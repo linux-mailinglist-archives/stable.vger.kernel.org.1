@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-123451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8922A5C59E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7855DA5C80C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D03AD3AA539
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D85B23AEA54
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A164D25DD0F;
-	Tue, 11 Mar 2025 15:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EBB25E82C;
+	Tue, 11 Mar 2025 15:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNp09+d0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMz8nqMH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F42E25D8E8;
-	Tue, 11 Mar 2025 15:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DCA1CAA8F;
+	Tue, 11 Mar 2025 15:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705993; cv=none; b=h0mG6v/hYRaL1jWT2XC5xmkIy3ut7cStsIVA16N6CFlQTS7ClJd2f55NPNB5wVXLvx30qSOxwqTV0wObHdX/pfBAJ3KpGjQ+GxgUJUALAlnscbFIFz1geZq8bu0lvE63uYqSaTlhwu4aZSUIEsEsWTIFViRPEKdqt84f1rV7D60=
+	t=1741707230; cv=none; b=nT9rNqohbKFUbco4I+LGbKyymiEjTrQkO2IHwwBBzxNw6puKtNy1QsN/pImmufOAvn/DWQMrog+sMmvAgRp+U/9WNduOnGFJ1+2zff161l1oMr7VxkZ8eL1uLYLr8Pwd5LkgEMS+aAGhDnmpQ0zpYsm43ojEcUalaetF6Is2GKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705993; c=relaxed/simple;
-	bh=tg/iFOzKJbrXe7I4HGUYOZsf9qpTMw/Ri1o6G4+0ecE=;
+	s=arc-20240116; t=1741707230; c=relaxed/simple;
+	bh=EUomllhsRYQvC2DZBl7xWsxNLF1y/O/lURcwdRIJLPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isikLTTnWKBIgLZEVJGix+RZw9mzlKuv0F1Lcix70WpgGHypIFjA3G18xAG0TVOWx1fLXrI/aHY84nZ7pDuroTof04D8k6fCM/PADk5Ft9FXCQFi5ddev6LI3AOTN+E1PcYX1lmB+phJEldKzroEljOhWTtR7B4sWWXMHvNUuVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNp09+d0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA003C4CEE9;
-	Tue, 11 Mar 2025 15:13:12 +0000 (UTC)
+	 MIME-Version; b=QvViYRLzadvvfN8mJWDURQF+1IgcMawyyCwu5NCrtsUQewtuaTMYiscROv7uPQxy3G1s+hT2fCJei5QQ6Ryn6dhiQwbbEwHvPKOtGHP0PYlZ2oC3+03ifLCbmtgGDvKwFKdrKcG3EN7dTwFX2ZPLV8Wu/+ACphztgJs9WQqApEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMz8nqMH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B439C4CEE9;
+	Tue, 11 Mar 2025 15:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705993;
-	bh=tg/iFOzKJbrXe7I4HGUYOZsf9qpTMw/Ri1o6G4+0ecE=;
+	s=korg; t=1741707230;
+	bh=EUomllhsRYQvC2DZBl7xWsxNLF1y/O/lURcwdRIJLPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNp09+d0UsTFKTd/j7BIv/iGP2iXpdZYCo8J6fOsP2JxEtwz+vbMqBM0vDV2Tmnbr
-	 51+CKTbKpGfuMF4LdNz8X15uYyW9jr6Ebxs91pbiamYi2rcEQGBw9ihmxVEUi0mnQd
-	 smnvVnW78612azCrmrEho7csgEtPOp1Iho44ZXTg=
+	b=eMz8nqMHBRGTUjemVUL9NKCwpcZsBm23lME3Cz6ZUpTlcjLzdwBFSVHtFgUiISJSL
+	 FdrqfA3l5+N259MwjA3amS2VeniKOtpgk2Phyqc7Dh+8sk666VwUO9NhZ9d8tP/+Tb
+	 ecWt/2nd71wp2xc63vQUPxrUEhbhxZ73wbezOyuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zetao <lizetao1@huawei.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 207/328] neighbour: delete redundant judgment statements
+	Casey Chen <cachen@purestorage.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Noah Meyerhans <noahm@debian.org>,
+	Yuanyuan Zhong <yzhong@purestorage.com>
+Subject: [PATCH 5.10 311/462] nvme-pci: fix multiple races in nvme_setup_io_queues
 Date: Tue, 11 Mar 2025 15:59:37 +0100
-Message-ID: <20250311145723.133765401@linuxfoundation.org>
+Message-ID: <20250311145810.648754200@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zetao <lizetao1@huawei.com>
+From: Casey Chen <cachen@purestorage.com>
 
-[ Upstream commit c25bdd2ac8cf7da70a226f1a66cdce7af15ff86f ]
+commit e4b9852a0f4afe40604afb442e3af4452722050a upstream.
 
-The initial value of err is -ENOBUFS, and err is guaranteed to be
-less than 0 before all goto errout. Therefore, on the error path
-of errout, there is no need to repeatedly judge that err is less than 0,
-and delete redundant judgments to make the code more concise.
+Below two paths could overlap each other if we power off a drive quickly
+after powering it on. There are multiple races in nvme_setup_io_queues()
+because of shutdown_lock missing and improper use of NVMEQ_ENABLED bit.
 
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: becbd5850c03 ("neighbour: use RCU protection in __neigh_notify()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+nvme_reset_work()                                nvme_remove()
+  nvme_setup_io_queues()                           nvme_dev_disable()
+  ...                                              ...
+A1  clear NVMEQ_ENABLED bit for admin queue          lock
+    retry:                                       B1  nvme_suspend_io_queues()
+A2    pci_free_irq() admin queue                 B2  nvme_suspend_queue() admin queue
+A3    pci_free_irq_vectors()                         nvme_pci_disable()
+A4    nvme_setup_irqs();                         B3    pci_free_irq_vectors()
+      ...                                            unlock
+A5    queue_request_irq() for admin queue
+      set NVMEQ_ENABLED bit
+      ...
+      nvme_create_io_queues()
+A6      result = queue_request_irq();
+        set NVMEQ_ENABLED bit
+      ...
+      fail to allocate enough IO queues:
+A7      nvme_suspend_io_queues()
+        goto retry
+
+If B3 runs in between A1 and A2, it will crash if irqaction haven't
+been freed by A2. B2 is supposed to free admin queue IRQ but it simply
+can't fulfill the job as A1 has cleared NVMEQ_ENABLED bit.
+
+Fix: combine A1 A2 so IRQ get freed as soon as the NVMEQ_ENABLED bit
+gets cleared.
+
+After solved #1, A2 could race with B3 if A2 is freeing IRQ while B3
+is checking irqaction. A3 also could race with B2 if B2 is freeing
+IRQ while A3 is checking irqaction.
+
+Fix: A2 and A3 take lock for mutual exclusion.
+
+A3 could race with B3 since they could run free_msi_irqs() in parallel.
+
+Fix: A3 takes lock for mutual exclusion.
+
+A4 could fail to allocate all needed IRQ vectors if A3 and A4 are
+interrupted by B3.
+
+Fix: A4 takes lock for mutual exclusion.
+
+If A5/A6 happened after B2/B1, B3 will crash since irqaction is not NULL.
+They are just allocated by A5/A6.
+
+Fix: Lock queue_request_irq() and setting of NVMEQ_ENABLED bit.
+
+A7 could get chance to pci_free_irq() for certain IO queue while B3 is
+checking irqaction.
+
+Fix: A7 takes lock.
+
+nvme_dev->online_queues need to be protected by shutdown_lock. Since it
+is not atomic, both paths could modify it using its own copy.
+
+Co-developed-by: Yuanyuan Zhong <yzhong@purestorage.com>
+Signed-off-by: Casey Chen <cachen@purestorage.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+[noahm@debian.org: backported to 5.10]
+Link: https://lore.kernel.org/linux-nvme/20210707211432.29536-1-cachen@purestorage.com/
+Signed-off-by: Noah Meyerhans <noahm@debian.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/nvme/host/pci.c |   66 ++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 58 insertions(+), 8 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 4dfe17f1a76aa..3e007cbadb707 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3382,8 +3382,7 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
- 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
- 	return;
- errout:
--	if (err < 0)
--		rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
-+	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1563,6 +1563,28 @@ static void nvme_init_queue(struct nvme_
+ 	wmb(); /* ensure the first interrupt sees the initialization */
  }
  
- void neigh_app_ns(struct neighbour *n)
--- 
-2.39.5
-
++/*
++ * Try getting shutdown_lock while setting up IO queues.
++ */
++static int nvme_setup_io_queues_trylock(struct nvme_dev *dev)
++{
++	/*
++	 * Give up if the lock is being held by nvme_dev_disable.
++	 */
++	if (!mutex_trylock(&dev->shutdown_lock))
++		return -ENODEV;
++
++	/*
++	 * Controller is in wrong state, fail early.
++	 */
++	if (dev->ctrl.state != NVME_CTRL_CONNECTING) {
++		mutex_unlock(&dev->shutdown_lock);
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
+ static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
+ {
+ 	struct nvme_dev *dev = nvmeq->dev;
+@@ -1591,8 +1613,11 @@ static int nvme_create_queue(struct nvme
+ 		goto release_cq;
+ 
+ 	nvmeq->cq_vector = vector;
+-	nvme_init_queue(nvmeq, qid);
+ 
++	result = nvme_setup_io_queues_trylock(dev);
++	if (result)
++		return result;
++	nvme_init_queue(nvmeq, qid);
+ 	if (!polled) {
+ 		result = queue_request_irq(nvmeq);
+ 		if (result < 0)
+@@ -1600,10 +1625,12 @@ static int nvme_create_queue(struct nvme
+ 	}
+ 
+ 	set_bit(NVMEQ_ENABLED, &nvmeq->flags);
++	mutex_unlock(&dev->shutdown_lock);
+ 	return result;
+ 
+ release_sq:
+ 	dev->online_queues--;
++	mutex_unlock(&dev->shutdown_lock);
+ 	adapter_delete_sq(dev, qid);
+ release_cq:
+ 	adapter_delete_cq(dev, qid);
+@@ -2182,7 +2209,18 @@ static int nvme_setup_io_queues(struct n
+ 	if (nr_io_queues == 0)
+ 		return 0;
+ 	
+-	clear_bit(NVMEQ_ENABLED, &adminq->flags);
++	/*
++	 * Free IRQ resources as soon as NVMEQ_ENABLED bit transitions
++	 * from set to unset. If there is a window to it is truely freed,
++	 * pci_free_irq_vectors() jumping into this window will crash.
++	 * And take lock to avoid racing with pci_free_irq_vectors() in
++	 * nvme_dev_disable() path.
++	 */
++	result = nvme_setup_io_queues_trylock(dev);
++	if (result)
++		return result;
++	if (test_and_clear_bit(NVMEQ_ENABLED, &adminq->flags))
++		pci_free_irq(pdev, 0, adminq);
+ 
+ 	if (dev->cmb_use_sqes) {
+ 		result = nvme_cmb_qdepth(dev, nr_io_queues,
+@@ -2198,14 +2236,17 @@ static int nvme_setup_io_queues(struct n
+ 		result = nvme_remap_bar(dev, size);
+ 		if (!result)
+ 			break;
+-		if (!--nr_io_queues)
+-			return -ENOMEM;
++		if (!--nr_io_queues) {
++			result = -ENOMEM;
++			goto out_unlock;
++		}
+ 	} while (1);
+ 	adminq->q_db = dev->dbs;
+ 
+  retry:
+ 	/* Deregister the admin queue's interrupt */
+-	pci_free_irq(pdev, 0, adminq);
++	if (test_and_clear_bit(NVMEQ_ENABLED, &adminq->flags))
++		pci_free_irq(pdev, 0, adminq);
+ 
+ 	/*
+ 	 * If we enable msix early due to not intx, disable it again before
+@@ -2214,8 +2255,10 @@ static int nvme_setup_io_queues(struct n
+ 	pci_free_irq_vectors(pdev);
+ 
+ 	result = nvme_setup_irqs(dev, nr_io_queues);
+-	if (result <= 0)
+-		return -EIO;
++	if (result <= 0) {
++		result = -EIO;
++		goto out_unlock;
++	}
+ 
+ 	dev->num_vecs = result;
+ 	result = max(result - 1, 1);
+@@ -2229,8 +2272,9 @@ static int nvme_setup_io_queues(struct n
+ 	 */
+ 	result = queue_request_irq(adminq);
+ 	if (result)
+-		return result;
++		goto out_unlock;
+ 	set_bit(NVMEQ_ENABLED, &adminq->flags);
++	mutex_unlock(&dev->shutdown_lock);
+ 
+ 	result = nvme_create_io_queues(dev);
+ 	if (result || dev->online_queues < 2)
+@@ -2239,6 +2283,9 @@ static int nvme_setup_io_queues(struct n
+ 	if (dev->online_queues - 1 < dev->max_qid) {
+ 		nr_io_queues = dev->online_queues - 1;
+ 		nvme_disable_io_queues(dev);
++		result = nvme_setup_io_queues_trylock(dev);
++		if (result)
++			return result;
+ 		nvme_suspend_io_queues(dev);
+ 		goto retry;
+ 	}
+@@ -2247,6 +2294,9 @@ static int nvme_setup_io_queues(struct n
+ 					dev->io_queues[HCTX_TYPE_READ],
+ 					dev->io_queues[HCTX_TYPE_POLL]);
+ 	return 0;
++out_unlock:
++	mutex_unlock(&dev->shutdown_lock);
++	return result;
+ }
+ 
+ static void nvme_del_queue_end(struct request *req, blk_status_t error)
 
 
 
