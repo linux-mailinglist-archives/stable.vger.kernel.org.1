@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DDBA5C71D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4705AA5C500
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA4216AE0D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A283AD9D1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486B725E813;
-	Tue, 11 Mar 2025 15:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6AD25EF89;
+	Tue, 11 Mar 2025 15:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9z4sHmX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbgvScWC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A7F15820C;
-	Tue, 11 Mar 2025 15:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2941C3BEB;
+	Tue, 11 Mar 2025 15:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706884; cv=none; b=o+uHXDJOTam55QwfSsX5F9p9n8G9RIJMT8BSezfpnvGdtDxjlCWAnAL0FurgWLc0nOhCRuk4JDAF+IDkNHX6V+Oae8DnSx7ubS7p8c7Gy2catI4BL3AGNO3Dl6kkfgs4M12/PwAGQyVjQxFPgTe4TNGQVUriCd4vS/rLOuWd7hc=
+	t=1741705640; cv=none; b=qFvwEKiFcay6Pu3JzhX6xT/Cz68WxR9v676YM1b5mR+TIfNyDy8Va0xfMOuE2POFxgsP6F9y3CLHHZ2hJeu5pxIChYzk5J2/B1tIKqb6fX7Uz2B/0H+2yYkoHHTW/fz8nwKxzvZ3oJxJFyq7Bq39cQx/PU6BGZxQ16O5RPdF5yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706884; c=relaxed/simple;
-	bh=VRH0uEjLB4SvSTiFwSy/omoo0MJJKlUzjaTJvVm6eUM=;
+	s=arc-20240116; t=1741705640; c=relaxed/simple;
+	bh=DcdEPswytfy4wBw4Ims/cO784c7zDPy7RCXCs4yIWZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQ9Eiac/MfRJbYXEGv2tuEvVB6xVACL0eAwvH6T3quL7VnaeuGrNMjxrIINC8WfPE3+Vhe5Pygaz9neFQ4eJpv+a7HoV3DeOpJHnxvu1g2fBl2waSvoWp/m8haScj2Ao8HQ5grU8Yxm/iwXDA5BYpVu769Din+imacTVgnPlAko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9z4sHmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BCAC4CEE9;
-	Tue, 11 Mar 2025 15:28:03 +0000 (UTC)
+	 MIME-Version; b=pyjpxwotJR2qVyH0obd9fRioSqiFdAGiBAYVgZ8Eto2yEsadBZgYoveA/I0LD/4Je0ciYd7O+ACuFBXx+ZEmFnce1lTbnOy1lTjYNQPiA6Uhf0ZemZ5QwpWrBm1+yZImBndiyTD4Am2vkQtk86nWFToGuDXNOpM44ef36Qm6SB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbgvScWC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05138C4CEE9;
+	Tue, 11 Mar 2025 15:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706883;
-	bh=VRH0uEjLB4SvSTiFwSy/omoo0MJJKlUzjaTJvVm6eUM=;
+	s=korg; t=1741705640;
+	bh=DcdEPswytfy4wBw4Ims/cO784c7zDPy7RCXCs4yIWZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c9z4sHmXFPEhSpA9YG1q6u9aJMpOHIGdRTIMJ1IHr2AlQvzq/XqUpdrB5bhGhgayO
-	 IZKehejlG730oqKNgg3d44YctM2hH9yfpkD/vfEYQH9Io6kFV5HRHRKwdZQg7ULoDR
-	 3LCJ1iRXWj4eVqQjlPzVpvFFkELR1O1TAOGMC8jY=
+	b=QbgvScWCLzTuU6HsvTzwprGMh6RCR3M7I358OLDMI0q/yxd3BzhZmsvY15XULuEYH
+	 32OuNpymy61V9qp80Bv6HaCuG7UDwMwyhzCN+qdU0tqILidfPY1tI7p9QCRwmlQR6n
+	 Kis5Tfp6/bp8GRix1iBW9xwppOlFApJYCazEuRi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 200/462] kbuild: Move -Wenum-enum-conversion to W=2
-Date: Tue, 11 Mar 2025 15:57:46 +0100
-Message-ID: <20250311145806.257500169@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 097/328] nilfs2: move page release outside of nilfs_delete_entry and nilfs_set_link
+Date: Tue, 11 Mar 2025 15:57:47 +0100
+Message-ID: <20250311145718.747561841@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 8f6629c004b193d23612641c3607e785819e97ab upstream.
+commit 584db20c181f5e28c0386d7987406ace7fbd3e49 upstream.
 
--Wenum-enum-conversion was strengthened in clang-19 to warn for C, which
-caused the kernel to move it to W=1 in commit 75b5ab134bb5 ("kbuild:
-Move -Wenum-{compare-conditional,enum-conversion} into W=1") because
-there were numerous instances that would break builds with -Werror.
-Unfortunately, this is not a full solution, as more and more developers,
-subsystems, and distributors are building with W=1 as well, so they
-continue to see the numerous instances of this warning.
+Patch series "nilfs2: Folio conversions for directory paths".
 
-Since the move to W=1, there have not been many new instances that have
-appeared through various build reports and the ones that have appeared
-seem to be following similar existing patterns, suggesting that most
-instances of this warning will not be real issues. The only alternatives
-for silencing this warning are adding casts (which is generally seen as
-an ugly practice) or refactoring the enums to macro defines or a unified
-enum (which may be undesirable because of type safety in other parts of
-the code).
+This series applies page->folio conversions to nilfs2 directory
+operations.  This reduces hidden compound_head() calls and also converts
+deprecated kmap calls to kmap_local in the directory code.
 
-Move the warning to W=2, where warnings that occur frequently but may be
-relevant should reside.
+Although nilfs2 does not yet support large folios, Matthew has done his
+best here to include support for large folios, which will be needed for
+devices with large block sizes.
 
-Cc: stable@vger.kernel.org
-Fixes: 75b5ab134bb5 ("kbuild: Move -Wenum-{compare-conditional,enum-conversion} into W=1")
-Link: https://lore.kernel.org/ZwRA9SOcOjjLJcpi@google.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+This series corresponds to the second half of the original post [1], but
+with two complementary patches inserted at the beginning and some
+adjustments, to prevent a kmap_local constraint violation found during
+testing with highmem mapping.
+
+[1] https://lkml.kernel.org/r/20231106173903.1734114-1-willy@infradead.org
+
+I have reviewed all changes and tested this for regular and small block
+sizes, both on machines with and without highmem mapping.  No issues
+found.
+
+
+This patch (of 17):
+
+In a few directory operations, the call to nilfs_put_page() for a page
+obtained using nilfs_find_entry() or nilfs_dotdot() is hidden in
+nilfs_set_link() and nilfs_delete_entry(), making it difficult to track
+page release and preventing change of its call position.
+
+By moving nilfs_put_page() out of these functions, this makes the page
+get/put correspondence clearer and makes it easier to swap
+nilfs_put_page() calls (and kunmap calls within them) when modifying
+multiple directory entries simultaneously in nilfs_rename().
+
+Also, update comments for nilfs_set_link() and nilfs_delete_entry() to
+reflect changes in their behavior.
+
+To make nilfs_put_page() visible from namei.c, this moves its definition
+to nilfs.h and replaces existing equivalents to use it, but the exposure
+of that definition is temporary and will be removed on a later kmap ->
+kmap_local conversion.
+
+Link: https://lkml.kernel.org/r/20231127143036.2425-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20231127143036.2425-2-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: ee70999a988b ("nilfs2: handle errors that nilfs_prepare_chunk() may return")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.extrawarn |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/nilfs2/dir.c   |   11 +----------
+ fs/nilfs2/namei.c |   13 +++++++------
+ fs/nilfs2/nilfs.h |    6 ++++++
+ 3 files changed, 14 insertions(+), 16 deletions(-)
 
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -37,6 +37,10 @@ KBUILD_CFLAGS += -Wno-missing-field-init
- KBUILD_CFLAGS += -Wno-sign-compare
- KBUILD_CFLAGS += -Wno-type-limits
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -64,12 +64,6 @@ static inline unsigned int nilfs_chunk_s
+ 	return inode->i_sb->s_blocksize;
+ }
  
-+ifdef CONFIG_CC_IS_CLANG
-+KBUILD_CFLAGS += -Wno-enum-enum-conversion
-+endif
+-static inline void nilfs_put_page(struct page *page)
+-{
+-	kunmap(page);
+-	put_page(page);
+-}
+-
+ /*
+  * Return the offset into page `page_nr' of the last valid
+  * byte in that page, plus one.
+@@ -450,7 +444,6 @@ int nilfs_inode_by_name(struct inode *di
+ 	return 0;
+ }
+ 
+-/* Releases the page */
+ void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
+ 		    struct page *page, struct inode *inode)
+ {
+@@ -465,7 +458,6 @@ void nilfs_set_link(struct inode *dir, s
+ 	de->inode = cpu_to_le64(inode->i_ino);
+ 	nilfs_set_de_type(de, inode);
+ 	nilfs_commit_chunk(page, mapping, from, to);
+-	nilfs_put_page(page);
+ 	dir->i_mtime = dir->i_ctime = current_time(dir);
+ }
+ 
+@@ -569,7 +561,7 @@ out_unlock:
+ 
+ /*
+  * nilfs_delete_entry deletes a directory entry by merging it with the
+- * previous entry. Page is up-to-date. Releases the page.
++ * previous entry. Page is up-to-date.
+  */
+ int nilfs_delete_entry(struct nilfs_dir_entry *dir, struct page *page)
+ {
+@@ -605,7 +597,6 @@ int nilfs_delete_entry(struct nilfs_dir_
+ 	nilfs_commit_chunk(page, mapping, from, to);
+ 	inode->i_ctime = inode->i_mtime = current_time(inode);
+ out:
+-	nilfs_put_page(page);
+ 	return err;
+ }
+ 
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -295,6 +295,7 @@ static int nilfs_do_unlink(struct inode
+ 		set_nlink(inode, 1);
+ 	}
+ 	err = nilfs_delete_entry(de, page);
++	nilfs_put_page(page);
+ 	if (err)
+ 		goto out;
+ 
+@@ -403,6 +404,7 @@ static int nilfs_rename(struct inode *ol
+ 			goto out_dir;
+ 		}
+ 		nilfs_set_link(new_dir, new_de, new_page, old_inode);
++		nilfs_put_page(new_page);
+ 		nilfs_mark_inode_dirty(new_dir);
+ 		new_inode->i_ctime = current_time(new_inode);
+ 		if (dir_de)
+@@ -426,9 +428,11 @@ static int nilfs_rename(struct inode *ol
+ 	old_inode->i_ctime = current_time(old_inode);
+ 
+ 	nilfs_delete_entry(old_de, old_page);
++	nilfs_put_page(old_page);
+ 
+ 	if (dir_de) {
+ 		nilfs_set_link(old_inode, dir_de, dir_page, new_dir);
++		nilfs_put_page(dir_page);
+ 		drop_nlink(old_dir);
+ 	}
+ 	nilfs_mark_inode_dirty(old_dir);
+@@ -438,13 +442,10 @@ static int nilfs_rename(struct inode *ol
+ 	return err;
+ 
+ out_dir:
+-	if (dir_de) {
+-		kunmap(dir_page);
+-		put_page(dir_page);
+-	}
++	if (dir_de)
++		nilfs_put_page(dir_page);
+ out_old:
+-	kunmap(old_page);
+-	put_page(old_page);
++	nilfs_put_page(old_page);
+ out:
+ 	nilfs_transaction_abort(old_dir->i_sb);
+ 	return err;
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -243,6 +243,12 @@ extern struct nilfs_dir_entry *nilfs_dot
+ extern void nilfs_set_link(struct inode *, struct nilfs_dir_entry *,
+ 			   struct page *, struct inode *);
+ 
++static inline void nilfs_put_page(struct page *page)
++{
++	kunmap(page);
++	put_page(page);
++}
 +
- KBUILD_CPPFLAGS += -DKBUILD_EXTRA_WARN1
+ /* file.c */
+ extern int nilfs_sync_file(struct file *, loff_t, loff_t, int);
  
- else
-@@ -54,7 +58,6 @@ KBUILD_CFLAGS += -Wno-tautological-const
- KBUILD_CFLAGS += $(call cc-disable-warning, unaligned-access)
- KBUILD_CFLAGS += $(call cc-disable-warning, cast-function-type-strict)
- KBUILD_CFLAGS += -Wno-enum-compare-conditional
--KBUILD_CFLAGS += -Wno-enum-enum-conversion
- endif
- 
- endif
 
 
 
