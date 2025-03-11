@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-123956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8157A5C7A7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B551BA5C5D5
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:18:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74E827A12AB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19D54178801
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2976025B691;
-	Tue, 11 Mar 2025 15:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB8925BACC;
+	Tue, 11 Mar 2025 15:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXTh1azg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0hOkyTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5C11A5BA4;
-	Tue, 11 Mar 2025 15:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A93C1C3BEB;
+	Tue, 11 Mar 2025 15:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707448; cv=none; b=Q7e6VjEitTxPT5Kx8ezhXxg4zdeUVD01UVvTreVfmgP6ZlVjn+ABv7gPpsRBZ6S4z9Bjs/PHfTAHT9RNKJx+q718vnYfQ/fbfhqaSXXgUJPj02qS50Kq53WBeILUXSnGKmV/bysvMyDQBQmXIEZdBQJrJ2b08iQ6VV1KE2xHPCU=
+	t=1741706237; cv=none; b=rd4lIiovCj/4smG8dKf2qhV5fI0ZOaQovJdCYnOXEvmBUm1bOqEuyCCpIxNsZlW7CSSm7cfvYlhUP7k/itVziuM2O4EmRG+Q6wirvUx393BrIkiDfmAI11nW09PMalmNIXJ8l2LGKd/qhyqSMkHUwe2mAt3U+eyhuwR0Uo71vg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707448; c=relaxed/simple;
-	bh=j6iFCgX27XncWhFfoyWewpJTDKKzzFfb46oZGaVs0d0=;
+	s=arc-20240116; t=1741706237; c=relaxed/simple;
+	bh=GNLwTXT4kFEVzQ5TN+NQ+/XRxlYl33TvqYkddaUoA1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HSflMUqENttT72Hr0Y38yXze2dqGCxHHXyCypFRVW1kVCArsfuKKpXxV7JUGatjXVgHw1XwlpF7w42JH8IBFPimvbPAZtNiMnv7e/jNWAGp/JwGPdRRGMzj1ks2yEGOa5cRcKPaCNzo/uKFabxOg7FoMc9BDs1T/r5iDp1Hlw0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXTh1azg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621E3C4CEEA;
-	Tue, 11 Mar 2025 15:37:28 +0000 (UTC)
+	 MIME-Version; b=qbT0gbTcnWeglsn2B87nfrDuB9mPfcnQgpoidW/1KXtLUz32lZNlmf6cq+S0lOJTkWTbuoRgabZQf2VQgqMM+7527EqVUrCBdKrMbk0XIw0pyNlzpj7Ukic73oKF42J9bUuqJNh7s7aRFKquwaMfnWniUBUfq0KIvOAUUAyISsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0hOkyTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A4FC4CEE9;
+	Tue, 11 Mar 2025 15:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707448;
-	bh=j6iFCgX27XncWhFfoyWewpJTDKKzzFfb46oZGaVs0d0=;
+	s=korg; t=1741706237;
+	bh=GNLwTXT4kFEVzQ5TN+NQ+/XRxlYl33TvqYkddaUoA1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QXTh1azgTvAG4BGmDEsSg8phQqZvOX6Mgjeycuz9OSyD4kyDVSWZgcaHuJGjbg09w
-	 1sOxs67mQvCd17+X8BUh2f4JzHaH+fbhtAcb3kqhRAe95niaFuRyP7AuY7XygojZ8B
-	 RH3nhyIve2otx7zNhNz7MPpL8du3ipsFoXD6qnLs=
+	b=u0hOkyTbe3XCKDBsDFe95V8ijudMlMqYbc8mSR3CctahPFh3ubRmgmEhfmdOw/7f2
+	 16Hl3np0tBJXpBBlh1+eZ/fhpqkpgceMlNcManTrYD5wQ+D09EqpopAOWPWgU3J+ju
+	 vxFxjDVyLp53LwCPUZjzbN2EiugD6X6fthTiY6tY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
-	Richard Thier <u9vata@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 393/462] drm/radeon: Fix rs400_gpu_init for ATI mobility radeon Xpress 200M
-Date: Tue, 11 Mar 2025 16:00:59 +0100
-Message-ID: <20250311145813.862677486@linuxfoundation.org>
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 290/328] rapidio: add check for rio_add_net() in rio_scan_alloc_net()
+Date: Tue, 11 Mar 2025 16:01:00 +0100
+Message-ID: <20250311145726.437458509@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +63,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Thier <u9vata@gmail.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 29ffeb73b216ce3eff10229eb077cf9b7812119d upstream.
+commit e842f9a1edf306bf36fe2a4d847a0b0d458770de upstream.
 
-num_gb_pipes was set to a wrong value using r420_pipe_config
+The return value of rio_add_net() should be checked.  If it fails,
+put_device() should be called to free the memory and give up the reference
+initialized in rio_add_net().
 
-This have lead to HyperZ glitches on fast Z clearing.
-
-Closes: https://bugs.freedesktop.org/show_bug.cgi?id=110897
-Reviewed-by: Marek Olšák <marek.olsak@amd.com>
-Signed-off-by: Richard Thier <u9vata@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 044e59a85c4d84e3c8d004c486e5c479640563a6)
-Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250227041131.3680761-1-haoxiang_li2024@163.com
+Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/r300.c        |    3 ++-
- drivers/gpu/drm/radeon/radeon_asic.h |    1 +
- drivers/gpu/drm/radeon/rs400.c       |   18 ++++++++++++++++--
- 3 files changed, 19 insertions(+), 3 deletions(-)
+ drivers/rapidio/rio-scan.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/radeon/r300.c
-+++ b/drivers/gpu/drm/radeon/r300.c
-@@ -361,7 +361,8 @@ int r300_mc_wait_for_idle(struct radeon_
- 	return -1;
- }
+--- a/drivers/rapidio/rio-scan.c
++++ b/drivers/rapidio/rio-scan.c
+@@ -873,7 +873,10 @@ static struct rio_net *rio_scan_alloc_ne
+ 		dev_set_name(&net->dev, "rnet_%d", net->id);
+ 		net->dev.parent = &mport->dev;
+ 		net->dev.release = rio_scan_release_dev;
+-		rio_add_net(net);
++		if (rio_add_net(net)) {
++			put_device(&net->dev);
++			net = NULL;
++		}
+ 	}
  
--static void r300_gpu_init(struct radeon_device *rdev)
-+/* rs400_gpu_init also calls this! */
-+void r300_gpu_init(struct radeon_device *rdev)
- {
- 	uint32_t gb_tile_config, tmp;
- 
---- a/drivers/gpu/drm/radeon/radeon_asic.h
-+++ b/drivers/gpu/drm/radeon/radeon_asic.h
-@@ -165,6 +165,7 @@ void r200_set_safe_registers(struct rade
-  */
- extern int r300_init(struct radeon_device *rdev);
- extern void r300_fini(struct radeon_device *rdev);
-+extern void r300_gpu_init(struct radeon_device *rdev);
- extern int r300_suspend(struct radeon_device *rdev);
- extern int r300_resume(struct radeon_device *rdev);
- extern int r300_asic_reset(struct radeon_device *rdev, bool hard);
---- a/drivers/gpu/drm/radeon/rs400.c
-+++ b/drivers/gpu/drm/radeon/rs400.c
-@@ -257,8 +257,22 @@ int rs400_mc_wait_for_idle(struct radeon
- 
- static void rs400_gpu_init(struct radeon_device *rdev)
- {
--	/* FIXME: is this correct ? */
--	r420_pipes_init(rdev);
-+	/* Earlier code was calling r420_pipes_init and then
-+	 * rs400_mc_wait_for_idle(rdev). The problem is that
-+	 * at least on my Mobility Radeon Xpress 200M RC410 card
-+	 * that ends up in this code path ends up num_gb_pipes == 3
-+	 * while the card seems to have only one pipe. With the
-+	 * r420 pipe initialization method.
-+	 *
-+	 * Problems shown up as HyperZ glitches, see:
-+	 * https://bugs.freedesktop.org/show_bug.cgi?id=110897
-+	 *
-+	 * Delegating initialization to r300 code seems to work
-+	 * and results in proper pipe numbers. The rs400 cards
-+	 * are said to be not r400, but r300 kind of cards.
-+	 */
-+	r300_gpu_init(rdev);
-+
- 	if (rs400_mc_wait_for_idle(rdev)) {
- 		pr_warn("rs400: Failed to wait MC idle while programming pipes. Bad things might happen. %08x\n",
- 			RREG32(RADEON_MC_STATUS));
+ 	return net;
 
 
 
