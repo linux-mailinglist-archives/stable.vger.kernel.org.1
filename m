@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92467A5C82B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:41:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC65A5C5F6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF5BF1884CF9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5A2C188458F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4257D237701;
-	Tue, 11 Mar 2025 15:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32ECA15820C;
+	Tue, 11 Mar 2025 15:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEkK1VUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUkip15H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C8B25DD0B;
-	Tue, 11 Mar 2025 15:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68A71EA80;
+	Tue, 11 Mar 2025 15:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707401; cv=none; b=NHFtUYmAj0J4lf6FnoxpkKDl0Ies4ytTruX3RL6IrK2JfJCtKnaSmDGZ9SiNx9TBwd5ENpT/qWQQgA/r04zV1iwJa6RHdq6c/vSE/RBoysG+0c7qyvaTQl1j2ijZIC5IGjPGnKa8hFVSlzHoGyix0fT3dIfvkNJdmN7u6AyNbqs=
+	t=1741706182; cv=none; b=uxbm6sKTIg80RaaGhSFgNucFeOxGLrvRIkfIuBvb3whJB1kHZYtq1BE8iFE4JBmsRkE5VqVYaKJb2L53e2b/HOlGRtfRvjLlsZLM3BMymOnnu+6xKseHdmOy6i7hw2JIUEhwmOGIWgP7286qiV9fWwVXeHBB/D9cqB2JkOEuwqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707401; c=relaxed/simple;
-	bh=2rYwjnsl5yHgGDjcqBSyvy25Lm2If/eB1B7LCjEspN8=;
+	s=arc-20240116; t=1741706182; c=relaxed/simple;
+	bh=50jJm68EwZBD4oji9+qJ9gxrfC12Xcd5rGeH3KKKMKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QdTM4NFlcy1yrOtH/DFDbx+Pp/jedyJdsk9S3JyhmtU8SeaJDa/T4rgEQ/+zh9osEiTHf73bwvdcWpDaWcbRhnRmGOjJccB4+NchkhLDAZ1Zjj1clK8G7SpvugwfydmS7dNyUIJBZnGfNwGbIdhYYchK27HvY5kPAQkHMOs8HKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEkK1VUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C963C4CEE9;
-	Tue, 11 Mar 2025 15:36:40 +0000 (UTC)
+	 MIME-Version; b=eUH0l1THRsczVrarXWhPoKfTAvmTXSmsGZoRwBMkYCENjAOE7aebSqJ3/mE1SFdCTAWKv5u8ka/lSSHCQNzPBxYzPd7d6wYMNuPJ7lUNygmc+LGHZ5w1zr1vZ9n8uaBhOJ65nBH6hmGqw1t/BTL+ECGyl9OGeIpOckawgoULoUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUkip15H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDAFC4CEE9;
+	Tue, 11 Mar 2025 15:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707400;
-	bh=2rYwjnsl5yHgGDjcqBSyvy25Lm2If/eB1B7LCjEspN8=;
+	s=korg; t=1741706181;
+	bh=50jJm68EwZBD4oji9+qJ9gxrfC12Xcd5rGeH3KKKMKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEkK1VUkVOMV96KUJS6diX1LPvHtG4N8R2dWBozX/k5RTIux9+QiVVyQ416G9gOIg
-	 sX2o7sVr1bpGVQg0AJ9mWSNmRm4Er2B2oPoolJY4WvMJqB4umLIOubYnKRBbWrqEQh
-	 DAGFSSMDk78VKVrBCRk94IWTPEXLDImoBOrm+CYw=
+	b=QUkip15HrFknuk4ETdqpGtAKqaU+WHVudMz+/fW7HE0oanIBr4D7gJtyUyS5gbgak
+	 s7oVic0lV8CHXWbPvZ9FfYMZRwiaNDEvrPJCEJuoL/7zCNzjq7emAQk45AGPgtxY99
+	 JT4CdAktgFDqVeasQWWtLkm75gCB5JUsMgjbMprE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cd3ce3d03a3393ae9700@syzkaller.appspotmail.com,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 375/462] mptcp: always handle address removal under msk socket lock
-Date: Tue, 11 Mar 2025 16:00:41 +0100
-Message-ID: <20250311145813.168089442@linuxfoundation.org>
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 272/328] drop_monitor: fix incorrect initialization order
+Date: Tue, 11 Mar 2025 16:00:42 +0100
+Message-ID: <20250311145725.722677701@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-commit f865c24bc55158313d5779fc81116023a6940ca3 upstream.
+[ Upstream commit 07b598c0e6f06a0f254c88dafb4ad50f8a8c6eea ]
 
-Syzkaller reported a lockdep splat in the PM control path:
+Syzkaller reports the following bug:
 
-  WARNING: CPU: 0 PID: 6693 at ./include/net/sock.h:1711 sock_owned_by_me include/net/sock.h:1711 [inline]
-  WARNING: CPU: 0 PID: 6693 at ./include/net/sock.h:1711 msk_owned_by_me net/mptcp/protocol.h:363 [inline]
-  WARNING: CPU: 0 PID: 6693 at ./include/net/sock.h:1711 mptcp_pm_nl_addr_send_ack+0x57c/0x610 net/mptcp/pm_netlink.c:788
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 6693 Comm: syz.0.205 Not tainted 6.14.0-rc2-syzkaller-00303-gad1b832bf1cf #0
-  Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
-  RIP: 0010:sock_owned_by_me include/net/sock.h:1711 [inline]
-  RIP: 0010:msk_owned_by_me net/mptcp/protocol.h:363 [inline]
-  RIP: 0010:mptcp_pm_nl_addr_send_ack+0x57c/0x610 net/mptcp/pm_netlink.c:788
-  Code: 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 ca 7b d3 f5 eb b9 e8 c3 7b d3 f5 90 0f 0b 90 e9 dd fb ff ff e8 b5 7b d3 f5 90 <0f> 0b 90 e9 3e fb ff ff 44 89 f1 80 e1 07 38 c1 0f 8c eb fb ff ff
-  RSP: 0000:ffffc900034f6f60 EFLAGS: 00010283
-  RAX: ffffffff8bee3c2b RBX: 0000000000000001 RCX: 0000000000080000
-  RDX: ffffc90004d42000 RSI: 000000000000a407 RDI: 000000000000a408
-  RBP: ffffc900034f7030 R08: ffffffff8bee37f6 R09: 0100000000000000
-  R10: dffffc0000000000 R11: ffffed100bcc62e4 R12: ffff88805e6316e0
-  R13: ffff88805e630c00 R14: dffffc0000000000 R15: ffff88805e630c00
-  FS:  00007f7e9a7e96c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000001b2fd18ff8 CR3: 0000000032c24000 CR4: 00000000003526f0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <TASK>
-   mptcp_pm_remove_addr+0x103/0x1d0 net/mptcp/pm.c:59
-   mptcp_pm_remove_anno_addr+0x1f4/0x2f0 net/mptcp/pm_netlink.c:1486
-   mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_netlink.c:1518 [inline]
-   mptcp_pm_nl_del_addr_doit+0x118d/0x1af0 net/mptcp/pm_netlink.c:1629
-   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0xb1f/0xec0 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x206/0x480 net/netlink/af_netlink.c:2543
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
-   netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1348
-   netlink_sendmsg+0x8de/0xcb0 net/netlink/af_netlink.c:1892
-   sock_sendmsg_nosec net/socket.c:718 [inline]
-   __sock_sendmsg+0x221/0x270 net/socket.c:733
-   ____sys_sendmsg+0x53a/0x860 net/socket.c:2573
-   ___sys_sendmsg net/socket.c:2627 [inline]
-   __sys_sendmsg+0x269/0x350 net/socket.c:2659
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f7e9998cde9
-  Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007f7e9a7e9038 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-  RAX: ffffffffffffffda RBX: 00007f7e99ba5fa0 RCX: 00007f7e9998cde9
-  RDX: 000000002000c094 RSI: 0000400000000000 RDI: 0000000000000007
-  RBP: 00007f7e99a0e2a0 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 0000000000000000 R14: 00007f7e99ba5fa0 R15: 00007fff49231088
+BUG: spinlock bad magic on CPU#1, syz-executor.0/7995
+ lock: 0xffff88805303f3e0, .magic: 00000000, .owner: <none>/-1, .owner_cpu: 0
+CPU: 1 PID: 7995 Comm: syz-executor.0 Tainted: G            E     5.10.209+ #1
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x119/0x179 lib/dump_stack.c:118
+ debug_spin_lock_before kernel/locking/spinlock_debug.c:83 [inline]
+ do_raw_spin_lock+0x1f6/0x270 kernel/locking/spinlock_debug.c:112
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:117 [inline]
+ _raw_spin_lock_irqsave+0x50/0x70 kernel/locking/spinlock.c:159
+ reset_per_cpu_data+0xe6/0x240 [drop_monitor]
+ net_dm_cmd_trace+0x43d/0x17a0 [drop_monitor]
+ genl_family_rcv_msg_doit+0x22f/0x330 net/netlink/genetlink.c:739
+ genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+ genl_rcv_msg+0x341/0x5a0 net/netlink/genetlink.c:800
+ netlink_rcv_skb+0x14d/0x440 net/netlink/af_netlink.c:2497
+ genl_rcv+0x29/0x40 net/netlink/genetlink.c:811
+ netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
+ netlink_unicast+0x54b/0x800 net/netlink/af_netlink.c:1348
+ netlink_sendmsg+0x914/0xe00 net/netlink/af_netlink.c:1916
+ sock_sendmsg_nosec net/socket.c:651 [inline]
+ __sock_sendmsg+0x157/0x190 net/socket.c:663
+ ____sys_sendmsg+0x712/0x870 net/socket.c:2378
+ ___sys_sendmsg+0xf8/0x170 net/socket.c:2432
+ __sys_sendmsg+0xea/0x1b0 net/socket.c:2461
+ do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x62/0xc7
+RIP: 0033:0x7f3f9815aee9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f3f972bf0c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f3f9826d050 RCX: 00007f3f9815aee9
+RDX: 0000000020000000 RSI: 0000000020001300 RDI: 0000000000000007
+RBP: 00007f3f981b63bd R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000006e R14: 00007f3f9826d050 R15: 00007ffe01ee6768
 
-Indeed the PM can try to send a RM_ADDR over a msk without acquiring
-first the msk socket lock.
+If drop_monitor is built as a kernel module, syzkaller may have time
+to send a netlink NET_DM_CMD_START message during the module loading.
+This will call the net_dm_monitor_start() function that uses
+a spinlock that has not yet been initialized.
 
-The bugged code-path comes from an early optimization: when there
-are no subflows, the PM should (usually) not send RM_ADDR
-notifications.
+To fix this, let's place resource initialization above the registration
+of a generic netlink family.
 
-The above statement is incorrect, as without locks another process
-could concurrent create a new subflow and cause the RM_ADDR generation.
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with Syzkaller.
 
-Additionally the supposed optimization is not very effective even
-performance-wise, as most mptcp sockets should have at least one
-subflow: the MPC one.
-
-Address the issue removing the buggy code path, the existing "slow-path"
-will handle correctly even the edge case.
-
-Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+cd3ce3d03a3393ae9700@syzkaller.appspotmail.com
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/546
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-1-f550f636b435@kernel.org
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250213152054.2785669-1-Ilia.Gavrilov@infotecs.ru
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    6 ------
- 1 file changed, 6 deletions(-)
+ net/core/drop_monitor.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -807,11 +807,6 @@ static int mptcp_nl_remove_subflow_and_s
- 		struct sock *sk = (struct sock *)msk;
- 		bool remove_subflow;
- 
--		if (list_empty(&msk->conn_list)) {
--			mptcp_pm_remove_anno_addr(msk, addr, false);
--			goto next;
--		}
--
- 		lock_sock(sk);
- 		remove_subflow = lookup_subflow_by_saddr(&msk->conn_list, addr);
- 		mptcp_pm_remove_anno_addr(msk, addr, remove_subflow);
-@@ -819,7 +814,6 @@ static int mptcp_nl_remove_subflow_and_s
- 			mptcp_pm_remove_subflow(msk, addr->id);
- 		release_sock(sk);
- 
--next:
- 		sock_put(sk);
- 		cond_resched();
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index b37465af47e4b..0c8afafcce436 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -1650,30 +1650,30 @@ static int __init init_net_drop_monitor(void)
+ 		return -ENOSPC;
  	}
+ 
+-	rc = genl_register_family(&net_drop_monitor_family);
+-	if (rc) {
+-		pr_err("Could not create drop monitor netlink family\n");
+-		return rc;
++	for_each_possible_cpu(cpu) {
++		net_dm_cpu_data_init(cpu);
++		net_dm_hw_cpu_data_init(cpu);
+ 	}
+-	WARN_ON(net_drop_monitor_family.mcgrp_offset != NET_DM_GRP_ALERT);
+ 
+ 	rc = register_netdevice_notifier(&dropmon_net_notifier);
+ 	if (rc < 0) {
+ 		pr_crit("Failed to register netdevice notifier\n");
++		return rc;
++	}
++
++	rc = genl_register_family(&net_drop_monitor_family);
++	if (rc) {
++		pr_err("Could not create drop monitor netlink family\n");
+ 		goto out_unreg;
+ 	}
++	WARN_ON(net_drop_monitor_family.mcgrp_offset != NET_DM_GRP_ALERT);
+ 
+ 	rc = 0;
+ 
+-	for_each_possible_cpu(cpu) {
+-		net_dm_cpu_data_init(cpu);
+-		net_dm_hw_cpu_data_init(cpu);
+-	}
+-
+ 	goto out;
+ 
+ out_unreg:
+-	genl_unregister_family(&net_drop_monitor_family);
++	WARN_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
+ out:
+ 	return rc;
+ }
+@@ -1682,19 +1682,18 @@ static void exit_net_drop_monitor(void)
+ {
+ 	int cpu;
+ 
+-	BUG_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
+-
+ 	/*
+ 	 * Because of the module_get/put we do in the trace state change path
+ 	 * we are guarnateed not to have any current users when we get here
+ 	 */
++	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
++
++	BUG_ON(unregister_netdevice_notifier(&dropmon_net_notifier));
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		net_dm_hw_cpu_data_fini(cpu);
+ 		net_dm_cpu_data_fini(cpu);
+ 	}
+-
+-	BUG_ON(genl_unregister_family(&net_drop_monitor_family));
+ }
+ 
+ module_init(init_net_drop_monitor);
+-- 
+2.39.5
+
 
 
 
