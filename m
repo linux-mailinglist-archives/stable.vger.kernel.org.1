@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-123878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7113BA5C805
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE90A5C575
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444DE3AE1CA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFD031888F34
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6810425F961;
-	Tue, 11 Mar 2025 15:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E215D25D90F;
+	Tue, 11 Mar 2025 15:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMpWdF+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVesuLnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FDB25DAEC;
-	Tue, 11 Mar 2025 15:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E93225D8F9;
+	Tue, 11 Mar 2025 15:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707222; cv=none; b=QGo+oswWUEYtfbU0d2g3w/UN1/lz/ERU+wL8froJ/kuWWU56As85kKz8cLtgh+27Lcn2qlDUu+YPkxxUE+pJ9QNANMwYc4Z/qaiGoFztMyStwbKD5V2mdODv14KGBkcmSJfZIRivLwaEOmatszNR9HEY4S00TXsBCk5ClG3e6cM=
+	t=1741705889; cv=none; b=oh23y7Xsi50qShwGzCR5u5Wzcj1yL+wrx30qAoW2e80iTUStCRqwbr/LtR247bk3JY2jFQYI29Da4eGxT8Hbk5GHaykySxXT7Z9LJ6Aw/T4VtI7AolWmFKiUc+iJmXVWpEVZ1MX68/4cfAYJpW/schtTyOi/vWmknSV0X20rPlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707222; c=relaxed/simple;
-	bh=FhCIyObPoHC1yIGmCUV2N+6MDrbjM8QvAn22awu+1Xg=;
+	s=arc-20240116; t=1741705889; c=relaxed/simple;
+	bh=m6GNFnZK+EqB+5UwBheXVT/AfejnbgbXUXVznenE/3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWg42VPsMfJKHPguDEIJzBT6UIkmOuedN5NNVhXZLOtpwx6Rp2gOjUITdcaVqKkiSsJ331cSdvCONpEslCuIJBilyNALiaLOvrOfAD9E8/1o871mPlNXKPe4glSrZpaBmBO5N9lYOSWqTNRlZX0cH6oN3uOrpkXIkloTVWVO6iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMpWdF+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A64CC4CEEA;
-	Tue, 11 Mar 2025 15:33:41 +0000 (UTC)
+	 MIME-Version; b=pqyLqlL67mhCsx/oqAiey4CR/2o10CPA2KCxoqRm4QdZk7Cfb2jg5EPAjWsK86Vphymh6borlOEgpDrDvm+Ji446OQN4FTAxkJidLerce1MO/8PIYMDqeab9WYi5BIx3l/iN3Xz4eMrgS5hRHNlnnt+9kA8icyeEd4z0FgI8pSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVesuLnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE8FC4CEE9;
+	Tue, 11 Mar 2025 15:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707222;
-	bh=FhCIyObPoHC1yIGmCUV2N+6MDrbjM8QvAn22awu+1Xg=;
+	s=korg; t=1741705889;
+	bh=m6GNFnZK+EqB+5UwBheXVT/AfejnbgbXUXVznenE/3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMpWdF+SYaF31g6CU8aC54jADOv5Zv6Bl5RTAS2GO+lZ5mJgwNHQLGESeBmleq3st
-	 S7K7GF4g0qaPa+jc9AvjyvJFWFZvPQbUjL/JLRmrQ0uKEqAetmv2PR4Ma1SIuKVq3Q
-	 gS2MROogvZOUo57haeiw5k+yaIU/+iTwZHjXN5Fc=
+	b=mVesuLnlGkAz6ZZoLYKd6CZ7WKyIZGkuRpw4Y4uXAL9BQH3kV/ZLART0HF+eerRoI
+	 rhCmuHBE9SnPdIU1cSljSx0WEIkxhso9WiLhmqxqSw8pt/7j7s3wk4F7+OBJnNShG8
+	 3qfuCKmy7tPI4c+1aVPs5+edKGT9Osn+GNsH+b4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zetao <lizetao1@huawei.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 285/462] neighbour: delete redundant judgment statements
-Date: Tue, 11 Mar 2025 15:59:11 +0100
-Message-ID: <20250311145809.631176108@linuxfoundation.org>
+	Lei Huang <huanglei@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.4 182/328] USB: quirks: add USB_QUIRK_NO_LPM quirk for Teclast dist
+Date: Tue, 11 Mar 2025 15:59:12 +0100
+Message-ID: <20250311145722.135590790@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zetao <lizetao1@huawei.com>
+From: Lei Huang <huanglei@kylinos.cn>
 
-[ Upstream commit c25bdd2ac8cf7da70a226f1a66cdce7af15ff86f ]
+commit e169d96eecd447ff7fd7542ca5fa0911f5622054 upstream.
 
-The initial value of err is -ENOBUFS, and err is guaranteed to be
-less than 0 before all goto errout. Therefore, on the error path
-of errout, there is no need to repeatedly judge that err is less than 0,
-and delete redundant judgments to make the code more concise.
+Teclast disk used on Huawei hisi platforms doesn't work well,
+losing connectivity intermittently if LPM is enabled.
+Add quirk disable LPM to resolve the issue.
 
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: becbd5850c03 ("neighbour: use RCU protection in __neigh_notify()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250212093829.7379-1-huanglei814@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index c187eb951083b..bd017b220cfed 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3387,8 +3387,7 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
- 	rtnl_notify(skb, net, 0, RTNLGRP_NEIGH, NULL, GFP_ATOMIC);
- 	return;
- errout:
--	if (err < 0)
--		rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
-+	rtnl_set_sk_err(net, RTNLGRP_NEIGH, err);
- }
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -520,6 +520,9 @@ static const struct usb_device_id usb_qu
+ 	/* Blackmagic Design UltraStudio SDI */
+ 	{ USB_DEVICE(0x1edb, 0xbd4f), .driver_info = USB_QUIRK_NO_LPM },
  
- void neigh_app_ns(struct neighbour *n)
--- 
-2.39.5
-
++	/* Teclast disk */
++	{ USB_DEVICE(0x1f75, 0x0917), .driver_info = USB_QUIRK_NO_LPM },
++
+ 	/* Hauppauge HVR-950q */
+ 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
 
 
 
