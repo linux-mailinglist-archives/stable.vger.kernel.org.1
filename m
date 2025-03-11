@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-123783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18604A5C743
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFFDA5C527
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECBE9167883
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0358718896ED
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A1C25E81B;
-	Tue, 11 Mar 2025 15:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99DA25EF89;
+	Tue, 11 Mar 2025 15:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jQYlN9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytAEfZTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45FE25E807;
-	Tue, 11 Mar 2025 15:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824D625EF81;
+	Tue, 11 Mar 2025 15:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706950; cv=none; b=G0Q4GooMrTcKubuBv0CHD8PZPPjHyU8Nfi4oD/lqVlx3cY3/GaA8rZPYp3eKJthyeWX6Z3YVMljHW1CS6bUXf6vmVg2HD8hPIiKuYijyFvXbNDcOIQJM7FNuCeTPEgUDMzlG0mOUULoHVibDF5TeQfNc3lWrhj293MAHO4qi+jE=
+	t=1741705737; cv=none; b=lwYZv7rl123AGAHLzuM32x1u0wHpq5RuFyFP4yd9yC/awgoM5vUwMba4p7J0A1qulT3T61TWknWlrid+G7NxCVV9IYoi9jaipO4+ciVZH86xNmDDWc3s0/KIq2wbK3M4NMdkgGo+YonAXXawoi+R0jjqVdyc0zMXIBtEjM8wxzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706950; c=relaxed/simple;
-	bh=BhEc1tKkjK+aqCNdI4k5ZCJRrhE4npCWfE20gZd7wgo=;
+	s=arc-20240116; t=1741705737; c=relaxed/simple;
+	bh=XXiKbN0SCyvZ+V8HJz+MqaGnZ48jTbLvmqcZHBemcZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKJ5r0h/mciV+OX06zpGt0mwsrmjUjT9fyMdg1NE0S51vafei7NrbDbu1cCqHv//48t/Wq4EfPBE8x7pkQRvL9XJItZMGAPQjM30zBZqmRDx0R/RxxA+99Txchu6L5zeKmO1EsXYrmFh9B2JTksq7Cn3zaedPTLiRv9Xmge/KI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jQYlN9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C80C4CEEA;
-	Tue, 11 Mar 2025 15:29:09 +0000 (UTC)
+	 MIME-Version; b=o5l68kHEYnPEV5vsIg10x9Kqqq3ZRx+pk2YrDDiQF/JE/apRih+0xpJtyVY8VBV1/RyAW8ZVkJISONKyzKrusuxk15Cu8AqaZH3poT7GsuVYiiQo937Cx0mOvUAkCM4/WTyG6GAXAg5N6g8s+VGj+BK9XberXwMCRtVk5vU3+l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytAEfZTp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A51CC4CEEA;
+	Tue, 11 Mar 2025 15:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706950;
-	bh=BhEc1tKkjK+aqCNdI4k5ZCJRrhE4npCWfE20gZd7wgo=;
+	s=korg; t=1741705737;
+	bh=XXiKbN0SCyvZ+V8HJz+MqaGnZ48jTbLvmqcZHBemcZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jQYlN9puUjLfR3zVoRYOsh8/mF0iFjhILttS2anbfjmjS2Ctz0TzK3x5glJ5H5mJ
-	 SL+zlMBQG/Jc/QvbdoKEf78zU+qjixrm8HUCLn1MISU72U+SVi+OlmSnZll9f9i4BT
-	 IsfuE33dBZssXC2q3qo7/V11zDH49kNTXtK92n9c=
+	b=ytAEfZTpa/kY3X5j/1fZ1UZHFVksNO7COolopqPKmATPRVUC61KyFnvC0mhpDVosZ
+	 aQQluiG1CTKMdtObek7awYNoq5bxYOeZge9EPAgP+Btept0iuRLjbWT2ArJoewmqXh
+	 zU0iQye2hJbZkxFA1GL5PKQdm4hIFV0g2YKrLeG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 224/462] mptcp: prevent excessive coalescing on receive
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.4 120/328] m68k: vga: Fix I/O defines
 Date: Tue, 11 Mar 2025 15:58:10 +0100
-Message-ID: <20250311145807.211480144@linuxfoundation.org>
+Message-ID: <20250311145719.664756521@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 56b824eb49d6258aa0bad09a406ceac3f643cdae upstream.
+commit 53036937a101b5faeaf98e7438555fa854a1a844 upstream.
 
-Currently the skb size after coalescing is only limited by the skb
-layout (the skb must not carry frag_list). A single coalesced skb
-covering several MSS can potentially fill completely the receive
-buffer. In such a case, the snd win will zero until the receive buffer
-will be empty again, affecting tput badly.
+Including m68k's <asm/raw_io.h> in vga.h on nommu platforms results
+in conflicting defines with io_no.h for various I/O macros from the
+__raw_read and __raw_write families. An example error is
 
-Fixes: 8268ed4c9d19 ("mptcp: introduce and use mptcp_try_coalesce()")
-Cc: stable@vger.kernel.org # please delay 2 weeks after 6.13-final release
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-3-8608af434ceb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+   In file included from arch/m68k/include/asm/vga.h:12,
+                 from include/video/vga.h:22,
+                 from include/linux/vgaarb.h:34,
+		 from drivers/video/aperture.c:12:
+>> arch/m68k/include/asm/raw_io.h:39: warning: "__raw_readb" redefined
+      39 | #define __raw_readb in_8
+	 |
+   In file included from arch/m68k/include/asm/io.h:6,
+		    from include/linux/io.h:13,
+		    from include/linux/irq.h:20,
+		    from include/asm-generic/hardirq.h:17,
+		    from ./arch/m68k/include/generated/asm/hardirq.h:1,
+		    from include/linux/hardirq.h:11,
+		    from include/linux/interrupt.h:11,
+                    from include/linux/trace_recursion.h:5,
+		    from include/linux/ftrace.h:10,
+		    from include/linux/kprobes.h:28,
+		    from include/linux/kgdb.h:19,
+		    from include/linux/fb.h:6,
+		    from drivers/video/aperture.c:5:
+   arch/m68k/include/asm/io_no.h:16: note: this is the location of the previous definition
+      16 | #define __raw_readb(addr) \
+	 |
+
+Include <asm/io.h>, which avoids raw_io.h on nommu platforms.
+Also change the defined values of some of the read/write symbols in
+vga.h to __raw_read/__raw_write as the raw_in/raw_out symbols are not
+generally available.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501071629.DNEswlm8-lkp@intel.com/
+Fixes: 5c3f968712ce ("m68k/video: Create <asm/vga.h>")
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v3.5+
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/20250107095912.130530-1-tzimmermann@suse.de
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/m68k/include/asm/vga.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -125,6 +125,7 @@ static bool mptcp_try_coalesce(struct so
- 	int delta;
+--- a/arch/m68k/include/asm/vga.h
++++ b/arch/m68k/include/asm/vga.h
+@@ -9,7 +9,7 @@
+  */
+ #ifndef CONFIG_PCI
  
- 	if (MPTCP_SKB_CB(from)->offset ||
-+	    ((to->len + from->len) > (sk->sk_rcvbuf >> 3)) ||
- 	    !skb_try_coalesce(to, from, &fragstolen, &delta))
- 		return false;
+-#include <asm/raw_io.h>
++#include <asm/io.h>
+ #include <asm/kmap.h>
  
+ /*
+@@ -29,9 +29,9 @@
+ #define inw_p(port)		0
+ #define outb_p(port, val)	do { } while (0)
+ #define outw(port, val)		do { } while (0)
+-#define readb			raw_inb
+-#define writeb			raw_outb
+-#define writew			raw_outw
++#define readb			__raw_readb
++#define writeb			__raw_writeb
++#define writew			__raw_writew
+ 
+ #endif /* CONFIG_PCI */
+ #endif /* _ASM_M68K_VGA_H */
 
 
 
