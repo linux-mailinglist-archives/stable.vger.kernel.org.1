@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-123795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23611A5C75F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40E9A5C4F4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C72917725B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:30:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C33627A4DD9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BA125EFB4;
-	Tue, 11 Mar 2025 15:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BD625E47F;
+	Tue, 11 Mar 2025 15:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqcRYR1Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEudC4hZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E2215820C;
-	Tue, 11 Mar 2025 15:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3C025D908;
+	Tue, 11 Mar 2025 15:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706982; cv=none; b=EfDTHEndNjoil2OMXan/l7Rp4N2Kzh2YeGvDNWwpK99xnfxucZfya21IxxIKL7FkgvnIios2mOUy4QIbWX8jDAvFV9hlAFcpXIuhIfOFGBXSl1gWsSIMMCySr5HA3hsKjbAUww2lQh9Ed6NmD7IAQhWGiG+vmiJRdK4lNUcPpJ4=
+	t=1741705717; cv=none; b=MdZ3vpLrPjPXY6ChKuWnfzYAAXXeiT61lGTz8+hCqstKJjK0QQh/mojnHbd50xdINYPG69mS9bnBLhrhhXplrfn5BPzjvYmUGCy3LhjVQ9rNDg1DzKppYWO4l10BSZdieZcFgrL870/8bSZdi+eVo2iPJ5yNBaka4xt+42mCtek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706982; c=relaxed/simple;
-	bh=m9KiuxvgbdE8YgOSvtgEnPLqiZ52v482TmO6qg58fpE=;
+	s=arc-20240116; t=1741705717; c=relaxed/simple;
+	bh=HKhhZPyt8k1knJXhVB8I3Jl6AOrq+Yh833Yx7Azi+JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ifyyb9RJmQU1W3o4FbBGSuC/RJ6dOXd11xSBqvejzIPVU68X+G3f/doLQjI4VfqH9WIxHdIck5QShdzVPL4crg/uEJ321FozYA2pilpVSUTBJgUS2jzJapN7tNNetFsW123hACYDgRvSkALufH1iaoBp7PIr10oQCcCB1ebBer0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqcRYR1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3D7C4CEE9;
-	Tue, 11 Mar 2025 15:29:41 +0000 (UTC)
+	 MIME-Version; b=ONPP48OWEVu5rzFjndbQGWA6/yfLgqyXltdFtg7l9ygZcb0foVBJOfnKTsNYzZ4mh0yMUyDUC+1ckxW8jfBUndw5NIUWVr2EwdFPumeXCVyAgJvDIARcLlwp/u95R6QNbcdwAti1bvTYSqBdDxJvWAUg83aO0I4jolNlKrLOU9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEudC4hZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB871C4CEE9;
+	Tue, 11 Mar 2025 15:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706981;
-	bh=m9KiuxvgbdE8YgOSvtgEnPLqiZ52v482TmO6qg58fpE=;
+	s=korg; t=1741705717;
+	bh=HKhhZPyt8k1knJXhVB8I3Jl6AOrq+Yh833Yx7Azi+JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqcRYR1ZuFHb6ePMwM7PH9JA1UIa7kuchfRpthneEuUTHvAujmMKsFPGDesr+4JDQ
-	 YQ9LuqMua6+4Whsx5Bid2owbcM1b7gcTEYk/Z5vZ8HX8ho7QCxp6kH7xsS/FqBuwDd
-	 XNoPQ7yLYxJMOTDCjIfDXXsGIUb6/UUaonNMm/qI=
+	b=aEudC4hZGQ5+VAd5+Y0aUaoDdC730TocKFmsQTNJB2dz6kjP58+acKlOLFmg8+Ul0
+	 UukYye7GfGH+EBx4uG4sJ9nj0xfbzjXE7YcS7OGDsoHIOnHDejPKPer5pcSP3vhOh7
+	 kdJ1g0ohocVUa6bjdDSKIpYH7/FjLafbQUQnK9Ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Markus Mayer <mmayer@broadcom.com>,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 234/462] gpio: bcm-kona: Add missing newline to dev_err format string
-Date: Tue, 11 Mar 2025 15:58:20 +0100
-Message-ID: <20250311145807.612957921@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.4 131/328] of: Fix of_find_node_opts_by_path() handling of alias+path+options
+Date: Tue, 11 Mar 2025 15:58:21 +0100
+Message-ID: <20250311145720.108032627@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 615279db222c3ac56d5c93716efd72b843295c1f ]
+commit b9e58c934c56aa35b0fb436d9afd86ef326bae0e upstream.
 
-Add a missing newline to the format string of the "Couldn't get IRQ
-for bank..." error message.
+of_find_node_opts_by_path() fails to find OF device node when its
+@path parameter have pattern below:
 
-Fixes: 757651e3d60e ("gpio: bcm281xx: Add GPIO driver")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Markus Mayer <mmayer@broadcom.com>
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250206-kona-gpio-fixes-v2-3-409135eab780@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"alias-name/node-name-1/.../node-name-N:options".
+
+The reason is that alias name length calculated by the API is wrong, as
+explained by example below:
+
+"testcase-alias/phandle-tests/consumer-a:testaliasoption".
+ ^             ^                        ^
+ 0             14                       39
+
+The right length of alias 'testcase-alias' is 14, but the result worked
+out by the API is 39 which is obvious wrong.
+
+Fix by using index of either '/' or ':' as the length who comes earlier.
+
+Fixes: 75c28c09af99 ("of: add optional options parameter to of_find_node_by_path()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20241216-of_core_fix-v2-1-e69b8f60da63@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-bcm-kona.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/base.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-bcm-kona.c b/drivers/gpio/gpio-bcm-kona.c
-index 46c7d399780ae..3aff7f2f1c2a5 100644
---- a/drivers/gpio/gpio-bcm-kona.c
-+++ b/drivers/gpio/gpio-bcm-kona.c
-@@ -677,7 +677,7 @@ static int bcm_kona_gpio_probe(struct platform_device *pdev)
- 		bank->irq = platform_get_irq(pdev, i);
- 		bank->kona_gpio = kona_gpio;
- 		if (bank->irq < 0) {
--			dev_err(dev, "Couldn't get IRQ for bank %d", i);
-+			dev_err(dev, "Couldn't get IRQ for bank %d\n", i);
- 			ret = -ENOENT;
- 			goto err_irq_domain;
- 		}
--- 
-2.39.5
-
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -988,10 +988,10 @@ struct device_node *of_find_node_opts_by
+ 	/* The path could begin with an alias */
+ 	if (*path != '/') {
+ 		int len;
+-		const char *p = separator;
++		const char *p = strchrnul(path, '/');
+ 
+-		if (!p)
+-			p = strchrnul(path, '/');
++		if (separator && separator < p)
++			p = separator;
+ 		len = p - path;
+ 
+ 		/* of_aliases must not be NULL */
 
 
 
