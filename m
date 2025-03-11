@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-124011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2627CA5C873
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD21A5C5CE
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:18:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDAF917AEB1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:40:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05E2D7A51A7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836BB25EFA0;
-	Tue, 11 Mar 2025 15:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67111BD00C;
+	Tue, 11 Mar 2025 15:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzHvL8ZQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ukkYiK0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4056E1E98EC;
-	Tue, 11 Mar 2025 15:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7328C249F9;
+	Tue, 11 Mar 2025 15:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707610; cv=none; b=LNsqp/KfhQsz3ZtA3kcVRoKigXcW5R7n6oWqg7YI9QVxm8lZ+cY3gH1pyAs18Er/BirxyJkUlxkTMqOo+mgxIDrrY0KNSO2z4VOKCJkCvTpfayKfT8OdD+iFGyJJ8pqNb5QFHxtruKngdr9AricqQVyqt8a+WbzJxAK4J3s1mWU=
+	t=1741706307; cv=none; b=n1whPJI01eD95Yhh8k+7hUEwTSLuADiyp2QMYGlXzayWj3bC0qRAV6umXcrhFfjg2L2R5UaE121ObjH5eTfQusowOy4HCOBGHwB3lKhPxdMi85/fNv5F2d9MIi2UatSHUALBXbC0zIoHHbMYZajw4kYa/Aqkt9500/Zkjr/uuuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707610; c=relaxed/simple;
-	bh=wZw3oYYcgTwqA01Nl+cSCYYZ/PUAeQOg6THhKjr3W94=;
+	s=arc-20240116; t=1741706307; c=relaxed/simple;
+	bh=8+kRcTrDFASu313IgSCmxeEvbizZlb/I/FFxPAkQ3GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBpIm4xdJISkkJCp6jZBIa6Kl1vtdm1LQmVWHmruGyZFr38DzAKwl6sMgYL4FffZHHXD5FBSPtuZZ5Lra0nx/pzwyL4BEeNIFhRphWdBTu9jCrrn/PfdJlEvIwwt2pqM6gQotBLYBazXEAgvt39rSFCXngT4auRWYZsBjDSPAlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzHvL8ZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0274C4CEE9;
-	Tue, 11 Mar 2025 15:40:09 +0000 (UTC)
+	 MIME-Version; b=XEItHcCTnrcloIfSu+Omuzd0jTmWQ7SzShYjSjJfqgsYQOY5Ej+UZPD+BHl0XBesQP13PGtbLkjmXnnSll6ViLGwBS8bgySO4JrXHwlaLpK9FV93IHd74YqhD7nI5Khm4M0qM4oJ/0PSgBHnIIbtmwzrqDqO+GlukuCFV1M5dj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ukkYiK0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891E2C4CEE9;
+	Tue, 11 Mar 2025 15:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707610;
-	bh=wZw3oYYcgTwqA01Nl+cSCYYZ/PUAeQOg6THhKjr3W94=;
+	s=korg; t=1741706306;
+	bh=8+kRcTrDFASu313IgSCmxeEvbizZlb/I/FFxPAkQ3GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zzHvL8ZQeOC5PR2UprtqoYRaqMAhdYT3mwI+X0OGm0GpPBtDr7b84PyedL6I+yFdB
-	 R3nKE+OWioLvfkEuz6Nyrudb07pD12y/0/DSwLbuB3o1aZCGBePYyjoTGHnsWkoSta
-	 jvpBT8nRzOgQKFNuOW+wBBAfenBCeaHHSXwuxq+M=
+	b=2ukkYiK0QbYq4McgcsZYWMrjrbEQ+2lgC1Kp9ayDHqIlXz00yTbJ8E1WAVeCycJ8N
+	 dR2BU8sdlzkVFSUs+AgM5Re1qQRy/YGg4szz6oRmZXaAlZFgaOvdGfI37JnxlKfK+n
+	 Itnqs0X279DPsLepEdu/Tzq6EgIMq+ZG+FynnA/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinghuo Chen <xinghuo.chen@foxmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 416/462] hwmon: fix a NULL vs IS_ERR_OR_NULL() check in xgene_hwmon_probe()
-Date: Tue, 11 Mar 2025 16:01:22 +0100
-Message-ID: <20250311145814.765231287@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.4 313/328] usb: renesas_usbhs: Use devm_usb_get_phy()
+Date: Tue, 11 Mar 2025 16:01:23 +0100
+Message-ID: <20250311145727.345834216@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinghuo Chen <xinghuo.chen@foxmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 10fce7ebe888fa8c97eee7e317a47e7603e5e78d ]
+commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
 
-The devm_memremap() function returns error pointers on error,
-it doesn't return NULL.
+The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
+never released. Use devm_usb_get_phy() to handle this scenario.
 
-Fixes: c7cefce03e69 ("hwmon: (xgene) access mailbox as RAM")
-Signed-off-by: Xinghuo Chen <xinghuo.chen@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_9AD8E7683EC29CAC97496B44F3F865BA070A@qq.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue was identified through code investigation. No issue was found
+without this change.
+
+Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
+ drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index f5d3cf86753f7..559a73bab51e8 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -719,7 +719,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
- 			goto out;
- 		}
+--- a/drivers/usb/renesas_usbhs/mod_gadget.c
++++ b/drivers/usb/renesas_usbhs/mod_gadget.c
+@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
+ 		goto usbhs_mod_gadget_probe_err_gpriv;
+ 	}
  
--		if (!ctx->pcc_comm_addr) {
-+		if (IS_ERR_OR_NULL(ctx->pcc_comm_addr)) {
- 			dev_err(&pdev->dev,
- 				"Failed to ioremap PCC comm region\n");
- 			rc = -ENOMEM;
--- 
-2.39.5
-
+-	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
++	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
+ 	dev_info(dev, "%stransceiver found\n",
+ 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
+ 
 
 
 
