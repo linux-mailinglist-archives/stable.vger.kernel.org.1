@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD21A5C5CE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:18:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20515A5C874
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05E2D7A51A7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF892165BBA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67111BD00C;
-	Tue, 11 Mar 2025 15:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5166B25E80C;
+	Tue, 11 Mar 2025 15:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ukkYiK0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUHiWu0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7328C249F9;
-	Tue, 11 Mar 2025 15:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3D01E98EC;
+	Tue, 11 Mar 2025 15:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706307; cv=none; b=n1whPJI01eD95Yhh8k+7hUEwTSLuADiyp2QMYGlXzayWj3bC0qRAV6umXcrhFfjg2L2R5UaE121ObjH5eTfQusowOy4HCOBGHwB3lKhPxdMi85/fNv5F2d9MIi2UatSHUALBXbC0zIoHHbMYZajw4kYa/Aqkt9500/Zkjr/uuuc=
+	t=1741707613; cv=none; b=eYR6li/AGBaF9HTNOKc7+1AM1N6vJ6J65XFhqaCf285rRMOKF3Ztfiw8SMCev2Dt7IKz0hvo9Sx7Gn8RAaji5azJw3mwCJz3T22gY/GN56In+b9fp+gwAxBwiEDSYdrf9eCaQhRwwtl+TmTKfG/qYOk2ugBmVTma5c/MTplnu0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706307; c=relaxed/simple;
-	bh=8+kRcTrDFASu313IgSCmxeEvbizZlb/I/FFxPAkQ3GM=;
+	s=arc-20240116; t=1741707613; c=relaxed/simple;
+	bh=ujAHltZyA3bEaTxVnzTD7fJjL3wXNJ+ro+ndR+2NiC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XEItHcCTnrcloIfSu+Omuzd0jTmWQ7SzShYjSjJfqgsYQOY5Ej+UZPD+BHl0XBesQP13PGtbLkjmXnnSll6ViLGwBS8bgySO4JrXHwlaLpK9FV93IHd74YqhD7nI5Khm4M0qM4oJ/0PSgBHnIIbtmwzrqDqO+GlukuCFV1M5dj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ukkYiK0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891E2C4CEE9;
-	Tue, 11 Mar 2025 15:18:26 +0000 (UTC)
+	 MIME-Version; b=mcQ+PJzybw8W9JoDgyQEmyljU01WwJbViLjssavpSyISPzPCkuNAdTAQmX/oJMC6Xkx9geOHbUXUYruYGqTNMDfRhIOf5+44uEQv9xLWTEXxKx09eBejAGhpf5Ks4yd/bvqvS3VBWWM85igCdZFdETkQulnBYv4KARpOa1vdffg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUHiWu0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFB8C4CEE9;
+	Tue, 11 Mar 2025 15:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706306;
-	bh=8+kRcTrDFASu313IgSCmxeEvbizZlb/I/FFxPAkQ3GM=;
+	s=korg; t=1741707612;
+	bh=ujAHltZyA3bEaTxVnzTD7fJjL3wXNJ+ro+ndR+2NiC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ukkYiK0QbYq4McgcsZYWMrjrbEQ+2lgC1Kp9ayDHqIlXz00yTbJ8E1WAVeCycJ8N
-	 dR2BU8sdlzkVFSUs+AgM5Re1qQRy/YGg4szz6oRmZXaAlZFgaOvdGfI37JnxlKfK+n
-	 Itnqs0X279DPsLepEdu/Tzq6EgIMq+ZG+FynnA/E=
+	b=sUHiWu0wisrUg8F9qLTscPHQm/eSRyCWSfZW+Zvwp8yRvQE2AEvEneeu4lrWIk0e8
+	 fuw6UeDRPgC5nmJFuhXhw4rvye8yGTd+RTvpspAQb4eWmNe2YtOw2c10+UqkKIAL7Y
+	 c0bPm1zI/ynFJQxMzRAlQy8djEWhorD9n0u3oeeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.4 313/328] usb: renesas_usbhs: Use devm_usb_get_phy()
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 417/462] drm/sched: Fix preprocessor guard
 Date: Tue, 11 Mar 2025 16:01:23 +0100
-Message-ID: <20250311145727.345834216@linuxfoundation.org>
+Message-ID: <20250311145814.805241226@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-commit e0c92440938930e7fa7aa6362780d39cdea34449 upstream.
+[ Upstream commit 23e0832d6d7be2d3c713f9390c060b6f1c48bf36 ]
 
-The gpriv->transceiver is retrieved in probe() through usb_get_phy() but
-never released. Use devm_usb_get_phy() to handle this scenario.
+When writing the header guard for gpu_scheduler_trace.h, a typo,
+apparently, occurred.
 
-This issue was identified through code investigation. No issue was found
-without this change.
+Fix the typo and document the scope of the guard.
 
-Fixes: b5a2875605ca ("usb: renesas_usbhs: Allow an OTG PHY driver to provide VBUS")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-3-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 353da3c520b4 ("drm/amdgpu: add tracepoint for scheduler (v2)")
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250218124149.118002-2-phasta@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/renesas_usbhs/mod_gadget.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/scheduler/gpu_scheduler_trace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/renesas_usbhs/mod_gadget.c
-+++ b/drivers/usb/renesas_usbhs/mod_gadget.c
-@@ -1094,7 +1094,7 @@ int usbhs_mod_gadget_probe(struct usbhs_
- 		goto usbhs_mod_gadget_probe_err_gpriv;
- 	}
+diff --git a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
+index 877ce9b127f16..caa5268c51ef1 100644
+--- a/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
++++ b/drivers/gpu/drm/scheduler/gpu_scheduler_trace.h
+@@ -21,7 +21,7 @@
+  *
+  */
  
--	gpriv->transceiver = usb_get_phy(USB_PHY_TYPE_UNDEFINED);
-+	gpriv->transceiver = devm_usb_get_phy(dev, USB_PHY_TYPE_UNDEFINED);
- 	dev_info(dev, "%stransceiver found\n",
- 		 !IS_ERR(gpriv->transceiver) ? "" : "no ");
+-#if !defined(_GPU_SCHED_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
++#if !defined(_GPU_SCHED_TRACE_H_) || defined(TRACE_HEADER_MULTI_READ)
+ #define _GPU_SCHED_TRACE_H_
  
+ #include <linux/stringify.h>
+@@ -123,7 +123,7 @@ TRACE_EVENT(drm_sched_job_wait_dep,
+ 		      __entry->seqno)
+ );
+ 
+-#endif
++#endif /* _GPU_SCHED_TRACE_H_ */
+ 
+ /* This part must be outside protection */
+ #undef TRACE_INCLUDE_PATH
+-- 
+2.39.5
+
 
 
 
