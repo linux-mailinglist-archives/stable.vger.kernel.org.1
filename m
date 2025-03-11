@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-123314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4EAAA5C4D3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C7DA5C715
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04837189AF19
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFED317B74B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2577625DD07;
-	Tue, 11 Mar 2025 15:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A33425E83E;
+	Tue, 11 Mar 2025 15:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdH0kLpQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7G0Lu2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D855B25D908;
-	Tue, 11 Mar 2025 15:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B581DF749;
+	Tue, 11 Mar 2025 15:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705593; cv=none; b=snDOx6Wgi7asqkxodxtDqle1gM7WW4ipV5xhqzDulMWtYHErijU6bU7Ynuoc3GyTe6n0L4ONC6/+aYs3Pwc4rOZrwTRuQjD4jhSrZbNm9Miiw0ae4Z0dY6bGtzBkoqnk5Shrr9ejwhg1fDeVsTZE8xlHkscn3eRtj//fhq/25EQ=
+	t=1741706861; cv=none; b=hxCxle1Dm91UhLcQQiVngZjB4C2BNp6Y11kO6gSq/2ea3CEcTTu6okC5lB9BMONl6Bzgmc76VOYXrGtyLSMR5Xqg6hegsMRhWe854w7aXldsfIOxsheABdrLEVO/3Hew/7lh7bwmgpQ7AWJWdGMaIwice8oDcnjnQ9EQJJ4ixEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705593; c=relaxed/simple;
-	bh=8PRAP0E6f4mfSrQjF9qhvuF7DCJoHoPwFM9mWibEn8I=;
+	s=arc-20240116; t=1741706861; c=relaxed/simple;
+	bh=nHo2MWvYeENNW1rTNuXmE7am6v0sI+kajIOHB/TJ+TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMOYRt8Hs3l30sWaElmpcoZ5lzGCzCDFhq47yoaRN2Ie4Q+ysqSoMFdYUmajHXcCD7UXIE0zYLwySZaYtTB1mdHkA+gAaIqum8A1/Pn3wzJAfwAPGQCfa5tukdG7xanHT5plSuqO3P7dWkH+nxf19NIBiYjfbA67NOb6jbqAzJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdH0kLpQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7C8C4CEE9;
-	Tue, 11 Mar 2025 15:06:33 +0000 (UTC)
+	 MIME-Version; b=fglXpeXjhUwPg/qzSHWMo/CPy8daDTKFh+T2QUKV0OhpuP/jq3mD6DrhpEqJ7KvwFZbLaw+BXkm/N1fhhjYziKS9Uy0/qA+TCBvULNEhPNjdYis5O0uL1ckXG1F7oq1A6HcxHaXY6ZF9rItIF41no903vBbePkI7Dz+OQAzE/6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7G0Lu2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9457DC4CEE9;
+	Tue, 11 Mar 2025 15:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705593;
-	bh=8PRAP0E6f4mfSrQjF9qhvuF7DCJoHoPwFM9mWibEn8I=;
+	s=korg; t=1741706861;
+	bh=nHo2MWvYeENNW1rTNuXmE7am6v0sI+kajIOHB/TJ+TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rdH0kLpQxnWyi3d11BSueNiznHNrD9H6jDhGknX6J8AfrXFgWLR6XlQfmIUZIJ5Qi
-	 HJ3AlVGi0sGb+DfqCBDTjSiXH/YLyxgGjjZRx0hfxVUK3Qupo4Ogp2Fwjebtxn3oc9
-	 kK/4z11cX/XoV/LHrTwEwoM8x8j8N9Bj3rMjIzUg=
+	b=u7G0Lu2FDqeqIr7luC0LFrB6QDODmb7FUqbj28VqGmIyAjSbBu/HF43uM0Sk7LfcY
+	 8vK4T7BoEFcBa3XDcXlW1KBL5kuC5nPjdQUF2Hd3q2G4rin0bK3laePs4uTjZkkOLb
+	 0G2pVMMcpb16EG3RokOXnEs2zSEzwzg8OUeBaxCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 089/328] mmc: core: Respect quirk_max_rate for non-UHS SDIO card
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.10 193/462] serial: sh-sci: Do not probe the serial port if its slot in sci_ports[] is in use
 Date: Tue, 11 Mar 2025 15:57:39 +0100
-Message-ID: <20250311145718.424202008@linuxfoundation.org>
+Message-ID: <20250311145805.985181802@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +60,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit a2a44f8da29352f76c99c6904ee652911b8dc7dd ]
+commit 9f7dea875cc7f9c1a56a5c688290634a59cd1420 upstream.
 
-The card-quirk was added to limit the clock-rate for a card with UHS-mode
-support, although let's respect the quirk for non-UHS mode too, to make the
-behaviour consistent.
+In the sh-sci driver, sci_ports[0] is used by earlycon. If the earlycon is
+still active when sci_probe() is called and the new serial port is supposed
+to map to sci_ports[0], return -EBUSY to prevent breaking the earlycon.
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Message-ID: <1732268242-72799-1-git-send-email-shawn.lin@rock-chips.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This situation should occurs in debug scenarios, and users should be
+aware of the potential conflict.
+
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250116182249.3828577-4-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/sdio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/sh-sci.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index e614fd82a32a4..2362a70460f1c 100644
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -379,6 +379,8 @@ static unsigned mmc_sdio_get_max_clock(struct mmc_card *card)
- 	if (card->type == MMC_TYPE_SD_COMBO)
- 		max_dtr = min(max_dtr, mmc_sd_get_max_clock(card));
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -164,6 +164,7 @@ struct sci_port {
+ static struct sci_port sci_ports[SCI_NPORTS];
+ static unsigned long sci_ports_in_use;
+ static struct uart_driver sci_uart_driver;
++static bool sci_uart_earlycon;
  
-+	max_dtr = min_not_zero(max_dtr, card->quirk_max_rate);
+ static inline struct sci_port *
+ to_sci_port(struct uart_port *uart)
+@@ -3343,6 +3344,7 @@ static int sci_probe_single(struct platf
+ static int sci_probe(struct platform_device *dev)
+ {
+ 	struct plat_sci_port *p;
++	struct resource *res;
+ 	struct sci_port *sp;
+ 	unsigned int dev_id;
+ 	int ret;
+@@ -3372,6 +3374,26 @@ static int sci_probe(struct platform_dev
+ 	}
+ 
+ 	sp = &sci_ports[dev_id];
 +
- 	return max_dtr;
- }
++	/*
++	 * In case:
++	 * - the probed port alias is zero (as the one used by earlycon), and
++	 * - the earlycon is still active (e.g., "earlycon keep_bootcon" in
++	 *   bootargs)
++	 *
++	 * defer the probe of this serial. This is a debug scenario and the user
++	 * must be aware of it.
++	 *
++	 * Except when the probed port is the same as the earlycon port.
++	 */
++
++	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -ENODEV;
++
++	if (sci_uart_earlycon && sp == &sci_ports[0] && sp->port.mapbase != res->start)
++		return dev_err_probe(&dev->dev, -EBUSY, "sci_port[0] is used by earlycon!\n");
++
+ 	platform_set_drvdata(dev, sp);
  
--- 
-2.39.5
-
+ 	ret = sci_probe_single(dev, dev_id, p, sp);
+@@ -3470,6 +3492,7 @@ static int __init early_console_setup(st
+ 	port_cfg.type = type;
+ 	sci_ports[0].cfg = &port_cfg;
+ 	sci_ports[0].params = sci_probe_regmap(&port_cfg);
++	sci_uart_earlycon = true;
+ 	port_cfg.scscr = sci_serial_in(&sci_ports[0].port, SCSCR);
+ 	sci_serial_out(&sci_ports[0].port, SCSCR,
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
 
 
 
