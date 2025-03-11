@@ -1,148 +1,169 @@
-Return-Path: <stable+bounces-123222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB35A5C365
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4583AA5C396
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8A83AFE03
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:12:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A35A177874
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B65B25BAC5;
-	Tue, 11 Mar 2025 14:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5943825C710;
+	Tue, 11 Mar 2025 14:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xul0Oswn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hG0oXFG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D4325B685;
-	Tue, 11 Mar 2025 14:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07348254B0D;
+	Tue, 11 Mar 2025 14:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741702342; cv=none; b=Viw0EyyyL15Vj4TiRn3vjnKrGPfs7WpuQjC8vtRerlraLsxP8ybMo307trNWEU2fq/8xNTtHx4lDM9LQ8lJPX3ejkfprjP6p1UDbZsFyDm7B37cDl65WnjVtWw9VftkEvyt+d+mJKRKtQvPFl9XVJO2ShHUgETiOIbp7vxZCUuc=
+	t=1741702479; cv=none; b=FPhDz7LLThh+dyZpjjHqhew7NyJLdFIbIG6RFQckwktyqysW2VuNtYFuGZiMa6Fy7aw1XuTxT+XbGEMMLMlFh58G+Jqiq9qwHc655WvkjY91NnWFoiotnsbcbXniBkbMHtlPlLLKB1Gu1mlKSwvDjijTvP30TM1cPvD6VTrq8fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741702342; c=relaxed/simple;
-	bh=s5tTPf8M/qtOoqE+Z9Xr/jAqha+ckvdOZ+a8jimc0Ws=;
+	s=arc-20240116; t=1741702479; c=relaxed/simple;
+	bh=yeuRqhNPxhQWRMw+OTMnVBLhf+GKJ3O5IeEzkxZ0+Xg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VFEimG6h3Ju2hYqDrBRTkWdzQnCkVgiD4J8Wh9b1tjBzNZdscQH4T8I1t7JMf4IAGWFQ+ZWAKQZ8AOUDjEmdHDyz9Ei/WpM+bZqRPC34xIKIFa5MVd0I5GSVLVVk6BDyiuFgU5vr+QmI37VPJ3ZiZ6Qsm122L/g/3hQBnpnRZ3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xul0Oswn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F408C4CEE9;
-	Tue, 11 Mar 2025 14:12:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741702341;
-	bh=s5tTPf8M/qtOoqE+Z9Xr/jAqha+ckvdOZ+a8jimc0Ws=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=m74fw51nMBjkQP0BQWFzzIZe+wd+U7wCrsr3qKka9F8/C0N8EeG3JalcI9IxYjVeszqY92lAvy9LLNIO5sLVAcrYTcTu4tQv5svJ6ZQzmcFGL29bnKsSAis6gov8jmQoqw7GVeufKK2OvH7V/Oro2Z8ncjO6ijAJ5UgD4TYuN3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hG0oXFG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C50BC4CEE9;
+	Tue, 11 Mar 2025 14:14:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741702478;
+	bh=yeuRqhNPxhQWRMw+OTMnVBLhf+GKJ3O5IeEzkxZ0+Xg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xul0Oswng8OAYUFcawvPSaIWfdo5VVFNJZlHB2L2mgvk5pYP3FsTvU2o32nZVmwb3
-	 vBG9PH5p5LAs4UeGQYGm2G+z+9NCb+q+UGVwbsASQV1PE6QR+Qjx9mKKECsHb9rCC5
-	 teocnBstL2/me4zfoVEKWm1SSC7+uLw6poyEhb0I=
-Date: Tue, 11 Mar 2025 15:12:13 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Florent Revest <revest@chromium.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>, bpf <bpf@vger.kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13 102/207] fprobe: Rewrite fprobe on function-graph
- tracer
-Message-ID: <2025031155-alabaster-sudoku-61c8@gregkh>
-References: <20250310170447.729440535@linuxfoundation.org>
- <20250310170451.816958751@linuxfoundation.org>
- <a66df96f-2280-49c0-875c-7cca4b4a6a71@kernel.org>
- <8ea06b5e-ec85-42e5-a2e9-9ad747fef217@kernel.org>
- <76c5a00f-ae15-43b8-a917-093ca63cc396@kernel.org>
+	b=hG0oXFG6SC8sDIeE5/XxN1PPtT4J5WkqDYCfDK2Fxpycjk3PWYAn6NOXRQrl0qz+E
+	 UgYNxORvvwIhTnNyrBAo3uvi6V//t5SILKN6JvE4mwH/0/KdpvsGRu+g60DRIqrq8X
+	 mJTnJAMsDmgr49FDdgiYiHBmtNp7YPR8dJUU2VW6TggIRk8OA3HPawnqZMEtHTvN49
+	 5ueTMQEt4Dxn+5kVp5mlvGhGvSASFvrDzpjdVsGwEneAQnOT0kiHBJbn8wwAQ85JsK
+	 gzuyHrc4R9Th4qG2eOEvdnnD+cLhWLJ12l7Sd2fAeNADMII4X6hCWqe+/E6o7KMESz
+	 d7yqvzyNNSP3w==
+Date: Tue, 11 Mar 2025 15:14:32 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Eric <eric.4.debian@grabatoulnz.fr>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jian-Hong Pan <jhp@endlessos.org>, regressions@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	Dieter Mummenschanz <dmummenschanz@web.de>
+Subject: Re: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
+ board type") on reboot (but not cold boot)
+Message-ID: <Z9BFSM059Wj2cYX5@ryzen>
+References: <8763ed79-991a-4a19-abb6-599c47a35514@grabatoulnz.fr>
+ <Z8VLZERz0FpvpchM@x1-carbon>
+ <8b1cbfd4-6877-48ef-b17d-fc10402efbf7@grabatoulnz.fr>
+ <Z8l61Kxss0bdvAQt@ryzen>
+ <Z8l7paeRL9szo0C0@ryzen>
+ <689f8224-f118-47f0-8ae0-a7377c6ff386@grabatoulnz.fr>
+ <Z8rCF39n5GjTwfjP@ryzen>
+ <9c4a635a-ce9f-4ed9-9605-002947490c61@redhat.com>
+ <Z88rtGH39C-S8phk@ryzen>
+ <383d5740-7740-4051-b39a-b8c74b035ec2@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <76c5a00f-ae15-43b8-a917-093ca63cc396@kernel.org>
+In-Reply-To: <383d5740-7740-4051-b39a-b8c74b035ec2@redhat.com>
 
-On Tue, Mar 11, 2025 at 10:56:26AM +0100, Jiri Slaby wrote:
-> On 11. 03. 25, 10:49, Jiri Slaby wrote:
-> > On 11. 03. 25, 10:46, Jiri Slaby wrote:
-> > > On 10. 03. 25, 18:04, Greg Kroah-Hartman wrote:
-> > > > 6.13-stable review patch.  If anyone has any objections, please
-> > > > let me know.
-> > > > 
-> > > > ------------------
-> > > > 
-> > > > From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > > > 
-> > > > [ Upstream commit 4346ba1604093305a287e08eb465a9c15ba05b80 ]
-> > > ...
-> > > > --- a/kernel/trace/Kconfig
-> > > > +++ b/kernel/trace/Kconfig
-> > > > @@ -302,11 +302,9 @@ config DYNAMIC_FTRACE_WITH_ARGS
-> > > >   config FPROBE
-> > > >       bool "Kernel Function Probe (fprobe)"
-> > > > -    depends on FUNCTION_TRACER
-> > > > -    depends on DYNAMIC_FTRACE_WITH_REGS || DYNAMIC_FTRACE_WITH_ARGS
-> > > > -    depends on HAVE_FTRACE_REGS_HAVING_PT_REGS || !
-> > > > HAVE_DYNAMIC_FTRACE_WITH_ARGS
-> > > > -    depends on HAVE_RETHOOK
-> > > > -    select RETHOOK
-> > > > +    depends on HAVE_FUNCTION_GRAPH_FREGS && HAVE_FTRACE_GRAPH_FUNC
-> > > 
-> > > HAVE_FTRACE_GRAPH_FUNC does not exist on 6.13, so FPROBE is
-> > > effectively disabled by this backport.
-> > > 
-> > > Is this missing (and only this?):
-> > > commit a762e9267dca843ced943ec24f20e110ba7c8431
-> > > Author: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > > Date:   Thu Dec 26 14:13:34 2024 +0900
-> > > 
-> > >      ftrace: Add CONFIG_HAVE_FTRACE_GRAPH_FUNC
-> > 
-> > With this applied, x86_64 is fixed. But ppc and s390 still loose it.
-> 
-> 
-> HAVE_FTRACE_GRAPH_FUNC is missing in ppc completely in upstream too (a
-> bug?).
-> 
-> s390 has it only through (here omitted):
-> commit 7495e179b478801433cec3cc4a82d2dcea35bf06
-> Author: Sven Schnelle <svens@linux.ibm.com>
-> Date:   Thu Dec 26 14:13:48 2024 +0900
-> 
->     s390/tracing: Enable HAVE_FTRACE_GRAPH_FUNC
+Hello Hans, Eric,
 
-Yeah, this isn't right.  I've dropped all of these from the queue now,
-thanks for the review!
+On Mon, Mar 10, 2025 at 09:12:13PM +0100, Hans de Goede wrote:
+> 
+> I agree with you that this is a BIOS bug of the motherboard in question
+> and/or a bad interaction between the ATI SATA controller and Samsung SSD
+> 870* models. Note that given the age of the motherboard there are likely
+> not going to be any BIOS updates fixing this though.
 
-greg k-h
+Looking at the number of quirks for some of the ATI SB7x0/SB8x0/SB9x0 SATA
+controllers, they really look like something special (not in a good way):
+https://github.com/torvalds/linux/blob/v6.14-rc6/drivers/ata/ahci.c#L236-L244
+
+-Ignore SError internal
+-No MSI
+-Max 255 sectors
+-Broken 64-bit DMA
+-Retry SRST (software reset)
+
+And that is even without the weird "disable NCQ but only for Samsung SSD
+8xx drives" quirk when using these ATI controllers.
+
+
+What does bother me is that we don't know if it is this specific mobo/BIOS:
+     Manufacturer: ASUSTeK COMPUTER INC.
+     Product Name: M5A99X EVO R2.0
+     Version: Rev 1.xx
+
+     M5A99X EVO R2.0 BIOS 2501
+     Version 2501
+     3.06 MB
+     2014/05/14
+
+
+that should have a NOLPM quirk, like we do for specific BIOSes:
+https://github.com/torvalds/linux/blob/v6.14-rc6/drivers/ata/ahci.c#L1402-L1439
+
+Or if it this ATI SATA controller that is always broken when it comes
+to LPM, regardless of the drive, or if it is only Samsung drives.
+
+Considering the dmesg comparing cold boot, the Maxtor drive and the
+ASUS ATAPI device seems to be recognized correctly.
+
+Eric, could you please run:
+$ sudo hdparm -I /dev/sdX | grep "interface power management"
+
+on both your Samsung and Maxtor drive?
+(A star to the left of feature means that the feature is enabled)
+
+
+
+One guess... perhaps it could be Device Initiated PM that is broken with
+these controllers? (Even though the controller does claim to support it.)
+
+Eric, could you please try this patch:
+
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index f813dbdc2346..ca690fde8842 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -244,7 +244,7 @@ static const struct ata_port_info ahci_port_info[] = {
+ 	},
+ 	[board_ahci_sb700] = {	/* for SB700 and SB800 */
+ 		AHCI_HFLAGS	(AHCI_HFLAG_IGN_SERR_INTERNAL),
+-		.flags		= AHCI_FLAG_COMMON,
++		.flags		= AHCI_FLAG_COMMON | ATA_FLAG_NO_DIPM,
+ 		.pio_mask	= ATA_PIO4,
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_pmp_retry_srst_ops,
+
+
+
+Normally, I do think that we need more reports, to see if it is just
+this specific BIOS, or all the ATI SB7x0/SB8x0/SB9x0 SATA controllers
+that are broken...
+
+...but, considering how many quirks these ATI controllers have already...
+
+...and the fact that the one (Dieter) who reported that his Samsung SSD 870
+QVO could enter deeper sleep states just fine was running an Intel AHCI
+controller (with the same FW version as Eric), I would be open to a patch
+that sets ATA_FLAG_NO_LPM for all these ATI controllers.
+
+Or a ATA_QUIRK_NO_LPM_ON_ATI, like you suggested, if we are certain that it
+is only Samsung drives that don't work with these ATI SATA controllers.
+
+
+Kind regards,
+Niklas
 
