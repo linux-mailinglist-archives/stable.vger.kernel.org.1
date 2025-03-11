@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-123861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D660A5C7EF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCA3A5C553
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFE5D3AA733
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C3917A3A3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AC325E826;
-	Tue, 11 Mar 2025 15:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D62F25E821;
+	Tue, 11 Mar 2025 15:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqLbITcR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPGoy4Um"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F67025DB0D;
-	Tue, 11 Mar 2025 15:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E095D25D8F9;
+	Tue, 11 Mar 2025 15:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707173; cv=none; b=T27GyGswYS9qhWXm+ekNfdvqEgO6GbwDHi6f5gXc50kfcz3f3rY2Z9uze+y/mRqg/BxRmav9GsWiJyqaB/u3ddRfR7wEFiJ1cmXbDjqJrW1NbijgZaYSawF5DkkaW2IoE/wsTsfBM/mr6ChzHrEM1Cjj0hdXiHLQHYS+fs6xsD4=
+	t=1741705904; cv=none; b=Syue30hhTptR65SXcU1JnWt6fBuaS8p0qMadyLkNc6Wb4j4gF/1Wq9D2WwWDKG3RlhfqpPei3NhIoQGIBw1tt5UNJY9q+dM8VinId4fmSs8sPMUsKqTUDpq47Aagu6fS4isxiyLTfQp8VN4IG0uqSwtLCPelxuZzKPHZWoY9KGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707173; c=relaxed/simple;
-	bh=IzY8FWb0ELqwXCRELokulGVIGJiFxmuS4z5If22y+0k=;
+	s=arc-20240116; t=1741705904; c=relaxed/simple;
+	bh=/fPQbJi4q/n5Tqb4Ht5wLR73okQPqmJLXr3zcZupgzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/U84aDVWRfcdvyQDfkQ0LVuVbSkhOSVZEYWFh+gUg8J29KvyFqfg9pcA2j/k04I6kPLxhLDOBSoMuYH5R1VfsPi4coNnFHYvEdKJ8eglKAQ2y9fCIJnnGXACA6I87FFrRlm+jBE4Vt16M0jnnqvV7KGpRHvLWooWQ7+T1k+GXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqLbITcR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD416C4CEE9;
-	Tue, 11 Mar 2025 15:32:52 +0000 (UTC)
+	 MIME-Version; b=oMYFmdehHVFAHBu+wzFY8GQx2uux11+MRzGrWHQROP2a3fG7YGk0cIDg96gGH2dPKmlrhV4aeqhAhDrV7oh65maAsZjRoIMck7e5Kdnb+oxq5kSzChkOQ7XNyzbsdhv1DZBTaKxyKdotl8eTo5kwnBAeqB49c69h/1rTUphBANo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPGoy4Um; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A068C4CEE9;
+	Tue, 11 Mar 2025 15:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707173;
-	bh=IzY8FWb0ELqwXCRELokulGVIGJiFxmuS4z5If22y+0k=;
+	s=korg; t=1741705903;
+	bh=/fPQbJi4q/n5Tqb4Ht5wLR73okQPqmJLXr3zcZupgzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqLbITcRQ95jxBNvOtusqRZqhSBKtLDvKgZtzPcMJNyUeZPC/X1lWLcklIOKYj33y
-	 BVlvWrOSYsr7Nqlfm2tBegNWtMF6eIxdCnWE+qmIRjSLCXrf7cHX2n0HAGwmA7IJrE
-	 ulL3Z/evhi1Z2rXdsABHqBxx7WBhcKtjv52GJ2VU=
+	b=EPGoy4UmreGIAmiHb7z9regm2zZf0VkR9HoZhcBPCC3FaleJs4eWwQXDAukI6g3vM
+	 XxRsXeSDI9e1u65a4+B6r0vgApbbilACLzTw8/j2ZZ8m5NQq4D7yL2nyIli0AZwb8Y
+	 XCjsxmwiMIxuElMEogOdBZ6ZZqNQk6AwvEhqihdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH 5.10 298/462] can: ems_pci: move ASIX AX99100 ids to pci_ids.h
-Date: Tue, 11 Mar 2025 15:59:24 +0100
-Message-ID: <20250311145810.135863434@linuxfoundation.org>
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Ivan Kokshaysky <ink@unseen.parts>
+Subject: [PATCH 5.4 195/328] alpha: make stack 16-byte aligned (most cases)
+Date: Tue, 11 Mar 2025 15:59:25 +0100
+Message-ID: <20250311145722.651197149@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Ivan Kokshaysky <ink@unseen.parts>
 
-commit 3029ad91335353a70feb42acd24d580d70ab258b upstream.
+commit 0a0f7362b0367634a2d5cb7c96226afc116f19c9 upstream.
 
-Move PCI Vendor and Device ID of ASIX AX99100 PCIe to Multi I/O
-Controller to pci_ids.h for its serial and parallel port driver
-support in subsequent patches.
+The problem is that GCC expects 16-byte alignment of the incoming stack
+since early 2004, as Maciej found out [1]:
+  Having actually dug speculatively I can see that the psABI was changed in
+ GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
+ improperly aligned)") back in Mar 2004, when the stack pointer alignment
+ was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
+ various suspicious stack pointer adjustments, starting with SP_OFF which
+ is not a whole multiple of 16.
 
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://lore.kernel.org/r/20230724083933.3173513-3-jiaqing.zhao@linux.intel.com
-[Moeko: Drop changes in drivers/net/can/sja1000/ems_pci.c]
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+Also, as Magnus noted, "ALPHA Calling Standard" [2] required the same:
+ D.3.1 Stack Alignment
+  This standard requires that stacks be octaword aligned at the time a
+  new procedure is invoked.
+
+However:
+- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
+  the odd number of 64-bit words in 'struct pt_regs', which is the very
+  first thing pushed onto the kernel thread stack;
+- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
+  stack depending on numerous factors.
+
+Somehow we got away with it until recently, when we ended up with
+a stack corruption in kernel/smp.c:smp_call_function_single() due to
+its use of 32-byte aligned local data and the compiler doing clever
+things allocating it on the stack.
+
+This adds padding between the PAL-saved and kernel-saved registers
+so that 'struct pt_regs' have an even number of 64-bit words.
+This makes the stack properly aligned for most of the kernel
+code, except two handlers which need special threatment.
+
+Note: struct pt_regs doesn't belong in uapi/asm; this should be fixed,
+but let's put this off until later.
+
+Link: https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/ [1]
+Link: https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf [2]
+
+Cc: stable@vger.kernel.org
+Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
+Tested-by: Matt Turner <mattst88@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
+Signed-off-by: Matt Turner <mattst88@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pci_ids.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/alpha/include/uapi/asm/ptrace.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -1765,6 +1765,10 @@
- #define PCI_SUBDEVICE_ID_AT_2700FX	0x2701
- #define PCI_SUBDEVICE_ID_AT_2701FX	0x2703
- 
-+#define PCI_VENDOR_ID_ASIX		0x125b
-+#define PCI_DEVICE_ID_ASIX_AX99100	0x9100
-+#define PCI_DEVICE_ID_ASIX_AX99100_LB	0x9110
-+
- #define PCI_VENDOR_ID_ESS		0x125d
- #define PCI_DEVICE_ID_ESS_ESS1968	0x1968
- #define PCI_DEVICE_ID_ESS_ESS1978	0x1978
+--- a/arch/alpha/include/uapi/asm/ptrace.h
++++ b/arch/alpha/include/uapi/asm/ptrace.h
+@@ -42,6 +42,8 @@ struct pt_regs {
+ 	unsigned long trap_a0;
+ 	unsigned long trap_a1;
+ 	unsigned long trap_a2;
++/* This makes the stack 16-byte aligned as GCC expects */
++	unsigned long __pad0;
+ /* These are saved by PAL-code: */
+ 	unsigned long ps;
+ 	unsigned long pc;
 
 
 
