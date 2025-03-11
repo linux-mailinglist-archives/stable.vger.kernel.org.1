@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71296A5C5A4
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AC3A5C7E6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0567B3A8CB6
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00DB51887B8D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C944525DD0B;
-	Tue, 11 Mar 2025 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741D225D527;
+	Tue, 11 Mar 2025 15:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q869nb95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9B0as9z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B7725D8E8;
-	Tue, 11 Mar 2025 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F521CAA8F;
+	Tue, 11 Mar 2025 15:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706010; cv=none; b=Wotr+IqSeWjbz4uT5II7StjX/uru3nkpmJxW/BVfEqLqeUoY9spe3QTE7ovK9bB/GuHT6ZNTN3uodvgHS630FesaSkmE6iOyapsexJ5giLGBKzuCkgdDtBDrGzZ++J23NPq7ExNPxiZjvqiBxQM0VAE0D+dR128nZ+eebVA6sek=
+	t=1741707260; cv=none; b=l1/Wg02f2iH2UYTTU6n62FZ1fLk32g717xh6pBYnishHZ6MWRmByaMUjvOo/X6B7xEzBWn+DeThDxp0FAJNbzfkx3HILHMFEfBIZEcg6ab6qk+Syc+QS4fW7f7LrzjUO2wYNquDtrImyu+Wb2h2r2JkOxdrAYtGaL2YzMdgSekY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706010; c=relaxed/simple;
-	bh=sUGdPxgltr5TBE3f0r66OGpugelg7q7Bjjj5EsaebNA=;
+	s=arc-20240116; t=1741707260; c=relaxed/simple;
+	bh=3Lq2HoCL9hHJ0zvKJJJiCN+69uqaAh6OTpov0+ACMuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BibIH1xYHyE/tqS1pS9kb5ZqiJNzPkXM/K+yiquVNXeIQUYe9rHi8XX3PPEX4em8llQc+zdRy9Bhh5OaHWeG+3J41k3EG5GkKE61U8OdgKcm9SeWZwODBnnYYUWuwkLKXIGuWrFBRyZKu1qLsGP10qHDQur0USQNLFxOe29U9rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q869nb95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBFBC4CEE9;
-	Tue, 11 Mar 2025 15:13:29 +0000 (UTC)
+	 MIME-Version; b=iqzLY3SexylNbqgHV6zRQgnzdrIVxkLq+e4gbcsDJm6ww0Opu24WVRanEjiTDm8l96+Ozmamdu39JYkdoRat/KpJq0n2vvLg27i9XLJk9VxrboNCzrGQS0DY3DTwzM0b2Eb8HDF+/4xMDgxo5qioVvkm8/ezKHsaIIdRUemVvJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9B0as9z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9EAC4CEE9;
+	Tue, 11 Mar 2025 15:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706010;
-	bh=sUGdPxgltr5TBE3f0r66OGpugelg7q7Bjjj5EsaebNA=;
+	s=korg; t=1741707260;
+	bh=3Lq2HoCL9hHJ0zvKJJJiCN+69uqaAh6OTpov0+ACMuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q869nb95CieHzv4uxM7kQ8P6ONR1lhTN+Tcgwb6bPDipGCF3MnygLql3LLZckRJbp
-	 g1q2nVoIK0BLk3yIqK+G9ljHU8Y+4Xzt5efAOunb8P1WlJ+F147tW2dIRU+XdANaJm
-	 6mSB/5U0Mo2f95S6eOc9Sa0izsgxXNOY56G75cM0=
+	b=l9B0as9zeqabTVrJSGchEcMFoz54Jyd+B7W33IYciKrp2B9GnYSiF4rQPv5X0UMus
+	 yGyqpYWFBjUPZHltw7Ca6By4GmSPdBQL32ARPJV3d0HfdzQKW2mQJyYyJIaIWnMI1X
+	 z4SseysrVaAPsZYYCH24XJIFMsxQQRE5R2oFSWlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Olivier Matz <olivier.matz@6wind.com>,
-	Ivan Delalande <colona@arista.com>
-Subject: [PATCH 5.4 224/328] vlan: introduce vlan_dev_free_egress_priority
-Date: Tue, 11 Mar 2025 15:59:54 +0100
-Message-ID: <20250311145723.816843990@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Felipe Balbi <balbi@kernel.org>,
+	Davidlohr Bueso <dbueso@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 329/462] usb/gadget: f_midi: Replace tasklet with work
+Date: Tue, 11 Mar 2025 15:59:55 +0100
+Message-ID: <20250311145811.359393078@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-commit 37aa50c539bcbcc01767e515bd170787fcfc0f33 upstream.
+[ Upstream commit 8653d71ce3763aedcf3d2331f59beda3fecd79e4 ]
 
-This patch is to introduce vlan_dev_free_egress_priority() to
-free egress priority for vlan dev, and keep vlan_dev_uninit()
-static as .ndo_uninit. It makes the code more clear and safer
-when adding new code in vlan_dev_uninit() in the future.
+Currently a tasklet is used to transmit input substream buffer
+data. However, tasklets have long been deprecated as being too
+heavy on the system by running in irq context - and this is not
+a performance critical path. If a higher priority process wants
+to run, it must wait for the tasklet to finish before doing so.
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Olivier Matz <olivier.matz@6wind.com>
-Signed-off-by: Ivan Delalande <colona@arista.com>
+Deferring work to a workqueue and executing in process context
+should be fine considering the callback already does
+f_midi_do_transmit() under the transmit_lock and thus changes in
+semantics are ok regarding concurrency - tasklets being serialized
+against itself.
+
+Cc: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Acked-by: Felipe Balbi <balbi@kernel.org>
+Signed-off-by: Davidlohr Bueso <dbueso@suse.de>
+Link: https://lore.kernel.org/r/20210111042855.73289-1-dave@stgolabs.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 4ab37fcb4283 ("USB: gadget: f_midi: f_midi_complete to call queue_work")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan.h         |    2 +-
- net/8021q/vlan_dev.c     |    7 ++++++-
- net/8021q/vlan_netlink.c |    7 ++++---
- 3 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/function/f_midi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/net/8021q/vlan.h
-+++ b/net/8021q/vlan.h
-@@ -117,6 +117,7 @@ void vlan_dev_set_ingress_priority(const
- 				   u32 skb_prio, u16 vlan_prio);
- int vlan_dev_set_egress_priority(const struct net_device *dev,
- 				 u32 skb_prio, u16 vlan_prio);
-+void vlan_dev_free_egress_priority(const struct net_device *dev);
- int vlan_dev_change_flags(const struct net_device *dev, u32 flag, u32 mask);
- void vlan_dev_get_realdev_name(const struct net_device *dev, char *result);
+diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+index 71aeaa2302edd..01c5736d381ef 100644
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -87,7 +87,7 @@ struct f_midi {
+ 	struct snd_rawmidi_substream *out_substream[MAX_PORTS];
  
-@@ -126,7 +127,6 @@ int vlan_check_real_dev(struct net_devic
- void vlan_setup(struct net_device *dev);
- int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack);
- void unregister_vlan_dev(struct net_device *dev, struct list_head *head);
--void vlan_dev_uninit(struct net_device *dev);
- bool vlan_dev_inherit_address(struct net_device *dev,
- 			      struct net_device *real_dev);
- 
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -590,7 +590,7 @@ static int vlan_dev_init(struct net_devi
+ 	unsigned long		out_triggered;
+-	struct tasklet_struct	tasklet;
++	struct work_struct	work;
+ 	unsigned int in_ports;
+ 	unsigned int out_ports;
+ 	int index;
+@@ -698,9 +698,11 @@ static void f_midi_transmit(struct f_midi *midi)
+ 	f_midi_drop_out_substreams(midi);
  }
  
- /* Note: this function might be called multiple times for the same device. */
--void vlan_dev_uninit(struct net_device *dev)
-+void vlan_dev_free_egress_priority(const struct net_device *dev)
+-static void f_midi_in_tasklet(struct tasklet_struct *t)
++static void f_midi_in_work(struct work_struct *work)
  {
- 	struct vlan_priority_tci_mapping *pm;
- 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
-@@ -604,6 +604,11 @@ void vlan_dev_uninit(struct net_device *
- 	}
- }
- 
-+static void vlan_dev_uninit(struct net_device *dev)
-+{
-+	vlan_dev_free_egress_priority(dev);
-+}
+-	struct f_midi *midi = from_tasklet(midi, t, tasklet);
++	struct f_midi *midi;
 +
- static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
- 	netdev_features_t features)
- {
---- a/net/8021q/vlan_netlink.c
-+++ b/net/8021q/vlan_netlink.c
-@@ -187,10 +187,11 @@ static int vlan_newlink(struct net *src_
- 		return -EINVAL;
- 
- 	err = vlan_changelink(dev, tb, data, extack);
--	if (!err)
--		err = register_vlan_dev(dev, extack);
- 	if (err)
--		vlan_dev_uninit(dev);
-+		return err;
-+	err = register_vlan_dev(dev, extack);
-+	if (err)
-+		vlan_dev_free_egress_priority(dev);
- 	return err;
++	midi = container_of(work, struct f_midi, work);
+ 	f_midi_transmit(midi);
  }
  
+@@ -737,7 +739,7 @@ static void f_midi_in_trigger(struct snd_rawmidi_substream *substream, int up)
+ 	VDBG(midi, "%s() %d\n", __func__, up);
+ 	midi->in_ports_array[substream->number].active = up;
+ 	if (up)
+-		tasklet_hi_schedule(&midi->tasklet);
++		queue_work(system_highpri_wq, &midi->work);
+ }
+ 
+ static int f_midi_out_open(struct snd_rawmidi_substream *substream)
+@@ -875,7 +877,7 @@ static int f_midi_bind(struct usb_configuration *c, struct usb_function *f)
+ 	int status, n, jack = 1, i = 0, endpoint_descriptor_index = 0;
+ 
+ 	midi->gadget = cdev->gadget;
+-	tasklet_setup(&midi->tasklet, f_midi_in_tasklet);
++	INIT_WORK(&midi->work, f_midi_in_work);
+ 	status = f_midi_register_card(midi);
+ 	if (status < 0)
+ 		goto fail_register;
+-- 
+2.39.5
+
 
 
 
