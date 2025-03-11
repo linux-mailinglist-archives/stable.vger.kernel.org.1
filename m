@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCB7A5C855
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:43:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABC0A5C604
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 577331888ABA
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5C0D189E01B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EAE25DCFA;
-	Tue, 11 Mar 2025 15:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0056025E83D;
+	Tue, 11 Mar 2025 15:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMRd5wRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zoFLoahm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8C125EFB4;
-	Tue, 11 Mar 2025 15:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B344C25E83B;
+	Tue, 11 Mar 2025 15:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707486; cv=none; b=vEcJFYvUTA9nIhI8pdxLfDr8vL9a4sZboJbQhdqWHCeEX3uO7X9W1uMX9BTX+Si3mZ/Pq3XypgCLOiqE/UjBUIJm1vfpdQ3llaGNMHsxYQWoOwG/ODZfFWpbnWjrUeDh0s+HLpClU/ERgmmFyZsMSFEdd+tsvzeOIdzC0MaLf3w=
+	t=1741706216; cv=none; b=bq7UaDEt+CbbH811ryPKyoO6CnfrGfaswLVrxBZJcol4DGmDVTMCJsxr6BrmT8VPjCqdKTRtSMUGQdbjvMGOK9lkYEKwOA31QqTyzr9oQH8pImIbTTAjbclIE1yutudl/qDst35CmWeZ0oK1mOW7RnVcLWizCevLV0RW13Tut/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707486; c=relaxed/simple;
-	bh=w5fD5+8qb2KnQkWF6ASXfpE7oGWu9PBFDF4auzgb1iM=;
+	s=arc-20240116; t=1741706216; c=relaxed/simple;
+	bh=2rOzjLWupE/+qGhGqGgEPmt+o6VKbyh8d7/z19yyLbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnC0yOzrDqVY/Ku+1j/lMQEHEf9E5lIrFvsgMQ6IoJzcx66skfKPu97U/wwu3J6HSsiAERsqKcMQ+t+HBwNjitTysawZS29KLpwwAm/hJOWmSh5s65dwftgQ79VyZ2erBYcU917BSXwGSZFpnzDsNFq7+7FKipLYmY2pHD4mdqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMRd5wRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C16C4CEEC;
-	Tue, 11 Mar 2025 15:38:05 +0000 (UTC)
+	 MIME-Version; b=IRbWCAcsaHqLs/cP5WCa1qjWfp3HeNZizjBvQkPIOwt0LOx1NrDXprHVJdhcYP6Pwut4+cXsqDjNTLKOnSyMXrQ7T1ZipTsChClOEnfqLdj0uNHFrLn2ioqheEXAbOVS2qH2/c9pHvCQxJZyS9THd8SFkL9uw+wIRRVD5v1jJkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zoFLoahm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8BDC4CEED;
+	Tue, 11 Mar 2025 15:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707486;
-	bh=w5fD5+8qb2KnQkWF6ASXfpE7oGWu9PBFDF4auzgb1iM=;
+	s=korg; t=1741706216;
+	bh=2rOzjLWupE/+qGhGqGgEPmt+o6VKbyh8d7/z19yyLbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMRd5wRB6bay/HGuB9Rtcd0YVNGtzU4x3rIqUtUsierg6zS59+O1jNtoDAjKoUF7p
-	 mwdbKYgZ9hPMO21ywdVQe0HlpPSICxIFksv1zbORX+nONPu+desNpghNWlSoTV+BbA
-	 Ibybgm/jj49MNt1Lzgm4sxGYviruQTmc06Q24bkk=
+	b=zoFLoahm+a2apKXfdRW2uC6JczY6GueouD0FfwMIRqHNAkIFqBQCpkVk4m9liHmGJ
+	 VjcHBmoXqCY9TLrcAT0tSuCafODStYCXmEAojATnu/ktuHSfqSs2MdP/AK5SzPA1PE
+	 rBm/j/QEi+GE1mjoPKe7Qdcvospv+mJIbLuqVcMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Xinghuo Chen <xinghuo.chen@foxmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 405/462] wifi: iwlwifi: limit printed string from FW file
-Date: Tue, 11 Mar 2025 16:01:11 +0100
-Message-ID: <20250311145814.331859421@linuxfoundation.org>
+Subject: [PATCH 5.4 302/328] hwmon: fix a NULL vs IS_ERR_OR_NULL() check in xgene_hwmon_probe()
+Date: Tue, 11 Mar 2025 16:01:12 +0100
+Message-ID: <20250311145726.909443738@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Xinghuo Chen <xinghuo.chen@foxmail.com>
 
-[ Upstream commit e0dc2c1bef722cbf16ae557690861e5f91208129 ]
+[ Upstream commit 10fce7ebe888fa8c97eee7e317a47e7603e5e78d ]
 
-There's no guarantee here that the file is always with a
-NUL-termination, so reading the string may read beyond the
-end of the TLV. If that's the last TLV in the file, it can
-perhaps even read beyond the end of the file buffer.
+The devm_memremap() function returns error pointers on error,
+it doesn't return NULL.
 
-Fix that by limiting the print format to the size of the
-buffer we have.
-
-Fixes: aee1b6385e29 ("iwlwifi: support fseq tlv and print fseq version")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250209143303.cb5f9d0c2f5d.Idec695d53c6c2234aade306f7647b576c7e3d928@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: c7cefce03e69 ("hwmon: (xgene) access mailbox as RAM")
+Signed-off-by: Xinghuo Chen <xinghuo.chen@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_9AD8E7683EC29CAC97496B44F3F865BA070A@qq.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
+ drivers/hwmon/xgene-hwmon.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index bf00c2fede746..47eea2c2a739e 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1127,7 +1127,7 @@ static int iwl_parse_tlv_firmware(struct iwl_drv *drv,
+diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
+index f5d3cf86753f7..559a73bab51e8 100644
+--- a/drivers/hwmon/xgene-hwmon.c
++++ b/drivers/hwmon/xgene-hwmon.c
+@@ -719,7 +719,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
+ 			goto out;
+ 		}
  
- 			if (tlv_len != sizeof(*fseq_ver))
- 				goto invalid_tlv_len;
--			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %s\n",
-+			IWL_INFO(drv, "TLV_FW_FSEQ_VERSION: %.32s\n",
- 				 fseq_ver->version);
- 			}
- 			break;
+-		if (!ctx->pcc_comm_addr) {
++		if (IS_ERR_OR_NULL(ctx->pcc_comm_addr)) {
+ 			dev_err(&pdev->dev,
+ 				"Failed to ioremap PCC comm region\n");
+ 			rc = -ENOMEM;
 -- 
 2.39.5
 
