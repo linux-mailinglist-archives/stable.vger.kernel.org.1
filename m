@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-123754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B67DA5C72B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC50A5C4B9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D88AB1884709
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD13188BFAC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084551DF749;
-	Tue, 11 Mar 2025 15:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7106125DD07;
+	Tue, 11 Mar 2025 15:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmiU53e3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSZwa5uP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B816125E82A;
-	Tue, 11 Mar 2025 15:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF8125E820;
+	Tue, 11 Mar 2025 15:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706866; cv=none; b=LkMPiYNRQbmDa+bPh+se+EHA0AwXFcgqQ/AYKjDzjnE63ZOchosRTJMndExHMW1JCRu2Crh47wCPte+8EipnGfW1NG44SZvR4xcQ47bbJ1hTNFdMOKQye5+mLTHF50z/8nZyBFNnX7tJ5ixAnM6k6iW3OPjltkBQaF/LXVvRZJQ=
+	t=1741705550; cv=none; b=Pqw4q4ScUt2ZgJ6xCLprJLsj9vzdDvk8bwplpGhHEtNDUQ5/dDDg1GwOEHp3O4Fm8mOVOxNRZvBZhHrmjky4AuSFRVt/fs0YLT9U1QKG6mgBeATItIAdhHrWW4jPYvj4NnXZCPQuW+9HONMKxNLcfL4+Kq//b81+QZx5wfB8lv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706866; c=relaxed/simple;
-	bh=/m5TVBmgCqooMZfTvwm0j4+iCoIA33s9VvNHLyR3WyI=;
+	s=arc-20240116; t=1741705550; c=relaxed/simple;
+	bh=JSIwbr8WVHw8ZWfbSjCJK77jgefgHVOgvEmCQZ612Z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azTCE6sxIJaXzFXQl57hyiTuEs4IoI2EAfk+LHsATM6bkCT30hu95p3v9KDmuqwISqEcfl9EqTh1XX78EBEIFSdRaT/M+O61+/hckyA0tiFZanK/g1gZi3IHpSqFOtLG5pvXCKCPpQpJ0Utq+TE2hap/VDMmY8I8KIh4GH2jfjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmiU53e3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E38C4CEE9;
-	Tue, 11 Mar 2025 15:27:46 +0000 (UTC)
+	 MIME-Version; b=U/1Y6DsZ1O9kuDu0QMGFGVt0tHt+N3emd3mfMWPP7gQNtisXrHh5cJBtZC3BaJ9/5Z93ovdLKo3CXCDdHloIN0THZOkEnjlXymX4r1xifP//GtrtaQZab0FCnk7hbLq5KmRDM69fAFznPHe1NEIqHXnoIjq84Hj74dPasBVMeyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSZwa5uP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1BDC4CEE9;
+	Tue, 11 Mar 2025 15:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706866;
-	bh=/m5TVBmgCqooMZfTvwm0j4+iCoIA33s9VvNHLyR3WyI=;
+	s=korg; t=1741705550;
+	bh=JSIwbr8WVHw8ZWfbSjCJK77jgefgHVOgvEmCQZ612Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmiU53e3cytkh7JD1859+U+ZSxYAamAk9Vu7ftRjvVcNri18sLS04XA3wrywsp5gR
-	 l16ysMCBkWUMV/y9GH3SE3fFB0TiR+oYor35qoA1ckFNU9p14FLDt4DLxr8qUvb+HV
-	 IhCtUfkCyWO5Y+OEN0WYr+I5cYuZ7Dk3RAUem2EI=
+	b=OSZwa5uPjZSHPW05+tpRk2mLhdzf3/S9uwxrZw2DjGxc07/xOBy2rMZy5hr7hkzl9
+	 IJ/VPmQmmx2RWe3dXCXZ4a1Vm6LCg8Lc8Q35+TwAY+WgMUaXG5MZbUEs+aYAQYODRW
+	 LpQy6EunbSLWwtI9tIsUWYcc9Z+IGc7Ao+cew8ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 177/462] clk: qcom: clk-rpmh: prevent integer overflow in recalc_rate
+	kernel test robot <lkp@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Brian Cain <bcain@quicinc.com>,
+	Brian Cain <brian.cain@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 073/328] hexagon: fix using plain integer as NULL pointer warning in cmpxchg
 Date: Tue, 11 Mar 2025 15:57:23 +0100
-Message-ID: <20250311145805.345214320@linuxfoundation.org>
+Message-ID: <20250311145717.794126755@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 89aa5925d201b90a48416784831916ca203658f9 upstream.
+[ Upstream commit 8a20030038742b9915c6d811a4e6c14b126cafb4 ]
 
-aggr_state and unit fields are u32. The result of their
-multiplication may not fit in this type.
+Sparse reports
 
-Add explicit casting to prevent overflow.
+    net/ipv4/inet_diag.c:1511:17: sparse: sparse: Using plain integer as NULL pointer
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Due to this code calling cmpxchg on a non-integer type
+struct inet_diag_handler *
 
-Fixes: 04053f4d23a4 ("clk: qcom: clk-rpmh: Add IPA clock support")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Link: https://lore.kernel.org/r/20241203084231.6001-1-abelova@astralinux.ru
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    return !cmpxchg((const struct inet_diag_handler**)&inet_diag_table[type],
+                    NULL, h) ? 0 : -EEXIST;
+
+While hexagon's cmpxchg assigns an integer value to a variable of this
+type.
+
+    __typeof__(*(ptr)) __oldval = 0;
+
+Update this assignment to cast 0 to the correct type.
+
+The original issue is easily reproduced at head with the below block,
+and is absent after this change.
+
+    make LLVM=1 ARCH=hexagon defconfig
+    make C=1 LLVM=1 ARCH=hexagon net/ipv4/inet_diag.o
+
+Fixes: 99a70aa051d2 ("Hexagon: Add processor and system headers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411091538.PGSTqUBi-lkp@intel.com/
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Tested-by: Christian Gmeiner <cgmeiner@igalia.com>
+Link: https://lore.kernel.org/r/20241203221736.282020-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Brian Cain <bcain@quicinc.com>
+Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-rpmh.c |    2 +-
+ arch/hexagon/include/asm/cmpxchg.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/clk-rpmh.c
-+++ b/drivers/clk/qcom/clk-rpmh.c
-@@ -331,7 +331,7 @@ static unsigned long clk_rpmh_bcm_recalc
- {
- 	struct clk_rpmh *c = to_clk_rpmh(hw);
- 
--	return c->aggr_state * c->unit;
-+	return (unsigned long)c->aggr_state * c->unit;
- }
- 
- static const struct clk_ops clk_rpmh_bcm_ops = {
+diff --git a/arch/hexagon/include/asm/cmpxchg.h b/arch/hexagon/include/asm/cmpxchg.h
+index 92b8a02e588ac..9c5f07749933e 100644
+--- a/arch/hexagon/include/asm/cmpxchg.h
++++ b/arch/hexagon/include/asm/cmpxchg.h
+@@ -56,7 +56,7 @@ static inline unsigned long __xchg(unsigned long x, volatile void *ptr,
+ 	__typeof__(ptr) __ptr = (ptr);				\
+ 	__typeof__(*(ptr)) __old = (old);			\
+ 	__typeof__(*(ptr)) __new = (new);			\
+-	__typeof__(*(ptr)) __oldval = 0;			\
++	__typeof__(*(ptr)) __oldval = (__typeof__(*(ptr))) 0;	\
+ 								\
+ 	asm volatile(						\
+ 		"1:	%0 = memw_locked(%1);\n"		\
+-- 
+2.39.5
+
 
 
 
