@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-123571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD1BA5C62F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:22:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD3DA5C615
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8166E1889B81
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:19:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F48B7A49F1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4481C3BEB;
-	Tue, 11 Mar 2025 15:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372BB25E81B;
+	Tue, 11 Mar 2025 15:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kubdPM/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ce1FrcYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B12E25E83C;
-	Tue, 11 Mar 2025 15:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96D825E473;
+	Tue, 11 Mar 2025 15:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706339; cv=none; b=fixzxt92kBF7XN8dxesmkKUIeAJylltx1o3AtjJ8XSyLz85fw99kWdtjNsrZlYQQvc6cSZkAp0SEd6aE1C6GTurtjQ+6zB7qN9w1ueR1nzI/M5bNi6a2FR812jcrBDqoKOQZqnkIFXa4JY6+wLlBMYwa0WEUHgMpIJvnhDKSidE=
+	t=1741706439; cv=none; b=drK8GUfJ/dLvXqzFFllemICj5f9QynxVudUB4ItdqONoqS7lqEB5SFIAoEXhkskS/6RCXS1vetUHIzU2z5qcY+6CpwR8nIQf1ON39u7y5x8SEThs0pEmnzeVypO1LBqDD0Q3QY52kYRzXkRxUao6hUamTe+f5s38g7W1U5W1K8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706339; c=relaxed/simple;
-	bh=U2Jazm27t4HK4IHcVBjXOzzTh+Uc9beePo3+39gKWmI=;
+	s=arc-20240116; t=1741706439; c=relaxed/simple;
+	bh=as8gJBDh5AsvZDHvWsjuXsp0TuqWFg5nZ5JZCb6QuCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+qVT/DetRzodBcE7NWhNrDvGevbmfDGSzZQqd4Adt0b33KYjR7NRF/DGgJ+mSHLeH/FqmVXBDkLI6w0rcTSf9aMwhBOh4BxR5P4FCC6ivYoJUcQsufRquPyFXVIpFR5uG/G4YJaWihXYZVwiAjZMKRB9vA9VFF3fAAyBMDe9aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kubdPM/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947E9C4CEEC;
-	Tue, 11 Mar 2025 15:18:58 +0000 (UTC)
+	 MIME-Version; b=Z+Qr+aihpVMe8KuJnNTKJY/Nz3kxgn+6HbIf/vLJCP0Sr5bs/jaFG16FgZfrRd8kDbwM+7Y4Lff2ufCO8W04kTIBEp0yiqLjLJZF0UQNwfJstF5IxuRi1SArVYLTfTlpiEooHPv9D4leo8X9oVLZZAHAh+NLeMkxQitmlW/E+qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ce1FrcYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66680C4CEE9;
+	Tue, 11 Mar 2025 15:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706339;
-	bh=U2Jazm27t4HK4IHcVBjXOzzTh+Uc9beePo3+39gKWmI=;
+	s=korg; t=1741706438;
+	bh=as8gJBDh5AsvZDHvWsjuXsp0TuqWFg5nZ5JZCb6QuCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kubdPM/tsfN9g2FyFIQCXkm2iXzXcB2Q9+HL5+B+IPzbdQg2RVjnZJye5dolhcO/8
-	 yC1Isu0MlcG3N5VaBno1VIyeGbkJkZgck47u683D7s9gp2/c5HhAk7wFTS6/8nSJ8h
-	 UCvgmkRfCyJ/eozPWYItjx87sVXtbugzk3vkAjR4=
+	b=ce1FrcYM2SZC3FuUGKdBD+5vzodSUtQ9mI+S1Pw9kTCPedKPu5YyF+GwFiHpoL3fs
+	 vP6yA3WmYEiyDLJC3jhwTRDVLaEeNzX25KQJXd+3Mfw7+C5mLnuTkjgWzUtZKKadNf
+	 +zf2iaswOCRDo2xzGzy0FTKeoI5oG1sVJbLi1A0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 007/462] afs: Fix the fallback handling for the YFS.RemoveFile2 RPC call
-Date: Tue, 11 Mar 2025 15:54:33 +0100
-Message-ID: <20250311145758.642598367@linuxfoundation.org>
+Subject: [PATCH 5.10 008/462] drm/etnaviv: Fix page property being used for non writecombine buffers
+Date: Tue, 11 Mar 2025 15:54:34 +0100
+Message-ID: <20250311145758.681342616@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -68,46 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
 
-[ Upstream commit e30458d690f35abb01de8b3cbc09285deb725d00 ]
+[ Upstream commit 834f304192834d6f0941954f3277ae0ba11a9a86 ]
 
-Fix a pair of bugs in the fallback handling for the YFS.RemoveFile2 RPC
-call:
+In the etnaviv_gem_vmap_impl() function, the driver vmap whatever buffers
+with write combine(WC) page property, this is incorrect. Cached buffers
+should be mapped with the cached page property and uncached buffers should
+be mapped with the uncached page property.
 
- (1) Fix the abort code check to also look for RXGEN_OPCODE.  The lack of
-     this masks the second bug.
-
- (2) call->server is now not used for ordinary filesystem RPC calls that
-     have an operation descriptor.  Fix to use call->op->server instead.
-
-Fixes: e49c7b2f6de7 ("afs: Build an abstraction around an "operation" concept")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/109541.1736865963@warthog.procyon.org.uk
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: a0a5ab3e99b8 ("drm/etnaviv: call correct function when trying to vmap a DMABUF")
+Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/yfsclient.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_gem.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/fs/afs/yfsclient.c b/fs/afs/yfsclient.c
-index 5b2ef5ffd716f..171de355a7e58 100644
---- a/fs/afs/yfsclient.c
-+++ b/fs/afs/yfsclient.c
-@@ -689,8 +689,9 @@ static int yfs_deliver_fs_remove_file2(struct afs_call *call)
- static void yfs_done_fs_remove_file2(struct afs_call *call)
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+index aa372982335e9..bdd3564634e79 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+@@ -351,6 +351,7 @@ void *etnaviv_gem_vmap(struct drm_gem_object *obj)
+ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
  {
- 	if (call->error == -ECONNABORTED &&
--	    call->abort_code == RX_INVALID_OPERATION) {
--		set_bit(AFS_SERVER_FL_NO_RM2, &call->server->flags);
-+	    (call->abort_code == RX_INVALID_OPERATION ||
-+	     call->abort_code == RXGEN_OPCODE)) {
-+		set_bit(AFS_SERVER_FL_NO_RM2, &call->op->server->flags);
- 		call->op->flags |= AFS_OPERATION_DOWNGRADE;
- 	}
+ 	struct page **pages;
++	pgprot_t prot;
+ 
+ 	lockdep_assert_held(&obj->lock);
+ 
+@@ -358,8 +359,19 @@ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
+ 	if (IS_ERR(pages))
+ 		return NULL;
+ 
+-	return vmap(pages, obj->base.size >> PAGE_SHIFT,
+-			VM_MAP, pgprot_writecombine(PAGE_KERNEL));
++	switch (obj->flags & ETNA_BO_CACHE_MASK) {
++	case ETNA_BO_CACHED:
++		prot = PAGE_KERNEL;
++		break;
++	case ETNA_BO_UNCACHED:
++		prot = pgprot_noncached(PAGE_KERNEL);
++		break;
++	case ETNA_BO_WC:
++	default:
++		prot = pgprot_writecombine(PAGE_KERNEL);
++	}
++
++	return vmap(pages, obj->base.size >> PAGE_SHIFT, VM_MAP, prot);
  }
+ 
+ static inline enum dma_data_direction etnaviv_op_to_dma_dir(u32 op)
 -- 
 2.39.5
 
