@@ -1,136 +1,194 @@
-Return-Path: <stable+bounces-123814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04205A5C77C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:35:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FB4A5C7B0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D939A188CA97
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD443165986
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9EE25EFA5;
-	Tue, 11 Mar 2025 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B361925FA31;
+	Tue, 11 Mar 2025 15:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="Ni+W+Ssk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QwlcDbzn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5F625E828
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 15:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF6A25FA1D
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 15:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707038; cv=none; b=puMWV2J8AFQzYhHrH1s7gegenZRQ5ni9v8LQWF0FyCdQJwf6U9GmFoR3gtU4jwB87Dvs/1KzBQ2J+JwMdo4GsnpJEEgBdDnQqlgLfwZuwXT0ZHVp18CmxEoBqaLUtZqJwpF7qAvVTvyy71lHwPu1Fj3C1lGvLZ3hre7aF94AHSw=
+	t=1741707152; cv=none; b=AMuPVSMYopjcoZmlWQinRR/NHx+SP5mnoIsnSmT4ipOyeEER9v0OOLmWSfOz9jLXEJZjoT23hM+Ug+iMsAEy7jE8QMpxe+bD1Hwm/3Lt1oAN+GDAZoW6M4T7+ZxxVy0CDuiIO9LHMOMCX242lCgqGBPzffWiZULagQ8yELhUgd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707038; c=relaxed/simple;
-	bh=f8WXdNINpbVnO+wl6UpJ+DrRRinxZU2pLsjZyk1/OMc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ai8WEZUpTtlwf/C8RjDrS9gPpR5/BD1lpvj7VLpwe8HMhuDt75SoJVjksRu3YS43lh8VMgJwkZm7L9/Zm8a2+N8qH9/0c1tN4PRVaMDa0N5u5MneQLrurlf9tHnI3LQjfGFFu1F4Y2ZqP2/6/nPJjkS+iRHcx9voyAozxGUk1MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=Ni+W+Ssk; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7c55500cf80so164435385a.1
-        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 08:30:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1741707034; x=1742311834; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Tj/ZAgYAWLVaIefJKjFIbhLbjv4Cos+iOgFdwRh3dU=;
-        b=Ni+W+Sskbe5OzpQs8ep1GR5vNz+u13DhnuuUU0WYXQYJthBaCBozzMmxquhHB0Xc3f
-         ihpVHAQ0QKzbmJr3I3Xwa2LlLrLVsBOVM3V20+6r9L90Erju3fK2QATj+bEYe6Sx2+NH
-         +AiDf3EOkltq8jcXIoLCh9GmNiLOTOOCdQmRCXKi4uU8U/XHqDOYSZN9j+VI6kBFtKd5
-         l64EeCLSpGdyxGkHXMZ7p7dUcCW5c2ftVKMZnwdx4ibVIqBRhOE+n1EgKvtU80OSPZ86
-         DRLvvjdrSHXYxiKmOBil+2t5h/t8Cmzy03GFMIJbNwRQpS/svEG6z8kKOhX1lgNp8y5B
-         ppeg==
+	s=arc-20240116; t=1741707152; c=relaxed/simple;
+	bh=cGR7yW+ul2CirNwt05XAkvBMRVJPmchILZoVSdAQWE4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=a3TM2YPnQLZlNSdj5l3fvDvjVkLP8cd2gjRrp2S88UYbxKAIJGegPsNJvxdEurQJpOJaul3XHN+9j7RKvgaxU90x8QsOeFGUpUvpWmYbTzcst01JlUk9p+wtulYdz0/1UkjBX75JAAor7dGLKzPNnjQTmOhG7kek1sSBu+y7AIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QwlcDbzn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741707148;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z/4Zhen8otZUUIGUirLVRCURFAkEQAh1g/kYBjTL128=;
+	b=QwlcDbznTboMEMAtNn4w6pDPNK8/goRXL6teh99+o4W8bBtCoDCw7FWbJeJJxDiFZANbrf
+	/GftojZw2oItJnK64cYnm2zcQSk8r2v/4lqVBFNGkrgu/dZ98xHWjvyigoVyej7DA81JQM
+	+tWiD2bCTMlfa86hVuKcoLbXZz+RQrc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-264-nF9YwQwFMoOTsVEgzfjhrA-1; Tue, 11 Mar 2025 11:32:27 -0400
+X-MC-Unique: nF9YwQwFMoOTsVEgzfjhrA-1
+X-Mimecast-MFC-AGG-ID: nF9YwQwFMoOTsVEgzfjhrA_1741707146
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3912b54611dso3432914f8f.1
+        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 08:32:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741707034; x=1742311834;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1Tj/ZAgYAWLVaIefJKjFIbhLbjv4Cos+iOgFdwRh3dU=;
-        b=PNSNHoPPEVt5/aHTj1Z7YBGMebG26nzuRguAXM5kwt/g04ozIM5vI3vAcSKH7lu1zU
-         3bWPFG9hmHOOVp3Mx1IaexcDYJL4PMyypSpCTFhao76fBcPFYUw5o2TxK3iG7QK1rwql
-         qcDh0AxlcBBVeAIDNd+Of6wC6IUYm1YnRP5BiOE3VPLBHhjeYmhi4cHcPlk3I0XPAEzL
-         1aqlG6/8pQtPCezzkfx7aoRVUbAtpOAeEOqK9D/kY+6F4OQev+x7ODR1m6umnEu7yUdE
-         qFeN1c9yUWU3RPfGettVvK+VaLFwxptM/OxpAumzoyhvrlMhY9adrKCinoOoEvAFh4bp
-         G8wA==
-X-Forwarded-Encrypted: i=1; AJvYcCWn/E9PHmnZhLD2DhoAPFjfYR7VebY3byDC89KjTEPQz2g4vDSUK8pjhz/NKNXTJc/TFQKHZPg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTfjepe2zxLpfk/eIJd95+4dxJDvaV4nDCLFJgZ79cvSLDtpEV
-	48PZ7beFe8S11PlhZUOOFydzGISwCqeGG3CGJlcSqgxVKAXIIJSfRaJ6tnHKEqI=
-X-Gm-Gg: ASbGnctkaV7BLnwzGtchGZ7s1bxIDi+g3b1lVGqGBvex713pgfPHzwaTbEFs2g128rq
-	x81q25RuQ4w68bFM5efSwcil4g/mKNKnnGEC9nCADd+AXNjUVNqg1m7IfTqnyLRQ4Tsf9bSHxyo
-	ycFqK/SPi5eCCGMUJPtON6LDJ57l6fMTAkh3Dlbn+5D6wQmRfYfje04X2tL65e5PMCqlvdISPgK
-	RphmhJ/sifPB3muNhBLHdjjL2NTK1ls5i6BrrBZtVWHEDCaNZDX7REjqUuv40KsQODpxMBT+fl/
-	CWLELhcZUfmEU2LY/oSefWPmXXuhp2tODqROWAHXt3o=
-X-Google-Smtp-Source: AGHT+IENmNilEy0vcw7hrxou0wF3L/Z9Vv4f8uUpsENzYSWwJpybBI0+STVaLXgcmHtw+muodFyH0Q==
-X-Received: by 2002:a05:620a:618e:b0:7c5:4c49:76a5 with SMTP id af79cd13be357-7c54c4981admr1332276185a.12.1741707033689;
-        Tue, 11 Mar 2025 08:30:33 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:da5e:d3ff:fee7:26e7])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7c553c14c37sm351315585a.112.2025.03.11.08.30.32
+        d=1e100.net; s=20230601; t=1741707146; x=1742311946;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z/4Zhen8otZUUIGUirLVRCURFAkEQAh1g/kYBjTL128=;
+        b=rP1PdOaVf+KVhffAwCQ1YTSqUlDOCXyyy4Rz0QIMXqh2TdLfxZFMLrHHPv6wgzWaPh
+         SsvQbU35THF/E53cTiJuCY9FIP5pd1b6pj2c1byWtEyMwWsXcIIkG34DHI9LsgWQKTvK
+         mGiru5ZpolQ6y/AH5TEc9VimzqbajsyUly5HRztaQq7OpzIXbqmUwF+kI+6CPJNbJ057
+         2ZgMGE/RzeccgSSuPicCW5zvYMUPz7y68TXzIwjCo5bvxXYRvjhZZ6WSZtV4zNnyFtn5
+         RQgLiTC/cpBNXSbyAkdH26T/08r/EkPyUyuBcbci93UBspFtPCN2sM0BOCXzLqMLTGnw
+         X0pQ==
+X-Gm-Message-State: AOJu0YyBnzalGUQanxBBXTBDYgIwzD2/TM0bftE18HGgUypr09bUqmfq
+	6GT8SCc80pfpSVHS2ixXJUBkDqpzp36Y7PayfekZB5QKgM1emD00FX3zk2lN4DFkJ5tF1PdRCvn
+	/x5H2jkmHvWsi8AYOiAz+5xzEqOx7x26GApjJCJD7eCRK7IRi7rQqAA==
+X-Gm-Gg: ASbGncsB5rS3nrBF5ccx1cJo4q+18GlX4NJ3G0DtUf3lVX/WicnLzQZVHUBaKuxS+Jm
+	+Qwom8S34iYNNUh18VafV3Tj6GpE6DGmAMTq+0GCGpuB4jD/wN0swG5UFBDrUBoHi5kvnNw/qjt
+	QHU8aNI0+ITPeuKgyqXQTQ3oD3du4Q7rwudviwuvMpsCJgMs6CX1dT8rvYOqLY9PUPGARlcryD9
+	tTLSZGHCwTrxOjEL+L2tKDGOBfWcOBfpc9LWRo0ur+ZY/4sJdjssqZ3fp2zTDRqSDKrwNuA+8nr
+	Fwa+Tqq7qODSgkTlWWJcJup0GcYCtvmxcFYvpEUMDN9+oYzUBBRD1IGRwpMiz2EQrbfyc7oDWDC
+	M
+X-Received: by 2002:a5d:5f8f:0:b0:390:e311:a8c7 with SMTP id ffacd0b85a97d-39132d2ac23mr14041026f8f.5.1741707146158;
+        Tue, 11 Mar 2025 08:32:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE5idbTwPC29cIZuVqWeIsBnJdPqrG40K1D1QZSJ7ax4/92Y7jODHouGk43yk3oUBObhGOXHw==
+X-Received: by 2002:a5d:5f8f:0:b0:390:e311:a8c7 with SMTP id ffacd0b85a97d-39132d2ac23mr14040985f8f.5.1741707145716;
+        Tue, 11 Mar 2025 08:32:25 -0700 (PDT)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-141-166.abo.bbox.fr. [213.44.141.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfba66esm18681629f8f.18.2025.03.11.08.32.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 08:30:33 -0700 (PDT)
-Date: Tue, 11 Mar 2025 11:30:32 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] memcg: drain obj stock on cpu hotplug teardown
-Message-ID: <20250311153032.GB1211411@cmpxchg.org>
-References: <20250310230934.2913113-1-shakeel.butt@linux.dev>
+        Tue, 11 Mar 2025 08:32:25 -0700 (PDT)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Naman Jain <namjain@linux.microsoft.com>, Ingo Molnar
+ <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org, Steve Wahl
+ <steve.wahl@hpe.com>, Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
+ srivatsa@csail.mit.edu, K Prateek Nayak <kprateek.nayak@amd.com>, Michael
+ Kelley <mhklinux@outlook.com>, Naman Jain <namjain@linux.microsoft.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: Re: [PATCH v5] sched/topology: Enable topology_span_sane check only
+ for debug builds
+In-Reply-To: <20250310052509.1416-1-namjain@linux.microsoft.com>
+References: <20250310052509.1416-1-namjain@linux.microsoft.com>
+Date: Tue, 11 Mar 2025 16:32:24 +0100
+Message-ID: <xhsmh34fjr3av.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250310230934.2913113-1-shakeel.butt@linux.dev>
+Content-Type: text/plain
 
-On Mon, Mar 10, 2025 at 04:09:34PM -0700, Shakeel Butt wrote:
-> Currently on cpu hotplug teardown, only memcg stock is drained but we
-> need to drain the obj stock as well otherwise we will miss the stats
-> accumulated on the target cpu as well as the nr_bytes cached. The stats
-> include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
-> addition we are leaking reference to struct obj_cgroup object.
-> 
-> Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Cc: <stable@vger.kernel.org>
-
-Wow, that's old. Good catch.
-
+On 10/03/25 10:55, Naman Jain wrote:
+> From: Saurabh Sengar <ssengar@linux.microsoft.com>
+>
+> On a x86 system under test with 1780 CPUs, topology_span_sane() takes
+> around 8 seconds cumulatively for all the iterations. It is an expensive
+> operation which does the sanity of non-NUMA topology masks.
+>
+> CPU topology is not something which changes very frequently hence make
+> this check optional for the systems where the topology is trusted and
+> need faster bootup.
+>
+> Restrict this to sched_verbose kernel cmdline option so that this penalty
+> can be avoided for the systems who want to avoid it.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't (partially) overlap")
+> Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+> Co-developed-by: Naman Jain <namjain@linux.microsoft.com>
+> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+> Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
 > ---
->  mm/memcontrol.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 4de6acb9b8ec..59dcaf6a3519 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -1921,9 +1921,18 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
->  static int memcg_hotplug_cpu_dead(unsigned int cpu)
+> Changes since v4:
+> https://lore.kernel.org/all/20250306055354.52915-1-namjain@linux.microsoft.com/
+>       - Rephrased print statement and moved it to sched_domain_debug.
+>         (addressing Valentin's comments)
+> Changes since v3:
+> https://lore.kernel.org/all/20250203114738.3109-1-namjain@linux.microsoft.com/
+>       - Minor typo correction in comment
+>       - Added Tested-by tag from Prateek for x86
+> Changes since v2:
+> https://lore.kernel.org/all/1731922777-7121-1-git-send-email-ssengar@linux.microsoft.com/
+>       - Use sched_debug() instead of using sched_debug_verbose
+>         variable directly (addressing Prateek's comment)
+>
+> Changes since v1:
+> https://lore.kernel.org/all/1729619853-2597-1-git-send-email-ssengar@linux.microsoft.com/
+>       - Use kernel cmdline param instead of compile time flag.
+>
+> Adding a link to the other patch which is under review.
+> https://lore.kernel.org/lkml/20241031200431.182443-1-steve.wahl@hpe.com/
+> Above patch tries to optimize the topology sanity check, whereas this
+> patch makes it optional. We believe both patches can coexist, as even
+> with optimization, there will still be some performance overhead for
+> this check.
+>
+> ---
+>  kernel/sched/topology.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> index c49aea8c1025..d7254c47af45 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -132,8 +132,11 @@ static void sched_domain_debug(struct sched_domain *sd, int cpu)
 >  {
->  	struct memcg_stock_pcp *stock;
-> +	struct obj_cgroup *old;
-> +	unsigned long flags;
->  
->  	stock = &per_cpu(memcg_stock, cpu);
-> +
-> +	/* drain_obj_stock requires stock_lock */
-> +	local_lock_irqsave(&memcg_stock.stock_lock, flags);
-> +	old = drain_obj_stock(stock);
-> +	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
-> +
->  	drain_stock(stock);
-> +	obj_cgroup_put(old);
+>       int level = 0;
+>
+> -	if (!sched_debug_verbose)
+> +	if (!sched_debug_verbose) {
+> +		pr_info_once("%s: Scheduler topology debugging disabled, add 'sched_verbose' to the cmdline to enable it\n",
+> +			     __func__);
+>               return;
+> +	}
+>
 
-It might be better to call drain_local_stock() directly instead. That
-would prevent a bug of this type to reoccur in the future.
+Nit: I've been told not to break warnings over multiple lines so they can
+be grep'ed, but given this has the "sched_domain_debug:" prefix I think we
+could get away with the below.
+
+Regardless:
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+
+---
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index d7254c47af455..b4dc7c7d2c41c 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -133,7 +133,8 @@ static void sched_domain_debug(struct sched_domain *sd, int cpu)
+ 	int level = 0;
+ 
+ 	if (!sched_debug_verbose) {
+-		pr_info_once("%s: Scheduler topology debugging disabled, add 'sched_verbose' to the cmdline to enable it\n",
++		pr_info_once("%s: Scheduler topology debugging disabled, "
++			     "add 'sched_verbose' to the cmdline to enable it\n",
+ 			     __func__);
+ 		return;
+ 	}
+
 
