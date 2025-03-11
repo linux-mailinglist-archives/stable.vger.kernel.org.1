@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-123802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE1E4A5C764
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:34:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B4DA5C506
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DA2917BB2C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:30:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D86178494
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DAD25EF89;
-	Tue, 11 Mar 2025 15:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570AC25E817;
+	Tue, 11 Mar 2025 15:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIjsLQAe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apoTAfCg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A9C25BAD4;
-	Tue, 11 Mar 2025 15:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1319925DD12;
+	Tue, 11 Mar 2025 15:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707004; cv=none; b=GrUDG6rugMnWi3Efh0kjgP9946kLfSCXO/TLi0ud2rseX6uWiZ0fCkaiLGbKUSv2/SMjAvdaNJQAKZN2+Nh/I3Dqtz5wfbZnKPZFO9IdZ4HuVSPpdcXwFzUbEJW0w0ohaiRz1CJ4iuaq9pVW8HO5u9UTdR2WRt7sZW3wGnVJ9Hs=
+	t=1741705732; cv=none; b=WO1QcYAEceaniZ6PkEuXTfRJT9O29Zrw8xqddwR481uDeNmJInv6WzZGpkGsqd7ugDaW+lUz+RQSkUN3nnwAdGYUr/74Y7q5RrZY4hOOCxqyrjxje4hJCrsacad5Pmfvyl38XGTdI6+cxej5zXSuH34jyer19XpKQd+Pa20YGeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707004; c=relaxed/simple;
-	bh=UccYOdO88y4mklDKQePx/znbpI06yPTaujsClgfoPkk=;
+	s=arc-20240116; t=1741705732; c=relaxed/simple;
+	bh=OaOVF6FnHAKdVxOggTM04jt1zmaqestm4/c658i/xgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxL2BbYbLN/pOxuJa9klFE5+Sp068CnFVbFccyeHwPVjRBcqvMxS6kdirzSgEF58Vz6yebCrPPyZmoxhA/fQ6oExWSFHBSrs1iStR1MUVU1tj6gOzjJfDE1zO2wvcrB6BON7X8JoEUomlMSxpdKqdAcPFjnmwYSOq5ZBDDRq3Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIjsLQAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7868C4CEE9;
-	Tue, 11 Mar 2025 15:30:03 +0000 (UTC)
+	 MIME-Version; b=eZf9hAs2mrcOJh/Ucuo40qdnBlOHUWbfh1a3mU077qfrx6SDQP+TkAXkBKV93f/UyVtnOfH9seJ1+PwpM4VHRTk7xccBaowbrNrUQEuU6u0LFxr9KU+sGL+lKquDQNQTRVuItz3sKOT47Sso7GZGrI1bcODCGlpjLLG0ZD8jwvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apoTAfCg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31881C4CEE9;
+	Tue, 11 Mar 2025 15:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707004;
-	bh=UccYOdO88y4mklDKQePx/znbpI06yPTaujsClgfoPkk=;
+	s=korg; t=1741705731;
+	bh=OaOVF6FnHAKdVxOggTM04jt1zmaqestm4/c658i/xgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qIjsLQAeDYdiLyH9fCyTezff1bF7iWuvaxfyxvkLKTdEzVmQfk7BCOGeF5980VL3Q
-	 HyI2O2I+hlFtLVuIToLqmWGI+vjKsZnNQOdbxxqCP8etbr2lcTX5LMvzlCTqNmQIEJ
-	 TZhVDPivliTXeUTqgCWkBgQv9gR5pKb+05p1kVNM=
+	b=apoTAfCgsike3k/W0Nc6n8+ver6Iy+/haiBuz7FHcOThZiZ9u26hl82K0HS935VL9
+	 C+GPLS7V6i1JM/aYydDMDOx+2BKY7EIdMz2FZIv9bYwdqHmXq4nHoSmMFgLLSW5bp1
+	 1emlK8CUJEMlHdldsRdAUU3v/CYx7N/KLS+ww368=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramesh Thomas <ramesh.thomas@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 240/462] vfio/pci: Enable iowrite64 and ioread64 for vfio pci
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.4 136/328] usb: gadget: f_tcm: Decrement command ref count on cleanup
 Date: Tue, 11 Mar 2025 15:58:26 +0100
-Message-ID: <20250311145807.848279917@linuxfoundation.org>
+Message-ID: <20250311145720.309782586@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramesh Thomas <ramesh.thomas@intel.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 2b938e3db335e3670475e31a722c2bee34748c5a ]
+commit 3b2a52e88ab0c9469eaadd4d4c8f57d072477820 upstream.
 
-Definitions of ioread64 and iowrite64 macros in asm/io.h called by vfio
-pci implementations are enclosed inside check for CONFIG_GENERIC_IOMAP.
-They don't get defined if CONFIG_GENERIC_IOMAP is defined. Include
-linux/io-64-nonatomic-lo-hi.h to define iowrite64 and ioread64 macros
-when they are not defined. io-64-nonatomic-lo-hi.h maps the macros to
-generic implementation in lib/iomap.c. The generic implementation does
-64 bit rw if readq/writeq is defined for the architecture, otherwise it
-would do 32 bit back to back rw.
+We submitted the command with TARGET_SCF_ACK_KREF, which requires
+acknowledgment of command completion. If the command fails, make sure to
+decrement the ref count.
 
-Note that there are two versions of the generic implementation that
-differs in the order the 32 bit words are written if 64 bit support is
-not present. This is not the little/big endian ordering, which is
-handled separately. This patch uses the lo followed by hi word ordering
-which is consistent with current back to back implementation in the
-vfio/pci code.
-
-Signed-off-by: Ramesh Thomas <ramesh.thomas@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20241210131938.303500-2-ramesh.thomas@intel.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cff834c16d23 ("usb-gadget/tcm: Convert to TARGET_SCF_ACK_KREF I/O krefs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/3c667b4d9c8b0b580346a69ff53616b6a74cfea2.1733876548.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/vfio_pci_rdwr.c | 1 +
+ drivers/usb/gadget/function/f_tcm.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-index a0b5fc8e46f4d..fdcc9dca14ca9 100644
---- a/drivers/vfio/pci/vfio_pci_rdwr.c
-+++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-@@ -16,6 +16,7 @@
- #include <linux/io.h>
- #include <linux/vfio.h>
- #include <linux/vgaarb.h>
-+#include <linux/io-64-nonatomic-lo-hi.h>
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -971,6 +971,7 @@ static void usbg_data_write_cmpl(struct
+ 	return;
  
- #include "vfio_pci_private.h"
+ cleanup:
++	target_put_sess_cmd(se_cmd);
+ 	transport_generic_free_cmd(&cmd->se_cmd, 0);
+ }
  
--- 
-2.39.5
-
 
 
 
