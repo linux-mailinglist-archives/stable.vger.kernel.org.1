@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-123489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA59FA5C5D7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:18:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905F9A5C80F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE4353A8DE0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:15:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07664167248
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8606125E825;
-	Tue, 11 Mar 2025 15:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108C525DCFA;
+	Tue, 11 Mar 2025 15:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDZzAFxE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrElT+BP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB0425E83E;
-	Tue, 11 Mar 2025 15:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27F63C0B;
+	Tue, 11 Mar 2025 15:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706105; cv=none; b=b6TmnBCc0zATXQSeZZfz0PSAJFtqdqpqN6z1Lk7oXFdMgRjPivMtNCuGHONQaoinsG7A1lIPKdKlnLYOHws8C5Hh6PDITuJWh4wUx6kHuw5vyeVTrIJFMHd5gPnmkWwo66Dw3dKLcAZTT5YluGkPGQbwsXctE0+Dd3pcwNmktlk=
+	t=1741707377; cv=none; b=jF7PxrjGjsqGhnBIYQea50HzkqMU4chc5w/25Ie95LI2FC2zcVuVAO4VkqsUoXVp0C59if9iZ9jzDHJH+o6pzdSUaToC1RdTA4Q3EKJwEpUhxtd1bN5UGFCcyiesyvQRBBMV1D6lVa7IweDOt6R7xOFpztNs0Z5AoS2+IDnXP24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706105; c=relaxed/simple;
-	bh=BMkM/DGFYxsjV6ih67e+6nN05UG99oQIDbhPZq9qUy8=;
+	s=arc-20240116; t=1741707377; c=relaxed/simple;
+	bh=jrQSf3XVd5bJAJ2DPov9u0ePB3MJWHI57VnyNTHMjjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UubPUhO/R8KbAlj9a8slzs9lu/1jkqsDdf2SDk65NE8byXjLwWIEojUgw46qEKZI1IcTwBPQjGFp5HAipnVOvHtzemGOr6flHPKovnGp0ln7lIzVeXXVFGtBd+ULz6dJcsSoWaeJ68RR3yxMNe1nbvLlV5i97smv/a7QsB7kYhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDZzAFxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68D5C4AF09;
-	Tue, 11 Mar 2025 15:15:04 +0000 (UTC)
+	 MIME-Version; b=eACEL0Bp9txtvgzsziYnYudS1spvdSaUGdQnSr9zjc/ajfrFVhur8GvyvAV1g8OIcmPpDq2tN1JRmuX5cByqtL7fnxBx7dddJIU3IX+1Z1UA4JZf6+OpFXtIlDmd+minIzq/Pfm5hPrfVTf6772R7POUqY+FSADbe/RZTPT+d/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrElT+BP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7F5C4CEE9;
+	Tue, 11 Mar 2025 15:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706105;
-	bh=BMkM/DGFYxsjV6ih67e+6nN05UG99oQIDbhPZq9qUy8=;
+	s=korg; t=1741707377;
+	bh=jrQSf3XVd5bJAJ2DPov9u0ePB3MJWHI57VnyNTHMjjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDZzAFxEIAQLOXReyYn0iObxtWAn488TwYmxorOPIdNBXS8rVUM+1SArGsAyC6XTg
-	 V9rxMAK8WF4VlPvoYdlTJRqKUW8c7prOFl7/r5WizN0YvEd0S0hiv9RSuFzwJF7f8V
-	 PDvHTq9iO0OUetfpL9OLL5SLoasFzCV0F/qsfITA=
+	b=RrElT+BP//IhqUxpv9R2F3cBHkqyKwuLnqHJiXmWOG31GNGAau7JOKXXQ69Rqbw5c
+	 GJzZzD/IDCBDf5fadwi8n6UXi979OKzIK2Vb69BC/h9TBlhBcPcXPX1c8RuANaiSf5
+	 VNxvK2cck0TA90VNhFsA/40TFRVNrJ/Qg//bGlZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
 	Jonas Gorski <jonas.gorski@gmail.com>
-Subject: [PATCH 5.4 264/328] x86/CPU: Fix warm boot hang regression on AMD SC1100 SoC systems
+Subject: [PATCH 5.10 368/462] x86/CPU: Fix warm boot hang regression on AMD SC1100 SoC systems
 Date: Tue, 11 Mar 2025 16:00:34 +0100
-Message-ID: <20250311145725.401872281@linuxfoundation.org>
+Message-ID: <20250311145812.887839991@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
