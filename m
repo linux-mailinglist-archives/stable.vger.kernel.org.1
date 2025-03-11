@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-123299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC50A5C4B9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDED3A5C753
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD13188BFAC
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD0D23A4369
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7106125DD07;
-	Tue, 11 Mar 2025 15:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B34925DB0A;
+	Tue, 11 Mar 2025 15:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSZwa5uP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtHocMv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF8125E820;
-	Tue, 11 Mar 2025 15:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA00A25DAEC;
+	Tue, 11 Mar 2025 15:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705550; cv=none; b=Pqw4q4ScUt2ZgJ6xCLprJLsj9vzdDvk8bwplpGhHEtNDUQ5/dDDg1GwOEHp3O4Fm8mOVOxNRZvBZhHrmjky4AuSFRVt/fs0YLT9U1QKG6mgBeATItIAdhHrWW4jPYvj4NnXZCPQuW+9HONMKxNLcfL4+Kq//b81+QZx5wfB8lv4=
+	t=1741706898; cv=none; b=rAzD/LQMPHEpW1Gl3IRbfGAs98XSlBF2nTTjtpPiq4OBXl1QXgzHexWFOjKRQO/eyu5Y5iFhYi8PA4P4X3E98rTlQA84WiD3W44IlsKed+kQtga/Qj3TBGQMlYlc8jmROww4/w0DONIX/vivvUBj80APDjYL9Vs2RWoL4zaOFm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705550; c=relaxed/simple;
-	bh=JSIwbr8WVHw8ZWfbSjCJK77jgefgHVOgvEmCQZ612Z0=;
+	s=arc-20240116; t=1741706898; c=relaxed/simple;
+	bh=VmZK8qrSldPJOaAMjvc/XEl7QrT/Tz6XRzYOxXL6RrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/1Y6DsZ1O9kuDu0QMGFGVt0tHt+N3emd3mfMWPP7gQNtisXrHh5cJBtZC3BaJ9/5Z93ovdLKo3CXCDdHloIN0THZOkEnjlXymX4r1xifP//GtrtaQZab0FCnk7hbLq5KmRDM69fAFznPHe1NEIqHXnoIjq84Hj74dPasBVMeyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSZwa5uP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1BDC4CEE9;
-	Tue, 11 Mar 2025 15:05:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UpqfYf6e5XdInvapT38y8hbrJM8BbL7IXiji7N2Jbz9MA4C9Riier7Wb89Q5lRgDjr6jTIM5IzWsR/Y09XgI9PwI4+O7Q5grCi4msmDRioTdfFJmb6zMGrpIza0DlSVovZrGN/D7PiK4ESq0yWN1lLq4I5J1bWXYUaUDSr3wB5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtHocMv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DACC4CEE9;
+	Tue, 11 Mar 2025 15:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705550;
-	bh=JSIwbr8WVHw8ZWfbSjCJK77jgefgHVOgvEmCQZ612Z0=;
+	s=korg; t=1741706898;
+	bh=VmZK8qrSldPJOaAMjvc/XEl7QrT/Tz6XRzYOxXL6RrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSZwa5uPjZSHPW05+tpRk2mLhdzf3/S9uwxrZw2DjGxc07/xOBy2rMZy5hr7hkzl9
-	 IJ/VPmQmmx2RWe3dXCXZ4a1Vm6LCg8Lc8Q35+TwAY+WgMUaXG5MZbUEs+aYAQYODRW
-	 LpQy6EunbSLWwtI9tIsUWYcc9Z+IGc7Ao+cew8ck=
+	b=DtHocMv0mlm9TQtWOeJ/oaquSv1c2hIuH2uk5OqIShSYtr8bWYoWraF/kr7+VGXJx
+	 qXrQ12Hv1YA+KW0qGMHrFWakUcJGjMrNqIE17vv+DNVWdmf8M/mxdv7DEHitb/mXLW
+	 4m2NGnW6rIe0hU39bJQqoQCUGEoTVr2PqlT4ltPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Brian Cain <bcain@quicinc.com>,
-	Brian Cain <brian.cain@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 073/328] hexagon: fix using plain integer as NULL pointer warning in cmpxchg
-Date: Tue, 11 Mar 2025 15:57:23 +0100
-Message-ID: <20250311145717.794126755@linuxfoundation.org>
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 5.10 178/462] blk-cgroup: Fix class @block_classs subsystem refcount leakage
+Date: Tue, 11 Mar 2025 15:57:24 +0100
+Message-ID: <20250311145805.386206843@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 8a20030038742b9915c6d811a4e6c14b126cafb4 ]
+commit d1248436cbef1f924c04255367ff4845ccd9025e upstream.
 
-Sparse reports
+blkcg_fill_root_iostats() iterates over @block_class's devices by
+class_dev_iter_(init|next)(), but does not end iterating with
+class_dev_iter_exit(), so causes the class's subsystem refcount leakage.
 
-    net/ipv4/inet_diag.c:1511:17: sparse: sparse: Using plain integer as NULL pointer
+Fix by ending the iterating with class_dev_iter_exit().
 
-Due to this code calling cmpxchg on a non-integer type
-struct inet_diag_handler *
-
-    return !cmpxchg((const struct inet_diag_handler**)&inet_diag_table[type],
-                    NULL, h) ? 0 : -EEXIST;
-
-While hexagon's cmpxchg assigns an integer value to a variable of this
-type.
-
-    __typeof__(*(ptr)) __oldval = 0;
-
-Update this assignment to cast 0 to the correct type.
-
-The original issue is easily reproduced at head with the below block,
-and is absent after this change.
-
-    make LLVM=1 ARCH=hexagon defconfig
-    make C=1 LLVM=1 ARCH=hexagon net/ipv4/inet_diag.o
-
-Fixes: 99a70aa051d2 ("Hexagon: Add processor and system headers")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411091538.PGSTqUBi-lkp@intel.com/
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Tested-by: Christian Gmeiner <cgmeiner@igalia.com>
-Link: https://lore.kernel.org/r/20241203221736.282020-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Brian Cain <bcain@quicinc.com>
-Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ef45fe470e1e ("blk-cgroup: show global disk stats in root cgroup io.stat")
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250105-class_fix-v6-2-3a2f1768d4d4@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/hexagon/include/asm/cmpxchg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-cgroup.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/hexagon/include/asm/cmpxchg.h b/arch/hexagon/include/asm/cmpxchg.h
-index 92b8a02e588ac..9c5f07749933e 100644
---- a/arch/hexagon/include/asm/cmpxchg.h
-+++ b/arch/hexagon/include/asm/cmpxchg.h
-@@ -56,7 +56,7 @@ static inline unsigned long __xchg(unsigned long x, volatile void *ptr,
- 	__typeof__(ptr) __ptr = (ptr);				\
- 	__typeof__(*(ptr)) __old = (old);			\
- 	__typeof__(*(ptr)) __new = (new);			\
--	__typeof__(*(ptr)) __oldval = 0;			\
-+	__typeof__(*(ptr)) __oldval = (__typeof__(*(ptr))) 0;	\
- 								\
- 	asm volatile(						\
- 		"1:	%0 = memw_locked(%1);\n"		\
--- 
-2.39.5
-
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -851,6 +851,7 @@ static void blkcg_fill_root_iostats(void
+ 		}
+ 		disk_put_part(part);
+ 	}
++	class_dev_iter_exit(&iter);
+ }
+ 
+ static int blkcg_print_stat(struct seq_file *sf, void *v)
 
 
 
