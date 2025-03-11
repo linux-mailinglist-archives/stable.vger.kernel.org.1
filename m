@@ -1,146 +1,143 @@
-Return-Path: <stable+bounces-123144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D479A5B88B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 06:29:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4B5A5B859
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 06:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36F413AD996
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 05:29:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67EB916C61A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 05:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975D51EE7B9;
-	Tue, 11 Mar 2025 05:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281041EB9E5;
+	Tue, 11 Mar 2025 05:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="cYwuJy+T"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jgk/zcGc"
 X-Original-To: stable@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F621EDA3A;
-	Tue, 11 Mar 2025 05:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5B01DEFF3;
+	Tue, 11 Mar 2025 05:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741670969; cv=none; b=QYP+GHfx4VZnEyDygzH2chH1FOt7U2C9twDYUkxzcJjjqX8XuPLXIkUncXhYQmdahfHTePfUPoyiLOH0p6jPzEWzsFfG5sWgoPSODvxbXdHGUozxiC9CUEJzt2EzsSYghH4x4AylY7tCMeS+Txde5ku77A4nQBZIoPrXhpnuo9k=
+	t=1741670670; cv=none; b=ki4+f1ZKetmNQSrkPC+HhiU/e95+ya+BD+GuAHE0GVwdlbyW8DCb60G4BIHdnW4ZbUMd0z+iE/PujAQr9S/OeGXvlpMGnXBFWv5W1+Wo4ZPf7Zlhlnm3CrdzwrK2znNAXP0At3EkbUqaO+LlRLW1Klaqsaw53MHo0r39jPLFvgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741670969; c=relaxed/simple;
-	bh=j4T/ihpX+piLqBcmM4WOze2O+wOXuPhkdsGGFg65LBE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G+8DKfiSRZIiG6HmjYjj4XqxzODp2q2mp2aGJLGM+P0RHsDgWDe7VCEAezeH4xS1+bZPGQcW9Ea9RAX6iPJaCx7/NEWhX2dQxHjCLpoRS8DsdrrS+S0l/EqOUFSt8Wrg1GpzMmwzIrZ1nLnuinaaFeg021yHd+Xxg9sIRyhr5O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=cYwuJy+T; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52B5I8ni675075
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Mar 2025 00:18:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741670288;
-	bh=NspGx0nqDbjExHcl+uSnaAoQr3YyjgF3MKCUI7kJdT8=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=cYwuJy+TZKOyrfecU6ZY2c8glXSCWO9OfycFIJ3QbZLTnpLwAqDJuLH9zmk1doOzq
-	 gmGEtZIuhHBgL0kTCbDTiKw9XN3R0FKgtn1UCIcb8T37lq9yrNs9kCLgu9BQimLrMg
-	 3LPcgwWeuGTCZtbNUV6ZTrsDgqGTVmhlVHLOnJng=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52B5I81c034069
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 11 Mar 2025 00:18:08 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 11
- Mar 2025 00:18:08 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 11 Mar 2025 00:18:08 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52B5I6G9051545;
-	Tue, 11 Mar 2025 00:18:07 -0500
-Date: Tue, 11 Mar 2025 10:48:06 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
-        <vigneshr@ti.com>, <manivannan.sadhasivam@linaro.org>,
-        <robh@kernel.org>, <bhelgaas@google.com>, <rogerq@kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250311051806.smcu4o4dxpngimth@uda0492258>
-References: <20250305132018.2260771-1-s-vadapalli@ti.com>
- <20250310210746.GA2377483@rocinante>
+	s=arc-20240116; t=1741670670; c=relaxed/simple;
+	bh=NocB5wuDBrbQL54yJUFHfBU5Ez+dNvLHO9HRnBbTKoI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+LPY6efgajDrlSU5VCE+Qg8AiZLBtkUjtRUzbL3HErzGLXGKHrWslFQwLp8yNilMQQWU7tEsQITD7LnRrXvpr3QS00TNnq6BoBi8D/yZxdlEJaDPib6dQIn+Qc+4lT+GcOxbGp6Wnf7yCnBkojSL88T10EEXFZvZbr46k4KAzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jgk/zcGc; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff797f8f1bso6714500a91.3;
+        Mon, 10 Mar 2025 22:24:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741670669; x=1742275469; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cMarbxznOZSe6oqbRQcowEnKXzuGUexSuWNf9vfnQvo=;
+        b=Jgk/zcGcvNkeA9c+CqGwUPc5F4MYaeiPagOeRacbmdv8sMePfZwGMeBZLUgrjHb8Sa
+         tCdsmgFNOYTkbmD+YFWrBtfHhff8DgjlE987bf0LlLK+NgYlbFf92jTq/N/Nx8BqP3oq
+         mFSxXY86vN+gTX7LL/1o8x0YoRWDOLtx4UvGSUXqoUybVSqXd/ZOeTB6WrmB5mNR11jS
+         O31RE/R93pXvDVeKNn9NS9RHfuSxWT1Tq6HIywPVx5AmfRRjiDZsAPUxJcEe8iDHSe56
+         gS/+uKHz9yNbITXghOfkS+OnIbAQ+Yy1vO50Xe9NKrBUUg/XuqMpr/HWuU/VAOkpCFZE
+         bhKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741670669; x=1742275469;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cMarbxznOZSe6oqbRQcowEnKXzuGUexSuWNf9vfnQvo=;
+        b=uFbs58O7JxDoGzc0mIR4uU2TKs7CWHwrW/rng8DlJveLydzdISmFeP1NGAfWwUSOkm
+         8NadBLJKwkfa4RufMsZYT4z1LGjwsycUlb4ULoBZypzAdxjr06fIQAIjCsjFIKgE51yv
+         NopsptUyc2UJsW0cygWShYHV+d1sN/5Waf0lFIXztTRdDBbSG+46YGvAeJBol/OaMDzV
+         2emc8Oatq9fTqldHndzEn49BZtn1Jm0Du6JAD3wD6STd9qjRhaLY4Byxte2acXj3bduz
+         gWT02KK8lNWpoat7pRLgT9NUgGM3Vlmmn++BcMD2ZHrCa3pbLnQU3KQ5/W4gQbV0I6Lr
+         BvZw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5jtcId2CArYjMq0jExGF+Z17SNWrrXDo3qBbxiaAcSxkLjbHlHSX571So26UDAN+Z6bTS/4hT@vger.kernel.org, AJvYcCW6csOh/8TPPAMbk1rGcrNbv4u8FN65Mjr+kbPLG/qtyJNrSNOVLoMqxZJiWXzc0gwz4GFYBARR3S1044E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmdcQg193G9QCuAOCLxzFp1bHde1T0Woog+9rZz1E5zdPQLfT7
+	wg5Z280LD4O8LINgPp1iDJCZBldmZUTw2vFjsMnnbmp/y9OTAoIRWb3qIQ==
+X-Gm-Gg: ASbGnctX9vVgbuSIf4zLHQzFeCpfc+aViAkdQ7RdgUgHKWD1O7LjTH0AgDYFcYkKssF
+	URtb0GZrEJCF0Mj9yD2mlSreuntje6l/Tj7ROQHmE6SFHtTAcndDs2ea+6DFwSOFsRMP10KTn5w
+	joATpRfeWxgaN2X5hPyQLmea/wXRBPqZCNk5yNMeZRGKEnD4NN/6A3XzpERuT8oiv5MWBzu7IbV
+	iD+SxTGhVq3DFIHpeOzyvNcqCM2qre3hpTCNAsYQL7Go0YRAZkJ73aBotDHkZkxQa2qhH09Gv9/
+	uZ4I1G4bPZHvGaecebsRRLOi9Q8EDDhXJkfo2/iJa/6kX4na+lrsE0qQK7Ol69dWKNA=
+X-Google-Smtp-Source: AGHT+IFpeymk1eZgvO7YbN3rUfelkvEk2uBGM5LaAhJUkze2V3KA7w/1a5qW98d/0OJAK8PyoMQ+gw==
+X-Received: by 2002:a17:90b:1f8d:b0:2ee:6d08:7936 with SMTP id 98e67ed59e1d1-300ff10566amr3212686a91.20.1741670668587;
+        Mon, 10 Mar 2025 22:24:28 -0700 (PDT)
+Received: from dtor-ws.sjc.corp.google.com ([2620:15c:9d:2:eb9f:29c2:9ede:46d])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff693f7f0bsm9023649a91.46.2025.03.10.22.24.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 22:24:28 -0700 (PDT)
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/3] Revert "drivers: core: synchronize really_probe() and dev_uevent()"
+Date: Mon, 10 Mar 2025 22:24:14 -0700
+Message-ID: <20250311052417.1846985-1-dmitry.torokhov@gmail.com>
+X-Mailer: git-send-email 2.49.0.rc0.332.g42c0ae87b1-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250310210746.GA2377483@rocinante>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Tue, Mar 11, 2025 at 06:07:46AM +0900, Krzysztof Wilczyński wrote:
-> Hello,
-> 
-> > Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
-> > expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
-> > already reuse this macro since it accurately represents the link-state
-> > field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
-> 
-> Can you confirm for me that the following use the correct macro?
-> 
->   333-static const struct j721e_pcie_data j721e_pcie_rc_data = {
->   337:	.linkdown_irq_regfield = LINK_DOWN,
->   
->   341-static const struct j721e_pcie_data j721e_pcie_ep_data = {
->   343:	.linkdown_irq_regfield = LINK_DOWN,
->   
->   347-static const struct j721e_pcie_data j7200_pcie_rc_data = {
->   350:	.linkdown_irq_regfield = J7200_LINK_DOWN,
->   
->   362-static const struct j721e_pcie_data am64_pcie_rc_data = {
->   364:	.linkdown_irq_regfield = J7200_LINK_DOWN,
->   
->   369-static const struct j721e_pcie_data am64_pcie_ep_data = {
->   371:	.linkdown_irq_regfield = J7200_LINK_DOWN,
->   
->   375-static const struct j721e_pcie_data j784s4_pcie_rc_data = {
->   379:	.linkdown_irq_regfield = LINK_DOWN,
->   
->   383-static const struct j721e_pcie_data j784s4_pcie_ep_data = {
->   385:	.linkdown_irq_regfield = LINK_DOWN,
->   
->   389-static const struct j721e_pcie_data j722s_pcie_rc_data = {
->   391:	.linkdown_irq_regfield = J7200_LINK_DOWN,
-> 
-> I am asking as some use LINK_DOWN, so I wanted to make sure.
+This reverts commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0.
 
-Yes, the above are accurate except for J784S4 which is fixed by this
-patch. LINK_DOWN i.e. BIT(1) is applicable only to J721E which was the
-first SoC after which the driver has been named. For all other SoCs, the
-integration of the PCIe Controller into the SoC led to BIT(10) of the
-register being used to indicate the link status.
+Probing a device can take arbitrary long time. In the field we observed
+that, for example, probing a bad micro-SD cards in an external USB card
+reader (or maybe cards were good but cables were flaky) sometimes takes
+longer than 2 minutes due to multiple retries at various levels of the
+stack. We can not block uevent_show() method for that long because udev
+is reading that attribute very often and that blocks udev and interferes
+with booting of the system.
 
-> 
-> Tht said, the following has no .linkdown_irq_regfield property set:
-> 
->   355-static const struct j721e_pcie_data j7200_pcie_ep_data = {
->   356-	.mode = PCI_MODE_EP,
->   357-	.quirk_detect_quiet_flag = true,
->   358-	.quirk_disable_flr = true,
->   359-	.max_lanes = 2,
->   360-};
-> 
-> Would this be a problem?  Or is this as expected?
+The change that introduced locking was concerned with dev_uevent()
+racing with unbinding the driver. However we can handle it without
+locking (which will be done in subsequent patch).
 
-Thank you for pointing this out. This has to be fixed and the
-"linkdown_irq_regfield" member has to be added to match
-j7200_pcie_rc_data. I will post the fix for this.
+There was also claim that synchronization with probe() is needed to
+properly load USB drivers, however this is a red herring: the change
+adding the lock was introduced in May of last year and USB loading and
+probing worked properly for many years before that.
 
-Regards,
-Siddharth.
+Revert the harmful locking.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+ drivers/base/core.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+v3: no changes.
+
+v2: added Cc: stable, no code changes.
+
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index d2f9d3a59d6b..f9c1c623bca5 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2726,11 +2726,8 @@ static ssize_t uevent_show(struct device *dev, struct device_attribute *attr,
+ 	if (!env)
+ 		return -ENOMEM;
+ 
+-	/* Synchronize with really_probe() */
+-	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
+-	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
+ 
+-- 
+2.49.0.rc0.332.g42c0ae87b1-goog
+
 
