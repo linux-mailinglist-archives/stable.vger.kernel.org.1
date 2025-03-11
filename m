@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-123247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9339A5C481
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:05:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F2BA5C498
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:06:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35CC77AB0E2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:03:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53FE23B62C6
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4770425F7AA;
-	Tue, 11 Mar 2025 15:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D514225EF9E;
+	Tue, 11 Mar 2025 15:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWDyY5OF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhyGNrrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0411125F798;
-	Tue, 11 Mar 2025 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC4825EF96;
+	Tue, 11 Mar 2025 15:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705401; cv=none; b=l88wTCCNKF66he552HU20l7qABhEP8d4JyozOIkY6pMv9DiBkNsMk2Cb9RA1souonX+8gFBRAhLhohiUehhTf9l3vZfDwhGxho/sT88ZMqmVl0/3Uj6V50vnTybp9wEeSf6xUuJfn+Av4k/vOfWrFJ9i6GucGsQqMQLnVnwBEPc=
+	t=1741705431; cv=none; b=J4K1/bbMFiySe9gTqbvwwv1HuopPzF3RvzyGzmSqtzQPcQJ1e5kI+EUh9sLLAAZgz0X+37mqMHOgPP4zN94JTbIuSOY44BCjCPOgWHXmtYsxYOjTACqSRuGc3MRdhxV3+OSqcjbCezAbBibKcfz5yCyx49IhNuNeoE1JB4CaaCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705401; c=relaxed/simple;
-	bh=EFd56TqzQsTj9Xf4XBweZReSIuHXhW1CIf8K3cQIw34=;
+	s=arc-20240116; t=1741705431; c=relaxed/simple;
+	bh=iSQy0LUIQRgFMdxtxvatU2W4DR5/DjdBY3hUpM5DgW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eClFxMGPwmrKU7btQiUpc6jUBYERSjYhYm7/1eNYp6kqg6sBM0E0635nXu8qo2eeNf/zok1ndYy6l+kPkU8GeRx9CQPvfwNwzcUjD3T6vZjYbrJnN6T0UIDRcwsR0jAguTMKZfTtqZ9Txj/cUmzrKZ01qshKtEXHPeKZGzSxknE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWDyY5OF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E80C4CEE9;
-	Tue, 11 Mar 2025 15:03:18 +0000 (UTC)
+	 MIME-Version; b=JPj+UhjwuQfbF/D9ChBtPHU6KGDBchZILV73lV805V3ZKjgLsrfndCQH6pIGe5G/JMbcd4a9B5ftvqFKVHMBUGK1k97FveD0T6weYWEpM4rYjrUw8Lr++x6fo5EIpzb6lEQwygTOXKTlqHi/CBpOjrdMbWbZemwqkUaEDkTHE4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhyGNrrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECD9C4CEF0;
+	Tue, 11 Mar 2025 15:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705399;
-	bh=EFd56TqzQsTj9Xf4XBweZReSIuHXhW1CIf8K3cQIw34=;
+	s=korg; t=1741705431;
+	bh=iSQy0LUIQRgFMdxtxvatU2W4DR5/DjdBY3hUpM5DgW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWDyY5OFsrwMJX4vl2TbwDyUDH1o+2ZOmGi9Ek1eXHVLALOCFYKhH1S+fMvbkn9Bl
-	 VEkljmUxeAFFUP/214CvcCO1JK2azPdSiqUwcNDuGak42h0ib0mIQpGOPKWjML+AVH
-	 80sR+qhXopeuRX+QPpqY2PMF3TsMVvsN/FntxXS4=
+	b=qhyGNrrx2x2vmp6vN6Lei14gacrKdVik6xoo+4nvLggufZlUmNQN/WZuLw4GyhJT0
+	 6BsMXpoSauSKchJtK2f1NwKr2WiiD8GFtq9/bca4GGpBycn9mE186xdx1r8u7NV6cv
+	 8x4Nd6XhWXQ5C0l0S1I+lVjeJd1ELKTeW9C9VS1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 014/328] wifi: rtlwifi: rtl8192se: rise completion of firmware loading as last step
-Date: Tue, 11 Mar 2025 15:56:24 +0100
-Message-ID: <20250311145715.445190759@linuxfoundation.org>
+Subject: [PATCH 5.4 015/328] wifi: rtlwifi: usb: fix workqueue leak when probe fails
+Date: Tue, 11 Mar 2025 15:56:25 +0100
+Message-ID: <20250311145715.484771440@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
 References: <20250311145714.865727435@linuxfoundation.org>
@@ -68,54 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 8559a9e0c457729fe3edb3176bbf7c7874f482b0 ]
+[ Upstream commit f79bc5c67867c19ce2762e7934c20dbb835ed82c ]
 
-Just like in commit 4dfde294b979 ("rtlwifi: rise completion at the last
-step of firmware callback"), only signal completion once the function is
-finished. Otherwise, the module removal waiting for the completion could
-free the memory that the callback will still use before returning.
+rtl_init_core creates a workqueue that is then assigned to rtl_wq.
+rtl_deinit_core does not destroy it. It is left to rtl_usb_deinit, which
+must be called in the probe error path.
 
-Fixes: b0302aba812b ("rtlwifi: Convert to asynchronous firmware load")
+Fixes: 2ca20f79e0d8 ("rtlwifi: Add usb driver")
+Fixes: 851639fdaeac ("rtlwifi: Modify some USB de-initialize code.")
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107133322.855112-3-cascardo@igalia.com
+Link: https://patch.msgid.link/20241107133322.855112-6-cascardo@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
-index 4c4a1201d420f..78547e4035dc6 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
-@@ -68,22 +68,23 @@ static void rtl92se_fw_cb(const struct firmware *firmware, void *context)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index b5b95ec1231e0..9e31ce0a9f562 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -1079,6 +1079,7 @@ int rtl_usb_probe(struct usb_interface *intf,
+ 	return 0;
  
- 	rtl_dbg(rtlpriv, COMP_ERR, DBG_LOUD,
- 		"Firmware callback routine entered!\n");
--	complete(&rtlpriv->firmware_loading_complete);
- 	if (!firmware) {
- 		pr_err("Firmware %s not available\n", fw_name);
- 		rtlpriv->max_fw_size = 0;
--		return;
-+		goto exit;
- 	}
- 	if (firmware->size > rtlpriv->max_fw_size) {
- 		pr_err("Firmware is too big!\n");
- 		rtlpriv->max_fw_size = 0;
- 		release_firmware(firmware);
--		return;
-+		goto exit;
- 	}
- 	pfirmware = (struct rt_firmware *)rtlpriv->rtlhal.pfirmware;
- 	memcpy(pfirmware->sz_fw_tmpbuffer, firmware->data, firmware->size);
- 	pfirmware->sz_fw_tmpbufferlen = firmware->size;
- 	release_firmware(firmware);
-+exit:
-+	complete(&rtlpriv->firmware_loading_complete);
- }
- 
- static int rtl92s_init_sw_vars(struct ieee80211_hw *hw)
+ error_out:
++	rtl_usb_deinit(hw);
+ 	rtl_deinit_core(hw);
+ error_out2:
+ 	_rtl_usb_io_handler_release(hw);
 -- 
 2.39.5
 
