@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A93A5C4D1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D6AA5C712
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 687FE17A4D5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5184517B6CD
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB92925F788;
-	Tue, 11 Mar 2025 15:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7FF25E834;
+	Tue, 11 Mar 2025 15:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iMhC3Ms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgP70WhU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FBE25F783;
-	Tue, 11 Mar 2025 15:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAF11DF749;
+	Tue, 11 Mar 2025 15:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705585; cv=none; b=XqGi7VYCtpCsi+uy8P6CTv4FvY2SDngF5ZJ25GuolWVPI3os6FCuLurvJOsUjhns9Qi5DKXCBV8gnBPy9pcy9XB23YoP77akcg2YEmd2dN8N/69At2s4Mfmbu/qwLYbdGns4IlhKlQhc6TWrTz5AL15WQU00ZbSV6CsqQOzz34I=
+	t=1741706855; cv=none; b=BBDpDx6gdskBd+k/X4t6tSgyuR80rM2Oilr5jm82Ti/t8wRQ64z2ngaBqoFdoH0gaCcKM93PVQr8DfqqQrBugdDA9fLebp1RtFD77Czium4YPZhZSRynlTxBk6kO6p3DvS7h3rJXiQdzQ1c7mFwqetK6ILmEtygppzAx+PTsKlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705585; c=relaxed/simple;
-	bh=m3XXxe8BRsCKg0ccgovl2urHpeYU2LqXuOoH5MacTsQ=;
+	s=arc-20240116; t=1741706855; c=relaxed/simple;
+	bh=6zf5aQFEC3G2f7U76uJjRnqZJr0974TBbISpkGonUcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ekV4AEZzu5AO4F4Fz3A0poThaobsd1hSw4f9iJ9eHMFasvoU/Ab/cmozzg+qQMWT2jjQdgIZRvkFptUScwbJhTd1ncbtXwK1y3ChzHYwqxR4+3h5BuyvNV3UTkyzxiBzquI6bQE7OlJ9dBrR2MFNeB8YGF5QaHbqkO8EsO8LWNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iMhC3Ms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9463BC4AF09;
-	Tue, 11 Mar 2025 15:06:24 +0000 (UTC)
+	 MIME-Version; b=Kz1cbjeBlu6CjDFINkGNtBJJEn5+wIorQiZsjaU4PerKevMNGf9S0U2Y1HOiKi2v9nkFuUmqJqkHqKRI7A9ZO7hZ9uS+rcc6BpuWomhAG7+UPdp3DFjZx5uOTA1/yLWjMbXJTPh3KArmtH9WQutPkXF7UuyhKdx8zpoxxlMbFCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgP70WhU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC284C4CEEA;
+	Tue, 11 Mar 2025 15:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705585;
-	bh=m3XXxe8BRsCKg0ccgovl2urHpeYU2LqXuOoH5MacTsQ=;
+	s=korg; t=1741706855;
+	bh=6zf5aQFEC3G2f7U76uJjRnqZJr0974TBbISpkGonUcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iMhC3MsAhDp85gjfc5RcygRRHvl49SRMh8m01Ki5jyglM4O79KqXM7xzfc/u1XPV
-	 m+QWhrd1EveQETK4hsZ/lORbeXKl51IJR2iS/F2zJqbjsg7KGVuGe4roP0QPC+IgQb
-	 y7SHOnKOQHkXyH0hS6lLwi/QBVlfyHYmJ/ks1v/M=
+	b=fgP70WhUnip1J4sO3W7eMR5/+XHv2p5F9szCHBmGw+5MHl/cDGUwQVA6foLfdD+FZ
+	 YLU+sgWLDEyO8J/6DHWhI3I/M9D2GRVQkrNK4Zyz2kadO+ur95EphsVXtbfSqQ6kuz
+	 PuA5Wk7PICw6fo/gMtncxyAI45WIaRoX/X0YZDYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 086/328] x86/amd_nb: Restrict init function to AMD-based systems
-Date: Tue, 11 Mar 2025 15:57:36 +0100
-Message-ID: <20250311145718.306645046@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.10 191/462] soc: qcom: socinfo: Avoid out of bounds read of serial number
+Date: Tue, 11 Mar 2025 15:57:37 +0100
+Message-ID: <20250311145805.906310636@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit bee9e840609cc67d0a7d82f22a2130fb7a0a766d ]
+commit 22cf4fae6660b6e1a583a41cbf84e3046ca9ccd0 upstream.
 
-The code implicitly operates on AMD-based systems by matching on PCI
-IDs. However, the use of these IDs is going away.
+On MSM8916 devices, the serial number exposed in sysfs is constant and does
+not change across individual devices. It's always:
 
-Add an explicit CPU vendor check instead of relying on PCI IDs.
+  db410c:/sys/devices/soc0$ cat serial_number
+  2644893864
 
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241206161210.163701-3-yazen.ghannam@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The firmware used on MSM8916 exposes SOCINFO_VERSION(0, 8), which does not
+have support for the serial_num field in the socinfo struct. There is an
+existing check to avoid exposing the serial number in that case, but it's
+not correct: When checking the item_size returned by SMEM, we need to make
+sure the *end* of the serial_num is within bounds, instead of comparing
+with the *start* offset. The serial_number currently exposed on MSM8916
+devices is just an out of bounds read of whatever comes after the socinfo
+struct in SMEM.
+
+Fix this by changing offsetof() to offsetofend(), so that the size of the
+field is also taken into account.
+
+Cc: stable@vger.kernel.org
+Fixes: efb448d0a3fc ("soc: qcom: Add socinfo driver")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241230-qcom-socinfo-serialno-oob-v1-1-9b7a890da3da@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/amd_nb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/soc/qcom/socinfo.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index e3b5de7b95988..ead78f981345c 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -538,6 +538,10 @@ static __init void fix_erratum_688(void)
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -510,7 +510,7 @@ static int qcom_socinfo_probe(struct pla
+ 	if (!qs->attr.soc_id || !qs->attr.revision)
+ 		return -ENOMEM;
  
- static __init int init_amd_nbs(void)
- {
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
-+	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
-+		return 0;
-+
- 	amd_cache_northbridges();
- 	amd_cache_gart();
- 
--- 
-2.39.5
-
+-	if (offsetof(struct socinfo, serial_num) <= item_size) {
++	if (offsetofend(struct socinfo, serial_num) <= item_size) {
+ 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 							"%u",
+ 							le32_to_cpu(info->serial_num));
 
 
 
