@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D45A5C7F2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1F4A5C57D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4E3D3AAB57
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C31FF1893DC2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E0325B69D;
-	Tue, 11 Mar 2025 15:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC1325EF91;
+	Tue, 11 Mar 2025 15:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0QqcwHu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VA8nArAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FDC25D904;
-	Tue, 11 Mar 2025 15:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE8925EF84;
+	Tue, 11 Mar 2025 15:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707176; cv=none; b=BsyvOjnqeHlvN5e9vxjgCL2asmKvGuvs94Gmg2QONLNHuQo2ervrmAEB40EmZtY/5t5QJvQ96i0w/9OH/+qtjmQXuGWPtFo+ftOnRFKEeotuywXQDaNDAduQQgAI8H7Pm8sVAlUQ3x5OZmXq5lK01xx1MfA6leFJVQGwStpydw4=
+	t=1741705906; cv=none; b=bXF4w5i52yuuLd7YGDxITUHKYSegW6j31ygzt77Ypa5QbZ5Pn+Lt4MqAQwPFDS7LNAewk4gIzxC30yozov9h29Og4ZAWC/eXROlws3dM2guTPvN4xuvdIkuY1qp2J6ts33Lo3QG3EG+kH3I+cr4x6+rY/sfPYUJ6pxjhJ0yUJ2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707176; c=relaxed/simple;
-	bh=EtE/cxMDdlpA2jnXLIf8M5JaYGSqry1m8c7Hdc1DMqE=;
+	s=arc-20240116; t=1741705906; c=relaxed/simple;
+	bh=cg4muBZACxpaT+35R+hCn1/tNokn+ztnJpgeRrF09BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djlnK62fjDjPX2xH6BKPTBfpKCvn3m6NsJuIp7m2TcRjM1E6jwauOwQP8F1N2nytZEFPSYo78hL/3WiqfIZIOWWZhEyKPjyXhEcOOVcXGCn17bYtThevomHFKMIMrO9RDq7epVJYLvw5+a9s9ybTLmKdoxRUgXg0yfrLtcTq1xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0QqcwHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1328C4CEE9;
-	Tue, 11 Mar 2025 15:32:55 +0000 (UTC)
+	 MIME-Version; b=fLG6q4R+6vvx/4N7KeJyA5Viea76/aKEfgLPO76LABn5BE3tQXO+UaNxixSQl2P4hkivEh6QU9I4Vj25pM7pIuDzaW3AoppjYgQJObLZB1qjcfHlg7e3DChdFxEsdQQg61KiL+XjdKQAesMfqAvrQcOnHB4rlyccIj74PO5rYIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VA8nArAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447FAC4CEED;
+	Tue, 11 Mar 2025 15:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707176;
-	bh=EtE/cxMDdlpA2jnXLIf8M5JaYGSqry1m8c7Hdc1DMqE=;
+	s=korg; t=1741705906;
+	bh=cg4muBZACxpaT+35R+hCn1/tNokn+ztnJpgeRrF09BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0QqcwHuKAZNd0xLXKldxhudb2pq03ufYQWqJ+yeLEBi5V/R62YE67RAA29Rl1YD+
-	 n/gTD1s5opivc/2BkUyTQ54mg1GpP3HqC/96J6RIpbVvC1Nu8y2i+HOl7iEJNNuNBh
-	 vx5aulumIkscUN5+zWQYX8rAMFmMmUPtUV/OE8FE=
+	b=VA8nArAp6OsT9Kv5Cx6diC0iNCffS7Hpuy6Xl7L0sU7JduLdHBDIEmMj2258zjDYG
+	 1RGZgvdXK1obXmNrrtg8d+yWW15WzAad1MX8XpygMv2NRvzmJZJk6bPS2FBcop7OYZ
+	 MdgnOEK//P9UGf9EFqnTpM1dZDz04hLp+Q+am3MM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH 5.10 299/462] serial: 8250_pci: add support for ASIX AX99100
-Date: Tue, 11 Mar 2025 15:59:25 +0100
-Message-ID: <20250311145810.175385636@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	John Keeping <jkeeping@inmusicbrands.com>
+Subject: [PATCH 5.4 196/328] serial: 8250: Fix fifo underflow on flush
+Date: Tue, 11 Mar 2025 15:59:26 +0100
+Message-ID: <20250311145722.689971257@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-commit 0b32216557ce3b2a468d1282d99b428bf72ff532 upstream.
+commit 9e512eaaf8f4008c44ede3dfc0fbc9d9c5118583 upstream.
 
-Each of the 4 PCI functions on ASIX AX99100 PCIe to Multi I/O
-Controller can be configured as a single-port serial port controller.
-The subvendor id is 0x1000 when configured as serial port and MSI
-interrupts are supported.
+When flushing the serial port's buffer, uart_flush_buffer() calls
+kfifo_reset() but if there is an outstanding DMA transfer then the
+completion function will consume data from the kfifo via
+uart_xmit_advance(), underflowing and leading to ongoing DMA as the
+driver tries to transmit another 2^32 bytes.
 
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230724083933.3173513-4-jiaqing.zhao@linux.intel.com
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+This is readily reproduced with serial-generic and amidi sending even
+short messages as closing the device on exit will wait for the fifo to
+drain and in the underflow case amidi hangs for 30 seconds on exit in
+tty_wait_until_sent().  A trace of that gives:
+
+     kworker/1:1-84    [001]    51.769423: bprint:               serial8250_tx_dma: tx_size=3 fifo_len=3
+           amidi-763   [001]    51.769460: bprint:               uart_flush_buffer: resetting fifo
+ irq/21-fe530000-76    [000]    51.769474: bprint:               __dma_tx_complete: tx_size=3
+ irq/21-fe530000-76    [000]    51.769479: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294967293
+ irq/21-fe530000-76    [000]    51.781295: bprint:               __dma_tx_complete: tx_size=4096
+ irq/21-fe530000-76    [000]    51.781301: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294963197
+ irq/21-fe530000-76    [000]    51.793131: bprint:               __dma_tx_complete: tx_size=4096
+ irq/21-fe530000-76    [000]    51.793135: bprint:               serial8250_tx_dma: tx_size=4096 fifo_len=4294959101
+ irq/21-fe530000-76    [000]    51.804949: bprint:               __dma_tx_complete: tx_size=4096
+
+Since the port lock is held in when the kfifo is reset in
+uart_flush_buffer() and in __dma_tx_complete(), adding a flush_buffer
+hook to adjust the outstanding DMA byte count is sufficient to avoid the
+kfifo underflow.
+
+Fixes: 9ee4b83e51f74 ("serial: 8250: Add support for dmaengine")
+Cc: stable <stable@kernel.org>
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Link: https://lore.kernel.org/r/20250208124148.1189191-1-jkeeping@inmusicbrands.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/tty/serial/8250/8250.h      |    2 ++
+ drivers/tty/serial/8250/8250_dma.c  |   16 ++++++++++++++++
+ drivers/tty/serial/8250/8250_port.c |    9 +++++++++
+ 3 files changed, 27 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -65,6 +65,8 @@ static const struct pci_device_id pci_us
- 			 0xA000, 0x1000) },
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9922,
- 			 0xA000, 0x1000) },
-+	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_ASIX, PCI_DEVICE_ID_ASIX_AX99100,
-+			 0xA000, 0x1000) },
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_HP_3PAR, PCI_DEVICE_ID_HPE_PCI_SERIAL,
- 			 PCI_ANY_ID, PCI_ANY_ID) },
- 	{ }
-@@ -5785,6 +5787,14 @@ static const struct pci_device_id serial
- 	{	PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9865,
- 		0xA000, 0x3004,
- 		0, 0, pbn_b0_bt_4_115200 },
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -300,6 +300,7 @@ static inline int is_omap1510_8250(struc
+ 
+ #ifdef CONFIG_SERIAL_8250_DMA
+ extern int serial8250_tx_dma(struct uart_8250_port *);
++extern void serial8250_tx_dma_flush(struct uart_8250_port *);
+ extern int serial8250_rx_dma(struct uart_8250_port *);
+ extern void serial8250_rx_dma_flush(struct uart_8250_port *);
+ extern int serial8250_request_dma(struct uart_8250_port *);
+@@ -316,6 +317,7 @@ static inline int serial8250_tx_dma(stru
+ {
+ 	return -1;
+ }
++static inline void serial8250_tx_dma_flush(struct uart_8250_port *p) { }
+ static inline int serial8250_rx_dma(struct uart_8250_port *p)
+ {
+ 	return -1;
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -126,6 +126,22 @@ err:
+ 	return ret;
+ }
+ 
++void serial8250_tx_dma_flush(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	if (!dma->tx_running)
++		return;
 +
 +	/*
-+	 * ASIX AX99100 PCIe to Multi I/O Controller
++	 * kfifo_reset() has been called by the serial core, avoid
++	 * advancing and underflowing in __dma_tx_complete().
 +	 */
-+	{	PCI_VENDOR_ID_ASIX, PCI_DEVICE_ID_ASIX_AX99100,
-+		0xA000, 0x1000,
-+		0, 0, pbn_b0_1_115200 },
++	dma->tx_size = 0;
 +
- 	/* Intel CE4100 */
- 	{	PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CE4100_UART,
- 		PCI_ANY_ID,  PCI_ANY_ID, 0, 0,
++	dmaengine_terminate_async(dma->rxchan);
++}
++
+ int serial8250_rx_dma(struct uart_8250_port *p)
+ {
+ 	struct uart_8250_dma		*dma = p->dma;
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2473,6 +2473,14 @@ static unsigned int npcm_get_divisor(str
+ 	return DIV_ROUND_CLOSEST(port->uartclk, 16 * baud + 2) - 2;
+ }
+ 
++static void serial8250_flush_buffer(struct uart_port *port)
++{
++	struct uart_8250_port *up = up_to_u8250p(port);
++
++	if (up->dma)
++		serial8250_tx_dma_flush(up);
++}
++
+ static unsigned int serial8250_do_get_divisor(struct uart_port *port,
+ 					      unsigned int baud,
+ 					      unsigned int *frac)
+@@ -3119,6 +3127,7 @@ static const struct uart_ops serial8250_
+ 	.break_ctl	= serial8250_break_ctl,
+ 	.startup	= serial8250_startup,
+ 	.shutdown	= serial8250_shutdown,
++	.flush_buffer	= serial8250_flush_buffer,
+ 	.set_termios	= serial8250_set_termios,
+ 	.set_ldisc	= serial8250_set_ldisc,
+ 	.pm		= serial8250_pm,
 
 
 
