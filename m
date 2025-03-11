@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-123488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BC0A5C576
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3CFA5C80E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 093CB7A2EC8
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:14:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3575164E94
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6A025E825;
-	Tue, 11 Mar 2025 15:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5CE25DCFA;
+	Tue, 11 Mar 2025 15:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s57jCoZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeqSw8LA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB7425E81A;
-	Tue, 11 Mar 2025 15:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A971C255E37;
+	Tue, 11 Mar 2025 15:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706102; cv=none; b=U/BG9R8iMZlFL+3PwC0IWAKRn3TclO2o4DNgDU9p9C4fkmCWzsIga3u5oCNm+UZrDzev7SpBqQgyPVvO18PN3p/P1kggX6ibWYQj1+lSlDpWMlPUu9MCtIgtX1H1TT+Oq5tJ3vblsj8NapizFM0bGMyDxvNIxe0BK3Zdy67ql4k=
+	t=1741707374; cv=none; b=NkPL4KS5Cn+Btd5vBhQafMRlar/iPBr3gwT7FNYqP09oEZ5xGPGPVe4Qt/XA+4uiSeMmOo4rsV+OohDzWAYuqq61sKE8u/3ivp5I7UdnHAAm4yzOgEpCvaIuqqSQC5BagJUDJQjx/R2ljb+dCR8P87kdY2BdDadIZ7cFKbOxZ7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706102; c=relaxed/simple;
-	bh=WZrBt7VWIaxpVL7xz455Lk4n9E0lZop2WzQ6j9j/Tds=;
+	s=arc-20240116; t=1741707374; c=relaxed/simple;
+	bh=X2W3CgqdXNTmf/qVE/5TkqHqlyef7XMMLBjH7AO+gcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itulHieoIUZwYB2vRK26CGL5iOa9Pg5OgZZyOyVXTc2Qy6slwd0GI+wKq7GtAmbMVFPphs32AN8OQoooG+/XghpvT3Eu+O+aaqZLXxWMDkDqPiTonVbn/X4OtZ8cx4VgmIV2rJYc2Zl2ze8jzZ4Y1P8InaVvT0rYdn1uJFYXZ7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s57jCoZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC19FC4CEE9;
-	Tue, 11 Mar 2025 15:15:01 +0000 (UTC)
+	 MIME-Version; b=BpH+laBU/Dx5BWhjv4U/GfWaHHAVflaD6keq/uZGQ9S+ykWwjxylpICoQiHKjcomklLGQt+wmPlJAgWjgosYu+QrsqIGu89f4dKTr2dHwMsfriO0rAUJqn87YNh2WMC6DKXTd2MnuVy17oXmfJwagwAUDtvDSE3t3pXcSH1jeZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeqSw8LA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AECC4CEE9;
+	Tue, 11 Mar 2025 15:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706102;
-	bh=WZrBt7VWIaxpVL7xz455Lk4n9E0lZop2WzQ6j9j/Tds=;
+	s=korg; t=1741707374;
+	bh=X2W3CgqdXNTmf/qVE/5TkqHqlyef7XMMLBjH7AO+gcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s57jCoZsconArBQzOnFvha9XYDNdXiKtPAq05GZb/vW/0x2xOJgVgmpUohYRAeRv7
-	 3Qt6z5a+4dc0rh/HytuUBbhIFpbTKr60j6EPmpisGWCpKCXLqXAz5fVeZBbIRIR6q/
-	 cpbL7nl4c5IakEfXha7aA1hJL34UWWpjafKTFx0c=
+	b=eeqSw8LA3fIvrPoFE+yP4QRFxJhtdMMpTuF39yXq2shGwKTljdckIETxW6o+C9ZPs
+	 A/FAUvjqcZ30eXP6XbYBLNRnxXZR2Lg8dofUTUSFAqLQAa9jmCBpfX5NWt7zfCCH2W
+	 Cl5ahd5azUz0gGcK36VZWuYvAjhaLhQdGja0KR9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshal Chaudhari <hchaudhari@marvell.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Aring <alex.aring@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 263/328] net: mvpp2: cls: Fixed Non IP flow, with vlan tag flow defination.
+Subject: [PATCH 5.10 367/462] net: ipv6: fix dst ref loop on input in rpl lwt
 Date: Tue, 11 Mar 2025 16:00:33 +0100
-Message-ID: <20250311145725.363850248@linuxfoundation.org>
+Message-ID: <20250311145812.848680897@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshal Chaudhari <hchaudhari@marvell.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 2d253726ff7106b39a44483b6864398bba8a2f74 ]
+[ Upstream commit 13e55fbaec176119cff68a7e1693b251c8883c5f ]
 
-Non IP flow, with vlan tag not working as expected while
-running below command for vlan-priority. fixed that.
+Prevent a dst ref loop on input in rpl_iptunnel.
 
-ethtool -N eth1 flow-type ether vlan 0x8000 vlan-mask 0x1fff action 0 loc 0
-
-Fixes: 1274daede3ef ("net: mvpp2: cls: Add steering based on vlan Id and priority.")
-Signed-off-by: Harshal Chaudhari <hchaudhari@marvell.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250225042058.2643838-1-hchaudhari@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
+Cc: Alexander Aring <alex.aring@gmail.com>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/rpl_iptunnel.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-index 6122057d60c00..0f55444861cda 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c
-@@ -318,7 +318,7 @@ static const struct mvpp2_cls_flow cls_flows[MVPP2_N_PRS_FLOWS] = {
- 		       MVPP2_PRS_RI_VLAN_MASK),
- 	/* Non IP flow, with vlan tag */
- 	MVPP2_DEF_FLOW(MVPP22_FLOW_ETHERNET, MVPP2_FL_NON_IP_TAG,
--		       MVPP22_CLS_HEK_OPT_VLAN,
-+		       MVPP22_CLS_HEK_TAGGED,
- 		       0, 0),
- };
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index dbdfdd2e52784..95e84ec035203 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -259,10 +259,18 @@ static int rpl_input(struct sk_buff *skb)
+ {
+ 	struct dst_entry *orig_dst = skb_dst(skb);
+ 	struct dst_entry *dst = NULL;
++	struct lwtunnel_state *lwtst;
+ 	struct rpl_lwt *rlwt;
+ 	int err;
  
+-	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
++	/* We cannot dereference "orig_dst" once ip6_route_input() or
++	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
++	 * need the address of its lwtstate. So, save the address of lwtstate
++	 * now and use it later as a comparison.
++	 */
++	lwtst = orig_dst->lwtstate;
++
++	rlwt = rpl_lwt_lwtunnel(lwtst);
+ 
+ 	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+@@ -277,7 +285,9 @@ static int rpl_input(struct sk_buff *skb)
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+-		if (!dst->error) {
++
++		/* cache only if we don't create a dst reference loop */
++		if (!dst->error && lwtst != dst->lwtstate) {
+ 			local_bh_disable();
+ 			dst_cache_set_ip6(&rlwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
 -- 
 2.39.5
 
