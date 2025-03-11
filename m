@@ -1,304 +1,301 @@
-Return-Path: <stable+bounces-124040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E262FA5CA61
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:10:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68890A5CA81
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F1283B0A23
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D2A3B47F9
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8049825B68E;
-	Tue, 11 Mar 2025 16:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0312126039A;
+	Tue, 11 Mar 2025 16:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="vmF/Q4f1";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="YdlE6pWo";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="vmF/Q4f1";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="YdlE6pWo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YXRE2DNo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D51B1917F4
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 16:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED8525F968;
+	Tue, 11 Mar 2025 16:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741709394; cv=none; b=nacM5pnF58iGyngKiP1frEPxOiicTdSAWlzzpK0GTxqxwSM1lqdEOeUo8cFGbvuocOnvTG/PfKWBMnabdCMcPGLSr6JBZc8Njl2CKMta7q6DBDzjtFdpbbLST+9bIs6gAZeEm46vJaT8FGVLqg4dO0IHm3SiO27YTeFgM0ogb8Q=
+	t=1741709544; cv=none; b=uf16g1ou9YEUg/8jgnYSSucB7oTHlck+q5Qq7k0TuAviyBSIy4tcHtKC/RCQ8+MqFNoBoTzFXGKuebJmB6BqNkZnU5BUQb/lL8KCdoELBermfjmbWtD8FNiJPP8bha0HoOjPRnplHOJhF8Qzhjaf3I7INgbHOO/ciZi3bEcmcI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741709394; c=relaxed/simple;
-	bh=/rx+xChyNLok1wjk2Dawul8K5RytW7b38dmMeLL22HI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kmWM4O16MaGoIlIohR7T9f95HHc+Wmh1mSp3CcVEns+dXLKWTtnc3kTz3gj0ckcneOf/B8031CjMlAKL7CWk/7829YUS7Z2nsyJLkSNrzcG9A7VR3nRY32sVpvDydxVTSUtXNsEDotsDRyRoui0t/WAWSqk5l1RN4zL1PzQNZ2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=vmF/Q4f1; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=YdlE6pWo; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=vmF/Q4f1; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=YdlE6pWo; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BA01F1F38F;
-	Tue, 11 Mar 2025 16:09:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1741709390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rRueIo77ZiVJ+5E8JzGhV+iNQQKg5omvZK+He5/bB0g=;
-	b=vmF/Q4f1n0rDrd7eXxJvdGAO37HwPLDRW+s/49xfC7QB2VDAMqyMyFtCrZSRF0UbNgp5x/
-	ozPvqPVZ6tgqJWJpVLiUKQkiYEniaIm+c0DphVUyK1BJENPInBji9Sv2MaU9cJ00AyIrLc
-	EnH+MaF49sb+zEWX5KJfgnES7aEV60w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1741709390;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rRueIo77ZiVJ+5E8JzGhV+iNQQKg5omvZK+He5/bB0g=;
-	b=YdlE6pWoSGFrw03Sy0j7+8KwKseBJwxX8Iyf8RIHacuVILIQmENdoxxDJlE0fe9iUS9c0d
-	s+TGQi8+EtGN/SDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1741709390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rRueIo77ZiVJ+5E8JzGhV+iNQQKg5omvZK+He5/bB0g=;
-	b=vmF/Q4f1n0rDrd7eXxJvdGAO37HwPLDRW+s/49xfC7QB2VDAMqyMyFtCrZSRF0UbNgp5x/
-	ozPvqPVZ6tgqJWJpVLiUKQkiYEniaIm+c0DphVUyK1BJENPInBji9Sv2MaU9cJ00AyIrLc
-	EnH+MaF49sb+zEWX5KJfgnES7aEV60w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1741709390;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rRueIo77ZiVJ+5E8JzGhV+iNQQKg5omvZK+He5/bB0g=;
-	b=YdlE6pWoSGFrw03Sy0j7+8KwKseBJwxX8Iyf8RIHacuVILIQmENdoxxDJlE0fe9iUS9c0d
-	s+TGQi8+EtGN/SDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ACCE9134A0;
-	Tue, 11 Mar 2025 16:09:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NLfsKU5g0GdGegAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 11 Mar 2025 16:09:50 +0000
-Message-ID: <5ba8803f-4208-4f84-b24c-ea2cc8539849@suse.cz>
-Date: Tue, 11 Mar 2025 17:11:44 +0100
+	s=arc-20240116; t=1741709544; c=relaxed/simple;
+	bh=08ikVFE4r7eJqr1YdwoBE6cm67vMz6CsVPTbF/HeYwA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C/zYpolCt2I9yicTmOwxPt0gfPQ35htpNhwz7n1EMeaA6GRwitimDSAbh6w556x5+AgiMeOPyZs7SvgM2qkyrfGCn6rKuTR6c2NXMKuN96VzhZIJxiCfgjvujeRkgamA1PXDbd9XXqV1v8Gs08IILwY5X/lJqg5B8yoY2wBR3ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YXRE2DNo; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43bdf0cbb6bso33874855e9.1;
+        Tue, 11 Mar 2025 09:12:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741709541; x=1742314341; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2YVAPWNU6X9KodjU6cnxu6uXZ4aud/elyY8D03IVUK4=;
+        b=YXRE2DNo23+IHfRcRwA//AEy69psE6t2cZoVubpVam6xu+VulG4AkGSj9+6RKZM0xq
+         tE+keIyScQffeHu5fBD1TaDOBp5BCR0iRzCdvQRy5SYWZepJxyfhdyFkmcsp+gCXdRCJ
+         NHVbbqCOe/rPiyrYI1qG2i5Z0rIUxHb+IJwcqdPCTnVeWXy2D43HrOb/aK8EkE3qx6oE
+         P4EsoAqg/kTiszdQZb+q52Xm6JN8wpLWS/xhD3GThsp93CwouD3oJ1swa+hbXV1kO2pS
+         Jq0Hx898oehe0QYVFZh6+zFPmqhiT9v3wIZCEruAiz2lRJCcIpEFOfUx2sP5bFfDSV8H
+         Sg3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741709541; x=1742314341;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2YVAPWNU6X9KodjU6cnxu6uXZ4aud/elyY8D03IVUK4=;
+        b=OJ6al1a0UbP+jQHtEwhj3+8kt22c85OQrIfhKXKojx5bfSOgdWV2gwX+gaMlhPay0p
+         9G+KG2pKZC5vEZceUR45T+dstEQsFOvkNnqxs7dRFMei5m9pIKjk+rLrQUECPqtnolee
+         U9U/AjCwoIfF5cGu3KuWuLudJTeKQZJSfK+AR7m5tmCihugvo73icympH2uXAJ2uloOR
+         E6PC06HNql5zp2F1mOHAgkekynC2ogd4XdRyw1rrdarSPg6glNnwd4Wf9PbGWx+JtwwR
+         D4GmKJBY4uZP54dwO6fDwYftgbHgyqwWLZlOIieEM91bI/do+KDphai3Im3mOcHL+nvJ
+         yFcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBaUhMXhx09Q2BVPgVw0coit68cAW04jRtftaUEw1yqkut+FsaptDMt97ZYLqhUk84jeWYncyR@vger.kernel.org, AJvYcCUCDLOjueLj72XahV6vTfw0RccSeMq+pzgDBKE0xihXB2S8d7PucwAv6xj1kjnCrySwXIBYrF1algEl@vger.kernel.org, AJvYcCUn2t2o2l4HPWapqiKPsn1UwZigUCvTDEJSettWFEm4lh2T9rdkkQSroJohzTmmkebUFmdiFkL72bsu5ig=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWs0OWCElcA9NxolUek2cF2iw1NVTFeFLcT4/bIgo8mOZAIRuD
+	mqZ/V1tTgOBkWdqzHgZM99t+1YkpHZZQUZZaRthhSCoPqc7UWxqs
+X-Gm-Gg: ASbGncs5GFzr3RkZof2so9tE+BEDyJ7gWAlW9fYnQlIGKjSDDPt8LZBc9taDWN2EADD
+	p0K1jY8BoZLTdhM5a5HOh4pCXFEO6DrQvSvFHhUJhPnGVKhxnHa0IRMEsdiYx6gYnYrLP682BQ+
+	T8lMMhz7oVNX+JOwBAdGKLWZKaEBIJduFAUMoxK48ul6HhWVDS9d3DvU5+jp7yUUpUHffoj9Js8
+	I+rz0y7d/01u7nGoUdv2Ld4FwdRB9TtfBtRhKWoE56HgwtQvsumJKY5nuNjAwUgxgDTvW2FejqC
+	b7nVBvspH5EqxHpJfkB1/fWGANN/3DKhZVBb1PF2JL8ZUs5NgxQw/Xy8qig=
+X-Google-Smtp-Source: AGHT+IFBLUgDMtRyAUVGrvv/9k4E3aCt70nIDcjTBdSBDZPdsLITH9UrfoUY3TMgTJSh+RJ7J+y8MQ==
+X-Received: by 2002:a05:600c:3b94:b0:43c:f8fc:f686 with SMTP id 5b1f17b1804b1-43cf8fcf858mr77369445e9.3.1741709540584;
+        Tue, 11 Mar 2025 09:12:20 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:c7c:6696:8300:4d2a:98a0:d51e:4f69])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d073555e5sm15331905e9.4.2025.03.11.09.12.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Mar 2025 09:12:20 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: fix uninitialised access in mii_nway_restart() and cleanup error handling
+Date: Tue, 11 Mar 2025 16:11:57 +0000
+Message-Id: <20250311161157.49065-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] mm/slab/kvfree_rcu: Switch to
- WQ_MEM_RECLAIM wq" failed to apply to 6.12-stable tree
-To: gregkh@linuxfoundation.org, urezki@gmail.com, joelagnelf@nvidia.com,
- kbusch@kernel.org
+Content-Transfer-Encoding: 8bit
+
+In mii_nway_restart() during the line:
+
+        bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
+
+The code attempts to call mii->mdio_read which is ch9200_mdio_read().
+
+ch9200_mdio_read() utilises a local buffer, which is initialised
+with control_read():
+
+        unsigned char buff[2];
+
+However buff is conditionally initialised inside control_read():
+
+        if (err == size) {
+                memcpy(data, buf, size);
+        }
+
+If the condition of "err == size" is not met, then buff remains
+uninitialised. Once this happens the uninitialised buff is accessed
+and returned during ch9200_mdio_read():
+
+        return (buff[0] | buff[1] << 8);
+
+The problem stems from the fact that ch9200_mdio_read() ignores the
+return value of control_read(), leading to uinit-access of buff.
+
+To fix this we should check the return value of control_read()
+and return early on error.
+
+Furthermore the get_mac_address() function has a similar problem where
+it does not directly check the return value of each control_read(),
+instead it sums up the return values and checks them all at the end
+which means if any call to control_read() fails the function just 
+continues on.
+
+Handle this by validating the return value of each call and fail fast
+and early instead of continuing.
+
+Lastly ch9200_bind() ignores the return values of multiple 
+control_write() calls.
+
+Validate each control_write() call to ensure it succeeds before
+continuing with the next call.
+
+Reported-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=3361c2d6f78a3e0892f9
+Tested-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
+Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
 Cc: stable@vger.kernel.org
-References: <2025030914-turtle-tattered-27c6@gregkh>
-From: Vlastimil Babka <vbabka@suse.cz>
-Content-Language: en-US
-In-Reply-To: <2025030914-turtle-tattered-27c6@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.998];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com,nvidia.com,kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,imap1.dmz-prg2.suse.org:helo,linuxfoundation.org:email]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+---
+ drivers/net/mii.c        |  2 ++
+ drivers/net/usb/ch9200.c | 55 +++++++++++++++++++++++++++-------------
+ 2 files changed, 40 insertions(+), 17 deletions(-)
 
-On 3/9/25 7:16 PM, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-
-Must be the code move from rcu to slab. Ulad, will you handle this, or
-should I? Thanks.
-
-Vlastimil
-
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x dfd3df31c9db752234d7d2e09bef2aeabb643ce4
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025030914-turtle-tattered-27c6@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> 
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> From dfd3df31c9db752234d7d2e09bef2aeabb643ce4 Mon Sep 17 00:00:00 2001
-> From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-> Date: Fri, 28 Feb 2025 13:13:56 +0100
-> Subject: [PATCH] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
-> 
-> Currently kvfree_rcu() APIs use a system workqueue which is
-> "system_unbound_wq" to driver RCU machinery to reclaim a memory.
-> 
-> Recently, it has been noted that the following kernel warning can
-> be observed:
-> 
-> <snip>
-> workqueue: WQ_MEM_RECLAIM nvme-wq:nvme_scan_work is flushing !WQ_MEM_RECLAIM events_unbound:kfree_rcu_work
->   WARNING: CPU: 21 PID: 330 at kernel/workqueue.c:3719 check_flush_dependency+0x112/0x120
->   Modules linked in: intel_uncore_frequency(E) intel_uncore_frequency_common(E) skx_edac(E) ...
->   CPU: 21 UID: 0 PID: 330 Comm: kworker/u144:6 Tainted: G            E      6.13.2-0_g925d379822da #1
->   Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passive MP, BIOS YMM20 02/01/2023
->   Workqueue: nvme-wq nvme_scan_work
->   RIP: 0010:check_flush_dependency+0x112/0x120
->   Code: 05 9a 40 14 02 01 48 81 c6 c0 00 00 00 48 8b 50 18 48 81 c7 c0 00 00 00 48 89 f9 48 ...
->   RSP: 0018:ffffc90000df7bd8 EFLAGS: 00010082
->   RAX: 000000000000006a RBX: ffffffff81622390 RCX: 0000000000000027
->   RDX: 00000000fffeffff RSI: 000000000057ffa8 RDI: ffff88907f960c88
->   RBP: 0000000000000000 R08: ffffffff83068e50 R09: 000000000002fffd
->   R10: 0000000000000004 R11: 0000000000000000 R12: ffff8881001a4400
->   R13: 0000000000000000 R14: ffff88907f420fb8 R15: 0000000000000000
->   FS:  0000000000000000(0000) GS:ffff88907f940000(0000) knlGS:0000000000000000
->   CR2: 00007f60c3001000 CR3: 000000107d010005 CR4: 00000000007726f0
->   PKRU: 55555554
->   Call Trace:
->    <TASK>
->    ? __warn+0xa4/0x140
->    ? check_flush_dependency+0x112/0x120
->    ? report_bug+0xe1/0x140
->    ? check_flush_dependency+0x112/0x120
->    ? handle_bug+0x5e/0x90
->    ? exc_invalid_op+0x16/0x40
->    ? asm_exc_invalid_op+0x16/0x20
->    ? timer_recalc_next_expiry+0x190/0x190
->    ? check_flush_dependency+0x112/0x120
->    ? check_flush_dependency+0x112/0x120
->    __flush_work.llvm.1643880146586177030+0x174/0x2c0
->    flush_rcu_work+0x28/0x30
->    kvfree_rcu_barrier+0x12f/0x160
->    kmem_cache_destroy+0x18/0x120
->    bioset_exit+0x10c/0x150
->    disk_release.llvm.6740012984264378178+0x61/0xd0
->    device_release+0x4f/0x90
->    kobject_put+0x95/0x180
->    nvme_put_ns+0x23/0xc0
->    nvme_remove_invalid_namespaces+0xb3/0xd0
->    nvme_scan_work+0x342/0x490
->    process_scheduled_works+0x1a2/0x370
->    worker_thread+0x2ff/0x390
->    ? pwq_release_workfn+0x1e0/0x1e0
->    kthread+0xb1/0xe0
->    ? __kthread_parkme+0x70/0x70
->    ret_from_fork+0x30/0x40
->    ? __kthread_parkme+0x70/0x70
->    ret_from_fork_asm+0x11/0x20
->    </TASK>
->   ---[ end trace 0000000000000000 ]---
-> <snip>
-> 
-> To address this switch to use of independent WQ_MEM_RECLAIM
-> workqueue, so the rules are not violated from workqueue framework
-> point of view.
-> 
-> Apart of that, since kvfree_rcu() does reclaim memory it is worth
-> to go with WQ_MEM_RECLAIM type of wq because it is designed for
-> this purpose.
-> 
-> Fixes: 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
-> Reported-by: Keith Busch <kbusch@kernel.org>
-> Closes: https://lore.kernel.org/all/Z7iqJtCjHKfo8Kho@kbusch-mbp/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> 
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 4030907b6b7d..4c9f0a87f733 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -1304,6 +1304,8 @@ module_param(rcu_min_cached_objs, int, 0444);
->  static int rcu_delay_page_cache_fill_msec = 5000;
->  module_param(rcu_delay_page_cache_fill_msec, int, 0444);
->  
-> +static struct workqueue_struct *rcu_reclaim_wq;
-> +
->  /* Maximum number of jiffies to wait before draining a batch. */
->  #define KFREE_DRAIN_JIFFIES (5 * HZ)
->  #define KFREE_N_BATCHES 2
-> @@ -1632,10 +1634,10 @@ __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
->  	if (delayed_work_pending(&krcp->monitor_work)) {
->  		delay_left = krcp->monitor_work.timer.expires - jiffies;
->  		if (delay < delay_left)
-> -			mod_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
-> +			mod_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
->  		return;
->  	}
-> -	queue_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
-> +	queue_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
->  }
->  
->  static void
-> @@ -1733,7 +1735,7 @@ kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
->  			// "free channels", the batch can handle. Break
->  			// the loop since it is done with this CPU thus
->  			// queuing an RCU work is _always_ success here.
-> -			queued = queue_rcu_work(system_unbound_wq, &krwp->rcu_work);
-> +			queued = queue_rcu_work(rcu_reclaim_wq, &krwp->rcu_work);
->  			WARN_ON_ONCE(!queued);
->  			break;
->  		}
-> @@ -1883,7 +1885,7 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
->  	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
->  			!atomic_xchg(&krcp->work_in_progress, 1)) {
->  		if (atomic_read(&krcp->backoff_page_cache_fill)) {
-> -			queue_delayed_work(system_unbound_wq,
-> +			queue_delayed_work(rcu_reclaim_wq,
->  				&krcp->page_cache_work,
->  					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
->  		} else {
-> @@ -2120,6 +2122,10 @@ void __init kvfree_rcu_init(void)
->  	int i, j;
->  	struct shrinker *kfree_rcu_shrinker;
->  
-> +	rcu_reclaim_wq = alloc_workqueue("kvfree_rcu_reclaim",
-> +			WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
-> +	WARN_ON(!rcu_reclaim_wq);
-> +
->  	/* Clamp it to [0:100] seconds interval. */
->  	if (rcu_delay_page_cache_fill_msec < 0 ||
->  		rcu_delay_page_cache_fill_msec > 100 * MSEC_PER_SEC) {
-> 
+diff --git a/drivers/net/mii.c b/drivers/net/mii.c
+index 37bc3131d31a..e305bf0f1d04 100644
+--- a/drivers/net/mii.c
++++ b/drivers/net/mii.c
+@@ -464,6 +464,8 @@ int mii_nway_restart (struct mii_if_info *mii)
+ 
+ 	/* if autoneg is off, it's an error */
+ 	bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
++	if (bmcr < 0)
++		return bmcr;
+ 
+ 	if (bmcr & BMCR_ANENABLE) {
+ 		bmcr |= BMCR_ANRESTART;
+diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
+index f69d9b902da0..e938501a1fc8 100644
+--- a/drivers/net/usb/ch9200.c
++++ b/drivers/net/usb/ch9200.c
+@@ -178,6 +178,7 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ {
+ 	struct usbnet *dev = netdev_priv(netdev);
+ 	unsigned char buff[2];
++	int ret;
+ 
+ 	netdev_dbg(netdev, "%s phy_id:%02x loc:%02x\n",
+ 		   __func__, phy_id, loc);
+@@ -185,8 +186,10 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ 	if (phy_id != 0)
+ 		return -ENODEV;
+ 
+-	control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
+-		     CONTROL_TIMEOUT_MS);
++	ret = control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
++			   CONTROL_TIMEOUT_MS);
++	if (ret != 2)
++		return ret;
+ 
+ 	return (buff[0] | buff[1] << 8);
+ }
+@@ -303,24 +306,27 @@ static int ch9200_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 
+ static int get_mac_address(struct usbnet *dev, unsigned char *data)
+ {
+-	int err = 0;
+ 	unsigned char mac_addr[0x06];
+-	int rd_mac_len = 0;
++	int rd_mac_len;
+ 
+ 	netdev_dbg(dev->net, "%s:\n\tusbnet VID:%0x PID:%0x\n", __func__,
+ 		   le16_to_cpu(dev->udev->descriptor.idVendor),
+ 		   le16_to_cpu(dev->udev->descriptor.idProduct));
+ 
+-	memset(mac_addr, 0, sizeof(mac_addr));
+-	rd_mac_len = control_read(dev, REQUEST_READ, 0,
+-				  MAC_REG_STATION_L, mac_addr, 0x02,
+-				  CONTROL_TIMEOUT_MS);
+-	rd_mac_len += control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_M,
+-				   mac_addr + 2, 0x02, CONTROL_TIMEOUT_MS);
+-	rd_mac_len += control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_H,
+-				   mac_addr + 4, 0x02, CONTROL_TIMEOUT_MS);
+-	if (rd_mac_len != ETH_ALEN)
+-		err = -EINVAL;
++	rd_mac_len = control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_L,
++				  mac_addr, 0x02, CONTROL_TIMEOUT_MS);
++	if (rd_mac_len != 2)
++		return rd_mac_len;
++
++	rd_mac_len = control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_M,
++				  mac_addr + 2, 0x02, CONTROL_TIMEOUT_MS);
++	if (rd_mac_len != 2)
++		return rd_mac_len;
++
++	rd_mac_len = control_read(dev, REQUEST_READ, 0, MAC_REG_STATION_H,
++				  mac_addr + 4, 0x02, CONTROL_TIMEOUT_MS);
++	if (rd_mac_len != 2)
++		return rd_mac_len;
+ 
+ 	data[0] = mac_addr[5];
+ 	data[1] = mac_addr[4];
+@@ -329,12 +335,12 @@ static int get_mac_address(struct usbnet *dev, unsigned char *data)
+ 	data[4] = mac_addr[1];
+ 	data[5] = mac_addr[0];
+ 
+-	return err;
++	return 0;
+ }
+ 
+ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+ {
+-	int retval = 0;
++	int retval;
+ 	unsigned char data[2];
+ 	u8 addr[ETH_ALEN];
+ 
+@@ -357,37 +363,52 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	data[1] = 0x0F;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_THRESHOLD, data,
+ 			       0x02, CONTROL_TIMEOUT_MS);
++	if (retval)
++		return retval;
+ 
+ 	data[0] = 0xA0;
+ 	data[1] = 0x90;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_FIFO_DEPTH, data,
+ 			       0x02, CONTROL_TIMEOUT_MS);
++	if (retval)
++		return retval;
+ 
+ 	data[0] = 0x30;
+ 	data[1] = 0x00;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_PAUSE, data,
+ 			       0x02, CONTROL_TIMEOUT_MS);
++	if (retval)
++		return retval;
+ 
+ 	data[0] = 0x17;
+ 	data[1] = 0xD8;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_FLOW_CONTROL,
+ 			       data, 0x02, CONTROL_TIMEOUT_MS);
++	if (retval)
++		return retval;
+ 
+ 	/* Undocumented register */
+ 	data[0] = 0x01;
+ 	data[1] = 0x00;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, 254, data, 0x02,
+ 			       CONTROL_TIMEOUT_MS);
++	if (retval)
++		return retval;
+ 
+ 	data[0] = 0x5F;
+ 	data[1] = 0x0D;
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_CTRL, data, 0x02,
+ 			       CONTROL_TIMEOUT_MS);
++	if (retval)
++		return retval;
+ 
+ 	retval = get_mac_address(dev, addr);
++	if (retval)
++		return retval;
++
+ 	eth_hw_addr_set(dev->net, addr);
+ 
+-	return retval;
++	return 0;
+ }
+ 
+ static const struct driver_info ch9200_info = {
+-- 
+2.39.5
 
 
