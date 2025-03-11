@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-123913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0AE0A5C815
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E914A5C590
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4857F189B7DF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC3CA3B439B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0EF225D904;
-	Tue, 11 Mar 2025 15:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351AA25E80C;
+	Tue, 11 Mar 2025 15:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQ7dBvdw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezMJGtuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC491CAA8F;
-	Tue, 11 Mar 2025 15:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EB925E808;
+	Tue, 11 Mar 2025 15:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707322; cv=none; b=P0Jzk3JOHxzjeo4mUV88Z6DQkMo1IQGqjS+V7B7zqquGVP294/o/2HHnbKXG7+UGjjKgFWux26br3rNLrMC719FCr1kBSh3lPcOrq1EEWlmofMBhwRpfbKJ+NcZkkA1FPYoZIu6fCSjyIqL97agRrRm/Tbw0CXB2kcl4rznogS0=
+	t=1741705959; cv=none; b=i5FskJBVcnHqyTeYSlQF123u34A2swxQ76sJ+sJyNau7ubHUTZQfjX3SX0/DotZUGixvEgyhhYzOCeog79lwYT/I42PNl/3xQbMV8VaThFvM9bW+/L0v/u6JsvMDDOuWVAsNtZJYb/Z/sk678M0l34CtlU4szvS6UBOTUJNs2G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707322; c=relaxed/simple;
-	bh=PxcLw2wLvzSksRebik9jOiMYmCXo19Cd3nEWPOZH/Cs=;
+	s=arc-20240116; t=1741705959; c=relaxed/simple;
+	bh=1R2dNKosE17V3l/3Cw15pZuGLMObNj64D/FlUYOuRms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A5QIaOIpDzWfktLJaj3OUpHA0godklWBVIDsj2pgs5N9ursjqQCY4mjIgWpFTXnoN1qfO733ToXL9LZDGVnUgWUMyxREFcEfOxQ2x0iIH5mEpOVq4L58HrpiiqlAqouRN1AH6LDGzOk+Ck4xTUVNwx7H5fdXZ0v1ozTW3fVenAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQ7dBvdw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEF5C4CEE9;
-	Tue, 11 Mar 2025 15:35:21 +0000 (UTC)
+	 MIME-Version; b=RnCwN9jflgI49dlzifkQLxnzlIJk0mkUmDmvjhvpvNJX2y0p63swEGjmC+r1QxXnzO9MRXCW9T9Ol+CHEBTbHRq/WN5hY9wAhsCxOU0rdyL7wQRmV7YaYcrKn3k3cQKV0zwJ8I6yxS7I1Ejy2RiuRJMKmtPLcyRd1bMoyERfowg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezMJGtuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1BFC4CEE9;
+	Tue, 11 Mar 2025 15:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707322;
-	bh=PxcLw2wLvzSksRebik9jOiMYmCXo19Cd3nEWPOZH/Cs=;
+	s=korg; t=1741705958;
+	bh=1R2dNKosE17V3l/3Cw15pZuGLMObNj64D/FlUYOuRms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQ7dBvdwup1PSMV2cCYLik93EAxmr+KIkY7JktlXA2uWiJw4x82jC4tV1tJzHiJh5
-	 YUzQdPAyxRXTJOVAeqE28phOGc1JpxWsEmiuaNcg9Y4qms7bSsveMYXcACavS3hDns
-	 8/LS8I/gLHfkelGu73vAQa9t35eBNTcCNrIqKnNE=
+	b=ezMJGtuDXBO+BzIARJrisVuGHMxENlSZ9V/DUqKiDuyAxKKR12hRgduyOj6TAdPqs
+	 VyPLmvZe0d/e5n60KNb8Ul03h32cMQSDZk1f0Lj+N3TF9qKnVZI6VcFoj+HqCTmidV
+	 pmwhLkYZ0tBequD1BRdi+QI/dz/8TYLtQVxdRI2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Galo <carlosgalo@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 318/462] mm: update mark_victim tracepoints fields
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com,
+	syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 214/328] nilfs2: do not force clear folio if buffer is referenced
 Date: Tue, 11 Mar 2025 15:59:44 +0100
-Message-ID: <20250311145810.921541815@linuxfoundation.org>
+Message-ID: <20250311145723.408411628@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,155 +61,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Galo <carlosgalo@google.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 72ba14deb40a9e9668ec5e66a341ed657e5215c2 ]
+commit ca76bb226bf47ff04c782cacbd299f12ddee1ec1 upstream.
 
-The current implementation of the mark_victim tracepoint provides only the
-process ID (pid) of the victim process.  This limitation poses challenges
-for userspace tools requiring real-time OOM analysis and intervention.
-Although this information is available from the kernel logs, it’s not
-the appropriate format to provide OOM notifications.  In Android, BPF
-programs are used with the mark_victim trace events to notify userspace of
-an OOM kill.  For consistency, update the trace event to include the same
-information about the OOMed victim as the kernel logs.
+Patch series "nilfs2: protect busy buffer heads from being force-cleared".
 
-- UID
-   In Android each installed application has a unique UID. Including
-   the `uid` assists in correlating OOM events with specific apps.
+This series fixes the buffer head state inconsistency issues reported by
+syzbot that occurs when the filesystem is corrupted and falls back to
+read-only, and the associated buffer head use-after-free issue.
 
-- Process Name (comm)
-   Enables identification of the affected process.
+This patch (of 2):
 
-- OOM Score
-  Will allow userspace to get additional insight of the relative kill
-  priority of the OOM victim. In Android, the oom_score_adj is used to
-  categorize app state (foreground, background, etc.), which aids in
-  analyzing user-perceptible impacts of OOM events [1].
+Syzbot has reported that after nilfs2 detects filesystem corruption and
+falls back to read-only, inconsistencies in the buffer state may occur.
 
-- Total VM, RSS Stats, and pgtables
-  Amount of memory used by the victim that will, potentially, be freed up
-  by killing it.
+One of the inconsistencies is that when nilfs2 calls mark_buffer_dirty()
+to set a data or metadata buffer as dirty, but it detects that the buffer
+is not in the uptodate state:
 
-[1] https://cs.android.com/android/platform/superproject/main/+/246dc8fc95b6d93afcba5c6d6c133307abb3ac2e:frameworks/base/services/core/java/com/android/server/am/ProcessList.java;l=188-283
-Signed-off-by: Carlos Galo <carlosgalo@google.com>
-Reviewed-by: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+ WARNING: CPU: 0 PID: 6049 at fs/buffer.c:1177 mark_buffer_dirty+0x2e5/0x520
+  fs/buffer.c:1177
+ ...
+ Call Trace:
+  <TASK>
+  nilfs_palloc_commit_alloc_entry+0x4b/0x160 fs/nilfs2/alloc.c:598
+  nilfs_ifile_create_inode+0x1dd/0x3a0 fs/nilfs2/ifile.c:73
+  nilfs_new_inode+0x254/0x830 fs/nilfs2/inode.c:344
+  nilfs_mkdir+0x10d/0x340 fs/nilfs2/namei.c:218
+  vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+  do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+  __do_sys_mkdirat fs/namei.c:4295 [inline]
+  __se_sys_mkdirat fs/namei.c:4293 [inline]
+  __x64_sys_mkdirat+0x87/0xa0 fs/namei.c:4293
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The other is when nilfs_btree_propagate(), which propagates the dirty
+state to the ancestor nodes of a b-tree that point to a dirty buffer,
+detects that the origin buffer is not dirty, even though it should be:
+
+ WARNING: CPU: 0 PID: 5245 at fs/nilfs2/btree.c:2089
+  nilfs_btree_propagate+0xc79/0xdf0 fs/nilfs2/btree.c:2089
+ ...
+ Call Trace:
+  <TASK>
+  nilfs_bmap_propagate+0x75/0x120 fs/nilfs2/bmap.c:345
+  nilfs_collect_file_data+0x4d/0xd0 fs/nilfs2/segment.c:587
+  nilfs_segctor_apply_buffers+0x184/0x340 fs/nilfs2/segment.c:1006
+  nilfs_segctor_scan_file+0x28c/0xa50 fs/nilfs2/segment.c:1045
+  nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1216 [inline]
+  nilfs_segctor_collect fs/nilfs2/segment.c:1540 [inline]
+  nilfs_segctor_do_construct+0x1c28/0x6b90 fs/nilfs2/segment.c:2115
+  nilfs_segctor_construct+0x181/0x6b0 fs/nilfs2/segment.c:2479
+  nilfs_segctor_thread_construct fs/nilfs2/segment.c:2587 [inline]
+  nilfs_segctor_thread+0x69e/0xe80 fs/nilfs2/segment.c:2701
+  kthread+0x2f0/0x390 kernel/kthread.c:389
+  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+  </TASK>
+
+Both of these issues are caused by the callbacks that handle the
+page/folio write requests, forcibly clear various states, including the
+working state of the buffers they hold, at unexpected times when they
+detect read-only fallback.
+
+Fix these issues by checking if the buffer is referenced before clearing
+the page/folio state, and skipping the clear if it is.
+
+[konishi.ryusuke@gmail.com: adjusted for page/folio conversion]
+Link: https://lkml.kernel.org/r/20250107200202.6432-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20250107200202.6432-2-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b2b14916b77acf8626d7
+Reported-by: syzbot+d98fd19acd08b36ff422@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=d98fd19acd08b36ff422
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Tested-by: syzbot+b2b14916b77acf8626d7@syzkaller.appspotmail.com
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ade81479c7dd ("memcg: fix soft lockup in the OOM process")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/oom.h | 36 ++++++++++++++++++++++++++++++++----
- mm/oom_kill.c              |  6 +++++-
- 2 files changed, 37 insertions(+), 5 deletions(-)
+ fs/nilfs2/page.c |   35 +++++++++++++++++++++++++++++------
+ 1 file changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/include/trace/events/oom.h b/include/trace/events/oom.h
-index 26a11e4a2c361..b799f3bcba823 100644
---- a/include/trace/events/oom.h
-+++ b/include/trace/events/oom.h
-@@ -7,6 +7,8 @@
- #include <linux/tracepoint.h>
- #include <trace/events/mmflags.h>
- 
-+#define PG_COUNT_TO_KB(x) ((x) << (PAGE_SHIFT - 10))
-+
- TRACE_EVENT(oom_score_adj_update,
- 
- 	TP_PROTO(struct task_struct *task),
-@@ -72,19 +74,45 @@ TRACE_EVENT(reclaim_retry_zone,
- );
- 
- TRACE_EVENT(mark_victim,
--	TP_PROTO(int pid),
-+	TP_PROTO(struct task_struct *task, uid_t uid),
- 
--	TP_ARGS(pid),
-+	TP_ARGS(task, uid),
- 
- 	TP_STRUCT__entry(
- 		__field(int, pid)
-+		__string(comm, task->comm)
-+		__field(unsigned long, total_vm)
-+		__field(unsigned long, anon_rss)
-+		__field(unsigned long, file_rss)
-+		__field(unsigned long, shmem_rss)
-+		__field(uid_t, uid)
-+		__field(unsigned long, pgtables)
-+		__field(short, oom_score_adj)
- 	),
- 
- 	TP_fast_assign(
--		__entry->pid = pid;
-+		__entry->pid = task->pid;
-+		__assign_str(comm, task->comm);
-+		__entry->total_vm = PG_COUNT_TO_KB(task->mm->total_vm);
-+		__entry->anon_rss = PG_COUNT_TO_KB(get_mm_counter(task->mm, MM_ANONPAGES));
-+		__entry->file_rss = PG_COUNT_TO_KB(get_mm_counter(task->mm, MM_FILEPAGES));
-+		__entry->shmem_rss = PG_COUNT_TO_KB(get_mm_counter(task->mm, MM_SHMEMPAGES));
-+		__entry->uid = uid;
-+		__entry->pgtables = mm_pgtables_bytes(task->mm) >> 10;
-+		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
- 
--	TP_printk("pid=%d", __entry->pid)
-+	TP_printk("pid=%d comm=%s total-vm=%lukB anon-rss=%lukB file-rss:%lukB shmem-rss:%lukB uid=%u pgtables=%lukB oom_score_adj=%hd",
-+		__entry->pid,
-+		__get_str(comm),
-+		__entry->total_vm,
-+		__entry->anon_rss,
-+		__entry->file_rss,
-+		__entry->shmem_rss,
-+		__entry->uid,
-+		__entry->pgtables,
-+		__entry->oom_score_adj
-+	)
- );
- 
- TRACE_EVENT(wake_reaper,
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 3d7c557fb70c9..32ed968e5c2d4 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -43,6 +43,7 @@
- #include <linux/kthread.h>
- #include <linux/init.h>
- #include <linux/mmu_notifier.h>
-+#include <linux/cred.h>
- 
- #include <asm/tlb.h>
- #include "internal.h"
-@@ -723,6 +724,7 @@ static inline void queue_oom_reaper(struct task_struct *tsk)
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -389,24 +389,44 @@ void nilfs_clear_dirty_pages(struct addr
+ /**
+  * nilfs_clear_dirty_page - discard dirty page
+  * @page: dirty page that will be discarded
++ *
++ * nilfs_clear_dirty_page() clears working states including dirty state for
++ * the page and its buffers.  If the page has buffers, clear only if it is
++ * confirmed that none of the buffer heads are busy (none have valid
++ * references and none are locked).
   */
- static void mark_oom_victim(struct task_struct *tsk)
+ void nilfs_clear_dirty_page(struct page *page)
  {
-+	const struct cred *cred;
- 	struct mm_struct *mm = tsk->mm;
+ 	BUG_ON(!PageLocked(page));
  
- 	WARN_ON(oom_killer_disabled);
-@@ -744,7 +746,9 @@ static void mark_oom_victim(struct task_struct *tsk)
- 	 */
- 	__thaw_task(tsk);
- 	atomic_inc(&oom_victims);
--	trace_mark_victim(tsk->pid);
-+	cred = get_task_cred(tsk);
-+	trace_mark_victim(tsk, cred->uid.val);
-+	put_cred(cred);
+-	ClearPageUptodate(page);
+-	ClearPageMappedToDisk(page);
+-	ClearPageChecked(page);
+-
+ 	if (page_has_buffers(page)) {
+-		struct buffer_head *bh, *head;
++		struct buffer_head *bh, *head = page_buffers(page);
+ 		const unsigned long clear_bits =
+ 			(BIT(BH_Uptodate) | BIT(BH_Dirty) | BIT(BH_Mapped) |
+ 			 BIT(BH_Async_Write) | BIT(BH_NILFS_Volatile) |
+ 			 BIT(BH_NILFS_Checked) | BIT(BH_NILFS_Redirected) |
+ 			 BIT(BH_Delay));
++		bool busy, invalidated = false;
+ 
+-		bh = head = page_buffers(page);
++recheck_buffers:
++		busy = false;
++		bh = head;
++		do {
++			if (atomic_read(&bh->b_count) | buffer_locked(bh)) {
++				busy = true;
++				break;
++			}
++		} while (bh = bh->b_this_page, bh != head);
++
++		if (busy) {
++			if (invalidated)
++				return;
++			invalidate_bh_lrus();
++			invalidated = true;
++			goto recheck_buffers;
++		}
++
++		bh = head;
+ 		do {
+ 			lock_buffer(bh);
+ 			set_mask_bits(&bh->b_state, clear_bits, 0);
+@@ -414,6 +434,9 @@ void nilfs_clear_dirty_page(struct page
+ 		} while (bh = bh->b_this_page, bh != head);
+ 	}
+ 
++	ClearPageUptodate(page);
++	ClearPageMappedToDisk(page);
++	ClearPageChecked(page);
+ 	__nilfs_clear_page_dirty(page);
  }
  
- /**
--- 
-2.39.5
-
 
 
 
