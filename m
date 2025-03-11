@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8513DA5C5B3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266C5A5C822
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B1A93A6972
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0EE8189A7F7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74F925E440;
-	Tue, 11 Mar 2025 15:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4577D25B691;
+	Tue, 11 Mar 2025 15:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCmgaA3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpNXvg/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F3925C715;
-	Tue, 11 Mar 2025 15:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EE0221DA5;
+	Tue, 11 Mar 2025 15:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706038; cv=none; b=uA95bh1wBCpTDV6NA3YHgf0MGknrPEZLFhwoI9DrSE9vFznY825khGZiua8+LTq52WDbSSxLXecr8aummKbwFBDlmEdtpuULbmKdRphHDVBWfuJXWrWXBFvkcGG52Xn7qJ6FpdHrncBUglb8rbGh6KAhVPpnNVQarikpF3pk6zo=
+	t=1741707363; cv=none; b=Egfm+XIL+c8ETIhADDgr7GKvAUGprN/a6cbcXE3Gt6xaQENKKxXhacwCgyKfXPiKX2YbgWs/EAvKQieEanMPe2hMxmuD7w1J1K24FcIAbIrZdAU3T4hiEwnQagze/AgqNIt+c2iDxxOWPDKylC+U7xqjjdF1KbSHjeUi69RJNvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706038; c=relaxed/simple;
-	bh=mlN2l8qC/EwaCzKTXyYqQZC4rBqDksbEYmDohEuznjM=;
+	s=arc-20240116; t=1741707363; c=relaxed/simple;
+	bh=oPeeY4XF0BGFqeFnHLWjA9pR7SfE6YIy57AQwME7GpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1PWKJt+ZwlY9IgWCuWEK3W8OcqRNKS47+ouPrfKcwbcejFzJhN/iXo/C/EojmDGGasPFGqZBoUfbpWUVlOUqsVNyiLTOH4gaYrt+QWIJQt3URetrwJ4I0VFBq2rjlL6cZcuXh3LBG7guIvvp5gUnYKa8Y2xZhfBRyHg5DTzbrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCmgaA3w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF656C4CEE9;
-	Tue, 11 Mar 2025 15:13:57 +0000 (UTC)
+	 MIME-Version; b=QiXcVIgnANLtpDkzD6qz0Y9cwlFAlm9824vr2syXzk07ZVJnkIwjP4tjtD433hcAc1F5rIVC+ZF1D14GpJS2ob9kTbEfLlBjwYhG2j4YT7peFSGDD4nhRsN0JTpZgkqbvVtHzki5d/Gw1cEOASIGKPZpCj8y8ngwyvEpz+Q/DgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpNXvg/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB8FC4CEE9;
+	Tue, 11 Mar 2025 15:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706038;
-	bh=mlN2l8qC/EwaCzKTXyYqQZC4rBqDksbEYmDohEuznjM=;
+	s=korg; t=1741707362;
+	bh=oPeeY4XF0BGFqeFnHLWjA9pR7SfE6YIy57AQwME7GpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCmgaA3wItaj5f3JN/kCCnTSintVQPlZiVScfGFLtV/ijZsshzkOKLidRY7MSfZ5L
-	 1NfNO27gXoKdAwTPsK+c83vKRb/L6t4tX7tRvzs+bPgR7nC8ZV5s6935C0jxSx6Sq9
-	 e3tEkW2T8VpXa6Wugwugxl7K5QKaAKW0zah8xF34=
+	b=cpNXvg/DB8G/e/jb7oZnJeW1csBWiFCPurCr/WEqDG3qf8NzeZkgI78ZrQNPxhVxu
+	 JSfrjq2MGCvQ/CP72Mh7TWsMF1E5w97dfIBOuXky/IHhHt4fihw9Noux+JjA15eSjf
+	 7HoHKOHokGx/zAzxROBzDzVpcnd/zXJRZk/QXkDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 241/328] powerpc/64s: Rewrite __real_pte() and __rpte_to_hidx() as static inline
-Date: Tue, 11 Mar 2025 16:00:11 +0100
-Message-ID: <20250311145724.493171707@linuxfoundation.org>
+	Amir Goldstein <amir73il@gmail.com>,
+	Zicheng Qu <quzicheng@huawei.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 346/462] acct: block access to kernel internal filesystems
+Date: Tue, 11 Mar 2025 16:00:12 +0100
+Message-ID: <20250311145812.030245014@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 61bcc752d1b81fde3cae454ff20c1d3c359df500 ]
+commit 890ed45bde808c422c3c27d3285fc45affa0f930 upstream.
 
-Rewrite __real_pte() and __rpte_to_hidx() as static inline in order to
-avoid following warnings/errors when building with 4k page size:
+There's no point in allowing anything kernel internal nor procfs or
+sysfs.
 
-	  CC      arch/powerpc/mm/book3s64/hash_tlb.o
-	arch/powerpc/mm/book3s64/hash_tlb.c: In function 'hpte_need_flush':
-	arch/powerpc/mm/book3s64/hash_tlb.c:49:16: error: variable 'offset' set but not used [-Werror=unused-but-set-variable]
-	   49 |         int i, offset;
-	      |                ^~~~~~
-
-	  CC      arch/powerpc/mm/book3s64/hash_native.o
-	arch/powerpc/mm/book3s64/hash_native.c: In function 'native_flush_hash_range':
-	arch/powerpc/mm/book3s64/hash_native.c:782:29: error: variable 'index' set but not used [-Werror=unused-but-set-variable]
-	  782 |         unsigned long hash, index, hidx, shift, slot;
-	      |                             ^~~~~
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501081741.AYFwybsq-lkp@intel.com/
-Fixes: ff31e105464d ("powerpc/mm/hash64: Store the slot information at the right offset for hugetlb")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/e0d340a5b7bd478ecbf245d826e6ab2778b74e06.1736706263.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20250127091811.3183623-1-quzicheng@huawei.com
+Link: https://lore.kernel.org/r/20250211-work-acct-v1-2-1c16aecab8b3@kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Reported-by: Zicheng Qu <quzicheng@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/book3s/64/hash-4k.h | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ kernel/acct.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-index 3e35a7d7dfbaf..864743b46f45a 100644
---- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-@@ -86,9 +86,17 @@ static inline int hash__hugepd_ok(hugepd_t hpd)
- /*
-  * With 4K page size the real_pte machinery is all nops.
-  */
--#define __real_pte(e, p, o)		((real_pte_t){(e)})
-+static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep, int offset)
-+{
-+	return (real_pte_t){pte};
-+}
-+
- #define __rpte_to_pte(r)	((r).pte)
--#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
-+
-+static inline unsigned long __rpte_to_hidx(real_pte_t rpte, unsigned long index)
-+{
-+	return pte_val(__rpte_to_pte(rpte)) >> H_PAGE_F_GIX_SHIFT;
-+}
+--- a/kernel/acct.c
++++ b/kernel/acct.c
+@@ -216,6 +216,20 @@ static int acct_on(struct filename *path
+ 		return -EACCES;
+ 	}
  
- #define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
- 	do {							         \
--- 
-2.39.5
-
++	/* Exclude kernel kernel internal filesystems. */
++	if (file_inode(file)->i_sb->s_flags & (SB_NOUSER | SB_KERNMOUNT)) {
++		kfree(acct);
++		filp_close(file, NULL);
++		return -EINVAL;
++	}
++
++	/* Exclude procfs and sysfs. */
++	if (file_inode(file)->i_sb->s_iflags & SB_I_USERNS_VISIBLE) {
++		kfree(acct);
++		filp_close(file, NULL);
++		return -EINVAL;
++	}
++
+ 	if (!(file->f_mode & FMODE_CAN_WRITE)) {
+ 		kfree(acct);
+ 		filp_close(file, NULL);
 
 
 
