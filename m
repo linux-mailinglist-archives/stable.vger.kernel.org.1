@@ -1,65 +1,53 @@
-Return-Path: <stable+bounces-123651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BD0A5C6D2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:29:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB45DA5C68E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 233F23B31CC
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:23:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0481516BBFD
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A29325EF89;
-	Tue, 11 Mar 2025 15:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92FF25E828;
+	Tue, 11 Mar 2025 15:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqczCio5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVo99XYR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53A025D918;
-	Tue, 11 Mar 2025 15:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A8D25B69D;
+	Tue, 11 Mar 2025 15:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706567; cv=none; b=HcceRTFUoNq0HfHK/uMPOHwJn7qutqFtCcwLs1E0/3GWGiJaVvgXwm/28FY3o+EJe9bPwbxIU9Gpr1roXpev1L5r78VRmmcfsLlHkF0jPk2meXSSsN/IRNqNeEP5bbgkasfzENKLp7ktZiQJHSPChHrkXiLR0h6NaJA5J2BYd3Q=
+	t=1741706573; cv=none; b=e4wrBoUZH7/XqAoJkMm005FPezj/TuctmX1fzBDcoAX91MMqn6R+IF/W91wRZh7FyRC3KPgS+AEV8gCRJEfam6xgKgW2N4SLE5WqW6/tfSMZzhCN3QoBT7iHIvTwOWBeU+QR7if4uCkxZ7s6FNssZOQNacXmAEolaQ7U4RZI/ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706567; c=relaxed/simple;
-	bh=jfMEqxbgBdGVFnDs5yBPsyLQMCEa4P3jCJ3E8KJALXM=;
+	s=arc-20240116; t=1741706573; c=relaxed/simple;
+	bh=9g/H6p5VbIIXkp48LmMyCXltn0DhTmHmmYOFhRtnYD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKzI74h8KY4Bsv+fIOeKyC88l6A6XJtLr0tf/2NS8zTiyu4XTqj8QpUH7PdH9X5Idtdz/c3Xi/xL0Ndi8CG7bPYXYPgE5B/H0H6MynjDBj/IZyatO1amQB7j0+eZch7pfetDkt31RLoBm5sP4AmFYR/8VdRzdVzRDJSI1tvrMOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqczCio5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211B0C4CEE9;
-	Tue, 11 Mar 2025 15:22:47 +0000 (UTC)
+	 MIME-Version; b=VSIcnUmqVlSSvOJb8DUsrF1zyoLD6e5tQ2y/krJ9v6j9hVnax71Lvc+T/OzBVwHfPxFos/KzyrSyg7opxwQ+GUnut0Q9l5GHZ9XcUk1yQa/z2N1wTUV6nyfl+Rzg4NTxZFdE5QcIM8Y3SIcAz7BfwBMMnnVAmxXX3zimQj7ar2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVo99XYR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DFBC4CEE9;
+	Tue, 11 Mar 2025 15:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706567;
-	bh=jfMEqxbgBdGVFnDs5yBPsyLQMCEa4P3jCJ3E8KJALXM=;
+	s=korg; t=1741706573;
+	bh=9g/H6p5VbIIXkp48LmMyCXltn0DhTmHmmYOFhRtnYD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqczCio5r9m2UZMc3/94eL8/4pL5AZylZtpcmriDK3TwQDOpZNIHZ5uoA+uuoXwjW
-	 GxXyIwryu94tXGKJU6V4Vgk05yqx/UEoO8dw9Af6Fg1H4DOShfV2Vl9YQ8auvPlG3d
-	 mHHH+ujbGLo9aG5YkFuNwkRtSEXVsn6YpakBLGOU=
+	b=XVo99XYR2CvBAEumapaiqWtNRtujowHgsB37kMRvTbvrWklG7ABYOhRIQqJL4XSMH
+	 5NGlyRlJm4tXGouaimHoqkpc0wnR5WInncLb01Ddwahc7UnsELZyR4f9JalwL+/GWD
+	 iLhlBxKOYLaUeDdOGiFDo8kXd7EhmmaQ2N3nsfck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Petr Pavlu <petr.pavlu@suse.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/462] module: Extend the preempt disabled section in dereference_symbol_descriptor().
-Date: Tue, 11 Mar 2025 15:55:59 +0100
-Message-ID: <20250311145802.027766156@linuxfoundation.org>
+Subject: [PATCH 5.10 094/462] NFSv4.2: fix COPY_NOTIFY xdr buf size calculation
+Date: Tue, 11 Mar 2025 15:56:00 +0100
+Message-ID: <20250311145802.067357298@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
 References: <20250311145758.343076290@linuxfoundation.org>
@@ -78,56 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit a145c848d69f9c6f32008d8319edaa133360dd74 ]
+[ Upstream commit e8380c2d06055665b3df6c03964911375d7f9290 ]
 
-dereference_symbol_descriptor() needs to obtain the module pointer
-belonging to pointer in order to resolve that pointer.
-The returned mod pointer is obtained under RCU-sched/ preempt_disable()
-guarantees and needs to be used within this section to ensure that the
-module is not removed in the meantime.
+We need to include sequence size in the compound.
 
-Extend the preempt_disable() section to also cover
-dereference_module_function_descriptor().
-
-Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descriptor()")
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250108090457.512198-2-bigeasy@linutronix.de
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Fixes: 0491567b51ef ("NFS: add COPY_NOTIFY operation")
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kallsyms.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs42xdr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index 430f1cefbb9e1..ea2eb5fe83a3c 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -63,10 +63,10 @@ static inline void *dereference_symbol_descriptor(void *ptr)
- 
- 	preempt_disable();
- 	mod = __module_address((unsigned long)ptr);
--	preempt_enable();
- 
- 	if (mod)
- 		ptr = dereference_module_function_descriptor(mod, ptr);
-+	preempt_enable();
- #endif
- 	return ptr;
- }
+diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
+index df5bee2f505c4..c9987d615ebc5 100644
+--- a/fs/nfs/nfs42xdr.c
++++ b/fs/nfs/nfs42xdr.c
+@@ -122,9 +122,11 @@
+ 					 decode_putfh_maxsz + \
+ 					 decode_offload_cancel_maxsz)
+ #define NFS4_enc_copy_notify_sz		(compound_encode_hdr_maxsz + \
++					 encode_sequence_maxsz + \
+ 					 encode_putfh_maxsz + \
+ 					 encode_copy_notify_maxsz)
+ #define NFS4_dec_copy_notify_sz		(compound_decode_hdr_maxsz + \
++					 decode_sequence_maxsz + \
+ 					 decode_putfh_maxsz + \
+ 					 decode_copy_notify_maxsz)
+ #define NFS4_enc_deallocate_sz		(compound_encode_hdr_maxsz + \
 -- 
 2.39.5
 
