@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-123733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B70AA5C70E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23E9A5C4B2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 271CF188EDFF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33109189B220
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A273525E807;
-	Tue, 11 Mar 2025 15:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1053225E47F;
+	Tue, 11 Mar 2025 15:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbgAAC7w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKA6FVl/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E5D1A5BA4;
-	Tue, 11 Mar 2025 15:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26DE250BF8;
+	Tue, 11 Mar 2025 15:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706806; cv=none; b=teW8Sh2OTKxWgRa6KiCjBPO9giVcrDRkC/allfGIcN52fhX/Pn+2dkVb7W2btLcr5RZ7Jr2CheJxnWST/WCrDURvylJBH1S1rwClyKn0ouytsx479RcpgSE/MdSmT1b3vXG1OmzvsBWWWFgYaf6ieI0bRR3cl4thrigdi09bLVk=
+	t=1741705535; cv=none; b=nDu1j0ATZw6t1a4X7vu5ndTA6/xHhUj65X48BeyQYN1Xsh51MMJvRjKH+a9jCd2hcLNcL1/0Nwj+3wmiDDwCG0mIPrioDYd5PzevZQhFBs9cCF6qTR2Yla3TbvXRoLl6NuB7ob/hPvoW/cJnNij2pktCt8teZiEZpfk12MsTB4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706806; c=relaxed/simple;
-	bh=zdS//MBlJ5C7xbpP4XEziOi2hUfUtRY/fFwf0YVQr4Q=;
+	s=arc-20240116; t=1741705535; c=relaxed/simple;
+	bh=UiUr6KwTi7BuYTz/TrUIN1tYfgZ2qyKkl17jPIWGjxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRUcdQaAgVP+T1DtACw4+XStB9wMyaLNDXJ0QxhEPjIf7XhaBuWemE4bkrn45ye4Rg5/uWL/05pIrFOkxnLBmf6Yc6YULb0MjsLSSgtfTN/ThOWYAFO1zqz72XYyJGZ0ZS0Qk3yJuZESrQoqKXiYc5lulZmJ87vsx19U5yii1I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbgAAC7w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8153CC4CEE9;
-	Tue, 11 Mar 2025 15:26:45 +0000 (UTC)
+	 MIME-Version; b=rADq0qZ7dtghCtJoBi0BVmJYshHHU3+hEAxLWhfIpC0tn6X6LS/Nfxp5Ctx/Ufxm0USV84eFzxMbnaAeFEQV8utERkz5nH3fuGD2UriUlO8aDFRjhM/r+gNqQ6xzpOappHQzxcZC1/44C6YcDZ4F64WSNltEdmVre+kRhfKS70g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKA6FVl/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428AAC4CEE9;
+	Tue, 11 Mar 2025 15:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706805;
-	bh=zdS//MBlJ5C7xbpP4XEziOi2hUfUtRY/fFwf0YVQr4Q=;
+	s=korg; t=1741705535;
+	bh=UiUr6KwTi7BuYTz/TrUIN1tYfgZ2qyKkl17jPIWGjxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbgAAC7wxDPdGTRaIcJzqYSXsUZjx/qL8owhOUvEidee4JM2IkaYEvDQvQ+5aWUBD
-	 i4WnOAW9HeF1fCMM1Ts/TC3sUzpdOaCL5V/v9RWpffYXNY1Groji1G9RxHZksL8Att
-	 uRFoRun7ZaMMzttn7o5JqW35TauWCdpYa31qYgXc=
+	b=XKA6FVl/FONLSl6pnpzVkxJgSWYmROrTHO47I5rLbEpJJM9aUdMwjhkooz8gP3qrL
+	 LHl3kyCghhn/lB0rv2kTknDd4AnZdaM7L6+tHGoH/t3MNMQ1Ocua9Zk6DRO2EEXfyh
+	 juxQI0Lg/Z0TIKYPCNcgY9261w/0EF0dthjmrr9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Liviu Dudau <liviu.dudau@arm.com>
-Subject: [PATCH 5.10 172/462] drm/komeda: Add check for komeda_get_layer_fourcc_list()
-Date: Tue, 11 Mar 2025 15:57:18 +0100
-Message-ID: <20250311145805.148853151@linuxfoundation.org>
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 069/328] vsock: Allow retrying on connect() failure
+Date: Tue, 11 Mar 2025 15:57:19 +0100
+Message-ID: <20250311145717.636581583@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit 79fc672a092d93a7eac24fe20a571d4efd8fa5a4 upstream.
+[ Upstream commit aa388c72113b7458127b709bdd7d3628af26e9b4 ]
 
-Add check for the return value of komeda_get_layer_fourcc_list()
-to catch the potential exception.
+sk_err is set when a (connectible) connect() fails. Effectively, this makes
+an otherwise still healthy SS_UNCONNECTED socket impossible to use for any
+subsequent connection attempts.
 
-Fixes: 5d51f6c0da1b ("drm/komeda: Add writeback support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://lore.kernel.org/r/20241219090256.146424-1-haoxiang_li2024@163.com
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Clear sk_err upon trying to establish a connection.
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250128-vsock-transport-vs-autobind-v3-2-1cf57065b770@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/vmw_vsock/af_vsock.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
-@@ -160,6 +160,10 @@ static int komeda_wb_connector_add(struc
- 	formats = komeda_get_layer_fourcc_list(&mdev->fmt_tbl,
- 					       kwb_conn->wb_layer->layer_type,
- 					       &n_formats);
-+	if (!formats) {
-+		kfree(kwb_conn);
-+		return -ENOMEM;
-+	}
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 4cd65a1a07f97..5d490633a7f11 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1185,6 +1185,11 @@ static int vsock_stream_connect(struct socket *sock, struct sockaddr *addr,
+ 		if (err < 0)
+ 			goto out;
  
- 	err = drm_writeback_connector_init(&kms->base, wb_conn,
- 					   &komeda_wb_connector_funcs,
++		/* sk_err might have been set as a result of an earlier
++		 * (failed) connect attempt.
++		 */
++		sk->sk_err = 0;
++
+ 		/* Mark sock as connecting and set the error code to in
+ 		 * progress in case this is a non-blocking connect.
+ 		 */
+-- 
+2.39.5
+
 
 
 
