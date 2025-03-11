@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D885FA5C71C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2466A5C501
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18ED317B91B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 687F7175088
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7029025E805;
-	Tue, 11 Mar 2025 15:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8132425E83B;
+	Tue, 11 Mar 2025 15:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKJMhQw/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhJ9zDMO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0C215820C;
-	Tue, 11 Mar 2025 15:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB2F25DB0B;
+	Tue, 11 Mar 2025 15:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706881; cv=none; b=POeJP/YS0HCPmWMj2/4oSYWottdyWeeBv537iNHf8CPJG5UTRSI7kr+o6243RPwTEkvxj9UZDOYWj4xmKEwHwV39/ijHbnjnTDfk4KGcP130Yz05synLESYY3Z4+JsCPW/H29lCdlx4mWWbouRmwV8hse2IqaWibRWr8N50A0jE=
+	t=1741705703; cv=none; b=pQozpAM/crYvrhVQqUaVrqYTgkM7rloa8k5w/5wSrS+C0karbJ9Bh0gFgE8sFPVZ2wwglaz1qwPsYWopk/fosFOCeLgV472wMUXyRJmeXYUAn6UxrWcooJs8NuV5CcLEi24Ib4DLWY2Iekwg4/olDjZvwteYsmozzUQd8SksesY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706881; c=relaxed/simple;
-	bh=UGQVnmJSlK/gtpekNyzVuA24NKw4RMfshtl/VMwSy5Q=;
+	s=arc-20240116; t=1741705703; c=relaxed/simple;
+	bh=CfkrHfSPi6rCcw4xXlo5kId5rgjpc/CMshDtMKpeFFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UsArB5N3w/7Pfn24+YOWeE7xuVxdRMSLMZtmR8C2tBNuStQ1aIZnsLtLj+wSmdCq+QcQyG8uEO7GPvSc694q3bJaAkxaPHQNlYX8jwsovdrsQeOg+9DWrMzVRNEgzrL+IREUCxPf77znT39TX9OjRdGUmWXLHsVsBlh8at6DE6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKJMhQw/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4B1C4CEE9;
-	Tue, 11 Mar 2025 15:28:00 +0000 (UTC)
+	 MIME-Version; b=fPWedLvVndTRH8pNQU3slfT9HETntooKNNCV9sZtoroU0SNz5mppIVuBLIbd58WGqXImPlctbnQU1CRYd3uJnw+bbJiaEp8SnQHKZnxtg8saAIbYpghn/1HSFwEXnb11zTifcmWedCzR8D6B63XvQ0pfHIE7SsN51RCf+OX2z6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhJ9zDMO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E75FC4CEE9;
+	Tue, 11 Mar 2025 15:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706881;
-	bh=UGQVnmJSlK/gtpekNyzVuA24NKw4RMfshtl/VMwSy5Q=;
+	s=korg; t=1741705702;
+	bh=CfkrHfSPi6rCcw4xXlo5kId5rgjpc/CMshDtMKpeFFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKJMhQw/DFhIHxPGSpaIlUrTP5KyrpjhGxYC9HZhVDImbsxUPHw4eym3scC7NulQK
-	 S3aRA42LuOsu4gjGtUq3/eOHWyeEWMDK59tdlnJ1et8h/YSl/LQRjXHGg69pIlbMku
-	 n3rf2HrAm7XtamEYw0wtGbIFQRcgoByJjQ0XWHiA=
+	b=bhJ9zDMOOazsYQMO+usj5dB9Y6bsryoUsbvGo8C7GcLqk4Ze5hOW3BtgyE9o7TZCs
+	 drX0r/bRZspF6flWDNv/9vjXINiUWg+1t92N6OySG622B8kEg0alkQV4X5juU+kDiU
+	 k/+Sr/0nzAUyyhyK27OJ9YiOXdjU34JDBkidbp80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 199/462] scsi: storvsc: Set correct data length for sending SCSI command without payload
-Date: Tue, 11 Mar 2025 15:57:45 +0100
-Message-ID: <20250311145806.218909200@linuxfoundation.org>
+	Ralf Schlatterbeck <rsc@runtux.com>,
+	Mark Brown <broonie@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH 5.4 096/328] spi-mxs: Fix chipselect glitch
+Date: Tue, 11 Mar 2025 15:57:46 +0100
+Message-ID: <20250311145718.708339936@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Ralf Schlatterbeck <rsc@runtux.com>
 
-commit 87c4b5e8a6b65189abd9ea5010ab308941f964a4 upstream.
+commit 269e31aecdd0b70f53a05def79480f15cbcc0fd6 upstream.
 
-In StorVSC, payload->range.len is used to indicate if this SCSI command
-carries payload. This data is allocated as part of the private driver data
-by the upper layer and may get passed to lower driver uninitialized.
+There was a change in the mxs-dma engine that uses a new custom flag.
+The change was not applied to the mxs spi driver.
+This results in chipselect being deasserted too early.
+This fixes the chipselect problem by using the new flag in the mxs-spi
+driver.
 
-For example, the SCSI error handling mid layer may send TEST_UNIT_READY or
-REQUEST_SENSE while reusing the buffer from a failed command. The private
-data section may have stale data from the previous command.
-
-If the SCSI command doesn't carry payload, the driver may use this value as
-is for communicating with host, resulting in possible corruption.
-
-Fix this by always initializing this value.
-
-Fixes: be0cf6ca301c ("scsi: storvsc: Set the tablesize based on the information given by the host")
-Cc: stable@kernel.org
-Tested-by: Roman Kisel <romank@linux.microsoft.com>
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Long Li <longli@microsoft.com>
-Link: https://lore.kernel.org/r/1737601642-7759-1-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ceeeb99cd821 ("dmaengine: mxs: rename custom flag")
+Signed-off-by: Ralf Schlatterbeck <rsc@runtux.com>
+Link: https://msgid.link/r/20240202115330.wxkbfmvd76sy3a6a@runtux.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Stefan Wahren <wahrenst@gmx.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-mxs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1759,6 +1759,7 @@ static int storvsc_queuecommand(struct S
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -40,6 +40,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/mxs-spi.h>
+ #include <trace/events/spi.h>
++#include <linux/dma/mxs-dma.h>
  
- 	length = scsi_bufflen(scmnd);
- 	payload = (struct vmbus_packet_mpb_array *)&cmd_request->mpb;
-+	payload->range.len = 0;
- 	payload_sz = 0;
+ #define DRIVER_NAME		"mxs-spi"
  
- 	if (sg_count) {
+@@ -253,7 +254,7 @@ static int mxs_spi_txrx_dma(struct mxs_s
+ 		desc = dmaengine_prep_slave_sg(ssp->dmach,
+ 				&dma_xfer[sg_count].sg, 1,
+ 				(flags & TXRX_WRITE) ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM,
+-				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++				DMA_PREP_INTERRUPT | MXS_DMA_CTRL_WAIT4END);
+ 
+ 		if (!desc) {
+ 			dev_err(ssp->dev,
 
 
 
