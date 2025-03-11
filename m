@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-123775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4E1A5C739
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:32:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEF8A5C4E1
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:09:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD37116B1F7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7430189C21C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD0C25E831;
-	Tue, 11 Mar 2025 15:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F31025DD02;
+	Tue, 11 Mar 2025 15:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgEn3ItB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOxUPffM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF36B15820C;
-	Tue, 11 Mar 2025 15:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0A325DAFF;
+	Tue, 11 Mar 2025 15:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706927; cv=none; b=J5AmTCwgHEc8PiauslkTKZxS78ldc8t6ZVS1CjxrgD/ImDYX4Iw9MYdnhUTxanR2txZnNO5eX1wDkMnCprJHASdWgRTpWGmSxEGNfec9AAIkpdR7KY5uYXX0LsV/n0+8uiH4wNkDoGfWIxkV1IVIMoc5gIQEjUwyCajLY05roDw=
+	t=1741705626; cv=none; b=Vn2qpSkyb+9PkqAz7GYvSIKR08voJdX50rfG9/oxXpmlgYrrm5OVJlFHoEiFH0/benN79xaEwcIrUG1v3A8cv7gqdodFfPdvlQeO/Tgz5HZKf3oRzMQzBGLgEOiv21YPnCbK+DgHycRqpRi6lzwVCbmRk07yXGXxDWpRVijVy6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706927; c=relaxed/simple;
-	bh=l+UceLeDjMxW1hk5MOfUHF9F2aVURmZo8i/GHcHYI+0=;
+	s=arc-20240116; t=1741705626; c=relaxed/simple;
+	bh=WfiAKIYZ9ZT54NER5k9aPbmbLxVpGdX+dEPHQ7UVxEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hj/7dPwnQufxcEBiit5ieLC/rC9dvNYsNFvPBBx8cjSMtPHVj2158uV144ZcVUb91+bPBmrFRXUyP6kV7mF0LceCkCQIglz6jxG41+zGxo9EmzN9gcJXaaqS34rrg21vPRSXdDnhTKHglle8S9uZ7xuREDP1f0AV5gzgNzuWt30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgEn3ItB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FE2C4CEE9;
-	Tue, 11 Mar 2025 15:28:46 +0000 (UTC)
+	 MIME-Version; b=MAR4lDv1CogsIzHozF24V1f8++rYow9OL53/Ww5ogmPHUnmh5ZDRcVOWmWmj8Q8VC7FZjjik8eF4VBvVoP6w7Gmgn/X/6HXoLd1dcKH+R5DedpzwdKXcIJ31Xewj9E9bpcnCbDHbEHoxkM2CUcArkdM8tQ9zB0/TTDdJG62/DJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOxUPffM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A17FC4CEE9;
+	Tue, 11 Mar 2025 15:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706927;
-	bh=l+UceLeDjMxW1hk5MOfUHF9F2aVURmZo8i/GHcHYI+0=;
+	s=korg; t=1741705625;
+	bh=WfiAKIYZ9ZT54NER5k9aPbmbLxVpGdX+dEPHQ7UVxEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgEn3ItBhl2M3vMQ3XIRYLUuB0s383DXxzJ+XwscntUc/KwPo/PGqF3KHAxbTApFJ
-	 uQKdU1/FDAuNqmPMj+g/qKZE19rIRhx1Pw7CjI+wj4gFS7I8Y9Q+En3wd35ij7Afx0
-	 SmBuGQAM/56nIQdUhFbibQz4SAbFMoDfanbd4ykA=
+	b=dOxUPffMJLjYh3MsUUyvpLM1oUbzKQX9oe+JpLzminMDvcxuGL9I5vbHGn/kXZrHO
+	 ukPKBAb++b1FfUQei4cDs8E/Wg4zIvMQdyUq4j1bJgr6X2RwkFvGKk6bMo6hGdqWO/
+	 q55ecQZcjpNwQ7mgdto4r8WUn2RaeCc/a/k23wpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.10 184/462] HID: hid-sensor-hub: dont use stale platform-data on remove
-Date: Tue, 11 Mar 2025 15:57:30 +0100
-Message-ID: <20250311145805.627635874@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.4 081/328] usb: gadget: f_tcm: Dont free command immediately
+Date: Tue, 11 Mar 2025 15:57:31 +0100
+Message-ID: <20250311145718.106568505@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit 8a5b38c3fd709e8acd2bfdedf66c25e6af759576 upstream.
+commit c225d006a31949d673e646d585d9569bc28feeb9 upstream.
 
-The hid-sensor-hub creates the individual device structs and transfers them
-to the created mfd platform-devices via the platform_data in the mfd_cell.
+Don't prematurely free the command. Wait for the status completion of
+the sense status. It can be freed then. Otherwise we will double-free
+the command.
 
-Before e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
-the sensor-hub was managing access centrally, with one "completion" in the
-hub's data structure, which needed to be finished on removal at the latest.
-
-The mentioned commit then moved this central management to each hid sensor
-device, resulting on a completion in each struct hid_sensor_hub_device.
-The remove procedure was adapted to go through all sensor devices and
-finish any pending "completion".
-
-What this didn't take into account was, platform_device_add_data() that is
-used by mfd_add{_hotplug}_devices() does a kmemdup on the submitted
-platform-data. So the data the platform-device gets is a copy of the
-original data, meaning that the device worked on a different completion
-than what sensor_hub_remove() currently wants to access.
-
-To fix that, use device_for_each_child() to go through each child-device
-similar to how mfd_remove_devices() unregisters the devices later and
-with that get the live platform_data to finalize the correct completion.
-
-Fixes: e651a1da442a ("HID: hid-sensor-hub: Allow parallel synchronous reads")
+Fixes: cff834c16d23 ("usb-gadget/tcm: Convert to TARGET_SCF_ACK_KREF I/O krefs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Acked-by: Jiri Kosina <jkosina@suse.com>
-Link: https://lore.kernel.org/r/20241107114712.538976-2-heiko@sntech.de
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/ae919ac431f16275e05ec819bdffb3ac5f44cbe1.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-sensor-hub.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/hid/hid-sensor-hub.c
-+++ b/drivers/hid/hid-sensor-hub.c
-@@ -730,23 +730,30 @@ err_stop_hw:
- 	return ret;
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1064,7 +1064,6 @@ static void usbg_cmd_work(struct work_st
+ out:
+ 	transport_send_check_condition_and_sense(se_cmd,
+ 			TCM_UNSUPPORTED_SCSI_OPCODE, 1);
+-	transport_generic_free_cmd(&cmd->se_cmd, 0);
  }
  
-+static int sensor_hub_finalize_pending_fn(struct device *dev, void *data)
-+{
-+	struct hid_sensor_hub_device *hsdev = dev->platform_data;
-+
-+	if (hsdev->pending.status)
-+		complete(&hsdev->pending.ready);
-+
-+	return 0;
-+}
-+
- static void sensor_hub_remove(struct hid_device *hdev)
- {
- 	struct sensor_hub_data *data = hid_get_drvdata(hdev);
- 	unsigned long flags;
--	int i;
- 
- 	hid_dbg(hdev, " hardware removed\n");
- 	hid_hw_close(hdev);
- 	hid_hw_stop(hdev);
-+
- 	spin_lock_irqsave(&data->lock, flags);
--	for (i = 0; i < data->hid_sensor_client_cnt; ++i) {
--		struct hid_sensor_hub_device *hsdev =
--			data->hid_sensor_hub_client_devs[i].platform_data;
--		if (hsdev->pending.status)
--			complete(&hsdev->pending.ready);
--	}
-+	device_for_each_child(&hdev->dev, NULL,
-+			      sensor_hub_finalize_pending_fn);
- 	spin_unlock_irqrestore(&data->lock, flags);
-+
- 	mfd_remove_devices(&hdev->dev);
- 	mutex_destroy(&data->mutex);
+ static struct usbg_cmd *usbg_get_cmd(struct f_uas *fu,
+@@ -1194,7 +1193,6 @@ static void bot_cmd_work(struct work_str
+ out:
+ 	transport_send_check_condition_and_sense(se_cmd,
+ 				TCM_UNSUPPORTED_SCSI_OPCODE, 1);
+-	transport_generic_free_cmd(&cmd->se_cmd, 0);
  }
+ 
+ static int bot_submit_command(struct f_uas *fu,
 
 
 
