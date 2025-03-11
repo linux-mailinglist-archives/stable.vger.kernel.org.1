@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-123432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4112A5C584
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:16:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A047BA5C754
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8271E3AC125
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19D557A697F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3165825C715;
-	Tue, 11 Mar 2025 15:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5B825FA2A;
+	Tue, 11 Mar 2025 15:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNrjO9JS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YY1bPrxK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35F925DB0D;
-	Tue, 11 Mar 2025 15:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFB725F7A9;
+	Tue, 11 Mar 2025 15:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705939; cv=none; b=YQ2aoNM0NoRytyKTaAPziPzDBSN9TOTtLmbdLC7SQPBSsxkKtsmOLCn9N2X4ANW/bCx62yyevpP06ggAtg526b8MDe7FrJzebNKBZMsIyl9yjCJX2X/hG+Jv0AOINIMkq6nuFYUfzJZibPRk0nQOyCqTpUZ1RJX4H4ysBBYs4pk=
+	t=1741707152; cv=none; b=FSHfd/ilcf+TYzWzqrdHKWGF5e01Hs4dwpctRxndYFYYQ/KNQOLS5YEZTphb0eWseMzNKl5WdK256uZvJkmDzg/RgrLc0cP4GDt2HAO+s4iAqQWfu0aIo3jDmWoFrcHYVQLbYJzg4M9Ygx2PwSr3zImnTZE0J8DQu1ENX2tavRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705939; c=relaxed/simple;
-	bh=xqk5IuAoAWszbJhLgO/XM58I/a5TLmoWeuaqH7GSjVA=;
+	s=arc-20240116; t=1741707152; c=relaxed/simple;
+	bh=cqkqpzsHeBFE/X5R6sG2NnB9IZwazypF1YT8w992oEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPxg5Ra2INO9G2Kn5PsfLnxdHppa0ZN7qcQ2isD+rZRZffG/TvsJfFaJ1Cw4J+xDuct1RlvRc6znbKSVlUNCdmwZ9s7cENayIpdTvM1HztIiuh6sELWdvNQHutDR26pb2HGvgKbdjrk+8M61ixQgLZTGOsf6qn7HUTJAHISJpxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNrjO9JS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA69C4CEEA;
-	Tue, 11 Mar 2025 15:12:17 +0000 (UTC)
+	 MIME-Version; b=plihQ/GTnnqI4cIv77UaxP1mplDeoLTke0ze0DL7+SA6k4mCBMkyOkQ4KUmseEcdkHzTBtknPgB4etsZOnb1FH4vgRmP8mAl0oygK9n/FXGG1jp+ZdHQlLhkh9cdFBcZRpBb9Pm3+aDA6jcz0exMRYXmiSurOHi50cpoAPx4NuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YY1bPrxK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EF4C4CEE9;
+	Tue, 11 Mar 2025 15:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705938;
-	bh=xqk5IuAoAWszbJhLgO/XM58I/a5TLmoWeuaqH7GSjVA=;
+	s=korg; t=1741707151;
+	bh=cqkqpzsHeBFE/X5R6sG2NnB9IZwazypF1YT8w992oEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNrjO9JSMq9bkSVI+/RpZI8wUxPnGdpr/EP1cNbhDojSq65Flqm/PDszaGlCHMHW3
-	 vhlqu7gkmPBqEaM4GIarzD55ofyYfpUnK30tjHh+eExb3K6otL5RD0ZSuVtfAbzeU9
-	 4Rxaftx1mziCeEIrS1yNK7GrnycR6Lj3Mz9TMuHY=
+	b=YY1bPrxKg+oMVOmqlNC8aepPxtjQq0sQz4l6AMnl+M3zr3frz9+PJ0zDzNybZ9xEy
+	 eybGHvI9qQ6SinaeF5uB8rOGaQBK/F/+Y64ER+CtcIzcJUc9Pq/T58C7/MT8NGX58J
+	 0+Pz5pOLfKpOzm5jtb6u852aCBHxADUr/c1PDQGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 5.4 188/328] usb: cdc-acm: Fix handling of oversized fragments
+	John Ogness <john.ogness@linutronix.de>,
+	Petr Mladek <pmladek@suse.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Brian Norris <briannorris@chromium.org>
+Subject: [PATCH 5.10 292/462] kdb: Do not assume write() callback available
 Date: Tue, 11 Mar 2025 15:59:18 +0100
-Message-ID: <20250311145722.369939901@linuxfoundation.org>
+Message-ID: <20250311145809.902720261@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: John Ogness <john.ogness@linutronix.de>
 
-commit 12e712964f41d05ae034989892de445781c46730 upstream.
+commit 6d3e0d8cc63221dec670d0ee92ac57961581e975 upstream.
 
-If we receive an initial fragment of size 8 bytes which specifies a wLength
-of 1 byte (so the reassembled message is supposed to be 9 bytes long), and
-we then receive a second fragment of size 9 bytes (which is not supposed to
-happen), we currently wrongly bypass the fragment reassembly code but still
-pass the pointer to the acm->notification_buffer to
-acm_process_notification().
+It is allowed for consoles to not provide a write() callback. For
+example ttynull does this.
 
-Make this less wrong by always going through fragment reassembly when we
-expect more fragments.
+Check if a write() callback is available before using it.
 
-Before this patch, receiving an overlong fragment could lead to `newctrl`
-in acm_process_notification() being uninitialized data (instead of data
-coming from the device).
-
-Cc: stable <stable@kernel.org>
-Fixes: ea2583529cd1 ("cdc-acm: reassemble fragmented notifications")
-Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230717194607.145135-2-john.ogness@linutronix.de
+Cc: Brian Norris <briannorris@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/debug/kdb/kdb_io.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -404,7 +404,7 @@ static void acm_ctrl_irq(struct urb *urb
- 	expected_size = sizeof(struct usb_cdc_notification) +
- 					le16_to_cpu(dr->wLength);
- 
--	if (current_size < expected_size) {
-+	if (acm->nb_index != 0 || current_size < expected_size) {
- 		/* notification is transmitted fragmented, reassemble */
- 		if (acm->nb_size < expected_size) {
- 			u8 *new_buffer;
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -577,6 +577,8 @@ static void kdb_msg_write(const char *ms
+ 			continue;
+ 		if (c == dbg_io_ops->cons)
+ 			continue;
++		if (!c->write)
++			continue;
+ 		/*
+ 		 * Set oops_in_progress to encourage the console drivers to
+ 		 * disregard their internal spin locks: in the current calling
 
 
 
