@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-123786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E7AA5C771
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:34:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A003A5C4FD
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 410A93B38E1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3761D7AAE79
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A4825E836;
-	Tue, 11 Mar 2025 15:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AA425DCE3;
+	Tue, 11 Mar 2025 15:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2GT7AXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTzR/L7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D4925BACC;
-	Tue, 11 Mar 2025 15:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850D11C3BEB;
+	Tue, 11 Mar 2025 15:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706958; cv=none; b=Fb5ahyr/gj/40bSIqDXIuXzQU/9MaVstCEas1qzmSrUiIRRL2+8iLYlHA91onWN2W6O02uRREywLdxlfVBYMaAjlgKiCntMfPnRVjIOqNZOuXvqWJDwldrAfH1Mdq3RW/ZFq96WTnQKkxFo0TnKJzt1KvqMv4t4tuIIGCJToRlA=
+	t=1741705746; cv=none; b=rEXwgrWq3LX4ERpb9t88YnvCRxFKoWef+YpZsDCd4eH96g8hxNTr7HlpG1aJrcdkmM+5LEX+mCyWWima+dZYZyt/7NvmsfOm+d9UiwOnxAPxlbPvDN3s1Uu5SKusF+Qng8EJ5um/nQ3192lYTxXzif+KQQ9X//c+ugojl0md+vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706958; c=relaxed/simple;
-	bh=9wKWYwAroQaSfYqYVK5stpr1hoYIzszW6tVB81AodKs=;
+	s=arc-20240116; t=1741705746; c=relaxed/simple;
+	bh=DbuQ+Wwh4b0vO6ej4Yv5HwOL8MEheGWKjnegnPHzUD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cr/f9+y08vKnBy43ZD+9lbng2GW6Mg74//M50u/f5iZQVpithx/CCm0lwUBDCvxxEP5PFLuNBy52cTEMtlKe92xaq8y8koYdFlbu1F7M8yUB5Kfq4MU68hJgLanvn9neQqdr+E3d/9cgQMAEd4rmN/nTMOc2vy1Bryn5BuA2oYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2GT7AXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF5DC4CEE9;
-	Tue, 11 Mar 2025 15:29:18 +0000 (UTC)
+	 MIME-Version; b=YdbbFTInfcVQMF4NDYf4X5ghTdOZgba7TFCWK+UUSWq3atp0mmNmcCL2vlzmCgvgFAfhjamKSfPXfcVXacMOrilFN0rI8MtEJiGlG9OEZyRbPtWWLmsbNkfDVhN6Wus9r9+2TeCeqy+pZjigIucahGAJfN9cvHvaswSq4TniBJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTzR/L7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C58C4CEE9;
+	Tue, 11 Mar 2025 15:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706958;
-	bh=9wKWYwAroQaSfYqYVK5stpr1hoYIzszW6tVB81AodKs=;
+	s=korg; t=1741705746;
+	bh=DbuQ+Wwh4b0vO6ej4Yv5HwOL8MEheGWKjnegnPHzUD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2GT7AXqH9AsCBZNU04A3eUjHxJHkgMqV8rsZSLBQssuXWSSA2/kKyUrskheHHbk0
-	 VAI4LMblqqBggVY15oIWUgHbcaQlkiH22EInGzkIAhsGC+nbFhNfIgXYpBZTZu9DUX
-	 mdtkRnO5FcYZ5R95MLAgehCY5ybTCBLze231utAo=
+	b=rTzR/L7R4kRmSKsfuzY7H++Qel2xXVXClNUlYeKMG0kIMPUqS2x3P8Ax6WV9SCCvK
+	 ImLbJUcQAaT5G5MRIY4aGbXqHfi6B4CeZnovfbrXTRz8uHS+4vCtQvUZJEuPdL6lLN
+	 eE5adlxfOt446rCsdTzsdhDM461Pbjb+rdDZHOqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 227/462] HID: multitouch: Add NULL check in mt_input_configured
+	Will Deacon <will@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.4 123/328] KVM: Explicitly verify target vCPU is online in kvm_get_vcpu()
 Date: Tue, 11 Mar 2025 15:58:13 +0100
-Message-ID: <20250311145807.331548059@linuxfoundation.org>
+Message-ID: <20250311145719.787007559@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 9b8e2220d3a052a690b1d1b23019673e612494c5 ]
+commit 1e7381f3617d14b3c11da80ff5f8a93ab14cfc46 upstream.
 
-devm_kasprintf() can return a NULL pointer on failure,but this
-returned value in mt_input_configured() is not checked.
-Add NULL check in mt_input_configured(), to handle kernel NULL
-pointer dereference error.
+Explicitly verify the target vCPU is fully online _prior_ to clamping the
+index in kvm_get_vcpu().  If the index is "bad", the nospec clamping will
+generate '0', i.e. KVM will return vCPU0 instead of NULL.
 
-Fixes: 479439463529 ("HID: multitouch: Correct devm device reference for hidinput input_dev name")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In practice, the bug is unlikely to cause problems, as it will only come
+into play if userspace or the guest is buggy or misbehaving, e.g. KVM may
+send interrupts to vCPU0 instead of dropping them on the floor.
+
+However, returning vCPU0 when it shouldn't exist per online_vcpus is
+problematic now that KVM uses an xarray for the vCPUs array, as KVM needs
+to insert into the xarray before publishing the vCPU to userspace (see
+commit c5b077549136 ("KVM: Convert the kvm->vcpus array to a xarray")),
+i.e. before vCPU creation is guaranteed to succeed.
+
+As a result, incorrectly providing access to vCPU0 will trigger a
+use-after-free if vCPU0 is dereferenced and kvm_vm_ioctl_create_vcpu()
+bails out of vCPU creation due to an error and frees vCPU0.  Commit
+afb2acb2e3a3 ("KVM: Fix vcpu_array[0] races") papered over that issue, but
+in doing so introduced an unsolvable teardown conundrum.  Preventing
+accesses to vCPU0 before it's fully online will allow reverting commit
+afb2acb2e3a3, without re-introducing the vcpu_array[0] UAF race.
+
+Fixes: 1d487e9bf8ba ("KVM: fix spectrev1 gadgets")
+Cc: stable@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>
+Cc: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241009150455.1057573-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-multitouch.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/kvm_host.h |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index f36ddcb4e2ef2..006af6e143073 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1594,9 +1594,12 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 		break;
- 	}
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -567,6 +567,15 @@ static inline struct kvm_io_bus *kvm_get
+ static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
+ {
+ 	int num_vcpus = atomic_read(&kvm->online_vcpus);
++
++	/*
++	 * Explicitly verify the target vCPU is online, as the anti-speculation
++	 * logic only limits the CPU's ability to speculate, e.g. given a "bad"
++	 * index, clamping the index to 0 would return vCPU0, not NULL.
++	 */
++	if (i >= num_vcpus)
++		return NULL;
++
+ 	i = array_index_nospec(i, num_vcpus);
  
--	if (suffix)
-+	if (suffix) {
- 		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
- 						 "%s %s", hdev->name, suffix);
-+		if (!hi->input->name)
-+			return -ENOMEM;
-+	}
- 
- 	return 0;
- }
--- 
-2.39.5
-
+ 	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
 
 
 
