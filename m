@@ -1,132 +1,127 @@
-Return-Path: <stable+bounces-124058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88AAFA5CC1E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 18:28:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEDAA5CC21
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 18:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF564177AF1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:28:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54DAB3B528F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 17:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BDC2627F2;
-	Tue, 11 Mar 2025 17:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SwLeDAsr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C732620E1;
+	Tue, 11 Mar 2025 17:29:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917522620D1;
-	Tue, 11 Mar 2025 17:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F74F25D8EF;
+	Tue, 11 Mar 2025 17:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741714124; cv=none; b=aKixyMGuRFlydO8Iyd0uON9tsfJv20pEN1Wbk0qU5ixUGV6ff+TaoSaVks52lEzXdltDi+OSjHkHdZoQevcWCXLlYE5R20HGnyXmDZShrW2DxfLezl3a8uCgKsRVAE9RMa8s/hGKB9Y7YsSA9QqylCz7O1P00+ih+RqSZP0Y7MI=
+	t=1741714180; cv=none; b=nCmOOLETAfyYdDOga/4GeVoT74zf3XBs8x05XUOnydPuAb2nEVJfuJ31hrdHWf+AIzgO0m4bX1ZpJ0m1cGCfGmqIPJLwjmA2ZunIGXhjES9ZXM4obK9xEjJ4xjtxElhbpgF4mKAEjT37iW3j+iX4Q03vFLnHn+0HvYpJkApiPwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741714124; c=relaxed/simple;
-	bh=d8BD4WOnmIjNqhK1wComNzTCrFFiicudBQP2VVmq7Z8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LzpDZhqqnmdxxn5IgMrNbKSNEgFOQH1whq128XKhYaZD3l+FGHJa2Rm1wbhj8maWPoT+dfUNllITQsDiPj5/yZabtPXz5Pbti4t/+3s7hLh6T4/irnukSNiM/2lTB12XiR9bx9T2INmjUGTzqxtu0F8ohCFxO5hgnojRkJf4PXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SwLeDAsr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1465BC4AF0B;
-	Tue, 11 Mar 2025 17:28:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741714124;
-	bh=d8BD4WOnmIjNqhK1wComNzTCrFFiicudBQP2VVmq7Z8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SwLeDAsrdikx6ereOClwlIDaeHpYUaVCYIdWA/gqU4jEb9otOGjjdZGvIpu9QgrFU
-	 BasH3tSjPtBd6wmXUUXmgtGXJE1c2mXPzeOs5dY12INMsI/tPwBJUSi4YJKLmECtes
-	 TM5UDohghrM4x2jKsArUS5J2Jh/ME+ZxorEGi8wdg/Qhbk5gvSSWtSAyI/PAUsy4Le
-	 zPfJmpwJpspt5Y9mXygKFmynxFUwMwdwlu93nj0LoEg/bOD7NQ94mwt8hicFAJE+JB
-	 WROxkOJm/Xr98WkIyDZQrpXSAOENYiYSOTFinIa11QBYrcNDfZOo/1nUA1Ez3Bu0mX
-	 56ptjUZ6gzRiw==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5499614d3d2so5034557e87.3;
-        Tue, 11 Mar 2025 10:28:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUyYL5vswrvcs1L4DDawe1qUtvfUpA9efcU/hxYKMaxHaiEufKMygCbnGmgJx6QqX8jlKanJeSW@vger.kernel.org, AJvYcCW/VK+oEQbhrtiUpuMPFCeJYcoOLAdo7oZSFlDm+D/e1AMONu69jGYLo2QSVEFnYIqMKtVM0UhRc4Mf9hM=@vger.kernel.org, AJvYcCWI8v/xSmB6sjFYUTcVsxwzb9I5AYP9k/HRoa3l0fM3cMNrOVyUUOkio+t2vUytrGVAke/t2zDtV3EylSudtdnwZQaL@vger.kernel.org, AJvYcCWo4p6E7PDjcdg3k5QZRiMU8xB+YyTVlvo+PWcMzMh66u2SOJiRW71clnyUaptehnkQSvZYSrEZx5COplvRsA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwEuDIkczTfCM4S5/BsZXWkPj5N8xDNRXQaj5KDrdoEdKdy5bm
-	sSUXgNoOAP1UrrKzQZIreLdxhH3SB/SMDMMFKDzyi8Da90ffLKd/iYyOCqi9Acq3lBZhiJbMwBe
-	hg46MN5X+nxqhFmuL6S5Pf4ydCfk=
-X-Google-Smtp-Source: AGHT+IFsHDduF+cR7BKl2mu6ZO3HqQftxmEu5BM2vjBQCDt55EMsQyof7sw3rtliSMsgS7q7uQEOkP4A3gh75uedz9s=
-X-Received: by 2002:a05:6512:6cd:b0:545:f9c:a80f with SMTP id
- 2adb3069b0e04-54990e2bf27mr5120145e87.1.1741714122784; Tue, 11 Mar 2025
- 10:28:42 -0700 (PDT)
+	s=arc-20240116; t=1741714180; c=relaxed/simple;
+	bh=dNaFF2I5Gxfj66buzQR0TbVjSPqPPsRobfCdX/cIf1g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mcy+MxEWocSATvbGB2izAw9WXuKUfmhnz7oYrffUJ3cJ5mek2a5vWJiKJ0jg7b6SwfLRReM3OglwLH1mPeDRhXb5ZnJmUmGJyTnQPj1J1qu1Ey1rQT8lDgaXHqHUmH5LDoP0mTip4nVUx7NEjQ6WoQAZ/MnFYljgGvfK1oeoo6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF71B152B;
+	Tue, 11 Mar 2025 10:29:48 -0700 (PDT)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A6303F673;
+	Tue, 11 Mar 2025 10:29:35 -0700 (PDT)
+Message-ID: <053851d9-49e3-46f7-86ae-59dcee6ddaa9@arm.com>
+Date: Tue, 11 Mar 2025 17:29:13 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250307165335.3110476-1-kris.van.hees@oracle.com>
-In-Reply-To: <20250307165335.3110476-1-kris.van.hees@oracle.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 12 Mar 2025 02:28:06 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQe5ZEd17v=zdP9xNMXFXa=Zjh=YUww2+_4Qerh=CdQOQ@mail.gmail.com>
-X-Gm-Features: AQ5f1Jqd8Dw99Dgh75IrGcKerpY-dzmShj5KMqxECut3Sko0l64ED8VLDnizrPM
-Message-ID: <CAK7LNAQe5ZEd17v=zdP9xNMXFXa=Zjh=YUww2+_4Qerh=CdQOQ@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: exclude .rodata.(cst|str)* when building ranges
-To: Kris Van Hees <kris.van.hees@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-modules@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Nick Alcock <nick.alcock@oracle.com>, Alan Maguire <alan.maguire@oracle.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Sam James <sam@gentoo.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Jiri Olsa <olsajiri@gmail.com>, 
-	Elena Zannoni <elena.zannoni@oracle.com>, Daniel Gomez <da.gomez@samsung.com>, stable@vger.kernel.org, 
-	Jack Vogel <jack.vogel@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iommu/arm: Allow disabling Qualcomm support in
+ arm_smmu_v3
+To: Aaron Kling <webgeek1234@gmail.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250310-b4-qcom-smmu-v1-1-733a1398ff85@gmail.com>
+ <6f5f2047-b315-440b-b57d-2ed0dd7395f6@arm.com>
+ <CALHNRZ87t7eXohTcpFnejFAPDsyE_1g0aPsASuQ7y5c_zxnLUw@mail.gmail.com>
+ <c99db1aa-8b3e-4a8d-8cee-b9574686cb7f@arm.com>
+ <CALHNRZ884fF4kpM_=N4d1vR27-9BOeaS7_cN_JhKN0S6MYQVQw@mail.gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CALHNRZ884fF4kpM_=N4d1vR27-9BOeaS7_cN_JhKN0S6MYQVQw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, Mar 8, 2025 at 1:54=E2=80=AFAM Kris Van Hees <kris.van.hees@oracle.=
-com> wrote:
->
-> The .rodata.(cst|str)* sections are often resized during the final
-> linking and since these sections do not cover actual symbols there is
-> no need to include them in the modules.builtin.ranges data.
->
-> When these sections were included in processing and resizing occurred,
-> modules were reported with ranges that extended beyond their true end,
-> causing subsequent symbols (in address order) to be associated with
-> the wrong module.
->
-> Fixes: 5f5e7344322f ("kbuild: generate offset range data for builtin modu=
-les")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kris Van Hees <kris.van.hees@oracle.com>
-> Reviewed-by: Jack Vogel <jack.vogel@oracle.com>
-> ---
+On 10/03/2025 8:15 pm, Aaron Kling wrote:
+> On Mon, Mar 10, 2025 at 2:52 PM Robin Murphy <robin.murphy@arm.com> wrote:
+>>
+>> On 2025-03-10 4:45 pm, Aaron Kling wrote:
+>>> On Mon, Mar 10, 2025 at 7:42 AM Robin Murphy <robin.murphy@arm.com> wrote:
+>>>>
+>>>> On 2025-03-10 6:11 am, Aaron Kling via B4 Relay wrote:
+>>>>> From: Aaron Kling <webgeek1234@gmail.com>
+>>>>>
+>>>>> If ARCH_QCOM is enabled when building arm_smmu_v3,
+>>>>
+>>>> This has nothing to do with SMMUv3, though?
+>>>>
+>>>>> a dependency on
+>>>>> qcom-scm is added, which currently cannot be disabled. Add a prompt to
+>>>>> ARM_SMMU_QCOM to allow disabling this dependency.
+>>>>
+>>>> Why is that an issue - what problem arises from having the SCM driver
+>>>> enabled? AFAICS it's also selected by plenty of other drivers including
+>>>> pretty fundamental ones like pinctrl. If it is somehow important to
+>>>> exclude the SCM driver, then I can't really imagine what the use-case
+>>>> would be for building a kernel which won't work on most Qualcomm
+>>>> platforms but not simply disabling ARCH_QCOM...
+>>>>
+>>>
+>>> I am working with the android kernel. The more recent setup enables a
+>>> minimal setup of configs in a core kernel that works across all
+>>> supported arch's, then requires further support to all be modules. I
+>>> specifically am working with tegra devices. But as ARCH_QCOM is
+>>> enabled in the core defconfig, when I build smmuv3 as a module, I end
+>>> up with a dependency on qcom-scm which gets built as an additional
+>>> module. And it would be preferable to not require qcom modules to boot
+>>> a tegra device.
+>>
+>> That just proves my point though - if you disable ARM_SMMU_QCOM in that
+>> context then you've got a kernel which won't work properly on Qualcomm
+>> platforms, so you may as well have just disabled ARCH_QCOM anyway. In
+>> fact the latter is objectively better since it then would not break the
+>> fundamental premise of "a core kernel that works across all supported
+>> arch's" :/
+> 
+> I'm not sure this is entirely true. Google's GKI mandates a fixed core
+> kernel Image. This has the minimal configs that can't be built as
+> modules. Then each device build is supposed to build independent sets
+> of modules via defconfig snippets that support the rest of the
+> hardware. Then what gets booted on a device is a prebuilt core kernel
+> image provided by Google, plus the modules built by the vendor. In
+> this setup, qcom-scm and ARM_SMMU_QCOM are modules and not part of the
+> core kernel. For a qcom target, arm_smmu_v3 would be built with
+> ARM_SMMU_QCOM. But then any non-qcom target that needs arm_smmu_v3
+> currently builds and deps qcom-scm. But there's no technical reason
+> they need that dep.
 
-Applied to linux-kbuild. Thanks.
+There *is* a dependency, because when ARM_SMMU_QCOM is enabled and both 
+ARM_SMMU=m and QCOM_SCM=m, arm-smmu.ko references symbols from 
+qcom-scm.ko, so the module loader literally cannot load and dynamically 
+link one without the other. As I said, you are welcome to do the work to 
+try to relax that dependency somehow. What you cannot do is turn off 
+ARM_SMMU_QCOM and functionally break ARCH_QCOM while still claiming to 
+support ARCH_QCOM, because there is only one arm-smmu.ko - the fact that 
+it's not built-in is immaterial, it's still effectively a "core" driver 
+because it is shared by many different platforms.
 
->  scripts/generate_builtin_ranges.awk | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/scripts/generate_builtin_ranges.awk b/scripts/generate_built=
-in_ranges.awk
-> index b9ec761b3bef..d4bd5c2b998c 100755
-> --- a/scripts/generate_builtin_ranges.awk
-> +++ b/scripts/generate_builtin_ranges.awk
-> @@ -282,6 +282,11 @@ ARGIND =3D=3D 2 && !anchor && NF =3D=3D 2 && $1 ~ /^=
-0x/ && $2 !~ /^0x/ {
->  # section.
->  #
->  ARGIND =3D=3D 2 && sect && NF =3D=3D 4 && /^ [^ \*]/ && !($1 in sect_add=
-end) {
-> +       # There are a few sections with constant data (without symbols) t=
-hat
-> +       # can get resized during linking, so it is best to ignore them.
-> +       if ($1 ~ /^\.rodata\.(cst|str)[0-9]/)
-> +               next;
-> +
->         if (!($1 in sect_base)) {
->                 sect_base[$1] =3D base;
->
-> --
-> 2.45.2
->
-
-
---=20
-Best Regards
-Masahiro Yamada
+Thanks,
+Robin.
 
