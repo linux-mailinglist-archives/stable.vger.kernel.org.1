@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-123521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47412A5C5FF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C64A5C859
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 436CC3B3C67
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:16:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 212BA3B8EC0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51B02571D8;
-	Tue, 11 Mar 2025 15:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A1125E820;
+	Tue, 11 Mar 2025 15:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M835Fcl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wyaf9BXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9381C249F9;
-	Tue, 11 Mar 2025 15:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A048C255E37;
+	Tue, 11 Mar 2025 15:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706196; cv=none; b=Q2Wifl5Gm4zDNUtsWdtpcg/5mXypLkx9Kiel0hI4um+DtutGQj/qeFpTKYnUf1rJtUeW/E856xbekpnLuOhj297z4PudTWKnvzNa3iLNzbtQ1vI4cj2JLCeZY/AIKnRNfpzWh24om11paj6xpRa7y0w+kGAmrjFNb8VW84MC7zk=
+	t=1741707441; cv=none; b=XEfCTiBl79EthRXMc4zaO/1sdxk3C3a6sKRHiVsQlLcF12YRI4Xq+w8ZXjngGbHJxHQq9lYuZEx5dTw8cieoVeFyh9qvpL5Kb8bYl8rh3m/BTAMCOuPUKt6tB6ldxuhea6y3UdmvQFu2QEi0XFO9xR2z0mqDTMB8S4X+1blKGpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706196; c=relaxed/simple;
-	bh=tXmmBOUcHqxivsTqE3ADx+bPBmH0j/Yv3LZDuXMOyXk=;
+	s=arc-20240116; t=1741707441; c=relaxed/simple;
+	bh=NnqodH5BUV9T96sCQJ5EJ+io0jBphEtsWXsjR87UPb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNBGAMW3KUFpocCjW5Hhutj65b6+hCACZlLahAW/Y6o+ObmHWwEd8RLE1nyCZQJ3MK4TY7W5TJ6BGblpEE40Ac2TKH5QdsLWvIRJkI5P0ShBLq/QWMucEDeszz2VnKDl7wUVT1nm/+gpfAZw3/mP84wwOqudhRrr+WLP20dbtXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M835Fcl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFB6C4CEE9;
-	Tue, 11 Mar 2025 15:16:35 +0000 (UTC)
+	 MIME-Version; b=uiqfid8b7jwhaHQA6zwjM430iqxNTdSQUgSC3LN58bnXh6qeJwSdE8uK+omN5NSsXbJpHoRcWkjvyRxOchBDnFT1Aryjv7m0aA9Aa9PpFmRD4q11W21bVhneGMcjeG706cE05E4n798nfzAksESEdV4tyV7AHmGsE9KhHkYzJlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wyaf9BXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270DCC4CEE9;
+	Tue, 11 Mar 2025 15:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706196;
-	bh=tXmmBOUcHqxivsTqE3ADx+bPBmH0j/Yv3LZDuXMOyXk=;
+	s=korg; t=1741707441;
+	bh=NnqodH5BUV9T96sCQJ5EJ+io0jBphEtsWXsjR87UPb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M835Fcl6HXE13AF8R1DPGngJUgJ2XIp0WgR0mXHCozYYX+ghUBseS6fJGIh9yRNg3
-	 xrG6rY2eza8BFc1lldFf8NtS/72KD2eBK3WXJ45IF2mDNH53AaNxSTSIhbsDWU/33Q
-	 RcDPFuWVmIYhH593vOgbzjo7fu//GA0zvbUKNoB4=
+	b=Wyaf9BXYj9OTARXKDpvzWQ2sdNSzPomnCa+5mV7Cp5HWbbDoxrv9t4WGBZ+mTAfBD
+	 NniaWsYOLLCg44Xw17IbUHW2UhMdJYk6pqcjOfYHgDLgtVC1q8hXsI8TRXUY1dbyr2
+	 NCXyqt/kOI5KkqlQZwIU5orPR1w97bFB5bNX4Ezk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.4 287/328] x86/cpu: Properly parse CPUID leaf 0x2 TLB descriptor 0x63
+	Hoku Ishibe <me@hokuishi.be>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 391/462] ALSA: hda: intel: Add Dell ALC3271 to power_save denylist
 Date: Tue, 11 Mar 2025 16:00:57 +0100
-Message-ID: <20250311145726.317252906@linuxfoundation.org>
+Message-ID: <20250311145813.784614105@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Hoku Ishibe <me@hokuishi.be>
 
-commit f6bdaab79ee4228a143ee1b4cb80416d6ffc0c63 upstream.
+commit 1ee5aa765c22a0577ec552d460bf2035300b4b51 upstream.
 
-CPUID leaf 0x2's one-byte TLB descriptors report the number of entries
-for specific TLB types, among other properties.
+Dell XPS 13 7390 with the Realtek ALC3271 codec experiences
+persistent humming noise when the power_save mode is enabled.
+This issue occurs when the codec enters power saving mode,
+leading to unwanted noise from the speakers.
 
-Typically, each emitted descriptor implies the same number of entries
-for its respective TLB type(s).  An emitted 0x63 descriptor is an
-exception: it implies 4 data TLB entries for 1GB pages and 32 data TLB
-entries for 2MB or 4MB pages.
+This patch adds the affected model (PCI ID 0x1028:0x0962) to the
+power_save denylist to ensure power_save is disabled by default,
+preventing power-off related noise issues.
 
-For the TLB descriptors parsing code, the entry count for 1GB pages is
-encoded at the intel_tlb_table[] mapping, but the 2MB/4MB entry count is
-totally ignored.
+Steps to Reproduce
+1. Boot the system with `snd_hda_intel` loaded.
+2. Verify that `power_save` mode is enabled:
+```sh
+cat /sys/module/snd_hda_intel/parameters/power_save
+````
+output: 10 (default power save timeout)
+3. Wait for the power save timeout
+4. Observe a persistent humming noise from the speakers
+5. Disable `power_save` manually:
+```sh
+echo 0 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
+````
+6. Confirm that the noise disappears immediately.
 
-Update leaf 0x2's parsing logic 0x2 to account for 32 data TLB entries
-for 2MB/4MB pages implied by the 0x63 descriptor.
+This issue has been observed on my system, and this patch
+successfully eliminates the unwanted noise. If other users
+experience similar issues, additional reports would be helpful.
 
-Fixes: e0ba94f14f74 ("x86/tlb_info: get last level TLB entry number of CPU")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250304085152.51092-4-darwi@linutronix.de
+Signed-off-by: Hoku Ishibe <me@hokuishi.be>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250224020517.51035-1-me@hokuishi.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/intel.c |   60 ++++++++++++++++++++++++++++----------------
- 1 file changed, 39 insertions(+), 21 deletions(-)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -795,26 +795,37 @@ static unsigned int intel_size_cache(str
- }
- #endif
- 
--#define TLB_INST_4K	0x01
--#define TLB_INST_4M	0x02
--#define TLB_INST_2M_4M	0x03
--
--#define TLB_INST_ALL	0x05
--#define TLB_INST_1G	0x06
--
--#define TLB_DATA_4K	0x11
--#define TLB_DATA_4M	0x12
--#define TLB_DATA_2M_4M	0x13
--#define TLB_DATA_4K_4M	0x14
--
--#define TLB_DATA_1G	0x16
--
--#define TLB_DATA0_4K	0x21
--#define TLB_DATA0_4M	0x22
--#define TLB_DATA0_2M_4M	0x23
--
--#define STLB_4K		0x41
--#define STLB_4K_2M	0x42
-+#define TLB_INST_4K		0x01
-+#define TLB_INST_4M		0x02
-+#define TLB_INST_2M_4M		0x03
-+
-+#define TLB_INST_ALL		0x05
-+#define TLB_INST_1G		0x06
-+
-+#define TLB_DATA_4K		0x11
-+#define TLB_DATA_4M		0x12
-+#define TLB_DATA_2M_4M		0x13
-+#define TLB_DATA_4K_4M		0x14
-+
-+#define TLB_DATA_1G		0x16
-+#define TLB_DATA_1G_2M_4M	0x17
-+
-+#define TLB_DATA0_4K		0x21
-+#define TLB_DATA0_4M		0x22
-+#define TLB_DATA0_2M_4M		0x23
-+
-+#define STLB_4K			0x41
-+#define STLB_4K_2M		0x42
-+
-+/*
-+ * All of leaf 0x2's one-byte TLB descriptors implies the same number of
-+ * entries for their respective TLB types.  The 0x63 descriptor is an
-+ * exception: it implies 4 dTLB entries for 1GB pages 32 dTLB entries
-+ * for 2MB or 4MB pages.  Encode descriptor 0x63 dTLB entry count for
-+ * 2MB/4MB pages here, as its count for dTLB 1GB pages is already at the
-+ * intel_tlb_table[] mapping.
-+ */
-+#define TLB_0x63_2M_4M_ENTRIES	32
- 
- static const struct _tlb_table intel_tlb_table[] = {
- 	{ 0x01, TLB_INST_4K,		32,	" TLB_INST 4 KByte pages, 4-way set associative" },
-@@ -836,7 +847,8 @@ static const struct _tlb_table intel_tlb
- 	{ 0x5c, TLB_DATA_4K_4M,		128,	" TLB_DATA 4 KByte and 4 MByte pages" },
- 	{ 0x5d, TLB_DATA_4K_4M,		256,	" TLB_DATA 4 KByte and 4 MByte pages" },
- 	{ 0x61, TLB_INST_4K,		48,	" TLB_INST 4 KByte pages, full associative" },
--	{ 0x63, TLB_DATA_1G,		4,	" TLB_DATA 1 GByte pages, 4-way set associative" },
-+	{ 0x63, TLB_DATA_1G_2M_4M,	4,	" TLB_DATA 1 GByte pages, 4-way set associative"
-+						" (plus 32 entries TLB_DATA 2 MByte or 4 MByte pages, not encoded here)" },
- 	{ 0x6b, TLB_DATA_4K,		256,	" TLB_DATA 4 KByte pages, 8-way associative" },
- 	{ 0x6c, TLB_DATA_2M_4M,		128,	" TLB_DATA 2 MByte or 4 MByte pages, 8-way associative" },
- 	{ 0x6d, TLB_DATA_1G,		16,	" TLB_DATA 1 GByte pages, fully associative" },
-@@ -936,6 +948,12 @@ static void intel_tlb_lookup(const unsig
- 		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
- 			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
- 		break;
-+	case TLB_DATA_1G_2M_4M:
-+		if (tlb_lld_2m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
-+			tlb_lld_2m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
-+		if (tlb_lld_4m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
-+			tlb_lld_4m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
-+		fallthrough;
- 	case TLB_DATA_1G:
- 		if (tlb_lld_1g[ENTRIES] < intel_tlb_table[k].entries)
- 			tlb_lld_1g[ENTRIES] = intel_tlb_table[k].entries;
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2280,6 +2280,8 @@ static const struct snd_pci_quirk power_
+ 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
+ 	/* KONTRON SinglePC may cause a stall at runtime resume */
+ 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
++	/* Dell ALC3271 */
++	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
+ 	{}
+ };
+ #endif /* CONFIG_PM */
 
 
 
