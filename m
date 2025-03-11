@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9510BA5C7C0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4062CA5C551
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2DBC1882B94
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D0B3162381
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D7425F7BB;
-	Tue, 11 Mar 2025 15:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C16125E808;
+	Tue, 11 Mar 2025 15:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1RbYxN3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgLWz/7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7187525F782;
-	Tue, 11 Mar 2025 15:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497F125C715;
+	Tue, 11 Mar 2025 15:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707170; cv=none; b=ga8vfSd/B57ox1KaEtpUIENORGBYnsG457Gq+zqe5K9iEPbKaIzvQEUA+RjdNsVMmtGkKazzpT7XxSjtr7T0CnnnuPWYr+skERnJ9sGcfU99SNKCVy5Gh0QIIP5/UE1uBP7k4XauW1RjP3Xp4XRxY+QWouAPGDJF0BnJa68kQBE=
+	t=1741705898; cv=none; b=AQ1kSZxiAbGqvLyp1cUp4SscpbUrMlanwSNWKCVgwE4RYnMNXM+bsQlnuT5aC4rVi2gVutazHZD00ys3Wo3whuIpH6LnhpKfCBTo/Hbnz+J7YWWelfoSsKseKNR55cxj44cnVQlEdfFhgZ5r+XemM5Dkklt1bvz7IkfR7d8PS4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707170; c=relaxed/simple;
-	bh=HxzEYQ1QCFjSq6hR0rUzKQ/fM3qsk/R/8jMJz/NAFmo=;
+	s=arc-20240116; t=1741705898; c=relaxed/simple;
+	bh=6ZtGNptFug0eRvqDhIz1TVpTPFbFDOoKWirGlmr3xOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRCDtVy8Yqsx/Ta9q71dJPY0Fh/i3N7/5q9/g63TmJPIglY27ZQHBwYCcFH6LO6Seh12jFMe4r9maXS6npbAViaFQS5Ks+ZC9+ENNz7igyre4aE559wG3XBJKCbVm3GQkDPmLe2Vghn+Q4RihE0hvwYy7f3nSfKCGSalGcyeAm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1RbYxN3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC164C4CEE9;
-	Tue, 11 Mar 2025 15:32:49 +0000 (UTC)
+	 MIME-Version; b=fAiGP0DCmbu/f/iC/iYW5aCWXw81g2Q7ban0QhZT65A0QQTzHJZIwgq766zusyWyoNEv7atpdz6IpCWAaNOzwIO2ETw/UMtvchwMbZJRALjvpw/3JFYan/FwzsrGV8dyDjCZjmF0Qe+HjeTwmIQRPnAQ/E0mQR9xdiUa3sKMYNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgLWz/7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D48C4CEE9;
+	Tue, 11 Mar 2025 15:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707170;
-	bh=HxzEYQ1QCFjSq6hR0rUzKQ/fM3qsk/R/8jMJz/NAFmo=;
+	s=korg; t=1741705898;
+	bh=6ZtGNptFug0eRvqDhIz1TVpTPFbFDOoKWirGlmr3xOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1RbYxN3ycW3Uul7CGKPNw0IMnkYb7m23NjeeoSs9rxK7gOY65/g8f/4JFPg4+/qU
-	 hu4RPXy7nmiTr+yc/B4z3cBl+ldg4yplNz0TZr2M2wsrnm0Tvw+ZoMnhC20p34FRpU
-	 5eTU5zLlFqMhflzHuOwZ9+6bFphJVBYAHTU1GFy8=
+	b=xgLWz/7yFe09ANC2QS4iWhoU9OkEwoCPqcIZ++RXZkj9P+jP6vY95CIgjx24KYsM/
+	 85x94tlTT7G8eBdYVfdlWGuTrtKW4x6u9us1i2hEB2gOPeZnYJAHLqSXukvOALNqTZ
+	 sm1nDyEpya3SvV11jdpUXJTkg7SZDinjK+xg/JMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: [PATCH 5.10 297/462] nilfs2: protect access to buffers with no active references
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.4 193/328] can: c_can: fix unbalanced runtime PM disable in error path
 Date: Tue, 11 Mar 2025 15:59:23 +0100
-Message-ID: <20250311145810.095799906@linuxfoundation.org>
+Message-ID: <20250311145722.573235659@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 367a9bffabe08c04f6d725032cce3d891b2b9e1a upstream.
+commit 257a2cd3eb578ee63d6bf90475dc4f4b16984139 upstream.
 
-nilfs_lookup_dirty_data_buffers(), which iterates through the buffers
-attached to dirty data folios/pages, accesses the attached buffers without
-locking the folios/pages.
+Runtime PM is enabled as one of the last steps of probe(), so all
+earlier gotos to "exit_free_device" label were not correct and were
+leading to unbalanced runtime PM disable depth.
 
-For data cache, nilfs_clear_folio_dirty() may be called asynchronously
-when the file system degenerates to read only, so
-nilfs_lookup_dirty_data_buffers() still has the potential to cause use
-after free issues when buffers lose the protection of their dirty state
-midway due to this asynchronous clearing and are unintentionally freed by
-try_to_free_buffers().
-
-Eliminate this race issue by adjusting the lock section in this function.
-
-[konishi.ryusuke@gmail.com: adjusted for page/folio conversion]
-Link: https://lkml.kernel.org/r/20250107200202.6432-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6e2fe01dd6f9 ("can: c_can: move runtime PM enable/disable to c_can_platform")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250112-syscon-phandle-args-can-v1-1-314d9549906f@linaro.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segment.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/can/c_can/c_can_platform.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -732,7 +732,6 @@ static size_t nilfs_lookup_dirty_data_bu
- 		}
- 		if (!page_has_buffers(page))
- 			create_empty_buffers(page, i_blocksize(inode), 0);
--		unlock_page(page);
- 
- 		bh = head = page_buffers(page);
- 		do {
-@@ -742,11 +741,14 @@ static size_t nilfs_lookup_dirty_data_bu
- 			list_add_tail(&bh->b_assoc_buffers, listp);
- 			ndirties++;
- 			if (unlikely(ndirties >= nlimit)) {
-+				unlock_page(page);
- 				pagevec_release(&pvec);
- 				cond_resched();
- 				return ndirties;
- 			}
- 		} while (bh = bh->b_this_page, bh != head);
-+
-+		unlock_page(page);
+--- a/drivers/net/can/c_can/c_can_platform.c
++++ b/drivers/net/can/c_can/c_can_platform.c
+@@ -391,15 +391,16 @@ static int c_can_plat_probe(struct platf
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "registering %s failed (err=%d)\n",
+ 			KBUILD_MODNAME, ret);
+-		goto exit_free_device;
++		goto exit_pm_runtime;
  	}
- 	pagevec_release(&pvec);
- 	cond_resched();
+ 
+ 	dev_info(&pdev->dev, "%s device registered (regs=%p, irq=%d)\n",
+ 		 KBUILD_MODNAME, priv->base, dev->irq);
+ 	return 0;
+ 
+-exit_free_device:
++exit_pm_runtime:
+ 	pm_runtime_disable(priv->device);
++exit_free_device:
+ 	free_c_can_dev(dev);
+ exit:
+ 	dev_err(&pdev->dev, "probe failed\n");
 
 
 
