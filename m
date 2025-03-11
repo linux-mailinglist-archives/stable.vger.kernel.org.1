@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2EA7A5C77F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:35:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE390A5C526
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D656C1892142
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:31:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56CBB17A39E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C613325DAEC;
-	Tue, 11 Mar 2025 15:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1A125E805;
+	Tue, 11 Mar 2025 15:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9yMdLcj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAmaIRTs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8295525DD0A;
-	Tue, 11 Mar 2025 15:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C1425DCE3;
+	Tue, 11 Mar 2025 15:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707043; cv=none; b=hpgChalSEakK8rsT1j4q3z/JpoIP6MECbEDYbiVZuNWRmJyBGdPS3OvLlPgYfQiSdg+A0Pjp6wrRTPUyR5/W4rce5XWkoEfZdIvMNpMaxuH3ydRsf3tFbXE+aUoqVkIkHunT2HcmwUg4LRSLUlWzPU9WmOboKQj++LmUaza2dFI=
+	t=1741705775; cv=none; b=FlUDCC+h+EElGxzdk3kZMT52Y3BYgAJzvFkzEV6NBO/tgccBtjcWiVQ3boKJ/BfZbiAnPw2ZWTKQp8v/qM4SIrvx+Phr5JBRXOnw9XBgU6HJtjj8mui8te4UDBZv4xAZiHwEgcbToKkATNX/UpFMPld8r4ojEa0hxy4iJbhhT/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707043; c=relaxed/simple;
-	bh=aeB8EP/4gy5GT5H3ZUpmswwafp+tSNSdDkdNHx+/hZM=;
+	s=arc-20240116; t=1741705775; c=relaxed/simple;
+	bh=RLA4NnTRREKV0wBo8a5QcxRmae6wSa6aNLDwSmfg4Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErqyxFaCLvEHtiXm7Z3h75rGJe17jkKTGWOwxXLCUju7VKMr12RHaDVDnljRugQZy2Wq3MQV1BuvaMv/BrcAKoDM7hQLGp5RBaYy53MR7UPGovXpImny1vHpuiv9RdGXAO0KPa1pOvE1dwrRHKXpinpbpY6rRns76O9kJWZGWxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9yMdLcj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADBDC4CEE9;
-	Tue, 11 Mar 2025 15:30:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gd7fyJpTpC/eBjk5wIpXaxSBHrB9KQS+lca7s1fkH9ZXatC8K/0pQZkUSURFgirEwYqvuFVpCAQIlrGhz+NRPnJaiiy6As7NfWCorbSJ/eAFmjzPdXLx/IF6rwJ5QmOKzR/KnjBrldCwRL8+gaTX6UYblJ9TjRZygYz1VfSe23I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAmaIRTs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C6DC4CEE9;
+	Tue, 11 Mar 2025 15:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707043;
-	bh=aeB8EP/4gy5GT5H3ZUpmswwafp+tSNSdDkdNHx+/hZM=;
+	s=korg; t=1741705774;
+	bh=RLA4NnTRREKV0wBo8a5QcxRmae6wSa6aNLDwSmfg4Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9yMdLcjZAWEjK4+2VftaSW9yLFQ3EO58zYaYIi8jw16AsiZBrsZjHWdvri1glkk5
-	 K0P38PuS3blH3YETbbE6t0gkmag9Mz6CsO3LZydFIWTVXnOaiG/X3H4FLfSKVWZSMn
-	 CUcvz+DlM9goTnP4nPZVrcI2eqH2UgqreKn2Mfb8=
+	b=ZAmaIRTsEYoyViJb8rn5Oo2hbvx1SUgTF8zM2AlaTLVN48IdgL83y9+h3j/gH1WTP
+	 fEoIPEOGmPklUwlWl5WumJXBJVJs5q5yPpcHnAb864BAQLYs2Z4PYh5+t1cKCOjrPe
+	 Cej94zglO2Y/6rDpHLYut5u32+GaDvly9j28nHjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Robert Morris <rtm@csail.mit.edu>
-Subject: [PATCH 5.10 255/462] USB: hub: Ignore non-compliant devices with too many configs or interfaces
+	Mostafa Saleh <smostafa@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.4 151/328] vfio/platform: check the bounds of read/write syscalls
 Date: Tue, 11 Mar 2025 15:58:41 +0100
-Message-ID: <20250311145808.436257587@linuxfoundation.org>
+Message-ID: <20250311145720.908253401@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit 2240fed37afbcdb5e8b627bc7ad986891100e05d upstream.
+commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
 
-Robert Morris created a test program which can cause
-usb_hub_to_struct_hub() to dereference a NULL or inappropriate
-pointer:
+count and offset are passed from user space and not checked, only
+offset is capped to 40 bits, which can be used to read/write out of
+bounds of the device.
 
-Oops: general protection fault, probably for non-canonical address
-0xcccccccccccccccc: 0000 [#1] SMP DEBUG_PAGEALLOC PTI
-CPU: 7 UID: 0 PID: 117 Comm: kworker/7:1 Not tainted 6.13.0-rc3-00017-gf44d154d6e3d #14
-Hardware name: FreeBSD BHYVE/BHYVE, BIOS 14.0 10/17/2021
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:usb_hub_adjust_deviceremovable+0x78/0x110
-...
-Call Trace:
- <TASK>
- ? die_addr+0x31/0x80
- ? exc_general_protection+0x1b4/0x3c0
- ? asm_exc_general_protection+0x26/0x30
- ? usb_hub_adjust_deviceremovable+0x78/0x110
- hub_probe+0x7c7/0xab0
- usb_probe_interface+0x14b/0x350
- really_probe+0xd0/0x2d0
- ? __pfx___device_attach_driver+0x10/0x10
- __driver_probe_device+0x6e/0x110
- driver_probe_device+0x1a/0x90
- __device_attach_driver+0x7e/0xc0
- bus_for_each_drv+0x7f/0xd0
- __device_attach+0xaa/0x1a0
- bus_probe_device+0x8b/0xa0
- device_add+0x62e/0x810
- usb_set_configuration+0x65d/0x990
- usb_generic_driver_probe+0x4b/0x70
- usb_probe_device+0x36/0xd0
-
-The cause of this error is that the device has two interfaces, and the
-hub driver binds to interface 1 instead of interface 0, which is where
-usb_hub_to_struct_hub() looks.
-
-We can prevent the problem from occurring by refusing to accept hub
-devices that violate the USB spec by having more than one
-configuration or interface.
-
-Reported-and-tested-by: Robert Morris <rtm@csail.mit.edu>
-Cc: stable <stable@kernel.org>
-Closes: https://lore.kernel.org/linux-usb/95564.1737394039@localhost/
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/c27f3bf4-63d8-4fb5-ac82-09e3cd19f61c@rowland.harvard.edu
+Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
+Cc: stable@vger.kernel.org
+Reported-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -1804,6 +1804,17 @@ static int hub_probe(struct usb_interfac
- 	hdev = interface_to_usbdev(intf);
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -410,6 +410,11 @@ static ssize_t vfio_platform_read_mmio(s
  
- 	/*
-+	 * The USB 2.0 spec prohibits hubs from having more than one
-+	 * configuration or interface, and we rely on this prohibition.
-+	 * Refuse to accept a device that violates it.
-+	 */
-+	if (hdev->descriptor.bNumConfigurations > 1 ||
-+			hdev->actconfig->desc.bNumInterfaces > 1) {
-+		dev_err(&intf->dev, "Invalid hub with more than one config or interface\n");
+ 	count = min_t(size_t, count, reg->size - off);
+ 
++	if (off >= reg->size)
 +		return -EINVAL;
-+	}
 +
-+	/*
- 	 * Set default autosuspend delay as 0 to speedup bus suspend,
- 	 * based on the below considerations:
- 	 *
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap_nocache(reg->addr, reg->size);
+@@ -489,6 +494,11 @@ static ssize_t vfio_platform_write_mmio(
+ 
+ 	if (off >= reg->size)
+ 		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
++	if (off >= reg->size)
++		return -EINVAL;
+ 
+ 	count = min_t(size_t, count, reg->size - off);
+ 
 
 
 
