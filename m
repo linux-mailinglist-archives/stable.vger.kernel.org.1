@@ -1,158 +1,240 @@
-Return-Path: <stable+bounces-123215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B850CA5C2F8
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:47:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD595A5C302
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:51:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4D3C3AB7B7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 13:47:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D4553B1504
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 13:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF461A841F;
-	Tue, 11 Mar 2025 13:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BB31D47AD;
+	Tue, 11 Mar 2025 13:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="2Q6n5T3o"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="Oh0IUokB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta-65-227.siemens.flowmailer.net (mta-65-227.siemens.flowmailer.net [185.136.65.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FECE1C695
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 13:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A99E2AF06
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 13:50:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741700832; cv=none; b=rftoEhIAt5zcgG+BN9pgjF5LCSNDimVkwpBdB/5EU+tpk/bIV6VYrikUhZYQ4TEcMlTbd+8v4zRjdsH4GZdgNwa0l87J0l9S7yWUqohbNfonLw2rdrojTY21oNPLQsb0AM7S1wUSRGLptliXCv52eE4X+LiA0gf+jt1+T6QQsVY=
+	t=1741701059; cv=none; b=fmzHYgvfrrCzT0vOhUv2vgfM+kJxhBWmPymdokkrdcUVZfpsMVzZvxt5BhVnBJGRQaVrzvl02Oa/OudYnl1gd5TWx96RmYT28/yxM1knKqD+na5dX5iZ58/hNCPP832AzBvVaSDaJMBozUi8w9Rss17qw5JwRG5dNVoTXGZgYBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741700832; c=relaxed/simple;
-	bh=/uudrGWGaPN/n2xs6Miptt0zc6rATz/KcV0WnDpVrX0=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=Z/Zy1wXp9O7gwzOneDCfSgr3nAQ8enQedbi06rsZcLQ8sOwWxtvqT9t6DemwolTPI98FNopcvFRWs7N/tXqZbUPvMZ/rQy7EFjjl9xOpRKMctZfr8Lzdm3EPfcD07oH6A2tZdJrLnDFNP8nPNQiYV1k6ChVCIOWiiep0scsK2ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=2Q6n5T3o; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6fee50bfea5so22497697b3.1
-        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 06:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1741700829; x=1742305629; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XO2ybzFgWX+w45tby+tU47c4Q9jbDC98Z0JXMVZgPG0=;
-        b=2Q6n5T3o3c2xnRJ8C+nvWz9pMETCD9a7CPssIy+mIg7vxlWKz1F1mp65taICTCQxp/
-         VxNuxlt8PK78X6Jtd+ov5sEO6jHIbcAchQuVtWLa0ws6TeO/um92NCOJ6eAAGIUPRvox
-         7tyaP2OA2PH5GFIOzTWeMja3Q1gLp8E6o/uFwEj32UtnWIv+kyZtGALhG0b+hADoueg8
-         ngNpJZHs2kNUz6u8J3OuSPdN06JZdjGynXtG6WL5dFG5j8xtZkg8Z3qhOOoamR4NcvmW
-         QwzqMw+qGjKaewFFmt2YHM9AwKUZsd9TLJD6BApIl/1o4DJmaPoE4KL6cK8yf23RE6ie
-         Anxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741700829; x=1742305629;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XO2ybzFgWX+w45tby+tU47c4Q9jbDC98Z0JXMVZgPG0=;
-        b=Vw6QNFj67tVhWmtunSz+CFqclmyN5ngXgolmIj4Hyq5KeFO6pioLaAPysa91bEqCzI
-         Q657CEsDDSMlkzuuwSGMqbBpjGW77s7KOtat9v/Adlbcdwx+Ny2yR7OPJ5tX43B0vYzi
-         yQxK9vybPRePn5kdPWEBKPklD6SCT7MV354Uwb+XyYkEbuksjMM6uarhuJrk8ySY/2Ot
-         OaFNNBJRcyp3y6jTWNbTe9m9AC8HuE4mSwX1lC3kg4SccbbqA13bxxyhznFzED8RObEd
-         ohv6H5wVghKUCsIytzKBt/dwm/Dx8jd/JRoXpPd7EkKXcWVvz/UyeoltjPgHqiXSaJLq
-         lr1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW3FuLk9/JKKWcsSoMbRWe6lmX1HmsOukt5MKrepjIIOGAV3bVthiZ99yU34vCBZD+t/yHyu/U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSGJgUaQfWLnC9iSV+L0KFt9Xf0O5NYLA2k3H40FuMJ4+eX0CW
-	sgJacV/IsR6YzW+9ixKXyXqRKBORN22cqvvkKDuzkjvWRvFY/br4GwZ6CwlHxfOMqH4YjvZmBOD
-	IdRoBFQZ7IOoUFhBq2BXR7qaQz/kwgkdvVBSW5w==
-X-Gm-Gg: ASbGncvuf71OXN2y/OxBEmsYFE+y0riprOath4i+fOeQHZSgqlTzvfxBXskrWHdvBfb
-	JvM6a5n9d4TxPyWZGdHPQB4A8up+WegFR3bLNweVRfN0o0CJ74l3NJxMpDbDNoWbCp99tzWWvXq
-	jeQvckPtujKatVKKYxhB3RHf6MVJzFU3Vi7tUNcbn8kZ2SKM+MXhB5q8T8y98=
-X-Google-Smtp-Source: AGHT+IHDN3QjEyPFaI+q+tBg6ITEkL1KlJmFcL0VU+25Lp0H0AdiTi+BHPathj5+erzv9qHHn0N/tSSUoXvplVO7pyg=
-X-Received: by 2002:a05:690c:6813:b0:6f9:af1f:53a4 with SMTP id
- 00721157ae682-6febf3ae047mr256271357b3.32.1741700829313; Tue, 11 Mar 2025
- 06:47:09 -0700 (PDT)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 11 Mar 2025 13:47:06 +0000
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 11 Mar 2025 13:47:06 +0000
+	s=arc-20240116; t=1741701059; c=relaxed/simple;
+	bh=B1drBOZv9ezPrgWUPpogByQ0O6JbrI3vQZLKWtZt0hQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LhX3TueXXeBOFTiVkjzUU4c9Bpuy48h3nujqA8JZ2XiWCPM8G5QbePu1AT2I/Q8K9oTGipjGyCEt/BiYZ+l+fQIlj9zFbfn/CcFsPdGaJ7FhEw/d/5BB5hamC36hfgc695wAmQ7toSuU/zE6PR5fj7hA8CiZ876OWygeeEnTHf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=Oh0IUokB; arc=none smtp.client-ip=185.136.65.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id 20250311135051370afddccd64a49456
+        for <stable@vger.kernel.org>;
+        Tue, 11 Mar 2025 14:50:51 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=felix.moessbauer@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=JbxsWCQEvdcvIOcP/MvY4CehNNotjYZd3ttvNWCCYRI=;
+ b=Oh0IUokBOG0KXKXb/c90m9QbYzEQmth/XynQGBIo++CIeN14qAG1QMMu2aLSZIO7Gn0SO6
+ bgGZhvTJA3mgFtlP2zCwdg23vpVWEO8tTxKwZueyf5zFVeBmYKkXEzGXfLI7lIA4ymzFCl6H
+ 6STgif5pLVw+68DgbMbud+nU9jR7dxcGIVD72rWYijzAlUsuIdvu0Jvhx6lIgrDDtTiz10UZ
+ IbLJzA/7SXyKtKTkF8H55JAAp3xLRmEAupvzx/G3Qz1gxvv6qMaK04AHqnrsAKKfEFlzK4iB
+ GCpgMfb1glwbzKvLNH2ifXq3PZJC/mPNI8i/aWhlfmI7uOxTWdErfS1g==;
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
+To: stable@vger.kernel.org
+Cc: Felix Moessbauer <felix.moessbauer@siemens.com>,
+	linux-kernel@vger.kernel.org,
+	tglx@linutronix.de,
+	qyousef@layalina.io,
+	frederic@kernel.org,
+	jan.kiszka@siemens.com,
+	bigeasy@linutronix.de,
+	anna-maria@linutronix.de
+Subject: [PATCH 6.6.y 1/1] hrtimer: Use and report correct timerslack values for realtime tasks
+Date: Tue, 11 Mar 2025 14:49:18 +0100
+Message-ID: <20250311134931.290856-1-felix.moessbauer@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Reply-To: kernelci@lists.linux.dev
-Date: Tue, 11 Mar 2025 13:47:06 +0000
-X-Gm-Features: AQ5f1Jpg2xFoTQk-3cindz2T69_7jR3bgyi5fDmcCGq_ao1rQmMw6Indk9AnvQY
-Message-ID: <CACo-S-0BKPQcA2Qh-7jmuU-YuX9E_wWcHEgr8pDhgwkzt0K5cQ@mail.gmail.com>
-Subject: [REGRESSION] stable-rc/linux-5.10.y: (build) in vmlinux
- (Makefile:1212) [logspec:kbuild,kbuild.other]
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1321639:519-21489:flowmailer
 
-Hello,
+commit ed4fb6d7ef68111bb539283561953e5c6e9a6e38 upstream.
 
-New build issue found on stable-rc/linux-5.10.y:
+The timerslack_ns setting is used to specify how much the hardware
+timers should be delayed, to potentially dispatch multiple timers in a
+single interrupt. This is a performance optimization. Timers of
+realtime tasks (having a realtime scheduling policy) should not be
+delayed.
 
+This logic was inconsitently applied to the hrtimers, leading to delays
+of realtime tasks which used timed waits for events (e.g. condition
+variables). Due to the downstream override of the slack for rt tasks,
+the procfs reported incorrect (non-zero) timerslack_ns values.
+
+This is changed by setting the timer_slack_ns task attribute to 0 for
+all tasks with a rt policy. By that, downstream users do not need to
+specially handle rt tasks (w.r.t. the slack), and the procfs entry
+shows the correct value of "0". Setting non-zero slack values (either
+via procfs or PR_SET_TIMERSLACK) on tasks with a rt policy is ignored,
+as stated in "man 2 PR_SET_TIMERSLACK":
+
+  Timer slack is not applied to threads that are scheduled under a
+  real-time scheduling policy (see sched_setscheduler(2)).
+
+The special handling of timerslack on rt tasks in downstream users
+is removed as well.
+
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240814121032.368444-2-felix.moessbauer@siemens.com
 ---
- in vmlinux (Makefile:1212) [logspec:kbuild,kbuild.other]
----
+ fs/proc/base.c        |  9 +++++----
+ fs/select.c           | 11 ++++-------
+ kernel/sched/core.c   |  8 ++++++++
+ kernel/sys.c          |  2 ++
+ kernel/time/hrtimer.c | 18 +++---------------
+ 5 files changed, 22 insertions(+), 26 deletions(-)
 
-- dashboard: https://d.kernelci.org/issue/maestro:d5c2be698989c7de46471109a=
-ae8df0339b713c1
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git
-- commit HEAD:  a0e8dfa03993fda7b4d4b696c50f69726522abba
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 699f085d4de7d..91fe20b7657c0 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -2633,10 +2633,11 @@ static ssize_t timerslack_ns_write(struct file *file, const char __user *buf,
+ 	}
+ 
+ 	task_lock(p);
+-	if (slack_ns == 0)
+-		p->timer_slack_ns = p->default_timer_slack_ns;
+-	else
+-		p->timer_slack_ns = slack_ns;
++	if (task_is_realtime(p))
++		slack_ns = 0;
++	else if (slack_ns == 0)
++		slack_ns = p->default_timer_slack_ns;
++	p->timer_slack_ns = slack_ns;
+ 	task_unlock(p);
+ 
+ out:
+diff --git a/fs/select.c b/fs/select.c
+index 3f730b8581f65..e66b6189845ea 100644
+--- a/fs/select.c
++++ b/fs/select.c
+@@ -77,19 +77,16 @@ u64 select_estimate_accuracy(struct timespec64 *tv)
+ {
+ 	u64 ret;
+ 	struct timespec64 now;
++	u64 slack = current->timer_slack_ns;
+ 
+-	/*
+-	 * Realtime tasks get a slack of 0 for obvious reasons.
+-	 */
+-
+-	if (rt_task(current))
++	if (slack == 0)
+ 		return 0;
+ 
+ 	ktime_get_ts64(&now);
+ 	now = timespec64_sub(*tv, now);
+ 	ret = __estimate_accuracy(&now);
+-	if (ret < current->timer_slack_ns)
+-		return current->timer_slack_ns;
++	if (ret < slack)
++		return slack;
+ 	return ret;
+ }
+ 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 784a4f8409453..3d6dc03e4a7d3 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7530,6 +7530,14 @@ static void __setscheduler_params(struct task_struct *p,
+ 	else if (fair_policy(policy))
+ 		p->static_prio = NICE_TO_PRIO(attr->sched_nice);
+ 
++	/* rt-policy tasks do not have a timerslack */
++	if (task_is_realtime(p)) {
++		p->timer_slack_ns = 0;
++	} else if (p->timer_slack_ns == 0) {
++		/* when switching back to non-rt policy, restore timerslack */
++		p->timer_slack_ns = p->default_timer_slack_ns;
++	}
++
+ 	/*
+ 	 * __sched_setscheduler() ensures attr->sched_priority == 0 when
+ 	 * !rt_policy. Always setting this ensures that things like
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 44b5759903332..355de0b65c235 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2535,6 +2535,8 @@ SYSCALL_DEFINE5(prctl, int, option, unsigned long, arg2, unsigned long, arg3,
+ 			error = current->timer_slack_ns;
+ 		break;
+ 	case PR_SET_TIMERSLACK:
++		if (task_is_realtime(current))
++			break;
+ 		if (arg2 <= 0)
+ 			current->timer_slack_ns =
+ 					current->default_timer_slack_ns;
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index e99b1305e1a5f..5db6912b8f6e1 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -2093,14 +2093,9 @@ long hrtimer_nanosleep(ktime_t rqtp, const enum hrtimer_mode mode,
+ 	struct restart_block *restart;
+ 	struct hrtimer_sleeper t;
+ 	int ret = 0;
+-	u64 slack;
+-
+-	slack = current->timer_slack_ns;
+-	if (rt_task(current))
+-		slack = 0;
+ 
+ 	hrtimer_init_sleeper_on_stack(&t, clockid, mode);
+-	hrtimer_set_expires_range_ns(&t.timer, rqtp, slack);
++	hrtimer_set_expires_range_ns(&t.timer, rqtp, current->timer_slack_ns);
+ 	ret = do_nanosleep(&t, mode);
+ 	if (ret != -ERESTART_RESTARTBLOCK)
+ 		goto out;
+@@ -2281,7 +2276,7 @@ void __init hrtimers_init(void)
+ /**
+  * schedule_hrtimeout_range_clock - sleep until timeout
+  * @expires:	timeout value (ktime_t)
+- * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
++ * @delta:	slack in expires timeout (ktime_t)
+  * @mode:	timer mode
+  * @clock_id:	timer clock to be used
+  */
+@@ -2308,13 +2303,6 @@ schedule_hrtimeout_range_clock(ktime_t *expires, u64 delta,
+ 		return -EINTR;
+ 	}
+ 
+-	/*
+-	 * Override any slack passed by the user if under
+-	 * rt contraints.
+-	 */
+-	if (rt_task(current))
+-		delta = 0;
+-
+ 	hrtimer_init_sleeper_on_stack(&t, clock_id, mode);
+ 	hrtimer_set_expires_range_ns(&t.timer, *expires, delta);
+ 	hrtimer_sleeper_start_expires(&t, mode);
+@@ -2334,7 +2322,7 @@ EXPORT_SYMBOL_GPL(schedule_hrtimeout_range_clock);
+ /**
+  * schedule_hrtimeout_range - sleep until timeout
+  * @expires:	timeout value (ktime_t)
+- * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
++ * @delta:	slack in expires timeout (ktime_t)
+  * @mode:	timer mode
+  *
+  * Make the current task sleep until the given expiry time has
+-- 
+2.47.2
 
-
-Log excerpt:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-.lds
-In file included from ./include/linux/kernel.h:15,
-net/ipv6/udp.c: In function =E2=80=98udp_v6_send_skb=E2=80=99:
-./include/linux/minmax.h:20:35: warning: comparison of distinct
-pointer types lacks a cast
-./include/linux/minmax.h:26:18: note: in expansion of macro =E2=80=98__type=
-check=E2=80=99
-./include/linux/minmax.h:36:31: note: in expansion of macro =E2=80=98__safe=
-_cmp=E2=80=99
-./include/linux/minmax.h:45:25: note: in expansion of macro =E2=80=98__care=
-ful_cmp=E2=80=99
-net/ipv6/udp.c:1213:28: note: in expansion of macro =E2=80=98min=E2=80=99
-In file included from ./include/linux/uaccess.h:7,
-net/ipv4/udp.c: In function =E2=80=98udp_send_skb=E2=80=99:
-./include/linux/minmax.h:20:35: warning: comparison of distinct
-pointer types lacks a cast
-./include/linux/minmax.h:26:18: note: in expansion of macro =E2=80=98__type=
-check=E2=80=99
-./include/linux/minmax.h:36:31: note: in expansion of macro =E2=80=98__safe=
-_cmp=E2=80=99
-./include/linux/minmax.h:45:25: note: in expansion of macro =E2=80=98__care=
-ful_cmp=E2=80=99
-net/ipv4/udp.c:926:28: note: in expansion of macro =E2=80=98min=E2=80=99
-FAILED unresolved symbol filp_close
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-
-
-# Builds where the incident occurred:
-
-## cros://chromeos-5.10/x86_64/chromeos-amd-stoneyridge.flavour.config+lab-=
-setup+x86-board+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_MODULE_COMPRESS_NONE=3Dy
-on (x86_64):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67ceffea18018371957ebdc0
-
-
-#kernelci issue maestro:d5c2be698989c7de46471109aae8df0339b713c1
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
