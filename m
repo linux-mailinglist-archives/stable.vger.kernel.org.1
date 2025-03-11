@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEDDA5C87A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4CCA5C611
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1463C188C22F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA3E11885FE7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545F925EF8F;
-	Tue, 11 Mar 2025 15:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DBD25BACC;
+	Tue, 11 Mar 2025 15:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0r203Qhk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8mgzdVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111DA3C0B;
-	Tue, 11 Mar 2025 15:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB28D1BD00C;
+	Tue, 11 Mar 2025 15:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707555; cv=none; b=tmTlE+XwRW8CPME8/YBgOuCF4GsrnkK3QaaR8y5S4GgLPiesL/bpnasW/ukWRdRBLQzJ6PKXmu+ktYSW1TYiPZOkL1xNf8mLwsbxY6nfXihkYkRSl9DBECa29FKb4k8YpFF287WHdOEbnyet+z94zQdarEDKCB3aeLDQ8XPAYZ4=
+	t=1741706284; cv=none; b=Ius+VhIml8Cz5HfPKpm9DWtKl6keFlvf7QVUttNeJygJzbcUZAqjIQ1B0Bpu/LYgqbF36mNaTdDjxUxmBAba1xGxJtinfmanF2orAFEzZe2vUG+htXp3qCXMA+cGbrjts1hU7Qjo2o6hykVrCG37TtAXp/gm8N0TmaXYZeS5Z1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707555; c=relaxed/simple;
-	bh=gw53YeQrHmZQjf3qx1MWY7N/3VKe90GfuZ3/FYUmEPc=;
+	s=arc-20240116; t=1741706284; c=relaxed/simple;
+	bh=RC6zOFGHWHH5YJKQbL+XlhZfGw+Y6hyDMyeYbHSNI2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUaefxg8G1ZcuzSVGdb5WCfw2b0mvyH0hgEi0y7L8lWSC2+I0WXj2ncHp3K+8DW8U3itLKz1exo+dtEQFOHI18id2Ph8wegwRBRP3O489qvNAIsjTcTXa4lqYojpX8gZHIct/Af27rh7V6lrxbAeseVQVqRfOK7uROHB3UaoyTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0r203Qhk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EE4C4CEE9;
-	Tue, 11 Mar 2025 15:39:14 +0000 (UTC)
+	 MIME-Version; b=fOiiCxuLFuTpmegWsDaAp+dqorQoYKdlYtWfSOVCppP6OFz08T9FT4nVWDq5NzSDvfmbpzi44PLz6+1Mk+JLQn72h228XEUCK3fo1+n7b/lrmYFnsANoZzrn0eEVp2BTvqjD2Rer9PBnYeujRIRq86dQYQvjgJkhB39FcD3OtOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8mgzdVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62838C4CEE9;
+	Tue, 11 Mar 2025 15:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707554;
-	bh=gw53YeQrHmZQjf3qx1MWY7N/3VKe90GfuZ3/FYUmEPc=;
+	s=korg; t=1741706283;
+	bh=RC6zOFGHWHH5YJKQbL+XlhZfGw+Y6hyDMyeYbHSNI2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0r203Qhkv3mkUIkpIhrs4dq5As6xWa95pLcmffyONAXMp6UAxNr/aH8S9UcnVt9Ph
-	 JWQsM1U3qJKangiT7x7voecTRFUE0xZGex+3ZdkaVFbCB7f6T1441/xoGHxGWqvypO
-	 3GDUWjUA816MHls8km3k4/xDnxP1Ohha4N4GJvvk=
+	b=u8mgzdVDyt2/wN11t80Jhx3M7xslFZPOm6VXv2LGgBRLlzvvL4ItDXlccEcyzXGkj
+	 wrLsFEyP57ouF6Kdobcyo0sJ5LMzZR3SOs3xKHzXcHsctFW4WHwMWub7mDxDJqljHa
+	 TEhBkmb6Z9kVpdYxYU3/1M0WOBYp+6Nv1whEEDrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.10 429/462] usb: renesas_usbhs: Flush the notify_hotplug_work
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 5.4 325/328] intel_th: pci: Add Panther Lake-H support
 Date: Tue, 11 Mar 2025 16:01:35 +0100
-Message-ID: <20250311145815.283339706@linuxfoundation.org>
+Message-ID: <20250311145727.814835446@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit 552ca6b87e3778f3dd5b87842f95138162e16c82 upstream.
+commit a70034d6c0d5f3cdee40bb00a578e17fd2ebe426 upstream.
 
-When performing continuous unbind/bind operations on the USB drivers
-available on the Renesas RZ/G2L SoC, a kernel crash with the message
-"Unable to handle kernel NULL pointer dereference at virtual address"
-may occur. This issue points to the usbhsc_notify_hotplug() function.
+Add support for the Trace Hub in Panther Lake-H.
 
-Flush the delayed work to avoid its execution when driver resources are
-unavailable.
-
-Fixes: bc57381e6347 ("usb: renesas_usbhs: use delayed_work instead of work_struct")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250225110248.870417-4-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20250211185017.1759193-5-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -774,6 +774,8 @@ static int usbhs_remove(struct platform_
- 
- 	dev_dbg(&pdev->dev, "usb remove\n");
- 
-+	flush_delayed_work(&priv->notify_hotplug_work);
-+
- 	/* power off */
- 	if (!usbhs_get_dparam(priv, runtime_pwctrl))
- 		usbhsc_power_ctrl(priv, 0);
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -330,6 +330,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Panther Lake-H */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xe324),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Rocket Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x4c19),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
