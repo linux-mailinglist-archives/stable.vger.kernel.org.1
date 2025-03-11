@@ -1,98 +1,158 @@
-Return-Path: <stable+bounces-123214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DACBFA5C296
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B850CA5C2F8
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED2913AFE3F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 13:26:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4D3C3AB7B7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 13:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA931BF33F;
-	Tue, 11 Mar 2025 13:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF461A841F;
+	Tue, 11 Mar 2025 13:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lo5NgzJj"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="2Q6n5T3o"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2162E5680;
-	Tue, 11 Mar 2025 13:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FECE1C695
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 13:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741699601; cv=none; b=Y/vIYeZbtrpI8ogDtBVPHHu19AmbLUMOlkdlOVCozDJ9eiC0SbqIkWP5hfBXht142yFvUu4BKBmSC1cR9YAxzI3oZ00CkkqdjDX9R5eMxIu0YX+W23k/SI5heyJUE/XqZvHLOUXg3wToszHxrqous/uRJ9NHXH4QyK9r685+K3E=
+	t=1741700832; cv=none; b=rftoEhIAt5zcgG+BN9pgjF5LCSNDimVkwpBdB/5EU+tpk/bIV6VYrikUhZYQ4TEcMlTbd+8v4zRjdsH4GZdgNwa0l87J0l9S7yWUqohbNfonLw2rdrojTY21oNPLQsb0AM7S1wUSRGLptliXCv52eE4X+LiA0gf+jt1+T6QQsVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741699601; c=relaxed/simple;
-	bh=6vwoLYDEO0sclPWLvRykycYPWlixS3LqBxJsGlHWJM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dAOiW40ByC0tY67yc402YdDhhfXEQtpg64KBNNHIqovT+Jb58g2lwX1xOE8Qg0F5WKuRe5zCnwQLZE0f05B0tippqkp5I6UbLXR5FsojzBEo5AsLnzIwcAvxdeXFLqqCsFVthes02Mbehz9E2ot7HUB3KsvIhu0iFl2ZEHUAOQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lo5NgzJj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9859DC4CEF0;
-	Tue, 11 Mar 2025 13:26:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741699600;
-	bh=6vwoLYDEO0sclPWLvRykycYPWlixS3LqBxJsGlHWJM8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lo5NgzJjYmOF9Cwwrf0cKvMjjq3nZpstoT400EUtgsRsM6sukQ9S7wWw9O3cVsI70
-	 MbjWzLEYRf+CBWlzVYrXAoKUMQ7quZh5tCunbkw3q+CbLoFXFQ3PY2FGmgMzi3xdW/
-	 nWewRV7nrtrM21QvxiW3ieytUH/Y+GYuQxzZdfBSxvK56TWCGRvrW1UezbGIP5rFtM
-	 HOrxBXzs4/4PbOW9K1POFWp5iX4kcZl/hMCPyVvNjfNiyVgAE0tR/+iWdl/4aYz2tW
-	 oxKlNBCjrcyKQWWt/5Jkdm1lu5WRfa2YBNdWm96+WOOb6VztuoCMyWzjbZ2N9mgNpt
-	 5ZsCq3T3yyu3w==
-Date: Tue, 11 Mar 2025 13:26:33 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.1 000/109] 6.1.131-rc1 review
-Message-ID: <86bbe03e-7ded-4bb3-a58b-bf5e3b5d9368@sirena.org.uk>
-References: <20250310170427.529761261@linuxfoundation.org>
+	s=arc-20240116; t=1741700832; c=relaxed/simple;
+	bh=/uudrGWGaPN/n2xs6Miptt0zc6rATz/KcV0WnDpVrX0=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=Z/Zy1wXp9O7gwzOneDCfSgr3nAQ8enQedbi06rsZcLQ8sOwWxtvqT9t6DemwolTPI98FNopcvFRWs7N/tXqZbUPvMZ/rQy7EFjjl9xOpRKMctZfr8Lzdm3EPfcD07oH6A2tZdJrLnDFNP8nPNQiYV1k6ChVCIOWiiep0scsK2ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=2Q6n5T3o; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6fee50bfea5so22497697b3.1
+        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 06:47:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1741700829; x=1742305629; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=XO2ybzFgWX+w45tby+tU47c4Q9jbDC98Z0JXMVZgPG0=;
+        b=2Q6n5T3o3c2xnRJ8C+nvWz9pMETCD9a7CPssIy+mIg7vxlWKz1F1mp65taICTCQxp/
+         VxNuxlt8PK78X6Jtd+ov5sEO6jHIbcAchQuVtWLa0ws6TeO/um92NCOJ6eAAGIUPRvox
+         7tyaP2OA2PH5GFIOzTWeMja3Q1gLp8E6o/uFwEj32UtnWIv+kyZtGALhG0b+hADoueg8
+         ngNpJZHs2kNUz6u8J3OuSPdN06JZdjGynXtG6WL5dFG5j8xtZkg8Z3qhOOoamR4NcvmW
+         QwzqMw+qGjKaewFFmt2YHM9AwKUZsd9TLJD6BApIl/1o4DJmaPoE4KL6cK8yf23RE6ie
+         Anxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741700829; x=1742305629;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XO2ybzFgWX+w45tby+tU47c4Q9jbDC98Z0JXMVZgPG0=;
+        b=Vw6QNFj67tVhWmtunSz+CFqclmyN5ngXgolmIj4Hyq5KeFO6pioLaAPysa91bEqCzI
+         Q657CEsDDSMlkzuuwSGMqbBpjGW77s7KOtat9v/Adlbcdwx+Ny2yR7OPJ5tX43B0vYzi
+         yQxK9vybPRePn5kdPWEBKPklD6SCT7MV354Uwb+XyYkEbuksjMM6uarhuJrk8ySY/2Ot
+         OaFNNBJRcyp3y6jTWNbTe9m9AC8HuE4mSwX1lC3kg4SccbbqA13bxxyhznFzED8RObEd
+         ohv6H5wVghKUCsIytzKBt/dwm/Dx8jd/JRoXpPd7EkKXcWVvz/UyeoltjPgHqiXSaJLq
+         lr1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW3FuLk9/JKKWcsSoMbRWe6lmX1HmsOukt5MKrepjIIOGAV3bVthiZ99yU34vCBZD+t/yHyu/U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSGJgUaQfWLnC9iSV+L0KFt9Xf0O5NYLA2k3H40FuMJ4+eX0CW
+	sgJacV/IsR6YzW+9ixKXyXqRKBORN22cqvvkKDuzkjvWRvFY/br4GwZ6CwlHxfOMqH4YjvZmBOD
+	IdRoBFQZ7IOoUFhBq2BXR7qaQz/kwgkdvVBSW5w==
+X-Gm-Gg: ASbGncvuf71OXN2y/OxBEmsYFE+y0riprOath4i+fOeQHZSgqlTzvfxBXskrWHdvBfb
+	JvM6a5n9d4TxPyWZGdHPQB4A8up+WegFR3bLNweVRfN0o0CJ74l3NJxMpDbDNoWbCp99tzWWvXq
+	jeQvckPtujKatVKKYxhB3RHf6MVJzFU3Vi7tUNcbn8kZ2SKM+MXhB5q8T8y98=
+X-Google-Smtp-Source: AGHT+IHDN3QjEyPFaI+q+tBg6ITEkL1KlJmFcL0VU+25Lp0H0AdiTi+BHPathj5+erzv9qHHn0N/tSSUoXvplVO7pyg=
+X-Received: by 2002:a05:690c:6813:b0:6f9:af1f:53a4 with SMTP id
+ 00721157ae682-6febf3ae047mr256271357b3.32.1741700829313; Tue, 11 Mar 2025
+ 06:47:09 -0700 (PDT)
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 11 Mar 2025 13:47:06 +0000
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 11 Mar 2025 13:47:06 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="n0XCh5xlJfjQbuu6"
-Content-Disposition: inline
-In-Reply-To: <20250310170427.529761261@linuxfoundation.org>
-X-Cookie: Androphobia:
+from: KernelCI bot <bot@kernelci.org>
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 11 Mar 2025 13:47:06 +0000
+X-Gm-Features: AQ5f1Jpg2xFoTQk-3cindz2T69_7jR3bgyi5fDmcCGq_ao1rQmMw6Indk9AnvQY
+Message-ID: <CACo-S-0BKPQcA2Qh-7jmuU-YuX9E_wWcHEgr8pDhgwkzt0K5cQ@mail.gmail.com>
+Subject: [REGRESSION] stable-rc/linux-5.10.y: (build) in vmlinux
+ (Makefile:1212) [logspec:kbuild,kbuild.other]
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+New build issue found on stable-rc/linux-5.10.y:
+
+---
+ in vmlinux (Makefile:1212) [logspec:kbuild,kbuild.other]
+---
+
+- dashboard: https://d.kernelci.org/issue/maestro:d5c2be698989c7de46471109a=
+ae8df0339b713c1
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git
+- commit HEAD:  a0e8dfa03993fda7b4d4b696c50f69726522abba
 
 
---n0XCh5xlJfjQbuu6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Log excerpt:
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+.lds
+In file included from ./include/linux/kernel.h:15,
+net/ipv6/udp.c: In function =E2=80=98udp_v6_send_skb=E2=80=99:
+./include/linux/minmax.h:20:35: warning: comparison of distinct
+pointer types lacks a cast
+./include/linux/minmax.h:26:18: note: in expansion of macro =E2=80=98__type=
+check=E2=80=99
+./include/linux/minmax.h:36:31: note: in expansion of macro =E2=80=98__safe=
+_cmp=E2=80=99
+./include/linux/minmax.h:45:25: note: in expansion of macro =E2=80=98__care=
+ful_cmp=E2=80=99
+net/ipv6/udp.c:1213:28: note: in expansion of macro =E2=80=98min=E2=80=99
+In file included from ./include/linux/uaccess.h:7,
+net/ipv4/udp.c: In function =E2=80=98udp_send_skb=E2=80=99:
+./include/linux/minmax.h:20:35: warning: comparison of distinct
+pointer types lacks a cast
+./include/linux/minmax.h:26:18: note: in expansion of macro =E2=80=98__type=
+check=E2=80=99
+./include/linux/minmax.h:36:31: note: in expansion of macro =E2=80=98__safe=
+_cmp=E2=80=99
+./include/linux/minmax.h:45:25: note: in expansion of macro =E2=80=98__care=
+ful_cmp=E2=80=99
+net/ipv4/udp.c:926:28: note: in expansion of macro =E2=80=98min=E2=80=99
+FAILED unresolved symbol filp_close
 
-On Mon, Mar 10, 2025 at 06:05:44PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.131 release.
-> There are 109 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
 
-Tested-by: Mark Brown <broonie@kernel.org>
 
---n0XCh5xlJfjQbuu6
-Content-Type: application/pgp-signature; name="signature.asc"
+# Builds where the incident occurred:
 
------BEGIN PGP SIGNATURE-----
+## cros://chromeos-5.10/x86_64/chromeos-amd-stoneyridge.flavour.config+lab-=
+setup+x86-board+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_MODULE_COMPRESS_NONE=3Dy
+on (x86_64):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:67ceffea18018371957ebdc0
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfQOgkACgkQJNaLcl1U
-h9DZ3gf9Gks+kHYmX0qfwt7VoCfZ+21YggJqANgsIPTOwMKOK5IwVqpImXRLwByy
-EG72+U91YXKKfVLoqEx8yoLfgv0Dufh7NJV5IPmxk5SJkOXSZNKJsyywsDnbL4Wi
-Bm1JXTf+WmdY0CUouUdB8WyJHg/qD5Mckp6GDyCZbZdQjAEC6bzvLzh03s4FPdDq
-IB95MN/8wQUyoRqzIjsi1irB2zF42WyQIkL5mWMbLnsjuz0xiCC8v39R2L4j+f4T
-PD3xkhx4E/ECp+rZFVx0qIgvmVEjJxTZ+6AscWw8pRu4b2QIZZF0nCObF53hfIqv
-Ek90wH3sosf7EvFmDZl2NRocs3AeyQ==
-=w4Xy
------END PGP SIGNATURE-----
 
---n0XCh5xlJfjQbuu6--
+#kernelci issue maestro:d5c2be698989c7de46471109aae8df0339b713c1
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
