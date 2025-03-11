@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-123416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A99A5C532
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:12:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F015AA5C7B2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:38:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C190C7AB61B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:10:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0CA71683F0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D0D25DD0B;
-	Tue, 11 Mar 2025 15:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E292C25BABF;
+	Tue, 11 Mar 2025 15:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0r4eNXqe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8VP6jMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EAA25C715;
-	Tue, 11 Mar 2025 15:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F91E25BAAA;
+	Tue, 11 Mar 2025 15:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705892; cv=none; b=XFtS9gunAO6L9e/H3GJCU8SLs4WhSkQUG4btg4tf5GfU/cKK5Dtcd4Toqte2o2dJPtQM7CNP2NizhNp0WqbTsD/MSliCgWIZMANVZB8RDpvgj/93cE05VpbCIzLi90VQ8xuxlhg0Kox4EdF31Uj6+3/tSC+kaUdUmrAkJz70NbQ=
+	t=1741707160; cv=none; b=HZpVQND0XDI2PJ+gYknXzazOViKXTskwX66Rru/NFyJoM+nBTdQgYzjfs8VRknFyTT0rxlUGfLzD0lxQ4P+0Q5908qvhk9rOe9xmqtL2fHu53hm1Fxh/KZnwnKFLUJ1z0nNfwX6S9ZzqtGPgqmEMZz+JpUHiQhvqAIZZ0RGELvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705892; c=relaxed/simple;
-	bh=NR1/0xhRUOIFoSi9QHQFGEWXLe+Aq1WbR2OBNs+UKKU=;
+	s=arc-20240116; t=1741707160; c=relaxed/simple;
+	bh=QCfJAYwxiZN5wXIPZH+AHLTBgQo+3mY2QhO61yZoxU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udEamMuMuM/QfGne5sbo8faQOosf1oGh7ClMXWzxeb78oZlrbAgZgbSGn67vNyTgG/euIpX9G2cE53q1tW+AAsVcLcZTu35KRSW00b2A7+xdKxyQNmT1VdeE/Tw0LCk7a9Faph1T+5SsKOxIgD/cbLMXVxZvcCv+EvnEbGnnrgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0r4eNXqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9D0C4CEE9;
-	Tue, 11 Mar 2025 15:11:31 +0000 (UTC)
+	 MIME-Version; b=CP+d/pxrR6y0FzQ8dtwifo4/NT1RfEWM3cy6Zd34TEgWSaXsGn/kSUfS4ekftEcCdT/syC8mg9ahSPqbLF5snwkr04KhDShXTHg7IjJEQwXFlOPjVlFYbIYoridK9tk6vM2sNEZv7AZ8RtoJRuawyxmXF6DFamQ/y0OWvZjNzrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8VP6jMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28747C4CEE9;
+	Tue, 11 Mar 2025 15:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705892;
-	bh=NR1/0xhRUOIFoSi9QHQFGEWXLe+Aq1WbR2OBNs+UKKU=;
+	s=korg; t=1741707160;
+	bh=QCfJAYwxiZN5wXIPZH+AHLTBgQo+3mY2QhO61yZoxU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0r4eNXqe9nLLy59ZxXpTVHY/WV87lRjKspILn4EtEC0JyC4Wehl3WzQhwTj1uhwMN
-	 Ts4kP4yB6PTTy3pI8gvi8nzxG8DAWOKB5r5kzZtePXuise0r+1nyKQpH4Nlhc6+enX
-	 Tqflw1eJ70wCtMl7e8Nexyk8UdydCHWT7jBdyijc=
+	b=E8VP6jMjsSab6n1tU+uKR9vlxO8bQO3AO3OK6+P4jWJnFm1ZKD3RHo1lT/HHCPPSU
+	 BFpfXO2WJGvg3Pto0wutt7jVP6LFF4ox665EHBpwtedDCu7oZxj49UnKpL0rhLzHCC
+	 0tX6yCvol7zP4pZBc5Adyj7yrScvSNhDZeE71cYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 191/328] USB: serial: option: fix Telit Cinterion FN990A name
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: [PATCH 5.10 295/462] nilfs2: do not output warnings when clearing dirty buffers
 Date: Tue, 11 Mar 2025 15:59:21 +0100
-Message-ID: <20250311145722.490330873@linuxfoundation.org>
+Message-ID: <20250311145810.018470698@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 12606fe73f33647c5e79bf666833bf0b225e649d upstream.
+commit 299910dcb4525ac0274f3efa9527876315ba4f67 upstream.
 
-The correct name for FN990 is FN990A so use it in order to avoid
-confusion with FN990B.
+After detecting file system corruption and degrading to a read-only mount,
+dirty folios and buffers in the page cache are cleared, and a large number
+of warnings are output at that time, often filling up the kernel log.
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+In this case, since the degrading to a read-only mount is output to the
+kernel log, these warnings are not very meaningful, and are rather a
+nuisance in system management and debugging.
+
+The related nilfs2-specific page/folio routines have a silent argument
+that suppresses the warning output, but since it is not currently used
+meaningfully, remove both the silent argument and the warning output.
+
+[konishi.ryusuke@gmail.com: adjusted for page/folio conversion]
+Link: https://lkml.kernel.org/r/20240816090128.4561-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: ca76bb226bf4 ("nilfs2: do not force clear folio if buffer is referenced")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/nilfs2/inode.c |    4 ++--
+ fs/nilfs2/mdt.c   |    6 +++---
+ fs/nilfs2/page.c  |   20 +++-----------------
+ fs/nilfs2/page.h  |    4 ++--
+ 4 files changed, 10 insertions(+), 24 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1370,15 +1370,15 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1063, 0xff),	/* Telit LN920 (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990 (rmnet) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1070, 0xff),	/* Telit FN990A (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990 (MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1071, 0xff),	/* Telit FN990A (MBIM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990 (RNDIS) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1072, 0xff),	/* Telit FN990A (RNDIS) */
- 	  .driver_info = NCTRL(2) | RSVD(3) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990 (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990A (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990 (PCIe) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
- 	  .driver_info = RSVD(0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -162,7 +162,7 @@ static int nilfs_writepages(struct addre
+ 	int err = 0;
+ 
+ 	if (sb_rdonly(inode->i_sb)) {
+-		nilfs_clear_dirty_pages(mapping, false);
++		nilfs_clear_dirty_pages(mapping);
+ 		return -EROFS;
+ 	}
+ 
+@@ -185,7 +185,7 @@ static int nilfs_writepage(struct page *
+ 		 * have dirty pages that try to be flushed in background.
+ 		 * So, here we simply discard this dirty page.
+ 		 */
+-		nilfs_clear_dirty_page(page, false);
++		nilfs_clear_dirty_page(page);
+ 		unlock_page(page);
+ 		return -EROFS;
+ 	}
+--- a/fs/nilfs2/mdt.c
++++ b/fs/nilfs2/mdt.c
+@@ -410,7 +410,7 @@ nilfs_mdt_write_page(struct page *page,
+ 		 * have dirty pages that try to be flushed in background.
+ 		 * So, here we simply discard this dirty page.
+ 		 */
+-		nilfs_clear_dirty_page(page, false);
++		nilfs_clear_dirty_page(page);
+ 		unlock_page(page);
+ 		return -EROFS;
+ 	}
+@@ -631,10 +631,10 @@ void nilfs_mdt_restore_from_shadow_map(s
+ 	if (mi->mi_palloc_cache)
+ 		nilfs_palloc_clear_cache(inode);
+ 
+-	nilfs_clear_dirty_pages(inode->i_mapping, true);
++	nilfs_clear_dirty_pages(inode->i_mapping);
+ 	nilfs_copy_back_pages(inode->i_mapping, shadow->inode->i_mapping);
+ 
+-	nilfs_clear_dirty_pages(ii->i_assoc_inode->i_mapping, true);
++	nilfs_clear_dirty_pages(ii->i_assoc_inode->i_mapping);
+ 	nilfs_copy_back_pages(ii->i_assoc_inode->i_mapping,
+ 			      NILFS_I(shadow->inode)->i_assoc_inode->i_mapping);
+ 
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -354,9 +354,8 @@ repeat:
+ /**
+  * nilfs_clear_dirty_pages - discard dirty pages in address space
+  * @mapping: address space with dirty pages for discarding
+- * @silent: suppress [true] or print [false] warning messages
+  */
+-void nilfs_clear_dirty_pages(struct address_space *mapping, bool silent)
++void nilfs_clear_dirty_pages(struct address_space *mapping)
+ {
+ 	struct pagevec pvec;
+ 	unsigned int i;
+@@ -377,7 +376,7 @@ void nilfs_clear_dirty_pages(struct addr
+ 			 * was acquired.  Skip processing in that case.
+ 			 */
+ 			if (likely(page->mapping == mapping))
+-				nilfs_clear_dirty_page(page, silent);
++				nilfs_clear_dirty_page(page);
+ 
+ 			unlock_page(page);
+ 		}
+@@ -389,19 +388,11 @@ void nilfs_clear_dirty_pages(struct addr
+ /**
+  * nilfs_clear_dirty_page - discard dirty page
+  * @page: dirty page that will be discarded
+- * @silent: suppress [true] or print [false] warning messages
+  */
+-void nilfs_clear_dirty_page(struct page *page, bool silent)
++void nilfs_clear_dirty_page(struct page *page)
+ {
+-	struct inode *inode = page->mapping->host;
+-	struct super_block *sb = inode->i_sb;
+-
+ 	BUG_ON(!PageLocked(page));
+ 
+-	if (!silent)
+-		nilfs_warn(sb, "discard dirty page: offset=%lld, ino=%lu",
+-			   page_offset(page), inode->i_ino);
+-
+ 	ClearPageUptodate(page);
+ 	ClearPageMappedToDisk(page);
+ 	ClearPageChecked(page);
+@@ -417,11 +408,6 @@ void nilfs_clear_dirty_page(struct page
+ 		bh = head = page_buffers(page);
+ 		do {
+ 			lock_buffer(bh);
+-			if (!silent)
+-				nilfs_warn(sb,
+-					   "discard dirty block: blocknr=%llu, size=%zu",
+-					   (u64)bh->b_blocknr, bh->b_size);
+-
+ 			set_mask_bits(&bh->b_state, clear_bits, 0);
+ 			unlock_buffer(bh);
+ 		} while (bh = bh->b_this_page, bh != head);
+--- a/fs/nilfs2/page.h
++++ b/fs/nilfs2/page.h
+@@ -41,8 +41,8 @@ void nilfs_page_bug(struct page *);
+ 
+ int nilfs_copy_dirty_pages(struct address_space *, struct address_space *);
+ void nilfs_copy_back_pages(struct address_space *, struct address_space *);
+-void nilfs_clear_dirty_page(struct page *, bool);
+-void nilfs_clear_dirty_pages(struct address_space *, bool);
++void nilfs_clear_dirty_page(struct page *page);
++void nilfs_clear_dirty_pages(struct address_space *mapping);
+ void nilfs_mapping_init(struct address_space *mapping, struct inode *inode);
+ unsigned int nilfs_page_count_clean_buffers(struct page *, unsigned int,
+ 					    unsigned int);
 
 
 
