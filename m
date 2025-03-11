@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-123410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4C5A5C566
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF9FA5C787
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:35:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF2F73B504F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9EF017E973
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F53825E80D;
-	Tue, 11 Mar 2025 15:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C4D25E818;
+	Tue, 11 Mar 2025 15:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0U/auYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKSkkaFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7ED25D8E8;
-	Tue, 11 Mar 2025 15:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EF025E804;
+	Tue, 11 Mar 2025 15:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705875; cv=none; b=kj7ll6Tskkn61tNAJhhO/aL3xdhUVWkU6WNRD9h3Y3emh21EolT9OmZ97cubJWM8C9aljQ15ZJku5j47PWBl01f3rK7hltNOCOOlWKOldTomVDRyHAiev20MeXAfdTsSNnaLZc7K0sNZRTkZfRlWdoahixy1aLx3jmiJodJHgTg=
+	t=1741707087; cv=none; b=WDwYq/GQrWRv4zVZMfYY3L0l5vvnmki2T/5WnuJGmCy2af420rdT5lPZ5Iw6wRz2eWtJ7x9qeeAaExubeiCHWToQwdtOlaGRptgdht94jEOaDQlBlI/PzcaUPkjcTGX4G/prx0gzVGZM/1AhxKHr5/BQgIitl9O899wAe8xZeYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705875; c=relaxed/simple;
-	bh=rFRVvN33Gqqfy2pmf9OyI6TXCwqiI/JIiH8Hxr/KPZM=;
+	s=arc-20240116; t=1741707087; c=relaxed/simple;
+	bh=1g15QBDiiX48szBpEAvX936ChXMK4A32gGfIxaNPxxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcaN369vj3EMQamzODlaDi0HnflyEqUd4DCXaP5He64LKW0JGdQQh4X+WsX39Cpn1OHTN+x1SHoI1UFjGjohrwYK1eoPy2Py9oFJDqbNPXKli6l7RPCgwnoO1G330Jaz7+t1oSXsbQCW7djgU+/6P+6lNo+ei0QV1/Ws5CEh84U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0U/auYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9915EC4CEE9;
-	Tue, 11 Mar 2025 15:11:14 +0000 (UTC)
+	 MIME-Version; b=gZqXckfA1YUPHzWXjVCkowlztfcivySAaw8FGLaAqVh8EJMtD9snmDsqIeAQOZ7u/8qRX7te/9la5A5oB82KY7F7fbjNxTWZJ6UdhBs3wivQJ2nguNGy1amAnzW/QxCNLzal83utFv7ByIcuU/WKUywWQ67+OFTcneWwttOMZhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKSkkaFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3C9C4CEE9;
+	Tue, 11 Mar 2025 15:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705875;
-	bh=rFRVvN33Gqqfy2pmf9OyI6TXCwqiI/JIiH8Hxr/KPZM=;
+	s=korg; t=1741707086;
+	bh=1g15QBDiiX48szBpEAvX936ChXMK4A32gGfIxaNPxxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0U/auYImvzgy192RZzKsFCZ6qTByZEDzcYpz9XyXoRArD86YDAb2NOVHSMb+tkIB
-	 mvZeGSrEMiqG9MUeTTPl4niBKE7L1j47Ca/20sfJMnRP+XffTCjf/2MFuBjF0TWpzn
-	 z2RxqOC+0dconGlQywbeykYMauXeC+A4Dz5Lr7cU=
+	b=xKSkkaFRxRtte+0DsMN0a+nVsjl98TXcWYaTdQ0EY4jm1Z0O4BfljMnWsRnTV9weg
+	 PIxqfCTEH/OoqW2EUGZV7EAQJ+QPEt97cp56IMejsDJtMvWMZiUviDpdSGlKfbQesv
+	 DeNvzlgy/arD/y2OgMyrG9VWiEcbSGljbHpnngnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 165/328] team: better TEAM_OPTION_TYPE_STRING validation
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 5.10 269/462] gpio: stmpe: Check return value of stmpe_reg_read in stmpe_gpio_irq_sync_unlock
 Date: Tue, 11 Mar 2025 15:58:55 +0100
-Message-ID: <20250311145721.465308348@linuxfoundation.org>
+Message-ID: <20250311145808.992210719@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 5bef3ac184b5626ea62385d6b82a1992b89d7940 ]
+commit b9644fbfbcab13da7f8b37bef7c51e5b8407d031 upstream.
 
-syzbot reported following splat [1]
+The stmpe_reg_read function can fail, but its return value is not checked
+in stmpe_gpio_irq_sync_unlock. This can lead to silent failures and
+incorrect behavior if the hardware access fails.
 
-Make sure user-provided data contains one nul byte.
+This patch adds checks for the return value of stmpe_reg_read. If the
+function fails, an error message is logged and the function returns
+early to avoid further issues.
 
-[1]
- BUG: KMSAN: uninit-value in string_nocheck lib/vsprintf.c:633 [inline]
- BUG: KMSAN: uninit-value in string+0x3ec/0x5f0 lib/vsprintf.c:714
-  string_nocheck lib/vsprintf.c:633 [inline]
-  string+0x3ec/0x5f0 lib/vsprintf.c:714
-  vsnprintf+0xa5d/0x1960 lib/vsprintf.c:2843
-  __request_module+0x252/0x9f0 kernel/module/kmod.c:149
-  team_mode_get drivers/net/team/team_core.c:480 [inline]
-  team_change_mode drivers/net/team/team_core.c:607 [inline]
-  team_mode_option_set+0x437/0x970 drivers/net/team/team_core.c:1401
-  team_option_set drivers/net/team/team_core.c:375 [inline]
-  team_nl_options_set_doit+0x1339/0x1f90 drivers/net/team/team_core.c:2662
-  genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
-  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-  genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
-  netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2543
-  genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
-  netlink_unicast_kernel net/netlink/af_netlink.c:1322 [inline]
-  netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1348
-  netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1892
-  sock_sendmsg_nosec net/socket.c:718 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:733
-  ____sys_sendmsg+0x877/0xb60 net/socket.c:2573
-  ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2627
-  __sys_sendmsg net/socket.c:2659 [inline]
-  __do_sys_sendmsg net/socket.c:2664 [inline]
-  __se_sys_sendmsg net/socket.c:2662 [inline]
-  __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2662
-  x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
-Reported-by: syzbot+1fcd957a82e3a1baa94d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1fcd957a82e3a1baa94d
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20250212134928.1541609-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b888fb6f2a27 ("gpio: stmpe: i2c transfer are forbiden in atomic context")
+Cc: stable@vger.kernel.org # 4.16+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250212021849.275-1-vulab@iscas.ac.cn
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/team/team.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-stmpe.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index b0a9dd33a0196..197aea66b30dd 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2663,7 +2663,9 @@ static int team_nl_cmd_options_set(struct sk_buff *skb, struct genl_info *info)
- 				ctx.data.u32_val = nla_get_u32(attr_data);
- 				break;
- 			case TEAM_OPTION_TYPE_STRING:
--				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN) {
-+				if (nla_len(attr_data) > TEAM_STRING_MAX_LEN ||
-+				    !memchr(nla_data(attr_data), '\0',
-+					    nla_len(attr_data))) {
- 					err = -EINVAL;
- 					goto team_put;
- 				}
--- 
-2.39.5
-
+--- a/drivers/gpio/gpio-stmpe.c
++++ b/drivers/gpio/gpio-stmpe.c
+@@ -191,7 +191,7 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 		[REG_IE][CSB] = STMPE_IDX_IEGPIOR_CSB,
+ 		[REG_IE][MSB] = STMPE_IDX_IEGPIOR_MSB,
+ 	};
+-	int i, j;
++	int ret, i, j;
+ 
+ 	/*
+ 	 * STMPE1600: to be able to get IRQ from pins,
+@@ -199,8 +199,16 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 	 * GPSR or GPCR registers
+ 	 */
+ 	if (stmpe->partnum == STMPE1600) {
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
+-		stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_LSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_LSB: %d\n", ret);
++			goto err;
++		}
++		ret = stmpe_reg_read(stmpe, stmpe->regs[STMPE_IDX_GPMR_CSB]);
++		if (ret < 0) {
++			dev_err(stmpe->dev, "Failed to read GPMR_CSB: %d\n", ret);
++			goto err;
++		}
+ 	}
+ 
+ 	for (i = 0; i < CACHE_NR_REGS; i++) {
+@@ -222,6 +230,7 @@ static void stmpe_gpio_irq_sync_unlock(s
+ 		}
+ 	}
+ 
++err:
+ 	mutex_unlock(&stmpe_gpio->irq_lock);
+ }
+ 
 
 
 
