@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9C1A5C487
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:05:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA08A5C6B0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30AF1189A3D5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CE1816B850
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7C025E80D;
-	Tue, 11 Mar 2025 15:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EEC61DF749;
+	Tue, 11 Mar 2025 15:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yT6+Y+TH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pw/lnBrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8798425DAEF;
-	Tue, 11 Mar 2025 15:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAE3846D;
+	Tue, 11 Mar 2025 15:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705411; cv=none; b=ggRvCZX35rhFZbWm+4InReA8pvq1oPqTvbUVOWavUyvNXcGQbgQ0eBqZcLmoYeXNl9jIXJfSHIfpmMYFdkdIb9qUHtwJxK5/ZKmw5yaD8nlYEGfZJ/aHC1e493SygD3Lmf4mx70Q6Z8fbczYeqR9ErOQAldGS4pNJzq4ZNrtuOQ=
+	t=1741706681; cv=none; b=S8aKtl74Vl2wNk34RfnCOzt4abWWlN4JkZAoIBlDMhTWWEEIKqGYnxzMODlm8YLKmVpJGiJjswFU4BWFWCZUhNM1LBFIxv5UAwAQoMmCoBT1imifu5IfOaqgQmxKCU9P3NYGvCplbc/Xv3VrvUiFenqSmFOyIFbjOrFJH7ptjRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705411; c=relaxed/simple;
-	bh=H4UwaH868Fu54eJFFEDdhxi2Dk4RZ8VbrwXE96eeGJM=;
+	s=arc-20240116; t=1741706681; c=relaxed/simple;
+	bh=xGibmD9Wlfyf7oaMJiQEQ6jUsFL7t8QF7kTSKS0WIK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqCH5edAUl6Gu4Ft3k+6hB4NYVrui+XfboCEprDoSYUyMIM2/CVVL+lLYfDKfgVuFGjBAX0kGblRCjLBhtQe8XG5fWTOHl+jk9s7ABzVZ6eZOxVgYb7LClEt8+N+TA55rMP2o/QPml3I0uJgxO4Ndbexr4TlaXuqTHpubP+iMuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yT6+Y+TH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9978C4CEE9;
-	Tue, 11 Mar 2025 15:03:30 +0000 (UTC)
+	 MIME-Version; b=O7TCPfMS5OKdp/iw7vklln1VF3JAJ2CGi8NLxGl4cwLwcxpzC3Dknyx8SeibrbsCpaH0uOKeoLITn8MTkE0+GjjmnHrNtGO7qcX364NKk2fzryEeGPgt/OCVV9+ADfzkgYY19vVe2vhMg1mhIJD4CslLM2EeAtGgjeX5gOw2QuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pw/lnBrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F9EC4CEE9;
+	Tue, 11 Mar 2025 15:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705411;
-	bh=H4UwaH868Fu54eJFFEDdhxi2Dk4RZ8VbrwXE96eeGJM=;
+	s=korg; t=1741706681;
+	bh=xGibmD9Wlfyf7oaMJiQEQ6jUsFL7t8QF7kTSKS0WIK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yT6+Y+TH2ExQQo81oqwEs6yYv9GbGzxFIgkn8qnVotUWQ1TIq8pnL9lYd/PB+/Eo0
-	 TFS4ttXPVesSuE+6Gr1CsiRLgyGmGOYNAwVyQVDGYDL5XEzkCQXvz5yzazkLACtJQc
-	 i1ELZ90Np8ITuUnA5N71ROUPp4wavxI9EZhpfaF0=
+	b=Pw/lnBrzUy8H4DbqxGnXWd4pic+oww4GtKZxUOZzJtMPb9sPNcvrhAmA0Zw7X6Rjj
+	 1UYOqdQAiHWI2rqtyjA9NRCbrUbmM3foGTq5oTsxapUQq536HWBzsBU+2/W6Kp3G7x
+	 Oh2VUOpWPhjPoVsYYMYbsnM8GQrbuhlXC0NPoU2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Michael Nemanov <michael.nemanov@ti.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 026/328] wifi: wlcore: fix unbalanced pm_runtime calls
+Subject: [PATCH 5.10 130/462] x86/amd_nb: Restrict init function to AMD-based systems
 Date: Tue, 11 Mar 2025 15:56:36 +0100
-Message-ID: <20250311145715.930925464@linuxfoundation.org>
+Message-ID: <20250311145803.494358447@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 996c934c8c196144af386c4385f61fcd5349af28 ]
+[ Upstream commit bee9e840609cc67d0a7d82f22a2130fb7a0a766d ]
 
-If firmware boot failes, runtime pm is put too often:
-[12092.708099] wlcore: ERROR firmware boot failed despite 3 retries
-[12092.708099] wl18xx_driver wl18xx.1.auto: Runtime PM usage count underflow!
-Fix that by redirecting all error gotos before runtime_get so that runtime is
-not put.
+The code implicitly operates on AMD-based systems by matching on PCI
+IDs. However, the use of these IDs is going away.
 
-Fixes: c40aad28a3cf ("wlcore: Make sure firmware is initialized in wl1271_op_add_interface()")
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20250104195507.402673-1-akemnade@kernel.org
+Add an explicit CPU vendor check instead of relying on PCI IDs.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241206161210.163701-3-yazen.ghannam@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/amd_nb.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index be0ed19f93569..5af0f0fdecda1 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -2546,24 +2546,24 @@ static int wl1271_op_add_interface(struct ieee80211_hw *hw,
- 	if (test_bit(WL1271_FLAG_RECOVERY_IN_PROGRESS, &wl->flags) ||
- 	    test_bit(WLVIF_FLAG_INITIALIZED, &wlvif->flags)) {
- 		ret = -EBUSY;
--		goto out;
-+		goto out_unlock;
- 	}
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 16cd56627574d..3dcaeb25ee301 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -536,6 +536,10 @@ static __init void fix_erratum_688(void)
  
+ static __init int init_amd_nbs(void)
+ {
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
++	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
++		return 0;
++
+ 	amd_cache_northbridges();
+ 	amd_cache_gart();
  
- 	ret = wl12xx_init_vif_data(wl, vif);
- 	if (ret < 0)
--		goto out;
-+		goto out_unlock;
- 
- 	wlvif->wl = wl;
- 	role_type = wl12xx_get_role_type(wl, wlvif);
- 	if (role_type == WL12XX_INVALID_ROLE_TYPE) {
- 		ret = -EINVAL;
--		goto out;
-+		goto out_unlock;
- 	}
- 
- 	ret = wlcore_allocate_hw_queue_base(wl, wlvif);
- 	if (ret < 0)
--		goto out;
-+		goto out_unlock;
- 
- 	/*
- 	 * TODO: after the nvs issue will be solved, move this block
-@@ -2578,7 +2578,7 @@ static int wl1271_op_add_interface(struct ieee80211_hw *hw,
- 
- 		ret = wl12xx_init_fw(wl);
- 		if (ret < 0)
--			goto out;
-+			goto out_unlock;
- 	}
- 
- 	/*
 -- 
 2.39.5
 
