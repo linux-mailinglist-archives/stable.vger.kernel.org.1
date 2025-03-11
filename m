@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE46DA5C751
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70928A5C4FB
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54E243AA7C8
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56F96189BE5D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D381494BB;
-	Tue, 11 Mar 2025 15:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DC625E801;
+	Tue, 11 Mar 2025 15:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvrTIotV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mX5Y3roC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207561DF749;
-	Tue, 11 Mar 2025 15:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87F325D8E8;
+	Tue, 11 Mar 2025 15:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706890; cv=none; b=lkphQ9w608uyNIia3dxISqD9bLa8cBYiIYlkpGITTYQftjBFUhXiyHn5SZei237AKfQutBmC2O2LNgEVxR3K7WAAhVfr3ao0ZB02P4pqjkTGivg2+48ew6/qltv+XtBr73f67gngoTqrGn38gWqeFW0+9zm3ZbIWAGOCrJrvgjE=
+	t=1741705673; cv=none; b=SfMU7e9b5d3HVopx6o/I9+Hpgd8WGQeavJAdvoKcS+kSYbOFCA0qbgOsMCTD5uTLRSe2IOEhlNMFqtyzWXv6L7OGKKM+P0MPIqoRdmfnedoviy2qSU2Rp1dJEaOQ7yQQeO3QGy1GIVaygxJg7UmleL6Q0clMfhzWeZmxiOZJOkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706890; c=relaxed/simple;
-	bh=fmzE3MRLAgEHlF0NWpTLhmF6SQxWqC8w1AeBUlAQzaA=;
+	s=arc-20240116; t=1741705673; c=relaxed/simple;
+	bh=4gIq/HFx0p4Mbch/tafQkGHMEXGQvh9i7WaKupkx7z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PoJRUqSNkwHC/q9/AVeQYXKZEYYH2NzNx0iz9pWGA5QkpKypVYLAtXQ6lt9s7ywPIjMuuPzU7H4FluBRq3qZLBxOWAgcByX6dQMCbJIIehqoVT8ombz+9Hal/t/9u+nj0S74+bu4z+GhxXFjeQgnLUv5Gv0Pqxq0W+GmGWLzvrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvrTIotV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF14C4CEE9;
-	Tue, 11 Mar 2025 15:28:09 +0000 (UTC)
+	 MIME-Version; b=AV8O9BtkqundhETFi/CtmShGYTm80MciNe+TDHmhI1dHsmI24JB82Symaj3xNjMu2Gt2/NCOrOUSYXwHtYULjo9o86sJlASimHi45rxIn7sVvetLQcbJDotaSt57vWSWuf9WtHLBEpAhtS5DTXLi/SmOVROTpfH8Qb6rRiXL9Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mX5Y3roC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33A9C4CEE9;
+	Tue, 11 Mar 2025 15:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706889;
-	bh=fmzE3MRLAgEHlF0NWpTLhmF6SQxWqC8w1AeBUlAQzaA=;
+	s=korg; t=1741705673;
+	bh=4gIq/HFx0p4Mbch/tafQkGHMEXGQvh9i7WaKupkx7z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvrTIotVjUTtq2BZFYWlRAchnuJqDWshsRphBZRj7NR1XWLOBAhfFIl9SCU0aqOrP
-	 akEfE/6bnJD/i9jrr5vBEKEfkXba1V5w//LC0Qrd3I6q2OsukVg47OhNpVIQYG6p+L
-	 VQ6DLpjoUSkBhTndbTI+BZSQMK4U94ra1M1hhHLM=
+	b=mX5Y3roCvmbl5DTXM947TO6VkvmdbdNBXdMXjrSxbCc6v/XlU+e4ySfEDPm8K3qIZ
+	 KdxjIGL2RKRSjKtGxH3oNmoxAKlJjAchRkE9CgH/jJwkgVmZ4INsxeG6H1bno7XSjL
+	 IhopF+XntyYziDCTIiAc9C8ofu99PTGxSfocRY4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 202/462] iio: light: as73211: fix channel handling in only-color triggered buffer
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 098/328] nilfs2: eliminate staggered calls to kunmap in nilfs_rename
 Date: Tue, 11 Mar 2025 15:57:48 +0100
-Message-ID: <20250311145806.336107586@linuxfoundation.org>
+Message-ID: <20250311145718.787507638@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit ab09c6cfe01b317f515bcd944668697241a54b9d upstream.
+commit 8cf57c6df818f58fdad16a909506be213623a88e upstream.
 
-The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-set (optimized path for color channel readings), and it must be shifted
-instead of leaving an empty channel for the temperature when it is off.
+In nilfs_rename(), calls to nilfs_put_page() to release pages obtained
+with nilfs_find_entry() or nilfs_dotdot() are alternated in the normal
+path.
 
-Once the channel index is fixed, the uninitialized channel must be set
-to zero to avoid pushing uninitialized data.
+When replacing the kernel memory mapping method from kmap to
+kmap_local_{page,folio}, this violates the constraint on the calling order
+of kunmap_local().
 
-Add available_scan_masks for all channels and only-color channels to let
-the IIO core demux and repack the enabled channels.
+Swap the order of nilfs_put_page calls where the kmap sections of multiple
+pages overlap so that they are nested, allowing direct replacement of
+nilfs_put_page() -> unmap_and_put_page().
 
-Cc: stable@vger.kernel.org
-Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-Tested-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Without this reordering, that replacement will cause a kernel WARNING in
+kunmap_local_indexed() on architectures with high memory mapping.
+
+Link: https://lkml.kernel.org/r/20231127143036.2425-3-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: ee70999a988b ("nilfs2: handle errors that nilfs_prepare_chunk() may return")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/as73211.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ fs/nilfs2/namei.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/light/as73211.c
-+++ b/drivers/iio/light/as73211.c
-@@ -155,6 +155,12 @@ struct as73211_data {
- 	BIT(AS73211_SCAN_INDEX_TEMP) | \
- 	AS73211_SCAN_MASK_COLOR)
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -428,13 +428,14 @@ static int nilfs_rename(struct inode *ol
+ 	old_inode->i_ctime = current_time(old_inode);
  
-+static const unsigned long as73211_scan_masks[] = {
-+	AS73211_SCAN_MASK_COLOR,
-+	AS73211_SCAN_MASK_ALL,
-+	0
-+};
-+
- static const struct iio_chan_spec as73211_channels[] = {
- 	{
- 		.type = IIO_TEMP,
-@@ -603,9 +609,12 @@ static irqreturn_t as73211_trigger_handl
+ 	nilfs_delete_entry(old_de, old_page);
+-	nilfs_put_page(old_page);
  
- 		/* AS73211 starts reading at address 2 */
- 		ret = i2c_master_recv(data->client,
--				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-+				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
- 		if (ret < 0)
- 			goto done;
-+
-+		/* Avoid pushing uninitialized data */
-+		scan.chan[3] = 0;
+ 	if (dir_de) {
+ 		nilfs_set_link(old_inode, dir_de, dir_page, new_dir);
+ 		nilfs_put_page(dir_page);
+ 		drop_nlink(old_dir);
  	}
++	nilfs_put_page(old_page);
++
+ 	nilfs_mark_inode_dirty(old_dir);
+ 	nilfs_mark_inode_dirty(old_inode);
  
- 	if (data_result) {
-@@ -613,9 +622,15 @@ static irqreturn_t as73211_trigger_handl
- 		 * Saturate all channels (in case of overflows). Temperature channel
- 		 * is not affected by overflows.
- 		 */
--		scan.chan[1] = cpu_to_le16(U16_MAX);
--		scan.chan[2] = cpu_to_le16(U16_MAX);
--		scan.chan[3] = cpu_to_le16(U16_MAX);
-+		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
-+			scan.chan[1] = cpu_to_le16(U16_MAX);
-+			scan.chan[2] = cpu_to_le16(U16_MAX);
-+			scan.chan[3] = cpu_to_le16(U16_MAX);
-+		} else {
-+			scan.chan[0] = cpu_to_le16(U16_MAX);
-+			scan.chan[1] = cpu_to_le16(U16_MAX);
-+			scan.chan[2] = cpu_to_le16(U16_MAX);
-+		}
- 	}
- 
- 	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-@@ -685,6 +700,7 @@ static int as73211_probe(struct i2c_clie
- 	indio_dev->channels = as73211_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(as73211_channels);
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->available_scan_masks = as73211_scan_masks;
- 
- 	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
- 	if (ret < 0)
 
 
 
