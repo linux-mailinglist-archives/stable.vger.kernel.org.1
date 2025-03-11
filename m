@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-123295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBDCA5C4C1
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345D3A5C710
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19CB83B6A10
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95A141891028
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED2325DD0F;
-	Tue, 11 Mar 2025 15:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1452825E805;
+	Tue, 11 Mar 2025 15:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BF/3KUcd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0fzKlg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD69325DCE5;
-	Tue, 11 Mar 2025 15:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A411A5BA4;
+	Tue, 11 Mar 2025 15:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705538; cv=none; b=OM3qy13hCJbN3rOray5p+lMz11oqb2krggaPlDqAcb+jXfLN9+zFoORf9UMkkCkoTLnxlGFJJ7bCH01/AFnqUjKsk9DGy6sK+M42Q1gdhbYsZHylDJIzYTPoZQawCt20fMEjHo4J0AIe8PQkHlU76FMxFtF2Wk+9bWMq64hfjHM=
+	t=1741706811; cv=none; b=pqB+m47tWiy8P1GNXILciPvf+3YnFLUz48umQseKuZ0GTs76R2rx4Nih+A4EcNVu6br+z6hS468kckuo3+70+PEI3a5uxShKSI6hJwmHpQBleLLkonCsZqQzpLgG9zE1LpkX4s6nxwp1pNMYdVDuiYfoggw1h6Y4fimBBdiriew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705538; c=relaxed/simple;
-	bh=Gq4HFUEgpQ0p4A1eN0ZnmxbRXdnUPYU0CHjEdqUjOJo=;
+	s=arc-20240116; t=1741706811; c=relaxed/simple;
+	bh=n5YzSNXlrPJLF9wqOWtvpwGSOz69Ee3C7KEZKt4+oKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ueth9cbd6Ss61rSks3EyQOwAeT5nT58N/ZO6tKY5T5xmByXbrasV+aS1Y0fWwMmXkkxOQssP+WfZkbWzJ4Qn5gZe/zLfJdPvE5F79BymytLiYXu9vPYV0OoDCmjBLiLWb31RotfAAxCMhpJ2rIe52iDUDSwtHS/eM2wamtOq8eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BF/3KUcd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D778C4CEE9;
-	Tue, 11 Mar 2025 15:05:38 +0000 (UTC)
+	 MIME-Version; b=fN4nPw6Kr0IzqFuh6/3YSVhjuW4fYq9Ikh7Wtb+qmbMoChI68SmWg7dIiPUP4F6AxFq2fsgZytG1H2DOtaF8CNtrCCNE/8yrAcanpl9/pbTBmw2stib3qgXUFVU5+L8qOCiy8qoY6Ui6XXzlt4anGH03BUthh4NgPUoNWO/KOB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0fzKlg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA0DC4CEE9;
+	Tue, 11 Mar 2025 15:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705538;
-	bh=Gq4HFUEgpQ0p4A1eN0ZnmxbRXdnUPYU0CHjEdqUjOJo=;
+	s=korg; t=1741706811;
+	bh=n5YzSNXlrPJLF9wqOWtvpwGSOz69Ee3C7KEZKt4+oKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BF/3KUcd+t8r4IfG6B/q+2705UuqAKsXFjOCoN7M+f8Enpsmevtx9pOMxxA8TnYRZ
-	 XM5gLPmYJxDmLk0OERUd+BtqvVqqRhq3bMFGF/tXIjcyY42DHKf/+eE30CRS+PHEUh
-	 ZXzhOf4Fuplt7umc0WzCplLT+gPyXDnHi2XKZ0Ew=
+	b=E0fzKlg6CqHAM7EFFIWxLEdHEAnA2oy+/MeOp9t3UEh3dgQK3aPMxCkAd4+cECK+g
+	 fsXCDq9SKlpAdeza+5cmvSmzpcUAKEMYxN0L/41sv8/qFVbFnRn/7MnB7KWjqWi2pa
+	 3ZT3/r6XgYV0V0joaVJH6H7HQM7gspmmpcypeoJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 070/328] net: sh_eth: Fix missing rtnl lock in suspend/resume path
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10 174/462] Bluetooth: L2CAP: accept zero as a special value for MTU auto-selection
 Date: Tue, 11 Mar 2025 15:57:20 +0100
-Message-ID: <20250311145717.675514749@linuxfoundation.org>
+Message-ID: <20250311145805.229641063@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit b95102215a8d0987789715ce11c0d4ec031cbfbe ]
+commit 5c61419e02033eaf01733d66e2fcd4044808f482 upstream.
 
-Fix the suspend/resume path by ensuring the rtnl lock is held where
-required. Calls to sh_eth_close, sh_eth_open and wol operations must be
-performed under the rtnl lock to prevent conflicts with ongoing ndo
-operations.
+One of the possible ways to enable the input MTU auto-selection for L2CAP
+connections is supposed to be through passing a special "0" value for it
+as a socket option. Commit [1] added one of those into avdtp. However, it
+simply wouldn't work because the kernel still treats the specified value
+as invalid and denies the setting attempt. Recorded BlueZ logs include the
+following:
 
-Fixes: b71af04676e9 ("sh_eth: add more PM methods")
-Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  bluetoothd[496]: profiles/audio/avdtp.c:l2cap_connect() setsockopt(L2CAP_OPTIONS): Invalid argument (22)
+
+[1]: https://github.com/bluez/bluez/commit/ae5be371a9f53fed33d2b34748a95a5498fd4b77
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 4b6e228e297b ("Bluetooth: Auto tune if input MTU is set to 0")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/sh_eth.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/bluetooth/l2cap_sock.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
-index 50d85d0372302..f808e60b4ee4f 100644
---- a/drivers/net/ethernet/renesas/sh_eth.c
-+++ b/drivers/net/ethernet/renesas/sh_eth.c
-@@ -3496,10 +3496,12 @@ static int sh_eth_suspend(struct device *dev)
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -727,12 +727,12 @@ static bool l2cap_valid_mtu(struct l2cap
+ {
+ 	switch (chan->scid) {
+ 	case L2CAP_CID_ATT:
+-		if (mtu < L2CAP_LE_MIN_MTU)
++		if (mtu && mtu < L2CAP_LE_MIN_MTU)
+ 			return false;
+ 		break;
  
- 	netif_device_detach(ndev);
+ 	default:
+-		if (mtu < L2CAP_DEFAULT_MIN_MTU)
++		if (mtu && mtu < L2CAP_DEFAULT_MIN_MTU)
+ 			return false;
+ 	}
  
-+	rtnl_lock();
- 	if (mdp->wol_enabled)
- 		ret = sh_eth_wol_setup(ndev);
- 	else
- 		ret = sh_eth_close(ndev);
-+	rtnl_unlock();
- 
- 	return ret;
- }
-@@ -3513,10 +3515,12 @@ static int sh_eth_resume(struct device *dev)
- 	if (!netif_running(ndev))
- 		return 0;
- 
-+	rtnl_lock();
- 	if (mdp->wol_enabled)
- 		ret = sh_eth_wol_restore(ndev);
- 	else
- 		ret = sh_eth_open(ndev);
-+	rtnl_unlock();
- 
- 	if (ret < 0)
- 		return ret;
--- 
-2.39.5
-
 
 
 
