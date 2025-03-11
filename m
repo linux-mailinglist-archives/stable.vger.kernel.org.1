@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-123458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68040A5C59F
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8A8A5C7E0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84CE0189B971
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26AFA17952E
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE1C25DCE5;
-	Tue, 11 Mar 2025 15:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B33625E82C;
+	Tue, 11 Mar 2025 15:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JskdMdRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1pJwbnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D71225C715;
-	Tue, 11 Mar 2025 15:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1737F25B691;
+	Tue, 11 Mar 2025 15:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706014; cv=none; b=sUVGOpdJUuwWPUp8BeO4Kv/pcxyAEeR2ekZ/uQf/gyw+lN8L8WDmQ05Iad/N7apLXGpsLwcAPZyHAGz9ax6DloD4/IKGHCXZNKdcWZ/BYU7ID2SMYU9zvaWkuJBxjw6Ass6ciOJ3n0WMV2jSZLOojZ/gQSbtOuuKUR24Z6JVmT4=
+	t=1741707286; cv=none; b=eUwhG8g8fXaUkq41MgEk1GovJGz4RxBj4oQRJGfym6QnBvaqmBAofieqW4QafNZd8Jh/mSH76q3QR56Zo6EEktLBQgCXJt9U+c0qfAI16UOFd8eAIY6TFurwtRBL8Ni9v8pbFUbUQhtMlMS+QTY783hmxHdXs9GloqWW6tUKQ+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706014; c=relaxed/simple;
-	bh=CgURnV/FLYwqjzN/O63hIiDvSlllUrL0MZDL5gPQCi8=;
+	s=arc-20240116; t=1741707286; c=relaxed/simple;
+	bh=ZYJb63cEbOa3jL38MiCYcl87yyxm6n+RYNX7UqEohLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F5Dub8WiPgEgCTWZgYSvKTuM9rQ3Z7hV44Q6yx+eTDZA/4hQqjdgn+z+XIQVaPIeZcT1lrh5WtY1CyFnJFV2TToCPchie1kTB9Vvjl4LXw6XQMTUSXFvbMTlUXUMHyPHTBpzGZxfsarwt5hz5AALcRz0Vp5yWZKk8TgD5Vab39Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JskdMdRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF87AC4CEE9;
-	Tue, 11 Mar 2025 15:13:33 +0000 (UTC)
+	 MIME-Version; b=XSqQGHHBXKE7inlPDSjQQcO9VttBWQFtbCbtLAeHLXNc+ZiIpxqTVhvfiRmdfLtn+63VuaG215ORjWPtBUQDvGa+exm7TZKEB5mmzUEFVYvYn9B1E+qRq0l4OMITC2xqYEn/5Dn5s/ORoPW/DHZjNJJ/PyEPBc60wJ1JzXzN84E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1pJwbnv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927EAC4CEE9;
+	Tue, 11 Mar 2025 15:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706014;
-	bh=CgURnV/FLYwqjzN/O63hIiDvSlllUrL0MZDL5gPQCi8=;
+	s=korg; t=1741707286;
+	bh=ZYJb63cEbOa3jL38MiCYcl87yyxm6n+RYNX7UqEohLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JskdMdRq6VRpDNav5bYjZcd5Gnwn7GV8JSZQCb+Q0is2S5OsM4Wwa8+Ol4wrdBdtp
-	 bRkn02k+SPrarD00E2JlGMcPDd7vUibfzwURPU01Xr7T+YdD7ougBRtrh6tXTzZ+g/
-	 W1grE6XOudHd4ijRw45WzvAZEDYxa71S8ikBcnmE=
+	b=M1pJwbnv7O/b3TS+TS78YaKykmEZJ5uJBfWwRxTm6VagclvHNoVKdPb21E1RSxr5V
+	 i8KALB7/dHxYYxlRH/bwiUtHzt1JcSdZKdS/TlT8ru8Dxv+WNks7xzveF1j5BJKjPH
+	 PrMcUuZ7zU218DA53SUWNu3Gmv3WnggOpuzVyCCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Galo <carlosgalo@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 233/328] mm: update mark_victim tracepoints fields
+Subject: [PATCH 5.10 337/462] geneve: Suppress list corruption splat in geneve_destroy_tunnels().
 Date: Tue, 11 Mar 2025 16:00:03 +0100
-Message-ID: <20250311145724.174949087@linuxfoundation.org>
+Message-ID: <20250311145811.680861287@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,152 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Galo <carlosgalo@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 72ba14deb40a9e9668ec5e66a341ed657e5215c2 ]
+[ Upstream commit 62fab6eef61f245dc8797e3a6a5b890ef40e8628 ]
 
-The current implementation of the mark_victim tracepoint provides only the
-process ID (pid) of the victim process.  This limitation poses challenges
-for userspace tools requiring real-time OOM analysis and intervention.
-Although this information is available from the kernel logs, it’s not
-the appropriate format to provide OOM notifications.  In Android, BPF
-programs are used with the mark_victim trace events to notify userspace of
-an OOM kill.  For consistency, update the trace event to include the same
-information about the OOMed victim as the kernel logs.
+As explained in the previous patch, iterating for_each_netdev() and
+gn->geneve_list during ->exit_batch_rtnl() could trigger ->dellink()
+twice for the same device.
 
-- UID
-   In Android each installed application has a unique UID. Including
-   the `uid` assists in correlating OOM events with specific apps.
+If CONFIG_DEBUG_LIST is enabled, we will see a list_del() corruption
+splat in the 2nd call of geneve_dellink().
 
-- Process Name (comm)
-   Enables identification of the affected process.
+Let's remove for_each_netdev() in geneve_destroy_tunnels() and delegate
+that part to default_device_exit_batch().
 
-- OOM Score
-  Will allow userspace to get additional insight of the relative kill
-  priority of the OOM victim. In Android, the oom_score_adj is used to
-  categorize app state (foreground, background, etc.), which aids in
-  analyzing user-perceptible impacts of OOM events [1].
-
-- Total VM, RSS Stats, and pgtables
-  Amount of memory used by the victim that will, potentially, be freed up
-  by killing it.
-
-[1] https://cs.android.com/android/platform/superproject/main/+/246dc8fc95b6d93afcba5c6d6c133307abb3ac2e:frameworks/base/services/core/java/com/android/server/am/ProcessList.java;l=188-283
-Signed-off-by: Carlos Galo <carlosgalo@google.com>
-Reviewed-by: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ade81479c7dd ("memcg: fix soft lockup in the OOM process")
+Fixes: 9593172d93b9 ("geneve: Fix use-after-free in geneve_find_dev().")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250217203705.40342-3-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/oom.h | 36 ++++++++++++++++++++++++++++++++----
- mm/oom_kill.c              |  6 +++++-
- 2 files changed, 37 insertions(+), 5 deletions(-)
+ drivers/net/geneve.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/include/trace/events/oom.h b/include/trace/events/oom.h
-index 26a11e4a2c361..b799f3bcba823 100644
---- a/include/trace/events/oom.h
-+++ b/include/trace/events/oom.h
-@@ -7,6 +7,8 @@
- #include <linux/tracepoint.h>
- #include <trace/events/mmflags.h>
- 
-+#define PG_COUNT_TO_KB(x) ((x) << (PAGE_SHIFT - 10))
-+
- TRACE_EVENT(oom_score_adj_update,
- 
- 	TP_PROTO(struct task_struct *task),
-@@ -72,19 +74,45 @@ TRACE_EVENT(reclaim_retry_zone,
- );
- 
- TRACE_EVENT(mark_victim,
--	TP_PROTO(int pid),
-+	TP_PROTO(struct task_struct *task, uid_t uid),
- 
--	TP_ARGS(pid),
-+	TP_ARGS(task, uid),
- 
- 	TP_STRUCT__entry(
- 		__field(int, pid)
-+		__string(comm, task->comm)
-+		__field(unsigned long, total_vm)
-+		__field(unsigned long, anon_rss)
-+		__field(unsigned long, file_rss)
-+		__field(unsigned long, shmem_rss)
-+		__field(uid_t, uid)
-+		__field(unsigned long, pgtables)
-+		__field(short, oom_score_adj)
- 	),
- 
- 	TP_fast_assign(
--		__entry->pid = pid;
-+		__entry->pid = task->pid;
-+		__assign_str(comm, task->comm);
-+		__entry->total_vm = PG_COUNT_TO_KB(task->mm->total_vm);
-+		__entry->anon_rss = PG_COUNT_TO_KB(get_mm_counter(task->mm, MM_ANONPAGES));
-+		__entry->file_rss = PG_COUNT_TO_KB(get_mm_counter(task->mm, MM_FILEPAGES));
-+		__entry->shmem_rss = PG_COUNT_TO_KB(get_mm_counter(task->mm, MM_SHMEMPAGES));
-+		__entry->uid = uid;
-+		__entry->pgtables = mm_pgtables_bytes(task->mm) >> 10;
-+		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
- 
--	TP_printk("pid=%d", __entry->pid)
-+	TP_printk("pid=%d comm=%s total-vm=%lukB anon-rss=%lukB file-rss:%lukB shmem-rss:%lukB uid=%u pgtables=%lukB oom_score_adj=%hd",
-+		__entry->pid,
-+		__get_str(comm),
-+		__entry->total_vm,
-+		__entry->anon_rss,
-+		__entry->file_rss,
-+		__entry->shmem_rss,
-+		__entry->uid,
-+		__entry->pgtables,
-+		__entry->oom_score_adj
-+	)
- );
- 
- TRACE_EVENT(wake_reaper,
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index ee927ffeb718d..42b546c7b74b5 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -42,6 +42,7 @@
- #include <linux/kthread.h>
- #include <linux/init.h>
- #include <linux/mmu_notifier.h>
-+#include <linux/cred.h>
- 
- #include <asm/tlb.h>
- #include "internal.h"
-@@ -721,6 +722,7 @@ static inline void queue_oom_reaper(struct task_struct *tsk)
-  */
- static void mark_oom_victim(struct task_struct *tsk)
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index a79cebd7041be..4dfe0dfb84e83 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -1963,14 +1963,7 @@ static void geneve_destroy_tunnels(struct net *net, struct list_head *head)
  {
-+	const struct cred *cred;
- 	struct mm_struct *mm = tsk->mm;
+ 	struct geneve_net *gn = net_generic(net, geneve_net_id);
+ 	struct geneve_dev *geneve, *next;
+-	struct net_device *dev, *aux;
  
- 	WARN_ON(oom_killer_disabled);
-@@ -742,7 +744,9 @@ static void mark_oom_victim(struct task_struct *tsk)
- 	 */
- 	__thaw_task(tsk);
- 	atomic_inc(&oom_victims);
--	trace_mark_victim(tsk->pid);
-+	cred = get_task_cred(tsk);
-+	trace_mark_victim(tsk, cred->uid.val);
-+	put_cred(cred);
+-	/* gather any geneve devices that were moved into this ns */
+-	for_each_netdev_safe(net, dev, aux)
+-		if (dev->rtnl_link_ops == &geneve_link_ops)
+-			geneve_dellink(dev, head);
+-
+-	/* now gather any other geneve devices that were created in this ns */
+ 	list_for_each_entry_safe(geneve, next, &gn->geneve_list, next)
+ 		geneve_dellink(geneve->dev, head);
  }
- 
- /**
 -- 
 2.39.5
 
