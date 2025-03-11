@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-123974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4479A5C867
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CB7A5C606
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:20:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B2381884FE8
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68A71189E509
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E341625D8FF;
-	Tue, 11 Mar 2025 15:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2558225E80B;
+	Tue, 11 Mar 2025 15:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqBNS0CU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZ/nj+j8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00321E98EC;
-	Tue, 11 Mar 2025 15:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A161BD00C;
+	Tue, 11 Mar 2025 15:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707502; cv=none; b=mbslYjD+SWNJoTWb1kicfgmXNL97jL/SifGQ+S8vLY2co3iOv8JsTDl+cxak9QZFIYiyyq/U3bGN/skENrBSBVcW5H0E0P5UGQvaMZj/i3Z5kPAdLOH844CtZmX42BUsWmjpyAIVJ0aVajJugUJ682lBwok4TwMHZ4xusI4g5Ag=
+	t=1741706226; cv=none; b=KydAM7h49UXV/a7fDsWw1SZqPNkUIIC5LL/zgySe+aetcshKYZ+BErtJOdGwoGmK7DrVoxk+wLOFX8nFrUooWjvY5gdDnXkxHe9904ueJeiONDjMy2p6Uk3apw3NYIynKFAzGPzKM+Ezag578FyNncP3xfqysR0K7qGaXzm33Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707502; c=relaxed/simple;
-	bh=FYx1uvOP8wpkR/81ciX3f9qOfOUbTdsaESd/HpgL0bw=;
+	s=arc-20240116; t=1741706226; c=relaxed/simple;
+	bh=O/qvqWSmcL5Ocvbl2k3zg6YZ/PRcNJV3BMZZPun9WDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ptp02dNLGv2I/iSxAf/teawaI2iMpAqIs60Wbgmm0Up68HGBGiytYYmyvAnwN5vYYgzdArVCdNJWeb7Qvn7fdN4ujyaUge6fpZfW1Kg18rSVi2NNc2nrAPre05wXZ4WsehmOGyp+EFbD6KExZXG/UMtcuF7j9FFhPSPJq2+46sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqBNS0CU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24812C4CEE9;
-	Tue, 11 Mar 2025 15:38:21 +0000 (UTC)
+	 MIME-Version; b=hYSRoXbX3w6kpy/GxTCYyju3D2dTd4T9WU1mceZ9RVjcSYTKE/xxUfMDHqRRLGKK/obB4QYs/jCaF3Q1leJbZz798CbxTARBDpgxzaCI9DXVQ+/7lp4pHANXlx05tcRF18/G74aaxUpLIUgEC56eCms09KV7QWbeVPbL3iD0T8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZ/nj+j8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A62BC4CEE9;
+	Tue, 11 Mar 2025 15:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707502;
-	bh=FYx1uvOP8wpkR/81ciX3f9qOfOUbTdsaESd/HpgL0bw=;
+	s=korg; t=1741706225;
+	bh=O/qvqWSmcL5Ocvbl2k3zg6YZ/PRcNJV3BMZZPun9WDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqBNS0CUjuRKsYhkB/GWMgqDE9RIKBuOoTh1fpiNSYL2Dw/iJOX1Z17svGa90rTAe
-	 SJaulBP87TQ6nuzit0jdpLIiejwldX94i56i1WpcjVRJUTb2kBC8uLsFgBLoZ6vSDE
-	 CUi0nJ1HQFbzJUC7OqD5FqfdPxu9Xyg3YWakRL/c=
+	b=AZ/nj+j8ss4+vCZBLonxSqSHx37COAthegmB0uDByVg6TXwAwmLWax8rLUJo6viAz
+	 tW/op6HbChwNbFo9O8+4RMYWGi6mu4P3Fsu6z+e6zPJ6de+LiVFcwJcueRcOtEtOu6
+	 +vwE7NEsrabluuUEwT2xRXwyPaWMh2Jc7gAHGoeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
+	Paul Mackerras <paulus@samba.org>,
+	syzbot+853242d9c9917165d791@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 409/462] net: gso: fix ownership in __udp_gso_segment
+Subject: [PATCH 5.4 305/328] ppp: Fix KMSAN uninit-value warning with bpf
 Date: Tue, 11 Mar 2025 16:01:15 +0100
-Message-ID: <20250311145814.488579061@linuxfoundation.org>
+Message-ID: <20250311145727.032007164@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +65,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit ee01b2f2d7d0010787c2343463965bbc283a497f ]
+[ Upstream commit 4c2d14c40a68678d885eab4008a0129646805bae ]
 
-In __udp_gso_segment the skb destructor is removed before segmenting the
-skb but the socket reference is kept as-is. This is an issue if the
-original skb is later orphaned as we can hit the following bug:
+Syzbot caught an "KMSAN: uninit-value" warning [1], which is caused by the
+ppp driver not initializing a 2-byte header when using socket filter.
 
-  kernel BUG at ./include/linux/skbuff.h:3312!  (skb_orphan)
-  RIP: 0010:ip_rcv_core+0x8b2/0xca0
-  Call Trace:
-   ip_rcv+0xab/0x6e0
-   __netif_receive_skb_one_core+0x168/0x1b0
-   process_backlog+0x384/0x1100
-   __napi_poll.constprop.0+0xa1/0x370
-   net_rx_action+0x925/0xe50
+The following code can generate a PPP filter BPF program:
+'''
+struct bpf_program fp;
+pcap_t *handle;
+handle = pcap_open_dead(DLT_PPP_PPPD, 65535);
+pcap_compile(handle, &fp, "ip and outbound", 0, 0);
+bpf_dump(&fp, 1);
+'''
+Its output is:
+'''
+(000) ldh [2]
+(001) jeq #0x21 jt 2 jf 5
+(002) ldb [0]
+(003) jeq #0x1 jt 4 jf 5
+(004) ret #65535
+(005) ret #0
+'''
+Wen can find similar code at the following link:
+https://github.com/ppp-project/ppp/blob/master/pppd/options.c#L1680
+The maintainer of this code repository is also the original maintainer
+of the ppp driver.
 
-The above can happen following a sequence of events when using
-OpenVSwitch, when an OVS_ACTION_ATTR_USERSPACE action precedes an
-OVS_ACTION_ATTR_OUTPUT action:
+As you can see the BPF program skips 2 bytes of data and then reads the
+'Protocol' field to determine if it's an IP packet. Then it read the first
+byte of the first 2 bytes to determine the direction.
 
-1. OVS_ACTION_ATTR_USERSPACE is handled (in do_execute_actions): the skb
-   goes through queue_gso_packets and then __udp_gso_segment, where its
-   destructor is removed.
-2. The segments' data are copied and sent to userspace.
-3. OVS_ACTION_ATTR_OUTPUT is handled (in do_execute_actions) and the
-   same original skb is sent to its path.
-4. If it later hits skb_orphan, we hit the bug.
+The issue is that only the first byte indicating direction is initialized
+in current ppp driver code while the second byte is not initialized.
 
-Fix this by also removing the reference to the socket in
-__udp_gso_segment.
+For normal BPF programs generated by libpcap, uninitialized data won't be
+used, so it's not a problem. However, for carefully crafted BPF programs,
+such as those generated by syzkaller [2], which start reading from offset
+0, the uninitialized data will be used and caught by KMSAN.
 
-Fixes: ad405857b174 ("udp: better wmem accounting on gso")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250226171352.258045-1-atenart@kernel.org
+[1] https://syzkaller.appspot.com/bug?extid=853242d9c9917165d791
+[2] https://syzkaller.appspot.com/text?tag=ReproC&x=11994913980000
+
+Cc: Paul Mackerras <paulus@samba.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+853242d9c9917165d791@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/000000000000dea025060d6bc3bc@google.com/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250228141408.393864-1-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ppp/ppp_generic.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 6e36eb1ba2763..b6952b88b5051 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -280,13 +280,17 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 3cd4196b36b21..7b9337e16d6e1 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -72,6 +72,17 @@
+ #define PPP_PROTO_LEN	2
+ #define PPP_LCP_HDRLEN	4
  
- 	/* clear destructor to avoid skb_segment assigning it to tail */
- 	copy_dtor = gso_skb->destructor == sock_wfree;
--	if (copy_dtor)
-+	if (copy_dtor) {
- 		gso_skb->destructor = NULL;
-+		gso_skb->sk = NULL;
-+	}
++/* The filter instructions generated by libpcap are constructed
++ * assuming a four-byte PPP header on each packet, where the last
++ * 2 bytes are the protocol field defined in the RFC and the first
++ * byte of the first 2 bytes indicates the direction.
++ * The second byte is currently unused, but we still need to initialize
++ * it to prevent crafted BPF programs from reading them which would
++ * cause reading of uninitialized data.
++ */
++#define PPP_FILTER_OUTBOUND_TAG 0x0100
++#define PPP_FILTER_INBOUND_TAG  0x0000
++
+ /*
+  * An instance of /dev/ppp can be associated with either a ppp
+  * interface unit or a ppp channel.  In both cases, file->private_data
+@@ -1541,10 +1552,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
  
- 	segs = skb_segment(gso_skb, features);
- 	if (IS_ERR_OR_NULL(segs)) {
--		if (copy_dtor)
-+		if (copy_dtor) {
- 			gso_skb->destructor = sock_wfree;
-+			gso_skb->sk = sk;
-+		}
- 		return segs;
- 	}
+ 	if (proto < 0x8000) {
+ #ifdef CONFIG_PPP_FILTER
+-		/* check if we should pass this packet */
+-		/* the filter instructions are constructed assuming
+-		   a four-byte PPP header on each packet */
+-		*(u8 *)skb_push(skb, 2) = 1;
++		/* check if the packet passes the pass and active filters.
++		 * See comment for PPP_FILTER_OUTBOUND_TAG above.
++		 */
++		*(__be16 *)skb_push(skb, 2) = htons(PPP_FILTER_OUTBOUND_TAG);
+ 		if (ppp->pass_filter &&
+ 		    BPF_PROG_RUN(ppp->pass_filter, skb) == 0) {
+ 			if (ppp->debug & 1)
+@@ -2223,14 +2234,13 @@ ppp_receive_nonmp_frame(struct ppp *ppp, struct sk_buff *skb)
+ 		/* network protocol frame - give it to the kernel */
  
+ #ifdef CONFIG_PPP_FILTER
+-		/* check if the packet passes the pass and active filters */
+-		/* the filter instructions are constructed assuming
+-		   a four-byte PPP header on each packet */
+ 		if (ppp->pass_filter || ppp->active_filter) {
+ 			if (skb_unclone(skb, GFP_ATOMIC))
+ 				goto err;
+-
+-			*(u8 *)skb_push(skb, 2) = 0;
++			/* Check if the packet passes the pass and active filters.
++			 * See comment for PPP_FILTER_INBOUND_TAG above.
++			 */
++			*(__be16 *)skb_push(skb, 2) = htons(PPP_FILTER_INBOUND_TAG);
+ 			if (ppp->pass_filter &&
+ 			    BPF_PROG_RUN(ppp->pass_filter, skb) == 0) {
+ 				if (ppp->debug & 1)
 -- 
 2.39.5
 
