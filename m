@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F7AA5C5B2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5ED5A5C7A2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07B613A776E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:13:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17E357ABEB7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5654E2405F9;
-	Tue, 11 Mar 2025 15:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7702E25E82C;
+	Tue, 11 Mar 2025 15:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnCov05Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REb1BDMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1312625DAFD;
-	Tue, 11 Mar 2025 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A6D255E37;
+	Tue, 11 Mar 2025 15:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706034; cv=none; b=dqbOGycvX0dieQ4hXNbWfcDjF96hFUnlKNxgWbWMIFNQu5KL4YV/jWvej2XHGao+74HiefRTYvsNabZwyK8WAVasr3u/NZXgSV+zi3YdnBmLgwQrwzZ1KJFfatIDbLt7N+WgJYJLhRhVKrUgI6NzYlqrdjvfMILWhjIOozdfrNQ=
+	t=1741707427; cv=none; b=DrxjLnOilstxM5e1eFy2pmOLU7iipzuumQSvNBpxZWtD6RkC5WnI4gs8yikVXmzArbrS5/tKSmqiV+xJL2JLTEuesATV6TY6tSZ4C9t/yl85k2v+8N+RP819hJA/88zwIA0XDEDkGVolw3iXsDI1uIrd8nZLgMGlnlNefgMnugk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706034; c=relaxed/simple;
-	bh=5kimeom3vZ3ch/xuBB+EbyA+woHOqaLpmoymciOv6JE=;
+	s=arc-20240116; t=1741707427; c=relaxed/simple;
+	bh=q2aMG1BIkL6+3PzzkGWsqL8JMnFGE7jN8UhYFSwrINM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nsAwgkGYCXMR766ELtF9FWeL09vLzQHXPy4yVyz29WLuJbRkV7zkLfBA/U+aTEAWqMYCYolhbYUjMHArRx8OU7nWUcYVu14L+9TgGBOME2v8ThOQklSghs1erjc+oOL2eAmfGa43s+yS2e6avrB7eO6P3BsPRc1rFweWRnr/oIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnCov05Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA6AC4CEE9;
-	Tue, 11 Mar 2025 15:13:52 +0000 (UTC)
+	 MIME-Version; b=Iz1eLaig1/n3AThexduzC9czgkHsTpHbcn9at1n+b46VHP+s+RWMC9F2GYlkqXB39dDNwsz8NeAfZXmee2hrSyU83ED+Ly9+dSVD9zX5cqf1gDe5I8YiWyeQ55+87icNNmHyopoqWzeYVIorxCMfkQRHdLHK0Vm0nhLJV1NzJ1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REb1BDMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD580C4CEEA;
+	Tue, 11 Mar 2025 15:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706032;
-	bh=5kimeom3vZ3ch/xuBB+EbyA+woHOqaLpmoymciOv6JE=;
+	s=korg; t=1741707427;
+	bh=q2aMG1BIkL6+3PzzkGWsqL8JMnFGE7jN8UhYFSwrINM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LnCov05Yo6lyzJ0pMtA7CyHCUxuq/dMshwehoEiYTv+bPALAHnL4zkoKlFFI/lZxG
-	 PaeGZ2aczZ7OcTWY1v/qlKm6MtTDoPMyVoE3IOXYYIS6ERnsz5/alqAhD3VK3BkgBF
-	 1F2FxXe0k/5PVetW6ONoFXLl6zoo0cojQBuySJOY=
+	b=REb1BDMMsRZBZiMuib7MVWU3Q/4Nw7Y+OgsxPpuWaYlvilfmStX9/0Xj3U5ysSPGe
+	 sRuXfTECQJzkRwLL7DzxNJ6XLKJGP50SaiTYeIy8jWm2I8SOtTa0EdB5jpJOXfpOt3
+	 c29u9deFnva6TM0Z3/0LZvREvX1WEUwwDmirdQCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jill Donahue <jilliandonahue58@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 239/328] USB: gadget: f_midi: f_midi_complete to call queue_work
-Date: Tue, 11 Mar 2025 16:00:09 +0100
-Message-ID: <20250311145724.413616867@linuxfoundation.org>
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 344/462] nfp: bpf: Add check for nfp_app_ctrl_msg_alloc()
+Date: Tue, 11 Mar 2025 16:00:10 +0100
+Message-ID: <20250311145811.953351304@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jill Donahue <jilliandonahue58@gmail.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 4ab37fcb42832cdd3e9d5e50653285ca84d6686f ]
+commit 878e7b11736e062514e58f3b445ff343e6705537 upstream.
 
-When using USB MIDI, a lock is attempted to be acquired twice through a
-re-entrant call to f_midi_transmit, causing a deadlock.
+Add check for the return value of nfp_app_ctrl_msg_alloc() in
+nfp_bpf_cmsg_alloc() to prevent null pointer dereference.
 
-Fix it by using queue_work() to schedule the inner f_midi_transmit() via
-a high priority work queue from the completion handler.
-
-Link: https://lore.kernel.org/all/CAArt=LjxU0fUZOj06X+5tkeGT+6RbXzpWg1h4t4Fwa_KGVAX6g@mail.gmail.com/
-Fixes: d5daf49b58661 ("USB: gadget: midi: add midi function driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jill Donahue <jilliandonahue58@gmail.com>
-Link: https://lore.kernel.org/r/20250211174805.1369265-1-jdonahue@fender.com
+Fixes: ff3d43f7568c ("nfp: bpf: implement helpers for FW map ops")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250218030409.2425798-1-haoxiang_li2024@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_midi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/netronome/nfp/bpf/cmsg.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
-index 01c5736d381ef..3e8ea1bbe429a 100644
---- a/drivers/usb/gadget/function/f_midi.c
-+++ b/drivers/usb/gadget/function/f_midi.c
-@@ -282,7 +282,7 @@ f_midi_complete(struct usb_ep *ep, struct usb_request *req)
- 			/* Our transmit completed. See if there's more to go.
- 			 * f_midi_transmit eats req, don't queue it again. */
- 			req->length = 0;
--			f_midi_transmit(midi);
-+			queue_work(system_highpri_wq, &midi->work);
- 			return;
- 		}
- 		break;
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
++++ b/drivers/net/ethernet/netronome/nfp/bpf/cmsg.c
+@@ -20,6 +20,8 @@ nfp_bpf_cmsg_alloc(struct nfp_app_bpf *b
+ 	struct sk_buff *skb;
+ 
+ 	skb = nfp_app_ctrl_msg_alloc(bpf->app, size, GFP_KERNEL);
++	if (!skb)
++		return NULL;
+ 	skb_put(skb, size);
+ 
+ 	return skb;
 
 
 
