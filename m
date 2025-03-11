@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-123917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEE8A5C81B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89FCA5C5DA
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:19:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4194D189B9EF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DFA3189395B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2062325E47F;
-	Tue, 11 Mar 2025 15:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AFF25E815;
+	Tue, 11 Mar 2025 15:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M02TD+BD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eELqtjjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27263C0B;
-	Tue, 11 Mar 2025 15:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A468325BAA1;
+	Tue, 11 Mar 2025 15:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707333; cv=none; b=YweVWR7GAFcXSukwB7Uh8rJr1naR0dM+/4LLGUk4l1UuJwmme1qOw8qMAkZbOUFIz7HFJSqdnunrFsoaWIzbDKTwlHAHp7i7T+rg6N9riW3TpXJ6k/OPz+JpuOKWWNtSVFtAAuwLCZ663FfYizoMQU/1T4+3iTEAPUeooT1xs/w=
+	t=1741706119; cv=none; b=qhnNPU+OJzQbMDzv71vriduwBHjppqS/ViYzP/pFxIULvflAVOODV8bSKaSJyjuD45xZl8dJvIGGCbkHXtduirulZgM3F301tRHwDtFdjxpXjwb9iYdneNyo2M/7lx9HrDPzchhIWTK10IowIpdq/uxWNaa2U0+cNZUTDlFpgt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707333; c=relaxed/simple;
-	bh=LAJy2WxoAeTrZEX5liyxKSNS/UDc74L5JPfpASYFa1k=;
+	s=arc-20240116; t=1741706119; c=relaxed/simple;
+	bh=RZk/e2qtZhBvN2GrV38ahQjNqhaQnqtsL/YYVvxMZ1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXSi28HZvKCgqvZrhqNeUYWCPoISTrsVS+qlh5q35wwtK4Hurmlo1P6+MsMMtwwv11SrxgUfMaQRilCP2qesaHF+e25wh9tMLmJlFtUXnzgsPxQVTLLt/92Q6GcvjXB+I1H+d7EkzEllVPo3Ml/H8Gvx5Ms4Nx/SqcvUXHjOrU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M02TD+BD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5977EC4CEEA;
-	Tue, 11 Mar 2025 15:35:33 +0000 (UTC)
+	 MIME-Version; b=SjNLQ/bn2E6AjIhiZquORXlgFOHSsoBTH5dGLXuPBtyFZJrv6J0KX7B39i2F/HrqCJZPhfvKeAvsblnU6hXWE0sauVVwL5INFRCgQg50j8M3ciMeqRsTQHeeKIgr3Mc9jVIhJsJ1RZXdAcmWcsfXaltsPtWKDRm9hFjWANy8gX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eELqtjjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6D4C4CEE9;
+	Tue, 11 Mar 2025 15:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707333;
-	bh=LAJy2WxoAeTrZEX5liyxKSNS/UDc74L5JPfpASYFa1k=;
+	s=korg; t=1741706119;
+	bh=RZk/e2qtZhBvN2GrV38ahQjNqhaQnqtsL/YYVvxMZ1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M02TD+BD7Ril26gLehk8DvINfDg7Y9v9EezsalzJmL9+OF7VkDEAhbmmruNIgG4fP
-	 A+0yGSbpaJnJU9DG4aZc0Zc4leLZBFjJA0UjaVpg3q2YjJKsnn1T4dN4mvBarCMD0/
-	 zZZ9FqSd8p6vqB+IAwt86YrEMJHy7EDmXeBX1Oo0=
+	b=eELqtjjjTIscd42oVpsMk0FOE1IUoE8iyGqCW/BW6YIHKdj77SB8584CbPKCBS9D9
+	 h2sFoOdt2NF/EhkiXG1vxaHWoWeucYM4W5ZiQo4erFUCejw+gP+MBHi/2wSrb5x02X
+	 vL9hkPu3+S70mDavZCbAmbu+zTjO8YcD0CNyI3gA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	John Keeping <jkeeping@inmusicbrands.com>
-Subject: [PATCH 5.10 354/462] ALSA: usb-audio: Avoid dropping MIDI events at closing multiple ports
+	Qiang Zhang <dtzq01@gmail.com>,
+	Yoshiki Komachi <komachi.yoshiki@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 250/328] flow_dissector: Fix port range key handling in BPF conversion
 Date: Tue, 11 Mar 2025 16:00:20 +0100
-Message-ID: <20250311145812.340090399@linuxfoundation.org>
+Message-ID: <20250311145724.846729640@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +66,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit a3bdd8f5c2217e1cb35db02c2eed36ea20fb50f5 ]
+[ Upstream commit 69ab34f705fbfabcace64b5d53bb7a4450fac875 ]
 
-We fixed the UAF issue in USB MIDI code by canceling the pending work
-at closing each MIDI output device in the commit below.  However, this
-assumed that it's the only one that is tied with the endpoint, and it
-resulted in unexpected data truncations when multiple devices are
-assigned to a single endpoint and opened simultaneously.
+Fix how port range keys are handled in __skb_flow_bpf_to_target() by:
+- Separating PORTS and PORTS_RANGE key handling
+- Using correct key_ports_range structure for range keys
+- Properly initializing both key types independently
 
-For addressing the unexpected MIDI message drops, simply replace
-cancel_work_sync() with flush_work().  The drain callback should have
-been already invoked before the close callback, hence the port->active
-flag must be already cleared.  So this just assures that the pending
-work is finished before freeing the resources.
+This ensures port range information is correctly stored in its dedicated
+structure rather than incorrectly using the regular ports key structure.
 
-Fixes: 0125de38122f ("ALSA: usb-audio: Cancel pending work at closing a MIDI substream")
-Reported-and-tested-by: John Keeping <jkeeping@inmusicbrands.com>
-Closes: https://lore.kernel.org/20250217111647.3368132-1-jkeeping@inmusicbrands.com
-Link: https://patch.msgid.link/20250218114024.23125-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 59fb9b62fb6c ("flow_dissector: Fix to use new variables for port ranges in bpf hook")
+Reported-by: Qiang Zhang <dtzq01@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAPx+-5uvFxkhkz4=j_Xuwkezjn9U6kzKTD5jz4tZ9msSJ0fOJA@mail.gmail.com/
+Cc: Yoshiki Komachi <komachi.yoshiki@gmail.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://patch.msgid.link/20250218043210.732959-4-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/midi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/flow_dissector.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/sound/usb/midi.c b/sound/usb/midi.c
-index b02e1a33304f0..f0a70e912bddc 100644
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -1161,7 +1161,7 @@ static int snd_usbmidi_output_close(struct snd_rawmidi_substream *substream)
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index f4cc3710be94a..96d2635aaae07 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -781,6 +781,7 @@ static void __skb_flow_bpf_to_target(const struct bpf_flow_keys *flow_keys,
+ 				     struct flow_dissector *flow_dissector,
+ 				     void *target_container)
  {
- 	struct usbmidi_out_port *port = substream->runtime->private_data;
++	struct flow_dissector_key_ports_range *key_ports_range = NULL;
+ 	struct flow_dissector_key_ports *key_ports = NULL;
+ 	struct flow_dissector_key_control *key_control;
+ 	struct flow_dissector_key_basic *key_basic;
+@@ -825,20 +826,21 @@ static void __skb_flow_bpf_to_target(const struct bpf_flow_keys *flow_keys,
+ 		key_control->addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
+ 	}
  
--	cancel_work_sync(&port->ep->work);
-+	flush_work(&port->ep->work);
- 	return substream_open(substream, 0, 0);
- }
+-	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS))
++	if (dissector_uses_key(flow_dissector, FLOW_DISSECTOR_KEY_PORTS)) {
+ 		key_ports = skb_flow_dissector_target(flow_dissector,
+ 						      FLOW_DISSECTOR_KEY_PORTS,
+ 						      target_container);
+-	else if (dissector_uses_key(flow_dissector,
+-				    FLOW_DISSECTOR_KEY_PORTS_RANGE))
+-		key_ports = skb_flow_dissector_target(flow_dissector,
+-						      FLOW_DISSECTOR_KEY_PORTS_RANGE,
+-						      target_container);
+-
+-	if (key_ports) {
+ 		key_ports->src = flow_keys->sport;
+ 		key_ports->dst = flow_keys->dport;
+ 	}
++	if (dissector_uses_key(flow_dissector,
++			       FLOW_DISSECTOR_KEY_PORTS_RANGE)) {
++		key_ports_range = skb_flow_dissector_target(flow_dissector,
++							    FLOW_DISSECTOR_KEY_PORTS_RANGE,
++							    target_container);
++		key_ports_range->tp.src = flow_keys->sport;
++		key_ports_range->tp.dst = flow_keys->dport;
++	}
  
+ 	if (dissector_uses_key(flow_dissector,
+ 			       FLOW_DISSECTOR_KEY_FLOW_LABEL)) {
 -- 
 2.39.5
 
