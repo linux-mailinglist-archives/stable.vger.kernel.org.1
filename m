@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95E7A5C75A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 411D3A5C57F
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:15:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2290E7A5D8C
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3841896479
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614D225F782;
-	Tue, 11 Mar 2025 15:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97D225EF8E;
+	Tue, 11 Mar 2025 15:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAfFKDbI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWlgDcUg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204AA25D904;
-	Tue, 11 Mar 2025 15:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E2A25E820;
+	Tue, 11 Mar 2025 15:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707179; cv=none; b=oHS8oTnNZy+nAzVPd/i1AUOMatOgUlN4anBOAbToBlYUi2AjuyJRgrkqztDKlvFkXAhXiWU6swrDmKc/2nnLlaisxrZYLMO7cLtTETwHw+sGBGvj8pYsMuyqaYHolYfi1Rw+Vcuyi7tDGFa5SQHqeD4ykoiqZRBJgjHkebNDXv4=
+	t=1741705909; cv=none; b=NQeNzJXLwjd8eKN8ir5cESvaMBSFhB5YUhubzwGGfkozWfSyaNIBVHT/nBcrypZfmp4TWM/DLALfUWMH5m7RP2WpfawFFUQhDM4v24/mxgEdgjme0/PYjopiekv3cWPm/WCu9yEm8gZl+9fStVKx/ILHNqgkAnDyQPvw7BNhxwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707179; c=relaxed/simple;
-	bh=p/KctSacRB4x+PL2lXtuyMN+S3i6GgD8Cepp1Tb55Xw=;
+	s=arc-20240116; t=1741705909; c=relaxed/simple;
+	bh=paBkyUNNPH7xJLoStv0cWVm19fTcn9OLxbxOzpEj/t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mxl0lG7AzuuHLWlCfQb1pZoJGggtu3mDYBJKxvIeP7RZvmtP4PkZgUIeBwHeWMREzMrQkx7MqqkJnxbFd57+Ly4qGOm7gorWiaPF+QMG945Zge7mItuZ7W/TSTxGgLQTc4UGhI2wNJ92KxvElEWLKtPD3sMx9t365ztPP9fIVpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAfFKDbI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2CBC4CEE9;
-	Tue, 11 Mar 2025 15:32:58 +0000 (UTC)
+	 MIME-Version; b=LAIcKLdQnKm3141I2HcGK6bQT07F+qegWX23BZwKqU0YUI7mJWVVOW15b7oij+pQf3jWmrvXoimZfNs3LUj5Z3k+n1e3A7qMs9B15iOVpJ8ne1yyOeUZFf3AlITu5aSktYOAx0235InQJFoO4XznoxTf2HWzbwelQdUCA5nBkHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWlgDcUg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253CAC4CEF3;
+	Tue, 11 Mar 2025 15:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707179;
-	bh=p/KctSacRB4x+PL2lXtuyMN+S3i6GgD8Cepp1Tb55Xw=;
+	s=korg; t=1741705909;
+	bh=paBkyUNNPH7xJLoStv0cWVm19fTcn9OLxbxOzpEj/t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAfFKDbIiHJ9adF5o+SDG6WEDnL9Qqb7xP3M83FQh19eG9nSqQcdheh3Jih2gou7s
-	 mi5TM5p37US3NG5ex4LufyhSPL2ptRoT9sD0N+lIEUZgnWYbdoLSf6WW3oHnOlZAn0
-	 gf8TBLD7YkSO5l6fMAJPRjoGd7BC8Kx+aSKludTg=
+	b=CWlgDcUgMT+MY8XvJZV9A2Wpcaz+B6/WMjCA71lqw05Fr8qkridgfQIxkPcRYyjG/
+	 g8CpXeTlz1a8P3QPOLboIsQGIKr0hN0JAIi8k3yAnf61WG2i9SHdkoD+lWPl9bUjeX
+	 +agR8tXdnXmk9ZkCUvzznhdPeEJ7QfaOlTXSRw44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>
-Subject: [PATCH 5.10 300/462] parport_pc: add support for ASIX AX99100
-Date: Tue, 11 Mar 2025 15:59:26 +0100
-Message-ID: <20250311145810.214503761@linuxfoundation.org>
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Ivan Kokshaysky <ink@unseen.parts>
+Subject: [PATCH 5.4 197/328] alpha: align stack for page fault and user unaligned trap handlers
+Date: Tue, 11 Mar 2025 15:59:27 +0100
+Message-ID: <20250311145722.733081903@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Ivan Kokshaysky <ink@unseen.parts>
 
-commit 16aae4c64600a6319a6f10dbff833fa198bf9599 upstream.
+commit 3b35a171060f846b08b48646b38c30b5d57d17ff upstream.
 
-The PCI function 2 on ASIX AX99100 PCIe to Multi I/O Controller can be
-configured as a single-port parallel port controller. The subvendor id
-is 0x2000 when configured as parallel port. It supports IEEE-1284 EPP /
-ECP with its ECR on BAR1.
+do_page_fault() and do_entUna() are special because they use
+non-standard stack frame layout. Fix them manually.
 
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/20230724083933.3173513-5-jiaqing.zhao@linux.intel.com
-Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+Cc: stable@vger.kernel.org
+Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
+Tested-by: Matt Turner <mattst88@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
+Signed-off-by: Matt Turner <mattst88@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/parport_pc.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/alpha/kernel/entry.S |   20 ++++++++++----------
+ arch/alpha/kernel/traps.c |    2 +-
+ arch/alpha/mm/fault.c     |    4 ++--
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/parport/parport_pc.c
-+++ b/drivers/parport/parport_pc.c
-@@ -2611,6 +2611,7 @@ enum parport_pc_pci_cards {
- 	netmos_9815,
- 	netmos_9901,
- 	netmos_9865,
-+	asix_ax99100,
- 	quatech_sppxp100,
- 	wch_ch382l,
- 	brainboxes_uc146,
-@@ -2676,6 +2677,7 @@ static struct parport_pc_pci {
- 	/* netmos_9815 */		{ 2, { { 0, 1 }, { 2, 3 }, } },
- 	/* netmos_9901 */               { 1, { { 0, -1 }, } },
- 	/* netmos_9865 */               { 1, { { 0, -1 }, } },
-+	/* asix_ax99100 */		{ 1, { { 0, 1 }, } },
- 	/* quatech_sppxp100 */		{ 1, { { 0, 1 }, } },
- 	/* wch_ch382l */		{ 1, { { 2, -1 }, } },
- 	/* brainboxes_uc146 */	{ 1, { { 3, -1 }, } },
-@@ -2766,6 +2768,9 @@ static const struct pci_device_id parpor
- 	  0xA000, 0x1000, 0, 0, netmos_9865 },
- 	{ PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9865,
- 	  0xA000, 0x2000, 0, 0, netmos_9865 },
-+	/* ASIX AX99100 PCIe to Multi I/O Controller */
-+	{ PCI_VENDOR_ID_ASIX, PCI_DEVICE_ID_ASIX_AX99100,
-+	  0xA000, 0x2000, 0, 0, asix_ax99100 },
- 	/* Quatech SPPXP-100 Parallel port PCI ExpressCard */
- 	{ PCI_VENDOR_ID_QUATECH, PCI_DEVICE_ID_QUATECH_SPPXP_100,
- 	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, quatech_sppxp100 },
+--- a/arch/alpha/kernel/entry.S
++++ b/arch/alpha/kernel/entry.S
+@@ -199,8 +199,8 @@ CFI_END_OSF_FRAME entArith
+ CFI_START_OSF_FRAME entMM
+ 	SAVE_ALL
+ /* save $9 - $15 so the inline exception code can manipulate them.  */
+-	subq	$sp, 56, $sp
+-	.cfi_adjust_cfa_offset	56
++	subq	$sp, 64, $sp
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -215,7 +215,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_rel_offset	$13, 32
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ /* handle the fault */
+ 	lda	$8, 0x3fff
+ 	bic	$sp, $8, $8
+@@ -228,7 +228,7 @@ CFI_START_OSF_FRAME entMM
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	addq	$sp, 56, $sp
++	addq	$sp, 64, $sp
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -236,7 +236,7 @@ CFI_START_OSF_FRAME entMM
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ /* finish up the syscall as normal.  */
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entMM
+@@ -383,8 +383,8 @@ entUnaUser:
+ 	.cfi_restore	$0
+ 	.cfi_adjust_cfa_offset	-256
+ 	SAVE_ALL		/* setup normal kernel stack */
+-	lda	$sp, -56($sp)
+-	.cfi_adjust_cfa_offset	56
++	lda	$sp, -64($sp)
++	.cfi_adjust_cfa_offset	64
+ 	stq	$9, 0($sp)
+ 	stq	$10, 8($sp)
+ 	stq	$11, 16($sp)
+@@ -400,7 +400,7 @@ entUnaUser:
+ 	.cfi_rel_offset	$14, 40
+ 	.cfi_rel_offset	$15, 48
+ 	lda	$8, 0x3fff
+-	addq	$sp, 56, $19
++	addq	$sp, 64, $19
+ 	bic	$sp, $8, $8
+ 	jsr	$26, do_entUnaUser
+ 	ldq	$9, 0($sp)
+@@ -410,7 +410,7 @@ entUnaUser:
+ 	ldq	$13, 32($sp)
+ 	ldq	$14, 40($sp)
+ 	ldq	$15, 48($sp)
+-	lda	$sp, 56($sp)
++	lda	$sp, 64($sp)
+ 	.cfi_restore	$9
+ 	.cfi_restore	$10
+ 	.cfi_restore	$11
+@@ -418,7 +418,7 @@ entUnaUser:
+ 	.cfi_restore	$13
+ 	.cfi_restore	$14
+ 	.cfi_restore	$15
+-	.cfi_adjust_cfa_offset	-56
++	.cfi_adjust_cfa_offset	-64
+ 	br	ret_from_sys_call
+ CFI_END_OSF_FRAME entUna
+ 
+--- a/arch/alpha/kernel/traps.c
++++ b/arch/alpha/kernel/traps.c
+@@ -709,7 +709,7 @@ s_reg_to_mem (unsigned long s_reg)
+ static int unauser_reg_offsets[32] = {
+ 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
+ 	/* r9 ... r15 are stored in front of regs.  */
+-	-56, -48, -40, -32, -24, -16, -8,
++	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
+ 	R(r16), R(r17), R(r18),
+ 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
+ 	R(r27), R(r28), R(gp),
+--- a/arch/alpha/mm/fault.c
++++ b/arch/alpha/mm/fault.c
+@@ -77,8 +77,8 @@ __load_new_mm_context(struct mm_struct *
+ 
+ /* Macro for exception fixup code to access integer registers.  */
+ #define dpf_reg(r)							\
+-	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
+-				 (r) <= 18 ? (r)+10 : (r)-10])
++	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
++				 (r) <= 18 ? (r)+11 : (r)-10])
+ 
+ asmlinkage void
+ do_page_fault(unsigned long address, unsigned long mmcsr,
 
 
 
