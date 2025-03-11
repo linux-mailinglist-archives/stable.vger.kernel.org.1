@@ -1,105 +1,137 @@
-Return-Path: <stable+bounces-123231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461F2A5C457
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:00:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88012A5C45D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:01:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 902507A152E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 14:59:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DC763A65E8
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25A825DAFC;
-	Tue, 11 Mar 2025 15:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A525625DAEF;
+	Tue, 11 Mar 2025 15:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="eMAY1ZF0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1309B25DAE7;
-	Tue, 11 Mar 2025 15:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6C425DAE3
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 15:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705205; cv=none; b=AxqrXvNdQQUtuLt+RsmaHwH52ibiy49JNouK89kv6WIv0NmxxbBlJcpdrp94ux/SYXopJSO7uqR6MJH4v12V8Yp+BkuSMRu+HaukDY7QlJKfgMO0krzeJ5O/XQIVl99TSLvU3BNCRbMVPd2UaJRsNGYZAnC/jWqeKXjdk3i1vwg=
+	t=1741705309; cv=none; b=s/zsTpPpcAtpLZW56F59/AVvqm+VDyKEVSooqUOUrQw/bX7JtzA2XiCGmLJOs/qCTFeemC8Tw/a84/Ttg0nEArGJFknlwo78O0pl9g+U6rnROFRVadSrYd4jal4x1S3RbkhJkNx2P1NNFyDSciKaO5g6Mz89YSCI8S4UUq9J4B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705205; c=relaxed/simple;
-	bh=5PJkwwYfGL4NbJsE8apZ0H1rlDQsfGXPYywEs5a7dgs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hbHDEK9m9Xwq9N4o1+WteyXg+HOz3d5+XFzNA6YdALqtHqdUEP9YuS5/fJ4F3jK94mVmETyxyffrWajjL62M9eihnj5C/vFfxxhv+Csj7oTDXNSHdb3lWyJLBwuXC67ue7OVZGlUoYia0lXS1o1Vnk+EUAZ3to/HjqtU9QuZtyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22401f4d35aso99883015ad.2;
-        Tue, 11 Mar 2025 08:00:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741705203; x=1742310003;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1741705309; c=relaxed/simple;
+	bh=Es7Jq+xaUItmnmFx3FliQRRwKbWCSA0oO4kxOs+0tR0=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=lXvewijfFz36BRwegnz3uDZvliwG9vzEIq0JZjt5D8noPQ/uQWoKhzipyOJDTBWjSAxmWUNCKRyanNxLiju4/7qvUR7NLYYchEHZvGMiisjInKsJHcK1g1o+CdU3ZnNJRpyr4c8hpFri8uHnNKGIP3mig+/uGyXes3P+XgVdYrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=eMAY1ZF0; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-72b82c8230aso565022a34.2
+        for <stable@vger.kernel.org>; Tue, 11 Mar 2025 08:01:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1741705307; x=1742310107; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MaJ8SLFG93FwYkFp7sfKg4X+KPodbWjwHYeXqqA9L2w=;
-        b=FFoNtEiwGDLcjBi3pKplT3KGrBuVaYywRABFEKQcnpb/oRicGBtN/F5+BsTM2+AGAq
-         q85c+riylkGI1yoSR0Ut/6CyOXaB9HRSg7ofHzVEgKBluTUcKmNs+7gyX1ZrthlzC2Oi
-         v2Irl/q3OCRcd4Di0tR+hBeOlO2PZ/Zn3PA6JmKuG6QXzg/JQBsM01Kf5q1Ux4ccNveF
-         XcVxwrGd/Q8S1L2xEX11Vx0sL9MEGS06Ss9Ytcow4IqLU3s5uUzqsZWkkRHjILFLzOZ3
-         oOOQu38NnMD/LbJUNQka3FOYy3vzgxBjIx1CBi3/IOSAiEiVSwaNFBATY/F2MeRJzd73
-         h1pA==
-X-Forwarded-Encrypted: i=1; AJvYcCVEzkJi4jGb/FUgw9qK/VUzc++Zi2BqTaNcDlMgUwYX248KH9JLylKi8CA4rSu1Ftix7YyCEwmsbgV8OGA=@vger.kernel.org, AJvYcCXVxUtxs3k3Sa+RwtAIPX4k6yBrAidjy6k4LM14sZqbX+qVGIOa7AVKJVpLz+szIpGtVLe7+iQL@vger.kernel.org, AJvYcCXWZ1zPziW2e5qiyOargm4i33YeTcr951JBAlQal5mEXNrPfGmP9fPcTwU7COzo/KHnMnu1T+riJhj3@vger.kernel.org, AJvYcCXhxjevKAo0yDcAHYyrlmOzl2HAH3dUUrs/iywgT6YZ22SkNYUwBHNQSEkWkP9lb0hHUxcqcJl/3NNNaw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7CxHK8DVigpg8QYCc98TJXpCpmQudIgSBVuzz1jsRThFzZtJt
-	IvD6/Ll2HBPumXyN39oxdQdr8nzsrQmCUCq68uMfXaUMqAS71hK1
-X-Gm-Gg: ASbGncsKcrLvqhLnWVyoJSrU7dG1vBYR5dbjMPt3JiBaM5cngveBfJ7MiEjCdRbEtxN
-	5WiTNt42T7wTsDA88FP7Tql6oVvQ6Ouud43hLqGw6PfQS6LH2ExnxvovvjUPWjewQFnkGeR0/RP
-	sZwtJCQieIu/otZcNTfBW0cy7ecAcCKabZo5IPftdKZadRKGd49JZntfSSxu5ukb1ObYWrxSvLT
-	br050e4JNF5SvXeoleu2uGMXPHZcWGiJkdQyvA/frtnRSQ1v0E1bFif8KXX6ZTH7Q2kDF468mWY
-	0oZwJVTd5euVIN03C6zZeTf1UXBgaQHDPLfcsi3z4MR8kRgqYUkVU0DVYUsONvAi9wvovt/L3Zc
-	LMjt2d/OvOuK7uw==
-X-Google-Smtp-Source: AGHT+IGDF17bVy+X8PD1CLxyryITaYKCJ8HP+TmrU6K1QilfB9RwZjOgz3kvEQi1n6fSoKOwqa28aQ==
-X-Received: by 2002:a05:6a00:cc4:b0:736:5544:7ad7 with SMTP id d2e1a72fcca58-736eb7ffa52mr5264312b3a.14.1741705201877;
-        Tue, 11 Mar 2025 08:00:01 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-736e3f9d4f0sm3313957b3a.145.2025.03.11.08.00.01
+        bh=g4b/KdywCYMFDDq1/kWvENPSoLkrsBJwlXAOtPzvf0I=;
+        b=eMAY1ZF0lLHPg0dOW/tX9X/on+2/+H3t0pn1rFeX7hOnh11h3we9Zc0jPHORxvcT+i
+         VnV/tLSWF2po4TZLDDzSkROkC0gSmE2KuVC4yBvwTT8sVcpe4MUwNuMfkfJPj5/lb3Q8
+         JHnd9FFHK1bGv1rpHyrghcmK068GzRqIBUVlM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741705307; x=1742310107;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g4b/KdywCYMFDDq1/kWvENPSoLkrsBJwlXAOtPzvf0I=;
+        b=L+yt0xvy1kdhF2UQ/P/S2JbrFFCaDWs7DEtxeiHuJH1vmplZnw6wgcHekeLq+WFvHF
+         FoQ90uCOrK/Xz+0huFuY+J5Ru1OdZ/ym6muK3zWnVLQMkZhPcpWBD1/gcW6kX8KACclX
+         SXElk7vff/SDZY+QzR3OeICxdJz8bONn/SvbShBmMUbqj2HPbEf5xNbJmozG1vjMKzNw
+         u5YV9MjBj4A/g2AfNOWQWGh0HJqgQYCLGXfVte5piFhYdTOYMBLXgIAza+SsS2/Rf6lZ
+         hHsPwFTnbhdRcnVxdk8wDUUS87xcNeJdNg3D902IoLxUbXOSs5lqwNH6ZuezxDQeSiUv
+         plKw==
+X-Gm-Message-State: AOJu0Yx5IFLYSFlHy3M+uWmPAU3sAxb83D0gKyBfiC1il8jDe1GJFncT
+	2ANEWOLkKpNX3ED291m28xH2ou0Y8+iQYUhcyddfxr4wDiEL/o/DqdBzRu3x/Vqf2wJaPg1NwlU
+	=
+X-Gm-Gg: ASbGncvud9RRA4RLZyo6SIi4/mr+0ITdkFb+DI3Zol2zziSuEGjyYE2TZxFjH4vGi97
+	IYZNGxcO5BDE4MWQ9LjpxI5ImJ8d7oQgsyTqpCdVqn4x0LpUqJHxNoBaEkls0fLSdQe8HZZBxLS
+	585WnzBBzNgS2vGO9UpH0Sr1UrZirtPQ5SoANbdNmdusKHDpSR5oV+B/Fi15blkCykgJKbxSJx0
+	K0v3+E6GpjO1ycQ5pXrnTNz0AYJfo+nbDcOgEy3F2aIaQnMT5eBcubxJG7n6JRIghCJefp3vv3l
+	VM2Ekccp9wI1ox0HrPzyqndfDoJ7QiXSzjgq6kbDA8AgDm72HcGkx1s9QGSVFdVFsOanTcw3cKw
+	lrdv7
+X-Google-Smtp-Source: AGHT+IFdbjAPLkBcT/PdO6aUZ/LPk9p9TaaPPNTQhmFPj4MU5+L0g0wPVorRUgYDuoVha/IN/Ce0Hw==
+X-Received: by 2002:a05:6808:151f:b0:3f6:d59c:6a40 with SMTP id 5614622812f47-3fa2b30bb82mr2312809b6e.28.1741705305315;
+        Tue, 11 Mar 2025 08:01:45 -0700 (PDT)
+Received: from mail.broadcom.net ([192.19.144.250])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f9513f1f88sm646247b6e.0.2025.03.11.08.01.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 08:00:01 -0700 (PDT)
-Date: Wed, 12 Mar 2025 00:00:00 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: lpieralisi@kernel.org, vigneshr@ti.com,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250311150000.GB1381004@rocinante>
-References: <20250305132018.2260771-1-s-vadapalli@ti.com>
+        Tue, 11 Mar 2025 08:01:44 -0700 (PDT)
+From: Kamal Dasu <kamal.dasu@broadcom.com>
+To: Adrian Hunter <adrian.hunter@intel.com>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Al Cooper <alcooperx@gmail.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	linux-mmc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops
+Date: Tue, 11 Mar 2025 11:01:28 -0400
+Message-Id: <20250311150136.46938-1-kamal.dasu@broadcom.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250305132018.2260771-1-s-vadapalli@ti.com>
 
-Hello,
+cqhci timeouts observed on brcmstb platforms during suspend:
+  ...
+  [  164.832853] mmc0: cqhci: timeout for tag 18
+  ...
 
-> Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
-> J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
-> to the Technical Reference Manual and Register Documentation for the J784S4
-> SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
-> the field for the link-state interrupt. Instead, it is BIT(10) of the
-> "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
-> field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
-> 
-> Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
-> expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
-> already reuse this macro since it accurately represents the link-state
-> field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
-> 
-> [0]: https://www.ti.com/lit/zip/spruj52
+Adding cqhci_suspend()/resume() calls to disable cqe
+in sdhci_brcmstb_suspend()/resume() respectively to fix
+CQE timeouts seen on PM suspend.
 
-Applied to controller/j721e, thank you!
+Fixes: d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+---
+ drivers/mmc/host/sdhci-brcmstb.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-	Krzysztof
+diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
+index 0ef4d578ade8..bf55a9185eb6 100644
+--- a/drivers/mmc/host/sdhci-brcmstb.c
++++ b/drivers/mmc/host/sdhci-brcmstb.c
+@@ -505,6 +505,12 @@ static int sdhci_brcmstb_suspend(struct device *dev)
+ 	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
+ 
+ 	clk_disable_unprepare(priv->base_clk);
++	if (host->mmc->caps2 & MMC_CAP2_CQE) {
++		ret = cqhci_suspend(host->mmc);
++		if (ret)
++			return ret;
++	}
++
+ 	return sdhci_pltfm_suspend(dev);
+ }
+ 
+@@ -529,6 +535,9 @@ static int sdhci_brcmstb_resume(struct device *dev)
+ 			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
+ 	}
+ 
++	if (host->mmc->caps2 & MMC_CAP2_CQE)
++		ret = cqhci_resume(host->mmc);
++
+ 	return ret;
+ }
+ #endif
+-- 
+2.17.1
+
 
