@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-123549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83554A5C628
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:22:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7E0A5C812
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 992493AA9D5
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:17:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C2617AD1CB
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F712571D8;
-	Tue, 11 Mar 2025 15:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A7225E83C;
+	Tue, 11 Mar 2025 15:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDYDfCSA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qi9QNEqr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC1A7E110;
-	Tue, 11 Mar 2025 15:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501B325E47F;
+	Tue, 11 Mar 2025 15:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706275; cv=none; b=MKEuQbHhg0X8xYOUL5oRbZXR6Fd8C8a8vde4mtsU09zPi0CZqEUI9rZkFGHxgw+avuw0o4ZWVNEAKuIgBHOpZWUSO1TuxJJLENWIEsVP2CLgLctZgTUg0/mLKG6cHjPS2/fj0gykiwYg+Dth6fUMhDFzdqPvAw2rmlXlqYcHOp0=
+	t=1741707546; cv=none; b=O1V3qv0KjjtyDsx7/AOwGhHTTUMEK/dsXhGXgxiEbmf+kGDmVrVbRWuUYcu9JGOWGo4UQUjcZLx1/4/GX1mfi3GU8NyQC2dr9qVEWS90gdW14OLTM0XXG7LTozC8TEDC3ftLH1iqqFzp8G7kmtI+2umk9MY5lwHK2l6nQ4MSB8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706275; c=relaxed/simple;
-	bh=pkcemzfuXYe5aPFbP1v49BTHGyIT1wNBEZrbD6eeh04=;
+	s=arc-20240116; t=1741707546; c=relaxed/simple;
+	bh=d9IU3pXkKNAgAIbgAmxYcVA6qlZoGRdxKcwzSnRyhZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cS0/F3zlv6SLe/IjR8MrsxkHkYV4JkYOquQQ1nY/NH1d75RkbGKlkE6XkPsgKNY60306kbBr5oFOdMmilROAQOA7ySsV0pAHVvm2qjSVFJKYzkg0rLeSpAAU0POMZpqsD6WSnaT52+Kq8LdPXjue5Rruh1rMYSYkTyzDkAX3FyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDYDfCSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7C8C4CEE9;
-	Tue, 11 Mar 2025 15:17:54 +0000 (UTC)
+	 MIME-Version; b=HM+2kBITkjTiVksN8WqF0bUtr/sXnjFuGchRtdyICvZ9wiZHSAxWqgwU61maU09Y6E6R21JO1D5SSNdsANgNs4m0g04uBG7CijUg8M5rn3PeGA8AijWggY/L3PBmqpXxXqVVw/qdbKbff6NM1gNkJuGN3kt6GhHltnwShW593L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qi9QNEqr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5CAC4CEEA;
+	Tue, 11 Mar 2025 15:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706275;
-	bh=pkcemzfuXYe5aPFbP1v49BTHGyIT1wNBEZrbD6eeh04=;
+	s=korg; t=1741707546;
+	bh=d9IU3pXkKNAgAIbgAmxYcVA6qlZoGRdxKcwzSnRyhZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDYDfCSAS/76vugee7AK5gTmntj29p0FemKPho62nCbTQUn6bqSDQRSCH85i1eVL+
-	 +YJf6T1Dcbhg4IyeDVP/3H+Oc76MeMmTy9n64iH+HVSmcNwn4n+v+g1jvfztXNqTEI
-	 mthlAD92Vpz2woVA7XwW/FDF0jNBnzp1PzMEqgiE=
+	b=qi9QNEqrayW2AdY5tC0+DMdVWjp9Lhe3WfzRcevFzwTAKVhYFlvS5ht6C7oR92qiw
+	 1Tou5wd2B3+UJLzx457mvEoYhVihDx5xQxBBQnAWLnH2z9j4ty0fDslEvzu3MIbhph
+	 iL6Ms5bxAQkD+Wd2LYcRIylmAInutLkicLo4xJsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 5.4 322/328] xhci: pci: Fix indentation in the PCI device ID definitions
+	stable <stable@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.10 426/462] usb: renesas_usbhs: Call clk_put()
 Date: Tue, 11 Mar 2025 16:01:32 +0100
-Message-ID: <20250311145727.695393598@linuxfoundation.org>
+Message-ID: <20250311145815.165452935@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 0309ed83791c079f239c13e0c605210425cd1a61 upstream.
+commit b5ea08aa883da05106fcc683d12489a4292d1122 upstream.
 
-Some of the definitions are missing the one TAB, add it to them.
+Clocks acquired with of_clk_get() need to be freed with clk_put(). Call
+clk_put() on priv->clks[0] on error path.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-23-mathias.nyman@linux.intel.com
+Fixes: 3df0e240caba ("usb: renesas_usbhs: Add multiple clocks management")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250225110248.870417-2-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -25,8 +25,8 @@
- #define SPARSE_CNTL_ENABLE	0xC12C
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -312,8 +312,10 @@ static int usbhsc_clk_get(struct device
+ 	priv->clks[1] = of_clk_get(dev_of_node(dev), 1);
+ 	if (PTR_ERR(priv->clks[1]) == -ENOENT)
+ 		priv->clks[1] = NULL;
+-	else if (IS_ERR(priv->clks[1]))
++	else if (IS_ERR(priv->clks[1])) {
++		clk_put(priv->clks[0]);
+ 		return PTR_ERR(priv->clks[1]);
++	}
  
- /* Device for a quirk */
--#define PCI_VENDOR_ID_FRESCO_LOGIC	0x1b73
--#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK	0x1000
-+#define PCI_VENDOR_ID_FRESCO_LOGIC		0x1b73
-+#define PCI_DEVICE_ID_FRESCO_LOGIC_PDK		0x1000
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1009	0x1009
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1100	0x1100
- #define PCI_DEVICE_ID_FRESCO_LOGIC_FL1400	0x1400
-@@ -35,8 +35,8 @@
- #define PCI_DEVICE_ID_EJ168		0x7023
- #define PCI_DEVICE_ID_EJ188		0x7052
- 
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
--#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
-+#define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
- #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
- #define PCI_DEVICE_ID_INTEL_CHERRYVIEW_XHCI		0x22b5
- #define PCI_DEVICE_ID_INTEL_SUNRISEPOINT_H_XHCI		0xa12f
+ 	return 0;
+ }
 
 
 
