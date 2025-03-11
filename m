@@ -1,143 +1,130 @@
-Return-Path: <stable+bounces-123180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32505A5BD35
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:06:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C090FA5BD32
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:06:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF48418952DD
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 10:06:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67EF43A7916
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 10:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CAC42065;
-	Tue, 11 Mar 2025 10:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F49122B8BC;
+	Tue, 11 Mar 2025 10:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b="iniPSoik"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="EAy//yhi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6467022577E
-	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 10:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8559EF9CB
+	for <stable@vger.kernel.org>; Tue, 11 Mar 2025 10:06:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741687595; cv=none; b=BhLA7eVkuOiqNiiAmGX2O0riM+32u8WXtlORDBnbq4Gi9RN9hRT/bQx+LsbNjfNwBnWNQtDL8Nr7X1J2/RvkLMbt0ea6lVvpYI5JzKpXAf5wtYqoPlvGbL6l5Ne8BV1MKY5zulCoWC/kTHLbAVomX/9RHYrtkq3U1fkrJawPMZM=
+	t=1741687573; cv=none; b=qY82Ri2qo+FLxU34hq43vdKTItWdVmDs7d3T2qUuOvdhLCEkrxVlW464Gt6HculJBxf4B5wlUuIbMTVOkMMiitr6Jtq5gl0DNdXeAhOGfVEpSfWU5fZDbDS6KATTxxY1EG1P6fzckgP7Y8SfRWj54DKdcaWZTte/S+DKiurCwms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741687595; c=relaxed/simple;
-	bh=/YEgTke/EWVA4zV2VvPzaZU3/mXdRxciFkmCnDilfvQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fJP2yOamAquBXIw8YzoAeSPITi6/FsJqFrOt7xH7od5NTAf3F1AWNjkWT7kEMGuDMSi4UwbOK0rvuiPnhAlEcKvzXNxEYjD9rRhHgMPKuMomPsyf75J0Nt6Ll7F/LbT0NlkHXq2coWDP1bcQpA3doSQ1UFyqJXw5QIDUZJen6Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org; spf=pass smtp.mailfrom=deepin.org; dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b=iniPSoik; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deepin.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deepin.org;
-	s=ukjg2408; t=1741687579;
-	bh=zMkGsEOhRrQJoE7b/qjicmm9MOJ2PvmNyE4ve+8Rljo=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=iniPSoikJYhj4lqZklFfc1OuVuTh00x61yB3A6O9snXfcQk9ohgDU/bLKZKQcxzVR
-	 bLrB+zwEx9mLTwZFUmdAcu0SWr49Ak/CRcLqvoto5ETN7yVuKZ1WMK45yA8uJl9LIi
-	 xkuJ/fVf5PhqeBHAqeSRI/FOllzC3c322X6es+3A=
-X-QQ-mid: bizesmtp78t1741687576tbd9r1h4
-X-QQ-Originating-IP: I5QyNztvaL4Hpsa+XWzIzqTavcUHPCv5hPoG9fF/GAg=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 11 Mar 2025 18:06:14 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 17129962958386938985
-From: Chen Linxuan <chenlinxuan@deepin.org>
-To: Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Chen Linxuan <chenlinxuan@deepin.org>,
-	Jann Horn <jannh@google.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>
-Cc: stable@vger.kernel.org,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH stable 6.6] lib/buildid: Handle memfd_secret() files in build_id_parse()
-Date: Tue, 11 Mar 2025 18:05:55 +0800
-Message-ID: <05D0A9F7DE394601+20250311100555.310788-2-chenlinxuan@deepin.org>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1741687573; c=relaxed/simple;
+	bh=rjkpyxd6RWcA9w9OKfTstC4hp2OuOWUSlwYw8CdoWwI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ecA2eke9xRJBOMG1OuELXdWPqjoEGCCY2WSAkTn4YPPpTMWZCheAopFW71CpYq+Q03MwD4ZWJxVw3nc65qMZ/beQKkK1NOwsHiv29L85fz8FIySsgwah7ZtuIIzi/5vmHiIS39WmaWHnKbA3bgrntj9ndsngnm99yto+bXLfhqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=EAy//yhi; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6010a.ext.cloudfilter.net ([10.0.30.248])
+	by cmsmtp with ESMTPS
+	id rpqfteBEef1UXrwUvt9OiH; Tue, 11 Mar 2025 10:06:05 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id rwUutWvaKZozcrwUvtTVT6; Tue, 11 Mar 2025 10:06:05 +0000
+X-Authority-Analysis: v=2.4 cv=GvNE+F1C c=1 sm=1 tr=0 ts=67d00b0d
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=VGeZqF52+y3Rppa+8xZLTmlKkc+wJljUH1xmwaROc6Y=; b=EAy//yhiPgty5l4xUtFNo0yZ4q
+	poel9alzEyUTFCmHPWCPk181FHWPZ6NY+mJBafdWLRebXoJX/BzT0oxDOlYHAKlZfp+Si9nKN4NSA
+	Z4rtW1J59GaMi/iEzecJD8mna4dEjm88QNQqj9jMZ8uIC6m6vRmGwlpt+m3u35gY/zCxyJBW8dR1N
+	ym/Dre2nxIlrRe3JK2muDfYv6YO2qf2EtZplHk7pLxsn56ivUOLZVVXKdLV2LMHdmarNlMaAD25No
+	hPRXd6d2qTxDKjSev0AYCkVQjrBMNzEngysAJPtxJtf3KnmXF3a5HMCYho8LMJNOxdbihkfzc1B5q
+	hwbkSfWg==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:57318 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1trwUs-00000001SwB-3ANY;
+	Tue, 11 Mar 2025 04:06:02 -0600
+Message-ID: <4bad0d2f-e359-438d-9160-b70b610f7ae8@w6rz.net>
+Date: Tue, 11 Mar 2025 03:05:59 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:deepin.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-X-QQ-XMAILINFO: N90SrNLg0QeiZgB7LkchNlrlH9H8kSdobDycuX/daLfxnfPzGCii4QlV
-	VDYEqbvBetZ2TZrtNoKkZKldeETorJCZ4lD/TXNn7lXmikgjn9PHbVonnytO9t7PRCylYon
-	xwWcOKoKD0Airhb+xiAokSqvHqijIm++0Ujp5q0bQ5f4Qi4V/UT0mqWDYchtzY8UyNhChCI
-	Josg38mfT8oe+ROlZ5Abm+jiCzXRDP9cOTqU8/k8WdoyIm3HYTgkPptnmoOYgKdC3GCr6Yp
-	gdWIq5rAN1lyobXlSnmsiv66vgikpNBQWoNqWq1tjXt9m3bzdFh9UK9Mn89Sa/D/CZIKh/Z
-	r3EiHLFzuTyTCaJDf1dvJ17olydcxz0WCr3TuSAKl3BUEwIYjtsD3Lc7HxMUJ557+EvrDyZ
-	Op7Eh972dLx9eBTRnv4BmVkHEsqeCTM14kJjQC1YtXOiw5zfmmlk7TZWGHSUnAEydNNSzG5
-	GHjmdwoEp9z7JZmhp33pNUhaEKtfFatdqn7UiAS6+OCKcD1RDHsjufv/0iAEFwjFtt9AaA9
-	McFFjNSMqKDnrz5zn1v66PmMnz+P3HcD+rauQkCC4JuUB5VU6KEMnwTjWnzBGCB9WHWK7mc
-	PJmXQLdXmARvXy74eaedZFyLgwTcqtKO4/ZKiQvJRU8Ni6a1RD6/2y6lo4HV/hfSBHIHMr5
-	jzzn57N1ju4AI91/x2KMp1vziOl0ABVSVyCkt46Wa+q57AolXnLmH1KMBO3+8GbSNhzhKM0
-	VFRSCHPtuH+HLXpwsmO+YVL42BsFTiz2+BXrh1TxFztfdwJe6xHglIgOJij7stjMZsEBWBN
-	Y+kjQ7QlLvyUmPWyME9VRDE4fHhKzZRWVUd1cybPF0FUtmZH1u8npWCkxcCtdpe9DJ+odX0
-	QkDLKHb4hpzpF0X97wr6pRPOENPcgjIV5vJd5j5bQaJs9S/PwYCNSo9Asv4PziX0P4mC4X0
-	xihc7FmR/N/FpwQ==
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/269] 6.12.19-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250310170457.700086763@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250310170457.700086763@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1trwUs-00000001SwB-3ANY
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:57318
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 18
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfLaGsT95hg02jCNw0ZF+oo5RpGXNQTK23ceG725eLTKd/5aIR8upGRShd/RAoPga1qNdvr5mFm/da1oQ5uvZk1mQIqiFJ4KibmXejNI5xoPhK3Mq//cH
+ BPe9IWaRDXFofDwFThVsAfJV6x4sVoUfVnv/WjJQ0znp1bqt+xPYOwgpKvVJrrZIU5004t1lQRdBkQ==
 
-Backport of a similar change from commit 5ac9b4e935df ("lib/buildid:
-Handle memfd_secret() files in build_id_parse()") to address an issue
-where accessing secret memfd contents through build_id_parse() would
-trigger faults.
+On 3/10/25 10:02, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.19 release.
+> There are 269 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 12 Mar 2025 17:04:00 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.19-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Original report and repro can be found in [0].
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-  [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
-
-This repro will cause BUG: unable to handle kernel paging request in
-build_id_parse in 5.15/6.1/6.6.
-
-Some other discussions can be found in [1].
-
-  [1] https://lore.kernel.org/bpf/20241104175256.2327164-1-jolsa@kernel.org/T/#u
-
-Cc: stable@vger.kernel.org
-Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
----
- lib/buildid.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/lib/buildid.c b/lib/buildid.c
-index 9fc46366597e..9db35305f257 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -5,6 +5,7 @@
- #include <linux/elf.h>
- #include <linux/kernel.h>
- #include <linux/pagemap.h>
-+#include <linux/secretmem.h>
- 
- #define BUILD_ID 3
- 
-@@ -157,6 +158,12 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
- 	if (!vma->vm_file)
- 		return -EINVAL;
- 
-+#ifdef CONFIG_SECRETMEM
-+	/* reject secretmem folios created with memfd_secret() */
-+	if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
-+		return -EFAULT;
-+#endif
-+
- 	page = find_get_page(vma->vm_file->f_mapping, 0);
- 	if (!page)
- 		return -EFAULT;	/* page not mapped */
--- 
-2.48.1
+Tested-by: Ron Economos <re@w6rz.net>
 
 
