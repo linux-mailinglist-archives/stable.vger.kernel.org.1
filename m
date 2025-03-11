@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAED8A5C7A9
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3841A5C557
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:14:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 508461885481
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09EE6189D084
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6596125EF93;
-	Tue, 11 Mar 2025 15:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857A325DD00;
+	Tue, 11 Mar 2025 15:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ha1xA/LY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMZqtQ+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2161C25DCFA;
-	Tue, 11 Mar 2025 15:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DB31C3BEB;
+	Tue, 11 Mar 2025 15:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707135; cv=none; b=Wum2ztsZI89ZTYwYCVv7SKnny2YJ9BpdJBe4Bjvm2CNEKeAfSp6voeQziHsK45VRUC8aQEurd9yPu0cIM1EwGBWOB9suqwiieMD2sUuuxhf+plbZBcsXTsTRHa2vwij2ZV4yeWVlmeHPi920DoNgImaNuONLksN2PFPQZeJa+co=
+	t=1741705843; cv=none; b=G1ahLEnPT0YxOMZ9wfYv5lHdnSb6ZV6UVmpPoCOrTBka7/ur1IG9nGJGe5Rz4New9YK3z0uN8SDo5V8eACWh+9V1JZ7WyEUaT2OUV2fb4aL3mJmt/fp/odc0sndWzS8Ky92rcfUmVF6k99NNmrH5Yc3C0JH0dkD5PlWe83hx/lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707135; c=relaxed/simple;
-	bh=Wx2iLpF2obO2sFtbX03L778uq74+mMbmX022S6fquS8=;
+	s=arc-20240116; t=1741705843; c=relaxed/simple;
+	bh=JtUdU8FXtAuKUDXolezMJMpO8RBMxmS/VGHL2ATjvSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzQ6LK8wN6+oA10hP78GgAx0RblTs9TyfAPEUPSmdfPSbBpAnH3sgmm9Wj5rZgkKtxfeTD8OQEvn7L7qn4lkss39j6a+N4x5HGVwmKg/B8ZOsqKa+r7fT81vjeR4RT0nPmdx/nkAEU/bmxpcnb4wm+wP+rcLTkBcnsO+8uK1MZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ha1xA/LY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C1CC4CEE9;
-	Tue, 11 Mar 2025 15:32:14 +0000 (UTC)
+	 MIME-Version; b=PHLAaF3Z+rAD7ul12TVvBEf4ie83zrK1JJDs7rQW7egR9Ij1/uHdoNkZ6evxfo4jNoYFeY/eBtrNFE5/Q+DwtdROr3C5A75UP6O6x58nV4iEDh80lOPJ5S3YiLLfHr13fbNSq4nDmkL+xF4x63fR2Ff7T9e6mE9HH7Mq044mbUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMZqtQ+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE2DC4CEEC;
+	Tue, 11 Mar 2025 15:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707134;
-	bh=Wx2iLpF2obO2sFtbX03L778uq74+mMbmX022S6fquS8=;
+	s=korg; t=1741705843;
+	bh=JtUdU8FXtAuKUDXolezMJMpO8RBMxmS/VGHL2ATjvSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ha1xA/LYa/J1d6pWlN3a4fqmb1tOUQOcYWWRiroab+5Bj+cqtDwESwA5wUyoCwUyO
-	 9knGjd/9n/G58D//8A/Od9WBThnJ06NyI4RQ6e7qspq0zUYoTAOHlokN6Xa5hKFpK5
-	 zaqnWcsxY8K36qSZQqYIxp0pKTqvfOCZjxj7mrLc=
+	b=ZMZqtQ+jfC+caT4FePdIRlbG7TKRDzUgWzDXOj1BbOIoPtfxclXKlhdIH9uoMRvtw
+	 TGJl6uAOpov4gApYkih1tEE6KwUDTN7N6Lo5kcMzxl+QuDBUHY6eQGZF++/aaDbqUa
+	 usNHVIN8wKvLqdmB7eizlbc6kHaf3m0AteMWMG8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Waiman Long <longman@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Maksym Planeta <maksym@exostellar.io>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 278/462] clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context
+Subject: [PATCH 5.4 174/328] Grab mm lock before grabbing pt lock
 Date: Tue, 11 Mar 2025 15:59:04 +0100
-Message-ID: <20250311145809.349732957@linuxfoundation.org>
+Message-ID: <20250311145721.824464959@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +62,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Maksym Planeta <maksym@exostellar.io>
 
-[ Upstream commit 6bb05a33337b2c842373857b63de5c9bf1ae2a09 ]
+[ Upstream commit 6d002348789bc16e9203e9818b7a3688787e3b29 ]
 
-The following bug report happened with a PREEMPT_RT kernel:
+Function xen_pin_page calls xen_pte_lock, which in turn grab page
+table lock (ptlock). When locking, xen_pte_lock expect mm->page_table_lock
+to be held before grabbing ptlock, but this does not happen when pinning
+is caused by xen_mm_pin_all.
 
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2012, name: kwatchdog
-  preempt_count: 1, expected: 0
-  RCU nest depth: 0, expected: 0
-  get_random_u32+0x4f/0x110
-  clocksource_verify_choose_cpus+0xab/0x1a0
-  clocksource_verify_percpu.part.0+0x6b/0x330
-  clocksource_watchdog_kthread+0x193/0x1a0
+This commit addresses lockdep warning below, which shows up when
+suspending a Xen VM.
 
-It is due to the fact that clocksource_verify_choose_cpus() is invoked with
-preemption disabled.  This function invokes get_random_u32() to obtain
-random numbers for choosing CPUs.  The batched_entropy_32 local lock and/or
-the base_crng.lock spinlock in driver/char/random.c will be acquired during
-the call. In PREEMPT_RT kernel, they are both sleeping locks and so cannot
-be acquired in atomic context.
+[ 3680.658422] Freezing user space processes
+[ 3680.660156] Freezing user space processes completed (elapsed 0.001 seconds)
+[ 3680.660182] OOM killer disabled.
+[ 3680.660192] Freezing remaining freezable tasks
+[ 3680.661485] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[ 3680.685254]
+[ 3680.685265] ==================================
+[ 3680.685269] WARNING: Nested lock was not taken
+[ 3680.685274] 6.12.0+ #16 Tainted: G        W
+[ 3680.685279] ----------------------------------
+[ 3680.685283] migration/0/19 is trying to lock:
+[ 3680.685288] ffff88800bac33c0 (ptlock_ptr(ptdesc)#2){+.+.}-{3:3}, at: xen_pin_page+0x175/0x1d0
+[ 3680.685303]
+[ 3680.685303] but this task is not holding:
+[ 3680.685308] init_mm.page_table_lock
+[ 3680.685311]
+[ 3680.685311] stack backtrace:
+[ 3680.685316] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
+[ 3680.685324] Tainted: [W]=WARN
+[ 3680.685328] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
+[ 3680.685339] Call Trace:
+[ 3680.685344]  <TASK>
+[ 3680.685347]  dump_stack_lvl+0x77/0xb0
+[ 3680.685356]  __lock_acquire+0x917/0x2310
+[ 3680.685364]  lock_acquire+0xce/0x2c0
+[ 3680.685369]  ? xen_pin_page+0x175/0x1d0
+[ 3680.685373]  _raw_spin_lock_nest_lock+0x2f/0x70
+[ 3680.685381]  ? xen_pin_page+0x175/0x1d0
+[ 3680.685386]  xen_pin_page+0x175/0x1d0
+[ 3680.685390]  ? __pfx_xen_pin_page+0x10/0x10
+[ 3680.685394]  __xen_pgd_walk+0x233/0x2c0
+[ 3680.685401]  ? stop_one_cpu+0x91/0x100
+[ 3680.685405]  __xen_pgd_pin+0x5d/0x250
+[ 3680.685410]  xen_mm_pin_all+0x70/0xa0
+[ 3680.685415]  xen_pv_pre_suspend+0xf/0x280
+[ 3680.685420]  xen_suspend+0x57/0x1a0
+[ 3680.685428]  multi_cpu_stop+0x6b/0x120
+[ 3680.685432]  ? update_cpumasks_hier+0x7c/0xa60
+[ 3680.685439]  ? __pfx_multi_cpu_stop+0x10/0x10
+[ 3680.685443]  cpu_stopper_thread+0x8c/0x140
+[ 3680.685448]  ? smpboot_thread_fn+0x20/0x1f0
+[ 3680.685454]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[ 3680.685458]  smpboot_thread_fn+0xed/0x1f0
+[ 3680.685462]  kthread+0xde/0x110
+[ 3680.685467]  ? __pfx_kthread+0x10/0x10
+[ 3680.685471]  ret_from_fork+0x2f/0x50
+[ 3680.685478]  ? __pfx_kthread+0x10/0x10
+[ 3680.685482]  ret_from_fork_asm+0x1a/0x30
+[ 3680.685489]  </TASK>
+[ 3680.685491]
+[ 3680.685491] other info that might help us debug this:
+[ 3680.685497] 1 lock held by migration/0/19:
+[ 3680.685500]  #0: ffffffff8284df38 (pgd_lock){+.+.}-{3:3}, at: xen_mm_pin_all+0x14/0xa0
+[ 3680.685512]
+[ 3680.685512] stack backtrace:
+[ 3680.685518] CPU: 0 UID: 0 PID: 19 Comm: migration/0 Tainted: G        W          6.12.0+ #16
+[ 3680.685528] Tainted: [W]=WARN
+[ 3680.685531] Stopper: multi_cpu_stop+0x0/0x120 <- __stop_cpus.constprop.0+0x8c/0xd0
+[ 3680.685538] Call Trace:
+[ 3680.685541]  <TASK>
+[ 3680.685544]  dump_stack_lvl+0x77/0xb0
+[ 3680.685549]  __lock_acquire+0x93c/0x2310
+[ 3680.685554]  lock_acquire+0xce/0x2c0
+[ 3680.685558]  ? xen_pin_page+0x175/0x1d0
+[ 3680.685562]  _raw_spin_lock_nest_lock+0x2f/0x70
+[ 3680.685568]  ? xen_pin_page+0x175/0x1d0
+[ 3680.685572]  xen_pin_page+0x175/0x1d0
+[ 3680.685578]  ? __pfx_xen_pin_page+0x10/0x10
+[ 3680.685582]  __xen_pgd_walk+0x233/0x2c0
+[ 3680.685588]  ? stop_one_cpu+0x91/0x100
+[ 3680.685592]  __xen_pgd_pin+0x5d/0x250
+[ 3680.685596]  xen_mm_pin_all+0x70/0xa0
+[ 3680.685600]  xen_pv_pre_suspend+0xf/0x280
+[ 3680.685607]  xen_suspend+0x57/0x1a0
+[ 3680.685611]  multi_cpu_stop+0x6b/0x120
+[ 3680.685615]  ? update_cpumasks_hier+0x7c/0xa60
+[ 3680.685620]  ? __pfx_multi_cpu_stop+0x10/0x10
+[ 3680.685625]  cpu_stopper_thread+0x8c/0x140
+[ 3680.685629]  ? smpboot_thread_fn+0x20/0x1f0
+[ 3680.685634]  ? __pfx_smpboot_thread_fn+0x10/0x10
+[ 3680.685638]  smpboot_thread_fn+0xed/0x1f0
+[ 3680.685642]  kthread+0xde/0x110
+[ 3680.685645]  ? __pfx_kthread+0x10/0x10
+[ 3680.685649]  ret_from_fork+0x2f/0x50
+[ 3680.685654]  ? __pfx_kthread+0x10/0x10
+[ 3680.685657]  ret_from_fork_asm+0x1a/0x30
+[ 3680.685662]  </TASK>
+[ 3680.685267] xen:grant_table: Grant tables using version 1 layout
+[ 3680.685921] OOM killer enabled.
+[ 3680.685934] Restarting tasks ... done.
 
-Fix this problem by using migrate_disable() to allow smp_processor_id() to
-be reliably used without introducing atomic context. preempt_disable() is
-then called after clocksource_verify_choose_cpus() but before the
-clocksource measurement is being run to avoid introducing unexpected
-latency.
-
-Fixes: 7560c02bdffb ("clocksource: Check per-CPU clock synchronization when marked unstable")
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/all/20250131173323.891943-2-longman@redhat.com
+Signed-off-by: Maksym Planeta <maksym@exostellar.io>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241204103516.3309112-1-maksym@exostellar.io>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/clocksource.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/xen/mmu_pv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 21dfee6c0d936..b22508c5d2d96 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -336,10 +336,10 @@ static void clocksource_verify_percpu(struct clocksource *cs)
- 	cpumask_clear(&cpus_ahead);
- 	cpumask_clear(&cpus_behind);
- 	cpus_read_lock();
--	preempt_disable();
-+	migrate_disable();
- 	clocksource_verify_choose_cpus();
- 	if (cpumask_empty(&cpus_chosen)) {
--		preempt_enable();
-+		migrate_enable();
- 		cpus_read_unlock();
- 		pr_warn("Not enough CPUs to check clocksource '%s'.\n", cs->name);
- 		return;
-@@ -347,6 +347,7 @@ static void clocksource_verify_percpu(struct clocksource *cs)
- 	testcpu = smp_processor_id();
- 	pr_info("Checking clocksource %s synchronization from CPU %d to CPUs %*pbl.\n",
- 		cs->name, testcpu, cpumask_pr_args(&cpus_chosen));
-+	preempt_disable();
- 	for_each_cpu(cpu, &cpus_chosen) {
- 		if (cpu == testcpu)
- 			continue;
-@@ -367,6 +368,7 @@ static void clocksource_verify_percpu(struct clocksource *cs)
- 			cs_nsec_min = cs_nsec;
+diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+index 57fa2dbf3f7a9..d61e40466d786 100644
+--- a/arch/x86/xen/mmu_pv.c
++++ b/arch/x86/xen/mmu_pv.c
+@@ -887,6 +887,7 @@ void xen_mm_pin_all(void)
+ {
+ 	struct page *page;
+ 
++	spin_lock(&init_mm.page_table_lock);
+ 	spin_lock(&pgd_lock);
+ 
+ 	list_for_each_entry(page, &pgd_list, lru) {
+@@ -897,6 +898,7 @@ void xen_mm_pin_all(void)
  	}
- 	preempt_enable();
-+	migrate_enable();
- 	cpus_read_unlock();
- 	if (!cpumask_empty(&cpus_ahead))
- 		pr_warn("        CPUs %*pbl ahead of CPU %d for clocksource %s.\n",
+ 
+ 	spin_unlock(&pgd_lock);
++	spin_unlock(&init_mm.page_table_lock);
+ }
+ 
+ static int __init xen_mark_pinned(struct mm_struct *mm, struct page *page,
+@@ -1009,6 +1011,7 @@ void xen_mm_unpin_all(void)
+ {
+ 	struct page *page;
+ 
++	spin_lock(&init_mm.page_table_lock);
+ 	spin_lock(&pgd_lock);
+ 
+ 	list_for_each_entry(page, &pgd_list, lru) {
+@@ -1020,6 +1023,7 @@ void xen_mm_unpin_all(void)
+ 	}
+ 
+ 	spin_unlock(&pgd_lock);
++	spin_unlock(&init_mm.page_table_lock);
+ }
+ 
+ static void xen_activate_mm(struct mm_struct *prev, struct mm_struct *next)
 -- 
 2.39.5
 
