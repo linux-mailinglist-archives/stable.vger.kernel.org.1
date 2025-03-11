@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B150CA5C4AF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3277EA5C6AC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:27:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60BB5189B190
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BD537ACBBC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4E325DD15;
-	Tue, 11 Mar 2025 15:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF79D25F792;
+	Tue, 11 Mar 2025 15:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUMijJjr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTkysdnr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670FB250BF8;
-	Tue, 11 Mar 2025 15:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3BB15820C;
+	Tue, 11 Mar 2025 15:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705521; cv=none; b=fPenk16VvyDI7I+34odMZrNnrqsTgdd1alP4la+W1K6PcjyTD73dBP/eSrMaj2i9ui503wEyvNKX4UIySr/+E12QjZln4g5ofl0L0EL8W3PTZo1ln5My0yVoRnnntJ01Bva0hMZptL05qko9LhTMHm4grIO7qFollQAJwQFWfsA=
+	t=1741706794; cv=none; b=etb4EMhruH1/HssG6+b8UNGKjI1leY4fwPBDgXb13Kiwh4akRn5JbgpHuMP+kBnJHauMj2OSlnbx5AkcBILhIL5xWAAeyayatg9KPMVAE2P4QwgRARgYJE5w3K4IVD535wlhojAiBMXCY0wUPJ9l7YQ+VdKFa57/0Aw9CzHHdNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705521; c=relaxed/simple;
-	bh=I3aw5+Q3rjGdzebt8Ox4OcZ+zoBbuN4xBXwfFysRFa8=;
+	s=arc-20240116; t=1741706794; c=relaxed/simple;
+	bh=O7Mzw92EVQ1waAgiGe8lsxEuuAQFDuEimOCPDrD2kJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2+tnJM80zCY6/xNKT1HNtZzHWcvgWSnNOBvWvgOTstCdiXolVMV6Y1caZ34SJ/F3aMI/UI//1yDIq0ZEigJJh/pp8eJ1M8sTxDqEw49T88rKVuUBWAK2xPNCSk/ki5LMYwUrDvOCZv2rRKlpfghu44x/q1Y9GwaxgBJxAa9sdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUMijJjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2972C4CEE9;
-	Tue, 11 Mar 2025 15:05:20 +0000 (UTC)
+	 MIME-Version; b=l3T5g+wgQ0LUrU2wyXCGQEDbDd5TPcEyh0j1gnGo3vTQvTIpiyFxwQUTq9mkq9UYkzss3ZKTOMfTfG/ClLZnIZFBveQwXKwmmrTTVrvB/t6Jd3qUs+e4XJLDC7ZarQFQhntycJaSB23bCy/jnCJ7Tmd+MlY7Mo33T0w0PMTkUgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTkysdnr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AEAC4CEE9;
+	Tue, 11 Mar 2025 15:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705521;
-	bh=I3aw5+Q3rjGdzebt8Ox4OcZ+zoBbuN4xBXwfFysRFa8=;
+	s=korg; t=1741706794;
+	bh=O7Mzw92EVQ1waAgiGe8lsxEuuAQFDuEimOCPDrD2kJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUMijJjr7ezC3IG/yxIZcAgUDxkvQl+QINpEhoQQKbFClTpWl+IJHAwfHB9LRzNK8
-	 ohNJLGnnY5pXm6DA9zS5Rn53UQ/ut3faUI3RAMekM2Pxmpi9za4ZBYngvfrcipRteG
-	 2bUBTyMqk530Ijh+Zh7DgdBR6gw+lGyB5zweBrMQ=
+	b=zTkysdnrAMxf9oxd+U9WuO9LfQNU+Wi21l7aUEwN9wq7pkVp2lPJx5q4qDpIs6+Va
+	 5K8DgFDc6n951NChPeQjFRmEs4H8c7Jj4bJhLrtE+yt+yGLg9B4hiKeU/rniNpuiP4
+	 G4mGp7FsAbyBWszSKhC8gZI02wMOtwU+jtD0C0gM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5cfae50c0e5f2c500013@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/328] ipmr: do not call mr_mfc_uses_dev() for unres entries
-Date: Tue, 11 Mar 2025 15:57:14 +0100
-Message-ID: <20250311145717.436373714@linuxfoundation.org>
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 5.10 169/462] arm64: dts: rockchip: increase gmac rx_delay on rk3399-puma
+Date: Tue, 11 Mar 2025 15:57:15 +0100
+Message-ID: <20250311145805.031766893@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jakob Unterwurzacher <jakobunt@gmail.com>
 
-[ Upstream commit 15a901361ec3fb1c393f91880e1cbf24ec0a88bd ]
+commit 9d241b06802c6c2176ae7aa4f9f17f8a577ed337 upstream.
 
-syzbot found that calling mr_mfc_uses_dev() for unres entries
-would crash [1], because c->mfc_un.res.minvif / c->mfc_un.res.maxvif
-alias to "struct sk_buff_head unresolved", which contain two pointers.
+During mass manufacturing, we noticed the mmc_rx_crc_error counter,
+as reported by "ethtool -S eth0 | grep mmc_rx_crc_error", to increase
+above zero during nuttcp speedtests. Most of the time, this did not
+affect the achieved speed, but it prompted this investigation.
 
-This code never worked, lets remove it.
+Cycling through the rx_delay range on six boards (see table below) of
+various ages shows that there is a large good region from 0x12 to 0x35
+where we see zero crc errors on all tested boards.
 
-[1]
-Unable to handle kernel paging request at virtual address ffff5fff2d536613
-KASAN: maybe wild-memory-access in range [0xfffefff96a9b3098-0xfffefff96a9b309f]
-Modules linked in:
-CPU: 1 UID: 0 PID: 7321 Comm: syz.0.16 Not tainted 6.13.0-rc7-syzkaller-g1950a0af2d55 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : mr_mfc_uses_dev net/ipv4/ipmr_base.c:290 [inline]
- pc : mr_table_dump+0x5a4/0x8b0 net/ipv4/ipmr_base.c:334
- lr : mr_mfc_uses_dev net/ipv4/ipmr_base.c:289 [inline]
- lr : mr_table_dump+0x694/0x8b0 net/ipv4/ipmr_base.c:334
-Call trace:
-  mr_mfc_uses_dev net/ipv4/ipmr_base.c:290 [inline] (P)
-  mr_table_dump+0x5a4/0x8b0 net/ipv4/ipmr_base.c:334 (P)
-  mr_rtm_dumproute+0x254/0x454 net/ipv4/ipmr_base.c:382
-  ipmr_rtm_dumproute+0x248/0x4b4 net/ipv4/ipmr.c:2648
-  rtnl_dump_all+0x2e4/0x4e8 net/core/rtnetlink.c:4327
-  rtnl_dumpit+0x98/0x1d0 net/core/rtnetlink.c:6791
-  netlink_dump+0x4f0/0xbc0 net/netlink/af_netlink.c:2317
-  netlink_recvmsg+0x56c/0xe64 net/netlink/af_netlink.c:1973
-  sock_recvmsg_nosec net/socket.c:1033 [inline]
-  sock_recvmsg net/socket.c:1055 [inline]
-  sock_read_iter+0x2d8/0x40c net/socket.c:1125
-  new_sync_read fs/read_write.c:484 [inline]
-  vfs_read+0x740/0x970 fs/read_write.c:565
-  ksys_read+0x15c/0x26c fs/read_write.c:708
+The old rx_delay value (0x10) seems to have always been on the edge for
+the KSZ9031RNX that is usually placed on Puma.
 
-Fixes: cb167893f41e ("net: Plumb support for filtering ipv4 and ipv6 multicast route dumps")
-Reported-by: syzbot+5cfae50c0e5f2c500013@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/678fe2d1.050a0220.15cac.00b3.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250121181241.841212-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Choose "rx_delay = 0x23" to put us smack in the middle of the good
+region. This works fine as well with the KSZ9131RNX PHY that was used
+for a small number of boards during the COVID chip shortages.
+
+	Board S/N        PHY        rx_delay good region
+	---------        ---        --------------------
+	Puma TT0069903   KSZ9031RNX 0x11 0x35
+	Puma TT0157733   KSZ9031RNX 0x11 0x35
+	Puma TT0681551   KSZ9031RNX 0x12 0x37
+	Puma TT0681156   KSZ9031RNX 0x10 0x38
+	Puma 17496030079 KSZ9031RNX 0x10 0x37 (Puma v1.2 from 2017)
+	Puma TT0681720   KSZ9131RNX 0x02 0x39 (alternative PHY used in very few boards)
+
+	Intersection of good regions = 0x12 0x35
+	Middle of good region = 0x23
+
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+Cc: stable@vger.kernel.org
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # Puma v2.1 and v2.3 with KSZ9031
+Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
+Link: https://lore.kernel.org/r/20241213-puma_rx_delay-v4-1-8e8e11cc6ed7@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ipmr_base.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ipmr_base.c b/net/ipv4/ipmr_base.c
-index 4a1a90a135406..78ca019f0a32a 100644
---- a/net/ipv4/ipmr_base.c
-+++ b/net/ipv4/ipmr_base.c
-@@ -321,9 +321,6 @@ int mr_table_dump(struct mr_table *mrt, struct sk_buff *skb,
- 	list_for_each_entry(mfc, &mrt->mfc_unres_queue, list) {
- 		if (e < s_e)
- 			goto next_entry2;
--		if (filter->dev &&
--		    !mr_mfc_uses_dev(mrt, mfc, filter->dev))
--			goto next_entry2;
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -176,7 +176,7 @@
+ 	snps,reset-active-low;
+ 	snps,reset-delays-us = <0 10000 50000>;
+ 	tx_delay = <0x10>;
+-	rx_delay = <0x10>;
++	rx_delay = <0x23>;
+ 	status = "okay";
+ };
  
- 		err = fill(mrt, skb, NETLINK_CB(cb->skb).portid,
- 			   cb->nlh->nlmsg_seq, mfc, RTM_NEWROUTE, flags);
--- 
-2.39.5
-
 
 
 
