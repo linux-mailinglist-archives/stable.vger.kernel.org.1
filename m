@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-123307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD34A5C4D4
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6501DA5C708
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3915C3B6C48
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F052188CAB5
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D90E25EFA2;
-	Tue, 11 Mar 2025 15:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E668025EFB8;
+	Tue, 11 Mar 2025 15:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0LH6zlI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAjbL/I/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C47B25EF9C;
-	Tue, 11 Mar 2025 15:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A293925DD06;
+	Tue, 11 Mar 2025 15:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705573; cv=none; b=vBY6o+acnZHEopxOu+1+qvdrmm59018xLguepH2LtVpsCiuH7ATFFfnv4ElJJQrGNTiBNfFAt+u7Emd/5TXumaxG22RRwkY1+ssXWSgD+MkBAknHfN3JKBkRinwfCr89XHM5xjSMoLoZ23DTf7gFBpA0kRIkojpreF7jMo30FnQ=
+	t=1741706788; cv=none; b=SYmMviJYsipWuSGXUgO3JvCkDsi65eSNfNbzhMoTCVpLY3AVUacEyE2lNZEUKX7GVQfFRnW5Brlgq+zfGGaG5H93TedbOc46lqorTkDCnOzVeprCibFWIkkgWvoR6qUvfH0bI5TYfrM8C92AEuvLbe2dIu6kUgZwQQ3h98NiQQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705573; c=relaxed/simple;
-	bh=ITeZpcRnXKBv+e1yOy/V48DD+O/KmV7IWyUUmRoVkbI=;
+	s=arc-20240116; t=1741706788; c=relaxed/simple;
+	bh=Jyzfswtbd02+H1SwTO3SSgnzdRQxYiZaNhQsjF2XmFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDHLPZVVWUr1J1j0uiYQbo5r1dN2vdwLTsBt88vzs0fWL2JcLLN73Z4pE5XouzALjR5qIJhk/XS8k/lg1wr+NKr6YIbDBCDyvtk7tHbJSU3zUNlcp/jOXQGGuryCnpGfNcZ9RctFqs8rHHnCVdEFxb8oT2225yJIFeeIqHPJe00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0LH6zlI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08FAC4CEED;
-	Tue, 11 Mar 2025 15:06:12 +0000 (UTC)
+	 MIME-Version; b=aUh2YiPDEzdKf8IWz6QM7Ubq1XyjNKWzG8JqXTGf4x422mklge1W3sxoafnK3mskw4v0d/s51BkOWKtiv5mwKDmXLuZMDUWUs+6uOilp4vDvfgbXd77uaXhsgH9necd0Hq1ZMVjhHTNPz1/YtwMuGcoWha1kbnp+TKOid9roQEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAjbL/I/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAB6C4CEE9;
+	Tue, 11 Mar 2025 15:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705573;
-	bh=ITeZpcRnXKBv+e1yOy/V48DD+O/KmV7IWyUUmRoVkbI=;
+	s=korg; t=1741706788;
+	bh=Jyzfswtbd02+H1SwTO3SSgnzdRQxYiZaNhQsjF2XmFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0LH6zlIwLklMQ7MGOWOBHGjrnzoBubvYU6GH7Lex3XXdPn+KiunBUyBr6f2eb1/v
-	 8BAjClkiuQP6w7Ja8IT7xa1TztbPO5Jqj6uYF5GGlptrD3L4bz5KgKbYGzAAr1sBZB
-	 +ln3KwQfqwGsjhFyIrV4Kn9xQS5fI63VSuDB5ZqY=
+	b=QAjbL/I/vxRRdLGb5A0S/jIQ+/+yik2NXVyFeZND/IIvS0H2xVdDxf25vbqrnbPvu
+	 WlG5vf++zsKBFpAHusknq8DhYDRyznU0uRTVHb/q9/JDfnlVEwomrEwCw+Eo7ClzC9
+	 4jIJeAADnWrRHAwBJlbXY/REK0XDTU3zMcuzHTDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	pangliyuan <pangliyuan1@huawei.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/328] ubifs: skip dumping tnc tree when zroot is null
-Date: Tue, 11 Mar 2025 15:57:12 +0100
-Message-ID: <20250311145717.358450672@linuxfoundation.org>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 167/462] m68k: vga: Fix I/O defines
+Date: Tue, 11 Mar 2025 15:57:13 +0100
+Message-ID: <20250311145804.950923052@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: pangliyuan <pangliyuan1@huawei.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit bdb0ca39e0acccf6771db49c3f94ed787d05f2d7 ]
+commit 53036937a101b5faeaf98e7438555fa854a1a844 upstream.
 
-Clearing slab cache will free all znode in memory and make
-c->zroot.znode = NULL, then dumping tnc tree will access
-c->zroot.znode which cause null pointer dereference.
+Including m68k's <asm/raw_io.h> in vga.h on nommu platforms results
+in conflicting defines with io_no.h for various I/O macros from the
+__raw_read and __raw_write families. An example error is
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219624#c0
-Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
-Signed-off-by: pangliyuan <pangliyuan1@huawei.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   In file included from arch/m68k/include/asm/vga.h:12,
+                 from include/video/vga.h:22,
+                 from include/linux/vgaarb.h:34,
+		 from drivers/video/aperture.c:12:
+>> arch/m68k/include/asm/raw_io.h:39: warning: "__raw_readb" redefined
+      39 | #define __raw_readb in_8
+	 |
+   In file included from arch/m68k/include/asm/io.h:6,
+		    from include/linux/io.h:13,
+		    from include/linux/irq.h:20,
+		    from include/asm-generic/hardirq.h:17,
+		    from ./arch/m68k/include/generated/asm/hardirq.h:1,
+		    from include/linux/hardirq.h:11,
+		    from include/linux/interrupt.h:11,
+                    from include/linux/trace_recursion.h:5,
+		    from include/linux/ftrace.h:10,
+		    from include/linux/kprobes.h:28,
+		    from include/linux/kgdb.h:19,
+		    from include/linux/fb.h:6,
+		    from drivers/video/aperture.c:5:
+   arch/m68k/include/asm/io_no.h:16: note: this is the location of the previous definition
+      16 | #define __raw_readb(addr) \
+	 |
+
+Include <asm/io.h>, which avoids raw_io.h on nommu platforms.
+Also change the defined values of some of the read/write symbols in
+vga.h to __raw_read/__raw_write as the raw_in/raw_out symbols are not
+generally available.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501071629.DNEswlm8-lkp@intel.com/
+Fixes: 5c3f968712ce ("m68k/video: Create <asm/vga.h>")
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v3.5+
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/20250107095912.130530-1-tzimmermann@suse.de
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ubifs/debug.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ arch/m68k/include/asm/vga.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ubifs/debug.c b/fs/ubifs/debug.c
-index 992b74f9c9414..b5efbaf7eac2b 100644
---- a/fs/ubifs/debug.c
-+++ b/fs/ubifs/debug.c
-@@ -925,16 +925,20 @@ void ubifs_dump_tnc(struct ubifs_info *c)
+--- a/arch/m68k/include/asm/vga.h
++++ b/arch/m68k/include/asm/vga.h
+@@ -9,7 +9,7 @@
+  */
+ #ifndef CONFIG_PCI
  
- 	pr_err("\n");
- 	pr_err("(pid %d) start dumping TNC tree\n", current->pid);
--	znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, NULL);
--	level = znode->level;
--	pr_err("== Level %d ==\n", level);
--	while (znode) {
--		if (level != znode->level) {
--			level = znode->level;
--			pr_err("== Level %d ==\n", level);
-+	if (c->zroot.znode) {
-+		znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, NULL);
-+		level = znode->level;
-+		pr_err("== Level %d ==\n", level);
-+		while (znode) {
-+			if (level != znode->level) {
-+				level = znode->level;
-+				pr_err("== Level %d ==\n", level);
-+			}
-+			ubifs_dump_znode(c, znode);
-+			znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, znode);
- 		}
--		ubifs_dump_znode(c, znode);
--		znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, znode);
-+	} else {
-+		pr_err("empty TNC tree in memory\n");
- 	}
- 	pr_err("(pid %d) finish dumping TNC tree\n", current->pid);
- }
--- 
-2.39.5
-
+-#include <asm/raw_io.h>
++#include <asm/io.h>
+ #include <asm/kmap.h>
+ 
+ /*
+@@ -29,9 +29,9 @@
+ #define inw_p(port)		0
+ #define outb_p(port, val)	do { } while (0)
+ #define outw(port, val)		do { } while (0)
+-#define readb			raw_inb
+-#define writeb			raw_outb
+-#define writew			raw_outw
++#define readb			__raw_readb
++#define writeb			__raw_writeb
++#define writew			__raw_writew
+ 
+ #endif /* CONFIG_PCI */
+ #endif /* _ASM_M68K_VGA_H */
 
 
 
