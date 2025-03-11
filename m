@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-123735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345D3A5C710
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0925BA5C4B7
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95A141891028
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB8B7179CA0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1452825E805;
-	Tue, 11 Mar 2025 15:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3E125E83C;
+	Tue, 11 Mar 2025 15:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0fzKlg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0iPndUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A411A5BA4;
-	Tue, 11 Mar 2025 15:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D15025E836;
+	Tue, 11 Mar 2025 15:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706811; cv=none; b=pqB+m47tWiy8P1GNXILciPvf+3YnFLUz48umQseKuZ0GTs76R2rx4Nih+A4EcNVu6br+z6hS468kckuo3+70+PEI3a5uxShKSI6hJwmHpQBleLLkonCsZqQzpLgG9zE1LpkX4s6nxwp1pNMYdVDuiYfoggw1h6Y4fimBBdiriew=
+	t=1741705541; cv=none; b=hcH/DC8cjpCLMIfhBqFF4yakVwVTs1jIOFj7y4ewMWftDlhDmoxnRTq/rZxprhtFD+EjEfBLJlEj1phm30OPfgstx/HtYjvtYuZcJ6CZHtLtMmrG4al/4w3GokHEGu9pEXzlMMFyUj1B3UmWqmYL4Rn60K/SIfPPoZ0KP3QYV7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706811; c=relaxed/simple;
-	bh=n5YzSNXlrPJLF9wqOWtvpwGSOz69Ee3C7KEZKt4+oKU=;
+	s=arc-20240116; t=1741705541; c=relaxed/simple;
+	bh=Uvrr5a4fzGB7RDIJ+pSYQpKAgP5x/uEbF7/uAESJvk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fN4nPw6Kr0IzqFuh6/3YSVhjuW4fYq9Ikh7Wtb+qmbMoChI68SmWg7dIiPUP4F6AxFq2fsgZytG1H2DOtaF8CNtrCCNE/8yrAcanpl9/pbTBmw2stib3qgXUFVU5+L8qOCiy8qoY6Ui6XXzlt4anGH03BUthh4NgPUoNWO/KOB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0fzKlg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA0DC4CEE9;
-	Tue, 11 Mar 2025 15:26:51 +0000 (UTC)
+	 MIME-Version; b=ElyQ8SB32DwPWE+qKBSS5lMnI8LOpanT1opNtNIEl/jnFqUcMyi/6RySL4XcwFlLeiGJEFFLjacsREYryJdnWhEkYY366NVFUn95WO8Prgnap6nVwAy1dfVXq75Y4tEae30U1i1Tqa5VLSwN/XY3R54Pcb+6zA6pljuWbOGS8ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0iPndUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15810C4CEEC;
+	Tue, 11 Mar 2025 15:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706811;
-	bh=n5YzSNXlrPJLF9wqOWtvpwGSOz69Ee3C7KEZKt4+oKU=;
+	s=korg; t=1741705541;
+	bh=Uvrr5a4fzGB7RDIJ+pSYQpKAgP5x/uEbF7/uAESJvk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0fzKlg6CqHAM7EFFIWxLEdHEAnA2oy+/MeOp9t3UEh3dgQK3aPMxCkAd4+cECK+g
-	 fsXCDq9SKlpAdeza+5cmvSmzpcUAKEMYxN0L/41sv8/qFVbFnRn/7MnB7KWjqWi2pa
-	 3ZT3/r6XgYV0V0joaVJH6H7HQM7gspmmpcypeoJU=
+	b=Y0iPndUCVFL2/WfVjpewqhoWtQBrkToTycUlVbXGC1+ajEnqD9b93+TLjUe8WZUq6
+	 YNpHsUY4/CuN5FKBr2cSXG2NYq4kFrXL7e/tApYOovJ6mtwAf9jm0727IUtdioFee+
+	 Px09Amr6Ebf0gbvoVk0Y3i0nNV3QAzZNzRJLwLkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10 174/462] Bluetooth: L2CAP: accept zero as a special value for MTU auto-selection
-Date: Tue, 11 Mar 2025 15:57:20 +0100
-Message-ID: <20250311145805.229641063@linuxfoundation.org>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 071/328] genksyms: fix memory leak when the same symbol is added from source
+Date: Tue, 11 Mar 2025 15:57:21 +0100
+Message-ID: <20250311145717.714735283@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 5c61419e02033eaf01733d66e2fcd4044808f482 upstream.
+[ Upstream commit 45c9c4101d3d2fdfa00852274bbebba65fcc3cf2 ]
 
-One of the possible ways to enable the input MTU auto-selection for L2CAP
-connections is supposed to be through passing a special "0" value for it
-as a socket option. Commit [1] added one of those into avdtp. However, it
-simply wouldn't work because the kernel still treats the specified value
-as invalid and denies the setting attempt. Recorded BlueZ logs include the
-following:
+When a symbol that is already registered is added again, __add_symbol()
+returns without freeing the symbol definition, making it unreachable.
 
-  bluetoothd[496]: profiles/audio/avdtp.c:l2cap_connect() setsockopt(L2CAP_OPTIONS): Invalid argument (22)
+The following test cases demonstrate different memory leak points.
 
-[1]: https://github.com/bluez/bluez/commit/ae5be371a9f53fed33d2b34748a95a5498fd4b77
+[Test Case 1]
 
-Found by Linux Verification Center (linuxtesting.org).
+Forward declaration with exactly the same definition
 
-Fixes: 4b6e228e297b ("Bluetooth: Auto tune if input MTU is set to 0")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ cat foo.c
+  #include <linux/export.h>
+  void foo(void);
+  void foo(void) {}
+  EXPORT_SYMBOL(foo);
+
+[Test Case 2]
+
+Forward declaration with a different definition (e.g. attribute)
+
+  $ cat foo.c
+  #include <linux/export.h>
+  void foo(void);
+  __attribute__((__section__(".ref.text"))) void foo(void) {}
+  EXPORT_SYMBOL(foo);
+
+[Test Case 3]
+
+Preserving an overridden symbol (compile with KBUILD_PRESERVE=1)
+
+  $ cat foo.c
+  #include <linux/export.h>
+  void foo(void);
+  void foo(void) { }
+  EXPORT_SYMBOL(foo);
+
+  $ cat foo.symref
+  override foo void foo ( int )
+
+The memory leaks in Test Case 1 and 2 have existed since the introduction
+of genksyms into the kernel tree. [1]
+
+The memory leak in Test Case 3 was introduced by commit 5dae9a550a74
+("genksyms: allow to ignore symbol checksum changes").
+
+When multiple init_declarators are reduced to an init_declarator_list,
+the decl_spec must be duplicated. Otherwise, the following Test Case 4
+would result in a double-free bug.
+
+[Test Case 4]
+
+  $ cat foo.c
+  #include <linux/export.h>
+
+  extern int foo, bar;
+
+  int foo, bar;
+  EXPORT_SYMBOL(foo);
+
+In this case, 'foo' and 'bar' share the same decl_spec, 'int'. It must
+be unshared before being passed to add_symbol().
+
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=46bd1da672d66ccd8a639d3c1f8a166048cca608
+
+Fixes: 5dae9a550a74 ("genksyms: allow to ignore symbol checksum changes")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/genksyms/genksyms.c |  3 +++
+ scripts/genksyms/parse.y    | 14 ++++++++++++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -727,12 +727,12 @@ static bool l2cap_valid_mtu(struct l2cap
- {
- 	switch (chan->scid) {
- 	case L2CAP_CID_ATT:
--		if (mtu < L2CAP_LE_MIN_MTU)
-+		if (mtu && mtu < L2CAP_LE_MIN_MTU)
- 			return false;
- 		break;
+diff --git a/scripts/genksyms/genksyms.c b/scripts/genksyms/genksyms.c
+index 23eff234184f3..d74bad87ef1a7 100644
+--- a/scripts/genksyms/genksyms.c
++++ b/scripts/genksyms/genksyms.c
+@@ -241,6 +241,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
+ 						"unchanged\n");
+ 				}
+ 				sym->is_declared = 1;
++				free_list(defn, NULL);
+ 				return sym;
+ 			} else if (!sym->is_declared) {
+ 				if (sym->is_override && flag_preserve) {
+@@ -249,6 +250,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
+ 					print_type_name(type, name);
+ 					fprintf(stderr, " modversion change\n");
+ 					sym->is_declared = 1;
++					free_list(defn, NULL);
+ 					return sym;
+ 				} else {
+ 					status = is_unknown_symbol(sym) ?
+@@ -256,6 +258,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
+ 				}
+ 			} else {
+ 				error_with_pos("redefinition of %s", name);
++				free_list(defn, NULL);
+ 				return sym;
+ 			}
+ 			break;
+diff --git a/scripts/genksyms/parse.y b/scripts/genksyms/parse.y
+index e22b42245bcc2..7df3fe290d535 100644
+--- a/scripts/genksyms/parse.y
++++ b/scripts/genksyms/parse.y
+@@ -149,14 +149,19 @@ simple_declaration:
+ 	;
  
- 	default:
--		if (mtu < L2CAP_DEFAULT_MIN_MTU)
-+		if (mtu && mtu < L2CAP_DEFAULT_MIN_MTU)
- 			return false;
- 	}
+ init_declarator_list_opt:
+-	/* empty */				{ $$ = NULL; }
+-	| init_declarator_list
++	/* empty */			{ $$ = NULL; }
++	| init_declarator_list		{ free_list(decl_spec, NULL); $$ = $1; }
+ 	;
  
+ init_declarator_list:
+ 	init_declarator
+ 		{ struct string_list *decl = *$1;
+ 		  *$1 = NULL;
++
++		  /* avoid sharing among multiple init_declarators */
++		  if (decl_spec)
++		    decl_spec = copy_list_range(decl_spec, NULL);
++
+ 		  add_symbol(current_name,
+ 			     is_typedef ? SYM_TYPEDEF : SYM_NORMAL, decl, is_extern);
+ 		  current_name = NULL;
+@@ -167,6 +172,11 @@ init_declarator_list:
+ 		  *$3 = NULL;
+ 		  free_list(*$2, NULL);
+ 		  *$2 = decl_spec;
++
++		  /* avoid sharing among multiple init_declarators */
++		  if (decl_spec)
++		    decl_spec = copy_list_range(decl_spec, NULL);
++
+ 		  add_symbol(current_name,
+ 			     is_typedef ? SYM_TYPEDEF : SYM_NORMAL, decl, is_extern);
+ 		  current_name = NULL;
+-- 
+2.39.5
+
 
 
 
