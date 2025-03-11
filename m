@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-123304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7E5A5C4C0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A5AA5C72C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 230F67ABC8E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:05:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CF103BA03C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0160925E821;
-	Tue, 11 Mar 2025 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5E525EF8C;
+	Tue, 11 Mar 2025 15:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBaIM/Bq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4mPiQJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0B325DD0B;
-	Tue, 11 Mar 2025 15:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7176F25E813;
+	Tue, 11 Mar 2025 15:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705564; cv=none; b=ThZqjI7TD82qh2nkm5HG9MkFxjtLrO3FJQacQa5uqGIA9kNmC0SGCPnD+PS8lHSd3KL0ASJlURgv6UVdomKoBxH3b9Qu1pxbNdlAlftyyrqr0F9NIrJQqJa/4vj3ctZm3dwEwz8N+1X++lpE6Aid/NUNfnRp7uQI57FKX2eqmkY=
+	t=1741706777; cv=none; b=G1T2lb8DoUxvPyXv8nnyAISPC6aXYKSAsxpmpxMNFbXg6fBRPzqPWNQmGDoNSW3IGsGmNVbSUM58hmF7mVNKAYRGVeSFk4zWYjrzh4rpnibIe0GwT2GmXBLE8IeIzPpsT52iHpmszZnrqMpBJIHItYRVzULsBcryP2F/uRlmiTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705564; c=relaxed/simple;
-	bh=teU+hXn+Myk6jvRF7qkBDarMFZ6al5Sl9daMvda9Ukc=;
+	s=arc-20240116; t=1741706777; c=relaxed/simple;
+	bh=6+yqkTO0PdTuHvDyd2f6M5PD04a4qU7wsFNvcyo7wBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbXqlgnrJi3oxDyZWYNrioZxlngFKvPtB16soV7olAJ/QaiVARTiFCL92dQEl3aJ1gvykcIJVV0Gqe0SPKWerejLpGwfSmnOkWjwKEtW952Oi1nQrd1IlxZ4x0gb2gRXgQRd7hwqRgL9fM11QvglMfLsEAurhoCvMxT/9WgHDwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBaIM/Bq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A29C4CEEA;
-	Tue, 11 Mar 2025 15:06:04 +0000 (UTC)
+	 MIME-Version; b=gLmQcZWKdI5CzmR56K0+j2F8/Sxv5EuHTXA+9JvThDAlAp1/oUtoYP3GbCJyGp1ruOGCN9MBYfWmPh0Nhsab6qnMK7Gko5q21exEaM+cJ9gUA0Bs2ZeNr/wh7oHpbI2m4x5do7mplEZHKueGRKfvjaqvXgovsQwGh4sF6ssmFjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4mPiQJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89244C4CEE9;
+	Tue, 11 Mar 2025 15:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705564;
-	bh=teU+hXn+Myk6jvRF7qkBDarMFZ6al5Sl9daMvda9Ukc=;
+	s=korg; t=1741706776;
+	bh=6+yqkTO0PdTuHvDyd2f6M5PD04a4qU7wsFNvcyo7wBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBaIM/Bqfh8/3MNUYVgxrIQJEhr6ZPeS/8BCrv5G8DdiayVywmIXTJkn3lDUoqxmj
-	 6aX6/T6KHlZSvrLWCxCEqBK5qan1qguUumpD6WriYfqMGhYKZV8hqSWJGyxW/yxriR
-	 Z4t6MvD1DXxlaQGpnFhBVM9cg4JtTijjp9QflCoE=
+	b=z4mPiQJEzgCQscJ0lGNt0vaF+m6u1GPmakwimtIpUdEB7eNqbRnYXfPf8qI/wWMpF
+	 69aCXFpeyUij8bwgPTYqq9SyDwtDXCrTR1QmXcK21pIX3CAz/r4JTDI/gk5fj09wSn
+	 K+AeICTgPnuBI9+CrfZUavZf5rbsPQ8+u4IZx5tA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 059/328] module: Extend the preempt disabled section in dereference_symbol_descriptor().
+	kernel test robot <lkp@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 163/462] cpufreq: s3c64xx: Fix compilation warning
 Date: Tue, 11 Mar 2025 15:57:09 +0100
-Message-ID: <20250311145717.241367846@linuxfoundation.org>
+Message-ID: <20250311145804.784333135@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,63 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit a145c848d69f9c6f32008d8319edaa133360dd74 ]
+commit 43855ac61483cb914f060851535ea753c094b3e0 upstream.
 
-dereference_symbol_descriptor() needs to obtain the module pointer
-belonging to pointer in order to resolve that pointer.
-The returned mod pointer is obtained under RCU-sched/ preempt_disable()
-guarantees and needs to be used within this section to ensure that the
-module is not removed in the meantime.
+The driver generates following warning when regulator support isn't
+enabled in the kernel. Fix it.
 
-Extend the preempt_disable() section to also cover
-dereference_module_function_descriptor().
+   drivers/cpufreq/s3c64xx-cpufreq.c: In function 's3c64xx_cpufreq_set_target':
+>> drivers/cpufreq/s3c64xx-cpufreq.c:55:22: warning: variable 'old_freq' set but not used [-Wunused-but-set-variable]
+      55 |         unsigned int old_freq, new_freq;
+         |                      ^~~~~~~~
+>> drivers/cpufreq/s3c64xx-cpufreq.c:54:30: warning: variable 'dvfs' set but not used [-Wunused-but-set-variable]
+      54 |         struct s3c64xx_dvfs *dvfs;
+         |                              ^~~~
 
-Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descriptor()")
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250108090457.512198-2-bigeasy@linutronix.de
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501191803.CtfT7b2o-lkp@intel.com/
+Cc: 5.4+ <stable@vger.kernel.org> # v5.4+
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/236b227e929e5adc04d1e9e7af6845a46c8e9432.1737525916.git.viresh.kumar@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kallsyms.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/s3c64xx-cpufreq.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index 1f96ce2b47df1..d84b677c728a9 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -63,10 +63,10 @@ static inline void *dereference_symbol_descriptor(void *ptr)
+--- a/drivers/cpufreq/s3c64xx-cpufreq.c
++++ b/drivers/cpufreq/s3c64xx-cpufreq.c
+@@ -24,6 +24,7 @@ struct s3c64xx_dvfs {
+ 	unsigned int vddarm_max;
+ };
  
- 	preempt_disable();
- 	mod = __module_address((unsigned long)ptr);
--	preempt_enable();
++#ifdef CONFIG_REGULATOR
+ static struct s3c64xx_dvfs s3c64xx_dvfs_table[] = {
+ 	[0] = { 1000000, 1150000 },
+ 	[1] = { 1050000, 1150000 },
+@@ -31,6 +32,7 @@ static struct s3c64xx_dvfs s3c64xx_dvfs_
+ 	[3] = { 1200000, 1350000 },
+ 	[4] = { 1300000, 1350000 },
+ };
++#endif
  
- 	if (mod)
- 		ptr = dereference_module_function_descriptor(mod, ptr);
-+	preempt_enable();
- #endif
- 	return ptr;
- }
--- 
-2.39.5
-
+ static struct cpufreq_frequency_table s3c64xx_freq_table[] = {
+ 	{ 0, 0,  66000 },
+@@ -51,15 +53,16 @@ static struct cpufreq_frequency_table s3
+ static int s3c64xx_cpufreq_set_target(struct cpufreq_policy *policy,
+ 				      unsigned int index)
+ {
+-	struct s3c64xx_dvfs *dvfs;
+-	unsigned int old_freq, new_freq;
++	unsigned int new_freq = s3c64xx_freq_table[index].frequency;
+ 	int ret;
+ 
++#ifdef CONFIG_REGULATOR
++	struct s3c64xx_dvfs *dvfs;
++	unsigned int old_freq;
++
+ 	old_freq = clk_get_rate(policy->clk) / 1000;
+-	new_freq = s3c64xx_freq_table[index].frequency;
+ 	dvfs = &s3c64xx_dvfs_table[s3c64xx_freq_table[index].driver_data];
+ 
+-#ifdef CONFIG_REGULATOR
+ 	if (vddarm && new_freq > old_freq) {
+ 		ret = regulator_set_voltage(vddarm,
+ 					    dvfs->vddarm_min,
 
 
 
