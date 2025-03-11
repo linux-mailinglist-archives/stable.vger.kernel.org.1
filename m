@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-123296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0925BA5C4B7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:07:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B143EA5C73B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:32:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB8B7179CA0
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 183C816B569
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3E125E83C;
-	Tue, 11 Mar 2025 15:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BE525DCFA;
+	Tue, 11 Mar 2025 15:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0iPndUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nl9BTZWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D15025E836;
-	Tue, 11 Mar 2025 15:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB1A15820C;
+	Tue, 11 Mar 2025 15:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705541; cv=none; b=hcH/DC8cjpCLMIfhBqFF4yakVwVTs1jIOFj7y4ewMWftDlhDmoxnRTq/rZxprhtFD+EjEfBLJlEj1phm30OPfgstx/HtYjvtYuZcJ6CZHtLtMmrG4al/4w3GokHEGu9pEXzlMMFyUj1B3UmWqmYL4Rn60K/SIfPPoZ0KP3QYV7A=
+	t=1741706930; cv=none; b=FLai/odyorwFb7X9uauHZ4vkLSoT8sKh4n13pD4rgkRmdZL8k1Vz8VhLcFHOQPsK9GH4qwIiSCIerV5j8l9VcmAfNWeaeCMN3Xb8Q35NRhJV2iEF9wrm7mdexU8Wp8ykzymRSuqQ5XtOz/frq5JHreePyzJy+RtcuY99uk3/FAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705541; c=relaxed/simple;
-	bh=Uvrr5a4fzGB7RDIJ+pSYQpKAgP5x/uEbF7/uAESJvk0=;
+	s=arc-20240116; t=1741706930; c=relaxed/simple;
+	bh=BK6mVohm96OPwdIhqnbY0hczz/s8s0cPifSsh1+wAAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ElyQ8SB32DwPWE+qKBSS5lMnI8LOpanT1opNtNIEl/jnFqUcMyi/6RySL4XcwFlLeiGJEFFLjacsREYryJdnWhEkYY366NVFUn95WO8Prgnap6nVwAy1dfVXq75Y4tEae30U1i1Tqa5VLSwN/XY3R54Pcb+6zA6pljuWbOGS8ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0iPndUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15810C4CEEC;
-	Tue, 11 Mar 2025 15:05:40 +0000 (UTC)
+	 MIME-Version; b=BLZnw8rFBBw1Ki3dkYZi7D4CdoBxqnbVY6ouaKASvDtYJ/kiismidqk7ASQLFLxenzdc4H7IgW5Sjz8OpfwbH1mODfhTZDmMv5yjGuVGV46yujPbngbSed7ZF7qY1QRg13fAUD1YRNR46m9haxCxX+lGM1mXqyjsEdu9QJG317E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nl9BTZWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34ECC4CEE9;
+	Tue, 11 Mar 2025 15:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705541;
-	bh=Uvrr5a4fzGB7RDIJ+pSYQpKAgP5x/uEbF7/uAESJvk0=;
+	s=korg; t=1741706930;
+	bh=BK6mVohm96OPwdIhqnbY0hczz/s8s0cPifSsh1+wAAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0iPndUCVFL2/WfVjpewqhoWtQBrkToTycUlVbXGC1+ajEnqD9b93+TLjUe8WZUq6
-	 YNpHsUY4/CuN5FKBr2cSXG2NYq4kFrXL7e/tApYOovJ6mtwAf9jm0727IUtdioFee+
-	 Px09Amr6Ebf0gbvoVk0Y3i0nNV3QAzZNzRJLwLkM=
+	b=nl9BTZWISYydTolzCLM6STFNeaDFY8O3DhEK7RITfhV/tONCiS/Tz1gs2ArvF84+6
+	 udDlTLqdlWZkLgA+HHJIVF4LJ5Ptufafb3QLDFR11Y0kPbb2OFmiFRF3BVvvhDKisV
+	 BBtCBeX76VgMA7LjQCiBBv37KW0HxUHDjOY4KwQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 071/328] genksyms: fix memory leak when the same symbol is added from source
+	Cody Eksal <masterr3c0rd@epochal.quest>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>
+Subject: [PATCH 5.10 175/462] clk: sunxi-ng: a100: enable MMC clock reparenting
 Date: Tue, 11 Mar 2025 15:57:21 +0100
-Message-ID: <20250311145717.714735283@linuxfoundation.org>
+Message-ID: <20250311145805.267910214@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,154 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Cody Eksal <masterr3c0rd@epochal.quest>
 
-[ Upstream commit 45c9c4101d3d2fdfa00852274bbebba65fcc3cf2 ]
+commit 16414720045de30945b8d14b7907e0cbf81a4b49 upstream.
 
-When a symbol that is already registered is added again, __add_symbol()
-returns without freeing the symbol definition, making it unreachable.
+While testing the MMC nodes proposed in [1], it was noted that mmc0/1
+would fail to initialize, with "mmc: fatal err update clk timeout" in
+the kernel logs. A closer look at the clock definitions showed that the MMC
+MPs had the "CLK_SET_RATE_NO_REPARENT" flag set. No reason was given for
+adding this flag in the first place, and its original purpose is unknown,
+but it doesn't seem to make sense and results in severe limitations to MMC
+speeds. Thus, remove this flag from the 3 MMC MPs.
 
-The following test cases demonstrate different memory leak points.
+[1] https://msgid.link/20241024170540.2721307-10-masterr3c0rd@epochal.quest
 
-[Test Case 1]
-
-Forward declaration with exactly the same definition
-
-  $ cat foo.c
-  #include <linux/export.h>
-  void foo(void);
-  void foo(void) {}
-  EXPORT_SYMBOL(foo);
-
-[Test Case 2]
-
-Forward declaration with a different definition (e.g. attribute)
-
-  $ cat foo.c
-  #include <linux/export.h>
-  void foo(void);
-  __attribute__((__section__(".ref.text"))) void foo(void) {}
-  EXPORT_SYMBOL(foo);
-
-[Test Case 3]
-
-Preserving an overridden symbol (compile with KBUILD_PRESERVE=1)
-
-  $ cat foo.c
-  #include <linux/export.h>
-  void foo(void);
-  void foo(void) { }
-  EXPORT_SYMBOL(foo);
-
-  $ cat foo.symref
-  override foo void foo ( int )
-
-The memory leaks in Test Case 1 and 2 have existed since the introduction
-of genksyms into the kernel tree. [1]
-
-The memory leak in Test Case 3 was introduced by commit 5dae9a550a74
-("genksyms: allow to ignore symbol checksum changes").
-
-When multiple init_declarators are reduced to an init_declarator_list,
-the decl_spec must be duplicated. Otherwise, the following Test Case 4
-would result in a double-free bug.
-
-[Test Case 4]
-
-  $ cat foo.c
-  #include <linux/export.h>
-
-  extern int foo, bar;
-
-  int foo, bar;
-  EXPORT_SYMBOL(foo);
-
-In this case, 'foo' and 'bar' share the same decl_spec, 'int'. It must
-be unshared before being passed to add_symbol().
-
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=46bd1da672d66ccd8a639d3c1f8a166048cca608
-
-Fixes: 5dae9a550a74 ("genksyms: allow to ignore symbol checksum changes")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fb038ce4db55 ("clk: sunxi-ng: add support for the Allwinner A100 CCU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cody Eksal <masterr3c0rd@epochal.quest>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Link: https://patch.msgid.link/20241109003739.3440904-1-masterr3c0rd@epochal.quest
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/genksyms/genksyms.c |  3 +++
- scripts/genksyms/parse.y    | 14 ++++++++++++--
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/clk/sunxi-ng/ccu-sun50i-a100.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/genksyms/genksyms.c b/scripts/genksyms/genksyms.c
-index 23eff234184f3..d74bad87ef1a7 100644
---- a/scripts/genksyms/genksyms.c
-+++ b/scripts/genksyms/genksyms.c
-@@ -241,6 +241,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
- 						"unchanged\n");
- 				}
- 				sym->is_declared = 1;
-+				free_list(defn, NULL);
- 				return sym;
- 			} else if (!sym->is_declared) {
- 				if (sym->is_override && flag_preserve) {
-@@ -249,6 +250,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
- 					print_type_name(type, name);
- 					fprintf(stderr, " modversion change\n");
- 					sym->is_declared = 1;
-+					free_list(defn, NULL);
- 					return sym;
- 				} else {
- 					status = is_unknown_symbol(sym) ?
-@@ -256,6 +258,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
- 				}
- 			} else {
- 				error_with_pos("redefinition of %s", name);
-+				free_list(defn, NULL);
- 				return sym;
- 			}
- 			break;
-diff --git a/scripts/genksyms/parse.y b/scripts/genksyms/parse.y
-index e22b42245bcc2..7df3fe290d535 100644
---- a/scripts/genksyms/parse.y
-+++ b/scripts/genksyms/parse.y
-@@ -149,14 +149,19 @@ simple_declaration:
- 	;
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a100.c
+@@ -437,7 +437,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
+ 					  24, 2,	/* mux */
+ 					  BIT(31),	/* gate */
+ 					  2,		/* post-div */
+-					  CLK_SET_RATE_NO_REPARENT);
++					  0);
  
- init_declarator_list_opt:
--	/* empty */				{ $$ = NULL; }
--	| init_declarator_list
-+	/* empty */			{ $$ = NULL; }
-+	| init_declarator_list		{ free_list(decl_spec, NULL); $$ = $1; }
- 	;
+ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc1_clk, "mmc1", mmc_parents, 0x834,
+ 					  0, 4,		/* M */
+@@ -445,7 +445,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
+ 					  24, 2,	/* mux */
+ 					  BIT(31),	/* gate */
+ 					  2,		/* post-div */
+-					  CLK_SET_RATE_NO_REPARENT);
++					  0);
  
- init_declarator_list:
- 	init_declarator
- 		{ struct string_list *decl = *$1;
- 		  *$1 = NULL;
-+
-+		  /* avoid sharing among multiple init_declarators */
-+		  if (decl_spec)
-+		    decl_spec = copy_list_range(decl_spec, NULL);
-+
- 		  add_symbol(current_name,
- 			     is_typedef ? SYM_TYPEDEF : SYM_NORMAL, decl, is_extern);
- 		  current_name = NULL;
-@@ -167,6 +172,11 @@ init_declarator_list:
- 		  *$3 = NULL;
- 		  free_list(*$2, NULL);
- 		  *$2 = decl_spec;
-+
-+		  /* avoid sharing among multiple init_declarators */
-+		  if (decl_spec)
-+		    decl_spec = copy_list_range(decl_spec, NULL);
-+
- 		  add_symbol(current_name,
- 			     is_typedef ? SYM_TYPEDEF : SYM_NORMAL, decl, is_extern);
- 		  current_name = NULL;
--- 
-2.39.5
-
+ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDIV(mmc2_clk, "mmc2", mmc_parents, 0x838,
+ 					  0, 4,		/* M */
+@@ -453,7 +453,7 @@ static SUNXI_CCU_MP_WITH_MUX_GATE_POSTDI
+ 					  24, 2,	/* mux */
+ 					  BIT(31),	/* gate */
+ 					  2,		/* post-div */
+-					  CLK_SET_RATE_NO_REPARENT);
++					  0);
+ 
+ static SUNXI_CCU_GATE(bus_mmc0_clk, "bus-mmc0", "ahb3", 0x84c, BIT(0), 0);
+ static SUNXI_CCU_GATE(bus_mmc1_clk, "bus-mmc1", "ahb3", 0x84c, BIT(1), 0);
 
 
 
