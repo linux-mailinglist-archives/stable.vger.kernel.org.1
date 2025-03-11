@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-123915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C855A5C7EE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713BDA5C59C
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E09317B4B7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:35:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB90C3B6651
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7B225E832;
-	Tue, 11 Mar 2025 15:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A08025DCE5;
+	Tue, 11 Mar 2025 15:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABw/UbMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8EYWZ1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B038221DA5;
-	Tue, 11 Mar 2025 15:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ED925C715;
+	Tue, 11 Mar 2025 15:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741707328; cv=none; b=BS6hyCqYLE6mh0Xp8VB5wesGHh/J9+eKTN4O2kIJuP/rxzlV2aVZvSq7YL3lEN2m+gEDPaSm/DI/0s2bq+X96nyez3XFEFbOqDYm4AOJHTdc4S5solW2a3kCLxunKIG+qedYNegsWgJPLKV+WxMGKIqUzRb9vDhgAaN7RzZzSBU=
+	t=1741705990; cv=none; b=cGFxFoNHCgCwlbNJUGg120YhOxFsSA7oJPcKud3hPEk3HwKjR7Xs9wIM71VQp3V2qxF+/xHv9z6CbluMdCDHc+vj7E1KiMkMw+r2krALrtQmua7m3M1nxsi5lmhvjt/QgCceDE/Ejn0e4+r9fsVNFvqPdTDRJoPzWMP1+XNdE3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741707328; c=relaxed/simple;
-	bh=kK41uRJClIiHTaM9UtIcExeOfS2KDmN81xc5kDNyLyM=;
+	s=arc-20240116; t=1741705990; c=relaxed/simple;
+	bh=s00B+dSNut3PWhsPhrcELyxzriTrJAxu/B49gn2R1oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJuUOvUeNcHgVNP0w22igAS2j7KHjo9wa5yN+pxfgavWWMMuuIktmPLD3ZtiRR7oTnyjWi2FNR9HPJE5UGyqKu3aeQZsxV6pt5avnVSOZAsDGQI/sgrHQeN6SfdOUjWu+RRW096b/kQGsyQm9mMY7z1ha1aSDyiCG9aRClfdh+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABw/UbMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5ABC4CEE9;
-	Tue, 11 Mar 2025 15:35:27 +0000 (UTC)
+	 MIME-Version; b=FGYGaLww2Pkavq/5lxaR3En41fP1p1DNxcdI1z+LzX7DYt9a7ujKLCU+wqJTDYs0uKXM2dT9QbDk/lf8aYSxzTofcaXKEdwrTyBBcLAFBpgM2zAzqxYwodEeGxMskOGkjcnmHk6y6MQrvA8m+bl5HO0PqbURYc1VqvgD8EUwYC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8EYWZ1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DD7C4CEE9;
+	Tue, 11 Mar 2025 15:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741707328;
-	bh=kK41uRJClIiHTaM9UtIcExeOfS2KDmN81xc5kDNyLyM=;
+	s=korg; t=1741705990;
+	bh=s00B+dSNut3PWhsPhrcELyxzriTrJAxu/B49gn2R1oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ABw/UbMANBuKMESKU0jbQNRahWgHaW3Qb5B87w9lhpzcHhaPjZNgiHUZSodpu6fA6
-	 YQ4YbJgiP6JSg7ScPBN21y5ab6xycIG+HEYReKq0j8UVOMdZQnnXLPi2gl56PhTuf5
-	 +uO0dUNZW3nSkDe6VprvkAzcfwE0P3h4vJogpEQg=
+	b=Q8EYWZ1nAur1zKMARSzl0VGoMk/w9fmQC7hqHTjPsw+iAVbkN7HxC8ezo7w4VbS8+
+	 eB/T2jZfbO9Y0Y7Mr7FIgC+MTWsM2cwdauTsaQP7kkgkPsAOTvvBjjvhPjcF0XBVr2
+	 A8uiIK0C7ZeQda+5eAOdxdCZzbr+8qVx509pF6eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Olivier Matz <olivier.matz@6wind.com>,
-	Ivan Delalande <colona@arista.com>
-Subject: [PATCH 5.10 310/462] vlan: move dev_put into vlan_dev_uninit
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 206/328] ndisc: use RCU protection in ndisc_alloc_skb()
 Date: Tue, 11 Mar 2025 15:59:36 +0100
-Message-ID: <20250311145810.609278518@linuxfoundation.org>
+Message-ID: <20250311145723.094432887@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d6ff94afd90b0ce8d1715f8ef77d4347d7a7f2c0 upstream.
+[ Upstream commit 628e6d18930bbd21f2d4562228afe27694f66da9 ]
 
-Shuang Li reported an QinQ issue by simply doing:
+ndisc_alloc_skb() can be called without RTNL or RCU being held.
 
-  # ip link add dummy0 type dummy
-  # ip link add link dummy0 name dummy0.1 type vlan id 1
-  # ip link add link dummy0.1 name dummy0.1.2 type vlan id 2
-  # rmmod 8021q
+Add RCU protection to avoid possible UAF.
 
- unregister_netdevice: waiting for dummy0.1 to become free. Usage count = 1
-
-When rmmods 8021q, all vlan devs are deleted from their real_dev's vlan grp
-and added into list_kill by unregister_vlan_dev(). dummy0.1 is unregistered
-before dummy0.1.2, as it's using for_each_netdev() in __rtnl_kill_links().
-
-When unregisters dummy0.1, dummy0.1.2 is not unregistered in the event of
-NETDEV_UNREGISTER, as it's been deleted from dummy0.1's vlan grp. However,
-due to dummy0.1.2 still holding dummy0.1, dummy0.1 will keep waiting in
-netdev_wait_allrefs(), while dummy0.1.2 will never get unregistered and
-release dummy0.1, as it delays dev_put until calling dev->priv_destructor,
-vlan_dev_free().
-
-This issue was introduced by Commit 563bcbae3ba2 ("net: vlan: fix a UAF in
-vlan_dev_real_dev()"), and this patch is to fix it by moving dev_put() into
-vlan_dev_uninit(), which is called after NETDEV_UNREGISTER event but before
-netdev_wait_allrefs().
-
-Fixes: 563bcbae3ba2 ("net: vlan: fix a UAF in vlan_dev_real_dev()")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Olivier Matz <olivier.matz@6wind.com>
-Signed-off-by: Ivan Delalande <colona@arista.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: de09334b9326 ("ndisc: Introduce ndisc_alloc_skb() helper.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan_dev.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/ipv6/ndisc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -629,7 +629,12 @@ void vlan_dev_free_egress_priority(const
- 
- static void vlan_dev_uninit(struct net_device *dev)
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 3096807caecab..92e35b3096dba 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -416,15 +416,11 @@ static struct sk_buff *ndisc_alloc_skb(struct net_device *dev,
  {
-+	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
-+
- 	vlan_dev_free_egress_priority(dev);
-+
-+	/* Get rid of the vlan's reference to real_dev */
-+	dev_put(vlan->real_dev);
+ 	int hlen = LL_RESERVED_SPACE(dev);
+ 	int tlen = dev->needed_tailroom;
+-	struct sock *sk = dev_net(dev)->ipv6.ndisc_sk;
+ 	struct sk_buff *skb;
+ 
+ 	skb = alloc_skb(hlen + sizeof(struct ipv6hdr) + len + tlen, GFP_ATOMIC);
+-	if (!skb) {
+-		ND_PRINTK(0, err, "ndisc: %s failed to allocate an skb\n",
+-			  __func__);
++	if (!skb)
+ 		return NULL;
+-	}
+ 
+ 	skb->protocol = htons(ETH_P_IPV6);
+ 	skb->dev = dev;
+@@ -435,7 +431,9 @@ static struct sk_buff *ndisc_alloc_skb(struct net_device *dev,
+ 	/* Manually assign socket ownership as we avoid calling
+ 	 * sock_alloc_send_pskb() to bypass wmem buffer limits
+ 	 */
+-	skb_set_owner_w(skb, sk);
++	rcu_read_lock();
++	skb_set_owner_w(skb, dev_net_rcu(dev)->ipv6.ndisc_sk);
++	rcu_read_unlock();
+ 
+ 	return skb;
  }
- 
- static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
-@@ -821,9 +826,6 @@ static void vlan_dev_free(struct net_dev
- 
- 	free_percpu(vlan->vlan_pcpu_stats);
- 	vlan->vlan_pcpu_stats = NULL;
--
--	/* Get rid of the vlan's reference to real_dev */
--	dev_put(vlan->real_dev);
- }
- 
- void vlan_setup(struct net_device *dev)
+-- 
+2.39.5
+
 
 
 
