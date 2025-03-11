@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-123312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD2EA5C4D2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06ECBA5C713
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8D9417A54B
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:07:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95EEF167016
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A50025EF89;
-	Tue, 11 Mar 2025 15:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774B925DD0A;
+	Tue, 11 Mar 2025 15:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mj4TpuKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0xrbrq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C2C25E808;
-	Tue, 11 Mar 2025 15:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3557625E82A;
+	Tue, 11 Mar 2025 15:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705588; cv=none; b=CaOxe+U4VS6vfJyrqBAEnO8tk1396XMafyqF1KjGvdMU4of2BAJ6hjUwKvk9vUPPBIpW5phU4I6fQ1FwaXGNzTN/Fb59ahPCF84uXVjByJhuEfusKRUT7UMEnyPqi4ubOScZhTsQKflL3CRWtEZYWDVgTcUKl70BSKfBosuxXto=
+	t=1741706858; cv=none; b=ihZO4vU6a8RDfudbVrOHz2yz4PpCwGHwUGRX9JxwVa3C9Udm7zn7+6zWDNFuIbP4b+V8/6gw9DOvA0YNg/8L5wPjV8f6upJZ7e2hxcNOpeWhwvdjlTEv6Dc9KtToucmjKHo/zuSGA4WhNBYYJaSlu2gN7jX7SQd7JkxPS/GldoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705588; c=relaxed/simple;
-	bh=hn1DtNsiWbNuidKA+ATWAmUri529VLRwxoaiPPT2PKQ=;
+	s=arc-20240116; t=1741706858; c=relaxed/simple;
+	bh=vtHI1/gpFIzLexZTOhT62Y/6Du//3sRK5t3Vj4qfvfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/v7DFeDE9BD8w63K4LqMFWznYPgP+Xp3Ca++jdKhIhHnHEmT4IDg0Q56rKOrXrvVog8DWqvtEhisZl1098gNdXBXDtsnFDe93WwD+Ot+grYh71S0JnowdwPu2qo2gNkAoahulMnFK8zNum+Jm7FHvlnVKrgABX+v6lk8s0bhJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mj4TpuKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A4FC4CEE9;
-	Tue, 11 Mar 2025 15:06:27 +0000 (UTC)
+	 MIME-Version; b=ly+WBf26wtroy0uut1976VMMkUT79J2hnUboEDR+JGCImnqRK5jrbjXsHgmuLgrxKK71FAy1Qbt9jd+ixVy3KsQ5Q3ZRPnV4OJEhkhldGXHqOWYUAwWFGILMdlhSgxHBPA0ufKd4J6AVWpkTj390c8awXupYIIzm276FMwWfBIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0xrbrq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5371C4CEE9;
+	Tue, 11 Mar 2025 15:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705587;
-	bh=hn1DtNsiWbNuidKA+ATWAmUri529VLRwxoaiPPT2PKQ=;
+	s=korg; t=1741706858;
+	bh=vtHI1/gpFIzLexZTOhT62Y/6Du//3sRK5t3Vj4qfvfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mj4TpuKmxGSVQofBFVGOF77aG5iYRQquxQQpTSZn8mQu3FJf94ZGa9FYT2FRBWWPV
-	 vxjcUW4RjVntrcmbTrD4N74VulTXo5NLu5ZEdVPmT/Ggy1DtK1iANESpFmATNr4e0t
-	 QnKMKW9TEz0axTV9u7O4DVQZ04t6C7/hGl7+O1Kk=
+	b=v0xrbrq6VmjqAsx3MHDi5Qzpjkg4KUK9GgoqAO+xM2ivNNlIXIv7qBCC5u/eUDzTE
+	 XSsKpEIyntDUafoaiCjrtQGW+vn6Qx8DcmTjPrJQv1fho76PMzvbjVZNze6hAxEGYK
+	 JIO6n54lU2+yY7ZKLaecCI+r1yHAOvR0cnxMUyg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 087/328] printk: Fix signed integer overflow when defining LOG_BUF_LEN_MAX
-Date: Tue, 11 Mar 2025 15:57:37 +0100
-Message-ID: <20250311145718.345963109@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.10 192/462] serial: sh-sci: Drop __initdata macro for port_cfg
+Date: Tue, 11 Mar 2025 15:57:38 +0100
+Message-ID: <20250311145805.946154195@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 3d6f83df8ff2d5de84b50377e4f0d45e25311c7a ]
+commit eaeee4225dba30bef4d424bdf134a07b7f423e8b upstream.
 
-Shifting 1 << 31 on a 32-bit int causes signed integer overflow, which
-leads to undefined behavior. To prevent this, cast 1 to u32 before
-performing the shift, ensuring well-defined behavior.
+The port_cfg object is used by serial_console_write(), which serves as
+the write function for the earlycon device. Marking port_cfg as __initdata
+causes it to be freed after kernel initialization, resulting in earlycon
+becoming unavailable thereafter. Remove the __initdata macro from port_cfg
+to resolve this issue.
 
-This change explicitly avoids any potential overflow by ensuring that
-the shift occurs on an unsigned 32-bit integer.
-
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Acked-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240928113608.1438087-1-visitorckw@gmail.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Fixes: 0b0cced19ab15c9e ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Link: https://lore.kernel.org/r/20250116182249.3828577-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/printk/printk.c | 2 +-
+ drivers/tty/serial/sh-sci.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index ae1a97dd0c3cb..f6e1e154d9c18 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -457,7 +457,7 @@ static u32 clear_idx;
- /* record buffer */
- #define LOG_ALIGN __alignof__(struct printk_log)
- #define __LOG_BUF_LEN (1 << CONFIG_LOG_BUF_SHIFT)
--#define LOG_BUF_LEN_MAX (u32)(1 << 31)
-+#define LOG_BUF_LEN_MAX ((u32)1 << 31)
- static char __log_buf[__LOG_BUF_LEN] __aligned(LOG_ALIGN);
- static char *log_buf = __log_buf;
- static u32 log_buf_len = __LOG_BUF_LEN;
--- 
-2.39.5
-
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3455,7 +3455,7 @@ sh_early_platform_init_buffer("earlyprin
+ 			   early_serial_buf, ARRAY_SIZE(early_serial_buf));
+ #endif
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+-static struct plat_sci_port port_cfg __initdata;
++static struct plat_sci_port port_cfg;
+ 
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
 
 
 
