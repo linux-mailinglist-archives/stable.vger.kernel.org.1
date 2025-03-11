@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-123547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066A6A5C60E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:21:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA132A5C85B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95BA4189EF07
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:18:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25B6E1706FC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C4C25DD06;
-	Tue, 11 Mar 2025 15:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7D425F784;
+	Tue, 11 Mar 2025 15:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaAgznrT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJ1Fr5i0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636B11684AC;
-	Tue, 11 Mar 2025 15:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EAA3C0B;
+	Tue, 11 Mar 2025 15:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706269; cv=none; b=Rdya+YwviGBtxB1Mv44wD2qp7AqxySB/gDUJNauP06cPzRjGeCD5T97q2cYeIb2dAow6ZtdpmThBEPrssXstJ5HaW7+XyvXAwgeL3Ihpqz9guiGwbenur/t2xP0Vgt1W5Q5rxA1bQ58E+oFFpR+Ig0ybA48l2Dzfz7DN0UXx7l0=
+	t=1741707540; cv=none; b=moNApTZDlid5KOqu0032bYctSlV7PA1uYrg8vBDxA16L+3tTvvD8CAW1GIEje0R5Vx+h0ouJsttyvxhYXOR0Xqqe5GhdiRQpS4E7gLZ8eL3J8MTsfYr9Fi5o39ggSHDJflsVzyoYQbthI8K3DzFtlPgdvteuibO3KoUf4lcDxVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706269; c=relaxed/simple;
-	bh=pPvubIf8rRulDpMR/CMycgTXjBmgamJJVoPciGMGTmQ=;
+	s=arc-20240116; t=1741707540; c=relaxed/simple;
+	bh=yDlRH5PXSb4rjUXcfw0iqlrw1s2cflRBb0erFFVcLnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0aZ3NFyuo9CBgoEjDCLL+5B1cWRV07c+M66yGWITFwssGgGL9V/erJgC8cayyJ7cVTsE8OkMHky5/EvMuEO4wX2OqKEZoufsUxQjNiJATPzCJHQeeBBs4LCSGWfhYMjdL8F4w4DaGIS4UtLn7XtdIZ54fhPd6tEuhKW324khws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaAgznrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBDFC4CEE9;
-	Tue, 11 Mar 2025 15:17:48 +0000 (UTC)
+	 MIME-Version; b=UKdwG9b8rpTJoZyW1wUaglPbhhHARtZYc/vQsPOaM14HW7TmE16qJVp/hxpJd8WukPdTGKREPAetRrFVRh0B3W2H99UWOm1v+YQgpgNHmU+AT5PeibLn+e4tcjeUT6vp2sRnxC7qSCCjCjopQlut2LxQwgQ8Xp47BQbaHBeQ4ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJ1Fr5i0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA95C4CEE9;
+	Tue, 11 Mar 2025 15:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706269;
-	bh=pPvubIf8rRulDpMR/CMycgTXjBmgamJJVoPciGMGTmQ=;
+	s=korg; t=1741707540;
+	bh=yDlRH5PXSb4rjUXcfw0iqlrw1s2cflRBb0erFFVcLnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaAgznrTpcQk3RUOST2utI3L+dDu7uNHIpqUdX+A7D/oRM4R/36iI0TSWVXlfN43l
-	 lj7itY5p/VFavyub89NrNeAIlCxFX6z81BPnBwiNeW3sRG1e5a57ydcSzsS5EuxhVB
-	 FV+3MbFDsemwQ0c63oXb8vdAVAwzEi6XAWzbwCYg=
+	b=VJ1Fr5i08S8v8tDsKpUMH33MmwVppu75SI0dhEOKCg2+i2TIV8cQNbxWrjwnpBINP
+	 PaoVjrQrzgrVUHwhwkjArMYYmoicinrVVf0cu8PVbgOEyFWCV6Q43tPANW1FKI0yUd
+	 zqgT61sRrm9F6vQ3ofB7r3A+PiIWJ2jfAbNPGo7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 5.4 320/328] usb: gadget: Fix setting self-powered state on suspend
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 424/462] gpio: rcar: Fix missing of_node_put() call
 Date: Tue, 11 Mar 2025 16:01:30 +0100
-Message-ID: <20250311145727.618575988@linuxfoundation.org>
+Message-ID: <20250311145815.087837469@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-commit c783e1258f29c5caac9eea0aea6b172870f1baf8 upstream.
+[ Upstream commit 391b41f983bf7ff853de44704d8e14e7cc648a9b ]
 
-cdev->config might be NULL, so check it before dereferencing.
+of_parse_phandle_with_fixed_args() requires its caller to
+call into of_node_put() on the node pointer from the output
+structure, but such a call is currently missing.
 
-CC: stable <stable@kernel.org>
-Fixes: 40e89ff5750f ("usb: gadget: Set self-powered based on MaxPower and bmAttributes")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250220120314.3614330-1-m.szyprowski@samsung.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Call into of_node_put() to rectify that.
+
+Fixes: 159f8a0209af ("gpio-rcar: Add DT support")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250305163753.34913-2-fabrizio.castro.jz@renesas.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-rcar.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2366,7 +2366,8 @@ void composite_suspend(struct usb_gadget
+diff --git a/drivers/gpio/gpio-rcar.c b/drivers/gpio/gpio-rcar.c
+index 3ef19cef8da9b..80bf2a84f296c 100644
+--- a/drivers/gpio/gpio-rcar.c
++++ b/drivers/gpio/gpio-rcar.c
+@@ -421,7 +421,12 @@ static int gpio_rcar_parse_dt(struct gpio_rcar_priv *p, unsigned int *npins)
+ 	p->has_both_edge_trigger = info->has_both_edge_trigger;
  
- 	cdev->suspended = 1;
+ 	ret = of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3, 0, &args);
+-	*npins = ret == 0 ? args.args[2] : RCAR_MAX_GPIO_PER_BANK;
++	if (ret) {
++		*npins = RCAR_MAX_GPIO_PER_BANK;
++	} else {
++		*npins = args.args[2];
++		of_node_put(args.np);
++	}
  
--	if (cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
-+	if (cdev->config &&
-+	    cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
- 		usb_gadget_set_selfpowered(gadget);
- 
- 	usb_gadget_vbus_draw(gadget, 2);
+ 	if (*npins == 0 || *npins > RCAR_MAX_GPIO_PER_BANK) {
+ 		dev_warn(p->dev, "Invalid number of gpio lines %u, using %u\n",
+-- 
+2.39.5
+
 
 
 
