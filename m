@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-123420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCA3A5C553
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D45A5C7F2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C3917A3A3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4E3D3AAB57
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D62F25E821;
-	Tue, 11 Mar 2025 15:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E0325B69D;
+	Tue, 11 Mar 2025 15:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPGoy4Um"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0QqcwHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E095D25D8F9;
-	Tue, 11 Mar 2025 15:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FDC25D904;
+	Tue, 11 Mar 2025 15:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705904; cv=none; b=Syue30hhTptR65SXcU1JnWt6fBuaS8p0qMadyLkNc6Wb4j4gF/1Wq9D2WwWDKG3RlhfqpPei3NhIoQGIBw1tt5UNJY9q+dM8VinId4fmSs8sPMUsKqTUDpq47Aagu6fS4isxiyLTfQp8VN4IG0uqSwtLCPelxuZzKPHZWoY9KGU=
+	t=1741707176; cv=none; b=BsyvOjnqeHlvN5e9vxjgCL2asmKvGuvs94Gmg2QONLNHuQo2ervrmAEB40EmZtY/5t5QJvQ96i0w/9OH/+qtjmQXuGWPtFo+ftOnRFKEeotuywXQDaNDAduQQgAI8H7Pm8sVAlUQ3x5OZmXq5lK01xx1MfA6leFJVQGwStpydw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705904; c=relaxed/simple;
-	bh=/fPQbJi4q/n5Tqb4Ht5wLR73okQPqmJLXr3zcZupgzA=;
+	s=arc-20240116; t=1741707176; c=relaxed/simple;
+	bh=EtE/cxMDdlpA2jnXLIf8M5JaYGSqry1m8c7Hdc1DMqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oMYFmdehHVFAHBu+wzFY8GQx2uux11+MRzGrWHQROP2a3fG7YGk0cIDg96gGH2dPKmlrhV4aeqhAhDrV7oh65maAsZjRoIMck7e5Kdnb+oxq5kSzChkOQ7XNyzbsdhv1DZBTaKxyKdotl8eTo5kwnBAeqB49c69h/1rTUphBANo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPGoy4Um; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A068C4CEE9;
-	Tue, 11 Mar 2025 15:11:43 +0000 (UTC)
+	 MIME-Version; b=djlnK62fjDjPX2xH6BKPTBfpKCvn3m6NsJuIp7m2TcRjM1E6jwauOwQP8F1N2nytZEFPSYo78hL/3WiqfIZIOWWZhEyKPjyXhEcOOVcXGCn17bYtThevomHFKMIMrO9RDq7epVJYLvw5+a9s9ybTLmKdoxRUgXg0yfrLtcTq1xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0QqcwHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1328C4CEE9;
+	Tue, 11 Mar 2025 15:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705903;
-	bh=/fPQbJi4q/n5Tqb4Ht5wLR73okQPqmJLXr3zcZupgzA=;
+	s=korg; t=1741707176;
+	bh=EtE/cxMDdlpA2jnXLIf8M5JaYGSqry1m8c7Hdc1DMqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPGoy4UmreGIAmiHb7z9regm2zZf0VkR9HoZhcBPCC3FaleJs4eWwQXDAukI6g3vM
-	 XxRsXeSDI9e1u65a4+B6r0vgApbbilACLzTw8/j2ZZ8m5NQq4D7yL2nyIli0AZwb8Y
-	 XCjsxmwiMIxuElMEogOdBZ6ZZqNQk6AwvEhqihdc=
+	b=K0QqcwHuKAZNd0xLXKldxhudb2pq03ufYQWqJ+yeLEBi5V/R62YE67RAA29Rl1YD+
+	 n/gTD1s5opivc/2BkUyTQ54mg1GpP3HqC/96J6RIpbVvC1Nu8y2i+HOl7iEJNNuNBh
+	 vx5aulumIkscUN5+zWQYX8rAMFmMmUPtUV/OE8FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Ivan Kokshaysky <ink@unseen.parts>
-Subject: [PATCH 5.4 195/328] alpha: make stack 16-byte aligned (most cases)
+	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>
+Subject: [PATCH 5.10 299/462] serial: 8250_pci: add support for ASIX AX99100
 Date: Tue, 11 Mar 2025 15:59:25 +0100
-Message-ID: <20250311145722.651197149@linuxfoundation.org>
+Message-ID: <20250311145810.175385636@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Kokshaysky <ink@unseen.parts>
+From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 
-commit 0a0f7362b0367634a2d5cb7c96226afc116f19c9 upstream.
+commit 0b32216557ce3b2a468d1282d99b428bf72ff532 upstream.
 
-The problem is that GCC expects 16-byte alignment of the incoming stack
-since early 2004, as Maciej found out [1]:
-  Having actually dug speculatively I can see that the psABI was changed in
- GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
- improperly aligned)") back in Mar 2004, when the stack pointer alignment
- was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
- various suspicious stack pointer adjustments, starting with SP_OFF which
- is not a whole multiple of 16.
+Each of the 4 PCI functions on ASIX AX99100 PCIe to Multi I/O
+Controller can be configured as a single-port serial port controller.
+The subvendor id is 0x1000 when configured as serial port and MSI
+interrupts are supported.
 
-Also, as Magnus noted, "ALPHA Calling Standard" [2] required the same:
- D.3.1 Stack Alignment
-  This standard requires that stacks be octaword aligned at the time a
-  new procedure is invoked.
-
-However:
-- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
-  the odd number of 64-bit words in 'struct pt_regs', which is the very
-  first thing pushed onto the kernel thread stack;
-- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
-  stack depending on numerous factors.
-
-Somehow we got away with it until recently, when we ended up with
-a stack corruption in kernel/smp.c:smp_call_function_single() due to
-its use of 32-byte aligned local data and the compiler doing clever
-things allocating it on the stack.
-
-This adds padding between the PAL-saved and kernel-saved registers
-so that 'struct pt_regs' have an even number of 64-bit words.
-This makes the stack properly aligned for most of the kernel
-code, except two handlers which need special threatment.
-
-Note: struct pt_regs doesn't belong in uapi/asm; this should be fixed,
-but let's put this off until later.
-
-Link: https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/ [1]
-Link: https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf [2]
-
-Cc: stable@vger.kernel.org
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Tested-by: Matt Turner <mattst88@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
-Signed-off-by: Matt Turner <mattst88@gmail.com>
+Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230724083933.3173513-4-jiaqing.zhao@linux.intel.com
+Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/alpha/include/uapi/asm/ptrace.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/8250/8250_pci.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/alpha/include/uapi/asm/ptrace.h
-+++ b/arch/alpha/include/uapi/asm/ptrace.h
-@@ -42,6 +42,8 @@ struct pt_regs {
- 	unsigned long trap_a0;
- 	unsigned long trap_a1;
- 	unsigned long trap_a2;
-+/* This makes the stack 16-byte aligned as GCC expects */
-+	unsigned long __pad0;
- /* These are saved by PAL-code: */
- 	unsigned long ps;
- 	unsigned long pc;
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -65,6 +65,8 @@ static const struct pci_device_id pci_us
+ 			 0xA000, 0x1000) },
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9922,
+ 			 0xA000, 0x1000) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_ASIX, PCI_DEVICE_ID_ASIX_AX99100,
++			 0xA000, 0x1000) },
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_HP_3PAR, PCI_DEVICE_ID_HPE_PCI_SERIAL,
+ 			 PCI_ANY_ID, PCI_ANY_ID) },
+ 	{ }
+@@ -5785,6 +5787,14 @@ static const struct pci_device_id serial
+ 	{	PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9865,
+ 		0xA000, 0x3004,
+ 		0, 0, pbn_b0_bt_4_115200 },
++
++	/*
++	 * ASIX AX99100 PCIe to Multi I/O Controller
++	 */
++	{	PCI_VENDOR_ID_ASIX, PCI_DEVICE_ID_ASIX_AX99100,
++		0xA000, 0x1000,
++		0, 0, pbn_b0_1_115200 },
++
+ 	/* Intel CE4100 */
+ 	{	PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_CE4100_UART,
+ 		PCI_ANY_ID,  PCI_ANY_ID, 0, 0,
 
 
 
