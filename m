@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-123406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BEBA5C546
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB11A5C7D2
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF85E17AD60
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2D61883DBF
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CC125D90F;
-	Tue, 11 Mar 2025 15:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8755C25F7B2;
+	Tue, 11 Mar 2025 15:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8V0X2AZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9eqtBRd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0069F1C5D77;
-	Tue, 11 Mar 2025 15:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB5C25F783;
+	Tue, 11 Mar 2025 15:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705864; cv=none; b=sceDAcLGaz6ztN3UWe0UtnHptwgXmlJlr5KcXeHvb9ke3w0D+rDyWBF1+j5fltANKeTvfTMo1SXFmhT52SvhH2FZZdXDmLg77uHdaY4Ut2CxlUvngGfHpWjGcrhW0ow/6D/X/cYxtf4JcAYI/TJQSpRIssHBo12BKXnkWsTR48Y=
+	t=1741707219; cv=none; b=rr3993ynPNp8PykMBKLWerc5RH49dz0QhkWdcm+pfgkzv3NWqXk3Y2mSArCjtwjAM0pJPNr2pOcXB3e8v+x/IfajsClYaUb8xIjf5L/fmzJFlAPTKwfHZGfTdsPAxLFCloj4Mo1OMRYtdDcZi8sXgmJjTG7Vy1gCsRrTVtM2wPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705864; c=relaxed/simple;
-	bh=Mm0rmHrfIwcIQDbdztFSAGqQ8pJ7+30FGge9WigUOnQ=;
+	s=arc-20240116; t=1741707219; c=relaxed/simple;
+	bh=o0CFUJTMSprhiUdm1hcR8XiLrd5UVSeav+Yp9HPt6x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsGNBE68Rk0CA44DM8D8fco39dacbRr3iYRud/CO4ZvLomH372lfevI5cmocSCJYkVNlqcgAtqbbcckNS7odQgbyF2OOAeRCLqfuKIESODkgi1kWzKYCLF5xjdxtUkG7pGznmlPNeBQpcMdCvNLARgZPOmoSOGglUYRkzC+74AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8V0X2AZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FC1C4CEE9;
-	Tue, 11 Mar 2025 15:11:02 +0000 (UTC)
+	 MIME-Version; b=E19cLYOjct894S5am+sDlWYKDIfxcXL2WFua8zpQrEo97AHk+5DF0hJRcgG6wlZFG4ddc0NZKgRR7WRZJNSF2bofD5R7T+NvSYrjNMV9dDCLh6XWOOHP7/A+wUI+T/4dZx0S/nyuuqG4eDdsCHW5KjZ9bc9fp2b3ix14KdYdEBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9eqtBRd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC27C4CEE9;
+	Tue, 11 Mar 2025 15:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705863;
-	bh=Mm0rmHrfIwcIQDbdztFSAGqQ8pJ7+30FGge9WigUOnQ=;
+	s=korg; t=1741707219;
+	bh=o0CFUJTMSprhiUdm1hcR8XiLrd5UVSeav+Yp9HPt6x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8V0X2AZA3a5glfeSEM/tmZUrbnNo4Juk/voCTUvBUsYotWDqjuxlP3LDkMOBJiev
-	 dal6D4UtP/xXzOF1QxXDJ9RcTyct4rDQx0mDEqTCvtcT9YiPthRX/cKOCt1uaqNusP
-	 5XPJm2CYX4uLf823TtZGF8C987fEigK4+KawBtO4=
+	b=C9eqtBRdOZbmel7QWu71/4Ur80+3y/fm5EZX9+kjQA6yhjMapsLKhj2EgBuIuH1ue
+	 76i6Z1JrAoYneIuSBXdGPyJROhT6hkAU2w7apKZeHQUPLgBQwv2zK4BNnJyTPlb3hh
+	 IqTbcb2pOyKd1Zf7TNJxaZAAlX/gfqJKmunktzco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Subject: [PATCH 5.4 180/328] usb: dwc2: gadget: remove of_node reference upon udc_stop
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 284/462] ndisc: use RCU protection in ndisc_alloc_skb()
 Date: Tue, 11 Mar 2025 15:59:10 +0100
-Message-ID: <20250311145722.057007373@linuxfoundation.org>
+Message-ID: <20250311145809.592441600@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 58cd423820d5b5610977e55e4acdd06628829ede upstream.
+[ Upstream commit 628e6d18930bbd21f2d4562228afe27694f66da9 ]
 
-In dwc2_hsotg_udc_start(), e.g. when binding composite driver, "of_node"
-is set to hsotg->dev->of_node.
+ndisc_alloc_skb() can be called without RTNL or RCU being held.
 
-It causes errors when binding the gadget driver several times, on
-stm32mp157c-ev1 board. Below error is seen:
-"pin PA10 already requested by 49000000.usb-otg; cannot claim for gadget.0"
+Add RCU protection to avoid possible UAF.
 
-The first time, no issue is seen as when registering the driver, of_node
-isn't NULL:
--> gadget_dev_desc_UDC_store
-  -> usb_gadget_register_driver_owner
-    -> driver_register
-    ...
-      -> really_probe -> pinctrl_bind_pins (no effect)
-
-Then dwc2_hsotg_udc_start() sets of_node.
-
-The second time (stop the gadget, reconfigure it, then start it again),
-of_node has been set, so the probing code tries to acquire pins for the
-gadget. These pins are hold by the controller, hence the error.
-
-So clear gadget.dev.of_node in udc_stop() routine to avoid the issue.
-
-Fixes: 7d7b22928b90 ("usb: gadget: s3c-hsotg: Propagate devicetree to gadget drivers")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20250124173325.2747710-1-fabrice.gasnier@foss.st.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: de09334b9326 ("ndisc: Introduce ndisc_alloc_skb() helper.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/gadget.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/ndisc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -4548,6 +4548,7 @@ static int dwc2_hsotg_udc_stop(struct us
- 	spin_lock_irqsave(&hsotg->lock, flags);
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index c0a5552733177..2361f4af49e8f 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -417,15 +417,11 @@ static struct sk_buff *ndisc_alloc_skb(struct net_device *dev,
+ {
+ 	int hlen = LL_RESERVED_SPACE(dev);
+ 	int tlen = dev->needed_tailroom;
+-	struct sock *sk = dev_net(dev)->ipv6.ndisc_sk;
+ 	struct sk_buff *skb;
  
- 	hsotg->driver = NULL;
-+	hsotg->gadget.dev.of_node = NULL;
- 	hsotg->gadget.speed = USB_SPEED_UNKNOWN;
- 	hsotg->enabled = 0;
+ 	skb = alloc_skb(hlen + sizeof(struct ipv6hdr) + len + tlen, GFP_ATOMIC);
+-	if (!skb) {
+-		ND_PRINTK(0, err, "ndisc: %s failed to allocate an skb\n",
+-			  __func__);
++	if (!skb)
+ 		return NULL;
+-	}
  
+ 	skb->protocol = htons(ETH_P_IPV6);
+ 	skb->dev = dev;
+@@ -436,7 +432,9 @@ static struct sk_buff *ndisc_alloc_skb(struct net_device *dev,
+ 	/* Manually assign socket ownership as we avoid calling
+ 	 * sock_alloc_send_pskb() to bypass wmem buffer limits
+ 	 */
+-	skb_set_owner_w(skb, sk);
++	rcu_read_lock();
++	skb_set_owner_w(skb, dev_net_rcu(dev)->ipv6.ndisc_sk);
++	rcu_read_unlock();
+ 
+ 	return skb;
+ }
+-- 
+2.39.5
+
 
 
 
