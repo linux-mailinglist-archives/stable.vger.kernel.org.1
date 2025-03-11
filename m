@@ -1,81 +1,79 @@
-Return-Path: <stable+bounces-123627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F099A5C68A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:26:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32182A5C6E8
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6390018891EE
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:22:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7C90189B75D
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CCA25F792;
-	Tue, 11 Mar 2025 15:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5640B25EFA9;
+	Tue, 11 Mar 2025 15:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dHwoQvlz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0F625BAAA;
-	Tue, 11 Mar 2025 15:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F09F25BAAA;
+	Tue, 11 Mar 2025 15:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706498; cv=none; b=eJtqTau4uJ+dn/QD2DdOG0t8T1qCCIUrMcdhn/XDerq++58rVMOrBpCFhIXp3yChgGViz/rXsBF9jBCFOYxfvZT6+XOYcTpmdK/CM9elgegk2nWrTpAJebIN9qHG06hS7+dgvtfU7sOpTdyiEpPMPH8Hv8X5X0oK5v7g5UdFwdg=
+	t=1741706732; cv=none; b=Y/QCOmYO3sbDUv2DFT1n3jyq9ANQihrZzmQnewebxvH5BhGQzMZD1fAawCbRnC6rLJxZSILqR3Ey3D5oiulcCB/qfbXv2PVxdUMyt0fO3KfgtS7C+h4XUin87vmXK5w0FQpVn7qwgvpSVDuHLNWJ3a5Va0IPkDNLmYXn7/M08lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706498; c=relaxed/simple;
-	bh=T319i0iTkEbGjZEaEiOULwpphTae3Q9TA08ZpzK+V6g=;
+	s=arc-20240116; t=1741706732; c=relaxed/simple;
+	bh=/pbrJLS75cPqadHFhAbQ59M5jBD+PgdPS+fqzG7J4Sk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jZmHslFjkpLflqiJj6uCRP8z+oELNVFEamwc5YrGyEdf+GSY+wyMKaO+TFtBj2/6wet/ZnvCF8WIvo90IQRkMDUqAANtFGNQ77sBmbKdiY8Q+l98k05yu/WyK9JbSbTG2Cgsn7QOPsMNOfhkp/AuDfT8lQn+6CyY1f+o9yDiwcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-223f4c06e9fso94153335ad.1;
-        Tue, 11 Mar 2025 08:21:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741706495; x=1742311295;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/E1C9TLEjucQveUr2gSBnFJRTsayVaSmXuzEE+51s00=;
-        b=t7r03qOAv719Vkh7diY7P11S5mGMLvFPqU//46f/t9sN45skxQpXQfEJSekhcq/cef
-         0BZ4Y2Y73tC8oNmeFjqjiw8cj8uM23mHuQaSA9LZBykG7UnlJre4Qkrz+r78ERybQd6S
-         f9SeXdSe1cf+vQfDBEfG1KC4XeDO6KB23TU1/MSP4rM7CH1Z3guIyeHg6JwM+OOcxQ3i
-         Ea2uFSdNVTQeSvINVj3B4LCvkp6+MzIOqSFefG8PdzVo/3SqDcacfRlqGQ0IXBWdTq1p
-         HLXoMrmJLZrw6NKhI82Q8ez7W9w9Z9rVB0pCqk1qHSlfZ/Qr/R5KWeL3RaKQ0KuZJvap
-         Pksg==
-X-Forwarded-Encrypted: i=1; AJvYcCUO0t2u2oGoyFjzuV3YkKnOw8KM8habPjeO7vS7D9eFCoyS7/xQv5ozLMDlX7gEAruJispy7VkD@vger.kernel.org, AJvYcCUaHENdZFIL+QxI/0GAG189hEPh1eamwNjaukgsJDSdsMWY+qXjMK1DF7BnvMQZiISsBaW5WhDH/41V@vger.kernel.org, AJvYcCVT0KDdbubNg6vn4X9OBJMMF0Sd3lxlSE/mnVyJJyGv8SwvVsD7Xu4x3+zMewAU7qDXsj9CesJ1gW1hyw==@vger.kernel.org, AJvYcCWDGMDlDFmSCr0aUSxU4MfyZwZsRr51UrumVAPXluUxVm5vgh9IqLfoHlpzKK2wOHoPsRKAbNlYExKKRXU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGErIZahyuAFF2FPTOMBkd1tvuuPE4aBZ9AU1meHtHfQHNens6
-	AtO9aPE1V4gZHS+4HV7rSYggi2yQEclvWbjpurs4qxR9RFO0X4Ye
-X-Gm-Gg: ASbGncvA+zwOV1OJDMq3hn9BpBbcuGJGh/LI/qTx2rNvwpFxbDxi+o/rXXXKpp8dTg0
-	AIa2Lh3sHq1O/FHawJLUpXPv0cAhqDAxDSgvdYrMyykD2jFY1zmoe7jZ0FFGfP9lXfXPr179hdo
-	JdXfh1W9O7CevnOoMLuTdKsI9GRiXpXHny2XvDSm/d3rTNCAU59ToQHNIUODamxpjuDkcYEgrWO
-	U3PEPrsvbVTLf4AqL/DBHU20Jlle0suBZMPe42Ps07iXXO4cx7Fh/gZXqnMDfBHSZBo1jQjiKGB
-	4S0ji166iIVE8gw+uyZyGf0PJQFw0fkJuHxGMVz8Is9GeHEwu03ksob8Bivn8je/DCWHr4N7sM8
-	N3i0=
-X-Google-Smtp-Source: AGHT+IFGz3iPtgYgyVDkphxmllQ/7kN3j2BaMrz84yDHpAk+pc1wjYonA27kitB771cxOGozpwoJqQ==
-X-Received: by 2002:a17:902:dacd:b0:21f:98fc:8414 with SMTP id d9443c01a7336-22593df9927mr55406405ad.26.1741706494802;
-        Tue, 11 Mar 2025 08:21:34 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-224109fda8esm99146375ad.101.2025.03.11.08.21.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 08:21:34 -0700 (PDT)
-Date: Wed, 12 Mar 2025 00:21:33 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: lpieralisi@kernel.org, vigneshr@ti.com,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250311152133.GC1381004@rocinante>
-References: <20250305132018.2260771-1-s-vadapalli@ti.com>
- <20250310210746.GA2377483@rocinante>
- <20250311051806.smcu4o4dxpngimth@uda0492258>
- <20250311072546.GA277060@rocinante>
- <20250311073216.ynw7rzmu36dwywij@uda0492258>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cu3BZM3u8i7z95wWYaLQz5BOms/SIRziJt2y5LcCfDQrEUYzUdGvG851PxG1VgXHyFF/qxvkkjvHW7Pchr+2fTBxsshesxBgOm7SpzJSs6iUDteuH0M8nSOQksmlGVinlQfczr5hDUwoH858ylvZXV+OCq5TXYrH3pmSN1zrxqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dHwoQvlz; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741706730; x=1773242730;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/pbrJLS75cPqadHFhAbQ59M5jBD+PgdPS+fqzG7J4Sk=;
+  b=dHwoQvlzpqYK3nVfICYgZb/r70V5uJiip0Lv9sMIgLvm/LLUrTUEDlyF
+   0gdO3oUFeGJHZePTLj11ix1VrEg7rziU3xuNM9rwyvgdsDEaYjuuDSFgz
+   vV8LHbVdtwJwDTP33GTYWHHBnQw3l3XyJ9D5ZkdNB/0cXH9vp3tBNVtOV
+   UQaKHTe8qHetxSDgfomq5Zn+UjvJRMaxfqpHSMvNsPEgj2fKDwnUJ5Wkk
+   7cJBSg85+FjqJPrWSNzI8xjNClxNKXOia/crUZVo7dqx8l3IMTM048gMz
+   vF40oj8CIg4pt0dYc6JLHBW1x3TdRRi9VnKEUrTXnnvZGG8iwcx51d6uO
+   A==;
+X-CSE-ConnectionGUID: tBSP3go8Rvij5ihaqFO8fA==
+X-CSE-MsgGUID: BIt5Fk1WR5uw5Oqd9hv+8g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="53392534"
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; 
+   d="scan'208";a="53392534"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 08:25:29 -0700
+X-CSE-ConnectionGUID: qQEz04IbR52YkzMO0LPcWw==
+X-CSE-MsgGUID: P5XdEeuTSuKYolsweBzsbQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; 
+   d="scan'208";a="121049964"
+Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 11 Mar 2025 08:25:26 -0700
+Received: from kbuild by a4747d147074 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ts1Tw-00077A-17;
+	Tue, 11 Mar 2025 15:25:24 +0000
+Date: Tue, 11 Mar 2025 23:24:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+	linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, osalvador@suse.de,
+	42.hyeyoo@gmail.com, byungchul@sk.com, dave.hansen@linux.intel.com,
+	luto@kernel.org, peterz@infradead.org, akpm@linux-foundation.org,
+	stable@vger.kernel.org, linux-mm@kvack.org,
+	max.byungchul.park@sk.com, max.byungchul.park@gmail.com
+Subject: Re: [PATCH] mm: introduce include/linux/pgalloc.h
+Message-ID: <202503112344.GSI5KIK4-lkp@intel.com>
+References: <20250311114420.240341-1-gwan-gyeong.mun@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,24 +82,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250311073216.ynw7rzmu36dwywij@uda0492258>
+In-Reply-To: <20250311114420.240341-1-gwan-gyeong.mun@intel.com>
 
-Hello,
+Hi Gwan-gyeong,
 
-[...]
-> > No need to send a new version.
-> > 
-> > I will update the branch directly when I pull the patch.  Not to worry.
-> 
-> Thank you Krzysztof :)
+kernel test robot noticed the following build errors:
 
-Done.  Have a look at:
+[auto build test ERROR on tip/x86/mm]
+[also build test ERROR on linus/master v6.14-rc6]
+[cannot apply to akpm-mm/mm-everything tip/x86/core next-20250311]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-  https://web.git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=controller/j721e&id=01d04dcd6e80f63ca5e97324ec17c20553947e35
+url:    https://github.com/intel-lab-lkp/linux/commits/Gwan-gyeong-Mun/mm-introduce-include-linux-pgalloc-h/20250311-194723
+base:   tip/x86/mm
+patch link:    https://lore.kernel.org/r/20250311114420.240341-1-gwan-gyeong.mun%40intel.com
+patch subject: [PATCH] mm: introduce include/linux/pgalloc.h
+config: x86_64-buildonly-randconfig-002-20250311 (https://download.01.org/0day-ci/archive/20250311/202503112344.GSI5KIK4-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250311/202503112344.GSI5KIK4-lkp@intel.com/reproduce)
 
-Let me know if there is anything else to update.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503112344.GSI5KIK4-lkp@intel.com/
 
-Thank you!
+All errors (new ones prefixed by >>):
 
-	Krzysztof
+>> arch/x86/mm/init_64.c:236:6: error: redefinition of 'arch_sync_global_p4ds'
+     236 | void arch_sync_global_p4ds(unsigned long start, unsigned long end) {}
+         |      ^~~~~~~~~~~~~~~~~~~~~
+   arch/x86/mm/init_64.c:228:6: note: previous definition of 'arch_sync_global_p4ds' with type 'void(long unsigned int,  long unsigned int)'
+     228 | void arch_sync_global_p4ds(unsigned long start, unsigned long end)
+         |      ^~~~~~~~~~~~~~~~~~~~~
+>> arch/x86/mm/init_64.c:238:6: error: redefinition of 'arch_sync_global_pgds'
+     238 | void arch_sync_global_pgds(unsigned long start, unsigned long end)
+         |      ^~~~~~~~~~~~~~~~~~~~~
+   arch/x86/mm/init_64.c:233:6: note: previous definition of 'arch_sync_global_pgds' with type 'void(long unsigned int,  long unsigned int)'
+     233 | void arch_sync_global_pgds(unsigned long start, unsigned long end) {}
+         |      ^~~~~~~~~~~~~~~~~~~~~
+
+
+vim +/arch_sync_global_p4ds +236 arch/x86/mm/init_64.c
+
+   234	
+   235	#if CONFIG_PGTABLE_LEVELS > 4
+ > 236	void arch_sync_global_p4ds(unsigned long start, unsigned long end) {}
+   237	
+ > 238	void arch_sync_global_pgds(unsigned long start, unsigned long end)
+   239	{
+   240		sync_global_pgds(start, end);
+   241	}
+   242	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
