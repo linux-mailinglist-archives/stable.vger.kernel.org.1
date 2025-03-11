@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-123397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33661A5C555
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:13:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81DBA5C78B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6947189CEDB
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:11:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A0FB17EE56
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD03725E454;
-	Tue, 11 Mar 2025 15:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3D625EF95;
+	Tue, 11 Mar 2025 15:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16nEj8Je"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtE+oeg1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EEB249F9;
-	Tue, 11 Mar 2025 15:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF6525E83F;
+	Tue, 11 Mar 2025 15:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705837; cv=none; b=AMqB9xzOnceWxu4DD9nwqt+dog+AhE3K0yL/2b08W6+GGpzj2TIXfiAu7UNc/eVLtpCd+OccIDb6Tbsi/kVVfCv0msjckifZBoLD01kNST8XFLoQyAdk3JHfv+btEQPiOfs0aE5iCQB948YonJDU2+LPELfbvpuX8t7TDrtXaSw=
+	t=1741707111; cv=none; b=py9bK6stPRm/ZbUG6M+cADMF42aiSaC1A1Mm1rcu9EHRwHMdEIGahfP3yWz4gsqJTvcUxIKxGPnatrFT9LxTGaAcGZX6fzMXbeOPsKbAivbpJwhC5VbZmMVFDgc4zUIAXr/MCKX6k1bgjxy++80vEZp7l2nZiDlayAJe4klJ15o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705837; c=relaxed/simple;
-	bh=VqnsLKdxc5JTQQ7t1otDpXTvGSz3sC8OpONVW7rUTcE=;
+	s=arc-20240116; t=1741707111; c=relaxed/simple;
+	bh=nJJx84pIg1EefgjoGX+YbswZLVsoekO6dr+uKUL1MwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khV9SpE1IoKnwZRzFkmrgQOprBC7zR1gbaYx8Bxpy/H0ktmMePAtcxsv54fHafHNdpNGC/KtRaJwcJLyod8wmz2TZifyRYY7WBQSqlIe/0tty8NKGy0F5NaRn4s2XcQxhwRS8YyRJbEcKgi3cOKeoWjf4pAKlIHMHQp2r28ZWJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16nEj8Je; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E822AC4CEE9;
-	Tue, 11 Mar 2025 15:10:36 +0000 (UTC)
+	 MIME-Version; b=dF7J8F4uaFDSQ02e3yuEWD9FcIqA/IT/M5l52bI6RAA8eDAgt9fjR0DcjteAiHEYOjKNC5CT/SaaReAeivcdIbwPBESDneKkRFNCe1oMwP1XA9Q7/LCy//d+u4U511T2FvWiH8THPhHc4xzEb8T4wh8rWxbWJ0WypV3GiK+eRCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtE+oeg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EF4C4CEE9;
+	Tue, 11 Mar 2025 15:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705837;
-	bh=VqnsLKdxc5JTQQ7t1otDpXTvGSz3sC8OpONVW7rUTcE=;
+	s=korg; t=1741707111;
+	bh=nJJx84pIg1EefgjoGX+YbswZLVsoekO6dr+uKUL1MwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16nEj8JexSEfr7j5wzrw9bnP+Fn8z4trBuHxyW25iui2bWIAw9QikgSo3Vx7mg61Q
-	 sKBMfKJwxhMyP8qGgNh4DsElFX8H+vNir5/+3TiBdp5T64Lcp/ES5j7iM6l0lCgkvm
-	 YGHSf6Q2sBTvV/VgJuXkm3dJGvMfMwgeDCEsszhc=
+	b=vtE+oeg1PvKQrm+ryMrb32J6l0LFDzSZV0NzO7Bx+yI6BGosSCRpUhKcVN6Tg0G9/
+	 w43yU/v84/P/nRqV79Z5UvHnxPRo8P36SYoBgHiOi4XvtJXjLzBPhGRKDdCULwqYKu
+	 SEechokxaCa1uygfBlAt997jQj/MRUS/hKKFjHuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Yury Norov <yury.norov@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 172/328] media: cxd2841er: fix 64-bit division on gcc-9
+Subject: [PATCH 5.10 276/462] clocksource: Replace cpumask_weight() with cpumask_empty()
 Date: Tue, 11 Mar 2025 15:59:02 +0100
-Message-ID: <20250311145721.744984018@linuxfoundation.org>
+Message-ID: <20250311145809.269877729@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
-References: <20250311145714.865727435@linuxfoundation.org>
+In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
+References: <20250311145758.343076290@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Yury Norov <yury.norov@gmail.com>
 
-[ Upstream commit 8d46603eeeb4c6abff1d2e49f2a6ae289dac765e ]
+[ Upstream commit 8afbcaf8690dac19ebf570a4e4fef9c59c75bf8e ]
 
-It appears that do_div() once more gets confused by a complex
-expression that ends up not quite being constant despite
-__builtin_constant_p() thinking it is:
+clocksource_verify_percpu() calls cpumask_weight() to check if any bit of a
+given cpumask is set.
 
-ERROR: modpost: "__aeabi_uldivmod" [drivers/media/dvb-frontends/cxd2841er.ko] undefined!
+This can be done more efficiently with cpumask_empty() because
+cpumask_empty() stops traversing the cpumask as soon as it finds first set
+bit, while cpumask_weight() counts all bits unconditionally.
 
-Use div_u64() instead, forcing the expression to be evaluated
-first, and making it a bit more readable.
-
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: added Closes tags]
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20220210224933.379149-24-yury.norov@gmail.com
+Stable-dep-of: 6bb05a33337b ("clocksource: Use migrate_disable() to avoid calling get_random_u32() in atomic context")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/cxd2841er.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ kernel/time/clocksource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/cxd2841er.c b/drivers/media/dvb-frontends/cxd2841er.c
-index 6b495fc36fd0c..51e890554457d 100644
---- a/drivers/media/dvb-frontends/cxd2841er.c
-+++ b/drivers/media/dvb-frontends/cxd2841er.c
-@@ -310,12 +310,8 @@ static int cxd2841er_set_reg_bits(struct cxd2841er_priv *priv,
- 
- static u32 cxd2841er_calc_iffreq_xtal(enum cxd2841er_xtal xtal, u32 ifhz)
- {
--	u64 tmp;
--
--	tmp = (u64) ifhz * 16777216;
--	do_div(tmp, ((xtal == SONY_XTAL_24000) ? 48000000 : 41000000));
--
--	return (u32) tmp;
-+	return div_u64(ifhz * 16777216ull,
-+		       (xtal == SONY_XTAL_24000) ? 48000000 : 41000000);
- }
- 
- static u32 cxd2841er_calc_iffreq(u32 ifhz)
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index e44fb1e12a281..658b90755dd72 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -338,7 +338,7 @@ static void clocksource_verify_percpu(struct clocksource *cs)
+ 	cpus_read_lock();
+ 	preempt_disable();
+ 	clocksource_verify_choose_cpus();
+-	if (cpumask_weight(&cpus_chosen) == 0) {
++	if (cpumask_empty(&cpus_chosen)) {
+ 		preempt_enable();
+ 		cpus_read_unlock();
+ 		pr_warn("Not enough CPUs to check clocksource '%s'.\n", cs->name);
 -- 
 2.39.5
 
