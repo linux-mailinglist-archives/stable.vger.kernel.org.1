@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-123751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06ECBA5C713
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5676BA5C4D0
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95EEF167016
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:27:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CF297AC0EC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774B925DD0A;
-	Tue, 11 Mar 2025 15:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377A725E820;
+	Tue, 11 Mar 2025 15:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0xrbrq6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JoAThkQu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3557625E82A;
-	Tue, 11 Mar 2025 15:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BE01C5D77;
+	Tue, 11 Mar 2025 15:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706858; cv=none; b=ihZO4vU6a8RDfudbVrOHz2yz4PpCwGHwUGRX9JxwVa3C9Udm7zn7+6zWDNFuIbP4b+V8/6gw9DOvA0YNg/8L5wPjV8f6upJZ7e2hxcNOpeWhwvdjlTEv6Dc9KtToucmjKHo/zuSGA4WhNBYYJaSlu2gN7jX7SQd7JkxPS/GldoY=
+	t=1741705591; cv=none; b=Aiex5QHCYPr2SAVo3WXn+BBT3XWDO/rgKgWfzZ4QKgDvZsTYn8JaBtevZous2P2A1kEWNdgL4EqUcx3lx00PCxTVYnMNBkWFG1Cf+KBgFgD6YNMi4dX5LMPz75/99dD7Lc5U5aLZLP+/Qn+aonuCt7PJ8WtDG1FzS1+J1ZD+HoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706858; c=relaxed/simple;
-	bh=vtHI1/gpFIzLexZTOhT62Y/6Du//3sRK5t3Vj4qfvfU=;
+	s=arc-20240116; t=1741705591; c=relaxed/simple;
+	bh=RjtX8nYX/hblkEANiV3fmeiWU7TGzmkxS07WkAMbUjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ly+WBf26wtroy0uut1976VMMkUT79J2hnUboEDR+JGCImnqRK5jrbjXsHgmuLgrxKK71FAy1Qbt9jd+ixVy3KsQ5Q3ZRPnV4OJEhkhldGXHqOWYUAwWFGILMdlhSgxHBPA0ufKd4J6AVWpkTj390c8awXupYIIzm276FMwWfBIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0xrbrq6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5371C4CEE9;
-	Tue, 11 Mar 2025 15:27:37 +0000 (UTC)
+	 MIME-Version; b=EeNxF8kmggtITmwMmucg//wx8voM+gpSV6wI7GyUpFKuGAkDsP75FK4zFAojnJfcoC+8eUlzH3/P+TkmCVlNXrWmorHcN7sAcCQfQ3guz5WHtPXw2pla7G2iSXEFSFDHrE2vwTyeuIpyfDN6KQB7lLqwSk5axj2YfxuDFxe++08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JoAThkQu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF10C4CEE9;
+	Tue, 11 Mar 2025 15:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706858;
-	bh=vtHI1/gpFIzLexZTOhT62Y/6Du//3sRK5t3Vj4qfvfU=;
+	s=korg; t=1741705590;
+	bh=RjtX8nYX/hblkEANiV3fmeiWU7TGzmkxS07WkAMbUjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v0xrbrq6VmjqAsx3MHDi5Qzpjkg4KUK9GgoqAO+xM2ivNNlIXIv7qBCC5u/eUDzTE
-	 XSsKpEIyntDUafoaiCjrtQGW+vn6Qx8DcmTjPrJQv1fho76PMzvbjVZNze6hAxEGYK
-	 JIO6n54lU2+yY7ZKLaecCI+r1yHAOvR0cnxMUyg8=
+	b=JoAThkQuGO8aaz9q0buf917APjl4Ngish/jgFXrqUNEr4RMKo1QNxOKadd5hJRLfp
+	 ylrJL/T0S1dsacZEdNw4MPTD1Rjg1eJSTKKoEZhfPLhZ3QG8QVqTzrTD0TsAVas+YN
+	 yLcEskXyilMshOE8Ke5uRoMYq44FjdA1h75bwh0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.10 192/462] serial: sh-sci: Drop __initdata macro for port_cfg
+	Stas Sergeev <stsp2@yandex.ru>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 088/328] tun: fix group permission check
 Date: Tue, 11 Mar 2025 15:57:38 +0100
-Message-ID: <20250311145805.946154195@linuxfoundation.org>
+Message-ID: <20250311145718.385711560@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Stas Sergeev <stsp2@yandex.ru>
 
-commit eaeee4225dba30bef4d424bdf134a07b7f423e8b upstream.
+[ Upstream commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3 ]
 
-The port_cfg object is used by serial_console_write(), which serves as
-the write function for the earlycon device. Marking port_cfg as __initdata
-causes it to be freed after kernel initialization, resulting in earlycon
-becoming unavailable thereafter. Remove the __initdata macro from port_cfg
-to resolve this issue.
+Currently tun checks the group permission even if the user have matched.
+Besides going against the usual permission semantic, this has a
+very interesting implication: if the tun group is not among the
+supplementary groups of the tun user, then effectively no one can
+access the tun device. CAP_SYS_ADMIN still can, but its the same as
+not setting the tun ownership.
 
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Fixes: 0b0cced19ab15c9e ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Link: https://lore.kernel.org/r/20250116182249.3828577-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch relaxes the group checking so that either the user match
+or the group match is enough. This avoids the situation when no one
+can access the device even though the ownership is properly set.
+
+Also I simplified the logic by removing the redundant inversions:
+tun_not_capable() --> !tun_capable()
+
+Signed-off-by: Stas Sergeev <stsp2@yandex.ru>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://patch.msgid.link/20241205073614.294773-1-stsp2@yandex.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/tun.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -3455,7 +3455,7 @@ sh_early_platform_init_buffer("earlyprin
- 			   early_serial_buf, ARRAY_SIZE(early_serial_buf));
- #endif
- #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
--static struct plat_sci_port port_cfg __initdata;
-+static struct plat_sci_port port_cfg;
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 0adce9bf7a1e5..87cc7d778c3cf 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -636,14 +636,18 @@ static u16 tun_select_queue(struct net_device *dev, struct sk_buff *skb,
+ 	return ret;
+ }
  
- static int __init early_console_setup(struct earlycon_device *device,
- 				      int type)
+-static inline bool tun_not_capable(struct tun_struct *tun)
++static inline bool tun_capable(struct tun_struct *tun)
+ {
+ 	const struct cred *cred = current_cred();
+ 	struct net *net = dev_net(tun->dev);
+ 
+-	return ((uid_valid(tun->owner) && !uid_eq(cred->euid, tun->owner)) ||
+-		  (gid_valid(tun->group) && !in_egroup_p(tun->group))) &&
+-		!ns_capable(net->user_ns, CAP_NET_ADMIN);
++	if (ns_capable(net->user_ns, CAP_NET_ADMIN))
++		return 1;
++	if (uid_valid(tun->owner) && uid_eq(cred->euid, tun->owner))
++		return 1;
++	if (gid_valid(tun->group) && in_egroup_p(tun->group))
++		return 1;
++	return 0;
+ }
+ 
+ static void tun_set_real_num_queues(struct tun_struct *tun)
+@@ -2838,7 +2842,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
+ 		    !!(tun->flags & IFF_MULTI_QUEUE))
+ 			return -EINVAL;
+ 
+-		if (tun_not_capable(tun))
++		if (!tun_capable(tun))
+ 			return -EPERM;
+ 		err = security_tun_dev_open(tun->security);
+ 		if (err < 0)
+-- 
+2.39.5
+
 
 
 
