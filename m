@@ -1,144 +1,112 @@
-Return-Path: <stable+bounces-123188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD68A5BDF2
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:34:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E642A5BE0A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 11:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 074A83AC18A
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 10:34:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 235991894069
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 10:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC90231A30;
-	Tue, 11 Mar 2025 10:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EA4231CB0;
+	Tue, 11 Mar 2025 10:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="trMzo645"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2uun/cS"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB182206BD;
-	Tue, 11 Mar 2025 10:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74285BA34;
+	Tue, 11 Mar 2025 10:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741689267; cv=none; b=hu0NfGNYa1hvSGD+QJSdr4FxLpg9jrkOAiw9zlQYS+DIKxXFIERR3Z9Jcn1IDk1vPh4PKQtTD6n39FCGgKlHXwokFUltpayA7jj6TXr3lbK+FqSR3VDsTPfehb3JAKW1vbpm9adog5o7T+9XoFXQuOdrolca4ygV7M1l8brE8II=
+	t=1741689492; cv=none; b=UgSfFdLv4hwR8+h+84aZ2LROxDpMY2t0q/h0zvoPBegHpxyLWzxP5U3YuerzA8Mn6tQNfv9C7gvkN7adKRjgzlM2SusJYoSNm5GdiAZHBiqj9oqhP9vv3SvvffQZYeGu5nGVd/1LT/ZzyhCCIhSjqXT4P9bFmaB9FmYlcG7IS2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741689267; c=relaxed/simple;
-	bh=S6wR8udc4flcNC99ou/zTegE4/iCZsKNPsN00sFe5JY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=i18lwUaUiWtLU1jMK+twTcMXFmKUou0pnTE/yl9lbfIfzB6p43aqaZLWB/mAtSZ2CK/MiOTM5e4ZY/3bnVkcFLjca1SvV2yN7+6n5UhSYft6R7jQqOSwXIpBL5Ylv4W5J7o/Fu7X0URi1m0tkHRJga8ehLD0JnERHP8fWFReCLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=trMzo645; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B9PUlB026764;
-	Tue, 11 Mar 2025 10:34:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=EXkS22
-	ubkiuuVZA6TyT0Ek4W0I7j3tntZa9y+PgAqPY=; b=trMzo645qIlqFJAT49IzMv
-	2vDkujAdoEQVpBBLzVQzF0tPMmnVljAtYe3VUGtzrzh7vETw2NnCja7Or7mToRJV
-	znmFcOsdnnnasBQaOXbWhGcx2Cne/YR2iJFxFnQg8179zc6Bo1atS4XR6QkpPgLt
-	xTZDQJh4KG07VqOgBRXcr+Oin1L5O+iUnS4iwsoLm5HozVQHk7Tcjj9wx6Cfwg04
-	kfKuIjW2Y5l1ZAKmMdLHFR4sHcY2LMfBuN6RD/TIb7pVeBtBBB0CwmsUlYzhFasl
-	HBYBrMkVJ/QbwkPMl0w1iBQP6RF8lczqfUq1Ee/EB/cJ2Q8PWfn7OlbnWbhIJJlg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45a7a1b7kd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 10:34:23 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52B8gOBK007011;
-	Tue, 11 Mar 2025 10:34:22 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45907t3v70-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 10:34:22 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52BAYMbr24117960
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Mar 2025 10:34:22 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1582258064;
-	Tue, 11 Mar 2025 10:34:22 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 313C85806B;
-	Tue, 11 Mar 2025 10:34:21 +0000 (GMT)
-Received: from [9.61.127.211] (unknown [9.61.127.211])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Mar 2025 10:34:21 +0000 (GMT)
-Message-ID: <ff033f2a-b82c-4c7b-a45d-71c674892b2d@linux.ibm.com>
-Date: Tue, 11 Mar 2025 06:34:20 -0400
+	s=arc-20240116; t=1741689492; c=relaxed/simple;
+	bh=21MGhRofUEJ0IDxhS/iYYEkZv7ETUGr/oWnYX8xLlUI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=teHSaIZBq6Fjb8lyqN8X4nAz63rx52mtEhbonftCdY0bRfznzWEhrIC9QWaVwxxpIP05iaxpgcd3zopv7O4EvGgIl7WQaSijUlEbN/FsodMTIcepSt30rLJtqguDDQFYCewqEKwsZVlVgwFBDvFZec8ddcbDsrlfzA8MWtKjLQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2uun/cS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33BFC4CEEF;
+	Tue, 11 Mar 2025 10:38:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741689491;
+	bh=21MGhRofUEJ0IDxhS/iYYEkZv7ETUGr/oWnYX8xLlUI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=c2uun/cSpJpOKknbR7fJLyOmluRIxIbLOkrrdW/X6jV+8YjfKADX5+qa08Cx1MIju
+	 3+bikZO5TwGOXN4SuaeaIv0tA3nyjo6eEspFGijS10AloVXdMyl+95BtxV2aB7Am+G
+	 GTi9bNpOJjXJd+w+DfqPi2NjKBUrCL4x5bvfz2BK82Qs55oguXmpqbOrEC8XzIBCz0
+	 mEH+8s+6wwoo7Uya1GjR2mMgsm501eEmuYZ+PXs/MYXB3Uh1VlcNP4iiVU13YdbGrR
+	 a5OzGo+hlZ5NPjoQy18jkmGCSiFwrdLHoGCCordVmuL31PaRFZ7GWJ1LMSxxuAJt4U
+	 Hd9e4ogJYTXqQ==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5497590ffbbso6049301e87.1;
+        Tue, 11 Mar 2025 03:38:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVISjD3MKDhuSLY0YzFP9SmC8OLijnP740RcOSYIl30XouyfTTATvrXa+fBxMS2HDu77kD++YxD@vger.kernel.org, AJvYcCXwWvjDJif3QTloGN1SY14TOSbftHApYEZ47wKYrK51i383WSFg+ppFioFRRaW798AhOBxr6rjJi5PuIUw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzZZz9HzzWWeDMIEjFYqNPK+DSkt92Izs0SMlwYsM0EzaKm6xk
+	NvBBNsBciR/R12k4NE1itlz3o45bPJLVvNCt/v6pSCHyW4BhSD8+Nc2rP9tqhvw1m2s4sJLWw65
+	Da+mHLoQgoU04CxgeWakqPNEeaiA=
+X-Google-Smtp-Source: AGHT+IFrw+jE8gCJmyCxRdWJX3PFj25i+6jaxU+VEI+QQJjytmYuJT8E955/OiftWm3m7XUK+z46/p2vYkJY2vCm23k=
+X-Received: by 2002:a05:6512:b84:b0:545:f1d:6f2c with SMTP id
+ 2adb3069b0e04-54990e5d4c2mr5402590e87.18.1741689490117; Tue, 11 Mar 2025
+ 03:38:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] s390/vfio-ap: lock mdev object when handling mdev remove
- request
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, pasic@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, borntraeger@linux.ibm.com,
-        alex.williamson@redhat.com, clg@redhat.com, mjrosato@linux.ibm.com,
-        stable@vger.kernel.org
-References: <20250221153238.3242737-1-akrowiak@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20250221153238.3242737-1-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RoiwAMSpPJPPSrY5iB4UQV1ltiLJsWnr
-X-Proofpoint-GUID: RoiwAMSpPJPPSrY5iB4UQV1ltiLJsWnr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-11_01,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 lowpriorityscore=0 mlxlogscore=999 malwarescore=0
- clxscore=1015 mlxscore=0 impostorscore=0 bulkscore=0 spamscore=0
- suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502100000 definitions=main-2503110070
+References: <20241105155801.1779119-1-brgerst@gmail.com> <20241105155801.1779119-2-brgerst@gmail.com>
+ <20241206123207.GA2091@redhat.com> <CAMj1kXGKCJfBVqgsqjX1bA_SY=503Z-tJV893y5JAwoVs0BUfw@mail.gmail.com>
+ <20241206142152.GB31748@redhat.com> <CAMj1kXGo5yv56VvNMvYBohxgyoyDtZhr4d4kjRdGTDQchHW0Gw@mail.gmail.com>
+ <CAMzpN2iUi_q_CfDa53H8MEV_zkb8NRtXtQPvOwDrEks58=3uAg@mail.gmail.com>
+ <CAMj1kXF8PZq4660mzNYcT=QmWywB1gOOfZGzZhi1sQxQacUX=g@mail.gmail.com>
+ <20250310214402.GBZ89dIo_NLF4zOSKh@fat_crate.local> <CAMj1kXEK0Kgx-C8sOvWJ9rkmC0ioWDEb+tpM9BTeWVwOWyGNog@mail.gmail.com>
+ <20250311102326.GAZ9APHqe5aSQ1m5ND@fat_crate.local>
+In-Reply-To: <20250311102326.GAZ9APHqe5aSQ1m5ND@fat_crate.local>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 11 Mar 2025 11:37:59 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHTLz4onmR5iyowptRE38RCK4jNT3BoURBkq2FoDOMTxQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JrK06MMGiOLeXqn-RxFrz_Tgl974_VpGDYK6e2sdNyxF6FLCPKn4dvM90Y
+Message-ID: <CAMj1kXHTLz4onmR5iyowptRE38RCK4jNT3BoURBkq2FoDOMTxQ@mail.gmail.com>
+Subject: Re: [PATCH] x86/stackprotector: fix build failure with CONFIG_STACKPROTECTOR=n
+To: Borislav Petkov <bp@alien8.de>
+Cc: Brian Gerst <brgerst@gmail.com>, Oleg Nesterov <oleg@redhat.com>, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, Ingo Molnar <mingo@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Uros Bizjak <ubizjak@gmail.com>, stable@vger.kernel.org, 
+	Fangrui Song <i@maskray.me>, Nathan Chancellor <nathan@kernel.org>, Andy Lutomirski <luto@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-PING!
-
-
-On 2/21/25 10:32 AM, Anthony Krowiak wrote:
-> The vfio_ap_mdev_request function in drivers/s390/crypto/vfio_ap_ops.c
-> accesses fields of an ap_matrix_mdev object without ensuring that the
-> object is accessed by only one thread at a time. This patch adds the lock
-> necessary to secure access to the ap_matrix_mdev object.
+On Tue, 11 Mar 2025 at 11:24, Borislav Petkov <bp@alien8.de> wrote:
 >
-> Fixes: 2e3d8d71e285 ("s390/vfio-ap: wire in the vfio_device_ops request callback")
-> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-> Cc: <stable@vger.kernel.org>
-> ---
->   drivers/s390/crypto/vfio_ap_ops.c | 3 +++
->   1 file changed, 3 insertions(+)
+> On Mon, Mar 10, 2025 at 11:19:03PM +0100, Ard Biesheuvel wrote:
+> > and no error.
 >
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-> index a52c2690933f..a2784d3357d9 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -2045,6 +2045,7 @@ static void vfio_ap_mdev_request(struct vfio_device *vdev, unsigned int count)
->   	struct ap_matrix_mdev *matrix_mdev;
->   
->   	matrix_mdev = container_of(vdev, struct ap_matrix_mdev, vdev);
-> +	mutex_lock(&matrix_dev->mdevs_lock);
->   
->   	if (matrix_mdev->req_trigger) {
->   		if (!(count % 10))
-> @@ -2057,6 +2058,8 @@ static void vfio_ap_mdev_request(struct vfio_device *vdev, unsigned int count)
->   		dev_notice(dev,
->   			   "No device request registered, blocked until released by user\n");
->   	}
-> +
-> +	mutex_unlock(&matrix_dev->mdevs_lock);
->   }
->   
->   static int vfio_ap_mdev_get_device_info(unsigned long arg)
+> Oh fun.
+>
+> > Could you capture the output of
+> >
+> > objdump -dr .tmp_vmlinux2 --section .head.text
+> >
+> > and share it somewhere please?
+>
+> See attached.
+>
+> Now lemme try to bisect it, see what this machine says since it is magically
+> toolchain or whatnot-specific. :-\
+>
 
+There are many occurrences of
+
+ffffffff8373cb87: 49 c7 c6 20 c0 55 86 mov    $0xffffffff8655c020,%r14
+ffffffff8373cb8a:         R_X86_64_32S __ref_stack_chk_guard
+
+whereas the ordinary Clang uses R_X86_64_REX_GOTPCRELX here, which are
+relaxed by the linker.
+
+I suspect that Ubuntu's Clang 15 has some additional patches that
+trigger this behavior.
+
+We could add __no_stack_protector to __head to work around this.
 
