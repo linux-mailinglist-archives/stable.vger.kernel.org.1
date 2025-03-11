@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-123692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16034A5C6CF
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:29:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA7BA5C48A
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42D681887AE4
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:25:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2CF4178B63
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E841494BB;
-	Tue, 11 Mar 2025 15:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE6E25E813;
+	Tue, 11 Mar 2025 15:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1tVk5/x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJw5K4dG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7765B846D;
-	Tue, 11 Mar 2025 15:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5ED25DD0F;
+	Tue, 11 Mar 2025 15:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706690; cv=none; b=LzU8QmPrwfBPyWzCDEuBDLR6I+0lg0/sI/TTKc/T7jKmM9vR0TzsTCfDbFlf5pEUqbQAtd59df4RVeXAk9IPmZdWfMbuH5cV4TY4akGtLleKbLv7AhgCTmvYNVqYNMvcryEsl1fnpiHGNNidffEWVia1QLbscH7a5qruCWa/BkI=
+	t=1741705420; cv=none; b=TBk4GKofGM0nWjpGXdpRa4DIHLg8iANvsaK2JJS+n82RbK5aGWnRPdNWYyVMRqzBSUA+qdUggTtFyVw5ceVSUD5E1XArp+bUefS6DFH9UNukrLMV1MQgDBeG2V8DyRtF7vhgQ6EGEvi4FjliL8lJejtjG0ljDegkG6N1oi9gd/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706690; c=relaxed/simple;
-	bh=9M5frO+y7Q5pjH4eY2gvAJ4+J49+NYxAOp2rmg5pUVA=;
+	s=arc-20240116; t=1741705420; c=relaxed/simple;
+	bh=Xof3FgNAl+tkuzAsNgvord3SVgHY06+OfMAsVTFVVH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNBZQOPkuz8jqGyW7xc9wfegyj9MoHsFW1Hup7Lqmaz7SNSzZZpiQ1iNzyNg9NOgxgmRZlFSNbhKDrUEIVdbUVwEsuA/+A1fOlchJm+KIpmzu/xTcTy1QLtC7o6Bhgh7iyADzqQi/lCWGHN1I8ZReGzSpKo8DGZC7rmx3uWT+tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1tVk5/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94797C4CEE9;
-	Tue, 11 Mar 2025 15:24:49 +0000 (UTC)
+	 MIME-Version; b=IaVnh3fk7Fo9cL30CAAgDuxF2aTEsi3bjrLh71g2oWZHEVeWNEinBUbCNfJhgE8hR3MP/t0kdXfD6ho0LRvmhRpOdttssDo7iakqkzyjNh6RO54ccxrq+x7C7eE+1fvHheP3gdkELLawjUETRTdF4o/8+hhIh1S1jz8/LN+H10U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJw5K4dG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E90C4CEE9;
+	Tue, 11 Mar 2025 15:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706690;
-	bh=9M5frO+y7Q5pjH4eY2gvAJ4+J49+NYxAOp2rmg5pUVA=;
+	s=korg; t=1741705419;
+	bh=Xof3FgNAl+tkuzAsNgvord3SVgHY06+OfMAsVTFVVH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1tVk5/x59m3Z/nxcN/t8Bdc2OG++fKfONgCmWLijwZJWcYwNUS1XxNBsvs5OasHt
-	 fToTnilgI/mUqS5eoJGs3xLQ7el4h0xYT0ZBDgUUdpfi1XqebVuJnYONGYK6NCfVzG
-	 z/JZOg3k+c3iTiZ76qq3PVLOqo91g7+dCV83AtqA=
+	b=AJw5K4dG7FGI4wQnM6B590rCqy7i3ttGa5CFEv05HFAtr3rLcfQM2N+4sUMlay9e4
+	 zHmEpWS7kNXxf687lt/oKCXnO7xWai9ODGnt9YXxc1uUFVKhmNVCybmdxVF7DZ8364
+	 kvGR8/xFng5kSO+BdF6WqhQqu2Ajh8CJaneW/vnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stas Sergeev <stsp2@yandex.ru>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bo Gan <ganboing@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 133/462] tun: fix group permission check
+Subject: [PATCH 5.4 029/328] clk: analogbits: Fix incorrect calculation of vco rate delta
 Date: Tue, 11 Mar 2025 15:56:39 +0100
-Message-ID: <20250311145803.614155184@linuxfoundation.org>
+Message-ID: <20250311145716.052261940@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stas Sergeev <stsp2@yandex.ru>
+From: Bo Gan <ganboing@gmail.com>
 
-[ Upstream commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3 ]
+[ Upstream commit d7f12857f095ef38523399d47e68787b357232f6 ]
 
-Currently tun checks the group permission even if the user have matched.
-Besides going against the usual permission semantic, this has a
-very interesting implication: if the tun group is not among the
-supplementary groups of the tun user, then effectively no one can
-access the tun device. CAP_SYS_ADMIN still can, but its the same as
-not setting the tun ownership.
+In wrpll_configure_for_rate() we try to determine the best PLL
+configuration for a target rate. However, in the loop where we try
+values of R, we should compare the derived `vco` with `target_vco_rate`.
+However, we were in fact comparing it with `target_rate`, which is
+actually after Q shift. This is incorrect, and sometimes can result in
+suboptimal clock rates. Fix it.
 
-This patch relaxes the group checking so that either the user match
-or the group match is enough. This avoids the situation when no one
-can access the device even though the ownership is properly set.
-
-Also I simplified the logic by removing the redundant inversions:
-tun_not_capable() --> !tun_capable()
-
-Signed-off-by: Stas Sergeev <stsp2@yandex.ru>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://patch.msgid.link/20241205073614.294773-1-stsp2@yandex.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7b9487a9a5c4 ("clk: analogbits: add Wide-Range PLL library")
+Signed-off-by: Bo Gan <ganboing@gmail.com>
+Link: https://lore.kernel.org/r/20240830061639.2316-1-ganboing@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/clk/analogbits/wrpll-cln28hpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index c34c6f0d23efe..52ea9f81d388b 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -586,14 +586,18 @@ static u16 tun_select_queue(struct net_device *dev, struct sk_buff *skb,
- 	return ret;
- }
+diff --git a/drivers/clk/analogbits/wrpll-cln28hpc.c b/drivers/clk/analogbits/wrpll-cln28hpc.c
+index 776ead319ae9c..9df572579afb4 100644
+--- a/drivers/clk/analogbits/wrpll-cln28hpc.c
++++ b/drivers/clk/analogbits/wrpll-cln28hpc.c
+@@ -287,7 +287,7 @@ int wrpll_configure_for_rate(struct wrpll_cfg *c, u32 target_rate,
+ 			vco = vco_pre * f;
+ 		}
  
--static inline bool tun_not_capable(struct tun_struct *tun)
-+static inline bool tun_capable(struct tun_struct *tun)
- {
- 	const struct cred *cred = current_cred();
- 	struct net *net = dev_net(tun->dev);
- 
--	return ((uid_valid(tun->owner) && !uid_eq(cred->euid, tun->owner)) ||
--		  (gid_valid(tun->group) && !in_egroup_p(tun->group))) &&
--		!ns_capable(net->user_ns, CAP_NET_ADMIN);
-+	if (ns_capable(net->user_ns, CAP_NET_ADMIN))
-+		return 1;
-+	if (uid_valid(tun->owner) && uid_eq(cred->euid, tun->owner))
-+		return 1;
-+	if (gid_valid(tun->group) && in_egroup_p(tun->group))
-+		return 1;
-+	return 0;
- }
- 
- static void tun_set_real_num_queues(struct tun_struct *tun)
-@@ -2772,7 +2776,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
- 		    !!(tun->flags & IFF_MULTI_QUEUE))
- 			return -EINVAL;
- 
--		if (tun_not_capable(tun))
-+		if (!tun_capable(tun))
- 			return -EPERM;
- 		err = security_tun_dev_open(tun->security);
- 		if (err < 0)
+-		delta = abs(target_rate - vco);
++		delta = abs(target_vco_rate - vco);
+ 		if (delta < best_delta) {
+ 			best_delta = delta;
+ 			best_r = r;
 -- 
 2.39.5
 
