@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-123234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F9BA5C46D
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:03:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD0BA5C475
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:03:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BA537A44F3
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:02:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70FAB165DA4
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD4325EF84;
-	Tue, 11 Mar 2025 15:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3E425E473;
+	Tue, 11 Mar 2025 15:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij0YzTET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6c2OQlx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF12A25EF80;
-	Tue, 11 Mar 2025 15:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6242325DCE5;
+	Tue, 11 Mar 2025 15:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741705362; cv=none; b=k8NyheimYfHR4G6UgRdVLjRFOugcAFqX5SgbJtELvel5Xp6nJc0TuoZ7RgQsTfa6fWeLVnk2Pk5VGkzK+PHpYT1pb9kYTI1LbWjT1vk5qbr9cTf7G91+awgA5bSMZgJkxu5nYbKII7yT8znLCF02QG5wH+b8UNN9io4o+xt/Jkc=
+	t=1741705373; cv=none; b=BmmEwYfaQ/SnIADe/rgMIPLrH5lhf3ck+GirK2rRSIkDfvQ57Gw7ZFuyhN34TeMzxoJrOzhx56HC447LR+pfE/HT8EJix/cVwU8S9KiwmW4aW3cwXzrc5ln/TORbbwZJn/gwLq+WH1KC4VoMVbRAqQY4EVr9/R5TBtquKfxsaaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741705362; c=relaxed/simple;
-	bh=Cv8KzLnl43Lg6bJwU3FSU6My9ifVrq3bAbiAeTRAhDw=;
+	s=arc-20240116; t=1741705373; c=relaxed/simple;
+	bh=niudUVNwYDVH9gWOYmJqm/Nqr0bws02C4JwMp0koAhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8ZJ2cRESRmDEsDp1IdKEWLDT2oyercgYD8bB3Qn0Fw49N5s/5S6ZifpV14GI9XxKiAhivS2pqhpe1eJTFLa033T5jsQ+YLVGEMnpn6EJgVnmRG11uNvUxUl8Cipdx1tNZlBSUeqKXNE3jSH+s+UNeUzG7NocdRTwONrAzoN2g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij0YzTET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78CFC4CEF1;
-	Tue, 11 Mar 2025 15:02:40 +0000 (UTC)
+	 MIME-Version; b=qahm1r5+96o37lJbqdYcXfj6osfSe02hfzf7f8MqHfpCCbYKghEwcyLwBoDY4yJrIfhheh2UIq6vsjWEiWWxkq8MUke+8EkYFgjuWTBVOXkkf8RDSGikL2fHy6rbrND5orbJtNJyUJzefsylcJ53InDr/mMrMRvfOtLMtUDrg74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6c2OQlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC46C4CEE9;
+	Tue, 11 Mar 2025 15:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741705361;
-	bh=Cv8KzLnl43Lg6bJwU3FSU6My9ifVrq3bAbiAeTRAhDw=;
+	s=korg; t=1741705372;
+	bh=niudUVNwYDVH9gWOYmJqm/Nqr0bws02C4JwMp0koAhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ij0YzTETV6CW8/Yt+YHeAKaWDkaD7H+krLvgMhIFlUl8W0FRnZQmGAd192OGZ/ZB5
-	 2ph1vTYEucQfrXu2+PH5LAkKeubAstjHZCOOFxPib3JSQKVmcK/AOFuTm2djS0U8gY
-	 KF8We7Wt1wkK5FnQQSd6lWMVKRB1YPFLeNZLb3io=
+	b=x6c2OQlxgcNpw6IjCDpoJvozuo7Nm+RtFf/U4VcLHkUK5rGY88XPVMfqugp8Pg7MH
+	 kK7NZuk0b/pOEClXfOxOKReTjiLtaTYNwUNwgkA6GJEVX414azfVOk0Y9NrvKDuDCP
+	 gZU+oxs6zqm+XXLNanFqQuKz/yPMe+O2RzJpJ5IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
+	Jan Kara <jack@suse.cz>,
 	Ben Hutchings <benh@debian.org>
-Subject: [PATCH 5.4 001/328] perf cs-etm: Add missing variable in cs_etm__process_queues()
-Date: Tue, 11 Mar 2025 15:56:11 +0100
-Message-ID: <20250311145714.930815871@linuxfoundation.org>
+Subject: [PATCH 5.4 002/328] udf: Fix use of check_add_overflow() with mixed type arguments
+Date: Tue, 11 Mar 2025 15:56:12 +0100
+Message-ID: <20250311145714.969237020@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
 References: <20250311145714.865727435@linuxfoundation.org>
@@ -67,32 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Ben Hutchings <benh@debian.org>
 
-Commit 5afd032961e8 "perf cs-etm: Don't flush when packet_queue fills
-up" uses i as a loop counter in cs_etm__process_queues().  It was
-backported to the 5.4 and 5.10 stable branches, but the i variable
-doesn't exist there as it was only added in 5.15.
+Commit ebbe26fd54a9 "udf: Avoid excessive partition lengths"
+introduced a use of check_add_overflow() with argument types u32,
+size_t, and u32 *.
 
-Declare i with the expected type.
+This was backported to the 5.x stable branches, where in 64-bit
+configurations it results in a build error (with older compilers) or a
+warning.  Before commit d219d2a9a92e "overflow: Allow mixed type
+arguments", which went into Linux 6.1, mixed type arguments are not
+supported.  That cannot be backported to 5.4 or 5.10 as it would raise
+the minimum compiler version for these kernel versions.
 
-Fixes: 1ed167325c32 ("perf cs-etm: Don't flush when packet_queue fills up")
-Fixes: 26db806fa23e ("perf cs-etm: Don't flush when packet_queue fills up")
+Add a cast to make the argument types compatible.
+
+Fixes: 1497a4484cdb ("udf: Avoid excessive partition lengths")
+Fixes: 551966371e17 ("udf: Avoid excessive partition lengths")
 Signed-off-by: Ben Hutchings <benh@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/cs-etm.c |    2 +-
+ fs/udf/super.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/perf/util/cs-etm.c
-+++ b/tools/perf/util/cs-etm.c
-@@ -2139,7 +2139,7 @@ static int cs_etm__process_timeless_queu
- static int cs_etm__process_queues(struct cs_etm_auxtrace *etm)
- {
- 	int ret = 0;
--	unsigned int cs_queue_nr, queue_nr;
-+	unsigned int cs_queue_nr, queue_nr, i;
- 	u8 trace_chan_id;
- 	u64 timestamp;
- 	struct auxtrace_queue *queue;
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1160,7 +1160,7 @@ static int udf_fill_partdesc_info(struct
+ 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
+ 		/* Check whether math over bitmap won't overflow. */
+ 		if (check_add_overflow(map->s_partition_len,
+-				       sizeof(struct spaceBitmapDesc) << 3,
++				       (u32)(sizeof(struct spaceBitmapDesc) << 3),
+ 				       &sum)) {
+ 			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
+ 				map->s_partition_len);
 
 
 
