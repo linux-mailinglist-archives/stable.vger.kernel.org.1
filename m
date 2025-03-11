@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-123785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36150A5C75E
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:33:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F02A5C4FC
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB4711888359
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:29:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8E787A25E3
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE6225EFB5;
-	Tue, 11 Mar 2025 15:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A628725DB0D;
+	Tue, 11 Mar 2025 15:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frh34i0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkpqVB/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0939F25EFAD;
-	Tue, 11 Mar 2025 15:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650961C3BEB;
+	Tue, 11 Mar 2025 15:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706956; cv=none; b=n7MU4eZe3NuPCFa6/JsmFk8HjbxWS4fYQJ2bim+CrRfdWRPj1zfxLgJrksJVSFfKfz5VazSw2TDVsnfsOsKcPfTpYC2up5Hr5Hc6vvLA41hMt1HoY57z+VsOUG0hJm4IGk/k/djzMH1+O+k6ru/aJK2y5eg2ygX3wR9kAUW8Ob0=
+	t=1741705743; cv=none; b=YcZDMyiT1yU63muMDI1yi94Kw6OImMG00dXVlyvHa08iKzTfGl0RVv4cCBKwL/0fqmSq6N1hDs6oSHEFpcc6gia4ZtXEMfIaxpFIV83DxZ8OZBhlH2zgFShELUxVhC930VLXbHM9rWu3n4dKO3z8VHhkSHCgQ5/FiBKmwSMXab8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706956; c=relaxed/simple;
-	bh=x9yY7GSriOhCB5RT9Vq2QMe0mnxi8k0dr2wh0/EpM/Y=;
+	s=arc-20240116; t=1741705743; c=relaxed/simple;
+	bh=ziC5xoD5RVWv/3lH0MD9fGagM2AKGXO31tMOA3B7Yco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWZHiRDM4ZM6G6cE1+P17gQZW0raazFiGFGYaJxk2SJ5RjhhckIjMgFzXy/q6ughuL9A2uyn1xaDT67bwnPZCit63QHUCLaPv5L7jsAmeEDGMTzrcI/73kTcZNiGGEbAS67zSLTnzp0JvjEo1Vfp0LXDudfRRHpTZ0ryArUrYUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frh34i0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832DFC4CEE9;
-	Tue, 11 Mar 2025 15:29:15 +0000 (UTC)
+	 MIME-Version; b=YCDjKuzBm28BPJ6m+yos+yccUOIJAtXL7FrtVd3a5ZF1B108Tsl3RO0cswNVgcoCRnCALgcbhKBsHCf/ZJgovlQRvlD8OqbwPreH3tdT5hrqcqbFrpMzK83/6ub8aze5CP1HLJl5v9wA6hq8MCcQOcibDJpV5Q3mqouTXfB9FRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkpqVB/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A2BC4CEE9;
+	Tue, 11 Mar 2025 15:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706955;
-	bh=x9yY7GSriOhCB5RT9Vq2QMe0mnxi8k0dr2wh0/EpM/Y=;
+	s=korg; t=1741705743;
+	bh=ziC5xoD5RVWv/3lH0MD9fGagM2AKGXO31tMOA3B7Yco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frh34i0IXBl2k5efAy6BbhK1pj+r4rtjhcM+0H14rxRNb0nFI4nA3R7a1epMgK++W
-	 +FmVrHU5Nhghak1FB+9q2b/kgj71/Vlurim+pgHp1cp512Pv5BdlpnBLawQi/tSurw
-	 t5alEUoxyVMDzio/YQZ4tuPeIoqZMF+RjunodONM=
+	b=FkpqVB/hMuRSoM2JVMNy0uItr2w8ilqCyCfmcx+AZ1ee84rNsLy3d6r5xFLmV6gWu
+	 n0q1Z97vcGtoD5qnMCUqxHH291VZ+ZH9gYiPA9BihmbCkrtFpsSG600Ztq1SqYPb6V
+	 h3YH0tJzmq+rZfawc6rXvYHHbCSUu0pjRV1PRdY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 226/462] NFSD: fix hang in nfsd4_shutdown_callback
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 5.4 122/328] arm64: dts: rockchip: increase gmac rx_delay on rk3399-puma
 Date: Tue, 11 Mar 2025 15:58:12 +0100
-Message-ID: <20250311145807.290803346@linuxfoundation.org>
+Message-ID: <20250311145719.748018053@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Jakob Unterwurzacher <jakobunt@gmail.com>
 
-commit 036ac2778f7b28885814c6fbc07e156ad1624d03 upstream.
+commit 9d241b06802c6c2176ae7aa4f9f17f8a577ed337 upstream.
 
-If nfs4_client is in courtesy state then there is no point to send
-the callback. This causes nfsd4_shutdown_callback to hang since
-cl_cb_inflight is not 0. This hang lasts about 15 minutes until TCP
-notifies NFSD that the connection was dropped.
+During mass manufacturing, we noticed the mmc_rx_crc_error counter,
+as reported by "ethtool -S eth0 | grep mmc_rx_crc_error", to increase
+above zero during nuttcp speedtests. Most of the time, this did not
+affect the achieved speed, but it prompted this investigation.
 
-This patch modifies nfsd4_run_cb_work to skip the RPC call if
-nfs4_client is in courtesy state.
+Cycling through the rx_delay range on six boards (see table below) of
+various ages shows that there is a large good region from 0x12 to 0x35
+where we see zero crc errors on all tested boards.
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Fixes: 66af25799940 ("NFSD: add courteous server support for thread with only delegation")
+The old rx_delay value (0x10) seems to have always been on the edge for
+the KSZ9031RNX that is usually placed on Puma.
+
+Choose "rx_delay = 0x23" to put us smack in the middle of the good
+region. This works fine as well with the KSZ9131RNX PHY that was used
+for a small number of boards during the COVID chip shortages.
+
+	Board S/N        PHY        rx_delay good region
+	---------        ---        --------------------
+	Puma TT0069903   KSZ9031RNX 0x11 0x35
+	Puma TT0157733   KSZ9031RNX 0x11 0x35
+	Puma TT0681551   KSZ9031RNX 0x12 0x37
+	Puma TT0681156   KSZ9031RNX 0x10 0x38
+	Puma 17496030079 KSZ9031RNX 0x10 0x37 (Puma v1.2 from 2017)
+	Puma TT0681720   KSZ9131RNX 0x02 0x39 (alternative PHY used in very few boards)
+
+	Intersection of good regions = 0x12 0x35
+	Middle of good region = 0x23
+
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # Puma v2.1 and v2.3 with KSZ9031
+Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
+Link: https://lore.kernel.org/r/20241213-puma_rx_delay-v4-1-8e8e11cc6ed7@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -1410,8 +1410,11 @@ nfsd4_run_cb_work(struct work_struct *wo
- 		nfsd4_process_cb_update(cb);
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -176,7 +176,7 @@
+ 	snps,reset-active-low;
+ 	snps,reset-delays-us = <0 10000 50000>;
+ 	tx_delay = <0x10>;
+-	rx_delay = <0x10>;
++	rx_delay = <0x23>;
+ 	status = "okay";
+ };
  
- 	clnt = clp->cl_cb_client;
--	if (!clnt) {
--		/* Callback channel broken, or client killed; give up: */
-+	if (!clnt || clp->cl_state == NFSD4_COURTESY) {
-+		/*
-+		 * Callback channel broken, client killed or
-+		 * nfs4_client in courtesy state; give up.
-+		 */
- 		nfsd41_destroy_cb(cb);
- 		return;
- 	}
 
 
 
