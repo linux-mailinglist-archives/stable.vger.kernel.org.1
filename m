@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-123764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19624A5C721
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:31:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A899A5C50B
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 16:11:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 184D2164BB7
-	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:28:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E095E1884054
+	for <lists+stable@lfdr.de>; Tue, 11 Mar 2025 15:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF6A25C6ED;
-	Tue, 11 Mar 2025 15:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD9625EF89;
+	Tue, 11 Mar 2025 15:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1E0ZfO7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdxuFFMD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD301494BB;
-	Tue, 11 Mar 2025 15:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1998B25EF86;
+	Tue, 11 Mar 2025 15:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741706895; cv=none; b=YJMOGN6EjcFiEdtDeensyJLgshs5xUcfdj+4vuizhDIUlh0damFO97vdTJlguX6UsU7CvDxdOHfDto2N6sAKbc3+CDXfQuBnrUtG4UV8N1esWoYoHDqF1uLanCJO6XJRXySbxd7G6fesd37nFrW9iwhvC81nl28HMHhDfFpVEs8=
+	t=1741705685; cv=none; b=c+KxZjAZeL5DLPNKkVThxGWjl+KaPxHoVcnXE7JElbSjy40kZzGDK7JImLhqan4eo3ac0gGojubmsUw/5Ba/NelPI7fK5v2GqSwx9Uhu02rirC+mM9dIKYzFt02CPdyPSIifYHMscx9eM2uY0GzBfPun3UjuaB9jBYocdyvnado=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741706895; c=relaxed/simple;
-	bh=4yZqwseOsZpkqDKxw3afWnaYvBj+nWe63iEuE61PyMo=;
+	s=arc-20240116; t=1741705685; c=relaxed/simple;
+	bh=5eKu9SJkRZL5KKiOhDrLDJj3txRAYIb5Jm+EZD5zkMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8pJ0GXsgs/tIUzxCZdCmuDHtqYAxquqZrW6Qfm9cO7finZ9pKbvyM7jy3EjzvC5w4dGlO0bd2ivMs7fmyFnWkTW48V+/0RI4cwyimtdmnMj17Ewk2QZCe/41ymgysGJIzLDB8wWlzDbd4Oh6wgvwr7yJXw/sQJAU/qWTEF0LIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1E0ZfO7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B27C4CEE9;
-	Tue, 11 Mar 2025 15:28:14 +0000 (UTC)
+	 MIME-Version; b=MMpiBFqV53wMgkRFGM67LUz7KA6OYjdVy699wjy6gVSZFvdhdFgbORrdbDbzqv+Xs5O09KJl/g0A6GDunjGszgDhLntCVzezAYACQIBtPqs/qWfY+N71e4XswQGGTm21tBxJrJS4rtS7OP546ZqUFoDZ6SsoTZB8gef9fPCm12k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdxuFFMD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A6AC4CEE9;
+	Tue, 11 Mar 2025 15:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706895;
-	bh=4yZqwseOsZpkqDKxw3afWnaYvBj+nWe63iEuE61PyMo=;
+	s=korg; t=1741705684;
+	bh=5eKu9SJkRZL5KKiOhDrLDJj3txRAYIb5Jm+EZD5zkMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1E0ZfO7RHtPsFC4QslrZufG2xa1gl/JyXnQ4duOa7jVsvXekGD+1uRxnAnKRdnXV
-	 3pygT9OVPaRDNoN4Ik/4kmy8dYFZ3z+drTJObcCYIPx/+lCCE6ra1HnPeg9lHcUcBl
-	 pQfHSM43ohrN9phs1q1VuBTEIU5+IHalMGXDpPAc=
+	b=ZdxuFFMDn5+vrUpvx8f7r86AuzRSydhfioZS1mt25ltJ6TCau0Colm61go5tO+DvA
+	 z999qBMP2ooud9vGZQeSQa8wINMh3qdEL1yI5fti7pVtqDK8aqT3jHkFcJQfK+hKOz
+	 pn/OiQT+IId1R/qTe5JLPhFgzrJyfVQi90UCpq6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10 204/462] media: mc: fix endpoint iteration
+Subject: [PATCH 5.4 100/328] media: uvcvideo: Only save async fh if success
 Date: Tue, 11 Mar 2025 15:57:50 +0100
-Message-ID: <20250311145806.413096547@linuxfoundation.org>
+Message-ID: <20250311145718.866706431@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit fb2bd86270cd0ad004f4c614ba4f8c63a5720e25 upstream.
+commit d9fecd096f67a4469536e040a8a10bbfb665918b upstream.
 
-When creating links from a subdev to a sink, the current logic tries to
-iterate over the endpoints of dev's fwnode.
+Now we keep a reference to the active fh for any call to uvc_ctrl_set,
+regardless if it is an actual set or if it is a just a try or if the
+device refused the operation.
 
-This might not be correct when the subdev uses a different fwnode
-compared to the dev's fwnode.
+We should only keep the file handle if the device actually accepted
+applying the operation.
 
-If, when registering, the subdev's fwnode is not set, the code inside
-v4l2_async_register_subdev will set it to the dev's fwnode.
-
-To fix this, just use the subdev's fwnode.
-
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Fixes: 0d3c81e82da9 ("media: v4l2-mc: add v4l2_create_fwnode_links helpers")
 Cc: stable@vger.kernel.org
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
+Suggested-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20241203-uvc-fix-async-v6-1-26c867231118@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-mc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/v4l2-core/v4l2-mc.c
-+++ b/drivers/media/v4l2-core/v4l2-mc.c
-@@ -321,7 +321,7 @@ int v4l2_create_fwnode_links_to_pad(stru
+---
+ drivers/media/usb/uvc/uvc_ctrl.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1528,7 +1528,9 @@ int uvc_ctrl_begin(struct uvc_video_chai
+ }
  
- 	sink_sd = media_entity_to_v4l2_subdev(sink->entity);
+ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+-	struct uvc_entity *entity, int rollback)
++				  struct uvc_fh *handle,
++				  struct uvc_entity *entity,
++				  int rollback)
+ {
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+@@ -1572,6 +1574,10 @@ static int uvc_ctrl_commit_entity(struct
  
--	fwnode_graph_for_each_endpoint(dev_fwnode(src_sd->dev), endpoint) {
-+	fwnode_graph_for_each_endpoint(src_sd->fwnode, endpoint) {
- 		struct fwnode_handle *remote_ep;
- 		int src_idx, sink_idx, ret;
- 		struct media_pad *src;
+ 		if (ret < 0)
+ 			return ret;
++
++		if (!rollback && handle &&
++		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
++			ctrl->handle = handle;
+ 	}
+ 
+ 	return 0;
+@@ -1587,7 +1593,8 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 
+ 	/* Find the control. */
+ 	list_for_each_entry(entity, &chain->entities, chain) {
+-		ret = uvc_ctrl_commit_entity(chain->dev, entity, rollback);
++		ret = uvc_ctrl_commit_entity(chain->dev, handle, entity,
++					     rollback);
+ 		if (ret < 0)
+ 			goto done;
+ 	}
+@@ -1711,9 +1718,6 @@ int uvc_ctrl_set(struct uvc_fh *handle,
+ 	mapping->set(mapping, value,
+ 		uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
+ 
+-	if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+-		ctrl->handle = handle;
+-
+ 	ctrl->dirty = 1;
+ 	ctrl->modified = 1;
+ 	return 0;
+@@ -2042,7 +2046,7 @@ int uvc_ctrl_restore_values(struct uvc_d
+ 			ctrl->dirty = 1;
+ 		}
+ 
+-		ret = uvc_ctrl_commit_entity(dev, entity, 0);
++		ret = uvc_ctrl_commit_entity(dev, NULL, entity, 0);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 
 
 
