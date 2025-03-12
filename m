@@ -1,161 +1,155 @@
-Return-Path: <stable+bounces-124147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03E3A5DC0B
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 12:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB875A5DC10
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 12:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72B053B3958
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 11:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78BE33B462A
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 11:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9945624168E;
-	Wed, 12 Mar 2025 11:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BCC242904;
+	Wed, 12 Mar 2025 11:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="DpHpyJTD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RlQrrYbc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A09241672
-	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 11:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6690A241C8B;
+	Wed, 12 Mar 2025 11:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741780576; cv=none; b=Nunvb0kR+0D+M1VqRO8OAVMcdBVwx8TcsInFeCPcVmBTEQ8cwo0h4VSL8Gqc1lKZjP8y6pROkrafAsP2mJlcrcCMNQsS5+vxrOTxkNcbWcscCRjiG68PIS/3zHEY6dNgNK5qeb4Stewy1GcmJnc8jnwMuOBk/eK90FWexj2d9Ic=
+	t=1741780582; cv=none; b=XZarz9GOwKVmtEUwbASjk64wqmgJtg9PbyHC5wy/0BIho9eOz/vdgfuIDB9fjjiU24k2jU7e6IuU7MZcGFzT30Lv4OEpzLXZL6Pl/cbQfPpOYmU+geo9ndbFIqVHtZBYotiEYUek+lK3BpR//x8BNGBVeN1e0Z9oP/s+FEDsjmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741780576; c=relaxed/simple;
-	bh=Nls52lkzjmJ+bhk/FuveEgJphMZM3lsoGJmXIHJqvZ8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UQKig6gz0F3drQo1IHtO4MgbykkSA0L4+S94t9aPUQ3/HGPC5nKfUemIoXEl10YMXpNpAp37wOTp7y4M7L/LnNcONnNczgtTIyPGj2O9nUdh28/KWuj66eVdLyVVbRPHHZxMszvBOnUNrK3U5GHuSo1TjqX9vXUXiuQFskPXEN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=DpHpyJTD; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-224100e9a5cso125235145ad.2
-        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 04:56:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741780574; x=1742385374; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rAMd6rGhip9Etdi0DcL12HaRjFlmNQeXSBT7tbE4ZZA=;
-        b=DpHpyJTDvRc9ec1bE6qFFFImDqKRMd9xE6ZiR3ZBEiUyGccu2lIkyvTFORokT8UWEk
-         TPWWo20ou48bdvtuVSLcugMNcEeLCKDnAJyp6P9cgmOleMriCTmNkngRaruGoP6+7JeT
-         gX6RHH8WALWvOHyqlW/gCi1QrrswDjTegxYerdZhBBhzi/hDwf+qsxyRyvBbpKhFRsDo
-         cdOHVWLB/19WwVkdx5D7TmPjbRz1Qe3wXRq9YFE9vmbBr3sKfy/fHc5I6SYfJWjB2kJ1
-         vwARCvEXGeQxOOs+sEkYIcGocZRxh7dETVwukNgqJTogFQzbl0rM81EKMgMBZOglvK6i
-         6nRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741780574; x=1742385374;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rAMd6rGhip9Etdi0DcL12HaRjFlmNQeXSBT7tbE4ZZA=;
-        b=nv7iiUeJxFJxThKrD4ECJ7Px9oplc02iQAB80wFOxaU1RCrsqdv92Wx8+jCfhvURqN
-         z5lnPcTAaN0UF6XRRjv0Jo7jU5SxQQ875P2dHGUBI8M1b3mOOFORtvSQJ2COlkE7Z6XC
-         U+v154WgjI+4Sy6J58Vz7xiar3IgZq4TPAVTwa79VtriFaO50yZ26Q5RO/ErHYp5jj3K
-         JWPcupaMWwJoJlVSG62/3Y48TbvFLvbeHwSm1v1urqD/5MCE6r1ACruYQfBR61GBf907
-         ELz0fqkyVYWBKeV2pL9yngorwcADAB6BsWjv3GSMpikpORhoQP08t8aMfjNzGkrtPtC7
-         58PA==
-X-Forwarded-Encrypted: i=1; AJvYcCXe3RvcCdFErUefkpbX9b7RoQY0KcEdPrO2VUI/3F+qfvlV5Ff1STxYpdHSut+ZImkTbLSnSj0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzLcoxKE/ILT6FBkk9Y/nR2B1Z1IsMYn3lzSVt1QLdUZ042p6d
-	dxgg+PW6RAMUFsQr3hZVDZMTqMH4j8CFSOOd+okstdvwAaWTlSwbsPMghdgw9FY=
-X-Gm-Gg: ASbGncv76h2yYh1evm0BYalwdH5RmFhJbFweaZX+1/LRx/MdTqZxKSISP1LyepU5hFA
-	HaWencHXlwnWb0FC6bC0ekBe0ygFqeMO0saMjbgMP0fwr6w45ti2hfvoRhfFDMzPKZ0/h4hwZl8
-	w1ln1mFi/Z0N/8Xb7B8S8GiOyMnjAFtlQ+Tf0JQGJHtRQBQRW8HDB9K4PENzXanMihgzHOfM/2y
-	pLE5Oy7zTDx04TwIw8kMg2xy0owWNaXHsmnm9dQu8+KZNJQIsMcceZrKrSk3FjfJNNpitucZ+QS
-	o1W3KGWev+Nur5j0eA6IEmY/j4Ik3o9fgnBgq2hPGi0nF2f7
-X-Google-Smtp-Source: AGHT+IGVJsaOES3D6e5IgzEgtMMcyBt78uD5r1dUvwmlCbFQdHU9CycZp7wTmKosTDLuCPhOfc8eNw==
-X-Received: by 2002:a17:902:e812:b0:211:e812:3948 with SMTP id d9443c01a7336-2242850b42amr315559235ad.0.1741780574197;
-        Wed, 12 Mar 2025 04:56:14 -0700 (PDT)
-Received: from localhost ([157.82.205.237])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73699da011asm11973015b3a.84.2025.03.12.04.56.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Mar 2025 04:56:13 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 12 Mar 2025 20:55:55 +0900
-Subject: [PATCH v3 1/6] KVM: arm64: PMU: Set raw values from user to
- PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}
+	s=arc-20240116; t=1741780582; c=relaxed/simple;
+	bh=VETkLINRI8hcNJRpuez892xea1lFBVqg7ZWvjLXYyZI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uh8B9+QPdLC6tRTWeu53zaTZHPC9sBuuEmJRqB3w7rC+wkSbTrwgz81SHKEn6+V5OHu9kh3WnZJCFryh1MPJjEkXLWSLIV3SHP/f+q2YBkWii7qkJK14ed9qplcdQozQyVDVgn7S0Gexk4TUmydh4JRbgm/1HItLS/IKLFh+hvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RlQrrYbc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1805AC4CEED;
+	Wed, 12 Mar 2025 11:56:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741780581;
+	bh=VETkLINRI8hcNJRpuez892xea1lFBVqg7ZWvjLXYyZI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RlQrrYbc+mQyR0zAoC1RAtoBY1ZqSo2cq+DOkxMfK52zQgeQNc4eaaZlndSyJ2pJD
+	 GHNEw7huNhJZ/HRlvyZ60LLbota9C9dhT3hyhvbbj/v0g+OoRfnNsghuLZI53rt8EW
+	 RLVchYzwI5o0Gt4tVKxP0oqeilv/wj/d+t7Iv0KMu6iPrWjFyUaP7p7WG9FDoJ1OMN
+	 hvHyNmC6q3HOTMmDMpRlnEVL8lIPtkLBeT47QfyLOgU7RjW5vO+Irp3VaGWPd0b7Vb
+	 zGiL/igrRb+UaFG3dSuaTaWRhxm3t+eEdd/05hLLPc0Jc0gQogNKGnICZpbAc1ydif
+	 vS+ZeT5X+hw3w==
+Message-ID: <328d89da-4246-4c75-a277-b06934e4a9d9@kernel.org>
+Date: Wed, 12 Mar 2025 12:56:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] pinctrl: samsung: add gs101 specific eint
+ suspend/resume callbacks
+To: Peter Griffin <peter.griffin@linaro.org>
+Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ andre.draszik@linaro.org, tudor.ambarus@linaro.org, willmcvicker@google.com,
+ semen.protsenko@linaro.org, kernel-team@android.com,
+ jaewon02.kim@samsung.com, stable@vger.kernel.org
+References: <20250307-pinctrl-fltcon-suspend-v4-0-2d775e486036@linaro.org>
+ <20250307-pinctrl-fltcon-suspend-v4-3-2d775e486036@linaro.org>
+ <59a1a6eb-d719-49bd-a4b5-bfb9c2817f08@kernel.org>
+ <CADrjBPqYoHckqr43y1z8UtthZ9DOG15TJWSv_707Jbyf1yforw@mail.gmail.com>
+ <CADrjBPqSSbt=xM7u12BU2nsF2xvyXe_+bLSCxCPBTfCc07VpuQ@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <CADrjBPqSSbt=xM7u12BU2nsF2xvyXe_+bLSCxCPBTfCc07VpuQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250312-pmc-v3-1-0411cab5dc3d@daynix.com>
-References: <20250312-pmc-v3-0-0411cab5dc3d@daynix.com>
-In-Reply-To: <20250312-pmc-v3-0-0411cab5dc3d@daynix.com>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
- Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
- Zenghui Yu <yuzenghui@huawei.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Andrew Jones <drjones@redhat.com>, Shannon Zhao <shannon.zhao@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
- linux-kernel@vger.kernel.org, devel@daynix.com, 
- Akihiko Odaki <akihiko.odaki@daynix.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-edae6
 
-Commit a45f41d754e0 ("KVM: arm64: Add {get,set}_user for
-PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}") changed KVM_SET_ONE_REG to update
-the mentioned registers in a way matching with the behavior of guest
-register writes. This is a breaking change of a UAPI though the new
-semantics looks cleaner and VMMs are not prepared for this.
+On 12/03/2025 12:39, Peter Griffin wrote:
+> Hi Krzysztof,
+> 
+> On Wed, 12 Mar 2025 at 11:31, Peter Griffin <peter.griffin@linaro.org> wrote:
+>>
+>> Hi Krzysztof,
+>>
+>> Thanks for the review feedback.
+>>
+>> On Tue, 11 Mar 2025 at 19:36, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>
+>>> On 07/03/2025 11:29, Peter Griffin wrote:
+>>>> gs101 differs to other SoCs in that fltcon1 register doesn't
+>>>> always exist. Additionally the offset of fltcon0 is not fixed
+>>>> and needs to use the newly added eint_fltcon_offset variable.
+>>>>
+>>>> Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configuration")
+>>>> Cc: stable@vger.kernel.org
+>>>
+>>> It looks this depends on previous commit, right?
+>>
+>> Yes that's right, it depends on the refactoring in the previous patch.
+>> To fix the bug (which is an Serror on suspend for gs101), we need the
+>> dedicated gs101 callback so it can have the knowledge that fltcon1
+>> doesn't always exist and it's varying offset.
+> 
+> and also dependent on the first patch that adds the eint_fltcon_offset :)
 
-Firecracker, QEMU, and crosvm perform migration by listing registers
-with KVM_GET_REG_LIST, getting their values with KVM_GET_ONE_REG and
-setting them with KVM_SET_ONE_REG. This algorithm assumes
-KVM_SET_ONE_REG restores the values retrieved with KVM_GET_ONE_REG
-without any alteration. However, bit operations added by the earlier
-commit do not preserve the values retried with KVM_GET_ONE_REG and
-potentially break migration.
 
-Remove the bit operations that alter the values retrieved with
-KVM_GET_ONE_REG.
+That would be fine because it's a fix as well. Ah, well, let's keep the
+dependency, but then I think syntax would be:
 
-Cc: stable@vger.kernel.org
-Fixes: a45f41d754e0 ("KVM: arm64: Add {get,set}_user for PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/kvm/sys_regs.c | 21 +--------------------
- 1 file changed, 1 insertion(+), 20 deletions(-)
+Cc: <stable@vger.kernel.org> # depends on the previous three patches
 
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 42791971f758..0a2ce931a946 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1126,26 +1126,7 @@ static bool access_pmu_evtyper(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
- 
- static int set_pmreg(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r, u64 val)
- {
--	bool set;
--
--	val &= kvm_pmu_valid_counter_mask(vcpu);
--
--	switch (r->reg) {
--	case PMOVSSET_EL0:
--		/* CRm[1] being set indicates a SET register, and CLR otherwise */
--		set = r->CRm & 2;
--		break;
--	default:
--		/* Op2[0] being set indicates a SET register, and CLR otherwise */
--		set = r->Op2 & 1;
--		break;
--	}
--
--	if (set)
--		__vcpu_sys_reg(vcpu, r->reg) |= val;
--	else
--		__vcpu_sys_reg(vcpu, r->reg) &= ~val;
--
-+	__vcpu_sys_reg(vcpu, r->reg) = val & kvm_pmu_valid_counter_mask(vcpu);
- 	return 0;
- }
- 
 
--- 
-2.48.1
-
+Best regards,
+Krzysztof
 
