@@ -1,139 +1,99 @@
-Return-Path: <stable+bounces-124126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6CF8A5D7C7
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:05:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13CFA5D7CD
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:07:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7099F3B6758
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 08:05:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2837B16F5C3
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 08:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC68823026F;
-	Wed, 12 Mar 2025 08:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC7823278D;
+	Wed, 12 Mar 2025 08:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQVDBwg5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lsoMAARq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBD11E260A;
-	Wed, 12 Mar 2025 08:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5250A232364;
+	Wed, 12 Mar 2025 08:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741766742; cv=none; b=c+elSZ1/wswdey2QqpnE5M8GGUvm9q5rTpDom1HvknWMGIcTPHQ9uMAG5gAN8byDX5B+ihpzQHFsB2LQ8hs3WOgsoaoL6+LI6+Vh2nSEgpeDf2wsqkKz0YTsrMACicGD0AA2wYQUnQw7Nr7Inpr44yYV66NeynXhaplBw9MdGss=
+	t=1741766811; cv=none; b=djv/YAAUKEltQsqORPFOl7ZXywDm4wasL/bp5xXBpDkU3QhH1ZeludPCF/kL7RXzNrD9wSzAsTBNiXRK280ApW6EQ9n72iylRq6lsq057As+R7ux5u96vQ2XNHHwyQPgpNuCPZi/45dhwZBGcrASKq95UCXcB2x79GZMLxeKvpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741766742; c=relaxed/simple;
-	bh=8joOwn5zgiw6PMnPjafoawE85VlA/Bqip/RwXux5d00=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zf6cj/RW2HYn7XCFynDcw+/d2cauoM+5m1gmwlxYsmHV5XiC9rfLvpq03OGd3utP3hRRm/wLfHKMZDiFIm5sWLSnWwaUwUmVtb4iXhQHY9il78ksUERZKZpH5MerDnMdFg0rq589pbNOX1BRo4uLBdNcKagWW69umqBsR6Pcet4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQVDBwg5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837D4C4CEE3;
-	Wed, 12 Mar 2025 08:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741766742;
-	bh=8joOwn5zgiw6PMnPjafoawE85VlA/Bqip/RwXux5d00=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NQVDBwg5iEVDhtkWC50lnaozSMDr9NaEmowQ42RDRSdW7i7BwcygKZXzGPCZYC1wB
-	 vBCNKsKQThv5tdJTT42HxwAXUMyFCCMdPdwj1PV6bqjMIqJiXEMAmCgeXARrAhFk74
-	 E0UOxBZsX9QPMOoB4OTvT4pZOaql/JBJEEjOF8qg=
-Date: Wed, 12 Mar 2025 09:05:39 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Florian Fainelli <f.fainelli@gmail.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 5.4 000/328] 5.4.291-rc1 review
-Message-ID: <2025031226-translate-resisting-f989@gregkh>
-References: <20250311145714.865727435@linuxfoundation.org>
- <0f5c904f-e9e3-405f-a54d-d81d56dc797e@gmail.com>
+	s=arc-20240116; t=1741766811; c=relaxed/simple;
+	bh=8/aqzVkQhaCsfezDRLPycVmFSKSk0ZnXQ8yaaEJW60Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pr40HNpu7tIYIBascDd3JZO3G3WdvGK/ENIvIjBUOeC/p5YXyb41flW8IsRKgPjd4NW+jiwc5eb44pXZUQof7SsNzHtquxYQBRdxVIxqv+uovDWpJtxxZ2QuyVDFQZP6E473MFIFqBpvrQ6gMAWhaImIHIg5lIXLXm2fI2Lj5EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lsoMAARq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE246C4CEEA;
+	Wed, 12 Mar 2025 08:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741766810;
+	bh=8/aqzVkQhaCsfezDRLPycVmFSKSk0ZnXQ8yaaEJW60Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lsoMAARqEI7pAj3h6fSaKPbdTl/tb1+CB5Rv1rlynbU8zn9TODlEvSqbd614Kl9L8
+	 zq8VVaEx/6pRIx7+rorYfooD6ssaZGGqThufVWU0w5prMWDd7YMW66QIHPRLU1Zzsq
+	 y/XYSoXzCF2LAlIGJmeQfINYLI27bu+fejH9vuoIO7Nzb7Zmj5uc7F7MjAW6M5lMR/
+	 GEI+osKsFd4bzTHuhPBBGgOsywD/+5j/yyz24irRqIuDbMwxLJkQyCVw7ujQJGWg9O
+	 Rq+tUqqSpCmqf8meSvc+rmtQkcXyVzlA896gETNvezdxNB4siPMXvWFd/fnbPidhA3
+	 xa6FIaBGFyW3g==
+From: Philipp Stanner <phasta@kernel.org>
+To: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Philipp Stanner <phasta@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] PCI: Fix wrong length of devres array
+Date: Wed, 12 Mar 2025 09:06:34 +0100
+Message-ID: <20250312080634.13731-3-phasta@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250312080634.13731-2-phasta@kernel.org>
+References: <20250312080634.13731-2-phasta@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0f5c904f-e9e3-405f-a54d-d81d56dc797e@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 11, 2025 at 11:38:29AM -0700, Florian Fainelli wrote:
-> On 3/11/25 07:56, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.4.291 release.
-> > There are 328 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Thu, 13 Mar 2025 14:56:14 +0000.
-> > Anything received after that time might be too late.
-> > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.291-rc1.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> > and the diffstat can be found below.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on
-> BMIPS_GENERIC:
-> 
-> Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> 
-> Please note that "udp: gso: do not drop small packets when PMTU reduces"
-> does cause the following build warning:
-> 
-> In file included from ./include/linux/uio.h:8,
->                  from ./include/linux/socket.h:8,
->                  from net/ipv6/udp.c:22:
-> net/ipv6/udp.c: In function 'udp_v6_send_skb':
-> ./include/linux/kernel.h:843:43: warning: comparison of distinct pointer
-> types lacks a cast
->   843 |                 (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
->       |                                           ^~
-> ./include/linux/kernel.h:857:18: note: in expansion of macro '__typecheck'
->   857 |                 (__typecheck(x, y) && __no_side_effects(x, y))
->       |                  ^~~~~~~~~~~
-> ./include/linux/kernel.h:867:31: note: in expansion of macro '__safe_cmp'
->   867 |         __builtin_choose_expr(__safe_cmp(x, y), \
->       |                               ^~~~~~~~~~
-> ./include/linux/kernel.h:876:25: note: in expansion of macro '__careful_cmp'
->   876 | #define min(x, y)       __careful_cmp(x, y, <)
->       |                         ^~~~~~~~~~~~~
-> net/ipv6/udp.c:1144:28: note: in expansion of macro 'min'
->  1144 |                 if (hlen + min(datalen, cork->gso_size) >
-> cork->fragsize) {
->       |
-> 
-> we need a more targeting fix for 5.4 which replaces the use of min, with
-> min_t:
-> 
-> diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-> index 58793dd7ac2c..db948e3a9bdc 100644
-> --- a/net/ipv6/udp.c
-> +++ b/net/ipv6/udp.c
-> @@ -1141,7 +1141,7 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct
-> flowi6 *fl6,
->                 const int hlen = skb_network_header_len(skb) +
->                                  sizeof(struct udphdr);
-> 
-> -               if (hlen + min(datalen, cork->gso_size) > cork->fragsize) {
-> +               if (hlen + min_t(int, datalen, cork->gso_size) >
-> cork->fragsize) {
->                         kfree_skb(skb);
->                         return -EMSGSIZE;
->                 }
-> 
-> Thanks!
+The array for the iomapping cookie addresses has a length of
+PCI_STD_NUM_BARS. This constant, however, only describes standard BARs;
+while PCI can allow for additional, special BARs.
 
-Thanks, that worked!  I'll go make this change to both 5.10.y and 5.4.y.
+The total number of PCI resources is described by constant
+PCI_NUM_RESOURCES, which is also used in, e.g., pci_select_bars().
 
-greg k-h
+Thus, the devres array has so far been too small.
+
+Change the length of the devres array to PCI_NUM_RESOURCES.
+
+Cc: <stable@vger.kernel.org>	# v6.11+
+Fixes: bbaff68bf4a4 ("PCI: Add managed partial-BAR request and map infrastructure")
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+---
+ drivers/pci/devres.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
+index 3431a7df3e0d..728ed0c7f70a 100644
+--- a/drivers/pci/devres.c
++++ b/drivers/pci/devres.c
+@@ -40,7 +40,7 @@
+  * Legacy struct storing addresses to whole mapped BARs.
+  */
+ struct pcim_iomap_devres {
+-	void __iomem *table[PCI_STD_NUM_BARS];
++	void __iomem *table[PCI_NUM_RESOURCES];
+ };
+ 
+ /* Used to restore the old INTx state on driver detach. */
+-- 
+2.48.1
+
 
