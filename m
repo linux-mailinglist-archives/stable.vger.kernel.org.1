@@ -1,179 +1,161 @@
-Return-Path: <stable+bounces-124131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A001BA5D8B1
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:55:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1451BA5D90E
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43C68189E5A4
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 08:55:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF00C1895B73
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E208923644E;
-	Wed, 12 Mar 2025 08:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkYlsS2w"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D561239083;
+	Wed, 12 Mar 2025 09:15:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5131B6CF1;
-	Wed, 12 Mar 2025 08:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7A41DFE09;
+	Wed, 12 Mar 2025 09:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741769711; cv=none; b=ufHJPabCJteXxC0pxCEAt5EwMgl5zjJ+rYAXMVSedwUuwCZsCDqMrt/6s3WK16sbnU7OVruiNK7Z4rH/RjvY32mZskc46uKQ+vMFxc8gHgvJ31DtzNFS9b/jgHyXp86BcBOqmOITSQkmj3rS6VlcnjSnnfx39TPvCu0u0ajhSRc=
+	t=1741770931; cv=none; b=Bs3YJaEf5iZqzj1aL4bWvmpS6pGJdh/OjbTNY6danM+ZzXKyoyzBDC516DW+4K1YpARNsa59d6o303rO0aErkX0y5vSm3RuI2rmvzvHenz/kUpuZ1+IsCFVQBC5FscJ210aIwnuG1Oe/NlI/R+5PegYQyygTQguY/CkHssMXOCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741769711; c=relaxed/simple;
-	bh=S1tFmuXwGba1cP+NtLc50X0fV+fYWhECovNzMFafSUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pAjMbfSEVhjHsgbYEGOePH2P3o1yyB48X6P+/ho5cC300WHuKE6RGTNrz88ui6/8SrD/EIavTkgiJQDNSEkDdnoy+p1mqNRwSpPF8KNx3niPm7hpyQVkyvhKqJea+tZY7ykbltM9oZYMuZWqg4esAmUA2TMeUODpe3JKrcrDfOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkYlsS2w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADBEC4CEE3;
-	Wed, 12 Mar 2025 08:55:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741769710;
-	bh=S1tFmuXwGba1cP+NtLc50X0fV+fYWhECovNzMFafSUc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QkYlsS2w3Cs4I5KMVQgmx7RuT/R5QlhPnW2BCqDaUrJug92bdyIPPjCUYgZdk4T8g
-	 3ztoLBveYNRQc1qw8jkyYyP3u7tP4wHmYlA7UFewk+N6N8n0xTpVqV8yzZowlwHpNJ
-	 wuGRY1U0HTP7f+TUTAEXIMy0mDH1STSi9b+J0ieA=
-Date: Wed, 12 Mar 2025 09:55:07 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: David Woodhouse <dwmw2@infradead.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Ingo Molnar <mingo@kernel.org>,
-	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Eric Biederman <ebiederm@xmission.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [EXTERNAL] [PATCH 6.13 089/443] x86/kexec: Allocate PGD for
- x86_64 transition page tables separately
-Message-ID: <2025031235-universal-volumes-a2ce@gregkh>
-References: <20250213142440.609878115@linuxfoundation.org>
- <20250213142444.044525855@linuxfoundation.org>
- <c4a1af46f7edcdf20274e384ec3b48781a350aaa.camel@infradead.org>
- <2025031203-scoring-overpass-0e1a@gregkh>
- <CAMj1kXH6oWVkUeU6+JYCuarzc5+AQxfyBzehfmLFRdKXg86qaA@mail.gmail.com>
- <2025031218-cardboard-pushcart-4211@gregkh>
- <CAMj1kXG6HRbQG2XJk=-TOZpDsKMAeVZ0=JO=8KLZ0-YFu2v_tw@mail.gmail.com>
+	s=arc-20240116; t=1741770931; c=relaxed/simple;
+	bh=l7jMbZfBiFeALlL27WJ4EFhnmaU6KMCEYHn0gqy7FzQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jXSd+w1RPM1eMgn2PE1jfJo6woU2QAemlfq8M4ejcpnO76/Cpm1x5wk74Jv62Nczn335qOBJC/guHBE69ekYu+PQR2Oh82fnp2LdhS3oOs7Mo2iTg3yjZ2sN5bcW7FcXWP8TBhef9XjRt7fcsI0trgFxcEC2fZc9GM74MV1GcQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from localhost.localdomain (188.234.20.53) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 12 Mar
+ 2025 12:00:14 +0300
+From: d.privalov <d.privalov@omp.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	<alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, Dmitriy Privalov <d.privalov@omp.ru>
+Subject: [PATCH 5.10 1/1] ASoC: ops: Check for negative values before reading them
+Date: Wed, 12 Mar 2025 11:58:29 +0300
+Message-ID: <20250312085829.52758-1-d.privalov@omp.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXG6HRbQG2XJk=-TOZpDsKMAeVZ0=JO=8KLZ0-YFu2v_tw@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 03/12/2025 08:41:23
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 191694 [Mar 12 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: d.privalov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 51 0.3.51
+ 68896fb0083a027476849bf400a331a2d5d94398
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info:
+	lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 188.234.20.53
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/12/2025 08:44:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 3/12/2025 6:37:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-On Wed, Mar 12, 2025 at 09:31:47AM +0100, Ard Biesheuvel wrote:
-> On Wed, 12 Mar 2025 at 09:16, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Wed, Mar 12, 2025 at 08:54:52AM +0100, Ard Biesheuvel wrote:
-> > > On Wed, 12 Mar 2025 at 08:47, Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Tue, Mar 11, 2025 at 04:45:26PM +0100, David Woodhouse wrote:
-> > > > > On Thu, 2025-02-13 at 15:24 +0100, Greg Kroah-Hartman wrote:
-> > > > > > 6.13-stable review patch.  If anyone has any objections, please let me know.
-> > > > > >
-> > > > > > ------------------
-> > > > > >
-> > > > > > From: David Woodhouse <dwmw@amazon.co.uk>
-> > > > > >
-> > > > > > [ Upstream commit 4b5bc2ec9a239bce261ffeafdd63571134102323 ]
-> > > > > >
-> > > > > > Now that the following fix:
-> > > > > >
-> > > > > >   d0ceea662d45 ("x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables")
-> > > > > >
-> > > > > > stops kernel_ident_mapping_init() from scribbling over the end of a
-> > > > > > 4KiB PGD by assuming the following 4KiB will be a userspace PGD,
-> > > > > > there's no good reason for the kexec PGD to be part of a single
-> > > > > > 8KiB allocation with the control_code_page.
-> > > > > >
-> > > > > > ( It's not clear that that was the reason for x86_64 kexec doing it that
-> > > > > >   way in the first place either; there were no comments to that effect and
-> > > > > >   it seems to have been the case even before PTI came along. It looks like
-> > > > > >   it was just a happy accident which prevented memory corruption on kexec. )
-> > > > > >
-> > > > > > Either way, it definitely isn't needed now. Just allocate the PGD
-> > > > > > separately on x86_64, like i386 already does.
-> > > > >
-> > > > > No objection (which is just as well given how late I am in replying)
-> > > > > but I'm just not sure *why*. This doesn't fix a real bug; it's just a
-> > > > > cleanup.
-> > > > >
-> > > > > Does this mean I should have written my original commit message better,
-> > > > > to make it clearer that this *isn't* a bugfix?
-> > > >
-> > > > Yes, that's why it was picked up.
-> > > >
-> > >
-> > > The patch has no fixes: tag and no cc:stable. The burden shouldn't be
-> > > on the patch author to sprinkle enough of the right keywords over the
-> > > commit log to convince the bot that this is not a suitable stable
-> > > candidate, just because it happens to apply without conflicts.
-> >
-> > The burden is not there to do that, this came in from the AUTOSEL stuff.
-> 
-> Yeah, that is what I figured. Can we *please* stop doing stupid stuff
-> like that for arch code, especially arch/x86, which is well looked
-> after? (In my personal opinion, we should not be using AUTOSEL at all,
-> but that seems to be a lost battle)
-> 
-> Especially for this patch in particular, which touches the kexec code,
-> which is easy to break and difficult to fix. Whether the patch applies
-> without breaking the build is entirely irrelevant (and even that seems
-> a high bar for stable trees these days). Nobody should be touching any
-> of that code without actually testing whether or not kexec still
-> works.
+From: Mark Brown <broonie@kernel.org>
 
-Maintainers can ask for their portions of the kernel to be not included
-in the AUTOSEL work, and many have, please see:
-	https://web.git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list
-for the current list of things that are excluded.
+commit 1601033da2dd2052e0489137f7788a46a8fcd82f upstream.
 
-> > It was sent to everyone on Jan 26:
-> >         https://lore.kernel.org/r/20250126150720.961959-3-sashal@kernel.org
-> > so there was 1 1/2 weeks chance to say something before Sasha committed
-> > it to the stable queue.  Then it was sent out again here in the -rc
-> > releases for review, for anyone to object to.
-> >
-> 
-> There should not be a need for people to object to something that no
-> actual person ever suggested in the first place.
-> 
-> The only responsible way to use AUTOSEL is to make it opt-in rather
-> than opt-out. And I object to the idea that it is ok for someone like
-> Sasha to run a bot that generates lots of emails to lots of people,
-> and put the burden on everyone else to spend actual time and mental
-> effort to go over all those patches and decide whether or not they
-> might the stable candidates, especially without any due diligence
-> whatsoever regarding whether the resulting kernel still boots and runs
-> correctly on a system that actually exercises the updated code.
+The controls allow inputs to be specified as negative but our manipulating
+them into register fields need to be done on unsigned variables so the
+checks for negative numbers weren't taking effect properly. Do the checks
+for negative values on the variable in the ABI struct rather than on our
+local unsigned copy.
 
-That does not work at all.  The whole reason AUTOSEL is used is because
-maintainers and developers are NOT tagging things that are bugfixes.  We
-have whole subsystems that just don't do anything, and this is the only
-way we can get fixes for that area included in stable kernels.
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20220128192443.3504823-1-broonie@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Dmitriy Privalov <d.privalov@omp.ru>
+---
+ sound/soc/soc-ops.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Again, we allow any subsystem to opt-out entirely from this if they so
-desire, AND we allow many chances for a patch to be dropped, AND we
-later allow anything to be reverted.  Heck, we have maintainers who just
-don't want to deal with stable kernels at all, and that's fine, I'm not
-going to impose that burden on them if they do not want to.  But in that
-case, we will do spelunking through the tree to find stuff that affects
-users.
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index a83cd8d8a9633..a1087dfee532d 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -316,26 +316,26 @@ int snd_soc_put_volsw(struct snd_kcontrol *kcontrol,
+ 	if (sign_bit)
+ 		mask = BIT(sign_bit + 1) - 1;
+ 
++	if (ucontrol->value.integer.value[0] < 0)
++		return -EINVAL;
+ 	val = ucontrol->value.integer.value[0];
+ 	if (mc->platform_max && ((int)val + min) > mc->platform_max)
+ 		return -EINVAL;
+ 	if (val > max - min)
+ 		return -EINVAL;
+-	if (val < 0)
+-		return -EINVAL;
+ 	val = (val + min) & mask;
+ 	if (invert)
+ 		val = max - val;
+ 	val_mask = mask << shift;
+ 	val = val << shift;
+ 	if (snd_soc_volsw_is_stereo(mc)) {
++		if (ucontrol->value.integer.value[1] < 0)
++			return -EINVAL;
+ 		val2 = ucontrol->value.integer.value[1];
+ 		if (mc->platform_max && ((int)val2 + min) > mc->platform_max)
+ 			return -EINVAL;
+ 		if (val2 > max - min)
+ 			return -EINVAL;
+-		if (val2 < 0)
+-			return -EINVAL;
+ 		val2 = (val2 + min) & mask;
+ 		if (invert)
+ 			val2 = max - val2;
+@@ -429,13 +429,13 @@ int snd_soc_put_volsw_sx(struct snd_kcontrol *kcontrol,
+ 	int err = 0;
+ 	unsigned int val, val_mask, val2 = 0;
+ 
++	if (ucontrol->value.integer.value[0] < 0)
++		return -EINVAL;
+ 	val = ucontrol->value.integer.value[0];
+ 	if (mc->platform_max && val > mc->platform_max)
+ 		return -EINVAL;
+ 	if (val > max)
+ 		return -EINVAL;
+-	if (val < 0)
+-		return -EINVAL;
+ 	val_mask = mask << shift;
+ 	val = (val + min) & mask;
+ 	val = val << shift;
+-- 
+2.34.1
 
-If you look at the history of AUTOSEL, I think the number of real bugs
-has shown that overall, it works really well.  Sure it will mess up at
-times, we're all human, and all we can do then is to be sure to react
-and fix the issue.
-
-thanks,
-
-greg k-h
 
