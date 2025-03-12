@@ -1,107 +1,138 @@
-Return-Path: <stable+bounces-124134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A92BA5D98B
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:34:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 040F7A5D998
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:35:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51542178A42
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:34:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F9363B629C
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E8523A98E;
-	Wed, 12 Mar 2025 09:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B459523AE8D;
+	Wed, 12 Mar 2025 09:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aJP4r0Qj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SSc9SUM/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9E338384;
-	Wed, 12 Mar 2025 09:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC8A23AE82;
+	Wed, 12 Mar 2025 09:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741772092; cv=none; b=JZgiRboJN38pki69igP9FlEEBm2Rwr6BBupcsDSSa6YaauTRzftNIU1eYa8wBiByxxXV7IX4mc/4e5ab1nUmaUxHFkU07oSFksqX+wJMFX7zmcEnrbXsyNyPpuvKJmiadaBQDpdkxe/g2p0jlCCX692FTDyr/39V5NdrbxyQPNY=
+	t=1741772116; cv=none; b=iuvboZsK87lgvKfn4dhEmHlY1b3IZ3B5evMcQ6pZdmgF7RioEcW79/eD4/+xJ16ug5kIIjRaTmhkT9m4edRTo0mz8UyCTOToc6w48gJAwoJqkvHzVI0FMIRQ902eiOqI+vpkA9dpCbp0yLtjiBeJ9MoFPHyuX735s1bSX3sya38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741772092; c=relaxed/simple;
-	bh=sxeSq7DARLje9UuKWZjona4rNmtHMjZR+LVlnGPftZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j5/GQud+pF9LNhD/5NJfKUwvfoUCIqVObaszrsWKe/w4o3A6pg7PKmJ0u0Z6t8akV5GX6sKtCFSkPdpeka//84PQ6/BK/t0g/o68myyyJSRP9pnjecfo/FQvPfIry7wJDzKa3MUvcG7psXubg6AM/kW9gSwGzld4DPJoCtOkGGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aJP4r0Qj; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741772090; x=1773308090;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=sxeSq7DARLje9UuKWZjona4rNmtHMjZR+LVlnGPftZA=;
-  b=aJP4r0Qj0eJ5jlXdp66ytulFAzIvax5kR//X/TxtHCQivTdXqwOzjb74
-   S9e2jPLMuIY28dF5b84u7CWZgcgSHHOiQ7RAXz6ez3w6NWApvPZ6xqrMd
-   srtnQHJfMB7Z3qxMt4jdfdNfbsu9rdn0nWXGEKHYSCtdGa/AlyNDQwTMS
-   eFBXK1UDte39t4+0qoFD4xzabHFqSNIGmiNrVOsHBTa+sION7zhMFQhmi
-   54/BOs77ExFCbjeqerQq5k7Uon12AZpqBsvFlQwZt9Fd+zFW0TI9WxzwT
-   2j720tLnZEk1XB40r6cU2zqu2GQ4TJoNkfw35Sp/cLLiKsidWf4jzzwgj
-   g==;
-X-CSE-ConnectionGUID: H8Y40/aWT5yfNfa5eguMkQ==
-X-CSE-MsgGUID: XYnqKlH4RhmdKw+FgDbEYg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="46623921"
-X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; 
-   d="scan'208";a="46623921"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 02:34:50 -0700
-X-CSE-ConnectionGUID: Bp/rXOZ7QwesnFy/i3bkNg==
-X-CSE-MsgGUID: 4oiua/KRTiOtZ3Qz8jcjTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,241,1736841600"; 
-   d="scan'208";a="125617858"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 02:34:47 -0700
-Date: Wed, 12 Mar 2025 11:34:43 +0200
-From: Raag Jadav <raag.jadav@intel.com>
-To: =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>
-Cc: Melissa Wen <mwen@igalia.com>, Iago Toral <itoral@igalia.com>,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nicolas Saenz Julienne <nsaenz@kernel.org>,
-	Phil Elwell <phil@raspberrypi.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, kernel-dev@igalia.com,
-	stable@vger.kernel.org, Emma Anholt <emma@anholt.net>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: Re: [PATCH v3 0/7] drm/v3d: Fix GPU reset issues on the Raspberry Pi
- 5
-Message-ID: <Z9FVMyP_t_fNndm0@black.fi.intel.com>
-References: <20250311-v3d-gpu-reset-fixes-v3-0-64f7a4247ec0@igalia.com>
+	s=arc-20240116; t=1741772116; c=relaxed/simple;
+	bh=PmzjR4Cpz/cGaEj6B7a8P4PKsIGJbrlzZH11KwxHt3Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c25k6iotn1jhwcV+j14oLaSWFTPFK4aHRU9sFz/g9jS7oeBlZ9FnyDpEURGNUSlKrlBwWQ8MxZ66RqhSkyIHuN/JWBIckSF/37ZMpHiH3pxTjh+BdanyvxyUGts3/ehagYgIPfH7zVdEPDyeAYlPMvrxSbj6ZCSamGJqtWiXQ8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SSc9SUM/; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2fee05829edso12677318a91.3;
+        Wed, 12 Mar 2025 02:35:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741772114; x=1742376914; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ttwRvArVp1ym17d1zB0rA2V5k7MFc9PYa4gsOt24iR8=;
+        b=SSc9SUM/q8X/v3ndeTm47BNQ8b/CbxvXYKW67xyh6mieAf1mCgHY/Lu3nGSmZkfJP3
+         ikd44dUv40tH1/mAI5ioIDp6nO1LGyPquzkbv9oaeD+BoCC/b/f7UuHYYq/vcOYHI21e
+         ygH8ZiuOvIY5IwXI5lIGlYz38pbH4j8K5nxMC/+cq5Imyy3NRaHXvaYzwUFOKpCqxjV0
+         uoapGc2oNta5WvugFsY3L+l6o38+HspoEwegdO4rf4tavxPxiFFj5HGXcZv7jND1sj02
+         +7w8B5XVSL6TRslmjBOUrV/teFQtJ0ws4h1hJLjwEcka/JYZQhWWUi7R3oK73OwcK4TX
+         jpcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741772114; x=1742376914;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ttwRvArVp1ym17d1zB0rA2V5k7MFc9PYa4gsOt24iR8=;
+        b=bA1GIbLRUBP8ASFBP3Nnnv5r9/JOJfO/Ju3nhGbBYtyG0tICB1nTdevDF+qrFfVMdu
+         fp70+wozoivlqa4moCowanYddpfTwSGifoCOj3J3rzOQUPaEzJfjjvmGGoOEwuC+Avng
+         8uk9UcRnEUrFj0c6M6ZmzENum8mWK5RFZRNMaCEBtBjR9c0Rz3+4fjvbTX4Vv8KROWVp
+         9I5iodiJqvsyqOwTGVrfhhIzdm7xGJf7t+Kb0hQdA5sKGMMNsrrKaF8MjQHhVuAcaqEF
+         ISRRzaLVHxT9UvRKbSxlIck1zJp17ot5j08jlynGwwvmi0EygixnWeNzT18XPTzTFckw
+         ggUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV95rATDed3uGbB/vy106VDNqfiDGMQS07cmZP7QNuIhEkVMQaJeLtouIME2JOuSpEvk3AndYg5@vger.kernel.org, AJvYcCVgbMPwMfVevOp/5N1fzcMtpzA1nUyx6VlTKlihRzjjeiLx9dtzH3EXoU4EwZEMLXkwPvfwMJuLZd8wp20=@vger.kernel.org, AJvYcCX3yUQL4N5KCWru7AquVPkH7615KaDQi5qHbMDMMtIMWgLG6yW+8HJ0L/dqLng0zeIjdTDwJmepbCLU+E0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTt93OU7V3ThC3GZ1NoCt0Fz523SLA202TfDnYAeRLFeq7gGeY
+	3n625qGb1aHVdI/zie/UlfrYEKRHaitGYnffxWGU1aeUsWvtZ4zcTR/tUcTosGK/issyrE27nnS
+	sfeYtA/DWGTRjyJOOf01zmiG3uAo=
+X-Gm-Gg: ASbGnctV5rMCI8KETa10Gn4mFEB75OrlOUYRXluPPRKp4xHlYfClrgnU9VcLkJPR6xP
+	qbC8rar5dTiNKR1xQi30hH/KUzE62PDRQO1pTLXCIYCP+SwpZFPzIbaB+xUsePTowpY7VXPWUcL
+	r2HWty/fnGy1Af6Qc8rtq2Pa5AeKQ=
+X-Google-Smtp-Source: AGHT+IEYSRe0gRR5yo1g7wU440dBsuRnZCe/vswTvp6uZ5rlXqRYBZ9uB2Uyw4ni/IgE8JGFvBGWEL/ibOE2TyQi0Es=
+X-Received: by 2002:a17:90a:bb8d:b0:2fe:b016:a6ac with SMTP id
+ 98e67ed59e1d1-2ff7cf5f7aemr32864523a91.15.1741772114286; Wed, 12 Mar 2025
+ 02:35:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250311-v3d-gpu-reset-fixes-v3-0-64f7a4247ec0@igalia.com>
+References: <20250311144241.070217339@linuxfoundation.org> <2b269f01-e508-4940-81ea-31c5cd961bb1@drhqmail201.nvidia.com>
+In-Reply-To: <2b269f01-e508-4940-81ea-31c5cd961bb1@drhqmail201.nvidia.com>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Wed, 12 Mar 2025 09:35:00 +0000
+X-Gm-Features: AQ5f1Jq0KNR5demOD7iOfh9YAuVYOUcWURsYUGw0TJtcXQdVfw8evk7uh_JbE1w
+Message-ID: <CADo9pHgbPPFZW=TMBw9mF15f9hsro4E3bw8FnQUsABZEqROBCg@mail.gmail.com>
+Subject: Re: [PATCH 6.13 000/197] 6.13.7-rc2 review
+To: Jon Hunter <jonathanh@nvidia.com>, Luna Jernberg <droidbittin@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Mar 11, 2025 at 03:13:42PM -0300, Maíra Canal wrote:
-> This series addresses GPU reset issues reported in [1], where running a
-> long compute job would trigger repeated GPU resets, leading to a UI
-> freeze.
-> 
-> Patches #1 and #2 prevent the same faulty job from being resubmitted in a
-> loop, mitigating the first cause of the issue.
-> 
-> However, the issue isn't entirely solved. Even with only a single GPU
-> reset, the UI still freezes on the Raspberry Pi 5, indicating a GPU hang.
-> Patches #3 to #6 address this by properly configuring the V3D_SMS
-> registers, which are required for power management and resets in V3D 7.1.
+Works fine on my Dell Latitude 7390 laptop with model name    :
+Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz
+and Arch Linux with testing repos enabled
 
-Not sure how much it helps your case, but still leaving it here in case it
-turns out to be useful here. It's already in -next and trending 6.15 merge.
+Tested-by: Luna Jernberg <droidbittin@gmail.com>
 
-https://patchwork.freedesktop.org/series/138070/
-
-Raag
+Den tis 11 mars 2025 kl 20:42 skrev Jon Hunter <jonathanh@nvidia.com>:
+>
+> On Tue, 11 Mar 2025 15:48:06 +0100, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.13.7 release.
+> > There are 197 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Thu, 13 Mar 2025 14:41:52 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.7-rc2.gz
+> > or in the git tree and branch at:
+> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> All tests passing for Tegra ...
+>
+> Test results for stable-v6.13:
+>     10 builds:  10 pass, 0 fail
+>     28 boots:   28 pass, 0 fail
+>     116 tests:  116 pass, 0 fail
+>
+> Linux version:  6.13.7-rc2-gfca1356f3f51
+> Boards tested:  tegra124-jetson-tk1, tegra186-p2771-0000,
+>                 tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+>                 tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+>                 tegra210-p2371-2180, tegra210-p3450-0000,
+>                 tegra30-cardhu-a04
+>
+> Tested-by: Jon Hunter <jonathanh@nvidia.com>
+>
+> Jon
+>
 
