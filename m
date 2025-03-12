@@ -1,230 +1,236 @@
-Return-Path: <stable+bounces-124139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50ABFA5DA6C
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 11:29:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A112FA5DA77
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 11:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9C661882E62
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:29:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A65416C78E
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DB123C8C9;
-	Wed, 12 Mar 2025 10:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C085723C8C9;
+	Wed, 12 Mar 2025 10:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CMC0ztDX"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rKlg7GPd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B44238D34
-	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 10:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEFF23E324
+	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 10:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741775371; cv=none; b=iINIAL9USYa+1LAuLib8DCKeRNNA2QV3ipskeSWey1PD/dZ0yiQSLL7UmurErk3tLnph4cgIq+jz2dPkBA8/njp50ZU8h9WFs7Zswu2pKHbWQmY7dp37g76eAvsePuXOXFWmoH1YJ8ACa+sZFed7lS0xUkQuGz7NvD/W8CVjzWs=
+	t=1741775596; cv=none; b=N8TlG2Q0Rj1y9Xk/+H46SJETte0RRKXorRm8wxn2zCaDH+m4hWYHtrgq/Bb8OhMjqMwrT9k5CR4jzOTfSW4Jtq/QUEnt5NxZFABHb7cVfKvHyUh1jI4sC6gFv73ew6ZuorlKCutJtAY8sdhX4Tn1PQa3I4urPUV/TNU5ArdnPcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741775371; c=relaxed/simple;
-	bh=7XDC3XUsFUb3OvFFjw+XGIUSCyN7dv4m+tq7GtM6H00=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LvTp2pLe4c0EZZbyfd60pCeyX1eFtdhCFSaJvHQTyu3cfAQUwlOs16ij5eoMWwRLpbCWXhsu+XZkpvQfm0HFtgoHrqM2zdBcnVPGOByX8bRzXBF5xeFNQ9KWbIjmBZpjePJS0y69vGXY1533FV9XhZZY6LCRClFG6jjySptMW0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CMC0ztDX; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30bf251025aso51353431fa.1
-        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 03:29:28 -0700 (PDT)
+	s=arc-20240116; t=1741775596; c=relaxed/simple;
+	bh=OxNjpOJ6VfzOUaMrWleIBMA1ReLbN1SeLEL4b38qWME=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ITcDjAF4H40irylpho+XLbd+FzRkn2jhE/e2LyIqRLp3HpZ8Sqm8zftAH+2ETxQJMRBtPGLCC5aJh17nfelNtpxhl29AaqqHGI7IQFnPtMCGE8qj8vwuO1EXBPs54EQl97RYTMOK64O37xJ9c4XZxUeunqhPz4L2PWfJUBMt3HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rKlg7GPd; arc=none smtp.client-ip=209.85.221.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-524125f6cadso2078697e0c.2
+        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 03:33:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741775367; x=1742380167; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LtIKzf1AYQYJxPgBXn2A2UD0WsXsukJsLv2YBV2DX/s=;
-        b=CMC0ztDXkqnAXDJHKI/ADx0K4QP3gr7zhiq9ehkwE99dCPw5UW+qigZGTOl5HqvIyJ
-         IeqO7DAErabMtQc5rGjukyk3FmyfTy53khjpBUY/zdKIYWreHYYjZcKBGAJr/7bSoVFB
-         r/iHE0AywLVFrj+3Cw1QLE87AhaVedIQXWsJvYhOoWHx5jgOMV6iyfLNoWIaMFxtqLb5
-         vktyw2A9QDrWKwCjsxuzg6oACaXxWFjOM4mtHvhtDggxR4Fj/SS0RLW4KWofpX7zDinW
-         gcFp+mpDaxXPS+0XvWpKupueh4wKf9LLEqqGGJDCdD0he32RGm1HqFGew5j25kcxPwtB
-         do8Q==
+        d=linaro.org; s=google; t=1741775593; x=1742380393; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KM0MvCdNVxzxXgBH2Q5bQqwEpszrc8WPfw4cYOnLhIo=;
+        b=rKlg7GPd+4NurfyBuZvh1oVboFFdhto0nKlucl3hRnN3sQM2FCpVzxWUQRgHTl7di0
+         CjbKETL4J9yiurUbb2thbiDL8fe8AoZPkQNrh8uAPggHMxE7bj1bMcqpLvwtlmYegPBd
+         W5YXD6uoYq7eVSwyxPu865mw97HnVN09/KqfKDeH8Dmu6K87IkoX8wn3fDsE/XO+W5gT
+         wyNMDs9QLWfzwZW7Lx6vj8HLxCRASQTK+rt4R4BSlHDeH/zN5tw/39pVhIHRK6i+dQ8H
+         KrXd6TxU6M5PE4iFA7MJBmNtFIgJX0Krmj6wPJyGL7/TfXmC3FL5csVWOvBG0TIspUhP
+         y1Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741775367; x=1742380167;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LtIKzf1AYQYJxPgBXn2A2UD0WsXsukJsLv2YBV2DX/s=;
-        b=lpw1LHfH99U2FMiZsPFw0PJIQ3ZSNvFHA7gMicb51v3QZrVsPKMZ+d/zPFFXbc+Qtn
-         hd6qF8zmapgPwfT+fEh0jtXDTTCP9MIRb3w3DI7euz9nFc9ORsbEkkhw4l/MmKbR0sw5
-         LybkNCcdNDtoN+gpOCCifymt077kf366nyoAZlUooR0SEDYUyxFzcQhODa29kCAwSOCq
-         vQhY1Xb8cqBCbshN4mI7UwdJlkhNBqs1xe3QOdsxPiovYhhIRHKVI0u6qKJZAczNQY5N
-         fK/OVM2TAqn/6yYLcSF2pmZnxpXDfpAbPt1B2iraJRJgxv5hieTQJiI/DRJYzMBaCJ9r
-         kVGw==
-X-Gm-Message-State: AOJu0YylR4s6aDjdQnY1UGfk1Ku5OOihCtJKJATF/qUtDhma660vhpkp
-	YXKNncMIb1PNpVJcq6LQWPqx9r1WjGlmyMVJA5n1T3JgM/+NiZBiBfeKIw==
-X-Gm-Gg: ASbGncuSUiGJMzQRjeOdBpWEZ63xxzL8ibF73s0LkNFdCuFw396fdDK/geuKELga+nG
-	DljvSQmFh/rjqdSOF/dn1mV1dYfbkG708LJCLzEQfnL17l6pvGfOGD9WQqDgKq+kjjjcRYu7qeM
-	/MwU/RYBllFkujbk030OUz0tGApIE4BzBwe8i17ksgJ5qODZ0g73UNF61lX3VeVhXrApG9C1L3o
-	mq+PBRh2RAYslhFYiKnIURveUIjaQkL5IsL9HQOe7ILiS0bZ/R0rec0j8h9h6Ienjr/hHhG2z7i
-	DcZM5mjUH4LHn4L6jrJ/UkhZte4shN/3OJe+FSCS
-X-Google-Smtp-Source: AGHT+IE1N02BobWmztaix4Q/+TUxontbZQ20W4MmbuM5LuK9Z37dHVXpAEYhNxFmFK6jd4v2eN2aSQ==
-X-Received: by 2002:a05:6512:1112:b0:549:5850:f275 with SMTP id 2adb3069b0e04-54990ec8e60mr7192816e87.50.1741775366988;
-        Wed, 12 Mar 2025 03:29:26 -0700 (PDT)
-Received: from pc638.lan ([2001:9b1:d5a0:a500:2d8:61ff:fec9:d743])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498ae593besm2072747e87.97.2025.03.12.03.29.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 03:29:26 -0700 (PDT)
-From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-To: stable@vger.kernel.org
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Oleksiy Avramchenko <oleksiy.avramchenko@sony.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: [PATCH 6.12.y 6.13.y] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
-Date: Wed, 12 Mar 2025 11:29:24 +0100
-Message-Id: <20250312102924.16247-1-urezki@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        d=1e100.net; s=20230601; t=1741775593; x=1742380393;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KM0MvCdNVxzxXgBH2Q5bQqwEpszrc8WPfw4cYOnLhIo=;
+        b=hkBuBZ8+uR1ksUx19n778ut6JKaeOQYt/zlAtHBAogCbAeRbcytMxT254lodRbPu1n
+         z1zOZZxXYrwnkDYbrlBg6d3L8r1O/BSYRG/XSUL4seQ/JflBT4QTgR2Bz+PAnJS5Vr+I
+         TntuHIIzy4Bw+ivqglHaYjApG3EOMVDxjn5v9I+4B/Qc0N3cSBKCvUkrZOL/tTLZ39Xn
+         kqlmYdeYT/lRfsqe5hVuV/d8b6C5ZWE3eQPUHUfZ35ad4C20PjpbhkjQ/3C66S69LQow
+         biMKCVV6/3P+K7UVqlsh5zt0RqB8Z6edkV446VIikGjQzbOHz5ivJZhsrnmDzMXHsg6H
+         ltqw==
+X-Gm-Message-State: AOJu0YxS+kihLWw8CGuzqNqBtMbQvu6sY0bDmDQh3OvnsFecK6s5VZAG
+	a3eVa3XQdtIuTQ7InPh0w7qeqmGY7u+OzIA4f+tADJpDo6UnNwpS6m6qeY+bSRkqLXX1wkFQKNS
+	tV9Eq02hut8YKfAY/VkZdolQtwtSM2qhWWd1ncg==
+X-Gm-Gg: ASbGnctXbSR2u5BCQYK3BSfkVYsg+K6dE9VXH3hd5RhlTPP90Y4gBw4J39BM050o894
+	pRMItblBkFdw4Wl+14EsPkkieBXpJPJSb9XDP71NZStloVGgs8yLiyxqWnSBGns8KyE3Zl1VA13
+	Fpu0uYD92SrrhB8eNevPm+Vuq9ZYnP3ThXjDMNvWEJFtkNtfkeAjrqzrgO14Y=
+X-Google-Smtp-Source: AGHT+IFlw8H9uqBvw9xXA5rE2InxUbS79lI5zq6VR1c4tWkxgj7QEGwJsPaP1vOJJJKSz6buJDR0kzLt/Wt2JZPh3lA=
+X-Received: by 2002:a05:6122:8297:b0:520:5a87:66f0 with SMTP id
+ 71dfb90a1353d-523e3d8de95mr13152498e0c.0.1741775593628; Wed, 12 Mar 2025
+ 03:33:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250311135648.989667520@linuxfoundation.org>
+In-Reply-To: <20250311135648.989667520@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 12 Mar 2025 16:03:01 +0530
+X-Gm-Features: AQ5f1Jp-kXQi5W-EyPUYylM5Jm9lw1_VYlNpkYa3ZexnBwthVaba4bKA-pk1Paw
+Message-ID: <CA+G9fYs0W=2xDtFzNhwg8pipi_iXiEZFNvD4tz8stZL=1fKWAg@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/144] 6.6.83-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-commit dfd3df31c9db752234d7d2e09bef2aeabb643ce4 upstream.
+On Tue, 11 Mar 2025 at 19:32, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.83 release.
+> There are 144 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 13 Mar 2025 13:56:12 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.83-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Currently kvfree_rcu() APIs use a system workqueue which is
-"system_unbound_wq" to driver RCU machinery to reclaim a memory.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Recently, it has been noted that the following kernel warning can
-be observed:
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-<snip>
-workqueue: WQ_MEM_RECLAIM nvme-wq:nvme_scan_work is flushing !WQ_MEM_RECLAIM events_unbound:kfree_rcu_work
-  WARNING: CPU: 21 PID: 330 at kernel/workqueue.c:3719 check_flush_dependency+0x112/0x120
-  Modules linked in: intel_uncore_frequency(E) intel_uncore_frequency_common(E) skx_edac(E) ...
-  CPU: 21 UID: 0 PID: 330 Comm: kworker/u144:6 Tainted: G            E      6.13.2-0_g925d379822da #1
-  Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passive MP, BIOS YMM20 02/01/2023
-  Workqueue: nvme-wq nvme_scan_work
-  RIP: 0010:check_flush_dependency+0x112/0x120
-  Code: 05 9a 40 14 02 01 48 81 c6 c0 00 00 00 48 8b 50 18 48 81 c7 c0 00 00 00 48 89 f9 48 ...
-  RSP: 0018:ffffc90000df7bd8 EFLAGS: 00010082
-  RAX: 000000000000006a RBX: ffffffff81622390 RCX: 0000000000000027
-  RDX: 00000000fffeffff RSI: 000000000057ffa8 RDI: ffff88907f960c88
-  RBP: 0000000000000000 R08: ffffffff83068e50 R09: 000000000002fffd
-  R10: 0000000000000004 R11: 0000000000000000 R12: ffff8881001a4400
-  R13: 0000000000000000 R14: ffff88907f420fb8 R15: 0000000000000000
-  FS:  0000000000000000(0000) GS:ffff88907f940000(0000) knlGS:0000000000000000
-  CR2: 00007f60c3001000 CR3: 000000107d010005 CR4: 00000000007726f0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? __warn+0xa4/0x140
-   ? check_flush_dependency+0x112/0x120
-   ? report_bug+0xe1/0x140
-   ? check_flush_dependency+0x112/0x120
-   ? handle_bug+0x5e/0x90
-   ? exc_invalid_op+0x16/0x40
-   ? asm_exc_invalid_op+0x16/0x20
-   ? timer_recalc_next_expiry+0x190/0x190
-   ? check_flush_dependency+0x112/0x120
-   ? check_flush_dependency+0x112/0x120
-   __flush_work.llvm.1643880146586177030+0x174/0x2c0
-   flush_rcu_work+0x28/0x30
-   kvfree_rcu_barrier+0x12f/0x160
-   kmem_cache_destroy+0x18/0x120
-   bioset_exit+0x10c/0x150
-   disk_release.llvm.6740012984264378178+0x61/0xd0
-   device_release+0x4f/0x90
-   kobject_put+0x95/0x180
-   nvme_put_ns+0x23/0xc0
-   nvme_remove_invalid_namespaces+0xb3/0xd0
-   nvme_scan_work+0x342/0x490
-   process_scheduled_works+0x1a2/0x370
-   worker_thread+0x2ff/0x390
-   ? pwq_release_workfn+0x1e0/0x1e0
-   kthread+0xb1/0xe0
-   ? __kthread_parkme+0x70/0x70
-   ret_from_fork+0x30/0x40
-   ? __kthread_parkme+0x70/0x70
-   ret_from_fork_asm+0x11/0x20
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-<snip>
+## Build
+* kernel: 6.6.83-rc2
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: e7347110295b72c0d0c942ed260f679edf70f859
+* git describe: v6.6.81-152-ge7347110295b
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.8=
+1-152-ge7347110295b
 
-To address this switch to use of independent WQ_MEM_RECLAIM
-workqueue, so the rules are not violated from workqueue framework
-point of view.
+## Test Regressions (compared to v6.6.78-442-g8f0527d547fe)
 
-Apart of that, since kvfree_rcu() does reclaim memory it is worth
-to go with WQ_MEM_RECLAIM type of wq because it is designed for
-this purpose.
+## Metric Regressions (compared to v6.6.78-442-g8f0527d547fe)
 
-Fixes: 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
-Reported-by: Keith Busch <kbusch@kernel.org>
-Closes: https://lore.kernel.org/all/Z7iqJtCjHKfo8Kho@kbusch-mbp/
-Cc: stable@vger.kernel.org
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
----
- kernel/rcu/tree.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+## Test Fixes (compared to v6.6.78-442-g8f0527d547fe)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 3e486ccaa4ca..8e52c1dd0628 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -3191,6 +3191,8 @@ void call_rcu(struct rcu_head *head, rcu_callback_t func)
- }
- EXPORT_SYMBOL_GPL(call_rcu);
- 
-+static struct workqueue_struct *rcu_reclaim_wq;
-+
- /* Maximum number of jiffies to wait before draining a batch. */
- #define KFREE_DRAIN_JIFFIES (5 * HZ)
- #define KFREE_N_BATCHES 2
-@@ -3519,10 +3521,10 @@ __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
- 	if (delayed_work_pending(&krcp->monitor_work)) {
- 		delay_left = krcp->monitor_work.timer.expires - jiffies;
- 		if (delay < delay_left)
--			mod_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
-+			mod_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
- 		return;
- 	}
--	queue_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
-+	queue_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
- }
- 
- static void
-@@ -3620,7 +3622,7 @@ kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
- 			// "free channels", the batch can handle. Break
- 			// the loop since it is done with this CPU thus
- 			// queuing an RCU work is _always_ success here.
--			queued = queue_rcu_work(system_unbound_wq, &krwp->rcu_work);
-+			queued = queue_rcu_work(rcu_reclaim_wq, &krwp->rcu_work);
- 			WARN_ON_ONCE(!queued);
- 			break;
- 		}
-@@ -3708,7 +3710,7 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
- 	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
- 			!atomic_xchg(&krcp->work_in_progress, 1)) {
- 		if (atomic_read(&krcp->backoff_page_cache_fill)) {
--			queue_delayed_work(system_unbound_wq,
-+			queue_delayed_work(rcu_reclaim_wq,
- 				&krcp->page_cache_work,
- 					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
- 		} else {
-@@ -5662,6 +5664,10 @@ static void __init kfree_rcu_batch_init(void)
- 	int i, j;
- 	struct shrinker *kfree_rcu_shrinker;
- 
-+	rcu_reclaim_wq = alloc_workqueue("kvfree_rcu_reclaim",
-+			WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
-+	WARN_ON(!rcu_reclaim_wq);
-+
- 	/* Clamp it to [0:100] seconds interval. */
- 	if (rcu_delay_page_cache_fill_msec < 0 ||
- 		rcu_delay_page_cache_fill_msec > 100 * MSEC_PER_SEC) {
--- 
-2.39.5
+## Metric Fixes (compared to v6.6.78-442-g8f0527d547fe)
 
+## Test result summary
+total: 122461, pass: 100025, fail: 3148, skip: 18798, xfail: 490
+
+## Build Summary
+* arc: 6 total, 5 passed, 1 failed
+* arm: 133 total, 133 passed, 0 failed
+* arm64: 46 total, 42 passed, 4 failed
+* i386: 31 total, 26 passed, 5 failed
+* mips: 30 total, 25 passed, 5 failed
+* parisc: 5 total, 5 passed, 0 failed
+* powerpc: 36 total, 33 passed, 3 failed
+* riscv: 23 total, 22 passed, 1 failed
+* s390: 18 total, 14 passed, 4 failed
+* sh: 12 total, 10 passed, 2 failed
+* sparc: 9 total, 8 passed, 1 failed
+* x86_64: 38 total, 37 passed, 1 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
