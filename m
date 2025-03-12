@@ -1,145 +1,169 @@
-Return-Path: <stable+bounces-124167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1374EA5E199
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 17:16:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD06A5E1E4
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 17:39:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5681B16AD0A
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 16:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDF8517101D
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 16:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F40D1CBA02;
-	Wed, 12 Mar 2025 16:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D051D95A9;
+	Wed, 12 Mar 2025 16:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltpF4bv2"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0GcWpJ6q";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="7/kN7EwB";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="C0Yf4tVX";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="6jukkAJf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228DF78F29;
-	Wed, 12 Mar 2025 16:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E013B189913
+	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 16:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741796162; cv=none; b=FtPomc7+o2C8VuqqBqSP3kFSj2K+UL97qu78MCp/Ml5TaoVmmCnR+F5gYBSupCEeiCvHxmeiX+NlfMqx1cTeZ8QXX9D5z38yXXypvZpVWWWljaaKvkx9EuO/ymarA2uLloHJdDI1U+CZjDI2E30emb7gT31kCz/maSQu43XjLuo=
+	t=1741797545; cv=none; b=mz/tX5lmqjXa4PldAU2p9i4OyRY/7vEKjkp0db6XXPzTtCE9geBjpaqMiOG9u7EpXdlzo+dDe3W2rWMOeU0vEQ2WB7b1Eet0U/pTQ+WdItNgsevZFv7RJLgiKKKiIRbojx2bBVKy6nu0+bZ/hdBhsMngOaCOIHvsWUxBPP0uy8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741796162; c=relaxed/simple;
-	bh=VsNryCp6Jdy8Cj9W96kO7ltsyTKRP2vUyvO8MTRIRCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=K66pd0pgK5CrW+mor17LcAT4pXNe1HkKLqUDt5kApzHLxsbXY1aPJasRlx1wcPxX2xQ5s/ueiIrC4FC1hROdL4oDqjWl8MP7Lri1NzFm2Qta/1ZkkzRN0y+7wiz5yS28wgN6vsvGMnf9DBVs6+38fJ6bRfrr2IKaby5CZPInMFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltpF4bv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DDDC4CEEA;
-	Wed, 12 Mar 2025 16:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741796161;
-	bh=VsNryCp6Jdy8Cj9W96kO7ltsyTKRP2vUyvO8MTRIRCA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=ltpF4bv2tpgig/rLF/SWUcRuVcjvjoqZTAwgDD/ab0SRZVZNFMNz/pO2uKoKFdUZ3
-	 Efa7P5+PybmQOFHqmjcy+GO9MJyiAtGOYfr+mrGhlQpC7/AuJ9lGqOhXLihiXLnT/6
-	 Tr/U34cIicPdZye4F1wPbcYYZNmQi9jSuLORnyM8fsy/2kkE/iVqElEgCVK/Ffm8F7
-	 01PQdXAtnn/gCdy0zkV60RsSHtz2V4JgT6B5WM00VL29bZHnuFvCp8zH4ma+HBw7h6
-	 J8Vcp02yuuuib4zPHSES5zqgX+d2N3xlacNeY4YPx6wiOVy8l/3OSk4Xj1JX7VN1mf
-	 D+5gS6kD2oJ2Q==
-Date: Wed, 12 Mar 2025 11:16:00 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Matt Ranostay <mranostay@ti.com>
-Cc: lpieralisi@kernel.org, kw@linux.com, vigneshr@ti.com,
-	manivannan.sadhasivam@linaro.org, robh@kernel.org,
-	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	srk@ti.com
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250312161600.GA680640@bhelgaas>
+	s=arc-20240116; t=1741797545; c=relaxed/simple;
+	bh=hHSWPkWgBkkw45VQvlFghF9WPlf7mcq+z3gYuFj7zAo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=efmC+Z6UHbkg2pdWsNcD/ZUC9KeqOXlux5rgFCVOpH/x9L6bleAL5oHWklOEVbNUC9lbZ1PWwI+I/PGUPtNjcst6k/aUZb4FdgiWssm4J4cJQSMi651v8nWteSTMgBHEFZnM6TJFVD0sfSmB0AdCwREo9aJNAzQEPdRaH57Rbg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0GcWpJ6q; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=7/kN7EwB; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=C0Yf4tVX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=6jukkAJf; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id ECF541F452;
+	Wed, 12 Mar 2025 16:39:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1741797542; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=MT868SRc1Rk/LBPHaHsnHdUb3x/9qUWrDJSZBTOPQFc=;
+	b=0GcWpJ6qNvL0ZBRYgdoEVQxZuP72DKANi+aNrSW+5QD97NMtNdhHCFoJfFxx4k68O8LNro
+	/o+/xV9lGU+amVu7xkZk8cJnfy8v6EGcXS7s2nLeW1P/CtKtsKPGsNbdFMBqT6Sjh+SRm7
+	8uuiVY1l2H0nPh+41tKrCWzoGswzWEI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1741797542;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=MT868SRc1Rk/LBPHaHsnHdUb3x/9qUWrDJSZBTOPQFc=;
+	b=7/kN7EwBhB90h6wOJvOPUGBeRk+B4VO05YcZ4gEy+gK9MEIUgCy/Q1rDbyBG5WbdvJyYFv
+	qjGPriHNF8ITuLCg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=C0Yf4tVX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6jukkAJf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1741797541; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=MT868SRc1Rk/LBPHaHsnHdUb3x/9qUWrDJSZBTOPQFc=;
+	b=C0Yf4tVXuNxYyvddKHvy8fjC8qBOSF9QgmAq/hqwtLtRluXO08delR8qEHVfAmVNmC6wPW
+	VGfmy/axfJeF9s9ttfuLqnIc6EZAOyXlqBj6H74ikp/gP2OQUulKVb5KBlLcHzmPCF0J9F
+	Xt08nHHTNPbTSe+u1VQ15icYr4+2vWE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1741797541;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=MT868SRc1Rk/LBPHaHsnHdUb3x/9qUWrDJSZBTOPQFc=;
+	b=6jukkAJf6uuUsZickeDMk9psPWqZGnjcCnKy3DyLZsH+2IDNYgVohNfw3Icwhddxx++F4u
+	CIzsS1ZN6zEn98Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DAB741377F;
+	Wed, 12 Mar 2025 16:39:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id UnFfNaW40WcyJAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 12 Mar 2025 16:39:01 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 94233A0908; Wed, 12 Mar 2025 17:38:57 +0100 (CET)
+From: Jan Kara <jack@suse.cz>
+To: <linux-fsdevel@vger.kernel.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+	Jan Kara <jack@suse.cz>,
+	stable@vger.kernel.org
+Subject: [PATCH] udf: Fix inode_getblk() return value
+Date: Wed, 12 Mar 2025 17:38:47 +0100
+Message-ID: <20250312163846.22851-2-jack@suse.cz>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250305132018.2260771-1-s-vadapalli@ti.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1157; i=jack@suse.cz; h=from:subject; bh=hHSWPkWgBkkw45VQvlFghF9WPlf7mcq+z3gYuFj7zAo=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBn0biWsPdx4sFau+lPFzQvAY3kf7iBmJT/dkt4POpe KTfVOLCJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCZ9G4lgAKCRCcnaoHP2RA2Sh3CA DNCVf/NODpaSqC7S1Ca1kkP45OqSapf18MoyO9NX9J+bHvtlXepy1JwoJzthWR6lauQz3JJAH/Rt+M mtU+ne4rr7Bw3ICFfl5X6WGyQKeMS+swgbxjWuO0ETiEjUagGHuyadptdHcXhSnslxoJ5hBtcWjXAK i+bCqxxXecymS8YsGm17CjROPXX79i6pK9mUMSOxYkz6TZFGTmHelHn3ERIeunLTHOegQTaBWSulZ/ YBzwyxIog7YnQe1poCwe5Pu/a9KiFHabTSSuvxjKm1POppBJY7a6+ePkz7qakWwQMvYxT8fsUMvGTZ hIz0OMw8XT0GgCXSEtf7eqZF22+4Q0
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: ECF541F452
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	TO_DN_SOME(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+X-Spam-Flag: NO
 
-[+to Matt, author of e49ad667815d]
+Smatch noticed that inode_getblk() can return 1 on successful mapping of
+a block instead of expected 0 after commit b405c1e58b73 ("udf: refactor
+udf_next_aext() to handle error"). This could confuse some of the
+callers and lead to strange failures (although the one reported by
+Smatch in udf_mkdir() is impossible to trigger in practice). Fix the
+return value of inode_getblk().
 
-On Wed, Mar 05, 2025 at 06:50:18PM +0530, Siddharth Vadapalli wrote:
-> Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
-> J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
-> to the Technical Reference Manual and Register Documentation for the J784S4
-> SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
-> the field for the link-state interrupt. Instead, it is BIT(10) of the
-> "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
-> field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
+Link: https://lore.kernel.org/all/cb514af7-bbe0-435b-934f-dd1d7a16d2cd@stanley.mountain
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: b405c1e58b73 ("udf: refactor udf_next_aext() to handle error")
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/udf/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I guess the reason we want this is that on J784S4, we ignore actual
-link-down interrupts (and we don't write STATUS_CLR_REG_SYS_2 to clear
-the interrupt indication, so maybe there's an interrupt storm), and we
-think some other interrupt (DPA_1, whatever that is) is actually a
-link-down interrupt?
+I plan to merge this patch through my tree.
 
-> Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
-> expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
-> already reuse this macro since it accurately represents the link-state
-> field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
-> 
-> [0]: https://www.ti.com/lit/zip/spruj52
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index 70c907fe8af9..4386dd845e40 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -810,6 +810,7 @@ static int inode_getblk(struct inode *inode, struct udf_map_rq *map)
+ 		}
+ 		map->oflags = UDF_BLK_MAPPED;
+ 		map->pblk = udf_get_lb_pblock(inode->i_sb, &eloc, offset);
++		ret = 0;
+ 		goto out_free;
+ 	}
+ 
+-- 
+2.43.0
 
-Thanks for the spec URL.  Can you include a relevant section number?
-I searched for some of this stuff but couldn't find it.
-
-Since I have low confidence that the URL will be valid after a few
-years, I wish the spec also had a human-readable name and revision
-number.  But maybe the alphabet soup or "SPRUJ52D", "revised July
-2024" is all we can hope for.
-
-> Fixes: e49ad667815d ("PCI: j721e: Add TI J784S4 PCIe configuration")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> ---
-> 
-> Hello,
-> 
-> This patch is based on commit
-> 48a5eed9ad58 Merge tag 'devicetree-fixes-for-6.14-2' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
-> of the master branch of Linux.
-> 
-> Patch has been tested on J784S4-EVM, validating that disconnecting an
-> Endpoint Device connected to J784S4-EVM results in the following message
-> on the J784S4-EVM:
-> 	j721e-pcie 2900000.pcie: LINK DOWN!
-> which wasn't seen earlier.
-> 
-> Regards,
-> Siddharth.
-> 
->  drivers/pci/controller/cadence/pci-j721e.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> index 0341d51d6aed..1da9d9918d0d 100644
-> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> @@ -376,13 +376,13 @@ static const struct j721e_pcie_data j784s4_pcie_rc_data = {
->  	.mode = PCI_MODE_RC,
->  	.quirk_retrain_flag = true,
->  	.byte_access_allowed = false,
-> -	.linkdown_irq_regfield = LINK_DOWN,
-> +	.linkdown_irq_regfield = J7200_LINK_DOWN,
->  	.max_lanes = 4,
->  };
->  
->  static const struct j721e_pcie_data j784s4_pcie_ep_data = {
->  	.mode = PCI_MODE_EP,
-> -	.linkdown_irq_regfield = LINK_DOWN,
-> +	.linkdown_irq_regfield = J7200_LINK_DOWN,
->  	.max_lanes = 4,
->  };
->  
-> -- 
-> 2.34.1
-> 
 
