@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-124163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5730A5DE17
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 14:34:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14383A5DE71
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 14:54:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AE5D1897E20
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 13:34:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE3EE189A129
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 13:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5894D2459CC;
-	Wed, 12 Mar 2025 13:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADD3242907;
+	Wed, 12 Mar 2025 13:54:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D9E248191;
-	Wed, 12 Mar 2025 13:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1095F241678;
+	Wed, 12 Mar 2025 13:54:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741786379; cv=none; b=HkttqfBjJFmjFXy/qPw/F/eyQyge7IjyKVJ2aRiFSNR6uesY3NqDcW3NU3CygVxM9XxIds39nUffcgwtkn7bG5faNHribghrqa3B5/LdFOAr0wh+YO8YQy7HyigbOJFmMPioMXbOVbzBIDnq8ph1eGHKAKeL8Uhq/37qNNMCzq4=
+	t=1741787651; cv=none; b=pfCVJBG2u7a03xvOTdzxa6FC5kzewV8Xekwubqv7RIaPIweZb0e+fOSuZ5sa7iKlCguc4dt5C8SdKumE6svALMxODtxgfQEPvASA4eBPOqjB2aShUn9mIXHMBsGzTxLWeRGWWkpDbgHc0zFKSopX5Kc7W8KPg6w3LdvXAyU4dVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741786379; c=relaxed/simple;
-	bh=kv403D/IQDN0pDBtd3LOqsksN46GogObziXacwjD4xk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rpg8CEU7YnmhzevhR7BX9sOLlN+18M+lElp5XjFO9OE2ozx62r4lrgb79Wmyd1Z2smy6RLcsbp6ySiuJssQpwNo890dOYYRZfLe6INt4hlzedpP8GgmDq7sFxLCQO6oPXdp9yxBRHxCZcg+1HXryFiqTWsoDyucrM17nV+XEC5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+	s=arc-20240116; t=1741787651; c=relaxed/simple;
+	bh=WilnYsgmRQ6RNc8BTHDueAu/uq9UrT2BQLCheOaHbE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ouhF7TSwqvpvm+EUYdjk6iTmqPf5Pkxs875Vw8d3ooHNlFhIPDMDPfz9tzbulo+CEbwi2RfykpBEDvNCLAukhgsekPygT7WROUDX0JK3TDd+JbXFiXT+HVBs1Qcmntjbcy1ILrnIn5vAMC7f6+F7dGj01b1w4kkWVhetDEYGIn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B920D200AD5;
-	Wed, 12 Mar 2025 14:32:48 +0100 (CET)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 524141A246B;
+	Wed, 12 Mar 2025 14:54:02 +0100 (CET)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 63B4420002C;
-	Wed, 12 Mar 2025 14:32:48 +0100 (CET)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 06F931A0420;
+	Wed, 12 Mar 2025 14:54:02 +0100 (CET)
 Received: from lsv03121.swis.in-blr01.nxp.com (lsv03121.swis.in-blr01.nxp.com [92.120.146.118])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 890CA1800088;
-	Wed, 12 Mar 2025 21:32:46 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 201841800088;
+	Wed, 12 Mar 2025 21:53:59 +0800 (+08)
 From: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
 To: miquel.raynal@bootlin.com,
 	conor.culhane@silvaco.com,
@@ -46,9 +46,9 @@ To: miquel.raynal@bootlin.com,
 Cc: stable@vger.kernel.org,
 	manjunatha.venkatesh@nxp.com,
 	rvmanjumce@gmail.com
-Subject: [PATCH v3] svc-i3c-master: Fix read from unreadable memory at svc_i3c_master_ibi_work
-Date: Wed, 12 Mar 2025 19:02:38 +0530
-Message-ID: <20250312133238.2313772-1-manjunatha.venkatesh@nxp.com>
+Subject: [PATCH v4] svc-i3c-master: Fix read from unreadable memory at svc_i3c_master_ibi_work()
+Date: Wed, 12 Mar 2025 19:23:56 +0530
+Message-ID: <20250312135356.2318667-1-manjunatha.venkatesh@nxp.com>
 X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,12 +78,12 @@ Below is the sequence where this issue happened.
    this variable before its initialized due to this race condition
    situation kernel panic happened.
 
-fixes: dd3c52846d595 (i3c: master: svc: Add Silvaco I3C master driver)
+Fixes: dd3c52846d595 ("i3c: master: svc: Add Silvaco I3C master driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
 ---
-Changes since v2:
-  - Description  updated as per the review feedback
+Changes since v3:
+  - Description  updated typo "Fixes:"
 
  drivers/i3c/master/svc-i3c-master.c | 7 +++++--
  1 file changed, 5 insertions(+), 2 deletions(-)
