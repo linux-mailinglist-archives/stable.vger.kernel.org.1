@@ -1,99 +1,129 @@
-Return-Path: <stable+bounces-124127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13CFA5D7CD
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:07:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA43A5D7F9
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2837B16F5C3
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 08:07:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF22B17746A
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 08:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC7823278D;
-	Wed, 12 Mar 2025 08:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78F0230BF4;
+	Wed, 12 Mar 2025 08:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lsoMAARq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTDniZ0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5250A232364;
-	Wed, 12 Mar 2025 08:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770B6258A;
+	Wed, 12 Mar 2025 08:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741766811; cv=none; b=djv/YAAUKEltQsqORPFOl7ZXywDm4wasL/bp5xXBpDkU3QhH1ZeludPCF/kL7RXzNrD9wSzAsTBNiXRK280ApW6EQ9n72iylRq6lsq057As+R7ux5u96vQ2XNHHwyQPgpNuCPZi/45dhwZBGcrASKq95UCXcB2x79GZMLxeKvpU=
+	t=1741767411; cv=none; b=AUrI0e4nxDIliXJvHhdHhp2Md2cdNgtOVBi1W5JhyD5eJ/m/ZOnffAc1ro8fkMdgOlbqLhamcQYGS/igV6Cp4PJ4f/R+AWJ7c0QsUAb+4mnGGKnQxC13wi5BJ0CXuSHE4FJP9bV2VF1UCvAAHCQXE14VsPID9UZbrXj2eLa4Bpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741766811; c=relaxed/simple;
-	bh=8/aqzVkQhaCsfezDRLPycVmFSKSk0ZnXQ8yaaEJW60Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pr40HNpu7tIYIBascDd3JZO3G3WdvGK/ENIvIjBUOeC/p5YXyb41flW8IsRKgPjd4NW+jiwc5eb44pXZUQof7SsNzHtquxYQBRdxVIxqv+uovDWpJtxxZ2QuyVDFQZP6E473MFIFqBpvrQ6gMAWhaImIHIg5lIXLXm2fI2Lj5EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lsoMAARq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE246C4CEEA;
-	Wed, 12 Mar 2025 08:06:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741766810;
-	bh=8/aqzVkQhaCsfezDRLPycVmFSKSk0ZnXQ8yaaEJW60Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsoMAARqEI7pAj3h6fSaKPbdTl/tb1+CB5Rv1rlynbU8zn9TODlEvSqbd614Kl9L8
-	 zq8VVaEx/6pRIx7+rorYfooD6ssaZGGqThufVWU0w5prMWDd7YMW66QIHPRLU1Zzsq
-	 y/XYSoXzCF2LAlIGJmeQfINYLI27bu+fejH9vuoIO7Nzb7Zmj5uc7F7MjAW6M5lMR/
-	 GEI+osKsFd4bzTHuhPBBGgOsywD/+5j/yyz24irRqIuDbMwxLJkQyCVw7ujQJGWg9O
-	 Rq+tUqqSpCmqf8meSvc+rmtQkcXyVzlA896gETNvezdxNB4siPMXvWFd/fnbPidhA3
-	 xa6FIaBGFyW3g==
-From: Philipp Stanner <phasta@kernel.org>
-To: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Philipp Stanner <phasta@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 1/2] PCI: Fix wrong length of devres array
-Date: Wed, 12 Mar 2025 09:06:34 +0100
-Message-ID: <20250312080634.13731-3-phasta@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250312080634.13731-2-phasta@kernel.org>
-References: <20250312080634.13731-2-phasta@kernel.org>
+	s=arc-20240116; t=1741767411; c=relaxed/simple;
+	bh=FmGTZGIRqjGvdrftQ0Veuag8jsHp59rXe3Dsa4a1fqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GElvbkFJcymxGUwu8nlwbnOk785qz1YzOEIxvHb2yUokZuwoSCficHCu7VIFzEVgiIi19ESGKehVY2tLsZTPrlKRdqlFBqZZTUjLtcituBwr+T1KWzjrExtxMW1Bh+6lJ7AugKFrbRXf2RXoYQHZoCYO80Qdr2OG38bTDjZJ2BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTDniZ0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A5EC4CEE3;
+	Wed, 12 Mar 2025 08:16:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741767411;
+	bh=FmGTZGIRqjGvdrftQ0Veuag8jsHp59rXe3Dsa4a1fqg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JTDniZ0wC9kTNSO4rlM3+ehiisufYpCgu9Q3bwkIbrdYs4Gzdq/LRr3x3tPRIGAX+
+	 spE7Dtnjth85zwa2jgRQOavRIvdVdbYLeK1D4SNaM/Tjw0y0WGCWvQUmyksR/wHeff
+	 zr9bgiYAQuCHrC60eqg9PMnPnr4oSjmD+wCyu04s=
+Date: Wed, 12 Mar 2025 09:16:48 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: David Woodhouse <dwmw2@infradead.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Ingo Molnar <mingo@kernel.org>,
+	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [EXTERNAL] [PATCH 6.13 089/443] x86/kexec: Allocate PGD for
+ x86_64 transition page tables separately
+Message-ID: <2025031218-cardboard-pushcart-4211@gregkh>
+References: <20250213142440.609878115@linuxfoundation.org>
+ <20250213142444.044525855@linuxfoundation.org>
+ <c4a1af46f7edcdf20274e384ec3b48781a350aaa.camel@infradead.org>
+ <2025031203-scoring-overpass-0e1a@gregkh>
+ <CAMj1kXH6oWVkUeU6+JYCuarzc5+AQxfyBzehfmLFRdKXg86qaA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXH6oWVkUeU6+JYCuarzc5+AQxfyBzehfmLFRdKXg86qaA@mail.gmail.com>
 
-The array for the iomapping cookie addresses has a length of
-PCI_STD_NUM_BARS. This constant, however, only describes standard BARs;
-while PCI can allow for additional, special BARs.
+On Wed, Mar 12, 2025 at 08:54:52AM +0100, Ard Biesheuvel wrote:
+> On Wed, 12 Mar 2025 at 08:47, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Tue, Mar 11, 2025 at 04:45:26PM +0100, David Woodhouse wrote:
+> > > On Thu, 2025-02-13 at 15:24 +0100, Greg Kroah-Hartman wrote:
+> > > > 6.13-stable review patch.  If anyone has any objections, please let me know.
+> > > >
+> > > > ------------------
+> > > >
+> > > > From: David Woodhouse <dwmw@amazon.co.uk>
+> > > >
+> > > > [ Upstream commit 4b5bc2ec9a239bce261ffeafdd63571134102323 ]
+> > > >
+> > > > Now that the following fix:
+> > > >
+> > > >   d0ceea662d45 ("x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables")
+> > > >
+> > > > stops kernel_ident_mapping_init() from scribbling over the end of a
+> > > > 4KiB PGD by assuming the following 4KiB will be a userspace PGD,
+> > > > there's no good reason for the kexec PGD to be part of a single
+> > > > 8KiB allocation with the control_code_page.
+> > > >
+> > > > ( It's not clear that that was the reason for x86_64 kexec doing it that
+> > > >   way in the first place either; there were no comments to that effect and
+> > > >   it seems to have been the case even before PTI came along. It looks like
+> > > >   it was just a happy accident which prevented memory corruption on kexec. )
+> > > >
+> > > > Either way, it definitely isn't needed now. Just allocate the PGD
+> > > > separately on x86_64, like i386 already does.
+> > >
+> > > No objection (which is just as well given how late I am in replying)
+> > > but I'm just not sure *why*. This doesn't fix a real bug; it's just a
+> > > cleanup.
+> > >
+> > > Does this mean I should have written my original commit message better,
+> > > to make it clearer that this *isn't* a bugfix?
+> >
+> > Yes, that's why it was picked up.
+> >
+> 
+> The patch has no fixes: tag and no cc:stable. The burden shouldn't be
+> on the patch author to sprinkle enough of the right keywords over the
+> commit log to convince the bot that this is not a suitable stable
+> candidate, just because it happens to apply without conflicts.
 
-The total number of PCI resources is described by constant
-PCI_NUM_RESOURCES, which is also used in, e.g., pci_select_bars().
+The burden is not there to do that, this came in from the AUTOSEL stuff.
+It was sent to everyone on Jan 26:
+	https://lore.kernel.org/r/20250126150720.961959-3-sashal@kernel.org
+so there was 1 1/2 weeks chance to say something before Sasha committed
+it to the stable queue.  Then it was sent out again here in the -rc
+releases for review, for anyone to object to.
 
-Thus, the devres array has so far been too small.
+So there was 3 different times someone could have said "no, this isn't
+ok for stable inclusion" before it was merged.  And even if that's not
+enough, I'll be glad to revert it if it wasn't ok to be merged at any
+time afterward.
 
-Change the length of the devres array to PCI_NUM_RESOURCES.
+thanks,
 
-Cc: <stable@vger.kernel.org>	# v6.11+
-Fixes: bbaff68bf4a4 ("PCI: Add managed partial-BAR request and map infrastructure")
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
----
- drivers/pci/devres.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
-index 3431a7df3e0d..728ed0c7f70a 100644
---- a/drivers/pci/devres.c
-+++ b/drivers/pci/devres.c
-@@ -40,7 +40,7 @@
-  * Legacy struct storing addresses to whole mapped BARs.
-  */
- struct pcim_iomap_devres {
--	void __iomem *table[PCI_STD_NUM_BARS];
-+	void __iomem *table[PCI_NUM_RESOURCES];
- };
- 
- /* Used to restore the old INTx state on driver detach. */
--- 
-2.48.1
-
+greg k-h
 
