@@ -1,237 +1,230 @@
-Return-Path: <stable+bounces-124138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B60A5DA67
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 11:25:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ABFA5DA6C
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 11:29:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95F08189B94A
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:25:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9C661882E62
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A930823E325;
-	Wed, 12 Mar 2025 10:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DB123C8C9;
+	Wed, 12 Mar 2025 10:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ykJtVod8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CMC0ztDX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4670237160
-	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 10:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B44238D34
+	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 10:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741775139; cv=none; b=s7qulIhgGDduAcRFVPfxXqrAI9gLRnf1QcrH8BuZPiixlZjG3/xWAK1OWFC9eXlBZJOImNQ2MAc00PyUhdhNqUqYx5PXMUGr1Vl0IxlU+dNfI2A2H4E5WTylEB+hKJG9VzIlzrmaprHdP6aZNmQPsLCNEhOTx5yvOXI9RLpe3zU=
+	t=1741775371; cv=none; b=iINIAL9USYa+1LAuLib8DCKeRNNA2QV3ipskeSWey1PD/dZ0yiQSLL7UmurErk3tLnph4cgIq+jz2dPkBA8/njp50ZU8h9WFs7Zswu2pKHbWQmY7dp37g76eAvsePuXOXFWmoH1YJ8ACa+sZFed7lS0xUkQuGz7NvD/W8CVjzWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741775139; c=relaxed/simple;
-	bh=PDHO7y+ERlJAnN05ImfV1yuUpp0i/lJuWqtTfGpzzzM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T/mYOMYhkm1rYVhTfX7TA6aEGL6Gd6v+STEakqSytZ1VUv83nUgHzRrSxM817sDU6oRP105uTI5UIqUif75KOchV9gXZRbWfpQS2/IwkyV6HYF/wJGSzLpGV5CAAkxNblq5dbhUkwGmbvSdEgoYYa/hzkFBAMBgRoKHAH3RH9uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ykJtVod8; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-51eb18130f9so3065508e0c.3
-        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 03:25:36 -0700 (PDT)
+	s=arc-20240116; t=1741775371; c=relaxed/simple;
+	bh=7XDC3XUsFUb3OvFFjw+XGIUSCyN7dv4m+tq7GtM6H00=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LvTp2pLe4c0EZZbyfd60pCeyX1eFtdhCFSaJvHQTyu3cfAQUwlOs16ij5eoMWwRLpbCWXhsu+XZkpvQfm0HFtgoHrqM2zdBcnVPGOByX8bRzXBF5xeFNQ9KWbIjmBZpjePJS0y69vGXY1533FV9XhZZY6LCRClFG6jjySptMW0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CMC0ztDX; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30bf251025aso51353431fa.1
+        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 03:29:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741775135; x=1742379935; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EGtpHZfxRNzO6OoMpHooKBsRfISaZAIh8bkBtSxi4jk=;
-        b=ykJtVod8q5rZWeryyKys+KQUnJbZ9bbfdm8dbbiczIQ+8NKlRUtNuqi024vl+83qIS
-         LQAHBYGVOhir3s/BVvq2IthQwmAGrDOnZggcFzd894t6WhfyNl+LSr8C3K6cQzpMg8Gd
-         D6eiLJHAmAB4RBCHBauzxihWO0wvcjLqkzcQDVeMz8K0zRhzh+iN0tUBlAVObWgSp1De
-         /IvIqCaZURWPrf072k/XZCfR/lCHUM4itDYBkmpf4dEqaqMl6EtbI63890FrKocagHMT
-         VPjfPUJsQHhsdwoVy2EixKOvBRcjWi/0weg2Lhnlsul5leJ8cc64qeYMFv3ryRJdNEZg
-         sYQw==
+        d=gmail.com; s=20230601; t=1741775367; x=1742380167; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LtIKzf1AYQYJxPgBXn2A2UD0WsXsukJsLv2YBV2DX/s=;
+        b=CMC0ztDXkqnAXDJHKI/ADx0K4QP3gr7zhiq9ehkwE99dCPw5UW+qigZGTOl5HqvIyJ
+         IeqO7DAErabMtQc5rGjukyk3FmyfTy53khjpBUY/zdKIYWreHYYjZcKBGAJr/7bSoVFB
+         r/iHE0AywLVFrj+3Cw1QLE87AhaVedIQXWsJvYhOoWHx5jgOMV6iyfLNoWIaMFxtqLb5
+         vktyw2A9QDrWKwCjsxuzg6oACaXxWFjOM4mtHvhtDggxR4Fj/SS0RLW4KWofpX7zDinW
+         gcFp+mpDaxXPS+0XvWpKupueh4wKf9LLEqqGGJDCdD0he32RGm1HqFGew5j25kcxPwtB
+         do8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741775135; x=1742379935;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EGtpHZfxRNzO6OoMpHooKBsRfISaZAIh8bkBtSxi4jk=;
-        b=Gte/N6wujD3jsvTMsLeg+rcw2pl7E0k51t+m6dxPm4O0ynUQX6aI3Wnh0GN17iXavS
-         bD/U3laq6gNUl4bxSjvhAtIcNMXQDTYPhpYhMWeaGLWrJ6BSmNzXCVpLK/DKFBKpyUPB
-         c4ZUEJv4a0Ox9/S7AqvtwSvAE57sjfE2DaoE8RunRX7akrKrHyr/FeJ3MRq76OtYjgu5
-         hL7Hk4riQRiiH9ouyK08WEC0HpgUt7SyKx6T3R9TWzbg5HC74i1TjtKPvy5p045d4IaR
-         hU1GDnhDCFhxFhjMZityMGmnxUy2R3UNNWpMmdneLodbPk663hBXIoJr9U/PMjK7FPx+
-         X/cw==
-X-Gm-Message-State: AOJu0YyiartDtQSZUIwSGTLxv8F08i8zAhHNstndzEtKEJMeVu7mhj4H
-	Drwf+I8oJAHNC+XFNhSyOlNcgMRh+5gkbJbeFXKL9dbReGmQb1y6t5XdglH24T92UkDpIfi2GSD
-	TAfiGVXR4foZYe8YaeAbha+8AC3RCe6sFf2WVvA==
-X-Gm-Gg: ASbGncu/4HrmK3eiim1rf9u+OCY1olBT/kn/CsxpvF3zFrqjltQrLv2yfTqHqN46Tkz
-	B4DJnVW0BvnzYmRiHZw1u5aVKjvYVBC+XyrGkzgRix1YtcRS8dqwAiNb6lh61xT5tmSuoUqv5ZO
-	S7Y1KD16YRtesruTNSg85XIvT0VRl970dd+qxwBc4uOjYfpf6CK+vSMsosiJM=
-X-Google-Smtp-Source: AGHT+IFL0HreR/KlcTDMM5OcMZYgMMEODEZdj0hq7LqEb2TK1xUYjtp9ukuN5QzK8OoEYGp1qR9p2Zj/muGfbshTL10=
-X-Received: by 2002:a05:6122:828e:b0:520:51a4:b84f with SMTP id
- 71dfb90a1353d-524198002dbmr4416579e0c.4.1741775135572; Wed, 12 Mar 2025
- 03:25:35 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741775367; x=1742380167;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LtIKzf1AYQYJxPgBXn2A2UD0WsXsukJsLv2YBV2DX/s=;
+        b=lpw1LHfH99U2FMiZsPFw0PJIQ3ZSNvFHA7gMicb51v3QZrVsPKMZ+d/zPFFXbc+Qtn
+         hd6qF8zmapgPwfT+fEh0jtXDTTCP9MIRb3w3DI7euz9nFc9ORsbEkkhw4l/MmKbR0sw5
+         LybkNCcdNDtoN+gpOCCifymt077kf366nyoAZlUooR0SEDYUyxFzcQhODa29kCAwSOCq
+         vQhY1Xb8cqBCbshN4mI7UwdJlkhNBqs1xe3QOdsxPiovYhhIRHKVI0u6qKJZAczNQY5N
+         fK/OVM2TAqn/6yYLcSF2pmZnxpXDfpAbPt1B2iraJRJgxv5hieTQJiI/DRJYzMBaCJ9r
+         kVGw==
+X-Gm-Message-State: AOJu0YylR4s6aDjdQnY1UGfk1Ku5OOihCtJKJATF/qUtDhma660vhpkp
+	YXKNncMIb1PNpVJcq6LQWPqx9r1WjGlmyMVJA5n1T3JgM/+NiZBiBfeKIw==
+X-Gm-Gg: ASbGncuSUiGJMzQRjeOdBpWEZ63xxzL8ibF73s0LkNFdCuFw396fdDK/geuKELga+nG
+	DljvSQmFh/rjqdSOF/dn1mV1dYfbkG708LJCLzEQfnL17l6pvGfOGD9WQqDgKq+kjjjcRYu7qeM
+	/MwU/RYBllFkujbk030OUz0tGApIE4BzBwe8i17ksgJ5qODZ0g73UNF61lX3VeVhXrApG9C1L3o
+	mq+PBRh2RAYslhFYiKnIURveUIjaQkL5IsL9HQOe7ILiS0bZ/R0rec0j8h9h6Ienjr/hHhG2z7i
+	DcZM5mjUH4LHn4L6jrJ/UkhZte4shN/3OJe+FSCS
+X-Google-Smtp-Source: AGHT+IE1N02BobWmztaix4Q/+TUxontbZQ20W4MmbuM5LuK9Z37dHVXpAEYhNxFmFK6jd4v2eN2aSQ==
+X-Received: by 2002:a05:6512:1112:b0:549:5850:f275 with SMTP id 2adb3069b0e04-54990ec8e60mr7192816e87.50.1741775366988;
+        Wed, 12 Mar 2025 03:29:26 -0700 (PDT)
+Received: from pc638.lan ([2001:9b1:d5a0:a500:2d8:61ff:fec9:d743])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498ae593besm2072747e87.97.2025.03.12.03.29.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Mar 2025 03:29:26 -0700 (PDT)
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+To: stable@vger.kernel.org
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Oleksiy Avramchenko <oleksiy.avramchenko@sony.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>
+Subject: [PATCH 6.12.y 6.13.y] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
+Date: Wed, 12 Mar 2025 11:29:24 +0100
+Message-Id: <20250312102924.16247-1-urezki@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250311144241.070217339@linuxfoundation.org>
-In-Reply-To: <20250311144241.070217339@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 12 Mar 2025 15:55:23 +0530
-X-Gm-Features: AQ5f1JocR2QVAetGvMUl47oG9R-0y5q4g7PNIHcghhHTaNTnPuThs4tcrPj0feU
-Message-ID: <CA+G9fYuK2dHLg5AGVyN98eRKwZQ-aMByvhBLyasHuJRVLNkpHg@mail.gmail.com>
-Subject: Re: [PATCH 6.13 000/197] 6.13.7-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 11 Mar 2025 at 20:18, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.13.7 release.
-> There are 197 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 13 Mar 2025 14:41:52 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.13.7-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.13.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+commit dfd3df31c9db752234d7d2e09bef2aeabb643ce4 upstream.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Currently kvfree_rcu() APIs use a system workqueue which is
+"system_unbound_wq" to driver RCU machinery to reclaim a memory.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Recently, it has been noted that the following kernel warning can
+be observed:
 
-## Build
-* kernel: 6.13.7-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: fca1356f3f511f72adfed5a76ddf17a30241474c
-* git describe: v6.13.6-198-gfca1356f3f51
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.13=
-.6-198-gfca1356f3f51
+<snip>
+workqueue: WQ_MEM_RECLAIM nvme-wq:nvme_scan_work is flushing !WQ_MEM_RECLAIM events_unbound:kfree_rcu_work
+  WARNING: CPU: 21 PID: 330 at kernel/workqueue.c:3719 check_flush_dependency+0x112/0x120
+  Modules linked in: intel_uncore_frequency(E) intel_uncore_frequency_common(E) skx_edac(E) ...
+  CPU: 21 UID: 0 PID: 330 Comm: kworker/u144:6 Tainted: G            E      6.13.2-0_g925d379822da #1
+  Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passive MP, BIOS YMM20 02/01/2023
+  Workqueue: nvme-wq nvme_scan_work
+  RIP: 0010:check_flush_dependency+0x112/0x120
+  Code: 05 9a 40 14 02 01 48 81 c6 c0 00 00 00 48 8b 50 18 48 81 c7 c0 00 00 00 48 89 f9 48 ...
+  RSP: 0018:ffffc90000df7bd8 EFLAGS: 00010082
+  RAX: 000000000000006a RBX: ffffffff81622390 RCX: 0000000000000027
+  RDX: 00000000fffeffff RSI: 000000000057ffa8 RDI: ffff88907f960c88
+  RBP: 0000000000000000 R08: ffffffff83068e50 R09: 000000000002fffd
+  R10: 0000000000000004 R11: 0000000000000000 R12: ffff8881001a4400
+  R13: 0000000000000000 R14: ffff88907f420fb8 R15: 0000000000000000
+  FS:  0000000000000000(0000) GS:ffff88907f940000(0000) knlGS:0000000000000000
+  CR2: 00007f60c3001000 CR3: 000000107d010005 CR4: 00000000007726f0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? __warn+0xa4/0x140
+   ? check_flush_dependency+0x112/0x120
+   ? report_bug+0xe1/0x140
+   ? check_flush_dependency+0x112/0x120
+   ? handle_bug+0x5e/0x90
+   ? exc_invalid_op+0x16/0x40
+   ? asm_exc_invalid_op+0x16/0x20
+   ? timer_recalc_next_expiry+0x190/0x190
+   ? check_flush_dependency+0x112/0x120
+   ? check_flush_dependency+0x112/0x120
+   __flush_work.llvm.1643880146586177030+0x174/0x2c0
+   flush_rcu_work+0x28/0x30
+   kvfree_rcu_barrier+0x12f/0x160
+   kmem_cache_destroy+0x18/0x120
+   bioset_exit+0x10c/0x150
+   disk_release.llvm.6740012984264378178+0x61/0xd0
+   device_release+0x4f/0x90
+   kobject_put+0x95/0x180
+   nvme_put_ns+0x23/0xc0
+   nvme_remove_invalid_namespaces+0xb3/0xd0
+   nvme_scan_work+0x342/0x490
+   process_scheduled_works+0x1a2/0x370
+   worker_thread+0x2ff/0x390
+   ? pwq_release_workfn+0x1e0/0x1e0
+   kthread+0xb1/0xe0
+   ? __kthread_parkme+0x70/0x70
+   ret_from_fork+0x30/0x40
+   ? __kthread_parkme+0x70/0x70
+   ret_from_fork_asm+0x11/0x20
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+<snip>
 
-## Test Regressions (compared to v6.13.3-552-g3244959bfa6b)
+To address this switch to use of independent WQ_MEM_RECLAIM
+workqueue, so the rules are not violated from workqueue framework
+point of view.
 
-## Metric Regressions (compared to v6.13.3-552-g3244959bfa6b)
+Apart of that, since kvfree_rcu() does reclaim memory it is worth
+to go with WQ_MEM_RECLAIM type of wq because it is designed for
+this purpose.
 
-## Test Fixes (compared to v6.13.3-552-g3244959bfa6b)
+Fixes: 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
+Reported-by: Keith Busch <kbusch@kernel.org>
+Closes: https://lore.kernel.org/all/Z7iqJtCjHKfo8Kho@kbusch-mbp/
+Cc: stable@vger.kernel.org
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+---
+ kernel/rcu/tree.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-## Metric Fixes (compared to v6.13.3-552-g3244959bfa6b)
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 3e486ccaa4ca..8e52c1dd0628 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -3191,6 +3191,8 @@ void call_rcu(struct rcu_head *head, rcu_callback_t func)
+ }
+ EXPORT_SYMBOL_GPL(call_rcu);
+ 
++static struct workqueue_struct *rcu_reclaim_wq;
++
+ /* Maximum number of jiffies to wait before draining a batch. */
+ #define KFREE_DRAIN_JIFFIES (5 * HZ)
+ #define KFREE_N_BATCHES 2
+@@ -3519,10 +3521,10 @@ __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+ 	if (delayed_work_pending(&krcp->monitor_work)) {
+ 		delay_left = krcp->monitor_work.timer.expires - jiffies;
+ 		if (delay < delay_left)
+-			mod_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
++			mod_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
+ 		return;
+ 	}
+-	queue_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
++	queue_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
+ }
+ 
+ static void
+@@ -3620,7 +3622,7 @@ kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+ 			// "free channels", the batch can handle. Break
+ 			// the loop since it is done with this CPU thus
+ 			// queuing an RCU work is _always_ success here.
+-			queued = queue_rcu_work(system_unbound_wq, &krwp->rcu_work);
++			queued = queue_rcu_work(rcu_reclaim_wq, &krwp->rcu_work);
+ 			WARN_ON_ONCE(!queued);
+ 			break;
+ 		}
+@@ -3708,7 +3710,7 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+ 	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
+ 			!atomic_xchg(&krcp->work_in_progress, 1)) {
+ 		if (atomic_read(&krcp->backoff_page_cache_fill)) {
+-			queue_delayed_work(system_unbound_wq,
++			queue_delayed_work(rcu_reclaim_wq,
+ 				&krcp->page_cache_work,
+ 					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
+ 		} else {
+@@ -5662,6 +5664,10 @@ static void __init kfree_rcu_batch_init(void)
+ 	int i, j;
+ 	struct shrinker *kfree_rcu_shrinker;
+ 
++	rcu_reclaim_wq = alloc_workqueue("kvfree_rcu_reclaim",
++			WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
++	WARN_ON(!rcu_reclaim_wq);
++
+ 	/* Clamp it to [0:100] seconds interval. */
+ 	if (rcu_delay_page_cache_fill_msec < 0 ||
+ 		rcu_delay_page_cache_fill_msec > 100 * MSEC_PER_SEC) {
+-- 
+2.39.5
 
-## Test result summary
-total: 131178, pass: 107823, fail: 3844, skip: 19511, xfail: 0
-
-## Build Summary
-* arc: 6 total, 5 passed, 1 failed
-* arm: 143 total, 137 passed, 6 failed
-* arm64: 58 total, 56 passed, 1 failed, 1 skipped
-* i386: 22 total, 19 passed, 3 failed
-* mips: 38 total, 33 passed, 5 failed
-* parisc: 5 total, 3 passed, 2 failed
-* powerpc: 44 total, 41 passed, 2 failed, 1 skipped
-* riscv: 27 total, 24 passed, 3 failed
-* s390: 26 total, 25 passed, 1 failed
-* sh: 6 total, 5 passed, 1 failed
-* sparc: 5 total, 3 passed, 2 failed
-* x86_64: 50 total, 49 passed, 1 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-rust
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
