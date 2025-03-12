@@ -1,153 +1,119 @@
-Return-Path: <stable+bounces-124190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18658A5E799
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 23:40:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA8AA5E8A6
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 00:49:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8852A3B4C29
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 22:39:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D701A18986DD
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 23:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C831F0E31;
-	Wed, 12 Mar 2025 22:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9347B1F153E;
+	Wed, 12 Mar 2025 23:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OBIeyMsk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wrpcc18m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A470D1DE3A4;
-	Wed, 12 Mar 2025 22:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A65B1F0E4B;
+	Wed, 12 Mar 2025 23:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741819200; cv=none; b=BSCIdTy4HKbDqYz0hPgaeY0fAN/LxTYOV1VhsEToiQHlPD0wVPHVk/tYx1LEgiaZ/gOnDRRUntWGZcVA/M83SCkIMY2llOfT1av+dbw7UwmeSmI0NqAIvq7tV0zv52UJ3+xIH0RZbCPKzq+yEA+bMMI5HJP1w6Lig1hBcOO1TT4=
+	t=1741823368; cv=none; b=GZ5n5ggjK3/Ki3gInxXHKwH651O/4nDYi+0QvCp28K/uh4O1gux7V6trS8IrGUyB9FBAU4CiVDMd2n2v9xYnzjfKWa7u7VfKS6EvDOQ/Yg8tvsL8adoSTNfw2QWt0QEqvooxVPaoGMX0RWgNCLCEOJQ5NeGxTEmxpWJKfIrRgqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741819200; c=relaxed/simple;
-	bh=VDMM2O2D43FkaPH94FVgj78/Auq6skvSQ+8RnfmcV50=;
-	h=Date:To:From:Subject:Message-Id; b=k3CTsHbeyqemDDkaOBWZByrjK0DeZ0LKQoFzKZOf353CndH3hZi9axgD4W0uMOX44qOcYq1PM4ZYbK3ZH/lyQDE34DscfzQjawqX4jLZ2w9deEMbA+kJ+GSrdPbajGK35TDlt604BeJi99/mQI/2XSpTmD1+6wcCffvHdLNs1VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OBIeyMsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197E0C4CEDD;
-	Wed, 12 Mar 2025 22:40:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741819200;
-	bh=VDMM2O2D43FkaPH94FVgj78/Auq6skvSQ+8RnfmcV50=;
-	h=Date:To:From:Subject:From;
-	b=OBIeyMsk73wldRty+EOydAi3h1Mo+1g03kZY12M2uZbwrO3cfFPFvE1b497B0TX1a
-	 nYrgBNeJuo8nfkm7cAw9xwqTYH/r4tczwTTlcV0IMO4dDDf5TjBvRvOJ8OOquZISgN
-	 uDVEtBpVGcjs7yHIIjzVd7CxUdxSe8Z7jYbUGgOM=
-Date: Wed, 12 Mar 2025 15:39:59 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,yuzhao@google.com,wangkefeng.wang@huawei.com,sunnanyong@huawei.com,stable@vger.kernel.org,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250312224000.197E0C4CEDD@smtp.kernel.org>
+	s=arc-20240116; t=1741823368; c=relaxed/simple;
+	bh=HbHXJf6SGTZ5u093xJt01x3/Z7InN/X2lZLhzmLppWk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ww8BoGrXRfNfO1FtaLPsGL4cZ41jXJdHdTMtAfp9Pj6qRkNcdkVZSyuvSIXYkJhkSC7dXCPXHMobmoyaJlF2onph0AFRETyA1K5947QUKBIdYVE8mSzY84F0T7ukrpXf6xlfiqYGnlo+qzD5yVMjyGR/6rbA17TmiNdsylE0/uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wrpcc18m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB96C4CEE3;
+	Wed, 12 Mar 2025 23:49:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741823367;
+	bh=HbHXJf6SGTZ5u093xJt01x3/Z7InN/X2lZLhzmLppWk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Wrpcc18mInGhIMAvU301Kt0+WOZCKCK4muRr95lCvUVzgAMSvkeBVVGzw3B4WHJQK
+	 Vr5s5bxY03lor/5TSfQeONaZgM+S5kzGKeAGurPkMw4cPhC4L/xcqiBeq5babGJUf8
+	 fTH1bYfhM24w6CSTD8XQqawA4uK6h5fjLYR/pCRyi3nYitzD9ztVOAGg1R9FpSNQFp
+	 zuVuYLEDtD6MO9AqAbyfcBUeHsZaCW1P8ZZgsxEcd3wolOtj1fwle4PUuT+Tz+mmBz
+	 toi4KNmho1+TI6/X5tV4O0URSciZ8i4jGH6J3i0thTegr9W1IQ4rNOaFB3yFFrXgM9
+	 WIq/zbetZ+gTA==
+From: Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 0/8] KVM: arm64: Backport of SVE fixes to v6.13
+Date: Wed, 12 Mar 2025 23:49:08 +0000
+Message-Id: <20250312-stable-sve-6-13-v1-0-c7ba07a6f4f7@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHUd0mcC/x3MQQ5AMBBA0avIrI20pYiriEUxZRJBOtJIxN01l
+ m/x/wNCgUmgyx4IFFn42BN0nsG0un0h5DkZjDJWGdOgXG7cCCUS1qhLtBM5X6l2tL6BVJ2BPN/
+ /sYe60CUM7/sBRZcyo2cAAAA=
+X-Change-ID: 20250227-stable-sve-6-13-5ceaf408b5f7
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+ Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>, Fuad Tabba <tabba@google.com>, 
+ James Clark <james.clark@linaro.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Eric Auger <eauger@redhat.com>, Wilco Dijkstra <wilco.dijkstra@arm.com>, 
+ Eric Auger <eric.auger@redhat.com>, Florian Weimer <fweimer@redhat.com>, 
+ Jeremy Linton <jeremy.linton@arm.com>, Paolo Bonzini <pbonzini@redhat.com>
+X-Mailer: b4 0.15-dev-1b0d6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1489; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=HbHXJf6SGTZ5u093xJt01x3/Z7InN/X2lZLhzmLppWk=;
+ b=owGbwMvMwMWocq27KDak/QLjabUkhvRLsjWeCflZ6+zmKLSzTfzP8knovP+qxI+5qy9tv69X2Kuz
+ 8JdCJ6MxCwMjF4OsmCLL2mcZq9LDJbbOfzT/FcwgViaQKQxcnAIwkboe9v9Oc6dUejUK7ezc8M1ae0
+ fevmzNd06+hj8khB5Lrg82yf38l6njveHjghnnojf9mR4XvO/Y6vqK2Us0i31lni5n4P9bNy2CdyPL
+ JZ5iTlZjvUA7TmGLlT4X/YqmpqxxuPE0pdtU8IvMJUvn6KW6gW8FZn3bEvM2L/CdvBpb7/L2Jx7CTY
+ Etk+7E98zmz/Nj6/zCdzCO/UNPYG3+GtetM1T7VJud4yw6E36yJ2v4vrtht8aVa0Gy2vULoarHZpW9
+ uCL3pOGMTYDdjCBGX77rpc07Hm4q/yywNPr1G6s+D9mCD1+cWxVPhHdXVbp5r339UnR14rH4QrfXTN
+ /LRcxztfV+MAYnf1FslW3Y5v8NAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+This series backports some recent fixes for SVE/KVM interactions from
+Mark Rutland to v6.13.
 
-The patch titled
-     Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Jinjiang Tu <tujinjiang@huawei.com>
-Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
-Date: Wed, 12 Mar 2025 16:47:05 +0800
-
-When calling alloc_contig_range() with __GFP_COMP and the order of
-requested pfn range is pageblock_order, less than MAX_ORDER, I triggered
-WARNING as follows:
-
- PFN range: requested [2150105088, 2150105600), allocated [2150105088, 2150106112)
- WARNING: CPU: 3 PID: 580 at mm/page_alloc.c:6877 alloc_contig_range+0x280/0x340
-
-alloc_contig_range() marks pageblocks of the requested pfn range to be
-isolated, migrate these pages if they are in use and will be freed to
-MIGRATE_ISOLATED freelist.
-
-Suppose two alloc_contig_range() calls at the same time and the requested
-pfn range are [0x80280000, 0x80280200) and [0x80280200, 0x80280400)
-respectively.  Suppose the two memory range are in use, then
-alloc_contig_range() will migrate and free these pages to MIGRATE_ISOLATED
-freelist.  __free_one_page() will merge MIGRATE_ISOLATE buddy to larger
-buddy, resulting in a MAX_ORDER buddy.  Finally, find_large_buddy() in
-alloc_contig_range() returns a MAX_ORDER buddy and results in WARNING.
-
-To fix it, call free_contig_range() to free the excess pfn range.
-
-Link: https://lkml.kernel.org/r/20250312084705.2938220-1-tujinjiang@huawei.com
-Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
+Fuad Tabba (1):
+      KVM: arm64: Calculate cptr_el2 traps on activating traps
 
- mm/page_alloc.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+Mark Rutland (7):
+      KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state
+      KVM: arm64: Remove host FPSIMD saving for non-protected KVM
+      KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
+      KVM: arm64: Remove VHE host restore of CPACR_EL1.SMEN
+      KVM: arm64: Refactor exit handlers
+      KVM: arm64: Mark some header functions as inline
+      KVM: arm64: Eagerly switch ZCR_EL{1,2}
 
---- a/mm/page_alloc.c~mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order
-+++ a/mm/page_alloc.c
-@@ -6528,7 +6528,8 @@ int alloc_contig_range_noprof(unsigned l
- 		goto done;
- 	}
- 
--	if (!(gfp_mask & __GFP_COMP)) {
-+	if (!(gfp_mask & __GFP_COMP) ||
-+		(is_power_of_2(end - start) && ilog2(end - start) < MAX_PAGE_ORDER)) {
- 		split_free_pages(cc.freepages, gfp_mask);
- 
- 		/* Free head and tail (if any) */
-@@ -6536,7 +6537,15 @@ int alloc_contig_range_noprof(unsigned l
- 			free_contig_range(outer_start, start - outer_start);
- 		if (end != outer_end)
- 			free_contig_range(end, outer_end - end);
--	} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
-+
-+		outer_start = start;
-+		outer_end = end;
-+
-+		if (!(gfp_mask & __GFP_COMP))
-+			goto done;
-+	}
-+
-+	if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
- 		struct page *head = pfn_to_page(start);
- 		int order = ilog2(end - start);
- 
-_
+ arch/arm64/include/asm/kvm_host.h       |  25 ++----
+ arch/arm64/kernel/fpsimd.c              |  25 ------
+ arch/arm64/kvm/arm.c                    |   9 ---
+ arch/arm64/kvm/fpsimd.c                 | 100 ++----------------------
+ arch/arm64/kvm/hyp/entry.S              |   5 ++
+ arch/arm64/kvm/hyp/include/hyp/switch.h | 133 ++++++++++++++++++++++---------
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c      |  15 ++--
+ arch/arm64/kvm/hyp/nvhe/pkvm.c          |  30 -------
+ arch/arm64/kvm/hyp/nvhe/switch.c        | 134 ++++++++++++++++++--------------
+ arch/arm64/kvm/hyp/vhe/switch.c         |  21 ++---
+ 10 files changed, 204 insertions(+), 293 deletions(-)
+---
+base-commit: 251aeb0f2f570db5290d0dc2f8ebf87247b00b85
+change-id: 20250227-stable-sve-6-13-5ceaf408b5f7
 
-Patches currently in -mm which might be from tujinjiang@huawei.com are
-
-mm-hugetlb-fix-surplus-pages-in-dissolve_free_huge_page.patch
-mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
-mm-hugetlb-fix-set_max_huge_pages-when-there-are-surplus-pages.patch
+Best regards,
+-- 
+Mark Brown <broonie@kernel.org>
 
 
