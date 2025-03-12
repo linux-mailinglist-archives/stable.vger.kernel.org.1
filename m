@@ -1,123 +1,145 @@
-Return-Path: <stable+bounces-124166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB93DA5E01E
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 16:21:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1374EA5E199
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 17:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39E4D169FFC
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 15:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5681B16AD0A
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 16:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BCD256C6D;
-	Wed, 12 Mar 2025 15:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F40D1CBA02;
+	Wed, 12 Mar 2025 16:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="N6Qz6MBJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltpF4bv2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4BF253B4A;
-	Wed, 12 Mar 2025 15:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228DF78F29;
+	Wed, 12 Mar 2025 16:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741792754; cv=none; b=A/SCRslzWQ9DcxbemdFTokYTWpvEHlf2XGcWQgZ1ANAXsrTY6L6B3hBLC1Fvw+iefMCYKP6AXu9ssYIct126RrgApRzWa4cdSoS903UKl1YBh3LFWtrJe5QICaIZK67JcceBwiWe8QAxifvuy0+sZ0WmdjRksdosq1bvwdDldWw=
+	t=1741796162; cv=none; b=FtPomc7+o2C8VuqqBqSP3kFSj2K+UL97qu78MCp/Ml5TaoVmmCnR+F5gYBSupCEeiCvHxmeiX+NlfMqx1cTeZ8QXX9D5z38yXXypvZpVWWWljaaKvkx9EuO/ymarA2uLloHJdDI1U+CZjDI2E30emb7gT31kCz/maSQu43XjLuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741792754; c=relaxed/simple;
-	bh=jNb7ofhEY6SToOBHz5m6ErUAC0PyqJ9CZaND4c4AKDc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tjA8utZqxbz4RoJsyvNcgAonPArrXfI9ej2qJGPjNsBoSis5ChBulMgzm9ySsXsWbIXTs5bokkemRTW5bPRGvWkShrGrXsCwVcNSNidmn0Zb7wcQxngb615beIG6npOByBcIJR8aQrhyyWmAeWCsnWcG5cR5PFnpM/wWYsO8byo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=N6Qz6MBJ; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52CE3FvS023107;
-	Wed, 12 Mar 2025 15:19:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ok6GZB
-	71aBRQITqSs+UG3I4EO7p/C6x1/eDKvx/Ld5M=; b=N6Qz6MBJkKEFfQEQfTwQ/6
-	FwhWphgSJAM0uD+E7GIZZQXJL0aHSEIgsS+pOHWhsMaoKRok+y9omYf9r5dJR0IE
-	te7deJadVzh6zyrtZru0f+ZHXYV+Ku7/7HTuqnEwPHDSIPdiGKfThungoULt1vOX
-	GJHqMTY8TWcQsunDiQH5Ci3phaHYRbbfBxEZT28Fya0fccPCUexjzTLvypEJcqDo
-	daFbc9O5sNpB84o7UzwvYrgB9VSGPui70wnbiY/emIwEDF8KvMdJqyW/un13YAdZ
-	SaQTORHjbYL3mTeMLK+R/IUbL1oAZjEfQpaw+djp7BYX1+s/miLJBaNtukPyHCXQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45bbpprekh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 15:19:09 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52CDjQpK026048;
-	Wed, 12 Mar 2025 15:19:08 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atspcs6q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 15:19:08 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52CFJ6lQ55378362
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Mar 2025 15:19:07 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A9A075805A;
-	Wed, 12 Mar 2025 15:19:06 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D0F2658052;
-	Wed, 12 Mar 2025 15:19:05 +0000 (GMT)
-Received: from [9.61.55.227] (unknown [9.61.55.227])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Mar 2025 15:19:05 +0000 (GMT)
-Message-ID: <b763cd33-fb89-498a-841d-1a5423b7ef9b@linux.ibm.com>
-Date: Wed, 12 Mar 2025 11:19:05 -0400
+	s=arc-20240116; t=1741796162; c=relaxed/simple;
+	bh=VsNryCp6Jdy8Cj9W96kO7ltsyTKRP2vUyvO8MTRIRCA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=K66pd0pgK5CrW+mor17LcAT4pXNe1HkKLqUDt5kApzHLxsbXY1aPJasRlx1wcPxX2xQ5s/ueiIrC4FC1hROdL4oDqjWl8MP7Lri1NzFm2Qta/1ZkkzRN0y+7wiz5yS28wgN6vsvGMnf9DBVs6+38fJ6bRfrr2IKaby5CZPInMFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltpF4bv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DDDC4CEEA;
+	Wed, 12 Mar 2025 16:16:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741796161;
+	bh=VsNryCp6Jdy8Cj9W96kO7ltsyTKRP2vUyvO8MTRIRCA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ltpF4bv2tpgig/rLF/SWUcRuVcjvjoqZTAwgDD/ab0SRZVZNFMNz/pO2uKoKFdUZ3
+	 Efa7P5+PybmQOFHqmjcy+GO9MJyiAtGOYfr+mrGhlQpC7/AuJ9lGqOhXLihiXLnT/6
+	 Tr/U34cIicPdZye4F1wPbcYYZNmQi9jSuLORnyM8fsy/2kkE/iVqElEgCVK/Ffm8F7
+	 01PQdXAtnn/gCdy0zkV60RsSHtz2V4JgT6B5WM00VL29bZHnuFvCp8zH4ma+HBw7h6
+	 J8Vcp02yuuuib4zPHSES5zqgX+d2N3xlacNeY4YPx6wiOVy8l/3OSk4Xj1JX7VN1mf
+	 D+5gS6kD2oJ2Q==
+Date: Wed, 12 Mar 2025 11:16:00 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Matt Ranostay <mranostay@ti.com>
+Cc: lpieralisi@kernel.org, kw@linux.com, vigneshr@ti.com,
+	manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
+ J784S4
+Message-ID: <20250312161600.GA680640@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] s390/vfio-ap: lock mdev object when handling mdev remove
- request
-To: Anthony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, pasic@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, borntraeger@linux.ibm.com,
-        alex.williamson@redhat.com, clg@redhat.com, stable@vger.kernel.org
-References: <20250221153238.3242737-1-akrowiak@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20250221153238.3242737-1-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ch44e_yl2Ni0C-dx_O-Zjlp6RSe5zxgc
-X-Proofpoint-GUID: ch44e_yl2Ni0C-dx_O-Zjlp6RSe5zxgc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-12_05,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
- adultscore=0 malwarescore=0 bulkscore=0 clxscore=1011 mlxscore=0
- mlxlogscore=958 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503120102
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250305132018.2260771-1-s-vadapalli@ti.com>
 
-On 2/21/25 10:32 AM, Anthony Krowiak wrote:
-> The vfio_ap_mdev_request function in drivers/s390/crypto/vfio_ap_ops.c
-> accesses fields of an ap_matrix_mdev object without ensuring that the
-> object is accessed by only one thread at a time. This patch adds the lock
-> necessary to secure access to the ap_matrix_mdev object.
+[+to Matt, author of e49ad667815d]
+
+On Wed, Mar 05, 2025 at 06:50:18PM +0530, Siddharth Vadapalli wrote:
+> Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
+> J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
+> to the Technical Reference Manual and Register Documentation for the J784S4
+> SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
+> the field for the link-state interrupt. Instead, it is BIT(10) of the
+> "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
+> field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
+
+I guess the reason we want this is that on J784S4, we ignore actual
+link-down interrupts (and we don't write STATUS_CLR_REG_SYS_2 to clear
+the interrupt indication, so maybe there's an interrupt storm), and we
+think some other interrupt (DPA_1, whatever that is) is actually a
+link-down interrupt?
+
+> Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
+> expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
+> already reuse this macro since it accurately represents the link-state
+> field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
 > 
-> Fixes: 2e3d8d71e285 ("s390/vfio-ap: wire in the vfio_device_ops request callback")
-> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-> Cc: <stable@vger.kernel.org>
+> [0]: https://www.ti.com/lit/zip/spruj52
 
-The new code itself seems sane.
+Thanks for the spec URL.  Can you include a relevant section number?
+I searched for some of this stuff but couldn't find it.
 
-But besides this area of code, there are 2 other paths that touch matrix_mdev->req_trigger:
+Since I have low confidence that the URL will be valid after a few
+years, I wish the spec also had a human-readable name and revision
+number.  But maybe the alphabet soup or "SPRUJ52D", "revised July
+2024" is all we can hope for.
 
-the one via vfio_ap_set_request_irq will already hold the lock via vfio_ap_mdev_ioctl (OK).
-
-However the other one in vfio_ap_mdev_probe acquires mdevs_lock a few lines -after- initializing req_trigger and cfg_chg_trigger to NULL.  Should the lock also be held there since we would have already registered the vfio device above?  We might be protected by circumstance because we are in .probe() but I'm not sure, and we bother getting the lock already to protect mdev_list...
-
+> Fixes: e49ad667815d ("PCI: j721e: Add TI J784S4 PCIe configuration")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+> ---
+> 
+> Hello,
+> 
+> This patch is based on commit
+> 48a5eed9ad58 Merge tag 'devicetree-fixes-for-6.14-2' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
+> of the master branch of Linux.
+> 
+> Patch has been tested on J784S4-EVM, validating that disconnecting an
+> Endpoint Device connected to J784S4-EVM results in the following message
+> on the J784S4-EVM:
+> 	j721e-pcie 2900000.pcie: LINK DOWN!
+> which wasn't seen earlier.
+> 
+> Regards,
+> Siddharth.
+> 
+>  drivers/pci/controller/cadence/pci-j721e.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index 0341d51d6aed..1da9d9918d0d 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -376,13 +376,13 @@ static const struct j721e_pcie_data j784s4_pcie_rc_data = {
+>  	.mode = PCI_MODE_RC,
+>  	.quirk_retrain_flag = true,
+>  	.byte_access_allowed = false,
+> -	.linkdown_irq_regfield = LINK_DOWN,
+> +	.linkdown_irq_regfield = J7200_LINK_DOWN,
+>  	.max_lanes = 4,
+>  };
+>  
+>  static const struct j721e_pcie_data j784s4_pcie_ep_data = {
+>  	.mode = PCI_MODE_EP,
+> -	.linkdown_irq_regfield = LINK_DOWN,
+> +	.linkdown_irq_regfield = J7200_LINK_DOWN,
+>  	.max_lanes = 4,
+>  };
+>  
+> -- 
+> 2.34.1
+> 
 
