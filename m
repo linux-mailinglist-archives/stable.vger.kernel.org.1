@@ -1,112 +1,123 @@
-Return-Path: <stable+bounces-124158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C03EA5DD41
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 14:02:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9ECA5DD74
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 14:10:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 087AB189CEF3
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 13:02:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE7287AB48C
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 13:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0925923E229;
-	Wed, 12 Mar 2025 13:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E08243956;
+	Wed, 12 Mar 2025 13:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="XzToS2AL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DzbZQNLc"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3275112E7F;
-	Wed, 12 Mar 2025 13:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4808B12B93
+	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 13:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741784518; cv=none; b=gJH3oVIE7jeyTeKzC29WCbKQjNtKZW8vr6NkTwKPuVU6u8VVcaeGjCphjzAxRqeltSRW3DBKH7RkAclpS1nf980xzfygkusX/WxRuRYpoYHC3yzwwbhcaYCExGYyCjwo7I5zLDs46iphbVV7EocoFuAZhuqKESk5mECeIF1FD4U=
+	t=1741784862; cv=none; b=jsr33sfLjZ6xqhZLmK+nJoO82yNBvyZBOgFUzuyWUoOGYaDeMjLxn4RcGa3iLHRZRivzKmwCQ3VMrbaRqMg0EHTJZjIC7cj5BMA/NgDq5usrOKAeO2zKlfz4qEAom70qfTeLDKpof3W0EFOKR0TPZMwyGIzt2Hq3KnRL1MjHaGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741784518; c=relaxed/simple;
-	bh=BHGEqUBsRjSctZb37VInW2MFE8xUzgQxm0wCEbT3a8o=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=g4BU2kh7/TDo9+mP7KfwDHPJlYVOiW50X808Fsqqil347e3wv9Y/JkCqZL+IFl52RPAKx3MytFT0PLUMTVwVF79RIJPV0t+MM3owYjqK2QDZ1hvWk3uYN6SQBq0UHUXtWF47YQVkI9e6aQACJ0IUruJBZXprNxu1OtkF1lWnP50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=XzToS2AL; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1741784511; x=1742389311; i=markus.elfring@web.de;
-	bh=wa2E+e8YKnG1Xs+YxlyJJXzQdlJ5kCk+NRUrDAih9V4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=XzToS2ALHajoqXEtPD37x05suc523bwy0gv0fldiMPnf2IVYlmwQ/N7IIFMjS1zY
-	 9xuLyBJtplgx6Z+zkyDkYJI79vBny7rymvCJxXSP50SswUquYNisRB2H71l1S+OLC
-	 np1WTpA8qV3kVO5oykBAuRiEkpGigsaGGAitGoSoTJKxQE9WlxxJD7st+a4BkG21f
-	 2JX8BbD2L4zwcKsqrgxHBayXjwbc2WNrWVuSftr40OXT6/DdnjJZKQP6UcZb+tdxa
-	 G7XFMlkwlnRZogpzD3EAF5qt1o11Tjdno863AtpPDjS1Kb4pYvwQqw4ebZpVA7jjA
-	 IMfLzrgNCZGmv40uLg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.93.19]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MC0LJ-1u4D8k2HrZ-000oJ9; Wed, 12
- Mar 2025 14:01:51 +0100
-Message-ID: <27efccdc-3400-46b9-9359-4b2a6c8254e9@web.de>
-Date: Wed, 12 Mar 2025 14:01:48 +0100
+	s=arc-20240116; t=1741784862; c=relaxed/simple;
+	bh=KE3VVb/VcsGNUw7lWuEm5cySxuPzoGdkS5CvuzcY1YE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=jCrJELr9r0JO0ZSbXCSw6oihPE92FyPXfOe4CIOLpklXf9jaoN08PL7RpX/xV30EoUDoVSwlHviGiJMC65OIOBxMQD/aTKqGmOPA7K/nxahCJ0pS8rJ/jMg03tIb4GYsmHOe2XmR4PEGWZCI4eGymgH0jmiLax3MkXkIs6ZuNc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DzbZQNLc; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5e6194e9d2cso8446150a12.2
+        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 06:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741784859; x=1742389659; darn=vger.kernel.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wOQY2Sl3cBtp1I4btkzfk+inVIddf9r7yc5Qn2hSVBI=;
+        b=DzbZQNLc+fwrHqpCT2IUJzKu7Z/soExoAQQ6NAxIlURN4X6QlZZs2xBVyKD/RN4Fjo
+         inluIFu07Gwng/fL6v76yg256Z52XZV6iv9AOKi1jMhe1mt6nfcW8186kTIS5Ryn45/X
+         dez6RK1aGfvtXAooZD7+MyWtgXRQpXyfOLMHIQEmijIxSjzDadMrKxnbnyAYEdyF4wN3
+         14H1W67w7loNwF+ULI9/Hx7IgmuJaJDFCeSfEA/+i1Oc+3aSf1nkiEKLtS4JHwzlqOOH
+         yjpPY6ZpIaWDa2zJ+URiplwvx3hK9MgyHoo1B615+NKQLaia9UBf/mdAl7r2DzBsNiWD
+         Z51A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741784859; x=1742389659;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wOQY2Sl3cBtp1I4btkzfk+inVIddf9r7yc5Qn2hSVBI=;
+        b=ipMD1mki1Z7/h9mbEFp6Cj5ZyQOvBz2EW/2CyOUcEmsm03LeIRe+e7xk8+jn9XzMju
+         Q4JJmVcHXYHvl//5cn/4lP7zCxdvEWy12bAEzufvwnogxW7XzqUuntWMpyvtGWCS+qys
+         aqZEtr5avIWbwNqw5AE8J2y8R+dcP67s24R4JSX0CEt6fcAEtzcvfmOdEFtoMg/dsntO
+         dFiYrbkMySC6BgMEUIb28hUR+RlqmI1oQQ3rlVASrvVKxTczRhbG2WX5HC1vUjR3PP7F
+         APAqDTJs8GBy7sr3OiLAwFy9p5DRNNHRS7iHxusxejh98CL5wW243MVkka1H0wgPfrHG
+         AMXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQr0vxaqhSvPr6qrHL9q/bi0xuLzX2eeixKjTkmXvr+kMrgocjBnpAerB48+xMiQp/mE0+OXc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJmk2xsvwRjOyiynnL43VrjRngCBJdhlaLgrHpv+POLRdJ++LV
+	2iey5eYCdiuoyNQmsrfmu7IHNDwwrTQ7DuwtB+mWh/dDzk42SUbU
+X-Gm-Gg: ASbGnctFle4JrTRMAAqnRsVBcdMP8iG6ivWvP9M/RzCaMHSRV6lxFiDHe9ttCD8v7sE
+	vurCPrJ4TRjAZsONCIf5tBY0kngEqjJwUqR/2GrCDjbq1veYspkgDFMWVbR/2uVxmmtEhaYzZAA
+	74VmWGg2rEewAXnKEgJr21rXSkEamDT3jbW6Ja/1QhQ4mRy0LbfrPX4XppmG7avJccr83zON9Ji
+	DdgTkBZyzdzWKXskoNGdQrpb7R5W/wBulVtG0thPPMvN9qFPZFWLhSF1rOGW+w0BWS7rHUZYtkg
+	oY5c7jrL9h1KXTEJW7NCtqREvswV05VibmwsGXO7CSDy2AwbECVeeF0=
+X-Google-Smtp-Source: AGHT+IG83SPr1vXm/EKJaEc3qHbCKbHCH3cOaoWT9J/EiHl38XqabL8gmb4G36WDVu0yC7WgMMy8vg==
+X-Received: by 2002:a05:6402:27c8:b0:5e6:1867:3f7e with SMTP id 4fb4d7f45d1cf-5e6186744c6mr18400588a12.32.1741784858251;
+        Wed, 12 Mar 2025 06:07:38 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e5c768c2aasm9722403a12.65.2025.03.12.06.07.37
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 12 Mar 2025 06:07:37 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: rppt@kernel.org,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Yajun Deng <yajun.deng@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] mm/memblock: pass size instead of end to memblock_set_node()
+Date: Wed, 12 Mar 2025 13:07:26 +0000
+Message-Id: <20250312130728.1117-2-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20250312130728.1117-1-richard.weiyang@gmail.com>
+References: <20250312130728.1117-1-richard.weiyang@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Qasim Ijaz <qasdev00@gmail.com>, linux-fpga@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Marco Pagani <marpagan@redhat.com>, Moritz Fischer <mdf@kernel.org>,
- Russ Weight <russ.weight@linux.dev>, Tom Rix <trix@redhat.com>,
- Wu Hao <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>
-References: <20250311234509.15523-1-qasdev00@gmail.com>
-Subject: Re: [PATCH] fpga: fix potential null pointer deref in
- fpga_mgr_test_img_load_sgt()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250311234509.15523-1-qasdev00@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:qRHTGPqNceH8IbA4YcipsJ6jRqi7gyRXpJ/J5IJMJ/4oZLWb+sV
- OuoaGdXteDQMl5G626O/Ne+2E07/FJBJcuS1hO1NYqJwceA7ag+i9f8JutLJtWcPEidcDW2
- cQ+wGcF6HXYTxGgeqnoOWi2CD/FAKdQT2vyXhNPgKJdCvdZ1yCTYnSuqEu2xHG77OiBZP8l
- eoqUr1NLoizc7ezDxRhWw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:mEMseo+PhIY=;V0O/wxhwV2ei7Wbe26EVhEYz2Vf
- 5yheAmTS1xiTVfpdwjTb8KRJ7w01LyQlrMTjTGRqqdNONvomlNm/Y29sBE+7Xxdvc8OrLjRL7
- XtGpZyBDmn4h3P/NCDnJh2UgEf15Xrjn7136zmCYBe1htg4hcC/zFLx7FzXi3OIx1scuGRByf
- +N/hkxGzM+PZd5rQfO4hciRkdwk+YxhvID9zn/+hfpXi96khz7to63qrOGWQe5ErpiKQxMTEn
- s7XnTaM1/tRnVRUcP1l3QVJVc8oH2ZrZW3WD/fr6/7mazR5HON3Nbdxsguc63ytRbX4T0oUDy
- Z9oVWqOhWeLyoGBkmSnKowkEKcgy8pnchY+FKvQmWzoccFfnz+/n6mDh4HlCOVnNqxkRztC3M
- okKnX8F3gds7QJEELQVyppCe/AYu3ddjXHB6FSAKDLag+0czj8Vsnt2B1Fz2S24/TNzJ/NndY
- kkcBKGxzcuSgmLZOycKyEkOFMkber6stepfODSzjr9ToObq2J9+h5TmYcl4ZIeF97IKDz0lxr
- oo9OyTK02d03AXrYNfssxktF3n/IiMvVlqkQvziqmMysofSgphW84fx5A2GWi9iqFOR/EbVXn
- I9aBZsi3GuPhvtu1sxjL1z1DeMmg9vbldd5A7rn+xN5FwTHaEvKTiS6Z/xLiF6JQL5xMIaOwv
- pfsc9Ay7op3DP/S3/xA5LiRuAqkszh4qseWOYZX4JaoZ6DAvq2prbojZK9InF7gChRZzCbrgg
- szxhwBKEXW5vJtiLXcqRO9HIiYFR53sMxzL0sSM3QUhqttdoUgfH7p+ey7oHz4XA3XTgdPMSK
- /19TaFMxRsGBqPE1RygQ1xdEUm9mSaUJc1MZnBqtcaRnh3FZcslRGMNb2cKzVZPel+wOpCyMj
- 1AZXEz4iSbYnCKTEAiE3sqA6QV2aZTtv932+d89zXY//5cFrrijTsJpRvG+8We2cE7DRM9cY1
- rB0QqJ9adGvb9sebTXa+9RJMj3BJv/kDlEzvcmT5angAwOUzBU/pwGhbnKQe5yjKvnua4TL8b
- 5eoWIhRj0xPEzzMKIINVDG0/RYxUJ9gklMNlWAPfDkYhci2E7cctTBongCaI1HU8okNDEj4M8
- WQ2EzgiqZ6N6/95aga4WuBZCOmon/Dxbuwipxp6zooTsCt2TLLw0Vz5+dY9BFpyzshcgOjpLO
- DgWDnTvDLs8zV9tqzNmZTKbncgsKAnq3giuH1mgE0CyRRrv/FiHzcx4kUGKlKxS3/F2BjDUjE
- sH7zyO+W07rdeQpyLGYfFSOSpW+KoT7nooqJohhPQrhuyo2h/5S8OtG/HHeT7Et+Tes+CHlAq
- RwICmtGBK+afoFREBaU+YBAhHC0aXHwhwGDl5o6Y2EA5wtDHDgDS3mAAr1fPCLSMRvXFZ04M8
- j/v1W8AoTvQCoFYD0xN7uaCRmmoeKXojJpvR/5do0Od8SgXaHCwb/+b7YhDmNv7KH4dQ88dF4
- VI8U6ki0wl5ifZk1i78JaQEihhfk=
 
-=E2=80=A6
-> zero it out. If the allocation fails then sgt will be NULL and the
-=E2=80=A6
-                                 failed?
+The second parameter of memblock_set_node() is size instead of end.
 
+Since it iterates from lower address to higher address, finally the node
+id is correct. But during the process, some of them are wrong.
 
-Can a summary phrase like =E2=80=9CPrevent null pointer dereference
-in fpga_mgr_test_img_load_sgt()=E2=80=9D be nicer?
+Pass size instead of end.
 
-Regards,
-Markus
+Fixes: 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+CC: Mike Rapoport <rppt@kernel.org>
+CC: Yajun Deng <yajun.deng@linux.dev>
+CC: <stable@vger.kernel.org>
+---
+ mm/memblock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 64ae678cd1d1..85442f1b7f14 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2192,7 +2192,7 @@ static void __init memmap_init_reserved_pages(void)
+ 		if (memblock_is_nomap(region))
+ 			reserve_bootmem_region(start, end, nid);
+ 
+-		memblock_set_node(start, end, &memblock.reserved, nid);
++		memblock_set_node(start, region->size, &memblock.reserved, nid);
+ 	}
+ 
+ 	/*
+-- 
+2.34.1
+
 
