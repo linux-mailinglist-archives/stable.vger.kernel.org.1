@@ -1,96 +1,89 @@
-Return-Path: <stable+bounces-124136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A5EA5D9C2
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:42:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D94DA5DA65
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 11:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E16F9176B27
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:42:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4411189B749
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1630723AE8D;
-	Wed, 12 Mar 2025 09:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3531023C8BD;
+	Wed, 12 Mar 2025 10:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ISrhHIqw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zxq98kiv"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F8915820C
-	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 09:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52207237160
+	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 10:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741772564; cv=none; b=a9zQCPF3OwtdfxHk8qmcjOv327q/rkTHWnuHkZKzsbCSg6adOMse+FOQgUWttAAAeNZEOiaWzCgoWbRddhbAwMiWLBDvJ/2junn8d944utt3lLtJ3yWO55YIPzkMgCNgkzy2sYXGFZ/c/hT4dRscAy7Yp21qYTniFNRNzcXeypY=
+	t=1741775125; cv=none; b=MATJZ/QJjWRVPpvAJOMuXQxgQ3JLrraBiw+biIXaBm+sTPPv6oyk1ikXYshlr7FTIxahD7qZ21AbDAx9HudYhH8GHZ+IDYSnJ5xG2E0YPCMkmauEEVyNquSIGFq8Xhx7HVdCN+w/z+Kf1iz3wOgfB9/q/PupO3L8aC9Fw5IfRao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741772564; c=relaxed/simple;
-	bh=9BHi7R0N1e0m6MI3+SIcypO7xwKr1WoHcHLF3jQDUW8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tXK08TiBe3VdcEIRO7xf4n+nPY/+OK+k5dFq1meoS0ju/zGLAdFmvuCjPwA0AKVW4q6UrTDXxYUUi14BbgIgvEnHIfSCJLHNuWaHUtEfbmnCc0bOuieszbm9ktFja+YkFLZfkDYxwvJ2+EzNoW40ROtDs4EaQlnuilZxz7AqmTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ISrhHIqw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741772561;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pFXifyzyx3TlWsPdUelbYNzLeb+XPxEQGzXrwyDafsQ=;
-	b=ISrhHIqwpj04gqbih1dVQnAl01vf7yVF5PGASxhAhPr8imE6ZLdDZ5hDifHmJz3u63o/rP
-	DqP9q3GxJ583chMHqWEmdpFtXOo6TWBK3b5NIKXekNlqSCaoRrQQctbkkjWL86dEUXbpDp
-	xsx1jnfQ7typtvwq34ptB7Ao1AJvDIA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-322-kbxyOEFjOs6zsa0RQKR9_Q-1; Wed, 12 Mar 2025 05:42:40 -0400
-X-MC-Unique: kbxyOEFjOs6zsa0RQKR9_Q-1
-X-Mimecast-MFC-AGG-ID: kbxyOEFjOs6zsa0RQKR9_Q_1741772559
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43cf172ff63so18578625e9.3
-        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 02:42:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741772559; x=1742377359;
+	s=arc-20240116; t=1741775125; c=relaxed/simple;
+	bh=Unfz1ynURXV9SA2ejF3GQ3Q6+tUVGg7jYvNl4Map2A0=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=awlmyM8Cey2IXz1pHL7Ac4LNjrs2dJy0EQsdqID+i3QvdRtheggo+xj7qTSzbE3lMeW4WYgLWMCVL0UyfWLfd6f/pOEZHCAO+BPWZU9YFY+oAMQ/rCU5nyXlZ+V939Wvz4e/v/xtJTsPOo0AtIIJmH+4yJXGnZAuLr0H5JZYh8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zxq98kiv; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5499c8fa0f3so3825095e87.2
+        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 03:25:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741775121; x=1742379921; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LlX1NLJXe80SJDubntfI8UzjC6gvn5HCizGdqCjTtb0=;
+        b=Zxq98kiviaGcFWtJrCDhhy8FGR6cqLjRK8976JYcc3M+g2rFz0GGUL89MN0pUVI92A
+         kSDGzk8L2FelmFU/pamecVLjfsGmcAsQZs7cfaZ7qVorYJ4jZ++rjoC0scUeZYIWIS/w
+         352CUhW7Qw+lG6jJNCKbBNtiThVcs4IBmE5HX9148jIbZqzxv9OxuePLv7trXvYnqRfZ
+         C+l2H6tgFirxPcUqArFopjx7MMNcRKTwBEkH83kk3kjuUNhsmahCkE/S5c9ikAeT7efO
+         oFkFij0cRoCgjqPeS4XqRX6gbIOE3NafXXA9LYXmvmyitPdxXY2C4aiCT+5P3uVLlzJP
+         a3oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741775121; x=1742379921;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pFXifyzyx3TlWsPdUelbYNzLeb+XPxEQGzXrwyDafsQ=;
-        b=tFSNCa/39tsGWvRSJ6T69Aj7pg07/xAwLDiE3lx0FcC6aH7Z4fn5DhHdCGf8rJGfY6
-         QZMr4ZlSMvNuinuYGu18cN9lZ/Eofi6JGKo4Pni5YZKRZ8N5Wpjzxum640Ujd7KpUcfa
-         ZF2xft0o9ee/U5htPnX/sf0s+n/FQSI5yp8/VupNwazvSByYgO/qKMrWA5/Ogh2KRkAp
-         vIlV7DFagPyEAu/tvIXAuhVaDct6wJabZQRcDVUDeX2pb5bG07hkoIn1QNh7Szf/20Co
-         h6MAQhmy51tNk3wcgXAkpQL3/jTLY0QeQd5auBMmiHpHjiSiCwHJ/ZqF8s6KfCgRUIaw
-         eDXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURw5caqfCUB6CEkih51e0UGjtpWwiWTP4Tj8z6hvj5/7aRNmwwMueJOYk3ibxVwxor/B/UYXY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynZoYoQdxlJzPOHWAigwN7Z911yVb9gJwj4ru/MWdLdxRIZAM7
-	5inqDYuSjLR5Pl593EiI8gzzCPUpHGu/8jf2HbSCnmLFoIDCoIb3x47mgZLxEoaExY5lJv2Guep
-	/NGaJK0ERtpxbUSt6wlv8MjrRC9j0/GgShl2PrxmI1cJvJLTUZP4pSg==
-X-Gm-Gg: ASbGnctobL7L941tD3ou1FQYsGSMI/N771ecerlqjlJ+1Pb5ubjwlZOhwzns8RLkn9c
-	mZL+DzQ8h5A0yLecSIrax6wIlG8HOwHZhJWRjC/9wl225IpTqzxhdzkfgrJ/LnSer8rHTIzPcOR
-	+hVf+lU+lSS9NWhiVQG2RQS7aIzQFdqjYmWYB6WrGQIACGSbHwZOzzLeCQXZosg/i9LodPL+oFV
-	WTtRdmshjTpUmFqxubdy+QYVafU0nXWS0BLxCxqVH19l9n4pX0qiYnEwH5wwIgKrq00La6tuTeq
-	2V4kSXKYeIqCJsk/YldbII9jE0qMba8NE4fReFxgIE4=
-X-Received: by 2002:a05:600c:1548:b0:43c:f81d:34 with SMTP id 5b1f17b1804b1-43d01bdbc0cmr60348285e9.9.1741772559298;
-        Wed, 12 Mar 2025 02:42:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGIyoWUS2iyHpblJuK/FyfuGkvyqkX/245cGSIo/CYaKp2qCmaR23bGtQM/hs3jXJSEjN8Q1g==
-X-Received: by 2002:a05:600c:1548:b0:43c:f81d:34 with SMTP id 5b1f17b1804b1-43d01bdbc0cmr60348045e9.9.1741772558886;
-        Wed, 12 Mar 2025 02:42:38 -0700 (PDT)
-Received: from jlelli-thinkpadt14gen4.remote.csb ([151.29.49.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c101febsm20045598f8f.81.2025.03.12.02.42.37
+        bh=LlX1NLJXe80SJDubntfI8UzjC6gvn5HCizGdqCjTtb0=;
+        b=gNjXraOFD/SF9S+PAgBMbVh1AHrwXXK6ZFaZIImdd+jw64bzfMQKthsH12xfw6bOn+
+         vG9QaARAmZzsCr963PObwxjDqeWZ6ufUrTx9O5GtPN9xYzxF6qaJ2sZtaTCZ6ULLqbZ/
+         noeVqc/33BcBWG2vx/6+yiTaaGJbBO/Km3kYhfIxYEnbFwi2AINmDwPPrG/+GsSaBgKD
+         lxPX9hVw3VSd2y1ESKVXLFOWVuPYoRrcIecJBjuy/WWD7z5gNHNnhAIjiJyXhTmqHNZ0
+         9Fs5BOxueLdX7LrB1LKavRdn/ZTIDf4ddm6H+LCpB/aZjZO9VGsuoFN27ceZ9mbWvo3D
+         lyNw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRmzMgVNoJuKW2Nd2CMCPAgEgfwINFOEYD5OZ1F0lXbMC4VUzn6qg4ugCXM7EVdiq4/fGLlzA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztpjFj59tiVfzdRANe63j2eL4J5T0wvfmODL/pIDu18Pq96M37
+	g7eLTtb9j6UmN/vk1bC98HOUfxMWJX/JJWP7egTLPxjnsIaYRIZAZ8M5PQ==
+X-Gm-Gg: ASbGnctezN0IDFYseJnG42YZeOvXyf9Hd4XRitjtgXgCnBAjJ5sr6DPlW70U/PRoOhV
+	WPwhzylxh3MrIx+xYDR8EAY3kmwUBduEKp479yvzJLn3yB383jN/Qm0NCS8xvlXE79k/wWEBgcy
+	daZ6c/kZ65alpvc+0zgkl2jJeaZ1H4mFddcChveTji15zqMNVSly5JCjDzF1PwYznMbUwJfDnqd
+	DFsFuN+Q7nR3UKLDJJhGuQH8znC2Yd6DWNEUkZg4ONnzyEG98E+tEbP0OwsuwsrIoPkSRWOjs8X
+	AGDgfohLA5TnpP9VMV+uhZfrJ0uOHTdX8IPionQmGTCVO2G9T53z0jdr+3ZnisSb/1tyEzrcz+U
+	e/w==
+X-Google-Smtp-Source: AGHT+IEf9XregvYnDUx0UtYmF2K5WZwbHVucxvDpJ8M2cxcVwkzVRDh0jjeYSqRiIjFHCeJZAV286g==
+X-Received: by 2002:a05:6512:1112:b0:549:4f0e:8e28 with SMTP id 2adb3069b0e04-54990e5d374mr8343973e87.15.1741775121064;
+        Wed, 12 Mar 2025 03:25:21 -0700 (PDT)
+Received: from pc636 (host-95-203-6-24.mobileonline.telia.com. [95.203.6.24])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498fc0ac2asm1909625e87.192.2025.03.12.03.25.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 02:42:38 -0700 (PDT)
-Date: Wed, 12 Mar 2025 10:42:35 +0100
-From: Juri Lelli <juri.lelli@redhat.com>
-To: Harshit Agarwal <harshit@nutanix.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] sched/deadline: Fix race in push_dl_task
-Message-ID: <Z9FXC7NMaGxJ6ai6@jlelli-thinkpadt14gen4.remote.csb>
-References: <20250307204255.60640-1-harshit@nutanix.com>
+        Wed, 12 Mar 2025 03:25:20 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Wed, 12 Mar 2025 11:25:18 +0100
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, stable@vger.kernel.org,
+	Oleksiy Avramchenko <oleksiy.avramchenko@sony.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>
+Subject: Re: [PATCH 6.13.y] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
+Message-ID: <Z9FhDk-svRFNBFGR@pc636>
+References: <20250311165944.151883-1-urezki@gmail.com>
+ <96e93e70-0d60-4ec4-a111-9eab58e8b3f9@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,82 +92,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250307204255.60640-1-harshit@nutanix.com>
+In-Reply-To: <96e93e70-0d60-4ec4-a111-9eab58e8b3f9@suse.cz>
 
-Hi Harshit,
-
-Thanks for this!
-
-On 07/03/25 20:42, Harshit Agarwal wrote:
-> This fix is the deadline version of the change made to the rt scheduler
-> here:
-> https://lore.kernel.org/lkml/20250225180553.167995-1-harshit@nutanix.com/
-> Please go through the original change for more details on the issue.
-
-I don't think we want this kind of URLs in the changelog, as URL might
-disappear while the history remains (at least usually a little longer
-:). Maybe you could add a very condensed version of the description of
-the problem you have on the other fix?
- 
-> In this fix we bail out or retry in the push_dl_task, if the task is no
-> longer at the head of pushable tasks list because this list changed
-> while trying to lock the runqueue of the other CPU.
+On Tue, Mar 11, 2025 at 09:33:38PM +0100, Vlastimil Babka wrote:
+> On 3/11/25 17:59, Uladzislau Rezki (Sony) wrote:
 > 
-> Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
-> Cc: stable@vger.kernel.org
-> ---
->  kernel/sched/deadline.c | 25 +++++++++++++++++++++----
->  1 file changed, 21 insertions(+), 4 deletions(-)
+> The first line of the changelog needs to say:
 > 
-> diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-> index 38e4537790af..c5048969c640 100644
-> --- a/kernel/sched/deadline.c
-> +++ b/kernel/sched/deadline.c
-> @@ -2704,6 +2704,7 @@ static int push_dl_task(struct rq *rq)
->  {
->  	struct task_struct *next_task;
->  	struct rq *later_rq;
-> +	struct task_struct *task;
->  	int ret = 0;
->  
->  	next_task = pick_next_pushable_dl_task(rq);
-> @@ -2734,15 +2735,30 @@ static int push_dl_task(struct rq *rq)
->  
->  	/* Will lock the rq it'll find */
->  	later_rq = find_lock_later_rq(next_task, rq);
-> -	if (!later_rq) {
-> -		struct task_struct *task;
-> +	task = pick_next_pushable_dl_task(rq);
-> +	if (later_rq && (!task || task != next_task)) {
-> +		/*
-> +		 * We must check all this again, since
-> +		 * find_lock_later_rq releases rq->lock and it is
-> +		 * then possible that next_task has migrated and
-> +		 * is no longer at the head of the pushable list.
-> +		 */
-> +		double_unlock_balance(rq, later_rq);
-> +		if (!task) {
-> +			/* No more tasks */
-> +			goto out;
-> +		}
->  
-> +		put_task_struct(next_task);
-> +		next_task = task;
-> +		goto retry;
+> commit dfd3df31c9db752234d7d2e09bef2aeabb643ce4 upstream.
+> 
+> I think Greg prefers if you resend with that fixed rather than fixing up
+> locally.
+> If the same backport applies to both 6.12 and 6.13 (it seems to me it does?)
+> I guess a single mail with [PATCH 6.12.y 6.13.y] could be enough.
+> 
+Thank you. I will make one for both kernels.
 
-I fear we might hit a pathological condition that can lead us into a
-never ending (or very long) loop. find_lock_later_rq() tries to find a
-later_rq for at most DL_MAX_TRIES and it bails out if it can't.
+> > Apart of that, since kvfree_rcu() does reclaim memory it is worth
+> > to go with WQ_MEM_RECLAIM type of wq because it is designed for
+> > this purpose.
+> > 
+> > Fixes: 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
+> > Reported-by: Keith Busch <kbusch@kernel.org>
+> > Closes: https://lore.kernel.org/all/Z7iqJtCjHKfo8Kho@kbusch-mbp/
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> > Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+> > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> 
+> I don't know if you need to add another
+> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> 
+> opinions on that differ and not sure where stable stands...
+> (does "git commit -s" add it or detects your previous one?)
+> 
+"-s" IMO should add it. But i will check.
 
-Maybe to discern between find_lock_later_rq() callers we can use
-dl_throttled flag in dl_se and still implement the fix in find_lock_
-later_rq()? I.e., fix similar to the rt.c patch in case the task is not
-throttled (so caller is push_dl_task()) and not rely on pick_next_
-pushable_dl_task() if the task is throttled.
+Thank you for the comments!
 
-What do you think?
-
-Thanks,
-Juri
-
+--
+Uladzislau Rezki
 
