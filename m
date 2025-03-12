@@ -1,121 +1,139 @@
-Return-Path: <stable+bounces-124125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7C1A5D7A4
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 08:55:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CF8A5D7C7
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:05:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82E827A48FD
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 07:54:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7099F3B6758
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 08:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B153922D7BB;
-	Wed, 12 Mar 2025 07:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC68823026F;
+	Wed, 12 Mar 2025 08:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AY8CV2/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQVDBwg5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDBE22D7A3
-	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 07:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBD11E260A;
+	Wed, 12 Mar 2025 08:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741766106; cv=none; b=d5cusMUZkU//3QWo63rwN4d6cZVtznXzNyAm4JcrLIU44Dmj2bj59jCWhZo3LdfzAenVBMT4lB6nJ5uZoaDXxV5hiAZfBk/mmfxTHnrOE98YxARHY24pnnmTqX9mb8hx7QXBx3NqGHa1rObtmb3lm+eqDIXxoaW4QSmbizps+Mo=
+	t=1741766742; cv=none; b=c+elSZ1/wswdey2QqpnE5M8GGUvm9q5rTpDom1HvknWMGIcTPHQ9uMAG5gAN8byDX5B+ihpzQHFsB2LQ8hs3WOgsoaoL6+LI6+Vh2nSEgpeDf2wsqkKz0YTsrMACicGD0AA2wYQUnQw7Nr7Inpr44yYV66NeynXhaplBw9MdGss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741766106; c=relaxed/simple;
-	bh=h2yszBlft9w0W0lfus/BAbnguOtEljz4K6kpAn+dE70=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZtvkDNTE8+fxDWSlGxOKnz4y+//2GN0NRtXjxPsZoixTAXjb97COsi9jFmdowEkoLY52aD1rWfG5dmD+hUOKnAScfiGSoCxjrcjjjCmQYep+HzB20ZOhnNvq/Dx+M1wiM5/mVfnOqwJmIXnCk+0YtxbBmbfqe0mmF5BoZrJ1/W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AY8CV2/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83F9C4CEED
-	for <stable@vger.kernel.org>; Wed, 12 Mar 2025 07:55:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741766105;
-	bh=h2yszBlft9w0W0lfus/BAbnguOtEljz4K6kpAn+dE70=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AY8CV2/fMlIHAexCGnBZw4yj3ipiYhHku/2qLmxQwQ7r0dvTcqD5xTDL4EJsmcYYF
-	 jFrmBauXiq9FzheLF2gTgPiEDo+6GOyY6wNS6pGoT702eohXpVFGvXvxJGkMhmysG6
-	 f8ZtljS4C/FL6fe8LrIliQ9oBDpkX3i1jbaToUNIS41t3dCUQzs2k5X/61vELANECE
-	 Z9sF3xZjlsHI//mvtF3BRTQye3LxoBSfSU0FWB5Wpfy+4xidOxzq4rllKEw6BiJ3c/
-	 cFXjm9vUYNPfXPiOkl+hU0zJNGQ69magRogteRLgjmkZ/HLMsQoN/JGHu1iYPgydbG
-	 MGYAVwdpbnBGQ==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-30bf5d7d107so50373091fa.2
-        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 00:55:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXy6agoPk2jXxX3Ev+2a2EeoJSaNvBIy/ROOSa1AO/VL2RaVfF2zUhTbisOH/A4gio5kyRB6j0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7MD2BL6C3wZfPEknNqzxTyUpd3Zubu0gxTWZAAAmxyA9sBiA6
-	Dg0V9imyNQgO/chuaxuXk6A7SWab1DkpkwSvkGLyjoj0Ekzc5gnR4jQ1rJs4lVmagAjC3jYyDOa
-	rIJaBgQfYVTmN68szQLvwrDieAL8=
-X-Google-Smtp-Source: AGHT+IFQ9XrHjp2gqV9ob8Y0l00i8VsXk764ENJISMUi1IJeoLCF6/rUtyL/LZti+kXAsAL+VHMhtP1EVbAQVf89W4w=
-X-Received: by 2002:a2e:a78a:0:b0:30c:2e21:9958 with SMTP id
- 38308e7fff4ca-30c2e219ca6mr10528511fa.32.1741766104260; Wed, 12 Mar 2025
- 00:55:04 -0700 (PDT)
+	s=arc-20240116; t=1741766742; c=relaxed/simple;
+	bh=8joOwn5zgiw6PMnPjafoawE85VlA/Bqip/RwXux5d00=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zf6cj/RW2HYn7XCFynDcw+/d2cauoM+5m1gmwlxYsmHV5XiC9rfLvpq03OGd3utP3hRRm/wLfHKMZDiFIm5sWLSnWwaUwUmVtb4iXhQHY9il78ksUERZKZpH5MerDnMdFg0rq589pbNOX1BRo4uLBdNcKagWW69umqBsR6Pcet4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQVDBwg5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837D4C4CEE3;
+	Wed, 12 Mar 2025 08:05:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741766742;
+	bh=8joOwn5zgiw6PMnPjafoawE85VlA/Bqip/RwXux5d00=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NQVDBwg5iEVDhtkWC50lnaozSMDr9NaEmowQ42RDRSdW7i7BwcygKZXzGPCZYC1wB
+	 vBCNKsKQThv5tdJTT42HxwAXUMyFCCMdPdwj1PV6bqjMIqJiXEMAmCgeXARrAhFk74
+	 E0UOxBZsX9QPMOoB4OTvT4pZOaql/JBJEEjOF8qg=
+Date: Wed, 12 Mar 2025 09:05:39 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Florian Fainelli <f.fainelli@gmail.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.4 000/328] 5.4.291-rc1 review
+Message-ID: <2025031226-translate-resisting-f989@gregkh>
+References: <20250311145714.865727435@linuxfoundation.org>
+ <0f5c904f-e9e3-405f-a54d-d81d56dc797e@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213142440.609878115@linuxfoundation.org> <20250213142444.044525855@linuxfoundation.org>
- <c4a1af46f7edcdf20274e384ec3b48781a350aaa.camel@infradead.org> <2025031203-scoring-overpass-0e1a@gregkh>
-In-Reply-To: <2025031203-scoring-overpass-0e1a@gregkh>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 12 Mar 2025 08:54:52 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXH6oWVkUeU6+JYCuarzc5+AQxfyBzehfmLFRdKXg86qaA@mail.gmail.com>
-X-Gm-Features: AQ5f1Jpdj6vU0gsVURehdCeS-elQRRDPafyIXk8k4SqEihBGm8ZJNnumXX6NTzQ
-Message-ID: <CAMj1kXH6oWVkUeU6+JYCuarzc5+AQxfyBzehfmLFRdKXg86qaA@mail.gmail.com>
-Subject: Re: [EXTERNAL] [PATCH 6.13 089/443] x86/kexec: Allocate PGD for
- x86_64 transition page tables separately
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: David Woodhouse <dwmw2@infradead.org>, stable@vger.kernel.org, patches@lists.linux.dev, 
-	Ingo Molnar <mingo@kernel.org>, Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, 
-	Dave Young <dyoung@redhat.com>, Eric Biederman <ebiederm@xmission.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0f5c904f-e9e3-405f-a54d-d81d56dc797e@gmail.com>
 
-On Wed, 12 Mar 2025 at 08:47, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Mar 11, 2025 at 04:45:26PM +0100, David Woodhouse wrote:
-> > On Thu, 2025-02-13 at 15:24 +0100, Greg Kroah-Hartman wrote:
-> > > 6.13-stable review patch.  If anyone has any objections, please let me know.
-> > >
-> > > ------------------
-> > >
-> > > From: David Woodhouse <dwmw@amazon.co.uk>
-> > >
-> > > [ Upstream commit 4b5bc2ec9a239bce261ffeafdd63571134102323 ]
-> > >
-> > > Now that the following fix:
-> > >
-> > >   d0ceea662d45 ("x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables")
-> > >
-> > > stops kernel_ident_mapping_init() from scribbling over the end of a
-> > > 4KiB PGD by assuming the following 4KiB will be a userspace PGD,
-> > > there's no good reason for the kexec PGD to be part of a single
-> > > 8KiB allocation with the control_code_page.
-> > >
-> > > ( It's not clear that that was the reason for x86_64 kexec doing it that
-> > >   way in the first place either; there were no comments to that effect and
-> > >   it seems to have been the case even before PTI came along. It looks like
-> > >   it was just a happy accident which prevented memory corruption on kexec. )
-> > >
-> > > Either way, it definitely isn't needed now. Just allocate the PGD
-> > > separately on x86_64, like i386 already does.
-> >
-> > No objection (which is just as well given how late I am in replying)
-> > but I'm just not sure *why*. This doesn't fix a real bug; it's just a
-> > cleanup.
-> >
-> > Does this mean I should have written my original commit message better,
-> > to make it clearer that this *isn't* a bugfix?
->
-> Yes, that's why it was picked up.
->
+On Tue, Mar 11, 2025 at 11:38:29AM -0700, Florian Fainelli wrote:
+> On 3/11/25 07:56, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.4.291 release.
+> > There are 328 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Thu, 13 Mar 2025 14:56:14 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.291-rc1.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on
+> BMIPS_GENERIC:
+> 
+> Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> 
+> Please note that "udp: gso: do not drop small packets when PMTU reduces"
+> does cause the following build warning:
+> 
+> In file included from ./include/linux/uio.h:8,
+>                  from ./include/linux/socket.h:8,
+>                  from net/ipv6/udp.c:22:
+> net/ipv6/udp.c: In function 'udp_v6_send_skb':
+> ./include/linux/kernel.h:843:43: warning: comparison of distinct pointer
+> types lacks a cast
+>   843 |                 (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+>       |                                           ^~
+> ./include/linux/kernel.h:857:18: note: in expansion of macro '__typecheck'
+>   857 |                 (__typecheck(x, y) && __no_side_effects(x, y))
+>       |                  ^~~~~~~~~~~
+> ./include/linux/kernel.h:867:31: note: in expansion of macro '__safe_cmp'
+>   867 |         __builtin_choose_expr(__safe_cmp(x, y), \
+>       |                               ^~~~~~~~~~
+> ./include/linux/kernel.h:876:25: note: in expansion of macro '__careful_cmp'
+>   876 | #define min(x, y)       __careful_cmp(x, y, <)
+>       |                         ^~~~~~~~~~~~~
+> net/ipv6/udp.c:1144:28: note: in expansion of macro 'min'
+>  1144 |                 if (hlen + min(datalen, cork->gso_size) >
+> cork->fragsize) {
+>       |
+> 
+> we need a more targeting fix for 5.4 which replaces the use of min, with
+> min_t:
+> 
+> diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+> index 58793dd7ac2c..db948e3a9bdc 100644
+> --- a/net/ipv6/udp.c
+> +++ b/net/ipv6/udp.c
+> @@ -1141,7 +1141,7 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct
+> flowi6 *fl6,
+>                 const int hlen = skb_network_header_len(skb) +
+>                                  sizeof(struct udphdr);
+> 
+> -               if (hlen + min(datalen, cork->gso_size) > cork->fragsize) {
+> +               if (hlen + min_t(int, datalen, cork->gso_size) >
+> cork->fragsize) {
+>                         kfree_skb(skb);
+>                         return -EMSGSIZE;
+>                 }
+> 
+> Thanks!
 
-The patch has no fixes: tag and no cc:stable. The burden shouldn't be
-on the patch author to sprinkle enough of the right keywords over the
-commit log to convince the bot that this is not a suitable stable
-candidate, just because it happens to apply without conflicts.
+Thanks, that worked!  I'll go make this change to both 5.10.y and 5.4.y.
+
+greg k-h
 
