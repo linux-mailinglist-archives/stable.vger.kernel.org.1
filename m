@@ -1,161 +1,113 @@
-Return-Path: <stable+bounces-124132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1451BA5D90E
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:15:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E40A5D975
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 10:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF00C1895B73
-	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:15:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB801189A754
+	for <lists+stable@lfdr.de>; Wed, 12 Mar 2025 09:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D561239083;
-	Wed, 12 Mar 2025 09:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F4A23A9A3;
+	Wed, 12 Mar 2025 09:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="d96hELNH"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7A41DFE09;
-	Wed, 12 Mar 2025 09:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80126230277;
+	Wed, 12 Mar 2025 09:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741770931; cv=none; b=Bs3YJaEf5iZqzj1aL4bWvmpS6pGJdh/OjbTNY6danM+ZzXKyoyzBDC516DW+4K1YpARNsa59d6o303rO0aErkX0y5vSm3RuI2rmvzvHenz/kUpuZ1+IsCFVQBC5FscJ210aIwnuG1Oe/NlI/R+5PegYQyygTQguY/CkHssMXOCk=
+	t=1741771744; cv=none; b=sGfObdhkq9B09E3EbYojMCzb/sH/KjFsAEaHRnn26LbZMTnjNMjsmH/cFTJvCLfeCP8P6wR9pX7PQVIS2JOCd1e9JFaj3pw6mJH6OyBLYs81+gxVEkNC+0zMs+Wdf457fQn/Ud+CAesBfPddES1/KytShfqAtn6W+mnCy4XpaUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741770931; c=relaxed/simple;
-	bh=l7jMbZfBiFeALlL27WJ4EFhnmaU6KMCEYHn0gqy7FzQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jXSd+w1RPM1eMgn2PE1jfJo6woU2QAemlfq8M4ejcpnO76/Cpm1x5wk74Jv62Nczn335qOBJC/guHBE69ekYu+PQR2Oh82fnp2LdhS3oOs7Mo2iTg3yjZ2sN5bcW7FcXWP8TBhef9XjRt7fcsI0trgFxcEC2fZc9GM74MV1GcQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from localhost.localdomain (188.234.20.53) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 12 Mar
- 2025 12:00:14 +0300
-From: d.privalov <d.privalov@omp.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	<alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, Dmitriy Privalov <d.privalov@omp.ru>
-Subject: [PATCH 5.10 1/1] ASoC: ops: Check for negative values before reading them
-Date: Wed, 12 Mar 2025 11:58:29 +0300
-Message-ID: <20250312085829.52758-1-d.privalov@omp.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1741771744; c=relaxed/simple;
+	bh=QGGV/YWbx/zVlrxU7PHHUEBg8dtLN6tC6kKxzib5JEo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WY24DYwsGMZbVP7ugZDnVThy0ZQNZqQLojuR6jiyR1Tv8zjfDRIVRWgn8O8os4LhZ7znZ8zI7sTn11sl36xlOdKnbkwrosHJ403U4YBflNMYeIWImn9ZQkvVbZ834h++2+0O4bqbVSZ9dKQZY25KHRNsVJrYWmoR9adXN64w42M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=d96hELNH; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 60C3740E021F;
+	Wed, 12 Mar 2025 09:29:00 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id jIkBTKvswBUR; Wed, 12 Mar 2025 09:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1741771735; bh=FBk2izR1CtgXu19+zXVbtRHMC1wmpKFb/kf0ihaVwYo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d96hELNH/h1r8H8NXuJbfD3CoK/YeB14Sqnkrqz9cLbMzWqVvFj4B3VNkyg1v8vOL
+	 DM8GLODmgBJtNDsiVZs7sqxuTolK5icOsNzNCZEjgd/0hX0fj8j15Ga23PruSgHncz
+	 30UqHXFMctjCaT7Rm8V9SI1JpmbRkc2C/blWaye8Qch2MfjL6kjRzXZARNFjRymdzS
+	 sGd4CMd5sblDIjw48SvIoialetDUVUhtB3t/stB04cz8DU/qzY9EAt5vGJEK/lRK/t
+	 WwgBmFWutCwkUs35Ghq5Rw2e6FkfnRumdGnrDpYBa1SNdADK9Cr9WAbMeJhO76K7qF
+	 He8uO38dSUeKFo7p8T6mMvf5b+gjnOZmg/WbLOMihozcyxacpZodyNqRLIUKsW/ht0
+	 ijKYe4P+AooVo4QDgzyzjipIj61H1jJAMBnwA459eUrDhLK9TH4/9VwiunLkUV1kVK
+	 vrduPLYkiiQVcyrfX34O6Ld5mRnKWl40OkAwsjqaLTDFKPecPggebNqZhkngJFDE1h
+	 42tgTATFoXhhw1yrLColE5XdVXGDCgIw3MuHyhDviKQuJxmVabwLzs18/JD6iV4m7l
+	 pYy1edslY6fkyu+fP+iCy4VmWZBl6VygE0Uq6Gb0I17pPEnSqAdPKEwWEmHe7y4lC1
+	 yVnMONgorYrxHf1ikLtINdc8=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 249C840E0219;
+	Wed, 12 Mar 2025 09:28:42 +0000 (UTC)
+Date: Wed, 12 Mar 2025 10:28:33 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	Ingo Molnar <mingo@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uros Bizjak <ubizjak@gmail.com>, stable@vger.kernel.org,
+	Fangrui Song <i@maskray.me>, Nathan Chancellor <nathan@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH] x86/stackprotector: fix build failure with
+ CONFIG_STACKPROTECTOR=n
+Message-ID: <20250312092833.GAZ9FTwUz_avVwL6CT@fat_crate.local>
+References: <20241206142152.GB31748@redhat.com>
+ <CAMj1kXGo5yv56VvNMvYBohxgyoyDtZhr4d4kjRdGTDQchHW0Gw@mail.gmail.com>
+ <CAMzpN2iUi_q_CfDa53H8MEV_zkb8NRtXtQPvOwDrEks58=3uAg@mail.gmail.com>
+ <CAMj1kXF8PZq4660mzNYcT=QmWywB1gOOfZGzZhi1sQxQacUX=g@mail.gmail.com>
+ <20250310214402.GBZ89dIo_NLF4zOSKh@fat_crate.local>
+ <CAMj1kXEK0Kgx-C8sOvWJ9rkmC0ioWDEb+tpM9BTeWVwOWyGNog@mail.gmail.com>
+ <20250311102326.GAZ9APHqe5aSQ1m5ND@fat_crate.local>
+ <CAMj1kXHTLz4onmR5iyowptRE38RCK4jNT3BoURBkq2FoDOMTxQ@mail.gmail.com>
+ <20250311112112.GEZ9AcqM2ceIQVUA0N@fat_crate.local>
+ <20250311131356.GGZ9A3FNOxp32eGAgV@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 03/12/2025 08:41:23
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 191694 [Mar 12 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: d.privalov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 51 0.3.51
- 68896fb0083a027476849bf400a331a2d5d94398
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info:
-	lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 188.234.20.53
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 03/12/2025 08:44:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 3/12/2025 6:37:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250311131356.GGZ9A3FNOxp32eGAgV@fat_crate.local>
 
-From: Mark Brown <broonie@kernel.org>
+On Tue, Mar 11, 2025 at 02:13:56PM +0100, Borislav Petkov wrote:
+> On Tue, Mar 11, 2025 at 12:21:12PM +0100, Borislav Petkov wrote:
+> > Yap, that fixes the build:
+> 
+> Lemme run randbuilds with that one, see what else breaks with it.
 
-commit 1601033da2dd2052e0489137f7788a46a8fcd82f upstream.
+Yeah, looks good.
 
-The controls allow inputs to be specified as negative but our manipulating
-them into register fields need to be done on unsigned variables so the
-checks for negative numbers weren't taking effect properly. Do the checks
-for negative values on the variable in the ABI struct rather than on our
-local unsigned copy.
+Pls send a proper patch.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20220128192443.3504823-1-broonie@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Dmitriy Privalov <d.privalov@omp.ru>
----
- sound/soc/soc-ops.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Thx.
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index a83cd8d8a9633..a1087dfee532d 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -316,26 +316,26 @@ int snd_soc_put_volsw(struct snd_kcontrol *kcontrol,
- 	if (sign_bit)
- 		mask = BIT(sign_bit + 1) - 1;
- 
-+	if (ucontrol->value.integer.value[0] < 0)
-+		return -EINVAL;
- 	val = ucontrol->value.integer.value[0];
- 	if (mc->platform_max && ((int)val + min) > mc->platform_max)
- 		return -EINVAL;
- 	if (val > max - min)
- 		return -EINVAL;
--	if (val < 0)
--		return -EINVAL;
- 	val = (val + min) & mask;
- 	if (invert)
- 		val = max - val;
- 	val_mask = mask << shift;
- 	val = val << shift;
- 	if (snd_soc_volsw_is_stereo(mc)) {
-+		if (ucontrol->value.integer.value[1] < 0)
-+			return -EINVAL;
- 		val2 = ucontrol->value.integer.value[1];
- 		if (mc->platform_max && ((int)val2 + min) > mc->platform_max)
- 			return -EINVAL;
- 		if (val2 > max - min)
- 			return -EINVAL;
--		if (val2 < 0)
--			return -EINVAL;
- 		val2 = (val2 + min) & mask;
- 		if (invert)
- 			val2 = max - val2;
-@@ -429,13 +429,13 @@ int snd_soc_put_volsw_sx(struct snd_kcontrol *kcontrol,
- 	int err = 0;
- 	unsigned int val, val_mask, val2 = 0;
- 
-+	if (ucontrol->value.integer.value[0] < 0)
-+		return -EINVAL;
- 	val = ucontrol->value.integer.value[0];
- 	if (mc->platform_max && val > mc->platform_max)
- 		return -EINVAL;
- 	if (val > max)
- 		return -EINVAL;
--	if (val < 0)
--		return -EINVAL;
- 	val_mask = mask << shift;
- 	val = (val + min) & mask;
- 	val = val << shift;
 -- 
-2.34.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
