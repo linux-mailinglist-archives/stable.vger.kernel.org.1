@@ -1,174 +1,86 @@
-Return-Path: <stable+bounces-124351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428EDA5FFE8
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 19:47:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2611A60024
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 19:55:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F30E919C5BB1
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 18:47:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8D3B7AD91B
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 18:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D261F03C2;
-	Thu, 13 Mar 2025 18:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7201EF099;
+	Thu, 13 Mar 2025 18:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xgll2/B1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGtrWUW/"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C961EF099
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 18:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73F11F0E48;
+	Thu, 13 Mar 2025 18:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741891638; cv=none; b=f8vyz/L2dDD7lXj73UdU7Af8xxSs6r0CuBqIy1XAA9LjYmSFnjZp43WUZ2my3WNRQUFkFFxUNERsK0S/bnOGL+gTUh+psaMmxkQ0CA55Z9mxxqnj1/LIfVnxnMo31lnjmx28m5H5VZuWHf49l0+n9jnYwbPk9cqpvMhZQWjKGLM=
+	t=1741892108; cv=none; b=AawFkUL/FiNwA4agP9ZUuIxb+EebfBRfu/Yf/p4L+3pOou9S6g0J9VHEh4n4o1qm3ZQL4PJbYyi4ech1syYDJQIsDPoWPFHh7HDldTtCCuloy+Q6WLk7HJY0uAodtSPM7hyXSmOHkF9ABKDoVknVnXjiRuM6AUxqRDNLN24lWZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741891638; c=relaxed/simple;
-	bh=1Wj0bufZ7EjYi7U/RFgZ/s0fjo6rJSEGTvGZw1CTU4M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r140GXX20ehOU4tjMhtRK9wUeDgfyrDDd5rM4iNnlTjK31Y/5UAwqASv/Vfgn/X/bn7kEpvI0hBi7iUoWkdpvS4NTwduS5T+DQxYBtTzmTx20yYGm/MVNrDRbGei9l1GyWzVXiB4cZczJBaFKVddcRPpbpdpw1YxNkdqxo8lOZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xgll2/B1; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741891636;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1GojteExoK1LwIk/yNQWtkCvbvibA9jZBZEt4xD5tPU=;
-	b=Xgll2/B1yB8kpwaPlhSbGd4G06xr+qBgY2Vc++chuBOZLxQGM/yzgbqIIVKL4jirZReOD4
-	rjdvg/MixzUYITCLPWyHhDFWrEdTjVS3xaUqqei3ZfDcOl8JKNnJa0cxr5y46QT55GW3U+
-	p0Td6Iwhg4uIARQ9VQTcOhGDsosoeSQ=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-411-TxawA0tONxye4p4ktHXcCA-1; Thu, 13 Mar 2025 14:47:14 -0400
-X-MC-Unique: TxawA0tONxye4p4ktHXcCA-1
-X-Mimecast-MFC-AGG-ID: TxawA0tONxye4p4ktHXcCA_1741891633
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-ab39f65dc10so146596266b.1
-        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 11:47:14 -0700 (PDT)
+	s=arc-20240116; t=1741892108; c=relaxed/simple;
+	bh=qXvwKTD2I1uFx9G1b72YzsT0pPXLzjbATobXsUry+ys=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=LvCYmVgxrc+1HtIka1Vz+ITAdcoqjR3VnzxGg3ycJlfG91Tw99xRN6vw91tAv+zJFmVr0Pu8sEOj2VWpK/v45iYJKrUylQPpIYeSrmjg0Cy3V0aK/GQgItQ+tA/rs2E1A73YzBKjZHq1p4d2xhftg4hHFZMEhrDtMRDwNyASSbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGtrWUW/; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6fda22908d9so10255237b3.1;
+        Thu, 13 Mar 2025 11:55:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741892105; x=1742496905; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qXvwKTD2I1uFx9G1b72YzsT0pPXLzjbATobXsUry+ys=;
+        b=bGtrWUW/9BEthlHyIJ//X6aaEGtJJRXrQDd4ezszvTCNuKwAJFf1xsWm5U6U6K3jNG
+         2PJqfQTkuTU2tih7CrmBsz8jw1+dO7WJW0jyG2RNGuH1pfYSIktwslowWKD4SUEK3+Fw
+         Srww6yLcE1WPCZ4QwcgnMcuqZDoZrQaQFVEwfLR7kgkzfYNLsPZXswVcrHG7W5+yrc0L
+         bfDRRm3LT4o4p2aWfj0MHxGmjq2m1eqLSg0Qibdu+z07ibU130Ih7ZlLaA/FMQej+2tw
+         WDsGQP/RL7ObweyLxbEAEB1E4qUhC6Gbia+1yzUXeWzspoB0SnUe7yliLj2nnJCgC9i+
+         PTcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741891633; x=1742496433;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1GojteExoK1LwIk/yNQWtkCvbvibA9jZBZEt4xD5tPU=;
-        b=fCbiCUkDarF03mf1j8pIxiYK2z5F/YPigryY0O33T8xntSynYb4J7S+SFBGk789a59
-         dcvXDi5FqnzPXeRI0u0ff4SbaJDIM4/3bpa+q7T29Vwb/zuSD61x8hAixd7UldGn8MYG
-         ssPEq0Mmv7IiOlHaB2Z7UxRIyL2oriP/PSa01cwW1gikrtw92CJRFTtF/gcJwfnrsCpM
-         6a5V25uNeGLSBbsfiAYOMAeP2kxB3Xpi9P9IZ5rM5cqMWgDYpQXGnLiapqvuGZsFISa0
-         ekFEawTsMTpzemUE1WpUZ6AHsZ+THHC+WHOMpAHn5KGq4DlmZrvObWI5ggPlfG5fGyp8
-         lysg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWBoguglbzdMIhXN1D+BkYwZ2NRH5sO43Uv9ezETSX0dmPAjKf9JZSrX/J5hEZbSw3xITrGFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyb/8Ayeu6jkzGRtOjX2fe0zQ6gcJJKW9C6hwzPlnBCUnh2sG3c
-	tbVYLKlzoSULrxb0VG5ZnjcIANrnM/kxRQ33ywuPh454CsUqHkOhdsm6WxPmNJyBXa+dsRe1QG1
-	pns+Iop4EYTbmyetykbgq2hs/zxHNXGqGtc/A5v5CaFYs52JSerhPXA==
-X-Gm-Gg: ASbGncsVNn+4aomK1pblQRMikJnI+bWbTmkhpUnsUqyfcEfumxhnaOwHN5+ZRjjTMmY
-	Ri8Q1WU0Qf1asYmEr3gpb247RSmsoh1o2nI4UdnQILsOuSnrUKWClJSX/ISEJ7/soEkHbOLbTNA
-	UDYhGRHM+q6+JdX3+3IReE1xZMeM2YgZDMI9mQfzP9t3w0If8LFN+LyaSUDkOvEsg/yZN+gK9T3
-	z6LZ+K2oIHor35wwBpVtXmijIZgzR2zAgtljvaUBjLRxPSTQQyMp8BLDlut8SyNYqC/wNEwMmBf
-	M4ktGQ5LORX4hkiiUE5DUJGxepS4OER4DTTDCMIeCsk7Hdxm9VL0eMOGBNqCtjBPHdJPW2a8DJ8
-	WdeUj6NO7l8SsTDChFXvQKG80qMQw7SZAeH+Jrhl5KalNMACTt4D6a/aPywFSKA8ESg==
-X-Received: by 2002:a17:906:f59d:b0:ac2:8428:c5c2 with SMTP id a640c23a62f3a-ac328fbd7a2mr59818066b.20.1741891633359;
-        Thu, 13 Mar 2025 11:47:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF200838Q9PH//rlXMgJcC7gCBuHjGntLC+HFTNJDzLV0/czimB9kN73ACIsQRgz1KoSS/F/Q==
-X-Received: by 2002:a17:906:f59d:b0:ac2:8428:c5c2 with SMTP id a640c23a62f3a-ac328fbd7a2mr59815866b.20.1741891633001;
-        Thu, 13 Mar 2025 11:47:13 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac314a48b51sm112898266b.149.2025.03.13.11.47.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Mar 2025 11:47:12 -0700 (PDT)
-Message-ID: <6d125c69-35b2-45b5-9790-33f3ea06f171@redhat.com>
-Date: Thu, 13 Mar 2025 19:47:11 +0100
+        d=1e100.net; s=20230601; t=1741892105; x=1742496905;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qXvwKTD2I1uFx9G1b72YzsT0pPXLzjbATobXsUry+ys=;
+        b=BczscUt5crgjKYWvqPXOFQLkVav6rD1eyjVQZqc0DeLRUDDPzau7g8+SyHqxW/kK85
+         H32XBhm4950TiL6ICaMeWnV2hN0Cwg8ljIu/UVBiB29lwtoLh33yUE4j0chJ4CEAinao
+         gPpL/3KiCrGtIFHws74fGcUVYccMTd2ClZiXSxjUEc6i/WRjQsMcy+tzbJ4aMJNA8Jwl
+         qRSxdw/zUOx8QEvbG1a7hztEy6sCsFf2GTawhrwGGx1APSw83jwr7C1V7Rwe9C6KVbQ+
+         Z2Xl227xdYaGQaXtp70M80KG9qC85aNUGdfIpc2lEdQdV2X+MbmGwzthNEKl6Z/8QS0t
+         XcNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWO2ORJqPP0XxspcRYQ8TBOLJXZSkY4RNpivEr7QbVRg+0nC2Y917oGWIoUZqi4L3mi+0cMKdkBpCyttQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIj7557+NfahpQEcwqfXDb8+RuJAvJXBPgw2wv1G2XM3IrBXWl
+	2AhRoN7jTC0c2+BAAuUu8ptS0zb/oN1sN8pwfIT2tl00+71C2dUN36j8IjBz6YW8gpmXusCjsXn
+	j8yXIx6qpP5NcomvHkBwjJJ9CYY3f8/g7NLo=
+X-Gm-Gg: ASbGncuT1RyjgKooFupHjlNYAxdR4ReDUD8z2CDc8qdEJ4v3/042xJr4QFZhVYuDr1w
+	mWlqLdQnBrtcvJs/cT+0ZY49pE8rU3mmP2BOLgokoO312/Zf+UlmCqXEtqWoGoKdbdA7IphqsHm
+	qeHFaBZEsvNLBw3VD/O2y6cXHP
+X-Google-Smtp-Source: AGHT+IEKqQWH7dcD6ejG247HSFtsx9xlYEtjwMC6/LTN+1/xsgE1a+3OO4iHGWpOaSpoQwnGnGStkTAfRgQ0xPSa48I=
+X-Received: by 2002:a05:690c:7446:b0:6fe:aa66:5d75 with SMTP id
+ 00721157ae682-6ff41f56827mr10681797b3.10.1741892105454; Thu, 13 Mar 2025
+ 11:55:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
- board type") on reboot (but not cold boot)
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Eric <eric.4.debian@grabatoulnz.fr>,
- Salvatore Bonaccorso <carnil@debian.org>,
- Mario Limonciello <mario.limonciello@amd.com>,
- Christoph Hellwig <hch@infradead.org>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Damien Le Moal <dlemoal@kernel.org>, Jian-Hong Pan <jhp@endlessos.org>,
- regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, linux-ide@vger.kernel.org,
- Dieter Mummenschanz <dmummenschanz@web.de>
-References: <Z8l7paeRL9szo0C0@ryzen>
- <689f8224-f118-47f0-8ae0-a7377c6ff386@grabatoulnz.fr>
- <Z8rCF39n5GjTwfjP@ryzen> <9c4a635a-ce9f-4ed9-9605-002947490c61@redhat.com>
- <Z88rtGH39C-S8phk@ryzen> <383d5740-7740-4051-b39a-b8c74b035ec2@redhat.com>
- <Z9BFSM059Wj2cYX5@ryzen> <9ac6e1ab-f2af-4bff-9d50-24df68ca1bb9@redhat.com>
- <Z9LUH2IkwoMElSDg@ryzen> <d5470665-4fee-432a-9cb7-fff9813b3e97@redhat.com>
- <Z9L5p6hTp6MATJ80@ryzen>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <Z9L5p6hTp6MATJ80@ryzen>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: pk <pkoroau@gmail.com>
+Date: Thu, 13 Mar 2025 19:54:52 +0100
+X-Gm-Features: AQ5f1Jo1crF904GwTCy7t9ym3SZy2HPEL2AnM4Gp2OSq8JXebw5v5lqXMcN_LJw
+Message-ID: <CAMNwjE+6g4j=GDfef1hkrDvu1snaB9e0MhMWJFhZxuLtinrOuQ@mail.gmail.com>
+Subject: Re: [PATCH 5.10 458/462] btrfs: bring back the incorrectly removed
+ extent buffer lock recursion support
+To: stable@vger.kernel.org, linux-btrfs@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev, 
+	Filipe Manana <fdmanana@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
-
-On 13-Mar-25 4:28 PM, Niklas Cassel wrote:
-> Hello Hans,
-> 
-> On Thu, Mar 13, 2025 at 04:13:24PM +0100, Hans de Goede wrote:
->>>
->>> Considering that DIPM seems to work fine on the Maxtor drive, I guess your
->>> initial suggestion of a Samsung only quirk which only disables LPM on ATI
->>> is the best way?
->>
->> I have no objections against going that route, except that I guess this
->> should then be something like ATA_QUIRK_NO_DIPM_ON_ATI to not loose the
->> other LPM modes / savings? AFAIK/IIRC there still is quite some powersaving
->> to be had without DIPM.
-> 
-> I was thinking like your original suggestion, i.e. setting:
-> ATA_QUIRK_NO_LPM_ON_ATI
-> 
-> for all the Samsung devices that currently have:
-> ATA_QUIRK_NO_NCQ_ON_ATI
-> 
-> Considering that this Samsung device only supports DIPM
-> (and not HIPM), I'm guessing the same is true for the other
-> Samsung devices as well.
-
-Ah I see ...
-
-> So we might as well just do:
-> ATA_QUIRK_NO_LPM_ON_ATI
-
-Yes I agree and that will nicely work as a combination of
-ATA_QUIRK_NO_LPM + ATA_QUIRK_NO_NCQ_ON_ATI functionality
-so using tested code-paths in a slightly new way.
-
-Regards,
-
-Hans
-
-
-
-
-> to disable both HIPM and DIPM
-> (since only DIPM would have been enabled without this quirk anyway).
-> 
-> 
->> Yes the most severe problems do seem to come from that specific mix,
->> although the long list of other ATI controller quirks also shows those
->> controllers are somewhat finicky.
-> 
-> Definitely!
-> 
-> 
-> Kind regards,
-> Niklas
-> 
-
+Hi all. I confirm that the patch fixes the issue for me. Thank you very much.
 
