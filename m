@@ -1,99 +1,103 @@
-Return-Path: <stable+bounces-124294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66942A5F483
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 13:32:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CAECA5F492
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 13:33:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 731251741C0
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 12:32:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0065E173FDB
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 12:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE3C267B83;
-	Thu, 13 Mar 2025 12:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DB2267B63;
+	Thu, 13 Mar 2025 12:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDGhZDs7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qOPcN6l5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70798267AFD;
-	Thu, 13 Mar 2025 12:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788D2267B13
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 12:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741868999; cv=none; b=dv+5lHLU7M0LdsojI+CEmCDL+BuR6PPrEfXKWzVelPuHJS2sihoDFWAnYIUgvmsz8mOpmOg3k/1jYBsa76gGIr6A35/Qch22CVqzr6FP8BSRIvUUT5vZpwxUo5Je9WPN5+oFKsF6Gf9OlAEKlAUatWFU+fwMcpsTgR34vRhoq+M=
+	t=1741869099; cv=none; b=cacsd8WBmz3E5EMkBufOkCF+Fr1zxTFmjGfERwroOspsFUYwpHXFc42PbDH/h77iSLyTcBjgJ5dbYAztGIZYSnkipDUZ7AB8CswnqUgLuwTe1OOsVukdOOEzDDkuDhL0ssgslw5T+mecWEehAnreCOVix8kqrGEBl2KYidiY/Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741868999; c=relaxed/simple;
-	bh=iCC+RlmGwLC9DGgjtMedAFqXUbdNm/kiYIj6yiU3nu0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DymVD2aYzx9ph00zZ+RVZpkLaPPbAdtCqPdlUGGSifWCeLjUAP+0u/a7peURpUfy0rNTnZEv2rrYnq/EhYcA3c1wZyJXWKysNRm/HkZyWj0dS924/NclDajJI5lDr/dEwiRHMmxkyUR3hA0v5BvQhqh17PrLbbhxUHgzW8CrbQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDGhZDs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359AAC4CEEA;
-	Thu, 13 Mar 2025 12:29:59 +0000 (UTC)
+	s=arc-20240116; t=1741869099; c=relaxed/simple;
+	bh=KkhbylnSbfkrvlGYDqwfAI8KsFUR9TUkXrLgbzNIyK8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ey1Qw3kfJWAmD9JZ1MvKWAPDBSs8GcRkF6FdOeK8vWUR3k3g7fRKqjZuoTfvjyk5xc3aNWaz/kjzyuSOkGLDRfpAamaKkeG5VqLjtzjjwyBduRICsp0oUsUkLFEYe085qebqHXEkNJhw8QIK+E0ROBDOFzhRojcxPryWDb4kTus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qOPcN6l5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73202C4CEEA;
+	Thu, 13 Mar 2025 12:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741868999;
-	bh=iCC+RlmGwLC9DGgjtMedAFqXUbdNm/kiYIj6yiU3nu0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=oDGhZDs7+uxmQZrAfA5xI0jDxiAGmeaVavbe900sPcVEnBa7njboUIsewPRaWdg6d
-	 QfMXlTfNNFzl7pYNrStthSjM/VtL+o5Tyi35zEJ1U/HMLgFiCW6rJLk4f3Fu/6MFq1
-	 J+kaLON2ciGFf+WJb6dQF0jeMEwafthEEVI5U21H8txvIULz5GAQAj/TZ3WQZrQ4ma
-	 hIqoh7EQsw8I5QlPLOEu3vkUAepyYXuZV7jkbmT5AmG5v/CDqJHa88btR3Z6LUgIBr
-	 6+fFF9yFruhHJOmX/j8IXpeDbNR8nuQx/uXvHbWIwRiUaRID6l48n/iW1dQggnt06d
-	 KGkEkA51dzxUA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB0143806651;
-	Thu, 13 Mar 2025 12:30:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1741869098;
+	bh=KkhbylnSbfkrvlGYDqwfAI8KsFUR9TUkXrLgbzNIyK8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qOPcN6l5JZNIkNc8+ZctZF0X77+pc5nrOHcRSWW47cEpaXv8edopms1/3JIBY8iGh
+	 5Msmjzp8FTGv6RdaMi4C1//yXhgat8hWYpk29JQ6M9NsFaRIFMnAyqJw52DVPJzCfv
+	 xxEBD43H5YgJXhvCsJAhgm/lfWpVfJL7KQ+JzUK5tj+qUzvrS0RY06685etPOGhU6y
+	 ubdQYWl88Ax8pkZr2WnrtZXWPQ48i0LkCUc7gOQJwyLWU0FCEUNZ3ZPzdxth9z4GpV
+	 o22N8ievLnPh66PrCyDxHT5OiX03iG3uH9LAH+yyNlSRUdIZWiWwTvBmQLuay3lktD
+	 7GdqxoQrVrZkQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.13 7/8] KVM: arm64: Mark some header functions as inline
+Date: Thu, 13 Mar 2025 08:31:37 -0400
+Message-Id: <20250313055934-b6e533e914da105b@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250312-stable-sve-6-13-v1-7-c7ba07a6f4f7@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: mana: cleanup mana struct after debugfs_remove()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174186903377.1494261.697056613145771727.git-patchwork-notify@kernel.org>
-Date: Thu, 13 Mar 2025 12:30:33 +0000
-References: <1741688260-28922-1-git-send-email-shradhagupta@linux.microsoft.com>
-In-Reply-To: <1741688260-28922-1-git-send-email-shradhagupta@linux.microsoft.com>
-To: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- longli@microsoft.com, schakrabarti@linux.microsoft.com,
- erick.archer@outlook.com, leon@kernel.org, ernis@linux.microsoft.com,
- kotaranov@microsoft.com, peterz@infradead.org, mlevitsk@redhat.com,
- yury.norov@gmail.com, michal.swiatkowski@linux.intel.com, pabeni@redhat.com,
- kuba@kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
- decui@microsoft.com, wei.liu@kernel.org, haiyangz@microsoft.com,
- kys@microsoft.com, shradhagupta@microsoft.com, stable@vger.kernel.org
 
-Hello:
+[ Sasha's backport helper bot ]
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Hi,
 
-On Tue, 11 Mar 2025 03:17:40 -0700 you wrote:
-> When on a MANA VM hibernation is triggered, as part of hibernate_snapshot(),
-> mana_gd_suspend() and mana_gd_resume() are called. If during this
-> mana_gd_resume(), a failure occurs with HWC creation, mana_port_debugfs
-> pointer does not get reinitialized and ends up pointing to older,
-> cleaned-up dentry.
-> Further in the hibernation path, as part of power_down(), mana_gd_shutdown()
-> is triggered. This call, unaware of the failures in resume, tries to cleanup
-> the already cleaned up  mana_port_debugfs value and hits the following bug:
-> 
-> [...]
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Here is the summary with links:
-  - [net] net: mana: cleanup mana struct after debugfs_remove()
-    https://git.kernel.org/netdev/net/c/3e64bb2ae7d9
+The upstream commit SHA1 provided is correct: f9dd00de1e53a47763dfad601635d18542c3836d
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Mark Brown<broonie@kernel.org>
+Commit author: Mark Rutland<mark.rutland@arm.com>
 
+Note: The patch differs from the upstream commit:
+---
+1:  f9dd00de1e53a ! 1:  a2c2f6b261d86 KVM: arm64: Mark some header functions as inline
+    @@ Metadata
+      ## Commit message ##
+         KVM: arm64: Mark some header functions as inline
+     
+    +    [ Upstream commit f9dd00de1e53a47763dfad601635d18542c3836d ]
+    +
+         The shared hyp switch header has a number of static functions which
+         might not be used by all files that include the header, and when unused
+         they will provoke compiler warnings, e.g.
+    @@ Commit message
+         Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+         Link: https://lore.kernel.org/r/20250210195226.1215254-8-mark.rutland@arm.com
+         Signed-off-by: Marc Zyngier <maz@kernel.org>
+    +    Signed-off-by: Mark Brown <broonie@kernel.org>
+     
+      ## arch/arm64/kvm/hyp/include/hyp/switch.h ##
+     @@ arch/arm64/kvm/hyp/include/hyp/switch.h: static inline bool __populate_fault_info(struct kvm_vcpu *vcpu)
+---
 
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.13.y       |  Success    |  Success   |
 
