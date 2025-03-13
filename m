@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E229A5F49A
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 13:34:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A2FA5F49B
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 13:34:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1BBC17E938
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 12:33:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 997E017FAF1
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 12:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09C0267723;
-	Thu, 13 Mar 2025 12:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BE0267739;
+	Thu, 13 Mar 2025 12:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHZV2ESX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MuTvvK5K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10592673A0
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 12:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0FB267735
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 12:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741869119; cv=none; b=McrwhQAEFiWVLcRTFHMw/YxQF55M/vd3jnk+h9Hv2UQ8zFVbiM0pDELGMkOT80AA0V61VJ6Ai7T015kSJaCEebZFXANa+1HA9/e0kTSMEKseKfju1OV+dar5RetY4kfH5E8kR/BhrwbTZzLLhn8Mju4nPtrAeH6svUfNdFzumcs=
+	t=1741869121; cv=none; b=AaN8JvuSzshqFau1TE83S3YPOB24K6+KJN5N9KOaKOoqLAl+CwO3FCmHAidjRUBzwKyhxTtoukgQJunqEiAJuWIC75o7se98m9mxEVUBIyeYwz8dIxK1pi4hNjjWyyvcGk87MjO6srnHVmW4mUX1/d0a1xuWmWFNaygvvilLCBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741869119; c=relaxed/simple;
-	bh=YgQbh5NS2zZyb+pNS8uEJFtAKjRWLuBER2+2/g4tl08=;
+	s=arc-20240116; t=1741869121; c=relaxed/simple;
+	bh=1surSqogUMb54X+eflbJg3yTvNO/fz2yxzZVRDwgqww=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B1icoxwyLOk1pPTdQt4qL5+VdVvDo9hZXAuamQ+mIyWYrgHEV5vwY+RaQrBUJAbfk5QNT4XrK2UxZu9lcJaCueNN5B1qi0xelFLWpyimgCgG+7Y+EFk/1iyTPyS55uQGZimSUfwv+Cd6xEhwmBv6TheQJljqK5GfaGHmBeQKVOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHZV2ESX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CE7C4CEDD;
-	Thu, 13 Mar 2025 12:31:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nJ1J1McmJ1Egfj2y2/ZuzO4OlH/rg4SHUZ81PgP5qseRvzCb5xYjvkHHrA5yXWvi7Ti8Bl3G8dT9JZ1VDvF7m/BtPwXQxZVntuvfGY0aVLU2CfjxoBZkRUstWrdhRGnOJSx5kF1Sr7+jVh5FRWE7v6FWFBZB1RbdukTR2t50w00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MuTvvK5K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247BEC4CEDD;
+	Thu, 13 Mar 2025 12:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741869119;
-	bh=YgQbh5NS2zZyb+pNS8uEJFtAKjRWLuBER2+2/g4tl08=;
+	s=k20201202; t=1741869121;
+	bh=1surSqogUMb54X+eflbJg3yTvNO/fz2yxzZVRDwgqww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHZV2ESXVWpM2f85sndmofQ63LPlz4UTNWgNsS8h1viawfBDNFO0ecq6aCKmBtibR
-	 0D6b7zXtemt1ZlrqWMdbPlHIcjyqb7ViASGB4SCj+fiVxv82vMSPH+Fu0aJImHZn1S
-	 2t7R8xIyT8VvsQcFdYD00GvJeIxrCTnflZSERKKD/+mb4dEmBeBSXeaqGDJHYkCAE7
-	 guHes7YA8nBA8zqqfvRPOD+9XmbBkh76XHGy4QvmeT+F0FLgS2S/yP92hK9ZjlUM11
-	 Y+Ncc8+Fjw8TGwKm+6+t1CKu8hdJVBKRN2sPHfP7aeFhvJrV4+N1LWIqPRYbkqphsi
-	 aPsk813dmYEhA==
+	b=MuTvvK5KkV41z20dr9Nbd5ZUSJrFC903vJez4gf9TDJgOuxkWwS0L0vSfpwAllzzR
+	 6ZlHR613xY2c2Dd+s7h2g2dTkwePH53vLE890/z/MBXoZ7q3ysFHLgOe6kAgAgRvAt
+	 8ZPfNXl/+uP/Zmj/37W3Ix8gADNB9z+1/vWyPuDXoAcIoqLEIRAUHIT+QDhDOWpcxz
+	 yQcsXC/ymai2vViF6DB2HfITWq+8UFca7PPDsdpybXPX7RJ/XjFkSs44Xco3ZNS+P+
+	 OWxqvBKz7md2LuQQlQOgOPoafiwGLM8g+rYHPzcDG3NJJEmyZVsn7L1+l/zw7Booke
+	 KB3QnboJj88Zw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Abdelkareem Abdelsaamad <kareemem@amazon.com>,
+Cc: Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] KVM: x86: Reject Hyper-V's SEND_IPI hypercalls if local APIC isn't in-kernel
-Date: Thu, 13 Mar 2025 08:31:57 -0400
-Message-Id: <20250313052005-ae3baa96896f463d@stable.kernel.org>
+Subject: Re: [PATCH 6.13 1/8] KVM: arm64: Calculate cptr_el2 traps on activating traps
+Date: Thu, 13 Mar 2025 08:31:59 -0400
+Message-Id: <20250313054232-becb62f2f2dd78b0@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250312122431.39721-1-kareemem@amazon.com>
+In-Reply-To:  <20250312-stable-sve-6-13-v1-1-c7ba07a6f4f7@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,68 +67,172 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: a8de7f100bb5989d9c3627d3a223ee1c863f3b69
+The upstream commit SHA1 provided is correct: 2fd5b4b0e7b440602455b79977bfa64dea101e6c
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Abdelkareem Abdelsaamad<kareemem@amazon.com>
-Commit author: Sean Christopherson<seanjc@google.com>
-
-Status in newer kernel trees:
-6.13.y | Present (different SHA1: ca29f58ca374)
-6.12.y | Present (different SHA1: aca8be4403fb)
-6.6.y | Present (different SHA1: 874ff13c73c4)
-6.1.y | Present (different SHA1: 5393cf223124)
-5.15.y | Present (different SHA1: 8c0bc4fec456)
+Backport author: Mark Brown<broonie@kernel.org>
+Commit author: Fuad Tabba<tabba@google.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  a8de7f100bb59 ! 1:  26c34724741d5 KVM: x86: Reject Hyper-V's SEND_IPI hypercalls if local APIC isn't in-kernel
+1:  2fd5b4b0e7b44 ! 1:  06e6cdf67becb KVM: arm64: Calculate cptr_el2 traps on activating traps
     @@ Metadata
       ## Commit message ##
-         KVM: x86: Reject Hyper-V's SEND_IPI hypercalls if local APIC isn't in-kernel
+         KVM: arm64: Calculate cptr_el2 traps on activating traps
      
-    +    commit a8de7f100bb5989d9c3627d3a223ee1c863f3b69 upstream.
+    +    [ Upstream commit 2fd5b4b0e7b440602455b79977bfa64dea101e6c ]
     +
-         Advertise support for Hyper-V's SEND_IPI and SEND_IPI_EX hypercalls if and
-         only if the local API is emulated/virtualized by KVM, and explicitly reject
-         said hypercalls if the local APIC is emulated in userspace, i.e. don't rely
+         Similar to VHE, calculate the value of cptr_el2 from scratch on
+         activate traps. This removes the need to store cptr_el2 in every
+         vcpu structure. Moreover, some traps, such as whether the guest
     @@ Commit message
-         Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-         Link: https://lore.kernel.org/r/20250118003454.2619573-2-seanjc@google.com
-         Signed-off-by: Sean Christopherson <seanjc@google.com>
-    +    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    [Conflict due to
-    +    72167a9d7da2 ("KVM: x86: hyper-v: Stop shadowing global 'current_vcpu'
-    +    variable")
-    +    not in the tree]
-    +    Signed-off-by: Abdelkareem Abdelsaamad <kareemem@amazon.com>
+         Signed-off-by: Fuad Tabba <tabba@google.com>
+         Link: https://lore.kernel.org/r/20241216105057.579031-13-tabba@google.com
+         Signed-off-by: Marc Zyngier <maz@kernel.org>
+    +    Signed-off-by: Mark Brown <broonie@kernel.org>
      
-      ## arch/x86/kvm/hyperv.c ##
-    -@@ arch/x86/kvm/hyperv.c: static u64 kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
-    +@@ arch/x86/kvm/hyperv.c: static u64 kvm_hv_send_ipi(struct kvm_vcpu *current_vcpu, u64 ingpa, u64 outgpa,
-      	u32 vector;
-      	bool all_cpus;
+      ## arch/arm64/include/asm/kvm_host.h ##
+     @@ arch/arm64/include/asm/kvm_host.h: struct kvm_vcpu_arch {
+    @@ arch/arm64/kvm/arm.c: static int kvm_arch_vcpu_ioctl_vcpu_init(struct kvm_vcpu *
+      	 * Handle the "start in power-off" case.
+     
+      ## arch/arm64/kvm/hyp/nvhe/pkvm.c ##
+    -@@ arch/arm64/kvm/hyp/nvhe/pkvm.c: static void pvm_init_traps_hcr(struct kvm_vcpu *vcpu)
+    - 	vcpu->arch.hcr_el2 = val;
+    - }
+    - 
+    --static void pvm_init_traps_cptr(struct kvm_vcpu *vcpu)
+    --{
+    --	struct kvm *kvm = vcpu->kvm;
+    --	u64 val = vcpu->arch.cptr_el2;
+    --
+    --	if (!has_hvhe()) {
+    --		val |= CPTR_NVHE_EL2_RES1;
+    --		val &= ~(CPTR_NVHE_EL2_RES0);
+    +@@ arch/arm64/kvm/hyp/nvhe/pkvm.c: static void pvm_init_traps_aa64pfr0(struct kvm_vcpu *vcpu)
+    + 	const u64 feature_ids = pvm_read_id_reg(vcpu, SYS_ID_AA64PFR0_EL1);
+    + 	u64 hcr_set = HCR_RW;
+    + 	u64 hcr_clear = 0;
+    +-	u64 cptr_set = 0;
+    +-	u64 cptr_clear = 0;
+    + 
+    + 	/* Protected KVM does not support AArch32 guests. */
+    + 	BUILD_BUG_ON(FIELD_GET(ARM64_FEATURE_MASK(ID_AA64PFR0_EL1_EL0),
+    +@@ arch/arm64/kvm/hyp/nvhe/pkvm.c: static void pvm_init_traps_aa64pfr0(struct kvm_vcpu *vcpu)
+    + 	/* Trap AMU */
+    + 	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64PFR0_EL1_AMU), feature_ids)) {
+    + 		hcr_clear |= HCR_AMVOFFEN;
+    +-		cptr_set |= CPTR_EL2_TAM;
+     -	}
+     -
+    --	if (!kvm_has_feat(kvm, ID_AA64PFR0_EL1, AMU, IMP))
+    --		val |= CPTR_EL2_TAM;
+    --
+    --	/* SVE can be disabled by userspace even if supported. */
+    --	if (!vcpu_has_sve(vcpu)) {
+    +-	/* Trap SVE */
+    +-	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64PFR0_EL1_SVE), feature_ids)) {
+     -		if (has_hvhe())
+    --			val &= ~(CPACR_ELx_ZEN);
+    +-			cptr_clear |= CPACR_ELx_ZEN;
+     -		else
+    --			val |= CPTR_EL2_TZ;
+    --	}
+    --
+    --	/* No SME support in KVM. */
+    --	BUG_ON(kvm_has_feat(kvm, ID_AA64PFR1_EL1, SME, IMP));
+    --	if (has_hvhe())
+    --		val &= ~(CPACR_ELx_SMEN);
+    --	else
+    --		val |= CPTR_EL2_TSM;
+    --
+    --	if (!kvm_has_feat(kvm, ID_AA64DFR0_EL1, TraceVer, IMP)) {
+    +-			cptr_set |= CPTR_EL2_TZ;
+    + 	}
+    + 
+    + 	vcpu->arch.hcr_el2 |= hcr_set;
+    + 	vcpu->arch.hcr_el2 &= ~hcr_clear;
+    +-	vcpu->arch.cptr_el2 |= cptr_set;
+    +-	vcpu->arch.cptr_el2 &= ~cptr_clear;
+    + }
+    + 
+    + /*
+    +@@ arch/arm64/kvm/hyp/nvhe/pkvm.c: static void pvm_init_traps_aa64dfr0(struct kvm_vcpu *vcpu)
+    + 	const u64 feature_ids = pvm_read_id_reg(vcpu, SYS_ID_AA64DFR0_EL1);
+    + 	u64 mdcr_set = 0;
+    + 	u64 mdcr_clear = 0;
+    +-	u64 cptr_set = 0;
+    + 
+    + 	/* Trap/constrain PMU */
+    + 	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64DFR0_EL1_PMUVer), feature_ids)) {
+    +@@ arch/arm64/kvm/hyp/nvhe/pkvm.c: static void pvm_init_traps_aa64dfr0(struct kvm_vcpu *vcpu)
+    + 	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64DFR0_EL1_TraceFilt), feature_ids))
+    + 		mdcr_set |= MDCR_EL2_TTRF;
+    + 
+    +-	/* Trap Trace */
+    +-	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64DFR0_EL1_TraceVer), feature_ids)) {
+     -		if (has_hvhe())
+    --			val |= CPACR_EL1_TTA;
+    +-			cptr_set |= CPACR_EL1_TTA;
+     -		else
+    --			val |= CPTR_EL2_TTA;
+    +-			cptr_set |= CPTR_EL2_TTA;
+     -	}
+     -
+    --	vcpu->arch.cptr_el2 = val;
+    --}
+    --
+    - static void pvm_init_traps_mdcr(struct kvm_vcpu *vcpu)
+    - {
+    - 	struct kvm *kvm = vcpu->kvm;
+    -@@ arch/arm64/kvm/hyp/nvhe/pkvm.c: static int pkvm_vcpu_init_traps(struct pkvm_hyp_vcpu *hyp_vcpu)
+    - 	struct kvm_vcpu *vcpu = &hyp_vcpu->vcpu;
+    - 	int ret;
+    + 	/* Trap External Trace */
+    + 	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64DFR0_EL1_ExtTrcBuff), feature_ids))
+    + 		mdcr_clear |= MDCR_EL2_E2TB_MASK;
+    + 
+    + 	vcpu->arch.mdcr_el2 |= mdcr_set;
+    + 	vcpu->arch.mdcr_el2 &= ~mdcr_clear;
+    +-	vcpu->arch.cptr_el2 |= cptr_set;
+    + }
       
-    -+	if (!lapic_in_kernel(vcpu))
-    ++	if (!lapic_in_kernel(current_vcpu))
-     +		return HV_STATUS_INVALID_HYPERCALL_INPUT;
-     +
-    - 	if (hc->code == HVCALL_SEND_IPI) {
-    - 		if (!hc->fast) {
-    - 			if (unlikely(kvm_read_guest(kvm, hc->ingpa, &send_ipi,
-    -@@ arch/x86/kvm/hyperv.c: int kvm_get_hv_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid2 *cpuid,
-    + 	if (!ex) {
-    + 		if (!fast) {
-    + 			if (unlikely(kvm_read_guest(kvm, ingpa, &send_ipi,
-    +@@ arch/x86/kvm/hyperv.c: int kvm_vcpu_ioctl_get_hv_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid2 *cpuid,
-      			ent->eax |= HV_X64_REMOTE_TLB_FLUSH_RECOMMENDED;
-      			ent->eax |= HV_X64_APIC_ACCESS_RECOMMENDED;
-      			ent->eax |= HV_X64_RELAXED_TIMING_RECOMMENDED;
+    + /*
+    +@@ arch/arm64/kvm/hyp/nvhe/pkvm.c: static void pvm_init_trap_regs(struct kvm_vcpu *vcpu)
+    + 	/* Clear res0 and set res1 bits to trap potential new features. */
+    + 	vcpu->arch.hcr_el2 &= ~(HCR_RES0);
+    + 	vcpu->arch.mdcr_el2 &= ~(MDCR_EL2_RES0);
+    +-	if (!has_hvhe()) {
+    +-		vcpu->arch.cptr_el2 |= CPTR_NVHE_EL2_RES1;
+    +-		vcpu->arch.cptr_el2 &= ~(CPTR_NVHE_EL2_RES0);
+    +-	}
+    + }
+    + 
+    + static void pkvm_vcpu_reset_hcr(struct kvm_vcpu *vcpu)
+    +@@ arch/arm64/kvm/hyp/nvhe/pkvm.c: static void pkvm_vcpu_reset_hcr(struct kvm_vcpu *vcpu)
+    +  */
+    + static void pkvm_vcpu_init_traps(struct kvm_vcpu *vcpu)
+    + {
+     -	vcpu->arch.cptr_el2 = kvm_get_reset_cptr_el2(vcpu);
+      	vcpu->arch.mdcr_el2 = 0;
+      
+      	pkvm_vcpu_reset_hcr(vcpu);
+    -@@ arch/arm64/kvm/hyp/nvhe/pkvm.c: static int pkvm_vcpu_init_traps(struct pkvm_hyp_vcpu *hyp_vcpu)
+    - 		return ret;
+    - 
+    - 	pvm_init_traps_hcr(vcpu);
+    --	pvm_init_traps_cptr(vcpu);
+    - 	pvm_init_traps_mdcr(vcpu);
+    - 
+    - 	return 0;
+     @@ arch/arm64/kvm/hyp/nvhe/pkvm.c: int __pkvm_init_vcpu(pkvm_handle_t handle, struct kvm_vcpu *host_vcpu,
+      		return ret;
+      	}
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.13.y       |  Success    |  Success   |
 
