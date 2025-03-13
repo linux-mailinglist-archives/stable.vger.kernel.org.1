@@ -1,164 +1,167 @@
-Return-Path: <stable+bounces-124206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21286A5EB55
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 06:55:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78ED1A5EBF1
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 07:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55E28177131
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 05:55:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DFC77A3D8C
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 06:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B5D1F9AB1;
-	Thu, 13 Mar 2025 05:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD1E1FBCB3;
+	Thu, 13 Mar 2025 06:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="zGmHtGiY"
+	dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b="yxlUpcy5"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B2C80604;
-	Thu, 13 Mar 2025 05:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4221FBCA0
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 06:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741845337; cv=none; b=CVSv2bgO0iNBTMYQJVGliCocvTUhVo0+GPiMh3s0XFTRCVjfMdv+5psT4Tmyw0DLQ80KSDzr78/XargIBJkg/dPDYeWceUR1siSybrzCUo7VrHHRPZ0PC2ay8D1Wc1B8FABEXizTu1O6uIQ+cAretVld/Q0cm+OySU2iO4dY0mE=
+	t=1741849080; cv=none; b=goqcQmDw2UYOs/5flwXIyMomzrkLHU1gGcvZTfTkj8NfU7iLW6c8YM8MNz7X9Yj2B449f8BKj7nqUICpK/aHLikisHu9N1eKsjzhACbVvbaPAUZxf+DYAFeoUvRIoynyfZHf85FSkeDKYzV7juTkO/40tve0Rhgv7ZkYR5+ydME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741845337; c=relaxed/simple;
-	bh=HfSlSZ2CqVWFW48fAe4Pz+wvV6Z9OMo9fS/2rnnhenU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W7LBa+QIAAj06PEg3+vl+zZSsxBlt7T2Va5wyv8a6nl+wITVx/nlMkqsJdU/PP5wL6GwkY2XpK8uq1i6s7MD44kPimYSbL3m2DejAcFE0GYBzKdXFNeVNsG2nUJKxQmjs1I6+GTNk+vWrD72ScJI+PcNF+8pLrHPIrRuaf6aBZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=zGmHtGiY; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52D5tLKc1737463
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Mar 2025 00:55:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741845321;
-	bh=XJezcyfF+yORt8Uw98gj4iwE+jSOmsLoiF2fnCYB870=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=zGmHtGiYaruD/5pWpaw3Km0ciUIhgr2MyPPLZyMnga2DreISPKbwWt5W+1+CUH44N
-	 1wDnb6Q9N5BwlRdwN+asaguym9HKZPgajwDhL9nPpaqDZvDdgLJUGKIZL9ZZ9sE01u
-	 h1WZOIbJy5u/ZVVEsSbJppqWKnNYybMNNtqW3q18=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52D5tLrL018383
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 13 Mar 2025 00:55:21 -0500
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 13
- Mar 2025 00:55:20 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 13 Mar 2025 00:55:20 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52D5tJmY065334;
-	Thu, 13 Mar 2025 00:55:20 -0500
-Date: Thu, 13 Mar 2025 11:25:19 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
-        <kw@linux.com>, <vigneshr@ti.com>, <manivannan.sadhasivam@linaro.org>,
-        <robh@kernel.org>, <bhelgaas@google.com>, <rogerq@kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250313055519.j3bpvsm6govd5ytk@uda0492258>
-References: <20250305132018.2260771-1-s-vadapalli@ti.com>
- <20250312161600.GA680640@bhelgaas>
+	s=arc-20240116; t=1741849080; c=relaxed/simple;
+	bh=i+aS6230F9Pf7oru2l/exa62ii5VwUSG1UgYivlTBkM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=eFMRjHbhRdxtqbwqiLljYrOwQ+q0BX0OO6uoReHBdvMjOiTBFPuCGzs4ubiuAy/GCkplNb8pJdM8deG/UC2kakpBG2W1W3YtRO5m1quwe0xVK6/Q1d9God/VGzVtR/RzrSc0qcx/2cC4Eefx3emHVlQ0klORmMfBupbWdPWrcrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com; spf=pass smtp.mailfrom=daynix.com; dkim=pass (2048-bit key) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.b=yxlUpcy5; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=daynix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=daynix.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-223594b3c6dso10848425ad.2
+        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 23:57:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1741849077; x=1742453877; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DzZ/OwKmmQbXUKB6Ig9nkspgT/x2zvQUcWtNQDAlXJ8=;
+        b=yxlUpcy5tJiKgdl/Nm6aV/oPpYabNkPkYFarREDWohXAJPYE2KsyADGSvVZnj1IIXk
+         3NllRgW7kPsugRoFW9SIXycNjwRbrKUH24zlU46o57tqKUr5h89y9s4qClMVsgpnsIFP
+         z9CKHdEaqpGe6a2V9QDqSiuSWD3FhKPAbJMEm9m6MgwpPilEnwiYWarSX/+AuzR4LpJ0
+         dws8nm0ex2PIB7A1Jq3WtKTIcp5o0imVSyQwMnTPKTKSfz6p5RXrfeNKfSZwoSyg1qUi
+         vCxPgJEBBN5mbCe2ZCvrcMRnnuP8pQpSiyBTaus1OrGZG5imU9z8/THhs7JbvE7vncTl
+         jNxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741849077; x=1742453877;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DzZ/OwKmmQbXUKB6Ig9nkspgT/x2zvQUcWtNQDAlXJ8=;
+        b=dtDSAzcJZxeqH01UxUWQgeu1WZ1QQAcyjWFFMf+SLcx9qStCv3NurfFfkP926dpROJ
+         m9rfQo7HvLd9PMwxo2QYMJe2GUtNCBIGcl4K8qRQItFPnPgAg8u8LmvNv3L4ekDkH2zo
+         AvgOJ4M4zYkUhySUHQPMrqDOawGrqmRsGBDgVfFrrnICFUHncMZgqdFOb8ed2b+NY1Er
+         Rw2SZ2KeLW2SiCIA6IzC/d/FrLtg4Qq92rrJ3C+qOQrKPYrWLV45mlhj+3NG15eFYer+
+         8NzDBwBYzro9N3aAhVlXmCR99kMEmKsIOO1BuwrzqyN1g5Xd2P+pa2qtJ5MZKncOt9aD
+         VLRg==
+X-Forwarded-Encrypted: i=1; AJvYcCU5ubLHqfmBnaPoI5VcpoiZcAT8dn1oM2VYmFW5lWIPRz+qU6tqoFhlYxQgH1hYcLo/gl/+/XQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/Qc9cA4dWaS6tmM0Wz88J2vW1w24HoUTpJ52n8uBY0mbMtkj0
+	+K2H0GWWL68s0ZX24e3SaYFupI/c7IchbSlYcfoKSQvbWBMWKXMdCDMMSEkrQUw=
+X-Gm-Gg: ASbGnctlsS0B/eXxpOm1JS6ByRvfWcfmUCDHjcSIzs+TN4QMgUGP7lgCNG741dgaZhp
+	KI2ZVzs075Ej7cFewxOz08ABYj+njdA7YEEPraMmAVRwoIkLJnnzkFzZob/VYT8EOewDo/PQ1tX
+	kx+MKK+uGzMCmmiYu0Tzx2LKHKy53BONhGUwSjRbLxB2K/d4n+W46P0+/kuhJyE6SDLJwSjmBdm
+	K+PDDwxg/zoIFnb2AIs51KTIBX9g96IX/2BRSqTGAcj/Ae3nOnGrruZ8P07UfQNac2gnhvB7ZHS
+	X0j1QxAgrQPgtDBuCYVv7AlSDPl5QWiZZym2OyK90n9uXnTe
+X-Google-Smtp-Source: AGHT+IFJys5eR6oUmPsgD0nQ7bgGFWSfRnMTkiQzEi9pZgL77FdSzGwIkj2Od2Zq73fxdD3yVQX53g==
+X-Received: by 2002:a05:6a00:c95:b0:725:96f2:9e63 with SMTP id d2e1a72fcca58-736aab16545mr42898380b3a.24.1741849076765;
+        Wed, 12 Mar 2025 23:57:56 -0700 (PDT)
+Received: from localhost ([157.82.205.237])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73711694b2csm624169b3a.129.2025.03.12.23.57.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Mar 2025 23:57:56 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v4 0/7] KVM: arm64: PMU: Fix SET_ONE_REG for vPMC regs
+Date: Thu, 13 Mar 2025 15:57:41 +0900
+Message-Id: <20250313-pmc-v4-0-2c976827118c@daynix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250312161600.GA680640@bhelgaas>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOWB0mcC/2XNyw6DIBAF0F8xrEvDU6Wr/kfTBQ5QWfgINERj/
+ Pei7ULT5b2Zc2dB0QZvI7oVCwo2+eiHPgdxKRC0un9Z7E3OiBEmCScMjx3gRhFdl9opIQHlyzF
+ Y56d95fHMufXxPYR5H010a88+UUwxaOdUrYjiBu5Gz72frjB0aBtI7IiqL2KY4BI4r6SWjlrxh
+ /gB0d8nnhERlIJupAFuTmhd1w9opBY6AQEAAA==
+X-Change-ID: 20250302-pmc-b90a86af945c
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+ Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Zenghui Yu <yuzenghui@huawei.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Andrew Jones <andrew.jones@linux.dev>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, devel@daynix.com, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-edae6
 
-On Wed, Mar 12, 2025 at 11:16:00AM -0500, Bjorn Helgaas wrote:
+Prepare vPMC registers for user-initiated changes after first run. This
+is important specifically for debugging Windows on QEMU with GDB; QEMU
+tries to write back all visible registers when resuming the VM execution
+with GDB, corrupting the PMU state. Windows always uses the PMU so this
+can cause adverse effects on that particular OS.
 
-Hello Bjorn,
+This series also contains patch "KVM: arm64: PMU: Set raw values from
+user to PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}", which reverts semantic
+changes made for the mentioned registers in the past. It is necessary
+to migrate the PMU state properly on Firecracker, QEMU, and crosvm.
 
-> [+to Matt, author of e49ad667815d]
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v4:
+- Reverted changes for functions implementing ioctls in patch
+  "KVM: arm64: PMU: Assume PMU presence in pmu-emul.c".
+- Removed kvm_pmu_vcpu_reset().
+- Reordered function calls in kvm_vcpu_reload_pmu() for better style.
+- Link to v3: https://lore.kernel.org/r/20250312-pmc-v3-0-0411cab5dc3d@daynix.com
 
-I dropped Matt's email on purpose since it will bounce as the email is
-no longer valid.
+Changes in v3:
+- Added patch "KVM: arm64: PMU: Assume PMU presence in pmu-emul.c".
+- Added an explanation of this path series' motivation to each patch.
+- Explained why userspace register writes and register reset should be
+  covered in patch "KVM: arm64: PMU: Reload when user modifies
+  registers".
+- Marked patch "KVM: arm64: PMU: Set raw values from user to
+  PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}" for stable.
+- Reoreded so that patch "KVM: arm64: PMU: Set raw values from user to
+  PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}" would come first.
+- Added patch "KVM: arm64: PMU: Call kvm_pmu_handle_pmcr() after masking
+  PMCNTENSET_EL0".
+- Added patch "KVM: arm64: Reload PMCNTENSET_EL0".
+- Link to v2: https://lore.kernel.org/r/20250307-pmc-v2-0-6c3375a5f1e4@daynix.com
 
-> 
-> On Wed, Mar 05, 2025 at 06:50:18PM +0530, Siddharth Vadapalli wrote:
-> > Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
-> > J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
-> > to the Technical Reference Manual and Register Documentation for the J784S4
-> > SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
-> > the field for the link-state interrupt. Instead, it is BIT(10) of the
-> > "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
-> > field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
-> 
-> I guess the reason we want this is that on J784S4, we ignore actual
-> link-down interrupts (and we don't write STATUS_CLR_REG_SYS_2 to clear
-> the interrupt indication, so maybe there's an interrupt storm), and we
-> think some other interrupt (DPA_1, whatever that is) is actually a
-> link-down interrupt?
+Changes in v2:
+- Changed to utilize KVM_REQ_RELOAD_PMU as suggested by Oliver Upton.
+- Added patch "KVM: arm64: PMU: Reload when user modifies registers"
+  to cover more registers.
+- Added patch "KVM: arm64: PMU: Set raw values from user to
+  PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}".
+- Link to v1: https://lore.kernel.org/r/20250302-pmc-v1-1-caff989093dc@daynix.com
 
-While it is true that actual link-down interrupts are ignored, it is not
-the case that there's an interrupt storm because the same incorrect macro
-is used to enable the interrupt line. Since the enables an interrupt for
-DPA_1 which never fires, we don't run into the situation where we are not
-clearing the interrupt (the interrupt handler will look for the same
-incorrect field to clear the interrupt if it does fire for DPA_1, but that
-doesn't happen). The 'linkdown_irq_regfield' corresponds to the
-"link-state" field not just in the J784S4 SoC, but in all SoCs supported by
-the pci-j721e.c driver. It is only in J721E that it is BIT(1)
-[LINK_DOWN macro], while in all other SoCs (J784S4 included), it is BIT(10)
-[J7200_LINK_DOWN macro since it was first added for J7200 SoC]. Matt
-probably referred to J721E's Technical Reference Manual and ended up
-incorrectly assigning "LINK_DOWN", due to which the driver is enabling
-the DPA_1 interrupt and the interrupt handler is also going to look for
-the field corresponding to receiving an interrupt for DPA_1.
+---
+Akihiko Odaki (7):
+      KVM: arm64: PMU: Set raw values from user to PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}
+      KVM: arm64: PMU: Assume PMU presence in pmu-emul.c
+      KVM: arm64: PMU: Fix SET_ONE_REG for vPMC regs
+      KVM: arm64: PMU: Reload when user modifies registers
+      KVM: arm64: PMU: Call kvm_pmu_handle_pmcr() after masking PMCNTENSET_EL0
+      KVM: arm64: PMU: Reload PMCNTENSET_EL0
+      KVM: arm64: PMU: Reload when resetting
 
-> 
-> > Hence, set 'linkdown_irq_regfield' to the macro 'J7200_LINK_DOWN' which
-> > expands to BIT(10) and was first defined for the J7200 SoC. Other SoCs
-> > already reuse this macro since it accurately represents the link-state
-> > field in their respective "PCIE_INTD_ENABLE_REG_SYS_2" register.
-> > 
-> > [0]: https://www.ti.com/lit/zip/spruj52
-> 
-> Thanks for the spec URL.  Can you include a relevant section number?
-> I searched for some of this stuff but couldn't find it.
+ arch/arm64/kvm/arm.c      |  8 ++++---
+ arch/arm64/kvm/pmu-emul.c | 60 ++++++++++++++---------------------------------
+ arch/arm64/kvm/reset.c    |  3 ---
+ arch/arm64/kvm/sys_regs.c | 53 +++++++++++++++++++++++------------------
+ include/kvm/arm_pmu.h     |  3 +--
+ 5 files changed, 53 insertions(+), 74 deletions(-)
+---
+base-commit: da2f480cb24d39d480b1e235eda0dd2d01f8765b
+change-id: 20250302-pmc-b90a86af945c
 
-The URL above is taken from the "User Guide" section of the following
-webpage:
-https://www.ti.com/product/TDA4VH-Q1
-corresponding to the J784S4 SoC (TDA4VH is another name for it).
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The User Guide [0] is a zip file containing the Technical Reference
-Manual (without Registers) along with an Excel Sheet containing the
-Registers. There unfortunately is no particular section that I can
-quote in the Excel Sheet. The PCIe registers described in the Excel
-Sheet contain the "PCIE_INTD_ENABLE_REG_SYS_2" register in one of the
-rows (I didn't want to mention the row number since things could change
-over time, similar to how you pointed out below that the URL could
-potentially change). However, the register name should remain the same,
-the reason being that the name is consistent across all SoCs supported
-by the pci-j721e.c.
-
-> 
-> Since I have low confidence that the URL will be valid after a few
-> years, I wish the spec also had a human-readable name and revision
-> number.  But maybe the alphabet soup or "SPRUJ52D", "revised July
-> 2024" is all we can hope for.
-
-I can only hope that the URL will redirect to the latest version of the
-User Guide if at all it becomes invalid.
-
-Regards,
-Siddharth.
 
