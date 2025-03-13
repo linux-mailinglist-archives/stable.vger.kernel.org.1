@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-124267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67112A5F0F0
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 11:31:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B22BA5F0F1
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 11:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28FAE19C15F2
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:31:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C50317D80E
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD097265CA5;
-	Thu, 13 Mar 2025 10:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59314265CCB;
+	Thu, 13 Mar 2025 10:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="UEsyqnS8"
+	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="qhyMk2wU"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2068.outbound.protection.outlook.com [40.107.249.68])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013068.outbound.protection.outlook.com [40.107.162.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2828D1FBC87;
-	Thu, 13 Mar 2025 10:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266DE1A00E7;
+	Thu, 13 Mar 2025 10:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741861891; cv=fail; b=EXrdOA+Lc27olchbS0mj6sSwjjl3wJqu6uHItoalsvILgQ0jjt4GHc5pZqPrtfih2KJApYV71OhNKGU7/+yLyqk5qLqgAAFAKz8Ubxl/pmeEHcYU7gyFOTgNWk2vu/NIo0WyFJA6awJTO7WJzlmlpUOfTi7BORhcQGzNMCZkIOQ=
+	t=1741861892; cv=fail; b=B8AUNuOZ+gyCj409z+nKIA7cigoszVj8zbXgVkes4JR6CBHT3kcLspSP2zDRJ4R3GdhRaSbjxMvHSTgLEsk2+CFJCBhNGoY7br0bYUymOsFDBJK0bzPOGJXZXQrwrcUyWjd/IBMF6ILOovWTovs5R+MPfiS/K8qZTQvNNW5Z0Sk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741861891; c=relaxed/simple;
-	bh=3Y/E69fW6ogJbZ6Q6iGGKaihQv15wvQaW6VDB3IioyE=;
+	s=arc-20240116; t=1741861892; c=relaxed/simple;
+	bh=SqI37NTOxvS2pIFC3G8QbPSFrBEV42jvhBrHLAjugIE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c8Rj6u5MyPS+cdJAjd71O0x7cfh2Xq/LtqxVThAXSQePnNXou/u0JQwzpvY3Q7suZy6wAyAkr5QJ/MaHW03Oiv2UCpP7bnengbCz4NXoehe1m5c8YztpUzwrtNZNMScZyYibpPfzg0Mmam18jnQ0xG+0Hmlm+3/SnmHjCNCAKbw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=UEsyqnS8; arc=fail smtp.client-ip=40.107.249.68
+	 MIME-Version:Content-Type; b=BQL+Fho419SjaeBLMaH0YmSFDhRAiw5zeKvMccUiU4ytuVC6PODzwCQg57KNcpfd8346vlFPo13Y0dqk33ftPB4xDT+FrS/YTz7nOK/d1LW2jY74NjrfphAWfCRtm3/JDlPipXavn99DM4GojRmtQWpphEJnQe/uF1i+Xt8k0Uc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=qhyMk2wU; arc=fail smtp.client-ip=40.107.162.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZL5FcWoOncbKtMKQ9KmK1nYlDzbHv1Xe9D57KKr3CTTXOgre5ZOAdiMBD45419UuPGsOUT1gP6cJQPjXuDRAxY7ujdpE4bC9pgqnd0gGYeK6Xy7uXThOVHMVZmpfGIdEez1wQpuhOIlVBZPMZz7eZQXbIn8pSBjZeD6DhDnt3KBtCyMfRCRL7vBL1ixOXLkhdL0Ann1hF/QsDb4q8uBsEnD/km7UiHs4uY5R71yF3m7NGDe2uA0M07H4f3U9sh5bIlt56ijm/kB2SOlolQ4GLNnqMLwIefBodc/iSeiG0eKlvECLLWQjDxo6r1n0OPOJgpDYXoh1aoBIKlMFx6WSNQ==
+ b=aGbrDU4qCRmTI6nlyoMdyEfjbM8AH3DeYfBjqUaGeOTtJCD5B0wQQpAfmVFXGqRchOBYJPHUQ//9z4ti1F/SpuhCjcqpp13EFRWUo0G9fmgds8I63dUBxFByLiYvZBdlt0fMYZd53ZEQ2ODCk1Xi7tMQnXEwJIlHWSy0KgOAYGEYZ2jCuzAIHuGZB4BX1L5cc0yk8j5hV8bIgkqEx0YLfqv6B7/Jz/W7YXM44vF37iY2kj3PUGzE8u0jMULCieiZl8eX/JjELctQGuBH15yGb/v2rausbEJw6Z/pDbz7ur+IfB+50PuRqUpYcqS7RJOHAN5opCfs5wIlPM4hR6sTDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tGhSwsBSILb/+nMOCZp5IU1JOlAmygG/ks18+mGfATw=;
- b=g82dW/5k4mi+y6ikcRKp1F5S/Hki/wZT1k60otIXgHiGp3Rq/S3tDsBtRWr4+0ImPnIeRAFtq7Bp6P1Jdqyu8H5xMVvk0SWv/3ZyMwyo2eMb0DBmMM1WfKWSqq+ILm+w+VRGHvkfsQOIQQ30OMMIQduPy/h+Tv7yAvc5xa8mHvnFpSBYZD3kruniqI09JBVXYMDcZA7e542i5b0Rbnxbb/Lqn0urQsXbJUeX+oOU0+f1b9Lt2UQtC3Vw6VV91PC6jIJYQF222dQevlpK3IdjTJHMxZuwyII/M3Jkkjc0Dqa5h2+LHrUl/7Ps+BEW773AAk9DoCLZMYOBUs4fOSrd1Q==
+ bh=I+fKTU87AqlupGhvDTYLkOQz/xMmyf17J72kabbLUsQ=;
+ b=tAsek/QzU3dWBv65ViwZQr8XGn8mLxCQEhdt58fk+RKuMFscjkIbWVOsD8O7FYAkgbedEeXZmvPmbPlT/7yBmSDmtOqOOKm6SArKo7g1F2rShxozbbinCNTWAptNa39/zUQaEtrz9/mIIS0hc0HMaf5lNdGON/DkIOjEeMHKJQE6JqW+LMO46dOkq83YgyUcL4QaubadGxNoNisNId9uSrnCNcGgFR+MoVrzGdmEWgNN2w7Zx/uZJP/+AhttH+mrjF93dKcN8zFvZVd6bDY/XC9w2mq5DCIAg3s9F2BJtoeYngjanTsA+BiBgOknqyM/eKCZiUBXeU3nigVCPYmRXA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
  217.111.95.7) smtp.rcpttodomain=gmail.com smtp.mailfrom=arri.de; dmarc=fail
  (p=none sp=none pct=100) action=none header.from=arri.de; dkim=none (message
  not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tGhSwsBSILb/+nMOCZp5IU1JOlAmygG/ks18+mGfATw=;
- b=UEsyqnS8dgUR7zTsmoMn35CAOU0OPMiadkIWtWfx58zO3BwtgTvNMACNTnmh3vLJo6M2VizRqo4Cs8X7yID8+iZf7ZX4D+Z1J7mHkbOuu9i3JcW0s1WMhbyOZniTwFeAHAsxZJNePqwyTYfXuwKcIkewyu8pagAcAHEe6ceASZ4=
-Received: from AM4PR07CA0009.eurprd07.prod.outlook.com (2603:10a6:205:1::22)
- by PA4PR03MB7472.eurprd03.prod.outlook.com (2603:10a6:102:10c::12) with
+ bh=I+fKTU87AqlupGhvDTYLkOQz/xMmyf17J72kabbLUsQ=;
+ b=qhyMk2wUKuiTlfiVLiPzCq5nLNPb0fO9+jsz0F62XRtRYwJE6N5G/F17Kile978lVyITdMP31/8vlE9qlAvwYiG75rF6YhepTDMM6/uA2D74FCQZySWx41OygdPDIW46zFaeaAYS2nahwdZwiPGGaWOGpyodZmg1QDVC4accFbE=
+Received: from AS4P189CA0015.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:5d7::19)
+ by AS8PR03MB9895.eurprd03.prod.outlook.com (2603:10a6:20b:638::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Thu, 13 Mar
- 2025 10:31:23 +0000
-Received: from AM1PEPF000252DF.eurprd07.prod.outlook.com
- (2603:10a6:205:1:cafe::bf) by AM4PR07CA0009.outlook.office365.com
- (2603:10a6:205:1::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8377.7 via Frontend Transport; Thu,
- 13 Mar 2025 10:31:23 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.28; Thu, 13 Mar
+ 2025 10:31:26 +0000
+Received: from AM1PEPF000252DA.eurprd07.prod.outlook.com
+ (2603:10a6:20b:5d7:cafe::cb) by AS4P189CA0015.outlook.office365.com
+ (2603:10a6:20b:5d7::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.27 via Frontend Transport; Thu,
+ 13 Mar 2025 10:31:26 +0000
 X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
  smtp.mailfrom=arri.de; dkim=none (message not signed)
  header.d=none;dmarc=fail action=none header.from=arri.de;
@@ -63,21 +63,21 @@ Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
  designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
  client-ip=217.111.95.7; helo=mta.arri.de;
 Received: from mta.arri.de (217.111.95.7) by
- AM1PEPF000252DF.mail.protection.outlook.com (10.167.16.57) with Microsoft
+ AM1PEPF000252DA.mail.protection.outlook.com (10.167.16.52) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8534.20 via Frontend Transport; Thu, 13 Mar 2025 10:31:22 +0000
+ 15.20.8534.20 via Frontend Transport; Thu, 13 Mar 2025 10:31:26 +0000
 Received: from N9W6SW14.arri.de (10.30.5.19) by mta.arri.de (10.10.18.5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.38; Thu, 13 Mar
- 2025 11:31:21 +0100
+ 2025 11:31:26 +0100
 From: Christian Eggers <ceggers@arri.de>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 	Douglas Anderson <dianders@chromium.org>
 CC: <linux-kernel@vger.kernel.org>, Christian Eggers <ceggers@arri.de>,
 	<stable@vger.kernel.org>
-Subject: [PATCH v3 1/2] regulator: dummy: force synchronous probing
-Date: Thu, 13 Mar 2025 11:27:38 +0100
-Message-ID: <20250313103051.32430-2-ceggers@arri.de>
+Subject: [PATCH v3 2/2] regulator: check that dummy regulator has been probed before using it
+Date: Thu, 13 Mar 2025 11:27:39 +0100
+Message-ID: <20250313103051.32430-3-ceggers@arri.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250313103051.32430-1-ceggers@arri.de>
 References: <20250313103051.32430-1-ceggers@arri.de>
@@ -91,97 +91,104 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM1PEPF000252DF:EE_|PA4PR03MB7472:EE_
-X-MS-Office365-Filtering-Correlation-Id: d18f9322-424e-431d-ae08-08dd621a3311
+X-MS-TrafficTypeDiagnostic: AM1PEPF000252DA:EE_|AS8PR03MB9895:EE_
+X-MS-Office365-Filtering-Correlation-Id: c4719a9c-1cf5-4023-be74-08dd621a35b3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2F1jB6ZJJYLi8CcVOB/EK3v+9Uh6KSHamowUGmL/zkrXwjYg6sbMInZzmp4r?=
- =?us-ascii?Q?y1pGfFQhVPXJzrIMT7vNYhImYbhyAui8rWuhAnjLhgawZD2l3eU8pWLwPLEL?=
- =?us-ascii?Q?gYXuHi9nENR3kv7lJO+gpXSTNpwl4d5WDx+3WcCS5JNeCHzp+w93gVfKEe19?=
- =?us-ascii?Q?rpMbwAhks4Q0oxB6Hx8PoXuUrgJlgub1nfahxm76PWFSZp5aUO1y2q9h1gGM?=
- =?us-ascii?Q?h1Hw9tOd5vAu4ZMpqncR1c8+5MqXc3xV1Ji3I5+QcCCs/7jDD2daXIPh7hPM?=
- =?us-ascii?Q?48WhbCeCLtBbxzjC6o9X2mC/X+0805KoOXedGdkpSLlzfqOp4yZ4HW0hgTji?=
- =?us-ascii?Q?7EaKs3AvJkIO/rahNOv8NyXN78eIMjlah1aaGILqSVQo6df0Np24nZ0WRjLq?=
- =?us-ascii?Q?767PF/4oo/votdL7XqozKc9w9OomKhIbidZ6PVU+uMYjglRJ2PH+3PWFe7fK?=
- =?us-ascii?Q?GNqUc9/MX+a77vy+1MeUASP5zW/aRnznRsSBFAAwA7wvzkZw3p4vkMQj5ZUs?=
- =?us-ascii?Q?i5vF4cmzTwUlKT2ke19w3m0QuoESJohYvYHgEOyKWOzf6ZjabLv3NViJ8EsO?=
- =?us-ascii?Q?zn3rYFrQkE6dLdRCCndYLa5aZeKF2hEDU/oAhI+LATv8CWE+AGlNwxamNI+V?=
- =?us-ascii?Q?t86/jC064Edvg9fqXDozYuPwBH1OE42HCB7uiwPkDwyPldFWPiNv/1dkErSo?=
- =?us-ascii?Q?TTb5twwPtVGIk3D+EL7+zar0VKu6hmvBUc0r6Z3nPTbB9+Gq/fObq8S0CiJl?=
- =?us-ascii?Q?TqgXqLq+1+xGVAYZMaxj4HoqF/dH46upA/UbcNhTkUOwLqjFL/a9OBKbUYHR?=
- =?us-ascii?Q?k7uK/gxYJXsqvZRXdxNeU3I6Bjfo1OcPbmN3QaoZZRC9cwzdd1o4zJcliVT7?=
- =?us-ascii?Q?J7/7M7b01zvwHEGlZCqj7cnTHQaukYERvPXyAL542CaIC8mh/mf5IFw3BXBQ?=
- =?us-ascii?Q?aoqqceGFW60N5FWzSYV1FCd3O4Mj7Q1SNTc1uetBbQ0xo98OX5+5LQNBpER3?=
- =?us-ascii?Q?Q2jfsty8hY8RMSqzpWA5pqH0CDy0JWgUmkCmZvNVJHJDI0Xso55LQ9+/Z5Wc?=
- =?us-ascii?Q?wZyGpZCXFVSRXOPaNoE3+YAwIGQFgFNQ/NxhhOoI08h/jMJg5RMJgG1BVErG?=
- =?us-ascii?Q?4BexsfPnuoneUagFhyQlLhHoo08k6oP9Ycb4QFDvjUZY/rbNL5apMncZnpQT?=
- =?us-ascii?Q?XFQ2o/beKks8rTGAYYrZYE6ICQBFVvvl9Z0DPRm4FfrygB5d2ITn/El/M7Xx?=
- =?us-ascii?Q?H4ncl6TverCIX7jXsbfDWO1aerGoGRQEy+RPJwm8a1tSPLdqm162LHJxVqMK?=
- =?us-ascii?Q?CWroZuaPquhbylwk3Hy3jeBKkk7IrMMm4nmE2ObSxJvpmFbHsozpm/0Cgs4y?=
- =?us-ascii?Q?s+PeQ8/woPnfiFVTE0jK4ycFkir1y93KbpP23BJk+g6aJtvFdsOzmUkh8u5v?=
- =?us-ascii?Q?QJVsBfk+mmKc8P2Wye7UtMRQhkDIr3KySnQ2lI2c+omDUUtexEoj+A=3D=3D?=
+	=?us-ascii?Q?QA2glPBxheYBCBJSTbyY326A6Yjx+sWTp+OJ3F1f1pya3UJC8QyP8PzDMGDm?=
+ =?us-ascii?Q?Ks4cD2feOYT60CzEc3GyK92k0SOfrO/K/hSfrgAfhYDjwGGxV3Y+IAVcr/Dc?=
+ =?us-ascii?Q?O2lIZ7+UpbxmnYgW3N4XrSOffx26N1sXZZ4v0cTgP9URkboNp2hw+UXlibEf?=
+ =?us-ascii?Q?FThQ4ueia2BWHJ/vmPAO5WhJSChk7a+boVpOIcq/KRaTxfCy9dZ3PKqhqv57?=
+ =?us-ascii?Q?H/kaFB2DIDlO9GLgU3xfiUKKxNCO6dWuLRemVr+dDmRRYUELtanqqzJLAKaW?=
+ =?us-ascii?Q?Lxw7rew0SGIzUjX5XJ5jMWC2yFiCyET107fRLv27mr7Zf/jp3ql6p+VKVuXP?=
+ =?us-ascii?Q?1a0PhfSRGSouPbBOikYzCaiQAnj+hDPk+r9TwqfEWd68wQktnpx/79UtdPCz?=
+ =?us-ascii?Q?QoKwTGk+lErjDeX7xK/Cxit85tolYQdR50kFdB8cIAPdWyFVIu2PyZV/x6bw?=
+ =?us-ascii?Q?27obH99tyBODQK6pPzMIRGae5q8GwGgAXGIB06Vy7vvDXbj7C9gW24h60Hsy?=
+ =?us-ascii?Q?WlDPTPLYyJJdRj7f/Vu/OzH6xZfZrlcwbqzsD86156biHxu1o9Ce5xPeO3o1?=
+ =?us-ascii?Q?B/m4RzpUyjHBmOiLJprJSq7yRXbSTyTp+nODmiMDMXqIeYfEa5tZyhPTWOVq?=
+ =?us-ascii?Q?8J9itTpWcsFmvl4H74iyNpns24pH+OjgFDRjvyIf8DpO2xGOoyrmJktzZtwg?=
+ =?us-ascii?Q?zVn7D0O9H8qv/sDUgxSxZRQjbilaO6cVSISXZHCOrharTtC/pkk22PEvy1J8?=
+ =?us-ascii?Q?DFGjheY0HZd7VS45BFAA1PX0iy7nu3eiAvYSrm8okYVzlU9PvNYy5bph5AAE?=
+ =?us-ascii?Q?rl7SUX4ZDzds1+41iZNQ2s3obvQZdxuk7J12XW1Dg2gbns7hs4uu2G5oI8eN?=
+ =?us-ascii?Q?7Clv6okrGFshhL/dN7ldP4tUDaiyO6hHodt+U8gYFdhU2EO7Xux4afogin57?=
+ =?us-ascii?Q?Dn09qsUSAbHPrNpGCgzE+JlUfwZixP2m/A53INL6zfH+fXda7pQwQMfRU7hv?=
+ =?us-ascii?Q?XiUabqyLOfv1QKoMgJ6+VvJjITWMoQYfu1BQy6J4eV6L+Zd5DMBoTyyID9Hy?=
+ =?us-ascii?Q?xjfZs6rPs6Okm1evPePubQx+xbEh0Nf9pFszJT+9pDae798t+BVvMDqWNlXE?=
+ =?us-ascii?Q?ya0hBckalgJpqEN2L+M9a8x9+/JpJCMfG/l5GAbu+pLf1ck3BOAvA1fbEEAW?=
+ =?us-ascii?Q?d+fcDWS74s9siSsXrIJREO5sY00IbUqgp5Wb0hTKTjvg6oCucWdlfp/Rt2F3?=
+ =?us-ascii?Q?CwqoHOvS1umiOVNrHAU7sD+d6aGme+Qp2EF/ezO1clpla0mRL3R1+GoxJo0T?=
+ =?us-ascii?Q?yolvpHAnVAHIJnbAqpk2ttuaiOpeaz2YEE709yQO6kuXlYxdZBP9rUg96iJo?=
+ =?us-ascii?Q?/Mb3gspVOELDj6fpc0CO0MfkU5kvrxIKNnpoLtleemmSk4JukGQdxVxlEci5?=
+ =?us-ascii?Q?a6MoHC+icLoIbCfTtD0KC+AjWt38XNsXiKeV4+wwJSL9egdbyLdd1A=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: arri.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2025 10:31:22.1634
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2025 10:31:26.5809
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d18f9322-424e-431d-ae08-08dd621a3311
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4719a9c-1cf5-4023-be74-08dd621a35b3
 X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
 X-MS-Exchange-CrossTenant-AuthSource:
-	AM1PEPF000252DF.eurprd07.prod.outlook.com
+	AM1PEPF000252DA.eurprd07.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR03MB7472
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB9895
 
-Sometimes I get a NULL pointer dereference at boot time in kobject_get()
-with the following call stack:
-
-anatop_regulator_probe()
- devm_regulator_register()
-  regulator_register()
-   regulator_resolve_supply()
-    kobject_get()
-
-By placing some extra BUG_ON() statements I could verify that this is
-raised because probing of the 'dummy' regulator driver is not completed
-('dummy_regulator_rdev' is still NULL).
-
-In the JTAG debugger I can see that dummy_regulator_probe() and
-anatop_regulator_probe() can be run by different kernel threads
-(kworker/u4:*).  I haven't further investigated whether this can be
-changed or if there are other possibilities to force synchronization
-between these two probe routines.  On the other hand I don't expect much
-boot time penalty by probing the 'dummy' regulator synchronously.
+Due to asynchronous driver probing there is a chance that the dummy
+regulator hasn't already been probed when first accessing it.
 
 Cc: stable@vger.kernel.org
-Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in 4.14")
 Signed-off-by: Christian Eggers <ceggers@arri.de>
 ---
 v2:
-- no changes
+- return -EPROBE_DEFER rather than using BUG_ON()
 
 v3:
-- no changes
+- move dev_warn() below returning -EPROBE_DEFER
 
- drivers/regulator/dummy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/dummy.c b/drivers/regulator/dummy.c
-index 5b9b9e4e762d..9f59889129ab 100644
---- a/drivers/regulator/dummy.c
-+++ b/drivers/regulator/dummy.c
-@@ -60,7 +60,7 @@ static struct platform_driver dummy_regulator_driver = {
- 	.probe		= dummy_regulator_probe,
- 	.driver		= {
- 		.name		= "reg-dummy",
--		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
-+		.probe_type	= PROBE_FORCE_SYNCHRONOUS,
- 	},
- };
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 4ddf0efead68..4d0f13899e6b 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2069,6 +2069,10 @@ static int regulator_resolve_supply(struct regulator_dev *rdev)
+ 
+ 		if (have_full_constraints()) {
+ 			r = dummy_regulator_rdev;
++			if (!r) {
++				ret = -EPROBE_DEFER;
++				goto out;
++			}
+ 			get_device(&r->dev);
+ 		} else {
+ 			dev_err(dev, "Failed to resolve %s-supply for %s\n",
+@@ -2086,6 +2090,10 @@ static int regulator_resolve_supply(struct regulator_dev *rdev)
+ 			goto out;
+ 		}
+ 		r = dummy_regulator_rdev;
++		if (!r) {
++			ret = -EPROBE_DEFER;
++			goto out;
++		}
+ 		get_device(&r->dev);
+ 	}
+ 
+@@ -2211,8 +2219,10 @@ struct regulator *_regulator_get_common(struct regulator_dev *rdev, struct devic
+ 			 * enabled, even if it isn't hooked up, and just
+ 			 * provide a dummy.
+ 			 */
+-			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			rdev = dummy_regulator_rdev;
++			if (!rdev)
++				return ERR_PTR(-EPROBE_DEFER);
++			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			get_device(&rdev->dev);
+ 			break;
  
 -- 
 2.44.1
