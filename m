@@ -1,51 +1,48 @@
-Return-Path: <stable+bounces-124217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625D1A5EDC0
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:15:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0199AA5EE11
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:31:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A615A189DD5E
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:15:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D06F2189F8EE
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F13225A23;
-	Thu, 13 Mar 2025 08:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2B51EA7FC;
+	Thu, 13 Mar 2025 08:31:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F441E493;
-	Thu, 13 Mar 2025 08:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3EC1E32C5;
+	Thu, 13 Mar 2025 08:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741853732; cv=none; b=ioDQZJa+XK9RKgC87d4MJ0wV/Zq7RFaR091G09WjENi+LJZu/M9mWNlujrQymMhj0UUO0JR0NRXpgKmhUOW2ni8Xs2VUEkw594A9cBijRDD1Sm6f3AlBLnCi8HqMy0rxJe3SdwL7dw/d/aqsNvtSPt9eOY2nXik6npAI6BdKLvY=
+	t=1741854710; cv=none; b=U72De08DLjhh7jcv+okFx8KxN3dtCLK1F8dKRbbgCDgfhw+AziCvyyYqZkjGmnYoNAaGP04czEUzc0F9OpseCV1uGczWHsCxtcYzQJYKEr1Ir7vur8J7eesXQB6zVXeXdKJictAObLtkGXBJM75TDBOlTlyuQ1O26yNDgB7GJWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741853732; c=relaxed/simple;
-	bh=U9cHiEZ2UlFacIMIB70jtsKQGRGFuOhEZ5no/PBzaHM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NeuAzF2slrNjYP1dE0omchUErY1sSe87jRGsZ3KHGxSnoKmP5LlFDzP127m+Z/JjcUILuDCoMe5NJc5YS8fWv33MVN3lQnuUJZvsuqKJcZFF0pbotvjAKToV7CLmahjwYn25d30rqZgUyyJ7AKXMW5XoNQsdPt2yQw8F+2KubvE=
+	s=arc-20240116; t=1741854710; c=relaxed/simple;
+	bh=+kov0AyTDctjJQJPImJYK40idK05CmrLDo085GVP3IY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XBUMvJ2ud6SfkLCkTRx50HW9vaZ9iscbfRyKKYsy/MSapKZSNB81uiOsNieeF+cL9C/RXYFg3LO/x7OO7fmlk9umHbOdbmrBCHPqO9yDFFNXdHlhuQ6PlAXFraPMmEQS7C6SxQDpjGU29vJuPJ8HSgghjkUzNco1FsUzozf//Gs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowACHjw8MlNJnAWfVFA--.3279S2;
-	Thu, 13 Mar 2025 16:15:16 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAC3v1vpl9JnqkXWFA--.3339S2;
+	Thu, 13 Mar 2025 16:31:44 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: lduncan@suse.com,
-	cleech@redhat.com,
-	michael.christie@oracle.com,
-	James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com,
-	James.Bottomley@SteelEye.com
-Cc: open-iscsi@googlegroups.com,
-	linux-scsi@vger.kernel.org,
+To: marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	luiz.dentz@gmail.com
+Cc: linux-bluetooth@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
 	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] [SCSI] iscsi: fix error handling in iscsi_add_session()
-Date: Thu, 13 Mar 2025 16:15:07 +0800
-Message-Id: <20250313081507.306792-1-make24@iscas.ac.cn>
+Subject: [PATCH] Bluetooth: fix error handling in hci_register_dev()
+Date: Thu, 13 Mar 2025 16:31:35 +0800
+Message-Id: <20250313083135.307357-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -54,23 +51,23 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACHjw8MlNJnAWfVFA--.3279S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFW8CF1xZrb_yoWkCFb_Cr
-	WSvryxWr18tws7tw4fWF95Zryq9ryqgrZ3uF4SqayrZa4rXF9Fyr98Wr4vvw4UGw4Du34r
-	t3WDtw48Cr1vgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbSxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+X-CM-TRANSID:rQCowAC3v1vpl9JnqkXWFA--.3339S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFW8CF1xZrb_yoWDZFb_Ka
+	yIvayS9r48Jw4ktayavF45Zr1xXws3JFWfJF4aqFyvg3s0gr9Fvrs3Wrn0vr17uw1DCr13
+	ZFs8Wa1UXw1rGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
 	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUF0eHDUUUU
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbsYFJUUUUU==
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
 Once device_add() failed, we should call put_device() to decrement
@@ -83,24 +80,24 @@ not succeeded, use only put_device() to drop the reference count'.
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 8434aa8b6fe5 ("[SCSI] iscsi: break up session creation into two stages")
+Fixes: 54506918059a ("Bluetooth: Move SMP initialization after HCI init")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 1 +
+ net/bluetooth/hci_core.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 9c347c64c315..74333e182612 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -2114,6 +2114,7 @@ int iscsi_add_session(struct iscsi_cls_session *session, unsigned int target_id)
- release_dev:
- 	device_del(&session->dev);
- release_ida:
-+	put_device(&session->dev);
- 	if (session->ida_used)
- 		ida_free(&iscsi_sess_ida, session->target_id);
- destroy_wq:
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index e7ec12437c8b..c03fd16d3c46 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2641,6 +2641,7 @@ int hci_register_dev(struct hci_dev *hdev)
+ 	return id;
+ 
+ err_wqueue:
++	put_device(&hdev->dev);
+ 	debugfs_remove_recursive(hdev->debugfs);
+ 	destroy_workqueue(hdev->workqueue);
+ 	destroy_workqueue(hdev->req_workqueue);
 -- 
 2.25.1
 
