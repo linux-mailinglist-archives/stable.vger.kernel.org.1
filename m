@@ -1,85 +1,113 @@
-Return-Path: <stable+bounces-124333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F77A5FAEE
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 17:13:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 363ECA5FAF2
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 17:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53559188B90D
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 16:09:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C567E188CA11
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 16:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87255260366;
-	Thu, 13 Mar 2025 16:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E5926983A;
+	Thu, 13 Mar 2025 16:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzuhRNuP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m5w9qBku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F4926980A
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 16:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8532690CB;
+	Thu, 13 Mar 2025 16:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741881693; cv=none; b=fA/2IZbfLOSxflQwZFRIaKy+vwNAHqFsFkEl3PrEQBw4pOJWM+utAu6+qg28hto4YZYBIBPJk8XLjeN4AocUZj3vaVOM5FZe5eib8aBa4x5ZfHwICFDsakjqLs5QEfIrR6Ax28CdbOy9e9ZIuZnXdEqt5OYN1dkO7gDFse1hkYA=
+	t=1741881737; cv=none; b=eLDGztnWdxymSgxHVjmQ3j6UAR6p5alCB3i6ikItYsXAit0uTvmZuoTj3Iu3SrIIWkvFI9gcMzbm2cLO8HHRZ1J56LsfqAn3VCmh0ZBd0PekBjd/OdGqorUjetAQ5lvksdALOnnsKhtaNOaizBahESIJFYBHCitFMxE/ToNUoaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741881693; c=relaxed/simple;
-	bh=L5P3hFLI5K7ekSRd/ERL3CdOeuImNGaiSpTkHDgueXY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OSBRXVkPvZ+QGlFdNs52u527fv/3grMJzOA3R1EHAJg16k2R6cUZn+pRQJpBtcOoebzI45Nd3oeBpbcVs8q5JHFiFf+Gq7rbEKJGhblCM9tLLaVtaWS+yUfTww4tH59OggTHF+2OCCFNgO3kRGHcvCZHxoTxPDIGTXbKgRKKPqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzuhRNuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188EAC4CEDD;
-	Thu, 13 Mar 2025 16:01:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741881691;
-	bh=L5P3hFLI5K7ekSRd/ERL3CdOeuImNGaiSpTkHDgueXY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MzuhRNuPwHpE2zLAFgeg72hbN0CAcURYA2yKmorSfGiEpLANx0AJ4b/K2hBOpUYj9
-	 omtb5kWBS0+vqD8NvBotdrIpGP7XouUh1aUTzyWEE0fQXbO77PrjL+nfJNO+FtPRZm
-	 35CyXcVlA+CKRMZ087r6OB1cZLLWQ5uKm2jQCUvY=
-Date: Thu, 13 Mar 2025 17:01:29 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: 21cnbao@gmail.com, Liam.Howlett@oracle.com, aarcange@redhat.com,
-	akpm@linux-foundation.org, david@redhat.com, hughd@google.com,
-	jannh@google.com, kaleshsingh@google.com, lokeshgidra@google.com,
-	lorenzo.stoakes@oracle.com, peterx@redhat.com,
-	stable@vger.kernel.org, v-songbaohua@oppo.com, willy@infradead.org
-Subject: Re: FAILED: patch "[PATCH] userfaultfd: fix PTE unmapping
- stack-allocated PTE copies" failed to apply to 6.13-stable tree
-Message-ID: <2025031321-irritate-repulsion-f936@gregkh>
-References: <2025030947-disloyal-bust-0d23@gregkh>
- <CAJuCfpETm8PL8O91jEhkAHc8hkpJhCyEXiZbCvnPz_GMAZ5ptA@mail.gmail.com>
+	s=arc-20240116; t=1741881737; c=relaxed/simple;
+	bh=yeXHcZgjUGF7P1GdENNOH+WMNLvGwDA1Vl+O4Y03fFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=SA7SGCNIcKK/7Zhk86Ks4cN9juiNcdflNlEUpj/tvxsyvpb776JS+3MriO+p26hdu9o7y/a88eqZoU09q2CC2eMLUfS9QblwDKTESu5AX63z34EHm/T2ngy3/fr+zgMfHBgi/PYdF3IbzDfzpAjlUFbaNxgYlbGux/mp59/5wnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m5w9qBku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACE5C4CEEA;
+	Thu, 13 Mar 2025 16:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741881737;
+	bh=yeXHcZgjUGF7P1GdENNOH+WMNLvGwDA1Vl+O4Y03fFM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=m5w9qBkuDQVNB4YeKXrBEztJzAJGHkUy75sZhJ+lyGei4s3zeKWOv0SZtQO31Gsa9
+	 9zA5dwPqruTyKckVPVI3Sc2CPa9gE2fbKxs/DYBZvmfvZmjuHwYebhNnapwDXYjgiV
+	 +Ru2nP7dQP72CsjCRT8/D0/0G9JAKdUV1QsxuEZEfiAJ85SAHNurCgF+sSUsWpdVo3
+	 zhPn+Jxbv3jJ+xe+TaIpsptYh5bWhvbEA+03S0nIV0ZGEoNybkj3kpr3aGaPNTBxsR
+	 kLyPJeq8zLyfGsv/w3L4UI8oyVPmLWleh4wEsuh06Ft+FLVf9nk7CsKy1c7lySb3X+
+	 2njSxjG5yuz0Q==
+Date: Thu, 13 Mar 2025 11:02:15 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kw@linux.com, vigneshr@ti.com,
+	manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
+ J784S4
+Message-ID: <20250313160215.GA736346@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpETm8PL8O91jEhkAHc8hkpJhCyEXiZbCvnPz_GMAZ5ptA@mail.gmail.com>
+In-Reply-To: <20250313055519.j3bpvsm6govd5ytk@uda0492258>
 
-On Mon, Mar 10, 2025 at 11:50:37AM -0700, Suren Baghdasaryan wrote:
-> On Sun, Mar 9, 2025 at 11:15 AM <gregkh@linuxfoundation.org> wrote:
-> >
-> >
-> > The patch below does not apply to the 6.13-stable tree.
+On Thu, Mar 13, 2025 at 11:25:19AM +0530, Siddharth Vadapalli wrote:
+> On Wed, Mar 12, 2025 at 11:16:00AM -0500, Bjorn Helgaas wrote:
+> > On Wed, Mar 05, 2025 at 06:50:18PM +0530, Siddharth Vadapalli wrote:
+> > > Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
+> > > J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
+> > > to the Technical Reference Manual and Register Documentation for the J784S4
+> > > SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
+> > > the field for the link-state interrupt. Instead, it is BIT(10) of the
+> > > "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
+> > > field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
+> > 
+> > I guess the reason we want this is that on J784S4, we ignore actual
+> > link-down interrupts (and we don't write STATUS_CLR_REG_SYS_2 to clear
+> > the interrupt indication, so maybe there's an interrupt storm), and we
+> > think some other interrupt (DPA_1, whatever that is) is actually a
+> > link-down interrupt?
 > 
-> Hi Greg,
-> I just posted linux-6.13.y backport [1] for an earlier patch and with
-> that and with 37b338eed10581784e854d4262da05c8d960c748 which you
-> already backported into linux-6.13.y this patch should merge cleanly.
-> Could you please try cherry-picking it again after merging [1] into
-> linux-6.13.y?
-> Thanks,
-> Suren.
-> 
-> [1] https://lore.kernel.org/all/20250310184033.1205075-1-surenb@google.com/
+> While it is true that actual link-down interrupts are ignored, it is not
+> the case that there's an interrupt storm because the same incorrect macro
+> is used to enable the interrupt line. Since the enables an interrupt for
+> DPA_1 which never fires, we don't run into the situation where we are not
+> clearing the interrupt (the interrupt handler will look for the same
+> incorrect field to clear the interrupt if it does fire for DPA_1, but that
+> doesn't happen). The 'linkdown_irq_regfield' corresponds to the
+> "link-state" field not just in the J784S4 SoC, but in all SoCs supported by
+> the pci-j721e.c driver. It is only in J721E that it is BIT(1)
+> [LINK_DOWN macro], while in all other SoCs (J784S4 included), it is BIT(10)
+> [J7200_LINK_DOWN macro since it was first added for J7200 SoC]. Matt
+> probably referred to J721E's Technical Reference Manual and ended up
+> incorrectly assigning "LINK_DOWN", due to which the driver is enabling
+> the DPA_1 interrupt and the interrupt handler is also going to look for
+> the field corresponding to receiving an interrupt for DPA_1.
 
-Yes, that worked, thanks!
+So I guess without this patch, we incorrectly ignore link-down
+interrupts on J784S4.  It's good to have a one-sentence motivation
+like that somewhere in the commit log that we can pull out and include
+in the merge commit log and the pull request.
 
-greg k-h
+> I can only hope that the URL will redirect to the latest version of
+> the User Guide if at all it becomes invalid.
+
+OK, thanks, I guess there's nothing more to do ;)  I guess that manual
+is not really designed for collaborative development.
+
+Thanks for the patient hand holding!
+
+Bjorn
 
