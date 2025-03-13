@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-124260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403D0A5F01F
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 11:01:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C55A5F023
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 11:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A93903A4523
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:01:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23FE53A111E
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD0224EF69;
-	Thu, 13 Mar 2025 10:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F74B24EF69;
+	Thu, 13 Mar 2025 10:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXB3tNTA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsOkOSoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711041D5175;
-	Thu, 13 Mar 2025 10:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E989E1D5154;
+	Thu, 13 Mar 2025 10:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741860069; cv=none; b=Mt4zTKRCysWS/2FLAXesLEA+QuFz06FwzCswTtqCZ/EenU2xKXO9VlINE8Ol0SaIP6j4kaKGW6wUigrqZ/wofIBOhrl7hi5wBJpJ9CSSmaAkgMjRO88191QWn7sB58E8IBSdW84rKF08NMaN4IXwi1F7OGY2Gl347+6XMUmVuJw=
+	t=1741860138; cv=none; b=qhjd2/i3JIPXEUYptBd3rilTwCEr6nF3ZCxYdMg4D8YThJxozSJMJCo72gTxpBH3HXdzFh1QEdXZRlY5I9F38GuEv8w6TusukZWBgrqvpO3SSnDJC9b/6R4tEfqqu1zz+IG5VwJA1NdQQEXXyI6UauxlNHPT6/kB2H73ngp9r6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741860069; c=relaxed/simple;
-	bh=16WhtlFUHkoIkrsFEIZFleNHV7u2hxufNBAPqiGf4+4=;
+	s=arc-20240116; t=1741860138; c=relaxed/simple;
+	bh=28SNKFuUKmYECf/xgbAUTfIo4d8ZW3uLsrPe/o/eeUs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TDLTZdAkYR1Tp4zFBjWueojZGBuWlrkRpjglFSZgspH/PQAC1HPbUG7kgwfp91KAFPBd/NCZ5FRvgcpRo2lNyV06hNZHB0NmTqADeNqAfzC0SM8mGL7+t4RGo7furdCOsN6qsXJaraY9Rewww9ta2RqxfgpSnXnEZ92ZXoq8Kgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXB3tNTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C5FC4CEDD;
-	Thu, 13 Mar 2025 10:01:08 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=kLuBhhkrSrL+t1xLMLGpSz3V7FlDnve13Zsud3K4sXo/GYEoFKBjvWpgxUuFxlBGCy2wpWXyjTn8RgGevveSURc6Pzl14hyG0zx3OQhhwJkWKopwptcAnlqJkkLwoooj00KS0m0aeGfHCYpLfGnlzt9XuxpcdiOS80tBenS+gm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsOkOSoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB7AC4CEDD;
+	Thu, 13 Mar 2025 10:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741860068;
-	bh=16WhtlFUHkoIkrsFEIZFleNHV7u2hxufNBAPqiGf4+4=;
+	s=korg; t=1741860136;
+	bh=28SNKFuUKmYECf/xgbAUTfIo4d8ZW3uLsrPe/o/eeUs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FXB3tNTA4HeQ6FgVgsaZwb2fBUweUu3n7bpy37g+AXPGInkeyEicYrYgk4V/ivmVN
-	 iMSqdh73i1Gr/lr4AXk2OZbiSRWRLaOltt4riPiRSx3Nw35BmCZkhrgUb6b1w3ZS2K
-	 6Yxp4LqfLqjrg+UtU0M+g6CO9x+c1FsvsSL5e32E=
-Date: Thu, 13 Mar 2025 11:01:05 +0100
+	b=WsOkOSoLSOjEe7s81HwUhQsD7RS3b4Ugw4Wo66gvWXTlKFyL1ugmE1a+8a1dno8BX
+	 inrAMn7L7LfCehOHigcJvTChdbgyhbg1WrZmgOEDfqum93WhbrSEF/URw0QPAPueGY
+	 mH/v+e4Wwom1zHwm/CU2Bexv264Sl/riefhnE304=
+Date: Thu, 13 Mar 2025 11:02:13 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Ma Ke <make24@iscas.ac.cn>
-Cc: dmitry.torokhov@gmail.com, bentiss@kernel.org, jeff@labundy.com,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH] Input: fix error handling in input_register_device()
-Message-ID: <2025031350-nutty-gatherer-3e69@gregkh>
-References: <20250313083803.307646-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH] Bluetooth: fix error handling in hci_register_dev()
+Message-ID: <2025031306-distaste-humbling-39b7@gregkh>
+References: <20250313083135.307357-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,9 +55,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250313083803.307646-1-make24@iscas.ac.cn>
+In-Reply-To: <20250313083135.307357-1-make24@iscas.ac.cn>
 
-On Thu, Mar 13, 2025 at 04:38:03PM +0800, Ma Ke wrote:
+On Thu, Mar 13, 2025 at 04:31:35PM +0800, Ma Ke wrote:
 > Once device_add() failed, we should call put_device() to decrement
 > reference count for cleanup. Or it could cause memory leak.
 > 
@@ -68,33 +68,22 @@ On Thu, Mar 13, 2025 at 04:38:03PM +0800, Ma Ke wrote:
 > Found by code review.
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: 0cd587735205 ("Input: preallocate memory to hold event values")
+> Fixes: 54506918059a ("Bluetooth: Move SMP initialization after HCI init")
 > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 > ---
->  drivers/input/input.c | 1 +
+>  net/bluetooth/hci_core.c | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/input/input.c b/drivers/input/input.c
-> index c9e3ac64bcd0..2e70f346dadc 100644
-> --- a/drivers/input/input.c
-> +++ b/drivers/input/input.c
-> @@ -2424,6 +2424,7 @@ int input_register_device(struct input_dev *dev)
->  err_device_del:
->  	device_del(&dev->dev);
->  err_devres_free:
-> +	put_device(&dev->dev);
+> diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+> index e7ec12437c8b..c03fd16d3c46 100644
+> --- a/net/bluetooth/hci_core.c
+> +++ b/net/bluetooth/hci_core.c
+> @@ -2641,6 +2641,7 @@ int hci_register_dev(struct hci_dev *hdev)
+>  	return id;
+>  
+>  err_wqueue:
+> +	put_device(&hdev->dev);
 
-Did you test this?  This is not going to work properly for all places
-that call this label.
+How was this tested?
 
-While these types of fixes are nice to have, PLEASE TEST THEM!!!!
-
-Stop doing these and verify, by actual tests, that they do what you
-think they are doing before sending any more of them.  As it is, this
-stream of "fixes" is just too full of bugs for any of us to trust them
-at all.
-
-thanks,
-
-greg k-h
 
