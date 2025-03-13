@@ -1,51 +1,54 @@
-Return-Path: <stable+bounces-124214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2DFA5ED35
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:43:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F233A5ED68
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:56:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9352C3A3F20
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 07:43:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62D867A55F5
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 07:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06E525FA09;
-	Thu, 13 Mar 2025 07:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E1E25FA2F;
+	Thu, 13 Mar 2025 07:55:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4949A537FF;
-	Thu, 13 Mar 2025 07:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B81325F992;
+	Thu, 13 Mar 2025 07:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741851823; cv=none; b=Jr1i1j4+JiEpRsyzOcadc89SiSlZOc2k02kbqOvrmuO0v3W9HZHvdzZfz07tAKymWpW7qS8YSKh0iwEmt94Mtmt54OG/6jmg7G2y1AcaUp3h6l0j6Rd6y9KUihQQB3CqF4fP9o33Z2cyFDwaFIAIM61ae5Ikb61bnkYyECeutbc=
+	t=1741852558; cv=none; b=J23rJAwYa4qe5rMqyFE4xCYMVSxy1G0voSkm16RB3LYI6NprTiEUl8B2+dRS4PFiMk+Ph9w5aDLJo3p6uwu7qqzHNbZr1cKQLB30b2fP99hoFgEaIX+Ni9pRN4vLBCf9UcjH+fHnAVXNMUFnVdepAaJZvI5g4M7A8904iEZTeSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741851823; c=relaxed/simple;
-	bh=nhMtbscwvuO+ipkUJ63nXRFs7fO62mVD0D9qAhWmAEM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A8dB5H6hYDxawhhqRZdW0TgCyl/yqq8fcx/ssaFgBhCYwvrd3Ay+gczJf++OAd/uQlETCp0669yXcL5H/arWPLIhDKOIAD36xAgtuD/ckm1IYvgi2MoU0HZLZMDNKgd0jMDEIkFvXvgCBPrw21kTdGPn47/3CoRvm2DTTTx9QPc=
+	s=arc-20240116; t=1741852558; c=relaxed/simple;
+	bh=Y3qveP2BwZANo6YXOBo9JwpsWcPy0YeXkf1x0BfzsF8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D+O3LhDsqkHTpGYQYVSQDdvtPPMjkH0tOsEA+jx5jdkJWuezvRF8DHdee23CwPebtOTRbN3sbTMJ4j02Igii4lJlmcsJZ2V7GZD3XH79Gul47S/f+iS+/mr9U0aJh8Zrd2gc7KvOI3wHbNo7b3lkYsh8EkzMwc3RhWaA4btXViQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAA3PlqXjNJnkJDTFA--.20692S2;
-	Thu, 13 Mar 2025 15:43:27 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowACnrg5xj9JnokbUFA--.3019S2;
+	Thu, 13 Mar 2025 15:55:36 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: mchehab@kernel.org,
-	hverkuil@xs4all.nl,
-	sakari.ailus@linux.intel.com,
-	viro@zeniv.linux.org.uk,
-	bartosz.golaszewski@linaro.org,
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jdamato@fastly.com,
+	aleksander.lobakin@intel.com,
 	make24@iscas.ac.cn,
-	benjamin.gaignard@collabora.com,
-	hljunggr@cisco.com
-Cc: linux-media@vger.kernel.org,
+	quic_zijuhu@quicinc.com,
+	andriy.shevchenko@linux.intel.com,
+	wanghai26@huawei.com
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] media: v4l2-dev: fix error handling in __video_register_device()
-Date: Thu, 13 Mar 2025 15:43:18 +0800
-Message-Id: <20250313074318.305556-1-make24@iscas.ac.cn>
+Subject: [PATCH] net-sysfs: fix error handling in netdev_register_kobject()
+Date: Thu, 13 Mar 2025 15:55:28 +0800
+Message-Id: <20250313075528.306019-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -54,54 +57,53 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA3PlqXjNJnkJDTFA--.20692S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFW8uFyUZFb_yoWkZrXEqF
-	1S9F9rWr1kKanxta45A343Z34rKFZI9rWfWFW7tr4ftayrZ3Zruw1kXr1Yqr4kWanF9rn8
-	ZFn0grW5Cw13KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbSxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+X-CM-TRANSID:rQCowACnrg5xj9JnokbUFA--.3019S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFW8CF1xZrb_yoWDJFc_Gr
+	10va4Uuw1kJanakw43AanYvr1kJrnrJrWfGrW7tF4kJ345XFZ2qrs5WrWFyr17Ca9ruF1D
+	AF17J3yUGw4fWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbSkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
 	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
+	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU122NtUUUUU==
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Once device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
+Once device_add() failed, we should call put_device() to decrement
+reference count for cleanup. Or it could cause memory leak.
 
-As comment of device_register() says, 'NOTE: _Never_ directly free
-@dev after calling this function, even if it returned an error! Always
-use put_device() to give up the reference initialized in this function
-instead.'
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: baa057e29b58 ("media: v4l2-dev: use pr_foo() for printing messages")
+Fixes: 8ed633b9baf9 ("Revert "net-sysfs: Fix memory leak in netdev_register_kobject"")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/media/v4l2-core/v4l2-dev.c | 1 +
+ net/core/net-sysfs.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
-index 5bcaeeba4d09..1619614e96bf 100644
---- a/drivers/media/v4l2-core/v4l2-dev.c
-+++ b/drivers/media/v4l2-core/v4l2-dev.c
-@@ -1060,6 +1060,7 @@ int __video_register_device(struct video_device *vdev,
- 	if (ret < 0) {
- 		mutex_unlock(&videodev_lock);
- 		pr_err("%s: device_register failed\n", __func__);
-+		put_device(&vdev->dev);
- 		goto cleanup;
- 	}
- 	/* Register the release callback that will be called when the last
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 07cb99b114bd..f443eacc9237 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -2169,6 +2169,7 @@ int netdev_register_kobject(struct net_device *ndev)
+ 
+ 	error = device_add(dev);
+ 	if (error)
++		put_device(dev);
+ 		return error;
+ 
+ 	error = register_queue_kobjects(ndev);
 -- 
 2.25.1
 
