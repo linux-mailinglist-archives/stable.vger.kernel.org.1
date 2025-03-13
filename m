@@ -1,180 +1,108 @@
-Return-Path: <stable+bounces-124213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED57A5ED22
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:40:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2DFA5ED35
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:43:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8B2C189A3FC
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 07:40:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9352C3A3F20
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 07:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C4A25F995;
-	Thu, 13 Mar 2025 07:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="rk6u8jOt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06E525FA09;
+	Thu, 13 Mar 2025 07:43:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2057.outbound.protection.outlook.com [40.107.20.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B9C13BC3F;
-	Thu, 13 Mar 2025 07:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741851643; cv=fail; b=ltOfmahlR8xIRRIqFBLWOGIjB36Z9QVMGzHiUbjZ7qe+ZnTw1RmzkUuVO8ofwzgZYnIq6vjDPoGpjCM0P2sJlNhsuEa+8xOYJOFHXX8XZ/HLxrIFXttWf5OFd2MaqdOJbog3tqov38QuJPqUolqb0J4vIFpIFPQyhato+I44tHk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741851643; c=relaxed/simple;
-	bh=g1X5ZLoN6x73bO98Tdmo6oFTesxZ3bBa3UUVJ8IR57o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DTc6qrE6yBx1aGNtvbdOPuKtZfkjx4BbIhT0TUfUfk/O/0AwegTTkeqEILvVq4FEiUQmpjPYeyfUl8xSs6bhkMrcjaJ+tb6PxZQBNMSQo0DUol9ZArBqNhUsvGRPcqu1OGiI4XqGgGLICDdGeQXyj2xecREHvRhghYVG7wh89iU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=rk6u8jOt; arc=fail smtp.client-ip=40.107.20.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ay7taXKv/4r2vvcHzRRouKrdabS1Lq8T759HpU7axkxlfi2utjvFH3UmrsInqJiKSYSYA9ZoIQRpFMbdYGn2/rIbgdRYK62oLOIBJr91flBbWAmIbfq8PNLphfndZqAefXTFoX+VEs91HZMCBsYPbmqCqsnP+eiJKK1c9cliyJGYMKhnh8Ru1I2RNk074ax+j81WxbBBiriAO/diyfn3RBDawrx9Dx7j3jTIaCq7QKc3nRcl5Hxw9jsh4G51tYPcriDcwf7g2MIFzBkTNGZnS98iY3kKIBx8DEDZ2fHGnTOnn/6p6wkAsNr+LGbeoz1+TfHf3oaBpyOpcKuC46OTMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i6Hg9gE+yVG4Foi/jQdZjEsDC3rXQ4+5Y+VQ2vhzNo4=;
- b=mjiM1pthZirl3E78DKUEnoLtRWYODScx1ptQ8lxu+aZl1Tt40sH/lixwNX5qYN8DEto6/nt71CynMUon69drCOg/6gs7iT3lAfQBAQLDxNuQxs+kY1rvDnmeeeJbKQJ123ll6ORVmQt/rRE9AOAC5r9TXTWqTWP3lau+mdEsljbjIi958jbeiR5Gv0ASKuViX2K62RZ8kp7LM3eC09Oa+LUNQWjEJV2aIi9s9EVRUKUJGYR598CC/ciaeT1T491wrNbXZ960vK5Qkqt3D3rh60VmPhfLZucP+cggGCxlwWYKlSkSWBl4w7BYW41Vy9/7tIFS+DaUBeLpaNYlR26p0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 217.111.95.7) smtp.rcpttodomain=chromium.org smtp.mailfrom=arri.de;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=arri.de;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i6Hg9gE+yVG4Foi/jQdZjEsDC3rXQ4+5Y+VQ2vhzNo4=;
- b=rk6u8jOtpl06bOYWLATDkkp+3tlzUUVKUVEEC7pv1XeKz6ayIOWqxGQViEd4WHhN1YJP0s2KavpU74aN6lOh+idJsDJRbrX8UTLfo9bi4MSU+k8ulyBCEX3h4FragTyzb0TgQiHdVcl6wl74q7ufSUzYmLVtxnALIDgVxsWDRCo=
-Received: from DUZPR01CA0212.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b4::18) by GV2PR03MB9401.eurprd03.prod.outlook.com
- (2603:10a6:150:d5::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.28; Thu, 13 Mar
- 2025 07:40:35 +0000
-Received: from DB1PEPF00050A00.eurprd03.prod.outlook.com
- (2603:10a6:10:4b4:cafe::fc) by DUZPR01CA0212.outlook.office365.com
- (2603:10a6:10:4b4::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.26 via Frontend Transport; Thu,
- 13 Mar 2025 07:40:35 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
- smtp.mailfrom=arri.de; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=arri.de;
-Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
- designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
- client-ip=217.111.95.7; helo=mta.arri.de;
-Received: from mta.arri.de (217.111.95.7) by
- DB1PEPF00050A00.mail.protection.outlook.com (10.167.242.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8534.20 via Frontend Transport; Thu, 13 Mar 2025 07:40:34 +0000
-Received: from n9w6sw14.localnet (10.30.5.19) by mta.arri.de (10.10.18.5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.38; Thu, 13 Mar
- 2025 08:40:34 +0100
-From: Christian Eggers <ceggers@arri.de>
-To: Doug Anderson <dianders@chromium.org>
-CC: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] regulator: check that dummy regulator has been probed
- before using it
-Date: Thu, 13 Mar 2025 08:40:34 +0100
-Message-ID: <2729466.lGaqSPkdTl@n9w6sw14>
-Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-In-Reply-To: <CAD=FV=V9WRjcxfYRtBWUe+twqjqkmW4r_oZYo2xJ4PctXgBQxw@mail.gmail.com>
-References: <20250311091803.31026-1-ceggers@arri.de>
- <20250311091803.31026-2-ceggers@arri.de>
- <CAD=FV=V9WRjcxfYRtBWUe+twqjqkmW4r_oZYo2xJ4PctXgBQxw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4949A537FF;
+	Thu, 13 Mar 2025 07:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741851823; cv=none; b=Jr1i1j4+JiEpRsyzOcadc89SiSlZOc2k02kbqOvrmuO0v3W9HZHvdzZfz07tAKymWpW7qS8YSKh0iwEmt94Mtmt54OG/6jmg7G2y1AcaUp3h6l0j6Rd6y9KUihQQB3CqF4fP9o33Z2cyFDwaFIAIM61ae5Ikb61bnkYyECeutbc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741851823; c=relaxed/simple;
+	bh=nhMtbscwvuO+ipkUJ63nXRFs7fO62mVD0D9qAhWmAEM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A8dB5H6hYDxawhhqRZdW0TgCyl/yqq8fcx/ssaFgBhCYwvrd3Ay+gczJf++OAd/uQlETCp0669yXcL5H/arWPLIhDKOIAD36xAgtuD/ckm1IYvgi2MoU0HZLZMDNKgd0jMDEIkFvXvgCBPrw21kTdGPn47/3CoRvm2DTTTx9QPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAA3PlqXjNJnkJDTFA--.20692S2;
+	Thu, 13 Mar 2025 15:43:27 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: mchehab@kernel.org,
+	hverkuil@xs4all.nl,
+	sakari.ailus@linux.intel.com,
+	viro@zeniv.linux.org.uk,
+	bartosz.golaszewski@linaro.org,
+	make24@iscas.ac.cn,
+	benjamin.gaignard@collabora.com,
+	hljunggr@cisco.com
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] media: v4l2-dev: fix error handling in __video_register_device()
+Date: Thu, 13 Mar 2025 15:43:18 +0800
+Message-Id: <20250313074318.305556-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF00050A00:EE_|GV2PR03MB9401:EE_
-X-MS-Office365-Filtering-Correlation-Id: d083df53-1158-4ef3-755f-08dd62025742
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bzU3RVpXbE1JUWk4WWtsWDlneGZkRGV2VVE2R3pCK0hKS01FQ1J4Y1hiWmMr?=
- =?utf-8?B?dlh2TDVSakhHZUhGMGVYUGQ2Rk80elQ5am12NFJHaG9GS29tbXBtWDR5cWFQ?=
- =?utf-8?B?TTZEVFB6Rzk2cXN2Q1J4dk53NGVjZ3JHVFhUSG9YM1VUTHVXU2wrR0FQQkYz?=
- =?utf-8?B?SWQ2enRmV29ZcU5IbWFlbS95bTJNa2MvSDNTTlNiTTAxOUVka1cyREY1ZUNT?=
- =?utf-8?B?WUgzWHdQa0FsQ25yOERERGFtTE5SaGx4b3AwbVJyVnFUeWdYNFk0M1QyZUVY?=
- =?utf-8?B?WDBHUDJhQkNVMFdHRlVwcjl4YkJJL1dxaXNhRXhxSzNRY0RzZGh0RWh5Sk44?=
- =?utf-8?B?NHloMm1EcVlnQUFmVklYZlI4L1lUak52bDZEcE1vb0w3c28rclJVR0VqbGJU?=
- =?utf-8?B?M3VReXdvMHNucHpTY1V1VDZBWW93T01JL1p6UUhDc2dGdUVHckUzQnJ5REU3?=
- =?utf-8?B?T1dLNmR3bG9zWWptaEp6OW1MU1ZISktDMkpJY2VYQzNINkd5WVBFaFd1OVpS?=
- =?utf-8?B?ekVKdWFXQTNhWGlqQWxNQ0FHRFJneTgzOHhta05NT0pjMEwvUVhyNTc2WE9o?=
- =?utf-8?B?Sy9TZ0R6TDBGWVlaV0Y5bWxzOGgvSUVGcFlGYTdyWmU5dFBZN3FHeGREVVJs?=
- =?utf-8?B?bXhhZlA0b2ZIS0hEQWJBdEJtQU9JL0d1czRQa3IwVmQxL0Q2YjJ1QlpPa2ZO?=
- =?utf-8?B?UmVTbzhDYXNkdEZPL3JLQ2JVVWZrdXJoNGJqaG1LVTI0Rm9EZXcxcUdRR1Zm?=
- =?utf-8?B?ZHNIK1R4S1lGOUR1WXV4SU9XWmd2QVQxbWhCTGpMNGh5THdvMVJtUytWSmh4?=
- =?utf-8?B?c0owS0tpdFRrTVhSamxCcDRIUjMvdVNqSWJzMHVFTnNOSVBxTCtMb1BQNGJx?=
- =?utf-8?B?MjhLN3RBbVl2K3FWVWFibkJpVGswdjJ3WFFUZXhoekRibWlVME5PVDcrNDRT?=
- =?utf-8?B?a01QdzBMQkcwWGR1d0NCK3RYamRlS1RLS1NYTHd2TkpUWDdMS0RwUTljUnVs?=
- =?utf-8?B?Vmx3b1k3K08venZ1R21VSUtlQXN3WjFlbVdnQXJWUTJyRm1xQlBpOWc4bUVX?=
- =?utf-8?B?cm55aDllWjhhMUFTbDZnbzNKSlhwQVRCaCtSTEVvSFZXZUwwSlFmNUdraEdG?=
- =?utf-8?B?YTd5QlNZakRSeDE1RjBZVHN6eWN2NWZPdm42WEpuTmpyZ1RuWGRNa2RzNVlv?=
- =?utf-8?B?aVRCMDdKTjBVRERiWHdmV1ZESE84VFdqZkFraG9LQ3BLYUw5clEycmFhSjg5?=
- =?utf-8?B?eGZydE5yY2R0K1lueE5UVStzSmVpdCs4bjRqRGtPRDBucWZ2RUR1Nzd4NFI5?=
- =?utf-8?B?THV1ZXJPbzFJODRMNVEweGRza2kwRTJJZWtqY2hCcWZicE41c0FOUzBoUkpC?=
- =?utf-8?B?OGtjRmptajR4elY1bEZhY2xMWUFJK1FKenE4RHlFcVhGWERkLzJSbDcyaEls?=
- =?utf-8?B?bm9UYUptcHRCU3E2VUpCd29xeE16QlFvdEoyM3NLb3NCbVRFS0tvZXhWOTRE?=
- =?utf-8?B?SmVLYk0rbzcyWktmOHFMUEdQTjJXeWhMeWJCaXp4MXJ5WloxR0J2elVkcGo3?=
- =?utf-8?B?SjdHOHdJUDdtcjdxeWgxdFNNdVluUys2S051elljZi9XTVp2cm82M2lvRG9k?=
- =?utf-8?B?U0oydXF2UFBQOVhZTlY1UTN2d2FSWGJNM2JvQ1FzS1dPN3Rla29Ub3ZzczZR?=
- =?utf-8?B?bzlORHoyTktLclpydjhUSG5BZjVaQndUUlBsSmlYZWFlWXJkL1JIbXVWanNL?=
- =?utf-8?B?SFhPUUNIUnFvN3prMFRSRUt6cTZrL05VTkVaZFFPZWp0RXl2TXgwbmVWak1T?=
- =?utf-8?B?cldoUGo5RVhZZEloU1VaS3lQMHBncWg5azNqc01MOVFuSEF5STBSSkgzYi9u?=
- =?utf-8?B?amRRcFMxYUhKL3ZESzcxSU8xSHNxbXF3RU1SZWEwQ3lNYnlybi9DRTUzcmgy?=
- =?utf-8?B?aU9tSklCWWlHNXRINnJjM1Fpd21tSFV6QitHcmVTb29Ed2tZMms1NWwxeUkv?=
- =?utf-8?B?UEVaL25CMEdnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arri.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2025 07:40:34.9283
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d083df53-1158-4ef3-755f-08dd62025742
-X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF00050A00.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR03MB9401
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAA3PlqXjNJnkJDTFA--.20692S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFW8uFyUZFb_yoWkZrXEqF
+	1S9F9rWr1kKanxta45A343Z34rKFZI9rWfWFW7tr4ftayrZ3Zruw1kXr1Yqr4kWanF9rn8
+	ZFn0grW5Cw13KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbSxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Thursday, 13 March 2025, 01:46:43 CET, Doug Anderson wrote:
-> Hi,
->=20
-> On Tue, Mar 11, 2025 at 2:18=E2=80=AFAM Christian Eggers <ceggers@arri.de=
-> wrote:
-> >
-> > @@ -2213,6 +2221,8 @@ struct regulator *_regulator_get_common(struct re=
-gulator_dev *rdev, struct devic
-> >                          */
-> >                         dev_warn(dev, "supply %s not found, using dummy=
- regulator\n", id);
-> >                         rdev =3D dummy_regulator_rdev;
-> > +                       if (!rdev)
-> > +                               return ERR_PTR(-EPROBE_DEFER);
->=20
-> nit: it feels like the dev_warn() above should be below your new
-> check. Otherwise you'll get the same message again after the deferral
-> processes.
->=20
+Once device_register() failed, we should call put_device() to
+decrement reference count for cleanup. Or it could cause memory leak.
 
-I actually had a similar feeling during making the change.  Having entropy =
-on warning
-messages isn't very nice, so I'll send a v3.
+As comment of device_register() says, 'NOTE: _Never_ directly free
+@dev after calling this function, even if it returned an error! Always
+use put_device() to give up the reference initialized in this function
+instead.'
 
-regards
-Christian
+Found by code review.
 
+Cc: stable@vger.kernel.org
+Fixes: baa057e29b58 ("media: v4l2-dev: use pr_foo() for printing messages")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/media/v4l2-core/v4l2-dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
+index 5bcaeeba4d09..1619614e96bf 100644
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1060,6 +1060,7 @@ int __video_register_device(struct video_device *vdev,
+ 	if (ret < 0) {
+ 		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
++		put_device(&vdev->dev);
+ 		goto cleanup;
+ 	}
+ 	/* Register the release callback that will be called when the last
+-- 
+2.25.1
 
 
