@@ -1,132 +1,108 @@
-Return-Path: <stable+bounces-124226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060E6A5EEC0
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:01:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1BDA5EEC7
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:02:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2288B19C0A84
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:01:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED5D19C0AE5
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD5C1FBCA3;
-	Thu, 13 Mar 2025 09:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F3A264624;
+	Thu, 13 Mar 2025 09:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bw3mmtGX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xk6EHSFi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1450C155C96
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5761326461C;
+	Thu, 13 Mar 2025 09:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741856480; cv=none; b=IBA3igYgZ16X4MxGkiSy3hVxk1b75iRl2DMuVbxJ97dQDxGGjpbhn6nHeB2+Jqzc89xQxezEVvj41VzZCV4sFb2SdZiq44P6eeAyzCIspQ+xrT/FvkRQh+toVZeRo/WGk77nZ/gEZwuYZgjIUQlhhSyHnP2e6+2C2gn7YM/h5aI=
+	t=1741856487; cv=none; b=RXU2lvstivkkPf/QRKfpKO4CXPd8PXz5PQOQOZ4bXwgfTkJko569CqFxtS3QS1WALAtpoC2D213VjcNPwniJIS94mcJcp5Y1nWO0dLsgi+yMClqNJPh6WQf2gVcBQr/YyRiek2z0PTpPq0timv+6fpdY58W2TdPuTxwVqhdmXpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741856480; c=relaxed/simple;
-	bh=7Dtah6WHPwKab1f1dJszcm/yd4hfUig7EKMFJJd4EBA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GEw49v7xGfBuiPg4uM9NUx2FZdt6Vp2aVvI/+NSRXwCSD25zgFmS6WSCb4dD6hCanCfKTUATfsE5P1AG8Gw1/sTRrWf5js4mJ32x/XZ5ruvBYp88CAvnb5zQp1yvaUv3TmqW90dL8Yynoa0ffIEtUsWd0VtAz0lYMc7cPGnZVxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bw3mmtGX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61ABC4CEEE;
-	Thu, 13 Mar 2025 09:01:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741856479;
-	bh=7Dtah6WHPwKab1f1dJszcm/yd4hfUig7EKMFJJd4EBA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bw3mmtGX+pW1q1H/7BVT2Clxx0fOYWIzncrkAKnXj7Sg/lN2DN/rLV/ZTMJw4lw1X
-	 37wC7e4c0E0dxc4DJS3FzA76hN8inpGu5L5SswCZ+Awn2OydL8Q6TkHNgLMvVV0UNj
-	 Pop6ZM7+OwumPgTTRcrmYxupRKZLjjuwD73Xd5JFC3Sel5k4mkaAE0D99SVUB/cA2T
-	 03Fgu/AFMOf4XqrD037fGHGxBfMOFu2Kq0WRivZdlooj5ZyFB8lW2coFOUM0ko6Zxu
-	 ZXGPHn5aA2inUy1ePL9oPNIfuv9I5YQPyrUWK+wwbE+hhNhf2G3AwdRgdY5NNqCOz5
-	 fPBQaGloDSVhQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	urezki@gmail.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13.y] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
-Date: Thu, 13 Mar 2025 05:01:17 -0400
-Message-Id: <20250312223646-63491c95dc46f5e4@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250311165944.151883-1-urezki@gmail.com>
-References: 
+	s=arc-20240116; t=1741856487; c=relaxed/simple;
+	bh=pZpHIxn8X7wku+BRIf/Q8fpkyPJtfSmtiqJspDYseeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YK5/hsK3/EPUOM213ehE4qgdzQdSJr0oDDBtos0GB5mK/8zihQqLDB7r7xsyT6stLCexCmuRgq3ArREQaOPT8o9kIrvyq+aSVNP8ANWk/Mx1X19pIs5+ABq8tDORrdzeM+0M+0JV2wAFzCkm40Y6tLtEEm33rLxLUeI0En4sYsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xk6EHSFi; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741856486; x=1773392486;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pZpHIxn8X7wku+BRIf/Q8fpkyPJtfSmtiqJspDYseeU=;
+  b=Xk6EHSFid/b6GDM8AV2SqLCHZm5WTQhW+n3NiTilJ6X1t3sjQyUzX10K
+   swHdBS0KIxsKbCFO/8EQDqqpUIw4I9qDrhOSu9pbaRPHl1P6sx/LJIYNt
+   OtZ3KdvBd7gfcF5gVAydAlpZEhiISWZpFjg5X8+zgd0UmN4DbMLXMkion
+   8MyL+efA7C1/Hf3rHOHkUDfy64yBtCUBMzjSZU/mlR9vFVtOeMGYNP2ef
+   PNZfoA+Zs57x4+AreC9SGPtq1Wgc+iFZCZSe8egVz3yGewRaBao3lzNRt
+   1vwAu1aeJuL0kxFkSC6UQD7sUHjYbNgbgUx5Um6r6jQnTS095RaOhrOPZ
+   g==;
+X-CSE-ConnectionGUID: DDNIfNFXRi+y3rFdtLgHQw==
+X-CSE-MsgGUID: uuWzSgkDQY+cBBavBVGOqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="53956649"
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
+   d="scan'208";a="53956649"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 02:01:25 -0700
+X-CSE-ConnectionGUID: gloHZR0kQASo1lI5EMvOOg==
+X-CSE-MsgGUID: iv+Aim2oTf28GiUBCA8S/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
+   d="scan'208";a="144082437"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 02:01:21 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tseRK-000000027la-3hv4;
+	Thu, 13 Mar 2025 11:01:18 +0200
+Date: Thu, 13 Mar 2025 11:01:18 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, jdamato@fastly.com,
+	aleksander.lobakin@intel.com, quic_zijuhu@quicinc.com,
+	wanghai26@huawei.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net-sysfs: fix error handling in
+ netdev_register_kobject()
+Message-ID: <Z9Ke3moM5BVSsPax@smile.fi.intel.com>
+References: <20250313075528.306019-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250313075528.306019-1-make24@iscas.ac.cn>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-[ Sasha's backport helper bot ]
+On Thu, Mar 13, 2025 at 03:55:28PM +0800, Ma Ke wrote:
+> Once device_add() failed, we should call put_device() to decrement
+> reference count for cleanup. Or it could cause memory leak.
+> 
+> As comment of device_add() says, 'if device_add() succeeds, you should
+> call device_del() when you want to get rid of it. If device_add() has
+> not succeeded, use only put_device() to drop the reference count'.
 
-Hi,
+Okay, have you read the history of this?
+6b70fc94afd1 ("net-sysfs: Fix memory leak in netdev_register_kobject")
+8ed633b9baf9 ("Revert "net-sysfs: Fix memory leak in netdev_register_kobject"")
+https://syzkaller.appspot.com/x/log.txt?x=1737671b200000
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+TL;DR: next time provide a better changelog and clean syzkaller report.
 
-Found matching upstream commit: dfd3df31c9db752234d7d2e09bef2aeabb643ce4
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Note: The patch differs from the upstream commit:
----
-1:  dfd3df31c9db7 ! 1:  95c2d9d981779 mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
-    @@ Commit message
-         Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-         Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-     
-    - ## mm/slab_common.c ##
-    -@@ mm/slab_common.c: module_param(rcu_min_cached_objs, int, 0444);
-    - static int rcu_delay_page_cache_fill_msec = 5000;
-    - module_param(rcu_delay_page_cache_fill_msec, int, 0444);
-    + ## kernel/rcu/tree.c ##
-    +@@ kernel/rcu/tree.c: void call_rcu(struct rcu_head *head, rcu_callback_t func)
-    + }
-    + EXPORT_SYMBOL_GPL(call_rcu);
-      
-     +static struct workqueue_struct *rcu_reclaim_wq;
-     +
-      /* Maximum number of jiffies to wait before draining a batch. */
-      #define KFREE_DRAIN_JIFFIES (5 * HZ)
-      #define KFREE_N_BATCHES 2
-    -@@ mm/slab_common.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
-    +@@ kernel/rcu/tree.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
-      	if (delayed_work_pending(&krcp->monitor_work)) {
-      		delay_left = krcp->monitor_work.timer.expires - jiffies;
-      		if (delay < delay_left)
-    @@ mm/slab_common.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
-      }
-      
-      static void
-    -@@ mm/slab_common.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
-    +@@ kernel/rcu/tree.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
-      			// "free channels", the batch can handle. Break
-      			// the loop since it is done with this CPU thus
-      			// queuing an RCU work is _always_ success here.
-    @@ mm/slab_common.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
-      			WARN_ON_ONCE(!queued);
-      			break;
-      		}
-    -@@ mm/slab_common.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
-    +@@ kernel/rcu/tree.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
-      	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
-      			!atomic_xchg(&krcp->work_in_progress, 1)) {
-      		if (atomic_read(&krcp->backoff_page_cache_fill)) {
-    @@ mm/slab_common.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
-      				&krcp->page_cache_work,
-      					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
-      		} else {
-    -@@ mm/slab_common.c: void __init kvfree_rcu_init(void)
-    +@@ kernel/rcu/tree.c: static void __init kfree_rcu_batch_init(void)
-      	int i, j;
-      	struct shrinker *kfree_rcu_shrinker;
-      
----
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Success    |  Success   |
 
