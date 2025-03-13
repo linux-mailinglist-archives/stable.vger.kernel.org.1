@@ -1,116 +1,118 @@
-Return-Path: <stable+bounces-124222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615D9A5EE64
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:49:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4236A5EEA9
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:57:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CF9E16A80E
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:49:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 133EF17D31B
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CD2262D03;
-	Thu, 13 Mar 2025 08:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88B6263C8E;
+	Thu, 13 Mar 2025 08:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OW6BStxA"
+	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="MblLZ3Qk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8A42620FF
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 08:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBA5262814;
+	Thu, 13 Mar 2025 08:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741855764; cv=none; b=Zkgn/F8CfSxDDGezVp7OcjYLhO1I9qO3nySePguu5MawOJQCqdPx3t+BPlCCni+iN75ofHT7pS4VOSGglBgv1wQiszSgM8mqFVRrqiJEH4KLMvlb1TAjsBsI9BuJys+k75qCpREOmv2hMM0pqvHnIgbeqq5Ij5q2Zzna1aXs9GE=
+	t=1741856241; cv=none; b=IyFZvafVi2NAuQd6TanJ/C2j2Mggi36Y8WqoTRIXiSOS7o5mO+PZ4D1gebtmHncTXy33KdRaJxflbW8FrY9mWLoVHK9EkWWtDC7eX9t5HGxeo+zVRw9dVA6UfBqIV5TWc6BfYEAO+KE2IAuSPJXohSUTJUebAy299fLAuXgjHNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741855764; c=relaxed/simple;
-	bh=wDdfhJhBThiZUn+0LbZ9lmE9r4DbYfHvlI21cG6BxoI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hL5my8XsneMOxwf8uoR8vDgqUzwHGIOU5f0A3DqfrOXwXj8Dx9vH6u7VKY9mxSSojGhN/2nN5A8f6Q6FbLOi7w62QWkZlSNzizbjzv0AV5rn4DlVa2zS38VZ3R4ALuhyS/AJzHm9z7kbmExoFAVXXKX0s6EWDGDx9lvms4bkcjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OW6BStxA; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5499c5d9691so772510e87.2
-        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 01:49:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741855760; x=1742460560; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cH0/G8dnIsLEQps0a+QRu5yJlelIyIdUnSqN98914W0=;
-        b=OW6BStxADydn6/Me4yfuO+9rgVQfirts/pkGEyYF0ptTOMt07HdwFDTRQuO/qMZooS
-         GPNVWOzl6Rgxixx1N+PYswTtC9M/1QGmrT7ByJdLA48Pd2om1+cEPZpHy7ZPoW9YNLDa
-         KZPiyujMvbF93BcPEEvfo4HOCLp4Lv6obU2e4HqVsQNRRhQWBe6DaHbdTcfEt7pyDefR
-         BxU+YKMuWP3o6Fq1Wcyi4IynV1wIf3lQ5FIQsQDnVUJvd2GtNxZxMeboQ/MHoA/bTchR
-         dGQ09hgM/gDx0ZEo9SQR0HPofVyVzdi1CtPKsm2jh04dxURCVmMcKQqYEnKsXL0L8WCA
-         K8ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741855760; x=1742460560;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cH0/G8dnIsLEQps0a+QRu5yJlelIyIdUnSqN98914W0=;
-        b=Tkd3j5ZGw3sHCsHL4/ltp12Pp0Kt01jTRpuPdqkgwdSDvZ3mRdF+sIHpsyjpeR2zgw
-         Ox9IbjYP6HjvY3a5Eg6lRi/rGEPx2Ng6BlZJrLvQTFmfjGVjrObNLHerkoZba+rP/TNx
-         ZcH2Mj9y01un1bxfrJUAZmxN2AzGSap/uDXzMrzDfKw8dkow6dQHCQlTGIRcdZs3A1lw
-         TVG/qHkhVMusZFvjHJLO7/JHLf4gjQaK0ES9LufrTjKYQ6RzTd69fwLTpvFY2nqAv1Y7
-         0sRIAYVG6KXqcn4rsLGLfQQb/lWFJQgeteyr0Z/JmrmG/cuzv1GVnJSGwZc2I2b25wDZ
-         tXaA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpevNhQYMzuogKdEpHvpmozjqbM/VP+QFnI+YuxuuH6/iXsFcZQGxNyewzuVkv7YccrEpOu48=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMPTMvW6dkn+dgk1BAQfoHyTLhl4zgvTPeCPR+JlNnhBLTluMC
-	7k6/F0I4awtws7V41hCC/Vb5aYb0wuBHWNThb/Dils9pULpVY7y/38ayRvmSv0wCxxtovCYYzGj
-	jIuClxeulinXb+2NdsogASdTiokCfQvJFKVnsuA==
-X-Gm-Gg: ASbGncveD5L8xWaH8DIRphoC1AWrEc69hBqp/1Yec80Pu1JKWQfIx/UiHvb74g3bgDY
-	zReWTdHfgmOMFdLWRe8oJhJTTTd4u+pRbNnFek5yoyry0tjaaNYgavaWyXDI066kw2E5euOEqjQ
-	PeiK8DrH7unmz4TzBW6ifoO9t4vQ==
-X-Google-Smtp-Source: AGHT+IHZkAfEyI5h1xNp9EscwBtm7RYtlJrFqFkZLqQeebsL2P20q1EFV/vAiiJ7hbwVCtlIBk24ytpLzUux5mvsmjw=
-X-Received: by 2002:a05:6512:ba6:b0:549:5b54:2c6c with SMTP id
- 2adb3069b0e04-54990e673f2mr9060936e87.23.1741855759797; Thu, 13 Mar 2025
- 01:49:19 -0700 (PDT)
+	s=arc-20240116; t=1741856241; c=relaxed/simple;
+	bh=tpmeGUgGhllwUBBAGOlrE9cU2ApLt6CWcDTd6RNOAGo=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mVGb+9HMt/24IdDUp6fwNL1pcmdOwpQtOqtO/5iZbFSn0war9B2H/eGQkASqPcHvrXT52x/DNPYb3B0yTgKptfSoIhuFhOilizyRZC8mGs5sNOPZMUxLxP2e3MoKMI86w7IvDge9vKIpwlYjGxoWQ+JeIib63hhH8Ee5bS1rsAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=MblLZ3Qk; arc=none smtp.client-ip=91.244.183.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
+Received: from mx0.infotecs-nt (localhost [127.0.0.1])
+	by mx0.infotecs.ru (Postfix) with ESMTP id 8495410B9393;
+	Thu, 13 Mar 2025 11:50:08 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 8495410B9393
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
+	t=1741855808; bh=g0YsrEhjGz8lcic6OJN5Xenjkp1uFzhGdMlrY9qTx3c=;
+	h=From:To:CC:Subject:Date:From;
+	b=MblLZ3QkaC4Odm+VZcIN/XFNg2xu85pnqEzg4rJY8oA55qjLvuRkrS5crfkD4l8yV
+	 JUgBFJcsnVPTIvAMG2YiTujbooZ0Wmp5USpDYsUg3tgchiOKVz98iOZvt1VokcI3qF
+	 aBksXzRouly01wgzIg8J2Y3s7NEBziOa4lT264R4=
+Received: from msk-exch-01.infotecs-nt (msk-exch-01.infotecs-nt [10.0.7.191])
+	by mx0.infotecs-nt (Postfix) with ESMTP id 80C4230375F8;
+	Thu, 13 Mar 2025 11:50:08 +0300 (MSK)
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+To: "bjorn@kernel.org" <bjorn@kernel.org>
+CC: Magnus Karlsson <magnus.karlsson@intel.com>, Maciej Fijalkowski
+	<maciej.fijalkowski@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, "Daniel
+ Borkmann" <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH net] xsk: fix an integer overflow in
+ xp_create_and_assign_umem()
+Thread-Topic: [PATCH net] xsk: fix an integer overflow in
+ xp_create_and_assign_umem()
+Thread-Index: AQHbk/Tsm9QMCOUZtk69szSJlOz3iQ==
+Date: Thu, 13 Mar 2025 08:50:08 +0000
+Message-ID: <20250313085007.3116044-1-Ilia.Gavrilov@infotecs.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250311-arm-fix-vectors-with-linker-dce-v1-0-ec4c382e3bfd@kernel.org>
- <20250311-arm-fix-vectors-with-linker-dce-v1-2-ec4c382e3bfd@kernel.org>
-In-Reply-To: <20250311-arm-fix-vectors-with-linker-dce-v1-2-ec4c382e3bfd@kernel.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 13 Mar 2025 09:49:06 +0100
-X-Gm-Features: AQ5f1Jr7N3AP_OP74JY7L1V0VadIJIbOxnWg4sgQC81ix5N9CYiTFnZob5PuCj4
-Message-ID: <CACRpkdatTYZ9oxSBdjTbs-LjF3ONqcA-9vYojPc-KSGZmoEO=A@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ARM: add KEEP() keyword to ARM_VECTORS
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>, Christian Eggers <ceggers@arri.de>, 
-	Arnd Bergmann <arnd@arndb.de>, Yuntao Liu <liuyuntao12@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KLMS-Rule-ID: 5
+X-KLMS-Message-Action: clean
+X-KLMS-AntiSpam-Status: not scanned, disabled by settings
+X-KLMS-AntiSpam-Interceptor-Info: not scanned
+X-KLMS-AntiPhishing: Clean, bases: 2025/03/13 07:05:00
+X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/03/13 07:03:00 #27752837
+X-KLMS-AntiVirus-Status: Clean, skipped
 
-On Tue, Mar 11, 2025 at 8:44=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
-g> wrote:
+Since the i and pool->chunk_size variables are of type 'u32',
+their product can wrap around and then be cast to 'u64'.
+This can lead to two different XDP buffers pointing to the same
+memory area.
 
-> From: Christian Eggers <ceggers@arri.de>
->
-> Without this, the vectors are removed if LD_DEAD_CODE_DATA_ELIMINATION
-> is enabled.  At startup, the CPU (silently) hangs in the undefined
-> instruction exception as soon as the first timer interrupt arrives.
->
-> On my setup, the system also boots fine without the 2nd and 3rd KEEP()
-> statements, so I cannot tell whether these are actually required.
->
-> Cc: stable@vger.kernel.org
-> Fixes: ed0f94102251 ("ARM: 9404/1: arm32: enable HAVE_LD_DEAD_CODE_DATA_E=
-LIMINATION")
-> Signed-off-by: Christian Eggers <ceggers@arri.de>
-> [nathan: Use OVERLAY_KEEP() to avoid breaking old ld.lld versions]
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 94033cd8e73b ("xsk: Optimize for aligned case")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+---
+ net/xdp/xsk_buff_pool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yours,
-Linus Walleij
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index 1f7975b49657..d158cb6dd391 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -105,7 +105,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct =
+xdp_sock *xs,
+ 		if (pool->unaligned)
+ 			pool->free_heads[i] =3D xskb;
+ 		else
+-			xp_init_xskb_addr(xskb, pool, i * pool->chunk_size);
++			xp_init_xskb_addr(xskb, pool, (u64)i * pool->chunk_size);
+ 	}
+=20
+ 	return pool;
+--=20
+2.39.5
 
