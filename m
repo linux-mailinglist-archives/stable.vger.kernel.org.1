@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72320A5EF27
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:10:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B6AA5EF1E
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:10:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC61F7AE948
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:08:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 995B717DA86
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3950C265CC8;
-	Thu, 13 Mar 2025 09:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659B8266192;
+	Thu, 13 Mar 2025 09:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F7iR8v1L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFT5vGHm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB43265CC1
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9D72641DD
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741856917; cv=none; b=BB1S1uE8DFkdvGC4cM4mBnKL7puJJlbDCay4ZU/cnW8iR38GikN4XmAsMKRmJQ26NahSS1q+kyqilhRjAQCS6rqnLQfwYbP8Tl0hDeJHo3WwAUDsOcJf0HK5G2VpZqmfF8ul+lzY4Oh4kQptYbNke7tBWY+pka1ug1vOnTMSPWw=
+	t=1741856920; cv=none; b=b+8dw1VO4PiEbP/os5jsIGySkYvCCIv5fwh0ZZwTEVnU/X+aQZVxTLXnbeeZgUpWA4q13EqX+KZCBoBN7YgHw2PiLArq6CXMFt5pjnelNsUySDiYletg5i+ZzE93jzI84TmeeDhYGpTA68A3DaK41KNUatpp71uZlvWbZ9Knves=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741856917; c=relaxed/simple;
-	bh=uQx5AB3+d5Ba0CA6Kamc6yvLcbCLKrjynpyvABPwAag=;
+	s=arc-20240116; t=1741856920; c=relaxed/simple;
+	bh=PztL1jn1+N4C6TmWg0sG6oK6xjR3WYfz8OzOo4WF1vo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QUektNmfAG5Ii21wpdz/B/lAmn5Ik4KoaFvV/9oJ7ZjL99c2BFNCVezW6PwZtB0Wr4XZxkvk6s1HMo8XiBAhkGpMCHrg8KRTDcw3UwBL+CWXID+9XbmZyXGlI9UvOcHxrPC8owYVeEyogJikCSw8F58aI7kH81PkDWQbFhGy0dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F7iR8v1L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCB4C4CEF0;
-	Thu, 13 Mar 2025 09:08:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tae/z6kvlyVJKYXTqb8t9vtVpqEQ75fMoT+SaAbYyVyn/reTv2kuzVPcIgj+w1QumkgajFcTNCvK3dt2cyrFws1w3/IDzGxDmMMsPgJc9Ceep9cNCPucx5w4uhqZTGbEFyD7D3x+0K8tAn8XhBg7o1zSDH7WxQR9Qq630y/yz+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFT5vGHm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECD3C4CEE3;
+	Thu, 13 Mar 2025 09:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741856917;
-	bh=uQx5AB3+d5Ba0CA6Kamc6yvLcbCLKrjynpyvABPwAag=;
+	s=k20201202; t=1741856919;
+	bh=PztL1jn1+N4C6TmWg0sG6oK6xjR3WYfz8OzOo4WF1vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7iR8v1LkjW/hFXwLClWvsHGFJWAEj3RscAFrr+tjOWiY3tnjA5t6gZw7pO14ZWbe
-	 dpzV8EBbq+6J6GBgqPt7k+CGs/mJiNQ98TW7WOr23XniJBSohYBGziPlsmJyYItkBO
-	 CD/vOz/1BB3VczemRZHkh+IujebLwJRODr9rNtbtpqRUa6YtO4nFQYFOZRmEqSUTRF
-	 BuugMoR8wAAaNnhYAoeVOWTSEYOaYK7a8boQjdTlG1RBohzLyl/h1ZtzdRerSZ5hZ4
-	 g4jTQ7vKH55HcH3GZHM3Zj5OqIWJoFWjEnEwN5bJ71OJ45OhrJDC73ieA6sEzZ89Dx
-	 7+7QCGKTFvpSg==
+	b=GFT5vGHmEuN2CGbYRjl4DzhZ2Avufz9JFRE0Tp+RMJYAPmfCT3XuRtzItImxRoJQI
+	 83O3qrl6QU9LPzptNz38Lnz3n3Og+qALT/dcGhZ3mTgRFXIAvzVGU5p3YBpOVoqOkL
+	 954RHbHxvsQWFtO3SnuQ0UscJZ0FyQU0DuDaF80rbCLmmVBVNyErKdz3EqfwxyL8tP
+	 IE92pam4xaEStghFkYVD8cEYRx1053cGQK26lBq2GMk3dlkL3wiD9icyY7CVTcYv+g
+	 uR1To5RvVrkBNEt0Yy+/W583cO36k5Tf78v7vk0MT36mrqehXYFT3kHIfIpISJop3+
+	 fwI3gJoXnzAbA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	michal.pecio@gmail.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] usb: xhci: Enable the TRB overfetch quirk on VIA VL805
-Date: Thu, 13 Mar 2025 05:08:35 -0400
-Message-Id: <20250312201303-813ab2bbeb6c9a99@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12.y 6.13.y] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
+Date: Thu, 13 Mar 2025 05:08:37 -0400
+Message-Id: <20250312204312-a70d979730718b6e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250310000221.1a7d4993@foxbook>
+In-Reply-To:  <20250312102924.16247-1-urezki@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,87 +64,84 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: c133ec0e5717868c9967fa3df92a55e537b1aead
+The upstream commit SHA1 provided is correct: dfd3df31c9db752234d7d2e09bef2aeabb643ce4
 
 Status in newer kernel trees:
-6.13.y | Present (different SHA1: b273b3dc3b5c)
-6.12.y | Present (different SHA1: 43115ac4e752)
-6.6.y | Present (different SHA1: 2a3d68873fc2)
-6.1.y | Present (different SHA1: bd139706d043)
-5.15.y | Present (different SHA1: e256a546d03d)
+6.13.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  c133ec0e57178 ! 1:  3d064d3287ee6 usb: xhci: Enable the TRB overfetch quirk on VIA VL805
+1:  dfd3df31c9db7 ! 1:  ec5a5cc49c69d mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
+    @@ Metadata
+      ## Commit message ##
+         mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
+     
+    +    commit dfd3df31c9db752234d7d2e09bef2aeabb643ce4 upstream.
+    +
+         Currently kvfree_rcu() APIs use a system workqueue which is
+         "system_unbound_wq" to driver RCU machinery to reclaim a memory.
+     
     @@ Commit message
-         Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-         Link: https://lore.kernel.org/r/20250225095927.2512358-2-mathias.nyman@linux.intel.com
-         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    (cherry picked from commit c133ec0e5717868c9967fa3df92a55e537b1aead)
-    +    [ Michal: merge conflict with white space and an unrelated quirk ]
-    +    Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+         Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+         Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+         Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+    +    Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
      
-      ## drivers/usb/host/xhci-mem.c ##
-     @@ drivers/usb/host/xhci-mem.c: int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
-    @@ drivers/usb/host/xhci-mem.c: int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flag
-     
-      ## drivers/usb/host/xhci-pci.c ##
-     @@
-    - #define PCI_DEVICE_ID_ETRON_EJ168		0x7023
-    - #define PCI_DEVICE_ID_ETRON_EJ188		0x7052
-    + #define PCI_DEVICE_ID_EJ168		0x7023
-    + #define PCI_DEVICE_ID_EJ188		0x7052
+    - ## mm/slab_common.c ##
+    -@@ mm/slab_common.c: module_param(rcu_min_cached_objs, int, 0444);
+    - static int rcu_delay_page_cache_fill_msec = 5000;
+    - module_param(rcu_delay_page_cache_fill_msec, int, 0444);
+    + ## kernel/rcu/tree.c ##
+    +@@ kernel/rcu/tree.c: void call_rcu(struct rcu_head *head, rcu_callback_t func)
+    + }
+    + EXPORT_SYMBOL_GPL(call_rcu);
       
-     +#define PCI_DEVICE_ID_VIA_VL805			0x3483
+     +static struct workqueue_struct *rcu_reclaim_wq;
      +
-    - #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI		0x8c31
-    - #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI		0x9c31
-    + #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
-    + #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
-      #define PCI_DEVICE_ID_INTEL_WILDCATPOINT_LP_XHCI	0x9cb1
-     @@ drivers/usb/host/xhci-pci.c: static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
-      			pdev->device == 0x3432)
-      		xhci->quirks |= XHCI_BROKEN_STREAMS;
+      /* Maximum number of jiffies to wait before draining a batch. */
+      #define KFREE_DRAIN_JIFFIES (5 * HZ)
+      #define KFREE_N_BATCHES 2
+    -@@ mm/slab_common.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+    +@@ kernel/rcu/tree.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+      	if (delayed_work_pending(&krcp->monitor_work)) {
+      		delay_left = krcp->monitor_work.timer.expires - jiffies;
+      		if (delay < delay_left)
+    @@ mm/slab_common.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+      }
       
-    --	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483)
-    +-	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == 0x3483) {
-     +	if (pdev->vendor == PCI_VENDOR_ID_VIA && pdev->device == PCI_DEVICE_ID_VIA_VL805) {
-      		xhci->quirks |= XHCI_LPM_SUPPORT;
-     +		xhci->quirks |= XHCI_TRB_OVERFETCH;
-    -+	}
-    + 		xhci->quirks |= XHCI_EP_CTX_BROKEN_DCS;
-    + 	}
+      static void
+    -@@ mm/slab_common.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+    +@@ kernel/rcu/tree.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+      			// "free channels", the batch can handle. Break
+      			// the loop since it is done with this CPU thus
+      			// queuing an RCU work is _always_ success here.
+    @@ mm/slab_common.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+      			WARN_ON_ONCE(!queued);
+      			break;
+      		}
+    -@@ mm/slab_common.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+    +@@ kernel/rcu/tree.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+      	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
+      			!atomic_xchg(&krcp->work_in_progress, 1)) {
+      		if (atomic_read(&krcp->backoff_page_cache_fill)) {
+    @@ mm/slab_common.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+      				&krcp->page_cache_work,
+      					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
+      		} else {
+    -@@ mm/slab_common.c: void __init kvfree_rcu_init(void)
+    +@@ kernel/rcu/tree.c: static void __init kfree_rcu_batch_init(void)
+      	int i, j;
+      	struct shrinker *kfree_rcu_shrinker;
       
-    - 	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA &&
-    - 		pdev->device == PCI_DEVICE_ID_ASMEDIA_1042_XHCI) {
-     @@ drivers/usb/host/xhci-pci.c: static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
-      
-      		if (pdev->device == 0x9202) {
-    @@ drivers/usb/host/xhci-pci.c: static void xhci_pci_quirks(struct device *dev, str
-     +			xhci->quirks |= XHCI_TRB_OVERFETCH;
-      	}
-      
-    - 	if (pdev->vendor == PCI_VENDOR_ID_CDNS &&
-    + 	/* xHC spec requires PCI devices to support D3hot and D3cold */
-     
-      ## drivers/usb/host/xhci.h ##
-     @@ drivers/usb/host/xhci.h: struct xhci_hcd {
-    @@ drivers/usb/host/xhci.h: struct xhci_hcd {
-     -#define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
-     +#define XHCI_TRB_OVERFETCH	BIT_ULL(45)
-      #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
-    - #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
-    - #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
-    + 
-    + 	unsigned int		num_active_eps;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.13.y       |  Success    |  Success   |
 
