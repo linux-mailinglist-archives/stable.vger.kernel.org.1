@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71ACBA5EED0
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9B4A5EED1
 	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98C9A3AC21A
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:02:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18B2917D095
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF83E265621;
-	Thu, 13 Mar 2025 09:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E380263C6A;
+	Thu, 13 Mar 2025 09:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MS83JsG6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAHCQttg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9805126561C
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464A526562A
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741856493; cv=none; b=knQ/CJpuIYZN3LImc24SmGAdnmip3QwCh7a2gsw1U1Pfy2P5FqPgeAAMTwMP2Z0r3RX4ZYDxDeLdazKM7yrcvFqmRPf/AYAOIGds14Vtw6sGmQ/kEtx+yXonSPbG2euq4W7iP6Cv5M8NsrQoSa4FWXTX4l5nNEZ1gmD+9i2IwGE=
+	t=1741856495; cv=none; b=VX52MP2Z5Ca5sztnqeJlJYRPOp+9ZLBCmOv0jhoR/IDHVGrnKTRztMjaGWW4m3eMDWtCjMWdNpQSZjUP2kIW1lDuMWYFmko6SbYOpWQxqI0gd+17XawDtxF+v8GPlIMiXiHUhG0uKZetnudF/ssuIMxpaf8plZ7c1quTAMRpUbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741856493; c=relaxed/simple;
-	bh=SbkWpjfZf9kUPSfifYc7pwgagCB1t1lM1rT4h3xbE5Q=;
+	s=arc-20240116; t=1741856495; c=relaxed/simple;
+	bh=dyb3joWsIHxyAmpb6oynTAm/jbslo6fH2CKnxZbtDkk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eADyUwVtIMIvnC75D1ovjiGmajt5w2WpwijULOTKtHcPiU5g7mvgz+NfYgOoECgPKWJaW3EZMDUOnnhMsyFekSLnnLb/ZxIjrlhKm8JsqaC6PcACflpqyEbZUsxCQ1YgtR7HsedHKDp7UOjdz99eBGXj5rB8sXe7iMoRBmar7zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MS83JsG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E5CC4CEEB;
-	Thu, 13 Mar 2025 09:01:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kVzSr6z0XO/wUtFvIsOCVIbvgi+k12w6sYbCa/YA46o6AP/fJEKaNZqE8F5jEWon7Zuy/7UnIgjSwmMPaxnTxfrLClBKDesjNek2uIqlWad/P0suo6VWmiCTpTJrFmbEVsY6g8IMtyNTcpiRQiDNNLdADYnoKjZcm6I/EZNcsF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAHCQttg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A727BC4CEEA;
+	Thu, 13 Mar 2025 09:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741856492;
-	bh=SbkWpjfZf9kUPSfifYc7pwgagCB1t1lM1rT4h3xbE5Q=;
+	s=k20201202; t=1741856495;
+	bh=dyb3joWsIHxyAmpb6oynTAm/jbslo6fH2CKnxZbtDkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MS83JsG6EiaU0TfyuHAxN3qT3tNwvtBvKFdEyDdRwfqxukGz20psJO3zGKGGJQ6n5
-	 WW1mFlK0rkKRKAkH1FuQXS9SDjlGdJ2iVbF/2gfNSETby0rjgG3qu/djEjVgWpkOod
-	 LNDp5rHD36DMQLQAaBDbJbXnB4uSWhwBK7OSaH/otLpm+1CTAAE/NJltwMGC9cxIwy
-	 2szLccHZ+ATkoPZyTaSY7s/bW5C8rLXuBgWb97mSoo7MizTxAwtOvL7HpdKXyzZc/2
-	 VpJtR5Mr/9OOfCYRxP6Uce+7YeZzqtm0tA5U+TbRTLfWmgzTel84AB2SXJGXouU/pr
-	 h3YM+fUSTTzYg==
+	b=JAHCQttgzkyrgWUcrE5T1MvWtfSQ7o7ZCS1kpfcPhryKa4PkjeQsxPiajF7ZBGRiF
+	 ZV2vRLvoJxXfMo9aMcnGp0Ary3WPdQn8HT9+24ZpHjM5fzNYVKcWd3YHZLfrhgWABe
+	 k2FTxAFcNlYp7uprKrjMF7HNpcRaj3L/+XaZOq2ZOZJANYihsc+y94MZUXeWLOFkJm
+	 OMvpIzzRgyHO7mRQOYgAWGGbJE+dK8cvBHcP0jqp7W5sOin5bljq0psw8gusV8gmtS
+	 w/CiHKR2/iDwM385/agm6qp4otdiE6zcZJhwPbZbmBelcuCtZiBWMK1DrNzPEN/rdx
+	 Gk1ZpmiqSgF+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chenlinxuan@deepin.org
+	surenb@google.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.1] lib/buildid: Handle memfd_secret() files in build_id_parse()
-Date: Thu, 13 Mar 2025 05:01:31 -0400
-Message-Id: <20250312203812-995fd1fd56c9a296@stable.kernel.org>
+Subject: Re: [PATCH 6.12.y] mm: fix kernel BUG when userfaultfd_move encounters swapcache
+Date: Thu, 13 Mar 2025 05:01:33 -0400
+Message-Id: <20250312204738-b4e540aab6e495cb@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <98CE17BE6E190CAE+20250311100624.310951-1-chenlinxuan@deepin.org>
+In-Reply-To:  <20250310185747.1238197-1-surenb@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,100 +66,88 @@ Hi,
 
 Summary of potential issues:
 ⚠️ Found matching upstream commit but patch is missing proper reference to it
+ℹ️ Patch is missing in 6.13.y (ignore if backport was sent)
+⚠️ Commit missing in all newer stable branches
 
-Found matching upstream commit: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
+Found matching upstream commit: c50f8e6053b0503375c2975bf47f182445aebb4c
 
 WARNING: Author mismatch between patch and found commit:
-Backport author: Chen Linxuan<chenlinxuan@deepin.org>
-Commit author: Andrii Nakryiko<andrii@kernel.org>
+Backport author: Suren Baghdasaryan<surenb@google.com>
+Commit author: Barry Song<v-songbaohua@oppo.com>
 
 Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Not found
+6.13.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  5ac9b4e935dfc ! 1:  e898f7bad933b lib/buildid: Handle memfd_secret() files in build_id_parse()
-    @@
-      ## Metadata ##
-    -Author: Andrii Nakryiko <andrii@kernel.org>
-    +Author: Chen Linxuan <chenlinxuan@deepin.org>
+1:  c50f8e6053b05 ! 1:  8c54f12bcedaa mm: fix kernel BUG when userfaultfd_move encounters swapcache
+    @@ Commit message
+         Cc: Tangquan Zheng <zhengtangquan@oppo.com>
+         Cc: <stable@vger.kernel.org>
+         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    +    (cherry picked from commit c50f8e6053b0503375c2975bf47f182445aebb4c)
+    +    [surenb: resolved merged conflict caused by the difference in
+    +    move_swap_pte() arguments]
+    +    Signed-off-by: Suren Baghdasaryan <surenb@google.com>
      
-      ## Commit message ##
-         lib/buildid: Handle memfd_secret() files in build_id_parse()
-     
-    -    >From memfd_secret(2) manpage:
-    +    Backport of a similar change from commit 5ac9b4e935df ("lib/buildid:
-    +    Handle memfd_secret() files in build_id_parse()") to address an issue
-    +    where accessing secret memfd contents through build_id_parse() would
-    +    trigger faults.
-     
-    -      The memory areas backing the file created with memfd_secret(2) are
-    -      visible only to the processes that have access to the file descriptor.
-    -      The memory region is removed from the kernel page tables and only the
-    -      page tables of the processes holding the file descriptor map the
-    -      corresponding physical memory. (Thus, the pages in the region can't be
-    -      accessed by the kernel itself, so that, for example, pointers to the
-    -      region can't be passed to system calls.)
-    -
-    -    We need to handle this special case gracefully in build ID fetching
-    -    code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
-    -    family of APIs. Original report and repro can be found in [0].
-    +    Original report and repro can be found in [0].
-     
-           [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
-     
-    -    Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
-    -    Reported-by: Yi Lai <yi1.lai@intel.com>
-    -    Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-    -    Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-    -    Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-    -    Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-    -    Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
-    -    Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
-    +    This repro will cause BUG: unable to handle kernel paging request in
-    +    build_id_parse in 5.15/6.1/6.6.
-    +
-    +    Some other discussions can be found in [1].
-    +
-    +      [1] https://lore.kernel.org/bpf/20241104175256.2327164-1-jolsa@kernel.org/T/#u
-    +
-    +    Cc: stable@vger.kernel.org
-    +    Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-    +    Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
-     
-      ## lib/buildid.c ##
+      ## mm/userfaultfd.c ##
      @@
-    @@ lib/buildid.c
+    @@ mm/userfaultfd.c: static int move_present_pte(struct mm_struct *mm,
+      			 unsigned long dst_addr, unsigned long src_addr,
+      			 pte_t *dst_pte, pte_t *src_pte,
+      			 pte_t orig_dst_pte, pte_t orig_src_pte,
+    - 			 pmd_t *dst_pmd, pmd_t dst_pmdval,
+     -			 spinlock_t *dst_ptl, spinlock_t *src_ptl)
+     +			 spinlock_t *dst_ptl, spinlock_t *src_ptl,
+     +			 struct folio *src_folio)
+    @@ mm/userfaultfd.c: static int move_present_pte(struct mm_struct *mm,
+     -
+      	double_pt_lock(dst_ptl, src_ptl);
       
-      #define BUILD_ID 3
-      
-    -@@ lib/buildid.c: static int freader_get_folio(struct freader *r, loff_t file_off)
-    - 
-    - 	freader_put_folio(r);
-    +@@ lib/buildid.c: int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-    + 	if (!vma->vm_file)
-    + 		return -EINVAL;
-      
-    ++#ifdef CONFIG_SECRETMEM
-     +	/* reject secretmem folios created with memfd_secret() */
-    -+	if (secretmem_mapping(r->file->f_mapping))
-    ++	if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
-     +		return -EFAULT;
-    ++#endif
+    - 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
+    + 	if (!pte_same(ptep_get(src_pte), orig_src_pte) ||
+     @@ mm/userfaultfd.c: static int move_swap_pte(struct mm_struct *mm,
+      		return -EAGAIN;
+      	}
+    @@ mm/userfaultfd.c: static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd
+      	pte_t src_folio_pte;
+      	spinlock_t *src_ptl, *dst_ptl;
+     @@ mm/userfaultfd.c: static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
+    - 				       orig_dst_pte, orig_src_pte, dst_pmd,
+    - 				       dst_pmdval, dst_ptl, src_ptl, src_folio);
+    + 				       orig_dst_pte, orig_src_pte,
+    + 				       dst_ptl, src_ptl, src_folio);
+      	} else {
+     +		struct folio *folio = NULL;
      +
-    - 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
-    - 
-    - 	/* if sleeping is allowed, wait for the page, if necessary */
-    + 	page = find_get_page(vma->vm_file->f_mapping, 0);
-    + 	if (!page)
-    + 		return -EFAULT;	/* page not mapped */
+    @@ mm/userfaultfd.c: static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd
+      			goto out;
+      		}
+      
+    --		err = move_swap_pte(mm, dst_addr, src_addr, dst_pte, src_pte,
+    --				    orig_dst_pte, orig_src_pte, dst_pmd,
+    --				    dst_pmdval, dst_ptl, src_ptl);
+    +-		err = move_swap_pte(mm, dst_addr, src_addr,
+    +-				    dst_pte, src_pte,
+    +-				    orig_dst_pte, orig_src_pte,
+    +-				    dst_ptl, src_ptl);
+     +		if (!pte_swp_exclusive(orig_src_pte)) {
+     +			err = -EBUSY;
+     +			goto out;
+    @@ mm/userfaultfd.c: static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd
+     +			}
+     +		}
+     +		err = move_swap_pte(mm, dst_vma, dst_addr, src_addr, dst_pte, src_pte,
+    -+				orig_dst_pte, orig_src_pte, dst_pmd, dst_pmdval,
+    ++				orig_dst_pte, orig_src_pte,
+     +				dst_ptl, src_ptl, src_folio);
+      	}
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
