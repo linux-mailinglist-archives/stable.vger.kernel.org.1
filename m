@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9B4A5EED1
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:02:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC00A5EED3
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:03:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18B2917D095
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ED7D19C1127
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E380263C6A;
-	Thu, 13 Mar 2025 09:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A15265630;
+	Thu, 13 Mar 2025 09:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAHCQttg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNJO6dQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464A526562A
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104D5155C96
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741856495; cv=none; b=VX52MP2Z5Ca5sztnqeJlJYRPOp+9ZLBCmOv0jhoR/IDHVGrnKTRztMjaGWW4m3eMDWtCjMWdNpQSZjUP2kIW1lDuMWYFmko6SbYOpWQxqI0gd+17XawDtxF+v8GPlIMiXiHUhG0uKZetnudF/ssuIMxpaf8plZ7c1quTAMRpUbs=
+	t=1741856498; cv=none; b=FQJMO52uSUYLgMa5yBoYoGjrOKQiLsQLX/bdzhJL29iyB+GOZaB95dZ0/EaEhJmc8Xn3rvynUPk5kDQfPIMmk8EnVmHTFA0fbLE+qrV47NWedVUXNzzIhbTaeFraemk5L7A5HJZsKPZjGe5Rn6ZbyGMc1EoMbAiQHO/3PKL+VTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741856495; c=relaxed/simple;
-	bh=dyb3joWsIHxyAmpb6oynTAm/jbslo6fH2CKnxZbtDkk=;
+	s=arc-20240116; t=1741856498; c=relaxed/simple;
+	bh=wcNpg//cMMPzhntZGfSX++p37bUSpBc2R0MNjEQS/nI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kVzSr6z0XO/wUtFvIsOCVIbvgi+k12w6sYbCa/YA46o6AP/fJEKaNZqE8F5jEWon7Zuy/7UnIgjSwmMPaxnTxfrLClBKDesjNek2uIqlWad/P0suo6VWmiCTpTJrFmbEVsY6g8IMtyNTcpiRQiDNNLdADYnoKjZcm6I/EZNcsF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAHCQttg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A727BC4CEEA;
-	Thu, 13 Mar 2025 09:01:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TTITnhExNBcocdBKTDVrYd5hZfWDusjdxrn37mMp9bra7D695767P825IJHczYLTWbw0hsJmpxMkY2ayDaI1gj4HNkHUyY36wCNoKhhmVawSHh+ebSmt38RAIn+4IFY+rCsh0kFnNE1lKfOtQER/E14IRCgeGU2VXPkyWBIyFqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNJO6dQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8945C4CEE3;
+	Thu, 13 Mar 2025 09:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741856495;
-	bh=dyb3joWsIHxyAmpb6oynTAm/jbslo6fH2CKnxZbtDkk=;
+	s=k20201202; t=1741856497;
+	bh=wcNpg//cMMPzhntZGfSX++p37bUSpBc2R0MNjEQS/nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAHCQttgzkyrgWUcrE5T1MvWtfSQ7o7ZCS1kpfcPhryKa4PkjeQsxPiajF7ZBGRiF
-	 ZV2vRLvoJxXfMo9aMcnGp0Ary3WPdQn8HT9+24ZpHjM5fzNYVKcWd3YHZLfrhgWABe
-	 k2FTxAFcNlYp7uprKrjMF7HNpcRaj3L/+XaZOq2ZOZJANYihsc+y94MZUXeWLOFkJm
-	 OMvpIzzRgyHO7mRQOYgAWGGbJE+dK8cvBHcP0jqp7W5sOin5bljq0psw8gusV8gmtS
-	 w/CiHKR2/iDwM385/agm6qp4otdiE6zcZJhwPbZbmBelcuCtZiBWMK1DrNzPEN/rdx
-	 Gk1ZpmiqSgF+Q==
+	b=BNJO6dQUl2r2laXenC7tUhhpPsbLrsWtDk99d/1fpyK7q7LKIeAFAbWv0kvYvqO/s
+	 vtno/ug3c5bdm358SqFaxLHT9CVqA8tfxLri0KF21UkjOymwSOi6IolNf0L+NBRdGr
+	 cAOeoMFTcDZjCgWGrzzvzAvZd2SkaFcNIfNRbNgrBa43CSlcFED3u+XlTRUl5/RFKB
+	 cwPXff7taYQEMRQeQJGUty16iMcQCkeUMXuhcmZkp4JMBRo3jShHBCNeonMmXCR1mb
+	 Dl1rGCieJqfQWVRVehatZbC/ibQX9d88He5WSyFzMC1ekO0QAZ+/r6GUUF5cCwRnU2
+	 Gch+ssArE3KnA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	surenb@google.com
+	urezki@gmail.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] mm: fix kernel BUG when userfaultfd_move encounters swapcache
-Date: Thu, 13 Mar 2025 05:01:33 -0400
-Message-Id: <20250312204738-b4e540aab6e495cb@stable.kernel.org>
+Subject: Re: [PATCH 6.12.y] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
+Date: Thu, 13 Mar 2025 05:01:35 -0400
+Message-Id: <20250312230601-fe0c364f617e016d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250310185747.1238197-1-surenb@google.com>
+In-Reply-To:  <20250311165416.108043-1-urezki@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -69,79 +69,63 @@ Summary of potential issues:
 ℹ️ Patch is missing in 6.13.y (ignore if backport was sent)
 ⚠️ Commit missing in all newer stable branches
 
-Found matching upstream commit: c50f8e6053b0503375c2975bf47f182445aebb4c
-
-WARNING: Author mismatch between patch and found commit:
-Backport author: Suren Baghdasaryan<surenb@google.com>
-Commit author: Barry Song<v-songbaohua@oppo.com>
+Found matching upstream commit: dfd3df31c9db752234d7d2e09bef2aeabb643ce4
 
 Status in newer kernel trees:
 6.13.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  c50f8e6053b05 ! 1:  8c54f12bcedaa mm: fix kernel BUG when userfaultfd_move encounters swapcache
+1:  dfd3df31c9db7 ! 1:  b4fb63fe8c845 mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
     @@ Commit message
-         Cc: Tangquan Zheng <zhengtangquan@oppo.com>
-         Cc: <stable@vger.kernel.org>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    (cherry picked from commit c50f8e6053b0503375c2975bf47f182445aebb4c)
-    +    [surenb: resolved merged conflict caused by the difference in
-    +    move_swap_pte() arguments]
-    +    Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+         Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+         Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
      
-      ## mm/userfaultfd.c ##
-     @@
-    @@ mm/userfaultfd.c: static int move_present_pte(struct mm_struct *mm,
-      			 unsigned long dst_addr, unsigned long src_addr,
-      			 pte_t *dst_pte, pte_t *src_pte,
-      			 pte_t orig_dst_pte, pte_t orig_src_pte,
-    - 			 pmd_t *dst_pmd, pmd_t dst_pmdval,
-     -			 spinlock_t *dst_ptl, spinlock_t *src_ptl)
-     +			 spinlock_t *dst_ptl, spinlock_t *src_ptl,
-     +			 struct folio *src_folio)
-    @@ mm/userfaultfd.c: static int move_present_pte(struct mm_struct *mm,
-     -
-      	double_pt_lock(dst_ptl, src_ptl);
+    - ## mm/slab_common.c ##
+    -@@ mm/slab_common.c: module_param(rcu_min_cached_objs, int, 0444);
+    - static int rcu_delay_page_cache_fill_msec = 5000;
+    - module_param(rcu_delay_page_cache_fill_msec, int, 0444);
+    + ## kernel/rcu/tree.c ##
+    +@@ kernel/rcu/tree.c: void call_rcu(struct rcu_head *head, rcu_callback_t func)
+    + }
+    + EXPORT_SYMBOL_GPL(call_rcu);
       
-    - 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
-    + 	if (!pte_same(ptep_get(src_pte), orig_src_pte) ||
-     @@ mm/userfaultfd.c: static int move_swap_pte(struct mm_struct *mm,
-      		return -EAGAIN;
-      	}
-    @@ mm/userfaultfd.c: static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd
-      	pte_t src_folio_pte;
-      	spinlock_t *src_ptl, *dst_ptl;
-     @@ mm/userfaultfd.c: static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd,
-    - 				       orig_dst_pte, orig_src_pte, dst_pmd,
-    - 				       dst_pmdval, dst_ptl, src_ptl, src_folio);
-    + 				       orig_dst_pte, orig_src_pte,
-    + 				       dst_ptl, src_ptl, src_folio);
-      	} else {
-     +		struct folio *folio = NULL;
+     +static struct workqueue_struct *rcu_reclaim_wq;
      +
-    @@ mm/userfaultfd.c: static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd
-      			goto out;
-      		}
+      /* Maximum number of jiffies to wait before draining a batch. */
+      #define KFREE_DRAIN_JIFFIES (5 * HZ)
+      #define KFREE_N_BATCHES 2
+    -@@ mm/slab_common.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+    +@@ kernel/rcu/tree.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+      	if (delayed_work_pending(&krcp->monitor_work)) {
+      		delay_left = krcp->monitor_work.timer.expires - jiffies;
+      		if (delay < delay_left)
+    @@ mm/slab_common.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+      }
       
-    --		err = move_swap_pte(mm, dst_addr, src_addr, dst_pte, src_pte,
-    --				    orig_dst_pte, orig_src_pte, dst_pmd,
-    --				    dst_pmdval, dst_ptl, src_ptl);
-    +-		err = move_swap_pte(mm, dst_addr, src_addr,
-    +-				    dst_pte, src_pte,
-    +-				    orig_dst_pte, orig_src_pte,
-    +-				    dst_ptl, src_ptl);
-     +		if (!pte_swp_exclusive(orig_src_pte)) {
-     +			err = -EBUSY;
-     +			goto out;
-    @@ mm/userfaultfd.c: static int move_pages_pte(struct mm_struct *mm, pmd_t *dst_pmd
-     +			}
-     +		}
-     +		err = move_swap_pte(mm, dst_vma, dst_addr, src_addr, dst_pte, src_pte,
-    -+				orig_dst_pte, orig_src_pte, dst_pmd, dst_pmdval,
-    ++				orig_dst_pte, orig_src_pte,
-     +				dst_ptl, src_ptl, src_folio);
-      	}
+      static void
+    -@@ mm/slab_common.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+    +@@ kernel/rcu/tree.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+      			// "free channels", the batch can handle. Break
+      			// the loop since it is done with this CPU thus
+      			// queuing an RCU work is _always_ success here.
+    @@ mm/slab_common.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+      			WARN_ON_ONCE(!queued);
+      			break;
+      		}
+    -@@ mm/slab_common.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+    +@@ kernel/rcu/tree.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+      	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
+      			!atomic_xchg(&krcp->work_in_progress, 1)) {
+      		if (atomic_read(&krcp->backoff_page_cache_fill)) {
+    @@ mm/slab_common.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+      				&krcp->page_cache_work,
+      					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
+      		} else {
+    -@@ mm/slab_common.c: void __init kvfree_rcu_init(void)
+    +@@ kernel/rcu/tree.c: static void __init kfree_rcu_batch_init(void)
+      	int i, j;
+      	struct shrinker *kfree_rcu_shrinker;
       
 ---
 
