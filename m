@@ -1,85 +1,85 @@
-Return-Path: <stable+bounces-124361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB33A6028B
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 21:26:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56660A6028C
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 21:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6F719C57E3
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 20:26:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F8BF19C584E
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 20:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F801F4612;
-	Thu, 13 Mar 2025 20:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC4B1F3FED;
+	Thu, 13 Mar 2025 20:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ufa+ucaF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JqEWQsPu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BAE1F426F
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 20:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692C71F4180
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 20:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741897569; cv=none; b=cYPoodgPJnaoZHLkm3OjeKfWsDZzCdf4/K8boq0kxghY93JPr9m7x14ij+cPfi22KvbbpKu/JqXRfRF6yc4iw2YO0AilNOawyfN4BLGkKKC35ku6E3shipkV84yYweluYE/nRIXTgdFr5K7nuK5ZFIFk5dwC0x/PaRn08S2VRso=
+	t=1741897571; cv=none; b=M86k209QpJffbHgHbSsz9zA/yUta1C5Bjy7S1FYaZ+n0oCbB608okMUOCpjlcgMHKNaJwNIDca8iDA/1xFy+P0fC0Y7L0zYbwOokAxlToS3dssesZd0dZOvE+nprwvnRtI4M99YctnSdN7fesJfuvjUBveRfiIL62dOiQ1fpkLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741897569; c=relaxed/simple;
-	bh=GmC0+hQ44aQDycd/MzOFKn4EE5CzukaH2/jdmMu6t6Q=;
+	s=arc-20240116; t=1741897571; c=relaxed/simple;
+	bh=nHu0wUKj+AcEYHWgalT8MFMI8/Kit11CK3UXrpju2Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBuozMs8QVcNQ4QBG3ImqAcavD/XFal0DzXYwmDx2TfXgI+eyie1MhTVWNNTcO8PeGqeckPrwkdGipcngp1i4cDzXivm+dRQ3MGPiBT4RZexk2prLiWF3cn1UsIVjQCRePKksd7MuoNNs21HNAQzUHD7535/QXPN24GPdeUoQCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ufa+ucaF; arc=none smtp.client-ip=209.85.216.49
+	 MIME-Version; b=kvwUTPXppykd8kSlGE+sW/H9dTe8YP00MASMz2JNuhlYqEBstiVXMrdOXl6WlahWu/drqsiKlA4tHKeiHmLSb8deYieEgG4usxfG2DyKW5ypKLwa+Xq8w6B1xijcEhxn5CtVrnW+ZmkWoFIn9PGWRh/EHLABc4GYDRbOitSPk1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JqEWQsPu; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ff797f8f1bso2611305a91.3
-        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 13:26:07 -0700 (PDT)
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ff6a98c638so3109176a91.0
+        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 13:26:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741897567; x=1742502367; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741897568; x=1742502368; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GmylYkk9a7+FT+fXSkvgjpuUiEJjXKb41rsG6Hn1Q0Q=;
-        b=Ufa+ucaFbIKzJElN8e4/k8ARsq/bQVicE1q1sE2xqG73PeL83zCzUuHX4fbqSv/3ZF
-         14FLPlPMHfvgCftAQXOF1ohbJ2eYkZxItwf/HAecUBtiEKRyDQwSoMsbCJddIPlkg15G
-         rEbZCzJbe6Y2OdLLdgAz7OXRxOiaONjtuOOYO41ZXAP8gpIFIEphWPv2/XSnERkmtXGf
-         tnvSZ5Hfr22yAZe7LgZtJYWHcIJWxfimpjRg7tMsneEkBilFhvimzFKoFEZ2YqdlJwW+
-         rPHfjVY4I+QYP+Flj6Yuhtg/fYOA0y5m9nEurh2/t7KO5EP0a5IrBOMCVUFguRE/+aZv
-         eHjA==
+        bh=q+pc838Z9e5/ChbXI0i2jmkR4hCMnsa2XNcyAogJjy4=;
+        b=JqEWQsPu/938njOopuBBH2YrFA2UhnJHo3/5Ri/hYkhf2gxdR0Hg8fdoCUo0+w21Kk
+         c8Gmon0j9xqW4sK1dkEXSVZp21MkWSsF5grhY6lVjaRoC9ZRucD5mNR0BV4WWlDeXsZS
+         lzjmGQMhFp2vTaMOMynzveMXxN08zRKiF9jF7OVtZSANYzjVb5x4Pe4pxeWRzImB8bFu
+         6SiW2nq0PqXFkVzOLXsiaDP/9eXlS+JtCKoB2QkJeKDIEVYqu0z5cE70wGmSCZHgTxEb
+         /OYxkdXVhfCEUBPsGCnCV4VbPlWdFmTtInTG9QBmRtmHj1FE5gNdKbCu/ghd7YNzTqar
+         BR+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741897567; x=1742502367;
+        d=1e100.net; s=20230601; t=1741897568; x=1742502368;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GmylYkk9a7+FT+fXSkvgjpuUiEJjXKb41rsG6Hn1Q0Q=;
-        b=fBN2TkNc65fEi0vkBeXWnKg1eLWS8o4/cUwG2DhCjSoPtk7nfvPmCt8JftoRfWAmfW
-         as7rs/9D1qyIJTKPI3/irC3QqIKvkeF1PjhZta3F0N0QN4uJiRhhar0M15mRJ21xF1Fo
-         X2UWqsk9D0mQEIjfhRqeL/Sn01egcyYyv0n05fiaHm1fxGQtF6EumjcglmfOFLYFPeG+
-         Q/xbttJH2nAfnG6dlBjFqfuIyGJVSABveYqqE3dq1DMnkz4kFW9dzsAdU0nuHiyYfCrP
-         0hIeTTJWN78Vs/GDsoWwWKrs4g+oKkOuv/ZMFtYIOJhL1F+tHK+d+/LiKvKOPX5KPXS7
-         cRtA==
-X-Gm-Message-State: AOJu0YzHg2eLmyPKZuZITHxIU7Kzgj98eJOAkKjm4logGOHmuH7P9jQh
-	AlneWqNbVOkkxaaygsfyptsJXrRk4X8NEA8ZlbrgLLKsz/Olt7G4V2z95w==
-X-Gm-Gg: ASbGnctUt1CFUOwhhqGwLo9VwTqMIzbrqmTJqOQo6ZJcYhrt5UxXBg5MB1lXmbx6efr
-	0gSPDERpeTt6bGic7pmYNOBXjGRFsFjizciIEg4bRjIb1RzDKpZvSrmelauleXS0RsUJD8GTgD/
-	9tpHb0Cfi/TTtdJoBlNy0o6L1UXTft8kDr0yKyrR4rYD0tQTveZBtmCQHKDnKnKPYERpRPwWc6b
-	y6i1ehnhggV9eaI9YtFOXBdgM0TvJeEStSAAjkw3Q5MZ1Ui3tv+1eCwOc9V/6tUN0YBjHggmqi0
-	qlOg3becIeQuL/pnZCcNVuJrQ3w9ymYS1SxKowZN4ofjfto8dp7wEhDwQFITYDxdbIMuYGDtC2M
-	JiEnUWQ==
-X-Google-Smtp-Source: AGHT+IEfaU8L7XAYMFvKAojHGNQvg5bH59vKvNxePF1UMHYVtRpWS57nCPkFfQEYCcFzkCj4GZK4mg==
-X-Received: by 2002:a05:6a21:328a:b0:1ee:c7c8:ca4 with SMTP id adf61e73a8af0-1f5c1317ea2mr40992637.36.1741897566859;
-        Thu, 13 Mar 2025 13:26:06 -0700 (PDT)
+        bh=q+pc838Z9e5/ChbXI0i2jmkR4hCMnsa2XNcyAogJjy4=;
+        b=LZ3WV26bdox/8hj5qY0tu9hZTgSKx3O661nTwO77LaWPJmbiYejl2FgWh+/OWmR9JM
+         KNV6MaDca33E7CX//r4Htq0drZC4xb8HYqnQjMaS1HzMM2ApahLcnP2VzcE9pwzQI0fm
+         piCcQb116DnfxtGC/JQfO0kXXdakX/K7PBid83RTgoSRUMqLEl7dkJleUQBnciv6zjFF
+         YNNsv2i25/AxiUi1vLuLMvEKRMETvVs+xkjY6qNs/o/Q3KLoYjoL3aMIBpDy9O6rTjZS
+         m0UpmRhSWp2wWzY6rEs90dk+Etfgc++3jVqn4SxnSFJ20SLujH2+T1cLNZkNTpwUBPgs
+         fPug==
+X-Gm-Message-State: AOJu0Yxc23AGbv6UURpgTWjtddgcgz+Tmz7us6/GjgR969iGILRPf9/o
+	Y3Y4K2/QqXdOd6N9m8p8YKusRnQ/lHdbrRxdx31/CTo9bgMAtKZVOrWL3A==
+X-Gm-Gg: ASbGncsBsFPREoh+IPLjVtERVhgWQFIrzh7cEzxV68wYzWAHJk9/geVACZ5uxO+Fsaw
+	+7R3d3abY5gv5pV+vJunu/sEyD7nwJqKjbil/f1CvY3EgyT0Tu38a8/VZYh71n1oR7EYtgbs3O2
+	ScEzEa+6XOioqLzCzlsjs40U2FS2BpNSQVpMsvBCKIJxvvseBbWMqg0TLSBOF4+Fkywa6B1yoGC
+	o1RuKS8jNMR+6Gy71h0Dt8xyQa3CTJx5qSZ5caiAMV9I0YdltGqHlAhRDV2Xnbx+CeLBKnyBTt3
+	E7lP6IUdEwxGL9f1JXp0za6axDsDizsr28P58RA3BSASHYSIsYbiTotGcESpkIrleqILSkM=
+X-Google-Smtp-Source: AGHT+IEd+wEk6wZg4gV6eigYymmzIJz1V4ZtteTT1BEntp7snualw7hjVKC7ToSFzz3c3oiLwwVVoA==
+X-Received: by 2002:a05:6a21:62c8:b0:1f5:92ac:d6b7 with SMTP id adf61e73a8af0-1f5c10ec93amr101867637.4.1741897567861;
+        Thu, 13 Mar 2025 13:26:07 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:b233:743:91db:ac7b])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9c94cesm1724455a12.6.2025.03.13.13.26.06
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9c94cesm1724455a12.6.2025.03.13.13.26.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 13:26:06 -0700 (PDT)
+        Thu, 13 Mar 2025 13:26:07 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
 	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 04/29] xfs: pass the xfs_bmbt_irec directly through the log intent code
-Date: Thu, 13 Mar 2025 13:25:24 -0700
-Message-ID: <20250313202550.2257219-5-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 05/29] xfs: pass per-ag references to xfs_free_extent
+Date: Thu, 13 Mar 2025 13:25:25 -0700
+Message-ID: <20250313202550.2257219-6-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
 In-Reply-To: <20250313202550.2257219-1-leah.rumancik@gmail.com>
 References: <20250313202550.2257219-1-leah.rumancik@gmail.com>
@@ -93,271 +93,256 @@ Content-Transfer-Encoding: 8bit
 
 From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit ddccb81b26ec021ae1f3366aa996cc4c68dd75ce ]
+[ Upstream commit b2ccab3199aa7cea9154d80ea2585312c5f6eba0 ]
 
-Instead of repeatedly boxing and unboxing the incore extent mapping
-structure as it passes through the BUI code, pass the pointer directly
-through.
+Pass a reference to the per-AG structure to xfs_free_extent.  Most
+callers already have one, so we can eliminate unnecessary lookups.  The
+one exception to this is the EFI code, which the next patch will fix.
 
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c | 32 ++++++++--------
- fs/xfs/libxfs/xfs_bmap.h |  5 +--
- fs/xfs/xfs_bmap_item.c   | 81 +++++++++++++++-------------------------
- 3 files changed, 46 insertions(+), 72 deletions(-)
+ fs/xfs/libxfs/xfs_ag.c             |  6 ++----
+ fs/xfs/libxfs/xfs_alloc.c          | 15 +++++----------
+ fs/xfs/libxfs/xfs_alloc.h          |  8 +++++---
+ fs/xfs/libxfs/xfs_ialloc_btree.c   |  7 +++++--
+ fs/xfs/libxfs/xfs_refcount_btree.c |  5 +++--
+ fs/xfs/scrub/repair.c              |  3 ++-
+ fs/xfs/xfs_extfree_item.c          |  8 ++++++--
+ 7 files changed, 28 insertions(+), 24 deletions(-)
 
-diff --git a/fs/xfs/libxfs/xfs_bmap.c b/fs/xfs/libxfs/xfs_bmap.c
-index 27d3121e6da9..d523ac51c662 100644
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -6117,43 +6117,41 @@ xfs_bmap_unmap_extent(
-  * btree cursor to maintain our lock on the bmapbt between calls.
+diff --git a/fs/xfs/libxfs/xfs_ag.c b/fs/xfs/libxfs/xfs_ag.c
+index bf47efe08a58..f29767e6eb7f 100644
+--- a/fs/xfs/libxfs/xfs_ag.c
++++ b/fs/xfs/libxfs/xfs_ag.c
+@@ -979,14 +979,12 @@ xfs_ag_extend_space(
+ 	error = xfs_rmap_free(tp, bp, pag, be32_to_cpu(agf->agf_length) - len,
+ 				len, &XFS_RMAP_OINFO_SKIP_UPDATE);
+ 	if (error)
+ 		return error;
+ 
+-	error = xfs_free_extent(tp, XFS_AGB_TO_FSB(pag->pag_mount, pag->pag_agno,
+-					be32_to_cpu(agf->agf_length) - len),
+-				len, &XFS_RMAP_OINFO_SKIP_UPDATE,
+-				XFS_AG_RESV_NONE);
++	error = xfs_free_extent(tp, pag, be32_to_cpu(agf->agf_length) - len,
++			len, &XFS_RMAP_OINFO_SKIP_UPDATE, XFS_AG_RESV_NONE);
+ 	if (error)
+ 		return error;
+ 
+ 	/* Update perag geometry */
+ 	pag->block_count = be32_to_cpu(agf->agf_length);
+diff --git a/fs/xfs/libxfs/xfs_alloc.c b/fs/xfs/libxfs/xfs_alloc.c
+index cc5c954cda88..da6d158d666f 100644
+--- a/fs/xfs/libxfs/xfs_alloc.c
++++ b/fs/xfs/libxfs/xfs_alloc.c
+@@ -3445,63 +3445,58 @@ xfs_free_extent_fix_freelist(
+  * after fixing up the freelist.
   */
  int
- xfs_bmap_finish_one(
+ __xfs_free_extent(
  	struct xfs_trans		*tp,
--	struct xfs_inode		*ip,
--	enum xfs_bmap_intent_type	type,
--	int				whichfork,
--	xfs_fileoff_t			startoff,
--	xfs_fsblock_t			startblock,
--	xfs_filblks_t			*blockcount,
--	xfs_exntst_t			state)
-+	struct xfs_bmap_intent		*bi)
+-	xfs_fsblock_t			bno,
++	struct xfs_perag		*pag,
++	xfs_agblock_t			agbno,
+ 	xfs_extlen_t			len,
+ 	const struct xfs_owner_info	*oinfo,
+ 	enum xfs_ag_resv_type		type,
+ 	bool				skip_discard)
  {
-+	struct xfs_bmbt_irec		*bmap = &bi->bi_bmap;
- 	int				error = 0;
+ 	struct xfs_mount		*mp = tp->t_mountp;
+ 	struct xfs_buf			*agbp;
+-	xfs_agnumber_t			agno = XFS_FSB_TO_AGNO(mp, bno);
+-	xfs_agblock_t			agbno = XFS_FSB_TO_AGBNO(mp, bno);
+ 	struct xfs_agf			*agf;
+ 	int				error;
+ 	unsigned int			busy_flags = 0;
+-	struct xfs_perag		*pag;
  
- 	ASSERT(tp->t_firstblock == NULLFSBLOCK);
+ 	ASSERT(len != 0);
+ 	ASSERT(type != XFS_AG_RESV_AGFL);
  
- 	trace_xfs_bmap_deferred(tp->t_mountp,
--			XFS_FSB_TO_AGNO(tp->t_mountp, startblock), type,
--			XFS_FSB_TO_AGBNO(tp->t_mountp, startblock),
--			ip->i_ino, whichfork, startoff, *blockcount, state);
-+			XFS_FSB_TO_AGNO(tp->t_mountp, bmap->br_startblock),
-+			bi->bi_type,
-+			XFS_FSB_TO_AGBNO(tp->t_mountp, bmap->br_startblock),
-+			bi->bi_owner->i_ino, bi->bi_whichfork,
-+			bmap->br_startoff, bmap->br_blockcount,
-+			bmap->br_state);
- 
--	if (WARN_ON_ONCE(whichfork != XFS_DATA_FORK))
-+	if (WARN_ON_ONCE(bi->bi_whichfork != XFS_DATA_FORK))
- 		return -EFSCORRUPTED;
- 
- 	if (XFS_TEST_ERROR(false, tp->t_mountp,
- 			XFS_ERRTAG_BMAP_FINISH_ONE))
+ 	if (XFS_TEST_ERROR(false, mp,
+ 			XFS_ERRTAG_FREE_EXTENT))
  		return -EIO;
  
--	switch (type) {
-+	switch (bi->bi_type) {
- 	case XFS_BMAP_MAP:
--		error = xfs_bmapi_remap(tp, ip, startoff, *blockcount,
--				startblock, 0);
--		*blockcount = 0;
-+		error = xfs_bmapi_remap(tp, bi->bi_owner, bmap->br_startoff,
-+				bmap->br_blockcount, bmap->br_startblock, 0);
-+		bmap->br_blockcount = 0;
- 		break;
- 	case XFS_BMAP_UNMAP:
--		error = __xfs_bunmapi(tp, ip, startoff, blockcount,
--				XFS_BMAPI_REMAP, 1);
-+		error = __xfs_bunmapi(tp, bi->bi_owner, bmap->br_startoff,
-+				&bmap->br_blockcount, XFS_BMAPI_REMAP, 1);
- 		break;
- 	default:
- 		ASSERT(0);
+-	pag = xfs_perag_get(mp, agno);
+ 	error = xfs_free_extent_fix_freelist(tp, pag, &agbp);
+ 	if (error)
+-		goto err;
++		return error;
+ 	agf = agbp->b_addr;
+ 
+ 	if (XFS_IS_CORRUPT(mp, agbno >= mp->m_sb.sb_agblocks)) {
  		error = -EFSCORRUPTED;
+ 		goto err_release;
  	}
-diff --git a/fs/xfs/libxfs/xfs_bmap.h b/fs/xfs/libxfs/xfs_bmap.h
-index 08c16e4edc0f..524912f276f8 100644
---- a/fs/xfs/libxfs/xfs_bmap.h
-+++ b/fs/xfs/libxfs/xfs_bmap.h
-@@ -234,14 +234,11 @@ struct xfs_bmap_intent {
- 	int					bi_whichfork;
- 	struct xfs_inode			*bi_owner;
- 	struct xfs_bmbt_irec			bi_bmap;
- };
  
--int	xfs_bmap_finish_one(struct xfs_trans *tp, struct xfs_inode *ip,
--		enum xfs_bmap_intent_type type, int whichfork,
--		xfs_fileoff_t startoff, xfs_fsblock_t startblock,
--		xfs_filblks_t *blockcount, xfs_exntst_t state);
-+int	xfs_bmap_finish_one(struct xfs_trans *tp, struct xfs_bmap_intent *bi);
- void	xfs_bmap_map_extent(struct xfs_trans *tp, struct xfs_inode *ip,
- 		struct xfs_bmbt_irec *imap);
- void	xfs_bmap_unmap_extent(struct xfs_trans *tp, struct xfs_inode *ip,
- 		struct xfs_bmbt_irec *imap);
+ 	/* validate the extent size is legal now we have the agf locked */
+ 	if (XFS_IS_CORRUPT(mp, agbno + len > be32_to_cpu(agf->agf_length))) {
+ 		error = -EFSCORRUPTED;
+ 		goto err_release;
+ 	}
  
-diff --git a/fs/xfs/xfs_bmap_item.c b/fs/xfs/xfs_bmap_item.c
-index 41323da523d1..13aa5359c02f 100644
---- a/fs/xfs/xfs_bmap_item.c
-+++ b/fs/xfs/xfs_bmap_item.c
-@@ -244,22 +244,15 @@ xfs_trans_get_bud(
+-	error = xfs_free_ag_extent(tp, agbp, agno, agbno, len, oinfo, type);
++	error = xfs_free_ag_extent(tp, agbp, pag->pag_agno, agbno, len, oinfo,
++			type);
+ 	if (error)
+ 		goto err_release;
+ 
+ 	if (skip_discard)
+ 		busy_flags |= XFS_EXTENT_BUSY_SKIP_DISCARD;
+ 	xfs_extent_busy_insert(tp, pag, agbno, len, busy_flags);
+-	xfs_perag_put(pag);
+ 	return 0;
+ 
+ err_release:
+ 	xfs_trans_brelse(tp, agbp);
+-err:
+-	xfs_perag_put(pag);
+ 	return error;
+ }
+ 
+ struct xfs_alloc_query_range_info {
+ 	xfs_alloc_query_range_fn	fn;
+diff --git a/fs/xfs/libxfs/xfs_alloc.h b/fs/xfs/libxfs/xfs_alloc.h
+index 2c3f762dfb58..5074aed6dfad 100644
+--- a/fs/xfs/libxfs/xfs_alloc.h
++++ b/fs/xfs/libxfs/xfs_alloc.h
+@@ -128,25 +128,27 @@ xfs_alloc_vextent(
+  * Free an extent.
   */
- static int
- xfs_trans_log_finish_bmap_update(
- 	struct xfs_trans		*tp,
- 	struct xfs_bud_log_item		*budp,
--	enum xfs_bmap_intent_type	type,
--	struct xfs_inode		*ip,
--	int				whichfork,
--	xfs_fileoff_t			startoff,
--	xfs_fsblock_t			startblock,
--	xfs_filblks_t			*blockcount,
--	xfs_exntst_t			state)
-+	struct xfs_bmap_intent		*bi)
+ int				/* error */
+ __xfs_free_extent(
+ 	struct xfs_trans	*tp,	/* transaction pointer */
+-	xfs_fsblock_t		bno,	/* starting block number of extent */
++	struct xfs_perag	*pag,
++	xfs_agblock_t		agbno,
+ 	xfs_extlen_t		len,	/* length of extent */
+ 	const struct xfs_owner_info	*oinfo,	/* extent owner */
+ 	enum xfs_ag_resv_type	type,	/* block reservation type */
+ 	bool			skip_discard);
+ 
+ static inline int
+ xfs_free_extent(
+ 	struct xfs_trans	*tp,
+-	xfs_fsblock_t		bno,
++	struct xfs_perag	*pag,
++	xfs_agblock_t		agbno,
+ 	xfs_extlen_t		len,
+ 	const struct xfs_owner_info	*oinfo,
+ 	enum xfs_ag_resv_type	type)
  {
+-	return __xfs_free_extent(tp, bno, len, oinfo, type, false);
++	return __xfs_free_extent(tp, pag, agbno, len, oinfo, type, false);
+ }
+ 
+ int				/* error */
+ xfs_alloc_lookup_le(
+ 	struct xfs_btree_cur	*cur,	/* btree cursor */
+diff --git a/fs/xfs/libxfs/xfs_ialloc_btree.c b/fs/xfs/libxfs/xfs_ialloc_btree.c
+index 8c83e265770c..2dbe553d87fb 100644
+--- a/fs/xfs/libxfs/xfs_ialloc_btree.c
++++ b/fs/xfs/libxfs/xfs_ialloc_btree.c
+@@ -154,13 +154,16 @@ STATIC int
+ __xfs_inobt_free_block(
+ 	struct xfs_btree_cur	*cur,
+ 	struct xfs_buf		*bp,
+ 	enum xfs_ag_resv_type	resv)
+ {
++	xfs_fsblock_t		fsbno;
++
+ 	xfs_inobt_mod_blockcount(cur, -1);
+-	return xfs_free_extent(cur->bc_tp,
+-			XFS_DADDR_TO_FSB(cur->bc_mp, xfs_buf_daddr(bp)), 1,
++	fsbno = XFS_DADDR_TO_FSB(cur->bc_mp, xfs_buf_daddr(bp));
++	return xfs_free_extent(cur->bc_tp, cur->bc_ag.pag,
++			XFS_FSB_TO_AGBNO(cur->bc_mp, fsbno), 1,
+ 			&XFS_RMAP_OINFO_INOBT, resv);
+ }
+ 
+ STATIC int
+ xfs_inobt_free_block(
+diff --git a/fs/xfs/libxfs/xfs_refcount_btree.c b/fs/xfs/libxfs/xfs_refcount_btree.c
+index e1f789866683..3d8e62da2ccc 100644
+--- a/fs/xfs/libxfs/xfs_refcount_btree.c
++++ b/fs/xfs/libxfs/xfs_refcount_btree.c
+@@ -110,12 +110,13 @@ xfs_refcountbt_free_block(
+ 
+ 	trace_xfs_refcountbt_free_block(cur->bc_mp, cur->bc_ag.pag->pag_agno,
+ 			XFS_FSB_TO_AGBNO(cur->bc_mp, fsbno), 1);
+ 	be32_add_cpu(&agf->agf_refcount_blocks, -1);
+ 	xfs_alloc_log_agf(cur->bc_tp, agbp, XFS_AGF_REFCOUNT_BLOCKS);
+-	error = xfs_free_extent(cur->bc_tp, fsbno, 1, &XFS_RMAP_OINFO_REFC,
+-			XFS_AG_RESV_METADATA);
++	error = xfs_free_extent(cur->bc_tp, cur->bc_ag.pag,
++			XFS_FSB_TO_AGBNO(cur->bc_mp, fsbno), 1,
++			&XFS_RMAP_OINFO_REFC, XFS_AG_RESV_METADATA);
+ 	if (error)
+ 		return error;
+ 
+ 	return error;
+ }
+diff --git a/fs/xfs/scrub/repair.c b/fs/xfs/scrub/repair.c
+index c18bd039fce9..e0ed0ebfdaea 100644
+--- a/fs/xfs/scrub/repair.c
++++ b/fs/xfs/scrub/repair.c
+@@ -580,11 +580,12 @@ xrep_reap_block(
+ 		error = xfs_rmap_free(sc->tp, agf_bp, sc->sa.pag, agbno,
+ 					1, oinfo);
+ 	else if (resv == XFS_AG_RESV_AGFL)
+ 		error = xrep_put_freelist(sc, agbno);
+ 	else
+-		error = xfs_free_extent(sc->tp, fsbno, 1, oinfo, resv);
++		error = xfs_free_extent(sc->tp, sc->sa.pag, agbno, 1, oinfo,
++				resv);
+ 	if (agf_bp != sc->sa.agf_bp)
+ 		xfs_trans_brelse(sc->tp, agf_bp);
+ 	if (error)
+ 		return error;
+ 
+diff --git a/fs/xfs/xfs_extfree_item.c b/fs/xfs/xfs_extfree_item.c
+index 011b50469301..c1aae07467c9 100644
+--- a/fs/xfs/xfs_extfree_item.c
++++ b/fs/xfs/xfs_extfree_item.c
+@@ -348,29 +348,33 @@ xfs_trans_free_extent(
+ 	struct xfs_extent_free_item	*xefi)
+ {
+ 	struct xfs_owner_info		oinfo = { };
+ 	struct xfs_mount		*mp = tp->t_mountp;
+ 	struct xfs_extent		*extp;
++	struct xfs_perag		*pag;
+ 	uint				next_extent;
+ 	xfs_agnumber_t			agno = XFS_FSB_TO_AGNO(mp,
+ 							xefi->xefi_startblock);
+ 	xfs_agblock_t			agbno = XFS_FSB_TO_AGBNO(mp,
+ 							xefi->xefi_startblock);
  	int				error;
  
--	error = xfs_bmap_finish_one(tp, ip, type, whichfork, startoff,
--			startblock, blockcount, state);
-+	error = xfs_bmap_finish_one(tp, bi);
+ 	oinfo.oi_owner = xefi->xefi_owner;
+ 	if (xefi->xefi_flags & XFS_EFI_ATTR_FORK)
+ 		oinfo.oi_flags |= XFS_OWNER_INFO_ATTR_FORK;
+ 	if (xefi->xefi_flags & XFS_EFI_BMBT_BLOCK)
+ 		oinfo.oi_flags |= XFS_OWNER_INFO_BMBT_BLOCK;
  
+ 	trace_xfs_bmap_free_deferred(tp->t_mountp, agno, 0, agbno,
+ 			xefi->xefi_blockcount);
+ 
+-	error = __xfs_free_extent(tp, xefi->xefi_startblock,
+-			xefi->xefi_blockcount, &oinfo, XFS_AG_RESV_NONE,
++	pag = xfs_perag_get(mp, agno);
++	error = __xfs_free_extent(tp, pag, agbno, xefi->xefi_blockcount,
++			&oinfo, XFS_AG_RESV_NONE,
+ 			xefi->xefi_flags & XFS_EFI_SKIP_DISCARD);
++	xfs_perag_put(pag);
++
  	/*
  	 * Mark the transaction dirty, even on error. This ensures the
  	 * transaction is aborted, which:
  	 *
-@@ -376,29 +369,21 @@ xfs_bmap_update_finish_item(
- 	struct xfs_trans		*tp,
- 	struct xfs_log_item		*done,
- 	struct list_head		*item,
- 	struct xfs_btree_cur		**state)
- {
--	struct xfs_bmap_intent		*bmap;
--	xfs_filblks_t			count;
-+	struct xfs_bmap_intent		*bi;
- 	int				error;
- 
--	bmap = container_of(item, struct xfs_bmap_intent, bi_list);
--	count = bmap->bi_bmap.br_blockcount;
--	error = xfs_trans_log_finish_bmap_update(tp, BUD_ITEM(done),
--			bmap->bi_type,
--			bmap->bi_owner, bmap->bi_whichfork,
--			bmap->bi_bmap.br_startoff,
--			bmap->bi_bmap.br_startblock,
--			&count,
--			bmap->bi_bmap.br_state);
--	if (!error && count > 0) {
--		ASSERT(bmap->bi_type == XFS_BMAP_UNMAP);
--		bmap->bi_bmap.br_blockcount = count;
-+	bi = container_of(item, struct xfs_bmap_intent, bi_list);
-+
-+	error = xfs_trans_log_finish_bmap_update(tp, BUD_ITEM(done), bi);
-+	if (!error && bi->bi_bmap.br_blockcount > 0) {
-+		ASSERT(bi->bi_type == XFS_BMAP_UNMAP);
- 		return -EAGAIN;
- 	}
--	kmem_cache_free(xfs_bmap_intent_cache, bmap);
-+	kmem_cache_free(xfs_bmap_intent_cache, bi);
- 	return error;
- }
- 
- /* Abort all pending BUIs. */
- STATIC void
-@@ -469,79 +454,73 @@ xfs_bui_validate(
- STATIC int
- xfs_bui_item_recover(
- 	struct xfs_log_item		*lip,
- 	struct list_head		*capture_list)
- {
--	struct xfs_bmbt_irec		irec;
-+	struct xfs_bmap_intent		fake = { };
- 	struct xfs_bui_log_item		*buip = BUI_ITEM(lip);
- 	struct xfs_trans		*tp;
- 	struct xfs_inode		*ip = NULL;
- 	struct xfs_mount		*mp = lip->li_log->l_mp;
--	struct xfs_map_extent		*bmap;
-+	struct xfs_map_extent		*map;
- 	struct xfs_bud_log_item		*budp;
--	xfs_filblks_t			count;
--	xfs_exntst_t			state;
--	unsigned int			bui_type;
--	int				whichfork;
- 	int				iext_delta;
- 	int				error = 0;
- 
- 	if (!xfs_bui_validate(mp, buip)) {
- 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
- 				&buip->bui_format, sizeof(buip->bui_format));
- 		return -EFSCORRUPTED;
- 	}
- 
--	bmap = &buip->bui_format.bui_extents[0];
--	state = (bmap->me_flags & XFS_BMAP_EXTENT_UNWRITTEN) ?
--			XFS_EXT_UNWRITTEN : XFS_EXT_NORM;
--	whichfork = (bmap->me_flags & XFS_BMAP_EXTENT_ATTR_FORK) ?
-+	map = &buip->bui_format.bui_extents[0];
-+	fake.bi_whichfork = (map->me_flags & XFS_BMAP_EXTENT_ATTR_FORK) ?
- 			XFS_ATTR_FORK : XFS_DATA_FORK;
--	bui_type = bmap->me_flags & XFS_BMAP_EXTENT_TYPE_MASK;
-+	fake.bi_type = map->me_flags & XFS_BMAP_EXTENT_TYPE_MASK;
- 
--	error = xlog_recover_iget(mp, bmap->me_owner, &ip);
-+	error = xlog_recover_iget(mp, map->me_owner, &ip);
- 	if (error)
- 		return error;
- 
- 	/* Allocate transaction and do the work. */
- 	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_itruncate,
- 			XFS_EXTENTADD_SPACE_RES(mp, XFS_DATA_FORK), 0, 0, &tp);
- 	if (error)
- 		goto err_rele;
- 
- 	budp = xfs_trans_get_bud(tp, buip);
- 	xfs_ilock(ip, XFS_ILOCK_EXCL);
- 	xfs_trans_ijoin(tp, ip, 0);
- 
--	if (bui_type == XFS_BMAP_MAP)
-+	if (fake.bi_type == XFS_BMAP_MAP)
- 		iext_delta = XFS_IEXT_ADD_NOSPLIT_CNT;
- 	else
- 		iext_delta = XFS_IEXT_PUNCH_HOLE_CNT;
- 
--	error = xfs_iext_count_may_overflow(ip, whichfork, iext_delta);
-+	error = xfs_iext_count_may_overflow(ip, fake.bi_whichfork, iext_delta);
- 	if (error == -EFBIG)
- 		error = xfs_iext_count_upgrade(tp, ip, iext_delta);
- 	if (error)
- 		goto err_cancel;
- 
--	count = bmap->me_len;
--	error = xfs_trans_log_finish_bmap_update(tp, budp, bui_type, ip,
--			whichfork, bmap->me_startoff, bmap->me_startblock,
--			&count, state);
-+	fake.bi_owner = ip;
-+	fake.bi_bmap.br_startblock = map->me_startblock;
-+	fake.bi_bmap.br_startoff = map->me_startoff;
-+	fake.bi_bmap.br_blockcount = map->me_len;
-+	fake.bi_bmap.br_state = (map->me_flags & XFS_BMAP_EXTENT_UNWRITTEN) ?
-+			XFS_EXT_UNWRITTEN : XFS_EXT_NORM;
-+
-+	error = xfs_trans_log_finish_bmap_update(tp, budp, &fake);
- 	if (error == -EFSCORRUPTED)
--		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp, bmap,
--				sizeof(*bmap));
-+		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp, map,
-+				sizeof(*map));
- 	if (error)
- 		goto err_cancel;
- 
--	if (count > 0) {
--		ASSERT(bui_type == XFS_BMAP_UNMAP);
--		irec.br_startblock = bmap->me_startblock;
--		irec.br_blockcount = count;
--		irec.br_startoff = bmap->me_startoff;
--		irec.br_state = state;
--		xfs_bmap_unmap_extent(tp, ip, &irec);
-+	if (fake.bi_bmap.br_blockcount > 0) {
-+		ASSERT(fake.bi_type == XFS_BMAP_UNMAP);
-+		xfs_bmap_unmap_extent(tp, ip, &fake.bi_bmap);
- 	}
- 
- 	/*
- 	 * Commit transaction, which frees the transaction and saves the inode
- 	 * for later replay activities.
+ 	 * 1.) releases the EFI and frees the EFD
 -- 
 2.49.0.rc1.451.g8f38331e32-goog
 
