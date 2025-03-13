@@ -1,89 +1,88 @@
-Return-Path: <stable+bounces-124381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C242EA6029F
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 21:26:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B60CA602A0
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 21:26:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03FDD17D5FD
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 20:26:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4AF43BFBCC
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 20:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077861F460A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC7B1F4618;
 	Thu, 13 Mar 2025 20:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aJBP+Kf9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F8YsV3lY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAF71F4624
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 20:26:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6057E1F4603
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 20:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741897590; cv=none; b=X6yWcPCz/1aqDroI5LdoLTTL6UCFjYF6HibLvuOpwOVXPAilyBeVRLBgAG6XnMvVl5z6uxiW86D5QoMGdwSK5WJiK0phX/QAgYyFcZ20MfGfUsZAFmui1tx0ozoPhA8VRm3xXoPG8Nqbcbx8P61XzItq/djRltBfAAudbZynRns=
+	t=1741897590; cv=none; b=k+Ij0pDr4Wb8hweCjyH2BGH5/WlG3iVGsITTLN/KUMlDQrYbV58QbDbtTsgMq9155c2yhTRT/wX3TlScjps1ESI62mIDCdH4JHR/F1zuXDObUyo9JVeTaaqKsZJeyqV9CSvoyQvKfpZ8WWhP91Ix2680BCK8+srISCriDrvBMsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741897590; c=relaxed/simple;
-	bh=UCEF5cAyQR2i3kM+IWKX2aV4NjmYsoWMifDh1HRyyxs=;
+	bh=6IsPBRqM/7q7ko5EC4COT+TsqVVTM00wC1fGtButqkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OrsSn5FvaYOq2Htat12QpIpehdP+QeW/OAeWnx40r4Hq+zynBesn3KSGip0zYJYwUvpSyXj7qpfokGJszKAq0YFfPIPSZlh5kt4cQQ32w/EK+a54/hS1xMarXjiErBbfy4gi/5ZrY57C/OxNA0zt/GWYcn4BcTTs6oOSJbrDwZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aJBP+Kf9; arc=none smtp.client-ip=209.85.214.173
+	 MIME-Version; b=ocjrIC7z4jKoGLxIziV85fguNeMiqr0nZU/VflV/wuVKHubAxBuLqEBIuvfxz9PeaHbpJWohvbxPxnopkISebQ2y8b72a8yF6nukIFBYEHXBEw3x6lAYZu1437GGUWTNvEmWk1khyiEgK/uhvEibiAAGBKmWenPiCfNJ/dHqpxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F8YsV3lY; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-223fd89d036so31227735ad.1
-        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 13:26:28 -0700 (PDT)
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-22548a28d0cso42197945ad.3
+        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 13:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741897588; x=1742502388; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741897589; x=1742502389; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S8Fo+7lYuejOCNgFSfEv4KCBucjx2ttu+XY47yKvXwQ=;
-        b=aJBP+Kf9d5f0i6ou8jJrooMJNujFGPpDwwk0mJPI1YvzeXEGNlntBfkZ3+AVmz2EkV
-         8dnz0inUc7jzcXRdGhHNRD1zgIOF251MyZcdouj4+PgqOea4MnV1AfZWNq2nQEt/NZHs
-         /sLr6alp9DVUTintG3TFwYle/lFYpgVyf4ohYJFsOvZ8nXdCOTAPOM3ntPzoMn929EH8
-         js2qosbjHyO/gWN6NsbvtHJg4F/9nVlcDLxP2DNYVbIj8yqvft9lRJ1xZPKADP+R2Ne3
-         /fCkBQMgwHI+GvCqalqe/UhPWlIyDheYM1dedpiVAdYIY2ri6u4OSRcgdC8ZFbbW64wI
-         Orsw==
+        bh=r5J1nEwdZJuMcozKjjHSIS6C+RNBgszoq248+dvVtE0=;
+        b=F8YsV3lYNjk/xdn0DHBWkfWlQTe6k/IP6FRV26LMlDj5g2snlmSSTgp+MvXIB+Es5X
+         55qQPsp2haCazQF6tGi++JkvcQd/MAQeLBvSf0kwS/1odp/eBcrmAZb+zRb2TFROZeYC
+         h3cJzXl91qL2wCgPru+tE1LVOOti5n2KOedZMztVWArBQGiIAAXpVdSe3GcJ6FpafLQ2
+         J0Jv0OD9rAfw4fx3kNb5M8tWAVNe13z24rQWX6tGXW43I45ank8XWDsTlIl80ix3w6l0
+         ZDJakwMYa2PucIehhyx8A1VOYcN+tFzFHjIkNDydgD0VlYjP6rLt9+mT9+pP/MID9CLd
+         JQew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741897588; x=1742502388;
+        d=1e100.net; s=20230601; t=1741897589; x=1742502389;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=S8Fo+7lYuejOCNgFSfEv4KCBucjx2ttu+XY47yKvXwQ=;
-        b=uT1lsQJdNjBsSsv/n9jacd119lHXo1h6dIll/FIpD5ybG5G8WQ5nXPjhvJri08nSkj
-         WKGQT7L59wfIts8dcwqMt2s3rfzIDXuT1J8Zp+RVNYC9guppqNCdMXMJAifxUtJ++gV5
-         1PtKjOirp2Nv4tYE7Ovqw/2nxUtxRBGkKc4QMJCKR7VUelZXs172d9TUZZosFMtJrw5y
-         ldOGSz5Mc1TSR7Ila+h/fMMMM6yIsFgvV9tfX10fhGVBSZ7PXWi4ZswPBOX1iiQMhdKN
-         LpNPBtqUCKjykmpAbYXDCyF9o0hOCxiVB0+MHFWR/f+irt5AqzwNfwQlPMtsH7WRkohd
-         DijQ==
-X-Gm-Message-State: AOJu0Yx2QVCPC+hIqi7iDwTUvXGoNPC3URSc1pyr8WHR0txgF7Sb5ury
-	gqCIW9dgxWpdxN3KA01BbRSUSTBnNT8zXIaFta0TsikjFeRu3ITGMN6cqclq
-X-Gm-Gg: ASbGncu19LTZhAngD+5YFtB+oYJ+kDALbHW0ZdyjQStHeSJ2LkNprt/O2wDilsBV8W6
-	bhFDTogVf179mRZw+hmYrMsCToDcHWTDtNtto5UjPJb1ii/JCu2ihvzIPvtsWhWsdVFgpHJFl5R
-	mgzuVSrKjJrrPYC0n2aGCgoLfAK15r560ZAWGrVIx+1doAcWjildze+XNO/mjOvdX0CXzKYOlkl
-	0FqHlASwjfsOJlj7NES/zwNTAE0YIxiHH+kFEyZBKpVi2IxOHG51vpe/6XtGBgwGL9Ef4Pg6qqa
-	rxU4UD51h0MilfJLL1cB6LI5IU2zXo46QfbK+db25pUHbHFdcTcoBPpP1U1CC0sfvKV9mFo=
-X-Google-Smtp-Source: AGHT+IFxIji81KqiJayEp6eUiqqleepJ29vJcZ2l09ZolIZnKbqIC5sbKhOiL8T16sRgxcDU7Zvu8Q==
-X-Received: by 2002:a05:6a21:58d:b0:1f5:8153:93fb with SMTP id adf61e73a8af0-1f5c114b9abmr102609637.10.1741897587704;
-        Thu, 13 Mar 2025 13:26:27 -0700 (PDT)
+        bh=r5J1nEwdZJuMcozKjjHSIS6C+RNBgszoq248+dvVtE0=;
+        b=jdRUtozppYLMHjPQKWoPzEx0KUKVv0hNJhBRfX6zAk4UOQahMiWRyCJQyrWRZXbK6J
+         qHM6Uo2L3STi++eUPQINjEQeq2AD/vx17v/aberO0a57AZLmf/OhH0KR2PLlhag4xTmo
+         G3RcafK5A5Rq02THEo2ZQDUA601+iHSy73n/Ttd5ipL1YKnXFYNQt/Fngs8XMZWCnjN4
+         v09JBHYdR2wb3MdOLNatcyzeBNFkrlRLrnz4ZjaeAYOJbBobR1hudfgwnyfPsJ3RAW5S
+         pIb8zVYzRigURNATPSvIywVZpPCRLxDB98xS9356MxNyomClZDUf4Vs5s5pWHZMY/st4
+         vFIw==
+X-Gm-Message-State: AOJu0YxOOiDGnQRLotNRY+x9hZ8bQBpCOhidRoX2Xd5Sk1R6WuWYecKJ
+	bLypEkOJRiV5I5gFrACmtoQi6MvFXZ8C1Rv0UHzrV0A+2pSl702501CRergg
+X-Gm-Gg: ASbGncsjBGUIwIMpRnUvO/umcVW7nSCC7GMmoAFfb7vYFx7rOzgdjFI2A/o1NvKpd+c
+	KgPPvtIRqxK/UM9lJf+8YrRNM+FDTfdmurH0PSaOgTy+R+Pp7edgJwbXG9yZSHWt2HV/4XoIRpI
+	ncArMAxSxGuR8PagSnsVtt+iM+0IYdp/zDDWkojuM6ulDU2pG6PJDseJ+8OPjWUh19q0obOcE4Y
+	iTDfVSNGdsENwqL739lP8nwPBNiHCYnfJo2dVCV1JteaWcik0b5Y13uRIzoIIk3CMAEx3WI4SeA
+	2OBTNK/xzZGO8Vs2vrIOtgnM5VyXJl5EyiUk1xvTCB9HtII/hG1O2+b+aMbIQMX93y9ql5U=
+X-Google-Smtp-Source: AGHT+IHgZDRuVe7UP/+9H2TNcGkG4/AmExQsAmFOxKyOWAzH9yLGtkxJYScdR5rnHX7yvrtTxYOzQw==
+X-Received: by 2002:a05:6a21:4508:b0:1f5:64fd:68ea with SMTP id adf61e73a8af0-1f5c10faae7mr110285637.4.1741897588719;
+        Thu, 13 Mar 2025 13:26:28 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:b233:743:91db:ac7b])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9c94cesm1724455a12.6.2025.03.13.13.26.26
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9c94cesm1724455a12.6.2025.03.13.13.26.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 13:26:27 -0700 (PDT)
+        Thu, 13 Mar 2025 13:26:28 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
 	Long Li <leo.lilong@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Chandan Babu R <chandanbabu@kernel.org>,
 	Catherine Hoang <catherine.hoang@oracle.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 24/29] xfs: add lock protection when remove perag from radix tree
-Date: Thu, 13 Mar 2025 13:25:44 -0700
-Message-ID: <20250313202550.2257219-25-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 25/29] xfs: fix perag leak when growfs fails
+Date: Thu, 13 Mar 2025 13:25:45 -0700
+Message-ID: <20250313202550.2257219-26-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
 In-Reply-To: <20250313202550.2257219-1-leah.rumancik@gmail.com>
 References: <20250313202550.2257219-1-leah.rumancik@gmail.com>
@@ -97,33 +96,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit 07afd3173d0c6d24a47441839a835955ec6cf0d4 ]
+[ Upstream commit 7823921887750b39d02e6b44faafdd1cc617c651 ]
 
-[ 6.1: resolved conflict in xfs_ag.c ]
+[ 6.1: resolved conflicts in xfs_ag.c and xfs_ag.h ]
 
-Take mp->m_perag_lock for deletions from the perag radix tree in
-xfs_initialize_perag to prevent racing with tagging operations.
-Lookups are fine - they are RCU protected so already deal with the
-tree changing shape underneath the lookup - but tagging operations
-require the tree to be stable while the tags are propagated back up
-to the root.
+During growfs, if new ag in memory has been initialized, however
+sb_agcount has not been updated, if an error occurs at this time it
+will cause perag leaks as follows, these new AGs will not been freed
+during umount , because of these new AGs are not visible(that is
+included in mp->m_sb.sb_agcount).
 
-Right now there's nothing stopping radix tree tagging from operating
-while a growfs operation is progress and adding/removing new entries
-into the radix tree.
+unreferenced object 0xffff88810be40200 (size 512):
+  comm "xfs_growfs", pid 857, jiffies 4294909093
+  hex dump (first 32 bytes):
+    00 c0 c1 05 81 88 ff ff 04 00 00 00 00 00 00 00  ................
+    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 381741e2):
+    [<ffffffff8191aef6>] __kmalloc+0x386/0x4f0
+    [<ffffffff82553e65>] kmem_alloc+0xb5/0x2f0
+    [<ffffffff8238dac5>] xfs_initialize_perag+0xc5/0x810
+    [<ffffffff824f679c>] xfs_growfs_data+0x9bc/0xbc0
+    [<ffffffff8250b90e>] xfs_file_ioctl+0x5fe/0x14d0
+    [<ffffffff81aa5194>] __x64_sys_ioctl+0x144/0x1c0
+    [<ffffffff83c3d81f>] do_syscall_64+0x3f/0xe0
+    [<ffffffff83e00087>] entry_SYSCALL_64_after_hwframe+0x62/0x6a
+unreferenced object 0xffff88810be40800 (size 512):
+  comm "xfs_growfs", pid 857, jiffies 4294909093
+  hex dump (first 32 bytes):
+    20 00 00 00 00 00 00 00 57 ef be dc 00 00 00 00   .......W.......
+    10 08 e4 0b 81 88 ff ff 10 08 e4 0b 81 88 ff ff  ................
+  backtrace (crc bde50e2d):
+    [<ffffffff8191b43a>] __kmalloc_node+0x3da/0x540
+    [<ffffffff81814489>] kvmalloc_node+0x99/0x160
+    [<ffffffff8286acff>] bucket_table_alloc.isra.0+0x5f/0x400
+    [<ffffffff8286bdc5>] rhashtable_init+0x405/0x760
+    [<ffffffff8238dda3>] xfs_initialize_perag+0x3a3/0x810
+    [<ffffffff824f679c>] xfs_growfs_data+0x9bc/0xbc0
+    [<ffffffff8250b90e>] xfs_file_ioctl+0x5fe/0x14d0
+    [<ffffffff81aa5194>] __x64_sys_ioctl+0x144/0x1c0
+    [<ffffffff83c3d81f>] do_syscall_64+0x3f/0xe0
+    [<ffffffff83e00087>] entry_SYSCALL_64_after_hwframe+0x62/0x6a
 
-Hence we can have traversals that require a stable tree occurring at
-the same time we are removing unused entries from the radix tree which
-causes the shape of the tree to change.
+Factor out xfs_free_unused_perag_range() from xfs_initialize_perag(),
+used for freeing unused perag within a specified range in error handling,
+included in the error path of the growfs failure.
 
-Likely this hasn't caused a problem in the past because we are only
-doing append addition and removal so the active AG part of the tree
-is not changing shape, but that doesn't mean it is safe. Just making
-the radix tree modifications serialise against each other is obviously
-correct.
-
+Fixes: 1c1c6ebcf528 ("xfs: Replace per-ag array with a radix tree")
 Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
@@ -132,35 +151,120 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/libxfs/xfs_ag.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/xfs/libxfs/xfs_ag.c | 34 +++++++++++++++++++++++++---------
+ fs/xfs/libxfs/xfs_ag.h |  3 +++
+ fs/xfs/xfs_fsops.c     |  5 ++++-
+ 3 files changed, 32 insertions(+), 10 deletions(-)
 
 diff --git a/fs/xfs/libxfs/xfs_ag.c b/fs/xfs/libxfs/xfs_ag.c
-index e03bfeacbed4..e7b011c42b7a 100644
+index e7b011c42b7a..9743fa5b5388 100644
 --- a/fs/xfs/libxfs/xfs_ag.c
 +++ b/fs/xfs/libxfs/xfs_ag.c
-@@ -343,17 +343,21 @@ xfs_initialize_perag(
+@@ -257,10 +257,34 @@ xfs_agino_range(
+ 	xfs_agino_t		*last)
+ {
+ 	return __xfs_agino_range(mp, xfs_ag_block_count(mp, agno), first, last);
+ }
  
- 	mp->m_ag_prealloc_blocks = xfs_prealloc_blocks(mp);
- 	return 0;
- 
- out_remove_pag:
-+	spin_lock(&mp->m_perag_lock);
- 	radix_tree_delete(&mp->m_perag_tree, index);
-+	spin_unlock(&mp->m_perag_lock);
++/*
++ * Free perag within the specified AG range, it is only used to free unused
++ * perags under the error handling path.
++ */
++void
++xfs_free_unused_perag_range(
++	struct xfs_mount	*mp,
++	xfs_agnumber_t		agstart,
++	xfs_agnumber_t		agend)
++{
++	struct xfs_perag	*pag;
++	xfs_agnumber_t		index;
++
++	for (index = agstart; index < agend; index++) {
++		spin_lock(&mp->m_perag_lock);
++		pag = radix_tree_delete(&mp->m_perag_tree, index);
++		spin_unlock(&mp->m_perag_lock);
++		if (!pag)
++			break;
++		xfs_buf_hash_destroy(pag);
++		kmem_free(pag);
++	}
++}
++
+ int
+ xfs_initialize_perag(
+ 	struct xfs_mount	*mp,
+ 	xfs_agnumber_t		agcount,
+ 	xfs_rfsblock_t		dblocks,
+@@ -350,19 +374,11 @@ xfs_initialize_perag(
+ 	spin_unlock(&mp->m_perag_lock);
  out_free_pag:
  	kmem_free(pag);
  out_unwind_new_pags:
  	/* unwind any prior newly initialized pags */
- 	for (index = first_initialised; index < agcount; index++) {
-+		spin_lock(&mp->m_perag_lock);
- 		pag = radix_tree_delete(&mp->m_perag_tree, index);
-+		spin_unlock(&mp->m_perag_lock);
- 		if (!pag)
- 			break;
- 		xfs_buf_hash_destroy(pag);
- 		kmem_free(pag);
+-	for (index = first_initialised; index < agcount; index++) {
+-		spin_lock(&mp->m_perag_lock);
+-		pag = radix_tree_delete(&mp->m_perag_tree, index);
+-		spin_unlock(&mp->m_perag_lock);
+-		if (!pag)
+-			break;
+-		xfs_buf_hash_destroy(pag);
+-		kmem_free(pag);
+-	}
++	xfs_free_unused_perag_range(mp, first_initialised, agcount);
+ 	return error;
+ }
+ 
+ static int
+ xfs_get_aghdr_buf(
+diff --git a/fs/xfs/libxfs/xfs_ag.h b/fs/xfs/libxfs/xfs_ag.h
+index 191b22b9a35b..eb84af1c8628 100644
+--- a/fs/xfs/libxfs/xfs_ag.h
++++ b/fs/xfs/libxfs/xfs_ag.h
+@@ -104,10 +104,13 @@ struct xfs_perag {
+ 	struct delayed_work	pag_blockgc_work;
+ 
+ #endif /* __KERNEL__ */
+ };
+ 
++
++void xfs_free_unused_perag_range(struct xfs_mount *mp, xfs_agnumber_t agstart,
++			xfs_agnumber_t agend);
+ int xfs_initialize_perag(struct xfs_mount *mp, xfs_agnumber_t agcount,
+ 			xfs_rfsblock_t dcount, xfs_agnumber_t *maxagi);
+ int xfs_initialize_perag_data(struct xfs_mount *mp, xfs_agnumber_t agno);
+ void xfs_free_perag(struct xfs_mount *mp);
+ 
+diff --git a/fs/xfs/xfs_fsops.c b/fs/xfs/xfs_fsops.c
+index 77b14f788214..96e9d64fbe62 100644
+--- a/fs/xfs/xfs_fsops.c
++++ b/fs/xfs/xfs_fsops.c
+@@ -151,11 +151,11 @@ xfs_growfs_data_private(
+ 
+ 	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_growdata,
+ 			(delta > 0 ? XFS_GROWFS_SPACE_RES(mp) : -delta), 0,
+ 			XFS_TRANS_RESERVE, &tp);
+ 	if (error)
+-		return error;
++		goto out_free_unused_perag;
+ 
+ 	last_pag = xfs_perag_get(mp, oagcount - 1);
+ 	if (delta > 0) {
+ 		error = xfs_resizefs_init_new_ags(tp, &id, oagcount, nagcount,
+ 				delta, last_pag, &lastag_extended);
+@@ -225,10 +225,13 @@ xfs_growfs_data_private(
  	}
+ 	return error;
+ 
+ out_trans_cancel:
+ 	xfs_trans_cancel(tp);
++out_free_unused_perag:
++	if (nagcount > oagcount)
++		xfs_free_unused_perag_range(mp, oagcount, nagcount);
+ 	return error;
+ }
+ 
+ static int
+ xfs_growfs_log_private(
 -- 
 2.49.0.rc1.451.g8f38331e32-goog
 
