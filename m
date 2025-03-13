@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70121A5EEBD
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:01:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 060E6A5EEC0
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:01:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7AE819C0A47
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:01:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2288B19C0A84
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308CC262D27;
-	Thu, 13 Mar 2025 09:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD5C1FBCA3;
+	Thu, 13 Mar 2025 09:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FXpVaJMx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bw3mmtGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB630155C96
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1450C155C96
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741856478; cv=none; b=tej/u1OQ1Os8kI5fH8JXFiss4bjQAt9gsqmG3tcCKJn8vOm0jtyZ7xi3QgNp4EGzqGStPTlQKdw67hvi9+1favoA4oUdLfqCq/6oRWs9mEC81rMYfutyz9FQrLRMymEHCCM97kjSo59MVVn3T/cj/uBWHJG8wTarEPrXIptin2I=
+	t=1741856480; cv=none; b=IBA3igYgZ16X4MxGkiSy3hVxk1b75iRl2DMuVbxJ97dQDxGGjpbhn6nHeB2+Jqzc89xQxezEVvj41VzZCV4sFb2SdZiq44P6eeAyzCIspQ+xrT/FvkRQh+toVZeRo/WGk77nZ/gEZwuYZgjIUQlhhSyHnP2e6+2C2gn7YM/h5aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741856478; c=relaxed/simple;
-	bh=AkCj/VZesoBCCX2zLdviQ+5R4ycUJ5Ug3uHgQzhbBLM=;
+	s=arc-20240116; t=1741856480; c=relaxed/simple;
+	bh=7Dtah6WHPwKab1f1dJszcm/yd4hfUig7EKMFJJd4EBA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f7MiZygK5eKYF/H8GVGnzM4DtjvGkKGAPKZLC/zr3B1fFlxCB6z+7/Ybsb/YdwB4ND7RAJqcmM+u9ipqZWnIjbgEWs0sSpiLRlFzib78UKSO7Wuhwa8LQ9fOFLuoaYzHqL6pWTUiJ+jMPIpGxw3rP07JUgoHBPZ7tRVErnkzDXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FXpVaJMx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5860C4CEDD;
-	Thu, 13 Mar 2025 09:01:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GEw49v7xGfBuiPg4uM9NUx2FZdt6Vp2aVvI/+NSRXwCSD25zgFmS6WSCb4dD6hCanCfKTUATfsE5P1AG8Gw1/sTRrWf5js4mJ32x/XZ5ruvBYp88CAvnb5zQp1yvaUv3TmqW90dL8Yynoa0ffIEtUsWd0VtAz0lYMc7cPGnZVxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bw3mmtGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61ABC4CEEE;
+	Thu, 13 Mar 2025 09:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741856477;
-	bh=AkCj/VZesoBCCX2zLdviQ+5R4ycUJ5Ug3uHgQzhbBLM=;
+	s=k20201202; t=1741856479;
+	bh=7Dtah6WHPwKab1f1dJszcm/yd4hfUig7EKMFJJd4EBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXpVaJMxlUXIMMhHP/X8UmNxSQ+W9D8faea05Wx8ANuJpdQYK31WD8pIRDD5RyBkM
-	 YLOT7hbmbs4+w0FpdxCSPhUQrPzGXZEBiUO0zpkYe4iy0baxXQDGXF89OBHKYQaauE
-	 vUDsbX9uS1xmBbpEjlKy1OjWobtTdh5r1L9WsnHHurAkJ5+mSUQ5YDNZk6Eo0l6l8g
-	 q1qiHtL4wLYsW9uGGPhYMcWZHNfA5QbWCTUGxm+GZHpxhXlwljkdy2eqSaBNpvKbQh
-	 0AUQtvmwTpDPwMx+dbOE3pyliaVCR+tXA9JH1qAxajjtjF2bOgP0pWuiPCp2iOaiwo
-	 3rk67h3FsMJiw==
+	b=bw3mmtGX+pW1q1H/7BVT2Clxx0fOYWIzncrkAKnXj7Sg/lN2DN/rLV/ZTMJw4lw1X
+	 37wC7e4c0E0dxc4DJS3FzA76hN8inpGu5L5SswCZ+Awn2OydL8Q6TkHNgLMvVV0UNj
+	 Pop6ZM7+OwumPgTTRcrmYxupRKZLjjuwD73Xd5JFC3Sel5k4mkaAE0D99SVUB/cA2T
+	 03Fgu/AFMOf4XqrD037fGHGxBfMOFu2Kq0WRivZdlooj5ZyFB8lW2coFOUM0ko6Zxu
+	 ZXGPHn5aA2inUy1ePL9oPNIfuv9I5YQPyrUWK+wwbE+hhNhf2G3AwdRgdY5NNqCOz5
+	 fPBQaGloDSVhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	chenlinxuan@deepin.org
+	urezki@gmail.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.6] lib/buildid: Handle memfd_secret() files in build_id_parse()
-Date: Thu, 13 Mar 2025 05:01:15 -0400
-Message-Id: <20250312205209-b20fd2c367e55db9@stable.kernel.org>
+Subject: Re: [PATCH 6.13.y] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
+Date: Thu, 13 Mar 2025 05:01:17 -0400
+Message-Id: <20250312223646-63491c95dc46f5e4@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <05D0A9F7DE394601+20250311100555.310788-2-chenlinxuan@deepin.org>
+In-Reply-To:  <20250311165944.151883-1-urezki@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,98 +67,66 @@ Hi,
 Summary of potential issues:
 ⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-Found matching upstream commit: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
-
-WARNING: Author mismatch between patch and found commit:
-Backport author: Chen Linxuan<chenlinxuan@deepin.org>
-Commit author: Andrii Nakryiko<andrii@kernel.org>
-
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
+Found matching upstream commit: dfd3df31c9db752234d7d2e09bef2aeabb643ce4
 
 Note: The patch differs from the upstream commit:
 ---
-1:  5ac9b4e935dfc ! 1:  9a5818b460ee4 lib/buildid: Handle memfd_secret() files in build_id_parse()
-    @@
-      ## Metadata ##
-    -Author: Andrii Nakryiko <andrii@kernel.org>
-    +Author: Chen Linxuan <chenlinxuan@deepin.org>
+1:  dfd3df31c9db7 ! 1:  95c2d9d981779 mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
+    @@ Commit message
+         Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+         Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
      
-      ## Commit message ##
-         lib/buildid: Handle memfd_secret() files in build_id_parse()
-     
-    -    >From memfd_secret(2) manpage:
-    +    Backport of a similar change from commit 5ac9b4e935df ("lib/buildid:
-    +    Handle memfd_secret() files in build_id_parse()") to address an issue
-    +    where accessing secret memfd contents through build_id_parse() would
-    +    trigger faults.
-     
-    -      The memory areas backing the file created with memfd_secret(2) are
-    -      visible only to the processes that have access to the file descriptor.
-    -      The memory region is removed from the kernel page tables and only the
-    -      page tables of the processes holding the file descriptor map the
-    -      corresponding physical memory. (Thus, the pages in the region can't be
-    -      accessed by the kernel itself, so that, for example, pointers to the
-    -      region can't be passed to system calls.)
-    -
-    -    We need to handle this special case gracefully in build ID fetching
-    -    code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
-    -    family of APIs. Original report and repro can be found in [0].
-    +    Original report and repro can be found in [0].
-     
-           [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
-     
-    -    Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
-    -    Reported-by: Yi Lai <yi1.lai@intel.com>
-    -    Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-    -    Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-    -    Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-    -    Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-    -    Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
-    -    Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
-    +    This repro will cause BUG: unable to handle kernel paging request in
-    +    build_id_parse in 5.15/6.1/6.6.
-    +
-    +    Some other discussions can be found in [1].
-    +
-    +      [1] https://lore.kernel.org/bpf/20241104175256.2327164-1-jolsa@kernel.org/T/#u
-    +
-    +    Cc: stable@vger.kernel.org
-    +    Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-    +    Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
-     
-      ## lib/buildid.c ##
-     @@
-    @@ lib/buildid.c
+    - ## mm/slab_common.c ##
+    -@@ mm/slab_common.c: module_param(rcu_min_cached_objs, int, 0444);
+    - static int rcu_delay_page_cache_fill_msec = 5000;
+    - module_param(rcu_delay_page_cache_fill_msec, int, 0444);
+    + ## kernel/rcu/tree.c ##
+    +@@ kernel/rcu/tree.c: void call_rcu(struct rcu_head *head, rcu_callback_t func)
+    + }
+    + EXPORT_SYMBOL_GPL(call_rcu);
       
-      #define BUILD_ID 3
-      
-    -@@ lib/buildid.c: static int freader_get_folio(struct freader *r, loff_t file_off)
-    - 
-    - 	freader_put_folio(r);
-    +@@ lib/buildid.c: int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-    + 	if (!vma->vm_file)
-    + 		return -EINVAL;
-      
-    ++#ifdef CONFIG_SECRETMEM
-     +	/* reject secretmem folios created with memfd_secret() */
-    -+	if (secretmem_mapping(r->file->f_mapping))
-    ++	if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
-     +		return -EFAULT;
-    ++#endif
+     +static struct workqueue_struct *rcu_reclaim_wq;
      +
-    - 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
-    - 
-    - 	/* if sleeping is allowed, wait for the page, if necessary */
-    + 	page = find_get_page(vma->vm_file->f_mapping, 0);
-    + 	if (!page)
-    + 		return -EFAULT;	/* page not mapped */
+      /* Maximum number of jiffies to wait before draining a batch. */
+      #define KFREE_DRAIN_JIFFIES (5 * HZ)
+      #define KFREE_N_BATCHES 2
+    -@@ mm/slab_common.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+    +@@ kernel/rcu/tree.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+      	if (delayed_work_pending(&krcp->monitor_work)) {
+      		delay_left = krcp->monitor_work.timer.expires - jiffies;
+      		if (delay < delay_left)
+    @@ mm/slab_common.c: __schedule_delayed_monitor_work(struct kfree_rcu_cpu *krcp)
+      }
+      
+      static void
+    -@@ mm/slab_common.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+    +@@ kernel/rcu/tree.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+      			// "free channels", the batch can handle. Break
+      			// the loop since it is done with this CPU thus
+      			// queuing an RCU work is _always_ success here.
+    @@ mm/slab_common.c: kvfree_rcu_queue_batch(struct kfree_rcu_cpu *krcp)
+      			WARN_ON_ONCE(!queued);
+      			break;
+      		}
+    -@@ mm/slab_common.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+    +@@ kernel/rcu/tree.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+      	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
+      			!atomic_xchg(&krcp->work_in_progress, 1)) {
+      		if (atomic_read(&krcp->backoff_page_cache_fill)) {
+    @@ mm/slab_common.c: run_page_cache_worker(struct kfree_rcu_cpu *krcp)
+      				&krcp->page_cache_work,
+      					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
+      		} else {
+    -@@ mm/slab_common.c: void __init kvfree_rcu_init(void)
+    +@@ kernel/rcu/tree.c: static void __init kfree_rcu_batch_init(void)
+      	int i, j;
+      	struct shrinker *kfree_rcu_shrinker;
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.13.y       |  Success    |  Success   |
 
