@@ -1,128 +1,164 @@
-Return-Path: <stable+bounces-124223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC21A5EE81
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:52:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70121A5EEBD
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:01:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D289A17D2F4
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:52:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7AE819C0A47
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A782A26388D;
-	Thu, 13 Mar 2025 08:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308CC262D27;
+	Thu, 13 Mar 2025 09:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QLYX9ZYa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FXpVaJMx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FB7262D11;
-	Thu, 13 Mar 2025 08:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB630155C96
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741855950; cv=none; b=LdniIcDzI2qJmS6oSRfSkdamlOyHDcbwFHLxrWPu1mY/AjYAZM+/PGWK+C4ZRRegDkJmnummyc7FNU0u4Y7/z4JgMdedNdz1+cv8qvt6/30ZjnofNCb6ecS4H5kttGU5Vbq1338hTJS/lRBQxjcVR26FYkz/PpRvn/ChCcnS1jY=
+	t=1741856478; cv=none; b=tej/u1OQ1Os8kI5fH8JXFiss4bjQAt9gsqmG3tcCKJn8vOm0jtyZ7xi3QgNp4EGzqGStPTlQKdw67hvi9+1favoA4oUdLfqCq/6oRWs9mEC81rMYfutyz9FQrLRMymEHCCM97kjSo59MVVn3T/cj/uBWHJG8wTarEPrXIptin2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741855950; c=relaxed/simple;
-	bh=bsWJBHENirJ6KNcHjp7ijhAQhuddBcS916UmjLeAtLU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LDPabSD6CsY8XmbGDRoBzZyNHMw6C/9FFnQ483460UAMuqnGMR9wRHRGguglc8be+kXMOZYpQWEmPQdn1HGZWtt1Hft/cMm5KUwysWAgmdFVHCafJxSuatmwM6AmxSBmhshYymsEzYVSglglp0LvsyphvsiDlJa3xnbTLVKDUOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QLYX9ZYa; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-224171d6826so15721575ad.3;
-        Thu, 13 Mar 2025 01:52:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741855948; x=1742460748; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zdZMMUWMDqS7xE5EceDiiL8qINCxcfmqx8XegAbr6Rw=;
-        b=QLYX9ZYaQTgKxSXQesumWHn3KWBmBQq3eizO6/CPT68TB3M3tU7/pCaOajhwM7t5nF
-         5pfhsSE3tnkjS2jVXjqmByLWj/7YShZ9X/Zpq4/fxf6RsDCA0d5UOjEWrmEb+FxPmAkL
-         uRvAzdTq1QlL0lH35EboMTC1/81ajUy8IEmWSbpt5kiciyYTgStZn9aOeHbux1l6yOep
-         cAJ6/aw9MH82dm4kuvF4SHycxRN9O6FNzE9DG7RmQ+Yg2EmhYeAOMnXBRaCYPWSbaVme
-         4OfXW7W6wbGkKkcLp1a2TJcMQENxLfQNaB6clGRFFMzudvLHk8y6uVlebCGNyW2EncKL
-         CGKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741855948; x=1742460748;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zdZMMUWMDqS7xE5EceDiiL8qINCxcfmqx8XegAbr6Rw=;
-        b=uIHjLuVl8XMH6dbGcfQTUGN3YJKCJKg32oheDGZmOf6MufscfVdqYKoHctZe27/VfP
-         8RBm9vBwlTEzVaVgzWmcxdzNDxOq6E3eRc08VNUfazUbJ61zGK10MKp4zeWJJ362soNt
-         84/g96q9V+PPgl7ofuJ9hF1tabRUAdUNcfIaRbV8ZKWMQxvO6fB4RVoK7UICtj+Pjryj
-         PxGvHAu8JcXgalurx3IPxeH7aGPJuqSAK6ZOwMMFsx3fdjo/Ipb5HP0i9fvj7fM1VYHl
-         MDA8HhtzY0xmMPqcqs0FTK0chjdCk3BUq1gUjAJDlfg/VOmTiggtuFX1Q8NQ//q0Hauw
-         TfgA==
-X-Forwarded-Encrypted: i=1; AJvYcCUiaXt0vph3r54ZosYedJLcPagEA92YLHMf0F6riCrYdcE3h8elucHzdYaibVVehSjRXMaYMJZeln37YM8J@vger.kernel.org, AJvYcCWAcrSRT4rmS9S7WPv2yX06PJp4Da8UVGsy+ai13MdYrX+mM5GfP0V3Ba1mfIKX/TRNh09PVuDL@vger.kernel.org, AJvYcCWa2C1zWy95aI7Xh9YDqoamHJV5Rbl4Bl4UPILvBeL4rptZYgpTHaaO32l6aLYMze255KQ7Eo86gWMIqPI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWA4H9eVXXCcTuSnuMVbZE3G8DB+8vtx1KWr4laNyJVZnsNrr2
-	lxS+6QD439GlMIJ5dd3cALScWqhU7hVB2Ib9gB0SC3AHyyvNevjk9LxlVg==
-X-Gm-Gg: ASbGnctGaFiHOatlJa0x83KR3/p2M0jpHp5AXYMi68VmcYqG0FfrJk2wh5kdu0862hp
-	cMXQqFvjqIeJXULUQU+Tmg/lUvrpMmLlH0il3Av0gppzZ2tedYeNI6hxLzHfWx1zZoo62icfSKh
-	u1jetN+etvt9H6a2Mmck1m1e7b3NbTFyiVP4LUXBO4ANCPCvqb+gw8/ejaUEBCSNAAHbpJNmEJK
-	GKUp4dgINyFJ2PVCr7NbJexiZ7PZwG6Rm9JiYxGoJUeoH6U7U8PsTrdcSTpGCv7tJJ6zJQiWXHe
-	UQcYSl2A3DVnggpfvt7YHks9hhANwU6XhZQUGFyBPJ/vwmIWC0TS2igqf9O3UFx6HycoK+3C/ZI
-	8QpuSwDgT
-X-Google-Smtp-Source: AGHT+IECYqlBbszLR2uQD3fg5Wv8tKjptePMqo8A+cMcx/3XxsKLDtVdhXKWVaCJTOwcFG09ArJudg==
-X-Received: by 2002:a05:6a21:497:b0:1f5:9024:3254 with SMTP id adf61e73a8af0-1f590246bcfmr14767135637.6.1741855947559;
-        Thu, 13 Mar 2025 01:52:27 -0700 (PDT)
-Received: from ubuntu-Virtual-Machine.corp.microsoft.com ([2001:4898:80e8:7:211c:30ca:9a22:6176])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9fe51asm799597a12.36.2025.03.13.01.52.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 01:52:27 -0700 (PDT)
-From: Tianyu Lan <ltykernel@gmail.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com
-Cc: Tianyu Lan <tiala@microsoft.com>,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] x86/Hyperv: Fix check of return value from snp_set_vmsa()
-Date: Thu, 13 Mar 2025 04:52:17 -0400
-Message-Id: <20250313085217.45483-1-ltykernel@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1741856478; c=relaxed/simple;
+	bh=AkCj/VZesoBCCX2zLdviQ+5R4ycUJ5Ug3uHgQzhbBLM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f7MiZygK5eKYF/H8GVGnzM4DtjvGkKGAPKZLC/zr3B1fFlxCB6z+7/Ybsb/YdwB4ND7RAJqcmM+u9ipqZWnIjbgEWs0sSpiLRlFzib78UKSO7Wuhwa8LQ9fOFLuoaYzHqL6pWTUiJ+jMPIpGxw3rP07JUgoHBPZ7tRVErnkzDXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FXpVaJMx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5860C4CEDD;
+	Thu, 13 Mar 2025 09:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741856477;
+	bh=AkCj/VZesoBCCX2zLdviQ+5R4ycUJ5Ug3uHgQzhbBLM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FXpVaJMxlUXIMMhHP/X8UmNxSQ+W9D8faea05Wx8ANuJpdQYK31WD8pIRDD5RyBkM
+	 YLOT7hbmbs4+w0FpdxCSPhUQrPzGXZEBiUO0zpkYe4iy0baxXQDGXF89OBHKYQaauE
+	 vUDsbX9uS1xmBbpEjlKy1OjWobtTdh5r1L9WsnHHurAkJ5+mSUQ5YDNZk6Eo0l6l8g
+	 q1qiHtL4wLYsW9uGGPhYMcWZHNfA5QbWCTUGxm+GZHpxhXlwljkdy2eqSaBNpvKbQh
+	 0AUQtvmwTpDPwMx+dbOE3pyliaVCR+tXA9JH1qAxajjtjF2bOgP0pWuiPCp2iOaiwo
+	 3rk67h3FsMJiw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	chenlinxuan@deepin.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH stable 6.6] lib/buildid: Handle memfd_secret() files in build_id_parse()
+Date: Thu, 13 Mar 2025 05:01:15 -0400
+Message-Id: <20250312205209-b20fd2c367e55db9@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <05D0A9F7DE394601+20250311100555.310788-2-chenlinxuan@deepin.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Tianyu Lan <tiala@microsoft.com>
+[ Sasha's backport helper bot ]
 
-snp_set_vmsa() returns 0 as success result and so fix it.
+Hi,
 
-Cc: stable@vger.kernel.org
-Fixes: 44676bb9d566 ("x86/hyperv: Add smp support for SEV-SNP guest")
-Signed-off-by: Tianyu Lan <tiala@microsoft.com>
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
+
+Found matching upstream commit: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
+
+WARNING: Author mismatch between patch and found commit:
+Backport author: Chen Linxuan<chenlinxuan@deepin.org>
+Commit author: Andrii Nakryiko<andrii@kernel.org>
+
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+
+Note: The patch differs from the upstream commit:
 ---
- arch/x86/hyperv/ivm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+1:  5ac9b4e935dfc ! 1:  9a5818b460ee4 lib/buildid: Handle memfd_secret() files in build_id_parse()
+    @@
+      ## Metadata ##
+    -Author: Andrii Nakryiko <andrii@kernel.org>
+    +Author: Chen Linxuan <chenlinxuan@deepin.org>
+     
+      ## Commit message ##
+         lib/buildid: Handle memfd_secret() files in build_id_parse()
+     
+    -    >From memfd_secret(2) manpage:
+    +    Backport of a similar change from commit 5ac9b4e935df ("lib/buildid:
+    +    Handle memfd_secret() files in build_id_parse()") to address an issue
+    +    where accessing secret memfd contents through build_id_parse() would
+    +    trigger faults.
+     
+    -      The memory areas backing the file created with memfd_secret(2) are
+    -      visible only to the processes that have access to the file descriptor.
+    -      The memory region is removed from the kernel page tables and only the
+    -      page tables of the processes holding the file descriptor map the
+    -      corresponding physical memory. (Thus, the pages in the region can't be
+    -      accessed by the kernel itself, so that, for example, pointers to the
+    -      region can't be passed to system calls.)
+    -
+    -    We need to handle this special case gracefully in build ID fetching
+    -    code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
+    -    family of APIs. Original report and repro can be found in [0].
+    +    Original report and repro can be found in [0].
+     
+           [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
+     
+    -    Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
+    -    Reported-by: Yi Lai <yi1.lai@intel.com>
+    -    Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+    -    Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+    -    Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+    -    Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+    -    Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
+    -    Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
+    +    This repro will cause BUG: unable to handle kernel paging request in
+    +    build_id_parse in 5.15/6.1/6.6.
+    +
+    +    Some other discussions can be found in [1].
+    +
+    +      [1] https://lore.kernel.org/bpf/20241104175256.2327164-1-jolsa@kernel.org/T/#u
+    +
+    +    Cc: stable@vger.kernel.org
+    +    Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+    +    Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+     
+      ## lib/buildid.c ##
+     @@
+    @@ lib/buildid.c
+      
+      #define BUILD_ID 3
+      
+    -@@ lib/buildid.c: static int freader_get_folio(struct freader *r, loff_t file_off)
+    - 
+    - 	freader_put_folio(r);
+    +@@ lib/buildid.c: int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+    + 	if (!vma->vm_file)
+    + 		return -EINVAL;
+      
+    ++#ifdef CONFIG_SECRETMEM
+     +	/* reject secretmem folios created with memfd_secret() */
+    -+	if (secretmem_mapping(r->file->f_mapping))
+    ++	if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
+     +		return -EFAULT;
+    ++#endif
+     +
+    - 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
+    - 
+    - 	/* if sleeping is allowed, wait for the page, if necessary */
+    + 	page = find_get_page(vma->vm_file->f_mapping, 0);
+    + 	if (!page)
+    + 		return -EFAULT;	/* page not mapped */
+---
 
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index ec7880271cf9..77bf05f06b9e 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -338,7 +338,7 @@ int hv_snp_boot_ap(u32 cpu, unsigned long start_ip)
- 	vmsa->sev_features = sev_status >> 2;
- 
- 	ret = snp_set_vmsa(vmsa, true);
--	if (!ret) {
-+	if (ret) {
- 		pr_err("RMPADJUST(%llx) failed: %llx\n", (u64)vmsa, ret);
- 		free_page((u64)vmsa);
- 		return ret;
--- 
-2.25.1
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.6.y        |  Success    |  Success   |
 
