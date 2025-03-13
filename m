@@ -1,118 +1,128 @@
-Return-Path: <stable+bounces-124224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4236A5EEA9
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:57:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC21A5EE81
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 133EF17D31B
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:57:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D289A17D2F4
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 08:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88B6263C8E;
-	Thu, 13 Mar 2025 08:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A782A26388D;
+	Thu, 13 Mar 2025 08:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="MblLZ3Qk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QLYX9ZYa"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBA5262814;
-	Thu, 13 Mar 2025 08:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FB7262D11;
+	Thu, 13 Mar 2025 08:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741856241; cv=none; b=IyFZvafVi2NAuQd6TanJ/C2j2Mggi36Y8WqoTRIXiSOS7o5mO+PZ4D1gebtmHncTXy33KdRaJxflbW8FrY9mWLoVHK9EkWWtDC7eX9t5HGxeo+zVRw9dVA6UfBqIV5TWc6BfYEAO+KE2IAuSPJXohSUTJUebAy299fLAuXgjHNE=
+	t=1741855950; cv=none; b=LdniIcDzI2qJmS6oSRfSkdamlOyHDcbwFHLxrWPu1mY/AjYAZM+/PGWK+C4ZRRegDkJmnummyc7FNU0u4Y7/z4JgMdedNdz1+cv8qvt6/30ZjnofNCb6ecS4H5kttGU5Vbq1338hTJS/lRBQxjcVR26FYkz/PpRvn/ChCcnS1jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741856241; c=relaxed/simple;
-	bh=tpmeGUgGhllwUBBAGOlrE9cU2ApLt6CWcDTd6RNOAGo=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mVGb+9HMt/24IdDUp6fwNL1pcmdOwpQtOqtO/5iZbFSn0war9B2H/eGQkASqPcHvrXT52x/DNPYb3B0yTgKptfSoIhuFhOilizyRZC8mGs5sNOPZMUxLxP2e3MoKMI86w7IvDge9vKIpwlYjGxoWQ+JeIib63hhH8Ee5bS1rsAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=MblLZ3Qk; arc=none smtp.client-ip=91.244.183.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
-Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id 8495410B9393;
-	Thu, 13 Mar 2025 11:50:08 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 8495410B9393
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1741855808; bh=g0YsrEhjGz8lcic6OJN5Xenjkp1uFzhGdMlrY9qTx3c=;
-	h=From:To:CC:Subject:Date:From;
-	b=MblLZ3QkaC4Odm+VZcIN/XFNg2xu85pnqEzg4rJY8oA55qjLvuRkrS5crfkD4l8yV
-	 JUgBFJcsnVPTIvAMG2YiTujbooZ0Wmp5USpDYsUg3tgchiOKVz98iOZvt1VokcI3qF
-	 aBksXzRouly01wgzIg8J2Y3s7NEBziOa4lT264R4=
-Received: from msk-exch-01.infotecs-nt (msk-exch-01.infotecs-nt [10.0.7.191])
-	by mx0.infotecs-nt (Postfix) with ESMTP id 80C4230375F8;
-	Thu, 13 Mar 2025 11:50:08 +0300 (MSK)
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-To: "bjorn@kernel.org" <bjorn@kernel.org>
-CC: Magnus Karlsson <magnus.karlsson@intel.com>, Maciej Fijalkowski
-	<maciej.fijalkowski@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, "Daniel
- Borkmann" <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH net] xsk: fix an integer overflow in
- xp_create_and_assign_umem()
-Thread-Topic: [PATCH net] xsk: fix an integer overflow in
- xp_create_and_assign_umem()
-Thread-Index: AQHbk/Tsm9QMCOUZtk69szSJlOz3iQ==
-Date: Thu, 13 Mar 2025 08:50:08 +0000
-Message-ID: <20250313085007.3116044-1-Ilia.Gavrilov@infotecs.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1741855950; c=relaxed/simple;
+	bh=bsWJBHENirJ6KNcHjp7ijhAQhuddBcS916UmjLeAtLU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LDPabSD6CsY8XmbGDRoBzZyNHMw6C/9FFnQ483460UAMuqnGMR9wRHRGguglc8be+kXMOZYpQWEmPQdn1HGZWtt1Hft/cMm5KUwysWAgmdFVHCafJxSuatmwM6AmxSBmhshYymsEzYVSglglp0LvsyphvsiDlJa3xnbTLVKDUOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QLYX9ZYa; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-224171d6826so15721575ad.3;
+        Thu, 13 Mar 2025 01:52:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741855948; x=1742460748; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zdZMMUWMDqS7xE5EceDiiL8qINCxcfmqx8XegAbr6Rw=;
+        b=QLYX9ZYaQTgKxSXQesumWHn3KWBmBQq3eizO6/CPT68TB3M3tU7/pCaOajhwM7t5nF
+         5pfhsSE3tnkjS2jVXjqmByLWj/7YShZ9X/Zpq4/fxf6RsDCA0d5UOjEWrmEb+FxPmAkL
+         uRvAzdTq1QlL0lH35EboMTC1/81ajUy8IEmWSbpt5kiciyYTgStZn9aOeHbux1l6yOep
+         cAJ6/aw9MH82dm4kuvF4SHycxRN9O6FNzE9DG7RmQ+Yg2EmhYeAOMnXBRaCYPWSbaVme
+         4OfXW7W6wbGkKkcLp1a2TJcMQENxLfQNaB6clGRFFMzudvLHk8y6uVlebCGNyW2EncKL
+         CGKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741855948; x=1742460748;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zdZMMUWMDqS7xE5EceDiiL8qINCxcfmqx8XegAbr6Rw=;
+        b=uIHjLuVl8XMH6dbGcfQTUGN3YJKCJKg32oheDGZmOf6MufscfVdqYKoHctZe27/VfP
+         8RBm9vBwlTEzVaVgzWmcxdzNDxOq6E3eRc08VNUfazUbJ61zGK10MKp4zeWJJ362soNt
+         84/g96q9V+PPgl7ofuJ9hF1tabRUAdUNcfIaRbV8ZKWMQxvO6fB4RVoK7UICtj+Pjryj
+         PxGvHAu8JcXgalurx3IPxeH7aGPJuqSAK6ZOwMMFsx3fdjo/Ipb5HP0i9fvj7fM1VYHl
+         MDA8HhtzY0xmMPqcqs0FTK0chjdCk3BUq1gUjAJDlfg/VOmTiggtuFX1Q8NQ//q0Hauw
+         TfgA==
+X-Forwarded-Encrypted: i=1; AJvYcCUiaXt0vph3r54ZosYedJLcPagEA92YLHMf0F6riCrYdcE3h8elucHzdYaibVVehSjRXMaYMJZeln37YM8J@vger.kernel.org, AJvYcCWAcrSRT4rmS9S7WPv2yX06PJp4Da8UVGsy+ai13MdYrX+mM5GfP0V3Ba1mfIKX/TRNh09PVuDL@vger.kernel.org, AJvYcCWa2C1zWy95aI7Xh9YDqoamHJV5Rbl4Bl4UPILvBeL4rptZYgpTHaaO32l6aLYMze255KQ7Eo86gWMIqPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWA4H9eVXXCcTuSnuMVbZE3G8DB+8vtx1KWr4laNyJVZnsNrr2
+	lxS+6QD439GlMIJ5dd3cALScWqhU7hVB2Ib9gB0SC3AHyyvNevjk9LxlVg==
+X-Gm-Gg: ASbGnctGaFiHOatlJa0x83KR3/p2M0jpHp5AXYMi68VmcYqG0FfrJk2wh5kdu0862hp
+	cMXQqFvjqIeJXULUQU+Tmg/lUvrpMmLlH0il3Av0gppzZ2tedYeNI6hxLzHfWx1zZoo62icfSKh
+	u1jetN+etvt9H6a2Mmck1m1e7b3NbTFyiVP4LUXBO4ANCPCvqb+gw8/ejaUEBCSNAAHbpJNmEJK
+	GKUp4dgINyFJ2PVCr7NbJexiZ7PZwG6Rm9JiYxGoJUeoH6U7U8PsTrdcSTpGCv7tJJ6zJQiWXHe
+	UQcYSl2A3DVnggpfvt7YHks9hhANwU6XhZQUGFyBPJ/vwmIWC0TS2igqf9O3UFx6HycoK+3C/ZI
+	8QpuSwDgT
+X-Google-Smtp-Source: AGHT+IECYqlBbszLR2uQD3fg5Wv8tKjptePMqo8A+cMcx/3XxsKLDtVdhXKWVaCJTOwcFG09ArJudg==
+X-Received: by 2002:a05:6a21:497:b0:1f5:9024:3254 with SMTP id adf61e73a8af0-1f590246bcfmr14767135637.6.1741855947559;
+        Thu, 13 Mar 2025 01:52:27 -0700 (PDT)
+Received: from ubuntu-Virtual-Machine.corp.microsoft.com ([2001:4898:80e8:7:211c:30ca:9a22:6176])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9fe51asm799597a12.36.2025.03.13.01.52.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Mar 2025 01:52:27 -0700 (PDT)
+From: Tianyu Lan <ltykernel@gmail.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com
+Cc: Tianyu Lan <tiala@microsoft.com>,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] x86/Hyperv: Fix check of return value from snp_set_vmsa()
+Date: Thu, 13 Mar 2025 04:52:17 -0400
+Message-Id: <20250313085217.45483-1-ltykernel@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KLMS-Rule-ID: 5
-X-KLMS-Message-Action: clean
-X-KLMS-AntiSpam-Status: not scanned, disabled by settings
-X-KLMS-AntiSpam-Interceptor-Info: not scanned
-X-KLMS-AntiPhishing: Clean, bases: 2025/03/13 07:05:00
-X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/03/13 07:03:00 #27752837
-X-KLMS-AntiVirus-Status: Clean, skipped
+Content-Transfer-Encoding: 8bit
 
-Since the i and pool->chunk_size variables are of type 'u32',
-their product can wrap around and then be cast to 'u64'.
-This can lead to two different XDP buffers pointing to the same
-memory area.
+From: Tianyu Lan <tiala@microsoft.com>
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with SVACE.
+snp_set_vmsa() returns 0 as success result and so fix it.
 
-Fixes: 94033cd8e73b ("xsk: Optimize for aligned case")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Fixes: 44676bb9d566 ("x86/hyperv: Add smp support for SEV-SNP guest")
+Signed-off-by: Tianyu Lan <tiala@microsoft.com>
 ---
- net/xdp/xsk_buff_pool.c | 2 +-
+ arch/x86/hyperv/ivm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 1f7975b49657..d158cb6dd391 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -105,7 +105,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct =
-xdp_sock *xs,
- 		if (pool->unaligned)
- 			pool->free_heads[i] =3D xskb;
- 		else
--			xp_init_xskb_addr(xskb, pool, i * pool->chunk_size);
-+			xp_init_xskb_addr(xskb, pool, (u64)i * pool->chunk_size);
- 	}
-=20
- 	return pool;
---=20
-2.39.5
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index ec7880271cf9..77bf05f06b9e 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -338,7 +338,7 @@ int hv_snp_boot_ap(u32 cpu, unsigned long start_ip)
+ 	vmsa->sev_features = sev_status >> 2;
+ 
+ 	ret = snp_set_vmsa(vmsa, true);
+-	if (!ret) {
++	if (ret) {
+ 		pr_err("RMPADJUST(%llx) failed: %llx\n", (u64)vmsa, ret);
+ 		free_page((u64)vmsa);
+ 		return ret;
+-- 
+2.25.1
+
 
