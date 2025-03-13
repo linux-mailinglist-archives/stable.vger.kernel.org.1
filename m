@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-124259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53198A5F014
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:58:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 403D0A5F01F
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 11:01:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A834E17DDA5
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:58:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A93903A4523
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282A026562A;
-	Thu, 13 Mar 2025 09:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD0224EF69;
+	Thu, 13 Mar 2025 10:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruhIPBuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXB3tNTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2A5263C8A;
-	Thu, 13 Mar 2025 09:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711041D5175;
+	Thu, 13 Mar 2025 10:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741859900; cv=none; b=nabc7EAT0JPHXhNiiSzkX3tfshPPBhg71DEbwhI16bN3CtpVzGILet3JH7DYidVh9Cp/QvPaCkNempCay1zDeVBJdTD/JiHp4c0nK6Rv7Zg1Uf0UYE6pVpPcA8i2qFcHRt04uH3rMrSZxsJyVzjhTIt7ND/Wj5KpBtpH3obS2uQ=
+	t=1741860069; cv=none; b=Mt4zTKRCysWS/2FLAXesLEA+QuFz06FwzCswTtqCZ/EenU2xKXO9VlINE8Ol0SaIP6j4kaKGW6wUigrqZ/wofIBOhrl7hi5wBJpJ9CSSmaAkgMjRO88191QWn7sB58E8IBSdW84rKF08NMaN4IXwi1F7OGY2Gl347+6XMUmVuJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741859900; c=relaxed/simple;
-	bh=cuy3wdeUkqjYr5LUbKSKDKjMf1F2kQtjs1UZvwSxQts=;
+	s=arc-20240116; t=1741860069; c=relaxed/simple;
+	bh=16WhtlFUHkoIkrsFEIZFleNHV7u2hxufNBAPqiGf4+4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bNu6+rk5nl5Xb46Prc3EC3hwmA5Yngmn5ayV+mfQnrrRbcU+jIIVPvdhZ7TGmfaCilW2Zi5N7cbaWwoFEYxDvGQqbPTnJqDL/wCJFEcw+PeY1jhUGAiOEGovrLmGDyNrA5XSQNLqgq60jw39Lz6gumAbMQt/H84QqC8O1yP5lmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruhIPBuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8690BC4CEFA;
-	Thu, 13 Mar 2025 09:58:19 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TDLTZdAkYR1Tp4zFBjWueojZGBuWlrkRpjglFSZgspH/PQAC1HPbUG7kgwfp91KAFPBd/NCZ5FRvgcpRo2lNyV06hNZHB0NmTqADeNqAfzC0SM8mGL7+t4RGo7furdCOsN6qsXJaraY9Rewww9ta2RqxfgpSnXnEZ92ZXoq8Kgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXB3tNTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C5FC4CEDD;
+	Thu, 13 Mar 2025 10:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741859900;
-	bh=cuy3wdeUkqjYr5LUbKSKDKjMf1F2kQtjs1UZvwSxQts=;
+	s=korg; t=1741860068;
+	bh=16WhtlFUHkoIkrsFEIZFleNHV7u2hxufNBAPqiGf4+4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ruhIPBuuhy04aY+GzopKjQXlQkBEg/msZwU2IW8670KDT3HZ6PgJrNEQy2y3rcU8G
-	 o52jFa8GcXBC1JZyYUuA8fV0bYliGko9220RiDftkvB6FCllOfGExY6hDf2j1xhEry
-	 +d4KBW+Id+UyEtaXdPwRUeCQT82yHAFQti4gfbWQ=
-Date: Thu, 13 Mar 2025 10:58:17 +0100
+	b=FXB3tNTA4HeQ6FgVgsaZwb2fBUweUu3n7bpy37g+AXPGInkeyEicYrYgk4V/ivmVN
+	 iMSqdh73i1Gr/lr4AXk2OZbiSRWRLaOltt4riPiRSx3Nw35BmCZkhrgUb6b1w3ZS2K
+	 6Yxp4LqfLqjrg+UtU0M+g6CO9x+c1FsvsSL5e32E=
+Date: Thu, 13 Mar 2025 11:01:05 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Ma Ke <make24@iscas.ac.cn>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, jdamato@fastly.com,
-	aleksander.lobakin@intel.com, quic_zijuhu@quicinc.com,
-	andriy.shevchenko@linux.intel.com, wanghai26@huawei.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net-sysfs: fix error handling in
- netdev_register_kobject()
-Message-ID: <2025031355-legend-liftoff-63bc@gregkh>
-References: <20250313075528.306019-1-make24@iscas.ac.cn>
+Cc: dmitry.torokhov@gmail.com, bentiss@kernel.org, jeff@labundy.com,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Input: fix error handling in input_register_device()
+Message-ID: <2025031350-nutty-gatherer-3e69@gregkh>
+References: <20250313083803.307646-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,9 +55,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250313075528.306019-1-make24@iscas.ac.cn>
+In-Reply-To: <20250313083803.307646-1-make24@iscas.ac.cn>
 
-On Thu, Mar 13, 2025 at 03:55:28PM +0800, Ma Ke wrote:
+On Thu, Mar 13, 2025 at 04:38:03PM +0800, Ma Ke wrote:
 > Once device_add() failed, we should call put_device() to decrement
 > reference count for cleanup. Or it could cause memory leak.
 > 
@@ -72,24 +68,33 @@ On Thu, Mar 13, 2025 at 03:55:28PM +0800, Ma Ke wrote:
 > Found by code review.
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: 8ed633b9baf9 ("Revert "net-sysfs: Fix memory leak in netdev_register_kobject"")
+> Fixes: 0cd587735205 ("Input: preallocate memory to hold event values")
 > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 > ---
->  net/core/net-sysfs.c | 1 +
+>  drivers/input/input.c | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-> index 07cb99b114bd..f443eacc9237 100644
-> --- a/net/core/net-sysfs.c
-> +++ b/net/core/net-sysfs.c
-> @@ -2169,6 +2169,7 @@ int netdev_register_kobject(struct net_device *ndev)
->  
->  	error = device_add(dev);
->  	if (error)
-> +		put_device(dev);
->  		return error;
+> diff --git a/drivers/input/input.c b/drivers/input/input.c
+> index c9e3ac64bcd0..2e70f346dadc 100644
+> --- a/drivers/input/input.c
+> +++ b/drivers/input/input.c
+> @@ -2424,6 +2424,7 @@ int input_register_device(struct input_dev *dev)
+>  err_device_del:
+>  	device_del(&dev->dev);
+>  err_devres_free:
+> +	put_device(&dev->dev);
 
-You obviously did not test this :(
+Did you test this?  This is not going to work properly for all places
+that call this label.
 
-Please be more careful in the future.
+While these types of fixes are nice to have, PLEASE TEST THEM!!!!
+
+Stop doing these and verify, by actual tests, that they do what you
+think they are doing before sending any more of them.  As it is, this
+stream of "fixes" is just too full of bugs for any of us to trust them
+at all.
+
+thanks,
+
+greg k-h
 
