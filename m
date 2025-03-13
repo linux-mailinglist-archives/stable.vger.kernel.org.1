@@ -1,78 +1,55 @@
-Return-Path: <stable+bounces-124265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED28CA5F055
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 11:11:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671D6A5F05D
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 11:13:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A1DD17DD10
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19E28188CFAF
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55EB26562A;
-	Thu, 13 Mar 2025 10:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BA8264630;
+	Thu, 13 Mar 2025 10:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T7VBDQao"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3rcZCy5"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9816126560E;
-	Thu, 13 Mar 2025 10:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDE21EE028;
+	Thu, 13 Mar 2025 10:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741860654; cv=none; b=A6f3/CBrP3y3EeEG8Ayvfk+Xuz4eVBEb0ELxzDyd4IsZjAMoRIn1EMqSuZzVNU6hJkKe4iI9ZHW8SHYNSqzaICl3m6ARmYwF5/cUzKdQ/wGa8YPde72BVPk9ToGv/chj1wm8aVWiV/p6pvMs+EFM0cfUDTktYvmUAbbAfvDcBfU=
+	t=1741860830; cv=none; b=H6p/yoTAvho/WnATDggJQ3Msxf0hB5HIcIkYPzUxkGj8gVmuvTj6GtrqrEpmSUtkUqS+Ig9gzHJI3fAt2rqtDxdIxXjgKM2Nq2eXPHe4J3/zP8TrRwmOReS8TeZKGL7HDfMz+H1u4v04DvDm9ti/A9TeQq+jbs90++SRQMmcFx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741860654; c=relaxed/simple;
-	bh=iDTPmKsP/Dkh4u+cTW/Lgk7hf7SQS3xcNseBGE75wpE=;
+	s=arc-20240116; t=1741860830; c=relaxed/simple;
+	bh=A+clKUiTVxNNWcs3kVwAtPbVCg55Ck1FzU4JTlveFn8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DMvVCQ7JQuuqW8lsl5DDQsmVxJLurEKfuPiTaIc2il2DpZK7hcuL0uVjcO1kfgNwrOAtC6RIEFQIlp2KYNpxV+af39dY80BW7jO2ZFGhqxJnp9GQgHVxdTbZYXmfLMrLMvM83P3biB2ah5VPq8HmDeJjtFH6HzHjfxCpGTWnAzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T7VBDQao; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741860652; x=1773396652;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=iDTPmKsP/Dkh4u+cTW/Lgk7hf7SQS3xcNseBGE75wpE=;
-  b=T7VBDQaoCp48ih/skMjiFRIXlxRD651cZjVuj+A7woEoEE7puaxcWdA1
-   jDtpH44+AQXARl5gW9SvuQVTIwjg2hNUQyyvuNYAwiD+hvGnQgS+fdhxr
-   Ds1PokSOBH/yjLHLugQJLPeqDFZR+tPgfJtylu1APuKNcyYwC3pWnuggg
-   t11Syk9NKC7wn5ea5ZOBS1UfayTMtT4R+cX4FbujHC5aN+SXourYxQhLa
-   NJz9/qM/Bc4yF45t5flUU8qbNxRw4csnIglLAIwfWzY+/S/mhS/VOfvQu
-   snZ6czTiutpDqc6Wpi8SdjFQxYZZIIEmHe0LTogFGRcHmeTQLDPYdivMq
-   Q==;
-X-CSE-ConnectionGUID: /LA1ktMtRnaDfhFpb4O0Xg==
-X-CSE-MsgGUID: YHGow8oHSf6BGun5+1DfLw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="46873637"
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
-   d="scan'208";a="46873637"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 03:10:51 -0700
-X-CSE-ConnectionGUID: QfouAGhmRcOb8ID6NJbPbw==
-X-CSE-MsgGUID: 4EoC7DcFQ7W0MBVryaDIsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
-   d="scan'208";a="151747890"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 03:10:50 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 96A2511F96E;
-	Thu, 13 Mar 2025 12:10:46 +0200 (EET)
-Date: Thu, 13 Mar 2025 10:10:46 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: mchehab@kernel.org, hverkuil@xs4all.nl, viro@zeniv.linux.org.uk,
-	bartosz.golaszewski@linaro.org, benjamin.gaignard@collabora.com,
-	hljunggr@cisco.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] media: v4l2-dev: fix error handling in
- __video_register_device()
-Message-ID: <Z9KvJteBVuPE8Hrs@kekkonen.localdomain>
-References: <20250313074318.305556-1-make24@iscas.ac.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CaES3lhg7Pr60/0u+pHO4NaeMbYk3HSzZuJWww60ANvdOKniimnx0HEHZigzgdIowcFKOUTM02AGgPkVYkTX5tO7Rh7NhIYAc3xmj5//SN1CUSk0YYh3T7nKrbd2BryRRuyRTMCrsGzC83cv0mzyD6ewagYeWceb9ouDEMf9b1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3rcZCy5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CAAC4CEDD;
+	Thu, 13 Mar 2025 10:13:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741860830;
+	bh=A+clKUiTVxNNWcs3kVwAtPbVCg55Ck1FzU4JTlveFn8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J3rcZCy5N59e0R0p3kmXrI4StRKYfepVSAaQEyVMFKsYuOJmmS15990JRbrNyqJj+
+	 GlWs9Dv2sSaTgjpy/4sJbcztYJQiO6H+zB9XMGYm2xeUwPRofUyU5aNdDTWkv3CNUV
+	 b+XqZeV5FRnSsStFr6CKhV0zfekycDRcF6KJrvq5KUwMjHYCvGdrKmlL9RKAOkLIXy
+	 JEq5NRQEd0UewIIgnKhCc1SZA2DlCxZYmlEbDRKI+LQl/13gj0132lCiYYpn1p2In/
+	 R1uLpRVtnL7X3c47yRK6z3y0ArWM/bmbk1Zw+1tDUz70yulv07Grnk3ZOPuUwje4u5
+	 frkKzZDcIXIIQ==
+Date: Thu, 13 Mar 2025 11:13:45 +0100
+From: Carlos Maiolino <cem@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] udf: Fix inode_getblk() return value
+Message-ID: <zh6ygcz237c23e7w47glfckqioyaeu62shroy6p5mlaxnp25rd@xyrcogmtwmth>
+References: <kTCh8T9LAi-c_EZZeR5n35O79mJYo1igl-bR8kBN0MQn6vWW8i_XSuO3dDDVuHo7ggqWLk4lZOAIAzf4T57-Zg==@protonmail.internalid>
+ <20250312163846.22851-2-jack@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,49 +58,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250313074318.305556-1-make24@iscas.ac.cn>
+In-Reply-To: <20250312163846.22851-2-jack@suse.cz>
 
-Hi Ma,
-
-Thanks for the patch.
-
-On Thu, Mar 13, 2025 at 03:43:18PM +0800, Ma Ke wrote:
-> Once device_register() failed, we should call put_device() to
-> decrement reference count for cleanup. Or it could cause memory leak.
+On Wed, Mar 12, 2025 at 05:38:47PM +0100, Jan Kara wrote:
+> Smatch noticed that inode_getblk() can return 1 on successful mapping of
+> a block instead of expected 0 after commit b405c1e58b73 ("udf: refactor
+> udf_next_aext() to handle error"). This could confuse some of the
+> callers and lead to strange failures (although the one reported by
+> Smatch in udf_mkdir() is impossible to trigger in practice). Fix the
+> return value of inode_getblk().
 > 
-> As comment of device_register() says, 'NOTE: _Never_ directly free
-> @dev after calling this function, even if it returned an error! Always
-> use put_device() to give up the reference initialized in this function
-> instead.'
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: baa057e29b58 ("media: v4l2-dev: use pr_foo() for printing messages")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> Link: https://lore.kernel.org/all/cb514af7-bbe0-435b-934f-dd1d7a16d2cd@stanley.mountain
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Fixes: b405c1e58b73 ("udf: refactor udf_next_aext() to handle error")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Jan Kara <jack@suse.cz>
 > ---
->  drivers/media/v4l2-core/v4l2-dev.c | 1 +
+>  fs/udf/inode.c | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
-> index 5bcaeeba4d09..1619614e96bf 100644
-> --- a/drivers/media/v4l2-core/v4l2-dev.c
-> +++ b/drivers/media/v4l2-core/v4l2-dev.c
-> @@ -1060,6 +1060,7 @@ int __video_register_device(struct video_device *vdev,
->  	if (ret < 0) {
->  		mutex_unlock(&videodev_lock);
->  		pr_err("%s: device_register failed\n", __func__);
-> +		put_device(&vdev->dev);
-
-Fixing this isn't quite as simple. The release callback is actually set
-below so there's no release callback set for this device yet.
-
->  		goto cleanup;
+> I plan to merge this patch through my tree.
+> 
+> diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+> index 70c907fe8af9..4386dd845e40 100644
+> --- a/fs/udf/inode.c
+> +++ b/fs/udf/inode.c
+> @@ -810,6 +810,7 @@ static int inode_getblk(struct inode *inode, struct udf_map_rq *map)
+>  		}
+>  		map->oflags = UDF_BLK_MAPPED;
+>  		map->pblk = udf_get_lb_pblock(inode->i_sb, &eloc, offset);
+> +		ret = 0;
+>  		goto out_free;
 >  	}
->  	/* Register the release callback that will be called when the last
+> 
 
--- 
-Kind regards,
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
 
-Sakari Ailus
+> --
+> 2.43.0
+> 
+> 
 
