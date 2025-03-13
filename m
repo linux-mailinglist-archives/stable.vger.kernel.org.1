@@ -1,310 +1,112 @@
-Return-Path: <stable+bounces-124239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3EEA5EED7
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:03:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A07AA5EEDC
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:03:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57EE03B9023
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:03:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3C4F3BB85F
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C4526563A;
-	Thu, 13 Mar 2025 09:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F53A2641FE;
+	Thu, 13 Mar 2025 09:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZXSetgO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gGxfFEx7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8C52641D1
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C7322F163;
+	Thu, 13 Mar 2025 09:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741856506; cv=none; b=H/W/S72aKHhSt/eTSElaOGfReIbwGBWsNklg5LKOay8oul7Az0iHsjKgTWW/yuM2iLX9pBZD0HpTBY3yM2T2VBEqXa2wCgfsIJYhTMk37UfRVulU9bBW3PIkJdPN8EUrD2wWEX7wkjBnZMKq3O/Xt9L11aqtKB5j9Rc0U0A2H3g=
+	t=1741856556; cv=none; b=a1vnnJ3w0McFtVnga/bQGZ2TLdYUPVbmsjFATyKHX/CAEXmP2rtlZ0xHCsjbP0/3rPWwjNyNVhzKME6w2jmt1+yqd/AIigv99bTVue8GqXAIR3ckUG8R/m8mzPNVCFI/d0yKqdLf4p/JuXWeAChOlPinlHsyV4pHXLWITiiyRvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741856506; c=relaxed/simple;
-	bh=JqXKnCBjt0r7Ty1yHC7ljcZXSoa7w4nvIbe5NknM6LI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qDR8WpNLHI978lA2oNc3NlGzbjt5TgNQwRZdIIe2cv6q6bzoanJFozckwO1pXiDBiCNP+vaatVZ1Mj/8aXIt/jWlRZJKbdezANszEKQMxkdGLJrFgu0idQNH9m2oz02BhKicma2kNUGM1vRYcN43UbK9oBzolYl0/rwRlyFrEDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZXSetgO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EB4C4CEDD;
-	Thu, 13 Mar 2025 09:01:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741856506;
-	bh=JqXKnCBjt0r7Ty1yHC7ljcZXSoa7w4nvIbe5NknM6LI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZXSetgOmhEPFmAJRMY7r/FioJ5ogr9LGKRF4ntHt0lDyeHILO9DuFF994pa6HCCR
-	 /BcYVq3mDMbEetQzJx+qMse+xJtItk55yVx6aEMiTQHJ+4WkH/+aDJQrPl1tbdYm2i
-	 dk7E/Ve+XXxljCYxFCZArw5cCIDlAkhffYW9LX+Swmd4yKmg79lWO5C3+Yano/BiXT
-	 3H1ayh6IoMQseqTvTd9e9Yq6rqtxtbslimOB/P0jx37syIV4ZAMvFzTtZDPztv06dJ
-	 kO//3qCMK5146RR6J8X13rraRzZjLlP6HYZaC83zyISQysFw7IZslwbvx9SBkRvwhf
-	 6lsvDGaQaun+w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	aik@amd.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13.y] virt: sev-guest: Move SNP Guest Request data pages handling under snp_cmd_mutex
-Date: Thu, 13 Mar 2025 05:01:44 -0400
-Message-Id: <20250312224217-281d7f5ef03b0f1c@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250310100027.1228858-1-aik@amd.com>
-References: 
+	s=arc-20240116; t=1741856556; c=relaxed/simple;
+	bh=puRFOogVBwJjAXTpJBm30uYFBzpj1RgRfFr0WKW4VD0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oZsxyUuHoXJ+UmyfkAKNRdYQLU3tplt/GZU+fvFHO/JSKW5AmDrFD5WMMD0STIRk3DqP40HAPrrcjVuHYGNweY8g14RMwfsa9woGHsL7vzVKSG8uTm18bvch8wiWlMSdgV+4PtB9miyRC3GeBv5QZkOJWUogaZiLdG9F/6Bby1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gGxfFEx7; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741856555; x=1773392555;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=puRFOogVBwJjAXTpJBm30uYFBzpj1RgRfFr0WKW4VD0=;
+  b=gGxfFEx7BYRaNl9n73u0AKl0Nt9AjRpf3Tf0pNsrKRSZybNo9OfQkplk
+   TfmyEl2lWh7nWIQ3QSn9Cdh+FPns5lXVB8l5cHncbUG/1EwvC0ALcCu3p
+   nAqDDXmXi6Yw329YUBcOi9kmNT3UPE4NtrxzzZtUPeoR9PxEarMT5H+Xl
+   xWTJVDipdtFWaZuomKTS37ggAEBKQ6ytB7yjg96gmPADoLgwaTwEGeWgG
+   slguEaWeKMViCh8JVgPrOUd58MFDe9+ZMeWKMXjfjgZk9Moyw9vffPd2N
+   /pZdWuktiPEbHquzuwA3CinhtNLjPE2ZDgO4YrHx+LMyyLnHWcgBRlX21
+   w==;
+X-CSE-ConnectionGUID: TQYW4ddyRdigpAexw978Cg==
+X-CSE-MsgGUID: Xj5BcJoFR3WyMgzljEfGwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="53599859"
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
+   d="scan'208";a="53599859"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 02:02:34 -0700
+X-CSE-ConnectionGUID: UJerJ1FESBO9PyHHKIPwuw==
+X-CSE-MsgGUID: f09Ru+GjRvOR3sHk70y+Yg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,244,1736841600"; 
+   d="scan'208";a="121386670"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2025 02:02:32 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tseSS-000000027n7-1E2e;
+	Thu, 13 Mar 2025 11:02:28 +0200
+Date: Thu, 13 Mar 2025 11:02:28 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Ma Ke <make24@iscas.ac.cn>, Wang Hai <wanghai26@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, jdamato@fastly.com,
+	aleksander.lobakin@intel.com, quic_zijuhu@quicinc.com,
+	wanghai26@huawei.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net-sysfs: fix error handling in
+ netdev_register_kobject()
+Message-ID: <Z9KfJBzR9ZWFBJDf@smile.fi.intel.com>
+References: <20250313075528.306019-1-make24@iscas.ac.cn>
+ <Z9Ke3moM5BVSsPax@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9Ke3moM5BVSsPax@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-[ Sasha's backport helper bot ]
++Cc: Wang Hai
 
-Hi,
+On Thu, Mar 13, 2025 at 11:01:18AM +0200, Andy Shevchenko wrote:
+> On Thu, Mar 13, 2025 at 03:55:28PM +0800, Ma Ke wrote:
+> > Once device_add() failed, we should call put_device() to decrement
+> > reference count for cleanup. Or it could cause memory leak.
+> > 
+> > As comment of device_add() says, 'if device_add() succeeds, you should
+> > call device_del() when you want to get rid of it. If device_add() has
+> > not succeeded, use only put_device() to drop the reference count'.
+> 
+> Okay, have you read the history of this?
+> 6b70fc94afd1 ("net-sysfs: Fix memory leak in netdev_register_kobject")
+> 8ed633b9baf9 ("Revert "net-sysfs: Fix memory leak in netdev_register_kobject"")
+> https://syzkaller.appspot.com/x/log.txt?x=1737671b200000
+> 
+> TL;DR: next time provide a better changelog and clean syzkaller report.
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Found matching upstream commit: 3e385c0d6ce88ac9916dcf84267bd5855d830748
 
-Note: The patch differs from the upstream commit:
----
-1:  3e385c0d6ce88 ! 1:  a6b033d98441d virt: sev-guest: Move SNP Guest Request data pages handling under snp_cmd_mutex
-    @@ Metadata
-      ## Commit message ##
-         virt: sev-guest: Move SNP Guest Request data pages handling under snp_cmd_mutex
-     
-    -    Compared to the SNP Guest Request, the "Extended" version adds data pages for
-    -    receiving certificates. If not enough pages provided, the HV can report to the
-    -    VM how much is needed so the VM can reallocate and repeat.
-    +    Compared to the SNP Guest Request, the "Extended" version adds data pages
-    +    for receiving certificates. If not enough pages provided, the HV can
-    +    report to the VM how much is needed so the VM can reallocate and repeat.
-     
-    -    Commit
-    -
-    -      ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
-    -
-    -    moved handling of the allocated/desired pages number out of scope of said
-    -    mutex and create a possibility for a race (multiple instances trying to
-    -    trigger Extended request in a VM) as there is just one instance of
-    -    snp_msg_desc per /dev/sev-guest and no locking other than snp_cmd_mutex.
-    +    Commit ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command
-    +    mutex") moved handling of the allocated/desired pages number out of scope
-    +    of said mutex and create a possibility for a race (multiple instances
-    +    trying to trigger Extended request in a VM) as there is just one instance
-    +    of snp_msg_desc per /dev/sev-guest and no locking other than snp_cmd_mutex.
-     
-         Fix the issue by moving the data blob/size and the GHCB input struct
-    -    (snp_req_data) into snp_guest_req which is allocated on stack now and accessed
-    -    by the GHCB caller under that mutex.
-    +    (snp_req_data) into snp_guest_req which is allocated on stack now
-    +    and accessed by the GHCB caller under that mutex.
-     
-    -    Stop allocating SEV_FW_BLOB_MAX_SIZE in snp_msg_alloc() as only one of four
-    -    callers needs it. Free the received blob in get_ext_report() right after it is
-    -    copied to the userspace. Possible future users of snp_send_guest_request() are
-    -    likely to have different ideas about the buffer size anyways.
-    +    Stop allocating SEV_FW_BLOB_MAX_SIZE in snp_msg_alloc() as only one of
-    +    four callers needs it. Free the received blob in get_ext_report() right
-    +    after it is copied to the userspace. Possible future users of
-    +    snp_send_guest_request() are likely to have different ideas about
-    +    the buffer size anyways.
-     
-         Fixes: ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
-    +    Cc: stable@vger.kernel.org # 6.13
-    +    Cc: Nikunj A Dadhania <nikunj@amd.com>
-         Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-    -    Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-    -    Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
-    -    Cc: stable@vger.kernel.org
-    -    Link: https://lore.kernel.org/r/20250307013700.437505-3-aik@amd.com
-     
-    - ## arch/x86/coco/sev/core.c ##
-    -@@ arch/x86/coco/sev/core.c: struct snp_msg_desc *snp_msg_alloc(void)
-    - 	if (!mdesc->response)
-    - 		goto e_free_request;
-    + ## arch/x86/include/asm/sev.h ##
-    +@@ arch/x86/include/asm/sev.h: struct snp_guest_req {
-    + 	unsigned int vmpck_id;
-    + 	u8 msg_version;
-    + 	u8 msg_type;
-    ++
-    ++	struct snp_req_data input;
-    ++	void *certs_data;
-    + };
-      
-    --	mdesc->certs_data = alloc_shared_pages(SEV_FW_BLOB_MAX_SIZE);
-    --	if (!mdesc->certs_data)
-    --		goto e_free_response;
-    --
-    --	/* initial the input address for guest request */
-    --	mdesc->input.req_gpa = __pa(mdesc->request);
-    --	mdesc->input.resp_gpa = __pa(mdesc->response);
-    --	mdesc->input.data_gpa = __pa(mdesc->certs_data);
-    + /*
-    +@@ arch/x86/include/asm/sev.h: struct snp_msg_desc {
-    + 	struct snp_guest_msg secret_request, secret_response;
-    + 
-    + 	struct snp_secrets_page *secrets;
-    +-	struct snp_req_data input;
-     -
-    - 	return mdesc;
-    +-	void *certs_data;
-      
-    --e_free_response:
-    --	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
-    - e_free_request:
-    - 	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
-    - e_unmap:
-    -@@ arch/x86/coco/sev/core.c: void snp_msg_free(struct snp_msg_desc *mdesc)
-    - 	kfree(mdesc->ctx);
-    - 	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
-    - 	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
-    --	free_shared_pages(mdesc->certs_data, SEV_FW_BLOB_MAX_SIZE);
-    - 	iounmap((__force void __iomem *)mdesc->secrets);
-    + 	struct aesgcm_ctx *ctx;
-      
-    - 	memset(mdesc, 0, sizeof(*mdesc));
-    -@@ arch/x86/coco/sev/core.c: static int __handle_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_r
-    +
-    + ## drivers/virt/coco/sev-guest/sev-guest.c ##
-    +@@ drivers/virt/coco/sev-guest/sev-guest.c: static int __handle_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_r
-      	 * sequence number must be incremented or the VMPCK must be deleted to
-      	 * prevent reuse of the IV.
-      	 */
-    @@ arch/x86/coco/sev/core.c: static int __handle_guest_request(struct snp_msg_desc
-      	switch (rc) {
-      	case -ENOSPC:
-      		/*
-    -@@ arch/x86/coco/sev/core.c: static int __handle_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_r
-    +@@ drivers/virt/coco/sev-guest/sev-guest.c: static int __handle_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_r
-      		 * order to increment the sequence number and thus avoid
-      		 * IV reuse.
-      		 */
-    @@ arch/x86/coco/sev/core.c: static int __handle_guest_request(struct snp_msg_desc
-      		req->exit_code	= SVM_VMGEXIT_GUEST_REQUEST;
-      
-      		/*
-    -@@ arch/x86/coco/sev/core.c: static int __handle_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_r
-    +@@ drivers/virt/coco/sev-guest/sev-guest.c: static int __handle_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_r
-      	}
-      
-      	if (override_npages)
-    @@ arch/x86/coco/sev/core.c: static int __handle_guest_request(struct snp_msg_desc
-      
-      	return rc;
-      }
-    -@@ arch/x86/coco/sev/core.c: int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req
-    - 	 */
-    - 	memcpy(mdesc->request, &mdesc->secret_request, sizeof(mdesc->secret_request));
-    +@@ drivers/virt/coco/sev-guest/sev-guest.c: static int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_r
-    + 	memcpy(mdesc->request, &mdesc->secret_request,
-    + 	       sizeof(mdesc->secret_request));
-      
-    -+	/* Initialize the input address for guest request */
-    ++	/* initial the input address for guest request */
-     +	req->input.req_gpa = __pa(mdesc->request);
-     +	req->input.resp_gpa = __pa(mdesc->response);
-     +	req->input.data_gpa = req->certs_data ? __pa(req->certs_data) : 0;
-    @@ arch/x86/coco/sev/core.c: int snp_send_guest_request(struct snp_msg_desc *mdesc,
-      	rc = __handle_guest_request(mdesc, req, rio);
-      	if (rc) {
-      		if (rc == -EIO &&
-    -
-    - ## arch/x86/include/asm/sev.h ##
-    -@@ arch/x86/include/asm/sev.h: struct snp_guest_req {
-    - 	unsigned int vmpck_id;
-    - 	u8 msg_version;
-    - 	u8 msg_type;
-    -+
-    -+	struct snp_req_data input;
-    -+	void *certs_data;
-    - };
-    - 
-    - /*
-    -@@ arch/x86/include/asm/sev.h: struct snp_msg_desc {
-    - 	struct snp_guest_msg secret_request, secret_response;
-    - 
-    - 	struct snp_secrets_page *secrets;
-    --	struct snp_req_data input;
-    --
-    --	void *certs_data;
-    - 
-    - 	struct aesgcm_ctx *ctx;
-    - 
-    -
-    - ## drivers/virt/coco/sev-guest/sev-guest.c ##
-     @@ drivers/virt/coco/sev-guest/sev-guest.c: static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
-      	struct snp_guest_req req = {};
-      	int ret, npages = 0, resp_len;
-    @@ drivers/virt/coco/sev-guest/sev-guest.c: static int get_ext_report(struct snp_gu
-      	return ret;
-      }
-      
-    +@@ drivers/virt/coco/sev-guest/sev-guest.c: static int __init sev_guest_probe(struct platform_device *pdev)
-    + 	if (!mdesc->response)
-    + 		goto e_free_request;
-    + 
-    +-	mdesc->certs_data = alloc_shared_pages(dev, SEV_FW_BLOB_MAX_SIZE);
-    +-	if (!mdesc->certs_data)
-    +-		goto e_free_response;
-    +-
-    + 	ret = -EIO;
-    + 	mdesc->ctx = snp_init_crypto(mdesc->vmpck, VMPCK_KEY_LEN);
-    + 	if (!mdesc->ctx)
-    +-		goto e_free_cert_data;
-    ++		goto e_free_response;
-    + 
-    + 	misc = &snp_dev->misc;
-    + 	misc->minor = MISC_DYNAMIC_MINOR;
-    + 	misc->name = DEVICE_NAME;
-    + 	misc->fops = &snp_guest_fops;
-    + 
-    +-	/* Initialize the input addresses for guest request */
-    +-	mdesc->input.req_gpa = __pa(mdesc->request);
-    +-	mdesc->input.resp_gpa = __pa(mdesc->response);
-    +-	mdesc->input.data_gpa = __pa(mdesc->certs_data);
-    +-
-    + 	/* Set the privlevel_floor attribute based on the vmpck_id */
-    + 	sev_tsm_ops.privlevel_floor = vmpck_id;
-    + 
-    + 	ret = tsm_register(&sev_tsm_ops, snp_dev);
-    + 	if (ret)
-    +-		goto e_free_cert_data;
-    ++		goto e_free_response;
-    + 
-    + 	ret = devm_add_action_or_reset(&pdev->dev, unregister_sev_tsm, NULL);
-    + 	if (ret)
-    +-		goto e_free_cert_data;
-    ++		goto e_free_response;
-    + 
-    + 	ret =  misc_register(misc);
-    + 	if (ret)
-    +@@ drivers/virt/coco/sev-guest/sev-guest.c: static int __init sev_guest_probe(struct platform_device *pdev)
-    + 
-    + e_free_ctx:
-    + 	kfree(mdesc->ctx);
-    +-e_free_cert_data:
-    +-	free_shared_pages(mdesc->certs_data, SEV_FW_BLOB_MAX_SIZE);
-    + e_free_response:
-    + 	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
-    + e_free_request:
-    +@@ drivers/virt/coco/sev-guest/sev-guest.c: static void __exit sev_guest_remove(struct platform_device *pdev)
-    + 	struct snp_guest_dev *snp_dev = platform_get_drvdata(pdev);
-    + 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
-    + 
-    +-	free_shared_pages(mdesc->certs_data, SEV_FW_BLOB_MAX_SIZE);
-    + 	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
-    + 	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
-    + 	kfree(mdesc->ctx);
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Success    |  Success   |
 
