@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-124319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE9BA5F8DD
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 15:47:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C06C0A5F8E0
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 15:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80AAA420C98
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 14:46:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A967420D42
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 14:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB979267F7D;
-	Thu, 13 Mar 2025 14:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A10267B96;
+	Thu, 13 Mar 2025 14:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="A5cnM9XV"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="fgBvG8mY"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969FB267B95;
-	Thu, 13 Mar 2025 14:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FD5267731;
+	Thu, 13 Mar 2025 14:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741877207; cv=none; b=n96Ro6pawEa/Yo7wK7p8FqxjzfoHOzSir2OCEwVTkS5nNtlPHV8BVXOt74/aKsqDZe5LYCz+AnjvVr/6+jVfdwBjjno+Av07z47alD9wR02lqYziOO4AQkdA6fBf+Zy2kk9z0zb6bZgNS9+t6NH62LpnpifX9OGMx/d7b19QsuM=
+	t=1741877208; cv=none; b=u/uOcetRuDsj/z3K1FYUKhjEQuWInBJZ8v3mJJDAs+FCE+bM/+8hBv0vAinElV2vLqLHqCe9StDLBBjdU7LIhHgFblAUcaH8xhLoqcpU7FzW0g1tiBZ+kXb397xxc7N7Jqt4WE4FPkSTYs/IDvlH/7UT/kGK7L9QaXjKoU7PtP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741877207; c=relaxed/simple;
-	bh=fGbjVVhtgTGnk+Pdsq2/tMP9YwJwXrXJYfwHG5ZtuOM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bsHeOpweqgw0i0x5vHr+x8x1npbjTXbXtnRGpegzX5YL90HhFFNQ1u14C8cpKjo73n8H9O+whHpjuWAQQp4KlAWhcddFVlXixlSodxZOBsKkBn3SB6KKCmxsJgo74AOn1vbVgVImdcCbrXeGagMFWzQ6DQ2k7qd3MeyqkHMGJng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=A5cnM9XV; arc=none smtp.client-ip=178.60.130.6
+	s=arc-20240116; t=1741877208; c=relaxed/simple;
+	bh=pUXjA+I7tCLIoH3bNrkO4IB28zYBbl1H9vaCVIpHHNI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Hjf/CfsTTFZJ3vLXW7lv453MWZubARR/1DRKSpa9vIOXYo5zew22FEx9QGA/I9tG5vo+udD+stNwBRJZYwKUMmvhIC4vcUFajrRv1RNsaX8Au3j9FO8NXNCCCrtkDKpxIYETy1uPqp7K6wzNcNqZ7y0eptDo8N8MxfhK+oXcm+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=fgBvG8mY; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=P3srhLIfq8Wq4n45Wagy1GLghBDDbdc8AIcVQdkfytk=; b=A5cnM9XVhkblo5+fl9OPXY1H/R
-	X8WPUr6csTXcvhgikGs5W5sDBy7g9Ep07YAfGrooShi3hfFzHERvtOsHwkhN3dR5+nQ0VATApyDhD
-	ZQAZ7Uj8w4ico5hXCBra9jTgAppYL29rP6AR36ujbl/PigeTGfIKjfi4ld1TrjW7+dU2bOaPJB1VW
-	xO7RO4iXl4ixE1XJUCTKAcgkNBg4ghcSSO196BwfD5eFjaXAbAari/tRaG4fEZ3k03zNcqrSqB1Ht
-	rvdGRW9UeRTtFnU0ENZwuOq+kABgfFBZ4oFK88vJzqHLtJHBVyRNQcLIL6h5BANphT9MLDP3frHx+
-	ORsVpmZw==;
+	s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=FcMGhykXB4u4YxIGnBy/HoDy7WeSl1BAMrtIHGKlZ4g=; b=fgBvG8mYYMnwhasvKoBU+7ExaL
+	F06mO7t115WJgEGhCX1k+gXLGJCViEY4+sx0Z+19CsBmdZvWZvguCkpKP+dQ4uX8I+EvC01CnSgBA
+	1gEHbRghrpBvy7lyZKcgSMMjDvu9MxUhVS4S0MpVEpgijWk6ZvjfVj6xvJ3/FSgP3IJirB1+7E9Re
+	C81Yt8kW0Zo5xNPA6V+8KTsWAHPI+vaux53tguhHH3yio3Qap959WGY0P4CbcsfEkrcEr9sjHxnHm
+	GTuLoAJhn/eDbZTWhhOFaY624qPw04kGMUUzWVaCTtGarbhd5BBoOyQVGcqtF863UXIylRz7kVUAF
+	IR/+Wnzw==;
 Received: from [189.7.87.170] (helo=janis.local)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tsjpQ-008Cju-UH; Thu, 13 Mar 2025 15:46:39 +0100
+	id 1tsjpU-008Cju-SZ; Thu, 13 Mar 2025 15:46:43 +0100
 From: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Subject: [PATCH v4 0/7] drm/v3d: Fix GPU reset issues on the Raspberry Pi 5
-Date: Thu, 13 Mar 2025 11:43:25 -0300
-Message-Id: <20250313-v3d-gpu-reset-fixes-v4-0-c1e780d8e096@igalia.com>
+Date: Thu, 13 Mar 2025 11:43:26 -0300
+Subject: [PATCH v4 1/7] drm/v3d: Don't run jobs that have errors flagged in
+ its fence
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,100 +59,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAA7v0mcC/23NQQ7CIBAF0Ks0rMXAgG1x5T2MCwJDS6JtA5Vom
- t5d2sSoscv/J//NRCIGj5Eci4kETD76vstB7gpiWt01SL3NmQCDAwOQNAlLm+FOA0YcqfMPjBQ
- scGcqVnFuSV4OAddDHp4vObc+jn14rk8SX9q3V256iVNGa6FVqZy1yvCTb/TV673pb2QBE3wQw
- eptBDICSigjmGPGyD9EfCGcbyMiI6V0lZYgKzTsB5nn+QUrxOXZQQEAAA==
-X-Change-ID: 20250224-v3d-gpu-reset-fixes-2d21fc70711d
+Message-Id: <20250313-v3d-gpu-reset-fixes-v4-1-c1e780d8e096@igalia.com>
+References: <20250313-v3d-gpu-reset-fixes-v4-0-c1e780d8e096@igalia.com>
+In-Reply-To: <20250313-v3d-gpu-reset-fixes-v4-0-c1e780d8e096@igalia.com>
 To: Melissa Wen <mwen@igalia.com>, Iago Toral <itoral@igalia.com>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
  Nicolas Saenz Julienne <nsaenz@kernel.org>
 Cc: Phil Elwell <phil@raspberrypi.com>, dri-devel@lists.freedesktop.org, 
  devicetree@vger.kernel.org, kernel-dev@igalia.com, stable@vger.kernel.org, 
- =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
- Emma Anholt <emma@anholt.net>, "Rob Herring (Arm)" <robh@kernel.org>
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3355; i=mcanal@igalia.com;
- h=from:subject:message-id; bh=fGbjVVhtgTGnk+Pdsq2/tMP9YwJwXrXJYfwHG5ZtuOM=;
- b=owEBbQGS/pANAwAIAT/zDop2iPqqAcsmYgBn0u/HlES3T+/8LfsRS2qERjnnzhB7NYzEoTXLB
- sDmyEY5U3iJATMEAAEIAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCZ9LvxwAKCRA/8w6Kdoj6
- qvg2B/44yeYdYbn7dPw5jdr2dYPPF7aGGCfhOdBTwYVqQa6VupwU+Dt/3gcTEtUxkSM++I3Cbvf
- senMLa0t+JTpwIUI0zxewvr9nfqWgKzmNBJq9SOc4rvzSeII61Q/l0kEPLWPvQsMeobMfG6tFOI
- FYKqZHNVkx+nFlpKc+I0ext2K17YiaVFJlvSpqKNctda2V7DDRBTVAFxx9SAuAns9Lb/mX5k4ht
- B7H53wvLIiCP9jg06cv7oWxtDSg7qJu8FkbqhK+fNCT7WV/nQgTl/HgD0BGduDSHGX11dekY0J1
- cZsKuSHsQxW1fpZUnqnpsj9I7rNo4yZCThFQFJ2i4QMcXaig
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2200; i=mcanal@igalia.com;
+ h=from:subject:message-id; bh=pUXjA+I7tCLIoH3bNrkO4IB28zYBbl1H9vaCVIpHHNI=;
+ b=owEBbQGS/pANAwAIAT/zDop2iPqqAcsmYgBn0u/HqMaJWRA1GllmY2v1YH6WrSQEBxhEJ/jV6
+ Bz5ogbf6E6JATMEAAEIAB0WIQT45F19ARZ3Bymmd9E/8w6Kdoj6qgUCZ9LvxwAKCRA/8w6Kdoj6
+ qi4kB/9ltS3wT5rVNsmGbD9myN3GvcxATBUDDObYoV0SRZHvM5BbyimCvJpo+7qAFFFxFsCpJ+f
+ bQr+UcUyBi81uSdcoL2ZCxtqAu2/AOXj0H5JnL/IuYB0AVe1Md3p3rqVAWnKgEo6mDQ1Os2qSYm
+ UdcoaywwZvS5+HKlxjJLp3gOTHiSJBN7xFzbE34OlWUlXgkMmgyuwb6iyZDrAwD90/mKS4lFJ92
+ OZn79OZcYRGCHyPla/RHC3pZ5ShLarZytLaEsgxpd9p+uNwg6H4sDEHDURMtGvASLuzPdgYPtAm
+ ziDJt/ShJKW4EM54yrmPcPYtiJ0Q+zyw1uAIC0FEjkVBnu9p
 X-Developer-Key: i=mcanal@igalia.com; a=openpgp;
  fpr=F8E45D7D0116770729A677D13FF30E8A7688FAAA
 
-This series addresses GPU reset issues reported in [1], where running a
-long compute job would trigger repeated GPU resets, leading to a UI
-freeze.
+The V3D driver still relies on `drm_sched_increase_karma()` and
+`drm_sched_resubmit_jobs()` for resubmissions when a timeout occurs.
+The function `drm_sched_increase_karma()` marks the job as guilty, while
+`drm_sched_resubmit_jobs()` sets an error (-ECANCELED) in the DMA fence of
+that guilty job.
 
-Patches #1 and #2 prevent the same faulty job from being resubmitted in a
-loop, mitigating the first cause of the issue.
+Because of this, we must check whether the job’s DMA fence has been
+flagged with an error before executing the job. Otherwise, the same guilty
+job may be resubmitted indefinitely, causing repeated GPU resets.
 
-However, the issue isn't entirely solved. Even with only a single GPU
-reset, the UI still freezes on the Raspberry Pi 5, indicating a GPU hang.
-Patches #3 to #6 address this by properly configuring the V3D_SMS
-registers, which are required for power management and resets in V3D 7.1.
+This patch adds a check for an error on the job's fence to prevent running
+a guilty job that was previously flagged when the GPU timed out.
 
-Patch #7 updates the DT maintainership, replacing Emma with the current
-v3d driver maintainer.
+Note that the CPU and CACHE_CLEAN queues do not require this check, as
+their jobs are executed synchronously once the DRM scheduler starts them.
 
-[1] https://github.com/raspberrypi/linux/issues/6660
-
-Best Regards,
-- Maíra
-
+Cc: stable@vger.kernel.org
+Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
+Fixes: 1584f16ca96e ("drm/v3d: Add support for submitting jobs to the TFU.")
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 ---
-v1 -> v2:
-- [1/6, 2/6, 5/6] Add Iago's R-b (Iago Toral)
-- [3/6] Use V3D_GEN_* macros consistently throughout the driver (Phil Elwell)
-- [3/6] Don't add Iago's R-b in 3/6 due to changes in the patch
-- [4/6] Add per-compatible restrictions to enforce per‐SoC register rules (Conor Dooley)
-- [6/6] Add Emma's A-b, collected through IRC (Emma Anholt)
-- [6/6] Add Rob's A-b (Rob Herring)
-- Link to v1: https://lore.kernel.org/r/20250226-v3d-gpu-reset-fixes-v1-0-83a969fdd9c1@igalia.com
+ drivers/gpu/drm/v3d/v3d_sched.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-v2 -> v3:
-- [3/7] Add Iago's R-b (Iago Toral)
-- [4/7, 5/7] Separate the patches to ease the reviewing process -> Now,
-  PATCH 4/7 only adds the per-compatible rules and PATCH 5/7 adds the
-  SMS registers
-- [4/7] `allOf` goes above `additionalProperties` (Krzysztof Kozlowski)
-- [4/7, 5/7] Sync `reg` and `reg-names` items (Krzysztof Kozlowski)
-- Link to v2: https://lore.kernel.org/r/20250308-v3d-gpu-reset-fixes-v2-0-2939c30f0cc4@igalia.com
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index 80466ce8c7df669280e556c0793490b79e75d2c7..c2010ecdb08f4ba3b54f7783ed33901552d0eba1 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -327,11 +327,15 @@ v3d_tfu_job_run(struct drm_sched_job *sched_job)
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct dma_fence *fence;
+ 
++	if (unlikely(job->base.base.s_fence->finished.error))
++		return NULL;
++
++	v3d->tfu_job = job;
++
+ 	fence = v3d_fence_create(v3d, V3D_TFU);
+ 	if (IS_ERR(fence))
+ 		return NULL;
+ 
+-	v3d->tfu_job = job;
+ 	if (job->base.irq_fence)
+ 		dma_fence_put(job->base.irq_fence);
+ 	job->base.irq_fence = dma_fence_get(fence);
+@@ -369,6 +373,9 @@ v3d_csd_job_run(struct drm_sched_job *sched_job)
+ 	struct dma_fence *fence;
+ 	int i, csd_cfg0_reg;
+ 
++	if (unlikely(job->base.base.s_fence->finished.error))
++		return NULL;
++
+ 	v3d->csd_job = job;
+ 
+ 	v3d_invalidate_caches(v3d);
 
-v3 -> v4:
-- [4/7] BCM2712 has an external reset controller, therefore the "bridge"
-	register is not needed (Krzysztof Kozlowski)
-- [4/7] Remove the word "required" from the reg descriptions (Rob Herring)
-- [5/7] Improve commit message (Rob Herring)
-- Link to v3: https://lore.kernel.org/r/20250311-v3d-gpu-reset-fixes-v3-0-64f7a4247ec0@igalia.com
-
----
-Maíra Canal (7):
-      drm/v3d: Don't run jobs that have errors flagged in its fence
-      drm/v3d: Set job pointer to NULL when the job's fence has an error
-      drm/v3d: Associate a V3D tech revision to all supported devices
-      dt-bindings: gpu: v3d: Add per-compatible register restrictions
-      dt-bindings: gpu: v3d: Add SMS register to BCM2712 compatible
-      drm/v3d: Use V3D_SMS registers for power on/off and reset on V3D 7.x
-      dt-bindings: gpu: Add V3D driver maintainer as DT maintainer
-
- .../devicetree/bindings/gpu/brcm,bcm-v3d.yaml      |  77 ++++++++++---
- drivers/gpu/drm/v3d/v3d_debugfs.c                  | 126 ++++++++++-----------
- drivers/gpu/drm/v3d/v3d_drv.c                      |  62 +++++++++-
- drivers/gpu/drm/v3d/v3d_drv.h                      |  22 +++-
- drivers/gpu/drm/v3d/v3d_gem.c                      |  27 ++++-
- drivers/gpu/drm/v3d/v3d_irq.c                      |   6 +-
- drivers/gpu/drm/v3d/v3d_perfmon.c                  |   4 +-
- drivers/gpu/drm/v3d/v3d_regs.h                     |  26 +++++
- drivers/gpu/drm/v3d/v3d_sched.c                    |  29 ++++-
- 9 files changed, 279 insertions(+), 100 deletions(-)
----
-base-commit: 10646ddac2917b31c985ceff0e4982c42a9c924b
-change-id: 20250224-v3d-gpu-reset-fixes-2d21fc70711d
+-- 
+Git-154)
 
 
