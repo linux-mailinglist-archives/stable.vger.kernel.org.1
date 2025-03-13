@@ -1,79 +1,77 @@
-Return-Path: <stable+bounces-124276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F1EA5F3C6
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 13:06:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A42A5F42A
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 13:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D677E188A8FC
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 12:06:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D80F93BC8D2
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 12:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C57266F0B;
-	Thu, 13 Mar 2025 12:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C47267704;
+	Thu, 13 Mar 2025 12:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lfxjgeLv"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="U2WY8X+1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED68266B71
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 12:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41562673AB
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 12:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741867591; cv=none; b=ZHAQ+vDgBvF4Sf5Q4Piq0s6RPi8ep0gmxcjZmmDsZSGLbZAmBed4HXlAaQRJEyVJxB+HS6kMPRrxQYuSLHrI7XVxttAogE6l/uTC76INbCmGPGRvHF1DNcHQ7x9xwqpLm6EfyxTbvqHlGD7hb90OxWx6WMIQnd8rg3XGALCuCuw=
+	t=1741868444; cv=none; b=SyVd/Ln6/4k/9+mcLKzlLbe4OMC7/mTqTV9D9qBxHEyCKc7OPewsThMEa/BQKLa0VKlcCW5uiHwsvlLeCvZFosYNG269B1TJFua6+IoeVt4sZDpl0dipeICNe4q9Ef9SNgvmaqJ5/a3ZPkKRGfmpMRLxiKwuGZPr/E7E5bQnyOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741867591; c=relaxed/simple;
-	bh=TdeKYj+nKDmLMq5rDHi0EKfmM8Q9c+Fp2RgC37HVEwQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mlPHh4N6QzHFiI5RCedtDlqK+2g7lNlPK7ASUFEJ78cwEj7khdU02q8raXtgCbDV6be/cABjEfxqOSBpmsjCiWf2O/iYm5MTmHlX9VmklfK/DRD4rPwHn5R1K93Bai2lC8nlchhIEk25ioTXBw8eJgLJ98nbyh/R4TLYhQnI9/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lfxjgeLv; arc=none smtp.client-ip=209.85.222.169
+	s=arc-20240116; t=1741868444; c=relaxed/simple;
+	bh=vWTi3LR9hJZNwt3nMvFrGfBx1tozG7F0KblReapEJjs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hGNGzTzu9x6dAvjMUcOXPF4/SvgOLTX+i53DaMs5wkH95PmehYRRiogBundvUUK/XKTp4PDj3AqQmhUiIT6SkFlNKexRxy/E/9UYnmaYXTL2fLTIfuxMWa9IJWbvkTuxFoXDux7t7ncTVY2EDpakhvULjN2EK8jivnWDDlY1wkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=U2WY8X+1; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c08fc20194so138500685a.2
-        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 05:06:28 -0700 (PDT)
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6e91d323346so9884256d6.1
+        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 05:20:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1741867588; x=1742472388; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E3p062ai1AaXGIlqJv8w3IqJw84i5gPWV6oy5k5lnYA=;
-        b=lfxjgeLvKObeZgFihWb0q52OYllBAKTdF/4lQ7HCrmU5Ign3Qf85EdNwKEnH5McfiQ
-         RlOGZj7dQ1ZuTdkFMephTsFrTUBDna2WLKl6IDTAmvfn/RK9JbprpFJa+rWoeLFANhEz
-         Tb1MnLvdy/4Ecf9myTEc4r7kOJLzSIkUWPGGY=
+        d=chromium.org; s=google; t=1741868440; x=1742473240; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eABKFzeZYScxgYja+KDOHU4gTOLr6uHZM4XhISuduUM=;
+        b=U2WY8X+1+8hBKhqS2d5jL1tVE+XJVgGeNker7Z/pO/NpAj7R9tuG+EH2la979IWLUe
+         P8b6M1S3qpZgg2Q16pxnCKETRdAvGuMciVbmk/G4/SJch7ypnHXeJUUp/AXtYkLwIz4h
+         x1ObV+qKEGlN7A4cYVFZKJKJk89vZlS6ZTYFY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741867588; x=1742472388;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E3p062ai1AaXGIlqJv8w3IqJw84i5gPWV6oy5k5lnYA=;
-        b=f7a9fwo6PO2/1EzboqwMc1SfpAphzzTx5j+LkoOGFhzkxZjBv+AEFlgfAwskrNUqkz
-         pDw7FLCqV3YEWanum2O/ahnHDSUJnfcFig2kau/PD+JAY4N1F6xRrdCVp1QyIZiJnv/0
-         dGeUBdy6DJX7ChWBdZcH7Uq30wzQtOPLKbToR4TNy5tQ92JhNJras2D4fOJVbgPFcDCY
-         mgzFkZJwe3mbpcNBLtWtCGJiTDDtmhOzjKwn+p9FFe3doWbfYOG2BqMdCjKQhxZYM6bt
-         djbE/YnRKIYPQb3coN4PMa0oYQ/aXCEZRTWhRpb1mLQEcSoE6+/cag6cTbib2oDIdq2W
-         7E9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXKvF2uaajIvlT9vbOGSGcS0Do9giEQQxJzIFhNE4Zizqd7tp93XxyK3FUKsP2X6cPexxc0icw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+Ps5bCdJKkqGrjbln1rG70KJbnpLbpgCgxPI14tVghJ+pPZSa
-	XgC5Zr/yXB8nArZtU0fYDXYsKBB9MYm1jXskXIpAYMcxuQu61DXO2rrGtqDm3Q==
-X-Gm-Gg: ASbGncv4Hsmi8lcVE9KZPHdkaAQ5Jaf8QKv82J+J8Ij7nQQj002VL3Leb82mNo2Yo/W
-	72FXTNpqYo49UgxD//g3byrTkhNcaJvBFcEzW2ucsV6ihbnW6VG+Fyw9oOZ6qqeFo8DpSFdX7p/
-	q8uWHQrvxEsF1VypLMjcYwDTAGyfuN6ZUa3lsuSJ9xfLJ+vsAVSUEhn/Gg171xYWyFQkFq+WDyb
-	Ovtj0a4RUTAGhWe8xwyHfthUv86lr08qPOQQclFsQjkulV9jm9wHFPrnH9rALthBTTk7byH3H4A
-	AP90mUKB7dMEfJKwtW8wAX0FLXoRn6LvwIJyFVwQePJVtFe/r260ZVdV4VGUZuGqRDAGMrvIsiZ
-	698jkaC7s+GkYwxioLn0j5w==
-X-Google-Smtp-Source: AGHT+IEs1dnda/05lwv48p1kChP8H4iqWWWnIRWvPPrcVe+HE60b6DEE4FUAP4bsiwKGbIpAGianVA==
-X-Received: by 2002:a05:620a:8803:b0:7c5:5a97:f784 with SMTP id af79cd13be357-7c55a97f9fbmr1863851085a.33.1741867588213;
-        Thu, 13 Mar 2025 05:06:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741868440; x=1742473240;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eABKFzeZYScxgYja+KDOHU4gTOLr6uHZM4XhISuduUM=;
+        b=M5y6uFYurisYRgkhWPI5tGx+6iBD/55NqUz6x6LUnUvensOdcVeNpaC8HqViJGYC2c
+         ANiUiHO8J8tWpMrwBDThWeFtqEX/+LvCCuLcE+4IuhcPAf3HZSKCCFxzTyTZz/0NORam
+         MTLGuGMZkDoPqqLXBtQz6U1MGSwPjFLLwPPLfOjeYUMJQbSDgQ7/outL+3IYZn+pG3dD
+         xjkZ2khKG8ZOyVfgd5jc5f9zuVZtOSor+GJOAXTlQCNmNfLtIWBt6EBt2PJ/kKU1rrMc
+         KYn/zDzHfGtjWfTfeQzMLHLbFvz5SZqNLp2Yh5QCuilMdQtthRzUnMpvwP8EcAXZBOgt
+         3YdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW71wbwC+XtUDKNDGyJSWZ2I2O9Q4jwNGyoYjzyUbgcwEZlQy1iEJfTMpczOsarT3KLJmnDjP0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwepMP7bsohjce//y0beI5T8O/d6RI6rej4L6Zd5HRfnWsXde6Q
+	6vZgqX7x5lXHVRRqK86cFCN8zD6ttDE4LqKHI2/h7+c82K3NPriElUbiHHguXQ==
+X-Gm-Gg: ASbGncv/ceMfejXUfRD5aWUf4M90h4GnUXn2NuV+VtuoPBUgzYZz/m+/gUniDlp4Pr7
+	ERxKtABjMOLWUe0p2/9Ddg/qkkV15yXE8i3iXJH3oxc1D3b2QVfgBRdl2zEQ5fxNa8q9DGLaZQ7
+	cvdL6uP7htKmxKfc2zr760E7hLm9VvrFuOVWFpdzbTh66W9ptlPjLBZbmV0KTpW0F/i3u6K4OkC
+	lTIj/yHyHofu/lGchmW+6LSAFWF5YSxHnaHGJtBp8jnMHnozLvfsNEErPoHh3iZoVsxqLivMqIg
+	76qFT03VaRqqSia8lpKSIMgxpvhJ+uyN4nzMmxqHPX9LR4fc82IQli6lHcHMTSsA55nnjeDRvm5
+	30I0Hyg84TNMCMMpTuPBZyw==
+X-Google-Smtp-Source: AGHT+IFbg5j8PXxdID945dtHure5/GdfhUiyt/sO6UjxT+wwZ4ooK4hNtTzwXvCSsIxBoX2VJ0H9mw==
+X-Received: by 2002:a05:6214:3c9b:b0:6e8:903c:6e5b with SMTP id 6a1803df08f44-6eaddf21d4cmr36484256d6.9.1741868440714;
+        Thu, 13 Mar 2025 05:20:40 -0700 (PDT)
 Received: from denia.c.googlers.com (15.237.245.35.bc.googleusercontent.com. [35.245.237.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c573c4db57sm92117685a.8.2025.03.13.05.06.27
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade235f9bsm9038616d6.29.2025.03.13.05.20.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 05:06:27 -0700 (PDT)
+        Thu, 13 Mar 2025 05:20:40 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Thu, 13 Mar 2025 12:06:25 +0000
-Subject: [PATCH v3 1/3] media: uvcvideo: Do not mark valid metadata as
- invalid
+Subject: [PATCH v3 0/2] media: uvcvideo: Fix Fix deferred probing error
+Date: Thu, 13 Mar 2025 12:20:38 +0000
+Message-Id: <20250313-uvc-eprobedefer-v3-0-a1d312708eef@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,64 +80,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250313-uvc-metadata-v3-1-c467af869c60@chromium.org>
-References: <20250313-uvc-metadata-v3-0-c467af869c60@chromium.org>
-In-Reply-To: <20250313-uvc-metadata-v3-0-c467af869c60@chromium.org>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+X-B4-Tracking: v=1; b=H4sIAJbN0mcC/3XNTQ6CMBCG4auYrh1TWn7ElfcwLuh0gC6gZCqNh
+ nB3CxsTjcv3S+aZRQRiR0FcDotgii44P6bQx4PAvhk7AmdTCyVVITNVwxwRaGJvyFJLDKYgY3J
+ rSo0o0tXE1LrnLt7uqXsXHp5f+4OYbet/K2aQQZlro0qpUVp1xZ794Obh5LkTGxfVh9BS/xIKJ
+ BiqsD5XiBqbL2Jd1zesVZ6g9AAAAA==
+X-Change-ID: 20250129-uvc-eprobedefer-b5ebb4db63cc
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
  Hans de Goede <hdegoede@redhat.com>, 
- Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org, 
+ Douglas Anderson <dianders@chromium.org>
 X-Mailer: b4 0.14.2
 
-Currently, the driver performs a length check of the metadata buffer
-before the actual metadata size is known and before the metadata is
-decided to be copied. This results in valid metadata buffers being
-incorrectly marked as invalid.
+uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
+have not yet been probed.
 
-Move the length check to occur after the metadata size is determined and
-is decided to be copied.
-
-Cc: stable@vger.kernel.org
-Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
 Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Changes in v3:
+- Remove duplicated error messages in uvc_probe()
+- Link to v2: https://lore.kernel.org/r/20250303-uvc-eprobedefer-v2-0-be7c987cc3ca@chromium.org
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index e3567aeb0007c1f0a766f331e4e744359e95a863..b113297dac61f1b2eecd72c36ea61ef2c1e7d28a 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -1433,12 +1433,6 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
- 	if (!meta_buf || length == 2)
- 		return;
- 
--	if (meta_buf->length - meta_buf->bytesused <
--	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
--		meta_buf->error = 1;
--		return;
--	}
--
- 	has_pts = mem[1] & UVC_STREAM_PTS;
- 	has_scr = mem[1] & UVC_STREAM_SCR;
- 
-@@ -1459,6 +1453,12 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
- 				  !memcmp(scr, stream->clock.last_scr, 6)))
- 		return;
- 
-+	if (meta_buf->length - meta_buf->bytesused <
-+	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
-+		meta_buf->error = 1;
-+		return;
-+	}
-+
- 	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
- 	local_irq_save(flags);
- 	time = uvc_video_get_time();
+Changes in v2:
+- Add follow-up patch for using dev_err_probe
+- Avoid error_retcode style
+- Link to v1: https://lore.kernel.org/r/20250129-uvc-eprobedefer-v1-1-643b2603c0d2@chromium.org
 
+---
+Ricardo Ribalda (2):
+      media: uvcvideo: Fix deferred probing error
+      media: uvcvideo: Use dev_err_probe for devm_gpiod_get_optional
+
+ drivers/media/usb/uvc/uvc_driver.c | 38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
+---
+base-commit: f4b211714bcc70effa60c34d9fa613d182e3ef1e
+change-id: 20250129-uvc-eprobedefer-b5ebb4db63cc
+
+Best regards,
 -- 
-2.49.0.rc0.332.g42c0ae87b1-goog
+Ricardo Ribalda <ribalda@chromium.org>
 
 
