@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-124369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5457EA60293
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 21:26:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F61A60294
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 21:26:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37C0719C5906
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 20:26:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7090619C5806
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 20:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869A91F4614;
-	Thu, 13 Mar 2025 20:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681941F3FED;
+	Thu, 13 Mar 2025 20:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZFPbbaLe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FSNEQdiI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0ACD1F4618
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 20:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C539B1F3FEE
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 20:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741897577; cv=none; b=nWmE1+gHtiMUxGwC8rnwrm35yCP6PUFXXjfTCoKaKc2OSq8/FxP2ZMU5T6PaFOUwtD9Hf9svRPgSgTFEnZ1A35RFVGLZ2NmCQOx0Dq7FoRakjQHPNr1dRtXbvocwS0sxv4yP7nUFm7efSu1ph7wM3lRw2aOJkcw33Rft2mKPuvg=
+	t=1741897578; cv=none; b=Evipslv9+pWAdyn+Vr1V00z7QkHKJiGRbRa5ZfZrwvMD9Twb6zt8Ntoz82GwQPNBkYKiOTrGBh842cinznT7qIICbw3gn6g5xSQO/a/tdGxe6ELSdGuYaIgswe14N+Hi9tfUlyynaxeD+IU9OZ7rBNtl96gswkpC+XBSCY9UtkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741897577; c=relaxed/simple;
-	bh=BbWkOzPeKDIJBgec6dWg7cJIMR26gcECoHi4o6/NVns=;
+	s=arc-20240116; t=1741897578; c=relaxed/simple;
+	bh=TwUeTIRHKScjU6mQok03tILvIrfVy/neM/PD/4IG3i8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPmBt390mjBmobZUxE0Jd6yxKVMbi9yaKsR3/CBQyIgdmKA6FihFk1zU62dnwcje19ksMZSCBvqY5HI+qGhjWwDXN/DhZF7j+UwJaACv5yGyoSwNEEyIw4OENO68Dew4jBawcFMH7wCuqVlzQmBQZyt2AQZf3if3BSesXqVedDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZFPbbaLe; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=oJvaCH/nfmFjOT7DRgnEXch+lyMVsZ9BQQis/RWQ+L1c3QVG7izsXAGmYNddWbYbo8RRu/SciUeJUWzd1ds1UEWde5Iyll/tt5MWqetnCKcQhUhtHWu76X/FCIjch0zMPzlO+k0+h5epaNUzav6EgfnGSuiJo8Ad8pPUYfpFGGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FSNEQdiI; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-225a28a511eso26701435ad.1
-        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 13:26:15 -0700 (PDT)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-224341bbc1dso29982585ad.3
+        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 13:26:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741897575; x=1742502375; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741897576; x=1742502376; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=K/3x2+jQC++c1ZD7wWYSfUrh/SLnUlNVKpaWCNjcVIc=;
-        b=ZFPbbaLeBcKZd9M9Enw9bDGTP9rB5pyIr2Bf+T2M6cZFodOGRB3SU0YuJ1wrX8CjYj
-         G9gPul3I2aXQkS4DIsc6hqvyYSvMKs+Zru9Qwz24Ed4xB8dGesMmi/JesId9YaiDeUB8
-         b+RXs5VWz+KOZ5i/uq6Mc3ffQnUjo5lWUTi2rTvljpuTr/KTFkgDMpU6zI2/n14cuKbe
-         yeolUWuZJzI7PBGHUmqMGmqoETtnHeQm7J1yCEjMvz9ypCn+WvTkzYzfyFDDNIGKNoGP
-         P3dfS8uuVZYRT1X/RXzn6eWVHFlL88I/CPMl/usQtWXEj2/dvjTolIwvw022iVXMyD6E
-         C4ZQ==
+        bh=rNsuG8Kz4PlZy+yaxsiLa9dGxfRU4N28aINgwyt+fCk=;
+        b=FSNEQdiIeYcIDWn+PU+L7lqFgoYYnecaoZeGEZYZ2fnyb5Qw9ZzNMjgRyIkEhs6nPY
+         SxW+gRCW5sQn6p6kZR1iN1jkN/QzZWSndYNW32DgIHtfFeJXG1z1Gy5wtySR7ahqcz9z
+         jGslihtO+amg9TK+lqqDts3VeoFLCrYpYumoZLZnaTMeEAPkzxF1X+WLBFs2r/VvpPN0
+         jFZc+R/paAlRCWRFVS10Tsg5Ej7RAboktW8S8CDmYxGIB8gftrXeor2t0QnXSEejSsdn
+         6o87dYKWgOkBoV8h2JTIGnP3KYcgUS73a6oI3A4JdtyY/Rk6MlmTvSOuCFwfu23FWPeL
+         kTWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741897575; x=1742502375;
+        d=1e100.net; s=20230601; t=1741897576; x=1742502376;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=K/3x2+jQC++c1ZD7wWYSfUrh/SLnUlNVKpaWCNjcVIc=;
-        b=LRXBj2jCRpSLd5Po0KTsH1LIqzXI9JfFODxPhsm7/ENrJl1z8H0fWg6Su+oVSC/WEe
-         QjwonP7tqgrzyn29E15ZDznilUqDnUBJ21kTINNHF6agcgP2iHrJiggMIozg4BUmfB+Q
-         xlu/iw0q4E2p1V3dIiwdOOocXgRmesbMpkmIJKcN6OatGRI/yCwh8/YPXHFZl7LW4X4L
-         vESY6EVu4rexVVw1N8QRFE7+5BnrNXqrSqtxrQRtmmCUXrm9p8DcOX9hVm8X44ycwe4C
-         d5Hf9hnPeqiFNapQaSamC/YP2Fx1I9eoT4CVnNF8prHcB7VzFRR3KHUXuGGxkBV9vfLu
-         3sWQ==
-X-Gm-Message-State: AOJu0Yx4JuUugkGjwqiuZrh8rqhmCwk7taQJgVPVnpc/Z3oyuesepAo0
-	laMOfuq0Rs1Y+z7V/1EDvgbsNamv9mfA6B0++BRWfSiGWa4rFeoZBvZWO+Ak
-X-Gm-Gg: ASbGncuaFWyS7L9X0+34J/S3SEILS4rTK43TS1CNkmIaTtqjWjTBPN821ePSPiF5MIA
-	8ELMdffloPUcW6acTicJ/ee64DjGN/Y/yOGVU+saCrTLUE++C/ZJZ9SMHNrM1+7peqQVVbxmjlt
-	joMURynT2qNRSpaw3yfFnCP7mp+KaPn+ftpEgmUGz8rTr2Jj1T0J2QN/bdx0OaNB9LwFi/olZE2
-	+9grI7Tdo87clabAJtBZjUAlytdM6Ogk61EMsDwoPHbNPg/HUK/1WzHCQrMoyz76bAr9bwzmHKB
-	aokSIsuqVbgiVSPJE4PmFwAENjZ86xvX2XDe2Tm2zg3ViTvSbgHBQoUzd7ntq7XkDK6fCsU=
-X-Google-Smtp-Source: AGHT+IEYYY4iNRZgxPNNGWniagJsj39Rq47RR0dHiVjSVLbm+EVE8a0YeWJypkihuDU1pxlgcdP7fg==
-X-Received: by 2002:a05:6a20:9c8e:b0:1f5:79c4:5da0 with SMTP id adf61e73a8af0-1f5c12d76c2mr87880637.31.1741897575004;
+        bh=rNsuG8Kz4PlZy+yaxsiLa9dGxfRU4N28aINgwyt+fCk=;
+        b=dLXCBHZkT6rz3r3Fm93XNAI2XD0BuV4uHBQdYuSPvjHY91mLB0cIlkO9d/FFNYI9bZ
+         Ag5HXYbv+wiCQOn0rkw1pVJsCM1Rg4M718yJ3bf6fW+0MIk/OldViidLnJYsyHF9oA6c
+         +qctSqJ4h2lyFFkSSSf4GEB9NODnihAuDQVenq//ypkQjY/BbFK5wDrIf3CouOfj5xvR
+         3DzQ+O4GHYPBhGhBdFIuogDHKRI8H5ZjcVpT/n1eD9ZhZG1gCZrJhUCqMLCsGYTePwzg
+         H7bVYGw3E05QniDiD2Xcuy7aL4e5Dy7eig1K8ugpZ0toFXLDqAc7ylRoODGY/KfXEANI
+         G8SQ==
+X-Gm-Message-State: AOJu0YzxOYWSnUQWdVz9FTqeXzYOnKdCpYPVksXIV72H8LjV9FhZL6j0
+	5Wd9p6pJ5gDDTjSqxHigs7pbyuCbNATuzshia9xLd7gTW2WkisHxjMk0rUH0
+X-Gm-Gg: ASbGncsxtz+sHlOJ0Sf1QxrXi9uVPZwi6TceHXG/zMYMS0mxOc4+KZF+jQSYZ5nwi/P
+	NV+D6rtvOp3TSxGXS8E4/FXUTShWU9e3Y7u+Y8HIeuKPcgv9XdP5lbQ4gJuCMTMldZvNItAb7bV
+	8Hf0riQqCpAw6GarikvzOhV+ixXSRu8fqM/HIDz5HQgVRvjvRB8epWxsnKIFqbqGRwfTfKxLjqz
+	EzLXgjKfRgv9yH9r7p5tdl54aGbUKORhNFfxHJ6iO4vLFMAMnVSunWS/+afMF3h42DHWKJfKKn0
+	tJX27WKJEbr0ej05mZSwfM1UmlqkjBV8JU0DkaRhdkIw5V9nZ9zjecx9LyyzN01+q1uRTGQ7kzZ
+	Lge5txg==
+X-Google-Smtp-Source: AGHT+IHfZ/44dfav0INPJnYsuEjDI12napzUBvVv36qbDKMP58ZG+SHweqvsaTfY5cgsm4VbNBzZxQ==
+X-Received: by 2002:a05:6a21:a43:b0:1f5:8c05:e8f8 with SMTP id adf61e73a8af0-1f5c1219153mr64419637.25.1741897575917;
         Thu, 13 Mar 2025 13:26:15 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:b233:743:91db:ac7b])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9c94cesm1724455a12.6.2025.03.13.13.26.14
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9c94cesm1724455a12.6.2025.03.13.13.26.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 13:26:14 -0700 (PDT)
+        Thu, 13 Mar 2025 13:26:15 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
 	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 12/29] xfs: consider minlen sized extents in xfs_rtallocate_extent_block
-Date: Thu, 13 Mar 2025 13:25:32 -0700
-Message-ID: <20250313202550.2257219-13-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 13/29] xfs: don't leak recovered attri intent items
+Date: Thu, 13 Mar 2025 13:25:33 -0700
+Message-ID: <20250313202550.2257219-14-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
 In-Reply-To: <20250313202550.2257219-1-leah.rumancik@gmail.com>
 References: <20250313202550.2257219-1-leah.rumancik@gmail.com>
@@ -92,42 +92,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christoph Hellwig <hch@lst.de>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 944df75958807d56f2db9fdc769eb15dd9f0366a ]
+[ Upstream commit 07bcbdf020c9fd3c14bec51c50225a2a02707b94 ]
 
-minlen is the lower bound on the extent length that the caller can
-accept, and maxlen is at this point the maximal available length.
-This means a minlen extent is perfectly fine to use, so do it.  This
-matches the equivalent logic in xfs_rtallocate_extent_exact that also
-accepts a minlen sized extent.
+If recovery finds an xattr log intent item calling for the removal of an
+attribute and the file doesn't even have an attr fork, we know that the
+removal is trivially complete.  However, we can't just exit the recovery
+function without doing something about the recovered log intent item --
+it's still on the AIL, and not logging an attrd item means it stays
+there forever.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+This has likely not been seen in practice because few people use LARP
+and the runtime code won't log the attri for a no-attrfork removexattr
+operation.  But let's fix this anyway.
+
+Also we shouldn't really be testing the attr fork presence until we've
+taken the ILOCK, though this doesn't matter much in recovery, which is
+single threaded.
+
+Fixes: fdaf1bb3cafc ("xfs: ATTR_REPLACE algorithm with LARP enabled needs rework")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_attr_item.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 7ce122da43fe..2f2280f4e7fa 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -316,11 +316,11 @@ xfs_rtallocate_extent_block(
- 			break;
+diff --git a/fs/xfs/xfs_attr_item.c b/fs/xfs/xfs_attr_item.c
+index 36fe2abb16e6..11e88a76a33c 100644
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -327,10 +327,17 @@ xfs_xattri_finish_update(
+ 	if (XFS_TEST_ERROR(false, args->dp->i_mount, XFS_ERRTAG_LARP)) {
+ 		error = -EIO;
+ 		goto out;
  	}
- 	/*
- 	 * Searched the whole thing & didn't find a maxlen free extent.
- 	 */
--	if (minlen < maxlen && besti != -1) {
-+	if (minlen <= maxlen && besti != -1) {
- 		xfs_extlen_t	p;	/* amount to trim length by */
  
- 		/*
- 		 * If size should be a multiple of prod, make that so.
- 		 */
++	/* If an attr removal is trivially complete, we're done. */
++	if (attr->xattri_op_flags == XFS_ATTRI_OP_FLAGS_REMOVE &&
++	    !xfs_inode_hasattr(args->dp)) {
++		error = 0;
++		goto out;
++	}
++
+ 	error = xfs_attr_set_iter(attr);
+ 	if (!error && attr->xattri_dela_state != XFS_DAS_DONE)
+ 		error = -EAGAIN;
+ out:
+ 	/*
+@@ -606,12 +613,10 @@ xfs_attri_item_recover(
+ 			attr->xattri_dela_state = xfs_attr_init_replace_state(args);
+ 		else
+ 			attr->xattri_dela_state = xfs_attr_init_add_state(args);
+ 		break;
+ 	case XFS_ATTRI_OP_FLAGS_REMOVE:
+-		if (!xfs_inode_hasattr(args->dp))
+-			goto out;
+ 		attr->xattri_dela_state = xfs_attr_init_remove_state(args);
+ 		break;
+ 	default:
+ 		ASSERT(0);
+ 		error = -EFSCORRUPTED;
 -- 
 2.49.0.rc1.451.g8f38331e32-goog
 
