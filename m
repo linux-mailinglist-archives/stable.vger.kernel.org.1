@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204CDA5EF22
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:10:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A49E6A5EF1F
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 10:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7FAF17D8F0
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:10:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01A361890B34
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 09:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91405266199;
-	Thu, 13 Mar 2025 09:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F5E264F83;
+	Thu, 13 Mar 2025 09:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Au9Yisi5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/hHWkYs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4924E26563C
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D591E264A7B
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 09:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741856924; cv=none; b=ci4XOU5MsSU88ebVMIUReZFAsyzFOlkSuAy4SQ37SEIr0U3AZ6Ch7rf70oSBBkEIsrgBKB0IWnunOGUer+KzKlMWKJW6BdGsQmSJU6WmhUifdi0TpbpWTeiqrH5wYKoFVSg65O/1lRtnfKZzR3w0Nx7RIYy4cQnDKyE1dY7Gg1o=
+	t=1741856925; cv=none; b=IFFZ6KjMOt+kQ4MSWCCvUrpBb7dBRxA/M4MVtR1OKlubhHDlIx6C3EF+sCTNcJmC9nfgShughxf+oElm5EyFakchXgZ92O2IdklxMDgJ6f+cSTmgbRb2bPDMAzvvpBTjqDYOYdqmeAHYUSahaJEk4AB2vRhzWg21o2RGLOBxpe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741856924; c=relaxed/simple;
-	bh=QL23fcfh0shPLspIUbfEnoY40ECyvqfz/JzLhn6NlnI=;
+	s=arc-20240116; t=1741856925; c=relaxed/simple;
+	bh=NRFBjR41wQOjkdyTP9fpuFfOQcI5Bw4NDqre8KU5IN8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mZ/k4DnkWtc7wk3LoWe1c0ixiKQGtwbWEcybCNmrXIzQ1asWAN35qmUX7xCiYvg1kBsvfFaoldGQZALEpu7k8HyqrCXFg548MG10SpirkG+7c2/oZLG0Qo6j/V2L/vbU3PjnauVeWLIoGrikQyaRe+NXVj/n09uD88euq2imQjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Au9Yisi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29166C4CEDD;
-	Thu, 13 Mar 2025 09:08:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YJaVw2HiR/gha5uaOqLtqC5+/6YqnjbkFGlF9z/AXm7RMZruvT8321gg1WVaZaThG+yMJtWmLHsQ3UTBsNC4HugZpUlgQWeoCalU1qukUDyeIci+cALiBXuRw6N96Zw4Tv62aWQKts9jRngI8c8dNg3K7qzL8lC85qvotIYa4fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/hHWkYs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D4AC4CEDD;
+	Thu, 13 Mar 2025 09:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741856923;
-	bh=QL23fcfh0shPLspIUbfEnoY40ECyvqfz/JzLhn6NlnI=;
+	s=k20201202; t=1741856925;
+	bh=NRFBjR41wQOjkdyTP9fpuFfOQcI5Bw4NDqre8KU5IN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Au9Yisi5GsXmHkC7d8OSwVsIPoEQNqD2wj5yEYOQbHGS0xgPXu8VB4QivKFLwvy3W
-	 LWA4gx9e15S8BGX9n1y4WNvfoNgTl8NaGouM/SFY3F7Vg/OfkCSYzrWBTpGtZR6gNh
-	 i8CYtPM4ZOQVSVcvNKuI/qALzZNVTBN046PBbKSpsMQKXBDm1hbxKbY1Fn2hdYhQlt
-	 GOG7emBBdbphV2ZEA1LVTy/a7EC7gMQLu1hXcPnf0zxNnFZAmD5XOcmJw8kzyNzDjN
-	 DlNUrWhZYwNebck4GJY9Dw6ByY7Tph9cClu4wl4W5vRnqgpsOedic7TpaVfBbGyDyJ
-	 M4lxqiLQM1ENw==
+	b=g/hHWkYsE8UamYtZ8Zh4AySi1F7gEVOlIgCOEV4lyYwezsqolGHjzcAhFb7F2tbKT
+	 tHy3MQSQs/GV3IODtriyaULaacjqpf5ITxpWxmX7NNA2QegmiWBxtgj4V70Ua+sn+Q
+	 19FPrQgylv0sSNPTCytVPALu1JhTLbVzEscU8J1s1VLJW6VmuxJiebzTp0bQySpoL3
+	 J8mUkR2zrqZ894pl9b0TEBTKbiywi8tmaUbqsB8SGSLSw0oc0BOyrnG9qtqKYAMrih
+	 DWQRNEYfsykowYvm+5KUUFN52n5kMg7IkIjRWfoVWuLqG554UejpUWaCnIpBRLajwb
+	 AP7QIh+WgPZxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Magali Lemes <magali.lemes@canonical.com>,
+Cc: Felix Moessbauer <felix.moessbauer@siemens.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4 4/4] sctp: sysctl: auth_enable: avoid using current->nsproxy
-Date: Thu, 13 Mar 2025 05:08:41 -0400
-Message-Id: <20250312235036-ab62536f582e2005@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y 1/1] hrtimer: Use and report correct timerslack values for realtime tasks
+Date: Thu, 13 Mar 2025 05:08:43 -0400
+Message-Id: <20250312233302-2946e29efda0cecc@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250311185427.1070104-5-magali.lemes@canonical.com>
+In-Reply-To:  <20250311134931.290856-1-felix.moessbauer@siemens.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,53 +67,40 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 15649fd5415eda664ef35780c2013adeb5d9c695
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Magali Lemes<magali.lemes@canonical.com>
-Commit author: Matthieu Baerts (NGI0)<matttbe@kernel.org>
+The upstream commit SHA1 provided is correct: ed4fb6d7ef68111bb539283561953e5c6e9a6e38
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: c184bc621e3c)
-6.6.y | Present (different SHA1: 7ec30c54f339)
-6.1.y | Present (different SHA1: 1b67030d39f2)
-5.15.y | Present (different SHA1: bd2a29394235)
-5.10.y | Present (different SHA1: dc583e7e5f85)
+6.12.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  15649fd5415ed ! 1:  43321e75147b6 sctp: sysctl: auth_enable: avoid using current->nsproxy
+1:  ed4fb6d7ef681 ! 1:  8ec8728ce513f hrtimer: Use and report correct timerslack values for realtime tasks
     @@ Metadata
       ## Commit message ##
-         sctp: sysctl: auth_enable: avoid using current->nsproxy
+         hrtimer: Use and report correct timerslack values for realtime tasks
      
-    +    commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
+    +    commit ed4fb6d7ef68111bb539283561953e5c6e9a6e38 upstream.
     +
-         As mentioned in a previous commit of this series, using the 'net'
-         structure via 'current' is not recommended for different reasons:
+         The timerslack_ns setting is used to specify how much the hardware
+         timers should be delayed, to potentially dispatch multiple timers in a
+         single interrupt. This is a performance optimization. Timers of
+    @@ fs/select.c: u64 select_estimate_accuracy(struct timespec64 *tv)
+      }
+      
      
-    @@ Commit message
-         Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-         Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    Signed-off-by: Magali Lemes <magali.lemes@canonical.com>
-     
-      ## net/sctp/sysctl.c ##
-    -@@ net/sctp/sysctl.c: static int proc_sctp_do_alpha_beta(const struct ctl_table *ctl, int write,
-    - static int proc_sctp_do_auth(const struct ctl_table *ctl, int write,
-    - 			     void *buffer, size_t *lenp, loff_t *ppos)
-    +@@ net/sctp/sysctl.c: static int proc_sctp_do_auth(struct ctl_table *ctl, int write,
-    + 			     void __user *buffer, size_t *lenp,
-    + 			     loff_t *ppos)
-      {
-     -	struct net *net = current->nsproxy->net_ns;
-     +	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
+    - ## kernel/sched/syscalls.c ##
+    -@@ kernel/sched/syscalls.c: static void __setscheduler_params(struct task_struct *p,
+    + ## kernel/sched/core.c ##
+    +@@ kernel/sched/core.c: static void __setscheduler_params(struct task_struct *p,
+      	else if (fair_policy(policy))
+      		p->static_prio = NICE_TO_PRIO(attr->sched_nice);
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
