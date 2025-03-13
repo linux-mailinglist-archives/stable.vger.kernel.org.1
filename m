@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-124339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8263A5FB67
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 17:23:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75E5A5FB52
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 17:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1DAF3B522D
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 16:18:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE4181893932
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 16:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3702690D1;
-	Thu, 13 Mar 2025 16:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A6426A09D;
+	Thu, 13 Mar 2025 16:17:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6742269885;
-	Thu, 13 Mar 2025 16:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD9E26A083;
+	Thu, 13 Mar 2025 16:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741882671; cv=none; b=CBpcMDVDeGgFA+8SvZgA+AmjYfiuMvGrQmFJWetyEn0APd3LxnRcgWhJ+5Xwiw59E0m/T8/hT+IO05dL1RO0fZTRkIOhcyo0d0KIxyQC7tAx1zfkUi2dtPNC2NSy3q5uMLMeFZ61aMJUZZiKPitO+DoMVms5mmkUKHQXRPOOypg=
+	t=1741882674; cv=none; b=mh1qZn8hI2ltBo1zGaLW3omvnWYfRJDeZh6j55zF7bJno9vJYcYqyfjc2Uq5bPqlYNh85wel1HG46rrvLLp4J7FHMY/zuxpLmDlVx4W7sWmHVBkm8AGV56PEB+5PoL63J8nAL8EqK/F4GHgWqGtFlnh9aumzb8lblBr1RpYKNzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741882671; c=relaxed/simple;
-	bh=IUiUrzbIpNsn++CeN7RJzXT5fi6NuhaBEDIhz+xV8JQ=;
+	s=arc-20240116; t=1741882674; c=relaxed/simple;
+	bh=wyn3VpaSleocOcFN9TKcRvlozK514gBG9UmOzKFHjxc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=U0uMVJ/jPV2SCRWFHpbXvj1E940BKH1V7ML9zRNeBzdNil7fcfwfp8d2ki0F0xYI5L0EhQqjtwBnOZPg9Hb5n6KfxlkqOieuGLjfiMXJn7AUIP5GOF9j98LOkvogIK2azsmuLgKJaKe/ZmebWAT1utbQ5cLbl32QIrVIgD2jQ9Y=
+	 MIME-Version; b=i2yigtrLqbCtVV1FpVunMJVfvta4BIb0yL7TQreJCHPnfWZHL7OfxAm80SzSvI76sAvlLYdQ0ihiJb02fiT7Iw8tVCDsKAdB4KMobXCGMh/aAahIBgoVjwe8h4tkcYQm5I9WdZFWDIs0+2XQSCbNrOtMOqSufBTm9EB4tpiNxOw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from kero.packetmixer.de (p200300FA272413901a38a4Bc9C0DE305.dip0.t-ipconnect.de [IPv6:2003:fa:2724:1390:1a38:a4bc:9c0d:e305])
+Received: from kero.packetmixer.de (p200300fA272413901A38A4bc9c0De305.dip0.t-ipconnect.de [IPv6:2003:fa:2724:1390:1a38:a4bc:9c0d:e305])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 7FB4DFA1EE;
-	Thu, 13 Mar 2025 17:17:45 +0100 (CET)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 6DB72FA449;
+	Thu, 13 Mar 2025 17:17:46 +0100 (CET)
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: davem@davemloft.net,
 	kuba@kernel.org
 Cc: netdev@vger.kernel.org,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Remi Pommarel <repk@triplefau.lt>,
-	stable@vger.kernel.org,
 	Sven Eckelmann <sven@narfation.org>,
+	stable@vger.kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4/5] batman-adv: Fix incorrect offset in batadv_tt_tvlv_ogm_handler_v1()
-Date: Thu, 13 Mar 2025 17:17:37 +0100
-Message-Id: <20250313161738.71299-5-sw@simonwunderlich.de>
+Subject: [PATCH 5/5] batman-adv: Ignore own maximum aggregation size during RX
+Date: Thu, 13 Mar 2025 17:17:38 +0100
+Message-Id: <20250313161738.71299-6-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250313161738.71299-1-sw@simonwunderlich.de>
 References: <20250313161738.71299-1-sw@simonwunderlich.de>
@@ -58,62 +57,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Sven Eckelmann <sven@narfation.org>
 
-Since commit 4436df478860 ("batman-adv: Add flex array to struct
-batadv_tvlv_tt_data"), the introduction of batadv_tvlv_tt_data's flex
-array member in batadv_tt_tvlv_ogm_handler_v1() put tt_changes at
-invalid offset. Those TT changes are supposed to be filled from the end
-of batadv_tvlv_tt_data structure (including vlan_data flexible array),
-but only the flex array size is taken into account missing completely
-the size of the fixed part of the structure itself.
+An OGMv1 and OGMv2 packet receive processing were not only limited by the
+number of bytes in the received packet but also by the nodes maximum
+aggregation packet size limit. But this limit is relevant for TX and not
+for RX. It must not be enforced by batadv_(i)v_ogm_aggr_packet to avoid
+loss of information in case of a different limit for sender and receiver.
 
-Fix the tt_change offset computation by using struct_size() instead of
-flex_array_size() so both flex array member and its container structure
-sizes are taken into account.
+This has a minor side effect for B.A.T.M.A.N. IV because the
+batadv_iv_ogm_aggr_packet is also used for the preprocessing for the TX.
+But since the aggregation code itself will not allow more than
+BATADV_MAX_AGGREGATION_BYTES bytes, this check was never triggering (in
+this context) prior of removing it.
 
 Cc: stable@vger.kernel.org
-Fixes: 4436df478860 ("batman-adv: Add flex array to struct batadv_tvlv_tt_data")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Fixes: 9323158ef9f4 ("batman-adv: OGMv2 - implement originators logic")
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/translation-table.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ net/batman-adv/bat_iv_ogm.c | 3 +--
+ net/batman-adv/bat_v_ogm.c  | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 760d51fdbdf6..7d5de4cbb814 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -3959,23 +3959,21 @@ static void batadv_tt_tvlv_ogm_handler_v1(struct batadv_priv *bat_priv,
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct batadv_tvlv_tt_data *tt_data;
- 	u16 num_entries, num_vlan;
--	size_t flex_size;
-+	size_t tt_data_sz;
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 07ae5dd1f150..b12645949ae5 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -325,8 +325,7 @@ batadv_iv_ogm_aggr_packet(int buff_pos, int packet_len,
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm_packet->tvlv_len);
  
- 	if (tvlv_value_len < sizeof(*tt_data))
- 		return;
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
  
- 	tt_data = tvlv_value;
--	tvlv_value_len -= sizeof(*tt_data);
--
- 	num_vlan = ntohs(tt_data->num_vlan);
+ /* send a batman ogm to a given interface */
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index e503ee0d896b..8f89ffe6020c 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -839,8 +839,7 @@ batadv_v_ogm_aggr_packet(int buff_pos, int packet_len,
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm2_packet->tvlv_len);
  
--	flex_size = flex_array_size(tt_data, vlan_data, num_vlan);
--	if (tvlv_value_len < flex_size)
-+	tt_data_sz = struct_size(tt_data, vlan_data, num_vlan);
-+	if (tvlv_value_len < tt_data_sz)
- 		return;
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
  
- 	tt_change = (struct batadv_tvlv_tt_change *)((void *)tt_data
--						     + flex_size);
--	tvlv_value_len -= flex_size;
-+						     + tt_data_sz);
-+	tvlv_value_len -= tt_data_sz;
- 
- 	num_entries = batadv_tt_entries(tvlv_value_len);
- 
+ /**
 -- 
 2.39.5
 
