@@ -1,132 +1,148 @@
-Return-Path: <stable+bounces-124200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A027A5E8DE
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 01:00:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3008FA5E90B
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 01:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDE2617C711
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 00:00:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A19933AAD42
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 00:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD121EE7D6;
-	Thu, 13 Mar 2025 00:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7479263B9;
+	Thu, 13 Mar 2025 00:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WVFDvl3d"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="L1PpxLhZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C23070818;
-	Thu, 13 Mar 2025 00:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA8813AF2
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 00:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741824036; cv=none; b=rzUJE1di/5en67Dxzwb3h0UJrLLf60MvGJ5x9AtoD04LVuY9frde2WG4fIN95nyopDwcQyCb+1WJL+fznPN3MNKl3PZ9PPrzAU02uLmGD3IYBpdKWwAlLfi4OveB99XW2w+pG0ts/PXnM6nK6hPZ7NzDQ5xcVxMNtrhHYlhflPU=
+	t=1741826553; cv=none; b=NCEHwzbrFQLiTkPezvPACpZ1Q0GSTBmj3AO92sVNY3tJVY4G+0X31fnHhZZjM6OQRmcs7Jl1Ru37rOmU3+1iQcqjNdPiu2/nlLAdJTahy0uweHwwr3yxCIZHpbwH/YNrQApCTiI3JAoUI9VMuMw/svjhIJnNpwQeVIPLBOMIO/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741824036; c=relaxed/simple;
-	bh=4BMK/YpzzNp5PxalzBToe0ubZNqxp6ZnKRn7zN/f8i0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MI3SBor0vuED9Pe0ms/7+mTZQzzo1HWJe0mY5jN4W/SKxY6gJ7/lTIcEhBtVkV9DyLFeCz2+5sZbX0juCZpsxQl5brUHJ6RAazDdvl+IoqCNXFA/9hq6r+kqY0YdGPdv4pS0nnRv21GTG2DWxcg6pGBYTx8xzCsemw0iDdOsYuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WVFDvl3d; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43d04dc73b7so2750505e9.3;
-        Wed, 12 Mar 2025 17:00:34 -0700 (PDT)
+	s=arc-20240116; t=1741826553; c=relaxed/simple;
+	bh=ig288ShW6uf9Gfh2KEd67PQ2IpnjkJQ1Avi5bcKW4BA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Op3AMUhk4z8Ll6j8JLOrIuEsz/aDxOgLUUUmekZMMu1KPye7f2j9NRL4U1x/nIHRjh8AK1eHwXlwO1GNEr1tpMIDkv7pu44wlxbUkXqVpXlVbHIlNRsOCNQgr70hrywk2mDScsh2Gs/fFJwhnkVbu6h5zOJ5F/sr7ByFUYhxgOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=L1PpxLhZ; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5499c8fa0f3so464920e87.2
+        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 17:42:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741824033; x=1742428833; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ejuNv8rYCw+E9SmKdhuUEutSZ7Cxi43XWQoJBcNyrcs=;
-        b=WVFDvl3dQ4f9Ck3VGepuHLJ6XcxQvw/qiGMdtgpjzVXgQ3DbW4Lx01gADrIdYkUzBy
-         HJMl0KUQ82qDbnPXbh3xEzivUmraAki6miEpa2zWxBD4qmjvK4CWIwaw9SpJkZeBNEGl
-         PyzGRqCWcDUObh+EXz0rUNyNTajq8Y4WBJtWe9wLFjV0HrExO6lDuqEzipG3X/WPBxP+
-         NbPmsFHyKgshYqhGqcBHbi5pvVudlkxTIPfMr1GwszacRNEDYECjvOfeAte52IcVbduK
-         slxsaMaqJfa5S6UVj4OLUYHANonPNSxNHrsLfSbDOjPNlNitPgLd7854K3lWCDO7Ak0r
-         vF0Q==
+        d=chromium.org; s=google; t=1741826548; x=1742431348; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aokOw4JpMhMtQebNFKUI7JxGsy/Gt1nWUW1Lw1QEB/8=;
+        b=L1PpxLhZK72q/Lttxw/Hh+onJcCWeljChhsm7E3P1MxiA6rnTiyH8AbLphoax9m67k
+         2anuJaB6Tl6YiWe/q63ePsD+vpbcoLH6woEe0/YhBnpzfCW6vBGcG+f1u0jYpMyLRWfX
+         nyxbV0HDSpISOFyL8bKbxMNz2c8bjh+8eOfgg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741824033; x=1742428833;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ejuNv8rYCw+E9SmKdhuUEutSZ7Cxi43XWQoJBcNyrcs=;
-        b=D03VIRL+zg/0h5lgLzgc3WOmExLN+ZS4pB676uMJEk4ViuH7N+ty+1idY8bcRxaofR
-         dSJ67Pnp9vI/Rt0XIu/gOHvAO8VC/oMP/npX1FXnpH4pvc1Ga/dHwO8YrJMBD00rVk5p
-         0CiSEDXiHpvx61AuPxMttfd4GDhccis0o2yCjEaV/uYEt1Ojuor7rqopvvHVkom8aNic
-         wOw+raSaDqlshVNYHd3gJugIT/vWazqVj0zVgLslrQoG7DfGAyTcuc77dKBaY2owSKTz
-         nVBpphhdnZIjVQY7e/JgkvXnr9bd3sUpylTmimk5YYpB2CeHH71mNCHnI9wOl9IrteGv
-         04vw==
-X-Forwarded-Encrypted: i=1; AJvYcCUHzpMwi3hq2WEz5TLoyfUqSlV7XMGyJcHzX0zyVmVVg9ahE/xTRGMIhK63ioQxqyTu6OFSVtRFZljtC14=@vger.kernel.org, AJvYcCUvcJf8HX8BAOF47DngRB4ijd6nDOK5FB/V3SoKw87mxuSaxHMBoCCgi2yKQFyFG2q3rvY5bRqX@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2LW3aAyt8pUtRnTcjHUeXp/o4Ff7SXCmsuypl+G39Wie531gI
-	QnnjrYDhpRc7VhztKYG06kfghECUoYOHsK46FaUxKUgOsteb6XWo5DnFBA==
-X-Gm-Gg: ASbGncuq4Y0p9W56SMV7Oi15fLY+ZXMbKwtnvEc5hv+k/nWVaiEepyRRkKhN9mP+G2p
-	X6ifmyeGwW2hYnaf9Z5PzfOz8aRbT1VMgJNMp4Hfc+IAXvRSDPyCoGe/PJMkfZm2DnC4mwti2xw
-	CSfMdGjCabEKPVFb+N8q74IWsD9fvXlcwQVQTEafos7450kkWUYx9MC1Kh5r+5JOeHnQknXNHxZ
-	bYZSa6p6dOkW9EYH1UwfL/xL1qzSc5kPti06chKESf1yjmrd+v19fYIPIJQpolS4cGDn3m0n/V7
-	KKnEXgKtSfHcbSjozm+paR7/WYD3CHEVQgODIj83FKI2sSR/odRWa/qTUA==
-X-Google-Smtp-Source: AGHT+IFuo61yCvipm5hMZjaeumpbpltoRjoRDM1oIDlSvOgzJUvZEvB+rFPlQ299bPySriHs/yZzGw==
-X-Received: by 2002:a05:600c:4fd5:b0:43c:fb5b:84d8 with SMTP id 5b1f17b1804b1-43cfb5b8569mr133512285e9.16.1741824032931;
-        Wed, 12 Mar 2025 17:00:32 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:c7c:6696:8300:d012:c3ec:2d3:844b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d0a8d0e01sm35770955e9.39.2025.03.12.17.00.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Mar 2025 17:00:31 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: adilger.kernel@dilger.ca,
-	tytso@mit.edu,
-	shikemeng@huaweicloud.com
-Cc: linux-ext4@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] ext4: Fix potential NULL pointer dereferences in test_mb_mark_used() and test_mb_free_blocks()
-Date: Thu, 13 Mar 2025 00:00:21 +0000
-Message-Id: <20250313000021.18170-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        d=1e100.net; s=20230601; t=1741826548; x=1742431348;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aokOw4JpMhMtQebNFKUI7JxGsy/Gt1nWUW1Lw1QEB/8=;
+        b=lveqKNsq5+6KaTjj7E4BaRko+iOjK91GvViC8KCJWV2I2+2pKWftP6/zPxgeMxE2k2
+         VlTsaYROZbF2q2o6y+1b7ONJ++FzukahCekHAL5F0Yhll8Jz5qpAPL/ZmHWFFB7chCTX
+         LjCGRZSE/zisrFIoirGGTqIULOcI85cld7Bs/MBZERrX9hvvGnyuLRtW1MMu6O6zMXOi
+         OZ2kQal22wgScMUjJHxCDMjSCteOqN7F+a57EFQUrFknPM/eTkO17bj/LwQywYawQTBu
+         nvpfR0YrpO4sCSwRj/d9VCf+EFpdZ5xa2Rht8AtDmrVLZKSFGYz6j2nnlZQ4u/HMRKAM
+         XPzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDyVHnb/6GnZDD84fEZJ2SmimiyO99Q/jpMO7gFvA88Rj1tfrvZJzoy/oiMJ0e83tJC1QsKKo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPYeme1DAE2fW/fMZN9mlVJHAToK0tSdCjhoDWJ3bBT+oimRpW
+	ZEXiGlkCoAD9KMM6/F6xb/VXCpWhKYYjEXXpyXa1MEo2HeVNxSLdbrKIAEXZabuOIoRGTnxTD/b
+	p6I/h
+X-Gm-Gg: ASbGncs+cADWlOJAgrg+wnHusd1DNjPasxRRWJZ8/v3PtUKGhl5zszRa+mFNzxDbNSb
+	cpAUzNCIkmaAXRe2uCNR7Dw3dg1hzH5J1eVg3L9g/TsvohAuNS3gqDhBGLXLueMhx7N/f035xdV
+	46TnAVAe9hm6uWHNBH0FnlMgRmuydDC3SXf15J+s+jA2o1QIvAC2y5smy//6c7J2mAeEOcSmMyt
+	EEUIBo8zWqez/cW01Ow9E1cXvUN9AcellCjRtVUzKZA7C2wCE+mLjSG2zHZU3IpD/wltWzNsoMn
+	/gdRC4Tra2cOaJ14oF1zUFeoQF2oVQVHStpZ7cbIRPLyG4KkQL/MdyPKmoslaIw+InFDfhlzQ57
+	G2JpsHB8T
+X-Google-Smtp-Source: AGHT+IGHVYGbBaGP2BKeI3+br41kS88V9wlS9U1zhlPHVKW6+r9yXjUAPLUY8K1xsiLOKQtjDOKHaQ==
+X-Received: by 2002:a05:6512:1112:b0:549:4f0e:8e28 with SMTP id 2adb3069b0e04-54990e5d374mr9440262e87.15.1741826548171;
+        Wed, 12 Mar 2025 17:42:28 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba7c2b0asm35430e87.100.2025.03.12.17.42.26
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Mar 2025 17:42:26 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5497590ffbbso422883e87.1
+        for <stable@vger.kernel.org>; Wed, 12 Mar 2025 17:42:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX/Ep5Mka37FW0+Uz8k3u7LFmb400QpeDdSAuLrg4sQNcfBIfqxtkZF2n2XjnXNtQn10U8sQgk=@vger.kernel.org
+X-Received: by 2002:a05:6512:1255:b0:545:f0a:bf50 with SMTP id
+ 2adb3069b0e04-549910b5d89mr8085069e87.35.1741826546215; Wed, 12 Mar 2025
+ 17:42:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250311091803.31026-1-ceggers@arri.de>
+In-Reply-To: <20250311091803.31026-1-ceggers@arri.de>
+From: Doug Anderson <dianders@chromium.org>
+Date: Wed, 12 Mar 2025 17:42:14 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UBUN+DERvSdZn67FUvyT+U_CNJs0HUdHooSZSK2F6Nsw@mail.gmail.com>
+X-Gm-Features: AQ5f1JqK--WuCFQMRsSDI8hPU1ACy47TUHjlGUN2x6HSPjgBp2xFsOB9wkyF5O8
+Message-ID: <CAD=FV=UBUN+DERvSdZn67FUvyT+U_CNJs0HUdHooSZSK2F6Nsw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] regulator: dummy: force synchronous probing
+To: Christian Eggers <ceggers@arri.de>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-test_mb_mark_used() and test_mb_free_blocks() call kunit_kzalloc() to 
-allocate memory, however both fail to ensure that the allocations 
-succeeded. If kunit_kzalloc() returns NULL, then dereferencing the 
-corresponding pointer without checking for NULL will lead to 
-a NULL pointer dereference.
+Hi,
 
-To fix this call KUNIT_ASSERT_NOT_ERR_OR_NULL() to ensure 
-the allocation succeeded.
+On Tue, Mar 11, 2025 at 2:18=E2=80=AFAM Christian Eggers <ceggers@arri.de> =
+wrote:
+>
+> Sometimes I get a NULL pointer dereference at boot time in kobject_get()
+> with the following call stack:
+>
+> anatop_regulator_probe()
+>  devm_regulator_register()
+>   regulator_register()
+>    regulator_resolve_supply()
+>     kobject_get()
+>
+> By placing some extra BUG_ON() statements I could verify that this is
+> raised because probing of the 'dummy' regulator driver is not completed
+> ('dummy_regulator_rdev' is still NULL).
+>
+> In the JTAG debugger I can see that dummy_regulator_probe() and
+> anatop_regulator_probe() can be run by different kernel threads
+> (kworker/u4:*).  I haven't further investigated whether this can be
+> changed or if there are other possibilities to force synchronization
+> between these two probe routines.  On the other hand I don't expect much
+> boot time penalty by probing the 'dummy' regulator synchronously.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for driver=
+s that existed in 4.14")
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+> ---
+> v2:
+> - no changes
+>
+>  drivers/regulator/dummy.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Fixes: ac96b56a2fbd ("ext4: Add unit test for mb_mark_used")
-Fixes: b7098e1fa7bc ("ext4: Add unit test for mb_free_blocks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
----
- fs/ext4/mballoc-test.c | 2 ++
- 1 file changed, 2 insertions(+)
+Not that it should really hurt, but do we need both commit
+cfaf53cb472e ("regulator: check that dummy regulator has been probed
+before using it") and this one? It seems like commit cfaf53cb472e
+("regulator: check that dummy regulator has been probed before using
+it") would be sufficient and we don't really need to force the
+regulator to synchronous probing.
 
-diff --git a/fs/ext4/mballoc-test.c b/fs/ext4/mballoc-test.c
-index bb2a223b207c..d634c12f1984 100644
---- a/fs/ext4/mballoc-test.c
-+++ b/fs/ext4/mballoc-test.c
-@@ -796,6 +796,7 @@ static void test_mb_mark_used(struct kunit *test)
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buddy);
- 	grp = kunit_kzalloc(test, offsetof(struct ext4_group_info,
- 				bb_counters[MB_NUM_ORDERS(sb)]), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, grp);
- 
- 	ret = ext4_mb_load_buddy(sb, TEST_GOAL_GROUP, &e4b);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
-@@ -860,6 +861,7 @@ static void test_mb_free_blocks(struct kunit *test)
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buddy);
- 	grp = kunit_kzalloc(test, offsetof(struct ext4_group_info,
- 				bb_counters[MB_NUM_ORDERS(sb)]), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, grp);
- 
- 	ret = ext4_mb_load_buddy(sb, TEST_GOAL_GROUP, &e4b);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
--- 
-2.39.5
+...not that I expect the dummy probing synchronously to be a big deal,
+I just want to make sure I understand.
 
+-Doug
 
