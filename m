@@ -1,84 +1,85 @@
-Return-Path: <stable+bounces-124360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE58A6028A
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 21:26:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB33A6028B
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 21:26:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EFCB3AF8EE
-	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 20:26:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6F719C57E3
+	for <lists+stable@lfdr.de>; Thu, 13 Mar 2025 20:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B6B1F460B;
-	Thu, 13 Mar 2025 20:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F801F4612;
+	Thu, 13 Mar 2025 20:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KjOw3pf9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ufa+ucaF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA781F4180
-	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 20:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BAE1F426F
+	for <stable@vger.kernel.org>; Thu, 13 Mar 2025 20:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741897568; cv=none; b=FzxvVeyG6KRPcdq5GdCyXuQIDbhpg++BFccf7AZFjf7KqVs7OZtnVXtQnxglCfKha/K++jklILR2+EWtNOut/xBAk9XnRd6LPXKjtVWtT83xWnwL9cnDKagZDN2AO/3mEHqQC7Qw8gMYbNdjDXqPC28XUl3VHW3YxTG52FaZFyo=
+	t=1741897569; cv=none; b=cYPoodgPJnaoZHLkm3OjeKfWsDZzCdf4/K8boq0kxghY93JPr9m7x14ij+cPfi22KvbbpKu/JqXRfRF6yc4iw2YO0AilNOawyfN4BLGkKKC35ku6E3shipkV84yYweluYE/nRIXTgdFr5K7nuK5ZFIFk5dwC0x/PaRn08S2VRso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741897568; c=relaxed/simple;
-	bh=TywG6zOc5kb3dZ2xlxUqo5kkTKpwtx2g2rJICIdkWKw=;
+	s=arc-20240116; t=1741897569; c=relaxed/simple;
+	bh=GmC0+hQ44aQDycd/MzOFKn4EE5CzukaH2/jdmMu6t6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1An2Zqa4KaLAJY2fn3i4mQmpJ302iAWS6tl+PMJlZMKgoseaHH2XMwWsnw7uGyDvDOJ973vWKaOVshlZSdLixhptbLJGUO/5uxbxvNcWR+KMbDi3g5GxOLbFCu7IeGbYXYwJ2WRmvjgLdbPv3z+AHi7eCIdlSWHXYsoE4+lSYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KjOw3pf9; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=eBuozMs8QVcNQ4QBG3ImqAcavD/XFal0DzXYwmDx2TfXgI+eyie1MhTVWNNTcO8PeGqeckPrwkdGipcngp1i4cDzXivm+dRQ3MGPiBT4RZexk2prLiWF3cn1UsIVjQCRePKksd7MuoNNs21HNAQzUHD7535/QXPN24GPdeUoQCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ufa+ucaF; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-224191d92e4so30359405ad.3
-        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 13:26:06 -0700 (PDT)
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ff797f8f1bso2611305a91.3
+        for <stable@vger.kernel.org>; Thu, 13 Mar 2025 13:26:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741897566; x=1742502366; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741897567; x=1742502367; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KlKTNyCK2BcIOuGEySH2zKy80IEmZXu/N/kPaWmpZxc=;
-        b=KjOw3pf95BB8YQAWnNoyGs7LI1P7sXutHEeItGhnYV06zEJJ8Zodn8lAGAg3ok5Jts
-         AkDMGWgeG3IQPtaHyG8sAeZWEfSTMqRqH7OFBXW59gvvvNn9Oy06CDFPBJnOu36atRVY
-         hH0dP178ZIV7zu9YZP4Nhflk+nEj4/vtrPJe2Z4nWeDY0Sco4Y8ZJXt8O4D+NVOlNA9k
-         5cuKK9Q+cCnOw0jwjbzL1bVVYSXtJ8nfEYtqsWGfpBNcPshqYXfdf0iA3IWXdysxzRZ8
-         uDJVovjLeC96nFG0qCnxUZkoPbZPwlVuqfL+q46Yykgw6DzIkcR1BIgJb59g+WVQZePz
-         1TWg==
+        bh=GmylYkk9a7+FT+fXSkvgjpuUiEJjXKb41rsG6Hn1Q0Q=;
+        b=Ufa+ucaFbIKzJElN8e4/k8ARsq/bQVicE1q1sE2xqG73PeL83zCzUuHX4fbqSv/3ZF
+         14FLPlPMHfvgCftAQXOF1ohbJ2eYkZxItwf/HAecUBtiEKRyDQwSoMsbCJddIPlkg15G
+         rEbZCzJbe6Y2OdLLdgAz7OXRxOiaONjtuOOYO41ZXAP8gpIFIEphWPv2/XSnERkmtXGf
+         tnvSZ5Hfr22yAZe7LgZtJYWHcIJWxfimpjRg7tMsneEkBilFhvimzFKoFEZ2YqdlJwW+
+         rPHfjVY4I+QYP+Flj6Yuhtg/fYOA0y5m9nEurh2/t7KO5EP0a5IrBOMCVUFguRE/+aZv
+         eHjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741897566; x=1742502366;
+        d=1e100.net; s=20230601; t=1741897567; x=1742502367;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KlKTNyCK2BcIOuGEySH2zKy80IEmZXu/N/kPaWmpZxc=;
-        b=YsZ8xacbe2sEyZR6LFy4sHSE9knHJzwLA8kxMxxd00db6a6j4oOhKMXT3ozPo3NCTO
-         lhlHRsPC5ib3j41QOvjp2hatjC8z48KmPtjLE0SeKBGjIyzzFIC5HBWOI+V1rLc/lwLi
-         rG+4yKxOKTYb7M7yhE7uMf4Llf3+P7Hu1j2Tv587jOK255LLWAhiQwxFJRJ1KaCHodL9
-         r1Yj+bCcSNSIwJHrRSP/tPyZgg+Plhuy77I7d/o4L3DeA1UjqFRUkRidIHsr0uU2YB7X
-         1LZkLF5NaSEoluiB4RFXsoNXcGAko7/rtymxSxOp4czHFXwzDXqcXihLuymEB4edxMhB
-         jaGA==
-X-Gm-Message-State: AOJu0YzLGax4lXOHmvhaDGRZM480MMkZb8JiSk5pGwBevotd9dzHTdYe
-	JOwVAgzIFFP+dggAWJXw6jDPhWaeikH+hDG3F0HKChZtGnEtlW67OcYF2w==
-X-Gm-Gg: ASbGncvqSPGUlTOnOw/8SA855+q+7aU9IsBBMepPgOFwOZ0YMRbiVNhmx2rYbG16rro
-	D0iqf8T0KR5mbLanA16EIpnShIGS/5NaeuveIqkwjNJrBH0E9aXT2wkvZG8P0gv4xAB+M2GbZP2
-	1CmGPtMLeO7GGAl0N4WX+uNRq0qwqQdSRcsltOVzwRmIMvqrH2dlpJ39oYe5Vq5sIpKYn95lk4W
-	EXM9EiVsBqALQsnUgEvBivD41qLG0CSpoE/yKXBp7Z83qXtWDzkjCGAONKJj8JE/C2jS/ghJ4tW
-	XAV90afQ3U0hPcOb4uVipNgqik/E4TUO+H7Ks3IZaQEG/w7VfnXr+dy63IcfUODS3zk4Q24=
-X-Google-Smtp-Source: AGHT+IEd7coE1hjcTowz4im2F8dtFPZtyo2BwHsJGMijUHF0Ko+XT38d8x6fRtB9C28gPIf1u/0Phg==
-X-Received: by 2002:a05:6a21:7894:b0:1f5:619a:8f73 with SMTP id adf61e73a8af0-1f5c12c7973mr71388637.26.1741897565995;
-        Thu, 13 Mar 2025 13:26:05 -0700 (PDT)
+        bh=GmylYkk9a7+FT+fXSkvgjpuUiEJjXKb41rsG6Hn1Q0Q=;
+        b=fBN2TkNc65fEi0vkBeXWnKg1eLWS8o4/cUwG2DhCjSoPtk7nfvPmCt8JftoRfWAmfW
+         as7rs/9D1qyIJTKPI3/irC3QqIKvkeF1PjhZta3F0N0QN4uJiRhhar0M15mRJ21xF1Fo
+         X2UWqsk9D0mQEIjfhRqeL/Sn01egcyYyv0n05fiaHm1fxGQtF6EumjcglmfOFLYFPeG+
+         Q/xbttJH2nAfnG6dlBjFqfuIyGJVSABveYqqE3dq1DMnkz4kFW9dzsAdU0nuHiyYfCrP
+         0hIeTTJWN78Vs/GDsoWwWKrs4g+oKkOuv/ZMFtYIOJhL1F+tHK+d+/LiKvKOPX5KPXS7
+         cRtA==
+X-Gm-Message-State: AOJu0YzHg2eLmyPKZuZITHxIU7Kzgj98eJOAkKjm4logGOHmuH7P9jQh
+	AlneWqNbVOkkxaaygsfyptsJXrRk4X8NEA8ZlbrgLLKsz/Olt7G4V2z95w==
+X-Gm-Gg: ASbGnctUt1CFUOwhhqGwLo9VwTqMIzbrqmTJqOQo6ZJcYhrt5UxXBg5MB1lXmbx6efr
+	0gSPDERpeTt6bGic7pmYNOBXjGRFsFjizciIEg4bRjIb1RzDKpZvSrmelauleXS0RsUJD8GTgD/
+	9tpHb0Cfi/TTtdJoBlNy0o6L1UXTft8kDr0yKyrR4rYD0tQTveZBtmCQHKDnKnKPYERpRPwWc6b
+	y6i1ehnhggV9eaI9YtFOXBdgM0TvJeEStSAAjkw3Q5MZ1Ui3tv+1eCwOc9V/6tUN0YBjHggmqi0
+	qlOg3becIeQuL/pnZCcNVuJrQ3w9ymYS1SxKowZN4ofjfto8dp7wEhDwQFITYDxdbIMuYGDtC2M
+	JiEnUWQ==
+X-Google-Smtp-Source: AGHT+IEfaU8L7XAYMFvKAojHGNQvg5bH59vKvNxePF1UMHYVtRpWS57nCPkFfQEYCcFzkCj4GZK4mg==
+X-Received: by 2002:a05:6a21:328a:b0:1ee:c7c8:ca4 with SMTP id adf61e73a8af0-1f5c1317ea2mr40992637.36.1741897566859;
+        Thu, 13 Mar 2025 13:26:06 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:b233:743:91db:ac7b])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9c94cesm1724455a12.6.2025.03.13.13.26.04
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56e9c94cesm1724455a12.6.2025.03.13.13.26.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 13:26:05 -0700 (PDT)
+        Thu, 13 Mar 2025 13:26:06 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 03/29] xfs: fix confusing xfs_extent_item variable names
-Date: Thu, 13 Mar 2025 13:25:23 -0700
-Message-ID: <20250313202550.2257219-4-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 04/29] xfs: pass the xfs_bmbt_irec directly through the log intent code
+Date: Thu, 13 Mar 2025 13:25:24 -0700
+Message-ID: <20250313202550.2257219-5-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
 In-Reply-To: <20250313202550.2257219-1-leah.rumancik@gmail.com>
 References: <20250313202550.2257219-1-leah.rumancik@gmail.com>
@@ -92,371 +93,271 @@ Content-Transfer-Encoding: 8bit
 
 From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 578c714b215d474c52949e65a914dae67924f0fe ]
+[ Upstream commit ddccb81b26ec021ae1f3366aa996cc4c68dd75ce ]
 
-Change the name of all pointers to xfs_extent_item structures to "xefi"
-to make the name consistent and because the current selections ("new"
-and "free") mean other things in C.
+Instead of repeatedly boxing and unboxing the incore extent mapping
+structure as it passes through the BUI code, pass the pointer directly
+through.
 
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/libxfs/xfs_alloc.c | 32 +++++++++---------
- fs/xfs/xfs_extfree_item.c | 70 +++++++++++++++++++--------------------
- 2 files changed, 51 insertions(+), 51 deletions(-)
+ fs/xfs/libxfs/xfs_bmap.c | 32 ++++++++--------
+ fs/xfs/libxfs/xfs_bmap.h |  5 +--
+ fs/xfs/xfs_bmap_item.c   | 81 +++++++++++++++-------------------------
+ 3 files changed, 46 insertions(+), 72 deletions(-)
 
-diff --git a/fs/xfs/libxfs/xfs_alloc.c b/fs/xfs/libxfs/xfs_alloc.c
-index 74d039bdc9f7..cc5c954cda88 100644
---- a/fs/xfs/libxfs/xfs_alloc.c
-+++ b/fs/xfs/libxfs/xfs_alloc.c
-@@ -2491,78 +2491,78 @@ xfs_defer_agfl_block(
- 	xfs_agnumber_t			agno,
- 	xfs_fsblock_t			agbno,
- 	struct xfs_owner_info		*oinfo)
- {
- 	struct xfs_mount		*mp = tp->t_mountp;
--	struct xfs_extent_free_item	*new;		/* new element */
-+	struct xfs_extent_free_item	*xefi;
- 
- 	ASSERT(xfs_extfree_item_cache != NULL);
- 	ASSERT(oinfo != NULL);
- 
--	new = kmem_cache_zalloc(xfs_extfree_item_cache,
-+	xefi = kmem_cache_zalloc(xfs_extfree_item_cache,
- 			       GFP_KERNEL | __GFP_NOFAIL);
--	new->xefi_startblock = XFS_AGB_TO_FSB(mp, agno, agbno);
--	new->xefi_blockcount = 1;
--	new->xefi_owner = oinfo->oi_owner;
-+	xefi->xefi_startblock = XFS_AGB_TO_FSB(mp, agno, agbno);
-+	xefi->xefi_blockcount = 1;
-+	xefi->xefi_owner = oinfo->oi_owner;
- 
- 	trace_xfs_agfl_free_defer(mp, agno, 0, agbno, 1);
- 
--	xfs_defer_add(tp, XFS_DEFER_OPS_TYPE_AGFL_FREE, &new->xefi_list);
-+	xfs_defer_add(tp, XFS_DEFER_OPS_TYPE_AGFL_FREE, &xefi->xefi_list);
- }
- 
- /*
-  * Add the extent to the list of extents to be free at transaction end.
-  * The list is maintained sorted (by block number).
+diff --git a/fs/xfs/libxfs/xfs_bmap.c b/fs/xfs/libxfs/xfs_bmap.c
+index 27d3121e6da9..d523ac51c662 100644
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -6117,43 +6117,41 @@ xfs_bmap_unmap_extent(
+  * btree cursor to maintain our lock on the bmapbt between calls.
   */
- void
- __xfs_free_extent_later(
+ int
+ xfs_bmap_finish_one(
  	struct xfs_trans		*tp,
- 	xfs_fsblock_t			bno,
- 	xfs_filblks_t			len,
- 	const struct xfs_owner_info	*oinfo,
- 	bool				skip_discard)
+-	struct xfs_inode		*ip,
+-	enum xfs_bmap_intent_type	type,
+-	int				whichfork,
+-	xfs_fileoff_t			startoff,
+-	xfs_fsblock_t			startblock,
+-	xfs_filblks_t			*blockcount,
+-	xfs_exntst_t			state)
++	struct xfs_bmap_intent		*bi)
  {
--	struct xfs_extent_free_item	*new;		/* new element */
-+	struct xfs_extent_free_item	*xefi;
- #ifdef DEBUG
- 	struct xfs_mount		*mp = tp->t_mountp;
- 	xfs_agnumber_t			agno;
- 	xfs_agblock_t			agbno;
++	struct xfs_bmbt_irec		*bmap = &bi->bi_bmap;
+ 	int				error = 0;
  
- 	ASSERT(bno != NULLFSBLOCK);
- 	ASSERT(len > 0);
- 	ASSERT(len <= XFS_MAX_BMBT_EXTLEN);
- 	ASSERT(!isnullstartblock(bno));
- 	agno = XFS_FSB_TO_AGNO(mp, bno);
- 	agbno = XFS_FSB_TO_AGBNO(mp, bno);
- 	ASSERT(agno < mp->m_sb.sb_agcount);
- 	ASSERT(agbno < mp->m_sb.sb_agblocks);
- 	ASSERT(len < mp->m_sb.sb_agblocks);
- 	ASSERT(agbno + len <= mp->m_sb.sb_agblocks);
- #endif
- 	ASSERT(xfs_extfree_item_cache != NULL);
+ 	ASSERT(tp->t_firstblock == NULLFSBLOCK);
  
--	new = kmem_cache_zalloc(xfs_extfree_item_cache,
-+	xefi = kmem_cache_zalloc(xfs_extfree_item_cache,
- 			       GFP_KERNEL | __GFP_NOFAIL);
--	new->xefi_startblock = bno;
--	new->xefi_blockcount = (xfs_extlen_t)len;
-+	xefi->xefi_startblock = bno;
-+	xefi->xefi_blockcount = (xfs_extlen_t)len;
- 	if (skip_discard)
--		new->xefi_flags |= XFS_EFI_SKIP_DISCARD;
-+		xefi->xefi_flags |= XFS_EFI_SKIP_DISCARD;
- 	if (oinfo) {
- 		ASSERT(oinfo->oi_offset == 0);
+ 	trace_xfs_bmap_deferred(tp->t_mountp,
+-			XFS_FSB_TO_AGNO(tp->t_mountp, startblock), type,
+-			XFS_FSB_TO_AGBNO(tp->t_mountp, startblock),
+-			ip->i_ino, whichfork, startoff, *blockcount, state);
++			XFS_FSB_TO_AGNO(tp->t_mountp, bmap->br_startblock),
++			bi->bi_type,
++			XFS_FSB_TO_AGBNO(tp->t_mountp, bmap->br_startblock),
++			bi->bi_owner->i_ino, bi->bi_whichfork,
++			bmap->br_startoff, bmap->br_blockcount,
++			bmap->br_state);
  
- 		if (oinfo->oi_flags & XFS_OWNER_INFO_ATTR_FORK)
--			new->xefi_flags |= XFS_EFI_ATTR_FORK;
-+			xefi->xefi_flags |= XFS_EFI_ATTR_FORK;
- 		if (oinfo->oi_flags & XFS_OWNER_INFO_BMBT_BLOCK)
--			new->xefi_flags |= XFS_EFI_BMBT_BLOCK;
--		new->xefi_owner = oinfo->oi_owner;
-+			xefi->xefi_flags |= XFS_EFI_BMBT_BLOCK;
-+		xefi->xefi_owner = oinfo->oi_owner;
- 	} else {
--		new->xefi_owner = XFS_RMAP_OWN_NULL;
-+		xefi->xefi_owner = XFS_RMAP_OWN_NULL;
+-	if (WARN_ON_ONCE(whichfork != XFS_DATA_FORK))
++	if (WARN_ON_ONCE(bi->bi_whichfork != XFS_DATA_FORK))
+ 		return -EFSCORRUPTED;
+ 
+ 	if (XFS_TEST_ERROR(false, tp->t_mountp,
+ 			XFS_ERRTAG_BMAP_FINISH_ONE))
+ 		return -EIO;
+ 
+-	switch (type) {
++	switch (bi->bi_type) {
+ 	case XFS_BMAP_MAP:
+-		error = xfs_bmapi_remap(tp, ip, startoff, *blockcount,
+-				startblock, 0);
+-		*blockcount = 0;
++		error = xfs_bmapi_remap(tp, bi->bi_owner, bmap->br_startoff,
++				bmap->br_blockcount, bmap->br_startblock, 0);
++		bmap->br_blockcount = 0;
+ 		break;
+ 	case XFS_BMAP_UNMAP:
+-		error = __xfs_bunmapi(tp, ip, startoff, blockcount,
+-				XFS_BMAPI_REMAP, 1);
++		error = __xfs_bunmapi(tp, bi->bi_owner, bmap->br_startoff,
++				&bmap->br_blockcount, XFS_BMAPI_REMAP, 1);
+ 		break;
+ 	default:
+ 		ASSERT(0);
+ 		error = -EFSCORRUPTED;
  	}
- 	trace_xfs_bmap_free_defer(tp->t_mountp,
- 			XFS_FSB_TO_AGNO(tp->t_mountp, bno), 0,
- 			XFS_FSB_TO_AGBNO(tp->t_mountp, bno), len);
--	xfs_defer_add(tp, XFS_DEFER_OPS_TYPE_FREE, &new->xefi_list);
-+	xfs_defer_add(tp, XFS_DEFER_OPS_TYPE_FREE, &xefi->xefi_list);
- }
- 
- #ifdef DEBUG
- /*
-  * Check if an AGF has a free extent record whose length is equal to
-diff --git a/fs/xfs/xfs_extfree_item.c b/fs/xfs/xfs_extfree_item.c
-index 618d2f9ff535..011b50469301 100644
---- a/fs/xfs/xfs_extfree_item.c
-+++ b/fs/xfs/xfs_extfree_item.c
-@@ -343,49 +343,49 @@ xfs_trans_get_efd(
-  */
- static int
- xfs_trans_free_extent(
- 	struct xfs_trans		*tp,
- 	struct xfs_efd_log_item		*efdp,
--	struct xfs_extent_free_item	*free)
-+	struct xfs_extent_free_item	*xefi)
- {
- 	struct xfs_owner_info		oinfo = { };
- 	struct xfs_mount		*mp = tp->t_mountp;
- 	struct xfs_extent		*extp;
- 	uint				next_extent;
- 	xfs_agnumber_t			agno = XFS_FSB_TO_AGNO(mp,
--							free->xefi_startblock);
-+							xefi->xefi_startblock);
- 	xfs_agblock_t			agbno = XFS_FSB_TO_AGBNO(mp,
--							free->xefi_startblock);
-+							xefi->xefi_startblock);
- 	int				error;
- 
--	oinfo.oi_owner = free->xefi_owner;
--	if (free->xefi_flags & XFS_EFI_ATTR_FORK)
-+	oinfo.oi_owner = xefi->xefi_owner;
-+	if (xefi->xefi_flags & XFS_EFI_ATTR_FORK)
- 		oinfo.oi_flags |= XFS_OWNER_INFO_ATTR_FORK;
--	if (free->xefi_flags & XFS_EFI_BMBT_BLOCK)
-+	if (xefi->xefi_flags & XFS_EFI_BMBT_BLOCK)
- 		oinfo.oi_flags |= XFS_OWNER_INFO_BMBT_BLOCK;
- 
- 	trace_xfs_bmap_free_deferred(tp->t_mountp, agno, 0, agbno,
--			free->xefi_blockcount);
-+			xefi->xefi_blockcount);
- 
--	error = __xfs_free_extent(tp, free->xefi_startblock,
--			free->xefi_blockcount, &oinfo, XFS_AG_RESV_NONE,
--			free->xefi_flags & XFS_EFI_SKIP_DISCARD);
-+	error = __xfs_free_extent(tp, xefi->xefi_startblock,
-+			xefi->xefi_blockcount, &oinfo, XFS_AG_RESV_NONE,
-+			xefi->xefi_flags & XFS_EFI_SKIP_DISCARD);
- 	/*
- 	 * Mark the transaction dirty, even on error. This ensures the
- 	 * transaction is aborted, which:
- 	 *
- 	 * 1.) releases the EFI and frees the EFD
- 	 * 2.) shuts down the filesystem
- 	 */
- 	tp->t_flags |= XFS_TRANS_DIRTY | XFS_TRANS_HAS_INTENT_DONE;
- 	set_bit(XFS_LI_DIRTY, &efdp->efd_item.li_flags);
- 
- 	next_extent = efdp->efd_next_extent;
- 	ASSERT(next_extent < efdp->efd_format.efd_nextents);
- 	extp = &(efdp->efd_format.efd_extents[next_extent]);
--	extp->ext_start = free->xefi_startblock;
--	extp->ext_len = free->xefi_blockcount;
-+	extp->ext_start = xefi->xefi_startblock;
-+	extp->ext_len = xefi->xefi_blockcount;
- 	efdp->efd_next_extent++;
- 
- 	return error;
- }
- 
-@@ -409,162 +409,162 @@ xfs_extent_free_diff_items(
- /* Log a free extent to the intent item. */
- STATIC void
- xfs_extent_free_log_item(
- 	struct xfs_trans		*tp,
- 	struct xfs_efi_log_item		*efip,
--	struct xfs_extent_free_item	*free)
-+	struct xfs_extent_free_item	*xefi)
- {
- 	uint				next_extent;
- 	struct xfs_extent		*extp;
- 
- 	tp->t_flags |= XFS_TRANS_DIRTY;
- 	set_bit(XFS_LI_DIRTY, &efip->efi_item.li_flags);
- 
- 	/*
- 	 * atomic_inc_return gives us the value after the increment;
- 	 * we want to use it as an array index so we need to subtract 1 from
- 	 * it.
- 	 */
- 	next_extent = atomic_inc_return(&efip->efi_next_extent) - 1;
- 	ASSERT(next_extent < efip->efi_format.efi_nextents);
- 	extp = &efip->efi_format.efi_extents[next_extent];
--	extp->ext_start = free->xefi_startblock;
--	extp->ext_len = free->xefi_blockcount;
-+	extp->ext_start = xefi->xefi_startblock;
-+	extp->ext_len = xefi->xefi_blockcount;
- }
- 
- static struct xfs_log_item *
- xfs_extent_free_create_intent(
- 	struct xfs_trans		*tp,
- 	struct list_head		*items,
- 	unsigned int			count,
- 	bool				sort)
- {
- 	struct xfs_mount		*mp = tp->t_mountp;
- 	struct xfs_efi_log_item		*efip = xfs_efi_init(mp, count);
--	struct xfs_extent_free_item	*free;
-+	struct xfs_extent_free_item	*xefi;
- 
- 	ASSERT(count > 0);
- 
- 	xfs_trans_add_item(tp, &efip->efi_item);
- 	if (sort)
- 		list_sort(mp, items, xfs_extent_free_diff_items);
--	list_for_each_entry(free, items, xefi_list)
--		xfs_extent_free_log_item(tp, efip, free);
-+	list_for_each_entry(xefi, items, xefi_list)
-+		xfs_extent_free_log_item(tp, efip, xefi);
- 	return &efip->efi_item;
- }
- 
- /* Get an EFD so we can process all the free extents. */
- static struct xfs_log_item *
- xfs_extent_free_create_done(
- 	struct xfs_trans		*tp,
- 	struct xfs_log_item		*intent,
- 	unsigned int			count)
- {
- 	return &xfs_trans_get_efd(tp, EFI_ITEM(intent), count)->efd_item;
- }
- 
- /* Process a free extent. */
- STATIC int
- xfs_extent_free_finish_item(
- 	struct xfs_trans		*tp,
- 	struct xfs_log_item		*done,
- 	struct list_head		*item,
- 	struct xfs_btree_cur		**state)
- {
--	struct xfs_extent_free_item	*free;
-+	struct xfs_extent_free_item	*xefi;
- 	int				error;
- 
--	free = container_of(item, struct xfs_extent_free_item, xefi_list);
-+	xefi = container_of(item, struct xfs_extent_free_item, xefi_list);
- 
--	error = xfs_trans_free_extent(tp, EFD_ITEM(done), free);
--	kmem_cache_free(xfs_extfree_item_cache, free);
-+	error = xfs_trans_free_extent(tp, EFD_ITEM(done), xefi);
-+	kmem_cache_free(xfs_extfree_item_cache, xefi);
- 	return error;
- }
- 
- /* Abort all pending EFIs. */
- STATIC void
- xfs_extent_free_abort_intent(
- 	struct xfs_log_item		*intent)
- {
- 	xfs_efi_release(EFI_ITEM(intent));
- }
- 
- /* Cancel a free extent. */
- STATIC void
- xfs_extent_free_cancel_item(
- 	struct list_head		*item)
- {
--	struct xfs_extent_free_item	*free;
-+	struct xfs_extent_free_item	*xefi;
- 
--	free = container_of(item, struct xfs_extent_free_item, xefi_list);
--	kmem_cache_free(xfs_extfree_item_cache, free);
-+	xefi = container_of(item, struct xfs_extent_free_item, xefi_list);
-+	kmem_cache_free(xfs_extfree_item_cache, xefi);
- }
- 
- const struct xfs_defer_op_type xfs_extent_free_defer_type = {
- 	.max_items	= XFS_EFI_MAX_FAST_EXTENTS,
- 	.create_intent	= xfs_extent_free_create_intent,
- 	.abort_intent	= xfs_extent_free_abort_intent,
- 	.create_done	= xfs_extent_free_create_done,
- 	.finish_item	= xfs_extent_free_finish_item,
- 	.cancel_item	= xfs_extent_free_cancel_item,
+diff --git a/fs/xfs/libxfs/xfs_bmap.h b/fs/xfs/libxfs/xfs_bmap.h
+index 08c16e4edc0f..524912f276f8 100644
+--- a/fs/xfs/libxfs/xfs_bmap.h
++++ b/fs/xfs/libxfs/xfs_bmap.h
+@@ -234,14 +234,11 @@ struct xfs_bmap_intent {
+ 	int					bi_whichfork;
+ 	struct xfs_inode			*bi_owner;
+ 	struct xfs_bmbt_irec			bi_bmap;
  };
  
- /*
-  * AGFL blocks are accounted differently in the reserve pools and are not
-  * inserted into the busy extent list.
+-int	xfs_bmap_finish_one(struct xfs_trans *tp, struct xfs_inode *ip,
+-		enum xfs_bmap_intent_type type, int whichfork,
+-		xfs_fileoff_t startoff, xfs_fsblock_t startblock,
+-		xfs_filblks_t *blockcount, xfs_exntst_t state);
++int	xfs_bmap_finish_one(struct xfs_trans *tp, struct xfs_bmap_intent *bi);
+ void	xfs_bmap_map_extent(struct xfs_trans *tp, struct xfs_inode *ip,
+ 		struct xfs_bmbt_irec *imap);
+ void	xfs_bmap_unmap_extent(struct xfs_trans *tp, struct xfs_inode *ip,
+ 		struct xfs_bmbt_irec *imap);
+ 
+diff --git a/fs/xfs/xfs_bmap_item.c b/fs/xfs/xfs_bmap_item.c
+index 41323da523d1..13aa5359c02f 100644
+--- a/fs/xfs/xfs_bmap_item.c
++++ b/fs/xfs/xfs_bmap_item.c
+@@ -244,22 +244,15 @@ xfs_trans_get_bud(
   */
- STATIC int
- xfs_agfl_free_finish_item(
+ static int
+ xfs_trans_log_finish_bmap_update(
  	struct xfs_trans		*tp,
- 	struct xfs_log_item		*done,
- 	struct list_head		*item,
- 	struct xfs_btree_cur		**state)
+ 	struct xfs_bud_log_item		*budp,
+-	enum xfs_bmap_intent_type	type,
+-	struct xfs_inode		*ip,
+-	int				whichfork,
+-	xfs_fileoff_t			startoff,
+-	xfs_fsblock_t			startblock,
+-	xfs_filblks_t			*blockcount,
+-	xfs_exntst_t			state)
++	struct xfs_bmap_intent		*bi)
  {
- 	struct xfs_owner_info		oinfo = { };
- 	struct xfs_mount		*mp = tp->t_mountp;
- 	struct xfs_efd_log_item		*efdp = EFD_ITEM(done);
--	struct xfs_extent_free_item	*free;
-+	struct xfs_extent_free_item	*xefi;
- 	struct xfs_extent		*extp;
- 	struct xfs_buf			*agbp;
  	int				error;
- 	xfs_agnumber_t			agno;
- 	xfs_agblock_t			agbno;
- 	uint				next_extent;
- 	struct xfs_perag		*pag;
  
--	free = container_of(item, struct xfs_extent_free_item, xefi_list);
--	ASSERT(free->xefi_blockcount == 1);
--	agno = XFS_FSB_TO_AGNO(mp, free->xefi_startblock);
--	agbno = XFS_FSB_TO_AGBNO(mp, free->xefi_startblock);
--	oinfo.oi_owner = free->xefi_owner;
-+	xefi = container_of(item, struct xfs_extent_free_item, xefi_list);
-+	ASSERT(xefi->xefi_blockcount == 1);
-+	agno = XFS_FSB_TO_AGNO(mp, xefi->xefi_startblock);
-+	agbno = XFS_FSB_TO_AGBNO(mp, xefi->xefi_startblock);
-+	oinfo.oi_owner = xefi->xefi_owner;
- 
--	trace_xfs_agfl_free_deferred(mp, agno, 0, agbno, free->xefi_blockcount);
-+	trace_xfs_agfl_free_deferred(mp, agno, 0, agbno, xefi->xefi_blockcount);
- 
- 	pag = xfs_perag_get(mp, agno);
- 	error = xfs_alloc_read_agf(pag, tp, 0, &agbp);
- 	if (!error)
- 		error = xfs_free_agfl_block(tp, agno, agbno, agbp, &oinfo);
- 	xfs_perag_put(pag);
+-	error = xfs_bmap_finish_one(tp, ip, type, whichfork, startoff,
+-			startblock, blockcount, state);
++	error = xfs_bmap_finish_one(tp, bi);
  
  	/*
  	 * Mark the transaction dirty, even on error. This ensures the
  	 * transaction is aborted, which:
  	 *
- 	 * 1.) releases the EFI and frees the EFD
- 	 * 2.) shuts down the filesystem
- 	 */
- 	tp->t_flags |= XFS_TRANS_DIRTY;
- 	set_bit(XFS_LI_DIRTY, &efdp->efd_item.li_flags);
+@@ -376,29 +369,21 @@ xfs_bmap_update_finish_item(
+ 	struct xfs_trans		*tp,
+ 	struct xfs_log_item		*done,
+ 	struct list_head		*item,
+ 	struct xfs_btree_cur		**state)
+ {
+-	struct xfs_bmap_intent		*bmap;
+-	xfs_filblks_t			count;
++	struct xfs_bmap_intent		*bi;
+ 	int				error;
  
- 	next_extent = efdp->efd_next_extent;
- 	ASSERT(next_extent < efdp->efd_format.efd_nextents);
- 	extp = &(efdp->efd_format.efd_extents[next_extent]);
--	extp->ext_start = free->xefi_startblock;
--	extp->ext_len = free->xefi_blockcount;
-+	extp->ext_start = xefi->xefi_startblock;
-+	extp->ext_len = xefi->xefi_blockcount;
- 	efdp->efd_next_extent++;
- 
--	kmem_cache_free(xfs_extfree_item_cache, free);
-+	kmem_cache_free(xfs_extfree_item_cache, xefi);
+-	bmap = container_of(item, struct xfs_bmap_intent, bi_list);
+-	count = bmap->bi_bmap.br_blockcount;
+-	error = xfs_trans_log_finish_bmap_update(tp, BUD_ITEM(done),
+-			bmap->bi_type,
+-			bmap->bi_owner, bmap->bi_whichfork,
+-			bmap->bi_bmap.br_startoff,
+-			bmap->bi_bmap.br_startblock,
+-			&count,
+-			bmap->bi_bmap.br_state);
+-	if (!error && count > 0) {
+-		ASSERT(bmap->bi_type == XFS_BMAP_UNMAP);
+-		bmap->bi_bmap.br_blockcount = count;
++	bi = container_of(item, struct xfs_bmap_intent, bi_list);
++
++	error = xfs_trans_log_finish_bmap_update(tp, BUD_ITEM(done), bi);
++	if (!error && bi->bi_bmap.br_blockcount > 0) {
++		ASSERT(bi->bi_type == XFS_BMAP_UNMAP);
+ 		return -EAGAIN;
+ 	}
+-	kmem_cache_free(xfs_bmap_intent_cache, bmap);
++	kmem_cache_free(xfs_bmap_intent_cache, bi);
  	return error;
  }
  
- /* sub-type with special handling for AGFL deferred frees */
- const struct xfs_defer_op_type xfs_agfl_free_defer_type = {
+ /* Abort all pending BUIs. */
+ STATIC void
+@@ -469,79 +454,73 @@ xfs_bui_validate(
+ STATIC int
+ xfs_bui_item_recover(
+ 	struct xfs_log_item		*lip,
+ 	struct list_head		*capture_list)
+ {
+-	struct xfs_bmbt_irec		irec;
++	struct xfs_bmap_intent		fake = { };
+ 	struct xfs_bui_log_item		*buip = BUI_ITEM(lip);
+ 	struct xfs_trans		*tp;
+ 	struct xfs_inode		*ip = NULL;
+ 	struct xfs_mount		*mp = lip->li_log->l_mp;
+-	struct xfs_map_extent		*bmap;
++	struct xfs_map_extent		*map;
+ 	struct xfs_bud_log_item		*budp;
+-	xfs_filblks_t			count;
+-	xfs_exntst_t			state;
+-	unsigned int			bui_type;
+-	int				whichfork;
+ 	int				iext_delta;
+ 	int				error = 0;
+ 
+ 	if (!xfs_bui_validate(mp, buip)) {
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+ 				&buip->bui_format, sizeof(buip->bui_format));
+ 		return -EFSCORRUPTED;
+ 	}
+ 
+-	bmap = &buip->bui_format.bui_extents[0];
+-	state = (bmap->me_flags & XFS_BMAP_EXTENT_UNWRITTEN) ?
+-			XFS_EXT_UNWRITTEN : XFS_EXT_NORM;
+-	whichfork = (bmap->me_flags & XFS_BMAP_EXTENT_ATTR_FORK) ?
++	map = &buip->bui_format.bui_extents[0];
++	fake.bi_whichfork = (map->me_flags & XFS_BMAP_EXTENT_ATTR_FORK) ?
+ 			XFS_ATTR_FORK : XFS_DATA_FORK;
+-	bui_type = bmap->me_flags & XFS_BMAP_EXTENT_TYPE_MASK;
++	fake.bi_type = map->me_flags & XFS_BMAP_EXTENT_TYPE_MASK;
+ 
+-	error = xlog_recover_iget(mp, bmap->me_owner, &ip);
++	error = xlog_recover_iget(mp, map->me_owner, &ip);
+ 	if (error)
+ 		return error;
+ 
+ 	/* Allocate transaction and do the work. */
+ 	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_itruncate,
+ 			XFS_EXTENTADD_SPACE_RES(mp, XFS_DATA_FORK), 0, 0, &tp);
+ 	if (error)
+ 		goto err_rele;
+ 
+ 	budp = xfs_trans_get_bud(tp, buip);
+ 	xfs_ilock(ip, XFS_ILOCK_EXCL);
+ 	xfs_trans_ijoin(tp, ip, 0);
+ 
+-	if (bui_type == XFS_BMAP_MAP)
++	if (fake.bi_type == XFS_BMAP_MAP)
+ 		iext_delta = XFS_IEXT_ADD_NOSPLIT_CNT;
+ 	else
+ 		iext_delta = XFS_IEXT_PUNCH_HOLE_CNT;
+ 
+-	error = xfs_iext_count_may_overflow(ip, whichfork, iext_delta);
++	error = xfs_iext_count_may_overflow(ip, fake.bi_whichfork, iext_delta);
+ 	if (error == -EFBIG)
+ 		error = xfs_iext_count_upgrade(tp, ip, iext_delta);
+ 	if (error)
+ 		goto err_cancel;
+ 
+-	count = bmap->me_len;
+-	error = xfs_trans_log_finish_bmap_update(tp, budp, bui_type, ip,
+-			whichfork, bmap->me_startoff, bmap->me_startblock,
+-			&count, state);
++	fake.bi_owner = ip;
++	fake.bi_bmap.br_startblock = map->me_startblock;
++	fake.bi_bmap.br_startoff = map->me_startoff;
++	fake.bi_bmap.br_blockcount = map->me_len;
++	fake.bi_bmap.br_state = (map->me_flags & XFS_BMAP_EXTENT_UNWRITTEN) ?
++			XFS_EXT_UNWRITTEN : XFS_EXT_NORM;
++
++	error = xfs_trans_log_finish_bmap_update(tp, budp, &fake);
+ 	if (error == -EFSCORRUPTED)
+-		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp, bmap,
+-				sizeof(*bmap));
++		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp, map,
++				sizeof(*map));
+ 	if (error)
+ 		goto err_cancel;
+ 
+-	if (count > 0) {
+-		ASSERT(bui_type == XFS_BMAP_UNMAP);
+-		irec.br_startblock = bmap->me_startblock;
+-		irec.br_blockcount = count;
+-		irec.br_startoff = bmap->me_startoff;
+-		irec.br_state = state;
+-		xfs_bmap_unmap_extent(tp, ip, &irec);
++	if (fake.bi_bmap.br_blockcount > 0) {
++		ASSERT(fake.bi_type == XFS_BMAP_UNMAP);
++		xfs_bmap_unmap_extent(tp, ip, &fake.bi_bmap);
+ 	}
+ 
+ 	/*
+ 	 * Commit transaction, which frees the transaction and saves the inode
+ 	 * for later replay activities.
 -- 
 2.49.0.rc1.451.g8f38331e32-goog
 
