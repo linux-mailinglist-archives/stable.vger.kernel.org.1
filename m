@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9F2A62143
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D592A62144
 	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 00:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5912646244F
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 23:10:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C65119C55C2
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 23:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D271C860B;
-	Fri, 14 Mar 2025 23:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144771DF242;
+	Fri, 14 Mar 2025 23:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3MaZUhl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RV/J/MBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2378A1F92E
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 23:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AEB1F92E
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 23:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741993807; cv=none; b=sQZfqO+pUfAFW2+5ta8SqqJV/ad28dqxBaSrWv0jBHhlLyS2xl8ijhT4qQgPaR50IB9f8nSR5JsIcWauK7zJmrAhBvaHM7Z3LNstvyDfUhQqSacoFOumhdXv/RHVeCJPhIDV7ahiLrIK6/byXy8cjLrpHhfa5yvTiuK2qsjgqC4=
+	t=1741993808; cv=none; b=Qi0D21i2BcGqfW/da5Oq3Hcaeari7JXnCPP5zQ77P5soI7q0eSLsZ8acyPKqzADFBXRaW6P6epy+nmeztbh+R/lSl7ZPltpKBS3nHnzxVuYz3m0Jqd56EYmH0bzJ0bZ9i+cppUZM95QYDUji7R1WlBEKk8ZlR9nILM+AAtL4y1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741993807; c=relaxed/simple;
-	bh=KbZFJSQTt+ShGS5hLc9Ed0i7kOGQy4qL8Xd5B7EF+4I=;
+	s=arc-20240116; t=1741993808; c=relaxed/simple;
+	bh=wSalaZtqoEhgxesvIgkHrK2m8lEkxMTUrJBq+/X6KM8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h5PqNuhbfFsChsZpa063XNmV8oIAHIh4ZyMc4Nw6FyD2MdfOMmukPKJ4GAf4/2FtBZhN9j3k3a0t7W/Ibp5FFoaOeDBybjQ5EPE1aYGaenvHPNNjyWV6UQDwLQritfRzkhSD8YS7S/jXZeQAaEgS9qgZl9U/CmjS5Pr8XqqnzGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3MaZUhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D992C4CEE3;
-	Fri, 14 Mar 2025 23:10:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dCbgeb0suVBVxxwtI9s+7JQ0Et87dlwtZ6u4cZxw2zHy+eE+EFcdIfF9LwXOoMwuJWIwszEoxEmPMlikAVVai2Zm4Wj2T0QjSG0EYRPSgJCp9/5Hysds86mlcxxKM+vcXdieLTpAQBpJIiZG2I0c5TedDxNFlD4typ5MmVR7IHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RV/J/MBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C2FC4CEE3;
+	Fri, 14 Mar 2025 23:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741993806;
-	bh=KbZFJSQTt+ShGS5hLc9Ed0i7kOGQy4qL8Xd5B7EF+4I=;
+	s=k20201202; t=1741993808;
+	bh=wSalaZtqoEhgxesvIgkHrK2m8lEkxMTUrJBq+/X6KM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3MaZUhl0kh/OlK3Sgw+tIKSX5gdn4l3KRC84cmfXfhvlGJypK9RZvby2/+1WYozL
-	 PmlN1gokZy5+68fvctZXKE6hQ2tGGWCyxGDc1yM/vtrvkDHUpTLPgEBXd8+56N6bUs
-	 HSzV+EGECMSR+Yokr5kz4EfUXPiyShCe3Rx1d8E0a7ipNsv/+qhOeqamMxd3LyC9On
-	 chbJUSzz5iThHHUX+EDDKKBBIhjfobpxFAllZwM3UQGd7El1phfDVooxOOdKp1jwoo
-	 dL8Zs09tZLPZfcxw6l+Rz8lSB4BxSuVQBluqYAGEsua/aUzGz12fW28BDPbf0LAEyX
-	 C08q5qpiPmXfw==
+	b=RV/J/MBQTjT+6WUAD9luzROfGICBbUJAN8ZhLuV0gXej1RoE3QAszXe0gDUh/OZez
+	 L48AX5MZupMllrXPrWmvPC6XVC8LwJJJFUwzW7XAi1LewuQl6ORl4JkNbwGns9w6R5
+	 JSCrDKYh3QtjtfkBQ1x+KEkNFH61zw0nWUwODJxPQBKam3iNF1acCsQ/DG0dYTPtpt
+	 rZkj4j39lGeKe2+GMWnfYJO9cRlDL4T3UvLAqyCv1fXUx7NIdAo7jhP6+PHSriF5NB
+	 fCuxI6z/Q5AkHbMF38RU5USANhmX4FJ9tkE5KxQAzhvQHBE0hLng+1IW974LAa4iDc
+	 HALFeziZ3oQNw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 4/8] KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
-Date: Fri, 14 Mar 2025 19:10:04 -0400
-Message-Id: <20250314084956-83dd7b2dcc1ef85a@stable.kernel.org>
+To: stable@vger.kernel.org,
+	leah.rumancik@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 06/29] xfs: validate block number being freed before adding to xefi
+Date: Fri, 14 Mar 2025 19:10:06 -0400
+Message-Id: <20250314114210-a6b6a9e69a98be50@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250314-stable-sve-6-12-v1-4-ddc16609d9ba@kernel.org>
+In-Reply-To:  <20250313202550.2257219-7-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,87 +64,81 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+ℹ️ This is part 06/29 of a series
+⚠️ Found follow-up fixes in mainline
 
-The upstream commit SHA1 provided is correct: 459f059be702056d91537b99a129994aa6ccdd35
+The upstream commit SHA1 provided is correct: 7dfee17b13e5024c5c0ab1911859ded4182de3e5
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Mark Brown<broonie@kernel.org>
-Commit author: Mark Rutland<mark.rutland@arm.com>
+Backport author: Leah Rumancik<leah.rumancik@gmail.com>
+Commit author: Dave Chinner<dchinner@redhat.com>
 
 Status in newer kernel trees:
-6.13.y | Present (different SHA1: 077e90a84fd7)
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+
+Found fixes commits:
+2bed0d82c2f7 xfs: fix bounds check in xfs_defer_agfl_block()
 
 Note: The patch differs from the upstream commit:
 ---
-1:  459f059be7020 ! 1:  17b83bb28de29 KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
+1:  7dfee17b13e50 ! 1:  0de6be42d2941 xfs: validate block number being freed before adding to xefi
     @@ Metadata
       ## Commit message ##
-         KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
+         xfs: validate block number being freed before adding to xefi
      
-    +    [ Upstream commit 459f059be702056d91537b99a129994aa6ccdd35 ]
+    +    [ Upstream commit 7dfee17b13e5024c5c0ab1911859ded4182de3e5 ]
     +
-         When KVM is in VHE mode, the host kernel tries to save and restore the
-         configuration of CPACR_EL1.ZEN (i.e. CPTR_EL2.ZEN when HCR_EL2.E2H=1)
-         across kvm_arch_vcpu_load_fp() and kvm_arch_vcpu_put_fp(), since the
+         Bad things happen in defered extent freeing operations if it is
+         passed a bad block number in the xefi. This can come from a bogus
+         agno/agbno pair from deferred agfl freeing, or just a bad fsbno
     @@ Commit message
-         Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-         Link: https://lore.kernel.org/r/20250210195226.1215254-4-mark.rutland@arm.com
-         Signed-off-by: Marc Zyngier <maz@kernel.org>
-    +    [Rework for refactoring of where the flags are stored -- broonie]
-    +    Signed-off-by: Mark Brown <broonie@kernel.org>
+         Reviewed-by: Christoph Hellwig <hch@lst.de>
+         Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+         Signed-off-by: Dave Chinner <david@fromorbit.com>
+    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
      
-      ## arch/arm64/include/asm/kvm_host.h ##
-    -@@ arch/arm64/include/asm/kvm_host.h: struct cpu_sve_state {
-    - struct kvm_host_data {
-    - #define KVM_HOST_DATA_FLAG_HAS_SPE			0
-    - #define KVM_HOST_DATA_FLAG_HAS_TRBE			1
-    --#define KVM_HOST_DATA_FLAG_HOST_SVE_ENABLED		2
-    - #define KVM_HOST_DATA_FLAG_HOST_SME_ENABLED		3
-    - #define KVM_HOST_DATA_FLAG_TRBE_ENABLED			4
-    - #define KVM_HOST_DATA_FLAG_EL1_TRACING_CONFIGURED	5
-    +@@ arch/arm64/include/asm/kvm_host.h: struct kvm_vcpu_arch {
-    + /* Save TRBE context if active  */
-    + #define DEBUG_STATE_SAVE_TRBE	__vcpu_single_flag(iflags, BIT(6))
-    + 
-    +-/* SVE enabled for host EL0 */
-    +-#define HOST_SVE_ENABLED	__vcpu_single_flag(sflags, BIT(0))
-    + /* SME enabled for EL0 */
-    + #define HOST_SME_ENABLED	__vcpu_single_flag(sflags, BIT(1))
-    + /* Physical CPU not in supported_cpus */
-     
-      ## arch/arm64/kvm/fpsimd.c ##
-     @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
-      	fpsimd_save_and_flush_cpu_state();
-      	*host_data_ptr(fp_owner) = FP_STATE_FREE;
+      ## fs/xfs/libxfs/xfs_ag.c ##
+     @@ fs/xfs/libxfs/xfs_ag.c: xfs_ag_shrink_space(
+    @@ fs/xfs/libxfs/xfs_alloc.c: xfs_defer_agfl_block(
+     +
+      	trace_xfs_agfl_free_defer(mp, agno, 0, agbno, 1);
       
-    --	host_data_clear_flag(HOST_SVE_ENABLED);
-    +-	vcpu_clear_flag(vcpu, HOST_SVE_ENABLED);
-     -	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
-    --		host_data_set_flag(HOST_SVE_ENABLED);
-    +-		vcpu_set_flag(vcpu, HOST_SVE_ENABLED);
-     -
-      	if (system_supports_sme()) {
-    - 		host_data_clear_flag(HOST_SME_ENABLED);
-    + 		vcpu_clear_flag(vcpu, HOST_SME_ENABLED);
-      		if (read_sysreg(cpacr_el1) & CPACR_EL1_SMEN_EL0EN)
-     @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
-      		 * when needed.
-    @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
-     -		 * for EL0.  To avoid spurious traps, restore the trap state
-     -		 * seen by kvm_arch_vcpu_load_fp():
-     -		 */
-    --		if (host_data_test_flag(HOST_SVE_ENABLED))
-    +-		if (vcpu_get_flag(vcpu, HOST_SVE_ENABLED))
-     -			sysreg_clear_set(CPACR_EL1, 0, CPACR_EL1_ZEN_EL0EN);
-     -		else
-     -			sysreg_clear_set(CPACR_EL1, CPACR_EL1_ZEN_EL0EN, 0);
+    - 	xfs_extent_free_get_group(mp, xefi);
+      	xfs_defer_add(tp, XFS_DEFER_OPS_TYPE_AGFL_FREE, &xefi->xefi_list);
+     +	return 0;
+      }
+    @@ fs/xfs/libxfs/xfs_alloc.c: __xfs_free_extent_later(
+      			       GFP_KERNEL | __GFP_NOFAIL);
+      	xefi->xefi_startblock = bno;
+     @@ fs/xfs/libxfs/xfs_alloc.c: __xfs_free_extent_later(
+    - 
+    - 	xfs_extent_free_get_group(mp, xefi);
+    + 			XFS_FSB_TO_AGNO(tp->t_mountp, bno), 0,
+    + 			XFS_FSB_TO_AGBNO(tp->t_mountp, bno), len);
+      	xfs_defer_add(tp, XFS_DEFER_OPS_TYPE_FREE, &xefi->xefi_list);
+     +	return 0;
+      }
+    @@ fs/xfs/libxfs/xfs_alloc.h: xfs_buf_to_agfl_bno(
+      		xfs_filblks_t len, const struct xfs_owner_info *oinfo,
+      		bool skip_discard);
+      
+    -@@ fs/xfs/libxfs/xfs_alloc.h: void xfs_extent_free_get_group(struct xfs_mount *mp,
+    +@@ fs/xfs/libxfs/xfs_alloc.h: struct xfs_extent_free_item {
+      #define XFS_EFI_ATTR_FORK	(1U << 1) /* freeing attr fork block */
+      #define XFS_EFI_BMBT_BLOCK	(1U << 2) /* freeing bmap btree block */
+      
 ---
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
