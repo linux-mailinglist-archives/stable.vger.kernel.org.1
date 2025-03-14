@@ -1,71 +1,75 @@
-Return-Path: <stable+bounces-124418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764FBA60CAD
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 10:04:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761B8A60CC3
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 10:07:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA21617995E
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 09:04:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA38F4614C7
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 09:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DAB1DE2C1;
-	Fri, 14 Mar 2025 09:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D864F1DE2C1;
+	Fri, 14 Mar 2025 09:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b="KB+jN3TB"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="RoRA6CrU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499EE1DD877;
-	Fri, 14 Mar 2025 09:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CB61DD877;
+	Fri, 14 Mar 2025 09:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741943088; cv=none; b=EQqB4OuKAsYZHsPOco1bws1mHrhZEKBNbja/8vzBPPHR0byW2ySqnmbq0+t9ukG3xqLNErCYWVf7ZI45Rf7HRtpmrbXh4uK20Sex22o2h8n2LOjT95DEDmD77qnizahBgNPn2QCcC87+AWK4Q0hQdT1MbB16HUEbffSI35OhvZw=
+	t=1741943224; cv=none; b=bLDyeQoUtfQztk8EPchN59CSC0q2VV95uvQ/5wWBeCMq/RrOiNCp6h2/GPqUT8nwk8jbju62mfXJ6kTiTOVzdjqzMI4Z+fXT6JUdAogaBDbZGh5dd7mZP8Kqb/dSLSh5BJsUZw4BD1r7mWnJk2Blxu2AzIE3XZGvlTz/QZ/zd84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741943088; c=relaxed/simple;
-	bh=ZErZMC+QOWToIegQ2iKmCvjBmUNPIrj83qIYnRryRRc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ARgRxjS59/VxU6C7m0CroNeju60lD2hcGg7De0yddsCiz577eWKcX+CHBDhAM5MxmcWCiru6cdGXA06pXpagjRqIIiGMSAhuIr7LCU1zBaGxSVAnd9CcMrN5hdW/vKJ0Zy5cJ6XFcoUpHhrB5kngMruyfO5JNpTYyEnnlWqosns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org; spf=none smtp.mailfrom=deepin.org; dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b=KB+jN3TB; arc=none smtp.client-ip=54.254.200.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=deepin.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deepin.org;
-	s=ukjg2408; t=1741943064;
-	bh=F3Mr2gHjrrQbbfObvuHIpoye6jVxjDNGFB92bMbmjnM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=KB+jN3TBO6D4thI9ZO5p2Lv7DnyH06j4vMAIj8m/u/SUKligkg0ak9B1y9Y0BeMum
-	 in+AmhlfX4BbhethgtBFcESnPFw195Dx4pMiNhGZsE50Sb2SFeKEin/TF3KulAOeGv
-	 cuhTobxlueTDXybsANqH9U/QCT6tD6NGzheAK1uQ=
-X-QQ-mid: bizesmtpsz4t1741943062ty14a9x
-X-QQ-Originating-IP: U5AE3YDjEh4ooRkvOj8VyCB63QVy2rZOlGNxtnFrpKM=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 14 Mar 2025 17:04:19 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 13118731995164398442
-From: Chen Linxuan <chenlinxuan@deepin.org>
-To: Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Chen Linxuan <chenlinxuan@deepin.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: Yi Lai <yi1.lai@intel.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jann Horn <jannh@google.com>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH stable 5.15] lib/buildid: Handle memfd_secret() files in build_id_parse()
-Date: Fri, 14 Mar 2025 17:04:00 +0800
-Message-ID: <E2C3ADFDB3DFD774+20250314090400.31676-2-chenlinxuan@deepin.org>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1741943224; c=relaxed/simple;
+	bh=37eHhDWIYH2KFzy4ngjAsSfwtLTRBQ6NSJl/HrZiHyo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HSozM9qENtP3X5vGJmJ1ZozcHQOr+sr/lEwhlrkfUJ5NZdrf2//KbWoDTwE7E+Xtxivs6i30A+ZU83oOv+9SGCISsRbSKUfPRF+xlCkHTNWus2Vij5SmprGzhqYQ5BOmKQaesJaDtykGfjrUDIG4TGIimEIy0vGzoUhnkh4dZfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=RoRA6CrU; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: ae6850d400b311f0aae1fd9735fae912-20250314
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=la9wkd5vzRHQ5ec7yJZBYLsKgQribkmSaDdGEv4GlFU=;
+	b=RoRA6CrU8VMFWtR6dFP2g4aarnUv94SkhA07LqajCUTk1FpE9TrHjBV/kAqPMKcTCSAXLuP+OV6rtXn3GPDd6qBW/iv/D1p5CKB/yWGBCoD+wmekjkqgO+wocN1N7wfyIIzReQik4Wbyf6pYT7fmvkKqxNNtL4m2d38UzpQVVnU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:87802171-6ce5-4f7b-b132-58aa1391fab1,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:0ef645f,CLOUDID:b9445f8c-f5b8-47d5-8cf3-b68fe7530c9a,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: ae6850d400b311f0aae1fd9735fae912-20250314
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 386278935; Fri, 14 Mar 2025 17:06:57 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Fri, 14 Mar 2025 17:06:56 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.28 via Frontend Transport; Fri, 14 Mar 2025 17:06:56 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2] wifi: mt76: mt7925: fix the incomplete revert of [tx,rx]_ba for MLO
+Date: Fri, 14 Mar 2025 17:06:54 +0800
+Message-ID: <20250314090655.2856153-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,93 +77,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:deepin.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-X-QQ-XMAILINFO: M2GOzXfxLYLpSibyllIY4YRrvaS50z5cnXKrV5ua65le3t0z00/7AMyj
-	gS7LrYuZVhc0q9a9loiVx65wigaVyHc/U3zmQrKL4GvVVB8w0/QtnfKiP5gFdDTnvWwAuZN
-	REKJTVyA3JSWsvC5e755ngzZytoVJPz13rPC0YADlwgaEzOvBH8ZwyJt3OMvLL+N/JYz4qt
-	AtMWb6UyVwm3OTNopzRdBZWp/zsw/7zvug5xYt02g6RxRTvnTgbmp2z2Kror/PkuuzCMNrL
-	ajak2MuvwQ+sV9dI+1JlZLcRZI6H3w4m0YBuXdNtvhMxzPCHu9WLXsdyIH1RBN/ZXBBLC1P
-	PNAfLZQkcwT4Ap0LILzIXVqjx3WbMkVgyChQXCMfZNLM1zP3fwfNtDdc2Xg13ip00Ez7zUO
-	QUXWrY8+azUOvefs1hu9hqhaEmV5LGCkzAsOaXyvL0OaLKjAB8rBSFkTIc56VHkoB1pHu2g
-	Cc40g5Kyvh2vsCRsNNuqcrtjGiAZtxdsUb7ilsSta4mUFnb/MTZ9Syle5E9WilU884Gcu0L
-	eexlKb6W+0bl+DbBy67aPpCycL14XXZrvFyB10wbu8EVNStMk3eTl+qJFrqco11mCB113Gs
-	re3CzQ6jpr3qy6NSFsVcuDadtDpTBpcbDiGJx6GMJE0mxZcMBhVda8iQLLHknVpA9NOU/ku
-	7MZ7Q6TDSO3PDL3Zycf5hAuYGw34wM1XWeXjWIi/ZWKruWQhc6A4RqKmMjNGdFIS/tmCBS8
-	RPoibIGN/SBt99wQ0D+INlIz6++zXmI1zQaHAMhhTJ2qZ6beR3NazbA9KJsUWuGUt92FmrO
-	Q+Q+LEbOVtVzo/68miaadlrjylbfHYSon/bbdk81DiK0/O6TbVv/q3bAadXGaNVQcgGt5om
-	nMaidfvlWdCA1UKgUpERTO/cLNHC1/Bw3E82iSbJL1L2n1adFWGxSM2YIZu1CqEGRKGEUx8
-	i5Fbhu/pJdWdf0Sv9Mvl8jkm705qtLVWR/gOIk7bSzbJZpWjKIEfFrU8R7iqaACML6NoEP7
-	FYpOAzGZq3EnpTLKF+aWz51TnyxzKVVwk7a9ApARa1TLli/mK/zMmiVl5Q4GaZVdqXVcF+L
-	biZo8tN6x6aJmTLhMI/j3c=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
 
-[ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
->From memfd_secret(2) manpage:
+Since the `Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO"`
+was not completely clean, submit this patch to fully clean it up.
 
-  The memory areas backing the file created with memfd_secret(2) are
-  visible only to the processes that have access to the file descriptor.
-  The memory region is removed from the kernel page tables and only the
-  page tables of the processes holding the file descriptor map the
-  corresponding physical memory. (Thus, the pages in the region can't be
-  accessed by the kernel itself, so that, for example, pointers to the
-  region can't be passed to system calls.)
-
-We need to handle this special case gracefully in build ID fetching
-code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
-family of APIs. Original report and repro can be found in [0].
-
-  [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
-
-Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
-Reported-by: Yi Lai <yi1.lai@intel.com>
-Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
-Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
-[ Linxuan: perform an equivalent direct check without folio-based changes ]
 Cc: stable@vger.kernel.org
-Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+Fixes: 73915469c55a ("Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO"")
+Change-Id: I2d851e6b79905baae35f691578bf50d56ad0adbf
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
-
-Some previous discussions can be found in the following links:
-https://lore.kernel.org/stable/05D0A9F7DE394601+20250311100555.310788-2-chenlinxuan@deepin.org/
-
+v2: rewrite the subject
 ---
- lib/buildid.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/lib/buildid.c b/lib/buildid.c
-index 9fc46366597e..6249bd47fb0b 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -5,6 +5,7 @@
- #include <linux/elf.h>
- #include <linux/kernel.h>
- #include <linux/pagemap.h>
-+#include <linux/secretmem.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 1ecba46d770d..1bdc313844c4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -572,10 +572,10 @@ void mt7925_mcu_rx_event(struct mt792x_dev *dev, struct sk_buff *skb)
  
- #define BUILD_ID 3
+ static int
+ mt7925_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif_link *mvif,
+-		  struct mt76_wcid *wcid,
+ 		  struct ieee80211_ampdu_params *params,
+ 		  bool enable, bool tx)
+ {
++	struct mt76_wcid *wcid = (struct mt76_wcid *)params->sta->drv_priv;
+ 	struct sta_rec_ba_uni *ba;
+ 	struct sk_buff *skb;
+ 	struct tlv *tlv;
+@@ -608,13 +608,12 @@ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
+ {
+ 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
+ 	struct mt792x_vif *mvif = msta->vif;
+-	struct mt76_wcid *wcid = &mvif->sta.deflink.wcid;
  
-@@ -157,6 +158,12 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
- 	if (!vma->vm_file)
- 		return -EINVAL;
+ 	if (enable && !params->amsdu)
+ 		msta->deflink.wcid.amsdu = false;
  
-+#ifdef CONFIG_SECRETMEM
-+       /* reject secretmem folios created with memfd_secret() */
-+       if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
-+               return -EFAULT;
-+#endif
-+
- 	page = find_get_page(vma->vm_file->f_mapping, 0);
- 	if (!page)
- 		return -EFAULT;	/* page not mapped */
+-	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, wcid,
+-				 params, enable, true);
++	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
++				 enable, true);
+ }
+ 
+ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+@@ -623,10 +622,9 @@ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
+ {
+ 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
+ 	struct mt792x_vif *mvif = msta->vif;
+-	struct mt76_wcid *wcid = &mvif->sta.deflink.wcid;
+ 
+-	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, wcid,
+-				 params, enable, false);
++	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
++				 enable, false);
+ }
+ 
+ static int mt7925_mcu_read_eeprom(struct mt792x_dev *dev, u32 offset, u8 *val)
 -- 
-2.48.1
+2.45.2
 
 
