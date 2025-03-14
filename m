@@ -1,147 +1,130 @@
-Return-Path: <stable+bounces-124402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE53A60786
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 03:34:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26256A607DC
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 04:47:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 985F019C4495
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 02:34:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9C33BE70A
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 03:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E582D05E;
-	Fri, 14 Mar 2025 02:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC1C7F7FC;
+	Fri, 14 Mar 2025 03:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXELSffC"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Qsb9XeYS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6542E3364
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 02:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2F02E3368;
+	Fri, 14 Mar 2025 03:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741919669; cv=none; b=ZzFoYvj4spuci9kEoPyWlCSOmgQFmIRIgGG1k2ujTYOIRVMGUrGUSnlAnFG5yPtrlWH9H1RyIm2ZxtT7vYItvvH0mzzyw7H+5ORDC8HUdwK9LNWhX6IEonbgfw0HzVqmzMk+QUcpBUpNLFWUR2JnUyU1UYoo2EEB/15u79Et5Cs=
+	t=1741924033; cv=none; b=SlpCFTQxXKYG2LILWSDaZcRs73vthZObwy+EGIvlfxr1SD11xgNDY/bMLJ/8Q+jNRPse6gQfcRLxaMAMu4Jg9FG3YBNRnPbZ3kvagRUB5s+UIXLdNpciNB2Hx7qILh63AdJKRRvvoONdyRtKJ8OXZakVQj7H1SDSNcM1ml0jhKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741919669; c=relaxed/simple;
-	bh=T6dvFeO348xbK0TlWceor8OFr8A7f/6odeHw0b6DUPE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o1Kr9CaPHVtWjmTvaYuGu/Zj95aGncz/++kvQ34Y9VmkR2tDIkwFMyx4SjgQZCspCIfu0q4RuzbtdHMl50o0oKA8jOXSIKyWTlZal1rF1/IT10KM6Jcd3CM2tok71AyLZ2o8fK3Bf51Dg3vvBJQ2mxvIf8wlZG2Ik7UBP0d+5J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXELSffC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1FCC4CEDD;
-	Fri, 14 Mar 2025 02:34:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741919668;
-	bh=T6dvFeO348xbK0TlWceor8OFr8A7f/6odeHw0b6DUPE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXELSffCfkfqDTcImEOJ5hVae3FlWIoGrxoqsCyi1ZYBjsLy+jI0Kq9f74QxrR5gO
-	 QjcY//Kglt4Ks2P6ekNMOaBN8W0EHXKu6MGXPXkKMuqvJH7C3GhpA5pTCtUSh7PGWn
-	 GKR4GKOyzr4nVlSjHH7jlRq9ABq3tvZlR69wdn7fL0VFbCtXxj77KFWMVU4Hi+ApHo
-	 KkU0OelkbTNU0nCnizJr1/2AeoluLJTxNmjxapEvw/I1O+fWrzdZgGyxShUeIv5kXt
-	 X+QIlvBxY5LUnF9zbFEBRXJJgGaD2i7VgcOO8DYWoMS60A+1oGPLugrV1ETLtbLZ0s
-	 IMt62mTFYpACQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	kareemem@amazon.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y 5.15.y] ptp: Ensure info->enable callback is always set
-Date: Thu, 13 Mar 2025 22:34:26 -0400
-Message-Id: <20250313132833-d96fe5c97d6404da@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250313161702.74223-1-kareemem@amazon.com>
-References: 
+	s=arc-20240116; t=1741924033; c=relaxed/simple;
+	bh=5csq7Xilf/ZeCp0TAlwqDeQoXcKSZIer57d9vlUbrfE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SIVgLF2RaTunfA/5hWbv597x9duCc2j5qyKz3S2OydY6WQ5JLS3FKAD4LOPA2Fd3fTKOpn+mSIUxy3P7WZkRTI306isZgAduVYkFed9t0b6RaM+3kPPhhaS2WgEGwjMkqHrDQBTFfV+gbVmPHfxKNwtKf8nZVTqwujQ2+1Nzw+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Qsb9XeYS; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DNOuSx030460;
+	Fri, 14 Mar 2025 03:46:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=JXua5c
+	aTwTNUTtdBvGHDVqyhcKPAlSgEyDPOfiwv554=; b=Qsb9XeYSWL6uv6usciKbcH
+	6j8mtMqjAlvVTbvYL0Z8cwvqAODUDf4AVUSDCXjQJbADa7QZNsOIFizxuhnsD/mt
+	yDy2FHcXvhUf4RxpO7V10v81zPY28NCqMOUP4E066bOQNNo9Or1rGAvrmaFA7+E3
+	tfHguPylMLn0XkMkQKRGortUB0ZRP1514ykq9dq0GVQaO9TPExs+JziiQYhZCUxa
+	DpDLhfZRe6Q1gApAVtkN6lTKaBwz5VgmrFJqEuj0eQa+BUaP8VZMwTBn2ZT2/6Dw
+	Dk40THwCA2ddQfwSgh7dDko5vTbaDW1m+JAwElj33q4fFRRFeYm0JVMmHuWS0yTg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45byd8v1ns-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Mar 2025 03:46:53 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52E3jDN1014449;
+	Fri, 14 Mar 2025 03:46:53 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45byd8v1nq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Mar 2025 03:46:53 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52DNlWnS003127;
+	Fri, 14 Mar 2025 03:46:52 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atstw3a7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Mar 2025 03:46:52 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52E3km0331719790
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Mar 2025 03:46:48 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D06F120040;
+	Fri, 14 Mar 2025 03:46:48 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F1D620043;
+	Fri, 14 Mar 2025 03:46:46 +0000 (GMT)
+Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.in.ibm.com (unknown [9.204.206.207])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Mar 2025 03:46:45 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, kvm@vger.kernel.org,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: Re: [PATCH v3] KVM: PPC: Enable CAP_SPAPR_TCE_VFIO on pSeries KVM guests
+Date: Fri, 14 Mar 2025 09:16:45 +0530
+Message-ID: <174192385435.14370.11531277481779566442.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250220070002.1478849-1-amachhiw@linux.ibm.com>
+References: <20250220070002.1478849-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: I-iNyNSGkOlt7gHk5ndV6xI-yg1ozl1W
+X-Proofpoint-ORIG-GUID: HfY6S5Tm98aVoIP7IKzo1zopnf1RSUjU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-14_01,2025-03-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ malwarescore=0 impostorscore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=679 clxscore=1015 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503140026
 
-[ Sasha's backport helper bot ]
+On Thu, 20 Feb 2025 12:30:02 +0530, Amit Machhiwal wrote:
+> Currently on book3s-hv, the capability KVM_CAP_SPAPR_TCE_VFIO is only
+> available for KVM Guests running on PowerNV and not for the KVM guests
+> running on pSeries hypervisors. This prevents a pSeries L2 guest from
+> leveraging the in-kernel acceleration for H_PUT_TCE_INDIRECT and
+> H_STUFF_TCE hcalls that results in slow startup times for large memory
+> guests.
+> 
+> [...]
 
-Hi,
+Applied to powerpc/next.
 
-Summary of potential issues:
-❌ Build failures detected
+[1/1] KVM: PPC: Enable CAP_SPAPR_TCE_VFIO on pSeries KVM guests
+      https://git.kernel.org/powerpc/c/b4392813bbc3b05fc01a33c64d8b8c6c62c32cfa
 
-The upstream commit SHA1 provided is correct: fd53aa40e65f518453115b6f56183b0c201db26b
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Abdelkareem Abdelsaamad<kareemem@amazon.com>
-Commit author: Thomas Weißschuh<linux@weissschuh.net>
-
-Status in newer kernel trees:
-6.13.y | Present (different SHA1: 755caf4ee1c6)
-6.12.y | Present (different SHA1: 8441aea46445)
-6.6.y | Present (different SHA1: 81846070cba1)
-6.1.y | Present (different SHA1: 5d1041c76de6)
-5.15.y | Present (different SHA1: fd80c97b94f0)
-
-Note: The patch differs from the upstream commit:
----
-Failed to apply patch cleanly.
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-
-Build Errors:
-Patch failed to apply on stable/linux-5.10.y. Reject:
-
-diff a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c	(rejected hunks)
-@@ -188,6 +188,11 @@ static void ptp_clock_release(struct device *dev)
- 	kfree(ptp);
- }
- 
-+static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static void ptp_aux_kworker(struct kthread_work *work)
- {
- 	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
-@@ -233,6 +238,9 @@ struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
- 	mutex_init(&ptp->pincfg_mux);
- 	init_waitqueue_head(&ptp->tsev_wq);
- 
-+	if (!ptp->info->enable)
-+		ptp->info->enable = ptp_enable;
-+
- 	if (ptp->info->do_aux_work) {
- 		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
- 		ptp->kworker = kthread_create_worker(0, "ptp%d", ptp->index);
-
-Patch failed to apply on stable/linux-5.15.y. Reject:
-
-diff a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c	(rejected hunks)
-@@ -188,6 +188,11 @@ static void ptp_clock_release(struct device *dev)
- 	kfree(ptp);
- }
- 
-+static int ptp_enable(struct ptp_clock_info *ptp, struct ptp_clock_request *request, int on)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static void ptp_aux_kworker(struct kthread_work *work)
- {
- 	struct ptp_clock *ptp = container_of(work, struct ptp_clock,
-@@ -233,6 +238,9 @@ struct ptp_clock *ptp_clock_register(struct ptp_clock_info *info,
- 	mutex_init(&ptp->pincfg_mux);
- 	init_waitqueue_head(&ptp->tsev_wq);
- 
-+	if (!ptp->info->enable)
-+		ptp->info->enable = ptp_enable;
-+
- 	if (ptp->info->do_aux_work) {
- 		kthread_init_delayed_work(&ptp->aux_work, ptp_aux_kworker);
- 		ptp->kworker = kthread_create_worker(0, "ptp%d", ptp->index);
+Thanks
 
