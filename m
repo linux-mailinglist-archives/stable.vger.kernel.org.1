@@ -1,116 +1,123 @@
-Return-Path: <stable+bounces-124408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE95FA6092D
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 07:24:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A851A6093A
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 07:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A233B7DE7
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 06:24:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC3103A8E4E
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 06:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48BC143895;
-	Fri, 14 Mar 2025 06:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34B013AA2E;
+	Fri, 14 Mar 2025 06:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="oyILwuRC"
-X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHGLy+ue"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8962613541B;
-	Fri, 14 Mar 2025 06:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8666A13A244
+	for <Stable@vger.kernel.org>; Fri, 14 Mar 2025 06:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741933457; cv=none; b=kCYFjiVk6FL1yvoT2++aueI4qKClxFTNob9V6pxpMscwCuDgrTJXniHd/XUkwyihEB/2VDwaJGtP/kKlTrGzahCk8x+xWY+/TvxT+mZyQMF19SYNZ2wI9B08/Ek98CKoYkXbGzojcA3z5desIjdnPWu/pk0HzDgagHflzj+7Pis=
+	t=1741934200; cv=none; b=rLtN10cTZDUgz9LxRs7t/gnknbsYxAAdwhELg4P17Db25oDsPoowI976rjF90VAvklj1fqor+pT8K5YickH1naA/6+ExMpFPTD/1U+PoCfLZyPQSGE6FQ5s3sTEbzd5JzSrXi3AQIN7ol77BAMYZaGJCRrN3jX8qQSpyozekc5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741933457; c=relaxed/simple;
-	bh=ya0SH5JkE73YAbolQjb8lvIYw7c+jueDq6m/+VfZa/o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=kqZOqzCGZCgSbT9GCghQYAAFuuk1EWvW9fSe6V1REms9av7+ZTx16Y6lnOCb3DignzCuUAZ+ln0qc+vgDQ7XTyA3bD8xYQFcvtYZ5ulj9c20xm1Supaf93RjT8vJwAH8aOZqJ8CKBT0kO/yD9Cn6yApzIiTWnXTqgO9KhcvovLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=oyILwuRC; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52E6NTrR42599211, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1741933409; bh=ya0SH5JkE73YAbolQjb8lvIYw7c+jueDq6m/+VfZa/o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=oyILwuRC0cWATv6ymcl8VitFUIWHSLvDKfc5kzj+HpxhN1oiTdyODC0ej/ZrjMlEv
-	 6dKlXHPqaWZ4xr6aJUMr9LllsuviUksmFChB2PYzWGBOZm2YvBHKVC28ZAk6vH3Y58
-	 9876+6bFl4I8xSx8YfDYg9XkgvJX21trt009tvEnaWmf91GqlvFZjICxcYBxkFtxiK
-	 1AiECSXYI50TO+D15a38ATdUsEq26gD2GRNtpUG1HA+GupHi5uy1iXUI5X5WdO2L2/
-	 ajbSdyojv6GKejmzfs4sVbFLMyhBDhuaFEGPktI6d7IOje6WMHhmgVloa7xPn9UlCg
-	 j8kvzFUA+f0tQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52E6NTrR42599211
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Mar 2025 14:23:29 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 14 Mar 2025 14:23:29 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 14 Mar 2025 14:23:28 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
- RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
- 15.01.2507.035; Fri, 14 Mar 2025 14:23:28 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, "nbd@nbd.name" <nbd@nbd.name>,
-        "lorenzo@kernel.org" <lorenzo@kernel.org>
-CC: "deren.wu@mediatek.com" <deren.wu@mediatek.com>,
-        "Sean.Wang@mediatek.com"
-	<Sean.Wang@mediatek.com>,
-        "Leon.Yen@mediatek.com" <Leon.Yen@mediatek.com>,
-        "Michael.Lo@mediatek.com" <Michael.Lo@mediatek.com>,
-        "allan.wang@mediatek.com" <allan.wang@mediatek.com>,
-        "Eric-SY.Chang@mediatek.com" <Eric-SY.Chang@mediatek.com>,
-        "km.lin@mediatek.com" <km.lin@mediatek.com>,
-        "Quan.Zhou@mediatek.com"
-	<Quan.Zhou@mediatek.com>,
-        "Ryder.Lee@mediatek.com" <Ryder.Lee@mediatek.com>,
-        "Shayne.Chen@mediatek.com" <Shayne.Chen@mediatek.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] wifi: mt76: mt7925: fix the incomplete revert
-Thread-Topic: [PATCH] wifi: mt76: mt7925: fix the incomplete revert
-Thread-Index: AQHblJVLA58AbZ/uukOTsr80EaU7ybNyKX7Q
-Date: Fri, 14 Mar 2025 06:23:28 +0000
-Message-ID: <619f3ca5dd71408f9b247d945dfde228@realtek.com>
-References: <20250314035741.2808863-1-mingyen.hsieh@mediatek.com>
-In-Reply-To: <20250314035741.2808863-1-mingyen.hsieh@mediatek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1741934200; c=relaxed/simple;
+	bh=G8NPDi0fNEepaqPqlO5RLvnah+9yzgOhK1I8azhG6IY=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=ED65KaUiyfVJMKjZMPwnZgMvLi+rjIdz0WHUw2Az4DKdCt4ZgdHwC5SoEE5u2r+FZ+cugxSB4iRV7UdlU74sXoUByvel2YRKCRFRpaemaRd9QgmHM01G8BN7j71up1Y86DSiXEnR/lMZ0CpQVCjc3L3CbgWRpfAJ9XJ5/yOpVRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHGLy+ue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6F3C4CEE3;
+	Fri, 14 Mar 2025 06:36:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741934200;
+	bh=G8NPDi0fNEepaqPqlO5RLvnah+9yzgOhK1I8azhG6IY=;
+	h=Subject:To:From:Date:From;
+	b=pHGLy+uepPo3zbVIMJdOsoStdhpjphxv+1rWpD0y/sTy42SbCnTd3Nhy7C0a3P2Ef
+	 U2nrPcLnhlLdZlC9l+p4sV4Jn5EoTIHQGDRv9W4VPvi5DDFZxvenOnuyfDV2bRSvTe
+	 GLsjoqlIOthdI5HZEbTxlNL/EbgLwtT724TZelI0=
+Subject: patch "iio: adc: ad7768-1: Fix conversion result sign" added to char-misc-testing
+To: sergiu.cuciurean@analog.com,Jonathan.Cameron@huawei.com,Jonathan.Santos@analog.com,Stable@vger.kernel.org,dlechner@baylibre.com,marcelo.schmitt@analog.com
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 14 Mar 2025 07:27:45 +0100
+Message-ID: <2025031445-sensuous-zestfully-2d97@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Mingyen Hsieh <mingyen.hsieh@mediatek.com> wrote:
-> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
->=20
-> Since the `Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba f=
-or MLO"`
-> was not completely clean, submit this patch to fully clean it up.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 73915469c55a ("Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[=
-tx,rx]_ba for MLO"")
-> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-To be unique subject, such as " wifi: mt76: mt7925: fix the incomplete reve=
-rt of [tx,rx]_ba"
+This is a note to let you know that I've just added the patch titled
+
+    iio: adc: ad7768-1: Fix conversion result sign
+
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-testing branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will be merged to the char-misc-next branch sometime soon,
+after it passes testing, and the merge window is open.
+
+If you have any questions about this process, please let me know.
+
+
+From 8236644f5ecb180e80ad92d691c22bc509b747bb Mon Sep 17 00:00:00 2001
+From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Date: Thu, 6 Mar 2025 18:00:29 -0300
+Subject: iio: adc: ad7768-1: Fix conversion result sign
+
+The ad7768-1 ADC output code is two's complement, meaning that the voltage
+conversion result is a signed value.. Since the value is a 24 bit one,
+stored in a 32 bit variable, the sign should be extended in order to get
+the correct representation.
+
+Also the channel description has been updated to signed representation,
+to match the ADC specifications.
+
+Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: <Stable@vger.kernel.org>
+Link: https://patch.msgid.link/505994d3b71c2aa38ba714d909a68e021f12124c.1741268122.git.Jonathan.Santos@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/adc/ad7768-1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index ea829c51e80b..09e7cccfd51c 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -142,7 +142,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
+ 		.channel = 0,
+ 		.scan_index = 0,
+ 		.scan_type = {
+-			.sign = 'u',
++			.sign = 's',
+ 			.realbits = 24,
+ 			.storagebits = 32,
+ 			.shift = 8,
+@@ -373,7 +373,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+ 		iio_device_release_direct(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
+-		*val = ret;
++		*val = sign_extend32(ret, chan->scan_type.realbits - 1);
+ 
+ 		return IIO_VAL_INT;
+ 
+-- 
+2.48.1
 
 
 
