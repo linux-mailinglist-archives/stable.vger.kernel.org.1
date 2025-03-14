@@ -1,97 +1,117 @@
-Return-Path: <stable+bounces-124443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B778CA613D2
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 15:40:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3120BA61434
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 15:55:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70FF07AF422
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 14:39:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22BA51896068
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 14:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6AE2010EF;
-	Fri, 14 Mar 2025 14:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EA4202968;
+	Fri, 14 Mar 2025 14:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZE9VqMza"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E05201012;
-	Fri, 14 Mar 2025 14:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A4D7485;
+	Fri, 14 Mar 2025 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741963219; cv=none; b=LsN5iO9yeUJxfDyte4iWKiXmiU/zEqW+t8h752L1mWEnai4oQlF9Q/FAKvVdXsbDC2WQd4lsfF9dHmNXW0RHRYxw2019u9W5J9/10zYszv/2n2cLS07cKwSJOTaM2ZHX6fz+XylM1gnyqCThxe0k4TUh1uFFtoXpvQ31fH6Dgr8=
+	t=1741964107; cv=none; b=I1DCDiXAsjIAeKzTDEqfSj5cPDTjvlG1hcsoGbRWGrP4FLGrFJIF5jLmjcE14wttjPxHcPyOW7ju/TN1QShkgCA8ImCPujA9e4fDF9u11DbFb5HfQbrC/kXmG+FThqbJlWkGJFZyK2bJhkFvcbbZFcATVnkZjOEG06zI1cMMWMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741963219; c=relaxed/simple;
-	bh=qvFqGn2zhzp1f7FyHd/EcWNszUg7lreAGkRtmPyJdYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aE9lEyZAfkkWT6F18gsLwc7+bZahIDCdjlkc6vrDBjnYxUZ6ltLYapJOwQxXNRtXctTtCpMczVI8hwG8a5Hh/K+jzm66d7OiYhHOFhnbRy0l/baC4WQvKbIXpnogGxZ7NUhbu0VPvWoe5MOzvXT4s9cWkUyHRwK7rfNKK9a36sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C2CC4CEE3;
-	Fri, 14 Mar 2025 14:40:16 +0000 (UTC)
-Date: Fri, 14 Mar 2025 14:40:13 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH 6.12 3/8] KVM: arm64: Remove host FPSIMD saving for
- non-protected KVM
-Message-ID: <Z9Q_zW_mM-v2iPHC@arm.com>
-References: <20250314-stable-sve-6-12-v1-0-ddc16609d9ba@kernel.org>
- <20250314-stable-sve-6-12-v1-3-ddc16609d9ba@kernel.org>
- <2025031427-yiddish-unrented-2bc2@gregkh>
+	s=arc-20240116; t=1741964107; c=relaxed/simple;
+	bh=Y7suO4Icu91JTInezlVFwg/llfVrPdESwvywRZKTwVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=a1zg3+YOv/nRH+wwWQG9RAxr4YkkS2c2xh6dPClXIBtvc/0Kpt3jmlbUhQ3IbP0c8JuBek5MCsNVnXxYlA9lwAxQgAuG/eEWPssCWRP67mB7c+2t5o8ZOj65zLlPTVoHCbQI99iLtMVvfkkrC3pjkxW8AN22IUorkm+ucHc7lcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZE9VqMza; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D42DC4CEE9;
+	Fri, 14 Mar 2025 14:55:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741964107;
+	bh=Y7suO4Icu91JTInezlVFwg/llfVrPdESwvywRZKTwVw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZE9VqMzaA0XQsHHgemK96xL6vlHy1ptD2FleIPSdLODCOXOArE06JObdn5PAYwAMu
+	 oht9vi+9nXrrre4yv23hm2HSOI8WfmCD/uqp4Prpmz63BVeLKG2enOPtw8yz1yoLZM
+	 /1msXs/oskrp3TOCM6rc1tSuL5yldKSIIAJfT0P7//t16jFYfWJxZDW8nC2hGMEQ3o
+	 csCtk/9DNfhx6ddJvDRmWs7lW5hZ/FeXBRC0wPObHP/ZwqiZhsVtLSJO5p/zVNYyMg
+	 BrsHBuu5fSIP1GrmfL+loYA2xXmCA87H/6cTJq15BjuQSs2xIdvRqJGVdM91/v0Fg1
+	 WvStGlKriWa7w==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1tt6RG-000000002yW-2Hcq;
+	Fri, 14 Mar 2025 15:55:06 +0100
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: [PATCH v2 1/8] arm64: dts: qcom: x1e80100-crd: mark l12b and l15b always-on
+Date: Fri, 14 Mar 2025 15:54:33 +0100
+Message-ID: <20250314145440.11371-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250314145440.11371-1-johan+linaro@kernel.org>
+References: <20250314145440.11371-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025031427-yiddish-unrented-2bc2@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 14, 2025 at 06:32:45AM +0100, Greg Kroah-Hartman wrote:
-> On Fri, Mar 14, 2025 at 12:35:15AM +0000, Mark Brown wrote:
-> > From: Mark Rutland <mark.rutland@arm.com>
-> > 
-> > Now that the host eagerly saves its own FPSIMD/SVE/SME state,
-> > non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
-> > and the code to do this is never used. Protected KVM still needs to
-> > save/restore the host FPSIMD/SVE state to avoid leaking guest state to
-> > the host (and to avoid revealing to the host whether the guest used
-> > FPSIMD/SVE/SME), and that code needs to be retained.
-> > 
-> > Remove the unused code and data structures.
-> > 
-> > To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
-> > VHE hyp code, the nVHE/hVHE version is moved into the shared switch
-> > header, where it is only invoked when KVM is in protected mode.
-> > 
-> > Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> > Reviewed-by: Mark Brown <broonie@kernel.org>
-> > Tested-by: Mark Brown <broonie@kernel.org>
-> > Acked-by: Will Deacon <will@kernel.org>
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Fuad Tabba <tabba@google.com>
-> > Cc: Marc Zyngier <maz@kernel.org>
-> > Cc: Oliver Upton <oliver.upton@linux.dev>
-> > Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-> > Link: https://lore.kernel.org/r/20250210195226.1215254-3-mark.rutland@arm.com
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > Signed-off-by: Mark Brown <broonie@kernel.org>
-> > ---
-> 
-> What is the upstream git id for this on?
+The l12b and l15b supplies are used by components that are not (fully)
+described (and some never will be) and must never be disabled.
 
-It seems to be 8eca7f6d5100 ("KVM: arm64: Remove host FPSIMD saving for
-non-protected KVM").
+Mark the regulators as always-on to prevent them from being disabled,
+for example, when consumers probe defer or suspend.
 
+Fixes: bd50b1f5b6f3 ("arm64: dts: qcom: x1e80100: Add Compute Reference Device")
+Cc: stable@vger.kernel.org	# 6.8
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
+Cc: Sibi Sankar <quic_sibis@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ arch/arm64/boot/dts/qcom/x1-crd.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/x1-crd.dtsi b/arch/arm64/boot/dts/qcom/x1-crd.dtsi
+index 9e587dc57532..22ebcbe54e24 100644
+--- a/arch/arm64/boot/dts/qcom/x1-crd.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1-crd.dtsi
+@@ -610,6 +610,7 @@ vreg_l12b_1p2: ldo12 {
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
+ 
+ 		vreg_l13b_3p0: ldo13 {
+@@ -631,6 +632,7 @@ vreg_l15b_1p8: ldo15 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
+ 
+ 		vreg_l16b_2p9: ldo16 {
 -- 
-Catalin
+2.48.1
+
 
