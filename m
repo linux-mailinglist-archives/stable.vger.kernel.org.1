@@ -1,145 +1,102 @@
-Return-Path: <stable+bounces-124405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E97DA60807
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 05:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0465BA60850
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 06:32:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCD5C17DEE5
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 04:17:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41E5E170754
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 05:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B83313B2B8;
-	Fri, 14 Mar 2025 04:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C618A126BF1;
+	Fri, 14 Mar 2025 05:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="zKBeeihX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfQoWP7U"
 X-Original-To: stable@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C48F50F;
-	Fri, 14 Mar 2025 04:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539C61E86E;
+	Fri, 14 Mar 2025 05:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741925850; cv=none; b=cZyWMJcvLF3AHSJ1/Q4B5bBgF2RXO+YN9fM0RILZ7zxgUlP31LIqbFDf6xz0tV8mOPIVUqsVe6JAScLlcYVNhfAc3n6NIccy7jB57HhYXQM0AoCClA6+wjPm7FA1KOIa4BnWnGTWXK2Dt1YTHgC4e/FdpxEuKsGIHT6j/3tM+ho=
+	t=1741930369; cv=none; b=oAq5LbL/XvXAE7exWKk9Gzv0BdLckShlDm9SaGHrFYjITIsOer/Vnk8/HLYZfakaDOB4h7iKr458ultMGtFiK+xEJ9PCNcNLgIdX1Lh5TOYozD3ctzTWumw3srjXr6zGb4J0WafgOOSUvsozBcLeeoFdmlOsU5OxiDyaeDAPqqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741925850; c=relaxed/simple;
-	bh=TnEWx0F+7GIBzZufC7ym7uTdsaxdyCuwesSiGz6Nu7g=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=isCiDLrRfUoYorDjRRjJ4Jmjn06r7Z94wJ/XTZaVZk60FSHGGnomaUYXhW7ouv52RL85Xw1X1IMAADRfLcUu/XDptmtlDqrdbke13udqXUnoLu914qY8PyHpWtvcGo9z1mpBwvEvFX6yD3+8dUOQCeRcEzZ9eDK/mE9Nee7KLSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=zKBeeihX; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52E4H7751577816
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Mar 2025 23:17:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1741925827;
-	bh=uJxJyWw+HNGoEkY0YqzV8FUsX4LKlrT7ZOekNYT3OXg=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=zKBeeihXhZ1QITWJuK3qrT/tyE4HVnXoRuzNmvNEv9uqrrliXTYcLFgAKLvhfZsry
-	 hLUynqqDWXbKfWI1IQS3GtSjXD8/lilRGvXOa9tAzUTxW11lhkleCjV0wa9ib8k5xg
-	 YYBPxSIzzeHjpN1ySx20PJb3Sn3MHG8S4sZ7ODsc=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52E4H7xI031477
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 13 Mar 2025 23:17:07 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 13
- Mar 2025 23:17:06 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 13 Mar 2025 23:17:06 -0500
-Received: from localhost (uda0492258.dhcp.ti.com [10.24.72.113])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52E4H5Lg046200;
-	Thu, 13 Mar 2025 23:17:06 -0500
-Date: Fri, 14 Mar 2025 09:47:05 +0530
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
-        <kw@linux.com>, <vigneshr@ti.com>, <manivannan.sadhasivam@linaro.org>,
-        <robh@kernel.org>, <bhelgaas@google.com>, <rogerq@kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
-Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
- J784S4
-Message-ID: <20250314041705.v5j2fjulol5ywvyq@uda0492258>
-References: <20250313055519.j3bpvsm6govd5ytk@uda0492258>
- <20250313160215.GA736346@bhelgaas>
+	s=arc-20240116; t=1741930369; c=relaxed/simple;
+	bh=Gqip2u1dKZM5ihrffxMctAlWaVDbG4jUMPKuit18Zpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cfp7Cj2EXUJRCTihtpYTGON6k+HrlIf5BuKp00yi5+dml6iSWzWDie+xUhUuhVLzP+5W+uYw14FfG0azqH2JFZq2a69ctREbNyJZwtxn7IHcpbt0r9pfp5PtBiDdtPAp/NVgs7wWPNfBjojY7qbhbJ012nbuOofHAlFAyatb4y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfQoWP7U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9B6C4CEE3;
+	Fri, 14 Mar 2025 05:32:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741930368;
+	bh=Gqip2u1dKZM5ihrffxMctAlWaVDbG4jUMPKuit18Zpk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RfQoWP7UNXyhVa14p9u5HeB1t3Ss4Pk8U9FROmk/VakXRN9O8U43W9QH75Ya2wT0P
+	 oecQf01nK6rnaGaQBWjE1efeNDTDt4CZkqvC+mG6/7Jwo+l78UF6rMpxXT11zZYTZP
+	 wSz3x4mxwDPsCW/CP1BR6Xhh9H/pvZdF/Tcpkl4Q=
+Date: Fri, 14 Mar 2025 06:32:45 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+	Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH 6.12 3/8] KVM: arm64: Remove host FPSIMD saving for
+ non-protected KVM
+Message-ID: <2025031427-yiddish-unrented-2bc2@gregkh>
+References: <20250314-stable-sve-6-12-v1-0-ddc16609d9ba@kernel.org>
+ <20250314-stable-sve-6-12-v1-3-ddc16609d9ba@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250313160215.GA736346@bhelgaas>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+In-Reply-To: <20250314-stable-sve-6-12-v1-3-ddc16609d9ba@kernel.org>
 
-On Thu, Mar 13, 2025 at 11:02:15AM -0500, Bjorn Helgaas wrote:
-> On Thu, Mar 13, 2025 at 11:25:19AM +0530, Siddharth Vadapalli wrote:
-> > On Wed, Mar 12, 2025 at 11:16:00AM -0500, Bjorn Helgaas wrote:
-> > > On Wed, Mar 05, 2025 at 06:50:18PM +0530, Siddharth Vadapalli wrote:
-> > > > Commit under Fixes assigned the value of 'linkdown_irq_regfield' for the
-> > > > J784S4 SoC as 'LINK_DOWN' which corresponds to BIT(1). However, according
-> > > > to the Technical Reference Manual and Register Documentation for the J784S4
-> > > > SoC [0], BIT(1) corresponds to "ENABLE_SYS_EN_PCIE_DPA_1" which is __NOT__
-> > > > the field for the link-state interrupt. Instead, it is BIT(10) of the
-> > > > "PCIE_INTD_ENABLE_REG_SYS_2" register that corresponds to the link-state
-> > > > field named as "ENABLE_SYS_EN_PCIE_LINK_STATE".
-> > > 
-> > > I guess the reason we want this is that on J784S4, we ignore actual
-> > > link-down interrupts (and we don't write STATUS_CLR_REG_SYS_2 to clear
-> > > the interrupt indication, so maybe there's an interrupt storm), and we
-> > > think some other interrupt (DPA_1, whatever that is) is actually a
-> > > link-down interrupt?
-> > 
-> > While it is true that actual link-down interrupts are ignored, it is not
-> > the case that there's an interrupt storm because the same incorrect macro
-> > is used to enable the interrupt line. Since the enables an interrupt for
-> > DPA_1 which never fires, we don't run into the situation where we are not
-> > clearing the interrupt (the interrupt handler will look for the same
-> > incorrect field to clear the interrupt if it does fire for DPA_1, but that
-> > doesn't happen). The 'linkdown_irq_regfield' corresponds to the
-> > "link-state" field not just in the J784S4 SoC, but in all SoCs supported by
-> > the pci-j721e.c driver. It is only in J721E that it is BIT(1)
-> > [LINK_DOWN macro], while in all other SoCs (J784S4 included), it is BIT(10)
-> > [J7200_LINK_DOWN macro since it was first added for J7200 SoC]. Matt
-> > probably referred to J721E's Technical Reference Manual and ended up
-> > incorrectly assigning "LINK_DOWN", due to which the driver is enabling
-> > the DPA_1 interrupt and the interrupt handler is also going to look for
-> > the field corresponding to receiving an interrupt for DPA_1.
+On Fri, Mar 14, 2025 at 12:35:15AM +0000, Mark Brown wrote:
+> From: Mark Rutland <mark.rutland@arm.com>
 > 
-> So I guess without this patch, we incorrectly ignore link-down
-> interrupts on J784S4.  It's good to have a one-sentence motivation
-> like that somewhere in the commit log that we can pull out and include
-> in the merge commit log and the pull request.
-
-Yes, we can prepend the following to the existing commit message:
-"Link down interrupts on J784S4 SoC are missed because..."
-
-resulting in the following updated paragraph in the commit message:
-Link down interrupts on J784S4 SoC are missed because commit under Fixes
-assigned the value of 'linkdown_irq_regfield' for the....
-
-
+> Now that the host eagerly saves its own FPSIMD/SVE/SME state,
+> non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
+> and the code to do this is never used. Protected KVM still needs to
+> save/restore the host FPSIMD/SVE state to avoid leaking guest state to
+> the host (and to avoid revealing to the host whether the guest used
+> FPSIMD/SVE/SME), and that code needs to be retained.
 > 
-> > I can only hope that the URL will redirect to the latest version of
-> > the User Guide if at all it becomes invalid.
+> Remove the unused code and data structures.
 > 
-> OK, thanks, I guess there's nothing more to do ;)  I guess that manual
-> is not really designed for collaborative development.
+> To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
+> VHE hyp code, the nVHE/hVHE version is moved into the shared switch
+> header, where it is only invoked when KVM is in protected mode.
 > 
-> Thanks for the patient hand holding!
+> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+> Reviewed-by: Mark Brown <broonie@kernel.org>
+> Tested-by: Mark Brown <broonie@kernel.org>
+> Acked-by: Will Deacon <will@kernel.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Fuad Tabba <tabba@google.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Oliver Upton <oliver.upton@linux.dev>
+> Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+> Link: https://lore.kernel.org/r/20250210195226.1215254-3-mark.rutland@arm.com
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> ---
 
-:)
+What is the upstream git id for this on?
 
-Regards,
-Siddharth.
+thanks,
+
+greg k-h
 
