@@ -1,136 +1,163 @@
-Return-Path: <stable+bounces-124415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B907A60C41
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 09:53:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EEAFA60CA7
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 10:04:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48892189A7AC
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 08:53:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70F707AB7FE
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 09:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962071DDC14;
-	Fri, 14 Mar 2025 08:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288551DDA3C;
+	Fri, 14 Mar 2025 09:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b="jXa4I/G3"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F4F1DA617
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 08:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852081DE2C1;
+	Fri, 14 Mar 2025 09:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741942418; cv=none; b=obXG+nLWLCFHbapcJbH+Yo0btQ1DIaaKvIAk4e6C19lA5aBmVXzkK+9kMJMbvK5kucVmvNLIxlbdEdMuoT+J2S+sA+BjGdh87nL9b/E07nO9gCH4Bqs17n1lZTHgZ24StEwM1HoKg8QGvjqkE4vrgBKcJqTAbbWcTXbT3T/rGbc=
+	t=1741943032; cv=none; b=I75emS5PAopMq3t3RECdbvNcivNAa7VGV5ALFE1sMEkzunIyQpPFsouehwibqhNKFFFRkHU8tD6ry24RLGbJ0NkFscxr90d2mS+Sie5xuMHWV7Q/l+US6GKYW03yyxlfdYDqr4RKz6Mb2+TLFuAhtq/f7i7GmnDWa37zhoi+FgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741942418; c=relaxed/simple;
-	bh=LG+zWUiU+YDS4u7udi6xwwIRvt4cLa8ZSYa7+ZaV17I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R+KppL6PlgWiBxoHWx7b87Ht9noqjdYZeeX51uw+SyzZX4TiMRTCMXgVej2WASYL1qpBa016jO/yGJAzASgPrEVq+QS0Pf7jt9UO7G4VX6PMB+VUc/Yb8hh5wkNxnP+Ife9luEYO1GMcGoLv9E0GagfKH9sF/w/G3hvbMBLEgvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tt0n5-0007tf-7y; Fri, 14 Mar 2025 09:53:15 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1tt0n3-005fmP-13;
-	Fri, 14 Mar 2025 09:53:13 +0100
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id EB3603DB854;
-	Fri, 14 Mar 2025 08:53:12 +0000 (UTC)
-Date: Fri, 14 Mar 2025 09:53:12 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Biju Das <biju.das.jz@bp.renesas.com>
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Duy Nguyen <duy.nguyen.rh@renesas.com>, Simon Horman <horms@kernel.org>, stable@vger.kernel.org, 
-	linux-can@vger.kernel.org, devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, Biju Das <biju.das.au@gmail.com>
-Subject: Re: [PATCH v3 0/2] R-Car CANFD fixes
-Message-ID: <20250314-coyote-of-inspiring-perception-9f5089-mkl@pengutronix.de>
-References: <20250307170330.173425-1-biju.das.jz@bp.renesas.com>
+	s=arc-20240116; t=1741943032; c=relaxed/simple;
+	bh=ZErZMC+QOWToIegQ2iKmCvjBmUNPIrj83qIYnRryRRc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FnT6hK09j2f3H+fVn7df2FNJvsRViQhCNdrnKZAPqX7xKXyR4ZTUCkxayIBVyjOqyeWlQi9JfDr9kFKD/G49v+V/wzZ+baacydUVWh69JsvPK5wV0ZEn0oxWgGulwbfgkS/+DGUdjflhE9qcTEmo/21ptEir+ngcu6eCN5Pnlbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org; spf=pass smtp.mailfrom=deepin.org; dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b=jXa4I/G3; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deepin.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deepin.org;
+	s=ukjg2408; t=1741943015;
+	bh=F3Mr2gHjrrQbbfObvuHIpoye6jVxjDNGFB92bMbmjnM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=jXa4I/G3uyCQg1WD0syZm8bEx4u8LV2xsCI9VQgC9WQoQDLXp+t7lMNZG3sHxwV+J
+	 3LmW5qqn/zc6zbIAphiW27/D8bXgkoMkmRLwN/PwiR9UhtAVotwmjHHicvnMonA6Fg
+	 hqwLVLhX58srmwO6KfZReoYIPEXbOEXQuVJGkolM=
+X-QQ-mid: bizesmtpsz6t1741943012t48o76y
+X-QQ-Originating-IP: yWt2CxAOtvx3l3yIbs0QqGFaTolnx3VFoOEH3BYpPD8=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 14 Mar 2025 17:03:30 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 4056344661151254047
+From: Chen Linxuan <chenlinxuan@deepin.org>
+To: Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Chen Linxuan <chenlinxuan@deepin.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Cc: Yi Lai <yi1.lai@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH stable 6.1] lib/buildid: Handle memfd_secret() files in build_id_parse()
+Date: Fri, 14 Mar 2025 17:02:47 +0800
+Message-ID: <5602B4F2D8F73293+20250314090247.31170-2-chenlinxuan@deepin.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sfhcrqzzuf5ym3x3"
-Content-Disposition: inline
-In-Reply-To: <20250307170330.173425-1-biju.das.jz@bp.renesas.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:deepin.org:qybglogicsvrgz:qybglogicsvrgz7a-0
+X-QQ-XMAILINFO: N2uXtyrSU4Fu3wpACaovTJUP+GajuhxUR6pKBTRzKenMG8bkFVtrUdaj
+	9VnFEzRe2Jt6/MXQKV8lL0pBqDz0Bqlti5oI1KxwfRNShTixDnkT1CZ90u1uktmxkRd6WSS
+	j4natsBdxEjDIWDyeVb3HV4LjRl50Q3hpiErT1gJ2bDBFxc7C+ubitiJWcpfFc1dNYUAt65
+	QK2QIYmN5ETM3pe5mwlu+3AwzZ7mp8gonYreBmCoRf7HRnktpniGTLbhD41yk2rFrBE5RL2
+	Iol3qTwdyk03GE0Rz7iNn+1It46+j27m/4b8IJacOemhyFaQmyvNm/553jnbWfo5aensg41
+	fDrfYAFPGMaRd2+GwIZ01V7sgFd6ScOXGVcfda5n6Mxo5rwYMdolzyyU8XgHTh5SgA56MCz
+	jHfCHJx8kCbGUrV6IlHKnj77rCBxVeQIQxBVUlEwQKbo5/hT5IuNvWGE+kU5utjKv8l+dnj
+	xVVay8U2OoBidcowcZlBv0aVI3Br87EojcPYemUy0iZiAzbqI69xA+3xYx1jEjDb0SVo/Jj
+	VzVSbn1imw5YupfqkenibARcEWV7BQvtrFWtPAoZXJygPiloiwiYLHnAFe6fGTaBqrsVo+N
+	IGCA5d6FFC5DSjRnCIJgmIiv6zHfoPIpUhv8zBbW4hOO7nEj2NuNGbw6CBDOcR0mnPyqj/y
+	K2dMOk/Me3evuLKxYyj4CSjhQkAQhNI0YZrxKsJ6uJCaj2gHA8Qv50P1hJvRtnopHOGcrsI
+	Vp0dwU9CPAG0qrSXYI0mAEtRdGOs90toD0ZY+GqYG7mnxMMR/XYIHrR/mEgVui2kw8D8jHi
+	AF8aRuREqbsiMJb+zAk+1gU78NSrBAY4RtvnLvUIp1b48Co+6kcEvc8CeU5VT5G+QByyjEh
+	X46gKDrOqd7rUjzNC2PYUwljm1NbbCmnM8PzKg1RkWiG8a6ieJkPcSV0FdGPhfIvK/r0N6F
+	E4YYj9FrTBKy1L4Nw/zye35xUwcXrJn/mUbbDZLZvSn3Ke8jAONqiVD+hZo5Y/SPJkbNYpa
+	o/3xs0dkXc0n6GTVNF6orP2ppZRoyu1PxXtSxTNv+zuySJ8L3WyfdtU7WPuuJ7bSbWUPaMx
+	w==
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-RECHKSPAM: 0
 
+[ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
 
---sfhcrqzzuf5ym3x3
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 0/2] R-Car CANFD fixes
-MIME-Version: 1.0
+>From memfd_secret(2) manpage:
 
-On 07.03.2025 17:03:25, Biju Das wrote:
-> This patch series addresses 2 issues
->  1) Fix typo in pattern properties for R-Car V4M.
->  2) Fix page entries in the AFL list.
->=20
-> v2->v3:
->  * Collected tags.
->  * Dropped unused variables cfg and start from
->    rcar_canfd_configure_afl_rules().
-> v1->v2:
->  * Split fixes patches as separate series.
->  * Added Rb tag from Geert for binding patch.
->  * Added the tag Cc:stable@vger.kernel.org
->=20
-> Biju Das (2):
->   dt-bindings: can: renesas,rcar-canfd: Fix typo in pattern properties
->     for R-Car V4M
->   can: rcar_canfd: Fix page entries in the AFL list
->=20
->  .../bindings/net/can/renesas,rcar-canfd.yaml  |  2 +-
->  drivers/net/can/rcar/rcar_canfd.c             | 28 ++++++++-----------
->  2 files changed, 12 insertions(+), 18 deletions(-)
+  The memory areas backing the file created with memfd_secret(2) are
+  visible only to the processes that have access to the file descriptor.
+  The memory region is removed from the kernel page tables and only the
+  page tables of the processes holding the file descriptor map the
+  corresponding physical memory. (Thus, the pages in the region can't be
+  accessed by the kernel itself, so that, for example, pointers to the
+  region can't be passed to system calls.)
 
-Applied to linux-can.
+We need to handle this special case gracefully in build ID fetching
+code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
+family of APIs. Original report and repro can be found in [0].
 
-Thanks,
-Marc
+  [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
+Reported-by: Yi Lai <yi1.lai@intel.com>
+Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
+Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
+[ Linxuan: perform an equivalent direct check without folio-based changes ]
+Cc: stable@vger.kernel.org
+Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+---
 
---sfhcrqzzuf5ym3x3
-Content-Type: application/pgp-signature; name="signature.asc"
+Some previous discussions can be found in the following links:
+https://lore.kernel.org/stable/05D0A9F7DE394601+20250311100555.310788-2-chenlinxuan@deepin.org/
 
------BEGIN PGP SIGNATURE-----
+---
+ lib/buildid.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmfT7nYACgkQDHRl3/mQ
-kZyQcQf9GCCP/HKTjBxyq7lVtcXFI0SYyIzqN2BocqvkOk+LX8jiBhabI2Dj3LLi
-Kxuv4HZRFDTf9zQXa690wOcWtBnRBKxDb+jXFBZY7lEnH59WhJlH1FVX7GkFOtmx
-cbDqwS/nrzW2VH2w7+wLlgsyQvcKycB9VvxO6lQvbgqSltageE/Jl45e9aquCY7l
-GhZjcVMltZhy0jA6IVqGpjicXYESfrZYYD+H7fJ3xo7tDIVdG/LdvSx3x71/+/Ct
-dALlcctsLVAEqh26BrpbIMv0hed5QZUFXbDRla5D5z/rRswkPsioqJMkPGfhGMB5
-e1V95RJmMYEelyf3EsO1mxs25dtC/Q==
-=SXcH
------END PGP SIGNATURE-----
+diff --git a/lib/buildid.c b/lib/buildid.c
+index 9fc46366597e..6249bd47fb0b 100644
+--- a/lib/buildid.c
++++ b/lib/buildid.c
+@@ -5,6 +5,7 @@
+ #include <linux/elf.h>
+ #include <linux/kernel.h>
+ #include <linux/pagemap.h>
++#include <linux/secretmem.h>
+ 
+ #define BUILD_ID 3
+ 
+@@ -157,6 +158,12 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+ 	if (!vma->vm_file)
+ 		return -EINVAL;
+ 
++#ifdef CONFIG_SECRETMEM
++       /* reject secretmem folios created with memfd_secret() */
++       if (vma->vm_file->f_mapping->a_ops == &secretmem_aops)
++               return -EFAULT;
++#endif
++
+ 	page = find_get_page(vma->vm_file->f_mapping, 0);
+ 	if (!page)
+ 		return -EFAULT;	/* page not mapped */
+-- 
+2.48.1
 
---sfhcrqzzuf5ym3x3--
 
