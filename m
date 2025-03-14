@@ -1,136 +1,92 @@
-Return-Path: <stable+bounces-124469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C06A61890
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 18:49:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5030DA61BD2
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 21:08:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A39E91B62869
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 17:49:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AE72884306
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 20:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CB9205AAC;
-	Fri, 14 Mar 2025 17:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52748217668;
+	Fri, 14 Mar 2025 20:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r86B2yOL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kv88ivhH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7200204F98
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 17:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057E6215F6E;
+	Fri, 14 Mar 2025 20:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741974523; cv=none; b=mfnfs5CCOa6tYM3b5xLEY0DyGFvzSzewMa9WjEYxzUHDcJMliawHu3OFsXNBvjGivqXFd+kasL0eYC851xD2pkuPc21G9n1rWDPaWgGjNNiI3vBBvjAD8/KWJhLoZ8TAzHLk5JGH3MNAH/C0CSKUcIYi7DSQm6wfaubRabYP1Xc=
+	t=1741982521; cv=none; b=m/eovm3m1ujNV6y9jSF5BfO/VKDe2uJttuA/CQzijgWlfKtu2UaN5zs6i144jNuknmDCCcZ7MlMKX9rrVJKFTkHMiI0un2T6hTmYGKbYPQUV0fA2V38XsQ06NIveHwpk7yzT2wLCHowdatMO/k6E/S2Iw6+eJk2UQCFTYOq0ScU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741974523; c=relaxed/simple;
-	bh=WZz3v+vsHhPD1tXnM2Sgca+yquBEKJ/qJRDwgWjeJjQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q07bgabaEbklpn7oMm49g74mWl/PKUA/Oiv/wyauk8ygUeJgV0PGYda7RxL5b1pjJwWM4US9scdB0mEW6Q6XhK1oXcVhqhUOPeSrGIvX+6o4/9NDQeXV07LXdFV+OBkQ5+etj71UDN2pKXVWxk/CwGx4HMG+eKUg0jcX2mTIN8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r86B2yOL; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3913fdd003bso1274761f8f.1
-        for <stable@vger.kernel.org>; Fri, 14 Mar 2025 10:48:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741974520; x=1742579320; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J/0LkOzwwvJNcYMQhvQr0pJ6M6A5VssVoqwJh0FipfI=;
-        b=r86B2yOLrp5ovBL+sphVOm7K+tIjuBHFQSZ4+WqizlY5llipVKCrSY84Wk8kFSlOwa
-         jxc4o7LZHP5h1wT9oIiUfYqMwCZetBrYCywa0qOngkxNwfbFD8SEwMePLXaT9oUUldAE
-         2vaHBFec4+lgB+ri/yRit/iclJ7YC3JNFIcdNQTWFfeyBvJGu2+uDOJO++VKsUgsYuLU
-         gFSxpIBnvExg5ozA1LOC3LiDKy0rwzXM56xLvGvRKYWsdzKDC/ty8XxivYvWWs+ZH4ae
-         7W4gYAk/tNYVWRcsTh6DDqni1hhWfg9cZuLHrrKyfcCdlZcaIpG71ftPZUhxUkgj+/BO
-         FgeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741974520; x=1742579320;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J/0LkOzwwvJNcYMQhvQr0pJ6M6A5VssVoqwJh0FipfI=;
-        b=WO9LFu1KVDWOPq7OcfDlUdeCgg66PBaMJ5wIOHm/dcvaAvErvCxi2nI/98j8mS0BTX
-         pbHgqbBdDJ6JlzxBVvy0l1LOKfNBQTJsKteqic7X8ITm8WU6qFuxQInKWK/yV4PCUbpT
-         7DNXWUq5g1OL1iq1EX06/Mb5szsgxj+UlRu8BeCaAV8U5VAXrsvIl/qWor2FiOhzBfHE
-         p76Z4qx+SOo+6/8oRT7Q+ur9cuRIsgsSvDdX+NuqiZU2XLF3LA3bsVViFXvTItQ3+5oI
-         Rp6VZlYoX+guWFbxFWtSRPxKqCuKmVOTLdoiICOOtnAUmUj6vTBe7Oq+m4XEW/XceN+3
-         l34w==
-X-Forwarded-Encrypted: i=1; AJvYcCWJqqdwFVQ4Zox6bGpP5kL0ZKRAFuftXxM2A/yRBo2iqVWyq23NegZnm0Mm0CbNR/aCb7Fw988=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcTHCFqoZGzhKPoMRE6721fmoYDZ0j+bo/bDv9kbeQIPlmrkab
-	PvCqNMo5xMFl56ZNN8zhnxlFpGtmXagBpnLX9xHHh0OxNFkrgNRkd5NeV9v3IMI=
-X-Gm-Gg: ASbGnctxAHhywjq3Lp9uqa0HwXsaK4J6u1+gom9Hv+pd9HF2PJwC5HeF3EXML4KUcz/
-	3NsTwARxrItnap5P7LXuKauAg5LXORKA/pKY3HZgXF5CKAXTZDABuep2oUKSObUJPSAG/fHjclE
-	c0B5ncTP1+gLv0ZMVI92J3c/FhuxrH4SorCaOM/FCoBPjIlYqDOxqRSH/AhBzEtrjdFmJGCvkdH
-	xhCK/LuXpqYKaRCHNRWJy8jQjJW7QI7UnI9J3B06eeEKy64ZPdRPl2/RSHKOuoxQ33qOuIfx+Bh
-	jilI/lbzx5U9g5v8U//H5p2+7YfzVjauQZM0TRIF4MB0k9nLGDYD6dqDIHf6zcMXJnmtTVI6uED
-	fF+Pq
-X-Google-Smtp-Source: AGHT+IFSURXCATif01r54d+KQHoWw2qah8uuJQ120su2MkweaWrQyfg3Zuqy7P/UA//iCx8NnbbY1Q==
-X-Received: by 2002:a05:6000:1a8c:b0:38d:ae1e:2f3c with SMTP id ffacd0b85a97d-3971dbe80bemr5173220f8f.25.1741974519796;
-        Fri, 14 Mar 2025 10:48:39 -0700 (PDT)
-Received: from localhost.localdomain ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-395c8975afesm6117243f8f.47.2025.03.14.10.48.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 10:48:38 -0700 (PDT)
-From: srinivas.kandagatla@linaro.org
-To: broonie@kernel.org
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	krzysztof.kozlowski@linaro.org,
-	linux-sound@vger.kernel.org,
+	s=arc-20240116; t=1741982521; c=relaxed/simple;
+	bh=H+lIMIida1YPLKiqGQvJnGjwP8jxGk4Ha/Ca/iVClOg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nFnOPUe0jtUIOCPpBQolDXsspQprmkuJGiKypMJ/x8rKW3QjwNV8dAlqS5sKPKB3eG2lD3uuHwjT6f0S89oMZhqt3PcMC0NMLnL3h3O6ZD5DyrxPDoBwSRFITRChScuLE5o4oBLMj+Ndnn+S0l1OlosY+pjYJxPDMJiI1Tmqpfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kv88ivhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4B7C4CEF0;
+	Fri, 14 Mar 2025 20:02:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741982520;
+	bh=H+lIMIida1YPLKiqGQvJnGjwP8jxGk4Ha/Ca/iVClOg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kv88ivhHPFjDHYwRtjNzfjKe7yUyTwpl+uYOYkP3wWrSb+tjKEAeWUOhLA/U6eILh
+	 sJ+cRZC383+E1jKsNnvuRdLLXIT/JmwZMj4H/o/Q7z1/OZsF48HVu45Zgz/SGZtus1
+	 jXtnEuSFi7H0aYIC5bqUDbJBMoPP/9n2CyhVTi0LYfcTFPX13H6JW3xlGcvaG1KqYb
+	 YHxN9Zn9lhF+qMrI1+giCmplnFMOkxq6a/ik0NhpqBxE3xnYMYNCxxbmrdV+/6OO+b
+	 oJFpmhjcGvIeED4kwI3QSjot8R2yj5AVG+60VHfTDZjShyte0VCR48fC6bJSuhRM6p
+	 Khtfm0/8j+3FA==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Taniya Das <quic_tdas@quicinc.com>
+Cc: Ajit Pandey <quic_ajipan@quicinc.com>,
+	Imran Shaik <quic_imrashai@quicinc.com>,
+	Jagadeesh Kona <quic_jkona@quicinc.com>,
 	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	dmitry.baryshkov@linaro.org,
-	johan+linaro@kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v5 5/5] ASoC: qdsp6: q6apm-dai: fix capture pipeline overruns.
-Date: Fri, 14 Mar 2025 17:48:00 +0000
-Message-Id: <20250314174800.10142-6-srinivas.kandagatla@linaro.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250314174800.10142-1-srinivas.kandagatla@linaro.org>
-References: <20250314174800.10142-1-srinivas.kandagatla@linaro.org>
+Subject: Re: [PATCH 0/2] clk: qcom: gdsc: Update retain_ff sequence and timeout for GDSC
+Date: Fri, 14 Mar 2025 15:01:13 -0500
+Message-ID: <174198247873.1604753.9788641578266920775.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250214-gdsc_fixes-v1-0-73e56d68a80f@quicinc.com>
+References: <20250214-gdsc_fixes-v1-0-73e56d68a80f@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-Period sizes less than 6k for capture path triggers overruns in the
-dsp capture pipeline.
+On Fri, 14 Feb 2025 09:56:58 +0530, Taniya Das wrote:
+> The retain_ff bit should be updated for a GDSC when it is under SW
+> control and ON. The current sequence needs to be fixed as the GDSC
+> needs to update retention and is moved to HW control which does not
+> guarantee the GDSC to be in enabled state.
+> 
+> During the GDSC FSM state, the GDSC hardware waits for an ACK and the
+> timeout for the ACK is 2000us as per design requirements.
+> 
+> [...]
 
-Change the period size and number of periods to value which DSP is happy with.
+Applied, thanks!
 
-Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
----
- sound/soc/qcom/qdsp6/q6apm-dai.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+[1/2] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
+      commit: 25708f73ff171bb4171950c9f4be5aa8504b8459
+[2/2] clk: qcom: gdsc: Update the status poll timeout for GDSC
+      commit: 172320f5ead5d1a0eed14472ce84146221c75675
 
-diff --git a/sound/soc/qcom/qdsp6/q6apm-dai.c b/sound/soc/qcom/qdsp6/q6apm-dai.c
-index 180ff24041bf..2cd522108221 100644
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -24,8 +24,8 @@
- #define PLAYBACK_MIN_PERIOD_SIZE	128
- #define CAPTURE_MIN_NUM_PERIODS		2
- #define CAPTURE_MAX_NUM_PERIODS		8
--#define CAPTURE_MAX_PERIOD_SIZE		4096
--#define CAPTURE_MIN_PERIOD_SIZE		320
-+#define CAPTURE_MAX_PERIOD_SIZE		65536
-+#define CAPTURE_MIN_PERIOD_SIZE		6144
- #define BUFFER_BYTES_MAX (PLAYBACK_MAX_NUM_PERIODS * PLAYBACK_MAX_PERIOD_SIZE)
- #define BUFFER_BYTES_MIN (PLAYBACK_MIN_NUM_PERIODS * PLAYBACK_MIN_PERIOD_SIZE)
- #define COMPR_PLAYBACK_MAX_FRAGMENT_SIZE (128 * 1024)
+Best regards,
 -- 
-2.39.5
-
+Bjorn Andersson <andersson@kernel.org>
 
