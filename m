@@ -1,198 +1,105 @@
-Return-Path: <stable+bounces-124449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB958A61441
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 15:55:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40233A61482
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 16:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA99D462CC7
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 14:55:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 388891B62E27
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 15:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEF0202C5D;
-	Fri, 14 Mar 2025 14:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0680620013E;
+	Fri, 14 Mar 2025 15:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ydn7qrBr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XNy5Dld9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29BB20127A;
-	Fri, 14 Mar 2025 14:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B357D17579;
+	Fri, 14 Mar 2025 15:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741964108; cv=none; b=cnNbUXZLOiAol1bHpx09Lz26RaVuiZSoeHgU3Y8F6xvHi8E0qL4SCuxLTNrEqGPm8kGC7gkflwTn4Vbf5lrY4yYdPulbx9S5l1KPoEIz8ffLMRXnD9BLH5xWrM966e+FwmwcHG2LiZ5oTAOJrBoliGRIc+vz2gC/4sGx823/4Fk=
+	t=1741964869; cv=none; b=GbivIzVu8PJOU7d51dzO7Tdv9IIgBueeR144rmkD9l9PVLTZSyabYAcwleQwPioKWALQX95sNteuPHLn4JVJu9EH+IusvgCWezeS/q4v/OM/gQpzpyj1DkWivHdMEyBjHpW7rUEJuzVWF33v18ZTT1h5m/qaYGNmmgWD1nmHpLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741964108; c=relaxed/simple;
-	bh=i7kZ6wYmuRLaAfIOVM6uuzu3RdGVBiH3IGLM285iByg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSQ0X4jLT0rydWCQxMKbeH69fP5czVyST7NuksKfdLEWk4fDB93Qw8FH45EQiXY9znh0/RlPOPxvJ+33RcTo+ig73Cy48uZ1orlf7JX8qQ9fAgUiMBhLgVouDc0EIQhjAz2Q7EH3NQxWg3hWnVrH7KxZTPZglAdDKX0NbjOnKzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ydn7qrBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62BBC16AAE;
-	Fri, 14 Mar 2025 14:55:07 +0000 (UTC)
+	s=arc-20240116; t=1741964869; c=relaxed/simple;
+	bh=auGt9XWP0Qbzw3OPjJr1G6NzqivSoczirlHeVfF6E10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sZADa86Ri9Xk7uniyi8p2hZumUomjBwFipIVtqByRTqqp63TYiyiQYZEv0nlesDvbaQtptLwSqsMXtohQNZOmP54fv7Ek1NGjUdpltj4P6j9CEbtD11zO7S9UXIcf5iRivsYhJ962mab9bNwFZQxVKAQV6R4IaohJYNKvGm+qgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XNy5Dld9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE39C4CEE3;
+	Fri, 14 Mar 2025 15:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741964107;
-	bh=i7kZ6wYmuRLaAfIOVM6uuzu3RdGVBiH3IGLM285iByg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ydn7qrBrfmr5u8KDgeRf2n5WCMY1T7cdDKI/NMDmoqlxEfNHqKQgfBwdYpme91Eo3
-	 vTm+yARnZ2ThDaztBMGVD7ZBjbxl/S6mzFEPyw/QUJ7h3SALYSsa1Z2X4/+570kHaw
-	 cfrE61qXKgYNys3xkGx9qF97f5dSpag4ebFUiugw8/aFwHaJ8rLG8uvcGK1EahpCqf
-	 xXO8I1cuhAyUANmx9LDlUTWEw9Mm/CjXcDe1ujDZyRSfL6OxVSQSACoM4nXCULfZ6e
-	 nXdqnWnXnjGdhFPPP1fqz27eJ31ZZ3nlF6ogLSdrZQoAMGoRFYsJXzSqGLB4F3VnSz
-	 UzxRhv7fTogiw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1tt6RH-000000002yp-0gi8;
-	Fri, 14 Mar 2025 15:55:07 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: [PATCH v2 8/8] arm64: dts: qcom: x1e78100-t14s: fix missing HID supplies
-Date: Fri, 14 Mar 2025 15:54:40 +0100
-Message-ID: <20250314145440.11371-9-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250314145440.11371-1-johan+linaro@kernel.org>
-References: <20250314145440.11371-1-johan+linaro@kernel.org>
+	s=k20201202; t=1741964869;
+	bh=auGt9XWP0Qbzw3OPjJr1G6NzqivSoczirlHeVfF6E10=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XNy5Dld9pXvBnJf7wFR2PSc2XDHnXiK4b460XZRPxQk4OI9ncVfutK1DC+v3Ca7iq
+	 8hatfFD9HqzC6G0xlxxkVw7+Xhu5afEzXQZZXm+weAOhZXM/LKsA0kQ7XqIGt04ZmN
+	 PRHTmKa2cyrMcd/TFdZch5GLtrXLTy3pBtBt/sKM9bQLFsLAyi9VDYbroS0g1c7tWR
+	 9nDRO7GOWk3GbTScXZ4mOKDkmgUJq/MENFAZJJ5Be3tPavyh1qZXNjOB2PCGLLFlsp
+	 bIvokHWi1xBp5PzSdliL2ixusTBWMibIQB0p+RPp9PYmfkZ8c2cKGDPzGnueoufAqi
+	 X08d4J+ZWL6fQ==
+Date: Fri, 14 Mar 2025 15:07:43 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+	Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH 6.12 3/8] KVM: arm64: Remove host FPSIMD saving for
+ non-protected KVM
+Message-ID: <fb6255b7-0ba2-45a3-93fd-2ebebfac61be@sirena.org.uk>
+References: <20250314-stable-sve-6-12-v1-0-ddc16609d9ba@kernel.org>
+ <20250314-stable-sve-6-12-v1-3-ddc16609d9ba@kernel.org>
+ <2025031427-yiddish-unrented-2bc2@gregkh>
+ <Z9Q_zW_mM-v2iPHC@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="S8XTGybJTDvyceBH"
+Content-Disposition: inline
+In-Reply-To: <Z9Q_zW_mM-v2iPHC@arm.com>
+X-Cookie: Reality does not exist -- yet.
 
-Add the missing HID supplies to avoid relying on other consumers to keep
-them on.
 
-This also avoids the following warnings on boot:
+--S8XTGybJTDvyceBH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-	i2c_hid_of 0-0010: supply vdd not found, using dummy regulator
-	i2c_hid_of 0-0010: supply vddl not found, using dummy regulator
-	i2c_hid_of 1-0015: supply vdd not found, using dummy regulator
-	i2c_hid_of 1-002c: supply vdd not found, using dummy regulator
-	i2c_hid_of 1-0015: supply vddl not found, using dummy regulator
-	i2c_hid_of 1-002c: supply vddl not found, using dummy regulator
-	i2c_hid_of 1-003a: supply vdd not found, using dummy regulator
-	i2c_hid_of 1-003a: supply vddl not found, using dummy regulator
+On Fri, Mar 14, 2025 at 02:40:13PM +0000, Catalin Marinas wrote:
+> On Fri, Mar 14, 2025 at 06:32:45AM +0100, Greg Kroah-Hartman wrote:
 
-Note that VCC3B is also used for things like the modem which are not yet
-described so mark the regulator as always-on for now.
+> > What is the upstream git id for this on?
 
-Fixes: 7d1cbe2f4985 ("arm64: dts: qcom: Add X1E78100 ThinkPad T14s Gen 6")
-Cc: stable@vger.kernel.org	# 6.12
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- .../qcom/x1e78100-lenovo-thinkpad-t14s.dtsi   | 43 +++++++++++++++++++
- 1 file changed, 43 insertions(+)
+> It seems to be 8eca7f6d5100 ("KVM: arm64: Remove host FPSIMD saving for
+> non-protected KVM").
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dtsi b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dtsi
-index 160c052db1ec..962fb050c55c 100644
---- a/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e78100-lenovo-thinkpad-t14s.dtsi
-@@ -9,6 +9,7 @@
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/input/gpio-keys.h>
- #include <dt-bindings/input/input.h>
-+#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
- 
- #include "x1e80100.dtsi"
-@@ -169,6 +170,23 @@ vreg_edp_3p3: regulator-edp-3p3 {
- 		regulator-boot-on;
- 	};
- 
-+	vreg_misc_3p3: regulator-misc-3p3 {
-+		compatible = "regulator-fixed";
-+
-+		regulator-name = "VCC3B";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+
-+		gpio = <&pm8550ve_8_gpios 6 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+
-+		pinctrl-0 = <&misc_3p3_reg_en>;
-+		pinctrl-names = "default";
-+
-+		regulator-boot-on;
-+		regulator-always-on;
-+	};
-+
- 	vreg_nvme: regulator-nvme {
- 		compatible = "regulator-fixed";
- 
-@@ -692,6 +710,9 @@ touchpad@15 {
- 		hid-descr-addr = <0x1>;
- 		interrupts-extended = <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
- 
-+		vdd-supply = <&vreg_misc_3p3>;
-+		vddl-supply = <&vreg_l12b_1p2>;
-+
- 		wakeup-source;
- 	};
- 
-@@ -703,6 +724,9 @@ touchpad@2c {
- 		hid-descr-addr = <0x20>;
- 		interrupts-extended = <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
- 
-+		vdd-supply = <&vreg_misc_3p3>;
-+		vddl-supply = <&vreg_l12b_1p2>;
-+
- 		wakeup-source;
- 	};
- 
-@@ -714,6 +738,9 @@ keyboard@3a {
- 		hid-descr-addr = <0x1>;
- 		interrupts-extended = <&tlmm 67 IRQ_TYPE_LEVEL_LOW>;
- 
-+		vdd-supply = <&vreg_misc_3p3>;
-+		vddl-supply = <&vreg_l15b_1p8>;
-+
- 		pinctrl-0 = <&kybd_default>;
- 		pinctrl-names = "default";
- 
-@@ -896,6 +923,9 @@ touchscreen@10 {
- 		hid-descr-addr = <0x1>;
- 		interrupts-extended = <&tlmm 51 IRQ_TYPE_LEVEL_LOW>;
- 
-+		vdd-supply = <&vreg_misc_3p3>;
-+		vddl-supply = <&vreg_l15b_1p8>;
-+
- 		pinctrl-0 = <&ts0_default>;
- 		pinctrl-names = "default";
- 	};
-@@ -1037,6 +1067,19 @@ usb0_3p3_reg_en: usb0-3p3-reg-en-state {
- 	};
- };
- 
-+&pm8550ve_8_gpios {
-+	misc_3p3_reg_en: misc-3p3-reg-en-state {
-+		pins = "gpio6";
-+		function = "normal";
-+		bias-disable;
-+		drive-push-pull;
-+		input-disable;
-+		output-enable;
-+		power-source = <1>; /* 1.8 V */
-+		qcom,drive-strength = <PMIC_GPIO_STRENGTH_LOW>;
-+	};
-+};
-+
- &pm8550ve_9_gpios {
- 	usb0_1p8_reg_en: usb0-1p8-reg-en-state {
- 		pins = "gpio8";
--- 
-2.48.1
+Yes, sorry.
 
+--S8XTGybJTDvyceBH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfURj4ACgkQJNaLcl1U
+h9Am2Qf/b4EHZqu6pDkBYyouOVfn8Z/DkFLUSyW1rFgzV1MJ+UBtBsdKnClTUz2/
+HbeF25PC/M9OJgPZDBVbyvMcSidxldZib36id+wvTgvvZvAPr/fiAW/T8AXmPT+T
+OujSaupg0i2yN3LtCcDbI9cytqJjYzD+eXHp2RZehpJvA2pWTJ/zLAq0d0WE55BD
+FAZx74C24WZ7InXKCP+U5hE2jpHp2iIuK5H+lTY6AJCpgOn9R6aIGkeo9SK5UCSC
+0k0oWK77zGxIe3B3Vxj/NvRkfk8D5rrh+pGJkuTihWjDzoCNyi8moceHdTO1YoVO
+aA73+5Bj6jDghbg3JPgw/01G2fO2yQ==
+=YUsB
+-----END PGP SIGNATURE-----
+
+--S8XTGybJTDvyceBH--
 
