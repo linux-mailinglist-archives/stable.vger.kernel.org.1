@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91808A62145
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 00:10:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37448A62146
+	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 00:10:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 361853BEC63
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 23:10:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E58119C56AB
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 23:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B0A1C860B;
-	Fri, 14 Mar 2025 23:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96AEC1C6FE4;
+	Fri, 14 Mar 2025 23:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZDPa11nt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDrUNYbE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E3115D5C4
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 23:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CF01F92E
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 23:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741993813; cv=none; b=OF4MGj0xVbrYEH9WNkeJ1FEfD1QoCBdzAdKiVx9FO313u9xM+Dkj+vYx0HkZmu6i/78fF1QyXcaIc2ZI+hXIEfH/ja+nI32IT5kWg2lsKolaka5wDDB0hs9hlYd++HStQ6VEGhpdAzaUQ/ed7IBmuJTAsBNX0tTOOS8BZKUuaE0=
+	t=1741993815; cv=none; b=eO0Owuf88HN4WEiSRZHuotbO63m5zTE8ZGik+ry5cuNUsGwUCQjAD8r96xpuxtHtEoy3mpzVLrvCxTw6/AO8HygsToKSIhMrl6Vf81oHBlP+zjqHvFctWhS6sW901Jrv33AL0X+xcLXopBzNySeLF278TcK8Yd/jgOvmhLcDcjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741993813; c=relaxed/simple;
-	bh=BxYKMZ9LX1C0kd/VoNZT6dy5lLdJ6zRp1+JZEyOr884=;
+	s=arc-20240116; t=1741993815; c=relaxed/simple;
+	bh=MQ6IECuBQip9HEHpeyTopPQPjtJEUMgjn3FEXj1v59Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sqag6OLa7qp68B+kCR9f5AFsuigDaoBqgp6e0bujZ0s+V72ZZXfLiW/NVpAudkfRrlwAnQWvzDOrktaMzDvIFIzUib31bxxeN7YYFXldPwwS5pm17ahag+6xgM5lIsNVsSJ30XLztXQI9LTVMEuZJM7N6Giq6l0tExix6TXqxaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZDPa11nt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D15CC4CEE3;
-	Fri, 14 Mar 2025 23:10:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eMo5XaM2wgReeIQPZQ+ll18bR+SpZHMe0azY51iCvoiKdA1m9ukxBw19esAo59igwiY9eGykgDak78J/Xlw6xEWjE5ixXtAaN0f0xnG685SRu+k8a3e1sdelsAZp+g+wVvlLdrXk/1wO752SjPBXTEEUGYkVh1751/7yRBqI7Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDrUNYbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6096FC4CEE3;
+	Fri, 14 Mar 2025 23:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741993812;
-	bh=BxYKMZ9LX1C0kd/VoNZT6dy5lLdJ6zRp1+JZEyOr884=;
+	s=k20201202; t=1741993814;
+	bh=MQ6IECuBQip9HEHpeyTopPQPjtJEUMgjn3FEXj1v59Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZDPa11ntUGydcULAizXihKrlrVOKvS7G5PjJA8jfNeKnmZVQsmQ8MzOX8OgPseKO1
-	 RBCHyjax2X34x3CcwVahuy1eGDJfEsjgLJOMukqbWt6UxWjGU3nC5oE6Nk2E3jvEXp
-	 0gw9eUKXvBNkv5DqaDLRbaP2BKeUo3yNwrevu1rD8l5IQ51wZ22DPyaYt4Ao9q+Tsj
-	 mAPMvvSB7LsCIzfJhF0TlhOgh1twUfzJm7gFDmwSlUZtTiPbBaXT0MvEbMxkTi7Nzk
-	 8OLsRSxPJHbLPaax9jp3aRP3vVZxRwNf3dzfBmNSCr4kKp2xmGx5ZXQ4JY8UN/8kSb
-	 nvbsTYQIydNgw==
+	b=hDrUNYbEw509yC6iClvO7VrLDId0yDqoJczye9OEx+6nqJYRfhkFB3FVlx16MAGXS
+	 rHXpjAlatRbNgKrktMFhC3zyPMpHTD2pmpMaXdgWiTdkjuMa4S7WeLVqgfa5A4RUou
+	 otUtP480c0Wmj08mELlubedql+4ehIkeShYxVT1UPJ/IY8TRIi9FDd+b35LsHRyd2h
+	 R9LipVWTb0k7GmJIJjLoVPRfMsAIYYrK5o1vKq8ksFEJjt84ruPylNY4YmqlTJg9YY
+	 tMOF1qiX9cRYHYv9LqgZep/Y6g5Hgbk1uBCfcAPsTDmyVhzlemYM7rxkI5fK9Ay0B+
+	 kqCLy4yOCPypA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 02/29] xfs: pass xfs_extent_free_item directly through the log intent code
-Date: Fri, 14 Mar 2025 19:10:11 -0400
-Message-Id: <20250314110942-dd51aa622667f911@stable.kernel.org>
+Subject: Re: [PATCH 6.1 03/29] xfs: fix confusing xfs_extent_item variable names
+Date: Fri, 14 Mar 2025 19:10:13 -0400
+Message-Id: <20250314111823-2e42f0aeec492f15@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250313202550.2257219-3-leah.rumancik@gmail.com>
+In-Reply-To:  <20250313202550.2257219-4-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 72ba455599ad13d08c29dafa22a32360e07b1961
+The upstream commit SHA1 provided is correct: 578c714b215d474c52949e65a914dae67924f0fe
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Leah Rumancik<leah.rumancik@gmail.com>
@@ -80,22 +80,23 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  72ba455599ad1 ! 1:  a4d4bccfa3b1e xfs: pass xfs_extent_free_item directly through the log intent code
+1:  578c714b215d4 ! 1:  48382d577161d xfs: fix confusing xfs_extent_item variable names
     @@ Metadata
       ## Commit message ##
-         xfs: pass xfs_extent_free_item directly through the log intent code
+         xfs: fix confusing xfs_extent_item variable names
      
-    +    [ Upstream commit 72ba455599ad13d08c29dafa22a32360e07b1961 ]
+    +    [ Upstream commit 578c714b215d474c52949e65a914dae67924f0fe ]
     +
-         Pass the incore xfs_extent_free_item through the EFI logging code
-         instead of repeatedly boxing and unboxing parameters.
+         Change the name of all pointers to xfs_extent_item structures to "xefi"
+         to make the name consistent and because the current selections ("new"
+         and "free") mean other things in C.
      
          Signed-off-by: Darrick J. Wong <djwong@kernel.org>
     +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
     +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
      
-      ## fs/xfs/xfs_extfree_item.c ##
-     @@ fs/xfs/xfs_extfree_item.c: static int
+      ## fs/xfs/libxfs/xfs_alloc.c ##
+     @@ fs/xfs/libxfs/xfs_alloc.c: xfs_defer_agfl_block(
 ---
 
 Results of testing on various branches:
