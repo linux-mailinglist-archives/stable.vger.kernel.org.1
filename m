@@ -1,148 +1,165 @@
-Return-Path: <stable+bounces-124459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A8BA61663
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 17:37:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB92A61691
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 17:43:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEC0B881B8F
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 16:36:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94EFC4642DF
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 16:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B794204691;
-	Fri, 14 Mar 2025 16:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955212046A5;
+	Fri, 14 Mar 2025 16:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dlt1JDhL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I3FEM6g3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618292045A6
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 16:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A269D20468B
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 16:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741970188; cv=none; b=pLK5ZxBHXiNbLAFVoFsoJ1baBJloVobYREYERCbnDa2Fm06yPdQuyi8lQ35hItIEtGC/JpkvlVKdyFE2fd6ct22QbHuCYnrxxrGqy/szml2Wzajn3BVqvFUW4tmwifajPJYrvVBOlPTiLaX6AbWxnYc8Aat8atiojq79Gko8XYo=
+	t=1741970548; cv=none; b=O51d2N7xK2pfws9FlaDvmo9/2rl0DrEYqM2PsfrrJdprU6x8hNVcNnTOwP6Dxa5LdlIpGlEdqwc6mr19CZTIbs0Mu1ni4qRRw8+JEdH3rLUkNSbRfRWtZZmJpKm853YW7/21kbJbhHpqgzD+DILH6neB9cPB7EZi3Opf4o2yeSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741970188; c=relaxed/simple;
-	bh=HL2qrnqP6m2SJjIgrryOgrdGWPC/DqOKAlmK3yLxVLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S2mSMqbsKGx9bj6sRyETvnwjy3T343Uk1qzmhOJOO5iBSiG5YrRa+IXSKQN49e95FmpVIugjiBqUe5eQe37QXdW/d6tT7VN77yYeBv7xOPJCf2APXDafiK0xw1ZOJ4JzDQWP7xLS1PooFQ6uM4wtlnGNvaAK9yl8knOe+NeE1HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dlt1JDhL; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52EDu5xO024792
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 16:36:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=dwRYAMlQoWB7Kdu76G96hqJd
-	qDT3vaRt4pY8/dRjDDw=; b=dlt1JDhLB3SF5k1enjXmPQ+CY5/Jc0SXLOy8zj/j
-	uDBrJIPmf0wDjctB15xSX7YkTsOAEhjm0YhizvjywwKAs4AeMsK1gMAyCkdz/hmv
-	7Gx8Jjj/I1GpU+piLuO5mmC/PhDsKVo+aOXmNgMUIiMTxkaAvlxPrVUuKeCUlotS
-	9ZgUHJFml/qIAql8oo2MoFD6bI5mJnbPgvqUKja4pggtsfo90ih0h7d7my/1gt7/
-	BLU1b+Gnq7pHHvjpPloiDRspdQGFhl7IcE+odoH3OogqNSLq4x2aCNz4sgz/qo2W
-	1q28TTeMZ3aVBxfgQoZZqrCr+2PYYNSohu9ghO3HSf4RdA==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45cnscrdyg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 16:36:25 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6e1b8065ed4so51206966d6.0
-        for <stable@vger.kernel.org>; Fri, 14 Mar 2025 09:36:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741970184; x=1742574984;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dwRYAMlQoWB7Kdu76G96hqJdqDT3vaRt4pY8/dRjDDw=;
-        b=JQNEz17YDLanv1gXjdl2pmNyWljwFHniqEAFcSy7dBcmOqvuwzm3lVEVNy7cGllQun
-         uXd21VFSvtcqRAXhwEN744+kktH09GpTx/vX2B6Nx3ncjV6LspU9P60y58xvyAGjsO2b
-         jKWkwGWs9boxXBjFQh95ohNYMSqjtEWjg8vBvIHHUxWjkQaUHgklTfgLmjjmtDYNdkb4
-         IQf+ch2SUDeaOYTvqiOOzdD6+JWZCa5QpWM5QL1OVdZQFAQo3/AMvXnVuAEopaFlWhrq
-         3HND+u4WZLjFVzayQ0CECr64wqt1wsML8WkuRJCH2bQPp3zVthqN7paMWnCarzc3qiN0
-         GxQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWVNf4Li0z/70aKe5wf8KMT1TKj4/OREo+8iXDKbJu2FcVYw0/DfmA5dwshcIjKavphm3rlfhk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqNe98q+0aWvc+JlYGCspJUzjUuNk0fsaCUSZB6v8JTx8lf88r
-	FtenkYoM4PjsYczUce6ShK/fzYlpO/IVqQU8kXbWzLqKle6t889AIpCy+Mf7LnbrJYSILgLZrrm
-	rsLJH/h08OQp37pd8hPUt6y2XLxS3qoYCe/x1zrG2j+j087p8zLDOtuk=
-X-Gm-Gg: ASbGncut4FZ5drnyT63urjuy/Y/04Gdl4hYD6ASIDAbFmwutVljYLSGWKfJyBkbBxo2
-	c5dBC24GNJLvS0ZGNxazF3xINIq4dtjQg2WlFCuFEJ52kWJ8IZx6j7+AWMGtEPyRywvI53g50M+
-	/yYZyWQaynhiuyws5UY6Fb7e/liam+Rf1uu+DAhr05dBNtB2WQN4EITtQ89dRrwt97SRJYJA4iy
-	2Z/K0Z4PErmrYQcehS/9qMVbFx3jutw6vGXTzUJPCEti1aatjB21H6eWDtMQq2qpp2fHXjbMKJw
-	99F/BphLlph7TjO9NXplm/szRwZZ7qEIOESWmml/qxAJBWwD8Qb0CaiUklgoaNq82Smfz8GhSCd
-	aK9c=
-X-Received: by 2002:a05:6214:5097:b0:6e8:ddaf:6422 with SMTP id 6a1803df08f44-6eaeab00312mr28706706d6.43.1741970184413;
-        Fri, 14 Mar 2025 09:36:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJb4x2fMIyGfk5ixR2DwoFRga6e8xcjQATKUUg0Rfaz32txxfwF6NxY3A0ZD5xbJ0//+/kjw==
-X-Received: by 2002:a05:6214:5097:b0:6e8:ddaf:6422 with SMTP id 6a1803df08f44-6eaeab00312mr28706456d6.43.1741970184127;
-        Fri, 14 Mar 2025 09:36:24 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba88598dsm562471e87.188.2025.03.14.09.36.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 09:36:22 -0700 (PDT)
-Date: Fri, 14 Mar 2025 18:36:19 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Abel Vesa <abel.vesa@linaro.org>,
-        Rajendra Nayak <quic_rjendra@quicinc.com>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v2 1/8] arm64: dts: qcom: x1e80100-crd: mark l12b and
- l15b always-on
-Message-ID: <zhiunl3doj3d5rc2m3w2isnwloyyvtbbgiiuzbg3dxy342vnhy@n27ioyo2mhvm>
-References: <20250314145440.11371-1-johan+linaro@kernel.org>
- <20250314145440.11371-2-johan+linaro@kernel.org>
+	s=arc-20240116; t=1741970548; c=relaxed/simple;
+	bh=bcuzJjM92SaHRB6hoSe8xIWoPbg8ScRbZsayAknw+7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dPG4KVVtjKPaZ9q0aEE5XUKKcTcO5tfKlYIUh8309D1ipzKuDRdGJPA9B928y1QknxWp9U6tk3MEuAf5gsZNysHEmPxQdN82m8fhbklodxhHrsHihRn6VAWhLGIm5/6NhWAZU1XmTIeI3B3Ou2qeoG/srBwtEw31IAUq05sgIt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I3FEM6g3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741970545;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n/cafhc4nnnQEwFVw0Q6oJte6Nc/tJJuXAQXURFTgx8=;
+	b=I3FEM6g3/hvG4yoDQVayDcGof0o1tEiFhB1l97hmeij1iEOULeo3y5eWYXRFQ9gKuV+T+X
+	CEceoOUyRiea6w/0n1kQXSZkQnmElDz00UiBn07ulD4sm9k+6EYftU3YWg/dLSBu+mG9Cb
+	Z7ETOxFK+MU0nAU/9W6CY7o11OfD0l4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-693-2zuPdtzHNfyUoe7oIN-B_Q-1; Fri,
+ 14 Mar 2025 12:42:20 -0400
+X-MC-Unique: 2zuPdtzHNfyUoe7oIN-B_Q-1
+X-Mimecast-MFC-AGG-ID: 2zuPdtzHNfyUoe7oIN-B_Q_1741970538
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C82C61956087;
+	Fri, 14 Mar 2025 16:42:17 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.61])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5DA851955F2D;
+	Fri, 14 Mar 2025 16:42:13 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 2/4] netfs: Call `invalidate_cache` only if implemented
+Date: Fri, 14 Mar 2025 16:41:57 +0000
+Message-ID: <20250314164201.1993231-3-dhowells@redhat.com>
+In-Reply-To: <20250314164201.1993231-1-dhowells@redhat.com>
+References: <20250314164201.1993231-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250314145440.11371-2-johan+linaro@kernel.org>
-X-Authority-Analysis: v=2.4 cv=Qbxmvtbv c=1 sm=1 tr=0 ts=67d45b09 cx=c_pps a=wEM5vcRIz55oU/E2lInRtA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=z4ldfGPc2qRxCRB1vwoA:9
- a=CjuIK1q_8ugA:10 a=OIgjcC2v60KrkQgK7BGD:22 a=cvBusfyB2V15izCimMoJ:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: Mdz7kx0tyYrEHwIHruAn5RKCjfP7q9qc
-X-Proofpoint-GUID: Mdz7kx0tyYrEHwIHruAn5RKCjfP7q9qc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-14_06,2025-03-14_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 adultscore=0 mlxlogscore=473 mlxscore=0 phishscore=0
- impostorscore=0 suspectscore=0 clxscore=1011 priorityscore=1501
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503140130
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Fri, Mar 14, 2025 at 03:54:33PM +0100, Johan Hovold wrote:
-> The l12b and l15b supplies are used by components that are not (fully)
-> described (and some never will be) and must never be disabled.
+From: Max Kellermann <max.kellermann@ionos.com>
 
-Which components?
+Many filesystems such as NFS and Ceph do not implement the
+`invalidate_cache` method.  On those filesystems, if writing to the
+cache (`NETFS_WRITE_TO_CACHE`) fails for some reason, the kernel
+crashes like this:
 
-> 
-> Mark the regulators as always-on to prevent them from being disabled,
-> for example, when consumers probe defer or suspend.
-> 
-> Fixes: bd50b1f5b6f3 ("arm64: dts: qcom: x1e80100: Add Compute Reference Device")
-> Cc: stable@vger.kernel.org	# 6.8
-> Cc: Abel Vesa <abel.vesa@linaro.org>
-> Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
-> Cc: Sibi Sankar <quic_sibis@quicinc.com>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->  arch/arm64/boot/dts/qcom/x1-crd.dtsi | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor instruction fetch in kernel mode
+ #PF: error_code(0x0010) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0010 [#1] SMP PTI
+ CPU: 9 UID: 0 PID: 3380 Comm: kworker/u193:11 Not tainted 6.13.3-cm4all1-hp #437
+ Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 10/17/2018
+ Workqueue: events_unbound netfs_write_collection_worker
+ RIP: 0010:0x0
+ Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+ RSP: 0018:ffff9b86e2ca7dc0 EFLAGS: 00010202
+ RAX: 0000000000000000 RBX: 0000000000000000 RCX: 7fffffffffffffff
+ RDX: 0000000000000001 RSI: ffff89259d576a18 RDI: ffff89259d576900
+ RBP: ffff89259d5769b0 R08: ffff9b86e2ca7d28 R09: 0000000000000002
+ R10: ffff89258ceaca80 R11: 0000000000000001 R12: 0000000000000020
+ R13: ffff893d158b9338 R14: ffff89259d576900 R15: ffff89259d5769b0
+ FS:  0000000000000000(0000) GS:ffff893c9fa40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: ffffffffffffffd6 CR3: 000000054442e003 CR4: 00000000001706f0
+ Call Trace:
+  <TASK>
+  ? __die+0x1f/0x60
+  ? page_fault_oops+0x15c/0x460
+  ? try_to_wake_up+0x2d2/0x530
+  ? exc_page_fault+0x5e/0x100
+  ? asm_exc_page_fault+0x22/0x30
+  netfs_write_collection_worker+0xe9f/0x12b0
+  ? xs_poll_check_readable+0x3f/0x80
+  ? xs_stream_data_receive_workfn+0x8d/0x110
+  process_one_work+0x134/0x2d0
+  worker_thread+0x299/0x3a0
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xba/0xe0
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x30/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ Modules linked in:
+ CR2: 0000000000000000
 
--- 
-With best wishes
-Dmitry
+This patch adds the missing `NULL` check.
+
+Fixes: 0e0f2dfe880f ("netfs: Dispatch write requests to process a writeback slice")
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: netfs@lists.linux.dev
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+---
+ fs/netfs/write_collect.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index 294f67795f79..3fca59e6475d 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -400,7 +400,8 @@ void netfs_write_collection_worker(struct work_struct *work)
+ 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
+ 
+ 	if (wreq->io_streams[1].active &&
+-	    wreq->io_streams[1].failed) {
++	    wreq->io_streams[1].failed &&
++	    ictx->ops->invalidate_cache) {
+ 		/* Cache write failure doesn't prevent writeback completion
+ 		 * unless we're in disconnected mode.
+ 		 */
+
 
