@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-124472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574DDA61C22
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 21:14:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB119A61C25
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 21:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75BEA1899FE2
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 20:14:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 099DC189C9F6
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 20:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D17205E2F;
-	Fri, 14 Mar 2025 20:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4272066C1;
+	Fri, 14 Mar 2025 20:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ehL159X4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhMQkduS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62873204C3E;
-	Fri, 14 Mar 2025 20:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2A42063CF;
+	Fri, 14 Mar 2025 20:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741983123; cv=none; b=JW2X7z1jKl0SW4dEKsO16Al/YWPnLf4M+djrXbmOC3rB3yVtoNzHo7jCdGrW4pHG2H6BfHVkMpiQXiLrgCFCWXTI87AWadNBpM6Ms7l//ezpSUOs+F8JJb+I+DzIC+6zM+8Ajvi6HMO2suM6lXAX7mz64JfeewUzwCSyzk1BjQs=
+	t=1741983128; cv=none; b=b9TnjK8z1te58SoacEmQfBzwlPXIyaSZhGpRvP5oGntlYzEoiP4h6GEHHu1/NI2yAwDunSoSGHDPDQHTLke4WCe6BiRyPWUwTSqtwD8fDDloyUewnmbsd3v37anp0j9yV7SkbwM2OolosQhyWiJXcoKGHhw4NQgVui6wzwQJTog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741983123; c=relaxed/simple;
-	bh=qoKytUUZn3dTKFNk2UikNnI4GujOFaD6WSrrTxrgd5g=;
+	s=arc-20240116; t=1741983128; c=relaxed/simple;
+	bh=K+kt5H19r+zhcB2pGmIn5iHnIGeebwcfJ1/x5/chx9E=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=peH149QhFaiZZnSllkeUiA03MaSwcUYELtKHoBYmlwZdDpIVDASr8Ya29efmc+PV1d+cGa80Pk05lfBpzFcABP+y/608u30TbLwpt9h/gUgaksTGLPaNH1kdQTiDbhl8VpGboMxQpi/6gLVQz99sLVVk0ppLRS8nynD/fHcMzAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ehL159X4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F987C4CEE3;
-	Fri, 14 Mar 2025 20:11:57 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=HXM5jh1OZTQ+YSJrUypFGwT9//BsfhHTNnTIBMxI+VOpO+GKCZWwYXw0fkzbplLTm0BOdSko1wzCJFUfvvQPNYI7MbcUcQJK7aoaKP7gW2YvZZ4MTdaDuAEijQwjTmIpeoGvNTGmTjfhixnrIZhVUucQAyg0Kp+LbcSLhkyeSLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhMQkduS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA99C4CEE3;
+	Fri, 14 Mar 2025 20:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741983122;
-	bh=qoKytUUZn3dTKFNk2UikNnI4GujOFaD6WSrrTxrgd5g=;
+	s=k20201202; t=1741983128;
+	bh=K+kt5H19r+zhcB2pGmIn5iHnIGeebwcfJ1/x5/chx9E=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ehL159X45Qz3+Ts7b8cBWZ/Ta0ojOp2xh+ydbGnAiPDd0+IxpnQuPr82yV9zW1OMu
-	 Fc0/JNffzaK74d5BBR4HpFKDq0QRg76lUPbshJfunrRRsUsNz2KZkgoSnxU9E6oJ3G
-	 hSVKUuLQ1z4KnjXGUXPT7n4qvTHpT+ZhTp3/nd8L7nIFilzbtzwMJA4x5pm8d6Yggy
-	 zjBoipOz8d1rQMGr3tepiiZWArF0E+9TIFn7YgzjkpIV6JP2gGBtOYsbnUpMbTn14X
-	 6R+wes95koltANxb4cNpTY1Nc65IJkl5tvJw0f8Sx6XxcPHl+mJB6izXieG2Yg5Ctk
-	 yHNUbBphd5raw==
+	b=BhMQkduSsgLhJGLaqIplnRle/4ogm1w9V7nmiTjXese4Ng/Ob9Bn61BfW28ED8g6h
+	 sNZJGU2AMei2R/CfTUDQLYH7J3bL6sqA8nGlefd8eAaueWdWDpq3jK5ilxzuMO7G/v
+	 xUto+17mh10OOamPQMliehzzEhYAL7TWi5GxbzQGpMpLrJYnsEP5EKkZsSqNoJ2kd7
+	 T/u6POgmCVEZZyK5hcusNSSeGGDkyt36zmyg2nn3SB7PjCAjFpy8ZoMqMPoWBddDhU
+	 +fkhP5U9si9xA6GLF/QvutRhYsR1WQW5N9p/HsfDWgbUpU5GoeCM2kwVt2bIYQxhuM
+	 Y/JpHf6wCrf7g==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Fri, 14 Mar 2025 21:11:31 +0100
-Subject: [PATCH net 1/3] mptcp: Fix data stream corruption in the address
- announcement
+Date: Fri, 14 Mar 2025 21:11:32 +0100
+Subject: [PATCH net 2/3] mptcp: sockopt: fix getting IPV6_V6ONLY
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,7 +52,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-1-122dbb249db3@kernel.org>
+Message-Id: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org>
 References: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
 In-Reply-To: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
 To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
@@ -62,95 +61,86 @@ To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
  Florian Westphal <fw@strlen.de>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Arthur Mongodin <amongodin@randorisec.fr>, stable@vger.kernel.org
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2992; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=4JhzmJYBMFawka53x2AFEn9Yetrnj935S45BTp3HhP4=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBn1I2HV0yvAEkN7GhQp4TmUbyUcK2Nlhqw8+FdP
- ArPaKxzo5mJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ9SNhwAKCRD2t4JPQmmg
- c7zCEADnUdR1ZyuTGGgM0FDgAM4PwHNuxao0GtNXVaG6/rWV1+YSSEjjYe+RqcyBIccCx7fYSu7
- U/sJkbU7YPhiEYc7kbK22Etn/VYTKTHytS4ovsrSPR9a+xa+3W1CxxftaAPK5g8It1xZF2X19y0
- c5QXuWyj9P20enafotxSQfTFjiTrqze86LLohcuk0k2W4ZPz6EYgT5QlTmlPwly7oKT5UbvxUCH
- nqYEtY0iiw0uIO+IgTzGhc0L7seP18wIszRHvxRIXk2MNdnX6Eujuy05fU4Tx3Va7GohWp0GIZu
- iznzE+C/SthZdWppZ3zY5LeL8oB78bdKHM6xESTHpcQsMraaXMWZeOm775SPtcyatFqpvBkl6tw
- VitU/U5J4xFx4OBxq8XYQanO8puB6FcjEi5+jNdGGbcvea2ufebUkcZsfNYNp1qKXxMynSzwbci
- /QAAQkxforZqCWflnbv9UfHIv9xBSYhnbon+kdboKKQKMDz52KkSBfRKAlBQm/agoomRdQDAQ1S
- IPEExNT5sFBK6Pk6aBZvUUW/UJGVPUhPEvT6WeRmRLupzrMLcHi7d+MHgljGvvJopqI67C10H8f
- 6vby2u7+qhzHD8AJbJt/6sPpeYssjVot+8Ql5GEFeivLrdWuhg9zeHg8P0ioAzX3UF9GsDR9Xy5
- XW6iOrGaTOf2fTQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2424; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=K+kt5H19r+zhcB2pGmIn5iHnIGeebwcfJ1/x5/chx9E=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBn1I2HIYtQZj6uH9MxHhmTDaxDMB5TrLG0UCciS
+ vrBtOqsaS2JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ9SNhwAKCRD2t4JPQmmg
+ c/ZlEADgJY1x0h02GMK6jlnMq8Xp+hck8Vr1OO8rEB4OKxCzDbXhkbwhbBIbDwRUqTsPq82z41V
+ llfbK2+qMwGzm9E2JFn4Dgmaca0Suht3Oyu040//hdSCtxokXvHj3wlUbSsI5NNsvgrx0EUFCpb
+ 8kIW6PAgFlAcepd8kodSn6GJL5I95XBvzKJZPvBA5/UrcBf2vWCVh4zCIH3w4cVjABGWg0CKh/4
+ H1dmC8raWuw1SMcsJlPXAWjM5XMxjxUzXR2L1mMiXqBbDZ7uCLCNA8pxCdo1YikDtoeQIotkqqw
+ JisSO6JgRdI4XqrgpZFX7iZZrMvsg+pd/8sg9CgGGujQ6/BOL+uGh5ZO2qPM/ntZxAaqcYYrNhr
+ 6vB2ybMwHQbJtllHDvAKNXSr5E7kI4nsPMgX84jtg5p9/DmXDJOi3+Lnqolc5ti9vqvne8r7lny
+ LyRxbzB4Nj4pSj6GW7TIFs/hHlI9xAppAGrPfy2e3AQdkARVT9bArSSKqf0QWe2PZGPYk81jawl
+ PQENXPb1juFwbuU0oZi+pWD6krDji4GvjVo3spTy0gzmlsBqt5zcFwey8+y9+Pr/ep6gMrogZj+
+ e4a8Be7rmmEZnFo5g9vmHxeqpF9r9pplx8oj5wHtbTuHDdRSgsW2l0LbBEq35RfMMAZeBnXh11l
+ ld63lBdB1xMYkug==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-From: Arthur Mongodin <amongodin@randorisec.fr>
+When adding a socket option support in MPTCP, both the get and set parts
+are supposed to be implemented.
 
-Because of the size restriction in the TCP options space, the MPTCP
-ADD_ADDR option is exclusive and cannot be sent with other MPTCP ones.
-For this reason, in the linked mptcp_out_options structure, group of
-fields linked to different options are part of the same union.
+IPV6_V6ONLY support for the setsockopt part has been added a while ago,
+but it looks like the get part got forgotten. It should have been
+present as a way to verify a setting has been set as expected, and not
+to act differently from TCP or any other socket types.
 
-There is a case where the mptcp_pm_add_addr_signal() function can modify
-opts->addr, but not ended up sending an ADD_ADDR. Later on, back in
-mptcp_established_options, other options will be sent, but with
-unexpected data written in other fields due to the union, e.g. in
-opts->ext_copy. This could lead to a data stream corruption in the next
-packet.
+Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
+to check the default value, before doing extra actions. On Linux, the
+default value is 0, but this can be changed with the net.ipv6.bindv6only
+sysctl knob. On Windows, it is set to 1 by default. So supporting the
+get part, like for all other socket options, is important.
 
-Using an intermediate variable, prevents from corrupting previously
-established DSS option. The assignment of the ADD_ADDR option
-parameters is now done once we are sure this ADD_ADDR option can be set
-in the packet, e.g. after having dropped other suboptions.
+Everything was in place to expose it, just the last step was missing.
+Only new code is added to cover this specific getsockopt(), that seems
+safe.
 
-Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
+Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
 Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Arthur Mongodin <amongodin@randorisec.fr>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-[ Matt: the commit message has been updated: long lines splits and some
-  clarifications. ]
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/options.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/mptcp/sockopt.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index fd2de185bc939f8730e87a63ac02a015e610e99c..23949ae2a3a8db19d05c5c8373f45c885c3523ad 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -651,6 +651,7 @@ static bool mptcp_established_options_add_addr(struct sock *sk, struct sk_buff *
- 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
- 	bool drop_other_suboptions = false;
- 	unsigned int opt_size = *size;
-+	struct mptcp_addr_info addr;
- 	bool echo;
- 	int len;
+diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+index 505445a9598fafa1cde6d8f4a1a8635c3e778051..4b99eb796855e4578d14df90f9d1cc3f1cd5b8c7 100644
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1430,6 +1430,20 @@ static int mptcp_getsockopt_v4(struct mptcp_sock *msk, int optname,
+ 	return -EOPNOTSUPP;
+ }
  
-@@ -659,7 +660,7 @@ static bool mptcp_established_options_add_addr(struct sock *sk, struct sk_buff *
- 	 */
- 	if (!mptcp_pm_should_add_signal(msk) ||
- 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
--	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &opts->addr,
-+	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
- 		    &echo, &drop_other_suboptions))
- 		return false;
++static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
++			       char __user *optval, int __user *optlen)
++{
++	struct sock *sk = (void *)msk;
++
++	switch (optname) {
++	case IPV6_V6ONLY:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    sk->sk_ipv6only);
++	}
++
++	return -EOPNOTSUPP;
++}
++
+ static int mptcp_getsockopt_sol_mptcp(struct mptcp_sock *msk, int optname,
+ 				      char __user *optval, int __user *optlen)
+ {
+@@ -1469,6 +1483,8 @@ int mptcp_getsockopt(struct sock *sk, int level, int optname,
  
-@@ -672,7 +673,7 @@ static bool mptcp_established_options_add_addr(struct sock *sk, struct sk_buff *
- 	else if (opts->suboptions & OPTION_MPTCP_DSS)
- 		return false;
- 
--	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
-+	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
- 	if (remaining < len)
- 		return false;
- 
-@@ -689,6 +690,7 @@ static bool mptcp_established_options_add_addr(struct sock *sk, struct sk_buff *
- 		opts->ahmac = 0;
- 		*size -= opt_size;
- 	}
-+	opts->addr = addr;
- 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
- 	if (!echo) {
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ADDADDRTX);
+ 	if (level == SOL_IP)
+ 		return mptcp_getsockopt_v4(msk, optname, optval, option);
++	if (level == SOL_IPV6)
++		return mptcp_getsockopt_v6(msk, optname, optval, option);
+ 	if (level == SOL_TCP)
+ 		return mptcp_getsockopt_sol_tcp(msk, optname, optval, option);
+ 	if (level == SOL_MPTCP)
 
 -- 
 2.48.1
