@@ -1,165 +1,88 @@
-Return-Path: <stable+bounces-124460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB92A61691
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 17:43:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E132A616C2
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 17:49:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94EFC4642DF
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 16:43:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FA381760C1
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 16:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955212046A5;
-	Fri, 14 Mar 2025 16:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F5820371A;
+	Fri, 14 Mar 2025 16:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I3FEM6g3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t/H70oSR"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A269D20468B
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 16:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABE21FFC5B;
+	Fri, 14 Mar 2025 16:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741970548; cv=none; b=O51d2N7xK2pfws9FlaDvmo9/2rl0DrEYqM2PsfrrJdprU6x8hNVcNnTOwP6Dxa5LdlIpGlEdqwc6mr19CZTIbs0Mu1ni4qRRw8+JEdH3rLUkNSbRfRWtZZmJpKm853YW7/21kbJbhHpqgzD+DILH6neB9cPB7EZi3Opf4o2yeSA=
+	t=1741970944; cv=none; b=BDkZTUr2oPq1p+frwTYBKB7D1ZkBGE2LlRIpHs5FpZ+mYdXJuHo+2raXXU04oc6Z+qC0BKYHgoh60WFwJ5XikbYePiiboDhwZJTsc+G7pTvC2voyO1F4J2OOqoENShbKNWM2DiYK86A7VWp5zFyuTTgK/y/PS0c1Yfaw2xi9Kg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741970548; c=relaxed/simple;
-	bh=bcuzJjM92SaHRB6hoSe8xIWoPbg8ScRbZsayAknw+7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPG4KVVtjKPaZ9q0aEE5XUKKcTcO5tfKlYIUh8309D1ipzKuDRdGJPA9B928y1QknxWp9U6tk3MEuAf5gsZNysHEmPxQdN82m8fhbklodxhHrsHihRn6VAWhLGIm5/6NhWAZU1XmTIeI3B3Ou2qeoG/srBwtEw31IAUq05sgIt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I3FEM6g3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741970545;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n/cafhc4nnnQEwFVw0Q6oJte6Nc/tJJuXAQXURFTgx8=;
-	b=I3FEM6g3/hvG4yoDQVayDcGof0o1tEiFhB1l97hmeij1iEOULeo3y5eWYXRFQ9gKuV+T+X
-	CEceoOUyRiea6w/0n1kQXSZkQnmElDz00UiBn07ulD4sm9k+6EYftU3YWg/dLSBu+mG9Cb
-	Z7ETOxFK+MU0nAU/9W6CY7o11OfD0l4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-693-2zuPdtzHNfyUoe7oIN-B_Q-1; Fri,
- 14 Mar 2025 12:42:20 -0400
-X-MC-Unique: 2zuPdtzHNfyUoe7oIN-B_Q-1
-X-Mimecast-MFC-AGG-ID: 2zuPdtzHNfyUoe7oIN-B_Q_1741970538
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C82C61956087;
-	Fri, 14 Mar 2025 16:42:17 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.61])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5DA851955F2D;
-	Fri, 14 Mar 2025 16:42:13 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/4] netfs: Call `invalidate_cache` only if implemented
-Date: Fri, 14 Mar 2025 16:41:57 +0000
-Message-ID: <20250314164201.1993231-3-dhowells@redhat.com>
-In-Reply-To: <20250314164201.1993231-1-dhowells@redhat.com>
-References: <20250314164201.1993231-1-dhowells@redhat.com>
+	s=arc-20240116; t=1741970944; c=relaxed/simple;
+	bh=JW6R4xOpTLFnNLrbqWO8JY6H8dfEYnttBIocU42Nwyg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ECucWLeUPONrV1PgiBn32r0lAW6RvMqz64nQKdRcvLrUIcT3Giln2FtKO+t76LJX8voDJMIr4UPMFyNyINs2lMmORZRa+h9RyK5YR9q+zr8pFVWMZOExe3qlZz39mUCLXNjfXXC3dmlbY+iiqg3E4J56qf5p4igugGhFs5mS3yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t/H70oSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29807C4CEE3;
+	Fri, 14 Mar 2025 16:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741970944;
+	bh=JW6R4xOpTLFnNLrbqWO8JY6H8dfEYnttBIocU42Nwyg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t/H70oSRIEv58fq/SYOScICYA4wYmIZrtAlIALuUBTcA9nCbYazaBbNN+UfDHesEj
+	 El3fLEJcVZ2vW89HK2/CuZY8ddPZJXhlgxHdEE1A0XCAeRfybxdgZ6soYVzeTXJu+K
+	 qL9ctu6HH9Q33xO6iq+uKTh4n3cX3vczD1QHcXqJXe6P1xkCnxgNN1sMvhSuCBu0c9
+	 E5kH+PD6SBBfYULaWqTZkX8ZRr8WfVOJM6MKc1zU/Mcj96knUjlR4GjtDM9XVqWLc7
+	 6x6hERhbZSG68/bEuwYHRtiUmRhEeo0aaX4ubt+CRm1cnbQoCsPNuF9n3NAscXm1C9
+	 g5hlrk100QUuQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tt8DX-000000000aR-38Ew;
+	Fri, 14 Mar 2025 17:49:03 +0100
+Date: Fri, 14 Mar 2025 17:49:03 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Abel Vesa <abel.vesa@linaro.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v2 1/8] arm64: dts: qcom: x1e80100-crd: mark l12b and
+ l15b always-on
+Message-ID: <Z9Rd_yCl4_sOuC1g@hovoldconsulting.com>
+References: <20250314145440.11371-1-johan+linaro@kernel.org>
+ <20250314145440.11371-2-johan+linaro@kernel.org>
+ <zhiunl3doj3d5rc2m3w2isnwloyyvtbbgiiuzbg3dxy342vnhy@n27ioyo2mhvm>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <zhiunl3doj3d5rc2m3w2isnwloyyvtbbgiiuzbg3dxy342vnhy@n27ioyo2mhvm>
 
-From: Max Kellermann <max.kellermann@ionos.com>
+On Fri, Mar 14, 2025 at 06:36:19PM +0200, Dmitry Baryshkov wrote:
+> On Fri, Mar 14, 2025 at 03:54:33PM +0100, Johan Hovold wrote:
+> > The l12b and l15b supplies are used by components that are not (fully)
+> > described (and some never will be) and must never be disabled.
+> 
+> Which components?
 
-Many filesystems such as NFS and Ceph do not implement the
-`invalidate_cache` method.  On those filesystems, if writing to the
-cache (`NETFS_WRITE_TO_CACHE`) fails for some reason, the kernel
-crashes like this:
+	https://lore.kernel.org/lkml/Z8gPaoqLiC_b2s3I@hovoldconsulting.com/
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor instruction fetch in kernel mode
- #PF: error_code(0x0010) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0010 [#1] SMP PTI
- CPU: 9 UID: 0 PID: 3380 Comm: kworker/u193:11 Not tainted 6.13.3-cm4all1-hp #437
- Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 10/17/2018
- Workqueue: events_unbound netfs_write_collection_worker
- RIP: 0010:0x0
- Code: Unable to access opcode bytes at 0xffffffffffffffd6.
- RSP: 0018:ffff9b86e2ca7dc0 EFLAGS: 00010202
- RAX: 0000000000000000 RBX: 0000000000000000 RCX: 7fffffffffffffff
- RDX: 0000000000000001 RSI: ffff89259d576a18 RDI: ffff89259d576900
- RBP: ffff89259d5769b0 R08: ffff9b86e2ca7d28 R09: 0000000000000002
- R10: ffff89258ceaca80 R11: 0000000000000001 R12: 0000000000000020
- R13: ffff893d158b9338 R14: ffff89259d576900 R15: ffff89259d5769b0
- FS:  0000000000000000(0000) GS:ffff893c9fa40000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: ffffffffffffffd6 CR3: 000000054442e003 CR4: 00000000001706f0
- Call Trace:
-  <TASK>
-  ? __die+0x1f/0x60
-  ? page_fault_oops+0x15c/0x460
-  ? try_to_wake_up+0x2d2/0x530
-  ? exc_page_fault+0x5e/0x100
-  ? asm_exc_page_fault+0x22/0x30
-  netfs_write_collection_worker+0xe9f/0x12b0
-  ? xs_poll_check_readable+0x3f/0x80
-  ? xs_stream_data_receive_workfn+0x8d/0x110
-  process_one_work+0x134/0x2d0
-  worker_thread+0x299/0x3a0
-  ? __pfx_worker_thread+0x10/0x10
-  kthread+0xba/0xe0
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x30/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- Modules linked in:
- CR2: 0000000000000000
-
-This patch adds the missing `NULL` check.
-
-Fixes: 0e0f2dfe880f ("netfs: Dispatch write requests to process a writeback slice")
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: netfs@lists.linux.dev
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-cc: stable@vger.kernel.org
----
- fs/netfs/write_collect.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 294f67795f79..3fca59e6475d 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -400,7 +400,8 @@ void netfs_write_collection_worker(struct work_struct *work)
- 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
- 
- 	if (wreq->io_streams[1].active &&
--	    wreq->io_streams[1].failed) {
-+	    wreq->io_streams[1].failed &&
-+	    ictx->ops->invalidate_cache) {
- 		/* Cache write failure doesn't prevent writeback completion
- 		 * unless we're in disconnected mode.
- 		 */
-
+Johan
 
