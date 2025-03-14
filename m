@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E63BA6214F
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 00:10:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88277A62151
+	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 00:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1178519C5A31
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 23:10:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FDE519C5A92
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 23:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512741A23B7;
-	Fri, 14 Mar 2025 23:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E971A23B7;
+	Fri, 14 Mar 2025 23:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e+mUFO91"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKpybZiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5CE1F92E
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 23:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834CF1F92E
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 23:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741993827; cv=none; b=CG/Fp88y3yTAguQfGC4C7nAXEptRHrYPfYMiIeqbkqf1B4+BSyOyZHyzIj+T7V2lu+gRKAdVLco9tgXDhkxEoqGMVPqNayYn/vFcmk+Eoxt29MOiPtdeSw0HIPLf7R3dfmwnIRquOfM776hUDAXQe7cK8Kx2ZaF+oUD66ljvAWg=
+	t=1741993829; cv=none; b=m6mY/gbtToBYW/bK7NrYaE3acV0MgXVKmy4qUF5s5Djd2hxJMsYX9G7AhBu5Iw5bRSZd+ATsXWAjVqHxNCoG4kMoSwsl2ttO5s4JUrY2HDFXRugT4UUn5x2o8s0ql+cxIzbsxmE/97vLsihWa4KqVGMQW3Wlg9jPDQzQWK5QLKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741993827; c=relaxed/simple;
-	bh=QVKevXcCq7E9+/FEvWG7qSrCS4N0E1cyxlF5yB8reow=;
+	s=arc-20240116; t=1741993829; c=relaxed/simple;
+	bh=yODi1OQGvzysj3zzvdAyugrUudTrpyTYs8ZJU45It7k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jyrj588vkemkiE5DK8+VCmnu7iAIo5AiqLCpzW/SfbQosc4/QgqU6UYy5MTNYejy2dTEtPLybw8fjAf+dWiEAMxzlK23FC66p94uSc34Y+v5r4d7rYBI1Khfj3MdEmrPfXPiECnIUOn44fagHczU9lhb31doY2/cFVcpJ6Od3mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e+mUFO91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74517C4CEE3;
-	Fri, 14 Mar 2025 23:10:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OSKeD4G3/64oBae1ySu6CTC+FTfy0TFnPmqcy5MWjGWw3+q4mLgnzhOIXQ+aFiVrfp4JYN9rRFYIHpBfegeQEBJsyJmsH35fjmblRSnDAX4RcXSyxnek4d14IkAN11UizcAEjjNPjjXHGvNWxNGcROl23PMjtEJdByM2oIiyzxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IKpybZiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3B0C4CEE3;
+	Fri, 14 Mar 2025 23:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741993826;
-	bh=QVKevXcCq7E9+/FEvWG7qSrCS4N0E1cyxlF5yB8reow=;
+	s=k20201202; t=1741993828;
+	bh=yODi1OQGvzysj3zzvdAyugrUudTrpyTYs8ZJU45It7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+mUFO91VSAdpFrzk6RAmlJl1KOZHDnDJ1+o9lWQlgVCgXfAmTXwUK+F6RoFbao/Y
-	 SccbaJm5ohd42sIgKz2WmX4v29hkrCU92budrQmBfi4lIHvmswuo7wGz1BMGKnFU26
-	 H7vlqYs/fc9QsTmS2oLkiEB0JqeQN1t8MAfkma1aE2aZOSyjBZZCxrpBK+rNLl18El
-	 SvvDE5swFq8MOjkIGzKVTY8/jEMKDJJjTbtueadYcaz2WW8IZRc5EmQcYIjiyp0BR4
-	 Ja6m46w3iGCA2dZFMsZxXPr8ZM4hh8OKn2phaa5LWpsFbfMp/wgFFBYk0BCu0dRsGt
-	 w9F6dJzyB39Cw==
+	b=IKpybZiHM5djbEca0eKvmOrly0klzW9Do3RPV28VeGi21M8r1b76BMlzYnT1AqVh8
+	 2x8vhoVPoNGoPRI11BeB5dPwk9Q1m5m8z7bRMgbc8l50apw0JG7+gyLSp5sEsxhgU1
+	 79xefClvcNUVLAgROAVkDCbgoH2nok+thieY10hFNjdb3ZkXOwbx1LpIHcWJ0Fn7eu
+	 1vgdCXD7vscQJko+xsggh3Ju+458Qe/sUjK3rbjlrXhMhRBPkq/MnTeZX/ynafWzgY
+	 OZCGSVZSMIuypfLwJA/lcE1Si7AurbEkqQ1AEP/DElc6TfKMld1r2lER7Hl+aUpsFd
+	 e1xR3AMVkES+Q==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	kareemem@amazon.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] memcg: fix soft lockup in the OOM process
-Date: Fri, 14 Mar 2025 19:10:25 -0400
-Message-Id: <20250314081509-114460a8b7f811a9@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Leah Rumancik <leah.rumancik@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 01/29] xfs: pass refcount intent directly through the log intent code
+Date: Fri, 14 Mar 2025 19:10:27 -0400
+Message-Id: <20250314110259-2f112c3ac5caf730@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250313180309.41770-1-kareemem@amazon.com>
+In-Reply-To:  <20250313202550.2257219-2-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,83 +64,43 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-❌ Build failures detected
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: ade81479c7dda1ce3eedb215c78bc615bbd04f06
+The upstream commit SHA1 provided is correct: 0b11553ec54a6d88907e60d0595dbcef98539747
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Abdelkareem Abdelsaamad<kareemem@amazon.com>
-Commit author: Chen Ridong<chenridong@huawei.com>
+Backport author: Leah Rumancik<leah.rumancik@gmail.com>
+Commit author: Darrick J. Wong<djwong@kernel.org>
 
 Status in newer kernel trees:
-6.13.y | Present (different SHA1: 465768342918)
-6.12.y | Present (different SHA1: c3a3741db8c1)
-6.6.y | Present (different SHA1: 972486d37169)
-6.1.y | Present (different SHA1: 0a09d56e1682)
-5.15.y | Present (different SHA1: a9042dbc1ed4)
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-Failed to apply patch cleanly.
+1:  0b11553ec54a6 ! 1:  17e9e595a5fc0 xfs: pass refcount intent directly through the log intent code
+    @@ Metadata
+      ## Commit message ##
+         xfs: pass refcount intent directly through the log intent code
+     
+    +    [ Upstream commit 0b11553ec54a6d88907e60d0595dbcef98539747 ]
+    +
+         Pass the incore refcount intent through the CUI logging code instead of
+         repeatedly boxing and unboxing parameters.
+     
+         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+     
+      ## fs/xfs/libxfs/xfs_refcount.c ##
+     @@ fs/xfs/libxfs/xfs_refcount.c: xfs_refcount_adjust_extents(
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-
-Build Errors:
-Patch failed to apply on stable/linux-5.10.y. Reject:
-
-diff a/mm/memcontrol.c b/mm/memcontrol.c	(rejected hunks)
-@@ -1312,6 +1312,7 @@ int mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
- {
- 	struct mem_cgroup *iter;
- 	int ret = 0;
-+	int i = 0;
- 
- 	BUG_ON(memcg == root_mem_cgroup);
- 
-@@ -1320,8 +1321,12 @@ int mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
- 		struct task_struct *task;
- 
- 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
--		while (!ret && (task = css_task_iter_next(&it)))
-+		while (!ret && (task = css_task_iter_next(&it))) {
-+			/* Avoid potential softlockup warning */
-+			if ((++i & 1023) == 0)
-+				cond_resched();
- 			ret = fn(task, arg);
-+		}
- 		css_task_iter_end(&it);
- 		if (ret) {
- 			mem_cgroup_iter_break(memcg, iter);
-diff a/mm/oom_kill.c b/mm/oom_kill.c	(rejected hunks)
-@@ -43,6 +43,7 @@
- #include <linux/kthread.h>
- #include <linux/init.h>
- #include <linux/mmu_notifier.h>
-+#include <linux/nmi.h>
- 
- #include <asm/tlb.h>
- #include "internal.h"
-@@ -430,10 +431,15 @@ static void dump_tasks(struct oom_control *oc)
- 		mem_cgroup_scan_tasks(oc->memcg, dump_task, oc);
- 	else {
- 		struct task_struct *p;
-+		int i = 0;
- 
- 		rcu_read_lock();
--		for_each_process(p)
-+		for_each_process(p) {
-+			/* Avoid potential softlockup warning */
-+			if ((++i & 1023) == 0)
-+				touch_softlockup_watchdog();
- 			dump_task(p, oc);
-+		}
- 		rcu_read_unlock();
- 	}
- }
+| stable/linux-6.1.y        |  Success    |  Success   |
 
