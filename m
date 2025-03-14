@@ -1,145 +1,120 @@
-Return-Path: <stable+bounces-124419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761B8A60CC3
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 10:07:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8194FA60CED
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 10:17:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA38F4614C7
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 09:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1491B19C5E8A
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 09:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D864F1DE2C1;
-	Fri, 14 Mar 2025 09:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642811EA7F7;
+	Fri, 14 Mar 2025 09:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="RoRA6CrU"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="cRlSUo3E"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CB61DD877;
-	Fri, 14 Mar 2025 09:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C6F1802AB
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 09:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741943224; cv=none; b=bLDyeQoUtfQztk8EPchN59CSC0q2VV95uvQ/5wWBeCMq/RrOiNCp6h2/GPqUT8nwk8jbju62mfXJ6kTiTOVzdjqzMI4Z+fXT6JUdAogaBDbZGh5dd7mZP8Kqb/dSLSh5BJsUZw4BD1r7mWnJk2Blxu2AzIE3XZGvlTz/QZ/zd84=
+	t=1741943837; cv=none; b=hElNkxivcO94D3SX5jfha9vFA7SNloblWJ9dJZTQOUBbz04WIc7qHEy39iidTDL5BoFscmRqqQYpGXswAk+b4IFGYjR0Go4w5DDtWsWxjx5lNgX7MlUXDiyBK14mR1rRISyk+t5W4weLYi051PS+x06KOJpK0QIJVOHpORC1VHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741943224; c=relaxed/simple;
-	bh=37eHhDWIYH2KFzy4ngjAsSfwtLTRBQ6NSJl/HrZiHyo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HSozM9qENtP3X5vGJmJ1ZozcHQOr+sr/lEwhlrkfUJ5NZdrf2//KbWoDTwE7E+Xtxivs6i30A+ZU83oOv+9SGCISsRbSKUfPRF+xlCkHTNWus2Vij5SmprGzhqYQ5BOmKQaesJaDtykGfjrUDIG4TGIimEIy0vGzoUhnkh4dZfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=RoRA6CrU; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: ae6850d400b311f0aae1fd9735fae912-20250314
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=la9wkd5vzRHQ5ec7yJZBYLsKgQribkmSaDdGEv4GlFU=;
-	b=RoRA6CrU8VMFWtR6dFP2g4aarnUv94SkhA07LqajCUTk1FpE9TrHjBV/kAqPMKcTCSAXLuP+OV6rtXn3GPDd6qBW/iv/D1p5CKB/yWGBCoD+wmekjkqgO+wocN1N7wfyIIzReQik4Wbyf6pYT7fmvkKqxNNtL4m2d38UzpQVVnU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.1,REQID:87802171-6ce5-4f7b-b132-58aa1391fab1,IP:0,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:0
-X-CID-META: VersionHash:0ef645f,CLOUDID:b9445f8c-f5b8-47d5-8cf3-b68fe7530c9a,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: ae6850d400b311f0aae1fd9735fae912-20250314
-Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 386278935; Fri, 14 Mar 2025 17:06:57 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Fri, 14 Mar 2025 17:06:56 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.28 via Frontend Transport; Fri, 14 Mar 2025 17:06:56 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
-Subject: [PATCH v2] wifi: mt76: mt7925: fix the incomplete revert of [tx,rx]_ba for MLO
-Date: Fri, 14 Mar 2025 17:06:54 +0800
-Message-ID: <20250314090655.2856153-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1741943837; c=relaxed/simple;
+	bh=5dhZAV9EyRZ2bVUtZeNoK2QiBwoclF/FSawk68+cTSY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iSTX34UrL+2RiOoiwoLVWAB9TK8y/+MJGZ+htTpormOSaSU4jIJjSATsfr0yPiV58qR8NuacJ7roNRNyKuBjJt/yJVz6LkpbOYIU3BwIfQUXYqLspthOLUC5I2OPdGVj97+1GPenbTCJIcJ17oympAATqQYQwxybtAY4nEY0yJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=cRlSUo3E; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ac25313ea37so374874366b.1
+        for <stable@vger.kernel.org>; Fri, 14 Mar 2025 02:17:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1741943833; x=1742548633; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q1MO2zgb067YUwCn/NT4o8yXeBw8prnigLMVVoVIjxU=;
+        b=cRlSUo3ExtvHvtfhqUJgS+uohe+8ubq9d39fIlVNIqE20RFGd6ncG1O+zqAyqNSdqV
+         iXlHA91spkcDPUsWvzicqKI7FwZDyuoeUg0E/9WrGkeD3dPtvrRsfKGR2BHlpE2P6hoK
+         nFKiO2jkGI5h+34I0sfJuPbtWyJDBIEfrE26MHVcv2ElNWy8X45BrCm4hEQxzepw1kWT
+         B9oeEnht8xlBwpjCHHvnYCiryXUaScIEnsDS05bypFFqaXhZ3mGaOu/2fq3UsZfRc5PN
+         8YdzOMfxD5kTIUITmecBIEOtu3DvmfSbIEUTK4ccH+3USDm/mNPguQtAweLsS3O1QxUa
+         zkqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741943833; x=1742548633;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q1MO2zgb067YUwCn/NT4o8yXeBw8prnigLMVVoVIjxU=;
+        b=xGVt8uMp7S2P4vaMnZOruRoJtUe/9GT+RAWO9jLMLl1XbkjnoMLvLu4FvCP5l9yM3E
+         gjP/E/ceAtUVUpAkjTr+cI1kkRC6ZrnS6kideLmRsmiqVA1Il09UvGBceFbIdKYhVwTO
+         5YeB3E8VatwU66WFW9BVUI4McavJiH9lLHtfsYGgHootoSqGeCDC5GcBZw8Cl8EWYIKo
+         Q5NDDyF8EVIdYBwkfKEpAZvKnX+KMsHLjehsQ/FYMn11fQjWKa+HfkYUJ7Q2DiSyprOS
+         7hu6xjt6cH+YXe/ZebpuY9iCgoeNx4A8p29jApEKHZPMRutleu9oE6sLRv/MPU+T5cc0
+         e8IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUjzSU9bxYaZW/WqHd9yIeAV8RM3zQTLFyFNxgS/F/tU8klFJpt4UMTI3CaqSG7rmKqi1hn+I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySO8soBFYT+alkLsHiEao6PeOwYWBVjXdvLL85cYu9kTZlLoMv
+	Wi5ZwXWuuFa/XWGNWgPYFp2/FeJdGLumOos/IE9oiTyK/HgMmccKD7mg6u8ypaM=
+X-Gm-Gg: ASbGncsV4o/RXKE8HUyl62KeMmmMjvMq5BkWdQF0rssmYf6uYobF7PrdYHxHx3RbcIO
+	LVM4fz5gkOSgRyPMKLB4M9BMGyllTr2KTqvgpNn63/J5lqnOppzucC99oYvVRW0b2o/t7tAVFQi
+	GdaWEqZ+2IbzlK6rG+nnLZQCUQmnJEI40LlwZjW1F77+QnTUdVbJjFDDHEB4WkIdu/pVnyJsqWB
+	sJIfKwK5dcG4eURoVfoomqQXbUfkXrj/L53EdayVYXbYknp9Jj0OjeGMsVDHITxntPhNrhgYY3P
+	ZOzJdO0VZdkSaRZzHJbfO6TvkXpJsquHptG1/qugOUmjBEbwK5qaiauLORZVC62noaRLKDgkTi4
+	UuzcQRfI8Oey4Yl1JqQ==
+X-Google-Smtp-Source: AGHT+IEsuY5B/NS2S21Sb19Nfa4GPRSr39x8zR8AnIVtNQ6bdJMlUrRQM/Etqzact+Gzgp81scA8Fw==
+X-Received: by 2002:a17:907:2cc5:b0:ac1:e1d8:997c with SMTP id a640c23a62f3a-ac3302755d0mr184197166b.31.1741943833036;
+        Fri, 14 Mar 2025 02:17:13 -0700 (PDT)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3146aeadbsm195582166b.29.2025.03.14.02.17.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Mar 2025 02:17:12 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/3] Fixes/improvements for SM6350 UFS
+Date: Fri, 14 Mar 2025 10:17:01 +0100
+Message-Id: <20250314-sm6350-ufs-things-v1-0-3600362cc52c@fairphone.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA3002cC/x3MMQqAMAxA0atIZgPVGkGvIg5SU81glUZFkN7d4
+ viG/19QjsIKffFC5FtU9pBRlQW4dQoLo8zZUJuajK0a1K21ZPDyiucqYVEk62jmzrMjhtwdkb0
+ 8/3MYU/oAv4GiMWMAAAA=
+X-Change-ID: 20250314-sm6350-ufs-things-53c5de9fec5e
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Fix the order of the freq-table-hz property, then convert to OPP tables
+and add interconnect support for UFS for the SM6350 SoC.
 
-Since the `Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO"`
-was not completely clean, submit this patch to fully clean it up.
-
-Cc: stable@vger.kernel.org
-Fixes: 73915469c55a ("Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO"")
-Change-Id: I2d851e6b79905baae35f691578bf50d56ad0adbf
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-v2: rewrite the subject
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+Luca Weiss (3):
+      arm64: dts: qcom: sm6350: Fix wrong order of freq-table-hz for UFS
+      arm64: dts: qcom: sm6350: Add OPP table support to UFSHC
+      arm64: dts: qcom: sm6350: Add interconnect support to UFS
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 1ecba46d770d..1bdc313844c4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -572,10 +572,10 @@ void mt7925_mcu_rx_event(struct mt792x_dev *dev, struct sk_buff *skb)
- 
- static int
- mt7925_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif_link *mvif,
--		  struct mt76_wcid *wcid,
- 		  struct ieee80211_ampdu_params *params,
- 		  bool enable, bool tx)
- {
-+	struct mt76_wcid *wcid = (struct mt76_wcid *)params->sta->drv_priv;
- 	struct sta_rec_ba_uni *ba;
- 	struct sk_buff *skb;
- 	struct tlv *tlv;
-@@ -608,13 +608,12 @@ int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
- {
- 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
- 	struct mt792x_vif *mvif = msta->vif;
--	struct mt76_wcid *wcid = &mvif->sta.deflink.wcid;
- 
- 	if (enable && !params->amsdu)
- 		msta->deflink.wcid.amsdu = false;
- 
--	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, wcid,
--				 params, enable, true);
-+	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
-+				 enable, true);
- }
- 
- int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
-@@ -623,10 +622,9 @@ int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
- {
- 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
- 	struct mt792x_vif *mvif = msta->vif;
--	struct mt76_wcid *wcid = &mvif->sta.deflink.wcid;
- 
--	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, wcid,
--				 params, enable, false);
-+	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
-+				 enable, false);
- }
- 
- static int mt7925_mcu_read_eeprom(struct mt792x_dev *dev, u32 offset, u8 *val)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 49 ++++++++++++++++++++++++++++--------
+ 1 file changed, 39 insertions(+), 10 deletions(-)
+---
+base-commit: eea255893718268e1ab852fb52f70c613d109b99
+change-id: 20250314-sm6350-ufs-things-53c5de9fec5e
+
+Best regards,
 -- 
-2.45.2
+Luca Weiss <luca.weiss@fairphone.com>
 
 
