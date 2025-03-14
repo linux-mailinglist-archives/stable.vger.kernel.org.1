@@ -1,155 +1,99 @@
-Return-Path: <stable+bounces-124413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2299BA60C09
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 09:48:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1976FA60C13
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 09:50:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10A5B18966B2
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 08:49:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6804F3B748A
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 08:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B831C863D;
-	Fri, 14 Mar 2025 08:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338EC18DF8D;
+	Fri, 14 Mar 2025 08:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fIsMQEFZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bb930m2u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FA418FDDB;
-	Fri, 14 Mar 2025 08:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820CB192D6B
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 08:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741942134; cv=none; b=gje7dtR5YboYP5COq1WhcLGSJXB/PrIhrvqZt7t/l/C90K/rEzC9GW8DsjUfbvud271e0RPPncQz7UTMqWSJTn6M4fQuzqThiquwyH1q90Rw0aymMbkgPA2foZHdL6yLQT7ckwM8F8I8GJ4ak3O+FyTmHRoa4fTb8IV6c+avjuM=
+	t=1741942203; cv=none; b=U+l0xqMCurPFUx1/yUaQWu0v8J5Vz1+rbHQs1mVO/4TkalCT7LpkpqsfMaR/+/jxsKj8w06Onxw582vPuEKbxczX9AfQTFcbSx7kwWU/d5GLIgbglvw30PHeeGGDLOej0EDzbbpv1gS2ARF9BY+5/4Ne3mjgULex6IEzkFc+zhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741942134; c=relaxed/simple;
-	bh=izFKGd6NIgePdak/hVqrXszrqeizjfGI2wWT42fp3+U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iX3u4K7ClMalXZeeF1WYRq+hLYGE3NqrFjfyxgqmZ+m5UHUgCSw0Y89ZwU5eB2DJwAo0rCZuB4JESWqtRQbgC4urjiV6+VR2bGM22om1fnYTmOWtWAUXVk5iG/j1+QTly7rFpKXGEZE/BaxJAmPsEQcwzbG10PX95OIIpHab06U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fIsMQEFZ; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2254e0b4b79so49620985ad.2;
-        Fri, 14 Mar 2025 01:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741942132; x=1742546932; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ToBMldha4NXdM4Yn/DOmK+H4G7j9iFfVU8ytUf5bV8g=;
-        b=fIsMQEFZfFqH9vpdFonz2A4aNgM7NflopAisHHVDRuivtHUqhWMg6QxmZHSgAMXSKM
-         +ezCZGAvtKYnfYqOaghSylDeEjnOZKPhGaRi+3ac9IPaIFXgpfa1UvMW+7HLniqLy8o2
-         3rJiDrgRa3qRsmJRKc1GIpSUB/Rm4CKAQsaIRIsBQ18Xh0CzH8QNvjxWMeqxvheeRcKV
-         3oYQVJAo43Sp5AKmLCnmkK2iw+ZKU0RhrEt/c/8a413nj7+dcnOda3M5/UC3su5nR74r
-         +17BjuUThrIfC6+2mo3Pm9s7Dg9qy6LnkNqrDG+dTyNtX0ufx97FmLGcei/6pPgf8ipl
-         qd9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741942132; x=1742546932;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ToBMldha4NXdM4Yn/DOmK+H4G7j9iFfVU8ytUf5bV8g=;
-        b=ekiPW31roY1pZJAxHT9UYxgfUKfGGEHjeXlyEo2FPhI+O63DpuFglFNEAJodghg7MR
-         LN0XtzKOflJCIrUcqiexehCbPn/QMKqd/iU3AEYExeTpPfacCOPodVae7/ZjWiXzjOxD
-         R3Qayk7+215W1WJEfw4jUJzMlM/3Y+yq1EQI3SmIcfd83PeTtpPf69e0L1X0klX202xS
-         jSObPRbMle/L5y3GJgI4R9/iWGJhsWnwtgvY1JbcVqCZm8Q+Ne8qi0u/EOJHC3V3dwBA
-         x+DDsW47U5gAJ7cGbv7AkKc7FXxOaqASw8wPKUhL/igAHXX02Z0xjTrhkmmhuYQYlX56
-         mnfg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJA0f1gbqcYcI86azqEr32tq644FCfl4ecYjeYbZ3FenDyHmw8mAM3MJh/w5UUmsSMp8bKmzU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR2jqDehpor/gpTpQ2Nne3XZzv5eNfVjY00H1Ktp8LOri+muKj
-	Usa/Xt9pbTsw3xsy7OD1kx7/KoSNr46IBf1D9jly1CTnktVgcao1rsVFVQ==
-X-Gm-Gg: ASbGncusvdimbhv+5Gee6opU66A+4nCCikxoSvOw1NeC8qRr6DfRdHWIO5nvlvKGrh1
-	3qVWTFSFP1HLSwQDXA02XUYmGcGuc6LZF1y9XUIE4Op9EcqSNbh/w1cjbcZt7nlRInUioJIKfKt
-	oz6kU1KBxn/1Vy9sroFaZTF5klCJWiJj832FbvI8mkutNVbJiaYfq8SfkGVHvOHlbDYY6aoUxRi
-	kMTK5il/VtOMpZhgjO1Y6NGkPrw+VMCVrswP26CudfMCRXSxdisiRli2AphwgzrYTuz2jFOi5U2
-	7ZgVIB/PPaCguO4lxrcCvBXyU4t9G7dzmkG/byjdcQkSqWDHYEHVpv2igMidJgkz3eJOkuY7o/M
-	lU7OxvSEys+hr9s315S5FcaAm1f1kjQ==
-X-Google-Smtp-Source: AGHT+IHNO30cGGLGuV0WLrMnJ/Sw+C7qW79wTrVUmizif/e7ihpkQc6O9ilMkMKWsarELvo9s7M3+w==
-X-Received: by 2002:a05:6a00:2389:b0:736:ab21:8a69 with SMTP id d2e1a72fcca58-7372225a7eamr2482874b3a.0.1741942132421;
-        Fri, 14 Mar 2025 01:48:52 -0700 (PDT)
-Received: from suda-ws01.. (p1201013-ipoe.ipoe.ocn.ne.jp. [122.26.46.12])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711551245sm2601955b3a.57.2025.03.14.01.48.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 01:48:52 -0700 (PDT)
-From: Akihiro Suda <suda.gitsendemail@gmail.com>
-X-Google-Original-From: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
-To: linux-kernel@vger.kernel.org
-Cc: x86@kernel.org,
-	stable@vger.kernel.org,
-	suda.kyoto@gmail.com,
-	regressions@lists.linux.dev,
-	aruna.ramakrishna@oracle.com,
-	tglx@linutronix.de,
-	Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
-Subject: [PATCH] x86/pkeys: Disable PKU when XFEATURE_PKRU is missing
-Date: Fri, 14 Mar 2025 17:48:18 +0900
-Message-ID: <20250314084818.2826-1-akihiro.suda.cz@hco.ntt.co.jp>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <CAG8fp8S92hXFxMKQtMBkGqk1sWGu7pdHYDowsYbmurt0BGjfww@mail.gmail.com>
-References: <CAG8fp8S92hXFxMKQtMBkGqk1sWGu7pdHYDowsYbmurt0BGjfww@mail.gmail.com>
+	s=arc-20240116; t=1741942203; c=relaxed/simple;
+	bh=t2Xvgkviw6BKWPs5pZKkYN089SPhHWmEvzBiUmwsONI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=nNmyHnpY8wFrgzNEiODxekSXNSYdLF3cIDOC2KpGD3Rjtp1aXFhu6Yqpf1Fke6wnalRoKynsLNQmrkFi9YTnOW7a46MrR+qwjL9xcGS5ZItfVZZYMaIxEwITCkZrjSGnUkQ+AYrgCQNyOwSxD1utQnQyBxogAddU2hjKZL+fvMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bb930m2u; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741942201; x=1773478201;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=t2Xvgkviw6BKWPs5pZKkYN089SPhHWmEvzBiUmwsONI=;
+  b=bb930m2uDL8L6mthBrWs9NlaFkzJBV2FCRrfojsM8RKobJkpJxqpVgpN
+   mFl09KEU+cY53TIl1Ja3b1WButSpiIgahbHufOnMHFZ7Hd9k2lDiVYab9
+   AVj5LpxptLG/o1bb+oqhxBqTNq7hr1JVv6UFHfCAGC1iI3GxItApnGVu+
+   f6pLcwbn5r5ook/GP8xL0tBGrnhZoVVvM4yZLliT1kTCxyogieZqIksa9
+   CMptX9w1ec9nNG9dusCBoDOfNmschsfefSAsPzv79jO1c0foBebVT1Lyr
+   V9XKrYML+HLE2L40u9P7rywC3xUHb800h2ocnff64+Cwkw2Ppt5G9xEXp
+   g==;
+X-CSE-ConnectionGUID: mUN+ftECRuyhUSimLZv3jA==
+X-CSE-MsgGUID: QQ/YJ2q9Qn2xgxpYqKx+WA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11372"; a="60626006"
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; 
+   d="scan'208";a="60626006"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2025 01:50:00 -0700
+X-CSE-ConnectionGUID: R/3j1HsiT2yvsqkcmpsVdg==
+X-CSE-MsgGUID: w8ABgcQIQ1ihbokP+pf6Vg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,246,1736841600"; 
+   d="scan'208";a="152145399"
+Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 14 Mar 2025 01:49:59 -0700
+Received: from kbuild by a4747d147074 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tt0jt-000AF6-02;
+	Fri, 14 Mar 2025 08:49:57 +0000
+Date: Fri, 14 Mar 2025 16:49:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Akihiro Suda <suda.gitsendemail@gmail.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] x86/pkeys: Disable PKU when XFEATURE_PKRU is missing
+Message-ID: <Z9PtpLTOMn9F80v2@8c81fd183747>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250314084818.2826-1-akihiro.suda.cz@hco.ntt.co.jp>
 
-Even when X86_FEATURE_PKU and X86_FEATURE_OSPKE are available,
-XFEATURE_PKRU can be missing.
-In such a case, pkeys has to be disabled to avoid hanging up.
+Hi,
 
-  WARNING: CPU: 0 PID: 1 at arch/x86/kernel/fpu/xstate.c:1003 get_xsave_addr_user+0x28/0x40
-  (...)
-  Call Trace:
-   <TASK>
-   ? get_xsave_addr_user+0x28/0x40
-   ? __warn.cold+0x8e/0xea
-   ? get_xsave_addr_user+0x28/0x40
-   ? report_bug+0xff/0x140
-   ? handle_bug+0x3b/0x70
-   ? exc_invalid_op+0x17/0x70
-   ? asm_exc_invalid_op+0x1a/0x20
-   ? get_xsave_addr_user+0x28/0x40
-   copy_fpstate_to_sigframe+0x1be/0x380
-   ? __put_user_8+0x11/0x20
-   get_sigframe+0xf1/0x280
-   x64_setup_rt_frame+0x67/0x2c0
-   arch_do_signal_or_restart+0x1b3/0x240
-   syscall_exit_to_user_mode+0xb0/0x130
-   do_syscall_64+0xab/0x1a0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Thanks for your patch.
 
-This fix is known to be needed on Apple Virtualization.
-Tested with macOS 13.5.2 running on MacBook Pro 2020 with
-Intel(R) Core(TM) i7-1068NG7 CPU @ 2.30GHz.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: 70044df250d0 ("x86/pkeys: Update PKRU to enable all pkeys before XSAVE")
-Link: https://lore.kernel.org/regressions/CAG8fp8QvH71Wi_y7b7tgFp7knK38rfrF7rRHh-gFKqeS0gxY6Q@mail.gmail.com/T/#u
-Link: https://github.com/lima-vm/lima/issues/3334
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Signed-off-by: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
----
- arch/x86/kernel/cpu/common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] x86/pkeys: Disable PKU when XFEATURE_PKRU is missing
+Link: https://lore.kernel.org/stable/20250314084818.2826-1-akihiro.suda.cz%40hco.ntt.co.jp
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index e9464fe411ac..4c2c268af214 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -517,7 +517,8 @@ static bool pku_disabled;
- static __always_inline void setup_pku(struct cpuinfo_x86 *c)
- {
- 	if (c == &boot_cpu_data) {
--		if (pku_disabled || !cpu_feature_enabled(X86_FEATURE_PKU))
-+		if (pku_disabled || !cpu_feature_enabled(X86_FEATURE_PKU) ||
-+		    !cpu_has_xfeatures(XFEATURE_PKRU, NULL))
- 			return;
- 		/*
- 		 * Setting CR4.PKE will cause the X86_FEATURE_OSPKE cpuid
 -- 
-2.45.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
