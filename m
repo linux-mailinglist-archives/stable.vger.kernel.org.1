@@ -1,95 +1,116 @@
-Return-Path: <stable+bounces-124407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F328EA6085E
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 06:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE95FA6092D
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 07:24:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 511A73ACB47
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 05:39:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A233B7DE7
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 06:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBB113D26B;
-	Fri, 14 Mar 2025 05:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48BC143895;
+	Fri, 14 Mar 2025 06:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0e0ub/V"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="oyILwuRC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6781E86E
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 05:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8962613541B;
+	Fri, 14 Mar 2025 06:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741930789; cv=none; b=dcx+14yDj/TcmiIlw4fKTB4a3FcCYXweH+H07/m1CJHLgKvGMU2XNjb/pO52f2mpb6UMsJcGj5xRRvZ44MR3yhFLN8hweNgqulIxyoAq8rhx6evcAWxJIgQKq95wiOdbRGm2GdN+S+z3mk56Tk8qs50UB/oLvztNg84UmrXA3lc=
+	t=1741933457; cv=none; b=kCYFjiVk6FL1yvoT2++aueI4qKClxFTNob9V6pxpMscwCuDgrTJXniHd/XUkwyihEB/2VDwaJGtP/kKlTrGzahCk8x+xWY+/TvxT+mZyQMF19SYNZ2wI9B08/Ek98CKoYkXbGzojcA3z5desIjdnPWu/pk0HzDgagHflzj+7Pis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741930789; c=relaxed/simple;
-	bh=XxJHdsWRFikwHuszEMabmo3HhC5hYC/LY5t+WYb7Oa8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ERZTwNZ7z+igy/e/J6KqSH0c8jqv2DwT7TgaqGgfz+wb5ek72WicskMSmehPzMzh7HjPp5r77ebt2eYmRM4J7bVg80poeq6Qzcq6ZKPCVUdJthvoofHEh6txXVEltHYjzIwY+7w+SjOhQyxrBrjLVu56IscRpXS2p3x1272OQUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0e0ub/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E654C4CEE3;
-	Fri, 14 Mar 2025 05:39:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741930788;
-	bh=XxJHdsWRFikwHuszEMabmo3HhC5hYC/LY5t+WYb7Oa8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N0e0ub/V5tF17m69NtLngU0e9wUmVr1Gma99R6ZFV45VI7wAlgQnCBYayK04PicFk
-	 fSmJU2btabyDcFHz1ygBzACXeA/MX/cOIqqeZyKwS17AzmjsqD51oVzEb7HrK/rsbn
-	 AyPvGuKzlcFBaT5b0G1P7lEgLrSmcVXih4byDD64=
-Date: Fri, 14 Mar 2025 06:39:45 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: 5.10 kernel series fails to build on newer toolchain: FAILED
- unresolved symbol filp_close
-Message-ID: <2025031408-dividers-alphabet-d26c@gregkh>
-References: <b39ca723-16a4-42a2-b8ca-b97d0e4bf7f5@manjaro.org>
+	s=arc-20240116; t=1741933457; c=relaxed/simple;
+	bh=ya0SH5JkE73YAbolQjb8lvIYw7c+jueDq6m/+VfZa/o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=kqZOqzCGZCgSbT9GCghQYAAFuuk1EWvW9fSe6V1REms9av7+ZTx16Y6lnOCb3DignzCuUAZ+ln0qc+vgDQ7XTyA3bD8xYQFcvtYZ5ulj9c20xm1Supaf93RjT8vJwAH8aOZqJ8CKBT0kO/yD9Cn6yApzIiTWnXTqgO9KhcvovLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=oyILwuRC; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 52E6NTrR42599211, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1741933409; bh=ya0SH5JkE73YAbolQjb8lvIYw7c+jueDq6m/+VfZa/o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=oyILwuRC0cWATv6ymcl8VitFUIWHSLvDKfc5kzj+HpxhN1oiTdyODC0ej/ZrjMlEv
+	 6dKlXHPqaWZ4xr6aJUMr9LllsuviUksmFChB2PYzWGBOZm2YvBHKVC28ZAk6vH3Y58
+	 9876+6bFl4I8xSx8YfDYg9XkgvJX21trt009tvEnaWmf91GqlvFZjICxcYBxkFtxiK
+	 1AiECSXYI50TO+D15a38ATdUsEq26gD2GRNtpUG1HA+GupHi5uy1iXUI5X5WdO2L2/
+	 ajbSdyojv6GKejmzfs4sVbFLMyhBDhuaFEGPktI6d7IOje6WMHhmgVloa7xPn9UlCg
+	 j8kvzFUA+f0tQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 52E6NTrR42599211
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Mar 2025 14:23:29 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 14 Mar 2025 14:23:29 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 14 Mar 2025 14:23:28 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622]) by
+ RTEXMBS04.realtek.com.tw ([fe80::4c19:b586:6e71:3622%5]) with mapi id
+ 15.01.2507.035; Fri, 14 Mar 2025 14:23:28 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, "nbd@nbd.name" <nbd@nbd.name>,
+        "lorenzo@kernel.org" <lorenzo@kernel.org>
+CC: "deren.wu@mediatek.com" <deren.wu@mediatek.com>,
+        "Sean.Wang@mediatek.com"
+	<Sean.Wang@mediatek.com>,
+        "Leon.Yen@mediatek.com" <Leon.Yen@mediatek.com>,
+        "Michael.Lo@mediatek.com" <Michael.Lo@mediatek.com>,
+        "allan.wang@mediatek.com" <allan.wang@mediatek.com>,
+        "Eric-SY.Chang@mediatek.com" <Eric-SY.Chang@mediatek.com>,
+        "km.lin@mediatek.com" <km.lin@mediatek.com>,
+        "Quan.Zhou@mediatek.com"
+	<Quan.Zhou@mediatek.com>,
+        "Ryder.Lee@mediatek.com" <Ryder.Lee@mediatek.com>,
+        "Shayne.Chen@mediatek.com" <Shayne.Chen@mediatek.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] wifi: mt76: mt7925: fix the incomplete revert
+Thread-Topic: [PATCH] wifi: mt76: mt7925: fix the incomplete revert
+Thread-Index: AQHblJVLA58AbZ/uukOTsr80EaU7ybNyKX7Q
+Date: Fri, 14 Mar 2025 06:23:28 +0000
+Message-ID: <619f3ca5dd71408f9b247d945dfde228@realtek.com>
+References: <20250314035741.2808863-1-mingyen.hsieh@mediatek.com>
+In-Reply-To: <20250314035741.2808863-1-mingyen.hsieh@mediatek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b39ca723-16a4-42a2-b8ca-b97d0e4bf7f5@manjaro.org>
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Fri, Mar 14, 2025 at 08:18:27AM +0700, Philip Müller wrote:
-> For some odd reason 5.10 kernel series doesn't compile with a newer
-> toolchain since 2025-02-09:
-> 
-> 2025-02-09T17:32:07.7991299Z   GEN     .version
-> 2025-02-09T17:32:07.8270062Z   CHK     include/generated/compile.h
-> 2025-02-09T17:32:07.8540777Z   LD      vmlinux.o
-> 2025-02-09T17:32:11.7210899Z   MODPOST vmlinux.symvers
-> 2025-02-09T17:32:12.0869599Z   MODINFO modules.builtin.modinfo
-> 2025-02-09T17:32:12.1403022Z   GEN     modules.builtin
-> 2025-02-09T17:32:12.1475659Z   LD      .tmp_vmlinux.btf
-> 2025-02-09T17:32:19.6117204Z   BTF     .btf.vmlinux.bin.o
-> 2025-02-09T17:32:31.2916650Z   LD      .tmp_vmlinux.kallsyms1
-> 2025-02-09T17:32:34.8731104Z   KSYMS   .tmp_vmlinux.kallsyms1.S
-> 2025-02-09T17:32:35.4910608Z   AS      .tmp_vmlinux.kallsyms1.o
-> 2025-02-09T17:32:35.9662538Z   LD      .tmp_vmlinux.kallsyms2
-> 2025-02-09T17:32:39.2595984Z   KSYMS   .tmp_vmlinux.kallsyms2.S
-> 2025-02-09T17:32:39.8802028Z   AS      .tmp_vmlinux.kallsyms2.o
-> 2025-02-09T17:32:40.3659440Z   LD      vmlinux
-> 2025-02-09T17:32:48.0031558Z   BTFIDS  vmlinux
-> 2025-02-09T17:32:48.0143553Z FAILED unresolved symbol filp_close
-> 2025-02-09T17:32:48.5019928Z make: *** [Makefile:1207: vmlinux] Error 255
-> 2025-02-09T17:32:48.5061241Z ==> ERROR: A failure occurred in build().
-> 
-> 5.10.234 built fine couple of days ago with the older one. There were slight
-> changes made. 5.4 and 5.15 still compile.
-> 
-> Wonder what might be missing here ...
+Mingyen Hsieh <mingyen.hsieh@mediatek.com> wrote:
+> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+>=20
+> Since the `Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba f=
+or MLO"`
+> was not completely clean, submit this patch to fully clean it up.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 73915469c55a ("Revert "wifi: mt76: mt7925: Update mt7925_mcu_uni_[=
+tx,rx]_ba for MLO"")
+> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Can you bisect down to the offending commit?
+To be unique subject, such as " wifi: mt76: mt7925: fix the incomplete reve=
+rt of [tx,rx]_ba"
 
-And I think I saw kernelci hit this as well, but I don't have an answer
-for it...
 
-greg k-h
 
