@@ -1,138 +1,139 @@
-Return-Path: <stable+bounces-124474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B650A61C2E
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 21:14:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D871A61FBC
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 23:03:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559EC19C7C67
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 20:14:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7890D1896E0D
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 22:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01302066F5;
-	Fri, 14 Mar 2025 20:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD961ACEA5;
+	Fri, 14 Mar 2025 22:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fPHqsbuh"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mMrfETTR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724562066C2;
-	Fri, 14 Mar 2025 20:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4211F154BE2
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 22:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741983133; cv=none; b=NmFcLb2ht4cbP+eu2NdrFhN5ArjrRBiDoLV9KNBSn2VfLn8cVOMUpv6GA44juhWInGRMztJ1y3pB/8huCJQFZIZ/KObowdc21P837evdno8pRogaSJXOfWCSlOadkCKVwh84TxyADnPiCjTGZ4huqF+eoOCZkaLAJRC4JpTuroE=
+	t=1741989805; cv=none; b=b2wB2Tx5SOdZkG4VaLShLzZ3eGp+0d/01YABCgzMDYMtLuzE/eVEkxqD+/kU7YPhe/i/BtIpKdFE4Ed4oUPYvIdzTZiSO/s4WpxK4AiNzh+jpsPysviW/SN/WhZ/oYKO4M0V8cXG5cRtuyvYiCx8CgI/MzsXYjqnx9D7ysgJZOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741983133; c=relaxed/simple;
-	bh=VNSKAbcRLuCrJ7z0XpO3AjyVVmDvQNQN+M90Z/9YUl4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZStviCV4L5sLJ2s6e98ITgN/lw5AoBJ14ubEal/qiLUJnk6TwGI/bzXUalvWzstgybFjg7+RfHZLpZ/mcx/adH5eXb6MHch5xv9tUMTvSs8LmYABUkza8Psfje9svDm8cDTufvBPIEF+Yh9kfUFe+Y67tD6Gx6CkraI/yonxJJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fPHqsbuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C12C4CEEC;
-	Fri, 14 Mar 2025 20:12:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741983132;
-	bh=VNSKAbcRLuCrJ7z0XpO3AjyVVmDvQNQN+M90Z/9YUl4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fPHqsbuhJioIBVVFMH4ju/t30fEgMVYnwFEUlqldSTNKOznAO5Olcu86hOtBVs8/z
-	 XX8ff5H5Pan/EWipX7+DKfMMzDvcGT9x0rO8Z3pLNQ3H2e50zLU1TUStez4HpS7A5m
-	 KVPFyQ4oCBpJQNrNDuTbFEL2wVdIyJfmRoHfCvacuF9KEflpCiDU80cOXWbFWN1kJJ
-	 jJIYGpST6amGCEoJ3jBAu4MKd9YMfSmnkV9T+g1EtSARxaU+I+vn7CojeZ7VCPNDI1
-	 zpXZZDENQPOy6MHsJCMZxeqO4w2yStH5is4RCke7mxzqcAlNSISNqv7dCSLdpSZO+P
-	 Ooax1C7O9/MSQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Fri, 14 Mar 2025 21:11:33 +0100
-Subject: [PATCH net 3/3] mptcp: sockopt: fix getting freebind & transparent
+	s=arc-20240116; t=1741989805; c=relaxed/simple;
+	bh=YPYAgaNXP2IIPLWgofpyQneMOCtNp97g1EQ3HHk81m4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=leJ/N07/2SYcFgegbKX4Wi+DIA/swmmzma/V6qT2jD2NBHdHIf7pI1Qoy+gv4mcwb2dUw1lErSsGd2h92p+guv4qGEw7UOBASIbH4KSdhOpM+ggliaU81SaII5iHTR2lTR0CHWHc8Y6xOzwEO/4a0n9N7cbTlD6lym3i8gklT+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mMrfETTR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52EA4HMc027567
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 22:03:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Dnm2t5CfeS/52MGOLwOHFsVRcUbMcJKyNFgAPRvdxfA=; b=mMrfETTRYc1MtFbr
+	cegihmZQto1dlyr23SbC7wUzzyfgoNOJ0Gs8mQhzGWxWCGXeJla7XfXJ/j5VmjAq
+	JMaLBwc7iJeHklYpZHFVZKe76u93ZgMr2/YzGE9gR7JoueYH3XS67FjUhYk7QRBx
+	yaTN9mHUV766P/2LuAfFM/KUJp7xUyjH8hHHEGKHfLuXvaF13xsjTkh6KvJdjX2F
+	5otqNdogdoLixYBmeKfxC4pdVQD3vqALdzmWaLfY1O/9sMh5JeKIafDQ0B+qVG3E
+	VXiDZKSgkVShwTsj25dNcnd62oHLbZZuR8YkcHPbkXRsKLnnA2ZByySVEKyGqU/E
+	53ltcA==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45c6733mxe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 22:03:23 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7c54734292aso34157485a.2
+        for <stable@vger.kernel.org>; Fri, 14 Mar 2025 15:03:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741989802; x=1742594602;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dnm2t5CfeS/52MGOLwOHFsVRcUbMcJKyNFgAPRvdxfA=;
+        b=waAHwmv83B8iT4WZaLk+s2TGpzxAiMIwUhHWKA+6otergnZIBh2bcxhEL+n4ULYQGc
+         cTmu1qsEq5uiWtynEcrgaNSy2B6QwARfO1Un2Tc403wQ9j/xGB9OI6HnoXEtWIWeUqL4
+         O5EyKektd+pQSZqC9rBXLlG9/HoJC4MsR98HkUPsXZL9SzxTfNH8ZGY50Ed6w9/RQkLO
+         7OO60SyeNOar3m4h9U2kIkYjRE5I79P3sRx1jODpHkLgq8NYm/9eeFaK27Q6TL0/Icam
+         RJoW442mfh8jmOLofcHEpEmPUEH7s4QSn1TjmK28tK32T9+0UInYS06DBWLnq+8lO4xa
+         iyZA==
+X-Forwarded-Encrypted: i=1; AJvYcCVrBHFUKqJ2F7Fu0w4JW1YHeFfO7jah1wBFk/VSocaX+JgMhEYToRKSIN/y9+cpdmcVExlHovc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOoCNR+J5o+0xtCaWRt6xpo2yLt++e2lMLNt99pf4kxCgTENBb
+	FuA31YWBJ9qXHRzCn2RaS5Igr5HBi3cHttCtxx5c/0xIja9b9YLgOLAiWSt4ER/+OLvQ3ye0m5A
+	XVDQ0f3iHtXUdbvXNjSsWp/fR8BaO67cIIHp9rjLHKa/uDPJDh9puMPM=
+X-Gm-Gg: ASbGnct+/0NVgAxF78V9wv269ybB18qPgL3jE0oSvwd1ldF02HOzDcdWPJj8L9DEoiM
+	YeDXqNsGWb4ChowXxc9eZw1x63M/sPlT3LZa24xikhuZVdGD/aV5Vh3HXNgpCyQyldgChQavQZy
+	EFrPLQSPczmX1Vw/h9rs22lhtQP1WR95hcGXA/auqmMNMFkfmIEgk8eq1Q+geQFVcvg4lOzd1IH
+	+PKuxkZGdBiDAm9ojd1k06ecVA+WfKgy9F1nqGNzK1YktMipxcMxi1ZkK16pu29WmYbLd48cNOt
+	zom7wBtNgI/4Tq9bhuqRHqMC25LayhdMcT3VLIr+sp8R8lP5wsJCf3Kb2tHbvUlpXMJS/Q==
+X-Received: by 2002:a05:620a:31a4:b0:7c3:c814:591d with SMTP id af79cd13be357-7c57c795580mr190183185a.1.1741989802134;
+        Fri, 14 Mar 2025 15:03:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGTEH8+2F/jBXZWadtElmUZ1siIaSDospZBCxTdVcPZR8v0O64Ck/1fxS27sV0REmM7K0WJA==
+X-Received: by 2002:a05:620a:31a4:b0:7c3:c814:591d with SMTP id af79cd13be357-7c57c795580mr190181285a.1.1741989801750;
+        Fri, 14 Mar 2025 15:03:21 -0700 (PDT)
+Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816afdfdbsm2397154a12.74.2025.03.14.15.03.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Mar 2025 15:03:21 -0700 (PDT)
+Message-ID: <948b3f2d-3834-479b-b165-7191778dc5c3@oss.qualcomm.com>
+Date: Fri, 14 Mar 2025 23:03:18 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] arm64: dts: qcom: sm6350: Fix wrong order of
+ freq-table-hz for UFS
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20250314-sm6350-ufs-things-v1-0-3600362cc52c@fairphone.com>
+ <20250314-sm6350-ufs-things-v1-1-3600362cc52c@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250314-sm6350-ufs-things-v1-1-3600362cc52c@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-3-122dbb249db3@kernel.org>
-References: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
-In-Reply-To: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2125; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=VNSKAbcRLuCrJ7z0XpO3AjyVVmDvQNQN+M90Z/9YUl4=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBn1I2Hfq5LsFzARDWfayx67sdfPp9WXUcvkhv+u
- Odk6YPT5H+JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ9SNhwAKCRD2t4JPQmmg
- c8FWD/9F+dbp1XxKCCOgUX8azpnuojlX7oNZuZjI0+jkr/rk9RNBL/JyuiYMDcFI+qIJG5cewgE
- /SpCuhz9Bl9hW0SvJADUO9Nw5SqynVahXT7bi36OC32V60M6xT4NJtHdVXj7gsMWNVy+Ox1nhmT
- GwmT7a4poKlTKUwrKr85BYFf3JE1psMp2vpuNlOKPDOaVr/YZ58pQrXVigJeePfSgfsnqK/M75K
- FWo2Ls+LU/3VmIybJ++W/5KiK895srJvrCCqOSxg/nOeqo9H0uBvP90KNorKKqia9WwNN0XtzWS
- bUNMAkm8vgCVT2Z8lkgHEHLLrUianyvRdxFxPNUIcXU/X6KAgk8Bd9djypRp+32TgqVqvyK/e0l
- cio2dkGnwqkVSOe9hWVvFKvp/9PesFY6MKRKKJBKnORlG3MDqRt5XgE73TX7XyMwXpP9NWyvFAA
- NmNXSoWr6fGHUJRoe6n1J3x12BqOEa6walGcwvxafu+keV/WXywJ9LwqlTQi1fxB8DwoHoT61LK
- q2PHfj4S9TYih0PIxgn4dk5ZciSdMFbJ/uTnDeisZ1WQqDcFB1SXJTz9q32JYBfWgr/8A+nEd4U
- FBgn5mKopJQp4EcMwf9PA9BJKZNIX78lpryqhgTWJ27hcicnfotGZGHPjnwG+Upqou6RneyA9Nd
- dujMkG7Ttw7QXqw==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-Authority-Analysis: v=2.4 cv=a5Iw9VSF c=1 sm=1 tr=0 ts=67d4a7ab cx=c_pps a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=6H0WHjuAAAAA:8 a=EUspDBNiAAAA:8 a=08tnehPgh3LRQT3fcTIA:9
+ a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22 a=Soq9LBFxuPC4vsCAQt-j:22
+X-Proofpoint-GUID: bEtbbri-Hko1MIxb1QEpbd0ZEYfvbF1P
+X-Proofpoint-ORIG-GUID: bEtbbri-Hko1MIxb1QEpbd0ZEYfvbF1P
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-14_09,2025-03-14_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
+ suspectscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 clxscore=1011 spamscore=0 mlxscore=0 adultscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503140170
 
-When adding a socket option support in MPTCP, both the get and set parts
-are supposed to be implemented.
+On 3/14/25 10:17 AM, Luca Weiss wrote:
+> During upstreaming the order of clocks was adjusted to match the
+> upstream sort order, but mistakently freq-table-hz wasn't re-ordered
+> with the new order.
+> 
+> Fix that by moving the entry for the ICE clk to the last place.
+> 
+> Fixes: 5a814af5fc22 ("arm64: dts: qcom: sm6350: Add UFS nodes")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-IP(V6)_FREEBIND and IP(V6)_TRANSPARENT support for the setsockopt part
-has been added a while ago, but it looks like the get part got
-forgotten. It should have been present as a way to verify a setting has
-been set as expected, and not to act differently from TCP or any other
-socket types.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-Everything was in place to expose it, just the last step was missing.
-Only new code is added to cover these specific getsockopt(), that seems
-safe.
-
-Fixes: c9406a23c116 ("mptcp: sockopt: add SOL_IP freebind & transparent options")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/sockopt.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-index 4b99eb796855e4578d14df90f9d1cc3f1cd5b8c7..3caa0a9d3b3885ce6399570f2d98a2e8f103638d 100644
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1419,6 +1419,12 @@ static int mptcp_getsockopt_v4(struct mptcp_sock *msk, int optname,
- 	switch (optname) {
- 	case IP_TOS:
- 		return mptcp_put_int_option(msk, optval, optlen, READ_ONCE(inet_sk(sk)->tos));
-+	case IP_FREEBIND:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+				inet_test_bit(FREEBIND, sk));
-+	case IP_TRANSPARENT:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+				inet_test_bit(TRANSPARENT, sk));
- 	case IP_BIND_ADDRESS_NO_PORT:
- 		return mptcp_put_int_option(msk, optval, optlen,
- 				inet_test_bit(BIND_ADDRESS_NO_PORT, sk));
-@@ -1439,6 +1445,12 @@ static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
- 	case IPV6_V6ONLY:
- 		return mptcp_put_int_option(msk, optval, optlen,
- 					    sk->sk_ipv6only);
-+	case IPV6_TRANSPARENT:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    inet_test_bit(TRANSPARENT, sk));
-+	case IPV6_FREEBIND:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    inet_test_bit(FREEBIND, sk));
- 	}
- 
- 	return -EOPNOTSUPP;
-
--- 
-2.48.1
-
+Konrad
 
