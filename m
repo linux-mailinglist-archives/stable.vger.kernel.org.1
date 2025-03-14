@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259B6A62140
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 00:10:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91808A62145
+	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 00:10:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A90193BC695
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 23:10:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 361853BEC63
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 23:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220CF1A23B7;
-	Fri, 14 Mar 2025 23:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B0A1C860B;
+	Fri, 14 Mar 2025 23:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxEqPFq6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZDPa11nt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EBF15D5C4
-	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 23:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E3115D5C4
+	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 23:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741993810; cv=none; b=YkFgzu0YPv3z111/6rRWX7Gc1MQEsrYFK5GZT9vQMd+FvQKpLGtJIRRgu16qdWSBYA6qgm5uW7RXYgJNlWFKYuZeSIKBYHNlarYSQXr+OIGDJ5cwpvlXki6dJRwg11tP1Ktey7IXv//YqNTnMiCMjzhZ53RQ6/QREaS26WubLgQ=
+	t=1741993813; cv=none; b=OF4MGj0xVbrYEH9WNkeJ1FEfD1QoCBdzAdKiVx9FO313u9xM+Dkj+vYx0HkZmu6i/78fF1QyXcaIc2ZI+hXIEfH/ja+nI32IT5kWg2lsKolaka5wDDB0hs9hlYd++HStQ6VEGhpdAzaUQ/ed7IBmuJTAsBNX0tTOOS8BZKUuaE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741993810; c=relaxed/simple;
-	bh=w3RqoW+BE4TOePOyTUCyk4WBuhMqo3OkJHHVrdbuTb8=;
+	s=arc-20240116; t=1741993813; c=relaxed/simple;
+	bh=BxYKMZ9LX1C0kd/VoNZT6dy5lLdJ6zRp1+JZEyOr884=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CLMn0usJuH956HikL9qPookOSMbqPF0R232xnIbXyKJMkwrhd14cuRb74h10YgEHTNMzYgseidEWncgLcWt85t6ppmh9TPVcfKg3IFw6UInnyBwxHJqXmthBNaZb1OzbzVgWsnMfiqfP0N8EZ/jAyiyGNWia9yVkJxbvSMYJSsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxEqPFq6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A55C4CEE3;
-	Fri, 14 Mar 2025 23:10:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Sqag6OLa7qp68B+kCR9f5AFsuigDaoBqgp6e0bujZ0s+V72ZZXfLiW/NVpAudkfRrlwAnQWvzDOrktaMzDvIFIzUib31bxxeN7YYFXldPwwS5pm17ahag+6xgM5lIsNVsSJ30XLztXQI9LTVMEuZJM7N6Giq6l0tExix6TXqxaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZDPa11nt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D15CC4CEE3;
+	Fri, 14 Mar 2025 23:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741993810;
-	bh=w3RqoW+BE4TOePOyTUCyk4WBuhMqo3OkJHHVrdbuTb8=;
+	s=k20201202; t=1741993812;
+	bh=BxYKMZ9LX1C0kd/VoNZT6dy5lLdJ6zRp1+JZEyOr884=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxEqPFq6DbRH/Fz25Ae3MqG6knCjY5325P/pUMchPLaeUktPQJPpyLZjfSIzBn06R
-	 jaf3H2KW6c5Key3hx6CBUynrvZHv9Ub0jeNs/jxv8yyBRTa2VOVFtlB9mdG+FuJRGe
-	 bSvoZWcbITJJhjJBKrBFoZwcAbc75j1dnYf+bPyjZ6WjhJc4+wf+AVRJWV5nE/HiHm
-	 x4aiGyZkKJ7+CfBaQGBxc89zi0X8Flvz6Qii2ymo37p/9dcutd9OnZes4C3m8zs174
-	 863xscpIjbzubXay2t56FVQKifkZDdPn0ESTS3el6VfETIOQprggExTAkuWSHozrHy
-	 /3R6clceSmEPA==
+	b=ZDPa11ntUGydcULAizXihKrlrVOKvS7G5PjJA8jfNeKnmZVQsmQ8MzOX8OgPseKO1
+	 RBCHyjax2X34x3CcwVahuy1eGDJfEsjgLJOMukqbWt6UxWjGU3nC5oE6Nk2E3jvEXp
+	 0gw9eUKXvBNkv5DqaDLRbaP2BKeUo3yNwrevu1rD8l5IQ51wZ22DPyaYt4Ao9q+Tsj
+	 mAPMvvSB7LsCIzfJhF0TlhOgh1twUfzJm7gFDmwSlUZtTiPbBaXT0MvEbMxkTi7Nzk
+	 8OLsRSxPJHbLPaax9jp3aRP3vVZxRwNf3dzfBmNSCr4kKp2xmGx5ZXQ4JY8UN/8kSb
+	 nvbsTYQIydNgw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	youngmin.nam@samsung.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 1/2] tcp: fix races in tcp_abort()
-Date: Fri, 14 Mar 2025 19:10:08 -0400
-Message-Id: <20250314121501-9fdf46a34dedcb9e@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Leah Rumancik <leah.rumancik@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 02/29] xfs: pass xfs_extent_free_item directly through the log intent code
+Date: Fri, 14 Mar 2025 19:10:11 -0400
+Message-Id: <20250314110942-dd51aa622667f911@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250314092446.852230-1-youngmin.nam@samsung.com>
+In-Reply-To:  <20250313202550.2257219-3-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,103 +64,43 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-❌ Build failures detected
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 5ce4645c23cf5f048eb8e9ce49e514bababdee85
+The upstream commit SHA1 provided is correct: 72ba455599ad13d08c29dafa22a32360e07b1961
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Youngmin Nam<youngmin.nam@samsung.com>
-Commit author: Eric Dumazet<edumazet@google.com>
+Backport author: Leah Rumancik<leah.rumancik@gmail.com>
+Commit author: Darrick J. Wong<djwong@kernel.org>
+
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-Failed to apply patch cleanly.
+1:  72ba455599ad1 ! 1:  a4d4bccfa3b1e xfs: pass xfs_extent_free_item directly through the log intent code
+    @@ Metadata
+      ## Commit message ##
+         xfs: pass xfs_extent_free_item directly through the log intent code
+     
+    +    [ Upstream commit 72ba455599ad13d08c29dafa22a32360e07b1961 ]
+    +
+         Pass the incore xfs_extent_free_item through the EFI logging code
+         instead of repeatedly boxing and unboxing parameters.
+     
+         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+     
+      ## fs/xfs/xfs_extfree_item.c ##
+     @@ fs/xfs/xfs_extfree_item.c: static int
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Failed     |  N/A       |
-| stable/linux-6.12.y       |  Failed     |  N/A       |
-| stable/linux-6.6.y        |  Success    |  Success   |
 | stable/linux-6.1.y        |  Success    |  Success   |
-| stable/linux-5.15.y       |  Success    |  Success   |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
-
-Build Errors:
-Patch failed to apply on stable/linux-6.13.y. Reject:
-
-diff a/net/ipv4/tcp.c b/net/ipv4/tcp.c	(rejected hunks)
-@@ -4630,13 +4630,9 @@ int tcp_abort(struct sock *sk, int err)
- 	bh_lock_sock(sk);
- 
- 	if (!sock_flag(sk, SOCK_DEAD)) {
--		WRITE_ONCE(sk->sk_err, err);
--		/* This barrier is coupled with smp_rmb() in tcp_poll() */
--		smp_wmb();
--		sk_error_report(sk);
- 		if (tcp_need_reset(sk->sk_state))
- 			tcp_send_active_reset(sk, GFP_ATOMIC);
--		tcp_done(sk);
-+		tcp_done_with_error(sk, err);
- 	}
- 
- 	bh_unlock_sock(sk);
-Patch failed to apply on stable/linux-6.12.y. Reject:
-
-diff a/net/ipv4/tcp.c b/net/ipv4/tcp.c	(rejected hunks)
-@@ -4630,13 +4630,9 @@ int tcp_abort(struct sock *sk, int err)
- 	bh_lock_sock(sk);
- 
- 	if (!sock_flag(sk, SOCK_DEAD)) {
--		WRITE_ONCE(sk->sk_err, err);
--		/* This barrier is coupled with smp_rmb() in tcp_poll() */
--		smp_wmb();
--		sk_error_report(sk);
- 		if (tcp_need_reset(sk->sk_state))
- 			tcp_send_active_reset(sk, GFP_ATOMIC);
--		tcp_done(sk);
-+		tcp_done_with_error(sk, err);
- 	}
- 
- 	bh_unlock_sock(sk);
-Patch failed to apply on stable/linux-5.10.y. Reject:
-
-diff a/net/ipv4/tcp.c b/net/ipv4/tcp.c	(rejected hunks)
-@@ -4630,13 +4630,9 @@ int tcp_abort(struct sock *sk, int err)
- 	bh_lock_sock(sk);
- 
- 	if (!sock_flag(sk, SOCK_DEAD)) {
--		WRITE_ONCE(sk->sk_err, err);
--		/* This barrier is coupled with smp_rmb() in tcp_poll() */
--		smp_wmb();
--		sk_error_report(sk);
- 		if (tcp_need_reset(sk->sk_state))
- 			tcp_send_active_reset(sk, GFP_ATOMIC);
--		tcp_done(sk);
-+		tcp_done_with_error(sk, err);
- 	}
- 
- 	bh_unlock_sock(sk);
-Patch failed to apply on stable/linux-5.4.y. Reject:
-
-diff a/net/ipv4/tcp.c b/net/ipv4/tcp.c	(rejected hunks)
-@@ -4630,13 +4630,9 @@ int tcp_abort(struct sock *sk, int err)
- 	bh_lock_sock(sk);
- 
- 	if (!sock_flag(sk, SOCK_DEAD)) {
--		WRITE_ONCE(sk->sk_err, err);
--		/* This barrier is coupled with smp_rmb() in tcp_poll() */
--		smp_wmb();
--		sk_error_report(sk);
- 		if (tcp_need_reset(sk->sk_state))
- 			tcp_send_active_reset(sk, GFP_ATOMIC);
--		tcp_done(sk);
-+		tcp_done_with_error(sk, err);
- 	}
- 
- 	bh_unlock_sock(sk);
 
