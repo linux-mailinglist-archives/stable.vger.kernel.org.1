@@ -1,31 +1,31 @@
-Return-Path: <stable+bounces-124435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A50A61210
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 14:09:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C306DA61213
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 14:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C4311B62EB2
-	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 13:09:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3E2F1B631A2
+	for <lists+stable@lfdr.de>; Fri, 14 Mar 2025 13:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C2C1FF7B6;
-	Fri, 14 Mar 2025 13:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017301FFC41;
+	Fri, 14 Mar 2025 13:09:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E451FF1CA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075851FF1D7
 	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 13:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741957761; cv=none; b=dQ8gSz4sDFHBiNuLqEpNUiXFll7f+flTLckobAETtMKq0sEb2cuiZuXDoDH6DfKouk0ZZ4VlyR3z7qzXl5rrOCtR+6XRgQql9Vb0gsHV1GXdY8DsVHIX1B0rn5cpG75lhObY/u6E0AeXh1UBJIf3tNMpVE1UuS6q/MqpuSvydsg=
+	t=1741957761; cv=none; b=k6gvmXrjlzptjpfcT335w0/vKtW+JzgvuxY6rtTbHeyR/kC6KjsB2EWTUYHsR6qt8u/jsXRBDMZCwxkjl/Az6rw0nwudTpiqTcXLXGh2FC1kgsVWP3bmHhpwMXj6cYn5xDPU2E27dz1gzNixPkeJHP8KPw0UxwTipKy53j0Cvfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741957761; c=relaxed/simple;
-	bh=CsSR2zUwu6jrdEDlu7QZuMGjGVG4dVHVjaXe3iPZz50=;
+	bh=Tn2PytU4owsO5Qh/XoeRKIU68E8DPy+8lO8cCjHONDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0okpN/dzeZjp5Oucquo4zxZg+DUSzfx8JMwohe+wx2CTYHW4vnW+z3jqV9Pd/d9QFhuIZ7PqNXYjXdxVc7reJMRM3otS7me7VgfmE4EOJuIvp7fNxaFaFt22alGJdHp9aADwsrRY4BEzWZDQiUGTh+sAs0vGmR74ESpLbWDhY0=
+	 MIME-Version; b=mED5e+8wwYzgh80RUY/a84PQO2sfvdvZQgjKuMJoBdks6Gm3Jlvpud02oWR3HeI2sN23kutGITXbD4Bhw+mtDJSFUxD69FGsZIwqlogHX8rj2fv4SDO+bnHZTtukpQhSBC1dq73jnwPT+d1k2QFQcHi9i+6ZrUzbhDLipoHO9YU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -33,26 +33,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tt4mr-0007Kl-LX
-	for stable@vger.kernel.org; Fri, 14 Mar 2025 14:09:17 +0100
+	id 1tt4ms-0007Lu-6M
+	for stable@vger.kernel.org; Fri, 14 Mar 2025 14:09:18 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1tt4mq-005hoU-1m
+	id 1tt4mr-005hpN-0j
 	for stable@vger.kernel.org;
-	Fri, 14 Mar 2025 14:09:16 +0100
+	Fri, 14 Mar 2025 14:09:17 +0100
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 3CA983DBB78
+	by bjornoya.blackshift.org (Postfix) with SMTP id E3DC43DBB85
 	for <stable@vger.kernel.org>; Fri, 14 Mar 2025 13:09:16 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id F40673DBB4C;
-	Fri, 14 Mar 2025 13:09:13 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 2045F3DBB4E;
+	Fri, 14 Mar 2025 13:09:14 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id b390e868;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id e895a5b0;
 	Fri, 14 Mar 2025 13:09:12 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -60,13 +60,14 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	syzbot+d7d8c418e8317899e88c@syzkaller.appspotmail.com,
+	Biju Das <biju.das.jz@bp.renesas.com>,
 	stable@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 1/6] can: ucan: fix out of bound read in strscpy() source
-Date: Fri, 14 Mar 2025 14:04:00 +0100
-Message-ID: <20250314130909.2890541-2-mkl@pengutronix.de>
+Subject: [PATCH net 3/6] dt-bindings: can: renesas,rcar-canfd: Fix typo in pattern properties for R-Car V4M
+Date: Fri, 14 Mar 2025 14:04:02 +0100
+Message-ID: <20250314130909.2890541-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250314130909.2890541-1-mkl@pengutronix.de>
 References: <20250314130909.2890541-1-mkl@pengutronix.de>
@@ -82,147 +83,35 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: stable@vger.kernel.org
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-Commit 7fdaf8966aae ("can: ucan: use strscpy() to instead of strncpy()")
-unintentionally introduced a one byte out of bound read on strscpy()'s
-source argument (which is kind of ironic knowing that strscpy() is meant
-to be a more secure alternative :)).
+The Renesas R-Car V4M(R8A779H0) SoC, supports up to four channels.
+Fix the typo 5->4 in pattern properties.
 
-Let's consider below buffers:
-
-  dest[len + 1]; /* will be NUL terminated */
-  src[len]; /* may not be NUL terminated */
-
-When doing:
-
-  strncpy(dest, src, len);
-  dest[len] = '\0';
-
-strncpy() will read up to len bytes from src.
-
-On the other hand:
-
-  strscpy(dest, src, len + 1);
-
-will read up to len + 1 bytes from src, that is to say, an out of bound
-read of one byte will occur on src if it is not NUL terminated. Note
-that the src[len] byte is never copied, but strscpy() still needs to
-read it to check whether a truncation occurred or not.
-
-This exact pattern happened in ucan.
-
-The root cause is that the source is not NUL terminated. Instead of
-doing a copy in a local buffer, directly NUL terminate it as soon as
-usb_control_msg() returns. With this, the local firmware_str[] variable
-can be removed.
-
-On top of this do a couple refactors:
-
-  - ucan_ctl_payload->raw is only used for the firmware string, so
-    rename it to ucan_ctl_payload->fw_str and change its type from u8 to
-    char.
-
-  - ucan_device_request_in() is only used to retrieve the firmware
-    string, so rename it to ucan_get_fw_str() and refactor it to make it
-    directly handle all the string termination logic.
-
-Reported-by: syzbot+d7d8c418e8317899e88c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-can/67b323a4.050a0220.173698.002b.GAE@google.com/
-Fixes: 7fdaf8966aae ("can: ucan: use strscpy() to instead of strncpy()")
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250218143515.627682-2-mailhol.vincent@wanadoo.fr
+Fixes: ced52c6ed257 ("dt-bindings: can: renesas,rcar-canfd: Document R-Car V4M support")
 Cc: stable@vger.kernel.org
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: "Rob Herring (Arm)" <robh@kernel.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20250307170330.173425-2-biju.das.jz@bp.renesas.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/usb/ucan.c | 43 ++++++++++++++++----------------------
- 1 file changed, 18 insertions(+), 25 deletions(-)
+ .../devicetree/bindings/net/can/renesas,rcar-canfd.yaml         | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/ucan.c b/drivers/net/can/usb/ucan.c
-index 39a63b7313a4..07406daf7c88 100644
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -186,7 +186,7 @@ union ucan_ctl_payload {
- 	 */
- 	struct ucan_ctl_cmd_get_protocol_version cmd_get_protocol_version;
- 
--	u8 raw[128];
-+	u8 fw_str[128];
- } __packed;
- 
- enum {
-@@ -424,18 +424,20 @@ static int ucan_ctrl_command_out(struct ucan_priv *up,
- 			       UCAN_USB_CTL_PIPE_TIMEOUT);
- }
- 
--static int ucan_device_request_in(struct ucan_priv *up,
--				  u8 cmd, u16 subcmd, u16 datalen)
-+static void ucan_get_fw_str(struct ucan_priv *up, char *fw_str, size_t size)
- {
--	return usb_control_msg(up->udev,
--			       usb_rcvctrlpipe(up->udev, 0),
--			       cmd,
--			       USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
--			       subcmd,
--			       0,
--			       up->ctl_msg_buffer,
--			       datalen,
--			       UCAN_USB_CTL_PIPE_TIMEOUT);
-+	int ret;
-+
-+	ret = usb_control_msg(up->udev, usb_rcvctrlpipe(up->udev, 0),
-+			      UCAN_DEVICE_GET_FW_STRING,
-+			      USB_DIR_IN | USB_TYPE_VENDOR |
-+			      USB_RECIP_DEVICE,
-+			      0, 0, fw_str, size - 1,
-+			      UCAN_USB_CTL_PIPE_TIMEOUT);
-+	if (ret > 0)
-+		fw_str[ret] = '\0';
-+	else
-+		strscpy(fw_str, "unknown", size);
- }
- 
- /* Parse the device information structure reported by the device and
-@@ -1314,7 +1316,6 @@ static int ucan_probe(struct usb_interface *intf,
- 	u8 in_ep_addr;
- 	u8 out_ep_addr;
- 	union ucan_ctl_payload *ctl_msg_buffer;
--	char firmware_str[sizeof(union ucan_ctl_payload) + 1];
- 
- 	udev = interface_to_usbdev(intf);
- 
-@@ -1527,17 +1528,6 @@ static int ucan_probe(struct usb_interface *intf,
- 	 */
- 	ucan_parse_device_info(up, &ctl_msg_buffer->cmd_get_device_info);
- 
--	/* just print some device information - if available */
--	ret = ucan_device_request_in(up, UCAN_DEVICE_GET_FW_STRING, 0,
--				     sizeof(union ucan_ctl_payload));
--	if (ret > 0) {
--		/* copy string while ensuring zero termination */
--		strscpy(firmware_str, up->ctl_msg_buffer->raw,
--			sizeof(union ucan_ctl_payload) + 1);
--	} else {
--		strcpy(firmware_str, "unknown");
--	}
--
- 	/* device is compatible, reset it */
- 	ret = ucan_ctrl_command_out(up, UCAN_COMMAND_RESET, 0, 0);
- 	if (ret < 0)
-@@ -1555,7 +1545,10 @@ static int ucan_probe(struct usb_interface *intf,
- 
- 	/* initialisation complete, log device info */
- 	netdev_info(up->netdev, "registered device\n");
--	netdev_info(up->netdev, "firmware string: %s\n", firmware_str);
-+	ucan_get_fw_str(up, up->ctl_msg_buffer->fw_str,
-+			sizeof(up->ctl_msg_buffer->fw_str));
-+	netdev_info(up->netdev, "firmware string: %s\n",
-+		    up->ctl_msg_buffer->fw_str);
- 
- 	/* success */
- 	return 0;
-
-base-commit: 4003c9e78778e93188a09d6043a74f7154449d43
+diff --git a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+index 7c5ac5d2e880..f6884f6e59e7 100644
+--- a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
++++ b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+@@ -170,7 +170,7 @@ allOf:
+             const: renesas,r8a779h0-canfd
+     then:
+       patternProperties:
+-        "^channel[5-7]$": false
++        "^channel[4-7]$": false
+     else:
+       if:
+         not:
 -- 
 2.47.2
 
