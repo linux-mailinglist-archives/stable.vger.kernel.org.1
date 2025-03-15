@@ -1,99 +1,86 @@
-Return-Path: <stable+bounces-124499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205CAA62422
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 02:39:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F5EA627C2
+	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 08:02:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A26A883026
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 01:39:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4237019C0EEA
+	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 07:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7426B176AA1;
-	Sat, 15 Mar 2025 01:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B141C861F;
+	Sat, 15 Mar 2025 07:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IfF8+zAN"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="QqAOk5Pb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2503D78F5F;
-	Sat, 15 Mar 2025 01:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8191CEC0;
+	Sat, 15 Mar 2025 07:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742002767; cv=none; b=EIExNeNGBdJOFng5JaVqJmINug7DQ+yrn0z9DAyNimOhjyT7XdcwdcM9e4XyeOoZhbGnBa0kWMJAA+yNAJyk3un7qam9TXVQYv+N8XtH9XUBxKTYEzl4f1OGo1iSui5UrwlvfZoYqAhZ7n4t2u9P3ZE2BPIQqHFRzSt3BUhb2x0=
+	t=1742022129; cv=none; b=XSFh7jWIumPY6GVjhsH/4Rjr5r7bw269jIcIe482N9elmjlVkrXvL1IIOEtuelmHVwDbmmi43kDepOUaM5hRt0+/0HVRXwhhhrpBoxwSo0T5yS+lgN0oPJOvTFWwRtSSCxw20aRxLrbkml4ic+lK4Yoc+3nHD3BsI75hKTZ0taI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742002767; c=relaxed/simple;
-	bh=TYDriDV6Hem3RlevujvNnrbRBOPfoqUXzyBsIJLgED4=;
+	s=arc-20240116; t=1742022129; c=relaxed/simple;
+	bh=u09qQqQQWeem3kD7yi7OJESXMq5QvavDAcoEfeuXhv8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JoPzTRly6lkhWa1aIKnNYv5AtROxDbF6HIaX2PiAteG9XJUPJg1xQW9aC76FcurU0WGQsFApmV3+pMCOzaC5ea3/MAh+nQv3nIRc06jVhb7mfBUi2VfEBEBdqNLRhCQM97ER8ZnMhMWaTLFoMtChk+VDUPHG6Qc0DGpX2IQFozk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IfF8+zAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B3FC4CEE3;
-	Sat, 15 Mar 2025 01:39:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742002766;
-	bh=TYDriDV6Hem3RlevujvNnrbRBOPfoqUXzyBsIJLgED4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IfF8+zANYFf8oHoOttF68SUoCZzc8543Af8DuwNHwv23B58sjOZbdlFdyAye/EuNj
-	 EPe8Gv/JhbVbX1cHuNXkvRn+XemIVEuwrwn20TCbdDJR45KjVTdR/JVv1HzvaNQC+D
-	 YglmvMWy/cPsD4wXQiQwlDAFiqEW9T1ja4LTFg15QOQPVrZdBqzC065l1eEzvB9PAr
-	 rVzy6LohogEJqwIuw9r6t1yKsHyxmqXzgwGskPUw3Fb48L/fKlAZGia/byl2CoZF1F
-	 Es69gSdqqmvJjWW8aAQbmx67fxdRD7+plt9D+qj9DTQhJybJf0a6POvcg0zVmcVSNy
-	 UQqfOS2Uub7cg==
-Date: Fri, 14 Mar 2025 21:39:25 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	martineau@kernel.org, davem@davemloft.net, edumazet@google.com,
-	netdev@vger.kernel.org, mptcp@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 6.13 13/17] mptcp: safety check before fallback
-Message-ID: <Z9TaTcOL1ZkccXr7@lappy>
-References: <20250303162951.3763346-1-sashal@kernel.org>
- <20250303162951.3763346-13-sashal@kernel.org>
- <262b5990-47e8-44f9-a2af-ca9c389e34fd@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=B0HMHmVMIsW6RVv+iDLRX+4dQRM2C+2m8xMD9xrrrBLQILUeb5KzqE3EkYx5HeXK/EjX/IGUleZA9ZcnXRP6AuPqPdo91GfLe6EPu/Zu/E9a2iHLpvp9U9mpI+1TMhJ35q/RrfVt8QgoIl2iG+RrP9FyGyR1OGwrA0GWmYQrytE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=QqAOk5Pb; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=DBxWDKn8W2F2PcTF0yhGuaiB9zxAIYsAk9R/fiHqBIE=; b=QqAOk5Pb3VAUKPh670hH2pSYbU
+	nQUO7tRMU1px/CDNgD5mOCurclTXdlGyJT5Mv2M6znvRTAJxEyEGCX4Us3q/cbVP0+P5ZE8BEld9u
+	IxoAF77AB4ogDcWOxdJdcoQaD08fTjT9qtN7HTOCk6ItILYJakuI+8JVzGxWkQQqFn+m47HkZ/riX
+	k4fjTwFek1aVHNUoM2TnyYiL4FUuZSfsUyKy1v3KAZHz3xJPz8fhis0nDyPwsMVHNSkXSR0oCq78H
+	NS+5tytWbyeUrdSBd1wDzu7+m64Bs3u01oEMbBN9UGPf6/QTdJc3N/OOfAzSsTHsDDZzTVil+qlL7
+	pz3RTmKw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1ttLWu-006mr6-2T;
+	Sat, 15 Mar 2025 15:01:57 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 15 Mar 2025 15:01:56 +0800
+Date: Sat, 15 Mar 2025 15:01:56 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>, linux-crypto@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: ccp: Fix uAPI definitions of PSP errors
+Message-ID: <Z9Ul5NaFlJXBRP43@gondor.apana.org.au>
+References: <20250308011028.719002-1-aik@amd.com>
+ <CAAH4kHaK3Z-_aYizZM0Kvmsjvs_RT88tKG5aefm2_9GTUsU4bg@mail.gmail.com>
+ <20250308133308.GCZ8xHFOX4JKRG1Mpk@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <262b5990-47e8-44f9-a2af-ca9c389e34fd@kernel.org>
+In-Reply-To: <20250308133308.GCZ8xHFOX4JKRG1Mpk@fat_crate.local>
 
-On Mon, Mar 03, 2025 at 06:05:12PM +0100, Matthieu Baerts wrote:
->Hi Sasha,
+On Sat, Mar 08, 2025 at 02:33:08PM +0100, Borislav Petkov wrote:
 >
->On 03/03/2025 17:29, Sasha Levin wrote:
->> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
->>
->> [ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
->>
->> Recently, some fallback have been initiated, while the connection was
->> not supposed to fallback.
->>
->> Add a safety check with a warning to detect when an wrong attempt to
->> fallback is being done. This should help detecting any future issues
->> quicker.
->>
->> Acked-by: Paolo Abeni <pabeni@redhat.com>
->> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->> Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
->> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->Thank you for backporting this patch, but is it OK to delay it a bit on
->v6.13 and older please?
->
->This patch depends on its parent commit, commit 8668860b0ad3 ("mptcp:
->reset when MPTCP opts are dropped after join"), on kernels >=v5.19, to
->avoid a WARN().
+> It should be corrected because the current SOB chain says that Dionna is the
+> author but From is yours, making you the author when it gets applied.
 
-Waited a bit, looks ok to pull in now :)
+I'll fix this one by hand.
 
--- 
 Thanks,
-Sasha
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
