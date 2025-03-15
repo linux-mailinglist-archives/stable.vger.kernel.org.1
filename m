@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-124497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFFDA62401
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 02:29:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D42A6240F
+	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 02:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F339A8806C3
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 01:29:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C985880DCE
+	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 01:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0CF170A13;
-	Sat, 15 Mar 2025 01:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A2717578;
+	Sat, 15 Mar 2025 01:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIrG5u4f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpIDYybX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A799716DEB3;
-	Sat, 15 Mar 2025 01:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E6F8460;
+	Sat, 15 Mar 2025 01:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742002160; cv=none; b=UIJ3e5nE0xWQh8unX9K/ZXBO0HPh3uMfW2xu54OEBg4C/tw15UE8bp22gNVXJSp/V36o9ExLoJBpXHwlMZtsK4ZICL7xxdH2E9WuXf/xkHFb6xVM5aeCz+FFKUOgc1SaU4UoF2/FCSThkCUOO2l/gxlQAzBjlclEQySl7R9Y944=
+	t=1742002242; cv=none; b=W1+f/Hs+j+3NN4aeZ6y+66BrfkUdGLB5c3Ky+G2kjU/31HEFeBodj4ofLW/P4hMlEbrbL/3VRuctV+9jc/7a4JNfRSAQQ71aDK5S5WI9Ffl+jF7iozaZVCq4AasK74lMVdU1KlPpNoKwjD+8jGlRFLOM2z6eAyLkJfrnJWlv1HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742002160; c=relaxed/simple;
-	bh=8a6cudezYN/0qR1pL7XJ08PJlQfplrgDXzVya/SnALQ=;
+	s=arc-20240116; t=1742002242; c=relaxed/simple;
+	bh=KaZb+So+kIJ61pd5tlqkvNoM0CboHenzCId7dCf8GHQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B4Rs5ruTH1pqXPVhnGtzIAGni2UZ6Rf/+7zAgzZvPNE+FIqJXQdzUk939YSN1b21Ox60BOM8Iw7/RNGHKvDDqrtaUtac405nDkJAFhBUg/JueuAr6yjQKy9gLSq8TEF4caq1ziFeTSsayAPQ369xpO61rlQBjyj/8ZVhDwbAleE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIrG5u4f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD195C4CEE3;
-	Sat, 15 Mar 2025 01:29:19 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=S1fuDjpvzbxDic+m8entuMgcHE3knk3t2WxnZea/pX7EJLH86SqOAn/BZsVore/NfwOQ/PLXHHazDcReb9JRJa6nk6B19QKJQqKqA/qk5D46qDyHwVWEfV+Zhnl4pLmeRc6beRAY96RfifhLZTLUkV603py3QLchspQgn8ubq4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpIDYybX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D381C4CEE3;
+	Sat, 15 Mar 2025 01:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742002160;
-	bh=8a6cudezYN/0qR1pL7XJ08PJlQfplrgDXzVya/SnALQ=;
+	s=k20201202; t=1742002241;
+	bh=KaZb+So+kIJ61pd5tlqkvNoM0CboHenzCId7dCf8GHQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RIrG5u4ftpB176s1kEmxAORX/BkabYCDhX5MqOyQLYgBDE/NcSyWbDJusUpkEUH7O
-	 aD4buzVX0OxT5jm7zTuEMiPKG9UaZGZpEy05zyjr5ytRHEOmFN3BtFsFP7WC7RMt+d
-	 ku0zJ9gNCxwarMhceDv4A1oPw8PPQy2URSbv9nS6FRhQdgjOsRyc+swIuehKzyMluz
-	 xDD+fPwPQo7xOeYy1n/OLPZWWh9BJSSGTcApvCVe/kDIHUHHO5qlO9joPc1+QcLaH+
-	 SLNoMCKec75dCA+tIY+sLRp4OrjNuoPCR2hF6p5VIZPKLwLTHjFYPCOSIuZGvlFoyG
-	 XEIqcriCcjEnA==
-Date: Fri, 14 Mar 2025 21:29:18 -0400
+	b=HpIDYybXEBqiKvhsBGuVjbelj1QhN4p+jn5ghGw1dgEOhNnRPGIDn2rhd9YxuyESP
+	 Y/B/NciJCUSrdlLkt9NGnGueuoV6ISNV5HC7oHbix9YOtUNuj4XjoNpeBHC1/9VLKf
+	 4x8Yv3PbVz3Yl7dKbbKTI4uCPc3al+GpWOWkxzUhOXQBaDK6hUPxTgfEiOREpx7gBQ
+	 7PSxj6NufgIkO58M+N09v1rK5OH9Qew1EB58jXgQvTrsCdn4DUUpXs/86I5Qo3mSn9
+	 80MBUvidbap7xYjKYTjr/g+fXkXiC6UlBquKb6j+0I6+kvRjeKF1hgy0iZEk5iLgVD
+	 0SXFUXFp2O48A==
+Date: Fri, 14 Mar 2025 21:30:40 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
+To: Johan Hovold <johan@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Richard Weinberger <richard@nod.at>,
-	anton.ivanov@cambridgegreys.com, mst@redhat.com, jiri@resnulli.us,
-	tglx@linutronix.de, viro@zeniv.linux.org.uk,
-	krzysztof.kozlowski@linaro.org, herve.codina@bootlin.com,
-	linux-um@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.6 14/17] um: virt-pci: don't use kmalloc()
-Message-ID: <Z9TX7vadBvxcrbf9@lappy>
-References: <20250218202743.3593296-1-sashal@kernel.org>
- <20250218202743.3593296-14-sashal@kernel.org>
- <c993aa3a8e86e429d2135974929283a33d0f34ca.camel@sipsolutions.net>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.13 32/32] irqchip/qcom-pdc: Workaround hardware
+ register bug on X1E80100
+Message-ID: <Z9TYQAwauX3q7WKb@lappy>
+References: <20250224111638.2212832-1-sashal@kernel.org>
+ <20250224111638.2212832-32-sashal@kernel.org>
+ <Z7yGLDkI1T4laWBd@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,30 +63,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <c993aa3a8e86e429d2135974929283a33d0f34ca.camel@sipsolutions.net>
+In-Reply-To: <Z7yGLDkI1T4laWBd@hovoldconsulting.com>
 
-On Wed, Feb 19, 2025 at 08:42:01AM +0100, Johannes Berg wrote:
->On Tue, 2025-02-18 at 15:27 -0500, Sasha Levin wrote:
->> From: Johannes Berg <johannes.berg@intel.com>
->>
->> [ Upstream commit 5b166b782d327f4b66190cc43afd3be36f2b3b7a ]
->>
->> This code can be called deep in the IRQ handling, for
->> example, and then cannot normally use kmalloc(). Have
->> its own pre-allocated memory and use from there instead
->> so this doesn't occur. Only in the (very rare) case of
->> memcpy_toio() we'd still need to allocate memory.
+On Mon, Feb 24, 2025 at 03:46:04PM +0100, Johan Hovold wrote:
+>Hi Sasha,
 >
->I don't believe this patch, "um: convert irq_lock to raw spinlock" and
->"um: virtio_uml: use raw spinlock", are relevant to anything older than
->6.12. I don't see how applying them would _hurt_, but I didn't have them
->before 6.12 and had no lockdep complaints about it; I believe some other
->internal IRQ rework caused the issues to pop up.
+>On Mon, Feb 24, 2025 at 06:16:38AM -0500, Sasha Levin wrote:
+>> From: Stephan Gerhold <stephan.gerhold@linaro.org>
+>>
+>> [ Upstream commit e9a48ea4d90be251e0d057d41665745caccb0351 ]
+>>
+>> On X1E80100, there is a hardware bug in the register logic of the
+>> IRQ_ENABLE_BANK register: While read accesses work on the normal address,
+>> all write accesses must be made to a shifted address. Without a workaround
+>> for this, the wrong interrupt gets enabled in the PDC and it is impossible
+>> to wakeup from deep suspend (CX collapse). This has not caused problems so
+>> far, because the deep suspend state was not enabled. A workaround is
+>> required now since work is ongoing to fix this.
 >
->Never mind that we (Intel WiFi stuff) are probably the only ones ever
->running this virtio_uml/virt-pci with lockdep :)
+>> Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+>> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+>> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+>> Link: https://lore.kernel.org/all/20250218-x1e80100-pdc-hw-wa-v2-1-29be4c98e355@linaro.org
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This one was not marked for backporting on purpose and is not needed in
+>older kernels, please drop from all autosel queues.
 
-I'll drop it, thanks!
+Will do, thanks!
 
 -- 
 Thanks,
