@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-124498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D42A6240F
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 02:30:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205CAA62422
+	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 02:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C985880DCE
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 01:30:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A26A883026
+	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 01:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A2717578;
-	Sat, 15 Mar 2025 01:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7426B176AA1;
+	Sat, 15 Mar 2025 01:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpIDYybX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IfF8+zAN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E6F8460;
-	Sat, 15 Mar 2025 01:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2503D78F5F;
+	Sat, 15 Mar 2025 01:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742002242; cv=none; b=W1+f/Hs+j+3NN4aeZ6y+66BrfkUdGLB5c3Ky+G2kjU/31HEFeBodj4ofLW/P4hMlEbrbL/3VRuctV+9jc/7a4JNfRSAQQ71aDK5S5WI9Ffl+jF7iozaZVCq4AasK74lMVdU1KlPpNoKwjD+8jGlRFLOM2z6eAyLkJfrnJWlv1HY=
+	t=1742002767; cv=none; b=EIExNeNGBdJOFng5JaVqJmINug7DQ+yrn0z9DAyNimOhjyT7XdcwdcM9e4XyeOoZhbGnBa0kWMJAA+yNAJyk3un7qam9TXVQYv+N8XtH9XUBxKTYEzl4f1OGo1iSui5UrwlvfZoYqAhZ7n4t2u9P3ZE2BPIQqHFRzSt3BUhb2x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742002242; c=relaxed/simple;
-	bh=KaZb+So+kIJ61pd5tlqkvNoM0CboHenzCId7dCf8GHQ=;
+	s=arc-20240116; t=1742002767; c=relaxed/simple;
+	bh=TYDriDV6Hem3RlevujvNnrbRBOPfoqUXzyBsIJLgED4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1fuDjpvzbxDic+m8entuMgcHE3knk3t2WxnZea/pX7EJLH86SqOAn/BZsVore/NfwOQ/PLXHHazDcReb9JRJa6nk6B19QKJQqKqA/qk5D46qDyHwVWEfV+Zhnl4pLmeRc6beRAY96RfifhLZTLUkV603py3QLchspQgn8ubq4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpIDYybX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D381C4CEE3;
-	Sat, 15 Mar 2025 01:30:41 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JoPzTRly6lkhWa1aIKnNYv5AtROxDbF6HIaX2PiAteG9XJUPJg1xQW9aC76FcurU0WGQsFApmV3+pMCOzaC5ea3/MAh+nQv3nIRc06jVhb7mfBUi2VfEBEBdqNLRhCQM97ER8ZnMhMWaTLFoMtChk+VDUPHG6Qc0DGpX2IQFozk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IfF8+zAN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B3FC4CEE3;
+	Sat, 15 Mar 2025 01:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742002241;
-	bh=KaZb+So+kIJ61pd5tlqkvNoM0CboHenzCId7dCf8GHQ=;
+	s=k20201202; t=1742002766;
+	bh=TYDriDV6Hem3RlevujvNnrbRBOPfoqUXzyBsIJLgED4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HpIDYybXEBqiKvhsBGuVjbelj1QhN4p+jn5ghGw1dgEOhNnRPGIDn2rhd9YxuyESP
-	 Y/B/NciJCUSrdlLkt9NGnGueuoV6ISNV5HC7oHbix9YOtUNuj4XjoNpeBHC1/9VLKf
-	 4x8Yv3PbVz3Yl7dKbbKTI4uCPc3al+GpWOWkxzUhOXQBaDK6hUPxTgfEiOREpx7gBQ
-	 7PSxj6NufgIkO58M+N09v1rK5OH9Qew1EB58jXgQvTrsCdn4DUUpXs/86I5Qo3mSn9
-	 80MBUvidbap7xYjKYTjr/g+fXkXiC6UlBquKb6j+0I6+kvRjeKF1hgy0iZEk5iLgVD
-	 0SXFUXFp2O48A==
-Date: Fri, 14 Mar 2025 21:30:40 -0400
+	b=IfF8+zANYFf8oHoOttF68SUoCZzc8543Af8DuwNHwv23B58sjOZbdlFdyAye/EuNj
+	 EPe8Gv/JhbVbX1cHuNXkvRn+XemIVEuwrwn20TCbdDJR45KjVTdR/JVv1HzvaNQC+D
+	 YglmvMWy/cPsD4wXQiQwlDAFiqEW9T1ja4LTFg15QOQPVrZdBqzC065l1eEzvB9PAr
+	 rVzy6LohogEJqwIuw9r6t1yKsHyxmqXzgwGskPUw3Fb48L/fKlAZGia/byl2CoZF1F
+	 Es69gSdqqmvJjWW8aAQbmx67fxdRD7+plt9D+qj9DTQhJybJf0a6POvcg0zVmcVSNy
+	 UQqfOS2Uub7cg==
+Date: Fri, 14 Mar 2025 21:39:25 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Johan Hovold <johan@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.13 32/32] irqchip/qcom-pdc: Workaround hardware
- register bug on X1E80100
-Message-ID: <Z9TYQAwauX3q7WKb@lappy>
-References: <20250224111638.2212832-1-sashal@kernel.org>
- <20250224111638.2212832-32-sashal@kernel.org>
- <Z7yGLDkI1T4laWBd@hovoldconsulting.com>
+	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	martineau@kernel.org, davem@davemloft.net, edumazet@google.com,
+	netdev@vger.kernel.org, mptcp@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.13 13/17] mptcp: safety check before fallback
+Message-ID: <Z9TaTcOL1ZkccXr7@lappy>
+References: <20250303162951.3763346-1-sashal@kernel.org>
+ <20250303162951.3763346-13-sashal@kernel.org>
+ <262b5990-47e8-44f9-a2af-ca9c389e34fd@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,34 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <Z7yGLDkI1T4laWBd@hovoldconsulting.com>
+In-Reply-To: <262b5990-47e8-44f9-a2af-ca9c389e34fd@kernel.org>
 
-On Mon, Feb 24, 2025 at 03:46:04PM +0100, Johan Hovold wrote:
+On Mon, Mar 03, 2025 at 06:05:12PM +0100, Matthieu Baerts wrote:
 >Hi Sasha,
 >
->On Mon, Feb 24, 2025 at 06:16:38AM -0500, Sasha Levin wrote:
->> From: Stephan Gerhold <stephan.gerhold@linaro.org>
+>On 03/03/2025 17:29, Sasha Levin wrote:
+>> From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 >>
->> [ Upstream commit e9a48ea4d90be251e0d057d41665745caccb0351 ]
+>> [ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
 >>
->> On X1E80100, there is a hardware bug in the register logic of the
->> IRQ_ENABLE_BANK register: While read accesses work on the normal address,
->> all write accesses must be made to a shifted address. Without a workaround
->> for this, the wrong interrupt gets enabled in the PDC and it is impossible
->> to wakeup from deep suspend (CX collapse). This has not caused problems so
->> far, because the deep suspend state was not enabled. A workaround is
->> required now since work is ongoing to fix this.
->
->> Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
->> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
->> Tested-by: Johan Hovold <johan+linaro@kernel.org>
->> Link: https://lore.kernel.org/all/20250218-x1e80100-pdc-hw-wa-v2-1-29be4c98e355@linaro.org
+>> Recently, some fallback have been initiated, while the connection was
+>> not supposed to fallback.
+>>
+>> Add a safety check with a warning to detect when an wrong attempt to
+>> fallback is being done. This should help detecting any future issues
+>> quicker.
+>>
+>> Acked-by: Paolo Abeni <pabeni@redhat.com>
+>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
+>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 >> Signed-off-by: Sasha Levin <sashal@kernel.org>
 >
->This one was not marked for backporting on purpose and is not needed in
->older kernels, please drop from all autosel queues.
+>Thank you for backporting this patch, but is it OK to delay it a bit on
+>v6.13 and older please?
+>
+>This patch depends on its parent commit, commit 8668860b0ad3 ("mptcp:
+>reset when MPTCP opts are dropped after join"), on kernels >=v5.19, to
+>avoid a WARN().
 
-Will do, thanks!
+Waited a bit, looks ok to pull in now :)
 
 -- 
 Thanks,
