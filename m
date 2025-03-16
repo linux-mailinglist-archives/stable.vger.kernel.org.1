@@ -1,143 +1,105 @@
-Return-Path: <stable+bounces-124551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33935A6376C
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 21:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39533A637A0
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 23:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F9016A3D4
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 20:54:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7669016A472
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 22:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A820B1A8F79;
-	Sun, 16 Mar 2025 20:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691B7199FD0;
+	Sun, 16 Mar 2025 22:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LJ8DzLWi"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Of7IXzZt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF1918A6A8;
-	Sun, 16 Mar 2025 20:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FD517D346
+	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 22:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742158472; cv=none; b=VUeNj16/wKy4zhtwPSSi6hn2GLk7io/JHhtAlEDztd/jQaNO/woDUaK5PZYuPxZfjtmyuSrEn3U+2gQWAhF5+HLuS9qKHkD/84Ro9wcCopOTDnKF+teKGlUvK3vDwCIb3xZjywODnYJA5YXcFpWCdR9Szkee7FSeE65QZVYmja0=
+	t=1742162414; cv=none; b=gOSJrslNJ3OCTZDowsKb1KPCPg+8XZHI6lZJFHv/MpEqEK6q4qz9SKSH+GpwjYNXuDjv84YqUYypMztbnLG2wMetBFw12VlCeEnc4wcsVNXzS/4Ck3nAIT2LykFO15MqvWibDH5h4V4JqQNJ6mCSgx6bf4UZKUb4W4hxgUZHq7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742158472; c=relaxed/simple;
-	bh=es5Aunb5wIZVgC4PxN0F8shzwnFw5ZYU0GFxkgF325c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GAIG6BFCwRhHaatdW1s4higGfd9Gv7LBk1gK8zXmUY6UQj6Q8GVpipAirx808QMxgjxa23ueMS84BIpeIB40xwXZv+KYx/IgQCoDtAhQ9JkKVVAU1XvdEvOdhhkwmsMPyOzeNd2V9624VLfZVtzYhYl1JXNYbXFPT84BMWfK1HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LJ8DzLWi; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e60b75f87aaso2861521276.2;
-        Sun, 16 Mar 2025 13:54:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742158470; x=1742763270; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+otTzr3TR+orm8vkPocyniFUBCMP9Xr/+NiYq2jrqpM=;
-        b=LJ8DzLWine0/DC4vDwXa9i4jKGphXtemnZHhD1+DGvYdv8noxPKYIfRJFwaoquj1bR
-         8u7Ekd9QIjmSiOtb+KIlZFMB6WnCTc6algB4T/pM2+qOLpTzvATNvfrJQjJPYD7aqSeH
-         crxh4B2YxoDLZlQEvd6SFZ9tsj3W8VKyvOrXAxSlany4K6YnXOCQDDnMu4Nx++a9Dwzt
-         v8dhA7moM72bKYaXADA+HgtFkT4HsXGG6wEc7rc1D0kC3HRjyQmNgV+Zid+omOeGWaAT
-         s7su8IVOrb39wC4OpHNSe8l02vu5GdIO2X5XsJ2e2x0GqXzkQuxWDwa65D9GbRN4cfPw
-         nuFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742158470; x=1742763270;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+otTzr3TR+orm8vkPocyniFUBCMP9Xr/+NiYq2jrqpM=;
-        b=IUqsw/XzpEJ52+Db6LN7maPa5JR2Ff6B5Vy0Y9hdAzPJRzrQmVk0gs3uj+aLiNvA34
-         Ig7GRgCNRkCqOJ7N67+mmqx43HOKIFGvqTUxenJWWieLn/crga3VtX1Zmn9ZSa+u35ii
-         Iri8N+LQ9HhI6zLfNUI9/FNTeJjZNDZh0C76C0uJTiVNWy40GMO4o+abAB1iXxGSHhQV
-         YSk9W1V6jn4LcfFjGS5bHViKaU4eQAQ5duF1F5dNKpwjzBjpoarjSucerRz4cpD3C76T
-         +7RDY62opQ7IV3YSy6cZmHqvdBAhoCheVE6A6kNW83cEN0+4kQUj/VH+fLP52zIQ3Vv5
-         ajgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHnbvmgwzJAOfjd/ls3BlMuwVVs/iLcc+C3RburwO8OR5N9BbVP0X48xTzf7Qki8JP1lrVzCeUt9IAMA==@vger.kernel.org, AJvYcCVoBNp7Z7tsixMvn8523BSZVaMMQvRyTe7JPsFsy8V+vnx4O+1G+Rkf781vo74sKUeV8LTazm8D@vger.kernel.org, AJvYcCWmuYH78Bv1xFo3nS8/yX6AmxKKZ3YgtIZBTroMFR22/4/zE2igmrn4F91YDJhjSshckwjCKyHJbXQELxs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHAYheu/Zc76iSIi2zrhuGyWnhJe6dnOfe8VM/YMKZc2tTLZa+
-	V1fUo0cqRp358/LDjvDiP0vqUWCvm9G+CBgExqmfyMq7rCYXNM5l3heviCJfEqF5eTQi4BbLrMs
-	3LSkr9h4oflUsj22L3nZEcgOwchY=
-X-Gm-Gg: ASbGncu9SeJYkIEC/cqiDexd3rVZmmkL8GHV6BHnDNaG3X/vvKpbxzvUpeo0o9q3Vcp
-	sr0ThnfaVH9XVk6oEYhc2OD7YPeRIiI6TbEFr7o7qkCo5E6b4l+vfEVkd+r4X/0Haf7PlbaSpF5
-	lFj6nh89ILYBBZcTi5um5ViX7B1Bo=
-X-Google-Smtp-Source: AGHT+IHFoMlNyy93E9p8PLdKAPmBbY2OXvYrcgOhmgshugONB/leWstGjgJSgPisbLdUzj1QNxLfSMErqx6KuE60UC4=
-X-Received: by 2002:a05:690c:4c06:b0:6ff:1cd7:18e6 with SMTP id
- 00721157ae682-6ff460fc34dmr131266867b3.37.1742158469595; Sun, 16 Mar 2025
- 13:54:29 -0700 (PDT)
+	s=arc-20240116; t=1742162414; c=relaxed/simple;
+	bh=LxbpImp9+fAa7a2gzuLuT0uenEc57/7pMm3uefW/RIc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=VPJI3W2mMJcncOu2IXN5ij4mceprG1iufvifmFFUWJxzSp+D+ttT9ES1djbPJfS6z6Ymoty6YSmVd6sz8BmkBohzbmhtZO1LPvD9TyiJ9cXWdIw0YkZZDM+bhqVp53C5xpBXTm7w2b102sUVXoTo88jUSGT947+PCR9peobbcKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Of7IXzZt; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <dfe1d14f-1488-4a6b-b864-2b9c23ae16df@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1742162409;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tDcwEC9Hm/pamSwL5uTliXHBCVufdMY1FDJGGf3nZSY=;
+	b=Of7IXzZtO5BQC2KJ9e4nVhyLrQUpfemzpZDlzQH+WrJoQbXX9jRiqRTOA1MFQELQz9gOeC
+	7/bVpxAswWilO+5UcH/VeoB/fKHnZfIkq1W7KgGOSngKszgKxb4jVINe3kuN7g/Lt8D1SA
+	tgMCuJo2wMfRTubywMApni5OLUVGqxk=
+Date: Sun, 16 Mar 2025 23:00:04 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250312121712.1168007-1-ulf.hansson@linaro.org>
-In-Reply-To: <20250312121712.1168007-1-ulf.hansson@linaro.org>
-From: Robert Nelson <robertcnelson@gmail.com>
-Date: Sun, 16 Mar 2025 15:54:03 -0500
-X-Gm-Features: AQ5f1JrC9arSKQQ_w0K5E-UGcgYKsF8QY-ZaOf_sn7pbfBAYKIZT1xZPxn2TesI
-Message-ID: <CAOCHtYjGuw9szeChihrDZ39_2+w5xOverbp6mAjjLjR=QkK1zg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Tony Lindgren <tony@atomide.com>, David Owens <daowens01@gmail.com>, 
-	Romain Naour <romain.naour@smile.fr>, Andrei Aldea <andrei@ti.com>, Judith Mendez <jm@ti.com>, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Marco Pagani <marco.pagani@linux.dev>
+Subject: Re: [PATCH] fpga: fix potential null pointer deref in
+ fpga_mgr_test_img_load_sgt()
+To: Qasim Ijaz <qasdev00@gmail.com>, mdf@kernel.org, hao.wu@intel.com,
+ yilun.xu@intel.com, trix@redhat.com, marpagan@redhat.com,
+ russ.weight@linux.dev
+Cc: linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250311234509.15523-1-qasdev00@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20250311234509.15523-1-qasdev00@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Mar 12, 2025 at 7:17=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.org=
-> wrote:
->
-> We have received reports about cards can become corrupt related to the
-> aggressive PM support. Let's make a partial revert of the change that
-> enabled the feature.
->
-> Reported-by: David Owens <daowens01@gmail.com>
-> Reported-by: Romain Naour <romain.naour@smile.fr>
-> Reported-by: Robert Nelson <robertcnelson@gmail.com>
-> Tested-by: Robert Nelson <robertcnelson@gmail.com>
-> Fixes: 3edf588e7fe0 ("mmc: sdhci-omap: Allow SDIO card power off and enab=
-le aggressive PM")
+
+On 2025-03-12 00:45, Qasim Ijaz wrote:
+> fpga_mgr_test_img_load_sgt() allocates memory for sgt using
+> kunit_kzalloc() however it does not check if the allocation failed. 
+> It then passes sgt to sg_alloc_table(), which passes it to
+> __sg_alloc_table(). This function calls memset() on sgt in an attempt to
+> zero it out. If the allocation fails then sgt will be NULL and the
+> memset will trigger a NULL pointer dereference.
+> 
+> Fix this by checking the allocation with KUNIT_ASSERT_NOT_ERR_OR_NULL().
+> 
+> Fixes: ccbc1c302115 ("fpga: add an initial KUnit suite for the FPGA Manager")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+
+Reviewed-by: Marco Pagani <marco.pagani@linux.dev>
+
 > ---
->  drivers/mmc/host/sdhci-omap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.=
-c
-> index 54d795205fb4..26a9a8b5682a 100644
-> --- a/drivers/mmc/host/sdhci-omap.c
-> +++ b/drivers/mmc/host/sdhci-omap.c
-> @@ -1339,8 +1339,8 @@ static int sdhci_omap_probe(struct platform_device =
-*pdev)
->         /* R1B responses is required to properly manage HW busy detection=
-. */
->         mmc->caps |=3D MMC_CAP_NEED_RSP_BUSY;
->
-> -       /* Allow card power off and runtime PM for eMMC/SD card devices *=
-/
-> -       mmc->caps |=3D MMC_CAP_POWER_OFF_CARD | MMC_CAP_AGGRESSIVE_PM;
-> +       /*  Enable SDIO card power off. */
-> +       mmc->caps |=3D MMC_CAP_POWER_OFF_CARD;
->
->         ret =3D sdhci_setup_host(host);
->         if (ret)
-> --
-> 2.43.0
->
+>  drivers/fpga/tests/fpga-mgr-test.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/fpga/tests/fpga-mgr-test.c b/drivers/fpga/tests/fpga-mgr-test.c
+> index 9cb37aefbac4..1902ebf5a298 100644
+> --- a/drivers/fpga/tests/fpga-mgr-test.c
+> +++ b/drivers/fpga/tests/fpga-mgr-test.c
+> @@ -263,6 +263,7 @@ static void fpga_mgr_test_img_load_sgt(struct kunit *test)
+>  	img_buf = init_test_buffer(test, IMAGE_SIZE);
+>  
+>  	sgt = kunit_kzalloc(test, sizeof(*sgt), GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, sgt);
+>  	ret = sg_alloc_table(sgt, 1, GFP_KERNEL);
+>  	KUNIT_ASSERT_EQ(test, ret, 0);
+>  	sg_init_one(sgt->sgl, img_buf, IMAGE_SIZE);
 
-Thanks Ulf, i also have this exact revert running on the target in our
-ci farm, i think we should be good.  But I'll validate it in 4 weeks!
+Thanks,
+Marco
 
-Regards,
-
---=20
-Robert Nelson
-https://rcn-ee.com/
 
