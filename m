@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-124513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0BAA6346B
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 08:16:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FDFA6346E
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 08:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7D0716E03D
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 07:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 353A216E1C1
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 07:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DE118859B;
-	Sun, 16 Mar 2025 07:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B1717D346;
+	Sun, 16 Mar 2025 07:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fw0rAk8l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GS2n6NYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBBF17D346
-	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 07:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67298BE5
+	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 07:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742109412; cv=none; b=X9xhf/GsvGUw+auOaL8h4OoB5SBuvSumI8YHtyD25k3nVSnS1vtHVMvy957ENDnRag02ikkFOGGSEyB21kgkwOuqPPbkj1wdoyFdKBn7I0bHS7WyeVMEN12gilZpj9ktVaMnM92XcvYdScIJt5ndokbcZ/KbJeEc63mFBFZiJiE=
+	t=1742109469; cv=none; b=j8qN7nbbkmoXlHsJaW4gyY1gEg270vEimHdBPqja3VtD1W4ROrnRdN3alaKgySIB1W1KPGZF9O+faBMQQY6mNy31VjBaChHdy05LTNQF1cLd1gTqnndjv+j3+Fqz9spMiFdZdFV+QFH37ReE4uF8q38cXoIGqf3KbTXId3N+WQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742109412; c=relaxed/simple;
-	bh=gOj8qv5gxZ/pb5RKYfm9HXQv1MyCBqf/NIzfW0hH85Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qS8L+NKFCOvFD5yVSnFDSqWDVNlITuIxwnhwRH1Dp3MHiyPAqOVVb2S8KizRt7EEJluVxgCB2jur/iFNl1qYj2zGHkjdri5nIgixFJEZGfXlKj0F6fteKQs8tzCdhh5IJCHSxutVB68BHZyEedX9c0sFi7KYJ794QU6Qls+fAy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fw0rAk8l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A611C4CEDD;
-	Sun, 16 Mar 2025 07:16:50 +0000 (UTC)
+	s=arc-20240116; t=1742109469; c=relaxed/simple;
+	bh=D5AC9cNjWF1ZpfC0D1DyK1trH3f++TqRQpfWNsu4hVs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EZzYNGPNk+zD8RZ72wvq8o15aMG3IjtM0pX5ihW9f4ht/3q32vhJC3u2q32vI7vCS2TSQAXQMjzB4z3HlHm66/zt5NjLToJ+9ZlHfdu2NDX+7IuJAI8xTsreozc3tTJTLQR7Pc2kSIzCKjn15g11gW5fSzoz+J/caDhM1xpbZU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GS2n6NYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8ABC4CEDD;
+	Sun, 16 Mar 2025 07:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742109411;
-	bh=gOj8qv5gxZ/pb5RKYfm9HXQv1MyCBqf/NIzfW0hH85Q=;
+	s=korg; t=1742109469;
+	bh=D5AC9cNjWF1ZpfC0D1DyK1trH3f++TqRQpfWNsu4hVs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fw0rAk8lJzbPHvenMKYizSjM/OVwke9+Pj/k0fv9S4T/vtAjgspgtgV7Rd6FOygBi
-	 to4yNSCK7gwFK5UAKvUb1gsZBxFOxxw3yDie9sJOkP6CAflYCHfX+7QS2iNxJWpkyP
-	 vhOESy2yCf8uKDCffwJO1vbvz0GTK+rU4AwSrY5c=
-Subject: FAILED: patch "[PATCH] rust: lockdep: Remove support for dynamically allocated" failed to apply to 6.6-stable tree
-To: levymitchell0@gmail.com,aliceryhl@google.com,benno.lossin@proton.me,boqun.feng@gmail.com,mingo@kernel.org
+	b=GS2n6NYMDFqTf3JDkSlqocBM0ztCld+b5uF55ZOgFiISdzCMpnZ/0lc0oX2mkts7W
+	 mh30A4j/bUpbzvnXR56/nsXYwvkL9THkE1yc/WTkCCXNnk3xFX4T12h861Q8F77Pel
+	 RaggCeruczu4yCNd15G0JuciuIzR6Ii/3gQ9SO58=
+Subject: FAILED: patch "[PATCH] rust: Disallow BTF generation with Rust + LTO" failed to apply to 6.1-stable tree
+To: mmaurer@google.com,ojeda@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 16 Mar 2025 08:15:32 +0100
-Message-ID: <2025031632-divorcee-duly-868e@gregkh>
+Date: Sun, 16 Mar 2025 08:16:22 +0100
+Message-ID: <2025031622-rocker-narrow-b1e3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 966944f3711665db13e214fef6d02982c49bb972
+git cherry-pick -x 5daa0c35a1f0e7a6c3b8ba9cb721e7d1ace6e619
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025031632-divorcee-duly-868e@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025031622-rocker-narrow-b1e3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,61 +77,36 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 966944f3711665db13e214fef6d02982c49bb972 Mon Sep 17 00:00:00 2001
-From: Mitchell Levy <levymitchell0@gmail.com>
-Date: Fri, 7 Mar 2025 15:27:00 -0800
-Subject: [PATCH] rust: lockdep: Remove support for dynamically allocated
- LockClassKeys
+From 5daa0c35a1f0e7a6c3b8ba9cb721e7d1ace6e619 Mon Sep 17 00:00:00 2001
+From: Matthew Maurer <mmaurer@google.com>
+Date: Wed, 8 Jan 2025 23:35:08 +0000
+Subject: [PATCH] rust: Disallow BTF generation with Rust + LTO
 
-Currently, dynamically allocated LockCLassKeys can be used from the Rust
-side without having them registered. This is a soundness issue, so
-remove them.
+The kernel cannot currently self-parse BTF containing Rust debug
+information. pahole uses the language of the CU to determine whether to
+filter out debug information when generating the BTF. When LTO is
+enabled, Rust code can cross CU boundaries, resulting in Rust debug
+information in CUs labeled as C. This results in a system which cannot
+parse its own BTF.
 
-Fixes: 6ea5aa08857a ("rust: sync: introduce `LockClassKey`")
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250307232717.1759087-11-boqun.feng@gmail.com
+Fixes: c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
+Link: https://lore.kernel.org/r/20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 3498fb344dc9..16eab9138b2b 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -30,28 +30,20 @@
- unsafe impl Sync for LockClassKey {}
- 
- impl LockClassKey {
--    /// Creates a new lock class key.
--    pub const fn new() -> Self {
--        Self(Opaque::uninit())
--    }
--
-     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-         self.0.get()
-     }
- }
- 
--impl Default for LockClassKey {
--    fn default() -> Self {
--        Self::new()
--    }
--}
--
- /// Defines a new static lock class and returns a pointer to it.
- #[doc(hidden)]
- #[macro_export]
- macro_rules! static_lock_class {
-     () => {{
--        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-+        static CLASS: $crate::sync::LockClassKey =
-+            // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
-+            // lock_class_key
-+            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
-         &CLASS
-     }};
- }
+diff --git a/init/Kconfig b/init/Kconfig
+index d0d021b3fa3b..324c2886b2ea 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1973,7 +1973,7 @@ config RUST
+ 	depends on !MODVERSIONS || GENDWARFKSYMS
+ 	depends on !GCC_PLUGIN_RANDSTRUCT
+ 	depends on !RANDSTRUCT
+-	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
++	depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && !LTO)
+ 	depends on !CFI_CLANG || HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
+ 	select CFI_ICALL_NORMALIZE_INTEGERS if CFI_CLANG
+ 	depends on !CALL_PADDING || RUSTC_VERSION >= 108100
 
 
