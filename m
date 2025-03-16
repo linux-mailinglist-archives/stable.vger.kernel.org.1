@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-124520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD45A63473
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 08:19:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A43A6347A
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 08:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71D03AF643
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 07:18:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADCDA3AF5F1
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 07:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E01456B81;
-	Sun, 16 Mar 2025 07:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C92150997;
+	Sun, 16 Mar 2025 07:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hscg9OSE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgf/GwZ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE1F2A1B2
-	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 07:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1015F4C80
+	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 07:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742109539; cv=none; b=q/yNV5Dc8YUDuCoJvxjkFmks7AlCeLSDNHvN1djXVOfcKP/ls48kmKUKJAVSvAS7Ej6j/o+6YJg8hu2gGVegg3Nbpar/f+jUowpzmNNSFJw6lglRAuhxDQ8bnfvFOGPDYOg0K3SddT6O+Fqr9MuS4gBr1N1IOSNDdRLXsn0/W7M=
+	t=1742109886; cv=none; b=g2mtEztmoT1EycEzNBZJquWUZs01Fgs9vmvzRlbxyKfzRmoBWOC/D8GJxPEnNiMHxwYkmxz7szMuAB6j5MTOKOZUVqHt6tKll3/qQNv1qqSwE/iGHpIwdyDafNyg2S8gk4N6e4th2bSwvJMvGwytXtJJ1P1oidMQwoyMC3yK4/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742109539; c=relaxed/simple;
-	bh=tNT3VZd1VI5Krm+wDBAWo/OtkzCbZwGLGZSFpbunEUU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z/LzKtVqgBChm9WsN+TRYabckgSlWHJ+PGYFLaO6yKdmV/5pIx5CL01Zwe9vUbkd83MnzsP3eNz5qoYiRAxpEb/GOcaETGPpAbVEAEGQwNzYqeRFTyp40IfBFha0/4SXOWidjQtglCli2dLUAgiC/uMXrNEXkDUiGCZ5b3hdFYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hscg9OSE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC0BC4CEDD;
-	Sun, 16 Mar 2025 07:18:58 +0000 (UTC)
+	s=arc-20240116; t=1742109886; c=relaxed/simple;
+	bh=ZKsIySiUr6LQd0s8LnxN60GOHtQA4wdDZjTIG+GQjfU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sTJnK5X8AmkIbI7RUubFRN28zxfPEwR6VUx1ishLLMVrooXG0ZoaAjO71gkkajsAqaARfSqyoBY2X4yiQM482OK9rZkZ6TKvnk0xrygI1pqGxTWG8u/nIzhOhpHDNEwLLe0hPGcekkLWHJIKZeUaKF7k4Zd3aFtSXoSQ2Ie3hYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgf/GwZ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3933BC4CEDD;
+	Sun, 16 Mar 2025 07:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742109538;
-	bh=tNT3VZd1VI5Krm+wDBAWo/OtkzCbZwGLGZSFpbunEUU=;
+	s=korg; t=1742109885;
+	bh=ZKsIySiUr6LQd0s8LnxN60GOHtQA4wdDZjTIG+GQjfU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Hscg9OSEsBJYpvJpgwfA3JgO4Md5uefYRhSM0LjF59vKSE+tKWX0ZCKx21GNJA5rw
-	 AfV41hM9hJHRopBRx5yHf+yOCk4VteRMYb4L0hiNLs8vS7RekrWyZ4dtIK8oysZcfh
-	 yGES2IRcFcKuJfpJbDwtMcFJhbb8wzN5Y7Uytw8k=
-Subject: FAILED: patch "[PATCH] spi: microchip-core: prevent RX overflows when transmit size" failed to apply to 6.1-stable tree
-To: conor.dooley@microchip.com,broonie@kernel.org
+	b=wgf/GwZ34EmlZsGiW5EuCvSR70s0iPpGiel0kZUAZVpphRzEgpox405g3DWxwPKT6
+	 YB9M+51ikxVtgSwpva13sOMx8gfOo4TMFUeGja+Qpb4YJVGskij8YbtmOocCncuXcN
+	 d1lz/YU3Et5iWellWXT/5XLrwbYLj3jUGJ4Dhjgw=
+Subject: FAILED: patch "[PATCH] arm64: mm: Populate vmemmap at the page level if not section" failed to apply to 6.1-stable tree
+To: quic_zhenhuah@quicinc.com,catalin.marinas@arm.com,david@redhat.com,osalvador@suse.de,will@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 16 Mar 2025 08:17:32 +0100
-Message-ID: <2025031631-sensuous-cataract-f3f3@gregkh>
+Date: Sun, 16 Mar 2025 08:23:27 +0100
+Message-ID: <2025031627-theorize-manned-7263@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 91cf42c63f2d8a9c1bcdfe923218e079b32e1a69
+git cherry-pick -x d4234d131b0a3f9e65973f1cdc71bb3560f5d14b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025031631-sensuous-cataract-f3f3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025031627-theorize-manned-7263@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,114 +77,62 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 91cf42c63f2d8a9c1bcdfe923218e079b32e1a69 Mon Sep 17 00:00:00 2001
-From: Conor Dooley <conor.dooley@microchip.com>
-Date: Mon, 3 Mar 2025 10:47:40 +0000
-Subject: [PATCH] spi: microchip-core: prevent RX overflows when transmit size
- > FIFO size
+From d4234d131b0a3f9e65973f1cdc71bb3560f5d14b Mon Sep 17 00:00:00 2001
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Date: Tue, 4 Mar 2025 15:27:00 +0800
+Subject: [PATCH] arm64: mm: Populate vmemmap at the page level if not section
+ aligned
 
-When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
-overflows will be generated and receive data will be corrupted and
-warnings will be produced. For example, here's an error generated by a
-transfer of 36 bytes:
+On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
+to 27, making one section 128M. The related page struct which vmemmap
+points to is 2M then.
+Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+vmemmap to populate at the PMD section level which was suitable
+initially since hot plug granule is always one section(128M). However,
+commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
+existing arm64 assumptions.
 
-  spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
+The first problem is that if start or end is not aligned to a section
+boundary, such as when a subsection is hot added, populating the entire
+section is wasteful.
 
-The driver is currently split between handling receiving in the
-interrupt handler, and sending outside of it. Move all handling out of
-the interrupt handling, and explicitly link the number of bytes read of
-of the RX FIFO to the number written into the TX one. This both resolves
-the overflow problems as well as simplifying the flow of the driver.
+The next problem is if we hotplug something that spans part of 128 MiB
+section (subsections, let's call it memblock1), and then hotplug something
+that spans another part of a 128 MiB section(subsections, let's call it
+memblock2), and subsequently unplug memblock1, vmemmap_free() will clear
+the entire PMD entry which also supports memblock2 even though memblock2
+is still active.
 
-CC: stable@vger.kernel.org
-Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20250303-veal-snooper-712c1dfad336@wendy
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Assuming hotplug/unplug sizes are guaranteed to be symmetric. Do the
+fix similar to x86-64: populate to pages levels if start/end is not aligned
+with section boundary.
 
-diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index 5b6af55855ef..62ba0bd9cbb7 100644
---- a/drivers/spi/spi-microchip-core.c
-+++ b/drivers/spi/spi-microchip-core.c
-@@ -70,8 +70,7 @@
- #define INT_RX_CHANNEL_OVERFLOW		BIT(2)
- #define INT_TX_CHANNEL_UNDERRUN		BIT(3)
- 
--#define INT_ENABLE_MASK (CONTROL_RX_DATA_INT | CONTROL_TX_DATA_INT | \
--			 CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
-+#define INT_ENABLE_MASK (CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
- 
- #define REG_CONTROL		(0x00)
- #define REG_FRAME_SIZE		(0x04)
-@@ -133,10 +132,15 @@ static inline void mchp_corespi_disable(struct mchp_corespi *spi)
- 	mchp_corespi_write(spi, REG_CONTROL, control);
- }
- 
--static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi)
-+static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi, int fifo_max)
+Cc: stable@vger.kernel.org # v5.4+
+Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20250304072700.3405036-1-quic_zhenhuah@quicinc.com
+Signed-off-by: Will Deacon <will@kernel.org>
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index b4df5bc5b1b8..1dfe1a8efdbe 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1177,8 +1177,11 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+ 		struct vmem_altmap *altmap)
  {
--	while (spi->rx_len >= spi->n_bytes && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)) {
--		u32 data = mchp_corespi_read(spi, REG_RX_DATA);
-+	for (int i = 0; i < fifo_max; i++) {
-+		u32 data;
-+
-+		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)
-+			;
-+
-+		data = mchp_corespi_read(spi, REG_RX_DATA);
+ 	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
++	/* [start, end] should be within one section */
++	WARN_ON_ONCE(end - start > PAGES_PER_SECTION * sizeof(struct page));
  
- 		spi->rx_len -= spi->n_bytes;
- 
-@@ -211,11 +215,10 @@ static inline void mchp_corespi_set_xfer_size(struct mchp_corespi *spi, int len)
- 	mchp_corespi_write(spi, REG_FRAMESUP, len);
- }
- 
--static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
-+static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi, int fifo_max)
- {
--	int fifo_max, i = 0;
-+	int i = 0;
- 
--	fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
- 	mchp_corespi_set_xfer_size(spi, fifo_max);
- 
- 	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_TXFIFO_FULL)) {
-@@ -413,19 +416,6 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
- 	if (intfield == 0)
- 		return IRQ_NONE;
- 
--	if (intfield & INT_TXDONE)
--		mchp_corespi_write(spi, REG_INT_CLEAR, INT_TXDONE);
--
--	if (intfield & INT_RXRDY) {
--		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RXRDY);
--
--		if (spi->rx_len)
--			mchp_corespi_read_fifo(spi);
--	}
--
--	if (!spi->rx_len && !spi->tx_len)
--		finalise = true;
--
- 	if (intfield & INT_RX_CHANNEL_OVERFLOW) {
- 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RX_CHANNEL_OVERFLOW);
- 		finalise = true;
-@@ -512,9 +502,14 @@ static int mchp_corespi_transfer_one(struct spi_controller *host,
- 
- 	mchp_corespi_write(spi, REG_SLAVE_SELECT, spi->pending_slave_select);
- 
--	while (spi->tx_len)
--		mchp_corespi_write_fifo(spi);
-+	while (spi->tx_len) {
-+		int fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
- 
-+		mchp_corespi_write_fifo(spi, fifo_max);
-+		mchp_corespi_read_fifo(spi, fifo_max);
-+	}
-+
-+	spi_finalize_current_transfer(host);
- 	return 1;
- }
- 
+-	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
++	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) ||
++	    (end - start < PAGES_PER_SECTION * sizeof(struct page)))
+ 		return vmemmap_populate_basepages(start, end, node, altmap);
+ 	else
+ 		return vmemmap_populate_hugepages(start, end, node, altmap);
 
 
