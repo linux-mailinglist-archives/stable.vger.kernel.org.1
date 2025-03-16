@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-124546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A839FA6364E
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 16:42:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC5BA6365B
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 17:09:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7F1F188D69B
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 15:42:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8D8616B65C
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 16:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8842F19ABD1;
-	Sun, 16 Mar 2025 15:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914EE19D886;
+	Sun, 16 Mar 2025 16:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JDkZP4Mi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="II5TVEBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45397170A23
-	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 15:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF1D2E3377
+	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 16:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742139728; cv=none; b=CMPWNtr7RkQ63Z99vSmLQRmggZCzE0n10n/+BTsC1k5higPHjPa8kHU2+67E8mZb4CRpOEGOHXPIwBvjn6nnrLyFlW08fnBqJxFQnQXtcDwsa2MVfA2Ev19F5cdfSUGq7IZse1yHIXvfCdzCpWzcKq1WeSC1EzjcTpNHZQj9plM=
+	t=1742141386; cv=none; b=g2Vp5cn0Iut4bF6YVxcS5eqAhf0vY3LIrIVMRWcrMWy5ls7YyvEU9R9iRNiRLYzP7DszEtC4Wwz/R+p7vknPKxkQwi60aVC7u6f4vhkvKNpeXpqg0VqOegGCaHMwRlMQHpNus1Bcl7HcIY5UimQFFqEIfDGP1VEIgodo/+xXMcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742139728; c=relaxed/simple;
-	bh=zT9mj/X88HI5d+JHTJ09RdGiXYGda8hTweMgBWHmv0w=;
+	s=arc-20240116; t=1742141386; c=relaxed/simple;
+	bh=Soe4YKf0OzgENLDUxzM+V4kuMu4g39U6VrerB4BS8uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8s/dcyUd3W0zzK4gD8TBaCaMt5SpKcESOvcUJFb5I3JI/e8goLU/PBiXe1rBBcc3W8Szn/n+1GM4zcQebEJ0v97BMVOfgxzye5UnVt32AkfbFLSficr7795I2pisgjNpWoRkXwnT8V3WMP87HtMLuFnvJtGlbeVesIpFZBt2ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JDkZP4Mi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3587C4CEDD;
-	Sun, 16 Mar 2025 15:42:06 +0000 (UTC)
+	 MIME-Version; b=sPLhzbWChIGsju7vZo+01YpUM7YLqPWDpH50N67E1Dszed9LhDhMHJOxczMqlJ9Q/iBoPmXthDRhc1k/wyeWGQb7tjL0YLBzvDu48vSrPUvohfNp0zJ9tMHBLmzbWTMmHjSrcqt3XUKrIT680risjhVRtlCgJqoz88xojR2twxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=II5TVEBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE2DC4CEDD;
+	Sun, 16 Mar 2025 16:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742139727;
-	bh=zT9mj/X88HI5d+JHTJ09RdGiXYGda8hTweMgBWHmv0w=;
+	s=k20201202; t=1742141385;
+	bh=Soe4YKf0OzgENLDUxzM+V4kuMu4g39U6VrerB4BS8uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDkZP4MiQXOou5yy8Wt6HuG44kWJu/hStWlJI+Z8oXUqj8JI3r33/gd6WNHSO9Veu
-	 xlLpg0+mpmbW7xT8fjXMHOD4vXeTu5IQ4MtWwIl7TDYKWWav30kQ8XLep+XYJ+rC1F
-	 EzeU5+BwMkwWCVrUXb0M7qU0A7M0sI2BraVqsWcULjnCCreI5unxI6JF31pj+sZJBP
-	 vqtdhqeMjvZ2KG8uFJDGTdCpfEYugJ8DgK44zfWMTBSzsQpGC8+Azw4T76xYzeX7hD
-	 0dP8ua+C4wcGjtMw67vaZPml7wo0K+WFxYrKMxN+XWH/5KLnizb+0YDaQ+ZPJsJEY2
-	 loht6fgMBnFaA==
+	b=II5TVEBilTXysZtB2+ykpcyw3TAHRvfhLRxPU9F5FMFoNbF7GbjgeO24lSixu2y/1
+	 YFOXhmLlNMrjEEZCN41+nEqV4Gyyg7V7/ntsV52M45GEMD9xOW7cz+37a5VKrG2SK0
+	 /VY9PRk8rkMK6zoN7MC78SFOfYqffiG7ZWfpIVTIqh9fUG4jRM+KSCK0VI4tgxw+dl
+	 UVREd6gA2/Y+ckYbj/fSKkrZNIR1vVfpFxQJfiJVgowh6bOqU6Le6dvM2zrARXfgx0
+	 fZ8eM52GAxxPI10OjYUpiJiwyYOt4thnglgJMTr3GHNfZXgFwKlgGFlxUIA0FRi4Yq
+	 IjhuMXunPyn+A==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: stable@vger.kernel.org
-Cc: Matthew Maurer <mmaurer@google.com>,
+Cc: Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.6.y] rust: Disallow BTF generation with Rust + LTO
-Date: Sun, 16 Mar 2025 16:41:59 +0100
-Message-ID: <20250316154159.2404145-1-ojeda@kernel.org>
-In-Reply-To: <2025031621-july-parkway-796f@gregkh>
-References: <2025031621-july-parkway-796f@gregkh>
+Subject: [PATCH 6.6.y] rust: init: fix `Zeroable` implementation for `Option<NonNull<T>>` and `Option<Box<T>>`
+Date: Sun, 16 Mar 2025 17:09:35 +0100
+Message-ID: <20250316160935.2407908-1-ojeda@kernel.org>
+In-Reply-To: <2025031635-resent-sniff-676f@gregkh>
+References: <2025031635-resent-sniff-676f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,39 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Matthew Maurer <mmaurer@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
 
-commit 5daa0c35a1f0e7a6c3b8ba9cb721e7d1ace6e619 upstream.
+commit df27cef153603b18a7d094b53cc3d5264ff32797 upstream.
 
-The kernel cannot currently self-parse BTF containing Rust debug
-information. pahole uses the language of the CU to determine whether to
-filter out debug information when generating the BTF. When LTO is
-enabled, Rust code can cross CU boundaries, resulting in Rust debug
-information in CUs labeled as C. This results in a system which cannot
-parse its own BTF.
+According to [1], `NonNull<T>` and `#[repr(transparent)]` wrapper types
+such as `Box<T>` have the null pointer optimization only if `T: Sized`.
+Thus remove the `Zeroable` implementation for the unsized case.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
-Cc: stable@vger.kernel.org
-Fixes: c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
-Link: https://lore.kernel.org/r/20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com
+Link: https://doc.rust-lang.org/stable/std/option/index.html#representation [1]
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Closes: https://lore.kernel.org/rust-for-linux/CAH5fLghL+qzrD8KiCF1V3vf2YcC6aWySzkmaE2Zzrnh1gKj-hw@mail.gmail.com/
+Cc: stable@vger.kernel.org # v6.12+ (a custom patch will be needed for 6.6.y)
+Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed` function")
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Link: https://lore.kernel.org/r/20250305132836.2145476-1-benno.lossin@proton.me
+[ Added Closes tag and moved up the Reported-by one. - Miguel ]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/init.rs | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 60ed7713b5ee..1105cb53f391 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1908,7 +1908,7 @@ config RUST
- 	depends on !GCC_PLUGINS
- 	depends on !RANDSTRUCT
- 	depends on !SHADOW_CALL_STACK
--	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-+	depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && !LTO)
- 	help
- 	  Enables Rust support in the kernel.
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 2d4b19b86857..6ef9f6182018 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -1310,17 +1310,14 @@ macro_rules! impl_zeroable {
+     // SAFETY: `T: Zeroable` and `UnsafeCell` is `repr(transparent)`.
+     {<T: ?Sized + Zeroable>} UnsafeCell<T>,
  
+-    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).
++    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee:
++    // https://doc.rust-lang.org/stable/std/option/index.html#representation).
+     Option<NonZeroU8>, Option<NonZeroU16>, Option<NonZeroU32>, Option<NonZeroU64>,
+     Option<NonZeroU128>, Option<NonZeroUsize>,
+     Option<NonZeroI8>, Option<NonZeroI16>, Option<NonZeroI32>, Option<NonZeroI64>,
+     Option<NonZeroI128>, Option<NonZeroIsize>,
+-
+-    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).
+-    //
+-    // In this case we are allowed to use `T: ?Sized`, since all zeros is the `None` variant.
+-    {<T: ?Sized>} Option<NonNull<T>>,
+-    {<T: ?Sized>} Option<Box<T>>,
++    {<T>} Option<NonNull<T>>,
++    {<T>} Option<Box<T>>,
+ 
+     // SAFETY: `null` pointer is valid.
+     //
 -- 
 2.49.0
 
