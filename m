@@ -1,138 +1,156 @@
-Return-Path: <stable+bounces-124535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A320AA63507
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 11:32:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E33A63512
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 11:33:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF5BC16ED79
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 10:32:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F6093A9A5F
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 10:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FBF1A0BC5;
-	Sun, 16 Mar 2025 10:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686261A01D4;
+	Sun, 16 Mar 2025 10:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="flmqoWu9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAjwDU6f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B7E19E997;
-	Sun, 16 Mar 2025 10:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECD6166F1A;
+	Sun, 16 Mar 2025 10:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742121163; cv=none; b=J5Hn4co0UXE8rdZRfQ0fm8cEjVDDooOi2T2prpPNtnU0BSd1RAXp7v7g9+y7f4uyRLY35MFdVUZXcQygNISEq06NHdoiXnHxfopBxybf0B6V7VjvQo2wtmTAw4Cyy5sBAg08Au2qOXjaMYRhnJPaahq4kQ6gYPLHgZAwDtSq3pQ=
+	t=1742121194; cv=none; b=tUvXTq8jyePyFl2tI5D/Xwvhl6TIxyYFvNSRNugAHg0U5YYdPpIHeHRQuGqvsz91bNhYwxMxNIptCv5ASoUuT+6tCN/SNfsWTcQQhaG9IOm5cOfqEz5oX6BlTeppShHJO7M3JjDBuBGaIPN0HQkgoRM8Ox1PFtjh9iF+Cnt1wsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742121163; c=relaxed/simple;
-	bh=DOt2j2sBDFz86NCym3zEcHqK/lzuS942FP7neaWxirw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rx6+a1zYtHnVH7tTgTUoMbzS+H5PZwHPtRgVHdBtweljoQ8zY1IICvv0WuK3uhb92Kz3GvIXXtr7uN+ws/gvdIWLYI+3yGoiHZHk//fDtu2emLiVuJoGj4pln7BWM0DxTFPHMH9KDthyqEOhnupzpOblj99HyVnz6PL6jGNgaK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=flmqoWu9; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fedora.intra.ispras.ru (unknown [10.10.165.7])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 9E475407617C;
-	Sun, 16 Mar 2025 10:27:26 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 9E475407617C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1742120846;
-	bh=VXIkuebHdGPclApSeeLBv84hAoCpWBAnKkf+0bLWFs4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=flmqoWu9/6FXh9KvFbcbJteN2BAmTr4uZVg1NGnP+YkdMli6hCfU0tsS8DF4QLi0K
-	 QM92ZrqQPMuFQKqYeDIffMIFPPZZBnegys4lKFt/5jW6WXZDsZeIozDbcT8x8lx5Aa
-	 bjEYGm+IOWkL1fKYkGI9Y7rZ3QFW8dFLsULTtOjc=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Peter Chen <peter.chen@kernel.org>,
-	Frank Li <Frank.li@nxp.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Sebastian Reichel <sre@kernel.org>,
-	Fabien Lahoudere <fabien.lahoudere@collabora.co.uk>,
-	linux-usb@vger.kernel.org,
-	imx@lists.linux.dev,
+	s=arc-20240116; t=1742121194; c=relaxed/simple;
+	bh=SRVlez7jQA05YlqVbFTK28O6hKORV/BZnhg/jFT8c7g=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MqePlIUzWri8jpBVadcljQfIidbwIgOqs6XhnEE3X3DYDADjZfxBwlL4V495sH/vZ3Jrk1ALDnSLumtM77a7aN3YInjWvB4nVwi3k/gCMAWHF0iWFREye9OVYxhzoFp8aRcPWPk9T5t6cKHEuZStJ27ZsXf1bqu/xQgIyEaX1YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QAjwDU6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF78C4CEDD;
+	Sun, 16 Mar 2025 10:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742121193;
+	bh=SRVlez7jQA05YlqVbFTK28O6hKORV/BZnhg/jFT8c7g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QAjwDU6f+Pa8HwEv4iSGndES2e7YvkrvUPjECcMnxGLRfemdcbYv33UH6njk8aNWu
+	 Q22BWB7QzwY+MT5F62iLC5npSimS5BmHFlGi1N1cgJ/M4/b1wP6RxpYLY+ggHj0gng
+	 NI8SnFlCi0q3553EzmMmEzQmrderUuQLl6DhvwxjdOXbKNTLvMmAhUdIsENCeQizgZ
+	 1xy6FC0JFThMMOws0YL2ZFFua7qRQjZYT5HYTNjU94IJNCusokvsP4dQpgCW8jF8GM
+	 hp/uN3wLEglgXOrUefpouKEsSz5Bh0SywVC3fl7yTw4eGBmiIv6iV08D0ZpsvvL3C0
+	 uxA46e3hKlQBA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1ttlIt-00Dy3A-3n;
+	Sun, 16 Mar 2025 10:33:11 +0000
+Date: Sun, 16 Mar 2025 10:33:10 +0000
+Message-ID: <86a59lnu3d.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Jones <andrew.jones@linux.dev>,
 	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
+	devel@daynix.com,
 	stable@vger.kernel.org
-Subject: [PATCH v2 3/3] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
-Date: Sun, 16 Mar 2025 13:26:56 +0300
-Message-ID: <20250316102658.490340-4-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250316102658.490340-1-pchelkin@ispras.ru>
-References: <20250316102658.490340-1-pchelkin@ispras.ru>
+Subject: Re: [PATCH v5 0/5] KVM: arm64: PMU: Fix SET_ONE_REG for vPMC regs
+In-Reply-To: <20250315-pmc-v5-0-ecee87dab216@daynix.com>
+References: <20250315-pmc-v5-0-ecee87dab216@daynix.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: akihiko.odaki@daynix.com, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, andrew.jones@linux.dev, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, devel@daynix.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-usb_phy_init() may return an error code if e.g. its implementation fails
-to prepare/enable some clocks. And properly rollback on probe error path
-by calling the counterpart usb_phy_shutdown().
+On Sat, 15 Mar 2025 09:12:09 +0000,
+Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> 
+> Prepare vPMC registers for user-initiated changes after first run. This
+> is important specifically for debugging Windows on QEMU with GDB; QEMU
+> tries to write back all visible registers when resuming the VM execution
+> with GDB, corrupting the PMU state. Windows always uses the PMU so this
+> can cause adverse effects on that particular OS.
+> 
+> This series also contains patch "KVM: arm64: PMU: Set raw values from
+> user to PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}", which reverts semantic
+> changes made for the mentioned registers in the past. It is necessary
+> to migrate the PMU state properly on Firecracker, QEMU, and crosvm.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+> Changes in v5:
+> - Rebased.
+> - Link to v4: https://lore.kernel.org/r/20250313-pmc-v4-0-2c976827118c@daynix.com
+> 
+> Changes in v4:
+> - Reverted changes for functions implementing ioctls in patch
+>   "KVM: arm64: PMU: Assume PMU presence in pmu-emul.c".
+> - Removed kvm_pmu_vcpu_reset().
+> - Reordered function calls in kvm_vcpu_reload_pmu() for better style.
+> - Link to v3: https://lore.kernel.org/r/20250312-pmc-v3-0-0411cab5dc3d@daynix.com
+> 
+> Changes in v3:
+> - Added patch "KVM: arm64: PMU: Assume PMU presence in pmu-emul.c".
+> - Added an explanation of this path series' motivation to each patch.
+> - Explained why userspace register writes and register reset should be
+>   covered in patch "KVM: arm64: PMU: Reload when user modifies
+>   registers".
+> - Marked patch "KVM: arm64: PMU: Set raw values from user to
+>   PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}" for stable.
+> - Reoreded so that patch "KVM: arm64: PMU: Set raw values from user to
+>   PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}" would come first.
+> - Added patch "KVM: arm64: PMU: Call kvm_pmu_handle_pmcr() after masking
+>   PMCNTENSET_EL0".
+> - Added patch "KVM: arm64: Reload PMCNTENSET_EL0".
+> - Link to v2: https://lore.kernel.org/r/20250307-pmc-v2-0-6c3375a5f1e4@daynix.com
+> 
+> Changes in v2:
+> - Changed to utilize KVM_REQ_RELOAD_PMU as suggested by Oliver Upton.
+> - Added patch "KVM: arm64: PMU: Reload when user modifies registers"
+>   to cover more registers.
+> - Added patch "KVM: arm64: PMU: Set raw values from user to
+>   PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}".
+> - Link to v1: https://lore.kernel.org/r/20250302-pmc-v1-1-caff989093dc@daynix.com
+> 
+> ---
+> Akihiko Odaki (5):
+>       KVM: arm64: PMU: Set raw values from user to PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}
+>       KVM: arm64: PMU: Assume PMU presence in pmu-emul.c
+>       KVM: arm64: PMU: Fix SET_ONE_REG for vPMC regs
+>       KVM: arm64: PMU: Reload when user modifies registers
+>       KVM: arm64: PMU: Reload when resetting
+> 
+>  arch/arm64/kvm/arm.c            | 17 ++++++++-----
+>  arch/arm64/kvm/emulate-nested.c |  6 +++--
+>  arch/arm64/kvm/pmu-emul.c       | 56 +++++++++++------------------------------
+>  arch/arm64/kvm/reset.c          |  3 ---
+>  arch/arm64/kvm/sys_regs.c       | 52 ++++++++++++++++++++++----------------
+>  include/kvm/arm_pmu.h           |  4 +--
+>  6 files changed, 62 insertions(+), 76 deletions(-)
 
-Found by Linux Verification Center (linuxtesting.org).
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 
-Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/usb/chipidea/ci_hdrc_imx.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+	M.
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index d942b3c72640..4f8bfd242b59 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -484,7 +484,11 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
- 		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
- 		data->override_phy_control = true;
--		usb_phy_init(pdata.usb_phy);
-+		ret = usb_phy_init(pdata.usb_phy);
-+		if (ret) {
-+			dev_err(dev, "Failed to init phy\n");
-+			goto err_clk;
-+		}
- 	}
- 
- 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
-@@ -493,7 +497,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	ret = imx_usbmisc_init(data->usbmisc_data);
- 	if (ret) {
- 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
--		goto err_clk;
-+		goto phy_shutdown;
- 	}
- 
- 	data->ci_pdev = ci_hdrc_add_device(dev,
-@@ -502,7 +506,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	if (IS_ERR(data->ci_pdev)) {
- 		ret = PTR_ERR(data->ci_pdev);
- 		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
--		goto err_clk;
-+		goto phy_shutdown;
- 	}
- 
- 	if (data->usbmisc_data) {
-@@ -536,6 +540,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 
- disable_device:
- 	ci_hdrc_remove_device(data->ci_pdev);
-+phy_shutdown:
-+	if (data->override_phy_control)
-+		usb_phy_shutdown(data->phy);
- err_clk:
- 	clk_disable_unprepare(data->clk_wakeup);
- err_wakeup_clk:
 -- 
-2.48.1
-
+Without deviation from the norm, progress is not possible.
 
