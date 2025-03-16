@@ -1,62 +1,50 @@
-Return-Path: <stable+bounces-124509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BF6A63291
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 22:13:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73127A63431
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 07:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF5F71890136
-	for <lists+stable@lfdr.de>; Sat, 15 Mar 2025 21:13:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FB5E3AF0D8
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 06:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588CA1A23A2;
-	Sat, 15 Mar 2025 21:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D98F16A395;
+	Sun, 16 Mar 2025 06:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLfpdPRg"
 X-Original-To: stable@vger.kernel.org
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EE1197A8E;
-	Sat, 15 Mar 2025 21:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25B86348
+	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 06:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742073180; cv=none; b=q5VDmYCnlUoVWb4klJCLGtPSe8MxgHO9bTRIB5B7ofsNW6vPeT3mV5AJB6+hu8tOHHOtxP9MKLbXR3adk1WsQjWcKi0yMjY+d1JFNgo9+jBJQPCO2opWyaa2S373IqR9AteeLy+ZN9/Z3DhFRtRA79kmlI+GBZ6aV8xSAINectM=
+	t=1742104884; cv=none; b=m8IXOKHxChU5g28BOddKtxecJ8I/UKQuQ5hsfIeeiWrpPCID7kqim/mdXNt+yIE0DuPXpxRWLLgzpFmU9/02Q/Qeg9wcOZhUwBAyAnN/uTzJpr48BHqcZwtX/9QhsnTWD8331xIl29aLSeuFsbEM5rPQKsSPpXylE9XJ6VlQ1GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742073180; c=relaxed/simple;
-	bh=DgGL/JgFUQpUq9OIXVfSqWVLaGTnhUc8MCtaagt/zX4=;
+	s=arc-20240116; t=1742104884; c=relaxed/simple;
+	bh=MQN8+LvreS0VmNSOADcZRkzmFSSSXtdJ71hbRqncFl0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UlBGem9h9BrPpuUWV2VhJBObORKOMFy9hIlztCTSfAMxbnGZ+z4tG2pfExB1xoEpj7iVzHWdSIX283ibNkD+2nT61CkZSj/b7PPz/ljdD+13HpnbJ8yvTGVeiWjWtHIKX0t1/LVa9n1piWI8TlPikKz/+5qb2uujw32vczxEFH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 6E713100DA1BC;
-	Sat, 15 Mar 2025 22:12:48 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 39DF711229; Sat, 15 Mar 2025 22:12:48 +0100 (CET)
-Date: Sat, 15 Mar 2025 22:12:48 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: proxy0@tutamail.com
-Cc: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Linux Pci <linux-pci@vger.kernel.org>,
-	Guenter Roeck <groeck@juniper.net>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Rajat Jain <rajatxjain@gmail.com>,
-	Linux Kernel <linux-kernel@vger.kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Stable <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/4] PCI/hotplug: Disable HPIE over reset
-Message-ID: <Z9XtUH55s9OZAPvK@wunner.de>
-References: <20250313142333.5792-1-ilpo.jarvinen@linux.intel.com>
- <20250313142333.5792-2-ilpo.jarvinen@linux.intel.com>
- <Z9Wjk2GzrSURZoTG@wunner.de>
- <OLQ9qyD--F-9@tutamail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=e3jtgOfqi0EcME8Hl9vqRLLRpPaj75Nj+Kau2vBLUffP27CWsiyHhQVexxI55lVJ0OFrYRaffZviqAWNh6ErLwvtG57f67zUsm/glciNZlnMSPL3y1pbz5AN2ePaHwD+ckrQJd9xF5ue38WyNydvDrGAQJTn2RSewPk2Tofsm4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLfpdPRg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE70C4CEDD;
+	Sun, 16 Mar 2025 06:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1742104883;
+	bh=MQN8+LvreS0VmNSOADcZRkzmFSSSXtdJ71hbRqncFl0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bLfpdPRgvsEYU1I9HvMOUAqy1sp7KSwlmBUYSmDaU6GmAA7jmX6kzUoCNh4YDpyhV
+	 JhvdpOCPzLFcGsU7w5W03vP18rQpooaR3TMrmS+5n4JvHb7dr7RP8kRViLTshW6tsc
+	 0wgU0ZbbxJE2Hmw/VtVodVj0kmfcFXqPbVwM2ii4=
+Date: Sun, 16 Mar 2025 07:01:14 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: stable <stable@vger.kernel.org>
+Subject: Re: 6.1 io_uring mmap backport
+Message-ID: <2025031600-unexposed-flyaway-eba4@gregkh>
+References: <9a29cdcc-c470-400a-a98c-8262a5210763@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,54 +53,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <OLQ9qyD--F-9@tutamail.com>
+In-Reply-To: <9a29cdcc-c470-400a-a98c-8262a5210763@kernel.dk>
 
-On Sat, Mar 15, 2025 at 07:57:55PM +0100, proxy0@tutamail.com wrote:
-> Mar 15, 2025, 9:28 PM by lukas@wunner.de:
-> > After dwelling on this for a while, I'm thinking that it may re-introduce
-> > the issue fixed by commit f5eff5591b8f ("PCI: pciehp: Fix AB-BA deadlock
-> > between reset_lock and device_lock"):
-> >
-> > Looking at the second and third stack trace in its commit message,
-> > down_write(reset_lock) in pciehp_reset_slot() is basically equivalent
-> > to synchronize_irq() and we're holding device_lock() at that point,
-> > hindering progress of pciehp_ist().
-> >
-> > So I think I have guided you in the wrong direction and I apologize
-> > for that.
-> >
-> > However it seems to me that this should be solvable with the small
-> > patch below.  Am I missing something?
-> >
-> > @Joel Mathew Thomas, could you give the below patch a spin and see
-> > if it helps?
+On Sat, Mar 15, 2025 at 06:59:55AM -0600, Jens Axboe wrote:
+> Hi,
 > 
-> I've tested the patch series along with the additional patch provided.
-> 
-> Kernel: 6.14.0-rc6-00043-g3571e8b091f4-dirty-pci-hotplug-reset-fixes-eventmask-fix
-> 
-> Patches applied:
-> - [PATCH 1/4] PCI/hotplug: Disable HPIE over reset
-> - [PATCH 2/4] PCI/hotplug: Clearing HPIE for the duration of reset is enough
-> - [PATCH 3/4] PCI/hotplug: reset_lock is not required synchronizing with irq thread
-> - [PATCH 4/4] PCI/hotplug: Don't enable HPIE in poll mode
-> - The latest patch from you:
-> +	/* Ignore events masked by pciehp_reset_slot(). */
-> +	events &= ctrl->slot_ctrl;
-> +	if (!events)
-> +		return IRQ_HANDLED;
+> I prepared this series about 6 months ago, but never got around to
+> sending it in. In mainline, we got rid of remap_pfn_range() on the
+> io_uring side, and this just backports it to 6.1-stable as well.
+> This eliminates issues with fragmented memory, and hence it'd
+> be nice to have it in 6.1 stable as well.
 
-Could you test *only* the quoted diff, i.e. without patches [1/4] - [4/4],
-on top of a recent kernel?
+This and the 6.6 set now queued up, thanks.
 
-Sorry for not having been clear about this.
-
-I believe that patch [1/4] will re-introduce a deadlock we've
-already fixed two years ago, so the small diff above seeks to
-replace it with a simpler approach that will hopefully avoid
-the issue as well.
-
-Thanks,
-
-Lukas
+greg k-h
 
