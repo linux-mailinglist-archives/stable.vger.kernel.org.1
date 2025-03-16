@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-124518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8164A63471
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 08:18:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C336A63472
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 08:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E6F816E11D
-	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 07:18:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E828188B4E0
+	for <lists+stable@lfdr.de>; Sun, 16 Mar 2025 07:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194FA17D346;
-	Sun, 16 Mar 2025 07:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1076D56B81;
+	Sun, 16 Mar 2025 07:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jYGOhun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cd99X08w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF5C8BE5
-	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 07:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A0B8BE5
+	for <stable@vger.kernel.org>; Sun, 16 Mar 2025 07:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742109521; cv=none; b=GN9ex6hgitRfV+ox/l+qT9ZxHi1RxzQ8tmvcVmRK0RrDULxsCjQBUJdDOUknlz2EWgFJ4Ube9X1Wxh2fKb0855BajZF1u66YjrSJUVwNDJW8zvBdLgnsE4cjr53ioxQKgmqZCfF8OtoN/C2iG5HMz/MMdU321r4Mhtcxoyg8yJI=
+	t=1742109530; cv=none; b=bW6eEGvqAfGeHd9bVFXdznN5Ceq4J/AoresGqnGx+VS+I3WYXFylxlD+r99FnoHhTKyHFAyCyEUPLZDh4hvHO689NXi1ekPcBsET48Un67Bnrin2Iu5Eyf+vRUml1yXDLIxxQkMKN1Qm5Q1K6r0G0Ov3DhyTL/xLkJUhTCR47D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742109521; c=relaxed/simple;
-	bh=SGL6uJruhAWVbgJYt5JC8KwRIQlMUuxmQQfBJSEPdLU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lM8jCYjjjHXrCUsgDoCQ7kHggadOq400hY818JxiArRmVhMq4uaAfhB5UrncS/PfGs9drm30bhaohWy5QI3uMBX9nqB7kB2wruFAXHZoaRHH9Uc3ji/kQGuPR7jBpAGKNsh51+Ilu/nvzZVOGaJ+9XlFm+71Na7AdAFhT8yt0hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jYGOhun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DD4C4CEDD;
-	Sun, 16 Mar 2025 07:18:40 +0000 (UTC)
+	s=arc-20240116; t=1742109530; c=relaxed/simple;
+	bh=gmC8DdJh3I9BkM9i6j3LI+dgs7XFN6Axpm9XbN8eNns=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A1WH4+6oNQf9RBSv2SXPcRNvlD5Snd8PSJfTzqkcZINWVSRQOJ4yl3Ie6azTHgaPb/aNb4mHbFKrqeeMOVJZXKd2mD4GqRN+LQzCl5/NykVjqB8thy2K6/vCm0dkOlluXscQggdLeyp/qjiTEbj6MUBEfLU2EjQ6xoihfgMiK08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cd99X08w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B78C4CEDD;
+	Sun, 16 Mar 2025 07:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742109521;
-	bh=SGL6uJruhAWVbgJYt5JC8KwRIQlMUuxmQQfBJSEPdLU=;
+	s=korg; t=1742109530;
+	bh=gmC8DdJh3I9BkM9i6j3LI+dgs7XFN6Axpm9XbN8eNns=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0jYGOhunePcZeutS6qmq96nNmSRx96ttKS3Y/H3adHYGqRfcGecwT70ReAiJE9zme
-	 TRg+9HfYrPQZPs3SQ/ut5NJGG6r75Hfka9ZuIGlo6Ei0B0jW7NIxlwGZZHI0nOi5ZP
-	 eWhAehhF/h6Tvj+TPNCzejZfy6wJrB7/6W1n+Dqg=
-Subject: FAILED: patch "[PATCH] sched_ext: Validate prev_cpu in scx_bpf_select_cpu_dfl()" failed to apply to 6.12-stable tree
-To: arighi@nvidia.com,tj@kernel.org
+	b=cd99X08wxvIWgdN6GwsDY2NH9rvxRa2q2Qpu5qOOix6F54saW6jJwovFL65hhvsPV
+	 llLLOLZ9ju2xytBd5Pk1NXVt605kIn3ERzwBDRJSzw9SUlJsIBX8YMkxgfRtBAD6JO
+	 4dEoqR85jQPF9n3Bx4W6UpdH1SXwyzv2dX4Tc7uA=
+Subject: FAILED: patch "[PATCH] spi: microchip-core: prevent RX overflows when transmit size" failed to apply to 6.6-stable tree
+To: conor.dooley@microchip.com,broonie@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 16 Mar 2025 08:17:14 +0100
-Message-ID: <2025031614-broiler-overgrown-4bd4@gregkh>
+Date: Sun, 16 Mar 2025 08:17:31 +0100
+Message-ID: <2025031631-outskirts-catfight-a453@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9360dfe4cbd62ff1eb8217b815964931523b75b3
+git cherry-pick -x 91cf42c63f2d8a9c1bcdfe923218e079b32e1a69
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025031614-broiler-overgrown-4bd4@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025031631-outskirts-catfight-a453@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,36 +77,114 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9360dfe4cbd62ff1eb8217b815964931523b75b3 Mon Sep 17 00:00:00 2001
-From: Andrea Righi <arighi@nvidia.com>
-Date: Mon, 3 Mar 2025 18:51:59 +0100
-Subject: [PATCH] sched_ext: Validate prev_cpu in scx_bpf_select_cpu_dfl()
+From 91cf42c63f2d8a9c1bcdfe923218e079b32e1a69 Mon Sep 17 00:00:00 2001
+From: Conor Dooley <conor.dooley@microchip.com>
+Date: Mon, 3 Mar 2025 10:47:40 +0000
+Subject: [PATCH] spi: microchip-core: prevent RX overflows when transmit size
+ > FIFO size
 
-If a BPF scheduler provides an invalid CPU (outside the nr_cpu_ids
-range) as prev_cpu to scx_bpf_select_cpu_dfl() it can cause a kernel
-crash.
+When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
+overflows will be generated and receive data will be corrupted and
+warnings will be produced. For example, here's an error generated by a
+transfer of 36 bytes:
 
-To prevent this, validate prev_cpu in scx_bpf_select_cpu_dfl() and
-trigger an scx error if an invalid CPU is specified.
+  spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
 
-Fixes: f0e1a0643a59b ("sched_ext: Implement BPF extensible scheduler class")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+The driver is currently split between handling receiving in the
+interrupt handler, and sending outside of it. Move all handling out of
+the interrupt handling, and explicitly link the number of bytes read of
+of the RX FIFO to the number written into the TX one. This both resolves
+the overflow problems as well as simplifying the flow of the driver.
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 0f1da199cfc7..7b9dfee858e7 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6422,6 +6422,9 @@ static bool check_builtin_idle_enabled(void)
- __bpf_kfunc s32 scx_bpf_select_cpu_dfl(struct task_struct *p, s32 prev_cpu,
- 				       u64 wake_flags, bool *is_idle)
+CC: stable@vger.kernel.org
+Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20250303-veal-snooper-712c1dfad336@wendy
+Signed-off-by: Mark Brown <broonie@kernel.org>
+
+diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
+index 5b6af55855ef..62ba0bd9cbb7 100644
+--- a/drivers/spi/spi-microchip-core.c
++++ b/drivers/spi/spi-microchip-core.c
+@@ -70,8 +70,7 @@
+ #define INT_RX_CHANNEL_OVERFLOW		BIT(2)
+ #define INT_TX_CHANNEL_UNDERRUN		BIT(3)
+ 
+-#define INT_ENABLE_MASK (CONTROL_RX_DATA_INT | CONTROL_TX_DATA_INT | \
+-			 CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
++#define INT_ENABLE_MASK (CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
+ 
+ #define REG_CONTROL		(0x00)
+ #define REG_FRAME_SIZE		(0x04)
+@@ -133,10 +132,15 @@ static inline void mchp_corespi_disable(struct mchp_corespi *spi)
+ 	mchp_corespi_write(spi, REG_CONTROL, control);
+ }
+ 
+-static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi)
++static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi, int fifo_max)
  {
-+	if (!ops_cpu_valid(prev_cpu, NULL))
-+		goto prev_cpu;
+-	while (spi->rx_len >= spi->n_bytes && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)) {
+-		u32 data = mchp_corespi_read(spi, REG_RX_DATA);
++	for (int i = 0; i < fifo_max; i++) {
++		u32 data;
 +
- 	if (!check_builtin_idle_enabled())
- 		goto prev_cpu;
++		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)
++			;
++
++		data = mchp_corespi_read(spi, REG_RX_DATA);
+ 
+ 		spi->rx_len -= spi->n_bytes;
+ 
+@@ -211,11 +215,10 @@ static inline void mchp_corespi_set_xfer_size(struct mchp_corespi *spi, int len)
+ 	mchp_corespi_write(spi, REG_FRAMESUP, len);
+ }
+ 
+-static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
++static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi, int fifo_max)
+ {
+-	int fifo_max, i = 0;
++	int i = 0;
+ 
+-	fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
+ 	mchp_corespi_set_xfer_size(spi, fifo_max);
+ 
+ 	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_TXFIFO_FULL)) {
+@@ -413,19 +416,6 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
+ 	if (intfield == 0)
+ 		return IRQ_NONE;
+ 
+-	if (intfield & INT_TXDONE)
+-		mchp_corespi_write(spi, REG_INT_CLEAR, INT_TXDONE);
+-
+-	if (intfield & INT_RXRDY) {
+-		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RXRDY);
+-
+-		if (spi->rx_len)
+-			mchp_corespi_read_fifo(spi);
+-	}
+-
+-	if (!spi->rx_len && !spi->tx_len)
+-		finalise = true;
+-
+ 	if (intfield & INT_RX_CHANNEL_OVERFLOW) {
+ 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RX_CHANNEL_OVERFLOW);
+ 		finalise = true;
+@@ -512,9 +502,14 @@ static int mchp_corespi_transfer_one(struct spi_controller *host,
+ 
+ 	mchp_corespi_write(spi, REG_SLAVE_SELECT, spi->pending_slave_select);
+ 
+-	while (spi->tx_len)
+-		mchp_corespi_write_fifo(spi);
++	while (spi->tx_len) {
++		int fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
+ 
++		mchp_corespi_write_fifo(spi, fifo_max);
++		mchp_corespi_read_fifo(spi, fifo_max);
++	}
++
++	spi_finalize_current_transfer(host);
+ 	return 1;
+ }
  
 
 
