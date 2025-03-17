@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-124583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A575A63F28
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 06:09:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFABA63F48
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 06:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBC6216DA96
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:09:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5C77188FFD6
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882E421518B;
-	Mon, 17 Mar 2025 05:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E2F215777;
+	Mon, 17 Mar 2025 05:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AS2KaSfA"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IO9yIDSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A5DA59;
-	Mon, 17 Mar 2025 05:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E502153E0;
+	Mon, 17 Mar 2025 05:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742188186; cv=none; b=TqMw2a/B6hGfayNf+jlAmUEevu5Yvz9OBE2glMfb4Q7xEFnLJ1RO3AYTqeRYnNPZOnI9zHVujClU+ru1igh9gmdP/LCsWv1WFsfwdKRzbin6p1aftd98dtNhADoU8mWjIYlnACxotW+heiNXe6pMikn73+ffbpa2dnyClyNE3Fw=
+	t=1742188253; cv=none; b=m7hbO1FlSb/jj2VewzOC5L8LdUx5q6ZmSjJ0ymi5zkfIDjL4kahKbnQSSM978/MsGqc1L54dIu813op9rHfaj+FknVc1vgjoALFXoUtSt5u74IeZL6V0aAswytgQ255RA03f46PdRzKTUg5WplS2/SUQzzzy/RgtFa60D5JitBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742188186; c=relaxed/simple;
-	bh=Z5ceqekeZDg8qH/kTk06qP6RtiriIOfZb7fnl9QgxyE=;
-	h=Date:To:From:Subject:Message-Id; b=kEMt2RDMInrLM9qoaGcFB7Phhu2kKIe3HxuVdkTus4BIY7kV3Xyslv4lCh5TDjou0pHxhd6HTlpqog1/S4656iNF7BltR0TlBwFvD0cByse5Oe6vTLLjGMjGpbJ67+/4hUPqaKNJ8iET5mVD8ir2qKlmJ5iTtta9T9FSM+aCOOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AS2KaSfA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED2CC4CEEC;
-	Mon, 17 Mar 2025 05:09:46 +0000 (UTC)
+	s=arc-20240116; t=1742188253; c=relaxed/simple;
+	bh=7sKPFPzhCga8+NVmOp1XCjN3BlcVNT0iIpYH468R12g=;
+	h=Date:To:From:Subject:Message-Id; b=GOo5AdD+cCEtT3q9hx/5p2h9cI7hhbsKPWnj7SZ1XqnAGiSL55eOf6FZOuGzpWBqDcLs/qfRh6m8+aMstEHZmBwmIy7Qs9kh/7B6Ma4Q1/Sc0qHHEcBKmCqvqZBeFjAF4dfYOI2gOLVxOOr27KANCYD/my51BluItoBmw1fhzns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IO9yIDSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F39AC4CEEC;
+	Mon, 17 Mar 2025 05:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1742188186;
-	bh=Z5ceqekeZDg8qH/kTk06qP6RtiriIOfZb7fnl9QgxyE=;
+	s=korg; t=1742188253;
+	bh=7sKPFPzhCga8+NVmOp1XCjN3BlcVNT0iIpYH468R12g=;
 	h=Date:To:From:Subject:From;
-	b=AS2KaSfAqdMdM1OZuTxJow+Ruzr0SB/FtK1Ov8dzdluBlWGUyt0k09yIkBbadAcdk
-	 AgNK2W9+5ilo/LT/7McYOZxiAVKxDXlh+qg54KBScjr1EOenzGqSgHNeir6fd+nMb7
-	 rCkhQS69Jxv6MZ9cmPsVDydAqD2ckInLjATip/GQ=
-Date: Sun, 16 Mar 2025 22:09:45 -0700
-To: mm-commits@vger.kernel.org,v-songbaohua@oppo.com,vbabka@suse.cz,stable@vger.kernel.org,sj@kernel.org,si.yanteng@linux.dev,simona.vetter@ffwll.ch,peterz@infradead.org,peterx@redhat.com,pasha.tatashin@soleen.com,oleg@redhat.com,mhiramat@kernel.org,lyude@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,kherbst@redhat.com,jhubbard@nvidia.com,jglisse@redhat.com,jgg@nvidia.com,jannh@google.com,dakr@kernel.org,corbet@lwn.net,apopple@nvidia.com,alexs@kernel.org,airlied@gmail.com,david@redhat.com,akpm@linux-foundation.org
+	b=IO9yIDSru2JvFYOEx0VNn11tBEefJNIfDZkMgtXASGRc/v+Cfvqrxsq/J7L6c/Lqh
+	 0oUNkeGTHLV5R15gjRhz2lb+L67NTOL2p5jXUIoBwOP/rJ80hGxQuRu41XXS5lXqqG
+	 BKe9qyHpRnsEekdNrQuHe7ffHtTNlufXGXsi/VBg=
+Date: Sun, 16 Mar 2025 22:10:52 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,usamaarif642@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-rmap-reject-hugetlb-folios-in-folio_make_device_exclusive.patch removed from -mm tree
-Message-Id: <20250317050946.0ED2CC4CEEC@smtp.kernel.org>
+Subject: [merged mm-stable] mm-damon-ops-have-damon_get_folio-return-folio-even-for-tail-pages.patch removed from -mm tree
+Message-Id: <20250317051053.3F39AC4CEEC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,99 +50,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/rmap: reject hugetlb folios in folio_make_device_exclusive()
+     Subject: mm/damon/ops: have damon_get_folio return folio even for tail pages
 has been removed from the -mm tree.  Its filename was
-     mm-rmap-reject-hugetlb-folios-in-folio_make_device_exclusive.patch
+     mm-damon-ops-have-damon_get_folio-return-folio-even-for-tail-pages.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: mm/rmap: reject hugetlb folios in folio_make_device_exclusive()
-Date: Mon, 10 Feb 2025 20:37:44 +0100
+From: Usama Arif <usamaarif642@gmail.com>
+Subject: mm/damon/ops: have damon_get_folio return folio even for tail pages
+Date: Fri, 7 Feb 2025 13:20:32 -0800
 
-Even though FOLL_SPLIT_PMD on hugetlb now always fails with -EOPNOTSUPP,
-let's add a safety net in case FOLL_SPLIT_PMD usage would ever be
-reworked.
+Patch series "mm/damon/paddr: fix large folios access and schemes handling".
 
-In particular, before commit 9cb28da54643 ("mm/gup: handle hugetlb in the
-generic follow_page_mask code"), GUP(FOLL_SPLIT_PMD) would just have
-returned a page.  In particular, hugetlb folios that are not PMD-sized
-would never have been prone to FOLL_SPLIT_PMD.
+DAMON operations set for physical address space, namely 'paddr', treats
+tail pages as unaccessed always.  It can also apply DAMOS action to a
+large folio multiple times within single DAMOS' regions walking.  As a
+result, the monitoring output has poor quality and DAMOS works in
+unexpected ways when large folios are being used.  Fix those.
 
-hugetlb folios can be anonymous, and page_make_device_exclusive_one() is
-not really prepared for handling them at all.  So let's spell that out.
+The patches were parts of Usama's hugepage_size DAMOS filter patch
+series[1].  The first fix has collected from there with a slight commit
+message change for the subject prefix.  The second fix is re-written by SJ
+and posted as an RFC before this series.  The second one also got a slight
+commit message change for the subject prefix.
 
-Link: https://lkml.kernel.org/r/20250210193801.781278-3-david@redhat.com
-Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Tested-by: Alistair Popple <apopple@nvidia.com>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Karol Herbst <kherbst@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Lyude <lyude@redhat.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yanteng Si <si.yanteng@linux.dev>
-Cc: Barry Song <v-songbaohua@oppo.com>
+[1] https://lore.kernel.org/20250203225604.44742-1-usamaarif642@gmail.com
+[2] https://lore.kernel.org/20250206231103.38298-1-sj@kernel.org
+
+
+This patch (of 2):
+
+This effectively adds support for large folios in damon for paddr, as
+damon_pa_mkold/young won't get a null folio from this function and won't
+ignore it, hence access will be checked and reported.  This also means
+that larger folios will be considered for different DAMOS actions like
+pageout, prioritization and migration.  As these DAMOS actions will
+consider larger folios, iterate through the region at folio_size and not
+PAGE_SIZE intervals.  This should not have an affect on vaddr, as
+damon_young_pmd_entry considers pmd entries.
+
+Link: https://lkml.kernel.org/r/20250207212033.45269-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20250207212033.45269-2-sj@kernel.org
+Fixes: a28397beb55b ("mm/damon: implement primitives for physical address space monitoring")
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/rmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/ops-common.c |    2 +-
+ mm/damon/paddr.c      |   24 ++++++++++++++++++------
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
---- a/mm/rmap.c~mm-rmap-reject-hugetlb-folios-in-folio_make_device_exclusive
-+++ a/mm/rmap.c
-@@ -2499,7 +2499,7 @@ static bool folio_make_device_exclusive(
- 	 * Restrict to anonymous folios for now to avoid potential writeback
- 	 * issues.
- 	 */
--	if (!folio_test_anon(folio))
-+	if (!folio_test_anon(folio) || folio_test_hugetlb(folio))
- 		return false;
+--- a/mm/damon/ops-common.c~mm-damon-ops-have-damon_get_folio-return-folio-even-for-tail-pages
++++ a/mm/damon/ops-common.c
+@@ -26,7 +26,7 @@ struct folio *damon_get_folio(unsigned l
+ 	struct page *page = pfn_to_online_page(pfn);
+ 	struct folio *folio;
  
- 	rmap_walk(folio, &rwc);
+-	if (!page || PageTail(page))
++	if (!page)
+ 		return NULL;
+ 
+ 	folio = page_folio(page);
+--- a/mm/damon/paddr.c~mm-damon-ops-have-damon_get_folio-return-folio-even-for-tail-pages
++++ a/mm/damon/paddr.c
+@@ -277,11 +277,14 @@ static unsigned long damon_pa_pageout(st
+ 		damos_add_filter(s, filter);
+ 	}
+ 
+-	for (addr = r->ar.start; addr < r->ar.end; addr += PAGE_SIZE) {
++	addr = r->ar.start;
++	while (addr < r->ar.end) {
+ 		struct folio *folio = damon_get_folio(PHYS_PFN(addr));
+ 
+-		if (!folio)
++		if (!folio) {
++			addr += PAGE_SIZE;
+ 			continue;
++		}
+ 
+ 		if (damos_pa_filter_out(s, folio))
+ 			goto put_folio;
+@@ -297,6 +300,7 @@ static unsigned long damon_pa_pageout(st
+ 		else
+ 			list_add(&folio->lru, &folio_list);
+ put_folio:
++		addr += folio_size(folio);
+ 		folio_put(folio);
+ 	}
+ 	if (install_young_filter)
+@@ -312,11 +316,14 @@ static inline unsigned long damon_pa_mar
+ {
+ 	unsigned long addr, applied = 0;
+ 
+-	for (addr = r->ar.start; addr < r->ar.end; addr += PAGE_SIZE) {
++	addr = r->ar.start;
++	while (addr < r->ar.end) {
+ 		struct folio *folio = damon_get_folio(PHYS_PFN(addr));
+ 
+-		if (!folio)
++		if (!folio) {
++			addr += PAGE_SIZE;
+ 			continue;
++		}
+ 
+ 		if (damos_pa_filter_out(s, folio))
+ 			goto put_folio;
+@@ -329,6 +336,7 @@ static inline unsigned long damon_pa_mar
+ 			folio_deactivate(folio);
+ 		applied += folio_nr_pages(folio);
+ put_folio:
++		addr += folio_size(folio);
+ 		folio_put(folio);
+ 	}
+ 	return applied * PAGE_SIZE;
+@@ -475,11 +483,14 @@ static unsigned long damon_pa_migrate(st
+ 	unsigned long addr, applied;
+ 	LIST_HEAD(folio_list);
+ 
+-	for (addr = r->ar.start; addr < r->ar.end; addr += PAGE_SIZE) {
++	addr = r->ar.start;
++	while (addr < r->ar.end) {
+ 		struct folio *folio = damon_get_folio(PHYS_PFN(addr));
+ 
+-		if (!folio)
++		if (!folio) {
++			addr += PAGE_SIZE;
+ 			continue;
++		}
+ 
+ 		if (damos_pa_filter_out(s, folio))
+ 			goto put_folio;
+@@ -490,6 +501,7 @@ static unsigned long damon_pa_migrate(st
+ 			goto put_folio;
+ 		list_add(&folio->lru, &folio_list);
+ put_folio:
++		addr += folio_size(folio);
+ 		folio_put(folio);
+ 	}
+ 	applied = damon_pa_migrate_pages(&folio_list, s->target_nid);
 _
 
-Patches currently in -mm which might be from david@redhat.com are
+Patches currently in -mm which might be from usamaarif642@gmail.com are
 
-mm-factor-out-large-folio-handling-from-folio_order-into-folio_large_order.patch
-mm-factor-out-large-folio-handling-from-folio_nr_pages-into-folio_large_nr_pages.patch
-mm-let-_folio_nr_pages-overlay-memcg_data-in-first-tail-page.patch
-mm-let-_folio_nr_pages-overlay-memcg_data-in-first-tail-page-fix.patch
-mm-move-hugetlb-specific-things-in-folio-to-page.patch
-mm-move-_pincount-in-folio-to-page-on-32bit.patch
-mm-move-_entire_mapcount-in-folio-to-page-on-32bit.patch
-mm-rmap-pass-dst_vma-to-folio_dup_file_rmap_pte-and-friends.patch
-mm-rmap-pass-vma-to-__folio_add_rmap.patch
-mm-rmap-abstract-large-mapcount-operations-for-large-folios-hugetlb.patch
-bit_spinlock-__always_inline-unlock-functions.patch
-mm-rmap-use-folio_large_nr_pages-in-add-remove-functions.patch
-mm-rmap-basic-mm-owner-tracking-for-large-folios-hugetlb.patch
-mm-copy-on-write-cow-reuse-support-for-pte-mapped-thp.patch
-mm-convert-folio_likely_mapped_shared-to-folio_maybe_mapped_shared.patch
-mm-config_no_page_mapcount-to-prepare-for-not-maintain-per-page-mapcounts-in-large-folios.patch
-fs-proc-page-remove-per-page-mapcount-dependency-for-proc-kpagecount-config_no_page_mapcount.patch
-fs-proc-task_mmu-remove-per-page-mapcount-dependency-for-pm_mmap_exclusive-config_no_page_mapcount.patch
-fs-proc-task_mmu-remove-per-page-mapcount-dependency-for-mapmax-config_no_page_mapcount.patch
-fs-proc-task_mmu-remove-per-page-mapcount-dependency-for-smaps-smaps_rollup-config_no_page_mapcount.patch
-mm-stop-maintaining-the-per-page-mapcount-of-large-folios-config_no_page_mapcount.patch
 
 
