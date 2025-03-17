@@ -1,67 +1,66 @@
-Return-Path: <stable+bounces-124664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE59A65860
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:40:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C91DA6587B
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAEF117AAEC
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:39:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E79518870AA
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94211D9A41;
-	Mon, 17 Mar 2025 16:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107241A3A8D;
+	Mon, 17 Mar 2025 16:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sjahLaMz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S68RN/lM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805D81D89FA;
-	Mon, 17 Mar 2025 16:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02CD1DD88E;
+	Mon, 17 Mar 2025 16:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229467; cv=none; b=G7zDcByU/1Yr4oGoD6PjRdDuadOMzpU2Yh/JXnF6QmJN2Xne2m4KSpsD94FLHB4jC94lsvwbKwyCFp2XxEk2PUT1tGiYpIOI0c98goGD0ZMn5l+pd576n963x3kY7CamwhjAtvcO4jYnnb79u8LyqE6Bia4m6fL119cxqlvApmU=
+	t=1742229469; cv=none; b=RK3t1qRLMShZ/NzQp221OsHqwUzsftUqvfUJh+WpTXaE7I7+k94L45ebOCDbVnax6jnOEUM/MrqY8cKWEBQzEm4oUxCDYX5BbGc4tDovhWeXfXYYbWOKn2PeX+v25L3BR8zMZ7XbwCTJ2vq7IWHM6dlUeCzdG+IXBLBuCsV5CWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229467; c=relaxed/simple;
-	bh=22zivszfsLHVUqSvsfQBBD0P2PKD7+iel7RGGmGOg2M=;
+	s=arc-20240116; t=1742229469; c=relaxed/simple;
+	bh=fTI6mTD6U6HzrRMuMomzwSD7v9bc+QEXsntyHFlOg0o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=a9QwWFmkiJR0fnC2TYq44UbHkMCcFRFSPnXTKB4if/uYFlKtltPCM7s2tsdhGTF8jtrKOSu8Q5E7LLR7fPHzfSByDb2PQ+CehkDIOxdq1FnfEtk87jDrMhVj5T3KmuzxZy1pdrh2NppVYCaL7RNQjsmMggRjQdoViP/UFq+Pe/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sjahLaMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2926FC4CEEC;
-	Mon, 17 Mar 2025 16:37:45 +0000 (UTC)
+	 MIME-Version; b=lujkn44d5SkBQPdyk4Yj0J+xr2gf9Feb+YdFnuToZa9/vGHQCg+uT3R0sT6qyN7rj3+eAnsnSlhBRhR/DW4z5biQiENznuCMNFO/IsnBj3kVppKYL+SUMuNRbeeFSfFKn3WeDk7FIqlEbtRP8SfHhlcA2AtdNxg30pU0DmHevlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S68RN/lM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 976FBC4CEED;
+	Mon, 17 Mar 2025 16:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229467;
-	bh=22zivszfsLHVUqSvsfQBBD0P2PKD7+iel7RGGmGOg2M=;
+	s=k20201202; t=1742229469;
+	bh=fTI6mTD6U6HzrRMuMomzwSD7v9bc+QEXsntyHFlOg0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjahLaMz2vKO648P+qztWSgADmhJackIyo4fYfcIjMcJq/qeHZqiE/9HHJV/mB76B
-	 rRjg1ApoxFQXKMLqQnr5JEJSZ//7+xupW5Da6p46tLmeWlPSDV4ILtBOmR+lrpfCcL
-	 MiAJCDdbe3UTkVQAMD81F/BRJ8ASlu9JSwibx02eRWVuEQPVlphshEoOurOLBuEnJ/
-	 fjBvxcvYOOoZQi8Fg04ogIqP3NvG3lIATGCI7874m4G+fQGkJJDARq17jemrRgR5dC
-	 UFuE1EnHWPowcc7Fc5TxCFFuIt2zkjFQp1tPY2sCZZheREk14phiqpsxONLs2RWb1p
-	 3FuO9vvMWA+jw==
+	b=S68RN/lMhLIYyBIMxhnUlqppbUHp/zkCipphcWRHxMrrbJFGmNOtWY2JLmjfxFemL
+	 RdcDiawHcUThOxQpdCNrgz+H5ovVcqFOXP2jDm2fVtXhzZiVfCIpdsBV/WIZWl4TV9
+	 Oeb13m43qY7bg0q9ZRglCqZR4nQ+bxKqusN4vjOCoTsyS5rjVHRKmJRezH0DVDI3sX
+	 yGb7YAeey3a9qDmvwG6kMJmGVIi0XDhDwhDQuqM7YyW9//+em9oT69x0jH2iHvRnF5
+	 k6w7eEqDR0yiqfsQzzqmYRHFzT9ENRAZ6AwETgFSOpbIzujVL850JR1PVaFb/tfLE+
+	 vjk50d4akC3SA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vladis Dronov <vdronov@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <sean.j.christopherson@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-sgx@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 09/16] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
-Date: Mon, 17 Mar 2025 12:37:18 -0400
-Message-Id: <20250317163725.1892824-9-sashal@kernel.org>
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.13 10/16] drm/xe/guc_pc: Retry and wait longer for GuC PC start
+Date: Mon, 17 Mar 2025 12:37:19 -0400
+Message-Id: <20250317163725.1892824-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250317163725.1892824-1-sashal@kernel.org>
 References: <20250317163725.1892824-1-sashal@kernel.org>
@@ -76,85 +75,181 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.7
 Content-Transfer-Encoding: 8bit
 
-From: Vladis Dronov <vdronov@redhat.com>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-[ Upstream commit 65be5c95d08eedda570a6c888a12384c77fe7614 ]
+[ Upstream commit c605acb53f449f6289f042790307d7dc9e62d03d ]
 
-The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
-not just X86_FEATURE_SGX.
+In a rare situation of thermal limit during resume, GuC can
+be slow and run into delays like this:
 
-There is quite a number of hardware which has X86_FEATURE_SGX but not
-X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
-the /dev/sgx_enclave file and does so silently.
+xe 0000:00:02.0: [drm] GT1: excessive init time: 667ms! \
+   		 [status = 0x8002F034, timeouts = 0]
+xe 0000:00:02.0: [drm] GT1: excessive init time: \
+   		 [freq = 100MHz (req = 800MHz), before = 100MHz, \
+   		 perf_limit_reasons = 0x1C001000]
+xe 0000:00:02.0: [drm] *ERROR* GT1: GuC PC Start failed
+------------[ cut here ]------------
+xe 0000:00:02.0: [drm] GT1: Failed to start GuC PC: -EIO
 
-Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
-users that the kernel disabled the SGX driver.
+When this happens, it will block entirely the GPU to be used.
+So, let's try and with a huge timeout in the hope it comes back.
 
-The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
-that enables LE (Launch Enclave) hash MSRs to be writable (with
-additional opt-in required in the 'feature control' MSR) when running
-enclaves, i.e. using a custom root key rather than the Intel proprietary
-key for enclave signing.
+Also, let's collect some information on how long it is usually
+taking on situations like this, so perhaps the time can be tuned
+later.
 
-I've hit this issue myself and have spent some time researching where
-my /dev/sgx_enclave file went on SGX-enabled hardware.
-
-Related links:
-
-  https://github.com/intel/linux-sgx/issues/837
-  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
-
-[ mingo: Made the error message a bit more verbose, and added other cases
-         where the kernel fails to create the /dev/sgx_enclave device node. ]
-
-Signed-off-by: Vladis Dronov <vdronov@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
+Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250307160307.1093391-1-rodrigo.vivi@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit b4b05e53b550a886b4754b87fd0dd2b304579e85)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_pc.c | 53 +++++++++++++++++++++++++---------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
-index 22b65a5f5ec6c..7f8d1e11dbee2 100644
---- a/arch/x86/kernel/cpu/sgx/driver.c
-+++ b/arch/x86/kernel/cpu/sgx/driver.c
-@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
- 	u64 xfrm_mask;
+diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
+index e8b9faeaef645..467d8a2879ecb 100644
+--- a/drivers/gpu/drm/xe/xe_guc_pc.c
++++ b/drivers/gpu/drm/xe/xe_guc_pc.c
+@@ -6,6 +6,7 @@
+ #include "xe_guc_pc.h"
+ 
+ #include <linux/delay.h>
++#include <linux/ktime.h>
+ 
+ #include <drm/drm_managed.h>
+ #include <generated/xe_wa_oob.h>
+@@ -19,6 +20,7 @@
+ #include "xe_gt.h"
+ #include "xe_gt_idle.h"
+ #include "xe_gt_printk.h"
++#include "xe_gt_throttle.h"
+ #include "xe_gt_types.h"
+ #include "xe_guc.h"
+ #include "xe_guc_ct.h"
+@@ -48,6 +50,9 @@
+ #define LNL_MERT_FREQ_CAP	800
+ #define BMG_MERT_FREQ_CAP	2133
+ 
++#define SLPC_RESET_TIMEOUT_MS 5 /* roughly 5ms, but no need for precision */
++#define SLPC_RESET_EXTENDED_TIMEOUT_MS 1000 /* To be used only at pc_start */
++
+ /**
+  * DOC: GuC Power Conservation (PC)
+  *
+@@ -112,9 +117,10 @@ static struct iosys_map *pc_to_maps(struct xe_guc_pc *pc)
+ 	 FIELD_PREP(HOST2GUC_PC_SLPC_REQUEST_MSG_1_EVENT_ARGC, count))
+ 
+ static int wait_for_pc_state(struct xe_guc_pc *pc,
+-			     enum slpc_global_state state)
++			     enum slpc_global_state state,
++			     int timeout_ms)
+ {
+-	int timeout_us = 5000; /* rought 5ms, but no need for precision */
++	int timeout_us = 1000 * timeout_ms;
+ 	int slept, wait = 10;
+ 
+ 	xe_device_assert_mem_access(pc_to_xe(pc));
+@@ -163,7 +169,8 @@ static int pc_action_query_task_state(struct xe_guc_pc *pc)
+ 	};
  	int ret;
  
--	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
-+	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
-+		pr_info("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
-+	}
+-	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING))
++	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++			      SLPC_RESET_TIMEOUT_MS))
+ 		return -EAGAIN;
  
- 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
+ 	/* Blocking here to ensure the results are ready before reading them */
+@@ -186,7 +193,8 @@ static int pc_action_set_param(struct xe_guc_pc *pc, u8 id, u32 value)
+ 	};
+ 	int ret;
  
- 	if (!(eax & 1))  {
--		pr_err("SGX disabled: SGX1 instruction support not available.\n");
-+		pr_info("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
- 	}
+-	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING))
++	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++			      SLPC_RESET_TIMEOUT_MS))
+ 		return -EAGAIN;
  
-@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
- 	}
+ 	ret = xe_guc_ct_send(ct, action, ARRAY_SIZE(action), 0, 0);
+@@ -207,7 +215,8 @@ static int pc_action_unset_param(struct xe_guc_pc *pc, u8 id)
+ 	struct xe_guc_ct *ct = &pc_to_guc(pc)->ct;
+ 	int ret;
  
- 	ret = misc_register(&sgx_dev_enclave);
--	if (ret)
-+	if (ret) {
-+		pr_info("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
- 		return ret;
-+	}
+-	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING))
++	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++			      SLPC_RESET_TIMEOUT_MS))
+ 		return -EAGAIN;
  
- 	return 0;
+ 	ret = xe_guc_ct_send(ct, action, ARRAY_SIZE(action), 0, 0);
+@@ -404,6 +413,15 @@ u32 xe_guc_pc_get_act_freq(struct xe_guc_pc *pc)
+ 	return freq;
  }
+ 
++static u32 get_cur_freq(struct xe_gt *gt)
++{
++	u32 freq;
++
++	freq = xe_mmio_read32(&gt->mmio, RPNSWREQ);
++	freq = REG_FIELD_GET(REQ_RATIO_MASK, freq);
++	return decode_freq(freq);
++}
++
+ /**
+  * xe_guc_pc_get_cur_freq - Get Current requested frequency
+  * @pc: The GuC PC
+@@ -427,10 +445,7 @@ int xe_guc_pc_get_cur_freq(struct xe_guc_pc *pc, u32 *freq)
+ 		return -ETIMEDOUT;
+ 	}
+ 
+-	*freq = xe_mmio_read32(&gt->mmio, RPNSWREQ);
+-
+-	*freq = REG_FIELD_GET(REQ_RATIO_MASK, *freq);
+-	*freq = decode_freq(*freq);
++	*freq = get_cur_freq(gt);
+ 
+ 	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	return 0;
+@@ -965,6 +980,7 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
+ 	struct xe_gt *gt = pc_to_gt(pc);
+ 	u32 size = PAGE_ALIGN(sizeof(struct slpc_shared_data));
+ 	unsigned int fw_ref;
++	ktime_t earlier;
+ 	int ret;
+ 
+ 	xe_gt_assert(gt, xe_device_uc_enabled(xe));
+@@ -989,14 +1005,25 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
+ 	memset(pc->bo->vmap.vaddr, 0, size);
+ 	slpc_shared_data_write(pc, header.size, size);
+ 
++	earlier = ktime_get();
+ 	ret = pc_action_reset(pc);
+ 	if (ret)
+ 		goto out;
+ 
+-	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING)) {
+-		xe_gt_err(gt, "GuC PC Start failed\n");
+-		ret = -EIO;
+-		goto out;
++	if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++			      SLPC_RESET_TIMEOUT_MS)) {
++		xe_gt_warn(gt, "GuC PC start taking longer than normal [freq = %dMHz (req = %dMHz), perf_limit_reasons = 0x%08X]\n",
++			   xe_guc_pc_get_act_freq(pc), get_cur_freq(gt),
++			   xe_gt_throttle_get_limit_reasons(gt));
++
++		if (wait_for_pc_state(pc, SLPC_GLOBAL_STATE_RUNNING,
++				      SLPC_RESET_EXTENDED_TIMEOUT_MS)) {
++			xe_gt_err(gt, "GuC PC Start failed: Dynamic GT frequency control and GT sleep states are now disabled.\n");
++			goto out;
++		}
++
++		xe_gt_warn(gt, "GuC PC excessive start time: %lldms",
++			   ktime_ms_delta(ktime_get(), earlier));
+ 	}
+ 
+ 	ret = pc_init_freqs(pc);
 -- 
 2.39.5
 
