@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4C9A65912
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:53:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFC5A6590B
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:53:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B872588459D
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:49:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78CBB1893469
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28C520ADD1;
-	Mon, 17 Mar 2025 16:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE3A20AF62;
+	Mon, 17 Mar 2025 16:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apxUsfgi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZMtjsM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837D320A5E9
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E810B20ADF9
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229619; cv=none; b=pvXDdWWxwRlc4sbkvnrHYLxUnlG8IxT+Gig4NhZKWq9liAnd4RjNefyXEE7vnL0wwSMv7wVgmJQ6W50sM2dexebL8kV46pCTq1gvN1y0wTJ0qLdUHjBDtNcEYllEoIopHLHBBIFdYKwh/9qWX1o4o4IzgLIg0ONGblM1Z6VFq30=
+	t=1742229622; cv=none; b=aiwFv4tP6lQWTTifgBdX8hsHCT0lBxMd8uISTkdoALrbRuVryiS6VYDAoSyWCtX3X98oLNYJ0fDxJr2NaS9epYXJ6vTo6TKwadSFuSW3Yb4PKmIz+p2jnPNBdOlRFpnY3S50MEpAcDdH2D/Bgv12vQI1mxpXWuzExE1ueJEMDCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229619; c=relaxed/simple;
-	bh=nltNzjgs+k0fN+msjMJ8okgLMqKbksSy1etz5nBCziE=;
+	s=arc-20240116; t=1742229622; c=relaxed/simple;
+	bh=sUbyPKqZR65uWfj/t6Iq6mchZWm5L/RM/jxiGwNXkQc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d40MZqaycT7Aj2HZc/bp7xf8B0nawSE7KdJfwVGGmhyuDhC85bqiYOScxSypwLJwmG51CwEcL7uXylZmUJdcZc70LXjtL1OIf/QubcDTU0C37cz21UuKBXCTa58m8c7TR9OHxTsQKWOvY+KQMSWFL7nc8uAKj7gs9y4e9mYd8z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apxUsfgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F89C4CEF0;
-	Mon, 17 Mar 2025 16:40:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nNcMagL/PmnjlBvSFRVL6bfNZ2CAcYdBp7cg/5bLwdvNFsPN0tt7SQpXbF0cwOJqggjYnuzIFiQ3e25PmzERFIJNLCkZK4evjpDvcJxBzf73MAemeycySkN52gJD0gHLv3mMnnjix7ZTXneQxzlSFcxcVHiWGV3XyClpjq7V1H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZMtjsM4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AEDC4CEF3;
+	Mon, 17 Mar 2025 16:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229619;
-	bh=nltNzjgs+k0fN+msjMJ8okgLMqKbksSy1etz5nBCziE=;
+	s=k20201202; t=1742229621;
+	bh=sUbyPKqZR65uWfj/t6Iq6mchZWm5L/RM/jxiGwNXkQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apxUsfgi3ghUzuffZyZVRqO36ggt+zsQhw7jIj/82/5XHdeZnTi+6ctlmPXgzzxoN
-	 X9FJxFMITMiE6ckA6hREZPWqGymHLZtA0GDsK6uoJY3B9/Fm6PyIOkM4+5rREFUL5A
-	 m0YUAOeaRCisE8mawUQsEivg+54Tt1WOXJ+Vb5DWMrFrRatEzdkYtJCC8EYySdKNBE
-	 Jx75zsc9kBcizbFUbOWsOZx2sQPyOVavaVU8iWcVSVBT7TOFLMiMeofcKrNVdVRY0b
-	 cFOhXl1l6cb3LrGkrjFJYQLdENw0ZVVIe0Xxr2Cv8xaGrg34hO5GDseYOJ9V4JRfIY
-	 9gTUQWGDoD2sw==
+	b=YZMtjsM445eQYERttyPFGW0iKEAhCcAFkQF/fVCcuvHxQlDEArHn2Ota9fkk7l8ju
+	 xdmWkNjgaxegdmKBU6TV/uVqvrdt5HEZ4HvGkhHgl3A7a11hrjXvghIj6emUHQUVk4
+	 fbxPnMkJZg5cCOXZd24AtTmUNw6FU1OUH73goeQE5G1yhODrCm/5/g2TcshA13CFHe
+	 3SEVClKJPmg41W5PlYq9Ym8L15BBVUfi9+DFkkWbcBbbTPNcyWg79YkiGSYyuW6q58
+	 o5tIFdoFIxCFf02BZM3g6Y1aeeJzVgn+OuaiUw8oeqk1sxh1MO4QTDEgsdfeIsxYlU
+	 cjFX0hBurkZgg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: jianqi.ren.cn@windriver.com,
+Cc: Chen Linxuan <chenlinxuan@deepin.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] mm: split critical region in remap_file_pages() and invoke LSMs in between
-Date: Mon, 17 Mar 2025 12:40:17 -0400
-Message-Id: <20250317090925-ea0127e4bb24d4de@stable.kernel.org>
+Subject: Re: [PATCH stable 5.15 v2] lib/buildid: Handle memfd_secret() files in build_id_parse()
+Date: Mon, 17 Mar 2025 12:40:19 -0400
+Message-Id: <20250317093541-108f75d914a6d87b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250317031629.2244-1-jianqi.ren.cn@windriver.com>
+In-Reply-To:  <C20998946B822F0F+20250317011339.119224-3-chenlinxuan@deepin.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,80 +67,73 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 58a039e679fe72bd0efa8b2abe669a7914bb4429
+The upstream commit SHA1 provided is correct: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: <jianqi.ren.cn@windriver.com>
-Commit author: Kirill A. Shutemov<kirill.shutemov@linux.intel.com>
+Backport author: Chen Linxuan<chenlinxuan@deepin.org>
+Commit author: Andrii Nakryiko<andrii@kernel.org>
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: a230a1bf75ae)
+6.1.y | Present (different SHA1: a22c1b6f88dc)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  58a039e679fe7 ! 1:  8ef52303f2705 mm: split critical region in remap_file_pages() and invoke LSMs in between
-    @@ Metadata
+1:  5ac9b4e935dfc ! 1:  6848f1e0a3cdb lib/buildid: Handle memfd_secret() files in build_id_parse()
+    @@
+      ## Metadata ##
+    -Author: Andrii Nakryiko <andrii@kernel.org>
+    +Author: Chen Linxuan <chenlinxuan@deepin.org>
+     
       ## Commit message ##
-         mm: split critical region in remap_file_pages() and invoke LSMs in between
+         lib/buildid: Handle memfd_secret() files in build_id_parse()
      
-    +    [ Upstream commit 58a039e679fe72bd0efa8b2abe669a7914bb4429 ]
+    +    [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
     +
-         Commit ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in
-         remap_file_pages()") fixed a security issue, it added an LSM check when
-         trying to remap file pages, so that LSMs have the opportunity to evaluate
-    @@ Commit message
-         Cc: Shu Han <ebpqwerty472123@gmail.com>
-         Cc: Vlastimil Babka <vbabka@suse.cz>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+         >From memfd_secret(2) manpage:
      
-      ## mm/mmap.c ##
-     @@ mm/mmap.c: SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long, size,
-    @@ mm/mmap.c: SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long
+           The memory areas backing the file created with memfd_secret(2) are
+    @@ Commit message
+         Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+         Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
+         Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
+    +    [ Chen Linxuan: backport same logic without folio-based changes ]
+    +    Cc: stable@vger.kernel.org
+    +    Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+    +    Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+     
+      ## lib/buildid.c ##
+     @@
+    @@ lib/buildid.c
       
-     -	if (mmap_write_lock_killable(mm))
-     +	if (mmap_read_lock_killable(mm))
-    - 		return -EINTR;
+      #define BUILD_ID 3
+      
+    -@@ lib/buildid.c: static int freader_get_folio(struct freader *r, loff_t file_off)
     - 
-    ++		return -EINTR;
-    ++
-     +	/*
-     +	 * Look up VMA under read lock first so we can perform the security
-     +	 * without holding locks (which can be problematic). We reacquire a
-     +	 * write lock later and check nothing changed underneath us.
-     +	 */
-    - 	vma = vma_lookup(mm, start);
-    - 
-    --	if (!vma || !(vma->vm_flags & VM_SHARED))
-    ++	vma = vma_lookup(mm, start);
-    ++
-     +	if (!vma || !(vma->vm_flags & VM_SHARED)) {
-     +		mmap_read_unlock(mm);
-     +		return -EINVAL;
-    @@ mm/mmap.c: SYSCALL_DEFINE5(remap_file_pages, unsigned long, start, unsigned long
-     +	/* OK security check passed, take write lock + let it rip. */
-     +	if (mmap_write_lock_killable(mm)) {
-     +		fput(file);
-    -+		return -EINTR;
-    + 		return -EINTR;
-     +	}
-    -+
-    -+	vma = vma_lookup(mm, start);
-    -+
-    + 
-    + 	vma = vma_lookup(mm, start);
-    + 
-    +-	if (!vma || !(vma->vm_flags & VM_SHARED))
-     +	if (!vma)
-     +		goto out;
+    - 	freader_put_folio(r);
+    +@@ lib/buildid.c: int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+    + 	if (!vma->vm_file)
+    + 		return -EINVAL;
+      
+    -+	/* reject secretmem folios created with memfd_secret() */
+    -+	if (secretmem_mapping(r->file->f_mapping))
+    ++	/* reject secretmem */
+    ++	if (vma_is_secretmem(vma))
+     +		return -EFAULT;
      +
+    - 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
+    - 
+    - 	/* if sleeping is allowed, wait for the page, if necessary */
+    + 	page = find_get_page(vma->vm_file->f_mapping, 0);
+    + 	if (!page)
+    + 		return -EFAULT;	/* page not mapped */
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
