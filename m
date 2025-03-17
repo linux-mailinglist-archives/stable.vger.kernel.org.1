@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-124682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAEA5A658AF
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:46:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C45DA658AE
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:46:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5677188D014
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:44:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77CB91707F3
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5A41B6D01;
-	Mon, 17 Mar 2025 16:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D09205E18;
+	Mon, 17 Mar 2025 16:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LwJ+sX5A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcdbeLCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0141A2567;
-	Mon, 17 Mar 2025 16:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E161A2567;
+	Mon, 17 Mar 2025 16:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229535; cv=none; b=FPPW8m7WHldnwlDkw7feyjcnv3PmukXMxi1EqKvzrlePdeQjwdQc2BNjRi2ebStfK0oOTZpn47gCFZL0c6SPcWWqasTFtvyaelRYsndC6lwU4gTN33Y/veZp8vF/PgVsjOxKL0iNxEGNEeYX0kQ8FF0cer/sExweIV8LgB1bStg=
+	t=1742229539; cv=none; b=geE9E6OEEOZSdLMZxXsxjlCYTuEU0jdSqOHHMp9uG/fWBTXkbuodWhz45tIadnhk2vkyygLKbulmSLGcSCItCfsP12OMKC5LnBDbi0n2LO3EizoETpHvvXguHDwYuaeK4/eVPTS9XGjxLBFoSMNebgPRcTckv3w1g9ofnoAMdTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229535; c=relaxed/simple;
-	bh=nPcvCsCRgv6WrfYsWQMws0+Y9HYX7FAwpVGL1NHNTy8=;
+	s=arc-20240116; t=1742229539; c=relaxed/simple;
+	bh=BbkZhxdokbhfSxfvsTxNQRLIManw6W5IZJTiFkZILlY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AB9Dd4qMLHyLJSFXVfxe+tA2BVOyN1/yI3jxSkN6329q5v2jFygZNvDzax2uw5T+J05ayjGSmarjtBANjyVaMLo42+PEyX1xQseYMFpQrIDidF46pIC3sXpcldaneplMItKA+jnSiW0KLFnARqI0ChQ7T/9JgxUZmpoT8hvzPS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LwJ+sX5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3A7C4CEE3;
-	Mon, 17 Mar 2025 16:38:52 +0000 (UTC)
+	 MIME-Version; b=O1Br8XBHdwVo3blZho/kt3GK02EWRDiWEHT1qqG4zRTE7lWIJjOcjIpMeBXLcjYCb7rQHluvvcpZHyQEwKuUoEI8Ag6RwC3mc0bpRDajAbGwEWyK85mv/n+PNPaJyC/hGnLbSWWNkVomreuwMTVlHS1PGNb3t2EpLqVBu00OrPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcdbeLCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90935C4CEE3;
+	Mon, 17 Mar 2025 16:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229535;
-	bh=nPcvCsCRgv6WrfYsWQMws0+Y9HYX7FAwpVGL1NHNTy8=;
+	s=k20201202; t=1742229538;
+	bh=BbkZhxdokbhfSxfvsTxNQRLIManw6W5IZJTiFkZILlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LwJ+sX5AHfe47qx2mrMvVgx1vNuxD2zOz58bRRZOkZMJjVaJpakE0LtSrxejKHodS
-	 06MvCYVeXbI8FkMTzlScm4Yz0w8Ry5uiqKe8G0+soYdth/N1GCcLnQq3UC8WRSmhkX
-	 Fl6X5HhsWtrtZP9B2ZJc1WNTymfaR7d6eOgg107VcLoD6Pp4trlwC4CL9XDAeVmdUW
-	 pYF1Km96Syn4XOtI5NMDgDCw7StTJkFflY3pdXtnYfkBxKvXpoDmZ+SDVfsveMWuVC
-	 sYNCHXO7pmcebLw9oGVeviz+lPTuz5RGcm9f36HN6cFX7eXOtu1Zr0s3ysVu2WkAEc
-	 YdqfYjuNgjifA==
+	b=KcdbeLCjtGCNHS4gS9LrGF9zsTH+ZI5abOwjn43KTLv824LklxuqWkq1NiVeCkIbo
+	 2RlmEozinNTxD0N2mGSBftIfbAuuVATwYuySXxYfbwCIdqLH8DVUEoTYoJUCJwlw5e
+	 zTK4W2n5qTxjJz4Vc1qYMhoUMn7tkDxtHYOL88Xwd7ntqmEHTsk75959ceb3cOPsr1
+	 8+ndfiEfFvBTeKYOCbsbbyZ3Im30M0W6G+uBf5Vi/PWcYErIBXxTfQyTfVnRyyWIC/
+	 vNFG4gZ5+/LB7WtzouYiL7lGtSwbH5am3B31QVjMYCxfxuUdQJ7cZZeRespQyg6jsF
+	 Dth5DVHGeG7Ag==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Taehee Yoo <ap420073@gmail.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>,
+	kadlec@netfilter.org,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	asml.silence@gmail.com,
-	willemb@google.com,
-	kaiyuanz@google.com,
-	skhawaja@google.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 11/13] net: devmem: do not WARN conditionally after netdev_rx_queue_restart()
-Date: Mon, 17 Mar 2025 12:38:16 -0400
-Message-Id: <20250317163818.1893102-11-sashal@kernel.org>
+	shuah@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 12/13] selftests: netfilter: skip br_netfilter queue tests if kernel is tainted
+Date: Mon, 17 Mar 2025 12:38:17 -0400
+Message-Id: <20250317163818.1893102-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250317163818.1893102-1-sashal@kernel.org>
 References: <20250317163818.1893102-1-sashal@kernel.org>
@@ -73,47 +74,87 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.19
 Content-Transfer-Encoding: 8bit
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit a70f891e0fa0435379ad4950e156a15a4ef88b4d ]
+[ Upstream commit c21b02fd9cbf15aed6e32c89e0fd70070281e3d1 ]
 
-When devmem socket is closed, netdev_rx_queue_restart() is called to
-reset queue by the net_devmem_unbind_dmabuf(). But callback may return
--ENETDOWN if the interface is down because queues are already freed
-when the interface is down so queue reset is not needed.
-So, it should not warn if the return value is -ENETDOWN.
+These scripts fail if the kernel is tainted which leads to wrong test
+failure reports in CI environments when an unrelated test triggers some
+splat.
 
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250309134219.91670-8-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Check taint state at start of script and SKIP if its already dodgy.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/devmem.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/netfilter/br_netfilter.sh      | 7 +++++++
+ .../testing/selftests/net/netfilter/br_netfilter_queue.sh  | 7 +++++++
+ tools/testing/selftests/net/netfilter/nft_queue.sh         | 1 +
+ 3 files changed, 15 insertions(+)
 
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index 11b91c12ee113..17f8a83a5ee74 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -108,6 +108,7 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
- 	struct netdev_rx_queue *rxq;
- 	unsigned long xa_idx;
- 	unsigned int rxq_idx;
-+	int err;
+diff --git a/tools/testing/selftests/net/netfilter/br_netfilter.sh b/tools/testing/selftests/net/netfilter/br_netfilter.sh
+index c28379a965d83..1559ba275105e 100755
+--- a/tools/testing/selftests/net/netfilter/br_netfilter.sh
++++ b/tools/testing/selftests/net/netfilter/br_netfilter.sh
+@@ -13,6 +13,12 @@ source lib.sh
  
- 	if (binding->list.next)
- 		list_del(&binding->list);
-@@ -119,7 +120,8 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
+ checktool "nft --version" "run test without nft tool"
  
- 		rxq_idx = get_netdev_rx_queue_index(rxq);
++read t < /proc/sys/kernel/tainted
++if [ "$t" -ne 0 ];then
++	echo SKIP: kernel is tainted
++	exit $ksft_skip
++fi
++
+ cleanup() {
+ 	cleanup_all_ns
+ }
+@@ -165,6 +171,7 @@ if [ "$t" -eq 0 ];then
+ 	echo PASS: kernel not tainted
+ else
+ 	echo ERROR: kernel is tainted
++	dmesg
+ 	ret=1
+ fi
  
--		WARN_ON(netdev_rx_queue_restart(binding->dev, rxq_idx));
-+		err = netdev_rx_queue_restart(binding->dev, rxq_idx);
-+		WARN_ON(err && err != -ENETDOWN);
- 	}
+diff --git a/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh b/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
+index 6a764d70ab06f..4788641717d93 100755
+--- a/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
++++ b/tools/testing/selftests/net/netfilter/br_netfilter_queue.sh
+@@ -4,6 +4,12 @@ source lib.sh
  
- 	xa_erase(&net_devmem_dmabuf_bindings, binding->id);
+ checktool "nft --version" "run test without nft tool"
+ 
++read t < /proc/sys/kernel/tainted
++if [ "$t" -ne 0 ];then
++	echo SKIP: kernel is tainted
++	exit $ksft_skip
++fi
++
+ cleanup() {
+ 	cleanup_all_ns
+ }
+@@ -72,6 +78,7 @@ if [ "$t" -eq 0 ];then
+ 	echo PASS: kernel not tainted
+ else
+ 	echo ERROR: kernel is tainted
++	dmesg
+ 	exit 1
+ fi
+ 
+diff --git a/tools/testing/selftests/net/netfilter/nft_queue.sh b/tools/testing/selftests/net/netfilter/nft_queue.sh
+index a9d109fcc15c2..00fe1a6c1f30c 100755
+--- a/tools/testing/selftests/net/netfilter/nft_queue.sh
++++ b/tools/testing/selftests/net/netfilter/nft_queue.sh
+@@ -593,6 +593,7 @@ EOF
+ 		echo "PASS: queue program exiting while packets queued"
+ 	else
+ 		echo "TAINT: queue program exiting while packets queued"
++		dmesg
+ 		ret=1
+ 	fi
+ }
 -- 
 2.39.5
 
