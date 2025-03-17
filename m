@@ -1,78 +1,62 @@
-Return-Path: <stable+bounces-124695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09227A658DE
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:50:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A098A658F5
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABD671897A3F
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:47:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D2B3A4FEA
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CEB1632D9;
-	Mon, 17 Mar 2025 16:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A472080DB;
+	Mon, 17 Mar 2025 16:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4tKAyme"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cA0//8wT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E321A4F21;
-	Mon, 17 Mar 2025 16:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DB81A4F21;
+	Mon, 17 Mar 2025 16:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229585; cv=none; b=Ijt4ziRn/InmaoRZk455IqFNpGPTxCeGkzGpWX4iN4OXrYCA1ZxmeZNOTeuZK+pTIA4PEaYqCErSeVqbbcWqrRieAhZtlgTDx5pGz8NAbqdpU8pa/5sMvu5f6QtewCUTwrAtBoc+hEJAl9FJTu16R5SwzxcmFdSOCf1oJ0ztE6g=
+	t=1742229589; cv=none; b=DiMgyb2WFfYNou6fz1Re8FzZSP2c7JmeKdlFQYOrDNBPPAs4oX26CQrft5IBO1l67nW/LTOebw40mAMJUkMxoPeDnr7Wtg1Y9TxDLBlIq7278FhS5aewQ583sFrxyxDEQMLhaO6874eO7lA5RTH463lgx2JoK45wNsXvWjty9CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229585; c=relaxed/simple;
-	bh=7kWfQ8zlguWQyuWeZIGhdUr9z+FhjfCrOr/e16jJDlM=;
+	s=arc-20240116; t=1742229589; c=relaxed/simple;
+	bh=vXCwbI10Rl9m+sJb+JM9niVxgGymnQBBBvpqY2iE/OQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FCUGdrL4KcICCbOs41GiUGsroG+WTn4wx3/cfa1UB203jphiatUKiFtmVLD2uN8Lkq3r+0ZyB+aafx2nCM+Nf97Q+MLkbewiGwuXC6ctrQSl3xFsXNPq+TQwOGoEiBCgFQTYvcVmvSSCmARX1PwNl4cjCUswocGQUdmH1COggLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4tKAyme; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4D4C4CEEC;
-	Mon, 17 Mar 2025 16:39:37 +0000 (UTC)
+	 MIME-Version; b=Mng0B/RJf9yAlffSyUXCQoDfExUqVLoiDf1ejer1jNbEYI4ohFOocmrjIdbbFF52oIatLfPtBXy4nAtkhb4PSi9Wy9KnQElj6h021zwYY4PupEYDPMB3hkKtw9z7Qn5xrQ2omZNqZHCaGhZf4y5utD7SDM/Ouh5BbStAlIQiyFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cA0//8wT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B8DC4CEF4;
+	Mon, 17 Mar 2025 16:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229584;
-	bh=7kWfQ8zlguWQyuWeZIGhdUr9z+FhjfCrOr/e16jJDlM=;
+	s=k20201202; t=1742229588;
+	bh=vXCwbI10Rl9m+sJb+JM9niVxgGymnQBBBvpqY2iE/OQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4tKAymeska0K8Ywk/da2HVtejrhcUgbsBTPRxkVM7nHwv0VQuDoR1aYjFuhpS4pp
-	 QOrokEp+vDDGfukl+XME2mYcW4unoNG9kS7tOt1u5cfRZ55FzZ0KNBbPLzrTGzqlYh
-	 kXKSxNRjG1d3cYxJ2RupwBR1RO2Hzg2tWqR1hmY9e0ddgeupyLTHXb3THkp7s3L5GV
-	 /j3oZvM9dWZFhDaD3B6+ILfWjiur1hvCA5qyCm+neiW8/ZkvN5UbQnSXpL3VHNxqQ9
-	 c1V6h0P1jd+i+1exM8Rx9XDWMSitrghaBjLKJf4LUo5G7h5C33sCKN6pX6dg+vlfyW
-	 E6JZYN4Mw0i6Q==
+	b=cA0//8wTCKvmfFz/WmxFfJg9gyWVs84VJEx1BU4vHlRk3FFqcuVLKSs1mKuEP/VTv
+	 u+3t/zEghP1lmA12Bz1e9TXCGu6y03EQD3DTQNCs5YDoH4NTgt1EEty/LA9kdEWQRu
+	 NPkVz1m5KJTmXCAd2VSa7zw8Rf2MRoQ0XiajjCi3KD48ER9kqnyX4eZNQ1HYFIaFPO
+	 0BOjj8WpuWZUi1IbB/+ZMGFKXfpLHVXIsmUwiVzIvSfJ10DQZvc/2492buoHMRvzz0
+	 j20yDPljAuo98+uJcp3UeLzB9wjgjtJ6iyM81HSRvOWrNadlnvB18hnIoexDohdpxX
+	 XyJqhYIfWKXug==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Xaver Hugl <xaver.hugl@gmail.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
+Cc: Navon John Lukose <navonjohnlukose@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	sunpeng.li@amd.com,
-	lijo.lazar@amd.com,
-	tzimmermann@suse.de,
-	rajneesh.bhardwaj@amd.com,
-	shaoyun.liu@amd.com,
-	Ramesh.Errabolu@amd.com,
-	Jack.Xiao@amd.com,
-	chiahsuan.chung@amd.com,
-	siqueira@igalia.com,
-	sunil.khatri@amd.com,
-	alex.hung@amd.com,
-	aurabindo.pillai@amd.com,
-	hersenxs.wu@amd.com,
-	mwen@igalia.com,
-	hamzamahfooz@linux.microsoft.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 3/4] drm/amd: Keep display off while going into S4
-Date: Mon, 17 Mar 2025 12:39:26 -0400
-Message-Id: <20250317163927.1893521-3-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	kailang@realtek.com,
+	sbinding@opensource.cirrus.com,
+	simont@opensource.cirrus.com,
+	josh@joshuagrisham.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 4/4] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion x360 14-dy1xxx
+Date: Mon, 17 Mar 2025 12:39:27 -0400
+Message-Id: <20250317163927.1893521-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250317163927.1893521-1-sashal@kernel.org>
 References: <20250317163927.1893521-1-sashal@kernel.org>
@@ -87,100 +71,76 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.131
 Content-Transfer-Encoding: 8bit
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Navon John Lukose <navonjohnlukose@gmail.com>
 
-[ Upstream commit 4afacc9948e1f8fdbca401d259ae65ad93d298c0 ]
+[ Upstream commit b11a74ac4f545626d0dc95a8ca8c41df90532bf3 ]
 
-When userspace invokes S4 the flow is:
+Add a fixup to enable the mute LED on HP Pavilion x360 Convertible
+14-dy1xxx with ALC295 codec. The appropriate coefficient index and bits
+were identified through a brute-force method, as detailed in
+https://bbs.archlinux.org/viewtopic.php?pid=2079504#p2079504.
 
-1) amdgpu_pmops_prepare()
-2) amdgpu_pmops_freeze()
-3) Create hibernation image
-4) amdgpu_pmops_thaw()
-5) Write out image to disk
-6) Turn off system
-
-Then on resume amdgpu_pmops_restore() is called.
-
-This flow has a problem that because amdgpu_pmops_thaw() is called
-it will call amdgpu_device_resume() which will resume all of the GPU.
-
-This includes turning the display hardware back on and discovering
-connectors again.
-
-This is an unexpected experience for the display to turn back on.
-Adjust the flow so that during the S4 sequence display hardware is
-not turned back on.
-
-Reported-by: Xaver Hugl <xaver.hugl@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2038
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Harry Wentland <harry.wentland@amd.com>
-Link: https://lore.kernel.org/r/20250306185124.44780-1-mario.limonciello@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 68bfdc8dc0a1a7fdd9ab61e69907ae71a6fd3d91)
+Signed-off-by: Navon John Lukose <navonjohnlukose@gmail.com>
+Link: https://patch.msgid.link/20250307213319.35507-1-navonjohnlukose@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c           | 11 +++++++++--
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  5 +++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 238c15c0c7e1e..48076cf8ba803 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2466,7 +2466,6 @@ static int amdgpu_pmops_freeze(struct device *dev)
- 
- 	adev->in_s4 = true;
- 	r = amdgpu_device_suspend(drm_dev, true);
--	adev->in_s4 = false;
- 	if (r)
- 		return r;
- 
-@@ -2478,8 +2477,13 @@ static int amdgpu_pmops_freeze(struct device *dev)
- static int amdgpu_pmops_thaw(struct device *dev)
- {
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
-+	struct amdgpu_device *adev = drm_to_adev(drm_dev);
-+	int r;
- 
--	return amdgpu_device_resume(drm_dev, true);
-+	r = amdgpu_device_resume(drm_dev, true);
-+	adev->in_s4 = false;
-+
-+	return r;
- }
- 
- static int amdgpu_pmops_poweroff(struct device *dev)
-@@ -2492,6 +2496,9 @@ static int amdgpu_pmops_poweroff(struct device *dev)
- static int amdgpu_pmops_restore(struct device *dev)
- {
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
-+	struct amdgpu_device *adev = drm_to_adev(drm_dev);
-+
-+	adev->in_s4 = false;
- 
- 	return amdgpu_device_resume(drm_dev, true);
- }
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 8dc0f70df24f8..f541ce3328f36 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2887,6 +2887,11 @@ static int dm_resume(void *handle)
- 
- 		return 0;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index e5e222e74d783..04f767067777b 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -4780,6 +4780,21 @@ static void alc236_fixup_hp_coef_micmute_led(struct hda_codec *codec,
  	}
+ }
+ 
++static void alc295_fixup_hp_mute_led_coefbit11(struct hda_codec *codec,
++				const struct hda_fixup *fix, int action)
++{
++	struct alc_spec *spec = codec->spec;
 +
-+	/* leave display off for S4 sequence */
-+	if (adev->in_s4)
-+		return 0;
++	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
++		spec->mute_led_polarity = 0;
++		spec->mute_led_coef.idx = 0xb;
++		spec->mute_led_coef.mask = 3 << 3;
++		spec->mute_led_coef.on = 1 << 3;
++		spec->mute_led_coef.off = 1 << 4;
++		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
++	}
++}
 +
- 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
- 	dc_release_state(dm_state->context);
- 	dm_state->context = dc_create_state(dm->dc);
+ static void alc285_fixup_hp_mute_led(struct hda_codec *codec,
+ 				const struct hda_fixup *fix, int action)
+ {
+@@ -7256,6 +7271,7 @@ enum {
+ 	ALC290_FIXUP_MONO_SPEAKERS_HSJACK,
+ 	ALC290_FIXUP_SUBWOOFER,
+ 	ALC290_FIXUP_SUBWOOFER_HSJACK,
++	ALC295_FIXUP_HP_MUTE_LED_COEFBIT11,
+ 	ALC269_FIXUP_THINKPAD_ACPI,
+ 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
+ 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
+@@ -8951,6 +8967,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC283_FIXUP_INT_MIC,
+ 	},
++	[ALC295_FIXUP_HP_MUTE_LED_COEFBIT11] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc295_fixup_hp_mute_led_coefbit11,
++	},
+ 	[ALC298_FIXUP_SAMSUNG_AMP] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc298_fixup_samsung_amp,
+@@ -9820,6 +9840,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
+ 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
+ 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
 -- 
 2.39.5
 
