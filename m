@@ -1,137 +1,155 @@
-Return-Path: <stable+bounces-124641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677DFA65289
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 15:14:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BDDA653C1
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 15:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A4613AE7F4
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 14:13:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5967617AA93
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 14:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9597C24060E;
-	Mon, 17 Mar 2025 14:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664B7244E89;
+	Mon, 17 Mar 2025 14:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TzYCnaTd";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Cr7WxoOe"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="JRXO7sqL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="wjKm4YMp"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D892820322;
-	Mon, 17 Mar 2025 14:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4186241C98;
+	Mon, 17 Mar 2025 14:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742220812; cv=none; b=r8C8iYAxTlVluYmQYTZc/1cX00+CdM0wNXJ6aDIw36peWPAGdV3XXi4be47Fby05rIVFm4ch0D5M/9nCx0J5Xbr/6PIYqxjE+vSr91EnuHRzFkSEmbPdBIdOeAEwrf0c95GfuovVYF+DytZyUh2bk7aeBGuakqouJUTnybTdaP8=
+	t=1742222123; cv=none; b=NZXa7OzHI39N4EOy+uylV/f8asVvz6Pm4wzwLcWZfKSYOnT7OcCC97G9lAmLElGasiB+u6ysaDDGajOB+fKml6q/w1Jczy4iwB2J19BXzAkaS9EYOCw0iG+msHKiPQdTRPSFHu8YNBa70eWks/fHeGQ3bcoUWqvx2hSWjEBONPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742220812; c=relaxed/simple;
-	bh=Hpdcypjt0ZbNYUdHGey6gpoTcz3DMDSTuv0leQ5C0HE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AV5FC+Cv3OIb+xr/qNKKG2qS7DBmM+PNQQJk14kldTuCb53xoJpPQhkqsNWJQgzxSoL0EVX2JN+B/QvE18ZMtJx31ioB9ItqGkx1tMcDzFUxClsEc0Q6UzzRIQXVmd/nKN1V9D8AANC53AuEuezjkHDXpwzvEL1u6tgQN6gl0v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TzYCnaTd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Cr7WxoOe; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742220809;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=EtclTXwOSCMg5QOeKYXMx4COUFyfI8/aHYlSBvUgGug=;
-	b=TzYCnaTdWzV3lR+LbCsvEXfYiozktCDRcAjuEJRTFaKJX21f1jRAeEEWrSmmwM693xOcZj
-	2LYKAtFqBlOpqv7KfpCqL2RmmlMHcQn5uBC/EpYh20HASDiCqSZRVz8SKgx3h0+0kLs0f4
-	rLCmkHMHGUOKDFGBMCSyZlFp2qXw++J3Whcu0AZWM9WafvunhtnOuGvfj/iSXg7m97k/JX
-	IE98Ukjxml0QJay26gx3Qo/HKuXQor/S+VxpLA7zycAkUjvQMChVQ+egsa8mNTmI/7ST64
-	9cpjR30crg9kNbyKef84j5u/TbML0mAPVNiXWUl8FmZH4uf3EL4HkwYco0F1+w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742220809;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=EtclTXwOSCMg5QOeKYXMx4COUFyfI8/aHYlSBvUgGug=;
-	b=Cr7WxoOe6k9vgW/OwIAFPJXvkXXDWam+Q5QI+HAYPBEKwogwSrCNLAFJK7AloA6dPmU0XD
-	lRnFLnNMiYbyqmAA==
-Date: Mon, 17 Mar 2025 15:13:25 +0100
-Subject: [PATCH] loop: Properly send KOBJ_CHANGED uevent for disk device
+	s=arc-20240116; t=1742222123; c=relaxed/simple;
+	bh=Yt3WgbrVQo8duGBSP1Jia0wgkU05qIskxVJQhvJpiV4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UQspIFHMqRqDn6SdiqFMlXnks1bXVqWPYS7PlhkR/mFasvqfxPuP1fSMY9xwD3HcOFJZq3AlGkGi1ZasyHu0TMYTmky31yXK/wFoVofzhPD23+h2wcF7Q/v7iNyjCsVgRqs7+4L4exrkirt8A6NMrfG32mZqOcp6BXQd8D+omBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=JRXO7sqL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=wjKm4YMp; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id F14CD1140098;
+	Mon, 17 Mar 2025 10:35:19 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Mon, 17 Mar 2025 10:35:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1742222119;
+	 x=1742308519; bh=2YSB9jrUO3YWPRHJXtZJF6w39S1fmkOod2mob/5TWPA=; b=
+	JRXO7sqLMoiym1IS/rElHi5heyyAdPhFUdkMfejJE+e7/ZI1zIMkWE9I6SWcSev7
+	udrth6sTL5KjMqpwlP7F1nPF0sBdrnfjwmqDbiPRGy8WAr1QjJ+3CEBckwr91GsE
+	3jtubLvlds+blpu7ZjOEojwQlHizgUx3m3YXKQ0RlSKWcgYA3l7hglJsuIoniRNZ
+	sfYVMkZIi0IumCQK8nHVbZbuwiWgbNGlbUASIlDJrl/0mhhVXBQXZ7JigcO7QxCJ
+	t18mZRZbBVyMwFO0c68878iN/ui2DikKiTjJ8+Xm6juP2+m9sFla9oT4WmZGpFrO
+	bGCzROiaaZbzqaaMK6nCxQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1742222119; x=
+	1742308519; bh=2YSB9jrUO3YWPRHJXtZJF6w39S1fmkOod2mob/5TWPA=; b=w
+	jKm4YMpNXWUmpNt36OtTm92YSomhtqbQoxFc3H08aXn9aPUBHJH0edyYGRFMznm1
+	bUlwJ+v3BP7hdqD298P97WbvbDob0ntbW+9y9tLuX7CllupDgKh8g/lhcHXJgtb4
+	GLRE+UmFOvEhNHMOe5FnowGw8S39oAcgI0OjiNIkdCc/V1LBJmH+p7f8Cy3cWuBc
+	F4sqf1+3BxP13kBT9HqIhZkfnONAeZgibdG9RI2nsV6OCqt2FknccCycwnn8m5c5
+	J0zO+lNNqLjSpePoxoIEUyAtfqRomnle53Lzpl4bG8Bm+xomgtviZ6lPFapdb9X7
+	0NXvZ640OTV7r1z5XoEZQ==
+X-ME-Sender: <xms:JzPYZ6t029xOpdkopxRg73Jt_RADru25mk86WG2_1ZTVjfqioAh5zQ>
+    <xme:JzPYZ_dq3FN-qFWNIqGCJAXu4IfN4otAoV-V-KTGVcHtZWSbxI6k6Zw9yBnsDwmzv
+    2OifyBFtoQ9Gw>
+X-ME-Received: <xmr:JzPYZ1zNB4J5UB9ZyxJf7uzS012kj-Dmvw0F0Srr690Tg_t6lbMUtNnnxg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeeljeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
+    tddunecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenuc
+    ggtffrrghtthgvrhhnpeffveeivedvkeejiedvteeggfeihfejtefghfeltdelledtueeg
+    heduvddvjeevhfenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrh
+    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgt
+    ohhmpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epthhhohhmrghsrdifvghishhsshgthhhuhheslhhinhhuthhrohhnihigrdguvgdprhgt
+    phhtthhopegrgigsohgvsehkvghrnhgvlhdrughkpdhrtghpthhtohepmhgrtghosegrnh
+    gurhhoihgurdgtohhmpdhrtghpthhtohephhhisegrlhihshhsrgdrihhspdhrtghpthht
+    ohepjhhohhhnrdhoghhnvghssheslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhope
+    hlihhnuhigqdgslhhotghksehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:JzPYZ1OEhr29cuNzu3OSg5YOzlewpUdp4kYwpaNI2gtFjQHCubIRKA>
+    <xmx:JzPYZ6-t8L-c8z_Dloch3rNmEym9Vl0jZ-lP7hreJf_EJ-vUTsr1fQ>
+    <xmx:JzPYZ9XJv1XAUp9rYRpGJFLQcdZqLqCNJN4RJhjveGTouAlAz-eW6A>
+    <xmx:JzPYZzff9wr73gR5j0Q77sS3MMOBTh4E8AD-q4ecbtmJaZrg89wE1w>
+    <xmx:JzPYZ6NncXCqcBum0CCdJVxmXRiH0dvxGNXkFnbMsPqRaQuikOXFRrUq>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 17 Mar 2025 10:35:18 -0400 (EDT)
+Date: Mon, 17 Mar 2025 15:33:55 +0100
+From: Greg KH <greg@kroah.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>,
+	Alyssa Ross <hi@alyssa.is>, John Ogness <john.ogness@linutronix.de>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] loop: Properly send KOBJ_CHANGED uevent for disk device
+Message-ID: <2025031759-unlined-candle-1d91@gregkh>
+References: <20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIAAQu2GcC/32Nyw7CIBBFf6WZtRgeRYMr/8N0QWRqJ2mgAUpqG
- v5drHtzV+fmPnZIGAkT3LodIhZKFHwDcergOVn/QkauMUguNVf8yuYQFrZiQZ/ZL+GYtepi+Ng
- r5Apac4k40nasPobGE6Uc4vs4KeLr/t8rgjWh0dpKZXqp7zP5NcfgaTs7hKHW+gFGqDT0ugAAA
- A==
-X-Change-ID: 20250307-loop-uevent-changed-aa3690f43e03
-To: Jens Axboe <axboe@kernel.dk>, Martijn Coenen <maco@android.com>, 
- Alyssa Ross <hi@alyssa.is>
-Cc: John Ogness <john.ogness@linutronix.de>, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1742220808; l=2095;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=Hpdcypjt0ZbNYUdHGey6gpoTcz3DMDSTuv0leQ5C0HE=;
- b=ZiaehUy4QRjIUsV2+NmlNt3mlBEdxOFbu0yZU+R2EUOO8E9PCR+ziupoxLo1EqSseZc+g9f8L
- XR1CUo90jEsDkbodaQktZN9z1XRXdwyXnqFtTUbzSN2/owDrtXrfL1g
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+In-Reply-To: <20250317-loop-uevent-changed-v1-1-cb29cb91b62d@linutronix.de>
 
-The wording "uncork" in the code comment indicates that it is expected that
-the suppressed event instances are automatically sent after unsuppressing.
-This is not the case, they are discarded.
-In effect this means that no "changed" events are emitted on the device
-itself by default. On the other hand each discovered partition does trigger
-a "changed" event on the loop device itself. Therefore no event is emitted for
-devices without partitions.
+On Mon, Mar 17, 2025 at 03:13:25PM +0100, Thomas Weiﬂschuh wrote:
+> The wording "uncork" in the code comment indicates that it is expected that
+> the suppressed event instances are automatically sent after unsuppressing.
+> This is not the case, they are discarded.
+> In effect this means that no "changed" events are emitted on the device
+> itself by default. On the other hand each discovered partition does trigger
+> a "changed" event on the loop device itself. Therefore no event is emitted for
+> devices without partitions.
+> 
+> This leads to udev missing the device creation and prompting workarounds in
+> userspace, see the linked util-linux/losetup bug.
+> 
+> Explicitly emit the events and drop the confusingly worded comments.
+> 
+> Link: https://github.com/util-linux/util-linux/issues/2434
+> Fixes: 3448914e8cc5 ("loop: Add LOOP_CONFIGURE ioctl")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> ---
+>  drivers/block/loop.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+> index c05fe27a96b64f1f1ea3868510fdd0c7f4937f55..fbc67ff29e07c15f2e3b3e225a4a37df016fe9de 100644
+> --- a/drivers/block/loop.c
+> +++ b/drivers/block/loop.c
+> @@ -654,8 +654,8 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+>  
+>  	error = 0;
+>  done:
+> -	/* enable and uncork uevent now that we are done */
+>  	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+> +	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
 
-This leads to udev missing the device creation and prompting workarounds in
-userspace, see the linked util-linux/losetup bug.
+Why not just remove the place where the uevent was suppressed to start
+with?  It feels by manually sending a change event, you are doing
+exactly what the suppress was trying to prevent, which makes me think
+this is wrong.
 
-Explicitly emit the events and drop the confusingly worded comments.
+thanks,
 
-Link: https://github.com/util-linux/util-linux/issues/2434
-Fixes: 3448914e8cc5 ("loop: Add LOOP_CONFIGURE ioctl")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Wei√üschuh <thomas.weissschuh@linutronix.de>
----
- drivers/block/loop.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index c05fe27a96b64f1f1ea3868510fdd0c7f4937f55..fbc67ff29e07c15f2e3b3e225a4a37df016fe9de 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -654,8 +654,8 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
- 
- 	error = 0;
- done:
--	/* enable and uncork uevent now that we are done */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-+	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- 	return error;
- 
- out_err:
-@@ -1115,8 +1115,8 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
- 	if (partscan)
- 		clear_bit(GD_SUPPRESS_PART_SCAN, &lo->lo_disk->state);
- 
--	/* enable and uncork uevent now that we are done */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-+	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- 
- 	loop_global_unlock(lo, is_loop);
- 	if (partscan)
-
----
-base-commit: 4701f33a10702d5fc577c32434eb62adde0a1ae1
-change-id: 20250307-loop-uevent-changed-aa3690f43e03
-
-Best regards,
--- 
-Thomas Wei√üschuh <thomas.weissschuh@linutronix.de>
-
+greg k-h
 
