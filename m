@@ -1,65 +1,66 @@
-Return-Path: <stable+bounces-124671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67100A65897
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:43:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079AAA6588E
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEB3C19A0EF3
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:41:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9885017CF57
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E051F5839;
-	Mon, 17 Mar 2025 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EFE1AF0B4;
+	Mon, 17 Mar 2025 16:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jd4gCWJA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBd6lIRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075711F4706;
-	Mon, 17 Mar 2025 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83201AA795;
+	Mon, 17 Mar 2025 16:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229498; cv=none; b=QxY6awmYrWnHZ1sLhP6o1wr9Sq5bOQT4I04VhZ7H0Uom5xJvaWzX8Pf6sZnLEb7S6TAY3rUunKwFaEnymZmyqSXbMdSMdgbRazC5H9RV5uv5NhkYabMHN83FETEDHAnouRJwbRt0zuUlrzKHEL3A7Lw59odEFprAWHngie9liGE=
+	t=1742229504; cv=none; b=SI9P8UvwmvqFK4zbnkdBLSCTIPMqsQcypaUpliGoGvjbR9aMZge8QKx9pr8MykefNWufLvC1HARrbZqtY5O+X6KSBXVzFu8l1cABQchVf4VU3/abmZCT6tKNy+0xoBKbqfWpJkwxQFE/ycB8/1txgaeor8ywhrE21uAf+3RxEZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229498; c=relaxed/simple;
-	bh=cTtWJdgHBaThA0PWeqWg4xK1c4tdQtMTakykwnUudeA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s+oq3HzYxfzE6fjhdTrzcEgSU0R2Qt+tBPCsVENSFAYW2aV+sGJpubCP/9c9haop6Nd459g50s2d4DnsvnLreWKjuBqhgesc+q3bCAMxPMdEaaK4IUijQwwZeV7gxof9ooFAtsyb2GEL0FZlr1I7cmiM/fmiDft9pjnUKSGKYMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jd4gCWJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E680C4CEED;
-	Mon, 17 Mar 2025 16:38:16 +0000 (UTC)
+	s=arc-20240116; t=1742229504; c=relaxed/simple;
+	bh=N/aRBNxPho1kgMQVdIQBUk7vp1cyQKJPsr48d15Ncd8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cvAS349KFWUob2qHUzzG2sca4HAGG2eL2gv07VaeHSq2zf44asfr9lImz4Or1ZqV+DfDNJkr8TOK/mzIxENhQEnnoom/+WHiM3IP+r7XDjwonKgw9ZH6ymd5RHOegbOIak3Adea9Kiet8tH09O4S3P6FjYr6adj+2r1cZgm81Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBd6lIRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9957DC4CEE3;
+	Mon, 17 Mar 2025 16:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229497;
-	bh=cTtWJdgHBaThA0PWeqWg4xK1c4tdQtMTakykwnUudeA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jd4gCWJA175gnYmv+UUvuESRvNokhMqroAYNgkrmxGygFK+TMmlNmN+nLxw8zxHvL
-	 /GQVzjlCKm6xAnCmcaa4tFFTQrSNDe6Xhli4VrEZg9iQE/eDk2BY9U6etn7erRszB4
-	 r0v2aKogu2wWo3+tZ7uokPvKZLc4X4e9KJ5fJ46lkGjbkKrNgoZQWpc0eE7TtjpQCU
-	 x/3qjUm1p8xTP6aByvS0ILLITbtdibuqCPm9V/d1805JBpENm1RYXYBILw+2w97985
-	 6l6qlD34j0kaprGERd0GXD+S+OQvt90dgnpPSBYyZhl1Ar01Ddm8fJcIVuPZOb+hoQ
-	 D9mBpZ33ejLIA==
+	s=k20201202; t=1742229503;
+	bh=N/aRBNxPho1kgMQVdIQBUk7vp1cyQKJPsr48d15Ncd8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RBd6lIRm1hIWxm0KUeLj7d+UXMQdXGpBSyZO/q0qgLiTEptbB240lZjInIYnkBcDC
+	 24UUVbf+cYbnzBmlVpsojn2X/cLpJLStnJekoHZxRaGA+ZfkAngQ3mcws1IFhaOFjK
+	 GzkEa9PRMW2h+9sr9uzssHHCX37Ju33eJTy9Bc059354isq8togX1gM52QXEo6WidW
+	 13oCCKWqrZfeIGau4gfFJirkpeCEgVJMFOIuvdC9g5aYmVDF2nMXhIz7Fj6fBOGTAJ
+	 WyfeFzgXbTT8DNxAtc1IYzoKBFol/4uuuP7lAi+ptLTQedDZfzYsFGcsZmbsyQiKrK
+	 QSSaF5tEeHkCw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Navon John Lukose <navonjohnlukose@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Naman Jain <namjain@linux.microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kailang@realtek.com,
-	sbinding@opensource.cirrus.com,
-	simont@opensource.cirrus.com,
-	josh@joshuagrisham.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 16/16] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion x360 14-dy1xxx
-Date: Mon, 17 Mar 2025 12:37:25 -0400
-Message-Id: <20250317163725.1892824-16-sashal@kernel.org>
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	decui@microsoft.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-hyperv@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 01/13] x86/hyperv/vtl: Stop kernel from probing VTL0 low memory
+Date: Mon, 17 Mar 2025 12:38:06 -0400
+Message-Id: <20250317163818.1893102-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250317163725.1892824-1-sashal@kernel.org>
-References: <20250317163725.1892824-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,79 +69,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13.7
+X-stable-base: Linux 6.12.19
 Content-Transfer-Encoding: 8bit
 
-From: Navon John Lukose <navonjohnlukose@gmail.com>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-[ Upstream commit b11a74ac4f545626d0dc95a8ca8c41df90532bf3 ]
+[ Upstream commit 59115e2e25f42924181055ed7cc1d123af7598b7 ]
 
-Add a fixup to enable the mute LED on HP Pavilion x360 Convertible
-14-dy1xxx with ALC295 codec. The appropriate coefficient index and bits
-were identified through a brute-force method, as detailed in
-https://bbs.archlinux.org/viewtopic.php?pid=2079504#p2079504.
+For Linux, running in Hyper-V VTL (Virtual Trust Level), kernel in VTL2
+tries to access VTL0 low memory in probe_roms. This memory is not
+described in the e820 map. Initialize probe_roms call to no-ops
+during boot for VTL2 kernel to avoid this. The issue got identified
+in OpenVMM which detects invalid accesses initiated from kernel running
+in VTL2.
 
-Signed-off-by: Navon John Lukose <navonjohnlukose@gmail.com>
-Link: https://patch.msgid.link/20250307213319.35507-1-navonjohnlukose@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Co-developed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Tested-by: Roman Kisel <romank@linux.microsoft.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250116061224.1701-1-namjain@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250116061224.1701-1-namjain@linux.microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/x86/hyperv/hv_vtl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 10e9ec74104d2..2eabab0da87d0 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4792,6 +4792,21 @@ static void alc236_fixup_hp_coef_micmute_led(struct hda_codec *codec,
- 	}
- }
+diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
+index 04775346369c5..d04ccd4b3b4af 100644
+--- a/arch/x86/hyperv/hv_vtl.c
++++ b/arch/x86/hyperv/hv_vtl.c
+@@ -30,6 +30,7 @@ void __init hv_vtl_init_platform(void)
+ 	x86_platform.realmode_init = x86_init_noop;
+ 	x86_init.irqs.pre_vector_init = x86_init_noop;
+ 	x86_init.timers.timer_init = x86_init_noop;
++	x86_init.resources.probe_roms = x86_init_noop;
  
-+static void alc295_fixup_hp_mute_led_coefbit11(struct hda_codec *codec,
-+				const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		spec->mute_led_polarity = 0;
-+		spec->mute_led_coef.idx = 0xb;
-+		spec->mute_led_coef.mask = 3 << 3;
-+		spec->mute_led_coef.on = 1 << 3;
-+		spec->mute_led_coef.off = 1 << 4;
-+		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
-+	}
-+}
-+
- static void alc285_fixup_hp_mute_led(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
- {
-@@ -7644,6 +7659,7 @@ enum {
- 	ALC290_FIXUP_MONO_SPEAKERS_HSJACK,
- 	ALC290_FIXUP_SUBWOOFER,
- 	ALC290_FIXUP_SUBWOOFER_HSJACK,
-+	ALC295_FIXUP_HP_MUTE_LED_COEFBIT11,
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
- 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
-@@ -9381,6 +9397,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC283_FIXUP_INT_MIC,
- 	},
-+	[ALC295_FIXUP_HP_MUTE_LED_COEFBIT11] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc295_fixup_hp_mute_led_coefbit11,
-+	},
- 	[ALC298_FIXUP_SAMSUNG_AMP] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc298_fixup_samsung_amp,
-@@ -10425,6 +10445,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
- 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
- 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	/* Avoid searching for BIOS MP tables */
+ 	x86_init.mpparse.find_mptable = x86_init_noop;
 -- 
 2.39.5
 
