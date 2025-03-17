@@ -1,183 +1,156 @@
-Return-Path: <stable+bounces-124732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E3FA65BED
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 19:08:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C46A65C3A
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 19:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8BC9189FD99
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 18:08:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 211E67A4CB5
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 18:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5FC1B0F30;
-	Mon, 17 Mar 2025 18:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD58A1A840A;
+	Mon, 17 Mar 2025 18:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cEQXogVo"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aywwZIbH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930C619F420;
-	Mon, 17 Mar 2025 18:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C15B14C5AA
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 18:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742234902; cv=none; b=N3mt5rS+B0bwhG4u+5yOW+Y8kntQahFHT2I8c73LITd5DhPhhQA3vGbc0ypcnwtss2IIed2qSkQUXE7fXUGfIgFk1QXoKhDcvxWvEK0Ix8tHpOS40cUgq4sIh3ro9nlHRCm25xJRQclXkfa6uOXgdl8eBgqk/UMHfjR96VJU7nw=
+	t=1742235475; cv=none; b=OhY5VQMi0pp3bLcnshkVDmsuwe/22cw/H79CdKsbUH9XWMjkAtprACZaxxE0rSmCWjwDLRA5eol+x+D/awZXLBogpvIAMJWwIpTTtVx/FRT+SatvBob55HO08koGLj31CN0liwbBBYIwd4R2a+9GHUQ3PV2vvd4uCG6SRd8e/ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742234902; c=relaxed/simple;
-	bh=Mu7m47kKBA0YhW5neOWnvRRU9TV9xE/f1KoAz4j7z80=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=V3gKShhvLAm/Uo/3+YKSGdP/uc0VR+gsGti1jjcRfCgMh1TZE59mFBrBVja23Npc2uE3wn80aPqOm3VSnLzBVsVZqB20HEvewrcYkYouGZ+nDPHQxKKrxXzD5PSKpbeizNc3oZ6KdC3uck1E4xs7xAF56FYk7wjcTfDr7Gt9Frw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cEQXogVo; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742234901; x=1773770901;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=Mu7m47kKBA0YhW5neOWnvRRU9TV9xE/f1KoAz4j7z80=;
-  b=cEQXogVoI/93v3JjG60AL3KN47IyjT09dE667TlaNqGcLjbUfpZBItQw
-   LKc8Xtn5SIEP1Mfz7o3Ll/fSvKGR+vmAZQAdeTQ27Wq/XDflcNUo/5hYO
-   vNT2e2RzU6yd1IOg4WOjfDArTjaUu3YlnVJxbcHs0fPnVy4Wi0djFWWJg
-   oQAce3rMcXEPxvG2/WxE33xOSNbu/7mkcmh7B1TcExzYvzO+izYNNhh6F
-   nBiIi3plDQmY9xNcAORPdBwRCZvh23KuaH4vimfDMPmJv7kxUcEc5O28x
-   pSpY3CSVCwNCj39PHFrKCVryUt7vBz+8aXOFQ2H7iEBQPfX5tX/tQPd0c
-   A==;
-X-CSE-ConnectionGUID: NhF3RMfoRmaX4piChoRCjw==
-X-CSE-MsgGUID: cfIPq2HqQbW3U9NCeL4ZZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="43258658"
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; 
-   d="scan'208";a="43258658"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2025 11:08:20 -0700
-X-CSE-ConnectionGUID: /lAY/v6iTu2NXtbhs97EQw==
-X-CSE-MsgGUID: DGuQfm/TTQe10ci770s4iQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; 
-   d="scan'208";a="153007123"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.60])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2025 11:08:15 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 17 Mar 2025 20:08:12 +0200 (EET)
-To: Lukas Wunner <lukas@wunner.de>
-cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org, 
-    Guenter Roeck <groeck@juniper.net>, 
-    Mika Westerberg <mika.westerberg@linux.intel.com>, 
-    "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-    Rajat Jain <rajatxjain@gmail.com>, 
-    Joel Mathew Thomas <proxy0@tutamail.com>, 
-    LKML <linux-kernel@vger.kernel.org>, 
-    Jonathan Cameron <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] PCI/hotplug: Disable HPIE over reset
-In-Reply-To: <Z9Wjk2GzrSURZoTG@wunner.de>
-Message-ID: <a18432fc-a9ff-0435-cd94-912bf2dcb4b3@linux.intel.com>
-References: <20250313142333.5792-1-ilpo.jarvinen@linux.intel.com> <20250313142333.5792-2-ilpo.jarvinen@linux.intel.com> <Z9Wjk2GzrSURZoTG@wunner.de>
+	s=arc-20240116; t=1742235475; c=relaxed/simple;
+	bh=Od4Ygc8gvgOgVyiZmiUSYJCWxXNdiXruHcxMWGREO/Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HPiHkld5Ds1834COhrliNQLnvbBS7gRQyOYoBhJMgByENb8U0+dZN9lESvzY/MXd7YOcji1Wi4ErlUsO/5pI5+JkX5b2QqtBzyMnBnJm97xujsvORbozrsv/lWvs7ahN3SIlPRKLoHta8I3dDIVskNxbaqvyvwgMvJL9xCZuLxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aywwZIbH; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3913fdd003bso2364808f8f.1
+        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 11:17:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1742235471; x=1742840271; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yEUZ6SgN7EUPHL01UAhQ5NF1qAY7R8r2dg2/lYHhiF0=;
+        b=aywwZIbHhHRcfJSO8JDeeRg49OAbJhkcUueEkFYlySNFJU4T4DadGkZGYJhaAKi4vY
+         K3+lZlQadID1inSCvA+d2igJemsx6jomLorghc7JhpkRcZF54z9GJv1PeWlVztxR5IFa
+         RyMmLQZxuMXOV3kupcfcfYYbV6Y0oS+x8JW5Q/7CHCMIk8nVp4XX8JhdS+M9bLic68N4
+         XeiHme78pi5cDKYyzPfaP1AQFn/l7P1qBoUpVrvuMsB1zAHKsHhatMAlKao8/uDfqzHi
+         7WmR/Aw5gPH34p75kuIpUrI0s2n+D5HNqO6jwZVBJpDqF8EwCfSofVW6E1ldAin1r3BH
+         mJWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742235471; x=1742840271;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yEUZ6SgN7EUPHL01UAhQ5NF1qAY7R8r2dg2/lYHhiF0=;
+        b=Z+ENEAymeaVYJSE19ZiWTcxLnwHepT/yb1ZUemhMhQx4ijhIU2erZSf/LSTEwn2S6A
+         Axu9paAXFmB9ovrON+qs0rJzAeT33Y42Ky6zJzX0DMLyXsLWgXwftEJJUwoKp/34/n/F
+         Y/l10uLjZDt1kbVnPOjk7alFD1xAcS/zo8YMNvPrGHFbuM8HUIxVJ/Hkqy3+uxaAkuq2
+         EvhnHJfOEVlkBtuz32RC4Wg8LqlfrMw+2ESFzFxSF5zgi8haB30kAiqyrQxuFWpng+y+
+         QMMcM9pWvcSzwCQf44lSY8R3pJpjUj52w2QHnjVhFnQWcics6n9gqgdo2IeGcyDDl9Xi
+         5qaQ==
+X-Gm-Message-State: AOJu0YwFjV9+KTpD+A4RlbE0LpH779ODZUeniABAbt0p4ozk9S0SvDza
+	NeyooXiPDVam1MUmc5e4jmqWrBLZiek7vXs91EtgWROHtaBhMCnDyWJ/bSQPycGk8IrQKIvFYmO
+	KCEs=
+X-Gm-Gg: ASbGnctbZORsXJPfuNoqoBjqB7ZNyFh2EuCcAZCD3PEoCWnFL+Hyc1FfH3gXNd3X26v
+	HGUcPv/Xho5kcvvoJpEDkrcDsSHel5LvMvXbLJ9jEERm7Vfmxlv4qm0UhGDDnhGjgIpkwpcrLRb
+	SarAQQQjEZENk2TRVG+7UKNmqs7BrYY7KAunw4Wt6v8r2XlKuMaOqHEwafdtLpi+fMUqe3MLpS1
+	3V7/D7ETf04dmn6W4qns+jmuPtNEI4htTWUzxp68En+UnPFzhE7rOpFH1eGdwxTTPS2kz7rHgag
+	NIo58KHALhUjtmFXtA+nYe9ifzEalQ/NuK+VlY0Q0vfiK5x2bFGozC+wdCh4LZpa3cu2yQ==
+X-Google-Smtp-Source: AGHT+IFXFIN9er7PxjTssS/3m1M1TXYav7ZGncsAn3519EBATQMUbrDgEZSXvgMvsrHw+3tfCBCbbw==
+X-Received: by 2002:a5d:5f94:0:b0:390:ff84:532b with SMTP id ffacd0b85a97d-3996bb44b21mr378534f8f.7.1742235471274;
+        Mon, 17 Mar 2025 11:17:51 -0700 (PDT)
+Received: from localhost.localdomain ([2804:7f0:bc00:1e6e:6171:3ed0:ca4f:bf31])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711559289sm8162301b3a.68.2025.03.17.11.17.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 11:17:50 -0700 (PDT)
+From: Henrique Carvalho <henrique.carvalho@suse.com>
+To: stable@vger.kernel.org
+Cc: Henrique Carvalho <henrique.carvalho@suse.com>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13.y] smb: client: Fix match_session bug preventing session reuse
+Date: Mon, 17 Mar 2025 15:16:22 -0300
+Message-ID: <20250317181622.2243629-1-henrique.carvalho@suse.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <2025031652-spider-flying-c68b@gregkh>
+References: <2025031652-spider-flying-c68b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-233792055-1742232008=:944"
-Content-ID: <2adfc975-5a6a-f98c-67a2-8b6bd7590068@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Fix a bug in match_session() that can causes the session to not be
+reused in some cases.
 
---8323328-233792055-1742232008=:944
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <84f24538-a527-e2dd-d7ca-4ecf85be92af@linux.intel.com>
+Reproduction steps:
 
-On Sat, 15 Mar 2025, Lukas Wunner wrote:
+mount.cifs //server/share /mnt/a -o credentials=creds
+mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
+cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
 
-> On Thu, Mar 13, 2025 at 04:23:30PM +0200, Ilpo J=E4rvinen wrote:
-> > pciehp_reset_slot() disables PDCE (Presence Detect Changed Enable) and
-> > DLLSCE (Data Link Layer State Changed Enable) for the duration of reset
-> > and clears the related status bits PDC and DLLSC from the Slot Status
-> > register after the reset to avoid hotplug incorrectly assuming the card
-> > was removed.
-> >=20
-> > However, hotplug shares interrupt with PME and BW notifications both of
-> > which can make pciehp_isr() to run despite PDCE and DLLSCE bits being
-> > off. pciehp_isr() then picks PDC or DLLSC bits from the Slot Status
-> > register due to the events that occur during reset and caches them into
-> > ->pending_events. Later, the IRQ thread in pciehp_ist() will process
-> > the ->pending_events and will assume the Link went Down due to a card
-> > change (in pciehp_handle_presence_or_link_change()).
-> >=20
-> > Change pciehp_reset_slot() to also clear HPIE (Hot-Plug Interrupt
-> > Enable) as pciehp_isr() will first check HPIE to see if the interrupt
-> > is not for it. Then synchronize with the IRQ handling to ensure no
-> > events are pending, before invoking the reset.
->=20
-> After dwelling on this for a while, I'm thinking that it may re-introduce
-> the issue fixed by commit f5eff5591b8f ("PCI: pciehp: Fix AB-BA deadlock
-> between reset_lock and device_lock"):
->=20
-> Looking at the second and third stack trace in its commit message,
-> down_write(reset_lock) in pciehp_reset_slot() is basically equivalent
-> to synchronize_irq() and we're holding device_lock() at that point,
-> hindering progress of pciehp_ist().
+mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
+mount.cifs //server/share /mnt/a -o credentials=creds
+cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
 
-This description was somewhat confusing but what I can see, now that you=20
-mentioned this, is that if pciehp_reset_slot() calls synchronize_irq(), it=
-=20
-can result in trying to acquire device_lock() again while trying to drain=
-=20
-the pending events. ->reset_lock seems irrelevant to that problem.
+Cc: stable@vger.kernel.org
+Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+(cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
+---
+ fs/smb/client/connect.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-Thus, pciehp_reset_slot() cannot ever rely on completing the processing of=
-=20
-all pending events before it invokes the reset as long as any of its=20
-callers is holding device_lock().
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index eaa6be4456d0..c9273a90d58e 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1873,9 +1873,8 @@ static int match_session(struct cifs_ses *ses,
+ 			 struct smb3_fs_context *ctx,
+ 			 bool match_super)
+ {
+-	if (ctx->sectype != Unspecified &&
+-	    ctx->sectype != ses->sectype)
+-		return 0;
++	struct TCP_Server_Info *server = ses->server;
++	enum securityEnum ctx_sec, ses_sec;
+ 
+ 	if (!match_super && ctx->dfs_root_ses != ses->dfs_root_ses)
+ 		return 0;
+@@ -1887,11 +1886,19 @@ static int match_session(struct cifs_ses *ses,
+ 	if (ses->chan_max < ctx->max_channels)
+ 		return 0;
+ 
+-	switch (ses->sectype) {
++	ctx_sec = server->ops->select_sectype(server, ctx->sectype);
++	ses_sec = server->ops->select_sectype(server, ses->sectype);
++
++	if (ctx_sec != ses_sec)
++		return 0;
++
++	switch (ctx_sec) {
+ 	case Kerberos:
+ 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
+ 			return 0;
+ 		break;
++	case NTLMv2:
++	case RawNTLMSSP:
+ 	default:
+ 		/* NULL username means anonymous session */
+ 		if (ses->user_name == NULL) {
+-- 
+2.47.0
 
-It's a bit sad, because removing most of the reset_lock complexity would=20
-have been nice simplification in locking, effectively it would have=20
-reverted f5eff5591b8f too.
-
-> So I think I have guided you in the wrong direction and I apologize
-> for that.
->=20
-> However it seems to me that this should be solvable with the small
-> patch below.  Am I missing something?
->=20
-> @Joel Mathew Thomas, could you give the below patch a spin and see
-> if it helps?
->=20
-> Thanks!
->=20
-> -- >8 --
->=20
-> diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pcieh=
-p_hpc.c
-> index bb5a8d9f03ad..99a2ac13a3d1 100644
-> --- a/drivers/pci/hotplug/pciehp_hpc.c
-> +++ b/drivers/pci/hotplug/pciehp_hpc.c
-> @@ -688,6 +688,11 @@ static irqreturn_t pciehp_isr(int irq, void *dev_id)
->  =09=09return IRQ_HANDLED;
->  =09}
-> =20
-> +=09/* Ignore events masked by pciehp_reset_slot(). */
-> +=09events &=3D ctrl->slot_ctrl;
-> +=09if (!events)
-> +=09=09return IRQ_HANDLED;
-> +
->  =09/* Save pending events for consumption by IRQ thread. */
->  =09atomic_or(events, &ctrl->pending_events);
->  =09return IRQ_WAKE_THREAD;
-
-Yes, this should work, I think.
-
-I'm not entirely sure though how reading ->slot_ctrl here synchronizes=20
-wrt. pciehp_reset_slot() invoking reset. What guarantees pciehp_isr() sees=
-=20
-the updated ->slot_ctrl when pciehp_reset_slot() has proceeded to invoke=20
-the reset? (I'm in general very hesitant about lockless and barrierless=20
-reader being race free, I might be just paranoid about it.)
-
---=20
- i.
---8323328-233792055-1742232008=:944--
 
