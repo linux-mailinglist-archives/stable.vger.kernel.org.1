@@ -1,137 +1,186 @@
-Return-Path: <stable+bounces-124697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E68A658EE
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:50:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0757AA65903
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:52:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59E581898C0F
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:47:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1623B57EA
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24BE1A5BA2;
-	Mon, 17 Mar 2025 16:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997351E1DE8;
+	Mon, 17 Mar 2025 16:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wr0X9I5p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9WLhZ75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF952080E9
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552411DE3DE;
+	Mon, 17 Mar 2025 16:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229590; cv=none; b=ZPXxaq8+kH5Zh+pDZIg3qmhmOI7QkffiTs2QbqQrS56FsJQlSIuxKkO5BPO6uxX/dnuxFm6lHhtNoorsKKxR1AGUkZRiGHyh4g2z+W2VRk8KxIbSHbjcM9M/V4AIXCcIxixFkmM3qKZuStWN9IN/p0yNCd7Z+q6fLNdxAnbmsf8=
+	t=1742229603; cv=none; b=TiLthNaHjjbG8DldHf4ta7qBFLwc/kx14syLMeCSF8Krp9TUJlzLig2b1XOPt1gB947gSWrc4dSIcFgv/dc50W0KnjQBmL1zkW9wQWvPOhQ/ZYdx0muKTmYXjXZM62V7Ey+3tylxQKrAukL1ELUzzpeBPPZxmUAdxzklALWRodI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229590; c=relaxed/simple;
-	bh=MicF0DeYfPx35BUCdArjk4ZNo6goKM7torN49w7vlrc=;
+	s=arc-20240116; t=1742229603; c=relaxed/simple;
+	bh=UAbiIlQI/oZVN6wdwg2tftAnClootC4jiRNVrV10gqo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=at2TRQunkdY0ev95Icor5wfXuLw/DRcWcinPsqu+S41VRjhHR2kqQURHHw5k2wv29C6u4HXrfoTM/vhXnEM2GRBwrvPOt/gtAyABwxtQBiz2VlvKYrLmwYgBeLA13PQl6TkYhqUS3EwhugEmEUB2trxxUWtecdKtlpHiPVX59Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wr0X9I5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1313C4CEE3;
-	Mon, 17 Mar 2025 16:39:49 +0000 (UTC)
+	 MIME-Version; b=JR17/Rm6nBamoshpkDszq2G7A1xKSoSE8wGqTD4J7DFJKR6jYlj+u3I2zUt4C0y9zi9v2CotHAonSfyEULPvqjR/L0sY+lERtcxpNRui0UpKvh1i7M6a0t3WMsX2dTbhJNq6E9Ch3U05nWbTkYEGY7eOrKpNwnjMLeSG8O1TJfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9WLhZ75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99D5C4CEEC;
+	Mon, 17 Mar 2025 16:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229590;
-	bh=MicF0DeYfPx35BUCdArjk4ZNo6goKM7torN49w7vlrc=;
+	s=k20201202; t=1742229603;
+	bh=UAbiIlQI/oZVN6wdwg2tftAnClootC4jiRNVrV10gqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wr0X9I5pT1+q0jZ+ECuiIpWEqwb+u/e0buAvwaTMI2gvD3JzY+/moEQ8dxC4nt7+L
-	 xwBuHe1w761rFiIMNy+0LrpXXYlfXIMscrhyhyZjzEYVkDhIJ6P4Hnj/hHsh4LSxSU
-	 a6d3BrwtXG4FhjRoCfNl7w+ODcve0xwNiHydEkdp1xXEaFiYmu+BCuYAWA3MMMO18Q
-	 GZ4f2CtYiMr9dgTO50HZOqGolSics0Ua/db/b2L4bD+BeE+NTOEASO4ZNhFs/2iq4M
-	 SeZudm+AWSZVF9ipTjq7j0uslo8TrWoSPt484DzkqkiWgsMoK+FTIr5McvJluqO0+O
-	 Xrg8Nor1lMp1g==
+	b=u9WLhZ75bgnZxM3wO3yomRYQTn7341E/3xYUwFcI7IbbP5T+Iz8x1w33sY0u596I4
+	 44oSUvEnaAXIHzGQ2pDum3gITd3Jqks/MmhqnOg/aQU3votcoVUcSmU257TqsrZt/x
+	 YbImtbfkQeFaPcuKdra1CgxJ6LLtVQcpc65cRbANfcr+3EtpRV4EPGJnQDkkaxk49n
+	 7j8G3GY5YkOQhv5iM2vbqATvOQrPQPxWXfJ190jCFRcrugrKc5q+v/3O6yXxiy3Ahw
+	 pezrVeyWA2nOX4+A4DwEiQBcd/acbFGZV2nBns9HNiPhHBRQdn6vXWqebx+B7WzjLS
+	 Fv7RFmjdf+49w==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chen Linxuan <chenlinxuan@deepin.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.1 v3] lib/buildid: Handle memfd_secret() files in build_id_parse()
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Xaver Hugl <xaver.hugl@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sunpeng.li@amd.com,
+	lijo.lazar@amd.com,
+	tzimmermann@suse.de,
+	rajneesh.bhardwaj@amd.com,
+	shaoyun.liu@amd.com,
+	Ramesh.Errabolu@amd.com,
+	chiahsuan.chung@amd.com,
+	siqueira@igalia.com,
+	sunil.khatri@amd.com,
+	alex.hung@amd.com,
+	aurabindo.pillai@amd.com,
+	hersenxs.wu@amd.com,
+	mwen@igalia.com,
+	hamzamahfooz@linux.microsoft.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.15 3/4] drm/amd: Keep display off while going into S4
 Date: Mon, 17 Mar 2025 12:39:48 -0400
-Message-Id: <20250317085620-5219e1d0fa181917@stable.kernel.org>
+Message-Id: <20250317163949.1893632-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <84211070D1A421C2+20250317052300.24146-2-chenlinxuan@deepin.org>
-References: 
+In-Reply-To: <20250317163949.1893632-1-sashal@kernel.org>
+References: <20250317163949.1893632-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.15.179
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-Hi,
+[ Upstream commit 4afacc9948e1f8fdbca401d259ae65ad93d298c0 ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+When userspace invokes S4 the flow is:
 
-The upstream commit SHA1 provided is correct: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
+1) amdgpu_pmops_prepare()
+2) amdgpu_pmops_freeze()
+3) Create hibernation image
+4) amdgpu_pmops_thaw()
+5) Write out image to disk
+6) Turn off system
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Chen Linxuan<chenlinxuan@deepin.org>
-Commit author: Andrii Nakryiko<andrii@kernel.org>
+Then on resume amdgpu_pmops_restore() is called.
 
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 80ca7ac4aa22)
+This flow has a problem that because amdgpu_pmops_thaw() is called
+it will call amdgpu_device_resume() which will resume all of the GPU.
 
-Note: The patch differs from the upstream commit:
+This includes turning the display hardware back on and discovering
+connectors again.
+
+This is an unexpected experience for the display to turn back on.
+Adjust the flow so that during the S4 sequence display hardware is
+not turned back on.
+
+Reported-by: Xaver Hugl <xaver.hugl@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2038
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Harry Wentland <harry.wentland@amd.com>
+Link: https://lore.kernel.org/r/20250306185124.44780-1-mario.limonciello@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 68bfdc8dc0a1a7fdd9ab61e69907ae71a6fd3d91)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  5ac9b4e935dfc ! 1:  1df0ffc18d9ec lib/buildid: Handle memfd_secret() files in build_id_parse()
-    @@
-      ## Metadata ##
-    -Author: Andrii Nakryiko <andrii@kernel.org>
-    +Author: Chen Linxuan <chenlinxuan@deepin.org>
-     
-      ## Commit message ##
-         lib/buildid: Handle memfd_secret() files in build_id_parse()
-     
-    +    [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
-    +
-         >From memfd_secret(2) manpage:
-     
-           The memory areas backing the file created with memfd_secret(2) are
-    @@ Commit message
-         Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-         Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
-         Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
-    +    [ Chen Linxuan: backport same logic without folio-based changes ]
-    +    Cc: stable@vger.kernel.org
-    +    Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-    +    Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
-     
-      ## lib/buildid.c ##
-     @@
-    @@ lib/buildid.c
-      
-      #define BUILD_ID 3
-      
-    -@@ lib/buildid.c: static int freader_get_folio(struct freader *r, loff_t file_off)
-    - 
-    - 	freader_put_folio(r);
-    +@@ lib/buildid.c: int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-    + 	if (!vma->vm_file)
-    + 		return -EINVAL;
-      
-     +	/* reject secretmem folios created with memfd_secret() */
-    -+	if (secretmem_mapping(r->file->f_mapping))
-    ++	if (vma_is_secretmem(vma))
-     +		return -EFAULT;
-     +
-    - 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
-    - 
-    - 	/* if sleeping is allowed, wait for the page, if necessary */
-    + 	page = find_get_page(vma->vm_file->f_mapping, 0);
-    + 	if (!page)
-    + 		return -EFAULT;	/* page not mapped */
----
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c           | 11 +++++++++--
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  5 +++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-Results of testing on various branches:
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 57943e9008710..adcf3adc5ca51 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2294,7 +2294,6 @@ static int amdgpu_pmops_freeze(struct device *dev)
+ 
+ 	adev->in_s4 = true;
+ 	r = amdgpu_device_suspend(drm_dev, true);
+-	adev->in_s4 = false;
+ 	if (r)
+ 		return r;
+ 	return amdgpu_asic_reset(adev);
+@@ -2303,8 +2302,13 @@ static int amdgpu_pmops_freeze(struct device *dev)
+ static int amdgpu_pmops_thaw(struct device *dev)
+ {
+ 	struct drm_device *drm_dev = dev_get_drvdata(dev);
++	struct amdgpu_device *adev = drm_to_adev(drm_dev);
++	int r;
+ 
+-	return amdgpu_device_resume(drm_dev, true);
++	r = amdgpu_device_resume(drm_dev, true);
++	adev->in_s4 = false;
++
++	return r;
+ }
+ 
+ static int amdgpu_pmops_poweroff(struct device *dev)
+@@ -2317,6 +2321,9 @@ static int amdgpu_pmops_poweroff(struct device *dev)
+ static int amdgpu_pmops_restore(struct device *dev)
+ {
+ 	struct drm_device *drm_dev = dev_get_drvdata(dev);
++	struct amdgpu_device *adev = drm_to_adev(drm_dev);
++
++	adev->in_s4 = false;
+ 
+ 	return amdgpu_device_resume(drm_dev, true);
+ }
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index bfa15d8959553..c93b27b6b17a6 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2700,6 +2700,11 @@ static int dm_resume(void *handle)
+ 
+ 		return 0;
+ 	}
++
++	/* leave display off for S4 sequence */
++	if (adev->in_s4)
++		return 0;
++
+ 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
+ 	dc_release_state(dm_state->context);
+ 	dm_state->context = dc_create_state(dm->dc);
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
 
