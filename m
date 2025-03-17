@@ -1,161 +1,137 @@
-Return-Path: <stable+bounces-124701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230D8A658D3
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:50:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E68A658EE
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42E5617B61E
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:47:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59E581898C0F
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64ED20897E;
-	Mon, 17 Mar 2025 16:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24BE1A5BA2;
+	Mon, 17 Mar 2025 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vy3lgEfM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wr0X9I5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA7B208974;
-	Mon, 17 Mar 2025 16:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF952080E9
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229595; cv=none; b=hf5lTeApDM7XbuQcKr+00A/NdCVURnkZ3bLBt/lYRsGMleaF4FJo/iW8wT/mLec+CWv3gNNE181KrkS45BiK2nuUaOLaRe66svxlKuu9YIJ1R6iWEQh5QQR8t3YzT3s1uGfvOX/GfUVqfdZA/qluP0aAtjkolPSLe7zQInCjm08=
+	t=1742229590; cv=none; b=ZPXxaq8+kH5Zh+pDZIg3qmhmOI7QkffiTs2QbqQrS56FsJQlSIuxKkO5BPO6uxX/dnuxFm6lHhtNoorsKKxR1AGUkZRiGHyh4g2z+W2VRk8KxIbSHbjcM9M/V4AIXCcIxixFkmM3qKZuStWN9IN/p0yNCd7Z+q6fLNdxAnbmsf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229595; c=relaxed/simple;
-	bh=1dC+jme/+qxpetUYUsM4Cnjcc/do5xD9p0M+53s6y2A=;
+	s=arc-20240116; t=1742229590; c=relaxed/simple;
+	bh=MicF0DeYfPx35BUCdArjk4ZNo6goKM7torN49w7vlrc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RGl+Xq0YmTIX4PQHVmDDQTZXJKsOJTbsvIQjbP0djvj5NgCMEU4izyWE2hVb/XCOlRO6pndbhLV5z54C+rkaSNtn9wCE4AytPldQmNRDzebKXW3JG9bEM3o2YgntzdAOwrTwXO1FD68h/ZgoJvBTOdxT3cylOiQK4kRbK550sas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vy3lgEfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBD7C4CEED;
-	Mon, 17 Mar 2025 16:39:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=at2TRQunkdY0ev95Icor5wfXuLw/DRcWcinPsqu+S41VRjhHR2kqQURHHw5k2wv29C6u4HXrfoTM/vhXnEM2GRBwrvPOt/gtAyABwxtQBiz2VlvKYrLmwYgBeLA13PQl6TkYhqUS3EwhugEmEUB2trxxUWtecdKtlpHiPVX59Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wr0X9I5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1313C4CEE3;
+	Mon, 17 Mar 2025 16:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229595;
-	bh=1dC+jme/+qxpetUYUsM4Cnjcc/do5xD9p0M+53s6y2A=;
+	s=k20201202; t=1742229590;
+	bh=MicF0DeYfPx35BUCdArjk4ZNo6goKM7torN49w7vlrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vy3lgEfMq5joCY30BohY+8Ogt5Dg1mJjITqCqtacQlu6EneyuG7jFCCFMXTdbdYcK
-	 2sIO/HDa8Ip94StoBirlIp6klbDQigv34EMbldv5OACounxZ/nSCvAC9lX7maNIAQ4
-	 KAV8STDR+zrHeowKe8HQZguwhNAJdZuCE/AXlEIXT0lL+QSwAeno0Ps0eN/bBR+QNG
-	 mq2OeI26YJKYNRPjlsJxyLuiTxwUc1Z/VToa1wVt7QhuXALaTOCgZzHUUl8J02DSDj
-	 MVmqpzStTgv7/M/9WiSZWdgyt6TCPgna8wgsmaITcyC84eTthwPSN9ippgpGqJpIL+
-	 QZydZgNbGyogw==
+	b=Wr0X9I5pT1+q0jZ+ECuiIpWEqwb+u/e0buAvwaTMI2gvD3JzY+/moEQ8dxC4nt7+L
+	 xwBuHe1w761rFiIMNy+0LrpXXYlfXIMscrhyhyZjzEYVkDhIJ6P4Hnj/hHsh4LSxSU
+	 a6d3BrwtXG4FhjRoCfNl7w+ODcve0xwNiHydEkdp1xXEaFiYmu+BCuYAWA3MMMO18Q
+	 GZ4f2CtYiMr9dgTO50HZOqGolSics0Ua/db/b2L4bD+BeE+NTOEASO4ZNhFs/2iq4M
+	 SeZudm+AWSZVF9ipTjq7j0uslo8TrWoSPt484DzkqkiWgsMoK+FTIr5McvJluqO0+O
+	 Xrg8Nor1lMp1g==
 From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Vladis Dronov <vdronov@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <sean.j.christopherson@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-sgx@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 2/4] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
-Date: Mon, 17 Mar 2025 12:39:47 -0400
-Message-Id: <20250317163949.1893632-2-sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chen Linxuan <chenlinxuan@deepin.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH stable 6.1 v3] lib/buildid: Handle memfd_secret() files in build_id_parse()
+Date: Mon, 17 Mar 2025 12:39:48 -0400
+Message-Id: <20250317085620-5219e1d0fa181917@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250317163949.1893632-1-sashal@kernel.org>
-References: <20250317163949.1893632-1-sashal@kernel.org>
+In-Reply-To:  <84211070D1A421C2+20250317052300.24146-2-chenlinxuan@deepin.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.179
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Vladis Dronov <vdronov@redhat.com>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 65be5c95d08eedda570a6c888a12384c77fe7614 ]
+Hi,
 
-The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
-not just X86_FEATURE_SGX.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-There is quite a number of hardware which has X86_FEATURE_SGX but not
-X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
-the /dev/sgx_enclave file and does so silently.
+The upstream commit SHA1 provided is correct: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
 
-Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
-users that the kernel disabled the SGX driver.
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Chen Linxuan<chenlinxuan@deepin.org>
+Commit author: Andrii Nakryiko<andrii@kernel.org>
 
-The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
-that enables LE (Launch Enclave) hash MSRs to be writable (with
-additional opt-in required in the 'feature control' MSR) when running
-enclaves, i.e. using a custom root key rather than the Intel proprietary
-key for enclave signing.
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 80ca7ac4aa22)
 
-I've hit this issue myself and have spent some time researching where
-my /dev/sgx_enclave file went on SGX-enabled hardware.
-
-Related links:
-
-  https://github.com/intel/linux-sgx/issues/837
-  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
-
-[ mingo: Made the error message a bit more verbose, and added other cases
-         where the kernel fails to create the /dev/sgx_enclave device node. ]
-
-Signed-off-by: Vladis Dronov <vdronov@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note: The patch differs from the upstream commit:
 ---
- arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+1:  5ac9b4e935dfc ! 1:  1df0ffc18d9ec lib/buildid: Handle memfd_secret() files in build_id_parse()
+    @@
+      ## Metadata ##
+    -Author: Andrii Nakryiko <andrii@kernel.org>
+    +Author: Chen Linxuan <chenlinxuan@deepin.org>
+     
+      ## Commit message ##
+         lib/buildid: Handle memfd_secret() files in build_id_parse()
+     
+    +    [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
+    +
+         >From memfd_secret(2) manpage:
+     
+           The memory areas backing the file created with memfd_secret(2) are
+    @@ Commit message
+         Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+         Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
+         Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
+    +    [ Chen Linxuan: backport same logic without folio-based changes ]
+    +    Cc: stable@vger.kernel.org
+    +    Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+    +    Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+     
+      ## lib/buildid.c ##
+     @@
+    @@ lib/buildid.c
+      
+      #define BUILD_ID 3
+      
+    -@@ lib/buildid.c: static int freader_get_folio(struct freader *r, loff_t file_off)
+    - 
+    - 	freader_put_folio(r);
+    +@@ lib/buildid.c: int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+    + 	if (!vma->vm_file)
+    + 		return -EINVAL;
+      
+     +	/* reject secretmem folios created with memfd_secret() */
+    -+	if (secretmem_mapping(r->file->f_mapping))
+    ++	if (vma_is_secretmem(vma))
+     +		return -EFAULT;
+     +
+    - 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
+    - 
+    - 	/* if sleeping is allowed, wait for the page, if necessary */
+    + 	page = find_get_page(vma->vm_file->f_mapping, 0);
+    + 	if (!page)
+    + 		return -EFAULT;	/* page not mapped */
+---
 
-diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
-index aa9b8b8688676..afccb69cd9a2c 100644
---- a/arch/x86/kernel/cpu/sgx/driver.c
-+++ b/arch/x86/kernel/cpu/sgx/driver.c
-@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
- 	u64 xfrm_mask;
- 	int ret;
- 
--	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
-+	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
-+		pr_info("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
-+	}
- 
- 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
- 
- 	if (!(eax & 1))  {
--		pr_err("SGX disabled: SGX1 instruction support not available.\n");
-+		pr_info("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
- 	}
- 
-@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
- 	}
- 
- 	ret = misc_register(&sgx_dev_enclave);
--	if (ret)
-+	if (ret) {
-+		pr_info("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
- 		return ret;
-+	}
- 
- 	return 0;
- }
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
