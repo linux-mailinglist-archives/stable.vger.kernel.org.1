@@ -1,57 +1,79 @@
-Return-Path: <stable+bounces-124690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27893A658C9
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:49:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0942EA658CC
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F228D88256F
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:45:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458D91888FBB
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C709920766A;
-	Mon, 17 Mar 2025 16:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E96A1CB9EA;
+	Mon, 17 Mar 2025 16:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hBTV4M/a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhZbzU3c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8547C1C8607;
-	Mon, 17 Mar 2025 16:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED3D1A3163;
+	Mon, 17 Mar 2025 16:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229556; cv=none; b=D4xlgtr0z+PrPTl5EeUmRKuz0KrYhq8aQgK/56ond7MhV00Z4PjvLUUphE7ncL0Pk+StuOF/NXlWoTMPpbzFp9fjvb5Cx2dfHVF5RtVOMucf2/SbHTxKP0uRc+RBEgEvlZ0zYzMD7HT5N/4CqEdo2ltWTz4mAjzkNa1NJ95THFA=
+	t=1742229563; cv=none; b=VRORVeUD1sWu+Edzs1nDr5BwJmb3wCN96fIeXYnX+rc/HSjUv4kf3Ui+/HeF9XWxQWR3ySEQxNEofe5rvIdFKjtKvA/uvsrHxckzeb3wQslqp+vnPemhpS38Dc+MSp64d6aMyc+7MKM4iQMT25zRLQkbJL37yaCRxxe2SgfGBlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229556; c=relaxed/simple;
-	bh=/kpzgGcALURdACupa9CkgptBg02OzJ/kPFAr8jUIFgI=;
+	s=arc-20240116; t=1742229563; c=relaxed/simple;
+	bh=zgWZaqceqFPunHhxCh9P0gIfWLby5B3NHXKqZzQouFs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UJkMI3v1y8V0RjiiFv9uP5aqR5qPi54TvTYKBYK1B4o9xfaJlBsH7BnLW+/S+JG9yDlGN2YXayCrmMDVceQ70cj2Qq46xKbehMwHkSV45x1oAFXpsnqcG9tdtPcfSXKwFCsZ2Jl2TWdEysgHQ2//pH1T5M7m09Qv94GH2s72pFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hBTV4M/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F06C4CEEC;
-	Mon, 17 Mar 2025 16:39:15 +0000 (UTC)
+	 MIME-Version; b=HrRGvLqhI+ZZjyG1Vezlnzlb82ilykOMjSDhB3xeSe00ifIwllnb6+EADxRBTHgmnrofacoAklBS2QGFgOrJCS9ZwDEH/rMwFU28KkWLCzFj5eW9guXB7fmKOoYV/ZFUSTz2Memho/KDB3TSkT9SHo/r6rvCK9qT2wtz0xSjB2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhZbzU3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C1AC4CEEC;
+	Mon, 17 Mar 2025 16:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229556;
-	bh=/kpzgGcALURdACupa9CkgptBg02OzJ/kPFAr8jUIFgI=;
+	s=k20201202; t=1742229563;
+	bh=zgWZaqceqFPunHhxCh9P0gIfWLby5B3NHXKqZzQouFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hBTV4M/avd+ARpjnFIQjWQ7vcqVcwniZMvUuZLX9eGsRaQ8A1Jxr2KY0O6ymak6cC
-	 +4irIGygN3CiLAmM3D7Igoa0XdaWG9HhRFj6tQZAX7mVcV+Sigx2x0dwriXCC2sVNv
-	 H4hLZfFic9otYWpa+DltPtjd/Fqd4YybhIElp/GdFSSPoPbERDeaDX4PiKwWdOb64c
-	 WvCRT2vZSFtaI8syi1KxSsaPHL+GthoWWZ6Ijh2yDHrgwR9DdCBdYet84gcK+FBPKX
-	 R99RiBuwLxJsdF3AOaT9I4PyOFJo2Iwianl4x9V7oeBzSnvZih8uzeHrzRzXhbh06n
-	 vXNyjfgr7pVfg==
+	b=uhZbzU3c+QiVjq7w23LtruzkfzcSjDIrNKQcxsTiot5QUsvh4fJ/tXATgsNl8djtL
+	 ew0vc6g6hQahj1Y5G3B+PurzKcc6D10z0VTyO7HeogP/sbkcMq21bVyzuh3UgQk9qV
+	 ZGpzRNJq0mkKxTCLLf4wysZ25FnjasUCSMg9I1RBhXIapYBMg6+sMJkddMg+uvFR/b
+	 zYclF47fk0PD/PVOx/zOBW6/17VNIPjv1vRWNJ3Vg2h7QTHcVJ2jw1Tblx9oJAKIfi
+	 jRexlD7HPzybrIFbV4qp5Dw63ie4UWgwm8WhOCGBeov1MQoZ9VfdDZOl44SCqOvyGC
+	 J5ktfCvUN5fiw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Keith Busch <kbusch@kernel.org>,
-	Nilay Shroff <nilay@linux.ibm.com>,
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Xaver Hugl <xaver.hugl@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sagi@grimberg.me,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 6/8] nvme-pci: fix stuck reset on concurrent DPC and HP
-Date: Mon, 17 Mar 2025 12:39:00 -0400
-Message-Id: <20250317163902.1893378-6-sashal@kernel.org>
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sunpeng.li@amd.com,
+	lijo.lazar@amd.com,
+	tzimmermann@suse.de,
+	rajneesh.bhardwaj@amd.com,
+	kenneth.feng@amd.com,
+	shaoyun.liu@amd.com,
+	Ramesh.Errabolu@amd.com,
+	Jack.Xiao@amd.com,
+	chiahsuan.chung@amd.com,
+	siqueira@igalia.com,
+	sunil.khatri@amd.com,
+	alex.hung@amd.com,
+	aurabindo.pillai@amd.com,
+	hersenxs.wu@amd.com,
+	mwen@igalia.com,
+	hamzamahfooz@linux.microsoft.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.6 7/8] drm/amd: Keep display off while going into S4
+Date: Mon, 17 Mar 2025 12:39:01 -0400
+Message-Id: <20250317163902.1893378-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250317163902.1893378-1-sashal@kernel.org>
 References: <20250317163902.1893378-1-sashal@kernel.org>
@@ -66,73 +88,100 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.83
 Content-Transfer-Encoding: 8bit
 
-From: Keith Busch <kbusch@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 3f674e7b670b7b7d9261935820e4eba3c059f835 ]
+[ Upstream commit 4afacc9948e1f8fdbca401d259ae65ad93d298c0 ]
 
-The PCIe error handling has the nvme driver quiesce the device, attempt
-to restart it, then wait for that restart to complete.
+When userspace invokes S4 the flow is:
 
-A PCIe DPC event also toggles the PCIe link. If the slot doesn't have
-out-of-band presence detection, this will trigger a pciehp
-re-enumeration.
+1) amdgpu_pmops_prepare()
+2) amdgpu_pmops_freeze()
+3) Create hibernation image
+4) amdgpu_pmops_thaw()
+5) Write out image to disk
+6) Turn off system
 
-The error handling that calls nvme_error_resume is holding the device
-lock while this happens. This lock blocks pciehp's request to disconnect
-the driver from proceeding.
+Then on resume amdgpu_pmops_restore() is called.
 
-Meanwhile the nvme's reset can't make forward progress because its
-device isn't there anymore with outstanding IO, and the timeout handler
-won't do anything to fix it because the device is undergoing error
-handling.
+This flow has a problem that because amdgpu_pmops_thaw() is called
+it will call amdgpu_device_resume() which will resume all of the GPU.
 
-End result: deadlocked.
+This includes turning the display hardware back on and discovering
+connectors again.
 
-Fix this by having the timeout handler short cut the disabling for a
-disconnected PCIe device. The downside is that we're relying on an IO
-timeout to clean up this mess, which could be a minute by default.
+This is an unexpected experience for the display to turn back on.
+Adjust the flow so that during the S4 sequence display hardware is
+not turned back on.
 
-Tested-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reported-by: Xaver Hugl <xaver.hugl@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2038
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Harry Wentland <harry.wentland@amd.com>
+Link: https://lore.kernel.org/r/20250306185124.44780-1-mario.limonciello@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 68bfdc8dc0a1a7fdd9ab61e69907ae71a6fd3d91)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c           | 11 +++++++++--
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  5 +++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index b1310e69d07da..e74a22c452ce7 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1282,8 +1282,19 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
- 	struct nvme_dev *dev = nvmeq->dev;
- 	struct request *abort_req;
- 	struct nvme_command cmd = { };
-+	struct pci_dev *pdev = to_pci_dev(dev->dev);
- 	u32 csts = readl(dev->bar + NVME_REG_CSTS);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index f9bc38d20ce3e..a51ceebb80547 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2461,7 +2461,6 @@ static int amdgpu_pmops_freeze(struct device *dev)
  
-+	/*
-+	 * Shutdown the device immediately if we see it is disconnected. This
-+	 * unblocks PCIe error handling if the nvme driver is waiting in
-+	 * error_resume for a device that has been removed. We can't unbind the
-+	 * driver while the driver's error callback is waiting to complete, so
-+	 * we're relying on a timeout to break that deadlock if a removal
-+	 * occurs while reset work is running.
-+	 */
-+	if (pci_dev_is_disconnected(pdev))
-+		nvme_change_ctrl_state(&dev->ctrl, NVME_CTRL_DELETING);
- 	if (nvme_state_terminal(&dev->ctrl))
- 		goto disable;
+ 	adev->in_s4 = true;
+ 	r = amdgpu_device_suspend(drm_dev, true);
+-	adev->in_s4 = false;
+ 	if (r)
+ 		return r;
  
-@@ -1291,7 +1302,7 @@ static enum blk_eh_timer_return nvme_timeout(struct request *req)
- 	 * the recovery mechanism will surely fail.
- 	 */
- 	mb();
--	if (pci_channel_offline(to_pci_dev(dev->dev)))
-+	if (pci_channel_offline(pdev))
- 		return BLK_EH_RESET_TIMER;
+@@ -2473,8 +2472,13 @@ static int amdgpu_pmops_freeze(struct device *dev)
+ static int amdgpu_pmops_thaw(struct device *dev)
+ {
+ 	struct drm_device *drm_dev = dev_get_drvdata(dev);
++	struct amdgpu_device *adev = drm_to_adev(drm_dev);
++	int r;
  
- 	/*
+-	return amdgpu_device_resume(drm_dev, true);
++	r = amdgpu_device_resume(drm_dev, true);
++	adev->in_s4 = false;
++
++	return r;
+ }
+ 
+ static int amdgpu_pmops_poweroff(struct device *dev)
+@@ -2487,6 +2491,9 @@ static int amdgpu_pmops_poweroff(struct device *dev)
+ static int amdgpu_pmops_restore(struct device *dev)
+ {
+ 	struct drm_device *drm_dev = dev_get_drvdata(dev);
++	struct amdgpu_device *adev = drm_to_adev(drm_dev);
++
++	adev->in_s4 = false;
+ 
+ 	return amdgpu_device_resume(drm_dev, true);
+ }
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index aab99df3ba1ae..37e087e8fcb23 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2881,6 +2881,11 @@ static int dm_resume(void *handle)
+ 
+ 		return 0;
+ 	}
++
++	/* leave display off for S4 sequence */
++	if (adev->in_s4)
++		return 0;
++
+ 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
+ 	dc_release_state(dm_state->context);
+ 	dm_state->context = dc_create_state(dm->dc);
 -- 
 2.39.5
 
