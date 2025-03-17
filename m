@@ -1,151 +1,164 @@
-Return-Path: <stable+bounces-124591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9E6A63F58
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 06:15:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD3FA63F4A
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 06:14:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F9DE3AA40C
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:15:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F7C91644A2
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E3721883C;
-	Mon, 17 Mar 2025 05:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6673C21858D;
+	Mon, 17 Mar 2025 05:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mrabfq0n"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xWGme/Rk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6749F155757;
-	Mon, 17 Mar 2025 05:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24912217F40;
+	Mon, 17 Mar 2025 05:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742188538; cv=none; b=axH4jte59WrdUhTUrKQfc68vRV2Jylerkq22e6FrWtjydls8Q4SgQo7fL7lGDDRtjQUmO1MaESPYL8ZlUJnLr1Ts4b6CzZaQN07SBbJ47szctP8sKj1E4uwEK5siDM9SGxgeciLAd/rli5mMwdyGJGyb+XkCsRh7jGLsmYO9/mk=
+	t=1742188462; cv=none; b=Lid9A+f0qbO9e7jEE44JzytMGpjeqVph4OZl5cvKnf6LBC+dp0IwQSgQamJXRRFhVvX/m8FoQge4LBeF9edxF+ErsIfB09v/4zduycdUEKMFsDMqNOPkapLYWneNh1INKWrpFi013TW9dND6gg3yTg6OEbDgyvMtKM97tMpKOQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742188538; c=relaxed/simple;
-	bh=biacf0Mv1ywcq2xxM8wpuuvYXaqqgfMZO8M0hMECUXQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z05jwcC1fFJuC5OgmzAGVBjDLW29xORtIj6cFQGRVbzHRdi/EtLN6cNjsChMHyIdZMSugb2nLbQXjGaciXYNgCkgZY+eMipMAxQ+8jMkQOtzHU+vNVBqhJ71M7XPxrjb7SW9U8AA6YbZ45BohMEWnbTg778toLNxbbV93+QiqO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mrabfq0n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C15FC4CEEE;
-	Mon, 17 Mar 2025 05:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742188538;
-	bh=biacf0Mv1ywcq2xxM8wpuuvYXaqqgfMZO8M0hMECUXQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mrabfq0nkgmzjoQMx+mb2o6w/XKoScCIqS945IV0N/PxyQLvXLYUT2MWA16HC42Lq
-	 LQsz2Sch2SLYd648Twi6ThOwcIWiEMQFaoQTggw/pGpkUvUXieAgRb502uIrRX5eq3
-	 LWrO1Bcm5A+OxcFMIfRhGCR1nTwq0Fa2I4YAU4pY=
-Date: Mon, 17 Mar 2025 06:14:18 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chen Linxuan <chenlinxuan@deepin.org>
-Cc: Andrii Nakryiko <andrii@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>, Jann Horn <jannh@google.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Yi Lai <yi1.lai@intel.com>, Daniel Borkmann <daniel@iogearbox.net>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH stable 6.6 v2] lib/buildid: Handle memfd_secret() files
- in build_id_parse()
-Message-ID: <2025031743-haunt-masculine-afb4@gregkh>
-References: <84B05ADD5527685D+20250317011604.119801-2-chenlinxuan@deepin.org>
- <2025031759-sacrifice-wreckage-9948@gregkh>
- <CAC1kPDNNBj3Hd6s72mA3qxwxC0B69aE7qhM+Az5msvjPy41N5w@mail.gmail.com>
+	s=arc-20240116; t=1742188462; c=relaxed/simple;
+	bh=rICoZloCFImHg6uvk628PDWpnJQOCE5v29QUuUuXLnM=;
+	h=Date:To:From:Subject:Message-Id; b=swXFeCmk/Vfb/cx73es2Pd5O20vntah68VP8aQC3UMVqZ+YA+sN0BBFsAYmX7mn0d5tGIL2W/sVZRXtkdMpfwffQ1aLsoT/DDQTaVx8z6ODQeyYwTCozvKXTaY4zO31z1A3eHXnFPzk03MqEZcAbpSR+3UULo1gbZoUHL9e50EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xWGme/Rk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47F5C4CEEC;
+	Mon, 17 Mar 2025 05:14:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1742188462;
+	bh=rICoZloCFImHg6uvk628PDWpnJQOCE5v29QUuUuXLnM=;
+	h=Date:To:From:Subject:From;
+	b=xWGme/RkrLfNg50UOP7qViWvh7wr4FF8YWarTLIsEpPVeJF6DbPmBFQS2kLR0BwmC
+	 dyE/neMhtW+fzFv44wG/sUryITnsC8Y87OY+FrR/wB7frxde563lw2abSsm3LVVR6M
+	 ADPMX3pkZ5tv0motHhwClhodLGkJRPEAuzOX82hU=
+Date: Sun, 16 Mar 2025 22:14:21 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,peterx@redhat.com,linmiaohe@huawei.com,kirill.shutemov@linux.intel.com,hughd@google.com,jane.chu@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-make-page_mapped_in_vma-hugetlb-walk-aware.patch removed from -mm tree
+Message-Id: <20250317051421.E47F5C4CEEC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAC1kPDNNBj3Hd6s72mA3qxwxC0B69aE7qhM+Az5msvjPy41N5w@mail.gmail.com>
 
-On Mon, Mar 17, 2025 at 01:04:41PM +0800, Chen Linxuan wrote:
-> Greg KH <greg@kroah.com> 于2025年3月17日周一 12:20写道：
-> >
-> > On Mon, Mar 17, 2025 at 09:16:04AM +0800, Chen Linxuan wrote:
-> > > [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
-> > >
-> > > >>From memfd_secret(2) manpage:
-> > >
-> > >   The memory areas backing the file created with memfd_secret(2) are
-> > >   visible only to the processes that have access to the file descriptor.
-> > >   The memory region is removed from the kernel page tables and only the
-> > >   page tables of the processes holding the file descriptor map the
-> > >   corresponding physical memory. (Thus, the pages in the region can't be
-> > >   accessed by the kernel itself, so that, for example, pointers to the
-> > >   region can't be passed to system calls.)
-> > >
-> > > We need to handle this special case gracefully in build ID fetching
-> > > code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
-> > > family of APIs. Original report and repro can be found in [0].
-> > >
-> > >   [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
-> > >
-> > > Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
-> > > Reported-by: Yi Lai <yi1.lai@intel.com>
-> > > Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > > Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> > > Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > > Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
-> > > Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
-> > > [ Chen Linxuan: backport same logic without folio-based changes ]
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-> > > Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
-> > > ---
-> > > v1 -> v2: use vma_is_secretmem() instead of directly checking
-> > >           vma->vm_file->f_op == &secretmem_fops
-> > > ---
-> > >  lib/buildid.c | 5 +++++
-> > >  1 file changed, 5 insertions(+)
-> > >
-> > > diff --git a/lib/buildid.c b/lib/buildid.c
-> > > index 9fc46366597e..34315d09b544 100644
-> > > --- a/lib/buildid.c
-> > > +++ b/lib/buildid.c
-> > > @@ -5,6 +5,7 @@
-> > >  #include <linux/elf.h>
-> > >  #include <linux/kernel.h>
-> > >  #include <linux/pagemap.h>
-> > > +#include <linux/secretmem.h>
-> > >
-> > >  #define BUILD_ID 3
-> > >
-> > > @@ -157,6 +158,10 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-> > >       if (!vma->vm_file)
-> > >               return -EINVAL;
-> > >
-> > > +     /* reject secretmem */
-> >
-> > Why is this comment different from what is in the original commit?  Same
-> > for your other backports.  Please try to keep it as identical to the
-> > original whenever possible as we have to maintain this for a very long
-> > time.
-> >
-> > thanks,
-> >
-> > greg k-h
-> >
-> >
-> 
-> Original comment is in a function named freader_get_folio(),
-> but folio related changes has not been backported yet.
 
-That's fine, but the logic is the same so keep the original code as
-close as possible.  Otherwise it looks like this is a totally different
-change and we would have to reject it for obvious reasons.
+The quilt patch titled
+     Subject: mm: make page_mapped_in_vma() hugetlb walk aware
+has been removed from the -mm tree.  Its filename was
+     mm-make-page_mapped_in_vma-hugetlb-walk-aware.patch
 
-thanks,
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-greg k-h
+------------------------------------------------------
+From: Jane Chu <jane.chu@oracle.com>
+Subject: mm: make page_mapped_in_vma() hugetlb walk aware
+Date: Mon, 24 Feb 2025 14:14:45 -0700
+
+When a process consumes a UE in a page, the memory failure handler
+attempts to collect information for a potential SIGBUS.  If the page is an
+anonymous page, page_mapped_in_vma(page, vma) is invoked in order to
+
+  1. retrieve the vaddr from the process' address space,
+
+  2. verify that the vaddr is indeed mapped to the poisoned page,
+     where 'page' is the precise small page with UE.
+
+It's been observed that when injecting poison to a non-head subpage of an
+anonymous hugetlb page, no SIGBUS shows up, while injecting to the head
+page produces a SIGBUS.  The cause is that, though hugetlb_walk() returns
+a valid pmd entry (on x86), but check_pte() detects mismatch between the
+head page per the pmd and the input subpage.  Thus the vaddr is considered
+not mapped to the subpage and the process is not collected for SIGBUS
+purpose.  This is the calling stack:
+
+      collect_procs_anon
+        page_mapped_in_vma
+          page_vma_mapped_walk
+            hugetlb_walk
+              huge_pte_lock
+                check_pte
+
+check_pte() header says that it
+"check if [pvmw->pfn, @pvmw->pfn + @pvmw->nr_pages) is mapped at the @pvmw->pte"
+but practically works only if pvmw->pfn is the head page pfn at pvmw->pte.
+Hindsight acknowledging that some pvmw->pte could point to a hugepage of
+some sort such that it makes sense to make check_pte() work for hugepage.
+
+Link: https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kirill A. Shuemov <kirill.shutemov@linux.intel.com>
+Cc: linmiaohe <linmiaohe@huawei.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/page_vma_mapped.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+--- a/mm/page_vma_mapped.c~mm-make-page_mapped_in_vma-hugetlb-walk-aware
++++ a/mm/page_vma_mapped.c
+@@ -84,6 +84,7 @@ again:
+  * mapped at the @pvmw->pte
+  * @pvmw: page_vma_mapped_walk struct, includes a pair pte and pfn range
+  * for checking
++ * @pte_nr: the number of small pages described by @pvmw->pte.
+  *
+  * page_vma_mapped_walk() found a place where pfn range is *potentially*
+  * mapped. check_pte() has to validate this.
+@@ -100,7 +101,7 @@ again:
+  * Otherwise, return false.
+  *
+  */
+-static bool check_pte(struct page_vma_mapped_walk *pvmw)
++static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+ {
+ 	unsigned long pfn;
+ 	pte_t ptent = ptep_get(pvmw->pte);
+@@ -132,7 +133,11 @@ static bool check_pte(struct page_vma_ma
+ 		pfn = pte_pfn(ptent);
+ 	}
+ 
+-	return (pfn - pvmw->pfn) < pvmw->nr_pages;
++	if ((pfn + pte_nr - 1) < pvmw->pfn)
++		return false;
++	if (pfn > (pvmw->pfn + pvmw->nr_pages - 1))
++		return false;
++	return true;
+ }
+ 
+ /* Returns true if the two ranges overlap.  Careful to not overflow. */
+@@ -207,7 +212,7 @@ bool page_vma_mapped_walk(struct page_vm
+ 			return false;
+ 
+ 		pvmw->ptl = huge_pte_lock(hstate, mm, pvmw->pte);
+-		if (!check_pte(pvmw))
++		if (!check_pte(pvmw, pages_per_huge_page(hstate)))
+ 			return not_found(pvmw);
+ 		return true;
+ 	}
+@@ -290,7 +295,7 @@ restart:
+ 			goto next_pte;
+ 		}
+ this_pte:
+-		if (check_pte(pvmw))
++		if (check_pte(pvmw, 1))
+ 			return true;
+ next_pte:
+ 		do {
+_
+
+Patches currently in -mm which might be from jane.chu@oracle.com are
+
+
 
