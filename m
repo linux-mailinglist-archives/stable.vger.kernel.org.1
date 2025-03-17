@@ -1,133 +1,218 @@
-Return-Path: <stable+bounces-124714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2109A65901
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F54A65904
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 970BA1887FA4
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:49:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81880188B741
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DB120A5F2;
-	Mon, 17 Mar 2025 16:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF8220A5D1;
+	Mon, 17 Mar 2025 16:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJrzLJCZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PADrlJ+4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BC91A8F61
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB821A8F84;
+	Mon, 17 Mar 2025 16:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229617; cv=none; b=P4L39jkT7ELeMr6YLoSqA6lve8iqFwogAScb1I5kOb1EDJ1vKkq4Gu0vwnw0zVkrkOs3q/Lh4XgmK9/6Ba9VVHd0gJMn6+eTH6LmViugABICBF9uaQ5xXYJy/2YRYJ+8k5ZHp84R455Ta9ekOAi0hODNY/dfSeHEk4LFf0ItwBQ=
+	t=1742229618; cv=none; b=nTFFuhiFoxE/LSds68VPfcpfw05ccQUimSYpXMJgrrkUnEIPgsAYBip5wPpMce9VElI79ByuACPSP3LDhvoZe6Kh+rrpMZQqHzVAPZsZns/fCbvkBQzSs+Kk9fivRAd1vCyq5jN1rq3Dd/Ir3DskppImVyVm5ylouokFE572fIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229617; c=relaxed/simple;
-	bh=q87sWJFL2N/gqbI3UgLeKNt/k8pymRp02A4twxgPG2g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MU3xf/52LYnZ2KChg5mGRBJ8PgRHGCVVazuMLKYk1eyar8vHNESKxYntDm1DiWsfgSnA9ahwhtUSIKgWEZmWijZEUMpacTAirhgSnlJNyPadupbU1TViCaTIz6+35OhfQ+ecH7Q67xnVKhDikYZQLYA94fP8FYzQDEARgDnVRxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJrzLJCZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D0AC4CEEC;
+	s=arc-20240116; t=1742229618; c=relaxed/simple;
+	bh=KPqq7IKw/v0+vm2iRgZpMnlwStLutH2yikFw0m6VI0U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Q1kH9uN+7XZaXNVf92QWqF8pvydWDLRugBgGraZYKH3Sg3343ja3dOIYEHvVSfRKnRuuaqe6VYnE+DzbSjoREiZ5fRE77/ZsmJGUouWFfYU3lwSAVVTE13fLdUY0fpi6eGX7O3XSfnpj2r55Z1hbA876myL3A+roKuuDSiJaAWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PADrlJ+4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9CAC4CEED;
 	Mon, 17 Mar 2025 16:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229617;
-	bh=q87sWJFL2N/gqbI3UgLeKNt/k8pymRp02A4twxgPG2g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJrzLJCZQnx11Vo8L45Wf2Xn6dmMRsi7geyghfzTUKQNYAY4o8tDmXihiUlvJ9I77
-	 hbnJQ2eic69IMQ/zbi3Wwpgs7Glrx/n9TtNiUe6exETvsFSnUVQHPM0rP6Mh4ZOVvk
-	 YpFaZWVM6JvPHBp+7gUwTYRAc/t78DZqqo2iaZkFi7jy90HlvZq80jCF9JavsT0Poh
-	 GrjB5w8zTh6HlX/j0wC6J94yipNBRFv6sIo/2wyMrZM26WWI4ip9eU6PjdOGFzjvv1
-	 OR65BuBFQ5mX4zlMht/m0KNUif2JO38QUan6fHwHy/NRtpw98BzvAlRy+RQFcjcY3z
-	 LXm5lbJ71WZwg==
+	s=k20201202; t=1742229618;
+	bh=KPqq7IKw/v0+vm2iRgZpMnlwStLutH2yikFw0m6VI0U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PADrlJ+4YmfIdILFrkMLFE2NFz6SRh8MzAgVMlXAyZs80TTw06RR8woz89TWxDyOW
+	 F5/gm7qsISuS9R/qQe7EYIlzF8M5Fnx4YqshDUKpGoQnLEDOS4viOA0AzkIHSTqSpj
+	 n4Xyu39Udr0fXJIZoaVZwECugnNABatRob1YrMX0gey6C5QP/FdNIrZUw+TDgzAyl3
+	 Bn96P282qYLPNnicCgztEvIfgryNnNDFQZIm0JC/PCDV7k7NzbKJ14k2KMvHWfj6FZ
+	 K/fiI5/FLy13LlvpcE3433DvgqQ9J7WLyQPx7+DdNFcXXbKu/Mo+EiQ72en+ONj4nH
+	 s4uUG7onod/cw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] leds: mlxreg: Use devm_mutex_init() for mutex initialization
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Waiman Long <longman@redhat.com>,
+	yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.4] locking/semaphore: Use wake_q to wake up processes outside lock critical section
 Date: Mon, 17 Mar 2025 12:40:15 -0400
-Message-Id: <20250317091357-20ecaee5e20b7b45@stable.kernel.org>
+Message-Id: <20250317164015.1893964-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250317050902.1151438-1-bin.lan.cn@windriver.com>
-References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Waiman Long <longman@redhat.com>
 
-Hi,
+[ Upstream commit 85b2b9c16d053364e2004883140538e73b333cdb ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+A circular lock dependency splat has been seen involving down_trylock():
 
-The upstream commit SHA1 provided is correct: efc347b9efee1c2b081f5281d33be4559fa50a16
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  6.12.0-41.el10.s390x+debug
+  ------------------------------------------------------
+  dd/32479 is trying to acquire lock:
+  0015a20accd0d4f8 ((console_sem).lock){-.-.}-{2:2}, at: down_trylock+0x26/0x90
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: bin.lan.cn@windriver.com
-Commit author: George Stark<gnstark@salutedevices.com>
+  but task is already holding lock:
+  000000017e461698 (&zone->lock){-.-.}-{2:2}, at: rmqueue_bulk+0xac/0x8f0
 
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 172ffd26a5af)
+  the existing dependency chain (in reverse order) is:
+  -> #4 (&zone->lock){-.-.}-{2:2}:
+  -> #3 (hrtimer_bases.lock){-.-.}-{2:2}:
+  -> #2 (&rq->__lock){-.-.}-{2:2}:
+  -> #1 (&p->pi_lock){-.-.}-{2:2}:
+  -> #0 ((console_sem).lock){-.-.}-{2:2}:
 
-Note: The patch differs from the upstream commit:
+The console_sem -> pi_lock dependency is due to calling try_to_wake_up()
+while holding the console_sem raw_spinlock. This dependency can be broken
+by using wake_q to do the wakeup instead of calling try_to_wake_up()
+under the console_sem lock. This will also make the semaphore's
+raw_spinlock become a terminal lock without taking any further locks
+underneath it.
+
+The hrtimer_bases.lock is a raw_spinlock while zone->lock is a
+spinlock. The hrtimer_bases.lock -> zone->lock dependency happens via
+the debug_objects_fill_pool() helper function in the debugobjects code.
+
+  -> #4 (&zone->lock){-.-.}-{2:2}:
+         __lock_acquire+0xe86/0x1cc0
+         lock_acquire.part.0+0x258/0x630
+         lock_acquire+0xb8/0xe0
+         _raw_spin_lock_irqsave+0xb4/0x120
+         rmqueue_bulk+0xac/0x8f0
+         __rmqueue_pcplist+0x580/0x830
+         rmqueue_pcplist+0xfc/0x470
+         rmqueue.isra.0+0xdec/0x11b0
+         get_page_from_freelist+0x2ee/0xeb0
+         __alloc_pages_noprof+0x2c2/0x520
+         alloc_pages_mpol_noprof+0x1fc/0x4d0
+         alloc_pages_noprof+0x8c/0xe0
+         allocate_slab+0x320/0x460
+         ___slab_alloc+0xa58/0x12b0
+         __slab_alloc.isra.0+0x42/0x60
+         kmem_cache_alloc_noprof+0x304/0x350
+         fill_pool+0xf6/0x450
+         debug_object_activate+0xfe/0x360
+         enqueue_hrtimer+0x34/0x190
+         __run_hrtimer+0x3c8/0x4c0
+         __hrtimer_run_queues+0x1b2/0x260
+         hrtimer_interrupt+0x316/0x760
+         do_IRQ+0x9a/0xe0
+         do_irq_async+0xf6/0x160
+
+Normally a raw_spinlock to spinlock dependency is not legitimate
+and will be warned if CONFIG_PROVE_RAW_LOCK_NESTING is enabled,
+but debug_objects_fill_pool() is an exception as it explicitly
+allows this dependency for non-PREEMPT_RT kernel without causing
+PROVE_RAW_LOCK_NESTING lockdep splat. As a result, this dependency is
+legitimate and not a bug.
+
+Anyway, semaphore is the only locking primitive left that is still
+using try_to_wake_up() to do wakeup inside critical section, all the
+other locking primitives had been migrated to use wake_q to do wakeup
+outside of the critical section. It is also possible that there are
+other circular locking dependencies involving printk/console_sem or
+other existing/new semaphores lurking somewhere which may show up in
+the future. Let just do the migration now to wake_q to avoid headache
+like this.
+
+Reported-by: yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250307232717.1759087-3-boqun.feng@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  efc347b9efee1 ! 1:  86f4e68bf53db leds: mlxreg: Use devm_mutex_init() for mutex initialization
-    @@ Metadata
-      ## Commit message ##
-         leds: mlxreg: Use devm_mutex_init() for mutex initialization
-     
-    +    [ Upstream commit efc347b9efee1c2b081f5281d33be4559fa50a16 ]
-    +
-         In this driver LEDs are registered using devm_led_classdev_register()
-         so they are automatically unregistered after module's remove() is done.
-         led_classdev_unregister() calls module's led_set_brightness() to turn off
-    @@ Commit message
-         Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-         Link: https://lore.kernel.org/r/20240411161032.609544-8-gnstark@salutedevices.com
-         Signed-off-by: Lee Jones <lee@kernel.org>
-    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
-     
-      ## drivers/leds/leds-mlxreg.c ##
-     @@ drivers/leds/leds-mlxreg.c: static int mlxreg_led_probe(struct platform_device *pdev)
-    @@ drivers/leds/leds-mlxreg.c: static int mlxreg_led_probe(struct platform_device *
-      	return mlxreg_led_config(priv);
-      }
-      
-    --static void mlxreg_led_remove(struct platform_device *pdev)
-    +-static int mlxreg_led_remove(struct platform_device *pdev)
-     -{
-     -	struct mlxreg_led_priv_data *priv = dev_get_drvdata(&pdev->dev);
-     -
-     -	mutex_destroy(&priv->access_lock);
-    +-
-    +-	return 0;
-     -}
-     -
-      static struct platform_driver mlxreg_led_driver = {
-    @@ drivers/leds/leds-mlxreg.c: static int mlxreg_led_probe(struct platform_device *
-      	    .name = "leds-mlxreg",
-      	},
-      	.probe = mlxreg_led_probe,
-    --	.remove_new = mlxreg_led_remove,
-    +-	.remove = mlxreg_led_remove,
-      };
-      
-      module_platform_driver(mlxreg_led_driver);
----
+ kernel/locking/semaphore.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Results of testing on various branches:
+diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
+index d9dd94defc0a9..19389fdbfdfb1 100644
+--- a/kernel/locking/semaphore.c
++++ b/kernel/locking/semaphore.c
+@@ -29,6 +29,7 @@
+ #include <linux/export.h>
+ #include <linux/sched.h>
+ #include <linux/sched/debug.h>
++#include <linux/sched/wake_q.h>
+ #include <linux/semaphore.h>
+ #include <linux/spinlock.h>
+ #include <linux/ftrace.h>
+@@ -37,7 +38,7 @@ static noinline void __down(struct semaphore *sem);
+ static noinline int __down_interruptible(struct semaphore *sem);
+ static noinline int __down_killable(struct semaphore *sem);
+ static noinline int __down_timeout(struct semaphore *sem, long timeout);
+-static noinline void __up(struct semaphore *sem);
++static noinline void __up(struct semaphore *sem, struct wake_q_head *wake_q);
+ 
+ /**
+  * down - acquire the semaphore
+@@ -178,13 +179,16 @@ EXPORT_SYMBOL(down_timeout);
+ void up(struct semaphore *sem)
+ {
+ 	unsigned long flags;
++	DEFINE_WAKE_Q(wake_q);
+ 
+ 	raw_spin_lock_irqsave(&sem->lock, flags);
+ 	if (likely(list_empty(&sem->wait_list)))
+ 		sem->count++;
+ 	else
+-		__up(sem);
++		__up(sem, &wake_q);
+ 	raw_spin_unlock_irqrestore(&sem->lock, flags);
++	if (!wake_q_empty(&wake_q))
++		wake_up_q(&wake_q);
+ }
+ EXPORT_SYMBOL(up);
+ 
+@@ -252,11 +256,12 @@ static noinline int __sched __down_timeout(struct semaphore *sem, long timeout)
+ 	return __down_common(sem, TASK_UNINTERRUPTIBLE, timeout);
+ }
+ 
+-static noinline void __sched __up(struct semaphore *sem)
++static noinline void __sched __up(struct semaphore *sem,
++				  struct wake_q_head *wake_q)
+ {
+ 	struct semaphore_waiter *waiter = list_first_entry(&sem->wait_list,
+ 						struct semaphore_waiter, list);
+ 	list_del(&waiter->list);
+ 	waiter->up = true;
+-	wake_up_process(waiter->task);
++	wake_q_add(wake_q, waiter->task);
+ }
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
 
