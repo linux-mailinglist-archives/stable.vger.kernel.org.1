@@ -1,71 +1,154 @@
-Return-Path: <stable+bounces-124626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47BAA64ADB
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 11:51:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D74A64AE7
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 11:52:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CE4716715F
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 10:51:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB53188AE25
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 10:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4B523027D;
-	Mon, 17 Mar 2025 10:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3623233727;
+	Mon, 17 Mar 2025 10:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TPEyLlYW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DDA38DD8;
-	Mon, 17 Mar 2025 10:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7ED23496F
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 10:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742208667; cv=none; b=sZH3UGP+YvoMagrwB5nTZSjNDS0w4aglW7QnjbcUpLNRCeWeIYgR3iMtPUmiM8GepsCE6vHKFV9hGLKvFCb9hU50Y4GOKQfOY491ECbz6KrYVcTDGE0NHT5vylt7V6yTYihzEOfFURO6ud9uewGmABytIEw0TbFeQTIJNBmQM3k=
+	t=1742208707; cv=none; b=iw4aBkFV/42BdPLvtdGNjOrnbD7CF4dCvVzfM7U51p7zFfiPIeO6rQMh8RLih6rnU7G/oJSmP4U75PMq8OSTDUleGIDYF7KVPeGPCT7FcrWhopuUuX0APHiyzBBRTxnYDFD8prb7lw9cElnICf+eh7VhYlwvh2OJodc2x0nzF4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742208667; c=relaxed/simple;
-	bh=N5vDIP/ZC1r9o50B33oF2VBCYpl51zXDjZlxWywD5Qk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BrD1UiMwJrXh8bHVhfu0kW5TQD4Mx3FKQPdsqaWpVCsGVNRJEuL4WYoV8R0bRC2S96izmdyJc21VNAb2CMP4DSRcBeFHIryArvnjWgbC7TKvo4g3Q4mdC3ceuZSrpNUb78ffRbAtr9LvgnCOnIk/0nzDwOwRMqVpJaw9DzgO7AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C537C4CEEE;
-	Mon, 17 Mar 2025 10:51:05 +0000 (UTC)
-Date: Mon, 17 Mar 2025 11:51:03 +0100
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Peter Griffin <peter.griffin@linaro.org>
-Cc: =?utf-8?B?QW5kcsOp?= Draszik <andre.draszik@linaro.org>, 
-	Tudor Ambarus <tudor.ambarus@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
-	Bart Van Assche <bvanassche@acm.org>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org, kernel-team@android.com, 
-	willmcvicker@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] scsi: ufs: dt-bindings: exynos: add dma-coherent
- property for gs101
-Message-ID: <20250317-gorgeous-wrasse-of-aurora-82ee0c@krzk-bin>
-References: <20250314-ufs-dma-coherent-v1-0-bdf9f9be2919@linaro.org>
- <20250314-ufs-dma-coherent-v1-2-bdf9f9be2919@linaro.org>
+	s=arc-20240116; t=1742208707; c=relaxed/simple;
+	bh=QHY+1BPCLViU0H9rv3Feced7ANo0/UdyUNjmCf5LslI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eL065tgK1AlFowHyS++SrkPSVUWN6RFFBx5BOtfYm5NJXBHhF6I+YGPAzWfKI0iLsLtF9S/EzC/i9acnUNsW6G+AgHMrhmN69sismud+rs75dh/u0mT5fWANJiMNu2B9WfpPTF8+gynpuxR/4HyyQXmQlayWT/9udk6bbaaopog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TPEyLlYW; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6ff2adbba3fso32657067b3.2
+        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 03:51:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742208704; x=1742813504; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L5vZp0HtUwVLeKpGm04Jx0bwIqFPyxQHAFaLRo/7tVI=;
+        b=TPEyLlYWpPlDPn/RcUUHhw1/s5hgHoa+7VswwB5YO9ki9acKG/0WfTtMKMwgdWoSa7
+         0cKNxeHaeS3OfrkyHmCniitHvyfjtXeu0WaQw8yIHBKXGP3x7MkRGD0AibW5Wi9ujp7M
+         dZpXjLxkEIkRhxi7+vfiJPIHyEXjYjXascs1VfC+4bIt4I/aRMJojAzg+CEOQCPbK/lj
+         M1jiXjYdVW0hkQ8EZWcj28m5FbGMTXW8rY0t3lEUC71tOgWXt/K+2+xCOqZtnseCQf0D
+         OoyXSBH29fglL/OLxrwD2aWzCldYUuY0Ba6JspetFoWgm5IoS+2iqlbv7X1HD0TXGugc
+         YtOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742208704; x=1742813504;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L5vZp0HtUwVLeKpGm04Jx0bwIqFPyxQHAFaLRo/7tVI=;
+        b=sKn5jHmnpJ8RCuFEgN1pn4/SITsRqdvgDH0HJkwEWw1DqD7/c6RKWq8xGEJ/suyGJT
+         rRd32WIpIiMwtb0wyq1KL13yWyVWTu3YUwtZH/5l4ZBjXC+/wytXKZENzgp419URx6st
+         OG49AzBWjS4SoEoNws1/HEtbtm9LKLl4KMGZSpocNYrMxId36nf3KfPbZFr7t9sSeBit
+         q0pMIuY58lxoYDZR45KoOuC/LFb08EDDkqyEaaDZyQxLGMaw4VHOETzQ8GYdfIQZsR5S
+         iH+TLdDpoejpjDy+ZPp8j1V8f4woK1nrIA5lO+MOPR7jl7s0XsoPidofAWr+XLJ3irrN
+         ucFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWro1uuJClCuAZoPgNpW9Ws+ceKj8OPPXMGx3LwDi3WLhl6fbS8MJSw7CgVDgz60L3DpB2V3vI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXsygctPm463SfXGaBSd3ytUjly0i5zyvOTIS+FkiKphp6WZGH
+	tRpkbU61M5ZpetwaSEWbutbo7lwuXFP9UCE/ZAX9EEkK2hYxl8Q80T4crGSvPe2Aru6JfYwD6tf
+	VfGwOD1en0jvGd/h6hz0NZh9C2QR64aiUdWvPVg==
+X-Gm-Gg: ASbGnctATuZYfeMCgi+fjwviI5XHl+gaf5UxX2jB+LC8lMzo7jkLB5DZBN80k8mW9uO
+	f7SUeNnKXtMcnJ8fXzlK0GU5qhA0RXfjYEFbSdcoBj7Egp41sVEVTBi5CdBPUI13/kojWHK6g/W
+	pfDnBO2ybMqIidq1uoKCvhwAU9LeY=
+X-Google-Smtp-Source: AGHT+IGUWzhUNx+FG7HRXqFuPdBF74JuGnRL6w6PE5kq0AM7HDR5wo32rWOJsJVL3Y0F4L1pFoaocbYX/Sdx4vjSCYs=
+X-Received: by 2002:a05:690c:600d:b0:6fb:a696:b23b with SMTP id
+ 00721157ae682-6ff460fa022mr159567617b3.33.1742208704533; Mon, 17 Mar 2025
+ 03:51:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250314-ufs-dma-coherent-v1-2-bdf9f9be2919@linaro.org>
+References: <20250312121712.1168007-1-ulf.hansson@linaro.org> <CAOCHtYjGuw9szeChihrDZ39_2+w5xOverbp6mAjjLjR=QkK1zg@mail.gmail.com>
+In-Reply-To: <CAOCHtYjGuw9szeChihrDZ39_2+w5xOverbp6mAjjLjR=QkK1zg@mail.gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 17 Mar 2025 11:51:08 +0100
+X-Gm-Features: AQ5f1JqWe_VGljdWIdz3MIyeNETV_0LFDiQxhaioBF37nyjW7vltrBkTmIinzVI
+Message-ID: <CAPDyKFqPdDjoECXeBqx0P+fpbgVN1g_jWM2fQiH8Mw6HGMSPNA@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci-omap: Disable MMC_CAP_AGGRESSIVE_PM for eMMC/SD
+To: Robert Nelson <robertcnelson@gmail.com>
+Cc: linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Tony Lindgren <tony@atomide.com>, David Owens <daowens01@gmail.com>, 
+	Romain Naour <romain.naour@smile.fr>, Andrei Aldea <andrei@ti.com>, Judith Mendez <jm@ti.com>, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 14, 2025 at 03:38:03PM +0000, Peter Griffin wrote:
-> dma-coherent property is required for gs101 as ufs-exynos enables
-> sharability.
-> 
-> Fixes: 438e23b61cd4 ("scsi: ufs: dt-bindings: exynos: Add gs101 compatible")
-> Cc: stable@vger.kernel.org
+On Sun, 16 Mar 2025 at 21:54, Robert Nelson <robertcnelson@gmail.com> wrote=
+:
+>
+> On Wed, Mar 12, 2025 at 7:17=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.o=
+rg> wrote:
+> >
+> > We have received reports about cards can become corrupt related to the
+> > aggressive PM support. Let's make a partial revert of the change that
+> > enabled the feature.
+> >
+> > Reported-by: David Owens <daowens01@gmail.com>
+> > Reported-by: Romain Naour <romain.naour@smile.fr>
+> > Reported-by: Robert Nelson <robertcnelson@gmail.com>
+> > Tested-by: Robert Nelson <robertcnelson@gmail.com>
+> > Fixes: 3edf588e7fe0 ("mmc: sdhci-omap: Allow SDIO card power off and en=
+able aggressive PM")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > ---
+> >  drivers/mmc/host/sdhci-omap.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-oma=
+p.c
+> > index 54d795205fb4..26a9a8b5682a 100644
+> > --- a/drivers/mmc/host/sdhci-omap.c
+> > +++ b/drivers/mmc/host/sdhci-omap.c
+> > @@ -1339,8 +1339,8 @@ static int sdhci_omap_probe(struct platform_devic=
+e *pdev)
+> >         /* R1B responses is required to properly manage HW busy detecti=
+on. */
+> >         mmc->caps |=3D MMC_CAP_NEED_RSP_BUSY;
+> >
+> > -       /* Allow card power off and runtime PM for eMMC/SD card devices=
+ */
+> > -       mmc->caps |=3D MMC_CAP_POWER_OFF_CARD | MMC_CAP_AGGRESSIVE_PM;
+> > +       /*  Enable SDIO card power off. */
+> > +       mmc->caps |=3D MMC_CAP_POWER_OFF_CARD;
+> >
+> >         ret =3D sdhci_setup_host(host);
+> >         if (ret)
+> > --
+> > 2.43.0
+> >
+>
+> Thanks Ulf, i also have this exact revert running on the target in our
+> ci farm, i think we should be good.  But I'll validate it in 4 weeks!
+>
+> Regards,
+>
+> --
+> Robert Nelson
+> https://rcn-ee.com/
 
-This change is a noop and fixes nothing, which you can test by testing
-your DTS without and with this patch.
+Thanks Robert for helping out!
 
-Best regards,
-Krzysztof
+In the meantime I decided to queue this up for next, to allow it to
+get more testing in linux-next.
 
+Kind regards
+Uffe
 
