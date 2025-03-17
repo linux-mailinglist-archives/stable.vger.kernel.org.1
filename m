@@ -1,132 +1,160 @@
-Return-Path: <stable+bounces-124590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F98A63F57
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 06:15:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C6FA63F85
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 06:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C8463A738D
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:15:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FD4616B7D2
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B601E1DEE;
-	Mon, 17 Mar 2025 05:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC2E218E92;
+	Mon, 17 Mar 2025 05:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YmblwWg8"
+	dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b="ptecTpPf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9107C1624E5;
-	Mon, 17 Mar 2025 05:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38DF21504D;
+	Mon, 17 Mar 2025 05:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742188514; cv=none; b=YcjHqLQVMDYByodxmVSjkiz2P4PWh/pQ2kqwfceEAhQj9J5CCEANmvAj0fqJkMyXSzitOYjpIhV7ShR6XaWbtRNTW29bXtn0P5PLDE5os2L+aO/9rRU5LGYA2PWuRN4ZtzT5XIg+q6sETpewhdPtaRtjKhCwL+1Imj1kIPpSFoA=
+	t=1742189013; cv=none; b=BffYlvOju1n1g+VeF8q8B7/g/pdphwZRUeqeMtL3skTWeAZYE8MVMa4DKUw4TppqOxfIFih5w7OuDR5NmWb7BUQgCKIDUCnekHDY6yV2y8QAAy8ob04DllvGnoUhBf9MRZ/51vbo2FlQ3J+G2CYdW5UiS84FdzFaL7FIwYEXZwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742188514; c=relaxed/simple;
-	bh=EnZdhGBlhKVDXnmtgopckYNq+xfqNbOjj+q5tyDFwcM=;
-	h=Date:To:From:Subject:Message-Id; b=ESnzaS4RlOmttluAI5v7WAWKGOcym1eZoOpFPakJvjt/kikTLfTHfvPCf1tOsnUH9wGL/IyP3ipl9H9CSYUV/E5yFSgMXnTbgSu81KIpJSRfPJaT/gGSNbM4VM0eZbRUNFdosKyaExobp6cXScmdr4QMXh3KJ8wXXFk9iqb+gAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YmblwWg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D10FC4CEEC;
-	Mon, 17 Mar 2025 05:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1742188514;
-	bh=EnZdhGBlhKVDXnmtgopckYNq+xfqNbOjj+q5tyDFwcM=;
-	h=Date:To:From:Subject:From;
-	b=YmblwWg8qYmrNpbB8LO/CQXawBq3HnVFjT1lXJD+fw4T1aESxMKOsbyOyAYfJKbQo
-	 eDTZ3lbBRvfedkbJ1IjlF+zTzxyf2ET5E9KOgoyN1Nvp7ucOFe1UzyqcOQh6VKm1rb
-	 Rp2Ua8zSpMt1OEY+ljbIEoJj/lTb+SMIuQSjT65s=
-Date: Sun, 16 Mar 2025 22:15:13 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,tglx@linutronix.de,stable@vger.kernel.org,mingo@redhat.com,jgross@suse.com,hpa@zytor.com,david@redhat.com,davem@davemloft.net,dave.hansen@linux.intel.com,catalin.marinas@arm.com,bp@alien8.de,boris.ostrovsky@oracle.com,andreas@gaisler.com,ryan.roberts@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] sparc-mm-avoid-calling-arch_enter-leave_lazy_mmu-in-set_ptes.patch removed from -mm tree
-Message-Id: <20250317051514.5D10FC4CEEC@smtp.kernel.org>
+	s=arc-20240116; t=1742189013; c=relaxed/simple;
+	bh=UW2ueA2Qb2x942vo6/I7KZcgWikDZcH9qzJDqMyqTXs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JzNHemcIZEFKIW8ZxwcyIUfMdCPlrOKHRCZGYetn2ViUtpF2m75uDz+HKNJjppBEsQjE+yJEtML5GKsFbarGAKTMI29n8VeDOdi8lNhUsGP1CQ9qYlYtIhiwM9JHwbSqBubI1QQz/u8Fhne/OtKYHvT/FlVU/sPChiJEL1FSZ2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org; spf=none smtp.mailfrom=deepin.org; dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b=ptecTpPf; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=deepin.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deepin.org;
+	s=ukjg2408; t=1742188973;
+	bh=5VoWo9+kTVRGehYZZb0Zl0JIHZwjW6msh7h7oa+43/k=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=ptecTpPfgPVGHl46fRwTY3Va3ZcWZY4zOWJ4Msz9FuR+HYFVCJ6J1DRLBf1CmEfiH
+	 mh+sxEkUMlC3YFWX1kZNQ3LauMdeBVb794jFloGXMit2KAu6Pk2Z+R3ms5D97roohV
+	 +P1aPauUjAO7pS4k6DGn9rKe4zpKHAx32nEqCKv8=
+X-QQ-mid: bizesmtp82t1742188971t1m7w3mm
+X-QQ-Originating-IP: djKXfLBif2j97QVwxqBQla9T8D7LOXKk7aoXSc0Nenk=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 17 Mar 2025 13:22:49 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 3296478406473002312
+From: Chen Linxuan <chenlinxuan@deepin.org>
+To: Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Chen Linxuan <chenlinxuan@deepin.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Cc: Yi Lai <yi1.lai@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	stable@vger.kernel.org,
+	Jann Horn <jannh@google.com>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH stable 5.15 v3] lib/buildid: Handle memfd_secret() files in build_id_parse()
+Date: Mon, 17 Mar 2025 13:21:32 +0800
+Message-ID: <DC5F0190D52D7B57+20250317052132.23783-2-chenlinxuan@deepin.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:deepin.org:qybglogicsvrgz:qybglogicsvrgz7a-0
+X-QQ-XMAILINFO: M4K5nIxZYv59mzLTsOPB8xGTLzBE0hsYcloIEf/+T9k2eVUJF0/yw1/F
+	8W0tbPH/xKH1OXOnlgyIYTIx6LWQ0okHyVJ752Mig7TieUcaX5aAyueXH5V1RyQ/5AJXBqv
+	z0GM47LFgNjx9+2PbfpFhb6viQSbs9eNjK7XAFevoTws1+ADOqJ3VacZdNsFSPhANvCpaSE
+	EvFl8X7sWOCjCI/oQwgXCvQwpDHzteqLZ3m925d3ScnsEeemDjYSu9aMAPwugYHxhBP2iA8
+	9UKpZir51pVmse8hmayHIp601tKPl3nJD81xg5537aEMlZDZUpLcl1cwzgCWvy0oBDKUUBs
+	OCLabEOlU9dSeCekFhHlfcFohxswQ+VRc4ziFP42iWh+GMg1FzI4h9U3MwtHZvZqR3iw2+j
+	QWGgFq2i9FZfUPmo2avdqqMLLOGp6ZxCxn2xxbaggS1tU3C/5M/lstzLpYs1m4sGAj0Kr7F
+	eQBTrZFwQTslDepUF30zoQlsNCYl+5P0OxHYST8l9fM2V6T5UBUpHyC7Fuj0uuSghvfWoJO
+	UFgzDygdn4MQi230Gb7sb1pnlVub9GlGeTUkf2Ykx0kGJWACt/A2AEvGit7BM21Q1YHcttC
+	HWc+63mR1iZgOlt/sUqzfRDkO86Hu7oa8VGF5QVf0uX2aQ6CUqDkLXql+g9/M+lvqs1fZbU
+	NY4B8EGGrLj5pMP6o7Sdr7ZVs8gyP0DZEnsenHucdVszD0vFiipenaFfhw6VzgPUHlaEADk
+	mhv0J6Qmbx85+kAWARPFX2dgnK+ms63QjO9L1WHbOIqNqVdAvNumFCs5XXADYC+le3bR0Oe
+	pqJN/qJ5OPOV2I8/AzyUMpx0jGTRJo/v6q955o+n6XiQwQsWPbIoA/5O0h9vvKryIazAn8I
+	0on2vBu52dJwcWw9FUu8EVSpFK68IfrUeZhlPQBi5fXz5F30Tod/Z2Y7hKa/HUVtvsOHDnu
+	IGXHbOJj8vGKeMmMQ5wdLkngFKogBtaT++jG62MNN7YpRN3x6wIjklokg
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+X-QQ-RECHKSPAM: 0
 
+[ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
 
-The quilt patch titled
-     Subject: sparc/mm: avoid calling arch_enter/leave_lazy_mmu() in set_ptes
-has been removed from the -mm tree.  Its filename was
-     sparc-mm-avoid-calling-arch_enter-leave_lazy_mmu-in-set_ptes.patch
+>From memfd_secret(2) manpage:
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+  The memory areas backing the file created with memfd_secret(2) are
+  visible only to the processes that have access to the file descriptor.
+  The memory region is removed from the kernel page tables and only the
+  page tables of the processes holding the file descriptor map the
+  corresponding physical memory. (Thus, the pages in the region can't be
+  accessed by the kernel itself, so that, for example, pointers to the
+  region can't be passed to system calls.)
 
-------------------------------------------------------
-From: Ryan Roberts <ryan.roberts@arm.com>
-Subject: sparc/mm: avoid calling arch_enter/leave_lazy_mmu() in set_ptes
-Date: Mon, 3 Mar 2025 14:15:38 +0000
+We need to handle this special case gracefully in build ID fetching
+code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
+family of APIs. Original report and repro can be found in [0].
 
-With commit 1a10a44dfc1d ("sparc64: implement the new page table range
-API") set_ptes was added to the sparc architecture.  The implementation
-included calling arch_enter/leave_lazy_mmu() calls.
+  [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
 
-The patch removes the usage of arch_enter/leave_lazy_mmu() since this
-implies nesting of lazy mmu regions which is not supported.  Without this
-fix, lazy mmu mode is effectively disabled because we exit the mode after
-the first set_ptes:
-
-remap_pte_range()
-  -> arch_enter_lazy_mmu()
-  -> set_ptes()
-      -> arch_enter_lazy_mmu()
-      -> arch_leave_lazy_mmu()
-  -> arch_leave_lazy_mmu()
-
-Powerpc suffered the same problem and fixed it in a corresponding way with
-commit 47b8def9358c ("powerpc/mm: Avoid calling
-arch_enter/leave_lazy_mmu() in set_ptes").
-
-Link: https://lkml.kernel.org/r/20250303141542.3371656-5-ryan.roberts@arm.com
-Fixes: 1a10a44dfc1d ("sparc64: implement the new page table range API")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Andreas Larsson <andreas@gaisler.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juegren Gross <jgross@suse.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
+Reported-by: Yi Lai <yi1.lai@intel.com>
+Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
+Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
+[ Chen Linxuan: backport same logic without folio-based changes ]
+Cc: stable@vger.kernel.org
+Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
 ---
+v1 -> v2: use vma_is_secretmem() instead of directly checking
+          vma->vm_file->f_op == &secretmem_fops
+v2 -> v3: keep original comment
+---
+ lib/buildid.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
- arch/sparc/include/asm/pgtable_64.h |    2 --
- 1 file changed, 2 deletions(-)
-
---- a/arch/sparc/include/asm/pgtable_64.h~sparc-mm-avoid-calling-arch_enter-leave_lazy_mmu-in-set_ptes
-+++ a/arch/sparc/include/asm/pgtable_64.h
-@@ -936,7 +936,6 @@ static inline void __set_pte_at(struct m
- static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		pte_t *ptep, pte_t pte, unsigned int nr)
- {
--	arch_enter_lazy_mmu_mode();
- 	for (;;) {
- 		__set_pte_at(mm, addr, ptep, pte, 0);
- 		if (--nr == 0)
-@@ -945,7 +944,6 @@ static inline void set_ptes(struct mm_st
- 		pte_val(pte) += PAGE_SIZE;
- 		addr += PAGE_SIZE;
- 	}
--	arch_leave_lazy_mmu_mode();
- }
- #define set_ptes set_ptes
+diff --git a/lib/buildid.c b/lib/buildid.c
+index 9fc46366597e..8d839ff5548e 100644
+--- a/lib/buildid.c
++++ b/lib/buildid.c
+@@ -5,6 +5,7 @@
+ #include <linux/elf.h>
+ #include <linux/kernel.h>
+ #include <linux/pagemap.h>
++#include <linux/secretmem.h>
  
-_
-
-Patches currently in -mm which might be from ryan.roberts@arm.com are
-
-mm-use-ptep_get-instead-of-directly-dereferencing-pte_t.patch
+ #define BUILD_ID 3
+ 
+@@ -157,6 +158,10 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+ 	if (!vma->vm_file)
+ 		return -EINVAL;
+ 
++	/* reject secretmem folios created with memfd_secret() */
++	if (vma_is_secretmem(vma))
++		return -EFAULT;
++
+ 	page = find_get_page(vma->vm_file->f_mapping, 0);
+ 	if (!page)
+ 		return -EFAULT;	/* page not mapped */
+-- 
+2.48.1
 
 
