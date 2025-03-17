@@ -1,145 +1,115 @@
-Return-Path: <stable+bounces-124751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5679A661E3
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 23:42:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2B8A660D3
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 22:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D775C189B4BF
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 22:42:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F1CC17A36E
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 21:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B798204C31;
-	Mon, 17 Mar 2025 22:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4801AD4B;
+	Mon, 17 Mar 2025 21:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="f4+s6LOG"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ma7Apm3w"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C967204851
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 22:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABDA2036F5
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 21:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742251338; cv=none; b=fe6Jar1C0cT/klsHw1XX7ki+iqV0gnAx9rBRTfOiPzAEzdHP2WKxXHrMOPlXKRAcXHIBLjk+vquY4ujHnIchX2ElxKHjdemhvcsHS9fUfhdo3bcESWMZOT68xpsSKBUZMZR0ucrim6A+TN+R4LlSfUh5VKn8TctNhVa2ZwpORAA=
+	t=1742247708; cv=none; b=VgNGoubxPWZtEko4zciaj7+h2oMNcj8D9BjJg2HYaF+n1Wc8nvjrVholbNS2PFpDqOvzv4Jbj1E46liLBh8zS2l6/XN52V34lnnrbZJdwFS9OpntnOkpX65slwzmmMSEejiQBEJs8dhd7GB1STB5aVqiCqAnISrUHOEZuFwkm8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742251338; c=relaxed/simple;
-	bh=o6y+XyffX9wmjk0Np+rMurFlpcoCW1araA3fSvob6fY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=BxewPqaoDBAXb3rPJSACfICJTwRZMffcINHMjAtbroC7jubjSymgK0cA5R/dY8m4lLIyRn0GtUewSnvdHC5gkrpWo+r3CgkEpIdXr78+c3nOSCOhulkeI/98AMVLmanQGuclRKgXdV0gwkKrEZOfBkKyb0e5TmDfkhPDZWTHNHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=f4+s6LOG; arc=none smtp.client-ip=170.10.133.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
-	t=1742251335;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=KXBti98LcS5GzDZjVFDN2KRvwCsazYpAUZPSb/VmakA=;
-	b=f4+s6LOGi3PFbiPFmjv9qXQ+8S7WErahm2cIoroAi6Ig1IKldfPyd6AsIuS4Xo/hU5szea
-	mB/lbd0nMHAPJexzHaMmyLnmAcjDNynH0WI4kuT+51nXT5SontYfE/GigNLBOLQ+e7WY2u
-	vopuM0/kadgDTKURDDZnHr8AKNNqd4Q=
-Received: from g7t16454g.inc.hp.com (hpifallback.mail.core.hp.com
- [15.73.128.143]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-GE-CncSxPaS36qHP86rU4w-1; Mon, 17 Mar 2025 18:42:13 -0400
-X-MC-Unique: GE-CncSxPaS36qHP86rU4w-1
-X-Mimecast-MFC-AGG-ID: GE-CncSxPaS36qHP86rU4w_1742251332
-Received: from g8t13021g.inc.hpicorp.net (g8t13021g.inc.hpicorp.net [15.60.27.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by g7t16454g.inc.hp.com (Postfix) with ESMTPS id 2815060001E3;
-	Mon, 17 Mar 2025 22:42:11 +0000 (UTC)
-Received: from localhost.localdomain (unknown [15.53.255.151])
-	by g8t13021g.inc.hpicorp.net (Postfix) with ESMTP id E2BD56000E9D;
-	Mon, 17 Mar 2025 22:42:02 +0000 (UTC)
-From: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-To: masahiroy@kernel.org,
-	nathan@kernel.org,
-	linux-kbuild@vger.kernel.org
-Cc: nicolas@fjasle.eu,
-	linux-kernel@vger.kernel.org,
-	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] kbuild: deb-pkg: don't set KBUILD_BUILD_VERSION unconditionally
-Date: Fri, 14 Mar 2025 13:10:53 +0000
-Message-ID: <20250314131053.23360-1-alexandru.gagniuc@hp.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1742247708; c=relaxed/simple;
+	bh=rWjsX3fFqA6bmIfSaxgyAO1zC4N3dVQ6uElBa1TNPlA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ho6d6BVQp3hyVqEooHU6KE5bpt1euicKjOzXtvCuGyK9YeLsdtvbJUswbPWU9/xQmH+SpB570iQecGkaZpNQrZVBrnSZIEY8lp3Wt1bsnFhOzhY+XQwj3ysY/CeKzN2N7KTMK2L/YTrLkYc6+jRhbvqmYE4hjLonakOLbU7tJ/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ma7Apm3w; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ff6af1e264so7083980a91.3
+        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 14:41:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742247706; x=1742852506; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vAuLB9yhasIYeGdFy6GEtR/y77QYYCbZKgQQARSv/eQ=;
+        b=Ma7Apm3w0VNV7tqHxXuPhkkBxUp8ziRHodlzwjcyaRBjkRFAOTkB5RK2cEnDYcNWrr
+         tjEBiQ2KR3TTh2XKS6sF+IhjE5ww4JD8hsO0EVZjUsoGXAgRO0O0xG5xlvq5NGDhNDAO
+         uOphLi64O26EeXaCQQ7sob3RERXy8RxXdIay8PTcCqKN6VLsV1X979RwhYKVBlFAREoA
+         UDtYHw1XmYfJoDHfnOnsruV0Rn1KcYXsFKaEF8GRaAhiDgJf9EK0mZNl7VFAAZHLtrx9
+         3s9LJYUIzv1ipfYQ2rlsbRY2LhJn6TFZ2C7nRSIVzqQ9yq+2aWN/jrHIJDjbrapVG0ay
+         BGEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742247706; x=1742852506;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vAuLB9yhasIYeGdFy6GEtR/y77QYYCbZKgQQARSv/eQ=;
+        b=cjPzXgEkMc+P3iQC4aOaIGTW0QD/JTdrzwiSdt3WO/SdLrzBArY3ojy2B8JHPzVogv
+         jfKVsA4vOqfWDlhqXa6NVgl8jz7U9m1nrA2AY2MURMUeIO61WuJYca56zVSr7VlnhRBx
+         FGTq9a7JaZtylUy/CxBMofe7QWmowZlUJgkPjsR7+5P+7bMBfRmMfZjWL/seNAl6U9Bn
+         jpWgSK5O2HGjQBMTlz8HbdQ0EP5gkT3QtoFeSfXlsBIcYDVvl4+yH498faYlafSjbbte
+         chT4sBhT3VpX+wo/vWzaDfzpZjsZchvwcDVPAfY2MiSpvxdLkvjyu/WON+8idpW2/LZy
+         +H8w==
+X-Forwarded-Encrypted: i=1; AJvYcCWdOxCaqOmf4LxrE7A4PH8Gxi7jDU8BQGbC01iWX7DML13j1uJ2TXCP0OXjNoehg2iZnbrJuo8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt3bn5548Ex9rwNTSunzJmc76gWRsjGoFuys2P0u4UHbFWcCti
+	xkz+VZ2/MJbg3YzR8PRM8tpxmaJkScGhqIuVx2/z2Yb9C02oT4KQD1u7uWcfx3uNNpxO3BFGORu
+	zkF9XkVRLqvil7F5GYOIX5g==
+X-Google-Smtp-Source: AGHT+IHV2parlCfkXlW1RqUC5CzSsgz7d1VNJdqbSQLUNs1qprSzGznj89/+LkY3VXxqSq8aMvQGVAF67nu2A+QTGg==
+X-Received: from pjbpl12.prod.google.com ([2002:a17:90b:268c:b0:2f9:c349:2f84])
+ (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:5144:b0:2f4:432d:250d with SMTP id 98e67ed59e1d1-30151cff08emr15675001a91.21.1742247706476;
+ Mon, 17 Mar 2025 14:41:46 -0700 (PDT)
+Date: Mon, 17 Mar 2025 21:41:41 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: la5LG7jKjWL9P5eFTdU0PUkWzyhx3VrVBvkyfaBJYqs_1742251332
-X-Mimecast-Originator: hp.com
-Content-Transfer-Encoding: quoted-printable
-content-type: text/plain; charset=WINDOWS-1252; x-default=true
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.rc1.451.g8f38331e32-goog
+Message-ID: <20250317214141.286854-1-hramamurthy@google.com>
+Subject: [PATCH net] gve: unlink old napi only if page pool exists
+From: Harshitha Ramamurthy <hramamurthy@google.com>
+To: netdev@vger.kernel.org
+Cc: jeroendb@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	pkaligineedi@google.com, shailend@google.com, willemb@google.com, 
+	jacob.e.keller@intel.com, joshwash@google.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-In ThinPro, we use the convention <upstream_ver>+hp<patchlevel> for
-the kernel package. This does not have a dash in the name or version.
-This is built by editing ".version" before a build, and setting
-EXTRAVERSION=3D"+hp" and KDEB_PKGVERSION make variables:
+Commit de70981f295e ("gve: unlink old napi when stopping a queue using
+queue API") unlinks the old napi when stopping a queue. But this breaks
+QPL mode of the driver which does not use page pool. Fix this by checking
+that there's a page pool associated with the ring.
 
-    echo 68 > .version
-    make -j<n> EXTRAVERSION=3D"+hp" bindeb-pkg KDEB_PKGVERSION=3D6.12.2+hp6=
-9
-
-    .deb name: linux-image-6.12.2+hp_6.12.2+hp69_amd64.deb
-
-Since commit 7d4f07d5cb71 ("kbuild: deb-pkg: squash
-scripts/package/deb-build-option to debian/rules"), this no longer
-works. The deb build logic changed, even though, the commit message
-implies that the logic should be unmodified.
-
-Before, KBUILD_BUILD_VERSION was not set if the KDEB_PKGVERSION did
-not contain a dash. After the change KBUILD_BUILD_VERSION is always
-set to KDEB_PKGVERSION. Since this determines UTS_VERSION,the uname
-output to look off:
-
-    (now)      uname -a: version 6.12.2+hp ... #6.12.2+hp69
-    (expected) uname -a: version 6.12.2+hp ... #69
-
-Update the debian/rules logic to restore the original behavior.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 7d4f07d5cb71 ("kbuild: deb-pkg: squash scripts/package/deb-build-opt=
-ion to debian/rules")
-Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Cc: stable@vger.kernel.org
+Fixes: de70981f295e ("gve: unlink old napi when stopping a queue using queue API")
+Reviewed-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
 ---
-Changes since v1:
- * Rework logic so that dpkg-parsechangelog is invoked just once
- * Adjust commit message to reflect review feedback
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- scripts/package/debian/rules | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/package/debian/rules b/scripts/package/debian/rules
-index ca07243bd5cd..d1f400685682 100755
---- a/scripts/package/debian/rules
-+++ b/scripts/package/debian/rules
-@@ -21,9 +21,11 @@ ifeq ($(origin KBUILD_VERBOSE),undefined)
-     endif
- endif
-=20
--revision =3D $(lastword $(subst -, ,$(shell dpkg-parsechangelog -S Version=
-)))
-+revision =3D $(shell dpkg-parsechangelog -S Version | sed -n 's/.*-//p')
- CROSS_COMPILE ?=3D $(filter-out $(DEB_BUILD_GNU_TYPE)-, $(DEB_HOST_GNU_TYP=
-E)-)
--make-opts =3D ARCH=3D$(ARCH) KERNELRELEASE=3D$(KERNELRELEASE) KBUILD_BUILD=
-_VERSION=3D$(revision) $(addprefix CROSS_COMPILE=3D,$(CROSS_COMPILE))
-+make-opts =3D ARCH=3D$(ARCH) KERNELRELEASE=3D$(KERNELRELEASE) $(addprefix =
-\
-+=09=09KBUILD_BUILD_VERSION=3D,$(revision)) $(addprefix \
-+=09=09CROSS_COMPILE=3D,$(CROSS_COMPILE))
-=20
- binary-targets :=3D $(addprefix binary-, image image-dbg headers libc-dev)
-=20
---=20
-2.48.1
+diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+index 2c03c39..0fcf4c9 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -114,7 +114,8 @@ void gve_rx_stop_ring_dqo(struct gve_priv *priv, int idx)
+ 	if (!gve_rx_was_added_to_block(priv, idx))
+ 		return;
+ 
+-	page_pool_disable_direct_recycling(rx->dqo.page_pool);
++	if (rx->dqo.page_pool)
++		page_pool_disable_direct_recycling(rx->dqo.page_pool);
+ 	gve_remove_napi(priv, ntfy_idx);
+ 	gve_rx_remove_from_block(priv, idx);
+ 	gve_rx_reset_ring_dqo(priv, idx);
+-- 
+2.49.0.rc1.451.g8f38331e32-goog
 
 
