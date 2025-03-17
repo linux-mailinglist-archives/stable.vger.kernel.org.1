@@ -1,98 +1,107 @@
-Return-Path: <stable+bounces-124737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC208A65E7D
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 20:52:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6609A65EA6
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 21:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A01D17958F
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 19:52:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E89B189A5B6
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 20:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A611DE3DE;
-	Mon, 17 Mar 2025 19:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221261547E7;
+	Mon, 17 Mar 2025 20:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DFdOHHti"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iSqMGIM5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968111A01D4
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 19:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7401FAA
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 20:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742241119; cv=none; b=t3so0eCbM6UQiB0TN8jWnmHjH+G4ZWGXkLlMjZO/rajwewvKl1xPwse4+zsyEpqxo2a2J1ID9KgnFXi2VvNl1vXQPt3R7tKYFiO+x8GWt5Cmk5aiM1AURxuLYegNPIFRMFbE4bnoP2Gksb37ZXwXty8LLQ6s7m2pu5ydSKzktV0=
+	t=1742241693; cv=none; b=IegWDf0jVgvY2fwqoO3Zzw3GFbrTDUs4tOvD65xI3uYteyfCAi82prMSonMO+Mc3OpyzVfY8AXQbl6bRsQLJS3O0h8JLaqEZQDqYDLdUi8eXV15pcSrhLkj2hbUBw7FgnENSZWAEXsthFEHeJOv75QeYjcXTKMENHjTF/+ga0CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742241119; c=relaxed/simple;
-	bh=FYaGJCV0OYPitwng4iSaKfa/Lb83Fq3OaTk/YVfyj/8=;
+	s=arc-20240116; t=1742241693; c=relaxed/simple;
+	bh=E/xZ+54KctjZ9m5sKDMSFIYRtt8Xn2G3hsazpBjuQBE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fX6A0mDONi+10Bn/D1gDfBZDAnFYHZm6YjouqISPkgBGz5wLy3YgmhNT1qTKqF1AuHOdncpDVLxzKlC/9ydacLOqXGVxWIwJZ7VoMK/TogSohKMlutixZkdkhdvv6xMk88uUDkNBqOSFWABqN617pg23+27KrEZUiN4UxS+FHpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DFdOHHti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C514C4CEE3;
-	Mon, 17 Mar 2025 19:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742241119;
-	bh=FYaGJCV0OYPitwng4iSaKfa/Lb83Fq3OaTk/YVfyj/8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFdOHHtiC4PTr9PS9wgF2fEptPwvBwHL5TqTEXdsC9yWyANDj3Dapt88V17OEcFPo
-	 pXacLXOivcX/wRKkBFxsLVnDgjhhCUey5OGKP68dIQF03lrOj16EVcHeU7ToESBtd9
-	 QbRzSITHZEs0msJEyZUHqyF6NHxmFGRH7X3DKormxYOCYJomiuNmIsO2pGosaK0Jqb
-	 NJzmHJAL8L4A10VbXjLGYJeLKTwYu9hocv+k9gsAAWxOBKF44w0/ORFQk4nq2DmbyZ
-	 WeQ48C2bVcE1QddFQJZKtLkDOPQvXgK+DJcvyNDGjBZVRYMkPlJ+FEUpk3xCqnf2Rr
-	 LJlknwWPtb7tw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	henrique.carvalho@suse.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13.y] smb: client: Fix match_session bug preventing session reuse
-Date: Mon, 17 Mar 2025 15:51:57 -0400
-Message-Id: <20250317154044-1e151d712e310112@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250317181622.2243629-1-henrique.carvalho@suse.com>
-References: 
+	 MIME-Version:Content-Type; b=gymB+cIRrNYjzLYkDz+K3Hxty46onNVLSZw8g5lgIONqxi6oR/6y5mHS4tGVe0flbfuiWwhhLnvFNJ1zZm2kKMNFc9WhKN36o8QGts36lCYiqdizqebPZcJCu+Ul52etP11A+GONZBIsI8//ZXM0ZeDIK4+E7iRNpU7qEv56aZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iSqMGIM5; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1742241680;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vu17wjBsFBCZ0+3MLyENCrSMY6OUYDwd3aPaG2b678Y=;
+	b=iSqMGIM5dt9iMPdojc31nopo9hKqmXZO6m/dgNFvLRNdYeReE7hDnUkJqKY7bShOAFHp5h
+	DEY80ffWRrxSJCsfjRKiFbxYdTwJK8ck8aMHT+o57UoCcCjsFxx6bjWFwJhXdYFIc/Gg07
+	nheG9vUQcD647tUcUEwt1m88nlV037Y=
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Jones <andrew.jones@linux.dev>,
+	Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	devel@daynix.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v5 0/5] KVM: arm64: PMU: Fix SET_ONE_REG for vPMC regs
+Date: Mon, 17 Mar 2025 13:01:07 -0700
+Message-Id: <174224155547.1588441.3490436622132208645.b4-ty@linux.dev>
+In-Reply-To: <20250315-pmc-v5-0-ecee87dab216@daynix.com>
+References: <20250315-pmc-v5-0-ecee87dab216@daynix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-[ Sasha's backport helper bot ]
+On Sat, 15 Mar 2025 18:12:09 +0900, Akihiko Odaki wrote:
+> Prepare vPMC registers for user-initiated changes after first run. This
+> is important specifically for debugging Windows on QEMU with GDB; QEMU
+> tries to write back all visible registers when resuming the VM execution
+> with GDB, corrupting the PMU state. Windows always uses the PMU so this
+> can cause adverse effects on that particular OS.
+> 
+> This series also contains patch "KVM: arm64: PMU: Set raw values from
+> user to PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}", which reverts semantic
+> changes made for the mentioned registers in the past. It is necessary
+> to migrate the PMU state properly on Firecracker, QEMU, and crosvm.
+> 
+> [...]
 
-Hi,
+Squashed in a fix for CONFIG_HW_PERF_EVENTS=n build.
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+Applied to next, thanks!
 
-Found matching upstream commit: 605b249ea96770ac4fac4b8510a99e0f8442be5e
+[1/5] KVM: arm64: PMU: Set raw values from user to PM{C,I}NTEN{SET,CLR}, PMOVS{SET,CLR}
+      https://git.kernel.org/kvmarm/kvmarm/c/f2aeb7bbd574
+[2/5] KVM: arm64: PMU: Assume PMU presence in pmu-emul.c
+      https://git.kernel.org/kvmarm/kvmarm/c/be5ccac3f15e
+[3/5] KVM: arm64: PMU: Fix SET_ONE_REG for vPMC regs
+      https://git.kernel.org/kvmarm/kvmarm/c/64074ca8ca92
+[4/5] KVM: arm64: PMU: Reload when user modifies registers
+      https://git.kernel.org/kvmarm/kvmarm/c/1db4aaa05589
+[5/5] KVM: arm64: PMU: Reload when resetting
+      https://git.kernel.org/kvmarm/kvmarm/c/fe53538069bb
 
-Note: The patch differs from the upstream commit:
----
-1:  605b249ea9677 ! 1:  09e6c5e075985 smb: client: Fix match_session bug preventing session reuse
-    @@ Commit message
-         Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-         Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-         Signed-off-by: Steve French <stfrench@microsoft.com>
-    +    (cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
-     
-      ## fs/smb/client/connect.c ##
-     @@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
-    @@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
-     +		return 0;
-     +
-     +	switch (ctx_sec) {
-    -+	case IAKerb:
-      	case Kerberos:
-      		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
-      			return 0;
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Success    |  Success   |
+--
+Best,
+Oliver
 
