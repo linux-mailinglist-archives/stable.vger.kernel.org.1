@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-124692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A1DA658D0
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:49:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE06A658B4
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F393AF42D
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:46:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52CC67A9481
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237E5207A3A;
-	Mon, 17 Mar 2025 16:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952041DC997;
+	Mon, 17 Mar 2025 16:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTbEQuVL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6bqX1eF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D070B1A3163;
-	Mon, 17 Mar 2025 16:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E17A1A3163;
+	Mon, 17 Mar 2025 16:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229567; cv=none; b=jFVjAWoaRA5osAClF+lIcpC2TRVVTldBRVOo7W/h2VfCyTu1Gs29lyyWx1DhSwYHjAS1JoGJuN+D+DtAGwcWKEdv3RTnM4tXwt2q/wMCmmZt1+yIwv0Km1cOk9SV/WuU6aRIacFokzr05GOV2KhBShdHa69pbctEDQtYam63WbU=
+	t=1742229572; cv=none; b=HXeZ/zwJIShpUe5e8ev8Taxs72I/FeWFqC1Us5WQvneOYfRW1JpFVhrmthc0o8XMUt8ExhKOagHmIalbaGWO7W88xSfmamI3m+w/66r2mdo/VJUfVXMM0I50fE1X7hIq1Ex5AqrlQuMXaU3KzjK2XjXlzcW2AKyGT80QMrX5qbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229567; c=relaxed/simple;
-	bh=UeiSQ/hkKZrLMmRLhZRiXRYof6CAysj/kL5O0U1ITzQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DSV8r8SfsTuPFhWLa8S170k3mgvDYjaqTcjO4haAh9b7NnMNoxUX1iahi7xtLgPgmofJW1ivJR6V4H69loOOrrEMqNM7Z4ONKJQEq5fQxnDLxLGqOdY6LKwpmSWmyMGVEofCB8pEE4ITe8JLFdX4OGCjOMFiPE3ga7ubMF5DgwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTbEQuVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C3FC4CEF8;
-	Mon, 17 Mar 2025 16:39:25 +0000 (UTC)
+	s=arc-20240116; t=1742229572; c=relaxed/simple;
+	bh=KMnofa1VM9IfQnXHHtsdHIzVARvSU9jHnwQYtJfYLHY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GVdUc9fI4oih5n0SGkye/rzphvVrVO8XmdDbmNVxK0sNPZrmszZPjzLFxOcCXFrBaQ+D/65niv7rzTZY782dDvxBo4P7vwukGKqpxrM4SwXEBxTn2JBC4j2GFiMQyhPux5whGXPZoh/PmmEniybprUZc4klgJNJfbd16nsZbM0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6bqX1eF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC05C4CEEF;
+	Mon, 17 Mar 2025 16:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229567;
-	bh=UeiSQ/hkKZrLMmRLhZRiXRYof6CAysj/kL5O0U1ITzQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTbEQuVLqHPydBk0FrNCgEYgCttYQB3R3WWTdaXY0MV4FakArqD+AqxhWe+KWJIIL
-	 sMJvdjqA/TOvnbNWlEANkuhfHx48J83bIzl5A7gyftaSjI1wmASP9CQzfBHKQyk/SP
-	 2larwp95NEjfelm/+fa6Yo25crvxu0X/FkeHiSm+H7xe1xuc0zL/15BvmGmylpHa9a
-	 8v+JP8PM/6Kib/+wZ0otIeerNvNn7jwPbAO1Dop1mOWefXZ++gJQgYLQ+nDKBQG585
-	 GKq2IXIT0mb6zgrwaJQaoMkWoZptWWVOxH0mYTqIQWlh+C1mUSuvpFEnMpvl61nvlQ
-	 S6qZU+oQQnGVw==
+	s=k20201202; t=1742229571;
+	bh=KMnofa1VM9IfQnXHHtsdHIzVARvSU9jHnwQYtJfYLHY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=c6bqX1eFFlt5WQeqUJJRPdWoBzFqJ+qtY5LfVyW08ODTsHC4sQzSdV8B82aLuO2/r
+	 YpuBJ9pS6sTg82W5e/Onuwn3HrvMYZrmrwkCVcTj3IzjVHwf2HSrulXCVoK8RL+aTg
+	 9chfSQ3rBVn6y2uhvRoz/XW8l08nWDTn9XlfH1tffB0aKJx+TBqOwTLo44vsPp5yLT
+	 XyGvwrGb4Rl9LFtDYDarpT/Nu6up16fvpc61PEZ3pwQgt/LWS4lZyI9oRSk/147kt/
+	 KMW2n9tObQODiTCJyUspLuQI5OpMKeUlD79BLQoVnxQEGnbkqWJF/HMMjIP1HNu0Nz
+	 ccJ0Zyux+9VjQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Navon John Lukose <navonjohnlukose@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Waiman Long <longman@redhat.com>,
+	yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kailang@realtek.com,
-	sbinding@opensource.cirrus.com,
-	simont@opensource.cirrus.com,
-	josh@joshuagrisham.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 8/8] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion x360 14-dy1xxx
-Date: Mon, 17 Mar 2025 12:39:02 -0400
-Message-Id: <20250317163902.1893378-8-sashal@kernel.org>
+	peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.1 1/4] locking/semaphore: Use wake_q to wake up processes outside lock critical section
+Date: Mon, 17 Mar 2025 12:39:24 -0400
+Message-Id: <20250317163927.1893521-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250317163902.1893378-1-sashal@kernel.org>
-References: <20250317163902.1893378-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,79 +68,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.83
+X-stable-base: Linux 6.1.131
 Content-Transfer-Encoding: 8bit
 
-From: Navon John Lukose <navonjohnlukose@gmail.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit b11a74ac4f545626d0dc95a8ca8c41df90532bf3 ]
+[ Upstream commit 85b2b9c16d053364e2004883140538e73b333cdb ]
 
-Add a fixup to enable the mute LED on HP Pavilion x360 Convertible
-14-dy1xxx with ALC295 codec. The appropriate coefficient index and bits
-were identified through a brute-force method, as detailed in
-https://bbs.archlinux.org/viewtopic.php?pid=2079504#p2079504.
+A circular lock dependency splat has been seen involving down_trylock():
 
-Signed-off-by: Navon John Lukose <navonjohnlukose@gmail.com>
-Link: https://patch.msgid.link/20250307213319.35507-1-navonjohnlukose@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  6.12.0-41.el10.s390x+debug
+  ------------------------------------------------------
+  dd/32479 is trying to acquire lock:
+  0015a20accd0d4f8 ((console_sem).lock){-.-.}-{2:2}, at: down_trylock+0x26/0x90
+
+  but task is already holding lock:
+  000000017e461698 (&zone->lock){-.-.}-{2:2}, at: rmqueue_bulk+0xac/0x8f0
+
+  the existing dependency chain (in reverse order) is:
+  -> #4 (&zone->lock){-.-.}-{2:2}:
+  -> #3 (hrtimer_bases.lock){-.-.}-{2:2}:
+  -> #2 (&rq->__lock){-.-.}-{2:2}:
+  -> #1 (&p->pi_lock){-.-.}-{2:2}:
+  -> #0 ((console_sem).lock){-.-.}-{2:2}:
+
+The console_sem -> pi_lock dependency is due to calling try_to_wake_up()
+while holding the console_sem raw_spinlock. This dependency can be broken
+by using wake_q to do the wakeup instead of calling try_to_wake_up()
+under the console_sem lock. This will also make the semaphore's
+raw_spinlock become a terminal lock without taking any further locks
+underneath it.
+
+The hrtimer_bases.lock is a raw_spinlock while zone->lock is a
+spinlock. The hrtimer_bases.lock -> zone->lock dependency happens via
+the debug_objects_fill_pool() helper function in the debugobjects code.
+
+  -> #4 (&zone->lock){-.-.}-{2:2}:
+         __lock_acquire+0xe86/0x1cc0
+         lock_acquire.part.0+0x258/0x630
+         lock_acquire+0xb8/0xe0
+         _raw_spin_lock_irqsave+0xb4/0x120
+         rmqueue_bulk+0xac/0x8f0
+         __rmqueue_pcplist+0x580/0x830
+         rmqueue_pcplist+0xfc/0x470
+         rmqueue.isra.0+0xdec/0x11b0
+         get_page_from_freelist+0x2ee/0xeb0
+         __alloc_pages_noprof+0x2c2/0x520
+         alloc_pages_mpol_noprof+0x1fc/0x4d0
+         alloc_pages_noprof+0x8c/0xe0
+         allocate_slab+0x320/0x460
+         ___slab_alloc+0xa58/0x12b0
+         __slab_alloc.isra.0+0x42/0x60
+         kmem_cache_alloc_noprof+0x304/0x350
+         fill_pool+0xf6/0x450
+         debug_object_activate+0xfe/0x360
+         enqueue_hrtimer+0x34/0x190
+         __run_hrtimer+0x3c8/0x4c0
+         __hrtimer_run_queues+0x1b2/0x260
+         hrtimer_interrupt+0x316/0x760
+         do_IRQ+0x9a/0xe0
+         do_irq_async+0xf6/0x160
+
+Normally a raw_spinlock to spinlock dependency is not legitimate
+and will be warned if CONFIG_PROVE_RAW_LOCK_NESTING is enabled,
+but debug_objects_fill_pool() is an exception as it explicitly
+allows this dependency for non-PREEMPT_RT kernel without causing
+PROVE_RAW_LOCK_NESTING lockdep splat. As a result, this dependency is
+legitimate and not a bug.
+
+Anyway, semaphore is the only locking primitive left that is still
+using try_to_wake_up() to do wakeup inside critical section, all the
+other locking primitives had been migrated to use wake_q to do wakeup
+outside of the critical section. It is also possible that there are
+other circular locking dependencies involving printk/console_sem or
+other existing/new semaphores lurking somewhere which may show up in
+the future. Let just do the migration now to wake_q to avoid headache
+like this.
+
+Reported-by: yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250307232717.1759087-3-boqun.feng@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ kernel/locking/semaphore.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index ec57148453c82..29ebcd45233cf 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4783,6 +4783,21 @@ static void alc236_fixup_hp_coef_micmute_led(struct hda_codec *codec,
- 	}
+diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
+index 34bfae72f2952..de9117c0e671e 100644
+--- a/kernel/locking/semaphore.c
++++ b/kernel/locking/semaphore.c
+@@ -29,6 +29,7 @@
+ #include <linux/export.h>
+ #include <linux/sched.h>
+ #include <linux/sched/debug.h>
++#include <linux/sched/wake_q.h>
+ #include <linux/semaphore.h>
+ #include <linux/spinlock.h>
+ #include <linux/ftrace.h>
+@@ -38,7 +39,7 @@ static noinline void __down(struct semaphore *sem);
+ static noinline int __down_interruptible(struct semaphore *sem);
+ static noinline int __down_killable(struct semaphore *sem);
+ static noinline int __down_timeout(struct semaphore *sem, long timeout);
+-static noinline void __up(struct semaphore *sem);
++static noinline void __up(struct semaphore *sem, struct wake_q_head *wake_q);
+ 
+ /**
+  * down - acquire the semaphore
+@@ -183,13 +184,16 @@ EXPORT_SYMBOL(down_timeout);
+ void __sched up(struct semaphore *sem)
+ {
+ 	unsigned long flags;
++	DEFINE_WAKE_Q(wake_q);
+ 
+ 	raw_spin_lock_irqsave(&sem->lock, flags);
+ 	if (likely(list_empty(&sem->wait_list)))
+ 		sem->count++;
+ 	else
+-		__up(sem);
++		__up(sem, &wake_q);
+ 	raw_spin_unlock_irqrestore(&sem->lock, flags);
++	if (!wake_q_empty(&wake_q))
++		wake_up_q(&wake_q);
+ }
+ EXPORT_SYMBOL(up);
+ 
+@@ -269,11 +273,12 @@ static noinline int __sched __down_timeout(struct semaphore *sem, long timeout)
+ 	return __down_common(sem, TASK_UNINTERRUPTIBLE, timeout);
  }
  
-+static void alc295_fixup_hp_mute_led_coefbit11(struct hda_codec *codec,
-+				const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		spec->mute_led_polarity = 0;
-+		spec->mute_led_coef.idx = 0xb;
-+		spec->mute_led_coef.mask = 3 << 3;
-+		spec->mute_led_coef.on = 1 << 3;
-+		spec->mute_led_coef.off = 1 << 4;
-+		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
-+	}
-+}
-+
- static void alc285_fixup_hp_mute_led(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
+-static noinline void __sched __up(struct semaphore *sem)
++static noinline void __sched __up(struct semaphore *sem,
++				  struct wake_q_head *wake_q)
  {
-@@ -7331,6 +7346,7 @@ enum {
- 	ALC290_FIXUP_MONO_SPEAKERS_HSJACK,
- 	ALC290_FIXUP_SUBWOOFER,
- 	ALC290_FIXUP_SUBWOOFER_HSJACK,
-+	ALC295_FIXUP_HP_MUTE_LED_COEFBIT11,
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
- 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
-@@ -9068,6 +9084,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC283_FIXUP_INT_MIC,
- 	},
-+	[ALC295_FIXUP_HP_MUTE_LED_COEFBIT11] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc295_fixup_hp_mute_led_coefbit11,
-+	},
- 	[ALC298_FIXUP_SAMSUNG_AMP] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc298_fixup_samsung_amp,
-@@ -9976,6 +9996,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
- 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
- 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	struct semaphore_waiter *waiter = list_first_entry(&sem->wait_list,
+ 						struct semaphore_waiter, list);
+ 	list_del(&waiter->list);
+ 	waiter->up = true;
+-	wake_up_process(waiter->task);
++	wake_q_add(wake_q, waiter->task);
+ }
 -- 
 2.39.5
 
