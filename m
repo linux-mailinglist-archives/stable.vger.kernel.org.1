@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-124674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFF33A65895
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:43:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BECA6589F
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86DB217E723
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:42:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8FEC3B57C5
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45ACA1FCD09;
-	Mon, 17 Mar 2025 16:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F151FECB8;
+	Mon, 17 Mar 2025 16:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VM5a9CKP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3sisvB1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9FB1FBC89;
-	Mon, 17 Mar 2025 16:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF25A1FE45D;
+	Mon, 17 Mar 2025 16:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229508; cv=none; b=Eu8VCcGvgvrYIqFs7bwzRUAQM4+cAna/pBUuYKTTIKtmKTllDR2L7JLvpx+qxLzO3k/Y7L+Bl3xTE27yTPHPOQAtmcoj/Orm4Wd5iyNED+ILy2vSxAoy4Q+ItNpv2pi0nRTunR8ACkYAGtefqMIX1B72f0hZ/gyb2AQudo009tI=
+	t=1742229510; cv=none; b=h3FAWskd7Off4YLP3O4cbCH52Iyxh8P2u8mRuwuD/iDG0sa8QUsXFUqOzNRvV6OWTKlZPj6Ia4uKIqDf3lkPRucfG9ubxfUbbY+x07TbUKIXlMCzWDiLLr4thDw26I0DzMF60hFa6V9KNJ5JAcob5A2/bMHevwkmbuZIuQX9seo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229508; c=relaxed/simple;
-	bh=tknfATxtlDvV74HAu8TQq9rWQmvqAefTlLTNa+fVVAY=;
+	s=arc-20240116; t=1742229510; c=relaxed/simple;
+	bh=/8meWmzTZbw5wi5wMvYrEgCMGPK9ybmFo2OU+vVu32k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NRqMGmXfZEx27PdWdvUo+pCLmNpyyMRsvySj9aiCSimEwknDW0Nt35fsWbPd/5IEty6diu4pvNlPHxHd2e0tNR6mH2Y0+OdLWrKu4t0ZBIMEraQ0PpBXx8TiOKpX9rRvIB+ovSHsBcSHzMKTZFMofRXULdDW2jbOkJOSgwj//lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VM5a9CKP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CA3C4CEF3;
-	Mon, 17 Mar 2025 16:38:25 +0000 (UTC)
+	 MIME-Version; b=KH1W7qT09qSiLJzY/F7IFVyZp5SLM/kVY54yFOg/Ai8V67g2IPzAsNkcg42Za9ikczrXpjoy39SnPIC/BoYOfgRyKb3xUZMw/gjjUoXXpL8I43fgUhBQ6UXK2rOcWbyovtMxaTTIn07NY+FHcr+iZLkyZduYTTmBiqfGW3ZUTv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3sisvB1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21301C4CEE3;
+	Mon, 17 Mar 2025 16:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229507;
-	bh=tknfATxtlDvV74HAu8TQq9rWQmvqAefTlLTNa+fVVAY=;
+	s=k20201202; t=1742229509;
+	bh=/8meWmzTZbw5wi5wMvYrEgCMGPK9ybmFo2OU+vVu32k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VM5a9CKPAo2tAWc9e4XPw9Dk9h+ddMiEb5w6prXHYdl1hB+GduXNLeY1KN9e5zJh3
-	 iX16Jsg8fX2z3qdhtD02yTPGJ3m2HCDjrZAcCvGA3go+Co666r+2xxdtFok7lgWkyD
-	 9/Mdrq9thPR2KEGBtdQIzEmPJpmQnlAI26iS/2m1JfBVzhFV/k/PCKnKQYATbXCqNI
-	 lkt0A66bPZox8dLTa9uwehQ6a4EJcNTrdmpiIRi8pNB+a4EqtqCW//hXuzcVoUk+MC
-	 W4IgPpQt8cretjQEDe6XP/K0u0N75kKtUQMcdcCjNjtKhwBfKKnkwurXq6D00TQbgP
-	 0XxUeCjkQDo+g==
+	b=I3sisvB135s+jdoEc/M1KlNKspKC81IaBp75+wIJpsdn8bRXWP+b/FFBgBTX3i8nF
+	 Py7bmKraQqMU3koxr/5SyjOIGmDCNm9CTLbz3H/xVpYkmF3BbNjdT/g7o4CxkW04cB
+	 oJGsP4Uk9pe6i9VUvxT/T5gMtPOHf5+C68YZ2oMZbtmwgjDuYi/HhaRTQEISgXZ6cb
+	 qlNCbrCkQjTCvnERyaEYM+lX4i6ba8kiRWCkGO6NhQjgvi0J2drRi71sau8X0eDiBt
+	 QfQPUld765FZg5Gaxj4SunqXyNDLGv5IgoJm18Bc3BlU2JFmhflsToEKvnZQjWf6Cf
+	 i1pGloSGQR+3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Shuming Fan <shumingf@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	oder_chiou@realtek.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 03/13] ASoC: rt1320: set wake_capable = 0 explicitly
-Date: Mon, 17 Mar 2025 12:38:08 -0400
-Message-Id: <20250317163818.1893102-3-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 04/13] wifi: mac80211: flush the station before moving it to UN-AUTHORIZED state
+Date: Mon, 17 Mar 2025 12:38:09 -0400
+Message-Id: <20250317163818.1893102-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250317163818.1893102-1-sashal@kernel.org>
 References: <20250317163818.1893102-1-sashal@kernel.org>
@@ -67,49 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.19
 Content-Transfer-Encoding: 8bit
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 927e6bec5cf3624665b0a2e9f64a1d32f3d22cdd ]
+[ Upstream commit 43e04077170799d0e6289f3e928f727e401b3d79 ]
 
-"generic_new_peripheral_assigned: invalid dev_num 1, wake supported 1"
-is reported by our internal CI test.
+We first want to flush the station to make sure we no longer have any
+frames being Tx by the station before the station is moved to
+un-authorized state. Failing to do that will lead to races: a frame may
+be sent after the station's state has been changed.
 
-Rt1320's wake feature is not used in Linux and that's why it is not in
-the wake_capable_list[] list in intel_auxdevice.c.
-However, BIOS may set it as wake-capable. Overwrite wake_capable to 0
-in the codec driver to align with wake_capable_list[].
+Since the API clearly states that the driver can't fail the sta_state()
+transition down the list of state, we can easily flush the station
+first, and only then call the driver's sta_state().
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Acked-by: Shuming Fan <shumingf@realtek.com>
-Link: https://patch.msgid.link/20250305134113.201326-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250306123626.450bc40e8b04.I636ba96843c77f13309c15c9fd6eb0c5a52a7976@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt1320-sdw.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/sta_info.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/rt1320-sdw.c b/sound/soc/codecs/rt1320-sdw.c
-index f4e1ea29c2651..f2d194e76a947 100644
---- a/sound/soc/codecs/rt1320-sdw.c
-+++ b/sound/soc/codecs/rt1320-sdw.c
-@@ -3705,6 +3705,9 @@ static int rt1320_read_prop(struct sdw_slave *slave)
- 	/* set the timeout values */
- 	prop->clk_stop_timeout = 64;
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index aa22f09e6d145..49095f19a0f22 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -4,7 +4,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+  * Copyright (C) 2015 - 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2023 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  */
  
-+	/* BIOS may set wake_capable. Make sure it is 0 as wake events are disabled. */
-+	prop->wake_capable = 0;
+ #include <linux/module.h>
+@@ -1317,9 +1317,13 @@ static int _sta_info_move_state(struct sta_info *sta,
+ 		sta->sta.addr, new_state);
+ 
+ 	/* notify the driver before the actual changes so it can
+-	 * fail the transition
++	 * fail the transition if the state is increasing.
++	 * The driver is required not to fail when the transition
++	 * is decreasing the state, so first, do all the preparation
++	 * work and only then, notify the driver.
+ 	 */
+-	if (test_sta_flag(sta, WLAN_STA_INSERTED)) {
++	if (new_state > sta->sta_state &&
++	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
+ 		int err = drv_sta_state(sta->local, sta->sdata, sta,
+ 					sta->sta_state, new_state);
+ 		if (err)
+@@ -1395,6 +1399,16 @@ static int _sta_info_move_state(struct sta_info *sta,
+ 		break;
+ 	}
+ 
++	if (new_state < sta->sta_state &&
++	    test_sta_flag(sta, WLAN_STA_INSERTED)) {
++		int err = drv_sta_state(sta->local, sta->sdata, sta,
++					sta->sta_state, new_state);
 +
- 	return 0;
- }
++		WARN_ONCE(err,
++			  "Driver is not allowed to fail if the sta_state is transitioning down the list: %d\n",
++			  err);
++	}
++
+ 	sta->sta_state = new_state;
  
+ 	return 0;
 -- 
 2.39.5
 
