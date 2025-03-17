@@ -1,211 +1,153 @@
-Return-Path: <stable+bounces-124595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F97A63FCF
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 06:39:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B97AA63FE6
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 06:41:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B61D47A45ED
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:38:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0FCF16EA1D
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A102219312;
-	Mon, 17 Mar 2025 05:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F32207E0A;
+	Mon, 17 Mar 2025 05:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b="SLlVMw93"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NZJWYii0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA0519ABD1;
-	Mon, 17 Mar 2025 05:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666107E0E4
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 05:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742189949; cv=none; b=HZclYLMFvBHKs6m9Pk7RdZkh2Wkd25V9AosS559S1sbTrs8IK094ckGj1MPF4c7F2CJMRjO+gzcXWO45wGlmFgGzWFH/0L9kXyfzcPn9vrRqSIB96PH9fTzb6tCj6oXYcx3E04wrh1ZFFDhprEKapRdxSLvEiBUMveT36lIkLJg=
+	t=1742190082; cv=none; b=lJKwDSCWaUbdyqZDyJdJKFczP1d3NrgR0mNgEfjA6ka8NsHRcvE8ulZQGOPAwZ4XXaCTNlETKNgCejzkj3jVZQvTtE9NupalBZHa7aDxT4JwYWYauCiTRYHiz4zkEq1KygSitb32s8DFh8QWqgY6jx4JyHOoszXE+pwtNPF9Ykc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742189949; c=relaxed/simple;
-	bh=avvAm3TfVmPXqQzOZzdus2bewNPLEU/HczMySDIdZmQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=noZ8OG7HMy+n7yM6JecKGbu0JJIBOTxvoFPKyL7ymOQ4Ny73gi7Kibz7k08Dj9LuodmJRfiKAaoewQIosM2Bn5wnmZp8Mnv34KVakwAr4WcP6RyM9soPIYrHzzQkFPJjLL7J980ihiRRs7edO72XnUSmEPs8lUu/hNrZQ1rL8ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org; spf=pass smtp.mailfrom=deepin.org; dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b=SLlVMw93; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deepin.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deepin.org;
-	s=ukjg2408; t=1742189934;
-	bh=zK+WlBZ7bfUFhV22HGI+VQBZQaODHmIrst6qLkeokfc=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To;
-	b=SLlVMw93lQ0pjnKON9JSVNeWfLyY4Wr+dPv3F/5SylHHgCrA0PYOnRnYdB5pJIqYK
-	 nZtSlNovZQYoA4Too4xZ2Rw7WbPw6PsSdmlm/rcXP5xAbTSotOb1DE1MlCoNMk7+8a
-	 0X0O3tM0o6bhEZ8l7U5jO2zgV4RtXLZSefIpa1KI=
-X-QQ-mid: bizesmtpsz10t1742189929t6cm00
-X-QQ-Originating-IP: s6iNHhpCw/0D1fPrZxK1dUONPmxCWlDy9tVvffz7Spg=
-Received: from mail-yb1-f171.google.com ( [209.85.219.171])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 17 Mar 2025 13:38:47 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 12359778561293452305
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e63fd2b482fso1789105276.1;
-        Sun, 16 Mar 2025 22:38:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVjC/9KNuzCwmLZtOeujkOyXju1sxXFwq+Qi/ocOkYYaKe8p184+zMQfE/LN/6/cHXU8xMEWPNY@vger.kernel.org, AJvYcCWirzynfBHu5E7xa1Atlh/lRgY6la5p6dIX5mdULli4s+3tihJt3BXh4E9/s7qQf2SXOJs=@vger.kernel.org, AJvYcCXhZfWzuzvn2+T/BHQ8OBED1+h0yIWrCqO8xeVX5XMbE8fSl2OTa0rXhqLksPPBYTBvMEN+k5oKkdBWqhnD@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL5L//6H44Hhh/xXDILNtKbtXXNIOip2cm2iwnhFCh6Z6Rmigi
-	xYvXFgDwwAUEHEUPZblixnogk+R4mKrURkib+6carE2dlifygXP0AciAAHFTw+kpo2DTC0zvnZU
-	YMj23IAS2kuQZf9odC6BoyUjBiVA=
-X-Google-Smtp-Source: AGHT+IG9QcE+zk+CQT1TeMx4mbEkt+HkxFBWSzkmmibRNOjKnTS9z2gqmQyqlPyCZj8eKRE+CfVQsZ4ngcPpsidtPzc=
-X-Received: by 2002:a05:6902:2190:b0:e60:87a0:6216 with SMTP id
- 3f1490d57ef6-e63f64d177emr13808887276.5.1742189927117; Sun, 16 Mar 2025
- 22:38:47 -0700 (PDT)
+	s=arc-20240116; t=1742190082; c=relaxed/simple;
+	bh=KeyXlPwoWxz3k/bhcDgKsTvt2UYON6eqUAu0ozm40RM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=B59Ji62DhkcrJpZYVywgurRBYTmhD3w3CceAQsOm9J0MOJke3EfNSxx6XErqajzFGA1eAbmzka9P1ZDrJUk8E8VFI81BagC2lsxyvEGwxpDjeb+pxJyiDUCNZrz50SdK9jHsyTJgP8uAh8nY6rje0h519LgqdlbLx/sk2oYpa8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NZJWYii0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52GHelPB022963
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 05:41:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=u7c4zzIqHSp
+	U99BAxGJBfhGwbHsNTMqduCbpBYC0Wsk=; b=NZJWYii0FfuJTMdJI2eU06787jB
+	/8TW0TSma1RWJ90kSeaDsyNb9fQiSPSvylb5DQXLArorfAEGQuH4OFOARhUNWdWS
+	EOx+0B4kW3ESsPvQAIN1ryKhht4tdcYDd8FW9TWOiroI7Vn/fq3IeREjp7aE9Ab8
+	I7MT3N4LqCVndtjvHDclLSFitadHV5JWNXkgPIZVlmQzhmq+XqUOL1EH12MKYYND
+	jrgZOgOkD5uLRCqDHMgJidPLZTqXUfz4O+M56emGEaKrFiyVy9+7ZXh4Z+YNm0iP
+	8ggp29BZMyZ3zKi1bUY46i8kWq8jN7jXKe4fJKAgRRezowxpEI5OvIU2YwA==
+Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45d1s3ug4p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 05:41:19 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 52H5fFa6014943
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 05:41:15 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 45dkgm3pfk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 05:41:15 +0000
+Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 52H5fFqS014938
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 05:41:15 GMT
+Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-schowdhu-hyd.qualcomm.com [10.213.97.56])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 52H5fESh014924
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Mar 2025 05:41:15 +0000
+Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 2365959)
+	id D799A3AF; Mon, 17 Mar 2025 11:11:13 +0530 (+0530)
+From: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
+To: quic_schowdhu@quicinc.com
+Cc: stable@vger.kernel.org
+Subject: [v2] remoteproc: Add device awake calls in rproc boot and shutdown path
+Date: Mon, 17 Mar 2025 11:11:10 +0530
+Message-Id: <20250317054110.1339365-2-quic_schowdhu@quicinc.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250317054110.1339365-1-quic_schowdhu@quicinc.com>
+References: <20250317054110.1339365-1-quic_schowdhu@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <84B05ADD5527685D+20250317011604.119801-2-chenlinxuan@deepin.org>
- <2025031759-sacrifice-wreckage-9948@gregkh> <CAC1kPDNNBj3Hd6s72mA3qxwxC0B69aE7qhM+Az5msvjPy41N5w@mail.gmail.com>
- <2025031743-haunt-masculine-afb4@gregkh>
-In-Reply-To: <2025031743-haunt-masculine-afb4@gregkh>
-From: Chen Linxuan <chenlinxuan@deepin.org>
-Date: Mon, 17 Mar 2025 13:38:36 +0800
-X-Gmail-Original-Message-ID: <1A817481715D4A86+CAC1kPDN-cwLyJgXY2DUZuhUf+guFS7u8OWJx_3G8s6RMua1NJQ@mail.gmail.com>
-X-Gm-Features: AQ5f1JrmjGnqdeXyssT6bNuZRCuqD15-5c3YjGNNWgoH8z4a5CDXQ1DtFJAE3l4
-Message-ID: <CAC1kPDN-cwLyJgXY2DUZuhUf+guFS7u8OWJx_3G8s6RMua1NJQ@mail.gmail.com>
-Subject: Re: [PATCH stable 6.6 v2] lib/buildid: Handle memfd_secret() files in build_id_parse()
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Chen Linxuan <chenlinxuan@deepin.org>, Andrii Nakryiko <andrii@kernel.org>, 
-	Jiri Olsa <jolsa@kernel.org>, Sasha Levin <sashal@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Jann Horn <jannh@google.com>, 
-	Alexey Dobriyan <adobriyan@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
-	Yi Lai <yi1.lai@intel.com>, Daniel Borkmann <daniel@iogearbox.net>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:deepin.org:qybglogicsvrgz:qybglogicsvrgz7a-0
-X-QQ-XMAILINFO: NBkE/PP8DpFYcxWPOUcuHNHVU2DSA7vQ2zAXl/+KP76gCyYiNiIcCPr0
-	gWKfQWaOBTdFAHn8Pm0J0ex8Z5Lah8CMzhlkuDecysTT6WqM2R4OiNJcLamMFdykKh6OOi6
-	Q5l6B5UJpHR83n/lGg7da2m9kQt9WJLMH1zXefvHss65gahGr1ejdI/x8jh4B56qZ+e1x7k
-	aBEDGI7AXK+BLxtIrc4NjODPaF65DgDrtN4RaoFeSJ3nmL32FtEVnKhWqDQUcBR5khXbpjh
-	klBqTg9AyGlu+0XBi0XZijXMX2OYot6KyXpQumsszmRaXsgMJqO0aFEThmK1T3b3h+amXTJ
-	VoLxHZuGfP9Ps3IDkQsCTlLuFBC/Ukqqmw4Awih+e/muf07eRE2GJTYT2Ih8s1hYWxEC2xU
-	wwzL1UptnGdgGfDnu9VZtQGp4z0H3aTokyiFQtv/HVGzyfIHFuQX6AAsJMLUO/nVNePl0kE
-	MZU9byRR29rJt+zJvsVMqvg34BKkEO0rxdfS7ZATCYU8i2aAIiSYagL1B6UriNz6hztnJIu
-	t+GgHduwwXr8SU5RwiMrIdkkK+b4ZeSp+c7YXQ+p3m+xvprtSJB//uB5iQ3YmGO6/mdUjAe
-	vSsgaZSY5nuNJyfM/uJqUAs9uYwsS8DZ9e5h3SKkoQYgHi5LWbwvIiv/6JRdsEx3jbN3dU3
-	ubcdAk1NtvLHWx6VGiTJMdDKClQj5rT7JfbWWD+2cfdA62yS6kelW/e7RifKdSZAc7HgJmb
-	r99/ZufVIGXD85ioXGnLPb2ujSYYLZLRc/OqzG47VdIAfIzWWG3Mpofvzw3eGoP/sW1cOwf
-	df2fc8ReXOaJMshTiLCOL4GXwU5sWv2QL4u+Qd5DIi4DaI4G0hZivHDQqD/cOPbyY9uWn5m
-	EjvzD6dRGULFuYn2uG8RVjTvFNS5Ww6944RvkSouew06ZYw3azTBtX304m3HqOjnh0DEGqv
-	5dDOzmATAUnQisYFVkxXmS0N8LkOLa1fMMv2S7sPTBLQu1ucEl18vgGnX8+Dhx7xVBK+4hV
-	mYwLnhFJDk9wPwbBYzSf+DnUZLXt7LlbILxwquet2v+37eCOcnQn5efyIqZgZhSIYaJE4+K
-	XQLxPWeDlru
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=WbQMa1hX c=1 sm=1 tr=0 ts=67d7b5ff cx=c_pps a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17 a=Vs1iUdzkB0EA:10 a=COk6AnOGAAAA:8 a=VwQbUJbxAAAA:8 a=d-bqaP4l6ypRa8K_nXgA:9 a=2gHAyr3T5vsSQB0k:21
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: 5LJuuBGIiVc-O5dN_50p1rtjVXfM3Flm
+X-Proofpoint-ORIG-GUID: 5LJuuBGIiVc-O5dN_50p1rtjVXfM3Flm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-17_01,2025-03-17_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 adultscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0
+ mlxlogscore=999 spamscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503170039
 
-Greg KH <gregkh@linuxfoundation.org> =E4=BA=8E2025=E5=B9=B43=E6=9C=8817=E6=
-=97=A5=E5=91=A8=E4=B8=80 13:15=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Mon, Mar 17, 2025 at 01:04:41PM +0800, Chen Linxuan wrote:
-> > Greg KH <greg@kroah.com> =E4=BA=8E2025=E5=B9=B43=E6=9C=8817=E6=97=A5=E5=
-=91=A8=E4=B8=80 12:20=E5=86=99=E9=81=93=EF=BC=9A
-> > >
-> > > On Mon, Mar 17, 2025 at 09:16:04AM +0800, Chen Linxuan wrote:
-> > > > [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
-> > > >
-> > > > >>From memfd_secret(2) manpage:
-> > > >
-> > > >   The memory areas backing the file created with memfd_secret(2) ar=
-e
-> > > >   visible only to the processes that have access to the file descri=
-ptor.
-> > > >   The memory region is removed from the kernel page tables and only=
- the
-> > > >   page tables of the processes holding the file descriptor map the
-> > > >   corresponding physical memory. (Thus, the pages in the region can=
-'t be
-> > > >   accessed by the kernel itself, so that, for example, pointers to =
-the
-> > > >   region can't be passed to system calls.)
-> > > >
-> > > > We need to handle this special case gracefully in build ID fetching
-> > > > code. Return -EFAULT whenever secretmem file is passed to build_id_=
-parse()
-> > > > family of APIs. Original report and repro can be found in [0].
-> > > >
-> > > >   [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation=
-/
-> > > >
-> > > > Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file read=
-er abstraction")
-> > > > Reported-by: Yi Lai <yi1.lai@intel.com>
-> > > > Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > > > Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> > > > Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> > > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > > > Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.i=
-bm.com
-> > > > Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@k=
-ernel.org
-> > > > [ Chen Linxuan: backport same logic without folio-based changes ]
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-> > > > Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
-> > > > ---
-> > > > v1 -> v2: use vma_is_secretmem() instead of directly checking
-> > > >           vma->vm_file->f_op =3D=3D &secretmem_fops
-> > > > ---
-> > > >  lib/buildid.c | 5 +++++
-> > > >  1 file changed, 5 insertions(+)
-> > > >
-> > > > diff --git a/lib/buildid.c b/lib/buildid.c
-> > > > index 9fc46366597e..34315d09b544 100644
-> > > > --- a/lib/buildid.c
-> > > > +++ b/lib/buildid.c
-> > > > @@ -5,6 +5,7 @@
-> > > >  #include <linux/elf.h>
-> > > >  #include <linux/kernel.h>
-> > > >  #include <linux/pagemap.h>
-> > > > +#include <linux/secretmem.h>
-> > > >
-> > > >  #define BUILD_ID 3
-> > > >
-> > > > @@ -157,6 +158,10 @@ int build_id_parse(struct vm_area_struct *vma,=
- unsigned char *build_id,
-> > > >       if (!vma->vm_file)
-> > > >               return -EINVAL;
-> > > >
-> > > > +     /* reject secretmem */
-> > >
-> > > Why is this comment different from what is in the original commit?  S=
-ame
-> > > for your other backports.  Please try to keep it as identical to the
-> > > original whenever possible as we have to maintain this for a very lon=
-g
-> > > time.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > >
-> > >
-> >
-> > Original comment is in a function named freader_get_folio(),
-> > but folio related changes has not been backported yet.
->
-> That's fine, but the logic is the same so keep the original code as
-> close as possible.  Otherwise it looks like this is a totally different
-> change and we would have to reject it for obvious reasons.
->
-> thanks,
->
-> greg k-h
->
->
+Add device awake calls in case of rproc boot and rproc shutdown path.
+Currently, device awake call is only present in the recovery path
+of remoteproc. If a user stops and starts rproc by using the sysfs
+interface, then on pm suspension the firmware loading fails. Keep the
+device awake in such a case just like it is done for the recovery path.
 
-V3 has been sent.
+Signed-off-by: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/remoteproc/remoteproc_core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Thanks,
-Chen Linxuan
+diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
+index c2cf0d277729..908a7b8f6c7e 100644
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -1916,7 +1916,8 @@ int rproc_boot(struct rproc *rproc)
+ 		pr_err("invalid rproc handle\n");
+ 		return -EINVAL;
+ 	}
+-
++	
++	pm_stay_awake(rproc->dev.parent);
+ 	dev = &rproc->dev;
+ 
+ 	ret = mutex_lock_interruptible(&rproc->lock);
+@@ -1961,6 +1962,7 @@ int rproc_boot(struct rproc *rproc)
+ 		atomic_dec(&rproc->power);
+ unlock_mutex:
+ 	mutex_unlock(&rproc->lock);
++	pm_relax(rproc->dev.parent);
+ 	return ret;
+ }
+ EXPORT_SYMBOL(rproc_boot);
+@@ -1991,6 +1993,7 @@ int rproc_shutdown(struct rproc *rproc)
+ 	struct device *dev = &rproc->dev;
+ 	int ret = 0;
+ 
++	pm_stay_awake(rproc->dev.parent);
+ 	ret = mutex_lock_interruptible(&rproc->lock);
+ 	if (ret) {
+ 		dev_err(dev, "can't lock rproc %s: %d\n", rproc->name, ret);
+@@ -2027,6 +2030,7 @@ int rproc_shutdown(struct rproc *rproc)
+ 	rproc->table_ptr = NULL;
+ out:
+ 	mutex_unlock(&rproc->lock);
++	pm_relax(rproc->dev.parent);
+ 	return ret;
+ }
+ EXPORT_SYMBOL(rproc_shutdown);
+-- 
+2.34.1
+
 
