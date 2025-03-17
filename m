@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFC5A6590B
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:53:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A5EA6590D
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:53:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78CBB1893469
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:49:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CEE81885D76
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE3A20AF62;
-	Mon, 17 Mar 2025 16:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AE720ADF8;
+	Mon, 17 Mar 2025 16:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZMtjsM4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oWYeuhU9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E810B20ADF9
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AF81E1E18
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229622; cv=none; b=aiwFv4tP6lQWTTifgBdX8hsHCT0lBxMd8uISTkdoALrbRuVryiS6VYDAoSyWCtX3X98oLNYJ0fDxJr2NaS9epYXJ6vTo6TKwadSFuSW3Yb4PKmIz+p2jnPNBdOlRFpnY3S50MEpAcDdH2D/Bgv12vQI1mxpXWuzExE1ueJEMDCk=
+	t=1742229623; cv=none; b=BnWTgT7FE/6VmbVQY27KMr/qWUrUTUQ19kWNwNRYbrQheg/e9bmgITCKEkbGNcVgLZJ0C0yqKHIUlcU8RzXG+chenaecQPi5Ai4UPFT2MCoxCH67gNffxSSR3Rk8BEku+sGUTTIRCBOB9UUoGKV+RL0im/o3EZ4hFKRYqImHRco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229622; c=relaxed/simple;
-	bh=sUbyPKqZR65uWfj/t6Iq6mchZWm5L/RM/jxiGwNXkQc=;
+	s=arc-20240116; t=1742229623; c=relaxed/simple;
+	bh=+i9eQ2aT04zOjQNdP1dbiCkLsdxAIwmCVoNJZYIa+JU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nNcMagL/PmnjlBvSFRVL6bfNZ2CAcYdBp7cg/5bLwdvNFsPN0tt7SQpXbF0cwOJqggjYnuzIFiQ3e25PmzERFIJNLCkZK4evjpDvcJxBzf73MAemeycySkN52gJD0gHLv3mMnnjix7ZTXneQxzlSFcxcVHiWGV3XyClpjq7V1H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZMtjsM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AEDC4CEF3;
-	Mon, 17 Mar 2025 16:40:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kBTGlrsfO033QWeFvQsYLpLnInJn0k0sfFqJ1baNHBS1htVimv/6gGFmPQkCko2wHRa0m94tcrK1eqvC9YbeAFlvfzgFlg3AATOoV4iR/F/ml521Yf0WP50ak3MytpGhSI+ehQuUO/f8aaCV/tZ6X9Itw0GXvWvvngb2R8H2s0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oWYeuhU9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F4CC4CEED;
+	Mon, 17 Mar 2025 16:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229621;
-	bh=sUbyPKqZR65uWfj/t6Iq6mchZWm5L/RM/jxiGwNXkQc=;
+	s=k20201202; t=1742229623;
+	bh=+i9eQ2aT04zOjQNdP1dbiCkLsdxAIwmCVoNJZYIa+JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZMtjsM445eQYERttyPFGW0iKEAhCcAFkQF/fVCcuvHxQlDEArHn2Ota9fkk7l8ju
-	 xdmWkNjgaxegdmKBU6TV/uVqvrdt5HEZ4HvGkhHgl3A7a11hrjXvghIj6emUHQUVk4
-	 fbxPnMkJZg5cCOXZd24AtTmUNw6FU1OUH73goeQE5G1yhODrCm/5/g2TcshA13CFHe
-	 3SEVClKJPmg41W5PlYq9Ym8L15BBVUfi9+DFkkWbcBbbTPNcyWg79YkiGSYyuW6q58
-	 o5tIFdoFIxCFf02BZM3g6Y1aeeJzVgn+OuaiUw8oeqk1sxh1MO4QTDEgsdfeIsxYlU
-	 cjFX0hBurkZgg==
+	b=oWYeuhU9tU9tjibLkhSLONyE2gPgJtgPbSYeJRC+MAlhs5aGHNzkB0+JKT4eW+0y3
+	 V30nvUom/rb16tkdA5/p+8rGg/EP344oILq8S9bwTlRUIDV0TXl2LNmfA2gjgKE0Hz
+	 fojl+LWswPlQ2m4FWqmO2zLXZq31E+phW0MJ84pu6gfqlswCD2An1AlP/K4HjRxUBt
+	 rey2DfDUqAXeFFxUQdX16jGC6WYAsuTGP+hGi+oKf/5/pJ6DKYcRDRPDfI7qUyzjw/
+	 yCauksa8s6MmKtJW0E2Am8SIQlua6526VDsC/5mNkPQxVOg5SQxhwV/F2M0BLh6cSh
+	 p4E+WkChzqbkQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chen Linxuan <chenlinxuan@deepin.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 5.15 v2] lib/buildid: Handle memfd_secret() files in build_id_parse()
-Date: Mon, 17 Mar 2025 12:40:19 -0400
-Message-Id: <20250317093541-108f75d914a6d87b@stable.kernel.org>
+To: stable@vger.kernel.org,
+	songmuchun@bytedance.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] block: fix ordering between checking QUEUE_FLAG_QUIESCED request adding
+Date: Mon, 17 Mar 2025 12:40:21 -0400
+Message-Id: <20250317094838-6b3bf9961f9e91a4@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <C20998946B822F0F+20250317011339.119224-3-chenlinxuan@deepin.org>
+In-Reply-To:  <20250317032934.6093-1-songmuchun@bytedance.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,71 +64,21 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Chen Linxuan<chenlinxuan@deepin.org>
-Commit author: Andrii Nakryiko<andrii@kernel.org>
+Found matching upstream commit: 6bda857bcbb86fb9d0e54fbef93a093d51172acc
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: a230a1bf75ae)
-6.1.y | Present (different SHA1: a22c1b6f88dc)
+6.12.y | Present (different SHA1: 2094bd1b5225)
+6.6.y | Present (different SHA1: 679b1874eba7)
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  5ac9b4e935dfc ! 1:  6848f1e0a3cdb lib/buildid: Handle memfd_secret() files in build_id_parse()
-    @@
-      ## Metadata ##
-    -Author: Andrii Nakryiko <andrii@kernel.org>
-    +Author: Chen Linxuan <chenlinxuan@deepin.org>
-     
-      ## Commit message ##
-         lib/buildid: Handle memfd_secret() files in build_id_parse()
-     
-    +    [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
-    +
-         >From memfd_secret(2) manpage:
-     
-           The memory areas backing the file created with memfd_secret(2) are
-    @@ Commit message
-         Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-         Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
-         Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
-    +    [ Chen Linxuan: backport same logic without folio-based changes ]
-    +    Cc: stable@vger.kernel.org
-    +    Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-    +    Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
-     
-      ## lib/buildid.c ##
-     @@
-    @@ lib/buildid.c
-      
-      #define BUILD_ID 3
-      
-    -@@ lib/buildid.c: static int freader_get_folio(struct freader *r, loff_t file_off)
-    - 
-    - 	freader_put_folio(r);
-    +@@ lib/buildid.c: int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-    + 	if (!vma->vm_file)
-    + 		return -EINVAL;
-      
-    -+	/* reject secretmem folios created with memfd_secret() */
-    -+	if (secretmem_mapping(r->file->f_mapping))
-    ++	/* reject secretmem */
-    ++	if (vma_is_secretmem(vma))
-     +		return -EFAULT;
-     +
-    - 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
-    - 
-    - 	/* if sleeping is allowed, wait for the page, if necessary */
-    + 	page = find_get_page(vma->vm_file->f_mapping, 0);
-    + 	if (!page)
-    + 		return -EFAULT;	/* page not mapped */
+1:  6bda857bcbb86 < -:  ------------- block: fix ordering between checking QUEUE_FLAG_QUIESCED request adding
+-:  ------------- > 1:  211b2b8efdf06 block: fix ordering between checking QUEUE_FLAG_QUIESCED request adding
 ---
 
 Results of testing on various branches:
