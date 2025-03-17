@@ -1,189 +1,187 @@
-Return-Path: <stable+bounces-124575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB1EA63E5B
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:32:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C207A63F1A
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 06:05:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1971A188DA89
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 04:32:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 180E47A6682
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17824214A9A;
-	Mon, 17 Mar 2025 04:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8E0207E0A;
+	Mon, 17 Mar 2025 05:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="piiOc7wn"
+	dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b="hRYAmMvY"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF9814F9F9
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 04:32:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB611CD2C;
+	Mon, 17 Mar 2025 05:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742185957; cv=none; b=MgfTnvWyHAraFPQeazHKU9Y7BRYmNW6mnbCqpDfu54qyY+PWRHQgP+QC6MDSg+EgOR+THOIQVYSmMfXKf5Ran0RMKW8hdXshoYW3tmN0RHU1pM7Y4++osqTetT95286tUKLmD37xdrmUBYVTttV1FOwj2FgitSGe3K8mAMIrboE=
+	t=1742187914; cv=none; b=QRRHsY6nwhkThwwZ2Ix3zDQ9CIIGN886hBwPipztj4Yx0ZCQUxHdvHtW3EoQC6etbSDWX++i5g0Y90Cy8WyjNzUqy5pW95oXOI9edbiSLqUaFoFgPDOG8nAEMjz06kfP2Q/JiDP/aMQt4wUTEDw272yf8hKQ659pV7O6fYV8HFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742185957; c=relaxed/simple;
-	bh=IOhGaXq1CIyRqLCk9AID5H6e1heMG9jjAvMzzoEgIIs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
-	 Content-Type:References; b=tX5H28QUpRxOnevhwcb2c8e1p1ZguDOflCvQa7xUQlnJFQloPlbC3ntx470xaWrC/3e4jBVMLEoVU+VqCca4rVvujTlCm8wShUgtKICkxCDFzFTyTrNjXeGVPzZrRNNRDSD2XpfnMIemhTZAnbbb+5AxGpW5gWbuN5vtXfyfCt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=piiOc7wn; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas2p3.samsung.com (unknown [182.195.41.55])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250317043233epoutp04bcc741f85b2822da496cf46cfa0966d8~tfOTr_Skj2173921739epoutp047
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 04:32:33 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250317043233epoutp04bcc741f85b2822da496cf46cfa0966d8~tfOTr_Skj2173921739epoutp047
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1742185953;
-	bh=CDS21IpwWqt7ZRocUWjRABgv3Dgf/G8yTwuk6a2wW7A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=piiOc7wnYKShbvhndy6ZzQaK1XcwfVo9WbdLPD2AsfJkML6EZPMj/Lg/6jLxld4Wq
-	 mF+iKdCNL1MRtOnuDZFEEJg1+J14FOXOG2rAAMhkGGMmWYepfsUYCxwUAECGLbUIsb
-	 zneFL8xfkldG5GBtFNmKvHF0DWJbMxVJ2AysE/Xo=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
-	epcas2p4.samsung.com (KnoxPortal) with ESMTP id
-	20250317043232epcas2p40964da2213e804d734c62516ca5daf50~tfOSyT7pi0713107131epcas2p4q;
-	Mon, 17 Mar 2025 04:32:32 +0000 (GMT)
-Received: from epsmges2p2.samsung.com (unknown [182.195.36.90]) by
-	epsnrtp3.localdomain (Postfix) with ESMTP id 4ZGMWz73RJz4x9Q3; Mon, 17 Mar
-	2025 04:32:31 +0000 (GMT)
-Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
-	epsmges2p2.samsung.com (Symantec Messaging Gateway) with SMTP id
-	88.44.22094.FD5A7D76; Mon, 17 Mar 2025 13:32:31 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-	epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250317043231epcas2p2a42eecaaabed96be1d19059416ad38da~tfOR0Uqfh1582715827epcas2p2v;
-	Mon, 17 Mar 2025 04:32:31 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20250317043231epsmtrp1f7364e4452314d8f07aa6fccfc31dd92~tfORzC5XY1640716407epsmtrp1U;
-	Mon, 17 Mar 2025 04:32:31 +0000 (GMT)
-X-AuditID: b6c32a46-484397000000564e-cd-67d7a5df5e06
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	BD.83.23488.FD5A7D76; Mon, 17 Mar 2025 13:32:31 +0900 (KST)
-Received: from perf (unknown [10.229.95.91]) by epsmtip2.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20250317043231epsmtip24a0871609fea3b04312495e8d4bbc518~tfORgMzGt1487914879epsmtip2G;
-	Mon, 17 Mar 2025 04:32:31 +0000 (GMT)
-Date: Mon, 17 Mar 2025 13:36:42 +0900
-From: Youngmin Nam <youngmin.nam@samsung.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, ncardwell@google.com, edumazet@google.com,
-	kuba@kernel.org, davem@davemloft.net, dsahern@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, guo88.liu@samsung.com, yiwang.cai@samsung.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	joonki.min@samsung.com, hajun.sung@samsung.com, d7271.choe@samsung.com,
-	sw.ju@samsung.com, dujeong.lee@samsung.com, ycheng@google.com,
-	yyd@google.com, kuro@kuroa.me, cmllamas@google.com, willdeacon@google.com,
-	maennich@google.com, gregkh@google.com, Lorenzo Colitti
-	<lorenzo@google.com>, Jason Xing <kerneljasonxing@gmail.com>, Youngmin Nam
-	<youngmin.nam@samsung.com>
-Subject: Re: [PATCH 1/2] tcp: fix races in tcp_abort()
-Message-ID: <Z9em2njRsaoKNBG0@perf>
+	s=arc-20240116; t=1742187914; c=relaxed/simple;
+	bh=2j2cV21FgM/8/ZWuQEAf2CTVTrE95v9rMrKC1HP20ws=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RPQROmG+QKghY9CxvDZldLJn0RyDQFqyb0LZOMi+jZJpRXXNbzP/eyQWyBiC3CRhLl9B2byDqJUr+dz/QSLBRsj5MCFtnC6spayCZnWYTZpYVb+9rYCcTVgXoT9MWQxiXWjtxW7w0BLwfxYXPe7TfeJG5AyWDgOEg1eZjT8LYlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org; spf=pass smtp.mailfrom=deepin.org; dkim=pass (1024-bit key) header.d=deepin.org header.i=@deepin.org header.b=hRYAmMvY; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=deepin.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deepin.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deepin.org;
+	s=ukjg2408; t=1742187899;
+	bh=M2UUyPvJ2y1MZA15wI3jxejuhS+GebCXKcVs2DOBs/Q=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To;
+	b=hRYAmMvYO6VsMN6MSpcC4ECIbLb7hkRcJyF78nYlVGsR4B4Y5erfre2sSAZoPys2n
+	 HU7bTpxHv4jywwhyPmYz1AW1jPuLQOc0MDRFpAcDC3H0LsxciQojKzf3ogkpo0A2jg
+	 uOrs07SaA/frFBAIqa6Y3XVywRBKUVnazBsTuleA=
+X-QQ-mid: bizesmtpsz9t1742187895taj7j1y
+X-QQ-Originating-IP: Z5C9+vlboSe8gW7/MYXuaRljzoEiXeNTh6d8mTpRtTo=
+Received: from mail-yb1-f180.google.com ( [209.85.219.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 17 Mar 2025 13:04:53 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14577142841368056084
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e60b75f87aaso3027648276.2;
+        Sun, 16 Mar 2025 22:04:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVghobj7YH88mE9czZAaN1XSd3qq0g7VamUFN4Jn/Ynk8wZAiQGBZXyDIpwYHzpviCyQIU=@vger.kernel.org, AJvYcCWXV5GG1CUxlYNrr/cEBTxtSDKIDT8UF4OjQvFpeeqHaMwrsdyQGktrx/TuocBr75iXwXzM6vrv@vger.kernel.org, AJvYcCWx26V7GA75d8WSKwAoFJCBLxzCDa+aSkwCg6aks/cU82SnGc5l90ckmG060rP3un1q8eZu2D3vMkBpVBYR@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2Ao3+D66Euf4f8WifBOmpolm1lmBRuJKw8b/NpDNZQh9dcci/
+	dl55LrvSYk5Uz4S2upJ4XyVrBDhH3oYB46V4eZ1MTf0zmqRHOq+8IQED+wPtTSORp6wm5wTNgS/
+	DPoVhcJkr3Zb3cI0TfJuBqzm6cQ4=
+X-Google-Smtp-Source: AGHT+IEclvi37l+5wwO8UmE2nDEZ7P2yrAPC5bWt1YuMHgdSe08lN5oTlUNdlPZn2kALuCGJK82TUIC2DrHQhJs+K4Y=
+X-Received: by 2002:a05:6902:2504:b0:e63:c2d2:94f2 with SMTP id
+ 3f1490d57ef6-e63f64d6613mr12913981276.4.1742187892688; Sun, 16 Mar 2025
+ 22:04:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2025031453-underpay-gigahertz-9ba4@gregkh>
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Tf0xbVRTHvX2P91pGl0dBdmXLwkpGBFdoEejdLE4jNvVXwoIxUUawwrMQ
-	Stu0ZXOYTAJ0MIb8jjDEpQqOgcuQrgGkFgiFwgbKQBg/xlJ+OAaOAWsJBiPEwgOz/z7n3O+5
-	33PuyWVjvFzSn52q0tNalVzJJzzxFluwWOD4cVwhXJwWo/WuERLdt5aSqGYoF0e32g0stGCs
-	wtEj+xyJFjY2MZRT20Sg8gqAsjtHMDRX3E+gMcsKhiwtlSS611Lkgbptj0n0R3sNgZoGVgDa
-	sC6TKH/aiiO70Q9tDCwDZGyeA8gw7yJR3uYTHK3PjxHoWV82iWq7nCTK+f4W/sYRmblhkiX7
-	pfohKTOaMmSmxsuEzFhEyjq/u0nKVjvGCFmRuRHIXKajsZxP0iQptDyZ1gbQqiR1cqpKEc1/
-	Ly7xrcTIKKFIIDqJxPwAlTydjubHvB8rkKYq3fPzA87JlRnuVKxcp+OHvS7RqjP0dECKWqeP
-	5tOaZKVGrAnVydN1GSpFqIrWnxIJheGRbuGnaSk3J/oJTavXF1P3S1lZ4IZnAeCwIRUBf7OV
-	4QXAk82j2gC0jM6wmMAJ4OTXo+SOikdtAFg1f3y/Yq3u0Z7ICmBn2W2CCWYBNNQ3YDsqnDoO
-	Fyt6wA4TlAC29G/vsi/1MlzqncJ3GKMKPaBj5asd9qGi4GZR3a4blwqE5c3XPBj2hneu/rmr
-	51AIWmebWUwXtRz45J6A4Ri4cPkBwbAP/KvPTDLsD5eKL+2xDmY5prCdRiGVC+Dd8UWMOXgV
-	Vi/kAaahFNheOus2ZrvzgbBnv8+DMN+2RTJpLsy/xGMqg+A/FT8Dho9AS+2NvRtl0Gm3Ycyb
-	dAHY7VpmlYCj1c+NU/2cG8MnoNHiJKrdFhh1GNZvsxkMhk3tYUbg0Qj8aI0uXUHrwjXh/y84
-	SZ1uArvfIUTaBiqeroV2AxYbdAPIxvi+3OIfxhU8brL8QiatVSdqM5S0rhtEundTivm/mKR2
-	/yeVPlEUcVIYERUlEodHCsX8Q9wv23IVPEoh19NpNK2htft1LDbHP4t1Gztd6XowX/NKSOtw
-	TupIYF3YRf4z/HpHzHzrFYlXvHqg54N8fYLIWnZQeqbhWkeQivvS7+tn1+WfedebI/IcnqdX
-	7E3xQQaZOVd6/mrHCdPoVK00PyG1pMkwkcAvA3AwUzWU882Ms2dViJf49WUqwbu+OY4rRaeU
-	YWsfsX3/PXZm4mx88GD2QezA+WnvknNDlW/y2j8Mdl4fLbhT806vV7gx2vz3U5g38PjwxE/2
-	YYltNTtGUvgQqxesxvfWuPChA2WSeoErzu7TNXEx3jA36fjYK05mGvz18wt5hmGnaYZz7LVv
-	u9LGt5ekqsItS2j60t3yF2KI1gHyUEfV29gWH9elyEUhmFYn/w+S70kulwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDIsWRmVeSWpSXmKPExsWy7bCSvO79pdfTDU6sFrP4cuASu8W1vRPZ
-	Leacb2GxWLerlcni2YIZLBZPjz1it3j27SezRfPi9WwWk6cwWjTtv8Rs8aj/BJvF1d3vmC12
-	b5vObnFhWx+rxaHDz9ktLu+aw2ax/vQ7Rotve9+wW3Tc2cticWyBmMW3028YLRZsfMRo0fr4
-	M7tF+8/XLBZfHl9ls/h4vIndYvGBT+wWzQvXsTjIeGxZeZPJY+esu+weCzaVemxa1cnmsaCP
-	3WP/3DXsHu/3XWXz6NuyitHj8ya5AM4oLpuU1JzMstQifbsEroyGrgPsBd85K1pOf2RsYGzk
-	6GLk5JAQMJH4sOQpUxcjF4eQwG5Giakzm1ggEjISt1deZoWwhSXutxxhhSi6zyjRee44M0iC
-	RUBV4sWUI4wgNpuArsS2E//AbBEBDYmXR2+xgDQwC0xglZj25QQTSEJYwEziZ98SdhCbV0BZ
-	YvLGeVBTDzBK3N63gwUiIShxcuYTMJtZQEvixr+XQM0cQLa0xPJ/YGdzClhI7H24kWkCo8As
-	JB2zkHTMQuhYwMi8ilEytaA4Nz032bDAMC+1XK84Mbe4NC9dLzk/dxMjOMK1NHYwvvvWpH+I
-	kYmD8RCjBAezkghv/6Lr6UK8KYmVValF+fFFpTmpxYcYpTlYlMR5VxpGpAsJpCeWpGanphak
-	FsFkmTg4pRqYhOPnHLnuGmRm/apKdxMPwxJ1s+Um4vZsm8oDfXU3T/4rqnCkLjrpQP0fRtu9
-	5cGi+wperpHMt/L9yZ6/dt/yhRWTDD4EKwlYx36I3+64kuW6N+vFtN8h3mYs2zwd6mYmyzIp
-	f9HicWHxLP6294By+muf5Kc+x0tuH+kLmLK18e9nsQ83LFcuWbOsO4j7o51H2KSEbXPO1S86
-	vfo0m+NJwdhnW0wcr77eo3hha1Hjh3uMp93e8KppXjNKMg5pzRXRjGNJUA68NuvsH81uvxyl
-	V/8CEl+alkUpCnrlrwjWufk2fFPW9w3ejZEtoosSzr+9YG31xXSKx5rwJ85xZXVPD50R/bM0
-	rjpxwsyrLLOUWIozEg21mIuKEwHqvlz2XwMAAA==
-X-CMS-MailID: 20250317043231epcas2p2a42eecaaabed96be1d19059416ad38da
-X-Msg-Generator: CA
-Content-Type: multipart/mixed;
-	boundary="----K-Xcka4Xsim0K0-JuHAa3VmVr3oPR9my9iMvsSsU8QXUQUBj=_21b24_"
-X-Sendblock-Type: AUTO_CONFIDENTIAL
-CMS-TYPE: 102P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250314092125epcas2p418cd0caeffc32b05fba4fdd2e4ffb9fa
-References: <CGME20250314092125epcas2p418cd0caeffc32b05fba4fdd2e4ffb9fa@epcas2p4.samsung.com>
-	<20250314092446.852230-1-youngmin.nam@samsung.com>
-	<2025031453-underpay-gigahertz-9ba4@gregkh>
+References: <84B05ADD5527685D+20250317011604.119801-2-chenlinxuan@deepin.org> <2025031759-sacrifice-wreckage-9948@gregkh>
+In-Reply-To: <2025031759-sacrifice-wreckage-9948@gregkh>
+From: Chen Linxuan <chenlinxuan@deepin.org>
+Date: Mon, 17 Mar 2025 13:04:41 +0800
+X-Gmail-Original-Message-ID: <90633147F3110D54+CAC1kPDNNBj3Hd6s72mA3qxwxC0B69aE7qhM+Az5msvjPy41N5w@mail.gmail.com>
+X-Gm-Features: AQ5f1JosL4TAodELERN3orTFlcWSuf3HluXcDHfk5v-mc_DcPgobK1IZuHPieJM
+Message-ID: <CAC1kPDNNBj3Hd6s72mA3qxwxC0B69aE7qhM+Az5msvjPy41N5w@mail.gmail.com>
+Subject: Re: [PATCH stable 6.6 v2] lib/buildid: Handle memfd_secret() files in build_id_parse()
+To: Greg KH <greg@kroah.com>
+Cc: Chen Linxuan <chenlinxuan@deepin.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Jiri Olsa <jolsa@kernel.org>, Sasha Levin <sashal@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Jann Horn <jannh@google.com>, 
+	Alexey Dobriyan <adobriyan@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+	Yi Lai <yi1.lai@intel.com>, Daniel Borkmann <daniel@iogearbox.net>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:deepin.org:qybglogicsvrgz:qybglogicsvrgz7a-0
+X-QQ-XMAILINFO: OH/oXo99N/TG8mylz+IzWatGYXRibEcyvlAzrNL0VlFXupXGcw66w6a4
+	hCzjgYdXpdWRrEUsgQYqv+yUIdkO7V2KIz5F40/221+0SXNrHAmZd5io45T+DsujC2+enDe
+	mwgfUJDk/Et7jFUZ5qPgyEQRLqOQbpUcl+4gZPlNtOaAx2KiZ39LVrGTUDmqyA0nXKzuSw7
+	Y1+vCpI08n00GP4O1XDFawTZZECo+FV3f7/rz8XobBFwQCzLTQA486QsT3gLSCobhY1RDU0
+	gzqOfAbaeC2B9Tvw0Hba2OVjz12lm1LiQrY4d6sgdaSfwP/AZAJfjCaU9t31UkpXugPQkPV
+	odplmYzsHwlCHVzCadpRvkUIhQ2Rm9FvcjHFRSHvr2unSVdLWPK4vUGpYXaSlyZLDOKBEqi
+	oSEW5+LAcLjmCLlsfhEmWeTDOEtck1axvJCTminWOXBJcAuppNKB8XKIThi1r/rth9l8ZSO
+	eaiUEtXSY4L6ammhsRXaQeTZJqPSb/vwSTRMgOpNwxUaFm4jz5OqIRw3mBeDRJ3Hm2wSAGe
+	5vQ0259CINzYtE4o6Y8G9qQhrp1NxTs+0vm7gjlGK/ouJw61HcTwnYxhf336tQmkwTCvW7n
+	elQ9J3EAqiUbdRn5e/3HW9IbO5ND6vnUMHpINkGtXs/7AcPqnn5Ium6YU2NYAdHpRLcch7K
+	Nart/+Jzo2ViuGMJ+XAreVIgsiC1k+fueKcgeZJqyXtcwrXcpnH1EtmgGSicqbhv3dRrYV4
+	tC2SJPc/GlvTrMjVjdep4uH+CJwFYY8oajvMNUVoyngYRhkaglIYKp1blxZ5WS41vHIGYTj
+	72+aVWaW0mZySFK50z31NyaF3jnrva2N0OmBfTykmynSmWp5lLX17GJsfFMHF+0sg/yzAkl
+	1+kZ4FXWb7AAGA2/HXiVll4PS2oiU+MZOScSs3aqWAyWFFPJeNiv1eu97dJIQnBGL5ZDXrD
+	sPwNNZQFcEdd/+Gbwcok6lF/W1gn3AqHzusgjH150IN8oeSMwesarENz8V1MmzmDUVTAHj1
+	9y6F2CDgt1RIxNmVFqUilwKiwrdIuoLLABILuqqLUqrQ7NQt7Q
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-RECHKSPAM: 0
 
-------K-Xcka4Xsim0K0-JuHAa3VmVr3oPR9my9iMvsSsU8QXUQUBj=_21b24_
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-
-On Fri, Mar 14, 2025 at 01:24:09PM +0100, Greg KH wrote:
-> On Fri, Mar 14, 2025 at 06:24:45PM +0900, Youngmin Nam wrote:
-> > From: Eric Dumazet <edumazet@google.com>
-> > 
-> > tcp_abort() has the same issue than the one fixed in the prior patch
-> > in tcp_write_err().
-> > 
-> > commit 5ce4645c23cf5f048eb8e9ce49e514bababdee85 upstream.
-> > 
-> > To apply commit bac76cf89816bff06c4ec2f3df97dc34e150a1c4,
-> > this patch must be applied first.
-> > 
-> > In order to get consistent results from tcp_poll(), we must call
-> > sk_error_report() after tcp_done().
-> > 
-> > We can use tcp_done_with_error() to centralize this logic.
-> > 
-> > Fixes: c1e64e298b8c ("net: diag: Support destroying TCP sockets.")
-> > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > Acked-by: Neal Cardwell <ncardwell@google.com>
-> > Link: https://lore.kernel.org/r/20240528125253.1966136-4-edumazet@google.com
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> > Cc: <stable@vger.kernel.org> # v5.10+
-> 
-> Did not apply to 5.10.y, what did you want this added to?
-> 
+Greg KH <greg@kroah.com> =E4=BA=8E2025=E5=B9=B43=E6=9C=8817=E6=97=A5=E5=91=
+=A8=E4=B8=80 12:20=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Mon, Mar 17, 2025 at 09:16:04AM +0800, Chen Linxuan wrote:
+> > [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
+> >
+> > >>From memfd_secret(2) manpage:
+> >
+> >   The memory areas backing the file created with memfd_secret(2) are
+> >   visible only to the processes that have access to the file descriptor=
+.
+> >   The memory region is removed from the kernel page tables and only the
+> >   page tables of the processes holding the file descriptor map the
+> >   corresponding physical memory. (Thus, the pages in the region can't b=
+e
+> >   accessed by the kernel itself, so that, for example, pointers to the
+> >   region can't be passed to system calls.)
+> >
+> > We need to handle this special case gracefully in build ID fetching
+> > code. Return -EFAULT whenever secretmem file is passed to build_id_pars=
+e()
+> > family of APIs. Original report and repro can be found in [0].
+> >
+> >   [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
+> >
+> > Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader a=
+bstraction")
+> > Reported-by: Yi Lai <yi1.lai@intel.com>
+> > Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> > Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.c=
+om
+> > Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kerne=
+l.org
+> > [ Chen Linxuan: backport same logic without folio-based changes ]
+> > Cc: stable@vger.kernel.org
+> > Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+> > Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+> > ---
+> > v1 -> v2: use vma_is_secretmem() instead of directly checking
+> >           vma->vm_file->f_op =3D=3D &secretmem_fops
+> > ---
+> >  lib/buildid.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/lib/buildid.c b/lib/buildid.c
+> > index 9fc46366597e..34315d09b544 100644
+> > --- a/lib/buildid.c
+> > +++ b/lib/buildid.c
+> > @@ -5,6 +5,7 @@
+> >  #include <linux/elf.h>
+> >  #include <linux/kernel.h>
+> >  #include <linux/pagemap.h>
+> > +#include <linux/secretmem.h>
+> >
+> >  #define BUILD_ID 3
+> >
+> > @@ -157,6 +158,10 @@ int build_id_parse(struct vm_area_struct *vma, uns=
+igned char *build_id,
+> >       if (!vma->vm_file)
+> >               return -EINVAL;
+> >
+> > +     /* reject secretmem */
+>
+> Why is this comment different from what is in the original commit?  Same
+> for your other backports.  Please try to keep it as identical to the
+> original whenever possible as we have to maintain this for a very long
+> time.
+>
 > thanks,
-> 
+>
 > greg k-h
-> 
+>
+>
 
-Hi Greg,
+Original comment is in a function named freader_get_folio(),
+but folio related changes has not been backported yet.
 
-Sorry about that.
+thanks,
 
-As for 5.10, it seems to have more dependencies for the backport.
-I think the maintainer should handle it to ensure a safe backport.
-
-------K-Xcka4Xsim0K0-JuHAa3VmVr3oPR9my9iMvsSsU8QXUQUBj=_21b24_
-Content-Type: text/plain; charset="utf-8"
-
-
-------K-Xcka4Xsim0K0-JuHAa3VmVr3oPR9my9iMvsSsU8QXUQUBj=_21b24_--
+Chen Linxuan
 
