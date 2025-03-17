@@ -1,136 +1,148 @@
-Return-Path: <stable+bounces-124720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE760A658F7
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:51:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D59A6593D
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:57:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AEEC165DDC
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:49:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1B2B3A64E5
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A621A8F84;
-	Mon, 17 Mar 2025 16:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012791DFD89;
+	Mon, 17 Mar 2025 16:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccteKLRi"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="SphrnGmx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDE81A9B53
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362391A0BFD
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229632; cv=none; b=n2H1B87fv0npq7hIu1cWBoukRQvztBM561QGfUFzHNCkQ8j0P8tydX0vCPJYJLd77mEy6rVzapOlo54L2un1SeICXc6eUWYqygzOxGWuqPHci/zSUFoW3IzJlduTMQMD7m1+u/atgnb6qq8l42PZwOrGAR0UOtIQ9V0kJOfpHaY=
+	t=1742230147; cv=none; b=TnLRcEYFXGCN9KFak8LqDVSosn15P0j90vkeSNm/pTqshjEBS29To0/DXrOQWj7f8XSZZ2Dr1bwhcqYkAk46P7RRjxdJmKoE0YbvvkyPb5xQKurLbHA+qScBvYXnx5GPeHGjIL+jcW5nT8nIFym1h+wfakCXIdDvxsxvWjkruyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229632; c=relaxed/simple;
-	bh=v6zsUwSu1YJfKkfyFhCNv/3Akl+TpybF4LERhjqtw5o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bxkHA0DqdJDTtdgRtUUJFwX/BCCoNjt/LQtYHRqtTVk5LMhZh+SUi56CASqVvclCbIMs35qf1I1HayXeepf0+7BXX7DVoJvpF5UEU+lsKfEgmGZvVEEy4uOov4ZVZeFXYDoGFCZyYM5h1AVbVBUsDqEIIn5y6Ib0hiBTqD0HOr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccteKLRi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EFEC4CEE3;
-	Mon, 17 Mar 2025 16:40:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229632;
-	bh=v6zsUwSu1YJfKkfyFhCNv/3Akl+TpybF4LERhjqtw5o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccteKLRicO0vKYxHmIB5GScckDoSgSXANVBvRmOuY2rFsCgDMsIoHBFHVVyOI5d+m
-	 saHPHTdYyIIIJkrm/I9/Fh9T3BudGNKebdx9mj/mdQdALrY8TUkCSp5wnVWA8pqPb6
-	 oFg/uO/3FPnNsSJqAnWBYsIiJ7t4Uo04nEOAUHpbZTRbJtmCX97gRSsGK7Zz7SaLgc
-	 QfADKby6kmhKlRvbOtv79YERjrKQMM8FXz9vy7HPRlDwlaapVfWwUvpLCkICqQWsfF
-	 S9Q0np/u04y6/Huj1dsr5GZJV1t17xV8r+66MAFjW3jInsBXVFCAki36Y5S/I1K/31
-	 DuKZRlm7NDROw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chen Linxuan <chenlinxuan@deepin.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.6 v3] lib/buildid: Handle memfd_secret() files in build_id_parse()
-Date: Mon, 17 Mar 2025 12:40:26 -0400
-Message-Id: <20250317084100-14b40fd9574c782a@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <485715E6BEC61FE5+20250317052325.24365-2-chenlinxuan@deepin.org>
-References: 
+	s=arc-20240116; t=1742230147; c=relaxed/simple;
+	bh=eM5va7AuXLT0rsHrtPonGC4+dBUXGMAWOPLF0ULzaE8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oLGmLIejfz78dsECKR63Ze+X0ps0SVVq0YBz3yAxgF90Tr5N8JuIBNAuiSkf2P8cGmAYV6T+YsqFlxAocLJFTRGFyYJDnpwrp2YNXycU69PxSf0YW3d6DJ0kbBGVnUnmyGLdx6KACS7Vf1WbqPx9UvbmB8/c3Rp68U/RmNQZsaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=SphrnGmx; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-601e049d794so922858eaf.3
+        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 09:49:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1742230144; x=1742834944; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=hR+2cdo6mmbMt3HXD2jP5VNCtOJ9m0Gv6fbcgcv/bBU=;
+        b=SphrnGmx4itMCN/ExoJlagg96dOO2GROqAOk5kcZ0CBC0m1fxSmJO1kDeb6MLPPW06
+         kB+NGW1cjPfDCQ56bQrADRBckubZ8uqZ529CRVpA5/c1GEuz+0M6B0nlJHURzm0bET24
+         cXVldmTY5NvTAyszkqxWY51qrbWCt3++YmLm0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742230144; x=1742834944;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hR+2cdo6mmbMt3HXD2jP5VNCtOJ9m0Gv6fbcgcv/bBU=;
+        b=RQN5weAZq4xPv9dPRrWEYF7llvChkGyH0PB87KJdq6k6TJYlSHJctxMSFSj4EmmSul
+         lxzbeW3sBceX+UrMNMc6wG5eB/PvNHKBxkiuRjTH7amhC8Ju2LWC2IFpK5k/XJpjsVgO
+         1a6UKlQBULX8OFRmRxEa9EJJUHkoB/7CBJga4EexzkuyJgixKaBvLTL9itr91Yy5PlwR
+         rrRI/ettMtLRHBfXK3Ij9SULdEZETyJY3renBK1TevoYuq0AKM+24Zv7k4ip4Y9UGyhQ
+         iSLOz9oXpu+Edn6MsDjgJxmqwAboKvyJi8aoZrTT3jiaGgEPeLRtSShfaNLkIEjCvxM1
+         I9mA==
+X-Gm-Message-State: AOJu0YyiSSzrKsLedUrzcnIvnSN0evWXKPiocFWuLCPDwge8/lpMpB0X
+	pHaisfMfXVpyLHhk6lPB2nCVhYAlphjNKs0BPAWYhsSgawR/AFPfIqr12ozt1Y0rLbAY5c3y/Iv
+	SPQ1EqlT9fy4gpObcJItQ9LESOAl28hXZPOodiknqHfuwUGYQMliJYGPTBWL0oul8/A1JTVS0KE
+	RZl3d8qzO4vcd201Z4yZjyjpoq5pGcfEnrRyDgZUY6X7ODsA==
+X-Gm-Gg: ASbGncsDREUMq6rAXcS8Xd29akozRv6l63y5Mo1T+vA5T10zeCJ1PGxc5a5dHtNwGLn
+	0hMIhWQaAgHVwvXVP47ImtOJUKyXlSGzkIkKuSIMAfsgJi32ST0PjeNUu7Y/f55Oa0gENl4kigJ
+	hOXJ+jp09HaRVWDJED/63ZXZQLvVCI8e5cqIH6p2ANFkL6JCMkXpz1+VX2EAYZFzflOJA1OOC/I
+	90zpQagkaKAZ2mJ7w/zd7idAd7mnezheMrJc2A3rktHJrkQIAq+s1C4iJKScaH1HkjzEJ9yECtR
+	oAnH2417y5zwQbu+0JU4DmxJ/Sus2NlpF4epmTXsQlXNv008kGkUS+EZqKZOoh/OyrGj4qRsx5z
+	84VH2WbGl
+X-Google-Smtp-Source: AGHT+IEXhCY9xr89eX6tBMG7DkAAspzRtGTTpjNmGgFlbsiwNx2AOKEyzh8EpraAE7G5FQCFX748sA==
+X-Received: by 2002:a05:6820:883:b0:601:b7e1:9233 with SMTP id 006d021491bc7-601e45c8543mr6433144eaf.3.1742230144551;
+        Mon, 17 Mar 2025 09:49:04 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-601db6598aesm1673541eaf.5.2025.03.17.09.49.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Mar 2025 09:49:03 -0700 (PDT)
+Message-ID: <2464508f-864e-4697-8fd5-ffa5c06f64a0@broadcom.com>
+Date: Mon, 17 Mar 2025 09:49:00 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable 5.4 0/2] openvswitch port output fixes
+To: stable@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>, Pravin B Shelar
+ <pshelar@ovn.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <kafai@fb.com>,
+ Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+ Andrii Nakryiko <andriin@fb.com>, Sasha Levin <sashal@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Willem de Bruijn <willemb@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, David Ahern <dsahern@kernel.org>,
+ =?UTF-8?Q?Beno=C3=AEt_Monin?= <benoit.monin@gmx.fr>,
+ Xin Long <lucien.xin@gmail.com>, Felix Huettner
+ <felix.huettner@mail.schwarz>,
+ "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:OPENVSWITCH" <dev@openvswitch.org>,
+ "open list:BPF (Safe dynamic programs and tools)" <bpf@vger.kernel.org>
+References: <20250317154023.3470515-1-florian.fainelli@broadcom.com>
+Content-Language: en-US
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20250317154023.3470515-1-florian.fainelli@broadcom.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-[ Sasha's backport helper bot ]
+On 3/17/25 08:40, Florian Fainelli wrote:
+> This patch series contains some missing openvswitch port output fixes
+> for the stable 5.4 kernel.
 
-Hi,
-
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
-
-The upstream commit SHA1 provided is correct: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Chen Linxuan<chenlinxuan@deepin.org>
-Commit author: Andrii Nakryiko<andrii@kernel.org>
-
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-
-Note: The patch differs from the upstream commit:
----
-1:  5ac9b4e935dfc ! 1:  690f6606d399c lib/buildid: Handle memfd_secret() files in build_id_parse()
-    @@
-      ## Metadata ##
-    -Author: Andrii Nakryiko <andrii@kernel.org>
-    +Author: Chen Linxuan <chenlinxuan@deepin.org>
-     
-      ## Commit message ##
-         lib/buildid: Handle memfd_secret() files in build_id_parse()
-     
-    +    [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
-    +
-         >From memfd_secret(2) manpage:
-     
-           The memory areas backing the file created with memfd_secret(2) are
-    @@ Commit message
-         Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-         Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
-         Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
-    +    [ Chen Linxuan: backport same logic without folio-based changes ]
-    +    Cc: stable@vger.kernel.org
-    +    Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-    +    Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
-     
-      ## lib/buildid.c ##
-     @@
-    @@ lib/buildid.c
-      
-      #define BUILD_ID 3
-      
-    -@@ lib/buildid.c: static int freader_get_folio(struct freader *r, loff_t file_off)
-    - 
-    - 	freader_put_folio(r);
-    +@@ lib/buildid.c: int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-    + 	if (!vma->vm_file)
-    + 		return -EINVAL;
-      
-     +	/* reject secretmem folios created with memfd_secret() */
-    -+	if (secretmem_mapping(r->file->f_mapping))
-    ++	if (vma_is_secretmem(vma))
-     +		return -EFAULT;
-     +
-    - 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
-    - 
-    - 	/* if sleeping is allowed, wait for the page, if necessary */
-    + 	page = find_get_page(vma->vm_file->f_mapping, 0);
-    + 	if (!page)
-    + 		return -EFAULT;	/* page not mapped */
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+Scratch that and the two others targeting 5.10 and 5.15, I missed that 
+DEBUG_NET_WARN_ON_ONCE was not added until later. Will submit a v2 later 
+today. Thanks!
+-- 
+Florian
 
