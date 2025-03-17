@@ -1,90 +1,90 @@
-Return-Path: <stable+bounces-124610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D0CA6433A
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 08:19:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B9BA64357
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 08:20:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B266168833
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 07:19:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B566B1883A44
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 07:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C966221ABA4;
-	Mon, 17 Mar 2025 07:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3EE1DE2A0;
+	Mon, 17 Mar 2025 07:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Lk9RwNIV"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="UYLrr5vq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D12215046
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 07:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B761D9324
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 07:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742195941; cv=none; b=s9e8pyiKQKUImeTA84LZPc4vXQvFsBfyp8Z3uRkY7c6I9FuOxm0gLHqW7zO33P30O6GX4DfNKzpM11b+9Jqt/OKIXnx8C2hOke/02ZtagV001uTVV6WUBhTpz+KVyWvshLh9WmAQQojDSToiZwFFNBerKEY9pfGFvbbUsurlsaU=
+	t=1742196050; cv=none; b=Ooygdxls3EpFA9N/iqfYeTUiaSWvec52zJ0hwP2gbcXddOGs5Z37OnAONTF9cD5K4Ccf7QGtXNU7l7ztqR5ftEO3jM4A8zScX7+cxkBNdp4VRQ/xM31tc7A39tkJUfPG7Y+h8CWgofPyhfmkVWDyRbcfhdPLBkgeeWIHtI6g/Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742195941; c=relaxed/simple;
-	bh=Lv+WQ1ZxB2m63z9sPK5atDsi5HCWR3guGcOZF9xvoak=;
+	s=arc-20240116; t=1742196050; c=relaxed/simple;
+	bh=EkU3LmWrXJ8xPmTftOyGBGTNA7Lkv9zQxh3xVlBYFZc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sm/TOecA7zTJXHDEXZ9oxXGiLD/OwuWWRj4b1+PKna69vaOpMrmYI0vczlLAULAvNaRfi3AJgQeur+kKwE+ciqPGAtDG02dU/3qvZV9bGfQmuneqXGqM1if/cVrvQ9uWuN7jeHVBftUFaxtcBj+zGxPu5FrAD9UHrSTuK/mDcd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Lk9RwNIV; arc=none smtp.client-ip=209.85.214.177
+	 MIME-Version; b=lnp21FmBqu9vlyhOwYATEPfTuNmPN+28Q+xoNxuPnUEqnN3k+fenBQy7out1GvpeRV22vckfsR9rtp6+i+cxJjI9+x50iH8noZQulXQNpWNp79rPIJX297QAcp/RoC6Gen6WW7FHWBc0qtjLYnhoL6LowANlo3YkTUV/qLaOKZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=UYLrr5vq; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-224019ad9edso21719425ad.1
-        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 00:18:58 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-223594b3c6dso78376865ad.2
+        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 00:20:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1742195937; x=1742800737; darn=vger.kernel.org;
+        d=bytedance.com; s=google; t=1742196047; x=1742800847; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ORxkt9MEvG6odcaKIZrmr6gSHyjIxXPlZQh0sCay6hs=;
-        b=Lk9RwNIVM6o3j+wgRK0KS6NCbGWlotGO3KP+/hATCb7FssZ55vVbbQ8xns4lhgpnnq
-         wlEpIpBoCHEtemv03dObf9yu0BlOuzsr8mMDgKZmnbgSjem0NI6S7w05uTfZXJ4gOyHV
-         Xc2G5vL00khXg/afCfFUxbyZ5Ku/r03F9pojMrDPaF9Jd71+2U7PTQm5nuMxv0XEUrZK
-         3ol5Jnd3xktdMUUUXFHCx457VVigH0WRYjdt04ewlXrW+fOcUcPFXlTkoObwNDGC3i+D
-         yclZ1cTqoVZKjY8YdEIjs8RFA0kRxNkEQpIz/Gxb/uknqcoDkIKS6OvXbpvIldUmOYm7
-         ezCQ==
+        bh=yzmAtzBtZEPUysI2r9KEIU3Wcwsb6Hl3wXRjg6svhnY=;
+        b=UYLrr5vqcvASz8v3YcdufrhoYhGXukQiRFnaYI+zsfrl24UVsSroeZwL+Mqhjklo5x
+         TKbMx3f3kCqaN4pJ+iHlEQ77RT3ctsdY74qw2uLnwgJJxBABmjfnRL8VPE4IfyqRvja8
+         UQIAvOxN8qXwYj2dHQgjdZkdKqNOkTlaGzCOzmiEQu53A2TXRkTgPNtMRmAQpLQcHdVF
+         bmPWTJjZ1iRrvS3DQEnPx/vg6rOO28MpesD83BfCtP9/gZyhYvosQsl8kGY+XqD8cD7W
+         GJw/PPFJKgrK6NAkWILfdbNQLlrqDFW3W+vKHsHn7RSOQCagdCH6b2+AwRF6c0NegDI7
+         U5Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742195937; x=1742800737;
+        d=1e100.net; s=20230601; t=1742196047; x=1742800847;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ORxkt9MEvG6odcaKIZrmr6gSHyjIxXPlZQh0sCay6hs=;
-        b=oebkmHgvgJlYWaB8NPzxAaIo0aUDONu2wt/W93q1CE/zE0S1azCpiOyLfrhG7UiUe+
-         dOrbcBrj8nr+jUFyrtWufbNYN/0I0YDUjLxAgSYFLRsIawLWUPNbqmdUfJ59dCa4SjeW
-         aNH0/8rEWEn9I440yyECj5LzwM4Unryeax/4dctO9kEhnMj6KqnNOXrU9sRvyGw6eiZt
-         t1/gYwx3gY4MyI7QjNInpMulZhFGT+xiDwB06tMiZctVE3oJUt90Wgr8QHPbR5UJKftm
-         3vff0AiCHMt2jUYWOq8d8bJ1OTnDaWfY8E8fb4X7js+T7M8a6r0OaNiuv2K8nvh1P8kG
-         tYAQ==
-X-Gm-Message-State: AOJu0YyCrahTvE5KIQcpkBjXe4RE6JCIE2xKvF8Yvh6AKEGDmVbJHFei
-	gh7KIJv6CYCReoH2M/8ksSvTiKDykXoMRnCf5bDsghPdyjY0nFy3ASQL3wyV6hKv10Dv2D1jnRX
-	H1DkM4A==
-X-Gm-Gg: ASbGnctS1R+qrFN27guEw5TH1086VWuQbGDp5QyRiHWx6z+idb1YQgMSfZvxp5i5hwx
-	Ky5AsPUR4xFF8hEc20athTO6nkYHU03mF2kve30KBagXQEVvyn8eFcB5c+FqJcF9xgNy0g0HJQ6
-	PwAHC2GEJHpCEgmVE6TVzZHX9AHUfM1Z+QMKtNdXi2UnbXrUMuoZ4tf23A0TOl5nIwAmGXBTK26
-	Q4Xf57ILojHQgCuyj3L2kmu2idIQahclm8t0vbp3kgft9YFlit8zw9+t0gx2QVnGRAUHvlJSMhg
-	5S9i/Y1M8rfBwRYMsfmCmzEX4gtLHy15SUV/m7KRJ3mDwzpSFFqpeENEBEr6IF42Zot2g9ABxkA
-	pW+nWpzd1k1k=
-X-Google-Smtp-Source: AGHT+IHQfmRY9CMJMqATM+q6HEV0EXa4QO41oYyPvs9RxL76xt2cup+5WXBhVcRlZOFT/V+gj5qm0A==
-X-Received: by 2002:a17:903:2f8a:b0:21f:52e:939e with SMTP id d9443c01a7336-225e0a8eaa1mr164454185ad.28.1742195937492;
-        Mon, 17 Mar 2025 00:18:57 -0700 (PDT)
-Received: from PXLDJ45XCM.bytedance.net ([61.213.176.6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6bbca45sm68069985ad.166.2025.03.17.00.18.55
+        bh=yzmAtzBtZEPUysI2r9KEIU3Wcwsb6Hl3wXRjg6svhnY=;
+        b=KW8h13RYFG5ht1xsO1TQPuftWBBXSaq6cXiqpslQMz9PPSNbv17bdX5a+2IBNSeIcH
+         tpE2I+XMcjxO/g5qVvMJSPYCcaOkVt8Dcbpba4f4KJZ00v2MP/WYc5kNoyXWMdD0+PFi
+         lYFxwJ5YKRWnjlXIbA0K377HdXIhV4qYOqIvAFvibpXSNJIdWBG/Fh42BaOkJ51F7ApV
+         pVpS6wIfKALh9nYy2Tcz/aa59S66kwzUQKYwzUe5hTNmFZKxBnHaPutjdLW1b97NODAE
+         4c2PAn5ilNBBI/ATBiTy/QoN7IjKKtamPwz+TkgATA/7F1ELBFzsyU7vZQkeYQioLPN/
+         WEiA==
+X-Gm-Message-State: AOJu0Yz+ADIuAC/94edL2ziCZCaW/dU7ICUsDx2h7sUBRPZu1k7h7lig
+	K39xoj9DgKqChE5l+/mRFp7evc4VYh6upTXxd7/p2aGztTDaiSWQC+0Bt1BzwGRi1JnQ+dGomO8
+	lBAWLTw==
+X-Gm-Gg: ASbGncta7EsYIKRQxNC2FB0qZTMVhRcj26uspeFtvKLeEHOZbC5HWvc8nGg9heOxl9/
+	UwpyMZ8ViPHPyy8sltXazPObCEambNtAUy8vHVGauzs7Sr0cvOa9emXnIYLfBEMGwTHozpvjGSc
+	jUpXKWJ0MXi6hC0hic2qwPIQgLlEmSZlUVTD+DM+bhgD9JJIZV7mfWU6Ean7Du8aF9ATevWBVBC
+	2AYIAQeObRLBiJ/3Vj121vS7RCBA2p9cq76HLvi25PXyelHrN6EJggDVZutkDeM1UOYJHppE3pX
+	I3QipH76/8vp22cxmW2Xuhpaoj3Qugb10PxvORTp0XC4X7kga5PLSPYun+dKf48vJ+r2W8wVzFI
+	XHw==
+X-Google-Smtp-Source: AGHT+IF2ot/JC5zmDfcpyEiFUi1MZEA72pWiN/yxVe/8ruF9mDhKcdsKchWy52vV5lxWhBd5hoEIaQ==
+X-Received: by 2002:a17:902:e809:b0:21f:988d:5756 with SMTP id d9443c01a7336-225e0b14f4emr126450695ad.42.1742196047128;
+        Mon, 17 Mar 2025 00:20:47 -0700 (PDT)
+Received: from PXLDJ45XCM.bytedance.net ([61.213.176.12])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6bbca77sm68127875ad.167.2025.03.17.00.20.44
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 17 Mar 2025 00:18:56 -0700 (PDT)
+        Mon, 17 Mar 2025 00:20:46 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: stable@vger.kernel.org
 Cc: muchun.song@linux.dev,
 	Muchun Song <songmuchun@bytedance.com>,
 	Ming Lei <ming.lei@redhat.com>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15.y] block: fix missing dispatching request when queue is started or unquiesced
-Date: Mon, 17 Mar 2025 15:18:21 +0800
-Message-Id: <20250317071821.22449-1-songmuchun@bytedance.com>
+Subject: [PATCH 5.15.y] block: fix ordering between checking QUEUE_FLAG_QUIESCED request adding
+Date: Mon, 17 Mar 2025 15:20:21 +0800
+Message-Id: <20250317072021.22578-1-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <2024120323-snowiness-subway-3844@gregkh>
-References: <2024120323-snowiness-subway-3844@gregkh>
+In-Reply-To: <2024120342-monsoon-wildcat-d0a1@gregkh>
+References: <2024120342-monsoon-wildcat-d0a1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,57 +93,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Supposing the following scenario with a virtio_blk driver.
+Supposing the following scenario.
 
-CPU0                    CPU1                    CPU2
+CPU0                        CPU1
 
-blk_mq_try_issue_directly()
-  __blk_mq_issue_directly()
-    q->mq_ops->queue_rq()
-      virtio_queue_rq()
-        blk_mq_stop_hw_queue()
-                                                virtblk_done()
-                        blk_mq_try_issue_directly()
-                          if (blk_mq_hctx_stopped())
-  blk_mq_request_bypass_insert()                  blk_mq_run_hw_queue()
-  blk_mq_run_hw_queue()     blk_mq_run_hw_queue()
-                            blk_mq_insert_request()
-                            return
+blk_mq_insert_request()     1) store
+                            blk_mq_unquiesce_queue()
+                            blk_queue_flag_clear()                3) store
+                              blk_mq_run_hw_queues()
+                                blk_mq_run_hw_queue()
+                                  if (!blk_mq_hctx_has_pending()) 4) load
+                                    return
+blk_mq_run_hw_queue()
+  if (blk_queue_quiesced()) 2) load
+    return
+  blk_mq_sched_dispatch_requests()
 
-After CPU0 has marked the queue as stopped, CPU1 will see the queue is
-stopped. But before CPU1 puts the request on the dispatch list, CPU2
-receives the interrupt of completion of request, so it will run the
-hardware queue and marks the queue as non-stopped. Meanwhile, CPU1 also
-runs the same hardware queue. After both CPU1 and CPU2 complete
-blk_mq_run_hw_queue(), CPU1 just puts the request to the same hardware
-queue and returns. It misses dispatching a request. Fix it by running
-the hardware queue explicitly. And blk_mq_request_issue_directly()
-should handle a similar situation. Fix it as well.
+The full memory barrier should be inserted between 1) and 2), as well as
+between 3) and 4) to make sure that either CPU0 sees QUEUE_FLAG_QUIESCED
+is cleared or CPU1 sees dispatch list or setting of bitmap of software
+queue. Otherwise, either CPU will not rerun the hardware queue causing
+starvation.
 
-Fixes: d964f04a8fde ("blk-mq: fix direct issue")
+So the first solution is to 1) add a pair of memory barrier to fix the
+problem, another solution is to 2) use hctx->queue->queue_lock to
+synchronize QUEUE_FLAG_QUIESCED. Here, we chose 2) to fix it since
+memory barrier is not easy to be maintained.
+
+Fixes: f4560ffe8cec ("blk-mq: use QUEUE_FLAG_QUIESCED to quiesce queue")
 Cc: stable@vger.kernel.org
 Cc: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241014092934.53630-2-songmuchun@bytedance.com
+Link: https://lore.kernel.org/r/20241014092934.53630-3-songmuchun@bytedance.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-(cherry picked from commit 2003ee8a9aa14d766b06088156978d53c2e9be3d)
+(cherry picked from commit 6bda857bcbb86fb9d0e54fbef93a093d51172acc)
 ---
- block/blk-mq.c | 1 -
- 1 file changed, 1 deletion(-)
+ block/blk-mq.c | 42 ++++++++++++++++++++++++++++++++----------
+ 1 file changed, 32 insertions(+), 10 deletions(-)
 
 diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 46cb802cfcf05..a15c665a77100 100644
+index a15c665a77100..3db8cc6b51fb1 100644
 --- a/block/blk-mq.c
 +++ b/block/blk-mq.c
-@@ -2048,7 +2048,6 @@ static blk_status_t __blk_mq_try_issue_directly(struct blk_mq_hw_ctx *hctx,
- 	 * and avoid driver to try to dispatch again.
- 	 */
- 	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(q)) {
--		run_queue = false;
- 		bypass_insert = false;
- 		goto insert;
- 	}
+@@ -1610,16 +1610,7 @@ void blk_mq_delay_run_hw_queue(struct blk_mq_hw_ctx *hctx, unsigned long msecs)
+ }
+ EXPORT_SYMBOL(blk_mq_delay_run_hw_queue);
+ 
+-/**
+- * blk_mq_run_hw_queue - Start to run a hardware queue.
+- * @hctx: Pointer to the hardware queue to run.
+- * @async: If we want to run the queue asynchronously.
+- *
+- * Check if the request queue is not in a quiesced state and if there are
+- * pending requests to be sent. If this is true, run the queue to send requests
+- * to hardware.
+- */
+-void blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
++static inline bool blk_mq_hw_queue_need_run(struct blk_mq_hw_ctx *hctx)
+ {
+ 	int srcu_idx;
+ 	bool need_run;
+@@ -1637,6 +1628,37 @@ void blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
+ 		blk_mq_hctx_has_pending(hctx);
+ 	hctx_unlock(hctx, srcu_idx);
+ 
++	return need_run;
++}
++
++/**
++ * blk_mq_run_hw_queue - Start to run a hardware queue.
++ * @hctx: Pointer to the hardware queue to run.
++ * @async: If we want to run the queue asynchronously.
++ *
++ * Check if the request queue is not in a quiesced state and if there are
++ * pending requests to be sent. If this is true, run the queue to send requests
++ * to hardware.
++ */
++void blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
++{
++	bool need_run;
++
++	need_run = blk_mq_hw_queue_need_run(hctx);
++	if (!need_run) {
++		unsigned long flags;
++
++		/*
++		 * Synchronize with blk_mq_unquiesce_queue(), because we check
++		 * if hw queue is quiesced locklessly above, we need the use
++		 * ->queue_lock to make sure we see the up-to-date status to
++		 * not miss rerunning the hw queue.
++		 */
++		spin_lock_irqsave(&hctx->queue->queue_lock, flags);
++		need_run = blk_mq_hw_queue_need_run(hctx);
++		spin_unlock_irqrestore(&hctx->queue->queue_lock, flags);
++	}
++
+ 	if (need_run)
+ 		__blk_mq_delay_run_hw_queue(hctx, async, 0);
+ }
 -- 
 2.20.1
 
