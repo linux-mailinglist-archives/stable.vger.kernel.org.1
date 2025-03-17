@@ -1,259 +1,181 @@
-Return-Path: <stable+bounces-124573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7363A63DA8
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 04:57:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C28DA63E0D
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 05:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1625216CE6F
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 03:57:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E860188C542
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 04:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47B81547EE;
-	Mon, 17 Mar 2025 03:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A90207E17;
+	Mon, 17 Mar 2025 04:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dtEhN3an"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="LHRPolUi";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="meyFymZf"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6C214A4F9;
-	Mon, 17 Mar 2025 03:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71366A59;
+	Mon, 17 Mar 2025 04:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742183817; cv=none; b=qm1NqeGPYRnSS47smwaFb9p2wnICWTYv4h57VnsrEiUdMa5pgZClrSLoCDJOQiv4kTr+1IHChR75Gg90TnfPio9+VSR2YskmiH3rUSQzAphqxt94NN/SlqqaBkyD0Lk0l5fuv6qAaqYVBzjtIx9p9+R8gEEVzBbq5tAzSzvJR8k=
+	t=1742185212; cv=none; b=sTIXwCADwWbMqrT6ZRDaQFsGnk1WEPyarT27fbY6/sfMQAizSuRIbw4omsUpDbTMUd6znfeBGUJuOQXlygQ/T7gy52qxw+9U+q+lfRQNOZokNIVct06/TcZwVJodE/Tfx0FZd5HS337VNLYP3gt25T52yclWSw8mtirWHxQ8a0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742183817; c=relaxed/simple;
-	bh=pXTAu4i+lPwO2BP0fApT2DXfArtOvPYetf21fXbZR/I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H0I+7f8C5BsqScL8QUrAub+wAAcpgrDe8/w+ftSMecSRdmDusUKgH0d3FjGdFd2UkB4gkwKAuYwz8HUEi6p+7vx8IZjWYOc6+rZmGmPOsmR8YY94QPCK4uAtyf/3/dYrFNtdDjrJA7T2Ac03zoiVXBhtAn6DfVQYrEOrBTfmMZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dtEhN3an; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742183816; x=1773719816;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=pXTAu4i+lPwO2BP0fApT2DXfArtOvPYetf21fXbZR/I=;
-  b=dtEhN3anBNMZLENuruxfV5JJ9OccESL90NbvV616kbRsGLQktu1oHbPe
-   qyQTl3CVrRKgPTHNL2o2YFuYzxmg14ekunqtZ4eo5Df6u42IjoM2T3wKi
-   UbrPZn9mByXxF3L/1s4hg4bNlsdnZzinVSHq08z11px43aU1mlCCtprZt
-   ilDR7v9q2jnKe/M/zJTaQ1q21O6KyhEoMeKf6FLwKKbOMVw5mt2PK59nc
-   fTsNzYii8VyxUUXFr99jkkJBgKMpa8JZtpX7hgBM/+rjIqveOXShNtJno
-   /mnx34BPwIUNuLycNi1So23wHsdJgM96dh+6w9VladcCwlTP7lbMB9FV9
-   g==;
-X-CSE-ConnectionGUID: qG37IcUTSw6K2UGdFTDZ4A==
-X-CSE-MsgGUID: W4hOmRJ4TguyWzwN3RZGwg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11375"; a="42998744"
-X-IronPort-AV: E=Sophos;i="6.14,253,1736841600"; 
-   d="scan'208";a="42998744"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2025 20:56:55 -0700
-X-CSE-ConnectionGUID: nImjPajCTwGxdSCetvpK3w==
-X-CSE-MsgGUID: 8m5c0qZ+QZK5aqukcgoDlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,253,1736841600"; 
-   d="scan'208";a="152702313"
-Received: from allen-box.sh.intel.com ([10.239.159.52])
-  by orviesa002.jf.intel.com with ESMTP; 16 Mar 2025 20:56:53 -0700
-From: Lu Baolu <baolu.lu@linux.intel.com>
-To: Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	chaitanya.kumar.borah@intel.com
-Cc: iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] iommu/vt-d: Fix possible circular locking dependency
-Date: Mon, 17 Mar 2025 11:57:14 +0800
-Message-ID: <20250317035714.1041549-1-baolu.lu@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1742185212; c=relaxed/simple;
+	bh=/8FiYef5d99uCy0bDydFDdgkV/npK40z7TQ6Wa3apfk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tFn2+JpCz2najOB9VSFUOhdZu3R/j/g9W0S37cwTB9Z7uR0aCpWFXIznYYm51uSXJlJ9bxFf2E1bcvehysKr1eaB0CvPpHxPUFbF+ObJEHfrV6YSRfRw9p3nL4c0AC22zd3+iKzEVoJjicMZl0yTWKYR+GQt3HSeSrw1MWMs8ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=LHRPolUi; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=meyFymZf; arc=none smtp.client-ip=202.12.124.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailflow.stl.internal (Postfix) with ESMTP id 57D551D41340;
+	Mon, 17 Mar 2025 00:20:07 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Mon, 17 Mar 2025 00:20:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1742185207; x=1742192407; bh=sB2Vv7iTl6
+	/85KF2Q7eb4AEAere1+nDFaUtjRjzwOaM=; b=LHRPolUi5saPu1XiZVS3ParkbA
+	kx00UA6CNHfLPEKuTVKT+cLj4948DZFHx6q4hhfD4SP9CVXxfZE14iiS0pf70rIs
+	8+B8DnaTY1tFKDkjcfLPJIinTzFSyLXMEE8EJrekv8fh0cpV85XScCNbKgHnD89k
+	n8lGrhmJwxpU+Hop30iWD31kcRdxcAckOiEEif72sJRx7vKfy/uCM5weIzNG1RUk
+	sr48gPHqkJBGeD3L2pLZ/mZy7+zR4g43jLcx0iURNwBKTqex+kVceEtXE78SMv93
+	53d0PIcppu3j7bPJGJREUpt5OqUg3X6PtR5aLDqvO3y+dzyAkXCN2wWpJ/jA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1742185207; x=1742192407; bh=sB2Vv7iTl6/85KF2Q7eb4AEAere1+nDFaUt
+	jRjzwOaM=; b=meyFymZfR3uTVY+cLQHjkQTdqrcQSft4BF7vNgjwKf5GNvxO7Jl
+	vf4/MKK5K8DbtYgK0oze7sOBGlRWS6DZeKgjC5mtvOuPl9BfX7CA1UEheRxfoRsh
+	ZvYB0mkxToAW3UQcBhxrMBzHigNvQYym+2/r9SYeYr0RYVOogb6EJFZFFlppIiWF
+	l0hTkGJOoYlik2wVP+qT3lDroWYkdX9OHEjo0ZadBaeUFMNu5TIf/Xk/znKbjIVK
+	wMJKfMMcRKD12dwok1iNfAPEWllWgfUCB0q7O0BvY0bSLTJG7g8Q+gXFfVPKgqJW
+	CcsC7xt+jJV14I8X7b8D1ZMff/qgzLzLucA==
+X-ME-Sender: <xms:9qLXZ2whe3XnVtD7p6uAYXyUXaBMlF4qDvoFO9hqxIpLkBY0bt-SVQ>
+    <xme:9qLXZyRf-mRRzq8PaHSfzMJGYVix01oj9OaZepb0Z9Xa5j36zYIcYD_8UKkC8GiKs
+    DmeRgsjsh-ZZg>
+X-ME-Received: <xmr:9qLXZ4UypdR-W64LjvfJi2Ttbcg_2rg12oGDP_8ojVQr9lbnXZYJLsqHGsc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeekhedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecugg
+    ftrfgrthhtvghrnhepgeehueehgfdtledutdelkeefgeejteegieekheefudeiffdvudef
+    feelvedttddvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtgho
+    mhdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    gthhgvnhhlihhngihurghnseguvggvphhinhdrohhrghdprhgtphhtthhopegrnhgurhhi
+    iheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhholhhsrgeskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtohepshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegv
+    ugguhiiikeejsehgmhgrihhlrdgtohhmpdhrtghpthhtohepjhgrnhhnhhesghhoohhglh
+    gvrdgtohhmpdhrtghpthhtoheprgguohgsrhhihigrnhesghhmrghilhdrtghomhdprhgt
+    phhtthhopegrshhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrkhgvvghlrd
+    gsuhhttheslhhinhhugidruggvvh
+X-ME-Proxy: <xmx:9qLXZ8hsOSOPmrpMr7z25rfUo7kihDS248pcC4iG3YixAqqPZAc6Gg>
+    <xmx:9qLXZ4DF0ovr4P35nfGjfNgtdBde2-YXbbwlEd5ClfIX0Iz3OuHb5Q>
+    <xmx:9qLXZ9KzFXk2ZZEkes0H7D4sLeQRLcJ8F5cWTXw6Og9N_ia2skh2tA>
+    <xmx:9qLXZ_DNAWLN4SP871nOuwGG3K1MWGVETN4xqn9s0Diq8r7kLxQ15g>
+    <xmx:96LXZ5gxKLYoTJrau4DWGESssk316THjwidXZy3dOa2g5pM13hThXWF2>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 17 Mar 2025 00:20:05 -0400 (EDT)
+Date: Mon, 17 Mar 2025 05:18:48 +0100
+From: Greg KH <greg@kroah.com>
+To: Chen Linxuan <chenlinxuan@deepin.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>, Jann Horn <jannh@google.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Yi Lai <yi1.lai@intel.com>, Daniel Borkmann <daniel@iogearbox.net>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH stable 6.6 v2] lib/buildid: Handle memfd_secret() files
+ in build_id_parse()
+Message-ID: <2025031759-sacrifice-wreckage-9948@gregkh>
+References: <84B05ADD5527685D+20250317011604.119801-2-chenlinxuan@deepin.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <84B05ADD5527685D+20250317011604.119801-2-chenlinxuan@deepin.org>
 
-We have recently seen report of lockdep circular lock dependency warnings
-on platforms like skykale and kabylake:
+On Mon, Mar 17, 2025 at 09:16:04AM +0800, Chen Linxuan wrote:
+> [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
+> 
+> >>From memfd_secret(2) manpage:
+> 
+>   The memory areas backing the file created with memfd_secret(2) are
+>   visible only to the processes that have access to the file descriptor.
+>   The memory region is removed from the kernel page tables and only the
+>   page tables of the processes holding the file descriptor map the
+>   corresponding physical memory. (Thus, the pages in the region can't be
+>   accessed by the kernel itself, so that, for example, pointers to the
+>   region can't be passed to system calls.)
+> 
+> We need to handle this special case gracefully in build ID fetching
+> code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
+> family of APIs. Original report and repro can be found in [0].
+> 
+>   [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
+> 
+> Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
+> Reported-by: Yi Lai <yi1.lai@intel.com>
+> Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
+> Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
+> [ Chen Linxuan: backport same logic without folio-based changes ]
+> Cc: stable@vger.kernel.org
+> Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+> Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+> ---
+> v1 -> v2: use vma_is_secretmem() instead of directly checking
+>           vma->vm_file->f_op == &secretmem_fops
+> ---
+>  lib/buildid.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/lib/buildid.c b/lib/buildid.c
+> index 9fc46366597e..34315d09b544 100644
+> --- a/lib/buildid.c
+> +++ b/lib/buildid.c
+> @@ -5,6 +5,7 @@
+>  #include <linux/elf.h>
+>  #include <linux/kernel.h>
+>  #include <linux/pagemap.h>
+> +#include <linux/secretmem.h>
+>  
+>  #define BUILD_ID 3
+>  
+> @@ -157,6 +158,10 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+>  	if (!vma->vm_file)
+>  		return -EINVAL;
+>  
+> +	/* reject secretmem */
 
- ======================================================
- WARNING: possible circular locking dependency detected
- 6.14.0-rc6-CI_DRM_16276-gca2c04fe76e8+ #1 Not tainted
- ------------------------------------------------------
- swapper/0/1 is trying to acquire lock:
- ffffffff8360ee48 (iommu_probe_device_lock){+.+.}-{3:3},
-   at: iommu_probe_device+0x1d/0x70
+Why is this comment different from what is in the original commit?  Same
+for your other backports.  Please try to keep it as identical to the
+original whenever possible as we have to maintain this for a very long
+time.
 
- but task is already holding lock:
- ffff888102c7efa8 (&device->physical_node_lock){+.+.}-{3:3},
-   at: intel_iommu_init+0xe75/0x11f0
+thanks,
 
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #6 (&device->physical_node_lock){+.+.}-{3:3}:
-        __mutex_lock+0xb4/0xe40
-        mutex_lock_nested+0x1b/0x30
-        intel_iommu_init+0xe75/0x11f0
-        pci_iommu_init+0x13/0x70
-        do_one_initcall+0x62/0x3f0
-        kernel_init_freeable+0x3da/0x6a0
-        kernel_init+0x1b/0x200
-        ret_from_fork+0x44/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- -> #5 (dmar_global_lock){++++}-{3:3}:
-        down_read+0x43/0x1d0
-        enable_drhd_fault_handling+0x21/0x110
-        cpuhp_invoke_callback+0x4c6/0x870
-        cpuhp_issue_call+0xbf/0x1f0
-        __cpuhp_setup_state_cpuslocked+0x111/0x320
-        __cpuhp_setup_state+0xb0/0x220
-        irq_remap_enable_fault_handling+0x3f/0xa0
-        apic_intr_mode_init+0x5c/0x110
-        x86_late_time_init+0x24/0x40
-        start_kernel+0x895/0xbd0
-        x86_64_start_reservations+0x18/0x30
-        x86_64_start_kernel+0xbf/0x110
-        common_startup_64+0x13e/0x141
-
- -> #4 (cpuhp_state_mutex){+.+.}-{3:3}:
-        __mutex_lock+0xb4/0xe40
-        mutex_lock_nested+0x1b/0x30
-        __cpuhp_setup_state_cpuslocked+0x67/0x320
-        __cpuhp_setup_state+0xb0/0x220
-        page_alloc_init_cpuhp+0x2d/0x60
-        mm_core_init+0x18/0x2c0
-        start_kernel+0x576/0xbd0
-        x86_64_start_reservations+0x18/0x30
-        x86_64_start_kernel+0xbf/0x110
-        common_startup_64+0x13e/0x141
-
- -> #3 (cpu_hotplug_lock){++++}-{0:0}:
-        __cpuhp_state_add_instance+0x4f/0x220
-        iova_domain_init_rcaches+0x214/0x280
-        iommu_setup_dma_ops+0x1a4/0x710
-        iommu_device_register+0x17d/0x260
-        intel_iommu_init+0xda4/0x11f0
-        pci_iommu_init+0x13/0x70
-        do_one_initcall+0x62/0x3f0
-        kernel_init_freeable+0x3da/0x6a0
-        kernel_init+0x1b/0x200
-        ret_from_fork+0x44/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- -> #2 (&domain->iova_cookie->mutex){+.+.}-{3:3}:
-        __mutex_lock+0xb4/0xe40
-        mutex_lock_nested+0x1b/0x30
-        iommu_setup_dma_ops+0x16b/0x710
-        iommu_device_register+0x17d/0x260
-        intel_iommu_init+0xda4/0x11f0
-        pci_iommu_init+0x13/0x70
-        do_one_initcall+0x62/0x3f0
-        kernel_init_freeable+0x3da/0x6a0
-        kernel_init+0x1b/0x200
-        ret_from_fork+0x44/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- -> #1 (&group->mutex){+.+.}-{3:3}:
-        __mutex_lock+0xb4/0xe40
-        mutex_lock_nested+0x1b/0x30
-        __iommu_probe_device+0x24c/0x4e0
-        probe_iommu_group+0x2b/0x50
-        bus_for_each_dev+0x7d/0xe0
-        iommu_device_register+0xe1/0x260
-        intel_iommu_init+0xda4/0x11f0
-        pci_iommu_init+0x13/0x70
-        do_one_initcall+0x62/0x3f0
-        kernel_init_freeable+0x3da/0x6a0
-        kernel_init+0x1b/0x200
-        ret_from_fork+0x44/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- -> #0 (iommu_probe_device_lock){+.+.}-{3:3}:
-        __lock_acquire+0x1637/0x2810
-        lock_acquire+0xc9/0x300
-        __mutex_lock+0xb4/0xe40
-        mutex_lock_nested+0x1b/0x30
-        iommu_probe_device+0x1d/0x70
-        intel_iommu_init+0xe90/0x11f0
-        pci_iommu_init+0x13/0x70
-        do_one_initcall+0x62/0x3f0
-        kernel_init_freeable+0x3da/0x6a0
-        kernel_init+0x1b/0x200
-        ret_from_fork+0x44/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- other info that might help us debug this:
-
- Chain exists of:
-   iommu_probe_device_lock --> dmar_global_lock -->
-     &device->physical_node_lock
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&device->physical_node_lock);
-                                lock(dmar_global_lock);
-                                lock(&device->physical_node_lock);
-   lock(iommu_probe_device_lock);
-
-  *** DEADLOCK ***
-
-This driver uses a global lock to protect the list of enumerated DMA
-remapping units. It is necessary due to the driver's support for dynamic
-addition and removal of remapping units at runtime.
-
-Two distinct code paths require iteration over this remapping unit list:
-
-- Device registration and probing: the driver iterates the list to
-  register each remapping unit with the upper layer IOMMU framework
-  and subsequently probe the devices managed by that unit.
-- Global configuration: Upper layer components may also iterate the list
-  to apply configuration changes.
-
-The lock acquisition order between these two code paths was reversed. This
-caused lockdep warnings, indicating a risk of deadlock. Fix this warning
-by releasing the global lock before invoking upper layer interfaces for
-device registration.
-
-Fixes: b150654f74bf ("iommu/vt-d: Fix suspicious RCU usage")
-Closes: https://lore.kernel.org/linux-iommu/SJ1PR11MB612953431F94F18C954C4A9CB9D32@SJ1PR11MB6129.namprd11.prod.outlook.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
----
- drivers/iommu/intel/iommu.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 85aa66ef4d61..ec2f385ae25b 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3049,6 +3049,7 @@ static int __init probe_acpi_namespace_devices(void)
- 			if (dev->bus != &acpi_bus_type)
- 				continue;
- 
-+			up_read(&dmar_global_lock);
- 			adev = to_acpi_device(dev);
- 			mutex_lock(&adev->physical_node_lock);
- 			list_for_each_entry(pn,
-@@ -3058,6 +3059,7 @@ static int __init probe_acpi_namespace_devices(void)
- 					break;
- 			}
- 			mutex_unlock(&adev->physical_node_lock);
-+			down_read(&dmar_global_lock);
- 
- 			if (ret)
- 				return ret;
--- 
-2.43.0
-
+greg k-h
 
