@@ -1,88 +1,89 @@
-Return-Path: <stable+bounces-124748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFF8A6615E
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 23:15:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7C4A6618C
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 23:26:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25DEF171362
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 22:15:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 454833A83CD
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 22:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926331DDC16;
-	Mon, 17 Mar 2025 22:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CD0205516;
+	Mon, 17 Mar 2025 22:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UViKsZDH"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QV5JkdHw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F1114885D
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 22:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E68204F6A
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 22:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742249743; cv=none; b=FKC4QPZuM46kZhU6YAgg7QZArIDqXQ+iZvXjyzL7V7a6hYeL4TwKmODnFgCK9VZMUd+zhTuHxFsHYzJl0N9uZFU2z+fZaK5Gv69vB4XhRiFU6qFlMIUT0nc+nDFH6/ezlySejLUQj3aS0UpHFjGsY/LZyKOmhpor28n1dl3R74Q=
+	t=1742250378; cv=none; b=MYzpfq52cd/ChnxS5kTcdP3+UwC9DrnZEbZIWPhdyn0vQ1CLrnxOfd/6WVSkNiAZp+X69LL9Ah6yhe5SVWxL4NP2AHs+syTOp22QH2nKmbLA3QrBmWOnJ8FcavU4O7YcSEUkmum7qIgVUKaLRSBAyxPSKrs029nx8VO/mSU2GTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742249743; c=relaxed/simple;
-	bh=gwbyCSSmxXbFiPAljLG3eUXdfsDnikxE9KJ8jAPeIB0=;
+	s=arc-20240116; t=1742250378; c=relaxed/simple;
+	bh=/OgC1U2VnvBlJFfUcxDqHhBqioSZzEp0JuC38ZOEWGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1oJ66eXtAoX/DEw3n+s4WIyZQNRVPWSaTma2YEz7nGa1Jdhm/YpM1sOl6nFGcv/cDnUODXNNfJyEy/j/D1a6nJFQtBLBtMzHK8loBayO8+LJH79RuJ/8Sg1by6hvv2vs8T3v5KzksTx3wauCxG2mqE4Ee7jsk/ISK0JJDKMa/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UViKsZDH; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version; b=ksd0/K8a51IWZ3ey/R33FfsvxMzp9Bos/HUgBSOpH7eENypXS+iX4mFebzjczF0oPCu357PMhf4SoVWtb4VEhWdUSd7itfI9JZ5A3ZMLekAYAC/HrPfqASo2v1FDI9DA19SuirM+wcI9hdqbZpw0H+C8sScquvitMmW8fVGnrZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QV5JkdHw; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43cf3192f3bso27995705e9.1
-        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 15:15:39 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3913fdd0120so2607012f8f.0
+        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 15:26:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1742249738; x=1742854538; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1742250373; x=1742855173; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QijzirKIfC8GrNdkTeAGChafX8fvgvLI/dha6SltH6Q=;
-        b=UViKsZDHqNIVUAK/tJ/YzUJYgWNQvm37qeWidAG16AgCNR+xg7P5WuoNd+L9anJ+w8
-         p45EuJgQDBcHM7ZrS0E3lvgrLLIzqWlhVhvp+YgnOKbCqAOF3+3fbZLJjdVfllySNhXJ
-         SfFKFu0uG+arqiPDb8jyjDkoeCE9JKXPEamzSH0Lypgde3IWSAZ5Df7EIvTBLmaZ9G6b
-         4nQ2wYsPV3GWO1iiPoOyo/OUrk1VBG9NdRFrqow/UJpE1b4vU8swDkhxJ2VWCfzLmMMH
-         wgSpKGTPWEcv1D8CjznSjRj6Pd5bgB2nKX3JkwIskEg61HWJJKWVQNK/KIDRIlFPbagl
-         SUjw==
+        bh=7X79TickNkRIrdMFG//UtYd+fzkNYnmIitIHnOlGbjQ=;
+        b=QV5JkdHw6ljGJqIR4FrY9jt2SY14dPDikbldVWYUL8sfsMD581YVhGbb8SmRmjmyif
+         4Uvelr9lkBCEovmrKfRawgAImGVYe1NSph/f81Z0cQ4iGUZjxKHtbD13JJd8wKUaRRGY
+         5sCPxBd3EmNi8WbfIQq6VlKnX1P2TbL7ubOvEUu7TMOJKEjgrT/juo0e58H10wG/gYvX
+         +RcMxshaY/aeMS1K8GD91CPw5BtZXJ7cKODvcsuEjWt1FXdFKlwLNL6DgTb+QdxoI4T9
+         iJHLkuQS7lISqbejkSSCEUcdlngcz7MJnSz/NDHXLBzXLAZrabD7lh6D1IwzpuVXtG88
+         H2ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742249738; x=1742854538;
+        d=1e100.net; s=20230601; t=1742250373; x=1742855173;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QijzirKIfC8GrNdkTeAGChafX8fvgvLI/dha6SltH6Q=;
-        b=EYlB+4eaZNLIpJA8cKkuIM4E9jrlXJg3vScZO4Dw5r8uLnFFlTDDQk4P6LWrZtI6hW
-         ofnT3mhuJJLwU7atrvni16tzw4Ybf8kDl5IDQlQDDkj+Cxw9+lKOj7T5cTxGm8Qoc/cO
-         eU7i3Kjqhcegd1EmFQeFQshSQjHDYDLN2jZmgchMtqaxdQgYM95FNUdo/2EjJUYZWQv4
-         WqkrH3dvDxPge0U7o2gJrS9BxIsO1y5vNUHvXybLPl/h1iaLfikW2A+lQA5FxB2otoSO
-         eEHzZuUPUiaIiFkwoNEkiObuvYSE6TOMniZ3HzOdckX0TUzGKFKJrRL+NOYkAafpiQ7r
-         vrpQ==
-X-Gm-Message-State: AOJu0Yyp4CvaFLyEMi1BYhg8Z32wfNeVStX/zMimEDGPRoJFn61rSeQf
-	35LSwep3kjo6mJmnj/kFZ3MUTvjZ74Wzd5MFYdmelnzbS9MuXuaVy1w8sB3ewIkO6c+ibYvYJ1p
-	axVc=
-X-Gm-Gg: ASbGncsIZ3mwoJlXC8uRPBlFWZwUF5AEskP9fX2t5TUwB4doiUCpO/Uz0wZUM+97kTL
-	kxsJjHP9rP/6ScjoWdeBJXqkeeTnan+fRNItB4qUn8vnZ4PI08jGPUfcYT4Re4vx7oQfLlgyC0l
-	PsImIUJkPNh+cXowgrYVw7OvEVOU5VLOR6OsXX9mzz5A5YJJ2Cv5FY1BxuqyWQqErLJFM1z74Au
-	IMhEMNT0H68dfWRlXUQXiyN5+NbNkUJMSCQktGxx2lxNiCbH4awxvmPf5d+HMFXjiMoTb4vmyIv
-	nAgz3/VGaweJqhDUFray/M6c5y5qJ5Tti2AFhQzYhys8Dh9b8GjAtIquc9y9T50liPDR+A==
-X-Google-Smtp-Source: AGHT+IEJT+nt74B+OH6qXE9xn01snf2Vv4ytHC82VgkCtciYQ+ggUn3fxU2X0TNbSCwaHQoyC1Z1YA==
-X-Received: by 2002:a5d:6da1:0:b0:391:4889:5045 with SMTP id ffacd0b85a97d-3971ee44081mr13059511f8f.36.1742249737708;
-        Mon, 17 Mar 2025 15:15:37 -0700 (PDT)
+        bh=7X79TickNkRIrdMFG//UtYd+fzkNYnmIitIHnOlGbjQ=;
+        b=Qoy6pRlvn47OopVGJ/zbFLTDVTK9OPSBdRuRC3pm/l7ABx+ChTSwf2CWKoZsh664DE
+         aIofhvZqxH1J4ZkIuTNE0ulOzpkDiN9SxLyXFTOjwVhIiZo8jW2qTdUk3QLC+oF9/Ci6
+         lDM/frgzbtF1OPIb0SLRXNbRLC1jNBcKXzQfOyuK9CXBZRfhN81fu+J3Ko78EilAseDi
+         M6itkVwPPxb5MXGw1TM0CWJoVmS5bQqZffmrSc7nM7eCY7oHcD/NBjrUk1j0/ijKu28f
+         l5v6AM9/EcDzcRjz4tNDyHJxCKUVtoGh/V6dw2/QnETaCGO5tQjQ/R4+eLeqhlsCPaF5
+         JhQw==
+X-Gm-Message-State: AOJu0YyxLc63gduWEcy+KkEwnG7ynj7xvic/kbeuFEm+Q+5iJhqQrVaT
+	4LxOmgBHtGsoXJiPaeCyo0D5Vpwx6bmM/dZf1UI3peRvwz1mqln+BUiT2oUnAvr/RejRdwMbyJI
+	ucfk=
+X-Gm-Gg: ASbGncv/03v4rDa3TMS1fZJ43NtkhH1vy/suwv3VqCdjYiUsYLfWT2XFSY2POr8M7h0
+	I/is0Obi7drndqNO4bkoLSH4uz0r2FHBs/W1hiV1Ehs9+W8ykgpb7tDVH410nW4A0O1Uej8DIKY
+	8RoqWlQRm59TgdUGV809sU0cdx2cU3/32xSVpDg6MQV10jFOHSdo4dUhKZXQhq0ao3M7Q5Ks2kF
+	DM6kEqEp2b8XkDqBy/BasLkFDJLQW5tZ3KV8YQQ6r0UVNA+navmJuJbGraQ5UTlFnDZfEJi5dtb
+	1+B4T9JixWSzhLBtseGt0KR5P7CB5Ng1TaGqVVMOx/h/OkdM5dBjP800a+kKqCL2rzpKlRZ5lLH
+	wlvH2
+X-Google-Smtp-Source: AGHT+IHiRQ2Vz/kuPZrBACeB3Pt1rDAccyfWJPEJk0QoJqIoaWNWSYzgTPLaewozCSZS6xCE7RAD+w==
+X-Received: by 2002:adf:cb83:0:b0:391:2d8f:dd59 with SMTP id ffacd0b85a97d-3971dae8de5mr10718045f8f.24.1742250373294;
+        Mon, 17 Mar 2025 15:26:13 -0700 (PDT)
 Received: from localhost.localdomain ([2804:7f0:bc00:1e6e:6171:3ed0:ca4f:bf31])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7371167e02esm8351664b3a.95.2025.03.17.15.15.35
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af56ea96d7bsm6426413a12.77.2025.03.17.15.26.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 15:15:37 -0700 (PDT)
+        Mon, 17 Mar 2025 15:26:12 -0700 (PDT)
 From: Henrique Carvalho <henrique.carvalho@suse.com>
 To: stable@vger.kernel.org
 Cc: Henrique Carvalho <henrique.carvalho@suse.com>,
 	Enzo Matsumiya <ematsumiya@suse.de>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12.y] smb: client: Fix match_session bug preventing session reuse
-Date: Mon, 17 Mar 2025 19:14:09 -0300
-Message-ID: <20250317221409.2644272-1-henrique.carvalho@suse.com>
+Subject: [PATCH 5.15.y] smb: client: Fix match_session bug preventing session reuse
+Date: Mon, 17 Mar 2025 19:21:08 -0300
+Message-ID: <20250317222108.2656094-1-henrique.carvalho@suse.com>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <2025031652-undiluted-junction-7d5e@gregkh>
-References: <2025031652-undiluted-junction-7d5e@gregkh>
+In-Reply-To: <2025031654-gulp-armful-f55b@gregkh>
+References: <2025031654-gulp-armful-f55b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -110,16 +111,16 @@ Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 (cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
 ---
- fs/smb/client/connect.c | 15 +++++++++++----
+ fs/cifs/connect.c | 15 +++++++++++----
  1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index fb51cdf55206..e7ca893f0612 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1873,9 +1873,8 @@ static int match_session(struct cifs_ses *ses,
- 			 struct smb3_fs_context *ctx,
- 			 bool match_super)
+diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
+index 1cbfb74c5380..96788385e1e7 100644
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -1582,9 +1582,8 @@ cifs_get_tcp_session(struct smb3_fs_context *ctx)
+ 
+ static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
  {
 -	if (ctx->sectype != Unspecified &&
 -	    ctx->sectype != ses->sectype)
@@ -127,11 +128,11 @@ index fb51cdf55206..e7ca893f0612 100644
 +	struct TCP_Server_Info *server = ses->server;
 +	enum securityEnum ctx_sec, ses_sec;
  
- 	if (!match_super && ctx->dfs_root_ses != ses->dfs_root_ses)
- 		return 0;
-@@ -1887,11 +1886,19 @@ static int match_session(struct cifs_ses *ses,
- 	if (ses->chan_max < ctx->max_channels)
- 		return 0;
+ 	/*
+ 	 * If an existing session is limited to less channels than
+@@ -1597,11 +1596,19 @@ static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+ 	}
+ 	spin_unlock(&ses->chan_lock);
  
 -	switch (ses->sectype) {
 +	ctx_sec = server->ops->select_sectype(server, ctx->sectype);
