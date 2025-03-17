@@ -1,123 +1,218 @@
-Return-Path: <stable+bounces-124708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43D5A658EF
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC20A658F1
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:50:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39BE71693BB
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:48:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA38D16E3C4
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93555209F38;
-	Mon, 17 Mar 2025 16:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB391A08BC;
+	Mon, 17 Mar 2025 16:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/10O8Tq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RncI4hnP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534A6209F30
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56151A5BBB;
+	Mon, 17 Mar 2025 16:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229608; cv=none; b=Tp9E2WECl2gjxqLWowPlXs++DQ1gHQkitb35usqja727KTazYLQasMZVxDdxKwctgGH/6emZ+F1wpU1PKfZ3MhvlZtZWjtD3UMhSpYTPGFY1vyA3z8M8GA1SV2RplmFP1FkOhdrlKJzjmeMALvrlydAcOIsgMuR87xSKwapt/CA=
+	t=1742229611; cv=none; b=gVxXgX7veGSa6wFI+zgIBvDpmH8SWg8uDtTyAQSFxvfEJmCfFzPtwqsoExY6hDRHcANJj0odlzwh1uJkoj3FocUsQwaAYBcDtDIYPlTgQk8W8gB0+K0ELyHtupwzOnT60ZFxYeHx77n0Qu0HiiWWj+PBO+ub+jR2D7wynOfxt90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229608; c=relaxed/simple;
-	bh=VbNXm7byRlQ6I+ohQzUvECMhFVOsApHVH+XmSg/FBQU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jniy/VRit4tn1WiW4UtBnIkNgSycwXdws73rnfh2TOUA1+Fi55nSvrqTtUkZZ7BMgjUurn/WCjCDscdpbqU0WpMwULmI3Eobb/B2AbXI/2p9nBsBDJ+HIWerbJfItzlW/vCJcU+VQTgS7gybuBl77ExuuS/a/Ew0Tws+8sgx7DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/10O8Tq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8324DC4CEE3;
-	Mon, 17 Mar 2025 16:40:06 +0000 (UTC)
+	s=arc-20240116; t=1742229611; c=relaxed/simple;
+	bh=n9+bqYjoP/uA9Uql6p/68DlLMLbl4tIySNIuJ1ZsIw4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MDLLFowpdIDXgLhBl37gzfCiaBvOs7PsLDtyRZtsRoRi1abhEnrl9t7j4ryi2iyt0mDgUevnjwIJeTu56WzJsYUy5NBP/qdLuQqDwUaFXWsfWVTemrjV+KmZ709lOW0rVS2MOGJjCJixE4kf82AgFa/RxlcMZ7XIBlT3CQagPCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RncI4hnP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E1DC4CEE3;
+	Mon, 17 Mar 2025 16:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229608;
-	bh=VbNXm7byRlQ6I+ohQzUvECMhFVOsApHVH+XmSg/FBQU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B/10O8TqqEs8JR57lCS1r7c4P7vydRadnUn537s4n5lbVbN+mnbvQMhtQG+Mub9nF
-	 /n79syGRLoy1n9iV5bI5lEjbOUi5EOCI1bct6LhL8cgGDLM4nN8PYSAXl6lSWtqgFv
-	 hemDRaXAPBr4gxi2Ls0ixuQ7ZCbcVz6Zqs/wigIYBbubfA3wWVThcSGgaS1Y8mdBfc
-	 67IX4OLe5UtEApQTIuSR7q6VKAe4It9aM/Rq6A6dWWaECQ+8PMJX/0NSsHU+782NCj
-	 F4XVYSU1Fdgpjoc9/khFjB1RnQSc8ZYL552VNTlPt2780RmwvI2U8hlXcx1dY8Cmkp
-	 O53NvDIH1gGGA==
+	s=k20201202; t=1742229611;
+	bh=n9+bqYjoP/uA9Uql6p/68DlLMLbl4tIySNIuJ1ZsIw4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RncI4hnPOfzAPzIOyjQM3TneaxbfHGLMYyo+zXNVs2PM2lt3quBvlEcmDj95xeqE3
+	 i/ahBjoj+NnwfSZYjH232ChQf+UHlmeFNXC/3mwT2K0WQraOQ4l2Ilh4LXPdgm8Wrc
+	 x3Zcs4ege4t8MIBL2t0sa9UIURQF/A1MkBVCshlBtLIlV6OO1JVnvqfs1N5w/C/QNG
+	 Tdvl6+4EYxmSbPjee4OwYsWJHw3XwxKtOchtmDkLk3A3CllpuXUE/sK4iboVT4p1c6
+	 6YRiSo/7YTzQZrSTcZt3eIaemApOdimpwkRzzinhGCN2xdseMcFhyUfvzCmXm2D+OH
+	 RgeGD+GaoNgWA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Youngmin Nam <youngmin.nam@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2 stable 6.1 1/2] tcp: fix races in tcp_abort()
-Date: Mon, 17 Mar 2025 12:40:05 -0400
-Message-Id: <20250317093954-8565c2c1f24aa85d@stable.kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Waiman Long <longman@redhat.com>,
+	yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.10 1/2] locking/semaphore: Use wake_q to wake up processes outside lock critical section
+Date: Mon, 17 Mar 2025 12:40:07 -0400
+Message-Id: <20250317164008.1893869-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250317050743.2350136-1-youngmin.nam@samsung.com>
-References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.10.235
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Waiman Long <longman@redhat.com>
 
-Hi,
+[ Upstream commit 85b2b9c16d053364e2004883140538e73b333cdb ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+A circular lock dependency splat has been seen involving down_trylock():
 
-The upstream commit SHA1 provided is correct: 5ce4645c23cf5f048eb8e9ce49e514bababdee85
+  ======================================================
+  WARNING: possible circular locking dependency detected
+  6.12.0-41.el10.s390x+debug
+  ------------------------------------------------------
+  dd/32479 is trying to acquire lock:
+  0015a20accd0d4f8 ((console_sem).lock){-.-.}-{2:2}, at: down_trylock+0x26/0x90
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Youngmin Nam<youngmin.nam@samsung.com>
-Commit author: Eric Dumazet<edumazet@google.com>
+  but task is already holding lock:
+  000000017e461698 (&zone->lock){-.-.}-{2:2}, at: rmqueue_bulk+0xac/0x8f0
 
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 943f2b2b065a)
+  the existing dependency chain (in reverse order) is:
+  -> #4 (&zone->lock){-.-.}-{2:2}:
+  -> #3 (hrtimer_bases.lock){-.-.}-{2:2}:
+  -> #2 (&rq->__lock){-.-.}-{2:2}:
+  -> #1 (&p->pi_lock){-.-.}-{2:2}:
+  -> #0 ((console_sem).lock){-.-.}-{2:2}:
 
-Note: The patch differs from the upstream commit:
+The console_sem -> pi_lock dependency is due to calling try_to_wake_up()
+while holding the console_sem raw_spinlock. This dependency can be broken
+by using wake_q to do the wakeup instead of calling try_to_wake_up()
+under the console_sem lock. This will also make the semaphore's
+raw_spinlock become a terminal lock without taking any further locks
+underneath it.
+
+The hrtimer_bases.lock is a raw_spinlock while zone->lock is a
+spinlock. The hrtimer_bases.lock -> zone->lock dependency happens via
+the debug_objects_fill_pool() helper function in the debugobjects code.
+
+  -> #4 (&zone->lock){-.-.}-{2:2}:
+         __lock_acquire+0xe86/0x1cc0
+         lock_acquire.part.0+0x258/0x630
+         lock_acquire+0xb8/0xe0
+         _raw_spin_lock_irqsave+0xb4/0x120
+         rmqueue_bulk+0xac/0x8f0
+         __rmqueue_pcplist+0x580/0x830
+         rmqueue_pcplist+0xfc/0x470
+         rmqueue.isra.0+0xdec/0x11b0
+         get_page_from_freelist+0x2ee/0xeb0
+         __alloc_pages_noprof+0x2c2/0x520
+         alloc_pages_mpol_noprof+0x1fc/0x4d0
+         alloc_pages_noprof+0x8c/0xe0
+         allocate_slab+0x320/0x460
+         ___slab_alloc+0xa58/0x12b0
+         __slab_alloc.isra.0+0x42/0x60
+         kmem_cache_alloc_noprof+0x304/0x350
+         fill_pool+0xf6/0x450
+         debug_object_activate+0xfe/0x360
+         enqueue_hrtimer+0x34/0x190
+         __run_hrtimer+0x3c8/0x4c0
+         __hrtimer_run_queues+0x1b2/0x260
+         hrtimer_interrupt+0x316/0x760
+         do_IRQ+0x9a/0xe0
+         do_irq_async+0xf6/0x160
+
+Normally a raw_spinlock to spinlock dependency is not legitimate
+and will be warned if CONFIG_PROVE_RAW_LOCK_NESTING is enabled,
+but debug_objects_fill_pool() is an exception as it explicitly
+allows this dependency for non-PREEMPT_RT kernel without causing
+PROVE_RAW_LOCK_NESTING lockdep splat. As a result, this dependency is
+legitimate and not a bug.
+
+Anyway, semaphore is the only locking primitive left that is still
+using try_to_wake_up() to do wakeup inside critical section, all the
+other locking primitives had been migrated to use wake_q to do wakeup
+outside of the critical section. It is also possible that there are
+other circular locking dependencies involving printk/console_sem or
+other existing/new semaphores lurking somewhere which may show up in
+the future. Let just do the migration now to wake_q to avoid headache
+like this.
+
+Reported-by: yzbot+ed801a886dfdbfe7136d@syzkaller.appspotmail.com
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250307232717.1759087-3-boqun.feng@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  5ce4645c23cf5 ! 1:  0ff51ebdcc2ec tcp: fix races in tcp_abort()
-    @@ Commit message
-         tcp_abort() has the same issue than the one fixed in the prior patch
-         in tcp_write_err().
-     
-    +    commit 5ce4645c23cf5f048eb8e9ce49e514bababdee85 upstream.
-    +
-    +    To apply commit bac76cf89816bff06c4ec2f3df97dc34e150a1c4,
-    +    this patch must be applied first.
-    +
-         In order to get consistent results from tcp_poll(), we must call
-         sk_error_report() after tcp_done().
-     
-    @@ Commit message
-         Acked-by: Neal Cardwell <ncardwell@google.com>
-         Link: https://lore.kernel.org/r/20240528125253.1966136-4-edumazet@google.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    Cc: <stable@vger.kernel.org>
-    +    [youngmin: Resolved minor conflict in net/ipv4/tcp.c]
-    +    Signed-off-by: Youngmin Nam <youngmin.nam@samsung.com>
-     
-      ## net/ipv4/tcp.c ##
-     @@ net/ipv4/tcp.c: int tcp_abort(struct sock *sk, int err)
-    @@ net/ipv4/tcp.c: int tcp_abort(struct sock *sk, int err)
-     -		smp_wmb();
-     -		sk_error_report(sk);
-      		if (tcp_need_reset(sk->sk_state))
-    - 			tcp_send_active_reset(sk, GFP_ATOMIC,
-    - 					      SK_RST_REASON_NOT_SPECIFIED);
-    + 			tcp_send_active_reset(sk, GFP_ATOMIC);
-     -		tcp_done(sk);
-     +		tcp_done_with_error(sk, err);
-      	}
----
+ kernel/locking/semaphore.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-Results of testing on various branches:
+diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
+index 9aa855a96c4ae..aadde65402913 100644
+--- a/kernel/locking/semaphore.c
++++ b/kernel/locking/semaphore.c
+@@ -29,6 +29,7 @@
+ #include <linux/export.h>
+ #include <linux/sched.h>
+ #include <linux/sched/debug.h>
++#include <linux/sched/wake_q.h>
+ #include <linux/semaphore.h>
+ #include <linux/spinlock.h>
+ #include <linux/ftrace.h>
+@@ -37,7 +38,7 @@ static noinline void __down(struct semaphore *sem);
+ static noinline int __down_interruptible(struct semaphore *sem);
+ static noinline int __down_killable(struct semaphore *sem);
+ static noinline int __down_timeout(struct semaphore *sem, long timeout);
+-static noinline void __up(struct semaphore *sem);
++static noinline void __up(struct semaphore *sem, struct wake_q_head *wake_q);
+ 
+ /**
+  * down - acquire the semaphore
+@@ -178,13 +179,16 @@ EXPORT_SYMBOL(down_timeout);
+ void up(struct semaphore *sem)
+ {
+ 	unsigned long flags;
++	DEFINE_WAKE_Q(wake_q);
+ 
+ 	raw_spin_lock_irqsave(&sem->lock, flags);
+ 	if (likely(list_empty(&sem->wait_list)))
+ 		sem->count++;
+ 	else
+-		__up(sem);
++		__up(sem, &wake_q);
+ 	raw_spin_unlock_irqrestore(&sem->lock, flags);
++	if (!wake_q_empty(&wake_q))
++		wake_up_q(&wake_q);
+ }
+ EXPORT_SYMBOL(up);
+ 
+@@ -252,11 +256,12 @@ static noinline int __sched __down_timeout(struct semaphore *sem, long timeout)
+ 	return __down_common(sem, TASK_UNINTERRUPTIBLE, timeout);
+ }
+ 
+-static noinline void __sched __up(struct semaphore *sem)
++static noinline void __sched __up(struct semaphore *sem,
++				  struct wake_q_head *wake_q)
+ {
+ 	struct semaphore_waiter *waiter = list_first_entry(&sem->wait_list,
+ 						struct semaphore_waiter, list);
+ 	list_del(&waiter->list);
+ 	waiter->up = true;
+-	wake_up_process(waiter->task);
++	wake_q_add(wake_q, waiter->task);
+ }
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
 
