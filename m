@@ -1,156 +1,103 @@
-Return-Path: <stable+bounces-124733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C46A65C3A
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 19:18:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 815FDA65C69
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 19:22:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 211E67A4CB5
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 18:16:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A89E42082A
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 18:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD58A1A840A;
-	Mon, 17 Mar 2025 18:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D441D8DFB;
+	Mon, 17 Mar 2025 18:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aywwZIbH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OY7Nng9M"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C15B14C5AA
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 18:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC8B1B4F1F
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 18:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742235475; cv=none; b=OhY5VQMi0pp3bLcnshkVDmsuwe/22cw/H79CdKsbUH9XWMjkAtprACZaxxE0rSmCWjwDLRA5eol+x+D/awZXLBogpvIAMJWwIpTTtVx/FRT+SatvBob55HO08koGLj31CN0liwbBBYIwd4R2a+9GHUQ3PV2vvd4uCG6SRd8e/ag=
+	t=1742235694; cv=none; b=NmwNJiQ2oK5IAyHXi1c2tgVJuuvpE0Kd1ud4dYIDOEkMYZZGpyNjIyy0Ff61m1l+moEe3Gh+OsiKH0rZ3u04Rke6yxJ/sX9BLQu94TcolznabY2bXmQPgqkBqRW7lPPKHPMS1SAiyLWXdQnjMWNuq2KE7ECpuVJLlrg+x4e25bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742235475; c=relaxed/simple;
-	bh=Od4Ygc8gvgOgVyiZmiUSYJCWxXNdiXruHcxMWGREO/Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPiHkld5Ds1834COhrliNQLnvbBS7gRQyOYoBhJMgByENb8U0+dZN9lESvzY/MXd7YOcji1Wi4ErlUsO/5pI5+JkX5b2QqtBzyMnBnJm97xujsvORbozrsv/lWvs7ahN3SIlPRKLoHta8I3dDIVskNxbaqvyvwgMvJL9xCZuLxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aywwZIbH; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3913fdd003bso2364808f8f.1
-        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 11:17:52 -0700 (PDT)
+	s=arc-20240116; t=1742235694; c=relaxed/simple;
+	bh=dKSg30IkiLDx7ApCCqA3X8bJMJfD3Y8O4OzusAwIbSM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cv1Z7SFuJDxTpxac5f0/QJeV728RpOtXowDa9bDeINKZy2iyp11/2zpWs95DAbXEwhT95qO0gvMNKnDiHGXG/k2HzPk9Am/Iawe6CRqFU0jCvB29E8k9NseXUBbYsCgIkEr87iZAtaIWKd04t9vavRlxJjIECQuBFiIXNM5JZPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OY7Nng9M; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-225887c7265so8542575ad.0
+        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 11:21:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1742235471; x=1742840271; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1742235692; x=1742840492; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yEUZ6SgN7EUPHL01UAhQ5NF1qAY7R8r2dg2/lYHhiF0=;
-        b=aywwZIbHhHRcfJSO8JDeeRg49OAbJhkcUueEkFYlySNFJU4T4DadGkZGYJhaAKi4vY
-         K3+lZlQadID1inSCvA+d2igJemsx6jomLorghc7JhpkRcZF54z9GJv1PeWlVztxR5IFa
-         RyMmLQZxuMXOV3kupcfcfYYbV6Y0oS+x8JW5Q/7CHCMIk8nVp4XX8JhdS+M9bLic68N4
-         XeiHme78pi5cDKYyzPfaP1AQFn/l7P1qBoUpVrvuMsB1zAHKsHhatMAlKao8/uDfqzHi
-         7WmR/Aw5gPH34p75kuIpUrI0s2n+D5HNqO6jwZVBJpDqF8EwCfSofVW6E1ldAin1r3BH
-         mJWQ==
+        bh=sCf6XJNlnq+SDr05a/r+KtNykp6WZKxbM10o5qQm+BY=;
+        b=OY7Nng9Mx5w1u/UY5bWydHDBamfxErhNXXVKeuxEZGKkau0P5LrIkqOcYUJ/7ULUgD
+         XEf2M6Ku/2MWIfbf4FQqjuqwa2nAlwD8pAxjf2Dph/NgJlSec+zB7FCrl+KDmNdDlAwy
+         mqDjM6aR6pEUG3JtqiOBtukLbV8O/3DfbV4umtyZCBFNjg9YhP53dLZSMKwsphAWEBgV
+         vzCmqlKz56b2cAk25e/27ozpon1lEajoKPJw0R/WFjBhbXBGnGEFNAFL/TDMyWYrbfVN
+         6qAZOr7zK2Qykb+WP4q46uoYTe8Gla3AdRuvhlWQeUq5+RgalIfp8bEiT4sSlPqNOjPP
+         dHpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742235471; x=1742840271;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1742235692; x=1742840492;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yEUZ6SgN7EUPHL01UAhQ5NF1qAY7R8r2dg2/lYHhiF0=;
-        b=Z+ENEAymeaVYJSE19ZiWTcxLnwHepT/yb1ZUemhMhQx4ijhIU2erZSf/LSTEwn2S6A
-         Axu9paAXFmB9ovrON+qs0rJzAeT33Y42Ky6zJzX0DMLyXsLWgXwftEJJUwoKp/34/n/F
-         Y/l10uLjZDt1kbVnPOjk7alFD1xAcS/zo8YMNvPrGHFbuM8HUIxVJ/Hkqy3+uxaAkuq2
-         EvhnHJfOEVlkBtuz32RC4Wg8LqlfrMw+2ESFzFxSF5zgi8haB30kAiqyrQxuFWpng+y+
-         QMMcM9pWvcSzwCQf44lSY8R3pJpjUj52w2QHnjVhFnQWcics6n9gqgdo2IeGcyDDl9Xi
-         5qaQ==
-X-Gm-Message-State: AOJu0YwFjV9+KTpD+A4RlbE0LpH779ODZUeniABAbt0p4ozk9S0SvDza
-	NeyooXiPDVam1MUmc5e4jmqWrBLZiek7vXs91EtgWROHtaBhMCnDyWJ/bSQPycGk8IrQKIvFYmO
-	KCEs=
-X-Gm-Gg: ASbGnctbZORsXJPfuNoqoBjqB7ZNyFh2EuCcAZCD3PEoCWnFL+Hyc1FfH3gXNd3X26v
-	HGUcPv/Xho5kcvvoJpEDkrcDsSHel5LvMvXbLJ9jEERm7Vfmxlv4qm0UhGDDnhGjgIpkwpcrLRb
-	SarAQQQjEZENk2TRVG+7UKNmqs7BrYY7KAunw4Wt6v8r2XlKuMaOqHEwafdtLpi+fMUqe3MLpS1
-	3V7/D7ETf04dmn6W4qns+jmuPtNEI4htTWUzxp68En+UnPFzhE7rOpFH1eGdwxTTPS2kz7rHgag
-	NIo58KHALhUjtmFXtA+nYe9ifzEalQ/NuK+VlY0Q0vfiK5x2bFGozC+wdCh4LZpa3cu2yQ==
-X-Google-Smtp-Source: AGHT+IFXFIN9er7PxjTssS/3m1M1TXYav7ZGncsAn3519EBATQMUbrDgEZSXvgMvsrHw+3tfCBCbbw==
-X-Received: by 2002:a5d:5f94:0:b0:390:ff84:532b with SMTP id ffacd0b85a97d-3996bb44b21mr378534f8f.7.1742235471274;
-        Mon, 17 Mar 2025 11:17:51 -0700 (PDT)
-Received: from localhost.localdomain ([2804:7f0:bc00:1e6e:6171:3ed0:ca4f:bf31])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711559289sm8162301b3a.68.2025.03.17.11.17.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 11:17:50 -0700 (PDT)
-From: Henrique Carvalho <henrique.carvalho@suse.com>
-To: stable@vger.kernel.org
-Cc: Henrique Carvalho <henrique.carvalho@suse.com>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13.y] smb: client: Fix match_session bug preventing session reuse
-Date: Mon, 17 Mar 2025 15:16:22 -0300
-Message-ID: <20250317181622.2243629-1-henrique.carvalho@suse.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <2025031652-spider-flying-c68b@gregkh>
-References: <2025031652-spider-flying-c68b@gregkh>
+        bh=sCf6XJNlnq+SDr05a/r+KtNykp6WZKxbM10o5qQm+BY=;
+        b=bMCU3Xe1L5NXMSSrQNBpzLwtrpUtLjhuxG6GSgb/7LiKWoQ9CKM3iLX/Iovdl3SGHF
+         NHQ2VuLXft00zrpQGkCdJreU9fK7FGVvYoPX4wfkdMvhg7TSnFXcgF1mSrPS+B4Qo5xD
+         RHLslKsyUghQRDE4Nk+9uPv+eOWPb3PZzgSxmx0VK0Z33uSa+iVFxL0K1690Hg6cmVW4
+         lSfb6ikZvPsGiDQD5MY3R3W/MeZnOpzgY0ix8Ag4XXL8/5PKZ6gu3qH7o8mYXr4BHl5u
+         U1qpvEmGy8+E7V3y2JT5mH6O1J/ZKoman3KiDBSw6Aq8l2mywVk3Jc2C3cFpefO9ey44
+         8yYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXu34+t/bWjklZxgBPJm4bBB8YrHW3TWaT3XVCyWliucHWoEFUDUtv3QWVP5is6hml+kSkUADY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhcS9TArxGMg1s4gif7CQa/ozeO3hMRzJWwpiLX5Gty5GSIGpM
+	gpmgovr8sBg8YW9y5cofuh3f76s1QtePsMLhghxpOpQVhVKZpb+JQGElNO55FX2UyR7mlosGUOz
+	CKD9A1I809r6wBGWAN7PecBQmXHc=
+X-Gm-Gg: ASbGncsDNQacPKDNNYdyb3eHXYDMgtJoN1rRRm0rRRtY95wQcZ8iy5/cwhNw8r01VIL
+	A7eeNmukdv3I/ZEA3aXZASPshtVLwYsaPvVbIrykn+tmTpLc87vpzH3iBDKtELTVEQtIx7rxOGX
+	p/fQm2s1TFvbcH5qqsrXhmEXd0HCGX4LUI1FlR
+X-Google-Smtp-Source: AGHT+IEgMP3dp0Msa7Kwow/9osyhuB17MrvZg0OdBbJEunhPD7BMP7fjnZKVXd2CxHHl5tNn/AoS3w0F3QY14DKQyac=
+X-Received: by 2002:a17:903:2f86:b0:223:28a8:610b with SMTP id
+ d9443c01a7336-225e0b19542mr57519125ad.14.1742235691828; Mon, 17 Mar 2025
+ 11:21:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2025031635-resent-sniff-676f@gregkh> <20250316160935.2407908-1-ojeda@kernel.org>
+ <CANiq72mEexdcTSCJuc5SMwMQ3V+hLpV623WEqLNNB5jVRxH+Nw@mail.gmail.com> <2025031624-nuttiness-diabetic-eaad@gregkh>
+In-Reply-To: <2025031624-nuttiness-diabetic-eaad@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 17 Mar 2025 19:21:18 +0100
+X-Gm-Features: AQ5f1JpzO-gmhWw563f4QKc_NB65Oy-EAW_R-GdCEbHqk3Li4LM0fanJ9cURRzo
+Message-ID: <CANiq72m9EcxPcaJ0M9Wb9HVjLEi+g2r59WR8=H7F+ikgQeYGHA@mail.gmail.com>
+Subject: Re: [PATCH 6.6.y] rust: init: fix `Zeroable` implementation for
+ `Option<NonNull<T>>` and `Option<Box<T>>`
+To: Greg KH <greg@kroah.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, stable@vger.kernel.org, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix a bug in match_session() that can causes the session to not be
-reused in some cases.
+On Sun, Mar 16, 2025 at 5:33=E2=80=AFPM Greg KH <greg@kroah.com> wrote:
+>
+> In the future, sure, that would help.  Don't worry about it this time.
 
-Reproduction steps:
+Sounds good, thanks!
 
-mount.cifs //server/share /mnt/a -o credentials=creds
-mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
+In stable-rc I see the original title/message used, is that expected?
 
-mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-mount.cifs //server/share /mnt/a -o credentials=creds
-cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-(cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
----
- fs/smb/client/connect.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index eaa6be4456d0..c9273a90d58e 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1873,9 +1873,8 @@ static int match_session(struct cifs_ses *ses,
- 			 struct smb3_fs_context *ctx,
- 			 bool match_super)
- {
--	if (ctx->sectype != Unspecified &&
--	    ctx->sectype != ses->sectype)
--		return 0;
-+	struct TCP_Server_Info *server = ses->server;
-+	enum securityEnum ctx_sec, ses_sec;
- 
- 	if (!match_super && ctx->dfs_root_ses != ses->dfs_root_ses)
- 		return 0;
-@@ -1887,11 +1886,19 @@ static int match_session(struct cifs_ses *ses,
- 	if (ses->chan_max < ctx->max_channels)
- 		return 0;
- 
--	switch (ses->sectype) {
-+	ctx_sec = server->ops->select_sectype(server, ctx->sectype);
-+	ses_sec = server->ops->select_sectype(server, ses->sectype);
-+
-+	if (ctx_sec != ses_sec)
-+		return 0;
-+
-+	switch (ctx_sec) {
- 	case Kerberos:
- 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
- 			return 0;
- 		break;
-+	case NTLMv2:
-+	case RawNTLMSSP:
- 	default:
- 		/* NULL username means anonymous session */
- 		if (ses->user_name == NULL) {
--- 
-2.47.0
-
+Cheers,
+Miguel
 
