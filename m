@@ -1,180 +1,101 @@
-Return-Path: <stable+bounces-124617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D52A645D3
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 09:40:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5580AA64663
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 09:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3009118855EA
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 08:40:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F0C2188D3F1
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 08:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04406220686;
-	Mon, 17 Mar 2025 08:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A01221726;
+	Mon, 17 Mar 2025 08:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="h4kBpObl";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="BA+tbSJs";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="h4kBpObl";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="BA+tbSJs"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QfbizwVI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EA621E098
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 08:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8B4221560
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 08:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742200781; cv=none; b=pfUJsqxBx1D6e+sE/KLPdrvg59lnFtsY0nWSKmm+x7ZYoYhz9mJ/NZap6P0/l8oVAnaE6C8k6zojLSRQ45rFft3kcL7IfTCfbDuBLt68ZJFxl4vCv29gWmyEaer7joh3k1NGylGKFY7z+SHurof8tLXuJUojLW+ojtDBOPf9kFg=
+	t=1742201831; cv=none; b=uhjD+iI88UVtnrM2wyeshuuxQhHcHxX+gE9aD2qXXhRuAf5kvgHoZ9wL6aQ9hvi15+3jtMtrg+KrDG0f+8/4EelSdOsUBql3F3NtxhGJeAheWO1gdfEYcwOXPwZ7pgYa8uaFyHsMZj9Htj8RA88BMV+AnxtRvp5OD/tetxjk77w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742200781; c=relaxed/simple;
-	bh=vx3UyLispRpVfWLiP9dgE6o+CmBS4/yGuqLzf961zs8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SIO0a8TmbDcU27xjeNam6hx/pko09RCpFiWG9yJLjRfMo25r9I1PZNE6Bp2ZJBYQkIMwWCiuYZwWZpMZkscL80AoEg1NouXSkW28Ujg2o+9LSVS/sdjGAzyejBidBGndgIO6e0TmoZyrA9jt1BLnjfrBZEtluRklfdiJo7xMObs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=h4kBpObl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=BA+tbSJs; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=h4kBpObl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=BA+tbSJs; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 29DD320094;
-	Mon, 17 Mar 2025 08:39:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1742200778; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l5TNV3pIkdVvErbUwHZyV4ACZXbtBjxLi3eTQ10vzZg=;
-	b=h4kBpObll4AX8tlBvoJzweznEJ1LyhcksZcwho42f5M7hUIVq2eCl75WmrGzB00Lt+emK+
-	EFqYmPykwYEwFYxEIMif2xuN+B/dQtoilpNtr5KAAQbaP8H1idbDhMot4Otht0v2jMB8nz
-	FPOVWs/HWwy8BCBf+4qri6NVJB8K75k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1742200778;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l5TNV3pIkdVvErbUwHZyV4ACZXbtBjxLi3eTQ10vzZg=;
-	b=BA+tbSJstcXvxnwgUT+rGjUROq6qOlUiBefh4rXI+3wsP8DQqMVrd6nKAWdTD0seI8aG/j
-	N9eLHp4qcqmBUGCA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=h4kBpObl;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=BA+tbSJs
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1742200778; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l5TNV3pIkdVvErbUwHZyV4ACZXbtBjxLi3eTQ10vzZg=;
-	b=h4kBpObll4AX8tlBvoJzweznEJ1LyhcksZcwho42f5M7hUIVq2eCl75WmrGzB00Lt+emK+
-	EFqYmPykwYEwFYxEIMif2xuN+B/dQtoilpNtr5KAAQbaP8H1idbDhMot4Otht0v2jMB8nz
-	FPOVWs/HWwy8BCBf+4qri6NVJB8K75k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1742200778;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l5TNV3pIkdVvErbUwHZyV4ACZXbtBjxLi3eTQ10vzZg=;
-	b=BA+tbSJstcXvxnwgUT+rGjUROq6qOlUiBefh4rXI+3wsP8DQqMVrd6nKAWdTD0seI8aG/j
-	N9eLHp4qcqmBUGCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 062E6139D2;
-	Mon, 17 Mar 2025 08:39:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Ow8QAMrf12cWfwAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 17 Mar 2025 08:39:38 +0000
-Date: Mon, 17 Mar 2025 09:39:37 +0100
-Message-ID: <875xk8f3ue.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Dhruv Deshpande <dhrv.d@proton.me>
-Cc: tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx The mute LED on this HP laptop uses ALC236 and requires a quirk to function. This patch enables the existing quirk for the device.
-In-Reply-To: <20250317083319.42195-1-dhrv.d@proton.me>
-References: <20250317083319.42195-1-dhrv.d@proton.me>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1742201831; c=relaxed/simple;
+	bh=M5U8yZkupMeJdPdceKmOgq2WYT0m/JGyRhiZdENwz7w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RtN82duWtiNPlWouDwbvYn7h8bcvKG5cV3icnm6EOhHAgLWLGeSyirDjfSSgOFPZXEOVcOudwpf/jS2j3/cWfFT+FGPlfoCOZzIbr05uS/iYsuAIFyACKbGgMr4xYTZAEgeaFfynPMP6eAuMITZAnltmQQO17HvQINYlb0gO8lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QfbizwVI; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742201818; x=1742461018;
+	bh=M5U8yZkupMeJdPdceKmOgq2WYT0m/JGyRhiZdENwz7w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=QfbizwVIcKZ/djyY5dCadCCdZREpY9rPouBlQPWaj6L77qp02dU9KUf/yrUyR39YU
+	 rGSJACajpYvF8zRW75VFeZFSguyALfwVpSPaLr54ZT8KRbRBKswY9OxEoIeHFNdJIq
+	 1PDAOjtOjvB6vhF10XBERHBwUPj3FPhCEL+4DzCN+6KlGWwVWfM0fZpHEb3k4Gsc1N
+	 NiLbIeehl/AbyptxxshPlIxhmpGEbTps3jqPAZuVVb+omc4/nsmJKSFss2uD+zHMfd
+	 o1/lXfNFi2q+VfjU76UvAiOmGKoEJp/riFnDOspxBYancvToeUlupaisp+xdDOyc4I
+	 trq0cepAzfSoA==
+Date: Mon, 17 Mar 2025 08:56:53 +0000
+To: tiwai@suse.com
+From: Dhruv Deshpande <dhrv.d@proton.me>
+Cc: alsa-devel@alsa-project.org, Dhruv Deshpande <dhrv.d@proton.me>, stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx
+Message-ID: <20250317085621.45056-1-dhrv.d@proton.me>
+In-Reply-To: <875xk8f3ue.wl-tiwai@suse.de>
+References: <20250317083319.42195-1-dhrv.d@proton.me> <875xk8f3ue.wl-tiwai@suse.de>
+Feedback-ID: 76774272:user:proton
+X-Pm-Message-ID: 1612640222e7ed998a44cd39718ca1c7f14ef6b7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 29DD320094
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.51
-X-Spam-Flag: NO
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 17 Mar 2025 09:33:53 +0100,
-Dhruv Deshpande wrote:
-> 
-> Signed-off-by: Dhruv Deshpande <dhrv.d@proton.me>
+The mute LED on this HP laptop uses ALC236 and requires a quirk to function=
+.
+This patch enables the existing quirk for the device.
 
-Please keep the subject line concise, and put the more texts in the
-patch description instead.
+Tested on my laptop and the LED behaviour works as intended.
 
-Also, we already changed the ML for the kernel patches to
-linux-sound@vger.kernel.org.  Use that address instead.
+Cc: stable@vger.kernel.org
+Signed-off-by: Dhruv Deshpande <dhrv.d@proton.me>
+---
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Last but not least, if you want to make this as a stable patch, put
-the Cc line in the patch itself (just before your Signed-off-by
-line), and you don't need the patch to send to stable ML.
-
-Could you resubmit with those corrections?
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index a84857a3c2bf..c0b97c29bf89 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10519,6 +10519,7 @@ static const struct hda_quirk alc269_fixup_tbl[] =
+=3D {
+ =09SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP=
+_HP_SPECTRE_X360_EB1),
+ =09SND_PCI_QUIRK(0x103c, 0x8812, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP=
+_HP_SPECTRE_X360_EB1),
+ =09SND_PCI_QUIRK(0x103c, 0x881d, "HP 250 G8 Notebook PC", ALC236_FIXUP_HP_=
+MUTE_LED_COEFBIT2),
++=09SND_PCI_QUIRK(0x103c, 0x881e, "HP Laptop 15s-du3xxx", ALC236_FIXUP_HP_M=
+UTE_LED_COEFBIT2),
+ =09SND_PCI_QUIRK(0x103c, 0x8846, "HP EliteBook 850 G8 Notebook PC", ALC285=
+_FIXUP_HP_GPIO_LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8847, "HP EliteBook x360 830 G8 Notebook PC", A=
+LC285_FIXUP_HP_GPIO_LED),
+ =09SND_PCI_QUIRK(0x103c, 0x884b, "HP EliteBook 840 Aero G8 Notebook PC", A=
+LC285_FIXUP_HP_GPIO_LED),
+--=20
+2.48.1
 
 
-thanks,
-
-Takashi
-
-> ---
->  sound/pci/hda/patch_realtek.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-> index a84857a3c2bf..c0b97c29bf89 100644
-> --- a/sound/pci/hda/patch_realtek.c
-> +++ b/sound/pci/hda/patch_realtek.c
-> @@ -10519,6 +10519,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
->  	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
->  	SND_PCI_QUIRK(0x103c, 0x8812, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
->  	SND_PCI_QUIRK(0x103c, 0x881d, "HP 250 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-> +	SND_PCI_QUIRK(0x103c, 0x881e, "HP Laptop 15s-du3xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
->  	SND_PCI_QUIRK(0x103c, 0x8846, "HP EliteBook 850 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
->  	SND_PCI_QUIRK(0x103c, 0x8847, "HP EliteBook x360 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
->  	SND_PCI_QUIRK(0x103c, 0x884b, "HP EliteBook 840 Aero G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
-> -- 
-> 2.48.1
-> 
-> 
 
