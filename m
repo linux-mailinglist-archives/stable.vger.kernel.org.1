@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242FFA64EAF
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 13:24:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA879A64EB0
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 13:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BBB016FF5B
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 12:24:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58E573B3E37
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 12:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAE82397BE;
-	Mon, 17 Mar 2025 12:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C60523957E;
+	Mon, 17 Mar 2025 12:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbJcI8/x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/3uQ25y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1F8238D5B
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 12:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D47F189905
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 12:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742214253; cv=none; b=gzlupQd4fhh1AexmhqkK3kxyOTPllM2fMxKESSxTQZ5X9n6+Z9GgofpumvC/BhSRTy+P96X3pyPCeDs5f8nruju0DDoXNfk8+nfGrXgC1XE78Pip5DDNvhHpkfUEdYjjr3t00boiheRojHmvRp+ez8KC4wuhdAqXmnbzWzAXz5g=
+	t=1742214255; cv=none; b=moL62V9qJmRqzxF73podfGKmpOpuvfGkZZW+pC0LYv+Ays3Qm4HZ/jQGFw/JHchs9JLzw63Sleah/B27iherK2BQ1Js1/Opl0/Df+mD1MMIanHRmXqI+z2xakLoMMvNM2f6da7Tw+Zjq44nehc2L4hf6S0GRCgOquq7rASjnuZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742214253; c=relaxed/simple;
-	bh=JkKYVgMHF0tJBrG7Xca+S3iFD9Y/WECXG6HoMRgz5HM=;
+	s=arc-20240116; t=1742214255; c=relaxed/simple;
+	bh=qvqEvQKHWDBwZOjm/iBzF3Itw5unWFc2zo+2bnLG2VI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bb7uaVmlhlvc57I8Dv2EEWifgQuRjpz31ExhW5y97xWJdagyFPHKGMEpHyOEbm4/vsWqmaOfq3dE+T5nD7cQtfbmP8pkD/z7fO4jIuSpsEa9ymvssFmRQY30FMG9ovycKJ+smeqXyDQVTVr9tbGsGMlzHxRzMXhcdRYL++nfy1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbJcI8/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6803BC4CEF0;
-	Mon, 17 Mar 2025 12:24:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YOJKkWgbAwqL+09MVagg2G0SBSjuSF3eHHZC/Chl330m48UzFbH4uX76vWQNLLx+jXE3JSYzv5PGGHrkSIjJSMBxvNuiZe9MWurHNqpogryd5xMLB3elx4yGPnVA5BK/D/HJoQrJxsEp+Ls8JkSIfzvxri5svg5o3t16Q+n5NN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/3uQ25y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF1CC4CEE3;
+	Mon, 17 Mar 2025 12:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742214252;
-	bh=JkKYVgMHF0tJBrG7Xca+S3iFD9Y/WECXG6HoMRgz5HM=;
+	s=k20201202; t=1742214255;
+	bh=qvqEvQKHWDBwZOjm/iBzF3Itw5unWFc2zo+2bnLG2VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UbJcI8/xxhC4X4DGAbqPna5fwmsEZ+0XMjkeokq+y8eMSb0gv0bl02kNcKyoOLTFo
-	 KuiEXaMkBCjP5FltW7UZ70U6Hq+Nj/XMgVoL42imAfxOlg4Uy2dNuiVruV+EWmLG1G
-	 PVt2U/TujpMwM5wOHRUXNyuWOKH2dTTuYA//OX021otJ/d7mT8eLlXOwmY7N8dAhxX
-	 DJ/KT/Qxr6C5KFEFDIcLQdGKVSFpnj3vd9NEa5gEIroRkEvNcG7tL7tWBAzdxzzh3q
-	 cBhldTfsBocrSbsTbJs5dSm4oktyNQ7nW+55/Pf0Si2bvcAH8IXmrgpsisb9+vxWMv
-	 DPsf7KfcoP2Fw==
+	b=R/3uQ25ysFdpjVXCbXjww+nrxHciA5kY98d/QWEtyVqnWki5HV4G9NMkixlTAScuz
+	 NYW0P0sxq1LlmCClY+aVIZNTSpxqFRurFpK9SAdsYPlpDpiu+z4+hHme/tNuuSbdX1
+	 mDe+QPq6k5Q9Fg7ZUyZLgIZ1TRqEgdPDA1b9ZdmEdSI2+/lXtU199y+9DYD1Dh71mV
+	 ZQor5EOalZ5nGohKZ6SHn76O9J4DvsYNVaK8apLsVkEIMLVb4eG+jSnlDEPrnrACHP
+	 V759BJNtOSzA2hW0pwLcLIrKhkh32glBNhl6IBXvGKkA+jha+oXBsdYToPAgfMcXa9
+	 +sP3MDAf/wWhA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] rust: init: fix `Zeroable` implementation for `Option<NonNull<T>>` and `Option<Box<T>>`
-Date: Mon, 17 Mar 2025 08:24:11 -0400
-Message-Id: <20250316145020-a2ad4bf4b590b564@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y] rust: Disallow BTF generation with Rust + LTO
+Date: Mon, 17 Mar 2025 08:24:13 -0400
+Message-Id: <20250316152441-6fc5fb6b1eb6e14c@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250316160935.2407908-1-ojeda@kernel.org>
+In-Reply-To:  <20250316154159.2404145-1-ojeda@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,49 +67,20 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: df27cef153603b18a7d094b53cc3d5264ff32797
+The upstream commit SHA1 provided is correct: 5daa0c35a1f0e7a6c3b8ba9cb721e7d1ace6e619
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Miguel Ojeda<ojeda@kernel.org>
-Commit author: Benno Lossin<benno.lossin@proton.me>
+Commit author: Matthew Maurer<mmaurer@google.com>
 
 Status in newer kernel trees:
-6.13.y | Present (different SHA1: 1a1d0545f7a5)
-6.12.y | Present (different SHA1: 0d876a8ae2cb)
+6.13.y | Present (different SHA1: d0ae348de14f)
+6.12.y | Present (different SHA1: 9565f4e43f2f)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  df27cef153603 ! 1:  f87fa26b09a1f rust: init: fix `Zeroable` implementation for `Option<NonNull<T>>` and `Option<KBox<T>>`
-    @@ Metadata
-     Author: Benno Lossin <benno.lossin@proton.me>
-     
-      ## Commit message ##
-    -    rust: init: fix `Zeroable` implementation for `Option<NonNull<T>>` and `Option<KBox<T>>`
-    +    rust: init: fix `Zeroable` implementation for `Option<NonNull<T>>` and `Option<Box<T>>`
-    +
-    +    commit df27cef153603b18a7d094b53cc3d5264ff32797 upstream.
-     
-         According to [1], `NonNull<T>` and `#[repr(transparent)]` wrapper types
-    -    such as our custom `KBox<T>` have the null pointer optimization only if
-    -    `T: Sized`. Thus remove the `Zeroable` implementation for the unsized
-    -    case.
-    +    such as `Box<T>` have the null pointer optimization only if `T: Sized`.
-    +    Thus remove the `Zeroable` implementation for the unsized case.
-     
-         Link: https://doc.rust-lang.org/stable/std/option/index.html#representation [1]
-         Reported-by: Alice Ryhl <aliceryhl@google.com>
-    @@ rust/kernel/init.rs: macro_rules! impl_zeroable {
-     -    //
-     -    // In this case we are allowed to use `T: ?Sized`, since all zeros is the `None` variant.
-     -    {<T: ?Sized>} Option<NonNull<T>>,
-    --    {<T: ?Sized>} Option<KBox<T>>,
-    +-    {<T: ?Sized>} Option<Box<T>>,
-     +    {<T>} Option<NonNull<T>>,
-    -+    {<T>} Option<KBox<T>>,
-    ++    {<T>} Option<Box<T>>,
-      
-          // SAFETY: `null` pointer is valid.
-          //
+1:  5daa0c35a1f0e < -:  ------------- rust: Disallow BTF generation with Rust + LTO
+-:  ------------- > 1:  fe3c31b5a6c87 rust: Disallow BTF generation with Rust + LTO
 ---
 
 Results of testing on various branches:
