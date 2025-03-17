@@ -1,140 +1,157 @@
-Return-Path: <stable+bounces-124643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8213A65484
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 15:56:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D23BA655D1
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 684FC170B9B
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 14:56:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDE1E7A8D3D
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 15:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6E524BBEC;
-	Mon, 17 Mar 2025 14:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0295223FC48;
+	Mon, 17 Mar 2025 15:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kKvuc1Dr"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="P1L1VPfE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C2B248896
-	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 14:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928A8155A4D
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 15:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742223331; cv=none; b=AO+Wo8TyQ3r0GBD4D+puyfe0MXpgXZCkoUesEyfWIJr6RIsT9JsYDyH5uqiFCY7yiCde0fPlhQxddoVw90BMcNl6A7UBrwscvORcmDLFPx0d0e2sZfOIqSXHh1HhRY/qxAn+179q6PiD0RylEiSU8uDTviffRTfarwVelBtHV6M=
+	t=1742225659; cv=none; b=oBiqWOx8FBEYtsx375QHrx89DTQmrPX3jN5ofnIXiAxEFhO0KZOcH7V0ZyiJ41rDU+k7e0CbD3W3r/mBHwejVGKiVN1tDZ/DKsYh2YuxhjVF4MUM0hzGex1PQ0aRUJN/V2ksLghRK5YAhJY7vHI/cH0vzjDIH73qf29y3BaiBik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742223331; c=relaxed/simple;
-	bh=17UdANjAVTcelMOQ4DNlejZ2Ce9FcJpH2K+ozwWVPTk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fIny8hZj3E0Kru549vaf/IyGUyra3eivLnrz17sYydUY/332KkB8JawqzmkNMQtZKy7gLSPdM84HN9hcwczbeiPgB1IB8rj/Nmsi3QCosLxV7kmNlz6QFBciOQ7RG0aCcb0/h9Jrld5X6PGMnfaGQ/pYR1+usAulx14jxPuTyyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kKvuc1Dr; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3f682a2c3c8so2585722b6e.1
-        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 07:55:28 -0700 (PDT)
+	s=arc-20240116; t=1742225659; c=relaxed/simple;
+	bh=ga+Uc4xr7N+5SXjvL/IJVH4zFW+rAOCcyP8nqeAkJQ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AIKhF0gJOHKgo6nKmOs0PpATYVTVIimgsJGoQgMzzFp98qtwivEdVdCIXYdi0U8EdeNMk5vFFlA3XArcXuNjvMsA1PcbzcUEx52NYZmC5YSs7UvPzjUQnbrqiIcE9duYwZ8bX3kXuryWSbTmLIaYhUuW5pt9nN1YtvSqbwB2/3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=P1L1VPfE; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43cfe574976so14139315e9.1
+        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 08:34:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742223327; x=1742828127; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=suse.com; s=google; t=1742225655; x=1742830455; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8jNzh4wPsc/2+sERlQmcDT54HRK5zRLKBArFjwQQ8DQ=;
-        b=kKvuc1DryQCbSVaBGLaDhiimzifPA1/+vWy5Oidkrz6z37iZQfnZhJR5IksOTb6bL7
-         toTwPj10SzvDwgmRUHhOlYXCJkfenGjgr61NjdUH4Fft6zEhNIRV4U0NmYNzmA6eptYP
-         ZkbtLa+0hyJEqzZqMM6dhXqfO3CH7gtQqx0lzVhIugTZc7jW+5z/r73CXfNwnmrmOitH
-         dykwAqTiUn6wv1eBlpWafYpH+qeiSlfouu+rQpdIFP4DFC5sXI+k0BhJ+RS3O2LjlhxK
-         oUZGPAL900MWZiRBKBGSFKDeHp1lfq1aHNNvtU7hhj9pSyXVhgHNlj5VMQRUe7UHY0Do
-         0ENg==
+        bh=N92JKWd5IkpVl1E8LCKpFW47n/9OCf6dkNcfyC82CKs=;
+        b=P1L1VPfEJzrNvRYtBmq9tMBQDI1R5/AOOomNQHcW5gUV4gBDhna3+Q6Lsdx+7dSthD
+         MuexcDr+9NVvIYuaUAR7M0mbuDkth1WDIbVwUMnVPiH0A8JPsNErZRt/Stqe94be8sNM
+         bGF8WagjmdIgEIvqCAIpGnUJ3X8/pJ4/ZB1rB1565SMbdDjZc37OyTCLGrestkpGceNJ
+         F4sg4BwlSBd71vWzIZngpGNf1HwBCbZZ4Kdv22vQs3HLJYm3sdwbYemjbnBjdIQvCpKx
+         5OGzneikLe1bHlc0Wyh3nYyN03Y1+0XkeLrWiCjqDKH028iZreDSIYaK/RiQKiv2tadO
+         +zyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742223327; x=1742828127;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1742225655; x=1742830455;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8jNzh4wPsc/2+sERlQmcDT54HRK5zRLKBArFjwQQ8DQ=;
-        b=saSh5j3hf9X3eDL5De3T7Y0A0h7iU2mTqKVi38Ixm+qDRt78Bs4d/SPPW8MjZOukw/
-         AUSQH/kIIU0yLac5GQCeywaU4VurfzFuGdQXjrnBv0SxOA27nn0BXQHIpukPd5MQc5Ag
-         CHbd6xoqga6ArcLSWLCLjTAtq35sD98EZC8PCVLCdp6yAz/eZBENSDCrqkbYf/XfY9DJ
-         xoWuaVo/Y7l7wFvC88yEF96LekNt/RQvyIHSSxm3Gmage7ooSRyOV/0VLOHpLvlUULMS
-         ETozdDuWfS1h4zSvUsWYfzLvNBZqbc9s43I8MaAz2i2l86OpYGbRyLwCF5J8P/ykQEkq
-         NTcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzLHQItwysGU3TDMSHpOBH0Wj/rRLevuoRTY6+LZJUA9VyhokV6EmQJfOKQ92N2DGNpwmF0Io=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzH8Uk89nxsVAfZSZhyIew2MXtnY9Xq6mdv17fcw37B60s/6wgr
-	F/JXt+rYw9cSYJpnZX2dVBZzVbHTc4YHjgmB4D7g6yVWw4JzrdJ39carKQKNzg4MyioPYOW5Z1K
-	mcWhf4S3G1K7/4k27FaR0b5k2LRjmRqf8j+UdoQ==
-X-Gm-Gg: ASbGncuLJalElljfinzz4P9Z9ELHkCi4ffnWx6YkeSoBetGeynkDjN3SzMxqyb84+fD
-	NIcvV0xX5MRTgtW0ZyGiOBXfCS9PUNRky0+JU8praVxHgq6+dhM5B+CjBEBohhNUZ2zE8s/O2O3
-	bbeueECitug1ZTntdWPFFu//wYazPlXQvJJzOoTu4=
-X-Google-Smtp-Source: AGHT+IG7IjY16t5eI+Uq4mhx6crav2fOJBQfWeSG630jb10M49QIM1vSar09EM0x1tUf2BaE+e0vaoly2VXwdW756V0=
-X-Received: by 2002:a05:6808:999:b0:3fa:c549:cfee with SMTP id
- 5614622812f47-3fdee27903emr4770583b6e.6.1742223327241; Mon, 17 Mar 2025
- 07:55:27 -0700 (PDT)
+        bh=N92JKWd5IkpVl1E8LCKpFW47n/9OCf6dkNcfyC82CKs=;
+        b=GMad+BEXyh1rUy2DpytPMiZRyZoU/fGb5MWYmOXmxkwAtcpxJKvYpZYE1KNHKV9cib
+         iFJXqe7rI05I+7gUc0NjVgJMM/YvcUErUgGrnfuC17kKIph0Sne8SaVgumuFCBz3yEyz
+         hCT2SYe/5u1ExE/7lbJfiwd6YwNj3REdPHQx0WUvS7XbCT5XL8gILGb/FP6Sb7ghObB1
+         qUSuSPCYrnikaSkL1GsRzEQz1QD23n4JrwndygUyMmrZxeJ4H4IPODjS7lM496+Mkz10
+         qC5jfLIT4LqeNb6GzEJLe3t2BP1xPb+zLliKzACEiGeXAIftXcMQLIZCCJQE5YXtmvVV
+         iYfw==
+X-Gm-Message-State: AOJu0YzNqh8I7mQ7c3A4ytQDoSzysIt5VTmtexBvCCA01MPYRjZuNWbD
+	dN3+sY3umJ1SVlJ2D/sMx/xNdB10Cgp4d37Qg3hYOaXLnezsoMrdAKFW3sYjM1r4gkR1fte0hk2
+	Cj/E=
+X-Gm-Gg: ASbGnctsPdDCzGxso6zEP4yLJlnC3ff2c8h8EpnCUSizUcmHCaq7369F4DzpPNejG0p
+	ASY7iPt81Yxhr8Bo0EmekVixABS9Qj21FsE2SDLgph4VpqfIkL2Y8MwyZn8oDqZdlpi6eYbGGUZ
+	IWQy1LnYCb0xbZ0uNST0q52g2mde1CKOQ5xatLMc9OYMCSkqoQpIlxiH676jMIOaL0qP+Uzz4xz
+	C+zGYor2BZZRvGqy2D5NBt+0zVAMnPYrhTR9Y6picTqlZ2WULQwpXV+wp14Eb6v+CqAyDGcxZHG
+	OA65QJM3GXn8Nx/CbRROV6gYVaH+G2oYh3SjFBEJm6tyD3KQ6Lx3XCxCNtVpeKamOaGJ3A==
+X-Google-Smtp-Source: AGHT+IHp9YdMzXAcga06QMQQOh9fXBev75qwV0xIwr040GNBn1LYdKA51txdMk+YIBy7mEh6PTA6Jw==
+X-Received: by 2002:a05:6000:4020:b0:390:f902:f973 with SMTP id ffacd0b85a97d-3971d13629bmr13245724f8f.8.1742225655545;
+        Mon, 17 Mar 2025 08:34:15 -0700 (PDT)
+Received: from localhost.localdomain ([2804:7f0:bc00:1e6e:6171:3ed0:ca4f:bf31])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3015374f1ccsm3186115a91.1.2025.03.17.08.34.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 08:34:15 -0700 (PDT)
+From: Henrique Carvalho <henrique.carvalho@suse.com>
+To: stable@vger.kernel.org
+Cc: Henrique Carvalho <henrique.carvalho@suse.com>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13.y] smb: client: Fix match_session bug preventing session reuse
+Date: Mon, 17 Mar 2025 12:32:24 -0300
+Message-ID: <20250317153224.2195879-1-henrique.carvalho@suse.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <2025031652-spider-flying-c68b@gregkh>
+References: <2025031652-spider-flying-c68b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250314-ufs-dma-coherent-v1-0-bdf9f9be2919@linaro.org>
- <20250314-ufs-dma-coherent-v1-2-bdf9f9be2919@linaro.org> <931e5e0b07d598912712b091d99a636b796fe19f.camel@linaro.org>
-In-Reply-To: <931e5e0b07d598912712b091d99a636b796fe19f.camel@linaro.org>
-From: Peter Griffin <peter.griffin@linaro.org>
-Date: Mon, 17 Mar 2025 14:55:15 +0000
-X-Gm-Features: AQ5f1Jq4uxqhD4QuKFFVh-mTPnz4ZIKWFOQ5G2m93FuUYrfiK5B9xukpdzF4pCI
-Message-ID: <CADrjBPoESd7D4H80prCtFXTGaWOg-HV_ovNdwZ4G7Y8n-hFdsQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] scsi: ufs: dt-bindings: exynos: add dma-coherent
- property for gs101
-To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
-	Bart Van Assche <bvanassche@acm.org>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, linux-arm-kernel@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	kernel-team@android.com, willmcvicker@google.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Andr=C3=A9
+Fix a bug in match_session() that can causes the session to not be
+reused in some cases.
 
-On Fri, 14 Mar 2025 at 15:59, Andr=C3=A9 Draszik <andre.draszik@linaro.org>=
- wrote:
->
-> Hi Pete,
->
-> On Fri, 2025-03-14 at 15:38 +0000, Peter Griffin wrote:
-> > dma-coherent property is required for gs101 as ufs-exynos enables
-> > sharability.
-> >
-> > Fixes: 438e23b61cd4 ("scsi: ufs: dt-bindings: exynos: Add gs101 compati=
-ble")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-> > ---
-> >  Documentation/devicetree/bindings/ufs/samsung,exynos-ufs.yaml | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/ufs/samsung,exynos-ufs.y=
-aml b/Documentation/devicetree/bindings/ufs/samsung,exynos-
-> > ufs.yaml
-> > index 720879820f6616a30cae2db3d4d2d22e847666c4..5dbb7f6a8c354b82685c521=
-e70655e106f702a8d 100644
-> > --- a/Documentation/devicetree/bindings/ufs/samsung,exynos-ufs.yaml
-> > +++ b/Documentation/devicetree/bindings/ufs/samsung,exynos-ufs.yaml
-> > @@ -96,6 +96,8 @@ allOf:
-> >          clock-names:
-> >            minItems: 6
-> >
-> > +        dma-coherent: true
-> > +
->
-> This is allowed globally already in this file. Did you meant to make it '=
-required'?
+Reproduction steps:
 
-I hadn't noticed it was already handled further up in the yaml. In
-which case this patch can be dropped entirely.
+mount.cifs //server/share /mnt/a -o credentials=creds
+mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
+cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
 
-Thanks,
+mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
+mount.cifs //server/share /mnt/a -o credentials=creds
+cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
 
-Peter
+Cc: stable@vger.kernel.org
+Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+(cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
+---
+ fs/smb/client/connect.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index eaa6be4456d0..a5d443c42996 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1873,9 +1873,8 @@ static int match_session(struct cifs_ses *ses,
+ 			 struct smb3_fs_context *ctx,
+ 			 bool match_super)
+ {
+-	if (ctx->sectype != Unspecified &&
+-	    ctx->sectype != ses->sectype)
+-		return 0;
++	struct TCP_Server_Info *server = ses->server;
++	enum securityEnum ctx_sec, ses_sec;
+ 
+ 	if (!match_super && ctx->dfs_root_ses != ses->dfs_root_ses)
+ 		return 0;
+@@ -1887,11 +1886,20 @@ static int match_session(struct cifs_ses *ses,
+ 	if (ses->chan_max < ctx->max_channels)
+ 		return 0;
+ 
+-	switch (ses->sectype) {
++	ctx_sec = server->ops->select_sectype(server, ctx->sectype);
++	ses_sec = server->ops->select_sectype(server, ses->sectype);
++
++	if (ctx_sec != ses_sec)
++		return 0;
++
++	switch (ctx_sec) {
++	case IAKerb:
+ 	case Kerberos:
+ 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
+ 			return 0;
+ 		break;
++	case NTLMv2:
++	case RawNTLMSSP:
+ 	default:
+ 		/* NULL username means anonymous session */
+ 		if (ses->user_name == NULL) {
+-- 
+2.47.0
+
 
