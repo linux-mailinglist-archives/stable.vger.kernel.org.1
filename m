@@ -1,67 +1,78 @@
-Return-Path: <stable+bounces-124694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DCE9A658E3
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:50:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09227A658DE
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:50:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 135CE3B47E2
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:46:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABD671897A3F
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA531A3BC0;
-	Mon, 17 Mar 2025 16:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CEB1632D9;
+	Mon, 17 Mar 2025 16:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIJOn7QR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4tKAyme"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551F3207DFD;
-	Mon, 17 Mar 2025 16:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E321A4F21;
+	Mon, 17 Mar 2025 16:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229574; cv=none; b=mpOld5b5+EA8Vsc1/RMvdhGhK4HGCmaTdoKYKJ3o5PCyOTLP3Hs6L6N9iMDPtRnTlZMydKOtUiP9fKMKnH2hqUv0F5RivAzp3akwpzHWUH9Oo766dPBmumSeEaZi74eK42uS8kv1oakNWdlXGK9/9W3ywCrW+AJPTnGQ3k3AVsw=
+	t=1742229585; cv=none; b=Ijt4ziRn/InmaoRZk455IqFNpGPTxCeGkzGpWX4iN4OXrYCA1ZxmeZNOTeuZK+pTIA4PEaYqCErSeVqbbcWqrRieAhZtlgTDx5pGz8NAbqdpU8pa/5sMvu5f6QtewCUTwrAtBoc+hEJAl9FJTu16R5SwzxcmFdSOCf1oJ0ztE6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229574; c=relaxed/simple;
-	bh=1dC+jme/+qxpetUYUsM4Cnjcc/do5xD9p0M+53s6y2A=;
+	s=arc-20240116; t=1742229585; c=relaxed/simple;
+	bh=7kWfQ8zlguWQyuWeZIGhdUr9z+FhjfCrOr/e16jJDlM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uBSj+TVJsJoGxh+JHHQ7xuuXoCo3ZA70hf2tSZHAX7wHpGbH1DItY3KUgs5Wx1J/orpVDUMdoUOZwK41uLJuC5ogwx2r87V1c1lyDexJoX7o8Wpp8+/FpO9iS5eKwFAdAyylIwDklb93zeSgouFI0kRRXO1hBi9JnKrA67gc9gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIJOn7QR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C153C4CEED;
-	Mon, 17 Mar 2025 16:39:32 +0000 (UTC)
+	 MIME-Version; b=FCUGdrL4KcICCbOs41GiUGsroG+WTn4wx3/cfa1UB203jphiatUKiFtmVLD2uN8Lkq3r+0ZyB+aafx2nCM+Nf97Q+MLkbewiGwuXC6ctrQSl3xFsXNPq+TQwOGoEiBCgFQTYvcVmvSSCmARX1PwNl4cjCUswocGQUdmH1COggLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4tKAyme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4D4C4CEEC;
+	Mon, 17 Mar 2025 16:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229574;
-	bh=1dC+jme/+qxpetUYUsM4Cnjcc/do5xD9p0M+53s6y2A=;
+	s=k20201202; t=1742229584;
+	bh=7kWfQ8zlguWQyuWeZIGhdUr9z+FhjfCrOr/e16jJDlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIJOn7QRe0yjG82WZq+GQM8ar5GSfzTpBVbeVuirxfB/hKztGaYFrbog8h5QiD8y5
-	 A7oAOnAzT6oMS7jk6hWOw+yzZi51SWh7xJ5UnwDltPLeHEE1qKVmuPV8SPPd2m0rhl
-	 14Um2QqbKdG0VxFgju0LQ24t4NzCk4mdzBfBNp5C5VA7avoClqieDRsv/TOf9FSv7G
-	 R4wnSloM4qd6a6MLejRtERVWcLPaFno1A8vHwIwnBosnfBvG2e29VjQ1n37oHna8Re
-	 WFywGn8rGkLss332xc+hYnWbmKyOjBBXc99TKoXOhLODOQgWxm53px0egl6uEvyoSp
-	 enYRf+1naHf9A==
+	b=o4tKAymeska0K8Ywk/da2HVtejrhcUgbsBTPRxkVM7nHwv0VQuDoR1aYjFuhpS4pp
+	 QOrokEp+vDDGfukl+XME2mYcW4unoNG9kS7tOt1u5cfRZ55FzZ0KNBbPLzrTGzqlYh
+	 kXKSxNRjG1d3cYxJ2RupwBR1RO2Hzg2tWqR1hmY9e0ddgeupyLTHXb3THkp7s3L5GV
+	 /j3oZvM9dWZFhDaD3B6+ILfWjiur1hvCA5qyCm+neiW8/ZkvN5UbQnSXpL3VHNxqQ9
+	 c1V6h0P1jd+i+1exM8Rx9XDWMSitrghaBjLKJf4LUo5G7h5C33sCKN6pX6dg+vlfyW
+	 E6JZYN4Mw0i6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vladis Dronov <vdronov@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <sean.j.christopherson@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Xaver Hugl <xaver.hugl@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-sgx@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 2/4] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
-Date: Mon, 17 Mar 2025 12:39:25 -0400
-Message-Id: <20250317163927.1893521-2-sashal@kernel.org>
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sunpeng.li@amd.com,
+	lijo.lazar@amd.com,
+	tzimmermann@suse.de,
+	rajneesh.bhardwaj@amd.com,
+	shaoyun.liu@amd.com,
+	Ramesh.Errabolu@amd.com,
+	Jack.Xiao@amd.com,
+	chiahsuan.chung@amd.com,
+	siqueira@igalia.com,
+	sunil.khatri@amd.com,
+	alex.hung@amd.com,
+	aurabindo.pillai@amd.com,
+	hersenxs.wu@amd.com,
+	mwen@igalia.com,
+	hamzamahfooz@linux.microsoft.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 3/4] drm/amd: Keep display off while going into S4
+Date: Mon, 17 Mar 2025 12:39:26 -0400
+Message-Id: <20250317163927.1893521-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250317163927.1893521-1-sashal@kernel.org>
 References: <20250317163927.1893521-1-sashal@kernel.org>
@@ -76,85 +87,100 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.131
 Content-Transfer-Encoding: 8bit
 
-From: Vladis Dronov <vdronov@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 65be5c95d08eedda570a6c888a12384c77fe7614 ]
+[ Upstream commit 4afacc9948e1f8fdbca401d259ae65ad93d298c0 ]
 
-The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
-not just X86_FEATURE_SGX.
+When userspace invokes S4 the flow is:
 
-There is quite a number of hardware which has X86_FEATURE_SGX but not
-X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
-the /dev/sgx_enclave file and does so silently.
+1) amdgpu_pmops_prepare()
+2) amdgpu_pmops_freeze()
+3) Create hibernation image
+4) amdgpu_pmops_thaw()
+5) Write out image to disk
+6) Turn off system
 
-Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
-users that the kernel disabled the SGX driver.
+Then on resume amdgpu_pmops_restore() is called.
 
-The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
-that enables LE (Launch Enclave) hash MSRs to be writable (with
-additional opt-in required in the 'feature control' MSR) when running
-enclaves, i.e. using a custom root key rather than the Intel proprietary
-key for enclave signing.
+This flow has a problem that because amdgpu_pmops_thaw() is called
+it will call amdgpu_device_resume() which will resume all of the GPU.
 
-I've hit this issue myself and have spent some time researching where
-my /dev/sgx_enclave file went on SGX-enabled hardware.
+This includes turning the display hardware back on and discovering
+connectors again.
 
-Related links:
+This is an unexpected experience for the display to turn back on.
+Adjust the flow so that during the S4 sequence display hardware is
+not turned back on.
 
-  https://github.com/intel/linux-sgx/issues/837
-  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
-
-[ mingo: Made the error message a bit more verbose, and added other cases
-         where the kernel fails to create the /dev/sgx_enclave device node. ]
-
-Signed-off-by: Vladis Dronov <vdronov@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Sean Christopherson <sean.j.christopherson@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
+Reported-by: Xaver Hugl <xaver.hugl@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2038
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Harry Wentland <harry.wentland@amd.com>
+Link: https://lore.kernel.org/r/20250306185124.44780-1-mario.limonciello@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 68bfdc8dc0a1a7fdd9ab61e69907ae71a6fd3d91)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c           | 11 +++++++++--
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |  5 +++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
-index aa9b8b8688676..afccb69cd9a2c 100644
---- a/arch/x86/kernel/cpu/sgx/driver.c
-+++ b/arch/x86/kernel/cpu/sgx/driver.c
-@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
- 	u64 xfrm_mask;
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 238c15c0c7e1e..48076cf8ba803 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2466,7 +2466,6 @@ static int amdgpu_pmops_freeze(struct device *dev)
  
--	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
-+	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
-+		pr_info("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
-+	}
+ 	adev->in_s4 = true;
+ 	r = amdgpu_device_suspend(drm_dev, true);
+-	adev->in_s4 = false;
+ 	if (r)
+ 		return r;
  
- 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
+@@ -2478,8 +2477,13 @@ static int amdgpu_pmops_freeze(struct device *dev)
+ static int amdgpu_pmops_thaw(struct device *dev)
+ {
+ 	struct drm_device *drm_dev = dev_get_drvdata(dev);
++	struct amdgpu_device *adev = drm_to_adev(drm_dev);
++	int r;
  
- 	if (!(eax & 1))  {
--		pr_err("SGX disabled: SGX1 instruction support not available.\n");
-+		pr_info("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
- 		return -ENODEV;
- 	}
- 
-@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
- 	}
- 
- 	ret = misc_register(&sgx_dev_enclave);
--	if (ret)
-+	if (ret) {
-+		pr_info("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
- 		return ret;
-+	}
- 
- 	return 0;
+-	return amdgpu_device_resume(drm_dev, true);
++	r = amdgpu_device_resume(drm_dev, true);
++	adev->in_s4 = false;
++
++	return r;
  }
+ 
+ static int amdgpu_pmops_poweroff(struct device *dev)
+@@ -2492,6 +2496,9 @@ static int amdgpu_pmops_poweroff(struct device *dev)
+ static int amdgpu_pmops_restore(struct device *dev)
+ {
+ 	struct drm_device *drm_dev = dev_get_drvdata(dev);
++	struct amdgpu_device *adev = drm_to_adev(drm_dev);
++
++	adev->in_s4 = false;
+ 
+ 	return amdgpu_device_resume(drm_dev, true);
+ }
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 8dc0f70df24f8..f541ce3328f36 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2887,6 +2887,11 @@ static int dm_resume(void *handle)
+ 
+ 		return 0;
+ 	}
++
++	/* leave display off for S4 sequence */
++	if (adev->in_s4)
++		return 0;
++
+ 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
+ 	dc_release_state(dm_state->context);
+ 	dm_state->context = dc_create_state(dm->dc);
 -- 
 2.39.5
 
