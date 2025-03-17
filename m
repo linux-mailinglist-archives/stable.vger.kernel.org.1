@@ -1,170 +1,183 @@
-Return-Path: <stable+bounces-124731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52925A65B87
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 18:51:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E3FA65BED
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 19:08:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EB977A8562
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:50:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8BC9189FD99
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 18:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3CE1B042E;
-	Mon, 17 Mar 2025 17:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5FC1B0F30;
+	Mon, 17 Mar 2025 18:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arrb2wum"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cEQXogVo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E491A3171;
-	Mon, 17 Mar 2025 17:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930C619F420;
+	Mon, 17 Mar 2025 18:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742233882; cv=none; b=f/v30mJRdCnfvyxpXLLXefsikX5WE7ux3nmfcdaYA2h4qUVhHI+Y47dmM6AbUunkHfbL9WTB1P5Z4OUZerEudHrxDu+n9DJlxDnxO2r7yRGz+3FCTa9FqKVq3Z0f/CzJz1kE1VCp22l9m2WQHhEYzAoalJTgIMgG3JuD9+gLqEs=
+	t=1742234902; cv=none; b=N3mt5rS+B0bwhG4u+5yOW+Y8kntQahFHT2I8c73LITd5DhPhhQA3vGbc0ypcnwtss2IIed2qSkQUXE7fXUGfIgFk1QXoKhDcvxWvEK0Ix8tHpOS40cUgq4sIh3ro9nlHRCm25xJRQclXkfa6uOXgdl8eBgqk/UMHfjR96VJU7nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742233882; c=relaxed/simple;
-	bh=/cKV0Fyi6T03lXlvNH38U4UTUiANpMHFR7ZBQzIISmc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qKKbFFm580N0sp73uAwgHnecmry4bEaeIDn3m6uGx1ZrM+8ut5IBDfNRpa1sLxQCTFlN+4Z+8cfst2TSxeIt7VTx7Wjn8Z2MjdfYBJf987EJ+qdxZayd8minoKHG+DpkZAO/0b8as1HAwysh+3/nmGas6yUce1feruacOED48eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arrb2wum; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BC9C4CEE3;
-	Mon, 17 Mar 2025 17:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742233881;
-	bh=/cKV0Fyi6T03lXlvNH38U4UTUiANpMHFR7ZBQzIISmc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=arrb2wumol6HA37c5JOUXQf10sXU/GN+zJFEfCtDCiaKqg/WN2FG50ycPyMY59aS4
-	 Z/7BYhHlwL4BMFqrv9HEs6MRf6WmpFNzvKFbKy/VwLFbRVS3OBVnumwoV7KfxydqqY
-	 i8YgmHNAci1IUoDcEtT43m1elrMU9JejrLRzwxFJgePhcuWwu4gjYk5JsgAElu3xwq
-	 otcjlKsHUVJf0aaOp4dq90YdEvZfOx6vbnzT7l+qosELAXeGdUzAYNgC09R9aGHkW9
-	 rn45UNgoNC/qQjg0lm4Auv+z5gppF+pDmfiwoRvE1rKwTbMkUS1dCFtkSfsiEBLHxR
-	 iMQ8bCZ+9TnWg==
-Date: Mon, 17 Mar 2025 17:51:17 +0000
-From: Simon Horman <horms@kernel.org>
-To: Qasim Ijaz <qasdev00@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: fix uninitialised access in mii_nway_restart() and
- cleanup error handling
-Message-ID: <20250317175117.GI688833@kernel.org>
-References: <20250311161157.49065-1-qasdev00@gmail.com>
+	s=arc-20240116; t=1742234902; c=relaxed/simple;
+	bh=Mu7m47kKBA0YhW5neOWnvRRU9TV9xE/f1KoAz4j7z80=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=V3gKShhvLAm/Uo/3+YKSGdP/uc0VR+gsGti1jjcRfCgMh1TZE59mFBrBVja23Npc2uE3wn80aPqOm3VSnLzBVsVZqB20HEvewrcYkYouGZ+nDPHQxKKrxXzD5PSKpbeizNc3oZ6KdC3uck1E4xs7xAF56FYk7wjcTfDr7Gt9Frw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cEQXogVo; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742234901; x=1773770901;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=Mu7m47kKBA0YhW5neOWnvRRU9TV9xE/f1KoAz4j7z80=;
+  b=cEQXogVoI/93v3JjG60AL3KN47IyjT09dE667TlaNqGcLjbUfpZBItQw
+   LKc8Xtn5SIEP1Mfz7o3Ll/fSvKGR+vmAZQAdeTQ27Wq/XDflcNUo/5hYO
+   vNT2e2RzU6yd1IOg4WOjfDArTjaUu3YlnVJxbcHs0fPnVy4Wi0djFWWJg
+   oQAce3rMcXEPxvG2/WxE33xOSNbu/7mkcmh7B1TcExzYvzO+izYNNhh6F
+   nBiIi3plDQmY9xNcAORPdBwRCZvh23KuaH4vimfDMPmJv7kxUcEc5O28x
+   pSpY3CSVCwNCj39PHFrKCVryUt7vBz+8aXOFQ2H7iEBQPfX5tX/tQPd0c
+   A==;
+X-CSE-ConnectionGUID: NhF3RMfoRmaX4piChoRCjw==
+X-CSE-MsgGUID: cfIPq2HqQbW3U9NCeL4ZZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11376"; a="43258658"
+X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; 
+   d="scan'208";a="43258658"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2025 11:08:20 -0700
+X-CSE-ConnectionGUID: /lAY/v6iTu2NXtbhs97EQw==
+X-CSE-MsgGUID: DGuQfm/TTQe10ci770s4iQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,254,1736841600"; 
+   d="scan'208";a="153007123"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.60])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2025 11:08:15 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 17 Mar 2025 20:08:12 +0200 (EET)
+To: Lukas Wunner <lukas@wunner.de>
+cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org, 
+    Guenter Roeck <groeck@juniper.net>, 
+    Mika Westerberg <mika.westerberg@linux.intel.com>, 
+    "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+    Rajat Jain <rajatxjain@gmail.com>, 
+    Joel Mathew Thomas <proxy0@tutamail.com>, 
+    LKML <linux-kernel@vger.kernel.org>, 
+    Jonathan Cameron <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] PCI/hotplug: Disable HPIE over reset
+In-Reply-To: <Z9Wjk2GzrSURZoTG@wunner.de>
+Message-ID: <a18432fc-a9ff-0435-cd94-912bf2dcb4b3@linux.intel.com>
+References: <20250313142333.5792-1-ilpo.jarvinen@linux.intel.com> <20250313142333.5792-2-ilpo.jarvinen@linux.intel.com> <Z9Wjk2GzrSURZoTG@wunner.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311161157.49065-1-qasdev00@gmail.com>
+Content-Type: multipart/mixed; BOUNDARY="8323328-233792055-1742232008=:944"
+Content-ID: <2adfc975-5a6a-f98c-67a2-8b6bd7590068@linux.intel.com>
 
-On Tue, Mar 11, 2025 at 04:11:57PM +0000, Qasim Ijaz wrote:
-> In mii_nway_restart() during the line:
-> 
->         bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
-> 
-> The code attempts to call mii->mdio_read which is ch9200_mdio_read().
-> 
-> ch9200_mdio_read() utilises a local buffer, which is initialised
-> with control_read():
-> 
->         unsigned char buff[2];
-> 
-> However buff is conditionally initialised inside control_read():
-> 
->         if (err == size) {
->                 memcpy(data, buf, size);
->         }
-> 
-> If the condition of "err == size" is not met, then buff remains
-> uninitialised. Once this happens the uninitialised buff is accessed
-> and returned during ch9200_mdio_read():
-> 
->         return (buff[0] | buff[1] << 8);
-> 
-> The problem stems from the fact that ch9200_mdio_read() ignores the
-> return value of control_read(), leading to uinit-access of buff.
-> 
-> To fix this we should check the return value of control_read()
-> and return early on error.
-> 
-> Furthermore the get_mac_address() function has a similar problem where
-> it does not directly check the return value of each control_read(),
-> instead it sums up the return values and checks them all at the end
-> which means if any call to control_read() fails the function just 
-> continues on.
-> 
-> Handle this by validating the return value of each call and fail fast
-> and early instead of continuing.
-> 
-> Lastly ch9200_bind() ignores the return values of multiple 
-> control_write() calls.
-> 
-> Validate each control_write() call to ensure it succeeds before
-> continuing with the next call.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Hi Qasim,
+--8323328-233792055-1742232008=:944
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <84f24538-a527-e2dd-d7ca-4ecf85be92af@linux.intel.com>
 
-I see that these problems are related, but this is quite a lot
-of fixes for one patch: the rule of thumb is one fix per patch.
-Could you consider splitting it up along those lines?
+On Sat, 15 Mar 2025, Lukas Wunner wrote:
 
-> 
-> Reported-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-> Closes: https://syzkaller.appspot.com/bug?extid=3361c2d6f78a3e0892f9
-> Tested-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-> Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+> On Thu, Mar 13, 2025 at 04:23:30PM +0200, Ilpo J=E4rvinen wrote:
+> > pciehp_reset_slot() disables PDCE (Presence Detect Changed Enable) and
+> > DLLSCE (Data Link Layer State Changed Enable) for the duration of reset
+> > and clears the related status bits PDC and DLLSC from the Slot Status
+> > register after the reset to avoid hotplug incorrectly assuming the card
+> > was removed.
+> >=20
+> > However, hotplug shares interrupt with PME and BW notifications both of
+> > which can make pciehp_isr() to run despite PDCE and DLLSCE bits being
+> > off. pciehp_isr() then picks PDC or DLLSC bits from the Slot Status
+> > register due to the events that occur during reset and caches them into
+> > ->pending_events. Later, the IRQ thread in pciehp_ist() will process
+> > the ->pending_events and will assume the Link went Down due to a card
+> > change (in pciehp_handle_presence_or_link_change()).
+> >=20
+> > Change pciehp_reset_slot() to also clear HPIE (Hot-Plug Interrupt
+> > Enable) as pciehp_isr() will first check HPIE to see if the interrupt
+> > is not for it. Then synchronize with the IRQ handling to ensure no
+> > events are pending, before invoking the reset.
+>=20
+> After dwelling on this for a while, I'm thinking that it may re-introduce
+> the issue fixed by commit f5eff5591b8f ("PCI: pciehp: Fix AB-BA deadlock
+> between reset_lock and device_lock"):
+>=20
+> Looking at the second and third stack trace in its commit message,
+> down_write(reset_lock) in pciehp_reset_slot() is basically equivalent
+> to synchronize_irq() and we're holding device_lock() at that point,
+> hindering progress of pciehp_ist().
 
-...
+This description was somewhat confusing but what I can see, now that you=20
+mentioned this, is that if pciehp_reset_slot() calls synchronize_irq(), it=
+=20
+can result in trying to acquire device_lock() again while trying to drain=
+=20
+the pending events. ->reset_lock seems irrelevant to that problem.
 
-> diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
-> index f69d9b902da0..e938501a1fc8 100644
-> --- a/drivers/net/usb/ch9200.c
-> +++ b/drivers/net/usb/ch9200.c
-> @@ -178,6 +178,7 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
->  {
->  	struct usbnet *dev = netdev_priv(netdev);
->  	unsigned char buff[2];
-> +	int ret;
->  
->  	netdev_dbg(netdev, "%s phy_id:%02x loc:%02x\n",
->  		   __func__, phy_id, loc);
-> @@ -185,8 +186,10 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
->  	if (phy_id != 0)
->  		return -ENODEV;
->  
-> -	control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
-> -		     CONTROL_TIMEOUT_MS);
-> +	ret = control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
-> +			   CONTROL_TIMEOUT_MS);
-> +	if (ret != 2)
-> +		return ret;
+Thus, pciehp_reset_slot() cannot ever rely on completing the processing of=
+=20
+all pending events before it invokes the reset as long as any of its=20
+callers is holding device_lock().
 
-If I understand things correctly, control_read() can (only) return:
+It's a bit sad, because removing most of the reset_lock complexity would=20
+have been nice simplification in locking, effectively it would have=20
+reverted f5eff5591b8f too.
 
-* 2: success
-* negative error value: a different failure mode
+> So I think I have guided you in the wrong direction and I apologize
+> for that.
+>=20
+> However it seems to me that this should be solvable with the small
+> patch below.  Am I missing something?
+>=20
+> @Joel Mathew Thomas, could you give the below patch a spin and see
+> if it helps?
+>=20
+> Thanks!
+>=20
+> -- >8 --
+>=20
+> diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pcieh=
+p_hpc.c
+> index bb5a8d9f03ad..99a2ac13a3d1 100644
+> --- a/drivers/pci/hotplug/pciehp_hpc.c
+> +++ b/drivers/pci/hotplug/pciehp_hpc.c
+> @@ -688,6 +688,11 @@ static irqreturn_t pciehp_isr(int irq, void *dev_id)
+>  =09=09return IRQ_HANDLED;
+>  =09}
+> =20
+> +=09/* Ignore events masked by pciehp_reset_slot(). */
+> +=09events &=3D ctrl->slot_ctrl;
+> +=09if (!events)
+> +=09=09return IRQ_HANDLED;
+> +
+>  =09/* Save pending events for consumption by IRQ thread. */
+>  =09atomic_or(events, &ctrl->pending_events);
+>  =09return IRQ_WAKE_THREAD;
 
-If so, I think it would be more idiomatic to write this as:
+Yes, this should work, I think.
 
-	if (ret < 0)
-		return ret;
+I'm not entirely sure though how reading ->slot_ctrl here synchronizes=20
+wrt. pciehp_reset_slot() invoking reset. What guarantees pciehp_isr() sees=
+=20
+the updated ->slot_ctrl when pciehp_reset_slot() has proceeded to invoke=20
+the reset? (I'm in general very hesitant about lockless and barrierless=20
+reader being race free, I might be just paranoid about it.)
 
-This makes it easier for those reading the code to see that
-an error value is being returns on error.
-
-Likewise elsewhere in this patch.
-
->  
->  	return (buff[0] | buff[1] << 8);
->  }
-
-...
+--=20
+ i.
+--8323328-233792055-1742232008=:944--
 
