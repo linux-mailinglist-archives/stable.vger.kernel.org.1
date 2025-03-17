@@ -1,147 +1,138 @@
-Return-Path: <stable+bounces-124707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34493A658F6
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:51:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8BDA658CF
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 17:49:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65D9619A2B27
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:48:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04944176AD1
+	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 16:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4F0209689;
-	Mon, 17 Mar 2025 16:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5B1208970;
+	Mon, 17 Mar 2025 16:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dky2ElzV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzDtkr19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93571A76BB;
-	Mon, 17 Mar 2025 16:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4549020896B
+	for <stable@vger.kernel.org>; Mon, 17 Mar 2025 16:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742229608; cv=none; b=LOw+/s4AXVZHb+U3darhyoCWFzxnhQNgBVrvOtnKeRl+9OgzU2L6rWWraIbutabYRlMi1OrhBRf7RVTEZIKd4YVu9Rp8NMF5VrFyGMoaZ5AvQjH76dHg0ud0P1s58AvODYhWyUmXYrMcGWjxUcQnbMCGL+L4TWlkS2Q0haQ03Dg=
+	t=1742229594; cv=none; b=Pkbp7Z9/bSZ/zjOMUhnfp67c//vHj9G0plcIVJCTG1mQcI+Qyu08NyITeSBM4zLYNsqeNhaR3GLxtglVaiH4M4Jlr4s21zGcuqh8Ycgd0f7MvhPEkLdb82eyOHqzZZXwxqYREhG77jw59GlH1S8SY9j86JsPn9lxkQNYdxYDgWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742229608; c=relaxed/simple;
-	bh=IuhfuT8S9hJIHHhBNQwtEhBy0GkXzY0UjEZtJlxCkak=;
+	s=arc-20240116; t=1742229594; c=relaxed/simple;
+	bh=Vz68pLxDECw8kUXLUr5TBoK/O9jKyOm+uZf1K6dDM+A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T9uV9RpZMuTc/A47Gr8PgOYVmRTXsRWIqRMuAWV6hc+RKp+PL1PQ7epai9SQCTSpgM4vUnWMm8afQuxIGuivmYm7b8LGKTwL3gJMaDm6FlMlhmJ1/O42G70k/S2pKa7P9rPeesOPMUbMwepDikS2ypHr3R8UR6pqYRZwRpg1XxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dky2ElzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F11EC4CEED;
-	Mon, 17 Mar 2025 16:40:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fvhF1fmIoV0AAVeNPQWNRYj1GOMXpkNdArsyyM30nhJDxTpYTLeuVXJ/hNIec7aRSU5sAZpg3Na0ut7iieXKdJ3iRQUWlN9SzKosWFTZ82BGj2JOrs7XyMvXGcfRgTSasTcegTxFs3iGA0ddeMhqkxnizw4gHa76zB5NOuDoTag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzDtkr19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31770C4CEE3;
+	Mon, 17 Mar 2025 16:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742229607;
-	bh=IuhfuT8S9hJIHHhBNQwtEhBy0GkXzY0UjEZtJlxCkak=;
+	s=k20201202; t=1742229592;
+	bh=Vz68pLxDECw8kUXLUr5TBoK/O9jKyOm+uZf1K6dDM+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dky2ElzVrE/MDT/QDJWP8o3nSxK+DESURc0B5qMO4M/tbtINU040xVIhfeeuED8+e
-	 eWEEQXEe11i95fjCxJ0Fd92vYSuAyM0HznQruJ52SvyKrWWyMq8CBK8y6b7d2EejUT
-	 v6ZrOKjQeD5id8S0xr0rdD2M4qrVGTKwKcLoXY1km7/SSs+F5dwISoeEDlUVjbCwlN
-	 k6PcBDU+iK+q2u9CLllVLW3INrKo5sT3MVEVHO+OKMuRoq0GtXBMwyONE4bhWI2pZe
-	 K6C0EG51yyQe9+lYiXLE4uxKzVflh+CRBICH2YmKuZFIOh2DCthQjTNrLXA1KFrco2
-	 8bsxzsgyYM8Qw==
+	b=HzDtkr19QFJOTCCVvQUhWg9e51//xgWZz8IHYVbM7qecqIdtTLxIHqLCqy60VMlJ9
+	 hDEsSWx9Hw0h+1FKVa3+FGG+0xJ9s9hJjH9HX3Tre77jTgtq3K/uQg9PHFifaD+RIl
+	 HDcKMGBO7fVT3O4NbW5mUJu6oEgO1zgYS+AXMK0f+FB4eRMJ+CdSPGBx2Ivkyir182
+	 ON2LfNT8RunzPa8Lf/lxEmLgqLlRXRDdNyDjd41QxpPhA56F+d9tNC48yygj+KwdVW
+	 grrpjUeQzfNoGlHSJwItmBOrURY3sqFT0B0YtM2rBpiGQGVoDfsCaweOrwrX6Bp20l
+	 CzlYcK/JBFHxg==
 From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Navon John Lukose <navonjohnlukose@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kailang@realtek.com,
-	sbinding@opensource.cirrus.com,
-	simont@opensource.cirrus.com,
-	josh@joshuagrisham.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 4/4] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion x360 14-dy1xxx
-Date: Mon, 17 Mar 2025 12:39:49 -0400
-Message-Id: <20250317163949.1893632-4-sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chen Linxuan <chenlinxuan@deepin.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH stable 6.1 v2] lib/buildid: Handle memfd_secret() files in build_id_parse()
+Date: Mon, 17 Mar 2025 12:39:50 -0400
+Message-Id: <20250317092710-f8328206c72a587e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250317163949.1893632-1-sashal@kernel.org>
-References: <20250317163949.1893632-1-sashal@kernel.org>
+In-Reply-To:  <16124577164D1373+20250317011540.119614-2-chenlinxuan@deepin.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.179
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Navon John Lukose <navonjohnlukose@gmail.com>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit b11a74ac4f545626d0dc95a8ca8c41df90532bf3 ]
+Hi,
 
-Add a fixup to enable the mute LED on HP Pavilion x360 Convertible
-14-dy1xxx with ALC295 codec. The appropriate coefficient index and bits
-were identified through a brute-force method, as detailed in
-https://bbs.archlinux.org/viewtopic.php?pid=2079504#p2079504.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Signed-off-by: Navon John Lukose <navonjohnlukose@gmail.com>
-Link: https://patch.msgid.link/20250307213319.35507-1-navonjohnlukose@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The upstream commit SHA1 provided is correct: 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Chen Linxuan<chenlinxuan@deepin.org>
+Commit author: Andrii Nakryiko<andrii@kernel.org>
+
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: a230a1bf75ae)
+
+Note: The patch differs from the upstream commit:
 ---
- sound/pci/hda/patch_realtek.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+1:  5ac9b4e935dfc ! 1:  6ad30ec95efa4 lib/buildid: Handle memfd_secret() files in build_id_parse()
+    @@
+      ## Metadata ##
+    -Author: Andrii Nakryiko <andrii@kernel.org>
+    +Author: Chen Linxuan <chenlinxuan@deepin.org>
+     
+      ## Commit message ##
+         lib/buildid: Handle memfd_secret() files in build_id_parse()
+     
+    +    [ Upstream commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f ]
+    +
+         >From memfd_secret(2) manpage:
+     
+           The memory areas backing the file created with memfd_secret(2) are
+    @@ Commit message
+         Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+         Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
+         Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
+    +    [ Chen Linxuan: backport same logic without folio-based changes ]
+    +    Cc: stable@vger.kernel.org
+    +    Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
+    +    Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
+     
+      ## lib/buildid.c ##
+     @@
+    @@ lib/buildid.c
+      
+      #define BUILD_ID 3
+      
+    -@@ lib/buildid.c: static int freader_get_folio(struct freader *r, loff_t file_off)
+    - 
+    - 	freader_put_folio(r);
+    +@@ lib/buildid.c: int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+    + 	if (!vma->vm_file)
+    + 		return -EINVAL;
+      
+    -+	/* reject secretmem folios created with memfd_secret() */
+    -+	if (secretmem_mapping(r->file->f_mapping))
+    ++	/* reject secretmem */
+    ++	if (vma_is_secretmem(vma))
+     +		return -EFAULT;
+     +
+    - 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
+    - 
+    - 	/* if sleeping is allowed, wait for the page, if necessary */
+    + 	page = find_get_page(vma->vm_file->f_mapping, 0);
+    + 	if (!page)
+    + 		return -EFAULT;	/* page not mapped */
+---
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 6440a79f4d480..f60e10a0c657f 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4757,6 +4757,21 @@ static void alc236_fixup_hp_coef_micmute_led(struct hda_codec *codec,
- 	}
- }
- 
-+static void alc295_fixup_hp_mute_led_coefbit11(struct hda_codec *codec,
-+				const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		spec->mute_led_polarity = 0;
-+		spec->mute_led_coef.idx = 0xb;
-+		spec->mute_led_coef.mask = 3 << 3;
-+		spec->mute_led_coef.on = 1 << 3;
-+		spec->mute_led_coef.off = 1 << 4;
-+		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
-+	}
-+}
-+
- static void alc285_fixup_hp_mute_led(struct hda_codec *codec,
- 				const struct hda_fixup *fix, int action)
- {
-@@ -6996,6 +7011,7 @@ enum {
- 	ALC290_FIXUP_MONO_SPEAKERS_HSJACK,
- 	ALC290_FIXUP_SUBWOOFER,
- 	ALC290_FIXUP_SUBWOOFER_HSJACK,
-+	ALC295_FIXUP_HP_MUTE_LED_COEFBIT11,
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
- 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
-@@ -8542,6 +8558,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC283_FIXUP_INT_MIC,
- 	},
-+	[ALC295_FIXUP_HP_MUTE_LED_COEFBIT11] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc295_fixup_hp_mute_led_coefbit11,
-+	},
- 	[ALC298_FIXUP_SAMSUNG_AMP] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc298_fixup_samsung_amp,
-@@ -9256,6 +9276,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
- 	SND_PCI_QUIRK(0x103c, 0x8537, "HP ProBook 440 G6", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x85c6, "HP Pavilion x360 Convertible 14-dy1xxx", ALC295_FIXUP_HP_MUTE_LED_COEFBIT11),
- 	SND_PCI_QUIRK(0x103c, 0x85de, "HP Envy x360 13-ar0xxx", ALC285_FIXUP_HP_ENVY_X360),
- 	SND_PCI_QUIRK(0x103c, 0x860f, "HP ZBook 15 G6", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x861f, "HP Elite Dragonfly G1", ALC285_FIXUP_HP_GPIO_AMP_INIT),
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
