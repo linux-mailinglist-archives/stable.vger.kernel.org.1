@@ -1,110 +1,60 @@
-Return-Path: <stable+bounces-124800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56575A67511
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 14:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17DA2A67515
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 14:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 890993AF438
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 13:24:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5A4E3B9830
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 13:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403CB20CCDB;
-	Tue, 18 Mar 2025 13:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8757D20B7E9;
+	Tue, 18 Mar 2025 13:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="b82qQoZT";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="6Tuksmqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygKwZy0L"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6C92576
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 13:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39ABC13C908;
+	Tue, 18 Mar 2025 13:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742304196; cv=none; b=ZVT67NBwtCam4KDqWTO7Grjvgvb0rQ0RxuJPeaUm+I94Yi/JyTLQTVo44QvFA7gi8pY+t9bihbVy+7j9flkIceNXpTDryC6uJwc7CudHEPa8dAdovKd4YWDe+8V8rOPV04lJXm5Q3U+vZA+nA10D5o8BYUmBXNSRiIUrra1+1Qw=
+	t=1742304320; cv=none; b=BazstfYxH1UrIdpq4xmOQHfED4wQmqkBjIgFGWW640p0YYd7Nbryqq4DSZ79Q/uPWJjzKz8+xTFxieuKJFhPV5KDnVs5QAbIyag6EFcRId+jzrYDnVNyedQmj6A1GhX3xP6Aw7aKpvY1eFu4cBbR0rV11uXc/PunSRbxEL6Kcow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742304196; c=relaxed/simple;
-	bh=/+NRncxQzBJSVfDsGcAlSlS+WwiKUr9+mtF0BVc5F7U=;
+	s=arc-20240116; t=1742304320; c=relaxed/simple;
+	bh=sm1Xz6loYNgAy8QDfYfj8lVAdZgMYiUz6arqfRBcYtw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=toitxuml4apCSeTLjpmmwa/t52e0GeU8Sby8mNuDdDJXfjO5KIJXJDEkuknQfbKHebk9OQ4zs3F4EQ+yMUrdj2RGdnlj7BWowyzsTacbblOaaXq5gnUJYFGBBWRQpFL8rQgvIb/vGFSYWjg/3RuluHTzVg8m5+mTBtz51onB6qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=b82qQoZT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=6Tuksmqg; arc=none smtp.client-ip=202.12.124.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id CDA22114013D;
-	Tue, 18 Mar 2025 09:23:12 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 18 Mar 2025 09:23:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1742304192;
-	 x=1742390592; bh=cubXMcBhaWWkL05KvtS58gyIe1CIRwTH2EAsTd977jo=; b=
-	b82qQoZTUS6c3xSQ/Mzb/JOsLYYCheEGSu0ONowhYA6svhFkgJOv3C5Qek2bcwlD
-	GC4Y256Nb1zkidA2ti7+RRmvXDIuS1QG03Noosj/E+2Cdad6Otk2tY0B9hPY88Zn
-	TCaj+Mt9QeG7Yt1VqVnXWsucQs5l5yUqMTf2xibEO1NsT5l0QQjuLMBNx6pHf9fc
-	sZguIsCoyxP/jgpkQWY0g9I0jqZw5A8YNC+2DzR/y/ST7FQ/0fi0E7k+0vO8anVW
-	6J/r+gh8uTsoO97df6wKuyfUfNIWrYRcCkN+KuxWEURBX0MT5YAOFsUQt4GUSpHe
-	/FFvzstw5SLuVvPPtla9yA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1742304192; x=
-	1742390592; bh=cubXMcBhaWWkL05KvtS58gyIe1CIRwTH2EAsTd977jo=; b=6
-	TuksmqgTUwYgBdfZ57n3eeC9wSy7DFNVC9XAaHDg8CTU9IKnkhDM9P+2oB5gIUeo
-	GH7xomofoCwM0iA53PxMtiIaEE1W47qk/1juQNMM2g//zohv4v4j5iu0phxWimJB
-	12tJyVl/5oTqJLaEvZIP9pCgvcLcIEfGW2lJc4GBMvbwcWGTGrrziZwIt4Zp81qf
-	dcGuzj8XnfIOARdy2Fbe28eeXdLMhmGbpSzqu/xhs8QlH8tJxpxeujzr5IDcCpWe
-	IUSg2DTS3g3ljTCsZ0YKjKxbh05hDILP9lZBoXsTFJwWF0Bs4te1ZbSuAGCoK2mG
-	Tk6altX7Qv4ZVtFzCiDug==
-X-ME-Sender: <xms:wHPZZ0U3TpCh8Ow0NZa3SM5cm4Ipx7i0cFSnXTR5r7xGgxesvN-9wg>
-    <xme:wHPZZ4mih8gFxbRnvTt2cQGlIwyKAGmmkS_EMm3dot86rkSh75YdmvyjNIeKagsK2
-    bfD7rSSXwKuTA>
-X-ME-Received: <xmr:wHPZZ4aic9kbqcZyFxRMZMASj4BLdwSQpfJVDi5pZQYj6mqPyInctle1jRc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugedvheehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
-    tdejnecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenuc
-    ggtffrrghtthgvrhhnpefgkeffieefieevkeelteejvdetvddtledugfdvhfetjeejiedu
-    ledtfefffedvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
-    hrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepuddvpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehmihhguhgvlhdrohhjvggurgdrshgrnhguoh
-    hnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohep
-    rghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusg
-    horhhgsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:wHPZZzUDrMaZz90lgh3w1Ib4tNkC6JBUfsy8HNCY2Rn-cj7c0p46CA>
-    <xmx:wHPZZ-m_PkndkOQ-i8BEcMvMSFDhIH5V8HYRHKGCWsAW6VoNdta3zw>
-    <xmx:wHPZZ4eo1QmVpoUsbjx5qO5fiK_GYf4U9twIY0JuW3uiBQbYQ8DSHQ>
-    <xmx:wHPZZwGdcwYIu5tfre0zeZh9YqCFm6YFDe4qJLq2x7wQTGWN31gjlw>
-    <xmx:wHPZZ5_ftLUDaCVRLFnFc1zesSoTv_04dVPvUv8r80hPPybBjhv5cIQD>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 18 Mar 2025 09:23:11 -0400 (EDT)
-Date: Tue, 18 Mar 2025 14:21:53 +0100
-From: Greg KH <greg@kroah.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, stable@vger.kernel.org,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Subject: Re: [PATCH 6.6.y] rust: init: fix `Zeroable` implementation for
- `Option<NonNull<T>>` and `Option<Box<T>>`
-Message-ID: <2025031810-untoasted-email-5a46@gregkh>
-References: <2025031635-resent-sniff-676f@gregkh>
- <20250316160935.2407908-1-ojeda@kernel.org>
- <CANiq72mEexdcTSCJuc5SMwMQ3V+hLpV623WEqLNNB5jVRxH+Nw@mail.gmail.com>
- <2025031624-nuttiness-diabetic-eaad@gregkh>
- <CANiq72m9EcxPcaJ0M9Wb9HVjLEi+g2r59WR8=H7F+ikgQeYGHA@mail.gmail.com>
- <2025031729-dizziness-petunia-c01a@gregkh>
- <CANiq72kKDNzAtVu60AzcHtGhWm5x3oKGcHCh4tWGrhxeXYRKNA@mail.gmail.com>
- <CANiq72=vBzBYkq617zpa2StEN9PYshG3cVPKjqC2-Q3KZSpEmw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fX5Ulz1j0qFtl5prQfYeiKrDz9oM0cUyXH0HBB0Ow90ZAdsa5EsikG5YjOxLH8Vusoj10fy3NR6tH2Iby55+sIPpPOPCZl8sC7FNOEzdWX5S3m34wmAfKjuXkubnB9FwVSdYR5OkkQZUTvPQ5Vnig51EIgio3+DZEtKlfrUlhC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygKwZy0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1455C4CEDD;
+	Tue, 18 Mar 2025 13:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1742304320;
+	bh=sm1Xz6loYNgAy8QDfYfj8lVAdZgMYiUz6arqfRBcYtw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ygKwZy0Ltkda23XHQWr41ijJCDPu/R0US0cCFlMUlDEzQ6r2ThZ811+VvKDazMaWv
+	 W1L7EDE3LdYeIQozswMoggFQ2zd0ITil2wxSAS4v97hoZZ3O6Xa7fOuPLUZQrtcrHR
+	 HpMwX/NtAqfhINVXu/TTsoNZWBc3Nk4KJiCnOBqw=
+Date: Tue, 18 Mar 2025 14:24:01 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Sasha Levin <sashal@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Jan Stancek <jstancek@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	R Nageswara Sastry <rnsastry@linux.ibm.com>,
+	Neal Gompa <neal@gompa.dev>
+Subject: Re: [PATCH 6.1&6.6 1/3] sign-file,extract-cert: move common SSL
+ helper functions to a header
+Message-ID: <2025031834-spotty-dipped-be36@gregkh>
+References: <20250318110124.2160941-1-chenhuacai@loongson.cn>
+ <20250318110124.2160941-2-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -114,23 +64,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=vBzBYkq617zpa2StEN9PYshG3cVPKjqC2-Q3KZSpEmw@mail.gmail.com>
+In-Reply-To: <20250318110124.2160941-2-chenhuacai@loongson.cn>
 
-On Mon, Mar 17, 2025 at 09:54:03PM +0100, Miguel Ojeda wrote:
-> On Mon, Mar 17, 2025 at 9:39 PM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > So I reworded accordingly: I renamed `KBox` and `Box` in the title and
+On Tue, Mar 18, 2025 at 07:01:22PM +0800, Huacai Chen wrote:
+> From: Jan Stancek <jstancek@redhat.com>
 > 
-> s/and/to/
+> commit 300e6d4116f956b035281ec94297dc4dc8d4e1d3 upstream.
 > 
-> Anyway, if the policy is to keep titles and original log intact even
-> in Option 3, I assume one should avoid [ ] comments in the log, and
-> only use the one-line-before-my-SoB style for [ ], since I assume you
-> keep the tags.
+> Couple error handling helpers are repeated in both tools, so
+> move them to a common header.
+> 
+> Signed-off-by: Jan Stancek <jstancek@redhat.com>
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+> Reviewed-by: Neal Gompa <neal@gompa.dev>
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
 
-Yeah, that is good, but really it's not that big of a deal, we can parse
-text pretty easily and handle it when it's not "perfect" :)
+Is this "v2" as well?  the threading is all confusing here.  This is
+what my inbox looks like right now:
+
+
+  32 N T Mar 18 Huacai Chen     (2.9K) [PATCH 6.1&6.6 V2 0/3] sign-file,extract-cert: switch to PROVIDER API for OpenSSL >= 3.0
+  33 N T Mar 18 Huacai Chen     (7.9K) ├─>[PATCH 6.1&6.6 V2 3/3] sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3
+  34 N T Mar 18 Huacai Chen     (3.4K) ├─>[PATCH 6.1&6.6 V2 2/3] sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+  35 N T Mar 18 Huacai Chen     (4.8K) └─>[PATCH 6.1&6.6 1/3] sign-file,extract-cert: move common SSL helper functions to a header
+  46 N T Mar 18 Huacai Chen     (2.9K) [PATCH 6.1&6.6 0/3] sign-file,extract-cert: switch to PROVIDER API for OpenSSL >= 3.0
+  47 N T Mar 18 Huacai Chen     (3.3K) ├─>[PATCH 6.1&6.6 2/3] sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+  48 N T Mar 18 Huacai Chen     (4.8K) ├─>[PATCH 6.1&6.6 1/3] sign-file,extract-cert: move common SSL helper functions to a header
+  50 N T Mar 18 Huacai Chen     (7.8K) └─>[PATCH 6.1&6.6 3/3] sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3
+
+What would you do if you saw that?
 
 greg k-h
 
