@@ -1,138 +1,168 @@
-Return-Path: <stable+bounces-124841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EAB7A679DC
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 17:43:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 002C2A679FF
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 17:45:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE250177710
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:43:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D33DE1885D1C
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE03A211466;
-	Tue, 18 Mar 2025 16:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57632211290;
+	Tue, 18 Mar 2025 16:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="OlYT0IG3";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dJUUG/yt"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="bGVTaCOk"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871AB211491
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 16:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B37F20FAB7
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 16:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742316180; cv=none; b=sYvPbt3kqJTxA+0r+G1B7V3DpRtkF2NOeDsvPs+T1J0vsd2fGhEzNpav30uV7ea7Sbym8ecA/IGAcjB4ODKAME0IIoQCjh/HrWv8O0kEUU61B/pHBFKS5FXCkTBmvT057FeFqL9TI5f+kVaIMwgvnblWjvnZmJMxRqO5bZCyW5M=
+	t=1742316309; cv=none; b=Ulsj/NUsCuNzPEUd9AiaAdX2L+3FFckI40l3PqKFAmPzt5PX2MEsl/cSb8OokJf176UR7IBxLHn9+oolOeqfSj3yFCIdDkeOxHZjepvOYfgKRVfy6Sd3LQyT0Q7f2DdRlB22pr23cBvJ9Q8HkfTxAxeZrXSDkYrAzQddnenXCD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742316180; c=relaxed/simple;
-	bh=l15G3XEk5X9jP54KFLebfa3JKFlzRrbDZ1NbpmrMg3g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YaFcCmJgCaEzUKN1Pnmoo3xHkzFxqFEt1uDTJKNEFalHbFo28V2ztOI/laVQPoZlU1UUapQ+jIozAhKChNtuCfi+zC4CfaKge905DOaYmhMP3mQAwd6/VH8O30m4KBKepwEikHoJk/JY7piEEQ1ZG1cNWUwVs3JV9LjvoAbLl7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=OlYT0IG3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dJUUG/yt; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 67906114013D;
-	Tue, 18 Mar 2025 12:42:56 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 18 Mar 2025 12:42:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1742316176; x=1742402576; bh=azhEX8iKHF
-	BQmwfTll3H37NojbeUzoOHf+36Oak1wyI=; b=OlYT0IG3u4/BW0LqsGCUlrNmgP
-	9wE0C9ZUEi24nTtKXhXNwQdg275FNL1y0yzqB0AG2S1oyD+Zf0KZ3R3qVZ31mlqF
-	2nVJjp+tO7uatDgphEXG5zKiLFmRvlpZy1Nx5z6FtbLhpWWMDWiS4JNftqINZdnX
-	zOlBFPJxt6Ix1Eyn/TTnoPNHqc/X8fHdq86LUdZzsuc0LJMujszIy3C+xrVeHDOj
-	66NdfQnEpDa8EulSNbMZZ7ss25khFC6dFSRIi+Za8B8uK+aSiKuI4KaPdeOdf1fH
-	8H5esJimfphusmX70n99nTtUh1dZciR/hWXuTvZryp9H5cio1QcCxVzm1+hg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1742316176; x=1742402576; bh=azhEX8iKHFBQmwfTll3H37NojbeUzoOHf+3
-	6Oak1wyI=; b=dJUUG/ytFZUWBBzHbkrlJIvuk+bPPDs1fVHS+VDZoKOyTvAlgkz
-	0yCmRqsiI+8zgVjGVNvsEif57dsbbi2tkq2/naZpZ1CktxzRTVH6P/OZ7g7dRSyI
-	3Xu6jgCZ4DC3I7BQjecux81uRaLoCy84RNrQLz2Kyz0IR1Cq9hiJjniXV/iQpDZZ
-	OqXpuU4eXLjJZl69JEYGeP1A5BTQ1cYg0yWD1wXUyebH4558YCoa92ICKtgNrk05
-	xVRAogOYqHjx1BKXHoCoP8J6NaDu0GKRQWjPj5A9o3qWd5a/LOZf4rg/R78hMbqV
-	/GKeK3p3HLpqy6ONGhA6EP/KFeC0UH5KD5w==
-X-ME-Sender: <xms:kKLZZ0pNxGxpH-9KwmPEfm6bV5JV2qBHKJcThNfzuDfI0E5bX0EjSQ>
-    <xme:kKLZZ6qAM2F2QoBpdl477IFS1qtILHo8ZrTuQMXibt-UFYtoNI8hRpTWSswB9ARDB
-    KtulONWBrGB3w>
-X-ME-Received: <xmr:kKLZZ5PcnqjPD80_uStZHalDQwlXAvgVwkLTTvP4u1i3v6yzwm88xXIOI4Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugedvleegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecugg
-    ftrfgrthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeu
-    fefhgfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeekpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopehhvghnrhhiqhhuvgdrtggrrhhvrghlhhhosehsuh
-    hsvgdrtghomhdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopegvmhgrthhsuhhmihihrgesshhushgvrdguvgdprhgtphhtthhope
-    hsthhfrhgvnhgthhesmhhitghrohhsohhfthdrtghomh
-X-ME-Proxy: <xmx:kKLZZ75oN5zKRkx4dT8EAOyTFRpeJksgauqxj79CHOSgHb8ml_uCkQ>
-    <xmx:kKLZZz4RHtukYCVF1OrCjljUf8z7f6nmCuifcAGZd14836cm0T0Ncg>
-    <xmx:kKLZZ7inWXmht3yzQpRJ6ee5C9mfkl7jrR2x3jtuZP3xfTnlXHJWMA>
-    <xmx:kKLZZ95KGdhUIPSpF02Mh-NZiUoqMz273b_tQdoamiYJ8iKH6MaM5w>
-    <xmx:kKLZZ9sPWljzv_jHTE1MHuOaqRViTHYJev-5MV3VpmvsDgGi681Ygg-f>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 18 Mar 2025 12:42:55 -0400 (EDT)
-Date: Tue, 18 Mar 2025 17:41:36 +0100
-From: Greg KH <greg@kroah.com>
-To: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: stable@vger.kernel.org, Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>
-Subject: Re: [PATCH 6.13.y] smb: client: Fix match_session bug preventing
- session reuse
-Message-ID: <2025031806-shininess-starter-54a9@gregkh>
-References: <2025031652-spider-flying-c68b@gregkh>
- <20250317181622.2243629-1-henrique.carvalho@suse.com>
+	s=arc-20240116; t=1742316309; c=relaxed/simple;
+	bh=Xz1AAnYOMSaJQFaCfNZVaJ5JJYK1AbpDI/w6DSj12lw=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=dlpH9+YL8aSM0r9Zbrdx7WfkE6q04FdlhMarSGG7/Lo9lkizP4DX4WYZAZZr8K8ki7MnWeI8dmAY4zj3ANACYoom0IAFkl7IVyQGX39R2RlQ5z8rJLtzngeTd90doA6ZtoDZzmkfC/Mdj3MhnSiX4jdY8hBgZDAdqdb575MN+qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=bGVTaCOk; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6fece18b3c8so50004457b3.3
+        for <stable@vger.kernel.org>; Tue, 18 Mar 2025 09:45:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1742316306; x=1742921106; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=UckPuGCexHWv3tcwtletWIj6Qf9+jmlu4mTzyuU/eCU=;
+        b=bGVTaCOkEt2NU1KM+dJIJ9HR3iF1v3n6TAvJOy16mqWVk94LcMzJdPEuJh33Xnjgqq
+         13tN4jtWtFADneOLooT0Kph3a8U3SWDXSaacVXIM8eY+62pIzeWzkKpaB3fhHKZjK5dV
+         p7nuSZkz1GDXaUMt8WCN6x5fTd9sz1nF8oIBABPdKCY4EL0DbaiqW8IbfZzMJO6iOT2K
+         Xfb4glGqTVKFAnmY6Aj6qmyzMAh+jYNX83majT+A5w78NPNP0QuRNMwReIcdO41JNvIK
+         AC/88di+beRgDZrxOYrLfpUrpknuUQVgRnBTmZB7Wm3cz6TCqkIm539ZAY7V5xPAbB2H
+         FdEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742316306; x=1742921106;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UckPuGCexHWv3tcwtletWIj6Qf9+jmlu4mTzyuU/eCU=;
+        b=L1PasQbHGwOuTTYvlhGiUjr8mz931nEup14ivOpyAyRfoeKxomUBNeqogbfUq79Zty
+         FqX8Ek+ZcjSJS8ArZY0JFqrgz5PT2BmUSrrE+PkAT+o289Ip13gZ2Kelm6dxkVp9D/cI
+         4Uaun0PIf8+hzMgV3yA0jNuuvsi5x07bxtXoO/GkYXK2i6tcejxd9RCbZZUI8r0VW10W
+         fopKIWvfScecKlqcZs+575SyYy/87K+jz48LCO2CWg3E8Qa3onpxTH4NgwiJ0vHCguw2
+         ov+Bnz9f5OZwkgExXmuAhObDKWQdYKVmqGKxaNXONUDIcNX9qdGaMVHAax1ssGhrQWve
+         /CpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVOQXPekTvkEa4BS/9FkuMA+WhvKo76kQcsTuZ9jVfcgCKfSkN4NZEZhssisvOs/2Z66Xvca2s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOjbqWupHCp4odjVsFfeyAGjQjLtJeZRfsQQwMIAygr6ro+2N2
+	qstuxKNRD4OFI1ttPVuZzXis8lCB7ohc5Z/A6gt/92UA7I69Ip7Z/e3kndwaxraA35seypc8bYm
+	39Q5JOs1sEw5dRAxLhZaKHtazxwKAIB4mgV2Nbw==
+X-Gm-Gg: ASbGnct0xbqllfQqKg3ck6vXMYgjo3X//a/wjrLbJbUTIFI/743BMQ+T0iFtf/ppFhg
+	vhKx/QyEjWzrN4wEbPM1ucfBg7ChJoScLYUW4MGMT3ukAxXrNXYWGjKMc6RWRoe5nxUw5ddGJOg
+	2R9KFvgE8ji42CRmbJCKvv+6ulEzIODeXS0iTRjZQZcI1WQzbshIxu6+C4+NE=
+X-Google-Smtp-Source: AGHT+IGj8Dw4U+eeF7sIGfrMDe9UYe2B8e6lOzO+T2WvcpP+WqtXx/lQprwrxn5h08hxV0cYFANYLdXbJX4Cn0coQkw=
+X-Received: by 2002:a05:690c:d1c:b0:6fe:c803:b48e with SMTP id
+ 00721157ae682-6ff45fbdf22mr221807947b3.22.1742316306115; Tue, 18 Mar 2025
+ 09:45:06 -0700 (PDT)
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 18 Mar 2025 09:45:04 -0700
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 18 Mar 2025 09:45:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250317181622.2243629-1-henrique.carvalho@suse.com>
+from: KernelCI bot <bot@kernelci.org>
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 18 Mar 2025 09:45:04 -0700
+X-Gm-Features: AQ5f1Jqb8E4ntCF99_XZaL-L8q7y4RdEAF7vY6heFL1cOXZ2iScOwmZG85M6zG0
+Message-ID: <CACo-S-3_yGcwY9m8ops=+4FXw2tKs0ySER9wb6fWW80zOx0qew@mail.gmail.com>
+Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjYueTogKGJ1aWxkKSBpbXBsaWNpdA==?=
+	=?UTF-8?B?IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9uIOKAmHZ1bm1hcOKAmTsgZGlkIHlvdSBtZWFuIOKAmGt1bm1h?=
+	=?UTF-8?B?cOKAmT8gLi4u?=
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 17, 2025 at 03:16:22PM -0300, Henrique Carvalho wrote:
-> Fix a bug in match_session() that can causes the session to not be
-> reused in some cases.
-> 
-> Reproduction steps:
-> 
-> mount.cifs //server/share /mnt/a -o credentials=creds
-> mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-> cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
-> 
-> mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-> mount.cifs //server/share /mnt/a -o credentials=creds
-> cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
-> 
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-> Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
-> (cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
-> ---
->  fs/smb/client/connect.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
+Hello,
 
-I see 2 different versions of this, with no versioning.  Which one is
-correct?
+New build issue found on stable-rc/linux-6.6.y:
 
-Please fix up and send a v3 with the proper information, as-is I have no
-idea what to do :(
+---
+ implicit declaration of function =E2=80=98vunmap=E2=80=99; did you mean =
+=E2=80=98kunmap=E2=80=99?
+[-Werror=3Dimplicit-function-declaration] in io_uring/io_uring.o
+(io_uring/io_uring.c) [logspec:kbuild,kbuild.compiler.error]
+---
 
-thanks,
+- dashboard: https://d.kernelci.org/i/maestro:160797c1391e9c7479eace7259b46=
+a47c35c7db7
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git
+- commit HEAD:  52baa369b052eae3278dda3062d63a3058eb9cfe
 
-greg k-h
+
+Log excerpt:
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+io_uring/io_uring.c:2708:17: error: implicit declaration of function
+=E2=80=98vunmap=E2=80=99; did you mean =E2=80=98kunmap=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+ 2708 |                 vunmap(ptr);
+      |                 ^~~~~~
+      |                 kunmap
+io_uring/io_uring.c: In function =E2=80=98__io_uaddr_map=E2=80=99:
+io_uring/io_uring.c:2784:21: error: implicit declaration of function
+=E2=80=98vmap=E2=80=99; did you mean =E2=80=98kmap=E2=80=99? [-Werror=3Dimp=
+licit-function-declaration]
+ 2784 |         page_addr =3D vmap(page_array, nr_pages, VM_MAP, PAGE_KERNE=
+L);
+      |                     ^~~~
+      |                     kmap
+io_uring/io_uring.c:2784:48: error: =E2=80=98VM_MAP=E2=80=99 undeclared (fi=
+rst use in
+this function); did you mean =E2=80=98VM_MTE=E2=80=99?
+ 2784 |         page_addr =3D vmap(page_array, nr_pages, VM_MAP, PAGE_KERNE=
+L);
+      |                                                ^~~~~~
+      |                                                VM_MTE
+io_uring/io_uring.c:2784:48: note: each undeclared identifier is
+reported only once for each function it appears in
+io_uring/io_uring.c: In function =E2=80=98io_mem_alloc_single=E2=80=99:
+io_uring/io_uring.c:2863:37: error: =E2=80=98VM_MAP=E2=80=99 undeclared (fi=
+rst use in
+this function); did you mean =E2=80=98VM_MTE=E2=80=99?
+ 2863 |         ret =3D vmap(pages, nr_pages, VM_MAP, PAGE_KERNEL);
+      |                                     ^~~~~~
+      |                                     VM_MTE
+  CC      crypto/sha256_generic.o
+cc1: some warnings being treated as errors
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+
+
+# Builds where the incident occurred:
+
+## 32r2el_defconfig on (mips):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:67d98bca28b1441c081c56f5
+
+
+#kernelci issue maestro:160797c1391e9c7479eace7259b46a47c35c7db7
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
