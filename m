@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-124843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85330A679FA
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 17:45:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D41CCA67A00
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 17:45:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC98917D59D
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:45:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A9351888832
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C915E211479;
-	Tue, 18 Mar 2025 16:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01557211494;
+	Tue, 18 Mar 2025 16:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="rMr832RQ"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="dYinRwtH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C32E211486
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 16:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5542319DF64
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 16:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742316312; cv=none; b=kguO4KGZIng1X4jfNwdz4OIKOVN9N0c2svJMT0Zqtjvl8uinYsZz+1cWK46XcLVxcGjPbexterLQbLA1jp9jycIplYb7ra4Br6D7YYK8tb53XN75w8hzqSffl5CQWnrOkackTnu79GVxF1sGWRYYoAgVrbxOsbDN/hMmfA/55pQ=
+	t=1742316312; cv=none; b=YYNUhg9aR5LMcNtF05OKbER9DxvNjTT3IuUgn0HXm3AUwiGrPM9sEq0Uvk2gfKG/sOW/T2cAXOrHBcgktZPopTVdCdnn43x2b1YHr4CAjGHwkKsb8J5Gt+jdgPqla/vlGxskp1gOUABH2CAeiZp6M8P7WzntyClwaL/vG1RGT78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742316312; c=relaxed/simple;
-	bh=4pTkRWjc7YHthMdvqy8ZuVPShaPeSKOTHBe8noeDUZw=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=sqjPsqJgVR86TsC1yByoroT/0Xl6VMWXP9iNYt9wGWAVyFfwefjp5rSHudmOcfGqvgn/3Mk/pmWxZK4Mce8Z4iMeqA+Vf6ela5POFFQAAmPfEyWZZnIAPxMmrXBfbM0B+BwTVuZe1NYrF/4Igd6gJ86aWmFn3BURUDOobjHRgMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=rMr832RQ; arc=none smtp.client-ip=209.85.128.174
+	bh=pw9Y34BDWe6LnJBry1hRlMuSxholkGAsVqmLUCoHzW4=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=TTKCUcyyXbyYld4SNrszx2sqpJ7fCzcnvUSQ40NT/Nh3gHwydENIZv6Fmu2ImBqOu6RXGxlAzgMUD6zzVHef2bB2DBPe5qaSFYFbSWK0UZcc1H9Rfftjha/8ZA0owH1etPUf1xJTDMOGWyJDR8CP5xudwf0+g6Y0hj6fXqDCI6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=dYinRwtH; arc=none smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6fedf6aaed2so52415147b3.0
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6f754678c29so65936117b3.0
         for <stable@vger.kernel.org>; Tue, 18 Mar 2025 09:45:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1742316309; x=1742921109; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1742316310; x=1742921110; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
          :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Grgi3IFLGamzGFwXWlL6Z7lbOWKXd5kIRsFQ2PCerwk=;
-        b=rMr832RQFBB5AhnIhON46bJAs0n3yCCMKi0vzUxw+lTKP8Qd1NzXjF15dOrinzHtrf
-         w8EE/FdvFEv3Uu6weKjW+frNCiGYwoDPcqM8/ZcBF8slPz8TkXWSqh9WyY/aHtGwKPH6
-         KoVFvkhs6uBjxQ2Dwu7MP+ucDe6bGiLnZC3OmXqaf+toxVCkaUH6rGItPtvD/T3E0wmA
-         rdQuCkSDBZuTqBWyhlvhLyXUu6AY+7MzWnDkOEacZGYiO5ZVfyh636N+lyBhEIuayr9F
-         U1veOkjR7jDznCbjca7jQBIH8f3vSA5STOXNqStIwlN0qwb/x1MchaFSMDa/26keANih
-         cwZQ==
+        bh=dYNNWFgnQiGgXMlO8GkPI0BVH71Pgd+xw32not0PR1s=;
+        b=dYinRwtHaMH5DcNIX/v9MM1ga9n8RWp1APaXZ58TchDk3A7664UEHH9joR3kZ2Ggiq
+         dMRIwh0tHinKScMGO6AOWleXrvHW4Qb61fJmrZLPoJu5JTVY2M9basnSQuVe+DCIx/ru
+         sYLYSs0ZDVgWbFn2AZ2/dBFQjDN4ewaoPH7/41Kl1qkM1Qf6s/dHoFcWALOH+Jw2CYt5
+         9voRuLVBskcBVf23TJpnQVKaJnuKKxTlulgH253DtOV14y+1Lg78Y6n69zj5pV9jheol
+         ZVTZ41rxliede3Co6rTq11EkHjup4TSwVr63mrX1Jj+y1IIcvhQh81ELHR5DMFXgKNJR
+         j5aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742316309; x=1742921109;
+        d=1e100.net; s=20230601; t=1742316310; x=1742921110;
         h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
          :from:mime-version:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Grgi3IFLGamzGFwXWlL6Z7lbOWKXd5kIRsFQ2PCerwk=;
-        b=r1F5EPS9zuLngLz0hSNA2mbPXQyGS94Owd5wC0eaCAv0Y4JlBksY49hfG0UZJh/TnF
-         5w9kjlFsz6TcTeFVHXPLghSlz2DshIhD2bIUhPfsroDKbUQ9McpZjaYQcExk0D2zlDLR
-         Zq2OihxCSDh3CyJbux+PJIOGQMseBxrEBzHrYxzm8N9AAfSh4ABawWx5RWJi13DmKM3t
-         GhqWmfzp9T1ADCM2J5EPtO6py+oNAmoTLX8cMCNy4XLV/dmLwa7eA6Tvfq3b++bnxZNO
-         319WM2Nd8NwMyNQAPdhRl4ra02r7BbVZexsWIO8DgJLJ1+7poWJtt+vVEzDSNIUz0y9a
-         2Vyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVd75R04m1/xbFGvK4bYNzEWnq9ak8kJIyHMTABJxDA8lPOkMYZQKbA4hXUnqpV260bpZtAqh0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnDJdGxN2X/P51ggfetoVJkPTLnRbwSgyST9hZ54G+VfofUlja
-	oma6l+y0WpVbnr7v/47Vq6H1Uis6Kw0HMSf/4yje6WxJSkcqZblQKys4wbZI6dfccO2xXVbbqxh
-	KX2oEgdaj9FvP2GqJ0w/Y5kbccQOU1tVsbIcs49Jbd7b2F25Zxds=
-X-Gm-Gg: ASbGncsHTd0ZBbpPT0U5W7UPNiWWQxsWEwxmcYjCuOa6/CV92Anf1PO2xthBV+0d9dO
-	UWGfiGiSrzufAcq7OYYMWdM0TzEeV5MqXJpK3D4O7ZSqcOe7mRYkbmvdWh2RCMmH/+HMLkD8Sed
-	hCaOfLl6Q9f56MpJbqryyOzZrg5n5s251fYnfaXz4gAausNKyVHKaI8UfcZ7howt4xOBbT5A==
-X-Google-Smtp-Source: AGHT+IGAl2KmvD22sIQ5Oot996yjk4zVJCKy1PIVKLDVLlTsORs+2lkT+LgMutG2eD2frW3tafA+SQV1PacgFNAU60M=
-X-Received: by 2002:a05:690c:d89:b0:6f9:c487:2c26 with SMTP id
- 00721157ae682-6fff852d98amr62384157b3.15.1742316309458; Tue, 18 Mar 2025
- 09:45:09 -0700 (PDT)
+        bh=dYNNWFgnQiGgXMlO8GkPI0BVH71Pgd+xw32not0PR1s=;
+        b=qhDooxQRDKLQmw30pK2IoP+3izJ+iZ45dWGAw7W+0t498TVtZOY80ZaOwqJ1j5jhv8
+         UYOll70lltc/U3pLUayovUR94F0uAM4JsaS8ZzbNDZ2vxOaQ1RMU778nalFxyiZk8w9t
+         MhB5I5OvkExWzN9tHvUa4L7QZgAxMHJptMAmbdx0nFcYhd8u3hLyywYU82wtgyMmR8UR
+         aqRM5MRI62YNkzmy9gtqCTAD2GFP0TN2yF/vA2MnHtuffgI+wc1gWwa+SbRezLoInUZe
+         M7qu6o88NPW1+nbr8d8ZovJJwtAPbV8zEaFTt7tWRdftnmSdv30ViBn590zjic9Zu8VM
+         g5qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX17W954/vCnQCPJdQvHjYzZjXJmPPfetuwcSXArvhNPMats6dCHX1xHPrm0FXDhbXaacu1UEw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxU9FsKvPbMiRNAbQ2ndYx2AoGoWQesp7fBV2cy4vEAThp7dK89
+	1DiX/YIHmtiEWzkA3NgUaSs9pHEvRyOqwtXlzIpA9BegQmEHXVIyegoSuzgShrnqCvftkYKreun
+	Qq06EZMz0MeTyhNXaAF04VnvgEjYxjsOrJclsMw==
+X-Gm-Gg: ASbGncs/L+CzVGMVxP9FxXuC661+RnLfLDO/j4CDJ6ti8voKpN2h/sgKIpWtk0oGfol
+	9rpqgEiLKjFN1pe7NDrLDbEjsouCTATmJ9wPcCqFRunFQQTzLBMRxd9oPhNg3PJS9h1QlP4Wa7/
+	F18INExkYgKVfHX45QjUuT3BkS8BqDJg9GCIFqilubU1KPrzlksjHKVD38XGU=
+X-Google-Smtp-Source: AGHT+IGwAJjmDDp8Td//DuOC0b9ysTYF7x3XsjhhY/CmeJGd/pQV6FSmV+iUmt6gbtXe7w/m1y+VUwrIZ968MpK356c=
+X-Received: by 2002:a05:690c:670e:b0:6fe:e79f:bd8f with SMTP id
+ 00721157ae682-6ff460ce8femr233380397b3.26.1742316310242; Tue, 18 Mar 2025
+ 09:45:10 -0700 (PDT)
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 18 Mar 2025 09:45:08 -0700
+ HTTPREST; Tue, 18 Mar 2025 09:45:09 -0700
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 18 Mar 2025 09:45:08 -0700
+ HTTPREST; Tue, 18 Mar 2025 09:45:09 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,12 +78,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 from: KernelCI bot <bot@kernelci.org>
 Reply-To: kernelci@lists.linux.dev
-Date: Tue, 18 Mar 2025 09:45:08 -0700
-X-Gm-Features: AQ5f1JrKo10wmx1_Be5fcapc5JEY3BYp68HGURi_tkr0XbDgjZaKxsjuaqLP_pc
-Message-ID: <CACo-S-2id8EdJDOEXu3=DGcPUS-2opiFA__ZWf-z1utYebCfpg@mail.gmail.com>
-Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjYueTogKGJ1aWxkKSDigJhmYl9jZQ==?=
-	=?UTF-8?B?bnRlcl9sb2dv4oCZIHVuZGVjbGFyZWQgKGZpcnN0IHVzZSBpbiB0aGlzIGZ1bmN0aW9uKTsgZGlkIHlv?=
-	=?UTF-8?B?dSAuLi4=?=
+Date: Tue, 18 Mar 2025 09:45:09 -0700
+X-Gm-Features: AQ5f1Jo_ldOJoAuep5UmBxj4nHsgkoEYe5oboILt1OOKM73T8gqXwH-qNxyCZlU
+Message-ID: <CACo-S-0_+v=Yxwg=xbkyowAvYXTtZs+nKZSM=1KVFrmxqbAOMw@mail.gmail.com>
+Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjEueTogKGJ1aWxkKSBpbXBsaWNpdA==?=
+	=?UTF-8?B?IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9uIOKAmHZ1bm1hcOKAmTsgZGlkIHlvdSBtZWFuIOKAmGt1bm1h?=
+	=?UTF-8?B?cOKAmT8gLi4u?=
 To: kernelci-results@groups.io
 Cc: gus@collabora.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -91,45 +91,50 @@ Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
-New build issue found on stable-rc/linux-6.6.y:
+New build issue found on stable-rc/linux-6.1.y:
 
 ---
- =E2=80=98fb_center_logo=E2=80=99 undeclared (first use in this function); =
-did you
-mean =E2=80=98fb_prepare_logo=E2=80=99? in drivers/video/fbdev/core/fbcon.o
-(drivers/video/fbdev/core/fbcon.c)
-[logspec:kbuild,kbuild.compiler.error]
+ implicit declaration of function =E2=80=98vunmap=E2=80=99; did you mean =
+=E2=80=98kunmap=E2=80=99?
+[-Werror=3Dimplicit-function-declaration] in io_uring/io_uring.o
+(io_uring/io_uring.c) [logspec:kbuild,kbuild.compiler.error]
 ---
 
-- dashboard: https://d.kernelci.org/i/maestro:e495b4ec34845e228a5f1639d0ec8=
-05fdbb6e7c0
+- dashboard: https://d.kernelci.org/i/maestro:cbcc52388974e489070975f640bce=
+79475aeb50a
 - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
 le-rc.git
-- commit HEAD:  52baa369b052eae3278dda3062d63a3058eb9cfe
+- commit HEAD:  463226a52e45030747cdf2c689bf719e1ab21055
 
 
 Log excerpt:
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D
-drivers/video/fbdev/core/fbcon.c:478:33: error: =E2=80=98fb_center_logo=E2=
-=80=99
-undeclared (first use in this function); did you mean
-=E2=80=98fb_prepare_logo=E2=80=99?
-  478 |                                 fb_center_logo =3D true;
-      |                                 ^~~~~~~~~~~~~~
-      |                                 fb_prepare_logo
-drivers/video/fbdev/core/fbcon.c:478:33: note: each undeclared
-identifier is reported only once for each function it appears in
-  CC      fs/ubifs/budget.o
-drivers/video/fbdev/core/fbcon.c:485:33: error: =E2=80=98fb_logo_count=E2=
-=80=99
-undeclared (first use in this function); did you mean =E2=80=98file_count=
-=E2=80=99?
-  485 |                                 fb_logo_count =3D
-simple_strtol(options, &options, 0);
-      |                                 ^~~~~~~~~~~~~
-      |                                 file_count
+io_uring/io_uring.c:2540:17: error: implicit declaration of function
+=E2=80=98vunmap=E2=80=99; did you mean =E2=80=98kunmap=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+ 2540 |                 vunmap(ptr);
+      |                 ^~~~~~
+      |                 kunmap
+io_uring/io_uring.c: In function =E2=80=98io_mem_alloc_single=E2=80=99:
+io_uring/io_uring.c:2588:15: error: implicit declaration of function
+=E2=80=98vmap=E2=80=99; did you mean =E2=80=98kmap=E2=80=99? [-Werror=3Dimp=
+licit-function-declaration]
+ 2588 |         ret =3D vmap(pages, nr_pages, VM_MAP, PAGE_KERNEL);
+      |               ^~~~
+      |               kmap
+io_uring/io_uring.c:2588:37: error: =E2=80=98VM_MAP=E2=80=99 undeclared (fi=
+rst use in
+this function); did you mean =E2=80=98VM_MTE=E2=80=99?
+ 2588 |         ret =3D vmap(pages, nr_pages, VM_MAP, PAGE_KERNEL);
+      |                                     ^~~~~~
+      |                                     VM_MTE
+io_uring/io_uring.c:2588:37: note: each undeclared identifier is
+reported only once for each function it appears in
+  CC      fs/read_write.o
+  CC      kernel/bpf/core.o
+cc1: some warnings being treated as errors
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -138,38 +143,12 @@ simple_strtol(options, &options, 0);
 
 # Builds where the incident occurred:
 
-## cros://chromeos-6.6/arm64/chromiumos-mediatek.flavour.config+lab-setup+a=
-rm64-chromebook+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_MODULE_COMPRESS_NONE=3Dy
-on (arm64):
+## 32r2el_defconfig on (mips):
 - compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67d98b4f28b1441c081c5566
-
-## cros://chromeos-6.6/x86_64/chromeos-amd-stoneyridge.flavour.config+lab-s=
-etup+x86-board+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_MODULE_COMPRESS_NONE=3Dy
-on (x86_64):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67d98b5428b1441c081c558c
-
-## cros://chromeos-6.6/x86_64/chromeos-intel-pineview.flavour.config+lab-se=
-tup+x86-board+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_MODULE_COMPRESS_NONE=3Dy
-on (x86_64):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67d98b5928b1441c081c558f
-
-## multi_v5_defconfig on (arm):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67d98b8f28b1441c081c5622
-
-## multi_v7_defconfig on (arm):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67d98b8028b1441c081c55fe
-
-## multi_v7_defconfig+kselftest on (arm):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:67d98b8a28b1441c081c561f
+- dashboard: https://d.kernelci.org/build/maestro:67d98b2228b1441c081c54ba
 
 
-#kernelci issue maestro:e495b4ec34845e228a5f1639d0ec805fdbb6e7c0
+#kernelci issue maestro:cbcc52388974e489070975f640bce79475aeb50a
 
 Reported-by: kernelci.org bot <bot@kernelci.org>
 
