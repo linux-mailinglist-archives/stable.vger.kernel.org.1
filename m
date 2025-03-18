@@ -1,148 +1,175 @@
-Return-Path: <stable+bounces-124767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09EAA66B6E
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 08:20:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F68A66C37
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 08:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D59C318968C7
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 07:20:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56C1819A297C
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 07:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914231E51FE;
-	Tue, 18 Mar 2025 07:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1751D1E5B8C;
+	Tue, 18 Mar 2025 07:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iITyY2T4"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="qoVpQzNR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35361B0402
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 07:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7767E9
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 07:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742282406; cv=none; b=m74yc9GUCP6PFJtGPDr9Z7lx2Ut4wRk+iD8JNRWKRIM3uYz0OcZnnzCD5QHycYHOyWciTb8BJQ/PSiyJjNzWLOaG+3GJOxVaUMx1QWjyB9NEAQV/gb20l/kQNeifaMDZdeHuEOUIAKEvvJbH8AKRB7DFTIH+9JmGJ66lCYEkoR4=
+	t=1742283488; cv=none; b=LZxupiEZKtQvcJcuXsRLUHih4sGvb2Dp6iKeFyVrQ4jka3/n1X/ySFEWjBWEBP7qHAS2mZs2tCYIdlbKRbzIvt4tK0SE83BccPvEMrqbW0uodj/awtpEltlVKEgzx783CFhRsV4VLA90phoXP4WDDeVAOTuy21iC5S6N/k2Jw8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742282406; c=relaxed/simple;
-	bh=/FqvHLHh3l3qpRKxK3+0ll66WXp6kEuOb87cz5vDWY8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=f2hGsHaS7AptIFHgFEkGX2/AbkvZsayQRUfZjRQ9Lojs584kb3zD2s41M2ajpSETLdR/Innxg0TA7+tW76raEkNUU/72tqbMWvIud4Lbh0z7RLWWTnXcbmnJlQA9eqYCKkXd8TUdJu0r00IuH+ZsokbjQu30MRfswaS5eTg9fmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iITyY2T4; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aaf0f1adef8so455590166b.3
-        for <stable@vger.kernel.org>; Tue, 18 Mar 2025 00:20:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742282403; x=1742887203; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Y2N+i92fAmW5afCtJ+wC4iVqk8jRVUIClCZRAiQ7H2Q=;
-        b=iITyY2T4d/h4jKGz+G8BVHp6xD2OdDy0llxiAA84YAuU8BJilvz6kiGJsDo8dH7X61
-         rYY+H5WxtwsZ1c8xt/7WYifuptxB7PnEgr3VaUcwCT7JP9BZKIoCDVFJ2OhVTivtgbGA
-         Mh7a3xcbHrWF4IULz5Kww9PkqdkDe3yE5uORe0I5A2kmMdQMAttzSE2l9Ab5E5pXmWuk
-         h7+f126Iw5SYxAXH7wt4Y/BAcqIfo1faGSrxqnRe62/3EdFE9AE4ZKKOdCaBWvhfdlpY
-         wD6cY7RUq5FmRdKvT9P8VwGj8A7HpZ/0a7JraKcJn2rlEY6deZSUOUrJxIWkcUUztjIK
-         k2Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742282403; x=1742887203;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y2N+i92fAmW5afCtJ+wC4iVqk8jRVUIClCZRAiQ7H2Q=;
-        b=MgO6JMtrt6PyuvGnvlSNGg3KhT7AGESOYUJ/ovUeJQ9MYUw2B9iJ9+o2OHglf+cMls
-         AImdHdiTaeJB5vLwhkJq8RP+i3wgryR9E4ZlzvZcf6P2xW5CuMdKKC4dABiXzxVZUGuY
-         SVxSFWgypBLFIcQ6kz/UUkI4qQmfMlkuslOuo/VL2Rg8s0g4iOVF/qzcrr0KjPbd/9cv
-         wSmxx3vh4y6OjTClxi5NAaqi5chJrdYV62JNcl/otb6QZ3ZF2/pgjnnrzVgDkNUMaIal
-         APMDcJiCbO8ezLpQuIb1pgTdRpRn/V4ElcbhV6a4Y5U5r9kDdcgLlFwh8tHfZUF94QWE
-         uQ0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUg5g1Ll95q7aA43+bXBjK5B/crK7GNzZb3waa6X8XIMHoC8BOPIPvUZbE6q75HaufdEpsi/XI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzD0aHbBkXoQWriXavvUOjZMJOqVXk14GjFFOZIXzpXX9auAAVL
-	npD0wlNKihDqCjF2W2Kiegpka7lXAX0EW2sDF1u5HFLPk3HGmQfL
-X-Gm-Gg: ASbGncuUw7drK5GrJNgQK9BDYTdlzpw05xsekmh1iSi2jlm2a8jw0wP4IzvNIq2rIX7
-	gNgUn1iH6kRylTD89/2XGChEwrGtEccO01cuHflY9i6YC9vJqqWobKXvrEYAJPDR0h0/TBeBw9f
-	U+vF/Nu0+XgHnbSgRiXhaGMPz4afe77Up7hi9bHZm9lU9K4dZf2Y/6IHotPAwalVAfMaFMwYHB4
-	djKNecIr6HTEp0EVOsQgF8havP3QHTxTK3gxi20Cw8sT1UWJmEv3onLOqCeUHD+GgmHnSm9NFZi
-	oMXZsfdS7kFnesRbSO7oVyc6b2ugLBpJfvRvj0cP50UE
-X-Google-Smtp-Source: AGHT+IFTrUaIZvqpSOupkfSU++2j4fNVNAxXa+4OPtJq3dlti+yGn7AS1teR3IpPUf3Y+VUdCzBPvg==
-X-Received: by 2002:a17:906:6a27:b0:ac2:7be7:95c5 with SMTP id a640c23a62f3a-ac3303225c3mr1613675066b.33.1742282402610;
-        Tue, 18 Mar 2025 00:20:02 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac314858a8fsm781703766b.80.2025.03.18.00.20.02
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 18 Mar 2025 00:20:02 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: rppt@kernel.org,
-	akpm@linux-foundation.org,
-	yajun.deng@linux.dev
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
+	s=arc-20240116; t=1742283488; c=relaxed/simple;
+	bh=TNHzETrAs9ASf/mtzKZatO+VZMHOF5LR6xLiaqtUUAA=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=uc7CMU9ehDcwEdrZuitZW2nZqEpVri2jvdT8fMImyx0sBd4Fa1VScUSERQPF/sCm/bEL4hI8buLJNI6lWEp+CFAtanN9/WO3gwFM+1gKXV44fPYA8qunFXyLIRxbN1865ZEZYnubrPdxn1w775hYl+mY4iIO7d52q8QxS+VuREY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=qoVpQzNR; arc=none smtp.client-ip=162.62.58.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1742283169;
+	bh=t3BQVJQf18D27DHzSxfer3fRuqW4K7UlYytGbRnKP1A=;
+	h=From:To:Cc:Subject:Date;
+	b=qoVpQzNRH/8ylBxPniFdKuHC9XL+RcuhKe1CD4DKdgd6iORVDG7CpHlWLjrY1tAeH
+	 E7VG8M5Pi/O6n6GqP7cNly3ztTbBdlfCaAmGQcH4//LOGTdgQbp2dKDFtT153mdIU4
+	 vUt1LsHndhvr8ezsPAekwdjq3EyJUO7X6S1ld2Yo=
+Received: from pek-blan-cn-l1.corp.ad.wrs.com ([120.244.194.128])
+	by newxmesmtplogicsvrsza36-0.qq.com (NewEsmtp) with SMTP
+	id 82496A07; Tue, 18 Mar 2025 15:32:36 +0800
+X-QQ-mid: xmsmtpt1742283156tz5xpbyhf
+Message-ID: <tencent_891A70685F6B183EE224B3AC4F70FC60DC09@qq.com>
+X-QQ-XMAILINFO: NnYhxYSyuBnLki+715JwhiCwrWWOitK/aWX4aTmSto519E3HchcKW5FmePghM3
+	 Y00qw2syQX5RfoW0gp3TGqh6Wq2RSwN8mbLamb719AmJpEVtBnTiEDJ8FAFsvwTNWBN6YO7DMJRf
+	 SJQX7PSEFBaFBbk9ARfpAZiHNXVWcrPNlkGv1DAuCMivtJtba5iYW15OvoBT7TNFzrujU+23SpRM
+	 HucRhhfySqae1ZwyHXaNGrRmU4E3ALb+PLcZI9k/tddrEbP4bR9OAGBBasWn/3iALveAbNz2gGMO
+	 yobDKOZenL098eGlSDZmviaHIqkCvQ9CoRhLXs/UN9Y1LnMUCh5/Z/IJ13Tfn3hLSrNYR3EwuvAK
+	 9ts79BDHSimskCwPncgwluFxRp8T1xfsWQ9ka9FcOOgZdRVqMhPt3MKlZ1/aukTdeqVcB8UeFjzC
+	 OIhf5wWBcTNvsLORsdbhV9T64J9mWtjQmaBl4UIDTbd+PhxqwBQMCF71tHUurj94GSqf9qoHT2Pr
+	 wINmSCUKVVt6DspS+zQKU0uY5EWnOyDJv3D7zEC8Sdl1LCMNAcrmPCsDF77LM2D3+TdB39IJ1zsy
+	 ULqXfClQMyWMV/oSHLDaE2olxbqEgI3Q66vN4vqHF/1+IQleW5d69m7E7xzp6pRARqPcMRSCIPFc
+	 GhSYehykJZ5QjkV+0NplGbPChvN3G9kbKnImmDHgfTaDTdhMa4WM9NAYfg0RslOXKaHRyC90p2yK
+	 A4B3xsNTWvxpiBHZQqDnjrz/KS1F8db+Mx2pg9kz/IUu7cS5jMMb2nnQ+Lbl63WsOOLeRnXo7Q1c
+	 AMAs8ejNiA6qw6ccD95DCPbssP7KgV5HKd+J99A29PZrqClHCeRYAmNb4cFHN/YfKR+/SOnhnXDi
+	 XeRBRjxU1/xkSW00Gbzn+wrz5EXUmIa7FaeDka9HVWurUd2Wc91xP1Y76OWsRZ51q+ciVso3zuqw
+	 BnzMwBE3XrYTBRzmJpf7zYuKMqvLcffyobaJOsfws=
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From: alvalan9@foxmail.com
+To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: [Patch v2 2/3] mm/memblock: repeat setting reserved region nid if array is doubled
-Date: Tue, 18 Mar 2025 07:19:47 +0000
-Message-Id: <20250318071948.23854-3-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20250318071948.23854-1-richard.weiyang@gmail.com>
-References: <20250318071948.23854-1-richard.weiyang@gmail.com>
+Cc: Kang Yang <quic_kangyang@quicinc.com>,
+	David Ruth <druth@chromium.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.15.y] wifi: ath10k: avoid NULL pointer error during sdio remove
+Date: Tue, 18 Mar 2025 15:32:34 +0800
+X-OQ-MSGID: <20250318073234.1166-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Commit 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()") introduce
-a way to set nid to all reserved region.
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-But there is a corner case it will leave some region with invalid nid.
-When memblock_set_node() doubles the array of memblock.reserved, it may
-lead to a new reserved region before current position. The new region
-will be left with an invalid node id.
+[ Upstream commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a ]
 
-Repeat the process when detecting it.
+When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
+workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
+is set to yes, kernel panic will happen:
+Call trace:
+ destroy_workqueue+0x1c/0x258
+ ath10k_sdio_remove+0x84/0x94
+ sdio_bus_remove+0x50/0x16c
+ device_release_driver_internal+0x188/0x25c
+ device_driver_detach+0x20/0x2c
 
-Fixes: 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-CC: Mike Rapoport <rppt@kernel.org>
-CC: Yajun Deng <yajun.deng@linux.dev>
-CC: <stable@vger.kernel.org>
+This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
+ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
+will finally be called in ath10k_core_destroy(). This function will free
+struct cfg80211_registered_device *rdev and all its members, including
+wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
+workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
 
+After device release, destroy_workqueue() will use NULL pointer then the
+kernel panic happen.
+
+Call trace:
+ath10k_sdio_remove
+  ->ath10k_core_unregister
+    ……
+    ->ath10k_core_stop
+      ->ath10k_hif_stop
+        ->ath10k_sdio_irq_disable
+    ->ath10k_hif_power_down
+      ->del_timer_sync(&ar_sdio->sleep_timer)
+  ->ath10k_core_destroy
+    ->ath10k_mac_destroy
+      ->ieee80211_free_hw
+        ->wiphy_free
+    ……
+          ->wiphy_dev_release
+  ->destroy_workqueue
+
+Need to call destroy_workqueue() before ath10k_core_destroy(), free
+the work queue buffer first and then free pointer of work queue by
+ath10k_core_destroy(). This order matches the error path order in
+ath10k_sdio_probe().
+
+No work will be queued on sdio workqueue between it is destroyed and
+ath10k_core_destroy() is called. Based on the call_stack above, the
+reason is:
+Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
+ath10k_sdio_irq_disable() will queue work on sdio workqueue.
+Sleep timer will be deleted before ath10k_core_destroy() in
+ath10k_hif_power_down().
+ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
+ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
+bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
+
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
+
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Tested-by: David Ruth <druth@chromium.org>
+Reviewed-by: David Ruth <druth@chromium.org>
+Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 ---
-v2: move check out side of the loop
----
- mm/memblock.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/ath/ath10k/sdio.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 85442f1b7f14..0bae7547d2db 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2179,11 +2179,14 @@ static void __init memmap_init_reserved_pages(void)
- 	struct memblock_region *region;
- 	phys_addr_t start, end;
- 	int nid;
-+	unsigned long max_reserved;
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 63e1c2d783c5..b2e0abb5b2b5 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -3,6 +3,7 @@
+  * Copyright (c) 2004-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
++ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
- 	/*
- 	 * set nid on all reserved pages and also treat struct
- 	 * pages for the NOMAP regions as PageReserved
- 	 */
-+repeat:
-+	max_reserved = memblock.reserved.max;
- 	for_each_mem_region(region) {
- 		nid = memblock_get_region_node(region);
- 		start = region->base;
-@@ -2194,6 +2197,13 @@ static void __init memmap_init_reserved_pages(void)
+ #include <linux/module.h>
+@@ -2648,9 +2649,9 @@ static void ath10k_sdio_remove(struct sdio_func *func)
  
- 		memblock_set_node(start, region->size, &memblock.reserved, nid);
- 	}
-+	/*
-+	 * 'max' is changed means memblock.reserved has been doubled its
-+	 * array, which may result a new reserved region before current
-+	 * 'start'. Now we should repeat the procedure to set its node id.
-+	 */
-+	if (max_reserved != memblock.reserved.max)
-+		goto repeat;
+ 	netif_napi_del(&ar->napi);
  
- 	/*
- 	 * initialize struct pages for reserved regions that don't have
+-	ath10k_core_destroy(ar);
+-
+ 	destroy_workqueue(ar_sdio->workqueue);
++
++	ath10k_core_destroy(ar);
+ }
+ 
+ static const struct sdio_device_id ath10k_sdio_devices[] = {
 -- 
 2.34.1
 
