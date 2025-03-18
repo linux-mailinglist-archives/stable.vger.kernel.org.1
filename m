@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1AA1A6775D
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:13:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97918A6775F
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:13:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A85DA3B8A5B
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:12:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E70A3B9061
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BAC20E700;
-	Tue, 18 Mar 2025 15:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C3520E702;
+	Tue, 18 Mar 2025 15:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zw5s3XEJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H91Ep2PL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BDC20A5E5
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 15:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0151E20E6EE
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 15:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742310768; cv=none; b=rizJ+/0b8EL8pbehHTsglC5xub4L9IRYZoB9BlMhKGp1urolRWGM2LJM0cUhDruvDVch3qV1imS9NmkAc7mnha0zBrooysS//MTew282tnjlvsmkq4FMRr9N2DerZ1ntuxnobcmj2jjiZxkMo0Mg5WuQ2etT3t8hhStaLX1mRgs=
+	t=1742310771; cv=none; b=VK5tW69//wQ6eZBqamdqPYwRO6lLH4B3BunBinioRBCR/e7VAXVu8JLPdOnU8FqY8OA3kpfzH5EebVGwIyOuGpRzgMszN02+d4U8CiXVxgBzwOOy8c/OC+pEiBc8spuJr98u+uSokW4wt2Xbjpwkpy/+Mf4ys9GLKM4Z/+13xj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742310768; c=relaxed/simple;
-	bh=0KiltTi/H/knPweV5fMxOgH24xO0eIeLVgzzjz9UaHw=;
+	s=arc-20240116; t=1742310771; c=relaxed/simple;
+	bh=Ec2ylzMS0vOHKbkAbiXplj0D5k6hQIhtcvjl8GYj65k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TZViyo5TPHzsgefBS4lH2S0gI9Lo7Z7s8OTJ7crlPFY/wl8O9BVUwt6hs/LU8EO1lxbczgUYEWTUygf6wbRyNudV3bmGkHtCaKQBfbZJgrt1Khk8BDzIbVLcbky8w/URehsmjXiAX/PJ1EuxtSSSpYNNb92tJU9kWDbDYthhtR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zw5s3XEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E402AC4CEDD;
-	Tue, 18 Mar 2025 15:12:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MeRhFYCF70rExW558mUTfqxD4G58N+0tBYK4Gji/KGcM6DmQrCcQ+cOqIi5/aGM+4Q8fcHngqWQ3bg62yAZp4fel5tyh1U7zkhiLKdPX10/PSX9EARNAn9Xtkc5awkP+qg55A4K4fuQb3tOw2IMM5X2YIUXPDgRGl/ManBdXpW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H91Ep2PL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B069C4CEDD;
+	Tue, 18 Mar 2025 15:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742310768;
-	bh=0KiltTi/H/knPweV5fMxOgH24xO0eIeLVgzzjz9UaHw=;
+	s=k20201202; t=1742310770;
+	bh=Ec2ylzMS0vOHKbkAbiXplj0D5k6hQIhtcvjl8GYj65k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zw5s3XEJzxWCWgXO5x3L4QXArXahQ7eE2/3oMIOftZ8UH9DMsg8u6t83GszibA+TY
-	 zrG0s+vzLeA1tfRPPHzqoVECnH38SOZlxde9F44aHTDsP1flgA7nRGYY7e8H9pMfjy
-	 G5I3fcpsRrQbpvNxQifHqCdbfVT24l1urcfvrcinn69dmIETh1w+hgXZAbN9LkkLL3
-	 SShngDhvsk+FhkC7NYCBKdULjTxbbTdzY3dl6PnEwV7YLiJrs0DxWeZHLxv0BgPvdY
-	 tcPH6QWX0Vmi2FsmZd9LH5YPQk5SvRZhsioHlBX6RZ2cpRxaBafFwDgbiGDcMXFAmR
-	 twKDdVLUjbkMg==
+	b=H91Ep2PL0gC7bd7laswtVkhJe4Xjy1Gv/ArB5KvNJ6hUYfL+7LlcQRniG4HYuacJo
+	 Awp6cIUdIXtbYES/8WVimvjhSGCf+HkoxdwwZzL+npFsfp2ewKhVWc3kuOGpw81wcB
+	 8fGzM125u3A0y2n7BnCtpSbYJrV1mfnnXyHFyerpDACtplPGczSG1WQqZwTCmRppwl
+	 Mdl5N5kv1mLJGCUL2FfJR+GeoH58modVeKCUIgq2ph940hRk189e8Bo2yuJutwt/L5
+	 6SaqVbayZ44lXjzFxIsVaMYDgBIo4XHD73Sh+kWsO31fRkmwd1//bGvpB6zwBED3Uj
+	 RamYhtKXjpMVg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	henrique.carvalho@suse.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] smb: client: Fix match_session bug preventing session reuse
-Date: Tue, 18 Mar 2025 11:12:46 -0400
-Message-Id: <20250317205350-054a32c01eb5e099@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Kamal Dasu <kamal.dasu@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH stable 5.4] mmc: cqhci: Fix checking of CQHCI_HALT state
+Date: Tue, 18 Mar 2025 11:12:48 -0400
+Message-Id: <20250317205909-5917d677600d7181@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250317222108.2656094-1-henrique.carvalho@suse.com>
+In-Reply-To:  <20250317220306.44646-1-kamal.dasu@broadcom.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,67 +64,54 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 605b249ea96770ac4fac4b8510a99e0f8442be5e
+The upstream commit SHA1 provided is correct: aea62c744a9ae2a8247c54ec42138405216414da
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Kamal Dasu<kamal.dasu@broadcom.com>
+Commit author: Seunghwan Baek<sh8267.baek@samsung.com>
 
 Status in newer kernel trees:
-6.13.y | Present (different SHA1: 4a133bda03ec)
-6.12.y | Present (different SHA1: 3d48d46299be)
-6.6.y | Present (different SHA1: 3fbc1e703fba)
-6.1.y | Present (different SHA1: d4942cd6ac83)
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: a7fa220ebb41)
+6.1.y | Present (different SHA1: ae7b2bd3d458)
+5.15.y | Present (different SHA1: c0f43b1f1f7d)
+5.10.y | Present (different SHA1: c6bd80f58522)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  605b249ea9677 ! 1:  b3ee73e91ec7f smb: client: Fix match_session bug preventing session reuse
-    @@ Commit message
-         Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-         Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-         Signed-off-by: Steve French <stfrench@microsoft.com>
-    +    (cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
+1:  aea62c744a9ae ! 1:  e62d1070a5f40 mmc: cqhci: Fix checking of CQHCI_HALT state
+    @@ Metadata
+      ## Commit message ##
+         mmc: cqhci: Fix checking of CQHCI_HALT state
      
-    - ## fs/smb/client/connect.c ##
-    -@@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
-    - 			 struct smb3_fs_context *ctx,
-    - 			 bool match_super)
-    + ## fs/cifs/connect.c ##
-    +@@ fs/cifs/connect.c: cifs_get_tcp_session(struct smb3_fs_context *ctx)
-    + 
-    + static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
-      {
-     -	if (ctx->sectype != Unspecified &&
-     -	    ctx->sectype != ses->sectype)
-    @@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
-     +	struct TCP_Server_Info *server = ses->server;
-     +	enum securityEnum ctx_sec, ses_sec;
-      
-    - 	if (!match_super && ctx->dfs_root_ses != ses->dfs_root_ses)
-    - 		return 0;
-    -@@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
-    - 	if (ses->chan_max < ctx->max_channels)
-    - 		return 0;
-    + 	/*
-    + 	 * If an existing session is limited to less channels than
-    +@@ fs/cifs/connect.c: static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
-    + 	}
-    + 	spin_unlock(&ses->chan_lock);
-      
-     -	switch (ses->sectype) {
-     +	ctx_sec = server->ops->select_sectype(server, ctx->sectype);
-    @@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
-     +		return 0;
-     +
-     +	switch (ctx_sec) {
-    -+	case IAKerb:
-      	case Kerberos:
-      		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
-      			return 0;
+    +    commit aea62c744a9ae2a8247c54ec42138405216414da upstream
+    +
+         To check if mmc cqe is in halt state, need to check set/clear of CQHCI_HALT
+         bit. At this time, we need to check with &, not &&.
+     
+    @@ Commit message
+         Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+         Link: https://lore.kernel.org/r/20240829061823.3718-2-sh8267.baek@samsung.com
+         Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+    +    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    +    Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+     
+    - ## drivers/mmc/host/cqhci-core.c ##
+    -@@ drivers/mmc/host/cqhci-core.c: static int cqhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
+    + ## drivers/mmc/host/cqhci.c ##
+    +@@ drivers/mmc/host/cqhci.c: static int cqhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
+      		cqhci_writel(cq_host, 0, CQHCI_CTL);
+      		mmc->cqe_on = true;
+      		pr_debug("%s: cqhci: CQE on\n", mmc_hostname(mmc));
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
