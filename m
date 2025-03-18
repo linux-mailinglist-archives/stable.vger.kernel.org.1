@@ -1,53 +1,69 @@
-Return-Path: <stable+bounces-124830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55423A678BE
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 17:09:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5EDA679AE
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 17:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E567E177689
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:09:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F768872E2
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9E620F075;
-	Tue, 18 Mar 2025 16:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D465521146C;
+	Tue, 18 Mar 2025 16:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="G00vL180"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from smtp-42ac.mail.infomaniak.ch (smtp-42ac.mail.infomaniak.ch [84.16.66.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DBF1E8334;
-	Tue, 18 Mar 2025 16:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1E0211283
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 16:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742314171; cv=none; b=poDOpKs6eWLGDEoiMk9kcxaAr4AsUl8k4U9dSqNTKVzQh8CerUFeUDeFSzl9uuStMSJwzISu3WfECbjczHHId0wvo04hKZMnCpiB/Sl8JDQnJCh2drnc2GewLyRwu99j6heN8mzsgNptK7OZL/WjzTQn8ALsiEuMbRGlpGa4hRk=
+	t=1742315422; cv=none; b=lyZkNi8D/Agm4N/W71WynEv0V/qgTBsTIKMlDaozUl5AaYilc5FS2ulpilkejk6JVptJCvfGwPmKuimmO5hdD+kQ0ULg36GuBkOUu9sM6WfuFwKXjFmiwQJdJLspmYB44A/E73wWLIxIUq2h0Y6FRZ6PvhsJ2eNrVZoy9zvGUzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742314171; c=relaxed/simple;
-	bh=xyy1nidpm2NckiLYGWHxIMTkjl1fascaNCIbAZgR9NI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BukvHcSqTOG6gSKSnbA+DpcKfB2v48KqefB+3aKK7ILKtMFYRrKYil1WGadDychX30WyA/vDTVH3bkgqWgK5inMMGFOUGjmo6FYqHMbuGoKHNCDRzKYh1Aqlvc58BTZM27d2V75pG94pBI1Q/I12s19c6lSY0254FBokJDdvTLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from abreu.molgen.mpg.de (g43.guest.molgen.mpg.de [141.14.220.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 55D0A61CCD8A3;
-	Tue, 18 Mar 2025 17:09:13 +0100 (CET)
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>,
-	Anton Shyndin <mrcold.il@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	All applicable <stable@vger.kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
-Date: Tue, 18 Mar 2025 17:09:02 +0100
-Message-ID: <20250318160903.77107-1-pmenzel@molgen.mpg.de>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1742315422; c=relaxed/simple;
+	bh=xZaWexEDQ0Q2wevcBVlIoz1JKXTpd5HEmCRzQZwf9kI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VoXLk0a4PgymaCNZv/mokSlw+xmslE6VV6NC4Z+Kdc7WUT4EGSrn+2b6eIJHMCXwGdLiF1x4jwHDgTLFTsub+MLS3g462se/eHtFg4F4Cs6+L349bbz2MHGT7l+A7eybT+G0kzUuKPQNZs8IpzZD00xRtIThWs4oB+IzbnN1YsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=G00vL180; arc=none smtp.client-ip=84.16.66.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4ZHH3w01gWzH5m;
+	Tue, 18 Mar 2025 17:14:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1742314491;
+	bh=4Ty/PA3beqWO8MWsel8drwatVfnYdf1jE7VZ1AhJNG8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G00vL180SUrGBAkP6sWfDo1AB0CMk7bkeCr10+9B+4kndaDxa3y90PvyXUAvKz7Ra
+	 j+W/o73fGq04/1K+pUtKEgHELraCtkqw+jq54rJCtVTnpZTSc91TxxK/cpXIJVfnJY
+	 TcUa0kQyc5Uh8DVEVfqdUqeI48deGOVWEVt+rP2w=
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4ZHH3v2mcYzGLQ;
+	Tue, 18 Mar 2025 17:14:51 +0100 (CET)
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Paul Moore <paul@paul-moore.com>,
+	"Serge E . Hallyn" <serge@hallyn.com>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Christian Brauner <brauner@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Jeff Xu <jeffxu@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
+	Tahera Fahimi <fahimitahera@gmail.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/8] landlock: Move code to ease future backports
+Date: Tue, 18 Mar 2025 17:14:36 +0100
+Message-ID: <20250318161443.279194-2-mic@digikod.net>
+In-Reply-To: <20250318161443.279194-1-mic@digikod.net>
+References: <20250318161443.279194-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,52 +72,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
 
-Like the ASUS Vivobook X1504VAP and Vivobook X1704VAP, the ASUS Vivobook 14
-X1404VAP has its keyboard IRQ (1) described as ActiveLow in the DSDT, which
-the kernel overrides to EdgeHigh breaking the keyboard.
+To ease backports in setup.c, let's group changes from
+__lsm_ro_after_init to __ro_after_init with commit f22f9aaf6c3d
+("selinux: remove the runtime disable functionality"), and the
+landlock_lsmid addition with commit f3b8788cde61 ("LSM: Identify modules
+by more than name").
 
-    $ sudo dmidecode
-    […]
-    System Information
-            Manufacturer: ASUSTeK COMPUTER INC.
-            Product Name: ASUS Vivobook 14 X1404VAP_X1404VA
-    […]
-    $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
-                 IRQ (Level, ActiveLow, Exclusive, )
-                     {1}
+That will help to backport the following errata.
 
-Add the X1404VAP to the irq1_level_low_skip_override[] quirk table to fix
-this.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
-Cc: Anton Shyndin <mrcold.il@gmail.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Günther Noack <gnoack@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Link: https://lore.kernel.org/r/20250318161443.279194-2-mic@digikod.net
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index b4cd14e7fa76..14c7bac4100b 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -440,6 +440,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook X1404VAP */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1404VAP"),
-+		},
-+	},
- 	{
- 		/* Asus Vivobook X1504VAP */
- 		.matches = {
+Changes since v1:
+- New patch.
+---
+ security/landlock/setup.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/security/landlock/setup.c b/security/landlock/setup.c
+index 28519a45b11f..c71832a8e369 100644
+--- a/security/landlock/setup.c
++++ b/security/landlock/setup.c
+@@ -19,6 +19,11 @@
+ 
+ bool landlock_initialized __ro_after_init = false;
+ 
++const struct lsm_id landlock_lsmid = {
++	.name = LANDLOCK_NAME,
++	.id = LSM_ID_LANDLOCK,
++};
++
+ struct lsm_blob_sizes landlock_blob_sizes __ro_after_init = {
+ 	.lbs_cred = sizeof(struct landlock_cred_security),
+ 	.lbs_file = sizeof(struct landlock_file_security),
+@@ -26,11 +31,6 @@ struct lsm_blob_sizes landlock_blob_sizes __ro_after_init = {
+ 	.lbs_superblock = sizeof(struct landlock_superblock_security),
+ };
+ 
+-const struct lsm_id landlock_lsmid = {
+-	.name = LANDLOCK_NAME,
+-	.id = LSM_ID_LANDLOCK,
+-};
+-
+ static int __init landlock_init(void)
+ {
+ 	landlock_add_cred_hooks();
 -- 
-2.49.0
+2.48.1
 
 
