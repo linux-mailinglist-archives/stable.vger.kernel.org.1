@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82FAA67762
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:13:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1FCFA6775C
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 902E73B9B44
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:12:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B5F717B3D3
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C7520A5E5;
-	Tue, 18 Mar 2025 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F8C20CCE7;
+	Tue, 18 Mar 2025 15:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cpvtiAGy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t1DRtzr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F791586C8
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 15:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C59E1586C8
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 15:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742310776; cv=none; b=djA02KbcGn+hs7WBP+6/Cz0AStoOszwH0X9iKiB+sfphkCNZNTFAgA8Uy3+nqfVTAnDufZQJ7NiYd4OP7wICUTWuv0pksx4nvpTEJtAIooQYjAX6nlqdaFthIjBwLUZlJ3l4Qd0FfOnZujD3bax8YvdAFvGk5MW6ooywC99Zems=
+	t=1742310779; cv=none; b=lyxClKsPyerzlIz8UwpjizlfmEhOAOleNZBKRqF2ga9HyGFz8wU7IjJpUxNg7NOY54bmQVwWdl7FwE5JvObMJhhbcRH2HDX2j51R4FeBhz3qZXv3VUBfvC1Yf4QeDyV6YS/jOD/Sjag82w5gj5ZCWtMaVXsF/1BCBMHFfR0ecqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742310776; c=relaxed/simple;
-	bh=sDCPQRspKguGeLgfPjgWT/XbANCsj8yo0JSUnPYGbj4=;
+	s=arc-20240116; t=1742310779; c=relaxed/simple;
+	bh=9r/8zatx/wCNy8TiDYbKvdJ0MaC45JuuiIvSeLBV51s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=louaDCR+9vA3WnIHE37KvExTh+7Kd/EAjaivs/a/ItQW65aA2itqK69Yg4cfyutIQfcQEC7NGYdQg8MQOgnVb1QsRPWgbGMhOchoLSs1X+xHYN68pD35dZHOoEpkz5pIxpiEemDyfwtUxnUg5FBATYasmKt8Yh6Xh5B39bKojT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cpvtiAGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D77BC4CEDD;
-	Tue, 18 Mar 2025 15:12:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=omMRTdAKAxmeSo13WapaUvYujXLkUAEGycCQ+OjQ1KYhDV0dI53O7823XPxhEbL0ZCyHO+DCJJHz4HXQqp3hp4VwdNanhxqwbGaiRGgSn6FzdrF9IW51jOH6Fv1Mg1RwIGZIF1htt8P2ooQJK8I8Hgxx5tpjdiEzJraqge0+4oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t1DRtzr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576C7C4CEDD;
+	Tue, 18 Mar 2025 15:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742310776;
-	bh=sDCPQRspKguGeLgfPjgWT/XbANCsj8yo0JSUnPYGbj4=;
+	s=k20201202; t=1742310778;
+	bh=9r/8zatx/wCNy8TiDYbKvdJ0MaC45JuuiIvSeLBV51s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpvtiAGyEhtFPMCD48n0cWkZu6sqTvniNNhtPiw5hiDQcZDa3XG7zTJqks/k6t3oR
-	 xbDWdoSl157Rg1Fnkyz61BGZGm0GtkuL0hnVPff2UuTPA7HlufdwE0WJVIAFVanLxN
-	 ZNcwOrT1lulHjOcI7XvbpU2f25z8UEjBdhg+oqTP5kr/xGkxFIPMADyDKS65AqVaNI
-	 oa1k+JmX+OxkahLV57iV3EMTvbuSeQ7PljKtHIA6KaICxY0SIHWBpq/dU/hvMhNiiF
-	 sIPMUS16lLU4KOpDr5vNq66Em6vlzZWGK9V+NwIPO4QLIxwU5xQT5S1ZLpYC5kSVBI
-	 2CnHx37MrbdjA==
+	b=t1DRtzr89b0NjB8eW+So52xwIJ+c+t0yQxrTKkRP0lDnd8j0RCUi3r6LwEgsVZYGN
+	 39Z/bMLay5EqKVmx9iShLISDXplwqoKZVgrCCSeYDRqgRhkBtRHJPeo2hziBTUzO0e
+	 oO18qEhjDLRutrKYGE3EduuZruuiGDwv89rIDt5pklXchIggXS3N7kXHL4zA17gQ8G
+	 3silIsHDaChmGJuaFN7Ds1Sq1VboXOIXtfYTdn3CzwqyN02pf/QephE/rNeE+6hrv/
+	 vA+yYzlLcgZbOsh3wx7rfXMc1nBrVhxmLIUbxPtHTaXtvhOu4DOBFl2YMdPZRg3ARk
+	 D1jW8aE+xAYBA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1&6.6 1/3] sign-file,extract-cert: move common SSL helper functions to a header
-Date: Tue, 18 Mar 2025 11:12:55 -0400
-Message-Id: <20250318081737-cf93b15b18accff5@stable.kernel.org>
+To: stable@vger.kernel.org,
+	henrique.carvalho@suse.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6.y] smb: client: Fix match_session bug preventing session reuse
+Date: Tue, 18 Mar 2025 11:12:57 -0400
+Message-Id: <20250317203959-7fb38f90f42a785a@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250318110124.2160941-2-chenhuacai@loongson.cn>
+In-Reply-To:  <20250317215800.2608506-1-henrique.carvalho@suse.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,46 +64,59 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 300e6d4116f956b035281ec94297dc4dc8d4e1d3
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Huacai Chen<chenhuacai@loongson.cn>
-Commit author: Jan Stancek<jstancek@redhat.com>
+Found matching upstream commit: 605b249ea96770ac4fac4b8510a99e0f8442be5e
 
 Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Not found
+6.13.y | Present (different SHA1: 4a133bda03ec)
+6.12.y | Present (different SHA1: 3d48d46299be)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  300e6d4116f95 ! 1:  685d9913a2def sign-file,extract-cert: move common SSL helper functions to a header
-    @@ Metadata
-      ## Commit message ##
-         sign-file,extract-cert: move common SSL helper functions to a header
-     
-    +    commit 300e6d4116f956b035281ec94297dc4dc8d4e1d3 upstream.
-    +
-         Couple error handling helpers are repeated in both tools, so
-         move them to a common header.
-     
+1:  605b249ea9677 ! 1:  4bb32947f2ce5 smb: client: Fix match_session bug preventing session reuse
     @@ Commit message
-         Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-         Reviewed-by: Neal Gompa <neal@gompa.dev>
-         Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-    +    Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+         Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
+         Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+         Signed-off-by: Steve French <stfrench@microsoft.com>
+    +    (cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
      
-      ## MAINTAINERS ##
-     @@ MAINTAINERS: S:	Maintained
+      ## fs/smb/client/connect.c ##
+    -@@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
+    - 			 struct smb3_fs_context *ctx,
+    - 			 bool match_super)
+    +@@ fs/smb/client/connect.c: cifs_get_tcp_session(struct smb3_fs_context *ctx,
+    + /* this function must be called with ses_lock and chan_lock held */
+    + static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+      {
+     -	if (ctx->sectype != Unspecified &&
+     -	    ctx->sectype != ses->sectype)
+    @@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
+     +	struct TCP_Server_Info *server = ses->server;
+     +	enum securityEnum ctx_sec, ses_sec;
+      
+    - 	if (!match_super && ctx->dfs_root_ses != ses->dfs_root_ses)
+    + 	if (ctx->dfs_root_ses != ses->dfs_root_ses)
+      		return 0;
+    -@@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
+    +@@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+      	if (ses->chan_max < ctx->max_channels)
+      		return 0;
+      
+    @@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
+     +		return 0;
+     +
+     +	switch (ctx_sec) {
+    -+	case IAKerb:
+      	case Kerberos:
+      		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
+      			return 0;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
 | stable/linux-6.6.y        |  Success    |  Success   |
 
