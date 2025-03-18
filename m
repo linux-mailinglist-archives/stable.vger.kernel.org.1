@@ -1,88 +1,118 @@
-Return-Path: <stable+bounces-124769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C78A66CD8
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 08:55:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35661A66E0E
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 09:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3A1819A0099
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 07:50:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AACE3ACE11
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 08:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27341EF385;
-	Tue, 18 Mar 2025 07:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="idJSt6aL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C821F0983;
+	Tue, 18 Mar 2025 08:22:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243FB1B81C1
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 07:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79932146D6A;
+	Tue, 18 Mar 2025 08:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742284070; cv=none; b=oRhb/f4w3V7xv34nufsIVEqXNfg/y8XX3cb0k11+BJDS2f6ApgHpraGRS9F0yrCpmP3336MFxb3Eg448spBanB6vV1CL4Ver6INIFzS7AqZ+Fw9chGw5BeR5S+eJFVb71NH12UksI76W1/mxd533cpGtdXFbWKdgvDsGPKoCp/4=
+	t=1742286154; cv=none; b=aHmFXI7BxVDCTooJ+IE1zzcs9v1AWCOWmKYZm2rqka8uub5nbsTKX3ep8m/WaGJcZd2Glan8SAM/ShstvXvnsDnTyNgnRstFDDEbU6dj0zrQaoSe5a5/bI8YYKDNyrWGWSN1N+xxKRtjkRKTyvxQUzTiVIlpZGJbBOPKnSD7DsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742284070; c=relaxed/simple;
-	bh=FyEpTVMAXHyHzYL5etlFHLqgUR6Jy8YUVW9FGFZ1aLU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YdZmESGrBe+V6czYB/H83mHiORuGoMajSQ6DVpTPJpOjUIfLMuUfAg+L+NFYGH8/3GE/JnHv4UwGm7n7eB+PoMuqI/yk7KOSZroqCnVAssmf4eJZHGq4ZvKwloeNKfaUEpx74nD1gYDEvz245FynVCgV6gZvP/+1Mhc9WQuOCjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=idJSt6aL; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742284066;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rf5qZHxtK3mCKSr6NpOLubF8ArBJB08AFgLuR4bU4a4=;
-	b=idJSt6aL5RAJe0a7zDM+Ky/FAFqk8PDtJOrD9qwYXfp2wHIiLaoRkaFaAJBUQbyBuxF1jl
-	t3nKzAOtAxb6dM2QJ5pnAw3RxGjfI9EPjFUlLdMPAvvOHa6cOgTjV09Nvmyqnva57ch8RN
-	tA85gUndW9J8a4bZz7CcO60t4iV8Txg=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev,
-	Will Deacon <will@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>,
-	Quentin Perret <qperret@google.com>
-Subject: Re: [PATCH] KVM: arm64: Tear down vGIC on failed vCPU creation
-Date: Tue, 18 Mar 2025 00:47:36 -0700
-Message-Id: <174228404857.1652170.4192050516109561246.b4-ty@linux.dev>
-In-Reply-To: <20250314133409.9123-1-will@kernel.org>
-References: <20250314133409.9123-1-will@kernel.org>
+	s=arc-20240116; t=1742286154; c=relaxed/simple;
+	bh=Lg/kjQ8+BXnYP2pnKclvS2rFLRLs9Np0/eWDe1t6oRw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gHTv2vfhI9OBPjYGABBfyweDMuPhr0EqeB3sXrLErs+EZB7863XXigMZlHuWco+PnEilCxOMTwpjAPf8Tlxe0Dvw3h2yV29eLRz+FgrM9idUAZ0pnzVqFzwJKe1bDlS+D1SfsSpqx3ShvxOl2/ZyIorAbiy7AM2eYhjP5jGoaKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowAAXHNAwLdlnivc7Fg--.12711S2;
+	Tue, 18 Mar 2025 16:22:20 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: eajames@linux.ibm.com,
+	ninad@linux.ibm.com,
+	joel@jms.id.au,
+	jk@ozlabs.org
+Cc: linux-fsi@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] fsi/core: fix error handling in fsi_slave_init()
+Date: Tue, 18 Mar 2025 16:22:07 +0800
+Message-Id: <20250318082207.1644582-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-CM-TRANSID:qwCowAAXHNAwLdlnivc7Fg--.12711S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WryrKw4rWw17XFW8GFyDJrb_yoW8Wr4kpa
+	1DGa4FyrWUGr1kKrsrZas7Z3s8CrWIv34furW8Gw1IkrZxX34Yyryjg340ya48JaykJF48
+	Xr9rXrykWF1DXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7VUbsYFJUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Fri, 14 Mar 2025 13:34:09 +0000, Will Deacon wrote:
-> If kvm_arch_vcpu_create() fails to share the vCPU page with the
-> hypervisor, we propagate the error back to the ioctl but leave the
-> vGIC vCPU data initialised. Note only does this leak the corresponding
-> memory when the vCPU is destroyed but it can also lead to use-after-free
-> if the redistributor device handling tries to walk into the vCPU.
-> 
-> Add the missing cleanup to kvm_arch_vcpu_create(), ensuring that the
-> vGIC vCPU structures are destroyed on error.
-> 
-> [...]
+Once cdev_device_add() failed, we should use put_device() to decrement
+reference count for cleanup. Or it could cause memory leak. Although
+operations in err_free_ida are similar to the operations in callback
+function fsi_slave_release(), put_device() is a correct handling
+operation as comments require when cdev_device_add() fails.
 
-Applied to next, thanks!
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
 
-[1/1] KVM: arm64: Tear down vGIC on failed vCPU creation
-      https://git.kernel.org/kvmarm/kvmarm/c/250f25367b58
+Found by code review.
 
---
-Best,
-Oliver
+Cc: stable@vger.kernel.org
+Fixes: 371975b0b075 ("fsi/core: Fix error paths on CFAM init")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/fsi/fsi-core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
+index e2e1e9df6115..1373e05e3659 100644
+--- a/drivers/fsi/fsi-core.c
++++ b/drivers/fsi/fsi-core.c
+@@ -1084,7 +1084,8 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
+ 	rc = cdev_device_add(&slave->cdev, &slave->dev);
+ 	if (rc) {
+ 		dev_err(&slave->dev, "Error %d creating slave device\n", rc);
+-		goto err_free_ida;
++		put_device(&slave->dev);
++		return rc;
+ 	}
+ 
+ 	/* Now that we have the cdev registered with the core, any fatal
+@@ -1110,8 +1111,6 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
+ 
+ 	return 0;
+ 
+-err_free_ida:
+-	fsi_free_minor(slave->dev.devt);
+ err_free:
+ 	of_node_put(slave->dev.of_node);
+ 	kfree(slave);
+-- 
+2.25.1
+
 
