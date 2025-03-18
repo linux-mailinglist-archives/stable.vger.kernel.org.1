@@ -1,156 +1,137 @@
-Return-Path: <stable+bounces-124851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2674DA67BB2
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 19:11:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E482FA67D1F
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 20:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63C6C18846E4
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 18:10:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9BB37A7681
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 19:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EE0211497;
-	Tue, 18 Mar 2025 18:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF05C1E1E02;
+	Tue, 18 Mar 2025 19:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TdnhTqTa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANb1eiUm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70667212D63
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 18:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B4F1DF247;
+	Tue, 18 Mar 2025 19:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742321422; cv=none; b=JWh2U2qXu3FXXt0fqQtTIfk4m7Q7lueqmfaaQJhM9a0Z290uiZ9+//V0wQE0XX+72UigrIYTR1oJrBjkSHOibTFSU83UUn4dv2g/0QEbov9mp7nZMZ8jg/4upsGKMoDrA+L1muo5y+psJZhytbjSYq+Y1ZajhauozKc3ckk/Eu8=
+	t=1742326113; cv=none; b=IUJWPmdsmTWrkCBlgHlA/ADfTdzJCZRP8ukT8CpJdArCV84J7eflPLdiW18blFxTsTyybyqa4szBlK93bT3t3jMK5LiYfFP8k+VlDdQrYHkxXnbByAIsd1CTW2KTO8fnHlMO08cHB281qRi6SPVpCwi8PaYIFmFz1jxCn1oDkFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742321422; c=relaxed/simple;
-	bh=Od4Ygc8gvgOgVyiZmiUSYJCWxXNdiXruHcxMWGREO/Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2w0noEK+jhpU31OZlhULfDWjxzGx+aWYoMVL01GI1gwWHZYhWH6SAzJdFI5vwjkdPRoC5lWQqHd1/l0HEQxRFelUA07VKVWXBpKQhwOB96JXzhR476Mjk1OIpl1TGy4JUxGy9pIWYFCZbKD35jY9ZWTv8TznUGd4nGXyFi/RoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TdnhTqTa; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cfebc343dso26927555e9.2
-        for <stable@vger.kernel.org>; Tue, 18 Mar 2025 11:10:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1742321412; x=1742926212; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yEUZ6SgN7EUPHL01UAhQ5NF1qAY7R8r2dg2/lYHhiF0=;
-        b=TdnhTqTaW9eT8KdwuNKcCfsGt1wGRKS7XQQd8gU1AEqxMlxLAzHgKLOf7mnNgqj8U5
-         D1SpGW/pYAD5uDHwv2Gz2xmXTzHqceqWfRstNjbTXjgXUYiKP0GNQI64cF/E9jBvnVPd
-         m4sQKoUaHE9Upc1qIvXaHRxJYgq8VOS/lRx0nk6Gl4w7Yv8g0+2+CzqnQ+ajKtiH3ntp
-         01c7Vyby1xrxcfqVWzj/eAYh9iFOmiJs69NqgKnWp+J13QI7kbOqD3H/KK1HxDCfdT3A
-         zQdypnj0YM6WMRpw0Lu1VL7l2NziLcC8dus10DhbtYvqY9Di58pxf/QZ9QH2XH5gK3xj
-         tWOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742321412; x=1742926212;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yEUZ6SgN7EUPHL01UAhQ5NF1qAY7R8r2dg2/lYHhiF0=;
-        b=jtdje79a2m35r6Kmc1bxE+bG5PPWINvOx8jIu19Q6BUvht2ftEScQzJskz92SGE5ao
-         yXgjwCCIl/8oNTG5j0xzLCorXmehs9Ol+D+p8ike8wAr2NIQpMsAU5XYGlAJHBV3y1C/
-         Q+e7m7CL8vCS5N+zhLxC7+iCJDNDtryj29XlMGdfo4PuG2s3dFKoZJM+mf63ZpxFzDGJ
-         103kvfQ/fCdP4MjH8gp2g2Qe9iCUh0tPomVtE0C6nUkt7+WkPBqkFOAOoMOSwodBmzRI
-         ktMnLF7OK9bM8lw338/C1gWuOK6F1y0xFFr03CvBy99PxGUaKQOtZEelaMLZGpehnG5A
-         790Q==
-X-Gm-Message-State: AOJu0YxxDVIdvID/uMSyYvrmD49sB0cEmySw/VUigfcPhTRBk2YQiBeu
-	1KG+6+Yu21XNRBzJ7gP1gZ8yhx3orB3hhW6jlsaFCgHw1x+sbbEBLw88kw28xOlggeY0zOCkP1l
-	hGNM=
-X-Gm-Gg: ASbGncv5Gj82hIyn1b0SgmLxtnGv2OhfO6Dp2i4M0EfEe8F069jt9uFc7fMcXqqUolc
-	jbr6mcJTuRanHZ9gmNZzbhfHg20LY1H2Z2IEWXZHVdyzRA4WAYrlIyKKE+M6Urh5B5Pb7PBBdLQ
-	4AjvE8BoCxydJP465UH2iIUdG6OgUIh8YGPxsxnfABFNpwv3BA3RduFxcRTCYwXQNGNiSGqWJuq
-	nkoTLGvwTUCjoFRCeRFcm2jfzKduWVDOawa0IQqD2qS4husO7d5o+dUgvgvDc5u2acJBzJNAjD+
-	EeUIOlZ/hnBCvckMApnS1v0eg8rAi1bNV/D8Zf0ZmZbLsPl6y3D5MHlXj1+y/ZrER0fTZQ==
-X-Google-Smtp-Source: AGHT+IFoVBCPC6WzzgT/GvRRAdAFLIp3B4CVORpbUYrLtA/OgC07XyJfweonSEsAaJ0aOoXYifSfQQ==
-X-Received: by 2002:a05:6000:1562:b0:391:22a9:4408 with SMTP id ffacd0b85a97d-3971d616a73mr19237014f8f.16.1742321412433;
-        Tue, 18 Mar 2025 11:10:12 -0700 (PDT)
-Received: from localhost.localdomain ([2804:7f0:bc00:1e6e:6171:3ed0:ca4f:bf31])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711694e34sm10254594b3a.140.2025.03.18.11.10.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 11:10:11 -0700 (PDT)
-From: Henrique Carvalho <henrique.carvalho@suse.com>
-To: stable@vger.kernel.org
-Cc: Henrique Carvalho <henrique.carvalho@suse.com>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13.y v3] smb: client: Fix match_session bug preventing session reuse
-Date: Tue, 18 Mar 2025 15:08:21 -0300
-Message-ID: <20250318180821.2986424-1-henrique.carvalho@suse.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <2025031652-spider-flying-c68b@gregkh>
-References: <2025031652-spider-flying-c68b@gregkh>
+	s=arc-20240116; t=1742326113; c=relaxed/simple;
+	bh=7LYIJU9zrIeD7qsda5EeEl4d9QdiYjSeLPX6TOyN8g8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U8ObTWn9Hm6/yFdorfNOUfYlO31GMM3n560YN/iz9QOShl+1TYDeS3kNsOdiMns9WArtBsPBzp5CnXtlOA9Dqa944iHWhAKlQOYjCfpZS+hs3uAJy5YqQ2C6TQAO4LNt4IvZFsz6GhgKR6F0HNNnCi0cqhzAMiCup6wfuypPXQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANb1eiUm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657A8C4CEDD;
+	Tue, 18 Mar 2025 19:28:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742326113;
+	bh=7LYIJU9zrIeD7qsda5EeEl4d9QdiYjSeLPX6TOyN8g8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ANb1eiUm4N1G9x3vbVWxGgqTcYRI24OwlIH8eP79gnwO8lrYGDLYwtUByJpyVYHSw
+	 oUO3/hytdx1DlFTDl+pMGJVsIpcZOdvVUv9VBwDzR+b4+mYY3BFXkHznNBz4LPL7E/
+	 TaaJpuP66U+hngKaXysTWmI5Mw8Y6mpsxOrRQaZw+hPbH42uBfm29hUYIsPDJuIf8m
+	 wSAWOiRsUeqy+3SqAV3hIAWmDq4yrAV4ztcKPboJwT5DQHKx/5Z3HKWISpr30glM6x
+	 qm1dVGqIj2RFcoDlE89TKx9tVOUmtdq3ieBcvtm3pAcT2mC8/WQ1UeaKtT6snBTUzj
+	 EDoL/JKeakfAg==
+Message-ID: <40eb446b-6531-4a73-b47b-55e609fb4d64@kernel.org>
+Date: Tue, 18 Mar 2025 20:28:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/5] pinctrl: samsung: add support for
+ eint_fltcon_offset
+To: Peter Griffin <peter.griffin@linaro.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ andre.draszik@linaro.org, tudor.ambarus@linaro.org, willmcvicker@google.com,
+ semen.protsenko@linaro.org, kernel-team@android.com,
+ jaewon02.kim@samsung.com, stable@vger.kernel.org
+References: <20250312-pinctrl-fltcon-suspend-v5-0-d98d5b271242@linaro.org>
+ <20250312-pinctrl-fltcon-suspend-v5-1-d98d5b271242@linaro.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250312-pinctrl-fltcon-suspend-v5-1-d98d5b271242@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Fix a bug in match_session() that can causes the session to not be
-reused in some cases.
+On 12/03/2025 22:58, Peter Griffin wrote:
+> On gs101 SoC the fltcon0 (filter configuration 0) offset
+> isn't at a fixed offset like previous SoCs as the fltcon1
+> register only exists when there are more than 4 pins in the
+> bank.
+> 
+> Add a eint_fltcon_offset and new GS101_PIN_BANK_EINT*
+> macros that take an additional fltcon_offs variable.
+> 
+> This can then be used in suspend/resume callbacks to
+> save and restore the fltcon0 and fltcon1 registers.
+> 
+> Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configuration")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: André Draszik <andre.draszik@linaro.org>
+> Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+> ---
 
-Reproduction steps:
+Please rebase on next and send incremental patch fixing previous, if needed.
 
-mount.cifs //server/share /mnt/a -o credentials=creds
-mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
-
-mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-mount.cifs //server/share /mnt/a -o credentials=creds
-cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-(cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
----
- fs/smb/client/connect.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index eaa6be4456d0..c9273a90d58e 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1873,9 +1873,8 @@ static int match_session(struct cifs_ses *ses,
- 			 struct smb3_fs_context *ctx,
- 			 bool match_super)
- {
--	if (ctx->sectype != Unspecified &&
--	    ctx->sectype != ses->sectype)
--		return 0;
-+	struct TCP_Server_Info *server = ses->server;
-+	enum securityEnum ctx_sec, ses_sec;
- 
- 	if (!match_super && ctx->dfs_root_ses != ses->dfs_root_ses)
- 		return 0;
-@@ -1887,11 +1886,19 @@ static int match_session(struct cifs_ses *ses,
- 	if (ses->chan_max < ctx->max_channels)
- 		return 0;
- 
--	switch (ses->sectype) {
-+	ctx_sec = server->ops->select_sectype(server, ctx->sectype);
-+	ses_sec = server->ops->select_sectype(server, ses->sectype);
-+
-+	if (ctx_sec != ses_sec)
-+		return 0;
-+
-+	switch (ctx_sec) {
- 	case Kerberos:
- 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
- 			return 0;
- 		break;
-+	case NTLMv2:
-+	case RawNTLMSSP:
- 	default:
- 		/* NULL username means anonymous session */
- 		if (ses->user_name == NULL) {
--- 
-2.47.0
-
+Best regards,
+Krzysztof
 
