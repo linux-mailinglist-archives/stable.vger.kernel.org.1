@@ -1,60 +1,51 @@
-Return-Path: <stable+bounces-124788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1908BA67216
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 12:05:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11AE9A6725D
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 12:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C27C19A5BB0
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 11:03:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E10AC3AC527
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 11:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F9020967E;
-	Tue, 18 Mar 2025 11:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0455D1EF372;
+	Tue, 18 Mar 2025 11:16:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BC4208989;
-	Tue, 18 Mar 2025 11:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F7C1922FD
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 11:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742295751; cv=none; b=scL1EgWUD4/mFfA0AfENrS3/pbRWXu6nGezJP2Rdnl5n6atqpCuQp2X5xzQ8qgSQFVitSGbV85nsXCzJM1ayhOlmRIO0x2lrhrN1R0O9kL5J7XOIs1c7IopBXvgNAO455e79917zkwielStJNhsGC1q+6YXsNhF4BfIynxCKgy4=
+	t=1742296593; cv=none; b=teo+s8VPKCDmZ98oN+Me8qP0GOcD0zewAKaTs2cqv5UFo3zMJ58O0WDPAdZcbCYyHUeFYlvUfpxqR0H+cJAym5rKggDdBSiCHZ5bln41xPdAMxm/74nJVTaoIWwvgxu4N0z1EI9H7nPtbKSOHxwgLfzVgXvgxuFA88XrytdZoTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742295751; c=relaxed/simple;
-	bh=OwrZkwraIy+D4Vlns3UTlc0OPVYM49V4ksnXMUTmo7w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bog4CrEdHb4J8dkG2lWSj10/4bCl0fOBn87tKlG/aUnLuD6OUVI9M5n94qoCES8CyuKWeHLKqF3tARoHCopxLLnVTqTntZqkngAqhHgcjrAoeZfNhBlmelTZPPqGPg3AVOfW3eenoIHzZOJMYO4kNcBOwj6lfTO8cf1kwl6U1w0=
+	s=arc-20240116; t=1742296593; c=relaxed/simple;
+	bh=P0rkjVeDHRZss3GYyklBPIwA6S4nfLS3VVUW29QST2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KbVSUFvihySRAZky1gt8jYo5sSGrhxeOVeMQ4po9ouFjdL3boqmqFPQMLbP1OaHlcjLHIP1kppxBAERzSqu6NrgRXjeL++etLKnn7aCFXwYbyVvbh+tuV6jzz9aeuMMEMWRcSX2GZzmmX530kZRCSld0MVq8EVY5A7zoupQczs4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.68.198])
-	by gateway (Coremail) with SMTP id _____8AxTWvAUtlnFoubAA--.656S3;
-	Tue, 18 Mar 2025 19:02:24 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8CxvOILVtlnPJCbAA--.2288S3;
+	Tue, 18 Mar 2025 19:16:27 +0800 (CST)
 Received: from localhost.localdomain (unknown [223.64.68.198])
-	by front1 (Coremail) with SMTP id qMiowMDxDceOUtlnb6FRAA--.22930S5;
-	Tue, 18 Mar 2025 19:02:22 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowMAxTsUCVtln96ZRAA--.22425S2;
+	Tue, 18 Mar 2025 19:16:25 +0800 (CST)
 From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
+To: David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Jan Stancek <jstancek@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	R Nageswara Sastry <rnsastry@linux.ibm.com>,
-	Neal Gompa <neal@gompa.dev>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1&6.6 V2 3/3] sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3
-Date: Tue, 18 Mar 2025 19:01:24 +0800
-Message-ID: <20250318110124.2160941-4-chenhuacai@loongson.cn>
+Cc: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH 37/40] drm/amd/display: Protect dml2_create()/dml2_copy()/dml2_create_copy()
+Date: Tue, 18 Mar 2025 19:16:10 +0800
+Message-ID: <20250318111611.2161153-1-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250318110124.2160941-1-chenhuacai@loongson.cn>
-References: <20250318110124.2160941-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,309 +53,161 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMDxDceOUtlnb6FRAA--.22930S5
+X-CM-TRANSID:qMiowMAxTsUCVtln96ZRAA--.22425S2
 X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxtw15Kr17GF4UuF43Kr4rZwc_yoW3Kr45pF
-	9xCFyYq340qrnrGr13Ar1Fg3srXr48Xw1avanxC393Gr4vya4UWF40gFWS93WxZ398J3Wa
-	v3yUXFW8Kr4kZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUj5529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoW3AFy5Kr1rCFWDJr4rGr4rWFX_yoWxJFyfpr
+	98XrWrGw48Ar1xJr13AF1UKr9Yq3ZxAFy8Jry7JF1a9F15Wrn8JFykJFW8trWUtFW5JF17
+	X3srAr98tay8KwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
 	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBvb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
 	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAaw2AFwI0_GFv_Wryle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
-	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_ZF0_
-	GryDMcIj6I8E87Iv67AKxVWxJVW8Jr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-	AKI48JMxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
-	6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
-	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
-	jxv20xvE14v26F1j6w1UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42
-	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY
-	1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07b1hL8UUUUU=
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Cr0_Gr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWU
+	XVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
+	kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW5JVW7JwCI42IY
+	6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
+	vEx4A2jsIE14v26F4j6r4UJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2
+	KfnxnUUI43ZEXa7IU829aPUUUUU==
 
-From: Jan Stancek <jstancek@redhat.com>
+Commit 7da55c27e76749b9 ("drm/amd/display: Remove incorrect FP context
+start") removes the FP context protection of dml2_create(), and it said
+"All the DC_FP_START/END should be used before call anything from DML2".
 
-commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
+However, dml2_create()/dml2_copy()/dml2_create_copy() are not protected
+from their callers, causing such errors:
 
-ENGINE API has been deprecated since OpenSSL version 3.0 [1].
-Distros have started dropping support from headers and in future
-it will likely disappear also from library.
+ do_fpu invoked from kernel context![#1]:
+ CPU: 0 UID: 0 PID: 239 Comm: kworker/0:5 Not tainted 6.14.0-rc6+ #1
+ Workqueue: events work_for_cpu_fn
+ pc ffff80000319de80 ra ffff80000319de5c tp 900000010575c000 sp 900000010575f840
+ a0 0000000000000000 a1 900000012f210130 a2 900000012f000000 a3 ffff80000357e268
+ a4 ffff80000357e260 a5 900000012ea52cf0 a6 0000000400000004 a7 0000012c00001388
+ t0 00001900000015e0 t1 ffff80000379d000 t2 0000000010624dd3 t3 0000006400000014
+ t4 00000000000003e8 t5 0000005000000018 t6 0000000000000020 t7 0000000f00000064
+ t8 000000000000002f u0 5f5e9200f8901912 s9 900000012d380010 s0 900000012ea51fd8
+ s1 900000012f000000 s2 9000000109296000 s3 0000000000000001 s4 0000000000001fd8
+ s5 0000000000000001 s6 ffff800003415000 s7 900000012d390000 s8 ffff800003211f80
+    ra: ffff80000319de5c dml21_apply_soc_bb_overrides+0x3c/0x960 [amdgpu]
+   ERA: ffff80000319de80 dml21_apply_soc_bb_overrides+0x60/0x960 [amdgpu]
+  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+  PRMD: 00000004 (PPLV0 +PIE -PWE)
+  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
+ ESTAT: 000f0000 [FPD] (IS= ECode=15 EsubCode=0)
+  PRID: 0014d010 (Loongson-64bit, Loongson-3C6000/S)
+ Process kworker/0:5 (pid: 239, threadinfo=00000000927eadc6, task=000000008fd31682)
+ Stack : 00040dc000003164 0000000000000001 900000012f210130 900000012eabeeb8
+         900000012f000000 ffff80000319fe48 900000012f210000 900000012f210130
+         900000012f000000 900000012eabeeb8 0000000000000001 ffff8000031a0064
+         900000010575f9f0 900000012f210130 900000012eac0000 900000012ea80000
+         900000012f000000 ffff8000031cefc4 900000010575f9f0 ffff8000035859c0
+         ffff800003414000 900000010575fa78 900000012f000000 ffff8000031b4c50
+         0000000000000000 9000000101c9d700 9000000109c40000 5f5e9200f8901912
+         900000012d3c4bd0 900000012d3c5000 ffff8000034aed18 900000012d380010
+         900000012d3c4bd0 ffff800003414000 900000012d380000 ffff800002ea49dc
+         0000000000000001 900000012d3c6000 00000000ffffe423 0000000000010000
+         ...
+ Call Trace:
+ [<ffff80000319de80>] dml21_apply_soc_bb_overrides+0x60/0x960 [amdgpu]
+ [<ffff80000319fe44>] dml21_init+0xa4/0x280 [amdgpu]
+ [<ffff8000031a0060>] dml21_create+0x40/0x80 [amdgpu]
+ [<ffff8000031cefc0>] dc_state_create+0x100/0x160 [amdgpu]
+ [<ffff8000031b4c4c>] dc_create+0x44c/0x640 [amdgpu]
+ [<ffff800002ea49d8>] amdgpu_dm_init+0x3f8/0x2060 [amdgpu]
+ [<ffff800002ea6658>] dm_hw_init+0x18/0x60 [amdgpu]
+ [<ffff800002b16738>] amdgpu_device_init+0x1938/0x27e0 [amdgpu]
+ [<ffff800002b18e80>] amdgpu_driver_load_kms+0x20/0xa0 [amdgpu]
+ [<ffff800002b0c8f0>] amdgpu_pci_probe+0x1b0/0x580 [amdgpu]
+ [<900000000448eae4>] local_pci_probe+0x44/0xc0
+ [<9000000003b02b18>] work_for_cpu_fn+0x18/0x40
+ [<9000000003b05da0>] process_one_work+0x160/0x300
+ [<9000000003b06718>] worker_thread+0x318/0x440
+ [<9000000003b11b8c>] kthread+0x12c/0x220
+ [<9000000003ac1484>] ret_from_kernel_thread+0x8/0xa4
 
-It has been superseded by the PROVIDER API, so use it instead
-for OPENSSL MAJOR >= 3.
+So protect dml2_create()/dml2_copy()/dml2_create_copy() with DC_FP_START
+and DC_FP_END.
 
-[1] https://github.com/openssl/openssl/blob/master/README-ENGINES.md
-
-[jarkko: fixed up alignment issues reported by checkpatch.pl --strict]
-
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
- scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
- 2 files changed, 138 insertions(+), 58 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_state.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/certs/extract-cert.c b/certs/extract-cert.c
-index 61bbe0085671..7d6d468ed612 100644
---- a/certs/extract-cert.c
-+++ b/certs/extract-cert.c
-@@ -21,17 +21,18 @@
- #include <openssl/bio.h>
- #include <openssl/pem.h>
- #include <openssl/err.h>
--#include <openssl/engine.h>
--
-+#if OPENSSL_VERSION_MAJOR >= 3
-+# define USE_PKCS11_PROVIDER
-+# include <openssl/provider.h>
-+# include <openssl/store.h>
-+#else
-+# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
-+#  define USE_PKCS11_ENGINE
-+#  include <openssl/engine.h>
-+# endif
-+#endif
- #include "ssl-common.h"
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_state.c b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
+index 1b2cce127981..6e2cac08002d 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_state.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
+@@ -210,17 +210,23 @@ struct dc_state *dc_state_create(struct dc *dc, struct dc_state_create_params *p
  
--/*
-- * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
-- *
-- * Remove this if/when that API is no longer used
-- */
--#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
--
- #define PKEY_ID_PKCS7 2
+ #ifdef CONFIG_DRM_AMD_DC_FP
+ 	if (dc->debug.using_dml2) {
++		DC_FP_START();
++
+ 		dml2_opt->use_clock_dc_limits = false;
+ 		if (!dml2_create(dc, dml2_opt, &state->bw_ctx.dml2)) {
++			DC_FP_END();
+ 			dc_state_release(state);
+ 			return NULL;
+ 		}
  
- static __attribute__((noreturn))
-@@ -61,6 +62,66 @@ static void write_cert(X509 *x509)
- 		fprintf(stderr, "Extracted cert: %s\n", buf);
- }
+ 		dml2_opt->use_clock_dc_limits = true;
+ 		if (!dml2_create(dc, dml2_opt, &state->bw_ctx.dml2_dc_power_source)) {
++			DC_FP_END();
+ 			dc_state_release(state);
+ 			return NULL;
+ 		}
++
++		DC_FP_END();
+ 	}
+ #endif
  
-+static X509 *load_cert_pkcs11(const char *cert_src)
-+{
-+	X509 *cert = NULL;
-+#ifdef USE_PKCS11_PROVIDER
-+	OSSL_STORE_CTX *store;
-+
-+	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
-+	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(default)");
-+
-+	store = OSSL_STORE_open(cert_src, NULL, NULL, NULL, NULL);
-+	ERR(!store, "OSSL_STORE_open");
-+
-+	while (!OSSL_STORE_eof(store)) {
-+		OSSL_STORE_INFO *info = OSSL_STORE_load(store);
-+
-+		if (!info) {
-+			drain_openssl_errors(__LINE__, 0);
-+			continue;
-+		}
-+		if (OSSL_STORE_INFO_get_type(info) == OSSL_STORE_INFO_CERT) {
-+			cert = OSSL_STORE_INFO_get1_CERT(info);
-+			ERR(!cert, "OSSL_STORE_INFO_get1_CERT");
-+		}
-+		OSSL_STORE_INFO_free(info);
-+		if (cert)
-+			break;
-+	}
-+	OSSL_STORE_close(store);
-+#elif defined(USE_PKCS11_ENGINE)
-+		ENGINE *e;
-+		struct {
-+			const char *cert_id;
-+			X509 *cert;
-+		} parms;
-+
-+		parms.cert_id = cert_src;
-+		parms.cert = NULL;
-+
-+		ENGINE_load_builtin_engines();
-+		drain_openssl_errors(__LINE__, 1);
-+		e = ENGINE_by_id("pkcs11");
-+		ERR(!e, "Load PKCS#11 ENGINE");
-+		if (ENGINE_init(e))
-+			drain_openssl_errors(__LINE__, 1);
-+		else
-+			ERR(1, "ENGINE_init");
-+		if (key_pass)
-+			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
-+		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
-+		ERR(!parms.cert, "Get X.509 from PKCS#11");
-+		cert = parms.cert;
-+#else
-+		fprintf(stderr, "no pkcs11 engine/provider available\n");
-+		exit(1);
-+#endif
-+	return cert;
-+}
-+
- int main(int argc, char **argv)
- {
- 	char *cert_src;
-@@ -89,28 +150,10 @@ int main(int argc, char **argv)
- 		fclose(f);
- 		exit(0);
- 	} else if (!strncmp(cert_src, "pkcs11:", 7)) {
--		ENGINE *e;
--		struct {
--			const char *cert_id;
--			X509 *cert;
--		} parms;
-+		X509 *cert = load_cert_pkcs11(cert_src);
+@@ -240,6 +246,8 @@ void dc_state_copy(struct dc_state *dst_state, struct dc_state *src_state)
+ 	dc_state_copy_internal(dst_state, src_state);
  
--		parms.cert_id = cert_src;
--		parms.cert = NULL;
--
--		ENGINE_load_builtin_engines();
--		drain_openssl_errors(__LINE__, 1);
--		e = ENGINE_by_id("pkcs11");
--		ERR(!e, "Load PKCS#11 ENGINE");
--		if (ENGINE_init(e))
--			drain_openssl_errors(__LINE__, 1);
--		else
--			ERR(1, "ENGINE_init");
--		if (key_pass)
--			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
--		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
--		ERR(!parms.cert, "Get X.509 from PKCS#11");
--		write_cert(parms.cert);
-+		ERR(!cert, "load_cert_pkcs11 failed");
-+		write_cert(cert);
- 	} else {
- 		BIO *b;
- 		X509 *x509;
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index bb3fdf1a617c..7070245edfc1 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -27,17 +27,18 @@
- #include <openssl/evp.h>
- #include <openssl/pem.h>
- #include <openssl/err.h>
--#include <openssl/engine.h>
--
-+#if OPENSSL_VERSION_MAJOR >= 3
-+# define USE_PKCS11_PROVIDER
-+# include <openssl/provider.h>
-+# include <openssl/store.h>
-+#else
-+# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
-+#  define USE_PKCS11_ENGINE
-+#  include <openssl/engine.h>
-+# endif
-+#endif
- #include "ssl-common.h"
- 
--/*
-- * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
-- *
-- * Remove this if/when that API is no longer used
-- */
--#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
--
- /*
-  * Use CMS if we have openssl-1.0.0 or newer available - otherwise we have to
-  * assume that it's not available and its header file is missing and that we
-@@ -106,28 +107,64 @@ static int pem_pw_cb(char *buf, int len, int w, void *v)
- 	return pwlen;
- }
- 
--static EVP_PKEY *read_private_key(const char *private_key_name)
-+static EVP_PKEY *read_private_key_pkcs11(const char *private_key_name)
- {
--	EVP_PKEY *private_key;
-+	EVP_PKEY *private_key = NULL;
-+#ifdef USE_PKCS11_PROVIDER
-+	OSSL_STORE_CTX *store;
- 
--	if (!strncmp(private_key_name, "pkcs11:", 7)) {
--		ENGINE *e;
-+	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
-+	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(default)");
+ #ifdef CONFIG_DRM_AMD_DC_FP
++	DC_FP_START();
 +
-+	store = OSSL_STORE_open(private_key_name, NULL, NULL, NULL, NULL);
-+	ERR(!store, "OSSL_STORE_open");
- 
--		ENGINE_load_builtin_engines();
-+	while (!OSSL_STORE_eof(store)) {
-+		OSSL_STORE_INFO *info = OSSL_STORE_load(store);
+ 	dst_state->bw_ctx.dml2 = dst_dml2;
+ 	if (src_state->bw_ctx.dml2)
+ 		dml2_copy(dst_state->bw_ctx.dml2, src_state->bw_ctx.dml2);
+@@ -247,6 +255,8 @@ void dc_state_copy(struct dc_state *dst_state, struct dc_state *src_state)
+ 	dst_state->bw_ctx.dml2_dc_power_source = dst_dml2_dc_power_source;
+ 	if (src_state->bw_ctx.dml2_dc_power_source)
+ 		dml2_copy(dst_state->bw_ctx.dml2_dc_power_source, src_state->bw_ctx.dml2_dc_power_source);
 +
-+		if (!info) {
-+			drain_openssl_errors(__LINE__, 0);
-+			continue;
-+		}
-+		if (OSSL_STORE_INFO_get_type(info) == OSSL_STORE_INFO_PKEY) {
-+			private_key = OSSL_STORE_INFO_get1_PKEY(info);
-+			ERR(!private_key, "OSSL_STORE_INFO_get1_PKEY");
-+		}
-+		OSSL_STORE_INFO_free(info);
-+		if (private_key)
-+			break;
-+	}
-+	OSSL_STORE_close(store);
-+#elif defined(USE_PKCS11_ENGINE)
-+	ENGINE *e;
++	DC_FP_END();
+ #endif
+ 
+ 	/* context refcount should not be overridden */
+@@ -268,17 +278,23 @@ struct dc_state *dc_state_create_copy(struct dc_state *src_state)
+ 	new_state->bw_ctx.dml2 = NULL;
+ 	new_state->bw_ctx.dml2_dc_power_source = NULL;
+ 
++	DC_FP_START();
 +
-+	ENGINE_load_builtin_engines();
-+	drain_openssl_errors(__LINE__, 1);
-+	e = ENGINE_by_id("pkcs11");
-+	ERR(!e, "Load PKCS#11 ENGINE");
-+	if (ENGINE_init(e))
- 		drain_openssl_errors(__LINE__, 1);
--		e = ENGINE_by_id("pkcs11");
--		ERR(!e, "Load PKCS#11 ENGINE");
--		if (ENGINE_init(e))
--			drain_openssl_errors(__LINE__, 1);
--		else
--			ERR(1, "ENGINE_init");
--		if (key_pass)
--			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0),
--			    "Set PKCS#11 PIN");
--		private_key = ENGINE_load_private_key(e, private_key_name,
--						      NULL, NULL);
--		ERR(!private_key, "%s", private_key_name);
-+	else
-+		ERR(1, "ENGINE_init");
-+	if (key_pass)
-+		ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
-+	private_key = ENGINE_load_private_key(e, private_key_name, NULL, NULL);
-+	ERR(!private_key, "%s", private_key_name);
-+#else
-+	fprintf(stderr, "no pkcs11 engine/provider available\n");
-+	exit(1);
-+#endif
-+	return private_key;
-+}
+ 	if (src_state->bw_ctx.dml2 &&
+ 			!dml2_create_copy(&new_state->bw_ctx.dml2, src_state->bw_ctx.dml2)) {
++		DC_FP_END();
+ 		dc_state_release(new_state);
+ 		return NULL;
+ 	}
+ 
+ 	if (src_state->bw_ctx.dml2_dc_power_source &&
+ 			!dml2_create_copy(&new_state->bw_ctx.dml2_dc_power_source, src_state->bw_ctx.dml2_dc_power_source)) {
++		DC_FP_END();
+ 		dc_state_release(new_state);
+ 		return NULL;
+ 	}
 +
-+static EVP_PKEY *read_private_key(const char *private_key_name)
-+{
-+	if (!strncmp(private_key_name, "pkcs11:", 7)) {
-+		return read_private_key_pkcs11(private_key_name);
- 	} else {
-+		EVP_PKEY *private_key;
- 		BIO *b;
++	DC_FP_END();
+ #endif
  
- 		b = BIO_new_file(private_key_name, "rb");
-@@ -136,9 +173,9 @@ static EVP_PKEY *read_private_key(const char *private_key_name)
- 						      NULL);
- 		ERR(!private_key, "%s", private_key_name);
- 		BIO_free(b);
--	}
- 
--	return private_key;
-+		return private_key;
-+	}
- }
- 
- static X509 *read_x509(const char *x509_name)
+ 	kref_init(&new_state->refcount);
 -- 
 2.47.1
 
