@@ -1,213 +1,94 @@
-Return-Path: <stable+bounces-124831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E8FA678E0
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 17:16:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905C9A67901
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 17:20:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0B288847F7
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:15:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB955189BBC6
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BC4211278;
-	Tue, 18 Mar 2025 16:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A69F2101B7;
+	Tue, 18 Mar 2025 16:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="HWN0BOVA"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IcZtxT6M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-190f.mail.infomaniak.ch (smtp-190f.mail.infomaniak.ch [185.125.25.15])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B26195FE8
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 16:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57967211A15
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 16:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742314507; cv=none; b=cRpzJpaHN21IxxoMex7fcM6NK+w1Vj5u0CM8lJq6kvPXSf/UzkgI11PDR3vH/u89toFp+1MPrwVIMpchEonijItrYEr1nUtv7R47bFPVlqzBCvjom/rIjZSwj39oJs8HIlBALJIkRKHwFKiL7nk16b7BKc3ZIYm2sJu4w5TNhig=
+	t=1742314644; cv=none; b=NSio8zqgXwamyMTsFP/Lvz9HlZ6Gbk88GERf8dFO0xPwrFJBiTorvG2qJ3J+VSUHd3JknLY3uMmMJdTfE2vH1bIdsIeUTusghWiOFp4NXOjVmXynrwOEvHOk7x5pzT8kpuGJ6ObUfvI4C4XvDIZTHuEo8rzQaBV/dK4q32A/QJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742314507; c=relaxed/simple;
-	bh=0qP5GqU6hxuBeipAIyWwTfxwmBhEYf4pOhwFrWR3+XI=;
+	s=arc-20240116; t=1742314644; c=relaxed/simple;
+	bh=6swj7PUyWPMDMlPdyuRo5lz/MHiQCIIPiQcx75r3WGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sx/XUmgMn/mOefVN6pfGw9kIE1Np4zco4LmZ7qjrbLOa2ViWyIBsmJZRg94rdlOQX2nOe0Iy17sWjVMocOzkKyf8KONf+n1V+FURUkgzSeFDFl+mo2nu1iDBIzClbiD+8isv0mMm4vTDwwxTjB03/Wby2evOyLWif3kmq8zWI7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=HWN0BOVA; arc=none smtp.client-ip=185.125.25.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
-Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4ZHH4421P9zLJx;
-	Tue, 18 Mar 2025 17:15:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1742314500;
-	bh=c7lbP1EQsl0DIIQZtCoH5DqcB56sY5n99Bx2F2IcBNo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWN0BOVAcXwF63j7W5D86BoY5uwFDnbZUuid85Sfcj3FLLI0sMmGbEEF0aLui1QQd
-	 85Es3LH1fczTdZF0U5srAyiKMxC5/zo9VmvrfhTYYywWKU04SwqEYFNmEagpIjsMvE
-	 RyYqITeV2AYVSjrOidM3wj9K5lwAAsGxVpezuZek=
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4ZHH434bfBzVqL;
-	Tue, 18 Mar 2025 17:14:59 +0100 (CET)
-From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-To: Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Paul Moore <paul@paul-moore.com>,
-	"Serge E . Hallyn" <serge@hallyn.com>
-Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Christian Brauner <brauner@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Jeff Xu <jeffxu@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>,
-	Tahera Fahimi <fahimitahera@gmail.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
+	 MIME-Version:Content-Type; b=aRJuBqfVVLi1hk4ckEFBcYeCT/3OqGfkT7WIPFtJMBMh1+V1K+7A/tGj0tEzlLFSuLSJ9ncwF7dCvXvkXZxY9CLBptuweMjkT9ZQSmN1LPGXQJZQHn9zSZaJPrG1GXe+r024Z+yt2yqd+70AyMwyc8LijvgxKifalbVgh+SdIns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IcZtxT6M; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5BE2C441C1;
+	Tue, 18 Mar 2025 16:17:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1742314631;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aVk+xYOAI24ssZ2g1HmfcjpWNVsVeIoJttJ9AIMmxhk=;
+	b=IcZtxT6Magpaqd3Ff644q78D5Ny303/ipNwNNsIryS6a02MG3HGAppDF0x9kp2sM9g69RH
+	/b+Lflpx+y99vJiOvkgfnHHrtzwfUhsSZJqAW5eV/mvXKn70BUtxkdIK36szKVN2BuIq3b
+	irBuhuBzAZCy+chmQ63moM5CLUH8K4KDR9/xjbPk8mJXZg1c7w3vslVM+JeCMm6q5FBcna
+	TykLaVh+7LuaHe89JeyIsb/LIUhm9r0QfG4aU6ENdqIyDQn9wHteWhFw+UsAQQOZliCSdk
+	IFG1xO7Q0lfEQbpEXRi+dQj2mEhaHBRgcvrnSmW/EP8f3/P4yzj5f01wEKA/hw==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	linux-mtd@lists.infradead.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 7/8] selftests/landlock: Add a new test for setuid()
-Date: Tue, 18 Mar 2025 17:14:42 +0100
-Message-ID: <20250318161443.279194-8-mic@digikod.net>
-In-Reply-To: <20250318161443.279194-1-mic@digikod.net>
-References: <20250318161443.279194-1-mic@digikod.net>
+Subject: Re: [PATCH] mtd: nand: Fix a kdoc comment
+Date: Tue, 18 Mar 2025 17:17:09 +0100
+Message-ID: <174231458436.979692.11846172650554767394.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250305194955.2508652-1-miquel.raynal@bootlin.com>
+References: <20250305194955.2508652-1-miquel.raynal@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugedvledtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeefuefgvdfffefhudfhteffgfeiieduueegffdvhedvvdeludejjeevvdfgtdevgfenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghlohepfhifrdhsthgvphhhrghngihprdhlohgtrghlpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepledprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrthdprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhmpdhrtghpthhtohepthhuughorhdrrghmsggrrhhusheslhhinhgrrhhordhorhhgpdhrtghpthhtohepphhrrghthihushhhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgrvghlseifrghllhgvrdgttgdprhgtphhtthhopehlihhnuhigq
+ dhmthgusehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-The new signal_scoping_thread_setuid tests check that the libc's
-setuid() function works as expected even when a thread is sandboxed with
-scoped signal restrictions.
+On Wed, 05 Mar 2025 20:49:55 +0100, Miquel Raynal wrote:
+> The max_bad_eraseblocks_per_lun member of nand_device obviously
+> describes a number of *maximum* number of bad eraseblocks per LUN.
+> 
+> Fix this obvious typo.
+> 
+> 
 
-Before the signal scoping fix, this test would have failed with the
-setuid() call:
+Applied to nand/next after fixing the Cc stable line as advised by
+Turod, thanks!
 
-  [pid    65] getpid()                    = 65
-  [pid    65] tgkill(65, 66, SIGRT_1)     = -1 EPERM (Operation not permitted)
-  [pid    65] futex(0x40a66cdc, FUTEX_WAKE_PRIVATE, 1) = 0
-  [pid    65] setuid(1001)                = 0
+[1/1] mtd: nand: Fix a kdoc comment
+      commit: ca8cbbb2be8f906d9602a6e4324f8adf279e9cc2
 
-After the fix, tgkill(2) is successfully leveraged to synchronize
-credentials update across threads:
-
-  [pid    65] getpid()                    = 65
-  [pid    65] tgkill(65, 66, SIGRT_1)     = 0
-  [pid    66] <... read resumed>0x40a65eb7, 1) = ? ERESTARTSYS (To be restarted if SA_RESTART is set)
-  [pid    66] --- SIGRT_1 {si_signo=SIGRT_1, si_code=SI_TKILL, si_pid=65, si_uid=1000} ---
-  [pid    66] getpid()                    = 65
-  [pid    66] setuid(1001)                = 0
-  [pid    66] futex(0x40a66cdc, FUTEX_WAKE_PRIVATE, 1) = 0
-  [pid    66] rt_sigreturn({mask=[]})     = 0
-  [pid    66] read(3,  <unfinished ...>
-  [pid    65] setuid(1001)                = 0
-
-Test coverage for security/landlock is 92.9% of 1053 lines according to
-gcc/gcov-14.
-
-Fixes: c8994965013e ("selftests/landlock: Test signal scoping for threads")
-Cc: Günther Noack <gnoack@google.com>
-Cc: Tahera Fahimi <fahimitahera@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-Link: https://lore.kernel.org/r/20250318161443.279194-8-mic@digikod.net
----
-
-Changes since v1:
-- New patch.
----
- tools/testing/selftests/landlock/common.h     |  1 +
- .../selftests/landlock/scoped_signal_test.c   | 59 +++++++++++++++++++
- 2 files changed, 60 insertions(+)
-
-diff --git a/tools/testing/selftests/landlock/common.h b/tools/testing/selftests/landlock/common.h
-index 6064c9ac0532..076a9a625c98 100644
---- a/tools/testing/selftests/landlock/common.h
-+++ b/tools/testing/selftests/landlock/common.h
-@@ -41,6 +41,7 @@ static void _init_caps(struct __test_metadata *const _metadata, bool drop_all)
- 		CAP_MKNOD,
- 		CAP_NET_ADMIN,
- 		CAP_NET_BIND_SERVICE,
-+		CAP_SETUID,
- 		CAP_SYS_ADMIN,
- 		CAP_SYS_CHROOT,
- 		/* clang-format on */
-diff --git a/tools/testing/selftests/landlock/scoped_signal_test.c b/tools/testing/selftests/landlock/scoped_signal_test.c
-index d313cb626225..d8bf33417619 100644
---- a/tools/testing/selftests/landlock/scoped_signal_test.c
-+++ b/tools/testing/selftests/landlock/scoped_signal_test.c
-@@ -253,6 +253,7 @@ enum thread_return {
- 	THREAD_INVALID = 0,
- 	THREAD_SUCCESS = 1,
- 	THREAD_ERROR = 2,
-+	THREAD_TEST_FAILED = 3,
- };
- 
- static void *thread_sync(void *arg)
-@@ -316,6 +317,64 @@ TEST(signal_scoping_thread_after)
- 	EXPECT_EQ(0, close(thread_pipe[1]));
- }
- 
-+struct thread_setuid_args {
-+	int pipe_read, new_uid;
-+};
-+
-+void *thread_setuid(void *ptr)
-+{
-+	const struct thread_setuid_args *arg = ptr;
-+	char buf;
-+
-+	if (read(arg->pipe_read, &buf, 1) != 1)
-+		return (void *)THREAD_ERROR;
-+
-+	/* libc's setuid() should update all thread's credentials. */
-+	if (getuid() != arg->new_uid)
-+		return (void *)THREAD_TEST_FAILED;
-+
-+	return (void *)THREAD_SUCCESS;
-+}
-+
-+TEST(signal_scoping_thread_setuid)
-+{
-+	struct thread_setuid_args arg;
-+	pthread_t no_sandbox_thread;
-+	enum thread_return ret = THREAD_INVALID;
-+	int pipe_parent[2];
-+	int prev_uid;
-+
-+	disable_caps(_metadata);
-+
-+	/* This test does not need to be run as root. */
-+	prev_uid = getuid();
-+	arg.new_uid = prev_uid + 1;
-+	EXPECT_LT(0, arg.new_uid);
-+
-+	ASSERT_EQ(0, pipe2(pipe_parent, O_CLOEXEC));
-+	arg.pipe_read = pipe_parent[0];
-+
-+	/* Capabilities must be set before creating a new thread. */
-+	set_cap(_metadata, CAP_SETUID);
-+	ASSERT_EQ(0, pthread_create(&no_sandbox_thread, NULL, thread_setuid,
-+				    &arg));
-+
-+	/* Enforces restriction after creating the thread. */
-+	create_scoped_domain(_metadata, LANDLOCK_SCOPE_SIGNAL);
-+
-+	EXPECT_NE(arg.new_uid, getuid());
-+	EXPECT_EQ(0, setuid(arg.new_uid));
-+	EXPECT_EQ(arg.new_uid, getuid());
-+	EXPECT_EQ(1, write(pipe_parent[1], ".", 1));
-+
-+	EXPECT_EQ(0, pthread_join(no_sandbox_thread, (void **)&ret));
-+	EXPECT_EQ(THREAD_SUCCESS, ret);
-+
-+	clear_cap(_metadata, CAP_SETUID);
-+	EXPECT_EQ(0, close(pipe_parent[0]));
-+	EXPECT_EQ(0, close(pipe_parent[1]));
-+}
-+
- const short backlog = 10;
- 
- static volatile sig_atomic_t signal_received;
--- 
-2.48.1
-
+Kind regards,
+Miquèl
 
