@@ -1,186 +1,102 @@
-Return-Path: <stable+bounces-124794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEA7A672DB
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 12:38:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F3FA6734C
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 13:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E4E117F860
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 11:37:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD1A57AB2ED
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 11:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD4820B215;
-	Tue, 18 Mar 2025 11:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5232080E3;
+	Tue, 18 Mar 2025 12:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VYYaFeCF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBLk3THi"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC9B20B7E7
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 11:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38B420B80B;
+	Tue, 18 Mar 2025 11:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742297864; cv=none; b=R2MepJwq4FnaDuSjSWLU+e8bwmG5uZkH+cDNoF+c5GwCFC+fVXWtaLB/4bvxiJSUj1MH7Ac+UryrERyalqOWT26168QO4gugUPK6p7+/uSS7JXP+Qs5oOCWNdjZwq60O7QZMSjpoHDhvDVbeo7hKki60nUrau+RBr0HOjTuuzbA=
+	t=1742299200; cv=none; b=t+3Mcf6b/Dgdri4hQjSYvss/OqkYk3/AhHbSnuB/A+z9TLrp7fa7ws3P57ttwvK0uGKBOaVOwilbRM4nA22qe4mmz7zDJwHFgtcPXZgCJLaBKOXsOdA+kK5wlTraS2vxKy4bllaTJvc+eom57I8cxbkPK7ChVIAUqSMALgK9j+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742297864; c=relaxed/simple;
-	bh=X5AEPegJnCWTJZdvz//Ircoe285+jfO/V3sdiCOHHa0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sPoRgsqRDOYL0Yo6/e+t8wcKMmhWRZwH5eIlk0Qp1RC7BHaXwFKf4z8nNGTuV4pIQxKW1DkbMygit+D3VQXQxjTQTMlspiLSQQnAsDoF+5R3LOlP3gWGVev0esKsNRC0tq95yRu6kFgCxisyyawVPz4qwEeRVg9Y7+d06tA4XF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VYYaFeCF; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742297858;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=11ZNprjj242fLpLRxnWb0Up6kO5h/hr5oXZeYOIssMQ=;
-	b=VYYaFeCF+1n4xX4V3Rvjq4lqLJ7zxNl/Nk5O6/P9e+Z/SpQvFZ6NZ7fF6veYx83Iyg0cDy
-	ddmq5a8u0cPYt0Adi4tENqSyujb1rRMLqNYYAoepnYMjuiHTlh+3od+Fkoln7R8j/aYyHg
-	NgMDEmsCU6cRHfIPdTEtc4jC5PEjc1I=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-0MmHvMWaPjaNHVL7QiWrIQ-1; Tue,
- 18 Mar 2025 07:37:34 -0400
-X-MC-Unique: 0MmHvMWaPjaNHVL7QiWrIQ-1
-X-Mimecast-MFC-AGG-ID: 0MmHvMWaPjaNHVL7QiWrIQ_1742297853
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 08E4E19560A1;
-	Tue, 18 Mar 2025 11:37:33 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.44.32.255])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 00DCB18001EF;
-	Tue, 18 Mar 2025 11:37:28 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue, 18 Mar 2025 12:37:00 +0100 (CET)
-Date: Tue, 18 Mar 2025 12:36:55 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, Kees Cook <kees@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Josh Drake <josh@delphoslabs.com>,
-	Suraj Sonawane <surajsonawane0215@gmail.com>,
-	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-	security@kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] keys: Fix UAF in key_put()
-Message-ID: <20250318113655.GB14792@redhat.com>
-References: <2477454.1742292885@warthog.procyon.org.uk>
- <20250318112245.GA14792@redhat.com>
+	s=arc-20240116; t=1742299200; c=relaxed/simple;
+	bh=rnDHqckyn9U1HCzf6rXs1dnXcs3qHyIMa6/uX54o2ps=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=RjdXwZE6MCO9UR3jSlNE0WrPQLpa+xIfybeHDZsspO7zk232pQzUo344On6P5HMV3gzGgKQ7hhDARgl/4oFHsDwEvUrviTP6lmzaz2RNGnXIL2ab2zoVZRFAlMTiDJyN7Y5Bsj7ygShy/rtvnc3WL8jIzLlLo1/+e/r6xXA2V5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBLk3THi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2381C4CEDD;
+	Tue, 18 Mar 2025 11:59:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742299199;
+	bh=rnDHqckyn9U1HCzf6rXs1dnXcs3qHyIMa6/uX54o2ps=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=PBLk3THiqqVVB4z45f9ytNgcZ1L2e9g7n7xHfB32u4+LhHw36HalulU5e0eX1Ba+Q
+	 3/b19srTQO+crPwLRF8UbsEhpb0bxdfmn5ecCjArQRkx99rzqhhTTqvPufsNs1BqpB
+	 ggmmdmHzhp8UXdH9RrtiNEGXghwM8PSnA3ntm5MTN0dCey+naE1TqdtsEjqF3RV09c
+	 0VBPMTYBS+DnmQXqqUvfyIv2b+MLbWGO2Ql+4QIKlOnxEG93e3NrsC2bwhSaR2XZYV
+	 1ikKyklcGdUrFmHEIINBhpEb8oy4VpFM0QmxohHUzDjfVLJPdz/hA1QzXWBKJjqcaC
+	 koq82/1/K8SKw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 713CD380DBE8;
+	Tue, 18 Mar 2025 12:00:36 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250318112245.GA14792@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 1/6] can: ucan: fix out of bound read in strscpy() source
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174229923525.283014.13510532442848295902.git-patchwork-notify@kernel.org>
+Date: Tue, 18 Mar 2025 12:00:35 +0000
+References: <20250314130909.2890541-2-mkl@pengutronix.de>
+In-Reply-To: <20250314130909.2890541-2-mkl@pengutronix.de>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ linux-can@vger.kernel.org, kernel@pengutronix.de, mailhol.vincent@wanadoo.fr,
+ syzbot+d7d8c418e8317899e88c@syzkaller.appspotmail.com, stable@vger.kernel.org
 
-Either way... I know nothing about security/key, but grep -w key_put
-finds
+Hello:
 
- *  When it is no longer required, the key should be released using::
+This series was applied to netdev/net.git (main)
+by Marc Kleine-Budde <mkl@pengutronix.de>:
 
-	void key_put(struct key *key);
+On Fri, 14 Mar 2025 14:04:00 +0100 you wrote:
+> From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+> 
+> Commit 7fdaf8966aae ("can: ucan: use strscpy() to instead of strncpy()")
+> unintentionally introduced a one byte out of bound read on strscpy()'s
+> source argument (which is kind of ironic knowing that strscpy() is meant
+> to be a more secure alternative :)).
+> 
+> [...]
 
-    Or::
+Here is the summary with links:
+  - [net,1/6] can: ucan: fix out of bound read in strscpy() source
+    https://git.kernel.org/netdev/net/c/1d22a122ffb1
+  - [net,2/6] can: statistics: use atomic access in hot path
+    https://git.kernel.org/netdev/net/c/80b5f90158d1
+  - [net,3/6] dt-bindings: can: renesas,rcar-canfd: Fix typo in pattern properties for R-Car V4M
+    https://git.kernel.org/netdev/net/c/51f6fc9eb1d7
+  - [net,4/6] can: rcar_canfd: Fix page entries in the AFL list
+    https://git.kernel.org/netdev/net/c/1dba0a37644e
+  - [net,5/6] can: flexcan: only change CAN state when link up in system PM
+    https://git.kernel.org/netdev/net/c/fd99d6ed2023
+  - [net,6/6] can: flexcan: disable transceiver during system PM
+    https://git.kernel.org/netdev/net/c/5a19143124be
 
-	void key_ref_put(key_ref_t key_ref);
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-    These can be called from interrupt context.
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-in Documentation/security/keys/core.rst
-
-and since key_user_put() takes key_user_lock with irqs enabled,
-key_put()->key_user_put() doesn't look correct...
-
-Oleg.
-
-On 03/18, Oleg Nesterov wrote:
->
-> On 03/18, David Howells wrote:
-> >
-> > --- a/security/keys/key.c
-> > +++ b/security/keys/key.c
-> > @@ -645,21 +645,30 @@ EXPORT_SYMBOL(key_reject_and_link);
-> >   */
-> >  void key_put(struct key *key)
-> >  {
-> > +	int quota_flag;
-> > +	unsigned short len;
-> > +	struct key_user *user;
-> > +
-> >  	if (key) {
-> >  		key_check(key);
-> >
-> > +		quota_flag = test_bit(KEY_FLAG_IN_QUOTA, &key->flags);
-> > +		len = key->quotalen;
-> > +		user = key->user;
-> > +		refcount_inc(&user->usage);
-> >  		if (refcount_dec_and_test(&key->usage)) {
-> >  			unsigned long flags;
-> >
-> >  			/* deal with the user's key tracking and quota */
-> > -			if (test_bit(KEY_FLAG_IN_QUOTA, &key->flags)) {
-> > -				spin_lock_irqsave(&key->user->lock, flags);
-> > -				key->user->qnkeys--;
-> > -				key->user->qnbytes -= key->quotalen;
-> > -				spin_unlock_irqrestore(&key->user->lock, flags);
-> > +			if (quota_flag) {
-> > +				spin_lock_irqsave(&user->lock, flags);
-> > +				user->qnkeys--;
-> > +				user->qnbytes -= len;
-> > +				spin_unlock_irqrestore(&user->lock, flags);
-> >  			}
-> >  			schedule_work(&key_gc_work);
-> >  		}
-> > +		key_user_put(user);
->
-> Do we really need the unconditional refcount_inc / key_user_put ?
->
-> 	void key_put(struct key *key)
-> 	{
-> 		if (key) {
-> 			struct key_user *user = NULL;
-> 			unsigned short len;
->
-> 			key_check(key);
->
-> 			if (test_bit(KEY_FLAG_IN_QUOTA, &key->flags)) {
-> 				len = key->quotalen;
-> 				user = key->user;
-> 				refcount_inc(&user->usage);
-> 			}
->
-> 			if (refcount_dec_and_test(&key->usage)) {
-> 				unsigned long flags;
->
-> 				/* deal with the user's key tracking and quota */
-> 				if (user) {
-> 					spin_lock_irqsave(&user->lock, flags);
-> 					user->qnkeys--;
-> 					user->qnbytes -= len;
-> 					spin_unlock_irqrestore(&user->lock, flags);
-> 				}
-> 				schedule_work(&key_gc_work);
-> 			}
->
-> 			if (user)
-> 				key_user_put(user);
-> 		}
-> 	}
->
-> looks a bit more clear/simple to me...
->
-> Oleg.
 
 
