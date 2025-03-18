@@ -1,116 +1,151 @@
-Return-Path: <stable+bounces-124811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA277A67730
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:03:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD9AA67751
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 025783BDF4A
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:00:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60C4617D1AE
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A62020F075;
-	Tue, 18 Mar 2025 15:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0878020E719;
+	Tue, 18 Mar 2025 15:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DU8tTh5S"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D680F20F065;
-	Tue, 18 Mar 2025 15:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A1320B807
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 15:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742310050; cv=none; b=S154w34fx/N5VBXT2U1VsNUP+8+Q+xu5WvbA0+0+2qkT94uGo9/si7wY7Ui3JfW313/dpiReXt1mzhC4Iz7s+HMFqKKi9ZCqLyEwQ3YsG8LfCUwhCJwDw+hDs8Hl3kanQW9Hsq0FS/q/jfVPJgqfGDDrrzvPaSoerdMKu42mMh8=
+	t=1742310591; cv=none; b=caCRka5WRYac33l+hxDYd6lA0Dpm5cLf5L9Hd5TOU/TlrjBhesMHt5CQE9mGj0fcyQTu7WerjGjxLDJ5jByCNO+lpGAJNkwxF/tMklSrb3tQIXuPA9RwO3ih+40tynS0Si0f8v2hn5dMsd5bNfTOgpe440uI5fZt1S0kyhidDsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742310050; c=relaxed/simple;
-	bh=wyn3VpaSleocOcFN9TKcRvlozK514gBG9UmOzKFHjxc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MxLQhSDpBuJz6ek5Uh3JgX0+zIG2mKl1PykBfJF9Q0gBdfR+APV3ztXb7GFSZ9zi39IDKYmVKJIWdN1wsI3DebiZZmqBM0VcEOsI4yYLchFZw4dtRHHe41MiGRMz6AOAU06kcLmpifOFMbi/zPZN8ArRy7/cd6hrzbp9E2auIbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from kero.packetmixer.de (p200300C5973197D81320d84731f3581A.dip0.t-ipconnect.de [IPv6:2003:c5:9731:97d8:1320:d847:31f3:581a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id D3090FA132;
-	Tue, 18 Mar 2025 16:00:38 +0100 (CET)
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
-	stable@vger.kernel.org,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 1/1] batman-adv: Ignore own maximum aggregation size during RX
-Date: Tue, 18 Mar 2025 16:00:35 +0100
-Message-Id: <20250318150035.35356-2-sw@simonwunderlich.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250318150035.35356-1-sw@simonwunderlich.de>
-References: <20250318150035.35356-1-sw@simonwunderlich.de>
+	s=arc-20240116; t=1742310591; c=relaxed/simple;
+	bh=up3vEH/2NyMI9+tvTMWFdSxU1SLIqBztBb2NGlnwDRE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HFcRV/NpcDFz4ELAaSxQpGcJbQ1dC9xCiMRxUN6+RvU7T7peTigZzxmCKvWx8IoYfcctKNqeoHNbi+E9e29QIeqlUOPVEF9OXWT3dEdePj2Y2rt/KsR3s8Y5/jn3pkTyFJJsW6CyF85RSJqobsmhLOUadCJeqkiEusjH1Tj/Vmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DU8tTh5S; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c54a9d3fcaso554423085a.2
+        for <stable@vger.kernel.org>; Tue, 18 Mar 2025 08:09:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742310585; x=1742915385; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y8KvHOzHLjO6KpO+17xD+gf6z/bYQ+D5l2z1JLTz/U8=;
+        b=DU8tTh5SKGppkzoBZ0pI3UVQvyIWEWfirWnGzz9zRTGeP0Zw1sPrpVYPSMN7sMIOL0
+         Muk2bTLi47Ff4VSOB9CL1wTUuzl/2CIuKY05G0RSW2kAsYT0soSemBkNXUbT9w6JsJdw
+         aFq5RXrtFR5oAWLmwQDQfCpsF6/XG9cBG5eQB9gJTvZCarwi44hDxI4U9AixCCdcg+LB
+         Z7okyfMfiRao6q85i3I+5xpTR8TDnEpKVeIz1l+uPbw+a8upPs7MaDoRmnzXOGQrIQCl
+         6Jv9kAAnzDT6/6l4FBBJIiejDGhiLaObkCsL8uUyjie103fpOS8oESQ5N/YURSGryEDA
+         wbjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742310585; x=1742915385;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y8KvHOzHLjO6KpO+17xD+gf6z/bYQ+D5l2z1JLTz/U8=;
+        b=IuiZ2xZAnXUhhwjesT4hSYZyAqXGsHvt1Nmjl31oAUkjG2U+R4V62UczQ5oXasP4wv
+         Tp2njDjfXfnAaqRsnX2lDd6ypN7OtrN15gPbnEX2B9R6Y0TMVGiMtZ504na9gRpKgaTh
+         HVXM0eQdk+1q0SxX7SKQxVhdeCliR9j8s5/flJll4Mo4yYb6+T/fxEV2YEuq8sFAO23p
+         TDf1ZZi7Oimgb+/xJkpwd1dvvA+eyf9UXePY2PJmgA58tFSIwEO+dGtzX+7bxN8W9XI2
+         rM+E8E+/sef/ZiRTJD/0D33MIoBRdDSi7tYlpBez0+B5fHczHwXAaMNBQbgVNO3txC28
+         aCDA==
+X-Forwarded-Encrypted: i=1; AJvYcCVcym6KX8HVf1J3vSqI4nn0jHrQSNhjn/+IwOgtSW10pR1+4rmPeCk0tpRR3U/1q/PYJ9H3F8w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo8RQmwcApUpeCC0OF8iP+8Vl+f8eAPJ+SraMJ5KpUcjkCs9IS
+	5RaGkrtqT1x2d3r0c0jnZdNj/e8cSHjAV6K8rJPR3IUzva2pSYOv1L3H70oembw=
+X-Gm-Gg: ASbGnct8cKI/3DUwha2goORNfeBSviVTdo1gPpw0VezMZc99iSpRGtodHekaEfxs+aN
+	0x+RQ+UX7Dj/+Y6IYzuAEZ35izdq2+zaDySvMPirWVJENt22mT18q+FxI2sThoCXV+9jdU61CqE
+	j6FSnVyOXE8cN4ujZVnsHsmhNfhm9GNLPsVYS0FmiS0vzbm4rg5shgRSo6ZkNZbMmYjaa5VDssJ
+	tkhk3Y7AdbDljRFnmZqY7cy0Z8u7uQhEJQQ3fjcWUXK+Nv2Yr8BOrCrsNB0R6Yj7fJp4ZTMSvaY
+	ckaZ/SjoOkcpoDvrpibIngxZbl/WgrwnLpRgHJrAYE2YF8XVUv9w/zVQlskhkkEUYyvwVhY=
+X-Google-Smtp-Source: AGHT+IEvlO3xHMq98UWUgmnAVEnhA/g6K+SfAxe199aM//I35slXn4vPlXVoilOfP/0Qmw5F3dgFjA==
+X-Received: by 2002:a05:620a:4010:b0:7c5:5768:40b9 with SMTP id af79cd13be357-7c57c8fc43amr2395060285a.43.1742310585406;
+        Tue, 18 Mar 2025 08:09:45 -0700 (PDT)
+Received: from maple.netwinder.org ([174.89.15.101])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c573d701besm735044185a.68.2025.03.18.08.09.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Mar 2025 08:09:45 -0700 (PDT)
+From: Ralph Siemsen <ralph.siemsen@linaro.org>
+Date: Tue, 18 Mar 2025 11:09:32 -0400
+Subject: [PATCH v2] usb: cdns3: Fix deadlock when using NCM gadget
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAKuM2WcC/z3MQQrCMBCF4auUrJ2STEi1rryHuAjJpA22SZkRE
+ UrvbnDh8oP3/l0JcSZR125XTO8suZYGPHUqzL5MBDk2K9TotDUInARCLGIhko9LDU8YxnNMLvh
+ oA6l23JhS/vyi90dz4rrCa+a2/6fQjOZinBt6o1FrHMEA+2Wbe8m0CpXbkovn2lee1HF8AYgWL
+ Y2oAAAA
+X-Change-ID: 20250312-rfs-cdns3-deadlock-697df5cad3ce
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Peter Chen <peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>, 
+ Roger Quadros <rogerq@kernel.org>, Aswath Govindraju <a-govindraju@ti.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Felipe Balbi <felipe.balbi@linux.intel.com>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, 
+ Steven Rostedt <rostedt@goodmis.org>, stable@vger.kernel.org, 
+ Ralph Siemsen <ralph.siemsen@linaro.org>
+X-Mailer: b4 0.15-dev-c25d1
 
-From: Sven Eckelmann <sven@narfation.org>
+The cdns3 driver has the same NCM deadlock as fixed in cdnsp by commit
+58f2fcb3a845 ("usb: cdnsp: Fix deadlock issue during using NCM gadget").
 
-An OGMv1 and OGMv2 packet receive processing were not only limited by the
-number of bytes in the received packet but also by the nodes maximum
-aggregation packet size limit. But this limit is relevant for TX and not
-for RX. It must not be enforced by batadv_(i)v_ogm_aggr_packet to avoid
-loss of information in case of a different limit for sender and receiver.
+Under PREEMPT_RT the deadlock can be readily triggered by heavy network
+traffic, for example using "iperf --bidir" over NCM ethernet link.
 
-This has a minor side effect for B.A.T.M.A.N. IV because the
-batadv_iv_ogm_aggr_packet is also used for the preprocessing for the TX.
-But since the aggregation code itself will not allow more than
-BATADV_MAX_AGGREGATION_BYTES bytes, this check was never triggering (in
-this context) prior of removing it.
+The deadlock occurs because the threaded interrupt handler gets
+preempted by a softirq, but both are protected by the same spinlock.
+Prevent deadlock by disabling softirq during threaded irq handler.
 
-Cc: stable@vger.kernel.org
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
-Fixes: 9323158ef9f4 ("batman-adv: OGMv2 - implement originators logic")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+cc: stable@vger.kernel.org
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
 ---
- net/batman-adv/bat_iv_ogm.c | 3 +--
- net/batman-adv/bat_v_ogm.c  | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+v2 changes:
+- move the fix up the call stack, as per discussion at
+https://lore.kernel.org/linux-rt-devel/20250226082931.-XRIDa6D@linutronix.de/
+---
+ drivers/usb/cdns3/cdns3-gadget.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index 07ae5dd1f150..b12645949ae5 100644
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -325,8 +325,7 @@ batadv_iv_ogm_aggr_packet(int buff_pos, int packet_len,
- 	/* check if there is enough space for the optional TVLV */
- 	next_buff_pos += ntohs(ogm_packet->tvlv_len);
+diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
+index fd1beb10bba72..19101ff1cf1bd 100644
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1963,6 +1963,7 @@ static irqreturn_t cdns3_device_thread_irq_handler(int irq, void *data)
+ 	unsigned int bit;
+ 	unsigned long reg;
  
--	return (next_buff_pos <= packet_len) &&
--	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
-+	return next_buff_pos <= packet_len;
++	local_bh_disable();
+ 	spin_lock_irqsave(&priv_dev->lock, flags);
+ 
+ 	reg = readl(&priv_dev->regs->usb_ists);
+@@ -2004,6 +2005,7 @@ static irqreturn_t cdns3_device_thread_irq_handler(int irq, void *data)
+ irqend:
+ 	writel(~0, &priv_dev->regs->ep_ien);
+ 	spin_unlock_irqrestore(&priv_dev->lock, flags);
++	local_bh_enable();
+ 
+ 	return ret;
  }
- 
- /* send a batman ogm to a given interface */
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index e503ee0d896b..8f89ffe6020c 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -839,8 +839,7 @@ batadv_v_ogm_aggr_packet(int buff_pos, int packet_len,
- 	/* check if there is enough space for the optional TVLV */
- 	next_buff_pos += ntohs(ogm2_packet->tvlv_len);
- 
--	return (next_buff_pos <= packet_len) &&
--	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
-+	return next_buff_pos <= packet_len;
- }
- 
- /**
+
+---
+base-commit: 4701f33a10702d5fc577c32434eb62adde0a1ae1
+change-id: 20250312-rfs-cdns3-deadlock-697df5cad3ce
+
+Best regards,
 -- 
-2.39.5
+Ralph Siemsen <ralph.siemsen@linaro.org>
 
 
