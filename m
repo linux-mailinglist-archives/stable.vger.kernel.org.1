@@ -1,141 +1,128 @@
-Return-Path: <stable+bounces-124752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5091BA661F1
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 23:48:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C965A6634F
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 01:05:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 399783B42E0
-	for <lists+stable@lfdr.de>; Mon, 17 Mar 2025 22:48:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86853177924
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 00:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F4D1FFC55;
-	Mon, 17 Mar 2025 22:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39727E1;
+	Tue, 18 Mar 2025 00:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="145oZ/59"
+	dkim=pass (2048-bit key) header.d=grabatoulnz.fr header.i=@grabatoulnz.fr header.b="jwvHETpI"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C5A1DE3CB;
-	Mon, 17 Mar 2025 22:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F472F37;
+	Tue, 18 Mar 2025 00:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742251726; cv=none; b=QyJ9dK12gPyg4+36dRwvUBvfOXOzk0ikj7ZLH3a9VdDg9JzXMlsslx+Pd5pOb+jKDVACw4T9eioV0Q1DpQW85D4ObjHeMDi7wZQhheHqA4bhCoYf+3FevS2S7MOVTT40p5n4BKU9xncuWtfbvJIlSZFXc5uqbtPMKTrZYmokdTY=
+	t=1742256295; cv=none; b=q9Xbm3siZjJZwQdBmIJFKDOfhj+25/lYwnCxFdh3Bv5ABjWhciKGdZgXbloz2HKoOVSVGXKqy2LSgTDVlEGFK2DOMGGdo5lIOrKNvIYX88J9xDExY5kURqYL09smhmRlGb/wx93bZzkVi0GhxN9N7P3CSG7VbHv6h+iaFl072Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742251726; c=relaxed/simple;
-	bh=ioTnEAuhr3Pub8Z9EfYIwul2H8ShlzATvu1Td70qjTk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=AX6l80AOt+prp0BK6/4ByxTF0hRKsLRDCTopqJa42WZPFyHWuO5UbJ5xdIoq8fXg5C7YrNWmLikCtWR1W5A0L3LMJUEVNiWrrrwOj4SQx2kJopMAJ6fCAP+O1e2y/XxBnCTOu9lJNZXvVHkAPtxhkId7CpQHj1I33WNExyGyMEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=145oZ/59; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id 61DE711401FD;
-	Mon, 17 Mar 2025 18:48:43 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 17 Mar 2025 18:48:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1742251723; x=1742338123; bh=R1vaJFtFdJW8YWR8qMo2bNDCNqTwTcZARad
-	vxpaOfME=; b=145oZ/59WJ4ni4RaK4uhJiEFFhRV97I0tCa4ETLMCzlrpl91Qpf
-	6sc3fVJSZ7qC6/VBO9zSSvJ5pNolKGVb09S0VD/cZb8gtuuDvBPXb4BlM43xA3AQ
-	Djl4+TvoIu9gtpm+c3dmk4nKcA4LKxIuTE7IQFaYl288/m1H3MlnTiQeRf1jeBP6
-	mXR3CjF398r/EJ4iL6nF1WwW0AAo36beFvPDUn74vYsrL2k8KY7Xvs7dS+xB6xsT
-	69+SsGMxzVn9qbzU1Px37wxCk7ctdgrBuElPBoAHX2+wWEX0ghaN6hls3MwAUn7e
-	HPM+9m5P9r2QFRUKl1XCfRTrHAGBxpLOUsg==
-X-ME-Sender: <xms:yqbYZxsJPxNzqKZpqXms7lnnXCN1fCLivLdSG4yzyL5i1ycQJaQybg>
-    <xme:yqbYZ6c-3-r3PrPjZZLuxg-C2SomgvjLyBTpNbk6N7SV1CtC_YGSwiniDDx6qFA9l
-    1GuRL2SjP9iFDx2kXU>
-X-ME-Received: <xmr:yqbYZ0wPrB7rEHw0qsS_EDx2ZtIUwLFjgz1ykBB3uIGn8mlAeJexsG2mc2KpFe9UyQYIQFcR60dFC7JZQmvL3SjbnFni4YfAMkM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugedtjeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevufgjkfhfgggtsehttdertddttddv
-    necuhfhrohhmpefhihhnnhcuvfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheike
-    hkrdhorhhgqeenucggtffrrghtthgvrhhnpeffiefhudeggfefgeejleekfedtkefgudev
-    ueeguedvffeukeetvdfffeefledvkeenucffohhmrghinhephhgvrggurdhssgenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinhes
-    lhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmth
-    hpohhuthdprhgtphhtthhopehgvggvrhhtsehlihhnuhigqdhmieekkhdrohhrghdprhgt
-    phhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hlihhnuhigqdhmieekkheslhhishhtshdrlhhinhhugidqmheikehkrdhorhhgpdhrtghp
-    thhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:yqbYZ4M39OseBdSKpG9v-NWHlMNAru5VXKg4SyRSlaItdx3MtFQP2Q>
-    <xmx:yqbYZx8Z4-PfwZmDanSIyXKRU5VXqfPFx9Bq6eoFqFLcjGvZCtrNEg>
-    <xmx:yqbYZ4UovpuNJ65Sh8FU-sZ81ltzpXa3fD01tN8wdGokbbn1fInVFQ>
-    <xmx:yqbYZydQmEvtCkg9EfqNARPQRqEQZpeB5xXf4PVxcR2w-80RTjMOfg>
-    <xmx:y6bYZ8Y5j4pQXfEeSuNUqwnvw7TF6YsaRTa8TcnJ_bhiHpLNCb0Tg0X0>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 17 Mar 2025 18:48:41 -0400 (EDT)
-Date: Tue, 18 Mar 2025 09:48:40 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-cc: stable@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] m68k: Fix lost column on framebuffer debug console
-In-Reply-To: <c03e60ce451e4ccdf12830192080be4262b31b89.1741338535.git.fthain@linux-m68k.org>
-Message-ID: <b504b718-0ffb-ff28-0c91-badf92282b32@linux-m68k.org>
-References: <c03e60ce451e4ccdf12830192080be4262b31b89.1741338535.git.fthain@linux-m68k.org>
+	s=arc-20240116; t=1742256295; c=relaxed/simple;
+	bh=tq8CJmlloYYC2eaCfLaHJmKFdrQ4nc0xPppw+yoA80k=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=asEvxgIp4eLDF8fNnN1XSWwHnyPK/IgL1TXdQvN1kqRU4+YJiu88QhJnQvmx90Ervxq9VrB3IluUFKfjLEEhBmSwqboTteMR6z6hrCRhLtvRzGCAbU07Rwnvr6Hsh87hxceRJ8oXUvCn3infVFHZhQ/WR81n879qy0HKY9MUUJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grabatoulnz.fr; spf=pass smtp.mailfrom=grabatoulnz.fr; dkim=pass (2048-bit key) header.d=grabatoulnz.fr header.i=@grabatoulnz.fr header.b=jwvHETpI; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grabatoulnz.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grabatoulnz.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 37C4920483;
+	Tue, 18 Mar 2025 00:04:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grabatoulnz.fr;
+	s=gm1; t=1742256290;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cnZvwqRAZ5oUuL6AcZoPaXLC4uzSfS6n9w4sjjDfis0=;
+	b=jwvHETpIklG1xJuNa6j02vXLJRwWjpcheZyGlhvhDM+b1DPG0XuVs8jIb2yaRuLKWEYX3j
+	HThhKziv/XSFlhuBHPIQ9KZjkI7A8m86Gsa12ePsLnoIhnoQEUoKfxVdI69obwnaKNYeVQ
+	g2TdCkrsbbnf4KiNCdDn0QIIxCtS2RYdJj8ZWlIPc9Mh6EZOjIBBTLCyrwxAgh36YLYz/P
+	nAgbzxG0kh6Wv44bv18kYnDDqtAxFs8Pf2GV3hvnLCU4oRaiVN1sIlq3EpVEcbMnSrwk6t
+	WtUKFinCaSx1mF/Mz5LclYX0HQhcMZfk0WnH8FwDMlRlLVJgFS2fYvqgSC5fUg==
+Message-ID: <5fe0557a-b9ec-4600-a10f-20c494aa2339@grabatoulnz.fr>
+Date: Tue, 18 Mar 2025 01:04:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
+ board type") on reboot (but not cold boot)
+From: Eric <eric.4.debian@grabatoulnz.fr>
+To: Niklas Cassel <cassel@kernel.org>, Hans de Goede <hdegoede@redhat.com>
+Cc: Salvatore Bonaccorso <carnil@debian.org>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Damien Le Moal <dlemoal@kernel.org>, Jian-Hong Pan <jhp@endlessos.org>,
+ regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, linux-ide@vger.kernel.org,
+ Dieter Mummenschanz <dmummenschanz@web.de>
+References: <Z8rCF39n5GjTwfjP@ryzen>
+ <9c4a635a-ce9f-4ed9-9605-002947490c61@redhat.com> <Z88rtGH39C-S8phk@ryzen>
+ <383d5740-7740-4051-b39a-b8c74b035ec2@redhat.com> <Z9BFSM059Wj2cYX5@ryzen>
+ <9ac6e1ab-f2af-4bff-9d50-24df68ca1bb9@redhat.com> <Z9LUH2IkwoMElSDg@ryzen>
+ <d5470665-4fee-432a-9cb7-fff9813b3e97@redhat.com> <Z9L5p6hTp6MATJ80@ryzen>
+ <6d125c69-35b2-45b5-9790-33f3ea06f171@redhat.com> <Z9hXRYQw1-fX0_PY@ryzen>
+ <06f76ca1-1a07-4df5-ba50-e36046f58d88@grabatoulnz.fr>
+Content-Language: en-US
+In-Reply-To: <06f76ca1-1a07-4df5-ba50-e36046f58d88@grabatoulnz.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugedtledvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuhffvvehfjggtgfesthekredttddvjeenucfhrhhomhepgfhrihgtuceovghrihgtrdegrdguvggsihgrnhesghhrrggsrghtohhulhhniidrfhhrqeenucggtffrrghtthgvrhhnpeeuhffhheehvdffkeeujedvudeftdekleehvdffleegkeehteelvefhteffgfdvgeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemtggstdegmeelgedumegsuddttdemgedvudeimeejvghffhemfhgvvdehmeelhegrudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggstdegmeelgedumegsuddttdemgedvudeimeejvghffhemfhgvvdehmeelhegruddphhgvlhhopeglkffrggeimedvrgdtudemtggstdegmeelgedumegsuddttdemgedvudeimeejvghffhemfhgvvdehmeelhegrudgnpdhmrghilhhfrhhomhepvghrihgtrdegrdguvggsihgrnhesghhrrggsrghtohhulhhniidrfhhrpdhnsggprhgtphhtthhopedufedprhgtphhtthhopegtrghsshgvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhguvghgohgvuggvsehrvgguhhgrt
+ hdrtghomhdprhgtphhtthhopegtrghrnhhilhesuggvsghirghnrdhorhhgpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopehhtghhsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhikhgrrdifvghsthgvrhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegulhgvmhhorghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjhhhpsegvnhgulhgvshhsohhsrdhorhhg
+X-GND-Sasl: eric.degenetais@grabatoulnz.fr
+
+Hi Niklas, hi Hans,
+
+Le 17/03/2025 à 20:15, Eric a écrit :
+> Hi Niklas,
+>
+> Le 17/03/2025 à 18:09, Niklas Cassel a écrit :
+>>
+>> I sent a patch that implements your original suggestion here:
+>> https://lore.kernel.org/linux-ide/20250317170348.1748671-2-cassel@kernel.org/ 
+>>
+>>
+>> I forgot to add your Suggested-by tag.
+>> If the patch solves Eric's problem, I could add the tag when applying.
+> I'll report back when the kernel with your proposed patch is built and 
+> tested on my system.
+
+The test is a success as far as I am concerned. With this new patch, 
+DIPM is disabled on the Samsung SSD, but not the Maxtor disk on the same 
+controller :
 
 
-Please disregard the patch below. Further testing shows that it does not 
-completely solve the problem. In particular, when line-wrap also produces 
-vertical scrolling. I think the recursive console_putc call may have to 
-go.
+(trixieUSB)eric@gwaihir:~$ sudo hdparm -I 
+/dev/disk/by-id/ata-Samsung_SSD_870_QVO_2TB_S5RPNF0T419459E | grep 
+"interface power management"
+             Device-initiated interface power management
+(trixieUSB)eric@gwaihir:~$ sudo hdparm -I 
+/dev/disk/by-id/ata-MAXTOR_STM3250310AS_6RY2WB82 | grep "interface power 
+management"
+        *    Device-initiated interface power management
 
-On Fri, 7 Mar 2025, Finn Thain wrote:
 
-> When long lines are sent to the debug console on the framebuffer, the
-> right-most column is lost. Fix this by subtracting 1 from the column
-> count before comparing it with console_struct_cur_column, as the latter
-> counts from zero.
-> 
-> Linewrap is handled with a recursive call to console_putc, but this
-> alters the console_struct_cur_row global. Store the old value before
-> calling console_putc, so the right-most character gets rendered on the
-> correct line.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-> ---
->  arch/m68k/kernel/head.S | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
-> index 852255cf60de..9c60047764d0 100644
-> --- a/arch/m68k/kernel/head.S
-> +++ b/arch/m68k/kernel/head.S
-> @@ -3583,11 +3583,16 @@ L(console_not_home):
->  	movel	%a0@(Lconsole_struct_cur_column),%d0
->  	addql	#1,%a0@(Lconsole_struct_cur_column)
->  	movel	%a0@(Lconsole_struct_num_columns),%d1
-> +	subil	#1,%d1
->  	cmpl	%d1,%d0
->  	jcs	1f
-> -	console_putc	#'\n'	/* recursion is OK! */
-> +	/*	recursion will alter console_struct so load d1 register first */
-> +	movel	%a0@(Lconsole_struct_cur_row),%d1
-> +	console_putc	#'\n'
-> +	jmp	2f
->  1:
->  	movel	%a0@(Lconsole_struct_cur_row),%d1
-> +2:
->  
->  	/*
->  	 *	At this point we make a shift in register usage
-> 
+and the SSD is successfully detected at reboot by both the UEFI and the 
+linux kernel.
+
+>>
+>> Kind regards,
+>> Niklas
+
+Kind regards
+
+Eric
+
 
