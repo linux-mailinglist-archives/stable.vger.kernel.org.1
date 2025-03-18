@@ -1,102 +1,70 @@
-Return-Path: <stable+bounces-124807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7DDA676AA
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:41:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057B9A676A8
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D686417968A
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 14:38:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F61F1888252
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 14:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F1220E038;
-	Tue, 18 Mar 2025 14:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D7020DD7B;
+	Tue, 18 Mar 2025 14:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKYCs18s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMHBTo6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A1120B81F;
-	Tue, 18 Mar 2025 14:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E689414B08E;
+	Tue, 18 Mar 2025 14:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742308707; cv=none; b=tuvtwPG07DY17FEyLp/PxVlVFXR2psXvxhs42j8M3NAptg5E3voChZZ9b6cCohBfG0Sx0ZlXaGDO5LhL4MYS3kcP8DcrUpVH01qNNnDVWQitEO7zWLX0iWjg+U/80Ye7QwVOcQ7HFH4N1+WHo1N1AmfY5uSJ29JnMHj+LW+svSo=
+	t=1742308734; cv=none; b=DZV4RUK0HpFT8DSpUwdl7rIC3t+O5/PlC78KQ6eVp8mgEXBaNOZv343KX+VB/SoXoB1OCfxGqy2UKxMbu5n32vwDpheCejt5jmsSALNgkYqvVt6PgVw5HdSsp2NbiMD4TVm90Xh5NErx3xtH+Y9Lsyg3K7cuXvmOYb85X/EGzBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742308707; c=relaxed/simple;
-	bh=9umgKWqtZT/8YY/xdx8wzJAOM6nVJd/mLI1qP7HBUfs=;
+	s=arc-20240116; t=1742308734; c=relaxed/simple;
+	bh=4VKclmvpYB5sBLwzt4Dwv68mG1o6toDPjALwYO67dDU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a2+WBIZxAloP4lyMvhvIxiLLWNChuc8LgKRN+fVL36F5DEua3AQ6nGaPQ2bVYVbdbVBcz1Ck8grG//fEZXpzssGyZqq3XaxoWCHlA+Av/I44mgdq/6wieYqJe5myoGmqRpgsQ9YuKvU1CZEKkRzUozb83yH3Dfy2/BeHlGEHrgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKYCs18s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EF2C4CEDD;
-	Tue, 18 Mar 2025 14:38:26 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=EcRhA4oinBAp2yzVa4Wv+om7Rkr/CewcVXd8PisEvJ6F+Fx00hVi5d7m9j5I4fca6gmtCls+gMLLYOuyrY8W3V+8wwPrduo68RhhVM1++9xWq94teq0QzcWs9N+UFP/n5AtqDmOupqkwnooLEjplZShLANz1jdwXpWQywL1ZX5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMHBTo6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5821EC4CEDD;
+	Tue, 18 Mar 2025 14:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742308707;
-	bh=9umgKWqtZT/8YY/xdx8wzJAOM6nVJd/mLI1qP7HBUfs=;
+	s=korg; t=1742308733;
+	bh=4VKclmvpYB5sBLwzt4Dwv68mG1o6toDPjALwYO67dDU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IKYCs18sngJvAsnONKCxnwa78vZ7S2q7pckhV4HDARytrwlWG6TyVdfEApKEckyIu
-	 Wz7lUyY8brABJ5uK8A1+rixIO7S1KWhmlHz5ekaF3Aev0yYsBkdov1AzHsYAXfbXU8
-	 /VcoPes/EpYQESDqbkm0NZi/M90rrD3EopBhZbnQ=
-Date: Tue, 18 Mar 2025 15:37:08 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Jan Stancek <jstancek@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-	R Nageswara Sastry <rnsastry@linux.ibm.com>,
-	Neal Gompa <neal@gompa.dev>
-Subject: Re: [PATCH 6.1&6.6 1/3] sign-file,extract-cert: move common SSL
- helper functions to a header
-Message-ID: <2025031852-angelfish-mouth-f455@gregkh>
-References: <20250318110124.2160941-1-chenhuacai@loongson.cn>
- <20250318110124.2160941-2-chenhuacai@loongson.cn>
- <2025031834-spotty-dipped-be36@gregkh>
- <CAAhV-H4y88jfpKp1mFytEjX4L0CErF=XFashZ9dXfwM58dPGGQ@mail.gmail.com>
+	b=OMHBTo6hlXQU7dVft10EP8yJE3VznGumEYNPjwcRLI8M7bgsJU8GwIdPcnCvT7IA/
+	 zRCZ3yj3RuZN1MLGMD3Zakp95oraxXSz7kTBaXI8/Pr+/l02Vq/pvNCQShGu02iH+Q
+	 fREc/SkfWMAKhsJTCNrc6SXyplZMcT7nns4lo6WI=
+Date: Tue, 18 Mar 2025 15:37:35 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Wang Zhaolong <wangzhaolong1@huawei.com>
+Cc: David Howells <dhowells@redhat.com>, Steve French <smfrench@gmail.com>,
+	stable@vger.kernel.org, linux-cifs@vger.kernel.org,
+	yangerkun <yangerkun@huawei.com>, yi zhang <yi.zhang@huawei.com>,
+	Paulo Alcantara <pc@manguebit.com>
+Subject: Re: [BUG REPORT] cifs: Deadlock due to network reconnection during
+ file writing
+Message-ID: <2025031821-ominous-sappy-18ad@gregkh>
+References: <CAH2r5mv4N9zFOKTxwdvk6ahAyjgpYULQp8iw2NMu3eB6FEXh0A@mail.gmail.com>
+ <3bd10acc-2d7f-019a-3182-82ab647bc15a@huawei.com>
+ <3049256.1739192701@warthog.procyon.org.uk>
+ <785a8d03-3ee6-4eb1-e72f-db05fc4fb49c@huawei.com>
+ <ee68f83b-6bc1-7334-b7bf-19415ee7c453@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhV-H4y88jfpKp1mFytEjX4L0CErF=XFashZ9dXfwM58dPGGQ@mail.gmail.com>
+In-Reply-To: <ee68f83b-6bc1-7334-b7bf-19415ee7c453@huawei.com>
 
-On Tue, Mar 18, 2025 at 09:58:26PM +0800, Huacai Chen wrote:
-> Hi, Greg,
-> 
-> On Tue, Mar 18, 2025 at 9:25 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, Mar 18, 2025 at 07:01:22PM +0800, Huacai Chen wrote:
-> > > From: Jan Stancek <jstancek@redhat.com>
-> > >
-> > > commit 300e6d4116f956b035281ec94297dc4dc8d4e1d3 upstream.
-> > >
-> > > Couple error handling helpers are repeated in both tools, so
-> > > move them to a common header.
-> > >
-> > > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> > > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-> > > Reviewed-by: Neal Gompa <neal@gompa.dev>
-> > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > ---
-> >
-> > Is this "v2" as well?  the threading is all confusing here.  This is
-> > what my inbox looks like right now:
-> Yes, this is also V2, I'm very sorry to confuse you.
+On Tue, Mar 18, 2025 at 09:50:25PM +0800, Wang Zhaolong wrote:
+> Friendly ping.
 
-Great!  Please resend them all as a "v3" so I'm not confused :)
-
-thanks,
-
-greg k-h
+Empty pings with no context are not good :(
 
