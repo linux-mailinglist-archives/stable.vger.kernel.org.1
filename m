@@ -1,147 +1,137 @@
-Return-Path: <stable+bounces-124796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D6DA673D4
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 13:26:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C77AA6743E
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 13:48:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61041178B93
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 12:25:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37DC63B4831
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 12:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC7C20C02E;
-	Tue, 18 Mar 2025 12:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB391FCF47;
+	Tue, 18 Mar 2025 12:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dsPH6kgE"
+	dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b="exCqs7/1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E6E20AF88;
-	Tue, 18 Mar 2025 12:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA562F37;
+	Tue, 18 Mar 2025 12:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742300724; cv=none; b=r249IgTNj5KlmwxAThEiys6CSOaH7a6ig0lYSxskQ+b+DnmEEzAgH07k0hJQNPVXa7smCAdHm4dx8CRTLLLsRCkWk5WSN91CRHf9SrdxrOPGt4pQomwej3dNVTaxFR7P2OvZ1hZfZ2zlxGBdyf/OcI+ngsD5ZZanK/WoCuUlLY0=
+	t=1742302077; cv=none; b=rlOOuUD0q9uD5aRlr2+TUDC67ibMZyPRncNiWrCaEy6DCcpU3lPfGwH3CjR4RtOi2ythvFMPevFmBGkGwx5Nd8KCDJeFPqY/dsuepwquFlDIu6XIrSGoyS6yEn16KGEzpBbFPYYfN95FP7AKmqcE/wXAiLjgyh0iZwBDr7bOwMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742300724; c=relaxed/simple;
-	bh=zi9dRxN+ND2jyyw2oSzr+LnlgDS15RwIOE2rJL1EGko=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a4lZ2M1pgubltIhPHdVTp0ZnZ4iDSoRO/AAup8E2iX4SCxkFydbdJ/uX/+yqRBDjID44GLYs/vMn1lzVjna5mdRvwWgy1zEWkpKl/lUCNzrTtHWCOyLpxjvt5pm4powQ2SB1dUDl3Gi+nKS/6m8tnvaBVEu+R+HOAdHXjNSsvZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dsPH6kgE; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742300719; x=1773836719;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zi9dRxN+ND2jyyw2oSzr+LnlgDS15RwIOE2rJL1EGko=;
-  b=dsPH6kgEvp5PpFJSvv+JOJUmS51puB0selDH74+ATNKW7QeYGJE1Mi/y
-   MhkELi4dxQ5aHsVgnlqi2ZxIeDf53aU0KvdW+ZH3e0dth7gHPrM/8TWuY
-   DWi1s50DcjkMLg3/oZD2X5xMCEkHxOX2rMn0C+IOyBJLJvSA7C7Q+mKke
-   N9n/mOlryX1w0Gv3DZPqPVuQuQuMTFpKl3vKfXwSAo4nfOyyDXXRHopgF
-   xe2OuRNNusSTMgJs4N0nRVXcat/zUl3a39Z6/pNwd/Xd8kx6oT2KaBxJ4
-   16iB/iKEq8EtioofSBkL4qe2bMSHn9rPzYhs2KHsYoJ66+3rtKZhl/sfA
-   A==;
-X-CSE-ConnectionGUID: 14pXo24dR1u87A59QMImcQ==
-X-CSE-MsgGUID: ef4KWIdkSoC1wFAjdC4wYA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="46202274"
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; 
-   d="scan'208";a="46202274"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 05:25:18 -0700
-X-CSE-ConnectionGUID: 5q7OoIhAQkigPw2DVYglwA==
-X-CSE-MsgGUID: xGJhRqnWRhe+NPCOQEEE+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; 
-   d="scan'208";a="126904270"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 05:25:15 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 4604411F74E;
-	Tue, 18 Mar 2025 14:25:13 +0200 (EET)
-Date: Tue, 18 Mar 2025 12:25:13 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: mchehab@kernel.org, hverkuil@xs4all.nl, sebastian.fricke@collabora.com,
-	ribalda@chromium.org, benjamin.gaignard@collabora.com,
-	viro@zeniv.linux.org.uk, bartosz.golaszewski@linaro.org,
-	hljunggr@cisco.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] media: v4l2-dev: fix error handling in
- __video_register_device()
-Message-ID: <Z9lmKWC-JlVo6Biw@kekkonen.localdomain>
-References: <20250318090945.1655458-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1742302077; c=relaxed/simple;
+	bh=JrkJq1TR8evIvgTVOlocAONxVSPvWVBh4GMsMB07KBE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=Dt1LjgHjwIGzSxRjTcnWl3h/K0OMr2R+LP/boHw6v5a3qO4fUnthmu7rXlgZtUjCXCZ59HTXpsG4j2zfTMQWBN8yMOSss//0SUytGxUQqLdh1/KbgyBVs8ObD4cuPOdkHHAMQfOq5dPZrS9o6ZvkCgqO+4IVaeX44y6/7t3LHM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b=exCqs7/1; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1742302065; x=1742906865; i=frank.scheiner@web.de;
+	bh=HAU6yVHHQsef2etIltM4g3rVJPQx5Yh6FgBlpUZOkik=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=exCqs7/1SH7xPm8oWoqOGdXPaoEj5ZLiFfr6pWeUWqMUJ7pdmGqarlpMPcGLeqrC
+	 W9J6zXMdWtxx5BTERP/mLfxcSMps4ud0GIr0i6Mv1sVBhZG4PHetbQw/OayYpke4a
+	 Qkarru8JS5sPltYvalV3luDWz1ESPC50bm8YGsHMJ3PFKMOQLfwMDcTtBsQ0dSAVy
+	 o5dRxiCbv2R5jnI4IdMog8mGC5tXt8aj1cbPFe39HGODyGdL48P8iVclUzHqeN4Gx
+	 Hr79Omc3z0gS8f3QC+GAvlR+AwtpgVr/xNcJoqh2FswNbZW9JxBAbASCXbhtXBl0o
+	 BBNOHpnVoeQUh9vM2w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.22] ([87.155.230.83]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MJWoU-1tae1g3ndg-00WRST; Tue, 18
+ Mar 2025 13:47:45 +0100
+Message-ID: <68e093fb-556d-4267-9430-ff9fddc1c3d1@web.de>
+Date: Tue, 18 Mar 2025 13:47:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250318090945.1655458-1-make24@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: tzimmermann@suse.de, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+From: Frank Scheiner <frank.scheiner@web.de>
+Subject: 6.6.84-rc1 build regression on ia64 (and possibly other
+ architectures)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:FJKlLDfHrxAUPzWqy55OJn8T76v026V4SPQJ9/b/50dbEhxKQ3q
+ jxWB8qSN1yDFgPli7l3+CC8NrN3upwbvKla3CTahVKF1KleKId18LVVAsx+W3dYE1MHhq65
+ 8eOd3ly6qdNtpg0QHTU8c1MDEXPyTM0u7yo5kC2XlINHpnNiHy3whGZTEg8S5vryPa93ch5
+ HnPcchz2yqG1vbTFW13eQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:wHMfjhyP/3k=;pwvUvKq/MneL/iqHylNaKAFXV2v
+ UrJGfO8lm1MkNAXUZd2bvmXpjKSMb7ZDVgEEUFQ3/JkgmyPkwPMNw4kIpjU5WhcrQxfs4xC0R
+ cAkoapyY+xDtK4RHgKQBu+N0C216DK94cpzUnC7cEdv0x+bcQrwuwU7r811Zl8/z/zMx9a93Z
+ wQ2Qhuk8Vu0qbSOvhig7QrdoQ4WgDoyvgdyTStJqSCCJ0C7VEuj3u08vr8+KhqTQ73b5IBjgZ
+ 9oUMQrGveY5G29+KgXcxb+v3oyE+stQnms00DgQvNxSIMeX5VXxFYdgzQ62/mzkevS1W1h71f
+ CeqtrBIO39YCdMrkH8P8Md7J0mZLc3PVQ2pPITClYc7LSHPmGP8YoLWak3EVGhmDp3Kig6msO
+ PcpR61j21y/BR1Q2YzzpcWIRtOyiZj3n8v6fR1bMBZyQ9WGP0irrR7vgGBFmObPn2MMhfxyfl
+ hBvn+qbBRinQ+8VJnXCWAFkn9dXzEv8MdLVZUWE/HsDS5BUP/OaWs3rjCxjlzp9q4DyR3VxGB
+ F/vCEb2g29YfJMcF79EMVsMcxkTxrl52w1Osju5ZdYT3fVJ/QqDc91Lhfk09hwCbJeiXco+0y
+ NVZ5/BZ30B2CtSHSCkn7Z+R4vtMGQ4k6i5GwofiwweDQFPvAKNOPqDhRf/cV/CMQyPEdnFf86
+ WUvUyhlNwuFrTe6M9Rfd1u7ITxL4ce9PP4O/DyHggJi8FVBvPHx9pncFVmT5iB8y1kVlV6Ss2
+ yBT5hkoTXLtwQ5M97qMmgj4OndUZUtD78r8gZsugKdjLDf37mlc4rhjx1en0J+RRjgkW05iST
+ rkR8ZYe7/hAlg9gM7BBwlpa72VUxaO+4Q0mNw3im07XI0ZcrMNTJmyu2bB9qnB7/7ROdoU87m
+ Xiko1luBq+Hn3npmFdE7xc5QXm7u00FeM1iwUyovgwcYSltld4JrPZWnRd/ytNAb9ktw+4veU
+ zz4UlTdlaDaOFkgQf1St9OV3gmhKV7sO5aIIBowKGpZzcFYt8PkdyJ5xRsknQYa3+q/3I8a06
+ rOQfnOA0I0I+VPDOvdGVErDmqVf+EsHL5BH9CtMq+HAlkwXsaglEbWGXS6uxloXX3eQWl5+6Q
+ tumVbjrlKREXzttkzKHqCK2OTkK8cgcmvkXm+QoXCUGdPLxR0o06oyc6f96ja2My/o1Do5TLK
+ W/rbF8kv9+/96f5aTnkzUmx8Qhl6IHpygmz9/SXzgZvBmoq8too6giVsPxIiXE+U0dBAYdyZe
+ Mm7NMzFrCcEOPRd3SeYM1VE/689i65MpB9lrcfmeMMhewnpcDaDDHy37PW5JD4TMg3UBQ85bG
+ N1A4uJ5ketUC217W2F32aQzC4/LWHRNgYjqCGJxmmKSoio1Pgs3DF4mBpanibwVJw8QFTVuch
+ /sU2hfZq4B8VPvBOHlaetZWBL9Cl03nY4aZBqZ7+sOwdIOu66p7lMb5IEM2pWq8dp1K/nKYa+
+ HYPZTZhxtvzzFtm6Q7h4UJJUKOl2Qh+S3s6V3xwiIXmQIqU3eE0T5SS5rpz9BwAVJfSohnA==
 
-Hi Ma,
+Dear Greg,
 
-Thanks for the update.
+I see that the review for 6.6.84-rc1 hasn't started yet, but as it was
+already available on [1], our CI has already tried to built it for ia64
+in the morning. Unfortunately that failed - I assume due to the
+following **missing** upstream commit:
 
-On Tue, Mar 18, 2025 at 05:09:45PM +0800, Ma Ke wrote:
-> Once device_register() failed, we should call put_device() to
-> decrement reference count for cleanup. Or it could cause memory leak.
-> And move callback function before put_device().
-> 
-> As comment of device_register() says, 'NOTE: _Never_ directly free
-> @dev after calling this function, even if it returned an error! Always
-> use put_device() to give up the reference initialized in this function
-> instead.'
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: baa057e29b58 ("media: v4l2-dev: use pr_foo() for printing messages")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - modified the patch as no callback function before put_device().
-> ---
->  drivers/media/v4l2-core/v4l2-dev.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
-> index 5bcaeeba4d09..4a8fdf8115c0 100644
-> --- a/drivers/media/v4l2-core/v4l2-dev.c
-> +++ b/drivers/media/v4l2-core/v4l2-dev.c
-> @@ -1054,17 +1054,16 @@ int __video_register_device(struct video_device *vdev,
->  	vdev->dev.class = &video_class;
->  	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
->  	vdev->dev.parent = vdev->dev_parent;
-> +	vdev->dev.release = v4l2_device_release;
->  	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
->  	mutex_lock(&videodev_lock);
->  	ret = device_register(&vdev->dev);
->  	if (ret < 0) {
->  		mutex_unlock(&videodev_lock);
->  		pr_err("%s: device_register failed\n", __func__);
-> -		goto cleanup;
-> +		put_device(&vdev->dev);
-> +		return ret;
->  	}
-> -	/* Register the release callback that will be called when the last
-> -	   reference to the device goes away. */
-> -	vdev->dev.release = v4l2_device_release;
->  
->  	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
->  		pr_warn("%s: requested %s%d, got %s\n", __func__,
+https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8887086ef2e0047ec321103a15e7d766be3a3874
 
-I think this still needs some work. E.g. v4l2_device_get() hasn't been
-called yet here, but still v4l2_device_release() will call
-v4l2_device_put().
+[1]: https://web.git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-6.6.y
 
--- 
-Regards,
+Build failure (see [2]):
 
-Sakari Ailus
+```
+[...]
+  CC      drivers/video/fbdev/core/fbcon.o
+drivers/video/fbdev/core/fbcon.c: In function 'fb_console_setup':
+drivers/video/fbdev/core/fbcon.c:478:33: error: 'fb_center_logo' undeclared (first use in this function); did you mean 'fb_prepare_logo'?
+  478 |                                 fb_center_logo = true;
+      |                                 ^~~~~~~~~~~~~~
+      |                                 fb_prepare_logo
+drivers/video/fbdev/core/fbcon.c:478:33: note: each undeclared identifier is reported only once for each function it appears in
+drivers/video/fbdev/core/fbcon.c:485:33: error: 'fb_logo_count' undeclared (first use in this function); did you mean 'file_count'?
+  485 |                                 fb_logo_count = simple_strtol(options, &options, 0);
+      |                                 ^~~~~~~~~~~~~
+      |                                 file_count
+make[8]: *** [scripts/Makefile.build:243: drivers/video/fbdev/core/fbcon.o] Error 1
+[...]
+```
+
+[2]: https://github.com/linux-ia64/linux-stable-rc/actions/runs/13914712427/job/38935973485#step:8:1458
+
+[3] (fa671e4f1556e2c18e5443f777a75ae041290068 upstream) includes
+definitions for these variables, but they are guarded by CONFIG_LOGO.
+But in `drivers/video/fbdev/core/fbcon.c` those variables are used
+unguarded with 6.6.84-rc1. The above upstream commit (8887086) fixes
+that IIUC. Not build-tested yet, though.
+
+[3]: https://web.git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-6.6.y&id=6562a182d204492b7c1ccdf857b05b46a9d917a0
+
+Cheers,
+Frank
 
