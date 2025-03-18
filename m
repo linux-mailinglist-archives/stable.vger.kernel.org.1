@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-124789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AE9A6725D
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 12:16:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC751A67265
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 12:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E10AC3AC527
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 11:16:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB78618937F2
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 11:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0455D1EF372;
-	Tue, 18 Mar 2025 11:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE5D2080FC;
+	Tue, 18 Mar 2025 11:17:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F7C1922FD
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 11:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7721C8602
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 11:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742296593; cv=none; b=teo+s8VPKCDmZ98oN+Me8qP0GOcD0zewAKaTs2cqv5UFo3zMJ58O0WDPAdZcbCYyHUeFYlvUfpxqR0H+cJAym5rKggDdBSiCHZ5bln41xPdAMxm/74nJVTaoIWwvgxu4N0z1EI9H7nPtbKSOHxwgLfzVgXvgxuFA88XrytdZoTU=
+	t=1742296659; cv=none; b=qxVG3ii1SttbYi++zI558wTpuBaSTh9egNc0HaasakN0rhnrObFIMpPvSc1o+Fcvxaf4kkIaq+Iya+OWWxBcMCd22OcJA57TjJoO6zw12QgPQzbAwRnONbD9884A3v88ksw/E6tbEbFL/pKqZS2oPxHMxh1Y3gfhjY1nUgpFfac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742296593; c=relaxed/simple;
+	s=arc-20240116; t=1742296659; c=relaxed/simple;
 	bh=P0rkjVeDHRZss3GYyklBPIwA6S4nfLS3VVUW29QST2s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KbVSUFvihySRAZky1gt8jYo5sSGrhxeOVeMQ4po9ouFjdL3boqmqFPQMLbP1OaHlcjLHIP1kppxBAERzSqu6NrgRXjeL++etLKnn7aCFXwYbyVvbh+tuV6jzz9aeuMMEMWRcSX2GZzmmX530kZRCSld0MVq8EVY5A7zoupQczs4=
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=opRkkvKc4LAGomyNmjOUYvpmy1oCJK0bXxcUoyWaK9fvY7TybogofFtC5RFKQ/oiLiT4Ra+fOed6xZVtGQP+lTGJx9kWsot+R/PfccM5TRjkHz1/8kVuICjJoyTriCT2R0OGUrTjBxpTZE+T3ZZRTySJv5r+46t9Xr4H/jeIdUk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.68.198])
-	by gateway (Coremail) with SMTP id _____8CxvOILVtlnPJCbAA--.2288S3;
-	Tue, 18 Mar 2025 19:16:27 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8CxLGtLVtlnbJCbAA--.1059S3;
+	Tue, 18 Mar 2025 19:17:31 +0800 (CST)
 Received: from localhost.localdomain (unknown [223.64.68.198])
-	by front1 (Coremail) with SMTP id qMiowMAxTsUCVtln96ZRAA--.22425S2;
-	Tue, 18 Mar 2025 19:16:25 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowMCxasRFVtlnRadRAA--.20746S2;
+	Tue, 18 Mar 2025 19:17:29 +0800 (CST)
 From: Huacai Chen <chenhuacai@loongson.cn>
 To: David Airlie <airlied@gmail.com>,
 	Simona Vetter <simona@ffwll.ch>,
@@ -42,9 +42,9 @@ Cc: amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH 37/40] drm/amd/display: Protect dml2_create()/dml2_copy()/dml2_create_copy()
-Date: Tue, 18 Mar 2025 19:16:10 +0800
-Message-ID: <20250318111611.2161153-1-chenhuacai@loongson.cn>
+Subject: [PATCH 1/2] drm/amd/display: Protect dml2_create()/dml2_copy()/dml2_create_copy()
+Date: Tue, 18 Mar 2025 19:17:16 +0800
+Message-ID: <20250318111717.2161235-1-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -53,25 +53,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMAxTsUCVtln96ZRAA--.22425S2
+X-CM-TRANSID:qMiowMCxasRFVtlnRadRAA--.20746S2
 X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
 X-Coremail-Antispam: 1Uk129KBj93XoW3AFy5Kr1rCFWDJr4rGr4rWFX_yoWxJFyfpr
 	98XrWrGw48Ar1xJr13AF1UKr9Yq3ZxAFy8Jry7JF1a9F15Wrn8JFykJFW8trWUtFW5JF17
-	X3srAr98tay8KwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	X3srAr98tay8KwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUP529EdanIXcx71UUUUU7KY7ZEXa
 	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
 	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Cr0_Gr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-	xGrwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWU
-	XVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
-	kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW5JVW7JwCI42IY
-	6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
-	vEx4A2jsIE14v26F4j6r4UJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2
-	KfnxnUUI43ZEXa7IU829aPUUUUU==
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5
+	McIj6I8E87Iv67AKxVWxJVW8Jr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Cr0_Gr1UMIIF0xvEx4A2jsIEc7CjxVAF
+	wI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUxOzsDUUUU
 
 Commit 7da55c27e76749b9 ("drm/amd/display: Remove incorrect FP context
 start") removes the FP context protection of dml2_create(), and it said
