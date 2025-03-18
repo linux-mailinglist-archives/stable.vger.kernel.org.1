@@ -1,197 +1,123 @@
-Return-Path: <stable+bounces-124765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6EEA66A61
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 07:28:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B64A66B6C
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 08:20:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E65DF7A4297
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 06:27:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB4941896144
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 07:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179F91DE2D5;
-	Tue, 18 Mar 2025 06:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DB51E8358;
+	Tue, 18 Mar 2025 07:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nSDn/H02"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kHXwonhQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351EE171658
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 06:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE471E51FE
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 07:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742279285; cv=none; b=JBGaKcKj+IB/RgP3f9yjCnv8yE+XiETxZQgQ9eYNpTkopVK1eza1LyVOvkzyUaGH+6bnjLaQhJCO8fm6+IjAHI24jbirdFw2X7mb+L37nHacypBHgNYeZRmWhtvSTrUyrbARiTgRRcwwPx5/51tl8qI4b65QZnIAuVipHy5A5oQ=
+	t=1742282405; cv=none; b=rVS+nFg4o8eJ4ufP/PoEfctzGFErxBkgZKOdlFwj/WeXvQFNrNc+fyc2eY8SarMCPQstNIOXf0x8tJwOwfI9eiYISspOIGMP2182hy1o7wgFshkulaksGCSE+PaWLMRmOE4IES9QvAUMy0L3IyWX2Iu6bIgtdjnyoWkaS0wgyCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742279285; c=relaxed/simple;
-	bh=BKMVTQqz3RsMwgJiObS9tQZ/rouwlRUpINy4oDngqVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dDqyPe8rrJ6QzuUXO9b9UQYWP+3MmKUKL71OGpY49T47681MoFIjylOmndbxZ5PWOLt3EH4PGIomDzLzmMSgyIDLS3ky19LkS3+uYlFCMBFavY/IErix7z0zo38+RPZb92hwFTbIgA++KrODcIOOCU4sTb2JKX/0GGL1KZ5pAIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nSDn/H02; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-225e3002dffso53288075ad.1
-        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 23:28:03 -0700 (PDT)
+	s=arc-20240116; t=1742282405; c=relaxed/simple;
+	bh=KE3VVb/VcsGNUw7lWuEm5cySxuPzoGdkS5CvuzcY1YE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=BJXBbPlwPTelupJoEhFL5FEbhreiZtuef3v/iPMIClyH/VMpUgC0yMSwv9RMnKL2Ko5/NUxcJ5Ru86thoT+FR8+ob9U2tWOwbclcB55OKoFW2PvEPIricweGHUkgulzjYo8sR3JLfwAx+PY62j9WqIV5d4TRgU6BDrPHPEYcDzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kHXwonhQ; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac2a81e41e3so1176717066b.1
+        for <stable@vger.kernel.org>; Tue, 18 Mar 2025 00:20:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742279283; x=1742884083; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+        d=gmail.com; s=20230601; t=1742282402; x=1742887202; darn=vger.kernel.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=BSXIkkDh3qUjQU6JXyu8jEZBeTmc92jcPbpiryIBFW0=;
-        b=nSDn/H02NITiW5l+fuBdoG/uvKANZCal+SirTwmTYjtHkNiuhBi0vQf9BUEwfsTc+P
-         Lpt6Qbty3m5Bz+BxNTBOO59WirgLrAvvtKBunJlDszh0RB/YQGEKq5e432dHGdmld+pw
-         gLLdcjui1NvfKARuaQGDm5VCI2/RfYVuizEVfmrhgM2v45s6L0IK6DR3Y0nLik3c3oZ0
-         kbXso3d6XgXc3gsgKaCyaJNKnuoe/Ian1vfIY0Cy+BSaAul1fR8iJVKVvZ0RCbEimXtg
-         esTANh97A+yVY34M8EzkVkE+RBt5rKtmilIjFcM5y2lkERsloJT9om+vgV3O9VUbGPKb
-         BPjA==
+        bh=wOQY2Sl3cBtp1I4btkzfk+inVIddf9r7yc5Qn2hSVBI=;
+        b=kHXwonhQF7WQigjLP1NPz57OONgvnL69h+H5vy4+CW2gCxc/yMSJxG2EJC6/k/IcRA
+         SKyIIvd7wukjRWcLwMo5IloAeaqtoVgfRqb4JNrNYpEG1+R0DXH5IAevmmoX9NHgRq48
+         kuHy6W8k/Xa8qnwJ4FEUM43+x5C4z1qTtjqJ9ACvLrw20MEMxAfGYpWUZ4agLQuYrfK5
+         v0zQUUi00orRgPsTXFTeCRVCJ1mI+ebQ+Uf8SYk/MZWc5IEapyIrAjd+4A/QFiyfCf2g
+         P3pngeEeggdGA7r/MCLHUe5z7E7G3c8GJFg9dQEEx335BNQf1gimBEbzQ3uEXWou4jjK
+         r1pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742279283; x=1742884083;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1742282402; x=1742887202;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BSXIkkDh3qUjQU6JXyu8jEZBeTmc92jcPbpiryIBFW0=;
-        b=pshHB7lioVBIHft917to1nedvq/7fT+YYAbMEhxitytDfgYT7KrKAEh6rVPpSvFj5y
-         KpBmvZ8YFYvFSa+yI3bB/8RQroqMjHF7aoal5v2nc6mkZO9t2fF6rA6NroGq4IpLyrpJ
-         E6VK0hlJFLlMf8FohwaS71vpUc8OlqTLuJQtsEgPIBjfikqE5R+iNFGmJTaO87B6yPZO
-         rhAP2ymEcXap8CajYKRcmA7e/XZ5Ee2XjUFaIzJ1OdCwY3ySrcB9OggDUejtBnrIwGQv
-         9TwUmKUMucvY5AEECJgdPbQIDwVk7M8r2q0Gi4JzYLOPOnTkCiYZtN9VmBZvO7vZIJGx
-         TPig==
-X-Forwarded-Encrypted: i=1; AJvYcCWtWJULrLagjHG1q3fJsrR60ZYLSdEgC13pd7bcIeFXxj0puS/lWrL8H3JtiBxWvEZ3Jm2tmh0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+p2gAgOkhT5E+LHH12PAJIztDvbp9Lv9BfTR0SldHeFw+f378
-	CxoUzW3QlOZd+bN062kg0HAB8rTKz8hJnQbVm0uJD0LDiQLdeq4x80xRGL7iyA==
-X-Gm-Gg: ASbGncvz1VEEgfP6zDF1ZDL762JTAzVAwjR8i5ZBc5ymLLQX9bKXsN/L9L80W/58XxH
-	5VxBwFaXVEl2Fd5NdtMoaCfm2jDdb8vD1kZ+DWCW4l9i4Csr7hSrXAd4+miFD4YthPpURSkBm0C
-	6QsnEfSCsBAUQsM0LRIeT51XsmBkd0DqRTB0va2tUCpwIWRPBKzkwiuulZV5hfTh6kPxjHOu4BV
-	7Gqxt9e3Kw97IT75GmcK+ZpaAdavSIq813NfJUtHrFtq5xaFXcTaC62vkRH8lIIDW+Q7GY+Ab5D
-	M6R+Mts0GeYfQUnpKyh8GUs6kYtsw/hDGcUOjEMvwR/3iU/sFzffs+R3
-X-Google-Smtp-Source: AGHT+IE9Ipx8e8hi6l851M8ECjjGxpURnuc//kCtsTCbalD6OxbQYJGW4eIjPuy+9CqCFihdVq7D0A==
-X-Received: by 2002:a17:902:ecc7:b0:224:1220:7f40 with SMTP id d9443c01a7336-2262c51bcb7mr23881445ad.3.1742279283447;
-        Mon, 17 Mar 2025 23:28:03 -0700 (PDT)
-Received: from thinkpad ([120.56.195.170])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301536326f6sm7277131a91.35.2025.03.17.23.28.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 23:28:02 -0700 (PDT)
-Date: Tue, 18 Mar 2025 11:57:58 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Bo Sun <Bo.Sun.CN@windriver.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Vidya Sagar <vidyas@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kevin Hao <kexin.hao@windriver.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] PCI: Forcefully set the PCI_REASSIGN_ALL_BUS flag
- for Marvell CN96XX/CN10XXX boards
-Message-ID: <20250318062758.hrquo3xhkt4kgt6g@thinkpad>
-References: <20250311135229.3329381-1-Bo.Sun.CN@windriver.com>
- <20250311135229.3329381-2-Bo.Sun.CN@windriver.com>
+        bh=wOQY2Sl3cBtp1I4btkzfk+inVIddf9r7yc5Qn2hSVBI=;
+        b=mtABKgEkYcAhgoGNuF0yHo/TQdofMuU3NGDeopb5Fe+UNR7W/A+q1gbpBly4stbh5I
+         w5f0YotAtW+urf2CLfZYGIDYBrVVMX/pkzeWuLTA7+4TZOwJX9q3MYnncZJavbIw7KqF
+         M0/jLtimvHI2/r16kxGUiU4zohrCWPAmpgo0VioZJkhJR3Pjse9+Di0PZw9GP/dnHT6G
+         EkmiSDNUs5FbbKsn83Uf8sHOpN0XvWyXMtwi0WwpxjylKOYVE88fRlg0yBrOtfjtlSVp
+         VmAY7B5IFcr4U/QxBeyysdSyyhylWN9c29uh6EId2akmISU70BIZ5gCB1wVJRCyMez44
+         eh1A==
+X-Forwarded-Encrypted: i=1; AJvYcCXCP02DqT5vQFMHYFiPsPx2nA8RWeMwLDtZkorHke+zQP2JzfjrjcPxPr8wN+UlRQLvFF+SA6c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLUjbgu46Kple3/qjvva9p2HwXijWmBOGbBVpDXgfdviGUU1tg
+	QFY+4pGo/SbYW2weyROEXetfOu/jsQEdsljbUAo2IvBLzZrHK/ik
+X-Gm-Gg: ASbGncurXapQcYgYY+Ae+7st0jZjSMEjzanLtR8Tnz2BTRYtgH/l0r6uAsjW4MZ5wXM
+	CNkHrqCV/7w61S0zXA8vDDlb4qAViM57R48rZjcEz48M4nC+3SsA5tl6yM/eVHF8uaokyVv0dW6
+	vjCIrJr93W/f8zTHVHz99rcvW+seHMqM6bIVqveESor1Q1tKMNP3coCWayBkyIIPxcThLEnRAxU
+	DXS0e2Emk/VggMShlv3CzTo7KmCxGMqwJWnI1dH4dE+M58T90dkzfgA8TptG682FNWgRz08FYV9
+	auQ5WoRfIDcf4SCs/KBiPOanv0qlkIS2Hsk/FyJOc4eQ
+X-Google-Smtp-Source: AGHT+IEhvb2+ZHW8QgmHwfldMUR1fhrpDw+JzWWWNaRp6WVUAp9rKbOnonL/rxePMCqjODSEKhw2xA==
+X-Received: by 2002:a17:907:868e:b0:ac2:c1e:dff0 with SMTP id a640c23a62f3a-ac38d405dc7mr252426566b.19.1742282401863;
+        Tue, 18 Mar 2025 00:20:01 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3146aec28sm811551466b.12.2025.03.18.00.20.01
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 18 Mar 2025 00:20:01 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: rppt@kernel.org,
+	akpm@linux-foundation.org,
+	yajun.deng@linux.dev
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	stable@vger.kernel.org
+Subject: [Patch v2 1/3] mm/memblock: pass size instead of end to memblock_set_node()
+Date: Tue, 18 Mar 2025 07:19:46 +0000
+Message-Id: <20250318071948.23854-2-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20250318071948.23854-1-richard.weiyang@gmail.com>
+References: <20250318071948.23854-1-richard.weiyang@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250311135229.3329381-2-Bo.Sun.CN@windriver.com>
 
-On Tue, Mar 11, 2025 at 09:52:28PM +0800, Bo Sun wrote:
-> On our Marvell OCTEON CN96XX board, we observed the following panic on
-> the latest kernel:
-> Unable to handle kernel NULL pointer dereference at virtual address 0000000000000080
-> CPU: 22 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc6 #20
-> Hardware name: Marvell OcteonTX CN96XX board (DT)
-> pc : of_pci_add_properties+0x278/0x4c8
-> Call trace:
->  of_pci_add_properties+0x278/0x4c8 (P)
->  of_pci_make_dev_node+0xe0/0x158
->  pci_bus_add_device+0x158/0x228
->  pci_bus_add_devices+0x40/0x98
->  pci_host_probe+0x94/0x118
->  pci_host_common_probe+0x130/0x1b0
->  platform_probe+0x70/0xf0
-> 
-> The dmesg logs indicated that the PCI bridge was scanning with an invalid bus range:
->  pci-host-generic 878020000000.pci: PCI host bridge to bus 0002:00
->  pci_bus 0002:00: root bus resource [bus 00-ff]
->  pci 0002:00:00.0: scanning [bus f9-f9] behind bridge, pass 0
->  pci 0002:00:01.0: scanning [bus fa-fa] behind bridge, pass 0
->  pci 0002:00:02.0: scanning [bus fb-fb] behind bridge, pass 0
->  pci 0002:00:03.0: scanning [bus fc-fc] behind bridge, pass 0
->  pci 0002:00:04.0: scanning [bus fd-fd] behind bridge, pass 0
->  pci 0002:00:05.0: scanning [bus fe-fe] behind bridge, pass 0
->  pci 0002:00:06.0: scanning [bus ff-ff] behind bridge, pass 0
->  pci 0002:00:07.0: scanning [bus 00-00] behind bridge, pass 0
->  pci 0002:00:07.0: bridge configuration invalid ([bus 00-00]), reconfiguring
->  pci 0002:00:08.0: scanning [bus 01-01] behind bridge, pass 0
->  pci 0002:00:09.0: scanning [bus 02-02] behind bridge, pass 0
->  pci 0002:00:0a.0: scanning [bus 03-03] behind bridge, pass 0
->  pci 0002:00:0b.0: scanning [bus 04-04] behind bridge, pass 0
->  pci 0002:00:0c.0: scanning [bus 05-05] behind bridge, pass 0
->  pci 0002:00:0d.0: scanning [bus 06-06] behind bridge, pass 0
->  pci 0002:00:0e.0: scanning [bus 07-07] behind bridge, pass 0
->  pci 0002:00:0f.0: scanning [bus 08-08] behind bridge, pass 0
-> 
-> This regression was introduced by commit 7246a4520b4b ("PCI: Use
-> preserve_config in place of pci_flags"). On our board, the 0002:00:07.0
-> bridge is misconfigured by the bootloader. Both its secondary and
-> subordinate bus numbers are initialized to 0, while its fixed secondary
-> bus number is set to 8. However, bus number 8 is also assigned to another
-> bridge (0002:00:0f.0). Although this is a bootloader issue, before the
-> change in commit 7246a4520b4b, the PCI_REASSIGN_ALL_BUS flag was set
-> by default when PCI_PROBE_ONLY was not enabled, ensuing that all the
-> bus number for these bridges were reassigned, avoiding any conflicts.
-> 
-> After the change introduced in commit 7246a4520b4b, the bus numbers
-> assigned by the bootloader are reused by all other bridges, except
-> the misconfigured 0002:00:07.0 bridge. The kernel attempt to reconfigure
-> 0002:00:07.0 by reusing the fixed secondary bus number 8 assigned by
-> bootloader. However, since a pci_bus has already been allocated for
-> bus 8 due to the probe of 0002:00:0f.0, no new pci_bus allocated for
-> 0002:00:07.0. This results in a pci bridge device without a pci_bus
-> attached (pdev->subordinate == NULL). Consequently, accessing
-> pdev->subordinate in of_pci_prop_bus_range() leads to a NULL pointer
-> dereference.
-> 
-> To summarize, we need to set the PCI_REASSIGN_ALL_BUS flag when
-> PCI_PROBE_ONLY is not enabled in order to work around issue like the
-> one described above.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 7246a4520b4b ("PCI: Use preserve_config in place of pci_flags")
-> Signed-off-by: Bo Sun <Bo.Sun.CN@windriver.com>
-> ---
-> Changes in v2:
->  - Added explicit comment about the quirk, as requested by Mani.
->  - Made commit message more clear, as requested by Bjorn.
-> 
->  drivers/pci/quirks.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
-> 
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index 82b21e34c545..cec58c7479e1 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -6181,6 +6181,23 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1536, rom_bar_overlap_defect);
->  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1537, rom_bar_overlap_defect);
->  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x1538, rom_bar_overlap_defect);
->  
-> +/*
-> + * Quirk for Marvell CN96XX/CN10XXX boards:
-> + *
-> + * Adds PCI_REASSIGN_ALL_BUS unless PCI_PROBE_ONLY is set, forcing bus number
-> + * reassignment to avoid conflicts caused by bootloader misconfigured PCI bridges.
-> + *
+The second parameter of memblock_set_node() is size instead of end.
 
-Do we really need to care about PCI_PROBE_ONLY in the quirk? Why can't we make
-it unconditional?
+Since it iterates from lower address to higher address, finally the node
+id is correct. But during the process, some of them are wrong.
 
-> + * This resolves a regression introduced by commit 7246a4520b4b ("PCI: Use
-> + * preserve_config in place of pci_flags"), which removed this behavior.
+Pass size instead of end.
 
-I don't think mentioning the commit is really needed here.
+Fixes: 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+CC: Mike Rapoport <rppt@kernel.org>
+CC: Yajun Deng <yajun.deng@linux.dev>
+CC: <stable@vger.kernel.org>
+---
+ mm/memblock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- Mani
-
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 64ae678cd1d1..85442f1b7f14 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2192,7 +2192,7 @@ static void __init memmap_init_reserved_pages(void)
+ 		if (memblock_is_nomap(region))
+ 			reserve_bootmem_region(start, end, nid);
+ 
+-		memblock_set_node(start, end, &memblock.reserved, nid);
++		memblock_set_node(start, region->size, &memblock.reserved, nid);
+ 	}
+ 
+ 	/*
 -- 
-மணிவண்ணன் சதாசிவம்
+2.34.1
+
 
