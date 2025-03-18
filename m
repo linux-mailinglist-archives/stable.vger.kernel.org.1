@@ -1,52 +1,93 @@
-Return-Path: <stable+bounces-124759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07C5A666B4
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 04:07:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A884FA6673B
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 04:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC2C47A4B88
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 03:06:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E194174AA1
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 03:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C3818BB8E;
-	Tue, 18 Mar 2025 03:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078A31991C9;
+	Tue, 18 Mar 2025 03:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jbT7LfI6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kotCoC0x"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B44157487;
-	Tue, 18 Mar 2025 03:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6313E35280;
+	Tue, 18 Mar 2025 03:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742267227; cv=none; b=shvBpK61GpHlGcLadnmdITtk8La1BFhsd1IPZCO3NhAFaa/H/Qghbb5IAjMAS2av7fqyflvP83+LxYexqOJIT4sHArcirlQW1Qho+H4Z991EjpY3zSLMqAo0ulF1MD6H8o7Q+v2ekSkRdq8ElWfpXV2DdCgfKUiY1jIimurcjFU=
+	t=1742268271; cv=none; b=j5YlvbIGsRc5QIyuAShTBCZf1HsbtxbQJ7DTUzPX5FlmYHt9GsrR//Q3CZUy8ZJR7VcexVYfnsj19WxW1F2Mdc39U4b+kiPWXd5UrDBML+bfIs4VJIIncMDpnHsSaQv0AWD7d4x7YvBvlfd/AW2kaintWAfVGe25xMnp0msVZpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742267227; c=relaxed/simple;
-	bh=YGsuhljqccKPHTYpawWHibXzqUjkIgNy6z/pL7cScYk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p7+yswQKjXpAibaAlHkL+t9ror4b8ZUd2WDrsvcAytLG/RPvTLMprJG0zqJrSfUs7WxgEi4cA2G7zgVzK9B/8ggvxZOj3BmxhVdEK8ktxQ6hOTOwUVWjUJhkKqzwq0SJLCMdSXe7TDapGe2fPf8k0aRJtj+0Dek5jQmiYVFYIIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jbT7LfI6; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=JBeRk
-	4co3+uSwf3WyPiW0R5ciRcTZIeouYHkX7tcL/M=; b=jbT7LfI6YLXA/yB/bquep
-	MIveH48+rPGOj40pF0za/gsvuHmtcpGvxupndfQDTs+cbfez/cg802SfIcC5D4uD
-	BBtqGNhVODF8aQuPzHOnzIYc95vNRJiWNIOUs/y1PKfn/+ANJ1r/sQKdkkQQMPg9
-	2DWal+EpPiEWpRyqorrdG8=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXnt8_49hnT9OMAA--.10535S4;
-	Tue, 18 Mar 2025 11:06:40 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: airlied@redhat.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] agp: Fix a potential memory leak bug in agp_amdk7_probe()
-Date: Tue, 18 Mar 2025 11:06:37 +0800
-Message-Id: <20250318030637.1572350-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1742268271; c=relaxed/simple;
+	bh=GJEQZBZoSXG8ZavXNPasT/udLtFSf8e3izTuvlxWoow=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l5U1OTIHFpUOWIuDsYJgdQOsq03yCkjfBDmZWcxjYJaePoa3td88UoeEcEbyk/3vjDMYNRSfOJ7Py4Z3yLoOsYpQ6vasBp+VtbXyXh7Q1SBP2QbRDhywoi9LRYzJTIeh8lQyX9M1H7K0PDbHsxKZ7HoMcvga8I8ROLk3wCNQvns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kotCoC0x; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-223fb0f619dso84768965ad.1;
+        Mon, 17 Mar 2025 20:24:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742268269; x=1742873069; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xzsGjBDZ3uOi/9IBR3NoAthzrrDc884LFnPwtHEO8r8=;
+        b=kotCoC0xliV1s3jyNu+4uhR7LQPtHTiKyXNTjFPhw7kbHuUaEl93YiuCdEH3Dc6icJ
+         hzQG4uym0MVrL2mjrsZUWUPjP99uZbKrEg8CIK1eEWZhkYR/WWGPiS2q8wpyj9EvSjMf
+         GFOtKQeNzr9xq40Fl7iU20QQZgbmrf79QQmSQHGUmSOe8dMTpV49HApUqL9cH7LWgh1l
+         K+GH9TWyltVfzYvu0QVl9cemrBKapazM9zemOM3q50iWRE/ccDFBaba//sjduL5qyJvY
+         D+oMsVNCDvQZoXZGTkppk+1RzaaXaXS8JY6L54+ALJuCDorhDulu6HPShGXED352GZNq
+         2+qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742268269; x=1742873069;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xzsGjBDZ3uOi/9IBR3NoAthzrrDc884LFnPwtHEO8r8=;
+        b=YX4O9//XFCRBgorQlJxBvsnTb25BnqW6QrPzhvoWpOfXDgxqbKnPc3sxmMtwtEzehh
+         dWqyfBIoDVSbzH36B5a67U0iOz+u5FaPsECxFZH8aJJVzmMWu3gWrXiKDwJsOEC2Yykj
+         bYlviW3U1K5za6xR1qdpA9oZQ4/89EskqFu2TPp4t872rV0Ycx5YyuipH8S2vZ+Pk6LX
+         W0dFPteEwuq448aVPNF+7FOIANmgtKpF5flvZ7wztf8Yp7MzOTVbzQyHRrKuStZ80PLq
+         Jv2eHeqzQK1OYSvZ14Zonu27ZZgq4BbKr4RVuP/zmpkjoFe04/rhCXvQSYcjhKNDDKYb
+         De9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUk7EYp867vdY0Y279qdtgdzBcz6BG3nxrQkuBm7AQSAX1KMPtRk19BzfyFgR6hufgWU0qdfhFw@vger.kernel.org, AJvYcCWul76XLyzeOQHEQ4IPOA1I8xG1UIXdW7HJunlXhkSI4XwSc1vUUxu2oBoEw2bNJP5vdNDMrUR68nQdjVw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzdpm3WuaXzSgH1ABP3ST3oHEx0qfV3EMlzTwQQu6skiISuVxkq
+	y++1botcrrBUtlY5ZNLAIgc9T+eXjaFx/Md+qKV4BEwNCZE/ncBf
+X-Gm-Gg: ASbGnctxJVVAq7pK2y4ylPGmVRmjuN7npvKUrrXyPZgvkrqT3Ysv1W7te9BBdXs1hSZ
+	Yl0Si7tRs51e32NvXt+aTJXuVNP4XakKBCgdzQExsQA2HEqCX0q5Z9BLRVnXRhX/E27S8U5qvoO
+	7s8gDYmcs1m1Ap2bDyqASaWgCrWsjpnmeEZQpac9xKELX0uENHYpWXpGUJIEmpIVDVfxYl8XALW
+	4sDZihhz+IclqchUcX1Z7hlPsrl0QogsP92i3fIbarbLIn/gkImNL30rB45N/lMrcsJnnBIVLOL
+	U00nGMFCFaux2Cb1txjxmPF3ulbBeDEzUQ3T5A==
+X-Google-Smtp-Source: AGHT+IEvQZr1NDuupnwhk0WVzDIWEjDBiyCz7Lf8A5Y9iUiBLq47O6z6JgLA8D0IgZ7PxP69ke1QsQ==
+X-Received: by 2002:a05:6a21:600f:b0:1f3:4427:74ae with SMTP id adf61e73a8af0-1f5c122df38mr18511704637.25.1742268269508;
+        Mon, 17 Mar 2025 20:24:29 -0700 (PDT)
+Received: from gmail.com ([116.237.135.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711694e56sm8666125b3a.130.2025.03.17.20.24.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 20:24:29 -0700 (PDT)
+From: Qingfang Deng <dqfext@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Ong Boon Leong <boon.leong.ong@intel.com>,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH net v2] net: stmmac: Fix accessing freed irq affinity_hint
+Date: Tue, 18 Mar 2025 11:24:23 +0800
+Message-ID: <20250318032424.112067-1-dqfext@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,38 +95,57 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXnt8_49hnT9OMAA--.10535S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7GF4DCF47tFyktw17JF17trb_yoWDXFb_G3
-	yUAr9293s5AFW8ur1akw4F9rWF9a1rXryku3ZFgwnxAFy3Zr4xXanrWFs5WF17ursrCFy7
-	t34DXr4Uuw1IyjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRWlkxJUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/1tbiqAETbmfX849cAgADsF
 
-Variable "bridge" is allocated by agp_alloc_bridge() and
-have to be released by agp_put_bridge() if something goes
-wrong. In this patch, add the missing call of agp_put_bridge()
-in agp_amdk7_probe() to prevent potential memory leak bug.
+The cpumask should not be a local variable, since its pointer is saved
+to irq_desc and may be accessed from procfs.
+To fix it, use the persistent mask cpumask_of(cpu#).
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Fixes: 8deec94c6040 ("net: stmmac: set IRQ affinity hint for multi MSI vectors")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
 ---
- drivers/char/agp/amd-k7-agp.c | 1 +
- 1 file changed, 1 insertion(+)
+v2: use cpumask_of()
 
-diff --git a/drivers/char/agp/amd-k7-agp.c b/drivers/char/agp/amd-k7-agp.c
-index 795c8c9ff680..40e1fc462dca 100644
---- a/drivers/char/agp/amd-k7-agp.c
-+++ b/drivers/char/agp/amd-k7-agp.c
-@@ -441,6 +441,7 @@ static int agp_amdk7_probe(struct pci_dev *pdev,
- 			gfxcard = pci_get_class(PCI_CLASS_DISPLAY_VGA<<8, gfxcard);
- 			if (!gfxcard) {
- 				dev_info(&pdev->dev, "no AGP VGA controller\n");
-+				agp_put_bridge(bridge);
- 				return -ENODEV;
- 			}
- 			cap_ptr = pci_find_capability(gfxcard, PCI_CAP_ID_AGP);
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b22417167cac..ec63452187d0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3667,7 +3667,6 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	enum request_irq_err irq_err;
+-	cpumask_t cpu_mask;
+ 	int irq_idx = 0;
+ 	char *int_name;
+ 	int ret;
+@@ -3796,9 +3795,8 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		cpumask_clear(&cpu_mask);
+-		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
+-		irq_set_affinity_hint(priv->rx_irq[i], &cpu_mask);
++		irq_set_affinity_hint(priv->rx_irq[i],
++				      cpumask_of(i % num_online_cpus()));
+ 	}
+ 
+ 	/* Request Tx MSI irq */
+@@ -3821,9 +3819,8 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		cpumask_clear(&cpu_mask);
+-		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
+-		irq_set_affinity_hint(priv->tx_irq[i], &cpu_mask);
++		irq_set_affinity_hint(priv->tx_irq[i],
++				      cpumask_of(i % num_online_cpus()));
+ 	}
+ 
+ 	return 0;
 -- 
-2.25.1
+2.43.0
 
 
