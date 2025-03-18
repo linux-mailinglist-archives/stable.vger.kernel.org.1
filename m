@@ -1,75 +1,76 @@
-Return-Path: <stable+bounces-124798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EB2A674CD
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6C2A674CE
 	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 14:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE0117A932D
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 13:18:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9594E3BA1BF
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 13:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0054320D50A;
-	Tue, 18 Mar 2025 13:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D5C20CCF1;
+	Tue, 18 Mar 2025 13:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nwc4TleZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="czhU9c+x"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB4920D4F0
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 13:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1B4AD2C;
+	Tue, 18 Mar 2025 13:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742303928; cv=none; b=EJGnRDTWtwNzmMBSm/GpCLsg92Ez/C9l+sPsWSR8Fdz7eRVIgTYu6aUYrhCtIuJBvO+xo1uxtj5UvC+TUTSZpP5LgxaU/k94Vlf6ibjfF9HLQgXDvQWfvSLbJiLBRgucOnn7Oqvwyd/eJVMHQaA47pBoyg8HepKrouOyf6FynAg=
+	t=1742303938; cv=none; b=oeGpuDwHBg4RLt8oyFjPilS/PB5WpdCXGdlmBEjfMF7NNREabhB0BvitiuNMhRktmH5vRP7gJFYrTZO6EpqPfXLrEptbyOCRodt8eaB5gCL0y2HWcRuaU6w8PhZM59gCoTxSwjWLlNLWX2z2fE1v/yatiOVElyUe5DA73y5SA/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742303928; c=relaxed/simple;
-	bh=hz2v0C2mE7ZdxfI3g27x84Iofq4u2FmSHLaMhh75KtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=bnQaRGYtZGBvm4rq1v1J827v1M4Rc+nu6zZshMH624B5z539F3zDEpujmJ4bWfX5NRTvadcaDirF5x8WCo5BxQIsZsSgfKsj+iwcWHnf4hkbPY00KCm/O1DKMOIkMsBr0XY6CcN/3v1l693ufNP7uRaTWmNfJvvp4Yd8fjq2BXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nwc4TleZ; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1742303938; c=relaxed/simple;
+	bh=3Oi8jiFqgl+aEYI1HZI2J5pcnohFtSR2tEqDeV0RWqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dlSEHilFg2PGoLhKl9zPHPlTWnNSmlWy/s6Rpi8ppoQwXKM1Z6us2n5dtyD8NHNxuwk25tiTZI3gBKYfMM8Bn0kQ4hECj9kql7YHh1jL9UUDWL31oIm3qelqm2TRJAjJzWQ1BAYznU42cT0oAwuPjn+X0zxS/lZanOoDdhhguWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=czhU9c+x; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742303927; x=1773839927;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=hz2v0C2mE7ZdxfI3g27x84Iofq4u2FmSHLaMhh75KtI=;
-  b=nwc4TleZWoScfSWwx3rMGm523dzfirzvT1JJrxg2IKMvHlkrZUR9mteJ
-   WA2IZho826hGGtvkuf3g8ZviW9jSdbh0imN5B/IFe1zRJVh7AEptPjfEL
-   hjqoH4mZY3QvRRy8ZvBTVC0g6dXrPkPkCMZ3QbPwZF3TVZnRfsAQCVOo2
-   rE4qUTUxNI5RqVTsgFnrbDXUci2705QnZanulU6el5phSJexotV+XVPRN
-   F/RT+xK1ASR6cGjwW1kGnsgPpoDyW69G4caLGD6keqXE3p1jnYBAzChR1
-   HCP8GcYUO2ZW8onWwr8bL3bFyFrb4bXIBrSo5i05x+W6pfeEBHK1KqrJn
-   Q==;
-X-CSE-ConnectionGUID: rf0OhsyjTE62CRqTroCOZQ==
-X-CSE-MsgGUID: q/B1JgOSTBCKlE7etCMkjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="43614709"
+  t=1742303933; x=1773839933;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3Oi8jiFqgl+aEYI1HZI2J5pcnohFtSR2tEqDeV0RWqU=;
+  b=czhU9c+xjanu8QqHL7xX8wt4597RTKbcVbxPT03hMDW36Dhp2RLzeZoK
+   PO2UNSBu25Txpzu7BWaNYSZ/w7zYds0CFJYcxhbpFZHQvQcSk8OrpJpmw
+   zte8yGNt8tu8A/lEZr1tqrBDC885NPQsgt0jLX+KdxNA1ZpiBQ9EGbQCH
+   ue/E/rSgMXXL3WhN4ZuZ9ZjYsxGtJA5uK4Whs3hrhvjiEOfn9iDW458kI
+   cvbXgM37M7AIK6SOlSQrpkAu3GtTertXSHqxCsfP4PTT49nLkXtcA/Dvc
+   nKilIGjOjYwi0NYNHlQMPM1siWmRKjDLrIgaBF9ZKiNuJ5ssn1jL8BBX1
+   g==;
+X-CSE-ConnectionGUID: f9+2qQVZQ1W+sE3Nr6tQ3A==
+X-CSE-MsgGUID: +m7ZGvrESMeY85Ft4NT6TQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="43359897"
 X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; 
-   d="scan'208";a="43614709"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 06:18:47 -0700
-X-CSE-ConnectionGUID: Nijdv+ukRSeG3ys+mBllpg==
-X-CSE-MsgGUID: aVTKrgVUQpm4psfQNxoCCg==
+   d="scan'208";a="43359897"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 06:18:52 -0700
+X-CSE-ConnectionGUID: glzh0WzESBmuMqdayJU9ew==
+X-CSE-MsgGUID: oaV8qNn3QgKXR5Bk48/n4Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,256,1736841600"; 
-   d="scan'208";a="122755268"
-Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 18 Mar 2025 06:18:45 -0700
-Received: from kbuild by a4747d147074 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tuWqB-000Do3-0h;
-	Tue, 18 Mar 2025 13:18:43 +0000
-Date: Tue, 18 Mar 2025 21:18:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dhruv Deshpande <dhrv.d@proton.me>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] ALSA: hda/realtek: Support mute LED on HP Laptop
- 15s-du3xxx The mute LED on this HP laptop uses ALC236 and requires a quirk
- to function. This patch enables the existing quirk for the device.
-Message-ID: <Z9lynnWSBAe2fIL5@4d9b5d180ac0>
+   d="scan'208";a="122231949"
+Received: from sgruszka-mobl.ger.corp.intel.com (HELO localhost) ([10.245.112.43])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 06:18:48 -0700
+Date: Tue, 18 Mar 2025 14:18:45 +0100
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: mchehab@kernel.org, hverkuil@xs4all.nl, sebastian.fricke@collabora.com,
+	ribalda@chromium.org, benjamin.gaignard@collabora.com,
+	viro@zeniv.linux.org.uk, bartosz.golaszewski@linaro.org,
+	hljunggr@cisco.com, sakari.ailus@linux.intel.com,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] media: v4l2-dev: fix error handling in
+ __video_register_device()
+Message-ID: <Z9lytZ0bOk4Fjk83@linux.intel.com>
+References: <20250318090945.1655458-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,24 +79,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250317083319.42195-1-dhrv.d@proton.me>
+In-Reply-To: <20250318090945.1655458-1-make24@iscas.ac.cn>
 
-Hi,
+On Tue, Mar 18, 2025 at 05:09:45PM +0800, Ma Ke wrote:
+> Once device_register() failed, we should call put_device() to
+> decrement reference count for cleanup. Or it could cause memory leak.
+> And move callback function before put_device().
+> 
+> As comment of device_register() says, 'NOTE: _Never_ directly free
+> @dev after calling this function, even if it returned an error! Always
+> use put_device() to give up the reference initialized in this function
+> instead.'
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: baa057e29b58 ("media: v4l2-dev: use pr_foo() for printing messages")
 
-Thanks for your patch.
+This tag does not seems to be right, the commit just change printk calls.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] ALSA: hda/realtek: Support mute LED on HP Laptop 15s-du3xxx The mute LED on this HP laptop uses ALC236 and requires a quirk to function. This patch enables the existing quirk for the device.
-Link: https://lore.kernel.org/stable/20250317083319.42195-1-dhrv.d%40proton.me
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards
+Stanislaw
 
 
-
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+> Changes in v2:
+> - modified the patch as no callback function before put_device().
+> ---
+>  drivers/media/v4l2-core/v4l2-dev.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
+> index 5bcaeeba4d09..4a8fdf8115c0 100644
+> --- a/drivers/media/v4l2-core/v4l2-dev.c
+> +++ b/drivers/media/v4l2-core/v4l2-dev.c
+> @@ -1054,17 +1054,16 @@ int __video_register_device(struct video_device *vdev,
+>  	vdev->dev.class = &video_class;
+>  	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+>  	vdev->dev.parent = vdev->dev_parent;
+> +	vdev->dev.release = v4l2_device_release;
+>  	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
+>  	mutex_lock(&videodev_lock);
+>  	ret = device_register(&vdev->dev);
+>  	if (ret < 0) {
+>  		mutex_unlock(&videodev_lock);
+>  		pr_err("%s: device_register failed\n", __func__);
+> -		goto cleanup;
+> +		put_device(&vdev->dev);
+> +		return ret;
+>  	}
+> -	/* Register the release callback that will be called when the last
+> -	   reference to the device goes away. */
+> -	vdev->dev.release = v4l2_device_release;
+>  
+>  	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
+>  		pr_warn("%s: requested %s%d, got %s\n", __func__,
+> -- 
+> 2.25.1
+> 
+> 
 
