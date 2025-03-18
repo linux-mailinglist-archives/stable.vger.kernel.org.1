@@ -1,123 +1,208 @@
-Return-Path: <stable+bounces-124756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564C5A6651D
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 02:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC575A66694
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 03:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D1903B54C2
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 01:30:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9533F3BA7ED
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 02:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D40176026;
-	Tue, 18 Mar 2025 01:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F77418DB2F;
+	Tue, 18 Mar 2025 02:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ygwdc0Mf"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A824A1E;
-	Tue, 18 Mar 2025 01:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994D2188938
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 02:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742261463; cv=none; b=tSDaLjdPHZAvpvSVjvGT2P4UVX+3RikFj0U/2OXf2i/cpLny7fZu/citF8d5XMdwXtPbijY5BIxCmK80lUu/UZjOhPzOuxGIPAWnQa/fo0B7oyZVMclT8y9P+qnUirZDNLJfj/DnM/ivsIKvQjWfCWOWW+a9hBQN23tc1BheGIo=
+	t=1742266695; cv=none; b=jp4MauUsJ8tRoN/tPNHaChVK2S7T1zLo8eAHeszcswGjC9DP5uT/CgcA0oTZECzmcCQRMloALnJwhZneEu4YYDEc9TCA41LlSkUspX/aRifEbCdeigL7uMNmH9FOoMsmty6QX+PQ2kpO9iFFqrHoAluwmyLwCbgvoJ0g5TsVJUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742261463; c=relaxed/simple;
-	bh=GqOqPhNmpDOOBJ70eh1A+FKAbrzAzBJOSmr6fthvsnE=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=BOUg/xDHZmH1Smjabv0we6PI9UoSJS7gPmJAiLzgdPoYr6BpcLdiU64d2BHpw7YKWcCiI7psN4RWz/Oc55xbk5yrtd6g+g2tYsZfEKLIhG1ddBqTn7S9xRQokFqdmPZcTsGRerHbWlbZyuWt0Ldkzq4q9BrhmPq7hk1r0zJs3zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4ZGvRf5ktDz4f3jkr;
-	Tue, 18 Mar 2025 09:30:38 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 078F91A01A6;
-	Tue, 18 Mar 2025 09:30:56 +0800 (CST)
-Received: from [10.174.178.129] (unknown [10.174.178.129])
-	by APP2 (Coremail) with SMTP id Syh0CgAnMGPPzNhnGXEYGw--.15476S2;
-	Tue, 18 Mar 2025 09:30:55 +0800 (CST)
-Subject: Re: [PATCH RESEND] ext4: Fix potential NULL pointer dereferences in
- test_mb_mark_used() and test_mb_free_blocks()
-To: Qasim Ijaz <qasdev00@gmail.com>, adilger.kernel@dilger.ca, tytso@mit.edu
-Cc: linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250313000021.18170-1-qasdev00@gmail.com>
-From: Kemeng Shi <shikemeng@huaweicloud.com>
-Message-ID: <cb138f5d-2470-bfcc-9939-fcaec24de100@huaweicloud.com>
-Date: Tue, 18 Mar 2025 09:30:55 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+	s=arc-20240116; t=1742266695; c=relaxed/simple;
+	bh=aSaLdUOQBTigsVPQ3M1UjRsvcieVzDRuQRGBxtkpEoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EATm2oadn9eoxgX8h9DMqMoK6/XG2S5+d4PMP+EmNUEI+dJaUG6Tf+LsgcgHdoX6yJ6UaW3X4gVJPFGHqdNgqKKR1hGf+Gfe7etzpPFDi5lZvrdbhJM/Mbt5UbunxFTYoirespq7YXWZt3FVJUZojGrv6LzQNzCAYpDC1K/ZpOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ygwdc0Mf; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5e673822f76so8511382a12.2
+        for <stable@vger.kernel.org>; Mon, 17 Mar 2025 19:58:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742266692; x=1742871492; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oi5DV8kK6A8fuA1aYBY10ebP1mOqFbAxgn/Eos6wI3w=;
+        b=Ygwdc0MfcJb7+W87DHJ26b4rbHnEHCIzo6XdpUQpArDoJwVvqjk8+zelpXCenmwXmT
+         qKuHOYTD0tOFaf32UhgTYxG1serRa6UYrl7FXsnRvfxh2lfEchRx/8W1YmbwICz2751p
+         eUhS7ZpwoOpO7M20EkwV/8Ns9OSNzCwxLUpLLQAboi6QhbMUix6KAoRQwAxXdRjdA5xx
+         jExEnTLv+YG/2v6/gpPQeCVlHipLjI3tykoNquMy1KGslrCLiEMeXiu7Cfe91PQBbJ4i
+         KwfgTPsjC8DC3UMIFQVGZGMRr7+8JECZ+4KTCAcdAcO3CeDEwvTVCMVs7A+/JBfWowLZ
+         sNZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742266692; x=1742871492;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oi5DV8kK6A8fuA1aYBY10ebP1mOqFbAxgn/Eos6wI3w=;
+        b=eU+n2FDtqmETHBXs1jySM6kF0peIyRcF4iH7rhGvn3c1DYvAe7sWl1oKhCeQwaNl+B
+         S1vBzURttqafn5MPSz0YCjHxPxI1KtiBrwDoq+hyk+ms4KtY5zwpC9YIhXrhYnwk65tp
+         bct6O7zBr8jkuffJbFhw51nZpliLNHoxZGLx8vwlwsszjj2gVZvjEYgoXQzO/DgjeMRV
+         XX8inlkxPP2UVXBiVL3BGnbxv3wC1jhyEk/Db0Js8c0eKHa7sQIrxdnRQxeW0/2dB9CL
+         A4ZwoWuM1GPtca4viHGtdVQBfg2k6gifM175S4EYsZcu7XZMDz8708klEF5Ek28jrl2q
+         T4rw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtr88NXemGDclvW6bjyDCRQT5TGr+0uL7xlbdttzLo76t4kB0CMl1flFWC+w2U+afmg1EasCE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7lJEbTKpid3VduYzJXVY4zqtiFa2SgMU3nrVI6qkjgkE990k9
+	KG/j+Jw21Tjy8Yw3UTfb5c1M6lZY0Lm4PZx25ZU4X1aUmpO4EXFd2pttLdc5
+X-Gm-Gg: ASbGncv6H9rp0ypr7vTOAmXmIceTqAuEfxMjzgL9zxj45I088fisdmPY10aFKdX98w1
+	fTVBDJujRm6mveYmA56CfGgtVxSWc7gAjIui1ae5IVhM02TwSYiovzd4HV7gDr1OgVqco58K4Ll
+	HkdcOkBhawbRkn5+wBZdEzo1+EvV+lyFQ36auzQ9KgBknuG2IrA0cFRbkClskRDgdbQzcO5i2LF
+	FVdZzgNS/7E8GUYsgzW92Ept+ZCrU5Fix0ANe6QdNy7CxLt97wiLWRzPJFkI4jYOtTqUQovfY/P
+	fz/0X4nj5qgTagWki1SoAuZsvLDfWompwbkqBW2X2ZgE
+X-Google-Smtp-Source: AGHT+IGIxuH9uLjfKi4krgI1q72QT+hWwcEhQZ8W3h8D0Igh5GdoyWgFjfQHt0zyiBgJcYL6KlBk7Q==
+X-Received: by 2002:a05:6402:278a:b0:5e7:e3f3:8647 with SMTP id 4fb4d7f45d1cf-5e89f645652mr15619188a12.19.1742266691513;
+        Mon, 17 Mar 2025 19:58:11 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e81692e64asm6836433a12.4.2025.03.17.19.58.09
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 17 Mar 2025 19:58:10 -0700 (PDT)
+Date: Tue, 18 Mar 2025 02:58:09 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, Yajun Deng <yajun.deng@linux.dev>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm/memblock: repeat setting reserved region nid if
+ array is doubled
+Message-ID: <20250318025809.v2jpjbwy3yhc7cik@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250312130728.1117-1-richard.weiyang@gmail.com>
+ <20250312130728.1117-3-richard.weiyang@gmail.com>
+ <Z9L0z6CNZjh3V8A7@kernel.org>
+ <20250314020351.bgdjmdjqnobu77s7@master>
+ <Z9bvE-6KsbIGRcTm@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250313000021.18170-1-qasdev00@gmail.com>
-Content-Type: text/plain; charset=gbk
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:Syh0CgAnMGPPzNhnGXEYGw--.15476S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFWkJw4DAr4kJr4DCFyUJrb_yoW8AFy5pw
-	s5KF1jkr15Wr18uw47uw48Wa4xK3yFkr45WrWfWw1jvF9xJFyfC3ZIvw1UWF18AFWxXa15
-	Z3WaqrWDWr4IkrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AF
-	wI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1D
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUwz
-	uWDUUUU
-X-CM-SenderInfo: 5vklyvpphqwq5kxd4v5lfo033gof0z/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9bvE-6KsbIGRcTm@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
 
+On Sun, Mar 16, 2025 at 05:32:35PM +0200, Mike Rapoport wrote:
+>On Fri, Mar 14, 2025 at 02:03:51AM +0000, Wei Yang wrote:
+>> On Thu, Mar 13, 2025 at 05:07:59PM +0200, Mike Rapoport wrote:
+>> >> Commit 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()") introduce
+>> >> a way to set nid to all reserved region.
+>> >> 
+>> >> But there is a corner case it will leave some region with invalid nid.
+>> >> When memblock_set_node() doubles the array of memblock.reserved, it may
+>> >> lead to a new reserved region before current position. The new region
+>> >> will be left with an invalid node id.
+>> >> 
+>> >> Repeat the process when detecting it.
+>> >> 
+>> >> Fixes: 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
+>> >> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> >> CC: Mike Rapoport <rppt@kernel.org>
+>> >> CC: Yajun Deng <yajun.deng@linux.dev>
+>> >> CC: <stable@vger.kernel.org>
+>> >> ---
+>> >>  mm/memblock.c | 12 ++++++++++++
+>> >>  1 file changed, 12 insertions(+)
+>> >> 
+>> >> diff --git a/mm/memblock.c b/mm/memblock.c
+>> >> index 85442f1b7f14..302dd7bc622d 100644
+>> >> --- a/mm/memblock.c
+>> >> +++ b/mm/memblock.c
+>> >> @@ -2184,7 +2184,10 @@ static void __init memmap_init_reserved_pages(void)
+>> >>  	 * set nid on all reserved pages and also treat struct
+>> >>  	 * pages for the NOMAP regions as PageReserved
+>> >>  	 */
+>> >> +repeat:
+>> >>  	for_each_mem_region(region) {
+>> >> +		unsigned long max = memblock.reserved.max;
+>> >> +
+>> >>  		nid = memblock_get_region_node(region);
+>> >>  		start = region->base;
+>> >>  		end = start + region->size;
+>> >> @@ -2193,6 +2196,15 @@ static void __init memmap_init_reserved_pages(void)
+>> >>  			reserve_bootmem_region(start, end, nid);
+>> >>  
+>> >>  		memblock_set_node(start, region->size, &memblock.reserved, nid);
+>> >> +
+>> >> +		/*
+>> >> +		 * 'max' is changed means memblock.reserved has been doubled
+>> >> +		 * its array, which may result a new reserved region before
+>> >> +		 * current 'start'. Now we should repeat the procedure to set
+>> >> +		 * its node id.
+>> >> +		 */
+>> >> +		if (max != memblock.reserved.max)
+>> >> +			goto repeat;
+>> >
+>> >This check can be moved outside the loop, can't it?
+>> >
+>> 
+>> We can. You mean something like this?
+>
+>Yes, something like this.
+> 
+>> diff --git a/mm/memblock.c b/mm/memblock.c
+>> index 85442f1b7f14..67fd1695cce4 100644
+>> --- a/mm/memblock.c
+>> +++ b/mm/memblock.c
+>> @@ -2179,11 +2179,14 @@ static void __init memmap_init_reserved_pages(void)
+>>  	struct memblock_region *region;
+>>  	phys_addr_t start, end;
+>>  	int nid;
+>> +	unsigned long max;
+>
+>maybe max_reserved?
 
+Sure, will update it.
 
-on 3/13/2025 8:00 AM, Qasim Ijaz wrote:
-> test_mb_mark_used() and test_mb_free_blocks() call kunit_kzalloc() to 
-> allocate memory, however both fail to ensure that the allocations 
-> succeeded. If kunit_kzalloc() returns NULL, then dereferencing the 
-> corresponding pointer without checking for NULL will lead to 
-> a NULL pointer dereference.
-> 
-> To fix this call KUNIT_ASSERT_NOT_ERR_OR_NULL() to ensure 
-> the allocation succeeded.
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-> 
-> Fixes: ac96b56a2fbd ("ext4: Add unit test for mb_mark_used")
-> Fixes: b7098e1fa7bc ("ext4: Add unit test for mb_free_blocks")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-> ---
->  fs/ext4/mballoc-test.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/fs/ext4/mballoc-test.c b/fs/ext4/mballoc-test.c
-> index bb2a223b207c..d634c12f1984 100644
-> --- a/fs/ext4/mballoc-test.c
-> +++ b/fs/ext4/mballoc-test.c
-> @@ -796,6 +796,7 @@ static void test_mb_mark_used(struct kunit *test)
->  	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buddy);
->  	grp = kunit_kzalloc(test, offsetof(struct ext4_group_info,
->  				bb_counters[MB_NUM_ORDERS(sb)]), GFP_KERNEL);
-> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, grp);
->  
->  	ret = ext4_mb_load_buddy(sb, TEST_GOAL_GROUP, &e4b);
->  	KUNIT_ASSERT_EQ(test, ret, 0);
-> @@ -860,6 +861,7 @@ static void test_mb_free_blocks(struct kunit *test)
->  	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buddy);
->  	grp = kunit_kzalloc(test, offsetof(struct ext4_group_info,
->  				bb_counters[MB_NUM_ORDERS(sb)]), GFP_KERNEL);
-> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, grp);
->  
->  	ret = ext4_mb_load_buddy(sb, TEST_GOAL_GROUP, &e4b);
->  	KUNIT_ASSERT_EQ(test, ret, 0);
-> 
+>>  
+>>  	/*
+>>  	 * set nid on all reserved pages and also treat struct
+>>  	 * pages for the NOMAP regions as PageReserved
+>>  	 */
+>> +repeat:
+>> +	max = memblock.reserved.max;
+>>  	for_each_mem_region(region) {
+>>  		nid = memblock_get_region_node(region);
+>>  		start = region->base;
+>> @@ -2194,6 +2197,13 @@ static void __init memmap_init_reserved_pages(void)
+>>  
+>>  		memblock_set_node(start, region->size, &memblock.reserved, nid);
+>>  	}
+>> +	/*
+>> +	 * 'max' is changed means memblock.reserved has been doubled its
+>> +	 * array, which may result a new reserved region before current
+>> +	 * 'start'. Now we should repeat the procedure to set its node id.
+>> +	 */
+>> +	if (max != memblock.reserved.max)
+>> +		goto repeat;
+>>  
+>>  	/*
+>>  	 * initialize struct pages for reserved regions that don't have
+>> -- 
+>> Wei Yang
+>> Help you, Help me
+>
+>-- 
+>Sincerely yours,
+>Mike.
 
+-- 
+Wei Yang
+Help you, Help me
 
