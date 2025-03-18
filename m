@@ -1,98 +1,154 @@
-Return-Path: <stable+bounces-124855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADF6A67DCE
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 21:12:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA578A67EF7
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 22:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20E35168615
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 20:12:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B92C742213D
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 21:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67991212F8F;
-	Tue, 18 Mar 2025 20:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896902066E9;
+	Tue, 18 Mar 2025 21:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DFquKuPH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E+0JuCPu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27167211A1E
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 20:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B344D2063D3
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 21:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742328767; cv=none; b=VtrSJRX+httaJyLv8Pb3VVjMhh8QjJLik0JxMq9LD1PbgLDwCg+b0PY3wcxibUdj6XjPsS3vfmoCgRET0bJz2ojgOXEMnt9BtygiRPt+53FoXA7GD+CdI4sTJsYrDN6wiIv9GlwgoRFlbwMtYAnlZJVct2T6//gg9zUGIOrtY1c=
+	t=1742334095; cv=none; b=D8Vgv6vvbeGKht7UPMuczdxsbascO/lYAaOWQTQpoFVWoL3+0q8M6rJJHxQP3GxxnKb0qmbxpwqvDLAHBLH9RBxE1TW5D1/mVHPbnEnrg9PIvSfLOkZnv1Ca70OKbRUzYCiZ1N8pdgihnwi50jjV/0/ushKnPbiDfnGkNRyJ7oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742328767; c=relaxed/simple;
-	bh=sQbqc8cjY+6YRBUrU83ScAVzp4QVKU13RzBFs9b8SS8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mvQJUKyOwXUBlohMPCjhtO3sGmc/tBnvBzk7pTKx02oTAhceCrlGLNgLABaXDmDYC+kKnAhUtyMAxnZ3vPmnjd4c+YFysmawzKxKy+KX+fX4ASX4wGu6Rd4NoYU7lu9JoAaPARrG0+af5Lpru6HeoYanBMZngdjFPrOwFgPtryk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DFquKuPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C12C4CEEE;
-	Tue, 18 Mar 2025 20:12:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742328766;
-	bh=sQbqc8cjY+6YRBUrU83ScAVzp4QVKU13RzBFs9b8SS8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFquKuPHfSjPvbVaj/Grg+55DG0O+EGo6fWmfdWVnjufC6BVFVI1nkBGSk5KIjS+V
-	 ClewIzYrvppO08Pw0TzT1rPxskDQaxHlLtUiGdvKyyjDTrhmKmRLshCj77Umr2Ck/1
-	 NaXh+ApcCB4sgiJ54xdAhjB2I7H6nG0RAotaz7JBZu543+rzYlKWbSGkB+A+gXZjlv
-	 /j8NSfOL6iM8Cx6J/Muk3W2ITxtSrPMaumn25YyOjEusXYUTPt4XC4oi4kjLCIpsQJ
-	 IsfGboXQnSxf8eX+YkvKfWzwgVccpdWm720zPbG2KMlKlR1A/9KF3hBT5GnZ/d1fO+
-	 XV4ukU6C2J8iw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	henrique.carvalho@suse.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13.y v3] smb: client: Fix match_session bug preventing session reuse
-Date: Tue, 18 Mar 2025 16:12:44 -0400
-Message-Id: <20250318161057-ae6bf14a4e6f7a26@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250318180821.2986424-1-henrique.carvalho@suse.com>
-References: 
+	s=arc-20240116; t=1742334095; c=relaxed/simple;
+	bh=48tNNYVxNbJIhapHHVTjKQnmA5ByjfhX/glfPRAKIhc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=POuY45mg3/Lo6ELbq1hld07kvSeodtVYdKOo0LzhDBCrxlW6ue97LzPImzGcbjSwBEKlsGdr0ZGo6tOHOeb/33tVbin6KVR2gKP5A80IY7ufJ6Q7UJI7fzrjIprnaBPKvdupfFZTuCr/PDQnqvRPAcymqFys3WtINQ36lh9SBxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pcc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E+0JuCPu; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pcc.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-225ab228a37so86775345ad.2
+        for <stable@vger.kernel.org>; Tue, 18 Mar 2025 14:41:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742334093; x=1742938893; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eTUn5qDH83alwoR8172wGnmaTD/nkQcDeotToQ/FQtU=;
+        b=E+0JuCPuXCTRQpxwuJCoPOuxF5kCEkC/7dh9RpTVY1vd36GHCre9gUgN5wIA20WDmh
+         v9ah15eJ4BiIeGZ/MXE7wXesI/NjKWY2vivmuKO18oZfYhqC+iLAqXljJrQ2AJnVipNN
+         TppDy357MnlZBUkqmlLwfdx6yobFatF7Dnubot0usBH9Cve4k+UtMD6hAPS8NtBw2dkk
+         CO0+agWZuIznwDGLeO0reg59qWzpmwpQTpJZa79dQhJwP34sJ3fDc2F78LJIJX+uTNKW
+         7/Z94xujnNdvrEmTR4RF3eg7QrL4B+KX3qL+XyFShFhCfyF4M07YhPjuDbpE4sI243jD
+         A4FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742334093; x=1742938893;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eTUn5qDH83alwoR8172wGnmaTD/nkQcDeotToQ/FQtU=;
+        b=t/0OnV17PxxUKpeAAlwOv6gRA58rTJMTcZaozdfcByclJoVt4i9Ccy/HP7w1yh/LaK
+         YKpteXcNhqN0sYaGVbdfXQUTmsCZZXwpnpJzpH7BBDY3cOPXF1M4w6Cikqz1ONUR+DB2
+         PMCjkTQ8+7yhwOQ0zTwtLsYiT7XrqHfxZhwPT/WU8rLp/BV+1Apf1ouezEAYo3l3ElzA
+         l6EQvoFDbwCasGidtrSGHMOZRN8XJG36i1GOqY0up/GC3nnbrKfTdWu+jYo05LuNgwkr
+         1aZRIOOCY2f+CAKURgocutTkOTLz1GZ6h3H85llBsVwFTSyYgnriYUHPQt8Wh2M7f8Kt
+         IFcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhOauob2YIxZD/5kqWz1812ZEjjn7qglXPcXbiPayPMEJb7hA7yXjKekMNIiACDhVR/k1EZww=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywoq8OdV5ln870exjyzbP0bSeNpVcm10xtZksdC8NRHt2nEMuSA
+	w3imCWnbqbLyA6Ry0JMxhxV41jCksbQJDKGbq7iNBd6yng2/IYfPOYR431bkQC1jZw==
+X-Google-Smtp-Source: AGHT+IG/QGxbxUqv2YDIjQQv/YN/p4GQJhFMy09dmHyQiNHhErBBFph57AE76+yZ/pqecPFGYqZrens=
+X-Received: from plsu3.prod.google.com ([2002:a17:902:bf43:b0:223:f487:afc6])
+ (user=pcc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2412:b0:223:3ef1:a30a
+ with SMTP id d9443c01a7336-22649a57c52mr3056545ad.45.1742334093068; Tue, 18
+ Mar 2025 14:41:33 -0700 (PDT)
+Date: Tue, 18 Mar 2025 14:40:32 -0700
+In-Reply-To: <20250318214035.481950-1-pcc@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250318214035.481950-1-pcc@google.com>
+X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
+Message-ID: <20250318214035.481950-2-pcc@google.com>
+Subject: [PATCH v2 1/2] string: Add load_unaligned_zeropad() code path to sized_strscpy()
+From: Peter Collingbourne <pcc@google.com>
+To: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Collingbourne <pcc@google.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-[ Sasha's backport helper bot ]
+The call to read_word_at_a_time() in sized_strscpy() is problematic
+with MTE because it may trigger a tag check fault when reading
+across a tag granule (16 bytes) boundary. To make this code
+MTE compatible, let's start using load_unaligned_zeropad()
+on architectures where it is available (i.e. architectures that
+define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
+takes care of page boundaries as well as tag granule boundaries,
+also disable the code preventing crossing page boundaries when using
+load_unaligned_zeropad().
 
-Hi,
-
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
-
-Found matching upstream commit: 605b249ea96770ac4fac4b8510a99e0f8442be5e
-
-Note: The patch differs from the upstream commit:
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
+Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
+Cc: stable@vger.kernel.org
 ---
-1:  605b249ea9677 ! 1:  eee0817427b12 smb: client: Fix match_session bug preventing session reuse
-    @@ Commit message
-         Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-         Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-         Signed-off-by: Steve French <stfrench@microsoft.com>
-    +    (cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
-     
-      ## fs/smb/client/connect.c ##
-     @@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
-    @@ fs/smb/client/connect.c: static int match_session(struct cifs_ses *ses,
-     +		return 0;
-     +
-     +	switch (ctx_sec) {
-    -+	case IAKerb:
-      	case Kerberos:
-      		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
-      			return 0;
----
+v2:
+- new approach
 
-Results of testing on various branches:
+ lib/string.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Success    |  Success   |
+diff --git a/lib/string.c b/lib/string.c
+index eb4486ed40d25..b632c71df1a50 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -119,6 +119,7 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
+ 	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
+ 		return -E2BIG;
+ 
++#ifndef CONFIG_DCACHE_WORD_ACCESS
+ #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+ 	/*
+ 	 * If src is unaligned, don't cross a page boundary,
+@@ -133,12 +134,14 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
+ 	/* If src or dest is unaligned, don't do word-at-a-time. */
+ 	if (((long) dest | (long) src) & (sizeof(long) - 1))
+ 		max = 0;
++#endif
+ #endif
+ 
+ 	/*
+-	 * read_word_at_a_time() below may read uninitialized bytes after the
+-	 * trailing zero and use them in comparisons. Disable this optimization
+-	 * under KMSAN to prevent false positive reports.
++	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
++	 * uninitialized bytes after the trailing zero and use them in
++	 * comparisons. Disable this optimization under KMSAN to prevent
++	 * false positive reports.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_KMSAN))
+ 		max = 0;
+@@ -146,7 +149,11 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
+ 	while (max >= sizeof(unsigned long)) {
+ 		unsigned long c, data;
+ 
++#ifdef CONFIG_DCACHE_WORD_ACCESS
++		c = load_unaligned_zeropad(src+res);
++#else
+ 		c = read_word_at_a_time(src+res);
++#endif
+ 		if (has_zero(c, &data, &constants)) {
+ 			data = prep_zero_mask(c, data, &constants);
+ 			data = create_zero_mask(data);
+-- 
+2.49.0.395.g12beb8f557-goog
+
 
