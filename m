@@ -1,137 +1,103 @@
-Return-Path: <stable+bounces-124852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E482FA67D1F
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 20:28:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B61BA67D99
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 21:00:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9BB37A7681
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 19:27:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8535B166D43
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 20:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF05C1E1E02;
-	Tue, 18 Mar 2025 19:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289581DC9BA;
+	Tue, 18 Mar 2025 20:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANb1eiUm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDMF5GxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B4F1DF247;
-	Tue, 18 Mar 2025 19:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21F6143748
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 20:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742326113; cv=none; b=IUJWPmdsmTWrkCBlgHlA/ADfTdzJCZRP8ukT8CpJdArCV84J7eflPLdiW18blFxTsTyybyqa4szBlK93bT3t3jMK5LiYfFP8k+VlDdQrYHkxXnbByAIsd1CTW2KTO8fnHlMO08cHB281qRi6SPVpCwi8PaYIFmFz1jxCn1oDkFI=
+	t=1742328043; cv=none; b=VuzcdfLJkLDH+zIgi1uikfzsc087FQEJPOoflS4vLDo3nhynjY701C5TUGByvuFo/Tzjflm9MpV2j0RnsLOUHcKfxAacyUpJLXhZzqNIZPCStzMyIbzVlMRc3bAxnLrvEQe3gzIrVbLQI4lVQTeEf5bzUXsj3ECojcQC1A50MNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742326113; c=relaxed/simple;
-	bh=7LYIJU9zrIeD7qsda5EeEl4d9QdiYjSeLPX6TOyN8g8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U8ObTWn9Hm6/yFdorfNOUfYlO31GMM3n560YN/iz9QOShl+1TYDeS3kNsOdiMns9WArtBsPBzp5CnXtlOA9Dqa944iHWhAKlQOYjCfpZS+hs3uAJy5YqQ2C6TQAO4LNt4IvZFsz6GhgKR6F0HNNnCi0cqhzAMiCup6wfuypPXQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANb1eiUm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657A8C4CEDD;
-	Tue, 18 Mar 2025 19:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742326113;
-	bh=7LYIJU9zrIeD7qsda5EeEl4d9QdiYjSeLPX6TOyN8g8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ANb1eiUm4N1G9x3vbVWxGgqTcYRI24OwlIH8eP79gnwO8lrYGDLYwtUByJpyVYHSw
-	 oUO3/hytdx1DlFTDl+pMGJVsIpcZOdvVUv9VBwDzR+b4+mYY3BFXkHznNBz4LPL7E/
-	 TaaJpuP66U+hngKaXysTWmI5Mw8Y6mpsxOrRQaZw+hPbH42uBfm29hUYIsPDJuIf8m
-	 wSAWOiRsUeqy+3SqAV3hIAWmDq4yrAV4ztcKPboJwT5DQHKx/5Z3HKWISpr30glM6x
-	 qm1dVGqIj2RFcoDlE89TKx9tVOUmtdq3ieBcvtm3pAcT2mC8/WQ1UeaKtT6snBTUzj
-	 EDoL/JKeakfAg==
-Message-ID: <40eb446b-6531-4a73-b47b-55e609fb4d64@kernel.org>
-Date: Tue, 18 Mar 2025 20:28:25 +0100
+	s=arc-20240116; t=1742328043; c=relaxed/simple;
+	bh=DydfOKdNMJ93oTj+WxJ5pFW7/BU9wkAnN4RILM6ycAg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kqEBKKEyJD2OHaKqb82U/w9j57CMO7fnW40BBNZLleZYSBJGJZpP6Kp7HVszM65u1Rol3SZBHqbbnwvjoH69+Kw0wMTkRwARDW0N+TQRkaX7gImlqPMJiXFyHtszC70OPfWLHoW8K9/aLLg8wqfnLQKFpcehhJuJrtybgRu1XAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDMF5GxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271EAC4CEDD;
+	Tue, 18 Mar 2025 20:00:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1742328043;
+	bh=DydfOKdNMJ93oTj+WxJ5pFW7/BU9wkAnN4RILM6ycAg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kDMF5GxX/klntgptHc4mPV1HYts7woCxNOIorOsLzfNv0FdibXt+iR1q6KEb1VCvd
+	 oRP4jks9CpvXga861+iDSIarAXXSS2Kvcr7Rcb1ZCdJKqYp+sDZLevh56hBAgmLVVh
+	 eEtC6xDvyEIzt0J9pxJgl44Oz8FLqgZGzs8i1Bw8=
+Date: Tue, 18 Mar 2025 12:59:24 -0700
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: levymitchell0@gmail.com, aliceryhl@google.com, benno.lossin@proton.me,
+	mingo@kernel.org, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] rust: lockdep: Remove support for
+ dynamically allocated" failed to apply to 6.6-stable tree
+Message-ID: <2025031804-macarena-appease-83d4@gregkh>
+References: <2025031632-divorcee-duly-868e@gregkh>
+ <67d9b4a0.e90a0220.3d651b.b756@mx.google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/5] pinctrl: samsung: add support for
- eint_fltcon_offset
-To: Peter Griffin <peter.griffin@linaro.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Alim Akhtar <alim.akhtar@samsung.com>,
- Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- andre.draszik@linaro.org, tudor.ambarus@linaro.org, willmcvicker@google.com,
- semen.protsenko@linaro.org, kernel-team@android.com,
- jaewon02.kim@samsung.com, stable@vger.kernel.org
-References: <20250312-pinctrl-fltcon-suspend-v5-0-d98d5b271242@linaro.org>
- <20250312-pinctrl-fltcon-suspend-v5-1-d98d5b271242@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250312-pinctrl-fltcon-suspend-v5-1-d98d5b271242@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <67d9b4a0.e90a0220.3d651b.b756@mx.google.com>
 
-On 12/03/2025 22:58, Peter Griffin wrote:
-> On gs101 SoC the fltcon0 (filter configuration 0) offset
-> isn't at a fixed offset like previous SoCs as the fltcon1
-> register only exists when there are more than 4 pins in the
-> bank.
+On Tue, Mar 18, 2025 at 10:59:58AM -0700, Boqun Feng wrote:
+> Hi Greg,
 > 
-> Add a eint_fltcon_offset and new GS101_PIN_BANK_EINT*
-> macros that take an additional fltcon_offs variable.
+> On Sun, Mar 16, 2025 at 08:15:32AM +0100, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 6.6-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 966944f3711665db13e214fef6d02982c49bb972
 > 
-> This can then be used in suspend/resume callbacks to
-> save and restore the fltcon0 and fltcon1 registers.
+> It's weird because `cherry-pick` works for me:
 > 
-> Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configuration")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: André Draszik <andre.draszik@linaro.org>
-> Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-> ---
+> $ git cherry-pick -x 966944f3711665db13e214fef6d02982c49bb972
+> Auto-merging rust/kernel/sync.rs
+> [stable-6.6 f5771e91eac3] rust: lockdep: Remove support for dynamically allocated LockClassKeys
+>  Author: Mitchell Levy <levymitchell0@gmail.com>
+>  Date: Fri Mar 7 15:27:00 2025 -0800
+>  1 file changed, 4 insertions(+), 6 deletions(-)
+> 
+> my base is 594a1dd5138a ("Linux 6.6.83").
+> 
+> I checked the original commit in Linus' tree, it removes the `impl
+> Default` which doesn't exist in 6.6, however it seems my `cherry-pick`
+> can realise and fix this! Anyway I will send the fixed patch soon.
 
-Please rebase on next and send incremental patch fixing previous, if needed.
+Yeah, git is smart, patch is not:
 
-Best regards,
-Krzysztof
+patching file rust/kernel/sync.rs
+Hunk #1 FAILED at 30.
+1 out of 1 hunk FAILED -- rejects in file rust/kernel/sync.rs
+
+:(
+
+thanks for the fixup.
+
+greg k-h
 
