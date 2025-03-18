@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-124820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97918A6775F
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:13:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BCCA67760
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 16:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E70A3B9061
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:12:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00E313B940E
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C3520E702;
-	Tue, 18 Mar 2025 15:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F0D20E021;
+	Tue, 18 Mar 2025 15:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H91Ep2PL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCdpe6Tt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0151E20E6EE
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 15:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1977B20A5E5
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 15:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742310771; cv=none; b=VK5tW69//wQ6eZBqamdqPYwRO6lLH4B3BunBinioRBCR/e7VAXVu8JLPdOnU8FqY8OA3kpfzH5EebVGwIyOuGpRzgMszN02+d4U8CiXVxgBzwOOy8c/OC+pEiBc8spuJr98u+uSokW4wt2Xbjpwkpy/+Mf4ys9GLKM4Z/+13xj8=
+	t=1742310773; cv=none; b=cp6X3lrGUvwoLt/uFLgE+rvWS/xVjwF4Q8zi90n5gePqcstqbsoKBfeKOsiPAj5bc0XO2xR9W8Nhgu07naQbNalPReFP01U3AIuurXQAidjPSySylesTATXb1awJTk/MQM/V166uxZiHL1mTRtfxmkGYcYH1KviQSDrqIYn7UuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742310771; c=relaxed/simple;
-	bh=Ec2ylzMS0vOHKbkAbiXplj0D5k6hQIhtcvjl8GYj65k=;
+	s=arc-20240116; t=1742310773; c=relaxed/simple;
+	bh=HOQUOGVdnRrMXUnP2CR4Wgau7DjpUdvs7IFOF+16LZc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MeRhFYCF70rExW558mUTfqxD4G58N+0tBYK4Gji/KGcM6DmQrCcQ+cOqIi5/aGM+4Q8fcHngqWQ3bg62yAZp4fel5tyh1U7zkhiLKdPX10/PSX9EARNAn9Xtkc5awkP+qg55A4K4fuQb3tOw2IMM5X2YIUXPDgRGl/ManBdXpW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H91Ep2PL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B069C4CEDD;
-	Tue, 18 Mar 2025 15:12:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LLm6uNdmctxckX/hrbZCvmh2/CUbNZTOe/fuDsiexhOjL/exVSpSSKOpZHFUhEgKirkBcFggF2RI8x2YuxOMTF98g0MaPHjmA3o06XmOMRW/+Rb+/SQRrZ7vdUawIP/jm3oWHK9ZVw/Imd8+B0GfLfuEMwHmgQ2rLdz/VcpiRBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCdpe6Tt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB5BC4CEDD;
+	Tue, 18 Mar 2025 15:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742310770;
-	bh=Ec2ylzMS0vOHKbkAbiXplj0D5k6hQIhtcvjl8GYj65k=;
+	s=k20201202; t=1742310772;
+	bh=HOQUOGVdnRrMXUnP2CR4Wgau7DjpUdvs7IFOF+16LZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H91Ep2PL0gC7bd7laswtVkhJe4Xjy1Gv/ArB5KvNJ6hUYfL+7LlcQRniG4HYuacJo
-	 Awp6cIUdIXtbYES/8WVimvjhSGCf+HkoxdwwZzL+npFsfp2ewKhVWc3kuOGpw81wcB
-	 8fGzM125u3A0y2n7BnCtpSbYJrV1mfnnXyHFyerpDACtplPGczSG1WQqZwTCmRppwl
-	 Mdl5N5kv1mLJGCUL2FfJR+GeoH58modVeKCUIgq2ph940hRk189e8Bo2yuJutwt/L5
-	 6SaqVbayZ44lXjzFxIsVaMYDgBIo4XHD73Sh+kWsO31fRkmwd1//bGvpB6zwBED3Uj
-	 RamYhtKXjpMVg==
+	b=aCdpe6Ttb3RvwQiQGrZahpD5vpNNVzz9W/xvP9WHTORk9KCI0Xb1zIgTm/u7wqsBu
+	 LbM0eHrFMcLewYWSb87fuM5/BfWxiiPB5UxmRbwsLF2U7/zwCON1SN62T6VLnkfKui
+	 bKMi3IehJ6sbhA/rqGUZLX7FbSMxSYQI0qnsM/3mw+MiNITAttAkJXeuA4pHL3tgo3
+	 FD7rJ08VBEZMdw7QmvozQXWj2TaY+jWrlc/5pM8l5Ui/onFum4HakngFJmcVmq0mxp
+	 AUiHyKyi1oVHN0FRTWoYrWh33iyb52UBlYNKu2ZDehWU5mdlrjuc2HmELHvM7NlyDt
+	 XJ6Xb8R+/D8Cg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Kamal Dasu <kamal.dasu@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 5.4] mmc: cqhci: Fix checking of CQHCI_HALT state
-Date: Tue, 18 Mar 2025 11:12:48 -0400
-Message-Id: <20250317205909-5917d677600d7181@stable.kernel.org>
+To: stable@vger.kernel.org,
+	chenhuacai@loongson.cn
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1&6.6 2/3] sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+Date: Tue, 18 Mar 2025 11:12:50 -0400
+Message-Id: <20250318075613-9985345a4a7f332b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250317220306.44646-1-kamal.dasu@broadcom.com>
+In-Reply-To:  <20250318105308.2160738-3-chenhuacai@loongson.cn>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,54 +64,41 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+ℹ️ This is part 2/3 of a series
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: aea62c744a9ae2a8247c54ec42138405216414da
+Found matching upstream commit: 467d60eddf55588add232feda325da7215ddaf30
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Kamal Dasu<kamal.dasu@broadcom.com>
-Commit author: Seunghwan Baek<sh8267.baek@samsung.com>
+WARNING: Author mismatch between patch and found commit:
+Backport author: Huacai Chen<chenhuacai@loongson.cn>
+Commit author: Jan Stancek<jstancek@redhat.com>
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: a7fa220ebb41)
-6.1.y | Present (different SHA1: ae7b2bd3d458)
-5.15.y | Present (different SHA1: c0f43b1f1f7d)
-5.10.y | Present (different SHA1: c6bd80f58522)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  aea62c744a9ae ! 1:  e62d1070a5f40 mmc: cqhci: Fix checking of CQHCI_HALT state
-    @@ Metadata
-      ## Commit message ##
-         mmc: cqhci: Fix checking of CQHCI_HALT state
-     
-    +    commit aea62c744a9ae2a8247c54ec42138405216414da upstream
-    +
-         To check if mmc cqe is in halt state, need to check set/clear of CQHCI_HALT
-         bit. At this time, we need to check with &, not &&.
-     
+1:  467d60eddf555 ! 1:  93774cf75460f sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
     @@ Commit message
-         Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-         Link: https://lore.kernel.org/r/20240829061823.3718-2-sh8267.baek@samsung.com
-         Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-    +    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+         Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+         Reviewed-by: Neal Gompa <neal@gompa.dev>
+         Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+    +    Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
      
-    - ## drivers/mmc/host/cqhci-core.c ##
-    -@@ drivers/mmc/host/cqhci-core.c: static int cqhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
-    + ## drivers/mmc/host/cqhci.c ##
-    +@@ drivers/mmc/host/cqhci.c: static int cqhci_request(struct mmc_host *mmc, struct mmc_request *mrq)
-      		cqhci_writel(cq_host, 0, CQHCI_CTL);
-      		mmc->cqe_on = true;
-      		pr_debug("%s: cqhci: CQE on\n", mmc_hostname(mmc));
+      ## certs/extract-cert.c ##
+     @@ certs/extract-cert.c: int main(int argc, char **argv)
 ---
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
