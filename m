@@ -1,73 +1,130 @@
-Return-Path: <stable+bounces-124805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24076A67591
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 14:50:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE7FA675C1
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 15:00:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F6C83BB077
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 13:50:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E89E8805AF
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 13:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0407D20D4ED;
-	Tue, 18 Mar 2025 13:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E0320E00C;
+	Tue, 18 Mar 2025 13:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mXZJmEli"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDB320ADC9;
-	Tue, 18 Mar 2025 13:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1316C20E003;
+	Tue, 18 Mar 2025 13:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742305830; cv=none; b=RD1MRQcETo6WLC3MyxHQW97tP4bglYeh6DiJadrSwuxfp79OgEpqv1gS/6YoEI/SH+sQEVfdsz5NJ8FRMujikefVw7wNFtQk8FYmz8MOIsZtD7rhWm744RdjP3MRjvr3MIwBgtjkmsxTdapr15KZSIBKfAYB28tAv8kIpFyvhLQ=
+	t=1742306328; cv=none; b=XE32ob+DPAYdOPMt0PErPPYkyCee+ZaXIprPwLlOC7XqeXzz5gVsgw4Io3RQBDwsyz+o7ulDztYqFjLkJxxuP/hpMcwt4yg1qqcYND3+ACvKbUXuSoWQRsBU/K1JtFor+RBHolBbXtYkEukf2/57GnXTT5ARDS2ZwucFgtloOFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742305830; c=relaxed/simple;
-	bh=xxmlMwu6sJ7mBw2CjEUBQVzyZVvCb7lnQGV6nZEw9eE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=VEk/Ic5bevOLdDSljVgiSb/GAImuthqP3yih9UbD2JEKnjz9s9AbZprhnXcNjKJLonUUDAFWqObMt8WW/XP8rFNnJt5KKBUvOdbQwYJyEhEiNFIbuOC44hysOe3DWj9Jzr2PuZLcRZ/YpWU1aNWqZIJJK+CwjVQD2EIJfnDv9NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ZHCnX6pCXz2Cd1y;
-	Tue, 18 Mar 2025 21:47:12 +0800 (CST)
-Received: from kwepemg500010.china.huawei.com (unknown [7.202.181.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 775771A0188;
-	Tue, 18 Mar 2025 21:50:26 +0800 (CST)
-Received: from [10.174.178.209] (10.174.178.209) by
- kwepemg500010.china.huawei.com (7.202.181.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 18 Mar 2025 21:50:25 +0800
-Message-ID: <ee68f83b-6bc1-7334-b7bf-19415ee7c453@huawei.com>
-Date: Tue, 18 Mar 2025 21:50:25 +0800
+	s=arc-20240116; t=1742306328; c=relaxed/simple;
+	bh=okAI5xect5YoGoMJm+SSYguV7ij0XhWYpvWkpZ9mSNI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bwgR87qzVXManRRsPpFj4dgXixDQVhoIoNWs+kpX3J+CC0pyFOuARzsVjv4pN5dFjFtlOODyKjhC8oWc+55+O1d5MuUZPRceRYC55eA+TNRoE4hIbB5NTc9UsKR3ojqyC83j5SDrlClA6n/9npOvKq2esZjpN4FgwwkWsnxIbCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mXZJmEli; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE341C4CEF3;
+	Tue, 18 Mar 2025 13:58:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742306327;
+	bh=okAI5xect5YoGoMJm+SSYguV7ij0XhWYpvWkpZ9mSNI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mXZJmEliUJSXvouqoB2Hc0ojwh2dkS9ApuTqOomkSQKYq+6hc9STqGpUkUJJiBGE/
+	 QzW2qgGMjSmdCAGzxbxXzMccxn4iI4WZcPwxZKXuZ39b3elhQaQ7mp5Y5v2KWD0Adv
+	 Cbzx5lRJSSPoBxGecHpMytq4b7Yhs/5vmYnaTEzVvcf9N6nKNWgi9ZY5WxufDpno31
+	 9Bucu05lZgzyxSwkaRPWjzjhPCAb+4OO0hsk+XxlAWKdyCWTkdmTlCWU2P5LQE2UA1
+	 9qJDFQd6tzolFsCJhgIo1E4JPqmO3qbyO/ZUfA5TrfGKrTlH5S3lImp3AhkRsLm9oC
+	 Z/bFFYpKox4ww==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-abf3d64849dso936100666b.3;
+        Tue, 18 Mar 2025 06:58:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVL9RwknIttYqH7owdYZ55clzR5yvfi3eF162EeqEKluTZhIVBlBoO0yLeBb6kQv7ROujCOc90sh8SGkNMv@vger.kernel.org, AJvYcCW1KstbKO4pZf/lHBZvs4ffp99dV+Y3WhGQCM427UgxRcdNTSiVBLC14Ns5own3Agb35KgCpWnV@vger.kernel.org, AJvYcCWO667APjqAGY2eAhs7JEA0hUmhzek7uUEZBl1MzilWz26xSTPulDMl2h7pterfXz3EJvh4MjHDZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaRPOI9nZ0GboFXpFEr4qbrN170msAg2on3FD2OFDbd2ZCK1XP
+	Nycln8F3pGGN/6ozOSQ1Zgh5Js2BM9JCcUDvPNfmOzSNB7diIDNcwc+OJVW8GIxfCDGtwqeTfT+
+	12lCkqo5IFG0b1/x6EZBVOQvASiM=
+X-Google-Smtp-Source: AGHT+IE7YlisJrMTzVcREBpQG1FxhWyYZgujmE0dhYcPDNWZ/tCZXtAHev1364mDDmLJfbnSJW9TCvdw+fFtJwSdQmc=
+X-Received: by 2002:a17:907:96a1:b0:ac2:88d5:770b with SMTP id
+ a640c23a62f3a-ac3302d1178mr1851030166b.25.1742306326013; Tue, 18 Mar 2025
+ 06:58:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [BUG REPORT] cifs: Deadlock due to network reconnection during
- file writing
-From: Wang Zhaolong <wangzhaolong1@huawei.com>
-To: David Howells <dhowells@redhat.com>, Steve French <smfrench@gmail.com>
-CC: <stable@vger.kernel.org>, <linux-cifs@vger.kernel.org>, yangerkun
-	<yangerkun@huawei.com>, yi zhang <yi.zhang@huawei.com>, Paulo Alcantara
-	<pc@manguebit.com>
-References: <CAH2r5mv4N9zFOKTxwdvk6ahAyjgpYULQp8iw2NMu3eB6FEXh0A@mail.gmail.com>
- <3bd10acc-2d7f-019a-3182-82ab647bc15a@huawei.com>
- <3049256.1739192701@warthog.procyon.org.uk>
- <785a8d03-3ee6-4eb1-e72f-db05fc4fb49c@huawei.com>
-In-Reply-To: <785a8d03-3ee6-4eb1-e72f-db05fc4fb49c@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemg500010.china.huawei.com (7.202.181.71)
+References: <20250318110124.2160941-1-chenhuacai@loongson.cn>
+ <20250318110124.2160941-2-chenhuacai@loongson.cn> <2025031834-spotty-dipped-be36@gregkh>
+In-Reply-To: <2025031834-spotty-dipped-be36@gregkh>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 18 Mar 2025 21:58:26 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4y88jfpKp1mFytEjX4L0CErF=XFashZ9dXfwM58dPGGQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JrlKqFQVz_RplvwKX2x93lPclA7QVuwsdwgLRloL8BWzAwJXxyFW_tu4Vs
+Message-ID: <CAAhV-H4y88jfpKp1mFytEjX4L0CErF=XFashZ9dXfwM58dPGGQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1&6.6 1/3] sign-file,extract-cert: move common SSL
+ helper functions to a header
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>, 
+	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org, 
+	David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Jan Stancek <jstancek@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	R Nageswara Sastry <rnsastry@linux.ibm.com>, Neal Gompa <neal@gompa.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Friendly ping.
+Hi, Greg,
 
-Best regards,
-Wang Zhaolong
+On Tue, Mar 18, 2025 at 9:25=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Mar 18, 2025 at 07:01:22PM +0800, Huacai Chen wrote:
+> > From: Jan Stancek <jstancek@redhat.com>
+> >
+> > commit 300e6d4116f956b035281ec94297dc4dc8d4e1d3 upstream.
+> >
+> > Couple error handling helpers are repeated in both tools, so
+> > move them to a common header.
+> >
+> > Signed-off-by: Jan Stancek <jstancek@redhat.com>
+> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+> > Reviewed-by: Neal Gompa <neal@gompa.dev>
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+>
+> Is this "v2" as well?  the threading is all confusing here.  This is
+> what my inbox looks like right now:
+Yes, this is also V2, I'm very sorry to confuse you.
+
+Huacai
+
+>
+>
+>   32 N T Mar 18 Huacai Chen     (2.9K) [PATCH 6.1&6.6 V2 0/3] sign-file,e=
+xtract-cert: switch to PROVIDER API for OpenSSL >=3D 3.0
+>   33 N T Mar 18 Huacai Chen     (7.9K) =E2=94=9C=E2=94=80>[PATCH 6.1&6.6 =
+V2 3/3] sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >=3D =
+3
+>   34 N T Mar 18 Huacai Chen     (3.4K) =E2=94=9C=E2=94=80>[PATCH 6.1&6.6 =
+V2 2/3] sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+>   35 N T Mar 18 Huacai Chen     (4.8K) =E2=94=94=E2=94=80>[PATCH 6.1&6.6 =
+1/3] sign-file,extract-cert: move common SSL helper functions to a header
+>   46 N T Mar 18 Huacai Chen     (2.9K) [PATCH 6.1&6.6 0/3] sign-file,extr=
+act-cert: switch to PROVIDER API for OpenSSL >=3D 3.0
+>   47 N T Mar 18 Huacai Chen     (3.3K) =E2=94=9C=E2=94=80>[PATCH 6.1&6.6 =
+2/3] sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+>   48 N T Mar 18 Huacai Chen     (4.8K) =E2=94=9C=E2=94=80>[PATCH 6.1&6.6 =
+1/3] sign-file,extract-cert: move common SSL helper functions to a header
+>   50 N T Mar 18 Huacai Chen     (7.8K) =E2=94=94=E2=94=80>[PATCH 6.1&6.6 =
+3/3] sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >=3D 3
+>
+> What would you do if you saw that?
+>
+> greg k-h
 
