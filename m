@@ -1,126 +1,88 @@
-Return-Path: <stable+bounces-124850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB24A67BA7
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 19:08:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2674DA67BB2
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 19:11:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E3A53B34D3
-	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 18:05:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63C6C18846E4
+	for <lists+stable@lfdr.de>; Tue, 18 Mar 2025 18:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6281E212FBA;
-	Tue, 18 Mar 2025 18:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EE0211497;
+	Tue, 18 Mar 2025 18:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lI9sD+gr"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TdnhTqTa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6DD169AE6
-	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 18:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70667212D63
+	for <stable@vger.kernel.org>; Tue, 18 Mar 2025 18:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742321118; cv=none; b=urGXK3xoM9bYBMlw2x8eoSQmqnTbMi2UO5mBQZixG8YoHBclG/xnE3Rz99Or/1vxNJroQJMEufo2ZyFBxEhD7Rts85fCXcsO2Z2+NGVKct9h+BHGniGZjjYF12A98RFUSfHX9fPDGDaT+cu/8UJRJj8UBDZgFL6v+L21rKk/TaI=
+	t=1742321422; cv=none; b=JWh2U2qXu3FXXt0fqQtTIfk4m7Q7lueqmfaaQJhM9a0Z290uiZ9+//V0wQE0XX+72UigrIYTR1oJrBjkSHOibTFSU83UUn4dv2g/0QEbov9mp7nZMZ8jg/4upsGKMoDrA+L1muo5y+psJZhytbjSYq+Y1ZajhauozKc3ckk/Eu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742321118; c=relaxed/simple;
-	bh=CueRC8PJeTB/4IkHMkrVWXgaytvI+cbWyZWFk6bfaao=;
+	s=arc-20240116; t=1742321422; c=relaxed/simple;
+	bh=Od4Ygc8gvgOgVyiZmiUSYJCWxXNdiXruHcxMWGREO/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4iIa84xHTnC3crCF+TCMyUsg3GhDmjwxzZAtYeaHtb1gGCy+3JZeBxPkCdczYkFeY9tEaC7uRfqkq0EqXT+v5yuM0YReeeUucTcERrdL+dIhJ9XqNOxsFYAZOclUVk/sP//RD/awlc/t656zp5ddUIspxoNvcBgDAlRjzl9m6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lI9sD+gr; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7c08fc20194so1045126485a.2
-        for <stable@vger.kernel.org>; Tue, 18 Mar 2025 11:05:12 -0700 (PDT)
+	 MIME-Version; b=O2w0noEK+jhpU31OZlhULfDWjxzGx+aWYoMVL01GI1gwWHZYhWH6SAzJdFI5vwjkdPRoC5lWQqHd1/l0HEQxRFelUA07VKVWXBpKQhwOB96JXzhR476Mjk1OIpl1TGy4JUxGy9pIWYFCZbKD35jY9ZWTv8TznUGd4nGXyFi/RoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TdnhTqTa; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cfebc343dso26927555e9.2
+        for <stable@vger.kernel.org>; Tue, 18 Mar 2025 11:10:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742321111; x=1742925911; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1742321412; x=1742926212; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FjAd8+d/AVUCTr0AtzBX8UuIIEKWtuWipcfyFxs+Bpc=;
-        b=lI9sD+grewqcn6gHbjTBlKSOTMIpceDnQb3wLDCYDsdOmvFPz2LZTBuoxDIVvpIt9E
-         2c8RNFCAhArPgYzoa6rqwh4fuRkSdJVq2smthsge3qscKYjud6PuOJw+MpYakivV8Vkt
-         USm+CDgwKx/72pYJpMJAy+F1DBsNFMsIFB41OKwd43vu/n1J7oQWVhVPKZJDm05tAiX+
-         0gLX9joB6sthNU3bnJjqZeQqDyA6xbG/rVdK6466pZg+HfLo3XQ3IoSiOmNILYuwqquM
-         rXTYn91DpuE/RowlOnkXlWuwSqrCBxyb1etm+5DmlaG6BqqvX5rVr6FMLvuIitUvRviV
-         nybA==
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yEUZ6SgN7EUPHL01UAhQ5NF1qAY7R8r2dg2/lYHhiF0=;
+        b=TdnhTqTaW9eT8KdwuNKcCfsGt1wGRKS7XQQd8gU1AEqxMlxLAzHgKLOf7mnNgqj8U5
+         D1SpGW/pYAD5uDHwv2Gz2xmXTzHqceqWfRstNjbTXjgXUYiKP0GNQI64cF/E9jBvnVPd
+         m4sQKoUaHE9Upc1qIvXaHRxJYgq8VOS/lRx0nk6Gl4w7Yv8g0+2+CzqnQ+ajKtiH3ntp
+         01c7Vyby1xrxcfqVWzj/eAYh9iFOmiJs69NqgKnWp+J13QI7kbOqD3H/KK1HxDCfdT3A
+         zQdypnj0YM6WMRpw0Lu1VL7l2NziLcC8dus10DhbtYvqY9Di58pxf/QZ9QH2XH5gK3xj
+         tWOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742321111; x=1742925911;
+        d=1e100.net; s=20230601; t=1742321412; x=1742926212;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FjAd8+d/AVUCTr0AtzBX8UuIIEKWtuWipcfyFxs+Bpc=;
-        b=vMfa/HaW+iLwmGzmekT9oghMiNm23rlXFHI8alyzq+P8KHmT4RyPdtOMdh0BYf+qP2
-         bm/GFvYd/W5Zp1xz2TsDG2HqwAt5Gaeaxfxs2QmXF+GHtkIhW9c4YxbvEviNSPZtHHGV
-         +sDYDGTcuQKNoYGGniveiQceEbkQ8KSWWicyl75HkZZ/Dz46M2Z5NDOxk32i51c2shuF
-         VvvlnmIe/noXV5wuJdbEiOqiPuO30Zop5Vi3xcFm7igIDpQS0dWLtx+mZJ94n1ij0Pyx
-         aO8h8Cvl7R5Q0BVMt/W4B09q7a70xYV7OD3ioYC6JOpGZyJ/JBi7nnZ1MmDyvwwZ67up
-         nCbQ==
-X-Gm-Message-State: AOJu0Yz5mqbKJ/0iJlznbxY8cN28pAPpLP49qzglReHOk+ER9p6cC7/5
-	jiUKihVOVvMgc4q4FBqxTOEcPQ1DkWhMOR626P5+1Z1NsUmiB0tY
-X-Gm-Gg: ASbGnctXQgUzxAOgppjrr0r2qRGBOppI3B453ENr7kXzLP5RbNBYpQ351n5uPVmmjEa
-	OsWitNBt52STg1gc2OLIIp2wQh2RYV2fQF+nernS4tRQfNLDt12BgcaaSFz4DAEJTzx1eSj4FvA
-	ZsjezyQtIWhp+LywVitmXnFWWdR1O8jPDlMipsG01GMlK7DYKlPLXrtKkZEltr8eTN8pEjTs2zM
-	EoKF3JVULT37RkQfSZ+uobDlddHkuQg9KY9rwZm6l5S6gCFPXUJqZqfHuVXUkY6jApEM+P0blux
-	ufJ3NPibrW6Jk77BEhPSqitrFgQxoJDyCDh+oBobaJJyNMSG4vLzo5J51PjMloTFMuL1qV2bIBm
-	qwTGBDFUe2iibwTt3w7IThmKAaxG2SniT6zE=
-X-Google-Smtp-Source: AGHT+IEniY+GkXyMMQxSHJf4Xbbj48xZ2u24Fe8yWLt+K56YL/zNLr+gtzVJggq4ZG8sp5eyCpiHHA==
-X-Received: by 2002:a05:620a:1a0e:b0:7c3:d5a4:3df3 with SMTP id af79cd13be357-7c5a69320a2mr20534485a.34.1742321111418;
-        Tue, 18 Mar 2025 11:05:11 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c573c545c5sm751305185a.21.2025.03.18.11.05.10
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yEUZ6SgN7EUPHL01UAhQ5NF1qAY7R8r2dg2/lYHhiF0=;
+        b=jtdje79a2m35r6Kmc1bxE+bG5PPWINvOx8jIu19Q6BUvht2ftEScQzJskz92SGE5ao
+         yXgjwCCIl/8oNTG5j0xzLCorXmehs9Ol+D+p8ike8wAr2NIQpMsAU5XYGlAJHBV3y1C/
+         Q+e7m7CL8vCS5N+zhLxC7+iCJDNDtryj29XlMGdfo4PuG2s3dFKoZJM+mf63ZpxFzDGJ
+         103kvfQ/fCdP4MjH8gp2g2Qe9iCUh0tPomVtE0C6nUkt7+WkPBqkFOAOoMOSwodBmzRI
+         ktMnLF7OK9bM8lw338/C1gWuOK6F1y0xFFr03CvBy99PxGUaKQOtZEelaMLZGpehnG5A
+         790Q==
+X-Gm-Message-State: AOJu0YxxDVIdvID/uMSyYvrmD49sB0cEmySw/VUigfcPhTRBk2YQiBeu
+	1KG+6+Yu21XNRBzJ7gP1gZ8yhx3orB3hhW6jlsaFCgHw1x+sbbEBLw88kw28xOlggeY0zOCkP1l
+	hGNM=
+X-Gm-Gg: ASbGncv5Gj82hIyn1b0SgmLxtnGv2OhfO6Dp2i4M0EfEe8F069jt9uFc7fMcXqqUolc
+	jbr6mcJTuRanHZ9gmNZzbhfHg20LY1H2Z2IEWXZHVdyzRA4WAYrlIyKKE+M6Urh5B5Pb7PBBdLQ
+	4AjvE8BoCxydJP465UH2iIUdG6OgUIh8YGPxsxnfABFNpwv3BA3RduFxcRTCYwXQNGNiSGqWJuq
+	nkoTLGvwTUCjoFRCeRFcm2jfzKduWVDOawa0IQqD2qS4husO7d5o+dUgvgvDc5u2acJBzJNAjD+
+	EeUIOlZ/hnBCvckMApnS1v0eg8rAi1bNV/D8Zf0ZmZbLsPl6y3D5MHlXj1+y/ZrER0fTZQ==
+X-Google-Smtp-Source: AGHT+IFoVBCPC6WzzgT/GvRRAdAFLIp3B4CVORpbUYrLtA/OgC07XyJfweonSEsAaJ0aOoXYifSfQQ==
+X-Received: by 2002:a05:6000:1562:b0:391:22a9:4408 with SMTP id ffacd0b85a97d-3971d616a73mr19237014f8f.16.1742321412433;
+        Tue, 18 Mar 2025 11:10:12 -0700 (PDT)
+Received: from localhost.localdomain ([2804:7f0:bc00:1e6e:6171:3ed0:ca4f:bf31])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711694e34sm10254594b3a.140.2025.03.18.11.10.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 11:05:10 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A4C3D1200075;
-	Tue, 18 Mar 2025 14:05:10 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Tue, 18 Mar 2025 14:05:10 -0400
-X-ME-Sender: <xms:1rXZZ3ubPFAnVnJTYBiUJVcZsNfawwLJuLE8lsk9C5Ad5nECVfCQCQ>
-    <xme:1rXZZ4fR2OTZ3qZLRrlsfJj8cEORExgDjcP7C92it7_Wr6rQgWyvasP45DhV7R-jV
-    OAhZbqgvdCm5kwaZg>
-X-ME-Received: <xmr:1rXZZ6zYZG7frSAPd6LAbL9YaWvP5sPb22m9i2vew_HI7nqdGPyTV00txpNQpA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeefudduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvf
-    evufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfhvghnghcu
-    oegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhepgf
-    fhffevhffhvdfgjefgkedvlefgkeegveeuheelhfeivdegffejgfetuefgheeinecuffho
-    mhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepkedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhn
-    rdhorhhgpdhrtghpthhtoheplhgvvhihmhhithgthhgvlhhltdesghhmrghilhdrtghomh
-    dprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthho
-    pegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegsohhquh
-    hnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehmihhnghhosehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:1rXZZ2M1DsfLLOl_SCvc8X9PWAggGGvLfO5Qsi7WcK_C5lOJz1IZYQ>
-    <xmx:1rXZZ39xi9JWJh-EPrTYJPUWxkNZvhY1sbEfm2_dX5iSBf6l7h-Aqg>
-    <xmx:1rXZZ2UJUjG63b8_mP5yPuT_nZ8iK2U17BBFOxqBZC0ZmCSpcH45Sg>
-    <xmx:1rXZZ4dPGGZyw4YPsCMGjCHDfKa-H3BNqkLa5TeoKwyGbwoIVxj4NQ>
-    <xmx:1rXZZ1fz8brr-UKMXnwqInm7fo-iLWZ4RJHm8_ROS1RRKGY4IliTvdz8>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 18 Mar 2025 14:05:10 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
+        Tue, 18 Mar 2025 11:10:11 -0700 (PDT)
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	levymitchell0@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	boqun.feng@gmail.com,
-	mingo@kernel.org,
-	ojeda@kernel.org
-Subject: [PATCH 6.6.y] rust: lockdep: Remove support for dynamically allocated LockClassKeys
-Date: Tue, 18 Mar 2025 11:04:47 -0700
-Message-ID: <20250318180447.4958-1-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025031632-divorcee-duly-868e@gregkh>
-References: <2025031632-divorcee-duly-868e@gregkh>
+Cc: Henrique Carvalho <henrique.carvalho@suse.com>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13.y v3] smb: client: Fix match_session bug preventing session reuse
+Date: Tue, 18 Mar 2025 15:08:21 -0300
+Message-ID: <20250318180821.2986424-1-henrique.carvalho@suse.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <2025031652-spider-flying-c68b@gregkh>
+References: <2025031652-spider-flying-c68b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -129,55 +91,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Mitchell Levy <levymitchell0@gmail.com>
+Fix a bug in match_session() that can causes the session to not be
+reused in some cases.
 
-Currently, dynamically allocated LockCLassKeys can be used from the Rust
-side without having them registered. This is a soundness issue, so
-remove them.
+Reproduction steps:
 
-Fixes: 6ea5aa08857a ("rust: sync: introduce `LockClassKey`")
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+mount.cifs //server/share /mnt/a -o credentials=creds
+mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
+cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
+
+mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
+mount.cifs //server/share /mnt/a -o credentials=creds
+cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250307232717.1759087-11-boqun.feng@gmail.com
-(cherry picked from commit 966944f3711665db13e214fef6d02982c49bb972)
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+(cherry picked from commit 605b249ea96770ac4fac4b8510a99e0f8442be5e)
 ---
- rust/kernel/sync.rs | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ fs/smb/client/connect.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index d219ee518eff..8b40589b1028 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -26,11 +26,6 @@
- unsafe impl Sync for LockClassKey {}
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index eaa6be4456d0..c9273a90d58e 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1873,9 +1873,8 @@ static int match_session(struct cifs_ses *ses,
+ 			 struct smb3_fs_context *ctx,
+ 			 bool match_super)
+ {
+-	if (ctx->sectype != Unspecified &&
+-	    ctx->sectype != ses->sectype)
+-		return 0;
++	struct TCP_Server_Info *server = ses->server;
++	enum securityEnum ctx_sec, ses_sec;
  
- impl LockClassKey {
--    /// Creates a new lock class key.
--    pub const fn new() -> Self {
--        Self(Opaque::uninit())
--    }
--
-     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-         self.0.get()
-     }
-@@ -41,7 +36,10 @@ pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
- #[macro_export]
- macro_rules! static_lock_class {
-     () => {{
--        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-+        static CLASS: $crate::sync::LockClassKey =
-+            // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
-+            // lock_class_key
-+            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
-         &CLASS
-     }};
- }
+ 	if (!match_super && ctx->dfs_root_ses != ses->dfs_root_ses)
+ 		return 0;
+@@ -1887,11 +1886,19 @@ static int match_session(struct cifs_ses *ses,
+ 	if (ses->chan_max < ctx->max_channels)
+ 		return 0;
+ 
+-	switch (ses->sectype) {
++	ctx_sec = server->ops->select_sectype(server, ctx->sectype);
++	ses_sec = server->ops->select_sectype(server, ses->sectype);
++
++	if (ctx_sec != ses_sec)
++		return 0;
++
++	switch (ctx_sec) {
+ 	case Kerberos:
+ 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
+ 			return 0;
+ 		break;
++	case NTLMv2:
++	case RawNTLMSSP:
+ 	default:
+ 		/* NULL username means anonymous session */
+ 		if (ses->user_name == NULL) {
 -- 
-2.48.1
+2.47.0
 
 
