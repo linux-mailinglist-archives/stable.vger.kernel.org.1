@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-125137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101FEA68FDD
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7ABA690F1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A29EE17E5E6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DBB37AED41
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9B81DED55;
-	Wed, 19 Mar 2025 14:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27D7222568;
+	Wed, 19 Mar 2025 14:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YafZKPdX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2o9uDT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB741DDA36;
-	Wed, 19 Mar 2025 14:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F83A1DEFD6;
+	Wed, 19 Mar 2025 14:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394980; cv=none; b=aEWguskkb3HuYwa+ZxomN2HWdNc6RIA9uJB5R42J2eQhd8dJi+obTlvgmURd9pePGiYTNJGC2/d/JO1iuCVRjn8qIsvn1iIvShkOKPfqlmQdP+5AP6I5YXkTIykobmRpmeahn5KDWeTQpFY3dXv2o9XRFv6VV8CmzavepJjXTqw=
+	t=1742395260; cv=none; b=LV9oPr3XOj3icjgUZdF7+/NCn84hSTlzCj0fNIdDzRkfg0utjinhB7vrce1nqJ97J68cw5GKUr5iJY4fDWTDacpN5GgtwlWqppY4j2P9kdKCqkl620CrBq/gPfsJgCPD4H6aZe43A+8QzF4o5cSOMudsvD40syr6QJm5nxgQfk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394980; c=relaxed/simple;
-	bh=TM9RzQBsv/Cz2xixmjmfE+uAknx1jxYerQAfONB90II=;
+	s=arc-20240116; t=1742395260; c=relaxed/simple;
+	bh=LRjDu1zQyOsxD+HGL29mqK/bwFzZ+4ptA4ugN8055T0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HALKA2RizsPoONLtyDAPJz9R6mG0lIdcwdX6hXkkM3sdfs3c0bxOxtTuJfJaYR7tB6QY3VMDCqUz+8nCLhQowK4V/iprZCDRXKqUD5CAwinCzLXkL/tWTmC3vXLFX2HZC7LyW+TmPPDvsaOW4O4BhJC2QwjV7kQj5Vkju0O+qtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YafZKPdX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0D1C4CEE4;
-	Wed, 19 Mar 2025 14:36:19 +0000 (UTC)
+	 MIME-Version; b=NfZLuvAeLFArb4YVl/JHDRzLVP84sSW40I0b5tW3HpFosKfLls4iN+rLdz2uYFIZejNEtyxhb9bnGb6kK5XKnqeIG2eyvw0X+FTpJmjtk7yi5wN+pEfGsazcR7q5WUETSK2QEHJfMVC4kVJlANEypM7W7PttHy1F3K2cxPWzdGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2o9uDT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA9BC4CEE4;
+	Wed, 19 Mar 2025 14:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394980;
-	bh=TM9RzQBsv/Cz2xixmjmfE+uAknx1jxYerQAfONB90II=;
+	s=korg; t=1742395260;
+	bh=LRjDu1zQyOsxD+HGL29mqK/bwFzZ+4ptA4ugN8055T0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YafZKPdXosXo1VVayHMv+U6DYNJMyE2vgr24lLzewMAfcZnF1wn+/R4QsKLsVwmsb
-	 eSnf6JyK55SVh8Hlz5Bp+OD5pyIXokhfKj7/miHYPm8hT7NR8ujNXR5ime3+bM7LBc
-	 LXYsB9Gajjp3jF6Do6f9//FfICqWzGS8ZvCcPMag=
+	b=p2o9uDT+lbHccl21BerzcpT0jYwXVlD9T50MJkr7H1ZDBAliGY6in+6af977NWJmw
+	 D3AWu4o0vGdB1KG1bAVL47JTJQ9DSQGjIASEH0sySvjADaihhSxVOx3AELE3kNkdbD
+	 tGDKoPfWw2lylXF1inLdjCW/Er4AreHeloCFzk8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 218/241] drm/i915: Increase I915_PARAM_MMAP_GTT_VERSION version to indicate support for partial mmaps
-Date: Wed, 19 Mar 2025 07:31:28 -0700
-Message-ID: <20250319143033.140880796@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 118/166] USB: serial: option: match on interface class for Telit FN990B
+Date: Wed, 19 Mar 2025 07:31:29 -0700
+Message-ID: <20250319143023.211343208@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Roberto de Souza <jose.souza@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a8045e46c508b70fe4b30cc020fd0a2b0709b2e5 ]
+commit 9a665fe3d967fe46edb4fd2497c7a5cc2dac2f55 upstream.
 
-Commit 255fc1703e42 ("drm/i915/gem: Calculate object page offset for partial memory mapping")
-was the last patch of several patches fixing multiple partial mmaps.
-But without a bump in I915_PARAM_MMAP_GTT_VERSION there is no clean
-way for UMD to know if it can do multiple partial mmaps.
+The device id entries for Telit FN990B ended up matching only on the
+interface protocol. While this works, the protocol is qualified by the
+interface class (and subclass) which should have been included.
 
-Fixes: 255fc1703e42 ("drm/i915/gem: Calculate object page offset for partial memory mapping")
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306210827.171147-1-jose.souza@intel.com
-(cherry picked from commit bfef148f3680e6b9d28e7fca46d9520f80c5e50e)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Switch to matching using USB_DEVICE_AND_INTERFACE_INFO() while keeping
+the entries sorted also by protocol for consistency.
+
+Link: https://lore.kernel.org/20250227110655.3647028-2-fabio.porcedda@gmail.com/
+Cc: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Daniele Palmas <dnlplm@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_mman.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-index 21274aa9bdddc..c3dabb8579605 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -164,6 +164,9 @@ static unsigned int tile_row_pages(const struct drm_i915_gem_object *obj)
-  * 4 - Support multiple fault handlers per object depending on object's
-  *     backing storage (a.k.a. MMAP_OFFSET).
-  *
-+ * 5 - Support multiple partial mmaps(mmap part of BO + unmap a offset, multiple
-+ *     times with different size and offset).
-+ *
-  * Restrictions:
-  *
-  *  * snoopable objects cannot be accessed via the GTT. It can cause machine
-@@ -191,7 +194,7 @@ static unsigned int tile_row_pages(const struct drm_i915_gem_object *obj)
-  */
- int i915_gem_mmap_gtt_version(void)
- {
--	return 4;
-+	return 5;
- }
- 
- static inline struct i915_gtt_view
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1410,22 +1410,22 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x60) },	/* Telit FN990B (rmnet) */
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x40) },
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x30),
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x30),	/* Telit FN990B (rmnet) */
+ 	  .driver_info = NCTRL(5) },
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x60) },	/* Telit FN990B (MBIM) */
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x40) },
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x30),
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
+ 	  .driver_info = NCTRL(6) },
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x60) },	/* Telit FN990B (RNDIS) */
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x40) },
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x30),
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x60) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x30),	/* Telit FN990B (RNDIS) */
+ 	  .driver_info = NCTRL(6) },
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x60) },	/* Telit FN990B (ECM) */
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x40) },
+-	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x30),
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x60) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x30),	/* Telit FN990B (ECM) */
+ 	  .driver_info = NCTRL(6) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x60) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
 
 
 
