@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-124967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A90DA69250
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:06:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D05A69159
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086D81B844D2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE8F21B86FCE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1A01D63FC;
-	Wed, 19 Mar 2025 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D92211715;
+	Wed, 19 Mar 2025 14:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1AymK/Y3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdOcwghk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE81D1C1F02;
-	Wed, 19 Mar 2025 14:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CC0208993;
+	Wed, 19 Mar 2025 14:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394859; cv=none; b=NlwudSILQMzNy/UpoqwqntzWqoPt1bUXO1YLdSzk9Rgu181WBPrDDxH0sE0QO9JQVwfNFdgRIuJUFZkldomlR+u0Ie2idEiVvKFXs9XEROftdZPq/aQIoVbM7ngez9+5umi0obGr5NaGLWqbcumQMlBj2hHsH894mOu+CE7quSU=
+	t=1742395014; cv=none; b=ObvQEu6rSYaO0q/rOK2rrj6c1iaFmgM6Vh/EMSY7CI1taNAkBJWp+ZTgHszu9dH1ze9l45PV/cAmbnM1ciYiptojonzh2DT+4xjXzlllASPDjn0E6zeQUEPYM3JcKdQYl9rrt5VhrmBqNehNFUv1/eJtU8+McoeUTfmPlPa2iGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394859; c=relaxed/simple;
-	bh=WupQ9Cgz+LV4eisKB3pI+ZV+9el17+JSOhtajCGKiQY=;
+	s=arc-20240116; t=1742395014; c=relaxed/simple;
+	bh=im3F+04DyxS0re/54yvPnR1CWhWRNaWByh/ey7z2yjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kiKYW8pNyl0WsjSltrOOVupRkB7EnXd2mIKENXcYMZnDzGvBjyh/z+ut01a2vv8yixtmev1veswIFAnpzzkuz33LYMvSDSfNcDb3axQVb2CeKG8tLpVH6jhqQmPe2R85PRButUW040VL8FXcJjXhwiW3Nvrt3+ZdMdnd/+t7ydg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1AymK/Y3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61E7C4CEE9;
-	Wed, 19 Mar 2025 14:34:18 +0000 (UTC)
+	 MIME-Version; b=Dte44m4R2uzsYbMWvFLf8G9bfH7QGit8VCp70NNB5j/6b6J6wEQ7tbduoJzsD5noWTYxrYKt4w0K3mJJdrpmI02GLEBQkGMd4jwEPHfK7qfkbs0Im5/LZAZiUEMueFsGwgZBbJyi4vX35PD4Wnl+DonT3rRNmWEqtS+Az22zSLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdOcwghk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACEEC4CEE4;
+	Wed, 19 Mar 2025 14:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394858;
-	bh=WupQ9Cgz+LV4eisKB3pI+ZV+9el17+JSOhtajCGKiQY=;
+	s=korg; t=1742395013;
+	bh=im3F+04DyxS0re/54yvPnR1CWhWRNaWByh/ey7z2yjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1AymK/Y3vVrorlxM2zpx96VN+EXS6FuFdzrVgcDgIviEJA2QmrO3XoI+s3No9JP9G
-	 g8k/7SC2H5DYFV17E/cxeDjvaWH2sWWZCwWWsiFtGZTeAYJlak/lx3Pt1JuApqNfKW
-	 nKrf/s4JXSgTti8Tg5xKv14WmdyL+mfm76nozolg=
+	b=RdOcwghkz8rZ91wjIIb0TAYHPOt3bjepHpF2+Yp4AwmP01FLb/nekyjKD095RHD0i
+	 xc48OdvD82QSXzRcWOknSzTCHFLd3LfUbO1MbWr1iT+1siesoDrcVwT6Z+/KqZ8B8m
+	 4eVyD9gVvnYIbP+HjVZDIxc6Y1qRM0BQudsV4fxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Thomas Tai <thomas.tai@oracle.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 048/241] gre: Fix IPv6 link-local address generation.
+Subject: [PATCH 6.12 025/231] fbdev: hyperv_fb: Fix hang in kdump kernel when on Hyper-V Gen 2 VMs
 Date: Wed, 19 Mar 2025 07:28:38 -0700
-Message-ID: <20250319143028.913772571@linuxfoundation.org>
+Message-ID: <20250319143027.447674878@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +63,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 183185a18ff96751db52a46ccf93fff3a1f42815 ]
+[ Upstream commit 304386373007aaca9236a3f36afac0bbedcd2bf0 ]
 
-Use addrconf_addr_gen() to generate IPv6 link-local addresses on GRE
-devices in most cases and fall back to using add_v4_addrs() only in
-case the GRE configuration is incompatible with addrconf_addr_gen().
+Gen 2 Hyper-V VMs boot via EFI and have a standard EFI framebuffer
+device. When the kdump kernel runs in such a VM, loading the efifb
+driver may hang because of accessing the framebuffer at the wrong
+memory address.
 
-GRE used to use addrconf_addr_gen() until commit e5dd729460ca
-("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL
-address") restricted this use to gretap and ip6gretap devices, and
-created add_v4_addrs() (borrowed from SIT) for non-Ethernet GRE ones.
+The scenario occurs when the hyperv_fb driver in the original kernel
+moves the framebuffer to a different MMIO address because of conflicts
+with an already-running efifb or simplefb driver. The hyperv_fb driver
+then informs Hyper-V of the change, which is allowed by the Hyper-V FB
+VMBus device protocol. However, when the kexec command loads the kdump
+kernel into crash memory via the kexec_file_load() system call, the
+system call doesn't know the framebuffer has moved, and it sets up the
+kdump screen_info using the original framebuffer address. The transition
+to the kdump kernel does not go through the Hyper-V host, so Hyper-V
+does not reset the framebuffer address like it would do on a reboot.
+When efifb tries to run, it accesses a non-existent framebuffer
+address, which traps to the Hyper-V host. After many such accesses,
+the Hyper-V host thinks the guest is being malicious, and throttles
+the guest to the point that it runs very slowly or appears to have hung.
 
-The original problem came when commit 9af28511be10 ("addrconf: refuse
-isatap eui64 for INADDR_ANY") made __ipv6_isatap_ifid() fail when its
-addr parameter was 0. The commit says that this would create an invalid
-address, however, I couldn't find any RFC saying that the generated
-interface identifier would be wrong. Anyway, since gre over IPv4
-devices pass their local tunnel address to __ipv6_isatap_ifid(), that
-commit broke their IPv6 link-local address generation when the local
-address was unspecified.
+When the kdump kernel is loaded into crash memory via the kexec_load()
+system call, the problem does not occur. In this case, the kexec command
+builds the screen_info table itself in user space from data returned
+by the FBIOGET_FSCREENINFO ioctl against /dev/fb0, which gives it the
+new framebuffer location.
 
-Then commit e5dd729460ca ("ip/ip6_gre: use the same logic as SIT
-interfaces when computing v6LL address") tried to fix that case by
-defining add_v4_addrs() and calling it to generate the IPv6 link-local
-address instead of using addrconf_addr_gen() (apart for gretap and
-ip6gretap devices, which would still use the regular
-addrconf_addr_gen(), since they have a MAC address).
+This problem was originally reported in 2020 [1], resulting in commit
+3cb73bc3fa2a ("hyperv_fb: Update screen_info after removing old
+framebuffer"). This commit solved the problem by setting orig_video_isVGA
+to 0, so the kdump kernel was unaware of the EFI framebuffer. The efifb
+driver did not try to load, and no hang occurred. But in 2024, commit
+c25a19afb81c ("fbdev/hyperv_fb: Do not clear global screen_info")
+effectively reverted 3cb73bc3fa2a. Commit c25a19afb81c has no reference
+to 3cb73bc3fa2a, so perhaps it was done without knowing the implications
+that were reported with 3cb73bc3fa2a. In any case, as of commit
+c25a19afb81c, the original problem came back again.
 
-That broke several use cases because add_v4_addrs() isn't properly
-integrated into the rest of IPv6 Neighbor Discovery code. Several of
-these shortcomings have been fixed over time, but add_v4_addrs()
-remains broken on several aspects. In particular, it doesn't send any
-Router Sollicitations, so the SLAAC process doesn't start until the
-interface receives a Router Advertisement. Also, add_v4_addrs() mostly
-ignores the address generation mode of the interface
-(/proc/sys/net/ipv6/conf/*/addr_gen_mode), thus breaking the
-IN6_ADDR_GEN_MODE_RANDOM and IN6_ADDR_GEN_MODE_STABLE_PRIVACY cases.
+Interestingly, the hyperv_drm driver does not have this problem because
+it never moves the framebuffer. The difference is that the hyperv_drm
+driver removes any conflicting framebuffers *before* allocating an MMIO
+address, while the hyperv_fb drivers removes conflicting framebuffers
+*after* allocating an MMIO address. With the "after" ordering, hyperv_fb
+may encounter a conflict and move the framebuffer to a different MMIO
+address. But the conflict is essentially bogus because it is removed
+a few lines of code later.
 
-Fix the situation by using add_v4_addrs() only in the specific scenario
-where the normal method would fail. That is, for interfaces that have
-all of the following characteristics:
+Rather than fix the problem with the approach from 2020 in commit
+3cb73bc3fa2a, instead slightly reorder the steps in hyperv_fb so
+conflicting framebuffers are removed before allocating an MMIO address.
+Then the default framebuffer MMIO address should always be available, and
+there's never any confusion about which framebuffer address the kdump
+kernel should use -- it's always the original address provided by
+the Hyper-V host. This approach is already used by the hyperv_drm
+driver, and is consistent with the usage guidelines at the head of
+the module with the function aperture_remove_conflicting_devices().
 
-  * run over IPv4,
-  * transport IP packets directly, not Ethernet (that is, not gretap
-    interfaces),
-  * tunnel endpoint is INADDR_ANY (that is, 0),
-  * device address generation mode is EUI64.
+This approach also solves a related minor problem when kexec_load()
+is used to load the kdump kernel. With current code, unbinding and
+rebinding the hyperv_fb driver could result in the framebuffer moving
+back to the default framebuffer address, because on the rebind there
+are no conflicts. If such a move is done after the kdump kernel is
+loaded with the new framebuffer address, at kdump time it could again
+have the wrong address.
 
-In all other cases, revert back to the regular addrconf_addr_gen().
+This problem and fix are described in terms of the kdump kernel, but
+it can also occur with any kernel started via kexec.
 
-Also, remove the special case for ip6gre interfaces in add_v4_addrs(),
-since ip6gre devices now always use addrconf_addr_gen() instead.
+See extensive discussion of the problem and solution at [2].
 
-Fixes: e5dd729460ca ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL address")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/559c32ce5c9976b269e6337ac9abb6a96abe5096.1741375285.git.gnault@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[1] https://lore.kernel.org/linux-hyperv/20201014092429.1415040-1-kasong@redhat.com/
+[2] https://lore.kernel.org/linux-hyperv/BLAPR10MB521793485093FDB448F7B2E5FDE92@BLAPR10MB5217.namprd10.prod.outlook.com/
+
+Reported-by: Thomas Tai <thomas.tai@oracle.com>
+Fixes: c25a19afb81c ("fbdev/hyperv_fb: Do not clear global screen_info")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20250218230130.3207-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250218230130.3207-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/video/fbdev/hyperv_fb.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 0e765466d7f79..bdf39388e514b 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3237,16 +3237,13 @@ static void add_v4_addrs(struct inet6_dev *idev)
- 	struct in6_addr addr;
- 	struct net_device *dev;
- 	struct net *net = dev_net(idev->dev);
--	int scope, plen, offset = 0;
-+	int scope, plen;
- 	u32 pflags = 0;
+diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
+index 363e4ccfcdb77..ce23d0ef5702a 100644
+--- a/drivers/video/fbdev/hyperv_fb.c
++++ b/drivers/video/fbdev/hyperv_fb.c
+@@ -989,6 +989,7 @@ static int hvfb_getmem(struct hv_device *hdev, struct fb_info *info)
  
- 	ASSERT_RTNL();
+ 		base = pci_resource_start(pdev, 0);
+ 		size = pci_resource_len(pdev, 0);
++		aperture_remove_conflicting_devices(base, size, KBUILD_MODNAME);
  
- 	memset(&addr, 0, sizeof(struct in6_addr));
--	/* in case of IP6GRE the dev_addr is an IPv6 and therefore we use only the last 4 bytes */
--	if (idev->dev->addr_len == sizeof(struct in6_addr))
--		offset = sizeof(struct in6_addr) - 4;
--	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr + offset, 4);
-+	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr, 4);
- 
- 	if (!(idev->dev->flags & IFF_POINTOPOINT) && idev->dev->type == ARPHRD_SIT) {
- 		scope = IPV6_ADDR_COMPATv4;
-@@ -3557,7 +3554,13 @@ static void addrconf_gre_config(struct net_device *dev)
- 		return;
+ 		/*
+ 		 * For Gen 1 VM, we can directly use the contiguous memory
+@@ -1010,11 +1011,21 @@ static int hvfb_getmem(struct hv_device *hdev, struct fb_info *info)
+ 			goto getmem_done;
+ 		}
+ 		pr_info("Unable to allocate enough contiguous physical memory on Gen 1 VM. Using MMIO instead.\n");
++	} else {
++		aperture_remove_all_conflicting_devices(KBUILD_MODNAME);
  	}
  
--	if (dev->type == ARPHRD_ETHER) {
-+	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
-+	 * unless we have an IPv4 GRE device not bound to an IP address and
-+	 * which is in EUI64 mode (as __ipv6_isatap_ifid() would fail in this
-+	 * case). Such devices fall back to add_v4_addrs() instead.
-+	 */
-+	if (!(dev->type == ARPHRD_IPGRE && *(__be32 *)dev->dev_addr == 0 &&
-+	      idev->cnf.addr_gen_mode == IN6_ADDR_GEN_MODE_EUI64)) {
- 		addrconf_addr_gen(idev, true);
- 		return;
- 	}
+ 	/*
+-	 * Cannot use the contiguous physical memory.
+-	 * Allocate mmio space for framebuffer.
++	 * Cannot use contiguous physical memory, so allocate MMIO space for
++	 * the framebuffer. At this point in the function, conflicting devices
++	 * that might have claimed the framebuffer MMIO space based on
++	 * screen_info.lfb_base must have already been removed so that
++	 * vmbus_allocate_mmio() does not allocate different MMIO space. If the
++	 * kdump image were to be loaded using kexec_file_load(), the
++	 * framebuffer location in the kdump image would be set from
++	 * screen_info.lfb_base at the time that kdump is enabled. If the
++	 * framebuffer has moved elsewhere, this could be the wrong location,
++	 * causing kdump to hang when efifb (for example) loads.
+ 	 */
+ 	dio_fb_size =
+ 		screen_width * screen_height * screen_depth / 8;
+@@ -1051,11 +1062,6 @@ static int hvfb_getmem(struct hv_device *hdev, struct fb_info *info)
+ 	info->screen_size = dio_fb_size;
+ 
+ getmem_done:
+-	if (base && size)
+-		aperture_remove_conflicting_devices(base, size, KBUILD_MODNAME);
+-	else
+-		aperture_remove_all_conflicting_devices(KBUILD_MODNAME);
+-
+ 	if (!gen2vm)
+ 		pci_dev_put(pdev);
+ 
 -- 
 2.39.5
 
