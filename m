@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-125496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FFDA691AE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DD3A69124
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9B468804A0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34C831B67F7E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAA61DF271;
-	Wed, 19 Mar 2025 14:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF831E8354;
+	Wed, 19 Mar 2025 14:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzlbZiHD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="un0HK9c4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE90209F54;
-	Wed, 19 Mar 2025 14:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6B71DD0E1;
+	Wed, 19 Mar 2025 14:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395231; cv=none; b=XsoWHfuIhyVwH21sYiBMGkWm16odFYjfFURzZRr99DkNNOEsRxtdKT5YUnC0uDx72bhSCTstQUGfc6dkIXHq/i7M/ABJ7V0nRlS0PVRtPZpZNuAy9mQmzHySCY5GIOysOWbIr9X2EIbotQhMgwKuBg5IyNwyj9gpDEOSjb1J+XI=
+	t=1742395119; cv=none; b=TlLk83Nuf8zkKw6D63saJuElm9nA08uwsyU8kntsWBofHF37EB5iZBZGNaiXcSUQ90KD9V+FdY9WIqFq3uN1KqzBALpZMuCcgIhxzmKDbqAVX9kBM/YtX099M5MR30FhxlQr5dlVwex2D9Pmm8kHuMoWRS++UpYtUTnSEpU44io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395231; c=relaxed/simple;
-	bh=pw2BG4Gdzzxd+eZRH4o0TdfAInWR0UeSqVCilMPVk4g=;
+	s=arc-20240116; t=1742395119; c=relaxed/simple;
+	bh=wKSJP4mARFGQ59JvU0/X1vaDTd1Ip7n+MeX2ekxxy30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hCI3E5bDm0lc0MhiV55vONDmCjouLzYXKusS9upLkhzbPNtwKskULbtwT34neDcW+Xs/xo1wrvZsoTv/jphydjIYwR39936rjJ7UOCzHm5GkjUtlLRSgWvtQ78y8l3/hiNFxDO68Z8J5x86YaKVs7YRNmc2hp/jcXeWLWY3t7X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzlbZiHD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4AEC4CEE8;
-	Wed, 19 Mar 2025 14:40:31 +0000 (UTC)
+	 MIME-Version; b=jhpgVn6nJDQM9nf8RyY9+s3gFlElYYUZAR7OPktTT5jClVxTOHPlhJe80+oCq4OwzLeMFBiuFLdAvRouS4wDVM/5IrHiLhGk4tbo71Y44UrmttC9Gnw+l4BbtvGtBs8fc0uNX5xwJFIfxrCDUUGvqbBfgcwMxiaFzy/n3VTJZU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=un0HK9c4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6E2C4CEE8;
+	Wed, 19 Mar 2025 14:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395231;
-	bh=pw2BG4Gdzzxd+eZRH4o0TdfAInWR0UeSqVCilMPVk4g=;
+	s=korg; t=1742395119;
+	bh=wKSJP4mARFGQ59JvU0/X1vaDTd1Ip7n+MeX2ekxxy30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YzlbZiHDmjYuZO/RBNgMnmLdlNzPp07gwR+tVSHauphZLlr0pXwJcu2m/fsSZ7evT
-	 CLbAxrk/V7ji6rMwz8ta8zuCTDo6GDcotatMw0BZzgzeiGq1D5XZvrN2Wu62laVr65
-	 zzEx8FHCHIS8FDJuN6oHyJlQun7cTCasT29j8RQg=
+	b=un0HK9c49h8Av1ma7O2tvWBfSxA8QvTCCiAzqxqUatn1q1nP3USirLDC5G9c1GXfm
+	 48MbI06AMafBLpS6byCgCbx91elp197sq48sxDDV1hg0gAUEfQlLwn2UU98dxrjKjI
+	 PcqZ/bwjJ4khBSSb+6oeBFCEmDbJzIhjpWjov1Yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 102/166] io_uring: use unpin_user_pages() where appropriate
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 180/231] drm/amd/display: Restore correct backlight brightness after a GPU reset
 Date: Wed, 19 Mar 2025 07:31:13 -0700
-Message-ID: <20250319143022.780661414@linuxfoundation.org>
+Message-ID: <20250319143031.284856784@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-Commit 18595c0a58ae29ac6a996c5b664610119b73182d upstream.
+commit 5760388d9681ac743038b846b9082b9023969551 upstream.
 
-There are a few cases of open-rolled loops around unpin_user_page(), use
-the generic helper instead.
+[Why]
+GPU reset will attempt to restore cached state, but brightness doesn't
+get restored. It will come back at 100% brightness, but userspace thinks
+it's the previous value.
 
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[How]
+When running resume sequence if GPU is in reset restore brightness
+to previous value.
+
+Acked-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5e19e2b57b6bb640d68dfc7991e1e182922cf867)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/kbuf.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -458,8 +458,8 @@ static int io_pin_pbuf_ring(struct io_ur
- 			    struct io_buffer_list *bl)
- {
- 	struct io_uring_buf_ring *br = NULL;
--	int nr_pages, ret, i;
- 	struct page **pages;
-+	int nr_pages, ret;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -243,6 +243,10 @@ static int amdgpu_dm_atomic_check(struct
+ static void handle_hpd_irq_helper(struct amdgpu_dm_connector *aconnector);
+ static void handle_hpd_rx_irq(void *param);
  
- 	pages = io_pin_pages(reg->ring_addr,
- 			     flex_array_size(br, bufs, reg->ring_entries),
-@@ -495,8 +495,7 @@ static int io_pin_pbuf_ring(struct io_ur
- 	bl->is_mmap = 0;
- 	return 0;
- error_unpin:
--	for (i = 0; i < nr_pages; i++)
--		unpin_user_page(pages[i]);
-+	unpin_user_pages(pages, nr_pages);
- 	kvfree(pages);
- 	vunmap(br);
- 	return ret;
++static void amdgpu_dm_backlight_set_level(struct amdgpu_display_manager *dm,
++					 int bl_idx,
++					 u32 user_brightness);
++
+ static bool
+ is_timing_unchanged_for_freesync(struct drm_crtc_state *old_crtc_state,
+ 				 struct drm_crtc_state *new_crtc_state);
+@@ -3295,6 +3299,12 @@ static int dm_resume(void *handle)
+ 
+ 		mutex_unlock(&dm->dc_lock);
+ 
++		/* set the backlight after a reset */
++		for (i = 0; i < dm->num_of_edps; i++) {
++			if (dm->backlight_dev[i])
++				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
++		}
++
+ 		return 0;
+ 	}
+ 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
 
 
 
