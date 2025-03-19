@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09621A6905B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C96DA69156
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C4A167751
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F8D13BF46A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D7A1DB131;
-	Wed, 19 Mar 2025 14:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A4B221542;
+	Wed, 19 Mar 2025 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlHU4QEL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhTnd8dO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D4E1D88D7;
-	Wed, 19 Mar 2025 14:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995CF1DED78;
+	Wed, 19 Mar 2025 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395088; cv=none; b=IFElkZwvH0beW2p4aRx10SV4WXyKa+6X3HSozEYwo5RKuvkRzA8QozPj7icZNgSt+Nr2sQeCw94ZCixuGrhIYpC5k369MqIPM3OGtqoSMZEEAPkuvWwbHM5k9KlCaa19o0LGTL1u6Ex0FfAyhMdA3gDd8/l9/tTTpp4XLEPcLHA=
+	t=1742395190; cv=none; b=J9W0N7Rrq2e30RmiIJZBWPRyMrvNdZOAtrS2KNrPqKO7GWDGH9iNVxW8nSoFqYLOv2dGt7gFJwIDV/kENDgCNl4ePY8/h62JYI2CSbyxU05zX5kiE/Midm+54uocI2u4ri5VXT270K6Ri+EPeZZUkZgj+2BZKab4rVtubmkSq40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395088; c=relaxed/simple;
-	bh=MJiRsF28hFZrAFyddBr0XRw8iYjGJbM240VXVdm9pQ4=;
+	s=arc-20240116; t=1742395190; c=relaxed/simple;
+	bh=xpkIHZ9BtF8kFokaHy10gSWWdIIgfP7SPrZLYMzuDlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmZ5uZzMdRxxWuIdctH6oFdbx35f+cMkzW4sTFnFzc0U8eXtlMvLNpD48eeRGky9QMtYEeLhaUkR97haCFc1MVVgo8+gf+gR4mYiuJr8d1eTDYPGyyDatOIiwlEjNirk3jqcpng69uOPf+nLodR9j1PbRpCVLEAs5nhnDJCuccA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlHU4QEL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04B9C4CEE4;
-	Wed, 19 Mar 2025 14:38:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q8n/ObrsqVQGmazwsA6WRTVPFXiuGf1sI/cyN75EO1SMh3yiEQmy78fIHPWH1qkV5fIoz2OWFqcSoD/NefxuI7wxcAiT3044pCB0E64szycZHgiy940yQ5DuTBaYdap/FNS/9JF2vTVQLGCLOQZ37Jsq43D5YjXOxfc8/nHiHf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhTnd8dO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E697C4CEE9;
+	Wed, 19 Mar 2025 14:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395088;
-	bh=MJiRsF28hFZrAFyddBr0XRw8iYjGJbM240VXVdm9pQ4=;
+	s=korg; t=1742395190;
+	bh=xpkIHZ9BtF8kFokaHy10gSWWdIIgfP7SPrZLYMzuDlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlHU4QELM5T7noSeYNNLw5ZKqVi4uj1DhezIJltD39dUEPQi0XFB92RoapRbk2Gxy
-	 80G7JKa1c4V00NHQcylXYUUtZM1ZJkrqpXP8leMe7gH+plXuOM+f+6AUEiT16HF2Lo
-	 0KwKfK19xPiZ9iYZmHRCXQl32Yp95xCMjMocxAgY=
+	b=xhTnd8dOtywinHpB5RnlCNLqaHsL5EaUBJ7f4R/fj0BO5tQSWpgc2aYqNbXiLShi8
+	 hzxetSPu+ylcCgKk7Y5GaY76evVsMmoZj/ebuMgsCT/8K2Jd/bLKjgTte+g0utbqub
+	 IkmnUASAHcGXunENWhtLrBAjo9AOuqhlP3MaWfE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+	Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/231] nvme: only allow entering LIVE from CONNECTING state
-Date: Wed, 19 Mar 2025 07:30:19 -0700
-Message-ID: <20250319143029.952093848@linuxfoundation.org>
+Subject: [PATCH 6.6 049/166] vboxsf: fix building with GCC 15
+Date: Wed, 19 Mar 2025 07:30:20 -0700
+Message-ID: <20250319143021.319639736@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
 
-[ Upstream commit d2fe192348f93fe3a0cb1e33e4aba58e646397f4 ]
+[ Upstream commit 4e7487245abcbc5a1a1aea54e4d3b33c53804bda ]
 
-The fabric transports and also the PCI transport are not entering the
-LIVE state from NEW or RESETTING. This makes the state machine more
-restrictive and allows to catch not supported state transitions, e.g.
-directly switching from RESETTING to LIVE.
+Building with GCC 15 results in build error
+fs/vboxsf/super.c:24:54: error: initializer-string for array of ‘unsigned char’ is too long [-Werror=unterminated-string-initialization]
+   24 | static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
+      |                                                      ^~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Due to GCC having enabled -Werror=unterminated-string-initialization[0]
+by default. Separately initializing each array element of
+VBSF_MOUNT_SIGNATURE to ensure NUL termination, thus satisfying GCC 15
+and fixing the build error.
+
+[0]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wno-unterminated-string-initialization
+
+Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+Link: https://lore.kernel.org/r/20250121162648.1408743-1-brahmajit.xyz@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/vboxsf/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 8da50df56b079..a950aa780d1f6 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -562,8 +562,6 @@ bool nvme_change_ctrl_state(struct nvme_ctrl *ctrl,
- 	switch (new_state) {
- 	case NVME_CTRL_LIVE:
- 		switch (old_state) {
--		case NVME_CTRL_NEW:
--		case NVME_CTRL_RESETTING:
- 		case NVME_CTRL_CONNECTING:
- 			changed = true;
- 			fallthrough;
+diff --git a/fs/vboxsf/super.c b/fs/vboxsf/super.c
+index 9848af78215bf..6e9ebf2321230 100644
+--- a/fs/vboxsf/super.c
++++ b/fs/vboxsf/super.c
+@@ -21,7 +21,8 @@
+ 
+ #define VBOXSF_SUPER_MAGIC 0x786f4256 /* 'VBox' little endian */
+ 
+-static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
++static const unsigned char VBSF_MOUNT_SIGNATURE[4] = { '\000', '\377', '\376',
++						       '\375' };
+ 
+ static int follow_symlinks;
+ module_param(follow_symlinks, int, 0444);
 -- 
 2.39.5
 
