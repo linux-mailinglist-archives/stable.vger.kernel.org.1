@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-125512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C420CA692D9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:17:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45ACEA69326
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:23:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26A91188EB18
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0822E1B8691A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D7D20ADF8;
-	Wed, 19 Mar 2025 14:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFCB207DF9;
+	Wed, 19 Mar 2025 14:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMcSZ8m0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGaisN1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E17D209679;
-	Wed, 19 Mar 2025 14:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA88C20551C;
+	Wed, 19 Mar 2025 14:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395243; cv=none; b=I6h0vFV9vpbD+52PAjLc38QpEfDM74qkOUW0oGI8/ICNDfabtFVDu49uCKlUR2Rxi14sOnz/uuH1M0uxeAEzQnJAIjWOlJerKRrEWt33Uleabg4ieoOodyI0bvfA+e6k6rACSl7HAG7YPuFMtI9XBF+Jul/mw7jy1DKZVqmOPAQ=
+	t=1742395214; cv=none; b=raIQIsWYEdb+mT5BXZrl4CY84JY0ASFriyUe2K6/D1QUxfu91hWxeWacHAGO//4MmMXkGSxpnaDvKOTKcZ9F1gr1QSWNLqaffD9FvOH+GkAaZTCkwoJ5MICFejPdxIlcvkeg4Q3mGFn6u3TwKGRZ/YkjQCocwyJpExYS9Mqwx1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395243; c=relaxed/simple;
-	bh=X2JjeH5jT9UlGTT+Xr3teUPB0m6djDTtymUAZ1F5Vxw=;
+	s=arc-20240116; t=1742395214; c=relaxed/simple;
+	bh=gAbpU7Vf1uGsQSlr6Te6n3z2TI3IEdvpRR8OHLblVsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qi4Dt997mwjXmuiyiVfHEGbvO9+JEt3ULk9OVeF68lLYjV0LZlPkIceAvtlas+FI+qMuM2HNZ7KWFtCq75RRnZrf/1R8PexYN0WkRPqpJgZoIfQuSN4ttGURW/6opBHbvtsfFF9IF+3zvMoUy3sCqrMUJES01mdJS65oqchCSsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMcSZ8m0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52CCC4CEE4;
-	Wed, 19 Mar 2025 14:40:41 +0000 (UTC)
+	 MIME-Version; b=K1bRJwBxB4s/TH9EtCrufCJ837ZVpuDsFdWCiUV+MS01ZqALHkEchXq7wXdkc6HW4pW4rLLTzT+UkaDgqgg7cvKJwZqpvfZvzNCT7rGhKCuIRqev47KKTCGXUtxhE8TPEzh/TcttdjQxYzOHVw+0Gb/SmV22WASkyVgYP6CSI8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGaisN1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D21BC4CEE4;
+	Wed, 19 Mar 2025 14:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395241;
-	bh=X2JjeH5jT9UlGTT+Xr3teUPB0m6djDTtymUAZ1F5Vxw=;
+	s=korg; t=1742395214;
+	bh=gAbpU7Vf1uGsQSlr6Te6n3z2TI3IEdvpRR8OHLblVsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMcSZ8m0clLypYZX5V9FLG/qBSq8+EIW71W27XeMIG/LY16kxmpUd+r2qRBKNcEP3
-	 3qXIOsd6xV5rM//ODmCsfGGDW8EA5K/IrXIo80LliEzm5fxb+jxhEFfQX6n2aQQc8Z
-	 oN+nn0ITMiMPGfs0upxe4ZrmsL+TvW81U31pMt9A=
+	b=UGaisN1WMzdzsVJu27fPFNFl+uiXnvyevMUbGJ5dncnZJbNSUaWt8QdUF5ZR/0OZA
+	 DjppnhhXwmqdGfT2d8nRoUQmx9pTJIoLlLyVoXS9caifOQO+N0rSnK2G2NejRRUJko
+	 HJWlTbWJzQTA/kVctOglLMztvj7AKhPCQ8Xib/U4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruozhu Li <david.li@jaguarmicro.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Neal Gompa <neal@gompa.dev>,
+	Hector Martin <marcan@marcan.st>,
+	James Calligeros <jcalligeros99@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/166] nvmet-rdma: recheck queue state is LIVE in state lock in recv done
-Date: Wed, 19 Mar 2025 07:30:49 -0700
-Message-ID: <20250319143022.121665977@linuxfoundation.org>
+Subject: [PATCH 6.6 085/166] ASoC: tas2764: Set the SDOUT polarity correctly
+Date: Wed, 19 Mar 2025 07:30:56 -0700
+Message-ID: <20250319143022.321518408@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
 References: <20250319143019.983527953@linuxfoundation.org>
@@ -67,77 +68,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ruozhu Li <david.li@jaguarmicro.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 3988ac1c67e6e84d2feb987d7b36d5791174b3da ]
+[ Upstream commit f5468beeab1b1adfc63c2717b1f29ef3f49a5fab ]
 
-The queue state checking in nvmet_rdma_recv_done is not in queue state
-lock.Queue state can transfer to LIVE in cm establish handler between
-state checking and state lock here, cause a silent drop of nvme connect
-cmd.
-Recheck queue state whether in LIVE state in state lock to prevent this
-issue.
+TX launch polarity needs to be the opposite of RX capture polarity, to
+generate the right bit slot alignment.
 
-Signed-off-by: Ruozhu Li <david.li@jaguarmicro.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Link: https://patch.msgid.link/20250218-apple-codec-changes-v2-28-932760fd7e07@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/rdma.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ sound/soc/codecs/tas2764.c | 10 +++++++++-
+ sound/soc/codecs/tas2764.h |  6 ++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
-index a6d55ebb82382..298c46834a539 100644
---- a/drivers/nvme/target/rdma.c
-+++ b/drivers/nvme/target/rdma.c
-@@ -997,6 +997,27 @@ static void nvmet_rdma_handle_command(struct nvmet_rdma_queue *queue,
- 	nvmet_req_complete(&cmd->req, status);
- }
- 
-+static bool nvmet_rdma_recv_not_live(struct nvmet_rdma_queue *queue,
-+		struct nvmet_rdma_rsp *rsp)
-+{
-+	unsigned long flags;
-+	bool ret = true;
-+
-+	spin_lock_irqsave(&queue->state_lock, flags);
-+	/*
-+	 * recheck queue state is not live to prevent a race condition
-+	 * with RDMA_CM_EVENT_ESTABLISHED handler.
-+	 */
-+	if (queue->state == NVMET_RDMA_Q_LIVE)
-+		ret = false;
-+	else if (queue->state == NVMET_RDMA_Q_CONNECTING)
-+		list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
-+	else
-+		nvmet_rdma_put_rsp(rsp);
-+	spin_unlock_irqrestore(&queue->state_lock, flags);
-+	return ret;
-+}
-+
- static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index a9838e0738cc1..e87a07eee9737 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -367,7 +367,7 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
  {
- 	struct nvmet_rdma_cmd *cmd =
-@@ -1038,17 +1059,9 @@ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	rsp->req.port = queue->port;
- 	rsp->n_rdma = 0;
+ 	struct snd_soc_component *component = dai->component;
+ 	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
+-	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0;
++	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0, asi_cfg_4 = 0;
+ 	int ret;
  
--	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE)) {
--		unsigned long flags;
--
--		spin_lock_irqsave(&queue->state_lock, flags);
--		if (queue->state == NVMET_RDMA_Q_CONNECTING)
--			list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
--		else
--			nvmet_rdma_put_rsp(rsp);
--		spin_unlock_irqrestore(&queue->state_lock, flags);
-+	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE) &&
-+	    nvmet_rdma_recv_not_live(queue, rsp))
- 		return;
--	}
+ 	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
+@@ -376,12 +376,14 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 		fallthrough;
+ 	case SND_SOC_DAIFMT_NB_NF:
+ 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_RISING;
++		asi_cfg_4 = TAS2764_TDM_CFG4_TX_FALLING;
+ 		break;
+ 	case SND_SOC_DAIFMT_IB_IF:
+ 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
+ 		fallthrough;
+ 	case SND_SOC_DAIFMT_IB_NF:
+ 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_FALLING;
++		asi_cfg_4 = TAS2764_TDM_CFG4_TX_RISING;
+ 		break;
+ 	}
  
- 	nvmet_rdma_handle_command(queue, rsp);
- }
+@@ -391,6 +393,12 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = snd_soc_component_update_bits(component, TAS2764_TDM_CFG4,
++					    TAS2764_TDM_CFG4_TX_MASK,
++					    asi_cfg_4);
++	if (ret < 0)
++		return ret;
++
+ 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
+ 	case SND_SOC_DAIFMT_I2S:
+ 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
+diff --git a/sound/soc/codecs/tas2764.h b/sound/soc/codecs/tas2764.h
+index d13ecae9c9c2f..9490f2686e389 100644
+--- a/sound/soc/codecs/tas2764.h
++++ b/sound/soc/codecs/tas2764.h
+@@ -79,6 +79,12 @@
+ #define TAS2764_TDM_CFG3_RXS_SHIFT	0x4
+ #define TAS2764_TDM_CFG3_MASK		GENMASK(3, 0)
+ 
++/* TDM Configuration Reg4 */
++#define TAS2764_TDM_CFG4		TAS2764_REG(0X0, 0x0d)
++#define TAS2764_TDM_CFG4_TX_MASK	BIT(0)
++#define TAS2764_TDM_CFG4_TX_RISING	0x0
++#define TAS2764_TDM_CFG4_TX_FALLING	BIT(0)
++
+ /* TDM Configuration Reg5 */
+ #define TAS2764_TDM_CFG5		TAS2764_REG(0X0, 0x0e)
+ #define TAS2764_TDM_CFG5_VSNS_MASK	BIT(6)
 -- 
 2.39.5
 
