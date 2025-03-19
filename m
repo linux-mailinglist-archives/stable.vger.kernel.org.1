@@ -1,122 +1,178 @@
-Return-Path: <stable+bounces-125585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F1FA69508
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 17:31:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E0EA69510
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 17:33:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 094D17AC52F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:30:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96A891896AC7
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B68B1DE3AA;
-	Wed, 19 Mar 2025 16:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E961DEFD9;
+	Wed, 19 Mar 2025 16:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XWZxgAzi"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="A6A/67I7"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2ABA15A85E
-	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 16:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367BC1DE899
+	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 16:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742401889; cv=none; b=KvalXZyyTmHA+l02nkQL+CiTIs13uQ6wJXAKg7hOthbJd5DOl1INsa68m1Jb6te21Ev4PdKmfMDkRXlmDcwFfivhpLLjxiLYN+knRuFs/X5MuaiW0Lqxa1JhgsOybHIlzrBakw/KZNiYiz9yFmtVm+V4zo86SEJttk0a8XPZ94g=
+	t=1742402016; cv=none; b=Hs0Tgjs4Y38/3rJSHNqPvz0DKsv7XPFtgVA69a5O75FkKXqbD8Vcn/GfBpWrvaD1BMqIELyZxaBCO+JJlNVaALYFCkufVn83lazSGlP5h7b8LNHr87grziVe9d5vJ5aNqKUg7lbt9SdBL0pyWXpWy4w76jEZPRwKXRopsXviqBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742401889; c=relaxed/simple;
-	bh=t5HTl/1sN+/sdSktoUHTbciuxtU3lbC7SvM0xor5DjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mH112dN4YyKC84qdx6XrD+s20IebI9p1E77y9Joyr4RBpB7CeOfqyIjZM+YAHOMKaJE0n7RkgTuGobLzL96ZWzxFZaQgSGi1xekrMGxC6H5adgtXNAXTsT7QHuMctSrxmqmxoqY2GhZz7q5XuBvk3vFSbYUHA0Sr/ctCwLXGDkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XWZxgAzi; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742401886;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kEuAVN1LlysmY3w8d4Fl+/NM3c03ETBt86dyGKQMHmE=;
-	b=XWZxgAzirsUKxAFnPTrinVIDvYGiplSWvGlFqSKIZQP+y4qHQn6eHDbF7/JKNMxku6rnMG
-	6625LR6A/pWH/pYG5VqdkUds2buUfipttbWdo6fWgBmmbfKr5o7aoOJNJNT1KcUmshJAuV
-	PyiLbpeKvym+++KsmWaULQJSBIzy0TM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-85-1Tcnj-kcMDO0qR63P9N4DQ-1; Wed,
- 19 Mar 2025 12:31:19 -0400
-X-MC-Unique: 1Tcnj-kcMDO0qR63P9N4DQ-1
-X-Mimecast-MFC-AGG-ID: 1Tcnj-kcMDO0qR63P9N4DQ_1742401877
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 072F11955E90;
-	Wed, 19 Mar 2025 16:31:17 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.226.12])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 01EC31955DCD;
-	Wed, 19 Mar 2025 16:31:12 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Wed, 19 Mar 2025 17:30:44 +0100 (CET)
-Date: Wed, 19 Mar 2025 17:30:39 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, Kees Cook <kees@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Josh Drake <josh@delphoslabs.com>,
-	Suraj Sonawane <surajsonawane0215@gmail.com>,
-	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-	security@kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] keys: Fix UAF in key_put()
-Message-ID: <20250319163038.GD26879@redhat.com>
-References: <2874581.1742399866@warthog.procyon.org.uk>
+	s=arc-20240116; t=1742402016; c=relaxed/simple;
+	bh=b5JoerGjzoODytPs4/JCCgsORTIkD1OWdTmBFC8AjPo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dmvMbHoY/C5BBLGlu2zTAmWXbkJO4BXTQ+15i5v5N+Lc4IMykbhE6/TtX00tMgVjkydDhIYzFodqheTnwZQ0HJuNzMkAnpGDHkqwZEQ0ULuLX8XZ7Hajej2DUR9SDcuqghwRfy41OqUNfl8sQXixZyMH2B8IYnB6dUJHWDAzfHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=A6A/67I7; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-523efb24fb9so2967339e0c.3
+        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 09:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742402013; x=1743006813; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=OVuqKpUv1pEU4LzOHuIA6EH8XUgNHnH2M2llTP84R4g=;
+        b=A6A/67I7CkMWwUadriYwzJU/lkazyWM2kNKMUtyaTwie3iaKbuhInQoWY5vYbCLqBC
+         gRSzPna9jvRlZ8PzRcSshfJlpC8uTumAng6LmkJbI59MQjb9B9uvh+8bFDv3GxmfF5JY
+         q1GLtFM5x9O41LvK3MycD5eqhpE4JaWi+45b24GkpjKVRHaAqIWUIIZdsUqBbAsZwqwh
+         v9gAfOoX49+wuqyKEiSmq88hYsdGL5thq8CXV8o5oqHX/cM6HbKV34xAh4QMmTlxQwes
+         vQLY9FL+q3P0FksMdJ9SnoygTIIHxhjwG8JOXO3/51tBu362ll4uSFD2gZdrP2sCpS0S
+         VM1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742402013; x=1743006813;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OVuqKpUv1pEU4LzOHuIA6EH8XUgNHnH2M2llTP84R4g=;
+        b=gvo3q3sIntxzzdFCjfcitF00BRfau58EcI/EWeRto3XI7Vh5PwYvg+NIgPtfE9O26w
+         Exh3hN10oNLK5iTwKG4OmEUV28V+vwp37iBDBE9Fwnkxmzpo1nued5QnIvZbdbAn0VI+
+         y0fhU2drK7kXTbtkh4MRcAg9zpLxQA4NNBrEoaWKT62fd5qqQG8meId3jrB7FT+RDYRx
+         iw9IXZu323uEGqLk1J3v3BrPsHGPiHGqVlhV5Zqo5SukMHPd2BJVdUV22lQ6WbAJebUJ
+         MZGSRNTe8E/S6htizLu1CeSUdHmuuJO/nyquMfcnnSHElDP35jaZQDlawGOG4BuQn9Co
+         bYmA==
+X-Gm-Message-State: AOJu0YyUzP7cBA/uyyaluZ6yRFz8Qi2Jvmu15bmYjyrZysgzJvmI/sPO
+	ZAXLiDYThSLI26EEQA8TkkZpPhsVGV/Mc8DzFe56x6ilU8l+FKLCIdDafLIlvdDv3rUwICBoaVo
+	8mkrNelW/t5kDivQODywF4oNueWQMgchpho2aNw==
+X-Gm-Gg: ASbGncsJal4IMkbGccpsd9THQnqM5cwTVXBVAPAvI5C/gv0muGvymZKlzH3t0GCDwYi
+	DBrEn88JD74ZNU8/fE2mYc1gEg9MUcgKrFqdL6JUNrjQnwEyVpMBsFMt6lOdN+8SYvcJa0Aca7y
+	jl5kPwEufj0u3KH5RI4+eNXRCI0n6Up4rewvbETz79FJUuRPQ4vdAmy0M=
+X-Google-Smtp-Source: AGHT+IHWmBTfBeI+pX6l/d4K6vWO07nXM028XzAozff8NwOIYDbLIFEeoObpskDnFhKhHnfnKlb6wiHJoN9ZGxWxSfQ=
+X-Received: by 2002:a05:6122:8890:b0:525:9440:243c with SMTP id
+ 71dfb90a1353d-525944025e4mr695738e0c.11.1742402012994; Wed, 19 Mar 2025
+ 09:33:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2874581.1742399866@warthog.procyon.org.uk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 19 Mar 2025 22:03:20 +0530
+X-Gm-Features: AQ5f1JqIqR8G0jdBi-EqCaYlr4_sxu0nohARN-WaSCDfLRpd0KihGkC9ntbmtXw
+Message-ID: <CA+G9fYvM_riojtryOUb3UrYbtw6yUZTTnbP+_X96nJLCcWYwBA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/166] 6.6.84-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, Jens Axboe <axboe@kernel.dk>, 
+	Pavel Begunkov <asml.silence@gmail.com>, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, io-uring@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 03/19, David Howells wrote:
+On Wed, 19 Mar 2025 at 20:09, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> --- a/security/keys/gc.c
-> +++ b/security/keys/gc.c
-> @@ -218,8 +218,10 @@ static void key_garbage_collector(struct work_struct *work)
->  		key = rb_entry(cursor, struct key, serial_node);
->  		cursor = rb_next(cursor);
->  
-> -		if (refcount_read(&key->usage) == 0)
-> +		if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
-> +			smp_mb(); /* Clobber key->user after FINAL_PUT seen. */
->  			goto found_unreferenced_key;
-> +		}
->  
->  		if (unlikely(gc_state & KEY_GC_REAPING_DEAD_1)) {
->  			if (key->type == key_gc_dead_keytype) {
-> diff --git a/security/keys/key.c b/security/keys/key.c
-> index 3d7d185019d3..7198cd2ac3a3 100644
-> --- a/security/keys/key.c
-> +++ b/security/keys/key.c
-> @@ -658,6 +658,8 @@ void key_put(struct key *key)
->  				key->user->qnbytes -= key->quotalen;
->  				spin_unlock_irqrestore(&key->user->lock, flags);
->  			}
-> +			smp_mb(); /* key->user before FINAL_PUT set. */
+> This is the start of the stable review cycle for the 6.6.84 release.
+> There are 166 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 21 Mar 2025 14:29:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.84-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Can't resist, smp_mb__before_atomic() should equally work,
-but this doesn't really matter, please forget.
+Regressions on mips the rt305x_defconfig builds failed with gcc-12
+the stable-rc v6.6.83-167-gd16a828e7b09
 
-> +			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
->  			schedule_work(&key_gc_work);
+First seen on the v6.6.83-167-gd16a828e7b09
+ Good: v6.6.83
+ Bad: v6.6.83-167-gd16a828e7b09
 
-I believe this patch is correct,
+* mips, build
+  - gcc-12-rt305x_defconfig
 
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Regression Analysis:
+ - New regression? Yes
+ - Reproducibility? Yes
 
+Build regression: mips implicit declaration of function 'vunmap'
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build log
+io_uring/io_uring.c: In function 'io_pages_unmap':
+io_uring/io_uring.c:2708:17: error: implicit declaration of function
+'vunmap'; did you mean 'kunmap'?
+[-Werror=implicit-function-declaration]
+ 2708 |                 vunmap(ptr);
+      |                 ^~~~~~
+      |                 kunmap
+io_uring/io_uring.c: In function '__io_uaddr_map':
+io_uring/io_uring.c:2784:21: error: implicit declaration of function
+'vmap'; did you mean 'kmap'? [-Werror=implicit-function-declaration]
+ 2784 |         page_addr = vmap(page_array, nr_pages, VM_MAP, PAGE_KERNEL);
+      |                     ^~~~
+      |                     kmap
+io_uring/io_uring.c:2784:48: error: 'VM_MAP' undeclared (first use in
+this function); did you mean 'VM_MTE'?
+ 2784 |         page_addr = vmap(page_array, nr_pages, VM_MAP, PAGE_KERNEL);
+      |                                                ^~~~~~
+      |                                                VM_MTE
+
+## Source
+* Kernel version: 6.6.84-rc1
+* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* Git sha: d16a828e7b0965ca37245ebea19052ad7b4b2f9b
+* Git describe: v6.6.83-167-gd16a828e7b09
+* Project details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-167-gd16a828e7b09/
+
+## Build
+* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-167-gd16a828e7b09/testrun/27677634/suite/build/test/gcc-12-rt305x_defconfig/log
+* Build history:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-167-gd16a828e7b09/testrun/27677634/suite/build/test/gcc-12-rt305x_defconfig/history/
+* Build details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-167-gd16a828e7b09/testrun/27677634/suite/build/test/gcc-12-rt305x_defconfig/
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2uXZlKzVxja3mOQfRLlPRxHzd5L/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2uXZlKzVxja3mOQfRLlPRxHzd5L/config
+
+## Steps to reproduce
+ - tuxmake --runtime podman --target-arch mips --toolchain gcc-12
+--kconfig rt305x_defconfig
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
