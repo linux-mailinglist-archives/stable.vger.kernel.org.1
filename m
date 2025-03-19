@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-125085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E23A68FB9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03D3A690B5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35FFF16815F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9E7D8A17B3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643101DDA39;
-	Wed, 19 Mar 2025 14:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F70821A44A;
+	Wed, 19 Mar 2025 14:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdJks60S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSgbnBY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231391DD0D5;
-	Wed, 19 Mar 2025 14:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22401DA112;
+	Wed, 19 Mar 2025 14:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394945; cv=none; b=X0KT6x6ZlV/7pPaFa567L5z2ABrTYWrJNDduoKSDArvrcX7Gn4MQwHNMjyji3yBqd89oB6opQAKs8xhfsug8Dc6WPgurOHaKJWCAe1Ka2zKZ4SRVyzzwgXEtV4DrDtWT/9p8l5Pqv8TwBDoAZOiXf/Q/SQfd+oDIjQZnT5bOoqo=
+	t=1742395095; cv=none; b=KfZ8VhN6KKRAFYxdAZLqmgufsJh6jlVvHjTM+li+eOYTOIS/1sWzR2RDa8+CjferxjYFiPrFq2vv/HB/V8kZ216p10SFS966rxLtKEklGP+1Hj23X4nhPlQRywzTH1Bl4PEMYyK+uvImdxyywKI9hz6S4SPFGp76TbxJ+1d9Yos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394945; c=relaxed/simple;
-	bh=jkueUicdMhighYEplXf2wX4n83YxoKuMRe0+lkb3Lz0=;
+	s=arc-20240116; t=1742395095; c=relaxed/simple;
+	bh=1sW+S4q6FEwEzYbX69Yu16eKEsoM7Enrm9ttBcEgBVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WzK7fJGVpZ5QyiM9jKVZrl0xp02jHbhRahCXpSe4KY2HLogr6e6ZnHiTEmnteBgphhioFhEw0W1J7PhTYhxTmPVUZoVFogcVRo+UqHYC0y6+4jhxBLMnJSNV2pqsyMv9IZt+W5JR90uVcKNKXnMCv9gxEUejrr4MViWm+HQr8Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdJks60S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A580C4CEE4;
-	Wed, 19 Mar 2025 14:35:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KjWHiLWvl3dYv6GcLirTYFMVrMTofY08HXpw8aOElEH4dR9TiYmRqTnpCEj3uBPdKnaVplnI3x58C+JhQJ0+h+wN2ZwUS62e2XIeT8pGzOLonubsUc5jTPc2ulfApq/8B3iMzy+u3gQ0qw/wapKQC7v8h+yhagwRXs5eJKzRr9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSgbnBY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75C3C4CEE4;
+	Wed, 19 Mar 2025 14:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394944;
-	bh=jkueUicdMhighYEplXf2wX4n83YxoKuMRe0+lkb3Lz0=;
+	s=korg; t=1742395094;
+	bh=1sW+S4q6FEwEzYbX69Yu16eKEsoM7Enrm9ttBcEgBVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdJks60S2ygXT/NPfeHVhLEQASNf7M5pAHAxrSpusZXWfmq14xRfSGl/rLkKb6H9X
-	 M0y5UEt9B0oLVb+9q+TaGctTqkqWKIVW9i40ztGkq9EHSD2Nall8ItibO0TfN1C135
-	 v8X8lZcoRhRSZMaJMbho5fCtpwt8Bsu2DjNpdvxs=
+	b=uSgbnBY+U+lJ9gACD3H5KzHHhc6RdS1W4rMZhfPhqdfCRZDHhsx1RQQTQFrmeBEim
+	 1o74wtYGpemPXmiK2gs8YwDinC3QljqJdJCfXf1pI7MBQTRV99TSPpV/WOy4W14dvw
+	 +FyYcuHt2s1sC6cdU6o4/9uLmHkbsF4TSC2/NS4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>
-Subject: [PATCH 6.13 167/241] rust: lockdep: Remove support for dynamically allocated LockClassKeys
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 144/231] cifs: Validate content of WSL reparse point buffers
 Date: Wed, 19 Mar 2025 07:30:37 -0700
-Message-ID: <20250319143031.857673209@linuxfoundation.org>
+Message-ID: <20250319143030.395423316@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mitchell Levy <levymitchell0@gmail.com>
+From: Pali Rohár <pali@kernel.org>
 
-commit 966944f3711665db13e214fef6d02982c49bb972 upstream.
+[ Upstream commit 1f48660667efb97c3cf70485c7e1977af718b48b ]
 
-Currently, dynamically allocated LockCLassKeys can be used from the Rust
-side without having them registered. This is a soundness issue, so
-remove them.
+WSL socket, fifo, char and block devices have empty reparse buffer.
+Validate the length of the reparse buffer.
 
-Fixes: 6ea5aa08857a ("rust: sync: introduce `LockClassKey`")
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250307232717.1759087-11-boqun.feng@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: cad3fc0a4c8c ("cifs: Throw -EOPNOTSUPP error on unsupported reparse point type from parse_reparse_point()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/sync.rs |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ fs/smb/client/reparse.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -29,28 +29,20 @@ pub struct LockClassKey(Opaque<bindings:
- unsafe impl Sync for LockClassKey {}
- 
- impl LockClassKey {
--    /// Creates a new lock class key.
--    pub const fn new() -> Self {
--        Self(Opaque::uninit())
--    }
--
-     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-         self.0.get()
-     }
- }
- 
--impl Default for LockClassKey {
--    fn default() -> Self {
--        Self::new()
--    }
--}
--
- /// Defines a new static lock class and returns a pointer to it.
- #[doc(hidden)]
- #[macro_export]
- macro_rules! static_lock_class {
-     () => {{
--        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-+        static CLASS: $crate::sync::LockClassKey =
-+            // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
-+            // lock_class_key
-+            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
-         &CLASS
-     }};
- }
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index e56a8df23fec9..bd8808e50d127 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -651,6 +651,11 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 	case IO_REPARSE_TAG_LX_FIFO:
+ 	case IO_REPARSE_TAG_LX_CHR:
+ 	case IO_REPARSE_TAG_LX_BLK:
++		if (le16_to_cpu(buf->ReparseDataLength) != 0) {
++			cifs_dbg(VFS, "srv returned malformed buffer for reparse point: 0x%08x\n",
++				 le32_to_cpu(buf->ReparseTag));
++			return -EIO;
++		}
+ 		break;
+ 	default:
+ 		cifs_tcon_dbg(VFS | ONCE, "unhandled reparse tag: 0x%08x\n",
+-- 
+2.39.5
+
 
 
 
