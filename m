@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-125289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05937A69057
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9247A69117
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4756217B92C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E11B3B0EA5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38FB1E3DFE;
-	Wed, 19 Mar 2025 14:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D8421D3F9;
+	Wed, 19 Mar 2025 14:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evYMTbE/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/voabCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E981E411C;
-	Wed, 19 Mar 2025 14:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEA41DE4EA;
+	Wed, 19 Mar 2025 14:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395084; cv=none; b=Jw7MyBXSt6TKipaGHZGTrw5FF0BobAVdbJMMxNWPvYwHxGqPIZ79I0C7s3MGnbXKlkA32SnCyagcsGr3ZBaGu7VBxYBML+zn+KLNIhj3DBiZiab24dhhpD8jxR7NAcE/zAdLoKI1kX6rOp60jyHo2lXw6qrl4VrogwinqMx9v34=
+	t=1742395163; cv=none; b=V8IzvYAEgP7rJayNMSse5rneG8weXYAq8wsRG42IN6+np9tPDA7HrNXWQReTGdOdVLJ2aDNaMb7dn9F+7wYgzJd/XN3POEBqTDiLCL6rO+En8wWEC2EBCd+ZPRHkUo2V51GlGKhINiYUU2CRiHCfyFI+Ep3gvpuZDFlpfkQXefE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395084; c=relaxed/simple;
-	bh=uhS73IuER/PO/qEeIPaf9MSWzv5OsQCV+QOw0/rRxN0=;
+	s=arc-20240116; t=1742395163; c=relaxed/simple;
+	bh=Hofi9DAOxFZ/1tCuZdYDtV0hQYXPL5gFNi3lyy3xTnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YAhxn6oIRdWIUNDlaLq8/Y2dE+D3ot3S+66U7mVwFW0hEffWRolc1UN3/tflF1tbUwoNoiT+ldjFMoxhWZw+LJiVFfLbdmVOYCjCc0AMN/Pe8wfy2ZylFd/sKydQwRZlDkNesvvmK0hwsQpusoickLwLaJNn4CRb97c1f8kDn9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evYMTbE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D57C4CEE4;
-	Wed, 19 Mar 2025 14:38:04 +0000 (UTC)
+	 MIME-Version; b=oPpfuC4Gk/qQceb45430UUL0RF6aJ9//XzCSvYVRiP2HGpk0xCWaAqEi99sEQPI+y9P52dXXMz9GdgHWEV4A0wVsX2ipWyJVX+u/JetN/TcrzEiaYZUAV2HowcoS3Vbgu01u2nC+XzZfuWZUHFZBRwEMFJjMNTZEN58VwPUfJU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/voabCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559DEC4CEE4;
+	Wed, 19 Mar 2025 14:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395084;
-	bh=uhS73IuER/PO/qEeIPaf9MSWzv5OsQCV+QOw0/rRxN0=;
+	s=korg; t=1742395163;
+	bh=Hofi9DAOxFZ/1tCuZdYDtV0hQYXPL5gFNi3lyy3xTnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evYMTbE/u+2yOIIF1o8RkD30B0mN+ot31GOzPktrWpnOp8JJ1H8ZA2IeP1WRwzaMW
-	 gpdf4cqC788xPEeHpu0HDKNzPXbRRNyMrqJORcEPFOb/Y69rAjl6Ni/gZx5gWoV7Gg
-	 59NKzQYPcv6XOimgNluIqJOpv7OdCDNd+bW5cPdE=
+	b=e/voabCs6tiokxR2ml++kMKUX1ZoBmIwX3ueJcdOhflAz8wMMi5gdWKekF5do100G
+	 LRzn9zfkC6qWf5eeEVzsp85xSjQOOhS04doilOrfXVGyShsfNSjqc0I4GGBd/+iXvB
+	 3lf4sFX2ew3hqCJBowTKWD0k1ctWPgP6CLjFtQBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/231] platform/x86: thinkpad_acpi: Support for V9 DYTC platform profiles
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.6 011/166] ice: fix memory leak in aRFS after reset
 Date: Wed, 19 Mar 2025 07:29:42 -0700
-Message-ID: <20250319143029.040115924@linuxfoundation.org>
+Message-ID: <20250319143020.289602728@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,124 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-[ Upstream commit 9cff907cbf8c7fb5345918dbcc7b74a01656f34f ]
+[ Upstream commit 23d97f18901ef5e4e264e3b1777fe65c760186b5 ]
 
-Newer Thinkpad AMD platforms are using V9 DYTC and this changes the
-profiles used for PSC mode. Add support for this update.
-Tested on P14s G5 AMD
+Fix aRFS (accelerated Receive Flow Steering) structures memory leak by
+adding a checker to verify if aRFS memory is already allocated while
+configuring VSI. aRFS objects are allocated in two cases:
+- as part of VSI initialization (at probe), and
+- as part of reset handling
 
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20250206193953.58365-1-mpearson-lenovo@squebb.ca
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+However, VSI reconfiguration executed during reset involves memory
+allocation one more time, without prior releasing already allocated
+resources. This led to the memory leak with the following signature:
+
+[root@os-delivery ~]# cat /sys/kernel/debug/kmemleak
+unreferenced object 0xff3c1ca7252e6000 (size 8192):
+  comm "kworker/0:0", pid 8, jiffies 4296833052
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    [<ffffffff991ec485>] __kmalloc_cache_noprof+0x275/0x340
+    [<ffffffffc0a6e06a>] ice_init_arfs+0x3a/0xe0 [ice]
+    [<ffffffffc09f1027>] ice_vsi_cfg_def+0x607/0x850 [ice]
+    [<ffffffffc09f244b>] ice_vsi_setup+0x5b/0x130 [ice]
+    [<ffffffffc09c2131>] ice_init+0x1c1/0x460 [ice]
+    [<ffffffffc09c64af>] ice_probe+0x2af/0x520 [ice]
+    [<ffffffff994fbcd3>] local_pci_probe+0x43/0xa0
+    [<ffffffff98f07103>] work_for_cpu_fn+0x13/0x20
+    [<ffffffff98f0b6d9>] process_one_work+0x179/0x390
+    [<ffffffff98f0c1e9>] worker_thread+0x239/0x340
+    [<ffffffff98f14abc>] kthread+0xcc/0x100
+    [<ffffffff98e45a6d>] ret_from_fork+0x2d/0x50
+    [<ffffffff98e083ba>] ret_from_fork_asm+0x1a/0x30
+    ...
+
+Fixes: 28bf26724fdb ("ice: Implement aRFS")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 34 ++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_arfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 21fecdf35cd0d..a3c73abb00f21 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10330,6 +10330,10 @@ static struct ibm_struct proxsensor_driver_data = {
- #define DYTC_MODE_PSC_BALANCE  5  /* Default mode aka balanced */
- #define DYTC_MODE_PSC_PERFORM  7  /* High power mode aka performance */
+diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
+index cca0e753f38ff..d7e0116f67737 100644
+--- a/drivers/net/ethernet/intel/ice/ice_arfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
+@@ -510,7 +510,7 @@ void ice_init_arfs(struct ice_vsi *vsi)
+ 	struct hlist_head *arfs_fltr_list;
+ 	unsigned int i;
  
-+#define DYTC_MODE_PSCV9_LOWPOWER 1  /* Low power mode */
-+#define DYTC_MODE_PSCV9_BALANCE  3  /* Default mode aka balanced */
-+#define DYTC_MODE_PSCV9_PERFORM  4  /* High power mode aka performance */
-+
- #define DYTC_ERR_MASK       0xF  /* Bits 0-3 in cmd result are the error result */
- #define DYTC_ERR_SUCCESS      1  /* CMD completed successful */
+-	if (!vsi || vsi->type != ICE_VSI_PF)
++	if (!vsi || vsi->type != ICE_VSI_PF || ice_is_arfs_active(vsi))
+ 		return;
  
-@@ -10350,6 +10354,10 @@ static int dytc_capabilities;
- static bool dytc_mmc_get_available;
- static int profile_force;
- 
-+static int platform_psc_profile_lowpower = DYTC_MODE_PSC_LOWPOWER;
-+static int platform_psc_profile_balanced = DYTC_MODE_PSC_BALANCE;
-+static int platform_psc_profile_performance = DYTC_MODE_PSC_PERFORM;
-+
- static int convert_dytc_to_profile(int funcmode, int dytcmode,
- 		enum platform_profile_option *profile)
- {
-@@ -10371,19 +10379,15 @@ static int convert_dytc_to_profile(int funcmode, int dytcmode,
- 		}
- 		return 0;
- 	case DYTC_FUNCTION_PSC:
--		switch (dytcmode) {
--		case DYTC_MODE_PSC_LOWPOWER:
-+		if (dytcmode == platform_psc_profile_lowpower)
- 			*profile = PLATFORM_PROFILE_LOW_POWER;
--			break;
--		case DYTC_MODE_PSC_BALANCE:
-+		else if (dytcmode == platform_psc_profile_balanced)
- 			*profile =  PLATFORM_PROFILE_BALANCED;
--			break;
--		case DYTC_MODE_PSC_PERFORM:
-+		else if (dytcmode == platform_psc_profile_performance)
- 			*profile =  PLATFORM_PROFILE_PERFORMANCE;
--			break;
--		default: /* Unknown mode */
-+		else
- 			return -EINVAL;
--		}
-+
- 		return 0;
- 	case DYTC_FUNCTION_AMT:
- 		/* For now return balanced. It's the closest we have to 'auto' */
-@@ -10404,19 +10408,19 @@ static int convert_profile_to_dytc(enum platform_profile_option profile, int *pe
- 		if (dytc_capabilities & BIT(DYTC_FC_MMC))
- 			*perfmode = DYTC_MODE_MMC_LOWPOWER;
- 		else if (dytc_capabilities & BIT(DYTC_FC_PSC))
--			*perfmode = DYTC_MODE_PSC_LOWPOWER;
-+			*perfmode = platform_psc_profile_lowpower;
- 		break;
- 	case PLATFORM_PROFILE_BALANCED:
- 		if (dytc_capabilities & BIT(DYTC_FC_MMC))
- 			*perfmode = DYTC_MODE_MMC_BALANCE;
- 		else if (dytc_capabilities & BIT(DYTC_FC_PSC))
--			*perfmode = DYTC_MODE_PSC_BALANCE;
-+			*perfmode = platform_psc_profile_balanced;
- 		break;
- 	case PLATFORM_PROFILE_PERFORMANCE:
- 		if (dytc_capabilities & BIT(DYTC_FC_MMC))
- 			*perfmode = DYTC_MODE_MMC_PERFORM;
- 		else if (dytc_capabilities & BIT(DYTC_FC_PSC))
--			*perfmode = DYTC_MODE_PSC_PERFORM;
-+			*perfmode = platform_psc_profile_performance;
- 		break;
- 	default: /* Unknown profile */
- 		return -EOPNOTSUPP;
-@@ -10605,6 +10609,7 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
- 	if (output & BIT(DYTC_QUERY_ENABLE_BIT))
- 		dytc_version = (output >> DYTC_QUERY_REV_BIT) & 0xF;
- 
-+	dbg_printk(TPACPI_DBG_INIT, "DYTC version %d\n", dytc_version);
- 	/* Check DYTC is enabled and supports mode setting */
- 	if (dytc_version < 5)
- 		return -ENODEV;
-@@ -10643,6 +10648,11 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
- 		}
- 	} else if (dytc_capabilities & BIT(DYTC_FC_PSC)) { /* PSC MODE */
- 		pr_debug("PSC is supported\n");
-+		if (dytc_version >= 9) { /* update profiles for DYTC 9 and up */
-+			platform_psc_profile_lowpower = DYTC_MODE_PSCV9_LOWPOWER;
-+			platform_psc_profile_balanced = DYTC_MODE_PSCV9_BALANCE;
-+			platform_psc_profile_performance = DYTC_MODE_PSCV9_PERFORM;
-+		}
- 	} else {
- 		dbg_printk(TPACPI_DBG_INIT, "No DYTC support available\n");
- 		return -ENODEV;
+ 	arfs_fltr_list = kcalloc(ICE_MAX_ARFS_LIST, sizeof(*arfs_fltr_list),
 -- 
 2.39.5
 
