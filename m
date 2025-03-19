@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-125410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5044FA69097
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84523A69041
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 168CB7A74E2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFB3171942
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A0221D5B6;
-	Wed, 19 Mar 2025 14:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DAF1E231F;
+	Wed, 19 Mar 2025 14:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0KL4c9u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Alxmr8Up"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503EE1F5849;
-	Wed, 19 Mar 2025 14:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66901E231A;
+	Wed, 19 Mar 2025 14:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395168; cv=none; b=XRxflw6mcI/rVmm0s+k2JjWRopBa/ZqTWhzGfgKqBahDr0a00PBxEEsm8ZKOtANwJL2ddLkYln7vGDHW5c7w4Rakx9B/GTjls0ASfuMEbhQad33RWYmG32QGW9WzJn/rDPc0HN7qTG8+4xK8gNdIvcpRJs5jkZwCrLXWOodLm8o=
+	t=1742395063; cv=none; b=KQn7lxOkvqpbzUGAwe4nRssG99Rp3kxeT8KGR46yBU1RFOvXLM+L9uYlsIQopMgXXCrzNHVI2aNlVCltkLhkG73KmAuxVSsqsc/g4zIxqzJqdhYqNyyPR/GkE3MErSeqR+wtWrpIvII37ManPhL+k59z0gy/qbTwb5dnncDCLGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395168; c=relaxed/simple;
-	bh=lsrX9+stBPohQ2S/m1yYj9oNzbqja8wQO1r6zwjpiFU=;
+	s=arc-20240116; t=1742395063; c=relaxed/simple;
+	bh=nRJDILvpdRkA3onb9r8AoM2jMJkIDNnYIzPUNBTAe6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGFBqjUkty6ncTWexd3H/t8cGj9naqMwgUs5ut6p2HKKYSWRwiVCzlLnUzFVZdP+jXrQvM1w+LHUIAnhXCEf6vQdEV4WlL2KvVFWEcjbTEcPC02zwmFjX1Y7hw/2yrhzPvy1H0rJaD0mpwwwnjD+mVtL4SK/s4+aVRCB1Pc0qQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0KL4c9u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA12C4CEE8;
-	Wed, 19 Mar 2025 14:39:28 +0000 (UTC)
+	 MIME-Version; b=OLxkpPr4tghllK/4ASwdZdyTpSIpqkxOJYJJaQKPe5w8zMpCN5y+J0yUOxb6vJ/1sTLCX5fTKDVdZ+GG+7QyZyIPe9XYBKBgSeVRRv67W+4doS2YZt+EPa0ojwd/+dpeRpHTDniuYiftwfl+2VObtVxsfbdi/dTLiS7zeSYydpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Alxmr8Up; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDA0C4CEE4;
+	Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395168;
-	bh=lsrX9+stBPohQ2S/m1yYj9oNzbqja8wQO1r6zwjpiFU=;
+	s=korg; t=1742395062;
+	bh=nRJDILvpdRkA3onb9r8AoM2jMJkIDNnYIzPUNBTAe6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0KL4c9u2gRYqwRgJ+dKbvwIwqXSYh0cyd2vBr7TrMUPlKHtiPMj8nC6TmXPG5Ams
-	 8yFW7T8sz0IdNur9fHZmH9UWlXf1TVi3vC0Fo0uzu4afVbFUEAlWsC5JU1LuZN1mgz
-	 2fS829+JB+P7RKJiETLsawx1VXmuITeCQ5wAQ5aM=
+	b=Alxmr8UpQPz6rgYTA345hrhjGfccl3gLI1eZXxwYFem9G6Ge6joZ/M9Tce9C8lYs8
+	 gmBB0CeJ1dczcoec+WaHqk05jX30zO60NhdPR1ppkJkhnemqxy12ZuMymznXaREVvI
+	 HekQqwz6Y6ezATvbYkzxJTcOg1nd/w0F4emwdzOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Huang <Joseph.Huang@garmin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Beata Michalska <beata.michalska@arm.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/166] net: dsa: mv88e6xxx: Verify after ATU Load ops
+Subject: [PATCH 6.12 096/231] arm64: amu: Delay allocating cpumask for AMU FIE support
 Date: Wed, 19 Mar 2025 07:29:49 -0700
-Message-ID: <20250319143020.476275451@linuxfoundation.org>
+Message-ID: <20250319143029.214673579@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Huang <Joseph.Huang@garmin.com>
+From: Beata Michalska <beata.michalska@arm.com>
 
-[ Upstream commit dc5340c3133a3ebe54853fd299116149e528cfaa ]
+[ Upstream commit d923782b041218ef3804b2fed87619b5b1a497f3 ]
 
-ATU Load operations could fail silently if there's not enough space
-on the device to hold the new entry. When this happens, the symptom
-depends on the unknown flood settings. If unknown multicast flood is
-disabled, the multicast packets are dropped when the ATU table is
-full. If unknown multicast flood is enabled, the multicast packets
-will be flooded to all ports. Either way, IGMP snooping is broken
-when the ATU Load operation fails silently.
+For the time being, the amu_fie_cpus cpumask is being exclusively used
+by the AMU-related internals of FIE support and is guaranteed to be
+valid on every access currently made. Still the mask is not being
+invalidated on one of the error handling code paths, which leaves
+a soft spot with theoretical risk of UAF for CPUMASK_OFFSTACK cases.
+To make things sound, delay allocating said cpumask
+(for CPUMASK_OFFSTACK) avoiding otherwise nasty sanitising case failing
+to register the cpufreq policy notifications.
 
-Do a Read-After-Write verification after each fdb/mdb add operation
-to make sure that the operation was really successful, and return
--ENOSPC otherwise.
-
-Fixes: defb05b9b9b4 ("net: dsa: mv88e6xxx: Add support for fdb_add, fdb_del, and fdb_getnext")
-Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250306172306.3859214-1-Joseph.Huang@garmin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+Reviewed-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+Reviewed-by: Sumit Gupta <sumitg@nvidia.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20250131155842.3839098-1-beata.michalska@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 59 ++++++++++++++++++++++++++------
- 1 file changed, 48 insertions(+), 11 deletions(-)
+ arch/arm64/kernel/topology.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 062bcbe6255cf..a39b33353ca6c 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -2125,13 +2125,11 @@ mv88e6xxx_port_vlan_prepare(struct dsa_switch *ds, int port,
- 	return err;
- }
+diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+index 1a2c72f3e7f80..cb180684d10d5 100644
+--- a/arch/arm64/kernel/topology.c
++++ b/arch/arm64/kernel/topology.c
+@@ -194,12 +194,19 @@ static void amu_fie_setup(const struct cpumask *cpus)
+ 	int cpu;
  
--static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
--					const unsigned char *addr, u16 vid,
--					u8 state)
-+static int mv88e6xxx_port_db_get(struct mv88e6xxx_chip *chip,
-+				 const unsigned char *addr, u16 vid,
-+				 u16 *fid, struct mv88e6xxx_atu_entry *entry)
- {
--	struct mv88e6xxx_atu_entry entry;
- 	struct mv88e6xxx_vtu_entry vlan;
--	u16 fid;
- 	int err;
+ 	/* We are already set since the last insmod of cpufreq driver */
+-	if (unlikely(cpumask_subset(cpus, amu_fie_cpus)))
++	if (cpumask_available(amu_fie_cpus) &&
++	    unlikely(cpumask_subset(cpus, amu_fie_cpus)))
+ 		return;
  
- 	/* Ports have two private address databases: one for when the port is
-@@ -2142,7 +2140,7 @@ static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
- 	 * VLAN ID into the port's database used for VLAN-unaware bridging.
- 	 */
- 	if (vid == 0) {
--		fid = MV88E6XXX_FID_BRIDGED;
-+		*fid = MV88E6XXX_FID_BRIDGED;
- 	} else {
- 		err = mv88e6xxx_vtu_get(chip, vid, &vlan);
- 		if (err)
-@@ -2152,14 +2150,39 @@ static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
- 		if (!vlan.valid)
- 			return -EOPNOTSUPP;
- 
--		fid = vlan.fid;
-+		*fid = vlan.fid;
+-	for_each_cpu(cpu, cpus) {
++	for_each_cpu(cpu, cpus)
+ 		if (!freq_counters_valid(cpu))
+ 			return;
++
++	if (!cpumask_available(amu_fie_cpus) &&
++	    !zalloc_cpumask_var(&amu_fie_cpus, GFP_KERNEL)) {
++		WARN_ONCE(1, "Failed to allocate FIE cpumask for CPUs[%*pbl]\n",
++			  cpumask_pr_args(cpus));
++		return;
  	}
  
--	entry.state = 0;
--	ether_addr_copy(entry.mac, addr);
--	eth_addr_dec(entry.mac);
-+	entry->state = 0;
-+	ether_addr_copy(entry->mac, addr);
-+	eth_addr_dec(entry->mac);
-+
-+	return mv88e6xxx_g1_atu_getnext(chip, *fid, entry);
-+}
-+
-+static bool mv88e6xxx_port_db_find(struct mv88e6xxx_chip *chip,
-+				   const unsigned char *addr, u16 vid)
-+{
-+	struct mv88e6xxx_atu_entry entry;
-+	u16 fid;
-+	int err;
+ 	cpumask_or(amu_fie_cpus, amu_fie_cpus, cpus);
+@@ -237,17 +244,8 @@ static struct notifier_block init_amu_fie_notifier = {
  
--	err = mv88e6xxx_g1_atu_getnext(chip, fid, &entry);
-+	err = mv88e6xxx_port_db_get(chip, addr, vid, &fid, &entry);
-+	if (err)
-+		return false;
-+
-+	return entry.state && ether_addr_equal(entry.mac, addr);
-+}
-+
-+static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
-+					const unsigned char *addr, u16 vid,
-+					u8 state)
-+{
-+	struct mv88e6xxx_atu_entry entry;
-+	u16 fid;
-+	int err;
-+
-+	err = mv88e6xxx_port_db_get(chip, addr, vid, &fid, &entry);
- 	if (err)
- 		return err;
+ static int __init init_amu_fie(void)
+ {
+-	int ret;
+-
+-	if (!zalloc_cpumask_var(&amu_fie_cpus, GFP_KERNEL))
+-		return -ENOMEM;
+-
+-	ret = cpufreq_register_notifier(&init_amu_fie_notifier,
++	return cpufreq_register_notifier(&init_amu_fie_notifier,
+ 					CPUFREQ_POLICY_NOTIFIER);
+-	if (ret)
+-		free_cpumask_var(amu_fie_cpus);
+-
+-	return ret;
+ }
+ core_initcall(init_amu_fie);
  
-@@ -2757,6 +2780,13 @@ static int mv88e6xxx_port_fdb_add(struct dsa_switch *ds, int port,
- 	mv88e6xxx_reg_lock(chip);
- 	err = mv88e6xxx_port_db_load_purge(chip, port, addr, vid,
- 					   MV88E6XXX_G1_ATU_DATA_STATE_UC_STATIC);
-+	if (err)
-+		goto out;
-+
-+	if (!mv88e6xxx_port_db_find(chip, addr, vid))
-+		err = -ENOSPC;
-+
-+out:
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	return err;
-@@ -6454,6 +6484,13 @@ static int mv88e6xxx_port_mdb_add(struct dsa_switch *ds, int port,
- 	mv88e6xxx_reg_lock(chip);
- 	err = mv88e6xxx_port_db_load_purge(chip, port, mdb->addr, mdb->vid,
- 					   MV88E6XXX_G1_ATU_DATA_STATE_MC_STATIC);
-+	if (err)
-+		goto out;
-+
-+	if (!mv88e6xxx_port_db_find(chip, mdb->addr, mdb->vid))
-+		err = -ENOSPC;
-+
-+out:
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	return err;
 -- 
 2.39.5
 
