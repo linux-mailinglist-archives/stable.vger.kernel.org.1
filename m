@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-125478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC81A692E2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:17:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FC1A692C2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:15:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 372F01B846AC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C7C21B83F84
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4CF1DE884;
-	Wed, 19 Mar 2025 14:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2241E5B8D;
+	Wed, 19 Mar 2025 14:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyYEJ8AZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bp4b9skX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527C522172A;
-	Wed, 19 Mar 2025 14:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD4F1C82F4;
+	Wed, 19 Mar 2025 14:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395215; cv=none; b=CUnGirfC2MjxyraEt7VZP9aTgv5cp+5LG545QS9+Q6aE/RNBtTyAoM82zyyj5D2MiSDL1BvCIfS2FF9bXNaNioaID8hY2G5vwsg3fxvsHzYECbPL7WR1xtUxQxfrVBl9NA7+7QJ8IyQSj+6y6t/+YQYXG54roIkGX/hy+NCPARc=
+	t=1742395111; cv=none; b=Y2c9rrNKybHq1FH0WLZsttkmzFWsVcYP22SekG9E4m2RBTg+y48GTxh7MJIO6eTtgQ5VndWZiNrA0vqlQ3DrhszlIq1JpdSXIpk+tYpt7g9hqXJE4QTVu+2CXMTP5zrqUv2M1qFQGaiLEbdW4CjE8ol15avyxh73/N3qQrnfxso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395215; c=relaxed/simple;
-	bh=U3obhKXeHssLFmgLwy33QnBsojtiIGzIKdENoG+h8qw=;
+	s=arc-20240116; t=1742395111; c=relaxed/simple;
+	bh=/i6SHqbDrDql4mtbJUEaF0kI2sowVmt2tFe0r9ygCNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6/6ddkH9LquDf4Dr2WSE3wVmtxwT3zKkJaEZgTNWAED2BXfi331i1EXhT1DkfhBsKxye0YS7+RW9vrRqOlsnyjgIgp3A9lz8Aw4QQIVHB2jKe19Cnqp/eZl8wkfUl2DwfZ1qlTXwI9AYtYJCuzvitVzEgktMI9byumk8vYQbdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyYEJ8AZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252CEC4CEE4;
-	Wed, 19 Mar 2025 14:40:15 +0000 (UTC)
+	 MIME-Version; b=nSN0pMTcvpa2IIEoP57GZjNFnhvHLw00rg0lDvfDcnvpSZMn84iDQq0QMBAzgRCaXH8vcWapzrLZ7AewVTay0FPXJ7wEPq29mZPgx5AjJ4itWUVjGpEXicL5lS06DZOSdm+iCmVIR9fQPm+AjeXvQv0PLjIPGzZ+ml0byovAs2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bp4b9skX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5239FC4CEE4;
+	Wed, 19 Mar 2025 14:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395215;
-	bh=U3obhKXeHssLFmgLwy33QnBsojtiIGzIKdENoG+h8qw=;
+	s=korg; t=1742395111;
+	bh=/i6SHqbDrDql4mtbJUEaF0kI2sowVmt2tFe0r9ygCNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyYEJ8AZiEqwUxbfWA8qhXEQ2Jy2AKYuMAVmB7uEA2tWo0CBNnS4PtlPe3G+kfv06
-	 9hvYt9McDrvJ389zIZeQH+XKaV+gBpdBuz0fMF/DgMWUlnpg0prVxZ7NmU8Aj8NDLI
-	 Sv6ti3SCt7Q5p8WF1qBLNHOIqZcx82LhoGecVcP4=
+	b=Bp4b9skXusLtd6g+U81TlP0DViLlg8lt5t7+m8rNoRTpDXNsTpY9rD+yO0mrqM08v
+	 bgtJRN6No1Te7m0XSUu2iIY6zxU8AK5qX/pq3GB90WXpc3t20jo6VyTN1hrDOMtm1l
+	 5VoYr21mOeSLg1veKxeauEExSo+RVfXOrU/zcDxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laura Promberger <laura.promberger@cern.ch>,
-	Sam Lewis <samclewis@google.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/166] fuse: dont truncate cached, mutated symlink
-Date: Wed, 19 Mar 2025 07:30:57 -0700
-Message-ID: <20250319143022.346685354@linuxfoundation.org>
+	Matthew Maurer <mmaurer@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 165/231] rust: Disallow BTF generation with Rust + LTO
+Date: Wed, 19 Mar 2025 07:30:58 -0700
+Message-ID: <20250319143030.917300876@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Matthew Maurer <mmaurer@google.com>
 
-[ Upstream commit b4c173dfbb6c78568578ff18f9e8822d7bd0e31b ]
+commit 5daa0c35a1f0e7a6c3b8ba9cb721e7d1ace6e619 upstream.
 
-Fuse allows the value of a symlink to change and this property is exploited
-by some filesystems (e.g. CVMFS).
+The kernel cannot currently self-parse BTF containing Rust debug
+information. pahole uses the language of the CU to determine whether to
+filter out debug information when generating the BTF. When LTO is
+enabled, Rust code can cross CU boundaries, resulting in Rust debug
+information in CUs labeled as C. This results in a system which cannot
+parse its own BTF.
 
-It has been observed, that sometimes after changing the symlink contents,
-the value is truncated to the old size.
-
-This is caused by fuse_getattr() racing with fuse_reverse_inval_inode().
-fuse_reverse_inval_inode() updates the fuse_inode's attr_version, which
-results in fuse_change_attributes() exiting before updating the cached
-attributes
-
-This is okay, as the cached attributes remain invalid and the next call to
-fuse_change_attributes() will likely update the inode with the correct
-values.
-
-The reason this causes problems is that cached symlinks will be
-returned through page_get_link(), which truncates the symlink to
-inode->i_size.  This is correct for filesystems that don't mutate
-symlinks, but in this case it causes bad behavior.
-
-The solution is to just remove this truncation.  This can cause a
-regression in a filesystem that relies on supplying a symlink larger than
-the file size, but this is unlikely.  If that happens we'd need to make
-this behavior conditional.
-
-Reported-by: Laura Promberger <laura.promberger@cern.ch>
-Tested-by: Sam Lewis <samclewis@google.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://lore.kernel.org/r/20250220100258.793363-1-mszeredi@redhat.com
-Reviewed-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+Cc: stable@vger.kernel.org
+Fixes: c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
+Link: https://lore.kernel.org/r/20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dir.c      |  2 +-
- fs/namei.c         | 24 +++++++++++++++++++-----
- include/linux/fs.h |  2 ++
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ init/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index 95f9913a35373..89bffaed421fa 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -1608,7 +1608,7 @@ static const char *fuse_get_link(struct dentry *dentry, struct inode *inode,
- 		goto out_err;
- 
- 	if (fc->cache_symlinks)
--		return page_get_link(dentry, inode, callback);
-+		return page_get_link_raw(dentry, inode, callback);
- 
- 	err = -ECHILD;
- 	if (!dentry)
-diff --git a/fs/namei.c b/fs/namei.c
-index beffbb02a24e6..155e4d09a5fb2 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -5154,10 +5154,9 @@ const char *vfs_get_link(struct dentry *dentry, struct delayed_call *done)
- EXPORT_SYMBOL(vfs_get_link);
- 
- /* get the link contents into pagecache */
--const char *page_get_link(struct dentry *dentry, struct inode *inode,
--			  struct delayed_call *callback)
-+static char *__page_get_link(struct dentry *dentry, struct inode *inode,
-+			     struct delayed_call *callback)
- {
--	char *kaddr;
- 	struct page *page;
- 	struct address_space *mapping = inode->i_mapping;
- 
-@@ -5176,8 +5175,23 @@ const char *page_get_link(struct dentry *dentry, struct inode *inode,
- 	}
- 	set_delayed_call(callback, page_put_link, page);
- 	BUG_ON(mapping_gfp_mask(mapping) & __GFP_HIGHMEM);
--	kaddr = page_address(page);
--	nd_terminate_link(kaddr, inode->i_size, PAGE_SIZE - 1);
-+	return page_address(page);
-+}
-+
-+const char *page_get_link_raw(struct dentry *dentry, struct inode *inode,
-+			      struct delayed_call *callback)
-+{
-+	return __page_get_link(dentry, inode, callback);
-+}
-+EXPORT_SYMBOL_GPL(page_get_link_raw);
-+
-+const char *page_get_link(struct dentry *dentry, struct inode *inode,
-+					struct delayed_call *callback)
-+{
-+	char *kaddr = __page_get_link(dentry, inode, callback);
-+
-+	if (!IS_ERR(kaddr))
-+		nd_terminate_link(kaddr, inode->i_size, PAGE_SIZE - 1);
- 	return kaddr;
- }
- 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index e47596d354ff7..81edfa1e66b60 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3085,6 +3085,8 @@ extern const struct file_operations generic_ro_fops;
- 
- extern int readlink_copy(char __user *, int, const char *);
- extern int page_readlink(struct dentry *, char __user *, int);
-+extern const char *page_get_link_raw(struct dentry *, struct inode *,
-+				     struct delayed_call *);
- extern const char *page_get_link(struct dentry *, struct inode *,
- 				 struct delayed_call *);
- extern void page_put_link(void *);
--- 
-2.39.5
-
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1958,7 +1958,7 @@ config RUST
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGIN_RANDSTRUCT
+ 	depends on !RANDSTRUCT
+-	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
++	depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && !LTO)
+ 	depends on !CFI_CLANG || HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
+ 	select CFI_ICALL_NORMALIZE_INTEGERS if CFI_CLANG
+ 	depends on !CALL_PADDING || RUSTC_VERSION >= 108100
 
 
 
