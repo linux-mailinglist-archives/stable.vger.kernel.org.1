@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECECA68FA5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE41DA69047
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C15E63AD1EB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC7321748D1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643621D7E5B;
-	Wed, 19 Mar 2025 14:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69E321517B;
+	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGsOPC8J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHthDEEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A0D1C5F2D;
-	Wed, 19 Mar 2025 14:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F711E2850;
+	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394920; cv=none; b=Ss9tsYb00bCZMab0/tzhP2nkDf8RBe/zFrkTddjKQy8CavGQq1ufNqypJhAWbVVkGkFbBCU0J8rAe/yS0bUIwp/wgONQBBXg3ZeGWpoykmFQw5R0tTxTuMHLZDF9kev96V4Rg2twiwIVhX5P/0X9W2+UnoQVh93Mv3/Q16t4k5c=
+	t=1742395070; cv=none; b=QtWuqlxhTvh2aAp09K0c9p4G+peRNAtyHSzQ/S1bVYPVE57xpNU5OVVNJapXI3FDiGNpwRBRwr8SXX2KcjJWecGD314K0l5fed7ujtE+sy4hj9JGaDRrYCRiN5C7d1vYgjKMpQ+GVbKCIrkSPdb5D0AXcSWyn5Sj76+G3LHJPBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394920; c=relaxed/simple;
-	bh=Tlb694bVZIz1PGr/J02v9mEkxmbuAZGeHMVf3G52oaw=;
+	s=arc-20240116; t=1742395070; c=relaxed/simple;
+	bh=nrU2WL3rALmHnF08F7UPXRGO4C/Y8XxQZv6JcSAmQSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eOk8CEXo6GUmQ6WblcX58hTdjOBskZw1SbvWKLybk3vnfmW2fy+9IpA/MIbmvidSbySpVAkmKhBPLzTER58wk8CGqQAGJtZY4dK34FEhlv9G5VJo9S96saqoxs3pOM/w0Ws50sa+gv/8GWBESI2If1dMh7a+7Hi+j3tvF7azLhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGsOPC8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB78DC4CEE4;
-	Wed, 19 Mar 2025 14:35:19 +0000 (UTC)
+	 MIME-Version; b=tKY4IXqgxdRZwl8VVM1xX4LwSpENyxMLkqrPbvkv3nbz/XM5JR9BNncr51LFHeVpFZHkCd5Ja7xbARMek3tQMLK8tpNT+LY9Jj/GVpFmBoA/qt8TiVx/gdZ/dnrPOeZMhzjXiYYdvvkDQJ7xKXGyIXcvVAHkYW9e4XXwatTFOCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHthDEEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DE4C4CEE8;
+	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394920;
-	bh=Tlb694bVZIz1PGr/J02v9mEkxmbuAZGeHMVf3G52oaw=;
+	s=korg; t=1742395070;
+	bh=nrU2WL3rALmHnF08F7UPXRGO4C/Y8XxQZv6JcSAmQSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGsOPC8JBYdZz47ssI3PXtSRVadnZhwzneFSzvTR5VikIJzK8sCtbiD7kWf5jIFIx
-	 E0iJRsiN4c9yB6wKOm8WQ5KFye3+OOZPPLJ3EYieiETomiZz5DAEIfMZIyv5OIroJT
-	 du6NmpmPDCOMnD+zrCOzIH7ckfUmPW1swoQxdDiA=
+	b=qHthDEEyhzs97RZ2Jo57vj1Ut4kDXtfDv0eHkMfuxRl5/aip3atl1MyN/DiuUI7W4
+	 NLRc6ApQMM29wKi0OVahAhOtXTc4anV0OcbZEyksHex/sMsYR+pIQrXVNRhJFeQO65
+	 xSIhHvtoAU3RXy3CLew3E90fyi9YS+PjVd8JRi3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 130/241] cifs: Treat unhandled directory name surrogate reparse points as mount directory nodes
+Subject: [PATCH 6.12 107/231] ALSA: hda/realtek: Limit mic boost on Positivo ARN50
 Date: Wed, 19 Mar 2025 07:30:00 -0700
-Message-ID: <20250319143030.942252721@linuxfoundation.org>
+Message-ID: <20250319143029.481987156@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit b587fd128660d48cd2122f870f720ff8e2b4abb3 ]
+[ Upstream commit 76b0a22d4cf7dc9091129560fdc04e73eb9db4cb ]
 
-If the reparse point was not handled (indicated by the -EOPNOTSUPP from
-ops->parse_reparse_point() call) but reparse tag is of type name surrogate
-directory type, then treat is as a new mount point.
+The internal mic boost on the Positivo ARN50 is too high.
+Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
+to limit the gain.
 
-Name surrogate reparse point represents another named entity in the system.
-
->From SMB client point of view, this another entity is resolved on the SMB
-server, and server serves its content automatically. Therefore from Linux
-client point of view, this name surrogate reparse point of directory type
-crosses mount point.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Link: https://patch.msgid.link/20250201143930.25089-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/inode.c    | 13 +++++++++++++
- fs/smb/common/smbfsctl.h |  3 +++
- 2 files changed, 16 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 4d8effe78be57..a1b06ca07fcc7 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1215,6 +1215,19 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
- 			rc = server->ops->parse_reparse_point(cifs_sb,
- 							      full_path,
- 							      iov, data);
-+			/*
-+			 * If the reparse point was not handled but it is the
-+			 * name surrogate which points to directory, then treat
-+			 * is as a new mount point. Name surrogate reparse point
-+			 * represents another named entity in the system.
-+			 */
-+			if (rc == -EOPNOTSUPP &&
-+			    IS_REPARSE_TAG_NAME_SURROGATE(data->reparse.tag) &&
-+			    (le32_to_cpu(data->fi.Attributes) & ATTR_DIRECTORY)) {
-+				rc = 0;
-+				cifs_create_junction_fattr(fattr, sb);
-+				goto out;
-+			}
- 		}
- 		break;
- 	}
-diff --git a/fs/smb/common/smbfsctl.h b/fs/smb/common/smbfsctl.h
-index 4b379e84c46b9..3253a18ecb5cb 100644
---- a/fs/smb/common/smbfsctl.h
-+++ b/fs/smb/common/smbfsctl.h
-@@ -159,6 +159,9 @@
- #define IO_REPARSE_TAG_LX_CHR	     0x80000025
- #define IO_REPARSE_TAG_LX_BLK	     0x80000026
- 
-+/* If Name Surrogate Bit is set, the file or directory represents another named entity in the system. */
-+#define IS_REPARSE_TAG_NAME_SURROGATE(tag) (!!((tag) & 0x20000000))
-+
- /* fsctl flags */
- /* If Flags is set to this value, the request is an FSCTL not ioctl request */
- #define SMB2_0_IOCTL_IS_FSCTL		0x00000001
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index b559f0d4e3488..3949e2614a663 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11064,6 +11064,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
 -- 
 2.39.5
 
