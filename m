@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-125291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5983AA692F7
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 865E0A69333
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:24:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C9E71B821C8
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEE1D1B60C41
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CE8219A91;
-	Wed, 19 Mar 2025 14:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3E021D599;
+	Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrJh2LBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIjeG29G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AF31E47AE;
-	Wed, 19 Mar 2025 14:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691C1F09BD;
+	Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395086; cv=none; b=PUzeRUV1tIJOqqMmcpzdLHhZCBEMgyqhCsKnHu4UF7a+JDR7OZ7RN//lY7ftWPiAuF0WhQ7Pi/WO/PxrcH9+YEB+D/VnW3tzSIHLC8VYe+x0xCA38549vsBpQEkjq6eAQ+qA8c4TdP5TrruYKTmh3K4QEbmR5wM2e0jnSOoq4eQ=
+	t=1742395165; cv=none; b=TZUEphnPrHXRjGi3a9JTAlgRR24z4AonfDgedHxsg4wcGsBO7ouCDjTSl2yNnHOFKR/4za9YzJEpD79Gs5IY/9yLqw7wSEWWIEWRy5d8oZpQwlvXtu0yUhv6VyzZOoWxI+PFnshRtF6LkhSbBXCEW3vUvMOTW4GS+Nje4hiCZ54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395086; c=relaxed/simple;
-	bh=ekfjHrMNQaaDkVXQY0WnBxAjfnTdWCBemSLoa8hpiF8=;
+	s=arc-20240116; t=1742395165; c=relaxed/simple;
+	bh=GoAwHghT1E+Mt2PnG1gDlvkQZsp+OyG28FcDvrBGGMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mgom2Rvh1ywaGrK7pQAEuelZup7SXVxSEUSYSpLWiEnlPnH0rG3Zwurd45MrwysZMlg8hoQHBqM6AWb7MkBKUxKRCzTPuVdhPbzSbHVTV0+gqS3JJEX09sQ/dqvNf3ivp+G9KaHzPLaPSIldHImB54DUBNzoCbmUGojY7IvyqMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrJh2LBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6408C4CEEE;
-	Wed, 19 Mar 2025 14:38:05 +0000 (UTC)
+	 MIME-Version; b=aBGOeuhv4bGwZTJJgmYXYwp9oKXQx1wUt4KtLQCPXKVOC0IUecyUWHFj9syUWHixPHOxT1BIiTAaPmRp3Y7MaKe/20z8OiR5DwdmXYfEdiIq1m9nr7+ypjWlBowbixDITlvDn/yZ35KPK+g/0IPNoI0Cte8fC2EWRKteHrpV5HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIjeG29G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B09BC4CEE4;
+	Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395086;
-	bh=ekfjHrMNQaaDkVXQY0WnBxAjfnTdWCBemSLoa8hpiF8=;
+	s=korg; t=1742395165;
+	bh=GoAwHghT1E+Mt2PnG1gDlvkQZsp+OyG28FcDvrBGGMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZrJh2LBU2rnmNkpQH7mOBRXyk66IwOS2oUyAxciv8jYdWNeRjr2NFWzBa+6Jufew0
-	 SKlNnYgUfQoXLUtNHAVNiHiohd7mZfVgSJ0jMXxU0f79hp2YD3k2Y2Co7yHUwSEGXf
-	 oy7vMcDylGBk9AsBYEW//H0uxix2PibNroMiJB6I=
+	b=NIjeG29Gfs5UNrrH55sgFuo3uIJAf/opG8VJCSURRtILnt/tUxRacUylFF/lntAW9
+	 Gc6E12OdeUtFjXDesniacnpHntGE+UP3EpU/4bZRqMuenAlBQNnPXNeVkn6mz4swxT
+	 ns0NJR41LN383upau0BcAU/GJ4alCKKQmecWrZOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/231] platform/x86: int3472: Call "reset" GPIO "enable" for INT347E
-Date: Wed, 19 Mar 2025 07:29:44 -0700
-Message-ID: <20250319143029.087714225@linuxfoundation.org>
+Subject: [PATCH 6.6 014/166] wifi: cfg80211: cancel wiphy_work before freeing wiphy
+Date: Wed, 19 Mar 2025 07:29:45 -0700
+Message-ID: <20250319143020.369687543@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 569617dbbd06286fb73f3f1c2ac91e51d863c7de ]
+[ Upstream commit 72d520476a2fab6f3489e8388ab524985d6c4b90 ]
 
-The DT bindings for ov7251 specify "enable" GPIO (xshutdown in
-documentation) but the int3472 indiscriminately provides this as a "reset"
-GPIO to sensor drivers. Take this into account by assigning it as "enable"
-with active high polarity for INT347E devices, i.e. ov7251. "reset" with
-active low polarity remains the default GPIO name for other devices.
+A wiphy_work can be queued from the moment the wiphy is allocated and
+initialized (i.e. wiphy_new_nm). When a wiphy_work is queued, the
+rdev::wiphy_work is getting queued.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250211072841.7713-3-sakari.ailus@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+If wiphy_free is called before the rdev::wiphy_work had a chance to run,
+the wiphy memory will be freed, and then when it eventally gets to run
+it'll use invalid memory.
+
+Fix this by canceling the work before freeing the wiphy.
+
+Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20250306123626.efd1d19f6e07.I48229f96f4067ef73f5b87302335e2fd750136c9@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/int3472/discrete.c | 52 +++++++++++++++++--
- 1 file changed, 48 insertions(+), 4 deletions(-)
+ net/wireless/core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
-index dc4d09611c5ab..9e69ac9cfb92c 100644
---- a/drivers/platform/x86/intel/int3472/discrete.c
-+++ b/drivers/platform/x86/intel/int3472/discrete.c
-@@ -2,6 +2,7 @@
- /* Author: Dan Scally <djrscally@gmail.com> */
- 
- #include <linux/acpi.h>
-+#include <linux/array_size.h>
- #include <linux/bitfield.h>
- #include <linux/device.h>
- #include <linux/gpio/consumer.h>
-@@ -122,10 +123,53 @@ skl_int3472_gpiod_get_from_temp_lookup(struct int3472_discrete_device *int3472,
- 	return desc;
- }
- 
--static void int3472_get_func_and_polarity(u8 type, const char **func,
--					  unsigned long *gpio_flags)
-+/**
-+ * struct int3472_gpio_map - Map GPIOs to whatever is expected by the
-+ * sensor driver (as in DT bindings)
-+ * @hid: The ACPI HID of the device without the instance number e.g. INT347E
-+ * @type_from: The GPIO type from ACPI ?SDT
-+ * @type_to: The assigned GPIO type, typically same as @type_from
-+ * @func: The function, e.g. "enable"
-+ * @polarity_low: GPIO_ACTIVE_LOW true if the @polarity_low is true,
-+ * GPIO_ACTIVE_HIGH otherwise
-+ */
-+struct int3472_gpio_map {
-+	const char *hid;
-+	u8 type_from;
-+	u8 type_to;
-+	bool polarity_low;
-+	const char *func;
-+};
-+
-+static const struct int3472_gpio_map int3472_gpio_map[] = {
-+	{ "INT347E", INT3472_GPIO_TYPE_RESET, INT3472_GPIO_TYPE_RESET, false, "enable" },
-+};
-+
-+static void int3472_get_func_and_polarity(struct acpi_device *adev, u8 *type,
-+					  const char **func, unsigned long *gpio_flags)
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 3c1247933ae92..a2b15349324b6 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1151,6 +1151,13 @@ void cfg80211_dev_free(struct cfg80211_registered_device *rdev)
  {
--	switch (type) {
-+	unsigned int i;
+ 	struct cfg80211_internal_bss *scan, *tmp;
+ 	struct cfg80211_beacon_registration *reg, *treg;
++	unsigned long flags;
 +
-+	for (i = 0; i < ARRAY_SIZE(int3472_gpio_map); i++) {
-+		/*
-+		 * Map the firmware-provided GPIO to whatever a driver expects
-+		 * (as in DT bindings). First check if the type matches with the
-+		 * GPIO map, then further check that the device _HID matches.
-+		 */
-+		if (*type != int3472_gpio_map[i].type_from)
-+			continue;
++	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
++	WARN_ON(!list_empty(&rdev->wiphy_work_list));
++	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
++	cancel_work_sync(&rdev->wiphy_work);
 +
-+		if (!acpi_dev_hid_uid_match(adev, int3472_gpio_map[i].hid, NULL))
-+			continue;
-+
-+		*type = int3472_gpio_map[i].type_to;
-+		*gpio_flags = int3472_gpio_map[i].polarity_low ?
-+			      GPIO_ACTIVE_LOW : GPIO_ACTIVE_HIGH;
-+		*func = int3472_gpio_map[i].func;
-+		return;
-+	}
-+
-+	switch (*type) {
- 	case INT3472_GPIO_TYPE_RESET:
- 		*func = "reset";
- 		*gpio_flags = GPIO_ACTIVE_LOW;
-@@ -218,7 +262,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
- 
- 	type = FIELD_GET(INT3472_GPIO_DSM_TYPE, obj->integer.value);
- 
--	int3472_get_func_and_polarity(type, &func, &gpio_flags);
-+	int3472_get_func_and_polarity(int3472->sensor, &type, &func, &gpio_flags);
- 
- 	pin = FIELD_GET(INT3472_GPIO_DSM_PIN, obj->integer.value);
- 	if (pin != agpio->pin_table[0])
+ 	rfkill_destroy(rdev->wiphy.rfkill);
+ 	list_for_each_entry_safe(reg, treg, &rdev->beacon_registrations, list) {
+ 		list_del(&reg->list);
 -- 
 2.39.5
 
