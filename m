@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF62A69115
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63437A690C8
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B9E4161094
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16BAB8A1A4A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CC3221725;
-	Wed, 19 Mar 2025 14:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2661DDA17;
+	Wed, 19 Mar 2025 14:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wa3pZehW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgd86IFC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FC620551C;
-	Wed, 19 Mar 2025 14:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6551E5B8D;
+	Wed, 19 Mar 2025 14:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395213; cv=none; b=FcTCpzN5defqQVnMLALfpKtVr6opy36ujbH34COs+HORHd3X7jhrxpNLQ1mfp/xBeEEoB5aSFS58TuZhBaF08OFfcC3F6IERsa/qJ2hdZpRhXSAL41fYvgSFk9cyE7ge3+jQoYPC66M0/09FpTNW5GppOptRHcbAlAlIE6FqEYo=
+	t=1742395108; cv=none; b=SG2vAstlbaYpD290bDVgiRyZxNbZDReqVH6nnIFVqKMm/w6utVXF8xgV5AkH2iQT/Bsa9z9hA6oblTz7O0Qj4y5ZGRgeAMCV/6/sotDieQPqQmn1qHcCKXb/O65ofJ9lp2uQOIW8sleHspWg2s2Erck8Uv9hvT9h5WHFEbQ4zeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395213; c=relaxed/simple;
-	bh=LwRMma4ZXe+D79z72hixW3cKZn5c+aurrsW8oEI/M3w=;
+	s=arc-20240116; t=1742395108; c=relaxed/simple;
+	bh=MzO105wdm3+feqLmFjX1vRJUwKcHBK4/PDf3sTBhaZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWow9a71qeOzfNukqeUC+mnUEeLEF5xX2JDxiwZiD+7K7AzOlxAcm9vOtvGOOTZV/czXoWLPdVNqnhVW0AEBG5rhMVigqcJzJ2Ogh8eG9rzM8tiG51NU7+Wi2TWFnfS2PyTsHBRuauf2ibtCu3/FDQ1+26BfOJO0/RHzRFY2ZPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wa3pZehW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ECAC4CEE4;
-	Wed, 19 Mar 2025 14:40:13 +0000 (UTC)
+	 MIME-Version; b=pUqABfKNvR8bbkZ8BLQ7WOYapBQXdor6e1wXjSqrZ3jeVdhs2/3GX8F1PTpzHzA+cFM68xPV50L40ciba0729QBN5CzUUDz+vEUo8gkW8eOLLsFFXSkEcqQAmMMGl5DIlMVgJ/I1kXzqls/1cdAUM2O/7Sj4Dc4mUreDjbrNiPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgd86IFC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D9BC4CEE4;
+	Wed, 19 Mar 2025 14:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395213;
-	bh=LwRMma4ZXe+D79z72hixW3cKZn5c+aurrsW8oEI/M3w=;
+	s=korg; t=1742395108;
+	bh=MzO105wdm3+feqLmFjX1vRJUwKcHBK4/PDf3sTBhaZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wa3pZehWYriK/ACH2oGqNof4DpvIxiG5L9cpojk0SECKk2AGja/ZvDB2RxwvVl/dI
-	 0e547X+iAYznC1DOYDVrXKAcm+S4ajurKVhPXYqDrIWS2qORcwyVuFYqKHmKUBYSHq
-	 ftdIFaAu97yHMns7SJg0xgQ6nGADyILCscKCYKfw=
+	b=bgd86IFCHz/I/rvMj/r2LSR7NLwsCY9VHXU7NeNmtpTHYNg93mkKiAFzHVoIMDWRT
+	 65oK8sugG0pFB4/hiMwA4IhgOUhWnDg9JoQ1RRm9cpkSxBZUdeh2bG0NH41yZRmi3/
+	 LulTQXv/rD8ToijoSTcsDvNc8wPPhlcKr/b4R5/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/166] ASoC: tas2770: Fix volume scale
-Date: Wed, 19 Mar 2025 07:30:54 -0700
-Message-ID: <20250319143022.268414920@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>
+Subject: [PATCH 6.12 162/231] rust: lockdep: Remove support for dynamically allocated LockClassKeys
+Date: Wed, 19 Mar 2025 07:30:55 -0700
+Message-ID: <20250319143030.842866991@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Mitchell Levy <levymitchell0@gmail.com>
 
-[ Upstream commit 579cd64b9df8a60284ec3422be919c362de40e41 ]
+commit 966944f3711665db13e214fef6d02982c49bb972 upstream.
 
-The scale starts at -100dB, not -128dB.
+Currently, dynamically allocated LockCLassKeys can be used from the Rust
+side without having them registered. This is a soundness issue, so
+remove them.
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2770-v1-1-cf50ff1d59a3@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6ea5aa08857a ("rust: sync: introduce `LockClassKey`")
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250307232717.1759087-11-boqun.feng@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/tas2770.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/sync.rs |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
-index 99bf402eb5667..5c6b825c757b3 100644
---- a/sound/soc/codecs/tas2770.c
-+++ b/sound/soc/codecs/tas2770.c
-@@ -508,7 +508,7 @@ static int tas2770_codec_probe(struct snd_soc_component *component)
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -27,28 +27,20 @@ pub struct LockClassKey(Opaque<bindings:
+ unsafe impl Sync for LockClassKey {}
+ 
+ impl LockClassKey {
+-    /// Creates a new lock class key.
+-    pub const fn new() -> Self {
+-        Self(Opaque::uninit())
+-    }
+-
+     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+         self.0.get()
+     }
  }
  
- static DECLARE_TLV_DB_SCALE(tas2770_digital_tlv, 1100, 50, 0);
--static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -12750, 50, 0);
-+static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -10050, 50, 0);
- 
- static const struct snd_kcontrol_new tas2770_snd_controls[] = {
- 	SOC_SINGLE_TLV("Speaker Playback Volume", TAS2770_PLAY_CFG_REG2,
--- 
-2.39.5
-
+-impl Default for LockClassKey {
+-    fn default() -> Self {
+-        Self::new()
+-    }
+-}
+-
+ /// Defines a new static lock class and returns a pointer to it.
+ #[doc(hidden)]
+ #[macro_export]
+ macro_rules! static_lock_class {
+     () => {{
+-        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
++        static CLASS: $crate::sync::LockClassKey =
++            // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
++            // lock_class_key
++            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
+         &CLASS
+     }};
+ }
 
 
 
