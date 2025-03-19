@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BE0A69099
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F676A691F4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:59:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD0C51652D2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CB9619C754D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7001EF39E;
-	Wed, 19 Mar 2025 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93431CAA86;
+	Wed, 19 Mar 2025 14:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cesiRGd6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLxecmpe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC421DE4C9;
-	Wed, 19 Mar 2025 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7719420C000;
+	Wed, 19 Mar 2025 14:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395154; cv=none; b=QjRHUPItGzHSudc0sgyySOZvZz3QFh/fo+UxE/ryIskldv376mB7SM//6+u5EA6o7FlXLImVB3KTSq/aneHZJ5mxn+snpG4hzi7hl+6SmaJ4/G5jEWCmMfq4+JvW9yNld/lwLKJ8XMh/tWJzvIFNoFMZOlRYF18XD2EDwAuPuYE=
+	t=1742395266; cv=none; b=ScJhGDcbB9GbTtM5xfDmjyytsnMjLdLzo1AmueFvC6Wud+NjSIZ0GB7cF5ZiPiNWs2JvzvkKONa3TAaPWDde6WCieRbwEL7J/HmS18IPAK3g257fi+DoKTXBKr0zHkDurtxobyRTIhXkiSEKR3qmLM1Ye5U1I61lM62ZwKLCn0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395154; c=relaxed/simple;
-	bh=0mUbuOg2g9QJUGtenOXRAhIqJNiPCEyqZrgbuDBFDvY=;
+	s=arc-20240116; t=1742395266; c=relaxed/simple;
+	bh=ctWKHbG5CUpW4JroOIUBXrYjSzEYAyrO/hnTtdCezDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=et7/R+BerKsEmyryFEm7cdsQNtZJEG3JJ7S4pBraeub0ZyMKdO4AFbeKmMn4Ke8Dj+cRA5s+qElhtJf7ffeC2eawHMobaEVGZuwruMl69/pt5swTc/XDraXZqZoz6sVUCpD8bNCesr5uZaOjHqhH4YWcrnaLTRW5j8NAq2bhq/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cesiRGd6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D2AC4CEE4;
-	Wed, 19 Mar 2025 14:39:14 +0000 (UTC)
+	 MIME-Version; b=CBZi2IK/RbQFZrsvqr/idppC8DQIJkn4v1ikGSyL1zQO2pwEDQuaB2GxuXUL8ZZ41RCaQZk3jPgYbpVi5hnOsGYQpMRm2pA1d/HDjNey4/ruEU1hMMkdA7qp6KPnbSLm2ON8E5r9ejUAKZT2hiJjXxuzDQyxlzuGqAEy8o6Nazc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLxecmpe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF18C4CEE4;
+	Wed, 19 Mar 2025 14:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395154;
-	bh=0mUbuOg2g9QJUGtenOXRAhIqJNiPCEyqZrgbuDBFDvY=;
+	s=korg; t=1742395266;
+	bh=ctWKHbG5CUpW4JroOIUBXrYjSzEYAyrO/hnTtdCezDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cesiRGd6B3WRyuoQDfjF3DyE5RsqragG1tGtUQTrx5dnNrSLx21SxJYvzQPK1tjJW
-	 GUSZZKMeDGdc4eWiMz7biocGAkpFYzVEFiWjEK/manieaTY14GCUnYQ0OE+S3UvDNI
-	 Q3TNxUusRfFCvcu9rN/5BifygQsLNuNzFbZ81al8=
+	b=iLxecmpe12yLmn/CUwrKMYf+QqyhGV/EJrrPmCGIZ00tYDnvYOgHrXMzcRAdKFYCj
+	 OEKPmcmSnuOz1tin2n0797ZuUg/gtW7Jm75HQv7AvrbybC6ENNR5RxSn+cnFd9psgH
+	 mAYfe5c8tEIf4qcYcVC4i9SNx0UzIaBkdqZiQuBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 230/231] HID: apple: disable Fn key handling on the Omoton KB066
-Date: Wed, 19 Mar 2025 07:32:03 -0700
-Message-ID: <20250319143032.522635845@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 153/166] i2c: ali1535: Fix an error handling path in ali1535_probe()
+Date: Wed, 19 Mar 2025 07:32:04 -0700
+Message-ID: <20250319143024.172268325@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 221cea1003d8a412e5ec64a58df7ab19b654f490 upstream.
+[ Upstream commit 9b5463f349d019a261f1e80803447efca3126151 ]
 
-Remove the fixup to make the Omoton KB066's F6 key F6 when not holding
-Fn. That was really just a hack to allow typing F6 in fnmode>0, and it
-didn't fix any of the other F keys that were likewise untypable in
-fnmode>0. Instead, because the Omoton's Fn key is entirely internal to
-the keyboard, completely disable Fn key translation when an Omoton is
-detected, which will prevent the hid-apple driver from interfering with
-the keyboard's built-in Fn key handling. All of the F keys, including
-F6, are then typable when Fn is held.
+If i2c_add_adapter() fails, the request_region() call in ali1535_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
 
-The Omoton KB066 and the Apple A1255 both have HID product code
-05ac:022c. The self-reported name of every original A1255 when they left
-the factory was "Apple Wireless Keyboard". By default, Mac OS changes
-the name to "<username>'s keyboard" when pairing with the keyboard, but
-Mac OS allows the user to set the internal name of Apple keyboards to
-anything they like. The Omoton KB066's name, on the other hand, is not
-configurable: It is always "Bluetooth Keyboard". Because that name is so
-generic that a user might conceivably use the same name for a real Apple
-keyboard, detect Omoton keyboards based on both having that exact name
-and having HID product code 022c.
-
-Fixes: 819083cb6eed ("HID: apple: fix up the F6 key on the Omoton KB066 keyboard")
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Reviewed-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/0daf63d7a2ce74c02e2664ba805bbfadab7d25e5.1741031571.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-ali1535.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -378,6 +378,12 @@ static bool apple_is_non_apple_keyboard(
- 	return false;
+diff --git a/drivers/i2c/busses/i2c-ali1535.c b/drivers/i2c/busses/i2c-ali1535.c
+index ee83c4581bce0..cd2c8afebe798 100644
+--- a/drivers/i2c/busses/i2c-ali1535.c
++++ b/drivers/i2c/busses/i2c-ali1535.c
+@@ -490,6 +490,8 @@ MODULE_DEVICE_TABLE(pci, ali1535_ids);
+ 
+ static int ali1535_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ {
++	int ret;
++
+ 	if (ali1535_setup(dev)) {
+ 		dev_warn(&dev->dev,
+ 			"ALI1535 not detected, module not inserted.\n");
+@@ -501,7 +503,15 @@ static int ali1535_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 
+ 	snprintf(ali1535_adapter.name, sizeof(ali1535_adapter.name),
+ 		"SMBus ALI1535 adapter at %04x", ali1535_offset);
+-	return i2c_add_adapter(&ali1535_adapter);
++	ret = i2c_add_adapter(&ali1535_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(ali1535_smba, ALI1535_SMB_IOSIZE);
++	return ret;
  }
  
-+static bool apple_is_omoton_kb066(struct hid_device *hdev)
-+{
-+	return hdev->product == USB_DEVICE_ID_APPLE_ALU_WIRELESS_ANSI &&
-+		strcmp(hdev->name, "Bluetooth Keyboard") == 0;
-+}
-+
- static inline void apple_setup_key_translation(struct input_dev *input,
- 		const struct apple_key_translation *table)
- {
-@@ -546,9 +552,6 @@ static int hidinput_apple_event(struct h
- 		}
- 	}
- 
--	if (usage->hid == 0xc0301) /* Omoton KB066 quirk */
--		code = KEY_F6;
--
- 	if (usage->code != code) {
- 		input_event_with_scancode(input, usage->type, code, usage->hid, value);
- 
-@@ -728,7 +731,7 @@ static int apple_input_configured(struct
- {
- 	struct apple_sc *asc = hid_get_drvdata(hdev);
- 
--	if ((asc->quirks & APPLE_HAS_FN) && !asc->fn_found) {
-+	if (((asc->quirks & APPLE_HAS_FN) && !asc->fn_found) || apple_is_omoton_kb066(hdev)) {
- 		hid_info(hdev, "Fn key not found (Apple Wireless Keyboard clone?), disabling Fn key handling\n");
- 		asc->quirks &= ~APPLE_HAS_FN;
- 	}
+ static void ali1535_remove(struct pci_dev *dev)
+-- 
+2.39.5
+
 
 
 
