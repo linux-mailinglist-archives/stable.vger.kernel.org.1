@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-125556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4063A690FA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BDCEA69075
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86A927A832C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0CE87A9212
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04ED122259E;
-	Wed, 19 Mar 2025 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE6221CC4E;
+	Wed, 19 Mar 2025 14:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6m80fNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhJxtYS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76791DF258;
-	Wed, 19 Mar 2025 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2C31C84A9;
+	Wed, 19 Mar 2025 14:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395272; cv=none; b=srPCpc3fcOm2kiVBsJvqQzt8CJUifWRIgw/mM6E7X8zSkW8KD68U2jCQ5TWSxI3P9IqZjLE2k1F0oQEFGzkELLVurBds6HBOtuh3X5V3Vog2JJTF9SJPEh3tZgnFbysy8fBFB3W6Oahoa4CXEtoL2rqLCA3eNlvaixJrrp0RPtg=
+	t=1742395136; cv=none; b=dHI1Tvj3jYEhSble+JdP5qBUSy79no6JG/Z61kbxHNxeJZMJa20oSu+4SOmtY4Cmc1GKpm/DBXnXJ/+OFtKuFaHc1IQS4Wrw/bv8dM7ZXOmOOVZXrEVEqkO7VVbmNHV6RfUV+mGGrdoJ/+OxX/CvWRi73YH0EUjTJ97l0+uOzQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395272; c=relaxed/simple;
-	bh=K7r8tFroOS4xG336iIuEwdTIa9jRtg7p2A2pHiqEd4k=;
+	s=arc-20240116; t=1742395136; c=relaxed/simple;
+	bh=+YQC/8lQcc3e2Jl+4FrMCoXw4mW+qORrhVuwiTo0t2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCnvObfOlNItGasII7ey4OCjPoY7jBUut1FPlZsQnGvkiK5LctoomFZYsA6pmXUd//gEHjVlLqHZiQEAgt0S+GMR0NhdSlqkyr/+dRAheB6B/LFWWajtWH6ZN1Sm9CA/d2PY3w5/+m3tya7TKgQnQFAPDuKVDqIbuEwWvEyCpP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6m80fNP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF94C4CEE4;
-	Wed, 19 Mar 2025 14:41:12 +0000 (UTC)
+	 MIME-Version; b=iNavoi2N8g5R66YK4uDLqfG7zA40wjzypVRIi59aqQHakL6XS2uiO8G+RWvqgHxYrEyuFFgPnY5nuWHxgZ4yeOuxN3x6VbeUPRVQTrqpbRtfL08ALQMc7cTiAUZyV/TWdyIU4bnMXsa3xQoHLnza1fwf/wX2RcANF8RxqA0K8HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhJxtYS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B5DC4CEE4;
+	Wed, 19 Mar 2025 14:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395272;
-	bh=K7r8tFroOS4xG336iIuEwdTIa9jRtg7p2A2pHiqEd4k=;
+	s=korg; t=1742395135;
+	bh=+YQC/8lQcc3e2Jl+4FrMCoXw4mW+qORrhVuwiTo0t2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6m80fNPtDkSI5ZzILb+phXX24mI0dCTKkLI9j/utzgA74KjH/s/zKrUh1GLiYk23
-	 icNNFgVVziFvG7PmeQ+wC/uOrt0+0RLdJYUU8wywqSxRB66hP5FKNOI1c4l5w606xz
-	 UXn6O4x+oHm7nGoOYR2ahTBcAv2rA9TR410nKf50=
+	b=yhJxtYS8l4L40vWFoBvfD8J4RGKy68to22CikNEpmgg/nHxoTuvS00Tc9N/K9JLyp
+	 ks2rqrVnS0jV5ppPzD+7DeCnBNJacEyHS935/EwvYlUwT0qtUDoKQxvJ2WXJwYE4W6
+	 lWknyit55fbOKwYnlYlpCAU+3YB3Mvn3+lbprknQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 123/166] drm/amd/display: Disable unneeded hpd interrupts during dm_init
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 201/231] ASoC: cs42l43: Fix maximum ADC Volume
 Date: Wed, 19 Mar 2025 07:31:34 -0700
-Message-ID: <20250319143023.346326455@linuxfoundation.org>
+Message-ID: <20250319143031.810177188@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,166 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Li <sunpeng.li@amd.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 40b8c14936bd2726354c856251f6baed9869e760 upstream.
+[ Upstream commit e26f1cfeac6712516bfeed80890da664f4f2e88a ]
 
-[Why]
+The range of ADC volume is -1 -> 3 (-6 to 18dB) so the number of levels
+should actually be 4.
 
-It seems HPD interrupts are enabled by default for all connectors, even
-if the hpd source isn't valid. An eDP for example, does not have a valid
-hpd source (but does have a valid hpdrx source; see construct_phy()).
-Thus, eDPs should have their hpd interrupt disabled.
-
-In the past, this wasn't really an issue. Although the driver gets
-interrupted, then acks by writing to hw registers, there weren't any
-subscribed handlers that did anything meaningful (see
-register_hpd_handlers()).
-
-But things changed with the introduction of IPS. s2idle requires that
-the driver allows IPS for DMUB fw to put hw to sleep. Since register
-access requires hw to be awake, the driver will block IPS entry to do
-so. And no IPS means no hw sleep during s2idle.
-
-This was the observation on DCN35 systems with an eDP. During suspend,
-the eDP toggled its hpd pin as part of the panel power down sequence.
-The driver was then interrupted, and acked by writing to registers,
-blocking IPS entry.
-
-[How]
-
-Since DC marks eDP connections as having invalid hpd sources (see
-construct_phy()), DM should disable them at the hw level. Do so in
-amdgpu_dm_hpd_init() by disabling all hpd ints first, then selectively
-enabling ones for connectors that have valid hpd sources.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7b1ba19eb15f88e70782642ce2d934211269337b)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250306133254.1861046-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c |   64 ++++++++++++------
- 1 file changed, 45 insertions(+), 19 deletions(-)
+ sound/soc/codecs/cs42l43.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-@@ -891,8 +891,16 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
- 	struct drm_device *dev = adev_to_drm(adev);
- 	struct drm_connector *connector;
- 	struct drm_connector_list_iter iter;
-+	int irq_type;
- 	int i;
+diff --git a/sound/soc/codecs/cs42l43.c b/sound/soc/codecs/cs42l43.c
+index 8ec4083cd3b80..2c43e4a6751b1 100644
+--- a/sound/soc/codecs/cs42l43.c
++++ b/sound/soc/codecs/cs42l43.c
+@@ -1146,7 +1146,7 @@ static const struct snd_kcontrol_new cs42l43_controls[] = {
  
-+	/* First, clear all hpd and hpdrx interrupts */
-+	for (i = DC_IRQ_SOURCE_HPD1; i <= DC_IRQ_SOURCE_HPD6RX; i++) {
-+		if (!dc_interrupt_set(adev->dm.dc, i, false))
-+			drm_err(dev, "Failed to clear hpd(rx) source=%d on init\n",
-+				i);
-+	}
-+
- 	drm_connector_list_iter_begin(dev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
- 		struct amdgpu_dm_connector *amdgpu_dm_connector =
-@@ -900,10 +908,31 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
+ 	SOC_DOUBLE_R_SX_TLV("ADC Volume", CS42L43_ADC_B_CTRL1, CS42L43_ADC_B_CTRL2,
+ 			    CS42L43_ADC_PGA_GAIN_SHIFT,
+-			    0xF, 5, cs42l43_adc_tlv),
++			    0xF, 4, cs42l43_adc_tlv),
  
- 		const struct dc_link *dc_link = amdgpu_dm_connector->dc_link;
- 
-+		/*
-+		 * Get a base driver irq reference for hpd ints for the lifetime
-+		 * of dm. Note that only hpd interrupt types are registered with
-+		 * base driver; hpd_rx types aren't. IOW, amdgpu_irq_get/put on
-+		 * hpd_rx isn't available. DM currently controls hpd_rx
-+		 * explicitly with dc_interrupt_set()
-+		 */
- 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
--			dc_interrupt_set(adev->dm.dc,
--					dc_link->irq_source_hpd,
--					true);
-+			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
-+			/*
-+			 * TODO: There's a mismatch between mode_info.num_hpd
-+			 * and what bios reports as the # of connectors with hpd
-+			 * sources. Since the # of hpd source types registered
-+			 * with base driver == mode_info.num_hpd, we have to
-+			 * fallback to dc_interrupt_set for the remaining types.
-+			 */
-+			if (irq_type < adev->mode_info.num_hpd) {
-+				if (amdgpu_irq_get(adev, &adev->hpd_irq, irq_type))
-+					drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n",
-+						dc_link->irq_source_hpd);
-+			} else {
-+				dc_interrupt_set(adev->dm.dc,
-+						 dc_link->irq_source_hpd,
-+						 true);
-+			}
- 		}
- 
- 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
-@@ -913,12 +942,6 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
- 		}
- 	}
- 	drm_connector_list_iter_end(&iter);
--
--	/* Update reference counts for HPDs */
--	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
--		if (amdgpu_irq_get(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
--			drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n", i);
--	}
- }
- 
- /**
-@@ -934,7 +957,7 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
- 	struct drm_device *dev = adev_to_drm(adev);
- 	struct drm_connector *connector;
- 	struct drm_connector_list_iter iter;
--	int i;
-+	int irq_type;
- 
- 	drm_connector_list_iter_begin(dev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
-@@ -943,9 +966,18 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
- 		const struct dc_link *dc_link = amdgpu_dm_connector->dc_link;
- 
- 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
--			dc_interrupt_set(adev->dm.dc,
--					dc_link->irq_source_hpd,
--					false);
-+			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
-+
-+			/* TODO: See same TODO in amdgpu_dm_hpd_init() */
-+			if (irq_type < adev->mode_info.num_hpd) {
-+				if (amdgpu_irq_put(adev, &adev->hpd_irq, irq_type))
-+					drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n",
-+						dc_link->irq_source_hpd);
-+			} else {
-+				dc_interrupt_set(adev->dm.dc,
-+						 dc_link->irq_source_hpd,
-+						 false);
-+			}
- 		}
- 
- 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
-@@ -955,10 +987,4 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
- 		}
- 	}
- 	drm_connector_list_iter_end(&iter);
--
--	/* Update reference counts for HPDs */
--	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
--		if (amdgpu_irq_put(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
--			drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n", i);
--	}
- }
+ 	SOC_DOUBLE("PDM1 Invert Switch", CS42L43_DMIC_PDM_CTRL,
+ 		   CS42L43_PDM1L_INV_SHIFT, CS42L43_PDM1R_INV_SHIFT, 1, 0),
+-- 
+2.39.5
+
 
 
 
