@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-125135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C22A692AA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:13:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F861A692FB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D7551B862C4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A1361889AE2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022871F9A91;
-	Wed, 19 Mar 2025 14:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C3421C19C;
+	Wed, 19 Mar 2025 14:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1U7oZVNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uuqm0bqx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FF71C9EAA;
-	Wed, 19 Mar 2025 14:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DBA21C18C;
+	Wed, 19 Mar 2025 14:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394978; cv=none; b=tXdpmnuqnALMqNU9BI3Lh1klLSd94MwoD5srimbEusoNXynRLL6UfiKQxp/Ippxu6h9EzGpihmlDkWLnXEff6KOE90zU/ZVfbkUvv0/CsYF/D7+tlVYaw1p/mEEXb3K4fDeY1WoI3iAH/b+t/rniWj6FDS0inoGtP8TmqXdfaPc=
+	t=1742395129; cv=none; b=XvdLk3kHNlKiDPZR+D+VvIybaYN/eWbvrcqkF4xGp62Ym27VMh7aQlVPT8EXBv4PZMEbXlJrKMJE8knPHYI+FBhoNbndVrVPq37U8xEldxWH7nPWKf0z30TcfuOrdEdCUYFQap6LL3Yi/sxMM823fQYM5ClHg/gDpGeZohQT/XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394978; c=relaxed/simple;
-	bh=/JeC3BJOtsZupxtO2USn206giP/g7VQ2r/ZOGYiGJWY=;
+	s=arc-20240116; t=1742395129; c=relaxed/simple;
+	bh=Ude4ER+MS2PrsUY2BVMcMXub/pPuDQslhLsg8/G1sBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5vaKLcMx4mjFDdNke5wvWRUaX6XHsV1yWlsKtkcU4TU3soR1w62wHV+oS1xySH4nrNqM3gURoIoi838cLMdY3Yh0L2iYMcbF9rJj7GaF02Dxh8yQZIlsXHhHOkTVcC7BbK0H5zeP2nUMgrQbr2TsnGkzX04gAfO3geX7o54G5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1U7oZVNP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2ABC4CEE4;
-	Wed, 19 Mar 2025 14:36:18 +0000 (UTC)
+	 MIME-Version; b=KmxtykSMXYbOKYX+YKe2aMaYyipftnSjrW3c3CbPXR3kJjGQKIh6CUklPPjmStjbYmt+pmRiNH2q+C1zlJPxYA19U17MNr3ZjW5ytikcpO2Mc9E8TZ6E9pk1p8jX0FyxbE5L5GM7/KId1V2amxKXombJsk/00cLoP7Lifgt+3L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uuqm0bqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2141BC4CEE9;
+	Wed, 19 Mar 2025 14:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394978;
-	bh=/JeC3BJOtsZupxtO2USn206giP/g7VQ2r/ZOGYiGJWY=;
+	s=korg; t=1742395129;
+	bh=Ude4ER+MS2PrsUY2BVMcMXub/pPuDQslhLsg8/G1sBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1U7oZVNPPkP6w/+rU1EDbHYbsxOFZsnx3oQEsrFEgaVDEmDMJDBD3dIBn5FNto4/N
-	 y3LV6BMlEWrVYQAJ1yh6/sAONsVACEMouup5ErRtTRuocCrizg9SVtWVWY1KearhL2
-	 2YnrbbAYHwmk5y5KY3z3fbQkWZuuuU0kjIYmP5AM=
+	b=Uuqm0bqxfKcohGAOu9tQ+0jI9q2Z3OFEvqaWVE031+//m61c4ZA8akKdR9etxruRZ
+	 8U9Bq+rp6kGHDylj5KBm7Ve0GHfflW1658bPgsD4VNKbbp9lVqdhHRGjeMkEbNvnH+
+	 oY6+D+JUTn8W+UqcSKq0058XyToDAQ5bmFUwrsTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 216/241] nvme: move error logging from nvme_end_req() to __nvme_end_req()
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 193/231] qlcnic: fix memory leak issues in qlcnic_sriov_common.c
 Date: Wed, 19 Mar 2025 07:31:26 -0700
-Message-ID: <20250319143033.093821683@linuxfoundation.org>
+Message-ID: <20250319143031.609442990@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit e5c2bcc0cd47321d78bb4e865d7857304139f95d ]
+commit d2b9d97e89c79c95f8b517e4fa43fd100f936acc upstream.
 
-Before the Commit 1f47ed294a2b ("block: cleanup and fix batch completion
-adding conditions"), blk_mq_add_to_batch() did not add failed
-passthrough requests to batch, and returned false. After the commit,
-blk_mq_add_to_batch() always adds passthrough requests to batch
-regardless of whether the request failed or not, and returns true. This
-affected error logging feature in the NVME driver.
+Add qlcnic_sriov_free_vlans() in qlcnic_sriov_alloc_vlans() if
+any sriov_vlans fails to be allocated.
+Add qlcnic_sriov_free_vlans() to free the memory allocated by
+qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
+be allocated.
 
-Before the commit, the call chain of failed passthrough request was as
-follows:
-
-nvme_handle_cqe()
- blk_mq_add_to_batch() .. false is returned, then call nvme_pci_complete_rq()
- nvme_pci_complete_rq()
-  nvme_complete_rq()
-   nvme_end_req()
-    nvme_log_err_passthru() .. error logging
-    __nvme_end_req()        .. end of the rqeuest
-
-After the commit, the call chain is as follows:
-
-nvme_handle_cqe()
- blk_mq_add_to_batch() .. true is returned, then set nvme_pci_complete_batch()
- ..
- nvme_pci_complete_batch()
-  nvme_complete_batch()
-   nvme_complete_batch_req()
-    __nvme_end_req() .. end of the request, without error logging
-
-To make the error logging feature work again for passthrough requests, move the
-nvme_log_err_passthru() call from nvme_end_req() to __nvme_end_req().
-
-While at it, move nvme_log_error() call for non-passthrough requests together
-with nvme_log_err_passthru(). Even though the trigger commit does not affect
-non-passthrough requests, move it together for code simplicity.
-
-Fixes: 1f47ed294a2b ("block: cleanup and fix batch completion adding conditions")
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250311104359.1767728-2-shinichiro.kawasaki@wdc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250307094952.14874-1-haoxiang_li2024@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index cf0e7c6d5502b..e4034cec59237 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -431,6 +431,12 @@ static inline void nvme_end_req_zoned(struct request *req)
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_m
  
- static inline void __nvme_end_req(struct request *req)
- {
-+	if (unlikely(nvme_req(req)->status && !(req->rq_flags & RQF_QUIET))) {
-+		if (blk_rq_is_passthrough(req))
-+			nvme_log_err_passthru(req);
-+		else
-+			nvme_log_error(req);
+ 	num_vlans = sriov->num_allowed_vlans;
+ 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
+-	if (!sriov->allowed_vlans)
++	if (!sriov->allowed_vlans) {
++		qlcnic_sriov_free_vlans(adapter);
+ 		return -ENOMEM;
 +	}
- 	nvme_end_req_zoned(req);
- 	nvme_trace_bio_complete(req);
- 	if (req->cmd_flags & REQ_NVME_MPATH)
-@@ -441,12 +447,6 @@ void nvme_end_req(struct request *req)
- {
- 	blk_status_t status = nvme_error_status(nvme_req(req)->status);
  
--	if (unlikely(nvme_req(req)->status && !(req->rq_flags & RQF_QUIET))) {
--		if (blk_rq_is_passthrough(req))
--			nvme_log_err_passthru(req);
--		else
--			nvme_log_error(req);
--	}
- 	__nvme_end_req(req);
- 	blk_mq_end_request(req, status);
- }
--- 
-2.39.5
-
+ 	vlans = (u16 *)&cmd->rsp.arg[3];
+ 	for (i = 0; i < num_vlans; i++)
+@@ -2167,8 +2169,10 @@ int qlcnic_sriov_alloc_vlans(struct qlcn
+ 		vf = &sriov->vf_info[i];
+ 		vf->sriov_vlans = kcalloc(sriov->num_allowed_vlans,
+ 					  sizeof(*vf->sriov_vlans), GFP_KERNEL);
+-		if (!vf->sriov_vlans)
++		if (!vf->sriov_vlans) {
++			qlcnic_sriov_free_vlans(adapter);
+ 			return -ENOMEM;
++		}
+ 	}
+ 
+ 	return 0;
 
 
 
