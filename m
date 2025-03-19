@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-125455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0D4A6916B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798A6A69174
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDB2B8A0136
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C2DB1B8824C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8C2221569;
-	Wed, 19 Mar 2025 14:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A941E5201;
+	Wed, 19 Mar 2025 14:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0xi92E/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uK+qtDWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B36D1C8618;
-	Wed, 19 Mar 2025 14:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9052521A443;
+	Wed, 19 Mar 2025 14:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395199; cv=none; b=ALsxJ7yYScM8y3YZ3ty1uWqVqIc6+xFAOcw5nH4kxsMIjtbo4WADH1TboCOTShE4mG4kVKAeRpUYpNRjBsJu1wqu+cHjZQo1+5MzeAwNbQgLzyfq3UhhEpuXpdD3UHBGv99MhP6SsnCJI0mcrSdgVnW0Iq4ofpUensCUnzevuoY=
+	t=1742395091; cv=none; b=R6ZMn2R616hqjHKKym8c8/QMOcmkRGhsSPPNG2kXncfhobJJHjpA/b+H7Kbje+JTLaPSBbOPEUcsLOHquRwWw61phIXkdFBaq1fOZMTXGAB6faU+8INK+qB1RyQ56DDevCtpeHH3Ra7FArUhFwD8Ok/wXMIuCuIzR3HBCcx+5KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395199; c=relaxed/simple;
-	bh=kDIZvDqYvmYW8ax17i78/7aphxkRU2Y90nxhfHACy84=;
+	s=arc-20240116; t=1742395091; c=relaxed/simple;
+	bh=tXFRggG4YInR5P+SE6u3g49ilDd0IhP+qJiU7y/MtL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLy4VzvQKYKiPNchCgsTY/S9bmmjItC1pSq4/g4kOG1cRsrKj48z3VKbaSy/ocY3T+tf8B4bisi//19ngNbIlXuKzfE+TXr4gtg5HKsyhPfZa2P/DDgJiC3yXE5pHiPLF4cerNSlVMvdXnXCAGFbTckytTlFNPg70JTtAr5xW5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0xi92E/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623C6C4CEE4;
-	Wed, 19 Mar 2025 14:39:59 +0000 (UTC)
+	 MIME-Version; b=WQ6H4UIYP89c4R9ve3Eqbf6rcDXQoEoxGRPb8ffLcxGZ2+XXhlA7RpJGpnogg54KdZTscKtFmemxo5vhKnViQNpxmyXJCr4umI7iHUmyzF8lv3j3Iz2VWwMpsoLzarRExty9jvWmeG1P3h8QHU4FPFHwRIM3iTi1GH+nPquHmxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uK+qtDWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680F1C4CEE4;
+	Wed, 19 Mar 2025 14:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395199;
-	bh=kDIZvDqYvmYW8ax17i78/7aphxkRU2Y90nxhfHACy84=;
+	s=korg; t=1742395091;
+	bh=tXFRggG4YInR5P+SE6u3g49ilDd0IhP+qJiU7y/MtL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0xi92E/FZkuYGrpGrzXOZcvXYyMip4a4yaQjidNGXLdWxsLccjt/YTpHgLOUGUQt
-	 ytuZYeng2pIqq+r1KNTYgLSnML4ut/UN7EJUAnUmdX8w4OZWqNKzN5diVccWbEpGHb
-	 a2KmjiIIGRWbkHaQvTLie7+sbbP0iDPDC7v5EIfA=
+	b=uK+qtDWOKy3TgSq/qqm04lr+o7BCHHDz/iZSAk96zJF+IJnnrc6vRM5o/y2IiLJci
+	 3RSha/o/EwzlvRINIaD+5uXSUIrK2reo/itI8zw1ijIU0pgfHP/2BAeAbMBulWxyvt
+	 vdI1DIiUis9KWVHNLvTRmljaxkp+elVgGWue8vvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/166] s390/cio: Fix CHPID "configure" attribute caching
+Subject: [PATCH 6.12 139/231] mptcp: safety check before fallback
 Date: Wed, 19 Mar 2025 07:30:32 -0700
-Message-ID: <20250319143021.660076820@linuxfoundation.org>
+Message-ID: <20250319143030.272827716@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 32ae4a2992529e2c7934e422035fad1d9b0f1fb5 ]
+[ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
 
-In some environments, the SCLP firmware interface used to query a
-CHPID's configured state is not supported. On these environments,
-rapidly reading the corresponding sysfs attribute produces inconsistent
-results:
+Recently, some fallback have been initiated, while the connection was
+not supposed to fallback.
 
-  $ cat /sys/devices/css0/chp0.00/configure
-  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
-  $ cat /sys/devices/css0/chp0.00/configure
-  3
+Add a safety check with a warning to detect when an wrong attempt to
+fallback is being done. This should help detecting any future issues
+quicker.
 
-This occurs for example when Linux is run as a KVM guest. The
-inconsistency is a result of CIO using cached results for generating
-the value of the "configure" attribute while failing to handle the
-situation where no data was returned by SCLP.
-
-Fix this by not updating the cache-expiration timestamp when SCLP
-returns no data. With the fix applied, the system response is
-consistent:
-
-  $ cat /sys/devices/css0/chp0.00/configure
-  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
-  $ cat /sys/devices/css0/chp0.00/configure
-  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
-
-Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Tested-by: Eric Farman <farman@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/chp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/s390/cio/chp.c b/drivers/s390/cio/chp.c
-index 5440f285f3494..7e00c061538db 100644
---- a/drivers/s390/cio/chp.c
-+++ b/drivers/s390/cio/chp.c
-@@ -661,7 +661,8 @@ static int info_update(void)
- 	if (time_after(jiffies, chp_info_expires)) {
- 		/* Data is too old, update. */
- 		rc = sclp_chp_read_info(&chp_info);
--		chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL ;
-+		if (!rc)
-+			chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL;
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index b70a303e08287..7e2f70f22b05b 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1194,6 +1194,8 @@ static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
+ 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
+ 		return;
  	}
- 	mutex_unlock(&info_lock);
++	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
++		return;
+ 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
+ }
  
 -- 
 2.39.5
