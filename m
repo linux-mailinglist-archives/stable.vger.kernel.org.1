@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E58A69313
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6354A6933C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:25:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166DE1BA03DB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ED191BA12F5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E7721CC4A;
-	Wed, 19 Mar 2025 14:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0E0221F2D;
+	Wed, 19 Mar 2025 14:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGmEGkJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdX/3h1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284731EF360;
-	Wed, 19 Mar 2025 14:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF6720ADF9;
+	Wed, 19 Mar 2025 14:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395135; cv=none; b=qESVvp5qzmYjtK0frrL5P4vBpuJqyVjAW2aI1JZrq5dyNL/P4EmywoZMcBHQa/psQZwmm4gklGp5J15Pv3BS33XdTk+vQXtCp/DhMSTUzeKIAigXRPXm6Z8bboIOqCjBbR4UiwgaqHXH2lcLOr4c0TpVCqcPEtRtg7V8qeJRV04=
+	t=1742395246; cv=none; b=f+b0DhmDw6TYUdSlqtQNVN4ssgNXmdPNmXcrZHob15ednsQxegShlTZxMvS8x9aFSmAOQul8gk+ScD2WWp2RRdEjrYDj0R6CE65y2H7u/rQ2N9ppCVFPv+EvmST9MycTQHDku+cMWvIeyQoVNz1yrwi/HzXRb9CNTizhIeMsBvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395135; c=relaxed/simple;
-	bh=1mpzWHJCHBqpYCHld6hvNGZjsCQitiX4LZXOpyA9NZ8=;
+	s=arc-20240116; t=1742395246; c=relaxed/simple;
+	bh=WOsOO08suYLXELe69hzgQkHOxRkyx9dl2EwqMkh6BwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFwjq29w0B64jQDA9k6GbmNpcdAPow3UNTcLn8xux9TMinnizivHyP9SlnJaNxOe8UolclwVqXvDPqoUnH9P6DUivy0F7dC5CAAM2c295xGI15ry5jsikbPG3Mj3yJmx0XJiqjbLUgslO9r5w43oXf8T9LTOA73HK3hhbrc9GUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGmEGkJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98424C4CEE4;
-	Wed, 19 Mar 2025 14:38:54 +0000 (UTC)
+	 MIME-Version; b=ehnI4xjAqJ75SSVCRyZUyKQzRObV16y9ckMyUHgqnZ6ir6+N/dIkp60zHO+7SJbc7OfyXdqdYRxJXtd8AsQtM92q6Q/xSoaAmAiyysLK2SjEqWJdCW5CPxkPoAUW8E7xv3Kw/IuxsSG872YHRWUkYYCfffkYuH0itCID2SLPN/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdX/3h1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21CDC4CEE4;
+	Wed, 19 Mar 2025 14:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395134;
-	bh=1mpzWHJCHBqpYCHld6hvNGZjsCQitiX4LZXOpyA9NZ8=;
+	s=korg; t=1742395246;
+	bh=WOsOO08suYLXELe69hzgQkHOxRkyx9dl2EwqMkh6BwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGmEGkJ31OQ9cWDyMvY3E0uEcMu3wyFwkynGMzVpcCCLLd5CWApnugTbZPNvngdNV
-	 deNkAi9PDahgrm+p0V3HfihFABsfarhip6Lw58+U/qwMCCVwGhmoGk6r3aUAIXEWy6
-	 sjOkPA0KDxoijhuoSRvePB5ea3Gr23jWpQZiENYE=
+	b=rdX/3h1z5j9eIy0sQf8kouH3+zVft7ipWxj6X/4LkK0356n+fP5mZQxgaAhAU0atR
+	 K/UeSsCLz+9ITFO3luX7dll40qutbYazy1CmGawgIabnq2DjIUya1pDSYJ2vA+iC3j
+	 Wtzbwuci85O9R5D69KsRltu9AJycfVDoUAznH+NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/231] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
-Date: Wed, 19 Mar 2025 07:31:33 -0700
-Message-ID: <20250319143031.786511818@linuxfoundation.org>
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 125/166] drm/amd/display: Assign normalized_pix_clk when color depth = 14
+Date: Wed, 19 Mar 2025 07:31:36 -0700
+Message-ID: <20250319143023.399435143@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
+commit 79e31396fdd7037c503e6add15af7cb00633ea92 upstream.
 
-Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
-pci_gfx_root in the mid_get_vbt_data().
+[WHY & HOW]
+A warning message "WARNING: CPU: 4 PID: 459 at ... /dc_resource.c:3397
+calculate_phy_pix_clks+0xef/0x100 [amdgpu]" occurs because the
+display_color_depth == COLOR_DEPTH_141414 is not handled. This is
+observed in Radeon RX 6600 XT.
 
-This change is similar to the checks implemented in mid_get_fuse_settings()
-and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
-("gma500: Final enables for Oaktrail") as "additional minor
-bulletproofing".
+It is fixed by assigning pix_clk * (14 * 3) / 24 - same as the rests.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Also fixes the indentation in get_norm_pix_clk.
 
-Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 274a87eb389f58eddcbc5659ab0b180b37e92775)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
-index 7e76790c6a81f..cba97d7db131d 100644
---- a/drivers/gpu/drm/gma500/mid_bios.c
-+++ b/drivers/gpu/drm/gma500/mid_bios.c
-@@ -279,6 +279,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
- 					    0, PCI_DEVFN(2, 0));
- 	int ret = -1;
- 
-+	if (pci_gfx_root == NULL) {
-+		WARN_ON(1);
-+		return;
-+	}
-+
- 	/* Get the address of the platform config vbt */
- 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
- 	pci_dev_put(pci_gfx_root);
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -2567,10 +2567,13 @@ static int get_norm_pix_clk(const struct
+ 			break;
+ 		case COLOR_DEPTH_121212:
+ 			normalized_pix_clk = (pix_clk * 36) / 24;
+-		break;
++			break;
++		case COLOR_DEPTH_141414:
++			normalized_pix_clk = (pix_clk * 42) / 24;
++			break;
+ 		case COLOR_DEPTH_161616:
+ 			normalized_pix_clk = (pix_clk * 48) / 24;
+-		break;
++			break;
+ 		default:
+ 			ASSERT(0);
+ 		break;
 
 
 
