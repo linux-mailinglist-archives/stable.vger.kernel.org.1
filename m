@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-125322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED26A6904F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 342BEA69187
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0CA77AE0C5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981BB8A0A1C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FF321ADAE;
-	Wed, 19 Mar 2025 14:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D783E207A20;
+	Wed, 19 Mar 2025 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUiyoTsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xFY68W4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED8621ABD2;
-	Wed, 19 Mar 2025 14:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9544620551C;
+	Wed, 19 Mar 2025 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395107; cv=none; b=Ln3GzjgBsXn0/CwVIG1rt4f5SMQ3lMFrasQb1jpgn0e0RUK7KIeU/b0jhv3IYfIrocv7zwZwFsEjBklV3LznAiqvpGX//itQMSXX5VitOiF7anhtVOERbVEMGtaUF0R4xsV8LqCbUCO7xaUyf3GLgBMLnIM60gY4x9FeCZ5rGEU=
+	t=1742395212; cv=none; b=DtRcCcBuW/qHiZnoxvbia5UdfiMpqmFrBXcUp/6+axiw2sGbBTR0YSrC7pwLv1QNjPW7oRRywLy+tvmONFNtWGCHiwFDOFj4RVBvh0RIuOUG7ozw52GokKZJi+8S7+c9f2Oun4zzyweocSIL8/8CTxedGTMA2TMRwCQSGaaU7ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395107; c=relaxed/simple;
-	bh=F6TIjrxbcnlmzv8k4iYS8LhgQ5HACgAOTUGuHFaDie8=;
+	s=arc-20240116; t=1742395212; c=relaxed/simple;
+	bh=MBdD/VPA1UmmDCHW4l6sZU7LM7yfGy8RrvkwJok6qEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ivgf5u5coMG6KZ/nKb+CwRxgakNMja9S9DALzR0+gwM8alYJkHvpNfMizJFwUaJFqv/CuoohTTynNS1y+M/JeARnRvw9E7cZn++1+Pj1pyHN+sqPMDH7sbZuR1qZAXV6PLWRD1g4AnGawUlKtKnCT2MYFW39Fp/MQBj+cw3kCNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUiyoTsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31870C4CEE4;
-	Wed, 19 Mar 2025 14:38:27 +0000 (UTC)
+	 MIME-Version; b=MOG1AULaVFlF2ctaC/0ZN2nXnQyS9cWkfPhNXDauuc1MLOsl1DaPaTGChW0IviSdORHWrkLkBPJEdMc/SWd2adMYV5TXPKUWt6PMWohxkG67PxjIl7uV9Riy9ZZOtnjl6RSU/iTbzHtY5bfo9n48lbs7QVbXGPxdxSghwZcd5io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xFY68W4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC7FC4CEE4;
+	Wed, 19 Mar 2025 14:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395107;
-	bh=F6TIjrxbcnlmzv8k4iYS8LhgQ5HACgAOTUGuHFaDie8=;
+	s=korg; t=1742395212;
+	bh=MBdD/VPA1UmmDCHW4l6sZU7LM7yfGy8RrvkwJok6qEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUiyoTskN5yLutCqmTUtztan6c3Jrbl89lkDrUBflJAPYA9M5oYanZtyVjlb3Rv4n
-	 d5A1XMYIqe7xk71b8PeCJSmr3BJ93VKJGmswPqGJ8sN+ysxTwbOnR1nFS6h8TGObbm
-	 g1h1QiqSse1oVeRuLSK0tqMcKHPFKZ9Qg8LIeu8c=
+	b=1xFY68W43lYm81BodOv0Xcy7i/9d7ljCXKpxglRMxEpcPfMBge9ZgMx86AGkI2h83
+	 1NIJYw6G6IWjjodGokahtO5LWkgp9H/rv73ZAbNNk8yV0imBYBi/6bFoLPPTVMF2bz
+	 iTiE6uw/BdY+H2LZDbE+vWTcPsbKqKHnAvljFxz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 160/231] USB: serial: option: fix Telit Cinterion FE990A name
+	Sagi Grimberg <sagi@grimberg.me>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 082/166] nvme: only allow entering LIVE from CONNECTING state
 Date: Wed, 19 Mar 2025 07:30:53 -0700
-Message-ID: <20250319143030.791129305@linuxfoundation.org>
+Message-ID: <20250319143022.237990129@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-commit 6232f0d8e100a26275bbd773fc56a60af2c95322 upstream.
+[ Upstream commit d2fe192348f93fe3a0cb1e33e4aba58e646397f4 ]
 
-The correct name for FE990 is FE990A so use it in order to avoid
-confusion with FE990B.
+The fabric transports and also the PCI transport are not entering the
+LIVE state from NEW or RESETTING. This makes the state machine more
+restrictive and allows to catch not supported state transitions, e.g.
+directly switching from RESETTING to LIVE.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/nvme/host/core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1368,13 +1368,13 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(0) | RSVD(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
- 	  .driver_info = RSVD(0) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990A (rmnet) */
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990 (MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990A (MBIM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990 (RNDIS) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990A (RNDIS) */
- 	  .driver_info = NCTRL(2) | RSVD(3) },
--	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990 (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990A (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(3) },
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 8a200931bc297..f00665ad0c11a 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -503,8 +503,6 @@ bool nvme_change_ctrl_state(struct nvme_ctrl *ctrl,
+ 	switch (new_state) {
+ 	case NVME_CTRL_LIVE:
+ 		switch (old_state) {
+-		case NVME_CTRL_NEW:
+-		case NVME_CTRL_RESETTING:
+ 		case NVME_CTRL_CONNECTING:
+ 			changed = true;
+ 			fallthrough;
+-- 
+2.39.5
+
 
 
 
