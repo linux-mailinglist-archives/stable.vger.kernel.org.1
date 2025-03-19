@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-124964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352B8A68F46
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:36:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EEFA69003
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A8663B3928
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:34:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C3EB46331B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4B51C5F29;
-	Wed, 19 Mar 2025 14:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35F620E31B;
+	Wed, 19 Mar 2025 14:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMBC+wl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+4FNJBt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD1E1C5F26;
-	Wed, 19 Mar 2025 14:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44851C5D6A;
+	Wed, 19 Mar 2025 14:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394857; cv=none; b=QCs2MhZNKIpxqaCtXGsTeGe0m9fgz/S2vltCmn7pTv3iCBsuGMLmQSXJNA6iaC29fSk4NnsyPOa2TKW9yBnYUpBNVhYyiVWuT68udcML2rtnU+it1fkXo29Kf8h9gq8vbvwhrvUNQbMxSb197XhcZafHF3HWbM1lsXsW0sDWr6k=
+	t=1742395012; cv=none; b=IozWs/PFDVQKJcHctDo/nN3cxNPxMCoOAPNzjZVsScAHyk8+bWa6Of6Nz1fGR1+e9TWYtrIcyuK1Jg4AljbPAMXmDciJmPMfrhhWLT/A04RdNxnP5VYpCJcsGZGk41sDzRh1GM+9oVA9mTccYI2gjCC/THXNc3slLcv+L6xvr04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394857; c=relaxed/simple;
-	bh=ulLwxkscGtLiDwKGt4jAC777deW5Wjm8poFLavZNWQA=;
+	s=arc-20240116; t=1742395012; c=relaxed/simple;
+	bh=xpRuJt/GGGIxdW2g1o7OWqjGRif/2Y5XVRniMFofkNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn0Owx2aFRxv3kXeAOgFWe23ILlxcnO9TzippL55nelpCCiycKUw4jWWSDd5lTxa6441ml6L6sa2y9CeLsSvgE2rKVcYK4HsqSz41YYqLDHI+nTF2+9+61Vhz9aKO3N+qS6kCe4gxWO6ytCBXjSh+jpSBwXVucT2w7Tt5n1Aj8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMBC+wl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F36C4CEEC;
-	Wed, 19 Mar 2025 14:34:16 +0000 (UTC)
+	 MIME-Version; b=JEisR3FaJn8S6HAzVL1icVdbBQUrFvnQkE1pWNhq3IguHUFwLl5GChm59mO2VeMF/XLoSl/6DntopYC9bKnLpOxgRbASLopm6drkOCXWjEEaYDBNxjRyTabLz/PPaoNTQSHGEyJeh8XMu50UdZdmbIYx3MtNh2EWad/8S+Ph3PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+4FNJBt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F22C4CEE9;
+	Wed, 19 Mar 2025 14:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394856;
-	bh=ulLwxkscGtLiDwKGt4jAC777deW5Wjm8poFLavZNWQA=;
+	s=korg; t=1742395012;
+	bh=xpRuJt/GGGIxdW2g1o7OWqjGRif/2Y5XVRniMFofkNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMBC+wl6lsZfB4xNQuCGrt1X0O3FcaoGfnVdRK/fpeDQQzPkKkFkGrYf6HMcOIxVQ
-	 9CGjqM/aDKgNeMVP0jrwWN3Ye4ImgJ57X0mD7wlGuwh+PdsGHiRBHNMTLpY82iRB7o
-	 TwD5wgcukF0BhqHdbLSNL375BLabQ2CjHVcJ/Wxs=
+	b=E+4FNJBtQk5B4yA0VKuD05m8pEW59klfcLCtkKJ9AMezd37FBWcyNno3VkdIYbASt
+	 lrktniRPHjwEnvrW9UTPLH6Pj4TTaZiX56BZ1pg0O5w+nDoVp7Ngvd0Wo2M3gzoYpa
+	 XA2I7BZTGy3lnbOGjxFzTT2COD/oaCpuMq7lA5Yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 045/241] ipvs: prevent integer overflow in do_ip_vs_get_ctl()
-Date: Wed, 19 Mar 2025 07:28:35 -0700
-Message-ID: <20250319143028.835592846@linuxfoundation.org>
+Subject: [PATCH 6.12 023/231] netpoll: hold rcu read lock in __netpoll_send_skb()
+Date: Wed, 19 Mar 2025 07:28:36 -0700
+Message-ID: <20250319143027.401151586@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 80b78c39eb86e6b55f56363b709eb817527da5aa ]
+[ Upstream commit 505ead7ab77f289f12d8a68ac83da068e4d4408b ]
 
-The get->num_services variable is an unsigned int which is controlled by
-the user.  The struct_size() function ensures that the size calculation
-does not overflow an unsigned long, however, we are saving the result to
-an int so the calculation can overflow.
+The function __netpoll_send_skb() is being invoked without holding the
+RCU read lock. This oversight triggers a warning message when
+CONFIG_PROVE_RCU_LIST is enabled:
 
-Both "len" and "get->num_services" come from the user.  This check is
-just a sanity check to help the user and ensure they are using the API
-correctly.  An integer overflow here is not a big deal.  This has no
-security impact.
+	net/core/netpoll.c:330 suspicious rcu_dereference_check() usage!
 
-Save the result from struct_size() type size_t to fix this integer
-overflow bug.
+	 netpoll_send_skb
+	 netpoll_send_udp
+	 write_ext_msg
+	 console_flush_all
+	 console_unlock
+	 vprintk_emit
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+To prevent npinfo from disappearing unexpectedly, ensure that
+__netpoll_send_skb() is protected with the RCU read lock.
+
+Fixes: 2899656b494dcd1 ("netpoll: take rcu_read_lock_bh() in netpoll_send_skb_on_dev()")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250306-netpoll_rcu_v2-v2-1-bc4f5c51742a@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/core/netpoll.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 7d13110ce1882..0633276d96bfb 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -3091,12 +3091,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_SERVICES:
- 	{
- 		struct ip_vs_get_services *get;
--		int size;
-+		size_t size;
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 45fb60bc48039..e95c2933756df 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -319,6 +319,7 @@ static int netpoll_owner_active(struct net_device *dev)
+ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ {
+ 	netdev_tx_t status = NETDEV_TX_BUSY;
++	netdev_tx_t ret = NET_XMIT_DROP;
+ 	struct net_device *dev;
+ 	unsigned long tries;
+ 	/* It is up to the caller to keep npinfo alive. */
+@@ -327,11 +328,12 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 	lockdep_assert_irqs_disabled();
  
- 		get = (struct ip_vs_get_services *)arg;
- 		size = struct_size(get, entrytable, get->num_services);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
-@@ -3132,12 +3132,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_DESTS:
- 	{
- 		struct ip_vs_get_dests *get;
--		int size;
-+		size_t size;
+ 	dev = np->dev;
++	rcu_read_lock();
+ 	npinfo = rcu_dereference_bh(dev->npinfo);
  
- 		get = (struct ip_vs_get_dests *)arg;
- 		size = struct_size(get, entrytable, get->num_dests);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
+ 	if (!npinfo || !netif_running(dev) || !netif_device_present(dev)) {
+ 		dev_kfree_skb_irq(skb);
+-		return NET_XMIT_DROP;
++		goto out;
+ 	}
+ 
+ 	/* don't get messages out of order, and no recursion */
+@@ -370,7 +372,10 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 		skb_queue_tail(&npinfo->txq, skb);
+ 		schedule_delayed_work(&npinfo->tx_work,0);
+ 	}
+-	return NETDEV_TX_OK;
++	ret = NETDEV_TX_OK;
++out:
++	rcu_read_unlock();
++	return ret;
+ }
+ 
+ netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
 -- 
 2.39.5
 
