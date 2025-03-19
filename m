@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-125372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C51A69077
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26AFA69217
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:01:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B14F07A79C5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 473611B82DC9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2741EF386;
-	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A83A20AF87;
+	Wed, 19 Mar 2025 14:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aL/nBj1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZk5vIKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F721DE3BF;
-	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381A820AF7D;
+	Wed, 19 Mar 2025 14:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395142; cv=none; b=ZorENde28yxiAniAHC8/iauvaA5t0UZDRn7TJhgIMhM7vj80EJhYGUX7M25q2IfhK/jfiytHJ2seS31i3e33pPfupKDXx2SpdJASf6A+br7weMpKdP6MjxPja40AeYRbnzAg95/fH5JmSXx1K8Usmhn4VbhIpL5dY/VyHTAoO34=
+	t=1742395250; cv=none; b=JHpc/b6LH2BcXYf3VPOir8+gHvCOxmZ8P9LldXt/CDPky4HY+l7iZilN1O4WCH/M8wrgPV2/g9toyqp2R40toVuW90aaoK+TrpbPmUXXB72uWbfg9OawIGqgD/wQkA+eOaFzNayHjnIokoJVz1RBosNV841fht9lqoTHzkjUgmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395142; c=relaxed/simple;
-	bh=AcPRGL6MPLCKaJPeKb/HBIsQVuZwAenDgwKx3f2xK5M=;
+	s=arc-20240116; t=1742395250; c=relaxed/simple;
+	bh=vzDnCcbQ+PGdZ81l4tJgOdwMZByunJNs0Q2Fj6NHqAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qcht0c93aLbJcfKpYnYnnzF3V1zY2rlzx3akD/hZv79eBgrlBf2ap5vhyrNIPyX6raWlWWEDGHQdQYYumLMA7MX4OkkMyiUKUo+8eotgplxER+VIBOR7FnlTBWkgmjKSE5cGXlubdYILkwtEFLqgLkcr0qN13NHTTdRW3UQAzQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aL/nBj1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2666C4CEE4;
-	Wed, 19 Mar 2025 14:39:01 +0000 (UTC)
+	 MIME-Version; b=HynEOxuKPZgX9XOm2GUAF2MGYSrQueQPTV7Ri12IiEzVaDHmZyDo9HRT6B9ltswZd2a5PnFMXes2agTTRellb0K8suQRz4u2TGsUTO1X/lGbBZCVhZIaU0lgvAq9vLtx4vfnbsnaWSwonA1aZUyLfTpwT0b2YnBce2bjizPhFUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZk5vIKf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB64C4CEE4;
+	Wed, 19 Mar 2025 14:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395141;
-	bh=AcPRGL6MPLCKaJPeKb/HBIsQVuZwAenDgwKx3f2xK5M=;
+	s=korg; t=1742395250;
+	bh=vzDnCcbQ+PGdZ81l4tJgOdwMZByunJNs0Q2Fj6NHqAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aL/nBj1Ys6Pgxvc7s30B0E4W4z4w6VCvmImvSToC93CX9YOJy/RfxIC0wNq9ooY/q
-	 I9b637tV5UQ9tg2PriI4/kT7ZMr/aE9CId2vySKOnICHcnAlTZUNayJyGR5aKEFUF3
-	 d1rUKcLumlGqS+bfcZjfu/H4KPV+n0/Uk2OG/5fA=
+	b=dZk5vIKfjVYNP8KbWaSZjb8sgNy8XBwxi3f3jfVoYIiZTmjmnK00vaqpit9t825gW
+	 D6AeADTL4rxZ+b+inxMwJvK5y0OAN3k3ocX6NHSjWSvNMHey2oDPK9NMX3plMc5yVN
+	 1hfP3nXDDTlFl8QlI+hFi/gX5mn0k9+YClY2fyTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/231] ASoC: codecs: wm0010: Fix error handling path in wm0010_spi_probe()
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 131/166] dm-flakey: Fix memory corruption in optional corrupt_bio_byte feature
 Date: Wed, 19 Mar 2025 07:31:42 -0700
-Message-ID: <20250319143032.013129361@linuxfoundation.org>
+Message-ID: <20250319143023.561307966@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-[ Upstream commit ed92bc5264c4357d4fca292c769ea9967cd3d3b6 ]
+commit 57e9417f69839cb10f7ffca684c38acd28ceb57b upstream.
 
-Free some resources in the error handling path of the probe, as already
-done in the remove function.
+Fix memory corruption due to incorrect parameter being passed to bio_init
 
-Fixes: e3523e01869d ("ASoC: wm0010: Add initial wm0010 DSP driver")
-Fixes: fd8b96574456 ("ASoC: wm0010: Clear IRQ as wake source and include missing header")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/5139ba1ab8c4c157ce04e56096a0f54a1683195c.1741549792.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org	# v6.5+
+Fixes: 1d9a94389853 ("dm flakey: clone pages on write bio before corrupting them")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm0010.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/md/dm-flakey.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wm0010.c b/sound/soc/codecs/wm0010.c
-index edd2cb185c42c..9e67fbfc2ccaf 100644
---- a/sound/soc/codecs/wm0010.c
-+++ b/sound/soc/codecs/wm0010.c
-@@ -920,7 +920,7 @@ static int wm0010_spi_probe(struct spi_device *spi)
- 	if (ret) {
- 		dev_err(wm0010->dev, "Failed to set IRQ %d as wake source: %d\n",
- 			irq, ret);
--		return ret;
-+		goto free_irq;
- 	}
+diff --git a/drivers/md/dm-flakey.c b/drivers/md/dm-flakey.c
+index 731467d4ed10..b690905ab89f 100644
+--- a/drivers/md/dm-flakey.c
++++ b/drivers/md/dm-flakey.c
+@@ -426,7 +426,7 @@ static struct bio *clone_bio(struct dm_target *ti, struct flakey_c *fc, struct b
+ 	if (!clone)
+ 		return NULL;
  
- 	if (spi->max_speed_hz)
-@@ -932,9 +932,18 @@ static int wm0010_spi_probe(struct spi_device *spi)
- 				     &soc_component_dev_wm0010, wm0010_dai,
- 				     ARRAY_SIZE(wm0010_dai));
- 	if (ret < 0)
--		return ret;
-+		goto disable_irq_wake;
+-	bio_init(clone, fc->dev->bdev, bio->bi_inline_vecs, nr_iovecs, bio->bi_opf);
++	bio_init(clone, fc->dev->bdev, clone->bi_inline_vecs, nr_iovecs, bio->bi_opf);
  
- 	return 0;
-+
-+disable_irq_wake:
-+	irq_set_irq_wake(wm0010->irq, 0);
-+
-+free_irq:
-+	if (wm0010->irq)
-+		free_irq(wm0010->irq, wm0010);
-+
-+	return ret;
- }
- 
- static void wm0010_spi_remove(struct spi_device *spi)
+ 	clone->bi_iter.bi_sector = flakey_map_sector(ti, bio->bi_iter.bi_sector);
+ 	clone->bi_private = bio;
 -- 
-2.39.5
+2.48.1
 
 
 
