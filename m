@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6773A69091
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 771DBA68F69
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35C7B88423C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BD867A7A3E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AF2214A9B;
-	Wed, 19 Mar 2025 14:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439D71D63E3;
+	Wed, 19 Mar 2025 14:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VreW+NXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiJ5s5BZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4601C5F26;
-	Wed, 19 Mar 2025 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0209E1B2194;
+	Wed, 19 Mar 2025 14:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395064; cv=none; b=DRWS7wwwmwQ2jcO21GESu5zUMdocv/TQKMb+OPVtGxvL36ZAW8MiAqs11mSX/y1Penxro/NwIkh4MSq/H0GIyimzpvE1iWm9bxjgkHj1CVhiZPGmeCK8wGJUbYfgwb3Xd1EWu2b3S/gUkW4/ayZpd8PEoXtea42QihQiFrmzvOQ=
+	t=1742394915; cv=none; b=I+Bb6hXwtZuorQGT21+Kevy33h4V3b9nuiyDy/yzwt/7YcMYsLo43moJ9w1U34KHHubPDKOAwIMlgajlM2m7rKg9YNPMmY0FqxTIeW79u5FUhb2pE+WPNiPpjVy0PyJ7oajjZbHvOBIuiTCWmpUy12rFpfp2O82QKLBtSxxe8WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395064; c=relaxed/simple;
-	bh=+ebAWWW1RYZcUY4k+8WfuOF0W/hMAn3wCnDksQtlZtU=;
+	s=arc-20240116; t=1742394915; c=relaxed/simple;
+	bh=9qFPWWnEzuEPnY0lP8mNwCfeV2tH4vcaQFyHR8K2sYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVok8R5he46vATMMUTV6zaI2YbyJo1lrio8HSEzg52K+Ya1lzMU6ef2dpNWLQ223cZzYVRGgyTZ7Wmr4mN6EB7VgfzfFzLKTc/d2LgcWbPRpKBdCnwWVwYgCytLlo8wGkdV0qG/WLop7HJR7oIrWkAQRSDZiw4yATpgdnD8bdwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VreW+NXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A015CC4CEE4;
-	Wed, 19 Mar 2025 14:37:44 +0000 (UTC)
+	 MIME-Version; b=HsUKZmVVtpB9QioXMXwtVRGXTTprznTuQ3h0Fip4foDWm14oDSNrFZitFWityrpM3/GbS7jtX6UyzihF66q8AnNz5y5S/RYcmPPnXYD7UZ8xbrDDJq/zhUFJgNkMasl3ddCY5kWYoX1bB0axNmnwCk1NcXOwp7cYetTqb1Wf42Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiJ5s5BZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21C7C4CEE4;
+	Wed, 19 Mar 2025 14:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395064;
-	bh=+ebAWWW1RYZcUY4k+8WfuOF0W/hMAn3wCnDksQtlZtU=;
+	s=korg; t=1742394914;
+	bh=9qFPWWnEzuEPnY0lP8mNwCfeV2tH4vcaQFyHR8K2sYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VreW+NXkWlt2ihwzqYRkOsf6LjbvIO0hwAVRktd1d/4DNObnQF9trVV5XB5ddGKzF
-	 JoVwfmuGDq1gLt7dcBkoahbQwIuVbteRCsR4ktuQ5ez1eyoL3Ma+RCa4sGT+fVlozR
-	 BpmtWdbN3kTvauHIQXKCuWLnlpSGMF2hMvUWUZ9s=
+	b=MiJ5s5BZcvalZFNgQeSnaQ/91vpbLidbTuxr5Ixt59dqzMNfer0v8ktNmiR1qXOAQ
+	 u9kcdf2oRUyLt4mWpsVX66jctGPUYidnw5XW8Gq2JevwD8ySijp0AkT1zTX1Rx0ZS8
+	 bX/viwFddCRbvuYZQ/fSs37P+WKB/1PKJPp4Zm2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Maxime Ripard <mripard@kernel.org>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/231] drm/tests: hdmi: Reorder DRM entities variables assignment
-Date: Wed, 19 Mar 2025 07:29:53 -0700
-Message-ID: <20250319143029.310228310@linuxfoundation.org>
+Subject: [PATCH 6.13 124/241] io-wq: backoff when retrying worker creation
+Date: Wed, 19 Mar 2025 07:29:54 -0700
+Message-ID: <20250319143030.791668993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,360 +62,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Uday Shankar <ushankar@purestorage.com>
 
-[ Upstream commit 6b6bfd63e1626ceedc738b2a06505aa5b46c1481 ]
+[ Upstream commit 13918315c5dc5a515926c8799042ea6885c2b734 ]
 
-The tests all deviate slightly in how they assign their local pointers
-to DRM entities. This makes refactoring pretty difficult, so let's just
-move the assignment as soon as the entities are allocated.
+When io_uring submission goes async for the first time on a given task,
+we'll try to create a worker thread to handle the submission. Creating
+this worker thread can fail due to various transient conditions, such as
+an outstanding signal in the forking thread, so we have retry logic with
+a limit of 3 retries. However, this retry logic appears to be too
+aggressive/fast - we've observed a thread blowing through the retry
+limit while having the same outstanding signal the whole time. Here's an
+excerpt of some tracing that demonstrates the issue:
 
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250129-test-kunit-v2-3-fe59c43805d5@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+First, signal 26 is generated for the process. It ends up getting routed
+to thread 92942.
+
+ 0)   cbd-92284    /* signal_generate: sig=26 errno=0 code=-2 comm=psblkdASD pid=92934 grp=1 res=0 */
+
+This causes create_io_thread in the signalled thread to fail with
+ERESTARTNOINTR, and thus a retry is queued.
+
+13) task_th-92942  /* io_uring_queue_async_work: ring 000000007325c9ae, request 0000000080c96d8e, user_data 0x0, opcode URING_CMD, flags 0x8240001, normal queue, work 000000006e96dd3f */
+13) task_th-92942  io_wq_enqueue() {
+13) task_th-92942    _raw_spin_lock();
+13) task_th-92942    io_wq_activate_free_worker();
+13) task_th-92942    _raw_spin_lock();
+13) task_th-92942    create_io_worker() {
+13) task_th-92942      __kmalloc_cache_noprof();
+13) task_th-92942      __init_swait_queue_head();
+13) task_th-92942      kprobe_ftrace_handler() {
+13) task_th-92942        get_kprobe();
+13) task_th-92942        aggr_pre_handler() {
+13) task_th-92942          pre_handler_kretprobe();
+13) task_th-92942          /* create_enter: (create_io_thread+0x0/0x50) fn=0xffffffff8172c0e0 arg=0xffff888996bb69c0 node=-1 */
+13) task_th-92942        } /* aggr_pre_handler */
+...
+13) task_th-92942        } /* copy_process */
+13) task_th-92942      } /* create_io_thread */
+13) task_th-92942      kretprobe_rethook_handler() {
+13) task_th-92942        /* create_exit: (create_io_worker+0x8a/0x1a0 <- create_io_thread) arg1=0xfffffffffffffdff */
+13) task_th-92942      } /* kretprobe_rethook_handler */
+13) task_th-92942    queue_work_on() {
+...
+
+The CPU is then handed to a kworker to process the queued retry:
+
+------------------------------------------
+ 13) task_th-92942  => kworker-54154
+------------------------------------------
+13) kworker-54154  io_workqueue_create() {
+13) kworker-54154    io_queue_worker_create() {
+13) kworker-54154      task_work_add() {
+13) kworker-54154        wake_up_state() {
+13) kworker-54154          try_to_wake_up() {
+13) kworker-54154            _raw_spin_lock_irqsave();
+13) kworker-54154            _raw_spin_unlock_irqrestore();
+13) kworker-54154          } /* try_to_wake_up */
+13) kworker-54154        } /* wake_up_state */
+13) kworker-54154        kick_process();
+13) kworker-54154      } /* task_work_add */
+13) kworker-54154    } /* io_queue_worker_create */
+13) kworker-54154  } /* io_workqueue_create */
+
+And then we immediately switch back to the original task to try creating
+a worker again. This fails, because the original task still hasn't
+handled its signal.
+
+-----------------------------------------
+ 13) kworker-54154  => task_th-92942
+------------------------------------------
+13) task_th-92942  create_worker_cont() {
+13) task_th-92942    kprobe_ftrace_handler() {
+13) task_th-92942      get_kprobe();
+13) task_th-92942      aggr_pre_handler() {
+13) task_th-92942        pre_handler_kretprobe();
+13) task_th-92942        /* create_enter: (create_io_thread+0x0/0x50) fn=0xffffffff8172c0e0 arg=0xffff888996bb69c0 node=-1 */
+13) task_th-92942      } /* aggr_pre_handler */
+13) task_th-92942    } /* kprobe_ftrace_handler */
+13) task_th-92942    create_io_thread() {
+13) task_th-92942      copy_process() {
+13) task_th-92942        task_active_pid_ns();
+13) task_th-92942        _raw_spin_lock_irq();
+13) task_th-92942        recalc_sigpending();
+13) task_th-92942        _raw_spin_lock_irq();
+13) task_th-92942      } /* copy_process */
+13) task_th-92942    } /* create_io_thread */
+13) task_th-92942    kretprobe_rethook_handler() {
+13) task_th-92942      /* create_exit: (create_worker_cont+0x35/0x1b0 <- create_io_thread) arg1=0xfffffffffffffdff */
+13) task_th-92942    } /* kretprobe_rethook_handler */
+13) task_th-92942    io_worker_release();
+13) task_th-92942    queue_work_on() {
+13) task_th-92942      clear_pending_if_disabled();
+13) task_th-92942      __queue_work() {
+13) task_th-92942      } /* __queue_work */
+13) task_th-92942    } /* queue_work_on */
+13) task_th-92942  } /* create_worker_cont */
+
+The pattern repeats another couple times until we blow through the retry
+counter, at which point we give up. All outstanding work is canceled,
+and the io_uring command which triggered all this is failed with
+ECANCELED:
+
+13) task_th-92942  io_acct_cancel_pending_work() {
+...
+13) task_th-92942  /* io_uring_complete: ring 000000007325c9ae, req 0000000080c96d8e, user_data 0x0, result -125, cflags 0x0 extra1 0 extra2 0  */
+
+Finally, the task gets around to processing its outstanding signal 26,
+but it's too late.
+
+13) task_th-92942  /* signal_deliver: sig=26 errno=0 code=-2 sa_handler=59566a0 sa_flags=14000000 */
+
+Try to address this issue by adding a small scaling delay when retrying
+worker creation. This should give the forking thread time to handle its
+signal in the above case. This isn't a particularly satisfying solution,
+as sufficiently paradoxical scheduling would still have us hitting the
+same issue, and I'm open to suggestions for something better. But this
+is likely to prevent this (already rare) issue from hitting in practice.
+
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Link: https://lore.kernel.org/r/20250208-wq_retry-v2-1-4f6f5041d303@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/tests/drm_hdmi_state_helper_test.c    | 81 ++++++++++---------
- 1 file changed, 42 insertions(+), 39 deletions(-)
+ io_uring/io-wq.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-index 4e7369caa7369..1dfd346c6fb39 100644
---- a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-+++ b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-@@ -258,15 +258,16 @@ static void drm_test_check_broadcast_rgb_crtc_mode_changed(struct kunit *test)
- 						     8);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index a38f36b680604..a2d577b099308 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -64,7 +64,7 @@ struct io_worker {
  
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
-+	conn = &priv->connector;
+ 	union {
+ 		struct rcu_head rcu;
+-		struct work_struct work;
++		struct delayed_work work;
+ 	};
+ };
+ 
+@@ -770,6 +770,18 @@ static inline bool io_should_retry_thread(struct io_worker *worker, long err)
+ 	}
+ }
+ 
++static void queue_create_worker_retry(struct io_worker *worker)
++{
++	/*
++	 * We only bother retrying because there's a chance that the
++	 * failure to create a worker is due to some temporary condition
++	 * in the forking task (e.g. outstanding signal); give the task
++	 * some time to clear that condition.
++	 */
++	schedule_delayed_work(&worker->work,
++			      msecs_to_jiffies(worker->init_retries * 5));
++}
 +
- 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+ static void create_worker_cont(struct callback_head *cb)
+ {
+ 	struct io_worker *worker;
+@@ -809,12 +821,13 @@ static void create_worker_cont(struct callback_head *cb)
  
--	conn = &priv->connector;
- 	preferred = find_preferred_mode(conn);
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
+ 	/* re-create attempts grab a new worker ref, drop the existing one */
+ 	io_worker_release(worker);
+-	schedule_work(&worker->work);
++	queue_create_worker_retry(worker);
+ }
  
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
+ static void io_workqueue_create(struct work_struct *work)
+ {
+-	struct io_worker *worker = container_of(work, struct io_worker, work);
++	struct io_worker *worker = container_of(work, struct io_worker,
++						work.work);
+ 	struct io_wq_acct *acct = io_wq_get_acct(worker);
  
-@@ -321,15 +322,16 @@ static void drm_test_check_broadcast_rgb_crtc_mode_not_changed(struct kunit *tes
- 						     8);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
+ 	if (!io_queue_worker_create(worker, acct, create_worker_cont))
+@@ -855,8 +868,8 @@ static bool create_io_worker(struct io_wq *wq, int index)
+ 		kfree(worker);
+ 		goto fail;
+ 	} else {
+-		INIT_WORK(&worker->work, io_workqueue_create);
+-		schedule_work(&worker->work);
++		INIT_DELAYED_WORK(&worker->work, io_workqueue_create);
++		queue_create_worker_retry(worker);
+ 	}
  
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
-+	conn = &priv->connector;
-+
- 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
- 
--	conn = &priv->connector;
- 	preferred = find_preferred_mode(conn);
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -384,6 +386,8 @@ static void drm_test_check_broadcast_rgb_auto_cea_mode(struct kunit *test)
- 						     8);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	KUNIT_ASSERT_TRUE(test, conn->display_info.is_hdmi);
- 
-@@ -394,8 +398,6 @@ static void drm_test_check_broadcast_rgb_auto_cea_mode(struct kunit *test)
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 	KUNIT_ASSERT_NE(test, drm_match_cea_mode(preferred), 1);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -495,6 +497,8 @@ static void drm_test_check_broadcast_rgb_full_cea_mode(struct kunit *test)
- 						     8);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	KUNIT_ASSERT_TRUE(test, conn->display_info.is_hdmi);
- 
-@@ -505,8 +509,6 @@ static void drm_test_check_broadcast_rgb_full_cea_mode(struct kunit *test)
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 	KUNIT_ASSERT_NE(test, drm_match_cea_mode(preferred), 1);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -610,6 +612,8 @@ static void drm_test_check_broadcast_rgb_limited_cea_mode(struct kunit *test)
- 						     8);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	KUNIT_ASSERT_TRUE(test, conn->display_info.is_hdmi);
- 
-@@ -620,8 +624,6 @@ static void drm_test_check_broadcast_rgb_limited_cea_mode(struct kunit *test)
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 	KUNIT_ASSERT_NE(test, drm_match_cea_mode(preferred), 1);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -727,6 +729,8 @@ static void drm_test_check_output_bpc_crtc_mode_changed(struct kunit *test)
- 						     10);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
-@@ -739,8 +743,6 @@ static void drm_test_check_output_bpc_crtc_mode_changed(struct kunit *test)
- 	preferred = find_preferred_mode(conn);
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -801,6 +803,8 @@ static void drm_test_check_output_bpc_crtc_mode_not_changed(struct kunit *test)
- 						     10);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
-@@ -813,8 +817,6 @@ static void drm_test_check_output_bpc_crtc_mode_not_changed(struct kunit *test)
- 	preferred = find_preferred_mode(conn);
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -872,6 +874,8 @@ static void drm_test_check_output_bpc_dvi(struct kunit *test)
- 						     12);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_dvi_1080p,
-@@ -887,8 +891,6 @@ static void drm_test_check_output_bpc_dvi(struct kunit *test)
- 	preferred = find_preferred_mode(conn);
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -919,6 +921,8 @@ static void drm_test_check_tmds_char_rate_rgb_8bpc(struct kunit *test)
- 						     8);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_max_200mhz,
-@@ -932,8 +936,6 @@ static void drm_test_check_tmds_char_rate_rgb_8bpc(struct kunit *test)
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 	KUNIT_ASSERT_FALSE(test, preferred->flags & DRM_MODE_FLAG_DBLCLK);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -966,6 +968,8 @@ static void drm_test_check_tmds_char_rate_rgb_10bpc(struct kunit *test)
- 						     10);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz,
-@@ -979,8 +983,6 @@ static void drm_test_check_tmds_char_rate_rgb_10bpc(struct kunit *test)
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 	KUNIT_ASSERT_FALSE(test, preferred->flags & DRM_MODE_FLAG_DBLCLK);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -1013,6 +1015,8 @@ static void drm_test_check_tmds_char_rate_rgb_12bpc(struct kunit *test)
- 						     12);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz,
-@@ -1026,8 +1030,6 @@ static void drm_test_check_tmds_char_rate_rgb_12bpc(struct kunit *test)
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 	KUNIT_ASSERT_FALSE(test, preferred->flags & DRM_MODE_FLAG_DBLCLK);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -1064,15 +1066,16 @@ static void drm_test_check_hdmi_funcs_reject_rate(struct kunit *test)
- 						     8);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
-+	conn = &priv->connector;
-+
- 	ctx = drm_kunit_helper_acquire_ctx_alloc(test);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
- 
--	conn = &priv->connector;
- 	preferred = find_preferred_mode(conn);
- 	KUNIT_ASSERT_NOT_NULL(test, preferred);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
-@@ -1120,6 +1123,8 @@ static void drm_test_check_max_tmds_rate_bpc_fallback(struct kunit *test)
- 						     12);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
-@@ -1143,8 +1148,6 @@ static void drm_test_check_max_tmds_rate_bpc_fallback(struct kunit *test)
- 	rate = drm_hdmi_compute_mode_clock(preferred, 10, HDMI_COLORSPACE_RGB);
- 	KUNIT_ASSERT_LT(test, rate, info->max_tmds_clock * 1000);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_EXPECT_EQ(test, ret, 0);
- 
-@@ -1189,6 +1192,8 @@ static void drm_test_check_max_tmds_rate_format_fallback(struct kunit *test)
- 						     12);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
-@@ -1215,8 +1220,6 @@ static void drm_test_check_max_tmds_rate_format_fallback(struct kunit *test)
- 	rate = drm_hdmi_compute_mode_clock(preferred, 12, HDMI_COLORSPACE_YUV422);
- 	KUNIT_ASSERT_LT(test, rate, info->max_tmds_clock * 1000);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_EXPECT_EQ(test, ret, 0);
- 
-@@ -1312,6 +1315,8 @@ static void drm_test_check_output_bpc_format_driver_rgb_only(struct kunit *test)
- 						     12);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_200mhz,
-@@ -1343,8 +1348,6 @@ static void drm_test_check_output_bpc_format_driver_rgb_only(struct kunit *test)
- 	rate = drm_hdmi_compute_mode_clock(preferred, 12, HDMI_COLORSPACE_YUV422);
- 	KUNIT_ASSERT_LT(test, rate, info->max_tmds_clock * 1000);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_EXPECT_EQ(test, ret, 0);
- 
-@@ -1379,6 +1382,8 @@ static void drm_test_check_output_bpc_format_display_rgb_only(struct kunit *test
- 						     12);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_max_200mhz,
-@@ -1410,8 +1415,6 @@ static void drm_test_check_output_bpc_format_display_rgb_only(struct kunit *test
- 	rate = drm_hdmi_compute_mode_clock(preferred, 12, HDMI_COLORSPACE_YUV422);
- 	KUNIT_ASSERT_LT(test, rate, info->max_tmds_clock * 1000);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_EXPECT_EQ(test, ret, 0);
- 
-@@ -1445,6 +1448,8 @@ static void drm_test_check_output_bpc_format_driver_8bpc_only(struct kunit *test
- 						     8);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_yuv_dc_max_340mhz,
-@@ -1468,8 +1473,6 @@ static void drm_test_check_output_bpc_format_driver_8bpc_only(struct kunit *test
- 	rate = drm_hdmi_compute_mode_clock(preferred, 12, HDMI_COLORSPACE_RGB);
- 	KUNIT_ASSERT_LT(test, rate, info->max_tmds_clock * 1000);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_EXPECT_EQ(test, ret, 0);
- 
-@@ -1505,6 +1508,8 @@ static void drm_test_check_output_bpc_format_display_8bpc_only(struct kunit *tes
- 						     12);
- 	KUNIT_ASSERT_NOT_NULL(test, priv);
- 
-+	drm = &priv->drm;
-+	crtc = priv->crtc;
- 	conn = &priv->connector;
- 	ret = set_connector_edid(test, conn,
- 				 test_edid_hdmi_1080p_rgb_max_340mhz,
-@@ -1528,8 +1533,6 @@ static void drm_test_check_output_bpc_format_display_8bpc_only(struct kunit *tes
- 	rate = drm_hdmi_compute_mode_clock(preferred, 12, HDMI_COLORSPACE_RGB);
- 	KUNIT_ASSERT_LT(test, rate, info->max_tmds_clock * 1000);
- 
--	drm = &priv->drm;
--	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, preferred, ctx);
- 	KUNIT_EXPECT_EQ(test, ret, 0);
- 
+ 	return true;
 -- 
 2.39.5
 
