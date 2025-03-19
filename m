@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-125273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1ECEA692DB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:17:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C684A6925B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7D8D1B87FA2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F11071B855B4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08551E32C6;
-	Wed, 19 Mar 2025 14:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD25221717;
+	Wed, 19 Mar 2025 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcL8A1i5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TueMxVYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6C01E2834;
-	Wed, 19 Mar 2025 14:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EDB1CAA60;
+	Wed, 19 Mar 2025 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395073; cv=none; b=tLzNXZefmbk33OG4aeLIt71HzPW7RZCHbVGFFUhrRJfn4ipfC51elxcsS9DXrems+x5nWEgYXYOlXE/4jn9GUjG49f/oSpaE3fQBatNU2CcddrH5w7Tu19tY0ATNLKzA1FQlZW6aPUNrsT3EZWJJCvm7f4FaN9AoMnsMus+OvHw=
+	t=1742395209; cv=none; b=UbvzkJsAuix6XFXG+v3jB6iRZuOdFnrHGXUR1vKKIeywNzrz/A+WPbZ7KwpyRFXWOlGsjylF9ecFn68xn/x/sAewnttPG5iyIv13FJqCQ1p5ZXO/Z5B/fHKo569EA5XaZ5aPUaA3vGnNUcaFH6r0ltoWua/lEtqYaVnnEzb7XnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395073; c=relaxed/simple;
-	bh=/Be+ecNPNwlCQLqqLZGRNYxl9wEjQsvN++/EvHwhBhA=;
+	s=arc-20240116; t=1742395209; c=relaxed/simple;
+	bh=QUbAHPUYuccFgqe66U7UkVwrOKVVuIjtGknNh7g0akQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V6lhjQd478Ktl6vR2mIMLny4M4pnNnDVdH18HVPfViE+pxscGLOlgEwaePSqI1ChxzLWrJN2qQ8dgcwB+puPODUw2rgatckexu0ltqoulpnb4Jt/IZlDoSH/WhT3WCx3/VXlRh0Knwf5Cn2mSZazOFGTKxQsL/PRu28TWqRncn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcL8A1i5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D65C4CEE4;
-	Wed, 19 Mar 2025 14:37:53 +0000 (UTC)
+	 MIME-Version; b=buAUr3X2BJyHN049IF7wVG/B9SUqY05Cm0RMO9UPfpZIxtG0XN+3lDdZQvad+kkFWsQJF3kh4NunKwQXAhVzoC2JQIBRtKhMr4numZ8CLPS1vf8nZzZdxp+W14d4YAXRU2vXWX+hisJ2WEniuNbRWcz1sZ2KD51wZculLvYI49A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TueMxVYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0373C4CEE4;
+	Wed, 19 Mar 2025 14:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395073;
-	bh=/Be+ecNPNwlCQLqqLZGRNYxl9wEjQsvN++/EvHwhBhA=;
+	s=korg; t=1742395209;
+	bh=QUbAHPUYuccFgqe66U7UkVwrOKVVuIjtGknNh7g0akQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZcL8A1i5tb8HkYmIm4NINMzXunWeS4wwXK0JbeH2qxir1Ndv9JjR36tTAo9v2zAZI
-	 aJjRJ4kZ69rzIOno21vdOiZ32g8uST3suDFzbai1xq5trITmsMJTalLzx0BrtUAgyc
-	 c/2cwViXUMTDaxYWyxMmrcxIB9VVUVA3tPrHzqtQ=
+	b=TueMxVYeXTLco6tYVdPOTQhWE+42rrOURzMb40Dw0fnpOq9K8AMros0Up4USdaQpX
+	 h4B033V9qAFqPDDZ9uF1u3YDSZt1hhWrNcUGM3AMsNbs6GBXJoh/69d7F3nSTOSY4v
+	 EcdP9FH0hWbguGeOvfUmiGootnSdI26Ug7rJhgsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Cheong <htcheong@chromium.org>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Johny Lin <lpg76627@gmail.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/231] ASoC: SOF: Intel: hda: add softdep pre to snd-hda-codec-hdmi module
-Date: Wed, 19 Mar 2025 07:30:05 -0700
-Message-ID: <20250319143029.609423912@linuxfoundation.org>
+Subject: [PATCH 6.6 036/166] nvme-fc: go straight to connecting state when initializing
+Date: Wed, 19 Mar 2025 07:30:07 -0700
+Message-ID: <20250319143020.968234016@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Cheong <htcheong@chromium.org>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 33b7dc7843dbdc9b90c91d11ba30b107f9138ffd ]
+[ Upstream commit d3d380eded7ee5fc2fc53b3b0e72365ded025c4a ]
 
-In enviornment without KMOD requesting module may fail to load
-snd-hda-codec-hdmi, resulting in HDMI audio not usable.
-Add softdep to loading HDMI codec module first to ensure we can load it
-correctly.
+The initial controller initialization mimiks the reconnect loop
+behavior by switching from NEW to RESETTING and then to CONNECTING.
 
-Signed-off-by: Terry Cheong <htcheong@chromium.org>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Johny Lin <lpg76627@gmail.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250206094723.18013-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The transition from NEW to CONNECTING is a valid transition, so there is
+no point entering the RESETTING state. TCP and RDMA also transition
+directly to CONNECTING state.
+
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-codec.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/fc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda-codec.c b/sound/soc/sof/intel/hda-codec.c
-index dc46888faa0dc..c0c58b4297155 100644
---- a/sound/soc/sof/intel/hda-codec.c
-+++ b/sound/soc/sof/intel/hda-codec.c
-@@ -454,6 +454,7 @@ int hda_codec_i915_exit(struct snd_sof_dev *sdev)
- }
- EXPORT_SYMBOL_NS_GPL(hda_codec_i915_exit, SND_SOC_SOF_HDA_AUDIO_CODEC_I915);
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 91324791a5b66..0641050f590f3 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3553,8 +3553,7 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
+ 	list_add_tail(&ctrl->ctrl_list, &rport->ctrl_list);
+ 	spin_unlock_irqrestore(&rport->lock, flags);
  
-+MODULE_SOFTDEP("pre: snd-hda-codec-hdmi");
- #endif
- 
- MODULE_LICENSE("Dual BSD/GPL");
+-	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_RESETTING) ||
+-	    !nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
++	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
+ 		dev_err(ctrl->ctrl.device,
+ 			"NVME-FC{%d}: failed to init ctrl state\n", ctrl->cnum);
+ 		goto fail_ctrl;
 -- 
 2.39.5
 
