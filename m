@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4EBBA6911D
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CBEA69062
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9028D4274D9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 633017A7E5E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BB81DF25A;
-	Wed, 19 Mar 2025 14:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B2921B9F8;
+	Wed, 19 Mar 2025 14:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlC7nSP/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iieHEkgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77721DF256;
-	Wed, 19 Mar 2025 14:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDBC1E5B97;
+	Wed, 19 Mar 2025 14:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395221; cv=none; b=YRH5D5fwqJSJ442KH97/brEdwV/daEKgsPd1BUvdO/9lIVUgJGqUdMxzglI4qOqiHpRh86OMBNvKKr+zkzsZK5liIFZypT00pxgEJs4MzgA68+BomRPwqnDbSYRSnQ/flf44xTn7hU8TzWsG3lnrCN4zq9gfyWuH2dxqwywIUak=
+	t=1742395125; cv=none; b=aiHd0QGnMyyY7TMceI+dEdInYcfW0PqJGh75ptJopfInqwlGHkcGp4PVbW9lTloItbdq/+qY+AqiC4BY9O9yOvLaKcdtR1/oqd4ApNKJ6PBswPP2EdYOj/1FVdG1lypy5tb3w7vkcFs6JvvVC/Gu0+Mr6ERyKAFC4VLNHNy+hjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395221; c=relaxed/simple;
-	bh=FGh1Uvfo+unASKoFG+7wac1IdGq8hLkPt+2lsNUfzxg=;
+	s=arc-20240116; t=1742395125; c=relaxed/simple;
+	bh=GTV8lyNPHG3WWCO8Ed1sLChvUmiiac5vZw00a6P2Qvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iz68sDZZNn3WPpOqD3+y1qHQlIQjeUv6oVSeYBpq0Z/hO10DYzZJ9RDQZYbXQQSHAdEFXYYeXbpxVwRfuOZrUVz3cE+bAn2ywzhKVLD2CYdXhQIBXk/rKoLvWGCdf0dMYY+dgN7g9tCcO8JAzVv+5HXhZHZKf42fv1/ZtVqnXN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlC7nSP/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E976C4CEE4;
-	Wed, 19 Mar 2025 14:40:21 +0000 (UTC)
+	 MIME-Version; b=OtgIyf9Dcrvj7wrSOKem2FZbxTXtyL0v2NREGa3nKIGLFQwRPHAyT+ruk/hRMLpn0/dV/WcXRmQ9X/y93yzZUlMuCR2FyhwjskWzoFtk/M76Cyxdqlx7IpwapvpvbPynDH2Vjv55PR/n3Q2LdzWpo3+HazLminr0+cIr+XbTgVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iieHEkgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B430C4CEE4;
+	Wed, 19 Mar 2025 14:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395221;
-	bh=FGh1Uvfo+unASKoFG+7wac1IdGq8hLkPt+2lsNUfzxg=;
+	s=korg; t=1742395125;
+	bh=GTV8lyNPHG3WWCO8Ed1sLChvUmiiac5vZw00a6P2Qvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlC7nSP/ykNlSW3NbbttXwAiz8ugShzSWfrMlG1/AqrKjjR615ZhBiHaIyB6shUuS
-	 N4vUxaEL0l8NDDwVzUzxA6JqxQavwq+70H0sf2bGL766B+m6rZA+2+gbM8FPYcdiD6
-	 bswBpJMxZZKuJpsa7RojqD5ReEvEchXftwsu48Pc=
+	b=iieHEkgttCPmsTMOH6f2LHwyihTplCWdJYusJkqC40mOaCYCVSWxac2tqp2sE6k0e
+	 OR3GfhY3oDL4RyzZ1feKtEbq4/EGe67r5FJ6KGFmQe/wFZ9Ec0IXAAF20Cx2bU3dnd
+	 8pc/+iLIJ9Nt7xns54nNfbAO0+9ZpOoJySqHltRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/166] drm/nouveau: Do not override forced connector status
-Date: Wed, 19 Mar 2025 07:31:02 -0700
-Message-ID: <20250319143022.488700281@linuxfoundation.org>
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 6.12 170/231] drm/panic: use `div_ceil` to clean Clippy warning
+Date: Wed, 19 Mar 2025 07:31:03 -0700
+Message-ID: <20250319143031.044112464@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 01f1d77a2630e774ce33233c4e6723bca3ae9daa ]
+commit 986c2e9ca818b0b74cfc737517549fd0b80ff15d upstream.
 
-Keep user-forced connector status even if it cannot be programmed. Same
-behavior as for the rest of the drivers.
+Starting with the upcoming Rust 1.86.0 (to be released 2025-04-03),
+Clippy warns:
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250114100214.195386-1-tzimmermann@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    error: manually reimplementing `div_ceil`
+       --> drivers/gpu/drm/drm_panic_qr.rs:548:26
+        |
+    548 |         let pad_offset = (offset + 7) / 8;
+        |                          ^^^^^^^^^^^^^^^^ help: consider using `.div_ceil()`: `offset.div_ceil(8)`
+        |
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#manual_div_ceil
+
+And similarly for `stride`. Thus apply the suggestion to both.
+
+The behavior (and thus codegen) is not exactly equivalent [1][2], since
+`div_ceil()` returns the right value for the values that currently
+would overflow.
+
+Link: https://github.com/rust-lang/rust-clippy/issues/14333 [1]
+Link: https://godbolt.org/z/dPq6nGnv3 [2]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
+Cc: stable@vger.kernel.org # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250301231602.917580-1-ojeda@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/drm_panic_qr.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index 22a125243d81f..c1985448d9b38 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -758,7 +758,6 @@ nouveau_connector_force(struct drm_connector *connector)
- 	if (!nv_encoder) {
- 		NV_ERROR(drm, "can't find encoder to force %s on!\n",
- 			 connector->name);
--		connector->status = connector_status_disconnected;
- 		return;
- 	}
+diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+index ef2d490965ba..56692c6be219 100644
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -545,7 +545,7 @@ impl EncodedMsg<'_> {
+         }
+         self.push(&mut offset, (MODE_STOP, 4));
  
+-        let pad_offset = (offset + 7) / 8;
++        let pad_offset = offset.div_ceil(8);
+         for i in pad_offset..self.version.max_data() {
+             self.data[i] = PADDING[(i & 1) ^ (pad_offset & 1)];
+         }
+@@ -659,7 +659,7 @@ struct QrImage<'a> {
+ impl QrImage<'_> {
+     fn new<'a, 'b>(em: &'b EncodedMsg<'b>, qrdata: &'a mut [u8]) -> QrImage<'a> {
+         let width = em.version.width();
+-        let stride = (width + 7) / 8;
++        let stride = width.div_ceil(8);
+         let data = qrdata;
+ 
+         let mut qr_image = QrImage {
 -- 
-2.39.5
+2.48.1
 
 
 
