@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A145A690EF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2587FA6907E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2D137AECF9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 736E67A7DAD
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D4820AF8E;
-	Wed, 19 Mar 2025 14:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFB41EF399;
+	Wed, 19 Mar 2025 14:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8e/vmKL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VinOaJB+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225F81DEFD6;
-	Wed, 19 Mar 2025 14:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8081C5F25;
+	Wed, 19 Mar 2025 14:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395259; cv=none; b=TSyEppcJ4KixNfuKdbI5oOkH4xhHPYuOSmKx9Cmfx7vq/mkPy7g0ipcuZCcGe5F4zxAY3TjqddiBowvx+Gp971DG9NMGvwsB5TZHvY+emWiOzASJ2oLMkRfX47mbQKporwqYqfsZdy21/Xs+niCpH1b/9x9y3dSTOwraH8r0Qmk=
+	t=1742395148; cv=none; b=ZfrECr/LO9k/fRRR0iF8cf4Oi998W1W66zljJqRE27/HICNFkVwmRJcLyMmMLk6AqaI9uhQBYLEYmS5n5IYM97lM9K3PFudkcyFEp80vOIMFwbAn5KDIQaVM2qveaJumFj2mI7arkvOfP3obp65Pn0q1xHmMXXJljqm7IsVC0og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395259; c=relaxed/simple;
-	bh=K9k7usDLl1+254KTUCB9t9IKRSjmYgGkyHPLYAYJee0=;
+	s=arc-20240116; t=1742395148; c=relaxed/simple;
+	bh=tPyG8UphfJ+hzgRMDnkCDoaZvpPkjijoGlJZQELDoBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4k446QgG+TtvCueZuvbVVsIEo2r35cGdKBVj5roeRF1T7vOGPnhSiF4n+7MROEsJqLWCS/xRzvf+waXcTsnQouFOkuzDdxpCYYcvctci39EWp66COZZJDUli1xwLY5z4bCuLC22y8/sC5wD048R4sxOkhCJvOPNukmB9CwbTtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8e/vmKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91E6C4CEE8;
-	Wed, 19 Mar 2025 14:40:58 +0000 (UTC)
+	 MIME-Version; b=R/TJvdi6BMXJQEVAOeqXhUQHq3N0urLTdL9zv9qCycF5OzbBJS1fXGIUN4OqiySXL2UwuBz3MIeM+/IcTV2eGl9zrbcgKu5bPa3Ht5Ye0PGni2pZOc8ujjPtoFOcJC1b5bj78lwdL8wvGzVcjHaPiA3tWZ1h8OtaEYfQ10XUDVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VinOaJB+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBD1C4CEE4;
+	Wed, 19 Mar 2025 14:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395259;
-	bh=K9k7usDLl1+254KTUCB9t9IKRSjmYgGkyHPLYAYJee0=;
+	s=korg; t=1742395148;
+	bh=tPyG8UphfJ+hzgRMDnkCDoaZvpPkjijoGlJZQELDoBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8e/vmKLZHefqhSNDn5VAyYjPGRxzLR+zEz19mgvgeI9FcS6QZRS+5dybM226KkUH
-	 rkGVebpQG5rUEy+9Xi2tKeiZYzDEocssxuhGc5fa/uNJhD6vui4YQET6WNQT6pQR9j
-	 27scBSel8vjiXsI5CwXMGZtvpm/YaRmLsCKYiBtI=
+	b=VinOaJB+XCDpC9hKuPtFwAqUAOVNmFuF1SIhu2k3QodE19FFjWL/Bzuc/YP6DngxY
+	 fYogbv2qYACyKSeBJJ3l73rSJqAWHfQcjIoq9RRHjqiGiyuVQD5ngF04+/7V8IWScK
+	 ydSzgXTEKdnHiCcKVczbM5hk8SK1XbC+Rgz9VDb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alban Kurti <kurti@invicto.ai>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/166] rust: init: add missing newline to pr_info! calls
+Subject: [PATCH 6.12 221/231] i2c: ali15x3: Fix an error handling path in ali15x3_probe()
 Date: Wed, 19 Mar 2025 07:31:54 -0700
-Message-ID: <20250319143023.894074988@linuxfoundation.org>
+Message-ID: <20250319143032.299818503@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alban Kurti <kurti@invicto.ai>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 6933c1067fe6df8ddb34dd68bdb2aa172cbd08c8 ]
+[ Upstream commit 6e55caaf30c88209d097e575a169b1dface1ab69 ]
 
-Several pr_info! calls in rust/kernel/init.rs (both in code examples
-and macro documentation) were missing a newline, causing logs to
-run together. This commit updates these calls to include a trailing
-newline, improving readability and consistency with the C side.
+If i2c_add_adapter() fails, the request_region() call in ali15x3_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
 
-Fixes: 6841d45a3030 ("rust: init: add `stack_pin_init!` macro")
-Fixes: 7f8977a7fe6d ("rust: init: add `{pin_}chain` functions to `{Pin}Init<T, E>`")
-Fixes: d0fdc3961270 ("rust: init: add `PinnedDrop` trait and macros")
-Fixes: 4af84c6a85c6 ("rust: init: update expanded macro explanation")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1139
-Signed-off-by: Alban Kurti <kurti@invicto.ai>
-Link: https://lore.kernel.org/r/20250206-printing_fix-v3-3-a85273b501ae@invicto.ai
-[ Replaced Closes with Link since it fixes part of the issue. Added
-  one more Fixes tag (still same set of stable kernels). - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/9b2090cbcc02659f425188ea05f2e02745c4e67b.1741031878.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/init.rs        | 12 ++++++------
- rust/kernel/init/macros.rs |  6 +++---
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/i2c/busses/i2c-ali15x3.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 6ef9f61820184..af1c77cc12b28 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -258,7 +258,7 @@ pub mod macros;
- ///     },
- /// }));
- /// let foo: Pin<&mut Foo> = foo;
--/// pr_info!("a: {}", &*foo.a.lock());
-+/// pr_info!("a: {}\n", &*foo.a.lock());
- /// ```
- ///
- /// # Syntax
-@@ -310,7 +310,7 @@ macro_rules! stack_pin_init {
- ///     })?,
- /// }));
- /// let foo = foo.unwrap();
--/// pr_info!("a: {}", &*foo.a.lock());
-+/// pr_info!("a: {}\n", &*foo.a.lock());
- /// ```
- ///
- /// ```rust,ignore
-@@ -335,7 +335,7 @@ macro_rules! stack_pin_init {
- ///         x: 64,
- ///     })?,
- /// }));
--/// pr_info!("a: {}", &*foo.a.lock());
-+/// pr_info!("a: {}\n", &*foo.a.lock());
- /// # Ok::<_, AllocError>(())
- /// ```
- ///
-@@ -800,7 +800,7 @@ pub unsafe trait PinInit<T: ?Sized, E = Infallible>: Sized {
-     ///
-     /// impl Foo {
-     ///     fn setup(self: Pin<&mut Self>) {
--    ///         pr_info!("Setting up foo");
-+    ///         pr_info!("Setting up foo\n");
-     ///     }
-     /// }
-     ///
-@@ -906,7 +906,7 @@ pub unsafe trait Init<T: ?Sized, E = Infallible>: PinInit<T, E> {
-     ///
-     /// impl Foo {
-     ///     fn setup(&mut self) {
--    ///         pr_info!("Setting up foo");
-+    ///         pr_info!("Setting up foo\n");
-     ///     }
-     /// }
-     ///
-@@ -1229,7 +1229,7 @@ impl<T> InPlaceInit<T> for UniqueArc<T> {
- /// #[pinned_drop]
- /// impl PinnedDrop for Foo {
- ///     fn drop(self: Pin<&mut Self>) {
--///         pr_info!("Foo is being dropped!");
-+///         pr_info!("Foo is being dropped!\n");
- ///     }
- /// }
- /// ```
-diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-index cb6e61b6c50bd..cb769a09e7426 100644
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -45,7 +45,7 @@
- //! #[pinned_drop]
- //! impl PinnedDrop for Foo {
- //!     fn drop(self: Pin<&mut Self>) {
--//!         pr_info!("{self:p} is getting dropped.");
-+//!         pr_info!("{self:p} is getting dropped.\n");
- //!     }
- //! }
- //!
-@@ -412,7 +412,7 @@
- //! #[pinned_drop]
- //! impl PinnedDrop for Foo {
- //!     fn drop(self: Pin<&mut Self>) {
--//!         pr_info!("{self:p} is getting dropped.");
-+//!         pr_info!("{self:p} is getting dropped.\n");
- //!     }
- //! }
- //! ```
-@@ -423,7 +423,7 @@
- //! // `unsafe`, full path and the token parameter are added, everything else stays the same.
- //! unsafe impl ::kernel::init::PinnedDrop for Foo {
- //!     fn drop(self: Pin<&mut Self>, _: ::kernel::init::__internal::OnlyCallFromDrop) {
--//!         pr_info!("{self:p} is getting dropped.");
-+//!         pr_info!("{self:p} is getting dropped.\n");
- //!     }
- //! }
- //! ```
+diff --git a/drivers/i2c/busses/i2c-ali15x3.c b/drivers/i2c/busses/i2c-ali15x3.c
+index 4761c72081022..418d11266671e 100644
+--- a/drivers/i2c/busses/i2c-ali15x3.c
++++ b/drivers/i2c/busses/i2c-ali15x3.c
+@@ -472,6 +472,8 @@ MODULE_DEVICE_TABLE (pci, ali15x3_ids);
+ 
+ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ {
++	int ret;
++
+ 	if (ali15x3_setup(dev)) {
+ 		dev_err(&dev->dev,
+ 			"ALI15X3 not detected, module not inserted.\n");
+@@ -483,7 +485,15 @@ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 
+ 	snprintf(ali15x3_adapter.name, sizeof(ali15x3_adapter.name),
+ 		"SMBus ALI15X3 adapter at %04x", ali15x3_smba);
+-	return i2c_add_adapter(&ali15x3_adapter);
++	ret = i2c_add_adapter(&ali15x3_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(ali15x3_smba, ALI15X3_SMB_IOSIZE);
++	return ret;
+ }
+ 
+ static void ali15x3_remove(struct pci_dev *dev)
 -- 
 2.39.5
 
