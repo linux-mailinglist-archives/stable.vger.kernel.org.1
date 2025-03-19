@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC22A6910D
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A967A69179
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27FB13AC919
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00A93167055
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1ACB1F0986;
-	Wed, 19 Mar 2025 14:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C2C22257D;
+	Wed, 19 Mar 2025 14:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYoXVsBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VF3VRTzl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9491DE4C9;
-	Wed, 19 Mar 2025 14:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB56920AF78;
+	Wed, 19 Mar 2025 14:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395152; cv=none; b=lgBl+B7ZOJs/5Ae/LavbZymNd3o8rwkCb5U0WNW3INWQ1RgCMoo4XqJhC8i+tIb2hGPkMMsSDjWAZxxj6Vu+JerEet26Si5fn8FvAoPzuy2KYrCQEtXKSS4aWJ/DqIBbLf3LjfdSgOYmMEGsie9rKuOiyEJWeNgCbnMr/SJC1us=
+	t=1742395263; cv=none; b=TnsWdbxHeVPhcVjgs1dfSkzbmQacCgMTUZ4j1llqoQl5YP2Yg3Ibd9rMfRHSqn1xbaQas/KaSEC1WrlJkOcHWNqt34p6MlABC199gLbr/C9EIiaSFX1S0uBTqX0OCcVQ7T6bVqDDZttBESzL/8zNjGFLkVyVBOXKkWLYgIQ887k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395152; c=relaxed/simple;
-	bh=IZc+1CsldkWqz1WmVsQaQKJs5lnbAsKF/CnHkIED7uM=;
+	s=arc-20240116; t=1742395263; c=relaxed/simple;
+	bh=/lXTDRFXhJ91ucjEUllagGwevV+cyQlTxJnOVIS3HYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKJJKJz3fHJsKhbfDOHX9us8qjVPcFEOkLigsNVATTg14XaMJpWzArEhPpQ1YKKUtcLiXwwr1RduNiuqboHGix6+JxWK2WlSMj/XdMhNakMwha7QmmppA7JctOkRYhXI4KYlexa97GWLr5ZveejvrkU1ugDcZ/nn2cHpPjJwp1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYoXVsBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4186BC4CEE4;
-	Wed, 19 Mar 2025 14:39:12 +0000 (UTC)
+	 MIME-Version; b=slo9He+vKaBL33+lxNzoO26CsC6t13BWoglV1zIBqQhs/WEWZs7IfxnpzEKr1yhrkSZV3QLG1Rrqhnm9Km5W9XqqxD/BMiNuhKGMHlmJ3S8JCrIkVGKj3qoNJ6suGPgo1nErx33x4q7GSI62j8SolNV6QGNDR3/TXqzkWIDAfsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VF3VRTzl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E393C4CEE4;
+	Wed, 19 Mar 2025 14:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395152;
-	bh=IZc+1CsldkWqz1WmVsQaQKJs5lnbAsKF/CnHkIED7uM=;
+	s=korg; t=1742395263;
+	bh=/lXTDRFXhJ91ucjEUllagGwevV+cyQlTxJnOVIS3HYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AYoXVsBtIamkQ21hoTpm+xhB3e41WZFUj9KRlIAaFWJLaOY05opwD194PH2cTDBKC
-	 Rpv0MQAP+f5eCXH5VFTKL7FybTDelvmsmG+9NHnIRvt1d7CnhaJP06iDfImWuW/GLf
-	 NszUKnbd/KG+H70MpsvESbwxayZHLDZiKGfWRU40=
+	b=VF3VRTzliainvTLeBxl+kzjGNGkVqO7z843kss3SOqUQYTkw/6747N6C4Gy31rXE+
+	 hcco6J5n6lq8TEFZC2omAj+FqTRBYsLGSl776IrgzGYosVHJZfN6XhUNJ6DvWHwaz0
+	 pnM614sX4ReLOqgdciCeH4Mf6wE+J2U/3KR6ytMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 227/231] tools/sched_ext: Add helper to check task migration state
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 149/166] cifs: Fix integer overflow while processing actimeo mount option
 Date: Wed, 19 Mar 2025 07:32:00 -0700
-Message-ID: <20250319143032.447732222@linuxfoundation.org>
+Message-ID: <20250319143024.061848256@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 5f52bbf2f6e0997394cf9c449d44e1c80ff4282c upstream.
+[ Upstream commit 64f690ee22c99e16084e0e45181b2a1eed2fa149 ]
 
-Introduce a new helper for BPF schedulers to determine whether a task
-can migrate or not (supporting both SMP and UP systems).
+User-provided mount parameter actimeo of type u32 is intended to have
+an upper limit, but before it is validated, the value is converted from
+seconds to jiffies which can lead to an integer overflow.
 
-Fixes: e9fe182772dc ("sched_ext: selftests/dsp_local_on: Fix sporadic failures")
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 6d20e8406f09 ("cifs: add attribute cache timeout (actimeo) tunable")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/sched_ext/include/scx/common.bpf.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/smb/client/fs_context.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/sched_ext/include/scx/common.bpf.h
-+++ b/tools/sched_ext/include/scx/common.bpf.h
-@@ -333,6 +333,17 @@ static __always_inline const struct cpum
- 	return (const struct cpumask *)mask;
- }
- 
-+/*
-+ * Return true if task @p cannot migrate to a different CPU, false
-+ * otherwise.
-+ */
-+static inline bool is_migration_disabled(const struct task_struct *p)
-+{
-+	if (bpf_core_field_exists(p->migration_disabled))
-+		return p->migration_disabled;
-+	return false;
-+}
-+
- /* rcu */
- void bpf_rcu_read_lock(void) __ksym;
- void bpf_rcu_read_unlock(void) __ksym;
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 479801187c762..51604c78f9ea4 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1280,7 +1280,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		ctx->acdirmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_actimeo:
+-		if (HZ * result.uint_32 > CIFS_MAX_ACTIMEO) {
++		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
+ 			cifs_errorf(fc, "timeout too large\n");
+ 			goto cifs_parse_mount_err;
+ 		}
+-- 
+2.39.5
+
 
 
 
