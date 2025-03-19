@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3A5A6912E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27629A68FD6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDE9463EDF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3896017D15C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD32209695;
-	Wed, 19 Mar 2025 14:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95AF1DE899;
+	Wed, 19 Mar 2025 14:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRw+B+Hu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvVOFWRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5861CAA81;
-	Wed, 19 Mar 2025 14:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6838C1DDA36;
+	Wed, 19 Mar 2025 14:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395236; cv=none; b=Rl9+xCcA3Pfq9ydkipP9YNJ/b+VH74JU/lz5IWYpY3gVvwbVxietV3jP1LKw3ziYT8FdhTOI+jjetfIC7OvnP0EexIC1ARxG2uwFXsUMRIkfJolHlMyhzEBOBOfNwwV17MkPU6z0UKTjHq4PBF8xPXPqAUnbo6adXXd2Pgs3ZUA=
+	t=1742394973; cv=none; b=Rf2ldbcXTiEbv9qUvxZjW7ud1H9KCTZVdioDaKJoFODh+W2obM2FXwRvghT+4jYS0MMUuvZ5kL4TbQ/ixiDry5URs5Iw6kslP9rDm4Yo6jFOJ4DRYOGtfxUfw347nXzCXRI4/HzLbddsientffRzUbAGv6F8GIlGx89Ig0vpzsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395236; c=relaxed/simple;
-	bh=i5XIyJkEbbk9ZytChK/2b/fz+lim/rZDtdYf/nzI2K0=;
+	s=arc-20240116; t=1742394973; c=relaxed/simple;
+	bh=y73YJ8nipcP0kEh9N60Duj7mTaYNHA8Tpo1CX+h0ePE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHIn3SN/dDmWDdj0kd57djJ52PZR1dXsFFmhCuU3ibWclcg4Jjqet8dD/neG/s2Az8hGfmPpOww3xNQL66c2Klu3B7qGAxvK3fTMm9szS95ygMvHNxpR7FqSbUeYuChn01AKfeSJpaV4dc6bG0Ghgu8iu0XAe35DJPmU/sPPTug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRw+B+Hu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0780C4CEE4;
-	Wed, 19 Mar 2025 14:40:35 +0000 (UTC)
+	 MIME-Version; b=V2TKIRbSAkgrW/nfhiDT/5tlbFz2Bcg0gvR1POpb0BGSxHaSuBg84eTrTjryKQcHKEEhG6Z30tP5+L3bNbMQGe2/55Y6J51d4ONUlhIqU1xBI1ZpBlBqavRs8GVbCjb6LX2eaqsSWiiEbZz+t+EYbPYsSWZTnhFy++4BfnTGkQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvVOFWRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFB7C4CEEC;
+	Wed, 19 Mar 2025 14:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395235;
-	bh=i5XIyJkEbbk9ZytChK/2b/fz+lim/rZDtdYf/nzI2K0=;
+	s=korg; t=1742394973;
+	bh=y73YJ8nipcP0kEh9N60Duj7mTaYNHA8Tpo1CX+h0ePE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRw+B+HurPy/hsja4pz5HduRte18QNFXJ7CpQcsBNQlw3nq4ssofjtGWEMMgHto3s
-	 rwjzZQF21X4KVmzQ9bXqotHHAm0JqY+7KQIrnQESEbxSNpcBl1ZMwlieyBx3t0CgTw
-	 SizM9DoePJI9y91PdRJAMXOI7zB5XWovE6ObldR8=
+	b=AvVOFWRONFY2+R3qsPNqRh+VlPxYOYrlQa7pJ/62xrLXyZI1K1TNgbUJYZegnKOJX
+	 p/Z70mgPU6FFa8MLv2DfuDzTFmJu8mm/7fdMGI6ruPfJs36OHoyav4/Yk/5kuPd2oD
+	 aKuunJiq5jOZOAoGhwnFUeaA+w/+lwQZolVrUPG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 108/166] Input: xpad - add support for ZOTAC Gaming Zone
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 209/241] ASoC: cs42l43: Fix maximum ADC Volume
 Date: Wed, 19 Mar 2025 07:31:19 -0700
-Message-ID: <20250319143022.941984990@linuxfoundation.org>
+Message-ID: <20250319143032.918247388@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 709329c48214ad2acf12eed1b5c0eb798e40a64c upstream.
+[ Upstream commit e26f1cfeac6712516bfeed80890da664f4f2e88a ]
 
-ZOTAC Gaming Zone is ZOTAC's 2024 handheld release. As it is common
-with these handhelds, it uses a hybrid USB device with an xpad
-endpoint, a keyboard endpoint, and a vendor-specific endpoint for
-RGB control et al.
+The range of ADC volume is -1 -> 3 (-6 to 18dB) so the number of levels
+should actually be 4.
 
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://lore.kernel.org/r/20250222170010.188761-2-lkml@antheas.dev
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250306133254.1861046-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/cs42l43.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -349,6 +349,7 @@ static const struct xpad_device {
- 	{ 0x1bad, 0xfa01, "MadCatz GamePad", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0xfd00, "Razer Onza TE", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0xfd01, "Razer Onza", 0, XTYPE_XBOX360 },
-+	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
- 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x281f, "PowerA Wired Controller For Xbox 360", 0, XTYPE_XBOX360 },
-@@ -537,6 +538,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
- 	XPAD_XBOX360_VENDOR(0x1a86),		/* QH Electronics */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
-+	XPAD_XBOX360_VENDOR(0x1ee9),		/* ZOTAC Technology Limited */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOX360_VENDOR(0x24c6),		/* PowerA controllers */
+diff --git a/sound/soc/codecs/cs42l43.c b/sound/soc/codecs/cs42l43.c
+index 83c21c17fb80b..b1969536862ba 100644
+--- a/sound/soc/codecs/cs42l43.c
++++ b/sound/soc/codecs/cs42l43.c
+@@ -1146,7 +1146,7 @@ static const struct snd_kcontrol_new cs42l43_controls[] = {
+ 
+ 	SOC_DOUBLE_R_SX_TLV("ADC Volume", CS42L43_ADC_B_CTRL1, CS42L43_ADC_B_CTRL2,
+ 			    CS42L43_ADC_PGA_GAIN_SHIFT,
+-			    0xF, 5, cs42l43_adc_tlv),
++			    0xF, 4, cs42l43_adc_tlv),
+ 
+ 	SOC_DOUBLE("PDM1 Invert Switch", CS42L43_DMIC_PDM_CTRL,
+ 		   CS42L43_PDM1L_INV_SHIFT, CS42L43_PDM1R_INV_SHIFT, 1, 0),
+-- 
+2.39.5
+
 
 
 
