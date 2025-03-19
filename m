@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DEDA68FEE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84AFCA691DA
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:58:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0503B3AA451
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7EE28A24F1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6DE2046BF;
-	Wed, 19 Mar 2025 14:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA6220B808;
+	Wed, 19 Mar 2025 14:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11psIZaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUcbnwcX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAE01C8618;
-	Wed, 19 Mar 2025 14:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2C41DF258;
+	Wed, 19 Mar 2025 14:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394985; cv=none; b=VcyofTNe8/zlyBXV2x72/ndwMDKiujle9AUayg8TMSeX2nfci15r6pSkpAoCbyu/o/729WvybegkUDwBx3+G8PvHxfTjwkIM0lzA9jRPqqMjfwRQpt9lDh9Ui8c+QDT9f+KESRun6oaq3W+SI0E+JZDmKrZ8lAUYlbjMbCVUXRo=
+	t=1742395273; cv=none; b=n/740T99pz4fHxA6QMPOMISxIj1vIjvwLRVN9HbRZ0XSmT91+1y/ay+6Rw9C2VUwKsvUEpycP8IZ03Ya4y9dwvK75Z8ZVOzzsJJsJofL8LKhMAhnmZ3W+MS3fyCcq953F8Uq/1uuJzb7Bc4Rq8L1rzLcXRJPNmSRQB/FmxtoOno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394985; c=relaxed/simple;
-	bh=dAkLYV+QPBfjl1tRRr28vGJ9TMrCVC/9mHEncv8wzkw=;
+	s=arc-20240116; t=1742395273; c=relaxed/simple;
+	bh=YJGDwV+a5WPnS6iVXmxIDaFIkTu+nVCIM8mo77Xvsf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UC8YUj9gpiMRFNQm9kouB490Ln2ZZL8VPvvggCqUzx3KQymxF1nQTIA1N9ZzadEYSwCiqGBZxXJDDUizbvMdEFVS+DijjpNc/xiUPblRohRwVk8mg51WdzXaE1M9oK6e9wmjO110TkMhBtFgZV54iDmGaqCFIdXlTOpbI8OT06k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11psIZaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F3FC4CEE8;
-	Wed, 19 Mar 2025 14:36:25 +0000 (UTC)
+	 MIME-Version; b=lfZ5Z+9EVmE6CSPRtbzrZFnl63/zJqlvZxBFT2XoPj9Zk37TU3+T33zpYOnHmZUl4Ti5DZ+vTJT+Zn7m1N6tdTJI3nVhheGqnjoXgKpLNj8oVGfYlI1GhcPNiYX7az+fpCWTRUBHBw8DTgAZYnRpw8J9ntK62T5/L+PwybartpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUcbnwcX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40626C4CEE4;
+	Wed, 19 Mar 2025 14:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394985;
-	bh=dAkLYV+QPBfjl1tRRr28vGJ9TMrCVC/9mHEncv8wzkw=;
+	s=korg; t=1742395273;
+	bh=YJGDwV+a5WPnS6iVXmxIDaFIkTu+nVCIM8mo77Xvsf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11psIZajDE5R7c1xQ99A6+XNgB5v4+09a+T4aoTYnWkoV1U3iy2rkmG2LLCVkxC+s
-	 vPWUfr0Y7E9DYoF30V+HwxpNg6NWaCfaqttfh/2oOR8CMXtKCRCiN4yQhcHL13MxN6
-	 JF47Dnr8u8a8MGPxmW24VBUujQu8XMWIgPAuFL1g=
+	b=SUcbnwcXMx+6h8cbEU2aifdubLB/90oNGUDea5p9dYeCoouyzxmKJtETlSEQMWBU+
+	 KxTBaY3ElSQIEnL8NTHrO4mHYO870bitC+R+SJGE+eex3ZX/9/l26xZ9RjWM7uDygw
+	 ZBDldufOFwlavd17a/CWa+XD9o5NdCOreoAuKTQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 225/241] cifs: Fix integer overflow while processing acdirmax mount option
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 124/166] drm/amd/display: Restore correct backlight brightness after a GPU reset
 Date: Wed, 19 Mar 2025 07:31:35 -0700
-Message-ID: <20250319143033.313408929@linuxfoundation.org>
+Message-ID: <20250319143023.373005397@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 5b29891f91dfb8758baf1e2217bef4b16b2b165b ]
+commit 5760388d9681ac743038b846b9082b9023969551 upstream.
 
-User-provided mount parameter acdirmax of type u32 is intended to have
-an upper limit, but before it is validated, the value is converted from
-seconds to jiffies which can lead to an integer overflow.
+[Why]
+GPU reset will attempt to restore cached state, but brightness doesn't
+get restored. It will come back at 100% brightness, but userspace thinks
+it's the previous value.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+[How]
+When running resume sequence if GPU is in reset restore brightness
+to previous value.
 
-Fixes: 4c9f948142a5 ("cifs: Add new mount parameter "acdirmax" to allow caching directory metadata")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5e19e2b57b6bb640d68dfc7991e1e182922cf867)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/fs_context.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 0fae0afa12626..6d7091ddec16e 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1291,11 +1291,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 		ctx->acregmax = HZ * result.uint_32;
- 		break;
- 	case Opt_acdirmax:
--		ctx->acdirmax = HZ * result.uint_32;
--		if (ctx->acdirmax > CIFS_MAX_ACTIMEO) {
-+		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
- 			cifs_errorf(fc, "acdirmax too large\n");
- 			goto cifs_parse_mount_err;
- 		}
-+		ctx->acdirmax = HZ * result.uint_32;
- 		break;
- 	case Opt_actimeo:
- 		if (HZ * result.uint_32 > CIFS_MAX_ACTIMEO) {
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -227,6 +227,10 @@ static int amdgpu_dm_atomic_check(struct
+ static void handle_hpd_irq_helper(struct amdgpu_dm_connector *aconnector);
+ static void handle_hpd_rx_irq(void *param);
+ 
++static void amdgpu_dm_backlight_set_level(struct amdgpu_display_manager *dm,
++					 int bl_idx,
++					 u32 user_brightness);
++
+ static bool
+ is_timing_unchanged_for_freesync(struct drm_crtc_state *old_crtc_state,
+ 				 struct drm_crtc_state *new_crtc_state);
+@@ -2879,6 +2883,12 @@ static int dm_resume(void *handle)
+ 
+ 		mutex_unlock(&dm->dc_lock);
+ 
++		/* set the backlight after a reset */
++		for (i = 0; i < dm->num_of_edps; i++) {
++			if (dm->backlight_dev[i])
++				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
++		}
++
+ 		return 0;
+ 	}
+ 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
 
 
 
