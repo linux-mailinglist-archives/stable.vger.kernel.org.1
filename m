@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-125237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E630DA69032
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67AC4A68F5E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7854416BDEF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26C697A6DF8
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E832147E0;
-	Wed, 19 Mar 2025 14:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCDA1E0DF5;
+	Wed, 19 Mar 2025 14:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+NtJ2tw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djr2SCyM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143F2214815;
-	Wed, 19 Mar 2025 14:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDC41B2194;
+	Wed, 19 Mar 2025 14:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395049; cv=none; b=nuHqwdjNlYgLUJKIHFHzHdqWHUPG/VKJofZbJfChGXJ+LRnZP/E9tEL/xOp7kmhAbAEUH1WTLK2cQsegKwUtneLXfTkhlqVjIqwlQmo25Bj5Y+fGdmVUlsVR0AO2wVTqX+RYxTVVI//UDulsvND55ltn9YdLdrNlQQiQ0+SJuAw=
+	t=1742394894; cv=none; b=O0+LFboUM4YlCad8Swv7s/yfl4v+DKx85VoGbMzsVxp9attJ4JD5hLy4bM6/J5icV2GgMFi3y/Kwungr6tb2e+jKJ5pxW82FUKJ5c/4+/WL3VcjbFHcmRrTFjFzHk+7eZ/Q+7edjkys/QZsyKCnUuOpYrygZLVXMyF3hO0aTj34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395049; c=relaxed/simple;
-	bh=xcMkMLEGagFvjduy10s3EcZdJiJwnGBNAbYhAyllhnA=;
+	s=arc-20240116; t=1742394894; c=relaxed/simple;
+	bh=Z8zjYVaks+3Reg6ND101Tk7ndRKyUM1TRPhKuKWrTy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEXTop8HED13Yqvv+3mblK6wIs64JLVs+sb3FH5EM+a1UZVauibrMlUTrXOQAdIzin3LDVt0mGSBdjWDz3rHyRQC+7WhWA0UF0kkmezn84SwEfgYI0pkAEYh7KqHquUK4PekLUf+dGH6cAkO+44u21sUMkd917PWuqvC8BQl+s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+NtJ2tw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4F4C4CEE4;
-	Wed, 19 Mar 2025 14:37:28 +0000 (UTC)
+	 MIME-Version; b=bxiEEELhP9PFD1ysgEXL6HRDgb9YtEanmCho5Mfn/u0KqaKp68KzYthV58OA0DEPlJ1QXBVcGR1G/QCMBKXiCxg8hdH2V7J0gspRclaW4RscdyTlXyDYBVcN+Y/oa30yUf6xgyS+m2pKGFarBBWhNTYtegB/fnxOmxp18B6aTCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djr2SCyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190EEC4CEE4;
+	Wed, 19 Mar 2025 14:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395049;
-	bh=xcMkMLEGagFvjduy10s3EcZdJiJwnGBNAbYhAyllhnA=;
+	s=korg; t=1742394894;
+	bh=Z8zjYVaks+3Reg6ND101Tk7ndRKyUM1TRPhKuKWrTy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+NtJ2twqX1QKP+A83idGpN/3tfOj5gaAdaF4mmt0uZ4rbCk/mbcbOC/DiWgkVEvj
-	 1gI/uveZYE1B64jgy/0DADbZReeBzleh4Hi8chuzOwmNQpqYUDpsaRXHUwBiXpru8j
-	 zRBC+PLj1veL/P8fskWI/LDImnx6MVsHJ3AIm7i4=
+	b=djr2SCyMc/WwlkpaLEQpiS7i98KFVf/1stUSP0ea+1942HqF3y8wvcJ/kyLfJvDme
+	 3fKjPQ9u39kJBD5+g+N5+ZqNrhoPGkBsB7rq7zoSG78gVyqY5ihLzi2W+1cv2o5K0I
+	 oMIkebKXyEprt3+ctF95uE4PxY7dAXdHY5VrIECw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Beata Michalska <beata.michalska@arm.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/231] HID: intel-ish-hid: fix the length of MNG_SYNC_FW_CLOCK in doorbell
+Subject: [PATCH 6.13 098/241] arm64: amu: Delay allocating cpumask for AMU FIE support
 Date: Wed, 19 Mar 2025 07:29:28 -0700
-Message-ID: <20250319143028.685701091@linuxfoundation.org>
+Message-ID: <20250319143030.144745804@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Beata Michalska <beata.michalska@arm.com>
 
-[ Upstream commit 4b54ae69197b9f416baa0fceadff7e89075f8454 ]
+[ Upstream commit d923782b041218ef3804b2fed87619b5b1a497f3 ]
 
-The timestamps in the Firmware log and HID sensor samples are incorrect.
-They show 1970-01-01 because the current IPC driver only uses the first
-8 bytes of bootup time when synchronizing time with the firmware. The
-firmware converts the bootup time to UTC time, which results in the
-display of 1970-01-01.
+For the time being, the amu_fie_cpus cpumask is being exclusively used
+by the AMU-related internals of FIE support and is guaranteed to be
+valid on every access currently made. Still the mask is not being
+invalidated on one of the error handling code paths, which leaves
+a soft spot with theoretical risk of UAF for CPUMASK_OFFSTACK cases.
+To make things sound, delay allocating said cpumask
+(for CPUMASK_OFFSTACK) avoiding otherwise nasty sanitising case failing
+to register the cpufreq policy notifications.
 
-In write_ipc_from_queue(), when sending the MNG_SYNC_FW_CLOCK message,
-the clock is updated according to the definition of ipc_time_update_msg.
-However, in _ish_sync_fw_clock(), the message length is specified as the
-size of uint64_t when building the doorbell. As a result, the firmware
-only receives the first 8 bytes of struct ipc_time_update_msg.
-This patch corrects the length in the doorbell to ensure the entire
-ipc_time_update_msg is sent, fixing the timestamp issue.
-
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+Reviewed-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+Reviewed-by: Sumit Gupta <sumitg@nvidia.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20250131155842.3839098-1-beata.michalska@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/ipc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/kernel/topology.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
-index 3cd53fc80634a..cb956a8c386cb 100644
---- a/drivers/hid/intel-ish-hid/ipc/ipc.c
-+++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
-@@ -578,14 +578,14 @@ static void fw_reset_work_fn(struct work_struct *work)
- static void _ish_sync_fw_clock(struct ishtp_device *dev)
- {
- 	static unsigned long	prev_sync;
--	uint64_t	usec;
-+	struct ipc_time_update_msg time = {};
+diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+index 1a2c72f3e7f80..cb180684d10d5 100644
+--- a/arch/arm64/kernel/topology.c
++++ b/arch/arm64/kernel/topology.c
+@@ -194,12 +194,19 @@ static void amu_fie_setup(const struct cpumask *cpus)
+ 	int cpu;
  
- 	if (prev_sync && time_before(jiffies, prev_sync + 20 * HZ))
+ 	/* We are already set since the last insmod of cpufreq driver */
+-	if (unlikely(cpumask_subset(cpus, amu_fie_cpus)))
++	if (cpumask_available(amu_fie_cpus) &&
++	    unlikely(cpumask_subset(cpus, amu_fie_cpus)))
  		return;
  
- 	prev_sync = jiffies;
--	usec = ktime_to_us(ktime_get_boottime());
--	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &usec, sizeof(uint64_t));
-+	/* The fields of time would be updated while sending message */
-+	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &time, sizeof(time));
- }
+-	for_each_cpu(cpu, cpus) {
++	for_each_cpu(cpu, cpus)
+ 		if (!freq_counters_valid(cpu))
+ 			return;
++
++	if (!cpumask_available(amu_fie_cpus) &&
++	    !zalloc_cpumask_var(&amu_fie_cpus, GFP_KERNEL)) {
++		WARN_ONCE(1, "Failed to allocate FIE cpumask for CPUs[%*pbl]\n",
++			  cpumask_pr_args(cpus));
++		return;
+ 	}
  
- /**
+ 	cpumask_or(amu_fie_cpus, amu_fie_cpus, cpus);
+@@ -237,17 +244,8 @@ static struct notifier_block init_amu_fie_notifier = {
+ 
+ static int __init init_amu_fie(void)
+ {
+-	int ret;
+-
+-	if (!zalloc_cpumask_var(&amu_fie_cpus, GFP_KERNEL))
+-		return -ENOMEM;
+-
+-	ret = cpufreq_register_notifier(&init_amu_fie_notifier,
++	return cpufreq_register_notifier(&init_amu_fie_notifier,
+ 					CPUFREQ_POLICY_NOTIFIER);
+-	if (ret)
+-		free_cpumask_var(amu_fie_cpus);
+-
+-	return ret;
+ }
+ core_initcall(init_amu_fie);
+ 
 -- 
 2.39.5
 
