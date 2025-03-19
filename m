@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-125047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE02A690C6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F44A690DE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ACCD1B666D4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 205211690F5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBEB1E22FD;
-	Wed, 19 Mar 2025 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A66E1DE3DF;
+	Wed, 19 Mar 2025 14:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIi+PB6i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7Wf26pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FBA1C1F0F;
-	Wed, 19 Mar 2025 14:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CCE1DE899;
+	Wed, 19 Mar 2025 14:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394918; cv=none; b=M+LUn0GrOTFINWYCqIPOmCYRmQaWqzkIuEQINZcWcMnzs8/RkpGUPL5RXX3weRNlLdH4APKI+7xlX7Bwui0zmZarBZEexe7fCNIEJupT0GjgBta60ehatqoHbRJBF1+7SIRPizbCQaDBi9l/GeVPbhb9YMB4YnZt1Tt0cA34yBQ=
+	t=1742395175; cv=none; b=NWRO2Rk3+/Xg2dU01UTOdrt5OuDWkStoLaZ++OHbwIeWzCuJDNz7oh64F2nsH7ALpAScU48xd/213H3XoXHMitO9HZ5MDILMKqc63kGVaV2g0SYWdNarytgo/9iR/sqwZKTJ65M5fxqRsFSXHgyUmUrez+zpoiSlPBTo/855rNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394918; c=relaxed/simple;
-	bh=dQ53vVGjPVNfA/IvtDfZjyyIPdmZYdCw68SB3f9KhGk=;
+	s=arc-20240116; t=1742395175; c=relaxed/simple;
+	bh=AlJotomPg7Hlm2/TdT+DFx6CmZ/pi7rBeweQj6tjbZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ielUZL24jiih2/EgpbA/drZQ0VZo3Ek2QUEcwso/3RohSLDFfYfBdDnZb20rkub4IVQRxhbVcAS+DUAHfFXe4akz3lmhZr7XmsjkD33v7QOkUp30OR+UOln3gqCR+b3e57ucr24lnAnBhe2UjLGiHMGqmA+Iprn2RILzi0ybKaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIi+PB6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A02C4CEE4;
-	Wed, 19 Mar 2025 14:35:18 +0000 (UTC)
+	 MIME-Version; b=caahAbloKbPBrWricCCO+ynv1HDlea90L7a/Pvsa4wwZbjClY/jguVZOkqIBpM06hPJBUUTHbOk3Fv0ScFd1m4Oo2v3VsMvGm93OQnP1LvXtjKY4ao+drnGfg3+WojEkWJIIJfSelMqCU6PSjBZqRASqAqErQ8Wyp0M9zwSkgdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7Wf26pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2157C4CEE4;
+	Wed, 19 Mar 2025 14:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394918;
-	bh=dQ53vVGjPVNfA/IvtDfZjyyIPdmZYdCw68SB3f9KhGk=;
+	s=korg; t=1742395175;
+	bh=AlJotomPg7Hlm2/TdT+DFx6CmZ/pi7rBeweQj6tjbZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIi+PB6iSXcqySK+PU4ZyU/tjb7sh/6j1wqnWU17Bata0Q5WuPr6XYvCWs+5aB99f
-	 vH+LvkC3+p+4cnF4IGl4BswAzbt2fWAVhtgXLVYwxtDDepCpKu5wk8IiLC7/6+VV84
-	 ssRc2GbdoGQtExbi/de2lB1hBlU2fVGMePDjmL+w=
+	b=Z7Wf26plSX6eqLboltSDpTGytOf+8MZ8VKHYv0F7Cgl0JtGRZrHwTNELWrI45rabJ
+	 ej3Q6wnrhacUxCJHkannSyTGchZVVR07B76xEGHz50NMKDaGSuQLo0tWgSiqkUCeeI
+	 Cxay79ieYIcOSRg0B4yiMl+lzDgEReB1cOchomTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	syzbot+83fed965338b573115f7@syzkaller.appspotmail.com,
+	Kohei Enju <enjuk@amazon.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 128/241] drm/xe: Make GUC binaries dump consistent with other binaries in devcoredump
+Subject: [PATCH 6.6 027/166] netfilter: nf_conncount: Fully initialize struct nf_conncount_tuple in insert_tree()
 Date: Wed, 19 Mar 2025 07:29:58 -0700
-Message-ID: <20250319143030.891753419@linuxfoundation.org>
+Message-ID: <20250319143020.719742008@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Roberto de Souza <jose.souza@intel.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit 643f209ba3fdd4099416aaf9efa8266f7366d6fb ]
+[ Upstream commit d653bfeb07ebb3499c403404c21ac58a16531607 ]
 
-All other(hwsp, hwctx and vmas) binaries follow this format:
-[name].length: 0x1000
-[name].data: xxxxxxx
-[name].error: errno
+Since commit b36e4523d4d5 ("netfilter: nf_conncount: fix garbage
+collection confirm race"), `cpu` and `jiffies32` were introduced to
+the struct nf_conncount_tuple.
 
-The error one is just in case by some reason it was not able to
-capture the binary.
+The commit made nf_conncount_add() initialize `conn->cpu` and
+`conn->jiffies32` when allocating the struct.
+In contrast, count_tree() was not changed to initialize them.
 
-So this GuC binaries should follow the same patern.
+By commit 34848d5c896e ("netfilter: nf_conncount: Split insert and
+traversal"), count_tree() was split and the relevant allocation
+code now resides in insert_tree().
+Initialize `conn->cpu` and `conn->jiffies32` in insert_tree().
 
-v2:
-- renamed GUC binary to LOG
+BUG: KMSAN: uninit-value in find_or_evict net/netfilter/nf_conncount.c:117 [inline]
+BUG: KMSAN: uninit-value in __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
+ find_or_evict net/netfilter/nf_conncount.c:117 [inline]
+ __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
+ count_tree net/netfilter/nf_conncount.c:438 [inline]
+ nf_conncount_count+0x82f/0x1e80 net/netfilter/nf_conncount.c:521
+ connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
+ __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
+ nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+ nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
+ nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+ nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
+ NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
+ ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
+ ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
+ __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
+ __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
+ __netif_receive_skb_list net/core/dev.c:6035 [inline]
+ netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
+ netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
+ xdp_recv_frames net/bpf/test_run.c:280 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:361 [inline]
+ bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
+ bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
+ bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
+ __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
+ __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
+ ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
 
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250123202307.95103-3-jose.souza@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit cb1f868ca13756c0c18ba54d1591332476760d07)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:4121 [inline]
+ slab_alloc_node mm/slub.c:4164 [inline]
+ kmem_cache_alloc_noprof+0x915/0xe10 mm/slub.c:4171
+ insert_tree net/netfilter/nf_conncount.c:372 [inline]
+ count_tree net/netfilter/nf_conncount.c:450 [inline]
+ nf_conncount_count+0x1415/0x1e80 net/netfilter/nf_conncount.c:521
+ connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
+ __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
+ nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+ nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
+ nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+ nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
+ NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
+ ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
+ ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
+ __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
+ __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
+ __netif_receive_skb_list net/core/dev.c:6035 [inline]
+ netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
+ netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
+ xdp_recv_frames net/bpf/test_run.c:280 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:361 [inline]
+ bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
+ bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
+ bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
+ __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
+ __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
+ ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+
+Reported-by: syzbot+83fed965338b573115f7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=83fed965338b573115f7
+Fixes: b36e4523d4d5 ("netfilter: nf_conncount: fix garbage collection confirm race")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c  | 6 ++++--
- drivers/gpu/drm/xe/xe_guc_log.c | 3 ++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ net/netfilter/nf_conncount.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index 6eabf7a9d3b07..b527f34b979be 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -1699,9 +1699,11 @@ void xe_guc_ct_snapshot_print(struct xe_guc_ct_snapshot *snapshot,
- 		drm_printf(p, "\tg2h outstanding: %d\n",
- 			   snapshot->g2h_outstanding);
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 71869ad466467..6156c0751056c 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -377,6 +377,8 @@ insert_tree(struct net *net,
  
--		if (snapshot->ctb)
--			xe_print_blob_ascii85(p, "CTB data", '\n',
-+		if (snapshot->ctb) {
-+			drm_printf(p, "[CTB].length: 0x%lx\n", snapshot->ctb_size);
-+			xe_print_blob_ascii85(p, "[CTB].data", '\n',
- 					      snapshot->ctb, 0, snapshot->ctb_size);
-+		}
- 	} else {
- 		drm_puts(p, "CT disabled\n");
- 	}
-diff --git a/drivers/gpu/drm/xe/xe_guc_log.c b/drivers/gpu/drm/xe/xe_guc_log.c
-index 2baa4d95571fb..2457572ed86ad 100644
---- a/drivers/gpu/drm/xe/xe_guc_log.c
-+++ b/drivers/gpu/drm/xe/xe_guc_log.c
-@@ -208,10 +208,11 @@ void xe_guc_log_snapshot_print(struct xe_guc_log_snapshot *snapshot, struct drm_
- 	drm_printf(p, "GuC timestamp: 0x%08llX [%llu]\n", snapshot->stamp, snapshot->stamp);
- 	drm_printf(p, "Log level: %u\n", snapshot->level);
+ 	conn->tuple = *tuple;
+ 	conn->zone = *zone;
++	conn->cpu = raw_smp_processor_id();
++	conn->jiffies32 = (u32)jiffies;
+ 	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
  
-+	drm_printf(p, "[LOG].length: 0x%lx\n", snapshot->size);
- 	remain = snapshot->size;
- 	for (i = 0; i < snapshot->num_chunks; i++) {
- 		size_t size = min(GUC_LOG_CHUNK_SIZE, remain);
--		const char *prefix = i ? NULL : "Log data";
-+		const char *prefix = i ? NULL : "[LOG].data";
- 		char suffix = i == snapshot->num_chunks - 1 ? '\n' : 0;
- 
- 		xe_print_blob_ascii85(p, prefix, suffix, snapshot->copy[i], 0, size);
+ 	nf_conncount_list_init(&rbconn->list);
 -- 
 2.39.5
 
