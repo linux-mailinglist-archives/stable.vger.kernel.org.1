@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-125413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98014A69127
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807CEA6903A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC92F881A9C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1FF416DB48
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EC01C549F;
-	Wed, 19 Mar 2025 14:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7AF1D5AC2;
+	Wed, 19 Mar 2025 14:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjEZGCDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJAzpUZU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638DB21E082;
-	Wed, 19 Mar 2025 14:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA64B1C6FEE;
+	Wed, 19 Mar 2025 14:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395170; cv=none; b=JwrGAbZIosUVjHH/JutdxbSTY0Jp48Hu3jrzjeQ14f2OTkFlKOrnd2UTDu/lqz4Ybwb/5gJKHb1tr1xX0x9jmlFrR0SeL93iXoZFs8ml4O0bQRZv5zw8YQe4OcvyAcvb87P8HT3c00rjtGUnFbKUeikfZP1Nupva4j+ErH3lQr8=
+	t=1742395053; cv=none; b=fdmu4JEp9DtshKblmmfj8koohvU+rEZACR9gureEkKVPtt8goFeKBO+SJkNRWwbF9jd7xA20VgBjjmNhklrUlKUDSzato25nN4S7674w+3Q8/WkVVVjRy++kC/z3ci4Gaczj+8g6aDms0a4SVPyc7c145Yv2M1gzoeuhpkXdxAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395170; c=relaxed/simple;
-	bh=glJpvshQcZ27C9BKugudcnC8SW+/8MSPGCTlys8/uwU=;
+	s=arc-20240116; t=1742395053; c=relaxed/simple;
+	bh=YjV1vHZlVvSiZHVtAYEunYhkgPN97hTHwJ+O58CG08E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KcR29D+eAwfcaAzsc/DR1sy/tTPI8wjxV07ZmuqaHdRkcBMVp5yJnvLoVF41wZr2uJiStU9412A1PosfyIvkkKoMfkLCNxX8MJdNMAgU79SzzUoOPz1YzlIEm0g3MylwMH32/UMUo8R2w8e84fdSA/dcDm9EIz+HxKDxCRux+Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjEZGCDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F29C4CEE4;
-	Wed, 19 Mar 2025 14:39:30 +0000 (UTC)
+	 MIME-Version; b=WrhN60vgyn52ahkRx0Ovz211hDa8j65/YbTDaXrGwqWUvRSXxGWHyFFOxMKUrhJhTY+ysfhOefyUIHVmzJOkyuy76HsSwcXf+pHreteC2OZXaeD8pIXuNQdz60jDn4eJO/z1PbcNyE/2ZlTKKTFWVBPGyyRgqRGpZq2fBF2D1JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJAzpUZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68C1C4CEE4;
+	Wed, 19 Mar 2025 14:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395170;
-	bh=glJpvshQcZ27C9BKugudcnC8SW+/8MSPGCTlys8/uwU=;
+	s=korg; t=1742395053;
+	bh=YjV1vHZlVvSiZHVtAYEunYhkgPN97hTHwJ+O58CG08E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjEZGCDV30WjMSJYFpMtBkA4AkJEdANyEcrhgxvVNSz8M0HNsSrzF2mQFkx6bhLOi
-	 ypHfoBBK9gJq4I2HJZMWtV2u617sb1up1m6MmM0SrEVkFMsuYUV0bz1EzNmK/cljeY
-	 GUDO7SItI+pxTJhwjN2T85+iKvYeMFl8nF/qizVE=
+	b=WJAzpUZUHQa2XnxHaMH8I2oI/F8GjdSaLnWwnXqi7WnTzP6OecBHyaJMV3zjNwf19
+	 5BppY+7FZicr2S8xiUJhPYm9tPFug3C2H/K45dEB5B7irOAz7NWfiSjvGcRlo3vWVR
+	 gMaRp9lfyKifIhyI7tqTWVsyxZ1jk9AMuXjP4m6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Shixin <liushixin2@huawei.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Minchan Kim <minchan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.6 003/166] zram: fix NULL pointer in comp_algorithm_show()
+	Daniel Brackenbury <daniel.brackenbury@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 081/231] HID: topre: Fix n-key rollover on Realforce R3S TKL boards
 Date: Wed, 19 Mar 2025 07:29:34 -0700
-Message-ID: <20250319143020.076417805@linuxfoundation.org>
+Message-ID: <20250319143028.835925547@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin <liushixin2@huawei.com>
+From: Daniel Brackenbury <daniel.brackenbury@gmail.com>
 
-commit f364cdeb38938f9d03061682b8ff3779dd1730e5 upstream.
+[ Upstream commit 9271af9d846c7e49c8709b58d5853cb73c00b193 ]
 
-LTP reported a NULL pointer dereference as followed:
+Newer model R3* Topre Realforce keyboards share an issue with their older
+R2 cousins where a report descriptor fixup is needed in order for n-key
+rollover to work correctly, otherwise only 6-key rollover is available.
+This patch adds some new hardware IDs for the R3S 87-key keyboard and
+makes amendments to the existing hid-topre driver in order to change the
+correct byte in the new model.
 
- CPU: 7 UID: 0 PID: 5995 Comm: cat Kdump: loaded Not tainted 6.12.0-rc6+ #3
- Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
- pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __pi_strcmp+0x24/0x140
- lr : zcomp_available_show+0x60/0x100 [zram]
- sp : ffff800088b93b90
- x29: ffff800088b93b90 x28: 0000000000000001 x27: 0000000000400cc0
- x26: 0000000000000ffe x25: ffff80007b3e2388 x24: 0000000000000000
- x23: ffff80007b3e2390 x22: ffff0004041a9000 x21: ffff80007b3e2900
- x20: 0000000000000000 x19: 0000000000000000 x18: 0000000000000000
- x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
- x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
- x11: 0000000000000000 x10: ffff80007b3e2900 x9 : ffff80007b3cb280
- x8 : 0101010101010101 x7 : 0000000000000000 x6 : 0000000000000000
- x5 : 0000000000000040 x4 : 0000000000000000 x3 : 00656c722d6f7a6c
- x2 : 0000000000000000 x1 : ffff80007b3e2900 x0 : 0000000000000000
- Call trace:
-  __pi_strcmp+0x24/0x140
-  comp_algorithm_show+0x40/0x70 [zram]
-  dev_attr_show+0x28/0x80
-  sysfs_kf_seq_show+0x90/0x140
-  kernfs_seq_show+0x34/0x48
-  seq_read_iter+0x1d4/0x4e8
-  kernfs_fop_read_iter+0x40/0x58
-  new_sync_read+0x9c/0x168
-  vfs_read+0x1a8/0x1f8
-  ksys_read+0x74/0x108
-  __arm64_sys_read+0x24/0x38
-  invoke_syscall+0x50/0x120
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x38/0x138
-  el0t_64_sync_handler+0xc0/0xc8
-  el0t_64_sync+0x188/0x190
-
-The zram->comp_algs[ZRAM_PRIMARY_COMP] can be NULL in zram_add() if
-comp_algorithm_set() has not been called.  User can access the zram device
-by sysfs after device_add_disk(), so there is a time window to trigger the
-NULL pointer dereference.  Move it ahead device_add_disk() to make sure
-when user can access the zram device, it is ready.  comp_algorithm_set()
-is protected by zram->init_lock in other places and no such problem.
-
-Link: https://lkml.kernel.org/r/20241108100147.3776123-1-liushixin2@huawei.com
-Fixes: 7ac07a26dea7 ("zram: preparation for multi-zcomp support")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Minchan Kim <minchan@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[This fix does not backport zram_comp_params_reset which was introduced after
- v6.6, in commit f2bac7ad187d ("zram: introduce zcomp_params structure")]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Brackenbury <daniel.brackenbury@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/zram/zram_drv.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/Kconfig     | 3 ++-
+ drivers/hid/hid-ids.h   | 1 +
+ drivers/hid/hid-topre.c | 7 +++++++
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2247,6 +2247,8 @@ static int zram_add(void)
- 	zram->disk->private_data = zram;
- 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index f8a56d6312425..4500d7653b05e 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -1154,7 +1154,8 @@ config HID_TOPRE
+ 	tristate "Topre REALFORCE keyboards"
+ 	depends on HID
+ 	help
+-	  Say Y for N-key rollover support on Topre REALFORCE R2 108/87 key keyboards.
++	  Say Y for N-key rollover support on Topre REALFORCE R2 108/87 key and
++          Topre REALFORCE R3S 87 key keyboards.
  
-+	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
-+
- 	/* Actual capacity set using sysfs (/sys/block/zram<id>/disksize */
- 	set_capacity(zram->disk, 0);
- 	/* zram devices sort of resembles non-rotational disks */
-@@ -2281,8 +2283,6 @@ static int zram_add(void)
- 	if (ret)
- 		goto out_cleanup_disk;
+ config HID_THINGM
+ 	tristate "ThingM blink(1) USB RGB LED"
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 6e8bcb1518bd7..a957ebcbc667a 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1296,6 +1296,7 @@
+ #define USB_VENDOR_ID_TOPRE			0x0853
+ #define USB_DEVICE_ID_TOPRE_REALFORCE_R2_108			0x0148
+ #define USB_DEVICE_ID_TOPRE_REALFORCE_R2_87			0x0146
++#define USB_DEVICE_ID_TOPRE_REALFORCE_R3S_87			0x0313
  
--	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
--
- 	zram_debugfs_register(zram);
- 	pr_info("Added device: %s\n", zram->disk->disk_name);
- 	return device_id;
+ #define USB_VENDOR_ID_TOPSEED		0x0766
+ #define USB_DEVICE_ID_TOPSEED_CYBERLINK	0x0204
+diff --git a/drivers/hid/hid-topre.c b/drivers/hid/hid-topre.c
+index 848361f6225df..ccedf8721722e 100644
+--- a/drivers/hid/hid-topre.c
++++ b/drivers/hid/hid-topre.c
+@@ -29,6 +29,11 @@ static const __u8 *topre_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		hid_info(hdev,
+ 			"fixing up Topre REALFORCE keyboard report descriptor\n");
+ 		rdesc[72] = 0x02;
++	} else if (*rsize >= 106 && rdesc[28] == 0x29 && rdesc[29] == 0xe7 &&
++				    rdesc[30] == 0x81 && rdesc[31] == 0x00) {
++		hid_info(hdev,
++			"fixing up Topre REALFORCE keyboard report descriptor\n");
++		rdesc[31] = 0x02;
+ 	}
+ 	return rdesc;
+ }
+@@ -38,6 +43,8 @@ static const struct hid_device_id topre_id_table[] = {
+ 			 USB_DEVICE_ID_TOPRE_REALFORCE_R2_108) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_TOPRE,
+ 			 USB_DEVICE_ID_TOPRE_REALFORCE_R2_87) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_TOPRE,
++			 USB_DEVICE_ID_TOPRE_REALFORCE_R3S_87) },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, topre_id_table);
+-- 
+2.39.5
+
 
 
 
