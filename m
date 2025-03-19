@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-125460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835FCA6910A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E23A68FB9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00F03175993
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35FFF16815F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2FF221574;
-	Wed, 19 Mar 2025 14:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643101DDA39;
+	Wed, 19 Mar 2025 14:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmNMvCB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdJks60S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBB71CAA60;
-	Wed, 19 Mar 2025 14:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231391DD0D5;
+	Wed, 19 Mar 2025 14:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395203; cv=none; b=H1J5+GIkY1PzP/YpOQYC2h5dbB6tL5/PFOeQb5FKmdK5TtYEabT8TG8rFm3ntNrH6xPJj1R3xZyvURRt+tyn7v002yrYgzdz3OS3zYyXV8zGf+k/V4qT699aT/0CZTI44ta5ApKjVFG+WY4IsYrzcNDlXE71TX0/4X0JpnfzGkw=
+	t=1742394945; cv=none; b=X0KT6x6ZlV/7pPaFa567L5z2ABrTYWrJNDduoKSDArvrcX7Gn4MQwHNMjyji3yBqd89oB6opQAKs8xhfsug8Dc6WPgurOHaKJWCAe1Ka2zKZ4SRVyzzwgXEtV4DrDtWT/9p8l5Pqv8TwBDoAZOiXf/Q/SQfd+oDIjQZnT5bOoqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395203; c=relaxed/simple;
-	bh=O2nATOfN8lsEhzP3x0fWe0+NKPC9bvd87vYUsfw/kDI=;
+	s=arc-20240116; t=1742394945; c=relaxed/simple;
+	bh=jkueUicdMhighYEplXf2wX4n83YxoKuMRe0+lkb3Lz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZRaQyUOSkjQZyU/WJUwIabLcMZZiQQb5zHkWdL+RKlAahz4yYePTjzNSt5HAbZeOlg4SdLoocGg+wmUbf+V5U++hOuadKk8mIV8NlLNAHPYdf53BtYcrkWFc4lGlp5qOniQofDMZJZIbhydPpkQfgMsJXdYwXMVx8CjkWTfy9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmNMvCB7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEE9C4CEE4;
-	Wed, 19 Mar 2025 14:40:02 +0000 (UTC)
+	 MIME-Version; b=WzK7fJGVpZ5QyiM9jKVZrl0xp02jHbhRahCXpSe4KY2HLogr6e6ZnHiTEmnteBgphhioFhEw0W1J7PhTYhxTmPVUZoVFogcVRo+UqHYC0y6+4jhxBLMnJSNV2pqsyMv9IZt+W5JR90uVcKNKXnMCv9gxEUejrr4MViWm+HQr8Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdJks60S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A580C4CEE4;
+	Wed, 19 Mar 2025 14:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395202;
-	bh=O2nATOfN8lsEhzP3x0fWe0+NKPC9bvd87vYUsfw/kDI=;
+	s=korg; t=1742394944;
+	bh=jkueUicdMhighYEplXf2wX4n83YxoKuMRe0+lkb3Lz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmNMvCB7xywuvQBIwyN6GYlQoZEQQxAfDAigAWdYzWNd3UYR12vDjazPwMAo/VbMd
-	 MTEcLEfDgp1OOLjPzRSatdleRdyJb1c0IoboWhLi5qI7NJZwxqI5rKqk/ZxfRaghjc
-	 qHUVjXkdkNMT5NLsEYddxHGYH2W7bDpco+aQXu5k=
+	b=mdJks60S2ygXT/NPfeHVhLEQASNf7M5pAHAxrSpusZXWfmq14xRfSGl/rLkKb6H9X
+	 M0y5UEt9B0oLVb+9q+TaGctTqkqWKIVW9i40ztGkq9EHSD2Nall8ItibO0TfN1C135
+	 v8X8lZcoRhRSZMaJMbho5fCtpwt8Bsu2DjNpdvxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/166] ASoC: simple-card-utils.c: add missing dlc->of_node
+	Alice Ryhl <aliceryhl@google.com>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>
+Subject: [PATCH 6.13 167/241] rust: lockdep: Remove support for dynamically allocated LockClassKeys
 Date: Wed, 19 Mar 2025 07:30:37 -0700
-Message-ID: <20250319143021.800193841@linuxfoundation.org>
+Message-ID: <20250319143031.857673209@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Mitchell Levy <levymitchell0@gmail.com>
 
-[ Upstream commit dabbd325b25edb5cdd99c94391817202dd54b651 ]
+commit 966944f3711665db13e214fef6d02982c49bb972 upstream.
 
-commit 90de551c1bf ("ASoC: simple-card-utils.c: enable multi Component
-support") added muiti Component support, but was missing to add
-dlc->of_node. Because of it, Sound device list will indicates strange
-name if it was DPCM connection and driver supports dai->driver->dai_args,
-like below
+Currently, dynamically allocated LockCLassKeys can be used from the Rust
+side without having them registered. This is a soundness issue, so
+remove them.
 
-	> aplay -l
-	card X: sndulcbmix [xxxx], device 0: fe.(null).rsnd-dai.0 (*) []
-	...                                     ^^^^^^
-
-It will be fixed by this patch
-
-	> aplay -l
-	card X: sndulcbmix [xxxx], device 0: fe.sound@ec500000.rsnd-dai.0 (*) []
-	...                                     ^^^^^^^^^^^^^^
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/87ikpp2rtb.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6ea5aa08857a ("rust: sync: introduce `LockClassKey`")
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250307232717.1759087-11-boqun.feng@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/generic/simple-card-utils.c | 1 +
- 1 file changed, 1 insertion(+)
+ rust/kernel/sync.rs |   16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
-index 2588ec735dbdf..598b0000df244 100644
---- a/sound/soc/generic/simple-card-utils.c
-+++ b/sound/soc/generic/simple-card-utils.c
-@@ -1086,6 +1086,7 @@ int asoc_graph_parse_dai(struct device *dev, struct device_node *ep,
- 	args.np = ep;
- 	dai = snd_soc_get_dai_via_args(&args);
- 	if (dai) {
-+		dlc->of_node  = node;
- 		dlc->dai_name = snd_soc_dai_name_get(dai);
- 		dlc->dai_args = snd_soc_copy_dai_args(dev, &args);
- 		if (!dlc->dai_args)
--- 
-2.39.5
-
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -29,28 +29,20 @@ pub struct LockClassKey(Opaque<bindings:
+ unsafe impl Sync for LockClassKey {}
+ 
+ impl LockClassKey {
+-    /// Creates a new lock class key.
+-    pub const fn new() -> Self {
+-        Self(Opaque::uninit())
+-    }
+-
+     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+         self.0.get()
+     }
+ }
+ 
+-impl Default for LockClassKey {
+-    fn default() -> Self {
+-        Self::new()
+-    }
+-}
+-
+ /// Defines a new static lock class and returns a pointer to it.
+ #[doc(hidden)]
+ #[macro_export]
+ macro_rules! static_lock_class {
+     () => {{
+-        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
++        static CLASS: $crate::sync::LockClassKey =
++            // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
++            // lock_class_key
++            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
+         &CLASS
+     }};
+ }
 
 
 
