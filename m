@@ -1,52 +1,60 @@
-Return-Path: <stable+bounces-124924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1AAA68E95
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:11:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6123A68EB1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:15:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A91F7AD155
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:10:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 988F07A9080
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D32417A2FA;
-	Wed, 19 Mar 2025 14:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FD61A841C;
+	Wed, 19 Mar 2025 14:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swqQrZcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBcjEcFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DB1134BD;
-	Wed, 19 Mar 2025 14:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC75487BE;
+	Wed, 19 Mar 2025 14:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742393494; cv=none; b=DatnLGoD7MW9kQKJXr1m6+0jXrFjmP/cdBNqSbetV3NmSUXL4M8+MJgnIsh7hFPuLAovlNmwrp7lAhkjB65IMg7d6+1IEDCaaidIUQ0jOsHPEgjjNI7aof8Kn1Z81A1VodWgCcXSO8RSWCSDwdchTqHHoxyg/WyEiNd5I0gaUF4=
+	t=1742393673; cv=none; b=MtCTnm04s+0uRiFI5IaQz/25Fnamf9n5AlRanS3UODlmQSt3OCOOzEeQnTuciK8kzlizQg8lQS/BAJTo1a/LnGjIKBh7IGcnufuAMPw3rrmqBmn0jYq7AbKPPnVsGR1IIfpz2GpymSkE0a5X5qVY+GL201UzgN3LkxQTUc7nduk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742393494; c=relaxed/simple;
-	bh=uDpWQNnyNWRntl18DJzcgXesN73xAgAP80C3z13HN/Y=;
+	s=arc-20240116; t=1742393673; c=relaxed/simple;
+	bh=qIcPp8H5gf08YqzNoTkeysvaahBDyB8+b1U/Q5PfK0M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p93cZnRK4tWTRcCj93iSlulKTFkEkY7IFUoVQRc/EMhnPdHyIM4XdcFQWb9Zv0Y1LTly2GZ7p7RwJeTi3OfuM3n0wc3CFPIwKbLziUksJoZXO1Tt8qTxwWPJUy0Y3EVKLbhPIMTajox/+I3hCXyZv16QOCqfcEAJHjsSE3sYrV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swqQrZcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7FEC4CEE4;
-	Wed, 19 Mar 2025 14:11:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=bkn98e8wHTZ0B0Je+cAj3/qLjnwEl6Crw8JYmbBG+JEF22nYaURpXiSuf86TSuLz4P6PjlDPGyywZAvel3WEE5oJq+6sXVOq3RFie/kaXuHyJmeBGhNxpoeFmemG0NJSdzC62GelUAobl2yh0vkDBUL8Sr88PDzlYihUtaLlmL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBcjEcFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA50C4CEE4;
+	Wed, 19 Mar 2025 14:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742393493;
-	bh=uDpWQNnyNWRntl18DJzcgXesN73xAgAP80C3z13HN/Y=;
+	s=korg; t=1742393673;
+	bh=qIcPp8H5gf08YqzNoTkeysvaahBDyB8+b1U/Q5PfK0M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=swqQrZcsn24BgJAljEX96q9iaD2Djcieux4gV1PAhs+McM3mDbObyXYvdjB9XuJva
-	 qrI8wBFDCG5KgajIaoT3RjDMVyATo/XpqBNzGzJLNpvWXC8BfdniysMRSWzE714v45
-	 3AZTG9LOCyewCpSX2xE5wE52f3+oQX84WfahqwPI=
-Date: Wed, 19 Mar 2025 07:10:14 -0700
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Frank Scheiner <frank.scheiner@web.de>
-Cc: tzimmermann@suse.de, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: 6.6.84-rc1 build regression on ia64 (and possibly other
- architectures)
-Message-ID: <2025031907-occupy-earthworm-9397@gregkh>
-References: <68e093fb-556d-4267-9430-ff9fddc1c3d1@web.de>
+	b=WBcjEcFdCTYOC0ayb3ZQAqjRafd9NrXRnYHSJlm415Bfqvba8LylTp+qFkmbba1AD
+	 Q7DT0djqfPTJ+cYdo0YPtiYxIWrPIFaCSU6MRUZXk33EgheDMDxKf4Bsp3QXqj7pCR
+	 gD5pR1GH4Y1Q2symCAUrXlBkOzujJfk38EmFwtCc=
+Date: Wed, 19 Mar 2025 07:13:13 -0700
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Sasha Levin <sashal@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Jan Stancek <jstancek@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	R Nageswara Sastry <rnsastry@linux.ibm.com>,
+	Neal Gompa <neal@gompa.dev>
+Subject: Re: [PATCH 6.1&6.6 V3 3/3] sign-file,extract-cert: use pkcs11
+ provider for OPENSSL MAJOR >= 3
+Message-ID: <2025031943-disparity-dash-cfa3@gregkh>
+References: <20250319064031.2971073-1-chenhuacai@loongson.cn>
+ <20250319064031.2971073-4-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,21 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <68e093fb-556d-4267-9430-ff9fddc1c3d1@web.de>
+In-Reply-To: <20250319064031.2971073-4-chenhuacai@loongson.cn>
 
-On Tue, Mar 18, 2025 at 01:47:44PM +0100, Frank Scheiner wrote:
-> Dear Greg,
+On Wed, Mar 19, 2025 at 02:40:31PM +0800, Huacai Chen wrote:
+> From: Jan Stancek <jstancek@redhat.com>
 > 
-> I see that the review for 6.6.84-rc1 hasn't started yet, but as it was
-> already available on [1], our CI has already tried to built it for ia64
-> in the morning. Unfortunately that failed - I assume due to the
-> following **missing** upstream commit:
+> commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
 > 
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8887086ef2e0047ec321103a15e7d766be3a3874
+> ENGINE API has been deprecated since OpenSSL version 3.0 [1].
+> Distros have started dropping support from headers and in future
+> it will likely disappear also from library.
 > 
-> [1]: https://web.git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=linux-6.6.y
+> It has been superseded by the PROVIDER API, so use it instead
+> for OPENSSL MAJOR >= 3.
+> 
+> [1] https://github.com/openssl/openssl/blob/master/README-ENGINES.md
+> 
+> [jarkko: fixed up alignment issues reported by checkpatch.pl --strict]
+> 
+> Signed-off-by: Jan Stancek <jstancek@redhat.com>
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+> Reviewed-by: Neal Gompa <neal@gompa.dev>
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
+>  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
+>  2 files changed, 138 insertions(+), 58 deletions(-)
 
-Thanks, now fixed up.
+This seems to differ from what is upstream by a lot, please document
+what you changed from it and why when you resend this series again.
+
+thanks,
 
 greg k-h
 
