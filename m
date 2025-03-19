@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807CEA6903A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE4BA68F8D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1FF416DB48
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F13FB3B3A58
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7AF1D5AC2;
-	Wed, 19 Mar 2025 14:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082C11D5AB8;
+	Wed, 19 Mar 2025 14:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJAzpUZU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR4gYx3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA64B1C6FEE;
-	Wed, 19 Mar 2025 14:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB8C1B2194;
+	Wed, 19 Mar 2025 14:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395053; cv=none; b=fdmu4JEp9DtshKblmmfj8koohvU+rEZACR9gureEkKVPtt8goFeKBO+SJkNRWwbF9jd7xA20VgBjjmNhklrUlKUDSzato25nN4S7674w+3Q8/WkVVVjRy++kC/z3ci4Gaczj+8g6aDms0a4SVPyc7c145Yv2M1gzoeuhpkXdxAg=
+	t=1742394899; cv=none; b=oUTbdWXlhx1YJT3WmKlYIm8CFocEpGNPQQmm8kHlbaPFy05X0pxluOv+yJ2RTaxyAwTdatxqAV/wKISUNXAXayffEAISFc7yMdSLlXUQcMTZPBX7hZ+i66buyuANjUrlvxE5eX3LPq/mdErdnxhd8iOuEEJ+vNvQseRQ/zyt+Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395053; c=relaxed/simple;
-	bh=YjV1vHZlVvSiZHVtAYEunYhkgPN97hTHwJ+O58CG08E=;
+	s=arc-20240116; t=1742394899; c=relaxed/simple;
+	bh=0271ZOHLmoAX0ciPBL4Kknfmm9TuyU9TAjJV7Mf4ywE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WrhN60vgyn52ahkRx0Ovz211hDa8j65/YbTDaXrGwqWUvRSXxGWHyFFOxMKUrhJhTY+ysfhOefyUIHVmzJOkyuy76HsSwcXf+pHreteC2OZXaeD8pIXuNQdz60jDn4eJO/z1PbcNyE/2ZlTKKTFWVBPGyyRgqRGpZq2fBF2D1JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJAzpUZU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68C1C4CEE4;
-	Wed, 19 Mar 2025 14:37:33 +0000 (UTC)
+	 MIME-Version; b=EScXggpyHm3sQ/gPf21LS9ToLcj5SpjMZFg7JRGtT17Gjgv1mceaeW6dE5BmqRYzKmZCOgohqr7dllkO1x+rB2IP9tU2ScKPJSBN4niOfbl1k+Hqre+G6z40iotErYOtnCJile88YEoIhGPdAjZB+3xWM8VBBhiK+Qv5oQZlYiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR4gYx3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D467C4CEE4;
+	Wed, 19 Mar 2025 14:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395053;
-	bh=YjV1vHZlVvSiZHVtAYEunYhkgPN97hTHwJ+O58CG08E=;
+	s=korg; t=1742394899;
+	bh=0271ZOHLmoAX0ciPBL4Kknfmm9TuyU9TAjJV7Mf4ywE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJAzpUZUHQa2XnxHaMH8I2oI/F8GjdSaLnWwnXqi7WnTzP6OecBHyaJMV3zjNwf19
-	 5BppY+7FZicr2S8xiUJhPYm9tPFug3C2H/K45dEB5B7irOAz7NWfiSjvGcRlo3vWVR
-	 gMaRp9lfyKifIhyI7tqTWVsyxZ1jk9AMuXjP4m6g=
+	b=SR4gYx3KRx50DKBCwEDpuqtcOlSRUjwpz8Bp0B4hDdFgG8iEQgCnWMb4nV06Uios5
+	 Cc0OE5VH4Iedow5DPixD8FanfIizur7IXyG54arhfHwHDDIDL5lGNao6/aY4Qg39Kb
+	 QpBqJ/VWKNR/w8GqhQvtzZ1t7R+2W9jVVbiSvN8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Brackenbury <daniel.brackenbury@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/231] HID: topre: Fix n-key rollover on Realforce R3S TKL boards
-Date: Wed, 19 Mar 2025 07:29:34 -0700
-Message-ID: <20250319143028.835925547@linuxfoundation.org>
+Subject: [PATCH 6.13 105/241] selftests/bpf: Fix invalid flag of recv()
+Date: Wed, 19 Mar 2025 07:29:35 -0700
+Message-ID: <20250319143030.321158436@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Brackenbury <daniel.brackenbury@gmail.com>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit 9271af9d846c7e49c8709b58d5853cb73c00b193 ]
+[ Upstream commit a0c11149509aa905aeec10cf9998091443472b0b ]
 
-Newer model R3* Topre Realforce keyboards share an issue with their older
-R2 cousins where a report descriptor fixup is needed in order for n-key
-rollover to work correctly, otherwise only 6-key rollover is available.
-This patch adds some new hardware IDs for the R3S 87-key keyboard and
-makes amendments to the existing hid-topre driver in order to change the
-correct byte in the new model.
+SOCK_NONBLOCK flag is only effective during socket creation, not during
+recv. Use MSG_DONTWAIT instead.
 
-Signed-off-by: Daniel Brackenbury <daniel.brackenbury@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://patch.msgid.link/20250122100917.49845-5-mrpre@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/Kconfig     | 3 ++-
- drivers/hid/hid-ids.h   | 1 +
- drivers/hid/hid-topre.c | 7 +++++++
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/sockmap_basic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index f8a56d6312425..4500d7653b05e 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -1154,7 +1154,8 @@ config HID_TOPRE
- 	tristate "Topre REALFORCE keyboards"
- 	depends on HID
- 	help
--	  Say Y for N-key rollover support on Topre REALFORCE R2 108/87 key keyboards.
-+	  Say Y for N-key rollover support on Topre REALFORCE R2 108/87 key and
-+          Topre REALFORCE R3S 87 key keyboards.
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
+index 884ad87783d59..0c51b7288978e 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
+@@ -522,8 +522,8 @@ static void test_sockmap_skb_verdict_shutdown(void)
+ 	if (!ASSERT_EQ(err, 1, "epoll_wait(fd)"))
+ 		goto out_close;
  
- config HID_THINGM
- 	tristate "ThingM blink(1) USB RGB LED"
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 6e8bcb1518bd7..a957ebcbc667a 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1296,6 +1296,7 @@
- #define USB_VENDOR_ID_TOPRE			0x0853
- #define USB_DEVICE_ID_TOPRE_REALFORCE_R2_108			0x0148
- #define USB_DEVICE_ID_TOPRE_REALFORCE_R2_87			0x0146
-+#define USB_DEVICE_ID_TOPRE_REALFORCE_R3S_87			0x0313
- 
- #define USB_VENDOR_ID_TOPSEED		0x0766
- #define USB_DEVICE_ID_TOPSEED_CYBERLINK	0x0204
-diff --git a/drivers/hid/hid-topre.c b/drivers/hid/hid-topre.c
-index 848361f6225df..ccedf8721722e 100644
---- a/drivers/hid/hid-topre.c
-+++ b/drivers/hid/hid-topre.c
-@@ -29,6 +29,11 @@ static const __u8 *topre_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		hid_info(hdev,
- 			"fixing up Topre REALFORCE keyboard report descriptor\n");
- 		rdesc[72] = 0x02;
-+	} else if (*rsize >= 106 && rdesc[28] == 0x29 && rdesc[29] == 0xe7 &&
-+				    rdesc[30] == 0x81 && rdesc[31] == 0x00) {
-+		hid_info(hdev,
-+			"fixing up Topre REALFORCE keyboard report descriptor\n");
-+		rdesc[31] = 0x02;
+-	n = recv(c1, &b, 1, SOCK_NONBLOCK);
+-	ASSERT_EQ(n, 0, "recv_timeout(fin)");
++	n = recv(c1, &b, 1, MSG_DONTWAIT);
++	ASSERT_EQ(n, 0, "recv(fin)");
+ out_close:
+ 	close(c1);
+ 	close(p1);
+@@ -628,7 +628,7 @@ static void test_sockmap_skb_verdict_fionread(bool pass_prog)
+ 	ASSERT_EQ(avail, expected, "ioctl(FIONREAD)");
+ 	/* On DROP test there will be no data to read */
+ 	if (pass_prog) {
+-		recvd = recv_timeout(c1, &buf, sizeof(buf), SOCK_NONBLOCK, IO_TIMEOUT_SEC);
++		recvd = recv_timeout(c1, &buf, sizeof(buf), MSG_DONTWAIT, IO_TIMEOUT_SEC);
+ 		ASSERT_EQ(recvd, sizeof(buf), "recv_timeout(c0)");
  	}
- 	return rdesc;
- }
-@@ -38,6 +43,8 @@ static const struct hid_device_id topre_id_table[] = {
- 			 USB_DEVICE_ID_TOPRE_REALFORCE_R2_108) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_TOPRE,
- 			 USB_DEVICE_ID_TOPRE_REALFORCE_R2_87) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_TOPRE,
-+			 USB_DEVICE_ID_TOPRE_REALFORCE_R3S_87) },
- 	{ }
- };
- MODULE_DEVICE_TABLE(hid, topre_id_table);
+ 
 -- 
 2.39.5
 
