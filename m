@@ -1,133 +1,158 @@
-Return-Path: <stable+bounces-124875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A327CA68367
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 04:02:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5045AA68369
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 04:06:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E3597A2621
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 03:01:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCBA67A2CB5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 03:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A20A20AF7C;
-	Wed, 19 Mar 2025 03:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7C020CCD6;
+	Wed, 19 Mar 2025 03:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUs5+gRN"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA71524F;
-	Wed, 19 Mar 2025 03:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3E2524F;
+	Wed, 19 Mar 2025 03:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742353355; cv=none; b=P6rCECVXwJLqxHwtD6S4xY5Na5NVeEv9CKTAqzpl2snkh3Q2v9zb8IszOsPQlzm2p/Me7mAX/pUxZxe/Lf3//opCc00hb8QrJxQNUtkawFXjPihWrZuj08zAQDz1bW0mDcRvVWRGzz7dYAsL2rL9+m3hVuGFLVjKfKdCNTtf5v4=
+	t=1742353593; cv=none; b=jCDzxbdOaaQ/UUNqPlbq/ftWy/bFv6qj37NvPnFuYxuwMWXAfWqFgzWLm/lWb2qq95XDzmNKjB00ku4D9fzhlXTMCvXbfaTa8+B2V0FvKqqUv5h7Yx8DMRdbwzQkDp00XguOZUXLTD8TbAOi+dJZXP2rV3BVJRCs+/NPu8tJyR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742353355; c=relaxed/simple;
-	bh=73sJN9RX4iQ9NGIl0uW9R3rvI9b1tby7yCaJMySlhX8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SjC732YH00tfVZaTSLEjwoZReIlSUoNO13ieAa/WvojSBqOpz8dAXY+Q4dwyB2eHUA2w60oBMA5Rq2FQhepV7HxXYMdu7Ay7PHT3xRWVCzf0hbGUqJd9YR0f8+67lclYHmLk6Qvc0eVg5oeFvAg7QoOUzix9PnVqV6x/pnHYRDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52J1qtxJ005416;
-	Tue, 18 Mar 2025 20:01:43 -0700
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45d92jus4b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 18 Mar 2025 20:01:43 -0700 (PDT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Tue, 18 Mar 2025 20:01:43 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Tue, 18 Mar 2025 20:01:40 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>,
-        <sfrench@samba.org>, <linux-cifs@vger.kernel.org>,
-        <samba-technical@lists.samba.org>, <pc@manguebit.com>,
-        <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y] smb: client: fix potential UAF in cifs_debug_files_proc_show()
-Date: Wed, 19 Mar 2025 11:01:39 +0800
-Message-ID: <20250319030139.953922-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1742353593; c=relaxed/simple;
+	bh=bSt/O7czoSNWFRcsE3rQTY00tKWSZJC7M7fXZe1tBRY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cNy7r/jKZNSmRXVRBAdaY6Ki+R8V3M7mJvKL473pLaEg/8rvsiURetXnaXpuV0638zcVSO1wM+aVhWrGgbPPnPzIqBek2YvXPPDLqF6fmKo8/0nh98VShBh84veLjiwUdsXDPBTkTYu+5YhQor82bJTMWubX3lyhVJB0dAylsQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUs5+gRN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC99C4CEE3;
+	Wed, 19 Mar 2025 03:06:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742353592;
+	bh=bSt/O7czoSNWFRcsE3rQTY00tKWSZJC7M7fXZe1tBRY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XUs5+gRN7F3D9wjM00iR5qUYJ+zg+KhgaBhp3hIjBKS7MmOnFRi5z4uyKZMByuzpT
+	 aRnLHnPrRFmw8TJD3EQ9k+RW4h8RwxCa62cAsI/eHS2et+ABobxSUuR51AjK8Qkkmx
+	 aTXLesTsTLkqQ0TyHDI6ckPdzTz7db3ZvW/Nbv9lOSP+4w+eqg/pLJD5mMykQEWnh2
+	 +g/1KVNEsR5ZjYg+2/frXjJkI7gO9Zr/97dD3MApFTAzH2nEFs6eoQtXFJbJIxt3kR
+	 GrWHMXbljMz8EcObP0y6RWAQ0vYec8y7uKu9SlDUyWi8TEW2Ilp4CmqKbnh1Zx6SnC
+	 ZePzyIlyjLcTA==
+Date: Tue, 18 Mar 2025 20:06:28 -0700
+From: Kees Cook <kees@kernel.org>
+To: Peter Collingbourne <pcc@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] string: Add load_unaligned_zeropad() code path to
+ sized_strscpy()
+Message-ID: <202503181957.55A0E0A@keescook>
+References: <20250318214035.481950-1-pcc@google.com>
+ <20250318214035.481950-2-pcc@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=QdRmvtbv c=1 sm=1 tr=0 ts=67da3397 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=Vs1iUdzkB0EA:10 a=Li1AiuEPAAAA:8 a=VwQbUJbxAAAA:8 a=yMhMjlubAAAA:8 a=t7CeM3EgAAAA:8 a=F951-fjzzYaKpzs5SyQA:9
- a=qGKPP_lnpMOaqR3bcYHU:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: l-zFfN9MBIYO6W5Jpo0ILgYzr1VYOz2D
-X-Proofpoint-GUID: l-zFfN9MBIYO6W5Jpo0ILgYzr1VYOz2D
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-18_10,2025-03-17_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
- malwarescore=0 priorityscore=1501 mlxlogscore=997 impostorscore=0
- mlxscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0 bulkscore=0
- adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2503190020
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250318214035.481950-2-pcc@google.com>
 
-From: Paulo Alcantara <pc@manguebit.com>
+On Tue, Mar 18, 2025 at 02:40:32PM -0700, Peter Collingbourne wrote:
+> The call to read_word_at_a_time() in sized_strscpy() is problematic
+> with MTE because it may trigger a tag check fault when reading
+> across a tag granule (16 bytes) boundary. To make this code
+> MTE compatible, let's start using load_unaligned_zeropad()
+> on architectures where it is available (i.e. architectures that
+> define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
+> takes care of page boundaries as well as tag granule boundaries,
+> also disable the code preventing crossing page boundaries when using
+> load_unaligned_zeropad().
+> 
+> Signed-off-by: Peter Collingbourne <pcc@google.com>
+> Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
+> Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
+> Cc: stable@vger.kernel.org
+> ---
+> v2:
+> - new approach
+> 
+>  lib/string.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/string.c b/lib/string.c
+> index eb4486ed40d25..b632c71df1a50 100644
+> --- a/lib/string.c
+> +++ b/lib/string.c
+> @@ -119,6 +119,7 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
+>  	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
+>  		return -E2BIG;
+>  
+> +#ifndef CONFIG_DCACHE_WORD_ACCESS
+>  #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 
-[ Upstream commit ca545b7f0823f19db0f1148d59bc5e1a56634502 ]
+I would prefer this were written as:
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+#if !defined(CONFIG_DCACHE_WORD_ACCESS) && \
+    defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS)
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[This patch removes lock/unlock operation in routine cifs_ses_exiting()
-for ses_lock is not present in v5.15 and not ported yet. ses->status
-is protected by a global lock, cifs_tcp_ses_lock, in v5.15.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Verified the build test
----
- fs/cifs/cifs_debug.c | 2 ++
- fs/cifs/cifsglob.h   | 8 ++++++++
- 2 files changed, 10 insertions(+)
+Having 2 #ifs makes me think there is some reason for having them
+separable. But the logic here is for a single check.
 
-diff --git a/fs/cifs/cifs_debug.c b/fs/cifs/cifs_debug.c
-index e7501533c2ec..8eb91bd18439 100644
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -183,6 +183,8 @@ static int cifs_debug_files_proc_show(struct seq_file *m, void *v)
- 	list_for_each_entry(server, &cifs_tcp_ses_list, tcp_ses_list) {
- 		list_for_each(tmp, &server->smb_ses_list) {
- 			ses = list_entry(tmp, struct cifs_ses, smb_ses_list);
-+			if (cifs_ses_exiting(ses))
-+				continue;
- 			list_for_each(tmp1, &ses->tcon_list) {
- 				tcon = list_entry(tmp1, struct cifs_tcon, tcon_list);
- 				spin_lock(&tcon->open_file_lock);
-diff --git a/fs/cifs/cifsglob.h b/fs/cifs/cifsglob.h
-index 2ee67a27020d..7b57cc5d7022 100644
---- a/fs/cifs/cifsglob.h
-+++ b/fs/cifs/cifsglob.h
-@@ -2041,4 +2041,12 @@ static inline struct scatterlist *cifs_sg_set_buf(struct scatterlist *sg,
- 	return sg;
- }
- 
-+static inline bool cifs_ses_exiting(struct cifs_ses *ses)
-+{
-+	bool ret;
-+
-+	ret = ses->status == CifsExiting;
-+	return ret;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
+>  	/*
+>  	 * If src is unaligned, don't cross a page boundary,
+> @@ -133,12 +134,14 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
+>  	/* If src or dest is unaligned, don't do word-at-a-time. */
+>  	if (((long) dest | (long) src) & (sizeof(long) - 1))
+>  		max = 0;
+> +#endif
+>  #endif
+
+(Then no second #endif needed)
+
+>  
+>  	/*
+> -	 * read_word_at_a_time() below may read uninitialized bytes after the
+> -	 * trailing zero and use them in comparisons. Disable this optimization
+> -	 * under KMSAN to prevent false positive reports.
+> +	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
+> +	 * uninitialized bytes after the trailing zero and use them in
+> +	 * comparisons. Disable this optimization under KMSAN to prevent
+> +	 * false positive reports.
+>  	 */
+>  	if (IS_ENABLED(CONFIG_KMSAN))
+>  		max = 0;
+> @@ -146,7 +149,11 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
+>  	while (max >= sizeof(unsigned long)) {
+>  		unsigned long c, data;
+>  
+> +#ifdef CONFIG_DCACHE_WORD_ACCESS
+> +		c = load_unaligned_zeropad(src+res);
+> +#else
+>  		c = read_word_at_a_time(src+res);
+> +#endif
+>  		if (has_zero(c, &data, &constants)) {
+>  			data = prep_zero_mask(c, data, &constants);
+>  			data = create_zero_mask(data);
+
+The rest seems good. Though I do wonder: what happens on a page boundary
+for read_word_at_a_time(), then? We get back zero-filled remainder? Will
+that hide a missing NUL terminator? As in, it's not actually there
+because of the end of the page/granule, but a zero was put in, so now
+it looks like it's been terminated and the exception got eaten? And
+doesn't this hide MTE faults since we can't differentiate "overran MTE
+tag" from "overran granule while over-reading"?
+
 -- 
-2.25.1
-
+Kees Cook
 
