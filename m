@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-125212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A6BA69056
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930E4A68F6F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A603AC38C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA6F53AF561
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248621D54D6;
-	Wed, 19 Mar 2025 14:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057B91C5D53;
+	Wed, 19 Mar 2025 14:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvfC5iSf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtLZBYvk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C84213E93;
-	Wed, 19 Mar 2025 14:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DB41DF267;
+	Wed, 19 Mar 2025 14:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395031; cv=none; b=HKRxTZp3yVAy0za0WD5Hh/lZVHysXz+caVJXwo2W2Af7pqRyzWh8vRsFFc6vEiZnZFmPV0/ILDOP4HiJInjkh4XymTOnU7qSUneZc5PH4YYt/vfeeEbs5XPvb5nYqMPVWnfMFfYrup1KsSQxd5bz5yefPsQ+4NXh57FAp2l0sGQ=
+	t=1742394877; cv=none; b=URdRLDAHGId2vZqU9Op6cP4otrzciKGT3RZ0ulsi9iJVmdSDIQ2wgqp0LPJ3G84/Q7GFt7oWxnPGnb2BvEnnA1k0TA9w3oPfQYtbsEjnTCAzyJuEoCKVmwwncKX+RCrbYTSUyUYtIn+jRdUHVUMdVa8r3Hdh2aspwzn9QLxFiog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395031; c=relaxed/simple;
-	bh=AiTtqeNkKu4t9tfbiYvSHIZHCu3whTEv10MDZgpnZ+8=;
+	s=arc-20240116; t=1742394877; c=relaxed/simple;
+	bh=vZyfbP6iYVzRQJXcF+GYRGMBgeAY1gGAD3UmOKs4s0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qahJg695sDvhRUgS69uMySnhr/ifEGSpWXAl1Sz4wDT7T/sbza/dStvjP2Ldm1uqWx9238ouzzpQnl1PDLmmYZw7uUgGcjXOqjsTFIOpAyU4eVANGTerKs3Enagy4NSBchiODQltSf36e97bWPALof7yQHCOoE3W0lf0d/u9MBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvfC5iSf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD247C4CEE4;
-	Wed, 19 Mar 2025 14:37:11 +0000 (UTC)
+	 MIME-Version; b=bI/kmPjZsvMP1QlbdomI0pBsCcEmdria2lBLSyJIscXJbmZOjrvrUcu/P7X+BPHQveuCoTRVQRzXXVCfrmrFqvxE0R1rhZdz40FmorGO2PU4YrP889TVTXUUSa42pMNaPAfuRcED5xSq+aqhLadhfciXhQ7fn4wlTULKDy5Sn9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtLZBYvk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8DFC4CEE8;
+	Wed, 19 Mar 2025 14:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395031;
-	bh=AiTtqeNkKu4t9tfbiYvSHIZHCu3whTEv10MDZgpnZ+8=;
+	s=korg; t=1742394877;
+	bh=vZyfbP6iYVzRQJXcF+GYRGMBgeAY1gGAD3UmOKs4s0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvfC5iSfiBkUw0oKFwT7TFo7JOMfVJKec5M22U62BuO7uyI8W+Z3nsBeh/xb8XV1y
-	 HdrN9aL6xmJ+XWszItiZEa/rJf37E+kBa0hAFjXObSRYZ+dL+lh8jtCh50vgaGzUE/
-	 1tpTZfMpUKczLVuWxwlaO9o6CJ2MkaC+fIWEE0zc=
+	b=OtLZBYvk3jb00jFMQEoJ3mOfugOTfPR384RHueWHZ6kSLy0bbxa6USgvomZjAbveg
+	 cnOknDmoIM+Fou1FOXvFsTeFBlXa3hwtRV2Nm6CM/5RuZAywh/nIABEIFPKFCg49gv
+	 3NZfdc6eVikjHHWgfE1n/nQPZVywcGxw399I77M4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@pm.me>,
+	Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/231] net/mlx5: Fix incorrect IRQ pool usage when releasing IRQs
-Date: Wed, 19 Mar 2025 07:29:05 -0700
-Message-ID: <20250319143028.110926197@linuxfoundation.org>
+Subject: [PATCH 6.13 076/241] sched_ext: selftests/dsp_local_on: Fix sporadic failures
+Date: Wed, 19 Mar 2025 07:29:06 -0700
+Message-ID: <20250319143029.609053139@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,154 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 32d2724db5b2361ab293427ccd5c24f4f2bcca14 ]
+[ Upstream commit e9fe182772dcb2630964724fd93e9c90b68ea0fd ]
 
-mlx5_irq_pool_get() is a getter for completion IRQ pool only.
-However, after the cited commit, mlx5_irq_pool_get() is called during
-ctrl IRQ release flow to retrieve the pool, resulting in the use of an
-incorrect IRQ pool.
+dsp_local_on has several incorrect assumptions, one of which is that
+p->nr_cpus_allowed always tracks p->cpus_ptr. This is not true when a task
+is scheduled out while migration is disabled - p->cpus_ptr is temporarily
+overridden to the previous CPU while p->nr_cpus_allowed remains unchanged.
 
-Hence, use the newly introduced mlx5_irq_get_pool() getter to retrieve
-the correct IRQ pool based on the IRQ itself. While at it, rename
-mlx5_irq_pool_get() to mlx5_irq_table_get_comp_irq_pool() which
-accurately reflects its purpose and improves code readability.
+This led to sporadic test faliures when dsp_local_on_dispatch() tries to put
+a migration disabled task to a different CPU. Fix it by keeping the previous
+CPU when migration is disabled.
 
-Fixes: 0477d5168bbb ("net/mlx5: Expose SFs IRQs")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/1741644104-97767-4-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+There are SCX schedulers that make use of p->nr_cpus_allowed. They should
+also implement explicit handling for p->migration_disabled.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Changwoo Min <changwoo@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eq.c        |  2 +-
- .../net/ethernet/mellanox/mlx5/core/irq_affinity.c  |  2 +-
- drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h  |  4 +++-
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c   | 13 ++++++++++---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h   |  2 +-
- 5 files changed, 16 insertions(+), 7 deletions(-)
+ tools/testing/selftests/sched_ext/dsp_local_on.bpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eq.c b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-index 68cb86b37e561..4241cf07a0306 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
-@@ -887,8 +887,8 @@ static void comp_irq_release_sf(struct mlx5_core_dev *dev, u16 vecidx)
+diff --git a/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c b/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
+index fbda6bf546712..758b479bd1ee1 100644
+--- a/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
++++ b/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
+@@ -43,7 +43,7 @@ void BPF_STRUCT_OPS(dsp_local_on_dispatch, s32 cpu, struct task_struct *prev)
+ 	if (!p)
+ 		return;
  
- static int comp_irq_request_sf(struct mlx5_core_dev *dev, u16 vecidx)
- {
-+	struct mlx5_irq_pool *pool = mlx5_irq_table_get_comp_irq_pool(dev);
- 	struct mlx5_eq_table *table = dev->priv.eq_table;
--	struct mlx5_irq_pool *pool = mlx5_irq_pool_get(dev);
- 	struct irq_affinity_desc af_desc = {};
- 	struct mlx5_irq *irq;
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-index 1477db7f5307e..2691d88cdee1f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-@@ -175,7 +175,7 @@ mlx5_irq_affinity_request(struct mlx5_core_dev *dev, struct mlx5_irq_pool *pool,
- 
- void mlx5_irq_affinity_irq_release(struct mlx5_core_dev *dev, struct mlx5_irq *irq)
- {
--	struct mlx5_irq_pool *pool = mlx5_irq_pool_get(dev);
-+	struct mlx5_irq_pool *pool = mlx5_irq_get_pool(irq);
- 	int cpu;
- 
- 	cpu = cpumask_first(mlx5_irq_get_affinity_mask(irq));
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h
-index 0881e961d8b17..586688da9940e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h
-@@ -10,12 +10,15 @@
- 
- struct mlx5_irq;
- struct cpu_rmap;
-+struct mlx5_irq_pool;
- 
- int mlx5_irq_table_init(struct mlx5_core_dev *dev);
- void mlx5_irq_table_cleanup(struct mlx5_core_dev *dev);
- int mlx5_irq_table_create(struct mlx5_core_dev *dev);
- void mlx5_irq_table_destroy(struct mlx5_core_dev *dev);
- void mlx5_irq_table_free_irqs(struct mlx5_core_dev *dev);
-+struct mlx5_irq_pool *
-+mlx5_irq_table_get_comp_irq_pool(struct mlx5_core_dev *dev);
- int mlx5_irq_table_get_num_comp(struct mlx5_irq_table *table);
- int mlx5_irq_table_get_sfs_vec(struct mlx5_irq_table *table);
- struct mlx5_irq_table *mlx5_irq_table_get(struct mlx5_core_dev *dev);
-@@ -38,7 +41,6 @@ struct cpumask *mlx5_irq_get_affinity_mask(struct mlx5_irq *irq);
- int mlx5_irq_get_index(struct mlx5_irq *irq);
- int mlx5_irq_get_irq(const struct mlx5_irq *irq);
- 
--struct mlx5_irq_pool;
- #ifdef CONFIG_MLX5_SF
- struct mlx5_irq *mlx5_irq_affinity_irq_request_auto(struct mlx5_core_dev *dev,
- 						    struct cpumask *used_cpus, u16 vecidx);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-index d9362eabc6a1c..2c5f850c31f68 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -378,6 +378,11 @@ int mlx5_irq_get_index(struct mlx5_irq *irq)
- 	return irq->map.index;
- }
- 
-+struct mlx5_irq_pool *mlx5_irq_get_pool(struct mlx5_irq *irq)
-+{
-+	return irq->pool;
-+}
-+
- /* irq_pool API */
- 
- /* requesting an irq from a given pool according to given index */
-@@ -405,18 +410,20 @@ static struct mlx5_irq_pool *sf_ctrl_irq_pool_get(struct mlx5_irq_table *irq_tab
- 	return irq_table->sf_ctrl_pool;
- }
- 
--static struct mlx5_irq_pool *sf_irq_pool_get(struct mlx5_irq_table *irq_table)
-+static struct mlx5_irq_pool *
-+sf_comp_irq_pool_get(struct mlx5_irq_table *irq_table)
- {
- 	return irq_table->sf_comp_pool;
- }
- 
--struct mlx5_irq_pool *mlx5_irq_pool_get(struct mlx5_core_dev *dev)
-+struct mlx5_irq_pool *
-+mlx5_irq_table_get_comp_irq_pool(struct mlx5_core_dev *dev)
- {
- 	struct mlx5_irq_table *irq_table = mlx5_irq_table_get(dev);
- 	struct mlx5_irq_pool *pool = NULL;
- 
- 	if (mlx5_core_is_sf(dev))
--		pool = sf_irq_pool_get(irq_table);
-+		pool = sf_comp_irq_pool_get(irq_table);
- 
- 	/* In some configs, there won't be a pool of SFs IRQs. Hence, returning
- 	 * the PF IRQs pool in case the SF pool doesn't exist.
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
-index c4d377f8df308..cc064425fe160 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
-@@ -28,7 +28,6 @@ struct mlx5_irq_pool {
- 	struct mlx5_core_dev *dev;
- };
- 
--struct mlx5_irq_pool *mlx5_irq_pool_get(struct mlx5_core_dev *dev);
- static inline bool mlx5_irq_pool_is_sf_pool(struct mlx5_irq_pool *pool)
- {
- 	return !strncmp("mlx5_sf", pool->name, strlen("mlx5_sf"));
-@@ -40,5 +39,6 @@ struct mlx5_irq *mlx5_irq_alloc(struct mlx5_irq_pool *pool, int i,
- int mlx5_irq_get_locked(struct mlx5_irq *irq);
- int mlx5_irq_read_locked(struct mlx5_irq *irq);
- int mlx5_irq_put(struct mlx5_irq *irq);
-+struct mlx5_irq_pool *mlx5_irq_get_pool(struct mlx5_irq *irq);
- 
- #endif /* __PCI_IRQ_H__ */
+-	if (p->nr_cpus_allowed == nr_cpus)
++	if (p->nr_cpus_allowed == nr_cpus && !p->migration_disabled)
+ 		target = bpf_get_prandom_u32() % nr_cpus;
+ 	else
+ 		target = scx_bpf_task_cpu(p);
 -- 
 2.39.5
 
