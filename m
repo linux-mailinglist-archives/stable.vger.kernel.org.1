@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3E9A69155
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9671CA69049
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDDF43AB621
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38CD9174D3F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A31B221543;
-	Wed, 19 Mar 2025 14:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8101C760D;
+	Wed, 19 Mar 2025 14:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vq4k3uN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVhTbwul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCC41DED78;
-	Wed, 19 Mar 2025 14:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899C91C5F2C;
+	Wed, 19 Mar 2025 14:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395189; cv=none; b=kMSD1lmuHverp6EaU0gVrH1xOTbRcjxoMO43/oo17Eu1jaPeVfFhaqeV/vfMZwX+MnObOC1Xbw7wKYV1YatFhe6Tr7NJG038fZyIlqIWUuI4opicKLOWw3vrM0tzi4Pd5RMC4Y2HFHhQW2mp+x+ckNvdn5EQImhfBHivs6Qvu+c=
+	t=1742395071; cv=none; b=YwwUMoeJE92UrpBRlSbfd32jXjBNULT0mjwXyt2lmkX1MWu2D3LdCUCZ6ZyR4Wf0N1vdCmYTd6D11qFo/L5iCofeNytZx3a4ujSkctAldTfj15g/bSqoMbHmfLCIghXjg8KO7Ab63Y+v4Cdy3IFVRpGNUnvUU8pGyTuFTsw91Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395189; c=relaxed/simple;
-	bh=TI1zHPCpjHcKgQvv6E4bYZVhRd22mqdOJ0iQc+uK7Mo=;
+	s=arc-20240116; t=1742395071; c=relaxed/simple;
+	bh=kR1x2pQhjDPnwxvWQRcELPkECSfJcECts5UR1MchWRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gi2KJluB5u8FJVk2jhEF4YrIXBFQ703ZeEeDoE0Ujq6XAoNx4XaczGvoy1ickGu6Jjv64BBox00JepxelPvAzLtl/gMJwfQoQnDxPxbEZd8Rgc0jpCeVCQM5WTorMpzZiAaaUDfswU6hKu9H7c08/psHv5sh7Snlwa5ks/K3K1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vq4k3uN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A39C4CEE4;
-	Wed, 19 Mar 2025 14:39:49 +0000 (UTC)
+	 MIME-Version; b=T9DUzj/t6CtPstLMYo9cxefudDsmnfE0XRBA/gt+kQDYRCLkolwcu9nf3EzN3kiDfkw04w4FFLrlrJs1cXOeR3RzlPuNayfLxDJuVod6uir6DcXt9YJ90uCIqdb7X0WPqx4M94wRVYrK4lf5I6DwRem7Jx11t7gACUUfGfHHZY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVhTbwul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FBF6C4CEE4;
+	Wed, 19 Mar 2025 14:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395189;
-	bh=TI1zHPCpjHcKgQvv6E4bYZVhRd22mqdOJ0iQc+uK7Mo=;
+	s=korg; t=1742395071;
+	bh=kR1x2pQhjDPnwxvWQRcELPkECSfJcECts5UR1MchWRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vq4k3uN8FqGMZiKP4XrGSUGK3Z09yerjgWhPmXfBBmigVsvRtarCE03v7UBW2eu63
-	 tHRtX6HlNGB+Oy8R3AcmHb2q7HNJA9AgKGrR0a96Q75cwVJOv3d5O15gIqORuhC74d
-	 DoZbl7jZN4yZjLJ27Lta3aUmXSaxpbVmdmDa1Jws=
+	b=tVhTbwulGAyBjX5XFlQ+l0LLPdlU4Pv7B+uO8GXiFyBxW5/bC+mbVR3hMzXOb4fsN
+	 riX8PuPFLfnNum+T1F28pWjgUEJ/AF8ARYNUBtsVe1yJsY7s9gmLBa47xudHqr4YJr
+	 uJABwFSHlPOr/qHmbzG8tiE3zr50ltFsqhj5DdOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/166] gre: Fix IPv6 link-local address generation.
+Subject: [PATCH 6.12 109/231] ASoC: rsnd: dont indicate warning on rsnd_kctrl_accept_runtime()
 Date: Wed, 19 Mar 2025 07:30:02 -0700
-Message-ID: <20250319143020.831390683@linuxfoundation.org>
+Message-ID: <20250319143029.531783805@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 183185a18ff96751db52a46ccf93fff3a1f42815 ]
+[ Upstream commit c3fc002b206c6c83d1e3702b979733002ba6fb2c ]
 
-Use addrconf_addr_gen() to generate IPv6 link-local addresses on GRE
-devices in most cases and fall back to using add_v4_addrs() only in
-case the GRE configuration is incompatible with addrconf_addr_gen().
+rsnd_kctrl_accept_runtime() (1) is used for runtime convert rate
+(= Synchronous SRC Mode). Now, rsnd driver has 2 kctrls for it
 
-GRE used to use addrconf_addr_gen() until commit e5dd729460ca
-("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL
-address") restricted this use to gretap and ip6gretap devices, and
-created add_v4_addrs() (borrowed from SIT) for non-Ethernet GRE ones.
+(A):	"SRC Out Rate Switch"
+(B):	"SRC Out Rate"		// it calls (1)
 
-The original problem came when commit 9af28511be10 ("addrconf: refuse
-isatap eui64 for INADDR_ANY") made __ipv6_isatap_ifid() fail when its
-addr parameter was 0. The commit says that this would create an invalid
-address, however, I couldn't find any RFC saying that the generated
-interface identifier would be wrong. Anyway, since gre over IPv4
-devices pass their local tunnel address to __ipv6_isatap_ifid(), that
-commit broke their IPv6 link-local address generation when the local
-address was unspecified.
+(A): can be called anytime
+(B): can be called only runtime, and will indicate warning if it was used
+   at non-runtime.
 
-Then commit e5dd729460ca ("ip/ip6_gre: use the same logic as SIT
-interfaces when computing v6LL address") tried to fix that case by
-defining add_v4_addrs() and calling it to generate the IPv6 link-local
-address instead of using addrconf_addr_gen() (apart for gretap and
-ip6gretap devices, which would still use the regular
-addrconf_addr_gen(), since they have a MAC address).
+To use runtime convert rate (= Synchronous SRC Mode), user might uses
+command in below order.
 
-That broke several use cases because add_v4_addrs() isn't properly
-integrated into the rest of IPv6 Neighbor Discovery code. Several of
-these shortcomings have been fixed over time, but add_v4_addrs()
-remains broken on several aspects. In particular, it doesn't send any
-Router Sollicitations, so the SLAAC process doesn't start until the
-interface receives a Router Advertisement. Also, add_v4_addrs() mostly
-ignores the address generation mode of the interface
-(/proc/sys/net/ipv6/conf/*/addr_gen_mode), thus breaking the
-IN6_ADDR_GEN_MODE_RANDOM and IN6_ADDR_GEN_MODE_STABLE_PRIVACY cases.
+(X):	> amixer set "SRC Out Rate" on
+	> aplay xxx.wav &
+(Y):	> amixer set "SRC Out Rate" 48010 // convert rate to 48010Hz
 
-Fix the situation by using add_v4_addrs() only in the specific scenario
-where the normal method would fail. That is, for interfaces that have
-all of the following characteristics:
+(Y): calls B
+(X): calls both A and B.
 
-  * run over IPv4,
-  * transport IP packets directly, not Ethernet (that is, not gretap
-    interfaces),
-  * tunnel endpoint is INADDR_ANY (that is, 0),
-  * device address generation mode is EUI64.
+In this case, when user calls (X), it calls both (A) and (B), but it is not
+yet start running. So, (B) will indicate warning.
 
-In all other cases, revert back to the regular addrconf_addr_gen().
+This warning was added by commit b5c088689847 ("ASoC: rsnd: add warning
+message to rsnd_kctrl_accept_runtime()"), but the message sounds like the
+operation was not correct. Let's update warning message.
 
-Also, remove the special case for ip6gre interfaces in add_v4_addrs(),
-since ip6gre devices now always use addrconf_addr_gen() instead.
+The message is very SRC specific, implement it in src.c
 
-Fixes: e5dd729460ca ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL address")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/559c32ce5c9976b269e6337ac9abb6a96abe5096.1741375285.git.gnault@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://patch.msgid.link/8734gt2qed.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ sound/soc/sh/rcar/core.c | 14 --------------
+ sound/soc/sh/rcar/rsnd.h |  1 -
+ sound/soc/sh/rcar/src.c  | 18 +++++++++++++++++-
+ 3 files changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 8360939acf85a..db07d3bbaf379 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3189,16 +3189,13 @@ static void add_v4_addrs(struct inet6_dev *idev)
- 	struct in6_addr addr;
- 	struct net_device *dev;
- 	struct net *net = dev_net(idev->dev);
--	int scope, plen, offset = 0;
-+	int scope, plen;
- 	u32 pflags = 0;
+diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
+index eca5ce096e545..e3ef9104b411c 100644
+--- a/sound/soc/sh/rcar/core.c
++++ b/sound/soc/sh/rcar/core.c
+@@ -1758,20 +1758,6 @@ int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io)
+ 	return 1;
+ }
  
- 	ASSERT_RTNL();
+-int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io)
+-{
+-	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
+-	struct rsnd_priv *priv = rsnd_io_to_priv(io);
+-	struct device *dev = rsnd_priv_to_dev(priv);
+-
+-	if (!runtime) {
+-		dev_warn(dev, "Can't update kctrl when idle\n");
+-		return 0;
+-	}
+-
+-	return 1;
+-}
+-
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg)
+ {
+ 	cfg->cfg.val = cfg->val;
+diff --git a/sound/soc/sh/rcar/rsnd.h b/sound/soc/sh/rcar/rsnd.h
+index 3c164d8e3b16b..3f1100b98cdd3 100644
+--- a/sound/soc/sh/rcar/rsnd.h
++++ b/sound/soc/sh/rcar/rsnd.h
+@@ -742,7 +742,6 @@ struct rsnd_kctrl_cfg_s {
+ #define rsnd_kctrl_vals(x)	((x).val)	/* = (x).cfg.val[0] */
  
- 	memset(&addr, 0, sizeof(struct in6_addr));
--	/* in case of IP6GRE the dev_addr is an IPv6 and therefore we use only the last 4 bytes */
--	if (idev->dev->addr_len == sizeof(struct in6_addr))
--		offset = sizeof(struct in6_addr) - 4;
--	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr + offset, 4);
-+	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr, 4);
+ int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io);
+-int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io);
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg);
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_s(struct rsnd_kctrl_cfg_s *cfg);
+ int rsnd_kctrl_new(struct rsnd_mod *mod,
+diff --git a/sound/soc/sh/rcar/src.c b/sound/soc/sh/rcar/src.c
+index e7f86db0d94c3..3099180297722 100644
+--- a/sound/soc/sh/rcar/src.c
++++ b/sound/soc/sh/rcar/src.c
+@@ -531,6 +531,22 @@ static irqreturn_t rsnd_src_interrupt(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
  
- 	if (!(idev->dev->flags & IFF_POINTOPOINT) && idev->dev->type == ARPHRD_SIT) {
- 		scope = IPV6_ADDR_COMPATv4;
-@@ -3508,7 +3505,13 @@ static void addrconf_gre_config(struct net_device *dev)
- 		return;
- 	}
++static int rsnd_src_kctrl_accept_runtime(struct rsnd_dai_stream *io)
++{
++	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
++
++	if (!runtime) {
++		struct rsnd_priv *priv = rsnd_io_to_priv(io);
++		struct device *dev = rsnd_priv_to_dev(priv);
++
++		dev_warn(dev, "\"SRC Out Rate\" can use during running\n");
++
++		return 0;
++	}
++
++	return 1;
++}
++
+ static int rsnd_src_probe_(struct rsnd_mod *mod,
+ 			   struct rsnd_dai_stream *io,
+ 			   struct rsnd_priv *priv)
+@@ -594,7 +610,7 @@ static int rsnd_src_pcm_new(struct rsnd_mod *mod,
+ 			       rsnd_io_is_play(io) ?
+ 			       "SRC Out Rate" :
+ 			       "SRC In Rate",
+-			       rsnd_kctrl_accept_runtime,
++			       rsnd_src_kctrl_accept_runtime,
+ 			       rsnd_src_set_convert_rate,
+ 			       &src->sync, 192000);
  
--	if (dev->type == ARPHRD_ETHER) {
-+	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
-+	 * unless we have an IPv4 GRE device not bound to an IP address and
-+	 * which is in EUI64 mode (as __ipv6_isatap_ifid() would fail in this
-+	 * case). Such devices fall back to add_v4_addrs() instead.
-+	 */
-+	if (!(dev->type == ARPHRD_IPGRE && *(__be32 *)dev->dev_addr == 0 &&
-+	      idev->cnf.addr_gen_mode == IN6_ADDR_GEN_MODE_EUI64)) {
- 		addrconf_addr_gen(idev, true);
- 		return;
- 	}
 -- 
 2.39.5
 
