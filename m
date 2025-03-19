@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF18DA68FDE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6EAEA690D3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2D8887EAF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 138167ADBCB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBC81F4C8F;
-	Wed, 19 Mar 2025 14:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4060A221D92;
+	Wed, 19 Mar 2025 14:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nyq6lMDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcB6/ZZk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6891C4A24;
-	Wed, 19 Mar 2025 14:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8AB20297C;
+	Wed, 19 Mar 2025 14:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394968; cv=none; b=F4OEIfy0x7XJFhYdefy53/uorz+7zE0UBmXxQBiedICtGf0ONPBpq4CA9avYOkJMlg0WwFCHs95RbUo8AtP+4UN/2d3ynggdDSF1C/3s81LDF3lpPSWz7eHBUNfAdBe9n/+x1nUZ8gHMHlFtNaPF/4uQecDmCITmplJocIOOMwU=
+	t=1742395225; cv=none; b=cbTB7WKADpsCFhIwSq5FYydpQlHtLg5itr+ysJevZIihUbLqB338CWoZYpXj8PXGEZMNJ+Wkmi4rTJX7mKuYTgQwyXlUQIar0mb+RDx2VHcfE/dpppjy562tj6u5vNSu+RQ4oNcAzsUJBapbvms0yK8rBOFP3kLTBs2oq6FcYPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394968; c=relaxed/simple;
-	bh=H7H4aahbxSseQBVC/tt69OnL8hEfx5iIVTpaF3mAf+o=;
+	s=arc-20240116; t=1742395225; c=relaxed/simple;
+	bh=S2KJQiqp3CAQAovQK9GojJOLo+7BJLVqpfWIPMY+5+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUYFTsDdgKSmOeIAYDhpJ+Geo7vNrCkjCOfQS0Iz6QtqizdusdPN6a8ZS45/pJAyNibvFJs4Lf7vb/b34ZkkFK3jH4AkMr0br27r9cNlnrKR3aMmlhVs2rC4z7V2Rcml3lOL00uFMkuStgbbYj/7CrOXrkQjx1yo5JIt1rLxtes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nyq6lMDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E381C4CEE4;
-	Wed, 19 Mar 2025 14:36:08 +0000 (UTC)
+	 MIME-Version; b=e6ileEMGKj8hbOAAzgM8ucG+SLS+z7Wa/oxRSqOMCqxKf/YyKqTxHuTyR5RXFxQlSPZeySNKTqaVCWjAlo/IX/AN3fzjEXveBl8scimqZKKfj3w7Md0xxqbFNbxzNlzsq/mqhclVm0+H7hRe2yNbuBrx1VSDdKK0qdLDKBDyHeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcB6/ZZk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B49C4CEE4;
+	Wed, 19 Mar 2025 14:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394968;
-	bh=H7H4aahbxSseQBVC/tt69OnL8hEfx5iIVTpaF3mAf+o=;
+	s=korg; t=1742395224;
+	bh=S2KJQiqp3CAQAovQK9GojJOLo+7BJLVqpfWIPMY+5+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nyq6lMDb3J/SUBPsg5Cwi4Gl4ok3SyP9e9uDRoTFKCkJWY/ZvdZFjxfYbVRQhpXr7
-	 ecDABWA5FZ/CjQ1qF3Oo7up1SSRGTnr79EXTpv0SJXytKchjiMhpYbUHOKiPQbd9LC
-	 nS7bnySm4xb903eLxvq1/JCYQo7GRXLECqlPB0Bw=
+	b=IcB6/ZZkcDkVogeN5dUTLWnRiIFmFrulf08415uGC7usWG1Vt5BSPmqPCxvaGb08J
+	 4i5gGdnUl/i3OKNTygvw4LYTzZXO0B2tiVYS3YDo+OBUenj5dmPqO+Fm2JeGJ1DVO/
+	 Tv+6ga7r7n/QDEyvxyND0xvy+e68snDem72GkTh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 194/241] ASoC: Intel: sof_sdw: Fix unlikely uninitialized variable use in create_sdw_dailinks()
+	Guangwu Zhang <guazhang@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 093/166] block: fix kmem_cache of name bio-108 already exists
 Date: Wed, 19 Mar 2025 07:31:04 -0700
-Message-ID: <20250319143032.521701429@linuxfoundation.org>
+Message-ID: <20250319143022.542266253@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 4363f02a39e25e80e68039b4323c570b0848ec66 upstream.
+[ Upstream commit b654f7a51ffb386131de42aa98ed831f8c126546 ]
 
-Initialize current_be_id to 0 to handle the unlikely case when there are
-no devices connected to a DAI.
-In this case create_sdw_dailink() would return without touching the passed
-pointer to current_be_id.
+Device mapper bioset often has big bio_slab size, which can be more than
+1000, then 8byte can't hold the slab name any more, cause the kmem_cache
+allocation warning of 'kmem_cache of name 'bio-108' already exists'.
 
-Found by gcc -fanalyzer
+Fix the warning by extending bio_slab->name to 12 bytes, but fix output
+of /proc/slabinfo
 
-Fixes: 59bf457d8055 ("ASoC: intel: sof_sdw: Factor out SoundWire DAI creation")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250303065552.78328-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250228132656.2838008-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c |    2 +-
+ block/bio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -945,7 +945,7 @@ static int create_sdw_dailinks(struct sn
- 
- 	/* generate DAI links by each sdw link */
- 	while (sof_dais->initialised) {
--		int current_be_id;
-+		int current_be_id = 0;
- 
- 		ret = create_sdw_dailink(card, sof_dais, dai_links,
- 					 &current_be_id, codec_conf);
+diff --git a/block/bio.c b/block/bio.c
+index 62419aa09d731..4a8e761699571 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -78,7 +78,7 @@ struct bio_slab {
+ 	struct kmem_cache *slab;
+ 	unsigned int slab_ref;
+ 	unsigned int slab_size;
+-	char name[8];
++	char name[12];
+ };
+ static DEFINE_MUTEX(bio_slab_lock);
+ static DEFINE_XARRAY(bio_slabs);
+-- 
+2.39.5
+
 
 
 
