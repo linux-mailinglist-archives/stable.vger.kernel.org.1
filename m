@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E618A691B0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5044FA69097
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 030AC1B87D75
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 168CB7A74E2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF86B1E22E6;
-	Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A0221D5B6;
+	Wed, 19 Mar 2025 14:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/vzmJAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0KL4c9u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2E51C5F26;
-	Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503EE1F5849;
+	Wed, 19 Mar 2025 14:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395061; cv=none; b=t+m3XcC8Z0g+Al7TFLzJ9bRrN60XWc5yjSRKvu8Fi3HWsSSyAUd2BbuHd+dY7aFbXbOHNdl+qfTxPOqE4LV0Dh6NkWdYzpe+l5TCR1nhXUWY6YwCT77zWKJTHqf+RuHQA2BcbeNj3De8h3Zsny133NNA6Q4s4p43VRIIH14Ghek=
+	t=1742395168; cv=none; b=XRxflw6mcI/rVmm0s+k2JjWRopBa/ZqTWhzGfgKqBahDr0a00PBxEEsm8ZKOtANwJL2ddLkYln7vGDHW5c7w4Rakx9B/GTjls0ASfuMEbhQad33RWYmG32QGW9WzJn/rDPc0HN7qTG8+4xK8gNdIvcpRJs5jkZwCrLXWOodLm8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395061; c=relaxed/simple;
-	bh=duLTdOu8nGpIhQZ1LluwQnQ4TNoPLei0446tmalqt+Y=;
+	s=arc-20240116; t=1742395168; c=relaxed/simple;
+	bh=lsrX9+stBPohQ2S/m1yYj9oNzbqja8wQO1r6zwjpiFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b31QU3eu7v+73SkYvPvwmVPskvBhTIS6GGQQa5fdBHsq9swcbxfYOXwscU6fE62zAY5i55fxLrwYK9vjcpI3Eyjyq6tZi3017YIG200dATdHozt2FkbazPw94YZih5XQnshMaZk2ihfce2uTxT493PrqBd8XqLmBGjW2elt7KXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/vzmJAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A064C4CEE4;
-	Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
+	 MIME-Version; b=WGFBqjUkty6ncTWexd3H/t8cGj9naqMwgUs5ut6p2HKKYSWRwiVCzlLnUzFVZdP+jXrQvM1w+LHUIAnhXCEf6vQdEV4WlL2KvVFWEcjbTEcPC02zwmFjX1Y7hw/2yrhzPvy1H0rJaD0mpwwwnjD+mVtL4SK/s4+aVRCB1Pc0qQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0KL4c9u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA12C4CEE8;
+	Wed, 19 Mar 2025 14:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395061;
-	bh=duLTdOu8nGpIhQZ1LluwQnQ4TNoPLei0446tmalqt+Y=;
+	s=korg; t=1742395168;
+	bh=lsrX9+stBPohQ2S/m1yYj9oNzbqja8wQO1r6zwjpiFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/vzmJAPG0DN22T1lx+p9iNUzLBPEq2HGjhi7VJVwF32WV1xHWGHhaCu2wnZrUKhE
-	 FsjFwIo6WHsQzoBz4eGISdLA4Ok0DWJdqA/2RKfOZQu+1YGi5Q1vyWoNIKDwyVO/Ax
-	 mQzjQkTYm5G/v+iwIAGTu/HHYSe38njubPKf4Axw=
+	b=X0KL4c9u2gRYqwRgJ+dKbvwIwqXSYh0cyd2vBr7TrMUPlKHtiPMj8nC6TmXPG5Ams
+	 8yFW7T8sz0IdNur9fHZmH9UWlXf1TVi3vC0Fo0uzu4afVbFUEAlWsC5JU1LuZN1mgz
+	 2fS829+JB+P7RKJiETLsawx1VXmuITeCQ5wAQ5aM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Joseph Huang <Joseph.Huang@garmin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/231] LoongArch: KVM: Set host with kernel mode when switch to VM mode
-Date: Wed, 19 Mar 2025 07:29:48 -0700
-Message-ID: <20250319143029.189673123@linuxfoundation.org>
+Subject: [PATCH 6.6 018/166] net: dsa: mv88e6xxx: Verify after ATU Load ops
+Date: Wed, 19 Mar 2025 07:29:49 -0700
+Message-ID: <20250319143020.476275451@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Joseph Huang <Joseph.Huang@garmin.com>
 
-[ Upstream commit 3011b29ec5a33ec16502e687c4264d57416a8b1f ]
+[ Upstream commit dc5340c3133a3ebe54853fd299116149e528cfaa ]
 
-PRMD register is only meaningful on the beginning stage of exception
-entry, and it is overwritten with nested irq or exception.
+ATU Load operations could fail silently if there's not enough space
+on the device to hold the new entry. When this happens, the symptom
+depends on the unknown flood settings. If unknown multicast flood is
+disabled, the multicast packets are dropped when the ATU table is
+full. If unknown multicast flood is enabled, the multicast packets
+will be flooded to all ports. Either way, IGMP snooping is broken
+when the ATU Load operation fails silently.
 
-When CPU runs in VM mode, interrupt need be enabled on host. And the
-mode for host had better be kernel mode rather than random or user mode.
+Do a Read-After-Write verification after each fdb/mdb add operation
+to make sure that the operation was really successful, and return
+-ENOSPC otherwise.
 
-When VM is running, the running mode with top command comes from CRMD
-register, and running mode should be kernel mode since kernel function
-is executing with perf command. It needs be consistent with both top and
-perf command.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: defb05b9b9b4 ("net: dsa: mv88e6xxx: Add support for fdb_add, fdb_del, and fdb_getnext")
+Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250306172306.3859214-1-Joseph.Huang@garmin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/switch.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 59 ++++++++++++++++++++++++++------
+ 1 file changed, 48 insertions(+), 11 deletions(-)
 
-diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-index 0c292f8184927..1be185e948072 100644
---- a/arch/loongarch/kvm/switch.S
-+++ b/arch/loongarch/kvm/switch.S
-@@ -85,7 +85,7 @@
- 	 * Guest CRMD comes from separate GCSR_CRMD register
- 	 */
- 	ori	t0, zero, CSR_PRMD_PIE
--	csrxchg	t0, t0,   LOONGARCH_CSR_PRMD
-+	csrwr	t0, LOONGARCH_CSR_PRMD
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 062bcbe6255cf..a39b33353ca6c 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -2125,13 +2125,11 @@ mv88e6xxx_port_vlan_prepare(struct dsa_switch *ds, int port,
+ 	return err;
+ }
  
- 	/* Set PVM bit to setup ertn to guest context */
- 	ori	t0, zero, CSR_GSTAT_PVM
+-static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
+-					const unsigned char *addr, u16 vid,
+-					u8 state)
++static int mv88e6xxx_port_db_get(struct mv88e6xxx_chip *chip,
++				 const unsigned char *addr, u16 vid,
++				 u16 *fid, struct mv88e6xxx_atu_entry *entry)
+ {
+-	struct mv88e6xxx_atu_entry entry;
+ 	struct mv88e6xxx_vtu_entry vlan;
+-	u16 fid;
+ 	int err;
+ 
+ 	/* Ports have two private address databases: one for when the port is
+@@ -2142,7 +2140,7 @@ static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
+ 	 * VLAN ID into the port's database used for VLAN-unaware bridging.
+ 	 */
+ 	if (vid == 0) {
+-		fid = MV88E6XXX_FID_BRIDGED;
++		*fid = MV88E6XXX_FID_BRIDGED;
+ 	} else {
+ 		err = mv88e6xxx_vtu_get(chip, vid, &vlan);
+ 		if (err)
+@@ -2152,14 +2150,39 @@ static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
+ 		if (!vlan.valid)
+ 			return -EOPNOTSUPP;
+ 
+-		fid = vlan.fid;
++		*fid = vlan.fid;
+ 	}
+ 
+-	entry.state = 0;
+-	ether_addr_copy(entry.mac, addr);
+-	eth_addr_dec(entry.mac);
++	entry->state = 0;
++	ether_addr_copy(entry->mac, addr);
++	eth_addr_dec(entry->mac);
++
++	return mv88e6xxx_g1_atu_getnext(chip, *fid, entry);
++}
++
++static bool mv88e6xxx_port_db_find(struct mv88e6xxx_chip *chip,
++				   const unsigned char *addr, u16 vid)
++{
++	struct mv88e6xxx_atu_entry entry;
++	u16 fid;
++	int err;
+ 
+-	err = mv88e6xxx_g1_atu_getnext(chip, fid, &entry);
++	err = mv88e6xxx_port_db_get(chip, addr, vid, &fid, &entry);
++	if (err)
++		return false;
++
++	return entry.state && ether_addr_equal(entry.mac, addr);
++}
++
++static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
++					const unsigned char *addr, u16 vid,
++					u8 state)
++{
++	struct mv88e6xxx_atu_entry entry;
++	u16 fid;
++	int err;
++
++	err = mv88e6xxx_port_db_get(chip, addr, vid, &fid, &entry);
+ 	if (err)
+ 		return err;
+ 
+@@ -2757,6 +2780,13 @@ static int mv88e6xxx_port_fdb_add(struct dsa_switch *ds, int port,
+ 	mv88e6xxx_reg_lock(chip);
+ 	err = mv88e6xxx_port_db_load_purge(chip, port, addr, vid,
+ 					   MV88E6XXX_G1_ATU_DATA_STATE_UC_STATIC);
++	if (err)
++		goto out;
++
++	if (!mv88e6xxx_port_db_find(chip, addr, vid))
++		err = -ENOSPC;
++
++out:
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+ 	return err;
+@@ -6454,6 +6484,13 @@ static int mv88e6xxx_port_mdb_add(struct dsa_switch *ds, int port,
+ 	mv88e6xxx_reg_lock(chip);
+ 	err = mv88e6xxx_port_db_load_purge(chip, port, mdb->addr, mdb->vid,
+ 					   MV88E6XXX_G1_ATU_DATA_STATE_MC_STATIC);
++	if (err)
++		goto out;
++
++	if (!mv88e6xxx_port_db_find(chip, mdb->addr, mdb->vid))
++		err = -ENOSPC;
++
++out:
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+ 	return err;
 -- 
 2.39.5
 
