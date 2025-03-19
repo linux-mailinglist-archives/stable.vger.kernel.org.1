@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-125290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E3EA690AA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11523A6911A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C0218A1183
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B927A3B346C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF275219A7E;
-	Wed, 19 Mar 2025 14:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D52B21D3EF;
+	Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToOczuTX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPUy7MGo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C490219319;
-	Wed, 19 Mar 2025 14:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE69321D591;
+	Wed, 19 Mar 2025 14:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395085; cv=none; b=jDxLVaqJsiwQ7kjwpdAWc6OfIDpJ5sP2HfiC7aluAYBHj2VjhHc2JaOxWwDzVD2TSgdLfjA9bPhSfo/8ATsHSl3S5+iQfRtrajGt/z9GwgCsNng2K/knZIcmJrQ0BhRdVhz0x81mBXlSwnIFO53Z8vXIla2hP/uEEoElXzbZjeU=
+	t=1742395164; cv=none; b=bLQiEohEx5EvYfTMhQWBWqUBJ6VPEAf+jYLQySrRTgiEk4sJZ5fQbw5Oc4axiRhY8CA44KrbvHNlW/9iT+KEvhoivXFEkVssu9gcKIChl9gi2O2DZRXbz3squeLaOBm+Ew3JXilUlBP+/cNUfQJ9pmSrhPyB9RN21jzKPTMi0f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395085; c=relaxed/simple;
-	bh=gDMTzQqTdf3MR41EsUG+gPMM179rSJHgPRp169Kvf1U=;
+	s=arc-20240116; t=1742395164; c=relaxed/simple;
+	bh=6h3BxvAEXMRoSnw8FsaVhnAYu48EZidEUtLmZPtHKhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cEcUuLL1LRZnphnID6bakcQEU4CRwgbgETz+UzxS4fiYIngjjInauh/jslXPkFI0+FF3EJsZan1s9MoZVwul0c0QD9F88Wwol1dP9gfQ7Mgj7mSTFyce9AnYXfOVspd6nZ0nbjYpeD2JhB4Iq1gxGiCl/9XT6TOwHjYAl7oQv3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToOczuTX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3364EC4CEE4;
-	Wed, 19 Mar 2025 14:38:05 +0000 (UTC)
+	 MIME-Version; b=Gd3BCUtiY88cIu/XL4wZOx322Znzd9ikFmkTmp4UNMesl7mQa5a0wY2utG5BW5uvFtEWXp8Ii2qUyMTgyMH24OVpoqgfdpmYnG0HcRF5v8ei1VMObw+ywcnMjcJVy1KfdbzZRueIUubjVvg/H7Xqzl1ZTVlDaASLpOqvJwQDQMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPUy7MGo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5033C4CEE4;
+	Wed, 19 Mar 2025 14:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395085;
-	bh=gDMTzQqTdf3MR41EsUG+gPMM179rSJHgPRp169Kvf1U=;
+	s=korg; t=1742395164;
+	bh=6h3BxvAEXMRoSnw8FsaVhnAYu48EZidEUtLmZPtHKhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToOczuTXDHRkMKgr3Pl5SKdQicSLlkldR+Cd5fYefQckbqHw/GiRrJjulrYAgwudN
-	 qg1N4piInlESPj69/D53nPRzXSgTS/8KC6x+EIf5OWVoboVSo2vGaNYiQV7igZdvcO
-	 mwuDmeIPhX3cAsACc0qsxPps1J5OYx8OaHQpO4WU=
+	b=kPUy7MGonHIq3GtS/lwVm/YeLsNjlhSTJLEFhbQeFnf7K9sB4mbmRw8DgCup7lAyb
+	 DJj/hPPWiZ4bda32iDRXxevPFvllt2CS3GbpUCwegYeMWSgkCTuh7sYIEFCCvWu2QN
+	 caqrHTwpU9NNFm9FZwZZEQTRgqMm0jiX2cjscKg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jun Yang <juny24602@gmail.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/231] platform/x86: int3472: Use correct type for "polarity", call it gpio_flags
-Date: Wed, 19 Mar 2025 07:29:43 -0700
-Message-ID: <20250319143029.063389432@linuxfoundation.org>
+Subject: [PATCH 6.6 013/166] sched: address a potential NULL pointer dereference in the GRED scheduler.
+Date: Wed, 19 Mar 2025 07:29:44 -0700
+Message-ID: <20250319143020.344010493@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,177 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Jun Yang <juny24602@gmail.com>
 
-[ Upstream commit fc22b06fbd2afefa1eddff69a6fd30c539cef577 ]
+[ Upstream commit 115ef44a98220fddfab37a39a19370497cd718b9 ]
 
-Struct gpiod_lookup flags field's type is unsigned long. Thus use unsigned
-long for values to be assigned to that field. Similarly, also call the
-field gpio_flags which it really is.
+If kzalloc in gred_init returns a NULL pointer, the code follows the
+error handling path, invoking gred_destroy. This, in turn, calls
+gred_offload, where memset could receive a NULL pointer as input,
+potentially leading to a kernel crash.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250211072841.7713-2-sakari.ailus@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+When table->opt is NULL in gred_init(), gred_change_table_def()
+is not called yet, so it is not necessary to call ->ndo_setup_tc()
+in gred_offload().
+
+Signed-off-by: Jun Yang <juny24602@gmail.com>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Fixes: f25c0515c521 ("net: sched: gred: dynamically allocate tc_gred_qopt_offload")
+Link: https://patch.msgid.link/20250305154410.3505642-1-juny24602@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/int3472/discrete.c | 39 ++++++++++---------
- 1 file changed, 20 insertions(+), 19 deletions(-)
+ net/sched/sch_gred.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
-index 15678508ee501..dc4d09611c5ab 100644
---- a/drivers/platform/x86/intel/int3472/discrete.c
-+++ b/drivers/platform/x86/intel/int3472/discrete.c
-@@ -55,7 +55,7 @@ static void skl_int3472_log_sensor_module_name(struct int3472_discrete_device *i
+diff --git a/net/sched/sch_gred.c b/net/sched/sch_gred.c
+index 872d127c9db42..fa7a1b69c0f35 100644
+--- a/net/sched/sch_gred.c
++++ b/net/sched/sch_gred.c
+@@ -913,7 +913,8 @@ static void gred_destroy(struct Qdisc *sch)
+ 	for (i = 0; i < table->DPs; i++)
+ 		gred_destroy_vq(table->tab[i]);
  
- static int skl_int3472_fill_gpiod_lookup(struct gpiod_lookup *table_entry,
- 					 struct acpi_resource_gpio *agpio,
--					 const char *func, u32 polarity)
-+					 const char *func, unsigned long gpio_flags)
- {
- 	char *path = agpio->resource_source.string_ptr;
- 	struct acpi_device *adev;
-@@ -70,14 +70,14 @@ static int skl_int3472_fill_gpiod_lookup(struct gpiod_lookup *table_entry,
- 	if (!adev)
- 		return -ENODEV;
- 
--	*table_entry = GPIO_LOOKUP(acpi_dev_name(adev), agpio->pin_table[0], func, polarity);
-+	*table_entry = GPIO_LOOKUP(acpi_dev_name(adev), agpio->pin_table[0], func, gpio_flags);
- 
- 	return 0;
+-	gred_offload(sch, TC_GRED_DESTROY);
++	if (table->opt)
++		gred_offload(sch, TC_GRED_DESTROY);
+ 	kfree(table->opt);
  }
  
- static int skl_int3472_map_gpio_to_sensor(struct int3472_discrete_device *int3472,
- 					  struct acpi_resource_gpio *agpio,
--					  const char *func, u32 polarity)
-+					  const char *func, unsigned long gpio_flags)
- {
- 	int ret;
- 
-@@ -87,7 +87,7 @@ static int skl_int3472_map_gpio_to_sensor(struct int3472_discrete_device *int347
- 	}
- 
- 	ret = skl_int3472_fill_gpiod_lookup(&int3472->gpios.table[int3472->n_sensor_gpios],
--					    agpio, func, polarity);
-+					    agpio, func, gpio_flags);
- 	if (ret)
- 		return ret;
- 
-@@ -100,7 +100,7 @@ static int skl_int3472_map_gpio_to_sensor(struct int3472_discrete_device *int347
- static struct gpio_desc *
- skl_int3472_gpiod_get_from_temp_lookup(struct int3472_discrete_device *int3472,
- 				       struct acpi_resource_gpio *agpio,
--				       const char *func, u32 polarity)
-+				       const char *func, unsigned long gpio_flags)
- {
- 	struct gpio_desc *desc;
- 	int ret;
-@@ -111,7 +111,7 @@ skl_int3472_gpiod_get_from_temp_lookup(struct int3472_discrete_device *int3472,
- 		return ERR_PTR(-ENOMEM);
- 
- 	lookup->dev_id = dev_name(int3472->dev);
--	ret = skl_int3472_fill_gpiod_lookup(&lookup->table[0], agpio, func, polarity);
-+	ret = skl_int3472_fill_gpiod_lookup(&lookup->table[0], agpio, func, gpio_flags);
- 	if (ret)
- 		return ERR_PTR(ret);
- 
-@@ -122,32 +122,33 @@ skl_int3472_gpiod_get_from_temp_lookup(struct int3472_discrete_device *int3472,
- 	return desc;
- }
- 
--static void int3472_get_func_and_polarity(u8 type, const char **func, u32 *polarity)
-+static void int3472_get_func_and_polarity(u8 type, const char **func,
-+					  unsigned long *gpio_flags)
- {
- 	switch (type) {
- 	case INT3472_GPIO_TYPE_RESET:
- 		*func = "reset";
--		*polarity = GPIO_ACTIVE_LOW;
-+		*gpio_flags = GPIO_ACTIVE_LOW;
- 		break;
- 	case INT3472_GPIO_TYPE_POWERDOWN:
- 		*func = "powerdown";
--		*polarity = GPIO_ACTIVE_LOW;
-+		*gpio_flags = GPIO_ACTIVE_LOW;
- 		break;
- 	case INT3472_GPIO_TYPE_CLK_ENABLE:
- 		*func = "clk-enable";
--		*polarity = GPIO_ACTIVE_HIGH;
-+		*gpio_flags = GPIO_ACTIVE_HIGH;
- 		break;
- 	case INT3472_GPIO_TYPE_PRIVACY_LED:
- 		*func = "privacy-led";
--		*polarity = GPIO_ACTIVE_HIGH;
-+		*gpio_flags = GPIO_ACTIVE_HIGH;
- 		break;
- 	case INT3472_GPIO_TYPE_POWER_ENABLE:
- 		*func = "power-enable";
--		*polarity = GPIO_ACTIVE_HIGH;
-+		*gpio_flags = GPIO_ACTIVE_HIGH;
- 		break;
- 	default:
- 		*func = "unknown";
--		*polarity = GPIO_ACTIVE_HIGH;
-+		*gpio_flags = GPIO_ACTIVE_HIGH;
- 		break;
- 	}
- }
-@@ -194,7 +195,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
- 	struct gpio_desc *gpio;
- 	const char *err_msg;
- 	const char *func;
--	u32 polarity;
-+	unsigned long gpio_flags;
- 	int ret;
- 
- 	if (!acpi_gpio_get_io_resource(ares, &agpio))
-@@ -217,7 +218,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
- 
- 	type = FIELD_GET(INT3472_GPIO_DSM_TYPE, obj->integer.value);
- 
--	int3472_get_func_and_polarity(type, &func, &polarity);
-+	int3472_get_func_and_polarity(type, &func, &gpio_flags);
- 
- 	pin = FIELD_GET(INT3472_GPIO_DSM_PIN, obj->integer.value);
- 	if (pin != agpio->pin_table[0])
-@@ -227,16 +228,16 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
- 
- 	active_value = FIELD_GET(INT3472_GPIO_DSM_SENSOR_ON_VAL, obj->integer.value);
- 	if (!active_value)
--		polarity ^= GPIO_ACTIVE_LOW;
-+		gpio_flags ^= GPIO_ACTIVE_LOW;
- 
- 	dev_dbg(int3472->dev, "%s %s pin %d active-%s\n", func,
- 		agpio->resource_source.string_ptr, agpio->pin_table[0],
--		str_high_low(polarity == GPIO_ACTIVE_HIGH));
-+		str_high_low(gpio_flags == GPIO_ACTIVE_HIGH));
- 
- 	switch (type) {
- 	case INT3472_GPIO_TYPE_RESET:
- 	case INT3472_GPIO_TYPE_POWERDOWN:
--		ret = skl_int3472_map_gpio_to_sensor(int3472, agpio, func, polarity);
-+		ret = skl_int3472_map_gpio_to_sensor(int3472, agpio, func, gpio_flags);
- 		if (ret)
- 			err_msg = "Failed to map GPIO pin to sensor\n";
- 
-@@ -244,7 +245,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
- 	case INT3472_GPIO_TYPE_CLK_ENABLE:
- 	case INT3472_GPIO_TYPE_PRIVACY_LED:
- 	case INT3472_GPIO_TYPE_POWER_ENABLE:
--		gpio = skl_int3472_gpiod_get_from_temp_lookup(int3472, agpio, func, polarity);
-+		gpio = skl_int3472_gpiod_get_from_temp_lookup(int3472, agpio, func, gpio_flags);
- 		if (IS_ERR(gpio)) {
- 			ret = PTR_ERR(gpio);
- 			err_msg = "Failed to get GPIO\n";
 -- 
 2.39.5
 
