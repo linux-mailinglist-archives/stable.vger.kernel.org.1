@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-125231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCF5A691CF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920E8A69079
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC8721B80469
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9199A1B8078D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201172147E3;
-	Wed, 19 Mar 2025 14:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE2B1DF97A;
+	Wed, 19 Mar 2025 14:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVX3wvV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jul5n8H9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E132144DB;
-	Wed, 19 Mar 2025 14:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE081DF75A;
+	Wed, 19 Mar 2025 14:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395044; cv=none; b=IzH56APm1GIqQ1yrXLXVSi76yoS1ET0LOqZobv45WEmW0KWdKbcueWIm1cC8DWgk/D51tV1abjXUA/khnWeWohIgjWIZV27e6G6yS5lcWRqeefx4bFOgLIQT5sdc4EafBlq/Jjf5o8KAymdsFBqaNCBUig5EN5ff9+JtJ4HN968=
+	t=1742394883; cv=none; b=mZzp1iUWX3JPnyLIJDlQmQEpEiBHaEBZtRVeEqhoj5+49YnuUwavgaXrbyFrYqSWmj8o863yBrJigUpjJaxu4gceuwCAv4msfQekLx9ox5+SsGtnSmMs8ZkQbC9N6wiO6hihtfSFiEADkew0sNQItclKve0T90tpQKvOXYN/GH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395044; c=relaxed/simple;
-	bh=VeaTGD0ou/V63ug1bDJMRn4bwKJ9pp9QZxBdFrXP9sw=;
+	s=arc-20240116; t=1742394883; c=relaxed/simple;
+	bh=J355HNhqeon6eocJ6L5ukwgXM8sHW0ih/bXTswSUDJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JcdlolFnOJ2cMzNyUq2sxw4wbvSdxIuq9mti6fhXScvfMF2V4mjH/kORPFulPN6143ESNGJH1O5WJGrutfo4iMc7tcFSZ6ce5kqHxxxP6qFo38oLT6O9vbK7C3cUO9pL21WfWQL8qRnEZ5ciuzkKkuU7UhF7hGVRvq90X1Tq8VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVX3wvV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9245C4CEE4;
-	Wed, 19 Mar 2025 14:37:24 +0000 (UTC)
+	 MIME-Version; b=Ohjlm2u09sWpYGXYaCBSMXAmeYm6LU6+hKqzMqIxsxJBhYKMGIFCMvCw3VGy8tl/KNV6po7aKiKEgq7mXUerhw6a61xdCz7QvsDFtzaENEz6Mt28A5IO19OEgTxRjwRUkIZQvK51spymK/O6NrV/FpArTl3eLAFhwvYGWgpIGtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jul5n8H9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04126C4CEE8;
+	Wed, 19 Mar 2025 14:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395044;
-	bh=VeaTGD0ou/V63ug1bDJMRn4bwKJ9pp9QZxBdFrXP9sw=;
+	s=korg; t=1742394883;
+	bh=J355HNhqeon6eocJ6L5ukwgXM8sHW0ih/bXTswSUDJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cVX3wvV6YTc9AZ4IWenYz6T7h28aug8kYUAuB2EC/g+C7emhk0emasaCwzIfMp4xk
-	 krVjUAiUdMg8Uu0sY9J+lAMTmRHrhIQYwjbXGkzGHa1XB4JKht/yZFJPC2Zy/tVyvc
-	 YnGfYb1WYwRvNcJiENya2vri4orpaBR9+3YbAtHQ=
+	b=jul5n8H99qwT2lIBZ5O9Iklr5DOrjbDlE/5Qdp6Q8QJMxjz+xOnvF6oAJsMTEMpVB
+	 K8PdZIpTqHmWh9gndKfBpk2CetPkMPuixfWR8evoY4wKRiFx8FlrECi5uxFhJ+OUUE
+	 8PrKrEMd/BUsLWeXtyPAbhZ8xMypXEfSqgKbH0S4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Lai <justinlai0215@realtek.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Austin Zheng <Austin.Zheng@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/231] rtase: Fix improper release of ring list entries in rtase_sw_reset
+Subject: [PATCH 6.13 066/241] drm/amd/display: Fix out-of-bound accesses
 Date: Wed, 19 Mar 2025 07:28:56 -0700
-Message-ID: <20250319143027.878152871@linuxfoundation.org>
+Message-ID: <20250319143029.356537784@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Lai <justinlai0215@realtek.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 415f135ace7fd824cde083184a922e39156055b5 ]
+[ Upstream commit 8adbb2a98b00926315fd513b5fe2596b5716b82d ]
 
-Since rtase_init_ring, which is called within rtase_sw_reset, adds ring
-entries already present in the ring list back into the list, it causes
-the ring list to form a cycle. This results in list_for_each_entry_safe
-failing to find an endpoint during traversal, leading to an error.
-Therefore, it is necessary to remove the previously added ring_list nodes
-before calling rtase_init_ring.
+[WHAT & HOW]
+hpo_stream_to_link_encoder_mapping has size MAX_HPO_DP2_ENCODERS(=4),
+but location can have size up to 6. As a result, it is necessary to
+check location against MAX_HPO_DP2_ENCODERS.
 
-Fixes: 079600489960 ("rtase: Implement net_device_ops")
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250306070510.18129-1-justinlai0215@realtek.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Similiarly, disp_cfg_stream_location can be used as an array index which
+should be 0..5, so the ASSERT's conditions should be less without equal.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3904
+Reviewed-by: Austin Zheng <Austin.Zheng@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/rtase/rtase_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../amd/display/dc/dml2/dml21/dml21_translation_helper.c    | 4 ++--
+ .../gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c   | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index 14ffd45e9a25a..86dd034fdddc5 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -1501,7 +1501,10 @@ static void rtase_wait_for_quiescence(const struct net_device *dev)
- static void rtase_sw_reset(struct net_device *dev)
- {
- 	struct rtase_private *tp = netdev_priv(dev);
-+	struct rtase_ring *ring, *tmp;
-+	struct rtase_int_vector *ivec;
- 	int ret;
-+	u32 i;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
+index c6a5a86146797..de2b6e954fbd2 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
+@@ -1010,7 +1010,7 @@ bool dml21_map_dc_state_into_dml_display_cfg(const struct dc *in_dc, struct dc_s
+ 		if (disp_cfg_stream_location < 0)
+ 			disp_cfg_stream_location = dml_dispcfg->num_streams++;
  
- 	netif_stop_queue(dev);
- 	netif_carrier_off(dev);
-@@ -1512,6 +1515,13 @@ static void rtase_sw_reset(struct net_device *dev)
- 	rtase_tx_clear(tp);
- 	rtase_rx_clear(tp);
+-		ASSERT(disp_cfg_stream_location >= 0 && disp_cfg_stream_location <= __DML2_WRAPPER_MAX_STREAMS_PLANES__);
++		ASSERT(disp_cfg_stream_location >= 0 && disp_cfg_stream_location < __DML2_WRAPPER_MAX_STREAMS_PLANES__);
+ 		populate_dml21_timing_config_from_stream_state(&dml_dispcfg->stream_descriptors[disp_cfg_stream_location].timing, context->streams[stream_index], dml_ctx);
+ 		adjust_dml21_hblank_timing_config_from_pipe_ctx(&dml_dispcfg->stream_descriptors[disp_cfg_stream_location].timing, &context->res_ctx.pipe_ctx[stream_index]);
+ 		populate_dml21_output_config_from_stream_state(&dml_dispcfg->stream_descriptors[disp_cfg_stream_location].output, context->streams[stream_index], &context->res_ctx.pipe_ctx[stream_index]);
+@@ -1035,7 +1035,7 @@ bool dml21_map_dc_state_into_dml_display_cfg(const struct dc *in_dc, struct dc_s
+ 				if (disp_cfg_plane_location < 0)
+ 					disp_cfg_plane_location = dml_dispcfg->num_planes++;
  
-+	for (i = 0; i < tp->int_nums; i++) {
-+		ivec = &tp->int_vector[i];
-+		list_for_each_entry_safe(ring, tmp, &ivec->ring_list,
-+					 ring_entry)
-+			list_del(&ring->ring_entry);
-+	}
-+
- 	ret = rtase_init_ring(dev);
- 	if (ret) {
- 		netdev_err(dev, "unable to init ring\n");
+-				ASSERT(disp_cfg_plane_location >= 0 && disp_cfg_plane_location <= __DML2_WRAPPER_MAX_STREAMS_PLANES__);
++				ASSERT(disp_cfg_plane_location >= 0 && disp_cfg_plane_location < __DML2_WRAPPER_MAX_STREAMS_PLANES__);
+ 
+ 				populate_dml21_surface_config_from_plane_state(in_dc, &dml_dispcfg->plane_descriptors[disp_cfg_plane_location].surface, context->stream_status[stream_index].plane_states[plane_index]);
+ 				populate_dml21_plane_config_from_plane_state(dml_ctx, &dml_dispcfg->plane_descriptors[disp_cfg_plane_location], context->stream_status[stream_index].plane_states[plane_index], context, stream_index);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+index bde4250853b10..81ba8809a3b4c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -746,7 +746,7 @@ static void populate_dml_output_cfg_from_stream_state(struct dml_output_cfg_st *
+ 	case SIGNAL_TYPE_DISPLAY_PORT_MST:
+ 	case SIGNAL_TYPE_DISPLAY_PORT:
+ 		out->OutputEncoder[location] = dml_dp;
+-		if (dml2->v20.scratch.hpo_stream_to_link_encoder_mapping[location] != -1)
++		if (location < MAX_HPO_DP2_ENCODERS && dml2->v20.scratch.hpo_stream_to_link_encoder_mapping[location] != -1)
+ 			out->OutputEncoder[dml2->v20.scratch.hpo_stream_to_link_encoder_mapping[location]] = dml_dp2p0;
+ 		break;
+ 	case SIGNAL_TYPE_EDP:
+@@ -1303,7 +1303,7 @@ void map_dc_state_into_dml_display_cfg(struct dml2_context *dml2, struct dc_stat
+ 		if (disp_cfg_stream_location < 0)
+ 			disp_cfg_stream_location = dml_dispcfg->num_timings++;
+ 
+-		ASSERT(disp_cfg_stream_location >= 0 && disp_cfg_stream_location <= __DML2_WRAPPER_MAX_STREAMS_PLANES__);
++		ASSERT(disp_cfg_stream_location >= 0 && disp_cfg_stream_location < __DML2_WRAPPER_MAX_STREAMS_PLANES__);
+ 
+ 		populate_dml_timing_cfg_from_stream_state(&dml_dispcfg->timing, disp_cfg_stream_location, context->streams[i]);
+ 		populate_dml_output_cfg_from_stream_state(&dml_dispcfg->output, disp_cfg_stream_location, context->streams[i], current_pipe_context, dml2);
+@@ -1343,7 +1343,7 @@ void map_dc_state_into_dml_display_cfg(struct dml2_context *dml2, struct dc_stat
+ 				if (disp_cfg_plane_location < 0)
+ 					disp_cfg_plane_location = dml_dispcfg->num_surfaces++;
+ 
+-				ASSERT(disp_cfg_plane_location >= 0 && disp_cfg_plane_location <= __DML2_WRAPPER_MAX_STREAMS_PLANES__);
++				ASSERT(disp_cfg_plane_location >= 0 && disp_cfg_plane_location < __DML2_WRAPPER_MAX_STREAMS_PLANES__);
+ 
+ 				populate_dml_surface_cfg_from_plane_state(dml2->v20.dml_core_ctx.project, &dml_dispcfg->surface, disp_cfg_plane_location, context->stream_status[i].plane_states[j]);
+ 				populate_dml_plane_cfg_from_plane_state(
 -- 
 2.39.5
 
