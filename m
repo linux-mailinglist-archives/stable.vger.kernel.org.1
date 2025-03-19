@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27629A68FD6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833A2A690DA
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3896017D15C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CAC68A2517
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95AF1DE899;
-	Wed, 19 Mar 2025 14:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03A421B9F3;
+	Wed, 19 Mar 2025 14:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvVOFWRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8wqUrKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6838C1DDA36;
-	Wed, 19 Mar 2025 14:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B11F1E991B;
+	Wed, 19 Mar 2025 14:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394973; cv=none; b=Rf2ldbcXTiEbv9qUvxZjW7ud1H9KCTZVdioDaKJoFODh+W2obM2FXwRvghT+4jYS0MMUuvZ5kL4TbQ/ixiDry5URs5Iw6kslP9rDm4Yo6jFOJ4DRYOGtfxUfw347nXzCXRI4/HzLbddsientffRzUbAGv6F8GIlGx89Ig0vpzsE=
+	t=1742395124; cv=none; b=rq5LzEbGia6UvluK9Q1WsJFUK9DxfudM5wTm3tx/7CburliIkh+4pXi5Rb6DmRVRLmsVe7B1Eq3TL+ekepuzzSVh8as3v1muCgOGeXbfPEQ27KLilIohWyNyyDuQlZxtbrR4DK6G9eASHKbPMvAYLqzdeka4HWheVGjyQ3kOVYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394973; c=relaxed/simple;
-	bh=y73YJ8nipcP0kEh9N60Duj7mTaYNHA8Tpo1CX+h0ePE=;
+	s=arc-20240116; t=1742395124; c=relaxed/simple;
+	bh=726Wnaq3ieaR0xQvNglcb5VBdwaen9hTo2h1K8W/YFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2TKIRbSAkgrW/nfhiDT/5tlbFz2Bcg0gvR1POpb0BGSxHaSuBg84eTrTjryKQcHKEEhG6Z30tP5+L3bNbMQGe2/55Y6J51d4ONUlhIqU1xBI1ZpBlBqavRs8GVbCjb6LX2eaqsSWiiEbZz+t+EYbPYsSWZTnhFy++4BfnTGkQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvVOFWRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFB7C4CEEC;
-	Wed, 19 Mar 2025 14:36:13 +0000 (UTC)
+	 MIME-Version; b=Bkl4wC5fb+RFZQps1LpF6YbXKKvi7FC0AwZMZbYNF/WNTG+HNX1g5hgTjqZcEJXseZu8l+HXvTQ7PxLA0PDAMpe8ub8OPACxTMNAnAnO1sdERY8ckkxQXLxsvP1hGAmrrhMuk7BIMccorhXfWNxI3EZy2wbVozwCvOSqCGZV+ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8wqUrKi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616E8C4CEE4;
+	Wed, 19 Mar 2025 14:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394973;
-	bh=y73YJ8nipcP0kEh9N60Duj7mTaYNHA8Tpo1CX+h0ePE=;
+	s=korg; t=1742395124;
+	bh=726Wnaq3ieaR0xQvNglcb5VBdwaen9hTo2h1K8W/YFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvVOFWRONFY2+R3qsPNqRh+VlPxYOYrlQa7pJ/62xrLXyZI1K1TNgbUJYZegnKOJX
-	 p/Z70mgPU6FFa8MLv2DfuDzTFmJu8mm/7fdMGI6ruPfJs36OHoyav4/Yk/5kuPd2oD
-	 aKuunJiq5jOZOAoGhwnFUeaA+w/+lwQZolVrUPG8=
+	b=Q8wqUrKiUyO1B6khcrthKK6gJomy6ofSyEN81MzcUBgNYFHTKUDAWdJzXrui2b5rZ
+	 E8jpsLAVWw15xyhN7Su7nTgriOEhJthMrEfob5QdZHs1r0HJu4BWSi+331V/PF+dHG
+	 w/dQpqLZKJbKafToPVz69Z7o/nKnHyGoP9r+yi+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 209/241] ASoC: cs42l43: Fix maximum ADC Volume
-Date: Wed, 19 Mar 2025 07:31:19 -0700
-Message-ID: <20250319143032.918247388@linuxfoundation.org>
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 187/231] ASoC: Intel: sof_sdw: Fix unlikely uninitialized variable use in create_sdw_dailinks()
+Date: Wed, 19 Mar 2025 07:31:20 -0700
+Message-ID: <20250319143031.453067389@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit e26f1cfeac6712516bfeed80890da664f4f2e88a ]
+commit 4363f02a39e25e80e68039b4323c570b0848ec66 upstream.
 
-The range of ADC volume is -1 -> 3 (-6 to 18dB) so the number of levels
-should actually be 4.
+Initialize current_be_id to 0 to handle the unlikely case when there are
+no devices connected to a DAI.
+In this case create_sdw_dailink() would return without touching the passed
+pointer to current_be_id.
 
-Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250306133254.1861046-1-ckeepax@opensource.cirrus.com
+Found by gcc -fanalyzer
+
+Fixes: 59bf457d8055 ("ASoC: intel: sof_sdw: Factor out SoundWire DAI creation")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250303065552.78328-1-yung-chuan.liao@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs42l43.c | 2 +-
+ sound/soc/intel/boards/sof_sdw.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs42l43.c b/sound/soc/codecs/cs42l43.c
-index 83c21c17fb80b..b1969536862ba 100644
---- a/sound/soc/codecs/cs42l43.c
-+++ b/sound/soc/codecs/cs42l43.c
-@@ -1146,7 +1146,7 @@ static const struct snd_kcontrol_new cs42l43_controls[] = {
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -871,7 +871,7 @@ static int create_sdw_dailinks(struct sn
  
- 	SOC_DOUBLE_R_SX_TLV("ADC Volume", CS42L43_ADC_B_CTRL1, CS42L43_ADC_B_CTRL2,
- 			    CS42L43_ADC_PGA_GAIN_SHIFT,
--			    0xF, 5, cs42l43_adc_tlv),
-+			    0xF, 4, cs42l43_adc_tlv),
+ 	/* generate DAI links by each sdw link */
+ 	while (sof_dais->initialised) {
+-		int current_be_id;
++		int current_be_id = 0;
  
- 	SOC_DOUBLE("PDM1 Invert Switch", CS42L43_DMIC_PDM_CTRL,
- 		   CS42L43_PDM1L_INV_SHIFT, CS42L43_PDM1R_INV_SHIFT, 1, 0),
--- 
-2.39.5
-
+ 		ret = create_sdw_dailink(card, sof_dais, dai_links,
+ 					 &current_be_id, codec_conf);
 
 
 
