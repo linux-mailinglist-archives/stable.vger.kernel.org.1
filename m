@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94077A691D9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:58:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4D6A68FAA
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 087D38A23E8
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93EA57A9E59
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D98223313;
-	Wed, 19 Mar 2025 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF112045A1;
+	Wed, 19 Mar 2025 14:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3bDJuEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEJlMnyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1226B1DF258;
-	Wed, 19 Mar 2025 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430971DED54;
+	Wed, 19 Mar 2025 14:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395272; cv=none; b=NvSQ2l1YYwR43jodyas+vDoJiyEpAN1J1BsNZ/02ljkRB6X2d2lw8G9li1AMbOdQuPS/+GPm3h/NoFcYCie+JSNEeqXdhKjIt66SUTwhiW58+PXQU5CiXWHSDPeVy1FqTMWorvKrRGekc+BLb7vH3p0FjFE5oJWKv+0FQYdPM/g=
+	t=1742394984; cv=none; b=S2C+fC2NtG2VJBH0PV+ye9swIt2XaknGAX6ZloMbG4+PuuwgsGG9UasHhA5jsmB0mDC36+CDZ36aFnXCHPIk1MwbBrZVhnS6PA6lT2VCqcz+jJIDBfITBRHUnp9m2CagaarFgxVKLNGA7HpZoPUTm9K1CrFG5GZDkq7ife8K+Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395272; c=relaxed/simple;
-	bh=5sGY++zEAgsUpbl4knd0nRNa8bnSB+eIQkIcxHkDJjM=;
+	s=arc-20240116; t=1742394984; c=relaxed/simple;
+	bh=rfJbMEXGED84BgqTzF2TNHrgmjcscDiwRk2/1IumLCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSS9TM3Zx9Pi3g95xNFrQkhOqE2VipCre7r6pLPh0ylF516nyN7GdvT7jXpQaLLFiq1DGRgFYP/VGfsRKCsrAv5HUlP8FR31XvzHMp+PLsCCrlRC9o0aYZ3+cr2w5BGUup9/xuPazuu9+T6lsKow/SDG7kht//eF1tkFBAMnOJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3bDJuEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E6AC4CEE4;
-	Wed, 19 Mar 2025 14:41:11 +0000 (UTC)
+	 MIME-Version; b=tHXqdzVxQc1YXBlEj3W0BYxyVH8qHOz4Y8QJdsvgmzRQxauChF1nXQ/70V1kClVB5W7cH/MI2amDLttjKh7hFKak4vzd2jMQrtbV5qpsdY9I4rL2vZ0GQt8FaiNvl+tO8NdYI2/HVYMOCv7usxZA+SNmLqCPjvS2hcXB/EswiMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEJlMnyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D960C4CEE8;
+	Wed, 19 Mar 2025 14:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395271;
-	bh=5sGY++zEAgsUpbl4knd0nRNa8bnSB+eIQkIcxHkDJjM=;
+	s=korg; t=1742394984;
+	bh=rfJbMEXGED84BgqTzF2TNHrgmjcscDiwRk2/1IumLCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3bDJuEuyJS/PGCpw8hU6vzAKfuWB+8ibLh1qmtE24eOgom1lnp9fBGxRCoVTwlP8
-	 bR4CGg2pM4+ahItJCgYv4BvkWcKJxpXQ8B0GKPdGf8qOns8ppUfjHvUKlASHlK2w5b
-	 1GEaqQ5ayeiEAZUnjNtS44GfdDzjpOAd3cfMLJsg=
+	b=lEJlMnygmWSAUMCQN1cmocV5SpJ9FiaTNbT7TMHEQI3SK4rboeSKTIPbouk0FCdIq
+	 mS0vzsG2lcPnweuvKFcWuGQECM8ceKwLKxDZ5VqT4l1A92CoM7hpP8tFzUjm2wo+hM
+	 7q9Jqn5i/nFUACtfa8iPJt6jnMlpngX3vOVpLl7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Imre Deak <imre.deak@intel.com>
-Subject: [PATCH 6.6 122/166] drm/dp_mst: Fix locking when skipping CSN before topology probing
+	David Jander <david@protonic.nl>,
+	Kent Gibson <warthog618@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 223/241] gpio: cdev: use raw notifier for line state events
 Date: Wed, 19 Mar 2025 07:31:33 -0700
-Message-ID: <20250319143023.319138983@linuxfoundation.org>
+Message-ID: <20250319143033.264835125@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 12d8f318347b1d4feac48e8ac351d3786af39599 upstream.
+[ Upstream commit dcb73cbaaeb39c9fd00bf2e019f911725945e2fe ]
 
-The handling of the MST Connection Status Notify message is skipped if
-the probing of the topology is still pending. Acquiring the
-drm_dp_mst_topology_mgr::probe_lock for this in
-drm_dp_mst_handle_up_req() is problematic: the task/work this function
-is called from is also responsible for handling MST down-request replies
-(in drm_dp_mst_handle_down_rep()). Thus drm_dp_mst_link_probe_work() -
-holding already probe_lock - could be blocked waiting for an MST
-down-request reply while drm_dp_mst_handle_up_req() is waiting for
-probe_lock while processing a CSN message. This leads to the probe
-work's down-request message timing out.
+We use a notifier to implement the mechanism of informing the user-space
+about changes in GPIO line status. We register with the notifier when
+the GPIO character device file is opened and unregister when the last
+reference to the associated file descriptor is dropped.
 
-A scenario similar to the above leading to a down-request timeout is
-handling a CSN message in drm_dp_mst_handle_conn_stat(), holding the
-probe_lock and sending down-request messages while a second CSN message
-sent by the sink subsequently is handled by drm_dp_mst_handle_up_req().
+Since commit fcc8b637c542 ("gpiolib: switch the line state notifier to
+atomic") we use the atomic notifier variant. Atomic notifiers call
+rcu_synchronize in atomic_notifier_chain_unregister() which caused a
+significant performance regression in some circumstances, observed by
+user-space when calling close() on the GPIO device file descriptor.
 
-Fix the above by moving the logic to skip the CSN handling to
-drm_dp_mst_process_up_req(). This function is called from a work
-(separate from the task/work handling new up/down messages), already
-holding probe_lock. This solves the above timeout issue, since handling
-of down-request replies won't be blocked by probe_lock.
+Replace the atomic notifier with the raw variant and provide
+synchronization with a read-write spinlock.
 
-Fixes: ddf983488c3e ("drm/dp_mst: Skip CSN if topology probing is not done yet")
-Cc: Wayne Lin <Wayne.Lin@amd.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: stable@vger.kernel.org # v6.6+
-Reviewed-by: Wayne Lin <Wayne.Lin@amd.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250307183152.3822170-1-imre.deak@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fcc8b637c542 ("gpiolib: switch the line state notifier to atomic")
+Reported-by: David Jander <david@protonic.nl>
+Closes: https://lore.kernel.org/all/20250311110034.53959031@erd003.prtnl/
+Tested-by: David Jander <david@protonic.nl>
+Tested-by: Kent Gibson <warthog618@gmail.com>
+Link: https://lore.kernel.org/r/20250311-gpiolib-line-state-raw-notifier-v2-1-138374581e1e@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c |   40 +++++++++++++++-----------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+ drivers/gpio/gpiolib-cdev.c | 15 +++++++++------
+ drivers/gpio/gpiolib.c      |  8 +++++---
+ drivers/gpio/gpiolib.h      |  5 ++++-
+ 3 files changed, 18 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3959,6 +3959,22 @@ out:
- 	return 0;
- }
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index 40f76a90fd7db..107d75558b5a8 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -2729,8 +2729,9 @@ static int gpio_chrdev_open(struct inode *inode, struct file *file)
+ 	cdev->gdev = gpio_device_get(gdev);
  
-+static bool primary_mstb_probing_is_done(struct drm_dp_mst_topology_mgr *mgr)
-+{
-+	bool probing_done = false;
-+
-+	mutex_lock(&mgr->lock);
-+
-+	if (mgr->mst_primary && drm_dp_mst_topology_try_get_mstb(mgr->mst_primary)) {
-+		probing_done = mgr->mst_primary->link_address_sent;
-+		drm_dp_mst_topology_put_mstb(mgr->mst_primary);
-+	}
-+
-+	mutex_unlock(&mgr->lock);
-+
-+	return probing_done;
-+}
-+
- static inline bool
- drm_dp_mst_process_up_req(struct drm_dp_mst_topology_mgr *mgr,
- 			  struct drm_dp_pending_up_req *up_req)
-@@ -3989,8 +4005,12 @@ drm_dp_mst_process_up_req(struct drm_dp_
+ 	cdev->lineinfo_changed_nb.notifier_call = lineinfo_changed_notify;
+-	ret = atomic_notifier_chain_register(&gdev->line_state_notifier,
+-					     &cdev->lineinfo_changed_nb);
++	scoped_guard(write_lock_irqsave, &gdev->line_state_lock)
++		ret = raw_notifier_chain_register(&gdev->line_state_notifier,
++						  &cdev->lineinfo_changed_nb);
+ 	if (ret)
+ 		goto out_free_bitmap;
  
- 	/* TODO: Add missing handler for DP_RESOURCE_STATUS_NOTIFY events */
- 	if (msg->req_type == DP_CONNECTION_STATUS_NOTIFY) {
--		dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
--		hotplug = true;
-+		if (!primary_mstb_probing_is_done(mgr)) {
-+			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.\n");
-+		} else {
-+			dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
-+			hotplug = true;
-+		}
+@@ -2754,8 +2755,9 @@ static int gpio_chrdev_open(struct inode *inode, struct file *file)
+ 	blocking_notifier_chain_unregister(&gdev->device_notifier,
+ 					   &cdev->device_unregistered_nb);
+ out_unregister_line_notifier:
+-	atomic_notifier_chain_unregister(&gdev->line_state_notifier,
+-					 &cdev->lineinfo_changed_nb);
++	scoped_guard(write_lock_irqsave, &gdev->line_state_lock)
++		raw_notifier_chain_unregister(&gdev->line_state_notifier,
++					      &cdev->lineinfo_changed_nb);
+ out_free_bitmap:
+ 	gpio_device_put(gdev);
+ 	bitmap_free(cdev->watched_lines);
+@@ -2779,8 +2781,9 @@ static int gpio_chrdev_release(struct inode *inode, struct file *file)
+ 
+ 	blocking_notifier_chain_unregister(&gdev->device_notifier,
+ 					   &cdev->device_unregistered_nb);
+-	atomic_notifier_chain_unregister(&gdev->line_state_notifier,
+-					 &cdev->lineinfo_changed_nb);
++	scoped_guard(write_lock_irqsave, &gdev->line_state_lock)
++		raw_notifier_chain_unregister(&gdev->line_state_notifier,
++					      &cdev->lineinfo_changed_nb);
+ 	bitmap_free(cdev->watched_lines);
+ 	gpio_device_put(gdev);
+ 	kfree(cdev);
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 19878bc75e94c..2509b723b34db 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1025,7 +1025,8 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 		}
  	}
  
- 	drm_dp_mst_topology_put_mstb(mstb);
-@@ -4069,10 +4089,11 @@ static int drm_dp_mst_handle_up_req(stru
- 	drm_dp_send_up_ack_reply(mgr, mst_primary, up_req->msg.req_type,
- 				 false);
+-	ATOMIC_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
++	rwlock_init(&gdev->line_state_lock);
++	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
+ 	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
  
-+	drm_dp_mst_topology_put_mstb(mst_primary);
+ 	ret = init_srcu_struct(&gdev->srcu);
+@@ -4171,8 +4172,9 @@ EXPORT_SYMBOL_GPL(gpiod_set_array_value_cansleep);
+ 
+ void gpiod_line_state_notify(struct gpio_desc *desc, unsigned long action)
+ {
+-	atomic_notifier_call_chain(&desc->gdev->line_state_notifier,
+-				   action, desc);
++	guard(read_lock_irqsave)(&desc->gdev->line_state_lock);
 +
- 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
- 		const struct drm_dp_connection_status_notify *conn_stat =
- 			&up_req->msg.u.conn_stat;
--		bool handle_csn;
++	raw_notifier_call_chain(&desc->gdev->line_state_notifier, action, desc);
+ }
  
- 		drm_dbg_kms(mgr->dev, "Got CSN: pn: %d ldps:%d ddps: %d mcs: %d ip: %d pdt: %d\n",
- 			    conn_stat->port_number,
-@@ -4081,16 +4102,6 @@ static int drm_dp_mst_handle_up_req(stru
- 			    conn_stat->message_capability_status,
- 			    conn_stat->input_port,
- 			    conn_stat->peer_device_type);
--
--		mutex_lock(&mgr->probe_lock);
--		handle_csn = mst_primary->link_address_sent;
--		mutex_unlock(&mgr->probe_lock);
--
--		if (!handle_csn) {
--			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
--			kfree(up_req);
--			goto out_put_primary;
--		}
- 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
- 		const struct drm_dp_resource_status_notify *res_stat =
- 			&up_req->msg.u.resource_stat;
-@@ -4105,9 +4116,6 @@ static int drm_dp_mst_handle_up_req(stru
- 	list_add_tail(&up_req->next, &mgr->up_req_list);
- 	mutex_unlock(&mgr->up_req_lock);
- 	queue_work(system_long_wq, &mgr->up_req_work);
--
--out_put_primary:
--	drm_dp_mst_topology_put_mstb(mst_primary);
- out_clear_reply:
- 	memset(&mgr->up_req_recv, 0, sizeof(struct drm_dp_sideband_msg_rx));
- 	return 0;
+ /**
+diff --git a/drivers/gpio/gpiolib.h b/drivers/gpio/gpiolib.h
+index 147156ec502b2..c129a03e20408 100644
+--- a/drivers/gpio/gpiolib.h
++++ b/drivers/gpio/gpiolib.h
+@@ -16,6 +16,7 @@
+ #include <linux/gpio/driver.h>
+ #include <linux/module.h>
+ #include <linux/notifier.h>
++#include <linux/spinlock.h>
+ #include <linux/srcu.h>
+ #include <linux/workqueue.h>
+ 
+@@ -45,6 +46,7 @@
+  * @list: links gpio_device:s together for traversal
+  * @line_state_notifier: used to notify subscribers about lines being
+  *                       requested, released or reconfigured
++ * @line_state_lock: RW-spinlock protecting the line state notifier
+  * @line_state_wq: used to emit line state events from a separate thread in
+  *                 process context
+  * @device_notifier: used to notify character device wait queues about the GPIO
+@@ -72,7 +74,8 @@ struct gpio_device {
+ 	const char		*label;
+ 	void			*data;
+ 	struct list_head        list;
+-	struct atomic_notifier_head line_state_notifier;
++	struct raw_notifier_head line_state_notifier;
++	rwlock_t		line_state_lock;
+ 	struct workqueue_struct	*line_state_wq;
+ 	struct blocking_notifier_head device_notifier;
+ 	struct srcu_struct	srcu;
+-- 
+2.39.5
+
 
 
 
