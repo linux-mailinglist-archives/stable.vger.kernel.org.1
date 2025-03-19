@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-125415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF22A690D5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89227A69194
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AE0E167209
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05EA1B85503
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04ADE21E08A;
-	Wed, 19 Mar 2025 14:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2511D63ED;
+	Wed, 19 Mar 2025 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCKUVkVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6fFfokl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D561DE899;
-	Wed, 19 Mar 2025 14:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4291B2194;
+	Wed, 19 Mar 2025 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395171; cv=none; b=J382UNxjiQuIbsiAQ9wLDpHp5sLSh447k0VkovyiAjqfZ2oQXOZQuAaXWrGIePLrZZMNzArWF/1geydFiFSObGXhdJDehWMMZesGAyjxSFt+77Ir+/UtDrn4aSF6dysjJmGGh92GZwsdDeGUzAsZfM0LvYdaFQUJvldQpALwILM=
+	t=1742394913; cv=none; b=ZCA8XvNbPH5Lfj5lJuA8j1lZiKegAZ3DnBp/8e8jgbeUz6jnVi8Jd2da1e3j9DjIVwBLkFhwTilyvIWBpIEqNVYRb1DRLzcL4ocTXchsGybMH+16r7A3DVTYDVj6PEfXBBqiLesGi7DbVXi4r4zaPbR6ZU95bL5Ijd0q6v5yXSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395171; c=relaxed/simple;
-	bh=qhdSrZ/BVjN+aad0ZR7Qj+7atXcUopS8XhTwfo2F6J4=;
+	s=arc-20240116; t=1742394913; c=relaxed/simple;
+	bh=PHyCwtLVdGb34o9t+hZ1lmuHFyQaVUsIA1wwddSNMrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ca36XYvVCLFzdkVVkXlqPdk46LprhV9KEcPkT30T8F0cI4lrGSyUrpJkVqrh+Zo7xr/ORnIINASzt4LpcOZpfTkSEzQ808mJ5Kvv9B3FBl0Kk7ZRLqegpnkQ5o/Tpk/0hg++/ke3qyW15WA2ZEKIoE82yVCMwxkEbY9DuDGlIwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCKUVkVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F84AC4CEE4;
-	Wed, 19 Mar 2025 14:39:31 +0000 (UTC)
+	 MIME-Version; b=O7mg+TUZXYCsSLnCxj+rjMER1QYxT6cxc4WUji7Uxwkvmj+8lW5aLskp9WDUZXeNI8z26YPsVLLUZH5E7NuxE9I9A9J9QFScWniQS+xNLMveiV7h1oz/X6VREyWIHUmPWNaJvQLLSwI/vz/m0NUSu5Fs/R91VYXYeyUZhYQlGRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6fFfokl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4350DC4CEE4;
+	Wed, 19 Mar 2025 14:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395171;
-	bh=qhdSrZ/BVjN+aad0ZR7Qj+7atXcUopS8XhTwfo2F6J4=;
+	s=korg; t=1742394913;
+	bh=PHyCwtLVdGb34o9t+hZ1lmuHFyQaVUsIA1wwddSNMrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCKUVkVn6WqtAzP6+STBtL5g//MfGjzuZKcu4Oi//mHpPrf2Qi3Wzkh1UBUEgQfkU
-	 p02pmKcOfe3riYV2mbBjcQjjPvFa6fO9Cl3V29f7EHAwVAxMm/1uIGpeuBP57MxHID
-	 0hO5JPxo7FBSwX7WbI+n2QN/T7zbE0YPy2YqFrfM=
+	b=G6fFfokl3ujCgQwS8CYhvjkjbkxzyj5H+O5mUrJwJd3sQ8rNkGZQzdAIa6xATpz/1
+	 76I/hnn/zx/gMFaNgWnZsSvuKaaLh0iUgCc+VrNJcn2vVPlHGjtG0bo3x96usnvKBt
+	 IielQvlRn4hGrw0g5izaqEzkxSwZSmfmiKLiwYlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/166] Drivers: hv: vmbus: Dont release fb_mmio resource in vmbus_free_mmio()
+Subject: [PATCH 6.13 123/241] net: wwan: mhi_wwan_mbim: Silence sequence number glitch errors
 Date: Wed, 19 Mar 2025 07:29:53 -0700
-Message-ID: <20250319143020.586198181@linuxfoundation.org>
+Message-ID: <20250319143030.767581243@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 73fe9073c0cc28056cb9de0c8a516dac070f1d1f ]
+[ Upstream commit 0d1fac6d26aff5df21bb4ec980d9b7a11c410b96 ]
 
-The VMBus driver manages the MMIO space it owns via the hyperv_mmio
-resource tree. Because the synthetic video framebuffer portion of the
-MMIO space is initially setup by the Hyper-V host for each guest, the
-VMBus driver does an early reserve of that portion of MMIO space in the
-hyperv_mmio resource tree. It saves a pointer to that resource in
-fb_mmio. When a VMBus driver requests MMIO space and passes "true"
-for the "fb_overlap_ok" argument, the reserved framebuffer space is
-used if possible. In that case it's not necessary to do another request
-against the "shadow" hyperv_mmio resource tree because that resource
-was already requested in the early reserve steps.
+When using the Qualcomm X55 modem on the ThinkPad X13s, the kernel log is
+constantly being filled with errors related to a "sequence number glitch",
+e.g.:
 
-However, the vmbus_free_mmio() function currently does no special
-handling for the fb_mmio resource. When a framebuffer device is
-removed, or the driver is unbound, the current code for
-vmbus_free_mmio() releases the reserved resource, leaving fb_mmio
-pointing to memory that has been freed. If the same or another
-driver is subsequently bound to the device, vmbus_allocate_mmio()
-checks against fb_mmio, and potentially gets garbage. Furthermore
-a second unbind operation produces this "nonexistent resource" error
-because of the unbalanced behavior between vmbus_allocate_mmio() and
-vmbus_free_mmio():
+	[ 1903.284538] sequence number glitch prev=16 curr=0
+	[ 1913.812205] sequence number glitch prev=50 curr=0
+	[ 1923.698219] sequence number glitch prev=142 curr=0
+	[ 2029.248276] sequence number glitch prev=1555 curr=0
+	[ 2046.333059] sequence number glitch prev=70 curr=0
+	[ 2076.520067] sequence number glitch prev=272 curr=0
+	[ 2158.704202] sequence number glitch prev=2655 curr=0
+	[ 2218.530776] sequence number glitch prev=2349 curr=0
+	[ 2225.579092] sequence number glitch prev=6 curr=0
 
-[   55.499643] resource: Trying to free nonexistent
-			resource <0x00000000f0000000-0x00000000f07fffff>
+Internet connectivity is working fine, so this error seems harmless. It
+looks like modem does not preserve the sequence number when entering low
+power state; the amount of errors depends on how actively the modem is
+being used.
 
-Fix this by adding logic to vmbus_free_mmio() to recognize when
-MMIO space in the fb_mmio reserved area would be released, and don't
-release it. This filtering ensures the fb_mmio resource always exists,
-and makes vmbus_free_mmio() more parallel with vmbus_allocate_mmio().
+A similar issue has also been seen on USB-based MBIM modems [1]. However,
+in cdc_ncm.c the "sequence number glitch" message is a debug message
+instead of an error. Apply the same to the mhi_wwan_mbim.c driver to
+silence these errors when using the modem.
 
-Fixes: be000f93e5d7 ("drivers:hv: Track allocations of children of hv_vmbus in private resource tree")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250310035208.275764-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250310035208.275764-1-mhklinux@outlook.com>
+[1]: https://lists.freedesktop.org/archives/libmbim-devel/2016-November/000781.html
+
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250212-mhi-wwan-mbim-sequence-glitch-v1-1-503735977cbd@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/vmbus_drv.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/wwan/mhi_wwan_mbim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 756aebf324735..c54d759b07384 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -2242,12 +2242,25 @@ void vmbus_free_mmio(resource_size_t start, resource_size_t size)
- 	struct resource *iter;
- 
- 	mutex_lock(&hyperv_mmio_lock);
-+
-+	/*
-+	 * If all bytes of the MMIO range to be released are within the
-+	 * special case fb_mmio shadow region, skip releasing the shadow
-+	 * region since no corresponding __request_region() was done
-+	 * in vmbus_allocate_mmio().
-+	 */
-+	if (fb_mmio && start >= fb_mmio->start &&
-+	    (start + size - 1 <= fb_mmio->end))
-+		goto skip_shadow_release;
-+
- 	for (iter = hyperv_mmio; iter; iter = iter->sibling) {
- 		if ((iter->start >= start + size) || (iter->end <= start))
- 			continue;
- 
- 		__release_region(iter, start, size);
+diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
+index d5a9360323d29..8755c5e6a65b3 100644
+--- a/drivers/net/wwan/mhi_wwan_mbim.c
++++ b/drivers/net/wwan/mhi_wwan_mbim.c
+@@ -220,7 +220,7 @@ static int mbim_rx_verify_nth16(struct mhi_mbim_context *mbim, struct sk_buff *s
+ 	if (mbim->rx_seq + 1 != le16_to_cpu(nth16->wSequence) &&
+ 	    (mbim->rx_seq || le16_to_cpu(nth16->wSequence)) &&
+ 	    !(mbim->rx_seq == 0xffff && !le16_to_cpu(nth16->wSequence))) {
+-		net_err_ratelimited("sequence number glitch prev=%d curr=%d\n",
++		net_dbg_ratelimited("sequence number glitch prev=%d curr=%d\n",
+ 				    mbim->rx_seq, le16_to_cpu(nth16->wSequence));
  	}
-+
-+skip_shadow_release:
- 	release_mem_region(start, size);
- 	mutex_unlock(&hyperv_mmio_lock);
- 
+ 	mbim->rx_seq = le16_to_cpu(nth16->wSequence);
 -- 
 2.39.5
 
