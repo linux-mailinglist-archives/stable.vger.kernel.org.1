@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F2AA68FD9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C87CA6911C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D4018876C6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DE784263A6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879BC1EF398;
-	Wed, 19 Mar 2025 14:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990B3207E0E;
+	Wed, 19 Mar 2025 14:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U11rl8d8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZjQj++S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F4B1DE4C6;
-	Wed, 19 Mar 2025 14:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B1E1C9B6C;
+	Wed, 19 Mar 2025 14:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394962; cv=none; b=SC3rKzbHOs/r83ChQIqNmWuH01LsLU7zwBQpyyt13LUKv2HMNkLhXYG+SxevpotfGErpZpiZbHLSP9729CKBNw8VSn3PJ7K2XZ85ljlqyc02uJUgTI5SslaEXtSnYkiReUM7Ea/ZCAknZ08TLCbuj3Mj+3iS2GEaLVI1Zs3XO+E=
+	t=1742395220; cv=none; b=ZJ1SuEf2qto3Gw17WYHkDrDrMthNK5oMiAznaiBg2JsufI+/T3WAKhfwUDtksghyd0Clv57m8iHOf4nn4t6R3AtZ5xW+OctJuZ2TyYLZ87zzCmt9gELPJxAsJbhKMsy0wGZLubSnl8FmY0LOu6gnGhSrHDyQ+Yr3+DQvBJzZy7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394962; c=relaxed/simple;
-	bh=UZMAnwIn1E7x4NbidLbKeOndymcJVqk6FKkWQYy2Tuo=;
+	s=arc-20240116; t=1742395220; c=relaxed/simple;
+	bh=U6dLSraKUc/JSHhNglrGU5h1WYOz3nnmjQ9f9cSqeY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4aY7710kywbIpI8r01xPjQRQC9E54u7AmDakpAjkWJFtbeTM44fWQj4yKcJIbeXh89cVB0kSgoQGzf2iBa9vNShPXgC66gTz2OyjZO8CdqG+IxEOhVSqnLy4ceD/xaGv3OB74p4GkeJ0u57WqTzIuWiHf7uNbGWzPPLXoMNgVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U11rl8d8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C411C4CEE4;
-	Wed, 19 Mar 2025 14:36:02 +0000 (UTC)
+	 MIME-Version; b=bd3SibVWlwDfaUDuPFhmL2vWSRTs7wcqiS4kEXLPbVLne4MF3I8FgtfGcwvWugpgVHvWWoI6AsqALLs/xBG37Ak7R/cNtfZCiU0f+gFFTt4kKMkzX0aJ/ACw+bBuHaPC0yE3G+LO2Cq5TW7bIsAiMTXe8bqeKyv7QzS2l5DzD38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZjQj++S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7B0C4CEE4;
+	Wed, 19 Mar 2025 14:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394962;
-	bh=UZMAnwIn1E7x4NbidLbKeOndymcJVqk6FKkWQYy2Tuo=;
+	s=korg; t=1742395220;
+	bh=U6dLSraKUc/JSHhNglrGU5h1WYOz3nnmjQ9f9cSqeY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U11rl8d8W7JMPBRlndTxvRDwQcWL9clLFiX6x6e6lGnLtLEuTLJAj9AlQvh0AJukg
-	 jHS6rAFVeEEPW+Ro7aHXo3uc1zECRiomw2I4W7hLPykZk1lGOxE35RArNjOffRKfb2
-	 kj8lH0OBsW4X0de9XjOTIoM931iz/4OJCAsdTcDg=
+	b=2ZjQj++ShT7iidm0bz9l9dYpoABDZw5NbT5s92R7ymrBI0t0w5PYcJto/JgqQKXsr
+	 42Y9qqwuctvDgtSfESq0MqAmi4b2EoKxFJgqMH7mb7P+Fq4whq3zXdx1dDw3utDjQg
+	 TaRG2++Mca26edOD7m9/fBzdkWOPdW9hOxiKJ3mU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 190/241] ksmbd: prevent connection release during oplock break notification
-Date: Wed, 19 Mar 2025 07:31:00 -0700
-Message-ID: <20250319143032.422722058@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 090/166] mptcp: safety check before fallback
+Date: Wed, 19 Mar 2025 07:31:01 -0700
+Message-ID: <20250319143022.460093076@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 3aa660c059240e0c795217182cf7df32909dd917 upstream.
+[ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
 
-ksmbd_work could be freed when after connection release.
-Increment r_count of ksmbd_conn to indicate that requests
-are not finished yet and to not release the connection.
+Recently, some fallback have been initiated, while the connection was
+not supposed to fallback.
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a safety check with a warning to detect when an wrong attempt to
+fallback is being done. This should help detecting any future issues
+quicker.
+
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/connection.c |   20 ++++++++++++++++++++
- fs/smb/server/connection.h |    2 ++
- fs/smb/server/oplock.c     |    6 ++++++
- fs/smb/server/server.c     |   14 ++------------
- 4 files changed, 30 insertions(+), 12 deletions(-)
+ net/mptcp/protocol.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -433,6 +433,26 @@ void ksmbd_conn_init_server_callbacks(st
- 	default_conn_ops.terminate_fn = ops->terminate_fn;
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 0bb0386aa0897..d67add91c9b90 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1103,6 +1103,8 @@ static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
+ 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
+ 		return;
+ 	}
++	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
++		return;
+ 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
  }
  
-+void ksmbd_conn_r_count_inc(struct ksmbd_conn *conn)
-+{
-+	atomic_inc(&conn->r_count);
-+}
-+
-+void ksmbd_conn_r_count_dec(struct ksmbd_conn *conn)
-+{
-+	/*
-+	 * Checking waitqueue to dropping pending requests on
-+	 * disconnection. waitqueue_active is safe because it
-+	 * uses atomic operation for condition.
-+	 */
-+	atomic_inc(&conn->refcnt);
-+	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
-+		wake_up(&conn->r_count_q);
-+
-+	if (atomic_dec_and_test(&conn->refcnt))
-+		kfree(conn);
-+}
-+
- int ksmbd_conn_transport_init(void)
- {
- 	int ret;
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -168,6 +168,8 @@ int ksmbd_conn_transport_init(void);
- void ksmbd_conn_transport_destroy(void);
- void ksmbd_conn_lock(struct ksmbd_conn *conn);
- void ksmbd_conn_unlock(struct ksmbd_conn *conn);
-+void ksmbd_conn_r_count_inc(struct ksmbd_conn *conn);
-+void ksmbd_conn_r_count_dec(struct ksmbd_conn *conn);
- 
- /*
-  * WARNING
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -634,6 +634,7 @@ static void __smb2_oplock_break_noti(str
- {
- 	struct smb2_oplock_break *rsp = NULL;
- 	struct ksmbd_work *work = container_of(wk, struct ksmbd_work, work);
-+	struct ksmbd_conn *conn = work->conn;
- 	struct oplock_break_info *br_info = work->request_buf;
- 	struct smb2_hdr *rsp_hdr;
- 	struct ksmbd_file *fp;
-@@ -689,6 +690,7 @@ static void __smb2_oplock_break_noti(str
- 
- out:
- 	ksmbd_free_work_struct(work);
-+	ksmbd_conn_r_count_dec(conn);
- }
- 
- /**
-@@ -723,6 +725,7 @@ static int smb2_oplock_break_noti(struct
- 	work->sess = opinfo->sess;
- 
- 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
-+		ksmbd_conn_r_count_inc(conn);
- 		INIT_WORK(&work->work, __smb2_oplock_break_noti);
- 		ksmbd_queue_work(work);
- 
-@@ -744,6 +747,7 @@ static void __smb2_lease_break_noti(stru
- {
- 	struct smb2_lease_break *rsp = NULL;
- 	struct ksmbd_work *work = container_of(wk, struct ksmbd_work, work);
-+	struct ksmbd_conn *conn = work->conn;
- 	struct lease_break_info *br_info = work->request_buf;
- 	struct smb2_hdr *rsp_hdr;
- 
-@@ -790,6 +794,7 @@ static void __smb2_lease_break_noti(stru
- 
- out:
- 	ksmbd_free_work_struct(work);
-+	ksmbd_conn_r_count_dec(conn);
- }
- 
- /**
-@@ -829,6 +834,7 @@ static int smb2_lease_break_noti(struct
- 	work->sess = opinfo->sess;
- 
- 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
-+		ksmbd_conn_r_count_inc(conn);
- 		INIT_WORK(&work->work, __smb2_lease_break_noti);
- 		ksmbd_queue_work(work);
- 		wait_for_break_ack(opinfo);
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -270,17 +270,7 @@ static void handle_ksmbd_work(struct wor
- 
- 	ksmbd_conn_try_dequeue_request(work);
- 	ksmbd_free_work_struct(work);
--	/*
--	 * Checking waitqueue to dropping pending requests on
--	 * disconnection. waitqueue_active is safe because it
--	 * uses atomic operation for condition.
--	 */
--	atomic_inc(&conn->refcnt);
--	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
--		wake_up(&conn->r_count_q);
--
--	if (atomic_dec_and_test(&conn->refcnt))
--		kfree(conn);
-+	ksmbd_conn_r_count_dec(conn);
- }
- 
- /**
-@@ -310,7 +300,7 @@ static int queue_ksmbd_work(struct ksmbd
- 	conn->request_buf = NULL;
- 
- 	ksmbd_conn_enqueue_request(work);
--	atomic_inc(&conn->r_count);
-+	ksmbd_conn_r_count_inc(conn);
- 	/* update activity on connection */
- 	conn->last_active = jiffies;
- 	INIT_WORK(&work->work, handle_ksmbd_work);
+-- 
+2.39.5
+
 
 
 
