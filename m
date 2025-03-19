@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-125184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EEFA69003
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22D0A68F60
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C3EB46331B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C74617D21B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35F620E31B;
-	Wed, 19 Mar 2025 14:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FEE1D63ED;
+	Wed, 19 Mar 2025 14:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+4FNJBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlsqEMsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44851C5D6A;
-	Wed, 19 Mar 2025 14:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947301C1F02;
+	Wed, 19 Mar 2025 14:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395012; cv=none; b=IozWs/PFDVQKJcHctDo/nN3cxNPxMCoOAPNzjZVsScAHyk8+bWa6Of6Nz1fGR1+e9TWYtrIcyuK1Jg4AljbPAMXmDciJmPMfrhhWLT/A04RdNxnP5VYpCJcsGZGk41sDzRh1GM+9oVA9mTccYI2gjCC/THXNc3slLcv+L6xvr04=
+	t=1742394857; cv=none; b=tSc8WqE2w8H3xH6PsA3o4deeURsTRML6tjCE7Rd6PPuUu3BJ7OxLTmkxoOceJR9oJHwUG/4gnQqJdBvCoYJAVQCf7Xn99+E9PENarDjqb4at77/mzJ4fa4kJ7b72oE4iRHAsT9/x0IUZaokrvIgRNl9W+Z05gMN9jqmB2CxUWmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395012; c=relaxed/simple;
-	bh=xpRuJt/GGGIxdW2g1o7OWqjGRif/2Y5XVRniMFofkNQ=;
+	s=arc-20240116; t=1742394857; c=relaxed/simple;
+	bh=Rl2t7T/CIXOCiopS6FrMjVXZBMDXjkiY0ZjijWjiiuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEisR3FaJn8S6HAzVL1icVdbBQUrFvnQkE1pWNhq3IguHUFwLl5GChm59mO2VeMF/XLoSl/6DntopYC9bKnLpOxgRbASLopm6drkOCXWjEEaYDBNxjRyTabLz/PPaoNTQSHGEyJeh8XMu50UdZdmbIYx3MtNh2EWad/8S+Ph3PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+4FNJBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F22C4CEE9;
-	Wed, 19 Mar 2025 14:36:52 +0000 (UTC)
+	 MIME-Version; b=NwFErKJA2mrsvgKAgmlJfPLuL/878d8G2NvrA1KZtbzorVeva51QdRWAYGZz4VU+6aT2jlAwboKG/l6BY8lz8n5piSwaAu6hAL/2O6GFv8bM9cfDiE4oGR3BVHCZ811D1BrTv5+KRT+mqnD8aZL3fb7UcxOsJfa85Pt5S3+DCYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlsqEMsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C35C4CEE8;
+	Wed, 19 Mar 2025 14:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395012;
-	bh=xpRuJt/GGGIxdW2g1o7OWqjGRif/2Y5XVRniMFofkNQ=;
+	s=korg; t=1742394857;
+	bh=Rl2t7T/CIXOCiopS6FrMjVXZBMDXjkiY0ZjijWjiiuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+4FNJBtQk5B4yA0VKuD05m8pEW59klfcLCtkKJ9AMezd37FBWcyNno3VkdIYbASt
-	 lrktniRPHjwEnvrW9UTPLH6Pj4TTaZiX56BZ1pg0O5w+nDoVp7Ngvd0Wo2M3gzoYpa
-	 XA2I7BZTGy3lnbOGjxFzTT2COD/oaCpuMq7lA5Yk=
+	b=RlsqEMsuBjn3rNtgsYzcv7aAUpg86P8tSIGa6L8vaPVPxVOXY28L9wg9mja3GzQR+
+	 g9XeMwSD7EzA6fYkvUzwVORsoTq4crtjGPO8t++6XH5xHHS5BitSR7qWrLnGtYae/V
+	 U4ipZI773df/u08810vQKU4jJCHUJXIMmzYgddEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/231] netpoll: hold rcu read lock in __netpoll_send_skb()
+Subject: [PATCH 6.13 046/241] net_sched: Prevent creation of classes with TC_H_ROOT
 Date: Wed, 19 Mar 2025 07:28:36 -0700
-Message-ID: <20250319143027.401151586@linuxfoundation.org>
+Message-ID: <20250319143028.861921413@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 505ead7ab77f289f12d8a68ac83da068e4d4408b ]
+[ Upstream commit 0c3057a5a04d07120b3d0ec9c79568fceb9c921e ]
 
-The function __netpoll_send_skb() is being invoked without holding the
-RCU read lock. This oversight triggers a warning message when
-CONFIG_PROVE_RCU_LIST is enabled:
+The function qdisc_tree_reduce_backlog() uses TC_H_ROOT as a termination
+condition when traversing up the qdisc tree to update parent backlog
+counters. However, if a class is created with classid TC_H_ROOT, the
+traversal terminates prematurely at this class instead of reaching the
+actual root qdisc, causing parent statistics to be incorrectly maintained.
+In case of DRR, this could lead to a crash as reported by Mingi Cho.
 
-	net/core/netpoll.c:330 suspicious rcu_dereference_check() usage!
+Prevent the creation of any Qdisc class with classid TC_H_ROOT
+(0xFFFFFFFF) across all qdisc types, as suggested by Jamal.
 
-	 netpoll_send_skb
-	 netpoll_send_udp
-	 write_ext_msg
-	 console_flush_all
-	 console_unlock
-	 vprintk_emit
-
-To prevent npinfo from disappearing unexpectedly, ensure that
-__netpoll_send_skb() is protected with the RCU read lock.
-
-Fixes: 2899656b494dcd1 ("netpoll: take rcu_read_lock_bh() in netpoll_send_skb_on_dev()")
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250306-netpoll_rcu_v2-v2-1-bc4f5c51742a@debian.org
+Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
+Link: https://patch.msgid.link/20250306232355.93864-2-xiyou.wangcong@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/sched/sch_api.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 45fb60bc48039..e95c2933756df 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -319,6 +319,7 @@ static int netpoll_owner_active(struct net_device *dev)
- static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- {
- 	netdev_tx_t status = NETDEV_TX_BUSY;
-+	netdev_tx_t ret = NET_XMIT_DROP;
- 	struct net_device *dev;
- 	unsigned long tries;
- 	/* It is up to the caller to keep npinfo alive. */
-@@ -327,11 +328,12 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 	lockdep_assert_irqs_disabled();
- 
- 	dev = np->dev;
-+	rcu_read_lock();
- 	npinfo = rcu_dereference_bh(dev->npinfo);
- 
- 	if (!npinfo || !netif_running(dev) || !netif_device_present(dev)) {
- 		dev_kfree_skb_irq(skb);
--		return NET_XMIT_DROP;
-+		goto out;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index fac9c946a4c75..778cf54df69b0 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -2254,6 +2254,12 @@ static int tc_ctl_tclass(struct sk_buff *skb, struct nlmsghdr *n,
+ 		return -EOPNOTSUPP;
  	}
  
- 	/* don't get messages out of order, and no recursion */
-@@ -370,7 +372,10 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 		skb_queue_tail(&npinfo->txq, skb);
- 		schedule_delayed_work(&npinfo->tx_work,0);
- 	}
--	return NETDEV_TX_OK;
-+	ret = NETDEV_TX_OK;
-+out:
-+	rcu_read_unlock();
-+	return ret;
- }
- 
- netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
++	/* Prevent creation of traffic classes with classid TC_H_ROOT */
++	if (clid == TC_H_ROOT) {
++		NL_SET_ERR_MSG(extack, "Cannot create traffic class with classid TC_H_ROOT");
++		return -EINVAL;
++	}
++
+ 	new_cl = cl;
+ 	err = -EOPNOTSUPP;
+ 	if (cops->change)
 -- 
 2.39.5
 
