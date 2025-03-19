@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-125310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A6EA690B9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8EEA68FBF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6BB68A1E08
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 875C116C184
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442EF1E520D;
-	Wed, 19 Mar 2025 14:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB2B1E885A;
+	Wed, 19 Mar 2025 14:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fr57KJs0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fN5oxkbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027811A4F0A;
-	Wed, 19 Mar 2025 14:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17571E7C18;
+	Wed, 19 Mar 2025 14:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395099; cv=none; b=ArxO6im9rc6nGMwFkqDzsCwY56oMYSbMP01mBGaoPvSaltKEzZi81h2eQjLzewDbAp+eQKaXw9wBRKHuY9yTNTvszbq3qlqWy2Qoal1gv/1oDHxVKQruo598o/dFOBZlTMBCWdEp5NDdNPqZ4AKgH5ptTkz93mN/D+XfcnZG/yU=
+	t=1742394948; cv=none; b=OdFunuCT3mghBimu0WgNXAFzGuPw60DN5OCRNqaXq/1ROCfPRnql0nwykbgRYHetZXgilF2fUli3NL79osBLGwEGuSYC8tto47N9tvM+wH814fDBJ5hxJGbjUnHyqH5QGGnsQcwjAJps4ExlmAHyF/vUfhir4V3NbAQK7BfVYC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395099; c=relaxed/simple;
-	bh=ytqwsCDq3xMK6psviW7nQQo8zcP+Ttm1Sv21u/PG5jo=;
+	s=arc-20240116; t=1742394948; c=relaxed/simple;
+	bh=IncLkhGMLxC1yuoXsbBU87b05B7r8Rv22L+hDi0/chE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tsy0SGUUkavLrtIdIfM4+uQhivZ7n8+acAO6luOq4jMsn9rFNtZ5jQCzXU41GU8qWySVS/Nz3CtSBq6QttiYq6sx6AU4zuwzWQyeeiwTQdhHNP11XV4xzfo5cCi9hURHXJZwPgB3z+J5NF9vqxRgsbdpU2LaI+5Oc1r5roh/3Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fr57KJs0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EF5C4CEE4;
-	Wed, 19 Mar 2025 14:38:18 +0000 (UTC)
+	 MIME-Version; b=oPRRcD2p38Mnju1DG9XV5gNdboaYKeJf2XvQp7oGMbzlRj6jVWAO/CDJxLyk0Q+K5/XWcz1tzoiZ6Z+QcgLZDZgBKU6xOo+by1/5x1u007VcQU/NuodUEjoB0DdcMdiH6Hnb68C4hCd15PURMYmUMsicZBlz2PYGf+7Bveq4ofc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fN5oxkbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A78DC4CEE4;
+	Wed, 19 Mar 2025 14:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395098;
-	bh=ytqwsCDq3xMK6psviW7nQQo8zcP+Ttm1Sv21u/PG5jo=;
+	s=korg; t=1742394948;
+	bh=IncLkhGMLxC1yuoXsbBU87b05B7r8Rv22L+hDi0/chE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fr57KJs0ui7bbgXExamQRDjFDudeFick5vHob6K6UXNFDk66bTAhC2FGLUjTStCLI
-	 gFniuXI5DhcYc2T+cVWRalOrJHdXHtb41Gv19WSgZlHWUIybiov8Lf84J00SKZKBsb
-	 9QPAWa0vGUlRB+lUzUR9X7YPeXXfIVn2Zva5bATY=
+	b=fN5oxkbXbnj7q9opE3/Z3TEIpdx98e/H4YodgUryrI2Sz49kPFeo4LVhjvY+VBn/P
+	 fSseHw5Lj3rAErqgXcBmiQarEwr7hIXV3q2EJ6o7dCRIFfhfj4mLCj4xKl+XFL0W9Q
+	 oCGss87sMh0+tjtLzdBZoGNXbh7tBUjyFp+7qga0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilton Perim Neto <niltonperimneto@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 149/231] Input: xpad - add 8BitDo SN30 Pro, Hyperkin X91 and Gamesir G7 SE controllers
+	Florent Revest <revest@chromium.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.13 172/241] x86/microcode/AMD: Fix out-of-bounds on systems with CPU-less NUMA nodes
 Date: Wed, 19 Mar 2025 07:30:42 -0700
-Message-ID: <20250319143030.521726493@linuxfoundation.org>
+Message-ID: <20250319143031.988336974@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilton Perim Neto <niltonperimneto@gmail.com>
+From: Florent Revest <revest@chromium.org>
 
-commit 36e093c8dcc585d0a9e79a005f721f01f3365eba upstream.
+commit e3e89178a9f4a80092578af3ff3c8478f9187d59 upstream.
 
-Add 8BitDo SN30 Pro, Hyperkin X91 and Gamesir G7 SE to the list of
-recognized controllers, and update vendor comments to match.
+Currently, load_microcode_amd() iterates over all NUMA nodes, retrieves their
+CPU masks and unconditionally accesses per-CPU data for the first CPU of each
+mask.
 
-Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
-Link: https://lore.kernel.org/r/20250122214814.102311-2-niltonperimneto@gmail.com
+According to Documentation/admin-guide/mm/numaperf.rst:
+
+  "Some memory may share the same node as a CPU, and others are provided as
+  memory only nodes."
+
+Therefore, some node CPU masks may be empty and wouldn't have a "first CPU".
+
+On a machine with far memory (and therefore CPU-less NUMA nodes):
+- cpumask_of_node(nid) is 0
+- cpumask_first(0) is CONFIG_NR_CPUS
+- cpu_data(CONFIG_NR_CPUS) accesses the cpu_info per-CPU array at an
+  index that is 1 out of bounds
+
+This does not have any security implications since flashing microcode is
+a privileged operation but I believe this has reliability implications by
+potentially corrupting memory while flashing a microcode update.
+
+When booting with CONFIG_UBSAN_BOUNDS=y on an AMD machine that flashes
+a microcode update. I get the following splat:
+
+  UBSAN: array-index-out-of-bounds in arch/x86/kernel/cpu/microcode/amd.c:X:Y
+  index 512 is out of range for type 'unsigned long[512]'
+  [...]
+  Call Trace:
+   dump_stack
+   __ubsan_handle_out_of_bounds
+   load_microcode_amd
+   request_microcode_amd
+   reload_store
+   kernfs_fop_write_iter
+   vfs_write
+   ksys_write
+   do_syscall_64
+   entry_SYSCALL_64_after_hwframe
+
+Change the loop to go over only NUMA nodes which have CPUs before determining
+whether the first CPU on the respective node needs microcode update.
+
+  [ bp: Massage commit message, fix typo. ]
+
+Fixes: 7ff6edf4fef3 ("x86/microcode/AMD: Fix mixed steppings support")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20250310144243.861978-1-revest@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -376,8 +376,10 @@ static const struct xpad_device {
- 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x3106, "8BitDo Ultimate Wireless / Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
-+	{ 0x2dc8, 0x6001, "8BitDo SN30 Pro", 0, XTYPE_XBOX360 },
- 	{ 0x2dc8, 0x310a, "8BitDo Ultimate 2C Wireless Controller", 0, XTYPE_XBOX360 },
- 	{ 0x2e24, 0x0652, "Hyperkin Duke X-Box One pad", 0, XTYPE_XBOXONE },
-+	{ 0x2e24, 0x1688, "Hyperkin X91 X-Box One pad", 0, XTYPE_XBOXONE },
- 	{ 0x31e3, 0x1100, "Wooting One", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1200, "Wooting Two", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1210, "Wooting Lekker", 0, XTYPE_XBOX360 },
-@@ -389,6 +391,7 @@ static const struct xpad_device {
- 	{ 0x3285, 0x0646, "Nacon Pro Compact", 0, XTYPE_XBOXONE },
- 	{ 0x3285, 0x0663, "Nacon Evol-X", 0, XTYPE_XBOXONE },
- 	{ 0x3537, 0x1004, "GameSir T4 Kaleid", 0, XTYPE_XBOX360 },
-+	{ 0x3537, 0x1010, "GameSir G7 SE", 0, XTYPE_XBOXONE },
- 	{ 0x3767, 0x0101, "Fanatec Speedster 3 Forceshock Wheel", 0, XTYPE_XBOX },
- 	{ 0xffff, 0xffff, "Chinese-made Xbox Controller", 0, XTYPE_XBOX },
- 	{ 0x0000, 0x0000, "Generic X-Box pad", 0, XTYPE_UNKNOWN }
-@@ -528,12 +531,12 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOXONE_VENDOR(0x24c6),		/* PowerA controllers */
- 	XPAD_XBOX360_VENDOR(0x2563),		/* OneXPlayer Gamepad */
- 	XPAD_XBOX360_VENDOR(0x260d),		/* Dareu H101 */
--       XPAD_XBOXONE_VENDOR(0x294b),            /* Snakebyte */
-+	XPAD_XBOXONE_VENDOR(0x294b),		/* Snakebyte */
- 	XPAD_XBOX360_VENDOR(0x2c22),		/* Qanba Controllers */
--	XPAD_XBOX360_VENDOR(0x2dc8),            /* 8BitDo Pro 2 Wired Controller */
--	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Pro 2 Wired Controller for Xbox */
--	XPAD_XBOXONE_VENDOR(0x2e24),		/* Hyperkin Duke Xbox One pad */
--	XPAD_XBOX360_VENDOR(0x2f24),		/* GameSir controllers */
-+	XPAD_XBOX360_VENDOR(0x2dc8),		/* 8BitDo Controllers */
-+	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Controllers */
-+	XPAD_XBOXONE_VENDOR(0x2e24),		/* Hyperkin Controllers */
-+	XPAD_XBOX360_VENDOR(0x2f24),		/* GameSir Controllers */
- 	XPAD_XBOX360_VENDOR(0x31e3),		/* Wooting Keyboards */
- 	XPAD_XBOX360_VENDOR(0x3285),		/* Nacon GC-100 */
- 	XPAD_XBOXONE_VENDOR(0x3285),		/* Nacon Evol-X */
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -1075,7 +1075,7 @@ static enum ucode_state load_microcode_a
+ 	if (ret != UCODE_OK)
+ 		return ret;
+ 
+-	for_each_node(nid) {
++	for_each_node_with_cpus(nid) {
+ 		cpu = cpumask_first(cpumask_of_node(nid));
+ 		c = &cpu_data(cpu);
+ 
 
 
 
