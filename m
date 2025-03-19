@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306A7A690ED
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA26A68FF3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E05458A3C16
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4E918A08F8
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E575121CC58;
-	Wed, 19 Mar 2025 14:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CBF1DEFD0;
+	Wed, 19 Mar 2025 14:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocQX1i34"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtkilE5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DCE21CC55;
-	Wed, 19 Mar 2025 14:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED431CAA60;
+	Wed, 19 Mar 2025 14:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395137; cv=none; b=OyFcOrl7qfNBhpiX1Mz3ziruqBSCFRWyuSDeLbaeS953i/oBGzFezx/E8syatEmNI2tYd/szCn6Hvq1hl/qPbfhLMND7q5w3KN2MX2JcHnxNgByM7d6KLK1gKuOMHDRcuBHTFooIev5gF8t4/vaVS2sNynGxcgkozSUFHxdMEYc=
+	t=1742394987; cv=none; b=nLVW+Tm0rnorhr31ujPEovqmkEJn2/256UNHr6cKraAzf2bY53SuaS32EXq2ABb4ZE2vdxJqdXGRr6ONpcE5d9vDLCXarmSsmJP+26boCaJkTY+ZcyQeDFm3ci77TjNslgMZmJGpkHMeiDMCPxSttnHqukC+3Qd7nOmqyYF3UXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395137; c=relaxed/simple;
-	bh=w67TLsNIhvYRQl+eku/O1OAvWEAUH8TT1xVRTrUJqbg=;
+	s=arc-20240116; t=1742394987; c=relaxed/simple;
+	bh=P2zgmam0jaUCd+hAdhpYtXjtaF3pP2fXaFASFxTBZ/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BvPpfP0+GMevm4MlX3BhroQHaWGFy3N+RBDXBVhW5w0sOUN9MwPOEI+5ArwgAEZK0a+lWU8f2AWn02MaohF1CaXr5SFHioZv02JZrLRuJYCqSHJYpBc1+YqJcVCLf/dgzcrYANByRJ1VTWSwuQMC96P+wG7KnfghYWS8Bfnyp74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocQX1i34; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD32C4CEE4;
-	Wed, 19 Mar 2025 14:38:57 +0000 (UTC)
+	 MIME-Version; b=k1Zc/0USzWlzxcMOvS1oy+NHyTgip0f6b/DMB87AahwHucTBMgCs8duyKNY02iJGJeVKBVCagbImgpcOol9nEZZ+6sh6AHAjJmYm5iVvZ906AcnjVU3J/bPOgnQjbhH9vRakac9xu3ObEPmuOxSnPOs0ZEPADhDzrG6F4va2vwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtkilE5c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AB3C4CEE9;
+	Wed, 19 Mar 2025 14:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395137;
-	bh=w67TLsNIhvYRQl+eku/O1OAvWEAUH8TT1xVRTrUJqbg=;
+	s=korg; t=1742394987;
+	bh=P2zgmam0jaUCd+hAdhpYtXjtaF3pP2fXaFASFxTBZ/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ocQX1i34pWZJT0h4jMjg9n+zWZO61WZlFEJFSZTV44y5Pk5nx6BCRQRFaxE+FZSy7
-	 7Ssceivwc4yLnDMpKOWFWcc2rdPnOkmTiyEoNY2M0OVzWdl50TShPmzFpP1r0hdp2P
-	 3VzT7EO2giL8ZpZ/3PsvyQbrMCGM7QdZWAOEl3m8=
+	b=UtkilE5c9TjCciGv26x2J7KDJBTYXOEz3y10O4pnkumlVYSgi79DT3+Ws88oP+auI
+	 Mk84xczGMF2pldcKBaQDn/YEyEGuR136qP15dJNmTTI9aPmEqVZSjY08Pv3NtjHNDp
+	 QmRhmgJQ706P56WAP1KXqNN/xKTtvutI0IJasCx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 204/231] drm/xe: cancel pending job timer before freeing scheduler
+Subject: [PATCH 6.13 227/241] cifs: Fix integer overflow while processing closetimeo mount option
 Date: Wed, 19 Mar 2025 07:31:37 -0700
-Message-ID: <20250319143031.880769977@linuxfoundation.org>
+Message-ID: <20250319143033.358946249@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 12c2f962fe71f390951d9242725bc7e608f55927 ]
+[ Upstream commit d5a30fddfe2f2e540f6c43b59cf701809995faef ]
 
-The async call to __guc_exec_queue_fini_async frees the scheduler
-while a submission may time out and restart. To prevent this race
-condition, the pending job timer should be canceled before freeing
-the scheduler.
+User-provided mount parameter closetimeo of type u32 is intended to have
+an upper limit, but before it is validated, the value is converted from
+seconds to jiffies which can lead to an integer overflow.
 
-V3(MattB):
- - Adjust position of cancel pending job
- - Remove gitlab issue# from commit message
-V2(MattB):
- - Cancel pending jobs before scheduler finish
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: a20c75dba192 ("drm/xe: Call __guc_exec_queue_fini_async direct for KERNEL exec_queues")
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250225045754.600905-1-tejas.upadhyay@intel.com
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-(cherry picked from commit 18fbd567e75f9b97b699b2ab4f1fa76b7cf268f6)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 5efdd9122eff ("smb3: allow deferred close timeout to be configurable")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/fs_context.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index fed23304e4da5..3fd2b28b91ab9 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1215,6 +1215,8 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
- 
- 	if (xe_exec_queue_is_lr(q))
- 		cancel_work_sync(&ge->lr_tdr);
-+	/* Confirm no work left behind accessing device structures */
-+	cancel_delayed_work_sync(&ge->sched.base.work_tdr);
- 	release_guc_id(guc, q);
- 	xe_sched_entity_fini(&ge->entity);
- 	xe_sched_fini(&ge->sched);
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 55bc036b243e4..c85285bf730e9 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1310,11 +1310,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		ctx->acdirmax = ctx->acregmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_closetimeo:
+-		ctx->closetimeo = HZ * result.uint_32;
+-		if (ctx->closetimeo > SMB3_MAX_DCLOSETIMEO) {
++		if (result.uint_32 > SMB3_MAX_DCLOSETIMEO / HZ) {
+ 			cifs_errorf(fc, "closetimeo too large\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		ctx->closetimeo = HZ * result.uint_32;
+ 		break;
+ 	case Opt_echo_interval:
+ 		ctx->echo_interval = result.uint_32;
 -- 
 2.39.5
 
