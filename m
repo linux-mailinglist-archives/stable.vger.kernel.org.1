@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6F4A68FB0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C51A69077
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 442257AA867
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B14F07A79C5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BA1207A35;
-	Wed, 19 Mar 2025 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2741EF386;
+	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqDSewqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aL/nBj1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92AE1DEFE3;
-	Wed, 19 Mar 2025 14:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F721DE3BF;
+	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394989; cv=none; b=P5YpWC7i4tn1iusqUG9U4dLRBiaC+i/c2WXtKP+rFy1BF8Mr1oOfApvm4yfykImBqZhLrMXzNWRnIBgV/RgJqRRk5loXCk3Mnz3v1O6045QaUUcGm8aUdaSqY/NnAIOKG2uA8rqbXHR8rp7jUUDRN9beP3ol1SCYS3su5duq7ZE=
+	t=1742395142; cv=none; b=ZorENde28yxiAniAHC8/iauvaA5t0UZDRn7TJhgIMhM7vj80EJhYGUX7M25q2IfhK/jfiytHJ2seS31i3e33pPfupKDXx2SpdJASf6A+br7weMpKdP6MjxPja40AeYRbnzAg95/fH5JmSXx1K8Usmhn4VbhIpL5dY/VyHTAoO34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394989; c=relaxed/simple;
-	bh=i94FeRtmW8p2ZQtfYuaDVdGnczi1/+89lHpdjHLpKlw=;
+	s=arc-20240116; t=1742395142; c=relaxed/simple;
+	bh=AcPRGL6MPLCKaJPeKb/HBIsQVuZwAenDgwKx3f2xK5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMCvPI1JuxIPvpJKpGNqMtPTKi1JQ/5GRXRsCH73kH+3tBC3MGzAHg1RKu2LhRgd9qtGIlhoRzDUxrA6UbF/3Xchvvm9lHxCEOafSqbkSxHbjNEj5IpeiEtMitPHYzA5PFWvNZnp4nuoR4KDyL/EyG7aocXXeptfm8CAYwbmC+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqDSewqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8F4C4CEE4;
-	Wed, 19 Mar 2025 14:36:29 +0000 (UTC)
+	 MIME-Version; b=Qcht0c93aLbJcfKpYnYnnzF3V1zY2rlzx3akD/hZv79eBgrlBf2ap5vhyrNIPyX6raWlWWEDGHQdQYYumLMA7MX4OkkMyiUKUo+8eotgplxER+VIBOR7FnlTBWkgmjKSE5cGXlubdYILkwtEFLqgLkcr0qN13NHTTdRW3UQAzQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aL/nBj1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2666C4CEE4;
+	Wed, 19 Mar 2025 14:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394989;
-	bh=i94FeRtmW8p2ZQtfYuaDVdGnczi1/+89lHpdjHLpKlw=;
+	s=korg; t=1742395141;
+	bh=AcPRGL6MPLCKaJPeKb/HBIsQVuZwAenDgwKx3f2xK5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqDSewqyov8xQlz+K4TjH5OnuQB38KH1kh2nH6qeg12zQwTm+RLe6BrhGP8KlK80T
-	 +kwH4beQ+91H3ZfG7UFLfk/8F62X5qtb7uLrTe5pyACiHKUrhsv3v2wvwGYIPF4cZH
-	 9UuWLOXNUh/1sC0wjYFO/Ow7hIlAL90DieLUZFKs=
+	b=aL/nBj1Ys6Pgxvc7s30B0E4W4z4w6VCvmImvSToC93CX9YOJy/RfxIC0wNq9ooY/q
+	 I9b637tV5UQ9tg2PriI4/kT7ZMr/aE9CId2vySKOnICHcnAlTZUNayJyGR5aKEFUF3
+	 d1rUKcLumlGqS+bfcZjfu/H4KPV+n0/Uk2OG/5fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 231/241] i2c: sis630: Fix an error handling path in sis630_probe()
-Date: Wed, 19 Mar 2025 07:31:41 -0700
-Message-ID: <20250319143033.457376885@linuxfoundation.org>
+Subject: [PATCH 6.12 209/231] ASoC: codecs: wm0010: Fix error handling path in wm0010_spi_probe()
+Date: Wed, 19 Mar 2025 07:31:42 -0700
+Message-ID: <20250319143032.013129361@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 2b22459792fcb4def9f0936d64575ac11a95a58d ]
+[ Upstream commit ed92bc5264c4357d4fca292c769ea9967cd3d3b6 ]
 
-If i2c_add_adapter() fails, the request_region() call in sis630_setup()
-must be undone by a corresponding release_region() call, as done in the
-remove function.
+Free some resources in the error handling path of the probe, as already
+done in the remove function.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: e3523e01869d ("ASoC: wm0010: Add initial wm0010 DSP driver")
+Fixes: fd8b96574456 ("ASoC: wm0010: Clear IRQ as wake source and include missing header")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/3d607601f2c38e896b10207963c6ab499ca5c307.1741033587.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/5139ba1ab8c4c157ce04e56096a0f54a1683195c.1741549792.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-sis630.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wm0010.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-sis630.c b/drivers/i2c/busses/i2c-sis630.c
-index 3505cf29cedda..a19c3d251804d 100644
---- a/drivers/i2c/busses/i2c-sis630.c
-+++ b/drivers/i2c/busses/i2c-sis630.c
-@@ -509,6 +509,8 @@ MODULE_DEVICE_TABLE(pci, sis630_ids);
+diff --git a/sound/soc/codecs/wm0010.c b/sound/soc/codecs/wm0010.c
+index edd2cb185c42c..9e67fbfc2ccaf 100644
+--- a/sound/soc/codecs/wm0010.c
++++ b/sound/soc/codecs/wm0010.c
+@@ -920,7 +920,7 @@ static int wm0010_spi_probe(struct spi_device *spi)
+ 	if (ret) {
+ 		dev_err(wm0010->dev, "Failed to set IRQ %d as wake source: %d\n",
+ 			irq, ret);
+-		return ret;
++		goto free_irq;
+ 	}
  
- static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
- {
-+	int ret;
-+
- 	if (sis630_setup(dev)) {
- 		dev_err(&dev->dev,
- 			"SIS630 compatible bus not detected, "
-@@ -522,7 +524,15 @@ static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	snprintf(sis630_adapter.name, sizeof(sis630_adapter.name),
- 		 "SMBus SIS630 adapter at %04x", smbus_base + SMB_STS);
+ 	if (spi->max_speed_hz)
+@@ -932,9 +932,18 @@ static int wm0010_spi_probe(struct spi_device *spi)
+ 				     &soc_component_dev_wm0010, wm0010_dai,
+ 				     ARRAY_SIZE(wm0010_dai));
+ 	if (ret < 0)
+-		return ret;
++		goto disable_irq_wake;
  
--	return i2c_add_adapter(&sis630_adapter);
-+	ret = i2c_add_adapter(&sis630_adapter);
-+	if (ret)
-+		goto release_region;
+ 	return 0;
 +
-+	return 0;
++disable_irq_wake:
++	irq_set_irq_wake(wm0010->irq, 0);
 +
-+release_region:
-+	release_region(smbus_base + SMB_STS, SIS630_SMB_IOREGION);
++free_irq:
++	if (wm0010->irq)
++		free_irq(wm0010->irq, wm0010);
++
 +	return ret;
  }
  
- static void sis630_remove(struct pci_dev *dev)
+ static void wm0010_spi_remove(struct spi_device *spi)
 -- 
 2.39.5
 
