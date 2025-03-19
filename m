@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-125250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBFBA69224
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:03:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62270A68FEF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B7101B87CB0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66E187AD5CE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E0C214A8A;
-	Wed, 19 Mar 2025 14:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328051E0E0D;
+	Wed, 19 Mar 2025 14:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aL49SjEY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfQhcA94"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E651D63FC;
-	Wed, 19 Mar 2025 14:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0408213E7A;
+	Wed, 19 Mar 2025 14:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395058; cv=none; b=t9yvdDV2juPQx+g4eYpesAwN/7qX0pTmKBrJ/0O/csXSwltV1qlzswS1zlm+wvGJS13B1+5aKMBgY2E8KYO6n5y1nLG+XI7ybTevQZTbOQKXdq5ex7iT3/cnBA7B6J0qSfuHQsGedRagD80AnjAB2lgTBIpSnzjCQ0404S7oGoc=
+	t=1742395031; cv=none; b=YpcvmXVbjNVafY+NTolnM52FkBTqFDLIxUH6sxd7sEX91zpm29eDvaCO0POIPqt+puV3MtPBT6yejhLw3xR7TE6bDWOL8LgUFg9oLGTXkYH3n33dCpTFzy4uiy6H5oCIGTPZAXWugnfgtJ1JSx/siNQdTDOv/WsgSciSvuKapw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395058; c=relaxed/simple;
-	bh=DRHY7+Jl+CCQK8CZhD0k/+r16WPuF5b16PqOmkLnrxk=;
+	s=arc-20240116; t=1742395031; c=relaxed/simple;
+	bh=xD8ENVPOpajLy54rVbUNXkQMB4lqS8dLDjTEp+UHOBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPcaW0nm8PIVhrLX21YaVIKZFkBp8OCttU/ATZXY+8bdty0mg2XZDPLKWpW4MbMN/Zmjf3or3/xJjCXMlp7fOQpFEDpvvjUt1L7q18PgiNQnI7KYAeKC0Mu93vhloNLDu4NvB97OE7GyaI5BubMrHOZblxGlU9Vq46A6SiTMOGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aL49SjEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A68C4CEE4;
-	Wed, 19 Mar 2025 14:37:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d4fO9Qe9ZH+/1Rt6fvmVDAzeM9YB8yEbRwaQmdblUpoyx1ZSPQUGAEcvv3FJaetpRdXjTRDgu6zso7YSDln34lqkmFXIXPlTxaN5rsgqn0SCBPWU5D9OcVlSQNisLND/wjA6Bm9cYhiFozaKe7+3CGDK+JHs1EhsXPfKNBiQUYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfQhcA94; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A490C4CEE4;
+	Wed, 19 Mar 2025 14:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395057;
-	bh=DRHY7+Jl+CCQK8CZhD0k/+r16WPuF5b16PqOmkLnrxk=;
+	s=korg; t=1742395030;
+	bh=xD8ENVPOpajLy54rVbUNXkQMB4lqS8dLDjTEp+UHOBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aL49SjEYoQODcJYK5tcpg2KL7tUnxoqk8XHONSLyrZBB2VRRVDQV3dyFYT6Y3qE+o
-	 PjUdaPrWIHzqf05NajEPD3hvhHjrTEKjiynjXVuMvSxjmHmXRKthy94rKqc5i+u8cW
-	 BQIxQOTG8UHWM96L937/BEOEPaUOVF97ikOVuY2s=
+	b=cfQhcA94PrKsyKdy4An5seTM8H76N54Ca+VvWnV9F1c4Mnl7govtCeLjLd/3aPXP0
+	 PsYW6FxDmMMNIYiXvZ8kVMyR7hq/55b9Nny4Mk7GtCr3bm70Z9uKaQN+JERP7xUW1A
+	 /qfuquvSQtBASkMjm2eaKpCLLCktrufhUyYFv4ZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Maximets <i.maximets@ovn.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Xin Long <lucien.xin@gmail.com>,
 	Aaron Conole <aconole@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/231] net: openvswitch: remove misbehaving actions length check
-Date: Wed, 19 Mar 2025 07:29:02 -0700
-Message-ID: <20250319143028.035388859@linuxfoundation.org>
+Subject: [PATCH 6.12 050/231] Revert "openvswitch: switch to per-action label counting in conntrack"
+Date: Wed, 19 Mar 2025 07:29:03 -0700
+Message-ID: <20250319143028.061602842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
 References: <20250319143026.865956961@linuxfoundation.org>
@@ -61,158 +62,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit a1e64addf3ff9257b45b78bc7d743781c3f41340 ]
+[ Upstream commit 1063ae07383c0ddc5bcce170260c143825846b03 ]
 
-The actions length check is unreliable and produces different results
-depending on the initial length of the provided netlink attribute and
-the composition of the actual actions inside of it.  For example, a
-user can add 4088 empty clone() actions without triggering -EMSGSIZE,
-on attempt to add 4089 such actions the operation will fail with the
--EMSGSIZE verdict.  However, if another 16 KB of other actions will
-be *appended* to the previous 4089 clone() actions, the check passes
-and the flow is successfully installed into the openvswitch datapath.
+Currently, ovs_ct_set_labels() is only called for confirmed conntrack
+entries (ct) within ovs_ct_commit(). However, if the conntrack entry
+does not have the labels_ext extension, attempting to allocate it in
+ovs_ct_get_conn_labels() for a confirmed entry triggers a warning in
+nf_ct_ext_add():
 
-The reason for a such a weird behavior is the way memory is allocated.
-When ovs_flow_cmd_new() is invoked, it calls ovs_nla_copy_actions(),
-that in turn calls nla_alloc_flow_actions() with either the actual
-length of the user-provided actions or the MAX_ACTIONS_BUFSIZE.  The
-function adds the size of the sw_flow_actions structure and then the
-actually allocated memory is rounded up to the closest power of two.
+  WARN_ON(nf_ct_is_confirmed(ct));
 
-So, if the user-provided actions are larger than MAX_ACTIONS_BUFSIZE,
-then MAX_ACTIONS_BUFSIZE + sizeof(*sfa) rounded up is 32K + 24 -> 64K.
-Later, while copying individual actions, we look at ksize(), which is
-64K, so this way the MAX_ACTIONS_BUFSIZE check is not actually
-triggered and the user can easily allocate almost 64 KB of actions.
+This happens when the conntrack entry is created externally before OVS
+increments net->ct.labels_used. The issue has become more likely since
+commit fcb1aa5163b1 ("openvswitch: switch to per-action label counting
+in conntrack"), which changed to use per-action label counting and
+increment net->ct.labels_used when a flow with ct action is added.
 
-However, when the initial size is less than MAX_ACTIONS_BUFSIZE, but
-the actions contain ones that require size increase while copying
-(such as clone() or sample()), then the limit check will be performed
-during the reserve_sfa_size() and the user will not be allowed to
-create actions that yield more than 32 KB internally.
+Since there’s no straightforward way to fully resolve this issue at the
+moment, this reverts the commit to avoid breaking existing use cases.
 
-This is one part of the problem.  The other part is that it's not
-actually possible for the userspace application to know beforehand
-if the particular set of actions will be rejected or not.
-
-Certain actions require more space in the internal representation,
-e.g. an empty clone() takes 4 bytes in the action list passed in by
-the user, but it takes 12 bytes in the internal representation due
-to an extra nested attribute, and some actions require less space in
-the internal representations, e.g. set(tunnel(..)) normally takes
-64+ bytes in the action list provided by the user, but only needs to
-store a single pointer in the internal implementation, since all the
-data is stored in the tunnel_info structure instead.
-
-And the action size limit is applied to the internal representation,
-not to the action list passed by the user.  So, it's not possible for
-the userpsace application to predict if the certain combination of
-actions will be rejected or not, because it is not possible for it to
-calculate how much space these actions will take in the internal
-representation without knowing kernel internals.
-
-All that is causing random failures in ovs-vswitchd in userspace and
-inability to handle certain traffic patterns as a result.  For example,
-it is reported that adding a bit more than a 1100 VMs in an OpenStack
-setup breaks the network due to OVS not being able to handle ARP
-traffic anymore in some cases (it tries to install a proper datapath
-flow, but the kernel rejects it with -EMSGSIZE, even though the action
-list isn't actually that large.)
-
-Kernel behavior must be consistent and predictable in order for the
-userspace application to use it in a reasonable way.  ovs-vswitchd has
-a mechanism to re-direct parts of the traffic and partially handle it
-in userspace if the required action list is oversized, but that doesn't
-work properly if we can't actually tell if the action list is oversized
-or not.
-
-Solution for this is to check the size of the user-provided actions
-instead of the internal representation.  This commit just removes the
-check from the internal part because there is already an implicit size
-check imposed by the netlink protocol.  The attribute can't be larger
-than 64 KB.  Realistically, we could reduce the limit to 32 KB, but
-we'll be risking to break some existing setups that rely on the fact
-that it's possible to create nearly 64 KB action lists today.
-
-Vast majority of flows in real setups are below 100-ish bytes.  So
-removal of the limit will not change real memory consumption on the
-system.  The absolutely worst case scenario is if someone adds a flow
-with 64 KB of empty clone() actions.  That will yield a 192 KB in the
-internal representation consuming 256 KB block of memory.  However,
-that list of actions is not meaningful and also a no-op.  Real world
-very large action lists (that can occur for a rare cases of BUM
-traffic handling) are unlikely to contain a large number of clones and
-will likely have a lot of tunnel attributes making the internal
-representation comparable in size to the original action list.
-So, it should be fine to just remove the limit.
-
-Commit in the 'Fixes' tag is the first one that introduced the
-difference between internal representation and the user-provided action
-lists, but there were many more afterwards that lead to the situation
-we have today.
-
-Fixes: 7d5437c709de ("openvswitch: Add tunneling interface.")
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20250308004609.2881861-1-i.maximets@ovn.org
+Fixes: fcb1aa5163b1 ("openvswitch: switch to per-action label counting in conntrack")
+Reported-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/1bdeb2f3a812bca016a225d3de714427b2cd4772.1741457143.git.lucien.xin@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ net/openvswitch/conntrack.c | 30 ++++++++++++++++++------------
+ net/openvswitch/datapath.h  |  3 +++
+ 2 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 729ef582a3a8b..0df89240b7336 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2317,14 +2317,10 @@ int ovs_nla_put_mask(const struct sw_flow *flow, struct sk_buff *skb)
- 				OVS_FLOW_ATTR_MASK, true, skb);
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 3bb4810234aac..e573e92213029 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -1368,8 +1368,11 @@ bool ovs_ct_verify(struct net *net, enum ovs_key_attr attr)
+ 	    attr == OVS_KEY_ATTR_CT_MARK)
+ 		return true;
+ 	if (IS_ENABLED(CONFIG_NF_CONNTRACK_LABELS) &&
+-	    attr == OVS_KEY_ATTR_CT_LABELS)
+-		return true;
++	    attr == OVS_KEY_ATTR_CT_LABELS) {
++		struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
++
++		return ovs_net->xt_label;
++	}
+ 
+ 	return false;
  }
- 
--#define MAX_ACTIONS_BUFSIZE	(32 * 1024)
--
- static struct sw_flow_actions *nla_alloc_flow_actions(int size)
+@@ -1378,7 +1381,6 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
+ 		       const struct sw_flow_key *key,
+ 		       struct sw_flow_actions **sfa,  bool log)
  {
- 	struct sw_flow_actions *sfa;
+-	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
+ 	struct ovs_conntrack_info ct_info;
+ 	const char *helper = NULL;
+ 	u16 family;
+@@ -1407,12 +1409,6 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
+ 		return -ENOMEM;
+ 	}
  
--	WARN_ON_ONCE(size > MAX_ACTIONS_BUFSIZE);
--
- 	sfa = kmalloc(kmalloc_size_roundup(sizeof(*sfa) + size), GFP_KERNEL);
- 	if (!sfa)
- 		return ERR_PTR(-ENOMEM);
-@@ -2480,15 +2476,6 @@ static struct nlattr *reserve_sfa_size(struct sw_flow_actions **sfa,
- 
- 	new_acts_size = max(next_offset + req_size, ksize(*sfa) * 2);
- 
--	if (new_acts_size > MAX_ACTIONS_BUFSIZE) {
--		if ((next_offset + req_size) > MAX_ACTIONS_BUFSIZE) {
--			OVS_NLERR(log, "Flow action size exceeds max %u",
--				  MAX_ACTIONS_BUFSIZE);
--			return ERR_PTR(-EMSGSIZE);
--		}
--		new_acts_size = MAX_ACTIONS_BUFSIZE;
+-	if (nf_connlabels_get(net, n_bits - 1)) {
+-		nf_ct_tmpl_free(ct_info.ct);
+-		OVS_NLERR(log, "Failed to set connlabel length");
+-		return -EOPNOTSUPP;
 -	}
 -
- 	acts = nla_alloc_flow_actions(new_acts_size);
- 	if (IS_ERR(acts))
- 		return ERR_CAST(acts);
-@@ -3545,7 +3532,7 @@ int ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 	int err;
- 	u32 mpls_label_count = 0;
+ 	if (ct_info.timeout[0]) {
+ 		if (nf_ct_set_timeout(net, ct_info.ct, family, key->ip.proto,
+ 				      ct_info.timeout))
+@@ -1581,7 +1577,6 @@ static void __ovs_ct_free_action(struct ovs_conntrack_info *ct_info)
+ 	if (ct_info->ct) {
+ 		if (ct_info->timeout[0])
+ 			nf_ct_destroy_timeout(ct_info->ct);
+-		nf_connlabels_put(nf_ct_net(ct_info->ct));
+ 		nf_ct_tmpl_free(ct_info->ct);
+ 	}
+ }
+@@ -2006,9 +2001,17 @@ struct genl_family dp_ct_limit_genl_family __ro_after_init = {
  
--	*sfa = nla_alloc_flow_actions(min(nla_len(attr), MAX_ACTIONS_BUFSIZE));
-+	*sfa = nla_alloc_flow_actions(nla_len(attr));
- 	if (IS_ERR(*sfa))
- 		return PTR_ERR(*sfa);
+ int ovs_ct_init(struct net *net)
+ {
+-#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
++	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
+ 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
  
++	if (nf_connlabels_get(net, n_bits - 1)) {
++		ovs_net->xt_label = false;
++		OVS_NLERR(true, "Failed to set connlabel length");
++	} else {
++		ovs_net->xt_label = true;
++	}
++
++#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	return ovs_ct_limit_init(net, ovs_net);
+ #else
+ 	return 0;
+@@ -2017,9 +2020,12 @@ int ovs_ct_init(struct net *net)
+ 
+ void ovs_ct_exit(struct net *net)
+ {
+-#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+ 
++#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	ovs_ct_limit_exit(net, ovs_net);
+ #endif
++
++	if (ovs_net->xt_label)
++		nf_connlabels_put(net);
+ }
+diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
+index 365b9bb7f546e..9ca6231ea6470 100644
+--- a/net/openvswitch/datapath.h
++++ b/net/openvswitch/datapath.h
+@@ -160,6 +160,9 @@ struct ovs_net {
+ #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	struct ovs_ct_limit_info *ct_limit_info;
+ #endif
++
++	/* Module reference for configuring conntrack. */
++	bool xt_label;
+ };
+ 
+ /**
 -- 
 2.39.5
 
