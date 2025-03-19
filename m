@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08AEA68FA9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C3FA6901F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:44:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37F8F3ADF63
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA85F7A9321
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8EE1E2613;
-	Wed, 19 Mar 2025 14:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEFC1E2850;
+	Wed, 19 Mar 2025 14:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCsoz63+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaOF1btG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7291C5F2D;
-	Wed, 19 Mar 2025 14:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7A81C5F2C;
+	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394920; cv=none; b=FIXIjbbNZYW3DagqgsfIH4L1B64Z0UYjpW2K+L8BRW065L/RrvPUDsvrzWCxZYoidoAh/05sQpt0W6czlQOv8rzKPqt3sc/TuhrV9oi3d8rtp+o5SOC7NplrrYzJwzUCTk6S/cnz9GZkKMnHJODCwz1qQnRftsEI9o+ACOSb3to=
+	t=1742395071; cv=none; b=lD3rOPSxpPIjcMB8HPBBoRMzSZjmnHUbgJuj+0Ez/xftWFZirSKVXUCUz70mFNEXoQIumhdERlHiVEbIiGqm5ZQ9Dp+rOj5Hx1GKYUV4kfiNi9kvMSrVEAbiWMS8ME5wdg9Bx8mWN3uB1pcUx4BXYBmBAeFpYkPYJ7m0FdcZ/AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394920; c=relaxed/simple;
-	bh=2hFThKx49oxz27PHz3w7DmRpLcx7evRFPIMWkshsjnk=;
+	s=arc-20240116; t=1742395071; c=relaxed/simple;
+	bh=ZljLT3wFVjO7naAwuTtkAgBPMpKrvtYdXMr5cKq9vwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VouijtTAc1NolyUJe3/HKyzHUuMtw0YveHl1uj3qwtfBm74Xd1pW0MAVLttrVCQfEPY6KYlEXa2djLRMgspIjYDAnvZo1eJMCf+2ElVK35vkqVQ6fJiDDE3J9H2LOwc9z4nvMidI7PjcdNyi/1s882c7E/JVm4tL4EyJQK/pY4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCsoz63+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A281C4CEE4;
-	Wed, 19 Mar 2025 14:35:20 +0000 (UTC)
+	 MIME-Version; b=mLyL0ji54FzhbxkUANODILx0JZnVo+tb+irZaBeYZpTdH49kbNsr8qmZdhhT6rSfwSOco9z00rcwJfv5VETRkxtwa9XWu69Zae2DBrpp1Tv6oP19xJo77W5+cwXaZiO/U3jVobm1OlgtlRU/6OxjwpKFxKOeZP7KKyAWTTgVQ5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaOF1btG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB824C4CEE4;
+	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394920;
-	bh=2hFThKx49oxz27PHz3w7DmRpLcx7evRFPIMWkshsjnk=;
+	s=korg; t=1742395070;
+	bh=ZljLT3wFVjO7naAwuTtkAgBPMpKrvtYdXMr5cKq9vwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCsoz63+mdTNbzaHtRtAojbffnC1t32Tn33kvkRtEi6aNr3jDz+M6mwRssbRcbDuD
-	 AndNgzI0k/wiv8AsnHdVFja9S/7LRJhDvdnBbfphNGwtdTndXLYso0h07ILIvxsfYY
-	 W8mFYPW7KfdkyPw4623TRf9vha71pLIv82ZOef7I=
+	b=CaOF1btGRX4Ogp/VNABnHsPYEwA4MBvjGy5pGKHXoFzlyKXL9oTdZKZItg0NY4rDw
+	 sNsOAqCLxstx/oZWy6Kj4TrQekDMnLoX4+RmkTb1b3+sWn293LW1zuRXsIb0fVIif6
+	 4zVgTh/N//N808gm2EIHjL4V62se/X7IgxUEwd0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 131/241] sctp: Fix undefined behavior in left shift operation
+Subject: [PATCH 6.12 108/231] ASoC: rsnd: indicate unsupported clock rate
 Date: Wed, 19 Mar 2025 07:30:01 -0700
-Message-ID: <20250319143030.967150625@linuxfoundation.org>
+Message-ID: <20250319143029.506568909@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 606572eb22c1786a3957d24307f5760bb058ca19 ]
+[ Upstream commit 796106e29e5df6cd4b4e2b51262a8a19e9fa0625 ]
 
-According to the C11 standard (ISO/IEC 9899:2011, 6.5.7):
-"If E1 has a signed type and E1 x 2^E2 is not representable in the result
-type, the behavior is undefined."
+It will indicate "unsupported clock rate" when setup clock failed.
+But it is unclear what kind of rate was failed. Indicate it.
 
-Shifting 1 << 31 causes signed integer overflow, which leads to undefined
-behavior.
-
-Fix this by explicitly using '1U << 31' to ensure the shift operates on
-an unsigned type, avoiding undefined behavior.
-
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Link: https://patch.msgid.link/20250218081217.3468369-1-eleanor15x@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://patch.msgid.link/874j192qej.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sh/rcar/ssi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-index c241cc552e8d5..bfcff6d6a4386 100644
---- a/net/sctp/stream.c
-+++ b/net/sctp/stream.c
-@@ -735,7 +735,7 @@ struct sctp_chunk *sctp_process_strreset_tsnreq(
- 	 *     value SHOULD be the smallest TSN not acknowledged by the
- 	 *     receiver of the request plus 2^31.
- 	 */
--	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1 << 31);
-+	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1U << 31);
- 	sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
- 			 init_tsn, GFP_ATOMIC);
+diff --git a/sound/soc/sh/rcar/ssi.c b/sound/soc/sh/rcar/ssi.c
+index b3d4e8ae07eff..0c6424a1fcac0 100644
+--- a/sound/soc/sh/rcar/ssi.c
++++ b/sound/soc/sh/rcar/ssi.c
+@@ -336,7 +336,8 @@ static int rsnd_ssi_master_clk_start(struct rsnd_mod *mod,
+ 	return 0;
+ 
+ rate_err:
+-	dev_err(dev, "unsupported clock rate\n");
++	dev_err(dev, "unsupported clock rate (%d)\n", rate);
++
+ 	return ret;
+ }
  
 -- 
 2.39.5
