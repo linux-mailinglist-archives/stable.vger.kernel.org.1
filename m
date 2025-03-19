@@ -1,215 +1,197 @@
-Return-Path: <stable+bounces-124909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4F6A68A7A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 12:03:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BC0A68A81
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 12:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 616F619C7493
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 11:02:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C2411B6065E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 11:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56003251788;
-	Wed, 19 Mar 2025 11:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D783202C47;
+	Wed, 19 Mar 2025 11:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="HbAWUbWF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iCtmty+e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4321E1E11;
-	Wed, 19 Mar 2025 11:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C13C2AEED
+	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 11:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742382141; cv=none; b=bG3IlfVRprqH/SIgitlcG/Fzutfirya8T/1jSXkGr+j08G95GGetZO0EvVJjR9XRFcyNVkT7YoxC7wF3vZLSe3NDaLC9W8999Bed7esS7aJNtF9/UElkEqWA19D/FoVmDC88Ve38vVm5U+aH/NdwKDqN0mV37bWvq4n3LQBJK8k=
+	t=1742382167; cv=none; b=szL0H3KHvsf8dpQ9F/+EDn/lFdh8VK3ylL2/XkKPuQ8ArMDjD05MY6ZSThFD1jHPv+x7mNtlRb3LkSB9MshOZNYMSdjc1hTcY1Ja9pzcOVJ544U8b1ReiXvRGTjApjz4xdhYBNKmQpJiRAQueRRC3umwZJLsNFB4JiysYZgYFy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742382141; c=relaxed/simple;
-	bh=CbYmhUb8EkLkPuFdD4oV9ftvFWgqisEueqJwG6XJ48w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GVWHXwOwXetvBuaugUFhVf6HKh/n//zNLOB49FiU8BeNxTDZ+6AiQVLdzt/ffZbuEaXipkI45M9CBuX3RvHyhsKu3RUAjZPDB03RYSFaB9xqJ8xaYkWK5F0dOtOpqntxhFZ90dCfKGv9N9AUMQi9eA1nj3/B+oznUhcI04VxR/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=HbAWUbWF; arc=none smtp.client-ip=207.171.184.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1742382140; x=1773918140;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vk5Lc7xy87s792gzIrpXh8NJw4dib0s+g5H7MWmXWv4=;
-  b=HbAWUbWF0loFj0VokOa5OKueMKUhqFOGTwQGhtDtfN07IrOn2YVuYGAf
-   fpipt0aTS76GyW8nB659ExjsyMQa7oF7XvpaWcuUu+3R4U0pbGtDzeYFq
-   Cmalv1RNgXb5m2j8DsBRbnDZoQuwwqZzQZWn1bddXtz+s0hXKujdV+iQ8
-   g=;
-X-IronPort-AV: E=Sophos;i="6.14,259,1736812800"; 
-   d="scan'208";a="504053979"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2025 11:02:11 +0000
-Received: from EX19MTAUEA001.ant.amazon.com [10.0.29.78:33402]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.45.183:2525] with esmtp (Farcaster)
- id c012bdca-5667-43d0-ba27-19c4d02abb87; Wed, 19 Mar 2025 11:02:10 +0000 (UTC)
-X-Farcaster-Flow-ID: c012bdca-5667-43d0-ba27-19c4d02abb87
-Received: from EX19MTAUEC002.ant.amazon.com (10.252.135.146) by
- EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 19 Mar 2025 11:02:02 +0000
-Received: from email-imr-corp-prod-iad-all-1a-f1af3bd3.us-east-1.amazon.com
- (10.43.8.6) by mail-relay.amazon.com (10.252.135.146) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1544.14 via Frontend Transport; Wed, 19 Mar 2025 11:02:02 +0000
-Received: from dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com (dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com [172.19.75.107])
-	by email-imr-corp-prod-iad-all-1a-f1af3bd3.us-east-1.amazon.com (Postfix) with ESMTP id 1EA6141319;
-	Wed, 19 Mar 2025 11:02:02 +0000 (UTC)
-Received: by dev-dsk-acsjakub-1b-6f9934e2.eu-west-1.amazon.com (Postfix, from userid 23348560)
-	id D04776C12; Wed, 19 Mar 2025 11:02:01 +0000 (UTC)
-From: Jakub Acs <acsjakub@amazon.com>
-To: <linux-kernel@vger.kernel.org>, <linux-ext4@vger.kernel.org>
-CC: <acsjakub@amazon.com>, Theodore Ts'o <tytso@mit.edu>, Andreas Dilger
-	<adilger.kernel@dilger.ca>, Mahmoud Adam <mngyadam@amazon.com>,
-	<stable@vger.kernel.org>, <security@kernel.org>
-Subject: [PATCH] ext4: fix OOB read when checking dotdot dir
-Date: Wed, 19 Mar 2025 11:01:34 +0000
-Message-ID: <20250319110134.10071-1-acsjakub@amazon.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1742382167; c=relaxed/simple;
+	bh=N1ko33Y76Ns05fD5tzlHyCtxkRCix7eMOQXaFOiw5Zg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hrpCczsYl0yDYmJUPRXw/A74RS//EdA3e/pbCgHziOMVZ1JcjEAoU7FOkMD1LnjGtwkReMff8mJGQLj8PlvvVskfolxSO3hYh/CcOn4ZeF4HUi/F+r5N7eeLLWOcmFxjOS32qWBzumDOqbpRyFbOlFSgNikdRRUmrkkyCMPirUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iCtmty+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56383C4CEEA;
+	Wed, 19 Mar 2025 11:02:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742382166;
+	bh=N1ko33Y76Ns05fD5tzlHyCtxkRCix7eMOQXaFOiw5Zg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=iCtmty+ec6tZu8cJgukTuIpeBmrxkx6xz0HLcaWiitfAbAHJtXioBA4h4sXep8wSh
+	 SZSmVXjBnCwtW686999KnATGi80l7Js11Z+isaIjydGrakzovG/wEokQAmk3wZ4B8P
+	 owccCsTWuyC+zzMRCyfFCtK7pvorStaaWYKhukIly7zwSANFNZmrZBPeFTXBoGf4I2
+	 bHixhJ5PVqxJ8IwVu94m5zk2eueGqYTYjOV9waN4MTDU+RI/6RDus7VPCKWyBbEhLa
+	 5C3KtaN6wUIN5b7GfqjR83HdCSREGnVAcmuD547WqALLfbXjQUon7vSVBG8TX5oT3R
+	 Q039bc86M1jWA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	donghua.liu@windriver.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] smb: prevent use-after-free due to open_cached_dir error paths
+Date: Wed, 19 Mar 2025 07:02:45 -0400
+Message-Id: <20250319070153-8cb1672a2748b3b4@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250319090839.3631424-1-donghua.liu@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-Mounting a corrupted filesystem with directory which contains '.' dir
-entry with rec_len == block size results in out-of-bounds read (later
-on, when the corrupted directory is removed).
+[ Sasha's backport helper bot ]
 
-ext4_empty_dir() assumes every ext4 directory contains at least '.'
-and '..' as directory entries in the first data block. It first loads
-the '.' dir entry, performs sanity checks by calling ext4_check_dir_entry()
-and then uses its rec_len member to compute the location of '..' dir
-entry (in ext4_next_entry). It assumes the '..' dir entry fits into the
-same data block.
+Hi,
 
-If the rec_len of '.' is precisely one block (4KB), it slips through the
-sanity checks (it is considered the last directory entry in the data
-block) and leaves "struct ext4_dir_entry_2 *de" point exactly past the
-memory slot allocated to the data block. The following call to
-ext4_check_dir_entry() on new value of de then dereferences this pointer
-which results in out-of-bounds mem access.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-Fix this by extending __ext4_check_dir_entry() to check for '.' dir
-entries that reach the end of data block. Make sure to ignore the phony
-dir entries for checksum (by checking name_len for non-zero).
+Found matching upstream commit: a9685b409a03b73d2980bbfa53eb47555802d0a9
 
-Note: This is reported by KASAN as use-after-free in case another
-structure was recently freed from the slot past the bound, but it is
-really an OOB read.
+WARNING: Author mismatch between patch and found commit:
+Backport author: Cliff Liu<donghua.liu@windriver.com>
+Commit author: Paul Aurich<paul@darkrain42.org>
 
-This issue was found by syzkaller tool.
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: 47655a12c6b1)
+6.6.y | Present (different SHA1: 791f83305357)
 
-Call Trace:
-[   38.594108] BUG: KASAN: slab-use-after-free in __ext4_check_dir_entry+0x67e/0x710
-[   38.594649] Read of size 2 at addr ffff88802b41a004 by task syz-executor/5375
-[   38.595158]
-[   38.595288] CPU: 0 UID: 0 PID: 5375 Comm: syz-executor Not tainted 6.14.0-rc7 #1
-[   38.595298] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   38.595304] Call Trace:
-[   38.595308]  <TASK>
-[   38.595311]  dump_stack_lvl+0xa7/0xd0
-[   38.595325]  print_address_description.constprop.0+0x2c/0x3f0
-[   38.595339]  ? __ext4_check_dir_entry+0x67e/0x710
-[   38.595349]  print_report+0xaa/0x250
-[   38.595359]  ? __ext4_check_dir_entry+0x67e/0x710
-[   38.595368]  ? kasan_addr_to_slab+0x9/0x90
-[   38.595378]  kasan_report+0xab/0xe0
-[   38.595389]  ? __ext4_check_dir_entry+0x67e/0x710
-[   38.595400]  __ext4_check_dir_entry+0x67e/0x710
-[   38.595410]  ext4_empty_dir+0x465/0x990
-[   38.595421]  ? __pfx_ext4_empty_dir+0x10/0x10
-[   38.595432]  ext4_rmdir.part.0+0x29a/0xd10
-[   38.595441]  ? __dquot_initialize+0x2a7/0xbf0
-[   38.595455]  ? __pfx_ext4_rmdir.part.0+0x10/0x10
-[   38.595464]  ? __pfx___dquot_initialize+0x10/0x10
-[   38.595478]  ? down_write+0xdb/0x140
-[   38.595487]  ? __pfx_down_write+0x10/0x10
-[   38.595497]  ext4_rmdir+0xee/0x140
-[   38.595506]  vfs_rmdir+0x209/0x670
-[   38.595517]  ? lookup_one_qstr_excl+0x3b/0x190
-[   38.595529]  do_rmdir+0x363/0x3c0
-[   38.595537]  ? __pfx_do_rmdir+0x10/0x10
-[   38.595544]  ? strncpy_from_user+0x1ff/0x2e0
-[   38.595561]  __x64_sys_unlinkat+0xf0/0x130
-[   38.595570]  do_syscall_64+0x5b/0x180
-[   38.595583]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: ac27a0ec112a0 ("[PATCH] ext4: initial copy of files from ext3")
-Signed-off-by: Jakub Acs <acsjakub@amazon.com>
-Cc: "Theodore Ts'o" <tytso@mit.edu>
-Cc: Andreas Dilger <adilger.kernel@dilger.ca>
-Cc: linux-ext4@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Mahmoud Adam <mngyadam@amazon.com>
-Cc: stable@vger.kernel.org
-Cc: security@kernel.org
+Note: The patch differs from the upstream commit:
 ---
-If not fixed, this potentially leaks information from kernel data
-structures allocated after the data block.
-
-I based the check on the assumption that every ext4 directory has '.'
-followed by at least one entry ('..') in the first data block.
-(the code in ext4_empty_dir seems to operate on this assumption)
-
-..and it is also supported by claim in
-https://www.kernel.org/doc/html/latest/filesystems/ext4/directory.html:
-"By ext2 custom, the '.' and '..' entries must appear at the beginning of
-this first block"
-
-Please confirm that this is correct and there are no valid ext4
-directories that have '.' as the last directory entry. If this
-assumption is wrong, I would fix the caller rather than the callee.
-
-Testing:
-I booted the kernel in AL2023 EC2 Instance and ran ext4 tests from
-git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git:
-
-<setup with loop devices>
-./check ext4/*
-[..]
-ext4/002       [not run] This test requires a valid $SCRATCH_LOGDEV
-ext4/004       [not run] dump utility required, skipped this test
-ext4/006       [not run] Couldn't find e2fuzz
-ext4/029       [not run] This test requires a valid $SCRATCH_LOGDEV
-ext4/030       [not run] mount /dev/loop1 with dax failed
-ext4/031       [not run] mount /dev/loop1 with dax failed
-ext4/047       [not run] mount /dev/loop1 with dax=always failed
-ext4/055       [not run] fsgqa user not defined.
-ext4/057       [not run] UUID ioctls are not supported by kernel.
-Not run: ext4/002 ext4/004 ext4/006 ext4/029 ext4/030 ext4/031 ext4/047
-ext4/055 ext4/057
-Passed all 69 tests
-(please let me know if any of the skipped tests need to be run)
-
-Thanks,
-Jakub
+1:  a9685b409a03b ! 1:  94e68b9a81ffa smb: prevent use-after-free due to open_cached_dir error paths
+    @@ Commit message
+         Cc: stable@vger.kernel.org
+         Signed-off-by: Paul Aurich <paul@darkrain42.org>
+         Signed-off-by: Steve French <stfrench@microsoft.com>
+    +    [ Do not apply the change for cfids_laundromat_worker() since there is no
+    +      this function and related feature on 6.1.y. Update open_cached_dir()
+    +      according to method of upstream patch. ]
+    +    Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+    +    Signed-off-by: He Zhe <Zhe.He@windriver.com>
+     
+      ## fs/smb/client/cached_dir.c ##
+     @@ fs/smb/client/cached_dir.c: int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+    - 	SMB2_query_info_free(&rqst[1]);
+    - 	free_rsp_buf(resp_buftype[0], rsp_iov[0].iov_base);
+    - 	free_rsp_buf(resp_buftype[1], rsp_iov[1].iov_base);
+    -+out:
+    + 		/*
+    + 		 * We are guaranteed to have two references at this point.
+    + 		 * One for the caller and one for a potential lease.
+    +-		 * Release the Lease-ref so that the directory will be closed
+    +-		 * when the caller closes the cached handle.
+    ++		 * Release one here, and the second below.
+    + 		 */
+    + 		kref_put(&cfid->refcount, smb2_close_cached_fid);
+    + 	}
+      	if (rc) {
+    - 		spin_lock(&cfids->cfid_list_lock);
+    - 		if (cfid->on_list) {
+    -@@ fs/smb/client/cached_dir.c: int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+    - 			/*
+    - 			 * We are guaranteed to have two references at this
+    - 			 * point. One for the caller and one for a potential
+    --			 * lease. Release the Lease-ref so that the directory
+    --			 * will be closed when the caller closes the cached
+    --			 * handle.
+    -+			 * lease. Release one here, and the second below.
+    - 			 */
+    - 			cfid->has_lease = false;
+    --			spin_unlock(&cfids->cfid_list_lock);
+    - 			kref_put(&cfid->refcount, smb2_close_cached_fid);
+    --			goto out;
+    - 		}
+    - 		spin_unlock(&cfids->cfid_list_lock);
+    --	}
+    --out:
+    --	if (rc) {
+     -		if (cfid->is_open)
+     -			SMB2_close(0, cfid->tcon, cfid->fid.persistent_fid,
+     -				   cfid->fid.volatile_fid);
+     -		free_cached_dir(cfid);
+    -+
+    +-		cfid = NULL;
+    ++		cfid->has_lease = false;
+     +		kref_put(&cfid->refcount, smb2_close_cached_fid);
+    - 	} else {
+    - 		*ret_cfid = cfid;
+    - 		atomic_inc(&tcon->num_remote_opens);
+    + 	}
+    + 
+    + 	if (rc == 0) {
+     @@ fs/smb/client/cached_dir.c: void invalidate_all_cached_dirs(struct cifs_tcon *tcon)
+      		cfids->num_entries--;
+      		cfid->is_open = false;
+    @@ fs/smb/client/cached_dir.c: int cached_dir_lease_break(struct cifs_tcon *tcon, _
+      			cfid->time = 0;
+      			/*
+      			 * We found a lease remove it from the list
+    -@@ fs/smb/client/cached_dir.c: static void cfids_laundromat_worker(struct work_struct *work)
+    - 			cfid->on_list = false;
+    - 			list_move(&cfid->entry, &entry);
+    - 			cfids->num_entries--;
+    --			/* To prevent race with smb2_cached_lease_break() */
+    --			kref_get(&cfid->refcount);
+    -+			if (cfid->has_lease) {
+    -+				/*
+    -+				 * Our lease has not yet been cancelled from the
+    -+				 * server. Steal that reference.
+    -+				 */
+    -+				cfid->has_lease = false;
+    -+			} else
+    -+				kref_get(&cfid->refcount);
+    - 		}
+    - 	}
+    - 	spin_unlock(&cfids->cfid_list_lock);
+    -@@ fs/smb/client/cached_dir.c: static void cfids_laundromat_worker(struct work_struct *work)
+    - 		 * with it.
+    - 		 */
+    - 		cancel_work_sync(&cfid->lease_break);
+    --		if (cfid->has_lease) {
+    --			/*
+    --			 * Our lease has not yet been cancelled from the server
+    --			 * so we need to drop the reference.
+    --			 */
+    --			spin_lock(&cfids->cfid_list_lock);
+    --			cfid->has_lease = false;
+    --			spin_unlock(&cfids->cfid_list_lock);
+    --			kref_put(&cfid->refcount, smb2_close_cached_fid);
+    --		}
+    --		/* Drop the extra reference opened above */
+    -+		/*
+    -+		 * Drop the ref-count from above, either the lease-ref (if there
+    -+		 * was one) or the extra one acquired.
+    -+		 */
+    - 		kref_put(&cfid->refcount, smb2_close_cached_fid);
+    - 	}
+    - 	queue_delayed_work(cifsiod_wq, &cfids->laundromat_work,
 ---
- fs/ext4/dir.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
-index 02d47a64e8d1..d157a6c0eff6 100644
---- a/fs/ext4/dir.c
-+++ b/fs/ext4/dir.c
-@@ -104,6 +104,9 @@ int __ext4_check_dir_entry(const char *function, unsigned int line,
- 	else if (unlikely(le32_to_cpu(de->inode) >
- 			le32_to_cpu(EXT4_SB(dir->i_sb)->s_es->s_inodes_count)))
- 		error_msg = "inode out of bounds";
-+	else if (unlikely(de->name_len > 0 && strcmp(".", de->name) == 0 &&
-+			  next_offset == size))
-+		error_msg = "'.' directory cannot be the last in data block";
- 	else
- 		return 0;
- 
--- 
-2.47.1
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
