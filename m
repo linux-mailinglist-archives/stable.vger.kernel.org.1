@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AD2A690F6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD30A68FA6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 832453B0352
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DC2C7A9BF1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60F721CC6C;
-	Wed, 19 Mar 2025 14:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C651C202979;
+	Wed, 19 Mar 2025 14:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2tZtQER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wv5/l6V0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7421B1A841C;
-	Wed, 19 Mar 2025 14:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EB81DED44;
+	Wed, 19 Mar 2025 14:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395143; cv=none; b=tpizz2To3kXUwzWgC5hkikNs2ZVVJhA7sC9wFs+OlghQ4Gyo6QSFbhXNn+9vbVM/22kwHKw75Ua7NSe0cP4ack6ruelzCSlL+8tL8mKERY8kX9DsuDf4VP9DLJeS7Tfsb494rzUHadmkDB5C+HTqJDVRqZJfUO4YfT89cTMFOtY=
+	t=1742394983; cv=none; b=UA5fuG3HuSpGEfeE9dmQOp7O3B6y6ae9RlesRMyT72r/eWrSTPuazW5SJU4udADkQwVYahLlCt/ljNVX4PZ4X9rmGZ+8tMiFaoQJzqMduolqP/uePL6+oOJzgTsWHwuW6kv7e8p9cXtxoNcMm6M/7VAYOkb5/H+l1WLRGeLos1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395143; c=relaxed/simple;
-	bh=dkHILbvVyT/nvtuvIonUaheG++Stis2IJ4rPh7vx++I=;
+	s=arc-20240116; t=1742394983; c=relaxed/simple;
+	bh=0m9GeUBnmtlBItobqB1YP/u9fDC/8J9Zfqwse8G4sPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkCz+eeUL/T9eS832GImLr9zWvuGTJLtrSaMq7s1GCg5U9TAffVAvcr6PZJ/Se+ucuCcfArVKIONoxQCSiFHiWUj/5a7oVTtQDOz0cuXVgy7Y38OHWnUQS8v0Oq9JTVKNsnW6yMX+htIz2Y16rduN+Jaqa0KYZWQZpgAuY4oV3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2tZtQER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB6AC4CEEA;
-	Wed, 19 Mar 2025 14:39:03 +0000 (UTC)
+	 MIME-Version; b=ugxUy0h1NU6TtciWR5e/DlZTuz2njMl0vxJRFFOgjne0CImuFPbn1ttaVMpOlCNMpt43o7Rni7n3NbkBoSPz0WOTxyaWaeNt8lhXArVXKuzk6Ppz2126r0tCUYXdrjcp0oferGzG/8f4YOKCwHaNE5CcVFUV+e9uCQaS3rC2crI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wv5/l6V0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B896C4CEE4;
+	Wed, 19 Mar 2025 14:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395143;
-	bh=dkHILbvVyT/nvtuvIonUaheG++Stis2IJ4rPh7vx++I=;
+	s=korg; t=1742394983;
+	bh=0m9GeUBnmtlBItobqB1YP/u9fDC/8J9Zfqwse8G4sPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2tZtQERU/iGxXRmH8oSGf1jmaU89dzlnd3Sd5C29MnvN0xBXUnk6Jmh1X3H/FMtd
-	 UYwH0Xr+53iHj2nFvb4USLJ67PG/o7s0FOpN+5G/jpkPQ4kPMZAY754xwS9udAbKpM
-	 7f2BTu46B1rupfQzyV2oVnoR8bafhaq4kUXSohd8=
+	b=Wv5/l6V0RpU7nRhY3hINBErRwsAk6RsAqHMEr3j2++RL0b2CvEX0cWslC5hZuTRUh
+	 k2/az4FNY85njdliQqu2wv5c0QpPFk/AvBEkrTiY/ffcwDRvCchkuFC2+Z3wZhSJJA
+	 pMG3/I1KkJvfJ5eulkmcuffSFbnDUHJNlxJEOVMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Imre Deak <imre.deak@intel.com>
-Subject: [PATCH 6.12 173/231] drm/dp_mst: Fix locking when skipping CSN before topology probing
+	Jakub Kicinski <kuba@kernel.org>,
+	Mina Almasry <almasrymina@google.com>
+Subject: [PATCH 6.13 196/241] netmem: prevent TX of unreadable skbs
 Date: Wed, 19 Mar 2025 07:31:06 -0700
-Message-ID: <20250319143031.116498473@linuxfoundation.org>
+Message-ID: <20250319143032.568317796@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Mina Almasry <almasrymina@google.com>
 
-commit 12d8f318347b1d4feac48e8ac351d3786af39599 upstream.
+commit f3600c867c99a2cc8038680ecf211089c50e7971 upstream.
 
-The handling of the MST Connection Status Notify message is skipped if
-the probing of the topology is still pending. Acquiring the
-drm_dp_mst_topology_mgr::probe_lock for this in
-drm_dp_mst_handle_up_req() is problematic: the task/work this function
-is called from is also responsible for handling MST down-request replies
-(in drm_dp_mst_handle_down_rep()). Thus drm_dp_mst_link_probe_work() -
-holding already probe_lock - could be blocked waiting for an MST
-down-request reply while drm_dp_mst_handle_up_req() is waiting for
-probe_lock while processing a CSN message. This leads to the probe
-work's down-request message timing out.
+Currently on stable trees we have support for netmem/devmem RX but not
+TX. It is not safe to forward/redirect an RX unreadable netmem packet
+into the device's TX path, as the device may call dma-mapping APIs on
+dma addrs that should not be passed to it.
 
-A scenario similar to the above leading to a down-request timeout is
-handling a CSN message in drm_dp_mst_handle_conn_stat(), holding the
-probe_lock and sending down-request messages while a second CSN message
-sent by the sink subsequently is handled by drm_dp_mst_handle_up_req().
+Fix this by preventing the xmit of unreadable skbs.
 
-Fix the above by moving the logic to skip the CSN handling to
-drm_dp_mst_process_up_req(). This function is called from a work
-(separate from the task/work handling new up/down messages), already
-holding probe_lock. This solves the above timeout issue, since handling
-of down-request replies won't be blocked by probe_lock.
+Tested by configuring tc redirect:
 
-Fixes: ddf983488c3e ("drm/dp_mst: Skip CSN if topology probing is not done yet")
-Cc: Wayne Lin <Wayne.Lin@amd.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: stable@vger.kernel.org # v6.6+
-Reviewed-by: Wayne Lin <Wayne.Lin@amd.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250307183152.3822170-1-imre.deak@intel.com
+sudo tc qdisc add dev eth1 ingress
+sudo tc filter add dev eth1 ingress protocol ip prio 1 flower ip_proto \
+	tcp src_ip 192.168.1.12 action mirred egress redirect dev eth1
+
+Before, I see unreadable skbs in the driver's TX path passed to dma
+mapping APIs.
+
+After, I don't see unreadable skbs in the driver's TX path passed to dma
+mapping APIs.
+
+Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250306215520.1415465-1-almasrymina@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c |   40 +++++++++++++++-----------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+ net/core/dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -4034,6 +4034,22 @@ out:
- 	return 0;
- }
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3725,6 +3725,9 @@ static struct sk_buff *validate_xmit_skb
+ {
+ 	netdev_features_t features;
  
-+static bool primary_mstb_probing_is_done(struct drm_dp_mst_topology_mgr *mgr)
-+{
-+	bool probing_done = false;
++	if (!skb_frags_readable(skb))
++		goto out_kfree_skb;
 +
-+	mutex_lock(&mgr->lock);
-+
-+	if (mgr->mst_primary && drm_dp_mst_topology_try_get_mstb(mgr->mst_primary)) {
-+		probing_done = mgr->mst_primary->link_address_sent;
-+		drm_dp_mst_topology_put_mstb(mgr->mst_primary);
-+	}
-+
-+	mutex_unlock(&mgr->lock);
-+
-+	return probing_done;
-+}
-+
- static inline bool
- drm_dp_mst_process_up_req(struct drm_dp_mst_topology_mgr *mgr,
- 			  struct drm_dp_pending_up_req *up_req)
-@@ -4064,8 +4080,12 @@ drm_dp_mst_process_up_req(struct drm_dp_
- 
- 	/* TODO: Add missing handler for DP_RESOURCE_STATUS_NOTIFY events */
- 	if (msg->req_type == DP_CONNECTION_STATUS_NOTIFY) {
--		dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
--		hotplug = true;
-+		if (!primary_mstb_probing_is_done(mgr)) {
-+			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.\n");
-+		} else {
-+			dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
-+			hotplug = true;
-+		}
- 	}
- 
- 	drm_dp_mst_topology_put_mstb(mstb);
-@@ -4144,10 +4164,11 @@ static int drm_dp_mst_handle_up_req(stru
- 	drm_dp_send_up_ack_reply(mgr, mst_primary, up_req->msg.req_type,
- 				 false);
- 
-+	drm_dp_mst_topology_put_mstb(mst_primary);
-+
- 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
- 		const struct drm_dp_connection_status_notify *conn_stat =
- 			&up_req->msg.u.conn_stat;
--		bool handle_csn;
- 
- 		drm_dbg_kms(mgr->dev, "Got CSN: pn: %d ldps:%d ddps: %d mcs: %d ip: %d pdt: %d\n",
- 			    conn_stat->port_number,
-@@ -4156,16 +4177,6 @@ static int drm_dp_mst_handle_up_req(stru
- 			    conn_stat->message_capability_status,
- 			    conn_stat->input_port,
- 			    conn_stat->peer_device_type);
--
--		mutex_lock(&mgr->probe_lock);
--		handle_csn = mst_primary->link_address_sent;
--		mutex_unlock(&mgr->probe_lock);
--
--		if (!handle_csn) {
--			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
--			kfree(up_req);
--			goto out_put_primary;
--		}
- 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
- 		const struct drm_dp_resource_status_notify *res_stat =
- 			&up_req->msg.u.resource_stat;
-@@ -4180,9 +4191,6 @@ static int drm_dp_mst_handle_up_req(stru
- 	list_add_tail(&up_req->next, &mgr->up_req_list);
- 	mutex_unlock(&mgr->up_req_lock);
- 	queue_work(system_long_wq, &mgr->up_req_work);
--
--out_put_primary:
--	drm_dp_mst_topology_put_mstb(mst_primary);
- out_clear_reply:
- 	memset(&mgr->up_req_recv, 0, sizeof(struct drm_dp_sideband_msg_rx));
- 	return 0;
+ 	features = netif_skb_features(skb);
+ 	skb = validate_xmit_vlan(skb, features);
+ 	if (unlikely(!skb))
 
 
 
