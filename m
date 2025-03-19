@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-125254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC60A6923F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:05:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9004CA68F9A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D369A1B87D39
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAF4D3A28FC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138B8214A90;
-	Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C511E1E0C;
+	Wed, 19 Mar 2025 14:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3OKGg9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mgCqmMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63F51C5F26;
-	Wed, 19 Mar 2025 14:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A302C1B2194;
+	Wed, 19 Mar 2025 14:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395060; cv=none; b=D1IpRVdhLexvpL97TagwW1Hjgo7quk43UTot6/JZACYq/rhoqRaoL1HPweE4zaJph8wdalXPsSbNBBulbe5t+hjdT3ZkGLplpb4DmvRDbv60tzzLt7pA1W1I2QsFMngVa33bETtYOJPJK2kOhhDD+9xF3qgfIk2DMhhk+y+WvYs=
+	t=1742394906; cv=none; b=KC/8+A7GhKgFpPZB4mY31EyOyRMCpEIcIdKd3kl+AgyQaoet+3nnFNYNGhwZ1xIeND80Ka3rRL2sijdT8hxlsjixMQz840lBYY8+xOcH6tNUv9be4g7iDR6P7dldLkc6VksdQ44vp8QI+ADEpMaPCGmW7CjlC8OzT6ZdYQxFRUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395060; c=relaxed/simple;
-	bh=Ph/mIF0AIwe8gUB+s+ZYhCBUIQjpy3RN/29SyDhkde8=;
+	s=arc-20240116; t=1742394906; c=relaxed/simple;
+	bh=gPfkyqpGGkqTv/rBovPI0E7QTf9kTbvfLO/Plp34ZoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6dSd8zKlki0cR0JbLRnknCRVz7Yskh8g4EM07VsO/MsYuB/jsZK7Ck/VldlY8DcRD4d9fWawUbbrFS/gI61OzEjZz9RcI6mu+2oVjjqGl9oHgnXZT5xoGauau8wUOElTbz99meIYZh47zczUI+bKSyslh5LuAFE1MwcmCO6t0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3OKGg9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99934C4CEE9;
-	Wed, 19 Mar 2025 14:37:40 +0000 (UTC)
+	 MIME-Version; b=JGIitrggWAhLmeXfHisP0oRUFygDY20NlfTRNgcueia6WLJVTlIqyrA0JMWeVX2jP+GKvemNKvRXERhzpFf6YOEcaJuKoHaaf2YonKAApsY+ZLMDyN0yIfY8o2x0vVPo7Y1AikW6jeqgXiVd7gt8eS5WJc83cQgII4H4MOA43YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mgCqmMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C1FC4CEE4;
+	Wed, 19 Mar 2025 14:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395060;
-	bh=Ph/mIF0AIwe8gUB+s+ZYhCBUIQjpy3RN/29SyDhkde8=;
+	s=korg; t=1742394906;
+	bh=gPfkyqpGGkqTv/rBovPI0E7QTf9kTbvfLO/Plp34ZoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3OKGg9LHe+RT+sHAb+YSgpubQ36ID43aJRhaX55jzvFw4qKvYmoqAt98wiAYeKra
-	 pj6J+uDjPWT9BcTYYwxNGHmoubVFUCEDDmOSxh3vt32VDWxV1J6NjXu8GXeFqFo1uJ
-	 bHAfIqaQmN8GtYTHoDBTHTdW4akm47wIr6VugGY0=
+	b=2mgCqmMNLm8FqYQcmZ5HB0YRb6JPYnt8q4/h9qJUxc7sKxhxXwfkjLb/zLxqXPzTV
+	 LgFsagfpabFyKpETrMJbbbeV2YRHT+COHzK61LHDGY2nEa3I+S9hHeXsftOXu6uDLF
+	 gsPN1geG/c6+NuJsNMOx5wQnG0Hkxm10Uk9/atKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/231] LoongArch: Fix kernel_page_present() for KPRANGE/XKPRANGE
-Date: Wed, 19 Mar 2025 07:29:47 -0700
-Message-ID: <20250319143029.165108042@linuxfoundation.org>
+Subject: [PATCH 6.13 118/241] ALSA: hda: intel-dsp-config: Add PTL-H support
+Date: Wed, 19 Mar 2025 07:29:48 -0700
+Message-ID: <20250319143030.640368235@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 619b52777a4972bdb6ddf86ac54c6f68a47b51c4 ]
+[ Upstream commit 214e6be2d91d5d58f28d3a37630480077a1aafbd ]
 
-Now kernel_page_present() always return true for KPRANGE/XKPRANGE
-addresses, this isn't correct because hibernation (ACPI S4) use it
-to distinguish whether a page is saveable. If all KPRANGE/XKPRANGE
-addresses are considered as saveable, then reserved memory such as
-EFI_RUNTIME_SERVICES_CODE / EFI_RUNTIME_SERVICES_DATA will also be
-saved and restored.
+Use same recipes as PTL for PTL-H.
 
-Fix this by returning true only if the KPRANGE/XKPRANGE address is in
-memblock.memory.
-
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250210081730.22916-3-peter.ujfalusi@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/pageattr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/hda/intel-dsp-config.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/loongarch/mm/pageattr.c b/arch/loongarch/mm/pageattr.c
-index ffd8d76021d47..aca4e86d2d888 100644
---- a/arch/loongarch/mm/pageattr.c
-+++ b/arch/loongarch/mm/pageattr.c
-@@ -3,6 +3,7 @@
-  * Copyright (C) 2024 Loongson Technology Corporation Limited
-  */
+diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
+index f564ec7af1940..ce3ae2cba6607 100644
+--- a/sound/hda/intel-dsp-config.c
++++ b/sound/hda/intel-dsp-config.c
+@@ -539,6 +539,11 @@ static const struct config_entry config_table[] = {
+ 		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
+ 		.device = PCI_DEVICE_ID_INTEL_HDA_PTL,
+ 	},
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_PTL_H,
++	},
++
+ #endif
  
-+#include <linux/memblock.h>
- #include <linux/pagewalk.h>
- #include <linux/pgtable.h>
- #include <asm/set_memory.h>
-@@ -167,7 +168,7 @@ bool kernel_page_present(struct page *page)
- 	unsigned long addr = (unsigned long)page_address(page);
- 
- 	if (addr < vm_map_base)
--		return true;
-+		return memblock_is_memory(__pa(addr));
- 
- 	pgd = pgd_offset_k(addr);
- 	if (pgd_none(pgdp_get(pgd)))
+ };
 -- 
 2.39.5
 
