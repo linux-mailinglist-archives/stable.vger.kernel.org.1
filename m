@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-125092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0B0A68F94
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A46FA690BD
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D46E57A77AD
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DD833AD364
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F9F1E5B97;
-	Wed, 19 Mar 2025 14:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0D321A955;
+	Wed, 19 Mar 2025 14:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m68t6kyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0d/46PtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F891E835F;
-	Wed, 19 Mar 2025 14:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DE81D6DBF;
+	Wed, 19 Mar 2025 14:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394949; cv=none; b=SaGZtq6ix0Uy4lbb9qz8Z4W02coh81LfaPKwnbAsV30B2vzIFULUq7AqFNaBagCgs+hUf+nzsVrrST7raSj/KBfxvzHo5mpR4Ot1VXQrxy4GAvDTPaeES2wmSM4J9a47AWxx+ksXbZLcgPNVysqvK4eA+H0E5pkh80JluKgy92A=
+	t=1742395099; cv=none; b=h37P5X5elQLOOs23KnerAPJEgCpnNH0yzWWEQVuer5iCnDdLojxktn/MUe+ZXlJ5UVCrAkSKNUBg5PZpQS9uzc73+SYFc3ml3VslHeZDeT4iDlyPIjw+VbiJr0KxdmDpFwnay++KXxHhXbW6bBd3kumVtc/qO5lvMx74F+JEy+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394949; c=relaxed/simple;
-	bh=FAD8rcoUkiIudDGBJyIV1pXTKfUfYBlmjWGLIMGF56k=;
+	s=arc-20240116; t=1742395099; c=relaxed/simple;
+	bh=sQbeRIsTwleVyfIoN2saJZ/zYRKDrkMMEYGSgTWyJjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5pRHg/2jTv196tO75uk5pgdKUWuOXS1hzfYM/KeZJWHQxyG60+JXuAmKYbD+ZCJjIOTUUDK1Hw57FIsJckqgyCo8tySMyxAisaci97QoOJlqKlIiBIjVqGnlBRujPA9MFpQzlk01vY90sOftqIUhsEk2fLAyMNurNsl0yEQI6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m68t6kyI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B63EC4CEE4;
-	Wed, 19 Mar 2025 14:35:49 +0000 (UTC)
+	 MIME-Version; b=UqUS+s+sYb8ca0XjrAS8WCwOZthcJRcKIc3zMmDffyLR14SJ6zoKGwhy4lGI/FEXBXjeWIoBip9wloA3R968LIMtDVXl52M43wJ7hbK8boeBYbSQkNTAOdTNdQjEVmAcCuaifZ49BAGKvS2aouxYE5DHBi801tRol1BrHc18TJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0d/46PtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8056CC4CEE4;
+	Wed, 19 Mar 2025 14:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394949;
-	bh=FAD8rcoUkiIudDGBJyIV1pXTKfUfYBlmjWGLIMGF56k=;
+	s=korg; t=1742395099;
+	bh=sQbeRIsTwleVyfIoN2saJZ/zYRKDrkMMEYGSgTWyJjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m68t6kyIzQqdYIkLpFg18FViQs+vCNeLXf81lBvB2IxSvyrH7BntvEgPFtCr6YDl/
-	 Ap+10Pd37G4m5tOrqIuiSIwn7dYdv3X7Fbbn7BZIPJd4zuutuSMFI7QCwP3nKhlKQK
-	 aYeDyOcWIYk18s0mWKEHNCAvdwC+5whGO7Ii/1zE=
+	b=0d/46PtJ7DWF3+A4tpG94QSJekEjWoR16rrXiOEtPP1DeIIgZg/tMCTZ30e9WKmDH
+	 JI6xzEw0dkfKsXXfdx4UnXyH1EHUXPKz9V8BtQeWO2h5x8Y2K99vrZKq3lrJ3Zh0Kq
+	 mjkeMFF06qiVeb7M1r65rVezBg7ccKhPKBkGQeTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 173/241] spi: microchip-core: prevent RX overflows when transmit size > FIFO size
+	Pavel Rojtberg <rojtberg@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 150/231] Input: xpad - add multiple supported devices
 Date: Wed, 19 Mar 2025 07:30:43 -0700
-Message-ID: <20250319143032.013652248@linuxfoundation.org>
+Message-ID: <20250319143030.546385150@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +61,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Pavel Rojtberg <rojtberg@gmail.com>
 
-commit 91cf42c63f2d8a9c1bcdfe923218e079b32e1a69 upstream.
+commit 3492321e2e60ddfe91aa438bb9ac209016f48f7a upstream.
 
-When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
-overflows will be generated and receive data will be corrupted and
-warnings will be produced. For example, here's an error generated by a
-transfer of 36 bytes:
+This is based on multiple commits at https://github.com/paroj/xpad
+that had bouncing email addresses and were not signed off.
 
-  spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
-
-The driver is currently split between handling receiving in the
-interrupt handler, and sending outside of it. Move all handling out of
-the interrupt handling, and explicitly link the number of bytes read of
-of the RX FIFO to the number written into the TX one. This both resolves
-the overflow problems as well as simplifying the flow of the driver.
-
-CC: stable@vger.kernel.org
-Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20250303-veal-snooper-712c1dfad336@wendy
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
+Link: https://lore.kernel.org/r/20250123175404.23254-1-rojtberg@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-microchip-core.c |   41 +++++++++++++++++----------------------
- 1 file changed, 18 insertions(+), 23 deletions(-)
+ drivers/input/joystick/xpad.c |   20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
---- a/drivers/spi/spi-microchip-core.c
-+++ b/drivers/spi/spi-microchip-core.c
-@@ -70,8 +70,7 @@
- #define INT_RX_CHANNEL_OVERFLOW		BIT(2)
- #define INT_TX_CHANNEL_UNDERRUN		BIT(3)
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -140,6 +140,7 @@ static const struct xpad_device {
+ 	{ 0x044f, 0x0f00, "Thrustmaster Wheel", 0, XTYPE_XBOX },
+ 	{ 0x044f, 0x0f03, "Thrustmaster Wheel", 0, XTYPE_XBOX },
+ 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
++	{ 0x044f, 0xd01e, "ThrustMaster, Inc. ESWAP X 2 ELDEN RING EDITION", 0, XTYPE_XBOXONE },
+ 	{ 0x044f, 0x0f10, "Thrustmaster Modena GT Wheel", 0, XTYPE_XBOX },
+ 	{ 0x044f, 0xb326, "Thrustmaster Gamepad GP XID", 0, XTYPE_XBOX360 },
+ 	{ 0x045e, 0x0202, "Microsoft X-Box pad v1 (US)", 0, XTYPE_XBOX },
+@@ -177,6 +178,7 @@ static const struct xpad_device {
+ 	{ 0x06a3, 0x0200, "Saitek Racing Wheel", 0, XTYPE_XBOX },
+ 	{ 0x06a3, 0x0201, "Saitek Adrenalin", 0, XTYPE_XBOX },
+ 	{ 0x06a3, 0xf51a, "Saitek P3600", 0, XTYPE_XBOX360 },
++	{ 0x0738, 0x4503, "Mad Catz Racing Wheel", 0, XTYPE_XBOXONE },
+ 	{ 0x0738, 0x4506, "Mad Catz 4506 Wireless Controller", 0, XTYPE_XBOX },
+ 	{ 0x0738, 0x4516, "Mad Catz Control Pad", 0, XTYPE_XBOX },
+ 	{ 0x0738, 0x4520, "Mad Catz Control Pad Pro", 0, XTYPE_XBOX },
+@@ -238,6 +240,7 @@ static const struct xpad_device {
+ 	{ 0x0e6f, 0x0146, "Rock Candy Wired Controller for Xbox One", 0, XTYPE_XBOXONE },
+ 	{ 0x0e6f, 0x0147, "PDP Marvel Xbox One Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x0e6f, 0x015c, "PDP Xbox One Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
++	{ 0x0e6f, 0x015d, "PDP Mirror's Edge Official Wired Controller for Xbox One", XTYPE_XBOXONE },
+ 	{ 0x0e6f, 0x0161, "PDP Xbox One Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x0e6f, 0x0162, "PDP Xbox One Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x0e6f, 0x0163, "PDP Xbox One Controller", 0, XTYPE_XBOXONE },
+@@ -276,12 +279,15 @@ static const struct xpad_device {
+ 	{ 0x0f0d, 0x0078, "Hori Real Arcade Pro V Kai Xbox One", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
+ 	{ 0x0f0d, 0x00c5, "Hori Fighting Commander ONE", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
+ 	{ 0x0f0d, 0x00dc, "HORIPAD FPS for Nintendo Switch", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
++	{ 0x0f0d, 0x0151, "Hori Racing Wheel Overdrive for Xbox Series X", 0, XTYPE_XBOXONE },
++	{ 0x0f0d, 0x0152, "Hori Racing Wheel Overdrive for Xbox Series X", 0, XTYPE_XBOXONE },
+ 	{ 0x0f30, 0x010b, "Philips Recoil", 0, XTYPE_XBOX },
+ 	{ 0x0f30, 0x0202, "Joytech Advanced Controller", 0, XTYPE_XBOX },
+ 	{ 0x0f30, 0x8888, "BigBen XBMiniPad Controller", 0, XTYPE_XBOX },
+ 	{ 0x102c, 0xff0c, "Joytech Wireless Advanced Controller", 0, XTYPE_XBOX },
+ 	{ 0x1038, 0x1430, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
+ 	{ 0x1038, 0x1431, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
++	{ 0x10f5, 0x7005, "Turtle Beach Recon Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x11c9, 0x55f0, "Nacon GC-100XF", 0, XTYPE_XBOX360 },
+ 	{ 0x11ff, 0x0511, "PXN V900", 0, XTYPE_XBOX360 },
+ 	{ 0x1209, 0x2882, "Ardwiino Controller", 0, XTYPE_XBOX360 },
+@@ -366,6 +372,7 @@ static const struct xpad_device {
+ 	{ 0x24c6, 0x5510, "Hori Fighting Commander ONE (Xbox 360/PC Mode)", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x551a, "PowerA FUSION Pro Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x24c6, 0x561a, "PowerA FUSION Controller", 0, XTYPE_XBOXONE },
++	{ 0x24c6, 0x581a, "ThrustMaster XB1 Classic Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x24c6, 0x5b00, "ThrustMaster Ferrari 458 Racing Wheel", 0, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x5b02, "Thrustmaster, Inc. GPX Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x5b03, "Thrustmaster Ferrari 458 Racing Wheel", 0, XTYPE_XBOX360 },
+@@ -376,10 +383,12 @@ static const struct xpad_device {
+ 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
+ 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
+ 	{ 0x2dc8, 0x3106, "8BitDo Ultimate Wireless / Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
+-	{ 0x2dc8, 0x6001, "8BitDo SN30 Pro", 0, XTYPE_XBOX360 },
++	{ 0x2dc8, 0x3109, "8BitDo Ultimate Wireless Bluetooth", 0, XTYPE_XBOX360 },
+ 	{ 0x2dc8, 0x310a, "8BitDo Ultimate 2C Wireless Controller", 0, XTYPE_XBOX360 },
++	{ 0x2dc8, 0x6001, "8BitDo SN30 Pro", 0, XTYPE_XBOX360 },
+ 	{ 0x2e24, 0x0652, "Hyperkin Duke X-Box One pad", 0, XTYPE_XBOXONE },
+ 	{ 0x2e24, 0x1688, "Hyperkin X91 X-Box One pad", 0, XTYPE_XBOXONE },
++	{ 0x2e95, 0x0504, "SCUF Gaming Controller", MAP_SELECT_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x31e3, 0x1100, "Wooting One", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1200, "Wooting Two", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1210, "Wooting Lekker", 0, XTYPE_XBOX360 },
+@@ -387,12 +396,16 @@ static const struct xpad_device {
+ 	{ 0x31e3, 0x1230, "Wooting Two HE (ARM)", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1300, "Wooting 60HE (AVR)", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1310, "Wooting 60HE (ARM)", 0, XTYPE_XBOX360 },
++	{ 0x3285, 0x0603, "Nacon Pro Compact controller for Xbox", 0, XTYPE_XBOXONE },
+ 	{ 0x3285, 0x0607, "Nacon GC-100", 0, XTYPE_XBOX360 },
++	{ 0x3285, 0x0614, "Nacon Pro Compact", 0, XTYPE_XBOXONE },
+ 	{ 0x3285, 0x0646, "Nacon Pro Compact", 0, XTYPE_XBOXONE },
++	{ 0x3285, 0x0662, "Nacon Revolution5 Pro", 0, XTYPE_XBOX360 },
+ 	{ 0x3285, 0x0663, "Nacon Evol-X", 0, XTYPE_XBOXONE },
+ 	{ 0x3537, 0x1004, "GameSir T4 Kaleid", 0, XTYPE_XBOX360 },
+ 	{ 0x3537, 0x1010, "GameSir G7 SE", 0, XTYPE_XBOXONE },
+ 	{ 0x3767, 0x0101, "Fanatec Speedster 3 Forceshock Wheel", 0, XTYPE_XBOX },
++	{ 0x413d, 0x2104, "Black Shark Green Ghost Gamepad", 0, XTYPE_XBOX360 },
+ 	{ 0xffff, 0xffff, "Chinese-made Xbox Controller", 0, XTYPE_XBOX },
+ 	{ 0x0000, 0x0000, "Generic X-Box pad", 0, XTYPE_UNKNOWN }
+ };
+@@ -491,6 +504,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x03f0),		/* HP HyperX Xbox 360 controllers */
+ 	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One controllers */
+ 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster Xbox 360 controllers */
++	XPAD_XBOXONE_VENDOR(0x044f),		/* Thrustmaster Xbox One controllers */
+ 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft Xbox 360 controllers */
+ 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft Xbox One controllers */
+ 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech Xbox 360-style controllers */
+@@ -537,11 +551,13 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Controllers */
+ 	XPAD_XBOXONE_VENDOR(0x2e24),		/* Hyperkin Controllers */
+ 	XPAD_XBOX360_VENDOR(0x2f24),		/* GameSir Controllers */
++	XPAD_XBOXONE_VENDOR(0x2e95),		/* SCUF Gaming Controller */
+ 	XPAD_XBOX360_VENDOR(0x31e3),		/* Wooting Keyboards */
+ 	XPAD_XBOX360_VENDOR(0x3285),		/* Nacon GC-100 */
+ 	XPAD_XBOXONE_VENDOR(0x3285),		/* Nacon Evol-X */
+ 	XPAD_XBOX360_VENDOR(0x3537),		/* GameSir Controllers */
+ 	XPAD_XBOXONE_VENDOR(0x3537),		/* GameSir Controllers */
++	XPAD_XBOX360_VENDOR(0x413d),		/* Black Shark Green Ghost Controller */
+ 	{ }
+ };
  
--#define INT_ENABLE_MASK (CONTROL_RX_DATA_INT | CONTROL_TX_DATA_INT | \
--			 CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
-+#define INT_ENABLE_MASK (CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
- 
- #define REG_CONTROL		(0x00)
- #define REG_FRAME_SIZE		(0x04)
-@@ -133,10 +132,15 @@ static inline void mchp_corespi_disable(
- 	mchp_corespi_write(spi, REG_CONTROL, control);
- }
- 
--static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi)
-+static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi, int fifo_max)
- {
--	while (spi->rx_len >= spi->n_bytes && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)) {
--		u32 data = mchp_corespi_read(spi, REG_RX_DATA);
-+	for (int i = 0; i < fifo_max; i++) {
-+		u32 data;
-+
-+		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)
-+			;
-+
-+		data = mchp_corespi_read(spi, REG_RX_DATA);
- 
- 		spi->rx_len -= spi->n_bytes;
- 
-@@ -211,11 +215,10 @@ static inline void mchp_corespi_set_xfer
- 	mchp_corespi_write(spi, REG_FRAMESUP, len);
- }
- 
--static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
-+static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi, int fifo_max)
- {
--	int fifo_max, i = 0;
-+	int i = 0;
- 
--	fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
- 	mchp_corespi_set_xfer_size(spi, fifo_max);
- 
- 	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_TXFIFO_FULL)) {
-@@ -413,19 +416,6 @@ static irqreturn_t mchp_corespi_interrup
- 	if (intfield == 0)
- 		return IRQ_NONE;
- 
--	if (intfield & INT_TXDONE)
--		mchp_corespi_write(spi, REG_INT_CLEAR, INT_TXDONE);
--
--	if (intfield & INT_RXRDY) {
--		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RXRDY);
--
--		if (spi->rx_len)
--			mchp_corespi_read_fifo(spi);
--	}
--
--	if (!spi->rx_len && !spi->tx_len)
--		finalise = true;
--
- 	if (intfield & INT_RX_CHANNEL_OVERFLOW) {
- 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RX_CHANNEL_OVERFLOW);
- 		finalise = true;
-@@ -512,9 +502,14 @@ static int mchp_corespi_transfer_one(str
- 
- 	mchp_corespi_write(spi, REG_SLAVE_SELECT, spi->pending_slave_select);
- 
--	while (spi->tx_len)
--		mchp_corespi_write_fifo(spi);
-+	while (spi->tx_len) {
-+		int fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
-+
-+		mchp_corespi_write_fifo(spi, fifo_max);
-+		mchp_corespi_read_fifo(spi, fifo_max);
-+	}
- 
-+	spi_finalize_current_transfer(host);
- 	return 1;
- }
- 
+@@ -694,7 +710,9 @@ static const struct xboxone_init_packet
+ 	XBOXONE_INIT_PKT(0x045e, 0x0b00, xboxone_s_init),
+ 	XBOXONE_INIT_PKT(0x045e, 0x0b00, extra_input_packet_init),
+ 	XBOXONE_INIT_PKT(0x0e6f, 0x0000, xboxone_pdp_led_on),
++	XBOXONE_INIT_PKT(0x20d6, 0xa01a, xboxone_pdp_led_on),
+ 	XBOXONE_INIT_PKT(0x0e6f, 0x0000, xboxone_pdp_auth),
++	XBOXONE_INIT_PKT(0x20d6, 0xa01a, xboxone_pdp_auth),
+ 	XBOXONE_INIT_PKT(0x24c6, 0x541a, xboxone_rumblebegin_init),
+ 	XBOXONE_INIT_PKT(0x24c6, 0x542a, xboxone_rumblebegin_init),
+ 	XBOXONE_INIT_PKT(0x24c6, 0x543a, xboxone_rumblebegin_init),
 
 
 
