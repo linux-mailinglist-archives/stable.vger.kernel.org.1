@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-124996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9D6A68F71
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4FDA6901B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:44:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 685213BFC3A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D35D016CCA5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682D91DF267;
-	Wed, 19 Mar 2025 14:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4861021421B;
+	Wed, 19 Mar 2025 14:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/PMZgL7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVxflK/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233C61C5D4D;
-	Wed, 19 Mar 2025 14:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B961D5AB2;
+	Wed, 19 Mar 2025 14:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394879; cv=none; b=O5CYeMRxHQGWKZbDsrjWEe8X/d9zCcPUzvlfVjOnUObCf8RQUEjeLEHuSHyuuiZu9kWucZjheIApaOLzMsHAizNH9oMFkRiILVispRmXwTuUjU0IjeDZnRxuniwtD9fUVQyzloUBQW5uDVMozBTqHvkbW1WKyDnL1GjSw0cpEqE=
+	t=1742395035; cv=none; b=ONG9XvZPy1Y5ptHe6U/AkGi3XQ2N5/04cJknkJuAj6V3qTlSBrvqhlenkVEQsaImVjUx2o9A0rVQkKMU+lJKnA4upR65JyUVD05iS9OgICmnKD5hVKypJdonM6sXBylyJdgDsDCHcJg32KZfjFAZQSQOEsBlkecKRcpF2gxfsHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394879; c=relaxed/simple;
-	bh=mRcrd3PtWNj8dotA/fGOTyV1XvC5wvH/aeuXshfIoFg=;
+	s=arc-20240116; t=1742395035; c=relaxed/simple;
+	bh=gScPToxdNtI84tjlJHMojcm8hMwb3UT1D/3MWvcfk30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R2bHRi4t21eEqjsjwGwfNa09HfCTBSdbMlml+Kx9Ibcw/5MJHx5d3mGF91TqwGQ27hhYiZiBk3pd6i99qnieSiGr1QnTKFtIJJWDsvFz0hwHdH4rmQ38rDEtaDgq82HQjv2l3kRU15FxFOp31WcCkZDzP0Bke2U3SRbQDtoF0ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/PMZgL7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E74C4CEE4;
-	Wed, 19 Mar 2025 14:34:38 +0000 (UTC)
+	 MIME-Version; b=On68IsO0BPo4ptgcYdaYyIBf8+CFGrQg8x62bsVE5SC6YEF+EhPWv510eShwouNJ2OxH4wOXYYhXyR2wKyNpDkXP394tTs19JZq3MI1DqOrw5LJ1yBtBv8hbJuNh+jAY4prG/yIJMB1yZIZonZlHK7+rd7IVGTRgbK1VTTfT8hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVxflK/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E6EC4CEEA;
+	Wed, 19 Mar 2025 14:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394879;
-	bh=mRcrd3PtWNj8dotA/fGOTyV1XvC5wvH/aeuXshfIoFg=;
+	s=korg; t=1742395034;
+	bh=gScPToxdNtI84tjlJHMojcm8hMwb3UT1D/3MWvcfk30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/PMZgL7SCtxMT+Nt3UqnRlSRw7iBtwvnBm8CNrxLBBDIT7q4dg7+vP/q9YmDYKmz
-	 b7fmZDD1RaGmwLwYggD9+SPwVgmEmsCDb/WYBbGiopeZLN9MfIXjF2c+OKW5S35pSR
-	 +h9bKcsAEl478NwFphCFEmHYInU0EoNGjVJ3eMJQ=
+	b=oVxflK/gHibZDE75CKfaFobEeM8vjeJU7vaNoRnLECf6EAcyKsjtOCCd6/eD7VZ3x
+	 nNsi9HPFxNr+IH9ASaslM7HlvGzIBnpf6RZEhgm7jLQbW9A+3XIKah//b4qid53/Ch
+	 whhx7bM5G5bd8NbP92bj/QK9Mc8IqDM1aEVqtn9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 078/241] HID: intel-ish-hid: Send clock sync message immediately after reset
-Date: Wed, 19 Mar 2025 07:29:08 -0700
-Message-ID: <20250319143029.662534744@linuxfoundation.org>
+Subject: [PATCH 6.12 056/231] nvme-fc: go straight to connecting state when initializing
+Date: Wed, 19 Mar 2025 07:29:09 -0700
+Message-ID: <20250319143028.207583118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 7e0d1cff12b895f44f4ddc8cf50311bc1f775201 ]
+[ Upstream commit d3d380eded7ee5fc2fc53b3b0e72365ded025c4a ]
 
-The ISH driver performs a clock sync with the firmware once at system
-startup and then every 20 seconds. If a firmware reset occurs right
-after a clock sync, the driver would wait 20 seconds before performing
-another clock sync with the firmware. This is particularly problematic
-with the introduction of the "load firmware from host" feature, where
-the driver performs a clock sync with the bootloader and then has to
-wait 20 seconds before syncing with the main firmware.
+The initial controller initialization mimiks the reconnect loop
+behavior by switching from NEW to RESETTING and then to CONNECTING.
 
-This patch clears prev_sync immediately upon receiving an IPC reset,
-so that the main firmware and driver will perform a clock sync
-immediately after completing the IPC handshake.
+The transition from NEW to CONNECTING is a valid transition, so there is
+no point entering the RESETTING state. TCP and RDMA also transition
+directly to CONNECTING state.
 
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/ipc.c         | 9 ++++++---
- drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h | 2 ++
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/nvme/host/fc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
-index cb956a8c386cb..4c861119e97aa 100644
---- a/drivers/hid/intel-ish-hid/ipc/ipc.c
-+++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
-@@ -517,6 +517,10 @@ static int ish_fw_reset_handler(struct ishtp_device *dev)
- 	/* ISH FW is dead */
- 	if (!ish_is_input_ready(dev))
- 		return	-EPIPE;
-+
-+	/* Send clock sync at once after reset */
-+	ishtp_dev->prev_sync = 0;
-+
- 	/*
- 	 * Set HOST2ISH.ILUP. Apparently we need this BEFORE sending
- 	 * RESET_NOTIFY_ACK - FW will be checking for it
-@@ -577,13 +581,12 @@ static void fw_reset_work_fn(struct work_struct *work)
-  */
- static void _ish_sync_fw_clock(struct ishtp_device *dev)
- {
--	static unsigned long	prev_sync;
- 	struct ipc_time_update_msg time = {};
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 682234da2fabe..a458d939ab662 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3582,8 +3582,7 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
+ 	list_add_tail(&ctrl->ctrl_list, &rport->ctrl_list);
+ 	spin_unlock_irqrestore(&rport->lock, flags);
  
--	if (prev_sync && time_before(jiffies, prev_sync + 20 * HZ))
-+	if (dev->prev_sync && time_before(jiffies, dev->prev_sync + 20 * HZ))
- 		return;
- 
--	prev_sync = jiffies;
-+	dev->prev_sync = jiffies;
- 	/* The fields of time would be updated while sending message */
- 	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &time, sizeof(time));
- }
-diff --git a/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h b/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
-index effbb442c7277..dfc8cfd393532 100644
---- a/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
-+++ b/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
-@@ -254,6 +254,8 @@ struct ishtp_device {
- 	unsigned int	ipc_tx_cnt;
- 	unsigned long long	ipc_tx_bytes_cnt;
- 
-+	/* Time of the last clock sync */
-+	unsigned long prev_sync;
- 	const struct ishtp_hw_ops *ops;
- 	size_t	mtu;
- 	uint32_t	ishtp_msg_hdr;
+-	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_RESETTING) ||
+-	    !nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
++	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
+ 		dev_err(ctrl->ctrl.device,
+ 			"NVME-FC{%d}: failed to init ctrl state\n", ctrl->cnum);
+ 		goto fail_ctrl;
 -- 
 2.39.5
 
