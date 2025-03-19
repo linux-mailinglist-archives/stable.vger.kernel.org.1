@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-125246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6A5A69223
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:02:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD2BA68F97
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640D21B87C03
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55B2B17D9F6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B933214A7A;
-	Wed, 19 Mar 2025 14:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C9A1E1025;
+	Wed, 19 Mar 2025 14:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3hXm1QI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGvQeXDI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4361C6FEE;
-	Wed, 19 Mar 2025 14:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EAF1B2194;
+	Wed, 19 Mar 2025 14:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395055; cv=none; b=F0beb0sDdmqeaeT3d6sLXz7c2TjtpxpaUE00nITNw6SCqueSonhAJnC+CsmrXtao3LjRhafb+oV50inuchlVexju+Qyb4bC1DFjyb6QZqahk4SHfckbHErH9P4eF81PEWc43Px7gmw4UIvMpeyBz9hxKDEhCa1zXD1z8zEGYvC4=
+	t=1742394898; cv=none; b=E/kH+2b+6yDhbQJ/SKtIp1hR8SZqlC5nLhjmi+jW0xsyLA4WSI9Hg/4YQ82MpalOpgmK8ByeH4l8J2gtIuL9/RM3RXbmu1XFTvpqWJSRWOMmckpLfgTez6OQGNR07V35UObwOa6vRyqWjc0/nERzaQbXS/lATc6+1KR/1tXq/JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395055; c=relaxed/simple;
-	bh=0Srm/FDr2uZcsiJZwh3hLXhq/vav172k5oZOkGv8Ahc=;
+	s=arc-20240116; t=1742394898; c=relaxed/simple;
+	bh=EqnbpRAt8sVe2qqlJLAVmUGuMUh+KZe+4vZKNiSyU4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxo7qkMS+bPqulecAOp7E9Q2J4WVAm/s8e0GpGuQgmgvV2ARv4S/56kqeZDtqx7n/oUbQXRswkw6XgQvpai1xG2/aO45pKTmQSYn1nXnngeDNSPsRJmkMzpBC8/SRNsgTPyN0gNLASD+puHHMnJ/7RvqU7aGk/vtMVXqPIRW8l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3hXm1QI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BF8C4CEE4;
-	Wed, 19 Mar 2025 14:37:34 +0000 (UTC)
+	 MIME-Version; b=p5vzBqbMJJnej+yLPDvvYWkBshwek9gx00OfNqPGlBWKe03Xbm1DM452oiWmdtBTosnBUJkDReRQIXHMuV8GKbHZOp+ksbu+t0qU3He9WetP2NZvU2x4XoRR/I0JLgiMjfdDGkwOyBbEztourM6Aq1PV0mydnkPqyx/wNyJvjoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGvQeXDI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297BCC4CEE4;
+	Wed, 19 Mar 2025 14:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395055;
-	bh=0Srm/FDr2uZcsiJZwh3hLXhq/vav172k5oZOkGv8Ahc=;
+	s=korg; t=1742394898;
+	bh=EqnbpRAt8sVe2qqlJLAVmUGuMUh+KZe+4vZKNiSyU4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3hXm1QIeLlft2hJfhtrl3IV0HswlSow0rx7jKYJTsFaFBiVI5UVklXYvCi1V32/p
-	 eL/U31hPgM4kZbnwR/PUOGWToXtx6IVsO7ky5UWnGUU08WjinsoqeIdgYBqftXWgi4
-	 sPd4s6KlmpavAjCk/lupseNhHoLJVdykLNvt2LGE=
+	b=kGvQeXDIDy2pAZz46xKg6zH5wSedDbfYjCydQcqqHx+d2/DfTARykwjRERSrfuPfL
+	 q1pBkvnVZj2Rl+pYblbSua4JIzHtZrMuxi/vO5EXQgZC/qO92qpcWpefJ3qD/N7a6Q
+	 AT0UoldRjUx+khuaGD7RYk5cqoMLO+gbVx7PNHpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Seunghui Lee <sh043.lee@samsung.com>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/231] ipvs: prevent integer overflow in do_ip_vs_get_ctl()
+Subject: [PATCH 6.13 068/241] scsi: ufs: core: Fix error return with query response
 Date: Wed, 19 Mar 2025 07:28:58 -0700
-Message-ID: <20250319143027.927922209@linuxfoundation.org>
+Message-ID: <20250319143029.404473766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Seunghui Lee <sh043.lee@samsung.com>
 
-[ Upstream commit 80b78c39eb86e6b55f56363b709eb817527da5aa ]
+[ Upstream commit 1a78a56ea65252bb089e0daace989167227f2d31 ]
 
-The get->num_services variable is an unsigned int which is controlled by
-the user.  The struct_size() function ensures that the size calculation
-does not overflow an unsigned long, however, we are saving the result to
-an int so the calculation can overflow.
+There is currently no mechanism to return error from query responses.
+Return the error and print the corresponding error message with it.
 
-Both "len" and "get->num_services" come from the user.  This check is
-just a sanity check to help the user and ensure they are using the API
-correctly.  An integer overflow here is not a big deal.  This has no
-security impact.
-
-Save the result from struct_size() type size_t to fix this integer
-overflow bug.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Seunghui Lee <sh043.lee@samsung.com>
+Link: https://lore.kernel.org/r/20250118023808.24726-1-sh043.lee@samsung.com
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/ufs/core/ufshcd.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index dc6ddc4abbe21..3224f6e17e736 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -3091,12 +3091,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_SERVICES:
- 	{
- 		struct ip_vs_get_services *get;
--		int size;
-+		size_t size;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index a5bb6ea96460c..96cb294e2ec30 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -3119,8 +3119,13 @@ ufshcd_dev_cmd_completion(struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
+ 	case UPIU_TRANSACTION_QUERY_RSP: {
+ 		u8 response = lrbp->ucd_rsp_ptr->header.response;
  
- 		get = (struct ip_vs_get_services *)arg;
- 		size = struct_size(get, entrytable, get->num_services);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
-@@ -3132,12 +3132,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_DESTS:
- 	{
- 		struct ip_vs_get_dests *get;
--		int size;
-+		size_t size;
- 
- 		get = (struct ip_vs_get_dests *)arg;
- 		size = struct_size(get, entrytable, get->num_dests);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
+-		if (response == 0)
++		if (response == 0) {
+ 			err = ufshcd_copy_query_response(hba, lrbp);
++		} else {
++			err = -EINVAL;
++			dev_err(hba->dev, "%s: unexpected response in Query RSP: %x\n",
++					__func__, response);
++		}
+ 		break;
+ 	}
+ 	case UPIU_TRANSACTION_REJECT_UPIU:
 -- 
 2.39.5
 
