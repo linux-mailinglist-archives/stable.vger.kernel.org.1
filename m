@@ -1,97 +1,103 @@
-Return-Path: <stable+bounces-125606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0BEA69BB1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 23:02:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 682F7A69BFF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 23:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D79937B171D
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 22:01:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18B717B00D4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 22:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B0B221DB7;
-	Wed, 19 Mar 2025 21:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1595215F63;
+	Wed, 19 Mar 2025 22:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HXbwnG6p"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="fUGv+Xve"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFE0221D9F;
-	Wed, 19 Mar 2025 21:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ACEF21C177;
+	Wed, 19 Mar 2025 22:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742421597; cv=none; b=rlKC6njns6CCuqIWu+eb/x2Mmg6Po6CQhab/p5QY+MPCt8KBpS15kJoPesX47MMrZt/flV+owKXmpLyyq7+CcoE+X0nOJmC6eAL5qj9ulkY5JfuK1/KhqW5ZxWox5lUXf9Rud1MQFtjWWtkLp1OnGso7JgndCHFOnYtxmRdiwI8=
+	t=1742423152; cv=none; b=js0OYMEQKOEiktu7qZmYg69+G+dYxiz8oK1DvO56Qr5FphChP2vgdyJUkTOqE1mUl3eBGVxln8sI11m+tQldrallVOExW6gJucoYVI83bB+e8G+IV26jB2Zbjw8HhyvgsFL6weOVdJsL0wQgr2jvBWMxCM4XzHJ0Gli4kKN85Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742421597; c=relaxed/simple;
-	bh=Kh+LiaNhD5S4fdAxEqLEVOhdzZQHMP+KOw5UY2eEKX8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IFSd/rTcjG07E5imFZ52p9vl3OnP87E2ymjTmWe0GAoGpeNeWSu5ABbrANDZuUdCTmPn6/FOXa9wzPDI6qULqz/NPZTuN+XIzk1VKlhxJoVEgVeC26Q5LhmGwFWSVN9uyDR4zSIJ6pI+ZpWNFI7nCjYKMpMgYoLpmcb8HiUGkCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HXbwnG6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B9AC4CEE4;
-	Wed, 19 Mar 2025 21:59:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742421597;
-	bh=Kh+LiaNhD5S4fdAxEqLEVOhdzZQHMP+KOw5UY2eEKX8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=HXbwnG6pPAnZve0XiygPaKa5GK/7LAlI5d/83iPOG9s9Z5jG9xOi3WL/QDoOeHQ6A
-	 ZBRWbA+YNyUS6qFZoC+CNVIBr+8XRf/doRqklNV7+xBh372vCavvKwUFynyph+ecqw
-	 T795MXFoapt1uO/P6XqR9Znftyc0IdsK3IEQbFCB1rM/BusGElMeM79069ohhMvbyO
-	 U8x9UYIStk6KwzMs+0OaAIlNhMEO0d5a0ACvHR1dNlEjsssBt2nMQY+vZxGyY0yg3v
-	 OctvQG+5Mmc8HWVfb3yLdGx0Bnmri47Gbgaivonx/ojggboCIi30cq8A3ESa/xQt/N
-	 Xxw/ysUDLvSJw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD843806654;
-	Wed, 19 Mar 2025 22:00:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1742423152; c=relaxed/simple;
+	bh=/DnXj7sM/hLH45jFZvnswxZZ5+2GzTWmiSt7GfwFTeU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=boPQJq1/qQKa5041JCyJRJ/7oB8hEAvKdAio7J+yvbpgboXsjqKPBPTWG5Kw7c1EKqlQX+fsPvq/mw5AsdcL2YrTwubipDQwt+eVXVAlGhQytt9gt8ZL/0XccDbKthHw5U+DPKlqpfMOzLmBEoNfoU1lYl28I/rUsigO76lkIgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=fUGv+Xve; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id 9C6202116B2E; Wed, 19 Mar 2025 15:25:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9C6202116B2E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1742423150;
+	bh=XMFT8EH3mSyVgesDwkhGIBj4pkS8bIEYZ5xxGIAAWPk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fUGv+XveaHdkgGyPHlkLf3SdCfeDxcbMPdlZhpwyo0lkTYJPczEPaFrNNdqudWFVs
+	 Nzafx0ikb4J5RTshNlrUVhhuAoZwZZgj3n8gZicbHYqDlOAuaBbFAu5p3Wp/h56ppe
+	 jIj98P82ELB2Y24jxz15ixnrBM3O65mPLqbQcevM=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: frank.scheiner@web.de
+Cc: dchinner@redhat.com,
+	djwong@kernel.org,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: 6.1.132-rc1 build regression on Azure x86 and arm64 VM
+Date: Wed, 19 Mar 2025 15:25:50 -0700
+Message-Id: <1742423150-5185-1-git-send-email-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <8c6125d7-363c-42b3-bdbb-f802cb8b4408@web.de>
+References: <8c6125d7-363c-42b3-bdbb-f802cb8b4408@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] xsk: fix an integer overflow in
- xp_create_and_assign_umem()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174242163283.1209542.11030914618226049895.git-patchwork-notify@kernel.org>
-Date: Wed, 19 Mar 2025 22:00:32 +0000
-References: <20250313085007.3116044-1-Ilia.Gavrilov@infotecs.ru>
-In-Reply-To: <20250313085007.3116044-1-Ilia.Gavrilov@infotecs.ru>
-To: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Cc: bjorn@kernel.org, magnus.karlsson@intel.com, maciej.fijalkowski@intel.com,
- jonathan.lemon@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- lvc-project@linuxtesting.org, stable@vger.kernel.org
 
-Hello:
+v6.1.132-rc1 build fails on Azure x86 and arm64 VM:
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+fs/xfs/libxfs/xfs_alloc.c: In function '__xfs_free_extent_later':
+fs/xfs/libxfs/xfs_alloc.c:2551:51: error: 'mp' undeclared (first use in this function); did you mean 'tp'?
+ 2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+      |                                                   ^~
+./include/linux/compiler.h:78:45: note: in definition of macro 'unlikely'
+   78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+      |                                             ^
+fs/xfs/libxfs/xfs_alloc.c:2551:13: note: in expansion of macro 'XFS_IS_CORRUPT'
+ 2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+      |             ^~~~~~~~~~~~~~
+fs/xfs/libxfs/xfs_alloc.c:2551:51: note: each undeclared identifier is reported only once for each function it appears in
+ 2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+      |                                                   ^~
+./include/linux/compiler.h:78:45: note: in definition of macro 'unlikely'
+   78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+      |                                             ^
+fs/xfs/libxfs/xfs_alloc.c:2551:13: note: in expansion of macro 'XFS_IS_CORRUPT'
+ 2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+      |             ^~~~~~~~~~~~~~
+In file included from ./fs/xfs/xfs.h:22,
+                 from fs/xfs/libxfs/xfs_alloc.c:6:
+./fs/xfs/xfs_linux.h:225:63: warning: left-hand operand of comma expression has no effect [-Wunused-value]
+  225 |                                                __this_address), \
+      |                                                               ^
+fs/xfs/libxfs/xfs_alloc.c:2551:13: note: in expansion of macro 'XFS_IS_CORRUPT'
+ 2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+      |             ^~~~~~~~~~~~~~
+  CC [M]  net/ipv4/netfilter/arpt_mangle.o
+  CC      net/unix/scm.o
+make[3]: *** [scripts/Makefile.build:250: fs/xfs/libxfs/xfs_alloc.o] Error 1
+make[2]: *** [scripts/Makefile.build:503: fs/xfs] Error 2
 
-On Thu, 13 Mar 2025 08:50:08 +0000 you wrote:
-> Since the i and pool->chunk_size variables are of type 'u32',
-> their product can wrap around and then be cast to 'u64'.
-> This can lead to two different XDP buffers pointing to the same
-> memory area.
-> 
-> Found by InfoTeCS on behalf of Linux Verification Center
-> (linuxtesting.org) with SVACE.
-> 
-> [...]
 
-Here is the summary with links:
-  - [net] xsk: fix an integer overflow in xp_create_and_assign_umem()
-    https://git.kernel.org/netdev/net/c/559847f56769
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Tested-by: Hardik Garg <hargar@linux.microsoft.com>
 
+
+
+Thanks,
+Hardik
 
 
