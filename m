@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-124998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65EF9A68F73
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09890A6901D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C30083AFBB3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D294316D5AF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D7E1DEFD9;
-	Wed, 19 Mar 2025 14:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE61214213;
+	Wed, 19 Mar 2025 14:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7I6BA5g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DB/Qs1H2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2578919DF99;
-	Wed, 19 Mar 2025 14:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6441D5142;
+	Wed, 19 Mar 2025 14:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394881; cv=none; b=tYLiGxOLnwg7OwBDDOS9EKuLCfyqfqiH1eQzuOHuunUtydnje3AUS+3D7jwndgEeWkAsmoyRca9t2jhpXa36Yf+gSn4wBN4x6Gjpfrqfw+P3pHLqYwqB1tHceguLmyg4zEEZfIE9gTAtadnpLTGImbOuEUN3tBAhGM3rNUzL39Q=
+	t=1742395036; cv=none; b=b9+r0MwaTnN+xSWcxwr/H7gSmbB4Bxt4EzRDFklgY7+KdJVIsybuHdtAFCHEZ307bEw19xjt3hsmF8lEMiuA3aaEDzTKg2IQxdzM/4p2StxyyGSoK/9qx68Wum2di+yoSdg3x4VD910MsshazdmgYK4LMN0TpAk7eo9kbgNd4dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394881; c=relaxed/simple;
-	bh=+9mOKGNaHBJxwL6b/FGGDQ+dRPQyiwj1tNtDhA+qEac=;
+	s=arc-20240116; t=1742395036; c=relaxed/simple;
+	bh=e5gOWpPwqQRAadWtxvbsU+HmaWvBUXJEs0vHohPNprs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUJmyD8pxaLq+3zwDFPlORqUZKyZRxCGuIbhsihR0Fnxlh+QoTqbpTxq7uTktQ20rJ6N0OllGnyga4DrV2kvJlm9AAo4+VO6SRLqV0r2uGjYx9mlCKK3GdfunSvRvev+fKHn/UFIxVLK/qizQ2pQqdfkeaqx01Z0M7nCaVE2ix4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7I6BA5g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5230C4CEE8;
-	Wed, 19 Mar 2025 14:34:40 +0000 (UTC)
+	 MIME-Version; b=oMAIRUrbhH+XahLzL6SKB2Di0wnfqSdkybxeBAZ0JUwS++0rpLs/Xmd4Q7GP0L2CCD0Q84jC12CNDEu06cvgOMKutrNBWiI78pfQKgr4cFJU+K8xM4pAQJdPVhJCxa+0iREhV9t0wvpgnX7wKwq9ZcEG17wPt5VniY2pSNMm4Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DB/Qs1H2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C437FC4CEE4;
+	Wed, 19 Mar 2025 14:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394881;
-	bh=+9mOKGNaHBJxwL6b/FGGDQ+dRPQyiwj1tNtDhA+qEac=;
+	s=korg; t=1742395035;
+	bh=e5gOWpPwqQRAadWtxvbsU+HmaWvBUXJEs0vHohPNprs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7I6BA5geFMpHRpFA95jFbFPoJ1FEosnB/oEuX4dhrQJhub0O3kA4uzx1qso0u9gW
-	 rUPy0e++2Vv6+9jmMYwBqrcXUblQe6OnnP/AMYfjP89JiQvDyf+uedPcJLL0QaH/n+
-	 I7TQMZD2CHBu8+JNVZIescwtagJBTgz/nVg+CfeY=
+	b=DB/Qs1H2v8z9Xi07jknXJW38Mv3ao+nNrN+0VTEVG8BHLhVt3molP0WhQ5XuJ2le9
+	 rbJyI9qryuRvOLZnJDmhIaqhWe2KQgLdwcjrndn1nHMRxRo58yAciBenDvgKPKCF+w
+	 54elr8CxoOOIjlGduZPbMfOvdw9mAS1Pe2cnrai4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 081/241] usb: phy: generic: Use proper helper for property detection
+Subject: [PATCH 6.12 058/231] hrtimers: Mark is_migration_base() with __always_inline
 Date: Wed, 19 Mar 2025 07:29:11 -0700
-Message-ID: <20250319143029.735306053@linuxfoundation.org>
+Message-ID: <20250319143028.257810843@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 309005e448c1f3e4b81e4416406991b7c3339c1d ]
+[ Upstream commit 27af31e44949fa85550176520ef7086a0d00fd7b ]
 
-Since commit c141ecc3cecd7 ("of: Warn when of_property_read_bool() is
-used on non-boolean properties") a warning is raised if this function
-is used for property detection. of_property_present() is the correct
-helper for this.
+When is_migration_base() is unused, it prevents kernel builds
+with clang, `make W=1` and CONFIG_WERROR=y:
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20250120144251.580981-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+kernel/time/hrtimer.c:156:20: error: unused function 'is_migration_base' [-Werror,-Wunused-function]
+  156 | static inline bool is_migration_base(struct hrtimer_clock_base *base)
+      |                    ^~~~~~~~~~~~~~~~~
+
+Fix this by marking it with __always_inline.
+
+[ tglx: Use __always_inline instead of __maybe_unused and move it into the
+  	usage sites conditional ]
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250116160745.243358-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/hrtimer.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/phy/phy-generic.c b/drivers/usb/phy/phy-generic.c
-index 6c3ececf91375..8423be59ec0ff 100644
---- a/drivers/usb/phy/phy-generic.c
-+++ b/drivers/usb/phy/phy-generic.c
-@@ -212,7 +212,7 @@ int usb_phy_gen_create_phy(struct device *dev, struct usb_phy_generic *nop)
- 		if (of_property_read_u32(node, "clock-frequency", &clk_rate))
- 			clk_rate = 0;
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index d116c28564f26..db9c06bb23116 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -156,11 +156,6 @@ static struct hrtimer_cpu_base migration_cpu_base = {
  
--		needs_clk = of_property_read_bool(node, "clocks");
-+		needs_clk = of_property_present(node, "clocks");
+ #define migration_base	migration_cpu_base.clock_base[0]
+ 
+-static inline bool is_migration_base(struct hrtimer_clock_base *base)
+-{
+-	return base == &migration_base;
+-}
+-
+ /*
+  * We are using hashed locking: holding per_cpu(hrtimer_bases)[n].lock
+  * means that all timers which are tied to this base via timer->base are
+@@ -312,11 +307,6 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 
+ #else /* CONFIG_SMP */
+ 
+-static inline bool is_migration_base(struct hrtimer_clock_base *base)
+-{
+-	return false;
+-}
+-
+ static inline struct hrtimer_clock_base *
+ lock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
+ 	__acquires(&timer->base->cpu_base->lock)
+@@ -1441,6 +1431,18 @@ static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base,
  	}
- 	nop->gpiod_reset = devm_gpiod_get_optional(dev, "reset",
- 						   GPIOD_ASIS);
+ }
+ 
++#ifdef CONFIG_SMP
++static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
++{
++	return base == &migration_base;
++}
++#else
++static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
++{
++	return false;
++}
++#endif
++
+ /*
+  * This function is called on PREEMPT_RT kernels when the fast path
+  * deletion of a timer failed because the timer callback function was
 -- 
 2.39.5
 
