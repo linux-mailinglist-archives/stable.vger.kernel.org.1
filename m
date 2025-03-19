@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-125356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA07AA69080
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 101FEA68FDD
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D3F4463060
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A29EE17E5E6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F241721C9E5;
-	Wed, 19 Mar 2025 14:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9B81DED55;
+	Wed, 19 Mar 2025 14:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g60yX4iy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YafZKPdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF47521C9ED;
-	Wed, 19 Mar 2025 14:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB741DDA36;
+	Wed, 19 Mar 2025 14:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395130; cv=none; b=n5/ssfYGVOBCj5hTKVp7nSS4+P7D1CmN8qlxff0HZg8lfHBjCh/LQbt1xojMYppc96diN0Xprue8Sqbl/WhEfQPPfNoCBYRO5uZ01XXpKjwzaNIWitpeKMVPiiMWI2BROr8vHiEJQh6BQncduz9j5eHTbNelcF4P7I2kSijimFU=
+	t=1742394980; cv=none; b=aEWguskkb3HuYwa+ZxomN2HWdNc6RIA9uJB5R42J2eQhd8dJi+obTlvgmURd9pePGiYTNJGC2/d/JO1iuCVRjn8qIsvn1iIvShkOKPfqlmQdP+5AP6I5YXkTIykobmRpmeahn5KDWeTQpFY3dXv2o9XRFv6VV8CmzavepJjXTqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395130; c=relaxed/simple;
-	bh=kDhoAYXGB7A8CD6GvCmwV5BeR0/H8EzuTpP2yuNZKVQ=;
+	s=arc-20240116; t=1742394980; c=relaxed/simple;
+	bh=TM9RzQBsv/Cz2xixmjmfE+uAknx1jxYerQAfONB90II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gvPFtmujxk3xV2psA4PWQdqIX93TsG6mmvpdbtsY+dtSMmA4pIZriCo9s2sQYs5lOsIJNuoz4Nl/z4JQo65pQLcOkfNMrsIdzqrEy7ja9KLD6Cy7PodmKwgNN39dJM2kyRwULvwRrzSsIyl3bJBYdH+dz3Vgzw5530ul+zWDQy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g60yX4iy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A210C4CEE8;
-	Wed, 19 Mar 2025 14:38:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HALKA2RizsPoONLtyDAPJz9R6mG0lIdcwdX6hXkkM3sdfs3c0bxOxtTuJfJaYR7tB6QY3VMDCqUz+8nCLhQowK4V/iprZCDRXKqUD5CAwinCzLXkL/tWTmC3vXLFX2HZC7LyW+TmPPDvsaOW4O4BhJC2QwjV7kQj5Vkju0O+qtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YafZKPdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0D1C4CEE4;
+	Wed, 19 Mar 2025 14:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395130;
-	bh=kDhoAYXGB7A8CD6GvCmwV5BeR0/H8EzuTpP2yuNZKVQ=;
+	s=korg; t=1742394980;
+	bh=TM9RzQBsv/Cz2xixmjmfE+uAknx1jxYerQAfONB90II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g60yX4iyYWE+HipbScyqqGVVkQmavLYMcoeI2j2JmV3sU0vC3+QMM8gSaJVilvzjX
-	 7mmF2CZbH4/SMrxEhXzo8UGnOFgx9eozYa2XtU+tblKwUvy9fX2aAd0azw8AMLGLvB
-	 IHA3bsupEbSQVnmRKobOWKgc2eX1Ies9/bvofus0=
+	b=YafZKPdXosXo1VVayHMv+U6DYNJMyE2vgr24lLzewMAfcZnF1wn+/R4QsKLsVwmsb
+	 eSnf6JyK55SVh8Hlz5Bp+OD5pyIXokhfKj7/miHYPm8hT7NR8ujNXR5ime3+bM7LBc
+	 LXYsB9Gajjp3jF6Do6f9//FfICqWzGS8ZvCcPMag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Botila <andrei.botila@oss.nxp.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 195/231] net: phy: nxp-c45-tja11xx: add TJA112X PHY configuration errata
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 218/241] drm/i915: Increase I915_PARAM_MMAP_GTT_VERSION version to indicate support for partial mmaps
 Date: Wed, 19 Mar 2025 07:31:28 -0700
-Message-ID: <20250319143031.657877283@linuxfoundation.org>
+Message-ID: <20250319143033.140880796@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +66,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Botila <andrei.botila@oss.nxp.com>
+From: José Roberto de Souza <jose.souza@intel.com>
 
-commit a07364b394697d2e0baffeb517f41385259aa484 upstream.
+[ Upstream commit a8045e46c508b70fe4b30cc020fd0a2b0709b2e5 ]
 
-The most recent sillicon versions of TJA1120 and TJA1121 can achieve
-full silicon performance by putting the PHY in managed mode.
+Commit 255fc1703e42 ("drm/i915/gem: Calculate object page offset for partial memory mapping")
+was the last patch of several patches fixing multiple partial mmaps.
+But without a bump in I915_PARAM_MMAP_GTT_VERSION there is no clean
+way for UMD to know if it can do multiple partial mmaps.
 
-It is necessary to apply these PHY writes before link gets established.
-Application of this fix is required after restart of device and wakeup
-from sleep.
-
-Cc: stable@vger.kernel.org
-Fixes: f1fe5dff2b8a ("net: phy: nxp-c45-tja11xx: add TJA1120 support")
-Signed-off-by: Andrei Botila <andrei.botila@oss.nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250304160619.181046-2-andrei.botila@oss.nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 255fc1703e42 ("drm/i915/gem: Calculate object page offset for partial memory mapping")
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306210827.171147-1-jose.souza@intel.com
+(cherry picked from commit bfef148f3680e6b9d28e7fca46d9520f80c5e50e)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/nxp-c45-tja11xx.c |   52 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/phy/nxp-c45-tja11xx.c
-+++ b/drivers/net/phy/nxp-c45-tja11xx.c
-@@ -21,6 +21,11 @@
- #define PHY_ID_TJA_1103			0x001BB010
- #define PHY_ID_TJA_1120			0x001BB031
- 
-+#define VEND1_DEVICE_ID3		0x0004
-+#define TJA1120_DEV_ID3_SILICON_VERSION	GENMASK(15, 12)
-+#define TJA1120_DEV_ID3_SAMPLE_TYPE	GENMASK(11, 8)
-+#define DEVICE_ID3_SAMPLE_TYPE_R	0x9
-+
- #define VEND1_DEVICE_CONTROL		0x0040
- #define DEVICE_CONTROL_RESET		BIT(15)
- #define DEVICE_CONTROL_CONFIG_GLOBAL_EN	BIT(14)
-@@ -1583,6 +1588,50 @@ static int nxp_c45_set_phy_mode(struct p
- 	return 0;
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+index 21274aa9bdddc..c3dabb8579605 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -164,6 +164,9 @@ static unsigned int tile_row_pages(const struct drm_i915_gem_object *obj)
+  * 4 - Support multiple fault handlers per object depending on object's
+  *     backing storage (a.k.a. MMAP_OFFSET).
+  *
++ * 5 - Support multiple partial mmaps(mmap part of BO + unmap a offset, multiple
++ *     times with different size and offset).
++ *
+  * Restrictions:
+  *
+  *  * snoopable objects cannot be accessed via the GTT. It can cause machine
+@@ -191,7 +194,7 @@ static unsigned int tile_row_pages(const struct drm_i915_gem_object *obj)
+  */
+ int i915_gem_mmap_gtt_version(void)
+ {
+-	return 4;
++	return 5;
  }
  
-+/* Errata: ES_TJA1120 and ES_TJA1121 Rev. 1.0 — 28 November 2024 Section 3.1 */
-+static void nxp_c45_tja1120_errata(struct phy_device *phydev)
-+{
-+	int silicon_version, sample_type;
-+	bool macsec_ability;
-+	int phy_abilities;
-+	int ret = 0;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND1, VEND1_DEVICE_ID3);
-+	if (ret < 0)
-+		return;
-+
-+	sample_type = FIELD_GET(TJA1120_DEV_ID3_SAMPLE_TYPE, ret);
-+	if (sample_type != DEVICE_ID3_SAMPLE_TYPE_R)
-+		return;
-+
-+	silicon_version = FIELD_GET(TJA1120_DEV_ID3_SILICON_VERSION, ret);
-+
-+	phy_abilities = phy_read_mmd(phydev, MDIO_MMD_VEND1,
-+				     VEND1_PORT_ABILITIES);
-+	macsec_ability = !!(phy_abilities & MACSEC_ABILITY);
-+	if ((!macsec_ability && silicon_version == 2) ||
-+	    (macsec_ability && silicon_version == 1)) {
-+		/* TJA1120/TJA1121 PHY configuration errata workaround.
-+		 * Apply PHY writes sequence before link up.
-+		 */
-+		if (!macsec_ability) {
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x4b95);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0xf3cd);
-+		} else {
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x89c7);
-+			phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0x0893);
-+		}
-+
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0476, 0x58a0);
-+
-+		phy_write_mmd(phydev, MDIO_MMD_PMAPMD, 0x8921, 0xa3a);
-+		phy_write_mmd(phydev, MDIO_MMD_PMAPMD, 0x89F1, 0x16c1);
-+
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x0);
-+		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0x0);
-+	}
-+}
-+
- static int nxp_c45_config_init(struct phy_device *phydev)
- {
- 	int ret;
-@@ -1599,6 +1648,9 @@ static int nxp_c45_config_init(struct ph
- 	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 1);
- 	phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 2);
- 
-+	if (phy_id_compare(phydev->phy_id, PHY_ID_TJA_1120, GENMASK(31, 4)))
-+		nxp_c45_tja1120_errata(phydev);
-+
- 	phy_set_bits_mmd(phydev, MDIO_MMD_VEND1, VEND1_PHY_CONFIG,
- 			 PHY_CONFIG_AUTO);
- 
+ static inline struct i915_gtt_view
+-- 
+2.39.5
+
 
 
 
