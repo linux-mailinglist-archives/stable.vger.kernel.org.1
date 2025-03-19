@@ -1,170 +1,136 @@
-Return-Path: <stable+bounces-125589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94AC0A69580
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 17:53:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8486EA6958D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 17:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BD8D19C3CCF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:53:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6662C1724FC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416B41E3DE4;
-	Wed, 19 Mar 2025 16:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675951E04BD;
+	Wed, 19 Mar 2025 16:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xa193cTt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jcfNHxwe"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821DB1DF248
-	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 16:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6581DF74E;
+	Wed, 19 Mar 2025 16:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742403203; cv=none; b=cRVk14H3ZTHU3QQ64Af9EMjq+Y9f32b7qU0BmquERXLQxQslWMpEkcjwMHFUZbJPaLGC64vSmvhmFCc5QRD0f0+Md4FS4C/yCd807mwnnTod7T9mu9l/j/mhoXyV4yN4I/ptI8nc5CqgHV3te3sasdT99LfhrWSLcCBW/C+l+gY=
+	t=1742403338; cv=none; b=r4X8Iol7ehz3DyDiByBBbFz/BWvvq46v/8UyJYlTnJHnZdqVOhsMEFtRWJCBlSeATJy000ju9qhCXw4mDDFStL7SFkCLmXzw0zxhOUzy3biqqHXNdYYtolK9Q7Xgv6avklC2+4xr84NMn+Y+mj9W38jqrHknQ8BfTgBOmKDaW98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742403203; c=relaxed/simple;
-	bh=gZ91fGn4VM1jhjIigc/roNld//H+y2pnwO3JvtN5t1g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LjOq3MtXTGgrUgmZPdK83EagY2xj9D/wwcr63M3hSFdDt19jFOnlxF9HJKTyiThujLIFk+SsB3qBfMlW8jCnfV5A3X3aYmrIZ95PrFx59BhkSKGJOxphYb3+6Zdw8NkEtBxp3kxvFNtdCTRpGwWNpBsC9F03JqNw9QS1850g0TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xa193cTt; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742403199;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QMYidfuF22qqOjt7R1FtIa+eC5SY/DINipfXYLFNQ3c=;
-	b=Xa193cTtLwB6J+31fN+oeph9eGd+cvGcGoI+G+Ar3/BTKeEMfllAoXdhCauWJx/0hNdjeC
-	AsxsXW8OnEXZALYm8ygHu41vSAkbpowr8HN6t783GZAoNHhyvfea+FcQ4vP2bSV3UfB/ud
-	6laHbXx0CZZoJqlD03fh/7el54yTOaI=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-138-ie7cooVcMkKO_Cb_qc3TdQ-1; Wed, 19 Mar 2025 12:53:18 -0400
-X-MC-Unique: ie7cooVcMkKO_Cb_qc3TdQ-1
-X-Mimecast-MFC-AGG-ID: ie7cooVcMkKO_Cb_qc3TdQ_1742403197
-Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-86c428a6b92so1722643241.0
-        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 09:53:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742403197; x=1743007997;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QMYidfuF22qqOjt7R1FtIa+eC5SY/DINipfXYLFNQ3c=;
-        b=Gjb8SBBAHDyJwaj3fnemGpsRR0AtH5O1jmRSunthoEI2vWwFSfAS9/zOfjK+HC+/1D
-         0R/VjbOtO7mBAKLX2FWBvD46ioy4vHxQW+9y9b3mDK22c5dqNw0fNu8hL7+BgCXEaqnE
-         jbyOI9++sQSQ/8wlAnv7BsfVBGQAbYDM0QAbAh6xCEOeUngRWOTaZ2vtwigAbXjPIHvq
-         PbIXe8x4g+3xGxu9tn6B9KVQKRGqJhN0wnKvQRYEhCnhERL/ngoVRUMdTW5Dop4yHl+n
-         ZFswhvg9otq8ff46AUiENb5mhep7Jli1mNymEXd1z2v9BG/vo0CWkgpm5fMrlYDU1YzC
-         ae5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUhZyMqjpb1/2C7WWDfoaAW9NAUMwSMqT5MO8N5YPLV2pIX3LCtGaMZWu6ADoKIF3H8ziaMOtE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVuo2+QIYzBI8vI9ZBccahpIXGn56vWFyvB1RT5T+PI2mMgHKJ
-	vpEO+7sJGWCclJMolwHUPI3pz1cO8Qlu/qNIvVLWt6bYzdI3eIcgQrmw0yyBK5fcZ39zwVqVXVS
-	Njqecf+sHMazbdkI82reWU7SuMZr7B401yPsZVrBEfCHC7EDdDOKKJDkbCDaxbvciTtuT5yIxAd
-	U4zKB4GwvhCoVl2Yif+lW+8kWP9UoW
-X-Gm-Gg: ASbGncsnqYz3ZbZN2sVY9Z3PgEFXYxgfX/6Jtu3q7F17IeZwTvWBGxnySTSo3SbIyLB
-	ZqmeLWi4im0Yx3R/HpPfrIE9YK7QjqIwJRMi8J99I6vQ4zV2meXKZuDkeQfu+DS7EnHdpK0pi
-X-Received: by 2002:a05:6102:c04:b0:4bb:d062:455 with SMTP id ada2fe7eead31-4c4ec2f2e0cmr3397545137.0.1742403197617;
-        Wed, 19 Mar 2025 09:53:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBaHItzcn4FKUvbMcp1OcW2oWpcGSy2J17LaT6TvPL1Qm1q4Ep4ILwSlmKbFP+qP7MGksmGbNbt7PDdKxGz40=
-X-Received: by 2002:a05:6102:c04:b0:4bb:d062:455 with SMTP id
- ada2fe7eead31-4c4ec2f2e0cmr3397539137.0.1742403197256; Wed, 19 Mar 2025
- 09:53:17 -0700 (PDT)
+	s=arc-20240116; t=1742403338; c=relaxed/simple;
+	bh=MsgLzD6PJaJW5GC1Kic0ijSywAJ9z3Kpg3x+ZmeJQy4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qV46nTK7EANa1Sikgb3gF9eQXdTY6JXuIDXJKYaID894mgRuJP9ib6G+Y05c4rmF3WGSvTaS+r9IHQvNDPnbGGc9dEKfdayOUhfAXBEXntyGEWzO1fgTtCx11grs/anQMA0CdDd1/CT4dyvo05L/5nsyTguEDGYvIiQBH8j3we8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jcfNHxwe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D4EC4CEE4;
+	Wed, 19 Mar 2025 16:55:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742403337;
+	bh=MsgLzD6PJaJW5GC1Kic0ijSywAJ9z3Kpg3x+ZmeJQy4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jcfNHxwemQPi3a7M8l5HMSOEdyOnBs2Et34UA8pYHL5Q4FB3WjLQtp/o9aGSCeYyx
+	 7xFdRJLCQZC+Ak4Iwy3an3Jbp9ybyKMl4KgENG0rsCngg3L1ytsUXjH7RQ8RmNSlXs
+	 azXY4Y351grm75fW/12Oa0j24csX3hk8kLO/sWKuGtXWjqMnF3d5TdVUPGRg8dPErZ
+	 RZnyiz/SspnniszvWRkj6hHwtEelf2YdXwuMVC0dITO1AXHJoEGyhI1W5086EhnMbk
+	 WCBM/lzxFbBpgYP3QASwD3oeUQUB/tzfKfdJGfpytwVa4PdZ4pMJZAvNI+OziOO5Ma
+	 T0Zw12smq0V7Q==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	damon@lists.linux.dev
+Subject: Re: [PATCH 6.6 000/166] 6.6.84-rc1 review
+Date: Wed, 19 Mar 2025 09:55:35 -0700
+Message-Id: <20250319165535.51516-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250319064031.2971073-1-chenhuacai@loongson.cn>
- <20250319064031.2971073-4-chenhuacai@loongson.cn> <2025031943-disparity-dash-cfa3@gregkh>
- <Z9rYQy3l5V5cvW7W@t14s> <2025031942-portside-finite-34a9@gregkh>
-In-Reply-To: <2025031942-portside-finite-34a9@gregkh>
-From: Jan Stancek <jstancek@redhat.com>
-Date: Wed, 19 Mar 2025 17:53:02 +0100
-X-Gm-Features: AQ5f1Jq9puc3zDkRAXP8CifSCOyuo9iakTiG2zcMin5No34Rk7G5vb8HVg7uT8A
-Message-ID: <CAASaF6zNsiwUOcSD177aORwfBu4kaq8EKh1XdZkO13kgedcOPA@mail.gmail.com>
-Subject: Re: [PATCH 6.1&6.6 V3 3/3] sign-file,extract-cert: use pkcs11
- provider for OPENSSL MAJOR >= 3
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org, 
-	David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, R Nageswara Sastry <rnsastry@linux.ibm.com>, 
-	Neal Gompa <neal@gompa.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 19, 2025 at 5:26=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Mar 19, 2025 at 03:44:19PM +0100, Jan Stancek wrote:
-> > On Wed, Mar 19, 2025 at 07:13:13AM -0700, Greg Kroah-Hartman wrote:
-> > > On Wed, Mar 19, 2025 at 02:40:31PM +0800, Huacai Chen wrote:
-> > > > From: Jan Stancek <jstancek@redhat.com>
-> > > >
-> > > > commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
-> > > >
-> > > > ENGINE API has been deprecated since OpenSSL version 3.0 [1].
-> > > > Distros have started dropping support from headers and in future
-> > > > it will likely disappear also from library.
-> > > >
-> > > > It has been superseded by the PROVIDER API, so use it instead
-> > > > for OPENSSL MAJOR >=3D 3.
-> > > >
-> > > > [1] https://github.com/openssl/openssl/blob/master/README-ENGINES.m=
-d
-> > > >
-> > > > [jarkko: fixed up alignment issues reported by checkpatch.pl --stri=
-ct]
-> > > >
-> > > > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> > > > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-> > > > Reviewed-by: Neal Gompa <neal@gompa.dev>
-> > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > ---
-> > > >  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++---------=
-----
-> > > >  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
-> > > >  2 files changed, 138 insertions(+), 58 deletions(-)
-> > >
-> > > This seems to differ from what is upstream by a lot, please document
-> > > what you changed from it and why when you resend this series again.
-> >
-> > Hunks are arranged differently, but code appears to be identical.
-> > When I apply the series to v6.6.83 and compare with upstream I get:
->
-> If so, why is the diffstat different?  Also why are the hunks arranged
-> differently,
+Hello,
 
-He appears to be using "--diff-algorithm=3Dminimal", while you probably
-patience or histogram.
+On Wed, 19 Mar 2025 07:29:31 -0700 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-$ git format-patch -1 --stdout --diff-algorithm=3Dminimal 558bdc45dfb2 |
-grep -A3 -m1 -- "---"
+> This is the start of the stable review cycle for the 6.6.84 release.
+> There are 166 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 21 Mar 2025 14:29:55 +0000.
+> Anything received after that time might be too late.
+
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/damonitor/damon-tests/tree/next/corr
+[2] d16a828e7b09 ("Linux 6.6.84-rc1")
+
+Thanks,
+SJ
+
+[...]
+
 ---
- certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
- scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
- 2 files changed, 138 insertions(+), 58 deletions(-)
 
-Should be easy to regenerate with different diff-alg for v4.
-
-Regards,
-Jan
-
-> that's a hint to me that something went wrong and I can't
-> trust the patch at all.
->
-> thanks,
->
-> greg k-h
->
-
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: debugfs_rm_non_contexts.sh
+ok 8 selftests: damon: sysfs.sh
+ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
+ok 10 selftests: damon: reclaim.sh
+ok 11 selftests: damon: lru_sort.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh # SKIP
+ok 12 selftests: damon-tests: build_m68k.sh # SKIP
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
