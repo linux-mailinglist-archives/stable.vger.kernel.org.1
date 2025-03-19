@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-125132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C0CA68FDA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BB4A691E5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67B6317DE51
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 403661BA1185
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45271DED43;
-	Wed, 19 Mar 2025 14:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AAA20A5EF;
+	Wed, 19 Mar 2025 14:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGY+mcGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cMIwDwGO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A294E1DDA36;
-	Wed, 19 Mar 2025 14:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C6620A5D3;
+	Wed, 19 Mar 2025 14:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394976; cv=none; b=haC7y/jI8b46LS3UKI+Uw+2yLEO8h7EW2fCHW88BlPAJpSncGRLLiBfsoYWVKkHgUmNNYPTEJ5I2GrLmQsX69Lds/2lxdweWsV0DBB5SCBtlPIDzhfXt0smkbqYdCctb58XWNI9bAhUv/B+U8oUYAGypsnqwmtsau9lzejpWd64=
+	t=1742395239; cv=none; b=g88L7jciYvHrS4Ltt6PQOQ0tKUFCs125e+e3PLyn/goX9Em54eFv6Vj6gSkjn8QfuMc4Z1EgbCTwmC9DATCXpVESZnJir5nw0povChsubLkg8muMHgLv5XV4CRy2AnvKNg4IDO+mLQS/WGTG2DP6WTPn0AI+b+Pkq4TSpfq1jlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394976; c=relaxed/simple;
-	bh=+viPMLfmhEmeMX/lId7o9qdBiRC+jlAjaIuqIhrHErQ=;
+	s=arc-20240116; t=1742395239; c=relaxed/simple;
+	bh=f8Yi7WaVglQDNALOHcXRNxxRByxWSIug6KQK1UaNK4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HyUrRgiak9XqMdDZdFVkK8IZv3DvbR6By2sKTMXeVG/XEV+9B6GFEvBSYG94+m+Zs+2gwu6cqANKG5MJUEMiCTiAXRUnVffOWVBeTzkUwEF67jhDQB84TabiD1kVx6Cyi0y+TJ2lJkLUbo0tmxV+QwYOOWWPxumhBBYIDP6aMX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGY+mcGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79808C4CEE4;
-	Wed, 19 Mar 2025 14:36:16 +0000 (UTC)
+	 MIME-Version; b=Ftf6XZFI54tLTZzWi60krkRLdkUczjaI/RI1U3HYvkRqx6cjD0v2yrRCaefwXnJ8kRxbeMgnshuGqkxAX5TAuHSmUMAObJm6EXNHDXVbBU0rljAxyp8N/TjPjVMxGhGDJ50vzmxTn27jqQEZm3ZnPB4ndXIzeQck6mDv4axPBnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cMIwDwGO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19FA3C4CEE8;
+	Wed, 19 Mar 2025 14:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394976;
-	bh=+viPMLfmhEmeMX/lId7o9qdBiRC+jlAjaIuqIhrHErQ=;
+	s=korg; t=1742395239;
+	bh=f8Yi7WaVglQDNALOHcXRNxxRByxWSIug6KQK1UaNK4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGY+mcGeDRZYLZGMUFDiqkVRmcQnOOF3Dw7QQj8XK24kPOUPKa43hmeXkF/ZNEaGK
-	 38CclV47gDjZ2dnVYS+WcUKtsnS27f0AKudXNFj7iu3NlKGSpEkUvIRF03l4PeNqRm
-	 JzU4wP+F6cSubpJp6Sda1pa0Dro7Tm3+oEOjFLJY=
+	b=cMIwDwGOOGx8osskq8jRDmpy4USUa6BzRUoQRUMiOMPYXHB4KUyq93CuodZTgb08w
+	 0NwUjuqntl3fM+Bda/iKStRb1qJsp5wGVm5Q0tU7gOmF9+oESQGfv1z8Bwt+9RNySc
+	 iEZVDGWyAJfkVfcnlLuuVjIz9KAC1CI3SCoAKOeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 213/241] drm/xe: Release guc ids before cancelling work
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 112/166] Input: i8042 - add required quirks for missing old boardnames
 Date: Wed, 19 Mar 2025 07:31:23 -0700
-Message-ID: <20250319143033.020281607@linuxfoundation.org>
+Message-ID: <20250319143023.048920538@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit 10c7988418d8f759ba70c4a558961e0bfa74647f ]
+commit 9ed468e17d5b80e7116fd35842df3648e808ae47 upstream.
 
-A GT resets can be occurring in parallel while cancelling
-work in async call  which can requeue these workers.
-to avoid that, lets first release guc ids and then cancel
-work so they don't requeued.
+Some older Clevo barebones have problems like no or laggy keyboard after
+resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
+quirk.
 
-Fixes: 8ae8a2e8dd21 ("drm/xe: Long running job update")
-Fixes: 12c2f962fe71 ("drm/xe: cancel pending job timer before freeing scheduler")
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Suggested-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306131211.975503-1-tejas.upadhyay@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 8e8d76f62329127b31c64a034b052fb9e30e92af)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The PB71RD keyboard is sometimes laggy after resume and the PC70DR, PB51RF,
+P640RE, and PCX0DX_GN20 keyboard is sometimes unresponsive after resume.
+This quirk fixes that.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://lore.kernel.org/r/20250221230137.70292-2-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index fe17e9ba86725..d2b1fce121a84 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1236,11 +1236,11 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
- 	xe_pm_runtime_get(guc_to_xe(guc));
- 	trace_xe_exec_queue_destroy(q);
- 
-+	release_guc_id(guc, q);
- 	if (xe_exec_queue_is_lr(q))
- 		cancel_work_sync(&ge->lr_tdr);
- 	/* Confirm no work left behind accessing device structures */
- 	cancel_delayed_work_sync(&ge->sched.base.work_tdr);
--	release_guc_id(guc, q);
- 	xe_sched_entity_fini(&ge->entity);
- 	xe_sched_fini(&ge->sched);
- 
--- 
-2.39.5
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1261,6 +1261,12 @@ static const struct dmi_system_id i8042_
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
+ 	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "P640RE"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
+ 		/*
+ 		 * This is only a partial board_name and might be followed by
+ 		 * another letter or number. DMI_MATCH however does do partial
+@@ -1337,11 +1343,35 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PB51RF"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PB71RD"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PC70DR"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX_GN20"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
+ 	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
+ 	{
+ 		.matches = {
 
 
 
