@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D469A690C7
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD2EA69245
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA835886E83
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CECD1B85E75
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5007421ABAB;
-	Wed, 19 Mar 2025 14:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3594D1EF384;
+	Wed, 19 Mar 2025 14:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Izuf4XnB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPmQJul8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBC71E5B8A;
-	Wed, 19 Mar 2025 14:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87D01DDC2B;
+	Wed, 19 Mar 2025 14:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395108; cv=none; b=VjmSlIaiViQ6rA2aR5gxo/jUHny1PjenuOmaIRFTFc4KV0SyISq+5BaD3ennh9LTnuE3BTplsOeSDmW1JlUAWPe+KBXTz3mi+IOyKJ3NwEuGvmA6FrgyCuDtVthwxxA7x+tZW49TAnvPHwxTPJZdKKSDZgd82rQhVN6hIZoacYA=
+	t=1742394958; cv=none; b=juYPvJCXXqKpYehyD8TqxeD4DeS/E8FX/CHuRgR3oIzxXhALyXcir0FMEu2QuLERkjGPwqkWxHswV3T9TVKzvFrtu2OogdSumo5VtMeLwUgxAJM+PAwwIz9TaxaX+c0751FNcqc8M2Uq/8xkJf4WhzVvwP1dXongMzevfm2Rdhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395108; c=relaxed/simple;
-	bh=1+DasE7nnkIlMmDgrtGv7vI8GznylRCobX9vVd6DUL4=;
+	s=arc-20240116; t=1742394958; c=relaxed/simple;
+	bh=Guaxbmu5t03lw85qw2N0xHhzReyNXv0p3iBhmqluzhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1QGr7R9iAUrx6unOLmG5FRXLi2UmMJIEsgy0Mys+qsSkMxDptYhTK1k5fEEUfizvoqmVgBzn8ceu0Y5EYxL7L5W4Mayli6ivCf1WrSZu1YR8Uy7kYntpVOcR882iei6og+y41jIRrPcCmPzKY30VDSzSSWmKZekp3skmYnccFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Izuf4XnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A06C4CEE4;
-	Wed, 19 Mar 2025 14:38:27 +0000 (UTC)
+	 MIME-Version; b=BWcCcGEL+TTf/3UyfUHtTpPobcwUHMDH6e4LoXKFisebayfZF723akugQm3/A5jAfG3e/pRGRv/T0n+vRsmbED+yCkXMxEM3cbqbHntibdBOeda3NZ+cYpWzGzQyfE8tNLhBYXe8fPOUXQKMibfa/MfBUcoC9IfZR0ScI+w6BVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPmQJul8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E25BC4CEE4;
+	Wed, 19 Mar 2025 14:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395107;
-	bh=1+DasE7nnkIlMmDgrtGv7vI8GznylRCobX9vVd6DUL4=;
+	s=korg; t=1742394957;
+	bh=Guaxbmu5t03lw85qw2N0xHhzReyNXv0p3iBhmqluzhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Izuf4XnBsUGaSp4667Hf2O8j1VqhNDUrK9jYZhtr/FeTkbS8HuIMtTKaukxR+kMBW
-	 NmIxEmn/lYEZMhiJFRLFAwKDhGd0XjQ26R7U+lF/YWgT5P63841J2iunqG2o6OCulH
-	 zgNLq6v4FdvfBjEnvKRXfhJiyeE6hnYQw3kpql7Q=
+	b=hPmQJul87HkkbJ6f6a7EJEGN7k6drx3NIE9Zmf4VsItDPGCyTPfH5kVW6z9jB+LEL
+	 DM9+Ba0P2fYrkhq850WQpnTZoGpxTxc754w0hdqbfPTRuoUqYjThW/PVsb3kXuC5YI
+	 hQQx0r4jBQDIYwTcs8e6aijUI8ZHsi4bxQCqSqWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 161/231] USB: serial: option: match on interface class for Telit FN990B
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 184/241] drm/amd/display: fix default brightness
 Date: Wed, 19 Mar 2025 07:30:54 -0700
-Message-ID: <20250319143030.817459094@linuxfoundation.org>
+Message-ID: <20250319143032.277023829@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 9a665fe3d967fe46edb4fd2497c7a5cc2dac2f55 upstream.
+commit b5a981e1b34e44f94a5967f730fff4166f2101e8 upstream.
 
-The device id entries for Telit FN990B ended up matching only on the
-interface protocol. While this works, the protocol is qualified by the
-interface class (and subclass) which should have been included.
+[Why]
+To avoid flickering during boot default brightness level set by BIOS
+should be maintained for as much of the boot as feasible.
+commit 2fe87f54abdc ("drm/amd/display: Set default brightness according
+to ACPI") attempted to set the right levels for AC vs DC, but brightness
+still got reset to maximum level in initialization code for
+setup_backlight_device().
 
-Switch to matching using USB_DEVICE_AND_INTERFACE_INFO() while keeping
-the entries sorted also by protocol for consistency.
+[How]
+Remove the hardcoded initialization in setup_backlight_device() and
+instead program brightness value to match BIOS (AC or DC).  This avoids a
+brightness flicker from kernel changing the value.  Userspace may however
+still change it during boot.
 
-Link: https://lore.kernel.org/20250227110655.3647028-2-fabio.porcedda@gmail.com/
-Cc: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Daniele Palmas <dnlplm@gmail.com>
+Fixes: 2fe87f54abdc ("drm/amd/display: Set default brightness according to ACPI")
+Acked-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0747acf3311229e22009bec4a9e7fc30c879e842)
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1410,22 +1410,22 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x60) },	/* Telit FN990B (rmnet) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x30),	/* Telit FN990B (rmnet) */
- 	  .driver_info = NCTRL(5) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x60) },	/* Telit FN990B (MBIM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x60) },	/* Telit FN990B (RNDIS) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x30),	/* Telit FN990B (RNDIS) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x60) },	/* Telit FN990B (ECM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x30),	/* Telit FN990B (ECM) */
- 	  .driver_info = NCTRL(6) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x60) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4848,6 +4848,7 @@ amdgpu_dm_register_backlight_device(stru
+ 	dm->backlight_dev[aconnector->bl_idx] =
+ 		backlight_device_register(bl_name, aconnector->base.kdev, dm,
+ 					  &amdgpu_dm_backlight_ops, &props);
++	dm->brightness[aconnector->bl_idx] = props.brightness;
+ 
+ 	if (IS_ERR(dm->backlight_dev[aconnector->bl_idx])) {
+ 		DRM_ERROR("DM: Backlight registration failed!\n");
+@@ -4915,7 +4916,6 @@ static void setup_backlight_device(struc
+ 	aconnector->bl_idx = bl_idx;
+ 
+ 	amdgpu_dm_update_backlight_caps(dm, bl_idx);
+-	dm->brightness[bl_idx] = AMDGPU_MAX_BL_LEVEL;
+ 	dm->backlight_link[bl_idx] = link;
+ 	dm->num_of_edps++;
+ 
 
 
 
