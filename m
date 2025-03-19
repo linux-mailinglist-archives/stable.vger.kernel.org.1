@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A542A69070
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B84A68FEB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ABD27AE3EA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B45D43A760C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C4021CA07;
-	Wed, 19 Mar 2025 14:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4EA1FF618;
+	Wed, 19 Mar 2025 14:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUcbQicC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvVosp8R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754D521CC41;
-	Wed, 19 Mar 2025 14:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAED1C8618;
+	Wed, 19 Mar 2025 14:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395133; cv=none; b=NQBzaXFS5sEKYpaodTyENgKj8losJ/g2LFx+CW8e7TBUSgDnRgzTO7g/nfvYZulSDVed1//U4+SELQmfdyvpAjHYoE9+fHKCgvxI2PLae7gB6bU6jEt7QxBfshMrJIOPruYI4KWrgoidKoerlXatYWhNRohnOZdUqFuZaTNCxgQ=
+	t=1742394982; cv=none; b=OaG8n3xJw2cIvmRGs/dlkt+vrAZl2cU9HBPaxL+UswhJcKGbUMwWjpo0GcUz4/kNvhj2uQscXw/TOBffBfJ9/T0HwIicYoAFAyF89VK9Qyx/0S91pUfdY2XN3JCVZcxvFj1vZwMDiexNUc+8Snmz5Z1djirmn97pP9OGTbgHmao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395133; c=relaxed/simple;
-	bh=EaNkZ/Ia5LyaWiNJEXlarobG1lVuxBjodxd44aTWIOw=;
+	s=arc-20240116; t=1742394982; c=relaxed/simple;
+	bh=rcNYgkHa0Wq97Mul8M7SrC0yxXSthTTxn1eBk+fsdFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pd7U6pXav5UswrXhoTWIkl3mY21mxHNsTYuRBM6MM+3pvspuMWhgXcab8SJpIYRWaY1070fSY4uXEQa/3IiuMH0/tjq8fQcfzL+fR4Vf+u/2RQeQx+R0V++JHzmvN0J3yPGg7B7KEXcsgNolRYwN8U29oxpC2pr9/TNoBv6oWTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUcbQicC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B2BC4CEE8;
-	Wed, 19 Mar 2025 14:38:53 +0000 (UTC)
+	 MIME-Version; b=Ouz9xrS4OqLppxJCWF8SpvANdTkGnP5jjK/cvVlR6UBXNedRWR+AoBu20nROX4zSbycvghtCTkQfQcQGRilwys4hQyL8jNs7sxTzjjsp/2mwFw/5uEh34EuTRxL0abQCHi6xhQlhgnPGpk6USOsSSv0rQm6YTD9CGkgZi3ujlfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvVosp8R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C16C4CEE4;
+	Wed, 19 Mar 2025 14:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395133;
-	bh=EaNkZ/Ia5LyaWiNJEXlarobG1lVuxBjodxd44aTWIOw=;
+	s=korg; t=1742394982;
+	bh=rcNYgkHa0Wq97Mul8M7SrC0yxXSthTTxn1eBk+fsdFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUcbQicC2Gbb7WOziZu+fgSUmvIYv39Z6mtqTkL1xKxXpW4qhBtleKQiLk+usferl
-	 Ct6cm3p6NCdn9jh1P8y5Py+CcOgp1iRoczyueY84Pe1s+t09W3jY23gGA+8ALQdQ0o
-	 8wTQ2L5pJSvw6sjcfG1udHPa4YULJcvYCBRMRS+o=
+	b=vvVosp8REH5/vgfdxu2iFuTuzObYtVxWs2LdFnNpk3BsV1aOMIZZuiDUoCYXLx1x2
+	 MOnQYwYN/v8e6CmkmN1RZew3EYtAj0EP+ZfNT4Ghn5+xD0H0R2/sXfdUT2hsUtnnzj
+	 B1yk66IN2xZlUwJW79BFeeJXTquvleM4pMSY1oqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 198/231] ASoC: ops: Consistently treat platform_max as control value
+Subject: [PATCH 6.13 221/241] scripts: generate_rust_analyzer: add uapi crate
 Date: Wed, 19 Mar 2025 07:31:31 -0700
-Message-ID: <20250319143031.736403747@linuxfoundation.org>
+Message-ID: <20250319143033.215636553@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Tamir Duberstein <tamird@gmail.com>
 
-[ Upstream commit 0eba2a7e858907a746ba69cd002eb9eb4dbd7bf3 ]
+[ Upstream commit a1eb95d6b5f4cf5cc7b081e85e374d1dd98a213b ]
 
-This reverts commit 9bdd10d57a88 ("ASoC: ops: Shift tested values in
-snd_soc_put_volsw() by +min"), and makes some additional related
-updates.
+Commit 4e1746656839 ("rust: uapi: Add UAPI crate") did not update
+rust-analyzer to include the new crate.
 
-There are two ways the platform_max could be interpreted; the maximum
-register value, or the maximum value the control can be set to. The
-patch moved from treating the value as a control value to a register
-one. When the patch was applied it was technically correct as
-snd_soc_limit_volume() also used the register interpretation. However,
-even then most of the other usages treated platform_max as a
-control value, and snd_soc_limit_volume() has since been updated to
-also do so in commit fb9ad24485087 ("ASoC: ops: add correct range
-check for limiting volume"). That patch however, missed updating
-snd_soc_put_volsw() back to the control interpretation, and fixing
-snd_soc_info_volsw_range(). The control interpretation makes more
-sense as limiting is typically done from the machine driver, so it is
-appropriate to use the customer facing representation rather than the
-internal codec representation. Update all the code to consistently use
-this interpretation of platform_max.
+Add the missing definition to improve the developer experience.
 
-Finally, also add some comments to the soc_mixer_control struct to
-hopefully avoid further patches switching between the two approaches.
-
-Fixes: fb9ad24485087 ("ASoC: ops: add correct range check for limiting volume")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250228151456.3703342-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 4e1746656839 ("rust: uapi: Add UAPI crate")
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+Link: https://lore.kernel.org/r/20250210-rust-analyzer-bindings-include-v2-2-23dff845edc3@gmail.com
+[ Slightly reworded title. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc.h |  5 ++++-
- sound/soc/soc-ops.c | 15 +++++++--------
- 2 files changed, 11 insertions(+), 9 deletions(-)
+ scripts/generate_rust_analyzer.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/sound/soc.h b/include/sound/soc.h
-index e6e359c1a2ac4..db3b464a91c7b 100644
---- a/include/sound/soc.h
-+++ b/include/sound/soc.h
-@@ -1251,7 +1251,10 @@ void snd_soc_close_delayed_work(struct snd_soc_pcm_runtime *rtd);
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 2a64067b09b0c..d1f5adbf33f91 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -110,7 +110,8 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+         }
  
- /* mixer control */
- struct soc_mixer_control {
--	int min, max, platform_max;
-+	/* Minimum and maximum specified as written to the hardware */
-+	int min, max;
-+	/* Limited maximum value specified as presented through the control */
-+	int platform_max;
- 	int reg, rreg;
- 	unsigned int shift, rshift;
- 	unsigned int sign_bit;
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index 19928f098d8dc..b0e4e4168f38d 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -337,7 +337,7 @@ int snd_soc_put_volsw(struct snd_kcontrol *kcontrol,
- 	if (ucontrol->value.integer.value[0] < 0)
- 		return -EINVAL;
- 	val = ucontrol->value.integer.value[0];
--	if (mc->platform_max && ((int)val + min) > mc->platform_max)
-+	if (mc->platform_max && val > mc->platform_max)
- 		return -EINVAL;
- 	if (val > max - min)
- 		return -EINVAL;
-@@ -350,7 +350,7 @@ int snd_soc_put_volsw(struct snd_kcontrol *kcontrol,
- 		if (ucontrol->value.integer.value[1] < 0)
- 			return -EINVAL;
- 		val2 = ucontrol->value.integer.value[1];
--		if (mc->platform_max && ((int)val2 + min) > mc->platform_max)
-+		if (mc->platform_max && val2 > mc->platform_max)
- 			return -EINVAL;
- 		if (val2 > max - min)
- 			return -EINVAL;
-@@ -503,17 +503,16 @@ int snd_soc_info_volsw_range(struct snd_kcontrol *kcontrol,
- {
- 	struct soc_mixer_control *mc =
- 		(struct soc_mixer_control *)kcontrol->private_value;
--	int platform_max;
--	int min = mc->min;
-+	int max;
+     append_crate_with_generated("bindings", ["core"])
+-    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings"])
++    append_crate_with_generated("uapi", ["core"])
++    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings", "uapi"])
  
--	if (!mc->platform_max)
--		mc->platform_max = mc->max;
--	platform_max = mc->platform_max;
-+	max = mc->max - mc->min;
-+	if (mc->platform_max && mc->platform_max < max)
-+		max = mc->platform_max;
- 
- 	uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
- 	uinfo->count = snd_soc_volsw_is_stereo(mc) ? 2 : 1;
- 	uinfo->value.integer.min = 0;
--	uinfo->value.integer.max = platform_max - min;
-+	uinfo->value.integer.max = max;
- 
- 	return 0;
- }
+     def is_root_crate(build_file, target):
+         try:
 -- 
 2.39.5
 
