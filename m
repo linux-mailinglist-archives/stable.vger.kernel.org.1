@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E4BA69088
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF18DA68FDE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C137917BA96
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2D8887EAF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D4E21C9F0;
-	Wed, 19 Mar 2025 14:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBC81F4C8F;
+	Wed, 19 Mar 2025 14:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwOORlWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nyq6lMDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2202D21C9E3;
-	Wed, 19 Mar 2025 14:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6891C4A24;
+	Wed, 19 Mar 2025 14:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395133; cv=none; b=tTcodLksghak4v/pRPnEL6Qg+xIYpvfchsn4Z3vfl+zF0s3pW3j83KdQoSctbJUeNgptM1oalU2gyUGQM0Ly3hPp7MeTwJFXf3ZqB6T4dF7ERt5Wo2WXnPsd3eNaT/9Pqh+4JNSHqhym8apQ/LCj7usNNn/h3taIUxxIoGVv+Oo=
+	t=1742394968; cv=none; b=F4OEIfy0x7XJFhYdefy53/uorz+7zE0UBmXxQBiedICtGf0ONPBpq4CA9avYOkJMlg0WwFCHs95RbUo8AtP+4UN/2d3ynggdDSF1C/3s81LDF3lpPSWz7eHBUNfAdBe9n/+x1nUZ8gHMHlFtNaPF/4uQecDmCITmplJocIOOMwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395133; c=relaxed/simple;
-	bh=WqE97WfV/YMA1xkJTJqj0ldvNKl0o8hIcwQ29LcGUGw=;
+	s=arc-20240116; t=1742394968; c=relaxed/simple;
+	bh=H7H4aahbxSseQBVC/tt69OnL8hEfx5iIVTpaF3mAf+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oV45HHC/a8cpXhW2tpW+HcubG8wJf3rmbLm9UltSVeYLx8Kb99KeB79tU6R1hUwVuA/XvJigQSm1K8yQ5qRsAXtIPMf3MJysNsBBVOpyB0qT+5lxqnxiInyq17M/wHqPeE+aIQUygsnekkOlTW1XxmrlPZTaYbRZZw9HcxG2o2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwOORlWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C98C4CEE4;
-	Wed, 19 Mar 2025 14:38:52 +0000 (UTC)
+	 MIME-Version; b=HUYFTsDdgKSmOeIAYDhpJ+Geo7vNrCkjCOfQS0Iz6QtqizdusdPN6a8ZS45/pJAyNibvFJs4Lf7vb/b34ZkkFK3jH4AkMr0br27r9cNlnrKR3aMmlhVs2rC4z7V2Rcml3lOL00uFMkuStgbbYj/7CrOXrkQjx1yo5JIt1rLxtes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nyq6lMDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E381C4CEE4;
+	Wed, 19 Mar 2025 14:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395132;
-	bh=WqE97WfV/YMA1xkJTJqj0ldvNKl0o8hIcwQ29LcGUGw=;
+	s=korg; t=1742394968;
+	bh=H7H4aahbxSseQBVC/tt69OnL8hEfx5iIVTpaF3mAf+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwOORlWKjxnz4bPGKITADtUXKIHnK2zj1LX5ebn/OiVR4OUx80cTtBms37CKcwX9V
-	 eEcroH65JxvLATwDXk6L2GeqijYXVLxJc3bD202V+5HXUIfmpQPhdU/7xIZe/hbuPY
-	 0BQd1o24DK/Hg46zw/Qt/XOj39jJ5K4ltW5Q+UuY=
+	b=Nyq6lMDb3J/SUBPsg5Cwi4Gl4ok3SyP9e9uDRoTFKCkJWY/ZvdZFjxfYbVRQhpXr7
+	 ecDABWA5FZ/CjQ1qF3Oo7up1SSRGTnr79EXTpv0SJXytKchjiMhpYbUHOKiPQbd9LC
+	 nS7bnySm4xb903eLxvq1/JCYQo7GRXLECqlPB0Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.12 171/231] drm/panic: fix overindented list items in documentation
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 194/241] ASoC: Intel: sof_sdw: Fix unlikely uninitialized variable use in create_sdw_dailinks()
 Date: Wed, 19 Mar 2025 07:31:04 -0700
-Message-ID: <20250319143031.067461343@linuxfoundation.org>
+Message-ID: <20250319143032.521701429@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit cba3b86974a3388b12130654809e50cd19294849 upstream.
+commit 4363f02a39e25e80e68039b4323c570b0848ec66 upstream.
 
-Starting with the upcoming Rust 1.86.0 (to be released 2025-04-03),
-Clippy warns:
+Initialize current_be_id to 0 to handle the unlikely case when there are
+no devices connected to a DAI.
+In this case create_sdw_dailink() would return without touching the passed
+pointer to current_be_id.
 
-    error: doc list item overindented
-       --> drivers/gpu/drm/drm_panic_qr.rs:914:5
-        |
-    914 | ///    will be encoded as binary segment, otherwise it will be encoded
-        |     ^^^ help: try using `  ` (2 spaces)
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#doc_overindented_list_items
+Found by gcc -fanalyzer
 
-The overindentation is slightly hard to notice, since all the items
-start with a backquote that makes it look OK, but it is there.
-
-Thus fix it.
-
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
-Cc: stable@vger.kernel.org # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250301231602.917580-2-ojeda@kernel.org
+Fixes: 59bf457d8055 ("ASoC: intel: sof_sdw: Factor out SoundWire DAI creation")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250303065552.78328-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panic_qr.rs | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ sound/soc/intel/boards/sof_sdw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-index 56692c6be219..08b31d75c24a 100644
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -911,16 +911,16 @@ impl QrImage<'_> {
- ///
- /// * `url`: The base URL of the QR code. It will be encoded as Binary segment.
- /// * `data`: A pointer to the binary data, to be encoded. if URL is NULL, it
--///    will be encoded as binary segment, otherwise it will be encoded
--///    efficiently as a numeric segment, and appended to the URL.
-+///   will be encoded as binary segment, otherwise it will be encoded
-+///   efficiently as a numeric segment, and appended to the URL.
- /// * `data_len`: Length of the data, that needs to be encoded, must be less
--///    than data_size.
-+///   than data_size.
- /// * `data_size`: Size of data buffer, it should be at least 4071 bytes to hold
--///    a V40 QR code. It will then be overwritten with the QR code image.
-+///   a V40 QR code. It will then be overwritten with the QR code image.
- /// * `tmp`: A temporary buffer that the QR code encoder will use, to write the
--///    segments and ECC.
-+///   segments and ECC.
- /// * `tmp_size`: Size of the temporary buffer, it must be at least 3706 bytes
--///    long for V40.
-+///   long for V40.
- ///
- /// # Safety
- ///
--- 
-2.48.1
-
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -945,7 +945,7 @@ static int create_sdw_dailinks(struct sn
+ 
+ 	/* generate DAI links by each sdw link */
+ 	while (sof_dais->initialised) {
+-		int current_be_id;
++		int current_be_id = 0;
+ 
+ 		ret = create_sdw_dailink(card, sof_dais, dai_links,
+ 					 &current_be_id, codec_conf);
 
 
 
