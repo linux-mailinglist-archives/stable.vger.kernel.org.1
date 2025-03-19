@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0738DA69203
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:00:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0E7A68FDB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E47121B65375
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 385258879CA
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1372422154D;
-	Wed, 19 Mar 2025 14:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443331DE4DF;
+	Wed, 19 Mar 2025 14:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIrKg3Nw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIFBiQPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ABD1DED78;
-	Wed, 19 Mar 2025 14:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D2C1C4609;
+	Wed, 19 Mar 2025 14:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395194; cv=none; b=NZiwhSZHFhf+os8NOYo9nZZeOuGLnbwYqLU6qmO89pxjrhDQ5GIkle9+stYzD4Y107NolJD9qsMp9fMpXHlX+zMOiwnqO+ihWDPh3EZzpxJuEBFWw12hPY0NsKiQiGZyf4fbF/swQfML5j76kzFx/Et8plYb8Y8CYKYnpR/TO44=
+	t=1742394965; cv=none; b=DJAyOMV1wioPR9o3Z+MmnWep7Kx7gwfRkCPhW9a6Wt2/1TjBpRofH7spDI0oUT7QTHC4tBOc+7tPkeoQpmKDSwG5sf36pufsU4MhRX6yDZGPsuLtQfMcHMb0gE9poZnzdP/ueybx6l06F00uPwndILBz/0ZNOjQ2t6qHkUuI6As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395194; c=relaxed/simple;
-	bh=hA13pnhR5PWvSm1G4B1J1v800qwZNH8jOoI4m++ozIw=;
+	s=arc-20240116; t=1742394965; c=relaxed/simple;
+	bh=UNtmFUgfxRdl4lrgGRFdEXvx1jc62A3BoeVho7rL8Ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WheVtRT8fnSRYXteQT9EWRN5U3fEPT4fOX3xzC2ePRxYN/Qt0C95yjFHPK+bdMw9sRotGjLmNYgefWuFen6LSvBJXqt7K4eHmmErzW7ZCOAYoyy8Dp2gwKQsONDc/xf2SOLRPOjGat2yifz94HipaALM/kKjEV9JwRpKGBtK6E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIrKg3Nw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978E7C4CEE4;
-	Wed, 19 Mar 2025 14:39:54 +0000 (UTC)
+	 MIME-Version; b=OM0LyUOmwanjo81U+uC3LmXMIsp8GEMDMBFyhdMeJLQRoBDgEWebLF4MeGGKeUVIVyoozg6mxf6dinncvkKm1nlr0gkFClfAZIdxI4yrfY+j1t94lQN8kyExXOoqtV7FzV7LbFQAjH1qLujXvKB4FIMaT1u5H30N3wKIC09rctc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIFBiQPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCADC4CEE4;
+	Wed, 19 Mar 2025 14:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395194;
-	bh=hA13pnhR5PWvSm1G4B1J1v800qwZNH8jOoI4m++ozIw=;
+	s=korg; t=1742394964;
+	bh=UNtmFUgfxRdl4lrgGRFdEXvx1jc62A3BoeVho7rL8Ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIrKg3Nwg+41rcs3F/NEeujbmk3A2f77FRPSZ/Td/ak/IHEjYFHNZlPpXl8ileXI6
-	 qUFJzZT7d4xu06+luM42eG7xFLRu0qKGCwL9ZTvVOzuF+SXOM58aO/feuNHzHXk/X/
-	 jgCuHt9goTZApVLKlJPH9UKoG1+xosec32KtCNRM=
+	b=AIFBiQPSJs1mPZ9fdVmMut+rCf2bXIPbRwOo2wJunHMrJ46V7qgV130ZMsUB322IU
+	 BCnH2ki2QVEf+JuuRXfQRGaaAf9XwKnEZOFxFmZONTNeLjhvkvtiRn65aZZtmJ4AP2
+	 fq1DiG1Q9DWxjLj6FESluOO1jnL8IIejGbSkvmsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ievgen Vovk <YevgenVovk@ukr.net>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/166] HID: hid-apple: Apple Magic Keyboard a3203 USB-C support
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.13 156/241] Input: xpad - add support for TECNO Pocket Go
 Date: Wed, 19 Mar 2025 07:30:26 -0700
-Message-ID: <20250319143021.485682751@linuxfoundation.org>
+Message-ID: <20250319143031.584266065@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ievgen Vovk <YevgenVovk@ukr.net>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit 2813e00dcd748cef47d2bffaa04071de93fddf00 ]
+commit 95a54a96f657fd069d2a9922b6c2d293a72a001f upstream.
 
-Add Apple Magic Keyboard 2024 model (with USB-C port) device ID (0320)
-to those recognized by the hid-apple driver. Keyboard is otherwise
-compatible with the existing implementation for its earlier 2021 model.
+TECNO Pocket Go is a kickstarter handheld by manufacturer TECNO Mobile.
+It poses a unique feature: it does not have a display. Instead, the
+handheld is essentially a pc in a controller. As customary, it has an
+xpad endpoint, a keyboard endpoint, and a vendor endpoint for its
+vendor software.
 
-Signed-off-by: Ievgen Vovk <YevgenVovk@ukr.net>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://lore.kernel.org/r/20250222170010.188761-3-lkml@antheas.dev
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-apple.c | 5 +++++
- drivers/hid/hid-ids.h   | 1 +
- 2 files changed, 6 insertions(+)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
-index d9e9829b22001..9ff40f3b98064 100644
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -459,6 +459,7 @@ static int hidinput_apple_event(struct hid_device *hid, struct input_dev *input,
- 			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_NUMPAD_2015)
- 			table = magic_keyboard_2015_fn_keys;
- 		else if (hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021 ||
-+			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024 ||
- 			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021 ||
- 			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_NUMPAD_2021)
- 			table = apple2021_fn_keys;
-@@ -1064,6 +1065,10 @@ static const struct hid_device_id apple_devices[] = {
- 		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK | APPLE_RDESC_BATTERY },
- 	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
- 		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024),
-+		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK | APPLE_RDESC_BATTERY },
-+	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024),
-+		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021),
- 		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK | APPLE_RDESC_BATTERY },
- 	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021),
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index b807d01ecca6e..09090803f1dd2 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -184,6 +184,7 @@
- #define USB_DEVICE_ID_APPLE_IRCONTROL4	0x8242
- #define USB_DEVICE_ID_APPLE_IRCONTROL5	0x8243
- #define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021   0x029c
-+#define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024   0x0320
- #define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021   0x029a
- #define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_NUMPAD_2021   0x029f
- #define USB_DEVICE_ID_APPLE_TOUCHBAR_BACKLIGHT 0x8102
--- 
-2.39.5
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -382,6 +382,7 @@ static const struct xpad_device {
+ 	{ 0x2563, 0x058d, "OneXPlayer Gamepad", 0, XTYPE_XBOX360 },
+ 	{ 0x294b, 0x3303, "Snakebyte GAMEPAD BASE X", 0, XTYPE_XBOXONE },
+ 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
++	{ 0x2993, 0x2001, "TECNO Pocket Go", 0, XTYPE_XBOX360 },
+ 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
+ 	{ 0x2dc8, 0x3106, "8BitDo Ultimate Wireless / Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x2dc8, 0x3109, "8BitDo Ultimate Wireless Bluetooth", 0, XTYPE_XBOX360 },
+@@ -548,6 +549,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x2563),		/* OneXPlayer Gamepad */
+ 	XPAD_XBOX360_VENDOR(0x260d),		/* Dareu H101 */
+ 	XPAD_XBOXONE_VENDOR(0x294b),		/* Snakebyte */
++	XPAD_XBOX360_VENDOR(0x2993),		/* TECNO Mobile */
+ 	XPAD_XBOX360_VENDOR(0x2c22),		/* Qanba Controllers */
+ 	XPAD_XBOX360_VENDOR(0x2dc8),		/* 8BitDo Controllers */
+ 	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Controllers */
 
 
 
