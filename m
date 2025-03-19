@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-124958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA47A68F5B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:36:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9AC3A68FFD
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78A061741F4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:34:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BBA74630B4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074421D5AA0;
-	Wed, 19 Mar 2025 14:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120EC209F55;
+	Wed, 19 Mar 2025 14:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8R8tbv6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/SJlGg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59F81D54F4;
-	Wed, 19 Mar 2025 14:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B826A1DF72E;
+	Wed, 19 Mar 2025 14:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394852; cv=none; b=JefVuWkgosSeWlIovja/AY/R0zHFt7+KE1z3MtSxbjsZjN7YtPWTwcmvkBhrETENna8QtewxlFLqeXPsZIRA48EAsMOl19TtrWrLn46lMepA0kuBAJpbYxXu7NGmO7AE/RXS2afXafahGP+lpZXl85yISLaMLzrOJdjHY5gunh4=
+	t=1742395007; cv=none; b=nro0dUac4ZYA6i/bm7fuNZwT3fJnoaf5aAoW8v/XGng7r95NFeMqaxh0W292ZWQDAOo5oMW+SkRkfWmcdLzcWmUxJaUN7qFQwTAvpUxJFv/+KP4ak55awf/3m2Tck3mWA3y3ZWKWZOHCHjurL8n6bt65T1QzmbCQTcG1sj5J31Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394852; c=relaxed/simple;
-	bh=Ln5XnP0WPnW6JwH/Y04pY36rwDDIKhYYVefFLL6xvpo=;
+	s=arc-20240116; t=1742395007; c=relaxed/simple;
+	bh=tzp5iva4kpqKgmbsgybV2t/s09bXhsfODJT+nW/68XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8NUb5LFJU3dTfu/5TP/dgWNKcnp5ZxyEXrz/kqCgHTgjNaCJ2OaCIcIQDw0tQNY+3btZyWSurz3ME+ziWICxS2wA8wgPnwEmERLIlz8vtPGIBnZAAWcjUyjPYJd4joS3yX5KPwkMMMEqXtS92dqGl/TphkYyFou9iTi1FScFlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8R8tbv6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736D6C4CEE8;
-	Wed, 19 Mar 2025 14:34:12 +0000 (UTC)
+	 MIME-Version; b=YJX4mgKP15nXk+sAnuPAUBcmc+Tyh/DzCrU5mq7iq8f6fnKQ4k3QgpconQBPY2GThemKdAXPW19k/AMgUwXQmhZQJp19m/r1RgThAgUWwlnBFTNYAeuG4WYKUFg5p9CsnOjFRqCOaFNtYBn7DL0A/XeHNFjPcZtHxUwFQKQ9RnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/SJlGg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB47C4CEE4;
+	Wed, 19 Mar 2025 14:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394852;
-	bh=Ln5XnP0WPnW6JwH/Y04pY36rwDDIKhYYVefFLL6xvpo=;
+	s=korg; t=1742395007;
+	bh=tzp5iva4kpqKgmbsgybV2t/s09bXhsfODJT+nW/68XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J8R8tbv6DVTT2DFhswDQqcQYD0G35/NDPI8xxBGW6hg2KrceWgVxeI0aHbbzO9qBh
-	 GCugvEqjWP/Zl6joUpFiMNnhfy+JAh17OR3Wm1vxd2ebs4acnk8+oWxh8SM8Prh8ob
-	 lav94m3cRnhx7vfvrwUfWCoPEuOJPmF8u8XTwGJg=
+	b=Q/SJlGg6XOwZrq4Nxy/F0AkYTTI4Hvgft5ciPHfsGyJaQvZgSz6dwuavnQ2uW/OQY
+	 1FPZX3H6yl7zcX/48iJEV8z2oiFVG4fUFwwbQH0pm/lxUuryDNEB6iEX0pHqbeWx+T
+	 jvY3mdhnSgE59YCmBqRhGM9EYlYm20D3Rw/ExiKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 040/241] bonding: fix incorrect MAC address setting to receive NS messages
+Subject: [PATCH 6.12 017/231] Bluetooth: hci_event: Fix enabling passive scanning
 Date: Wed, 19 Mar 2025 07:28:30 -0700
-Message-ID: <20250319143028.710739026@linuxfoundation.org>
+Message-ID: <20250319143027.271781938@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,133 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 0c5e145a350de3b38cd5ae77a401b12c46fb7c1d ]
+[ Upstream commit 0bdd88971519cfa8a76d1a4dde182e74cfbd5d5c ]
 
-When validation on the backup slave is enabled, we need to validate the
-Neighbor Solicitation (NS) messages received on the backup slave. To
-receive these messages, the correct destination MAC address must be added
-to the slave. However, the target in bonding is a unicast address, which
-we cannot use directly. Instead, we should first convert it to a
-Solicited-Node Multicast Address and then derive the corresponding MAC
-address.
+Passive scanning shall only be enabled when disconnecting LE links,
+otherwise it may start result in triggering scanning when e.g. an ISO
+link disconnects:
 
-Fix the incorrect MAC address setting on both slave_set_ns_maddr() and
-slave_set_ns_maddrs(). Since the two function names are similar. Add
-some description for the functions. Also only use one mac_addr variable
-in slave_set_ns_maddr() to save some code and logic.
+> HCI Event: LE Meta Event (0x3e) plen 29
+      LE Connected Isochronous Stream Established (0x19)
+        Status: Success (0x00)
+        Connection Handle: 257
+        CIG Synchronization Delay: 0 us (0x000000)
+        CIS Synchronization Delay: 0 us (0x000000)
+        Central to Peripheral Latency: 10000 us (0x002710)
+        Peripheral to Central Latency: 10000 us (0x002710)
+        Central to Peripheral PHY: LE 2M (0x02)
+        Peripheral to Central PHY: LE 2M (0x02)
+        Number of Subevents: 1
+        Central to Peripheral Burst Number: 1
+        Peripheral to Central Burst Number: 1
+        Central to Peripheral Flush Timeout: 2
+        Peripheral to Central Flush Timeout: 2
+        Central to Peripheral MTU: 320
+        Peripheral to Central MTU: 160
+        ISO Interval: 10.00 msec (0x0008)
+...
+> HCI Event: Disconnect Complete (0x05) plen 4
+        Status: Success (0x00)
+        Handle: 257
+        Reason: Remote User Terminated Connection (0x13)
+< HCI Command: LE Set Extended Scan Enable (0x08|0x0042) plen 6
+        Extended scan: Enabled (0x01)
+        Filter duplicates: Enabled (0x01)
+        Duration: 0 msec (0x0000)
+        Period: 0.00 sec (0x0000)
 
-Fixes: 8eb36164d1a6 ("bonding: add ns target multicast address to slave device")
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250306023923.38777-2-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9fcb18ef3acb ("Bluetooth: Introduce LE auto connect options")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_options.c | 55 +++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 8 deletions(-)
+ net/bluetooth/hci_event.c | 37 ++++++++++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 327b6ecdc77e0..d1b095af253bd 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1242,10 +1242,28 @@ static bool slave_can_set_ns_maddr(const struct bonding *bond, struct slave *sla
- 	       slave->dev->flags & IFF_MULTICAST;
- }
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 388d46c6a043d..d64117be62cc4 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3393,23 +3393,30 @@ static void hci_disconn_complete_evt(struct hci_dev *hdev, void *data,
+ 		hci_update_scan(hdev);
+ 	}
  
-+/**
-+ * slave_set_ns_maddrs - add/del all NS mac addresses for slave
-+ * @bond: bond device
-+ * @slave: slave device
-+ * @add: add or remove all the NS mac addresses
-+ *
-+ * This function tries to add or delete all the NS mac addresses on the slave
-+ *
-+ * Note, the IPv6 NS target address is the unicast address in Neighbor
-+ * Solicitation (NS) message. The dest address of NS message should be
-+ * solicited-node multicast address of the target. The dest mac of NS message
-+ * is converted from the solicited-node multicast address.
-+ *
-+ * This function is called when
-+ *   * arp_validate changes
-+ *   * enslaving, releasing new slaves
-+ */
- static void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool add)
- {
- 	struct in6_addr *targets = bond->params.ns_targets;
- 	char slot_maddr[MAX_ADDR_LEN];
-+	struct in6_addr mcaddr;
- 	int i;
+-	params = hci_conn_params_lookup(hdev, &conn->dst, conn->dst_type);
+-	if (params) {
+-		switch (params->auto_connect) {
+-		case HCI_AUTO_CONN_LINK_LOSS:
+-			if (ev->reason != HCI_ERROR_CONNECTION_TIMEOUT)
++	/* Re-enable passive scanning if disconnected device is marked
++	 * as auto-connectable.
++	 */
++	if (conn->type == LE_LINK) {
++		params = hci_conn_params_lookup(hdev, &conn->dst,
++						conn->dst_type);
++		if (params) {
++			switch (params->auto_connect) {
++			case HCI_AUTO_CONN_LINK_LOSS:
++				if (ev->reason != HCI_ERROR_CONNECTION_TIMEOUT)
++					break;
++				fallthrough;
++
++			case HCI_AUTO_CONN_DIRECT:
++			case HCI_AUTO_CONN_ALWAYS:
++				hci_pend_le_list_del_init(params);
++				hci_pend_le_list_add(params,
++						     &hdev->pend_le_conns);
++				hci_update_passive_scan(hdev);
+ 				break;
+-			fallthrough;
  
- 	if (!slave_can_set_ns_maddr(bond, slave))
-@@ -1255,7 +1273,8 @@ static void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool
- 		if (ipv6_addr_any(&targets[i]))
- 			break;
+-		case HCI_AUTO_CONN_DIRECT:
+-		case HCI_AUTO_CONN_ALWAYS:
+-			hci_pend_le_list_del_init(params);
+-			hci_pend_le_list_add(params, &hdev->pend_le_conns);
+-			hci_update_passive_scan(hdev);
+-			break;
+-
+-		default:
+-			break;
++			default:
++				break;
++			}
+ 		}
+ 	}
  
--		if (!ndisc_mc_map(&targets[i], slot_maddr, slave->dev, 0)) {
-+		addrconf_addr_solict_mult(&targets[i], &mcaddr);
-+		if (!ndisc_mc_map(&mcaddr, slot_maddr, slave->dev, 0)) {
- 			if (add)
- 				dev_mc_add(slave->dev, slot_maddr);
- 			else
-@@ -1278,23 +1297,43 @@ void bond_slave_ns_maddrs_del(struct bonding *bond, struct slave *slave)
- 	slave_set_ns_maddrs(bond, slave, false);
- }
- 
-+/**
-+ * slave_set_ns_maddr - set new NS mac address for slave
-+ * @bond: bond device
-+ * @slave: slave device
-+ * @target: the new IPv6 target
-+ * @slot: the old IPv6 target in the slot
-+ *
-+ * This function tries to replace the old mac address to new one on the slave.
-+ *
-+ * Note, the target/slot IPv6 address is the unicast address in Neighbor
-+ * Solicitation (NS) message. The dest address of NS message should be
-+ * solicited-node multicast address of the target. The dest mac of NS message
-+ * is converted from the solicited-node multicast address.
-+ *
-+ * This function is called when
-+ *   * An IPv6 NS target is added or removed.
-+ */
- static void slave_set_ns_maddr(struct bonding *bond, struct slave *slave,
- 			       struct in6_addr *target, struct in6_addr *slot)
- {
--	char target_maddr[MAX_ADDR_LEN], slot_maddr[MAX_ADDR_LEN];
-+	char mac_addr[MAX_ADDR_LEN];
-+	struct in6_addr mcast_addr;
- 
- 	if (!bond->params.arp_validate || !slave_can_set_ns_maddr(bond, slave))
- 		return;
- 
--	/* remove the previous maddr from slave */
-+	/* remove the previous mac addr from slave */
-+	addrconf_addr_solict_mult(slot, &mcast_addr);
- 	if (!ipv6_addr_any(slot) &&
--	    !ndisc_mc_map(slot, slot_maddr, slave->dev, 0))
--		dev_mc_del(slave->dev, slot_maddr);
-+	    !ndisc_mc_map(&mcast_addr, mac_addr, slave->dev, 0))
-+		dev_mc_del(slave->dev, mac_addr);
- 
--	/* add new maddr on slave if target is set */
-+	/* add new mac addr on slave if target is set */
-+	addrconf_addr_solict_mult(target, &mcast_addr);
- 	if (!ipv6_addr_any(target) &&
--	    !ndisc_mc_map(target, target_maddr, slave->dev, 0))
--		dev_mc_add(slave->dev, target_maddr);
-+	    !ndisc_mc_map(&mcast_addr, mac_addr, slave->dev, 0))
-+		dev_mc_add(slave->dev, mac_addr);
- }
- 
- static void _bond_options_ns_ip6_target_set(struct bonding *bond, int slot,
 -- 
 2.39.5
 
