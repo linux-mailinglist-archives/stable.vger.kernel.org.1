@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911DCA69001
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5EBDA68F45
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 134A317192A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F7013ACBD8
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E52E19DF99;
-	Wed, 19 Mar 2025 14:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77EE21D63D9;
+	Wed, 19 Mar 2025 14:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Awlmbhku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH3NXWLK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8EB1C5D6A;
-	Wed, 19 Mar 2025 14:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EF61C5F26;
+	Wed, 19 Mar 2025 14:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395011; cv=none; b=g1sYAaYZqkVNdnI4R9m34zVrX92Uu85uqXlw71s+QXDSsPQjfnUNze0xpQdiEAXJO2rCAf1H8WjWW30OitqmAxc52nVo71Q22tzsvwAMRM3cbHhikZafmO+n9pTnoSkniCUIhTR7j/WHDuL0boFkQ00IGFTTL6LRICSh1W0mx6w=
+	t=1742394856; cv=none; b=F03xASpqlSDOo2FkTNZA520LR0m08GacBRwlY9Uw6QSnAU7zHfD/YkRg3adEHh2mak99SmUhhAOyJrnL7VwPxErWHjtX22ld+Sab5xspejnZofSJ+41dVh0toGYnI1sj22CqZnenb4SF+EwmMwjuAlLo8IppBQXMNqLO1PunnBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395011; c=relaxed/simple;
-	bh=cXwYpJPd25zHNmQSkpdZGM6dFhvWexe1c0zHkGFStWQ=;
+	s=arc-20240116; t=1742394856; c=relaxed/simple;
+	bh=224z7gH6Z5oNPuKaq1xm4y7ABw1H+zDUYdd0Q3qYI6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XyIdR+Uf9Xn5/meq8+iY/L4OxRb3hDLlzHvReHL5qL+c5C7pQrIZcAiRJY5tfvJpmdU07IrNq7szssuGnsNeSctAZkkDTCoTv1HtikJxuSQjjojWKeO48ywhfq8vXoCmpK4AhZ0mitnIgb7+A6jJbSLu6AeeJwPf5iE92bjpHxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Awlmbhku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D884C4CEE4;
-	Wed, 19 Mar 2025 14:36:51 +0000 (UTC)
+	 MIME-Version; b=kUQ857JEd/UBuAxiIOWRMnq2y9cXgxCPkL8Gc4YbaWHsoYXLeI4O79hgzdU39kRrBQLdRbJIDkm1EYMH11samIsNcCMm1ryz4vcCW9wuE3fay3UAXZ1zkO7Ilv21xu34O4JZdjjx4xU5VmdLnn9Xl4OxsXLY3+0iUHSTkiK2nSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH3NXWLK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08438C4CEE4;
+	Wed, 19 Mar 2025 14:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395011;
-	bh=cXwYpJPd25zHNmQSkpdZGM6dFhvWexe1c0zHkGFStWQ=;
+	s=korg; t=1742394856;
+	bh=224z7gH6Z5oNPuKaq1xm4y7ABw1H+zDUYdd0Q3qYI6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AwlmbhkuhkgOCn2td5HQai2Jp9XCNWt/wucGLZIOsdL3SkHq7MNa58x6rRtzYmyNm
-	 aOnbML10X0J/NG0dvDVMP0FxzkH2mPhxTxuDyuqBrzbf1Acpdnod/Kn6lWgUEoRLS8
-	 RRx6L/PISDXszrogGeI/dQxQnePcCFweJ7wgIuYY=
+	b=qH3NXWLKNRab1tbgFdgjY7NMFyYmCYDVhtF2gJ8sKvhkjzbVHW9hH43hTLXhNhQtw
+	 9t6VqnXNn9u3qQPn3xI3Bj3FRML7qo7rDKvOWYDJZpi40ygjHZPXqVMacOnS/g4pAU
+	 LbMFLdjUmqUQkDjFPGKBbPRF/P1C5GQmCrA6rppw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+83fed965338b573115f7@syzkaller.appspotmail.com,
+	Kohei Enju <enjuk@amazon.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/231] net: mctp i3c: Copy headers if cloned
+Subject: [PATCH 6.13 044/241] netfilter: nf_conncount: Fully initialize struct nf_conncount_tuple in insert_tree()
 Date: Wed, 19 Mar 2025 07:28:34 -0700
-Message-ID: <20250319143027.359604491@linuxfoundation.org>
+Message-ID: <20250319143028.811380894@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit 26db9c9ee19c36a97dbb1cfef007a3c189c4c874 ]
+[ Upstream commit d653bfeb07ebb3499c403404c21ac58a16531607 ]
 
-Use skb_cow_head() prior to modifying the tx skb. This is necessary
-when the skb has been cloned, to avoid modifying other shared clones.
+Since commit b36e4523d4d5 ("netfilter: nf_conncount: fix garbage
+collection confirm race"), `cpu` and `jiffies32` were introduced to
+the struct nf_conncount_tuple.
 
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Fixes: c8755b29b58e ("mctp i3c: MCTP I3C driver")
-Link: https://patch.msgid.link/20250306-matt-i3c-cow-head-v1-1-d5e6a5495227@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The commit made nf_conncount_add() initialize `conn->cpu` and
+`conn->jiffies32` when allocating the struct.
+In contrast, count_tree() was not changed to initialize them.
+
+By commit 34848d5c896e ("netfilter: nf_conncount: Split insert and
+traversal"), count_tree() was split and the relevant allocation
+code now resides in insert_tree().
+Initialize `conn->cpu` and `conn->jiffies32` in insert_tree().
+
+BUG: KMSAN: uninit-value in find_or_evict net/netfilter/nf_conncount.c:117 [inline]
+BUG: KMSAN: uninit-value in __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
+ find_or_evict net/netfilter/nf_conncount.c:117 [inline]
+ __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
+ count_tree net/netfilter/nf_conncount.c:438 [inline]
+ nf_conncount_count+0x82f/0x1e80 net/netfilter/nf_conncount.c:521
+ connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
+ __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
+ nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+ nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
+ nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+ nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
+ NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
+ ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
+ ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
+ __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
+ __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
+ __netif_receive_skb_list net/core/dev.c:6035 [inline]
+ netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
+ netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
+ xdp_recv_frames net/bpf/test_run.c:280 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:361 [inline]
+ bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
+ bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
+ bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
+ __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
+ __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
+ ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:4121 [inline]
+ slab_alloc_node mm/slub.c:4164 [inline]
+ kmem_cache_alloc_noprof+0x915/0xe10 mm/slub.c:4171
+ insert_tree net/netfilter/nf_conncount.c:372 [inline]
+ count_tree net/netfilter/nf_conncount.c:450 [inline]
+ nf_conncount_count+0x1415/0x1e80 net/netfilter/nf_conncount.c:521
+ connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
+ __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
+ nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+ nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
+ nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+ nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
+ NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
+ ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
+ ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
+ __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
+ __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
+ __netif_receive_skb_list net/core/dev.c:6035 [inline]
+ netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
+ netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
+ xdp_recv_frames net/bpf/test_run.c:280 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:361 [inline]
+ bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
+ bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
+ bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
+ __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
+ __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
+ ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+
+Reported-by: syzbot+83fed965338b573115f7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=83fed965338b573115f7
+Fixes: b36e4523d4d5 ("netfilter: nf_conncount: fix garbage collection confirm race")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mctp/mctp-i3c.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nf_conncount.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/mctp/mctp-i3c.c b/drivers/net/mctp/mctp-i3c.c
-index a2b15cddf46e6..47513ebbc6807 100644
---- a/drivers/net/mctp/mctp-i3c.c
-+++ b/drivers/net/mctp/mctp-i3c.c
-@@ -506,10 +506,15 @@ static int mctp_i3c_header_create(struct sk_buff *skb, struct net_device *dev,
- 	   const void *saddr, unsigned int len)
- {
- 	struct mctp_i3c_internal_hdr *ihdr;
-+	int rc;
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index ebe38ed2e6f4f..913ede2f57f9a 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -377,6 +377,8 @@ insert_tree(struct net *net,
  
- 	if (!daddr || !saddr)
- 		return -EINVAL;
+ 	conn->tuple = *tuple;
+ 	conn->zone = *zone;
++	conn->cpu = raw_smp_processor_id();
++	conn->jiffies32 = (u32)jiffies;
+ 	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
  
-+	rc = skb_cow_head(skb, sizeof(struct mctp_i3c_internal_hdr));
-+	if (rc)
-+		return rc;
-+
- 	skb_push(skb, sizeof(struct mctp_i3c_internal_hdr));
- 	skb_reset_mac_header(skb);
- 	ihdr = (void *)skb_mac_header(skb);
+ 	nf_conncount_list_init(&rbconn->list);
 -- 
 2.39.5
 
