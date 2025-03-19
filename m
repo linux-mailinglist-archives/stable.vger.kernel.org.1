@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA86A69042
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557A4A6905A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5330C1721D2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FE4D1B63CEE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFB61E25E3;
-	Wed, 19 Mar 2025 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0901D5AC2;
+	Wed, 19 Mar 2025 14:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKhaB8xB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqks/XmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB5F215076;
-	Wed, 19 Mar 2025 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCD31B2194;
+	Wed, 19 Mar 2025 14:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395064; cv=none; b=kJaN7jf0sC9PdeptOs81nVdQ6D1YDrRR7PDiEu99xUQkatb6UsJ1wj5MVxBf5EjsLg+lPtf5AQ9SglgNcSLVy12I4AMg2rlV+/eJJLNJQ622sBThMe/ZUuyk0O+lc1pXj+8mZA2PB3LNIz/oYMBxjS651T7TM0nA8MjYwsBAzjE=
+	t=1742394912; cv=none; b=mJyQILrbsPWPq90v+4RNt2Q+Qb6HQ8xwVKuxQ7XH0dlVfCx5TTg5Er6E3a73tAy1h8DE2QOza4C0nbRQPA3ScoPLx3m4X3mI0scnN0Ym1qbAaRmzBkVfCpG1gjKVZZy/GYcm+/USg7wm0NjY3oyEqXQHRkFGZ3GylPGVbeukX9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395064; c=relaxed/simple;
-	bh=0Sw1VnzyLiE14Ad6XA4jPs1DcObPR9AZtkTbW6Vp1EE=;
+	s=arc-20240116; t=1742394912; c=relaxed/simple;
+	bh=xc13w1/m0R4RhR06Whudbke44zAksu/vPbl7VYH8Pbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcZlnOxZH9SdpsWrkkOhlVfg9OjQbI8GIzSzHyDIWJcHrZ+Od6mZkI0oEtfv8sbNWUgFXwBFt0cWxvInQGSIOQWJvw2Y6AOcIoAQEC7Dfp7cUDEcnN1GjdqSWN+rpPJc4DvwyfsSWUh/Ea2ZhsKHXfaL/w2Ns2ZgAxbVAZyV0ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKhaB8xB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0940C4CEE4;
-	Wed, 19 Mar 2025 14:37:43 +0000 (UTC)
+	 MIME-Version; b=mjzz27cQlhbV5Gm3pxay43GQ5duEkwJiz8J167ulCMw455esPagckycRwgwRxWv4LhTD5xHTAh7P6wUbkYGIixP3OHYSj5lYtrbTfnsyx67RhyMzZWAWSnEQFbQMQ046nm7OKJq54nBVS5RCGHePSVHr/NrhlVn3v0/efWBlRhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqks/XmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1015CC4CEE4;
+	Wed, 19 Mar 2025 14:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395064;
-	bh=0Sw1VnzyLiE14Ad6XA4jPs1DcObPR9AZtkTbW6Vp1EE=;
+	s=korg; t=1742394912;
+	bh=xc13w1/m0R4RhR06Whudbke44zAksu/vPbl7VYH8Pbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKhaB8xBlQSbFHTaar/G6Z5YzehPuawa38gO0ikhkZ7P8cRlpgtVxfvfPmjqx3Ylr
-	 UrMwr7o0BAVfBR11iNk5ZxKUaSfMzZ8mxlU1x0ISk9tWKGVxOdw4M8m99aopTp94om
-	 kn4esMhXm6okVjjcNDz7wmLpGCtCUUZemVDLkSuw=
+	b=sqks/XmELTEG1ATlHwsQvZVKW2VEPYqxpt9jbRPCKudBc3fBJQOsOSgMayODNziUu
+	 EdZ+28oIHXrVjQXJX2tsjPKOP+J1R3ccXQDK+6eWyA7xrVDtEjp/JCnZeCIDPN0VBr
+	 b6+7pICwunulxHjx9Sgf4IZSwW3PnBiasXLFCmdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Maxime Ripard <mripard@kernel.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/231] drm/tests: hdmi: Remove redundant assignments
+Subject: [PATCH 6.13 122/241] ASoC: SOF: amd: Handle IPC replies before FW_BOOT_COMPLETE
 Date: Wed, 19 Mar 2025 07:29:52 -0700
-Message-ID: <20250319143029.286513087@linuxfoundation.org>
+Message-ID: <20250319143030.742169329@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit bb4f929a8875b4801db95b8cf3b2c527c1e475e0 ]
+[ Upstream commit ac84ca815adb4171a4276b1d44096b75f6a150b7 ]
 
-Some tests have the drm pointer assigned multiple times to the same
-value. Drop the redundant assignments.
+In some cases, e.g. during resuming from suspend, there is a possibility
+that some IPC reply messages get received by the host while the DSP
+firmware has not yet reached the complete boot state.
 
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250129-test-kunit-v2-2-fe59c43805d5@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Detect when this happens and do not attempt to process the unexpected
+replies from DSP.  Instead, provide proper debugging support.
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20250207-sof-vangogh-fixes-v1-3-67824c1e4c9a@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c | 4 ----
- 1 file changed, 4 deletions(-)
+ sound/soc/sof/amd/acp-ipc.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-index cbd9584af3299..4e7369caa7369 100644
---- a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-+++ b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-@@ -450,7 +450,6 @@ static void drm_test_check_broadcast_rgb_auto_cea_mode_vic_1(struct kunit *test)
- 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
+diff --git a/sound/soc/sof/amd/acp-ipc.c b/sound/soc/sof/amd/acp-ipc.c
+index 5f371d9263f3b..12caefd087885 100644
+--- a/sound/soc/sof/amd/acp-ipc.c
++++ b/sound/soc/sof/amd/acp-ipc.c
+@@ -167,6 +167,7 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
  
--	drm = &priv->drm;
- 	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
-@@ -564,7 +563,6 @@ static void drm_test_check_broadcast_rgb_full_cea_mode_vic_1(struct kunit *test)
- 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 	if (sdev->first_boot && sdev->fw_state != SOF_FW_BOOT_COMPLETE) {
+ 		acp_mailbox_read(sdev, sdev->dsp_box.offset, &status, sizeof(status));
++
+ 		if ((status & SOF_IPC_PANIC_MAGIC_MASK) == SOF_IPC_PANIC_MAGIC) {
+ 			snd_sof_dsp_panic(sdev, sdev->dsp_box.offset + sizeof(status),
+ 					  true);
+@@ -188,13 +189,21 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
  
--	drm = &priv->drm;
- 	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
-@@ -680,7 +678,6 @@ static void drm_test_check_broadcast_rgb_limited_cea_mode_vic_1(struct kunit *te
- 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
+ 	dsp_ack = snd_sof_dsp_read(sdev, ACP_DSP_BAR, ACP_SCRATCH_REG_0 + dsp_ack_write);
+ 	if (dsp_ack) {
+-		spin_lock_irq(&sdev->ipc_lock);
+-		/* handle immediate reply from DSP core */
+-		acp_dsp_ipc_get_reply(sdev);
+-		snd_sof_ipc_reply(sdev, 0);
+-		/* set the done bit */
+-		acp_dsp_ipc_dsp_done(sdev);
+-		spin_unlock_irq(&sdev->ipc_lock);
++		if (likely(sdev->fw_state == SOF_FW_BOOT_COMPLETE)) {
++			spin_lock_irq(&sdev->ipc_lock);
++
++			/* handle immediate reply from DSP core */
++			acp_dsp_ipc_get_reply(sdev);
++			snd_sof_ipc_reply(sdev, 0);
++			/* set the done bit */
++			acp_dsp_ipc_dsp_done(sdev);
++
++			spin_unlock_irq(&sdev->ipc_lock);
++		} else {
++			dev_dbg_ratelimited(sdev->dev, "IPC reply before FW_BOOT_COMPLETE: %#x\n",
++					    dsp_ack);
++		}
++
+ 		ipc_irq = true;
+ 	}
  
--	drm = &priv->drm;
- 	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
-@@ -1282,7 +1279,6 @@ static void drm_test_check_output_bpc_format_vic_1(struct kunit *test)
- 	rate = mode->clock * 1500;
- 	KUNIT_ASSERT_LT(test, rate, info->max_tmds_clock * 1000);
- 
--	drm = &priv->drm;
- 	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
- 	KUNIT_EXPECT_EQ(test, ret, 0);
 -- 
 2.39.5
 
