@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-125522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84896A691C3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1218BA69090
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D6528A1D8B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AE7516FB5F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC4A2222A4;
-	Wed, 19 Mar 2025 14:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA3521CC60;
+	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSALsLz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LfBEJrzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1A0221F2E;
-	Wed, 19 Mar 2025 14:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1171EF386;
+	Wed, 19 Mar 2025 14:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395249; cv=none; b=oz+rg5NbauJJy2WfMsQXM1/4AegXCnzpLAbsfvJhfvk56k7XEPPT25z8Jn5axiArNSTMEogyrbqX0QlMci9Im7fDWK7JmuyO5merYLCsBVQ1Zapw2kFYxZt6WQznl1+PMLdqPRPYoKBI33D2Y1G4DvbFZKO98qbOYEHoKTrmWPU=
+	t=1742395141; cv=none; b=AIOlJqIabLJdMmI4BkNyZyoooFt69T5q/bkwy7j1KvhuwLssVKpqb7XBWeCuDr00k1Le9yHHWt2j6Tcw9GiY/u5AqTZ2u+bvEQbc/lIjM0eUjkL/dPo1bEvVaTh+/6YByabNAtBdkBPrMtbIFzjYJPjdML0aC/SdHn0PQ2RMsfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395249; c=relaxed/simple;
-	bh=1vAWMRmg3gyFxi2tHvUbWlCQsLLfYAiDbvmvof9/Pqc=;
+	s=arc-20240116; t=1742395141; c=relaxed/simple;
+	bh=LLxQ5+vu8djUMD5Be+PJ+JcbymlPg2yQ0TbAkdQx3dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUTD/B5g7Fo78MnMV815oiLHBczHqoov0E1SG9KfdtMiEBNplumxijPFwei3zXwTU1rvxaF4p43Jx9Ie7wpTzygJQt6kYKz/5MSAuPv3BwOEdTRAaGFgTrEDK65yLeMu5SCCWhmv5oHSzeDW9n00+BNbqr5jrgUkmSeJ/uGVK/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSALsLz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E678C4CEE8;
-	Wed, 19 Mar 2025 14:40:49 +0000 (UTC)
+	 MIME-Version; b=gTRMstKtQmvpqAhovZUkgkC3TH+KVyDpkmzG1zPo3fPLWb/z0BN7HivNkhGwgztfCCXG6fDzKlMJVlbhmiz99N8ECv5hiZyG43tHz+7pVZ0ofhpaJ3P/yVjNSbYC0v2ZycDQcpQ7IRbpZK4YcDiGA2RkiCG8trCW0tVaIJUZlSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LfBEJrzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30964C4CEE8;
+	Wed, 19 Mar 2025 14:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395249;
-	bh=1vAWMRmg3gyFxi2tHvUbWlCQsLLfYAiDbvmvof9/Pqc=;
+	s=korg; t=1742395141;
+	bh=LLxQ5+vu8djUMD5Be+PJ+JcbymlPg2yQ0TbAkdQx3dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSALsLz92s4u3IrRwRAIW9zHB1OvtSzYHw0neZ4eAo4DIVEki4vlyAV3BZlBGyrjW
-	 tmWTnPPmEXiZh262QxEM/3R74AWSq7PNdwnZp56Li/Chwn1KOEdAOtFKrojNqvOUoK
-	 oJ4NP4cnheu2ztk/bYwFQ+wjJ5B4WxpxcXO9shPI=
+	b=LfBEJrzcsUqdQKt0+ChKgx5ZynUlDNArZ7GeUlzsusMDmBZUsogdgcYQEagxGy1z5
+	 HCEPwnm3Vks2qYKhc3W5sI4W9Wfe+jCw/mtYRnXKFwOoD+tFLppfM6+2qS8d1uYq/d
+	 SkTih+WCNgNEAvvDT7b8ngN37XdG0mnz/4ZfCH8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Mizrahi <thomasmizra@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 130/166] ASoC: amd: yc: Support mic on another Lenovo ThinkPad E16 Gen 2 model
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 208/231] nvme: move error logging from nvme_end_req() to __nvme_end_req()
 Date: Wed, 19 Mar 2025 07:31:41 -0700
-Message-ID: <20250319143023.534308114@linuxfoundation.org>
+Message-ID: <20250319143031.988342134@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Mizrahi <thomasmizra@gmail.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit 0704a15b930cf97073ce091a0cd7ad32f2304329 upstream.
+[ Upstream commit e5c2bcc0cd47321d78bb4e865d7857304139f95d ]
 
-The internal microphone on the Lenovo ThinkPad E16 model requires a
-quirk entry to work properly. This was fixed in a previous patch (linked
-below), but depending on the specific variant of the model, the product
-name may be "21M5" or "21M6".
+Before the Commit 1f47ed294a2b ("block: cleanup and fix batch completion
+adding conditions"), blk_mq_add_to_batch() did not add failed
+passthrough requests to batch, and returned false. After the commit,
+blk_mq_add_to_batch() always adds passthrough requests to batch
+regardless of whether the request failed or not, and returns true. This
+affected error logging feature in the NVME driver.
 
-The following patch fixed this issue for the 21M5 variant:
-  https://lore.kernel.org/all/20240725065442.9293-1-tiwai@suse.de/
+Before the commit, the call chain of failed passthrough request was as
+follows:
 
-This patch adds support for the microphone on the 21M6 variant.
+nvme_handle_cqe()
+ blk_mq_add_to_batch() .. false is returned, then call nvme_pci_complete_rq()
+ nvme_pci_complete_rq()
+  nvme_complete_rq()
+   nvme_end_req()
+    nvme_log_err_passthru() .. error logging
+    __nvme_end_req()        .. end of the rqeuest
 
-Link: https://github.com/ramaureirac/thinkpad-e14-linux/issues/31
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Mizrahi <thomasmizra@gmail.com>
-Link: https://patch.msgid.link/20250308041303.198765-1-thomasmizra@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After the commit, the call chain is as follows:
+
+nvme_handle_cqe()
+ blk_mq_add_to_batch() .. true is returned, then set nvme_pci_complete_batch()
+ ..
+ nvme_pci_complete_batch()
+  nvme_complete_batch()
+   nvme_complete_batch_req()
+    __nvme_end_req() .. end of the request, without error logging
+
+To make the error logging feature work again for passthrough requests, move the
+nvme_log_err_passthru() call from nvme_end_req() to __nvme_end_req().
+
+While at it, move nvme_log_error() call for non-passthrough requests together
+with nvme_log_err_passthru(). Even though the trigger commit does not affect
+non-passthrough requests, move it together for code simplicity.
+
+Fixes: 1f47ed294a2b ("block: cleanup and fix batch completion adding conditions")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250311104359.1767728-2-shinichiro.kawasaki@wdc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvme/host/core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -252,6 +252,13 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21M6"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
- 		}
- 	},
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index a950aa780d1f6..9bdf6fc53697c 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -429,6 +429,12 @@ static inline void nvme_end_req_zoned(struct request *req)
+ 
+ static inline void __nvme_end_req(struct request *req)
+ {
++	if (unlikely(nvme_req(req)->status && !(req->rq_flags & RQF_QUIET))) {
++		if (blk_rq_is_passthrough(req))
++			nvme_log_err_passthru(req);
++		else
++			nvme_log_error(req);
++	}
+ 	nvme_end_req_zoned(req);
+ 	nvme_trace_bio_complete(req);
+ 	if (req->cmd_flags & REQ_NVME_MPATH)
+@@ -439,12 +445,6 @@ void nvme_end_req(struct request *req)
+ {
+ 	blk_status_t status = nvme_error_status(nvme_req(req)->status);
+ 
+-	if (unlikely(nvme_req(req)->status && !(req->rq_flags & RQF_QUIET))) {
+-		if (blk_rq_is_passthrough(req))
+-			nvme_log_err_passthru(req);
+-		else
+-			nvme_log_error(req);
+-	}
+ 	__nvme_end_req(req);
+ 	blk_mq_end_request(req, status);
+ }
+-- 
+2.39.5
+
 
 
 
