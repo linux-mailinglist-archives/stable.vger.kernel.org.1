@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAC7A69100
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1938A690AE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DEE816C303
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1A911B671B9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A9C1DED44;
-	Wed, 19 Mar 2025 14:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638ED1F09B0;
+	Wed, 19 Mar 2025 14:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f4GTYES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WF8ZZqgT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32CB1C8618;
-	Wed, 19 Mar 2025 14:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2143F1DE2D8;
+	Wed, 19 Mar 2025 14:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395196; cv=none; b=OEMJ3IkMVHw2DaJ6GDlPLyLdYMP5wtSSgEltPJugrF9+adcYwZo323Dz2DnnrQt+AhDJXKsNzW/u3w6ugBX9FH+P/MDsgLC5pb0uud1wVfxlNJbl3krie5ITO2NhYn6MapiABwY0y9QCgypd5fawZgKS4xM4FbSLfCau8WIRbDk=
+	t=1742394967; cv=none; b=UFFLl7dNj9xfUJVBuS3K7etLascC4WWqkn0SGyb8q2RKPjGVzG3UhWIg8oUnyzg1KwxtraM7WcYmK0m0PrzRuQXUq2HLX4UMV6IOhXoZgv/5F17LYOMhSQTL6dp7frxPq7hPbBL5ZutaRGMXmMRhSKdustGe0r9Vz6EYUatSGFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395196; c=relaxed/simple;
-	bh=OKnEojHfHU5kkE7EwkhT00ULSyyf1pnYruAQd1LfxUA=;
+	s=arc-20240116; t=1742394967; c=relaxed/simple;
+	bh=rlx30Z1s9G6QeKpt82oe2ScVuc14I8yPIB25Sc4RFRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRkYLz4i1Nd00l/g9V/DqqwLiVSSdUlziMO7y1pik+U64LCc4RuEvgQITruuMfNYRrCJN++lHwMufkpPvVDjcQ4k42mOWTWKESlFe6H1oRWGyBMNbFWBIvGrkeuJN79sW7gjEQRySqrKvvTT/3j48qX5SGTJtfXboOhh3ldQb2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f4GTYES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A821DC4CEE4;
-	Wed, 19 Mar 2025 14:39:56 +0000 (UTC)
+	 MIME-Version; b=BFWlmPRmLMY1M6emAb2n5uSz2P8DCsZRWzeXNAyCipQpAXY+2QU7CmJ5crBQc4R+eWHMVN/yW/mwIET7d4tr/DGYbrrjXo5DdA92KBmPqPueJKKoV6oFeKKnjrJDmDjLzzENN61JY+iLK/PrbmXP3seOD89so5hLuTMR1jSykaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WF8ZZqgT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37EFC4CEE4;
+	Wed, 19 Mar 2025 14:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395196;
-	bh=OKnEojHfHU5kkE7EwkhT00ULSyyf1pnYruAQd1LfxUA=;
+	s=korg; t=1742394967;
+	bh=rlx30Z1s9G6QeKpt82oe2ScVuc14I8yPIB25Sc4RFRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1f4GTYEStMOS4ubHBi2yfy2X4qAaHRyUVw7WeM9r0ks5PWsDNZ+8SdVMEWN01MFlj
-	 y7vlMz2YrJaoRVxnPjD1SUmghALELtTuB5eNct9KIKbs7etIfN69t2/ahkmU1bzOUi
-	 k1Gn71sJGHlTUOnQLzK727SRVUlI6oVleUYA7jA8=
+	b=WF8ZZqgTwEQfT7P5fODTPtxkyUh7YuFF9u7QNivNHL6JuiWeftqlyZF5x/dxGukmy
+	 f6IKfvUjww7BrO8WLb9txO1ka4sErVf4PEVZl+wTKfAhV9VDp5MRpdx8Nc+FExsD4A
+	 1hHCMgQc8hGmZi4rlipTknmqvdalMwdNRCztRI7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/166] sched: Clarify wake_up_q()s write to task->wake_q.next
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.13 159/241] Input: i8042 - add required quirks for missing old boardnames
 Date: Wed, 19 Mar 2025 07:30:29 -0700
-Message-ID: <20250319143021.569035432@linuxfoundation.org>
+Message-ID: <20250319143031.659601085@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit bcc6244e13b4d4903511a1ea84368abf925031c0 ]
+commit 9ed468e17d5b80e7116fd35842df3648e808ae47 upstream.
 
-Clarify that wake_up_q() does an atomic write to task->wake_q.next, after
-which a concurrent __wake_q_add() can immediately overwrite
-task->wake_q.next again.
+Some older Clevo barebones have problems like no or laggy keyboard after
+resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
+quirk.
 
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250129-sched-wakeup-prettier-v1-1-2f51f5f663fa@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The PB71RD keyboard is sometimes laggy after resume and the PC70DR, PB51RF,
+P640RE, and PCX0DX_GN20 keyboard is sometimes unresponsive after resume.
+This quirk fixes that.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://lore.kernel.org/r/20250221230137.70292-2-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 3d6dc03e4a7d3..942734bf7347d 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1019,9 +1019,10 @@ void wake_up_q(struct wake_q_head *head)
- 		struct task_struct *task;
- 
- 		task = container_of(node, struct task_struct, wake_q);
--		/* Task can safely be re-inserted now: */
- 		node = node->next;
--		task->wake_q.next = NULL;
-+		/* pairs with cmpxchg_relaxed() in __wake_q_add() */
-+		WRITE_ONCE(task->wake_q.next, NULL);
-+		/* Task can safely be re-inserted now. */
- 
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1261,6 +1261,12 @@ static const struct dmi_system_id i8042_
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
+ 	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "P640RE"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
  		/*
- 		 * wake_up_process() executes a full barrier, which pairs with
--- 
-2.39.5
-
+ 		 * This is only a partial board_name and might be followed by
+ 		 * another letter or number. DMI_MATCH however does do partial
+@@ -1337,11 +1343,35 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PB51RF"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PB71RD"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PC70DR"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX_GN20"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
+ 	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
+ 	{
+ 		.matches = {
 
 
 
