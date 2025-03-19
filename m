@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-125034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934BAA69258
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A4BA692A5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:13:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EFDC1B853FE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F36691B82755
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A05A1D61B7;
-	Wed, 19 Mar 2025 14:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DACC220688;
+	Wed, 19 Mar 2025 14:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEKtcBnJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lqspcnlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C5F1B2194;
-	Wed, 19 Mar 2025 14:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9C71DE8AB;
+	Wed, 19 Mar 2025 14:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394905; cv=none; b=VrkOQg8QBRgvQWpLFqL2m+tj+giBk5V9tUJsgPRS6gFEaSLO4Kk/7KkXAjTN27sMBfvUoNuhi7KZxTHNrhuCgM71RCBelfJjxlSszoBWgevaJ+PNxTs+4W/bJAqc7iBD+4EgG4/T7RvdVMPGHUNi4SY+rVF1mqeoPrrxV2Qw0Xk=
+	t=1742395179; cv=none; b=Zi5NxAt5OjvgG5hw1viiPj3lVebqDexeewEVXMkCkBD+Zg4Le/4Z+ajqZoIbIsArvHcUsNAYDurgiN+2vwI7T1VCP8y6i6EKIykb507xI1YX06QMHDlE2HtJVmRe1kb3NZOvghZlM5rAcbNSNCPctX1V2HUodTRmmn8lG4QNzDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394905; c=relaxed/simple;
-	bh=zgossc8tH6T3nb1y+p90jKSG6qBZHYA50oZnUIqUCAs=;
+	s=arc-20240116; t=1742395179; c=relaxed/simple;
+	bh=MbsIFUyYFCEnLht3+evYEyaNn19nDr+kbv7Ql8GptWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RFZHROlcZ+gRthNZ6GDEJOovu+nQrAAV1s3T0+IBewiQ5uFWOOQ5IJ0UpfQ6Q4azq2g24QGrXmBG6l73QvVbYFQHYeSPKOd0kUtxM5hpM0FlA4WpKNff7UtmwWWgKiIo9stXo7MQU1LXgQ7cgjWxUo8QpyPyrvBF77pq3C4qJAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEKtcBnJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2206FC4CEE4;
-	Wed, 19 Mar 2025 14:35:05 +0000 (UTC)
+	 MIME-Version; b=NMqQ+sfqngCqWFYC4BEDUinJeP4QNRjV5Bgn7Qjvq6Vf1JmsLX/0cawuj2hTRQGBwag5I/dyb79tvbkxdsqcGng9ZvurvbHzOa70kphPzmWxQbBDN7MaC1XhJUEK9OgzRNgrlRz0g/mGT5Lq+QEHNcNO5UQtU0Z9gJ55BB3vwa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lqspcnlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34C0C4CEE8;
+	Wed, 19 Mar 2025 14:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394905;
-	bh=zgossc8tH6T3nb1y+p90jKSG6qBZHYA50oZnUIqUCAs=;
+	s=korg; t=1742395179;
+	bh=MbsIFUyYFCEnLht3+evYEyaNn19nDr+kbv7Ql8GptWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEKtcBnJ32efa/rjqoSBC+2bpkW9SSTN77o/nxGRKm73LhUeI2rqg6X0j3zyeQvvf
-	 2C+OdhWswQPCKkrgqKRnwpO/NUkoJ9P5AACwAdjPnkNh6FKSpbc2jOubeWzIyO33Df
-	 yBIveeH2qVweSTsmyo1AKx1doNUoyyTR0SiWnVZI=
+	b=Lqspcnlwxf+1LdBnyIq1Fu1CU4YtagQi+X7yDgp2bXbrd8uFiPn3c8jXL/BmCWf4b
+	 J4eATboBlhm9QdQ0p9pJrE3TIKjSMun701qYC0oMmd785IgI3kVzuYgWK0diL3EtV4
+	 7I9otGkLJY/JqIu7L4N5ZtZeUooUqBV3Or76juEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday M Bhat <uday.m.bhat@intel.com>,
-	Jairaj Arava <jairaj.arava@intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 108/241] ASoC: Intel: sof_sdw: Add support for Fatcat board with BT offload enabled in PTL platform
-Date: Wed, 19 Mar 2025 07:29:38 -0700
-Message-ID: <20250319143030.394552158@linuxfoundation.org>
+Subject: [PATCH 6.6 008/166] fbdev: hyperv_fb: iounmap() the correct memory when removing a device
+Date: Wed, 19 Mar 2025 07:29:39 -0700
+Message-ID: <20250319143020.206384218@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday M Bhat <uday.m.bhat@intel.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit d8989106287d3735c7e7fc6acb3811d62ebb666c ]
+[ Upstream commit 7241c886a71797cc51efc6fadec7076fcf6435c2 ]
 
-    This change adds an entry for fatcat boards in soundwire quirk table
-    and also, enables BT offload for PTL RVP.
+When a Hyper-V framebuffer device is removed, or the driver is unbound
+from a device, any allocated and/or mapped memory must be released. In
+particular, MMIO address space that was mapped to the framebuffer must
+be unmapped. Current code unmaps the wrong address, resulting in an
+error like:
 
-Signed-off-by: Uday M Bhat <uday.m.bhat@intel.com>
-Signed-off-by: Jairaj Arava <jairaj.arava@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250204053943.93596-4-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[ 4093.980597] iounmap: bad address 00000000c936c05c
+
+followed by a stack dump.
+
+Commit d21987d709e8 ("video: hyperv: hyperv_fb: Support deferred IO for
+Hyper-V frame buffer driver") changed the kind of address stored in
+info->screen_base, and the iounmap() call in hvfb_putmem() was not
+updated accordingly.
+
+Fix this by updating hvfb_putmem() to unmap the correct address.
+
+Fixes: d21987d709e8 ("video: hyperv: hyperv_fb: Support deferred IO for Hyper-V frame buffer driver")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250209235252.2987-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250209235252.2987-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/video/fbdev/hyperv_fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 352c7a84cc2e8..e3e474fa4dae4 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -747,6 +747,16 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		},
- 		.driver_data = (void *)(SOC_SDW_PCH_DMIC),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Fatcat"),
-+		},
-+		.driver_data = (void *)(SOC_SDW_PCH_DMIC |
-+					SOF_BT_OFFLOAD_SSP(2) |
-+					SOF_SSP_BT_OFFLOAD_PRESENT),
-+	},
- 	{}
- };
+diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
+index b9965cbdd7642..80e8ec36b7db2 100644
+--- a/drivers/video/fbdev/hyperv_fb.c
++++ b/drivers/video/fbdev/hyperv_fb.c
+@@ -1106,7 +1106,7 @@ static void hvfb_putmem(struct hv_device *hdev, struct fb_info *info)
  
+ 	if (par->need_docopy) {
+ 		vfree(par->dio_vp);
+-		iounmap(info->screen_base);
++		iounmap(par->mmio_vp);
+ 		vmbus_free_mmio(par->mem->start, screen_fb_size);
+ 	} else {
+ 		hvfb_release_phymem(hdev, info->fix.smem_start,
 -- 
 2.39.5
 
