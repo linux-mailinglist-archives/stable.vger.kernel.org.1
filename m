@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C56A69195
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E9DA68FC0
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A00621B88247
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 764E43BFC71
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303D91B87D5;
-	Wed, 19 Mar 2025 14:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FA11E5B7E;
+	Wed, 19 Mar 2025 14:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2iwXZ00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vfz8YRs8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39281DA11B;
-	Wed, 19 Mar 2025 14:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B718F1DA314;
+	Wed, 19 Mar 2025 14:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395091; cv=none; b=Sby+bM7Y0YA4UxvRBAzS72jVUaMVZoShVykHYT15Pfx9zhb5kik0prkw6JYVcP2aqwtVrgYpRwYuhmlTFqYNwPARkEQPvx5DTh47bJR6DABFnfWgujM3bw5EavBJqnLGVscBrpctLu47TEifzwIimgMiEAkwGddtxMvaSvJHxAY=
+	t=1742394942; cv=none; b=n3TM+EI3riwbCaqDrD2renbBrj/fQSnVmanfzE2XOakC0wWiRds4gr9o24NP3NdjToNnR2CyCGlT1QdGlPkkXwq66EfDcFCmK87Qcpziqf8+rZKnjf/UXOY8AurcZ90wEt6EpU3AFmFCGyBqPZ9ZfuyLnqFjeGMrQjdAMapns0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395091; c=relaxed/simple;
-	bh=/dxhgjHh76YH8DVZu+KJJU+aWIvZciKjurNuxKt5xng=;
+	s=arc-20240116; t=1742394942; c=relaxed/simple;
+	bh=gu+GxRtE8PZ3JSfiC8J2EbW8/n/sSTy9WtcIP4vJnxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dry3H8RmGc+jT2KPttVUZo3hTOCkZ1RtUEhdGaFldR44XioKpuNGzqwckfTEE5f8hyspSuJdUImQXS2IBFuM7xpUzaeMLtafSvOLcdDAiI3xRggwCGbVx+2f4qa/QVYHyOSPvr3SE44+19FYc1j90VK6tPyEzY0Az38DPgZ1rnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2iwXZ00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D95C4CEE4;
-	Wed, 19 Mar 2025 14:38:10 +0000 (UTC)
+	 MIME-Version; b=AtOxxhrXs5wFD3MbXrqogEMeU35o2oHuRZLIQKbz5t0K7X3Q1bVRKYg3SVSyPLBXSts5q6W+i+7kVqzf4VgwFuQEUPTywnFWw4wbJuZ53UI3INowR6gJNwNh169QFandDvPyvtFrUsHp8C6+O3aYoLO/uBeTXalvfhm3qRf3TQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vfz8YRs8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325A2C4CEE4;
+	Wed, 19 Mar 2025 14:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395090;
-	bh=/dxhgjHh76YH8DVZu+KJJU+aWIvZciKjurNuxKt5xng=;
+	s=korg; t=1742394941;
+	bh=gu+GxRtE8PZ3JSfiC8J2EbW8/n/sSTy9WtcIP4vJnxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q2iwXZ00DIezSEtRaWSooHS2o7/9q+wdbgNuutvz8p42BwaBaoqlBbfliz8AuS74a
-	 wvtHHYEUataoIzq3ymB+JjahGB+1orOU8ImjqYUq/R5GzrNw6o4jUv5UrnzyYA6au0
-	 x4dZcks+8AI+8KbQCXHeVjv3i/Rz+aRsCJzE4fxs=
+	b=Vfz8YRs81zkLKKikDnNNm+13Ln5hRAYQj6p1krf+lLuAcKbYiPCqDHEAPdeLIUUBN
+	 tzWBHE05UcrPoLjCjgiYIfmsZ8v9CTjerex6RwOokrRKwh5NP3DVPNoEXpj4GUAAFJ
+	 uYnI4fTz8hbTYTQcJDC7NKFic69CPqRLOfZvbjcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Ma <aaron.ma@canonical.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 138/231] perf/x86/rapl: Add support for Intel Arrow Lake U
-Date: Wed, 19 Mar 2025 07:30:31 -0700
-Message-ID: <20250319143030.247807764@linuxfoundation.org>
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.13 162/241] usb: typec: tcpm: fix state transition for SNK_WAIT_CAPABILITIES state in run_state_machine()
+Date: Wed, 19 Mar 2025 07:30:32 -0700
+Message-ID: <20250319143031.734487196@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Ma <aaron.ma@canonical.com>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit 68a9b0e313302451468c0b0eda53c383fa51a8f4 ]
+commit f2865c6300d75a9f187dd7918d248e010970fd44 upstream.
 
-Add Arrow Lake U model for RAPL:
+A subtle error got introduced while manually fixing merge conflict in
+tcpm.c for commit 85c4efbe6088 ("Merge v6.12-rc6 into usb-next"). As a
+result of this error, the next state is unconditionally set to
+SNK_WAIT_CAPABILITIES_TIMEOUT while handling SNK_WAIT_CAPABILITIES state
+in run_state_machine(...).
 
-  $ ls -1 /sys/devices/power/events/
-  energy-cores
-  energy-cores.scale
-  energy-cores.unit
-  energy-gpu
-  energy-gpu.scale
-  energy-gpu.unit
-  energy-pkg
-  energy-pkg.scale
-  energy-pkg.unit
-  energy-psys
-  energy-psys.scale
-  energy-psys.unit
+Fix this by setting new state of TCPM state machine to `upcoming_state`
+(that is set to different values based on conditions).
 
-The same output as ArrowLake:
-
-  $ perf stat -a -I 1000 --per-socket -e power/energy-pkg/
-
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://lore.kernel.org/r/20241224145516.349028-1-aaron.ma@canonical.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 85c4efbe60888 ("Merge v6.12-rc6 into usb-next")
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250310-fix-snk-wait-timeout-v6-14-rc6-v1-1-5db14475798f@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/rapl.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/typec/tcpm/tcpm.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
-index a481a939862e5..fc06b216aacdb 100644
---- a/arch/x86/events/rapl.c
-+++ b/arch/x86/events/rapl.c
-@@ -846,6 +846,7 @@ static const struct x86_cpu_id rapl_model_match[] __initconst = {
- 	X86_MATCH_VFM(INTEL_METEORLAKE_L,	&model_skl),
- 	X86_MATCH_VFM(INTEL_ARROWLAKE_H,	&model_skl),
- 	X86_MATCH_VFM(INTEL_ARROWLAKE,		&model_skl),
-+	X86_MATCH_VFM(INTEL_ARROWLAKE_U,	&model_skl),
- 	X86_MATCH_VFM(INTEL_LUNARLAKE_M,	&model_skl),
- 	{},
- };
--- 
-2.39.5
-
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5067,16 +5067,16 @@ static void run_state_machine(struct tcp
+ 		 */
+ 		if (port->vbus_never_low) {
+ 			port->vbus_never_low = false;
+-			tcpm_set_state(port, SNK_SOFT_RESET,
+-				       port->timings.sink_wait_cap_time);
++			upcoming_state = SNK_SOFT_RESET;
+ 		} else {
+ 			if (!port->self_powered)
+ 				upcoming_state = SNK_WAIT_CAPABILITIES_TIMEOUT;
+ 			else
+ 				upcoming_state = hard_reset_state(port);
+-			tcpm_set_state(port, SNK_WAIT_CAPABILITIES_TIMEOUT,
+-				       port->timings.sink_wait_cap_time);
+ 		}
++
++		tcpm_set_state(port, upcoming_state,
++			       port->timings.sink_wait_cap_time);
+ 		break;
+ 	case SNK_WAIT_CAPABILITIES_TIMEOUT:
+ 		/*
 
 
 
