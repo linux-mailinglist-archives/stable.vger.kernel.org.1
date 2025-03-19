@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A192FA69164
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3497BA69020
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECBCC3AF88A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A1BC7AAA21
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AC022155E;
-	Wed, 19 Mar 2025 14:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2FB1E32A2;
+	Wed, 19 Mar 2025 14:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPcGyGWi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIV8QpfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D8A1C8618;
-	Wed, 19 Mar 2025 14:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF801E2834;
+	Wed, 19 Mar 2025 14:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395197; cv=none; b=sa2b5StACNh0zSaV+S6PELRzFfp+s1XGQeEpYs9pB9qsQ47T88BRE3hDK/J0cn9BogERkIannh9aD+2gU9Aa5RslI6+x8J8E1VzcrOnzrpNOl2FzbU7xkYdcMQt6eD1BQQaojLTrWO1fB1MSD4Kffkzqs7S952PZr5CwXN/tC3k=
+	t=1742395072; cv=none; b=KE5omnYfEaZnvp1KVmdNvryBqV+ia5gUnlkzJriC52WEhreTG53ijr9dqK9h++kHFxQNORQ9p9LnW11TT/e2CqyOpetvldlwz49ANGgLJma9HaneuYRhxI0/M0/SJSpap4h8NK+Rjct+0JbQXGE+/vZHSANOEFkTGN1ym5/agMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395197; c=relaxed/simple;
-	bh=ihbKsClGsnSiALq3gkost3thQBqtx3EuOeR7Ts4bNJo=;
+	s=arc-20240116; t=1742395072; c=relaxed/simple;
+	bh=31g12/a7DhEOgggP8Ax8vWMlfK49eTRO0JwvlWakx+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGZ+X4d7uCmAbCW2FzMX17xOZXo5dbnAYWcckGYjj8/tnuumg/33+Uh7NA4Y+05Twxmx4nr45bYXPtvH1uVJCX1WPFg8sbwFdfnSox23H3UnkJPw+C4mzDgaVNal7Sora8HoQ2lJ+y5I46Bq7AH7A8ewTgx5kQAzTKgxwiRFznY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPcGyGWi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B11C4CEE4;
-	Wed, 19 Mar 2025 14:39:57 +0000 (UTC)
+	 MIME-Version; b=W0JRGgPQHLDI7A4cTy71r2mCxTHy5X4ZThZs4AHUZtRf+KF8um1ldfsLGo6gdbr/PjFMizd9sMLxxhG35VspZmCnRryNbalKQja7yeGhBshk146Z3uGEWcxIY16KEWaX9R1oUAdGpWnjYFzpDdlaYjP/aBXYv2Z+jARQ7OKApyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIV8QpfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117F9C4CEE4;
+	Wed, 19 Mar 2025 14:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395197;
-	bh=ihbKsClGsnSiALq3gkost3thQBqtx3EuOeR7Ts4bNJo=;
+	s=korg; t=1742395072;
+	bh=31g12/a7DhEOgggP8Ax8vWMlfK49eTRO0JwvlWakx+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sPcGyGWiuGzHto/ps20ts4sV+FrDa7EO7TR70LypInbgKbYEatCvMPZ+zBxSM/5y7
-	 QSF7aVDbh8rEmqJO9yR3jbt+jTi4ai0DtmumosL/TOLQfzwp3a4fj/89cMoCji74Ys
-	 NttpeGYwVXH1NoQCd/2Ky+f2LfPMw7OMvj1hQUbs=
+	b=RIV8QpfMebJhs4XHC8tKME5wqOlnqdi4gh3eaUsInd/wA78qnpJvCtJczlL1eXhAY
+	 7QaZzJFBf3lrzumzcSIHfTQNTtEBo1pXVikNPNn3dK3q/KvLzjYuZvOxbaAqD87zqH
+	 I6GvHCj7IbMgTKazbuDnekmSkkLvgzfRFgHkXeOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/166] net: openvswitch: remove misbehaving actions length check
+Subject: [PATCH 6.12 110/231] ASoC: rsnd: adjust convert rate limitation
 Date: Wed, 19 Mar 2025 07:30:03 -0700
-Message-ID: <20250319143020.859047462@linuxfoundation.org>
+Message-ID: <20250319143029.555770306@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,156 +63,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit a1e64addf3ff9257b45b78bc7d743781c3f41340 ]
+[ Upstream commit 89f9cf185885d4358aa92b48e51d0f09b71775aa ]
 
-The actions length check is unreliable and produces different results
-depending on the initial length of the provided netlink attribute and
-the composition of the actual actions inside of it.  For example, a
-user can add 4088 empty clone() actions without triggering -EMSGSIZE,
-on attempt to add 4089 such actions the operation will fail with the
--EMSGSIZE verdict.  However, if another 16 KB of other actions will
-be *appended* to the previous 4089 clone() actions, the check passes
-and the flow is successfully installed into the openvswitch datapath.
+Current rsnd driver supports Synchronous SRC Mode, but HW allow to update
+rate only within 1% from current rate. Adjust to it.
 
-The reason for a such a weird behavior is the way memory is allocated.
-When ovs_flow_cmd_new() is invoked, it calls ovs_nla_copy_actions(),
-that in turn calls nla_alloc_flow_actions() with either the actual
-length of the user-provided actions or the MAX_ACTIONS_BUFSIZE.  The
-function adds the size of the sw_flow_actions structure and then the
-actually allocated memory is rounded up to the closest power of two.
+Becially, this feature is used to fine-tune subtle difference that occur
+during sampling rate conversion in SRC. So, it should be called within 1%
+margin of rate difference.
 
-So, if the user-provided actions are larger than MAX_ACTIONS_BUFSIZE,
-then MAX_ACTIONS_BUFSIZE + sizeof(*sfa) rounded up is 32K + 24 -> 64K.
-Later, while copying individual actions, we look at ksize(), which is
-64K, so this way the MAX_ACTIONS_BUFSIZE check is not actually
-triggered and the user can easily allocate almost 64 KB of actions.
+If there was difference over 1%, it will apply with 1% increments by using
+loop without indicating error message.
 
-However, when the initial size is less than MAX_ACTIONS_BUFSIZE, but
-the actions contain ones that require size increase while copying
-(such as clone() or sample()), then the limit check will be performed
-during the reserve_sfa_size() and the user will not be allowed to
-create actions that yield more than 32 KB internally.
-
-This is one part of the problem.  The other part is that it's not
-actually possible for the userspace application to know beforehand
-if the particular set of actions will be rejected or not.
-
-Certain actions require more space in the internal representation,
-e.g. an empty clone() takes 4 bytes in the action list passed in by
-the user, but it takes 12 bytes in the internal representation due
-to an extra nested attribute, and some actions require less space in
-the internal representations, e.g. set(tunnel(..)) normally takes
-64+ bytes in the action list provided by the user, but only needs to
-store a single pointer in the internal implementation, since all the
-data is stored in the tunnel_info structure instead.
-
-And the action size limit is applied to the internal representation,
-not to the action list passed by the user.  So, it's not possible for
-the userpsace application to predict if the certain combination of
-actions will be rejected or not, because it is not possible for it to
-calculate how much space these actions will take in the internal
-representation without knowing kernel internals.
-
-All that is causing random failures in ovs-vswitchd in userspace and
-inability to handle certain traffic patterns as a result.  For example,
-it is reported that adding a bit more than a 1100 VMs in an OpenStack
-setup breaks the network due to OVS not being able to handle ARP
-traffic anymore in some cases (it tries to install a proper datapath
-flow, but the kernel rejects it with -EMSGSIZE, even though the action
-list isn't actually that large.)
-
-Kernel behavior must be consistent and predictable in order for the
-userspace application to use it in a reasonable way.  ovs-vswitchd has
-a mechanism to re-direct parts of the traffic and partially handle it
-in userspace if the required action list is oversized, but that doesn't
-work properly if we can't actually tell if the action list is oversized
-or not.
-
-Solution for this is to check the size of the user-provided actions
-instead of the internal representation.  This commit just removes the
-check from the internal part because there is already an implicit size
-check imposed by the netlink protocol.  The attribute can't be larger
-than 64 KB.  Realistically, we could reduce the limit to 32 KB, but
-we'll be risking to break some existing setups that rely on the fact
-that it's possible to create nearly 64 KB action lists today.
-
-Vast majority of flows in real setups are below 100-ish bytes.  So
-removal of the limit will not change real memory consumption on the
-system.  The absolutely worst case scenario is if someone adds a flow
-with 64 KB of empty clone() actions.  That will yield a 192 KB in the
-internal representation consuming 256 KB block of memory.  However,
-that list of actions is not meaningful and also a no-op.  Real world
-very large action lists (that can occur for a rare cases of BUM
-traffic handling) are unlikely to contain a large number of clones and
-will likely have a lot of tunnel attributes making the internal
-representation comparable in size to the original action list.
-So, it should be fine to just remove the limit.
-
-Commit in the 'Fixes' tag is the first one that introduced the
-difference between internal representation and the user-provided action
-lists, but there were many more afterwards that lead to the situation
-we have today.
-
-Fixes: 7d5437c709de ("openvswitch: Add tunneling interface.")
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20250308004609.2881861-1-i.maximets@ovn.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://patch.msgid.link/871pwd2qe8.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ sound/soc/sh/rcar/src.c | 98 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 76 insertions(+), 22 deletions(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index ebc5728aab4ea..9c13e14034d3b 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2304,14 +2304,10 @@ int ovs_nla_put_mask(const struct sw_flow *flow, struct sk_buff *skb)
- 				OVS_FLOW_ATTR_MASK, true, skb);
- }
+diff --git a/sound/soc/sh/rcar/src.c b/sound/soc/sh/rcar/src.c
+index 3099180297722..7d73b183bda68 100644
+--- a/sound/soc/sh/rcar/src.c
++++ b/sound/soc/sh/rcar/src.c
+@@ -35,6 +35,7 @@ struct rsnd_src {
+ 	struct rsnd_mod *dma;
+ 	struct rsnd_kctrl_cfg_s sen;  /* sync convert enable */
+ 	struct rsnd_kctrl_cfg_s sync; /* sync convert */
++	u32 current_sync_rate;
+ 	int irq;
+ };
  
--#define MAX_ACTIONS_BUFSIZE	(32 * 1024)
--
- static struct sw_flow_actions *nla_alloc_flow_actions(int size)
+@@ -100,7 +101,7 @@ static u32 rsnd_src_convert_rate(struct rsnd_dai_stream *io,
+ 	if (!rsnd_src_sync_is_enabled(mod))
+ 		return rsnd_io_converted_rate(io);
+ 
+-	convert_rate = src->sync.val;
++	convert_rate = src->current_sync_rate;
+ 
+ 	if (!convert_rate)
+ 		convert_rate = rsnd_io_converted_rate(io);
+@@ -201,13 +202,73 @@ static const u32 chan222222[] = {
+ static void rsnd_src_set_convert_rate(struct rsnd_dai_stream *io,
+ 				      struct rsnd_mod *mod)
  {
- 	struct sw_flow_actions *sfa;
++	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
+ 	struct rsnd_priv *priv = rsnd_mod_to_priv(mod);
+-	struct device *dev = rsnd_priv_to_dev(priv);
++	struct rsnd_src *src = rsnd_mod_to_src(mod);
++	u32 fin, fout, new_rate;
++	int inc, cnt, rate;
++	u64 base, val;
++
++	if (!runtime)
++		return;
++
++	if (!rsnd_src_sync_is_enabled(mod))
++		return;
++
++	fin	= rsnd_src_get_in_rate(priv, io);
++	fout	= rsnd_src_get_out_rate(priv, io);
++
++	new_rate = src->sync.val;
++
++	if (!new_rate)
++		new_rate = fout;
++
++	/* Do nothing if no diff */
++	if (new_rate == src->current_sync_rate)
++		return;
++
++	/*
++	 * SRCm_IFSVR::INTIFS can change within 1%
++	 * see
++	 *	SRCm_IFSVR::INTIFS Note
++	 */
++	inc = fout / 100;
++	cnt = abs(new_rate - fout) / inc;
++	if (fout > new_rate)
++		inc *= -1;
++
++	/*
++	 * After start running SRC, we can update only SRC_IFSVR
++	 * for Synchronous Mode
++	 */
++	base = (u64)0x0400000 * fin;
++	rate  = fout;
++	for (int i = 0; i < cnt; i++) {
++		val   = base;
++		rate += inc;
++		do_div(val, rate);
++
++		rsnd_mod_write(mod, SRC_IFSVR, val);
++	}
++	val   = base;
++	do_div(val, new_rate);
++
++	rsnd_mod_write(mod, SRC_IFSVR, val);
++
++	/* update current_sync_rate */
++	src->current_sync_rate = new_rate;
++}
++
++static void rsnd_src_init_convert_rate(struct rsnd_dai_stream *io,
++				       struct rsnd_mod *mod)
++{
+ 	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
++	struct rsnd_priv *priv = rsnd_mod_to_priv(mod);
++	struct device *dev = rsnd_priv_to_dev(priv);
+ 	int is_play = rsnd_io_is_play(io);
+ 	int use_src = 0;
+ 	u32 fin, fout;
+-	u32 ifscr, fsrate, adinr;
++	u32 ifscr, adinr;
+ 	u32 cr, route;
+ 	u32 i_busif, o_busif, tmp;
+ 	const u32 *bsdsr_table;
+@@ -245,26 +306,15 @@ static void rsnd_src_set_convert_rate(struct rsnd_dai_stream *io,
+ 	adinr = rsnd_get_adinr_bit(mod, io) | chan;
  
--	WARN_ON_ONCE(size > MAX_ACTIONS_BUFSIZE);
+ 	/*
+-	 * SRC_IFSCR / SRC_IFSVR
+-	 */
+-	ifscr = 0;
+-	fsrate = 0;
+-	if (use_src) {
+-		u64 n;
 -
- 	sfa = kmalloc(kmalloc_size_roundup(sizeof(*sfa) + size), GFP_KERNEL);
- 	if (!sfa)
- 		return ERR_PTR(-ENOMEM);
-@@ -2467,15 +2463,6 @@ static struct nlattr *reserve_sfa_size(struct sw_flow_actions **sfa,
- 
- 	new_acts_size = max(next_offset + req_size, ksize(*sfa) * 2);
- 
--	if (new_acts_size > MAX_ACTIONS_BUFSIZE) {
--		if ((next_offset + req_size) > MAX_ACTIONS_BUFSIZE) {
--			OVS_NLERR(log, "Flow action size exceeds max %u",
--				  MAX_ACTIONS_BUFSIZE);
--			return ERR_PTR(-EMSGSIZE);
--		}
--		new_acts_size = MAX_ACTIONS_BUFSIZE;
+-		ifscr = 1;
+-		n = (u64)0x0400000 * fin;
+-		do_div(n, fout);
+-		fsrate = n;
 -	}
 -
- 	acts = nla_alloc_flow_actions(new_acts_size);
- 	if (IS_ERR(acts))
- 		return (void *)acts;
-@@ -3502,7 +3489,7 @@ int ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 	int err;
- 	u32 mpls_label_count = 0;
+-	/*
++	 * SRC_IFSCR
+ 	 * SRC_SRCCR / SRC_ROUTE_MODE0
+ 	 */
++	ifscr	= 0;
+ 	cr	= 0x00011110;
+ 	route	= 0x0;
+ 	if (use_src) {
+ 		route	= 0x1;
++		ifscr	= 0x1;
  
--	*sfa = nla_alloc_flow_actions(min(nla_len(attr), MAX_ACTIONS_BUFSIZE));
-+	*sfa = nla_alloc_flow_actions(nla_len(attr));
- 	if (IS_ERR(*sfa))
- 		return PTR_ERR(*sfa);
+ 		if (rsnd_src_sync_is_enabled(mod)) {
+ 			cr |= 0x1;
+@@ -335,7 +385,6 @@ static void rsnd_src_set_convert_rate(struct rsnd_dai_stream *io,
+ 	rsnd_mod_write(mod, SRC_SRCIR, 1);	/* initialize */
+ 	rsnd_mod_write(mod, SRC_ADINR, adinr);
+ 	rsnd_mod_write(mod, SRC_IFSCR, ifscr);
+-	rsnd_mod_write(mod, SRC_IFSVR, fsrate);
+ 	rsnd_mod_write(mod, SRC_SRCCR, cr);
+ 	rsnd_mod_write(mod, SRC_BSDSR, bsdsr_table[idx]);
+ 	rsnd_mod_write(mod, SRC_BSISR, bsisr_table[idx]);
+@@ -348,6 +397,9 @@ static void rsnd_src_set_convert_rate(struct rsnd_dai_stream *io,
  
+ 	rsnd_adg_set_src_timesel_gen2(mod, io, fin, fout);
+ 
++	/* update SRC_IFSVR */
++	rsnd_src_set_convert_rate(io, mod);
++
+ 	return;
+ 
+ convert_rate_err:
+@@ -467,7 +519,8 @@ static int rsnd_src_init(struct rsnd_mod *mod,
+ 	int ret;
+ 
+ 	/* reset sync convert_rate */
+-	src->sync.val = 0;
++	src->sync.val		=
++	src->current_sync_rate	= 0;
+ 
+ 	ret = rsnd_mod_power_on(mod);
+ 	if (ret < 0)
+@@ -475,7 +528,7 @@ static int rsnd_src_init(struct rsnd_mod *mod,
+ 
+ 	rsnd_src_activation(mod);
+ 
+-	rsnd_src_set_convert_rate(io, mod);
++	rsnd_src_init_convert_rate(io, mod);
+ 
+ 	rsnd_src_status_clear(mod);
+ 
+@@ -493,7 +546,8 @@ static int rsnd_src_quit(struct rsnd_mod *mod,
+ 	rsnd_mod_power_off(mod);
+ 
+ 	/* reset sync convert_rate */
+-	src->sync.val = 0;
++	src->sync.val		=
++	src->current_sync_rate	= 0;
+ 
+ 	return 0;
+ }
+@@ -601,7 +655,7 @@ static int rsnd_src_pcm_new(struct rsnd_mod *mod,
+ 			       "SRC Out Rate Switch" :
+ 			       "SRC In Rate Switch",
+ 			       rsnd_kctrl_accept_anytime,
+-			       rsnd_src_set_convert_rate,
++			       rsnd_src_init_convert_rate,
+ 			       &src->sen, 1);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.39.5
 
