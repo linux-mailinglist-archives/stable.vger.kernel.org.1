@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-125470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FD5A69181
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FAFA68FA3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 825DE3BFBBF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A381F16A460
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F6A207A2A;
-	Wed, 19 Mar 2025 14:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9E21E284C;
+	Wed, 19 Mar 2025 14:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzNDoGjc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7F1+5qL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C5B1DEFE6;
-	Wed, 19 Mar 2025 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDFD1D88C3;
+	Wed, 19 Mar 2025 14:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395210; cv=none; b=liA3NZ2upBKzhMe/5oOZzU8aDOcY9Ds277zb1TutmJRTLk2/rOCa4NTTzJYe0PqtCgiFYrApHGBJM7evz96YrUHyVr/8uq3Lu9MCSEvKa33pB3S6mq1MR0AKkK7MAKcnn3gUyriQUzf35Z+n5gnTFxF6nAEQ/Ub5oSSYIA5F2Go=
+	t=1742394926; cv=none; b=JiaebKbz+nEP7bNQoENqhzAFHS2cXGEYxd7oqKZHzg5iaiibFQT5VASCkjWMJmLhM8porlD8X12iJ9u/gD16VHPdkaC8UuMLtm3NupK3AnQyyVsintGL/eYcuUcvNtyV5fggsimFswe6u3cxX7drGg48cMuoyhpaC+6OF/V2JaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395210; c=relaxed/simple;
-	bh=cp05/xXOUNJL9E8VoDMMpkXclWI4dTYkp7fg1mP+UyU=;
+	s=arc-20240116; t=1742394926; c=relaxed/simple;
+	bh=pWsxl5rWtly8gUQrhddc1ycejo1K8oDRKB9dOoYccak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ahH2FHBAccq5O4ytbD9eFF2qv7RPatVIGT06WnQbwrRK4L57CxhhdSclfZctBArr+SV+hhH13BYsC6wJw+nul0cq4C/qojGhSOcQvElW6s+XH4epXJcbdJMCxHJl/pVlfLv5t6ze1UnSEsMD+aud8fjmw3yG2TJuZjPGNQIfT/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzNDoGjc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05DAC4CEE4;
-	Wed, 19 Mar 2025 14:40:09 +0000 (UTC)
+	 MIME-Version; b=WpJcWLqm2lJkcfSgP56f3HeysrlzCymkhtfX41ofzfyxLLaSURtuRFjKPVz9u3pofuP+CuN1CsXpcmOMsOB7rgZERHoOk7b+oNIs2UubsREwjTgwlAZTRmDYX2T8cCUI116FYd1edjtZucznv0AK5ywFfIYd/umhaXP4qWEyfw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7F1+5qL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F7AC4CEE4;
+	Wed, 19 Mar 2025 14:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395209;
-	bh=cp05/xXOUNJL9E8VoDMMpkXclWI4dTYkp7fg1mP+UyU=;
+	s=korg; t=1742394926;
+	bh=pWsxl5rWtly8gUQrhddc1ycejo1K8oDRKB9dOoYccak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PzNDoGjcGUllCd9wgwNMoyfLEMqC03NEy+661Mu+WjwfuuedOH73teZ6B+FNAUVJZ
-	 95R7wxpHCnWEC/g5qQxvd8Ox6TGBA3LwoUEI3uO7WR4JIaZfVZPTAcOaEEYaBTYQ00
-	 13oxmoLbbv2ZCqSjqZhljlDylmoyFOgiH8bsWi5w=
+	b=J7F1+5qLgtBr/wDhaPPAhv8h1zpdrMmhr47p9EhVEBioFan9QtCVUGSGYqpaV2aN+
+	 5VLt11SG21ZnsFl9Om2pYilYuJPotWx+opmeKh1/XG0dRsZhV7nMHAzQs7V1NNUASm
+	 oJH79/iQ4IO8fPMuZMsmLjBlRGM2TC+N3mKjBCAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/166] nvme-fc: do not ignore connectivity loss during connecting
+Subject: [PATCH 6.13 138/241] ASoC: dapm-graph: set fill colour of turned on nodes
 Date: Wed, 19 Mar 2025 07:30:08 -0700
-Message-ID: <20250319143020.996078786@linuxfoundation.org>
+Message-ID: <20250319143031.139071753@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-[ Upstream commit ee59e3820ca92a9f4307ae23dfc7229dc8b8d400 ]
+[ Upstream commit d31babd7e304d3b800d36ff74be6739405b985f2 ]
 
-When a connectivity loss occurs while nvme_fc_create_assocation is
-being executed, it's possible that the ctrl ends up stuck in the LIVE
-state:
+Some tools like KGraphViewer interpret the "ON" nodes not having an
+explicitly set fill colour as them being entirely black, which obscures
+the text on them and looks funny. In fact, I thought they were off for
+the longest time. Comparing to the output of the `dot` tool, I assume
+they are supposed to be white.
 
-  1) nvme nvme10: NVME-FC{10}: create association : ...
-  2) nvme nvme10: NVME-FC{10}: controller connectivity lost.
-                  Awaiting Reconnect
-     nvme nvme10: queue_size 128 > ctrl maxcmd 32, reducing to maxcmd
-  3) nvme nvme10: Could not set queue count (880)
-     nvme nvme10: Failed to configure AEN (cfg 900)
-  4) nvme nvme10: NVME-FC{10}: controller connect complete
-  5) nvme nvme10: failed nvme_keep_alive_end_io error=4
+Instead of speclawyering over who's in the wrong and must immediately
+atone for their wickedness at the altar of RFC2119, just be explicit
+about it, set the fillcolor to white, and nobody gets confused.
 
-A connection attempt starts 1) and the ctrl is in state CONNECTING.
-Shortly after the LLDD driver detects a connection lost event and calls
-nvme_fc_ctrl_connectivity_loss 2). Because we are still in CONNECTING
-state, this event is ignored.
-
-nvme_fc_create_association continues to run in parallel and tries to
-communicate with the controller and these commands will fail. Though
-these errors are filtered out, e.g in 3) setting the I/O queues numbers
-fails which leads to an early exit in nvme_fc_create_io_queues. Because
-the number of IO queues is 0 at this point, there is nothing left in
-nvme_fc_create_association which could detected the connection drop.
-Thus the ctrl enters LIVE state 4).
-
-Eventually the keep alive handler times out 5) but because nothing is
-being done, the ctrl stays in LIVE state.
-
-There is already the ASSOC_FAILED flag to track connectivity loss event
-but this bit is set too late in the recovery code path. Move this into
-the connectivity loss event handler and synchronize it with the state
-change. This ensures that the ASSOC_FAILED flag is seen by
-nvme_fc_create_io_queues and it does not enter the LIVE state after a
-connectivity loss event. If the connectivity loss event happens after we
-entered the LIVE state the normal error recovery path is executed.
-
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250221-dapm-graph-node-colour-v1-1-514ed0aa7069@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ tools/sound/dapm-graph | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index 0641050f590f3..66c4c411ebe04 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -782,11 +782,19 @@ nvme_fc_abort_lsops(struct nvme_fc_rport *rport)
- static void
- nvme_fc_ctrl_connectivity_loss(struct nvme_fc_ctrl *ctrl)
- {
-+	enum nvme_ctrl_state state;
-+	unsigned long flags;
-+
- 	dev_info(ctrl->ctrl.device,
- 		"NVME-FC{%d}: controller connectivity lost. Awaiting "
- 		"Reconnect", ctrl->cnum);
+diff --git a/tools/sound/dapm-graph b/tools/sound/dapm-graph
+index f14bdfedee8f1..b6196ee5065a4 100755
+--- a/tools/sound/dapm-graph
++++ b/tools/sound/dapm-graph
+@@ -10,7 +10,7 @@ set -eu
  
--	switch (nvme_ctrl_state(&ctrl->ctrl)) {
-+	spin_lock_irqsave(&ctrl->lock, flags);
-+	set_bit(ASSOC_FAILED, &ctrl->flags);
-+	state = nvme_ctrl_state(&ctrl->ctrl);
-+	spin_unlock_irqrestore(&ctrl->lock, flags);
-+
-+	switch (state) {
- 	case NVME_CTRL_NEW:
- 	case NVME_CTRL_LIVE:
- 		/*
-@@ -2546,7 +2554,6 @@ nvme_fc_error_recovery(struct nvme_fc_ctrl *ctrl, char *errmsg)
- 	 */
- 	if (state == NVME_CTRL_CONNECTING) {
- 		__nvme_fc_abort_outstanding_ios(ctrl, true);
--		set_bit(ASSOC_FAILED, &ctrl->flags);
- 		dev_warn(ctrl->ctrl.device,
- 			"NVME-FC{%d}: transport error during (re)connect\n",
- 			ctrl->cnum);
-@@ -3168,12 +3175,18 @@ nvme_fc_create_association(struct nvme_fc_ctrl *ctrl)
- 		else
- 			ret = nvme_fc_recreate_io_queues(ctrl);
- 	}
--	if (!ret && test_bit(ASSOC_FAILED, &ctrl->flags))
--		ret = -EIO;
- 	if (ret)
- 		goto out_term_aen_ops;
+ STYLE_COMPONENT_ON="color=dodgerblue;style=bold"
+ STYLE_COMPONENT_OFF="color=gray40;style=filled;fillcolor=gray90"
+-STYLE_NODE_ON="shape=box,style=bold,color=green4"
++STYLE_NODE_ON="shape=box,style=bold,color=green4,fillcolor=white"
+ STYLE_NODE_OFF="shape=box,style=filled,color=gray30,fillcolor=gray95"
  
--	changed = nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_LIVE);
-+	spin_lock_irqsave(&ctrl->lock, flags);
-+	if (!test_bit(ASSOC_FAILED, &ctrl->flags))
-+		changed = nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_LIVE);
-+	else
-+		ret = -EIO;
-+	spin_unlock_irqrestore(&ctrl->lock, flags);
-+
-+	if (ret)
-+		goto out_term_aen_ops;
- 
- 	ctrl->ctrl.nr_reconnects = 0;
- 
+ # Print usage and exit
 -- 
 2.39.5
 
