@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-125534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B968A691CB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E46EA690A0
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F17BF883F2A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10B5F462600
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39A51CAA89;
-	Wed, 19 Mar 2025 14:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FE01F09BB;
+	Wed, 19 Mar 2025 14:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAaD0iVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwmGX0BF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28A01DEFD6;
-	Wed, 19 Mar 2025 14:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96AA21D3EB;
+	Wed, 19 Mar 2025 14:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395257; cv=none; b=BuYMyLEDxMPZ2yaK5Qwx2G6ad78667mzazfDRe1a11Yl4/5VBRTsuOjTrxTcElgEwKvAFNa4a4GaS3jJF7Wd8d4XYv1nNyzTSXTi3XJXYo4+QwHuBhqSkWklioiihM+ADoYe8xf8u9gVMrHZTbzaGJBj3IPQg3qbmK2LfH+v7EA=
+	t=1742395160; cv=none; b=PDblWDk6t1mi6DCkbpIar+Q0bEfq2uDP/4m5225qmn+STzcd3sJb2TMD6jZMRdwaA3qLFDtjr4ccTglA/r65XZeptZfd49dU9CPKJEdG3Mxkbjp5IfqdMX5BYJf7tMqyO3RDYmnwPImjt3xu8eu+SZSR7E/mR1o2kIphsvzc5lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395257; c=relaxed/simple;
-	bh=kHP3BnPRrdG/lhtXonsVZtRj4RbYHRClaw++gszLFGM=;
+	s=arc-20240116; t=1742395160; c=relaxed/simple;
+	bh=tvtSOvBoF/cjAKKllOJRhuRtNyyf66IoddqBH7C+Qtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2AZcX2LYkfOg4bh4NuHPpm7C7f4jhxWRAv6uuFlsMuozB0MKUQL2CeCICxO4W8r48C/hu0HWr9KVd9bhftQLOhiv9Wrp1eVSk5U35c4NrScnPYjBthlPZmO3rymEmKcK/OW3dD1UWjz/EWlOjadDo7CxzVuHsGNYGxvhg4t3qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAaD0iVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABA7C4CEE4;
-	Wed, 19 Mar 2025 14:40:57 +0000 (UTC)
+	 MIME-Version; b=t3NtA1EO/OYUkf+JQ89wISwV7bjo5hw7P4qYiBKjMAhwW3YQBRZ9v/P4pA1kBpTn06JY9wOySTAEjStRW+Sb0yz09VJiB/0W6z7RC9nWhFBqL5Z6VwsglxeUzbisS+iI8oOgrTKGqlEv0YmcDuoy4R9bCgHf2vCD/Q3e206hQL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwmGX0BF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF74AC4CEE4;
+	Wed, 19 Mar 2025 14:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395257;
-	bh=kHP3BnPRrdG/lhtXonsVZtRj4RbYHRClaw++gszLFGM=;
+	s=korg; t=1742395159;
+	bh=tvtSOvBoF/cjAKKllOJRhuRtNyyf66IoddqBH7C+Qtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IAaD0iVQc3s0xge4pequ0sMCC+KWVGx+8ZOwJToMAh+27l5lA/rrN/ltknJ00/XTj
-	 +KVdEYxkMUm0zRclvonWivrtDug0o5+fn7qhq5dlDNJEIJVO0P2LHNerQbodnOUMkW
-	 MHkkZoMq5F34uyWmbmNgq9hkgRWPBQJJ4qn74ybg=
+	b=nwmGX0BFTgp2UJuMsH4Z4CrZl88Fha6EtJsmYn4Mn+SDbWxHuqUyiLbEzHd4bFjX2
+	 o49eIjJNvOxM8qLGZU43+IW9RUiSEf1yg1hFzFYyi2eNf1Qx8aHFkTDupDOf3bqC7G
+	 XZJekBl1dIkKw4zgpUmXnbK9kz9KI4MDOy6c7Uck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Ye Li <ye.li@broadcom.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/166] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
+Subject: [PATCH 6.12 219/231] x86/vmware: Parse MP tables for SEV-SNP enabled guests under VMware hypervisors
 Date: Wed, 19 Mar 2025 07:31:52 -0700
-Message-ID: <20250319143023.838761470@linuxfoundation.org>
+Message-ID: <20250319143032.254294397@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Ajay Kaher <ajay.kaher@broadcom.com>
 
-[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
+[ Upstream commit a2ab25529bbcea51b5e01dded79f45aeb94f644a ]
 
-Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
-pci_gfx_root in the mid_get_vbt_data().
+Under VMware hypervisors, SEV-SNP enabled VMs are fundamentally able to boot
+without UEFI, but this regressed a year ago due to:
 
-This change is similar to the checks implemented in mid_get_fuse_settings()
-and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
-("gma500: Final enables for Oaktrail") as "additional minor
-bulletproofing".
+  0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for SEV-SNP guests")
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+In this case, mpparse_find_mptable() has to be called to parse MP
+tables which contains the necessary boot information.
 
-Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
+[ mingo: Updated the changelog. ]
+
+Fixes: 0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for SEV-SNP guests")
+Co-developed-by: Ye Li <ye.li@broadcom.com>
+Signed-off-by: Ye Li <ye.li@broadcom.com>
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Ye Li <ye.li@broadcom.com>
+Reviewed-by: Kevin Loughlin <kevinloughlin@google.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20250313173111.10918-1-ajay.kaher@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kernel/cpu/vmware.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
-index 7e76790c6a81f..cba97d7db131d 100644
---- a/drivers/gpu/drm/gma500/mid_bios.c
-+++ b/drivers/gpu/drm/gma500/mid_bios.c
-@@ -279,6 +279,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
- 					    0, PCI_DEVFN(2, 0));
- 	int ret = -1;
+diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
+index 00189cdeb775f..cb3f900c46fcc 100644
+--- a/arch/x86/kernel/cpu/vmware.c
++++ b/arch/x86/kernel/cpu/vmware.c
+@@ -26,6 +26,7 @@
+ #include <linux/export.h>
+ #include <linux/clocksource.h>
+ #include <linux/cpu.h>
++#include <linux/efi.h>
+ #include <linux/reboot.h>
+ #include <linux/static_call.h>
+ #include <asm/div64.h>
+@@ -429,6 +430,9 @@ static void __init vmware_platform_setup(void)
+ 		pr_warn("Failed to get TSC freq from the hypervisor\n");
+ 	}
  
-+	if (pci_gfx_root == NULL) {
-+		WARN_ON(1);
-+		return;
-+	}
++	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) && !efi_enabled(EFI_BOOT))
++		x86_init.mpparse.find_mptable = mpparse_find_mptable;
 +
- 	/* Get the address of the platform config vbt */
- 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
- 	pci_dev_put(pci_gfx_root);
+ 	vmware_paravirt_ops_setup();
+ 
+ #ifdef CONFIG_X86_IO_APIC
 -- 
 2.39.5
 
