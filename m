@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE626A68FC1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:41:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0BFA69186
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB7B616D5BC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E5008A09A3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C33E1DE2C6;
-	Wed, 19 Mar 2025 14:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F85F207A2C;
+	Wed, 19 Mar 2025 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+9Po3eQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUW3Q8q+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6811DE2C0;
-	Wed, 19 Mar 2025 14:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BB71DEFD8;
+	Wed, 19 Mar 2025 14:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394950; cv=none; b=NM52LSHpQgl2Bk3sfqQ9QQKFjH223nXkO7YVN+8k/++yzgoZT6b5DaF3Uxj+sWhJ7QOTbn5qbwm/9m8HHD+fixtN7T+TJ7JWJvcaGecSRevXOJ9pmaE+83hhy63+rejJ6SUqmfUzvKJgm53nMVhq6GtcXIExr4PBkpoaRraX7+k=
+	t=1742395212; cv=none; b=Hq+LdQV5Y/+NH1XaK86vB3p0DiTGci1Sx7GgGOfCuhR9MN/fWyUMcDq7y+x0pZX7qSrN52WmDf7AqRteUyQ8WbvhgaYs0fkdcE2srBUwGLS2EvIUqvWp0HL1AwhmgW2zCs19+ES8+i5vOC2FV6ETb9KkFS6e3hLJGX9YSiygYys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394950; c=relaxed/simple;
-	bh=E5jy3MdPfikrXz+cBesaNwG+sPGl9J8BH2HaeuA7jro=;
+	s=arc-20240116; t=1742395212; c=relaxed/simple;
+	bh=IAIaVO9Pg/Wnn1Aj8X4lR/bFxT/NO/niRfMy8NVZvuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vGt4ZM+u6vBtWPdgUgQMeeDlHuHpe284LV0Fk5W2rFk3G4hodgVczEs0xBf2wTHwnrmwc2PrbXja+lD9lHIDB3UFsaTleh0UZpOhas5G9MNDsXk2U8mr/hPuudH5/20nFMfh+M8C1uauwWdQ9bomWSxYlztoy13jp8NTbWl9+QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+9Po3eQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CD7C4CEE4;
-	Wed, 19 Mar 2025 14:35:49 +0000 (UTC)
+	 MIME-Version; b=Auu7MjiTilZMIWEILJBvzIxtUE4C0Tp9jknNvoB4Zggz0gIVIQQKyYiEK5qhH3zjhiBm2ON67Gxx8/i14wtLwL3M6RSkzZMEcIjXp54Q/0Rlj9ST3BTfk4E+L950GUHxQkfR2fp/Q/X0PM87pLC0HQfm7Qu4UYXEra6JCopWLeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUW3Q8q+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5382C4CEE4;
+	Wed, 19 Mar 2025 14:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394950;
-	bh=E5jy3MdPfikrXz+cBesaNwG+sPGl9J8BH2HaeuA7jro=;
+	s=korg; t=1742395211;
+	bh=IAIaVO9Pg/Wnn1Aj8X4lR/bFxT/NO/niRfMy8NVZvuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0+9Po3eQbrVhW/8T9EnGkcOW1uJ3cA58y+9sFm7fz8xgOTNR3/kqJqM/wXX2hmOB/
-	 pF3BM521Iie/ni/bStElCrEYShcCrIHGB6ov54Dk161lnZQwoZXp0BVG3j5zxKeJv+
-	 EDIVmpq81eh2vLzKWKg+JrMtbwT0cf9tjuNhNdNA=
+	b=NUW3Q8q+9wLyfjMdi8oS2p5iAydb4l1Kz3UiVhw4F6rJyu/bdfcv66N9nH6YpWNkE
+	 oDKM08yYPqngQLapuC1cBDaPJL0bYZx5beE6G96DzdfTX8phKU2Qzjn2osr4LWovNX
+	 GGIWPEYATvIMXrxP+PDX7bcv7foxAyuHFCVk8VOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Vinod Govindapillai <vinod.govindapillai@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.13 174/241] drm/i915/cdclk: Do cdclk post plane programming later
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 073/166] ASoC: SOF: amd: Handle IPC replies before FW_BOOT_COMPLETE
 Date: Wed, 19 Mar 2025 07:30:44 -0700
-Message-ID: <20250319143032.038738784@linuxfoundation.org>
+Message-ID: <20250319143021.989432108@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 6266f4a78131c795631440ea9c7b66cdfd399484 upstream.
+[ Upstream commit ac84ca815adb4171a4276b1d44096b75f6a150b7 ]
 
-We currently call intel_set_cdclk_post_plane_update() far
-too early. When pipes are active during the reprogramming
-the current spot only works for the cd2x divider update
-case, as that is synchronize to the pipe's vblank. Squashing
-and crawling are not synchronized in any way, so doing the
-programming while the pipes/planes are potentially still using
-the old hardware state could lead to underruns.
+In some cases, e.g. during resuming from suspend, there is a possibility
+that some IPC reply messages get received by the host while the DSP
+firmware has not yet reached the complete boot state.
 
-Move the post plane reprgramming to a spot where we know
-that the pipes/planes have switched over the new hardware
-state.
+Detect when this happens and do not attempt to process the unexpected
+replies from DSP.  Instead, provide proper debugging support.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250218211913.27867-2-ville.syrjala@linux.intel.com
-Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
-(cherry picked from commit fb64f5568c0e0b5730733d70a012ae26b1a55815)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20250207-sof-vangogh-fixes-v1-3-67824c1e4c9a@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/soc/sof/amd/acp-ipc.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -7840,9 +7840,6 @@ static void intel_atomic_commit_tail(str
- 	/* Now enable the clocks, plane, pipe, and connectors that we set up. */
- 	dev_priv->display.funcs.display->commit_modeset_enables(state);
+diff --git a/sound/soc/sof/amd/acp-ipc.c b/sound/soc/sof/amd/acp-ipc.c
+index fcb54f545fea3..a4e9bc20adaff 100644
+--- a/sound/soc/sof/amd/acp-ipc.c
++++ b/sound/soc/sof/amd/acp-ipc.c
+@@ -167,6 +167,7 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
  
--	if (state->modeset)
--		intel_set_cdclk_post_plane_update(state);
--
- 	intel_wait_for_vblank_workers(state);
+ 	if (sdev->first_boot && sdev->fw_state != SOF_FW_BOOT_COMPLETE) {
+ 		acp_mailbox_read(sdev, sdev->dsp_box.offset, &status, sizeof(status));
++
+ 		if ((status & SOF_IPC_PANIC_MAGIC_MASK) == SOF_IPC_PANIC_MAGIC) {
+ 			snd_sof_dsp_panic(sdev, sdev->dsp_box.offset + sizeof(status),
+ 					  true);
+@@ -188,13 +189,21 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
  
- 	/* FIXME: We should call drm_atomic_helper_commit_hw_done() here
-@@ -7916,6 +7913,8 @@ static void intel_atomic_commit_tail(str
- 		intel_verify_planes(state);
+ 	dsp_ack = snd_sof_dsp_read(sdev, ACP_DSP_BAR, ACP_SCRATCH_REG_0 + dsp_ack_write);
+ 	if (dsp_ack) {
+-		spin_lock_irq(&sdev->ipc_lock);
+-		/* handle immediate reply from DSP core */
+-		acp_dsp_ipc_get_reply(sdev);
+-		snd_sof_ipc_reply(sdev, 0);
+-		/* set the done bit */
+-		acp_dsp_ipc_dsp_done(sdev);
+-		spin_unlock_irq(&sdev->ipc_lock);
++		if (likely(sdev->fw_state == SOF_FW_BOOT_COMPLETE)) {
++			spin_lock_irq(&sdev->ipc_lock);
++
++			/* handle immediate reply from DSP core */
++			acp_dsp_ipc_get_reply(sdev);
++			snd_sof_ipc_reply(sdev, 0);
++			/* set the done bit */
++			acp_dsp_ipc_dsp_done(sdev);
++
++			spin_unlock_irq(&sdev->ipc_lock);
++		} else {
++			dev_dbg_ratelimited(sdev->dev, "IPC reply before FW_BOOT_COMPLETE: %#x\n",
++					    dsp_ack);
++		}
++
+ 		ipc_irq = true;
+ 	}
  
- 	intel_sagv_post_plane_update(state);
-+	if (state->modeset)
-+		intel_set_cdclk_post_plane_update(state);
- 	intel_pmdemand_post_plane_update(state);
- 
- 	drm_atomic_helper_commit_hw_done(&state->base);
+-- 
+2.39.5
+
 
 
 
