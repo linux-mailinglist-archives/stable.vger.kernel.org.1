@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-125557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AFCA691DA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6408AA690EC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7EE28A24F1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A02CD3B28BF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA6220B808;
-	Wed, 19 Mar 2025 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DFF21CC54;
+	Wed, 19 Mar 2025 14:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUcbnwcX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKKkedlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2C41DF258;
-	Wed, 19 Mar 2025 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F22F21CC51;
+	Wed, 19 Mar 2025 14:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395273; cv=none; b=n/740T99pz4fHxA6QMPOMISxIj1vIjvwLRVN9HbRZ0XSmT91+1y/ay+6Rw9C2VUwKsvUEpycP8IZ03Ya4y9dwvK75Z8ZVOzzsJJsJofL8LKhMAhnmZ3W+MS3fyCcq953F8Uq/1uuJzb7Bc4Rq8L1rzLcXRJPNmSRQB/FmxtoOno=
+	t=1742395137; cv=none; b=QuUt7RlRFO2lOLcy/yZrLx7cSMuWMtcJnvGnPuQQ40rW9MqGFL6YkPYEedw8N8JGKp11EXaYFIyxdVLU4p+5OkObgnC5mT6FC2m1wl6lHayLSF05j+HakT2j68MzwcfYSYyzlvjWTLOk1U1JiOW2Uu2YuVVhRrvHL2qFsD9Kr7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395273; c=relaxed/simple;
-	bh=YJGDwV+a5WPnS6iVXmxIDaFIkTu+nVCIM8mo77Xvsf8=;
+	s=arc-20240116; t=1742395137; c=relaxed/simple;
+	bh=0BPZ7hqfCQQiCzD2ZqECW38VSCKvRK/sZPJILZYWweM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfZ5Z+9EVmE6CSPRtbzrZFnl63/zJqlvZxBFT2XoPj9Zk37TU3+T33zpYOnHmZUl4Ti5DZ+vTJT+Zn7m1N6tdTJI3nVhheGqnjoXgKpLNj8oVGfYlI1GhcPNiYX7az+fpCWTRUBHBw8DTgAZYnRpw8J9ntK62T5/L+PwybartpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUcbnwcX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40626C4CEE4;
-	Wed, 19 Mar 2025 14:41:13 +0000 (UTC)
+	 MIME-Version; b=OxzUgHuafxycmRwN9m4dDc8xo9kna9W+ddsdscvJ3T+ygk+KS38N/HCyGVXhJAkf7+eUQk1Oj8TBLBl+jNfCpIeyZ2y2Tjwx5TRv9W1AME39Wn5CDq801r1bMAY57Hr/Bi73gNxSCJ1K4b85GHGaamD5H00zrMw4X5oSOrX337Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKKkedlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE17FC4CEE8;
+	Wed, 19 Mar 2025 14:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395273;
-	bh=YJGDwV+a5WPnS6iVXmxIDaFIkTu+nVCIM8mo77Xvsf8=;
+	s=korg; t=1742395136;
+	bh=0BPZ7hqfCQQiCzD2ZqECW38VSCKvRK/sZPJILZYWweM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUcbnwcXMx+6h8cbEU2aifdubLB/90oNGUDea5p9dYeCoouyzxmKJtETlSEQMWBU+
-	 KxTBaY3ElSQIEnL8NTHrO4mHYO870bitC+R+SJGE+eex3ZX/9/l26xZ9RjWM7uDygw
-	 ZBDldufOFwlavd17a/CWa+XD9o5NdCOreoAuKTQc=
+	b=IKKkedlzOQn38+V9O6hTNQZsWNYJ5ZUMt0hj4aQqEPHJIDt1sA+OQlHBv4zaimOEU
+	 DHFp1um+UpiTwl2hJHZ425jf1jRrEx/qBK9ziInQdF+dxNkp1hh3bFVquvjju/ceih
+	 qUxxSG2D7akcVhLuh+SI5XoKt06QCG2rCF1GmgRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 124/166] drm/amd/display: Restore correct backlight brightness after a GPU reset
-Date: Wed, 19 Mar 2025 07:31:35 -0700
-Message-ID: <20250319143023.373005397@linuxfoundation.org>
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 203/231] ASoC: rt722-sdca: add missing readable registers
+Date: Wed, 19 Mar 2025 07:31:36 -0700
+Message-ID: <20250319143031.858147104@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-commit 5760388d9681ac743038b846b9082b9023969551 upstream.
+[ Upstream commit 247fba13416af65b155949bae582d55c310f58b6 ]
 
-[Why]
-GPU reset will attempt to restore cached state, but brightness doesn't
-get restored. It will come back at 100% brightness, but userspace thinks
-it's the previous value.
+SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_FU15,
+RT722_SDCA_CTL_FU_CH_GAIN, CH_01) ... SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY,
+RT722_SDCA_ENT_FU15, RT722_SDCA_CTL_FU_CH_GAIN, CH_04) are used by the
+"FU15 Boost Volume" control, but not marked as readable.
+And the mbq size are 2 for those registers.
 
-[How]
-When running resume sequence if GPU is in reset restore brightness
-to previous value.
-
-Acked-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5e19e2b57b6bb640d68dfc7991e1e182922cf867)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7f5d6036ca005 ("ASoC: rt722-sdca: Add RT722 SDCA driver")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20250310080440.58797-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/soc/codecs/rt722-sdca-sdw.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -227,6 +227,10 @@ static int amdgpu_dm_atomic_check(struct
- static void handle_hpd_irq_helper(struct amdgpu_dm_connector *aconnector);
- static void handle_hpd_rx_irq(void *param);
- 
-+static void amdgpu_dm_backlight_set_level(struct amdgpu_display_manager *dm,
-+					 int bl_idx,
-+					 u32 user_brightness);
-+
- static bool
- is_timing_unchanged_for_freesync(struct drm_crtc_state *old_crtc_state,
- 				 struct drm_crtc_state *new_crtc_state);
-@@ -2879,6 +2883,12 @@ static int dm_resume(void *handle)
- 
- 		mutex_unlock(&dm->dc_lock);
- 
-+		/* set the backlight after a reset */
-+		for (i = 0; i < dm->num_of_edps; i++) {
-+			if (dm->backlight_dev[i])
-+				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
-+		}
-+
- 		return 0;
- 	}
- 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
+diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
+index d5c985ff5ac55..5449d6b5cf3d1 100644
+--- a/sound/soc/codecs/rt722-sdca-sdw.c
++++ b/sound/soc/codecs/rt722-sdca-sdw.c
+@@ -86,6 +86,10 @@ static bool rt722_sdca_mbq_readable_register(struct device *dev, unsigned int re
+ 	case 0x6100067:
+ 	case 0x6100070 ... 0x610007c:
+ 	case 0x6100080:
++	case SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_FU15, RT722_SDCA_CTL_FU_CH_GAIN,
++			  CH_01) ...
++	     SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_FU15, RT722_SDCA_CTL_FU_CH_GAIN,
++			  CH_04):
+ 	case SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_USER_FU1E, RT722_SDCA_CTL_FU_VOLUME,
+ 			CH_01):
+ 	case SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_USER_FU1E, RT722_SDCA_CTL_FU_VOLUME,
+-- 
+2.39.5
+
 
 
 
