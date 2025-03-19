@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-125158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC27A68FB6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BAAA69103
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC8337AAE5F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A78263A858E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138F3209F4F;
-	Wed, 19 Mar 2025 14:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F350621CFEF;
+	Wed, 19 Mar 2025 14:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPkf+ozv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+cq18Kr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6558209F4B;
-	Wed, 19 Mar 2025 14:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18011EF38C;
+	Wed, 19 Mar 2025 14:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394994; cv=none; b=KzwSYC0UWsV7bArUqiGhMwju2aY9D0TqgVe/dnY+uZFJC07kenahmllZxy3mRVxL28uzQftbj1Gxd2WcmijpvikfqBIZXPAsrp2/efLhm497GBVB5wzmj/GHe3G4pqFaBWhahukgXLVNXJMq5codfgld/GRQIo0VaBUZ3/yA+VQ=
+	t=1742395147; cv=none; b=Gj9dpzZI7rLLw6WI04yVE58exmMZ7Y6HoDl09dURnpleXm1sGzZvKd/0HGBpM0Yd93ZKwKc9iOmksJeXk8sJrB0vn2cxQG5wu6HFBIEpTV44dxj/CEXyGO8o3UCGv3KWJ5k7brI+M0SFRcwftJfOLsh0LVSSFfYePwCKMQfwTNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394994; c=relaxed/simple;
-	bh=0S+PucrAQkiXKwvwBfrzrAMJ5P8P8PC2LHuX5sjH/BY=;
+	s=arc-20240116; t=1742395147; c=relaxed/simple;
+	bh=Zpom4Yqwp5+gbqfzS0H8Udt8SwuwKu6Sb/MMKTGiUxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGtwlfjAGDcknY1LNBOKuXB/gcetkvR4EfAbFMllMzY17aVWU/VHSW1E5xR0Z7ZOvedB2RhruUtGNsxTQ6FQSjmzIw3kg2RZn2ZIf5UhFxHcmKd7Tg6gW6cRmM/JLzHYdWnmAcRsvyMBc/j5jwzNhVW8gMXsRGCwrRJzPbrIiSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPkf+ozv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF9BC4CEE4;
-	Wed, 19 Mar 2025 14:36:34 +0000 (UTC)
+	 MIME-Version; b=agFQHjLK5C1Jjh9jdxSFzt7UpuLg6Rd91AOBUnxFMWUcX6+/ejJsd4FVDUza937ODkFCeOJLbCSIuGvd+oAWMxyXdn10St35Ak6iU5PUPEeZFbR3OOhfTy1Oc2+irVtG7cUVu8mfIPg0k8qosIT4PbnEvDxaCQbe/RxLcQdGn5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+cq18Kr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D11DC4CEE4;
+	Wed, 19 Mar 2025 14:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394994;
-	bh=0S+PucrAQkiXKwvwBfrzrAMJ5P8P8PC2LHuX5sjH/BY=;
+	s=korg; t=1742395146;
+	bh=Zpom4Yqwp5+gbqfzS0H8Udt8SwuwKu6Sb/MMKTGiUxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qPkf+ozvtUK8Bqsfiyz+g0GHnbbQBBl0TPOm344lGP3uxdMnoNZO/mCIl+F6QD2XS
-	 hoH9lvhhGP/14DbhSkFofd51z+AgMA4cK2LcNmOpXiR7I90lo7Nc8FEtjBvXlOSdfs
-	 uCG14SPDM4EtH7BF6zEB8/FnUpiZXe7pah7+NzLc=
+	b=z+cq18KrFfagkdniaVu2RHlsIEnMZf5NN+DuewKUrZyqukLKxPiCilj0MJde8hLXG
+	 2cj6e5JdaD+hsqwp5zMpGFtDs9Zc81xeF0M9wYoB/P9EC9qgofZoyvy5DpzYdrvDcX
+	 NSHpqyAJI35lD31evgaHnIbiNMxhCuTJqEyDw/PE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.13 200/241] qlcnic: fix memory leak issues in qlcnic_sriov_common.c
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.12 177/231] drm/amd/display: Disable unneeded hpd interrupts during dm_init
 Date: Wed, 19 Mar 2025 07:31:10 -0700
-Message-ID: <20250319143032.671451469@linuxfoundation.org>
+Message-ID: <20250319143031.210293216@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +65,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Leo Li <sunpeng.li@amd.com>
 
-commit d2b9d97e89c79c95f8b517e4fa43fd100f936acc upstream.
+commit 40b8c14936bd2726354c856251f6baed9869e760 upstream.
 
-Add qlcnic_sriov_free_vlans() in qlcnic_sriov_alloc_vlans() if
-any sriov_vlans fails to be allocated.
-Add qlcnic_sriov_free_vlans() to free the memory allocated by
-qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
-be allocated.
+[Why]
 
-Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
+It seems HPD interrupts are enabled by default for all connectors, even
+if the hpd source isn't valid. An eDP for example, does not have a valid
+hpd source (but does have a valid hpdrx source; see construct_phy()).
+Thus, eDPs should have their hpd interrupt disabled.
+
+In the past, this wasn't really an issue. Although the driver gets
+interrupted, then acks by writing to hw registers, there weren't any
+subscribed handlers that did anything meaningful (see
+register_hpd_handlers()).
+
+But things changed with the introduction of IPS. s2idle requires that
+the driver allows IPS for DMUB fw to put hw to sleep. Since register
+access requires hw to be awake, the driver will block IPS entry to do
+so. And no IPS means no hw sleep during s2idle.
+
+This was the observation on DCN35 systems with an eDP. During suspend,
+the eDP toggled its hpd pin as part of the panel power down sequence.
+The driver was then interrupted, and acked by writing to registers,
+blocking IPS entry.
+
+[How]
+
+Since DC marks eDP connections as having invalid hpd sources (see
+construct_phy()), DM should disable them at the hw level. Do so in
+amdgpu_dm_hpd_init() by disabling all hpd ints first, then selectively
+enabling ones for connectors that have valid hpd sources.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7b1ba19eb15f88e70782642ce2d934211269337b)
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20250307094952.14874-1-haoxiang_li2024@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c |   64 ++++++++++++------
+ 1 file changed, 45 insertions(+), 19 deletions(-)
 
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_m
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
+@@ -894,8 +894,16 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
+ 	struct drm_device *dev = adev_to_drm(adev);
+ 	struct drm_connector *connector;
+ 	struct drm_connector_list_iter iter;
++	int irq_type;
+ 	int i;
  
- 	num_vlans = sriov->num_allowed_vlans;
- 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
--	if (!sriov->allowed_vlans)
-+	if (!sriov->allowed_vlans) {
-+		qlcnic_sriov_free_vlans(adapter);
- 		return -ENOMEM;
++	/* First, clear all hpd and hpdrx interrupts */
++	for (i = DC_IRQ_SOURCE_HPD1; i <= DC_IRQ_SOURCE_HPD6RX; i++) {
++		if (!dc_interrupt_set(adev->dm.dc, i, false))
++			drm_err(dev, "Failed to clear hpd(rx) source=%d on init\n",
++				i);
 +	}
++
+ 	drm_connector_list_iter_begin(dev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
+ 		struct amdgpu_dm_connector *amdgpu_dm_connector;
+@@ -908,10 +916,31 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
  
- 	vlans = (u16 *)&cmd->rsp.arg[3];
- 	for (i = 0; i < num_vlans; i++)
-@@ -2167,8 +2169,10 @@ int qlcnic_sriov_alloc_vlans(struct qlcn
- 		vf = &sriov->vf_info[i];
- 		vf->sriov_vlans = kcalloc(sriov->num_allowed_vlans,
- 					  sizeof(*vf->sriov_vlans), GFP_KERNEL);
--		if (!vf->sriov_vlans)
-+		if (!vf->sriov_vlans) {
-+			qlcnic_sriov_free_vlans(adapter);
- 			return -ENOMEM;
-+		}
+ 		dc_link = amdgpu_dm_connector->dc_link;
+ 
++		/*
++		 * Get a base driver irq reference for hpd ints for the lifetime
++		 * of dm. Note that only hpd interrupt types are registered with
++		 * base driver; hpd_rx types aren't. IOW, amdgpu_irq_get/put on
++		 * hpd_rx isn't available. DM currently controls hpd_rx
++		 * explicitly with dc_interrupt_set()
++		 */
+ 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
+-			dc_interrupt_set(adev->dm.dc,
+-					dc_link->irq_source_hpd,
+-					true);
++			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
++			/*
++			 * TODO: There's a mismatch between mode_info.num_hpd
++			 * and what bios reports as the # of connectors with hpd
++			 * sources. Since the # of hpd source types registered
++			 * with base driver == mode_info.num_hpd, we have to
++			 * fallback to dc_interrupt_set for the remaining types.
++			 */
++			if (irq_type < adev->mode_info.num_hpd) {
++				if (amdgpu_irq_get(adev, &adev->hpd_irq, irq_type))
++					drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n",
++						dc_link->irq_source_hpd);
++			} else {
++				dc_interrupt_set(adev->dm.dc,
++						 dc_link->irq_source_hpd,
++						 true);
++			}
+ 		}
+ 
+ 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
+@@ -921,12 +950,6 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
+ 		}
  	}
+ 	drm_connector_list_iter_end(&iter);
+-
+-	/* Update reference counts for HPDs */
+-	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
+-		if (amdgpu_irq_get(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
+-			drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n", i);
+-	}
+ }
  
- 	return 0;
+ /**
+@@ -942,7 +965,7 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
+ 	struct drm_device *dev = adev_to_drm(adev);
+ 	struct drm_connector *connector;
+ 	struct drm_connector_list_iter iter;
+-	int i;
++	int irq_type;
+ 
+ 	drm_connector_list_iter_begin(dev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
+@@ -956,9 +979,18 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
+ 		dc_link = amdgpu_dm_connector->dc_link;
+ 
+ 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
+-			dc_interrupt_set(adev->dm.dc,
+-					dc_link->irq_source_hpd,
+-					false);
++			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
++
++			/* TODO: See same TODO in amdgpu_dm_hpd_init() */
++			if (irq_type < adev->mode_info.num_hpd) {
++				if (amdgpu_irq_put(adev, &adev->hpd_irq, irq_type))
++					drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n",
++						dc_link->irq_source_hpd);
++			} else {
++				dc_interrupt_set(adev->dm.dc,
++						 dc_link->irq_source_hpd,
++						 false);
++			}
+ 		}
+ 
+ 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
+@@ -968,10 +1000,4 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
+ 		}
+ 	}
+ 	drm_connector_list_iter_end(&iter);
+-
+-	/* Update reference counts for HPDs */
+-	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
+-		if (amdgpu_irq_put(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
+-			drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n", i);
+-	}
+ }
 
 
 
