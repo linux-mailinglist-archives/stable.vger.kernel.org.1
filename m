@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07B8A68F79
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73711A690DF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 066223BDD20
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FBCB1B666DB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB411C5D6A;
-	Wed, 19 Mar 2025 14:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFB32144B6;
+	Wed, 19 Mar 2025 14:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnZNiqs0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J11uSUd3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F711B422A;
-	Wed, 19 Mar 2025 14:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8BF1D5AC6;
+	Wed, 19 Mar 2025 14:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394885; cv=none; b=GI7e8BLhQUTS1xt6BasrN/cKN7JxHlRlgu3HMx1bSY0MezKZjcAaHnyYIkD58ts7nDAgcVr4R46JngljmEb6bR2YH6b4ZtC31ScDnW7j8N9DvEfkhLG6ve3vthwpV7MdteHSLBOp8oLYNkaLtj1DFZVRKlrNs/2RD0Ux+v8R4I4=
+	t=1742395040; cv=none; b=ozoi1r2EtjiHk06QTdbhIoU2Im9mG8js+R++ovhP0dC9o5+nZtpIOPmWo9683YDK/ExX9fifNO/Pu9bLG7qWvNmt4O/ZTi6z7n4BNmB/zOVC6LgSTTeXJVcxLI2mL00GCO8h323HXzDoDgSCEn1RPefUIslShyp6pdc5kHrk7zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394885; c=relaxed/simple;
-	bh=n2T9pgw/DiHUo+7FR2kyEuSfSxnFOiT2ua0uLMA4lL4=;
+	s=arc-20240116; t=1742395040; c=relaxed/simple;
+	bh=d3sCLBfsojkHNWNY8DGkJ1PLo9tHnNND3vgu3peHg8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uo+EjNn+b6qD6ERU3LZVDt2rU/A3dPoXfhAxfPWSynBf+kzhJkFrwUEONGjlwTAFudEri057pVrNHK2EkmYE/II8ROJgw/ZczBVxiE7tJms0h13wqAlQhtBdUl3rzpi0iskSzWdHe2HFICrp4KRdnipYNk4TJP9aavG/uYmLdMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnZNiqs0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28615C4CEE4;
-	Wed, 19 Mar 2025 14:34:45 +0000 (UTC)
+	 MIME-Version; b=OeDd94SyOaI3kSLusuWGcpHDPkuH+bDSL82t/7Jt7vQsc0fAQsFOaPCDpCTzh4DqgIHGOtaK0pw5Majcq4s86zpCLJsYJWRTeasaVflShOQW7+LWMv/HQvmsvq149/8HYk03r6uYvk30CULcNNkd6xDoVz1HJtdsxuhlYGGzW30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J11uSUd3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D500FC4CEE4;
+	Wed, 19 Mar 2025 14:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394885;
-	bh=n2T9pgw/DiHUo+7FR2kyEuSfSxnFOiT2ua0uLMA4lL4=;
+	s=korg; t=1742395039;
+	bh=d3sCLBfsojkHNWNY8DGkJ1PLo9tHnNND3vgu3peHg8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnZNiqs0n9AXkitI3sL1qjPtPH96Ome8czsIU2U13wW5nuBXyv9KUurOmfUWnNE9/
-	 iuARM3buBQJS3X4B8Uk+YGZafGdki4uP76aqmxUDUvOEugrWA31F+wMEuhnJeLj5fj
-	 jxTz4wQDD64vaMc5v27bAfVboyWDsJwYPDJKr1bw=
+	b=J11uSUd36R2iSQAGzzmHVKx1lyVgdTw22kCgQ5cBvIeOZqysVmolVBeIfE/7pRaBB
+	 +I9NCkzhe+ib8YuyuxDZoeT0JzL2W64sGyG98oM9TR358FuRRQpjiUqeTs5y+Il8l6
+	 CCx4tEUEoegfzjxLl0Y0cFDVuOr6HOS2gijvgVbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 086/241] HID: apple: fix up the F6 key on the Omoton KB066 keyboard
+Subject: [PATCH 6.12 063/231] sched/debug: Provide slice length for fair tasks
 Date: Wed, 19 Mar 2025 07:29:16 -0700
-Message-ID: <20250319143029.855857783@linuxfoundation.org>
+Message-ID: <20250319143028.381502631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Christian Loehle <christian.loehle@arm.com>
 
-[ Upstream commit 819083cb6eedcc8495cbf84845877bcc741b93b3 ]
+[ Upstream commit 9065ce69754dece78606c8bbb3821449272e56bf ]
 
-The Omoton KB066 is an Apple A1255 keyboard clone (HID product code
-05ac:022c). On both keyboards, the F6 key becomes Num Lock when the Fn
-key is held. But unlike its Apple exemplar, when the Omoton's F6 key is
-pressed without Fn, it sends the usage code 0xC0301 from the reserved
-section of the consumer page instead of the standard F6 usage code
-0x7003F from the keyboard page. The nonstandard code is translated to
-KEY_UNKNOWN and becomes useless on Linux. The Omoton KB066 is a pretty
-popular keyboard, judging from its 29,058 reviews on Amazon at time of
-writing, so let's account for its quirk to make it more usable.
+Since commit:
 
-By the way, it would be nice if we could automatically set fnmode to 0
-for Omoton keyboards because they handle the Fn key internally and the
-kernel's Fn key handling creates undesirable side effects such as making
-F1 and F2 always Brightness Up and Brightness Down in fnmode=1 (the
-default) or always F1 and F2 in fnmode=2. Unfortunately I don't think
-there's a way to identify Bluetooth keyboards more specifically than the
-HID product code which is obviously inaccurate. Users of Omoton
-keyboards will just have to set fnmode to 0 manually to get full Fn key
-functionality.
+  857b158dc5e8 ("sched/eevdf: Use sched_attr::sched_runtime to set request/slice suggestion")
 
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+... we have the userspace per-task tunable slice length, which is
+a key parameter that is otherwise difficult to obtain, so provide
+it in /proc/$PID/sched.
+
+[ mingo: Clarified the changelog. ]
+
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/453349b1-1637-42f5-a7b2-2385392b5956@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/sched/debug.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
-index 3c3f67d0bfcfe..49812a76b7edd 100644
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -546,6 +546,9 @@ static int hidinput_apple_event(struct hid_device *hid, struct input_dev *input,
- 		}
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 82b165bf48c42..1e3bc0774efd5 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -1264,6 +1264,8 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+ 	if (task_has_dl_policy(p)) {
+ 		P(dl.runtime);
+ 		P(dl.deadline);
++	} else if (fair_policy(p->policy)) {
++		P(se.slice);
  	}
- 
-+	if (usage->hid == 0xc0301) /* Omoton KB066 quirk */
-+		code = KEY_F6;
-+
- 	if (usage->code != code) {
- 		input_event_with_scancode(input, usage->type, code, usage->hid, value);
- 
+ #ifdef CONFIG_SCHED_CLASS_EXT
+ 	__PS("ext.enabled", task_on_scx(p));
 -- 
 2.39.5
 
