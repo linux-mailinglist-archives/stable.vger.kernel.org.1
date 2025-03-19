@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-125108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3689A68FD5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:41:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E893A690CC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A9A2887477
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 027207AD957
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B641DE3CF;
-	Wed, 19 Mar 2025 14:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF78205AA4;
+	Wed, 19 Mar 2025 14:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdfiG9rN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jw5fVumI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4549E1DE3CA;
-	Wed, 19 Mar 2025 14:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD6022172A;
+	Wed, 19 Mar 2025 14:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394960; cv=none; b=sofjFOF18wFc/bictz8+BwikBYvKq1KCNZrZ/DRKj8PdmDEP4Q7jXp61rZxuWa0CSZ6/wBXg+Bu+nR7meAIWv6LWIBcbiDaePDi6GAyiUC2mnf6MFPrpgqH1gzJcGQ7EOa9pgLkICHS3Yq97ZEve+bc0bK4Tz4IZ8YgQal05kS0=
+	t=1742395216; cv=none; b=I4ka9fMfKfIZd4Fk2pAdYOOOPDBuhiqO3dgnbC96D5qpdW6zZXH218t2zMAw1K3X3JOUSsy8Ea+rhYN7AmuOFiw2CRAkfY3ooMCszXbaYgHrPETq1VYeZt7ARAwLcMrdNh3QKff5t/KrOudRCXgkSIDUOppN6oVVEpnE5aSr2Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394960; c=relaxed/simple;
-	bh=cyR23pjeg8l4NrC7MVo5sPhrzWUloHiFnNrzzNKiNU4=;
+	s=arc-20240116; t=1742395216; c=relaxed/simple;
+	bh=y7NqKHt3dlfom78hRyGl8LTntbtVkN4RaMnmSOG6GzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1uty7Jcj6FD7DJqknT/cjwIOwYmafDBssIVfAxoUGZgJvTguwjuJbipbIl8OlDx/vWBXY7b0MqPjl/yUEvd14MzzSNd6VfGzy9TEyUryrwtN1bUVtP8y0ncLKSDMpM6XlWkvOlK5DAISfgyqFg/if2gprAg7OBV/gHlT27gbSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdfiG9rN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8F7C4CEE4;
-	Wed, 19 Mar 2025 14:36:00 +0000 (UTC)
+	 MIME-Version; b=VGI9vCDtnuvwlU4vgf62LytdwlMMMcIPWZMt9tX7Cm/hoSzyRPJz6vGVwo3SU/6QnhVcK6pRxw3XXdHxDQlm9O7ZeLNuxvsj8AzttSdUYAA3AClully0bNm4AGEhZuGbpM0RbgNZW/f0EDzf86tM/j+ZEt44lgINJ8YEr3rnMbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jw5fVumI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F324BC4CEE4;
+	Wed, 19 Mar 2025 14:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394960;
-	bh=cyR23pjeg8l4NrC7MVo5sPhrzWUloHiFnNrzzNKiNU4=;
+	s=korg; t=1742395216;
+	bh=y7NqKHt3dlfom78hRyGl8LTntbtVkN4RaMnmSOG6GzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdfiG9rN/dsSPPSxB5tays42PK9gxOTX/XbV277HcB+PUXHyvmxrineNfqniFldnD
-	 viH95gd9LhybNWDholSaTvjgo3npmQ7QNk8/cYsHHfVy/cUkGaLUxwp0maVZKyFdsM
-	 0YtAvggBeKy7mBz2C/IwcTPNH7tdn0lN6oqua3uI=
+	b=Jw5fVumI2nLYOc/KO15684etvshNQOYWCzh9czt9tAuwhwhI/t+B2C1ez9l3aXw1E
+	 4k0os1KVCVoUfROKPDJqVCP0nFpjuALjSVAZVwOBFKIJVPI0Ejq1syvKPRg1ccdTGf
+	 B6CznPUi75KV/1vHBqi5+SLQXth5AaaHUtU/VBiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
 	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.13 188/241] drm/amd/display: Fix slab-use-after-free on hdcp_work
+	Harry Wentland <harry.wentland@amd.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 087/166] drm/vkms: Round fixp2int conversion in lerp_u16
 Date: Wed, 19 Mar 2025 07:30:58 -0700
-Message-ID: <20250319143032.371506397@linuxfoundation.org>
+Message-ID: <20250319143022.377348832@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit e65e7bea220c3ce8c4c793b4ba35557f4994ab2b upstream.
+[ Upstream commit 8ec43c58d3be615a71548bc09148212013fb7e5f ]
 
-[Why]
-A slab-use-after-free is reported when HDCP is destroyed but the
-property_validate_dwork queue is still running.
+fixp2int always rounds down, fixp2int_ceil rounds up. We need
+the new fixp2int_round.
 
-[How]
-Cancel the delayed work when destroying workqueue.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
-Fixes: da3fd7ac0bcf ("drm/amd/display: Update CP property based on HW query")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 725a04ba5a95e89c89633d4322430cfbca7ce128)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241220043410.416867-3-alex.hung@amd.com
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/vkms/vkms_composer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-@@ -455,6 +455,7 @@ void hdcp_destroy(struct kobject *kobj,
- 	for (i = 0; i < hdcp_work->max_link; i++) {
- 		cancel_delayed_work_sync(&hdcp_work[i].callback_dwork);
- 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
-+		cancel_delayed_work_sync(&hdcp_work[i].property_validate_dwork);
- 	}
+diff --git a/drivers/gpu/drm/vkms/vkms_composer.c b/drivers/gpu/drm/vkms/vkms_composer.c
+index e7441b227b3ce..3d6785d081f2c 100644
+--- a/drivers/gpu/drm/vkms/vkms_composer.c
++++ b/drivers/gpu/drm/vkms/vkms_composer.c
+@@ -98,7 +98,7 @@ static u16 lerp_u16(u16 a, u16 b, s64 t)
  
- 	sysfs_remove_bin_file(kobj, &hdcp_work[0].attr);
+ 	s64 delta = drm_fixp_mul(b_fp - a_fp,  t);
+ 
+-	return drm_fixp2int(a_fp + delta);
++	return drm_fixp2int_round(a_fp + delta);
+ }
+ 
+ static s64 get_lut_index(const struct vkms_color_lut *lut, u16 channel_value)
+-- 
+2.39.5
+
 
 
 
