@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-125114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE647A6920B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:00:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51ACCA69059
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C27011B8602B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 230C67ABB8D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905551F0988;
-	Wed, 19 Mar 2025 14:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633BC1DDA39;
+	Wed, 19 Mar 2025 14:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGO76gw0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzS++Rkz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB0A1C4609;
-	Wed, 19 Mar 2025 14:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215021DDC01;
+	Wed, 19 Mar 2025 14:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394964; cv=none; b=Jx/ihooEHFttZmdg+B94kcytvXFmLTNaflCYtdmLWBHAr7JVe8qS7ixcYUyCM+Ckr0A5X31oSPyyu08cxFMj3FEf2zLdN+Hu0Lno7E1W4OycA/9sxAqQR6rG8+j20ul1btFQHWZJGOZJWUWCi3s8rS1gUhqvlMw29NssMKoaJb0=
+	t=1742395115; cv=none; b=rGyL/dmbWMp6SwiNP8vW25tV3rHPZqZ+woMbI22EPwefkbZVVilgqmBCM6OrHeI4hB/Tjr9jfabT573+Rjtrf5Fj53CpXrvRJuhQxM4FW+iGKm1WhRsOQInLUMY7C0+LtKgGCxyr4Op2wUJR7v2Gl+/SxZjSj2rcblk9XkwMODc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394964; c=relaxed/simple;
-	bh=+pOQRdiq6s7Dfw/FIiEBJctdaJo2jIKHzUa/WHQATmQ=;
+	s=arc-20240116; t=1742395115; c=relaxed/simple;
+	bh=G5RhAinuUW1355JjmnRAl3T2XfnyQ07tIqYACKpSZCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lj2B1NznaKtq3rIfjbbwIwwlKSmxq7AZ5elpAJGzBXxl05vvnEfbygJDCdqnur1+lSUgVgMgsV8WaE7psw0g8ctbhtCqTfeA99lAhm02CEoEL6s+wXMvlfwuz+hnznPg2ouzTZ0EVQ+/aM9IfGVzGOjYMZWoA7vgvzLK3YWuw7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGO76gw0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231E7C4CEE4;
-	Wed, 19 Mar 2025 14:36:04 +0000 (UTC)
+	 MIME-Version; b=Qf2bMPY4EtARML8QbA3F/RmT/pa3c3xOruo7QjgvN+OQgUWgexJ/erGLHeBLF3eBeYuGbyJWytzdob8xs0pEqOjxLprFC3c5xsXMqqrfe4lCn/wSkPxrdbx2/87MMmiyamOFiangy4uOLpaE0CRlnb1YnRCJvxr6I4pRI/BEftA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzS++Rkz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C5EC4CEE4;
+	Wed, 19 Mar 2025 14:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394964;
-	bh=+pOQRdiq6s7Dfw/FIiEBJctdaJo2jIKHzUa/WHQATmQ=;
+	s=korg; t=1742395115;
+	bh=G5RhAinuUW1355JjmnRAl3T2XfnyQ07tIqYACKpSZCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bGO76gw0f7DYTdwf6iHipHhyuECLWwtCemaNPbuNHvoQwrSVIYtadnaTGe0n/CU12
-	 yiop0ssjlAO1/QxxFsI4+D7a5NPXhfihLJoxO/2CByso3t9Zrl0I5C+SFbJxLka2TU
-	 A5cWNCq3zUWzyWrVqBW0/ySOXPCGAFAgAWHkG9T0=
+	b=kzS++RkzrZAUTxeSw+sopCRjObsHXax9EgXnQ+hcn0xBcvvHi02po5hm3SyajX0cV
+	 LDtu6FmgeyMaSrNFVkotlrASSK+4g81nM1PmIBOlKUBI/oPTAb9zohempSai8n3L3m
+	 AWmhwDgVtrkL7e6avu3rXVcd5HrEjWuIn9dtUJr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.13 155/241] Input: xpad - add support for ZOTAC Gaming Zone
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 132/231] ASoC: dapm-graph: set fill colour of turned on nodes
 Date: Wed, 19 Mar 2025 07:30:25 -0700
-Message-ID: <20250319143031.558208645@linuxfoundation.org>
+Message-ID: <20250319143030.096558533@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-commit 709329c48214ad2acf12eed1b5c0eb798e40a64c upstream.
+[ Upstream commit d31babd7e304d3b800d36ff74be6739405b985f2 ]
 
-ZOTAC Gaming Zone is ZOTAC's 2024 handheld release. As it is common
-with these handhelds, it uses a hybrid USB device with an xpad
-endpoint, a keyboard endpoint, and a vendor-specific endpoint for
-RGB control et al.
+Some tools like KGraphViewer interpret the "ON" nodes not having an
+explicitly set fill colour as them being entirely black, which obscures
+the text on them and looks funny. In fact, I thought they were off for
+the longest time. Comparing to the output of the `dot` tool, I assume
+they are supposed to be white.
 
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://lore.kernel.org/r/20250222170010.188761-2-lkml@antheas.dev
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead of speclawyering over who's in the wrong and must immediately
+atone for their wickedness at the altar of RFC2119, just be explicit
+about it, set the fillcolor to white, and nobody gets confused.
+
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250221-dapm-graph-node-colour-v1-1-514ed0aa7069@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/sound/dapm-graph | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -349,6 +349,7 @@ static const struct xpad_device {
- 	{ 0x1bad, 0xfa01, "MadCatz GamePad", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0xfd00, "Razer Onza TE", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0xfd01, "Razer Onza", 0, XTYPE_XBOX360 },
-+	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
- 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
- 	{ 0x20d6, 0x281f, "PowerA Wired Controller For Xbox 360", 0, XTYPE_XBOX360 },
-@@ -538,6 +539,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
- 	XPAD_XBOX360_VENDOR(0x1a86),		/* QH Electronics */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
-+	XPAD_XBOX360_VENDOR(0x1ee9),		/* ZOTAC Technology Limited */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOX360_VENDOR(0x2345),		/* Machenike Controllers */
+diff --git a/tools/sound/dapm-graph b/tools/sound/dapm-graph
+index f14bdfedee8f1..b6196ee5065a4 100755
+--- a/tools/sound/dapm-graph
++++ b/tools/sound/dapm-graph
+@@ -10,7 +10,7 @@ set -eu
+ 
+ STYLE_COMPONENT_ON="color=dodgerblue;style=bold"
+ STYLE_COMPONENT_OFF="color=gray40;style=filled;fillcolor=gray90"
+-STYLE_NODE_ON="shape=box,style=bold,color=green4"
++STYLE_NODE_ON="shape=box,style=bold,color=green4,fillcolor=white"
+ STYLE_NODE_OFF="shape=box,style=filled,color=gray30,fillcolor=gray95"
+ 
+ # Print usage and exit
+-- 
+2.39.5
+
 
 
 
