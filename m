@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6DAA68FE7
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D56DAA68F78
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7130D7AD6E6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 556AD16BC8C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F74F1E0DCC;
-	Wed, 19 Mar 2025 14:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E931C4A24;
+	Wed, 19 Mar 2025 14:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHgAbprR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KJlBwG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FE21D47C3;
-	Wed, 19 Mar 2025 14:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34541C549E;
+	Wed, 19 Mar 2025 14:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395023; cv=none; b=SG3EcogW9MjNXY5o+ZLdiSAwC//lOa+s9vdOKiEfOvoS0n9exo7xxW/R884kBSAWBY3uP0cpk6YqchqJ0x+XSdo6rBt1lIfVcvXZfJqLgYY7rcFtVPextdoGLIU2k660GU6mTOzzeKfMlfZ7Nz99uIPOIHxWUQhhXUmik8OiQDo=
+	t=1742394869; cv=none; b=Sbm7SSt4AUxwcBRsq18WLREOXEnAmCm40dLvrQe6IBmje51Atx6UOemT0iZyYO+6Z7Y6MI0BEqaGbvk4LSPkyI4dltpXM6kqNzOWvr8qoVP2LCzfLVTqBi5HXWqhzQH52wX1yBe9zu/E/zIOaFsfLIfAwg0MzmvUTou8SbTLDHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395023; c=relaxed/simple;
-	bh=Jj1jZoile5EOrcH6hY1xUKwpoqqkr1bp7m8DKkQr/sk=;
+	s=arc-20240116; t=1742394869; c=relaxed/simple;
+	bh=tN6icY64IwBxyikVGg7tzGOQUUa39s857vFPKP23/2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFfIibI2DwDG6koLmE8K3NMgsAnJuJV5tR99yx0vEqlzvslGA1J5bAONtOBdiJtsg9hFcsT095btqJt1bLQf3AnSZ5CNOFEmRLkXuXfa30ZG7A191cwCf+JrgBthr8fhqsyX4JhAZG3XzERAtW0o6kZeZTpIqidtUTZjs2GuSJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHgAbprR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC52BC4CEE4;
-	Wed, 19 Mar 2025 14:37:02 +0000 (UTC)
+	 MIME-Version; b=K4iEp5P0p5XHmwCpK8gK65mHuS1zSA0G0NmHfbvHbyWxv00AjrwCc0uRX/HQAXWsf0JYfgZK5zXOMP6NHEbUDag+vLcmFbIMzcZ//dQREqKA8R137JPeQHZKI5f9y8WlRIfNvwQ3oIv8M1EDmA/yDvUqcJEcb1HY+XjcQoz8iZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KJlBwG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2B4C4CEE4;
+	Wed, 19 Mar 2025 14:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395022;
-	bh=Jj1jZoile5EOrcH6hY1xUKwpoqqkr1bp7m8DKkQr/sk=;
+	s=korg; t=1742394869;
+	bh=tN6icY64IwBxyikVGg7tzGOQUUa39s857vFPKP23/2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHgAbprRnnFqYVCLhrRxd1YEyjpAGtvi522Yz6UaK6suh+se7T3vf815ngOcDfr8J
-	 xFz6WVOj7vjNvvU9HlgnZNgNb2x+uPFUiE7jA04XT+TUr0p/1UtyKfhAe+umNk5SSo
-	 Pi2SCYCphyiofjlDavNRvNZoe1U6gm6rSLvCKE/8=
+	b=1KJlBwG8Eo0rfOAaT6D6RVkMY1bfOVgTg/oiZdBth5nF68cExeaRUnwurKSPp4BIO
+	 zmezwuEv65s3q7Ve9lpB8Ml18Xvti0Aa65PvvZ/bTcxx6FEC4CEUPnsoP+MmLnDwda
+	 c1BFePFafQM1Jw5R3VKwBNpmg+nThzG90vFDg6qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/231] bnxt_en: handle tpa_info in queue API implementation
-Date: Wed, 19 Mar 2025 07:28:50 -0700
-Message-ID: <20250319143027.729123968@linuxfoundation.org>
+Subject: [PATCH 6.13 061/241] futex: Pass in task to futex_queue()
+Date: Wed, 19 Mar 2025 07:28:51 -0700
+Message-ID: <20250319143029.238400214@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +63,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wei <dw@davidwei.uk>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit bd649c5cc958169b8a8a3e77ea926d92d472b02a ]
+[ Upstream commit 5e0e02f0d7e52cfc8b1adfc778dd02181d8b47b4 ]
 
-Commit 7ed816be35ab ("eth: bnxt: use page pool for head frags") added a
-page pool for header frags, which may be distinct from the existing pool
-for the aggregation ring. Prior to this change, frags used in the TPA
-ring rx_tpa were allocated from system memory e.g. napi_alloc_frag()
-meaning their lifetimes were not associated with a page pool. They can
-be returned at any time and so the queue API did not alloc or free
-rx_tpa.
+futex_queue() -> __futex_queue() uses 'current' as the task to store in
+the struct futex_q->task field. This is fine for synchronous usage of
+the futex infrastructure, but it's not always correct when used by
+io_uring where the task doing the initial futex_queue() might not be
+available later on. This doesn't lead to any issues currently, as the
+io_uring side doesn't support PI futexes, but it does leave a
+potentially dangling pointer which is never a good idea.
 
-But now frags come from a separate head_pool which may be different to
-page_pool. Without allocating and freeing rx_tpa, frags allocated from
-the old head_pool may be returned to a different new head_pool which
-causes a mismatch between the pp hold/release count.
+Have futex_queue() take a task_struct argument, and have the regular
+callers pass in 'current' for that. Meanwhile io_uring can just pass in
+NULL, as the task should never be used off that path. In theory
+req->tctx->task could be used here, but there's no point populating it
+with a task field that will never be used anyway.
 
-Fix this problem by properly freeing and allocating rx_tpa in the queue
-API implementation.
-
-Signed-off-by: David Wei <dw@davidwei.uk>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20241204041022.56512-4-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 87dd2850835d ("eth: bnxt: fix memory leak in queue reset")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/22484a23-542c-4003-b721-400688a0d055@kernel.dk
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 27 +++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ io_uring/futex.c        |  2 +-
+ kernel/futex/core.c     |  5 +++--
+ kernel/futex/futex.h    | 11 ++++++++---
+ kernel/futex/pi.c       |  2 +-
+ kernel/futex/waitwake.c |  4 ++--
+ 5 files changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 800a63daba2b4..ee52ac821ef9a 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -3623,7 +3623,7 @@ static void bnxt_free_rx_rings(struct bnxt *bp)
- 			xdp_rxq_info_unreg(&rxr->xdp_rxq);
+diff --git a/io_uring/futex.c b/io_uring/futex.c
+index e29662f039e1a..f108da4ff863c 100644
+--- a/io_uring/futex.c
++++ b/io_uring/futex.c
+@@ -349,7 +349,7 @@ int io_futex_wait(struct io_kiocb *req, unsigned int issue_flags)
+ 		hlist_add_head(&req->hash_node, &ctx->futex_list);
+ 		io_ring_submit_unlock(ctx, issue_flags);
  
- 		page_pool_destroy(rxr->page_pool);
--		if (rxr->page_pool != rxr->head_pool)
-+		if (bnxt_separate_head_pool())
- 			page_pool_destroy(rxr->head_pool);
- 		rxr->page_pool = rxr->head_pool = NULL;
- 
-@@ -15199,15 +15199,25 @@ static int bnxt_queue_mem_alloc(struct net_device *dev, void *qmem, int idx)
- 			goto err_free_rx_agg_ring;
+-		futex_queue(&ifd->q, hb);
++		futex_queue(&ifd->q, hb, NULL);
+ 		return IOU_ISSUE_SKIP_COMPLETE;
  	}
  
-+	if (bp->flags & BNXT_FLAG_TPA) {
-+		rc = bnxt_alloc_one_tpa_info(bp, clone);
-+		if (rc)
-+			goto err_free_tpa_info;
-+	}
-+
- 	bnxt_init_one_rx_ring_rxbd(bp, clone);
- 	bnxt_init_one_rx_agg_ring_rxbd(bp, clone);
- 
- 	bnxt_alloc_one_rx_ring_skb(bp, clone, idx);
- 	if (bp->flags & BNXT_FLAG_AGG_RINGS)
- 		bnxt_alloc_one_rx_ring_page(bp, clone, idx);
-+	if (bp->flags & BNXT_FLAG_TPA)
-+		bnxt_alloc_one_tpa_info_data(bp, clone);
- 
- 	return 0;
- 
-+err_free_tpa_info:
-+	bnxt_free_one_tpa_info(bp, clone);
- err_free_rx_agg_ring:
- 	bnxt_free_ring(bp, &clone->rx_agg_ring_struct.ring_mem);
- err_free_rx_ring:
-@@ -15215,9 +15225,11 @@ static int bnxt_queue_mem_alloc(struct net_device *dev, void *qmem, int idx)
- err_rxq_info_unreg:
- 	xdp_rxq_info_unreg(&clone->xdp_rxq);
- err_page_pool_destroy:
--	clone->page_pool->p.napi = NULL;
- 	page_pool_destroy(clone->page_pool);
-+	if (bnxt_separate_head_pool())
-+		page_pool_destroy(clone->head_pool);
- 	clone->page_pool = NULL;
-+	clone->head_pool = NULL;
- 	return rc;
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index ebdd76b4ecbba..3db8567f5a44e 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -532,7 +532,8 @@ void futex_q_unlock(struct futex_hash_bucket *hb)
+ 	futex_hb_waiters_dec(hb);
  }
  
-@@ -15227,13 +15239,15 @@ static void bnxt_queue_mem_free(struct net_device *dev, void *qmem)
- 	struct bnxt *bp = netdev_priv(dev);
- 	struct bnxt_ring_struct *ring;
+-void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
++void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
++		   struct task_struct *task)
+ {
+ 	int prio;
  
--	bnxt_free_one_rx_ring(bp, rxr);
--	bnxt_free_one_rx_agg_ring(bp, rxr);
-+	bnxt_free_one_rx_ring_skbs(bp, rxr);
+@@ -548,7 +549,7 @@ void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
  
- 	xdp_rxq_info_unreg(&rxr->xdp_rxq);
+ 	plist_node_init(&q->list, prio);
+ 	plist_add(&q->list, &hb->chain);
+-	q->task = current;
++	q->task = task;
+ }
  
- 	page_pool_destroy(rxr->page_pool);
-+	if (bnxt_separate_head_pool())
-+		page_pool_destroy(rxr->head_pool);
- 	rxr->page_pool = NULL;
-+	rxr->head_pool = NULL;
+ /**
+diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
+index 99b32e728c4ad..6b2f4c7eb720f 100644
+--- a/kernel/futex/futex.h
++++ b/kernel/futex/futex.h
+@@ -285,13 +285,15 @@ static inline int futex_get_value_locked(u32 *dest, u32 __user *from)
+ }
  
- 	ring = &rxr->rx_ring_struct;
- 	bnxt_free_ring(bp, &ring->ring_mem);
-@@ -15315,7 +15329,10 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
- 	rxr->rx_agg_prod = clone->rx_agg_prod;
- 	rxr->rx_sw_agg_prod = clone->rx_sw_agg_prod;
- 	rxr->rx_next_cons = clone->rx_next_cons;
-+	rxr->rx_tpa = clone->rx_tpa;
-+	rxr->rx_tpa_idx_map = clone->rx_tpa_idx_map;
- 	rxr->page_pool = clone->page_pool;
-+	rxr->head_pool = clone->head_pool;
- 	rxr->xdp_rxq = clone->xdp_rxq;
+ extern void __futex_unqueue(struct futex_q *q);
+-extern void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb);
++extern void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
++				struct task_struct *task);
+ extern int futex_unqueue(struct futex_q *q);
  
- 	bnxt_copy_rx_ring(bp, rxr, clone);
-@@ -15376,6 +15393,8 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
- 	bnxt_hwrm_rx_agg_ring_free(bp, rxr, false);
- 	rxr->rx_next_cons = 0;
- 	page_pool_disable_direct_recycling(rxr->page_pool);
-+	if (bnxt_separate_head_pool())
-+		page_pool_disable_direct_recycling(rxr->head_pool);
+ /**
+  * futex_queue() - Enqueue the futex_q on the futex_hash_bucket
+  * @q:	The futex_q to enqueue
+  * @hb:	The destination hash bucket
++ * @task: Task queueing this futex
+  *
+  * The hb->lock must be held by the caller, and is released here. A call to
+  * futex_queue() is typically paired with exactly one call to futex_unqueue().  The
+@@ -299,11 +301,14 @@ extern int futex_unqueue(struct futex_q *q);
+  * or nothing if the unqueue is done as part of the wake process and the unqueue
+  * state is implicit in the state of woken task (see futex_wait_requeue_pi() for
+  * an example).
++ *
++ * Note that @task may be NULL, for async usage of futexes.
+  */
+-static inline void futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
++static inline void futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
++			       struct task_struct *task)
+ 	__releases(&hb->lock)
+ {
+-	__futex_queue(q, hb);
++	__futex_queue(q, hb, task);
+ 	spin_unlock(&hb->lock);
+ }
  
- 	memcpy(qmem, rxr, sizeof(*rxr));
- 	bnxt_init_rx_ring_struct(bp, qmem);
+diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
+index d62cca5ed8f4c..635c7d5d42220 100644
+--- a/kernel/futex/pi.c
++++ b/kernel/futex/pi.c
+@@ -982,7 +982,7 @@ int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int tryl
+ 	/*
+ 	 * Only actually queue now that the atomic ops are done:
+ 	 */
+-	__futex_queue(&q, hb);
++	__futex_queue(&q, hb, current);
+ 
+ 	if (trylock) {
+ 		ret = rt_mutex_futex_trylock(&q.pi_state->pi_mutex);
+diff --git a/kernel/futex/waitwake.c b/kernel/futex/waitwake.c
+index 3a10375d95218..a9056acb75eef 100644
+--- a/kernel/futex/waitwake.c
++++ b/kernel/futex/waitwake.c
+@@ -350,7 +350,7 @@ void futex_wait_queue(struct futex_hash_bucket *hb, struct futex_q *q,
+ 	 * access to the hash list and forcing another memory barrier.
+ 	 */
+ 	set_current_state(TASK_INTERRUPTIBLE|TASK_FREEZABLE);
+-	futex_queue(q, hb);
++	futex_queue(q, hb, current);
+ 
+ 	/* Arm the timer */
+ 	if (timeout)
+@@ -461,7 +461,7 @@ int futex_wait_multiple_setup(struct futex_vector *vs, int count, int *woken)
+ 			 * next futex. Queue each futex at this moment so hb can
+ 			 * be unlocked.
+ 			 */
+-			futex_queue(q, hb);
++			futex_queue(q, hb, current);
+ 			continue;
+ 		}
+ 
 -- 
 2.39.5
 
