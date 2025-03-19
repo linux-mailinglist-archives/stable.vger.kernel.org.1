@@ -1,205 +1,168 @@
-Return-Path: <stable+bounces-125581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295EBA694DC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 17:27:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6431A694DF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 17:27:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB18219C1C5F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:26:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A3DC885860
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E20D1DE881;
-	Wed, 19 Mar 2025 16:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6861E0DCC;
+	Wed, 19 Mar 2025 16:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="JWyyAMy2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWTDSsnI"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D651539AD6;
-	Wed, 19 Mar 2025 16:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1BAF9DA;
+	Wed, 19 Mar 2025 16:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742401571; cv=none; b=iEoD06Mfj866lVhY99HJmBr5N3VtkrkicbIrDMvICQ1VoLjIOTKLbs8HGeM9IypGPeEgOcwDIM3cUgnvlTcoJofkF9JnrlhRfUhc2nGA0D1JCncgoUi4GG4Z+Sd79WA0d6quwafrcIQ5MMgTW3OIInkn/RCGYbmSJVE1UHgw6No=
+	t=1742401601; cv=none; b=bUnuRVAdEjGnB1cWciQeTpNqnJHXVgHuyZTSKTpzArEyiMzM2ARgzHlKE59qxvgGkz01DhWFz/tPvWzKhJy+vQSG4ZIsmTsft7n2I97e1FE0rQMl8FcZ4b+IGQ0kcZBeWezwRs4opyF3af9HgoOEOvTe9bzx+9cwCgUoNTiqiww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742401571; c=relaxed/simple;
-	bh=JxCmPweMsh0+Rt53TtaclNYAL5gRgU57d1LEoHFDFNw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Y81CXYfeMd7leBg/RpGtaRKOMnAvsFF8uuOFv7zq5DNaMStEyKgUHaKdLxp+OeptgK3FhocYAYMC71vfOl2hb418YvnEaMC2RnXLi3GJAKIAr+AJgwxU8PDf9NtJf1lFi9FhyP/ibUYrgE0DwNmwxcvSPKvoKhwpslFIy1iTVsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=JWyyAMy2; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52JGPtap368025
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Mar 2025 11:25:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1742401555;
-	bh=8EunOXKbmJ/ARqV7n6jMGBLucBQE7UpQk6Ad1sq5D/k=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=JWyyAMy2kcOQt10nu8WW+JzQR2w1LlzSKj6UWBM7lvLFbkuntqZsjLoxi99XXKJmV
-	 PLU/nS+3qOnWCXgHXVMLC5qs37atr5OHf1ZZmGtJggMB7AhZv1iS00MEdltECw6UC8
-	 jEVNozRquBVBGB9XGrdMfH3kB3hygZLnDDqX015E=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52JGPtRa027485
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 19 Mar 2025 11:25:55 -0500
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 19
- Mar 2025 11:25:54 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 19 Mar 2025 11:25:54 -0500
-Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52JGPsKI080092;
-	Wed, 19 Mar 2025 11:25:54 -0500
-Message-ID: <3be2f0a1-65f9-4aa7-9c0b-1f4fe626be17@ti.com>
-Date: Wed, 19 Mar 2025 11:25:54 -0500
+	s=arc-20240116; t=1742401601; c=relaxed/simple;
+	bh=+NovpqlAsquT1zXAI20hR5SbwnPIEjw5Mmy6/Kiav40=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qjP65TCNz5czSQ1rRe7d3IQkYLFR+7i1Yge4NrDi2FK0inHef/o+5yXvjXWTIQu94crDr3/4mBVujzf95jdOZtgXAtHiydycJiVkTg09iTWDj8pROjrkryaj3TMLY86ehjMcqAD71SUqBZRol1fXhxGkezZMGcjSjLOtLlrZMrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWTDSsnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD392C4CEED;
+	Wed, 19 Mar 2025 16:26:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742401601;
+	bh=+NovpqlAsquT1zXAI20hR5SbwnPIEjw5Mmy6/Kiav40=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KWTDSsnI5C2ZqKFYak0Osm2PDSIaxivFspKsJdnfakhcGwSK+FBTOPxs7cmY3NDjc
+	 25uBHPkoCouB5uT6NE3jjxEwzTY99Hj/lDd8voj2GgPCtgwWO7Kxopl/+B6IvaCOSO
+	 TqfdlASDzCL/p7HslkpKto8XZNXZEcWT1jJCA3pj+TrU1OBDylxjKdft8hsXscKfv+
+	 qILPJC7ktoiqRHjuBs6te7UjuU2/4BQjNNyXpvx+CuynAr0r16oVDcakfexO0nN1OE
+	 +t3nFEBs4YvmixSf9lJzMMmoAuBN1VELxx6sL/WS4rznBOBHuh6aKH6+QkQjpEEoMg
+	 BpW3LeN5t8SyA==
+Message-ID: <a2b61202-a257-4317-b454-799da27951e8@kernel.org>
+Date: Wed, 19 Mar 2025 17:26:35 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Revert "mmc: sdhci_am654: Add
- sdhci_am654_start_signal_voltage_switch"
-To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>,
-        "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
-        "adrian.hunter@intel.com"
-	<adrian.hunter@intel.com>,
-        "josua@solid-run.com" <josua@solid-run.com>
-CC: "rabeeh@solid-run.com" <rabeeh@solid-run.com>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>,
-        "linux-mmc@vger.kernel.org"
-	<linux-mmc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "jon@solid-run.com" <jon@solid-run.com>
-References: <20250127-am654-mmc-regression-v2-1-9bb39fb12810@solid-run.com>
- <93d7e958-be62-45b3-ba8f-d3e4cf2839bf@ti.com>
- <5c6e447ad9633f969cad7ed6641c8f6cfcc51237.camel@siemens.com>
-Content-Language: en-US
-From: Judith Mendez <jm@ti.com>
-In-Reply-To: <5c6e447ad9633f969cad7ed6641c8f6cfcc51237.camel@siemens.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net 2/3] mptcp: sockopt: fix getting IPV6_V6ONLY
+Content-Language: en-GB, fr-BE
+To: Simon Horman <horms@kernel.org>
+Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Florian Westphal <fw@strlen.de>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
+ <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org>
+ <20250319153827.GC768132@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20250319153827.GC768132@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi, Alexander,
+Hi Simon,
 
-On 3/19/25 5:22 AM, Sverdlin, Alexander wrote:
-> Hi Judith, Ulf,
+Thank you for your review!
+
+On 19/03/2025 16:38, Simon Horman wrote:
+> On Fri, Mar 14, 2025 at 09:11:32PM +0100, Matthieu Baerts (NGI0) wrote:
+>> When adding a socket option support in MPTCP, both the get and set parts
+>> are supposed to be implemented.
+>>
+>> IPV6_V6ONLY support for the setsockopt part has been added a while ago,
+>> but it looks like the get part got forgotten. It should have been
+>> present as a way to verify a setting has been set as expected, and not
+>> to act differently from TCP or any other socket types.
+>>
+>> Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
+>> to check the default value, before doing extra actions. On Linux, the
+>> default value is 0, but this can be changed with the net.ipv6.bindv6only
+>> sysctl knob. On Windows, it is set to 1 by default. So supporting the
+>> get part, like for all other socket options, is important.
+>>
+>> Everything was in place to expose it, just the last step was missing.
+>> Only new code is added to cover this specific getsockopt(), that seems
+>> safe.
+>>
+>> Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
+>> Cc: stable@vger.kernel.org
+>> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
+>> Reviewed-by: Mat Martineau <martineau@kernel.org>
+>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 > 
-> On Wed, 2025-02-05 at 13:39 -0600, Judith Mendez wrote:
->> Hi all,
->>
->> On 1/27/25 2:12 PM, Josua Mayer wrote:
->>> This reverts commit 941a7abd4666912b84ab209396fdb54b0dae685d.
->>>
->>> This commit uses presence of device-tree properties vmmc-supply and
->>> vqmmc-supply for deciding whether to enable a quirk affecting timing of
->>> clock and data.
->>> The intention was to address issues observed with eMMC and SD on AM62
->>> platforms.
->>>
->>> This new quirk is however also enabled for AM64 breaking microSD access
->>> on the SolidRun HimmingBoard-T which is supported in-tree since v6.11,
->>> causing a regression. During boot microSD initialization now fails with
->>> the error below:
->>>
->>> [    2.008520] mmc1: SDHCI controller on fa00000.mmc [fa00000.mmc] using ADMA 64-bit
->>> [    2.115348] mmc1: error -110 whilst initialising SD card
->>>
->>> The heuristics for enabling the quirk are clearly not correct as they
->>> break at least one but potentially many existing boards.
->>>
->>> Revert the change and restore original behaviour until a more
->>> appropriate method of selecting the quirk is derived.
->>
->>
->> Somehow I missed these emails, apologies.
->>
->> Thanks for reporting this issue Josua.
->>
->> We do need this patch for am62x devices since it fixes timing issues
->> with a variety of SD cards on those boards, but if there is a
->> regression, too bad, patch had to be reverted.
->>
->> I will look again into how to implement this quirk, I think using the
->> voltage regulator nodes to discover if we need this quirk might not have
->> been a good idea, based on your explanation. I believe I did test the
->> patch on am64x SK and am64x EVM boards and saw no boot issue there,
->> so the issue seems related to the voltage regulator nodes existing in DT
->> (the heuristics for enabling the quirk) as you call it.
->>
->> Again, thanks for reporting, will look into fixing this issue for am62x
->> again soon.
+> Hi Matthieu, all,
 > 
-> does it mean, that 14afef2333af
-> ("arm64: dts: ti: k3-am62-main: Update otap/itap values") has to be reverted
-> as well, for the time being?
+> TBH, I would lean towards this being net-next material rather than a fix
+> for net. But that notwithstanding this looks good to me.
+I understand. This patch and the next one target "net" because, with
+MPTCP, we try to mimic TCP when interacting with the userspace.
 
-So sorry for the delay in response.
+Not supporting "getsockopt(IPV6_V6ONLY)" breaks some legacy apps forced
+to use MPTCP instead of TCP. These apps apparently "strangely" check
+this "getsockopt(IPV6_V6ONLY)" before changing the behaviour with
+"setsockopt(IPV6_V6ONLY)" which is supported for a long time. The "get"
+part should have been added from the beginning, and I don't see this
+patch as a new feature. Because it simply sets an integer like most
+other "get" options, it seems better to target net and fix these apps
+ASAP rather than targeting net-next and delay this "safe" fix.
 
-Does this fix: ("arm64: dts: ti: k3-am62-main: Update otap/itap values")
-cause any issues for you?
+If that's OK, I would then prefer if these patches are applied in "net".
+Or they can be applied in "net-next" if we can keep their "Cc: stable"
+and "Fixes" tags, but that looks strange.
 
-The otap/itap fix is actually setting tap settings according to the
-device datasheet since they were wrong in the first place.
-
-The values in the datasheet are the optimal tap settings for our
-boards based off of bench characterization results. If these values
-provide issues for you, please let me know.
-
-
-Changing topic:
-
-Going back to the reverted patch. What the patch does is that it
-tries to switch data launch from the rising clock edge to the
-falling clock edge if we find two voltage supplies for SD/SDIO, one
-for powering the SD/SDIO and another for IO voltage switch, or for
-the case that no voltage supplies exist (eMMC).
-
-(this was based off-of some internal debug that resulted with a
-request to unset V1P8_SIGNAL_ENA to fix timing issues)
-
-However, if you had one voltage supply, the patch should not have
-affected you at all and I am really confused why you see an issue
-downstream with only one voltage supply.
-
-That being said, I have dug up more information on V1P8_SIGNAL_ENA.
-If HIGH_SPEED_ENA is set or if V1P8_SIGNAL_ENA is set, these two bits
-are OR'd and if any of the two is set, then data launch always happens
-on rising clock edge. This should be the case for any of the UHS modes
-or > mmc_hs mode for MMC.
-
-If this is true, we should be setting HIGH_SPEED_ENA anyways for UHS
-modes and thus this patch should have done nothing in this sense, since
-data launch should still be happening on the rising clock edge.
-
-I am still digging up more information to make sure disabling
-V1P8_SIGNAL_ENA has no other implications.
-
-
-~ Judith
-
-
-
-
-
-
-
-
-
-
-
-
-
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
 
