@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CF6A68F59
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:36:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8890A6906A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A6FE7A6BE1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC03F3ACB77
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E208F1CC8B0;
-	Wed, 19 Mar 2025 14:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2572144B1;
+	Wed, 19 Mar 2025 14:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moRHHeb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S38bGn7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6301B422A;
-	Wed, 19 Mar 2025 14:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE991D5AC6;
+	Wed, 19 Mar 2025 14:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394884; cv=none; b=hHb94OOMYbMmgo9EJS//Vbnfjzk7BfUDpCrA+bI0icDi0RU7I4ZNowYYyiZ3Y1OI4YvA6tjAmBcEKP6KddVFVwTpqXhG8juMZgiFYLfoZ0C8Ejkog1B8ADWJMLq+TeIA/yXNcVjVzOVOvHdsTJnItQZ5KTnbzIfVz7gsqzJdLfY=
+	t=1742395039; cv=none; b=IU6nVe8+85fwrSckVMe5R60MJXyIHvqxzghKNvb/M8sRqGK9pgpdHWygBX2+m4vdVLVUNJnimWBEScGVEt6J4VLOOfKo4mx4mXgg76DyLlFGj76nS6ZT+lBLl0BX8yn4HI/SfxJK1OEg9fZuA+iq8unk7eAWCGzNMcbKWl5ymOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394884; c=relaxed/simple;
-	bh=AHNzIsyjGqZQphEFJ777gb8DlnucUq4qms2umzsXutg=;
+	s=arc-20240116; t=1742395039; c=relaxed/simple;
+	bh=2bu8bsZwZHZpFF1mTma1jVELCuMcuvAVKyLpCupeLf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MyMLc2mhXUQJzgy9uAEJTBNx/SRnzcOPbjdAyvEUEWlttNYkWvGUjqeRfFtXFH7xElAC9Cr6OLFwk/SpHRHA9nWfsFxOyIojSaoGxkdGrnFg7DejcqQxKCHF2yzt2U/tdSuxDSqJ+bh+STgNq3/WZA7ByiCac0mQBuGjRkUTYJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moRHHeb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7299FC4CEE4;
-	Wed, 19 Mar 2025 14:34:44 +0000 (UTC)
+	 MIME-Version; b=kjd6UqkhmPWFTvOdB4xGVcVzLN+WsJ5AWA2FYDnV29SNgKCq4y4oC1wcsm2hQW2OVqUuuZcuZB0bfnUH5REs/3XxH2nAvB9XCro4ijIg69kq1MGvq2fJV2m2kWnYZGEK7NSXWLPC38q7RBshjHxOHomb6/qG0rJ5YYiRBE8sxbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S38bGn7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BBFC4CEE4;
+	Wed, 19 Mar 2025 14:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394884;
-	bh=AHNzIsyjGqZQphEFJ777gb8DlnucUq4qms2umzsXutg=;
+	s=korg; t=1742395039;
+	bh=2bu8bsZwZHZpFF1mTma1jVELCuMcuvAVKyLpCupeLf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moRHHeb4LJV45SIu9Kq5TweKdujZ+jq/9jwZEu3g0kCvKQjzSWvQ4NPCKafayn7cA
-	 yIgjw8SQrczX/HhURl1Rt0SfhyZkLV9jmYSqx6yJxBIepAGcscvHRLPHnTdoYrv6Cm
-	 YJUeORjMdpXW+9AvWRzFDtR1S3Y800J11Rehvyks=
+	b=S38bGn7wWeixBU6zbd2a/gsLH+pxCPcGQKyeYOmMKpcVDrtb+n7FTjcy3b9IFZdCs
+	 qsWitU6K0VB+EbnFbvK1geqyGkyIdamZxf/6tLv7y1zZQ7KcneF4cUakPMZhHFyP5r
+	 Mfl2EHuzTe6igy3EKSifXS5DEbHBE6qZb1lChFgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ievgen Vovk <YevgenVovk@ukr.net>,
-	Jiri Kosina <jkosina@suse.com>,
+	Chengen Du <chengen.du@canonical.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 085/241] HID: hid-apple: Apple Magic Keyboard a3203 USB-C support
+Subject: [PATCH 6.12 062/231] iscsi_ibft: Fix UBSAN shift-out-of-bounds warning in ibft_attr_show_nic()
 Date: Wed, 19 Mar 2025 07:29:15 -0700
-Message-ID: <20250319143029.831972492@linuxfoundation.org>
+Message-ID: <20250319143028.357251907@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ievgen Vovk <YevgenVovk@ukr.net>
+From: Chengen Du <chengen.du@canonical.com>
 
-[ Upstream commit 2813e00dcd748cef47d2bffaa04071de93fddf00 ]
+[ Upstream commit 07e0d99a2f701123ad3104c0f1a1e66bce74d6e5 ]
 
-Add Apple Magic Keyboard 2024 model (with USB-C port) device ID (0320)
-to those recognized by the hid-apple driver. Keyboard is otherwise
-compatible with the existing implementation for its earlier 2021 model.
+When performing an iSCSI boot using IPv6, iscsistart still reads the
+/sys/firmware/ibft/ethernetX/subnet-mask entry. Since the IPv6 prefix
+length is 64, this causes the shift exponent to become negative,
+triggering a UBSAN warning. As the concept of a subnet mask does not
+apply to IPv6, the value is set to ~0 to suppress the warning message.
 
-Signed-off-by: Ievgen Vovk <YevgenVovk@ukr.net>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c | 5 +++++
- drivers/hid/hid-ids.h   | 1 +
- 2 files changed, 6 insertions(+)
+ drivers/firmware/iscsi_ibft.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
-index 7e1ae2a2bcc24..3c3f67d0bfcfe 100644
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -474,6 +474,7 @@ static int hidinput_apple_event(struct hid_device *hid, struct input_dev *input,
- 			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_NUMPAD_2015)
- 			table = magic_keyboard_2015_fn_keys;
- 		else if (hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021 ||
-+			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024 ||
- 			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021 ||
- 			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_NUMPAD_2021)
- 			table = apple2021_fn_keys;
-@@ -1150,6 +1151,10 @@ static const struct hid_device_id apple_devices[] = {
- 		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK | APPLE_RDESC_BATTERY },
- 	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
- 		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024),
-+		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK | APPLE_RDESC_BATTERY },
-+	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024),
-+		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021),
- 		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK | APPLE_RDESC_BATTERY },
- 	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021),
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 4df0bfc3c8413..c4ca7a579e3d4 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -184,6 +184,7 @@
- #define USB_DEVICE_ID_APPLE_IRCONTROL4	0x8242
- #define USB_DEVICE_ID_APPLE_IRCONTROL5	0x8243
- #define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021   0x029c
-+#define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024   0x0320
- #define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021   0x029a
- #define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_NUMPAD_2021   0x029f
- #define USB_DEVICE_ID_APPLE_TOUCHBAR_BACKLIGHT 0x8102
+diff --git a/drivers/firmware/iscsi_ibft.c b/drivers/firmware/iscsi_ibft.c
+index 6e9788324fea5..371f24569b3b2 100644
+--- a/drivers/firmware/iscsi_ibft.c
++++ b/drivers/firmware/iscsi_ibft.c
+@@ -310,7 +310,10 @@ static ssize_t ibft_attr_show_nic(void *data, int type, char *buf)
+ 		str += sprintf_ipaddr(str, nic->ip_addr);
+ 		break;
+ 	case ISCSI_BOOT_ETH_SUBNET_MASK:
+-		val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
++		if (nic->subnet_mask_prefix > 32)
++			val = cpu_to_be32(~0);
++		else
++			val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
+ 		str += sprintf(str, "%pI4", &val);
+ 		break;
+ 	case ISCSI_BOOT_ETH_PREFIX_LEN:
 -- 
 2.39.5
 
