@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-125419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F23A69301
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:19:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D08A692A0
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09CE21B66C06
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 791CE1B855C3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06581F8745;
-	Wed, 19 Mar 2025 14:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7A51E231F;
+	Wed, 19 Mar 2025 14:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds/Xl87J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zk4rGw1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1981DE899;
-	Wed, 19 Mar 2025 14:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E97F1C1F0F;
+	Wed, 19 Mar 2025 14:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395174; cv=none; b=LX/g/3q3xBq5yE+SGhFuh4D1Twww6UqCP6xPz7XLOtb1/ZGMB7WjErjNZIhTBvxRKDPKBKAk1nOVRF8/3Jamm530q2pcWpzQ3CM2oIRsFmSlc2n8q7T4tCeqmKxptYzmK7vD3WLRJfcbqqSyHRyBhcd4jl5ZuI7W5Ut3wxokdwk=
+	t=1742394919; cv=none; b=f+lfX71ueNBUc8Fk55djt4aD5k6oU5XWoBdbvtmnaC0I9xMdYzlJXJ456r6hFK7KAPRHFBDKhY1tiYUYRNOICmGyFVLIfFLamRtYIeoT1NtpzPYOPlsdegNY3B8/hFywTS3kfN/BdEbC5s0ls7l5sYnOAUrFJ3/NxoTc/kxkotc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395174; c=relaxed/simple;
-	bh=oXlRM4Y93X+aoNsRSWqeO08bn7PSXXo+uH3jqo/5oQQ=;
+	s=arc-20240116; t=1742394919; c=relaxed/simple;
+	bh=FXqgskyyxMEHQpDTpG3OD2OtGubS/B3dpPTWi5fhBRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPlnlFkmEwr8bD1cgeAX3xS8OcrXJuWbz6OrjjrA4VvH1dWI2NvqXU22RCoSq1mCN5RjgxLrxwiQnbRRA68vhRLOtA5YShEx0ys/NXEpaenHjxPcOHOl6l14Zo97cdRR96u7v680OxUYyDSzcnMGVE1rL7FF6TsLGDQneD4llb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds/Xl87J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4539EC4CEE4;
-	Wed, 19 Mar 2025 14:39:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mpDUTXrw5egbeErKhQ+XG0Za7NgwG3ZRZCy5FMW4/ORBWPQf2ZWqa7jf4lplo/t2am0oTHp6FNNk+0DBKj2b3reZ65Ch0EuAyOuF48AHgnSUVjQD2/FaNOwESuP/v/ADgJXEIn/4nuEksfmLlxCIeJjM5cC9xeJWb0ilvQksNfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zk4rGw1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC05C4CEE4;
+	Wed, 19 Mar 2025 14:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395174;
-	bh=oXlRM4Y93X+aoNsRSWqeO08bn7PSXXo+uH3jqo/5oQQ=;
+	s=korg; t=1742394919;
+	bh=FXqgskyyxMEHQpDTpG3OD2OtGubS/B3dpPTWi5fhBRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ds/Xl87JOWEbEenY87v7VRHivlBYCGxOtWoEo99YFEMEFJd/iSk50A1OlVkGMmXja
-	 uRXV0DkrABseNa2cCg5s6rAVWRbzNCFUB+5CUMm8rNS0ta0wd/4QYZriCguatXBVj3
-	 VlhvbsAx41l+HV39oJJyY5OMd2eC3RiB73U8sFIg=
+	b=Zk4rGw1hlYrQ0GBpJ+Ska3xnXs2RXqV/N3ejvqxKzC87pytlj2Mhn9pnq6HDVXL8P
+	 bfLXuODcjXUW6jH0KgLq0bGm45h+/oGyPPpj3+BmbxgLy+ZWUuflljVKw9NQa1lncN
+	 yyWZmAivvMQyakAx8RbllbYjGkSmY0Xmib/TUbOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/166] bonding: fix incorrect MAC address setting to receive NS messages
-Date: Wed, 19 Mar 2025 07:29:57 -0700
-Message-ID: <20250319143020.694162060@linuxfoundation.org>
+Subject: [PATCH 6.13 129/241] cifs: Throw -EOPNOTSUPP error on unsupported reparse point type from parse_reparse_point()
+Date: Wed, 19 Mar 2025 07:29:59 -0700
+Message-ID: <20250319143030.917286519@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,135 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 0c5e145a350de3b38cd5ae77a401b12c46fb7c1d ]
+[ Upstream commit cad3fc0a4c8cef07b07ceddc137f582267577250 ]
 
-When validation on the backup slave is enabled, we need to validate the
-Neighbor Solicitation (NS) messages received on the backup slave. To
-receive these messages, the correct destination MAC address must be added
-to the slave. However, the target in bonding is a unicast address, which
-we cannot use directly. Instead, we should first convert it to a
-Solicited-Node Multicast Address and then derive the corresponding MAC
-address.
+This would help to track and detect by caller if the reparse point type was
+processed or not.
 
-Fix the incorrect MAC address setting on both slave_set_ns_maddr() and
-slave_set_ns_maddrs(). Since the two function names are similar. Add
-some description for the functions. Also only use one mac_addr variable
-in slave_set_ns_maddr() to save some code and logic.
-
-Fixes: 8eb36164d1a6 ("bonding: add ns target multicast address to slave device")
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250306023923.38777-2-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_options.c | 55 +++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 8 deletions(-)
+ fs/smb/client/reparse.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 8c326e41b8d63..6d003c0ef6698 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1226,10 +1226,28 @@ static bool slave_can_set_ns_maddr(const struct bonding *bond, struct slave *sla
- 	       slave->dev->flags & IFF_MULTICAST;
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index b387dfbaf16b0..a93127c94aff9 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -724,13 +724,12 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 				 le32_to_cpu(buf->ReparseTag));
+ 			return -EIO;
+ 		}
+-		break;
++		return 0;
+ 	default:
+ 		cifs_tcon_dbg(VFS | ONCE, "unhandled reparse tag: 0x%08x\n",
+ 			      le32_to_cpu(buf->ReparseTag));
+-		break;
++		return -EOPNOTSUPP;
+ 	}
+-	return 0;
  }
  
-+/**
-+ * slave_set_ns_maddrs - add/del all NS mac addresses for slave
-+ * @bond: bond device
-+ * @slave: slave device
-+ * @add: add or remove all the NS mac addresses
-+ *
-+ * This function tries to add or delete all the NS mac addresses on the slave
-+ *
-+ * Note, the IPv6 NS target address is the unicast address in Neighbor
-+ * Solicitation (NS) message. The dest address of NS message should be
-+ * solicited-node multicast address of the target. The dest mac of NS message
-+ * is converted from the solicited-node multicast address.
-+ *
-+ * This function is called when
-+ *   * arp_validate changes
-+ *   * enslaving, releasing new slaves
-+ */
- static void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool add)
- {
- 	struct in6_addr *targets = bond->params.ns_targets;
- 	char slot_maddr[MAX_ADDR_LEN];
-+	struct in6_addr mcaddr;
- 	int i;
- 
- 	if (!slave_can_set_ns_maddr(bond, slave))
-@@ -1239,7 +1257,8 @@ static void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool
- 		if (ipv6_addr_any(&targets[i]))
- 			break;
- 
--		if (!ndisc_mc_map(&targets[i], slot_maddr, slave->dev, 0)) {
-+		addrconf_addr_solict_mult(&targets[i], &mcaddr);
-+		if (!ndisc_mc_map(&mcaddr, slot_maddr, slave->dev, 0)) {
- 			if (add)
- 				dev_mc_add(slave->dev, slot_maddr);
- 			else
-@@ -1262,23 +1281,43 @@ void bond_slave_ns_maddrs_del(struct bonding *bond, struct slave *slave)
- 	slave_set_ns_maddrs(bond, slave, false);
- }
- 
-+/**
-+ * slave_set_ns_maddr - set new NS mac address for slave
-+ * @bond: bond device
-+ * @slave: slave device
-+ * @target: the new IPv6 target
-+ * @slot: the old IPv6 target in the slot
-+ *
-+ * This function tries to replace the old mac address to new one on the slave.
-+ *
-+ * Note, the target/slot IPv6 address is the unicast address in Neighbor
-+ * Solicitation (NS) message. The dest address of NS message should be
-+ * solicited-node multicast address of the target. The dest mac of NS message
-+ * is converted from the solicited-node multicast address.
-+ *
-+ * This function is called when
-+ *   * An IPv6 NS target is added or removed.
-+ */
- static void slave_set_ns_maddr(struct bonding *bond, struct slave *slave,
- 			       struct in6_addr *target, struct in6_addr *slot)
- {
--	char target_maddr[MAX_ADDR_LEN], slot_maddr[MAX_ADDR_LEN];
-+	char mac_addr[MAX_ADDR_LEN];
-+	struct in6_addr mcast_addr;
- 
- 	if (!bond->params.arp_validate || !slave_can_set_ns_maddr(bond, slave))
- 		return;
- 
--	/* remove the previous maddr from slave */
-+	/* remove the previous mac addr from slave */
-+	addrconf_addr_solict_mult(slot, &mcast_addr);
- 	if (!ipv6_addr_any(slot) &&
--	    !ndisc_mc_map(slot, slot_maddr, slave->dev, 0))
--		dev_mc_del(slave->dev, slot_maddr);
-+	    !ndisc_mc_map(&mcast_addr, mac_addr, slave->dev, 0))
-+		dev_mc_del(slave->dev, mac_addr);
- 
--	/* add new maddr on slave if target is set */
-+	/* add new mac addr on slave if target is set */
-+	addrconf_addr_solict_mult(target, &mcast_addr);
- 	if (!ipv6_addr_any(target) &&
--	    !ndisc_mc_map(target, target_maddr, slave->dev, 0))
--		dev_mc_add(slave->dev, target_maddr);
-+	    !ndisc_mc_map(&mcast_addr, mac_addr, slave->dev, 0))
-+		dev_mc_add(slave->dev, mac_addr);
- }
- 
- static void _bond_options_ns_ip6_target_set(struct bonding *bond, int slot,
+ int smb2_parse_reparse_point(struct cifs_sb_info *cifs_sb,
 -- 
 2.39.5
 
