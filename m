@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-125313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C58AA69276
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:10:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6441AA692EE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78DDF1B64C7E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA891BA0F2B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD2F1E5734;
-	Wed, 19 Mar 2025 14:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D68F1DF26E;
+	Wed, 19 Mar 2025 14:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyOPouH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcoAjJes"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A0B1DC9A7;
-	Wed, 19 Mar 2025 14:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FCE208970;
+	Wed, 19 Mar 2025 14:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395101; cv=none; b=SaeJ9GxLYHnsLLDWuC4zXTEJHLDHXq4xcoP8Vz6bNbNuS75BwLqTVS6pk5I+zRJgWw8TqXVzQM8Vbodqm2SWfy2tIXOjMjyd0iWW/ShlZbdmXVuaWmDLGXmwPv9sBCQoy0daFMkaG1171KT8ECny3FgGN4jI5Z48ZimEPvTwnXA=
+	t=1742395223; cv=none; b=fHi0VAAhMakF33t0nLp3ZUPR9L7Uv8lB7nLGYwhhRgJ+E6EhdIruA3xwzuwQiKH14doC+ZqoTUADaOOh/31lV6qaTybB6kajI1qCxpDz81fBwtOhXYJgFYU5tHnnxj6eWq4QVwewd6ZVV0ePsgs61uoUgFyM3Hum946wkYGNRBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395101; c=relaxed/simple;
-	bh=/ghVvRf1W28rwusnORAF/H3AJCu5SuaT+26rR4jrz48=;
+	s=arc-20240116; t=1742395223; c=relaxed/simple;
+	bh=GRoUZ6p2Pe2OLT6j7BLpx4/5ZnUtYpPwxjVuXcaSyL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHzC5YWVUo2BWJBvqimx/fUUHEikQb2H5KGeXg25mSWZX16Nc98WKB0Y8ym7Ov3i1OkPhYD2C1dtAfITi4wWNtVktbhphOY94hRRTkQuFiJrs73xUk5odKujSx5II7YKhvtalf21Lv3AlVdiNlo70Ssk4GRHpzI9WePADjwouc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyOPouH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E84C4CEE4;
-	Wed, 19 Mar 2025 14:38:20 +0000 (UTC)
+	 MIME-Version; b=Wd7jperL1SzzqOGXZgWTMBOc4yCRJaIcpzv4eWQjQOOwDts9LEtM6yGteNfprYo1UopoukVKroqvvGWTvnjGb74PxxY6F4iZRb0/he7WSAh5hIfdE5ujMXCIQxHcxOvqYORU/YI7TdJM3/oBEgf1afl7eyNna+oUvULA08av7KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcoAjJes; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64212C4CEE4;
+	Wed, 19 Mar 2025 14:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395101;
-	bh=/ghVvRf1W28rwusnORAF/H3AJCu5SuaT+26rR4jrz48=;
+	s=korg; t=1742395222;
+	bh=GRoUZ6p2Pe2OLT6j7BLpx4/5ZnUtYpPwxjVuXcaSyL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uyOPouH/qUNe9j09TBjvkzW0ntFYqvGr6A0krEgu40P2fuCBHcLdgpy4lJkFyDgQl
-	 0TtFWDGQxEenZWITkT6T1hfVd70HsdpNcce+VP9gRDnmO8nHXxxKeHj1xU6XHqn2eZ
-	 CNLe7fjSswYQSnqtRdNVygX3tPCLXZmGm1vXxq2w=
+	b=TcoAjJesnjUU+Y7n+zOBlgbr6+7FvBWKLu21vrJKA8enQ+uzficpHaSburAY2vA4T
+	 wkcM6AB4e3ohLEyl88sNmKTPKbosN4cUi9d78XEgz1hxHP0+ne5tF8wDdSbxLo2uIx
+	 qBE+htarjSh0ChCAw5QNY5kgtuIcsFQFRVGPHQcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 152/231] Input: xpad - add support for TECNO Pocket Go
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 074/166] net: wwan: mhi_wwan_mbim: Silence sequence number glitch errors
 Date: Wed, 19 Mar 2025 07:30:45 -0700
-Message-ID: <20250319143030.591778511@linuxfoundation.org>
+Message-ID: <20250319143022.016909271@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 95a54a96f657fd069d2a9922b6c2d293a72a001f upstream.
+[ Upstream commit 0d1fac6d26aff5df21bb4ec980d9b7a11c410b96 ]
 
-TECNO Pocket Go is a kickstarter handheld by manufacturer TECNO Mobile.
-It poses a unique feature: it does not have a display. Instead, the
-handheld is essentially a pc in a controller. As customary, it has an
-xpad endpoint, a keyboard endpoint, and a vendor endpoint for its
-vendor software.
+When using the Qualcomm X55 modem on the ThinkPad X13s, the kernel log is
+constantly being filled with errors related to a "sequence number glitch",
+e.g.:
 
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://lore.kernel.org/r/20250222170010.188761-3-lkml@antheas.dev
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	[ 1903.284538] sequence number glitch prev=16 curr=0
+	[ 1913.812205] sequence number glitch prev=50 curr=0
+	[ 1923.698219] sequence number glitch prev=142 curr=0
+	[ 2029.248276] sequence number glitch prev=1555 curr=0
+	[ 2046.333059] sequence number glitch prev=70 curr=0
+	[ 2076.520067] sequence number glitch prev=272 curr=0
+	[ 2158.704202] sequence number glitch prev=2655 curr=0
+	[ 2218.530776] sequence number glitch prev=2349 curr=0
+	[ 2225.579092] sequence number glitch prev=6 curr=0
+
+Internet connectivity is working fine, so this error seems harmless. It
+looks like modem does not preserve the sequence number when entering low
+power state; the amount of errors depends on how actively the modem is
+being used.
+
+A similar issue has also been seen on USB-based MBIM modems [1]. However,
+in cdc_ncm.c the "sequence number glitch" message is a debug message
+instead of an error. Apply the same to the mhi_wwan_mbim.c driver to
+silence these errors when using the modem.
+
+[1]: https://lists.freedesktop.org/archives/libmbim-devel/2016-November/000781.html
+
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250212-mhi-wwan-mbim-sequence-glitch-v1-1-503735977cbd@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wwan/mhi_wwan_mbim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -382,6 +382,7 @@ static const struct xpad_device {
- 	{ 0x2563, 0x058d, "OneXPlayer Gamepad", 0, XTYPE_XBOX360 },
- 	{ 0x294b, 0x3303, "Snakebyte GAMEPAD BASE X", 0, XTYPE_XBOXONE },
- 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
-+	{ 0x2993, 0x2001, "TECNO Pocket Go", 0, XTYPE_XBOX360 },
- 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x3106, "8BitDo Ultimate Wireless / Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
- 	{ 0x2dc8, 0x3109, "8BitDo Ultimate Wireless Bluetooth", 0, XTYPE_XBOX360 },
-@@ -548,6 +549,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x2563),		/* OneXPlayer Gamepad */
- 	XPAD_XBOX360_VENDOR(0x260d),		/* Dareu H101 */
- 	XPAD_XBOXONE_VENDOR(0x294b),		/* Snakebyte */
-+	XPAD_XBOX360_VENDOR(0x2993),		/* TECNO Mobile */
- 	XPAD_XBOX360_VENDOR(0x2c22),		/* Qanba Controllers */
- 	XPAD_XBOX360_VENDOR(0x2dc8),		/* 8BitDo Controllers */
- 	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Controllers */
+diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
+index 3f72ae943b294..b1b2870a054ba 100644
+--- a/drivers/net/wwan/mhi_wwan_mbim.c
++++ b/drivers/net/wwan/mhi_wwan_mbim.c
+@@ -209,7 +209,7 @@ static int mbim_rx_verify_nth16(struct mhi_mbim_context *mbim, struct sk_buff *s
+ 	if (mbim->rx_seq + 1 != le16_to_cpu(nth16->wSequence) &&
+ 	    (mbim->rx_seq || le16_to_cpu(nth16->wSequence)) &&
+ 	    !(mbim->rx_seq == 0xffff && !le16_to_cpu(nth16->wSequence))) {
+-		net_err_ratelimited("sequence number glitch prev=%d curr=%d\n",
++		net_dbg_ratelimited("sequence number glitch prev=%d curr=%d\n",
+ 				    mbim->rx_seq, le16_to_cpu(nth16->wSequence));
+ 	}
+ 	mbim->rx_seq = le16_to_cpu(nth16->wSequence);
+-- 
+2.39.5
+
 
 
 
