@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D08A692A0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:12:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAED9A692E3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 791CE1B855C3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E329A1B824CE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7A51E231F;
-	Wed, 19 Mar 2025 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB5E207A23;
+	Wed, 19 Mar 2025 14:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zk4rGw1h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gF0OCOn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E97F1C1F0F;
-	Wed, 19 Mar 2025 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393E01DEFD8;
+	Wed, 19 Mar 2025 14:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394919; cv=none; b=f+lfX71ueNBUc8Fk55djt4aD5k6oU5XWoBdbvtmnaC0I9xMdYzlJXJ456r6hFK7KAPRHFBDKhY1tiYUYRNOICmGyFVLIfFLamRtYIeoT1NtpzPYOPlsdegNY3B8/hFywTS3kfN/BdEbC5s0ls7l5sYnOAUrFJ3/NxoTc/kxkotc=
+	t=1742395211; cv=none; b=dxLa6t3qs94VE1t53fgk5mfDEeAAWIyuq2Rdb8VpOFCOH4xpi9N5bYrbNiBSF4TZ72LbklvmZNzVgAQZ94UDzk/55eD+q+Y62M+1azPe0aKtMARk+B/lIRoGeT94BNCKa+/Tr6kAUFiSMuTK93P0thMV48SUPehXQoGzBq4ngpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394919; c=relaxed/simple;
-	bh=FXqgskyyxMEHQpDTpG3OD2OtGubS/B3dpPTWi5fhBRw=;
+	s=arc-20240116; t=1742395211; c=relaxed/simple;
+	bh=BO5/yqfXmMAy4FmzIFrsLRv+Mm0p0OKu59q5d1C8UUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mpDUTXrw5egbeErKhQ+XG0Za7NgwG3ZRZCy5FMW4/ORBWPQf2ZWqa7jf4lplo/t2am0oTHp6FNNk+0DBKj2b3reZ65Ch0EuAyOuF48AHgnSUVjQD2/FaNOwESuP/v/ADgJXEIn/4nuEksfmLlxCIeJjM5cC9xeJWb0ilvQksNfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zk4rGw1h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC05C4CEE4;
-	Wed, 19 Mar 2025 14:35:19 +0000 (UTC)
+	 MIME-Version; b=QgNiEqDc+tULbHSzF00wEdqskcCuf23onEvedf2izOWShZ0hrb7bwaMn+N5jP7sXIO8IuBGPWJUvtI3Mfi5+o14y3Zr6wZm29P3HU+Y7ECxaUdRSijrEYleUwn7B4PZFC1BXIxEeijQ2/Z9hRwl23kfzUqNIOhMxx0ZZXN7G4ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gF0OCOn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B497C4CEE8;
+	Wed, 19 Mar 2025 14:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394919;
-	bh=FXqgskyyxMEHQpDTpG3OD2OtGubS/B3dpPTWi5fhBRw=;
+	s=korg; t=1742395211;
+	bh=BO5/yqfXmMAy4FmzIFrsLRv+Mm0p0OKu59q5d1C8UUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zk4rGw1hlYrQ0GBpJ+Ska3xnXs2RXqV/N3ejvqxKzC87pytlj2Mhn9pnq6HDVXL8P
-	 bfLXuODcjXUW6jH0KgLq0bGm45h+/oGyPPpj3+BmbxgLy+ZWUuflljVKw9NQa1lncN
-	 yyWZmAivvMQyakAx8RbllbYjGkSmY0Xmib/TUbOM=
+	b=2gF0OCOnPxDVq9PhW1WRE+6fco/LgrhEbGtS/P/cOzfmb8oGfGyx4U3sGembrFuL+
+	 LCUM4IxcUMvto84k2xZsAAAsSyZv0RpBDSXkDu+0fLrFqgs0ZhN2PUXLR5blIcnESU
+	 Wxb2bV0EdjhEEwU+EQvrNCSqykkPm9nLCNfMJN9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 129/241] cifs: Throw -EOPNOTSUPP error on unsupported reparse point type from parse_reparse_point()
-Date: Wed, 19 Mar 2025 07:29:59 -0700
-Message-ID: <20250319143030.917286519@linuxfoundation.org>
+Subject: [PATCH 6.6 029/166] net_sched: Prevent creation of classes with TC_H_ROOT
+Date: Wed, 19 Mar 2025 07:30:00 -0700
+Message-ID: <20250319143020.775321143@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit cad3fc0a4c8cef07b07ceddc137f582267577250 ]
+[ Upstream commit 0c3057a5a04d07120b3d0ec9c79568fceb9c921e ]
 
-This would help to track and detect by caller if the reparse point type was
-processed or not.
+The function qdisc_tree_reduce_backlog() uses TC_H_ROOT as a termination
+condition when traversing up the qdisc tree to update parent backlog
+counters. However, if a class is created with classid TC_H_ROOT, the
+traversal terminates prematurely at this class instead of reaching the
+actual root qdisc, causing parent statistics to be incorrectly maintained.
+In case of DRR, this could lead to a crash as reported by Mingi Cho.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Prevent the creation of any Qdisc class with classid TC_H_ROOT
+(0xFFFFFFFF) across all qdisc types, as suggested by Jamal.
+
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
+Link: https://patch.msgid.link/20250306232355.93864-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/reparse.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/sched/sch_api.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
-index b387dfbaf16b0..a93127c94aff9 100644
---- a/fs/smb/client/reparse.c
-+++ b/fs/smb/client/reparse.c
-@@ -724,13 +724,12 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
- 				 le32_to_cpu(buf->ReparseTag));
- 			return -EIO;
- 		}
--		break;
-+		return 0;
- 	default:
- 		cifs_tcon_dbg(VFS | ONCE, "unhandled reparse tag: 0x%08x\n",
- 			      le32_to_cpu(buf->ReparseTag));
--		break;
-+		return -EOPNOTSUPP;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 7cddaa6321c7c..df89790c459ad 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -2197,6 +2197,12 @@ static int tc_ctl_tclass(struct sk_buff *skb, struct nlmsghdr *n,
+ 		return -EOPNOTSUPP;
  	}
--	return 0;
- }
  
- int smb2_parse_reparse_point(struct cifs_sb_info *cifs_sb,
++	/* Prevent creation of traffic classes with classid TC_H_ROOT */
++	if (clid == TC_H_ROOT) {
++		NL_SET_ERR_MSG(extack, "Cannot create traffic class with classid TC_H_ROOT");
++		return -EINVAL;
++	}
++
+ 	new_cl = cl;
+ 	err = -EOPNOTSUPP;
+ 	if (cops->change)
 -- 
 2.39.5
 
