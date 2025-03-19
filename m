@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FDAA69235
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:04:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CADCA690CB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084771BA0EC8
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CBCA1B670D6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90B7221D86;
-	Wed, 19 Mar 2025 14:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A45D33E7;
+	Wed, 19 Mar 2025 14:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbpEZWSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDDR7o4o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7618221D8D;
-	Wed, 19 Mar 2025 14:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFB51DE3A9;
+	Wed, 19 Mar 2025 14:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395217; cv=none; b=H22uzD3NYZJyJ1DNksiWSLa111dxKL6h3Ladw/fOjgDH4whrVNn18bdjW1tGkffTsVrqjzaXqEMQNWq0i/EWm6b6BEe5nMFJHMaN2c0IcZpiREqZUOgRnLrMPk/4WV86TvuL5VnGFYw1QmvsOquoIq45aMRU9LgXlhFw9pPEBy4=
+	t=1742394961; cv=none; b=Z1Qe5cK3OBWvZObDCnTu/BwPiLpdz/13TN1ABWWcxSFbxo5T4fK7QPx8xS7PX/7s7OkR+yi3InxhBcheCine5lBJY7XRuDCqjFaBQkrNAVq8UaltoTfZYvyY3NFTDm384vpwsqolr4SAtMsW78/lUFbsvADdeq1374AEs7FCOwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395217; c=relaxed/simple;
-	bh=CvCMyY2w5vKeu3R3y5ppwEOzPwlDANMfgPnSVbcUlDs=;
+	s=arc-20240116; t=1742394961; c=relaxed/simple;
+	bh=b0BPHHuvheWkVv9DXOZbGvRbBW4WDqc1vDKzapLgoXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ig+8tEe3rDIe5omb7jwmBfimKpicI0+tiUoA6KVa+R57FN3oLP15zlTmCY980xaVtvY4ZUtEG4Vk7712RhX7r0UQ8K+P30gFmCiPpxJSUwB8N4OIas413U2jdJEK1GjBaEnSauEaimp20QNVmivxHQcWBC1mlTFTb5k1iCJJ07o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbpEZWSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C790C4CEE8;
-	Wed, 19 Mar 2025 14:40:17 +0000 (UTC)
+	 MIME-Version; b=tI+wHfb8lR99Ju13+NPOf0zaUVIAflZx+wq/r3hw3h+MicwXD57tsLAH7jku0v7zMgNKP62cjJDD+6+R1Uvu74G5V7uIuU5QadbKZQ6Jig4s4YtdSkDEJd0sKF6VLH7MwTd1QT7SdbdLnxDpdtFKOXROmTU2iEMqHnDZ47aM8sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDDR7o4o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A5AC4CEE4;
+	Wed, 19 Mar 2025 14:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395217;
-	bh=CvCMyY2w5vKeu3R3y5ppwEOzPwlDANMfgPnSVbcUlDs=;
+	s=korg; t=1742394960;
+	bh=b0BPHHuvheWkVv9DXOZbGvRbBW4WDqc1vDKzapLgoXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UbpEZWSHoP+OzqWj3WprVG1d2o5BzzF9Ta1sxrpeTjECIbQ3RPEvHf6z3792nFZMB
-	 4frR+fHYnnkMBDcsfPYa8NoAiQ39fGSTIfzrJNznbHESU++N1OyH1+ABi1fXjglBzh
-	 Wr6fNunbzCryFmypPo7S6MNNyek/X6jIfi0STAAM=
+	b=ZDDR7o4ohWlBXajEnVggTI6T5mSKvMY1/nJhgovgVM6aT6Jd8YqqXvohg0/ee7KD1
+	 7N3taI7c/HBsC3efLK9Ww/bEvVHaRlye6p2lDt8iP2mBs8daNpcf3kKbzuT8vWRqkM
+	 hAZvspebChhGVcWgD05XVGEOCgx9LIf+Af0dl3ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/166] perf/x86/intel: Use better start period for frequency mode
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 189/241] ksmbd: fix use-after-free in ksmbd_free_work_struct
 Date: Wed, 19 Mar 2025 07:30:59 -0700
-Message-ID: <20250319143022.404027022@linuxfoundation.org>
+Message-ID: <20250319143032.397753492@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,155 +62,180 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit a26b24b2e21f6222635a95426b9ef9eec63d69b1 ]
+commit bb39ed47065455604729404729d9116868638d31 upstream.
 
-Freqency mode is the current default mode of Linux perf. A period of 1 is
-used as a starting period. The period is auto-adjusted on each tick or an
-overflow, to meet the frequency target.
+->interim_entry of ksmbd_work could be deleted after oplock is freed.
+We don't need to manage it with linked list. The interim request could be
+immediately sent whenever a oplock break wait is needed.
 
-The start period of 1 is too low and may trigger some issues:
-
-- Many HWs do not support period 1 well.
-  https://lore.kernel.org/lkml/875xs2oh69.ffs@tglx/
-
-- For an event that occurs frequently, period 1 is too far away from the
-  real period. Lots of samples are generated at the beginning.
-  The distribution of samples may not be even.
-
-- A low starting period for frequently occurring events also challenges
-  virtualization, which has a longer path to handle a PMI.
-
-The limit_period value only checks the minimum acceptable value for HW.
-It cannot be used to set the start period, because some events may
-need a very low period. The limit_period cannot be set too high. It
-doesn't help with the events that occur frequently.
-
-It's hard to find a universal starting period for all events. The idea
-implemented by this patch is to only give an estimate for the popular
-HW and HW cache events. For the rest of the events, start from the lowest
-possible recommended value.
-
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250117151913.3043942-3-kan.liang@linux.intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c | 85 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
+ fs/smb/server/ksmbd_work.c |    3 ---
+ fs/smb/server/ksmbd_work.h |    1 -
+ fs/smb/server/oplock.c     |   37 +++++++++++++++----------------------
+ fs/smb/server/oplock.h     |    1 -
+ 4 files changed, 15 insertions(+), 27 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 61ac094e26bd7..b163817ad6daf 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3881,6 +3881,85 @@ static inline bool intel_pmu_has_cap(struct perf_event *event, int idx)
- 	return test_bit(idx, (unsigned long *)&intel_cap->capabilities);
+--- a/fs/smb/server/ksmbd_work.c
++++ b/fs/smb/server/ksmbd_work.c
+@@ -26,7 +26,6 @@ struct ksmbd_work *ksmbd_alloc_work_stru
+ 		INIT_LIST_HEAD(&work->request_entry);
+ 		INIT_LIST_HEAD(&work->async_request_entry);
+ 		INIT_LIST_HEAD(&work->fp_entry);
+-		INIT_LIST_HEAD(&work->interim_entry);
+ 		INIT_LIST_HEAD(&work->aux_read_list);
+ 		work->iov_alloc_cnt = 4;
+ 		work->iov = kcalloc(work->iov_alloc_cnt, sizeof(struct kvec),
+@@ -56,8 +55,6 @@ void ksmbd_free_work_struct(struct ksmbd
+ 	kfree(work->tr_buf);
+ 	kvfree(work->request_buf);
+ 	kfree(work->iov);
+-	if (!list_empty(&work->interim_entry))
+-		list_del(&work->interim_entry);
+ 
+ 	if (work->async_id)
+ 		ksmbd_release_id(&work->conn->async_ida, work->async_id);
+--- a/fs/smb/server/ksmbd_work.h
++++ b/fs/smb/server/ksmbd_work.h
+@@ -89,7 +89,6 @@ struct ksmbd_work {
+ 	/* List head at conn->async_requests */
+ 	struct list_head                async_request_entry;
+ 	struct list_head                fp_entry;
+-	struct list_head                interim_entry;
+ };
+ 
+ /**
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -46,7 +46,6 @@ static struct oplock_info *alloc_opinfo(
+ 	opinfo->fid = id;
+ 	opinfo->Tid = Tid;
+ 	INIT_LIST_HEAD(&opinfo->op_entry);
+-	INIT_LIST_HEAD(&opinfo->interim_list);
+ 	init_waitqueue_head(&opinfo->oplock_q);
+ 	init_waitqueue_head(&opinfo->oplock_brk);
+ 	atomic_set(&opinfo->refcount, 1);
+@@ -803,7 +802,6 @@ out:
+ static int smb2_lease_break_noti(struct oplock_info *opinfo)
+ {
+ 	struct ksmbd_conn *conn = opinfo->conn;
+-	struct list_head *tmp, *t;
+ 	struct ksmbd_work *work;
+ 	struct lease_break_info *br_info;
+ 	struct lease *lease = opinfo->o_lease;
+@@ -831,16 +829,6 @@ static int smb2_lease_break_noti(struct
+ 	work->sess = opinfo->sess;
+ 
+ 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
+-		list_for_each_safe(tmp, t, &opinfo->interim_list) {
+-			struct ksmbd_work *in_work;
+-
+-			in_work = list_entry(tmp, struct ksmbd_work,
+-					     interim_entry);
+-			setup_async_work(in_work, NULL, NULL);
+-			smb2_send_interim_resp(in_work, STATUS_PENDING);
+-			list_del_init(&in_work->interim_entry);
+-			release_async_work(in_work);
+-		}
+ 		INIT_WORK(&work->work, __smb2_lease_break_noti);
+ 		ksmbd_queue_work(work);
+ 		wait_for_break_ack(opinfo);
+@@ -871,7 +859,8 @@ static void wait_lease_breaking(struct o
+ 	}
  }
  
-+static u64 intel_pmu_freq_start_period(struct perf_event *event)
-+{
-+	int type = event->attr.type;
-+	u64 config, factor;
-+	s64 start;
-+
-+	/*
-+	 * The 127 is the lowest possible recommended SAV (sample after value)
-+	 * for a 4000 freq (default freq), according to the event list JSON file.
-+	 * Also, assume the workload is idle 50% time.
-+	 */
-+	factor = 64 * 4000;
-+	if (type != PERF_TYPE_HARDWARE && type != PERF_TYPE_HW_CACHE)
-+		goto end;
-+
-+	/*
-+	 * The estimation of the start period in the freq mode is
-+	 * based on the below assumption.
-+	 *
-+	 * For a cycles or an instructions event, 1GHZ of the
-+	 * underlying platform, 1 IPC. The workload is idle 50% time.
-+	 * The start period = 1,000,000,000 * 1 / freq / 2.
-+	 *		    = 500,000,000 / freq
-+	 *
-+	 * Usually, the branch-related events occur less than the
-+	 * instructions event. According to the Intel event list JSON
-+	 * file, the SAV (sample after value) of a branch-related event
-+	 * is usually 1/4 of an instruction event.
-+	 * The start period of branch-related events = 125,000,000 / freq.
-+	 *
-+	 * The cache-related events occurs even less. The SAV is usually
-+	 * 1/20 of an instruction event.
-+	 * The start period of cache-related events = 25,000,000 / freq.
-+	 */
-+	config = event->attr.config & PERF_HW_EVENT_MASK;
-+	if (type == PERF_TYPE_HARDWARE) {
-+		switch (config) {
-+		case PERF_COUNT_HW_CPU_CYCLES:
-+		case PERF_COUNT_HW_INSTRUCTIONS:
-+		case PERF_COUNT_HW_BUS_CYCLES:
-+		case PERF_COUNT_HW_STALLED_CYCLES_FRONTEND:
-+		case PERF_COUNT_HW_STALLED_CYCLES_BACKEND:
-+		case PERF_COUNT_HW_REF_CPU_CYCLES:
-+			factor = 500000000;
-+			break;
-+		case PERF_COUNT_HW_BRANCH_INSTRUCTIONS:
-+		case PERF_COUNT_HW_BRANCH_MISSES:
-+			factor = 125000000;
-+			break;
-+		case PERF_COUNT_HW_CACHE_REFERENCES:
-+		case PERF_COUNT_HW_CACHE_MISSES:
-+			factor = 25000000;
-+			break;
-+		default:
-+			goto end;
-+		}
-+	}
-+
-+	if (type == PERF_TYPE_HW_CACHE)
-+		factor = 25000000;
-+end:
-+	/*
-+	 * Usually, a prime or a number with less factors (close to prime)
-+	 * is chosen as an SAV, which makes it less likely that the sampling
-+	 * period synchronizes with some periodic event in the workload.
-+	 * Minus 1 to make it at least avoiding values near power of twos
-+	 * for the default freq.
-+	 */
-+	start = DIV_ROUND_UP_ULL(factor, event->attr.sample_freq) - 1;
-+
-+	if (start > x86_pmu.max_period)
-+		start = x86_pmu.max_period;
-+
-+	if (x86_pmu.limit_period)
-+		x86_pmu.limit_period(event, &start);
-+
-+	return start;
-+}
-+
- static int intel_pmu_hw_config(struct perf_event *event)
+-static int oplock_break(struct oplock_info *brk_opinfo, int req_op_level)
++static int oplock_break(struct oplock_info *brk_opinfo, int req_op_level,
++			struct ksmbd_work *in_work)
  {
- 	int ret = x86_pmu_hw_config(event);
-@@ -3892,6 +3971,12 @@ static int intel_pmu_hw_config(struct perf_event *event)
- 	if (ret)
- 		return ret;
+ 	int err = 0;
  
-+	if (event->attr.freq && event->attr.sample_freq) {
-+		event->hw.sample_period = intel_pmu_freq_start_period(event);
-+		event->hw.last_period = event->hw.sample_period;
-+		local64_set(&event->hw.period_left, event->hw.sample_period);
-+	}
+@@ -914,9 +903,15 @@ static int oplock_break(struct oplock_in
+ 		}
+ 
+ 		if (lease->state & (SMB2_LEASE_WRITE_CACHING_LE |
+-				SMB2_LEASE_HANDLE_CACHING_LE))
++				SMB2_LEASE_HANDLE_CACHING_LE)) {
++			if (in_work) {
++				setup_async_work(in_work, NULL, NULL);
++				smb2_send_interim_resp(in_work, STATUS_PENDING);
++				release_async_work(in_work);
++			}
 +
- 	if (event->attr.precise_ip) {
- 		if ((event->attr.config & INTEL_ARCH_EVENT_MASK) == INTEL_FIXED_VLBR_EVENT)
- 			return -EINVAL;
--- 
-2.39.5
-
+ 			brk_opinfo->op_state = OPLOCK_ACK_WAIT;
+-		else
++		} else
+ 			atomic_dec(&brk_opinfo->breaking_cnt);
+ 	} else {
+ 		err = oplock_break_pending(brk_opinfo, req_op_level);
+@@ -1116,7 +1111,7 @@ void smb_send_parent_lease_break_noti(st
+ 			if (ksmbd_conn_releasing(opinfo->conn))
+ 				continue;
+ 
+-			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
++			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
+ 			opinfo_put(opinfo);
+ 		}
+ 	}
+@@ -1152,7 +1147,7 @@ void smb_lazy_parent_lease_break_close(s
+ 
+ 			if (ksmbd_conn_releasing(opinfo->conn))
+ 				continue;
+-			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
++			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
+ 			opinfo_put(opinfo);
+ 		}
+ 	}
+@@ -1252,8 +1247,7 @@ int smb_grant_oplock(struct ksmbd_work *
+ 		goto op_break_not_needed;
+ 	}
+ 
+-	list_add(&work->interim_entry, &prev_opinfo->interim_list);
+-	err = oplock_break(prev_opinfo, SMB2_OPLOCK_LEVEL_II);
++	err = oplock_break(prev_opinfo, SMB2_OPLOCK_LEVEL_II, work);
+ 	opinfo_put(prev_opinfo);
+ 	if (err == -ENOENT)
+ 		goto set_lev;
+@@ -1322,8 +1316,7 @@ static void smb_break_all_write_oplock(s
+ 	}
+ 
+ 	brk_opinfo->open_trunc = is_trunc;
+-	list_add(&work->interim_entry, &brk_opinfo->interim_list);
+-	oplock_break(brk_opinfo, SMB2_OPLOCK_LEVEL_II);
++	oplock_break(brk_opinfo, SMB2_OPLOCK_LEVEL_II, work);
+ 	opinfo_put(brk_opinfo);
+ }
+ 
+@@ -1386,7 +1379,7 @@ void smb_break_all_levII_oplock(struct k
+ 			    SMB2_LEASE_KEY_SIZE))
+ 			goto next;
+ 		brk_op->open_trunc = is_trunc;
+-		oplock_break(brk_op, SMB2_OPLOCK_LEVEL_NONE);
++		oplock_break(brk_op, SMB2_OPLOCK_LEVEL_NONE, NULL);
+ next:
+ 		opinfo_put(brk_op);
+ 		rcu_read_lock();
+--- a/fs/smb/server/oplock.h
++++ b/fs/smb/server/oplock.h
+@@ -67,7 +67,6 @@ struct oplock_info {
+ 	bool			is_lease;
+ 	bool			open_trunc;	/* truncate on open */
+ 	struct lease		*o_lease;
+-	struct list_head        interim_list;
+ 	struct list_head        op_entry;
+ 	struct list_head        lease_entry;
+ 	wait_queue_head_t oplock_q; /* Other server threads */
 
 
 
