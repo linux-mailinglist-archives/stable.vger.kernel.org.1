@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-125445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C6CA690F5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC62DA690CF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA85917398B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727D18A1B52
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10E7221548;
-	Wed, 19 Mar 2025 14:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AE921B191;
+	Wed, 19 Mar 2025 14:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anLX6JeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ni8oCO6y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6071DED78;
-	Wed, 19 Mar 2025 14:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B222B1DDC01;
+	Wed, 19 Mar 2025 14:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395192; cv=none; b=MCYpb+hqf7D9qlYOBs285rLiMWvYiNSvBO7YpLT/5+am1Cn1Nk8PSBrIqVDj/mWyOJxHB+7ZI8k2A1RRwPVYIDkFIt9Hra4790hY5PpWhs5x5+HLpz3MEle9a1cR7X7B40HxpoobK1hEtyiapcDP1gGst5a+WYzXR9v8h9uibdk=
+	t=1742395113; cv=none; b=hzFYzwYpodISw5JM2yLLJL64SmpEi79J3sdOkcb5UWApQZ7quHSafCU52pet0pSMWToIicCgwNzKRnEjEkS/enN9eB2mf9k9Nbo9DANKJVKTL7bA1K43FwZRZarKAjErfsOEffai78SMiX+LaOy4MK0UU4QwOlJNduBWEAK0Kms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395192; c=relaxed/simple;
-	bh=89a5X4oeDehWUUhrMpKIgGVbaJNx4SP+SrwlzsdmvEc=;
+	s=arc-20240116; t=1742395113; c=relaxed/simple;
+	bh=I4iKOnW3WrdvX7rO97b9RnHReD3Lwc7aO81/R9ohVIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqtdkvTQixDZZxdv20aDkPdIVGu3A3hLFlZlp0f7+56zrna+DVnrYL1IbD3gMlaqNzqAqogulIJUnDJxJ39gpxZmEWBuMf75BTtGHqTAFsnM5RrC1wupWexpDwvtWahqywZAR25xgc1vTWBtEdnl4jLWFPmPviFGaybiHWPytlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anLX6JeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87258C4CEE4;
-	Wed, 19 Mar 2025 14:39:52 +0000 (UTC)
+	 MIME-Version; b=QOkFHsGVqf6tTGYwjAFxY/PUhWmhsZMU+caI1pPngSnfP3yFpop559uc/SCb10aIpDXVc5n9O+MwWUBPEXLyxlxDV/5mJfTqrcQ0fH7LfFAIEmvxQa15RuAQUajvlyVXU2mG8l0DuuN7EHz0Vr9usoFB7pQ/Kjz7XYguazcVEew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ni8oCO6y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DEEC4CEE8;
+	Wed, 19 Mar 2025 14:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395192;
-	bh=89a5X4oeDehWUUhrMpKIgGVbaJNx4SP+SrwlzsdmvEc=;
+	s=korg; t=1742395113;
+	bh=I4iKOnW3WrdvX7rO97b9RnHReD3Lwc7aO81/R9ohVIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=anLX6JeEmcWdLGdsKrVxxm/vYHZiKEi35jGMJQdl+YbJc8++iCIx07AXrYwg/ACVI
-	 OcsigqoI2CVH/fSy4dBJEoRxMsMUXcDvr3ZaM0GXOu6r/muNxd57wvkgmHP2noKCHi
-	 2ZSvuHnCoeUtPvVpyqHTKBi8+86hTEdMH6WcpwJw=
+	b=ni8oCO6yMcWndaDk/+AbgdWpih1/bN5FDmWbal7TPhlF+gtF1kQtb7n/CPbCS4SnJ
+	 qzgb4lrn/As+cYM9QKXVEhZEoHWltPDVgDIu2MuccmeWF+cWcrpTzCVCCny0djgLiH
+	 GmOf/gvGYElXtJxFVJOrhDHN+zipgLa+Q4eJU0rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Neal Gompa <neal@gompa.dev>,
+	Hector Martin <marcan@marcan.st>,
+	James Calligeros <jcalligeros99@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/166] HID: ignore non-functional sensor in HP 5MP Camera
+Subject: [PATCH 6.12 130/231] ASoC: tas2764: Set the SDOUT polarity correctly
 Date: Wed, 19 Mar 2025 07:30:23 -0700
-Message-ID: <20250319143021.398290842@linuxfoundation.org>
+Message-ID: <20250319143030.048809309@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 363236d709e75610b628c2a4337ccbe42e454b6d ]
+[ Upstream commit f5468beeab1b1adfc63c2717b1f29ef3f49a5fab ]
 
-The HP 5MP Camera (USB ID 0408:5473) reports a HID sensor interface that
-is not actually implemented. Attempting to access this non-functional
-sensor via iio_info causes system hangs as runtime PM tries to wake up
-an unresponsive sensor.
+TX launch polarity needs to be the opposite of RX capture polarity, to
+generate the right bit slot alignment.
 
-  [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
-  [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff
-
-Add this device to the HID ignore list since the sensor interface is
-non-functional by design and should not be exposed to userspace.
-
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Link: https://patch.msgid.link/20250218-apple-codec-changes-v2-28-932760fd7e07@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 1 +
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
+ sound/soc/codecs/tas2764.c | 10 +++++++++-
+ sound/soc/codecs/tas2764.h |  6 ++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 1174626904cb0..ff996accd371d 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1085,6 +1085,7 @@
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3001		0x3001
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3003		0x3003
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3008		0x3008
-+#define USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473		0x5473
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index d482cd194c08c..58315eab492a1 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -365,7 +365,7 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ {
+ 	struct snd_soc_component *component = dai->component;
+ 	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
+-	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0;
++	u8 tdm_rx_start_slot = 0, asi_cfg_0 = 0, asi_cfg_1 = 0, asi_cfg_4 = 0;
+ 	int ret;
  
- #define I2C_VENDOR_ID_RAYDIUM		0x2386
- #define I2C_PRODUCT_ID_RAYDIUM_4B33	0x4b33
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index e0bbf0c6345d6..5d7a418ccdbec 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -891,6 +891,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SYNAPTICS, USB_DEVICE_ID_SYNAPTICS_DPAD) },
- #endif
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
- 	{ }
- };
+ 	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
+@@ -374,12 +374,14 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 		fallthrough;
+ 	case SND_SOC_DAIFMT_NB_NF:
+ 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_RISING;
++		asi_cfg_4 = TAS2764_TDM_CFG4_TX_FALLING;
+ 		break;
+ 	case SND_SOC_DAIFMT_IB_IF:
+ 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
+ 		fallthrough;
+ 	case SND_SOC_DAIFMT_IB_NF:
+ 		asi_cfg_1 = TAS2764_TDM_CFG1_RX_FALLING;
++		asi_cfg_4 = TAS2764_TDM_CFG4_TX_RISING;
+ 		break;
+ 	}
  
+@@ -389,6 +391,12 @@ static int tas2764_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	ret = snd_soc_component_update_bits(component, TAS2764_TDM_CFG4,
++					    TAS2764_TDM_CFG4_TX_MASK,
++					    asi_cfg_4);
++	if (ret < 0)
++		return ret;
++
+ 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
+ 	case SND_SOC_DAIFMT_I2S:
+ 		asi_cfg_0 ^= TAS2764_TDM_CFG0_FRAME_START;
+diff --git a/sound/soc/codecs/tas2764.h b/sound/soc/codecs/tas2764.h
+index d13ecae9c9c2f..9490f2686e389 100644
+--- a/sound/soc/codecs/tas2764.h
++++ b/sound/soc/codecs/tas2764.h
+@@ -79,6 +79,12 @@
+ #define TAS2764_TDM_CFG3_RXS_SHIFT	0x4
+ #define TAS2764_TDM_CFG3_MASK		GENMASK(3, 0)
+ 
++/* TDM Configuration Reg4 */
++#define TAS2764_TDM_CFG4		TAS2764_REG(0X0, 0x0d)
++#define TAS2764_TDM_CFG4_TX_MASK	BIT(0)
++#define TAS2764_TDM_CFG4_TX_RISING	0x0
++#define TAS2764_TDM_CFG4_TX_FALLING	BIT(0)
++
+ /* TDM Configuration Reg5 */
+ #define TAS2764_TDM_CFG5		TAS2764_REG(0X0, 0x0e)
+ #define TAS2764_TDM_CFG5_VSNS_MASK	BIT(6)
 -- 
 2.39.5
 
