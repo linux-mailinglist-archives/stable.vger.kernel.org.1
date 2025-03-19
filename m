@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-125027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BB5A68F98
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A402AA69036
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA7624601FD
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45F677ABCF1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3B51E102E;
-	Wed, 19 Mar 2025 14:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC76A1E47AE;
+	Wed, 19 Mar 2025 14:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5N9wI1b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kyd/i8Tl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD531B2194;
-	Wed, 19 Mar 2025 14:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2ED1D88D7;
+	Wed, 19 Mar 2025 14:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394900; cv=none; b=StjxmMkvlc+wd9UB3Vd+sXcwZdDYqj3ytyPjaGF5QWB1ihVnWDdCMLY1DEmpXFxLbiHclLO4gGZiVGoAmZ6l93XHG0j8IH3VJXALTG0OeQX/7d4eUAYFQnfSzTtSaPyPeKOCIsZUEBsbg9la+cMS3zkqTKjdVZM5VeIV1zYXLbI=
+	t=1742395087; cv=none; b=ZGQ0ZTdCt/xxfc3735R7XloZf5V1RDMKUL7evdrPzob2rAcs8kL/YXRGEvquaqzbks2cOmoTyrBIKtFLwkneVvHGqmS0h/Bng3tIW00F1FdtaxgT1OL7ajlnvc8oMDXqzzxC0fyFWiLaukPYqaVF0XTrCIGRhxcHrsMx8XP+t8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394900; c=relaxed/simple;
-	bh=9sCHjrFAoq3JAg21OIdTwgeMK1RGEyf/wRj7fmoRdpE=;
+	s=arc-20240116; t=1742395087; c=relaxed/simple;
+	bh=MZnKMmln9kOpkK4zcXSjAniqEPkapkaFNASI8RThUbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HknKxK9WDzHvas695GKvmLO6AaQAESyDGumQZFYncSXdX7d8EGanOmy6O42GJLFBaUEfgpM4So7PmQHc7kyihD9QOvf2pkUcG0Bqjmhuy+aXP3kd3KI0XgyPvTsTyHguvI8I8nN+8iq1AQy+8fahdVJJzpgtggW/t5YsCzao5wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5N9wI1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E351C4CEE4;
-	Wed, 19 Mar 2025 14:35:00 +0000 (UTC)
+	 MIME-Version; b=MH+6maljN3ctnh7KTWJV45hxtQBJSejIQALBtLq1QfZGkLCaAGUB3K2VROeYG2akewNGxzg8lw9bYD76ZJllMO8WcIelDy2rtlkKelwv5g5LwEUHvYQgQ/hTnP2Fwt02gtb3JUrh9VGgOb5le3JjkoLQNSnbXytMaHqhSfNcu/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kyd/i8Tl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D5FC4CEE4;
+	Wed, 19 Mar 2025 14:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394900;
-	bh=9sCHjrFAoq3JAg21OIdTwgeMK1RGEyf/wRj7fmoRdpE=;
+	s=korg; t=1742395087;
+	bh=MZnKMmln9kOpkK4zcXSjAniqEPkapkaFNASI8RThUbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5N9wI1be/41ZZ9JmRh6yPsQqaBtlDmpOqqSrIpN74Mk3ZsJHDqU+1GljjgUkNLUG
-	 VYhTonK5uIdEE0pGqiNINtct3DzjmN2Gobdmi9i7U/ND+sHjmJxlf5nc7z+aFRkC3b
-	 tXQGlP1PNKbq/RwT0L8zXC8OMwMzK39hiRzhHZS8=
+	b=Kyd/i8Tlp3BWOSZtKFEUgQR6UawG0Lw9nFubiXItVw8VsfbiSsCi2ZzmdHgUyoK5h
+	 Pdt4+xTGqkxldko03TSyZJFRu2N0r1tCN3bpiIceaMOvm0WZ/M8OF+TZ3XIHlgjxyf
+	 +phQqGQ1pFTNta+yEScR25V38jXG8f2XFgQkhJMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ievgen Vovk <YevgenVovk@ukr.net>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 106/241] ASoC: Intel: sof_sdw: Add lookup of quirk using PCI subsystem ID
+Subject: [PATCH 6.12 083/231] HID: hid-apple: Apple Magic Keyboard a3203 USB-C support
 Date: Wed, 19 Mar 2025 07:29:36 -0700
-Message-ID: <20250319143030.346456126@linuxfoundation.org>
+Message-ID: <20250319143028.888487363@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Ievgen Vovk <YevgenVovk@ukr.net>
 
-[ Upstream commit fc016ef7da64fd473d73ee6c261ba1b0b47afe2b ]
+[ Upstream commit 2813e00dcd748cef47d2bffaa04071de93fddf00 ]
 
-Add lookup of PCI subsystem vendor:device ID to find a quirk.
+Add Apple Magic Keyboard 2024 model (with USB-C port) device ID (0320)
+to those recognized by the hid-apple driver. Keyboard is otherwise
+compatible with the existing implementation for its earlier 2021 model.
 
-The subsystem ID (SSID) is part of the PCI specification to uniquely
-identify a particular system-specific implementation of a hardware
-device.
-
-Unlike DMI information, it identifies the sound hardware itself, rather
-than a specific model of PC. SSID can be more reliable and stable than
-DMI strings, and is preferred by some vendors as the way to identify
-the actual sound hardware.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250204053943.93596-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ievgen Vovk <YevgenVovk@ukr.net>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ drivers/hid/hid-apple.c | 5 +++++
+ drivers/hid/hid-ids.h   | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 65e55c46fb064..62e71f56269d8 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -13,6 +13,7 @@
- #include <linux/soundwire/sdw.h>
- #include <linux/soundwire/sdw_type.h>
- #include <linux/soundwire/sdw_intel.h>
-+#include <sound/core.h>
- #include <sound/soc-acpi.h>
- #include "sof_sdw_common.h"
- #include "../../codecs/rt711.h"
-@@ -749,6 +750,22 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 	{}
- };
- 
-+static const struct snd_pci_quirk sof_sdw_ssid_quirk_table[] = {
-+	{}
-+};
-+
-+static void sof_sdw_check_ssid_quirk(const struct snd_soc_acpi_mach *mach)
-+{
-+	const struct snd_pci_quirk *quirk_entry;
-+
-+	quirk_entry = snd_pci_quirk_lookup_id(mach->mach_params.subsystem_vendor,
-+					      mach->mach_params.subsystem_device,
-+					      sof_sdw_ssid_quirk_table);
-+
-+	if (quirk_entry)
-+		sof_sdw_quirk = quirk_entry->value;
-+}
-+
- static struct snd_soc_dai_link_component platform_component[] = {
- 	{
- 		/* name might be overridden during probe */
-@@ -1276,6 +1293,13 @@ static int mc_probe(struct platform_device *pdev)
- 
- 	snd_soc_card_set_drvdata(card, ctx);
- 
-+	if (mach->mach_params.subsystem_id_set) {
-+		snd_soc_card_set_pci_ssid(card,
-+					  mach->mach_params.subsystem_vendor,
-+					  mach->mach_params.subsystem_device);
-+		sof_sdw_check_ssid_quirk(mach);
-+	}
-+
- 	dmi_check_system(sof_sdw_quirk_table);
- 
- 	if (quirk_override != -1) {
-@@ -1291,12 +1315,6 @@ static int mc_probe(struct platform_device *pdev)
- 	for (i = 0; i < ctx->codec_info_list_count; i++)
- 		codec_info_list[i].amp_num = 0;
- 
--	if (mach->mach_params.subsystem_id_set) {
--		snd_soc_card_set_pci_ssid(card,
--					  mach->mach_params.subsystem_vendor,
--					  mach->mach_params.subsystem_device);
--	}
--
- 	ret = sof_card_dai_links_create(card);
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
+index 7e1ae2a2bcc24..3c3f67d0bfcfe 100644
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -474,6 +474,7 @@ static int hidinput_apple_event(struct hid_device *hid, struct input_dev *input,
+ 			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_NUMPAD_2015)
+ 			table = magic_keyboard_2015_fn_keys;
+ 		else if (hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021 ||
++			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024 ||
+ 			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021 ||
+ 			 hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_NUMPAD_2021)
+ 			table = apple2021_fn_keys;
+@@ -1150,6 +1151,10 @@ static const struct hid_device_id apple_devices[] = {
+ 		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK | APPLE_RDESC_BATTERY },
+ 	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
+ 		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024),
++		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK | APPLE_RDESC_BATTERY },
++	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024),
++		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021),
+ 		.driver_data = APPLE_HAS_FN | APPLE_ISO_TILDE_QUIRK | APPLE_RDESC_BATTERY },
+ 	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021),
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index a957ebcbc667a..c6ae7c4268b84 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -184,6 +184,7 @@
+ #define USB_DEVICE_ID_APPLE_IRCONTROL4	0x8242
+ #define USB_DEVICE_ID_APPLE_IRCONTROL5	0x8243
+ #define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021   0x029c
++#define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2024   0x0320
+ #define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_FINGERPRINT_2021   0x029a
+ #define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_NUMPAD_2021   0x029f
+ #define USB_DEVICE_ID_APPLE_TOUCHBAR_BACKLIGHT 0x8102
 -- 
 2.39.5
 
