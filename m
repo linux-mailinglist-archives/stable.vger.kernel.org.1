@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-125227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A427A69024
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3164FA68F7F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D27F942569A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2F2088098B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747372144C0;
-	Wed, 19 Mar 2025 14:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B619B1DF991;
+	Wed, 19 Mar 2025 14:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4kQl4fO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcIwPz8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276EC1E105E;
-	Wed, 19 Mar 2025 14:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0651C2DC8;
+	Wed, 19 Mar 2025 14:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395042; cv=none; b=IEPMasQxWSsNxFFez9ldJRGmTDxnfic9VfvjE5ZuSuSVvQ4+PZ2Kh8Qh2ma/9lzhBOopx8p0OzjIRcok1VF2tyghXbxa3Nv247yoTRHj01QAVjPMR0HnYuaFcmOHIBLfaCtdjiTvNWlVnmtiiHbJUeuGecmp9DQrCLL158JhGz4=
+	t=1742394887; cv=none; b=S3JUNsjJDpPLSUn3w7ofRcauP1hqFHBkowmqJlKVJucXk4Hak+rvYjgSedv4SCvDky30nl48aXg9aP8Obqt54ZtSSVEb0cbIVrNggtIYoD4te7LLa3P90l7DUijLEHL6X2T9SsM7fwBAQycfETXzZnu8znzccbgKaRsrm5OUd0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395042; c=relaxed/simple;
-	bh=kQ08iqHSIohfh0wjGSOpMsUCFjX71pr89htDAy1jT9w=;
+	s=arc-20240116; t=1742394887; c=relaxed/simple;
+	bh=g5GulIV+Q6O28Gvz5uu8Si1jG8IhaJWu9sKO84D1RcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d32s32OHx8F7r9R97a6e/tVedyroLC2ghZHfMpSWZLF+E04zVM+CrMc0n4vej3l6BcrliZ4gVm+USlS9S0vLC+9k7kQxOCysiFgJd+e4GrUqKKOVhZ17unemnXV+wgwfeViIe0Me8jOCguRZWMyfRNGKoa89tycy7sSQyCj986A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4kQl4fO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EB6C4CEE8;
-	Wed, 19 Mar 2025 14:37:21 +0000 (UTC)
+	 MIME-Version; b=CqkEvUpNRmPtoYX8lLNEAuRS5a2/9uCS1Ul1GS3Q92ZxkHmtBbWd8xAkBIzIiwP9zQTBjgaOuEbbBt9FdPaOTFQrgbHp3mDpiVf5XP3SbAdzRecKcwiKdGhJ5kkxSbb36kCjZDg6E8b5xnaSjwW1qs8kpwfiWvBNmLXhxt8rAok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcIwPz8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBE0C4CEE4;
+	Wed, 19 Mar 2025 14:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395042;
-	bh=kQ08iqHSIohfh0wjGSOpMsUCFjX71pr89htDAy1jT9w=;
+	s=korg; t=1742394887;
+	bh=g5GulIV+Q6O28Gvz5uu8Si1jG8IhaJWu9sKO84D1RcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4kQl4fOts3Kc7QkUuaszey3G8qlMi/Nag8AihIotIvSXFQcWAouQxDHx2Bv8MzEj
-	 HhgB4D1ubFnjAB0WqDZrzYpKHs3tHhihmGesV6U3eIAwY3Gco/1fpdH+4XvZ8XsLAl
-	 xWpTb2g5pHAecvw3i8DAr5mESyiCAng3uvUXYEc8=
+	b=RcIwPz8Br0ENQ+G4iVS96MGBItYs4Ss/LyIg7j8sA+yzQkRXBQycl4LVCPeleYB8o
+	 uVGq8mT1/1NR7Tiv/Dq+tDCOJSkjEkJ2wnW4byWl2wiSnd8RsIanSUipL5krvL1CFd
+	 TY9NHztn2Zc1NqXqTKmYq/G2uCYUPAijUxveMr7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
-	Rik van Riel <riel@surriel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jann Horn <jannh@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/231] scsi: core: Use GFP_NOIO to avoid circular locking dependency
+Subject: [PATCH 6.13 089/241] sched: Clarify wake_up_q()s write to task->wake_q.next
 Date: Wed, 19 Mar 2025 07:29:19 -0700
-Message-ID: <20250319143028.459935990@linuxfoundation.org>
+Message-ID: <20250319143029.926728932@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 5363ee9d110e139584c2d92a0b640bc210588506 ]
+[ Upstream commit bcc6244e13b4d4903511a1ea84368abf925031c0 ]
 
-Filesystems can write to disk from page reclaim with __GFP_FS
-set. Marc found a case where scsi_realloc_sdev_budget_map() ends up in
-page reclaim with GFP_KERNEL, where it could try to take filesystem
-locks again, leading to a deadlock.
+Clarify that wake_up_q() does an atomic write to task->wake_q.next, after
+which a concurrent __wake_q_add() can immediately overwrite
+task->wake_q.next again.
 
-WARNING: possible circular locking dependency detected
-6.13.0 #1 Not tainted
-------------------------------------------------------
-kswapd0/70 is trying to acquire lock:
-ffff8881025d5d78 (&q->q_usage_counter(io)){++++}-{0:0}, at: blk_mq_submit_bio+0x461/0x6e0
-
-but task is already holding lock:
-ffffffff81ef5f40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x9f/0x760
-
-The full lockdep splat can be found in Marc's report:
-
-https://lkml.org/lkml/2025/1/24/1101
-
-Avoid the potential deadlock by doing the allocation with GFP_NOIO, which
-prevents both filesystem and block layer recursion.
-
-Reported-by: Marc Aurèle La France <tsi@tuyoix.net>
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Link: https://lore.kernel.org/r/20250129104525.0ae8421e@fangorn
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250129-sched-wakeup-prettier-v1-1-2f51f5f663fa@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
-index 042329b74c6e6..fe08af4dcb67c 100644
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -245,7 +245,7 @@ static int scsi_realloc_sdev_budget_map(struct scsi_device *sdev,
- 	}
- 	ret = sbitmap_init_node(&sdev->budget_map,
- 				scsi_device_max_queue_depth(sdev),
--				new_shift, GFP_KERNEL,
-+				new_shift, GFP_NOIO,
- 				sdev->request_queue->node, false, true);
- 	if (!ret)
- 		sbitmap_resize(&sdev->budget_map, depth);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 86cb6db081680..4b5878b2fdd02 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1057,9 +1057,10 @@ void wake_up_q(struct wake_q_head *head)
+ 		struct task_struct *task;
+ 
+ 		task = container_of(node, struct task_struct, wake_q);
+-		/* Task can safely be re-inserted now: */
+ 		node = node->next;
+-		task->wake_q.next = NULL;
++		/* pairs with cmpxchg_relaxed() in __wake_q_add() */
++		WRITE_ONCE(task->wake_q.next, NULL);
++		/* Task can safely be re-inserted now. */
+ 
+ 		/*
+ 		 * wake_up_process() executes a full barrier, which pairs with
 -- 
 2.39.5
 
