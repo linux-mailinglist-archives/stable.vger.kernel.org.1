@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-124993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3739A69267
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:09:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF55A6928B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C26C1B65271
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E728D1B87532
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A441DEFEC;
-	Wed, 19 Mar 2025 14:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1ED1E0DE6;
+	Wed, 19 Mar 2025 14:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqm/bLCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLg/nx56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1191C5D53;
-	Wed, 19 Mar 2025 14:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B6A214216;
+	Wed, 19 Mar 2025 14:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394877; cv=none; b=YcZdIAYAoK99+UiGwEkLQJZix+s4F+wUzWTXYDxigXK8uI8lvHg6lE7mgg0/cidHBuM92I8hmC08O/BKW4+BiitVeCFpbMVa+3DDKGOda5X/KevDDUsvAF0Quzmo8qp9j5+17kGa1EMA3lXTJMs9iLanNYjW7KvinqBiSpThS8U=
+	t=1742395033; cv=none; b=CO5GGJNXlJQPIPWSvmcGak1qv5Z+d6iC6XkO7EDSMLx8tyEtAWTQBfsAExguZ1RKWYTYALbk8pkzZ4mOLEZ+UfByBfreuN4X6O8jAhbRQU3JPbh08JyeQ7yiKj1zUR8Xst66xI25KFJGu5Qp8LMtW2OVzndOf9bndWo1HyhZhX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394877; c=relaxed/simple;
-	bh=0dEayP+Z9dLf19jsLI0Vc+byaRSPdYkLpjwTHr7VMiA=;
+	s=arc-20240116; t=1742395033; c=relaxed/simple;
+	bh=UAX2s8p6gi3WPIw02s0otclMzAVkAzwEUvDsUFpn6wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwI+o8iR6d2M43f+QZu+El2NFwJfiKrEEZjIQvWhDfYLfpB7wDMmmhz/F8W+Oo9kobkXaXj98EimL210x0w6Q2IlcV9pALzfof0KOZ1lEfyTCpqko1G5JvZ8G/O3KckYx7YaB4knF0UAgf5q/fOcmGlhqkDyXr/cm4gBIkuYVoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqm/bLCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CE9C4CEE4;
-	Wed, 19 Mar 2025 14:34:36 +0000 (UTC)
+	 MIME-Version; b=bKncdVEzfCGY6ouTzf+8dHyKRrOy3BluVYSbIINzv3Og+mGDIbosRdIFTcf2LISvI40O1GFPzQmESY6g2T/s494Gs6ZIxHb+qhW9WP7tNUQbY5HgkIbAjMOlNzDgcquZKcJIUbKbKXrIIRHfxedNe6Ax4xtVcvDdmScqzEqRD8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLg/nx56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125D5C4CEE4;
+	Wed, 19 Mar 2025 14:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394876;
-	bh=0dEayP+Z9dLf19jsLI0Vc+byaRSPdYkLpjwTHr7VMiA=;
+	s=korg; t=1742395033;
+	bh=UAX2s8p6gi3WPIw02s0otclMzAVkAzwEUvDsUFpn6wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqm/bLCh5tIdDpEuKzUcfV4vnObKkQR2795uT2vsjB5OHdcUfCgHjcJxaJ2ZJrj5m
-	 IzZKZ7qS3o6kkiR95KitHl91ZFHVEOtYzYfhtYIQPxH0P5ALfIoHKj6Fx/Tu1neHAp
-	 TPUaZMX1H0yrG2EM4Z3dmAQT+xLlhWd6mtEov33o=
+	b=LLg/nx56lKormqSOEe1Y0xL0BNxkGTz/UD/audX5GxlykWEBzarkT1UnL2MkmwlJ6
+	 xlW+ncfBhqyDTlkwIVnpvle7xShaqAoA36UW7xB4UJOxo/i1jrr1WbcADDWJQni4Sh
+	 vWGe2UItRyUvFY0edWoaJgnTBPLS+kT9GYp6PUAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 075/241] selftests: always check mask returned by statmount(2)
-Date: Wed, 19 Mar 2025 07:29:05 -0700
-Message-ID: <20250319143029.581510473@linuxfoundation.org>
+Subject: [PATCH 6.12 054/231] net/mlx5: Bridge, fix the crash caused by LAG state check
+Date: Wed, 19 Mar 2025 07:29:07 -0700
+Message-ID: <20250319143028.160291620@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +65,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 2cc02059fbc79306b53a44b1f1a4444aa3c76598 ]
+[ Upstream commit 4b8eeed4fb105770ce6dc84a2c6ef953c7b71cbb ]
 
-STATMOUNT_MNT_OPTS can actually be missing if there are no options.  This
-is a change of behavior since 75ead69a7173 ("fs: don't let statmount return
-empty strings").
+When removing LAG device from bridge, NETDEV_CHANGEUPPER event is
+triggered. Driver finds the lower devices (PFs) to flush all the
+offloaded entries. And mlx5_lag_is_shared_fdb is checked, it returns
+false if one of PF is unloaded. In such case,
+mlx5_esw_bridge_lag_rep_get() and its caller return NULL, instead of
+the alive PF, and the flush is skipped.
 
-The other checks shouldn't actually trigger, but add them for correctness
-and for easier debugging if the test fails.
+Besides, the bridge fdb entry's lastuse is updated in mlx5 bridge
+event handler. But this SWITCHDEV_FDB_ADD_TO_BRIDGE event can be
+ignored in this case because the upper interface for bond is deleted,
+and the entry will never be aged because lastuse is never updated.
 
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://lore.kernel.org/r/20250129160641.35485-1-mszeredi@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+To make things worse, as the entry is alive, mlx5 bridge workqueue
+keeps sending that event, which is then handled by kernel bridge
+notifier. It causes the following crash when accessing the passed bond
+netdev which is already destroyed.
+
+To fix this issue, remove such checks. LAG state is already checked in
+commit 15f8f168952f ("net/mlx5: Bridge, verify LAG state when adding
+bond to bridge"), driver still need to skip offload if LAG becomes
+invalid state after initialization.
+
+ Oops: stack segment: 0000 [#1] SMP
+ CPU: 3 UID: 0 PID: 23695 Comm: kworker/u40:3 Tainted: G           OE      6.11.0_mlnx #1
+ Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+ Workqueue: mlx5_bridge_wq mlx5_esw_bridge_update_work [mlx5_core]
+ RIP: 0010:br_switchdev_event+0x2c/0x110 [bridge]
+ Code: 44 00 00 48 8b 02 48 f7 00 00 02 00 00 74 69 41 54 55 53 48 83 ec 08 48 8b a8 08 01 00 00 48 85 ed 74 4a 48 83 fe 02 48 89 d3 <4c> 8b 65 00 74 23 76 49 48 83 fe 05 74 7e 48 83 fe 06 75 2f 0f b7
+ RSP: 0018:ffffc900092cfda0 EFLAGS: 00010297
+ RAX: ffff888123bfe000 RBX: ffffc900092cfe08 RCX: 00000000ffffffff
+ RDX: ffffc900092cfe08 RSI: 0000000000000001 RDI: ffffffffa0c585f0
+ RBP: 6669746f6e690a30 R08: 0000000000000000 R09: ffff888123ae92c8
+ R10: 0000000000000000 R11: fefefefefefefeff R12: ffff888123ae9c60
+ R13: 0000000000000001 R14: ffffc900092cfe08 R15: 0000000000000000
+ FS:  0000000000000000(0000) GS:ffff88852c980000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007f15914c8734 CR3: 0000000002830005 CR4: 0000000000770ef0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  ? __die_body+0x1a/0x60
+  ? die+0x38/0x60
+  ? do_trap+0x10b/0x120
+  ? do_error_trap+0x64/0xa0
+  ? exc_stack_segment+0x33/0x50
+  ? asm_exc_stack_segment+0x22/0x30
+  ? br_switchdev_event+0x2c/0x110 [bridge]
+  ? sched_balance_newidle.isra.149+0x248/0x390
+  notifier_call_chain+0x4b/0xa0
+  atomic_notifier_call_chain+0x16/0x20
+  mlx5_esw_bridge_update+0xec/0x170 [mlx5_core]
+  mlx5_esw_bridge_update_work+0x19/0x40 [mlx5_core]
+  process_scheduled_works+0x81/0x390
+  worker_thread+0x106/0x250
+  ? bh_worker+0x110/0x110
+  kthread+0xb7/0xe0
+  ? kthread_park+0x80/0x80
+  ret_from_fork+0x2d/0x50
+  ? kthread_park+0x80/0x80
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
+
+Fixes: ff9b7521468b ("net/mlx5: Bridge, support LAG")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1741644104-97767-6-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../filesystems/statmount/statmount_test.c    | 22 ++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ .../net/ethernet/mellanox/mlx5/core/en/rep/bridge.c  | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/filesystems/statmount/statmount_test.c b/tools/testing/selftests/filesystems/statmount/statmount_test.c
-index 8eb6aa606a0d5..46d289611ce86 100644
---- a/tools/testing/selftests/filesystems/statmount/statmount_test.c
-+++ b/tools/testing/selftests/filesystems/statmount/statmount_test.c
-@@ -383,6 +383,10 @@ static void test_statmount_mnt_point(void)
- 		return;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
+index 5d128c5b4529a..0f5d7ea8956f7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
+@@ -48,15 +48,10 @@ mlx5_esw_bridge_lag_rep_get(struct net_device *dev, struct mlx5_eswitch *esw)
+ 	struct list_head *iter;
+ 
+ 	netdev_for_each_lower_dev(dev, lower, iter) {
+-		struct mlx5_core_dev *mdev;
+-		struct mlx5e_priv *priv;
+-
+ 		if (!mlx5e_eswitch_rep(lower))
+ 			continue;
+ 
+-		priv = netdev_priv(lower);
+-		mdev = priv->mdev;
+-		if (mlx5_lag_is_shared_fdb(mdev) && mlx5_esw_bridge_dev_same_esw(lower, esw))
++		if (mlx5_esw_bridge_dev_same_esw(lower, esw))
+ 			return lower;
  	}
  
-+	if (!(sm->mask & STATMOUNT_MNT_POINT)) {
-+		ksft_test_result_fail("missing STATMOUNT_MNT_POINT in mask\n");
-+		return;
-+	}
- 	if (strcmp(sm->str + sm->mnt_point, "/") != 0) {
- 		ksft_test_result_fail("unexpected mount point: '%s' != '/'\n",
- 				      sm->str + sm->mnt_point);
-@@ -408,6 +412,10 @@ static void test_statmount_mnt_root(void)
- 				      strerror(errno));
- 		return;
- 	}
-+	if (!(sm->mask & STATMOUNT_MNT_ROOT)) {
-+		ksft_test_result_fail("missing STATMOUNT_MNT_ROOT in mask\n");
-+		return;
-+	}
- 	mnt_root = sm->str + sm->mnt_root;
- 	last_root = strrchr(mnt_root, '/');
- 	if (last_root)
-@@ -437,6 +445,10 @@ static void test_statmount_fs_type(void)
- 				      strerror(errno));
- 		return;
- 	}
-+	if (!(sm->mask & STATMOUNT_FS_TYPE)) {
-+		ksft_test_result_fail("missing STATMOUNT_FS_TYPE in mask\n");
-+		return;
-+	}
- 	fs_type = sm->str + sm->fs_type;
- 	for (s = known_fs; s != NULL; s++) {
- 		if (strcmp(fs_type, *s) == 0)
-@@ -464,6 +476,11 @@ static void test_statmount_mnt_opts(void)
- 		return;
- 	}
+@@ -125,7 +120,7 @@ static bool mlx5_esw_bridge_is_local(struct net_device *dev, struct net_device *
+ 	priv = netdev_priv(rep);
+ 	mdev = priv->mdev;
+ 	if (netif_is_lag_master(dev))
+-		return mlx5_lag_is_shared_fdb(mdev) && mlx5_lag_is_master(mdev);
++		return mlx5_lag_is_master(mdev);
+ 	return true;
+ }
  
-+	if (!(sm->mask & STATMOUNT_MNT_BASIC)) {
-+		ksft_test_result_fail("missing STATMOUNT_MNT_BASIC in mask\n");
-+		return;
-+	}
+@@ -455,6 +450,9 @@ static int mlx5_esw_bridge_switchdev_event(struct notifier_block *nb,
+ 	if (!rep)
+ 		return NOTIFY_DONE;
+ 
++	if (netif_is_lag_master(dev) && !mlx5_lag_is_shared_fdb(esw->dev))
++		return NOTIFY_DONE;
 +
- 	while (getline(&line, &len, f_mountinfo) != -1) {
- 		int i;
- 		char *p, *p2;
-@@ -514,7 +531,10 @@ static void test_statmount_mnt_opts(void)
- 		if (p2)
- 			*p2 = '\0';
- 
--		statmount_opts = sm->str + sm->mnt_opts;
-+		if (sm->mask & STATMOUNT_MNT_OPTS)
-+			statmount_opts = sm->str + sm->mnt_opts;
-+		else
-+			statmount_opts = "";
- 		if (strcmp(statmount_opts, p) != 0)
- 			ksft_test_result_fail(
- 				"unexpected mount options: '%s' != '%s'\n",
+ 	switch (event) {
+ 	case SWITCHDEV_FDB_ADD_TO_BRIDGE:
+ 		fdb_info = container_of(info,
 -- 
 2.39.5
 
