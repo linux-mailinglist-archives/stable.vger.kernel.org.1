@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-125148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66105A68FF4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7039A6923A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 347E48A095E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE5E21895FFD
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215C61DEFD4;
-	Wed, 19 Mar 2025 14:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953831EF378;
+	Wed, 19 Mar 2025 14:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ixrtw/7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2j3sN0St"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B97205E3C;
-	Wed, 19 Mar 2025 14:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5096B1DE2B2;
+	Wed, 19 Mar 2025 14:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394987; cv=none; b=AzBCIPOsq2TkAIMBOgXGh1mh2kasoqCWcIg0x2wjQhvq8NFNFutj/p0NnxmA1d/6Q+xgSu5kpKbYQVSVERUIBd7+sRxan9W98ZsyrllWogiN/cFOTVlekaoYb7gngsxF6nMGdH1gOpbZz/POWonubsy1K3xd1FMs9Vh8/YwFA0Q=
+	t=1742395139; cv=none; b=T4Ww/8KzMLEHXuU/90OUhDUU3hf/MshjE2dALJkzvZP74T7bYUiNTFdtL4bcOSDwqqEheorKHhtLL8DcLZ+73SHCy7a+EvX0ks3o8Dn+FPHV+4lgq+mt2LWW+6YqExim6HTRZ0tjhUGWbPP6YxoLzLjwPzM2Hz1yIMms/6CoLkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394987; c=relaxed/simple;
-	bh=Mo9Ukl6HLMRSZmotiChyxKFHJkP9MYi54Rckh0XfVek=;
+	s=arc-20240116; t=1742395139; c=relaxed/simple;
+	bh=GRgBoOtdnz0RGhoBld7ku4LGtGC+RJ/2yThL+OQgqxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFP0abVPzGmqGAOtCtk7OkWcAqcGNGRu6v8i/31TztP6tIdd6iIDRsj5ye71sBNPdXEG8HC1XIK/+EpXgQ0ryseE1SdanYTrGVWHRt8vSLK1kN4MVskXn3QJDaT2oomRKuc6Xr8J4LFg/0bocSmrYzPQNEIJXVzVDOr/kJrp23w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ixrtw/7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A980FC4CEE4;
-	Wed, 19 Mar 2025 14:36:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qoHrUeGg9O64hshjwAGiEanr3fb4CqM7zmE8sNXE58vpY8YKhtvJBPF6uNezACZNm7MH5eWjIYFLitcuLhmSkhugnA4bVCWdIVlgXg5P/S5JMiplKlMqbE3FNQcRldlBgn2C9S+NPqvOsmVqcO0JgLr+yOcRCLqSvowKg2zkKsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2j3sN0St; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25452C4CEE4;
+	Wed, 19 Mar 2025 14:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394987;
-	bh=Mo9Ukl6HLMRSZmotiChyxKFHJkP9MYi54Rckh0XfVek=;
+	s=korg; t=1742395139;
+	bh=GRgBoOtdnz0RGhoBld7ku4LGtGC+RJ/2yThL+OQgqxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ixrtw/7l2A8XYMDz3H33crD0u5cQldf7PPcZRmmhjyFlsf/wB3fbCX3GrMCJjZhVo
-	 7W3X0w9nGIoj357iqhX1HJyM8qb7HbCRPACEI15Fbk8uWSkszdP8jl8kX9Yq6BGi4i
-	 Dp8UfWSCxnw38zRHWKWomm3H+mYvObZzcDgejGNY=
+	b=2j3sN0St06N/IhHTD9UCyLyHAIxCdDRhxof+9mhC9rHrFjwSFWG5N07Aas45DfC0N
+	 J4lQy3z3IWwq84WLD+CoZ2ZqxWq/QjRt+s5jbwMK1XHihw5HmL1H5TYcIq+pdCoM1V
+	 S2tNS02/cuqtEI2zgJQHghZUiqCTsWHO9xJcsTok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Li <ye.li@broadcom.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 228/241] x86/vmware: Parse MP tables for SEV-SNP enabled guests under VMware hypervisors
-Date: Wed, 19 Mar 2025 07:31:38 -0700
-Message-ID: <20250319143033.381869984@linuxfoundation.org>
+Subject: [PATCH 6.12 206/231] drm/xe/userptr: Fix an incorrect assert
+Date: Wed, 19 Mar 2025 07:31:39 -0700
+Message-ID: <20250319143031.934576949@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ajay Kaher <ajay.kaher@broadcom.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit a2ab25529bbcea51b5e01dded79f45aeb94f644a ]
+[ Upstream commit 9106713bd2ab0cacd380cda0d3f0219f2e488086 ]
 
-Under VMware hypervisors, SEV-SNP enabled VMs are fundamentally able to boot
-without UEFI, but this regressed a year ago due to:
+The assert incorrectly checks the total length processed which
+can in fact be greater than the number of pages. Fix.
 
-  0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for SEV-SNP guests")
-
-In this case, mpparse_find_mptable() has to be called to parse MP
-tables which contains the necessary boot information.
-
-[ mingo: Updated the changelog. ]
-
-Fixes: 0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for SEV-SNP guests")
-Co-developed-by: Ye Li <ye.li@broadcom.com>
-Signed-off-by: Ye Li <ye.li@broadcom.com>
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Ye Li <ye.li@broadcom.com>
-Reviewed-by: Kevin Loughlin <kevinloughlin@google.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20250313173111.10918-1-ajay.kaher@broadcom.com
+Fixes: 0a98219bcc96 ("drm/xe/hmm: Don't dereference struct page pointers without notifier lock")
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250307100109.21397-1-thomas.hellstrom@linux.intel.com
+(cherry picked from commit 70e5043ba85eae199b232e39921abd706b5c1fa4)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/vmware.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/xe/xe_hmm.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index 00189cdeb775f..cb3f900c46fcc 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -26,6 +26,7 @@
- #include <linux/export.h>
- #include <linux/clocksource.h>
- #include <linux/cpu.h>
-+#include <linux/efi.h>
- #include <linux/reboot.h>
- #include <linux/static_call.h>
- #include <asm/div64.h>
-@@ -429,6 +430,9 @@ static void __init vmware_platform_setup(void)
- 		pr_warn("Failed to get TSC freq from the hypervisor\n");
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_hmm.c b/drivers/gpu/drm/xe/xe_hmm.c
+index d7a9408b3a97c..f6bc4f29d7538 100644
+--- a/drivers/gpu/drm/xe/xe_hmm.c
++++ b/drivers/gpu/drm/xe/xe_hmm.c
+@@ -138,13 +138,17 @@ static int xe_build_sg(struct xe_device *xe, struct hmm_range *range,
+ 		i += size;
  
-+	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) && !efi_enabled(EFI_BOOT))
-+		x86_init.mpparse.find_mptable = mpparse_find_mptable;
+ 		if (unlikely(j == st->nents - 1)) {
++			xe_assert(xe, i >= npages);
+ 			if (i > npages)
+ 				size -= (i - npages);
 +
- 	vmware_paravirt_ops_setup();
+ 			sg_mark_end(sgl);
++		} else {
++			xe_assert(xe, i < npages);
+ 		}
++
+ 		sg_set_page(sgl, page, size << PAGE_SHIFT, 0);
+ 	}
+-	xe_assert(xe, i == npages);
  
- #ifdef CONFIG_X86_IO_APIC
+ 	return dma_map_sgtable(dev, st, write ? DMA_BIDIRECTIONAL : DMA_TO_DEVICE,
+ 			       DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
 -- 
 2.39.5
 
