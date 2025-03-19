@@ -1,118 +1,97 @@
-Return-Path: <stable+bounces-124880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3420FA68437
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 05:34:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8ADA684B1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 06:57:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CE383B2CAC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 04:34:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8359119C3200
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 05:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B2820C46B;
-	Wed, 19 Mar 2025 04:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E3524E4C7;
+	Wed, 19 Mar 2025 05:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mrQpvrSj"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1rAhZVoL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gr5IHlEF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AED18F4A;
-	Wed, 19 Mar 2025 04:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA59E20F060;
+	Wed, 19 Mar 2025 05:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742358868; cv=none; b=HcYk4UXTRCrLKhAWC79c5RPg8V4vwkROXcAvEwsCEKyjHNXtDlolCsMwIhaR+b7zsPFmexlKnf1tZlAEtjs6jnjzArAKVMowZfL1KDh0N6/HtrNEKTd0DatMU44kRBaJWySFe0r6+QpLnEn6ivJQFRMCUYDOKWBETNvqLwyRWWg=
+	t=1742363823; cv=none; b=YFUPDJ2X1Q5+sDiiFRVK/Fpmc8l96THOGhRwQek5GNumBMllAi3lNB1n5Y5X7P89IP4a2A2vV5xTJeURKusnZW1GzDMLkR9+wtLf2WFbXH/h3tTm5u201jc+wl5S653CbYh4Ev6PPG9QNyn39O4Hz0radDfoK+7XZ2VEElG5Ln4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742358868; c=relaxed/simple;
-	bh=tb219t++8fRJ9kz/h+J19vyhypnb0UhgT9+U8D020bc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qMSvvj6II1rfsXG7bl5qnWgl3SZqBTxAuynqtUy37jmfC3oXsVJcDV5WnZc3M84x9HVDeWiCW/wTDLW2hYZckVGbbUr6+CmnmPiozQxZuXym9tmMziXRjZkgRSLN0cRIrmw4tzsTIdBlYmGQPKQy+ro9+hH9I8GnS0pTVG/aegI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mrQpvrSj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A01AC4CEEA;
-	Wed, 19 Mar 2025 04:34:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742358867;
-	bh=tb219t++8fRJ9kz/h+J19vyhypnb0UhgT9+U8D020bc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mrQpvrSjECT1KDry4PiFESBV34lOdssfJNpjEAfO7uXm8ESTAh4xXDvzw5DCvYPgn
-	 eOU4361qPpKyro/JSd+bPuPwgjLWsuCXnLEsDr3orfgEv4MEL9YyaVXMwTTXeOSbYN
-	 pLGoBwizlX6QC2YS/EWcGu0uVVkpTgtUwvvfb1wyG5lrNcebkrDKMzhxl70hdDYwY6
-	 U3D3mucRR8kwGyDXmT55U9mqLevUaDIiK6uPXYFuWcclSifDVa2vcvkhtt8qXAH9K4
-	 2H+8QiLygpewoOn9dPsZ7vleb7B01gMjPD2ObQKh3Juc+ePh9S71oVXru7dzJK6CLR
-	 gBDCNAgvVv1EQ==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac2963dc379so1087370166b.2;
-        Tue, 18 Mar 2025 21:34:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUcdSfRJMyd7lofI2IUFaJfSmLxHmHV2XoKHKmr2uHjxPrBKMqXfB5BXEP+GBEaDdrlbrEIpEywL1AKb3if@vger.kernel.org, AJvYcCWKUHV+8sNuRnPuF3r1AkDSAsJS/elgbjAh8vpxU8EKdrP+IGENdwXS1+KLu+xlTXoZfjVtMqr+@vger.kernel.org, AJvYcCX1dOfDwYm/ZptGNuUYNRkEbpt2Fb5oVIqHvXoBj+r434PyNiVc6N1+5UOtMz/Ds0dQAHtve+FCAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmCJVnumVSk3Vf5AK00AVe7dG/Mqxo5fjWe9mFcjBoZyMmIX2Z
-	H3y6TnrIx2kWFB17Ry94GCollTEvX222HCEZ9TYBVBPB4/Vx8rrGiDi7lDH7ZdJJuTIi5dKcKDv
-	Mnz6C334eV/6qd1XROjMaNfSqTUg=
-X-Google-Smtp-Source: AGHT+IEKrD5BVHlMH5cIfN9exRPHgKjBOjN4LuEaeAb1uQmrKcOZ45guA8zoWyTH6F5sw4ba/gyC/dA0IVDr8yKg6Bs=
-X-Received: by 2002:a17:907:d7c7:b0:abf:68b5:f798 with SMTP id
- a640c23a62f3a-ac3b7a9bc3amr122518966b.9.1742358865242; Tue, 18 Mar 2025
- 21:34:25 -0700 (PDT)
+	s=arc-20240116; t=1742363823; c=relaxed/simple;
+	bh=T0otBTV/6W6FGpqUqNIWoJL4tq1mjsyb9gKufZqadtc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rddqg28/phA/tFOuXLsKYjpjuqJsC83OuklPlhqMEj/z4N4l1beshiVJqb56JkAQ+AgflijYxHgKcbZqwAuPttlghtHxq9XUzX+mP5rlm+bvpD13gl/Bfr2uoed0VjWLpG0rmikH1guNu7d1cJR5Z98DcNnN5v94FFfpbriLprQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1rAhZVoL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gr5IHlEF; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 19 Mar 2025 06:56:53 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1742363813;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HhNs5jIgxAZdS5yYj9y8SQEJJ9FxcQj5IZ8rsflvDhY=;
+	b=1rAhZVoLIOoeYi4SmbmTdBq1WP6F95AGzxtni/TQoO0SC1JFnEJrF/UHDGXoulnGiOuCtK
+	+jR1IVHJ3SG+HZCQasSUC8j6dyFSkwBTx/JWMIwQOTeLklsmTAIOQ6DWcStei20tBXcXCF
+	zgAHze+qkU9eaG4F7z+Z9GhkFKE/cIEZfnWOIZj+aKWdvW0JryADPf7qnfztLeRxzTab/+
+	tfXHAk2Cqp5pA1on5HOXVGovY/WmWyCzl6sYLkCD+pMNyX/xxUoU1zbhcOOW5p8dFrES11
+	aD6bDEqcQcLLsA5D/SSJGyDBUJExKI1hyLRlEiEZyqahPHwQgOePgaM9/OADMA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1742363813;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HhNs5jIgxAZdS5yYj9y8SQEJJ9FxcQj5IZ8rsflvDhY=;
+	b=Gr5IHlEFk2qx6sQKvcaMaTAyuSquDUo8EXlmPlRY79D9nZKstQ5aaK9vMtWDwr36hNEj8p
+	vqUMOqRf0NYPt+Dg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Ralph Siemsen <ralph.siemsen@linaro.org>
+Cc: Peter Chen <peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Aswath Govindraju <a-govindraju@ti.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Felipe Balbi <felipe.balbi@linux.intel.com>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] usb: cdns3: Fix deadlock when using NCM gadget
+Message-ID: <20250319055653.uSl-FEiQ@linutronix.de>
+References: <20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250318110124.2160941-1-chenhuacai@loongson.cn>
- <20250318110124.2160941-2-chenhuacai@loongson.cn> <2025031834-spotty-dipped-be36@gregkh>
- <CAAhV-H4y88jfpKp1mFytEjX4L0CErF=XFashZ9dXfwM58dPGGQ@mail.gmail.com> <2025031852-angelfish-mouth-f455@gregkh>
-In-Reply-To: <2025031852-angelfish-mouth-f455@gregkh>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 19 Mar 2025 12:34:14 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4ns+HQ30p++eG97iaDBm4pZB+8XpjhcaC1Czx_iex6FQ@mail.gmail.com>
-X-Gm-Features: AQ5f1Jq1LpF2KOdiplv8HT0Ag3bf_-gr0IrAGadWDR9ZsBLQNMLwC9_sXBuayzA
-Message-ID: <CAAhV-H4ns+HQ30p++eG97iaDBm4pZB+8XpjhcaC1Czx_iex6FQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1&6.6 1/3] sign-file,extract-cert: move common SSL
- helper functions to a header
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>, 
-	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org, 
-	David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Jan Stancek <jstancek@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	R Nageswara Sastry <rnsastry@linux.ibm.com>, Neal Gompa <neal@gompa.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org>
 
-On Tue, Mar 18, 2025 at 10:38=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Mar 18, 2025 at 09:58:26PM +0800, Huacai Chen wrote:
-> > Hi, Greg,
-> >
-> > On Tue, Mar 18, 2025 at 9:25=E2=80=AFPM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Tue, Mar 18, 2025 at 07:01:22PM +0800, Huacai Chen wrote:
-> > > > From: Jan Stancek <jstancek@redhat.com>
-> > > >
-> > > > commit 300e6d4116f956b035281ec94297dc4dc8d4e1d3 upstream.
-> > > >
-> > > > Couple error handling helpers are repeated in both tools, so
-> > > > move them to a common header.
-> > > >
-> > > > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> > > > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-> > > > Reviewed-by: Neal Gompa <neal@gompa.dev>
-> > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > ---
-> > >
-> > > Is this "v2" as well?  the threading is all confusing here.  This is
-> > > what my inbox looks like right now:
-> > Yes, this is also V2, I'm very sorry to confuse you.
->
-> Great!  Please resend them all as a "v3" so I'm not confused :)
-OK, thanks.
+On 2025-03-18 11:09:32 [-0400], Ralph Siemsen wrote:
+> The cdns3 driver has the same NCM deadlock as fixed in cdnsp by commit
+> 58f2fcb3a845 ("usb: cdnsp: Fix deadlock issue during using NCM gadget").
+> 
+> Under PREEMPT_RT the deadlock can be readily triggered by heavy network
+> traffic, for example using "iperf --bidir" over NCM ethernet link.
+> 
+> The deadlock occurs because the threaded interrupt handler gets
+> preempted by a softirq, but both are protected by the same spinlock.
+> Prevent deadlock by disabling softirq during threaded irq handler.
+> 
+> cc: stable@vger.kernel.org
+> Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+> Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
 
-Huacai
->
-> thanks,
->
-> greg k-h
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+
+Sebastian
 
