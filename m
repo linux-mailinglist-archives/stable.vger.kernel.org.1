@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E318CA691C6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7340A69037
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 957BA1885168
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4CE016CFB0
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890381BDA97;
-	Wed, 19 Mar 2025 14:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BDB214A74;
+	Wed, 19 Mar 2025 14:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0I+918bm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JIdOcoT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484421B2194;
-	Wed, 19 Mar 2025 14:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61721E1C3F;
+	Wed, 19 Mar 2025 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394896; cv=none; b=ZzPcj3kss6BQ9kRuNc+AtyDQs+vXdmV1zvgK8ceXDwmTtFTYRGHr2wZuC/vPXDhFOyeNPsP04TWa1GRIM59Szma8IOSnHBoSO9c8c1leIXnpPIHo8CP8Ub88HVPcai5Sby0CZS4sOfqzAEwFrR8hrR9/gAtCQi1IUJQWPBAJf1w=
+	t=1742395051; cv=none; b=kDca5wt5JAN5fd6uJ3bwQWduQiEzYoSc3P6/pEeFHflXW5pS0f/sWgAwncFpivNf14MHoWGal8yDgsgiJcgN/rc3xE2Ge/w6z+lQ0CUeCXXCf8Ty2ZwLXENPEIiIH0+Y/M2yzjLgRE2ilHcdbuCB/MErHDhAjHuEOfx9AH/8iIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394896; c=relaxed/simple;
-	bh=fAPsKIUVGXBQx1vkPhzGrzj9XEikdlLgLRX0UHKobvI=;
+	s=arc-20240116; t=1742395051; c=relaxed/simple;
+	bh=CvjKvnhF8TU4lHL8ajh5a27cfeEuG07XecZADkgLbVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHQNN7RLj0wwpQEMAU23a7PHs2XdrMJMPVOIyY70mqJW6559bjzjQNsnWhSSh7S7PIdDpt+nr3q9kBKuM6tjHnlRuiqY8oUTIUTT8Ws9+NKKXlT6u77WcvBs5Bn/0PbRUsSZZFzlhKH9YBu068GHFGaoWZxmw2+Ln8ZeXifuM4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0I+918bm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBDFC4CEE4;
-	Wed, 19 Mar 2025 14:34:56 +0000 (UTC)
+	 MIME-Version; b=I4R9W+JlLtxLWYIkgGJp+x3/P7DU3szN7VDLVsWqmB+Q78LbMOI8WTZtQHoLw7drrTLP/ZTjE1Ak48iu0NzQ+a+Q8poZlIXDgR7mQ3DAdglgeNDn6dFZb6BqVrtv/5bM/Qe0VbPFCxlBM1a6zQxlc9AFYOBcxMDlKonqjfUz6wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JIdOcoT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB12C4CEE4;
+	Wed, 19 Mar 2025 14:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394896;
-	bh=fAPsKIUVGXBQx1vkPhzGrzj9XEikdlLgLRX0UHKobvI=;
+	s=korg; t=1742395051;
+	bh=CvjKvnhF8TU4lHL8ajh5a27cfeEuG07XecZADkgLbVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0I+918bmsX9BJIdCElwjAYbSTEzcmPM8fe+lq62Pr+KIWsgcgM7lRhkoxu2oZzUmK
-	 JNH7224UedMTA3BFjAS062/8iayG9sEfivvFGqkKI6t9LxRlODBbcnBrumjKa/F4p2
-	 3SSGeUhAsTJOVm8I7eyJ8zmSYQs5Gi6s3Zy0Cq3I=
+	b=0JIdOcoTEQSGkVIuO8w3A70CTpvo8vOWZXg5hqMEEZO+0GctS61dHswgBNbWMC4Lr
+	 mFCpp89WHHZ6x+dRBfXFYc8J0b0EU0YfZahYWqXdS4qtH85QE/4cGoXFcEnlj6A1Wh
+	 gRR/POiDTNT0TCYhRp7/YEe89E6VdUZZwTdceSmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Maxime Ripard <mripard@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 101/241] drm/tests: hdmi: Remove redundant assignments
-Date: Wed, 19 Mar 2025 07:29:31 -0700
-Message-ID: <20250319143030.222519751@linuxfoundation.org>
+Subject: [PATCH 6.12 079/231] usb: phy: generic: Use proper helper for property detection
+Date: Wed, 19 Mar 2025 07:29:32 -0700
+Message-ID: <20250319143028.785945465@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit bb4f929a8875b4801db95b8cf3b2c527c1e475e0 ]
+[ Upstream commit 309005e448c1f3e4b81e4416406991b7c3339c1d ]
 
-Some tests have the drm pointer assigned multiple times to the same
-value. Drop the redundant assignments.
+Since commit c141ecc3cecd7 ("of: Warn when of_property_read_bool() is
+used on non-boolean properties") a warning is raised if this function
+is used for property detection. of_property_present() is the correct
+helper for this.
 
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250129-test-kunit-v2-2-fe59c43805d5@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Stable-dep-of: 5d14c08a4746 ("drm/tests: hdmi: Fix recursive locking")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20250120144251.580981-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/usb/phy/phy-generic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-index cbd9584af3299..4e7369caa7369 100644
---- a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-+++ b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
-@@ -450,7 +450,6 @@ static void drm_test_check_broadcast_rgb_auto_cea_mode_vic_1(struct kunit *test)
- 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
+diff --git a/drivers/usb/phy/phy-generic.c b/drivers/usb/phy/phy-generic.c
+index e7d50e0a16123..aadf98f65c608 100644
+--- a/drivers/usb/phy/phy-generic.c
++++ b/drivers/usb/phy/phy-generic.c
+@@ -212,7 +212,7 @@ int usb_phy_gen_create_phy(struct device *dev, struct usb_phy_generic *nop)
+ 		if (of_property_read_u32(node, "clock-frequency", &clk_rate))
+ 			clk_rate = 0;
  
--	drm = &priv->drm;
- 	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
-@@ -564,7 +563,6 @@ static void drm_test_check_broadcast_rgb_full_cea_mode_vic_1(struct kunit *test)
- 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
--	drm = &priv->drm;
- 	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
-@@ -680,7 +678,6 @@ static void drm_test_check_broadcast_rgb_limited_cea_mode_vic_1(struct kunit *te
- 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
- 	KUNIT_ASSERT_NOT_NULL(test, mode);
- 
--	drm = &priv->drm;
- 	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
- 	KUNIT_ASSERT_EQ(test, ret, 0);
-@@ -1282,7 +1279,6 @@ static void drm_test_check_output_bpc_format_vic_1(struct kunit *test)
- 	rate = mode->clock * 1500;
- 	KUNIT_ASSERT_LT(test, rate, info->max_tmds_clock * 1000);
- 
--	drm = &priv->drm;
- 	crtc = priv->crtc;
- 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
- 	KUNIT_EXPECT_EQ(test, ret, 0);
+-		needs_clk = of_property_read_bool(node, "clocks");
++		needs_clk = of_property_present(node, "clocks");
+ 	}
+ 	nop->gpiod_reset = devm_gpiod_get_optional(dev, "reset",
+ 						   GPIOD_ASIS);
 -- 
 2.39.5
 
