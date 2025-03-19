@@ -1,63 +1,52 @@
-Return-Path: <stable+bounces-125610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E2CA69CE8
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 00:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D77C2A69CED
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 00:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10E67189E153
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 23:53:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D002189F0F5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 23:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ADD224254;
-	Wed, 19 Mar 2025 23:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567AC222599;
+	Wed, 19 Mar 2025 23:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXbPhUky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gB1kCa/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA2A1DE3A9;
-	Wed, 19 Mar 2025 23:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13291219A7E;
+	Wed, 19 Mar 2025 23:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742428389; cv=none; b=Im6LWnmdHhFKXgQPBarDuprn3innVIvv4kepDgB7PZTWuGN+JAhJVbdZxFel8HdeIdYqLDFAm9r84X/jV5/VIA3GUqBjhzS3Y3xM2MEXe6aQ1lIQGXkTwf4JIcctl0TdHc+KuoGl+Mr7biux6R6g3sSnadZe6B3dkA4Q17k4rEw=
+	t=1742428513; cv=none; b=j7JtTPdOc7aBPwgfKCsKC2Dq2aKNF/6ECAY5GPSgM8AxN1wvvota0fXKvDJeNdumEjWMZtg7N34DTFvUCavLslocvGeJwOk6dOOd/1eqV4JE/gaVvBMDwpPNq/gQUVIPigy/aGS9myS7g9syGOw/JMwYTFE08HkA5eJ7ewDsE1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742428389; c=relaxed/simple;
-	bh=hH0LpOTOHDJophFQjjaTOYTw6j+eOBph/0/AThm9o3M=;
+	s=arc-20240116; t=1742428513; c=relaxed/simple;
+	bh=ZHlDr1DFYlSxB8cpiuHTZVz4DMnmYr21wuhSjCJu4Zo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cjYfYRVQP9czyH1+wS2BDf9qezspJi23mLUwsO93hYiAoKmWA1hMXLEQAEfaLfPDG/KZye4XYibES6+0+fFSXCD5xooMkTvf9RG96EQKj4vyFNf2xAB3i/jZhh9WRVOsjYfNxbDkEaboTaB4ipZSCgDF+DJwEkJt9jhRhY9HQlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXbPhUky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E75C4CEE4;
-	Wed, 19 Mar 2025 23:53:09 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=u/G1iTYXr4cR04M9vJ8o07J+XqcWJ5+UiugtJDiEqHaKaW+NSF0Oeege6cNZ5Vc1qXao7tlACb1iWhHcDWNALVum4gB1a1+6J2RfFhEp2CyHR+/PjOeFNJlZu94jJ5P65GScnIuR15e01SytOK1rCZh8ZuGjkC8pC258IOA/lME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gB1kCa/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A993C4CEE4;
+	Wed, 19 Mar 2025 23:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742428389;
-	bh=hH0LpOTOHDJophFQjjaTOYTw6j+eOBph/0/AThm9o3M=;
+	s=korg; t=1742428512;
+	bh=ZHlDr1DFYlSxB8cpiuHTZVz4DMnmYr21wuhSjCJu4Zo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YXbPhUkyapcCUG+Yp/RWTLgPFYZWlzHVq2ADtB7NMwXkuj83rLl/3glD4QxcG5cDa
-	 CxHnEnIxLd8OdjEbJLoW3TzQinnQG/X/wQbFQQo5g5Es3LcxlMAN5OFIKs2+hQkkeO
-	 l+f6XnFsGpga/wRmbixTs+kwfVLK+/ZSIsiLhO54=
-Date: Wed, 19 Mar 2025 16:51:50 -0700
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>, io-uring@vger.kernel.org
-Subject: Re: [PATCH 6.6 000/166] 6.6.84-rc1 review
-Message-ID: <2025031910-poking-crusher-b38f@gregkh>
-References: <20250319143019.983527953@linuxfoundation.org>
- <CA+G9fYvM_riojtryOUb3UrYbtw6yUZTTnbP+_X96nJLCcWYwBA@mail.gmail.com>
- <2deb9e86-7ca8-4baf-8576-83dad1ea065f@kernel.dk>
+	b=gB1kCa/wL/HzAdvTkgp38QB5Oapu3pyTOZgBjiYAJj447NC9yOq+Lxpul/ItjqkmV
+	 m8qyRNGHkgUHiW6RD268UZL3ZL6uiWf9vvbycp92LnqoHpL/v3kiC3FrNrElw1Etvi
+	 OJv4nyGhU5xTHwrEx/Egc8pCmUwd6WF6tqpkPxkA=
+Date: Wed, 19 Mar 2025 16:53:53 -0700
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Hardik Garg <hargar@linux.microsoft.com>
+Cc: frank.scheiner@web.de, dchinner@redhat.com, djwong@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: 6.1.132-rc1 build regression on Azure x86 and arm64 VM
+Message-ID: <2025031946-polygon-barrel-6df0@gregkh>
+References: <8c6125d7-363c-42b3-bdbb-f802cb8b4408@web.de>
+ <1742423150-5185-1-git-send-email-hargar@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,66 +55,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2deb9e86-7ca8-4baf-8576-83dad1ea065f@kernel.dk>
+In-Reply-To: <1742423150-5185-1-git-send-email-hargar@linux.microsoft.com>
 
-On Wed, Mar 19, 2025 at 10:37:20AM -0600, Jens Axboe wrote:
-> On 3/19/25 10:33 AM, Naresh Kamboju wrote:
-> > On Wed, 19 Mar 2025 at 20:09, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> >>
-> >> This is the start of the stable review cycle for the 6.6.84 release.
-> >> There are 166 patches in this series, all will be posted as a response
-> >> to this one.  If anyone has any issues with these being applied, please
-> >> let me know.
-> >>
-> >> Responses should be made by Fri, 21 Mar 2025 14:29:55 +0000.
-> >> Anything received after that time might be too late.
-> >>
-> >> The whole patch series can be found in one patch at:
-> >>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.84-rc1.gz
-> >> or in the git tree and branch at:
-> >>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> >> and the diffstat can be found below.
-> >>
-> >> thanks,
-> >>
-> >> greg k-h
-> > 
-> > Regressions on mips the rt305x_defconfig builds failed with gcc-12
-> > the stable-rc v6.6.83-167-gd16a828e7b09
-> > 
-> > First seen on the v6.6.83-167-gd16a828e7b09
-> >  Good: v6.6.83
-> >  Bad: v6.6.83-167-gd16a828e7b09
-> > 
-> > * mips, build
-> >   - gcc-12-rt305x_defconfig
-> > 
-> > Regression Analysis:
-> >  - New regression? Yes
-> >  - Reproducibility? Yes
-> > 
-> > Build regression: mips implicit declaration of function 'vunmap'
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> Ah that's my fault, forgot to include the backport of:
-> 
-> commit 62346c6cb28b043f2a6e95337d9081ec0b37b5f5
-> Author: Jens Axboe <axboe@kernel.dk>
-> Date:   Sat Mar 16 07:21:43 2024 -0600
-> 
->     mm: add nommu variant of vm_insert_pages()
-> 
-> for 6.1-stable and 6.6-stable. Greg, can you just cherry pick that one?
-> It'll pick cleanly into both, should go before the io_uring mmap series
-> obviously.
-> 
-> Sorry about that! I did have it in my local trees, but for some reason
-> forgot to include it in the sent in series.
+On Wed, Mar 19, 2025 at 03:25:50PM -0700, Hardik Garg wrote:
+> v6.1.132-rc1 build fails on Azure x86 and arm64 VM:
 
-Wait, this is already in the 6.6.y and 6.1.y queues, so this can't be
-the fix.  Was there a fixup for that commit somewhere else that I'm
-missing?
+Odd, there is no real 6.1.132-rc1 announcement yet, so there's no rush
+at the moment :)
+
+> fs/xfs/libxfs/xfs_alloc.c: In function '__xfs_free_extent_later':
+> fs/xfs/libxfs/xfs_alloc.c:2551:51: error: 'mp' undeclared (first use in this function); did you mean 'tp'?
+>  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+>       |                                                   ^~
+> ./include/linux/compiler.h:78:45: note: in definition of macro 'unlikely'
+>    78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+>       |                                             ^
+> fs/xfs/libxfs/xfs_alloc.c:2551:13: note: in expansion of macro 'XFS_IS_CORRUPT'
+>  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+>       |             ^~~~~~~~~~~~~~
+> fs/xfs/libxfs/xfs_alloc.c:2551:51: note: each undeclared identifier is reported only once for each function it appears in
+>  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+>       |                                                   ^~
+> ./include/linux/compiler.h:78:45: note: in definition of macro 'unlikely'
+>    78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+>       |                                             ^
+> fs/xfs/libxfs/xfs_alloc.c:2551:13: note: in expansion of macro 'XFS_IS_CORRUPT'
+>  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+>       |             ^~~~~~~~~~~~~~
+> In file included from ./fs/xfs/xfs.h:22,
+>                  from fs/xfs/libxfs/xfs_alloc.c:6:
+> ./fs/xfs/xfs_linux.h:225:63: warning: left-hand operand of comma expression has no effect [-Wunused-value]
+>   225 |                                                __this_address), \
+>       |                                                               ^
+> fs/xfs/libxfs/xfs_alloc.c:2551:13: note: in expansion of macro 'XFS_IS_CORRUPT'
+>  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
+>       |             ^~~~~~~~~~~~~~
+>   CC [M]  net/ipv4/netfilter/arpt_mangle.o
+>   CC      net/unix/scm.o
+> make[3]: *** [scripts/Makefile.build:250: fs/xfs/libxfs/xfs_alloc.o] Error 1
+> make[2]: *** [scripts/Makefile.build:503: fs/xfs] Error 2
+
+Something is odd with the xfs patches I took?
+
+Any hints on what to do is appreciated.
 
 thanks,
 
