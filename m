@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-125435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D35DA690F0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863A9A68FB3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5301B172202
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7B2B3B93E3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC2D1FF618;
-	Wed, 19 Mar 2025 14:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9F41E3DE4;
+	Wed, 19 Mar 2025 14:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptNSoJaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2b3YRccX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA101FDE39;
-	Wed, 19 Mar 2025 14:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9F21B87D5;
+	Wed, 19 Mar 2025 14:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395185; cv=none; b=tGfEJoyqu5f1TpRNYS1Cl9H6HOb9GnzxUcbfDi+9IEc6G1BuyyywFzA+xZIcxj0C+SE6Zc5S4TkiKAUYAhJOTo6a6sytyhP7PfCWuFsx4ppExL9UP0hntQvQwSt45aguLH0lM986h8ySkDMG8ls8oU7to24kmYmUZPECMkz9f8s=
+	t=1742394930; cv=none; b=ZbaJIRV3YC4TezH9vayMW2eau9cxbT1oGbEEmCGuU20iKijJ9lnYpVifPOd2Vrou6t9Ou1NmzDofi8V+RAwGtGNrr26lXKBAZDAX/dk2OfM/IABeHyj62iQDRwzHBZrZkCJm5dPh/tfxaHzkBFt4ztMdl+NCWgoeWIzKIe3vkR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395185; c=relaxed/simple;
-	bh=QhRdMUM9C05PjpDlD0k2QAGsyVUdtH4KsPJOp37JC7g=;
+	s=arc-20240116; t=1742394930; c=relaxed/simple;
+	bh=crgJ0APOhzY52Zzpi+5H/1Gpzgb0MubFQULIYOApS6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TkO7fdw1HOjdNAgzjAEarACNtUMShVvoxVoH1HKSbVlyQn4bLa646I19m1MqmTlok03xhdTnKfNhg3Yz//S5oN7L3XQn/TeTQouRFcNBVvOlRBTTvbrlUxQ5WG9UdAr3Kxn68tpOlCqLOSRlewElnzg2I0tUVzLcj5oV/KEkWLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptNSoJaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C8BC4CEE4;
-	Wed, 19 Mar 2025 14:39:45 +0000 (UTC)
+	 MIME-Version; b=HuMk3W0nXkzOL8CGMrSWPTbDKPN1e4OD6oWWjN9wSyYoYGSGSGFd6t5J0WNKd7+EwwwpaYcYiyR49E2Ino6uAlSulpgUuP67Av5+IBQpsP/M21VptG7M+tx3Ju3vKBCwTsM14LhX9jZun86jRZorTxADMflajJ7stPBwNn6OIpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2b3YRccX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF38C4CEE4;
+	Wed, 19 Mar 2025 14:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395185;
-	bh=QhRdMUM9C05PjpDlD0k2QAGsyVUdtH4KsPJOp37JC7g=;
+	s=korg; t=1742394930;
+	bh=crgJ0APOhzY52Zzpi+5H/1Gpzgb0MubFQULIYOApS6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptNSoJaJSMnQWjT2YiIb2Yqwaeu7MP+xhpPqmnAzqRfoSmKw5ytgATTAUoRQfIicp
-	 jfEYnJXFuLWXUv9wN5bRu6AGfyGdJFsFmmH2Mr1TnqwFxLV8i3DeMBoLh1lceltxch
-	 VJ/MMnCnf/Ai3quig9y7U/Wui6mSpE/N0gO16Bjc=
+	b=2b3YRccXkAbzopSgtydiNyPAC3Cz/QYaKFJg7WzXNtGRnai/u4G8blH7AGvErnmdk
+	 bkqHryzwcTGEudTzZS9DR3KuR1M5G+MNIKQIl3ARSH8WFpKOEm1ftP+mVJyMQpVVXL
+	 ArYGe07xS4JSEhvR7bMZvZJHysfyNkkL55Q+hCkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
-	Rik van Riel <riel@surriel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Aaron Ma <aaron.ma@canonical.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/166] scsi: core: Use GFP_NOIO to avoid circular locking dependency
+Subject: [PATCH 6.13 144/241] perf/x86/rapl: Add support for Intel Arrow Lake U
 Date: Wed, 19 Mar 2025 07:30:14 -0700
-Message-ID: <20250319143021.158155039@linuxfoundation.org>
+Message-ID: <20250319143031.285408054@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Aaron Ma <aaron.ma@canonical.com>
 
-[ Upstream commit 5363ee9d110e139584c2d92a0b640bc210588506 ]
+[ Upstream commit 68a9b0e313302451468c0b0eda53c383fa51a8f4 ]
 
-Filesystems can write to disk from page reclaim with __GFP_FS
-set. Marc found a case where scsi_realloc_sdev_budget_map() ends up in
-page reclaim with GFP_KERNEL, where it could try to take filesystem
-locks again, leading to a deadlock.
+Add Arrow Lake U model for RAPL:
 
-WARNING: possible circular locking dependency detected
-6.13.0 #1 Not tainted
-------------------------------------------------------
-kswapd0/70 is trying to acquire lock:
-ffff8881025d5d78 (&q->q_usage_counter(io)){++++}-{0:0}, at: blk_mq_submit_bio+0x461/0x6e0
+  $ ls -1 /sys/devices/power/events/
+  energy-cores
+  energy-cores.scale
+  energy-cores.unit
+  energy-gpu
+  energy-gpu.scale
+  energy-gpu.unit
+  energy-pkg
+  energy-pkg.scale
+  energy-pkg.unit
+  energy-psys
+  energy-psys.scale
+  energy-psys.unit
 
-but task is already holding lock:
-ffffffff81ef5f40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x9f/0x760
+The same output as ArrowLake:
 
-The full lockdep splat can be found in Marc's report:
+  $ perf stat -a -I 1000 --per-socket -e power/energy-pkg/
 
-https://lkml.org/lkml/2025/1/24/1101
-
-Avoid the potential deadlock by doing the allocation with GFP_NOIO, which
-prevents both filesystem and block layer recursion.
-
-Reported-by: Marc Aurèle La France <tsi@tuyoix.net>
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Link: https://lore.kernel.org/r/20250129104525.0ae8421e@fangorn
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://lore.kernel.org/r/20241224145516.349028-1-aaron.ma@canonical.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/rapl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
-index ca99be7341d9b..cead0fbbe5dbd 100644
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -245,7 +245,7 @@ static int scsi_realloc_sdev_budget_map(struct scsi_device *sdev,
- 	}
- 	ret = sbitmap_init_node(&sdev->budget_map,
- 				scsi_device_max_queue_depth(sdev),
--				new_shift, GFP_KERNEL,
-+				new_shift, GFP_NOIO,
- 				sdev->request_queue->node, false, true);
- 	if (!ret)
- 		sbitmap_resize(&sdev->budget_map, depth);
+diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
+index a8defc813c369..7e493963d0576 100644
+--- a/arch/x86/events/rapl.c
++++ b/arch/x86/events/rapl.c
+@@ -796,6 +796,7 @@ static const struct x86_cpu_id rapl_model_match[] __initconst = {
+ 	X86_MATCH_VFM(INTEL_METEORLAKE_L,	&model_skl),
+ 	X86_MATCH_VFM(INTEL_ARROWLAKE_H,	&model_skl),
+ 	X86_MATCH_VFM(INTEL_ARROWLAKE,		&model_skl),
++	X86_MATCH_VFM(INTEL_ARROWLAKE_U,	&model_skl),
+ 	X86_MATCH_VFM(INTEL_LUNARLAKE_M,	&model_skl),
+ 	{},
+ };
 -- 
 2.39.5
 
