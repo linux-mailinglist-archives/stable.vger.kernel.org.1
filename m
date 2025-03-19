@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-125136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844FFA68FE9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68C2A6915B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 015208A05BF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59DF4464622
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FA51DED51;
-	Wed, 19 Mar 2025 14:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FAA2222B6;
+	Wed, 19 Mar 2025 14:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hk72CllN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AS92WRP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F131FCCF2;
-	Wed, 19 Mar 2025 14:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F8C18BC36;
+	Wed, 19 Mar 2025 14:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394979; cv=none; b=Rwc2LYDOzV7r6kLiitAnDuLQ4xn2Tz7mbmU1oDGX8RWRhoRItkE2u2Ndb8eq7hhX4Hfb1zuwkRjV/K9dFZGO8GyIgwy8KHg9x+QyyFZ1N8pAnCJAH+Yf4dFxNRP5oLy5GQb1uxmvVuMF1rvgEuffz6B2vHeWu00yGarb0onM74E=
+	t=1742395252; cv=none; b=G2fmB5hA1SMg63GZOBmMpo8qmpuzMkYl700eQADmcP899kHWpA+fAh4es+EbDHzg3Cbv47hh9h6xjJBIVITDPHAFZL41jw4s7XunbeuFe0Cr7bjuochh+5an8JiCfWC8jQOLd7yl0PKY7A2KGjXLJ+tpCRLsCkeoEkAwyKV7Vjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394979; c=relaxed/simple;
-	bh=cisNbSetQLtzeZC1197lOJrkVZQBtIQaqusx5xwMSHQ=;
+	s=arc-20240116; t=1742395252; c=relaxed/simple;
+	bh=xpfLSWvbq8z+zeiBY1FvjD3TDi0JGlnrjOGwbQwdhHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AV/sE2nAljrAJT64tpQNANj3TjXOBNbOYNZWLdsFj5uVrBCQN+SNDMLI2Bq/DNCwFlvpjMQ/okQ5NMQNW/lBgkjWDn2VhiKaMTnUobM35AKgCqhICI7D1t1wKH13ELEcNw0Ly1QzW/mK+juyF9c55y/2lKm4yV+4aLbNajWiTCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hk72CllN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C801C4CEE4;
-	Wed, 19 Mar 2025 14:36:19 +0000 (UTC)
+	 MIME-Version; b=cCe9LAN6ZdNeWiebb0Fsg9J/18VUhLOb/C3Z7ZcPXkuXdwEhbjCBLsyW4+v4xZCMgDilGdhAatAhgPXk+z7gt8UEQ2eChGTIebkyXzxaGKY26/e1KwFSb51xtKuW42I3ISFYJOnjriqpFX2+HQWom3gfH385fBJUYz7A/9BTqPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AS92WRP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB06C4CEE4;
+	Wed, 19 Mar 2025 14:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394979;
-	bh=cisNbSetQLtzeZC1197lOJrkVZQBtIQaqusx5xwMSHQ=;
+	s=korg; t=1742395252;
+	bh=xpfLSWvbq8z+zeiBY1FvjD3TDi0JGlnrjOGwbQwdhHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hk72CllNyhsK0GLQLrnfmt8zWL61cvrsPngp/84a/FmLSI0RHs6xFh82NmDc0Bvfn
-	 AqwpZ3wsL4BGkVZf8P27aNauEgLbpXIbzTp58WaZ+5AtXovcYfL/3F8cl8B1VELGqz
-	 qya4rinWIO1eaZLS0vX3UripQAq2dcuewu58j0L8=
+	b=2AS92WRPGgxN7nyNakVGZqTu7hg52c7NXso+dJ4633r1Eg6Wz/QbRZ8lnCGGmWgla
+	 vthC2ZYShklaA0W9Y5O9EqkW+IjJB+PkzYDwFbvjz6So8JGAToEfo5Vfhtkd1ee6jf
+	 PuLChAaVLhzMhnZ3BHqFbfVoh9Ls09b9czDwjjcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 217/241] ASoC: codecs: wm0010: Fix error handling path in wm0010_spi_probe()
-Date: Wed, 19 Mar 2025 07:31:27 -0700
-Message-ID: <20250319143033.118485519@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 117/166] USB: serial: option: fix Telit Cinterion FE990A name
+Date: Wed, 19 Mar 2025 07:31:28 -0700
+Message-ID: <20250319143023.183260773@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-[ Upstream commit ed92bc5264c4357d4fca292c769ea9967cd3d3b6 ]
+commit 6232f0d8e100a26275bbd773fc56a60af2c95322 upstream.
 
-Free some resources in the error handling path of the probe, as already
-done in the remove function.
+The correct name for FE990 is FE990A so use it in order to avoid
+confusion with FE990B.
 
-Fixes: e3523e01869d ("ASoC: wm0010: Add initial wm0010 DSP driver")
-Fixes: fd8b96574456 ("ASoC: wm0010: Clear IRQ as wake source and include missing header")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/5139ba1ab8c4c157ce04e56096a0f54a1683195c.1741549792.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm0010.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/wm0010.c b/sound/soc/codecs/wm0010.c
-index edd2cb185c42c..9e67fbfc2ccaf 100644
---- a/sound/soc/codecs/wm0010.c
-+++ b/sound/soc/codecs/wm0010.c
-@@ -920,7 +920,7 @@ static int wm0010_spi_probe(struct spi_device *spi)
- 	if (ret) {
- 		dev_err(wm0010->dev, "Failed to set IRQ %d as wake source: %d\n",
- 			irq, ret);
--		return ret;
-+		goto free_irq;
- 	}
- 
- 	if (spi->max_speed_hz)
-@@ -932,9 +932,18 @@ static int wm0010_spi_probe(struct spi_device *spi)
- 				     &soc_component_dev_wm0010, wm0010_dai,
- 				     ARRAY_SIZE(wm0010_dai));
- 	if (ret < 0)
--		return ret;
-+		goto disable_irq_wake;
- 
- 	return 0;
-+
-+disable_irq_wake:
-+	irq_set_irq_wake(wm0010->irq, 0);
-+
-+free_irq:
-+	if (wm0010->irq)
-+		free_irq(wm0010->irq, wm0010);
-+
-+	return ret;
- }
- 
- static void wm0010_spi_remove(struct spi_device *spi)
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1368,13 +1368,13 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
+ 	  .driver_info = RSVD(0) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990A (rmnet) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990 (MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990A (MBIM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990 (RNDIS) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990A (RNDIS) */
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990 (ECM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990A (ECM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
 
 
 
