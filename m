@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1113DA68F89
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA5CA68FF7
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE80C169D34
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87D3B7A7846
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C320B1CAA8E;
-	Wed, 19 Mar 2025 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7612144A5;
+	Wed, 19 Mar 2025 14:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="im2Lfm9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZV7toqe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A5F1CC89D;
-	Wed, 19 Mar 2025 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5031E102E;
+	Wed, 19 Mar 2025 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394882; cv=none; b=fWBTAzOXX5THwy7fOtwuTV/usNAVh2CWyuB1eajgUbO4uDQz8S0zhnTPHq9z8RM70ZlsjE+GS7+XAsjE3UR938pdwyg7C0NwUraVF/8J6zJiiRDTr1tsdpVFqydXfbESUMKVKKowpMIFTpnCajArgAaOID8yam2MWcfVZu6/hNk=
+	t=1742395038; cv=none; b=u7ruxDmzi6pD7PM731eR9lIujMdpaAic5h19VQ9IMfNxy00L2JzCFjLi+fJZ9L/Jp8zzu5SLLMkG6EVY/X0ae1PCsonahYBLLR8s3BCTUHx9iv3uvY0LHB7w06WFdaxUzY+u75hOv+QgYHpPm4Lp2uj1OFVcswYoq4RfdpQCVNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394882; c=relaxed/simple;
-	bh=Mt/AWzHcslEJ8RzA7oXimm6F9+DX81DjqEcMPnDbO0U=;
+	s=arc-20240116; t=1742395038; c=relaxed/simple;
+	bh=BpMC896kIzzh/IyoAboINL0we4erfmBhW4SoXizPOJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHIGBNAMLClhvxtP3iZuznrCvInWk4GTn1flc4aBE613x4l44yeyvoCngC0aJHduU0C6BUF03qH2205l7RpB+2lmVJ6UxFpDPvsRUnA2a8rN3pytXWEfGAqdnqGPtRrM5GMSSD6lW0L0bQe1e57T/usa6uiN+rax0y0k72t9URw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=im2Lfm9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C593C4CEE8;
-	Wed, 19 Mar 2025 14:34:42 +0000 (UTC)
+	 MIME-Version; b=Oq5c+W0SNCJdNpo0HkJkHiKhC+PlI2Lv2gKgsw7R7adVD9OUsLeh31wFoL6vXtIPxHoixARXvSAZt/I1mxRlMBmkxUVm/ckXRi+fNJa/8BBY7P43GLUmOky+yUrXs5yHo2vO0+9z2NxMFvb4zJabdNHI18ZpvDNww3PwDsQfarg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZV7toqe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E41C4CEE4;
+	Wed, 19 Mar 2025 14:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394882;
-	bh=Mt/AWzHcslEJ8RzA7oXimm6F9+DX81DjqEcMPnDbO0U=;
+	s=korg; t=1742395037;
+	bh=BpMC896kIzzh/IyoAboINL0we4erfmBhW4SoXizPOJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=im2Lfm9KXI5IiW3YhsBepyMEorfo5sp4YSrYOXWguQPlb7WauQR4r+ZucRkY6ZaQr
-	 Su2/4rhF0s+jF9LIAQ4/9LCWNw5hB4ylp6hWSjL6bro+u7HxVKg6fSeDw5EUBl6Aml
-	 PD9ULdCol0T0N+qQMb03jHG7wUWRVabVtVTF8W7M=
+	b=jZV7toqeV+5liSofy4HePCrxNrXkise2TrBYtMYS2f5MS8L7UjqLxcD8YOsDkNFSI
+	 jy2pZROMO1oM86mYPnWae9mr/zOM8NfFJ4rT2B9Ua7Y3kVrOrYQr849ejpiBV+g/VW
+	 C8PaChBXLtO5vYG+6IVSOTXUSMu1LdsDY9Rdh85s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Brackenbury <daniel.brackenbury@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 083/241] HID: topre: Fix n-key rollover on Realforce R3S TKL boards
+Subject: [PATCH 6.12 060/231] btrfs: avoid starting new transaction when cleaning qgroup during subvolume drop
 Date: Wed, 19 Mar 2025 07:29:13 -0700
-Message-ID: <20250319143029.784765262@linuxfoundation.org>
+Message-ID: <20250319143028.308486885@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Brackenbury <daniel.brackenbury@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 9271af9d846c7e49c8709b58d5853cb73c00b193 ]
+[ Upstream commit fdef89ce6fada462aef9cb90a140c93c8c209f0f ]
 
-Newer model R3* Topre Realforce keyboards share an issue with their older
-R2 cousins where a report descriptor fixup is needed in order for n-key
-rollover to work correctly, otherwise only 6-key rollover is available.
-This patch adds some new hardware IDs for the R3S 87-key keyboard and
-makes amendments to the existing hid-topre driver in order to change the
-correct byte in the new model.
+At btrfs_qgroup_cleanup_dropped_subvolume() all we want to commit the
+current transaction in order to have all the qgroup rfer/excl numbers up
+to date. However we are using btrfs_start_transaction(), which joins the
+current transaction if there is one that is not yet committing, but also
+starts a new one if there is none or if the current one is already
+committing (its state is >= TRANS_STATE_COMMIT_START). This later case
+results in unnecessary IO, wasting time and a pointless rotation of the
+backup roots in the super block.
 
-Signed-off-by: Daniel Brackenbury <daniel.brackenbury@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+So instead of using btrfs_start_transaction() followed by a
+btrfs_commit_transaction(), use btrfs_commit_current_transaction() which
+achieves our purpose and avoids starting and committing new transactions.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/Kconfig     | 3 ++-
- drivers/hid/hid-ids.h   | 1 +
- drivers/hid/hid-topre.c | 7 +++++++
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ fs/btrfs/qgroup.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index 4d2a89d65b658..363c860835d35 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -1167,7 +1167,8 @@ config HID_TOPRE
- 	tristate "Topre REALFORCE keyboards"
- 	depends on HID
- 	help
--	  Say Y for N-key rollover support on Topre REALFORCE R2 108/87 key keyboards.
-+	  Say Y for N-key rollover support on Topre REALFORCE R2 108/87 key and
-+          Topre REALFORCE R3S 87 key keyboards.
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index fa9025c05d4e2..e9f58cdeeb5f3 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1899,11 +1899,7 @@ int btrfs_qgroup_cleanup_dropped_subvolume(struct btrfs_fs_info *fs_info, u64 su
+ 	 * Commit current transaction to make sure all the rfer/excl numbers
+ 	 * get updated.
+ 	 */
+-	trans = btrfs_start_transaction(fs_info->quota_root, 0);
+-	if (IS_ERR(trans))
+-		return PTR_ERR(trans);
+-
+-	ret = btrfs_commit_transaction(trans);
++	ret = btrfs_commit_current_transaction(fs_info->quota_root);
+ 	if (ret < 0)
+ 		return ret;
  
- config HID_THINGM
- 	tristate "ThingM blink(1) USB RGB LED"
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 43a6f1d243a62..4df0bfc3c8413 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1300,6 +1300,7 @@
- #define USB_VENDOR_ID_TOPRE			0x0853
- #define USB_DEVICE_ID_TOPRE_REALFORCE_R2_108			0x0148
- #define USB_DEVICE_ID_TOPRE_REALFORCE_R2_87			0x0146
-+#define USB_DEVICE_ID_TOPRE_REALFORCE_R3S_87			0x0313
- 
- #define USB_VENDOR_ID_TOPSEED		0x0766
- #define USB_DEVICE_ID_TOPSEED_CYBERLINK	0x0204
-diff --git a/drivers/hid/hid-topre.c b/drivers/hid/hid-topre.c
-index 848361f6225df..ccedf8721722e 100644
---- a/drivers/hid/hid-topre.c
-+++ b/drivers/hid/hid-topre.c
-@@ -29,6 +29,11 @@ static const __u8 *topre_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		hid_info(hdev,
- 			"fixing up Topre REALFORCE keyboard report descriptor\n");
- 		rdesc[72] = 0x02;
-+	} else if (*rsize >= 106 && rdesc[28] == 0x29 && rdesc[29] == 0xe7 &&
-+				    rdesc[30] == 0x81 && rdesc[31] == 0x00) {
-+		hid_info(hdev,
-+			"fixing up Topre REALFORCE keyboard report descriptor\n");
-+		rdesc[31] = 0x02;
- 	}
- 	return rdesc;
- }
-@@ -38,6 +43,8 @@ static const struct hid_device_id topre_id_table[] = {
- 			 USB_DEVICE_ID_TOPRE_REALFORCE_R2_108) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_TOPRE,
- 			 USB_DEVICE_ID_TOPRE_REALFORCE_R2_87) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_TOPRE,
-+			 USB_DEVICE_ID_TOPRE_REALFORCE_R3S_87) },
- 	{ }
- };
- MODULE_DEVICE_TABLE(hid, topre_id_table);
 -- 
 2.39.5
 
