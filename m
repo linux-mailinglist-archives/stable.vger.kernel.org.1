@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-125611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77C2A69CED
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 00:55:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 413E3A69CF0
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 00:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D002189F0F5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 23:55:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2CE67B263F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 23:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567AC222599;
-	Wed, 19 Mar 2025 23:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEAF222599;
+	Wed, 19 Mar 2025 23:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gB1kCa/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqNVkV2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13291219A7E;
-	Wed, 19 Mar 2025 23:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5DA219A7E;
+	Wed, 19 Mar 2025 23:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742428513; cv=none; b=j7JtTPdOc7aBPwgfKCsKC2Dq2aKNF/6ECAY5GPSgM8AxN1wvvota0fXKvDJeNdumEjWMZtg7N34DTFvUCavLslocvGeJwOk6dOOd/1eqV4JE/gaVvBMDwpPNq/gQUVIPigy/aGS9myS7g9syGOw/JMwYTFE08HkA5eJ7ewDsE1g=
+	t=1742428574; cv=none; b=IGJi30Qk+We3XDrAm38bbRFahHvnTp5IRfZrnCMkKjyz21E9tJes6/wl2Qa2YyeVylL0uPwFpxgYouNq8YjYb3gFAMi4qlmJvMMNOVDkzj2K1IeAmXRlmq5Orw9Bfs44B622hHQaiViyr/Lo8ZsJ5w8I7A1aPzLlj+O7KoOmJxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742428513; c=relaxed/simple;
-	bh=ZHlDr1DFYlSxB8cpiuHTZVz4DMnmYr21wuhSjCJu4Zo=;
+	s=arc-20240116; t=1742428574; c=relaxed/simple;
+	bh=dWBcxNU4QZTdjfYj1hu24JqFo9RJvy5cK4j7c1xnIQ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u/G1iTYXr4cR04M9vJ8o07J+XqcWJ5+UiugtJDiEqHaKaW+NSF0Oeege6cNZ5Vc1qXao7tlACb1iWhHcDWNALVum4gB1a1+6J2RfFhEp2CyHR+/PjOeFNJlZu94jJ5P65GScnIuR15e01SytOK1rCZh8ZuGjkC8pC258IOA/lME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gB1kCa/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A993C4CEE4;
-	Wed, 19 Mar 2025 23:55:12 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=IwE+a5p4UqPuXQFqik35RlfvruKaLOqgYIxpeGYow6K/axSp/en4pGbaNIK0o+I1OvQ/ppv+GQF0fFDru1gEOh/WJsGaWOw6FwaR8MjGuHN1gQLEku+1Cl8q2zdJqi/L+y11KUB23+oB9OlH6wnKk7jJq0rfCMG7KatYeOzGp8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqNVkV2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472E8C4CEE4;
+	Wed, 19 Mar 2025 23:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742428512;
-	bh=ZHlDr1DFYlSxB8cpiuHTZVz4DMnmYr21wuhSjCJu4Zo=;
+	s=korg; t=1742428573;
+	bh=dWBcxNU4QZTdjfYj1hu24JqFo9RJvy5cK4j7c1xnIQ4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gB1kCa/wL/HzAdvTkgp38QB5Oapu3pyTOZgBjiYAJj447NC9yOq+Lxpul/ItjqkmV
-	 m8qyRNGHkgUHiW6RD268UZL3ZL6uiWf9vvbycp92LnqoHpL/v3kiC3FrNrElw1Etvi
-	 OJv4nyGhU5xTHwrEx/Egc8pCmUwd6WF6tqpkPxkA=
-Date: Wed, 19 Mar 2025 16:53:53 -0700
+	b=UqNVkV2QWt33DVkwZ1KxpqZCq5RnjASeW4D4cKlkgBUpFgO8J6egQ7klVn1hkMgVN
+	 WMVQMqU9KpMwl0VpIRG0ZWI0KUyjU3apTO4XZWLtbAQzUsfZNvV4kiBYNGN91oxKRs
+	 t/gQYcIJX/HD5a10xeuPzK0o6B8rvxokKepRF9Qg=
+Date: Wed, 19 Mar 2025 16:54:54 -0700
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Hardik Garg <hargar@linux.microsoft.com>
-Cc: frank.scheiner@web.de, dchinner@redhat.com, djwong@kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: 6.1.132-rc1 build regression on Azure x86 and arm64 VM
-Message-ID: <2025031946-polygon-barrel-6df0@gregkh>
-References: <8c6125d7-363c-42b3-bdbb-f802cb8b4408@web.de>
- <1742423150-5185-1-git-send-email-hargar@linux.microsoft.com>
+To: Sergio Callegari <sergio.callegari@gmail.com>
+Cc: stable@vger.kernel.org, Linux Regressions <regressions@lists.linux.dev>
+Subject: Re: Regression: mt7921e unable to change power state from d3cold to
+ d0 - 6.12.x broken, past LTS 6.6.x works
+Message-ID: <2025031923-rocklike-unbitten-9e90@gregkh>
+References: <415e7c31-1e8d-499b-911e-33569c29ebe0@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,49 +54,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1742423150-5185-1-git-send-email-hargar@linux.microsoft.com>
+In-Reply-To: <415e7c31-1e8d-499b-911e-33569c29ebe0@gmail.com>
 
-On Wed, Mar 19, 2025 at 03:25:50PM -0700, Hardik Garg wrote:
-> v6.1.132-rc1 build fails on Azure x86 and arm64 VM:
+On Wed, Mar 19, 2025 at 08:38:52PM +0100, Sergio Callegari wrote:
+> There is a nasty regression wrt mt7921e in the last LTS series (6.12). If
+> your computer crashes or fails to get out of hibernation, then at the next
+> boot the mt7921e wifi does not work, with dmesg reporting that it is unable
+> to change power state from d3cold to d0.
+> 
+> The issue is nasty, because rebooting won't help.
 
-Odd, there is no real 6.1.132-rc1 announcement yet, so there's no rush
-at the moment :)
-
-> fs/xfs/libxfs/xfs_alloc.c: In function '__xfs_free_extent_later':
-> fs/xfs/libxfs/xfs_alloc.c:2551:51: error: 'mp' undeclared (first use in this function); did you mean 'tp'?
->  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
->       |                                                   ^~
-> ./include/linux/compiler.h:78:45: note: in definition of macro 'unlikely'
->    78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
->       |                                             ^
-> fs/xfs/libxfs/xfs_alloc.c:2551:13: note: in expansion of macro 'XFS_IS_CORRUPT'
->  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
->       |             ^~~~~~~~~~~~~~
-> fs/xfs/libxfs/xfs_alloc.c:2551:51: note: each undeclared identifier is reported only once for each function it appears in
->  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
->       |                                                   ^~
-> ./include/linux/compiler.h:78:45: note: in definition of macro 'unlikely'
->    78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
->       |                                             ^
-> fs/xfs/libxfs/xfs_alloc.c:2551:13: note: in expansion of macro 'XFS_IS_CORRUPT'
->  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
->       |             ^~~~~~~~~~~~~~
-> In file included from ./fs/xfs/xfs.h:22,
->                  from fs/xfs/libxfs/xfs_alloc.c:6:
-> ./fs/xfs/xfs_linux.h:225:63: warning: left-hand operand of comma expression has no effect [-Wunused-value]
->   225 |                                                __this_address), \
->       |                                                               ^
-> fs/xfs/libxfs/xfs_alloc.c:2551:13: note: in expansion of macro 'XFS_IS_CORRUPT'
->  2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
->       |             ^~~~~~~~~~~~~~
->   CC [M]  net/ipv4/netfilter/arpt_mangle.o
->   CC      net/unix/scm.o
-> make[3]: *** [scripts/Makefile.build:250: fs/xfs/libxfs/xfs_alloc.o] Error 1
-> make[2]: *** [scripts/Makefile.build:503: fs/xfs] Error 2
-
-Something is odd with the xfs patches I took?
-
-Any hints on what to do is appreciated.
+Can you do a 'git bisect' to track down the issue?  Also, maybe letting
+the network driver authors know about this would be good.
 
 thanks,
 
