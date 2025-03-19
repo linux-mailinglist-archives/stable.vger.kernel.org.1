@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-125076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D5BA68FBD
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135DFA69222
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:02:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 277AD3BF5F8
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817E51B6736D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26511D6DBF;
-	Wed, 19 Mar 2025 14:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D561DE89C;
+	Wed, 19 Mar 2025 14:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlOjw22a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmqCd+LK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A310F1E5216;
-	Wed, 19 Mar 2025 14:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CC21DED4A;
+	Wed, 19 Mar 2025 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394938; cv=none; b=XVijnH0O5OmktBB4TBsxvH4Jv5JW0D85R657lpcpGyAoTVRxfOTWQFju7k9FnCDml+qdknS/FPcPYFt0YTlI4TwK5J3Y60cqCYeRcfAUf4L+Y+kgRD3W+er9i+JN3gEbMClhzxW0VGs6YlhkSHLGoE2Jtf4FIQSy5z/speB25zc=
+	t=1742395177; cv=none; b=IEMqTk8UqFYlfQgElsc/425GvCkt9ZkvZD+B3oacQqySv6d8WMqhUR8uNANhHk54NEeNJboTqm2KCQqImSmhxIFapSmaQ/gAASVfSHZcGjCXgWm4GZfoGVSyvcl1IOfepJ/iEXCgU20oeJAaK9NBK9kOm13q4rfzm8voMLaRZRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394938; c=relaxed/simple;
-	bh=PlOObE7wVbXJoLMJfxohyfrHr4LdBfClUrYkCy73pvs=;
+	s=arc-20240116; t=1742395177; c=relaxed/simple;
+	bh=3ZVKPlpIvJGxo1tktWA3C19RWDN0ZVO5CQm7DCGM5As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBXOecRodttBW8HgCOgDzJqOoTL3UqA70jYXwvSXXvbZyDANRO0HwKxkTWbTp8/jeWSmfj/LNnrNftz3UD5bHntuidTIDRpqIBEnXBEBG3ynCwYZijulDteDYTDCdWWwotJASTc2UUQACS3dbYgDLGPnfVBq12jWO1Fx/kYcgWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlOjw22a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7007AC4CEE8;
-	Wed, 19 Mar 2025 14:35:38 +0000 (UTC)
+	 MIME-Version; b=Hgbm/8YnF0Omc00Z+xOKCcNS0fyxD6/ngg0TnJ0YZfCcBol5NlNjwdi3nPHx1RGfSFmnBjF+0JvuLPixOKHERPay57QgCdrtyt+VlUrSDn3HQuCrW4fN5EK2hf7flIaV74kw3yX5UDbBrf9SB9Hezoef9woclEyodU2A1S95+XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmqCd+LK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E59CC4CEE4;
+	Wed, 19 Mar 2025 14:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394938;
-	bh=PlOObE7wVbXJoLMJfxohyfrHr4LdBfClUrYkCy73pvs=;
+	s=korg; t=1742395177;
+	bh=3ZVKPlpIvJGxo1tktWA3C19RWDN0ZVO5CQm7DCGM5As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlOjw22aQvTr9LaQSgz0QOAZG/VQNq2a0OUAhOLCpy9Eh/dXCJfw9g1A22RbRIRFF
-	 V6NWbO3fpZQ4/mOJE4o77U8e03hnlpai12nezvPjz6kWuJniwePcIgsinWCHYDL24e
-	 VqtGyVWUYtZUqOeLV+wopot4SF2sOie8JqgKPww0=
+	b=qmqCd+LKTqMLqF88/SKa9856eVhfpEOtzc2kpyR0GqG8IZGjpJ5CszA0Vgc2HQ8Rp
+	 RlL5qY2NPorYoQo+TIi3nXcGVTzaHstML3DFc26DxWw4f2acTMnWU3NfcWJV32UMtl
+	 v5W7eYYbjzQy2AbRtcC04f/o7llPkgTYTYvh2m2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 107/241] ASoC: Intel: sof_sdw: Add quirk for Asus Zenbook S14
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Youngmin Nam <youngmin.nam@samsung.com>
+Subject: [PATCH 6.6 006/166] tcp: fix races in tcp_abort()
 Date: Wed, 19 Mar 2025 07:29:37 -0700
-Message-ID: <20250319143030.369125606@linuxfoundation.org>
+Message-ID: <20250319143020.154369464@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0843449708085c4fb45a3c325c2fbced556f6abf ]
+commit 5ce4645c23cf5f048eb8e9ce49e514bababdee85 upstream.
 
-Asus laptops with sound PCI subsystem ID 1043:1e13 have the DMICs
-connected to the host instead of the CS42L43 so need the
-SOC_SDW_CODEC_MIC quirk.
+tcp_abort() has the same issue than the one fixed in the prior patch
+in tcp_write_err().
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250204053943.93596-3-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In order to get consistent results from tcp_poll(), we must call
+sk_error_report() after tcp_done().
+
+We can use tcp_done_with_error() to centralize this logic.
+
+Fixes: c1e64e298b8c ("net: diag: Support destroying TCP sockets.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20240528125253.1966136-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[youngmin: Resolved minor conflict in net/ipv4/tcp.c]
+Signed-off-by: Youngmin Nam <youngmin.nam@samsung.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 62e71f56269d8..352c7a84cc2e8 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -751,6 +751,7 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- };
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4630,13 +4630,9 @@ int tcp_abort(struct sock *sk, int err)
+ 	bh_lock_sock(sk);
  
- static const struct snd_pci_quirk sof_sdw_ssid_quirk_table[] = {
-+	SND_PCI_QUIRK(0x1043, 0x1e13, "ASUS Zenbook S14", SOC_SDW_CODEC_MIC),
- 	{}
- };
+ 	if (!sock_flag(sk, SOCK_DEAD)) {
+-		WRITE_ONCE(sk->sk_err, err);
+-		/* This barrier is coupled with smp_rmb() in tcp_poll() */
+-		smp_wmb();
+-		sk_error_report(sk);
+ 		if (tcp_need_reset(sk->sk_state))
+ 			tcp_send_active_reset(sk, GFP_ATOMIC);
+-		tcp_done(sk);
++		tcp_done_with_error(sk, err);
+ 	}
  
--- 
-2.39.5
-
+ 	bh_unlock_sock(sk);
 
 
 
