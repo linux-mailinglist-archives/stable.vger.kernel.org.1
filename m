@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79433A6913D
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0186AA690B1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4431B85365
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7689C1B648F3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193AB1E130F;
-	Wed, 19 Mar 2025 14:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8811B0F32;
+	Wed, 19 Mar 2025 14:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nThvSc5T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTAcLEPF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C965C1B2194;
-	Wed, 19 Mar 2025 14:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0A01D63E3;
+	Wed, 19 Mar 2025 14:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394901; cv=none; b=VKzI9k7wBdwpIY9H2Kk3QVB4RpS/api4CEOXJSX0w/1qBBQIl+sE7Nadk8pbp5mk4J6opPzcPfANT1Up6nWScxzbJT1lTBcAt9s0Nkxj/+U+5vpComNx/DNUdoN/3I8iBuuSEJMa49lqocrZqT05maPtm8teptBeDGvuTDkJKHg=
+	t=1742395057; cv=none; b=PABjD+rmaXq5Clj/vziHKmHn0wwmCZr5eUwpX9XrlgeN9WTaeskH1qrVrzNqsaxuqbY+UZXk7+cHbrP/v958YeBqBC8nAPzjo7z+BucuFNe5QQlhbT8pYCEUHpLLRVhar1alf+dM2lw8eseDROiqTdYxTMTzAvAD3jOhTA/sOB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394901; c=relaxed/simple;
-	bh=iq2MwUsQfJsUmkGk1fPY2VOtzjTn6EJkYKfWfqZosww=;
+	s=arc-20240116; t=1742395057; c=relaxed/simple;
+	bh=DQ6MBOjQm72p8U4PILn/kvDBaDqMDYb5leaQU3jZVKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6m5OtI22dukHzXxoajMUdpj3wDVRb3dI02yWzZ/HRKpzCIPw6U3MpS8/Y9strsRGGEHKzMWznaTHX39AYbDpMvCAwsPAIIaswkBDN4oMA+sr5eJ607qSW2ESczUJdzIDv4v6HMOaQfYLYrB8nFbMEnOuCT+W/NxYHP+GF8U/tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nThvSc5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B178C4CEE4;
-	Wed, 19 Mar 2025 14:35:01 +0000 (UTC)
+	 MIME-Version; b=f9nJvjtsalqGlr9CJHWBt9+KjpwspVknzFB2e6qhZiaKgqb19ctFhbJfzFt0gyrs+RvcFXzqm/XmApXqMSGyoaRsJtzRmxr2FK24m34hMBFhMPbD7K8zmDniLD8SH+l5+krPYZveEucAttP3xj1lx+4KeT6ryu6wbruFQymKjWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTAcLEPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF90C4CEE4;
+	Wed, 19 Mar 2025 14:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394901;
-	bh=iq2MwUsQfJsUmkGk1fPY2VOtzjTn6EJkYKfWfqZosww=;
+	s=korg; t=1742395057;
+	bh=DQ6MBOjQm72p8U4PILn/kvDBaDqMDYb5leaQU3jZVKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nThvSc5Tss8Znvm34FOaVOmY2JRQZTxAXQL/mtO/NMUAJsZc2A0pomPUrdoF0/Akg
-	 /mrztfC9buPH1NG9RXh1Q1ilouQD1nnhQkhTEaK0Lsh5ZbKU3ySuJWeH5v7bdEyHpw
-	 kNPxXsxtRBwsRB2s62xUKd632nXZs4g6ePXNszc8=
+	b=zTAcLEPFSfhbDWNOnbGy7b5r8ts6zt38Ga4aNtSAxgDglvQMOHI3xEL0M+hKhwEOm
+	 fMTFgKvbbZSUV4ITieoB0/QkC6shRIp8OpUjmRuaLQP1xNHm3QEtr7zrOxxEh7c07Q
+	 JvQbCIBraaAt26jEUyTZhcyFnMo4mF5P5zpZoHp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 070/241] kbuild: keep symbols for symbol_get() even with CONFIG_TRIM_UNUSED_KSYMS
-Date: Wed, 19 Mar 2025 07:29:00 -0700
-Message-ID: <20250319143029.457845706@linuxfoundation.org>
+Subject: [PATCH 6.12 048/231] gre: Fix IPv6 link-local address generation.
+Date: Wed, 19 Mar 2025 07:29:01 -0700
+Message-ID: <20250319143028.009049963@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,186 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 4c56eb33e603c3b9eb4bd24efbfdd0283c1c37e4 ]
+[ Upstream commit 183185a18ff96751db52a46ccf93fff3a1f42815 ]
 
-Linus observed that the symbol_request(utf8_data_table) call fails when
-CONFIG_UNICODE=y and CONFIG_TRIM_UNUSED_KSYMS=y.
+Use addrconf_addr_gen() to generate IPv6 link-local addresses on GRE
+devices in most cases and fall back to using add_v4_addrs() only in
+case the GRE configuration is incompatible with addrconf_addr_gen().
 
-symbol_get() relies on the symbol data being present in the ksymtab for
-symbol lookups. However, EXPORT_SYMBOL_GPL(utf8_data_table) is dropped
-due to CONFIG_TRIM_UNUSED_KSYMS, as no module references it in this case.
+GRE used to use addrconf_addr_gen() until commit e5dd729460ca
+("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL
+address") restricted this use to gretap and ip6gretap devices, and
+created add_v4_addrs() (borrowed from SIT) for non-Ethernet GRE ones.
 
-Probably, this has been broken since commit dbacb0ef670d ("kconfig option
-for TRIM_UNUSED_KSYMS").
+The original problem came when commit 9af28511be10 ("addrconf: refuse
+isatap eui64 for INADDR_ANY") made __ipv6_isatap_ifid() fail when its
+addr parameter was 0. The commit says that this would create an invalid
+address, however, I couldn't find any RFC saying that the generated
+interface identifier would be wrong. Anyway, since gre over IPv4
+devices pass their local tunnel address to __ipv6_isatap_ifid(), that
+commit broke their IPv6 link-local address generation when the local
+address was unspecified.
 
-This commit addresses the issue by leveraging modpost. Symbol names
-passed to symbol_get() are recorded in the special .no_trim_symbol
-section, which is then parsed by modpost to forcibly keep such symbols.
-The .no_trim_symbol section is discarded by the linker scripts, so there
-is no impact on the size of the final vmlinux or modules.
+Then commit e5dd729460ca ("ip/ip6_gre: use the same logic as SIT
+interfaces when computing v6LL address") tried to fix that case by
+defining add_v4_addrs() and calling it to generate the IPv6 link-local
+address instead of using addrconf_addr_gen() (apart for gretap and
+ip6gretap devices, which would still use the regular
+addrconf_addr_gen(), since they have a MAC address).
 
-This commit cannot resolve the issue for direct calls to __symbol_get()
-because the symbol name is not known at compile-time.
+That broke several use cases because add_v4_addrs() isn't properly
+integrated into the rest of IPv6 Neighbor Discovery code. Several of
+these shortcomings have been fixed over time, but add_v4_addrs()
+remains broken on several aspects. In particular, it doesn't send any
+Router Sollicitations, so the SLAAC process doesn't start until the
+interface receives a Router Advertisement. Also, add_v4_addrs() mostly
+ignores the address generation mode of the interface
+(/proc/sys/net/ipv6/conf/*/addr_gen_mode), thus breaking the
+IN6_ADDR_GEN_MODE_RANDOM and IN6_ADDR_GEN_MODE_STABLE_PRIVACY cases.
 
-Although symbol_get() may eventually be deprecated, this workaround
-should be good enough meanwhile.
+Fix the situation by using add_v4_addrs() only in the specific scenario
+where the normal method would fail. That is, for interfaces that have
+all of the following characteristics:
 
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+  * run over IPv4,
+  * transport IP packets directly, not Ethernet (that is, not gretap
+    interfaces),
+  * tunnel endpoint is INADDR_ANY (that is, 0),
+  * device address generation mode is EUI64.
+
+In all other cases, revert back to the regular addrconf_addr_gen().
+
+Also, remove the special case for ip6gre interfaces in add_v4_addrs(),
+since ip6gre devices now always use addrconf_addr_gen() instead.
+
+Fixes: e5dd729460ca ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL address")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/559c32ce5c9976b269e6337ac9abb6a96abe5096.1741375285.git.gnault@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/vmlinux.lds.h |  1 +
- include/linux/module.h            |  5 ++++-
- scripts/mod/modpost.c             | 35 +++++++++++++++++++++++++++++++
- scripts/mod/modpost.h             |  6 ++++++
- scripts/module.lds.S              |  1 +
- 5 files changed, 47 insertions(+), 1 deletion(-)
+ net/ipv6/addrconf.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 337d3336e1756..0d5b186abee86 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -1038,6 +1038,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
- 	*(.discard)							\
- 	*(.discard.*)							\
- 	*(.export_symbol)						\
-+	*(.no_trim_symbol)						\
- 	*(.modinfo)							\
- 	/* ld.bfd warns about .gnu.version* even when not emitted */	\
- 	*(.gnu.version*)						\
-diff --git a/include/linux/module.h b/include/linux/module.h
-index b3a6434353579..541e4357ea2f1 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -306,7 +306,10 @@ extern int modules_disabled; /* for sysctl */
- /* Get/put a kernel symbol (calls must be symmetric) */
- void *__symbol_get(const char *symbol);
- void *__symbol_get_gpl(const char *symbol);
--#define symbol_get(x) ((typeof(&x))(__symbol_get(__stringify(x))))
-+#define symbol_get(x)	({ \
-+	static const char __notrim[] \
-+		__used __section(".no_trim_symbol") = __stringify(x); \
-+	(typeof(&x))(__symbol_get(__stringify(x))); })
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index f7c17388ff6aa..26cdb66574757 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3237,16 +3237,13 @@ static void add_v4_addrs(struct inet6_dev *idev)
+ 	struct in6_addr addr;
+ 	struct net_device *dev;
+ 	struct net *net = dev_net(idev->dev);
+-	int scope, plen, offset = 0;
++	int scope, plen;
+ 	u32 pflags = 0;
  
- /* modules using other modules: kdb wants to see this. */
- struct module_use {
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 7ea59dc4926b3..967d698e0c924 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -503,6 +503,9 @@ static int parse_elf(struct elf_info *info, const char *filename)
- 			info->modinfo_len = sechdrs[i].sh_size;
- 		} else if (!strcmp(secname, ".export_symbol")) {
- 			info->export_symbol_secndx = i;
-+		} else if (!strcmp(secname, ".no_trim_symbol")) {
-+			info->no_trim_symbol = (void *)hdr + sechdrs[i].sh_offset;
-+			info->no_trim_symbol_len = sechdrs[i].sh_size;
- 		}
+ 	ASSERT_RTNL();
  
- 		if (sechdrs[i].sh_type == SHT_SYMTAB) {
-@@ -1562,6 +1565,14 @@ static void read_symbols(const char *modname)
- 	/* strip trailing .o */
- 	mod = new_module(modname, strlen(modname) - strlen(".o"));
+ 	memset(&addr, 0, sizeof(struct in6_addr));
+-	/* in case of IP6GRE the dev_addr is an IPv6 and therefore we use only the last 4 bytes */
+-	if (idev->dev->addr_len == sizeof(struct in6_addr))
+-		offset = sizeof(struct in6_addr) - 4;
+-	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr + offset, 4);
++	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr, 4);
  
-+	/* save .no_trim_symbol section for later use */
-+	if (info.no_trim_symbol_len) {
-+		mod->no_trim_symbol = xmalloc(info.no_trim_symbol_len);
-+		memcpy(mod->no_trim_symbol, info.no_trim_symbol,
-+		       info.no_trim_symbol_len);
-+		mod->no_trim_symbol_len = info.no_trim_symbol_len;
-+	}
-+
- 	if (!mod->is_vmlinux) {
- 		license = get_modinfo(&info, "license");
- 		if (!license)
-@@ -1724,6 +1735,28 @@ static void handle_white_list_exports(const char *white_list)
- 	free(buf);
- }
- 
-+/*
-+ * Keep symbols recorded in the .no_trim_symbol section. This is necessary to
-+ * prevent CONFIG_TRIM_UNUSED_KSYMS from dropping EXPORT_SYMBOL because
-+ * symbol_get() relies on the symbol being present in the ksymtab for lookups.
-+ */
-+static void keep_no_trim_symbols(struct module *mod)
-+{
-+	unsigned long size = mod->no_trim_symbol_len;
-+
-+	for (char *s = mod->no_trim_symbol; s; s = next_string(s , &size)) {
-+		struct symbol *sym;
-+
-+		/*
-+		 * If find_symbol() returns NULL, this symbol is not provided
-+		 * by any module, and symbol_get() will fail.
-+		 */
-+		sym = find_symbol(s);
-+		if (sym)
-+			sym->used = true;
-+	}
-+}
-+
- static void check_modname_len(struct module *mod)
- {
- 	const char *mod_name;
-@@ -2195,6 +2228,8 @@ int main(int argc, char **argv)
- 		read_symbols_from_files(files_source);
- 
- 	list_for_each_entry(mod, &modules, list) {
-+		keep_no_trim_symbols(mod);
-+
- 		if (mod->dump_file || mod->is_vmlinux)
- 			continue;
- 
-diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
-index ffd0a52a606ef..59366f456b765 100644
---- a/scripts/mod/modpost.h
-+++ b/scripts/mod/modpost.h
-@@ -111,6 +111,8 @@ struct module_alias {
-  *
-  * @dump_file: path to the .symvers file if loaded from a file
-  * @aliases: list head for module_aliases
-+ * @no_trim_symbol: .no_trim_symbol section data
-+ * @no_trim_symbol_len: length of the .no_trim_symbol section
-  */
- struct module {
- 	struct list_head list;
-@@ -128,6 +130,8 @@ struct module {
- 	// Actual imported namespaces
- 	struct list_head imported_namespaces;
- 	struct list_head aliases;
-+	char *no_trim_symbol;
-+	unsigned int no_trim_symbol_len;
- 	char name[];
- };
- 
-@@ -141,6 +145,8 @@ struct elf_info {
- 	char         *strtab;
- 	char	     *modinfo;
- 	unsigned int modinfo_len;
-+	char         *no_trim_symbol;
-+	unsigned int no_trim_symbol_len;
- 
- 	/* support for 32bit section numbers */
- 
-diff --git a/scripts/module.lds.S b/scripts/module.lds.S
-index c2f80f9141d40..450f1088d5fd3 100644
---- a/scripts/module.lds.S
-+++ b/scripts/module.lds.S
-@@ -16,6 +16,7 @@ SECTIONS {
- 		*(.discard)
- 		*(.discard.*)
- 		*(.export_symbol)
-+		*(.no_trim_symbol)
+ 	if (!(idev->dev->flags & IFF_POINTOPOINT) && idev->dev->type == ARPHRD_SIT) {
+ 		scope = IPV6_ADDR_COMPATv4;
+@@ -3557,7 +3554,13 @@ static void addrconf_gre_config(struct net_device *dev)
+ 		return;
  	}
  
- 	__ksymtab		0 : ALIGN(8) { *(SORT(___ksymtab+*)) }
+-	if (dev->type == ARPHRD_ETHER) {
++	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
++	 * unless we have an IPv4 GRE device not bound to an IP address and
++	 * which is in EUI64 mode (as __ipv6_isatap_ifid() would fail in this
++	 * case). Such devices fall back to add_v4_addrs() instead.
++	 */
++	if (!(dev->type == ARPHRD_IPGRE && *(__be32 *)dev->dev_addr == 0 &&
++	      idev->cnf.addr_gen_mode == IN6_ADDR_GEN_MODE_EUI64)) {
+ 		addrconf_addr_gen(idev, true);
+ 		return;
+ 	}
 -- 
 2.39.5
 
