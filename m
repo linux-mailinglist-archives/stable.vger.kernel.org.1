@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469C3A690F9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83767A68FDC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99BAA174426
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEA14887B40
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1672204F8D;
-	Wed, 19 Mar 2025 14:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94321F099C;
+	Wed, 19 Mar 2025 14:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgRyqMR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZA6DOtMq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701CE1DED78;
-	Wed, 19 Mar 2025 14:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F561DE2D8;
+	Wed, 19 Mar 2025 14:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395195; cv=none; b=ZOUOQJBKKoUKDtkQrQGV6mIoY8LDiH/2Pz0h/g8p6dCltrPbT5iLv5pr5r08yvGYpoux9vuuAF3jW5V5hwQhivOy1QVhTye0ni8yzs0w6GwcYCVqo60/YaRfiG8T8HWegl29cb8LdcNqzzd+IDvtVQ/ZIJhZ+UjyW9qWfUyj99A=
+	t=1742394966; cv=none; b=GfTmKkHc5jv8PFx9DX5AhYEIrX89NfK4WeEhgXdxw+ydHZWAx4W4bibP/Ds00zZqOjA1La/yeIN484jj/C0v1RFtmHu/r+BdbLPcxN7svOYAayOSpJNTxJ3TVfSDKtNgFgt2noyKm/AyqQdgnpDlVTgFCgGWfxLQDWmqgBnqfnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395195; c=relaxed/simple;
-	bh=HbvNzl3FQu/X1b3xW87I9dsbgEYuE86MIui3oWV8bZI=;
+	s=arc-20240116; t=1742394966; c=relaxed/simple;
+	bh=tZo9tbZ/pIwiIdl9lDezi1AsGhRGWue4CaasuoxxbF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F02lFl9rpDnXwfKWEazO58755NZUfYQp11xkvpwe8OM6YT12H/oMg3Mgme15VCy0twxY4vaGPV12cFU8xz7nGgKd/I7iqBK1xCLP/tttqDeIOBmnS8oZ/RQD7TunQuMWjSngPCvllgLsBCDQMLpMIqazrIHlkval0nhRMwQSgyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgRyqMR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BFFC4CEE4;
-	Wed, 19 Mar 2025 14:39:55 +0000 (UTC)
+	 MIME-Version; b=Sgf9XDUN1yxbg4fTtc+XLGI6PYnrYxcEgRAFS8AsbXcjtj6r7jYbJaHZxiFBxLJ3DjMxIs0k8S/hotCiek1L7moImdOeYlN6QlU9U3YBO6RuxZ7DTLyulbhwTtxSSTmfMiSvL7EcjYEBTQNIp+x0o683n2S8uJuTQCgKKZBx7wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZA6DOtMq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE2BC4CEE4;
+	Wed, 19 Mar 2025 14:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395195;
-	bh=HbvNzl3FQu/X1b3xW87I9dsbgEYuE86MIui3oWV8bZI=;
+	s=korg; t=1742394966;
+	bh=tZo9tbZ/pIwiIdl9lDezi1AsGhRGWue4CaasuoxxbF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgRyqMR3Ps/Kl5YGxediju6yBWGNx4Q6j9/lXzoZ0DC9m746uAjORDUboeF3jezY4
-	 MOc3HpNxpjDrVa4aafjKGkvc4MWsEi2X1jg08YNxKvphBDtoSLfCbwjAJ0vFlub9tG
-	 frY7cflNl9cY+Fpk2oE9DNWtK/fLK0iXwUkyK0YI=
+	b=ZA6DOtMqEp4JemLOiQejl6HVs0UeUyTfl1Ts4OIQYNF932XPaLWbja8wJ4YHkrhaw
+	 KBLCFBRvHzBsNGjN0KNaNqT8tyQcBbFDMyXkfLnP0LDgIyWb4bOA8gzlIXWBytSH5I
+	 ivD6gF8xVUR1WMRBVZWC+KWbB0VJwfezPA4QckdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/166] HID: apple: fix up the F6 key on the Omoton KB066 keyboard
-Date: Wed, 19 Mar 2025 07:30:27 -0700
-Message-ID: <20250319143021.514694111@linuxfoundation.org>
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.13 158/241] Input: i8042 - swap old quirk combination with new quirk for NHxxRZQ
+Date: Wed, 19 Mar 2025 07:30:28 -0700
+Message-ID: <20250319143031.633604968@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit 819083cb6eedcc8495cbf84845877bcc741b93b3 ]
+commit 729d163232971672d0f41b93c02092fb91f0e758 upstream.
 
-The Omoton KB066 is an Apple A1255 keyboard clone (HID product code
-05ac:022c). On both keyboards, the F6 key becomes Num Lock when the Fn
-key is held. But unlike its Apple exemplar, when the Omoton's F6 key is
-pressed without Fn, it sends the usage code 0xC0301 from the reserved
-section of the consumer page instead of the standard F6 usage code
-0x7003F from the keyboard page. The nonstandard code is translated to
-KEY_UNKNOWN and becomes useless on Linux. The Omoton KB066 is a pretty
-popular keyboard, judging from its 29,058 reviews on Amazon at time of
-writing, so let's account for its quirk to make it more usable.
+Some older Clevo barebones have problems like no or laggy keyboard after
+resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
+quirk.
 
-By the way, it would be nice if we could automatically set fnmode to 0
-for Omoton keyboards because they handle the Fn key internally and the
-kernel's Fn key handling creates undesirable side effects such as making
-F1 and F2 always Brightness Up and Brightness Down in fnmode=1 (the
-default) or always F1 and F2 in fnmode=2. Unfortunately I don't think
-there's a way to identify Bluetooth keyboards more specifically than the
-HID product code which is obviously inaccurate. Users of Omoton
-keyboards will just have to set fnmode to 0 manually to get full Fn key
-functionality.
+With the old i8042 quirks this devices keyboard is sometimes laggy after
+resume. With the new quirk this issue doesn't happen.
 
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://lore.kernel.org/r/20250221230137.70292-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-apple.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/input/serio/i8042-acpipnpio.h |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
-index 9ff40f3b98064..9f3480ef524c1 100644
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -531,6 +531,9 @@ static int hidinput_apple_event(struct hid_device *hid, struct input_dev *input,
- 		}
- 	}
- 
-+	if (usage->hid == 0xc0301) /* Omoton KB066 quirk */
-+		code = KEY_F6;
-+
- 	if (usage->code != code) {
- 		input_event_with_scancode(input, usage->type, code, usage->hid, value);
- 
--- 
-2.39.5
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1209,18 +1209,10 @@ static const struct dmi_system_id i8042_
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
+ 	{
+-		/*
+-		 * Setting SERIO_QUIRK_NOMUX or SERIO_QUIRK_RESET_ALWAYS makes
+-		 * the keyboard very laggy for ~5 seconds after boot and
+-		 * sometimes also after resume.
+-		 * However both are required for the keyboard to not fail
+-		 * completely sometimes after boot or resume.
+-		 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NHxxRZQ"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
 
 
 
