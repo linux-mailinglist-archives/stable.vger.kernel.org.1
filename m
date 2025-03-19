@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-124966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBE2A68F48
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:36:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AC2A69198
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BBC63AD240
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:34:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8251883C4A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9751C1F0F;
-	Wed, 19 Mar 2025 14:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B009921146D;
+	Wed, 19 Mar 2025 14:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNMzgFLm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXDBTY/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484CA1C1F02;
-	Wed, 19 Mar 2025 14:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6148C210F58;
+	Wed, 19 Mar 2025 14:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394858; cv=none; b=G7lQ/pfss4SjU/cXocpbcPnbLfQWBYAe6hnVcZNtiaAcbozeEKcl4qIXBrJaj/8aJCG3opSuwNU/TuCKoMGNI3c2T1DnjF3zOW0FgXBqvcpXtTf9qcwVLHbqqiDskZYqBkclLDrKbg4nnt7ke4fdBLCEnXTD/0NxeVdw6DXjXZY=
+	t=1742395013; cv=none; b=jxYw1KooL6MQhq9GoECSuE6I4Z6s1DvQ8HEGpsBP5Ecc3yFxN3KQrO1hZkmPd6ph0eOab8G+2F2jH6rWxwiEmUuC1biH2Bdd6cMwHinn/q4K7TYWprlXg/PiHlnBUjlULfplzvKwobeUuTKESK4x3zDSg7oK2UK767FqUcDbcXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394858; c=relaxed/simple;
-	bh=mTenDwC+FswwTY/pGFeuSQm4TQY44N+ju9qfYW/STq0=;
+	s=arc-20240116; t=1742395013; c=relaxed/simple;
+	bh=iq94qkHdhrKyYJMN61Zrf3JOhsSXDXIUpLak6JkPNhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AB0R6Mj37anlOa3ZLwnudP9QN82dRGdtAJ5YiAFlGSVWKLwu1NimpYjOhWqyPN4pBzImbtICr4xn6a28C7wTNkE2Qu81G5PHufAn1cOHSK4xt+y4h6NhZjgRFBewkkgpGz4tMG5lL7wNgqwsc4mYdT4dqLMnM9WRbzDTtI18h5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNMzgFLm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1508AC4CEE4;
-	Wed, 19 Mar 2025 14:34:18 +0000 (UTC)
+	 MIME-Version; b=gx9zm0JWmdMor2pmd03Ba6KwLNEiUNRSjlYOlFuroRygBTuuqy2V2ZFixpxz0IOpiWBjYs2IXZrglAXKvOJSX5eQJOm2otr+3h42w0is9hk3sOzLT5Myjy2woJF0O4Sj243rbkgkKoBWOExdQwVBvK3Bd3zGG3z9exhX8FI2Pv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXDBTY/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38716C4CEE4;
+	Wed, 19 Mar 2025 14:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394858;
-	bh=mTenDwC+FswwTY/pGFeuSQm4TQY44N+ju9qfYW/STq0=;
+	s=korg; t=1742395013;
+	bh=iq94qkHdhrKyYJMN61Zrf3JOhsSXDXIUpLak6JkPNhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNMzgFLmf52QNxSajb5O0XkKv2oWLmBlSbi5N1k6XG8bPyRe/ek915ZLXC2tPBUx6
-	 +REK20Md1MGroo2Ou4zvF69mMfr4Bp4pgPCb9KQiuOq3ez5U5xHVpgUnoV0q9yNRbH
-	 Isa4pRLNEZ+lct1c0Dfd/BVCnpEJgFAYm2ArAcxU=
+	b=jXDBTY/w21lr8nn2YfZX7akpbaO59JTXKaSRnayXH8LpZjTiCjbdbNeg7FG0m8b8/
+	 JCjNpRjkYbwfTbW20sg2O4ps5FVebusi/zpOFN0Q3ZVZEU+Ff4REXexZUQV1vzV9t+
+	 QRNGoMO5vOCdj1QarVLNdb/2X5BfK1R/tEpdMtrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kashavkin <akashavkin@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 047/241] netfilter: nft_exthdr: fix offset with ipv4_find_option()
+Subject: [PATCH 6.12 024/231] drm/hyperv: Fix address space leak when Hyper-V DRM device is removed
 Date: Wed, 19 Mar 2025 07:28:37 -0700
-Message-ID: <20250319143028.888658353@linuxfoundation.org>
+Message-ID: <20250319143027.422884325@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kashavkin <akashavkin@gmail.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 6edd78af9506bb182518da7f6feebd75655d9a0e ]
+[ Upstream commit aed709355fd05ef747e1af24a1d5d78cd7feb81e ]
 
-There is an incorrect calculation in the offset variable which causes
-the nft_skb_copy_to_reg() function to always return -EFAULT. Adding the
-start variable is redundant. In the __ip_options_compile() function the
-correct offset is specified when finding the function. There is no need
-to add the size of the iphdr structure to the offset.
+When a Hyper-V DRM device is probed, the driver allocates MMIO space for
+the vram, and maps it cacheable. If the device removed, or in the error
+path for device probing, the MMIO space is released but no unmap is done.
+Consequently the kernel address space for the mapping is leaked.
 
-Fixes: dbb5281a1f84 ("netfilter: nf_tables: add support for matching IPv4 options")
-Signed-off-by: Alexey Kashavkin <akashavkin@gmail.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fix this by adding iounmap() calls in the device removal path, and in the
+error path during device probing.
+
+Fixes: f1f63cbb705d ("drm/hyperv: Fix an error handling path in hyperv_vmbus_probe()")
+Fixes: a0ab5abced55 ("drm/hyperv : Removing the restruction of VRAM allocation with PCI bar size")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250210193441.2414-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250210193441.2414-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_exthdr.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/hyperv/hyperv_drm_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index b8d03364566c1..c74012c991255 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -85,7 +85,6 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 	unsigned char optbuf[sizeof(struct ip_options) + 40];
- 	struct ip_options *opt = (struct ip_options *)optbuf;
- 	struct iphdr *iph, _iph;
--	unsigned int start;
- 	bool found = false;
- 	__be32 info;
- 	int optlen;
-@@ -93,7 +92,6 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 	iph = skb_header_pointer(skb, 0, sizeof(_iph), &_iph);
- 	if (!iph)
- 		return -EBADMSG;
--	start = sizeof(struct iphdr);
+diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+index ff93e08d5036d..5f02a5a39ab4a 100644
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+@@ -154,6 +154,7 @@ static int hyperv_vmbus_probe(struct hv_device *hdev,
+ 	return 0;
  
- 	optlen = iph->ihl * 4 - (int)sizeof(struct iphdr);
- 	if (optlen <= 0)
-@@ -103,7 +101,7 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 	/* Copy the options since __ip_options_compile() modifies
- 	 * the options.
- 	 */
--	if (skb_copy_bits(skb, start, opt->__data, optlen))
-+	if (skb_copy_bits(skb, sizeof(struct iphdr), opt->__data, optlen))
- 		return -EBADMSG;
- 	opt->optlen = optlen;
+ err_free_mmio:
++	iounmap(hv->vram);
+ 	vmbus_free_mmio(hv->mem->start, hv->fb_size);
+ err_vmbus_close:
+ 	vmbus_close(hdev->channel);
+@@ -172,6 +173,7 @@ static void hyperv_vmbus_remove(struct hv_device *hdev)
+ 	vmbus_close(hdev->channel);
+ 	hv_set_drvdata(hdev, NULL);
  
-@@ -118,18 +116,18 @@ static int ipv4_find_option(struct net *net, struct sk_buff *skb,
- 		found = target == IPOPT_SSRR ? opt->is_strictroute :
- 					       !opt->is_strictroute;
- 		if (found)
--			*offset = opt->srr + start;
-+			*offset = opt->srr;
- 		break;
- 	case IPOPT_RR:
- 		if (!opt->rr)
- 			break;
--		*offset = opt->rr + start;
-+		*offset = opt->rr;
- 		found = true;
- 		break;
- 	case IPOPT_RA:
- 		if (!opt->router_alert)
- 			break;
--		*offset = opt->router_alert + start;
-+		*offset = opt->router_alert;
- 		found = true;
- 		break;
- 	default:
++	iounmap(hv->vram);
+ 	vmbus_free_mmio(hv->mem->start, hv->fb_size);
+ }
+ 
 -- 
 2.39.5
 
