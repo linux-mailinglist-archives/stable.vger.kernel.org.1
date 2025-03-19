@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-124995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79620A68F70
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3FAA691E0
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:58:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1028F3AF7C1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF5B51B87584
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AC31DED6C;
-	Wed, 19 Mar 2025 14:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356BD214221;
+	Wed, 19 Mar 2025 14:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ff5bqo2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUTlOdJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6F41C5D4D;
-	Wed, 19 Mar 2025 14:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07B51E1023;
+	Wed, 19 Mar 2025 14:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394878; cv=none; b=fXqgdC/d48gVtqvCNHl2YVum4y0LowWgtNLfm+pbclmoBVtqSEY9OY5p75reEQmkaRi9VrFo4DcQcew9RO2cwmPQPwgMsgdjLPoo7qFksT8UXqt6kDEEZZrAItjYPtev7mNIww9zYFPBgZ5AcsHaRJX0DuAy9aHS31a3MF9secU=
+	t=1742395034; cv=none; b=fWoHExlin1EFgG3lQaKY/WYoZuUTEs/Wi0IP1iMiBswQtqMV3z3Jr/kx6zL8qfrD0PuK8bSdulrAAZHTqVs9KzoXKoDbHlTgWg5/bh3FV+2nCYINnrpjpcqhiksQl3v+BrCdleZMzWHqkkxZnxTq9NYPidpWB2/2YkNZnyUilps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394878; c=relaxed/simple;
-	bh=mmYgaWc0H85fCqYKw/EgFTtn8PpYZyBSfCGMfIjTb6o=;
+	s=arc-20240116; t=1742395034; c=relaxed/simple;
+	bh=b2Sb3oaFQb3Aw0Y7oPuBYAvR31nUHJdoOq+ATdfyRoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfG6mLNef1Ld4kdMzhsKF1aBpshxJm+Jd22zy7tjzxvcEqx1qcIftUPaDLvqKzUFga1x2yF9bfi7UbbX/edpMJadoYBLRFtxIdogFuTzoOhMhS0diUubxsebvVxgyO2Lu04vwVTbpWajtlKGlKluBIoQnCwv7IuJc8WvrhZ3m20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ff5bqo2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420E8C4CEE4;
-	Wed, 19 Mar 2025 14:34:38 +0000 (UTC)
+	 MIME-Version; b=s62d+taqEKcUT3DksJn/g7HbnlvjPAkBxZeOMjYmXC/i9ukESbM8ItNmGUVGLdj14LxzgeGh8wVWYKo5oL0SpgigQeNqSBOBRON0gFwrekRinTU+M+UrvtyKmSaWSdVEJ6eyRYnEiZDniG+66IW6vu+AhN6TNjr3G84ryaXYNM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUTlOdJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B03C4CEE4;
+	Wed, 19 Mar 2025 14:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394878;
-	bh=mmYgaWc0H85fCqYKw/EgFTtn8PpYZyBSfCGMfIjTb6o=;
+	s=korg; t=1742395033;
+	bh=b2Sb3oaFQb3Aw0Y7oPuBYAvR31nUHJdoOq+ATdfyRoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ff5bqo2DKFlIQN1RcFfHdviJJ/YSgMrGsPEW2zNy8rYVf5hSmNHIhMcXcVe5F/40L
-	 8mUB+O4jIYMOnNDq4kP+xLMwwICJypztRaI4dPBMwTFENSFD9bNXDJkNcX3JTWTVAv
-	 kDijguWkOSP2TvZCW7TBa0GfOqF7KZmeXul2tfGg=
+	b=hUTlOdJ3TuTmPaXRS/kY5621NXDRP4Jsm8RvAueFlhdsDT0Vfa4wMb4L3+sB0AJ7g
+	 1yCSanjB703BEd25s3EtUuYbG0fb1b8k7yANaTC364Xr/fGRmMga/9HzLLGMwGiW3Z
+	 9/fCcg2dNl97OUz6ApLbG0s0aYRgBgUiWoHycTSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 077/241] HID: intel-ish-hid: fix the length of MNG_SYNC_FW_CLOCK in doorbell
-Date: Wed, 19 Mar 2025 07:29:07 -0700
-Message-ID: <20250319143029.636432860@linuxfoundation.org>
+Subject: [PATCH 6.12 055/231] net/mlx5e: Prevent bridge link show failure for non-eswitch-allowed devices
+Date: Wed, 19 Mar 2025 07:29:08 -0700
+Message-ID: <20250319143028.184045346@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 4b54ae69197b9f416baa0fceadff7e89075f8454 ]
+[ Upstream commit e92df790d07a8eea873efcb84776e7b71f81c7d5 ]
 
-The timestamps in the Firmware log and HID sensor samples are incorrect.
-They show 1970-01-01 because the current IPC driver only uses the first
-8 bytes of bootup time when synchronizing time with the firmware. The
-firmware converts the bootup time to UTC time, which results in the
-display of 1970-01-01.
+mlx5_eswitch_get_vepa returns -EPERM if the device lacks
+eswitch_manager capability, blocking mlx5e_bridge_getlink from
+retrieving VEPA mode. Since mlx5e_bridge_getlink implements
+ndo_bridge_getlink, returning -EPERM causes bridge link show to fail
+instead of skipping devices without this capability.
 
-In write_ipc_from_queue(), when sending the MNG_SYNC_FW_CLOCK message,
-the clock is updated according to the definition of ipc_time_update_msg.
-However, in _ish_sync_fw_clock(), the message length is specified as the
-size of uint64_t when building the doorbell. As a result, the firmware
-only receives the first 8 bytes of struct ipc_time_update_msg.
-This patch corrects the length in the doorbell to ensure the entire
-ipc_time_update_msg is sent, fixing the timestamp issue.
+To avoid this, return -EOPNOTSUPP from mlx5e_bridge_getlink when
+mlx5_eswitch_get_vepa fails, ensuring the command continues processing
+other devices while ignoring those without the necessary capability.
 
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 4b89251de024 ("net/mlx5: Support ndo bridge_setlink and getlink")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1741644104-97767-7-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/ipc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
-index 3cd53fc80634a..cb956a8c386cb 100644
---- a/drivers/hid/intel-ish-hid/ipc/ipc.c
-+++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
-@@ -578,14 +578,14 @@ static void fw_reset_work_fn(struct work_struct *work)
- static void _ish_sync_fw_clock(struct ishtp_device *dev)
- {
- 	static unsigned long	prev_sync;
--	uint64_t	usec;
-+	struct ipc_time_update_msg time = {};
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 62b8a7c1c6b54..1c087fa1ca269 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5099,11 +5099,9 @@ static int mlx5e_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 	struct mlx5e_priv *priv = netdev_priv(dev);
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u8 mode, setting;
+-	int err;
  
- 	if (prev_sync && time_before(jiffies, prev_sync + 20 * HZ))
- 		return;
- 
- 	prev_sync = jiffies;
--	usec = ktime_to_us(ktime_get_boottime());
--	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &usec, sizeof(uint64_t));
-+	/* The fields of time would be updated while sending message */
-+	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &time, sizeof(time));
- }
- 
- /**
+-	err = mlx5_eswitch_get_vepa(mdev->priv.eswitch, &setting);
+-	if (err)
+-		return err;
++	if (mlx5_eswitch_get_vepa(mdev->priv.eswitch, &setting))
++		return -EOPNOTSUPP;
+ 	mode = setting ? BRIDGE_MODE_VEPA : BRIDGE_MODE_VEB;
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev,
+ 				       mode,
 -- 
 2.39.5
 
