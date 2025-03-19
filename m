@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-125188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A08AA68FDF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 603F6A68F64
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47D9B7A97B1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:40:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44F1017EBAF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37F5212B15;
-	Wed, 19 Mar 2025 14:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9215D1D7999;
+	Wed, 19 Mar 2025 14:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTIgvVoE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQLRq0LN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBF11DF98E;
-	Wed, 19 Mar 2025 14:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464F71D5CE7;
+	Wed, 19 Mar 2025 14:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395015; cv=none; b=MvUymwecgI2X71Ze9IIsZiNsxdtwRehdSJjnyb9gnHEW17lH58U46fpqoSqO3DbYfBDIQc0OqG98Prlf8L/BzSzhUhptYdQJJbfsnc+2e3utZVd75lQHiwTKolPdGM6HmEN8egRq3eouATARkXYJU2qUgYuzPuQNOBwQ1gklAwY=
+	t=1742394860; cv=none; b=fWOc/ielcTzYYIAoVYEdMCfc8t6jA1UnX9wiI7tUWc9+USD0QDmDKpyu2Jm9bK2smbpJCQLsKnFKYpjHAZp/CgUhL7+58vl2ghmxF+2d9dXKsX35yvzxUDbz9UFBqjJss2HuBB3bWP+k45uxuZwTkHJzdwxEKrCDMwbY78buFzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395015; c=relaxed/simple;
-	bh=V3BtB8bS98KBqj1dEkfRvbBBA7ynGH/2CaGOufpwrjk=;
+	s=arc-20240116; t=1742394860; c=relaxed/simple;
+	bh=lt01i60LJ+XF21OoySeYUt2oYmdFLQBpOFT5Y/dIhlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+78raCHs/uSYZct6pn1vGwvGozlOPYvFW4Pl0WXBw8LaifnzXMIC6+1ZrOR4IKvSJ6+8CXzTnUaejSOsh1hxE+vQJXZe6hV5b9X1J7Yw2VNNjXXlJC0L3t+pg0adOfoSLvzwZPT/u6hbypIpp0H+AGccfo+FmPi1B7vA8ZhTTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTIgvVoE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F60C4CEE8;
-	Wed, 19 Mar 2025 14:36:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G6t9S2mG00n6sId9WEanTEmTPg//qXDEAMzG5IH+3o3TwKIrDfh1OMt+WY/V7kjySRBEgBeq3VwJdm012+SSZG8p+8BU4nfSqf3YCrogV7lKTfE0Zy3KQz3P/MaD70KYSFrb7J6AQLOTjxI26vuw+dPoJ+HEuDPMgYylzPGejV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQLRq0LN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C51C4CEE9;
+	Wed, 19 Mar 2025 14:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395015;
-	bh=V3BtB8bS98KBqj1dEkfRvbBBA7ynGH/2CaGOufpwrjk=;
+	s=korg; t=1742394860;
+	bh=lt01i60LJ+XF21OoySeYUt2oYmdFLQBpOFT5Y/dIhlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTIgvVoE6EdFyZSi15qZUYmb3E1fghDxTqq14veFfH9Nk/cDgMktILavjxpVIOU+N
-	 +kIf+jp0njoLBRctbBNgkrs+pVAuGXbCYhEY9RC3UytfkugctBWDr4pP5/iAJBiP4j
-	 oILLU7iz5fwofI8OozSy+jCS0JYVNr2ZHKuAt20w=
+	b=nQLRq0LN0+UfmlxRuMYRR47wle9k7BHfda82SnonHo4yxtI+aO5BizV25nT7OY91E
+	 2y9RSqKr9bRqGwF+hh6YzPM1PZJnNp6ZlNgstneEyaZCPtGV0ezHFeqHyDgxEI4EFb
+	 vqV0SDFB4BR0tOha3y0fR2820BRBQ6qeBRQsP9/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/231] fbdev: hyperv_fb: Allow graceful removal of framebuffer
+Subject: [PATCH 6.13 050/241] Revert "openvswitch: switch to per-action label counting in conntrack"
 Date: Wed, 19 Mar 2025 07:28:40 -0700
-Message-ID: <20250319143027.494134892@linuxfoundation.org>
+Message-ID: <20250319143028.965568105@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +62,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit ea2f45ab0e53b255f72c85ccd99e2b394fc5fceb ]
+[ Upstream commit 1063ae07383c0ddc5bcce170260c143825846b03 ]
 
-When a Hyper-V framebuffer device is unbind, hyperv_fb driver tries to
-release the framebuffer forcefully. If this framebuffer is in use it
-produce the following WARN and hence this framebuffer is never released.
+Currently, ovs_ct_set_labels() is only called for confirmed conntrack
+entries (ct) within ovs_ct_commit(). However, if the conntrack entry
+does not have the labels_ext extension, attempting to allocate it in
+ovs_ct_get_conn_labels() for a confirmed entry triggers a warning in
+nf_ct_ext_add():
 
-[   44.111220] WARNING: CPU: 35 PID: 1882 at drivers/video/fbdev/core/fb_info.c:70 framebuffer_release+0x2c/0x40
-< snip >
-[   44.111289] Call Trace:
-[   44.111290]  <TASK>
-[   44.111291]  ? show_regs+0x6c/0x80
-[   44.111295]  ? __warn+0x8d/0x150
-[   44.111298]  ? framebuffer_release+0x2c/0x40
-[   44.111300]  ? report_bug+0x182/0x1b0
-[   44.111303]  ? handle_bug+0x6e/0xb0
-[   44.111306]  ? exc_invalid_op+0x18/0x80
-[   44.111308]  ? asm_exc_invalid_op+0x1b/0x20
-[   44.111311]  ? framebuffer_release+0x2c/0x40
-[   44.111313]  ? hvfb_remove+0x86/0xa0 [hyperv_fb]
-[   44.111315]  vmbus_remove+0x24/0x40 [hv_vmbus]
-[   44.111323]  device_remove+0x40/0x80
-[   44.111325]  device_release_driver_internal+0x20b/0x270
-[   44.111327]  ? bus_find_device+0xb3/0xf0
+  WARN_ON(nf_ct_is_confirmed(ct));
 
-Fix this by moving the release of framebuffer and assosiated memory
-to fb_ops.fb_destroy function, so that framebuffer framework handles
-it gracefully.
+This happens when the conntrack entry is created externally before OVS
+increments net->ct.labels_used. The issue has become more likely since
+commit fcb1aa5163b1 ("openvswitch: switch to per-action label counting
+in conntrack"), which changed to use per-action label counting and
+increment net->ct.labels_used when a flow with ct action is added.
 
-While we fix this, also replace manual registrations/unregistration of
-framebuffer with devm_register_framebuffer.
+Since there’s no straightforward way to fully resolve this issue at the
+moment, this reverts the commit to avoid breaking existing use cases.
 
-Fixes: 68a2d20b79b1 ("drivers/video: add Hyper-V Synthetic Video Frame Buffer Driver")
-
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1740845791-19977-3-git-send-email-ssengar@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1740845791-19977-3-git-send-email-ssengar@linux.microsoft.com>
+Fixes: fcb1aa5163b1 ("openvswitch: switch to per-action label counting in conntrack")
+Reported-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/1bdeb2f3a812bca016a225d3de714427b2cd4772.1741457143.git.lucien.xin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/hyperv_fb.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ net/openvswitch/conntrack.c | 30 ++++++++++++++++++------------
+ net/openvswitch/datapath.h  |  3 +++
+ 2 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-index 9798a34ac571f..75338ffc703fb 100644
---- a/drivers/video/fbdev/hyperv_fb.c
-+++ b/drivers/video/fbdev/hyperv_fb.c
-@@ -282,6 +282,8 @@ static uint screen_depth;
- static uint screen_fb_size;
- static uint dio_fb_size; /* FB size for deferred IO */
- 
-+static void hvfb_putmem(struct fb_info *info);
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 3bb4810234aac..e573e92213029 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -1368,8 +1368,11 @@ bool ovs_ct_verify(struct net *net, enum ovs_key_attr attr)
+ 	    attr == OVS_KEY_ATTR_CT_MARK)
+ 		return true;
+ 	if (IS_ENABLED(CONFIG_NF_CONNTRACK_LABELS) &&
+-	    attr == OVS_KEY_ATTR_CT_LABELS)
+-		return true;
++	    attr == OVS_KEY_ATTR_CT_LABELS) {
++		struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
 +
- /* Send message to Hyper-V host */
- static inline int synthvid_send(struct hv_device *hdev,
- 				struct synthvid_msg *msg)
-@@ -862,6 +864,17 @@ static void hvfb_ops_damage_area(struct fb_info *info, u32 x, u32 y, u32 width,
- 		hvfb_ondemand_refresh_throttle(par, x, y, width, height);
++		return ovs_net->xt_label;
++	}
+ 
+ 	return false;
  }
+@@ -1378,7 +1381,6 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
+ 		       const struct sw_flow_key *key,
+ 		       struct sw_flow_actions **sfa,  bool log)
+ {
+-	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
+ 	struct ovs_conntrack_info ct_info;
+ 	const char *helper = NULL;
+ 	u16 family;
+@@ -1407,12 +1409,6 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
+ 		return -ENOMEM;
+ 	}
  
-+/*
-+ * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
-+ * of unregister_framebuffer() or fb_release(). Do any cleanup related to
-+ * framebuffer here.
-+ */
-+static void hvfb_destroy(struct fb_info *info)
-+{
-+	hvfb_putmem(info);
-+	framebuffer_release(info);
-+}
+-	if (nf_connlabels_get(net, n_bits - 1)) {
+-		nf_ct_tmpl_free(ct_info.ct);
+-		OVS_NLERR(log, "Failed to set connlabel length");
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	if (ct_info.timeout[0]) {
+ 		if (nf_ct_set_timeout(net, ct_info.ct, family, key->ip.proto,
+ 				      ct_info.timeout))
+@@ -1581,7 +1577,6 @@ static void __ovs_ct_free_action(struct ovs_conntrack_info *ct_info)
+ 	if (ct_info->ct) {
+ 		if (ct_info->timeout[0])
+ 			nf_ct_destroy_timeout(ct_info->ct);
+-		nf_connlabels_put(nf_ct_net(ct_info->ct));
+ 		nf_ct_tmpl_free(ct_info->ct);
+ 	}
+ }
+@@ -2006,9 +2001,17 @@ struct genl_family dp_ct_limit_genl_family __ro_after_init = {
+ 
+ int ovs_ct_init(struct net *net)
+ {
+-#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
++	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
+ 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+ 
++	if (nf_connlabels_get(net, n_bits - 1)) {
++		ovs_net->xt_label = false;
++		OVS_NLERR(true, "Failed to set connlabel length");
++	} else {
++		ovs_net->xt_label = true;
++	}
 +
- /*
-  * TODO: GEN1 codepaths allocate from system or DMA-able memory. Fix the
-  *       driver to use the _SYSMEM_ or _DMAMEM_ helpers in these cases.
-@@ -877,6 +890,7 @@ static const struct fb_ops hvfb_ops = {
- 	.fb_set_par = hvfb_set_par,
- 	.fb_setcolreg = hvfb_setcolreg,
- 	.fb_blank = hvfb_blank,
-+	.fb_destroy	= hvfb_destroy,
++#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	return ovs_ct_limit_init(net, ovs_net);
+ #else
+ 	return 0;
+@@ -2017,9 +2020,12 @@ int ovs_ct_init(struct net *net)
+ 
+ void ovs_ct_exit(struct net *net)
+ {
+-#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+ 
++#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	ovs_ct_limit_exit(net, ovs_net);
+ #endif
++
++	if (ovs_net->xt_label)
++		nf_connlabels_put(net);
+ }
+diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
+index 365b9bb7f546e..9ca6231ea6470 100644
+--- a/net/openvswitch/datapath.h
++++ b/net/openvswitch/datapath.h
+@@ -160,6 +160,9 @@ struct ovs_net {
+ #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	struct ovs_ct_limit_info *ct_limit_info;
+ #endif
++
++	/* Module reference for configuring conntrack. */
++	bool xt_label;
  };
  
- /* Get options from kernel paramenter "video=" */
-@@ -1178,7 +1192,7 @@ static int hvfb_probe(struct hv_device *hdev,
- 	if (ret)
- 		goto error;
- 
--	ret = register_framebuffer(info);
-+	ret = devm_register_framebuffer(&hdev->device, info);
- 	if (ret) {
- 		pr_err("Unable to register framebuffer\n");
- 		goto error;
-@@ -1226,14 +1240,10 @@ static void hvfb_remove(struct hv_device *hdev)
- 
- 	fb_deferred_io_cleanup(info);
- 
--	unregister_framebuffer(info);
- 	cancel_delayed_work_sync(&par->dwork);
- 
- 	vmbus_close(hdev->channel);
- 	hv_set_drvdata(hdev, NULL);
--
--	hvfb_putmem(info);
--	framebuffer_release(info);
- }
- 
- static int hvfb_suspend(struct hv_device *hdev)
+ /**
 -- 
 2.39.5
 
