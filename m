@@ -1,180 +1,118 @@
-Return-Path: <stable+bounces-125597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4B4A69742
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 19:00:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE5BA697C6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 19:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D703B8A2F74
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 17:59:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DF9C4800D1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 18:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C21207DE6;
-	Wed, 19 Mar 2025 17:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B0820B20D;
+	Wed, 19 Mar 2025 18:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvta72lD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO+my/8i"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468221FCCF2
-	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 17:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB8A205E36
+	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 18:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742407070; cv=none; b=b+xa8IYiDFxWD8JSM8Pyj1axHUzFN3RksNqjQUS41U1X8GHm0szCpAMjq2OBGLSJk9APdmiKvhi5qwZalyVWmsqVCSPs88rynMf5HFF0PFy5tMJD1LM63cUZ+pqCWXA0WOUuvirvYGvneIDGmRV58PYKeHhkwcGGQS9iFUZ72Ss=
+	t=1742407938; cv=none; b=LvKD6Hofx/BoL8tqnKQvW6drJkCluxrNk/z7co742vWl15GZge+I0DdikN4P+wb5LvXVt2zmG85m8O23mwLtfWMWeXm/H5W+upIS3TeyKoPddGtEl4/1jwzQOGCxmta8pMm91DEKUVqV6UPXm/MBbWwJj1CHWx1fqwDeMtPCwzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742407070; c=relaxed/simple;
-	bh=LlsBQX7hhvcLCEckC4XlxagJ61/f38xMe0TXANkJ3uM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l25gesQ+Tpxe3qbOXk9AjCclZolnjbtf/qEiC3H7kIkWaDwXKDEOCdk9O5/WXL0Qm0qT/+dUNL7zhk+Gj2p7xVqLtbbIA7l6OhBAKIHPmXPq00ABZieGhgqFmFTOgxHrrrpzwcuZV7QDErzlJzBcVM9Pg8DMYfsnM5h+2E4Ebgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvta72lD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CD0C4CEE4;
-	Wed, 19 Mar 2025 17:57:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742407069;
-	bh=LlsBQX7hhvcLCEckC4XlxagJ61/f38xMe0TXANkJ3uM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvta72lDIvu7juTzcCpQXyJFtVLJrxTnpHVlWBcOOMFpaXJ7poZKz+sylDoFtpJPV
-	 eH7EVD34ZiyDKJJXfUA0nkQt+GW5F9d7OjEfFnF1TeqnJoxP9SzbSmeNuXU248bFRH
-	 +kwML+WkcRXahyrjUNkb/bvYs1ukX4sFjiWwEj3aCa+Rxcfot58601z88RpVmRsTZI
-	 nIn75xIij/ALHc7+Yv1lwGrRf+RAWI1auaFrHNjJPtq6cMwwsgw74V53cmTGjF6OfU
-	 t6oEQZxN9VgiWEFXohekvCSXAzM5gCYia4jKuzt5DT3K3z/R+ClGf6qtyoWJNwIDCd
-	 c5RuSjLuIPrEg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Miguel=20Garc=C3=ADa?= <miguelgarciaroman8@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] fs/ntfs3: Change new sparse cluster processing
-Date: Wed, 19 Mar 2025 13:57:37 -0400
-Message-Id: <20250319134209-1bad56b94d979534@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250319145436.79713-1-miguelgarciaroman8@gmail.com>
-References: 
+	s=arc-20240116; t=1742407938; c=relaxed/simple;
+	bh=fFeqEDSx+gFrh11ijFVYJhwWlYSMde/JsajtuuK8bvA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aY2HLvyCSf3NmmjyupnxuP11rTxMJlRqWCTa/rn4l+PoLw3Ag5Wp1Z1Vh+l5+90yWrgJ7YWEwgsNm0ZRgGX3+Xarr//cLSmKcx2p1T9Hn/UzCa58yYIhvYA4bFvnQP1NepohYYaP0Gk7GCgp390fSdqEBzrquHSHQWPB1BjVLRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SO+my/8i; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e5e34f4e89so12919547a12.1
+        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 11:12:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1742407935; x=1743012735; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PtsDpMKG3PVh8c/2wdkRvEAKIrMwiuW7c09tD+wzsRQ=;
+        b=SO+my/8iQC8Sry5gW8ScLtTJKz1xPXEWyhJqAmZk6pqTd7ZwdCTM1TQFPBDiePS1d+
+         T2u39Hctl8SR4BwtPK1xiHhBW8z3V4hBhIxnOdJ3qzOGK1nSPhn5TIYUixr6dvEsh2bx
+         WQPpNR+W3NXEtmu93UpOmsRDn0+jGh5+nwijw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742407935; x=1743012735;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PtsDpMKG3PVh8c/2wdkRvEAKIrMwiuW7c09tD+wzsRQ=;
+        b=exHZvvlvNHuaXuB+19PcSab20akDjc74LABdb2APVtwmY6WefV35Vviyr8Zc/zhuoo
+         T6MVeS5KhUi4/J+motaFTJ6MFmRHl8RBTKuFuBn0k1bj3qIcRPDHIjtTiCmP7TmSYKV3
+         Zm2IfKGYtcpM0VS3AGlpETAb08oeS6D6/jgBcdJjJqKQboniL4pGNwt5x7eIBIYbtjsW
+         m2XOfHlxSAq1m86OLtbXr+JD66PgTrr+kqrOhtCzYRnBGuq5gb37mSgcF1WsD89yUe1f
+         cHUAsy903OczyFjUg9/1yEWruEv6tZp9XgyfLG8WTcySLoSbqnYDxKymDhzMY+/vjVFN
+         iung==
+X-Forwarded-Encrypted: i=1; AJvYcCUYqy/1OBVnwF9tZ1XbRs4JapMAsKstGm5bmcveHlOBYCEzzEpwPifSYPfPetgsYwNUf7npiRE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywPQXVnt18bDjPv26oLSfSA4WwuqkIsH3EqJ3cs/TJzKl+yE0h
+	tc9uLISKJtoJyLeTMr9CXWGu/j8wYr0Fm6J+q1W3tecSNAScG5nAEWLZq5cisBMwM5KFHN7SW0m
+	8Sf8=
+X-Gm-Gg: ASbGncu+wC7vKAO+zqbK+5EZR8MTorIoYZOcpk9Po5n2iOLHY6YYpGH5TC/NeNFPiji
+	TPfDogCPD0s8jFPJPLlhMkYQfflrLqIHDnF7c6eEGjviEoRZ8RyUwEyAYodKCKQjE459NCgSOD1
+	tMmcJa/jj/cA5LdbQp5VHN+DvXuV6nSgFgykfd5D8OXeNzE/Lpup9DUAwEy71cfCHJHrQJRMqHi
+	zXDXU0XIraYvgMXs3gzhs7cAqhg0onaT47B7nL+1wJ3WjZ/IN68cj5+az0dQf05JMTtNQ7Y56qK
+	z1uRq/hIPSrsOa0PieY43nZsCeM4I+GLxpYFMDGZ77qiJiOYyVtRw0fLFuOkgoLYyIcZL1/WZ0K
+	0fKdhA5YPjhjDDGMPGg==
+X-Google-Smtp-Source: AGHT+IELlNBT3dcNXWdc7MHK87XIUhlngCIzsa9wnCjSOQo8G+eQwa5/jiD1E1RgFV6emBbo1WqnxQ==
+X-Received: by 2002:a05:6402:348b:b0:5e4:a88a:64e with SMTP id 4fb4d7f45d1cf-5eb80cdc9d9mr4220457a12.5.1742407934623;
+        Wed, 19 Mar 2025 11:12:14 -0700 (PDT)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816968ce3sm9426107a12.21.2025.03.19.11.12.13
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Mar 2025 11:12:13 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ab7430e27b2so164874766b.3
+        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 11:12:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVd697TTVv2ofoaDqNhc+34Rv4oXH/Z/mtMUc1RdqRFdPPGBhZZyVQYkFUZGC85ub/ElvlIYec=@vger.kernel.org
+X-Received: by 2002:a17:907:ec0d:b0:ac3:bd68:24e4 with SMTP id
+ a640c23a62f3a-ac3bd6830damr446966766b.53.1742407933026; Wed, 19 Mar 2025
+ 11:12:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <2874581.1742399866@warthog.procyon.org.uk> <20250319163038.GD26879@redhat.com>
+In-Reply-To: <20250319163038.GD26879@redhat.com>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Wed, 19 Mar 2025 11:11:56 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgqidLD38wYUw-5Y6ztFdAvkX3P+Gv2=K+rpkFBG-bf7g@mail.gmail.com>
+X-Gm-Features: AQ5f1JrIwulbm3bCXYePiRgtmwvEUEXDiL2TRjJKyWZ4_ecrDX73K-AxzmDTtIE
+Message-ID: <CAHk-=wgqidLD38wYUw-5Y6ztFdAvkX3P+Gv2=K+rpkFBG-bf7g@mail.gmail.com>
+Subject: Re: [PATCH v2] keys: Fix UAF in key_put()
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Greg KH <gregkh@linuxfoundation.org>, Josh Drake <josh@delphoslabs.com>, 
+	Suraj Sonawane <surajsonawane0215@gmail.com>, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, security@kernel.org, 
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-[ Sasha's backport helper bot ]
+On Wed, 19 Mar 2025 at 09:31, Oleg Nesterov <oleg@redhat.com> wrote:
+>
+> Can't resist, smp_mb__before_atomic() should equally work,
+> but this doesn't really matter, please forget.
 
-Hi,
+We really should have "test_bit_acquire()" and "set_bit_release()".
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Well, we do have the test_bit_acquire().
 
-The upstream commit SHA1 provided is correct: c380b52f6c5702cc4bdda5e6d456d6c19a201a0b
+We just don't have the set_bit side, because we only have the bit
+clearing version (and it's called "clear_bit_unlock()" for historical
+reasons).
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: <miguelgarciaroman8@gmail.com>
-Commit author: Konstantin Komarov<almaz.alexandrovich@paragon-software.com>
+Annoying.
 
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-
-Note: The patch differs from the upstream commit:
----
-1:  c380b52f6c570 ! 1:  d24d9a62db4cb fs/ntfs3: Change new sparse cluster processing
-    @@ Metadata
-      ## Commit message ##
-         fs/ntfs3: Change new sparse cluster processing
-     
-    +    commit c380b52f6c5702cc4bdda5e6d456d6c19a201a0b upstream.
-    +
-    +    This patch is a backport.
-         Remove ntfs_sparse_cluster.
-         Zero clusters in attr_allocate_clusters.
-         Fixes xfstest generic/263
-     
-    +    The fix has been verified by executing the syzkaller reproducer test case.
-    +
-    +    Bug: https://syzkaller.appspot.com/bug?extid=f3e5d0948a1837ed1bb0
-    +    Reported-by: syzbot+f3e5d0948a1837ed1bb0@syzkaller.appspotmail.com
-    +    Cc: <stable@vger.kernel.org>
-         Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-    +    Signed-off-by: Miguel Garcia Roman <miguelgarciaroman8@gmail.com>
-    +    (cherry picked from commit c380b52f6c5702cc4bdda5e6d456d6c19a201a0b)
-     
-      ## fs/ntfs3/attrib.c ##
-     @@ fs/ntfs3/attrib.c: static int run_deallocate_ex(struct ntfs_sb_info *sbi, struct runs_tree *run,
-    @@ fs/ntfs3/attrib.c: int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST
-      	struct mft_inode *mi, *mi_b;
-     -	CLST hint, svcn, to_alloc, evcn1, next_svcn, asize, end;
-     +	CLST hint, svcn, to_alloc, evcn1, next_svcn, asize, end, vcn0, alen;
-    -+	unsigned fr;
-    ++	unsigned int fr;
-      	u64 total_size;
-     -	u32 clst_per_frame;
-     -	bool ok;
-    @@ fs/ntfs3/file.c: static int ntfs_zero_range(struct inode *inode, u64 vbo, u64 vb
-     -{
-     -	struct address_space *mapping = inode->i_mapping;
-     -	struct ntfs_sb_info *sbi = inode->i_sb->s_fs_info;
-    --	u8 cluster_bits = sbi->cluster_bits;
-    --	u64 vbo = (u64)vcn << cluster_bits;
-    --	u64 bytes = (u64)len << cluster_bits;
-    +-	u64 vbo = (u64)vcn << sbi->cluster_bits;
-    +-	u64 bytes = (u64)len << sbi->cluster_bits;
-     -	u32 blocksize = 1 << inode->i_blkbits;
-     -	pgoff_t idx0 = page0 ? page0->index : -1;
-     -	loff_t vbo_clst = vbo & sbi->cluster_mask_inv;
-    @@ fs/ntfs3/file.c: static int ntfs_zero_range(struct inode *inode, u64 vbo, u64 vb
-     -
-     -		zero_user_segment(page, from, to);
-     -
-    --		if (!partial)
-    --			SetPageUptodate(page);
-    --		flush_dcache_page(page);
-    --		set_page_dirty(page);
-    +-		if (!partial) {
-    +-			if (!PageUptodate(page))
-    +-				SetPageUptodate(page);
-    +-			set_page_dirty(page);
-    +-		}
-     -
-     -		if (idx != idx0) {
-     -			unlock_page(page);
-    @@ fs/ntfs3/file.c: static int ntfs_zero_range(struct inode *inode, u64 vbo, u64 vb
-     -		}
-     -		cond_resched();
-     -	}
-    +-	mark_inode_dirty(inode);
-     -}
-     -
-      /*
-    @@ fs/ntfs3/file.c: static long ntfs_fallocate(struct file *file, int mode, loff_t
-      		u32 frame_size;
-      		loff_t mask, vbo_a, end_a, tmp;
-      
-    --		err = filemap_write_and_wait_range(mapping, vbo, LLONG_MAX);
-    +-		err = filemap_write_and_wait_range(mapping, vbo, end - 1);
-    +-		if (err)
-    +-			goto out;
-    +-
-    +-		err = filemap_write_and_wait_range(mapping, end, LLONG_MAX);
-     +		err = filemap_write_and_wait_range(mapping, vbo_down,
-     +						   LLONG_MAX);
-      		if (err)
-    @@ fs/ntfs3/file.c: static long ntfs_fallocate(struct file *file, int mode, loff_t
-      			goto out;
-      
-      		if (is_supported_holes) {
-    --			CLST vcn_v = bytes_to_cluster(sbi, ni->i_valid);
-    +-			CLST vcn_v = ni->i_valid >> sbi->cluster_bits;
-      			CLST vcn = vbo >> sbi->cluster_bits;
-      			CLST cend = bytes_to_cluster(sbi, end);
-     +			CLST cend_v = bytes_to_cluster(sbi, ni->i_valid);
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+             Linus
 
