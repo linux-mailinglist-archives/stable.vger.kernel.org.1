@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-125284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17952A69050
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC911A6914A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34FAB177BB9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452233BDED2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B8F1E3796;
-	Wed, 19 Mar 2025 14:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739A51DED55;
+	Wed, 19 Mar 2025 14:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXSRAqE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHLOj53I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249551C1F02;
-	Wed, 19 Mar 2025 14:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3221D1FDE39;
+	Wed, 19 Mar 2025 14:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395081; cv=none; b=IAEH++4ca22OXBE0NV70pMGIplmfsL1C34ixW9lwoWl3G0rKdu0zEwSgyvfwyNv9xd1VL0YpwjzRY1HWhyNJ/FQAi00e9oK/xDXZMGEG4eaOuD4OdGNtIVoRUGcmf/e2A7lgOC18b0F3IcdTjdSJ0Ph+GzYN42dqaim6UKEu1eE=
+	t=1742395186; cv=none; b=J9W1tgJr2h1aA0A6K3cMH8Ci9xVGKcKgsb8R3eCsdXD6SLfVNIZEGKDrlmMaBjg5Qtx8THbblw6s9+E60yclwCtgTiFv589ED+52AORr/9n2bQs4AabP3ny9cb6/d+ownvGQP3LyDhgxJ0od1o6TnlIFAvTEqqFTKDIgOH5X4S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395081; c=relaxed/simple;
-	bh=P97PoLt/0SLun+zt06zNiCL3r8t+MCEOirsukKvbIvI=;
+	s=arc-20240116; t=1742395186; c=relaxed/simple;
+	bh=slCl2vYTn0Zy6K+DTEU0bIRVcCt//ngQUkmmpWfEPWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6hdMKijseKhDo44tKgHpzPYTKJjdvPLQVwJFv2Zaols1G98KPhw/b3H9OGPDJ+jtJWNDbccPIqSTZ1DpytqBmhDFHKWotXc06Qg6yHomup9oj28FIxy10OX3ljn1X8WNCmAZc0m6bRcFIXOHH+iVQ71WxfKBlfqemkh594f/6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXSRAqE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94CDC4CEE4;
-	Wed, 19 Mar 2025 14:38:00 +0000 (UTC)
+	 MIME-Version; b=qo9mfZxKTwjHv98M5U5daLMz/0rQfbWWP3FamsOERQarHBMTL91xPlwcYOH3IEPndVqA2Iy5ZahrsT7fCVBGc9dp8Uc7OqW+6x/2cl0uI4cK4+eVG7OBbgyYcKFQxhrvDTs6sU2kgubkzW+ddabwBkAhvk9RhJrDk1FAc8NkGSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHLOj53I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E62C4CEE4;
+	Wed, 19 Mar 2025 14:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395081;
-	bh=P97PoLt/0SLun+zt06zNiCL3r8t+MCEOirsukKvbIvI=;
+	s=korg; t=1742395186;
+	bh=slCl2vYTn0Zy6K+DTEU0bIRVcCt//ngQUkmmpWfEPWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXSRAqE++ZsM+Ed+88GL2/xItq5wgo52HvDBf2NbOZkMnLnJNQEej+s3UclRldzMQ
-	 +PthZT44mR0cHpORSwo6bQ/LMChWnfhwu+XbF2iNgHYcWrWgG6Usk05I+VsZxy1fiQ
-	 wPppirnZ58raY9yAI6lmoKONC0qY0sDzCmttv4Hk=
+	b=lHLOj53IUyzFK2NDn+fOmOe4fQW3HWrpEhhNhTfRVebFGy8urAmBvUmmrpFOOBZg2
+	 vgelC09oJ+6kCs0xH0i777CNWBvoIyV+MPd9fgD6Ud3Jo1jVn4+ubn5m4rnjkOGo3c
+	 jRXQke9Jpj3m1P5Ejza9h25IgpzZ+dED1kgrbvYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruozhu Li <david.li@jaguarmicro.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Seunghui Lee <sh043.lee@samsung.com>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/231] nvmet-rdma: recheck queue state is LIVE in state lock in recv done
+Subject: [PATCH 6.6 044/166] scsi: ufs: core: Fix error return with query response
 Date: Wed, 19 Mar 2025 07:30:15 -0700
-Message-ID: <20250319143029.855429323@linuxfoundation.org>
+Message-ID: <20250319143021.185507910@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruozhu Li <david.li@jaguarmicro.com>
+From: Seunghui Lee <sh043.lee@samsung.com>
 
-[ Upstream commit 3988ac1c67e6e84d2feb987d7b36d5791174b3da ]
+[ Upstream commit 1a78a56ea65252bb089e0daace989167227f2d31 ]
 
-The queue state checking in nvmet_rdma_recv_done is not in queue state
-lock.Queue state can transfer to LIVE in cm establish handler between
-state checking and state lock here, cause a silent drop of nvme connect
-cmd.
-Recheck queue state whether in LIVE state in state lock to prevent this
-issue.
+There is currently no mechanism to return error from query responses.
+Return the error and print the corresponding error message with it.
 
-Signed-off-by: Ruozhu Li <david.li@jaguarmicro.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Seunghui Lee <sh043.lee@samsung.com>
+Link: https://lore.kernel.org/r/20250118023808.24726-1-sh043.lee@samsung.com
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/rdma.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ drivers/ufs/core/ufshcd.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
-index 1afd93026f9bf..2a4536ef61848 100644
---- a/drivers/nvme/target/rdma.c
-+++ b/drivers/nvme/target/rdma.c
-@@ -996,6 +996,27 @@ static void nvmet_rdma_handle_command(struct nvmet_rdma_queue *queue,
- 	nvmet_req_complete(&cmd->req, status);
- }
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 6d53dd7d411a8..cb5611cbf4547 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -3027,8 +3027,13 @@ ufshcd_dev_cmd_completion(struct ufs_hba *hba, struct ufshcd_lrb *lrbp)
+ 	case UPIU_TRANSACTION_QUERY_RSP: {
+ 		u8 response = lrbp->ucd_rsp_ptr->header.response;
  
-+static bool nvmet_rdma_recv_not_live(struct nvmet_rdma_queue *queue,
-+		struct nvmet_rdma_rsp *rsp)
-+{
-+	unsigned long flags;
-+	bool ret = true;
-+
-+	spin_lock_irqsave(&queue->state_lock, flags);
-+	/*
-+	 * recheck queue state is not live to prevent a race condition
-+	 * with RDMA_CM_EVENT_ESTABLISHED handler.
-+	 */
-+	if (queue->state == NVMET_RDMA_Q_LIVE)
-+		ret = false;
-+	else if (queue->state == NVMET_RDMA_Q_CONNECTING)
-+		list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
-+	else
-+		nvmet_rdma_put_rsp(rsp);
-+	spin_unlock_irqrestore(&queue->state_lock, flags);
-+	return ret;
-+}
-+
- static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
- {
- 	struct nvmet_rdma_cmd *cmd =
-@@ -1038,17 +1059,9 @@ static void nvmet_rdma_recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	rsp->n_rdma = 0;
- 	rsp->invalidate_rkey = 0;
- 
--	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE)) {
--		unsigned long flags;
--
--		spin_lock_irqsave(&queue->state_lock, flags);
--		if (queue->state == NVMET_RDMA_Q_CONNECTING)
--			list_add_tail(&rsp->wait_list, &queue->rsp_wait_list);
--		else
--			nvmet_rdma_put_rsp(rsp);
--		spin_unlock_irqrestore(&queue->state_lock, flags);
-+	if (unlikely(queue->state != NVMET_RDMA_Q_LIVE) &&
-+	    nvmet_rdma_recv_not_live(queue, rsp))
- 		return;
--	}
- 
- 	nvmet_rdma_handle_command(queue, rsp);
- }
+-		if (response == 0)
++		if (response == 0) {
+ 			err = ufshcd_copy_query_response(hba, lrbp);
++		} else {
++			err = -EINVAL;
++			dev_err(hba->dev, "%s: unexpected response in Query RSP: %x\n",
++					__func__, response);
++		}
+ 		break;
+ 	}
+ 	case UPIU_TRANSACTION_REJECT_UPIU:
 -- 
 2.39.5
 
