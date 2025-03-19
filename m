@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131BFA69084
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3038AA69189
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4151B162B72
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5D7D464B45
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485E221C195;
-	Wed, 19 Mar 2025 14:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0546E1DF738;
+	Wed, 19 Mar 2025 14:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0MhpeKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiyX49VO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022E321CA0E;
-	Wed, 19 Mar 2025 14:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D4B1DF269;
+	Wed, 19 Mar 2025 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395132; cv=none; b=sUlo1p/HsV9pGgRRUpRaAXM38yXuaJotOsA9bte8gVKURToCP0P6szbRcc4gCg/MjZELhQj83MGNUKl3lJH0K2FaDtB8kz8y25Y+ft0yV29zZPGVpgqTiTpVcvHckw2dGUsLPb3NLu+ZdmdUM7WXlSFK2DqZiM1D1Y7Af5o026M=
+	t=1742395270; cv=none; b=q22sTBPDDvLSrLVyF7bkpEkdOaJ+IFksSzoE7Bjrg3tLFT22vSeOiDfwEqaoabllU0JcZSSWXNg3YZJgNVjnOZJzwTicaC8yPYzhNC+HMGd7qHXDhntRop9SziT3VoawgJRTsNk+yYHzG8JCpFn652cV0WTCNpYMUu3X9HgDWPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395132; c=relaxed/simple;
-	bh=BmKSliDpAy3R5sdE7mqc+EBgllVWTSO6M2nnx6k7Zlc=;
+	s=arc-20240116; t=1742395270; c=relaxed/simple;
+	bh=8fXAjYwGMGwhDEaExNaULDc/N2p20S8vLGHfZtu06Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKPxEdEhnycNpdvoLQ6Glc+XC9jhJtcuzh84+03toTkggwQbRYmpiTPPZOv9UCcXPKlV6XtWgNVTDSXGE7iBnnLsnsdKqKoTuyHOHFzohwCaQ8QsBLQroA/myU9ZwNqxR+L/X9IMEpw1N8dm8v7I2B8MK4FgToGABd8k1P1yLzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0MhpeKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC503C4CEE9;
-	Wed, 19 Mar 2025 14:38:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pun6Ip92XH7KZ5+Xn9i5/HMC16xkSeGYvLXlmw4GEGtRk3VOWqn6r7LCallqF4izM8V8DG4wE+ZkU/gz1lQjbi2+X91ut3tk1lDneW+8O6LkBl8+dB1yTmEFvPKaxYa1eDkAaf52QLXgmL0U77JZikF5rq6rnfRRL9j6xm38y4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiyX49VO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8763FC4CEE8;
+	Wed, 19 Mar 2025 14:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395131;
-	bh=BmKSliDpAy3R5sdE7mqc+EBgllVWTSO6M2nnx6k7Zlc=;
+	s=korg; t=1742395270;
+	bh=8fXAjYwGMGwhDEaExNaULDc/N2p20S8vLGHfZtu06Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0MhpeKmRxaB9e1QpTQKCpwNXAJWBv5ZW50PSSPV9GgSblBK2kzdBAmALRvu1OmZ6
-	 wdqExlYcT6zm9viXNxBjQgQr4CC+R3d9f+s5DgR6FRSDJxgNj/E7kRcK1wusvE7zSV
-	 K0kjZWAQuHg+5Z611s7yVuaRktElOmtD4jpzm42U=
+	b=ZiyX49VOWYtoWUl20YHUwWVKlApIIKTe0BwS0x7pacZibeUg8J7jVieM/xjUFkyKw
+	 sfCPepejS5dRt1bMkq+Jw3ndVYI99tGeNhxvQHhUBPc+5ZeWKFkK2rmdr/mUC1sESb
+	 brTxfguRuILhNNdJyu9cSsoyrrUDWOEuDJcAeE2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 197/231] sched_ext: Validate prev_cpu in scx_bpf_select_cpu_dfl()
-Date: Wed, 19 Mar 2025 07:31:30 -0700
-Message-ID: <20250319143031.711352426@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Vinod Govindapillai <vinod.govindapillai@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.6 120/166] drm/i915/cdclk: Do cdclk post plane programming later
+Date: Wed, 19 Mar 2025 07:31:31 -0700
+Message-ID: <20250319143023.267556016@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 9360dfe4cbd62ff1eb8217b815964931523b75b3 upstream.
+commit 6266f4a78131c795631440ea9c7b66cdfd399484 upstream.
 
-If a BPF scheduler provides an invalid CPU (outside the nr_cpu_ids
-range) as prev_cpu to scx_bpf_select_cpu_dfl() it can cause a kernel
-crash.
+We currently call intel_set_cdclk_post_plane_update() far
+too early. When pipes are active during the reprogramming
+the current spot only works for the cd2x divider update
+case, as that is synchronize to the pipe's vblank. Squashing
+and crawling are not synchronized in any way, so doing the
+programming while the pipes/planes are potentially still using
+the old hardware state could lead to underruns.
 
-To prevent this, validate prev_cpu in scx_bpf_select_cpu_dfl() and
-trigger an scx error if an invalid CPU is specified.
+Move the post plane reprgramming to a spot where we know
+that the pipes/planes have switched over the new hardware
+state.
 
-Fixes: f0e1a0643a59b ("sched_ext: Implement BPF extensible scheduler class")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250218211913.27867-2-ville.syrjala@linux.intel.com
+Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+(cherry picked from commit fb64f5568c0e0b5730733d70a012ae26b1a55815)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/i915/display/intel_display.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6052,6 +6052,9 @@ __bpf_kfunc_start_defs();
- __bpf_kfunc s32 scx_bpf_select_cpu_dfl(struct task_struct *p, s32 prev_cpu,
- 				       u64 wake_flags, bool *is_idle)
- {
-+	if (!ops_cpu_valid(prev_cpu, NULL))
-+		goto prev_cpu;
-+
- 	if (!static_branch_likely(&scx_builtin_idle_enabled)) {
- 		scx_ops_error("built-in idle tracking is disabled");
- 		goto prev_cpu;
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -7097,9 +7097,6 @@ static void intel_atomic_commit_tail(str
+ 	/* Now enable the clocks, plane, pipe, and connectors that we set up. */
+ 	dev_priv->display.funcs.display->commit_modeset_enables(state);
+ 
+-	if (state->modeset)
+-		intel_set_cdclk_post_plane_update(state);
+-
+ 	intel_wait_for_vblank_workers(state);
+ 
+ 	/* FIXME: We should call drm_atomic_helper_commit_hw_done() here
+@@ -7178,6 +7175,8 @@ static void intel_atomic_commit_tail(str
+ 		intel_verify_planes(state);
+ 
+ 	intel_sagv_post_plane_update(state);
++	if (state->modeset)
++		intel_set_cdclk_post_plane_update(state);
+ 	intel_pmdemand_post_plane_update(state);
+ 
+ 	drm_atomic_helper_commit_hw_done(&state->base);
 
 
 
