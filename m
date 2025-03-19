@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C5FA69292
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:11:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A36FFA69302
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:19:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB0521B81D70
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79703189A8F4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA5B21A445;
-	Wed, 19 Mar 2025 14:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA864221573;
+	Wed, 19 Mar 2025 14:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzRJjOqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ji7psLWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977971DA112;
-	Wed, 19 Mar 2025 14:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80841CAA60;
+	Wed, 19 Mar 2025 14:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395093; cv=none; b=IDrftsieMhNFV04M0Bzycp2eiAqYZra/UlzCuAkfOd7KPPG82rVJAfrsS2mbZbd7Wa/roVLneVw5juAXYif9oH3RG7r61sNKhCu3RA3w6vU3aWtwY7hhYb5BRndXWjy8Y2/TkgBcsVLQaO+Kp7RZ2mmxQkLj5kU9K0AX+F89NO4=
+	t=1742395203; cv=none; b=ZOEpTCu3zwv3QcWa2oLbpnhc03lXYvXWyMtil5yldNz6ZeLV/u2p96DQ563TbGa4v6MpsovWrpSW5VVeZT83mEPJaUq/qjcYZZONM86nZkLA979yWumkv2OPbPh8qBJHJ+gMWt3Jg5di+aXY+1n2oo0PDijY8pAwuiH6lfrymp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395093; c=relaxed/simple;
-	bh=4vY0bT+t5XOtOoOVBwlbKstJltn2fEWUakgexcelQlo=;
+	s=arc-20240116; t=1742395203; c=relaxed/simple;
+	bh=IIAx7p/Y/bG1muyo2qcFpZsU5DlzD50fCECDKe8hPAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DC1lVSNABi2u2pb9nUDmgd+ylCtH9J5/nRImR+velaPXLVvz4CDEHh9gzsgHwkU/FWlR43oKsCnrp1Zj0CcQhTdM6QAC/EWC527V8/cQCCCRPKOZMS2lgG8Cv1sD3Q5Ls8C7VMBpVLasgc1AtoJnpDiCbCSl7gNj9YllUv4U5+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzRJjOqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE2BC4CEE4;
-	Wed, 19 Mar 2025 14:38:13 +0000 (UTC)
+	 MIME-Version; b=cK7leLnk8jPbVtksgyvklmlNH3WacB8Sq7gMJP2kBkpR8/hvlRJCD2nXLNllZMf8EZCKS/Ce4gPdPBICSgpO4qkyx/DOsfQ4XykCiiJPq7VsfuDKHfS3Cv+zD3ijAZEQ2463RrRsGemzucaLsgwLtwVrAzwKYR1WD65EvOAivzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ji7psLWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709DEC4CEE4;
+	Wed, 19 Mar 2025 14:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395093;
-	bh=4vY0bT+t5XOtOoOVBwlbKstJltn2fEWUakgexcelQlo=;
+	s=korg; t=1742395203;
+	bh=IIAx7p/Y/bG1muyo2qcFpZsU5DlzD50fCECDKe8hPAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dzRJjOqplk45St0dgkwuHRWTtQismE1kZO8nQq8aqZYXcVx/j8UW3PCRuV6HLV99Y
-	 NVyNmDlXBF4pKHzpOD49SWO9cB2v5t7E0f9Xho04UZ1yku9qfCgoRLhSZo2Huqthar
-	 i77PO3X2G/XZkbzv120R5dxfdSnLu5tg2Eo9pPtA=
+	b=Ji7psLWrQJjGjF+vhN2vYA5R0ugfJ0TAty/42jD3k87pV3JFp+XlkILlubgyhIzfG
+	 MwNAQHkcWBrbQLjB8pZ3RX0/Q4204DjDmGtJBXnTH+sojG8DMjBOrzgSrTR574KTHr
+	 s48qU1HwiPxOePsjR9bl4pDYQAOhgPRJevuVk7kE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 142/231] block: fix kmem_cache of name bio-108 already exists
-Date: Wed, 19 Mar 2025 07:30:35 -0700
-Message-ID: <20250319143030.344953839@linuxfoundation.org>
+Subject: [PATCH 6.6 067/166] ALSA: hda/realtek: Limit mic boost on Positivo ARN50
+Date: Wed, 19 Mar 2025 07:30:38 -0700
+Message-ID: <20250319143021.827440002@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit b654f7a51ffb386131de42aa98ed831f8c126546 ]
+[ Upstream commit 76b0a22d4cf7dc9091129560fdc04e73eb9db4cb ]
 
-Device mapper bioset often has big bio_slab size, which can be more than
-1000, then 8byte can't hold the slab name any more, cause the kmem_cache
-allocation warning of 'kmem_cache of name 'bio-108' already exists'.
+The internal mic boost on the Positivo ARN50 is too high.
+Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
+to limit the gain.
 
-Fix the warning by extending bio_slab->name to 12 bytes, but fix output
-of /proc/slabinfo
-
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250228132656.2838008-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Link: https://patch.msgid.link/20250201143930.25089-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/bio.c b/block/bio.c
-index ac4d77c889322..43d4ae26f4758 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -77,7 +77,7 @@ struct bio_slab {
- 	struct kmem_cache *slab;
- 	unsigned int slab_ref;
- 	unsigned int slab_size;
--	char name[8];
-+	char name[12];
- };
- static DEFINE_MUTEX(bio_slab_lock);
- static DEFINE_XARRAY(bio_slabs);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index ec57148453c82..1fd6e84b0e371 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10527,6 +10527,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
 -- 
 2.39.5
 
