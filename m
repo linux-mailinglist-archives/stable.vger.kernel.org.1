@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-124982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56DAA68F78
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 393AEA69014
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:44:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 556AD16BC8C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4748D17E177
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E931C4A24;
-	Wed, 19 Mar 2025 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0820E1E0DB5;
+	Wed, 19 Mar 2025 14:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KJlBwG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdEA0xmT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34541C549E;
-	Wed, 19 Mar 2025 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA47A1C5D6F;
+	Wed, 19 Mar 2025 14:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394869; cv=none; b=Sbm7SSt4AUxwcBRsq18WLREOXEnAmCm40dLvrQe6IBmje51Atx6UOemT0iZyYO+6Z7Y6MI0BEqaGbvk4LSPkyI4dltpXM6kqNzOWvr8qoVP2LCzfLVTqBi5HXWqhzQH52wX1yBe9zu/E/zIOaFsfLIfAwg0MzmvUTou8SbTLDHE=
+	t=1742395024; cv=none; b=qaYFe+Ay6xq/smo1JyHCaBaGWbVZ2quoqIEortEbpaM4pEBhdFJagNnwh5/a8hMq8jsbv9+bMPo0ceY7ylJbXdWVo69afTzo/tnADvV75dXj/nU0ODIsORt3PQfsZoL1CVtAc+ELuxHyPPmgxDKf3JmDmFktk+cPEFkO+JU6BIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394869; c=relaxed/simple;
-	bh=tN6icY64IwBxyikVGg7tzGOQUUa39s857vFPKP23/2s=;
+	s=arc-20240116; t=1742395024; c=relaxed/simple;
+	bh=Cs/6i7GI9YLg3KQv6PDPW1fWYMuMn+NvnK5R5QF+zDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4iEp5P0p5XHmwCpK8gK65mHuS1zSA0G0NmHfbvHbyWxv00AjrwCc0uRX/HQAXWsf0JYfgZK5zXOMP6NHEbUDag+vLcmFbIMzcZ//dQREqKA8R137JPeQHZKI5f9y8WlRIfNvwQ3oIv8M1EDmA/yDvUqcJEcb1HY+XjcQoz8iZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KJlBwG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2B4C4CEE4;
-	Wed, 19 Mar 2025 14:34:29 +0000 (UTC)
+	 MIME-Version; b=g+JMVk48S2VGCuejSNcgH9C3NZerHzSFUGihOde5+IWO+CZZQtei4hdz2pJWqxsOJhYTVOYWS/9v7BTX731IrTl1ZYv6VMw0fGrKpikBryq1e2DKSfz54jkbW/VDYIpGHwFE3uW2Neef64TK7AVG7RTUU/LYuI3nRDYar5I6tVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdEA0xmT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC12C4CEE4;
+	Wed, 19 Mar 2025 14:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394869;
-	bh=tN6icY64IwBxyikVGg7tzGOQUUa39s857vFPKP23/2s=;
+	s=korg; t=1742395024;
+	bh=Cs/6i7GI9YLg3KQv6PDPW1fWYMuMn+NvnK5R5QF+zDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KJlBwG8Eo0rfOAaT6D6RVkMY1bfOVgTg/oiZdBth5nF68cExeaRUnwurKSPp4BIO
-	 zmezwuEv65s3q7Ve9lpB8Ml18Xvti0Aa65PvvZ/bTcxx6FEC4CEUPnsoP+MmLnDwda
-	 c1BFePFafQM1Jw5R3VKwBNpmg+nThzG90vFDg6qo=
+	b=zdEA0xmTC3gPFtjcu577Pr3re0ex3yqm8DQjKT3QQwkonMf92hzHn6+o5uWVJ/Bay
+	 ArHYw1Y9ACT88IOLw4Uk3VQr1kr9Ie3Yu0lPSTvHhQJVD3V0rgUAuFPK9m+KUphnZ2
+	 Kgb7ZaRU2seDzSwsb+Ezg9EtLhDd/wc+ImQ36iPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 061/241] futex: Pass in task to futex_queue()
-Date: Wed, 19 Mar 2025 07:28:51 -0700
-Message-ID: <20250319143029.238400214@linuxfoundation.org>
+Subject: [PATCH 6.12 039/231] net: switchdev: Convert blocking notification chain to a raw one
+Date: Wed, 19 Mar 2025 07:28:52 -0700
+Message-ID: <20250319143027.781543469@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,149 +65,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Amit Cohen <amcohen@nvidia.com>
 
-[ Upstream commit 5e0e02f0d7e52cfc8b1adfc778dd02181d8b47b4 ]
+[ Upstream commit 62531a1effa87bdab12d5104015af72e60d926ff ]
 
-futex_queue() -> __futex_queue() uses 'current' as the task to store in
-the struct futex_q->task field. This is fine for synchronous usage of
-the futex infrastructure, but it's not always correct when used by
-io_uring where the task doing the initial futex_queue() might not be
-available later on. This doesn't lead to any issues currently, as the
-io_uring side doesn't support PI futexes, but it does leave a
-potentially dangling pointer which is never a good idea.
+A blocking notification chain uses a read-write semaphore to protect the
+integrity of the chain. The semaphore is acquired for writing when
+adding / removing notifiers to / from the chain and acquired for reading
+when traversing the chain and informing notifiers about an event.
 
-Have futex_queue() take a task_struct argument, and have the regular
-callers pass in 'current' for that. Meanwhile io_uring can just pass in
-NULL, as the task should never be used off that path. In theory
-req->tctx->task could be used here, but there's no point populating it
-with a task field that will never be used anyway.
+In case of the blocking switchdev notification chain, recursive
+notifications are possible which leads to the semaphore being acquired
+twice for reading and to lockdep warnings being generated [1].
 
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/22484a23-542c-4003-b721-400688a0d055@kernel.dk
+Specifically, this can happen when the bridge driver processes a
+SWITCHDEV_BRPORT_UNOFFLOADED event which causes it to emit notifications
+about deferred events when calling switchdev_deferred_process().
+
+Fix this by converting the notification chain to a raw notification
+chain in a similar fashion to the netdev notification chain. Protect
+the chain using the RTNL mutex by acquiring it when modifying the chain.
+Events are always informed under the RTNL mutex, but add an assertion in
+call_switchdev_blocking_notifiers() to make sure this is not violated in
+the future.
+
+Maintain the "blocking" prefix as events are always emitted from process
+context and listeners are allowed to block.
+
+[1]:
+WARNING: possible recursive locking detected
+6.14.0-rc4-custom-g079270089484 #1 Not tainted
+--------------------------------------------
+ip/52731 is trying to acquire lock:
+ffffffff850918d8 ((switchdev_blocking_notif_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x58/0xa0
+
+but task is already holding lock:
+ffffffff850918d8 ((switchdev_blocking_notif_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x58/0xa0
+
+other info that might help us debug this:
+Possible unsafe locking scenario:
+CPU0
+----
+lock((switchdev_blocking_notif_chain).rwsem);
+lock((switchdev_blocking_notif_chain).rwsem);
+
+*** DEADLOCK ***
+May be due to missing lock nesting notation
+3 locks held by ip/52731:
+ #0: ffffffff84f795b0 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0x727/0x1dc0
+ #1: ffffffff8731f628 (&net->rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0x790/0x1dc0
+ #2: ffffffff850918d8 ((switchdev_blocking_notif_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x58/0xa0
+
+stack backtrace:
+...
+? __pfx_down_read+0x10/0x10
+? __pfx_mark_lock+0x10/0x10
+? __pfx_switchdev_port_attr_set_deferred+0x10/0x10
+blocking_notifier_call_chain+0x58/0xa0
+switchdev_port_attr_notify.constprop.0+0xb3/0x1b0
+? __pfx_switchdev_port_attr_notify.constprop.0+0x10/0x10
+? mark_held_locks+0x94/0xe0
+? switchdev_deferred_process+0x11a/0x340
+switchdev_port_attr_set_deferred+0x27/0xd0
+switchdev_deferred_process+0x164/0x340
+br_switchdev_port_unoffload+0xc8/0x100 [bridge]
+br_switchdev_blocking_event+0x29f/0x580 [bridge]
+notifier_call_chain+0xa2/0x440
+blocking_notifier_call_chain+0x6e/0xa0
+switchdev_bridge_port_unoffload+0xde/0x1a0
+...
+
+Fixes: f7a70d650b0b6 ("net: bridge: switchdev: Ensure deferred event delivery on unoffload")
+Signed-off-by: Amit Cohen <amcohen@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Tested-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250305121509.631207-1-amcohen@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/futex.c        |  2 +-
- kernel/futex/core.c     |  5 +++--
- kernel/futex/futex.h    | 11 ++++++++---
- kernel/futex/pi.c       |  2 +-
- kernel/futex/waitwake.c |  4 ++--
- 5 files changed, 15 insertions(+), 9 deletions(-)
+ net/switchdev/switchdev.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/io_uring/futex.c b/io_uring/futex.c
-index e29662f039e1a..f108da4ff863c 100644
---- a/io_uring/futex.c
-+++ b/io_uring/futex.c
-@@ -349,7 +349,7 @@ int io_futex_wait(struct io_kiocb *req, unsigned int issue_flags)
- 		hlist_add_head(&req->hash_node, &ctx->futex_list);
- 		io_ring_submit_unlock(ctx, issue_flags);
+diff --git a/net/switchdev/switchdev.c b/net/switchdev/switchdev.c
+index 6488ead9e4645..4d5fbacef496f 100644
+--- a/net/switchdev/switchdev.c
++++ b/net/switchdev/switchdev.c
+@@ -472,7 +472,7 @@ bool switchdev_port_obj_act_is_deferred(struct net_device *dev,
+ EXPORT_SYMBOL_GPL(switchdev_port_obj_act_is_deferred);
  
--		futex_queue(&ifd->q, hb);
-+		futex_queue(&ifd->q, hb, NULL);
- 		return IOU_ISSUE_SKIP_COMPLETE;
- 	}
- 
-diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index ebdd76b4ecbba..3db8567f5a44e 100644
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -532,7 +532,8 @@ void futex_q_unlock(struct futex_hash_bucket *hb)
- 	futex_hb_waiters_dec(hb);
- }
- 
--void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
-+void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
-+		   struct task_struct *task)
- {
- 	int prio;
- 
-@@ -548,7 +549,7 @@ void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
- 
- 	plist_node_init(&q->list, prio);
- 	plist_add(&q->list, &hb->chain);
--	q->task = current;
-+	q->task = task;
- }
+ static ATOMIC_NOTIFIER_HEAD(switchdev_notif_chain);
+-static BLOCKING_NOTIFIER_HEAD(switchdev_blocking_notif_chain);
++static RAW_NOTIFIER_HEAD(switchdev_blocking_notif_chain);
  
  /**
-diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
-index 99b32e728c4ad..6b2f4c7eb720f 100644
---- a/kernel/futex/futex.h
-+++ b/kernel/futex/futex.h
-@@ -285,13 +285,15 @@ static inline int futex_get_value_locked(u32 *dest, u32 __user *from)
- }
+  *	register_switchdev_notifier - Register notifier
+@@ -518,17 +518,27 @@ EXPORT_SYMBOL_GPL(call_switchdev_notifiers);
  
- extern void __futex_unqueue(struct futex_q *q);
--extern void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb);
-+extern void __futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
-+				struct task_struct *task);
- extern int futex_unqueue(struct futex_q *q);
- 
- /**
-  * futex_queue() - Enqueue the futex_q on the futex_hash_bucket
-  * @q:	The futex_q to enqueue
-  * @hb:	The destination hash bucket
-+ * @task: Task queueing this futex
-  *
-  * The hb->lock must be held by the caller, and is released here. A call to
-  * futex_queue() is typically paired with exactly one call to futex_unqueue().  The
-@@ -299,11 +301,14 @@ extern int futex_unqueue(struct futex_q *q);
-  * or nothing if the unqueue is done as part of the wake process and the unqueue
-  * state is implicit in the state of woken task (see futex_wait_requeue_pi() for
-  * an example).
-+ *
-+ * Note that @task may be NULL, for async usage of futexes.
-  */
--static inline void futex_queue(struct futex_q *q, struct futex_hash_bucket *hb)
-+static inline void futex_queue(struct futex_q *q, struct futex_hash_bucket *hb,
-+			       struct task_struct *task)
- 	__releases(&hb->lock)
+ int register_switchdev_blocking_notifier(struct notifier_block *nb)
  {
--	__futex_queue(q, hb);
-+	__futex_queue(q, hb, task);
- 	spin_unlock(&hb->lock);
+-	struct blocking_notifier_head *chain = &switchdev_blocking_notif_chain;
++	struct raw_notifier_head *chain = &switchdev_blocking_notif_chain;
++	int err;
++
++	rtnl_lock();
++	err = raw_notifier_chain_register(chain, nb);
++	rtnl_unlock();
+ 
+-	return blocking_notifier_chain_register(chain, nb);
++	return err;
  }
+ EXPORT_SYMBOL_GPL(register_switchdev_blocking_notifier);
  
-diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
-index d62cca5ed8f4c..635c7d5d42220 100644
---- a/kernel/futex/pi.c
-+++ b/kernel/futex/pi.c
-@@ -982,7 +982,7 @@ int futex_lock_pi(u32 __user *uaddr, unsigned int flags, ktime_t *time, int tryl
- 	/*
- 	 * Only actually queue now that the atomic ops are done:
- 	 */
--	__futex_queue(&q, hb);
-+	__futex_queue(&q, hb, current);
+ int unregister_switchdev_blocking_notifier(struct notifier_block *nb)
+ {
+-	struct blocking_notifier_head *chain = &switchdev_blocking_notif_chain;
++	struct raw_notifier_head *chain = &switchdev_blocking_notif_chain;
++	int err;
  
- 	if (trylock) {
- 		ret = rt_mutex_futex_trylock(&q.pi_state->pi_mutex);
-diff --git a/kernel/futex/waitwake.c b/kernel/futex/waitwake.c
-index 3a10375d95218..a9056acb75eef 100644
---- a/kernel/futex/waitwake.c
-+++ b/kernel/futex/waitwake.c
-@@ -350,7 +350,7 @@ void futex_wait_queue(struct futex_hash_bucket *hb, struct futex_q *q,
- 	 * access to the hash list and forcing another memory barrier.
- 	 */
- 	set_current_state(TASK_INTERRUPTIBLE|TASK_FREEZABLE);
--	futex_queue(q, hb);
-+	futex_queue(q, hb, current);
+-	return blocking_notifier_chain_unregister(chain, nb);
++	rtnl_lock();
++	err = raw_notifier_chain_unregister(chain, nb);
++	rtnl_unlock();
++
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(unregister_switchdev_blocking_notifier);
  
- 	/* Arm the timer */
- 	if (timeout)
-@@ -461,7 +461,7 @@ int futex_wait_multiple_setup(struct futex_vector *vs, int count, int *woken)
- 			 * next futex. Queue each futex at this moment so hb can
- 			 * be unlocked.
- 			 */
--			futex_queue(q, hb);
-+			futex_queue(q, hb, current);
- 			continue;
- 		}
+@@ -536,10 +546,11 @@ int call_switchdev_blocking_notifiers(unsigned long val, struct net_device *dev,
+ 				      struct switchdev_notifier_info *info,
+ 				      struct netlink_ext_ack *extack)
+ {
++	ASSERT_RTNL();
+ 	info->dev = dev;
+ 	info->extack = extack;
+-	return blocking_notifier_call_chain(&switchdev_blocking_notif_chain,
+-					    val, info);
++	return raw_notifier_call_chain(&switchdev_blocking_notif_chain,
++				       val, info);
+ }
+ EXPORT_SYMBOL_GPL(call_switchdev_blocking_notifiers);
  
 -- 
 2.39.5
