@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-125370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB99A69306
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F91A6931C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6F601B85081
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3944E19C3F46
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA6C21CC5D;
-	Wed, 19 Mar 2025 14:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9877C21CC74;
+	Wed, 19 Mar 2025 14:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mLkweQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1/mK4tl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B7E1DE2B2;
-	Wed, 19 Mar 2025 14:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A561A841C;
+	Wed, 19 Mar 2025 14:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395141; cv=none; b=fpfI9LWatohhSr2RI/x4XYhtoRiekVvrml34KLVcyzv8YYwxpeXC4cA6k4G8bJbOa4pglHZT4QvkiYaV1bNcZKo/DxTlGj4U/U8gTd59WMd+qqUYm8c7SPK2LzkI/QI3weBl9xtmYQ0CzFRawWwPBpFr4Jlo6pNdEtmnwCCPHRw=
+	t=1742395144; cv=none; b=SNu2vdjn2OIkUCIewI01qVw6sZX1XPXtS172qS6MpLSCBI08G1wyaU6ncXBS7AdzcurMwcWXKpXIpj5OHYpIoPpOFDtA/BmRSs0PupM50SuX0/6BH6UpZPalRkeEjiZkaBKwd6qjL9cDHvMdb4dyWNhPlL4T1dzio1CbB2VQgBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395141; c=relaxed/simple;
-	bh=YD1TmsQ8Hm9Uqa3Nfx6NfBFTFKj2xGwY7KyrtkFrMrc=;
+	s=arc-20240116; t=1742395144; c=relaxed/simple;
+	bh=iX1OqZY2rZGviVxUK5qI42O0aIvxe13gDil03XrF8tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oc0sAAS4xGOLdtaQ949Zq0giSnQSTsNEosx5QPBEitYAnPwrnYhEpVaVpkY4gWLylk+Yc611tPLI/PjJGscKIMi77yL+DMdIBbOddBjmb7zLjcXKWXxvS3w4fXH7eo4tQXPK0Bk52WwqH/JHxWcjtDrI8jw0D5UTu9aFq/6hJGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mLkweQb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83735C4CEE4;
-	Wed, 19 Mar 2025 14:39:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C6GGP6Y89/edYLjTNcF0VMTT/3Ob71gUp51yAWoRE/TmlCgCb3DRUvTOCMwBPQ/2UF3gAvGSglguGXOJRlEzthpupLpGcfyd+kjdMOxYGfE9DJqTLivt7V55q2uXkAZhRMSbWKVZs9TJbUSI8+sauKJsbaoDFnmM0m1ceBSFEWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1/mK4tl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C321C4CEE4;
+	Wed, 19 Mar 2025 14:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395140;
-	bh=YD1TmsQ8Hm9Uqa3Nfx6NfBFTFKj2xGwY7KyrtkFrMrc=;
+	s=korg; t=1742395144;
+	bh=iX1OqZY2rZGviVxUK5qI42O0aIvxe13gDil03XrF8tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0mLkweQbJCFqeXduKjY1k4Zq5f/yIVYfV93fXzpqb4qmTxd9AWYLiRqVo3T1BjuoU
-	 StziTL0esRCWZ51RyOYKgtokJup9jTZ9WS1XgZFB5aykB4pmd36P8oYoxcK8qYogtN
-	 vZ9nIH6mrTwOvv3DlItIgcJyS+u/WXVlo9O9Cc7A=
+	b=n1/mK4tlwMJ3gyHvyUtjxVVPCJMetoIH/SpEebPkHGwlzxIdHcJ3hxNnMnibR2uhR
+	 QIWTvmPglxFGaocjO8W15g8M0m6HOf9h88BVuPgFN9Ael3CbZ8ewq/+2qltVD0iUSj
+	 MrsCEi4TCwA1o+DPxNEaCw6ARrrNvkTr9/ULtspk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH 6.12 172/231] drm/atomic: Filter out redundant DPMS calls
-Date: Wed, 19 Mar 2025 07:31:05 -0700
-Message-ID: <20250319143031.093387558@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Natalie Vock <natalie.vock@gmx.de>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 174/231] drm/amdgpu: NULL-check BOs backing store when determining GFX12 PTE flags
+Date: Wed, 19 Mar 2025 07:31:07 -0700
+Message-ID: <20250319143031.139634805@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
 References: <20250319143026.865956961@linuxfoundation.org>
@@ -66,61 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Natalie Vock <natalie.vock@gmx.de>
 
-commit de93ddf88088f7624b589d0ff3af9effb87e8f3b upstream.
+commit 6cc30748e17ea2a64051ceaf83a8372484e597f1 upstream.
 
-Video players (eg. mpv) do periodic XResetScreenSaver() calls to
-keep the screen on while the video playing. The modesetting ddx
-plumbs these straight through into the kernel as DPMS setproperty
-ioctls, without any filtering whatsoever. When implemented via
-atomic these end up as empty commits on the crtc (which will
-nonetheless take one full frame), which leads to a dropped
-frame every time XResetScreenSaver() is called.
+PRT BOs may not have any backing store, so bo->tbo.resource will be
+NULL. Check for that before dereferencing.
 
-Let's just filter out redundant DPMS property changes in the
-kernel to avoid this issue.
-
-v2: Explain the resulting commits a bit better (Sima)
-    Document the behaviour in uapi docs (Sima)
-
-Cc: stable@vger.kernel.org
-Testcase: igt/kms_flip/flip-vs-dpms-on-nop
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250219160239.17502-1-ville.syrjala@linux.intel.com
+Fixes: 0cce5f285d9a ("drm/amdkfd: Check correct memory types for is_system variable")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3e3fcd29b505cebed659311337ea03b7698767fc)
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_atomic_uapi.c |    4 ++++
- drivers/gpu/drm/drm_connector.c   |    4 ++++
- 2 files changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -956,6 +956,10 @@ int drm_atomic_connector_commit_dpms(str
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
+@@ -525,8 +525,9 @@ static void gmc_v12_0_get_vm_pte(struct
  
- 	if (mode != DRM_MODE_DPMS_ON)
- 		mode = DRM_MODE_DPMS_OFF;
-+
-+	if (connector->dpms == mode)
-+		goto out;
-+
- 	connector->dpms = mode;
+ 	bo_adev = amdgpu_ttm_adev(bo->tbo.bdev);
+ 	coherent = bo->flags & AMDGPU_GEM_CREATE_COHERENT;
+-	is_system = (bo->tbo.resource->mem_type == TTM_PL_TT) ||
+-		(bo->tbo.resource->mem_type == AMDGPU_PL_PREEMPT);
++	is_system = bo->tbo.resource &&
++		(bo->tbo.resource->mem_type == TTM_PL_TT ||
++		 bo->tbo.resource->mem_type == AMDGPU_PL_PREEMPT);
  
- 	crtc = connector->state->crtc;
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -1308,6 +1308,10 @@ EXPORT_SYMBOL(drm_hdmi_connector_get_out
-  * 	callback. For atomic drivers the remapping to the "ACTIVE" property is
-  * 	implemented in the DRM core.
-  *
-+ * 	On atomic drivers any DPMS setproperty ioctl where the value does not
-+ * 	change is completely skipped, otherwise a full atomic commit will occur.
-+ * 	On legacy drivers the exact behavior is driver specific.
-+ *
-  * 	Note that this property cannot be set through the MODE_ATOMIC ioctl,
-  * 	userspace must use "ACTIVE" on the CRTC instead.
-  *
+ 	if (bo && bo->flags & AMDGPU_GEM_CREATE_GFX12_DCC)
+ 		*flags |= AMDGPU_PTE_DCC;
 
 
 
