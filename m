@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-125409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB33A690C4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E618A691B0
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8A92163A6F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 030AC1B87D75
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CB021D5B0;
-	Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF86B1E22E6;
+	Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/yG2e4V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/vzmJAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E6A1DE4FF;
-	Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2E51C5F26;
+	Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395167; cv=none; b=kC8TkryK9l3pjBftGnoXe2CZ/NDstVjR9Z9t9/KYwYB6bPHmGMbvORpiJ6VWgrYYnqDSCAfNBBV3fAvlXq9E8RrQlzo0+CasEKWoSkyWjVpTemPpVRxUkjJDLJQhIKLhrSKocoKAitMmA+tvPDKejQwykzquH1D3RumoUX1gYl8=
+	t=1742395061; cv=none; b=t+m3XcC8Z0g+Al7TFLzJ9bRrN60XWc5yjSRKvu8Fi3HWsSSyAUd2BbuHd+dY7aFbXbOHNdl+qfTxPOqE4LV0Dh6NkWdYzpe+l5TCR1nhXUWY6YwCT77zWKJTHqf+RuHQA2BcbeNj3De8h3Zsny133NNA6Q4s4p43VRIIH14Ghek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395167; c=relaxed/simple;
-	bh=kIxAx/tlXnvggueC7HNkmUhgScjDtfm+eUMjJ4J4PIs=;
+	s=arc-20240116; t=1742395061; c=relaxed/simple;
+	bh=duLTdOu8nGpIhQZ1LluwQnQ4TNoPLei0446tmalqt+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3hS2y1J04g5TQBlqvc6kqYAP1a/D6Ip1r22ZnMdY2V4UMaZh4hd2vz1sgrUrUb2xE4Aik5V36jCYMOlRJ4yKgtU4knCIusw26Gwom7W1UuKGBCr87L6c+PuWRN9qYi8G+nHfuIzH6hZeCzYrReOW8/aaEFSqbplaWLL94uYMdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/yG2e4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6D2C4CEE4;
-	Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
+	 MIME-Version; b=b31QU3eu7v+73SkYvPvwmVPskvBhTIS6GGQQa5fdBHsq9swcbxfYOXwscU6fE62zAY5i55fxLrwYK9vjcpI3Eyjyq6tZi3017YIG200dATdHozt2FkbazPw94YZih5XQnshMaZk2ihfce2uTxT493PrqBd8XqLmBGjW2elt7KXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/vzmJAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A064C4CEE4;
+	Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395167;
-	bh=kIxAx/tlXnvggueC7HNkmUhgScjDtfm+eUMjJ4J4PIs=;
+	s=korg; t=1742395061;
+	bh=duLTdOu8nGpIhQZ1LluwQnQ4TNoPLei0446tmalqt+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/yG2e4VfvxEANUDuLGk6n8d72rcR4tOUMVsHJA7uIv/F518kDF+owDL4xZ9vYtSF
-	 uAoXIVysoO5CkDmJ2aXeNOMnBbIFdmuy3G2qE4yUwkdD+np2t7/7Utn8ZQr98q1C/Q
-	 fExK+ftcIATZFXQ/8nLdmWWWfDOlyEjBYarc2e1w=
+	b=A/vzmJAPG0DN22T1lx+p9iNUzLBPEq2HGjhi7VJVwF32WV1xHWGHhaCu2wnZrUKhE
+	 FsjFwIo6WHsQzoBz4eGISdLA4Ok0DWJdqA/2RKfOZQu+1YGi5Q1vyWoNIKDwyVO/Ax
+	 mQzjQkTYm5G/v+iwIAGTu/HHYSe38njubPKf4Axw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/166] net/mlx5: Fill out devlink dev info only for PFs
+Subject: [PATCH 6.12 095/231] LoongArch: KVM: Set host with kernel mode when switch to VM mode
 Date: Wed, 19 Mar 2025 07:29:48 -0700
-Message-ID: <20250319143020.448346514@linuxfoundation.org>
+Message-ID: <20250319143029.189673123@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit d749d901b2168389f060b654fdaa08acf6b367d2 ]
+[ Upstream commit 3011b29ec5a33ec16502e687c4264d57416a8b1f ]
 
-Firmware version query is supported on the PFs. Due to this
-following kernel warning log is observed:
+PRMD register is only meaningful on the beginning stage of exception
+entry, and it is overwritten with nested irq or exception.
 
-[  188.590344] mlx5_core 0000:08:00.2: mlx5_fw_version_query:816:(pid 1453): fw query isn't supported by the FW
+When CPU runs in VM mode, interrupt need be enabled on host. And the
+mode for host had better be kernel mode rather than random or user mode.
 
-Fix it by restricting the query and devlink info to the PF.
+When VM is running, the running mode with top command comes from CRMD
+register, and running mode should be kernel mode since kernel function
+is executing with perf command. It needs be consistent with both top and
+perf command.
 
-Fixes: 8338d9378895 ("net/mlx5: Added devlink info callback")
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Link: https://patch.msgid.link/20250306212529.429329-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/devlink.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/loongarch/kvm/switch.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-index 1bccb5633ab4b..f66788a2ed77e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-@@ -46,6 +46,9 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
- 	u32 running_fw, stored_fw;
- 	int err;
+diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+index 0c292f8184927..1be185e948072 100644
+--- a/arch/loongarch/kvm/switch.S
++++ b/arch/loongarch/kvm/switch.S
+@@ -85,7 +85,7 @@
+ 	 * Guest CRMD comes from separate GCSR_CRMD register
+ 	 */
+ 	ori	t0, zero, CSR_PRMD_PIE
+-	csrxchg	t0, t0,   LOONGARCH_CSR_PRMD
++	csrwr	t0, LOONGARCH_CSR_PRMD
  
-+	if (!mlx5_core_is_pf(dev))
-+		return 0;
-+
- 	err = devlink_info_version_fixed_put(req, "fw.psid", dev->board_id);
- 	if (err)
- 		return err;
+ 	/* Set PVM bit to setup ertn to guest context */
+ 	ori	t0, zero, CSR_GSTAT_PVM
 -- 
 2.39.5
 
