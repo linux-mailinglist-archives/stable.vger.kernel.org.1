@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-125408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55979A690C1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC60A6923F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:05:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F002163593
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D369A1B87D39
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CC41F09A2;
-	Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138B8214A90;
+	Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrnSnP9y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3OKGg9L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36AF1F4C97;
-	Wed, 19 Mar 2025 14:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63F51C5F26;
+	Wed, 19 Mar 2025 14:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395167; cv=none; b=HBx0U6oNykgk7/RfjttASB9iEI99036LQ/6ZHgfQ0XswT1NNRupkM5VzwBs1qW5a5OYs4svA93SovRhFLxTlVKEd5X0yBwAo+Bn/CPyhUh867dyo+dzDJyMFFjjevoTdX0xP6OmocKp14dkdsF3F9Qj1bUeLaY7alMyzUCaZqOg=
+	t=1742395060; cv=none; b=D1IpRVdhLexvpL97TagwW1Hjgo7quk43UTot6/JZACYq/rhoqRaoL1HPweE4zaJph8wdalXPsSbNBBulbe5t+hjdT3ZkGLplpb4DmvRDbv60tzzLt7pA1W1I2QsFMngVa33bETtYOJPJK2kOhhDD+9xF3qgfIk2DMhhk+y+WvYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395167; c=relaxed/simple;
-	bh=WbJeMYPZ+h89wJ/AJsio4RnyrS8qdkhJZmaRfgA2zGE=;
+	s=arc-20240116; t=1742395060; c=relaxed/simple;
+	bh=Ph/mIF0AIwe8gUB+s+ZYhCBUIQjpy3RN/29SyDhkde8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jR9L+dVvpAWxKXH7rg3fVRfW1kAsDFU832dyPYtuBkBAVkfiPVwhhiq1FRhi6f5TNDenoleZi3ml7zXx2OdocqRi0Ojj6iSuUSKJ4528hfH6MJT0W7bgHR0YDNJAHYuOpqDoGraRxzc42i8Wo67ZXCNPxmmuKT5Uu92uzmruBA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrnSnP9y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B781CC4CEE9;
-	Wed, 19 Mar 2025 14:39:26 +0000 (UTC)
+	 MIME-Version; b=X6dSd8zKlki0cR0JbLRnknCRVz7Yskh8g4EM07VsO/MsYuB/jsZK7Ck/VldlY8DcRD4d9fWawUbbrFS/gI61OzEjZz9RcI6mu+2oVjjqGl9oHgnXZT5xoGauau8wUOElTbz99meIYZh47zczUI+bKSyslh5LuAFE1MwcmCO6t0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3OKGg9L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99934C4CEE9;
+	Wed, 19 Mar 2025 14:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395166;
-	bh=WbJeMYPZ+h89wJ/AJsio4RnyrS8qdkhJZmaRfgA2zGE=;
+	s=korg; t=1742395060;
+	bh=Ph/mIF0AIwe8gUB+s+ZYhCBUIQjpy3RN/29SyDhkde8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mrnSnP9ysphUT/MDW2vyYeT9FOOuCuW2GAIkmbaChyTM7U6BJ5SmTHuGXrqJhZoMv
-	 1FPS/vFx6xQ8L3W3knUnSdnARrduPmX3f2KT4n3l/FRF7T0la1vT8CPnRCDUYFFpM9
-	 rTxZzucyMv+2huyNOhxJ2VN9GhXAGVaSgzF+mo+I=
+	b=D3OKGg9LHe+RT+sHAb+YSgpubQ36ID43aJRhaX55jzvFw4qKvYmoqAt98wiAYeKra
+	 pj6J+uDjPWT9BcTYYwxNGHmoubVFUCEDDmOSxh3vt32VDWxV1J6NjXu8GXeFqFo1uJ
+	 bHAfIqaQmN8GtYTHoDBTHTdW4akm47wIr6VugGY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/166] Revert "Bluetooth: hci_core: Fix sleeping function called from invalid context"
+Subject: [PATCH 6.12 094/231] LoongArch: Fix kernel_page_present() for KPRANGE/XKPRANGE
 Date: Wed, 19 Mar 2025 07:29:47 -0700
-Message-ID: <20250319143020.422624640@linuxfoundation.org>
+Message-ID: <20250319143029.165108042@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,390 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit ab6ab707a4d060a51c45fc13e3b2228d5f7c0b87 ]
+[ Upstream commit 619b52777a4972bdb6ddf86ac54c6f68a47b51c4 ]
 
-This reverts commit 4d94f05558271654670d18c26c912da0c1c15549 which has
-problems (see [1]) and is no longer needed since 581dd2dc168f
-("Bluetooth: hci_event: Fix using rcu_read_(un)lock while iterating")
-has reworked the code where the original bug has been found.
+Now kernel_page_present() always return true for KPRANGE/XKPRANGE
+addresses, this isn't correct because hibernation (ACPI S4) use it
+to distinguish whether a page is saveable. If all KPRANGE/XKPRANGE
+addresses are considered as saveable, then reserved memory such as
+EFI_RUNTIME_SERVICES_CODE / EFI_RUNTIME_SERVICES_DATA will also be
+saved and restored.
 
-[1] Link: https://lore.kernel.org/linux-bluetooth/877c55ci1r.wl-tiwai@suse.de/T/#t
-Fixes: 4d94f0555827 ("Bluetooth: hci_core: Fix sleeping function called from invalid context")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix this by returning true only if the KPRANGE/XKPRANGE address is in
+memblock.memory.
+
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h | 108 +++++++++++--------------------
- net/bluetooth/hci_core.c         |  10 ++-
- net/bluetooth/iso.c              |   6 --
- net/bluetooth/l2cap_core.c       |  12 ++--
- net/bluetooth/rfcomm/core.c      |   6 --
- net/bluetooth/sco.c              |  12 ++--
- 6 files changed, 57 insertions(+), 97 deletions(-)
+ arch/loongarch/mm/pageattr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 4fcee6b734b74..e9214ccfde2d7 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -800,6 +800,7 @@ struct hci_conn_params {
- extern struct list_head hci_dev_list;
- extern struct list_head hci_cb_list;
- extern rwlock_t hci_dev_list_lock;
-+extern struct mutex hci_cb_list_lock;
+diff --git a/arch/loongarch/mm/pageattr.c b/arch/loongarch/mm/pageattr.c
+index ffd8d76021d47..aca4e86d2d888 100644
+--- a/arch/loongarch/mm/pageattr.c
++++ b/arch/loongarch/mm/pageattr.c
+@@ -3,6 +3,7 @@
+  * Copyright (C) 2024 Loongson Technology Corporation Limited
+  */
  
- #define hci_dev_set_flag(hdev, nr)             set_bit((nr), (hdev)->dev_flags)
- #define hci_dev_clear_flag(hdev, nr)           clear_bit((nr), (hdev)->dev_flags)
-@@ -1948,47 +1949,24 @@ struct hci_cb {
++#include <linux/memblock.h>
+ #include <linux/pagewalk.h>
+ #include <linux/pgtable.h>
+ #include <asm/set_memory.h>
+@@ -167,7 +168,7 @@ bool kernel_page_present(struct page *page)
+ 	unsigned long addr = (unsigned long)page_address(page);
  
- 	char *name;
+ 	if (addr < vm_map_base)
+-		return true;
++		return memblock_is_memory(__pa(addr));
  
--	bool (*match)		(struct hci_conn *conn);
- 	void (*connect_cfm)	(struct hci_conn *conn, __u8 status);
- 	void (*disconn_cfm)	(struct hci_conn *conn, __u8 status);
- 	void (*security_cfm)	(struct hci_conn *conn, __u8 status,
--				 __u8 encrypt);
-+								__u8 encrypt);
- 	void (*key_change_cfm)	(struct hci_conn *conn, __u8 status);
- 	void (*role_switch_cfm)	(struct hci_conn *conn, __u8 status, __u8 role);
- };
- 
--static inline void hci_cb_lookup(struct hci_conn *conn, struct list_head *list)
--{
--	struct hci_cb *cb, *cpy;
--
--	rcu_read_lock();
--	list_for_each_entry_rcu(cb, &hci_cb_list, list) {
--		if (cb->match && cb->match(conn)) {
--			cpy = kmalloc(sizeof(*cpy), GFP_ATOMIC);
--			if (!cpy)
--				break;
--
--			*cpy = *cb;
--			INIT_LIST_HEAD(&cpy->list);
--			list_add_rcu(&cpy->list, list);
--		}
--	}
--	rcu_read_unlock();
--}
--
- static inline void hci_connect_cfm(struct hci_conn *conn, __u8 status)
- {
--	struct list_head list;
--	struct hci_cb *cb, *tmp;
--
--	INIT_LIST_HEAD(&list);
--	hci_cb_lookup(conn, &list);
-+	struct hci_cb *cb;
- 
--	list_for_each_entry_safe(cb, tmp, &list, list) {
-+	mutex_lock(&hci_cb_list_lock);
-+	list_for_each_entry(cb, &hci_cb_list, list) {
- 		if (cb->connect_cfm)
- 			cb->connect_cfm(conn, status);
--		kfree(cb);
- 	}
-+	mutex_unlock(&hci_cb_list_lock);
- 
- 	if (conn->connect_cfm_cb)
- 		conn->connect_cfm_cb(conn, status);
-@@ -1996,43 +1974,22 @@ static inline void hci_connect_cfm(struct hci_conn *conn, __u8 status)
- 
- static inline void hci_disconn_cfm(struct hci_conn *conn, __u8 reason)
- {
--	struct list_head list;
--	struct hci_cb *cb, *tmp;
--
--	INIT_LIST_HEAD(&list);
--	hci_cb_lookup(conn, &list);
-+	struct hci_cb *cb;
- 
--	list_for_each_entry_safe(cb, tmp, &list, list) {
-+	mutex_lock(&hci_cb_list_lock);
-+	list_for_each_entry(cb, &hci_cb_list, list) {
- 		if (cb->disconn_cfm)
- 			cb->disconn_cfm(conn, reason);
--		kfree(cb);
- 	}
-+	mutex_unlock(&hci_cb_list_lock);
- 
- 	if (conn->disconn_cfm_cb)
- 		conn->disconn_cfm_cb(conn, reason);
- }
- 
--static inline void hci_security_cfm(struct hci_conn *conn, __u8 status,
--				    __u8 encrypt)
--{
--	struct list_head list;
--	struct hci_cb *cb, *tmp;
--
--	INIT_LIST_HEAD(&list);
--	hci_cb_lookup(conn, &list);
--
--	list_for_each_entry_safe(cb, tmp, &list, list) {
--		if (cb->security_cfm)
--			cb->security_cfm(conn, status, encrypt);
--		kfree(cb);
--	}
--
--	if (conn->security_cfm_cb)
--		conn->security_cfm_cb(conn, status);
--}
--
- static inline void hci_auth_cfm(struct hci_conn *conn, __u8 status)
- {
-+	struct hci_cb *cb;
- 	__u8 encrypt;
- 
- 	if (test_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags))
-@@ -2040,11 +1997,20 @@ static inline void hci_auth_cfm(struct hci_conn *conn, __u8 status)
- 
- 	encrypt = test_bit(HCI_CONN_ENCRYPT, &conn->flags) ? 0x01 : 0x00;
- 
--	hci_security_cfm(conn, status, encrypt);
-+	mutex_lock(&hci_cb_list_lock);
-+	list_for_each_entry(cb, &hci_cb_list, list) {
-+		if (cb->security_cfm)
-+			cb->security_cfm(conn, status, encrypt);
-+	}
-+	mutex_unlock(&hci_cb_list_lock);
-+
-+	if (conn->security_cfm_cb)
-+		conn->security_cfm_cb(conn, status);
- }
- 
- static inline void hci_encrypt_cfm(struct hci_conn *conn, __u8 status)
- {
-+	struct hci_cb *cb;
- 	__u8 encrypt;
- 
- 	if (conn->state == BT_CONFIG) {
-@@ -2071,38 +2037,40 @@ static inline void hci_encrypt_cfm(struct hci_conn *conn, __u8 status)
- 			conn->sec_level = conn->pending_sec_level;
- 	}
- 
--	hci_security_cfm(conn, status, encrypt);
-+	mutex_lock(&hci_cb_list_lock);
-+	list_for_each_entry(cb, &hci_cb_list, list) {
-+		if (cb->security_cfm)
-+			cb->security_cfm(conn, status, encrypt);
-+	}
-+	mutex_unlock(&hci_cb_list_lock);
-+
-+	if (conn->security_cfm_cb)
-+		conn->security_cfm_cb(conn, status);
- }
- 
- static inline void hci_key_change_cfm(struct hci_conn *conn, __u8 status)
- {
--	struct list_head list;
--	struct hci_cb *cb, *tmp;
--
--	INIT_LIST_HEAD(&list);
--	hci_cb_lookup(conn, &list);
-+	struct hci_cb *cb;
- 
--	list_for_each_entry_safe(cb, tmp, &list, list) {
-+	mutex_lock(&hci_cb_list_lock);
-+	list_for_each_entry(cb, &hci_cb_list, list) {
- 		if (cb->key_change_cfm)
- 			cb->key_change_cfm(conn, status);
--		kfree(cb);
- 	}
-+	mutex_unlock(&hci_cb_list_lock);
- }
- 
- static inline void hci_role_switch_cfm(struct hci_conn *conn, __u8 status,
- 								__u8 role)
- {
--	struct list_head list;
--	struct hci_cb *cb, *tmp;
--
--	INIT_LIST_HEAD(&list);
--	hci_cb_lookup(conn, &list);
-+	struct hci_cb *cb;
- 
--	list_for_each_entry_safe(cb, tmp, &list, list) {
-+	mutex_lock(&hci_cb_list_lock);
-+	list_for_each_entry(cb, &hci_cb_list, list) {
- 		if (cb->role_switch_cfm)
- 			cb->role_switch_cfm(conn, status, role);
--		kfree(cb);
- 	}
-+	mutex_unlock(&hci_cb_list_lock);
- }
- 
- static inline bool hci_bdaddr_is_rpa(bdaddr_t *bdaddr, u8 addr_type)
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index f29fd32644011..30519d47e8a69 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -58,6 +58,7 @@ DEFINE_RWLOCK(hci_dev_list_lock);
- 
- /* HCI callback list */
- LIST_HEAD(hci_cb_list);
-+DEFINE_MUTEX(hci_cb_list_lock);
- 
- /* HCI ID Numbering */
- static DEFINE_IDA(hci_index_ida);
-@@ -2956,7 +2957,9 @@ int hci_register_cb(struct hci_cb *cb)
- {
- 	BT_DBG("%p name %s", cb, cb->name);
- 
--	list_add_tail_rcu(&cb->list, &hci_cb_list);
-+	mutex_lock(&hci_cb_list_lock);
-+	list_add_tail(&cb->list, &hci_cb_list);
-+	mutex_unlock(&hci_cb_list_lock);
- 
- 	return 0;
- }
-@@ -2966,8 +2969,9 @@ int hci_unregister_cb(struct hci_cb *cb)
- {
- 	BT_DBG("%p name %s", cb, cb->name);
- 
--	list_del_rcu(&cb->list);
--	synchronize_rcu();
-+	mutex_lock(&hci_cb_list_lock);
-+	list_del(&cb->list);
-+	mutex_unlock(&hci_cb_list_lock);
- 
- 	return 0;
- }
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index f165cafa3aa98..b94d202bf3745 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1929,11 +1929,6 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 	return lm;
- }
- 
--static bool iso_match(struct hci_conn *hcon)
--{
--	return hcon->type == ISO_LINK || hcon->type == LE_LINK;
--}
--
- static void iso_connect_cfm(struct hci_conn *hcon, __u8 status)
- {
- 	if (hcon->type != ISO_LINK) {
-@@ -2115,7 +2110,6 @@ void iso_recv(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
- 
- static struct hci_cb iso_cb = {
- 	.name		= "ISO",
--	.match		= iso_match,
- 	.connect_cfm	= iso_connect_cfm,
- 	.disconn_cfm	= iso_disconn_cfm,
- };
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 304ebb31cebba..76a85d8b17574 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7228,11 +7228,6 @@ static struct l2cap_chan *l2cap_global_fixed_chan(struct l2cap_chan *c,
- 	return NULL;
- }
- 
--static bool l2cap_match(struct hci_conn *hcon)
--{
--	return hcon->type == ACL_LINK || hcon->type == LE_LINK;
--}
--
- static void l2cap_connect_cfm(struct hci_conn *hcon, u8 status)
- {
- 	struct hci_dev *hdev = hcon->hdev;
-@@ -7240,6 +7235,9 @@ static void l2cap_connect_cfm(struct hci_conn *hcon, u8 status)
- 	struct l2cap_chan *pchan;
- 	u8 dst_type;
- 
-+	if (hcon->type != ACL_LINK && hcon->type != LE_LINK)
-+		return;
-+
- 	BT_DBG("hcon %p bdaddr %pMR status %d", hcon, &hcon->dst, status);
- 
- 	if (status) {
-@@ -7304,6 +7302,9 @@ int l2cap_disconn_ind(struct hci_conn *hcon)
- 
- static void l2cap_disconn_cfm(struct hci_conn *hcon, u8 reason)
- {
-+	if (hcon->type != ACL_LINK && hcon->type != LE_LINK)
-+		return;
-+
- 	BT_DBG("hcon %p reason %d", hcon, reason);
- 
- 	l2cap_conn_del(hcon, bt_to_errno(reason));
-@@ -7582,7 +7583,6 @@ void l2cap_recv_acldata(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
- 
- static struct hci_cb l2cap_cb = {
- 	.name		= "L2CAP",
--	.match		= l2cap_match,
- 	.connect_cfm	= l2cap_connect_cfm,
- 	.disconn_cfm	= l2cap_disconn_cfm,
- 	.security_cfm	= l2cap_security_cfm,
-diff --git a/net/bluetooth/rfcomm/core.c b/net/bluetooth/rfcomm/core.c
-index 9d46afb24caf0..1d34d84970332 100644
---- a/net/bluetooth/rfcomm/core.c
-+++ b/net/bluetooth/rfcomm/core.c
-@@ -2134,11 +2134,6 @@ static int rfcomm_run(void *unused)
- 	return 0;
- }
- 
--static bool rfcomm_match(struct hci_conn *hcon)
--{
--	return hcon->type == ACL_LINK;
--}
--
- static void rfcomm_security_cfm(struct hci_conn *conn, u8 status, u8 encrypt)
- {
- 	struct rfcomm_session *s;
-@@ -2185,7 +2180,6 @@ static void rfcomm_security_cfm(struct hci_conn *conn, u8 status, u8 encrypt)
- 
- static struct hci_cb rfcomm_cb = {
- 	.name		= "RFCOMM",
--	.match		= rfcomm_match,
- 	.security_cfm	= rfcomm_security_cfm
- };
- 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index c4c36ff25fb20..64d4d57c7033a 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -1353,13 +1353,11 @@ int sco_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 	return lm;
- }
- 
--static bool sco_match(struct hci_conn *hcon)
--{
--	return hcon->type == SCO_LINK || hcon->type == ESCO_LINK;
--}
--
- static void sco_connect_cfm(struct hci_conn *hcon, __u8 status)
- {
-+	if (hcon->type != SCO_LINK && hcon->type != ESCO_LINK)
-+		return;
-+
- 	BT_DBG("hcon %p bdaddr %pMR status %u", hcon, &hcon->dst, status);
- 
- 	if (!status) {
-@@ -1374,6 +1372,9 @@ static void sco_connect_cfm(struct hci_conn *hcon, __u8 status)
- 
- static void sco_disconn_cfm(struct hci_conn *hcon, __u8 reason)
- {
-+	if (hcon->type != SCO_LINK && hcon->type != ESCO_LINK)
-+		return;
-+
- 	BT_DBG("hcon %p reason %d", hcon, reason);
- 
- 	sco_conn_del(hcon, bt_to_errno(reason));
-@@ -1399,7 +1400,6 @@ void sco_recv_scodata(struct hci_conn *hcon, struct sk_buff *skb)
- 
- static struct hci_cb sco_cb = {
- 	.name		= "SCO",
--	.match		= sco_match,
- 	.connect_cfm	= sco_connect_cfm,
- 	.disconn_cfm	= sco_disconn_cfm,
- };
+ 	pgd = pgd_offset_k(addr);
+ 	if (pgd_none(pgdp_get(pgd)))
 -- 
 2.39.5
 
