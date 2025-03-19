@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-125156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7DEA68FFA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2B4A69120
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E76313B8B1F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:40:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F26E4634F6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF14C207E02;
-	Wed, 19 Mar 2025 14:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7FB1209F4D;
+	Wed, 19 Mar 2025 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNf5rg4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mcz9kag3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4D31DEFD6;
-	Wed, 19 Mar 2025 14:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969E020297C;
+	Wed, 19 Mar 2025 14:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394993; cv=none; b=BigjPCs4TW5QrO3TkDFmkhAE8xl9nZPBzB7ykFA+Ok8azYPvca3MEGNLxunqOzKvZSWi6u7miO1JGaxxWag46Tn5xgwy1x84RO5NFJr6ZypNl6PAGQM9rfTLJvJ28IfV7rx5S+AOhRn4J2psEqETJiwgCn8GXRYc187Fg9D04L0=
+	t=1742395227; cv=none; b=rjdBq1dOYbpApY2tKRns/5exu+YQZ2xAh+Nq+aLgo0OZ9Pn0BD38t0QI3OyHeE82SSQnqFcS5tTSXSH30WJJq/d5cabtcpVnAz2olx//EVs+1AftItjUOLebZcDv6gukc9RZ51Fry6AOfPzTNP+WS5O5HEQsEeBmsgDGVGPx7fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394993; c=relaxed/simple;
-	bh=li+smUdeICT5ooo14itJ12GVRuWzpIn+gWuH8CTa7os=;
+	s=arc-20240116; t=1742395227; c=relaxed/simple;
+	bh=hr6vypmSLeG4EYuBmY9Ak8zRlGBiSBbVGHiyigrs5vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c/iZY9zZdKWHt5fyNnJ32ms72Trrbw/osJhr1cfq/2WALtBhZwssqj6EVF6X8zLxEYZ6stGZpvJDDlA8riIEilcw0PnYjEbtUXG0pdIcqV5AUh8XY7+7pYvuHXmZsJucFJUNmBZaxo/9HnVqH4fqW1s3GPsU/t1n5/Y8r/AsaSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNf5rg4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4265CC4CEE4;
-	Wed, 19 Mar 2025 14:36:33 +0000 (UTC)
+	 MIME-Version; b=QJtEZnaLKy3ydv/sETptopeLBSlmMFqM/D3ssjsbtvWKvfZ/0QlqNgq4aE9k4IJF4SHLNyJgYCx4qZs0Q1Ai5Kc8L99q/fHP12nFvuVXWw2yyQOafQProoGiIvpjN5QcpsFIfpcn0KE/Vl1eViaXUDtOSx8CwYV6Hszvawp0cmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mcz9kag3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA6CC4CEE4;
+	Wed, 19 Mar 2025 14:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394993;
-	bh=li+smUdeICT5ooo14itJ12GVRuWzpIn+gWuH8CTa7os=;
+	s=korg; t=1742395227;
+	bh=hr6vypmSLeG4EYuBmY9Ak8zRlGBiSBbVGHiyigrs5vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNf5rg4Tn8rPf0AbDWvUAqkiyPx1SpayzBzJJfiwXHByrvyggtpdfsM6qXX94zPtD
-	 +fK7kEnr/kvHpEozfvN/qJnPlC+f533EJKJ9i3HqvgBzl91RP9Qj94S/EiQ4eRu38r
-	 ItPThxJM5RHc4N9pA6k0wQ/++e0EVpEakCp9qS1w=
+	b=Mcz9kag3LBpSP7mCRy5zywXVWIT6ka+JCq7ftfP01liWrS1Q9p0Q1ULFDTA8vPMUb
+	 ZeSSlY0vbrloz1h3fWK9anniEDpg7IlAnNLA3HHf9szDYMZRHPbqf6mQwPE5kMQ89J
+	 UJEEfyzJxeFb/mZVbJbXpge1hucgrqDcMb2c/anM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.13 198/241] arm64: mm: Populate vmemmap at the page level if not section aligned
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 097/166] io_uring: fix corner case forgetting to vunmap
 Date: Wed, 19 Mar 2025 07:31:08 -0700
-Message-ID: <20250319143032.616878676@linuxfoundation.org>
+Message-ID: <20250319143022.643571881@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit d4234d131b0a3f9e65973f1cdc71bb3560f5d14b upstream.
+Commit 43eef70e7e2ac74e7767731dd806720c7fb5e010 upstream.
 
-On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
-to 27, making one section 128M. The related page struct which vmemmap
-points to is 2M then.
-Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
-vmemmap to populate at the PMD section level which was suitable
-initially since hot plug granule is always one section(128M). However,
-commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
-existing arm64 assumptions.
+io_pages_unmap() is a bit tricky in trying to figure whether the pages
+were previously vmap'ed or not. In particular If there is juts one page
+it belives there is no need to vunmap. Paired io_pages_map(), however,
+could've failed io_mem_alloc_compound() and attempted to
+io_mem_alloc_single(), which does vmap, and that leads to unpaired vmap.
 
-The first problem is that if start or end is not aligned to a section
-boundary, such as when a subsection is hot added, populating the entire
-section is wasteful.
+The solution is to fail if io_mem_alloc_compound() can't allocate a
+single page. That's the easiest way to deal with it, and those two
+functions are getting removed soon, so no need to overcomplicate it.
 
-The next problem is if we hotplug something that spans part of 128 MiB
-section (subsections, let's call it memblock1), and then hotplug something
-that spans another part of a 128 MiB section(subsections, let's call it
-memblock2), and subsequently unplug memblock1, vmemmap_free() will clear
-the entire PMD entry which also supports memblock2 even though memblock2
-is still active.
-
-Assuming hotplug/unplug sizes are guaranteed to be symmetric. Do the
-fix similar to x86-64: populate to pages levels if start/end is not aligned
-with section boundary.
-
-Cc: stable@vger.kernel.org # v5.4+
-Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20250304072700.3405036-1-quic_zhenhuah@quicinc.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3ab1db3c6039e ("io_uring: get rid of remap_pfn_range() for mapping rings/sqes")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/477e75a3907a2fe83249e49c0a92cd480b2c60e0.1732569842.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/mmu.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1176,8 +1176,11 @@ int __meminit vmemmap_populate(unsigned
- 		struct vmem_altmap *altmap)
- {
- 	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
-+	/* [start, end] should be within one section */
-+	WARN_ON_ONCE(end - start > PAGES_PER_SECTION * sizeof(struct page));
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2889,6 +2889,8 @@ static void *io_pages_map(struct page **
+ 	ret = io_mem_alloc_compound(pages, nr_pages, size, gfp);
+ 	if (!IS_ERR(ret))
+ 		goto done;
++	if (nr_pages == 1)
++		goto fail;
  
--	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
-+	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) ||
-+	    (end - start < PAGES_PER_SECTION * sizeof(struct page)))
- 		return vmemmap_populate_basepages(start, end, node, altmap);
- 	else
- 		return vmemmap_populate_hugepages(start, end, node, altmap);
+ 	ret = io_mem_alloc_single(pages, nr_pages, size, gfp);
+ 	if (!IS_ERR(ret)) {
+@@ -2897,7 +2899,7 @@ done:
+ 		*npages = nr_pages;
+ 		return ret;
+ 	}
+-
++fail:
+ 	kvfree(pages);
+ 	*out_pages = NULL;
+ 	*npages = 0;
 
 
 
