@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-125402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229E9A692FE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:19:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E06EAA6927E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:10:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E9201B83DF9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C33311B852CC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236591F4C88;
-	Wed, 19 Mar 2025 14:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5460D1E0E1A;
+	Wed, 19 Mar 2025 14:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQLrDJjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P92/z6LT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D632C1DE4EA;
-	Wed, 19 Mar 2025 14:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137D11B2194;
+	Wed, 19 Mar 2025 14:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395162; cv=none; b=bCOfR0xcOFYBENRYMQ7Sm7zCO5TWX44my1+X4hQAsv5mFE0qAqTt6uuWs1ZX9GiHLSQlbsEvzMNZU8K/Wx38iylFJLKm/N6CCTWTx1ZhJeAuQJLwpgHYw/Lu+up2RJwuaZw4+RjFGqyMcZAif4hTHiULPZU+4DkxlGY+SosUO1s=
+	t=1742394899; cv=none; b=l/NyyIUb1cN2F2I5Z6UKiydAetsYMhI0Xs6V44+PcOgLCfAmDLvdCncnOEZvOSmCraVx2EurEW7TMTft97gOYwlZiGYU6ekO5at4yTGQFWEuzOeagEUGq7cfz0oAfDbpmJUZi0dFLxekt4zag05pefX9T5BDFFifd6+/pGqXq5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395162; c=relaxed/simple;
-	bh=88mN1vNbfy6CLLkjlFa1BzObKgYeQg1HqAeCJ9zntFo=;
+	s=arc-20240116; t=1742394899; c=relaxed/simple;
+	bh=SomFmDwqKrEqm0Sm5fJIscmHt8faGsLJqWg5yDgdBTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8ByJTdwSNs0gHoOn7rUpeeNYb2GXo7d3+sG0JH/LVgz+dcFLVW5OgyzO8myzYznF/Oyozm+7qkONFJVGnxSJATLRS/lHfFw2ErLp8dMa0hpb5cg460oHOKLF/r2P9w/NpzIJaallGfZ8uV1SWcFxSfdaN/uxAaHfB75YfmGyus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQLrDJjX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC878C4CEE4;
-	Wed, 19 Mar 2025 14:39:22 +0000 (UTC)
+	 MIME-Version; b=i3+kHJMHJPFPPQylu7PuHzODL88V30Yn7epsJUbWs8UyT2+T40N5+9AREc7jsH+nCu1hd+/+eWX6LBxsXxJzKHywWs1JoWVqN2Dxont+zp6y4koC/pLMampBtZMCdXsnwH108LsVemvhEqxAqMFeZEYdu109fu6PNWb3XTseiWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P92/z6LT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D0EC4CEE4;
+	Wed, 19 Mar 2025 14:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395162;
-	bh=88mN1vNbfy6CLLkjlFa1BzObKgYeQg1HqAeCJ9zntFo=;
+	s=korg; t=1742394898;
+	bh=SomFmDwqKrEqm0Sm5fJIscmHt8faGsLJqWg5yDgdBTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQLrDJjX6VIkcDGLwhDsx1DKUFPy5PS3MuvU7IcdthS3acUGwMIuWm6CVMsgY72/T
-	 E+x8bACJ+As8tP4bapMBv391OCVT/PML8kfbXkrbfXcYwGk++FDhS0SP4P/py6syU7
-	 LIzidQqkZj1XYssIJ3nIBRfq6PtQbMHO87doLrtY=
+	b=P92/z6LT7wdeeQb0irZGyQrYyHBcGafIRq70WsGXVCdZFDxrhxafqFaWpsRDMHl+6
+	 1Meiy2PU2cgtkDCM4mCvnun2j3+wIwQE5pEfelOLHNa62tqx/DUE2p4UsEF0AMIwS2
+	 i4nrzecuBJ/kq4Eoe7X9cKLu2KHYERQyap7xYtW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris von Recklinghausen <crecklin@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Phil Auld <pauld@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
-Subject: [PATCH 6.6 002/166] sched/isolation: Prevent boot crash when the boot CPU is nohz_full
-Date: Wed, 19 Mar 2025 07:29:33 -0700
-Message-ID: <20250319143020.050156974@linuxfoundation.org>
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 104/241] selftests/bpf: Adjust data size to have ETH_HLEN
+Date: Wed, 19 Mar 2025 07:29:34 -0700
+Message-ID: <20250319143030.297636533@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-Documentation/timers/no_hz.rst states that the "nohz_full=" mask must not
-include the boot CPU, which is no longer true after:
+[ Upstream commit c7f2188d68c114095660a950b7e880a1e5a71c8f ]
 
-  08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full").
+The function bpf_test_init() now returns an error if user_size
+(.data_size_in) is less than ETH_HLEN, causing the tests to
+fail. Adjust the data size to ensure it meets the requirement of
+ETH_HLEN.
 
-However after:
-
-  aae17ebb53cd ("workqueue: Avoid using isolated cpus' timers on queue_delayed_work")
-
-the kernel will crash at boot time in this case; housekeeping_any_cpu()
-returns an invalid CPU number until smp_init() brings the first
-housekeeping CPU up.
-
-Change housekeeping_any_cpu() to check the result of cpumask_any_and() and
-return smp_processor_id() in this case.
-
-This is just the simple and backportable workaround which fixes the
-symptom, but smp_processor_id() at boot time should be safe at least for
-type == HK_TYPE_TIMER, this more or less matches the tick_do_timer_boot_cpu
-logic.
-
-There is no worry about cpu_down(); tick_nohz_cpu_down() will not allow to
-offline tick_do_timer_cpu (the 1st online housekeeping CPU).
-
-[ Apply only documentation changes as commit which causes boot
-  crash when boot CPU is nohz_full is not backported to stable
-  kernels - Krishanth ]
-
-Reported-by: Chris von Recklinghausen <crecklin@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20240411143905.GA19288@redhat.com
-Closes: https://lore.kernel.org/all/20240402105847.GA24832@redhat.com/
-Signed-off-by: Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
-[ strip out upstream commit and Fixes: so tools don't get confused that
-  this commit actually does anything real - gregkh]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250121150643.671650-2-syoshida@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/timers/no_hz.rst |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ .../testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c  | 4 ++--
+ .../testing/selftests/bpf/prog_tests/xdp_devmap_attach.c  | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/Documentation/timers/no_hz.rst
-+++ b/Documentation/timers/no_hz.rst
-@@ -129,11 +129,8 @@ adaptive-tick CPUs:  At least one non-ad
- online to handle timekeeping tasks in order to ensure that system
- calls like gettimeofday() returns accurate values on adaptive-tick CPUs.
- (This is not an issue for CONFIG_NO_HZ_IDLE=y because there are no running
--user processes to observe slight drifts in clock rate.)  Therefore, the
--boot CPU is prohibited from entering adaptive-ticks mode.  Specifying a
--"nohz_full=" mask that includes the boot CPU will result in a boot-time
--error message, and the boot CPU will be removed from the mask.  Note that
--this means that your system must have at least two CPUs in order for
-+user processes to observe slight drifts in clock rate.) Note that this
-+means that your system must have at least two CPUs in order for
- CONFIG_NO_HZ_FULL=y to do anything for you.
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
+index c7f74f068e788..df27535995af8 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
+@@ -52,10 +52,10 @@ static void test_xdp_with_cpumap_helpers(void)
+ 	ASSERT_EQ(info.id, val.bpf_prog.id, "Match program id to cpumap entry prog_id");
  
- Finally, adaptive-ticks CPUs must have their RCU callbacks offloaded.
+ 	/* send a packet to trigger any potential bugs in there */
+-	char data[10] = {};
++	char data[ETH_HLEN] = {};
+ 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
+ 			    .data_in = &data,
+-			    .data_size_in = 10,
++			    .data_size_in = sizeof(data),
+ 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
+ 			    .repeat = 1,
+ 		);
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c b/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
+index 27ffed17d4be3..461ab18705d5c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
+@@ -23,7 +23,7 @@ static void test_xdp_with_devmap_helpers(void)
+ 	__u32 len = sizeof(info);
+ 	int err, dm_fd, dm_fd_redir, map_fd;
+ 	struct nstoken *nstoken = NULL;
+-	char data[10] = {};
++	char data[ETH_HLEN] = {};
+ 	__u32 idx = 0;
+ 
+ 	SYS(out_close, "ip netns add %s", TEST_NS);
+@@ -58,7 +58,7 @@ static void test_xdp_with_devmap_helpers(void)
+ 	/* send a packet to trigger any potential bugs in there */
+ 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
+ 			    .data_in = &data,
+-			    .data_size_in = 10,
++			    .data_size_in = sizeof(data),
+ 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
+ 			    .repeat = 1,
+ 		);
+@@ -158,7 +158,7 @@ static void test_xdp_with_devmap_helpers_veth(void)
+ 	struct nstoken *nstoken = NULL;
+ 	__u32 len = sizeof(info);
+ 	int err, dm_fd, dm_fd_redir, map_fd, ifindex_dst;
+-	char data[10] = {};
++	char data[ETH_HLEN] = {};
+ 	__u32 idx = 0;
+ 
+ 	SYS(out_close, "ip netns add %s", TEST_NS);
+@@ -208,7 +208,7 @@ static void test_xdp_with_devmap_helpers_veth(void)
+ 	/* send a packet to trigger any potential bugs in there */
+ 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
+ 			    .data_in = &data,
+-			    .data_size_in = 10,
++			    .data_size_in = sizeof(data),
+ 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
+ 			    .repeat = 1,
+ 		);
+-- 
+2.39.5
+
 
 
 
