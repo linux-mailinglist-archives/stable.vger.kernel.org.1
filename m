@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-125525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890ACA69263
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 068E2A69288
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096A01B84A0A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EDB71B829A9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C245220AF7D;
-	Wed, 19 Mar 2025 14:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938DD1F03E0;
+	Wed, 19 Mar 2025 14:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m430rm27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQ56CmyZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8155E18BC36;
-	Wed, 19 Mar 2025 14:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513C31DE4C9;
+	Wed, 19 Mar 2025 14:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395251; cv=none; b=TMIRVHNSIK3reKwLimtMVXaa/As8jUKiidlYoiC31VF1PZpengWeLFVquP7uYWHwMBg18J1eIY7t7ss23qWknf8hFLc5SWxPesSlKCnV1grKVSKB1A0YJfZrEhDeqwfEfKxqVd+nfO+eCXJGJ8hU8RbKtG7mhrSc7rskPBo+ds4=
+	t=1742395155; cv=none; b=OMdLYOwbM+y4hBWjlBe+Cu56CIrnhYgQ4RB71gMp1kuNQ24lQwiNB+Q15+lViWEGoNA5hztKdm7QRQY1jSeaAy8TnhQ4l7PMWyYh1W27QdhZ7YewQ8g33il6H7tb6KoZqpsdR06XszC0wftn7Z82HTzS2//JrMbAKyjxcH7uPMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395251; c=relaxed/simple;
-	bh=BsD92i5mH/qnMsziLAM9F+EOiMJlAPXb+ZfptwHvMtM=;
+	s=arc-20240116; t=1742395155; c=relaxed/simple;
+	bh=tT+pB8SKwgXczENcgIyju9GNi6DvuuPAGerpGZd5UBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofsMWwYGt1exuCIdMu6o8oeDX9nheHPa5JwesKZpB8jhQeoJhx+/Sf+Ak28dZ8MSOHnlvMQNhBJ8cfxG5angWrOGpbbJfu9PrqateHoQeBBHJyq0EkJUhLJK7kcAVgPapifrVo7+WSglbHlHknuW8QzrEg7I5nWrnbLZ+dvztKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m430rm27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D05C4CEE4;
-	Wed, 19 Mar 2025 14:40:51 +0000 (UTC)
+	 MIME-Version; b=FKNmUbSJPxujOCyypjoG5S1qdF4ol4bYLkaaIG+RpDmRlpHA+nQf4IceUFmX6qwrCF2abU+e9kzig4gfEDu90ZPKWDt5+k24Rqc2Le+PEchZnCP4ypW0v+TcrqWuS3Wj5bbZb2WitzlAaobb3DFq0qxExrnn22jGpiCrJkd3Qqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQ56CmyZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26916C4CEE4;
+	Wed, 19 Mar 2025 14:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395251;
-	bh=BsD92i5mH/qnMsziLAM9F+EOiMJlAPXb+ZfptwHvMtM=;
+	s=korg; t=1742395155;
+	bh=tT+pB8SKwgXczENcgIyju9GNi6DvuuPAGerpGZd5UBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m430rm27qSAwdeApUld3/7Yj44o9oS5HSiD4ezfGdXh/6l0umxRZBzsMfzXPLKbM+
-	 RvUCI9H4yMTwqptZWLT0rWgN2TIK9IWi0xBj3P6ttnVauFDuYLA/x4C1F28OsrCBVQ
-	 uohYk/QLv5i3VckFTOKub0IC/9n3wnZXQihV8GHU=
+	b=aQ56CmyZTflKFxe9RRY1Aurf7DkXOtDGvBl/NSAULflcYefcJ+WCcevfod/0JBxeX
+	 hZr2rMkyIUNl51f1WvizH8JW/6U4OGbTwl+tjh1QormEbUG8Fxwsec00lFtB6OyNMf
+	 Lic/3Ss9ebIv/SktcuiRoJvWrPJUoyNdOyaKInz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 133/166] qlcnic: fix memory leak issues in qlcnic_sriov_common.c
-Date: Wed, 19 Mar 2025 07:31:44 -0700
-Message-ID: <20250319143023.618171690@linuxfoundation.org>
+	Tamir Duberstein <tamird@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 213/231] scripts: generate_rust_analyzer: add uapi crate
+Date: Wed, 19 Mar 2025 07:31:46 -0700
+Message-ID: <20250319143032.112697742@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Tamir Duberstein <tamird@gmail.com>
 
-commit d2b9d97e89c79c95f8b517e4fa43fd100f936acc upstream.
+[ Upstream commit a1eb95d6b5f4cf5cc7b081e85e374d1dd98a213b ]
 
-Add qlcnic_sriov_free_vlans() in qlcnic_sriov_alloc_vlans() if
-any sriov_vlans fails to be allocated.
-Add qlcnic_sriov_free_vlans() to free the memory allocated by
-qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
-be allocated.
+Commit 4e1746656839 ("rust: uapi: Add UAPI crate") did not update
+rust-analyzer to include the new crate.
 
-Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20250307094952.14874-1-haoxiang_li2024@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add the missing definition to improve the developer experience.
+
+Fixes: 4e1746656839 ("rust: uapi: Add UAPI crate")
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+Link: https://lore.kernel.org/r/20250210-rust-analyzer-bindings-include-v2-2-23dff845edc3@gmail.com
+[ Slightly reworded title. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ scripts/generate_rust_analyzer.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_m
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 2a64067b09b0c..d1f5adbf33f91 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -110,7 +110,8 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+         }
  
- 	num_vlans = sriov->num_allowed_vlans;
- 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
--	if (!sriov->allowed_vlans)
-+	if (!sriov->allowed_vlans) {
-+		qlcnic_sriov_free_vlans(adapter);
- 		return -ENOMEM;
-+	}
+     append_crate_with_generated("bindings", ["core"])
+-    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings"])
++    append_crate_with_generated("uapi", ["core"])
++    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings", "uapi"])
  
- 	vlans = (u16 *)&cmd->rsp.arg[3];
- 	for (i = 0; i < num_vlans; i++)
-@@ -2167,8 +2169,10 @@ int qlcnic_sriov_alloc_vlans(struct qlcn
- 		vf = &sriov->vf_info[i];
- 		vf->sriov_vlans = kcalloc(sriov->num_allowed_vlans,
- 					  sizeof(*vf->sriov_vlans), GFP_KERNEL);
--		if (!vf->sriov_vlans)
-+		if (!vf->sriov_vlans) {
-+			qlcnic_sriov_free_vlans(adapter);
- 			return -ENOMEM;
-+		}
- 	}
- 
- 	return 0;
+     def is_root_crate(build_file, target):
+         try:
+-- 
+2.39.5
+
 
 
 
