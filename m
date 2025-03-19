@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-125488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8978FA691A8
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AD2A690F6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 351538A0FF8
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 832453B0352
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8895F20897A;
-	Wed, 19 Mar 2025 14:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60F721CC6C;
+	Wed, 19 Mar 2025 14:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdiDS5L/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2tZtQER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46678209673;
-	Wed, 19 Mar 2025 14:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7421B1A841C;
+	Wed, 19 Mar 2025 14:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395226; cv=none; b=Y8mUvKsRmYH57eBmCqMbSSFZZS4om4YqB9pGgUBR03nSxoz5NHr2ymOcYNheQwbJRlopEtfC4nflk9F7a2svO8s3FZEJLzRkuC8N0SCcZpmoriDHh2mC7Qp3Ll9KRHbM0w0/pzI5VwBMhQGojRRHVVuprNs91HTY5a+2cVWiZKo=
+	t=1742395143; cv=none; b=tpizz2To3kXUwzWgC5hkikNs2ZVVJhA7sC9wFs+OlghQ4Gyo6QSFbhXNn+9vbVM/22kwHKw75Ua7NSe0cP4ack6ruelzCSlL+8tL8mKERY8kX9DsuDf4VP9DLJeS7Tfsb494rzUHadmkDB5C+HTqJDVRqZJfUO4YfT89cTMFOtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395226; c=relaxed/simple;
-	bh=oY6/Zqx23rB88P1KfNzghJBOFccp18xXESiUtdaZMUM=;
+	s=arc-20240116; t=1742395143; c=relaxed/simple;
+	bh=dkHILbvVyT/nvtuvIonUaheG++Stis2IJ4rPh7vx++I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtabvLD4cl1tyMIVhzQqxOfJqnKNRY6AsYACn3DcI3/kL/I92iR3+R7t8htZgfVAiMYIlfUG4cicYAMoaBHD8JoZ+jNnFAI7pqeoOgDEMt3FrMruRtR0J4Ki44mJP8yz4kmzjVWZhalISro0aldgEkKDffWfT+8Yj8tRkieP91k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdiDS5L/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF33C4CEE4;
-	Wed, 19 Mar 2025 14:40:26 +0000 (UTC)
+	 MIME-Version; b=VkCz+eeUL/T9eS832GImLr9zWvuGTJLtrSaMq7s1GCg5U9TAffVAvcr6PZJ/Se+ucuCcfArVKIONoxQCSiFHiWUj/5a7oVTtQDOz0cuXVgy7Y38OHWnUQS8v0Oq9JTVKNsnW6yMX+htIz2Y16rduN+Jaqa0KYZWQZpgAuY4oV3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2tZtQER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB6AC4CEEA;
+	Wed, 19 Mar 2025 14:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395226;
-	bh=oY6/Zqx23rB88P1KfNzghJBOFccp18xXESiUtdaZMUM=;
+	s=korg; t=1742395143;
+	bh=dkHILbvVyT/nvtuvIonUaheG++Stis2IJ4rPh7vx++I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdiDS5L/X5qJnsOjSTOukli6sCvyeTUxYF/bXwb1tgsBoljD+c/kTNO4FzVAh1FE0
-	 IGFkYt3KN+WOhjN3tjV3fX8uu5Cc2LUJitd1C+9msn9W/Col2M51lY+sijoh2PhzTc
-	 IhVWXQM8bF3q8jfLvjL3wPdxcLGLtLsQEqpIfu0I=
+	b=Z2tZtQERU/iGxXRmH8oSGf1jmaU89dzlnd3Sd5C29MnvN0xBXUnk6Jmh1X3H/FMtd
+	 UYwH0Xr+53iHj2nFvb4USLJ67PG/o7s0FOpN+5G/jpkPQ4kPMZAY754xwS9udAbKpM
+	 7f2BTu46B1rupfQzyV2oVnoR8bafhaq4kUXSohd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 095/166] io_uring: get rid of remap_pfn_range() for mapping rings/sqes
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.12 173/231] drm/dp_mst: Fix locking when skipping CSN before topology probing
 Date: Wed, 19 Mar 2025 07:31:06 -0700
-Message-ID: <20250319143022.593793636@linuxfoundation.org>
+Message-ID: <20250319143031.116498473@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,250 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Imre Deak <imre.deak@intel.com>
 
-Commit 3ab1db3c6039e02a9deb9d5091d28d559917a645 upstream.
+commit 12d8f318347b1d4feac48e8ac351d3786af39599 upstream.
 
-Rather than use remap_pfn_range() for this and manually free later,
-switch to using vm_insert_pages() and have it Just Work.
+The handling of the MST Connection Status Notify message is skipped if
+the probing of the topology is still pending. Acquiring the
+drm_dp_mst_topology_mgr::probe_lock for this in
+drm_dp_mst_handle_up_req() is problematic: the task/work this function
+is called from is also responsible for handling MST down-request replies
+(in drm_dp_mst_handle_down_rep()). Thus drm_dp_mst_link_probe_work() -
+holding already probe_lock - could be blocked waiting for an MST
+down-request reply while drm_dp_mst_handle_up_req() is waiting for
+probe_lock while processing a CSN message. This leads to the probe
+work's down-request message timing out.
 
-If possible, allocate a single compound page that covers the range that
-is needed. If that works, then we can just use page_address() on that
-page. If we fail to get a compound page, allocate single pages and use
-vmap() to map them into the kernel virtual address space.
+A scenario similar to the above leading to a down-request timeout is
+handling a CSN message in drm_dp_mst_handle_conn_stat(), holding the
+probe_lock and sending down-request messages while a second CSN message
+sent by the sink subsequently is handled by drm_dp_mst_handle_up_req().
 
-This just covers the rings/sqes, the other remaining user of the mmap
-remap_pfn_range() user will be converted separately. Once that is done,
-we can kill the old alloc/free code.
+Fix the above by moving the logic to skip the CSN handling to
+drm_dp_mst_process_up_req(). This function is called from a work
+(separate from the task/work handling new up/down messages), already
+holding probe_lock. This solves the above timeout issue, since handling
+of down-request replies won't be blocked by probe_lock.
 
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: ddf983488c3e ("drm/dp_mst: Skip CSN if topology probing is not done yet")
+Cc: Wayne Lin <Wayne.Lin@amd.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: stable@vger.kernel.org # v6.6+
+Reviewed-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250307183152.3822170-1-imre.deak@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |  139 +++++++++++++++++++++++++++++++++++++++++++++++++---
- io_uring/io_uring.h |    2 
- 2 files changed, 133 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |   40 +++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 16 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2683,6 +2683,36 @@ static int io_cqring_wait(struct io_ring
- 	return READ_ONCE(rings->cq.head) == READ_ONCE(rings->cq.tail) ? ret : 0;
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -4034,6 +4034,22 @@ out:
+ 	return 0;
  }
  
-+static void io_pages_unmap(void *ptr, struct page ***pages,
-+			   unsigned short *npages)
++static bool primary_mstb_probing_is_done(struct drm_dp_mst_topology_mgr *mgr)
 +{
-+	bool do_vunmap = false;
++	bool probing_done = false;
 +
-+	if (!ptr)
-+		return;
++	mutex_lock(&mgr->lock);
 +
-+	if (*npages) {
-+		struct page **to_free = *pages;
-+		int i;
-+
-+		/*
-+		 * Only did vmap for the non-compound multiple page case.
-+		 * For the compound page, we just need to put the head.
-+		 */
-+		if (PageCompound(to_free[0]))
-+			*npages = 1;
-+		else if (*npages > 1)
-+			do_vunmap = true;
-+		for (i = 0; i < *npages; i++)
-+			put_page(to_free[i]);
-+	}
-+	if (do_vunmap)
-+		vunmap(ptr);
-+	kvfree(*pages);
-+	*pages = NULL;
-+	*npages = 0;
-+}
-+
- void io_mem_free(void *ptr)
- {
- 	if (!ptr)
-@@ -2787,8 +2817,8 @@ static void *io_sqes_map(struct io_ring_
- static void io_rings_free(struct io_ring_ctx *ctx)
- {
- 	if (!(ctx->flags & IORING_SETUP_NO_MMAP)) {
--		io_mem_free(ctx->rings);
--		io_mem_free(ctx->sq_sqes);
-+		io_pages_unmap(ctx->rings, &ctx->ring_pages, &ctx->n_ring_pages);
-+		io_pages_unmap(ctx->sq_sqes, &ctx->sqe_pages, &ctx->n_sqe_pages);
- 	} else {
- 		io_pages_free(&ctx->ring_pages, ctx->n_ring_pages);
- 		ctx->n_ring_pages = 0;
-@@ -2800,6 +2830,80 @@ static void io_rings_free(struct io_ring
- 	ctx->sq_sqes = NULL;
- }
- 
-+static void *io_mem_alloc_compound(struct page **pages, int nr_pages,
-+				   size_t size, gfp_t gfp)
-+{
-+	struct page *page;
-+	int i, order;
-+
-+	order = get_order(size);
-+	if (order > 10)
-+		return ERR_PTR(-ENOMEM);
-+	else if (order)
-+		gfp |= __GFP_COMP;
-+
-+	page = alloc_pages(gfp, order);
-+	if (!page)
-+		return ERR_PTR(-ENOMEM);
-+
-+	for (i = 0; i < nr_pages; i++)
-+		pages[i] = page + i;
-+
-+	return page_address(page);
-+}
-+
-+static void *io_mem_alloc_single(struct page **pages, int nr_pages, size_t size,
-+				 gfp_t gfp)
-+{
-+	void *ret;
-+	int i;
-+
-+	for (i = 0; i < nr_pages; i++) {
-+		pages[i] = alloc_page(gfp);
-+		if (!pages[i])
-+			goto err;
++	if (mgr->mst_primary && drm_dp_mst_topology_try_get_mstb(mgr->mst_primary)) {
++		probing_done = mgr->mst_primary->link_address_sent;
++		drm_dp_mst_topology_put_mstb(mgr->mst_primary);
 +	}
 +
-+	ret = vmap(pages, nr_pages, VM_MAP, PAGE_KERNEL);
-+	if (ret)
-+		return ret;
-+err:
-+	while (i--)
-+		put_page(pages[i]);
-+	return ERR_PTR(-ENOMEM);
++	mutex_unlock(&mgr->lock);
++
++	return probing_done;
 +}
 +
-+static void *io_pages_map(struct page ***out_pages, unsigned short *npages,
-+			  size_t size)
-+{
-+	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN;
-+	struct page **pages;
-+	int nr_pages;
-+	void *ret;
-+
-+	nr_pages = (size + PAGE_SIZE - 1) >> PAGE_SHIFT;
-+	pages = kvmalloc_array(nr_pages, sizeof(struct page *), gfp);
-+	if (!pages)
-+		return ERR_PTR(-ENOMEM);
-+
-+	ret = io_mem_alloc_compound(pages, nr_pages, size, gfp);
-+	if (!IS_ERR(ret))
-+		goto done;
-+
-+	ret = io_mem_alloc_single(pages, nr_pages, size, gfp);
-+	if (!IS_ERR(ret)) {
-+done:
-+		*out_pages = pages;
-+		*npages = nr_pages;
-+		return ret;
-+	}
-+
-+	kvfree(pages);
-+	*out_pages = NULL;
-+	*npages = 0;
-+	return ret;
-+}
-+
- void *io_mem_alloc(size_t size)
- {
- 	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN | __GFP_COMP;
-@@ -3463,14 +3567,12 @@ static void *io_uring_validate_mmap_requ
- 		/* Don't allow mmap if the ring was setup without it */
- 		if (ctx->flags & IORING_SETUP_NO_MMAP)
- 			return ERR_PTR(-EINVAL);
--		ptr = ctx->rings;
--		break;
-+		return ctx->rings;
- 	case IORING_OFF_SQES:
- 		/* Don't allow mmap if the ring was setup without it */
- 		if (ctx->flags & IORING_SETUP_NO_MMAP)
- 			return ERR_PTR(-EINVAL);
--		ptr = ctx->sq_sqes;
--		break;
-+		return ctx->sq_sqes;
- 	case IORING_OFF_PBUF_RING: {
- 		struct io_buffer_list *bl;
- 		unsigned int bgid;
-@@ -3494,11 +3596,22 @@ static void *io_uring_validate_mmap_requ
- 	return ptr;
- }
+ static inline bool
+ drm_dp_mst_process_up_req(struct drm_dp_mst_topology_mgr *mgr,
+ 			  struct drm_dp_pending_up_req *up_req)
+@@ -4064,8 +4080,12 @@ drm_dp_mst_process_up_req(struct drm_dp_
  
-+int io_uring_mmap_pages(struct io_ring_ctx *ctx, struct vm_area_struct *vma,
-+			struct page **pages, int npages)
-+{
-+	unsigned long nr_pages = npages;
-+
-+	vm_flags_set(vma, VM_DONTEXPAND);
-+	return vm_insert_pages(vma, vma->vm_start, pages, &nr_pages);
-+}
-+
- #ifdef CONFIG_MMU
- 
- static __cold int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
- {
-+	struct io_ring_ctx *ctx = file->private_data;
- 	size_t sz = vma->vm_end - vma->vm_start;
-+	long offset = vma->vm_pgoff << PAGE_SHIFT;
- 	unsigned long pfn;
- 	void *ptr;
- 
-@@ -3506,6 +3619,16 @@ static __cold int io_uring_mmap(struct f
- 	if (IS_ERR(ptr))
- 		return PTR_ERR(ptr);
- 
-+	switch (offset & IORING_OFF_MMAP_MASK) {
-+	case IORING_OFF_SQ_RING:
-+	case IORING_OFF_CQ_RING:
-+		return io_uring_mmap_pages(ctx, vma, ctx->ring_pages,
-+						ctx->n_ring_pages);
-+	case IORING_OFF_SQES:
-+		return io_uring_mmap_pages(ctx, vma, ctx->sqe_pages,
-+						ctx->n_sqe_pages);
-+	}
-+
- 	pfn = virt_to_phys(ptr) >> PAGE_SHIFT;
- 	return remap_pfn_range(vma, vma->vm_start, pfn, sz, vma->vm_page_prot);
- }
-@@ -3795,7 +3918,7 @@ static __cold int io_allocate_scq_urings
- 		return -EOVERFLOW;
- 
- 	if (!(ctx->flags & IORING_SETUP_NO_MMAP))
--		rings = io_mem_alloc(size);
-+		rings = io_pages_map(&ctx->ring_pages, &ctx->n_ring_pages, size);
- 	else
- 		rings = io_rings_map(ctx, p->cq_off.user_addr, size);
- 
-@@ -3820,7 +3943,7 @@ static __cold int io_allocate_scq_urings
+ 	/* TODO: Add missing handler for DP_RESOURCE_STATUS_NOTIFY events */
+ 	if (msg->req_type == DP_CONNECTION_STATUS_NOTIFY) {
+-		dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
+-		hotplug = true;
++		if (!primary_mstb_probing_is_done(mgr)) {
++			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.\n");
++		} else {
++			dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
++			hotplug = true;
++		}
  	}
  
- 	if (!(ctx->flags & IORING_SETUP_NO_MMAP))
--		ptr = io_mem_alloc(size);
-+		ptr = io_pages_map(&ctx->sqe_pages, &ctx->n_sqe_pages, size);
- 	else
- 		ptr = io_sqes_map(ctx, p->sq_off.user_addr, size);
+ 	drm_dp_mst_topology_put_mstb(mstb);
+@@ -4144,10 +4164,11 @@ static int drm_dp_mst_handle_up_req(stru
+ 	drm_dp_send_up_ack_reply(mgr, mst_primary, up_req->msg.req_type,
+ 				 false);
  
---- a/io_uring/io_uring.h
-+++ b/io_uring/io_uring.h
-@@ -55,6 +55,8 @@ bool io_fill_cqe_req_aux(struct io_kiocb
- void __io_commit_cqring_flush(struct io_ring_ctx *ctx);
++	drm_dp_mst_topology_put_mstb(mst_primary);
++
+ 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
+ 		const struct drm_dp_connection_status_notify *conn_stat =
+ 			&up_req->msg.u.conn_stat;
+-		bool handle_csn;
  
- struct page **io_pin_pages(unsigned long ubuf, unsigned long len, int *npages);
-+int io_uring_mmap_pages(struct io_ring_ctx *ctx, struct vm_area_struct *vma,
-+			struct page **pages, int npages);
- 
- struct file *io_file_get_normal(struct io_kiocb *req, int fd);
- struct file *io_file_get_fixed(struct io_kiocb *req, int fd,
+ 		drm_dbg_kms(mgr->dev, "Got CSN: pn: %d ldps:%d ddps: %d mcs: %d ip: %d pdt: %d\n",
+ 			    conn_stat->port_number,
+@@ -4156,16 +4177,6 @@ static int drm_dp_mst_handle_up_req(stru
+ 			    conn_stat->message_capability_status,
+ 			    conn_stat->input_port,
+ 			    conn_stat->peer_device_type);
+-
+-		mutex_lock(&mgr->probe_lock);
+-		handle_csn = mst_primary->link_address_sent;
+-		mutex_unlock(&mgr->probe_lock);
+-
+-		if (!handle_csn) {
+-			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
+-			kfree(up_req);
+-			goto out_put_primary;
+-		}
+ 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
+ 		const struct drm_dp_resource_status_notify *res_stat =
+ 			&up_req->msg.u.resource_stat;
+@@ -4180,9 +4191,6 @@ static int drm_dp_mst_handle_up_req(stru
+ 	list_add_tail(&up_req->next, &mgr->up_req_list);
+ 	mutex_unlock(&mgr->up_req_lock);
+ 	queue_work(system_long_wq, &mgr->up_req_work);
+-
+-out_put_primary:
+-	drm_dp_mst_topology_put_mstb(mst_primary);
+ out_clear_reply:
+ 	memset(&mgr->up_req_recv, 0, sizeof(struct drm_dp_sideband_msg_rx));
+ 	return 0;
 
 
 
