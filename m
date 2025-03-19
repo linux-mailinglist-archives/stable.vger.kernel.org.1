@@ -1,88 +1,59 @@
-Return-Path: <stable+bounces-124911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF83A68B61
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 12:24:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 265C8A68B62
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 12:24:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 586B1423D0D
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 11:20:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29C9F4254B3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 11:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4544B25B670;
-	Wed, 19 Mar 2025 11:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F52A25486D;
+	Wed, 19 Mar 2025 11:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gvksRFPx"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="sXhWKfUy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0BC25524E
-	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 11:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9E225179F;
+	Wed, 19 Mar 2025 11:16:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742382903; cv=none; b=qn95bjwBXqulfDN3wJznIOt4uA7o8wgnoxOooHfM8YLbnKNHjYgCemT8qFGH6qnWRYdqIJC88Sj3xRCm9HjvGqBQ3c5DkWE8LJa1VwE+atuGnNY94TLRggYnwhmpjwrB5AlGBBfNcXZrTpEag07KhIRneF6ZLjUrUwxxWleFR0w=
+	t=1742382996; cv=none; b=Wiv0zEh51lqcUbq38r780XZ+m0kk/o8LQvAKvlGJgLRBV9W77AphpfQLMESp5TANJI7rA3jYyC9Tmq1U6wVubzGXuFrNjQIyUC9oklODkpXr+xRxSJoSnPvmjQAfAI/KXn6X/4oo/7kccjBud3NQEQblMFsWuKytHQtTv+CZePE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742382903; c=relaxed/simple;
-	bh=aY+wT718jcd7J9zYcBPNjAxxvgMi/7jJqwdrk3HqTIE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KH/oOijqpnd7GC8YZlZtebKbbIm2jGPran2geIZCZ2uzUpAXHhc3776DQzrjwqEBRCcOJrScFblkRR8HFIRkXANQ6s4VXEetIY80q+IRyfCjlS1+OZWiIVZtMPwdw+Hh9UFiMtH6MIwceJSBi198ixi5t52G47/plLWkSpgZY6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gvksRFPx; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43cf0d787eeso45467815e9.3
-        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 04:15:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742382899; x=1742987699; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yqFmyb1JpY335n5hykX+2u4g/6H0xVX+LFgESzsIi/w=;
-        b=gvksRFPxbM1gIIxu1jaFdAWL62IB+2Rxuheudo9U3B8jndaS63Wwvi1oHgTybl7cGF
-         dbqYW7+8VpWM0CZx2MYUNC8YQOHVxGypSCY6nqSddO3Wu3sbZG/W2m6D2yj7bGxUOp2h
-         QTHhrD4G8KxdwN0wjVszpEm5QMbgsd2t9aGUGLC9U4U3RvLIN24kYSKWwYxOYE53GyAG
-         l8qeTssQkwj71ok4NuRqpVHa9LPQqc20KqO045l1reBCCAM1cLBKD/gXhspqwHcXNvHP
-         ZGHjJ8E/hZ5uZMlBmySzEDP0e7HiHJvjovJipbX6ZY4SrxW8jEiArBJEY3UDP+enN8si
-         4WyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742382899; x=1742987699;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yqFmyb1JpY335n5hykX+2u4g/6H0xVX+LFgESzsIi/w=;
-        b=Gqz3RJYFYA/ORTby8csGRnFV09kUeY2h/QqGmToOv802By/5eWRYkWQzlZ/d78xrkc
-         DaCP0G8joYpVjamrs68mkBF+6BYz0b5PJC5amAp0fFiFF/xlGlYXtsdqwtIDWzQnzDrh
-         SsW7SiD6RPbGCMK9iOQhm08hOJTX0rsP0FL+H2aJReAPDrQWQa3giRWNlN1vMeqqucNw
-         bXOscdy+6zi+D9+CcbiknguJl+2LHn3EMXEMhUEpF6j0WNakdtn3bGHgVEq/xAeVY4ff
-         XQAuD9ScprPMgXusvp30qTAKMR6wGfGrh8nyB48E/D/LgKHbz57mGL2DJCKYWoiXzHQQ
-         BbFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWTXrCRiWvKSGKA5VRGFXKteP4CPzxtcvmxjrScO9fvGgXEE39RmWUs8gKVhwS6jhFBIFczj8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwicoD1cFdQFfykj1G1v/bsIxGtwFL0PIGC66kkChPKtkFqN5vE
-	ptprl2ju0uSTwdwNiB5SEF09mVNT/bXLLp3gz7YbQEXC5uY4YVrc
-X-Gm-Gg: ASbGnctUwROEHwFvTCtThR6YetPDd0kCYs0msmA4vhmnB9LD6BCy51WjYgLKHOb6y/K
-	qNU7vKYIl/ZeJESIhS/IYHO7Caa1lGc05DV+N4jrMo0xoWBaWAm6GQe+4+p8bkZ3+dTKEHLaWYw
-	IRVLDAF02T250PFtr7T1fTFrenMR787NNFAb2gRTbl9eMej8R65bu9qMno+rshRK8TVukOLYG6Z
-	9HF3qd2eKasntO0F6MmWzmIsqSmTMbEjXd62N6M9u6hJXYteRX0gZKFe0ZWZYkhBeaK8xyQUC/3
-	sSgayDkO3DNyRCKoRFhVUSo7H2+x6/k/OrKzKKNUsj0x3QOf3Chpmniq1Q==
-X-Google-Smtp-Source: AGHT+IF5u2+ZWno2imnegCnIpegs3nuXSbaY10+poB6n2yQwg8orjRtkDY8YtyKQ3z+9igvNP/Aflw==
-X-Received: by 2002:a05:600c:19d2:b0:43c:ef55:f1e8 with SMTP id 5b1f17b1804b1-43d43798a14mr17318605e9.13.1742382899162;
-        Wed, 19 Mar 2025 04:14:59 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:c7c:6696:8300:7659:65a:5e42:31a9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-395cb7eb953sm20948889f8f.93.2025.03.19.04.14.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 04:14:58 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: 
-Cc: Qasim Ijaz <qasdev00@gmail.com>,
-	syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/4] net: fix uninitialised access in mii_nway_restart()
-Date: Wed, 19 Mar 2025 11:14:41 +0000
-Message-Id: <20250319111444.47843-2-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250319111444.47843-1-qasdev00@gmail.com>
-References: <20250319111444.47843-1-qasdev00@gmail.com>
+	s=arc-20240116; t=1742382996; c=relaxed/simple;
+	bh=gpbvjdms4Rrry5x3aYgBkWxK8NldF01k+Ac5eSpURJs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rcxrX4xucvB5RUnHSrzmzr1WiGR/4sHZ2C+emrqqP5kZhbTjkiYtnnAYmxqEtc3PB3FWLWgXnDs0Nx+FlvVYL3vG9OawVzBZX6+SXqnSUzEDPMKhJODWQ1fMZ7xVs7iiaFT7b+lJV3pi6LEzdIWJnG50B2V24diUnv73Vcf/YQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=sXhWKfUy; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1742382982;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fxGghcda7/TGIIY3lDBoKyvwQc1Uh2+ER/W7JsyZyok=;
+	b=sXhWKfUySwCy73is8UVrucnMK194LvsAqaXhYFzS843cxDeTna6bqxizrj6cvOhkEL9/tf
+	A3G85sN0j9/sI8W4zlugN5tQuj/onJ+y8Dzg6/eosLnVfFSGngrfquL9lHhf4dMZBVs6tv
+	2ONBzx7pCr4LgZ17fXcykPnU2oBavVs=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Richard Weinberger <richard@nod.at>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Mike Frysinger <vapier@gentoo.org>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Zhihao Cheng <chengzhihao1@huawei.com>
+Subject: [PATCH 6.1] ubi: Add a check for ubi_num
+Date: Wed, 19 Mar 2025 14:16:20 +0300
+Message-ID: <20250319111622.34057-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,85 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In mii_nway_restart() during the line:
+From: Denis Arefev <arefev@swemel.ru>
 
-        bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
+commit 97bbf9e312c3fbaf0baa56120238825d2eb23b8a upstream.  
 
-The code attempts to call mii->mdio_read which is ch9200_mdio_read().
+Added a check for ubi_num for negative numbers
+If the variable ubi_num takes negative values then we get:
 
-ch9200_mdio_read() utilises a local buffer, which is initialised
-with control_read():
+qemu-system-arm ... -append "ubi.mtd=0,0,0,-22222345" ...
+[    0.745065]  ubi_attach_mtd_dev from ubi_init+0x178/0x218
+[    0.745230]  ubi_init from do_one_initcall+0x70/0x1ac
+[    0.745344]  do_one_initcall from kernel_init_freeable+0x198/0x224
+[    0.745474]  kernel_init_freeable from kernel_init+0x18/0x134
+[    0.745600]  kernel_init from ret_from_fork+0x14/0x28
+[    0.745727] Exception stack(0x90015fb0 to 0x90015ff8)
 
-        unsigned char buff[2];
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-However buff is conditionally initialised inside control_read():
-
-        if (err == size) {
-                memcpy(data, buf, size);
-        }
-
-If the condition of "err == size" is not met, then buff remains
-uninitialised. Once this happens the uninitialised buff is accessed
-and returned during ch9200_mdio_read():
-
-        return (buff[0] | buff[1] << 8);
-
-The problem stems from the fact that ch9200_mdio_read() ignores the
-return value of control_read(), leading to uinit-access of buff.
-
-To fix this we should check the return value of control_read()
-and return early on error.
-
-Reported-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=3361c2d6f78a3e0892f9
-Tested-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Fixes: 83ff59a06663 ("UBI: support ubi_num on mtd.ubi command line")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+[Denis: minor fix to resolve merge conflict.]                                           
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
 ---
- drivers/net/mii.c        | 2 ++
- drivers/net/usb/ch9200.c | 7 +++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/mtd/ubi/build.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/mii.c b/drivers/net/mii.c
-index 37bc3131d31a..e305bf0f1d04 100644
---- a/drivers/net/mii.c
-+++ b/drivers/net/mii.c
-@@ -464,6 +464,8 @@ int mii_nway_restart (struct mii_if_info *mii)
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index 6fbd77dc1d18..6a7577e57617 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -1460,9 +1460,9 @@ static int ubi_mtd_param_parse(const char *val, const struct kernel_param *kp)
+ 	if (token) {
+ 		int err = kstrtoint(token, 10, &p->ubi_num);
  
- 	/* if autoneg is off, it's an error */
- 	bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
-+	if (bmcr < 0)
-+		return bmcr;
- 
- 	if (bmcr & BMCR_ANENABLE) {
- 		bmcr |= BMCR_ANRESTART;
-diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
-index f69d9b902da0..a206ffa76f1b 100644
---- a/drivers/net/usb/ch9200.c
-+++ b/drivers/net/usb/ch9200.c
-@@ -178,6 +178,7 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
- {
- 	struct usbnet *dev = netdev_priv(netdev);
- 	unsigned char buff[2];
-+	int ret;
- 
- 	netdev_dbg(netdev, "%s phy_id:%02x loc:%02x\n",
- 		   __func__, phy_id, loc);
-@@ -185,8 +186,10 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
- 	if (phy_id != 0)
- 		return -ENODEV;
- 
--	control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
--		     CONTROL_TIMEOUT_MS);
-+	ret = control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
-+			   CONTROL_TIMEOUT_MS);
-+	if (ret < 0)
-+		return ret;
- 
- 	return (buff[0] | buff[1] << 8);
- }
+-		if (err) {
+-			pr_err("UBI error: bad value for ubi_num parameter: %s",
+-			       token);
++		if (err || p->ubi_num < UBI_DEV_NUM_AUTO) {
++			pr_err("UBI error: bad value for ubi_num parameter: %s\n",
++					token);
+ 			return -EINVAL;
+ 		}
+ 	} else
 -- 
-2.39.5
+2.43.0
 
 
