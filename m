@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-125471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AAAA692FF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:19:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D65A6931D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C13A11B636D3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF68C1BA0A8C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65AD22171A;
-	Wed, 19 Mar 2025 14:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7D51DDA36;
+	Wed, 19 Mar 2025 14:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7wn8kmQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opIvQdAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F471DEFE6;
-	Wed, 19 Mar 2025 14:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1311DED55;
+	Wed, 19 Mar 2025 14:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395210; cv=none; b=tCHE5XbF1lrL+MDkqB4azA7or/9XCD8noRjibhYrakhVULu7mnyZ553MhQnv67K8PVqOYUdqtULmbiNWGNkQXdGs4mW4I3hrcs7AjklSUgyc4k52ustu/Qlw7ZwVSsh3bT1jXqNgbx5/x+MGBDyWjQvPI22Y4Ti+XFRceXzPAM8=
+	t=1742395184; cv=none; b=jdWB/mjnS4bev4Xe2yuxt2P+MFkfoBWgud74OudoFG4Rm5K5nnXvllyPdUAviHZDY67DN7/CITDoDUR/zeaRje+n/ntcBPiJsz+0xFQha6VncJn7ysKX0sJTpLYRw6U5IKE25DMBr/e9IAT3iFiKYUf24NF3g4bRboySHnw38A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395210; c=relaxed/simple;
-	bh=j2PVY763EFTFZpL2Bp4krsmlyv8mTSnbyee3mUxa+pI=;
+	s=arc-20240116; t=1742395184; c=relaxed/simple;
+	bh=NStSWo2Xhq/TsaHnDWw+fbO7zlBwwOVILHd+eDI850Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0z6wWSwT7QR8Rcp2szdQqv4hkHnRUM7QAhXP7VcgzqttIWAPbxZbDQeLMuJVdR7w6Sr7QRLlEha8eQ4lr79qpFHnyisRFQdp1yDVAFEfh/8+t6IrlQuoBGM3aswaX161NOn3bdgaKZqctzul8oRfE41tSAFqCxjXhMRB1Pvv9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7wn8kmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC74C4CEE4;
-	Wed, 19 Mar 2025 14:40:10 +0000 (UTC)
+	 MIME-Version; b=rKZZPvEnHI6j3tZXVtHvVdEyGavYDcvMFnJ7PkZdTKP/IdkA2pySKC25bEYFUgLwBuCZCjgag9SWL8Q94LUjHjgeyjTeBDN1JrhfPaYQNesWaLUhzHuZ0bo2kG/bvJ3IgqtS+6qDrLf7Jt+ogFY5sGglX9b3OETAxnyQ6YTWWl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opIvQdAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1134C4CEE8;
+	Wed, 19 Mar 2025 14:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395210;
-	bh=j2PVY763EFTFZpL2Bp4krsmlyv8mTSnbyee3mUxa+pI=;
+	s=korg; t=1742395184;
+	bh=NStSWo2Xhq/TsaHnDWw+fbO7zlBwwOVILHd+eDI850Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V7wn8kmQhs0ww/MmaFCya3AKSr3fYHvqwLjYJnKsnoDwoDn6YQ7bB9MNZUBwGT5Ct
-	 zlUy6SlQN7sxLquc/jtFRYSjTSF1RIak6oCUiOVlOnq7eexk2I7z+lGM4rAMoBjlRk
-	 Xt/1CmrI2phuUQzPKtbXlKmcwyFWVpExRD8ERchE=
+	b=opIvQdAOKBCriSpJ/6CDUOgs33HSfGzxDHXKIONb65mI2vOeDrdNfHdpVExasN+Cj
+	 HQdzH+Z0G/WGo+3vQa/8w3wMosr70qRynkhcJnjmvY1E1vtcyiDFsr95m5NcreU82i
+	 rNDU5W2w3jv5SWR0GtExYD1UfQoFrbdpqz9LMrUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/166] hrtimers: Mark is_migration_base() with __always_inline
-Date: Wed, 19 Mar 2025 07:30:09 -0700
-Message-ID: <20250319143021.021917147@linuxfoundation.org>
+Subject: [PATCH 6.6 041/166] sched/debug: Provide slice length for fair tasks
+Date: Wed, 19 Mar 2025 07:30:12 -0700
+Message-ID: <20250319143021.102116867@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
 References: <20250319143019.983527953@linuxfoundation.org>
@@ -66,77 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Christian Loehle <christian.loehle@arm.com>
 
-[ Upstream commit 27af31e44949fa85550176520ef7086a0d00fd7b ]
+[ Upstream commit 9065ce69754dece78606c8bbb3821449272e56bf ]
 
-When is_migration_base() is unused, it prevents kernel builds
-with clang, `make W=1` and CONFIG_WERROR=y:
+Since commit:
 
-kernel/time/hrtimer.c:156:20: error: unused function 'is_migration_base' [-Werror,-Wunused-function]
-  156 | static inline bool is_migration_base(struct hrtimer_clock_base *base)
-      |                    ^~~~~~~~~~~~~~~~~
+  857b158dc5e8 ("sched/eevdf: Use sched_attr::sched_runtime to set request/slice suggestion")
 
-Fix this by marking it with __always_inline.
+... we have the userspace per-task tunable slice length, which is
+a key parameter that is otherwise difficult to obtain, so provide
+it in /proc/$PID/sched.
 
-[ tglx: Use __always_inline instead of __maybe_unused and move it into the
-  	usage sites conditional ]
+[ mingo: Clarified the changelog. ]
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250116160745.243358-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/453349b1-1637-42f5-a7b2-2385392b5956@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ kernel/sched/debug.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 5db6912b8f6e1..877535b06e73a 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -145,11 +145,6 @@ static struct hrtimer_cpu_base migration_cpu_base = {
- 
- #define migration_base	migration_cpu_base.clock_base[0]
- 
--static inline bool is_migration_base(struct hrtimer_clock_base *base)
--{
--	return base == &migration_base;
--}
--
- /*
-  * We are using hashed locking: holding per_cpu(hrtimer_bases)[n].lock
-  * means that all timers which are tied to this base via timer->base are
-@@ -275,11 +270,6 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 
- #else /* CONFIG_SMP */
- 
--static inline bool is_migration_base(struct hrtimer_clock_base *base)
--{
--	return false;
--}
--
- static inline struct hrtimer_clock_base *
- lock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
- 	__acquires(&timer->base->cpu_base->lock)
-@@ -1381,6 +1371,18 @@ static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base,
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 4c3d0d9f3db63..115e266db76bf 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -1089,6 +1089,8 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+ 	if (task_has_dl_policy(p)) {
+ 		P(dl.runtime);
+ 		P(dl.deadline);
++	} else if (fair_policy(p->policy)) {
++		P(se.slice);
  	}
- }
- 
-+#ifdef CONFIG_SMP
-+static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
-+{
-+	return base == &migration_base;
-+}
-+#else
-+static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
-+{
-+	return false;
-+}
-+#endif
-+
- /*
-  * This function is called on PREEMPT_RT kernels when the fast path
-  * deletion of a timer failed because the timer callback function was
+ #undef PN_SCHEDSTAT
+ #undef P_SCHEDSTAT
 -- 
 2.39.5
 
