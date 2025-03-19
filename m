@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8D8A69040
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C98A68F7D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 198F28A1C5F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 822C542643D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530381DFD98;
-	Wed, 19 Mar 2025 14:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130AA1C549F;
+	Wed, 19 Mar 2025 14:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRLrgPJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dl3HOUqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108491E0DDF;
-	Wed, 19 Mar 2025 14:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F3C1C862A;
+	Wed, 19 Mar 2025 14:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395025; cv=none; b=eMv1mmU/jmRYAROWMh4VfjnbWZh/ibOGvnIVgWDsGDsA01g2icAoegxXrL9dT3e2+Aa9jacOQ1pz2hJsMcPK1AMRKM6mtu1qQ+UqyGJcTrJlmt6oDJDrkKP5geapmM0fuAz4m/G2fVlaF8iEmQfOKUBH9Ep1UT2AO0sEZy3NJuA=
+	t=1742394872; cv=none; b=O69BPiZsrjG+S4tnPhhnCHOEo+2lw3eQe4dyiygIC9JEHSh8ohd26jIR2QwwU4MCCDtTyudtHBPIO+NetY5u5K/HIAJRWZq2AJL2BXyqeYC/Zhk6lK5AVHAyDyQ05Z2DCU3YVNlNbcw8XGpbWKrVmqtPw4bHiH6aeYwS6puCI5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395025; c=relaxed/simple;
-	bh=88tYN/DOG1Jl9uMTxPxSZkoTGAJWVNqyNUSlZtMbKCs=;
+	s=arc-20240116; t=1742394872; c=relaxed/simple;
+	bh=r5LNANF1ks16OjJ3A4D/EPJR/hDO5ZRQsdXlklv++1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcjKf4gN1+mw53I3OxenJ+dC6WFLcIoEeUC43CFlAnpuRkK3xHcpouPoHA9nipdKpPn/ZuzNBvF7KCJY9l8Q01/P0TymD8rbH4SfRK8/sOYOsEh/JtJ2qyGdJ10LK5F/KOgChmyonKLbhHIv5wggx+80MerTqqshQVjmTgKvi+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRLrgPJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8607C4CEE8;
-	Wed, 19 Mar 2025 14:37:04 +0000 (UTC)
+	 MIME-Version; b=GiYz8zyoR0Q7Def79jxGkdHEInoABDE4NtBTY/q4VJODTFwkXn5YAWIjiTY28TF4PT5RFiDxZu9/CS83sv8bBUEjXi7rEEXNMoahgNgX9UxIRjVKPjfZizeVweBT6vFMvK9Ml0s1AiFm+hQjZ778YIeoQzyLOYCWP8vurxjCyKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dl3HOUqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E88C4CEEC;
+	Wed, 19 Mar 2025 14:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395024;
-	bh=88tYN/DOG1Jl9uMTxPxSZkoTGAJWVNqyNUSlZtMbKCs=;
+	s=korg; t=1742394872;
+	bh=r5LNANF1ks16OjJ3A4D/EPJR/hDO5ZRQsdXlklv++1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRLrgPJUr/57aVL60ifjx4nGHLk2QeQp+rk8/yfgbBxUHOy3UlGHeI6+fFkwqV0wX
-	 ihqqPosvYxrIXde4/cCxYk4Do1JP4BV0wmFFFu9IxhES+KzCmBUCR/opNthMnq0fmw
-	 VfqCiIWd4uhWj87Nkq8pZbYaTVFxy31s6h3rx8dU=
+	b=Dl3HOUqIGUCqgH97aHq7fHxAYqn31w3gbRQVp1Ks6/QXEVvBvmgU+Hkti6qv5IW21
+	 uyfcE74KByE/H3IKKgA+gTszgXUVT5UZDoqNGZvafKmzvvE48wGYHKbWbHtCc9Vi/R
+	 elBZkOKOVQPGxOGoZGxHREC2A5vtO5zLGpJ0+3oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
 	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
 	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/231] fbdev: hyperv_fb: iounmap() the correct memory when removing a device
-Date: Wed, 19 Mar 2025 07:28:17 -0700
-Message-ID: <20250319143026.975567276@linuxfoundation.org>
+Subject: [PATCH 6.13 028/241] fbdev: hyperv_fb: Simplify hvfb_putmem
+Date: Wed, 19 Mar 2025 07:28:18 -0700
+Message-ID: <20250319143028.408888564@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-[ Upstream commit 7241c886a71797cc51efc6fadec7076fcf6435c2 ]
+[ Upstream commit f5e728a50bb17336a20803dde488515b833ecd1d ]
 
-When a Hyper-V framebuffer device is removed, or the driver is unbound
-from a device, any allocated and/or mapped memory must be released. In
-particular, MMIO address space that was mapped to the framebuffer must
-be unmapped. Current code unmaps the wrong address, resulting in an
-error like:
+The device object required in 'hvfb_release_phymem' function
+for 'dma_free_coherent' can also be obtained from the 'info'
+pointer, making 'hdev' parameter in 'hvfb_putmem' redundant.
+Remove the unnecessary 'hdev' argument from 'hvfb_putmem'.
 
-[ 4093.980597] iounmap: bad address 00000000c936c05c
-
-followed by a stack dump.
-
-Commit d21987d709e8 ("video: hyperv: hyperv_fb: Support deferred IO for
-Hyper-V frame buffer driver") changed the kind of address stored in
-info->screen_base, and the iounmap() call in hvfb_putmem() was not
-updated accordingly.
-
-Fix this by updating hvfb_putmem() to unmap the correct address.
-
-Fixes: d21987d709e8 ("video: hyperv: hyperv_fb: Support deferred IO for Hyper-V frame buffer driver")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250209235252.2987-1-mhklinux@outlook.com
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/1740845791-19977-2-git-send-email-ssengar@linux.microsoft.com
 Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250209235252.2987-1-mhklinux@outlook.com>
+Message-ID: <1740845791-19977-2-git-send-email-ssengar@linux.microsoft.com>
+Stable-dep-of: ea2f45ab0e53 ("fbdev: hyperv_fb: Allow graceful removal of framebuffer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/hyperv_fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/hyperv_fb.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-index 7fdb5edd7e2e8..363e4ccfcdb77 100644
+index ce23d0ef5702a..9798a34ac571f 100644
 --- a/drivers/video/fbdev/hyperv_fb.c
 +++ b/drivers/video/fbdev/hyperv_fb.c
-@@ -1080,7 +1080,7 @@ static void hvfb_putmem(struct hv_device *hdev, struct fb_info *info)
+@@ -952,7 +952,7 @@ static phys_addr_t hvfb_get_phymem(struct hv_device *hdev,
+ }
  
- 	if (par->need_docopy) {
- 		vfree(par->dio_vp);
--		iounmap(info->screen_base);
-+		iounmap(par->mmio_vp);
+ /* Release contiguous physical memory */
+-static void hvfb_release_phymem(struct hv_device *hdev,
++static void hvfb_release_phymem(struct device *device,
+ 				phys_addr_t paddr, unsigned int size)
+ {
+ 	unsigned int order = get_order(size);
+@@ -960,7 +960,7 @@ static void hvfb_release_phymem(struct hv_device *hdev,
+ 	if (order <= MAX_PAGE_ORDER)
+ 		__free_pages(pfn_to_page(paddr >> PAGE_SHIFT), order);
+ 	else
+-		dma_free_coherent(&hdev->device,
++		dma_free_coherent(device,
+ 				  round_up(size, PAGE_SIZE),
+ 				  phys_to_virt(paddr),
+ 				  paddr);
+@@ -1080,7 +1080,7 @@ static int hvfb_getmem(struct hv_device *hdev, struct fb_info *info)
+ }
+ 
+ /* Release the framebuffer */
+-static void hvfb_putmem(struct hv_device *hdev, struct fb_info *info)
++static void hvfb_putmem(struct fb_info *info)
+ {
+ 	struct hvfb_par *par = info->par;
+ 
+@@ -1089,7 +1089,7 @@ static void hvfb_putmem(struct hv_device *hdev, struct fb_info *info)
+ 		iounmap(par->mmio_vp);
  		vmbus_free_mmio(par->mem->start, screen_fb_size);
  	} else {
- 		hvfb_release_phymem(hdev, info->fix.smem_start,
+-		hvfb_release_phymem(hdev, info->fix.smem_start,
++		hvfb_release_phymem(info->device, info->fix.smem_start,
+ 				    screen_fb_size);
+ 	}
+ 
+@@ -1203,7 +1203,7 @@ static int hvfb_probe(struct hv_device *hdev,
+ 
+ error:
+ 	fb_deferred_io_cleanup(info);
+-	hvfb_putmem(hdev, info);
++	hvfb_putmem(info);
+ error2:
+ 	vmbus_close(hdev->channel);
+ error1:
+@@ -1232,7 +1232,7 @@ static void hvfb_remove(struct hv_device *hdev)
+ 	vmbus_close(hdev->channel);
+ 	hv_set_drvdata(hdev, NULL);
+ 
+-	hvfb_putmem(hdev, info);
++	hvfb_putmem(info);
+ 	framebuffer_release(info);
+ }
+ 
 -- 
 2.39.5
 
