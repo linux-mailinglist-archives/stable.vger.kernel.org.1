@@ -1,174 +1,172 @@
-Return-Path: <stable+bounces-125571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A73A693AE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:38:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B625BA6937F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C434188BBCC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:23:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 412F616A0B0
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513351C5D6A;
-	Wed, 19 Mar 2025 15:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CF81D5AC6;
+	Wed, 19 Mar 2025 15:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="EEc7jCrd"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o7Z6D9mv"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B63194A44;
-	Wed, 19 Mar 2025 15:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDC51B0F1E
+	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 15:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742397820; cv=none; b=svujwNk/TS5ThR06L89CDnxo+Fn9yuL1HyfM+dXiKZdc5tMZ8NzaLDBJm2AeiSmpUBtEauiA7ZtPyhZPJ4lKQquvQtxZeYcRtty10fxbgivZSf+YUFR/QwLneuZYPYDiAMwW1tGjLj2U58wh3gfZcFeGn1KrQKTTZA5ONq/1xQY=
+	t=1742398233; cv=none; b=DolfkBif+fEiH3PFQ3nIWm4YM+e0f+Fj7K1TXornxba5NatF9l5ZJmKn5iUSpQ0H6iyiPu1gCT/yN+yBuZ1AowV3MsAbEzG1g7TBT6EYHsJMsU81eC7g/5HyroktNfPZCb8T6YaCkz5F5M+GsdLor0Ke3aMZnd8GvTyaw/txDbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742397820; c=relaxed/simple;
-	bh=K8QsbPhk3iE2g5mRU+pM6Dwov0ogzDt1edO5SeIdQ2U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RkUa7tK44lLoirKEKZxDHwc4Oc1lX15uIBNWcdty3TpOr5VavaQTU77/41Yqs4Hoi1Ms4RJJpwyR8jsrVlwuM5quDzV4G6UUpMsTR4W1Pq0BkB9AJkb45ZiiYHYVgP/4m3eVGlUEYHH5v4AbeT5lthiLXCkIpky4MqTp5jR8gDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=EEc7jCrd; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1742397778; x=1743002578; i=rwarsow@gmx.de;
-	bh=zr1kNpQluBJWeRvzP2vQQDfQWJstvl1L64TGUGtrH3s=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=EEc7jCrd6JS1tnvjcn/B5CgfU7HNbllxh/CCYwk9y57PIoAQKKA/K/yuSJ3i77TW
-	 AbKR/b210BdcMymepvKB67InGdH8I4TiC8vPiOHWpBuZz6nbM2hhn8PrJi6Cf22+b
-	 FaNxI/kue11S8O0eBijNp+G6eAeDoVbdaQCr4vLgOLhCdIgelrTY0hh1+oFCVIUpG
-	 9UMMmNflwojbaVlZMTQx/dmKEtALgE8N2+BqO1v309mtMW2N+/nck9NR8HwGqdxtE
-	 XFr6Kpqct7673PB/RuPUW9p0rTae8WXzXetuj/hCaPIqJdm2ZPRAtIlGNu114vXOa
-	 5M3Z0hyk/l1HnUsujA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.34.177]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MY68d-1tgp9o3iOL-00QVRE; Wed, 19
- Mar 2025 16:22:57 +0100
-Message-ID: <8330d511-9411-4b1b-91cd-dfbbf6d0fe37@gmx.de>
-Date: Wed, 19 Mar 2025 16:22:56 +0100
+	s=arc-20240116; t=1742398233; c=relaxed/simple;
+	bh=/wdQQT8Uza3QQ8DxhowYsgtSCAG+eJfAgNfJhMqT56E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XKDHHG45DGlHUNJ08eNoz9ohtKt76KTMxrqlxOJ8/t/dV6xId64bw/hQGPolRbisO8osdxP7aokvpJVtnX1xPsW3vQM6iVlpwlN18VLrLC+nbGq6vyLhajesSWiPP7O1rU5az04bVWCZ5x2L1fzv1QQRlamdqnqaTgGzMU28Uuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o7Z6D9mv; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-399744f74e9so679865f8f.1
+        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 08:30:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742398228; x=1743003028; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qEZeyPH3DN6EY3kRLphvmTruJ5WHhFKumGbsm0McfOM=;
+        b=o7Z6D9mvwWUc4ik5kMr0HVes3KqDqxi/izaFuSV6KFk0Jz3eOCZ97XGRtH6ovusEQB
+         ZQKjDocnTrZ16Mth0FSAbNIbBavwaBePvlntrAJhMKxjKQ5/cpbf3W7Kr6CdS6bbWyco
+         WhaE9fGwXxe89H+YUM3jke5gPrPiL1chiEbPdBu8RYLU/f9PsW0QLz+5nPKLMG1aduPg
+         F7YUqnyUgX4CfihEnzVrn0TtSpoyHKqHF3opBM/DgFB7kowHfQ4QC7fHYX1twTXowVzD
+         04sWdBLP1WZYpSlowIFfGuCWVHL1Da84uOUoBCxN9OFuLTbcDh5fJqQ4YJy5udr3i+at
+         4jcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742398228; x=1743003028;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qEZeyPH3DN6EY3kRLphvmTruJ5WHhFKumGbsm0McfOM=;
+        b=sKe3R9fk30QsA142d03Gs8yrDRQtIYEIcfpNzhzmXshRDcbYmSuUJNJjEBuFP/9CrB
+         JtA2qsmhAEuk4FPeY50CDmwRXJ8wNA4d0t/nUuj6A8wHzXUve8Bg3HgKFR0zm12Sw1Ra
+         +LBomqylVtRHLd+wS9cpZ5D+k4PHLWniNzKk48Ix+KA9fraM2Hh3aWI1LXsTk/e0WH6M
+         bQqKoWJmQWWSTUQ1H/rtbavTU8RZ9nPJ+848R3rzxDqo+DjIroG99Dac9ZO3zRCqiETP
+         kW4RfnMcok5B+ZLKGLCiu0aaDD7FiVoL+0GZhTezAL8Z1piHskSOoP8fi0KP68jXc2uv
+         XuNw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFPeutlWLUxmsbxBsQE52/0+xKnc/lJXM9EI/+6PVT1IR6FCWZT7WuTKOtpxNFWNSISOs+8kk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+6bWCRjJ2n/jW3TPlFWtjtuGLv8uU0+ovNGYe8r760JMNWNNZ
+	8FIsW3h/yU6dfFomnczoKxfbT6lBNoxZzPs/h8tE4pvLZhSODcQflxlV6JLpMA8=
+X-Gm-Gg: ASbGncvLPwywj87NxwbhLFge9FYSMzHpl+Wa3JK2oiNy/H0ei1wgYt8KpVMcsTAmVEc
+	xTK48ERVJi+N+7Oqvqd6cH0bD8Z5jMPBL6QqfV5VQob5DjuQeqEUXcXjGWlnFVZjH4MBBvnxpZ2
+	W1nnNq42VJoPYAPYiopqPu08eEj1pXXRPbXeXkRWVvUAXk8SYn0QgC52j3anAq0lU0yM/p0k4ee
+	w1cd0W1lHVfkwT6WC1w4pDle3tz5Qc0holtPhOEcU1IKxoHSTJ3BnSmIJI1TSMUfuidtek52uET
+	tWThbhaeRVBCnEETvkfe43h3oRKUi6hPCgFtYXUwGX+MDYF5Fog1cdkj9976prcLBFSUmPp6wCd
+	P
+X-Google-Smtp-Source: AGHT+IGjnNjwq+MehcbC/hNwNMnENA+yaAifRw6JfmAvbNb+L/5ZJ5fX1A2xaTQSRDS1Im7e3lx1xA==
+X-Received: by 2002:a5d:6d8e:0:b0:391:1222:b444 with SMTP id ffacd0b85a97d-399739bedaamr3628438f8f.20.1742398228350;
+        Wed, 19 Mar 2025 08:30:28 -0700 (PDT)
+Received: from gpeter-l.roam.corp.google.com ([212.105.145.136])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43fdaca8sm22590635e9.28.2025.03.19.08.30.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Mar 2025 08:30:27 -0700 (PDT)
+From: Peter Griffin <peter.griffin@linaro.org>
+Subject: [PATCH v2 0/7] ufs-exynos stability fixes for gs101
+Date: Wed, 19 Mar 2025 15:30:17 +0000
+Message-Id: <20250319-exynos-ufs-stability-fixes-v2-0-96722cc2ba1b@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250319143027.685727358@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:9Bwh10FpqO6KPV7oxnRs5GwpiZ0qdbOAcVKQQr4CoVSqQuyygfa
- eOaCXhR0caaqcKTpiVQ+3RMJHeKRopCF/0veoifOhjPIOzVqkBO5OlLAQg5XGYTWEaJcW8L
- R2JazD8kuB+h4m12pMsLtxLivyQLonJdUFoJ8s8200HcI4ifVruPvuO2bFvDG2Rw0KTUhDX
- gw7K4+T7fcBqvbpz/ooHQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:5IS7PFwG1RE=;s4QxJcidotvsFWHVPp+DPaXhxgg
- lrQfLoq/BJ8MXPYGurCJ7+k800ReVldqu1LPGtBJcA8pJdse5JBq9EywW9DteTny/43tARljx
- fuCsjIoSUvSfwwxsSJMzjv5dxU34FQ7eSYICCAIDgcBsPdQBE+TM61V1xUOm6rVxIOf61sUqu
- yGsBM6PQN6BXQrGq5AWSwRSDzbwWrnnqtSo2UgOQo6V3iJMiZC8V3nYu59W75ESmoSJNaSSMw
- YaCD+ESFV/Pwx50noPUq50GyjpdIdkzLLAqcYdvjtE9VaIJ86r64OpLZDHIDnk/mRYASkxjdF
- b+BWwA4Ej3j0tZQD41vUJCwGnZS7iZ3+dPp+zv1struJ19wXF2JOsJCxCt9VpxwBSf51jbMIa
- 3UIsqwR2W2izToft1PN+Kbp0QIwqkVcnKij6z0oGZnQItEFAF9ObTTGQZQXuMt4xyr8izRbVB
- voIx6W2wMPFkjsri8Y8kme2ihu6GBY1kMtJoOMH4fq2EkkhQPmx/nlSCDYSy8rEl0lN5IGFU2
- odxYPccSsYrq9V1QpkhtDPKjDoijWZqj4w3gE4k4SxoNaCoLxh8OiglzHXjCkLvR11FqJBTTM
- ZPGBPzXhYTRVSv+26X97n4zW10DOPdrw6Kswxq0zfmxq0zWbHxAUUB/CVk5mbNgGDjZktVVsp
- wVzlEeCKGr7dUqc1//7Dl7Mq/c3wMg7Lf6DeSrU+y/n9qoYdgCm8uOLOknpV7EYZJZNtasg/m
- DJBcB3H4ePSzAMdC6XuTR8DerPJlj4huNeDYRhqVngQcddCe5qi/1e35WBfAPJA0nyv88lmDP
- p7vDx2KHg04mlL65lC3GUS6d3bu/7k1mOIxsAYCUG/appiyvP/Edlfi6iDYMgRcWTcZ3KoK7b
- NkxaUXIw62d2Ma9D135y88/j/pYRHV9PllI3xZ9wYFFWqkYy75O7Phlom/A3eOdPseouXWHbT
- AiVZmc71+t8lMu+l2XBYCaBBpSRboyyvuCG25LUq5/tfkMYDSXh3f/Y6ND3qYIbv2MpUdeD6p
- 3EptWs1Bb3HmibO4cNBwzG1eMcLXOxFhNatVUmcMk65ZpU96PxoynX8u1EyYHqoPn594vZx7Y
- TCFeBqSAB8s+MmZUcu+K5fJ2y8rsFky3U63Zj//wuB+UuP61b26txc+F8/naAI7BL5ISM993I
- R4dFoZPp6Ih9F1GBLJjBLAP5qNU07MER84J0dRNlg1rnuFNywU1dcYuesae05XW0kyjMgfYYk
- pONGI9wuYRmRs/Mwu0K5v5fxBOdnGy+FlUwXxA2gUXSfsKj80bM5jxpWkwGMW1dw5VyP/ixak
- aOXIi9vwGmv/ngcDi0xyGum8jmjzvT4SnvDAaxsKoTO1kYl/ScxDwrZ0RZ8jsOMsMY5w0ucTs
- YEftVqeLGJ704sxWCCGUCDWR7LIShzZOFT7p7dMAZBcQotADFEVEE25cT09h9TAU9T8A4/WZ+
- hQHrRE+0IiCgJpy/XM2GVjEMGPxk=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAnj2mcC/x2M0QpGQBQGX0Xn2ilWhFeRi2U/nNLSHv8fybvbX
+ E7TzE2KIFBqk5sC/qKy+QgmTWhcrJ/B4iKTyUyZFXnDOC+/Kf8mZT3sIKscF09yQhm1s01dGRR
+ upDjYAz4R+65/nhfznIBRbAAAAA==
+X-Change-ID: 20250319-exynos-ufs-stability-fixes-e8da9862e3dc
+To: Alim Akhtar <alim.akhtar@samsung.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Chanho Park <chanho61.park@samsung.com>
+Cc: linux-scsi@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Eric Biggers <ebiggers@kernel.org>, Bart Van Assche <bvanassche@acm.org>, 
+ willmcvicker@google.com, kernel-team@android.com, tudor.ambarus@linaro.org, 
+ andre.draszik@linaro.org, Peter Griffin <peter.griffin@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2074;
+ i=peter.griffin@linaro.org; h=from:subject:message-id;
+ bh=/wdQQT8Uza3QQ8DxhowYsgtSCAG+eJfAgNfJhMqT56E=;
+ b=owEBbQKS/ZANAwAKAc7ouNYCNHK6AcsmYgBn2uMPIIUjvTrJwB/bf6NJvAEfmLtzYJjS2lH1T
+ 7BfK9xyJDKJAjMEAAEKAB0WIQQO/I5vVXh1DVa1SfzO6LjWAjRyugUCZ9rjDwAKCRDO6LjWAjRy
+ unajD/9Cn7tx2QPnMfbWKfUHujf8hPZa1cu0fDAlEehSOmtXXbYACAJh5RMKun3s4cmXI1SLDV1
+ NDgRqHDRg7+OfgTquDBmQBnRltEdbiw5hMN0u6W0+SxUc+7d8cdPvTqml4b3PQY4Hofg77kYdqW
+ zDVjS+FgJLNTPm1jAgKGVydFbUxn6uovbzmpPPOJfosNwhRlOqreukBWwmGKVuCjs1/KGv/O4v2
+ dzj1Mo+GYACOZPMqttC4X7VB6mFkyb5QnsokohAIhQ11/G8Kom7x0NITrwU7d/B/3ZioHJ4T42t
+ uRQ0jqf10+jt3lFQ0fgiLV052oMwmFjEdRA9vMlcAGprcKr2kEvbR3hJxQR/VdRgULSs5LJfPx1
+ JX9vgQ4LtCK8b2FlxMNcDCi0RSnIrkAM0Husi1ATJTpelimGuB3TnuT4xN7WouTrCy/UhnhRhrE
+ tiym0DZ+nj26EBNIPz9eSmEZc5DrL06IWb4BfEQ9HoTzq7glC/+W36RbVgvG1wic4OovGYK6C2G
+ /aGtXnyrs/KBTZDX6rw/1J2piiasyKTZ9/JYcGS5UnCfb//OXZhZcL9teaQCwLUJ0ThNnPykKPw
+ oBwHDzjnJvThNpzL/J0fPTOciSwv/SNhaDqxsxRPsge01ie9OD9hS/O9C7z2y2ZBIzpUQok0BWj
+ 8Fe9IXbmzfPYBtg==
+X-Developer-Key: i=peter.griffin@linaro.org; a=openpgp;
+ fpr=0EFC8E6F5578750D56B549FCCEE8B8D6023472BA
 
-Hi Greg
+Hi folks,
 
-moved to Fedora 42 (Beta) with
+This series fixes several stability issues with the upstream ufs-exynos
+driver, specifically for the gs101 SoC found in Pixel 6.
 
-gcc-15.0.1-0.10.fc42.x86_64
-gcc version 15.0.1 20250313 (Red Hat 15.0.1-0) (GCC)
+The main fix is regarding the IO cache coherency setting and ensuring
+that it is correctly applied depending on if the dma-coherent property
+is specified in device tree. This fixes the UFS stability issues on gs101
+and I would imagine will also fix issues on exynosauto platform that
+seems to have similar iocc shareability bits.
 
-with this
-Kernel 6.13.x doesn't compile
-Kernel 6.14.0-rc7 does
+Additionally the phy reference counting is fixed which allows module
+load/unload to work reliably and keeps the phy state machine in sync
+with the controller glue driver.
 
-so I'm offline until 6.14.x stable kernel releases
+regards,
 
-sorry !
+Peter
 
-Errors
-=3D=3D=3D=3D=3D=3D
+Changes since v1:
+ * Added patch for correct handling of iocc depedent on dma-coherent property
+ * Rebased onto next-20250319
+ * Add a gs101 specific suspend hook (Bart)
+ * Drop asserting GPIO_OUT in .exit() (Peter)
+ * Remove superfluous blank line (Bart)
+ * Update PRDT_PREFECT_EN to PRDT_PREFETCH_EN (Bart)
+ * Update commit description for desctype type 3 (Eric)
+ * https://lore.kernel.org/lkml/20250226220414.343659-1-peter.griffin@linaro.org/
 
-C032A7D52A7F0000:error:03000098:digital envelope
-routines:do_sigver_init:invalid digest:crypto/evp/m_sigver.c:342:
-make[3]: *** [certs/Makefile:53: certs/signing_key.pem] Error 1
-make[3]: *** Deleting file 'certs/signing_key.pem'
-make[2]: *** [scripts/Makefile.build:442: certs] Error 2
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+---
+Peter Griffin (7):
+      scsi: ufs: exynos: ensure pre_link() executes before exynos_ufs_phy_init()
+      scsi: ufs: exynos: move ufs shareability value to drvdata
+      scsi: ufs: exynos: disable iocc if dma-coherent property isn't set
+      scsi: ufs: exynos: ensure consistent phy reference counts
+      scsi: ufs: exynos: Enable PRDT pre-fetching with UFSHCD_CAP_CRYPTO
+      scsi: ufs: exynos: Move phy calls to .exit() callback
+      scsi: ufs: exynos: gs101: put ufs device in reset on .suspend()
 
-...
+ drivers/ufs/host/ufs-exynos.c | 85 ++++++++++++++++++++++++++++++++-----------
+ drivers/ufs/host/ufs-exynos.h |  6 ++-
+ 2 files changed, 68 insertions(+), 23 deletions(-)
+---
+base-commit: 433ccb6f2e879866b8601fcb1de14e316cdb0d39
+change-id: 20250319-exynos-ufs-stability-fixes-e8da9862e3dc
 
-   CC      fs/ext4/indirect.o
-fs/netfs/fscache_cache.c:375:67: warning: initializer-string for array
-of =E2=80=98char=E2=80=99 truncates NUL terminator but destination lacks =
-=E2=80=98nonstring=E2=80=99
-attribute (6 chars into 5 available) [-Wunterminated-string-initialization=
-]
-   375 | static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE]
-=3D "-PAEW";
-       |
-   ^~~~~~~
-   CC      fs/netfs/fscache_cookie.o
-
-...
-
-   CC      kernel/seccomp.o
-fs/netfs/fscache_cookie.c:32:69: warning: initializer-string for array
-of =E2=80=98char=E2=80=99 truncates NUL terminator but destination lacks =
-=E2=80=98nonstring=E2=80=99
-attribute (11 chars into 10 available)
-[-Wunterminated-string-initialization]
-    32 | static const char
-fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] =3D "-LCAIFUWRD";
-       |
-     ^~~~~~~~~~~~
-   CC      fs/nfsd/nfssvc.o
-
-...
-
-   CC      fs/nfsd/blocklayoutxdr.o
-fs/cachefiles/key.c:12:9: warning: initializer-string for array of
-=E2=80=98char=E2=80=99 truncates NUL terminator but destination lacks =E2=
-=80=98nonstring=E2=80=99
-attribute (65 chars into 64 available)
-[-Wunterminated-string-initialization]
-    12 |         "0123456789"                    /* 0 - 9 */
-       |         ^~~~~~~~~~~~
-   CC      fs/cachefiles/main.o
-
-...
-
-   AR      fs/built-in.a
-make[1]: *** [/home/DATA/DEVEL/linux-6.13.7/Makefile:1989: .] Error 2
-make: *** [Makefile:251: __sub-make] Error 2
-
+Best regards,
+-- 
+Peter Griffin <peter.griffin@linaro.org>
 
 
