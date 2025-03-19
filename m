@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-125154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E61EA6919B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84944A690E9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DA341B8667C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:40:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C0097AE1E7
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B2A1C9B6C;
-	Wed, 19 Mar 2025 14:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22374221F2E;
+	Wed, 19 Mar 2025 14:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFwUOGNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8vwU4vu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E8A1DEFE3;
-	Wed, 19 Mar 2025 14:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F8F18BC36;
+	Wed, 19 Mar 2025 14:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394992; cv=none; b=qkMdwSRzarvTCx8YwHnGfOYsv8Nr8aG8n0LdRxkuBEEP4aTZS83wVXedHLPi+s8yaTiHqPzrMabSNHb0JGH/sTQb+2QloE7Ro51eYFHhxawEdnUgxDdA7h+aruI2ZwPQ0EovuZfVHvKnBYj/iy8MCcRiDwdJXwmoAlz+Z+rvV4M=
+	t=1742395250; cv=none; b=hm6r5m2/DZNdd0WiOeA67ZYb08dU1fmE4JgHi1zTRiCGbwTzrFiA+mJCZ4fMUoiuC+CNZk4M9EkBPAi9zG7MFycQC9c3ruawA6Te3czQ3XMPfC8NvCRzyUfNtQDOx5En6cpGHVI1XvaTRecH47cboczSMGofAGYRYwIU6mnwtyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394992; c=relaxed/simple;
-	bh=RuC2V2ZdQlpwZYog6bkk/lNv8Z1qPU1toIMFAFRn+aE=;
+	s=arc-20240116; t=1742395250; c=relaxed/simple;
+	bh=kqWaQgsjDgimILJLyb/3593xDejv02tHvnA5OVh+Fus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DILli9L6G98UWztHFsk2Q2nUFV9/wfY202tIbIgTZsUFOCShc0CrObhhLE6K/W513Cf5ZifXhkl73qtbLz4NjgdOx3GYFSoL5OhJwY/WcDU/TMCG9heErUOrKxoZgwIiqfHd1ktGnrMGzWpUg4kCLscuECLeiYchdmAMmM3Mueo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFwUOGNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1390C4CEE4;
-	Wed, 19 Mar 2025 14:36:31 +0000 (UTC)
+	 MIME-Version; b=gcoV/V5WCOF2g3oAqTAHeT1fFrGd1ePXC86S/Xm3D2BlXgr+o2cr+RAW1eFAVts9Ou9Pk8SMzSCXb+8OcXw7HPLuckMbpEVqq8VyABhMxSe+/yLCbS3rOCDmMezyQ/i2hdEy1fNT+hcWkwD15lN1MQ2EIAMdOkadabhdSdrYPvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8vwU4vu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25B2C4CEE4;
+	Wed, 19 Mar 2025 14:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394991;
-	bh=RuC2V2ZdQlpwZYog6bkk/lNv8Z1qPU1toIMFAFRn+aE=;
+	s=korg; t=1742395250;
+	bh=kqWaQgsjDgimILJLyb/3593xDejv02tHvnA5OVh+Fus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFwUOGNiqw7cAhe01/AwJK9ue/+zouNeoSdewhOCObW74vyD9vY47nfowV8ABPVZh
-	 RZ3EcXGKNkQYr8O9nP1SX0pIfyMslBZ7VkMj76OCRO5vBqmJLRsor5h0qPp52ti/T9
-	 CGGfYHaDZaq4AQUEpVOtEY51Xgzo0fPTZ7Dt07O8=
+	b=T8vwU4vuhs5FVF6ELy8GcuL/9l4zR0+DOOMvzAUo9gwQC15xnSsb31a+ye80h7xOC
+	 s1SR94D+Icnsc5iYOhgMLb2cKON7LiYRliTQ3Zpuf/Y4e8TEevpHg8DrfZEjLsnbOz
+	 8wLxPTvo73f7Xq/oHZxGjSrs2/7QvWMsJBL8XSE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 233/241] smb3: add support for IAKerb
+	David Hildenbrand <david@redhat.com>,
+	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 132/166] arm64: mm: Populate vmemmap at the page level if not section aligned
 Date: Wed, 19 Mar 2025 07:31:43 -0700
-Message-ID: <20250319143033.507814051@linuxfoundation.org>
+Message-ID: <20250319143023.590012332@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,129 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
 
-[ Upstream commit eea5119fa5979c350af5783a8148eacdd4219715 ]
+commit d4234d131b0a3f9e65973f1cdc71bb3560f5d14b upstream.
 
-There are now more servers which advertise support for IAKerb (passthrough
-Kerberos authentication via proxy).  IAKerb is a public extension industry
-standard Kerberos protocol that allows a client without line-of-sight
-to a Domain Controller to authenticate. There can be cases where we
-would fail to mount if the server only advertises the OID for IAKerb
-in SPNEGO/GSSAPI.  Add code to allow us to still upcall to userspace
-in these cases to obtain the Kerberos ticket.
+On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
+to 27, making one section 128M. The related page struct which vmemmap
+points to is 2M then.
+Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+vmemmap to populate at the PMD section level which was suitable
+initially since hot plug granule is always one section(128M). However,
+commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
+existing arm64 assumptions.
 
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 605b249ea967 ("smb: client: Fix match_session bug preventing session reuse")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The first problem is that if start or end is not aligned to a section
+boundary, such as when a subsection is hot added, populating the entire
+section is wasteful.
+
+The next problem is if we hotplug something that spans part of 128 MiB
+section (subsections, let's call it memblock1), and then hotplug something
+that spans another part of a 128 MiB section(subsections, let's call it
+memblock2), and subsequently unplug memblock1, vmemmap_free() will clear
+the entire PMD entry which also supports memblock2 even though memblock2
+is still active.
+
+Assuming hotplug/unplug sizes are guaranteed to be symmetric. Do the
+fix similar to x86-64: populate to pages levels if start/end is not aligned
+with section boundary.
+
+Cc: stable@vger.kernel.org # v5.4+
+Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20250304072700.3405036-1-quic_zhenhuah@quicinc.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/asn1.c        | 2 ++
- fs/smb/client/cifs_spnego.c | 4 +++-
- fs/smb/client/cifsglob.h    | 4 ++++
- fs/smb/client/sess.c        | 3 ++-
- fs/smb/client/smb2pdu.c     | 2 +-
- 5 files changed, 12 insertions(+), 3 deletions(-)
+ arch/arm64/mm/mmu.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/asn1.c b/fs/smb/client/asn1.c
-index b5724ef9f182f..214a44509e7b9 100644
---- a/fs/smb/client/asn1.c
-+++ b/fs/smb/client/asn1.c
-@@ -52,6 +52,8 @@ int cifs_neg_token_init_mech_type(void *context, size_t hdrlen,
- 		server->sec_kerberos = true;
- 	else if (oid == OID_ntlmssp)
- 		server->sec_ntlmssp = true;
-+	else if (oid == OID_IAKerb)
-+		server->sec_iakerb = true;
- 	else {
- 		char buf[50];
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1150,8 +1150,11 @@ int __meminit vmemmap_populate(unsigned
+ 		struct vmem_altmap *altmap)
+ {
+ 	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
++	/* [start, end] should be within one section */
++	WARN_ON_ONCE(end - start > PAGES_PER_SECTION * sizeof(struct page));
  
-diff --git a/fs/smb/client/cifs_spnego.c b/fs/smb/client/cifs_spnego.c
-index 28f568b5fc277..bc1c1e9b288ad 100644
---- a/fs/smb/client/cifs_spnego.c
-+++ b/fs/smb/client/cifs_spnego.c
-@@ -138,11 +138,13 @@ cifs_get_spnego_key(struct cifs_ses *sesInfo,
- 
- 	dp = description + strlen(description);
- 
--	/* for now, only sec=krb5 and sec=mskrb5 are valid */
-+	/* for now, only sec=krb5 and sec=mskrb5 and iakerb are valid */
- 	if (server->sec_kerberos)
- 		sprintf(dp, ";sec=krb5");
- 	else if (server->sec_mskerberos)
- 		sprintf(dp, ";sec=mskrb5");
-+	else if (server->sec_iakerb)
-+		sprintf(dp, ";sec=iakerb");
- 	else {
- 		cifs_dbg(VFS, "unknown or missing server auth type, use krb5\n");
- 		sprintf(dp, ";sec=krb5");
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 37b7d84e26913..774d47318b0d3 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -151,6 +151,7 @@ enum securityEnum {
- 	NTLMv2,			/* Legacy NTLM auth with NTLMv2 hash */
- 	RawNTLMSSP,		/* NTLMSSP without SPNEGO, NTLMv2 hash */
- 	Kerberos,		/* Kerberos via SPNEGO */
-+	IAKerb,			/* Kerberos proxy */
- };
- 
- enum upcall_target_enum {
-@@ -749,6 +750,7 @@ struct TCP_Server_Info {
- 	bool	sec_kerberosu2u;	/* supports U2U Kerberos */
- 	bool	sec_kerberos;		/* supports plain Kerberos */
- 	bool	sec_mskerberos;		/* supports legacy MS Kerberos */
-+	bool	sec_iakerb;		/* supports pass-through auth for Kerberos (krb5 proxy) */
- 	bool	large_buf;		/* is current buffer large? */
- 	/* use SMBD connection instead of socket */
- 	bool	rdma;
-@@ -2122,6 +2124,8 @@ static inline char *get_security_type_str(enum securityEnum sectype)
- 		return "Kerberos";
- 	case NTLMv2:
- 		return "NTLMv2";
-+	case IAKerb:
-+		return "IAKerb";
- 	default:
- 		return "Unknown";
- 	}
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 91d4d409cb1dc..faa80e7d54a6e 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -1235,12 +1235,13 @@ cifs_select_sectype(struct TCP_Server_Info *server, enum securityEnum requested)
- 		switch (requested) {
- 		case Kerberos:
- 		case RawNTLMSSP:
-+		case IAKerb:
- 			return requested;
- 		case Unspecified:
- 			if (server->sec_ntlmssp &&
- 			    (global_secflags & CIFSSEC_MAY_NTLMSSP))
- 				return RawNTLMSSP;
--			if ((server->sec_kerberos || server->sec_mskerberos) &&
-+			if ((server->sec_kerberos || server->sec_mskerberos || server->sec_iakerb) &&
- 			    (global_secflags & CIFSSEC_MAY_KRB5))
- 				return Kerberos;
- 			fallthrough;
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index f1f55fbd0eeab..7ece98c742bdb 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -1429,7 +1429,7 @@ smb2_select_sectype(struct TCP_Server_Info *server, enum securityEnum requested)
- 		if (server->sec_ntlmssp &&
- 			(global_secflags & CIFSSEC_MAY_NTLMSSP))
- 			return RawNTLMSSP;
--		if ((server->sec_kerberos || server->sec_mskerberos) &&
-+		if ((server->sec_kerberos || server->sec_mskerberos || server->sec_iakerb) &&
- 			(global_secflags & CIFSSEC_MAY_KRB5))
- 			return Kerberos;
- 		fallthrough;
--- 
-2.39.5
-
+-	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
++	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) ||
++	    (end - start < PAGES_PER_SECTION * sizeof(struct page)))
+ 		return vmemmap_populate_basepages(start, end, node, altmap);
+ 	else
+ 		return vmemmap_populate_hugepages(start, end, node, altmap);
 
 
 
