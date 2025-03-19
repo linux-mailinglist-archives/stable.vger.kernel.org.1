@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E017A6903E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F19A69123
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E170170CA9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21FF98817EA
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1588E214A70;
-	Wed, 19 Mar 2025 14:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CF321D5BB;
+	Wed, 19 Mar 2025 14:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYrwXtao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNxOByx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F031D6DC5;
-	Wed, 19 Mar 2025 14:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0EF1F5849;
+	Wed, 19 Mar 2025 14:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395062; cv=none; b=pzkvVUM9GjAh5b0ncAyxjk2qu0Y+0Popl18Up/P5LbQoO5COR8Vmi2lhMgeVRzF38SGCT72whQjZKTNihlThIhcMWPEGGiqppGZj/o/80An8h3aQekXLyOEFAjMp0/PQWlDPQbddd/xZyjtvxbLTpHTGwYpgR3Y1y0TuysqKHVc=
+	t=1742395169; cv=none; b=LjmMN+Qd8S7Eo7Bsl/wGAAzC7EjYsnHn4o6mAV+0rmS52f7nkikRZ7t6NSggGDq128sQO8TYG6OVsFXZxiT0+GujSJjVnWB72rd+uhVaYuX0j85MePkkAji1+NlxDJVVn0IYj5EEo5kPYZtwMXqhTJLuKPc2tUtwaJEwfYJujT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395062; c=relaxed/simple;
-	bh=kornihFhtDv7UYG9yvfL/01eKb1GTRRTS+X3r8u6Ayw=;
+	s=arc-20240116; t=1742395169; c=relaxed/simple;
+	bh=AbpZ6SoSWLZW5EMjALIXcrSDmW5zOARf348NKfbnqb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLoTCKnw1pnRt1VyDjD1JerSyX6BczyCPjVeD0lbXVGo5jyjLtiu5D1s5V6DZM88YidHwRPR17dkUzIvr0+qfnQ/z+XWBXg6Hi1A59GjRBXra2+xUVPn88M2qwHIrrn/rdLhqdS7ZqrR2AY24tPkofUO1vNNz8dEyhjtqx1IvVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYrwXtao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99105C4CEE8;
-	Wed, 19 Mar 2025 14:37:42 +0000 (UTC)
+	 MIME-Version; b=AQy2HG4lBN2GCSnb5OPdBc6gxpjjI7IVPoKKf7Idaeu5k8n8wafhEBm7bn+KgoPXk/7wnGtMiZ5p09XZWGvMb+LOeYkc8vnlU8DzZN5Pbwya4qLiMOSPXtQcG39JHpMiQJQQNRLeAifZ3lUlTAyTq3HRf6NLfyfWAMFfDKKbsAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNxOByx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD9EC4CEE4;
+	Wed, 19 Mar 2025 14:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395062;
-	bh=kornihFhtDv7UYG9yvfL/01eKb1GTRRTS+X3r8u6Ayw=;
+	s=korg; t=1742395168;
+	bh=AbpZ6SoSWLZW5EMjALIXcrSDmW5zOARf348NKfbnqb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYrwXtaoUKRqVmYCrKrnh9sLpS5cHaBMOuf331qe15waEqJpmSJuNTzCP/a6a5JVG
-	 qAKVvkUydQsxYLX6JHNSbF5NQ9I9rU44+U00fy2J3PCfJZQaPtbvZA0ZePQUBdEmmC
-	 7hYFAL/lykC6C3ilvNfGbozKZNB6stmPfbCXEsq4=
+	b=NNxOByx0V6M1wU3C3cn85wYk1YUMgNUHi1vaEMi5J12IYfrpW2VQU6QyNaAaoQc3M
+	 IP1m4lwiZXHzN6NL7URUFAs2wGsBc/FoFucFOdA8+/Krv1Ow76hYJ2uvyi0bDtvOK/
+	 3yOJy0sFGowsjsYlM7vjSDgv7Bu0jfUobaYJi8Ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/231] Xen/swiotlb: mark xen_swiotlb_fixup() __init
+Subject: [PATCH 6.6 019/166] net: mctp i2c: Copy headers if cloned
 Date: Wed, 19 Mar 2025 07:29:50 -0700
-Message-ID: <20250319143029.237528234@linuxfoundation.org>
+Message-ID: <20250319143020.503872880@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit 75ad02318af2e4ae669e26a79f001bd5e1f97472 ]
+[ Upstream commit df8ce77ba8b7c012a3edd1ca7368b46831341466 ]
 
-It's sole user (pci_xen_swiotlb_init()) is __init, too.
+Use skb_cow_head() prior to modifying the TX SKB. This is necessary
+when the SKB has been cloned, to avoid modifying other shared clones.
 
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-
-Message-ID: <e1198286-99ec-41c1-b5ad-e04e285836c9@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+Link: https://patch.msgid.link/20250306-matt-mctp-i2c-cow-v1-1-293827212681@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/swiotlb-xen.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/mctp/mctp-i2c.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index 26c62e0d34e98..1f65795cf5d7a 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -113,7 +113,7 @@ static struct io_tlb_pool *xen_swiotlb_find_pool(struct device *dev,
- }
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index 20b8d7d528baf..fbe8483a07b58 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -543,6 +543,7 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+ 	struct mctp_i2c_hdr *hdr;
+ 	struct mctp_hdr *mhdr;
+ 	u8 lldst, llsrc;
++	int rc;
  
- #ifdef CONFIG_X86
--int xen_swiotlb_fixup(void *buf, unsigned long nslabs)
-+int __init xen_swiotlb_fixup(void *buf, unsigned long nslabs)
- {
- 	int rc;
- 	unsigned int order = get_order(IO_TLB_SEGSIZE << IO_TLB_SHIFT);
+ 	if (len > MCTP_I2C_MAXMTU)
+ 		return -EMSGSIZE;
+@@ -553,6 +554,10 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+ 	lldst = *((u8 *)daddr);
+ 	llsrc = *((u8 *)saddr);
+ 
++	rc = skb_cow_head(skb, sizeof(struct mctp_i2c_hdr));
++	if (rc)
++		return rc;
++
+ 	skb_push(skb, sizeof(struct mctp_i2c_hdr));
+ 	skb_reset_mac_header(skb);
+ 	hdr = (void *)skb_mac_header(skb);
 -- 
 2.39.5
 
