@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD88A69238
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:04:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1CD2A6906F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0D981B850AA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 135093AEA45
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113091CD1E0;
-	Wed, 19 Mar 2025 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC3D2144C1;
+	Wed, 19 Mar 2025 14:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nV+IjsxR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bok53qe8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D701DFDB4;
-	Wed, 19 Mar 2025 14:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9211D5CEA;
+	Wed, 19 Mar 2025 14:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394888; cv=none; b=Ji9gxKGkD5SrTwsRAqM9qGmmO3eAOk36BmpIp5tFOuYu5smE8gOsK/RVXSfexD98RaqiUDd5CzztyxAi6TDPMU33WhwiQ2SeLdV1NKTkx4wcmEEPsQ7HSyq2ktQ90E00J9da4lS/DoKoh/36EoKfVFTMI6lP7ODFvA1odjAkuP8=
+	t=1742395043; cv=none; b=busrdLT8+X6gN9zQuKBayjMzpgdaQxFH4WDa7syJLurkC1Ii8Bu4ld6LYpGb4+TeRBTDP/hJ2QAq2MAxOeSWHG28TsonRJm/ULoZQEzZITY91OTzI1k3yFWWO/4YZ7Sck810B/Wl09+To/M0GI/EDfaWMd1uTZ4qcDKukjEC34o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394888; c=relaxed/simple;
-	bh=f686+h0NCknCjuX/DgWlN+pzOYsn5jArjRgzJZ+Iqc4=;
+	s=arc-20240116; t=1742395043; c=relaxed/simple;
+	bh=z345MGeHA3XOdDx95Bcr2D4O9ewEidX/HaqSGExx4fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UJTbkWKX4hd9bnIDnXqM9mWBnNcIwwqQHT72zQ2ynJfknKQy3K6EYsh/8eMNo16nAKWnbq9NjsURpErdSVPDiNN/2KjeV7vaSDSfQsTL6qFRnXAv3IjAgqXtUTEdHYspZvPtw7VjfxVozUfiMLs22FOjw5Pf2h+5O7Ohgzx6Q4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nV+IjsxR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974A5C4CEE9;
-	Wed, 19 Mar 2025 14:34:48 +0000 (UTC)
+	 MIME-Version; b=D4Vnwi1LT6YS9uVw+KWW6QDBZrZHMfrHNBLgD2e1Xdl+GEjl3RYiw4da4njV7uziCb9WFeSnS3sbapQAqSR31GdRGJjuXjUeTMCORnADhUx346w4Rx9QB0dESWjRwMLmhz+3M9Hcx1QthjzSytiy+6CT5KltVppTpGm1BE2qGgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bok53qe8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F59C4CEE4;
+	Wed, 19 Mar 2025 14:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394888;
-	bh=f686+h0NCknCjuX/DgWlN+pzOYsn5jArjRgzJZ+Iqc4=;
+	s=korg; t=1742395043;
+	bh=z345MGeHA3XOdDx95Bcr2D4O9ewEidX/HaqSGExx4fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nV+IjsxRmC1orp3EoGOAsvFMU+UIMUn7jPLsfv7m0JH1Nj6t0IEG44gT0RDpV6ZsT
-	 8PahgYqKVvgMgzWHDjvJkGxKNpKIopvHrBTeDbjPxUaTAi/dQ8bIaoRkTFq1poMEfg
-	 OJZCp/AHRGkP+Smjhib8Vvdw9cUsnJ2gkKRIt66I=
+	b=Bok53qe8y4sTkkxzOz0gdkxoI2N/A9A2A24EfhB3lqan/1+sjx/GrHeWHpG7xknHB
+	 kOtBO/sIVQ3EMhi8Dnq28DmLlg+mq/XnwJl4Jd5Ru+0zWMZPJ9qUw7g7Up6Sv/XrTF
+	 zlkGTSt0ab/XxDIM1ZQamTtKz+qcr5MEdJ97jtiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 091/241] platform/x86: thinkpad_acpi: Support for V9 DYTC platform profiles
+Subject: [PATCH 6.12 068/231] scsi: qla1280: Fix kernel oops when debug level > 2
 Date: Wed, 19 Mar 2025 07:29:21 -0700
-Message-ID: <20250319143029.976914989@linuxfoundation.org>
+Message-ID: <20250319143028.511183490@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,124 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Magnus Lindholm <linmag7@gmail.com>
 
-[ Upstream commit 9cff907cbf8c7fb5345918dbcc7b74a01656f34f ]
+[ Upstream commit 5233e3235dec3065ccc632729675575dbe3c6b8a ]
 
-Newer Thinkpad AMD platforms are using V9 DYTC and this changes the
-profiles used for PSC mode. Add support for this update.
-Tested on P14s G5 AMD
+A null dereference or oops exception will eventually occur when qla1280.c
+driver is compiled with DEBUG_QLA1280 enabled and ql_debug_level > 2.  I
+think its clear from the code that the intention here is sg_dma_len(s) not
+length of sg_next(s) when printing the debug info.
 
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20250206193953.58365-1-mpearson-lenovo@squebb.ca
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+Link: https://lore.kernel.org/r/20250125095033.26188-1-linmag7@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 34 ++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+ drivers/scsi/qla1280.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 21fecdf35cd0d..a3c73abb00f21 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10330,6 +10330,10 @@ static struct ibm_struct proxsensor_driver_data = {
- #define DYTC_MODE_PSC_BALANCE  5  /* Default mode aka balanced */
- #define DYTC_MODE_PSC_PERFORM  7  /* High power mode aka performance */
- 
-+#define DYTC_MODE_PSCV9_LOWPOWER 1  /* Low power mode */
-+#define DYTC_MODE_PSCV9_BALANCE  3  /* Default mode aka balanced */
-+#define DYTC_MODE_PSCV9_PERFORM  4  /* High power mode aka performance */
-+
- #define DYTC_ERR_MASK       0xF  /* Bits 0-3 in cmd result are the error result */
- #define DYTC_ERR_SUCCESS      1  /* CMD completed successful */
- 
-@@ -10350,6 +10354,10 @@ static int dytc_capabilities;
- static bool dytc_mmc_get_available;
- static int profile_force;
- 
-+static int platform_psc_profile_lowpower = DYTC_MODE_PSC_LOWPOWER;
-+static int platform_psc_profile_balanced = DYTC_MODE_PSC_BALANCE;
-+static int platform_psc_profile_performance = DYTC_MODE_PSC_PERFORM;
-+
- static int convert_dytc_to_profile(int funcmode, int dytcmode,
- 		enum platform_profile_option *profile)
- {
-@@ -10371,19 +10379,15 @@ static int convert_dytc_to_profile(int funcmode, int dytcmode,
+diff --git a/drivers/scsi/qla1280.c b/drivers/scsi/qla1280.c
+index 8958547ac111a..fed07b1460702 100644
+--- a/drivers/scsi/qla1280.c
++++ b/drivers/scsi/qla1280.c
+@@ -2867,7 +2867,7 @@ qla1280_64bit_start_scsi(struct scsi_qla_host *ha, struct srb * sp)
+ 			dprintk(3, "S/G Segment phys_addr=%x %x, len=0x%x\n",
+ 				cpu_to_le32(upper_32_bits(dma_handle)),
+ 				cpu_to_le32(lower_32_bits(dma_handle)),
+-				cpu_to_le32(sg_dma_len(sg_next(s))));
++				cpu_to_le32(sg_dma_len(s)));
+ 			remseg--;
  		}
- 		return 0;
- 	case DYTC_FUNCTION_PSC:
--		switch (dytcmode) {
--		case DYTC_MODE_PSC_LOWPOWER:
-+		if (dytcmode == platform_psc_profile_lowpower)
- 			*profile = PLATFORM_PROFILE_LOW_POWER;
--			break;
--		case DYTC_MODE_PSC_BALANCE:
-+		else if (dytcmode == platform_psc_profile_balanced)
- 			*profile =  PLATFORM_PROFILE_BALANCED;
--			break;
--		case DYTC_MODE_PSC_PERFORM:
-+		else if (dytcmode == platform_psc_profile_performance)
- 			*profile =  PLATFORM_PROFILE_PERFORMANCE;
--			break;
--		default: /* Unknown mode */
-+		else
- 			return -EINVAL;
--		}
-+
- 		return 0;
- 	case DYTC_FUNCTION_AMT:
- 		/* For now return balanced. It's the closest we have to 'auto' */
-@@ -10404,19 +10408,19 @@ static int convert_profile_to_dytc(enum platform_profile_option profile, int *pe
- 		if (dytc_capabilities & BIT(DYTC_FC_MMC))
- 			*perfmode = DYTC_MODE_MMC_LOWPOWER;
- 		else if (dytc_capabilities & BIT(DYTC_FC_PSC))
--			*perfmode = DYTC_MODE_PSC_LOWPOWER;
-+			*perfmode = platform_psc_profile_lowpower;
- 		break;
- 	case PLATFORM_PROFILE_BALANCED:
- 		if (dytc_capabilities & BIT(DYTC_FC_MMC))
- 			*perfmode = DYTC_MODE_MMC_BALANCE;
- 		else if (dytc_capabilities & BIT(DYTC_FC_PSC))
--			*perfmode = DYTC_MODE_PSC_BALANCE;
-+			*perfmode = platform_psc_profile_balanced;
- 		break;
- 	case PLATFORM_PROFILE_PERFORMANCE:
- 		if (dytc_capabilities & BIT(DYTC_FC_MMC))
- 			*perfmode = DYTC_MODE_MMC_PERFORM;
- 		else if (dytc_capabilities & BIT(DYTC_FC_PSC))
--			*perfmode = DYTC_MODE_PSC_PERFORM;
-+			*perfmode = platform_psc_profile_performance;
- 		break;
- 	default: /* Unknown profile */
- 		return -EOPNOTSUPP;
-@@ -10605,6 +10609,7 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
- 	if (output & BIT(DYTC_QUERY_ENABLE_BIT))
- 		dytc_version = (output >> DYTC_QUERY_REV_BIT) & 0xF;
- 
-+	dbg_printk(TPACPI_DBG_INIT, "DYTC version %d\n", dytc_version);
- 	/* Check DYTC is enabled and supports mode setting */
- 	if (dytc_version < 5)
- 		return -ENODEV;
-@@ -10643,6 +10648,11 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
- 		}
- 	} else if (dytc_capabilities & BIT(DYTC_FC_PSC)) { /* PSC MODE */
- 		pr_debug("PSC is supported\n");
-+		if (dytc_version >= 9) { /* update profiles for DYTC 9 and up */
-+			platform_psc_profile_lowpower = DYTC_MODE_PSCV9_LOWPOWER;
-+			platform_psc_profile_balanced = DYTC_MODE_PSCV9_BALANCE;
-+			platform_psc_profile_performance = DYTC_MODE_PSCV9_PERFORM;
-+		}
- 	} else {
- 		dbg_printk(TPACPI_DBG_INIT, "No DYTC support available\n");
- 		return -ENODEV;
+ 		dprintk(5, "qla1280_64bit_start_scsi: Scatter/gather "
 -- 
 2.39.5
 
