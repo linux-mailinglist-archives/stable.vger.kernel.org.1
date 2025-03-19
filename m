@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-125407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1133FA690C0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04BEA69015
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:44:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1959E163187
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 165C07A9477
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D28A21D5A4;
-	Wed, 19 Mar 2025 14:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFF31E1E13;
+	Wed, 19 Mar 2025 14:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IInqopI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQzQURcG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D16B1F09A2;
-	Wed, 19 Mar 2025 14:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270161C5F26;
+	Wed, 19 Mar 2025 14:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395166; cv=none; b=B4Etl/f7l1J5VaTHETC7ZR8p6GNLskyklPGujGp6zAMqwpaGPlGJPsT3M3D+Fm72q52phPEJmzFt6XqFT195wb6LrAnJzMUj4U8nqGUXmovcUNED1iNFm0qcjTiAwBrItctq/kg7je+ttVEbH0ZIlrP3WxeArSMIF0A+PoQKHOA=
+	t=1742395060; cv=none; b=r5DMbnwg928BJlG8o38sDWTsvFD0Gy4UYVbmBzpY/ATROO57N9xXOoVLcXO57Uv2diJNpYVEQn5Lt1+h+RgpGMpI0BPg+m02RYfRLnvMtWFUhm1hgI8tss79l11tb0Yg9lZFwRpmemonCHYjk4xXcEKR08YgKSfYROqt43jIXXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395166; c=relaxed/simple;
-	bh=zngIUVi0A1eXVt0mCLZncDIOEBPR1IC0aysjgmfGHE8=;
+	s=arc-20240116; t=1742395060; c=relaxed/simple;
+	bh=7NTwrxyaDnfhoVKE7HK6M/gHxDtSkeWRn3keqMz+pCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IG6ve7DvTE3oxl9Qlz2rco6Wk4NxcWC1sPX8GNzJNlscTZR+7xVX7BWBKiEAirNOkc2CV+8qPTWBAnZFvhHz2+kKMtDjfB8GdY6j9DCyjWXIwzA8KoCj4feovYCXE1ff9hpPxWRQLUipHv2FlVmZFjY6Jsy85R5xx5NObW/bAr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IInqopI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C743C4CEE4;
-	Wed, 19 Mar 2025 14:39:26 +0000 (UTC)
+	 MIME-Version; b=cWe+TAKgOz81qKF8sue6wvpsZvnO+0HN5tKkepXTtrmLoMFIeMzSvabOVd51W16x6tpsfn7HtMKL/3+Lu/6h30oqTwo7qZPJiS14QMEJ4DFZ0lwOGDqbgTS3f3jHxySpKdzf+4lfhudUmk10pcLGrweY2B1HzREgycQrZ5Sndng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQzQURcG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB26FC4CEE4;
+	Wed, 19 Mar 2025 14:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395166;
-	bh=zngIUVi0A1eXVt0mCLZncDIOEBPR1IC0aysjgmfGHE8=;
+	s=korg; t=1742395060;
+	bh=7NTwrxyaDnfhoVKE7HK6M/gHxDtSkeWRn3keqMz+pCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0IInqopIW836WPjarlMcAQrglUekYrj9HeHHScxmQedDPsxcHZxDjb/6q43CHZTOI
-	 LhRe9LTUcPDxVB2q68ImPz47eGQcBQbrPW67Ouwrn53q9pdAtmDzoO5t1d0C5jXqpi
-	 GbDq9i7fTB4NfHvzebfr9H1ceDzLooQS9ZE8eSbA=
+	b=DQzQURcGcCPJFJI6+EGP/ufTNBT/DKm++4OACO+7flfyNymdMX2BcVlWqhSFJAm59
+	 mebYecQHw0ORoOyWWSVSEH2M6V7mG/Kk0c9Bb/wAO9Xw7xRizMfGeFrxJDWOB2LXB7
+	 mzUzc9OzB2xlhfIwUR78CGRj+MTWkObH6BCroFa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/166] Bluetooth: hci_event: Fix enabling passive scanning
+Subject: [PATCH 6.12 093/231] thermal/cpufreq_cooling: Remove structure member documentation
 Date: Wed, 19 Mar 2025 07:29:46 -0700
-Message-ID: <20250319143020.395875497@linuxfoundation.org>
+Message-ID: <20250319143029.141390824@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit 0bdd88971519cfa8a76d1a4dde182e74cfbd5d5c ]
+[ Upstream commit a6768c4f92e152265590371975d44c071a5279c7 ]
 
-Passive scanning shall only be enabled when disconnecting LE links,
-otherwise it may start result in triggering scanning when e.g. an ISO
-link disconnects:
+The structure member documentation refers to a member which does not
+exist any more. Remove it.
 
-> HCI Event: LE Meta Event (0x3e) plen 29
-      LE Connected Isochronous Stream Established (0x19)
-        Status: Success (0x00)
-        Connection Handle: 257
-        CIG Synchronization Delay: 0 us (0x000000)
-        CIS Synchronization Delay: 0 us (0x000000)
-        Central to Peripheral Latency: 10000 us (0x002710)
-        Peripheral to Central Latency: 10000 us (0x002710)
-        Central to Peripheral PHY: LE 2M (0x02)
-        Peripheral to Central PHY: LE 2M (0x02)
-        Number of Subevents: 1
-        Central to Peripheral Burst Number: 1
-        Peripheral to Central Burst Number: 1
-        Central to Peripheral Flush Timeout: 2
-        Peripheral to Central Flush Timeout: 2
-        Central to Peripheral MTU: 320
-        Peripheral to Central MTU: 160
-        ISO Interval: 10.00 msec (0x0008)
-...
-> HCI Event: Disconnect Complete (0x05) plen 4
-        Status: Success (0x00)
-        Handle: 257
-        Reason: Remote User Terminated Connection (0x13)
-< HCI Command: LE Set Extended Scan Enable (0x08|0x0042) plen 6
-        Extended scan: Enabled (0x01)
-        Filter duplicates: Enabled (0x01)
-        Duration: 0 msec (0x0000)
-        Period: 0.00 sec (0x0000)
-
-Fixes: 9fcb18ef3acb ("Bluetooth: Introduce LE auto connect options")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lore.kernel.org/all/202501220046.h3PMBCti-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501220046.h3PMBCti-lkp@intel.com/
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/20250211084712.2746705-1-daniel.lezcano@linaro.org
+[ rjw: Minor changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 37 ++++++++++++++++++++++---------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ drivers/thermal/cpufreq_cooling.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 01e51e1dc9b33..1e689d8c00a50 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3394,23 +3394,30 @@ static void hci_disconn_complete_evt(struct hci_dev *hdev, void *data,
- 		hci_update_scan(hdev);
- 	}
- 
--	params = hci_conn_params_lookup(hdev, &conn->dst, conn->dst_type);
--	if (params) {
--		switch (params->auto_connect) {
--		case HCI_AUTO_CONN_LINK_LOSS:
--			if (ev->reason != HCI_ERROR_CONNECTION_TIMEOUT)
-+	/* Re-enable passive scanning if disconnected device is marked
-+	 * as auto-connectable.
-+	 */
-+	if (conn->type == LE_LINK) {
-+		params = hci_conn_params_lookup(hdev, &conn->dst,
-+						conn->dst_type);
-+		if (params) {
-+			switch (params->auto_connect) {
-+			case HCI_AUTO_CONN_LINK_LOSS:
-+				if (ev->reason != HCI_ERROR_CONNECTION_TIMEOUT)
-+					break;
-+				fallthrough;
-+
-+			case HCI_AUTO_CONN_DIRECT:
-+			case HCI_AUTO_CONN_ALWAYS:
-+				hci_pend_le_list_del_init(params);
-+				hci_pend_le_list_add(params,
-+						     &hdev->pend_le_conns);
-+				hci_update_passive_scan(hdev);
- 				break;
--			fallthrough;
- 
--		case HCI_AUTO_CONN_DIRECT:
--		case HCI_AUTO_CONN_ALWAYS:
--			hci_pend_le_list_del_init(params);
--			hci_pend_le_list_add(params, &hdev->pend_le_conns);
--			hci_update_passive_scan(hdev);
--			break;
--
--		default:
--			break;
-+			default:
-+				break;
-+			}
- 		}
- 	}
- 
+diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
+index 280071be30b15..6b7ab1814c12d 100644
+--- a/drivers/thermal/cpufreq_cooling.c
++++ b/drivers/thermal/cpufreq_cooling.c
+@@ -57,8 +57,6 @@ struct time_in_idle {
+  * @max_level: maximum cooling level. One less than total number of valid
+  *	cpufreq frequencies.
+  * @em: Reference on the Energy Model of the device
+- * @cdev: thermal_cooling_device pointer to keep track of the
+- *	registered cooling device.
+  * @policy: cpufreq policy.
+  * @cooling_ops: cpufreq callbacks to thermal cooling device ops
+  * @idle_time: idle time stats
 -- 
 2.39.5
 
