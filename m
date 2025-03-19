@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-125036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9004CA68F9A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB33A690C4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAF4D3A28FC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8A92163A6F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C511E1E0C;
-	Wed, 19 Mar 2025 14:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CB021D5B0;
+	Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mgCqmMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/yG2e4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A302C1B2194;
-	Wed, 19 Mar 2025 14:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E6A1DE4FF;
+	Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394906; cv=none; b=KC/8+A7GhKgFpPZB4mY31EyOyRMCpEIcIdKd3kl+AgyQaoet+3nnFNYNGhwZ1xIeND80Ka3rRL2sijdT8hxlsjixMQz840lBYY8+xOcH6tNUv9be4g7iDR6P7dldLkc6VksdQ44vp8QI+ADEpMaPCGmW7CjlC8OzT6ZdYQxFRUc=
+	t=1742395167; cv=none; b=kC8TkryK9l3pjBftGnoXe2CZ/NDstVjR9Z9t9/KYwYB6bPHmGMbvORpiJ6VWgrYYnqDSCAfNBBV3fAvlXq9E8RrQlzo0+CasEKWoSkyWjVpTemPpVRxUkjJDLJQhIKLhrSKocoKAitMmA+tvPDKejQwykzquH1D3RumoUX1gYl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394906; c=relaxed/simple;
-	bh=gPfkyqpGGkqTv/rBovPI0E7QTf9kTbvfLO/Plp34ZoA=;
+	s=arc-20240116; t=1742395167; c=relaxed/simple;
+	bh=kIxAx/tlXnvggueC7HNkmUhgScjDtfm+eUMjJ4J4PIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGIitrggWAhLmeXfHisP0oRUFygDY20NlfTRNgcueia6WLJVTlIqyrA0JMWeVX2jP+GKvemNKvRXERhzpFf6YOEcaJuKoHaaf2YonKAApsY+ZLMDyN0yIfY8o2x0vVPo7Y1AikW6jeqgXiVd7gt8eS5WJc83cQgII4H4MOA43YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mgCqmMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C1FC4CEE4;
-	Wed, 19 Mar 2025 14:35:06 +0000 (UTC)
+	 MIME-Version; b=Z3hS2y1J04g5TQBlqvc6kqYAP1a/D6Ip1r22ZnMdY2V4UMaZh4hd2vz1sgrUrUb2xE4Aik5V36jCYMOlRJ4yKgtU4knCIusw26Gwom7W1UuKGBCr87L6c+PuWRN9qYi8G+nHfuIzH6hZeCzYrReOW8/aaEFSqbplaWLL94uYMdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/yG2e4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6D2C4CEE4;
+	Wed, 19 Mar 2025 14:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394906;
-	bh=gPfkyqpGGkqTv/rBovPI0E7QTf9kTbvfLO/Plp34ZoA=;
+	s=korg; t=1742395167;
+	bh=kIxAx/tlXnvggueC7HNkmUhgScjDtfm+eUMjJ4J4PIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2mgCqmMNLm8FqYQcmZ5HB0YRb6JPYnt8q4/h9qJUxc7sKxhxXwfkjLb/zLxqXPzTV
-	 LgFsagfpabFyKpETrMJbbbeV2YRHT+COHzK61LHDGY2nEa3I+S9hHeXsftOXu6uDLF
-	 gsPN1geG/c6+NuJsNMOx5wQnG0Hkxm10Uk9/atKQ=
+	b=u/yG2e4VfvxEANUDuLGk6n8d72rcR4tOUMVsHJA7uIv/F518kDF+owDL4xZ9vYtSF
+	 uAoXIVysoO5CkDmJ2aXeNOMnBbIFdmuy3G2qE4yUwkdD+np2t7/7Utn8ZQr98q1C/Q
+	 fExK+ftcIATZFXQ/8nLdmWWWfDOlyEjBYarc2e1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 118/241] ALSA: hda: intel-dsp-config: Add PTL-H support
+Subject: [PATCH 6.6 017/166] net/mlx5: Fill out devlink dev info only for PFs
 Date: Wed, 19 Mar 2025 07:29:48 -0700
-Message-ID: <20250319143030.640368235@linuxfoundation.org>
+Message-ID: <20250319143020.448346514@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit 214e6be2d91d5d58f28d3a37630480077a1aafbd ]
+[ Upstream commit d749d901b2168389f060b654fdaa08acf6b367d2 ]
 
-Use same recipes as PTL for PTL-H.
+Firmware version query is supported on the PFs. Due to this
+following kernel warning log is observed:
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250210081730.22916-3-peter.ujfalusi@linux.intel.com
+[  188.590344] mlx5_core 0000:08:00.2: mlx5_fw_version_query:816:(pid 1453): fw query isn't supported by the FW
+
+Fix it by restricting the query and devlink info to the PF.
+
+Fixes: 8338d9378895 ("net/mlx5: Added devlink info callback")
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Link: https://patch.msgid.link/20250306212529.429329-1-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/intel-dsp-config.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/devlink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
-index f564ec7af1940..ce3ae2cba6607 100644
---- a/sound/hda/intel-dsp-config.c
-+++ b/sound/hda/intel-dsp-config.c
-@@ -539,6 +539,11 @@ static const struct config_entry config_table[] = {
- 		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
- 		.device = PCI_DEVICE_ID_INTEL_HDA_PTL,
- 	},
-+	{
-+		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
-+		.device = PCI_DEVICE_ID_INTEL_HDA_PTL_H,
-+	},
-+
- #endif
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 1bccb5633ab4b..f66788a2ed77e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -46,6 +46,9 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
+ 	u32 running_fw, stored_fw;
+ 	int err;
  
- };
++	if (!mlx5_core_is_pf(dev))
++		return 0;
++
+ 	err = devlink_info_version_fixed_put(req, "fw.psid", dev->board_id);
+ 	if (err)
+ 		return err;
 -- 
 2.39.5
 
