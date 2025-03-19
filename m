@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094F8A6914E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A657DA68FA8
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB1068831CF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF7B54262B3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0091C9EAA;
-	Wed, 19 Mar 2025 14:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B071E47B0;
+	Wed, 19 Mar 2025 14:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJJOyG5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWmb7sbc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B792206B7;
-	Wed, 19 Mar 2025 14:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFB91B87D5;
+	Wed, 19 Mar 2025 14:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395186; cv=none; b=RqpeAQWeE+L5DpPretZlT7P/JQwTXIePqHZBE+dZIA26Q52RKKnxKOGG8raE4bXArd0PRoy5I/l5fNRgDWI4+VWpepyLfYaYfaWWxSLvpemsa7XHOwGumx7DSf6AFOfF8nKddBXc3GfdqS3DD0OHeguN+3MrKjz7AffmGl/udBE=
+	t=1742394931; cv=none; b=GtQkkV428zIzuaI6/zLe+ecMNa+opNp+49YePzrY2GniGXMgHA+xvHbE7MzKnlktp03oUnV2iuxCC4LzU1c8F8xP5mbGDviUmUSUx4kDkIvjYmEQIesMTzmo3pavb4pehXxm3tnAPC6Z2XCNEkELbXTxR7HVeXLMYKe6LM7TWh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395186; c=relaxed/simple;
-	bh=jyM9p4jVDGh0j8+suHK/tntRLunK4tEr83tG6OZDxZ8=;
+	s=arc-20240116; t=1742394931; c=relaxed/simple;
+	bh=PrQ/tyPtRkKNPradbRl9xhtS+9bme7Y8APgVJfx2TT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRB5Btms26rpuesAiu+CbixPnLhGWPu6NADnOjB99dYkOQW3TpuQsnVuNRoE94dPRX6DL4aheFPk7zhX1BOJU69aHKdZAML9xsagvVsBUguNb0MdCb6RIsPPQut1kaaWVbakKbxcmptOKX4p+I93q1b8zW0If6ZYB74QdgCXHlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJJOyG5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DB8C4CEE4;
-	Wed, 19 Mar 2025 14:39:46 +0000 (UTC)
+	 MIME-Version; b=SfVFXtpEzvT/2hQmgVR9tpobzdgwRQXX7YjlVYjSAw4EosMYzin6RAiiZPEFbd5nxHxoi1JTbqj1yXq+1hoVoJjg5nzV9g5Ao9zLYKCCJY/WlRaKQ1dD3N9E28uue2Q5DQeYJbxL/Qef9zvoJw4P3nQpldoS9txPuRfV4tbFnZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWmb7sbc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D340C4CEE4;
+	Wed, 19 Mar 2025 14:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395186;
-	bh=jyM9p4jVDGh0j8+suHK/tntRLunK4tEr83tG6OZDxZ8=;
+	s=korg; t=1742394931;
+	bh=PrQ/tyPtRkKNPradbRl9xhtS+9bme7Y8APgVJfx2TT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJJOyG5hpT6+Frzv34PjgXNi+UAjgKMQsLlnZ1eKNriBzvWRBm/YPBOwZzbGQPuLp
-	 B85bFY2i64mVRQwTQbYyMmPprtorOiXN9qbYXHC/2AAKFyOj/WDXh/dSxqUycKy3VS
-	 Cmrb0OkubdPn2oBVOoDl7lBQvtKIvw+oI5Am7jzg=
+	b=lWmb7sbcOGsIPAPDZ+JN9d2z1hiEwl0yzSbVRCmgzSJNNZbCDUPB6lJqiB+/0NP3m
+	 goi60A5G5v2hSlzdXgSRoJeeVHCTVo7LzzFdYv8WjQGqylyULfbLqWYODbgBnsfZYP
+	 BIdFXeq1QrgitpnoV0HF8kS/Abz6/HP2oQA6AACk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Lindholm <linmag7@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lyude Paul <lyude@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/166] scsi: qla1280: Fix kernel oops when debug level > 2
+Subject: [PATCH 6.13 146/241] drm/nouveau: Do not override forced connector status
 Date: Wed, 19 Mar 2025 07:30:16 -0700
-Message-ID: <20250319143021.210773661@linuxfoundation.org>
+Message-ID: <20250319143031.331310357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Lindholm <linmag7@gmail.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 5233e3235dec3065ccc632729675575dbe3c6b8a ]
+[ Upstream commit 01f1d77a2630e774ce33233c4e6723bca3ae9daa ]
 
-A null dereference or oops exception will eventually occur when qla1280.c
-driver is compiled with DEBUG_QLA1280 enabled and ql_debug_level > 2.  I
-think its clear from the code that the intention here is sg_dma_len(s) not
-length of sg_next(s) when printing the debug info.
+Keep user-forced connector status even if it cannot be programmed. Same
+behavior as for the rest of the drivers.
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/20250125095033.26188-1-linmag7@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250114100214.195386-1-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla1280.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/qla1280.c b/drivers/scsi/qla1280.c
-index 6e5e89aaa283b..74b23c43af3ea 100644
---- a/drivers/scsi/qla1280.c
-+++ b/drivers/scsi/qla1280.c
-@@ -2866,7 +2866,7 @@ qla1280_64bit_start_scsi(struct scsi_qla_host *ha, struct srb * sp)
- 			dprintk(3, "S/G Segment phys_addr=%x %x, len=0x%x\n",
- 				cpu_to_le32(upper_32_bits(dma_handle)),
- 				cpu_to_le32(lower_32_bits(dma_handle)),
--				cpu_to_le32(sg_dma_len(sg_next(s))));
-+				cpu_to_le32(sg_dma_len(s)));
- 			remseg--;
- 		}
- 		dprintk(5, "qla1280_64bit_start_scsi: Scatter/gather "
+diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
+index 8d5c9c74cbb90..eac0d1d2dbda2 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -775,7 +775,6 @@ nouveau_connector_force(struct drm_connector *connector)
+ 	if (!nv_encoder) {
+ 		NV_ERROR(drm, "can't find encoder to force %s on!\n",
+ 			 connector->name);
+-		connector->status = connector_status_disconnected;
+ 		return;
+ 	}
+ 
 -- 
 2.39.5
 
