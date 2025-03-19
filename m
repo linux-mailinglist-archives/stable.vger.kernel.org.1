@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-125515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392CAA691BC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE626A68FC1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:41:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29DE28A1796
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB7B616D5BC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1305120AF63;
-	Wed, 19 Mar 2025 14:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C33E1DE2C6;
+	Wed, 19 Mar 2025 14:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhBxEMT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+9Po3eQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F2818BC36;
-	Wed, 19 Mar 2025 14:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6811DE2C0;
+	Wed, 19 Mar 2025 14:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395244; cv=none; b=S4E78n2c5rgIcbumrkcPP7PMXeG2uPRpwy8MOLkaG+c7mqEjbm+DHlCTAButuUz2I/s/EZ30uGZkzbR4PpK8WxkqKeChbZcG38CAZdnW3J8ecSO2yjGmhCFv9wmQNC49HW7RP9VmEV9U7hK56qC6qn3jUFXA7T/wcxzJocQ273E=
+	t=1742394950; cv=none; b=NM52LSHpQgl2Bk3sfqQ9QQKFjH223nXkO7YVN+8k/++yzgoZT6b5DaF3Uxj+sWhJ7QOTbn5qbwm/9m8HHD+fixtN7T+TJ7JWJvcaGecSRevXOJ9pmaE+83hhy63+rejJ6SUqmfUzvKJgm53nMVhq6GtcXIExr4PBkpoaRraX7+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395244; c=relaxed/simple;
-	bh=S4kg65Sy8YL7YQunM2SLuy0ElZDrj2n5IE4QB/BtgI8=;
+	s=arc-20240116; t=1742394950; c=relaxed/simple;
+	bh=E5jy3MdPfikrXz+cBesaNwG+sPGl9J8BH2HaeuA7jro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cMoFIBTVLQbm7aqM44GdVg/ers9Q/ikE4Jbohg+RfiCgXFiDuzQXBaPuGgrKEYVKo3sxdBYvJnABW+cecQzBSAih0eRnvHlf2qsnB6XWY/NsudKU19P5wGTkREI0GGSe0Wvv8VIiGo+P5UHYH66kfXpMhJOARzoEYZobANFL/YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhBxEMT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97794C4CEE4;
-	Wed, 19 Mar 2025 14:40:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vGt4ZM+u6vBtWPdgUgQMeeDlHuHpe284LV0Fk5W2rFk3G4hodgVczEs0xBf2wTHwnrmwc2PrbXja+lD9lHIDB3UFsaTleh0UZpOhas5G9MNDsXk2U8mr/hPuudH5/20nFMfh+M8C1uauwWdQ9bomWSxYlztoy13jp8NTbWl9+QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+9Po3eQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CD7C4CEE4;
+	Wed, 19 Mar 2025 14:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395244;
-	bh=S4kg65Sy8YL7YQunM2SLuy0ElZDrj2n5IE4QB/BtgI8=;
+	s=korg; t=1742394950;
+	bh=E5jy3MdPfikrXz+cBesaNwG+sPGl9J8BH2HaeuA7jro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhBxEMT4dP4bx+jqiVQFUAf9RdBoqEYS6DhRzi3kH2NoPkTlMbqXhnLHX+Tm+Pkpd
-	 eu1ZzKywRbT8GXgQzTSGqA14Z3sw7JkUradskvowgQ1bFnh8U/rTktgXdxWLcDZ45+
-	 XFzJRo9x/SLcdbIVkCoG/eHzkv9UNi/JaVhVW7cI=
+	b=0+9Po3eQbrVhW/8T9EnGkcOW1uJ3cA58y+9sFm7fz8xgOTNR3/kqJqM/wXX2hmOB/
+	 pF3BM521Iie/ni/bStElCrEYShcCrIHGB6ov54Dk161lnZQwoZXp0BVG3j5zxKeJv+
+	 EDIVmpq81eh2vLzKWKg+JrMtbwT0cf9tjuNhNdNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Cheong <htcheong@chromium.org>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Johny Lin <lpg76627@gmail.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/166] ASoC: SOF: Intel: hda: add softdep pre to snd-hda-codec-hdmi module
-Date: Wed, 19 Mar 2025 07:30:43 -0700
-Message-ID: <20250319143021.964470475@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Vinod Govindapillai <vinod.govindapillai@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.13 174/241] drm/i915/cdclk: Do cdclk post plane programming later
+Date: Wed, 19 Mar 2025 07:30:44 -0700
+Message-ID: <20250319143032.038738784@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +63,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Cheong <htcheong@chromium.org>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 33b7dc7843dbdc9b90c91d11ba30b107f9138ffd ]
+commit 6266f4a78131c795631440ea9c7b66cdfd399484 upstream.
 
-In enviornment without KMOD requesting module may fail to load
-snd-hda-codec-hdmi, resulting in HDMI audio not usable.
-Add softdep to loading HDMI codec module first to ensure we can load it
-correctly.
+We currently call intel_set_cdclk_post_plane_update() far
+too early. When pipes are active during the reprogramming
+the current spot only works for the cd2x divider update
+case, as that is synchronize to the pipe's vblank. Squashing
+and crawling are not synchronized in any way, so doing the
+programming while the pipes/planes are potentially still using
+the old hardware state could lead to underruns.
 
-Signed-off-by: Terry Cheong <htcheong@chromium.org>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Johny Lin <lpg76627@gmail.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250206094723.18013-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the post plane reprgramming to a spot where we know
+that the pipes/planes have switched over the new hardware
+state.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250218211913.27867-2-ville.syrjala@linux.intel.com
+Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+(cherry picked from commit fb64f5568c0e0b5730733d70a012ae26b1a55815)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/intel/hda-codec.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/display/intel_display.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda-codec.c b/sound/soc/sof/intel/hda-codec.c
-index 328d7c227b218..82a6707fb4b80 100644
---- a/sound/soc/sof/intel/hda-codec.c
-+++ b/sound/soc/sof/intel/hda-codec.c
-@@ -444,6 +444,7 @@ int hda_codec_i915_exit(struct snd_sof_dev *sdev)
- }
- EXPORT_SYMBOL_NS_GPL(hda_codec_i915_exit, SND_SOC_SOF_HDA_AUDIO_CODEC_I915);
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -7840,9 +7840,6 @@ static void intel_atomic_commit_tail(str
+ 	/* Now enable the clocks, plane, pipe, and connectors that we set up. */
+ 	dev_priv->display.funcs.display->commit_modeset_enables(state);
  
-+MODULE_SOFTDEP("pre: snd-hda-codec-hdmi");
- #endif
+-	if (state->modeset)
+-		intel_set_cdclk_post_plane_update(state);
+-
+ 	intel_wait_for_vblank_workers(state);
  
- MODULE_LICENSE("Dual BSD/GPL");
--- 
-2.39.5
-
+ 	/* FIXME: We should call drm_atomic_helper_commit_hw_done() here
+@@ -7916,6 +7913,8 @@ static void intel_atomic_commit_tail(str
+ 		intel_verify_planes(state);
+ 
+ 	intel_sagv_post_plane_update(state);
++	if (state->modeset)
++		intel_set_cdclk_post_plane_update(state);
+ 	intel_pmdemand_post_plane_update(state);
+ 
+ 	drm_atomic_helper_commit_hw_done(&state->base);
 
 
 
