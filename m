@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A982EA69133
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FF2A69095
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E702A88247A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2730D8A012B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7E721E0AF;
-	Wed, 19 Mar 2025 14:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E59B1E231D;
+	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZmSgWMBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ts2BTMxI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B391DE899;
-	Wed, 19 Mar 2025 14:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E905F214A9E;
+	Wed, 19 Mar 2025 14:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395175; cv=none; b=f48EHTp3f5mbySRsj6/YWhym0iLbBSLDfMEfgH5R9F1S1IcfD6Fq8dNHqj7mvl1jZ0A8wkrNLpcCPTg1BKk+s4hBMvOu49eA02tFJUSYeq6HEV6GiurhpatC6mASZlcUrDzwC/r2tyND99DUCYBITiD8h1hD3xUWrQwAxlkFpDM=
+	t=1742395070; cv=none; b=jXJSUJFCGZ6SBevwOpLhUVfQ3ojnkadhShwyN+FCA5cN34HIemdrmTBvz8OpKsUE5L4fLKJQBv/+9j/jJOMZQYFYwy0QXNwAVt2FkAVEdF2Uqcg7aYAl1qYV2Rrwr98Uii/fm3QAUlXmGVVOloTVPwXsy8HQeRM7ur5Nft67qoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395175; c=relaxed/simple;
-	bh=3/SitdCYhoWCs+ioEioUh0JFWg0gY4nCxbMnVf8yeGE=;
+	s=arc-20240116; t=1742395070; c=relaxed/simple;
+	bh=wPDXHV2kcXRpWgMdDHC63YcXS9xxRCVMXsyRhcmo3Qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hv2q/Et4PFG913wEX9hdqF+makIGpUCqjPWTu52jk3PW57Q20rj1c4I3CtgyeJDq1/AGelHaEuXTewqq3iQA53gvMc7lhQ4cvvUfjr/w8RPnbi5olsrmKRClsgOt8VjztdDh5aWSMPG9H7N0CBmgIaXnREHdbxydQUeviSw75W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZmSgWMBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D54C4CEE4;
-	Wed, 19 Mar 2025 14:39:35 +0000 (UTC)
+	 MIME-Version; b=aao3Sa++ss+6voML2m5dd+bvoiTbezaSKHkxqDoIdIYOBWAoPqBhTYwbRlx3fiGuJq/B6XG4FPD5v+vvk7MornX68Sd3tu6UqSOb9RzjQsEY1QzXCvOCLi8P2YIRKOsQ911L7wKmDmStpXZ1p4d224qhlx2Ka9R+4S6VJ1J9cQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ts2BTMxI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FD5C4CEE4;
+	Wed, 19 Mar 2025 14:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395175;
-	bh=3/SitdCYhoWCs+ioEioUh0JFWg0gY4nCxbMnVf8yeGE=;
+	s=korg; t=1742395069;
+	bh=wPDXHV2kcXRpWgMdDHC63YcXS9xxRCVMXsyRhcmo3Qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZmSgWMBVE3i4AUMPK/VXBP0T5hruwXGN0XAuyXQLgwfuvF29d2uBTHZzszblBtLqv
-	 a9THRMpm48lnBpLnBnyK/e/8wNYL3iIkmu06SWGJz7sff1ZICDHbTmF+qzAT/TzjdO
-	 v0z8ROaK8RGV7Nr1IgnflOEPJfaXrTkXCK49S5h0=
+	b=ts2BTMxIpb9o5nkr6WgKh2nEvKlCifMdfYvARsPpXaNfml24aVxRwVfus4YjG5W4O
+	 XNqGa5gg9uoRml8mx3wA50f43Drc5hNgJuK1yD2CRkQLCKm4aexuCq21qqAHdbOkDc
+	 xfZM5xegXcOjggTQOJQwfMqUggqoqqlEch9TLsNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/166] ipvs: prevent integer overflow in do_ip_vs_get_ctl()
+Subject: [PATCH 6.12 106/231] ASoC: simple-card-utils.c: add missing dlc->of_node
 Date: Wed, 19 Mar 2025 07:29:59 -0700
-Message-ID: <20250319143020.747473697@linuxfoundation.org>
+Message-ID: <20250319143029.456657195@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 80b78c39eb86e6b55f56363b709eb817527da5aa ]
+[ Upstream commit dabbd325b25edb5cdd99c94391817202dd54b651 ]
 
-The get->num_services variable is an unsigned int which is controlled by
-the user.  The struct_size() function ensures that the size calculation
-does not overflow an unsigned long, however, we are saving the result to
-an int so the calculation can overflow.
+commit 90de551c1bf ("ASoC: simple-card-utils.c: enable multi Component
+support") added muiti Component support, but was missing to add
+dlc->of_node. Because of it, Sound device list will indicates strange
+name if it was DPCM connection and driver supports dai->driver->dai_args,
+like below
 
-Both "len" and "get->num_services" come from the user.  This check is
-just a sanity check to help the user and ensure they are using the API
-correctly.  An integer overflow here is not a big deal.  This has no
-security impact.
+	> aplay -l
+	card X: sndulcbmix [xxxx], device 0: fe.(null).rsnd-dai.0 (*) []
+	...                                     ^^^^^^
 
-Save the result from struct_size() type size_t to fix this integer
-overflow bug.
+It will be fixed by this patch
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+	> aplay -l
+	card X: sndulcbmix [xxxx], device 0: fe.sound@ec500000.rsnd-dai.0 (*) []
+	...                                     ^^^^^^^^^^^^^^
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://patch.msgid.link/87ikpp2rtb.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/generic/simple-card-utils.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index dec5309d9f1f5..ae76542de3e98 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -3091,12 +3091,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_SERVICES:
- 	{
- 		struct ip_vs_get_services *get;
--		int size;
-+		size_t size;
- 
- 		get = (struct ip_vs_get_services *)arg;
- 		size = struct_size(get, entrytable, get->num_services);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
-@@ -3132,12 +3132,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_DESTS:
- 	{
- 		struct ip_vs_get_dests *get;
--		int size;
-+		size_t size;
- 
- 		get = (struct ip_vs_get_dests *)arg;
- 		size = struct_size(get, entrytable, get->num_dests);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index fedae7f6f70cc..975ffd2cad292 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -1097,6 +1097,7 @@ int graph_util_parse_dai(struct device *dev, struct device_node *ep,
+ 	args.np = ep;
+ 	dai = snd_soc_get_dai_via_args(&args);
+ 	if (dai) {
++		dlc->of_node  = node;
+ 		dlc->dai_name = snd_soc_dai_name_get(dai);
+ 		dlc->dai_args = snd_soc_copy_dai_args(dev, &args);
+ 		if (!dlc->dai_args)
 -- 
 2.39.5
 
