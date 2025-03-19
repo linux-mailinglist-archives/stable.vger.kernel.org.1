@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0BFA69186
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA473A690BF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E5008A09A3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7553B8A1E3A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F85F207A2C;
-	Wed, 19 Mar 2025 14:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFEE21A94D;
+	Wed, 19 Mar 2025 14:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUW3Q8q+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKCWQLJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BB71DEFD8;
-	Wed, 19 Mar 2025 14:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7945F1DC9A7;
+	Wed, 19 Mar 2025 14:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395212; cv=none; b=Hq+LdQV5Y/+NH1XaK86vB3p0DiTGci1Sx7GgGOfCuhR9MN/fWyUMcDq7y+x0pZX7qSrN52WmDf7AqRteUyQ8WbvhgaYs0fkdcE2srBUwGLS2EvIUqvWp0HL1AwhmgW2zCs19+ES8+i5vOC2FV6ETb9KkFS6e3hLJGX9YSiygYys=
+	t=1742395100; cv=none; b=oz4ziYtm75Phe3QmbLCWZT6gGLGL/zuV2hjvPxpKvaZbcielePR7IUQthu2CsrWd9KRTUE1vU/jh6OWiUevpxuD4wRUd3Mp1vwRj8v1GkiatY4oRLXP9N3aPgPwBOKlhZQcxQFL+CyOrR2Y/pwTYRPm1cLkMoWn+aBA0hzkppfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395212; c=relaxed/simple;
-	bh=IAIaVO9Pg/Wnn1Aj8X4lR/bFxT/NO/niRfMy8NVZvuw=;
+	s=arc-20240116; t=1742395100; c=relaxed/simple;
+	bh=YzWovWffZm/pMj4WqISBQXguPoDk7ffy1RIWYGTJe/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Auu7MjiTilZMIWEILJBvzIxtUE4C0Tp9jknNvoB4Zggz0gIVIQQKyYiEK5qhH3zjhiBm2ON67Gxx8/i14wtLwL3M6RSkzZMEcIjXp54Q/0Rlj9ST3BTfk4E+L950GUHxQkfR2fp/Q/X0PM87pLC0HQfm7Qu4UYXEra6JCopWLeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUW3Q8q+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5382C4CEE4;
-	Wed, 19 Mar 2025 14:40:11 +0000 (UTC)
+	 MIME-Version; b=CcFnVD4P+e7+6kh5+/GN37d/AAP23RHYDpm6Vo2Uc15y5Lr8KzglBL7dnZAUfuhAeefHBLwYevkWHCnX+qLi/Ux1OO+TBUnvy96h74oVpX5HyE8uGR8Pon2MiapQMdxIcRyAsAMeaGc8AmH/LH6/79Gso4aQL5R2eyb8Fk/pS8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKCWQLJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D438C4CEE4;
+	Wed, 19 Mar 2025 14:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395211;
-	bh=IAIaVO9Pg/Wnn1Aj8X4lR/bFxT/NO/niRfMy8NVZvuw=;
+	s=korg; t=1742395100;
+	bh=YzWovWffZm/pMj4WqISBQXguPoDk7ffy1RIWYGTJe/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUW3Q8q+9wLyfjMdi8oS2p5iAydb4l1Kz3UiVhw4F6rJyu/bdfcv66N9nH6YpWNkE
-	 oDKM08yYPqngQLapuC1cBDaPJL0bYZx5beE6G96DzdfTX8phKU2Qzjn2osr4LWovNX
-	 GGIWPEYATvIMXrxP+PDX7bcv7foxAyuHFCVk8VOc=
+	b=RKCWQLJFKGAaM7SibUA3AO96LPVwCGNzuEvvqovYgiSzKDgfgY5epCt3skTxVw/KV
+	 3oQGG07UiMIqM6aMCL65Zxw62Zgb+1lIT1IMw96sERcZ2wIv7pe6aLnl5vxc3PPMMa
+	 o1gUc5jWnPT7m8X19zizPUJaGIEO1/i73kEyzSLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/166] ASoC: SOF: amd: Handle IPC replies before FW_BOOT_COMPLETE
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 151/231] Input: xpad - add support for ZOTAC Gaming Zone
 Date: Wed, 19 Mar 2025 07:30:44 -0700
-Message-ID: <20250319143021.989432108@linuxfoundation.org>
+Message-ID: <20250319143030.568701460@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit ac84ca815adb4171a4276b1d44096b75f6a150b7 ]
+commit 709329c48214ad2acf12eed1b5c0eb798e40a64c upstream.
 
-In some cases, e.g. during resuming from suspend, there is a possibility
-that some IPC reply messages get received by the host while the DSP
-firmware has not yet reached the complete boot state.
+ZOTAC Gaming Zone is ZOTAC's 2024 handheld release. As it is common
+with these handhelds, it uses a hybrid USB device with an xpad
+endpoint, a keyboard endpoint, and a vendor-specific endpoint for
+RGB control et al.
 
-Detect when this happens and do not attempt to process the unexpected
-replies from DSP.  Instead, provide proper debugging support.
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250207-sof-vangogh-fixes-v1-3-67824c1e4c9a@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://lore.kernel.org/r/20250222170010.188761-2-lkml@antheas.dev
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/amd/acp-ipc.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/sof/amd/acp-ipc.c b/sound/soc/sof/amd/acp-ipc.c
-index fcb54f545fea3..a4e9bc20adaff 100644
---- a/sound/soc/sof/amd/acp-ipc.c
-+++ b/sound/soc/sof/amd/acp-ipc.c
-@@ -167,6 +167,7 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
- 
- 	if (sdev->first_boot && sdev->fw_state != SOF_FW_BOOT_COMPLETE) {
- 		acp_mailbox_read(sdev, sdev->dsp_box.offset, &status, sizeof(status));
-+
- 		if ((status & SOF_IPC_PANIC_MAGIC_MASK) == SOF_IPC_PANIC_MAGIC) {
- 			snd_sof_dsp_panic(sdev, sdev->dsp_box.offset + sizeof(status),
- 					  true);
-@@ -188,13 +189,21 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
- 
- 	dsp_ack = snd_sof_dsp_read(sdev, ACP_DSP_BAR, ACP_SCRATCH_REG_0 + dsp_ack_write);
- 	if (dsp_ack) {
--		spin_lock_irq(&sdev->ipc_lock);
--		/* handle immediate reply from DSP core */
--		acp_dsp_ipc_get_reply(sdev);
--		snd_sof_ipc_reply(sdev, 0);
--		/* set the done bit */
--		acp_dsp_ipc_dsp_done(sdev);
--		spin_unlock_irq(&sdev->ipc_lock);
-+		if (likely(sdev->fw_state == SOF_FW_BOOT_COMPLETE)) {
-+			spin_lock_irq(&sdev->ipc_lock);
-+
-+			/* handle immediate reply from DSP core */
-+			acp_dsp_ipc_get_reply(sdev);
-+			snd_sof_ipc_reply(sdev, 0);
-+			/* set the done bit */
-+			acp_dsp_ipc_dsp_done(sdev);
-+
-+			spin_unlock_irq(&sdev->ipc_lock);
-+		} else {
-+			dev_dbg_ratelimited(sdev->dev, "IPC reply before FW_BOOT_COMPLETE: %#x\n",
-+					    dsp_ack);
-+		}
-+
- 		ipc_irq = true;
- 	}
- 
--- 
-2.39.5
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -349,6 +349,7 @@ static const struct xpad_device {
+ 	{ 0x1bad, 0xfa01, "MadCatz GamePad", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0xfd00, "Razer Onza TE", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0xfd01, "Razer Onza", 0, XTYPE_XBOX360 },
++	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
+ 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x281f, "PowerA Wired Controller For Xbox 360", 0, XTYPE_XBOX360 },
+@@ -538,6 +539,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
+ 	XPAD_XBOX360_VENDOR(0x1a86),		/* QH Electronics */
+ 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
++	XPAD_XBOX360_VENDOR(0x1ee9),		/* ZOTAC Technology Limited */
+ 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
+ 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA controllers */
+ 	XPAD_XBOX360_VENDOR(0x2345),		/* Machenike Controllers */
 
 
 
