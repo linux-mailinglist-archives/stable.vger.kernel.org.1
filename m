@@ -1,156 +1,99 @@
-Return-Path: <stable+bounces-124869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8921DA682B3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 02:23:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8D5A682BB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 02:26:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB0044223F9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 01:23:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE8EC19C5DC4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 01:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E13A537F8;
-	Wed, 19 Mar 2025 01:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DB9224893;
+	Wed, 19 Mar 2025 01:26:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568D98C0B;
-	Wed, 19 Mar 2025 01:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E6F224889;
+	Wed, 19 Mar 2025 01:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742347375; cv=none; b=qwCWEaQpdvCNhhLwr0AnF5tfi0sxwDVkcDVXWepSNoF7y7tISCDFHaepWMQltLrnNhptcHFyEZuzJP5gl6DSYN1JF1032eHvMIIJ1o+uYfDpCJ47nzrvSP4boXr12tXJovR7K1BOKEwSFFllW0ozo+nwSJovSgSLhk/BCSjAiZc=
+	t=1742347560; cv=none; b=L5s1haucyhd0eyZK+/xNRhzOkK6ehE0F6EbGRwQi3b7jxxiiuj3d3+0TxcMrVi3fPrDCq5W001uHlzWFEVW2nI++ODzJs1CKShi23K/0awRr44yNnvIV8S8Cdczku+F4Mb61x7wVpab0qTAQrCi1nO6WwHdAaIw4Os98MvApqSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742347375; c=relaxed/simple;
-	bh=DEBFMxwAsJn6rC1BPqAY1aUJxtEqZ7s0Q0rSJs6fekQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Cs7/qZpiOyy9mjT52hwf4Th0K1RrnVYH09GvFP58koNpcjLhYI0e3wckBK2bvhemMbU5XkgA0IC4cxaYfAn3E55xF14L4Qq5ouLeEkDzlFz8DNMr7tsf7hM01FcX2YFRte74Ny2gOYn611DP2ZkvRHQIfLqL/I4rUztwk444Sb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52J1LiKQ002371;
-	Tue, 18 Mar 2025 18:22:30 -0700
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45eprr9s5a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 18 Mar 2025 18:22:29 -0700 (PDT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Tue, 18 Mar 2025 18:22:29 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Tue, 18 Mar 2025 18:22:26 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <jhs@mojatatu.com>,
-        <xiyou.wangcong@gmail.com>, <jiri@resnulli.us>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <netdev@vger.kernel.org>, <michal.swiatkowski@linux.intel.com>
-Subject: [RFC PATCH 6.1.y] net/sched: act_mirred: don't override retval if we already lost the skb
-Date: Wed, 19 Mar 2025 09:22:25 +0800
-Message-ID: <20250319012225.821278-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1742347560; c=relaxed/simple;
+	bh=mjS5cN+X81H4fXdsTkqyF7Mt+ArgyzY9HRm+gUADz7c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=c/Uanv/840WAc3wLlZo799ABDHw00lxH9aq4FNEa+BxPZqfIyeLYBPhMq9rwGgMIcyROcxpcENDl73aCBXAFLXsQ5jG9Cuqd3p2nBtQ1up0wDMsIOisZUN5r/SRzOBi+vAI5Pu3hVvR3KRf2L/i0Byb98Mj+2t6z8IkbofceVvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4ZHWCD319mzvWqy;
+	Wed, 19 Mar 2025 09:22:00 +0800 (CST)
+Received: from kwepemg500010.china.huawei.com (unknown [7.202.181.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id EA6CC180116;
+	Wed, 19 Mar 2025 09:25:53 +0800 (CST)
+Received: from [10.174.178.209] (10.174.178.209) by
+ kwepemg500010.china.huawei.com (7.202.181.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 19 Mar 2025 09:25:44 +0800
+Message-ID: <10823e8a-8569-80e9-cea0-d8d7ac32a54d@huawei.com>
+Date: Wed, 19 Mar 2025 09:25:43 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [BUG REPORT] cifs: Deadlock due to network reconnection during
+ file writing
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: David Howells <dhowells@redhat.com>, Steve French <smfrench@gmail.com>,
+	<stable@vger.kernel.org>, <linux-cifs@vger.kernel.org>, yangerkun
+	<yangerkun@huawei.com>, yi zhang <yi.zhang@huawei.com>, Paulo Alcantara
+	<pc@manguebit.com>
+References: <CAH2r5mv4N9zFOKTxwdvk6ahAyjgpYULQp8iw2NMu3eB6FEXh0A@mail.gmail.com>
+ <3bd10acc-2d7f-019a-3182-82ab647bc15a@huawei.com>
+ <3049256.1739192701@warthog.procyon.org.uk>
+ <785a8d03-3ee6-4eb1-e72f-db05fc4fb49c@huawei.com>
+ <ee68f83b-6bc1-7334-b7bf-19415ee7c453@huawei.com>
+ <2025031821-ominous-sappy-18ad@gregkh>
+From: Wang Zhaolong <wangzhaolong1@huawei.com>
+In-Reply-To: <2025031821-ominous-sappy-18ad@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=LZw86ifi c=1 sm=1 tr=0 ts=67da1c55 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=A7XncKjpAAAA:8 a=J1Y8HTJGAAAA:8 a=t7CeM3EgAAAA:8
- a=z6SZLS2PjRZJ6NiNSX0A:9 a=R9rPLQDAdC6-Ub70kJmZ:22 a=y1Q9-5lHfBjTkpIzbSAN:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: m1nnqcQeXG37wuuTHI20t1um596iVOkQ
-X-Proofpoint-ORIG-GUID: m1nnqcQeXG37wuuTHI20t1um596iVOkQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-18_10,2025-03-17_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 clxscore=1011 adultscore=0 spamscore=0 phishscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2503190008
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemg500010.china.huawei.com (7.202.181.71)
 
-From: Jakub Kicinski <kuba@kernel.org>
+Apologies for the earlier context-less ping 🙏. Here's the
+situation:
 
-[ Upstream commit 166c2c8a6a4dc2e4ceba9e10cfe81c3e469e3210 ]
+I have been tracking the latest progress on fixing an issue
+involving a deadlock in the CIFS write file process caused by
+a network interruption. This problem affects LTS Linux kernel
+versions 5.4.y through 6.6.y. The reason it is limited to LTS
+versions is that the issue was avoided in the mainline 6.9
+version due to the netns-based code restructuring in the CIFS.
 
-If we're redirecting the skb, and haven't called tcf_mirred_forward(),
-yet, we need to tell the core to drop the skb by setting the retcode
-to SHOT. If we have called tcf_mirred_forward(), however, the skb
-is out of our hands and returning SHOT will lead to UaF.
+In my previous email, I provided the code call flow of the issue,
+as well as the invasive method to modify the kernel for reproduction.
+If there is anything else I can provide to help move this
+forward, please let me know.
 
-Move the retval override to the error path which actually need it.
+Thank you for your time and support!
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Fixes: e5cf1baf92cb ("act_mirred: use TC_ACT_REINSERT when possible")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Verified the build test
----
- net/sched/act_mirred.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+Best regards,
+Wang Zhaolong
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 36395e5db3b4..24c70ba6eebc 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -259,13 +259,13 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
- 	dev = rcu_dereference_bh(m->tcfm_dev);
- 	if (unlikely(!dev)) {
- 		pr_notice_once("tc mirred: target device is gone\n");
--		goto out;
-+		goto err_cant_do;
- 	}
- 
- 	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
- 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
- 				       dev->name);
--		goto out;
-+		goto err_cant_do;
- 	}
- 
- 	/* we could easily avoid the clone only if called by ingress and clsact;
-@@ -279,7 +279,7 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
- 	if (!use_reinsert) {
- 		skb2 = skb_clone(skb, GFP_ATOMIC);
- 		if (!skb2)
--			goto out;
-+			goto err_cant_do;
- 	}
- 
- 	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
-@@ -321,12 +321,16 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
- 	}
- 
- 	err = tcf_mirred_forward(want_ingress, skb2);
--	if (err) {
--out:
-+	if (err)
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		if (tcf_mirred_is_act_redirect(m_eaction))
--			retval = TC_ACT_SHOT;
--	}
-+	__this_cpu_dec(mirred_nest_level);
-+
-+	return retval;
-+
-+err_cant_do:
-+	if (tcf_mirred_is_act_redirect(m_eaction))
-+		retval = TC_ACT_SHOT;
-+	tcf_action_inc_overlimit_qstats(&m->common);
- 	__this_cpu_dec(mirred_nest_level);
- 
- 	return retval;
--- 
-2.25.1
+
+
+> On Tue, Mar 18, 2025 at 09:50:25PM +0800, Wang Zhaolong wrote:
+>> Friendly ping.
+> 
+> Empty pings with no context are not good :(
 
 
