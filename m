@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-124968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F34A68F62
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A08AA68FDF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95E1E17E6EA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47D9B7A97B1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB31C1C3306;
-	Wed, 19 Mar 2025 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37F5212B15;
+	Wed, 19 Mar 2025 14:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vsij9XmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTIgvVoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9592618C322;
-	Wed, 19 Mar 2025 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBF11DF98E;
+	Wed, 19 Mar 2025 14:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394859; cv=none; b=fvG0aVzBF2lgjEOJcVtOJUjnYDS6hLJTgFgK01W7Rxqe1BxwJxPXqoEIYwswmzTNl4Tqcsx7PVKDB5YHgISH/vnVB+vH7JzDgCn83XkhBMuoMYci7Xa3nZowXGMTdavGuAR+UQWPECcWgKWSP0rvOJOkqJ9kCgQRIV0mTbXvdzI=
+	t=1742395015; cv=none; b=MvUymwecgI2X71Ze9IIsZiNsxdtwRehdSJjnyb9gnHEW17lH58U46fpqoSqO3DbYfBDIQc0OqG98Prlf8L/BzSzhUhptYdQJJbfsnc+2e3utZVd75lQHiwTKolPdGM6HmEN8egRq3eouATARkXYJU2qUgYuzPuQNOBwQ1gklAwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394859; c=relaxed/simple;
-	bh=DLe22ReUMY6maf0j+8+xBhOLMeAOG0KI7ZhF75CI9Nc=;
+	s=arc-20240116; t=1742395015; c=relaxed/simple;
+	bh=V3BtB8bS98KBqj1dEkfRvbBBA7ynGH/2CaGOufpwrjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQT/WOQPiWd96iV/PnkTJ7UH9OA9iyzxZo9FqDmCVpm/OM5WC5wRacqxtKGQKpOSvHwd6uHeWfaEoZ8ipvFpNoj/D4Jhg3Exr02HWBkoGwsFfbg1K1kFzwMBQZGwgKh6WvGMhaS2fBPE6X3FgSS7NJtjVX3jB77q0dZu2YYyW/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vsij9XmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61063C4CEEA;
-	Wed, 19 Mar 2025 14:34:19 +0000 (UTC)
+	 MIME-Version; b=Y+78raCHs/uSYZct6pn1vGwvGozlOPYvFW4Pl0WXBw8LaifnzXMIC6+1ZrOR4IKvSJ6+8CXzTnUaejSOsh1hxE+vQJXZe6hV5b9X1J7Yw2VNNjXXlJC0L3t+pg0adOfoSLvzwZPT/u6hbypIpp0H+AGccfo+FmPi1B7vA8ZhTTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTIgvVoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F60C4CEE8;
+	Wed, 19 Mar 2025 14:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394859;
-	bh=DLe22ReUMY6maf0j+8+xBhOLMeAOG0KI7ZhF75CI9Nc=;
+	s=korg; t=1742395015;
+	bh=V3BtB8bS98KBqj1dEkfRvbBBA7ynGH/2CaGOufpwrjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vsij9XmPwoig1m/RXktMf0gGS+QbBVp/x1miAxHbmEvP+lKng9ROQiqLUI7A8c/6+
-	 bCp4TVdNxXfD1rx2eUcRNdzfeZf42ZOhiaqOxr1EqReuknqLTVfbG6zScBMUW++Q+S
-	 gvsVsnvF8+kCMi2mtTWb7fUfM0a82gnJXDPUDG1U=
+	b=aTIgvVoE6EdFyZSi15qZUYmb3E1fghDxTqq14veFfH9Nk/cDgMktILavjxpVIOU+N
+	 +kIf+jp0njoLBRctbBNgkrs+pVAuGXbCYhEY9RC3UytfkugctBWDr4pP5/iAJBiP4j
+	 oILLU7iz5fwofI8OozSy+jCS0JYVNr2ZHKuAt20w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 049/241] net: openvswitch: remove misbehaving actions length check
-Date: Wed, 19 Mar 2025 07:28:39 -0700
-Message-ID: <20250319143028.940399535@linuxfoundation.org>
+Subject: [PATCH 6.12 027/231] fbdev: hyperv_fb: Allow graceful removal of framebuffer
+Date: Wed, 19 Mar 2025 07:28:40 -0700
+Message-ID: <20250319143027.494134892@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,156 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-[ Upstream commit a1e64addf3ff9257b45b78bc7d743781c3f41340 ]
+[ Upstream commit ea2f45ab0e53b255f72c85ccd99e2b394fc5fceb ]
 
-The actions length check is unreliable and produces different results
-depending on the initial length of the provided netlink attribute and
-the composition of the actual actions inside of it.  For example, a
-user can add 4088 empty clone() actions without triggering -EMSGSIZE,
-on attempt to add 4089 such actions the operation will fail with the
--EMSGSIZE verdict.  However, if another 16 KB of other actions will
-be *appended* to the previous 4089 clone() actions, the check passes
-and the flow is successfully installed into the openvswitch datapath.
+When a Hyper-V framebuffer device is unbind, hyperv_fb driver tries to
+release the framebuffer forcefully. If this framebuffer is in use it
+produce the following WARN and hence this framebuffer is never released.
 
-The reason for a such a weird behavior is the way memory is allocated.
-When ovs_flow_cmd_new() is invoked, it calls ovs_nla_copy_actions(),
-that in turn calls nla_alloc_flow_actions() with either the actual
-length of the user-provided actions or the MAX_ACTIONS_BUFSIZE.  The
-function adds the size of the sw_flow_actions structure and then the
-actually allocated memory is rounded up to the closest power of two.
+[   44.111220] WARNING: CPU: 35 PID: 1882 at drivers/video/fbdev/core/fb_info.c:70 framebuffer_release+0x2c/0x40
+< snip >
+[   44.111289] Call Trace:
+[   44.111290]  <TASK>
+[   44.111291]  ? show_regs+0x6c/0x80
+[   44.111295]  ? __warn+0x8d/0x150
+[   44.111298]  ? framebuffer_release+0x2c/0x40
+[   44.111300]  ? report_bug+0x182/0x1b0
+[   44.111303]  ? handle_bug+0x6e/0xb0
+[   44.111306]  ? exc_invalid_op+0x18/0x80
+[   44.111308]  ? asm_exc_invalid_op+0x1b/0x20
+[   44.111311]  ? framebuffer_release+0x2c/0x40
+[   44.111313]  ? hvfb_remove+0x86/0xa0 [hyperv_fb]
+[   44.111315]  vmbus_remove+0x24/0x40 [hv_vmbus]
+[   44.111323]  device_remove+0x40/0x80
+[   44.111325]  device_release_driver_internal+0x20b/0x270
+[   44.111327]  ? bus_find_device+0xb3/0xf0
 
-So, if the user-provided actions are larger than MAX_ACTIONS_BUFSIZE,
-then MAX_ACTIONS_BUFSIZE + sizeof(*sfa) rounded up is 32K + 24 -> 64K.
-Later, while copying individual actions, we look at ksize(), which is
-64K, so this way the MAX_ACTIONS_BUFSIZE check is not actually
-triggered and the user can easily allocate almost 64 KB of actions.
+Fix this by moving the release of framebuffer and assosiated memory
+to fb_ops.fb_destroy function, so that framebuffer framework handles
+it gracefully.
 
-However, when the initial size is less than MAX_ACTIONS_BUFSIZE, but
-the actions contain ones that require size increase while copying
-(such as clone() or sample()), then the limit check will be performed
-during the reserve_sfa_size() and the user will not be allowed to
-create actions that yield more than 32 KB internally.
+While we fix this, also replace manual registrations/unregistration of
+framebuffer with devm_register_framebuffer.
 
-This is one part of the problem.  The other part is that it's not
-actually possible for the userspace application to know beforehand
-if the particular set of actions will be rejected or not.
+Fixes: 68a2d20b79b1 ("drivers/video: add Hyper-V Synthetic Video Frame Buffer Driver")
 
-Certain actions require more space in the internal representation,
-e.g. an empty clone() takes 4 bytes in the action list passed in by
-the user, but it takes 12 bytes in the internal representation due
-to an extra nested attribute, and some actions require less space in
-the internal representations, e.g. set(tunnel(..)) normally takes
-64+ bytes in the action list provided by the user, but only needs to
-store a single pointer in the internal implementation, since all the
-data is stored in the tunnel_info structure instead.
-
-And the action size limit is applied to the internal representation,
-not to the action list passed by the user.  So, it's not possible for
-the userpsace application to predict if the certain combination of
-actions will be rejected or not, because it is not possible for it to
-calculate how much space these actions will take in the internal
-representation without knowing kernel internals.
-
-All that is causing random failures in ovs-vswitchd in userspace and
-inability to handle certain traffic patterns as a result.  For example,
-it is reported that adding a bit more than a 1100 VMs in an OpenStack
-setup breaks the network due to OVS not being able to handle ARP
-traffic anymore in some cases (it tries to install a proper datapath
-flow, but the kernel rejects it with -EMSGSIZE, even though the action
-list isn't actually that large.)
-
-Kernel behavior must be consistent and predictable in order for the
-userspace application to use it in a reasonable way.  ovs-vswitchd has
-a mechanism to re-direct parts of the traffic and partially handle it
-in userspace if the required action list is oversized, but that doesn't
-work properly if we can't actually tell if the action list is oversized
-or not.
-
-Solution for this is to check the size of the user-provided actions
-instead of the internal representation.  This commit just removes the
-check from the internal part because there is already an implicit size
-check imposed by the netlink protocol.  The attribute can't be larger
-than 64 KB.  Realistically, we could reduce the limit to 32 KB, but
-we'll be risking to break some existing setups that rely on the fact
-that it's possible to create nearly 64 KB action lists today.
-
-Vast majority of flows in real setups are below 100-ish bytes.  So
-removal of the limit will not change real memory consumption on the
-system.  The absolutely worst case scenario is if someone adds a flow
-with 64 KB of empty clone() actions.  That will yield a 192 KB in the
-internal representation consuming 256 KB block of memory.  However,
-that list of actions is not meaningful and also a no-op.  Real world
-very large action lists (that can occur for a rare cases of BUM
-traffic handling) are unlikely to contain a large number of clones and
-will likely have a lot of tunnel attributes making the internal
-representation comparable in size to the original action list.
-So, it should be fine to just remove the limit.
-
-Commit in the 'Fixes' tag is the first one that introduced the
-difference between internal representation and the user-provided action
-lists, but there were many more afterwards that lead to the situation
-we have today.
-
-Fixes: 7d5437c709de ("openvswitch: Add tunneling interface.")
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20250308004609.2881861-1-i.maximets@ovn.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/1740845791-19977-3-git-send-email-ssengar@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1740845791-19977-3-git-send-email-ssengar@linux.microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ drivers/video/fbdev/hyperv_fb.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 881ddd3696d54..95e0dd14dc1a3 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2317,14 +2317,10 @@ int ovs_nla_put_mask(const struct sw_flow *flow, struct sk_buff *skb)
- 				OVS_FLOW_ATTR_MASK, true, skb);
+diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
+index 9798a34ac571f..75338ffc703fb 100644
+--- a/drivers/video/fbdev/hyperv_fb.c
++++ b/drivers/video/fbdev/hyperv_fb.c
+@@ -282,6 +282,8 @@ static uint screen_depth;
+ static uint screen_fb_size;
+ static uint dio_fb_size; /* FB size for deferred IO */
+ 
++static void hvfb_putmem(struct fb_info *info);
++
+ /* Send message to Hyper-V host */
+ static inline int synthvid_send(struct hv_device *hdev,
+ 				struct synthvid_msg *msg)
+@@ -862,6 +864,17 @@ static void hvfb_ops_damage_area(struct fb_info *info, u32 x, u32 y, u32 width,
+ 		hvfb_ondemand_refresh_throttle(par, x, y, width, height);
  }
  
--#define MAX_ACTIONS_BUFSIZE	(32 * 1024)
++/*
++ * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
++ * of unregister_framebuffer() or fb_release(). Do any cleanup related to
++ * framebuffer here.
++ */
++static void hvfb_destroy(struct fb_info *info)
++{
++	hvfb_putmem(info);
++	framebuffer_release(info);
++}
++
+ /*
+  * TODO: GEN1 codepaths allocate from system or DMA-able memory. Fix the
+  *       driver to use the _SYSMEM_ or _DMAMEM_ helpers in these cases.
+@@ -877,6 +890,7 @@ static const struct fb_ops hvfb_ops = {
+ 	.fb_set_par = hvfb_set_par,
+ 	.fb_setcolreg = hvfb_setcolreg,
+ 	.fb_blank = hvfb_blank,
++	.fb_destroy	= hvfb_destroy,
+ };
+ 
+ /* Get options from kernel paramenter "video=" */
+@@ -1178,7 +1192,7 @@ static int hvfb_probe(struct hv_device *hdev,
+ 	if (ret)
+ 		goto error;
+ 
+-	ret = register_framebuffer(info);
++	ret = devm_register_framebuffer(&hdev->device, info);
+ 	if (ret) {
+ 		pr_err("Unable to register framebuffer\n");
+ 		goto error;
+@@ -1226,14 +1240,10 @@ static void hvfb_remove(struct hv_device *hdev)
+ 
+ 	fb_deferred_io_cleanup(info);
+ 
+-	unregister_framebuffer(info);
+ 	cancel_delayed_work_sync(&par->dwork);
+ 
+ 	vmbus_close(hdev->channel);
+ 	hv_set_drvdata(hdev, NULL);
 -
- static struct sw_flow_actions *nla_alloc_flow_actions(int size)
- {
- 	struct sw_flow_actions *sfa;
+-	hvfb_putmem(info);
+-	framebuffer_release(info);
+ }
  
--	WARN_ON_ONCE(size > MAX_ACTIONS_BUFSIZE);
--
- 	sfa = kmalloc(kmalloc_size_roundup(sizeof(*sfa) + size), GFP_KERNEL);
- 	if (!sfa)
- 		return ERR_PTR(-ENOMEM);
-@@ -2480,15 +2476,6 @@ static struct nlattr *reserve_sfa_size(struct sw_flow_actions **sfa,
- 
- 	new_acts_size = max(next_offset + req_size, ksize(*sfa) * 2);
- 
--	if (new_acts_size > MAX_ACTIONS_BUFSIZE) {
--		if ((next_offset + req_size) > MAX_ACTIONS_BUFSIZE) {
--			OVS_NLERR(log, "Flow action size exceeds max %u",
--				  MAX_ACTIONS_BUFSIZE);
--			return ERR_PTR(-EMSGSIZE);
--		}
--		new_acts_size = MAX_ACTIONS_BUFSIZE;
--	}
--
- 	acts = nla_alloc_flow_actions(new_acts_size);
- 	if (IS_ERR(acts))
- 		return ERR_CAST(acts);
-@@ -3545,7 +3532,7 @@ int ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 	int err;
- 	u32 mpls_label_count = 0;
- 
--	*sfa = nla_alloc_flow_actions(min(nla_len(attr), MAX_ACTIONS_BUFSIZE));
-+	*sfa = nla_alloc_flow_actions(nla_len(attr));
- 	if (IS_ERR(*sfa))
- 		return PTR_ERR(*sfa);
- 
+ static int hvfb_suspend(struct hv_device *hdev)
 -- 
 2.39.5
 
