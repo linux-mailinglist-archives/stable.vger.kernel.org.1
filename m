@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28ACA68FE1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3A5A6912E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69F8E88828D
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDE9463EDF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD32C1DE895;
-	Wed, 19 Mar 2025 14:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD32209695;
+	Wed, 19 Mar 2025 14:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4I8qXee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRw+B+Hu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE951DDA36;
-	Wed, 19 Mar 2025 14:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5861CAA81;
+	Wed, 19 Mar 2025 14:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394972; cv=none; b=sL8t1wkAHHhSWOf9joFAw5MVpWNojy5GS1pwt3/Fzo11Ec/vF2jXKVju6s9mxCoDQ4urjFE5rHJlMuBXf6rqJMBoiu0YXEZiY4TZINyQ1N+OAHtZE9fsYS8IA6QBWemgtCuHDy6KvkbG4BdH4qqACH0ExD2L1tLsErzIzJVvt80=
+	t=1742395236; cv=none; b=Rl9+xCcA3Pfq9ydkipP9YNJ/b+VH74JU/lz5IWYpY3gVvwbVxietV3jP1LKw3ziYT8FdhTOI+jjetfIC7OvnP0EexIC1ARxG2uwFXsUMRIkfJolHlMyhzEBOBOfNwwV17MkPU6z0UKTjHq4PBF8xPXPqAUnbo6adXXd2Pgs3ZUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394972; c=relaxed/simple;
-	bh=mIdnJjTtqdPEVgGq5OEFteQfxfcIP3dH9AIPH5WpMvA=;
+	s=arc-20240116; t=1742395236; c=relaxed/simple;
+	bh=i5XIyJkEbbk9ZytChK/2b/fz+lim/rZDtdYf/nzI2K0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVQdcZKy7YtxSNbBSAK1mIGOYaLYu373Q6qz2u5hMoz2yoISUVR2zy9yjs8Wc0aVT+mMPANgJVbVsNJgu26OnWxYECMUnaRuVMtVYjzjb9YHxYBzB4GecHRxGUsS9Fnfm95MkooIid4l/m1upbOj/8BDlqMdDFXKzBlaRdhhC4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4I8qXee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651BCC4CEE4;
-	Wed, 19 Mar 2025 14:36:12 +0000 (UTC)
+	 MIME-Version; b=nHIn3SN/dDmWDdj0kd57djJ52PZR1dXsFFmhCuU3ibWclcg4Jjqet8dD/neG/s2Az8hGfmPpOww3xNQL66c2Klu3B7qGAxvK3fTMm9szS95ygMvHNxpR7FqSbUeYuChn01AKfeSJpaV4dc6bG0Ghgu8iu0XAe35DJPmU/sPPTug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRw+B+Hu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0780C4CEE4;
+	Wed, 19 Mar 2025 14:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394972;
-	bh=mIdnJjTtqdPEVgGq5OEFteQfxfcIP3dH9AIPH5WpMvA=;
+	s=korg; t=1742395235;
+	bh=i5XIyJkEbbk9ZytChK/2b/fz+lim/rZDtdYf/nzI2K0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w4I8qXeesq6bPC51zVE90873WJnxeE1kEq4AvKF9cqtJHnFhbOifh7WXfQZdG48xB
-	 1UD0MmCQPcsUGWvXbfwz040duRE+E93f2lVvi+t3ybp9HV5ilrPEgemxz5ldkjGIwp
-	 JvFEpduLdq3l6F4hblwD8xxkiBIZcJOl7x7JmG7o=
+	b=hRw+B+HurPy/hsja4pz5HduRte18QNFXJ7CpQcsBNQlw3nq4ssofjtGWEMMgHto3s
+	 rwjzZQF21X4KVmzQ9bXqotHHAm0JqY+7KQIrnQESEbxSNpcBl1ZMwlieyBx3t0CgTw
+	 SizM9DoePJI9y91PdRJAMXOI7zB5XWovE6ObldR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 208/241] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
-Date: Wed, 19 Mar 2025 07:31:18 -0700
-Message-ID: <20250319143032.890385936@linuxfoundation.org>
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 108/166] Input: xpad - add support for ZOTAC Gaming Zone
+Date: Wed, 19 Mar 2025 07:31:19 -0700
+Message-ID: <20250319143022.941984990@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
+commit 709329c48214ad2acf12eed1b5c0eb798e40a64c upstream.
 
-Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
-pci_gfx_root in the mid_get_vbt_data().
+ZOTAC Gaming Zone is ZOTAC's 2024 handheld release. As it is common
+with these handhelds, it uses a hybrid USB device with an xpad
+endpoint, a keyboard endpoint, and a vendor-specific endpoint for
+RGB control et al.
 
-This change is similar to the checks implemented in mid_get_fuse_settings()
-and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
-("gma500: Final enables for Oaktrail") as "additional minor
-bulletproofing".
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://lore.kernel.org/r/20250222170010.188761-2-lkml@antheas.dev
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
-index 7e76790c6a81f..cba97d7db131d 100644
---- a/drivers/gpu/drm/gma500/mid_bios.c
-+++ b/drivers/gpu/drm/gma500/mid_bios.c
-@@ -279,6 +279,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
- 					    0, PCI_DEVFN(2, 0));
- 	int ret = -1;
- 
-+	if (pci_gfx_root == NULL) {
-+		WARN_ON(1);
-+		return;
-+	}
-+
- 	/* Get the address of the platform config vbt */
- 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
- 	pci_dev_put(pci_gfx_root);
--- 
-2.39.5
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -349,6 +349,7 @@ static const struct xpad_device {
+ 	{ 0x1bad, 0xfa01, "MadCatz GamePad", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0xfd00, "Razer Onza TE", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0xfd01, "Razer Onza", 0, XTYPE_XBOX360 },
++	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
+ 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x281f, "PowerA Wired Controller For Xbox 360", 0, XTYPE_XBOX360 },
+@@ -537,6 +538,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
+ 	XPAD_XBOX360_VENDOR(0x1a86),		/* QH Electronics */
+ 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
++	XPAD_XBOX360_VENDOR(0x1ee9),		/* ZOTAC Technology Limited */
+ 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
+ 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA controllers */
+ 	XPAD_XBOX360_VENDOR(0x24c6),		/* PowerA controllers */
 
 
 
