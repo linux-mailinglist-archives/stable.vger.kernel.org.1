@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-125123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312E2A69110
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D37A69128
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F07E91B86126
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12723463BC9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C811B1F4CB5;
-	Wed, 19 Mar 2025 14:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C436221DAC;
+	Wed, 19 Mar 2025 14:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ant/1QOs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gd9he8WN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CE01DDA36;
-	Wed, 19 Mar 2025 14:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2FE209695;
+	Wed, 19 Mar 2025 14:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394970; cv=none; b=q8wMDHPmXUtdIxyDwvU0K/1lZeibp4yZ6UDtnPl6TohK30qmfDAca4qbIg5SDideHZFPjOyLoO3fDzLEbinvq9KmhcKe/ez5hAT14oWlsgbid8ld4NMreSyheSHk4kCwoQsoGECr3SE88jbVYjdG/9frDCzMxV0kf4992yft23Y=
+	t=1742395233; cv=none; b=SlN8RNICVkjMLB/LEpd6RCQVMx26vIQVqc4XVAuzNQttZRYmUEtUWURG43D46tJyezsGJOYMtAhJ5cwzAJ56Eli1IAcNX5H3B/3U73zostAszeppWFjKLgBICew31aidLPTIw5/VmJFmX6bjeWMSxEV04A3HJKStPZxaIEAOdTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394970; c=relaxed/simple;
-	bh=A1H/Y6g6rYQO7Qlfs3wvqL8+aD+hl5zqV92bIXom4/E=;
+	s=arc-20240116; t=1742395233; c=relaxed/simple;
+	bh=ybB3D7W+cqikEnQ+tAGpfYQry3Gz3IYV8VaW6pmuR50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvDvd3dR+HBu26E4quefM2u0g+NOuIZX5ONHxrDP1EBEz9kib0PbRk8dmXnm450C1yIqNeuNkcOw7oFCh/AxbmkjLEUYSeknSLZHEiJgY/jznG6yQS+3PaRCET7EbHlyVcBNV58gQ7hB8IjJe5HhQCvhzqNN8BXaaIDNyTUc6uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ant/1QOs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59397C4CEE4;
-	Wed, 19 Mar 2025 14:36:10 +0000 (UTC)
+	 MIME-Version; b=l/9rj155PnGr5p28JntZu61wUsc+Xnkz4X8UvIUODAkAYEhtmxH3wC/3x+07MLfXNCsE8vtqhC12zDH2Z/vxIQ+g1JsZ6TMDCj4Mi65BLP3eudZqlzVoYy75LCCxG9HeDNxeJlX2xaDWN3/A8964zFixW1Slmw6955z7/AmjP2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gd9he8WN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EF8C2BD00;
+	Wed, 19 Mar 2025 14:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394970;
-	bh=A1H/Y6g6rYQO7Qlfs3wvqL8+aD+hl5zqV92bIXom4/E=;
+	s=korg; t=1742395233;
+	bh=ybB3D7W+cqikEnQ+tAGpfYQry3Gz3IYV8VaW6pmuR50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ant/1QOspKNf1vax7h6o44EuRn2ffSYer1QAtKml3TFXRplSj5TzKULUHQQqN6vDM
-	 xJiCp1DRkiKLt9bfeBqT/f6ohTa67SPpCf+Y+WFJiGDNxg1IwwJBpUuBy0j7zavXMf
-	 bnIECfuekaR8L+wKUnev7EH6CAZAv/MjRuAeUNM4=
+	b=Gd9he8WNNrDXWovPV4on/M5taUwqFogSpbW1oPoif5VYJkm/xmdrnC16QBXHv1bRE
+	 NSo200IqewQcd39Jp2cU2Iocohly+1gMiuEQcb7151FElrWTs7hTMSWe9Ynl4MATJu
+	 f1rjz3fBMqNv8jrdEEwO0DPbO7KaHk5eQjkOjZ+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.13 205/241] sched_ext: Validate prev_cpu in scx_bpf_select_cpu_dfl()
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 104/166] Input: ads7846 - fix gpiod allocation
 Date: Wed, 19 Mar 2025 07:31:15 -0700
-Message-ID: <20250319143032.809824260@linuxfoundation.org>
+Message-ID: <20250319143022.835188893@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: H. Nikolaus Schaller <hns@goldelico.com>
 
-commit 9360dfe4cbd62ff1eb8217b815964931523b75b3 upstream.
+commit c9ccb88f534ca760d06590b67571c353a2f0cbcd upstream.
 
-If a BPF scheduler provides an invalid CPU (outside the nr_cpu_ids
-range) as prev_cpu to scx_bpf_select_cpu_dfl() it can cause a kernel
-crash.
+commit 767d83361aaa ("Input: ads7846 - Convert to use software nodes")
 
-To prevent this, validate prev_cpu in scx_bpf_select_cpu_dfl() and
-trigger an scx error if an invalid CPU is specified.
+has simplified the code but accidentially converted a devm_gpiod_get()
+to gpiod_get(). This leaves the gpio reserved on module remove and the
+driver can no longer be loaded again.
 
-Fixes: f0e1a0643a59b ("sched_ext: Implement BPF extensible scheduler class")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 767d83361aaa ("Input: ads7846 - Convert to use software nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+Link: https://lore.kernel.org/r/6e9b143f19cdfda835711a8a7a3966e5a2494cff.1738410204.git.hns@goldelico.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/input/touchscreen/ads7846.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6376,6 +6376,9 @@ __bpf_kfunc_start_defs();
- __bpf_kfunc s32 scx_bpf_select_cpu_dfl(struct task_struct *p, s32 prev_cpu,
- 				       u64 wake_flags, bool *is_idle)
- {
-+	if (!ops_cpu_valid(prev_cpu, NULL))
-+		goto prev_cpu;
-+
- 	if (!static_branch_likely(&scx_builtin_idle_enabled)) {
- 		scx_ops_error("built-in idle tracking is disabled");
- 		goto prev_cpu;
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -995,7 +995,7 @@ static int ads7846_setup_pendown(struct
+ 	if (pdata->get_pendown_state) {
+ 		ts->get_pendown_state = pdata->get_pendown_state;
+ 	} else {
+-		ts->gpio_pendown = gpiod_get(&spi->dev, "pendown", GPIOD_IN);
++		ts->gpio_pendown = devm_gpiod_get(&spi->dev, "pendown", GPIOD_IN);
+ 		if (IS_ERR(ts->gpio_pendown)) {
+ 			dev_err(&spi->dev, "failed to request pendown GPIO\n");
+ 			return PTR_ERR(ts->gpio_pendown);
 
 
 
