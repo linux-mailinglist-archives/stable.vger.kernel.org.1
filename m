@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-125099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0FFA68FC8
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:41:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C6CA690F5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E36116EADC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA85917398B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8351EF360;
-	Wed, 19 Mar 2025 14:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10E7221548;
+	Wed, 19 Mar 2025 14:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbb9zuEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anLX6JeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3D11DE2C0;
-	Wed, 19 Mar 2025 14:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6071DED78;
+	Wed, 19 Mar 2025 14:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394954; cv=none; b=dHhtPgyMWF5BNuVVILn/KUWRhmmrga8P6md2SzShj8pwnO92SUQUIjzcsj6r9rj3Mfqi0aD24672ZVYAGDup4hbJScCFFQv4B6PffEIz6p9Yev+itfbZgORq+hlselgZSy/Nj1aOBOmF6Au3eBgOI/BBRiJ2g9eC0jbJH11wJbA=
+	t=1742395192; cv=none; b=MCYpb+hqf7D9qlYOBs285rLiMWvYiNSvBO7YpLT/5+am1Cn1Nk8PSBrIqVDj/mWyOJxHB+7ZI8k2A1RRwPVYIDkFIt9Hra4790hY5PpWhs5x5+HLpz3MEle9a1cR7X7B40HxpoobK1hEtyiapcDP1gGst5a+WYzXR9v8h9uibdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394954; c=relaxed/simple;
-	bh=V2L8Ac2IEd8Rvl6Ox9v1OLyPoo6B4xYjse5zq+pYZwI=;
+	s=arc-20240116; t=1742395192; c=relaxed/simple;
+	bh=89a5X4oeDehWUUhrMpKIgGVbaJNx4SP+SrwlzsdmvEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1ONoRaL9+dK2K7F2ACsHmJy93kmKQ3C1seeyDfveB1lWlvcxrabJ+JJG3D9nwOia3KG76N27PaASSg5ej8fw3MqDAv7mZ8jckdeueN1darJVz8g6zy8tz6Ca+0jwwPsJn6FHFpv1igcnm06DyY0Lkh36SPIYDjhdGV4/xHbq/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbb9zuEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA15C4CEE4;
-	Wed, 19 Mar 2025 14:35:54 +0000 (UTC)
+	 MIME-Version; b=VqtdkvTQixDZZxdv20aDkPdIVGu3A3hLFlZlp0f7+56zrna+DVnrYL1IbD3gMlaqNzqAqogulIJUnDJxJ39gpxZmEWBuMf75BTtGHqTAFsnM5RrC1wupWexpDwvtWahqywZAR25xgc1vTWBtEdnl4jLWFPmPviFGaybiHWPytlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anLX6JeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87258C4CEE4;
+	Wed, 19 Mar 2025 14:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394954;
-	bh=V2L8Ac2IEd8Rvl6Ox9v1OLyPoo6B4xYjse5zq+pYZwI=;
+	s=korg; t=1742395192;
+	bh=89a5X4oeDehWUUhrMpKIgGVbaJNx4SP+SrwlzsdmvEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbb9zuEek+IA7Zz13vp/AZmploo2CyBIf13p09V85H9+f9sWx/GYLImkMzFvwH6Y2
-	 yFGwn/F+fogYGcQXmwvHTzECmIlTYGlgsCc9ckAyTSxUo1wnXL1jxnoJFOOv770aEB
-	 w0kPpMh9cqwggXxWBz6Vl1jszYmlhXrSSLniK2p8=
+	b=anLX6JeEmcWdLGdsKrVxxm/vYHZiKEi35jGMJQdl+YbJc8++iCIx07AXrYwg/ACVI
+	 OcsigqoI2CVH/fSy4dBJEoRxMsMUXcDvr3ZaM0GXOu6r/muNxd57wvkgmHP2noKCHi
+	 2ZSvuHnCoeUtPvVpyqHTKBi8+86hTEdMH6WcpwJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilton Perim Neto <niltonperimneto@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.13 153/241] Input: xpad - add 8BitDo SN30 Pro, Hyperkin X91 and Gamesir G7 SE controllers
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 052/166] HID: ignore non-functional sensor in HP 5MP Camera
 Date: Wed, 19 Mar 2025 07:30:23 -0700
-Message-ID: <20250319143031.505723843@linuxfoundation.org>
+Message-ID: <20250319143021.398290842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilton Perim Neto <niltonperimneto@gmail.com>
+From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 
-commit 36e093c8dcc585d0a9e79a005f721f01f3365eba upstream.
+[ Upstream commit 363236d709e75610b628c2a4337ccbe42e454b6d ]
 
-Add 8BitDo SN30 Pro, Hyperkin X91 and Gamesir G7 SE to the list of
-recognized controllers, and update vendor comments to match.
+The HP 5MP Camera (USB ID 0408:5473) reports a HID sensor interface that
+is not actually implemented. Attempting to access this non-functional
+sensor via iio_info causes system hangs as runtime PM tries to wake up
+an unresponsive sensor.
 
-Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
-Link: https://lore.kernel.org/r/20250122214814.102311-2-niltonperimneto@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
+  [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff
+
+Add this device to the HID ignore list since the sensor interface is
+non-functional by design and should not be exposed to userspace.
+
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -376,8 +376,10 @@ static const struct xpad_device {
- 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x3106, "8BitDo Ultimate Wireless / Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
-+	{ 0x2dc8, 0x6001, "8BitDo SN30 Pro", 0, XTYPE_XBOX360 },
- 	{ 0x2dc8, 0x310a, "8BitDo Ultimate 2C Wireless Controller", 0, XTYPE_XBOX360 },
- 	{ 0x2e24, 0x0652, "Hyperkin Duke X-Box One pad", 0, XTYPE_XBOXONE },
-+	{ 0x2e24, 0x1688, "Hyperkin X91 X-Box One pad", 0, XTYPE_XBOXONE },
- 	{ 0x31e3, 0x1100, "Wooting One", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1200, "Wooting Two", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1210, "Wooting Lekker", 0, XTYPE_XBOX360 },
-@@ -389,6 +391,7 @@ static const struct xpad_device {
- 	{ 0x3285, 0x0646, "Nacon Pro Compact", 0, XTYPE_XBOXONE },
- 	{ 0x3285, 0x0663, "Nacon Evol-X", 0, XTYPE_XBOXONE },
- 	{ 0x3537, 0x1004, "GameSir T4 Kaleid", 0, XTYPE_XBOX360 },
-+	{ 0x3537, 0x1010, "GameSir G7 SE", 0, XTYPE_XBOXONE },
- 	{ 0x3767, 0x0101, "Fanatec Speedster 3 Forceshock Wheel", 0, XTYPE_XBOX },
- 	{ 0xffff, 0xffff, "Chinese-made Xbox Controller", 0, XTYPE_XBOX },
- 	{ 0x0000, 0x0000, "Generic X-Box pad", 0, XTYPE_UNKNOWN }
-@@ -528,12 +531,12 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOXONE_VENDOR(0x24c6),		/* PowerA controllers */
- 	XPAD_XBOX360_VENDOR(0x2563),		/* OneXPlayer Gamepad */
- 	XPAD_XBOX360_VENDOR(0x260d),		/* Dareu H101 */
--       XPAD_XBOXONE_VENDOR(0x294b),            /* Snakebyte */
-+	XPAD_XBOXONE_VENDOR(0x294b),		/* Snakebyte */
- 	XPAD_XBOX360_VENDOR(0x2c22),		/* Qanba Controllers */
--	XPAD_XBOX360_VENDOR(0x2dc8),            /* 8BitDo Pro 2 Wired Controller */
--	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Pro 2 Wired Controller for Xbox */
--	XPAD_XBOXONE_VENDOR(0x2e24),		/* Hyperkin Duke Xbox One pad */
--	XPAD_XBOX360_VENDOR(0x2f24),		/* GameSir controllers */
-+	XPAD_XBOX360_VENDOR(0x2dc8),		/* 8BitDo Controllers */
-+	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Controllers */
-+	XPAD_XBOXONE_VENDOR(0x2e24),		/* Hyperkin Controllers */
-+	XPAD_XBOX360_VENDOR(0x2f24),		/* GameSir Controllers */
- 	XPAD_XBOX360_VENDOR(0x31e3),		/* Wooting Keyboards */
- 	XPAD_XBOX360_VENDOR(0x3285),		/* Nacon GC-100 */
- 	XPAD_XBOXONE_VENDOR(0x3285),		/* Nacon Evol-X */
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 1174626904cb0..ff996accd371d 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1085,6 +1085,7 @@
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3001		0x3001
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3003		0x3003
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3008		0x3008
++#define USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473		0x5473
+ 
+ #define I2C_VENDOR_ID_RAYDIUM		0x2386
+ #define I2C_PRODUCT_ID_RAYDIUM_4B33	0x4b33
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index e0bbf0c6345d6..5d7a418ccdbec 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -891,6 +891,7 @@ static const struct hid_device_id hid_ignore_list[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SYNAPTICS, USB_DEVICE_ID_SYNAPTICS_DPAD) },
+ #endif
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
+ 	{ }
+ };
+ 
+-- 
+2.39.5
+
 
 
 
