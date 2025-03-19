@@ -1,237 +1,126 @@
-Return-Path: <stable+bounces-124872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B91A682F8
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 02:59:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1DBA68336
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 03:38:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4531919C0C41
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 01:59:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 795C8188261F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 02:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE1224E008;
-	Wed, 19 Mar 2025 01:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FFpCYspw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F8924E018;
+	Wed, 19 Mar 2025 02:38:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457F521CC52;
-	Wed, 19 Mar 2025 01:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C5213DDB9;
+	Wed, 19 Mar 2025 02:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742349578; cv=none; b=K6YmL2dyc++YtX1UiVu4leLtk1fv+Ox2MtiE06f84pkLCd+mdBjGtRdkUESfOIAJWmqTD4DFix2UGjV11/F6b6M0vfqsQUfZk5zWRPqDUMLjY9lz8VZHKqFTLnXjOY8Rg5jhHiERTaxKuicXQxOnnTDKRedNjaiCop7GfKaQcWU=
+	t=1742351924; cv=none; b=TLwwGzFTwxey1iIJmHDE4ORBpLRfmsu+8kpp9F4fZivcmNrY/vtiV3Cyoi2+eJbjQ+5rTPZe2BOTdsV/JTS1PPayGUAfSciHez7rk0gYgEQz0ueCNM76xmzoOYwOIrvoTSKQWh90TVEuGQ1PHRtXIGFswXZqugqnE4nO1v0C7mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742349578; c=relaxed/simple;
-	bh=EyyFyODnsEzMciEgu+arJe3dUVPI6ukPATE0SwvOo+k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zu8v+MSlLp/gAmITo2xI8hnXFnIGaotR3BJA0t1oMq2AmrNMU7rcsAPMEqrQPP2r2gq/trBzizYclcaVyH4lIDc2K2L4kPec5HP8yT+cVFLzdY8oJ/bCKdja5dGZve4ieM5GNsfayQe5AFhRp5rpgUTMM2cqlrVnOAaSSGVguhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FFpCYspw; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742349575; x=1773885575;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EyyFyODnsEzMciEgu+arJe3dUVPI6ukPATE0SwvOo+k=;
-  b=FFpCYspw+GDwDA+tk5f6ouird8KbKSvnD7bqjpSr3zgcHyB9FuHIF89o
-   Cdyo0g9cpxeOlxkBx+WNvUydkXvig5Ag2e8f93dEzWupmLXM8yydr1NgJ
-   0gp/1ogK+/+sgbpebTOnOvTo5QbWqxDl4ZXD+7c1mi/58/tSXWA3r6v+d
-   i9BV8GBKmA0rXb8X/mzrtKXOcoJKAp9K3sa+mXV4BNCRbzSRzvOEXfgGT
-   1lGo+pLdxvpPk4fKj5SC/rYCTeDoKmOM2oGx0es/HY0P4Q15bdwzZQ6ae
-   z67P25a6L8zVqwmZUdkURMnqGdaSwfTqWJRRy3WpPlr08kiU4zWk85bog
-   A==;
-X-CSE-ConnectionGUID: bCwMVNNERU25ng2Ux7Pc6A==
-X-CSE-MsgGUID: iCOhFVcvQgC0SigW8FfgIg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="53734817"
-X-IronPort-AV: E=Sophos;i="6.14,258,1736841600"; 
-   d="scan'208";a="53734817"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 18:59:35 -0700
-X-CSE-ConnectionGUID: Kg9WWkAJQcSasLF9z61Sjw==
-X-CSE-MsgGUID: qiiq/t0wT/iImM2ZB3AAcw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,258,1736841600"; 
-   d="scan'208";a="123185683"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 18:59:33 -0700
-Message-ID: <67630ed5-7ace-4e7f-9d26-3d259c381488@linux.intel.com>
-Date: Wed, 19 Mar 2025 09:56:06 +0800
+	s=arc-20240116; t=1742351924; c=relaxed/simple;
+	bh=UK+DFx0zekguPPA1xLGOZkgkPBl0vVGvugn2cPZEb2s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YQrddUDp66e63VYrjYw8RtedRgvPW0jE7uo6ZPTlMBvKqEJYiox4umV2b5PkmYOv2T7gK4fulY+EJ4ouQTEr56ZXPzsbQug/nyhqeBFaH8tAzR+bKVGVXlhq21D5J12fg1gajRMat15bDHPW8GmqoCpFUXwKn74zWPopg+i9ePg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52J1S3fv015231;
+	Wed, 19 Mar 2025 02:37:46 GMT
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45cxs0v53g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 19 Mar 2025 02:37:46 +0000 (GMT)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Tue, 18 Mar 2025 19:37:45 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Tue, 18 Mar 2025 19:37:42 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <sfrench@samba.org>, <pc@cjr.nz>,
+        <lsahlber@redhat.com>, <sprasad@microsoft.com>, <tom@talpey.com>,
+        <linux-cifs@vger.kernel.org>, <samba-technical@lists.samba.org>,
+        <pc@manguebit.com>, <stfrench@microsoft.com>
+Subject: [PATCH 6.1.y] smb: client: fix potential UAF in cifs_dump_full_key()
+Date: Wed, 19 Mar 2025 10:37:41 +0800
+Message-ID: <20250319023741.922528-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] iommu/vt-d: Fix possible circular locking dependency
-To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- chaitanya.kumar.borah@intel.com
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250317035714.1041549-1-baolu.lu@linux.intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20250317035714.1041549-1-baolu.lu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: NdeE3YcFlthwkM3I29nemHpK4f04O29Y
+X-Proofpoint-GUID: NdeE3YcFlthwkM3I29nemHpK4f04O29Y
+X-Authority-Analysis: v=2.4 cv=NY/m13D4 c=1 sm=1 tr=0 ts=67da2dfa cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=Vs1iUdzkB0EA:10 a=Li1AiuEPAAAA:8 a=VwQbUJbxAAAA:8 a=yMhMjlubAAAA:8 a=t7CeM3EgAAAA:8 a=1_rInJw21EjIxf1COpsA:9
+ a=qGKPP_lnpMOaqR3bcYHU:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-18_10,2025-03-17_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ spamscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
+ clxscore=1011 mlxlogscore=999 impostorscore=0 adultscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
+ definitions=main-2503190017
 
-On 3/17/25 11:57, Lu Baolu wrote:
-> We have recently seen report of lockdep circular lock dependency warnings
-> on platforms like skykale and kabylake:
-> 
->   ======================================================
->   WARNING: possible circular locking dependency detected
->   6.14.0-rc6-CI_DRM_16276-gca2c04fe76e8+ #1 Not tainted
->   ------------------------------------------------------
->   swapper/0/1 is trying to acquire lock:
->   ffffffff8360ee48 (iommu_probe_device_lock){+.+.}-{3:3},
->     at: iommu_probe_device+0x1d/0x70
-> 
->   but task is already holding lock:
->   ffff888102c7efa8 (&device->physical_node_lock){+.+.}-{3:3},
->     at: intel_iommu_init+0xe75/0x11f0
-> 
->   which lock already depends on the new lock.
-> 
->   the existing dependency chain (in reverse order) is:
-> 
->   -> #6 (&device->physical_node_lock){+.+.}-{3:3}:
->          __mutex_lock+0xb4/0xe40
->          mutex_lock_nested+0x1b/0x30
->          intel_iommu_init+0xe75/0x11f0
->          pci_iommu_init+0x13/0x70
->          do_one_initcall+0x62/0x3f0
->          kernel_init_freeable+0x3da/0x6a0
->          kernel_init+0x1b/0x200
->          ret_from_fork+0x44/0x70
->          ret_from_fork_asm+0x1a/0x30
-> 
->   -> #5 (dmar_global_lock){++++}-{3:3}:
->          down_read+0x43/0x1d0
->          enable_drhd_fault_handling+0x21/0x110
->          cpuhp_invoke_callback+0x4c6/0x870
->          cpuhp_issue_call+0xbf/0x1f0
->          __cpuhp_setup_state_cpuslocked+0x111/0x320
->          __cpuhp_setup_state+0xb0/0x220
->          irq_remap_enable_fault_handling+0x3f/0xa0
->          apic_intr_mode_init+0x5c/0x110
->          x86_late_time_init+0x24/0x40
->          start_kernel+0x895/0xbd0
->          x86_64_start_reservations+0x18/0x30
->          x86_64_start_kernel+0xbf/0x110
->          common_startup_64+0x13e/0x141
-> 
->   -> #4 (cpuhp_state_mutex){+.+.}-{3:3}:
->          __mutex_lock+0xb4/0xe40
->          mutex_lock_nested+0x1b/0x30
->          __cpuhp_setup_state_cpuslocked+0x67/0x320
->          __cpuhp_setup_state+0xb0/0x220
->          page_alloc_init_cpuhp+0x2d/0x60
->          mm_core_init+0x18/0x2c0
->          start_kernel+0x576/0xbd0
->          x86_64_start_reservations+0x18/0x30
->          x86_64_start_kernel+0xbf/0x110
->          common_startup_64+0x13e/0x141
-> 
->   -> #3 (cpu_hotplug_lock){++++}-{0:0}:
->          __cpuhp_state_add_instance+0x4f/0x220
->          iova_domain_init_rcaches+0x214/0x280
->          iommu_setup_dma_ops+0x1a4/0x710
->          iommu_device_register+0x17d/0x260
->          intel_iommu_init+0xda4/0x11f0
->          pci_iommu_init+0x13/0x70
->          do_one_initcall+0x62/0x3f0
->          kernel_init_freeable+0x3da/0x6a0
->          kernel_init+0x1b/0x200
->          ret_from_fork+0x44/0x70
->          ret_from_fork_asm+0x1a/0x30
-> 
->   -> #2 (&domain->iova_cookie->mutex){+.+.}-{3:3}:
->          __mutex_lock+0xb4/0xe40
->          mutex_lock_nested+0x1b/0x30
->          iommu_setup_dma_ops+0x16b/0x710
->          iommu_device_register+0x17d/0x260
->          intel_iommu_init+0xda4/0x11f0
->          pci_iommu_init+0x13/0x70
->          do_one_initcall+0x62/0x3f0
->          kernel_init_freeable+0x3da/0x6a0
->          kernel_init+0x1b/0x200
->          ret_from_fork+0x44/0x70
->          ret_from_fork_asm+0x1a/0x30
-> 
->   -> #1 (&group->mutex){+.+.}-{3:3}:
->          __mutex_lock+0xb4/0xe40
->          mutex_lock_nested+0x1b/0x30
->          __iommu_probe_device+0x24c/0x4e0
->          probe_iommu_group+0x2b/0x50
->          bus_for_each_dev+0x7d/0xe0
->          iommu_device_register+0xe1/0x260
->          intel_iommu_init+0xda4/0x11f0
->          pci_iommu_init+0x13/0x70
->          do_one_initcall+0x62/0x3f0
->          kernel_init_freeable+0x3da/0x6a0
->          kernel_init+0x1b/0x200
->          ret_from_fork+0x44/0x70
->          ret_from_fork_asm+0x1a/0x30
-> 
->   -> #0 (iommu_probe_device_lock){+.+.}-{3:3}:
->          __lock_acquire+0x1637/0x2810
->          lock_acquire+0xc9/0x300
->          __mutex_lock+0xb4/0xe40
->          mutex_lock_nested+0x1b/0x30
->          iommu_probe_device+0x1d/0x70
->          intel_iommu_init+0xe90/0x11f0
->          pci_iommu_init+0x13/0x70
->          do_one_initcall+0x62/0x3f0
->          kernel_init_freeable+0x3da/0x6a0
->          kernel_init+0x1b/0x200
->          ret_from_fork+0x44/0x70
->          ret_from_fork_asm+0x1a/0x30
-> 
->   other info that might help us debug this:
-> 
->   Chain exists of:
->     iommu_probe_device_lock --> dmar_global_lock -->
->       &device->physical_node_lock
-> 
->    Possible unsafe locking scenario:
-> 
->          CPU0                    CPU1
->          ----                    ----
->     lock(&device->physical_node_lock);
->                                  lock(dmar_global_lock);
->                                  lock(&device->physical_node_lock);
->     lock(iommu_probe_device_lock);
-> 
->    *** DEADLOCK ***
-> 
-> This driver uses a global lock to protect the list of enumerated DMA
-> remapping units. It is necessary due to the driver's support for dynamic
-> addition and removal of remapping units at runtime.
-> 
-> Two distinct code paths require iteration over this remapping unit list:
-> 
-> - Device registration and probing: the driver iterates the list to
->    register each remapping unit with the upper layer IOMMU framework
->    and subsequently probe the devices managed by that unit.
-> - Global configuration: Upper layer components may also iterate the list
->    to apply configuration changes.
-> 
-> The lock acquisition order between these two code paths was reversed. This
-> caused lockdep warnings, indicating a risk of deadlock. Fix this warning
-> by releasing the global lock before invoking upper layer interfaces for
-> device registration.
-> 
-> Fixes: b150654f74bf ("iommu/vt-d: Fix suspicious RCU usage")
-> Closes:https://lore.kernel.org/linux-iommu/ 
-> SJ1PR11MB612953431F94F18C954C4A9CB9D32@SJ1PR11MB6129.namprd11.prod.outlook.com/
-> Cc:stable@vger.kernel.org
-> Signed-off-by: Lu Baolu<baolu.lu@linux.intel.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-Queued this patch for iommu tree.
+[ Upstream commit 58acd1f497162e7d282077f816faa519487be045 ]
+
+Skip sessions that are being teared down (status == SES_EXITING) to
+avoid UAF.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test
+---
+ fs/smb/client/ioctl.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/fs/smb/client/ioctl.c b/fs/smb/client/ioctl.c
+index ae9905e2b9d4..7402070b7a06 100644
+--- a/fs/smb/client/ioctl.c
++++ b/fs/smb/client/ioctl.c
+@@ -246,7 +246,9 @@ static int cifs_dump_full_key(struct cifs_tcon *tcon, struct smb3_full_key_debug
+ 		spin_lock(&cifs_tcp_ses_lock);
+ 		list_for_each_entry(server_it, &cifs_tcp_ses_list, tcp_ses_list) {
+ 			list_for_each_entry(ses_it, &server_it->smb_ses_list, smb_ses_list) {
+-				if (ses_it->Suid == out.session_id) {
++				spin_lock(&ses_it->ses_lock);
++				if (ses_it->ses_status != SES_EXITING &&
++				    ses_it->Suid == out.session_id) {
+ 					ses = ses_it;
+ 					/*
+ 					 * since we are using the session outside the crit
+@@ -254,9 +256,11 @@ static int cifs_dump_full_key(struct cifs_tcon *tcon, struct smb3_full_key_debug
+ 					 * so increment its refcount
+ 					 */
+ 					ses->ses_count++;
++					spin_unlock(&ses_it->ses_lock);
+ 					found = true;
+ 					goto search_end;
+ 				}
++				spin_unlock(&ses_it->ses_lock);
+ 			}
+ 		}
+ search_end:
+-- 
+2.25.1
+
 
