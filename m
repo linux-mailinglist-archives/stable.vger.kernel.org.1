@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC420A69111
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED723A690F4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 477613BDBC7
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CA637AE4F5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415EC21D3C9;
-	Wed, 19 Mar 2025 14:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BFA222594;
+	Wed, 19 Mar 2025 14:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlPe/eu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hshi/I+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CAF1DE4C9;
-	Wed, 19 Mar 2025 14:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B2E1CAA92;
+	Wed, 19 Mar 2025 14:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395156; cv=none; b=qHTiHZ6ZIr+izHaK/FeTthQKkwLaj3IGKj05QRV2d70WfV80jqliaiPxusAdSi5fCvw9XkLAzauHzl4OxI3yny9teaTc2GKRw+5eClxUdpvjVqAOq+lh3MlmMD5YfOO63cFd+kwVCOZH1hL/i+4dFR2u+8Dcz6ru31zHCge91Pc=
+	t=1742395267; cv=none; b=i4CVwkw1BA3BFQuN1sCDrrkX+zmI1QwgtMirx6BczGCaENCMY3x3f0LdhGraKF8mAfCvnHxFHy6MhUw9exvjcFvTtG9UfMbh9EshyzwiOD03uBenIIA2fDEA2NOeO4dKk4L5X8DkqOQA7UhZkROjZoXf1vkITpVG6Q0P1irkE+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395156; c=relaxed/simple;
-	bh=QQpr0vl19bK5U9fkeSYBDet9mXr85TzL7aCT9h5WpeA=;
+	s=arc-20240116; t=1742395267; c=relaxed/simple;
+	bh=7QUKmDtxghsdO6Rd1tZZoLXsOJTL7RU1GdRO+WE4XQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ir92CWq8b/K8g3u6UQiZVwAvMT/sg92IMWxxvOuiHYpZISsjdlI9yUuZF60/+EQJfFbTq3udRkkuwk9NQBFgLzMqbI825d01YpcOPEa6RcsuxkgrZgx2jIjzeEODkiIB7SCKbqboKF9xBm5kJIrZ2Lt2zdkJB7cpVSlWq8uxPvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlPe/eu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CF6C4CEE4;
-	Wed, 19 Mar 2025 14:39:15 +0000 (UTC)
+	 MIME-Version; b=t/BEdwciS/2d0pUXyPLwa2Q9MASfkedbociqRpipBdH6Pgjq5N71aOI+RDn+7zQZCAJt58m+EZeRXRkf1sfFh6qdb/NgqqZrg/fef6i8tJXh7PKqNaxjlSGo0LKfGJC6h4dzcEJxsTaeaNN2cqfRlOAoAZzhn61uTBAAMAo6qr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hshi/I+X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0748AC4CEE4;
+	Wed, 19 Mar 2025 14:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395155;
-	bh=QQpr0vl19bK5U9fkeSYBDet9mXr85TzL7aCT9h5WpeA=;
+	s=korg; t=1742395267;
+	bh=7QUKmDtxghsdO6Rd1tZZoLXsOJTL7RU1GdRO+WE4XQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PlPe/eu/xOt+dgeMWbUU8fOWrPnzrYVMEwkWl4ldtw/185u1G53eGknlya0LdFKP+
-	 Uoe2A44aRy27ASLJ36SrxRyJahRbw3g/15YKE2cztIbcij1vU9BRUfOJR3cHc9YXiF
-	 iUjJPoR4XxcIHkUFhvHRKkseH81D4PTSyUSicZT4=
+	b=hshi/I+XV7C0ko/dCKCcYfIzmfRMy8S0bb7vHp84f3xF9q/+lRMQIQvi2KkhHQg0d
+	 0yVyFm99gdDRAfQISNZL8B10dMwvUyk1LB1bxx2MMhcjT/g97vhDS9s8Rt7x++ptws
+	 NWSZdAENulo61qxcC5w1LnVf9MRZj1ql2t1bXlxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	David Howells <dhowells@redhat.com>
-Subject: [PATCH 6.12 231/231] fs/netfs/read_collect: add to next->prev_donated
-Date: Wed, 19 Mar 2025 07:32:04 -0700
-Message-ID: <20250319143032.544671430@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 154/166] i2c: ali15x3: Fix an error handling path in ali15x3_probe()
+Date: Wed, 19 Mar 2025 07:32:05 -0700
+Message-ID: <20250319143024.200621595@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-If multiple subrequests donate data to the same "next" request
-(depending on the subrequest completion order), each of them would
-overwrite the `prev_donated` field, causing data corruption and a
-BUG() crash ("Can't donate prior to front").
+[ Upstream commit 6e55caaf30c88209d097e575a169b1dface1ab69 ]
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Closes: https://lore.kernel.org/netfs/CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If i2c_add_adapter() fails, the request_region() call in ali15x3_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/9b2090cbcc02659f425188ea05f2e02745c4e67b.1741031878.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/read_collect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-ali15x3.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 8878b46589ff..cafadfe8e858 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -284,7 +284,7 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
- 				   netfs_trace_donate_to_deferred_next);
- 	} else {
- 		next = list_next_entry(subreq, rreq_link);
--		WRITE_ONCE(next->prev_donated, excess);
-+		WRITE_ONCE(next->prev_donated, next->prev_donated + excess);
- 		trace_netfs_donate(rreq, subreq, next, excess,
- 				   netfs_trace_donate_to_next);
- 	}
+diff --git a/drivers/i2c/busses/i2c-ali15x3.c b/drivers/i2c/busses/i2c-ali15x3.c
+index 0231c5be6354f..c3f76b13a76f5 100644
+--- a/drivers/i2c/busses/i2c-ali15x3.c
++++ b/drivers/i2c/busses/i2c-ali15x3.c
+@@ -474,6 +474,8 @@ MODULE_DEVICE_TABLE (pci, ali15x3_ids);
+ 
+ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ {
++	int ret;
++
+ 	if (ali15x3_setup(dev)) {
+ 		dev_err(&dev->dev,
+ 			"ALI15X3 not detected, module not inserted.\n");
+@@ -485,7 +487,15 @@ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 
+ 	snprintf(ali15x3_adapter.name, sizeof(ali15x3_adapter.name),
+ 		"SMBus ALI15X3 adapter at %04x", ali15x3_smba);
+-	return i2c_add_adapter(&ali15x3_adapter);
++	ret = i2c_add_adapter(&ali15x3_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(ali15x3_smba, ALI15X3_SMB_IOSIZE);
++	return ret;
+ }
+ 
+ static void ali15x3_remove(struct pci_dev *dev)
 -- 
-2.47.2
+2.39.5
 
 
 
