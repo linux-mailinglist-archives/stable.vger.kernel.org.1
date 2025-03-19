@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-125104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD2EA69245
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:05:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF62A69115
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CECD1B85E75
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B9E4161094
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3594D1EF384;
-	Wed, 19 Mar 2025 14:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CC3221725;
+	Wed, 19 Mar 2025 14:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPmQJul8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wa3pZehW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87D01DDC2B;
-	Wed, 19 Mar 2025 14:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FC620551C;
+	Wed, 19 Mar 2025 14:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394958; cv=none; b=juYPvJCXXqKpYehyD8TqxeD4DeS/E8FX/CHuRgR3oIzxXhALyXcir0FMEu2QuLERkjGPwqkWxHswV3T9TVKzvFrtu2OogdSumo5VtMeLwUgxAJM+PAwwIz9TaxaX+c0751FNcqc8M2Uq/8xkJf4WhzVvwP1dXongMzevfm2Rdhw=
+	t=1742395213; cv=none; b=FcTCpzN5defqQVnMLALfpKtVr6opy36ujbH34COs+HORHd3X7jhrxpNLQ1mfp/xBeEEoB5aSFS58TuZhBaF08OFfcC3F6IERsa/qJ2hdZpRhXSAL41fYvgSFk9cyE7ge3+jQoYPC66M0/09FpTNW5GppOptRHcbAlAlIE6FqEYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394958; c=relaxed/simple;
-	bh=Guaxbmu5t03lw85qw2N0xHhzReyNXv0p3iBhmqluzhs=;
+	s=arc-20240116; t=1742395213; c=relaxed/simple;
+	bh=LwRMma4ZXe+D79z72hixW3cKZn5c+aurrsW8oEI/M3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWcCcGEL+TTf/3UyfUHtTpPobcwUHMDH6e4LoXKFisebayfZF723akugQm3/A5jAfG3e/pRGRv/T0n+vRsmbED+yCkXMxEM3cbqbHntibdBOeda3NZ+cYpWzGzQyfE8tNLhBYXe8fPOUXQKMibfa/MfBUcoC9IfZR0ScI+w6BVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPmQJul8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E25BC4CEE4;
-	Wed, 19 Mar 2025 14:35:57 +0000 (UTC)
+	 MIME-Version; b=IWow9a71qeOzfNukqeUC+mnUEeLEF5xX2JDxiwZiD+7K7AzOlxAcm9vOtvGOOTZV/czXoWLPdVNqnhVW0AEBG5rhMVigqcJzJ2Ogh8eG9rzM8tiG51NU7+Wi2TWFnfS2PyTsHBRuauf2ibtCu3/FDQ1+26BfOJO0/RHzRFY2ZPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wa3pZehW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ECAC4CEE4;
+	Wed, 19 Mar 2025 14:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394957;
-	bh=Guaxbmu5t03lw85qw2N0xHhzReyNXv0p3iBhmqluzhs=;
+	s=korg; t=1742395213;
+	bh=LwRMma4ZXe+D79z72hixW3cKZn5c+aurrsW8oEI/M3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPmQJul87HkkbJ6f6a7EJEGN7k6drx3NIE9Zmf4VsItDPGCyTPfH5kVW6z9jB+LEL
-	 DM9+Ba0P2fYrkhq850WQpnTZoGpxTxc754w0hdqbfPTRuoUqYjThW/PVsb3kXuC5YI
-	 hQQx0r4jBQDIYwTcs8e6aijUI8ZHsi4bxQCqSqWg=
+	b=wa3pZehWYriK/ACH2oGqNof4DpvIxiG5L9cpojk0SECKk2AGja/ZvDB2RxwvVl/dI
+	 0e547X+iAYznC1DOYDVrXKAcm+S4ajurKVhPXYqDrIWS2qORcwyVuFYqKHmKUBYSHq
+	 ftdIFaAu97yHMns7SJg0xgQ6nGADyILCscKCYKfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 184/241] drm/amd/display: fix default brightness
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 083/166] ASoC: tas2770: Fix volume scale
 Date: Wed, 19 Mar 2025 07:30:54 -0700
-Message-ID: <20250319143032.277023829@linuxfoundation.org>
+Message-ID: <20250319143022.268414920@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Hector Martin <marcan@marcan.st>
 
-commit b5a981e1b34e44f94a5967f730fff4166f2101e8 upstream.
+[ Upstream commit 579cd64b9df8a60284ec3422be919c362de40e41 ]
 
-[Why]
-To avoid flickering during boot default brightness level set by BIOS
-should be maintained for as much of the boot as feasible.
-commit 2fe87f54abdc ("drm/amd/display: Set default brightness according
-to ACPI") attempted to set the right levels for AC vs DC, but brightness
-still got reset to maximum level in initialization code for
-setup_backlight_device().
+The scale starts at -100dB, not -128dB.
 
-[How]
-Remove the hardcoded initialization in setup_backlight_device() and
-instead program brightness value to match BIOS (AC or DC).  This avoids a
-brightness flicker from kernel changing the value.  Userspace may however
-still change it during boot.
-
-Fixes: 2fe87f54abdc ("drm/amd/display: Set default brightness according to ACPI")
-Acked-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0747acf3311229e22009bec4a9e7fc30c879e842)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2770-v1-1-cf50ff1d59a3@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
+ sound/soc/codecs/tas2770.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4848,6 +4848,7 @@ amdgpu_dm_register_backlight_device(stru
- 	dm->backlight_dev[aconnector->bl_idx] =
- 		backlight_device_register(bl_name, aconnector->base.kdev, dm,
- 					  &amdgpu_dm_backlight_ops, &props);
-+	dm->brightness[aconnector->bl_idx] = props.brightness;
+diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
+index 99bf402eb5667..5c6b825c757b3 100644
+--- a/sound/soc/codecs/tas2770.c
++++ b/sound/soc/codecs/tas2770.c
+@@ -508,7 +508,7 @@ static int tas2770_codec_probe(struct snd_soc_component *component)
+ }
  
- 	if (IS_ERR(dm->backlight_dev[aconnector->bl_idx])) {
- 		DRM_ERROR("DM: Backlight registration failed!\n");
-@@ -4915,7 +4916,6 @@ static void setup_backlight_device(struc
- 	aconnector->bl_idx = bl_idx;
+ static DECLARE_TLV_DB_SCALE(tas2770_digital_tlv, 1100, 50, 0);
+-static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -12750, 50, 0);
++static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -10050, 50, 0);
  
- 	amdgpu_dm_update_backlight_caps(dm, bl_idx);
--	dm->brightness[bl_idx] = AMDGPU_MAX_BL_LEVEL;
- 	dm->backlight_link[bl_idx] = link;
- 	dm->num_of_edps++;
- 
+ static const struct snd_kcontrol_new tas2770_snd_controls[] = {
+ 	SOC_SINGLE_TLV("Speaker Playback Volume", TAS2770_PLAY_CFG_REG2,
+-- 
+2.39.5
+
 
 
 
