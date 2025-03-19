@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E9DA68FC0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0D4A6916B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 764E43BFC71
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDB2B8A0136
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FA11E5B7E;
-	Wed, 19 Mar 2025 14:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8C2221569;
+	Wed, 19 Mar 2025 14:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vfz8YRs8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0xi92E/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B718F1DA314;
-	Wed, 19 Mar 2025 14:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B36D1C8618;
+	Wed, 19 Mar 2025 14:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394942; cv=none; b=n3TM+EI3riwbCaqDrD2renbBrj/fQSnVmanfzE2XOakC0wWiRds4gr9o24NP3NdjToNnR2CyCGlT1QdGlPkkXwq66EfDcFCmK87Qcpziqf8+rZKnjf/UXOY8AurcZ90wEt6EpU3AFmFCGyBqPZ9ZfuyLnqFjeGMrQjdAMapns0s=
+	t=1742395199; cv=none; b=ALsxJ7yYScM8y3YZ3ty1uWqVqIc6+xFAOcw5nH4kxsMIjtbo4WADH1TboCOTShE4mG4kVKAeRpUYpNRjBsJu1wqu+cHjZQo1+5MzeAwNbQgLzyfq3UhhEpuXpdD3UHBGv99MhP6SsnCJI0mcrSdgVnW0Iq4ofpUensCUnzevuoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394942; c=relaxed/simple;
-	bh=gu+GxRtE8PZ3JSfiC8J2EbW8/n/sSTy9WtcIP4vJnxI=;
+	s=arc-20240116; t=1742395199; c=relaxed/simple;
+	bh=kDIZvDqYvmYW8ax17i78/7aphxkRU2Y90nxhfHACy84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtOxxhrXs5wFD3MbXrqogEMeU35o2oHuRZLIQKbz5t0K7X3Q1bVRKYg3SVSyPLBXSts5q6W+i+7kVqzf4VgwFuQEUPTywnFWw4wbJuZ53UI3INowR6gJNwNh169QFandDvPyvtFrUsHp8C6+O3aYoLO/uBeTXalvfhm3qRf3TQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vfz8YRs8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325A2C4CEE4;
-	Wed, 19 Mar 2025 14:35:41 +0000 (UTC)
+	 MIME-Version; b=pLy4VzvQKYKiPNchCgsTY/S9bmmjItC1pSq4/g4kOG1cRsrKj48z3VKbaSy/ocY3T+tf8B4bisi//19ngNbIlXuKzfE+TXr4gtg5HKsyhPfZa2P/DDgJiC3yXE5pHiPLF4cerNSlVMvdXnXCAGFbTckytTlFNPg70JTtAr5xW5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0xi92E/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623C6C4CEE4;
+	Wed, 19 Mar 2025 14:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394941;
-	bh=gu+GxRtE8PZ3JSfiC8J2EbW8/n/sSTy9WtcIP4vJnxI=;
+	s=korg; t=1742395199;
+	bh=kDIZvDqYvmYW8ax17i78/7aphxkRU2Y90nxhfHACy84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vfz8YRs81zkLKKikDnNNm+13Ln5hRAYQj6p1krf+lLuAcKbYiPCqDHEAPdeLIUUBN
-	 tzWBHE05UcrPoLjCjgiYIfmsZ8v9CTjerex6RwOokrRKwh5NP3DVPNoEXpj4GUAAFJ
-	 uYnI4fTz8hbTYTQcJDC7NKFic69CPqRLOfZvbjcE=
+	b=C0xi92E/FZkuYGrpGrzXOZcvXYyMip4a4yaQjidNGXLdWxsLccjt/YTpHgLOUGUQt
+	 ytuZYeng2pIqq+r1KNTYgLSnML4ut/UN7EJUAnUmdX8w4OZWqNKzN5diVccWbEpGHb
+	 a2KmjiIIGRWbkHaQvTLie7+sbbP0iDPDC7v5EIfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.13 162/241] usb: typec: tcpm: fix state transition for SNK_WAIT_CAPABILITIES state in run_state_machine()
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 061/166] s390/cio: Fix CHPID "configure" attribute caching
 Date: Wed, 19 Mar 2025 07:30:32 -0700
-Message-ID: <20250319143031.734487196@linuxfoundation.org>
+Message-ID: <20250319143021.660076820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-commit f2865c6300d75a9f187dd7918d248e010970fd44 upstream.
+[ Upstream commit 32ae4a2992529e2c7934e422035fad1d9b0f1fb5 ]
 
-A subtle error got introduced while manually fixing merge conflict in
-tcpm.c for commit 85c4efbe6088 ("Merge v6.12-rc6 into usb-next"). As a
-result of this error, the next state is unconditionally set to
-SNK_WAIT_CAPABILITIES_TIMEOUT while handling SNK_WAIT_CAPABILITIES state
-in run_state_machine(...).
+In some environments, the SCLP firmware interface used to query a
+CHPID's configured state is not supported. On these environments,
+rapidly reading the corresponding sysfs attribute produces inconsistent
+results:
 
-Fix this by setting new state of TCPM state machine to `upcoming_state`
-(that is set to different values based on conditions).
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+  $ cat /sys/devices/css0/chp0.00/configure
+  3
 
-Cc: stable@vger.kernel.org
-Fixes: 85c4efbe60888 ("Merge v6.12-rc6 into usb-next")
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250310-fix-snk-wait-timeout-v6-14-rc6-v1-1-5db14475798f@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This occurs for example when Linux is run as a KVM guest. The
+inconsistency is a result of CIO using cached results for generating
+the value of the "configure" attribute while failing to handle the
+situation where no data was returned by SCLP.
+
+Fix this by not updating the cache-expiration timestamp when SCLP
+returns no data. With the fix applied, the system response is
+consistent:
+
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+  $ cat /sys/devices/css0/chp0.00/configure
+  cat: /sys/devices/css0/chp0.00/configure: Operation not supported
+
+Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Tested-by: Eric Farman <farman@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/s390/cio/chp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5067,16 +5067,16 @@ static void run_state_machine(struct tcp
- 		 */
- 		if (port->vbus_never_low) {
- 			port->vbus_never_low = false;
--			tcpm_set_state(port, SNK_SOFT_RESET,
--				       port->timings.sink_wait_cap_time);
-+			upcoming_state = SNK_SOFT_RESET;
- 		} else {
- 			if (!port->self_powered)
- 				upcoming_state = SNK_WAIT_CAPABILITIES_TIMEOUT;
- 			else
- 				upcoming_state = hard_reset_state(port);
--			tcpm_set_state(port, SNK_WAIT_CAPABILITIES_TIMEOUT,
--				       port->timings.sink_wait_cap_time);
- 		}
-+
-+		tcpm_set_state(port, upcoming_state,
-+			       port->timings.sink_wait_cap_time);
- 		break;
- 	case SNK_WAIT_CAPABILITIES_TIMEOUT:
- 		/*
+diff --git a/drivers/s390/cio/chp.c b/drivers/s390/cio/chp.c
+index 5440f285f3494..7e00c061538db 100644
+--- a/drivers/s390/cio/chp.c
++++ b/drivers/s390/cio/chp.c
+@@ -661,7 +661,8 @@ static int info_update(void)
+ 	if (time_after(jiffies, chp_info_expires)) {
+ 		/* Data is too old, update. */
+ 		rc = sclp_chp_read_info(&chp_info);
+-		chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL ;
++		if (!rc)
++			chp_info_expires = jiffies + CHP_INFO_UPDATE_INTERVAL;
+ 	}
+ 	mutex_unlock(&info_lock);
+ 
+-- 
+2.39.5
+
 
 
 
