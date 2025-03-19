@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A8DA6904B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 875C9A68FC9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD7227ADFFC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C63DF16F6F2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE171E5B60;
-	Wed, 19 Mar 2025 14:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340D41EB5F9;
+	Wed, 19 Mar 2025 14:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtePv8AX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlno8+LQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7641DD0EF;
-	Wed, 19 Mar 2025 14:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E627E1DE2C0;
+	Wed, 19 Mar 2025 14:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395104; cv=none; b=i1xRoobLSxI9NQuHPZkQNKEW3JxzS4wDBZY5p5dsTkUI/dAsjqWfiXUKUyk0jegFQDP5l05JGdrjGLp98HPEi1e2eWYG5uwPMb9OsqgKluHj1rPvYVQumK/Oa04eRZTVePPapbQCgq5S2va9Ljh16hT7PWBSL6PqAzqxagVa/TQ=
+	t=1742394955; cv=none; b=W35541L4xwtpbCiw1k1lvZCrS1qhC50pFznFHdFgWwheVZ0Yo/k5dj1IDswFsskeOmAYKqgpX8L1H1DgAjapwDjTCex8KzFqO1DggN8+rvNOoRwBWbdgTGn9WwWB4DhCB5IuyGIkLMWTIImqYB7LtuCQUJ1zJgYVVltMZyjHVOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395104; c=relaxed/simple;
-	bh=FFGLL8CjhzJbQKGEo3TpZEJii0EaX8O/hLxzIWYt7/8=;
+	s=arc-20240116; t=1742394955; c=relaxed/simple;
+	bh=SueSLP+5PaCEYNj8TD6pHYyZoeU9L4xrr7KJpd9suJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQCM6PaMjdG4GDiBMebOVRPZE5kFVO4JgYibUWvyyOESCC7TolAyF4z2hFq/c/BuUUMufOMkS9jq1nx5Pr/BwPkfiomGFmnH3vMOl2j9nRPNW6ntu+lFw5gvV2W5QEYlBM2qA1q7WZGrl88pT0HmdBtqfygmMus7jTTLYvRx+EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtePv8AX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D79C4CEE4;
-	Wed, 19 Mar 2025 14:38:24 +0000 (UTC)
+	 MIME-Version; b=Ui+NuL3RrVJNAE2xRI4eITJFcOx3ZHxpnC2DMky0Dqyt9ObofK7FSi+cNN8r7LgFxRRkbzii02gn2FS4TNtUMsjeFGOOGO8PTjI73539gePQZNHRMCCDBn0HKdVaTTPuZZnX8+qC7t6EXeO1jNJ/kOcKFPiQt40DlA2jOHyZZ6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlno8+LQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D44C4CEE4;
+	Wed, 19 Mar 2025 14:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395104;
-	bh=FFGLL8CjhzJbQKGEo3TpZEJii0EaX8O/hLxzIWYt7/8=;
+	s=korg; t=1742394954;
+	bh=SueSLP+5PaCEYNj8TD6pHYyZoeU9L4xrr7KJpd9suJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UtePv8AXBEYYOl+11c2vGdQA/7EFC2LYfEhA7l5hBW7ibrONLDmywdHaD8/4Gt1vi
-	 uuG+Ocst2bRw5MzFdIFhNCKo5qNb5MCYWdELw7i4BWo2REdx4BNVTKHSa0UfYMGuDW
-	 lsbQq1L7bLrDKPPrADlpLIegRmOnjCipwJihaonQ=
+	b=mlno8+LQ6pakDzjeSTqQPx2YkF4fBDfJfFb8DVP4dxjXEdkGsd56qgpaKUqbLbQVt
+	 ciCMDj0GN+3abXNeWcT+81sfecGp90ypdTZtl6pb04jj9pLrO/eO3l9TFdwewHrjGY
+	 B+70mzoetvaqo23Ve+tvonceTg074Qlun3Or7eZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 156/231] Input: i8042 - swap old quirk combination with new quirk for several devices
-Date: Wed, 19 Mar 2025 07:30:49 -0700
-Message-ID: <20250319143030.689482138@linuxfoundation.org>
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Yifan Zha <Yifan.Zha@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 180/241] drm/amd/amdkfd: Evict all queues even HWS remove queue failed
+Date: Wed, 19 Mar 2025 07:30:50 -0700
+Message-ID: <20250319143032.181799435@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,152 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Yifan Zha <Yifan.Zha@amd.com>
 
-commit 75ee4ebebbbe8dc4b55ba37f388924fa96bf1564 upstream.
+commit 0882ca4eecfe8b0013f339144acf886a0a0de41f upstream.
 
-Some older Clevo barebones have problems like no or laggy keyboard after
-resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
-quirk.
+[Why]
+If reset is detected and kfd need to evict working queues, HWS moving queue will be failed.
+Then remaining queues are not evicted and in active state.
 
-While the old quirk combination did not show negative effects on these
-devices specifically, the new quirk works just as well and seems more
-stable in general.
+After reset done, kfd uses HWS to termination remaining activated queues but HWS is resetted.
+So remove queue will be failed again.
 
+[How]
+Keep removing all queues even if HWS returns failed.
+It will not affect cpsch as it checks reset_domain->sem.
+
+v2: If any queue failed, evict queue returns error.
+v3: Declare err inside the if-block.
+
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Yifan Zha <Yifan.Zha@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 42c854b8fb0cce512534aa2b7141948e80c6ebb0)
 Cc: stable@vger.kernel.org
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://lore.kernel.org/r/20250221230137.70292-3-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   40 +++++++++++-----------------------
- 1 file changed, 14 insertions(+), 26 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1080,16 +1080,14 @@ static const struct dmi_system_id i8042_
- 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
- 			DMI_MATCH(DMI_BOARD_NAME, "AURA1501"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
- 			DMI_MATCH(DMI_BOARD_NAME, "EDUBOOK1502"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/* Mivvy M310 */
-@@ -1171,8 +1169,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "LAPQC71A"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1205,8 +1202,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NH5xAx"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1218,8 +1214,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	/*
- 	 * At least one modern Clevo barebone has the touchpad connected both
-@@ -1235,17 +1230,15 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NS50MU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
--					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
--					SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
-+					SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NS50_70MU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
--					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
--					SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
-+					SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1319,8 +1312,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "P65_67RS"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/*
-@@ -1338,8 +1330,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "PB50_70DFx,DDx"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1363,8 +1354,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1383,15 +1373,13 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170KM-G"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/*
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -1230,11 +1230,13 @@ static int evict_process_queues_cpsch(st
+ 		decrement_queue_count(dqm, qpd, q);
+ 
+ 		if (dqm->dev->kfd->shared_resources.enable_mes) {
+-			retval = remove_queue_mes(dqm, q, qpd);
+-			if (retval) {
++			int err;
++
++			err = remove_queue_mes(dqm, q, qpd);
++			if (err) {
+ 				dev_err(dev, "Failed to evict queue %d\n",
+ 					q->properties.queue_id);
+-				goto out;
++				retval = err;
+ 			}
+ 		}
+ 	}
 
 
 
