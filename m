@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825ABA69259
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DDA1A692C9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:16:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F3151B66D4E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C86BB1B670FF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8AC1C5F25;
-	Wed, 19 Mar 2025 14:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C364222578;
+	Wed, 19 Mar 2025 14:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqd7R6UZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgX3irLp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A09C1EF394;
-	Wed, 19 Mar 2025 14:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE55F20B1F9;
+	Wed, 19 Mar 2025 14:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395149; cv=none; b=QDPj7PZgD1YDOaKtk8XVh602RQFSauSffOOP1tFBYbHaAE+ssy1egiqWInRiJOnfBDcyOuNy0qMrW+9WVqUzm0O2edAuF+WuWyYZLtwdWvHpA/9J6y4l/I+Lq7+nABNOKMTGC+6Wc3TyJWbgAPmFd8Klq+eLUKQ+Dg5e/aL3b78=
+	t=1742395262; cv=none; b=aypqO1ZHxa7mffGxcOqKYomi6KREdl4ogPCkWWR7prVzg1DDjeoZ54yHgniK47hKHdlRrP1DEip8aHK9dLkT28UP+N0RzR3yCSjkxBapB5qo9+dROFEMnlt3pOqz3Xx0//BxkbXYa8alYaEodMBHMginc5UsN7ewhJl0avdWL6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395149; c=relaxed/simple;
-	bh=vyDrr9yv015p7d+c9qFOLyAULdOGetg3MEAWLxl4QrE=;
+	s=arc-20240116; t=1742395262; c=relaxed/simple;
+	bh=J0AH9sojMX8WHIJ3wRIdj10+KlY2Do9eArL4YxsvRRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mTsZawzVitWD26YVXy2ram1mGnUf++jZTKLq2a2Qf4YBiUKJR6Yw54GfvTVBi6qsbEDI9p2igmnn5eQmH81AIbgeDFG7g0C4PF0cicT+EDhw+cefoNrICJSU/4/q8U7d0hNfedcJUbFjJHIfz0H+orwehMmJovDKGgu5VVnvMW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqd7R6UZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7A0C4CEE8;
-	Wed, 19 Mar 2025 14:39:08 +0000 (UTC)
+	 MIME-Version; b=TicI2GrEmplJxfp0e2ZSvUnyJ9aVo3LxvLG7pNMiVdumtSyKnxkGlIJUqJ3R6A8aoJlBo/HgrsTMV5tGlJBDgZwkZaz/HB5RLI3jX53hZb65faUB/w8g2luE+cqJyNMWJmHT1cvG32tNqskvEVoa4RnWr8Noin0giQldEOYP7KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgX3irLp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4796FC4CEE4;
+	Wed, 19 Mar 2025 14:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395148;
-	bh=vyDrr9yv015p7d+c9qFOLyAULdOGetg3MEAWLxl4QrE=;
+	s=korg; t=1742395262;
+	bh=J0AH9sojMX8WHIJ3wRIdj10+KlY2Do9eArL4YxsvRRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqd7R6UZ3QTS83gpDTkUGi0OtLJ0ZnWKtPjbXfPRS+KHpxOMfcQ0ZXjFMMKkpv8wu
-	 SS/df8OXkAkliVUTXVkSSENJMfxSbM7IJTo7XIhxsjN97MyJHXY4gaR2kgWO7D96ji
-	 b2yWB9KI2zKXsvYoqWUaWawDAovyp6n4YC4suV6w=
+	b=TgX3irLpUQ1oPmmIfQC5o1PrcbbcNuj03vwq67B81o7y955KG/GT8IBbn+9APHbDx
+	 piPYm654Bc6+AjNA8gQZA1GzkVHRQj8aNJCze3xnAtVhIr515is3ARwaGYnxPh+z0q
+	 IRLViqO9Y24OWjtyIG0rWcy5kRHmFQs2fa9k1KC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 222/231] i2c: sis630: Fix an error handling path in sis630_probe()
-Date: Wed, 19 Mar 2025 07:31:55 -0700
-Message-ID: <20250319143032.322407652@linuxfoundation.org>
+Subject: [PATCH 6.6 147/166] cifs: Fix integer overflow while processing acregmax mount option
+Date: Wed, 19 Mar 2025 07:31:58 -0700
+Message-ID: <20250319143024.007730182@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 2b22459792fcb4def9f0936d64575ac11a95a58d ]
+[ Upstream commit 7489161b1852390b4413d57f2457cd40b34da6cc ]
 
-If i2c_add_adapter() fails, the request_region() call in sis630_setup()
-must be undone by a corresponding release_region() call, as done in the
-remove function.
+User-provided mount parameter acregmax of type u32 is intended to have
+an upper limit, but before it is validated, the value is converted from
+seconds to jiffies which can lead to an integer overflow.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/3d607601f2c38e896b10207963c6ab499ca5c307.1741033587.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 5780464614f6 ("cifs: Add new parameter "acregmax" for distinct file and directory metadata timeout")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-sis630.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/smb/client/fs_context.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-sis630.c b/drivers/i2c/busses/i2c-sis630.c
-index 3505cf29cedda..a19c3d251804d 100644
---- a/drivers/i2c/busses/i2c-sis630.c
-+++ b/drivers/i2c/busses/i2c-sis630.c
-@@ -509,6 +509,8 @@ MODULE_DEVICE_TABLE(pci, sis630_ids);
- 
- static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
- {
-+	int ret;
-+
- 	if (sis630_setup(dev)) {
- 		dev_err(&dev->dev,
- 			"SIS630 compatible bus not detected, "
-@@ -522,7 +524,15 @@ static int sis630_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	snprintf(sis630_adapter.name, sizeof(sis630_adapter.name),
- 		 "SMBus SIS630 adapter at %04x", smbus_base + SMB_STS);
- 
--	return i2c_add_adapter(&sis630_adapter);
-+	ret = i2c_add_adapter(&sis630_adapter);
-+	if (ret)
-+		goto release_region;
-+
-+	return 0;
-+
-+release_region:
-+	release_region(smbus_base + SMB_STS, SIS630_SMB_IOREGION);
-+	return ret;
- }
- 
- static void sis630_remove(struct pci_dev *dev)
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 249dd3f4904e3..82a0987f4f868 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1266,11 +1266,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		}
+ 		break;
+ 	case Opt_acregmax:
+-		ctx->acregmax = HZ * result.uint_32;
+-		if (ctx->acregmax > CIFS_MAX_ACTIMEO) {
++		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
+ 			cifs_errorf(fc, "acregmax too large\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		ctx->acregmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_acdirmax:
+ 		ctx->acdirmax = HZ * result.uint_32;
 -- 
 2.39.5
 
