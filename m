@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D539AA68F8E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 652DCA6906B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A109C17309E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C48D23BEDF6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EADB1CD1FD;
-	Wed, 19 Mar 2025 14:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0767A1D54EF;
+	Wed, 19 Mar 2025 14:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySJJzd6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txdnxbxc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCB41CC89D;
-	Wed, 19 Mar 2025 14:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9EA1D514F;
+	Wed, 19 Mar 2025 14:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394886; cv=none; b=mXzvYXkFfItgyJA7ksIjckQ8+7Xih8m6LGHxt1TLM+C0/uiB1LL2o3LwkJNOZ396wh+n7LaTsCC9b39jVemHQVLhJy68wW3IgXprxBROJtABYwPhyz/EwlPAKYBFmLBXoSXrw2w92KmCAooukrJ5UXCbKuGpmtjP132GstWJcZg=
+	t=1742395040; cv=none; b=NPDrDUVI8W9rw9/Nou9q69RqRhMu9+tGWD3mFz37RmHP7djFI9dbjdzKFyahf9yXiUHE+T2byJ+XixWF2HqIIuqYr9t9S/4IooJKvblcyIsiJh7knzfEO08PwcwpybsaLPUuTf+ndkH75g7mgS6LkX6q4CfkfKs/IUf4eZms24o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394886; c=relaxed/simple;
-	bh=Ox0J3c6cYs1ft96R7YhLolj/pBUsycNrvt0kPYaEJsU=;
+	s=arc-20240116; t=1742395040; c=relaxed/simple;
+	bh=FP/jPe3AMPGh6i28fNtBgBXSDcjbvNMxmp1CxVsQ4tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=slL0dzGKbC0JV+Rhud9HdA1bwfX5jpANpt0ZcaV9DkaszY8+TYAx5gwsfWAxVD++uf0C28RkMqcw4kO6v3u4BANtz+xVC56M7FVfY3cjoAGPaFxxIe7kUfUScN8M0OYRXt8rR9UkeS/SLt14tUQdySCp2k5nEqn3A739DTg9Amc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySJJzd6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4862C4CEE4;
-	Wed, 19 Mar 2025 14:34:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XEZKZh10kJVg5JMYhIqGrR9WsELRP2ABtNmC8mPXWnTYIQUr3kVTIEbxe7v9JZuKzqoFAed53fYhbbSwV9gitbe+gEmNSl1Qz6Zc5vyoA+PMIvCM/a5pWrcxF5x1VvbePirNlaR2//qcysSYl1YnledNWyHkhSal0hkF3F0A9XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txdnxbxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBFEC4CEE4;
+	Wed, 19 Mar 2025 14:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394885;
-	bh=Ox0J3c6cYs1ft96R7YhLolj/pBUsycNrvt0kPYaEJsU=;
+	s=korg; t=1742395040;
+	bh=FP/jPe3AMPGh6i28fNtBgBXSDcjbvNMxmp1CxVsQ4tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySJJzd6j4Y4Aph0T4iF8E+jb/K0JupKF+gDJB3AzOl/TMGawgT7TUjNxB+kd/HuTm
-	 AlLn93VAkijo5yaaGB4oBzKNlfxoWkzyTh79o1eU1cSqcQcY+axvZeDVbH4ju63l1l
-	 o+QZeST09ac413gbgCn3WqAbwyXzjgo8vmeMq+Bg=
+	b=txdnxbxcnu2sQXI2j6tOGZONIaaRi+N6FuQ9BcM2/1MFU21F6/OSe8WREP0jZg6w1
+	 r57UqCb0d+sYtItq6fiGiF5FHsvUZc5n4MkG4go3OrNXn8f5rn3kj/H0BAfMfoL/FE
+	 hTtp+yej8W4YuYCCBPC8nKLlEKeUYAUWQ0otErDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Sterba <dsterba@suse.com>,
+	Dmitry Kandybka <d.kandybka@gmail.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 087/241] btrfs: fix two misuses of folio_shift()
+Subject: [PATCH 6.12 064/231] platform/x86/intel: pmc: fix ltr decode in pmc_core_ltr_show()
 Date: Wed, 19 Mar 2025 07:29:17 -0700
-Message-ID: <20250319143029.879559913@linuxfoundation.org>
+Message-ID: <20250319143028.407262485@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Dmitry Kandybka <d.kandybka@gmail.com>
 
-[ Upstream commit 01af106a076352182b2916b143fc50272600bd81 ]
+[ Upstream commit 583ef25bb2a094813351a727ddec38b35a15b9f8 ]
 
-It is meaningless to shift a byte count by folio_shift().  The folio index
-is in units of PAGE_SIZE, not folio_size().  We can use folio_contains()
-to make this work for arbitrary-order folios, so remove the assertion
-that the folios are of order 0.
+In pmc_core_ltr_show(), promote 'val' to 'u64' to avoid possible integer
+overflow. Values (10 bit) are multiplied by the scale, the result of
+expression is in a range from 1 to 34,326,183,936 which is bigger then
+UINT32_MAX. Compile tested only.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250123220739.68087-1-d.kandybka@gmail.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/platform/x86/intel/pmc/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 0dd24d1289863..95d3cf2e15c84 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -526,8 +526,6 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
- 		u64 end;
- 		u32 len;
+diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
+index 4e9c8c96c8cce..257c03c59fd95 100644
+--- a/drivers/platform/x86/intel/pmc/core.c
++++ b/drivers/platform/x86/intel/pmc/core.c
+@@ -625,8 +625,8 @@ static u32 convert_ltr_scale(u32 val)
+ static int pmc_core_ltr_show(struct seq_file *s, void *unused)
+ {
+ 	struct pmc_dev *pmcdev = s->private;
+-	u64 decoded_snoop_ltr, decoded_non_snoop_ltr;
+-	u32 ltr_raw_data, scale, val;
++	u64 decoded_snoop_ltr, decoded_non_snoop_ltr, val;
++	u32 ltr_raw_data, scale;
+ 	u16 snoop_ltr, nonsnoop_ltr;
+ 	unsigned int i, index, ltr_index = 0;
  
--		/* For now only order 0 folios are supported for data. */
--		ASSERT(folio_order(folio) == 0);
- 		btrfs_debug(fs_info,
- 			"%s: bi_sector=%llu, err=%d, mirror=%u",
- 			__func__, bio->bi_iter.bi_sector, bio->bi_status,
-@@ -555,7 +553,6 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
- 
- 		if (likely(uptodate)) {
- 			loff_t i_size = i_size_read(inode);
--			pgoff_t end_index = i_size >> folio_shift(folio);
- 
- 			/*
- 			 * Zero out the remaining part if this range straddles
-@@ -564,9 +561,11 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
- 			 * Here we should only zero the range inside the folio,
- 			 * not touch anything else.
- 			 *
--			 * NOTE: i_size is exclusive while end is inclusive.
-+			 * NOTE: i_size is exclusive while end is inclusive and
-+			 * folio_contains() takes PAGE_SIZE units.
- 			 */
--			if (folio_index(folio) == end_index && i_size <= end) {
-+			if (folio_contains(folio, i_size >> PAGE_SHIFT) &&
-+			    i_size <= end) {
- 				u32 zero_start = max(offset_in_folio(folio, i_size),
- 						     offset_in_folio(folio, start));
- 				u32 zero_len = offset_in_folio(folio, end) + 1 -
-@@ -960,7 +959,7 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
- 		return ret;
- 	}
- 
--	if (folio->index == last_byte >> folio_shift(folio)) {
-+	if (folio_contains(folio, last_byte >> PAGE_SHIFT)) {
- 		size_t zero_offset = offset_in_folio(folio, last_byte);
- 
- 		if (zero_offset) {
 -- 
 2.39.5
 
