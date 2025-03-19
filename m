@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B8BA691E1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:58:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B968A691CB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD11319C45EB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F17BF883F2A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F07421D3E6;
-	Wed, 19 Mar 2025 14:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39A51CAA89;
+	Wed, 19 Mar 2025 14:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jx6Pl50i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAaD0iVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8501F09BB;
-	Wed, 19 Mar 2025 14:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28A01DEFD6;
+	Wed, 19 Mar 2025 14:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395159; cv=none; b=iM9G6ExUvHLNiOQMWJya8cx0myJlwzZ1nDuDmLS/YOEjZjQmAhRh8gtlLKaDHH+65TNqu0goAxTw/rhQP9xhPzhzvIl0YbKJPnoU5Ipm/agg3rOO4hOv63x6RqoDwy0aPkRVAsQZTDrTYo0J4YKLmjXYQmWmWGEZ2RpdwDG1LtQ=
+	t=1742395257; cv=none; b=BuYMyLEDxMPZ2yaK5Qwx2G6ad78667mzazfDRe1a11Yl4/5VBRTsuOjTrxTcElgEwKvAFNa4a4GaS3jJF7Wd8d4XYv1nNyzTSXTi3XJXYo4+QwHuBhqSkWklioiihM+ADoYe8xf8u9gVMrHZTbzaGJBj3IPQg3qbmK2LfH+v7EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395159; c=relaxed/simple;
-	bh=DoCECirrSavCb72UxJ8ba3+9iCCSjHbS6YIFqdSJ/j8=;
+	s=arc-20240116; t=1742395257; c=relaxed/simple;
+	bh=kHP3BnPRrdG/lhtXonsVZtRj4RbYHRClaw++gszLFGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKLcHYKteOF9FpHjWBE04ad+JrmdsiryZU3YsEAQiDWfwLD4HwXztvyza/HlPAOMCs7Hac4QgeVhqOmVSTaD9dEbY5lpru0poNgV4/rVb47ni5AuXaBE+6MX1bUw7PrgzSC7NwCZILW3SqxCDBHxhXsWd66FfOaVdUiyn2KTasc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jx6Pl50i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2CEC4CEE4;
-	Wed, 19 Mar 2025 14:39:19 +0000 (UTC)
+	 MIME-Version; b=C2AZcX2LYkfOg4bh4NuHPpm7C7f4jhxWRAv6uuFlsMuozB0MKUQL2CeCICxO4W8r48C/hu0HWr9KVd9bhftQLOhiv9Wrp1eVSk5U35c4NrScnPYjBthlPZmO3rymEmKcK/OW3dD1UWjz/EWlOjadDo7CxzVuHsGNYGxvhg4t3qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAaD0iVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABA7C4CEE4;
+	Wed, 19 Mar 2025 14:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395159;
-	bh=DoCECirrSavCb72UxJ8ba3+9iCCSjHbS6YIFqdSJ/j8=;
+	s=korg; t=1742395257;
+	bh=kHP3BnPRrdG/lhtXonsVZtRj4RbYHRClaw++gszLFGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jx6Pl50iKTucWRyxoCpKBbbNCERRwmDdse8FdNRBVn7iyZ8GKGalPWNk64DvA225b
-	 N7Ux5ytwPWBNXT5KeZLmB44yyLY1KA82j7Kpg5N+K6lqJcek4851gs6xutbZ2u6vxa
-	 g961Z8zwrnAU18/DYzhEAjE/2f3Yth2uuuszgjGA=
+	b=IAaD0iVQc3s0xge4pequ0sMCC+KWVGx+8ZOwJToMAh+27l5lA/rrN/ltknJ00/XTj
+	 +KVdEYxkMUm0zRclvonWivrtDug0o5+fn7qhq5dlDNJEIJVO0P2LHNerQbodnOUMkW
+	 MHkkZoMq5F34uyWmbmNgq9hkgRWPBQJJ4qn74ybg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Steve French <stfrench@microsoft.com>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 218/231] cifs: Fix integer overflow while processing closetimeo mount option
-Date: Wed, 19 Mar 2025 07:31:51 -0700
-Message-ID: <20250319143032.230379551@linuxfoundation.org>
+Subject: [PATCH 6.6 141/166] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
+Date: Wed, 19 Mar 2025 07:31:52 -0700
+Message-ID: <20250319143023.838761470@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit d5a30fddfe2f2e540f6c43b59cf701809995faef ]
+[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
 
-User-provided mount parameter closetimeo of type u32 is intended to have
-an upper limit, but before it is validated, the value is converted from
-seconds to jiffies which can lead to an integer overflow.
+Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
+pci_gfx_root in the mid_get_vbt_data().
+
+This change is similar to the checks implemented in mid_get_fuse_settings()
+and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
+("gma500: Final enables for Oaktrail") as "additional minor
+bulletproofing".
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 5efdd9122eff ("smb3: allow deferred close timeout to be configurable")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 934c45ec81957..f8bc1da300378 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1280,11 +1280,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 		ctx->acdirmax = ctx->acregmax = HZ * result.uint_32;
- 		break;
- 	case Opt_closetimeo:
--		ctx->closetimeo = HZ * result.uint_32;
--		if (ctx->closetimeo > SMB3_MAX_DCLOSETIMEO) {
-+		if (result.uint_32 > SMB3_MAX_DCLOSETIMEO / HZ) {
- 			cifs_errorf(fc, "closetimeo too large\n");
- 			goto cifs_parse_mount_err;
- 		}
-+		ctx->closetimeo = HZ * result.uint_32;
- 		break;
- 	case Opt_echo_interval:
- 		ctx->echo_interval = result.uint_32;
+diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
+index 7e76790c6a81f..cba97d7db131d 100644
+--- a/drivers/gpu/drm/gma500/mid_bios.c
++++ b/drivers/gpu/drm/gma500/mid_bios.c
+@@ -279,6 +279,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
+ 					    0, PCI_DEVFN(2, 0));
+ 	int ret = -1;
+ 
++	if (pci_gfx_root == NULL) {
++		WARN_ON(1);
++		return;
++	}
++
+ 	/* Get the address of the platform config vbt */
+ 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
+ 	pci_dev_put(pci_gfx_root);
 -- 
 2.39.5
 
