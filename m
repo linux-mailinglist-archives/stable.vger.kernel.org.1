@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-125278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35350A69026
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC743A68FAF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FF8D7A656A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70A9B3B3C7C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454251E32D3;
-	Wed, 19 Mar 2025 14:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3848F1D88C3;
+	Wed, 19 Mar 2025 14:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noe6FZT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTI2TGYr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0403421576C;
-	Wed, 19 Mar 2025 14:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEDF1E32DD;
+	Wed, 19 Mar 2025 14:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395077; cv=none; b=e0136270/PX/o3F23wyH935yPvNjuItivwFTuIVl5i06gO21NL1m0p0AHMjJzK1aG3nLwNv2gSyBbuZG1aQVe8nCGbfxzbKZ2AedhNjRuRmzGROiIqkJzunj7VQuctIgNNp5vzs5Mcqyd5o4nGHqtTD4MgaL3BkjBeNLRCxFmrU=
+	t=1742394927; cv=none; b=U6Gibi6CAS5mwf3WNKY9DPe6mrckh+jCOb0lws1yHdpi9SK0Im6hD3P7bwoHAWYrqUUQxO/TjN5tGTJk6iShlq6TNuB+XRubrFttXK8+d5vR7axsdkVV4lHmvj1/5yzYh+zEvccJmL677keV7o3WvZaKRnc8B72GlZSPEKgNjoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395077; c=relaxed/simple;
-	bh=L8zRLnMhj0Tdusquce4UyjqU65OQCVatozPq6pomLWM=;
+	s=arc-20240116; t=1742394927; c=relaxed/simple;
+	bh=xjQLqPLsS2V+hZK5oEY5x9zv0iGPMQxMeKsXv01Tdn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXwm9nWw54+aZcHQymnn8Dn3Cs3bFwaapbDYwzs9deMn5JTdTBnH8oqB573nrJZ4vKJ3bLloCbW4SYq2OdrWu/7aVg2ea3wn0Mo0+6OeHyssNMpgifDWULidOin1CT9hRZtu7CCZpFSY5qV2mPd3eIB1U3S7CeZVMrCufWIlhqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noe6FZT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9C6C4CEE4;
-	Wed, 19 Mar 2025 14:37:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M814zsCStPBCzwUd1NlLe3HIFgO4LRKIl1QeCi2HRB2qmT6qlKxOzY4A01WqVJ6TiPj3QNYF3BH5nFhJEJ9JPT5OgC3sLbJtNPm/k7CATxtuVecYEfSe9ppk9Ta1D5+LF+9EnvsUqilQW5dDSGD/jmF5xrexfzbANU/eFNg744s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTI2TGYr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4FEC4CEE4;
+	Wed, 19 Mar 2025 14:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395076;
-	bh=L8zRLnMhj0Tdusquce4UyjqU65OQCVatozPq6pomLWM=;
+	s=korg; t=1742394926;
+	bh=xjQLqPLsS2V+hZK5oEY5x9zv0iGPMQxMeKsXv01Tdn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=noe6FZT4hNlOSsTA+MMBP2l7GnlEffkRgn4KzgmgadHRTLAL7hO3vufl0vGj8uEOq
-	 McTbSmBsujenj7NBT2pZ8lswfAsHPloFQConiIHKCQldxHZZ0YLV67b/0xiB7Q+hh8
-	 dVXWy8mh09CLNC03MR6g7zkWLqrdV6ArogKEHxnA=
+	b=kTI2TGYrc3n4veW7morSZrPqorA7ADg5yaXc2M/8C6cmcdVLlMVkZMCEAaCVOeTbC
+	 xUTQsFS2UHmiwKyoY3Oo/NBOFduU4uFNtD70mTMa1RQZ93/s/PlwIjQa3F5MUgt0Fj
+	 P1RJsfGj0XEV0tEGElOBAMcv34XXuG326fRsfVFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 116/231] ALSA: hda: hda-intel: add Panther Lake-H support
+Subject: [PATCH 6.13 139/241] ASoC: SOF: Intel: dont check number of sdw links when set dmic_fixup
 Date: Wed, 19 Mar 2025 07:30:09 -0700
-Message-ID: <20250319143029.711183598@linuxfoundation.org>
+Message-ID: <20250319143031.162693452@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit d7e2447a4d51de5c3c03e3b7892898e98ddd9769 ]
+[ Upstream commit 56a677293509b2a0d39ac8d02b583c1ab1fe4d94 ]
 
-Add Intel PTL-H audio Device ID.
+Currently, we assume that the PCH DMIC pins are pin-muxed with SoundWire
+links. However, we do see a HW design that use PCH DMIC along with 3
+SoundWire links. Remove the check now.
+With this change the PCM DMIC will be presented if it is reported by the
+BIOS irrespective of whether there are SDW links present or not.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250210081730.22916-5-peter.ujfalusi@linux.intel.com
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250225093716.67240-2-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/sof/intel/hda.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index ea52bc7370a58..cb9925948175f 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2508,6 +2508,8 @@ static const struct pci_device_id azx_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, HDA_ARL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
- 	/* Panther Lake */
- 	{ PCI_DEVICE_DATA(INTEL, HDA_PTL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_LNL) },
-+	/* Panther Lake-H */
-+	{ PCI_DEVICE_DATA(INTEL, HDA_PTL_H, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_LNL) },
- 	/* Apollolake (Broxton-P) */
- 	{ PCI_DEVICE_DATA(INTEL, HDA_APL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON) },
- 	/* Gemini-Lake */
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index be689f6e10c81..a1ccd95da8bb7 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -1312,22 +1312,8 @@ struct snd_soc_acpi_mach *hda_machine_select(struct snd_sof_dev *sdev)
+ 		/* report to machine driver if any DMICs are found */
+ 		mach->mach_params.dmic_num = check_dmic_num(sdev);
+ 
+-		if (sdw_mach_found) {
+-			/*
+-			 * DMICs use up to 4 pins and are typically pin-muxed with SoundWire
+-			 * link 2 and 3, or link 1 and 2, thus we only try to enable dmics
+-			 * if all conditions are true:
+-			 * a) 2 or fewer links are used by SoundWire
+-			 * b) the NHLT table reports the presence of microphones
+-			 */
+-			if (hweight_long(mach->link_mask) <= 2)
+-				dmic_fixup = true;
+-			else
+-				mach->mach_params.dmic_num = 0;
+-		} else {
+-			if (mach->tplg_quirk_mask & SND_SOC_ACPI_TPLG_INTEL_DMIC_NUMBER)
+-				dmic_fixup = true;
+-		}
++		if (sdw_mach_found || mach->tplg_quirk_mask & SND_SOC_ACPI_TPLG_INTEL_DMIC_NUMBER)
++			dmic_fixup = true;
+ 
+ 		if (tplg_fixup &&
+ 		    dmic_fixup &&
 -- 
 2.39.5
 
