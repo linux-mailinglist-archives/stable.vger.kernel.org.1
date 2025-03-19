@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9934A691CA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B8BA691E1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:58:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99622887421
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD11319C45EB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551C120B1F4;
-	Wed, 19 Mar 2025 14:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F07421D3E6;
+	Wed, 19 Mar 2025 14:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGxyHazP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jx6Pl50i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E131DF267;
-	Wed, 19 Mar 2025 14:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8501F09BB;
+	Wed, 19 Mar 2025 14:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395257; cv=none; b=l43526IoVP7u4XqcLpW5a8R65/9nC04zXQInyGR0JgWW8DFyRGGotH+uqtRLVHnOnxa8iixXlWjPuNq065N5d/jDmAYprWhNJsgjk1+3SqwxORDcZTtzWbfIn9Z3MXEbutxDZvGS4J2t70qz7iCWQjZocTc9tOWeBpWVZKPacI0=
+	t=1742395159; cv=none; b=iM9G6ExUvHLNiOQMWJya8cx0myJlwzZ1nDuDmLS/YOEjZjQmAhRh8gtlLKaDHH+65TNqu0goAxTw/rhQP9xhPzhzvIl0YbKJPnoU5Ipm/agg3rOO4hOv63x6RqoDwy0aPkRVAsQZTDrTYo0J4YKLmjXYQmWmWGEZ2RpdwDG1LtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395257; c=relaxed/simple;
-	bh=htzoDjVyzDxsieW1PCtlUJPWd2LizVy1k2vtpR5iQYY=;
+	s=arc-20240116; t=1742395159; c=relaxed/simple;
+	bh=DoCECirrSavCb72UxJ8ba3+9iCCSjHbS6YIFqdSJ/j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DsowVlo/+4fTrrSN4nAJFFz9JmG+lwK/PnC8ZAY1+ifHqW6jLKQUln/p0IaQz/8vgx1d2rdyS6OeNKzqzXC3ZX3X1KoZtiqt3JtODUnVN5m+Hbsk+8w30WHKzDL0Wlexq1voGR8DaNxkFReGXN8nuZTX+fcDb+jRA7HgiIhGrh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGxyHazP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD047C4CEE4;
-	Wed, 19 Mar 2025 14:40:56 +0000 (UTC)
+	 MIME-Version; b=KKLcHYKteOF9FpHjWBE04ad+JrmdsiryZU3YsEAQiDWfwLD4HwXztvyza/HlPAOMCs7Hac4QgeVhqOmVSTaD9dEbY5lpru0poNgV4/rVb47ni5AuXaBE+6MX1bUw7PrgzSC7NwCZILW3SqxCDBHxhXsWd66FfOaVdUiyn2KTasc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jx6Pl50i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2CEC4CEE4;
+	Wed, 19 Mar 2025 14:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395257;
-	bh=htzoDjVyzDxsieW1PCtlUJPWd2LizVy1k2vtpR5iQYY=;
+	s=korg; t=1742395159;
+	bh=DoCECirrSavCb72UxJ8ba3+9iCCSjHbS6YIFqdSJ/j8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qGxyHazPXJ4p63irID4aZ9kpNi9CT2PyVvzSLnfzFeqH0mZmj832wupmBlOX4u1zN
-	 mPUTPyaj7XFxI8JJFlBN2dyjlWFsxetY1q/rTQ+7DGLLLYkXnUO/KGGTeC8A7Re9hA
-	 Xx+8ZQDlSFBHEhsfHef59ukhRyKBMxCKGOXOul4M=
+	b=Jx6Pl50iKTucWRyxoCpKBbbNCERRwmDdse8FdNRBVn7iyZ8GKGalPWNk64DvA225b
+	 N7Ux5ytwPWBNXT5KeZLmB44yyLY1KA82j7Kpg5N+K6lqJcek4851gs6xutbZ2u6vxa
+	 g961Z8zwrnAU18/DYzhEAjE/2f3Yth2uuuszgjGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alban Kurti <kurti@invicto.ai>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 140/166] rust: error: add missing newline to pr_warn! calls
+Subject: [PATCH 6.12 218/231] cifs: Fix integer overflow while processing closetimeo mount option
 Date: Wed, 19 Mar 2025 07:31:51 -0700
-Message-ID: <20250319143023.812642234@linuxfoundation.org>
+Message-ID: <20250319143032.230379551@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alban Kurti <kurti@invicto.ai>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 6f5c36f56d475732981dcf624e0ac0cc7c8984c8 ]
+[ Upstream commit d5a30fddfe2f2e540f6c43b59cf701809995faef ]
 
-Added missing newline at the end of pr_warn! usage
-so the log is not missed.
+User-provided mount parameter closetimeo of type u32 is intended to have
+an upper limit, but before it is validated, the value is converted from
+seconds to jiffies which can lead to an integer overflow.
 
-Fixes: 6551a7fe0acb ("rust: error: Add Error::from_errno{_unchecked}()")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1139
-Signed-off-by: Alban Kurti <kurti@invicto.ai>
-Link: https://lore.kernel.org/r/20250206-printing_fix-v3-2-a85273b501ae@invicto.ai
-[ Replaced Closes with Link since it fixes part of the issue. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 5efdd9122eff ("smb3: allow deferred close timeout to be configurable")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/error.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/fs_context.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 032b645439539..e82d31aa1f307 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -103,7 +103,7 @@ impl Error {
-         if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
-             // TODO: Make it a `WARN_ONCE` once available.
-             crate::pr_warn!(
--                "attempted to create `Error` with out of range `errno`: {}",
-+                "attempted to create `Error` with out of range `errno`: {}\n",
-                 errno
-             );
-             return code::EINVAL;
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 934c45ec81957..f8bc1da300378 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1280,11 +1280,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		ctx->acdirmax = ctx->acregmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_closetimeo:
+-		ctx->closetimeo = HZ * result.uint_32;
+-		if (ctx->closetimeo > SMB3_MAX_DCLOSETIMEO) {
++		if (result.uint_32 > SMB3_MAX_DCLOSETIMEO / HZ) {
+ 			cifs_errorf(fc, "closetimeo too large\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		ctx->closetimeo = HZ * result.uint_32;
+ 		break;
+ 	case Opt_echo_interval:
+ 		ctx->echo_interval = result.uint_32;
 -- 
 2.39.5
 
