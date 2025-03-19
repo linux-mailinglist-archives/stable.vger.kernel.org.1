@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-125350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F44FA692BA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:15:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC8FA69330
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6779F1BA015B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8521BA1156
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A06B1EB5C5;
-	Wed, 19 Mar 2025 14:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD54221DB9;
+	Wed, 19 Mar 2025 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJJwbsGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qj9uVAe5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BAB1DE2C6;
-	Wed, 19 Mar 2025 14:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5FF20A5D3;
+	Wed, 19 Mar 2025 14:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395127; cv=none; b=Cmd8FW2zIKKQ2+sJJQklbiS8HuQprf60YcoZX9IxIQWmihel986faZpYylwnB6+keTcNiMHAZr9tBPcV6tYxKgzsP7FT3ewEHUcXXXUjltX4840W2R3jBORJWd/v2SUBczvxoSkRSd6+Ga71cHjnov2jgScdHYaUg6cVzWOgrxc=
+	t=1742395238; cv=none; b=Zkrzv5I5PaE8ispUsExsXLWIk7jTfn+QGTnaOs6+RuXDW/kfkLsjRE1PX3Yv71txihtC1zvILBXsF8bn9ccdKEOmE604IvXnbqLeVy9ZUHffjw9vRHKooy0LS0GrWUdpPX/tAi41XC8yudjSmRh/983viQ6l5QAvo0lUt6nd7i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395127; c=relaxed/simple;
-	bh=D/WvpTSq751G9avZCR5jAl5xB9BwMyGa2wJI9qc1rg0=;
+	s=arc-20240116; t=1742395238; c=relaxed/simple;
+	bh=r7WuiPcAbS7OwFC76SNeas56+MOrt455vFrXulxdXAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/8ST4XAc1TQgAOr24wq9rbo/juPxWlVKwdHC2QgjbTeM3sfRo1fIBb9iISrlXhiO4oNIuAT/r28reFdAsttJF4p0Y/g/QSszsqZwK3ASU+wqtTwBJQvMporNjJL2uz6KpjFhys5vzREgFIRqTDGKungHaLe8CuUH3JRw/nmy0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJJwbsGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7194C4CEE4;
-	Wed, 19 Mar 2025 14:38:45 +0000 (UTC)
+	 MIME-Version; b=iltfbDMc4sDl/3KXHG4YRx0An93uFajhPOhCxWekIG6JtX9CQg2IV3s2ARhyG6fzvck2Z6YWUNXm/lxvGKm99xILxoIuAbK25hAMhiobBweQrVVSXg2Wxw6r0Z60TErjCfax0r6YoendNWwQMDqibjSWzuFtiGzJMq3zSXpwxyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qj9uVAe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FFCC4CEE4;
+	Wed, 19 Mar 2025 14:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395125;
-	bh=D/WvpTSq751G9avZCR5jAl5xB9BwMyGa2wJI9qc1rg0=;
+	s=korg; t=1742395237;
+	bh=r7WuiPcAbS7OwFC76SNeas56+MOrt455vFrXulxdXAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJJwbsGuWM0KqxH/+LCtyqoDCTBxEgzFMLmz2FIwAdJfpMwyur8B2RfM4RTQMrp2+
-	 DOGyIBpnuaIhxa9Nb1142KR3/IdeG2owui4xfxXgT32/D3tR0D5e7QkkTLPPjohsmP
-	 vpjfDIaG5XybFi4rwlpEonFrpOzEOftxvKHi2rMI=
+	b=qj9uVAe5q0NBP6G+71459WhSIhFvt6rqf+Ph5EZMd66//MUgQ6/RVgmws+ShLG1Zi
+	 L8glhFGAbzk4ZCov1Nxj4cUSOoHsLCOM6Zl/W1gUvMynm6D5V/ox8+6pMTVXH/2nh7
+	 Nf6lxNnP1Nz4vmHiaXcrMB+FhOHn5ziO6VcuHC04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Mizrahi <thomasmizra@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 188/231] ASoC: amd: yc: Support mic on another Lenovo ThinkPad E16 Gen 2 model
-Date: Wed, 19 Mar 2025 07:31:21 -0700
-Message-ID: <20250319143031.480653566@linuxfoundation.org>
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 111/166] Input: i8042 - swap old quirk combination with new quirk for NHxxRZQ
+Date: Wed, 19 Mar 2025 07:31:22 -0700
+Message-ID: <20250319143023.022313861@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Mizrahi <thomasmizra@gmail.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit 0704a15b930cf97073ce091a0cd7ad32f2304329 upstream.
+commit 729d163232971672d0f41b93c02092fb91f0e758 upstream.
 
-The internal microphone on the Lenovo ThinkPad E16 model requires a
-quirk entry to work properly. This was fixed in a previous patch (linked
-below), but depending on the specific variant of the model, the product
-name may be "21M5" or "21M6".
+Some older Clevo barebones have problems like no or laggy keyboard after
+resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
+quirk.
 
-The following patch fixed this issue for the 21M5 variant:
-  https://lore.kernel.org/all/20240725065442.9293-1-tiwai@suse.de/
+With the old i8042 quirks this devices keyboard is sometimes laggy after
+resume. With the new quirk this issue doesn't happen.
 
-This patch adds support for the microphone on the 21M6 variant.
-
-Link: https://github.com/ramaureirac/thinkpad-e14-linux/issues/31
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Mizrahi <thomasmizra@gmail.com>
-Link: https://patch.msgid.link/20250308041303.198765-1-thomasmizra@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://lore.kernel.org/r/20250221230137.70292-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/input/serio/i8042-acpipnpio.h |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -252,6 +252,13 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21M6"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
- 		}
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1209,18 +1209,10 @@ static const struct dmi_system_id i8042_
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
  	},
+ 	{
+-		/*
+-		 * Setting SERIO_QUIRK_NOMUX or SERIO_QUIRK_RESET_ALWAYS makes
+-		 * the keyboard very laggy for ~5 seconds after boot and
+-		 * sometimes also after resume.
+-		 * However both are required for the keyboard to not fail
+-		 * completely sometimes after boot or resume.
+-		 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NHxxRZQ"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
 
 
 
