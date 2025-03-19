@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-124960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF46A68F43
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 602BAA69028
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AB1A3AC3C2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:34:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AFA23B328B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692901D5CEA;
-	Wed, 19 Mar 2025 14:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5875E1CC8B0;
+	Wed, 19 Mar 2025 14:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxn/nuGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miHFKmgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247581D5CD7;
-	Wed, 19 Mar 2025 14:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1641720C480;
+	Wed, 19 Mar 2025 14:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394854; cv=none; b=S+oAQ7jl+1SrN7ulnpawMoSaiz3lvChTdxUNhwGAv1MqrwzQX8aPpeuaBJXComqbHGmicYx8nusCkh8+6rg8oEUgB90lIfvf7XpOcKAGfawHMv4dQOVDNVQV7l8DMC0j/RJ4Wl+pFpvQwwOK59DWPxGMakFdbQBuWEiy3Wk9mjI=
+	t=1742395009; cv=none; b=ok12EC3NRZTrzFVJyNNPan4r4379pClbF6VHLNKYSwFbPMnQU3HFjK00pZK9oweqL8ZlVnYpHr0qS+pT4+JEtU2tWkzi2guDj/UhM75ifZt+ulZK4Pu7X49s9rUwBMiCjvKhMJAY98i0SjCgrlue2XLOZEBYb3lWm3B0DS4+z2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394854; c=relaxed/simple;
-	bh=vtYzNJk5WoZS2BQOGEovNIxNZamzGkthZl4HOWFk3hU=;
+	s=arc-20240116; t=1742395009; c=relaxed/simple;
+	bh=VlfN7xSnK4Z5V0QcjLjkcf8KBRRHpi/hQobv1vUfQeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2St1v249uBJLmDLjDvR/8EWtxjVayljriHbUJtALAeWrNqJrkgbZ2zB13aZP3zR8GUoAgqKS8rSXK28kmCbB4XZcvfFYjk5hWWq3qlTNaRdO+AlkkI6L5Wa1kSjygJc87JboK45qBeV4KKQmx1o0SaZDnmJavsP+lOdTww8Yv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxn/nuGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE174C4CEE4;
-	Wed, 19 Mar 2025 14:34:13 +0000 (UTC)
+	 MIME-Version; b=Ihh0OH8yf8MReaNjeVJtZ55BVe1P3krPogYIu2IivDGRzW0PzC8o/reT+Jb0SrA9ZhDYhudL3asa0/HPb3hBw2Bo7/2khveZXUE+NWc+eQjT1kOxYoR8FF20RVhc3RO3BYGFguywuUg8YqyXMvEptrt35kZiIBEcMlJfVqrWyl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miHFKmgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24DCC4CEE4;
+	Wed, 19 Mar 2025 14:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394854;
-	bh=vtYzNJk5WoZS2BQOGEovNIxNZamzGkthZl4HOWFk3hU=;
+	s=korg; t=1742395009;
+	bh=VlfN7xSnK4Z5V0QcjLjkcf8KBRRHpi/hQobv1vUfQeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxn/nuGu+eCtr1jq1M+p4WllAX01amOV2EcduJP4K17963qUk5p8xPWgWfJttq0Fr
-	 FpQrQzxjijTQG6E/lId+CNqqQgJXTICgoRKZ3Ky/zO7ceAp9sDnH2XVVV4MAHee/No
-	 5JmtgKhVH/Pl5MQvMb4okROEpIc4wG9fdbw5Pk0A=
+	b=miHFKmgu35rxenuGjYzzpR6juC/7XUSkSVZJj7I84VcLBSLDyQedLOnucM+/eudCu
+	 Ol8obAsfmXsAphUMm0Og5CJAT1THr/yVxTJqCootP94FZauD2gBsnVo3jpSErWUcUZ
+	 mM2NsT0bU+3fGZ52JlvuOXqD1PzNVHLX7lryaZnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 041/241] selftests: bonding: fix incorrect mac address
-Date: Wed, 19 Mar 2025 07:28:31 -0700
-Message-ID: <20250319143028.736140851@linuxfoundation.org>
+Subject: [PATCH 6.12 019/231] net/mlx5: Fill out devlink dev info only for PFs
+Date: Wed, 19 Mar 2025 07:28:32 -0700
+Message-ID: <20250319143027.314797415@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit 9318dc2357b6b8b2ea1200ab7f2d5877851b7382 ]
+[ Upstream commit d749d901b2168389f060b654fdaa08acf6b367d2 ]
 
-The correct mac address for NS target 2001:db8::254 is 33:33:ff:00:02:54,
-not 33:33:00:00:02:54. The same with client maddress.
+Firmware version query is supported on the PFs. Due to this
+following kernel warning log is observed:
 
-Fixes: 86fb6173d11e ("selftests: bonding: add ns multicast group testing")
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250306023923.38777-3-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[  188.590344] mlx5_core 0000:08:00.2: mlx5_fw_version_query:816:(pid 1453): fw query isn't supported by the FW
+
+Fix it by restricting the query and devlink info to the PF.
+
+Fixes: 8338d9378895 ("net/mlx5: Added devlink info callback")
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Link: https://patch.msgid.link/20250306212529.429329-1-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/bonding/bond_options.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/devlink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-index edc56e2cc6069..7bc148889ca72 100755
---- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-+++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-@@ -11,8 +11,8 @@ ALL_TESTS="
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 98d4306929f3e..a2cf3e79693dd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -46,6 +46,9 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
+ 	u32 running_fw, stored_fw;
+ 	int err;
  
- lib_dir=$(dirname "$0")
- source ${lib_dir}/bond_topo_3d1c.sh
--c_maddr="33:33:00:00:00:10"
--g_maddr="33:33:00:00:02:54"
-+c_maddr="33:33:ff:00:00:10"
-+g_maddr="33:33:ff:00:02:54"
- 
- skip_prio()
- {
++	if (!mlx5_core_is_pf(dev))
++		return 0;
++
+ 	err = devlink_info_version_fixed_put(req, "fw.psid", dev->board_id);
+ 	if (err)
+ 		return err;
 -- 
 2.39.5
 
