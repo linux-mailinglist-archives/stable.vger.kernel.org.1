@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB28A69239
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:04:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E318CA691C6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C13261B837A9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 957BA1885168
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5861A1E1A3D;
-	Wed, 19 Mar 2025 14:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890381BDA97;
+	Wed, 19 Mar 2025 14:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElQn5JPf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0I+918bm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169BB214A6C;
-	Wed, 19 Mar 2025 14:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484421B2194;
+	Wed, 19 Mar 2025 14:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395051; cv=none; b=tUuDugVcMJasnChCCwbr3ZhPf70UvZc+b+/cmw9aF4bAibRix+GTQRf9qeXYgTQjZLJeyHBRcqo2HRGkrFZBo7WicbcuqyVXd9hl08cWqPHPtI2pU9AZ7gfZdUsvLmbleOKxM4fXJVLGHEYVPr6KPW+cg3QwofKUil7EucwIzdQ=
+	t=1742394896; cv=none; b=ZzPcj3kss6BQ9kRuNc+AtyDQs+vXdmV1zvgK8ceXDwmTtFTYRGHr2wZuC/vPXDhFOyeNPsP04TWa1GRIM59Szma8IOSnHBoSO9c8c1leIXnpPIHo8CP8Ub88HVPcai5Sby0CZS4sOfqzAEwFrR8hrR9/gAtCQi1IUJQWPBAJf1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395051; c=relaxed/simple;
-	bh=KLQQD++e4l4fFJDUJVpNLZDTTQwfwg9zCgIjfl6zHvA=;
+	s=arc-20240116; t=1742394896; c=relaxed/simple;
+	bh=fAPsKIUVGXBQx1vkPhzGrzj9XEikdlLgLRX0UHKobvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YE/LiBzrkgkHlBSOCLm3uyC8rVg7sMrJzxv6Jw1/XLeLsPx6ZVkE8NyeiYHqxFliHc09cPx2As8AYSTOO3j3oPQqlUKpWzQWnOpJXibnWvugx+CkRsUJ0OCNUzbcsYQR2dPXB1RkCbX9fFXjCK4YzgpBBPXMtHS0/86t/YoE44k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElQn5JPf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0765C4CEE4;
-	Wed, 19 Mar 2025 14:37:30 +0000 (UTC)
+	 MIME-Version; b=BHQNN7RLj0wwpQEMAU23a7PHs2XdrMJMPVOIyY70mqJW6559bjzjQNsnWhSSh7S7PIdDpt+nr3q9kBKuM6tjHnlRuiqY8oUTIUTT8Ws9+NKKXlT6u77WcvBs5Bn/0PbRUsSZZFzlhKH9YBu068GHFGaoWZxmw2+Ln8ZeXifuM4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0I+918bm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBDFC4CEE4;
+	Wed, 19 Mar 2025 14:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395051;
-	bh=KLQQD++e4l4fFJDUJVpNLZDTTQwfwg9zCgIjfl6zHvA=;
+	s=korg; t=1742394896;
+	bh=fAPsKIUVGXBQx1vkPhzGrzj9XEikdlLgLRX0UHKobvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ElQn5JPfmzcaVMLjuVP3iiSSXg7dARQ8GU+UvsA/TZ+DenNhgcQfvp28xYsTWCCbW
-	 EOWas4k/68sHJGWJ9FAZO6PnR3MTOO/xtLfHcOC6BNZyW5Od4LZYICaxzcH81w6izX
-	 cTyMeLBJcBVsM7J9568i1tGpXcBgiNCSeMvWGgl4=
+	b=0I+918bmsX9BJIdCElwjAYbSTEzcmPM8fe+lq62Pr+KIWsgcgM7lRhkoxu2oZzUmK
+	 JNH7224UedMTA3BFjAS062/8iayG9sEfivvFGqkKI6t9LxRlODBbcnBrumjKa/F4p2
+	 3SSGeUhAsTJOVm8I7eyJ8zmSYQs5Gi6s3Zy0Cq3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugeny Shcheglov <eugenyshcheglov@gmail.com>,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/231] HID: hid-steam: Fix issues with disabling both gamepad mode and lizard mode
+Subject: [PATCH 6.13 101/241] drm/tests: hdmi: Remove redundant assignments
 Date: Wed, 19 Mar 2025 07:29:31 -0700
-Message-ID: <20250319143028.760761627@linuxfoundation.org>
+Message-ID: <20250319143030.222519751@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit 05c4ede6951b5d8e083b6bb237950cac59bdeb92 ]
+[ Upstream commit bb4f929a8875b4801db95b8cf3b2c527c1e475e0 ]
 
-When lizard mode is disabled, there were two issues:
+Some tests have the drm pointer assigned multiple times to the same
+value. Drop the redundant assignments.
 
-1. Switching between gamepad mode and desktop mode still functioned, even
-though desktop mode did not. This lead to the ability to "break" gamepad mode
-by holding down the Options key even while lizard mode is disabled
-
-2. If you were in desktop mode when lizard mode is disabled, you would
-immediately enter this faulty mode.
-
-This patch properly disables the ability to switch between gamepad mode and the
-faulty desktop mode by holding the Options key, as well as effectively removing
-the faulty mode by bypassing the early returns if lizard mode is disabled.
-
-Reported-by: Eugeny Shcheglov <eugenyshcheglov@gmail.com>
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250129-test-kunit-v2-2-fe59c43805d5@kernel.org
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Stable-dep-of: 5d14c08a4746 ("drm/tests: hdmi: Fix recursive locking")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-steam.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/hid/hid-steam.c b/drivers/hid/hid-steam.c
-index 19b7bb0c3d7f9..9de875f27c246 100644
---- a/drivers/hid/hid-steam.c
-+++ b/drivers/hid/hid-steam.c
-@@ -1051,10 +1051,10 @@ static void steam_mode_switch_cb(struct work_struct *work)
- 							struct steam_device, mode_switch);
- 	unsigned long flags;
- 	bool client_opened;
--	steam->gamepad_mode = !steam->gamepad_mode;
- 	if (!lizard_mode)
- 		return;
+diff --git a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
+index cbd9584af3299..4e7369caa7369 100644
+--- a/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
++++ b/drivers/gpu/drm/tests/drm_hdmi_state_helper_test.c
+@@ -450,7 +450,6 @@ static void drm_test_check_broadcast_rgb_auto_cea_mode_vic_1(struct kunit *test)
+ 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
  
-+	steam->gamepad_mode = !steam->gamepad_mode;
- 	if (steam->gamepad_mode)
- 		steam_set_lizard_mode(steam, false);
- 	else {
-@@ -1623,7 +1623,7 @@ static void steam_do_deck_input_event(struct steam_device *steam,
- 		schedule_delayed_work(&steam->mode_switch, 45 * HZ / 100);
- 	}
+-	drm = &priv->drm;
+ 	crtc = priv->crtc;
+ 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
+ 	KUNIT_ASSERT_EQ(test, ret, 0);
+@@ -564,7 +563,6 @@ static void drm_test_check_broadcast_rgb_full_cea_mode_vic_1(struct kunit *test)
+ 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
  
--	if (!steam->gamepad_mode)
-+	if (!steam->gamepad_mode && lizard_mode)
- 		return;
+-	drm = &priv->drm;
+ 	crtc = priv->crtc;
+ 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
+ 	KUNIT_ASSERT_EQ(test, ret, 0);
+@@ -680,7 +678,6 @@ static void drm_test_check_broadcast_rgb_limited_cea_mode_vic_1(struct kunit *te
+ 	mode = drm_kunit_display_mode_from_cea_vic(test, drm, 1);
+ 	KUNIT_ASSERT_NOT_NULL(test, mode);
  
- 	lpad_touched = b10 & BIT(3);
-@@ -1693,7 +1693,7 @@ static void steam_do_deck_sensors_event(struct steam_device *steam,
- 	 */
- 	steam->sensor_timestamp_us += 4000;
+-	drm = &priv->drm;
+ 	crtc = priv->crtc;
+ 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
+ 	KUNIT_ASSERT_EQ(test, ret, 0);
+@@ -1282,7 +1279,6 @@ static void drm_test_check_output_bpc_format_vic_1(struct kunit *test)
+ 	rate = mode->clock * 1500;
+ 	KUNIT_ASSERT_LT(test, rate, info->max_tmds_clock * 1000);
  
--	if (!steam->gamepad_mode)
-+	if (!steam->gamepad_mode && lizard_mode)
- 		return;
- 
- 	input_event(sensors, EV_MSC, MSC_TIMESTAMP, steam->sensor_timestamp_us);
+-	drm = &priv->drm;
+ 	crtc = priv->crtc;
+ 	ret = light_up_connector(test, drm, crtc, conn, mode, ctx);
+ 	KUNIT_EXPECT_EQ(test, ret, 0);
 -- 
 2.39.5
 
