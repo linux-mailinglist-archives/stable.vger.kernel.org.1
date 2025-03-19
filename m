@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-125209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59994A690A7
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D25C1A68F9C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA3911B66C93
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B192F17FCA1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AF0213E78;
-	Wed, 19 Mar 2025 14:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12291E1A2D;
+	Wed, 19 Mar 2025 14:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLbFtc52"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAuy4N6u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9EC213E79;
-	Wed, 19 Mar 2025 14:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A0A1B2194;
+	Wed, 19 Mar 2025 14:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395030; cv=none; b=e/J93uVnLSzhV2pOeyj9Xl2IACexxwdWB8/fV9BsBLiEGteqlyWci6UidWwF6491vPQsDEu2iyWnR+rg0qoACGEgj0RiIyVTzoM3l66y3SqkXwSlUmHa1H3H07lDNhWtkaVS6JTUakG4UNIPZL7vNwCm7WmFpUPFUOJizQq921c=
+	t=1742394904; cv=none; b=Bv9asO7lzTC9UmWwGUnGyKXy3ps/AI0bwV1GOJTHkB+WxFlB7/qDRdZRMvqedWDwsHy82XNZRPVFskFk0g5EeRh+HzTNpoQnJOmr/yR54PKPns80JHB2pme/xwTbO7ltFgoukB9VQr5TXAN7oeyX96omDK3YYix0KtkdCRa2FVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395030; c=relaxed/simple;
-	bh=/f1QS6wf3joohSTwC/VTPTkHeazGtbFRX33SJpljYQw=;
+	s=arc-20240116; t=1742394904; c=relaxed/simple;
+	bh=sjFtLJ1iS93fwb/PQ4KW3Fjt+ljisj6KhYvLihwr1ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkJJA8YC8a9mgeZ1COnLoigxPeT2ylNRBw79CgDJl8/N+Pp6VTtYfqb3a3VhyoGz/HgkmHbKbYX0OpHLedl8nwyB44DPPBidHZ7gGjWe12o9JRk+GJQdE551nuam6/9h2vyRkhFw/TEqUnBnkBI//AvlA885YC2Hz0D6p7JjERQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLbFtc52; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D44C4CEE4;
-	Wed, 19 Mar 2025 14:37:09 +0000 (UTC)
+	 MIME-Version; b=EQAgNOUrTgyzcxlhPESiRsXe8gUegjg4MBABUVluiHzluvxRwFHQWuU/KJ/xV8seT6wLrb2GQQnSz4BCoL+l+qiNbCFSjpNqI4M/Um0vs279uA/aTHerT8yKQ6uUWLUUqZpr2V4TZXottsfn33FIvgvHkbCEtLqI1OmGg8Hs1So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAuy4N6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6373EC4AF0B;
+	Wed, 19 Mar 2025 14:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395029;
-	bh=/f1QS6wf3joohSTwC/VTPTkHeazGtbFRX33SJpljYQw=;
+	s=korg; t=1742394904;
+	bh=sjFtLJ1iS93fwb/PQ4KW3Fjt+ljisj6KhYvLihwr1ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLbFtc52wunKDWzEiwLVk1paRT9SfvfuO5C0tG1tjhOa4EKjkzN4MJzDlhEUmFTy6
-	 TuyzN3KsvwbBQaROvPnkVzn+72zxFKySrm7m2FN86yLfN1yKDycWwcYBc/E8hwVJCq
-	 3fe0Dcqav8gcyo4GY8pucnmXaxZQGQBi428KgHFk=
+	b=WAuy4N6ul8lHfRCNfcqCI0JeUFhEBAZL+jZ/AFnCtoU5ftxhAbjwVw2GmY91LrbVY
+	 LLTRhLM/59pDjGt7rDchLZ5CWDoNzZisW14iv/ywh4+Z/wX6D3/KPip4bB1BpICx1R
+	 FRaTZl0OLpCrxGk3HofbdHX7lrqnGupDmRVE1+Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/231] bonding: fix incorrect MAC address setting to receive NS messages
+Subject: [PATCH 6.13 064/241] sched/debug: Provide slice length for fair tasks
 Date: Wed, 19 Mar 2025 07:28:54 -0700
-Message-ID: <20250319143027.830163359@linuxfoundation.org>
+Message-ID: <20250319143029.310674544@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,133 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Christian Loehle <christian.loehle@arm.com>
 
-[ Upstream commit 0c5e145a350de3b38cd5ae77a401b12c46fb7c1d ]
+[ Upstream commit 9065ce69754dece78606c8bbb3821449272e56bf ]
 
-When validation on the backup slave is enabled, we need to validate the
-Neighbor Solicitation (NS) messages received on the backup slave. To
-receive these messages, the correct destination MAC address must be added
-to the slave. However, the target in bonding is a unicast address, which
-we cannot use directly. Instead, we should first convert it to a
-Solicited-Node Multicast Address and then derive the corresponding MAC
-address.
+Since commit:
 
-Fix the incorrect MAC address setting on both slave_set_ns_maddr() and
-slave_set_ns_maddrs(). Since the two function names are similar. Add
-some description for the functions. Also only use one mac_addr variable
-in slave_set_ns_maddr() to save some code and logic.
+  857b158dc5e8 ("sched/eevdf: Use sched_attr::sched_runtime to set request/slice suggestion")
 
-Fixes: 8eb36164d1a6 ("bonding: add ns target multicast address to slave device")
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250306023923.38777-2-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+... we have the userspace per-task tunable slice length, which is
+a key parameter that is otherwise difficult to obtain, so provide
+it in /proc/$PID/sched.
+
+[ mingo: Clarified the changelog. ]
+
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/453349b1-1637-42f5-a7b2-2385392b5956@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_options.c | 55 +++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 8 deletions(-)
+ kernel/sched/debug.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 327b6ecdc77e0..d1b095af253bd 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1242,10 +1242,28 @@ static bool slave_can_set_ns_maddr(const struct bonding *bond, struct slave *sla
- 	       slave->dev->flags & IFF_MULTICAST;
- }
- 
-+/**
-+ * slave_set_ns_maddrs - add/del all NS mac addresses for slave
-+ * @bond: bond device
-+ * @slave: slave device
-+ * @add: add or remove all the NS mac addresses
-+ *
-+ * This function tries to add or delete all the NS mac addresses on the slave
-+ *
-+ * Note, the IPv6 NS target address is the unicast address in Neighbor
-+ * Solicitation (NS) message. The dest address of NS message should be
-+ * solicited-node multicast address of the target. The dest mac of NS message
-+ * is converted from the solicited-node multicast address.
-+ *
-+ * This function is called when
-+ *   * arp_validate changes
-+ *   * enslaving, releasing new slaves
-+ */
- static void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool add)
- {
- 	struct in6_addr *targets = bond->params.ns_targets;
- 	char slot_maddr[MAX_ADDR_LEN];
-+	struct in6_addr mcaddr;
- 	int i;
- 
- 	if (!slave_can_set_ns_maddr(bond, slave))
-@@ -1255,7 +1273,8 @@ static void slave_set_ns_maddrs(struct bonding *bond, struct slave *slave, bool
- 		if (ipv6_addr_any(&targets[i]))
- 			break;
- 
--		if (!ndisc_mc_map(&targets[i], slot_maddr, slave->dev, 0)) {
-+		addrconf_addr_solict_mult(&targets[i], &mcaddr);
-+		if (!ndisc_mc_map(&mcaddr, slot_maddr, slave->dev, 0)) {
- 			if (add)
- 				dev_mc_add(slave->dev, slot_maddr);
- 			else
-@@ -1278,23 +1297,43 @@ void bond_slave_ns_maddrs_del(struct bonding *bond, struct slave *slave)
- 	slave_set_ns_maddrs(bond, slave, false);
- }
- 
-+/**
-+ * slave_set_ns_maddr - set new NS mac address for slave
-+ * @bond: bond device
-+ * @slave: slave device
-+ * @target: the new IPv6 target
-+ * @slot: the old IPv6 target in the slot
-+ *
-+ * This function tries to replace the old mac address to new one on the slave.
-+ *
-+ * Note, the target/slot IPv6 address is the unicast address in Neighbor
-+ * Solicitation (NS) message. The dest address of NS message should be
-+ * solicited-node multicast address of the target. The dest mac of NS message
-+ * is converted from the solicited-node multicast address.
-+ *
-+ * This function is called when
-+ *   * An IPv6 NS target is added or removed.
-+ */
- static void slave_set_ns_maddr(struct bonding *bond, struct slave *slave,
- 			       struct in6_addr *target, struct in6_addr *slot)
- {
--	char target_maddr[MAX_ADDR_LEN], slot_maddr[MAX_ADDR_LEN];
-+	char mac_addr[MAX_ADDR_LEN];
-+	struct in6_addr mcast_addr;
- 
- 	if (!bond->params.arp_validate || !slave_can_set_ns_maddr(bond, slave))
- 		return;
- 
--	/* remove the previous maddr from slave */
-+	/* remove the previous mac addr from slave */
-+	addrconf_addr_solict_mult(slot, &mcast_addr);
- 	if (!ipv6_addr_any(slot) &&
--	    !ndisc_mc_map(slot, slot_maddr, slave->dev, 0))
--		dev_mc_del(slave->dev, slot_maddr);
-+	    !ndisc_mc_map(&mcast_addr, mac_addr, slave->dev, 0))
-+		dev_mc_del(slave->dev, mac_addr);
- 
--	/* add new maddr on slave if target is set */
-+	/* add new mac addr on slave if target is set */
-+	addrconf_addr_solict_mult(target, &mcast_addr);
- 	if (!ipv6_addr_any(target) &&
--	    !ndisc_mc_map(target, target_maddr, slave->dev, 0))
--		dev_mc_add(slave->dev, target_maddr);
-+	    !ndisc_mc_map(&mcast_addr, mac_addr, slave->dev, 0))
-+		dev_mc_add(slave->dev, mac_addr);
- }
- 
- static void _bond_options_ns_ip6_target_set(struct bonding *bond, int slot,
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index a1be00a988bf6..5b32d3cc393bf 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -1265,6 +1265,8 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+ 	if (task_has_dl_policy(p)) {
+ 		P(dl.runtime);
+ 		P(dl.deadline);
++	} else if (fair_policy(p->policy)) {
++		P(se.slice);
+ 	}
+ #ifdef CONFIG_SCHED_CLASS_EXT
+ 	__PS("ext.enabled", task_on_scx(p));
 -- 
 2.39.5
 
