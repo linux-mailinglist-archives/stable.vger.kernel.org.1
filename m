@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-125304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E03D3A690B5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F524A690B7
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9E7D8A17B3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59F918A1D63
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F70821A44A;
-	Wed, 19 Mar 2025 14:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F8F1E5206;
+	Wed, 19 Mar 2025 14:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSgbnBY+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vz/A8Pkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22401DA112;
-	Wed, 19 Mar 2025 14:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565C81DA112;
+	Wed, 19 Mar 2025 14:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395095; cv=none; b=KfZ8VhN6KKRAFYxdAZLqmgufsJh6jlVvHjTM+li+eOYTOIS/1sWzR2RDa8+CjferxjYFiPrFq2vv/HB/V8kZ216p10SFS966rxLtKEklGP+1Hj23X4nhPlQRywzTH1Bl4PEMYyK+uvImdxyywKI9hz6S4SPFGp76TbxJ+1d9Yos=
+	t=1742395096; cv=none; b=npMT94gyP7NtXqSwOH3EVsr4xySpDYJq1kqiRxluYlOymhxmURvKua8/iqldpO3oN1IA71UtjMq3tTxg2UXoJUKRGBfSB4CR3ogMO8YHldyHVXiLwmzg0DSyIROcEKi+hZUp5viv6MoDJbCNEu2t0wBeGKrtWRK6PW/AfnNDzzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395095; c=relaxed/simple;
-	bh=1sW+S4q6FEwEzYbX69Yu16eKEsoM7Enrm9ttBcEgBVM=;
+	s=arc-20240116; t=1742395096; c=relaxed/simple;
+	bh=z0DRr/8vbUTS9MP//K7C/lJfgGqPfTXyygCdrBPnAzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KjWHiLWvl3dYv6GcLirTYFMVrMTofY08HXpw8aOElEH4dR9TiYmRqTnpCEj3uBPdKnaVplnI3x58C+JhQJ0+h+wN2ZwUS62e2XIeT8pGzOLonubsUc5jTPc2ulfApq/8B3iMzy+u3gQ0qw/wapKQC7v8h+yhagwRXs5eJKzRr9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSgbnBY+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75C3C4CEE4;
-	Wed, 19 Mar 2025 14:38:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uuf/yJgXLOkcGAcdfJUhspLym7MS3vA8/51niwqVRXLrDvzt0hVuBLp6PXWgpi36HmVtxlfrZjKjoZLli2rd3xaurZ3Q3luyTAUhN3EqiZTbUItdQ8AYJMzY60QR3n0GAhCG54J4yvlxPA4cATI+3mWeqrb6SU4bKYfioMUqzwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vz/A8Pkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2435AC4CEE4;
+	Wed, 19 Mar 2025 14:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395094;
-	bh=1sW+S4q6FEwEzYbX69Yu16eKEsoM7Enrm9ttBcEgBVM=;
+	s=korg; t=1742395096;
+	bh=z0DRr/8vbUTS9MP//K7C/lJfgGqPfTXyygCdrBPnAzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uSgbnBY+U+lJ9gACD3H5KzHHhc6RdS1W4rMZhfPhqdfCRZDHhsx1RQQTQFrmeBEim
-	 1o74wtYGpemPXmiK2gs8YwDinC3QljqJdJCfXf1pI7MBQTRV99TSPpV/WOy4W14dvw
-	 +FyYcuHt2s1sC6cdU6o4/9uLmHkbsF4TSC2/NS4U=
+	b=vz/A8Pkqass8/FNFfFhFso8nLaIRSEw6yYe9deWDGydoSnqP/sWNQCmHKRIZxmHMl
+	 bBcn59pmArB0e2NgCPvNzh0srSCkzefMOHg5Vu3xHmxziqfb9o6q6ECGuPmQqJhRol
+	 luyyeuwRiprWskDsJinvxx2LTiU0k6pcahLX8SK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 144/231] cifs: Validate content of WSL reparse point buffers
-Date: Wed, 19 Mar 2025 07:30:37 -0700
-Message-ID: <20250319143030.395423316@linuxfoundation.org>
+Subject: [PATCH 6.12 145/231] cifs: Throw -EOPNOTSUPP error on unsupported reparse point type from parse_reparse_point()
+Date: Wed, 19 Mar 2025 07:30:38 -0700
+Message-ID: <20250319143030.422348628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
 References: <20250319143026.865956961@linuxfoundation.org>
@@ -69,35 +69,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 1f48660667efb97c3cf70485c7e1977af718b48b ]
+[ Upstream commit cad3fc0a4c8cef07b07ceddc137f582267577250 ]
 
-WSL socket, fifo, char and block devices have empty reparse buffer.
-Validate the length of the reparse buffer.
+This would help to track and detect by caller if the reparse point type was
+processed or not.
 
 Signed-off-by: Pali Rohár <pali@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: cad3fc0a4c8c ("cifs: Throw -EOPNOTSUPP error on unsupported reparse point type from parse_reparse_point()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/reparse.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/smb/client/reparse.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
-index e56a8df23fec9..bd8808e50d127 100644
+index bd8808e50d127..bb246ef0458fb 100644
 --- a/fs/smb/client/reparse.c
 +++ b/fs/smb/client/reparse.c
-@@ -651,6 +651,11 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
- 	case IO_REPARSE_TAG_LX_FIFO:
- 	case IO_REPARSE_TAG_LX_CHR:
- 	case IO_REPARSE_TAG_LX_BLK:
-+		if (le16_to_cpu(buf->ReparseDataLength) != 0) {
-+			cifs_dbg(VFS, "srv returned malformed buffer for reparse point: 0x%08x\n",
-+				 le32_to_cpu(buf->ReparseTag));
-+			return -EIO;
-+		}
- 		break;
+@@ -656,13 +656,12 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 				 le32_to_cpu(buf->ReparseTag));
+ 			return -EIO;
+ 		}
+-		break;
++		return 0;
  	default:
  		cifs_tcon_dbg(VFS | ONCE, "unhandled reparse tag: 0x%08x\n",
+ 			      le32_to_cpu(buf->ReparseTag));
+-		break;
++		return -EOPNOTSUPP;
+ 	}
+-	return 0;
+ }
+ 
+ int smb2_parse_reparse_point(struct cifs_sb_info *cifs_sb,
 -- 
 2.39.5
 
