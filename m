@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42931A69023
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:44:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68113A68F57
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1958588036A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49451171D74
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AC620C46D;
-	Wed, 19 Mar 2025 14:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFCE1C5D57;
+	Wed, 19 Mar 2025 14:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6cDJ0Uv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUq+tmcq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8511DF973;
-	Wed, 19 Mar 2025 14:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5DA1B2194;
+	Wed, 19 Mar 2025 14:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395005; cv=none; b=WSWbSp+1TdvfpQtWdMu2DpudsghslOteo7vzdJ5/EbuMo4tZ/B9/nm9+PcDytBvgMdmsoNWHlqClyW7oyppTiFTXcS07yZyi/o4scJTUakr3JfktQbHBZD5Nf6sgL11xz6HnCy8glZiMzDB1KddvyYGfEavD5otW0vcdIEgXnRI=
+	t=1742394850; cv=none; b=shoZFF5M7VHjhpqB6exZVYq8iQeWgZ+2babIryL+KpwgzM4/t8HqIdjVFPAncUuaxlm6V4BxVuHP2gJOyLyiVNoGwbQIjqAhbPUjWtndU0k83u4Y0D2QamxFLRlNnZuvR88wYenw3H0ELEf8S6F/4Q/Noez/p2GhIguIAzH+CMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395005; c=relaxed/simple;
-	bh=T9bs0awX5pAORLbKbkLAsziOt0TBddxxjni/hhK6D+Y=;
+	s=arc-20240116; t=1742394850; c=relaxed/simple;
+	bh=C/aHKP2WAOv+sXObuIiNtagkYHlaeubX9B8MHS7C2Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eWomdAcaGQi7sz8Ud+m9FWRidtb3Va3toxhZAljwLYXB+5vV4635+u1yWq1iw1J6tZsq69edwrebAuIbxRTH32CIU6T8GlLUv96YChbxeK+aaL41sswMKFeVN89DnSHxbFFZQYi1h9TgFp1VZ6hfb0rjAzIapqEeUpWbWP4Ea8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6cDJ0Uv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87695C4CEE4;
-	Wed, 19 Mar 2025 14:36:45 +0000 (UTC)
+	 MIME-Version; b=CSSpJ3LkQze5544sI6udqpMi9a3ZU7qag/gp/grsm5LK/KawhIOprFBa5tR3l/dtoql8+eSTN0he2P4jQurNLaZXvioHqJpbNPhURb2DSV5csuD74FWlvFDIbIddBiJjHt/yVbCvc29Q4IHRhngAzo9KtFbxclH9AivBe4b7T80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUq+tmcq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A700C4CEED;
+	Wed, 19 Mar 2025 14:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395005;
-	bh=T9bs0awX5pAORLbKbkLAsziOt0TBddxxjni/hhK6D+Y=;
+	s=korg; t=1742394850;
+	bh=C/aHKP2WAOv+sXObuIiNtagkYHlaeubX9B8MHS7C2Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6cDJ0Uv3hVHEhNhCKiZA5+ERlg8E+FKAcL4Pwm+m2sx/kmopy9/m9sdNLo4pvXoq
-	 ZIIAB2YbRL18T5+fUpGh+PM+9LxsWqawUWHxIKsO4PZyw3MGQvf9lIzKX6/F7MaZlN
-	 Ct+KnZNnqiTBrt9xQ4Y219HyhLpOxiJkTEBItdZ8=
+	b=xUq+tmcq6LINSBpBvRbyEpzI1SOimy2lEZqYfu6lqQVa0mWGAD3fJ0LAMbNiQacdV
+	 +5NKBriNrigSrSJ2KpYmXtwL/pBy/+/4rwvPvq5iE0IJLhFAukzb3M0bcc7SMfsbTY
+	 uwxQKIP3h+lvept3FeIRE47cjITYHHrxR3LRMBvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Taehee Yoo <ap420073@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/231] wifi: iwlwifi: mvm: fix PNVM timeout for non-MSI-X platforms
+Subject: [PATCH 6.13 037/241] eth: bnxt: fix memory leak in queue reset
 Date: Wed, 19 Mar 2025 07:28:27 -0700
-Message-ID: <20250319143027.206298697@linuxfoundation.org>
+Message-ID: <20250319143028.635916113@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Taehee Yoo <ap420073@gmail.com>
 
-[ Upstream commit b8c8a03e9b7bfc06f366b75daf3d0812400e7123 ]
+[ Upstream commit 87dd2850835dd7886726b428a8ef7d73a60520c7 ]
 
-When MSI-X is not enabled, we mask all the interrupts in the interrupt
-handler and re-enable them when the interrupt thread runs. If
-STATUS_INT_ENABLED is not set, we won't re-enable in the thread.
-In order to get the ALIVE interrupt, we allow the ALIVE interrupt
-itself, and RX as well in order to receive the ALIVE notification (which
-is received as an RX from the firmware.
+When the queue is reset, the bnxt_alloc_one_tpa_info() is called to
+allocate tpa_info for the new queue.
+And then the old queue's tpa_info should be removed by the
+bnxt_free_one_tpa_info(), but it is not called.
+So memory leak occurs.
+It adds the bnxt_free_one_tpa_info() in the bnxt_queue_mem_free().
 
-The problem is that STATUS_INT_ENABLED is clear until the op_mode calls
-trans_fw_alive which means that until trans_fw_alive is called, any
-notification from the firmware will not be received.
+unreferenced object 0xffff888293cc0000 (size 16384):
+  comm "ncdevmem", pid 2076, jiffies 4296604081
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 40 75 78 93 82 88 ff ff  ........@ux.....
+    40 75 78 93 02 00 00 00 00 00 00 00 00 00 00 00  @ux.............
+  backtrace (crc 5d7d4798):
+    ___kmalloc_large_node+0x10d/0x1b0
+    __kmalloc_large_node_noprof+0x17/0x60
+    __kmalloc_noprof+0x3f6/0x520
+    bnxt_alloc_one_tpa_info+0x5f/0x300 [bnxt_en]
+    bnxt_queue_mem_alloc+0x8e8/0x14f0 [bnxt_en]
+    netdev_rx_queue_restart+0x233/0x620
+    net_devmem_bind_dmabuf_to_queue+0x2a3/0x600
+    netdev_nl_bind_rx_doit+0xc00/0x10a0
+    genl_family_rcv_msg_doit+0x1d4/0x2b0
+    genl_rcv_msg+0x3fb/0x6c0
+    netlink_rcv_skb+0x12c/0x360
+    genl_rcv+0x24/0x40
+    netlink_unicast+0x447/0x710
+    netlink_sendmsg+0x712/0xbc0
+    __sys_sendto+0x3fd/0x4d0
+    __x64_sys_sendto+0xdc/0x1b0
 
-This became a problem when we inserted the pnvm_load exactly between the
-ALIVE and trans_fw_alive.
-
-Fix that by calling trans_fw_alive before loading the PNVM. This will
-allow to get the notification from the firmware about PNVM load being
-complete and continue the flow normally.
-
-This didn't happen on MSI-X because we don't disable the interrupts in
-the ISR when MSI-X is available.
-
-The error in the log looks like this:
-
-iwlwifi 0000:00:03.0: Timeout waiting for PNVM load!
-iwlwifi 0000:00:03.0: Failed to start RT ucode: -110
-iwlwifi 0000:00:03.0: WRT: Collecting data: ini trigger 13 fired (delay=0ms).
-
-Fixes: 70d3ca86b025 ("iwlwifi: mvm: ring the doorbell and wait for PNVM load completion")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250306122425.0f2cf207aae1.I025d8f724b44f52eadf6c19069352eb9275613a8@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 2d694c27d32e ("bnxt_en: implement netdev_queue_mgmt_ops")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+Link: https://patch.msgid.link/20250309134219.91670-7-ap420073@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index f30b0fc8eca97..2b9a684cf61d5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -422,6 +422,8 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
- 	/* if reached this point, Alive notification was received */
- 	iwl_mei_alive_notif(true);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index a768b71054fcf..a79c78061d1d0 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -15486,6 +15486,7 @@ static void bnxt_queue_mem_free(struct net_device *dev, void *qmem)
+ 	struct bnxt_ring_struct *ring;
  
-+	iwl_trans_fw_alive(mvm->trans, alive_data.scd_base_addr);
-+
- 	ret = iwl_pnvm_load(mvm->trans, &mvm->notif_wait,
- 			    &mvm->fw->ucode_capa);
- 	if (ret) {
-@@ -430,8 +432,6 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
- 		return ret;
- 	}
+ 	bnxt_free_one_rx_ring_skbs(bp, rxr);
++	bnxt_free_one_tpa_info(bp, rxr);
  
--	iwl_trans_fw_alive(mvm->trans, alive_data.scd_base_addr);
--
- 	/*
- 	 * Note: all the queues are enabled as part of the interface
- 	 * initialization, but in firmware restart scenarios they
+ 	xdp_rxq_info_unreg(&rxr->xdp_rxq);
+ 
 -- 
 2.39.5
 
