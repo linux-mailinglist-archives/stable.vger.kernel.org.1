@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-125406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865E0A69333
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:24:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 134D9A6928A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEE1D1B60C41
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70CA61B8542D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3E021D599;
-	Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409501B4F15;
+	Wed, 19 Mar 2025 14:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIjeG29G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OegDKpii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691C1F09BD;
-	Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CFB1B2194;
+	Wed, 19 Mar 2025 14:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395165; cv=none; b=TZUEphnPrHXRjGi3a9JTAlgRR24z4AonfDgedHxsg4wcGsBO7ouCDjTSl2yNnHOFKR/4za9YzJEpD79Gs5IY/9yLqw7wSEWWIEWRy5d8oZpQwlvXtu0yUhv6VyzZOoWxI+PFnshRtF6LkhSbBXCEW3vUvMOTW4GS+Nje4hiCZ54=
+	t=1742394906; cv=none; b=Mx3qiMzbTAdZxRZCuk5989RwVJ3pPz9wboKzwglT1nniPbvjI2ijmq3vGqlPpyDAmJUJm7N5MShENXG+x+eudaq3OO0atKqUBDpBv7i8Cx+4wY19x8M6aXl2YkEmqHfTDySuVhXMtsaXotZrrz7nlU4WlfiUKOwYfU3rcnSZmBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395165; c=relaxed/simple;
-	bh=GoAwHghT1E+Mt2PnG1gDlvkQZsp+OyG28FcDvrBGGMs=;
+	s=arc-20240116; t=1742394906; c=relaxed/simple;
+	bh=OTDfvz1FpFyATERCkYMhJtGFaHTb/catgF+uVEiX17c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBGOeuhv4bGwZTJJgmYXYwp9oKXQx1wUt4KtLQCPXKVOC0IUecyUWHFj9syUWHixPHOxT1BIiTAaPmRp3Y7MaKe/20z8OiR5DwdmXYfEdiIq1m9nr7+ypjWlBowbixDITlvDn/yZ35KPK+g/0IPNoI0Cte8fC2EWRKteHrpV5HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIjeG29G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B09BC4CEE4;
-	Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
+	 MIME-Version; b=c5pbUIwsbbVxqNBJxzi1foVf+V3D2uiEW4cayMMWiRAUtGXGoCimFsgV7rJm1GpjWzAk6CmwFGI5nR98KsNsJw5Ggp+eQ2TjwNncHhvamierTPI9dr88JBTDNnctWApMx/vGuEidvbDfibNMKDDNi5wjiWATQYrYXbtmyn/oAIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OegDKpii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92DBC4CEE4;
+	Wed, 19 Mar 2025 14:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395165;
-	bh=GoAwHghT1E+Mt2PnG1gDlvkQZsp+OyG28FcDvrBGGMs=;
+	s=korg; t=1742394905;
+	bh=OTDfvz1FpFyATERCkYMhJtGFaHTb/catgF+uVEiX17c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NIjeG29Gfs5UNrrH55sgFuo3uIJAf/opG8VJCSURRtILnt/tUxRacUylFF/lntAW9
-	 Gc6E12OdeUtFjXDesniacnpHntGE+UP3EpU/4bZRqMuenAlBQNnPXNeVkn6mz4swxT
-	 ns0NJR41LN383upau0BcAU/GJ4alCKKQmecWrZOI=
+	b=OegDKpii3FWXvP5wekmWM0PGITe2MGmPT2Mh3j+if8jI6kKkYAphb6fclCGFtOU//
+	 aJlsj6vjU6stkST2OXU/VN0BMYVPpDfH5TLkZ6wDy3kNwAyitmfkp1SI+H3S3YrtXs
+	 BhL1jmyfbkTLIEk0+5GyM0p7TruOWAo/8K0fTFc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/166] wifi: cfg80211: cancel wiphy_work before freeing wiphy
-Date: Wed, 19 Mar 2025 07:29:45 -0700
-Message-ID: <20250319143020.369687543@linuxfoundation.org>
+Subject: [PATCH 6.13 117/241] PCI: pci_ids: add INTEL_HDA_PTL_H
+Date: Wed, 19 Mar 2025 07:29:47 -0700
+Message-ID: <20250319143030.615861753@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +66,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 72d520476a2fab6f3489e8388ab524985d6c4b90 ]
+[ Upstream commit a1f7b7ff0e10ae574d388131596390157222f986 ]
 
-A wiphy_work can be queued from the moment the wiphy is allocated and
-initialized (i.e. wiphy_new_nm). When a wiphy_work is queued, the
-rdev::wiphy_work is getting queued.
+Add Intel PTL-H audio Device ID.
 
-If wiphy_free is called before the rdev::wiphy_work had a chance to run,
-the wiphy memory will be freed, and then when it eventally gets to run
-it'll use invalid memory.
-
-Fix this by canceling the work before freeing the wiphy.
-
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20250306123626.efd1d19f6e07.I48229f96f4067ef73f5b87302335e2fd750136c9@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250210081730.22916-2-peter.ujfalusi@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/pci_ids.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 3c1247933ae92..a2b15349324b6 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1151,6 +1151,13 @@ void cfg80211_dev_free(struct cfg80211_registered_device *rdev)
- {
- 	struct cfg80211_internal_bss *scan, *tmp;
- 	struct cfg80211_beacon_registration *reg, *treg;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+	WARN_ON(!list_empty(&rdev->wiphy_work_list));
-+	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+	cancel_work_sync(&rdev->wiphy_work);
-+
- 	rfkill_destroy(rdev->wiphy.rfkill);
- 	list_for_each_entry_safe(reg, treg, &rdev->beacon_registrations, list) {
- 		list_del(&reg->list);
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index de5deb1a0118f..1a2594a38199f 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -3134,6 +3134,7 @@
+ #define PCI_DEVICE_ID_INTEL_HDA_LNL_P	0xa828
+ #define PCI_DEVICE_ID_INTEL_S21152BB	0xb152
+ #define PCI_DEVICE_ID_INTEL_HDA_BMG	0xe2f7
++#define PCI_DEVICE_ID_INTEL_HDA_PTL_H	0xe328
+ #define PCI_DEVICE_ID_INTEL_HDA_PTL	0xe428
+ #define PCI_DEVICE_ID_INTEL_HDA_CML_R	0xf0c8
+ #define PCI_DEVICE_ID_INTEL_HDA_RKL_S	0xf1c8
 -- 
 2.39.5
 
