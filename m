@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-125469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C684A6925B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:08:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AAAA692FF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F11071B855B4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C13A11B636D3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD25221717;
-	Wed, 19 Mar 2025 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65AD22171A;
+	Wed, 19 Mar 2025 14:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TueMxVYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7wn8kmQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EDB1CAA60;
-	Wed, 19 Mar 2025 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F471DEFE6;
+	Wed, 19 Mar 2025 14:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395209; cv=none; b=UbvzkJsAuix6XFXG+v3jB6iRZuOdFnrHGXUR1vKKIeywNzrz/A+WPbZ7KwpyRFXWOlGsjylF9ecFn68xn/x/sAewnttPG5iyIv13FJqCQ1p5ZXO/Z5B/fHKo569EA5XaZ5aPUaA3vGnNUcaFH6r0ltoWua/lEtqYaVnnEzb7XnY=
+	t=1742395210; cv=none; b=tCHE5XbF1lrL+MDkqB4azA7or/9XCD8noRjibhYrakhVULu7mnyZ553MhQnv67K8PVqOYUdqtULmbiNWGNkQXdGs4mW4I3hrcs7AjklSUgyc4k52ustu/Qlw7ZwVSsh3bT1jXqNgbx5/x+MGBDyWjQvPI22Y4Ti+XFRceXzPAM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395209; c=relaxed/simple;
-	bh=QUbAHPUYuccFgqe66U7UkVwrOKVVuIjtGknNh7g0akQ=;
+	s=arc-20240116; t=1742395210; c=relaxed/simple;
+	bh=j2PVY763EFTFZpL2Bp4krsmlyv8mTSnbyee3mUxa+pI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buAUr3X2BJyHN049IF7wVG/B9SUqY05Cm0RMO9UPfpZIxtG0XN+3lDdZQvad+kkFWsQJF3kh4NunKwQXAhVzoC2JQIBRtKhMr4numZ8CLPS1vf8nZzZdxp+W14d4YAXRU2vXWX+hisJ2WEniuNbRWcz1sZ2KD51wZculLvYI49A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TueMxVYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0373C4CEE4;
-	Wed, 19 Mar 2025 14:40:08 +0000 (UTC)
+	 MIME-Version; b=V0z6wWSwT7QR8Rcp2szdQqv4hkHnRUM7QAhXP7VcgzqttIWAPbxZbDQeLMuJVdR7w6Sr7QRLlEha8eQ4lr79qpFHnyisRFQdp1yDVAFEfh/8+t6IrlQuoBGM3aswaX161NOn3bdgaKZqctzul8oRfE41tSAFqCxjXhMRB1Pvv9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7wn8kmQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC74C4CEE4;
+	Wed, 19 Mar 2025 14:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395209;
-	bh=QUbAHPUYuccFgqe66U7UkVwrOKVVuIjtGknNh7g0akQ=;
+	s=korg; t=1742395210;
+	bh=j2PVY763EFTFZpL2Bp4krsmlyv8mTSnbyee3mUxa+pI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TueMxVYeXTLco6tYVdPOTQhWE+42rrOURzMb40Dw0fnpOq9K8AMros0Up4USdaQpX
-	 h4B033V9qAFqPDDZ9uF1u3YDSZt1hhWrNcUGM3AMsNbs6GBXJoh/69d7F3nSTOSY4v
-	 EcdP9FH0hWbguGeOvfUmiGootnSdI26Ug7rJhgsM=
+	b=V7wn8kmQhs0ww/MmaFCya3AKSr3fYHvqwLjYJnKsnoDwoDn6YQ7bB9MNZUBwGT5Ct
+	 zlUy6SlQN7sxLquc/jtFRYSjTSF1RIak6oCUiOVlOnq7eexk2I7z+lGM4rAMoBjlRk
+	 Xt/1CmrI2phuUQzPKtbXlKmcwyFWVpExRD8ERchE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/166] nvme-fc: go straight to connecting state when initializing
-Date: Wed, 19 Mar 2025 07:30:07 -0700
-Message-ID: <20250319143020.968234016@linuxfoundation.org>
+Subject: [PATCH 6.6 038/166] hrtimers: Mark is_migration_base() with __always_inline
+Date: Wed, 19 Mar 2025 07:30:09 -0700
+Message-ID: <20250319143021.021917147@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
 References: <20250319143019.983527953@linuxfoundation.org>
@@ -69,41 +66,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d3d380eded7ee5fc2fc53b3b0e72365ded025c4a ]
+[ Upstream commit 27af31e44949fa85550176520ef7086a0d00fd7b ]
 
-The initial controller initialization mimiks the reconnect loop
-behavior by switching from NEW to RESETTING and then to CONNECTING.
+When is_migration_base() is unused, it prevents kernel builds
+with clang, `make W=1` and CONFIG_WERROR=y:
 
-The transition from NEW to CONNECTING is a valid transition, so there is
-no point entering the RESETTING state. TCP and RDMA also transition
-directly to CONNECTING state.
+kernel/time/hrtimer.c:156:20: error: unused function 'is_migration_base' [-Werror,-Wunused-function]
+  156 | static inline bool is_migration_base(struct hrtimer_clock_base *base)
+      |                    ^~~~~~~~~~~~~~~~~
 
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fix this by marking it with __always_inline.
+
+[ tglx: Use __always_inline instead of __maybe_unused and move it into the
+  	usage sites conditional ]
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250116160745.243358-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/time/hrtimer.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index 91324791a5b66..0641050f590f3 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -3553,8 +3553,7 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
- 	list_add_tail(&ctrl->ctrl_list, &rport->ctrl_list);
- 	spin_unlock_irqrestore(&rport->lock, flags);
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 5db6912b8f6e1..877535b06e73a 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -145,11 +145,6 @@ static struct hrtimer_cpu_base migration_cpu_base = {
  
--	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_RESETTING) ||
--	    !nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
-+	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING)) {
- 		dev_err(ctrl->ctrl.device,
- 			"NVME-FC{%d}: failed to init ctrl state\n", ctrl->cnum);
- 		goto fail_ctrl;
+ #define migration_base	migration_cpu_base.clock_base[0]
+ 
+-static inline bool is_migration_base(struct hrtimer_clock_base *base)
+-{
+-	return base == &migration_base;
+-}
+-
+ /*
+  * We are using hashed locking: holding per_cpu(hrtimer_bases)[n].lock
+  * means that all timers which are tied to this base via timer->base are
+@@ -275,11 +270,6 @@ switch_hrtimer_base(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 
+ #else /* CONFIG_SMP */
+ 
+-static inline bool is_migration_base(struct hrtimer_clock_base *base)
+-{
+-	return false;
+-}
+-
+ static inline struct hrtimer_clock_base *
+ lock_hrtimer_base(const struct hrtimer *timer, unsigned long *flags)
+ 	__acquires(&timer->base->cpu_base->lock)
+@@ -1381,6 +1371,18 @@ static void hrtimer_sync_wait_running(struct hrtimer_cpu_base *cpu_base,
+ 	}
+ }
+ 
++#ifdef CONFIG_SMP
++static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
++{
++	return base == &migration_base;
++}
++#else
++static __always_inline bool is_migration_base(struct hrtimer_clock_base *base)
++{
++	return false;
++}
++#endif
++
+ /*
+  * This function is called on PREEMPT_RT kernels when the fast path
+  * deletion of a timer failed because the timer callback function was
 -- 
 2.39.5
 
