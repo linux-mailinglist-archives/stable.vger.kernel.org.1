@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-125268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE41DA69047
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08AEA68FA9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC7321748D1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37F8F3ADF63
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69E321517B;
-	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8EE1E2613;
+	Wed, 19 Mar 2025 14:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHthDEEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCsoz63+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F711E2850;
-	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7291C5F2D;
+	Wed, 19 Mar 2025 14:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395070; cv=none; b=QtWuqlxhTvh2aAp09K0c9p4G+peRNAtyHSzQ/S1bVYPVE57xpNU5OVVNJapXI3FDiGNpwRBRwr8SXX2KcjJWecGD314K0l5fed7ujtE+sy4hj9JGaDRrYCRiN5C7d1vYgjKMpQ+GVbKCIrkSPdb5D0AXcSWyn5Sj76+G3LHJPBw=
+	t=1742394920; cv=none; b=FIXIjbbNZYW3DagqgsfIH4L1B64Z0UYjpW2K+L8BRW065L/RrvPUDsvrzWCxZYoidoAh/05sQpt0W6czlQOv8rzKPqt3sc/TuhrV9oi3d8rtp+o5SOC7NplrrYzJwzUCTk6S/cnz9GZkKMnHJODCwz1qQnRftsEI9o+ACOSb3to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395070; c=relaxed/simple;
-	bh=nrU2WL3rALmHnF08F7UPXRGO4C/Y8XxQZv6JcSAmQSc=;
+	s=arc-20240116; t=1742394920; c=relaxed/simple;
+	bh=2hFThKx49oxz27PHz3w7DmRpLcx7evRFPIMWkshsjnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKY4IXqgxdRZwl8VVM1xX4LwSpENyxMLkqrPbvkv3nbz/XM5JR9BNncr51LFHeVpFZHkCd5Ja7xbARMek3tQMLK8tpNT+LY9Jj/GVpFmBoA/qt8TiVx/gdZ/dnrPOeZMhzjXiYYdvvkDQJ7xKXGyIXcvVAHkYW9e4XXwatTFOCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHthDEEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DE4C4CEE8;
-	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
+	 MIME-Version; b=VouijtTAc1NolyUJe3/HKyzHUuMtw0YveHl1uj3qwtfBm74Xd1pW0MAVLttrVCQfEPY6KYlEXa2djLRMgspIjYDAnvZo1eJMCf+2ElVK35vkqVQ6fJiDDE3J9H2LOwc9z4nvMidI7PjcdNyi/1s882c7E/JVm4tL4EyJQK/pY4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCsoz63+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A281C4CEE4;
+	Wed, 19 Mar 2025 14:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395070;
-	bh=nrU2WL3rALmHnF08F7UPXRGO4C/Y8XxQZv6JcSAmQSc=;
+	s=korg; t=1742394920;
+	bh=2hFThKx49oxz27PHz3w7DmRpLcx7evRFPIMWkshsjnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHthDEEyhzs97RZ2Jo57vj1Ut4kDXtfDv0eHkMfuxRl5/aip3atl1MyN/DiuUI7W4
-	 NLRc6ApQMM29wKi0OVahAhOtXTc4anV0OcbZEyksHex/sMsYR+pIQrXVNRhJFeQO65
-	 xSIhHvtoAU3RXy3CLew3E90fyi9YS+PjVd8JRi3o=
+	b=RCsoz63+mdTNbzaHtRtAojbffnC1t32Tn33kvkRtEi6aNr3jDz+M6mwRssbRcbDuD
+	 AndNgzI0k/wiv8AsnHdVFja9S/7LRJhDvdnBbfphNGwtdTndXLYso0h07ILIvxsfYY
+	 W8mFYPW7KfdkyPw4623TRf9vha71pLIv82ZOef7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/231] ALSA: hda/realtek: Limit mic boost on Positivo ARN50
-Date: Wed, 19 Mar 2025 07:30:00 -0700
-Message-ID: <20250319143029.481987156@linuxfoundation.org>
+Subject: [PATCH 6.13 131/241] sctp: Fix undefined behavior in left shift operation
+Date: Wed, 19 Mar 2025 07:30:01 -0700
+Message-ID: <20250319143030.967150625@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 76b0a22d4cf7dc9091129560fdc04e73eb9db4cb ]
+[ Upstream commit 606572eb22c1786a3957d24307f5760bb058ca19 ]
 
-The internal mic boost on the Positivo ARN50 is too high.
-Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
-to limit the gain.
+According to the C11 standard (ISO/IEC 9899:2011, 6.5.7):
+"If E1 has a signed type and E1 x 2^E2 is not representable in the result
+type, the behavior is undefined."
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Link: https://patch.msgid.link/20250201143930.25089-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Shifting 1 << 31 causes signed integer overflow, which leads to undefined
+behavior.
+
+Fix this by explicitly using '1U << 31' to ensure the shift operates on
+an unsigned type, avoiding undefined behavior.
+
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Link: https://patch.msgid.link/20250218081217.3468369-1-eleanor15x@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sctp/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index b559f0d4e3488..3949e2614a663 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11064,6 +11064,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+diff --git a/net/sctp/stream.c b/net/sctp/stream.c
+index c241cc552e8d5..bfcff6d6a4386 100644
+--- a/net/sctp/stream.c
++++ b/net/sctp/stream.c
+@@ -735,7 +735,7 @@ struct sctp_chunk *sctp_process_strreset_tsnreq(
+ 	 *     value SHOULD be the smallest TSN not acknowledged by the
+ 	 *     receiver of the request plus 2^31.
+ 	 */
+-	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1 << 31);
++	init_tsn = sctp_tsnmap_get_ctsn(&asoc->peer.tsn_map) + (1U << 31);
+ 	sctp_tsnmap_init(&asoc->peer.tsn_map, SCTP_TSN_MAP_INITIAL,
+ 			 init_tsn, GFP_ATOMIC);
+ 
 -- 
 2.39.5
 
