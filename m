@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-125342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883A8A69071
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312E2A69110
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37ED6170960
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F07E91B86126
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6096A1E8345;
-	Wed, 19 Mar 2025 14:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C811B1F4CB5;
+	Wed, 19 Mar 2025 14:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3r32fgJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ant/1QOs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5301E8855;
-	Wed, 19 Mar 2025 14:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CE01DDA36;
+	Wed, 19 Mar 2025 14:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395121; cv=none; b=olpU7CXe/96ZPr4M/NyZp18brmaYmDrbUq4mBrcIDrbpJ4G1y9B5flv5m+bvD6ppdW62CEEu/rgpYtGNyjBMfmHUEfGDmrP2z/oKrhRk/Ejo+XKvv08oSapxf+NvzNvVg3QrcLwnHb90+F0L6EDpqKgGRch0ctnWn72FT8NItP0=
+	t=1742394970; cv=none; b=q8wMDHPmXUtdIxyDwvU0K/1lZeibp4yZ6UDtnPl6TohK30qmfDAca4qbIg5SDideHZFPjOyLoO3fDzLEbinvq9KmhcKe/ez5hAT14oWlsgbid8ld4NMreSyheSHk4kCwoQsoGECr3SE88jbVYjdG/9frDCzMxV0kf4992yft23Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395121; c=relaxed/simple;
-	bh=uM0F4lXusic25kBHtVOfhLtIaEOPm9RK+cbxwIjxqrA=;
+	s=arc-20240116; t=1742394970; c=relaxed/simple;
+	bh=A1H/Y6g6rYQO7Qlfs3wvqL8+aD+hl5zqV92bIXom4/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/1HePjL6ycvqAYwB0Ji/6OJ8qslg2UNQu9Uo64vTEehpaEeX4VkQDLoUkr2FB2rHhELKrp1Y1CQ625vCis8ns4yJmmkZFhrzxddv+FZJmkFi0xCMjBANBE0FeJcYl3CoBO1Dw5a14DiGTvh+5jFqRWVEC54BAPi0NlKIDXkFYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3r32fgJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9930C4CEE4;
-	Wed, 19 Mar 2025 14:38:40 +0000 (UTC)
+	 MIME-Version; b=uvDvd3dR+HBu26E4quefM2u0g+NOuIZX5ONHxrDP1EBEz9kib0PbRk8dmXnm450C1yIqNeuNkcOw7oFCh/AxbmkjLEUYSeknSLZHEiJgY/jznG6yQS+3PaRCET7EbHlyVcBNV58gQ7hB8IjJe5HhQCvhzqNN8BXaaIDNyTUc6uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ant/1QOs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59397C4CEE4;
+	Wed, 19 Mar 2025 14:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395121;
-	bh=uM0F4lXusic25kBHtVOfhLtIaEOPm9RK+cbxwIjxqrA=;
+	s=korg; t=1742394970;
+	bh=A1H/Y6g6rYQO7Qlfs3wvqL8+aD+hl5zqV92bIXom4/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3r32fgJp/2YDTA+3dGY83RkSK+vqO8348cZP4whVqET983GBui85VGoJtKXzl8EJ
-	 bVI4b5hIASr1y47wg4FRX22mJDjVo0E6OaENr0bePwHWgjCEx0GnhOXQ/XS2tlJ0tD
-	 YTFeulet2AMQ+qEGLfD21EHDKtSrx6k4z0SnxkOc=
+	b=Ant/1QOspKNf1vax7h6o44EuRn2ffSYer1QAtKml3TFXRplSj5TzKULUHQQqN6vDM
+	 xJiCp1DRkiKLt9bfeBqT/f6ohTa67SPpCf+Y+WFJiGDNxg1IwwJBpUuBy0j7zavXMf
+	 bnIECfuekaR8L+wKUnev7EH6CAZAv/MjRuAeUNM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 182/231] drm/amd/display: Fix slab-use-after-free on hdcp_work
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.13 205/241] sched_ext: Validate prev_cpu in scx_bpf_select_cpu_dfl()
 Date: Wed, 19 Mar 2025 07:31:15 -0700
-Message-ID: <20250319143031.330461450@linuxfoundation.org>
+Message-ID: <20250319143032.809824260@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Andrea Righi <arighi@nvidia.com>
 
-commit e65e7bea220c3ce8c4c793b4ba35557f4994ab2b upstream.
+commit 9360dfe4cbd62ff1eb8217b815964931523b75b3 upstream.
 
-[Why]
-A slab-use-after-free is reported when HDCP is destroyed but the
-property_validate_dwork queue is still running.
+If a BPF scheduler provides an invalid CPU (outside the nr_cpu_ids
+range) as prev_cpu to scx_bpf_select_cpu_dfl() it can cause a kernel
+crash.
 
-[How]
-Cancel the delayed work when destroying workqueue.
+To prevent this, validate prev_cpu in scx_bpf_select_cpu_dfl() and
+trigger an scx error if an invalid CPU is specified.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
-Fixes: da3fd7ac0bcf ("drm/amd/display: Update CP property based on HW query")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 725a04ba5a95e89c89633d4322430cfbca7ce128)
-Cc: stable@vger.kernel.org
+Fixes: f0e1a0643a59b ("sched_ext: Implement BPF extensible scheduler class")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/ext.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-@@ -455,6 +455,7 @@ void hdcp_destroy(struct kobject *kobj,
- 	for (i = 0; i < hdcp_work->max_link; i++) {
- 		cancel_delayed_work_sync(&hdcp_work[i].callback_dwork);
- 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
-+		cancel_delayed_work_sync(&hdcp_work[i].property_validate_dwork);
- 	}
- 
- 	sysfs_remove_bin_file(kobj, &hdcp_work[0].attr);
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -6376,6 +6376,9 @@ __bpf_kfunc_start_defs();
+ __bpf_kfunc s32 scx_bpf_select_cpu_dfl(struct task_struct *p, s32 prev_cpu,
+ 				       u64 wake_flags, bool *is_idle)
+ {
++	if (!ops_cpu_valid(prev_cpu, NULL))
++		goto prev_cpu;
++
+ 	if (!static_branch_likely(&scx_builtin_idle_enabled)) {
+ 		scx_ops_error("built-in idle tracking is disabled");
+ 		goto prev_cpu;
 
 
 
