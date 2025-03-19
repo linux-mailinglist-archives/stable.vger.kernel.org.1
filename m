@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-125138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1E9A68FEA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B82C5A691D3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BDE33A65D6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CAC3887C2E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D79F1DED58;
-	Wed, 19 Mar 2025 14:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332901CAA92;
+	Wed, 19 Mar 2025 14:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2q7Jui1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eu+zpCk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AE11C9EAA;
-	Wed, 19 Mar 2025 14:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FD820C019;
+	Wed, 19 Mar 2025 14:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394980; cv=none; b=oin5EPi7Rb1r1NUy28cnFznxjoY5iHCR8XRQJiW4jBfx4MmZOHNGdQ04a6Z78HID8rcZ6sGU2oUFGKo9zP2CrEc9PKM/PXiO7hKPMuafURaDvymeW/m43cuyC3Zvsag0Ed36pah8ogm2XxfJk/2fTnoyZa8AkX44z82Cw2jyfrk=
+	t=1742395268; cv=none; b=gairpj6Ptkn08NJf+2dukDR5nb80bDmPYKGblXUbbvF84aOzewrBRq6QvIXl4E946EqU7tevq4RpCNNcaERJz2KPHs2ozuXOx+antHsG87Ix84A5d9A469ncPKm1QeGxA2mzXpM1gWMreKQF/Lj9YMXUZvsBSZKEiwuVn+t+C8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394980; c=relaxed/simple;
-	bh=5V6mPOluwy37qDnOgT4CqS6tekHjtYOzs36ZMlm+yOU=;
+	s=arc-20240116; t=1742395268; c=relaxed/simple;
+	bh=GZmcDrXwwdpL4x14E4Ao8NSX1L+q3/63dCdp+Bc3ssU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdH8pRwlpKLqNN/e1cmB2deT2102QhaTfPAb5SGfkE81E/JjdLpdCr8/bzPN18feqA2rIuGJQYiZxGcNLW3PP64G8zFRkiG4+kGRNzGEYtM2GgmRpkwjpL9eFMqBO+NMlGfOtXnKmQkaiQ4upciaQReooSF8HbtvKqPAOsI5qeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2q7Jui1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C78C4CEE4;
-	Wed, 19 Mar 2025 14:36:20 +0000 (UTC)
+	 MIME-Version; b=SEprodQVexTezmX8Fo1H2tUeUoc4LCticKN2kU7mfz1Htbzk2zUvLX4trqjpuk/BIYIQ1YbIXX9QzGpC/M9ZX92vc23M+qcSS3WGt6apPgi5DRI0AEA9/0e9v+Ci8b0WUNgFfc223NVddQcxtYqSgsLl1/WPk/G3V05miHfxuus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eu+zpCk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3534C4CEE4;
+	Wed, 19 Mar 2025 14:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394980;
-	bh=5V6mPOluwy37qDnOgT4CqS6tekHjtYOzs36ZMlm+yOU=;
+	s=korg; t=1742395267;
+	bh=GZmcDrXwwdpL4x14E4Ao8NSX1L+q3/63dCdp+Bc3ssU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2q7Jui1R8dnfy5JSO66t7yTWvA9pzM1l2JJLke/BNDRXZ+xrH0iVBVyxxmrp3FvE
-	 JIExR8GyiDx9eqDPTt7uRHuWPz1NnmEqtQFi8gN33hHAaFrsbSEDAgq0l3gsvXSyyS
-	 p0eS5DE6klGBclys/KtkilniN9LokBbUL6KYQLT4=
+	b=Eu+zpCk+ZWGnvTzkUdcqpTL7FPYni76rQyQltN5eQUqM4wxzH2RCXob0DN6f5zqit
+	 NennOt4e99O3BRajStNYm5lDPQOExeXQHQ8QrX4H17dVV1y6EH8LyorpKa9Wb8z4Bw
+	 zilTCWqAAOUoEJgOfWaRMjRKljr14lDdqZK155Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Behrens <me@kloenk.dev>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Chayim Refael Friedman <chayimfr@gmail.com>
-Subject: [PATCH 6.13 219/241] scripts: generate_rust_analyzer: add missing macros deps
-Date: Wed, 19 Mar 2025 07:31:29 -0700
-Message-ID: <20250319143033.164566114@linuxfoundation.org>
+	Florent Revest <revest@chromium.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 119/166] x86/microcode/AMD: Fix out-of-bounds on systems with CPU-less NUMA nodes
+Date: Wed, 19 Mar 2025 07:31:30 -0700
+Message-ID: <20250319143023.239810722@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,117 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@gmail.com>
+From: Florent Revest <revest@chromium.org>
 
-[ Upstream commit 2e0f91aba507a3cb59f7a12fc3ea2b7d4d6675b7 ]
+commit e3e89178a9f4a80092578af3ff3c8478f9187d59 upstream.
 
-The macros crate has depended on std and proc_macro since its
-introduction in commit 1fbde52bde73 ("rust: add `macros` crate"). These
-dependencies were omitted from commit 8c4555ccc55c ("scripts: add
-`generate_rust_analyzer.py`") resulting in missing go-to-definition and
-autocomplete, and false-positive warnings emitted from rust-analyzer
-such as:
+Currently, load_microcode_amd() iterates over all NUMA nodes, retrieves their
+CPU masks and unconditionally accesses per-CPU data for the first CPU of each
+mask.
 
-  [{
-  	"resource": "/Users/tamird/src/linux/rust/macros/module.rs",
-  	"owner": "_generated_diagnostic_collection_name_#1",
-  	"code": {
-  		"value": "non_snake_case",
-  		"target": {
-  			"$mid": 1,
-  			"path": "/rustc/",
-  			"scheme": "https",
-  			"authority": "doc.rust-lang.org",
-  			"query": "search=non_snake_case"
-  		}
-  	},
-  	"severity": 4,
-  	"message": "Variable `None` should have snake_case name, e.g. `none`",
-  	"source": "rust-analyzer",
-  	"startLineNumber": 123,
-  	"startColumn": 17,
-  	"endLineNumber": 123,
-  	"endColumn": 21
-  }]
+According to Documentation/admin-guide/mm/numaperf.rst:
 
-Add the missing dependencies to improve the developer experience.
+  "Some memory may share the same node as a CPU, and others are provided as
+  memory only nodes."
 
-  [ Fiona had a different approach (thanks!) at:
+Therefore, some node CPU masks may be empty and wouldn't have a "first CPU".
 
-        https://lore.kernel.org/rust-for-linux/20241205115438.234221-1-me@kloenk.dev/
+On a machine with far memory (and therefore CPU-less NUMA nodes):
+- cpumask_of_node(nid) is 0
+- cpumask_first(0) is CONFIG_NR_CPUS
+- cpu_data(CONFIG_NR_CPUS) accesses the cpu_info per-CPU array at an
+  index that is 1 out of bounds
 
-    But Tamir and Fiona agreed to this one. - Miguel ]
+This does not have any security implications since flashing microcode is
+a privileged operation but I believe this has reliability implications by
+potentially corrupting memory while flashing a microcode update.
 
-Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Diagnosed-by: Chayim Refael Friedman <chayimfr@gmail.com>
-Link: https://github.com/rust-lang/rust-analyzer/issues/17759#issuecomment-2646328275
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
-Link: https://lore.kernel.org/r/20250210-rust-analyzer-macros-core-dep-v3-1-45eb4836f218@gmail.com
-[ Removed `return`. Changed tag name. Added Link. Slightly
-  reworded. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When booting with CONFIG_UBSAN_BOUNDS=y on an AMD machine that flashes
+a microcode update. I get the following splat:
+
+  UBSAN: array-index-out-of-bounds in arch/x86/kernel/cpu/microcode/amd.c:X:Y
+  index 512 is out of range for type 'unsigned long[512]'
+  [...]
+  Call Trace:
+   dump_stack
+   __ubsan_handle_out_of_bounds
+   load_microcode_amd
+   request_microcode_amd
+   reload_store
+   kernfs_fop_write_iter
+   vfs_write
+   ksys_write
+   do_syscall_64
+   entry_SYSCALL_64_after_hwframe
+
+Change the loop to go over only NUMA nodes which have CPUs before determining
+whether the first CPU on the respective node needs microcode update.
+
+  [ bp: Massage commit message, fix typo. ]
+
+Fixes: 7ff6edf4fef3 ("x86/microcode/AMD: Fix mixed steppings support")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250310144243.861978-1-revest@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_analyzer.py | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 09e1d166d8d23..8cf278aceba7b 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -49,14 +49,26 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-             }
-         })
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -1078,7 +1078,7 @@ static enum ucode_state load_microcode_a
+ 	if (ret != UCODE_OK)
+ 		return ret;
  
--    # First, the ones in `rust/` since they are a bit special.
--    append_crate(
--        "core",
--        sysroot_src / "core" / "src" / "lib.rs",
--        [],
--        cfg=crates_cfgs.get("core", []),
--        is_workspace_member=False,
--    )
-+    def append_sysroot_crate(
-+        display_name,
-+        deps,
-+        cfg=[],
-+    ):
-+        append_crate(
-+            display_name,
-+            sysroot_src / display_name / "src" / "lib.rs",
-+            deps,
-+            cfg,
-+            is_workspace_member=False,
-+        )
-+
-+    # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
-+    # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
-+    # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
-+    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
-+    append_sysroot_crate("alloc", ["core"])
-+    append_sysroot_crate("std", ["alloc", "core"])
-+    append_sysroot_crate("proc_macro", ["core", "std"])
+-	for_each_node(nid) {
++	for_each_node_with_cpus(nid) {
+ 		cpu = cpumask_first(cpumask_of_node(nid));
+ 		c = &cpu_data(cpu);
  
-     append_crate(
-         "compiler_builtins",
-@@ -67,7 +79,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-     append_crate(
-         "macros",
-         srctree / "rust" / "macros" / "lib.rs",
--        [],
-+        ["std", "proc_macro"],
-         is_proc_macro=True,
-     )
-     crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
--- 
-2.39.5
-
 
 
 
