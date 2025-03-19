@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-125170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC6DA6901E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:44:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9113BA68F53
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F05023B2A36
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:40:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 072CE17018C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D79920C02C;
-	Wed, 19 Mar 2025 14:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48E11CC89D;
+	Wed, 19 Mar 2025 14:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UE+aXj69"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuFTNtzi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5EC1DEFD9;
-	Wed, 19 Mar 2025 14:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713811B422A;
+	Wed, 19 Mar 2025 14:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395003; cv=none; b=XlIhCTNZYgq3WRP88so2UN7v5ikJdMzEmG6yc2Dg9ppNJXcHaFAJjmDb67ww5xixYmTnJIFZrcGz9qSILHeeIQlYTM3lJWOYNoqArEsQFjTZ3zhk77HKlw47jyDCYhb4KRjY2mmuJHWBDELoihxelw6r0TofaC0Z309k/gNyKd8=
+	t=1742394848; cv=none; b=dZROJnQvAR6ASLJP8C7sjmM2eJhqscPlWyr/SMSS+1ob+/vyPcBF6GPQBZy0SXUMJxsmfRAdR0X/Dker8+yOnYWdRnmWTHOLKjfSwinbtJzFtWhy9MjbfAao0cB40UcCmd9nic6+4kX8FR0dFOTfF+rr2Ks1mPNv4dwGDJ6Ifyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395003; c=relaxed/simple;
-	bh=Q4khvRpB79gQUjknxgZpCKnoojxuX0D5eCJ5VGHsynU=;
+	s=arc-20240116; t=1742394848; c=relaxed/simple;
+	bh=8iMj4g5nUoAxyz7zd6svN16awoXiHp5d37gWXq2F6TY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N98YqsCcUO3hmeQBNnlE4eGpvRnr7O59q0DcVYMJkTAE85nckO+NjvG26HTMqotdrxwjExKkfL7ojoWk2kELZIWvpDzm5POyKVwGjz6yXYBCyGK2PNac/WY/UfAD/Fhwh+PfUjSz71EOBHPdmUaHbttDHVq2VeWjFJa5pWD0KxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UE+aXj69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28DDC4CEE4;
-	Wed, 19 Mar 2025 14:36:42 +0000 (UTC)
+	 MIME-Version; b=UN1he2jVcTA5KlN0U9znvAEe3yCaM4A10/lovjl6/tnh954MLJm6VBxJ0wFuaNHrkFI46HyuT/hzJ/AMahnzwM70xK4BgolFa1eJrWUMxJnhg9Kx0ReKUyX40vEBpJGRSFXLbytOfmm+CaYLZjo6Q8GCQpWvSngsxLgNJoSE7EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuFTNtzi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439C5C4CEE8;
+	Wed, 19 Mar 2025 14:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395002;
-	bh=Q4khvRpB79gQUjknxgZpCKnoojxuX0D5eCJ5VGHsynU=;
+	s=korg; t=1742394848;
+	bh=8iMj4g5nUoAxyz7zd6svN16awoXiHp5d37gWXq2F6TY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UE+aXj69PviyOluLDOTXoFnKacs3vpXXrfj/Gqis2YTzC82p80JXRFmw9CRoANPjZ
-	 ujZmfUO7HJO9XNSBR5jFwmbZW0qci9sSij9FS9aWBsrcWD7yXSnUXgSwCuDUKcoWac
-	 zLQvCtFoAGoRl6wMZZXgpmlv/IhCvNbWQG+uLG7g=
+	b=IuFTNtzi61SUBb2T5s23N6HRJGI6SqIUNSp2r7r2rCiwgdTI4Okig0jEghVFmin0j
+	 rpFSzVLgSPKtV+bx7Wknj8mqpJfgs6hyAsT2Vqe69phMdPdOH8vO+s9LP0B1O2xRTb
+	 sMRS+XO0CSyosanYL5j8+x0xkp+6mfOOtOvTW17o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Taehee Yoo <ap420073@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 010/231] ice: Fix switchdev slow-path in LAG
-Date: Wed, 19 Mar 2025 07:28:23 -0700
-Message-ID: <20250319143027.113915401@linuxfoundation.org>
+Subject: [PATCH 6.13 034/241] eth: bnxt: do not use BNXT_VNIC_NTUPLE unconditionally in queue restart logic
+Date: Wed, 19 Mar 2025 07:28:24 -0700
+Message-ID: <20250319143028.562161407@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,118 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Taehee Yoo <ap420073@gmail.com>
 
-[ Upstream commit dce97cb0a3e34204c0b99345418a714eac85953f ]
+[ Upstream commit 661958552eda5bf64bfafb4821cbdded935f1f68 ]
 
-Ever since removing switchdev control VSI and using PF for port
-representor Tx/Rx, switchdev slow-path has been working improperly after
-failover in SR-IOV LAG. LAG assumes that the first uplink to be added to
-the aggregate will own VFs and have switchdev configured. After
-failing-over to the other uplink, representors are still configured to
-Tx through the uplink they are set up on, which fails because that
-uplink is now down.
+When a queue is restarted, it sets MRU to 0 for stopping packet flow.
+MRU variable is a member of vnic_info[], the first vnic_info is default
+and the second is ntuple.
+Only when ntuple is enabled(ethtool -K eth0 ntuple on), vnic_info for
+ntuple is allocated in init logic.
+The bp->nr_vnics indicates how many vnic_info are allocated.
+However bnxt_queue_{start | stop}() accesses vnic_info[BNXT_VNIC_NTUPLE]
+regardless of ntuple state.
 
-On failover, update all PRs on primary uplink to use the currently
-active uplink for Tx. Call netif_keep_dst(), as the secondary uplink
-might not be in switchdev mode. Also make sure to call
-ice_eswitch_set_target_vsi() if uplink is in LAG.
-
-On the Rx path, representors are already working properly, because
-default Tx from VFs is set to PF owning the eswitch. After failover the
-same PF is receiving traffic from VFs, even though link is down.
-
-Fixes: defd52455aee ("ice: do Tx through PF netdev in slow-path")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Fixes: b9d2956e869c ("bnxt_en: stop packet flow during bnxt_queue_stop/start")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+Link: https://patch.msgid.link/20250309134219.91670-4-ap420073@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lag.c  | 27 +++++++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_txrx.c |  4 +++-
- 2 files changed, 30 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index 1ccb572ce285d..22371011c2492 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -1000,6 +1000,28 @@ static void ice_lag_link(struct ice_lag *lag)
- 	netdev_info(lag->netdev, "Shared SR-IOV resources in bond are active\n");
- }
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index d5d91bbc67924..1b8ed81ef497e 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -15590,7 +15590,7 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
+ 	cpr = &rxr->bnapi->cp_ring;
+ 	cpr->sw_stats->rx.rx_resets++;
  
-+/**
-+ * ice_lag_config_eswitch - configure eswitch to work with LAG
-+ * @lag: lag info struct
-+ * @netdev: active network interface device struct
-+ *
-+ * Updates all port representors in eswitch to use @netdev for Tx.
-+ *
-+ * Configures the netdev to keep dst metadata (also used in representor Tx).
-+ * This is required for an uplink without switchdev mode configured.
-+ */
-+static void ice_lag_config_eswitch(struct ice_lag *lag,
-+				   struct net_device *netdev)
-+{
-+	struct ice_repr *repr;
-+	unsigned long id;
-+
-+	xa_for_each(&lag->pf->eswitch.reprs, id, repr)
-+		repr->dst->u.port_info.lower_dev = netdev;
-+
-+	netif_keep_dst(netdev);
-+}
-+
- /**
-  * ice_lag_unlink - handle unlink event
-  * @lag: LAG info struct
-@@ -1021,6 +1043,9 @@ static void ice_lag_unlink(struct ice_lag *lag)
- 			ice_lag_move_vf_nodes(lag, act_port, pri_port);
- 		lag->primary = false;
- 		lag->active_port = ICE_LAG_INVALID_PORT;
-+
-+		/* Config primary's eswitch back to normal operation. */
-+		ice_lag_config_eswitch(lag, lag->netdev);
- 	} else {
- 		struct ice_lag *primary_lag;
+-	for (i = 0; i <= BNXT_VNIC_NTUPLE; i++) {
++	for (i = 0; i <= bp->nr_vnics; i++) {
+ 		vnic = &bp->vnic_info[i];
  
-@@ -1419,6 +1444,7 @@ static void ice_lag_monitor_active(struct ice_lag *lag, void *ptr)
- 				ice_lag_move_vf_nodes(lag, prim_port,
- 						      event_port);
- 			lag->active_port = event_port;
-+			ice_lag_config_eswitch(lag, event_netdev);
- 			return;
- 		}
+ 		rc = bnxt_hwrm_vnic_set_rss_p5(bp, vnic, true);
+@@ -15618,7 +15618,7 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
+ 	struct bnxt_vnic_info *vnic;
+ 	int i;
  
-@@ -1428,6 +1454,7 @@ static void ice_lag_monitor_active(struct ice_lag *lag, void *ptr)
- 		/* new active port */
- 		ice_lag_move_vf_nodes(lag, lag->active_port, event_port);
- 		lag->active_port = event_port;
-+		ice_lag_config_eswitch(lag, event_netdev);
- 	} else {
- 		/* port not set as currently active (e.g. new active port
- 		 * has already claimed the nodes and filters
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index f12fb3a2b6ad9..f522dd42093a9 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -2424,7 +2424,9 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
- 					ICE_TXD_CTX_QW1_CMD_S);
- 
- 	ice_tstamp(tx_ring, skb, first, &offload);
--	if (ice_is_switchdev_running(vsi->back) && vsi->type != ICE_VSI_SF)
-+	if ((ice_is_switchdev_running(vsi->back) ||
-+	     ice_lag_is_switchdev_running(vsi->back)) &&
-+	    vsi->type != ICE_VSI_SF)
- 		ice_eswitch_set_target_vsi(skb, &offload);
- 
- 	if (offload.cd_qw1 & ICE_TX_DESC_DTYPE_CTX) {
+-	for (i = 0; i <= BNXT_VNIC_NTUPLE; i++) {
++	for (i = 0; i <= bp->nr_vnics; i++) {
+ 		vnic = &bp->vnic_info[i];
+ 		vnic->mru = 0;
+ 		bnxt_hwrm_vnic_update(bp, vnic,
 -- 
 2.39.5
 
