@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-125013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AE8A68F83
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6A5A69223
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB5B488140A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640D21B87C03
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FCB1E0B67;
-	Wed, 19 Mar 2025 14:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B933214A7A;
+	Wed, 19 Mar 2025 14:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIf+BfYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3hXm1QI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B991C2DC8;
-	Wed, 19 Mar 2025 14:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4361C6FEE;
+	Wed, 19 Mar 2025 14:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394890; cv=none; b=p9He7xDOEyQn7aeypzsHs1lmUfNgOMNlgFalSfn4svrll56xW00E9Au7hxw06eoAdqolLXId/D9e5mBK8RslH8KU7DNUfaFqHpRcPyT4CD6uXcjUPKP4N/fDgeSwAmOY6ItRgHtFVzALs5fpLgSSS0QgFkRKp0nasAGyeOvQj+I=
+	t=1742395055; cv=none; b=F0beb0sDdmqeaeT3d6sLXz7c2TjtpxpaUE00nITNw6SCqueSonhAJnC+CsmrXtao3LjRhafb+oV50inuchlVexju+Qyb4bC1DFjyb6QZqahk4SHfckbHErH9P4eF81PEWc43Px7gmw4UIvMpeyBz9hxKDEhCa1zXD1z8zEGYvC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394890; c=relaxed/simple;
-	bh=UVqrr7CHg5bI9QZO7NaevoGBCFDENLEqJUfLClDIZbM=;
+	s=arc-20240116; t=1742395055; c=relaxed/simple;
+	bh=0Srm/FDr2uZcsiJZwh3hLXhq/vav172k5oZOkGv8Ahc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VGWNdUx1dQrla2YkAUhQ1kTm0oS8bD7g6o/c4Edfm8jZ3rvaVJpuKkfiDkuWgjsoKzmFtJh4inK5G6jcpLLllbYN4TP97+mtX0Wu+nKqRdlY7tTErxRC3k9BCMPJPLNDE7eiBu+7/vn9qcCHI/PF2nbP5WUYIFsY8ULDZSrmYSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIf+BfYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DA2C4CEE4;
-	Wed, 19 Mar 2025 14:34:50 +0000 (UTC)
+	 MIME-Version; b=qxo7qkMS+bPqulecAOp7E9Q2J4WVAm/s8e0GpGuQgmgvV2ARv4S/56kqeZDtqx7n/oUbQXRswkw6XgQvpai1xG2/aO45pKTmQSYn1nXnngeDNSPsRJmkMzpBC8/SRNsgTPyN0gNLASD+puHHMnJ/7RvqU7aGk/vtMVXqPIRW8l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3hXm1QI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BF8C4CEE4;
+	Wed, 19 Mar 2025 14:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394890;
-	bh=UVqrr7CHg5bI9QZO7NaevoGBCFDENLEqJUfLClDIZbM=;
+	s=korg; t=1742395055;
+	bh=0Srm/FDr2uZcsiJZwh3hLXhq/vav172k5oZOkGv8Ahc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIf+BfYJLdJSWUsW3VWyf65R+L3h/KqcY8/I7OM9l9z/pvVo3eE7heBJs1iWsIxMu
-	 9ILJSRcQZmvJy9amcjr3+M1U1TqDp/QTxQU3dyMnzzRraFIFl04cFpl4OtcpZR8bTw
-	 +PxOq3ANJ4duLokZeON15Cp0p4oF6Rqdkbz51PaQ=
+	b=P3hXm1QIeLlft2hJfhtrl3IV0HswlSow0rx7jKYJTsFaFBiVI5UVklXYvCi1V32/p
+	 eL/U31hPgM4kZbnwR/PUOGWToXtx6IVsO7ky5UWnGUU08WjinsoqeIdgYBqftXWgi4
+	 sPd4s6KlmpavAjCk/lupseNhHoLJVdykLNvt2LGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
-	Rik van Riel <riel@surriel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 067/241] scsi: core: Use GFP_NOIO to avoid circular locking dependency
-Date: Wed, 19 Mar 2025 07:28:57 -0700
-Message-ID: <20250319143029.380979635@linuxfoundation.org>
+Subject: [PATCH 6.12 045/231] ipvs: prevent integer overflow in do_ip_vs_get_ctl()
+Date: Wed, 19 Mar 2025 07:28:58 -0700
+Message-ID: <20250319143027.927922209@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 5363ee9d110e139584c2d92a0b640bc210588506 ]
+[ Upstream commit 80b78c39eb86e6b55f56363b709eb817527da5aa ]
 
-Filesystems can write to disk from page reclaim with __GFP_FS
-set. Marc found a case where scsi_realloc_sdev_budget_map() ends up in
-page reclaim with GFP_KERNEL, where it could try to take filesystem
-locks again, leading to a deadlock.
+The get->num_services variable is an unsigned int which is controlled by
+the user.  The struct_size() function ensures that the size calculation
+does not overflow an unsigned long, however, we are saving the result to
+an int so the calculation can overflow.
 
-WARNING: possible circular locking dependency detected
-6.13.0 #1 Not tainted
-------------------------------------------------------
-kswapd0/70 is trying to acquire lock:
-ffff8881025d5d78 (&q->q_usage_counter(io)){++++}-{0:0}, at: blk_mq_submit_bio+0x461/0x6e0
+Both "len" and "get->num_services" come from the user.  This check is
+just a sanity check to help the user and ensure they are using the API
+correctly.  An integer overflow here is not a big deal.  This has no
+security impact.
 
-but task is already holding lock:
-ffffffff81ef5f40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x9f/0x760
+Save the result from struct_size() type size_t to fix this integer
+overflow bug.
 
-The full lockdep splat can be found in Marc's report:
-
-https://lkml.org/lkml/2025/1/24/1101
-
-Avoid the potential deadlock by doing the allocation with GFP_NOIO, which
-prevents both filesystem and block layer recursion.
-
-Reported-by: Marc Aurèle La France <tsi@tuyoix.net>
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Link: https://lore.kernel.org/r/20250129104525.0ae8421e@fangorn
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_ctl.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
-index 042329b74c6e6..fe08af4dcb67c 100644
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -245,7 +245,7 @@ static int scsi_realloc_sdev_budget_map(struct scsi_device *sdev,
- 	}
- 	ret = sbitmap_init_node(&sdev->budget_map,
- 				scsi_device_max_queue_depth(sdev),
--				new_shift, GFP_KERNEL,
-+				new_shift, GFP_NOIO,
- 				sdev->request_queue->node, false, true);
- 	if (!ret)
- 		sbitmap_resize(&sdev->budget_map, depth);
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index dc6ddc4abbe21..3224f6e17e736 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -3091,12 +3091,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
+ 	case IP_VS_SO_GET_SERVICES:
+ 	{
+ 		struct ip_vs_get_services *get;
+-		int size;
++		size_t size;
+ 
+ 		get = (struct ip_vs_get_services *)arg;
+ 		size = struct_size(get, entrytable, get->num_services);
+ 		if (*len != size) {
+-			pr_err("length: %u != %u\n", *len, size);
++			pr_err("length: %u != %zu\n", *len, size);
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+@@ -3132,12 +3132,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
+ 	case IP_VS_SO_GET_DESTS:
+ 	{
+ 		struct ip_vs_get_dests *get;
+-		int size;
++		size_t size;
+ 
+ 		get = (struct ip_vs_get_dests *)arg;
+ 		size = struct_size(get, entrytable, get->num_dests);
+ 		if (*len != size) {
+-			pr_err("length: %u != %u\n", *len, size);
++			pr_err("length: %u != %zu\n", *len, size);
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
 -- 
 2.39.5
 
