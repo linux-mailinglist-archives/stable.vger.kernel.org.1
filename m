@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D690AA69072
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1EDFA6912A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCBB91665E0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 521C2463C93
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F3D1E9904;
-	Wed, 19 Mar 2025 14:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E8D20A5C4;
+	Wed, 19 Mar 2025 14:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIHy/8lT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2Qs3A50"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39E31E8855;
-	Wed, 19 Mar 2025 14:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23B61CAA81;
+	Wed, 19 Mar 2025 14:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395121; cv=none; b=qW/opf5CkH1MJNUEp0YuB6UU2P2S25zTPED77Ai1F/x0AWOFGSKW/0kiVpgalWgu4DTjohxvwGblevQUAj/hzr4VY24wRhDQT2zX4F/8M2SuRGFsL3XHkAze0gGKm6QuIESg6mnimcg0gjP7Shboqv2JAcGsPvagHFqWwX5FPdQ=
+	t=1742395233; cv=none; b=ozZj73IBt/hpZDe85iKzQQLkqNcm6wzOYMLDE6SLd6M1go8W5iMBtIGfZH1tqfYfpZO4A2AyiodRugmBCGRK7sgGbv29pm/6ocL1rFvkVU/Qz7nBp0DUETp4AAxtJx1ZdBi5CUh8BELBz3REEILDgadJTfrsQpEjyRVO6Vc/nXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395121; c=relaxed/simple;
-	bh=Zj77N0lumPapj/JQL+Sf5oPw7rX5QtCwg1st335e3Mk=;
+	s=arc-20240116; t=1742395233; c=relaxed/simple;
+	bh=idJjtViYpvgW4kY3UD0BsPTX2xgm1rwPNh/Gr901FAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMHRI3zGRDbU7pYQe8OFNQNnOch0Y6IFg++lDt8ElmarvY2R+pz1lyVoO2D7bAqWVyUEeZdwzuJboTiWcEQsmPuDqEDiliZmKi4WeeBREzAIuqGX5BFTlwJiLq6g4jQs2+sXt2zZk6W0tVagLV7yvnnx1sj+eR8GIm4en9fntLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIHy/8lT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73CCC4CEE4;
-	Wed, 19 Mar 2025 14:38:41 +0000 (UTC)
+	 MIME-Version; b=ab7Pta/vYCRu3+CoJi14s/peOgW7GEQnB/en1aePE3SqnDE2gPiXMedAJ8gfcj14l3GKGr07Ec7cTdOKeN9ZpcQuyqpqlGTxcGw9AwNpfVPCnkyVA+3QaGdT3DdGkiunjCjM8BXzqC3YO5QbN4tLo1AdNrAUPSs66jvNmOqvxUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2Qs3A50; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9185EC4CEE8;
+	Wed, 19 Mar 2025 14:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395121;
-	bh=Zj77N0lumPapj/JQL+Sf5oPw7rX5QtCwg1st335e3Mk=;
+	s=korg; t=1742395233;
+	bh=idJjtViYpvgW4kY3UD0BsPTX2xgm1rwPNh/Gr901FAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TIHy/8lToDrHdHsUinxZA7/hHzi8uHxBN2+dho38gsnPtnOltYGTjNvktgwG+GEgZ
-	 gw9hVlV0As8y4Yr7IEz0Flw66JtnAtStDeedFWW+c4El2FmID7MdSpbkfylPWWopPH
-	 NzEhbinE/8JOh3LLr0NkchA9hZK5zZvyIIyiJ/Gw=
+	b=Y2Qs3A50eq+PXdOl7+eVxnhCnNONMgS0LXVybOfY7ITxCkcZIBELK6aCAGIXLigTp
+	 03EwVtSiYmj4hhjsC/OazAQFD7EUnLdOnX8jgd/pzf6gpPdRIh3TB0aEVLijpK1IoF
+	 1HuIc3w2okMUbaHfjA2d3BtvSNNBpVcMK44HNRZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 183/231] ksmbd: fix use-after-free in ksmbd_free_work_struct
+	Jeff LaBundy <jeff@labundy.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 105/166] Input: iqs7222 - preserve system status register
 Date: Wed, 19 Mar 2025 07:31:16 -0700
-Message-ID: <20250319143031.355286238@linuxfoundation.org>
+Message-ID: <20250319143022.862148910@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,180 +61,267 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Jeff LaBundy <jeff@labundy.com>
 
-commit bb39ed47065455604729404729d9116868638d31 upstream.
+commit a2add513311b48cc924a699a8174db2c61ed5e8a upstream.
 
-->interim_entry of ksmbd_work could be deleted after oplock is freed.
-We don't need to manage it with linked list. The interim request could be
-immediately sent whenever a oplock break wait is needed.
+Some register groups reserve a byte at the end of their continuous
+address space. Depending on the variant of silicon, this field may
+share the same memory space as the lower byte of the system status
+register (0x10).
 
+In these cases, caching the reserved byte and writing it later may
+effectively reset the device depending on what happened in between
+the read and write operations.
+
+Solve this problem by avoiding any access to this last byte within
+offending register groups. This method replaces a workaround which
+attempted to write the reserved byte with up-to-date contents, but
+left a small window in which updates by the device could have been
+clobbered.
+
+Now that the driver does not touch these reserved bytes, the order
+in which the device's registers are written no longer matters, and
+they can be written in their natural order. The new method is also
+much more generic, and can be more easily extended to new variants
+of silicon with different register maps.
+
+As part of this change, the register read and write functions must
+be gently updated to support byte access instead of word access.
+
+Fixes: 2e70ef525b73 ("Input: iqs7222 - acknowledge reset before writing registers")
+Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+Link: https://lore.kernel.org/r/Z85Alw+d9EHKXx2e@nixie71
 Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/ksmbd_work.c |    3 ---
- fs/smb/server/ksmbd_work.h |    1 -
- fs/smb/server/oplock.c     |   37 +++++++++++++++----------------------
- fs/smb/server/oplock.h     |    1 -
- 4 files changed, 15 insertions(+), 27 deletions(-)
+ drivers/input/misc/iqs7222.c |   50 ++++++++++++++++++-------------------------
+ 1 file changed, 22 insertions(+), 28 deletions(-)
 
---- a/fs/smb/server/ksmbd_work.c
-+++ b/fs/smb/server/ksmbd_work.c
-@@ -26,7 +26,6 @@ struct ksmbd_work *ksmbd_alloc_work_stru
- 		INIT_LIST_HEAD(&work->request_entry);
- 		INIT_LIST_HEAD(&work->async_request_entry);
- 		INIT_LIST_HEAD(&work->fp_entry);
--		INIT_LIST_HEAD(&work->interim_entry);
- 		INIT_LIST_HEAD(&work->aux_read_list);
- 		work->iov_alloc_cnt = 4;
- 		work->iov = kcalloc(work->iov_alloc_cnt, sizeof(struct kvec),
-@@ -56,8 +55,6 @@ void ksmbd_free_work_struct(struct ksmbd
- 	kfree(work->tr_buf);
- 	kvfree(work->request_buf);
- 	kfree(work->iov);
--	if (!list_empty(&work->interim_entry))
--		list_del(&work->interim_entry);
+--- a/drivers/input/misc/iqs7222.c
++++ b/drivers/input/misc/iqs7222.c
+@@ -100,11 +100,11 @@ enum iqs7222_reg_key_id {
  
- 	if (work->async_id)
- 		ksmbd_release_id(&work->conn->async_ida, work->async_id);
---- a/fs/smb/server/ksmbd_work.h
-+++ b/fs/smb/server/ksmbd_work.h
-@@ -89,7 +89,6 @@ struct ksmbd_work {
- 	/* List head at conn->async_requests */
- 	struct list_head                async_request_entry;
- 	struct list_head                fp_entry;
--	struct list_head                interim_entry;
+ enum iqs7222_reg_grp_id {
+ 	IQS7222_REG_GRP_STAT,
+-	IQS7222_REG_GRP_FILT,
+ 	IQS7222_REG_GRP_CYCLE,
+ 	IQS7222_REG_GRP_GLBL,
+ 	IQS7222_REG_GRP_BTN,
+ 	IQS7222_REG_GRP_CHAN,
++	IQS7222_REG_GRP_FILT,
+ 	IQS7222_REG_GRP_SLDR,
+ 	IQS7222_REG_GRP_TPAD,
+ 	IQS7222_REG_GRP_GPIO,
+@@ -286,6 +286,7 @@ static const struct iqs7222_event_desc i
+ 
+ struct iqs7222_reg_grp_desc {
+ 	u16 base;
++	u16 val_len;
+ 	int num_row;
+ 	int num_col;
  };
+@@ -342,6 +343,7 @@ static const struct iqs7222_dev_desc iqs
+ 			},
+ 			[IQS7222_REG_GRP_FILT] = {
+ 				.base = 0xAC00,
++				.val_len = 3,
+ 				.num_row = 1,
+ 				.num_col = 2,
+ 			},
+@@ -400,6 +402,7 @@ static const struct iqs7222_dev_desc iqs
+ 			},
+ 			[IQS7222_REG_GRP_FILT] = {
+ 				.base = 0xAC00,
++				.val_len = 3,
+ 				.num_row = 1,
+ 				.num_col = 2,
+ 			},
+@@ -454,6 +457,7 @@ static const struct iqs7222_dev_desc iqs
+ 			},
+ 			[IQS7222_REG_GRP_FILT] = {
+ 				.base = 0xC400,
++				.val_len = 3,
+ 				.num_row = 1,
+ 				.num_col = 2,
+ 			},
+@@ -496,6 +500,7 @@ static const struct iqs7222_dev_desc iqs
+ 			},
+ 			[IQS7222_REG_GRP_FILT] = {
+ 				.base = 0xC400,
++				.val_len = 3,
+ 				.num_row = 1,
+ 				.num_col = 2,
+ 			},
+@@ -543,6 +548,7 @@ static const struct iqs7222_dev_desc iqs
+ 			},
+ 			[IQS7222_REG_GRP_FILT] = {
+ 				.base = 0xAA00,
++				.val_len = 3,
+ 				.num_row = 1,
+ 				.num_col = 2,
+ 			},
+@@ -600,6 +606,7 @@ static const struct iqs7222_dev_desc iqs
+ 			},
+ 			[IQS7222_REG_GRP_FILT] = {
+ 				.base = 0xAA00,
++				.val_len = 3,
+ 				.num_row = 1,
+ 				.num_col = 2,
+ 			},
+@@ -656,6 +663,7 @@ static const struct iqs7222_dev_desc iqs
+ 			},
+ 			[IQS7222_REG_GRP_FILT] = {
+ 				.base = 0xAE00,
++				.val_len = 3,
+ 				.num_row = 1,
+ 				.num_col = 2,
+ 			},
+@@ -712,6 +720,7 @@ static const struct iqs7222_dev_desc iqs
+ 			},
+ 			[IQS7222_REG_GRP_FILT] = {
+ 				.base = 0xAE00,
++				.val_len = 3,
+ 				.num_row = 1,
+ 				.num_col = 2,
+ 			},
+@@ -768,6 +777,7 @@ static const struct iqs7222_dev_desc iqs
+ 			},
+ 			[IQS7222_REG_GRP_FILT] = {
+ 				.base = 0xAE00,
++				.val_len = 3,
+ 				.num_row = 1,
+ 				.num_col = 2,
+ 			},
+@@ -1604,7 +1614,7 @@ static int iqs7222_force_comms(struct iq
+ }
  
- /**
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -46,7 +46,6 @@ static struct oplock_info *alloc_opinfo(
- 	opinfo->fid = id;
- 	opinfo->Tid = Tid;
- 	INIT_LIST_HEAD(&opinfo->op_entry);
--	INIT_LIST_HEAD(&opinfo->interim_list);
- 	init_waitqueue_head(&opinfo->oplock_q);
- 	init_waitqueue_head(&opinfo->oplock_brk);
- 	atomic_set(&opinfo->refcount, 1);
-@@ -803,7 +802,6 @@ out:
- static int smb2_lease_break_noti(struct oplock_info *opinfo)
+ static int iqs7222_read_burst(struct iqs7222_private *iqs7222,
+-			      u16 reg, void *val, u16 num_val)
++			      u16 reg, void *val, u16 val_len)
  {
- 	struct ksmbd_conn *conn = opinfo->conn;
--	struct list_head *tmp, *t;
- 	struct ksmbd_work *work;
- 	struct lease_break_info *br_info;
- 	struct lease *lease = opinfo->o_lease;
-@@ -831,16 +829,6 @@ static int smb2_lease_break_noti(struct
- 	work->sess = opinfo->sess;
+ 	u8 reg_buf[sizeof(__be16)];
+ 	int ret, i;
+@@ -1619,7 +1629,7 @@ static int iqs7222_read_burst(struct iqs
+ 		{
+ 			.addr = client->addr,
+ 			.flags = I2C_M_RD,
+-			.len = num_val * sizeof(__le16),
++			.len = val_len,
+ 			.buf = (u8 *)val,
+ 		},
+ 	};
+@@ -1675,7 +1685,7 @@ static int iqs7222_read_word(struct iqs7
+ 	__le16 val_buf;
+ 	int error;
  
- 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
--		list_for_each_safe(tmp, t, &opinfo->interim_list) {
--			struct ksmbd_work *in_work;
+-	error = iqs7222_read_burst(iqs7222, reg, &val_buf, 1);
++	error = iqs7222_read_burst(iqs7222, reg, &val_buf, sizeof(val_buf));
+ 	if (error)
+ 		return error;
+ 
+@@ -1685,10 +1695,9 @@ static int iqs7222_read_word(struct iqs7
+ }
+ 
+ static int iqs7222_write_burst(struct iqs7222_private *iqs7222,
+-			       u16 reg, const void *val, u16 num_val)
++			       u16 reg, const void *val, u16 val_len)
+ {
+ 	int reg_len = reg > U8_MAX ? sizeof(reg) : sizeof(u8);
+-	int val_len = num_val * sizeof(__le16);
+ 	int msg_len = reg_len + val_len;
+ 	int ret, i;
+ 	struct i2c_client *client = iqs7222->client;
+@@ -1747,7 +1756,7 @@ static int iqs7222_write_word(struct iqs
+ {
+ 	__le16 val_buf = cpu_to_le16(val);
+ 
+-	return iqs7222_write_burst(iqs7222, reg, &val_buf, 1);
++	return iqs7222_write_burst(iqs7222, reg, &val_buf, sizeof(val_buf));
+ }
+ 
+ static int iqs7222_ati_trigger(struct iqs7222_private *iqs7222)
+@@ -1831,30 +1840,14 @@ static int iqs7222_dev_init(struct iqs72
+ 
+ 	/*
+ 	 * Acknowledge reset before writing any registers in case the device
+-	 * suffers a spurious reset during initialization. Because this step
+-	 * may change the reserved fields of the second filter beta register,
+-	 * its cache must be updated.
+-	 *
+-	 * Writing the second filter beta register, in turn, may clobber the
+-	 * system status register. As such, the filter beta register pair is
+-	 * written first to protect against this hazard.
++	 * suffers a spurious reset during initialization.
+ 	 */
+ 	if (dir == WRITE) {
+-		u16 reg = dev_desc->reg_grps[IQS7222_REG_GRP_FILT].base + 1;
+-		u16 filt_setup;
 -
--			in_work = list_entry(tmp, struct ksmbd_work,
--					     interim_entry);
--			setup_async_work(in_work, NULL, NULL);
--			smb2_send_interim_resp(in_work, STATUS_PENDING);
--			list_del_init(&in_work->interim_entry);
--			release_async_work(in_work);
--		}
- 		INIT_WORK(&work->work, __smb2_lease_break_noti);
- 		ksmbd_queue_work(work);
- 		wait_for_break_ack(opinfo);
-@@ -871,7 +859,8 @@ static void wait_lease_breaking(struct o
- 	}
- }
- 
--static int oplock_break(struct oplock_info *brk_opinfo, int req_op_level)
-+static int oplock_break(struct oplock_info *brk_opinfo, int req_op_level,
-+			struct ksmbd_work *in_work)
- {
- 	int err = 0;
- 
-@@ -914,9 +903,15 @@ static int oplock_break(struct oplock_in
- 		}
- 
- 		if (lease->state & (SMB2_LEASE_WRITE_CACHING_LE |
--				SMB2_LEASE_HANDLE_CACHING_LE))
-+				SMB2_LEASE_HANDLE_CACHING_LE)) {
-+			if (in_work) {
-+				setup_async_work(in_work, NULL, NULL);
-+				smb2_send_interim_resp(in_work, STATUS_PENDING);
-+				release_async_work(in_work);
-+			}
-+
- 			brk_opinfo->op_state = OPLOCK_ACK_WAIT;
--		else
-+		} else
- 			atomic_dec(&brk_opinfo->breaking_cnt);
- 	} else {
- 		err = oplock_break_pending(brk_opinfo, req_op_level);
-@@ -1116,7 +1111,7 @@ void smb_send_parent_lease_break_noti(st
- 			if (ksmbd_conn_releasing(opinfo->conn))
- 				continue;
- 
--			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
-+			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
- 			opinfo_put(opinfo);
- 		}
- 	}
-@@ -1152,7 +1147,7 @@ void smb_lazy_parent_lease_break_close(s
- 
- 			if (ksmbd_conn_releasing(opinfo->conn))
- 				continue;
--			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
-+			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE, NULL);
- 			opinfo_put(opinfo);
- 		}
- 	}
-@@ -1252,8 +1247,7 @@ int smb_grant_oplock(struct ksmbd_work *
- 		goto op_break_not_needed;
+ 		error = iqs7222_write_word(iqs7222, IQS7222_SYS_SETUP,
+ 					   iqs7222->sys_setup[0] |
+ 					   IQS7222_SYS_SETUP_ACK_RESET);
+ 		if (error)
+ 			return error;
+-
+-		error = iqs7222_read_word(iqs7222, reg, &filt_setup);
+-		if (error)
+-			return error;
+-
+-		iqs7222->filt_setup[1] &= GENMASK(7, 0);
+-		iqs7222->filt_setup[1] |= (filt_setup & ~GENMASK(7, 0));
  	}
  
--	list_add(&work->interim_entry, &prev_opinfo->interim_list);
--	err = oplock_break(prev_opinfo, SMB2_OPLOCK_LEVEL_II);
-+	err = oplock_break(prev_opinfo, SMB2_OPLOCK_LEVEL_II, work);
- 	opinfo_put(prev_opinfo);
- 	if (err == -ENOENT)
- 		goto set_lev;
-@@ -1322,8 +1316,7 @@ static void smb_break_all_write_oplock(s
- 	}
+ 	/*
+@@ -1883,6 +1876,7 @@ static int iqs7222_dev_init(struct iqs72
+ 		int num_col = dev_desc->reg_grps[i].num_col;
+ 		u16 reg = dev_desc->reg_grps[i].base;
+ 		__le16 *val_buf;
++		u16 val_len = dev_desc->reg_grps[i].val_len ? : num_col * sizeof(*val_buf);
+ 		u16 *val;
  
- 	brk_opinfo->open_trunc = is_trunc;
--	list_add(&work->interim_entry, &brk_opinfo->interim_list);
--	oplock_break(brk_opinfo, SMB2_OPLOCK_LEVEL_II);
-+	oplock_break(brk_opinfo, SMB2_OPLOCK_LEVEL_II, work);
- 	opinfo_put(brk_opinfo);
- }
+ 		if (!num_col)
+@@ -1900,7 +1894,7 @@ static int iqs7222_dev_init(struct iqs72
+ 			switch (dir) {
+ 			case READ:
+ 				error = iqs7222_read_burst(iqs7222, reg,
+-							   val_buf, num_col);
++							   val_buf, val_len);
+ 				for (k = 0; k < num_col; k++)
+ 					val[k] = le16_to_cpu(val_buf[k]);
+ 				break;
+@@ -1909,7 +1903,7 @@ static int iqs7222_dev_init(struct iqs72
+ 				for (k = 0; k < num_col; k++)
+ 					val_buf[k] = cpu_to_le16(val[k]);
+ 				error = iqs7222_write_burst(iqs7222, reg,
+-							    val_buf, num_col);
++							    val_buf, val_len);
+ 				break;
  
-@@ -1386,7 +1379,7 @@ void smb_break_all_levII_oplock(struct k
- 			    SMB2_LEASE_KEY_SIZE))
- 			goto next;
- 		brk_op->open_trunc = is_trunc;
--		oplock_break(brk_op, SMB2_OPLOCK_LEVEL_NONE);
-+		oplock_break(brk_op, SMB2_OPLOCK_LEVEL_NONE, NULL);
- next:
- 		opinfo_put(brk_op);
- 		rcu_read_lock();
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -67,7 +67,6 @@ struct oplock_info {
- 	bool			is_lease;
- 	bool			open_trunc;	/* truncate on open */
- 	struct lease		*o_lease;
--	struct list_head        interim_list;
- 	struct list_head        op_entry;
- 	struct list_head        lease_entry;
- 	wait_queue_head_t oplock_q; /* Other server threads */
+ 			default:
+@@ -1962,7 +1956,7 @@ static int iqs7222_dev_info(struct iqs72
+ 	int error, i;
+ 
+ 	error = iqs7222_read_burst(iqs7222, IQS7222_PROD_NUM, dev_id,
+-				   ARRAY_SIZE(dev_id));
++				   sizeof(dev_id));
+ 	if (error)
+ 		return error;
+ 
+@@ -2917,7 +2911,7 @@ static int iqs7222_report(struct iqs7222
+ 	__le16 status[IQS7222_MAX_COLS_STAT];
+ 
+ 	error = iqs7222_read_burst(iqs7222, IQS7222_SYS_STATUS, status,
+-				   num_stat);
++				   num_stat * sizeof(*status));
+ 	if (error)
+ 		return error;
+ 
 
 
 
