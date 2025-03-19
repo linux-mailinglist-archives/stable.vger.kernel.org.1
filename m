@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87482A68FCB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647BCA6906E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F23D173E56
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBDA3461DD8
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3854B1C8602;
-	Wed, 19 Mar 2025 14:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2399621B9C9;
+	Wed, 19 Mar 2025 14:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3f3QjtJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClwQgHz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AFD1DE4C6;
-	Wed, 19 Mar 2025 14:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C860721B9C0;
+	Wed, 19 Mar 2025 14:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394963; cv=none; b=qrTmsuydyfkbDuRZ/5bIojBbYQM0ZfrD5/2L9NZcJHpr7GZGyS+ybWEYFdIqKkLrHSYB+INCfOgNE9/4LLiFd6LxplnCh+nZC9Ns0WbMhr7XJHRPDJvCcrvsWXMYrTc6ZUmKNjW/9sK+5rd3ovwPNLXpRSHu4fzlrc3/RfxtUjk=
+	t=1742395117; cv=none; b=XVq1gV/5Pf51FW1agr+A/q2JN/LGBLjw9vhENIDaLdfDua/DX+e327PSkYC6btykSnKUGIRCydYh/JUpsVhq/kS4OGnHwZ1P09w0OOpd0oJZtggTcaWMsgpEZg5APmY0T6gJnRbBpVf4V2Zfb+cK8Gme/EJEfxAqEDi1C95P/bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394963; c=relaxed/simple;
-	bh=wpe5hGobUC+cb16WM2qKJAuVQkhVr0i90qkoSKdZg2A=;
+	s=arc-20240116; t=1742395117; c=relaxed/simple;
+	bh=O8spj2uLW8+SBJNamKIlsNXit5s2v6/zZvZwVVXhOSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WrPpeCScmyj+mfsWy/3a3G8ZDxbVtWC1F5wjEa1KKKYuIw5v8GtQ0SczgMLSJeiIO5/WTtmeLVhY8j0MyYS2xjXMrk3aaRIB8qVp2R4E7o+PTBW37PXvJYgf2KtFC6uI3wgrbdzK1I5n0/IZpkB0bK5B6a7zRP05Cppc16tnxO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3f3QjtJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7D2C4CEE4;
-	Wed, 19 Mar 2025 14:36:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KtNYa/IFPk1UbPIPHnfXQ9HBKjugQtTeTSYYSKVFjs8bcDSLjfpsZ4JyxvKcpgzOrn0/REkA0rm6aGckUWtoZ9kntIXXUS3viUd/GivDmDHWhGhgDcB4aYW+2KXYgM3hnCop0b3rQdVJpPmHOFFwWnNWZbx20xM8TBjh9wDiv4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClwQgHz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFC9C4CEE4;
+	Wed, 19 Mar 2025 14:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394962;
-	bh=wpe5hGobUC+cb16WM2qKJAuVQkhVr0i90qkoSKdZg2A=;
+	s=korg; t=1742395117;
+	bh=O8spj2uLW8+SBJNamKIlsNXit5s2v6/zZvZwVVXhOSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3f3QjtJ4D1w6VqRRlqg7oZz44bs8KdSXHt9ss+B4SMvT+nuSXG2PgHfYyoDYlIG1
-	 OttjbUliQjy3XPpweLZEw+VzIAGlo3g3+5a2t+EeOG1DrnEuhElvTjL97uLvXssjMb
-	 DkP/LW0swHlSZ8LAMuoySJh1S1mwy6MChUKruYfQ=
+	b=ClwQgHz8HQQlu2ScoACq76NneENdKpGLGC8iHArlnS8MXbXvb1NZiuvcCR86EZmca
+	 APwQv6Z4Ya76JGvoDDfB6B/T3DtftrRrVO8T1q0ATCcFzhsV7iYswnGUjPPneBjFR5
+	 qN/ij8H/g4BuHUhb8vMl2vtSbAd+2Wv8vpexFZB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Varada Pavani <v.pavani@samsung.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.13 191/241] clk: samsung: update PLL locktime for PLL142XX used on FSD platform
-Date: Wed, 19 Mar 2025 07:31:01 -0700
-Message-ID: <20250319143032.447775433@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Vinod Govindapillai <vinod.govindapillai@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.12 169/231] drm/i915/cdclk: Do cdclk post plane programming later
+Date: Wed, 19 Mar 2025 07:31:02 -0700
+Message-ID: <20250319143031.019050494@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varada Pavani <v.pavani@samsung.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 53517a70873c7a91675f7244768aad5006cc45de upstream.
+commit 6266f4a78131c795631440ea9c7b66cdfd399484 upstream.
 
-Currently PLL142XX locktime is 270. As per spec, it should be 150. Hence
-update PLL142XX controller locktime to 150.
+We currently call intel_set_cdclk_post_plane_update() far
+too early. When pipes are active during the reprogramming
+the current spot only works for the cd2x divider update
+case, as that is synchronize to the pipe's vblank. Squashing
+and crawling are not synchronized in any way, so doing the
+programming while the pipes/planes are potentially still using
+the old hardware state could lead to underruns.
+
+Move the post plane reprgramming to a spot where we know
+that the pipes/planes have switched over the new hardware
+state.
 
 Cc: stable@vger.kernel.org
-Fixes: 4f346005aaed ("clk: samsung: fsd: Add initial clock support")
-Signed-off-by: Varada Pavani <v.pavani@samsung.com>
-Link: https://lore.kernel.org/r/20250225131918.50925-3-v.pavani@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250218211913.27867-2-ville.syrjala@linux.intel.com
+Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+(cherry picked from commit fb64f5568c0e0b5730733d70a012ae26b1a55815)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/samsung/clk-pll.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_display.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/samsung/clk-pll.c
-+++ b/drivers/clk/samsung/clk-pll.c
-@@ -206,6 +206,7 @@ static const struct clk_ops samsung_pll3
-  */
- /* Maximum lock time can be 270 * PDIV cycles */
- #define PLL35XX_LOCK_FACTOR	(270)
-+#define PLL142XX_LOCK_FACTOR	(150)
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -7438,9 +7438,6 @@ static void intel_atomic_commit_tail(str
+ 	/* Now enable the clocks, plane, pipe, and connectors that we set up. */
+ 	dev_priv->display.funcs.display->commit_modeset_enables(state);
  
- #define PLL35XX_MDIV_MASK       (0x3FF)
- #define PLL35XX_PDIV_MASK       (0x3F)
-@@ -272,7 +273,11 @@ static int samsung_pll35xx_set_rate(stru
- 	}
+-	if (state->modeset)
+-		intel_set_cdclk_post_plane_update(state);
+-
+ 	intel_wait_for_vblank_workers(state);
  
- 	/* Set PLL lock time. */
--	writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
-+	if (pll->type == pll_142xx)
-+		writel_relaxed(rate->pdiv * PLL142XX_LOCK_FACTOR,
-+			pll->lock_reg);
-+	else
-+		writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
- 			pll->lock_reg);
+ 	/* FIXME: We should call drm_atomic_helper_commit_hw_done() here
+@@ -7521,6 +7518,8 @@ static void intel_atomic_commit_tail(str
+ 		intel_verify_planes(state);
  
- 	/* Change PLL PMS values */
+ 	intel_sagv_post_plane_update(state);
++	if (state->modeset)
++		intel_set_cdclk_post_plane_update(state);
+ 	intel_pmdemand_post_plane_update(state);
+ 
+ 	drm_atomic_helper_commit_hw_done(&state->base);
 
 
 
