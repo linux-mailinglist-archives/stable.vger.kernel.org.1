@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-125133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7B3A68FA1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADCEA6924D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:06:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77AD07A994F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A6CF19C6E2E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EA31F872A;
-	Wed, 19 Mar 2025 14:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375861E832C;
+	Wed, 19 Mar 2025 14:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eISHw9K4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGBu47JR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574331DE8AB;
-	Wed, 19 Mar 2025 14:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E934F1DDC0F;
+	Wed, 19 Mar 2025 14:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394977; cv=none; b=rogEcwURN+SoyHmpHBeNocNk/JMHGK3baNkYw+bOmk4zcDC9slvQQnlOomvKVzj9f+IKlbKtijKkXEoEzPt10Oa99O6WPZWRIM7SWrVLh28HY+69JKvKREUA/chQ5YJMSiXuD49b/1p3vfgBo7YWE64u5fjK1pFjoh+olB8Z6jk=
+	t=1742395128; cv=none; b=Nwc3WEbgGRNljOzZHgHwsYjVUoUzG+aW204LiB6bPbxJ+0/O3Ot8bKCLtYjZL7klLBEDgX/duU1NysYCz0wHOGG8/dufiaIipt5TYvduWyiZVbMjdhkW/ybUq1IcUs6O0oh60t40FvjLUCVYTSZy1MCYTARz8D78HGh/iI9oReo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394977; c=relaxed/simple;
-	bh=yFndqrjTd938M2Q4qXsaa96fACsnZ3vAOoy+Jst0sms=;
+	s=arc-20240116; t=1742395128; c=relaxed/simple;
+	bh=fl0tynh98PQ+yXOzivFBDzkaJ6AiKo+3ur30Gyl0wFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lfiDORxrCSlXXcHYcKDXpjg+rgjX4baFVb00qLDHAUhWUAa4+hXxWtPhgTdE9N8JvrIV7+eRya+AidwjjOCH3Am63ewX4k+N9HeyvlpVVrcxgd94S4fTnpxP1sPs4/+jsgGvNAelEo1P4H2TLYbxIi/kUF4fGYGR1QeldIiPsQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eISHw9K4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7CBC4CEE4;
-	Wed, 19 Mar 2025 14:36:17 +0000 (UTC)
+	 MIME-Version; b=SEWiqdD8WfchrbC0zLa0Xi/B2Sw85AXG7AUg9ovbRkSHdtb84NYg9yzDWx4Sb69ZoGfSkhWwGJmAiD/T2vdAx6vxWos5a+WoBMK4B7AEy2G5ooIUUccYjBFJGuCTRRQbtzXpjH6RQAPj5WMEa5UUSVSGL3np7YJdq/5yQ3mh8E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGBu47JR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB18C4CEE4;
+	Wed, 19 Mar 2025 14:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394977;
-	bh=yFndqrjTd938M2Q4qXsaa96fACsnZ3vAOoy+Jst0sms=;
+	s=korg; t=1742395127;
+	bh=fl0tynh98PQ+yXOzivFBDzkaJ6AiKo+3ur30Gyl0wFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eISHw9K4bCR5hH7eGdl0UeDA+5G2lsbHLlI9Td1QcRbWaRXLbKJnx/Vxz7nJy4czW
-	 ZsfbEcrdueUDanATbLRkZsrVD2y7J0H4raInCVPoALcQuPxTd1AIalDXScBmC3Q6na
-	 PLcm35GAcvKQNF2y/ZCRgm9UCERx0jbevAnXZzbw=
+	b=IGBu47JRkQf/mo9ykI3D4rLIGqAwB1golbl+s9M8xVYmPg9cBA4BQnYzn5JVpK8Gq
+	 fzwDkr8Vnn0lGIAluHBroRT2F0zNfhpksQg8IP+JlYFJy8xspsuirnOGuwsgS/E6yE
+	 MIwW31HrkcfKsftxsCZY6ncwT196TUzNr6fqhk+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 214/241] drm/xe/userptr: Fix an incorrect assert
+	David Hildenbrand <david@redhat.com>,
+	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 191/231] arm64: mm: Populate vmemmap at the page level if not section aligned
 Date: Wed, 19 Mar 2025 07:31:24 -0700
-Message-ID: <20250319143033.045632066@linuxfoundation.org>
+Message-ID: <20250319143031.559633317@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
 
-[ Upstream commit 9106713bd2ab0cacd380cda0d3f0219f2e488086 ]
+commit d4234d131b0a3f9e65973f1cdc71bb3560f5d14b upstream.
 
-The assert incorrectly checks the total length processed which
-can in fact be greater than the number of pages. Fix.
+On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
+to 27, making one section 128M. The related page struct which vmemmap
+points to is 2M then.
+Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+vmemmap to populate at the PMD section level which was suitable
+initially since hot plug granule is always one section(128M). However,
+commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
+existing arm64 assumptions.
 
-Fixes: 0a98219bcc96 ("drm/xe/hmm: Don't dereference struct page pointers without notifier lock")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250307100109.21397-1-thomas.hellstrom@linux.intel.com
-(cherry picked from commit 70e5043ba85eae199b232e39921abd706b5c1fa4)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The first problem is that if start or end is not aligned to a section
+boundary, such as when a subsection is hot added, populating the entire
+section is wasteful.
+
+The next problem is if we hotplug something that spans part of 128 MiB
+section (subsections, let's call it memblock1), and then hotplug something
+that spans another part of a 128 MiB section(subsections, let's call it
+memblock2), and subsequently unplug memblock1, vmemmap_free() will clear
+the entire PMD entry which also supports memblock2 even though memblock2
+is still active.
+
+Assuming hotplug/unplug sizes are guaranteed to be symmetric. Do the
+fix similar to x86-64: populate to pages levels if start/end is not aligned
+with section boundary.
+
+Cc: stable@vger.kernel.org # v5.4+
+Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20250304072700.3405036-1-quic_zhenhuah@quicinc.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_hmm.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/mm/mmu.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_hmm.c b/drivers/gpu/drm/xe/xe_hmm.c
-index d7a9408b3a97c..f6bc4f29d7538 100644
---- a/drivers/gpu/drm/xe/xe_hmm.c
-+++ b/drivers/gpu/drm/xe/xe_hmm.c
-@@ -138,13 +138,17 @@ static int xe_build_sg(struct xe_device *xe, struct hmm_range *range,
- 		i += size;
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1176,8 +1176,11 @@ int __meminit vmemmap_populate(unsigned
+ 		struct vmem_altmap *altmap)
+ {
+ 	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
++	/* [start, end] should be within one section */
++	WARN_ON_ONCE(end - start > PAGES_PER_SECTION * sizeof(struct page));
  
- 		if (unlikely(j == st->nents - 1)) {
-+			xe_assert(xe, i >= npages);
- 			if (i > npages)
- 				size -= (i - npages);
-+
- 			sg_mark_end(sgl);
-+		} else {
-+			xe_assert(xe, i < npages);
- 		}
-+
- 		sg_set_page(sgl, page, size << PAGE_SHIFT, 0);
- 	}
--	xe_assert(xe, i == npages);
- 
- 	return dma_map_sgtable(dev, st, write ? DMA_BIDIRECTIONAL : DMA_TO_DEVICE,
- 			       DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_NO_KERNEL_MAPPING);
--- 
-2.39.5
-
+-	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES))
++	if (!IS_ENABLED(CONFIG_ARM64_4K_PAGES) ||
++	    (end - start < PAGES_PER_SECTION * sizeof(struct page)))
+ 		return vmemmap_populate_basepages(start, end, node, altmap);
+ 	else
+ 		return vmemmap_populate_hugepages(start, end, node, altmap);
 
 
 
