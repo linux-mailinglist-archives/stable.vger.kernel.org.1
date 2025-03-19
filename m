@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-125001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920E8A69079
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7F2A690CE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9199A1B8078D
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6DB1B671C6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE2B1DF97A;
-	Wed, 19 Mar 2025 14:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0880214A6C;
+	Wed, 19 Mar 2025 14:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jul5n8H9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEt9jbwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE081DF75A;
-	Wed, 19 Mar 2025 14:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9281E1C3F;
+	Wed, 19 Mar 2025 14:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394883; cv=none; b=mZzp1iUWX3JPnyLIJDlQmQEpEiBHaEBZtRVeEqhoj5+49YnuUwavgaXrbyFrYqSWmj8o863yBrJigUpjJaxu4gceuwCAv4msfQekLx9ox5+SsGtnSmMs8ZkQbC9N6wiO6hihtfSFiEADkew0sNQItclKve0T90tpQKvOXYN/GH8=
+	t=1742395052; cv=none; b=Htdshqw3IwdRJHqYzJJG793waTaERqQWp4tKSCUrKVEgbD5e67rDDnbxiu8TjVAKw//q0dRpWRv5Cc6Gx1rJ/MvKHhwCwonvvRTV38wvBPbOLSRchHlyh25uH0/qHDMJzHerbEGHsMWbmyXCuugtiUy8RP+Jh25MLu9J2qeJx/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394883; c=relaxed/simple;
-	bh=J355HNhqeon6eocJ6L5ukwgXM8sHW0ih/bXTswSUDJA=;
+	s=arc-20240116; t=1742395052; c=relaxed/simple;
+	bh=1LLuGMhrT3PNHyBKL5vklmNFUS4KIz3pp66ugjI36uQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ohjlm2u09sWpYGXYaCBSMXAmeYm6LU6+hKqzMqIxsxJBhYKMGIFCMvCw3VGy8tl/KNV6po7aKiKEgq7mXUerhw6a61xdCz7QvsDFtzaENEz6Mt28A5IO19OEgTxRjwRUkIZQvK51spymK/O6NrV/FpArTl3eLAFhwvYGWgpIGtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jul5n8H9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04126C4CEE8;
-	Wed, 19 Mar 2025 14:34:42 +0000 (UTC)
+	 MIME-Version; b=WloZGRGvNwdDSWeu5QbE7NiiiIhaMcnD34SPJXw2ISnDd+YiLqSmtNEuUQX2J+KIA7YaYUIaOkcv7ZTPL7pCDq//k9EZNTcItjFeyzeNMDvSqOw0tuqoOAMgr0MzgRXvpIp+ppLnbr9SEhP0b8eu8e5MOFUA+UILnFl1QPEFNDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEt9jbwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45490C4CEE4;
+	Wed, 19 Mar 2025 14:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394883;
-	bh=J355HNhqeon6eocJ6L5ukwgXM8sHW0ih/bXTswSUDJA=;
+	s=korg; t=1742395052;
+	bh=1LLuGMhrT3PNHyBKL5vklmNFUS4KIz3pp66ugjI36uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jul5n8H99qwT2lIBZ5O9Iklr5DOrjbDlE/5Qdp6Q8QJMxjz+xOnvF6oAJsMTEMpVB
-	 K8PdZIpTqHmWh9gndKfBpk2CetPkMPuixfWR8evoY4wKRiFx8FlrECi5uxFhJ+OUUE
-	 8PrKrEMd/BUsLWeXtyPAbhZ8xMypXEfSqgKbH0S4=
+	b=dEt9jbwuB63j87k+ij9cckxpDo36n0URYk2bqvr0IMfzLlRWZiMMtzihl/+Ly0LFQ
+	 OsdIuqFbAi3Zz/CT0iASaMmVK6PYJdiXoqGh+h6KgyYntaa4mLejHzPw/j/P/4SAUX
+	 xH+RZ0DU+j1IEPAzZwxb6dTxmPh5UmgA/gzuHLfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Austin Zheng <Austin.Zheng@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+83fed965338b573115f7@syzkaller.appspotmail.com,
+	Kohei Enju <enjuk@amazon.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 066/241] drm/amd/display: Fix out-of-bound accesses
-Date: Wed, 19 Mar 2025 07:28:56 -0700
-Message-ID: <20250319143029.356537784@linuxfoundation.org>
+Subject: [PATCH 6.12 044/231] netfilter: nf_conncount: Fully initialize struct nf_conncount_tuple in insert_tree()
+Date: Wed, 19 Mar 2025 07:28:57 -0700
+Message-ID: <20250319143027.902617094@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit 8adbb2a98b00926315fd513b5fe2596b5716b82d ]
+[ Upstream commit d653bfeb07ebb3499c403404c21ac58a16531607 ]
 
-[WHAT & HOW]
-hpo_stream_to_link_encoder_mapping has size MAX_HPO_DP2_ENCODERS(=4),
-but location can have size up to 6. As a result, it is necessary to
-check location against MAX_HPO_DP2_ENCODERS.
+Since commit b36e4523d4d5 ("netfilter: nf_conncount: fix garbage
+collection confirm race"), `cpu` and `jiffies32` were introduced to
+the struct nf_conncount_tuple.
 
-Similiarly, disp_cfg_stream_location can be used as an array index which
-should be 0..5, so the ASSERT's conditions should be less without equal.
+The commit made nf_conncount_add() initialize `conn->cpu` and
+`conn->jiffies32` when allocating the struct.
+In contrast, count_tree() was not changed to initialize them.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3904
-Reviewed-by: Austin Zheng <Austin.Zheng@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+By commit 34848d5c896e ("netfilter: nf_conncount: Split insert and
+traversal"), count_tree() was split and the relevant allocation
+code now resides in insert_tree().
+Initialize `conn->cpu` and `conn->jiffies32` in insert_tree().
+
+BUG: KMSAN: uninit-value in find_or_evict net/netfilter/nf_conncount.c:117 [inline]
+BUG: KMSAN: uninit-value in __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
+ find_or_evict net/netfilter/nf_conncount.c:117 [inline]
+ __nf_conncount_add+0xd9c/0x2850 net/netfilter/nf_conncount.c:143
+ count_tree net/netfilter/nf_conncount.c:438 [inline]
+ nf_conncount_count+0x82f/0x1e80 net/netfilter/nf_conncount.c:521
+ connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
+ __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
+ nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+ nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
+ nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+ nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
+ NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
+ ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
+ ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
+ __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
+ __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
+ __netif_receive_skb_list net/core/dev.c:6035 [inline]
+ netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
+ netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
+ xdp_recv_frames net/bpf/test_run.c:280 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:361 [inline]
+ bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
+ bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
+ bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
+ __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
+ __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
+ ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:4121 [inline]
+ slab_alloc_node mm/slub.c:4164 [inline]
+ kmem_cache_alloc_noprof+0x915/0xe10 mm/slub.c:4171
+ insert_tree net/netfilter/nf_conncount.c:372 [inline]
+ count_tree net/netfilter/nf_conncount.c:450 [inline]
+ nf_conncount_count+0x1415/0x1e80 net/netfilter/nf_conncount.c:521
+ connlimit_mt+0x7f6/0xbd0 net/netfilter/xt_connlimit.c:72
+ __nft_match_eval net/netfilter/nft_compat.c:403 [inline]
+ nft_match_eval+0x1a5/0x300 net/netfilter/nft_compat.c:433
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+ nft_do_chain+0x426/0x2290 net/netfilter/nf_tables_core.c:288
+ nft_do_chain_ipv4+0x1a5/0x230 net/netfilter/nft_chain_filter.c:23
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+ nf_hook_slow_list+0x24d/0x860 net/netfilter/core.c:663
+ NF_HOOK_LIST include/linux/netfilter.h:350 [inline]
+ ip_sublist_rcv+0x17b7/0x17f0 net/ipv4/ip_input.c:633
+ ip_list_rcv+0x9ef/0xa40 net/ipv4/ip_input.c:669
+ __netif_receive_skb_list_ptype net/core/dev.c:5936 [inline]
+ __netif_receive_skb_list_core+0x15c5/0x1670 net/core/dev.c:5983
+ __netif_receive_skb_list net/core/dev.c:6035 [inline]
+ netif_receive_skb_list_internal+0x1085/0x1700 net/core/dev.c:6126
+ netif_receive_skb_list+0x5a/0x460 net/core/dev.c:6178
+ xdp_recv_frames net/bpf/test_run.c:280 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:361 [inline]
+ bpf_test_run_xdp_live+0x2e86/0x3480 net/bpf/test_run.c:390
+ bpf_prog_test_run_xdp+0xf1d/0x1ae0 net/bpf/test_run.c:1316
+ bpf_prog_test_run+0x5e5/0xa30 kernel/bpf/syscall.c:4407
+ __sys_bpf+0x6aa/0xd90 kernel/bpf/syscall.c:5813
+ __do_sys_bpf kernel/bpf/syscall.c:5902 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:5900 [inline]
+ __ia32_sys_bpf+0xa0/0xe0 kernel/bpf/syscall.c:5900
+ ia32_sys_call+0x394d/0x4180 arch/x86/include/generated/asm/syscalls_32.h:358
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/common.c:387
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/common.c:412
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/common.c:450
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+
+Reported-by: syzbot+83fed965338b573115f7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=83fed965338b573115f7
+Fixes: b36e4523d4d5 ("netfilter: nf_conncount: fix garbage collection confirm race")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dml2/dml21/dml21_translation_helper.c    | 4 ++--
- .../gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c   | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/netfilter/nf_conncount.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-index c6a5a86146797..de2b6e954fbd2 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-@@ -1010,7 +1010,7 @@ bool dml21_map_dc_state_into_dml_display_cfg(const struct dc *in_dc, struct dc_s
- 		if (disp_cfg_stream_location < 0)
- 			disp_cfg_stream_location = dml_dispcfg->num_streams++;
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index ebe38ed2e6f4f..913ede2f57f9a 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -377,6 +377,8 @@ insert_tree(struct net *net,
  
--		ASSERT(disp_cfg_stream_location >= 0 && disp_cfg_stream_location <= __DML2_WRAPPER_MAX_STREAMS_PLANES__);
-+		ASSERT(disp_cfg_stream_location >= 0 && disp_cfg_stream_location < __DML2_WRAPPER_MAX_STREAMS_PLANES__);
- 		populate_dml21_timing_config_from_stream_state(&dml_dispcfg->stream_descriptors[disp_cfg_stream_location].timing, context->streams[stream_index], dml_ctx);
- 		adjust_dml21_hblank_timing_config_from_pipe_ctx(&dml_dispcfg->stream_descriptors[disp_cfg_stream_location].timing, &context->res_ctx.pipe_ctx[stream_index]);
- 		populate_dml21_output_config_from_stream_state(&dml_dispcfg->stream_descriptors[disp_cfg_stream_location].output, context->streams[stream_index], &context->res_ctx.pipe_ctx[stream_index]);
-@@ -1035,7 +1035,7 @@ bool dml21_map_dc_state_into_dml_display_cfg(const struct dc *in_dc, struct dc_s
- 				if (disp_cfg_plane_location < 0)
- 					disp_cfg_plane_location = dml_dispcfg->num_planes++;
+ 	conn->tuple = *tuple;
+ 	conn->zone = *zone;
++	conn->cpu = raw_smp_processor_id();
++	conn->jiffies32 = (u32)jiffies;
+ 	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
  
--				ASSERT(disp_cfg_plane_location >= 0 && disp_cfg_plane_location <= __DML2_WRAPPER_MAX_STREAMS_PLANES__);
-+				ASSERT(disp_cfg_plane_location >= 0 && disp_cfg_plane_location < __DML2_WRAPPER_MAX_STREAMS_PLANES__);
- 
- 				populate_dml21_surface_config_from_plane_state(in_dc, &dml_dispcfg->plane_descriptors[disp_cfg_plane_location].surface, context->stream_status[stream_index].plane_states[plane_index]);
- 				populate_dml21_plane_config_from_plane_state(dml_ctx, &dml_dispcfg->plane_descriptors[disp_cfg_plane_location], context->stream_status[stream_index].plane_states[plane_index], context, stream_index);
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-index bde4250853b10..81ba8809a3b4c 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -746,7 +746,7 @@ static void populate_dml_output_cfg_from_stream_state(struct dml_output_cfg_st *
- 	case SIGNAL_TYPE_DISPLAY_PORT_MST:
- 	case SIGNAL_TYPE_DISPLAY_PORT:
- 		out->OutputEncoder[location] = dml_dp;
--		if (dml2->v20.scratch.hpo_stream_to_link_encoder_mapping[location] != -1)
-+		if (location < MAX_HPO_DP2_ENCODERS && dml2->v20.scratch.hpo_stream_to_link_encoder_mapping[location] != -1)
- 			out->OutputEncoder[dml2->v20.scratch.hpo_stream_to_link_encoder_mapping[location]] = dml_dp2p0;
- 		break;
- 	case SIGNAL_TYPE_EDP:
-@@ -1303,7 +1303,7 @@ void map_dc_state_into_dml_display_cfg(struct dml2_context *dml2, struct dc_stat
- 		if (disp_cfg_stream_location < 0)
- 			disp_cfg_stream_location = dml_dispcfg->num_timings++;
- 
--		ASSERT(disp_cfg_stream_location >= 0 && disp_cfg_stream_location <= __DML2_WRAPPER_MAX_STREAMS_PLANES__);
-+		ASSERT(disp_cfg_stream_location >= 0 && disp_cfg_stream_location < __DML2_WRAPPER_MAX_STREAMS_PLANES__);
- 
- 		populate_dml_timing_cfg_from_stream_state(&dml_dispcfg->timing, disp_cfg_stream_location, context->streams[i]);
- 		populate_dml_output_cfg_from_stream_state(&dml_dispcfg->output, disp_cfg_stream_location, context->streams[i], current_pipe_context, dml2);
-@@ -1343,7 +1343,7 @@ void map_dc_state_into_dml_display_cfg(struct dml2_context *dml2, struct dc_stat
- 				if (disp_cfg_plane_location < 0)
- 					disp_cfg_plane_location = dml_dispcfg->num_surfaces++;
- 
--				ASSERT(disp_cfg_plane_location >= 0 && disp_cfg_plane_location <= __DML2_WRAPPER_MAX_STREAMS_PLANES__);
-+				ASSERT(disp_cfg_plane_location >= 0 && disp_cfg_plane_location < __DML2_WRAPPER_MAX_STREAMS_PLANES__);
- 
- 				populate_dml_surface_cfg_from_plane_state(dml2->v20.dml_core_ctx.project, &dml_dispcfg->surface, disp_cfg_plane_location, context->stream_status[i].plane_states[j]);
- 				populate_dml_plane_cfg_from_plane_state(
+ 	nf_conncount_list_init(&rbconn->list);
 -- 
 2.39.5
 
