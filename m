@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64358A69160
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A90A69013
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FBBA4646F7
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AB8D8A1164
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C16B2222C5;
-	Wed, 19 Mar 2025 14:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBC51DED6C;
+	Wed, 19 Mar 2025 14:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9EBOfGC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/sg7PHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE67E20AF9B;
-	Wed, 19 Mar 2025 14:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D74520AF8E;
+	Wed, 19 Mar 2025 14:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395255; cv=none; b=r1Kkw0B5EUsl38FMoql43bN1ka/40WAD6Sv9350s9p88267lggno8BKwet2tH7QwLPs4GAMUxIOa5WPegw0o7sFOQwjHTgbA7IdSm4/DpI3XvMbdUCMxgpwS3He/bD2okBoViPd+gXjHZhYzfzRAe4A5HFuFJDfgT1Eh4aqgaEY=
+	t=1742394998; cv=none; b=CllSJul5eHAy5gNY7thdAhNTfDrLUxX/xyMXsu3FVgYFyp6bH35m3h2zersOETJefq4oTvn6UxgNqXfJBurYGdioxSVvBHrCJooC/5vmRrzJ6XhjYuAg6wVfm78YOKR7+PyvWYCdqdoj8QA//Nvco6CLbncs/zAkQRVKEbS2wh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395255; c=relaxed/simple;
-	bh=tIT5Aa27jZpFFU4dbsX44TyU/x+e2snjMHBYPEjltg0=;
+	s=arc-20240116; t=1742394998; c=relaxed/simple;
+	bh=D+ly6aE25l6GHtaHRuRVa+OVvvGEExQJxe4El1AGkdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFGKn6vEPTh3vZ5IWBh8NPx3po07H+wJqA6/aTBilKDPaK9Nf5G/xCb8CcWeBDHbtMCsg2LR0lne4b2rb1YmM68IdbXjsYuMx2eV04NpJH1FzncnEC6iM85ltve1zbhiXj+/A67c3zViBJR1psPOXjczZOA35XD2CxtZ5ScfEz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9EBOfGC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F30C4CEE4;
-	Wed, 19 Mar 2025 14:40:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bijcBu1p7ayW8G17jZMMMdJt67qLaHMA3Exp3zFQ7Zq2dOpEracbeNhJNpFWATfT0yP4xaBL4WCr9wtmwjcDqceKeWKAvxWCYVGp10w88/dMzQYRoA8YKW6Lv56t14mrRqYLsvcesOSXepXUNzUGg0Vc6bHDg9avOo5Dxu5hwBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/sg7PHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A6CC4CEE4;
+	Wed, 19 Mar 2025 14:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395254;
-	bh=tIT5Aa27jZpFFU4dbsX44TyU/x+e2snjMHBYPEjltg0=;
+	s=korg; t=1742394998;
+	bh=D+ly6aE25l6GHtaHRuRVa+OVvvGEExQJxe4El1AGkdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9EBOfGC5ExliZOasZbRY5KjRmMvuR8L/Z0ckJAy1CGgXLKfUD7lVtf9AIb5kxBFQ
-	 TbsrqD/dh4O2mO+afq++qZMrivr0W2AVC529hpbW9U2Wm16xEPMMPHGvo0zX4SwXXD
-	 k85wgYr3jhQpsN1ChieFNFHyYEEBu3PSL2kFcAgs=
+	b=s/sg7PHwJChkSNkhNpMj4fPf4EBdzsARLPQgrpINbnr80yW0EEbiiMd9XwvyzyP6r
+	 o+WRI0ywCZKZQ8voaxd2Jz3tj1xPpi14TkYfwZBDPM0kJ3qR5QdaQ+GfF/7ORW12h0
+	 m4XeeBni6PaFr/FAhsdOqXjVUW0pdrdsoOkpheqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.6 136/166] rust: init: fix `Zeroable` implementation for `Option<NonNull<T>>` and `Option<KBox<T>>`
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.13 237/241] drm/xe/guc: Fix size_t print format
 Date: Wed, 19 Mar 2025 07:31:47 -0700
-Message-ID: <20250319143023.701855660@linuxfoundation.org>
+Message-ID: <20250319143033.602371289@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benno Lossin <benno.lossin@proton.me>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-commit df27cef153603b18a7d094b53cc3d5264ff32797 upstream.
+commit 213e24250feed3bcf58d7594298df2d7e78a88ab upstream.
 
-According to [1], `NonNull<T>` and `#[repr(transparent)]` wrapper types
-such as our custom `KBox<T>` have the null pointer optimization only if
-`T: Sized`. Thus remove the `Zeroable` implementation for the unsized
-case.
+Use %zx format to print size_t to remove the following warning when
+building for i386:
 
-Link: https://doc.rust-lang.org/stable/std/option/index.html#representation [1]
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Closes: https://lore.kernel.org/rust-for-linux/CAH5fLghL+qzrD8KiCF1V3vf2YcC6aWySzkmaE2Zzrnh1gKj-hw@mail.gmail.com/
-Cc: stable@vger.kernel.org # v6.12+ (a custom patch will be needed for 6.6.y)
-Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed` function")
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Link: https://lore.kernel.org/r/20250305132836.2145476-1-benno.lossin@proton.me
-[ Added Closes tag and moved up the Reported-by one. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+>> drivers/gpu/drm/xe/xe_guc_ct.c:1727:43: warning: format specifies type 'unsigned long' but the argument has type 'size_t' (aka 'unsigned int') [-Wformat]
+    1727 |                         drm_printf(p, "[CTB].length: 0x%lx\n", snapshot->ctb_size);
+         |                                                        ~~~     ^~~~~~~~~~~~~~~~~~
+         |                                                        %zx
+
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501281627.H6nj184e-lkp@intel.com/
+Fixes: 643f209ba3fd ("drm/xe: Make GUC binaries dump consistent with other binaries in devcoredump")
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250128154242.3371687-1-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 7748289df510638ba61fed86b59ce7d2fb4a194c)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/init.rs |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_ct.c  |    2 +-
+ drivers/gpu/drm/xe/xe_guc_log.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -1310,17 +1310,14 @@ impl_zeroable! {
-     // SAFETY: `T: Zeroable` and `UnsafeCell` is `repr(transparent)`.
-     {<T: ?Sized + Zeroable>} UnsafeCell<T>,
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -1700,7 +1700,7 @@ void xe_guc_ct_snapshot_print(struct xe_
+ 			   snapshot->g2h_outstanding);
  
--    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).
-+    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee:
-+    // https://doc.rust-lang.org/stable/std/option/index.html#representation).
-     Option<NonZeroU8>, Option<NonZeroU16>, Option<NonZeroU32>, Option<NonZeroU64>,
-     Option<NonZeroU128>, Option<NonZeroUsize>,
-     Option<NonZeroI8>, Option<NonZeroI16>, Option<NonZeroI32>, Option<NonZeroI64>,
-     Option<NonZeroI128>, Option<NonZeroIsize>,
--
--    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).
--    //
--    // In this case we are allowed to use `T: ?Sized`, since all zeros is the `None` variant.
--    {<T: ?Sized>} Option<NonNull<T>>,
--    {<T: ?Sized>} Option<Box<T>>,
-+    {<T>} Option<NonNull<T>>,
-+    {<T>} Option<Box<T>>,
+ 		if (snapshot->ctb) {
+-			drm_printf(p, "[CTB].length: 0x%lx\n", snapshot->ctb_size);
++			drm_printf(p, "[CTB].length: 0x%zx\n", snapshot->ctb_size);
+ 			xe_print_blob_ascii85(p, "[CTB].data", '\n',
+ 					      snapshot->ctb, 0, snapshot->ctb_size);
+ 		}
+--- a/drivers/gpu/drm/xe/xe_guc_log.c
++++ b/drivers/gpu/drm/xe/xe_guc_log.c
+@@ -208,7 +208,7 @@ void xe_guc_log_snapshot_print(struct xe
+ 	drm_printf(p, "GuC timestamp: 0x%08llX [%llu]\n", snapshot->stamp, snapshot->stamp);
+ 	drm_printf(p, "Log level: %u\n", snapshot->level);
  
-     // SAFETY: `null` pointer is valid.
-     //
+-	drm_printf(p, "[LOG].length: 0x%lx\n", snapshot->size);
++	drm_printf(p, "[LOG].length: 0x%zx\n", snapshot->size);
+ 	remain = snapshot->size;
+ 	for (i = 0; i < snapshot->num_chunks; i++) {
+ 		size_t size = min(GUC_LOG_CHUNK_SIZE, remain);
 
 
 
