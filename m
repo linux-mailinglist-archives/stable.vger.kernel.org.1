@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34516A68F8F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DBCAA69089
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 975D4883A66
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CC088294C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A5C1D5AC6;
-	Wed, 19 Mar 2025 14:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2379B214A7B;
+	Wed, 19 Mar 2025 14:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHEBGzcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTH2MdAc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177B61B2194;
-	Wed, 19 Mar 2025 14:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D434D1B0F32;
+	Wed, 19 Mar 2025 14:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394901; cv=none; b=Nqp2gklseOrA9fs8tZSaOje/zDTqXIx1EoWOvVoXLBzhRGNeemsEcO9HYFF3g8PBaQCRCStNbrheZ93xa+OFnFrqUsQJxzzSFBcMOOzsVr1yRt1Ytiq5MimDeg4cHr5eIRXUmUr5Fq6OMDa+LU6+BXCGMcrCcQirH/X7YZB/My8=
+	t=1742395055; cv=none; b=HEtFtbfibswMjjeB55kHTt/fAZ4z8KaB98yRvsC4ksw1Sb9HKFc6GD9AZIynYeXzvwHR+FJZbRelczg6tjZ9lr2kuHV7y3koIlrS02pceau0aMIqwZc4Uitu1ivx3y5AUV/8sJOfVpiLHWjgueKz0VmZgTwpkkdPpr+VgmjsVCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394901; c=relaxed/simple;
-	bh=YF7ZGlluTxDajrBGFaP9ee7ZxHWv9FSXbTNi6O0aWH0=;
+	s=arc-20240116; t=1742395055; c=relaxed/simple;
+	bh=S/G6Y+RRgNVW9x5Fo+0p2cXCHx/eW0jIah3TslOKLtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdIjz/bXA2+v7uH8hIIiI6ANBRzXRwOPj1LLc6x0GSxYcwFLMTezE2w+fhy9Gbm2y33KnAYjA83KD3xSvATlqY3174u6xaS8kYQFPYCj3dj2DRof0yURHHwRdQ2AN1KlayFOg/whbyYvlIyYoozRveQipbdXncZRLrwvfkWbpxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHEBGzcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1050C4CEE4;
-	Wed, 19 Mar 2025 14:35:00 +0000 (UTC)
+	 MIME-Version; b=MByHNmbkaCvPVA6MIlP9F+W1kLdKVCNZk2Ci/70u66arZ42RkJtb2h878YbbqV72/v7UDWkquDJJCQ8bkldPnqNYRBcIZ3D2vDytGB5iWQy1SxVwEbcnNzs1ObTptm/Ho+ifOWRNz5Rau/2j1P2PzGxMS5GwbhflqhlIEC3vag0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTH2MdAc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6574C4CEE4;
+	Wed, 19 Mar 2025 14:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394901;
-	bh=YF7ZGlluTxDajrBGFaP9ee7ZxHWv9FSXbTNi6O0aWH0=;
+	s=korg; t=1742395055;
+	bh=S/G6Y+RRgNVW9x5Fo+0p2cXCHx/eW0jIah3TslOKLtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHEBGzcvuHzZFnBFa642poMYkk9s6EQ5AfVPFWBL0a/PKcokYx5VH0/tkAdWjXuC7
-	 O2vMieAHVt4/L1nsWW07TbqkiXWG6juiyvZhFFyGRYmo1Gj/jO8IsJOuuod1pyJf95
-	 sPk9+ZC3uK6tmtwKKB/3U9ws6clCNlnb/gWBtLuM=
+	b=mTH2MdAceChAUv1YTbyEG0ZQKQrAglDccy3aifq3VypeUd+HEtv3D9dLs6ohkwUi/
+	 gKvyRfncbqvohnYIxAjc3eolohALT4rOqAK8eC8WeUxhfzL3zUNS8TKSmlYjMCmCGG
+	 vxHr1P4DPygHhs/U2xp/MJUppcsmK9ZlRpRGIkNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Lindholm <linmag7@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 069/241] scsi: qla1280: Fix kernel oops when debug level > 2
+Subject: [PATCH 6.12 046/231] net_sched: Prevent creation of classes with TC_H_ROOT
 Date: Wed, 19 Mar 2025 07:28:59 -0700
-Message-ID: <20250319143029.433000130@linuxfoundation.org>
+Message-ID: <20250319143027.955150898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Lindholm <linmag7@gmail.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 5233e3235dec3065ccc632729675575dbe3c6b8a ]
+[ Upstream commit 0c3057a5a04d07120b3d0ec9c79568fceb9c921e ]
 
-A null dereference or oops exception will eventually occur when qla1280.c
-driver is compiled with DEBUG_QLA1280 enabled and ql_debug_level > 2.  I
-think its clear from the code that the intention here is sg_dma_len(s) not
-length of sg_next(s) when printing the debug info.
+The function qdisc_tree_reduce_backlog() uses TC_H_ROOT as a termination
+condition when traversing up the qdisc tree to update parent backlog
+counters. However, if a class is created with classid TC_H_ROOT, the
+traversal terminates prematurely at this class instead of reaching the
+actual root qdisc, causing parent statistics to be incorrectly maintained.
+In case of DRR, this could lead to a crash as reported by Mingi Cho.
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/20250125095033.26188-1-linmag7@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Prevent the creation of any Qdisc class with classid TC_H_ROOT
+(0xFFFFFFFF) across all qdisc types, as suggested by Jamal.
+
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
+Link: https://patch.msgid.link/20250306232355.93864-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla1280.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_api.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/scsi/qla1280.c b/drivers/scsi/qla1280.c
-index 8958547ac111a..fed07b1460702 100644
---- a/drivers/scsi/qla1280.c
-+++ b/drivers/scsi/qla1280.c
-@@ -2867,7 +2867,7 @@ qla1280_64bit_start_scsi(struct scsi_qla_host *ha, struct srb * sp)
- 			dprintk(3, "S/G Segment phys_addr=%x %x, len=0x%x\n",
- 				cpu_to_le32(upper_32_bits(dma_handle)),
- 				cpu_to_le32(lower_32_bits(dma_handle)),
--				cpu_to_le32(sg_dma_len(sg_next(s))));
-+				cpu_to_le32(sg_dma_len(s)));
- 			remseg--;
- 		}
- 		dprintk(5, "qla1280_64bit_start_scsi: Scatter/gather "
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index d26ac6bd9b108..518f52f65a49d 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -2254,6 +2254,12 @@ static int tc_ctl_tclass(struct sk_buff *skb, struct nlmsghdr *n,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	/* Prevent creation of traffic classes with classid TC_H_ROOT */
++	if (clid == TC_H_ROOT) {
++		NL_SET_ERR_MSG(extack, "Cannot create traffic class with classid TC_H_ROOT");
++		return -EINVAL;
++	}
++
+ 	new_cl = cl;
+ 	err = -EOPNOTSUPP;
+ 	if (cops->change)
 -- 
 2.39.5
 
