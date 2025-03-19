@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-124984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E21DA68F61
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C508FA69038
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D4CC3ACCFF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DF6D887416
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59CA1DDA36;
-	Wed, 19 Mar 2025 14:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB77212FB3;
+	Wed, 19 Mar 2025 14:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ybapy3tL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRrbvEAC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8C71C9B6C;
-	Wed, 19 Mar 2025 14:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5061DF986;
+	Wed, 19 Mar 2025 14:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394871; cv=none; b=PUCMoxLZLG1sU4oaJAW+UJFeFiJl7adaXhMgYyG7mjxbumoPU3pRCzvMmqSKCykgASd3daiPaHmFyuQwVL1wL75E0j7brzKSoyecbbYWDG6SPhxSvGk45RDMr3yCEobclNA70J9Fjr+dcqWLMg25DjtrDloy8FaNW4IldzJ7I3s=
+	t=1742395017; cv=none; b=nisUGt/g/V1XFTAj2zBB17cVTn9JEcR9mQ6BWX4jZ36ZuFWavJimnpaG0ZKC+g/IDrC/MSSsV6lSS3PECQerUSmz8/JKRyO9xX7jsmn8QSmbrvcyCU6HHh9c4Yhh+pX3NfTGOIQIDYtXNrIxyFH6bnsVUxXxGnbt2EQdCG3rEsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394871; c=relaxed/simple;
-	bh=yQiDEIKV2t1mp2RGAnpziuIPNVq13SGP9wzs5i6qRWM=;
+	s=arc-20240116; t=1742395017; c=relaxed/simple;
+	bh=3ux5jJDLmvFgg75g1qUkbUik8ggTkc0cljEEgVd3DO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJruqfloYyYYhQokVHEkINTPN3/hug7YT7iPGaUKSmg3YNnj+QXUzCtm2ZIUx6imERjCuSwIlY2oQkUnKJ4my7TO9ihQPUchZu6nkVwkup/NU7tqIqC1WqEoVUFr9XJiq6dpg4EkzC+Xnyq6bd8yZQA8k7sBPVmEjx31yEJzpoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ybapy3tL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A93C4CEE8;
-	Wed, 19 Mar 2025 14:34:31 +0000 (UTC)
+	 MIME-Version; b=AKJf+Fm2m20G5lVZ8O/plxI8m8LgEGngSlYM4fbi/NFE2aAVtiRxncsj/IIeraC6UiBuzvCuHjQyYKnjtb5CupD02/PtysvrOcgOfYUFQ2Ap1W7d/Kp4zaRTwnhBOiElUhhCmGwkiSR3kdPt2MeINie1fG5HJp2NnaREsnhWOsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRrbvEAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7F3C4CEE8;
+	Wed, 19 Mar 2025 14:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394871;
-	bh=yQiDEIKV2t1mp2RGAnpziuIPNVq13SGP9wzs5i6qRWM=;
+	s=korg; t=1742395017;
+	bh=3ux5jJDLmvFgg75g1qUkbUik8ggTkc0cljEEgVd3DO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ybapy3tLgL9eDUAzAsJ7+kEu8blN9BFHliYCiH0E07YbGnx1DRQo8H/8JkDa3p5YS
-	 OvT42SWBiWftejdSXFrN+q6gtd5Dpp5Mx369gxPgTSfTA8EXw2BNd1yibhIc4wSN0N
-	 O74fJZsFt0Y1lP3pCjWKK+TvDHDSJsOAUf3koXd8=
+	b=DRrbvEAC0pQT3PdOftHNC+XSgF/8GFYx41GWVEBhUGNi44kEbsI8TeGm3ZkwFKdKv
+	 jUEbBCbC6Ovjh7NfqLeIE/3oiwNX9Bnt3s2QKArLXGSh3P9FfPsyJAz6lQiPlK67SL
+	 yjJw7O4zzD7h5aWYjWF2RG8CuMUc17ztHkyCjU8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 026/241] drm/hyperv: Fix address space leak when Hyper-V DRM device is removed
+	Suren Baghdasaryan <surenb@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Barry Song <21cnbao@gmail.com>,
+	Barry Song <v-songbaohua@oppo.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Jann Horn <jannh@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 003/231] userfaultfd: fix PTE unmapping stack-allocated PTE copies
 Date: Wed, 19 Mar 2025 07:28:16 -0700
-Message-ID: <20250319143028.357315986@linuxfoundation.org>
+Message-ID: <20250319143026.951185347@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +73,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Suren Baghdasaryan <surenb@google.com>
 
-[ Upstream commit aed709355fd05ef747e1af24a1d5d78cd7feb81e ]
+commit 927e926d72d9155fde3264459fe9bfd7b5e40d28 upstream.
 
-When a Hyper-V DRM device is probed, the driver allocates MMIO space for
-the vram, and maps it cacheable. If the device removed, or in the error
-path for device probing, the MMIO space is released but no unmap is done.
-Consequently the kernel address space for the mapping is leaked.
+Current implementation of move_pages_pte() copies source and destination
+PTEs in order to detect concurrent changes to PTEs involved in the move.
+However these copies are also used to unmap the PTEs, which will fail if
+CONFIG_HIGHPTE is enabled because the copies are allocated on the stack.
+Fix this by using the actual PTEs which were kmap()ed.
 
-Fix this by adding iounmap() calls in the device removal path, and in the
-error path during device probing.
-
-Fixes: f1f63cbb705d ("drm/hyperv: Fix an error handling path in hyperv_vmbus_probe()")
-Fixes: a0ab5abced55 ("drm/hyperv : Removing the restruction of VRAM allocation with PCI bar size")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250210193441.2414-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250210193441.2414-1-mhklinux@outlook.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250226185510.2732648-3-surenb@google.com
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: Barry Song <v-songbaohua@oppo.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/hyperv/hyperv_drm_drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/userfaultfd.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-index e0953777a2066..b491827941f19 100644
---- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-@@ -156,6 +156,7 @@ static int hyperv_vmbus_probe(struct hv_device *hdev,
- 	return 0;
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1265,8 +1265,8 @@ retry:
+ 			spin_unlock(src_ptl);
  
- err_free_mmio:
-+	iounmap(hv->vram);
- 	vmbus_free_mmio(hv->mem->start, hv->fb_size);
- err_vmbus_close:
- 	vmbus_close(hdev->channel);
-@@ -174,6 +175,7 @@ static void hyperv_vmbus_remove(struct hv_device *hdev)
- 	vmbus_close(hdev->channel);
- 	hv_set_drvdata(hdev, NULL);
- 
-+	iounmap(hv->vram);
- 	vmbus_free_mmio(hv->mem->start, hv->fb_size);
- }
- 
--- 
-2.39.5
-
+ 			if (!locked) {
+-				pte_unmap(&orig_src_pte);
+-				pte_unmap(&orig_dst_pte);
++				pte_unmap(src_pte);
++				pte_unmap(dst_pte);
+ 				src_pte = dst_pte = NULL;
+ 				/* now we can block and wait */
+ 				folio_lock(src_folio);
+@@ -1282,8 +1282,8 @@ retry:
+ 		/* at this point we have src_folio locked */
+ 		if (folio_test_large(src_folio)) {
+ 			/* split_folio() can block */
+-			pte_unmap(&orig_src_pte);
+-			pte_unmap(&orig_dst_pte);
++			pte_unmap(src_pte);
++			pte_unmap(dst_pte);
+ 			src_pte = dst_pte = NULL;
+ 			err = split_folio(src_folio);
+ 			if (err)
+@@ -1308,8 +1308,8 @@ retry:
+ 				goto out;
+ 			}
+ 			if (!anon_vma_trylock_write(src_anon_vma)) {
+-				pte_unmap(&orig_src_pte);
+-				pte_unmap(&orig_dst_pte);
++				pte_unmap(src_pte);
++				pte_unmap(dst_pte);
+ 				src_pte = dst_pte = NULL;
+ 				/* now we can block and wait */
+ 				anon_vma_lock_write(src_anon_vma);
+@@ -1327,8 +1327,8 @@ retry:
+ 		entry = pte_to_swp_entry(orig_src_pte);
+ 		if (non_swap_entry(entry)) {
+ 			if (is_migration_entry(entry)) {
+-				pte_unmap(&orig_src_pte);
+-				pte_unmap(&orig_dst_pte);
++				pte_unmap(src_pte);
++				pte_unmap(dst_pte);
+ 				src_pte = dst_pte = NULL;
+ 				migration_entry_wait(mm, src_pmd, src_addr);
+ 				err = -EAGAIN;
+@@ -1371,8 +1371,8 @@ retry:
+ 			src_folio = folio;
+ 			src_folio_pte = orig_src_pte;
+ 			if (!folio_trylock(src_folio)) {
+-				pte_unmap(&orig_src_pte);
+-				pte_unmap(&orig_dst_pte);
++				pte_unmap(src_pte);
++				pte_unmap(dst_pte);
+ 				src_pte = dst_pte = NULL;
+ 				put_swap_device(si);
+ 				si = NULL;
 
 
 
