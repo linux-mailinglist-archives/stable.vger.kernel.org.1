@@ -1,129 +1,237 @@
-Return-Path: <stable+bounces-124871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0A1A682BC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 02:28:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B91A682F8
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 02:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A95381768AD
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 01:28:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4531919C0C41
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 01:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB5422489A;
-	Wed, 19 Mar 2025 01:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE1224E008;
+	Wed, 19 Mar 2025 01:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UaLE5S/4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FFpCYspw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76C2207E04;
-	Wed, 19 Mar 2025 01:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457F521CC52;
+	Wed, 19 Mar 2025 01:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742347675; cv=none; b=o4bRUmlT1975AMYe5pSaOIqSePeEaIR2A5oJ9HWj72HLOZhE6oJbYBWWwR/vBOuxwSsls79JMI8RYoVUXGiwv9oJ6WjBSKWAFiqwzSGTQRmzMOyim2TR+8THZt5cfQWuz7Zf3j2kB5omOK6rD3Ja/POz3OAEEFMNCkeDGXeznKE=
+	t=1742349578; cv=none; b=K6YmL2dyc++YtX1UiVu4leLtk1fv+Ox2MtiE06f84pkLCd+mdBjGtRdkUESfOIAJWmqTD4DFix2UGjV11/F6b6M0vfqsQUfZk5zWRPqDUMLjY9lz8VZHKqFTLnXjOY8Rg5jhHiERTaxKuicXQxOnnTDKRedNjaiCop7GfKaQcWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742347675; c=relaxed/simple;
-	bh=CuVaPYVmTxG9Z/4/GY8XJLK4/KQ794QljAoN47lFzjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TpsrxvIz8PLUnjCkBCFY8A3Fr3hF7L30CJOgGpx5xoz9n9touqrm66Gz+mS3nfdOIiYer1cr64M7BmgiBzLSCBS/GgeLjFdTauhNoMwKGNdtvvri0yumHqbKh4w7VxBfWNC9m/RkI3Qy2aq8DT2z6HL8nK1l0FXnM4H6ER0do2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UaLE5S/4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C169C4CEE3;
-	Wed, 19 Mar 2025 01:27:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742347674;
-	bh=CuVaPYVmTxG9Z/4/GY8XJLK4/KQ794QljAoN47lFzjI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UaLE5S/4qIpbLqkK+uTylbL9aZ26EtlwM/+7mnRprz2E8Pi3JWsAXRg4QbCu0orKs
-	 SVTSDjbX9ZE+yFitzbzo9ZCY+XJyu4ncJxN02+NDCcFf6bWmk2cW9Df87WdjD1lEYY
-	 SJlTJUYUB/ntzlEHmSuGEtUw+vNsnibebqwjGya3h8ucocZwxVYdC9PZzqSjYqmW+c
-	 Kw/XxQ/vCseqQYEvkokYtSJ8TNyQ4ujvQV4ckDoCY9OqVGkYi3NMXqqVAhI5DIgyJa
-	 Avz0g7TrjSOPSm0DLFMWqvRtJsEdI5d8KUiH43ootRqKpNxoTiBaLAFIC2y9AX6AoF
-	 EkQCyki6IB/4A==
-Date: Wed, 19 Mar 2025 09:27:47 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Ralph Siemsen <ralph.siemsen@linaro.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Aswath Govindraju <a-govindraju@ti.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Felipe Balbi <felipe.balbi@linux.intel.com>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: cdns3: Fix deadlock when using NCM gadget
-Message-ID: <Z9odk4aHd76nXxZ-@nchen-desktop>
-References: <20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org>
+	s=arc-20240116; t=1742349578; c=relaxed/simple;
+	bh=EyyFyODnsEzMciEgu+arJe3dUVPI6ukPATE0SwvOo+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zu8v+MSlLp/gAmITo2xI8hnXFnIGaotR3BJA0t1oMq2AmrNMU7rcsAPMEqrQPP2r2gq/trBzizYclcaVyH4lIDc2K2L4kPec5HP8yT+cVFLzdY8oJ/bCKdja5dGZve4ieM5GNsfayQe5AFhRp5rpgUTMM2cqlrVnOAaSSGVguhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FFpCYspw; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742349575; x=1773885575;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EyyFyODnsEzMciEgu+arJe3dUVPI6ukPATE0SwvOo+k=;
+  b=FFpCYspw+GDwDA+tk5f6ouird8KbKSvnD7bqjpSr3zgcHyB9FuHIF89o
+   Cdyo0g9cpxeOlxkBx+WNvUydkXvig5Ag2e8f93dEzWupmLXM8yydr1NgJ
+   0gp/1ogK+/+sgbpebTOnOvTo5QbWqxDl4ZXD+7c1mi/58/tSXWA3r6v+d
+   i9BV8GBKmA0rXb8X/mzrtKXOcoJKAp9K3sa+mXV4BNCRbzSRzvOEXfgGT
+   1lGo+pLdxvpPk4fKj5SC/rYCTeDoKmOM2oGx0es/HY0P4Q15bdwzZQ6ae
+   z67P25a6L8zVqwmZUdkURMnqGdaSwfTqWJRRy3WpPlr08kiU4zWk85bog
+   A==;
+X-CSE-ConnectionGUID: bCwMVNNERU25ng2Ux7Pc6A==
+X-CSE-MsgGUID: iCOhFVcvQgC0SigW8FfgIg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="53734817"
+X-IronPort-AV: E=Sophos;i="6.14,258,1736841600"; 
+   d="scan'208";a="53734817"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 18:59:35 -0700
+X-CSE-ConnectionGUID: Kg9WWkAJQcSasLF9z61Sjw==
+X-CSE-MsgGUID: qiiq/t0wT/iImM2ZB3AAcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,258,1736841600"; 
+   d="scan'208";a="123185683"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 18:59:33 -0700
+Message-ID: <67630ed5-7ace-4e7f-9d26-3d259c381488@linux.intel.com>
+Date: Wed, 19 Mar 2025 09:56:06 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] iommu/vt-d: Fix possible circular locking dependency
+To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ chaitanya.kumar.borah@intel.com
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250317035714.1041549-1-baolu.lu@linux.intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20250317035714.1041549-1-baolu.lu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 25-03-18 11:09:32, Ralph Siemsen wrote:
-> The cdns3 driver has the same NCM deadlock as fixed in cdnsp by commit
-> 58f2fcb3a845 ("usb: cdnsp: Fix deadlock issue during using NCM gadget").
+On 3/17/25 11:57, Lu Baolu wrote:
+> We have recently seen report of lockdep circular lock dependency warnings
+> on platforms like skykale and kabylake:
 > 
-> Under PREEMPT_RT the deadlock can be readily triggered by heavy network
-> traffic, for example using "iperf --bidir" over NCM ethernet link.
+>   ======================================================
+>   WARNING: possible circular locking dependency detected
+>   6.14.0-rc6-CI_DRM_16276-gca2c04fe76e8+ #1 Not tainted
+>   ------------------------------------------------------
+>   swapper/0/1 is trying to acquire lock:
+>   ffffffff8360ee48 (iommu_probe_device_lock){+.+.}-{3:3},
+>     at: iommu_probe_device+0x1d/0x70
 > 
-> The deadlock occurs because the threaded interrupt handler gets
-> preempted by a softirq, but both are protected by the same spinlock.
-> Prevent deadlock by disabling softirq during threaded irq handler.
+>   but task is already holding lock:
+>   ffff888102c7efa8 (&device->physical_node_lock){+.+.}-{3:3},
+>     at: intel_iommu_init+0xe75/0x11f0
 > 
-> cc: stable@vger.kernel.org
-> Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-> Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
+>   which lock already depends on the new lock.
+> 
+>   the existing dependency chain (in reverse order) is:
+> 
+>   -> #6 (&device->physical_node_lock){+.+.}-{3:3}:
+>          __mutex_lock+0xb4/0xe40
+>          mutex_lock_nested+0x1b/0x30
+>          intel_iommu_init+0xe75/0x11f0
+>          pci_iommu_init+0x13/0x70
+>          do_one_initcall+0x62/0x3f0
+>          kernel_init_freeable+0x3da/0x6a0
+>          kernel_init+0x1b/0x200
+>          ret_from_fork+0x44/0x70
+>          ret_from_fork_asm+0x1a/0x30
+> 
+>   -> #5 (dmar_global_lock){++++}-{3:3}:
+>          down_read+0x43/0x1d0
+>          enable_drhd_fault_handling+0x21/0x110
+>          cpuhp_invoke_callback+0x4c6/0x870
+>          cpuhp_issue_call+0xbf/0x1f0
+>          __cpuhp_setup_state_cpuslocked+0x111/0x320
+>          __cpuhp_setup_state+0xb0/0x220
+>          irq_remap_enable_fault_handling+0x3f/0xa0
+>          apic_intr_mode_init+0x5c/0x110
+>          x86_late_time_init+0x24/0x40
+>          start_kernel+0x895/0xbd0
+>          x86_64_start_reservations+0x18/0x30
+>          x86_64_start_kernel+0xbf/0x110
+>          common_startup_64+0x13e/0x141
+> 
+>   -> #4 (cpuhp_state_mutex){+.+.}-{3:3}:
+>          __mutex_lock+0xb4/0xe40
+>          mutex_lock_nested+0x1b/0x30
+>          __cpuhp_setup_state_cpuslocked+0x67/0x320
+>          __cpuhp_setup_state+0xb0/0x220
+>          page_alloc_init_cpuhp+0x2d/0x60
+>          mm_core_init+0x18/0x2c0
+>          start_kernel+0x576/0xbd0
+>          x86_64_start_reservations+0x18/0x30
+>          x86_64_start_kernel+0xbf/0x110
+>          common_startup_64+0x13e/0x141
+> 
+>   -> #3 (cpu_hotplug_lock){++++}-{0:0}:
+>          __cpuhp_state_add_instance+0x4f/0x220
+>          iova_domain_init_rcaches+0x214/0x280
+>          iommu_setup_dma_ops+0x1a4/0x710
+>          iommu_device_register+0x17d/0x260
+>          intel_iommu_init+0xda4/0x11f0
+>          pci_iommu_init+0x13/0x70
+>          do_one_initcall+0x62/0x3f0
+>          kernel_init_freeable+0x3da/0x6a0
+>          kernel_init+0x1b/0x200
+>          ret_from_fork+0x44/0x70
+>          ret_from_fork_asm+0x1a/0x30
+> 
+>   -> #2 (&domain->iova_cookie->mutex){+.+.}-{3:3}:
+>          __mutex_lock+0xb4/0xe40
+>          mutex_lock_nested+0x1b/0x30
+>          iommu_setup_dma_ops+0x16b/0x710
+>          iommu_device_register+0x17d/0x260
+>          intel_iommu_init+0xda4/0x11f0
+>          pci_iommu_init+0x13/0x70
+>          do_one_initcall+0x62/0x3f0
+>          kernel_init_freeable+0x3da/0x6a0
+>          kernel_init+0x1b/0x200
+>          ret_from_fork+0x44/0x70
+>          ret_from_fork_asm+0x1a/0x30
+> 
+>   -> #1 (&group->mutex){+.+.}-{3:3}:
+>          __mutex_lock+0xb4/0xe40
+>          mutex_lock_nested+0x1b/0x30
+>          __iommu_probe_device+0x24c/0x4e0
+>          probe_iommu_group+0x2b/0x50
+>          bus_for_each_dev+0x7d/0xe0
+>          iommu_device_register+0xe1/0x260
+>          intel_iommu_init+0xda4/0x11f0
+>          pci_iommu_init+0x13/0x70
+>          do_one_initcall+0x62/0x3f0
+>          kernel_init_freeable+0x3da/0x6a0
+>          kernel_init+0x1b/0x200
+>          ret_from_fork+0x44/0x70
+>          ret_from_fork_asm+0x1a/0x30
+> 
+>   -> #0 (iommu_probe_device_lock){+.+.}-{3:3}:
+>          __lock_acquire+0x1637/0x2810
+>          lock_acquire+0xc9/0x300
+>          __mutex_lock+0xb4/0xe40
+>          mutex_lock_nested+0x1b/0x30
+>          iommu_probe_device+0x1d/0x70
+>          intel_iommu_init+0xe90/0x11f0
+>          pci_iommu_init+0x13/0x70
+>          do_one_initcall+0x62/0x3f0
+>          kernel_init_freeable+0x3da/0x6a0
+>          kernel_init+0x1b/0x200
+>          ret_from_fork+0x44/0x70
+>          ret_from_fork_asm+0x1a/0x30
+> 
+>   other info that might help us debug this:
+> 
+>   Chain exists of:
+>     iommu_probe_device_lock --> dmar_global_lock -->
+>       &device->physical_node_lock
+> 
+>    Possible unsafe locking scenario:
+> 
+>          CPU0                    CPU1
+>          ----                    ----
+>     lock(&device->physical_node_lock);
+>                                  lock(dmar_global_lock);
+>                                  lock(&device->physical_node_lock);
+>     lock(iommu_probe_device_lock);
+> 
+>    *** DEADLOCK ***
+> 
+> This driver uses a global lock to protect the list of enumerated DMA
+> remapping units. It is necessary due to the driver's support for dynamic
+> addition and removal of remapping units at runtime.
+> 
+> Two distinct code paths require iteration over this remapping unit list:
+> 
+> - Device registration and probing: the driver iterates the list to
+>    register each remapping unit with the upper layer IOMMU framework
+>    and subsequently probe the devices managed by that unit.
+> - Global configuration: Upper layer components may also iterate the list
+>    to apply configuration changes.
+> 
+> The lock acquisition order between these two code paths was reversed. This
+> caused lockdep warnings, indicating a risk of deadlock. Fix this warning
+> by releasing the global lock before invoking upper layer interfaces for
+> device registration.
+> 
+> Fixes: b150654f74bf ("iommu/vt-d: Fix suspicious RCU usage")
+> Closes:https://lore.kernel.org/linux-iommu/ 
+> SJ1PR11MB612953431F94F18C954C4A9CB9D32@SJ1PR11MB6129.namprd11.prod.outlook.com/
+> Cc:stable@vger.kernel.org
+> Signed-off-by: Lu Baolu<baolu.lu@linux.intel.com>
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
-
-> ---
-> v2 changes:
-> - move the fix up the call stack, as per discussion at
-> https://lore.kernel.org/linux-rt-devel/20250226082931.-XRIDa6D@linutronix.de/
-> ---
->  drivers/usb/cdns3/cdns3-gadget.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-> index fd1beb10bba72..19101ff1cf1bd 100644
-> --- a/drivers/usb/cdns3/cdns3-gadget.c
-> +++ b/drivers/usb/cdns3/cdns3-gadget.c
-> @@ -1963,6 +1963,7 @@ static irqreturn_t cdns3_device_thread_irq_handler(int irq, void *data)
->  	unsigned int bit;
->  	unsigned long reg;
->  
-> +	local_bh_disable();
->  	spin_lock_irqsave(&priv_dev->lock, flags);
->  
->  	reg = readl(&priv_dev->regs->usb_ists);
-> @@ -2004,6 +2005,7 @@ static irqreturn_t cdns3_device_thread_irq_handler(int irq, void *data)
->  irqend:
->  	writel(~0, &priv_dev->regs->ep_ien);
->  	spin_unlock_irqrestore(&priv_dev->lock, flags);
-> +	local_bh_enable();
->  
->  	return ret;
->  }
-> 
-> ---
-> base-commit: 4701f33a10702d5fc577c32434eb62adde0a1ae1
-> change-id: 20250312-rfs-cdns3-deadlock-697df5cad3ce
-> 
-> Best regards,
-> -- 
-> Ralph Siemsen <ralph.siemsen@linaro.org>
-> 
-
--- 
-
-Best regards,
-Peter
+Queued this patch for iommu tree.
 
