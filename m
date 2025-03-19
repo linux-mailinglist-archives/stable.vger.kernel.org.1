@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-124969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603F6A68F64
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6AFA691CC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44F1017EBAF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A17F1B62786
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9215D1D7999;
-	Wed, 19 Mar 2025 14:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64293212FBD;
+	Wed, 19 Mar 2025 14:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQLRq0LN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVRftCNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464F71D5CE7;
-	Wed, 19 Mar 2025 14:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6E7211704;
+	Wed, 19 Mar 2025 14:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394860; cv=none; b=fWOc/ielcTzYYIAoVYEdMCfc8t6jA1UnX9wiI7tUWc9+USD0QDmDKpyu2Jm9bK2smbpJCQLsKnFKYpjHAZp/CgUhL7+58vl2ghmxF+2d9dXKsX35yvzxUDbz9UFBqjJss2HuBB3bWP+k45uxuZwTkHJzdwxEKrCDMwbY78buFzo=
+	t=1742395016; cv=none; b=Du87ikc2MK7gaArS5wFChMdrxPTT1ONMIktvAf3XBN9ILKDG9r0uQN0rZMSB4GtMYn1R/sk65WKp3vdxzje+FRjvDkYW+fDOrmCbW6jJvyy/jsxaKVfqDrnUnP+DqX81/oB5mCkFQcBYzmDuoctgzU69aUt1ETDZ8qPltOtJc+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394860; c=relaxed/simple;
-	bh=lt01i60LJ+XF21OoySeYUt2oYmdFLQBpOFT5Y/dIhlk=;
+	s=arc-20240116; t=1742395016; c=relaxed/simple;
+	bh=0TAoP2BZPZ9Y7c9A1/rqBMO8WwxoU/SXp9u8tiymNN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G6t9S2mG00n6sId9WEanTEmTPg//qXDEAMzG5IH+3o3TwKIrDfh1OMt+WY/V7kjySRBEgBeq3VwJdm012+SSZG8p+8BU4nfSqf3YCrogV7lKTfE0Zy3KQz3P/MaD70KYSFrb7J6AQLOTjxI26vuw+dPoJ+HEuDPMgYylzPGejV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQLRq0LN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C51C4CEE9;
-	Wed, 19 Mar 2025 14:34:20 +0000 (UTC)
+	 MIME-Version; b=bQPa8IF5BQVAIbFIKiKYceVsaIgtKjal3gNvAtYugoOlaG4DM/XLn8LXQEfNMbOiZW09V3cnoxUjlWeQDwzb4VmKziZgTC/buKK9f1b3g8xPHamwAwQ+XHW14tlsQc0IJUKxpXo1RZf/Qv8V1bI66WmUdLCF8soHhRMQcMReh4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVRftCNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A16C4CEE4;
+	Wed, 19 Mar 2025 14:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394860;
-	bh=lt01i60LJ+XF21OoySeYUt2oYmdFLQBpOFT5Y/dIhlk=;
+	s=korg; t=1742395016;
+	bh=0TAoP2BZPZ9Y7c9A1/rqBMO8WwxoU/SXp9u8tiymNN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQLRq0LN0+UfmlxRuMYRR47wle9k7BHfda82SnonHo4yxtI+aO5BizV25nT7OY91E
-	 2y9RSqKr9bRqGwF+hh6YzPM1PZJnNp6ZlNgstneEyaZCPtGV0ezHFeqHyDgxEI4EFb
-	 vqV0SDFB4BR0tOha3y0fR2820BRBQ6qeBRQsP9/4=
+	b=tVRftCNimqb1qi+8QCK4P+gXIWoHj0QXJT8uL2XnppTarQ2AfJFR6w24AcoPqx0bK
+	 fKWxCOjWi0CbnLS5oVjYO6Pp1upraezYCwHXeQeXtvekEMKIvonx++V1WsAEHi+nRr
+	 nayoZ5+fohN5PZiRBqfqNRH7tSUj04bdM5ylE9yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 050/241] Revert "openvswitch: switch to per-action label counting in conntrack"
-Date: Wed, 19 Mar 2025 07:28:40 -0700
-Message-ID: <20250319143028.965568105@linuxfoundation.org>
+Subject: [PATCH 6.12 028/231] Drivers: hv: vmbus: Dont release fb_mmio resource in vmbus_free_mmio()
+Date: Wed, 19 Mar 2025 07:28:41 -0700
+Message-ID: <20250319143027.518519978@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 1063ae07383c0ddc5bcce170260c143825846b03 ]
+[ Upstream commit 73fe9073c0cc28056cb9de0c8a516dac070f1d1f ]
 
-Currently, ovs_ct_set_labels() is only called for confirmed conntrack
-entries (ct) within ovs_ct_commit(). However, if the conntrack entry
-does not have the labels_ext extension, attempting to allocate it in
-ovs_ct_get_conn_labels() for a confirmed entry triggers a warning in
-nf_ct_ext_add():
+The VMBus driver manages the MMIO space it owns via the hyperv_mmio
+resource tree. Because the synthetic video framebuffer portion of the
+MMIO space is initially setup by the Hyper-V host for each guest, the
+VMBus driver does an early reserve of that portion of MMIO space in the
+hyperv_mmio resource tree. It saves a pointer to that resource in
+fb_mmio. When a VMBus driver requests MMIO space and passes "true"
+for the "fb_overlap_ok" argument, the reserved framebuffer space is
+used if possible. In that case it's not necessary to do another request
+against the "shadow" hyperv_mmio resource tree because that resource
+was already requested in the early reserve steps.
 
-  WARN_ON(nf_ct_is_confirmed(ct));
+However, the vmbus_free_mmio() function currently does no special
+handling for the fb_mmio resource. When a framebuffer device is
+removed, or the driver is unbound, the current code for
+vmbus_free_mmio() releases the reserved resource, leaving fb_mmio
+pointing to memory that has been freed. If the same or another
+driver is subsequently bound to the device, vmbus_allocate_mmio()
+checks against fb_mmio, and potentially gets garbage. Furthermore
+a second unbind operation produces this "nonexistent resource" error
+because of the unbalanced behavior between vmbus_allocate_mmio() and
+vmbus_free_mmio():
 
-This happens when the conntrack entry is created externally before OVS
-increments net->ct.labels_used. The issue has become more likely since
-commit fcb1aa5163b1 ("openvswitch: switch to per-action label counting
-in conntrack"), which changed to use per-action label counting and
-increment net->ct.labels_used when a flow with ct action is added.
+[   55.499643] resource: Trying to free nonexistent
+			resource <0x00000000f0000000-0x00000000f07fffff>
 
-Since there’s no straightforward way to fully resolve this issue at the
-moment, this reverts the commit to avoid breaking existing use cases.
+Fix this by adding logic to vmbus_free_mmio() to recognize when
+MMIO space in the fb_mmio reserved area would be released, and don't
+release it. This filtering ensures the fb_mmio resource always exists,
+and makes vmbus_free_mmio() more parallel with vmbus_allocate_mmio().
 
-Fixes: fcb1aa5163b1 ("openvswitch: switch to per-action label counting in conntrack")
-Reported-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/1bdeb2f3a812bca016a225d3de714427b2cd4772.1741457143.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: be000f93e5d7 ("drivers:hv: Track allocations of children of hv_vmbus in private resource tree")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250310035208.275764-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250310035208.275764-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/conntrack.c | 30 ++++++++++++++++++------------
- net/openvswitch/datapath.h  |  3 +++
- 2 files changed, 21 insertions(+), 12 deletions(-)
+ drivers/hv/vmbus_drv.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index 3bb4810234aac..e573e92213029 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -1368,8 +1368,11 @@ bool ovs_ct_verify(struct net *net, enum ovs_key_attr attr)
- 	    attr == OVS_KEY_ATTR_CT_MARK)
- 		return true;
- 	if (IS_ENABLED(CONFIG_NF_CONNTRACK_LABELS) &&
--	    attr == OVS_KEY_ATTR_CT_LABELS)
--		return true;
-+	    attr == OVS_KEY_ATTR_CT_LABELS) {
-+		struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
-+
-+		return ovs_net->xt_label;
-+	}
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 9b15f7daf5059..2b6749c9712ef 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2262,12 +2262,25 @@ void vmbus_free_mmio(resource_size_t start, resource_size_t size)
+ 	struct resource *iter;
  
- 	return false;
- }
-@@ -1378,7 +1381,6 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
- 		       const struct sw_flow_key *key,
- 		       struct sw_flow_actions **sfa,  bool log)
- {
--	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
- 	struct ovs_conntrack_info ct_info;
- 	const char *helper = NULL;
- 	u16 family;
-@@ -1407,12 +1409,6 @@ int ovs_ct_copy_action(struct net *net, const struct nlattr *attr,
- 		return -ENOMEM;
+ 	mutex_lock(&hyperv_mmio_lock);
++
++	/*
++	 * If all bytes of the MMIO range to be released are within the
++	 * special case fb_mmio shadow region, skip releasing the shadow
++	 * region since no corresponding __request_region() was done
++	 * in vmbus_allocate_mmio().
++	 */
++	if (fb_mmio && start >= fb_mmio->start &&
++	    (start + size - 1 <= fb_mmio->end))
++		goto skip_shadow_release;
++
+ 	for (iter = hyperv_mmio; iter; iter = iter->sibling) {
+ 		if ((iter->start >= start + size) || (iter->end <= start))
+ 			continue;
+ 
+ 		__release_region(iter, start, size);
  	}
- 
--	if (nf_connlabels_get(net, n_bits - 1)) {
--		nf_ct_tmpl_free(ct_info.ct);
--		OVS_NLERR(log, "Failed to set connlabel length");
--		return -EOPNOTSUPP;
--	}
--
- 	if (ct_info.timeout[0]) {
- 		if (nf_ct_set_timeout(net, ct_info.ct, family, key->ip.proto,
- 				      ct_info.timeout))
-@@ -1581,7 +1577,6 @@ static void __ovs_ct_free_action(struct ovs_conntrack_info *ct_info)
- 	if (ct_info->ct) {
- 		if (ct_info->timeout[0])
- 			nf_ct_destroy_timeout(ct_info->ct);
--		nf_connlabels_put(nf_ct_net(ct_info->ct));
- 		nf_ct_tmpl_free(ct_info->ct);
- 	}
- }
-@@ -2006,9 +2001,17 @@ struct genl_family dp_ct_limit_genl_family __ro_after_init = {
- 
- int ovs_ct_init(struct net *net)
- {
--#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
-+	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
- 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
- 
-+	if (nf_connlabels_get(net, n_bits - 1)) {
-+		ovs_net->xt_label = false;
-+		OVS_NLERR(true, "Failed to set connlabel length");
-+	} else {
-+		ovs_net->xt_label = true;
-+	}
 +
-+#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
- 	return ovs_ct_limit_init(net, ovs_net);
- #else
- 	return 0;
-@@ -2017,9 +2020,12 @@ int ovs_ct_init(struct net *net)
++skip_shadow_release:
+ 	release_mem_region(start, size);
+ 	mutex_unlock(&hyperv_mmio_lock);
  
- void ovs_ct_exit(struct net *net)
- {
--#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
- 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
- 
-+#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
- 	ovs_ct_limit_exit(net, ovs_net);
- #endif
-+
-+	if (ovs_net->xt_label)
-+		nf_connlabels_put(net);
- }
-diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
-index 365b9bb7f546e..9ca6231ea6470 100644
---- a/net/openvswitch/datapath.h
-+++ b/net/openvswitch/datapath.h
-@@ -160,6 +160,9 @@ struct ovs_net {
- #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
- 	struct ovs_ct_limit_info *ct_limit_info;
- #endif
-+
-+	/* Module reference for configuring conntrack. */
-+	bool xt_label;
- };
- 
- /**
 -- 
 2.39.5
 
