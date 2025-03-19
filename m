@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-125508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F95A692EB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:18:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C22A692AA
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:13:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CBE91BA11AB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D7551B862C4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381E520A5DE;
-	Wed, 19 Mar 2025 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022871F9A91;
+	Wed, 19 Mar 2025 14:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVqV9zb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1U7oZVNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C7320A5D3;
-	Wed, 19 Mar 2025 14:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FF71C9EAA;
+	Wed, 19 Mar 2025 14:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395240; cv=none; b=QocohtpOzI9T0BiznWi3w29QM2EsWz4PCvhT8BX+9hwzeRFRK4h2T1ArxMLOaAxtRM4/bPr21a1YReXeHvznTdnFz2lOOmp7SBFez6P8ne9BZmxW0b7ofrPyi9pBmcUY+B9ZKe+mTFu2ThAiAOktyYkJ8/0Ef/M0dvB1MtIWjCc=
+	t=1742394978; cv=none; b=tXdpmnuqnALMqNU9BI3Lh1klLSd94MwoD5srimbEusoNXynRLL6UfiKQxp/Ippxu6h9EzGpihmlDkWLnXEff6KOE90zU/ZVfbkUvv0/CsYF/D7+tlVYaw1p/mEEXb3K4fDeY1WoI3iAH/b+t/rniWj6FDS0inoGtP8TmqXdfaPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395240; c=relaxed/simple;
-	bh=6itD3lkPVPXKwbVng344no1YU/mSotK1JwwSxMhZZjI=;
+	s=arc-20240116; t=1742394978; c=relaxed/simple;
+	bh=/JeC3BJOtsZupxtO2USn206giP/g7VQ2r/ZOGYiGJWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKrVlBwKPRsPbOn2mMtZc/jQI1nlmoBhpbr8JWjMckmd0cw/B3z3FKeaCv3/yWmcxaxJbO9NwHrP0gR9JmB69TMUhG5GUoEp7R6na/VGFTgTSpEq2VXdZBuw7gdg8UEiFDOH1kzJyO89GPrztioruYgz8UlKtcABp4Olg7odOoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVqV9zb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A59C4CEE8;
-	Wed, 19 Mar 2025 14:40:39 +0000 (UTC)
+	 MIME-Version; b=I5vaKLcMx4mjFDdNke5wvWRUaX6XHsV1yWlsKtkcU4TU3soR1w62wHV+oS1xySH4nrNqM3gURoIoi838cLMdY3Yh0L2iYMcbF9rJj7GaF02Dxh8yQZIlsXHhHOkTVcC7BbK0H5zeP2nUMgrQbr2TsnGkzX04gAfO3geX7o54G5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1U7oZVNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2ABC4CEE4;
+	Wed, 19 Mar 2025 14:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395239;
-	bh=6itD3lkPVPXKwbVng344no1YU/mSotK1JwwSxMhZZjI=;
+	s=korg; t=1742394978;
+	bh=/JeC3BJOtsZupxtO2USn206giP/g7VQ2r/ZOGYiGJWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVqV9zb1pjwalccNUR0MRG9DMgxNXJPgq/fawhwTxjgD5hKR4jhAqu+/dJrzwR2ml
-	 FkUCC7ruLjy4Hv5E69rw8eJLNrPsvk6mD/o92/k3vBMcoM1QF1OUe45N4qjzSB0J+f
-	 seyh0YDVbqfD9vjjAexSAAYGXH+aOh0u/q3YP9BU=
+	b=1U7oZVNPPkP6w/+rU1EDbHYbsxOFZsnx3oQEsrFEgaVDEmDMJDBD3dIBn5FNto4/N
+	 y3LV6BMlEWrVYQAJ1yh6/sAONsVACEMouup5ErRtTRuocCrizg9SVtWVWY1KearhL2
+	 2YnrbbAYHwmk5y5KY3z3fbQkWZuuuU0kjIYmP5AM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 113/166] Input: i8042 - swap old quirk combination with new quirk for several devices
-Date: Wed, 19 Mar 2025 07:31:24 -0700
-Message-ID: <20250319143023.075629926@linuxfoundation.org>
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 216/241] nvme: move error logging from nvme_end_req() to __nvme_end_req()
+Date: Wed, 19 Mar 2025 07:31:26 -0700
+Message-ID: <20250319143033.093821683@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,152 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit 75ee4ebebbbe8dc4b55ba37f388924fa96bf1564 upstream.
+[ Upstream commit e5c2bcc0cd47321d78bb4e865d7857304139f95d ]
 
-Some older Clevo barebones have problems like no or laggy keyboard after
-resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
-quirk.
+Before the Commit 1f47ed294a2b ("block: cleanup and fix batch completion
+adding conditions"), blk_mq_add_to_batch() did not add failed
+passthrough requests to batch, and returned false. After the commit,
+blk_mq_add_to_batch() always adds passthrough requests to batch
+regardless of whether the request failed or not, and returns true. This
+affected error logging feature in the NVME driver.
 
-While the old quirk combination did not show negative effects on these
-devices specifically, the new quirk works just as well and seems more
-stable in general.
+Before the commit, the call chain of failed passthrough request was as
+follows:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://lore.kernel.org/r/20250221230137.70292-3-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+nvme_handle_cqe()
+ blk_mq_add_to_batch() .. false is returned, then call nvme_pci_complete_rq()
+ nvme_pci_complete_rq()
+  nvme_complete_rq()
+   nvme_end_req()
+    nvme_log_err_passthru() .. error logging
+    __nvme_end_req()        .. end of the rqeuest
+
+After the commit, the call chain is as follows:
+
+nvme_handle_cqe()
+ blk_mq_add_to_batch() .. true is returned, then set nvme_pci_complete_batch()
+ ..
+ nvme_pci_complete_batch()
+  nvme_complete_batch()
+   nvme_complete_batch_req()
+    __nvme_end_req() .. end of the request, without error logging
+
+To make the error logging feature work again for passthrough requests, move the
+nvme_log_err_passthru() call from nvme_end_req() to __nvme_end_req().
+
+While at it, move nvme_log_error() call for non-passthrough requests together
+with nvme_log_err_passthru(). Even though the trigger commit does not affect
+non-passthrough requests, move it together for code simplicity.
+
+Fixes: 1f47ed294a2b ("block: cleanup and fix batch completion adding conditions")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250311104359.1767728-2-shinichiro.kawasaki@wdc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   40 +++++++++++-----------------------
- 1 file changed, 14 insertions(+), 26 deletions(-)
+ drivers/nvme/host/core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1080,16 +1080,14 @@ static const struct dmi_system_id i8042_
- 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
- 			DMI_MATCH(DMI_BOARD_NAME, "AURA1501"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
- 			DMI_MATCH(DMI_BOARD_NAME, "EDUBOOK1502"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/* Mivvy M310 */
-@@ -1171,8 +1169,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "LAPQC71A"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1205,8 +1202,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NH5xAx"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1218,8 +1214,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	/*
- 	 * At least one modern Clevo barebone has the touchpad connected both
-@@ -1235,17 +1230,15 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NS50MU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
--					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
--					SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
-+					SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NS50_70MU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
--					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
--					SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
-+					SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1319,8 +1312,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "P65_67RS"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/*
-@@ -1338,8 +1330,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "PB50_70DFx,DDx"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1363,8 +1354,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1383,15 +1373,13 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170KM-G"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/*
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index cf0e7c6d5502b..e4034cec59237 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -431,6 +431,12 @@ static inline void nvme_end_req_zoned(struct request *req)
+ 
+ static inline void __nvme_end_req(struct request *req)
+ {
++	if (unlikely(nvme_req(req)->status && !(req->rq_flags & RQF_QUIET))) {
++		if (blk_rq_is_passthrough(req))
++			nvme_log_err_passthru(req);
++		else
++			nvme_log_error(req);
++	}
+ 	nvme_end_req_zoned(req);
+ 	nvme_trace_bio_complete(req);
+ 	if (req->cmd_flags & REQ_NVME_MPATH)
+@@ -441,12 +447,6 @@ void nvme_end_req(struct request *req)
+ {
+ 	blk_status_t status = nvme_error_status(nvme_req(req)->status);
+ 
+-	if (unlikely(nvme_req(req)->status && !(req->rq_flags & RQF_QUIET))) {
+-		if (blk_rq_is_passthrough(req))
+-			nvme_log_err_passthru(req);
+-		else
+-			nvme_log_error(req);
+-	}
+ 	__nvme_end_req(req);
+ 	blk_mq_end_request(req, status);
+ }
+-- 
+2.39.5
+
 
 
 
