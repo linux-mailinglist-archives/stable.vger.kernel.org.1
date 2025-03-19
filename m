@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8704A691BF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8F0A691AB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B2DE18867EA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 188391B84C4A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0672C1D514B;
-	Wed, 19 Mar 2025 14:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC651DE3DF;
+	Wed, 19 Mar 2025 14:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuQ2SPP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Su2QKKC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B974225760;
-	Wed, 19 Mar 2025 14:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF981C9EAA;
+	Wed, 19 Mar 2025 14:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395025; cv=none; b=I1roOIcBAKcch6Lv7aTXXGJoGESrlWk/m/ofD++vnAlv9fisGfVF25GnHfWtWCx49LRaw9tB3FU8qRViU1NmwST36VntUlFFarX+UFhIDuEutLeRuvuhTvhshgmvJcXFnaIkftOydn8pkKoKhaPOE6fJ453gsHIlNwZs6OF2xdE=
+	t=1742394873; cv=none; b=B2LNTMLh1anyxYk0AUOzUHNXVLgHECdmIui5aAFxMZ9noiSQanMP29azYcJeI0tm0X21gJcZSZA8ny93FUcsXy3CKBNRT9jo1Ixnze2NCFjLHWZaKVlXTHIW6DEKgi0CluncItNRWZ4l1WmvNj0hnUiuRWgr9P+z3lAZWJ6FYos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395025; c=relaxed/simple;
-	bh=ZBexT3evC1u1WAEdgyWuq5lRtWmY1nvjH29htKAGpSg=;
+	s=arc-20240116; t=1742394873; c=relaxed/simple;
+	bh=JWOAKaXtoXk01JJM4QiqoncrMSfPWP6IrjnEMHgN2Js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4x2wW9JXvrcQi2XBbFp1XKlCGul35HXJ/9bozBqcwSKRKIpZ5Xd96TPMsJa+8M8OrzYOeeeRgxne5SiF04GoOIJ3zIrDwBYtL5E7hKQbzSYjoDtnMH/s9ztp0g1m6VstlJjncPymg5F6vJfl7vDa6DgE2nZ29Rk2FxUDm/qhIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuQ2SPP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD6FC4CEE4;
-	Wed, 19 Mar 2025 14:37:05 +0000 (UTC)
+	 MIME-Version; b=SxLvMsSfR4t+f8bAtkqwU7695XuMNSOvaV4DZSiViPux7SvBxZCdTESlarIuarzZacVnB+GVkuzRhSLp7gaU8zwFHNgjJOzgyDzFlUgRSHamWMC95PI3pIGuJIgaQ6kvUOHQazY5/Bq4ZwD/Qtv+ub1s6yPzV3syQg9cCS+JRG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Su2QKKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5035AC4CEE4;
+	Wed, 19 Mar 2025 14:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395025;
-	bh=ZBexT3evC1u1WAEdgyWuq5lRtWmY1nvjH29htKAGpSg=;
+	s=korg; t=1742394873;
+	bh=JWOAKaXtoXk01JJM4QiqoncrMSfPWP6IrjnEMHgN2Js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RuQ2SPP91wX9RkQcDB4DdyqEfiuqMuRYWcnhHxsRyF652J2nor8qaXjoomDiT/CQp
-	 1HzTQS1Y7xr8+YbS5KaVpzK5UZC2wyiClUK+l0dE/sNnEbHf09W/FLjUG79QMSFvng
-	 YcGTmpubqYb2I4WoxRRuc6nYUHXgXZ1fL5KCnPxY=
+	b=0Su2QKKCGW4QPxyzHKLNKWXkOzOo9POcwRB/2t/Z9yxcXqGbpcBX40HtYPt3zktWp
+	 So7U267+HFSvLOHL5rCncqIzp9yQYGfxB3u5k2kPPuGrBlrG4YjViHZWX0dqcoqNc9
+	 BAaSDHRXhunCZyD+8+sIfdRAPHuyqm1a0SfVaKe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 005/231] pinctrl: bcm281xx: Fix incorrect regmap max_registers value
-Date: Wed, 19 Mar 2025 07:28:18 -0700
-Message-ID: <20250319143026.999437370@linuxfoundation.org>
+Subject: [PATCH 6.13 029/241] fbdev: hyperv_fb: Allow graceful removal of framebuffer
+Date: Wed, 19 Mar 2025 07:28:19 -0700
+Message-ID: <20250319143028.435824596@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-[ Upstream commit 68283c1cb573143c0b7515e93206f3503616bc10 ]
+[ Upstream commit ea2f45ab0e53b255f72c85ccd99e2b394fc5fceb ]
 
-The max_registers value does not take into consideration the stride;
-currently, it's set to the number of the last pin, but this does not
-accurately represent the final register.
+When a Hyper-V framebuffer device is unbind, hyperv_fb driver tries to
+release the framebuffer forcefully. If this framebuffer is in use it
+produce the following WARN and hence this framebuffer is never released.
 
-Fix this by multiplying the current value by 4.
+[   44.111220] WARNING: CPU: 35 PID: 1882 at drivers/video/fbdev/core/fb_info.c:70 framebuffer_release+0x2c/0x40
+< snip >
+[   44.111289] Call Trace:
+[   44.111290]  <TASK>
+[   44.111291]  ? show_regs+0x6c/0x80
+[   44.111295]  ? __warn+0x8d/0x150
+[   44.111298]  ? framebuffer_release+0x2c/0x40
+[   44.111300]  ? report_bug+0x182/0x1b0
+[   44.111303]  ? handle_bug+0x6e/0xb0
+[   44.111306]  ? exc_invalid_op+0x18/0x80
+[   44.111308]  ? asm_exc_invalid_op+0x1b/0x20
+[   44.111311]  ? framebuffer_release+0x2c/0x40
+[   44.111313]  ? hvfb_remove+0x86/0xa0 [hyperv_fb]
+[   44.111315]  vmbus_remove+0x24/0x40 [hv_vmbus]
+[   44.111323]  device_remove+0x40/0x80
+[   44.111325]  device_release_driver_internal+0x20b/0x270
+[   44.111327]  ? bus_find_device+0xb3/0xf0
 
-Fixes: 54b1aa5a5b16 ("ARM: pinctrl: Add Broadcom Capri pinctrl driver")
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Link: https://lore.kernel.org/20250207-bcm21664-pinctrl-v1-2-e7cfac9b2d3b@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fix this by moving the release of framebuffer and assosiated memory
+to fb_ops.fb_destroy function, so that framebuffer framework handles
+it gracefully.
+
+While we fix this, also replace manual registrations/unregistration of
+framebuffer with devm_register_framebuffer.
+
+Fixes: 68a2d20b79b1 ("drivers/video: add Hyper-V Synthetic Video Frame Buffer Driver")
+
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/1740845791-19977-3-git-send-email-ssengar@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1740845791-19977-3-git-send-email-ssengar@linux.microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/bcm/pinctrl-bcm281xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/hyperv_fb.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-index 73dbf29c002f3..cf6efa9c0364a 100644
---- a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-+++ b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-@@ -974,7 +974,7 @@ static const struct regmap_config bcm281xx_pinctrl_regmap_config = {
- 	.reg_bits = 32,
- 	.reg_stride = 4,
- 	.val_bits = 32,
--	.max_register = BCM281XX_PIN_VC_CAM3_SDA,
-+	.max_register = BCM281XX_PIN_VC_CAM3_SDA * 4,
+diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
+index 9798a34ac571f..75338ffc703fb 100644
+--- a/drivers/video/fbdev/hyperv_fb.c
++++ b/drivers/video/fbdev/hyperv_fb.c
+@@ -282,6 +282,8 @@ static uint screen_depth;
+ static uint screen_fb_size;
+ static uint dio_fb_size; /* FB size for deferred IO */
+ 
++static void hvfb_putmem(struct fb_info *info);
++
+ /* Send message to Hyper-V host */
+ static inline int synthvid_send(struct hv_device *hdev,
+ 				struct synthvid_msg *msg)
+@@ -862,6 +864,17 @@ static void hvfb_ops_damage_area(struct fb_info *info, u32 x, u32 y, u32 width,
+ 		hvfb_ondemand_refresh_throttle(par, x, y, width, height);
+ }
+ 
++/*
++ * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
++ * of unregister_framebuffer() or fb_release(). Do any cleanup related to
++ * framebuffer here.
++ */
++static void hvfb_destroy(struct fb_info *info)
++{
++	hvfb_putmem(info);
++	framebuffer_release(info);
++}
++
+ /*
+  * TODO: GEN1 codepaths allocate from system or DMA-able memory. Fix the
+  *       driver to use the _SYSMEM_ or _DMAMEM_ helpers in these cases.
+@@ -877,6 +890,7 @@ static const struct fb_ops hvfb_ops = {
+ 	.fb_set_par = hvfb_set_par,
+ 	.fb_setcolreg = hvfb_setcolreg,
+ 	.fb_blank = hvfb_blank,
++	.fb_destroy	= hvfb_destroy,
  };
  
- static int bcm281xx_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
+ /* Get options from kernel paramenter "video=" */
+@@ -1178,7 +1192,7 @@ static int hvfb_probe(struct hv_device *hdev,
+ 	if (ret)
+ 		goto error;
+ 
+-	ret = register_framebuffer(info);
++	ret = devm_register_framebuffer(&hdev->device, info);
+ 	if (ret) {
+ 		pr_err("Unable to register framebuffer\n");
+ 		goto error;
+@@ -1226,14 +1240,10 @@ static void hvfb_remove(struct hv_device *hdev)
+ 
+ 	fb_deferred_io_cleanup(info);
+ 
+-	unregister_framebuffer(info);
+ 	cancel_delayed_work_sync(&par->dwork);
+ 
+ 	vmbus_close(hdev->channel);
+ 	hv_set_drvdata(hdev, NULL);
+-
+-	hvfb_putmem(info);
+-	framebuffer_release(info);
+ }
+ 
+ static int hvfb_suspend(struct hv_device *hdev)
 -- 
 2.39.5
 
