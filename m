@@ -1,158 +1,101 @@
-Return-Path: <stable+bounces-125575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D38A693BE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:41:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DD4A693D7
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D8041B681CB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:31:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 106713B1598
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE271DED6C;
-	Wed, 19 Mar 2025 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D521D79B8;
+	Wed, 19 Mar 2025 15:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Lwz2QgCP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WS9tYJEx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDC51DE2CD
-	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 15:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017D61D5CF9;
+	Wed, 19 Mar 2025 15:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742398238; cv=none; b=X6VlvdOe+EwcxzsjOOhh3rfYcXHuW5fFgP7vqTY0RIoCcpcuricQXLGSM0VPNKqFLDGPymHdDKCh2PWf5G2rCybsltvgBZjmdQKEU4wx43/3rFMBHTk5tmp0jOTygmIbD1oKsE0axEp4wGQVePayOYykwzPNutwC09tKd8PBEGo=
+	t=1742398634; cv=none; b=txji9lxuPvk4kHBsQoTIlbwcDOOpbuxc2xyMQERmQUCT5sgTazjbUYoVEHuyPSNwVz+eU3nK0qm8dg99UUYFGvAEzWx1o5OlxsKJQWheRrdwn4CwQ0gRyh4vL5hyeC8A0632m6daqY1Q2F+mal2HKPQtEtZkLcnk8gUGkMxqH+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742398238; c=relaxed/simple;
-	bh=3SI4bC7ybL3N2FRvbuwPacvlxHEWeD8IolpWQSN1KPw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tkke2+f6L4EnlQhW+9/FW0p4oKIw2b8CRwH3YoPLqkCuC4BmESnmfTZXKBO11olekyc7lPDfWFiq/Et1e3EgTIIPA/h1ZeJmSJYhFvZGwS2ETIEOl29LRnpDqU2EJyR8b7hdOzmAQmNT4W3bdJ7DhxFQ+dJuIx0aOVKA9kuUGB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Lwz2QgCP; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4394345e4d5so33363455e9.0
-        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 08:30:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742398235; x=1743003035; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MFAUALr8nAtye3+ZWjuqCa8ix3cqHAZ7WDjEfM5Mp+M=;
-        b=Lwz2QgCP1fjGoso0X3obFi84svUz3wxpvDYJClyOKcINmg5oCz+CeXEIkCe+NMhhGQ
-         2/qSltYMBzqhhpUltVXwVq/ibTUe/rzR0YmCpTxPez6H8ZEXLeFPDWfGDqAKJM21keSO
-         +iyy6283eg8hhB6y7acMUFnR7cQ57voY0RFiQNTmKX8gvPYXhILT9augvTauZ1A1PBBj
-         S2orWYkMrbkplGpcH3nyLy6FhrBfEYRAmI8bEjv47H584asEIaPciO/K+NZJPLc8B2dW
-         C+akQoz1IkUjMJWCdKPeSRdl9jmxrC1yGE7y4tgJLIgeD8OAuI3/7JFDJ4PSCwNDh4pM
-         N1RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742398235; x=1743003035;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MFAUALr8nAtye3+ZWjuqCa8ix3cqHAZ7WDjEfM5Mp+M=;
-        b=JyrMPJYEzN0CAdMiy0W3wzVAqwbBNEayvNsR9cUX4G83caEexsXTrw1+KduVf+MOSf
-         JPWNNGe68bW+NdmeBRFabFW1em1eOh5RVWRMtIgy+rjny/n/zznRye3HK6cd0tCxeNox
-         tHTK1qUuYrLNHq+S0cZ3TlKDzKWMNxLTrEptjRxYo2b3ikx/aB7XTWz2o2Qi6rKCucBa
-         xraVyJKIDzyJzbSISeEH8u2N15erVWV586RLyrRPyAVb4e/9hu+A1ObfFeSDgN5SVJ1w
-         PQW3tUphp2MEC8HbuaFezmoNrCzz6tkneCWCqxl/giSkQsKYVC0k8YPTxPpc1wDENcOp
-         9Yow==
-X-Forwarded-Encrypted: i=1; AJvYcCUZABhdnVuRjUY3BiVZCjMhQqakc8MxnvP6NK+3j5ndHjtE2WMjIyv/HrUTwiJ0xlbtUryaFqM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySRmtqGLrHNSjkDu0KzmvZGmJS14rYidEkP2V90uTy23z6MswL
-	gjOo9jmrOcF9fgzUeJ9y219kzVluDciL1vwkScKpD79uzyOW0DsAcqjWZ1Y6qfA=
-X-Gm-Gg: ASbGncu42TR3cezSrqQ5/D3VCJ5juG5kevO/fV89pgJofNm3TnvWlWfG07bewcaCAHD
-	6lpnRoMpGesCtYdP0CX2kFIb7P74oCB/DSH9rhuMGcPCLJNdtb+zchOwhRwAr8QATltPjild9pH
-	BPk8j1N/tTpKhqRgeuWqP5AfjwZX1EVyozG27zzkyAVgezuc/A7hxRur6tpe95jO8OYTMmoExxt
-	9w8Ha2NBSsbjyWwMlPR95CUpfsuUNgtN/4i8wBBC0CbWxFCMND8UZ+sq+gPABfB44GIL8itUJEf
-	2I22K18CKb0DQzwiNItmdpba4d9GzeEWz49UeQFNHFSRqJI045UWo4iDj1ml2xlwml6SycvfsQ+
-	nrmhTpZWuJnQ=
-X-Google-Smtp-Source: AGHT+IEHXtC0EIKTh5C5yDLtKnopzR+kKj3o5MrwB8zEIjbuESCbAMxGj1QGIrHhGz+ceqR8jXdneA==
-X-Received: by 2002:a05:600c:3509:b0:43d:79:ae1b with SMTP id 5b1f17b1804b1-43d437a9541mr31446495e9.14.1742398234649;
-        Wed, 19 Mar 2025 08:30:34 -0700 (PDT)
-Received: from gpeter-l.roam.corp.google.com ([212.105.145.136])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43fdaca8sm22590635e9.28.2025.03.19.08.30.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 08:30:34 -0700 (PDT)
-From: Peter Griffin <peter.griffin@linaro.org>
-Date: Wed, 19 Mar 2025 15:30:21 +0000
-Subject: [PATCH v2 4/7] scsi: ufs: exynos: ensure consistent phy reference
- counts
+	s=arc-20240116; t=1742398634; c=relaxed/simple;
+	bh=83bujgNrQMKv2tBRheguoh8xgosbiV/jEvNTMO/lef8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RBGGEJHGq+uwXhyoFnK3Iw1g8GYlNDfIPbLRadIy+IfMb8GJmXizl+aHjVUMxs6Cn1apEqrHbY64qeJPocgto1yivbFkiQkHMoy5KlhuHYi5kThbvpjOYy1sokzCkL8CqHJbxT9ac4o4sXWaHfX0S+w/+rpj/7+3DfO0zhQVDSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WS9tYJEx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3347DC4CEEA;
+	Wed, 19 Mar 2025 15:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742398633;
+	bh=83bujgNrQMKv2tBRheguoh8xgosbiV/jEvNTMO/lef8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WS9tYJExgn75ZVlX3FwX7jiNdk569mkWlRGYUoJgUkjb1AX/WFjOPPvINruexgBKz
+	 M8XCNgSBUJNPDLGRoC24uFdfIW46An81dsD3p/N4rJNaXo+6ftN190gbB99EqGA0ep
+	 D0qNSgF/Tfxrvzx0AJj8s5Nb8rR7D16VOm4lC+buvA1QIXFi7gxTqLamZuzYzmzPrl
+	 blNQliVD2qaiB5rlIVMPKqimYoZlbkxrE62aVk1Unl9X+uVX/RLNUI6B9ouTtANOkE
+	 Z/PmZsXrtOZa64Ln7YWiAOq1x9O76X4gnZzLtkImtLHWntK3GowD3UUkZULLjNRhvl
+	 dZGAUn1u3wVdg==
+Date: Wed, 19 Mar 2025 15:37:05 +0000
+From: Simon Horman <horms@kernel.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Arthur Mongodin <amongodin@randorisec.fr>, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/3] mptcp: Fix data stream corruption in the address
+ announcement
+Message-ID: <20250319153705.GB768132@kernel.org>
+References: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
+ <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-1-122dbb249db3@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250319-exynos-ufs-stability-fixes-v2-4-96722cc2ba1b@linaro.org>
-References: <20250319-exynos-ufs-stability-fixes-v2-0-96722cc2ba1b@linaro.org>
-In-Reply-To: <20250319-exynos-ufs-stability-fixes-v2-0-96722cc2ba1b@linaro.org>
-To: Alim Akhtar <alim.akhtar@samsung.com>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Chanho Park <chanho61.park@samsung.com>
-Cc: linux-scsi@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Eric Biggers <ebiggers@kernel.org>, Bart Van Assche <bvanassche@acm.org>, 
- willmcvicker@google.com, kernel-team@android.com, tudor.ambarus@linaro.org, 
- andre.draszik@linaro.org, Peter Griffin <peter.griffin@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1228;
- i=peter.griffin@linaro.org; h=from:subject:message-id;
- bh=3SI4bC7ybL3N2FRvbuwPacvlxHEWeD8IolpWQSN1KPw=;
- b=owEBbQKS/ZANAwAKAc7ouNYCNHK6AcsmYgBn2uMR7Gt6GMiUHhQ9tNeB1ryvfLXf0f6hKBg7Z
- AIUaxYvoPqJAjMEAAEKAB0WIQQO/I5vVXh1DVa1SfzO6LjWAjRyugUCZ9rjEQAKCRDO6LjWAjRy
- uhgZD/44yhmeYZZzFKVFFjq28rha6NHqeREb1/qoxysPC7HrGnjsYlpYk7SLWHWWcyjtwhG/gMt
- O1lVZxIDu8c7fSHM8+Z80aiXDkcsmEARfOUrD7rvRCij6LS61K5swgmRoawpJUwVvovpsoSW0g5
- ABdLqjCx+iqyCQMidJfzV25UAHL4ymc/kVXCFeiVTBnnTndKQIathuUUcIEm/D2p1t+jRbp1ouj
- psGLVwlAg4zg8pKpXLOUq9qzcfjC45NB8RsIepMMqtHXKaJISGMHXLd5hVa/TNrEeTA/cPK42UC
- gzzSTMDl+u11SC4wzQJW1pGjPumuXTS5esnkGul/VvG0fkXHdp3YuGBE3rnUUwFqjGqOmH5yoXs
- Y70vVU28KnxP2Fnhhl1lONhMkR2STrszNmC6huHjeZtsh4TFCSmXHmLJh0xpisMoQmlN/30pOcl
- RRN4m1DK7nUiauvbcCVaPdj5P6RmbOYJtDqUCqON9M/eQo7wP4JYkQZi5YQHNXvOx1YZ7jHq5jc
- mfPzh2Tq80p/hi0O56Kgz0Ehub3xxNXIikH/CGYwVORuo/Gmg8U1YYHcER1HhltRaAp1JQPrDw/
- c1f/EAeGILL0PZnv5PKrNi3kkPLIv224YLEkUbnDCaWb9v3eW95YQeb7mFh8wcQGHiwEF+mqTl6
- hymvqaPAm/4Doyw==
-X-Developer-Key: i=peter.griffin@linaro.org; a=openpgp;
- fpr=0EFC8E6F5578750D56B549FCCEE8B8D6023472BA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-1-122dbb249db3@kernel.org>
 
-ufshcd_link_startup() can call ufshcd_vops_link_startup_notify()
-multiple times when retrying. This causes the phy reference count
-to keep increasing and the phy to not properly re-initialize.
+On Fri, Mar 14, 2025 at 09:11:31PM +0100, Matthieu Baerts (NGI0) wrote:
+> From: Arthur Mongodin <amongodin@randorisec.fr>
+> 
+> Because of the size restriction in the TCP options space, the MPTCP
+> ADD_ADDR option is exclusive and cannot be sent with other MPTCP ones.
+> For this reason, in the linked mptcp_out_options structure, group of
+> fields linked to different options are part of the same union.
+> 
+> There is a case where the mptcp_pm_add_addr_signal() function can modify
+> opts->addr, but not ended up sending an ADD_ADDR. Later on, back in
+> mptcp_established_options, other options will be sent, but with
+> unexpected data written in other fields due to the union, e.g. in
+> opts->ext_copy. This could lead to a data stream corruption in the next
+> packet.
+> 
+> Using an intermediate variable, prevents from corrupting previously
+> established DSS option. The assignment of the ADD_ADDR option
+> parameters is now done once we are sure this ADD_ADDR option can be set
+> in the packet, e.g. after having dropped other suboptions.
+> 
+> Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Paolo Abeni <pabeni@redhat.com>
+> Signed-off-by: Arthur Mongodin <amongodin@randorisec.fr>
+> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> [ Matt: the commit message has been updated: long lines splits and some
+>   clarifications. ]
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-If the phy has already been previously powered on, first issue a
-phy_power_off() and phy_exit(), before re-initializing and powering
-on again.
-
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Fixes: 3d73b200f989 ("scsi: ufs: ufs-exynos: Change ufs phy control sequence")
-Cc: stable@vger.kernel.org
----
- drivers/ufs/host/ufs-exynos.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 61b03e493cc1ddba17179a9f22e5b59ece02458b..34e16e198830d086cbdb6cb0b027ca92687b2ae6 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -962,6 +962,12 @@ static int exynos_ufs_phy_init(struct exynos_ufs *ufs)
- 	}
- 
- 	phy_set_bus_width(generic_phy, ufs->avail_ln_rx);
-+
-+	if (generic_phy->power_count) {
-+		phy_power_off(generic_phy);
-+		phy_exit(generic_phy);
-+	}
-+
- 	ret = phy_init(generic_phy);
- 	if (ret) {
- 		dev_err(hba->dev, "%s: phy init failed, ret = %d\n",
-
--- 
-2.49.0.rc1.451.g8f38331e32-goog
+Reviewed-by: Simon Horman <horms@kernel.org>
 
 
