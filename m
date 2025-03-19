@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-125503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BCCA69130
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF26A691D6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911D2463FB2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B312B19C4E2E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2891F209F5E;
-	Wed, 19 Mar 2025 14:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2A71F5844;
+	Wed, 19 Mar 2025 14:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejzJm66E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmddBv8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9AA1CAA81;
-	Wed, 19 Mar 2025 14:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBBC1DE89C;
+	Wed, 19 Mar 2025 14:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395236; cv=none; b=Z4AIbgKW0mdBK05cj/qNOtXSI/41WzMXkcnO7kmNWg0dQMnQ8xOUl00aQmVsH2HuER+hWMYvC0lHgIZraYZXT0G+tYTONs1r2nJa2pRAA9+EtWeTuUY5tNId+7aZ63M+PDu6P2Hy4Ph6vBKPaR8+wp9IdGvmqfTjeTTmR6bIg0Y=
+	t=1742394975; cv=none; b=SZMBEhi/g4p14IuwOVhlxpRziQDrkY62vtcfCsdc1BAD1YwaXRwLGzEo8ZREcqK+bbhysiwUDWPPvcnHP61Inzt4kCN7+qlgFR+84e4akL9CSG60to0nHpN3QzcBXwjGWD8r14EF1e/Ntln/iDKexNq2v82Py0C5P5Rufo5K62k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395236; c=relaxed/simple;
-	bh=F0UowwDkyxtpazBxWwIfZP2kf2JlCuOdy2qG5YP/4ik=;
+	s=arc-20240116; t=1742394975; c=relaxed/simple;
+	bh=UVPI1uX79bBVScglC0chtxirVfShLf59aFO1p0mLC6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7PqXyq3hPtKhm+E1qJukBwkKula5zJoEeJIxNNxQ3Ad/mGUEHfzqlhEsGOI2r5nMe70OPhuqAx2JN8gO2jqPgxRPcaxCO4bxfaOtEj+QjMVsgVKcGFBVbsCko9Y/6jmw6CLIrJut2WUsaoif2xaJ+k15r/dqJTozpLz8AS64uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejzJm66E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D188C4CEE4;
-	Wed, 19 Mar 2025 14:40:36 +0000 (UTC)
+	 MIME-Version; b=IkdJ2poqq/7nQjrxZcN4NF5Sfm64Nl7dE4t+3KdE21Sb5K+EoDxeTVq882hddz2AfVGn3zvfjKmT614MxVoRnjExmaOKndtKnUzS0E7wPm6Hi746BSdt6OqSEcx4AbNU8QMh/gY3dj6MaS3+g4dOmAf/VVIA63UHs6I5yo1K+yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmddBv8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771FEC4CEE4;
+	Wed, 19 Mar 2025 14:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395236;
-	bh=F0UowwDkyxtpazBxWwIfZP2kf2JlCuOdy2qG5YP/4ik=;
+	s=korg; t=1742394974;
+	bh=UVPI1uX79bBVScglC0chtxirVfShLf59aFO1p0mLC6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejzJm66EQZk+4ohcJcqVW5LgEMMW+6RgwvswzxeOfs9BykQ3y6Jyt4HL/MejoYZwJ
-	 EvEDKzFVarh7nzMs45UvqwAa0/J2qR44sSmSi5j+83C+4MTe0gKiPENDotG47DR8/N
-	 /n6jPoTiftOnKmH05zd5ADlg0LB84lIfJ9iJ5WZk=
+	b=wmddBv8q2AZWpOt5/qu4huvhp5uD52oaNSKMaljN5Lr2IqrgEFkEfgFZCwiF4X8a/
+	 5L+RV5WByRx5FH2v7eJCxD0xI/nWdQb7TAiP9oZACPt4ktz4ADJyAOyyOZ4OxdRL8D
+	 T1rclD2cb9S6Xg99TRbwoGTj+aV3VOnsoeM87C3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 109/166] Input: xpad - add support for TECNO Pocket Go
-Date: Wed, 19 Mar 2025 07:31:20 -0700
-Message-ID: <20250319143022.968564887@linuxfoundation.org>
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 211/241] ASoC: rt722-sdca: add missing readable registers
+Date: Wed, 19 Mar 2025 07:31:21 -0700
+Message-ID: <20250319143032.971630959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-commit 95a54a96f657fd069d2a9922b6c2d293a72a001f upstream.
+[ Upstream commit 247fba13416af65b155949bae582d55c310f58b6 ]
 
-TECNO Pocket Go is a kickstarter handheld by manufacturer TECNO Mobile.
-It poses a unique feature: it does not have a display. Instead, the
-handheld is essentially a pc in a controller. As customary, it has an
-xpad endpoint, a keyboard endpoint, and a vendor endpoint for its
-vendor software.
+SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_FU15,
+RT722_SDCA_CTL_FU_CH_GAIN, CH_01) ... SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY,
+RT722_SDCA_ENT_FU15, RT722_SDCA_CTL_FU_CH_GAIN, CH_04) are used by the
+"FU15 Boost Volume" control, but not marked as readable.
+And the mbq size are 2 for those registers.
 
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Link: https://lore.kernel.org/r/20250222170010.188761-3-lkml@antheas.dev
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7f5d6036ca005 ("ASoC: rt722-sdca: Add RT722 SDCA driver")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Shuming Fan <shumingf@realtek.com>
+Link: https://patch.msgid.link/20250310080440.58797-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/rt722-sdca-sdw.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -381,6 +381,7 @@ static const struct xpad_device {
- 	{ 0x2563, 0x058d, "OneXPlayer Gamepad", 0, XTYPE_XBOX360 },
- 	{ 0x294b, 0x3303, "Snakebyte GAMEPAD BASE X", 0, XTYPE_XBOXONE },
- 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
-+	{ 0x2993, 0x2001, "TECNO Pocket Go", 0, XTYPE_XBOX360 },
- 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x3106, "8BitDo Ultimate Wireless / Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
- 	{ 0x2dc8, 0x3109, "8BitDo Ultimate Wireless Bluetooth", 0, XTYPE_XBOX360 },
-@@ -546,6 +547,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x2563),		/* OneXPlayer Gamepad */
- 	XPAD_XBOX360_VENDOR(0x260d),		/* Dareu H101 */
- 	XPAD_XBOXONE_VENDOR(0x294b),		/* Snakebyte */
-+	XPAD_XBOX360_VENDOR(0x2993),		/* TECNO Mobile */
- 	XPAD_XBOX360_VENDOR(0x2c22),		/* Qanba Controllers */
- 	XPAD_XBOX360_VENDOR(0x2dc8),		/* 8BitDo Controllers */
- 	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Controllers */
+diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
+index 25fc13687bc83..4d3043627bd04 100644
+--- a/sound/soc/codecs/rt722-sdca-sdw.c
++++ b/sound/soc/codecs/rt722-sdca-sdw.c
+@@ -86,6 +86,10 @@ static bool rt722_sdca_mbq_readable_register(struct device *dev, unsigned int re
+ 	case 0x6100067:
+ 	case 0x6100070 ... 0x610007c:
+ 	case 0x6100080:
++	case SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_FU15, RT722_SDCA_CTL_FU_CH_GAIN,
++			  CH_01) ...
++	     SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_FU15, RT722_SDCA_CTL_FU_CH_GAIN,
++			  CH_04):
+ 	case SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_USER_FU1E, RT722_SDCA_CTL_FU_VOLUME,
+ 			CH_01):
+ 	case SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_USER_FU1E, RT722_SDCA_CTL_FU_VOLUME,
+-- 
+2.39.5
+
 
 
 
