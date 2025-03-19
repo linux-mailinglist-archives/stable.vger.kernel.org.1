@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BF0A691F6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:59:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC27A68FB6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CD71BA0535
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC8337AAE5F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1C521CC79;
-	Wed, 19 Mar 2025 14:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138F3209F4F;
+	Wed, 19 Mar 2025 14:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEpJOF/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPkf+ozv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFB71A841C;
-	Wed, 19 Mar 2025 14:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6558209F4B;
+	Wed, 19 Mar 2025 14:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395145; cv=none; b=oHNeG0+yGbEflUKqLQnSoFIbu7rX7smeUZ4i6k6hCJJHaJdO5QH09e2bOc6uA05Yfb89s1NNtJbbTzoT5UvovoG3yBFIhE22hYhH7PVZOfbGKNKfRVLNwfwOC/c7nmB9RFyeTbwh/15ADf2Z5d0aldEjM58SMQoYRkJ2eZLATWE=
+	t=1742394994; cv=none; b=KzwSYC0UWsV7bArUqiGhMwju2aY9D0TqgVe/dnY+uZFJC07kenahmllZxy3mRVxL28uzQftbj1Gxd2WcmijpvikfqBIZXPAsrp2/efLhm497GBVB5wzmj/GHe3G4pqFaBWhahukgXLVNXJMq5codfgld/GRQIo0VaBUZ3/yA+VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395145; c=relaxed/simple;
-	bh=A2OB4nHZkYqnDk9cpW/OArTeGzm+6cBKl0n6XTAzvO0=;
+	s=arc-20240116; t=1742394994; c=relaxed/simple;
+	bh=0S+PucrAQkiXKwvwBfrzrAMJ5P8P8PC2LHuX5sjH/BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NL01Glp2DcBqHhr9SCi5nWG/PInzmES6Ldp107zXrI6V8iuQkLgeGEOp9bFadPiYLPzg0KIi2PgVwv1sCfaoGGJ82JV4bRwgrbqQ8ZFJXG1MT+mkYSZ7ZAmqVK9yPODaFW2/808lxYpVEfVWHRM7M/FsdEA3dvXbDfTEHlMv4sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEpJOF/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BB0C4CEE4;
-	Wed, 19 Mar 2025 14:39:05 +0000 (UTC)
+	 MIME-Version; b=sGtwlfjAGDcknY1LNBOKuXB/gcetkvR4EfAbFMllMzY17aVWU/VHSW1E5xR0Z7ZOvedB2RhruUtGNsxTQ6FQSjmzIw3kg2RZn2ZIf5UhFxHcmKd7Tg6gW6cRmM/JLzHYdWnmAcRsvyMBc/j5jwzNhVW8gMXsRGCwrRJzPbrIiSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPkf+ozv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF9BC4CEE4;
+	Wed, 19 Mar 2025 14:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395145;
-	bh=A2OB4nHZkYqnDk9cpW/OArTeGzm+6cBKl0n6XTAzvO0=;
+	s=korg; t=1742394994;
+	bh=0S+PucrAQkiXKwvwBfrzrAMJ5P8P8PC2LHuX5sjH/BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEpJOF/C0mnJs0FsJFNEoS2PxRTtSJK82a1aZmw6voUXLg1jUD0WCCqBEMW4TGREt
-	 e8MLzM7ADoPurqLw+Uy+4oVRx1v6dr/G/AAey+mto7Azm1xs+hK4byHSPfWdT2nsYY
-	 Bbx3F3B6xvosKcxCqvT3M5HyIoxHVSl7YoijB2sA=
+	b=qPkf+ozvtUK8Bqsfiyz+g0GHnbbQBBl0TPOm344lGP3uxdMnoNZO/mCIl+F6QD2XS
+	 hoH9lvhhGP/14DbhSkFofd51z+AgMA4cK2LcNmOpXiR7I90lo7Nc8FEtjBvXlOSdfs
+	 uCG14SPDM4EtH7BF6zEB8/FnUpiZXe7pah7+NzLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 176/231] drm/amdgpu/display: Allow DCC for video formats on GFX12
-Date: Wed, 19 Mar 2025 07:31:09 -0700
-Message-ID: <20250319143031.187905483@linuxfoundation.org>
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.13 200/241] qlcnic: fix memory leak issues in qlcnic_sriov_common.c
+Date: Wed, 19 Mar 2025 07:31:10 -0700
+Message-ID: <20250319143032.671451469@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit df1e82e7acd3c50b65ca0e2e09089b78382d14ab upstream.
+commit d2b9d97e89c79c95f8b517e4fa43fd100f936acc upstream.
 
-We advertise DCC as supported for NV12/P010 formats on GFX12,
-but it would fail on this check on atomic commit.
+Add qlcnic_sriov_free_vlans() in qlcnic_sriov_alloc_vlans() if
+any sriov_vlans fails to be allocated.
+Add qlcnic_sriov_free_vlans() to free the memory allocated by
+qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
+be allocated.
 
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ba795235a2b99ba9bbef647ab003b2f3145d9bbb)
-Cc: stable@vger.kernel.org # 6.12.x
+Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250307094952.14874-1-haoxiang_li2024@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -275,8 +275,11 @@ static int amdgpu_dm_plane_validate_dcc(
- 	if (!dcc->enable)
- 		return 0;
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_m
  
--	if (format >= SURFACE_PIXEL_FORMAT_VIDEO_BEGIN ||
--	    !dc->cap_funcs.get_dcc_compression_cap)
-+	if (adev->family < AMDGPU_FAMILY_GC_12_0_0 &&
-+	    format >= SURFACE_PIXEL_FORMAT_VIDEO_BEGIN)
-+		return -EINVAL;
-+
-+	if (!dc->cap_funcs.get_dcc_compression_cap)
- 		return -EINVAL;
+ 	num_vlans = sriov->num_allowed_vlans;
+ 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
+-	if (!sriov->allowed_vlans)
++	if (!sriov->allowed_vlans) {
++		qlcnic_sriov_free_vlans(adapter);
+ 		return -ENOMEM;
++	}
  
- 	input.format = format;
+ 	vlans = (u16 *)&cmd->rsp.arg[3];
+ 	for (i = 0; i < num_vlans; i++)
+@@ -2167,8 +2169,10 @@ int qlcnic_sriov_alloc_vlans(struct qlcn
+ 		vf = &sriov->vf_info[i];
+ 		vf->sriov_vlans = kcalloc(sriov->num_allowed_vlans,
+ 					  sizeof(*vf->sriov_vlans), GFP_KERNEL);
+-		if (!vf->sriov_vlans)
++		if (!vf->sriov_vlans) {
++			qlcnic_sriov_free_vlans(adapter);
+ 			return -ENOMEM;
++		}
+ 	}
+ 
+ 	return 0;
 
 
 
