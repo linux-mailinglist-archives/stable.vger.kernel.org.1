@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-125484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6441AA692EE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:18:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5A9A692C0
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA891BA0F2B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8B511B60D98
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D68F1DF26E;
-	Wed, 19 Mar 2025 14:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8F021ABA2;
+	Wed, 19 Mar 2025 14:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcoAjJes"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuympGKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FCE208970;
-	Wed, 19 Mar 2025 14:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C621DC9A7;
+	Wed, 19 Mar 2025 14:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395223; cv=none; b=fHi0VAAhMakF33t0nLp3ZUPR9L7Uv8lB7nLGYwhhRgJ+E6EhdIruA3xwzuwQiKH14doC+ZqoTUADaOOh/31lV6qaTybB6kajI1qCxpDz81fBwtOhXYJgFYU5tHnnxj6eWq4QVwewd6ZVV0ePsgs61uoUgFyM3Hum946wkYGNRBk=
+	t=1742395101; cv=none; b=ZwSfDpW7DHDDxqON1hzrr3ZVjJ8iukUzva8wZMg7P2eYHXP4B/TYOaCPMjeHXwVj3j4jM5E7GL+tvz3pANM2ZERZJ9aBOAC9uD5wEXrpIgN08MDsZnbY0dqNsSvehW0bo8SgocWChZFzy1Ys3QOwA1k4WQ5fCrW4zM2efGJs4s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395223; c=relaxed/simple;
-	bh=GRoUZ6p2Pe2OLT6j7BLpx4/5ZnUtYpPwxjVuXcaSyL4=;
+	s=arc-20240116; t=1742395101; c=relaxed/simple;
+	bh=fMp7MJX63AiJOQLESaoFX1/9du1rRQYWk7ma5slxVEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wd7jperL1SzzqOGXZgWTMBOc4yCRJaIcpzv4eWQjQOOwDts9LEtM6yGteNfprYo1UopoukVKroqvvGWTvnjGb74PxxY6F4iZRb0/he7WSAh5hIfdE5ujMXCIQxHcxOvqYORU/YI7TdJM3/oBEgf1afl7eyNna+oUvULA08av7KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcoAjJes; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64212C4CEE4;
-	Wed, 19 Mar 2025 14:40:22 +0000 (UTC)
+	 MIME-Version; b=mhfkvFRs1PpWnDIAGKfwkbNAjVkb9gUaN6L8KKN48eoSNRp9lf+0SHBBmpzyj1WhJE06AFGvlgOOmI0pgYzH+w/QDD2fsC8BKbONK6N9HYfB3Rn4Pj+Ot++PEQ+G6Uvl3RZPVKsSoHEXgm8Qt0OPCoFCJOC6Vvqzobi+IPfO2Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuympGKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67F5C4CEE4;
+	Wed, 19 Mar 2025 14:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395222;
-	bh=GRoUZ6p2Pe2OLT6j7BLpx4/5ZnUtYpPwxjVuXcaSyL4=;
+	s=korg; t=1742395101;
+	bh=fMp7MJX63AiJOQLESaoFX1/9du1rRQYWk7ma5slxVEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TcoAjJesnjUU+Y7n+zOBlgbr6+7FvBWKLu21vrJKA8enQ+uzficpHaSburAY2vA4T
-	 wkcM6AB4e3ohLEyl88sNmKTPKbosN4cUi9d78XEgz1hxHP0+ne5tF8wDdSbxLo2uIx
-	 qBE+htarjSh0ChCAw5QNY5kgtuIcsFQFRVGPHQcU=
+	b=tuympGKrr702zhC+jwvmxh4xlnxXDtKc9tz8Fzn7Vl7YC1hzBXSx2+cQhpaKnvRS8
+	 8v49+ONAprPHrdxXt5sPdGlQx3oDG7Zgwu1Vy9khM4jfTcLXUkFOGKMJYkyQ1Jh4DQ
+	 BN3tMZ7UcpCLKOZZdo9tXG7SS3KCbVNdoJU4nc0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/166] net: wwan: mhi_wwan_mbim: Silence sequence number glitch errors
-Date: Wed, 19 Mar 2025 07:30:45 -0700
-Message-ID: <20250319143022.016909271@linuxfoundation.org>
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 153/231] Input: xpad - rename QH controller to Legion Go S
+Date: Wed, 19 Mar 2025 07:30:46 -0700
+Message-ID: <20250319143030.615558226@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit 0d1fac6d26aff5df21bb4ec980d9b7a11c410b96 ]
+commit 659a7614dd72e2835ac0b220c2fa68fabd8d1df9 upstream.
 
-When using the Qualcomm X55 modem on the ThinkPad X13s, the kernel log is
-constantly being filled with errors related to a "sequence number glitch",
-e.g.:
+The QH controller is actually the controller of the Legion Go S, with
+the manufacturer string wch.cn and product name Legion Go S in its
+USB descriptor. A cursory lookup of the VID reveals the same.
 
-	[ 1903.284538] sequence number glitch prev=16 curr=0
-	[ 1913.812205] sequence number glitch prev=50 curr=0
-	[ 1923.698219] sequence number glitch prev=142 curr=0
-	[ 2029.248276] sequence number glitch prev=1555 curr=0
-	[ 2046.333059] sequence number glitch prev=70 curr=0
-	[ 2076.520067] sequence number glitch prev=272 curr=0
-	[ 2158.704202] sequence number glitch prev=2655 curr=0
-	[ 2218.530776] sequence number glitch prev=2349 curr=0
-	[ 2225.579092] sequence number glitch prev=6 curr=0
+Therefore, rename the xpad entries to match.
 
-Internet connectivity is working fine, so this error seems harmless. It
-looks like modem does not preserve the sequence number when entering low
-power state; the amount of errors depends on how actively the modem is
-being used.
-
-A similar issue has also been seen on USB-based MBIM modems [1]. However,
-in cdc_ncm.c the "sequence number glitch" message is a debug message
-instead of an error. Apply the same to the mhi_wwan_mbim.c driver to
-silence these errors when using the modem.
-
-[1]: https://lists.freedesktop.org/archives/libmbim-devel/2016-November/000781.html
-
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250212-mhi-wwan-mbim-sequence-glitch-v1-1-503735977cbd@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://lore.kernel.org/r/20250222170010.188761-4-lkml@antheas.dev
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/mhi_wwan_mbim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/joystick/xpad.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
-index 3f72ae943b294..b1b2870a054ba 100644
---- a/drivers/net/wwan/mhi_wwan_mbim.c
-+++ b/drivers/net/wwan/mhi_wwan_mbim.c
-@@ -209,7 +209,7 @@ static int mbim_rx_verify_nth16(struct mhi_mbim_context *mbim, struct sk_buff *s
- 	if (mbim->rx_seq + 1 != le16_to_cpu(nth16->wSequence) &&
- 	    (mbim->rx_seq || le16_to_cpu(nth16->wSequence)) &&
- 	    !(mbim->rx_seq == 0xffff && !le16_to_cpu(nth16->wSequence))) {
--		net_err_ratelimited("sequence number glitch prev=%d curr=%d\n",
-+		net_dbg_ratelimited("sequence number glitch prev=%d curr=%d\n",
- 				    mbim->rx_seq, le16_to_cpu(nth16->wSequence));
- 	}
- 	mbim->rx_seq = le16_to_cpu(nth16->wSequence);
--- 
-2.39.5
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -312,7 +312,7 @@ static const struct xpad_device {
+ 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
+ 	{ 0x17ef, 0x6182, "Lenovo Legion Controller for Windows", 0, XTYPE_XBOX360 },
+ 	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
+-	{ 0x1a86, 0xe310, "QH Electronics Controller", 0, XTYPE_XBOX360 },
++	{ 0x1a86, 0xe310, "Legion Go S", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0130, "Ion Drum Rocker", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
+@@ -538,7 +538,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
+ 	XPAD_XBOX360_VENDOR(0x17ef),		/* Lenovo */
+ 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
+-	XPAD_XBOX360_VENDOR(0x1a86),		/* QH Electronics */
++	XPAD_XBOX360_VENDOR(0x1a86),		/* Nanjing Qinheng Microelectronics (WCH) */
+ 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
+ 	XPAD_XBOX360_VENDOR(0x1ee9),		/* ZOTAC Technology Limited */
+ 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
 
 
 
