@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557A4A6905A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 269B9A690D2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FE4D1B63CEE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0569C16690C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0901D5AC2;
-	Wed, 19 Mar 2025 14:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F0C21E092;
+	Wed, 19 Mar 2025 14:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqks/XmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+OY1atp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCD31B2194;
-	Wed, 19 Mar 2025 14:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F8B1DE899;
+	Wed, 19 Mar 2025 14:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394912; cv=none; b=mJyQILrbsPWPq90v+4RNt2Q+Qb6HQ8xwVKuxQ7XH0dlVfCx5TTg5Er6E3a73tAy1h8DE2QOza4C0nbRQPA3ScoPLx3m4X3mI0scnN0Ym1qbAaRmzBkVfCpG1gjKVZZy/GYcm+/USg7wm0NjY3oyEqXQHRkFGZ3GylPGVbeukX9o=
+	t=1742395171; cv=none; b=TjSskN/A+mUKMrEUYlte3q7KTBq0/po46M2DKfn8ufREulYY+twctXB/+s0Ukciqj0PcSrlMaxtxN5K2poCfbTzqhs9duS9JzWx56Ant6R0+C4Uk5yVYLnOeoW9NwPXwAHJVY/mq9jp3oOSOBduTQ/9j2uf4/VtSoRZSXNCEiNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394912; c=relaxed/simple;
-	bh=xc13w1/m0R4RhR06Whudbke44zAksu/vPbl7VYH8Pbc=;
+	s=arc-20240116; t=1742395171; c=relaxed/simple;
+	bh=STe0VC9BsPwSU9ZRLTIS2b9s2UR2GgFF7+dH/F8XkUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjzz27cQlhbV5Gm3pxay43GQ5duEkwJiz8J167ulCMw455esPagckycRwgwRxWv4LhTD5xHTAh7P6wUbkYGIixP3OHYSj5lYtrbTfnsyx67RhyMzZWAWSnEQFbQMQ046nm7OKJq54nBVS5RCGHePSVHr/NrhlVn3v0/efWBlRhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqks/XmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1015CC4CEE4;
-	Wed, 19 Mar 2025 14:35:12 +0000 (UTC)
+	 MIME-Version; b=e9JarA1bcJf862/kaqjgnihJMUdkeNgdJihDoRxPP598GMdxYLzsc3bY1Yw6G7oe706Mlxpv2nAUezsn4hve/Zf0Rul7HreG9N5g04qQgXBkrxscQENJUfgXFCpu2TFwpdskr5He7wBonxA44bETSFbyRoKI9CKcJuWBsaBw0I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+OY1atp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2DBC4CEE4;
+	Wed, 19 Mar 2025 14:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394912;
-	bh=xc13w1/m0R4RhR06Whudbke44zAksu/vPbl7VYH8Pbc=;
+	s=korg; t=1742395171;
+	bh=STe0VC9BsPwSU9ZRLTIS2b9s2UR2GgFF7+dH/F8XkUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqks/XmELTEG1ATlHwsQvZVKW2VEPYqxpt9jbRPCKudBc3fBJQOsOSgMayODNziUu
-	 EdZ+28oIHXrVjQXJX2tsjPKOP+J1R3ccXQDK+6eWyA7xrVDtEjp/JCnZeCIDPN0VBr
-	 b6+7pICwunulxHjx9Sgf4IZSwW3PnBiasXLFCmdc=
+	b=f+OY1atp3+i6f+tqJn2H1hgxGXiYuwzhQygrC4myneWdcjkRvWD0/T7gOAgW9WUtV
+	 rhGwapSjRW+fjpmGOaT3ApeoKpzgBafhXBG7S0MfYg1ox12JptXw/Mv4lGq2goBwIC
+	 KdMzaZoYggoPFBwUC/iDh7INN85oL7JNIXoDPnw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 122/241] ASoC: SOF: amd: Handle IPC replies before FW_BOOT_COMPLETE
+Subject: [PATCH 6.6 021/166] drm/hyperv: Fix address space leak when Hyper-V DRM device is removed
 Date: Wed, 19 Mar 2025 07:29:52 -0700
-Message-ID: <20250319143030.742169329@linuxfoundation.org>
+Message-ID: <20250319143020.558591215@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit ac84ca815adb4171a4276b1d44096b75f6a150b7 ]
+[ Upstream commit aed709355fd05ef747e1af24a1d5d78cd7feb81e ]
 
-In some cases, e.g. during resuming from suspend, there is a possibility
-that some IPC reply messages get received by the host while the DSP
-firmware has not yet reached the complete boot state.
+When a Hyper-V DRM device is probed, the driver allocates MMIO space for
+the vram, and maps it cacheable. If the device removed, or in the error
+path for device probing, the MMIO space is released but no unmap is done.
+Consequently the kernel address space for the mapping is leaked.
 
-Detect when this happens and do not attempt to process the unexpected
-replies from DSP.  Instead, provide proper debugging support.
+Fix this by adding iounmap() calls in the device removal path, and in the
+error path during device probing.
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20250207-sof-vangogh-fixes-v1-3-67824c1e4c9a@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f1f63cbb705d ("drm/hyperv: Fix an error handling path in hyperv_vmbus_probe()")
+Fixes: a0ab5abced55 ("drm/hyperv : Removing the restruction of VRAM allocation with PCI bar size")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250210193441.2414-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250210193441.2414-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/amd/acp-ipc.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/hyperv/hyperv_drm_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/sof/amd/acp-ipc.c b/sound/soc/sof/amd/acp-ipc.c
-index 5f371d9263f3b..12caefd087885 100644
---- a/sound/soc/sof/amd/acp-ipc.c
-+++ b/sound/soc/sof/amd/acp-ipc.c
-@@ -167,6 +167,7 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
+diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+index 8026118c6e033..8a7933f5c6ebe 100644
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+@@ -157,6 +157,7 @@ static int hyperv_vmbus_probe(struct hv_device *hdev,
+ 	return 0;
  
- 	if (sdev->first_boot && sdev->fw_state != SOF_FW_BOOT_COMPLETE) {
- 		acp_mailbox_read(sdev, sdev->dsp_box.offset, &status, sizeof(status));
-+
- 		if ((status & SOF_IPC_PANIC_MAGIC_MASK) == SOF_IPC_PANIC_MAGIC) {
- 			snd_sof_dsp_panic(sdev, sdev->dsp_box.offset + sizeof(status),
- 					  true);
-@@ -188,13 +189,21 @@ irqreturn_t acp_sof_ipc_irq_thread(int irq, void *context)
+ err_free_mmio:
++	iounmap(hv->vram);
+ 	vmbus_free_mmio(hv->mem->start, hv->fb_size);
+ err_vmbus_close:
+ 	vmbus_close(hdev->channel);
+@@ -175,6 +176,7 @@ static void hyperv_vmbus_remove(struct hv_device *hdev)
+ 	vmbus_close(hdev->channel);
+ 	hv_set_drvdata(hdev, NULL);
  
- 	dsp_ack = snd_sof_dsp_read(sdev, ACP_DSP_BAR, ACP_SCRATCH_REG_0 + dsp_ack_write);
- 	if (dsp_ack) {
--		spin_lock_irq(&sdev->ipc_lock);
--		/* handle immediate reply from DSP core */
--		acp_dsp_ipc_get_reply(sdev);
--		snd_sof_ipc_reply(sdev, 0);
--		/* set the done bit */
--		acp_dsp_ipc_dsp_done(sdev);
--		spin_unlock_irq(&sdev->ipc_lock);
-+		if (likely(sdev->fw_state == SOF_FW_BOOT_COMPLETE)) {
-+			spin_lock_irq(&sdev->ipc_lock);
-+
-+			/* handle immediate reply from DSP core */
-+			acp_dsp_ipc_get_reply(sdev);
-+			snd_sof_ipc_reply(sdev, 0);
-+			/* set the done bit */
-+			acp_dsp_ipc_dsp_done(sdev);
-+
-+			spin_unlock_irq(&sdev->ipc_lock);
-+		} else {
-+			dev_dbg_ratelimited(sdev->dev, "IPC reply before FW_BOOT_COMPLETE: %#x\n",
-+					    dsp_ack);
-+		}
-+
- 		ipc_irq = true;
- 	}
++	iounmap(hv->vram);
+ 	vmbus_free_mmio(hv->mem->start, hv->fb_size);
+ }
  
 -- 
 2.39.5
