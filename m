@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CFCA68FC4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B581A69063
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4276F16DB32
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC2EA426A33
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4FC1DE2CA;
-	Wed, 19 Mar 2025 14:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB311D6DBF;
+	Wed, 19 Mar 2025 14:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuffB8Vs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FK/UX0tl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0E81C0DED;
-	Wed, 19 Mar 2025 14:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8440E1DC9A7;
+	Wed, 19 Mar 2025 14:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394952; cv=none; b=Z68/FvMLTRo9+NpLg1moJyh0NAhThY8RvZV/4JgNfmdIDJA6UWHcFghuls7zmCMqkpN9n/0EuIPxhCb5ye7JC5Wue+8RSFnWBhLsZWQr51Oszpk3hyetegSR1Kyj9OvsTBPOsDhQmVDSazdouHXEuW+eDz1ZUAqhDRz5k9YuQjw=
+	t=1742395102; cv=none; b=aYU3//UdVwi6qtBZrW/AAbvSJT1U6F5p5NU3GtsTjDnWQlS0PbjapAi7uHowbjUwaqFGW9YvkEf08Jh8/qdB5jXEGP6aJ/cm4tFjhTVYyKJPn42mVAnE7cylKpLLNUpX0+Faj6pjn1oo6DhwqXmPEld2BfehHs/3cJAGMF06qPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394952; c=relaxed/simple;
-	bh=3AGL/Pp/i9e7iPobJEQOIqLVGJfrR7yGpR3ixzP+UQk=;
+	s=arc-20240116; t=1742395102; c=relaxed/simple;
+	bh=T4hlngTb5Eo0pSiMJfuCFdBkw7/hrkncRfAhGbZj8rA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewdKM8Of93UWyJBeUWSw60yrf7v0xkMQyXiacfTqfpxhQtMUhvaZEp7CSjtB9HL/le8ksYQ0rhzNvKD6g+f7Hl91tc+kxxKJL2ws/bmZ34NzlK9Q58g2ZwQ0J1434pqeJ6oNz8VjkesGaLX5xOnQ0QdNjzUBuHknQrFNcv2RYyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuffB8Vs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8C2C4CEE4;
-	Wed, 19 Mar 2025 14:35:51 +0000 (UTC)
+	 MIME-Version; b=E1X6wJD6YTdMFYYUTWjraqdDr3ImadcPCTPMQL5JDVuGjhKGLq7pbWrYBbER1/xm90F1UzNoiK2+/iz7K8CW79Oef6A2ekmB5PB1fWYuByavv/U/+3bPhRboU9LcLJGN+9gF/i8kuESRIcF46MWa/hVNyXBFsveN61583cPvaP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FK/UX0tl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58302C4CEE4;
+	Wed, 19 Mar 2025 14:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394951;
-	bh=3AGL/Pp/i9e7iPobJEQOIqLVGJfrR7yGpR3ixzP+UQk=;
+	s=korg; t=1742395102;
+	bh=T4hlngTb5Eo0pSiMJfuCFdBkw7/hrkncRfAhGbZj8rA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuffB8VsvNCTKqlY+f1twaUBy1qRV1IscSiIMZFcATrD8MFHWs6XN2C0u6KKbpGEJ
-	 z/PjYthZu8V4NiHp5gNgitwBODHJQUc5Kl1QdHJMwyN6PW+/puf33gQjj3VPB+UKTF
-	 wEJMr3IgtsDcPIihFc0SI6xA0t/mHjir7j90CwwM=
+	b=FK/UX0tl7LKioes5BEJwIWD1JMoelyOI8zlFpjjP6+eIjBQyy5MA1wecfiWJ/V6vJ
+	 9Ht36iIQE73PMsQUhjboUOVD21F6a/TwRejuAH/SNAoPH83SmgmToB2eIeUAKmANL5
+	 k+izNd9uhID90O//wceAzziT13YsDhYvR5U16vpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.13 176/241] drm/panic: fix overindented list items in documentation
-Date: Wed, 19 Mar 2025 07:30:46 -0700
-Message-ID: <20250319143032.089678619@linuxfoundation.org>
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 154/231] Input: i8042 - swap old quirk combination with new quirk for NHxxRZQ
+Date: Wed, 19 Mar 2025 07:30:47 -0700
+Message-ID: <20250319143030.640217393@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit cba3b86974a3388b12130654809e50cd19294849 upstream.
+commit 729d163232971672d0f41b93c02092fb91f0e758 upstream.
 
-Starting with the upcoming Rust 1.86.0 (to be released 2025-04-03),
-Clippy warns:
+Some older Clevo barebones have problems like no or laggy keyboard after
+resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
+quirk.
 
-    error: doc list item overindented
-       --> drivers/gpu/drm/drm_panic_qr.rs:914:5
-        |
-    914 | ///    will be encoded as binary segment, otherwise it will be encoded
-        |     ^^^ help: try using `  ` (2 spaces)
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#doc_overindented_list_items
+With the old i8042 quirks this devices keyboard is sometimes laggy after
+resume. With the new quirk this issue doesn't happen.
 
-The overindentation is slightly hard to notice, since all the items
-start with a backquote that makes it look OK, but it is there.
-
-Thus fix it.
-
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
-Cc: stable@vger.kernel.org # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250301231602.917580-2-ojeda@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://lore.kernel.org/r/20250221230137.70292-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panic_qr.rs |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -911,16 +911,16 @@ impl QrImage<'_> {
- ///
- /// * `url`: The base URL of the QR code. It will be encoded as Binary segment.
- /// * `data`: A pointer to the binary data, to be encoded. if URL is NULL, it
--///    will be encoded as binary segment, otherwise it will be encoded
--///    efficiently as a numeric segment, and appended to the URL.
-+///   will be encoded as binary segment, otherwise it will be encoded
-+///   efficiently as a numeric segment, and appended to the URL.
- /// * `data_len`: Length of the data, that needs to be encoded, must be less
--///    than data_size.
-+///   than data_size.
- /// * `data_size`: Size of data buffer, it should be at least 4071 bytes to hold
--///    a V40 QR code. It will then be overwritten with the QR code image.
-+///   a V40 QR code. It will then be overwritten with the QR code image.
- /// * `tmp`: A temporary buffer that the QR code encoder will use, to write the
--///    segments and ECC.
-+///   segments and ECC.
- /// * `tmp_size`: Size of the temporary buffer, it must be at least 3706 bytes
--///    long for V40.
-+///   long for V40.
- ///
- /// # Safety
- ///
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1209,18 +1209,10 @@ static const struct dmi_system_id i8042_
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
+ 	{
+-		/*
+-		 * Setting SERIO_QUIRK_NOMUX or SERIO_QUIRK_RESET_ALWAYS makes
+-		 * the keyboard very laggy for ~5 seconds after boot and
+-		 * sometimes also after resume.
+-		 * However both are required for the keyboard to not fail
+-		 * completely sometimes after boot or resume.
+-		 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NHxxRZQ"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
 
 
 
