@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C411A68FAC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D3BA69142
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BAFD3AAC99
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 016DA8829B4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B241E32C6;
-	Wed, 19 Mar 2025 14:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2C522068B;
+	Wed, 19 Mar 2025 14:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4dEUhqi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcquQcES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB981D6DBC;
-	Wed, 19 Mar 2025 14:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3A81DE8AB;
+	Wed, 19 Mar 2025 14:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394924; cv=none; b=ZIJMrU0ZPA8PgNxMlRptZtWdJ0Zym9foTrnVypqbX9Iu9e+4w29Fv/vA2pU/G5aepILcbY3IZJ/ZJmNSifBu/ShAJQUqG9IParOpFtMWvxLBgrL/05n44GJqorV6g3G2+OXlwva3WJFWcuMfSoqGXqGnQLBfpInECy1G2IocVoo=
+	t=1742395179; cv=none; b=PQCzhQcKeGWKRoky7Rh54iZijimvRQHZB9YNn67QS68LLlGBnzychQvfBMBJMDMHg6nlA5BHIqxS+sfKDCC8oZfchsTTDFDSK6nHT2yHT2AYZ6+3MxnmTC3oLSRpzcaxH6SYEBzNWCzhSD7lvoL/XUry5vjM9lKUOV5ZGur/Ctw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394924; c=relaxed/simple;
-	bh=R278BY4aQrC4rNO+RgGLmV1EyAJZxdkDO77nyXpZF94=;
+	s=arc-20240116; t=1742395179; c=relaxed/simple;
+	bh=TZUMUjAuQWXpmbJIMZLx4bVGOUUoJqtigGyFjt8CzwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRJbZIILAOjKdGoxREvjtor0bqKISv+TU7IsGokdv65fyVz3qO7UN1IaFyD1jEhFd3eXu/g8Sp015vJnFqqfewql8heZltgcvZ7RuCXkmK9qeUzjY+PIKpsnMhPHTEyBr8E5ZI4R15vhPi2ggZ0YmiOqZzQxlpiVNR+mwo2qoaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4dEUhqi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB72C4CEE4;
-	Wed, 19 Mar 2025 14:35:24 +0000 (UTC)
+	 MIME-Version; b=QPT9IyWYVkVBV2wF6CPr69pHfsiXdkxPTTKKKgUzQfloKk9t6FjLJuW48GU+k6dss/Lk1eranhUMDUWH/xuVrR8fgqTlCxC1HrghOSAQfRlYfavarU0jZS2z4a8Hjpc9uhG89Je3LAuh0HVM6IqI0WJR01SDWFm5Fh1fdcw4LsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcquQcES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE052C4CEE8;
+	Wed, 19 Mar 2025 14:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394924;
-	bh=R278BY4aQrC4rNO+RgGLmV1EyAJZxdkDO77nyXpZF94=;
+	s=korg; t=1742395179;
+	bh=TZUMUjAuQWXpmbJIMZLx4bVGOUUoJqtigGyFjt8CzwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4dEUhqiMwDYdqUlgM8F6dIrtZ1fit6o5cNOhTPXr6qfv70LVcjIVPPsYJy+0kQI1
-	 GJRVbGbujWhyruZbt1CI0ehnSRwPHeaiK/CYyNiVqzRKjcj7ayV9uN4WI8rVM3LKVg
-	 CO25qWWkxq6ldVdJzVQ5gHkbgSyEEWic4tMeL7go=
+	b=dcquQcESkPyodRmJRzrLm5Qqe8X6/awKSA2KCkrWhHqr5eX8qPmXoAU6aLJLCDUXA
+	 CDVo0imYSwU/Dgi1TGGqX6LtS7Fhj6QITOJ1XAxqSJ5fdO1W+rjIr56fhzALaK+GMC
+	 wHNP5MA8FfxOMNYow87tpZ0k9aQvcRo3EEzTMWQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 110/241] ASoC: simple-card-utils.c: add missing dlc->of_node
+Subject: [PATCH 6.6 009/166] pinctrl: bcm281xx: Fix incorrect regmap max_registers value
 Date: Wed, 19 Mar 2025 07:29:40 -0700
-Message-ID: <20250319143030.446591588@linuxfoundation.org>
+Message-ID: <20250319143020.233486600@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit dabbd325b25edb5cdd99c94391817202dd54b651 ]
+[ Upstream commit 68283c1cb573143c0b7515e93206f3503616bc10 ]
 
-commit 90de551c1bf ("ASoC: simple-card-utils.c: enable multi Component
-support") added muiti Component support, but was missing to add
-dlc->of_node. Because of it, Sound device list will indicates strange
-name if it was DPCM connection and driver supports dai->driver->dai_args,
-like below
+The max_registers value does not take into consideration the stride;
+currently, it's set to the number of the last pin, but this does not
+accurately represent the final register.
 
-	> aplay -l
-	card X: sndulcbmix [xxxx], device 0: fe.(null).rsnd-dai.0 (*) []
-	...                                     ^^^^^^
+Fix this by multiplying the current value by 4.
 
-It will be fixed by this patch
-
-	> aplay -l
-	card X: sndulcbmix [xxxx], device 0: fe.sound@ec500000.rsnd-dai.0 (*) []
-	...                                     ^^^^^^^^^^^^^^
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/87ikpp2rtb.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 54b1aa5a5b16 ("ARM: pinctrl: Add Broadcom Capri pinctrl driver")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Link: https://lore.kernel.org/20250207-bcm21664-pinctrl-v1-2-e7cfac9b2d3b@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/generic/simple-card-utils.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/bcm/pinctrl-bcm281xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
-index 24b371f320663..5b6c2f7f288a0 100644
---- a/sound/soc/generic/simple-card-utils.c
-+++ b/sound/soc/generic/simple-card-utils.c
-@@ -1103,6 +1103,7 @@ int graph_util_parse_dai(struct device *dev, struct device_node *ep,
- 	args.np = ep;
- 	dai = snd_soc_get_dai_via_args(&args);
- 	if (dai) {
-+		dlc->of_node  = node;
- 		dlc->dai_name = snd_soc_dai_name_get(dai);
- 		dlc->dai_args = snd_soc_copy_dai_args(dev, &args);
- 		if (!dlc->dai_args)
+diff --git a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
+index 73dbf29c002f3..cf6efa9c0364a 100644
+--- a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
++++ b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
+@@ -974,7 +974,7 @@ static const struct regmap_config bcm281xx_pinctrl_regmap_config = {
+ 	.reg_bits = 32,
+ 	.reg_stride = 4,
+ 	.val_bits = 32,
+-	.max_register = BCM281XX_PIN_VC_CAM3_SDA,
++	.max_register = BCM281XX_PIN_VC_CAM3_SDA * 4,
+ };
+ 
+ static int bcm281xx_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
 -- 
 2.39.5
 
