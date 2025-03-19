@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-125373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95005A6927C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:10:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 890ACA69263
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E36B41BA04C6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096A01B84A0A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A8121CC68;
-	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C245220AF7D;
+	Wed, 19 Mar 2025 14:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0C6CFbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m430rm27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EEC1A841C;
-	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8155E18BC36;
+	Wed, 19 Mar 2025 14:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395142; cv=none; b=SNUlTglzdZCsE7q1vtkOkU8gL45udUffbY8rwJeSMOrE0MJimMCDlFC2oXAsspOjGwDRCRLrJis2faf+LILamOAjW6eutJ/n/E543y/7H8JZOmhIxeFYGJV10reaaxQViIn8ou3gUOJhvg0tgn9DpUVYURlR0+L4B6Z/S3xVM2g=
+	t=1742395251; cv=none; b=TMIRVHNSIK3reKwLimtMVXaa/As8jUKiidlYoiC31VF1PZpengWeLFVquP7uYWHwMBg18J1eIY7t7ss23qWknf8hFLc5SWxPesSlKCnV1grKVSKB1A0YJfZrEhDeqwfEfKxqVd+nfO+eCXJGJ8hU8RbKtG7mhrSc7rskPBo+ds4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395142; c=relaxed/simple;
-	bh=H137YHE3XHz57/2N+0igsRM2qAh/UKbQjxd9wS3buXE=;
+	s=arc-20240116; t=1742395251; c=relaxed/simple;
+	bh=BsD92i5mH/qnMsziLAM9F+EOiMJlAPXb+ZfptwHvMtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RB+RFpcHBCyXlk4HJbAqVmPqAol+F7kKgZECIKk1yvBCBLcvMmWGq4236r3naS+shD85EzVFqbjpT8QMbqq1y+5phH2icODu/ba+5fNyhTK1OJPNQWF77vaTda17NR/cgqwlPhpM3gt1asWiA+QfmGc2hWvtanh9QZ+Aqbssz8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0C6CFbZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D441C4CEE4;
-	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
+	 MIME-Version; b=ofsMWwYGt1exuCIdMu6o8oeDX9nheHPa5JwesKZpB8jhQeoJhx+/Sf+Ak28dZ8MSOHnlvMQNhBJ8cfxG5angWrOGpbbJfu9PrqateHoQeBBHJyq0EkJUhLJK7kcAVgPapifrVo7+WSglbHlHknuW8QzrEg7I5nWrnbLZ+dvztKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m430rm27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D05C4CEE4;
+	Wed, 19 Mar 2025 14:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395142;
-	bh=H137YHE3XHz57/2N+0igsRM2qAh/UKbQjxd9wS3buXE=;
+	s=korg; t=1742395251;
+	bh=BsD92i5mH/qnMsziLAM9F+EOiMJlAPXb+ZfptwHvMtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v0C6CFbZn6ov6F2LZ8DvM6D+gCvDwXycFdDaLjWPTcSCqcqD4grQHNOMYzoQG8aOG
-	 vliOil1PkLEuXloPDVx/khYNx1nUELHBfFEQQCMeASRdswMQRkIjwXdgYSEdveGPS6
-	 2wq5Q/uhAumUpAEOkkdhau5mubtpKVxlHs6Er+WI=
+	b=m430rm27qSAwdeApUld3/7Yj44o9oS5HSiD4ezfGdXh/6l0umxRZBzsMfzXPLKbM+
+	 RvUCI9H4yMTwqptZWLT0rWgN2TIK9IWi0xBj3P6ttnVauFDuYLA/x4C1F28OsrCBVQ
+	 uohYk/QLv5i3VckFTOKub0IC/9n3wnZXQihV8GHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 210/231] drm/i915: Increase I915_PARAM_MMAP_GTT_VERSION version to indicate support for partial mmaps
-Date: Wed, 19 Mar 2025 07:31:43 -0700
-Message-ID: <20250319143032.039194576@linuxfoundation.org>
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 133/166] qlcnic: fix memory leak issues in qlcnic_sriov_common.c
+Date: Wed, 19 Mar 2025 07:31:44 -0700
+Message-ID: <20250319143023.618171690@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Roberto de Souza <jose.souza@intel.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit a8045e46c508b70fe4b30cc020fd0a2b0709b2e5 ]
+commit d2b9d97e89c79c95f8b517e4fa43fd100f936acc upstream.
 
-Commit 255fc1703e42 ("drm/i915/gem: Calculate object page offset for partial memory mapping")
-was the last patch of several patches fixing multiple partial mmaps.
-But without a bump in I915_PARAM_MMAP_GTT_VERSION there is no clean
-way for UMD to know if it can do multiple partial mmaps.
+Add qlcnic_sriov_free_vlans() in qlcnic_sriov_alloc_vlans() if
+any sriov_vlans fails to be allocated.
+Add qlcnic_sriov_free_vlans() to free the memory allocated by
+qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
+be allocated.
 
-Fixes: 255fc1703e42 ("drm/i915/gem: Calculate object page offset for partial memory mapping")
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306210827.171147-1-jose.souza@intel.com
-(cherry picked from commit bfef148f3680e6b9d28e7fca46d9520f80c5e50e)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250307094952.14874-1-haoxiang_li2024@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_mman.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-index 21274aa9bdddc..c3dabb8579605 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -164,6 +164,9 @@ static unsigned int tile_row_pages(const struct drm_i915_gem_object *obj)
-  * 4 - Support multiple fault handlers per object depending on object's
-  *     backing storage (a.k.a. MMAP_OFFSET).
-  *
-+ * 5 - Support multiple partial mmaps(mmap part of BO + unmap a offset, multiple
-+ *     times with different size and offset).
-+ *
-  * Restrictions:
-  *
-  *  * snoopable objects cannot be accessed via the GTT. It can cause machine
-@@ -191,7 +194,7 @@ static unsigned int tile_row_pages(const struct drm_i915_gem_object *obj)
-  */
- int i915_gem_mmap_gtt_version(void)
- {
--	return 4;
-+	return 5;
- }
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_m
  
- static inline struct i915_gtt_view
--- 
-2.39.5
-
+ 	num_vlans = sriov->num_allowed_vlans;
+ 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
+-	if (!sriov->allowed_vlans)
++	if (!sriov->allowed_vlans) {
++		qlcnic_sriov_free_vlans(adapter);
+ 		return -ENOMEM;
++	}
+ 
+ 	vlans = (u16 *)&cmd->rsp.arg[3];
+ 	for (i = 0; i < num_vlans; i++)
+@@ -2167,8 +2169,10 @@ int qlcnic_sriov_alloc_vlans(struct qlcn
+ 		vf = &sriov->vf_info[i];
+ 		vf->sriov_vlans = kcalloc(sriov->num_allowed_vlans,
+ 					  sizeof(*vf->sriov_vlans), GFP_KERNEL);
+-		if (!vf->sriov_vlans)
++		if (!vf->sriov_vlans) {
++			qlcnic_sriov_free_vlans(adapter);
+ 			return -ENOMEM;
++		}
+ 	}
+ 
+ 	return 0;
 
 
 
