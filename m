@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-125459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A74A691EE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:59:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B87BA690B3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F25A21BA0CF6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 505938A1725
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825B8204F7A;
-	Wed, 19 Mar 2025 14:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8CA21A438;
+	Wed, 19 Mar 2025 14:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxLONnTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qC6M3f02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA781CAA60;
-	Wed, 19 Mar 2025 14:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3421DA112;
+	Wed, 19 Mar 2025 14:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395202; cv=none; b=IlNYHIEpEvHHkf0CkV1+gGFsvuM7U5v62oZNhhi/priQN/a5u6vLqcM0TtMxFJ0XHi+ZEu54xj5BoGLqcW5SXkRAHNeTIiWXnY7YnFex4iGk3slsElOzL/5geo0qMxy/HUIccjK81JZYWi2JGvH9ViFGkZZzm9+Zx8TtRse/Rj0=
+	t=1742395094; cv=none; b=n9wYidoHp+Pfqy+ClZbm6nKvk3+ogndr4bz7yfNXVrxBiZa1/I1fDBqXewcTYMyEDBPWRrd9nH0UROLb1VAXWOxmW0el6D5F1wP9JXtTMMAETD2SaMO9fBLNcoVNwUs4Lq4v2nI/nL3AJpqw4YgBwCj10mRvdjJ5PpzAFlH47P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395202; c=relaxed/simple;
-	bh=Me1ZVzTJBKT9nJyOB06aFPKVB6hjmoU7FBdlTXgY/uU=;
+	s=arc-20240116; t=1742395094; c=relaxed/simple;
+	bh=6Iju+ntpwo8ymvKWQTLw8OpAlum0c3ab0Ix7s32UunE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgwTQjGeGrO81jUxaTLZAF1p0Z1Sq72gDxR8JLpJ4OiHA6jWpy5pplMx28RHTft3W7Bu5/1QracUeYVDxRwQ2a+GHPR9CouSeiosA5f71PXx92YxbfmMfdN2ZbTbD+19Ixr9PdTml2bB/Ivq58FG+8dYX29sD+qcy/RKYXHCtlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxLONnTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBF0C4CEE4;
-	Wed, 19 Mar 2025 14:40:02 +0000 (UTC)
+	 MIME-Version; b=sABHrETxrx0wzbNV4t6SyDHLzzgPuDvE3JiSK62cYbf2qqnRCgGf9L4lHJan90kBpJS3+GwVhZopSB05QZ5MgjWaVraJ6y98bN3AaK0S9+Gyg7x5YZuxDKvFM4AWl0TE5cAVYucySL5EkA8KcoMyNeRV5UAq6MrepMQTE+W2fGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qC6M3f02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE42C4CEE4;
+	Wed, 19 Mar 2025 14:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395202;
-	bh=Me1ZVzTJBKT9nJyOB06aFPKVB6hjmoU7FBdlTXgY/uU=;
+	s=korg; t=1742395094;
+	bh=6Iju+ntpwo8ymvKWQTLw8OpAlum0c3ab0Ix7s32UunE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxLONnTneZpBEkij0U5i54yttvOrqt++V1apZGELXTG7ZmEb+xTTVgIKwc4F5XygI
-	 4ghXRCp0TAKX9qb8eRs1XY+bpROdLuwZbpo6rEDmH+0J6q8A7ETxuSzzlkWwiGq4U4
-	 D0grsYxLD/1QrgUCGIPOSNQ16LwXY1z4Co2Jx7yk=
+	b=qC6M3f02baRStnMeetG0ymWOVDDAvauG+y4IYQt6+ao1hyR5CpppxMsK3OP0O06lE
+	 Sjuz6swDN9//B5WXpiKw+LRe286ouYqRIxQbBzWvHE6MhpWciy2CzoxlleNZuQ64Gz
+	 C1NkU0hxsmNiX4IUsjaqBxzoRZGiV8FueSPyujWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <mrpre@163.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Mike Christie <michael.christie@oracle.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/166] selftests/bpf: Fix invalid flag of recv()
+Subject: [PATCH 6.12 143/231] vhost: return task creation error instead of NULL
 Date: Wed, 19 Mar 2025 07:30:36 -0700
-Message-ID: <20250319143021.772237341@linuxfoundation.org>
+Message-ID: <20250319143030.369144031@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <mrpre@163.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit a0c11149509aa905aeec10cf9998091443472b0b ]
+[ Upstream commit cb380909ae3b1ebf14d6a455a4f92d7916d790cb ]
 
-SOCK_NONBLOCK flag is only effective during socket creation, not during
-recv. Use MSG_DONTWAIT instead.
+Lets callers distinguish why the vhost task creation failed. No one
+currently cares why it failed, so no real runtime change from this
+patch, but that will not be the case for long.
 
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://patch.msgid.link/20250122100917.49845-5-mrpre@163.com
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Message-ID: <20250227230631.303431-2-kbusch@meta.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/sockmap_basic.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 2 +-
+ drivers/vhost/vhost.c  | 2 +-
+ kernel/vhost_task.c    | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-index dda7060e86a09..b16d765a153a9 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-@@ -402,8 +402,8 @@ static void test_sockmap_skb_verdict_shutdown(void)
- 	if (!ASSERT_EQ(err, 1, "epoll_wait(fd)"))
- 		goto out_close;
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 19c96278ba755..9242c0649adf1 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7589,7 +7589,7 @@ static void kvm_mmu_start_lpage_recovery(struct once *once)
+ 				      kvm_nx_huge_page_recovery_worker_kill,
+ 				      kvm, "kvm-nx-lpage-recovery");
  
--	n = recv(c1, &b, 1, SOCK_NONBLOCK);
--	ASSERT_EQ(n, 0, "recv_timeout(fin)");
-+	n = recv(c1, &b, 1, MSG_DONTWAIT);
-+	ASSERT_EQ(n, 0, "recv(fin)");
- out_close:
- 	close(c1);
- 	close(p1);
-@@ -459,7 +459,7 @@ static void test_sockmap_skb_verdict_fionread(bool pass_prog)
- 	ASSERT_EQ(avail, expected, "ioctl(FIONREAD)");
- 	/* On DROP test there will be no data to read */
- 	if (pass_prog) {
--		recvd = recv_timeout(c1, &buf, sizeof(buf), SOCK_NONBLOCK, IO_TIMEOUT_SEC);
-+		recvd = recv_timeout(c1, &buf, sizeof(buf), MSG_DONTWAIT, IO_TIMEOUT_SEC);
- 		ASSERT_EQ(recvd, sizeof(buf), "recv_timeout(c0)");
+-	if (!nx_thread)
++	if (IS_ERR(nx_thread))
+ 		return;
+ 
+ 	vhost_task_start(nx_thread);
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 9ac25d08f473e..63612faeab727 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -666,7 +666,7 @@ static struct vhost_worker *vhost_worker_create(struct vhost_dev *dev)
+ 
+ 	vtsk = vhost_task_create(vhost_run_work_list, vhost_worker_killed,
+ 				 worker, name);
+-	if (!vtsk)
++	if (IS_ERR(vtsk))
+ 		goto free_worker;
+ 
+ 	mutex_init(&worker->mutex);
+diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+index 8800f5acc0071..2ef2e1b800916 100644
+--- a/kernel/vhost_task.c
++++ b/kernel/vhost_task.c
+@@ -133,7 +133,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *),
+ 
+ 	vtsk = kzalloc(sizeof(*vtsk), GFP_KERNEL);
+ 	if (!vtsk)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 	init_completion(&vtsk->exited);
+ 	mutex_init(&vtsk->exit_mutex);
+ 	vtsk->data = arg;
+@@ -145,7 +145,7 @@ struct vhost_task *vhost_task_create(bool (*fn)(void *),
+ 	tsk = copy_process(NULL, 0, NUMA_NO_NODE, &args);
+ 	if (IS_ERR(tsk)) {
+ 		kfree(vtsk);
+-		return NULL;
++		return ERR_PTR(PTR_ERR(tsk));
  	}
  
+ 	vtsk->task = tsk;
 -- 
 2.39.5
 
