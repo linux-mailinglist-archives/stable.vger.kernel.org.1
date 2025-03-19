@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EB0A68FE4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BCCA69130
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF8088A00BB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911D2463FB2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493B01F869E;
-	Wed, 19 Mar 2025 14:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2891F209F5E;
+	Wed, 19 Mar 2025 14:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsHwavdi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejzJm66E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059711DDA36;
-	Wed, 19 Mar 2025 14:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9AA1CAA81;
+	Wed, 19 Mar 2025 14:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394974; cv=none; b=jo+mDBwfgUGj/VWGxjaUIdO0ZU2X+Xuox5XJHzojl9G4y6gazRQZ7jo59vo0DXdxHxr135LCjT9VAmWNRXnhZjAX2KmFsvAgS/cfzszlUQwiXV1Kuv3NCbchQ9YA8cX7/RG8gB24u4X4L452l3lw9+nIqU77kIXuZeDqr7IzYv0=
+	t=1742395236; cv=none; b=Z4AIbgKW0mdBK05cj/qNOtXSI/41WzMXkcnO7kmNWg0dQMnQ8xOUl00aQmVsH2HuER+hWMYvC0lHgIZraYZXT0G+tYTONs1r2nJa2pRAA9+EtWeTuUY5tNId+7aZ63M+PDu6P2Hy4Ph6vBKPaR8+wp9IdGvmqfTjeTTmR6bIg0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394974; c=relaxed/simple;
-	bh=f63KNTfZ/KPJ0rO7cEi3cUW2wVVwVDSp1tErh4ipiz4=;
+	s=arc-20240116; t=1742395236; c=relaxed/simple;
+	bh=F0UowwDkyxtpazBxWwIfZP2kf2JlCuOdy2qG5YP/4ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMCrEQ3CLvN2BDtAqpYdke1Lo7bpOVR9vyzmF2nGW9r2d2Vqx8wts6oJGKh4ENkMzfrBx76v6Y598bY7Pw8/MGl5UW7lBA6QtRF6cHCvkGqTQBfPWNyJLZhfSzn0FCCgB30Ib16AC7eu807PRKMIwS5+8nbcDdbnAL5VxvfvXSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsHwavdi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80E3C4CEE8;
-	Wed, 19 Mar 2025 14:36:13 +0000 (UTC)
+	 MIME-Version; b=h7PqXyq3hPtKhm+E1qJukBwkKula5zJoEeJIxNNxQ3Ad/mGUEHfzqlhEsGOI2r5nMe70OPhuqAx2JN8gO2jqPgxRPcaxCO4bxfaOtEj+QjMVsgVKcGFBVbsCko9Y/6jmw6CLIrJut2WUsaoif2xaJ+k15r/dqJTozpLz8AS64uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejzJm66E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D188C4CEE4;
+	Wed, 19 Mar 2025 14:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394973;
-	bh=f63KNTfZ/KPJ0rO7cEi3cUW2wVVwVDSp1tErh4ipiz4=;
+	s=korg; t=1742395236;
+	bh=F0UowwDkyxtpazBxWwIfZP2kf2JlCuOdy2qG5YP/4ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsHwavdi1gICKlXzmXzLHDCvjUSXscMC2T80NDnD0ZkcwJh0I+O1iPNneJcsvXe0q
-	 8BEv9O9YAu6684MvpXBKvEUjgZmLSVduXnpoJVv0Vb8UnMYneM/V8h93YLTzgrN4JG
-	 l6WL0O35K0ZowrnsDr3VTAjMh82RKSsRVyu0HDfk=
+	b=ejzJm66EQZk+4ohcJcqVW5LgEMMW+6RgwvswzxeOfs9BykQ3y6Jyt4HL/MejoYZwJ
+	 EvEDKzFVarh7nzMs45UvqwAa0/J2qR44sSmSi5j+83C+4MTe0gKiPENDotG47DR8/N
+	 /n6jPoTiftOnKmH05zd5ADlg0LB84lIfJ9iJ5WZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alban Kurti <kurti@invicto.ai>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 210/241] rust: init: add missing newline to pr_info! calls
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 109/166] Input: xpad - add support for TECNO Pocket Go
 Date: Wed, 19 Mar 2025 07:31:20 -0700
-Message-ID: <20250319143032.945182658@linuxfoundation.org>
+Message-ID: <20250319143022.968564887@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alban Kurti <kurti@invicto.ai>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit 6933c1067fe6df8ddb34dd68bdb2aa172cbd08c8 ]
+commit 95a54a96f657fd069d2a9922b6c2d293a72a001f upstream.
 
-Several pr_info! calls in rust/kernel/init.rs (both in code examples
-and macro documentation) were missing a newline, causing logs to
-run together. This commit updates these calls to include a trailing
-newline, improving readability and consistency with the C side.
+TECNO Pocket Go is a kickstarter handheld by manufacturer TECNO Mobile.
+It poses a unique feature: it does not have a display. Instead, the
+handheld is essentially a pc in a controller. As customary, it has an
+xpad endpoint, a keyboard endpoint, and a vendor endpoint for its
+vendor software.
 
-Fixes: 6841d45a3030 ("rust: init: add `stack_pin_init!` macro")
-Fixes: 7f8977a7fe6d ("rust: init: add `{pin_}chain` functions to `{Pin}Init<T, E>`")
-Fixes: d0fdc3961270 ("rust: init: add `PinnedDrop` trait and macros")
-Fixes: 4af84c6a85c6 ("rust: init: update expanded macro explanation")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1139
-Signed-off-by: Alban Kurti <kurti@invicto.ai>
-Link: https://lore.kernel.org/r/20250206-printing_fix-v3-3-a85273b501ae@invicto.ai
-[ Replaced Closes with Link since it fixes part of the issue. Added
-  one more Fixes tag (still same set of stable kernels). - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Link: https://lore.kernel.org/r/20250222170010.188761-3-lkml@antheas.dev
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/init.rs        | 12 ++++++------
- rust/kernel/init/macros.rs |  6 +++---
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index d201954bd43f0..90bfb5cb26cd7 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -259,7 +259,7 @@ pub mod macros;
- ///     },
- /// }));
- /// let foo: Pin<&mut Foo> = foo;
--/// pr_info!("a: {}", &*foo.a.lock());
-+/// pr_info!("a: {}\n", &*foo.a.lock());
- /// ```
- ///
- /// # Syntax
-@@ -311,7 +311,7 @@ macro_rules! stack_pin_init {
- ///     }, GFP_KERNEL)?,
- /// }));
- /// let foo = foo.unwrap();
--/// pr_info!("a: {}", &*foo.a.lock());
-+/// pr_info!("a: {}\n", &*foo.a.lock());
- /// ```
- ///
- /// ```rust,ignore
-@@ -336,7 +336,7 @@ macro_rules! stack_pin_init {
- ///         x: 64,
- ///     }, GFP_KERNEL)?,
- /// }));
--/// pr_info!("a: {}", &*foo.a.lock());
-+/// pr_info!("a: {}\n", &*foo.a.lock());
- /// # Ok::<_, AllocError>(())
- /// ```
- ///
-@@ -866,7 +866,7 @@ pub unsafe trait PinInit<T: ?Sized, E = Infallible>: Sized {
-     ///
-     /// impl Foo {
-     ///     fn setup(self: Pin<&mut Self>) {
--    ///         pr_info!("Setting up foo");
-+    ///         pr_info!("Setting up foo\n");
-     ///     }
-     /// }
-     ///
-@@ -970,7 +970,7 @@ pub unsafe trait Init<T: ?Sized, E = Infallible>: PinInit<T, E> {
-     ///
-     /// impl Foo {
-     ///     fn setup(&mut self) {
--    ///         pr_info!("Setting up foo");
-+    ///         pr_info!("Setting up foo\n");
-     ///     }
-     /// }
-     ///
-@@ -1318,7 +1318,7 @@ impl<T> InPlaceWrite<T> for UniqueArc<MaybeUninit<T>> {
- /// #[pinned_drop]
- /// impl PinnedDrop for Foo {
- ///     fn drop(self: Pin<&mut Self>) {
--///         pr_info!("Foo is being dropped!");
-+///         pr_info!("Foo is being dropped!\n");
- ///     }
- /// }
- /// ```
-diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-index 1fd146a832416..b7213962a6a5a 100644
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -45,7 +45,7 @@
- //! #[pinned_drop]
- //! impl PinnedDrop for Foo {
- //!     fn drop(self: Pin<&mut Self>) {
--//!         pr_info!("{self:p} is getting dropped.");
-+//!         pr_info!("{self:p} is getting dropped.\n");
- //!     }
- //! }
- //!
-@@ -412,7 +412,7 @@
- //! #[pinned_drop]
- //! impl PinnedDrop for Foo {
- //!     fn drop(self: Pin<&mut Self>) {
--//!         pr_info!("{self:p} is getting dropped.");
-+//!         pr_info!("{self:p} is getting dropped.\n");
- //!     }
- //! }
- //! ```
-@@ -423,7 +423,7 @@
- //! // `unsafe`, full path and the token parameter are added, everything else stays the same.
- //! unsafe impl ::kernel::init::PinnedDrop for Foo {
- //!     fn drop(self: Pin<&mut Self>, _: ::kernel::init::__internal::OnlyCallFromDrop) {
--//!         pr_info!("{self:p} is getting dropped.");
-+//!         pr_info!("{self:p} is getting dropped.\n");
- //!     }
- //! }
- //! ```
--- 
-2.39.5
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -381,6 +381,7 @@ static const struct xpad_device {
+ 	{ 0x2563, 0x058d, "OneXPlayer Gamepad", 0, XTYPE_XBOX360 },
+ 	{ 0x294b, 0x3303, "Snakebyte GAMEPAD BASE X", 0, XTYPE_XBOXONE },
+ 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
++	{ 0x2993, 0x2001, "TECNO Pocket Go", 0, XTYPE_XBOX360 },
+ 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
+ 	{ 0x2dc8, 0x3106, "8BitDo Ultimate Wireless / Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x2dc8, 0x3109, "8BitDo Ultimate Wireless Bluetooth", 0, XTYPE_XBOX360 },
+@@ -546,6 +547,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x2563),		/* OneXPlayer Gamepad */
+ 	XPAD_XBOX360_VENDOR(0x260d),		/* Dareu H101 */
+ 	XPAD_XBOXONE_VENDOR(0x294b),		/* Snakebyte */
++	XPAD_XBOX360_VENDOR(0x2993),		/* TECNO Mobile */
+ 	XPAD_XBOX360_VENDOR(0x2c22),		/* Qanba Controllers */
+ 	XPAD_XBOX360_VENDOR(0x2dc8),		/* 8BitDo Controllers */
+ 	XPAD_XBOXONE_VENDOR(0x2dc8),		/* 8BitDo Controllers */
 
 
 
