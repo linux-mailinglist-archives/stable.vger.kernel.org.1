@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-125107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C941DA68F99
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB06A690C9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DCA37A86FB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5056E8A20E6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3541DDC2B;
-	Wed, 19 Mar 2025 14:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEDB1D90DD;
+	Wed, 19 Mar 2025 14:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXsOWUEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpQ8Qn3n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5261EF394;
-	Wed, 19 Mar 2025 14:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAAF1C82F4;
+	Wed, 19 Mar 2025 14:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394959; cv=none; b=fdyd498RNBluMYXKXAKPamseRM+VZm2IG4jJDkJoPpdEjTUllHeGpsWnXQ4jCozomBl4Yu1heQ9JSMV0StVfImcJbI57Ac+FG34WQY6Xor67iibIWGR5AALy5rFW9d5nwnfYHMX0GEuzGi+6KKaDVbd4f5YFv1/cT1YiPOtzZCA=
+	t=1742395110; cv=none; b=P6j9sbjVX2wuBOlc30r6Hz9iW95TEVVaOwKgut2PSdCkakAbSxaB18UE+N/WOU6xBQjWu/6px3SFVPn1V9S40oPkDt/geKzbCrOekCQyoUpCFC37W9KNWygiicOt2z/A/mPKC7vrqpkRSEUD6tPEuHff8efGzI3TgUXgIi9v19c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394959; c=relaxed/simple;
-	bh=MaFpzjwE8YtFs6ggbdDkjPWhGSMS28aXJnK20gNJyDg=;
+	s=arc-20240116; t=1742395110; c=relaxed/simple;
+	bh=tWUWwBSJp4HJ4b/iSeUFtJJGPIoN4RwlHD0VPXUCGIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uiFihEg/aWO3iAXhkNUG165IhXrfeQqjhZ7sWBsKvTiT2M83/88SknF4CuPAfvTuN1IuMkzURqvl7yYYlgFKBXnwYVa29U9g2XWfiXWB3Zex5tibRc3uZZeYyfmbAmr68uTl0bQdGlQS0YhTSe7deY8uZBGOW4MH3NNhbJl9I6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXsOWUEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D63C4CEE4;
-	Wed, 19 Mar 2025 14:35:59 +0000 (UTC)
+	 MIME-Version; b=h52MkLktYKsM1ogppqL6SUaDmcWXfawtb9Hi1OesPfp+dSWcRx8ojeOhW6A8o16GlcbUZj8fKYADIg6zugA9cBGJZiBEslibLpnciynriMJjaiHGINZSe+wtTIR84caecRXLpGk1ZN+EmZJNGxhYGDxN5dWPO8UTlldvF2XhSco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpQ8Qn3n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC66AC4CEE4;
+	Wed, 19 Mar 2025 14:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394959;
-	bh=MaFpzjwE8YtFs6ggbdDkjPWhGSMS28aXJnK20gNJyDg=;
+	s=korg; t=1742395110;
+	bh=tWUWwBSJp4HJ4b/iSeUFtJJGPIoN4RwlHD0VPXUCGIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kXsOWUEeWzq29wjaExcantMx9rW7AYi+eo1u/ef6S+aL9l56rpNfFt+/FUKLTCQht
-	 xGhySrD28DGZXb4lF4l2uo7ingRuBA1n3gUGSHLQsUPt7DdRbdpFQTWwgy/M1GfnFn
-	 JQ98g2zNAXTcJR4tPpcCSM8S0SPfoFn3o3YHy3/s=
+	b=BpQ8Qn3n/GP6Sriyf+3cGIOk0UZWLRXmoYL55KGXX5Fptq44Z2wBIyINq+TcdUUKS
+	 SLundyiIua1HYZ/QvF/u3/lIptP1C6Ofg5+cgdZ1Jnaz6tYKVJjk6AA/w57UIWlH5/
+	 g5TSELr+6ahg52SQ+/n5DvDT6nizpSZz2xXjawZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 187/241] drm/amd/display: Assign normalized_pix_clk when color depth = 14
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 164/231] rust: alloc: satisfy POSIX alignment requirement
 Date: Wed, 19 Mar 2025 07:30:57 -0700
-Message-ID: <20250319143032.347071298@linuxfoundation.org>
+Message-ID: <20250319143030.892916572@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Tamir Duberstein <tamird@gmail.com>
 
-commit 79e31396fdd7037c503e6add15af7cb00633ea92 upstream.
+commit ff64846bee0e7e3e7bc9363ebad3bab42dd27e24 upstream.
 
-[WHY & HOW]
-A warning message "WARNING: CPU: 4 PID: 459 at ... /dc_resource.c:3397
-calculate_phy_pix_clks+0xef/0x100 [amdgpu]" occurs because the
-display_color_depth == COLOR_DEPTH_141414 is not handled. This is
-observed in Radeon RX 6600 XT.
+ISO C's `aligned_alloc` is partially implementation-defined; on some
+systems it inherits stricter requirements from POSIX's `posix_memalign`.
 
-It is fixed by assigning pix_clk * (14 * 3) / 24 - same as the rests.
+This causes the call added in commit dd09538fb409 ("rust: alloc:
+implement `Cmalloc` in module allocator_test") to fail on macOS because
+it doesn't meet the requirements of `posix_memalign`.
 
-Also fixes the indentation in get_norm_pix_clk.
+Adjust the call to meet the POSIX requirement and add a comment. This
+fixes failures in `make rusttest` on macOS.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 274a87eb389f58eddcbc5659ab0b180b37e92775)
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 Cc: stable@vger.kernel.org
+Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module allocator_test")
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20250213-aligned-alloc-v7-1-d2a2d0be164b@gmail.com
+[ Added Cc: stable. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ rust/kernel/alloc/allocator_test.rs |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -3389,10 +3389,13 @@ static int get_norm_pix_clk(const struct
- 			break;
- 		case COLOR_DEPTH_121212:
- 			normalized_pix_clk = (pix_clk * 36) / 24;
--		break;
-+			break;
-+		case COLOR_DEPTH_141414:
-+			normalized_pix_clk = (pix_clk * 42) / 24;
-+			break;
- 		case COLOR_DEPTH_161616:
- 			normalized_pix_clk = (pix_clk * 48) / 24;
--		break;
-+			break;
- 		default:
- 			ASSERT(0);
- 		break;
+--- a/rust/kernel/alloc/allocator_test.rs
++++ b/rust/kernel/alloc/allocator_test.rs
+@@ -62,6 +62,24 @@ unsafe impl Allocator for Cmalloc {
+             ));
+         }
+ 
++        // ISO C (ISO/IEC 9899:2011) defines `aligned_alloc`:
++        //
++        // > The value of alignment shall be a valid alignment supported by the implementation
++        // [...].
++        //
++        // As an example of the "supported by the implementation" requirement, POSIX.1-2001 (IEEE
++        // 1003.1-2001) defines `posix_memalign`:
++        //
++        // > The value of alignment shall be a power of two multiple of sizeof (void *).
++        //
++        // and POSIX-based implementations of `aligned_alloc` inherit this requirement. At the time
++        // of writing, this is known to be the case on macOS (but not in glibc).
++        //
++        // Satisfy the stricter requirement to avoid spurious test failures on some platforms.
++        let min_align = core::mem::size_of::<*const crate::ffi::c_void>();
++        let layout = layout.align_to(min_align).map_err(|_| AllocError)?;
++        let layout = layout.pad_to_align();
++
+         // SAFETY: Returns either NULL or a pointer to a memory allocation that satisfies or
+         // exceeds the given size and alignment requirements.
+         let dst = unsafe { libc_aligned_alloc(layout.align(), layout.size()) } as *mut u8;
 
 
 
