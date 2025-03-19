@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73711A690DF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D539AA68F8E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FBCB1B666DB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A109C17309E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFB32144B6;
-	Wed, 19 Mar 2025 14:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EADB1CD1FD;
+	Wed, 19 Mar 2025 14:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J11uSUd3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySJJzd6j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8BF1D5AC6;
-	Wed, 19 Mar 2025 14:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCB41CC89D;
+	Wed, 19 Mar 2025 14:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395040; cv=none; b=ozoi1r2EtjiHk06QTdbhIoU2Im9mG8js+R++ovhP0dC9o5+nZtpIOPmWo9683YDK/ExX9fifNO/Pu9bLG7qWvNmt4O/ZTi6z7n4BNmB/zOVC6LgSTTeXJVcxLI2mL00GCO8h323HXzDoDgSCEn1RPefUIslShyp6pdc5kHrk7zA=
+	t=1742394886; cv=none; b=mXzvYXkFfItgyJA7ksIjckQ8+7Xih8m6LGHxt1TLM+C0/uiB1LL2o3LwkJNOZ396wh+n7LaTsCC9b39jVemHQVLhJy68wW3IgXprxBROJtABYwPhyz/EwlPAKYBFmLBXoSXrw2w92KmCAooukrJ5UXCbKuGpmtjP132GstWJcZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395040; c=relaxed/simple;
-	bh=d3sCLBfsojkHNWNY8DGkJ1PLo9tHnNND3vgu3peHg8M=;
+	s=arc-20240116; t=1742394886; c=relaxed/simple;
+	bh=Ox0J3c6cYs1ft96R7YhLolj/pBUsycNrvt0kPYaEJsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeDd94SyOaI3kSLusuWGcpHDPkuH+bDSL82t/7Jt7vQsc0fAQsFOaPCDpCTzh4DqgIHGOtaK0pw5Majcq4s86zpCLJsYJWRTeasaVflShOQW7+LWMv/HQvmsvq149/8HYk03r6uYvk30CULcNNkd6xDoVz1HJtdsxuhlYGGzW30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J11uSUd3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D500FC4CEE4;
-	Wed, 19 Mar 2025 14:37:19 +0000 (UTC)
+	 MIME-Version; b=slL0dzGKbC0JV+Rhud9HdA1bwfX5jpANpt0ZcaV9DkaszY8+TYAx5gwsfWAxVD++uf0C28RkMqcw4kO6v3u4BANtz+xVC56M7FVfY3cjoAGPaFxxIe7kUfUScN8M0OYRXt8rR9UkeS/SLt14tUQdySCp2k5nEqn3A739DTg9Amc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySJJzd6j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4862C4CEE4;
+	Wed, 19 Mar 2025 14:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395039;
-	bh=d3sCLBfsojkHNWNY8DGkJ1PLo9tHnNND3vgu3peHg8M=;
+	s=korg; t=1742394885;
+	bh=Ox0J3c6cYs1ft96R7YhLolj/pBUsycNrvt0kPYaEJsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J11uSUd36R2iSQAGzzmHVKx1lyVgdTw22kCgQ5cBvIeOZqysVmolVBeIfE/7pRaBB
-	 +I9NCkzhe+ib8YuyuxDZoeT0JzL2W64sGyG98oM9TR358FuRRQpjiUqeTs5y+Il8l6
-	 CCx4tEUEoegfzjxLl0Y0cFDVuOr6HOS2gijvgVbo=
+	b=ySJJzd6j4Y4Aph0T4iF8E+jb/K0JupKF+gDJB3AzOl/TMGawgT7TUjNxB+kd/HuTm
+	 AlLn93VAkijo5yaaGB4oBzKNlfxoWkzyTh79o1eU1cSqcQcY+axvZeDVbH4ju63l1l
+	 o+QZeST09ac413gbgCn3WqAbwyXzjgo8vmeMq+Bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Loehle <christian.loehle@arm.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Qu Wenruo <wqu@suse.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/231] sched/debug: Provide slice length for fair tasks
-Date: Wed, 19 Mar 2025 07:29:16 -0700
-Message-ID: <20250319143028.381502631@linuxfoundation.org>
+Subject: [PATCH 6.13 087/241] btrfs: fix two misuses of folio_shift()
+Date: Wed, 19 Mar 2025 07:29:17 -0700
+Message-ID: <20250319143029.879559913@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Loehle <christian.loehle@arm.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 9065ce69754dece78606c8bbb3821449272e56bf ]
+[ Upstream commit 01af106a076352182b2916b143fc50272600bd81 ]
 
-Since commit:
+It is meaningless to shift a byte count by folio_shift().  The folio index
+is in units of PAGE_SIZE, not folio_size().  We can use folio_contains()
+to make this work for arbitrary-order folios, so remove the assertion
+that the folios are of order 0.
 
-  857b158dc5e8 ("sched/eevdf: Use sched_attr::sched_runtime to set request/slice suggestion")
-
-... we have the userspace per-task tunable slice length, which is
-a key parameter that is otherwise difficult to obtain, so provide
-it in /proc/$PID/sched.
-
-[ mingo: Clarified the changelog. ]
-
-Signed-off-by: Christian Loehle <christian.loehle@arm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/453349b1-1637-42f5-a7b2-2385392b5956@arm.com
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/debug.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/extent_io.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 82b165bf48c42..1e3bc0774efd5 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -1264,6 +1264,8 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
- 	if (task_has_dl_policy(p)) {
- 		P(dl.runtime);
- 		P(dl.deadline);
-+	} else if (fair_policy(p->policy)) {
-+		P(se.slice);
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 0dd24d1289863..95d3cf2e15c84 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -526,8 +526,6 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
+ 		u64 end;
+ 		u32 len;
+ 
+-		/* For now only order 0 folios are supported for data. */
+-		ASSERT(folio_order(folio) == 0);
+ 		btrfs_debug(fs_info,
+ 			"%s: bi_sector=%llu, err=%d, mirror=%u",
+ 			__func__, bio->bi_iter.bi_sector, bio->bi_status,
+@@ -555,7 +553,6 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
+ 
+ 		if (likely(uptodate)) {
+ 			loff_t i_size = i_size_read(inode);
+-			pgoff_t end_index = i_size >> folio_shift(folio);
+ 
+ 			/*
+ 			 * Zero out the remaining part if this range straddles
+@@ -564,9 +561,11 @@ static void end_bbio_data_read(struct btrfs_bio *bbio)
+ 			 * Here we should only zero the range inside the folio,
+ 			 * not touch anything else.
+ 			 *
+-			 * NOTE: i_size is exclusive while end is inclusive.
++			 * NOTE: i_size is exclusive while end is inclusive and
++			 * folio_contains() takes PAGE_SIZE units.
+ 			 */
+-			if (folio_index(folio) == end_index && i_size <= end) {
++			if (folio_contains(folio, i_size >> PAGE_SHIFT) &&
++			    i_size <= end) {
+ 				u32 zero_start = max(offset_in_folio(folio, i_size),
+ 						     offset_in_folio(folio, start));
+ 				u32 zero_len = offset_in_folio(folio, end) + 1 -
+@@ -960,7 +959,7 @@ static int btrfs_do_readpage(struct folio *folio, struct extent_map **em_cached,
+ 		return ret;
  	}
- #ifdef CONFIG_SCHED_CLASS_EXT
- 	__PS("ext.enabled", task_on_scx(p));
+ 
+-	if (folio->index == last_byte >> folio_shift(folio)) {
++	if (folio_contains(folio, last_byte >> PAGE_SHIFT)) {
+ 		size_t zero_offset = offset_in_folio(folio, last_byte);
+ 
+ 		if (zero_offset) {
 -- 
 2.39.5
 
