@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-125351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303DEA692AC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:14:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F95A692EB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 298BC1B828D1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CBE91BA11AB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD4E21C160;
-	Wed, 19 Mar 2025 14:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381E520A5DE;
+	Wed, 19 Mar 2025 14:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxMEN5JV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVqV9zb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BFB1E5B97;
-	Wed, 19 Mar 2025 14:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C7320A5D3;
+	Wed, 19 Mar 2025 14:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395127; cv=none; b=tDXBo38sAzwivrXjDnxTaR4H9c7EbmUAkDVfaXBhdtFzicx5XjcYKxnkUNOxEb9TrjiAw6I/aLJphJMNt4bReqOHMo9XvPjR4mhgVtz7J4uuU4hb3Vr5CPlDf3yoWxxEDPvSQfQuJkUx9EwsZA4IQ+uawoNKw1t67OVKCABPcc0=
+	t=1742395240; cv=none; b=QocohtpOzI9T0BiznWi3w29QM2EsWz4PCvhT8BX+9hwzeRFRK4h2T1ArxMLOaAxtRM4/bPr21a1YReXeHvznTdnFz2lOOmp7SBFez6P8ne9BZmxW0b7ofrPyi9pBmcUY+B9ZKe+mTFu2ThAiAOktyYkJ8/0Ef/M0dvB1MtIWjCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395127; c=relaxed/simple;
-	bh=YFBICstWxpffwNxwueTN4b5VogK/xkEWRnFFF7uJiwM=;
+	s=arc-20240116; t=1742395240; c=relaxed/simple;
+	bh=6itD3lkPVPXKwbVng344no1YU/mSotK1JwwSxMhZZjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lt9cAJuqB4oPh7zg5GdtCrdPfyEFMMBjH/eCkvFlbYLLFHAqzZ3UHs2SCICHxcSHpzRYSk5y6wlx43zEioDrA7IeHn+Gsnt/xoMN+bj/jgUhi2itW+rK+3f8kaV8JBeQNKNKcdDOa/P2T4CLd3AqbJI5/v32YpYx+i97eQ8TjFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxMEN5JV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD4DC4CEE9;
-	Wed, 19 Mar 2025 14:38:47 +0000 (UTC)
+	 MIME-Version; b=VKrVlBwKPRsPbOn2mMtZc/jQI1nlmoBhpbr8JWjMckmd0cw/B3z3FKeaCv3/yWmcxaxJbO9NwHrP0gR9JmB69TMUhG5GUoEp7R6na/VGFTgTSpEq2VXdZBuw7gdg8UEiFDOH1kzJyO89GPrztioruYgz8UlKtcABp4Olg7odOoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVqV9zb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A59C4CEE8;
+	Wed, 19 Mar 2025 14:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395127;
-	bh=YFBICstWxpffwNxwueTN4b5VogK/xkEWRnFFF7uJiwM=;
+	s=korg; t=1742395239;
+	bh=6itD3lkPVPXKwbVng344no1YU/mSotK1JwwSxMhZZjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RxMEN5JVhQJCBSbz7tpIY9x6FoioYv3hjihYnd7MIST35mOplQmEJhgiky3BW/zaE
-	 KDIsfPC9Lr/ijBe0C871thZ8rOnUh4qVo5zVuz8nxe04A82mDtxcb1a/ZODZkMG5ml
-	 pGtojeYf4wIQByyG4XPzseLCdkHhD/GE0fE1aP4E=
+	b=KVqV9zb1pjwalccNUR0MRG9DMgxNXJPgq/fawhwTxjgD5hKR4jhAqu+/dJrzwR2ml
+	 FkUCC7ruLjy4Hv5E69rw8eJLNrPsvk6mD/o92/k3vBMcoM1QF1OUe45N4qjzSB0J+f
+	 seyh0YDVbqfD9vjjAexSAAYGXH+aOh0u/q3YP9BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.12 190/231] dm-flakey: Fix memory corruption in optional corrupt_bio_byte feature
-Date: Wed, 19 Mar 2025 07:31:23 -0700
-Message-ID: <20250319143031.532089248@linuxfoundation.org>
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 113/166] Input: i8042 - swap old quirk combination with new quirk for several devices
+Date: Wed, 19 Mar 2025 07:31:24 -0700
+Message-ID: <20250319143023.075629926@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit 57e9417f69839cb10f7ffca684c38acd28ceb57b upstream.
+commit 75ee4ebebbbe8dc4b55ba37f388924fa96bf1564 upstream.
 
-Fix memory corruption due to incorrect parameter being passed to bio_init
+Some older Clevo barebones have problems like no or laggy keyboard after
+resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
+quirk.
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org	# v6.5+
-Fixes: 1d9a94389853 ("dm flakey: clone pages on write bio before corrupting them")
+While the old quirk combination did not show negative effects on these
+devices specifically, the new quirk works just as well and seems more
+stable in general.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://lore.kernel.org/r/20250221230137.70292-3-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-flakey.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h |   40 +++++++++++-----------------------
+ 1 file changed, 14 insertions(+), 26 deletions(-)
 
---- a/drivers/md/dm-flakey.c
-+++ b/drivers/md/dm-flakey.c
-@@ -426,7 +426,7 @@ static struct bio *clone_bio(struct dm_t
- 	if (!clone)
- 		return NULL;
- 
--	bio_init(clone, fc->dev->bdev, bio->bi_inline_vecs, nr_iovecs, bio->bi_opf);
-+	bio_init(clone, fc->dev->bdev, clone->bi_inline_vecs, nr_iovecs, bio->bi_opf);
- 
- 	clone->bi_iter.bi_sector = flakey_map_sector(ti, bio->bi_iter.bi_sector);
- 	clone->bi_private = bio;
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1080,16 +1080,14 @@ static const struct dmi_system_id i8042_
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "AURA1501"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "EDUBOOK1502"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		/* Mivvy M310 */
+@@ -1171,8 +1169,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "LAPQC71A"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1205,8 +1202,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NH5xAx"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1218,8 +1214,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	/*
+ 	 * At least one modern Clevo barebone has the touchpad connected both
+@@ -1235,17 +1230,15 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NS50MU"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
+-					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
+-					SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
++					SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NS50_70MU"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
+-					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
+-					SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
++					SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1319,8 +1312,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "P65_67RS"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		/*
+@@ -1338,8 +1330,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "PB50_70DFx,DDx"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1363,8 +1354,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1383,15 +1373,13 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "X170KM-G"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		/*
 
 
 
