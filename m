@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-125189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6AFA691CC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AA7A69112
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A17F1B62786
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAFC8188A431
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64293212FBD;
-	Wed, 19 Mar 2025 14:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E789E1C6FE3;
+	Wed, 19 Mar 2025 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVRftCNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpuatNoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6E7211704;
-	Wed, 19 Mar 2025 14:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64521A4F0A;
+	Wed, 19 Mar 2025 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395016; cv=none; b=Du87ikc2MK7gaArS5wFChMdrxPTT1ONMIktvAf3XBN9ILKDG9r0uQN0rZMSB4GtMYn1R/sk65WKp3vdxzje+FRjvDkYW+fDOrmCbW6jJvyy/jsxaKVfqDrnUnP+DqX81/oB5mCkFQcBYzmDuoctgzU69aUt1ETDZ8qPltOtJc+Y=
+	t=1742394861; cv=none; b=DHCSpKkEO6MrUo9++xSnZ3TzkbjBiH0N3UUlmVfO2iLJnb1ov2dLWMokHl341zEq95zC4wJHeUsKULLSjBsCwnasIdbxsqz5qhCfoYmidhidwhj169SfgRWYAC+2dVW72oBp3fzxn1KmftNiRFi//YxvdMSVIrjMTf3yL+DeWLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395016; c=relaxed/simple;
-	bh=0TAoP2BZPZ9Y7c9A1/rqBMO8WwxoU/SXp9u8tiymNN8=;
+	s=arc-20240116; t=1742394861; c=relaxed/simple;
+	bh=te5j0XcmqjtLnZXDVERfnuY3E3PKzYBc34mZknE8RLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQPa8IF5BQVAIbFIKiKYceVsaIgtKjal3gNvAtYugoOlaG4DM/XLn8LXQEfNMbOiZW09V3cnoxUjlWeQDwzb4VmKziZgTC/buKK9f1b3g8xPHamwAwQ+XHW14tlsQc0IJUKxpXo1RZf/Qv8V1bI66WmUdLCF8soHhRMQcMReh4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVRftCNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A16C4CEE4;
-	Wed, 19 Mar 2025 14:36:55 +0000 (UTC)
+	 MIME-Version; b=mCdo8nKRXupwLF3HcNFoxRAiTGdgLcHyTfQ/qrMkaw5CN5fz14ehs9/QENR0SgwZ2VWJjKn3DotJRBC4ukzyz7tLBIMtAzZ7/ekDiLWOO4d91TRccgJ3xSuTTGyDfe2otyY+50qB6pjnLdU8lb6jiElZEUzv1Iyhhb90ZwlPGVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpuatNoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72074C4CEE9;
+	Wed, 19 Mar 2025 14:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395016;
-	bh=0TAoP2BZPZ9Y7c9A1/rqBMO8WwxoU/SXp9u8tiymNN8=;
+	s=korg; t=1742394861;
+	bh=te5j0XcmqjtLnZXDVERfnuY3E3PKzYBc34mZknE8RLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVRftCNimqb1qi+8QCK4P+gXIWoHj0QXJT8uL2XnppTarQ2AfJFR6w24AcoPqx0bK
-	 fKWxCOjWi0CbnLS5oVjYO6Pp1upraezYCwHXeQeXtvekEMKIvonx++V1WsAEHi+nRr
-	 nayoZ5+fohN5PZiRBqfqNRH7tSUj04bdM5ylE9yg=
+	b=YpuatNoeMKRv/mFs0eQ59QWEDnizyXnArYhKPwyvdOOeKMayy4+mtliU2k3Us0++v
+	 qcWVVY+vNcxViAVEl0a76XylgSu7K4JGMtxXT4EHz/sZ/H7IVhf/X2fdrDnyO+6G9P
+	 vhWN4mkmjiYzA2XajCXxeGTsFmxn57W8ZmGwT4t4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Vlad Dogaru <vdogaru@nvidia.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/231] Drivers: hv: vmbus: Dont release fb_mmio resource in vmbus_free_mmio()
+Subject: [PATCH 6.13 051/241] net/mlx5: HWS, Rightsize bwc matcher priority
 Date: Wed, 19 Mar 2025 07:28:41 -0700
-Message-ID: <20250319143027.518519978@linuxfoundation.org>
+Message-ID: <20250319143028.990670651@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Vlad Dogaru <vdogaru@nvidia.com>
 
-[ Upstream commit 73fe9073c0cc28056cb9de0c8a516dac070f1d1f ]
+[ Upstream commit 521992337f67f71ce4436b98bc32563ddb1a5ce3 ]
 
-The VMBus driver manages the MMIO space it owns via the hyperv_mmio
-resource tree. Because the synthetic video framebuffer portion of the
-MMIO space is initially setup by the Hyper-V host for each guest, the
-VMBus driver does an early reserve of that portion of MMIO space in the
-hyperv_mmio resource tree. It saves a pointer to that resource in
-fb_mmio. When a VMBus driver requests MMIO space and passes "true"
-for the "fb_overlap_ok" argument, the reserved framebuffer space is
-used if possible. In that case it's not necessary to do another request
-against the "shadow" hyperv_mmio resource tree because that resource
-was already requested in the early reserve steps.
+The bwc layer was clamping the matcher priority from 32 bits to 16 bits.
+This didn't show up until a matcher was resized, since the initial
+native matcher was created using the correct 32 bit value.
 
-However, the vmbus_free_mmio() function currently does no special
-handling for the fb_mmio resource. When a framebuffer device is
-removed, or the driver is unbound, the current code for
-vmbus_free_mmio() releases the reserved resource, leaving fb_mmio
-pointing to memory that has been freed. If the same or another
-driver is subsequently bound to the device, vmbus_allocate_mmio()
-checks against fb_mmio, and potentially gets garbage. Furthermore
-a second unbind operation produces this "nonexistent resource" error
-because of the unbalanced behavior between vmbus_allocate_mmio() and
-vmbus_free_mmio():
+The fix also reorders fields to avoid some padding.
 
-[   55.499643] resource: Trying to free nonexistent
-			resource <0x00000000f0000000-0x00000000f07fffff>
-
-Fix this by adding logic to vmbus_free_mmio() to recognize when
-MMIO space in the fb_mmio reserved area would be released, and don't
-release it. This filtering ensures the fb_mmio resource always exists,
-and makes vmbus_free_mmio() more parallel with vmbus_allocate_mmio().
-
-Fixes: be000f93e5d7 ("drivers:hv: Track allocations of children of hv_vmbus in private resource tree")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250310035208.275764-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250310035208.275764-1-mhklinux@outlook.com>
+Fixes: 2111bb970c78 ("net/mlx5: HWS, added backward-compatible API handling")
+Signed-off-by: Vlad Dogaru <vdogaru@nvidia.com>
+Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1741644104-97767-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/vmbus_drv.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 9b15f7daf5059..2b6749c9712ef 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -2262,12 +2262,25 @@ void vmbus_free_mmio(resource_size_t start, resource_size_t size)
- 	struct resource *iter;
- 
- 	mutex_lock(&hyperv_mmio_lock);
-+
-+	/*
-+	 * If all bytes of the MMIO range to be released are within the
-+	 * special case fb_mmio shadow region, skip releasing the shadow
-+	 * region since no corresponding __request_region() was done
-+	 * in vmbus_allocate_mmio().
-+	 */
-+	if (fb_mmio && start >= fb_mmio->start &&
-+	    (start + size - 1 <= fb_mmio->end))
-+		goto skip_shadow_release;
-+
- 	for (iter = hyperv_mmio; iter; iter = iter->sibling) {
- 		if ((iter->start >= start + size) || (iter->end <= start))
- 			continue;
- 
- 		__release_region(iter, start, size);
- 	}
-+
-+skip_shadow_release:
- 	release_mem_region(start, size);
- 	mutex_unlock(&hyperv_mmio_lock);
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
+index 655fa7a22d84f..7c00740f1d130 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
+@@ -16,8 +16,8 @@ struct mlx5hws_bwc_matcher {
+ 	struct mlx5hws_matcher *matcher;
+ 	struct mlx5hws_match_template *mt;
+ 	struct mlx5hws_action_template *at[MLX5HWS_BWC_MATCHER_ATTACH_AT_NUM];
++	u32 priority;
+ 	u8 num_of_at;
+-	u16 priority;
+ 	u8 size_log;
+ 	atomic_t num_of_rules;
+ 	struct list_head *rules;
 -- 
 2.39.5
 
