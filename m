@@ -1,202 +1,209 @@
-Return-Path: <stable+bounces-125568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9309A691FA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:59:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D879A6927B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:10:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0185C425BA4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:54:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FD1C1B676E1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929761DB15C;
-	Wed, 19 Mar 2025 14:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CF81DF738;
+	Wed, 19 Mar 2025 14:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AD+Xnpp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0yjtP85"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E861DA112
-	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 14:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549271DEFD9;
+	Wed, 19 Mar 2025 14:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395550; cv=none; b=JY2MRy3c8VASm7BDfqxXZzOKxdqb9oBsOl3icOaWkCVw8m10ofqp3bvgcRccZIHpsRYSy3SVlOKg980N3ThFr8XSVBiI6eo8MFGqB949wk4eHuf/+EoqWxXcRrcv23EuhgyP2tpW4/HHa5srWwPC5w/gaII3pIZcta/6wxTUBxM=
+	t=1742395002; cv=none; b=EjnpthSV+DGUNYny+qonQjiN2isOY3nWY8/kbX03q5YnFL/T/nClOlFl5jKgeA2FCBK4qRu0sb3uNcptJ7YOQGOJgivrK1UqEWOSoTB2ep6Zkg3QzsoI12Z4WzqWzSCDfTzrnH/8gHOtzIyCSuakKlQEP/ZqokqYIcFjgAO6IF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395550; c=relaxed/simple;
-	bh=9L42q8XTVysN7xQfFBqQBdxnATYp/dyhFwRQkVx/X5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=csTZXDz/B2d8cr6+Zzxe/Dd1PrH5vClkwuhhuhqc+RX51oD+c3ZovP135XJgOHgy4cY+/aBj3NNT7cSlayq846cPqRoAoz2gKRxETaErBxoQ570EbvNRoeHdK2bxyDrTPDoOXmIcEUyzrE2rZrjIieFOfatUlIXPwBON4UYiqfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AD+Xnpp2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742395547;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3uivH8PibG1oy7GS5DqSAMDJAw4T7tHzPmVv8sb0Gz0=;
-	b=AD+Xnpp27vro/KWmHPkQmHAXc9gVfjqvFFGr2y4viemrM9j17Yjq0sUenTqbQv1yCg6LZN
-	hHXOZpAtOIFoczn4Df/Lg3KfdAljm4rC0QyinxqnY4BzEI4vdLtF7Z4ZJnPqF3VkIlq6rV
-	jJvXyiCQOfIzsMrZJd9YvaUZvGKA2rs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-6srcWUjOPQKP5rOpyMZrvw-1; Wed, 19 Mar 2025 10:45:45 -0400
-X-MC-Unique: 6srcWUjOPQKP5rOpyMZrvw-1
-X-Mimecast-MFC-AGG-ID: 6srcWUjOPQKP5rOpyMZrvw_1742395544
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43bd0586b86so25941245e9.3
-        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 07:45:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742395544; x=1743000344;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3uivH8PibG1oy7GS5DqSAMDJAw4T7tHzPmVv8sb0Gz0=;
-        b=dT7C99rwrePkQ9PsdV5FrlAoOoOU9/X7jRTlBqn7SQzXMPoClKm6TNe9MZUXevYsZT
-         15P40IPYX0LmmCH5H7FxRtnWUcQ/ZtcVHx8q4ojB47fUo9JP+p58fdInJwkGyRZ9TK8T
-         5lBZVnXNdEQUiHTe2Gk1WjCbI6X/db+v+kgMx2Br0vpUlFZBuFXl6hPVxpWkuwIEzdrX
-         5S5ncT7y2c+60S7NKF5m6WcjMz+ho1A1Wjd1WUHXQfZiuwW2uLyzAA36lTQloyNRv0J1
-         TNeHsGIoyLEQAB6tiSTwZ1PL39xMg8o70YjkzxtSUJCc3W8pilnC7P99s6kA01d2lB8N
-         VgKA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5z9UXQJYELtvvijge6E+Con5ze6c0cJ3Zujqc0f6veAgsBQrIYkKGu0T6+p65KZKby+CW18U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyKBYn3jKJF/2+NZrWHTXwZJXTLWocXA8OlemhOChGyqxp+0Zr
-	CuACukyBXxM7leF65kuzrK8hlGdHpZkMWimx1c/4TlHP96U1Gj1RWaQYnoZa+fnz/oDNH/44Arc
-	ueJqGGtxWNir0eI7c3xWH4HJVaFOzxcZVHlhn/7IqARBRp8a9unOapsGUyObL0YMt
-X-Gm-Gg: ASbGnctqNF8qJtDkTZwyrZR8abnqsbate7YupO2VgRA5Xk8I+ajOuyRrh2jIOGAx/Vk
-	X2nmlmvEllAFMdwGcjCprLv7OsjGNLhKyhJxAdmX9oE3dCwcfD39erg703FLgt2izqKquaLJ+3z
-	HRTl9wD6UtXfamMlFpUeXGxkurr0q6WRHpjbEk8xSs2J7mBEkCsctpsEsaFWs5hmiE+vc/Cudqo
-	/AWgvSC8ndsogtKMQ4wLb5VnzMTgP9/iSQXFfD3th8eqXItRui2hw7QGZwJuDaPfoHHEAkRzeBw
-	8UlyalTBQ1Xv15XPYvAqR3m+/rg=
-X-Received: by 2002:a05:6000:1882:b0:391:45e9:face with SMTP id ffacd0b85a97d-39973b42580mr2717381f8f.54.1742395544458;
-        Wed, 19 Mar 2025 07:45:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMTYIXhBJfy97j/7DcnGLMwHyGymMh+1VfCo0umRZJg9WuviL2+KVtrXsPj1uih+w+iQXU0g==
-X-Received: by 2002:a05:6000:1882:b0:391:45e9:face with SMTP id ffacd0b85a97d-39973b42580mr2717360f8f.54.1742395543947;
-        Wed, 19 Mar 2025 07:45:43 -0700 (PDT)
-Received: from t14s (109-81-85-212.rct.o2.cz. [109.81.85.212])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43f47bccsm20824965e9.15.2025.03.19.07.45.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 07:45:43 -0700 (PDT)
-Date: Wed, 19 Mar 2025 15:44:19 +0100
-From: Jan Stancek <jstancek@redhat.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-	R Nageswara Sastry <rnsastry@linux.ibm.com>,
-	Neal Gompa <neal@gompa.dev>
-Subject: Re: [PATCH 6.1&6.6 V3 3/3] sign-file,extract-cert: use pkcs11
- provider for OPENSSL MAJOR >= 3
-Message-ID: <Z9rYQy3l5V5cvW7W@t14s>
-References: <20250319064031.2971073-1-chenhuacai@loongson.cn>
- <20250319064031.2971073-4-chenhuacai@loongson.cn>
- <2025031943-disparity-dash-cfa3@gregkh>
+	s=arc-20240116; t=1742395002; c=relaxed/simple;
+	bh=8V3EmuUOZQ+K5rWW0g5JEGbuHBU2l2E+PKaVLCTpI6Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N63qLurSHBXYBa/3c/eNWIKigEHkNrvUVAP8/7ytQcTfugdw0mG0uOPWjHmBG9mKmSmDJjh0eq4ISaFBwQGnyic8YuJW2/qKq4grxGFbAI0r4xbxiTNUZx2v8clVw8zv9vRlfs82Ospg0rr4mK/Knv8I/FVnFxrwS741oqORI4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0yjtP85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B1DC4CEE4;
+	Wed, 19 Mar 2025 14:36:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1742395002;
+	bh=8V3EmuUOZQ+K5rWW0g5JEGbuHBU2l2E+PKaVLCTpI6Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A0yjtP85+Oa3wwqJD+wTsu/2hL40mGHUMOp2eeeZDHpklKRGrSJ4JJc7kJg6rF3gr
+	 b7Se5QF9y3UMEEBpdyXe0vqzEwVWrdjBo+gNjvcolvsJ0kZ2hfBXVIt67+GnoF3/IX
+	 vPflzN9WOfZXlSQ59iXk0FbQY4IRv1cBmy6sabc0=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Keith Busch <kbusch@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.12 001/231] mm/slab/kvfree_rcu: Switch to WQ_MEM_RECLAIM wq
+Date: Wed, 19 Mar 2025 07:28:14 -0700
+Message-ID: <20250319143026.901985012@linuxfoundation.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <2025031943-disparity-dash-cfa3@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 19, 2025 at 07:13:13AM -0700, Greg Kroah-Hartman wrote:
->On Wed, Mar 19, 2025 at 02:40:31PM +0800, Huacai Chen wrote:
->> From: Jan Stancek <jstancek@redhat.com>
->>
->> commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
->>
->> ENGINE API has been deprecated since OpenSSL version 3.0 [1].
->> Distros have started dropping support from headers and in future
->> it will likely disappear also from library.
->>
->> It has been superseded by the PROVIDER API, so use it instead
->> for OPENSSL MAJOR >= 3.
->>
->> [1] https://github.com/openssl/openssl/blob/master/README-ENGINES.md
->>
->> [jarkko: fixed up alignment issues reported by checkpatch.pl --strict]
->>
->> Signed-off-by: Jan Stancek <jstancek@redhat.com>
->> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->> Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
->> Reviewed-by: Neal Gompa <neal@gompa.dev>
->> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
->> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
->> ---
->>  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
->>  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
->>  2 files changed, 138 insertions(+), 58 deletions(-)
->
->This seems to differ from what is upstream by a lot, please document
->what you changed from it and why when you resend this series again.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-Hunks are arranged differently, but code appears to be identical.
-When I apply the series to v6.6.83 and compare with upstream I get:
+------------------
 
-$ git range-diff HEAD~3..HEAD 558bdc45dfb2~3..558bdc45dfb2
-1:  02ea9f7368c6 ! 1:  300e6d4116f9 sign-file,extract-cert: move common SSL helper functions to a header
-     @@ Metadata
-       ## Commit message ##
-          sign-file,extract-cert: move common SSL helper functions to a header
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-     -    commit 300e6d4116f956b035281ec94297dc4dc8d4e1d3 upstream.
-     -
-          Couple error handling helpers are repeated in both tools, so
-          move them to a common header.
+commit dfd3df31c9db752234d7d2e09bef2aeabb643ce4 upstream.
 
-     @@ Commit message
-          Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-          Reviewed-by: Neal Gompa <neal@gompa.dev>
-          Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-     -    Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Currently kvfree_rcu() APIs use a system workqueue which is
+"system_unbound_wq" to driver RCU machinery to reclaim a memory.
 
-       ## MAINTAINERS ##
-      @@ MAINTAINERS: S: Maintained
-2:  0a81fb059cfd ! 2:  467d60eddf55 sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
-     @@ Metadata
-       ## Commit message ##
-          sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+Recently, it has been noted that the following kernel warning can
+be observed:
 
-     -    commit 467d60eddf55588add232feda325da7215ddaf30 upstream.
-     -
-          ERR_get_error_line() is deprecated since OpenSSL 3.0.
+<snip>
+workqueue: WQ_MEM_RECLAIM nvme-wq:nvme_scan_work is flushing !WQ_MEM_RECLAIM events_unbound:kfree_rcu_work
+  WARNING: CPU: 21 PID: 330 at kernel/workqueue.c:3719 check_flush_dependency+0x112/0x120
+  Modules linked in: intel_uncore_frequency(E) intel_uncore_frequency_common(E) skx_edac(E) ...
+  CPU: 21 UID: 0 PID: 330 Comm: kworker/u144:6 Tainted: G            E      6.13.2-0_g925d379822da #1
+  Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passive MP, BIOS YMM20 02/01/2023
+  Workqueue: nvme-wq nvme_scan_work
+  RIP: 0010:check_flush_dependency+0x112/0x120
+  Code: 05 9a 40 14 02 01 48 81 c6 c0 00 00 00 48 8b 50 18 48 81 c7 c0 00 00 00 48 89 f9 48 ...
+  RSP: 0018:ffffc90000df7bd8 EFLAGS: 00010082
+  RAX: 000000000000006a RBX: ffffffff81622390 RCX: 0000000000000027
+  RDX: 00000000fffeffff RSI: 000000000057ffa8 RDI: ffff88907f960c88
+  RBP: 0000000000000000 R08: ffffffff83068e50 R09: 000000000002fffd
+  R10: 0000000000000004 R11: 0000000000000000 R12: ffff8881001a4400
+  R13: 0000000000000000 R14: ffff88907f420fb8 R15: 0000000000000000
+  FS:  0000000000000000(0000) GS:ffff88907f940000(0000) knlGS:0000000000000000
+  CR2: 00007f60c3001000 CR3: 000000107d010005 CR4: 00000000007726f0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? __warn+0xa4/0x140
+   ? check_flush_dependency+0x112/0x120
+   ? report_bug+0xe1/0x140
+   ? check_flush_dependency+0x112/0x120
+   ? handle_bug+0x5e/0x90
+   ? exc_invalid_op+0x16/0x40
+   ? asm_exc_invalid_op+0x16/0x20
+   ? timer_recalc_next_expiry+0x190/0x190
+   ? check_flush_dependency+0x112/0x120
+   ? check_flush_dependency+0x112/0x120
+   __flush_work.llvm.1643880146586177030+0x174/0x2c0
+   flush_rcu_work+0x28/0x30
+   kvfree_rcu_barrier+0x12f/0x160
+   kmem_cache_destroy+0x18/0x120
+   bioset_exit+0x10c/0x150
+   disk_release.llvm.6740012984264378178+0x61/0xd0
+   device_release+0x4f/0x90
+   kobject_put+0x95/0x180
+   nvme_put_ns+0x23/0xc0
+   nvme_remove_invalid_namespaces+0xb3/0xd0
+   nvme_scan_work+0x342/0x490
+   process_scheduled_works+0x1a2/0x370
+   worker_thread+0x2ff/0x390
+   ? pwq_release_workfn+0x1e0/0x1e0
+   kthread+0xb1/0xe0
+   ? __kthread_parkme+0x70/0x70
+   ret_from_fork+0x30/0x40
+   ? __kthread_parkme+0x70/0x70
+   ret_from_fork_asm+0x11/0x20
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+<snip>
 
-          Use ERR_peek_error_line() instead, and combine display_openssl_errors()
-     @@ Commit message
-          Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-          Reviewed-by: Neal Gompa <neal@gompa.dev>
-          Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-     -    Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+To address this switch to use of independent WQ_MEM_RECLAIM
+workqueue, so the rules are not violated from workqueue framework
+point of view.
 
-       ## certs/extract-cert.c ##
-      @@ certs/extract-cert.c: int main(int argc, char **argv)
-3:  0882f379a1f5 ! 3:  558bdc45dfb2 sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3
-     @@ Metadata
-       ## Commit message ##
-          sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3
+Apart of that, since kvfree_rcu() does reclaim memory it is worth
+to go with WQ_MEM_RECLAIM type of wq because it is designed for
+this purpose.
 
-     -    commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
-     -
-          ENGINE API has been deprecated since OpenSSL version 3.0 [1].
-          Distros have started dropping support from headers and in future
-          it will likely disappear also from library.
-     @@ Commit message
-          Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-          Reviewed-by: Neal Gompa <neal@gompa.dev>
-          Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-     -    Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
+Reported-by: Keith Busch <kbusch@kernel.org>
+Closes: https://lore.kernel.org/all/Z7iqJtCjHKfo8Kho@kbusch-mbp/
+Cc: stable@vger.kernel.org
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ kernel/rcu/tree.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-       ## certs/extract-cert.c ##
-      @@
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -3191,6 +3191,8 @@ void call_rcu(struct rcu_head *head, rcu
+ }
+ EXPORT_SYMBOL_GPL(call_rcu);
+ 
++static struct workqueue_struct *rcu_reclaim_wq;
++
+ /* Maximum number of jiffies to wait before draining a batch. */
+ #define KFREE_DRAIN_JIFFIES (5 * HZ)
+ #define KFREE_N_BATCHES 2
+@@ -3519,10 +3521,10 @@ __schedule_delayed_monitor_work(struct k
+ 	if (delayed_work_pending(&krcp->monitor_work)) {
+ 		delay_left = krcp->monitor_work.timer.expires - jiffies;
+ 		if (delay < delay_left)
+-			mod_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
++			mod_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
+ 		return;
+ 	}
+-	queue_delayed_work(system_unbound_wq, &krcp->monitor_work, delay);
++	queue_delayed_work(rcu_reclaim_wq, &krcp->monitor_work, delay);
+ }
+ 
+ static void
+@@ -3620,7 +3622,7 @@ kvfree_rcu_queue_batch(struct kfree_rcu_
+ 			// "free channels", the batch can handle. Break
+ 			// the loop since it is done with this CPU thus
+ 			// queuing an RCU work is _always_ success here.
+-			queued = queue_rcu_work(system_unbound_wq, &krwp->rcu_work);
++			queued = queue_rcu_work(rcu_reclaim_wq, &krwp->rcu_work);
+ 			WARN_ON_ONCE(!queued);
+ 			break;
+ 		}
+@@ -3708,7 +3710,7 @@ run_page_cache_worker(struct kfree_rcu_c
+ 	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
+ 			!atomic_xchg(&krcp->work_in_progress, 1)) {
+ 		if (atomic_read(&krcp->backoff_page_cache_fill)) {
+-			queue_delayed_work(system_unbound_wq,
++			queue_delayed_work(rcu_reclaim_wq,
+ 				&krcp->page_cache_work,
+ 					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
+ 		} else {
+@@ -5662,6 +5664,10 @@ static void __init kfree_rcu_batch_init(
+ 	int i, j;
+ 	struct shrinker *kfree_rcu_shrinker;
+ 
++	rcu_reclaim_wq = alloc_workqueue("kvfree_rcu_reclaim",
++			WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
++	WARN_ON(!rcu_reclaim_wq);
++
+ 	/* Clamp it to [0:100] seconds interval. */
+ 	if (rcu_delay_page_cache_fill_msec < 0 ||
+ 		rcu_delay_page_cache_fill_msec > 100 * MSEC_PER_SEC) {
 
-Regards,
-Jan
 
 
