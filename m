@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-124992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6ECA691DF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:58:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A6BA69056
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1B4B1B61441
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A603AC38C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D241DF270;
-	Wed, 19 Mar 2025 14:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248621D54D6;
+	Wed, 19 Mar 2025 14:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSXYHFZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvfC5iSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A11B1DEFEC;
-	Wed, 19 Mar 2025 14:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C84213E93;
+	Wed, 19 Mar 2025 14:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394876; cv=none; b=nJLoFX40x71mQLT2/RDK7OHPGZjYmYAgwXBFqQGT1MqX5xCL3iA6V6Jqs7mkS2nokEFAD6e6rTSjmM5Rfto+YIr43B9IsfrOtEpJ6A9hwBs0cB4MfvpknC/EugiWUv1HTUOjRxp+45CYY9wA5g0B80bSQGAxYvYDNtaq4qDClq4=
+	t=1742395031; cv=none; b=HKRxTZp3yVAy0za0WD5Hh/lZVHysXz+caVJXwo2W2Af7pqRyzWh8vRsFFc6vEiZnZFmPV0/ILDOP4HiJInjkh4XymTOnU7qSUneZc5PH4YYt/vfeeEbs5XPvb5nYqMPVWnfMFfYrup1KsSQxd5bz5yefPsQ+4NXh57FAp2l0sGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394876; c=relaxed/simple;
-	bh=Ih9JSC8h6wTdKiq9TfdSUUi9P3yYfLCNB5dsf8N3aS4=;
+	s=arc-20240116; t=1742395031; c=relaxed/simple;
+	bh=AiTtqeNkKu4t9tfbiYvSHIZHCu3whTEv10MDZgpnZ+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QEKUXQu68x8qooGov9LU+O9nrrGuv2n9PUhyy5WpcZTYKPToCz5kn2Oxhn5yH2Anw6UxvrJEEpM97vL8+DjZ7A9SB05O6UoPPiiqZP4UJcera5tmpI19mi/m56PVcn9hCT6gaCdVv46baBHhQ4FgfcdNUJ8GSV9g2Mm9szW1WgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSXYHFZr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D046C4CEE8;
-	Wed, 19 Mar 2025 14:34:36 +0000 (UTC)
+	 MIME-Version; b=qahJg695sDvhRUgS69uMySnhr/ifEGSpWXAl1Sz4wDT7T/sbza/dStvjP2Ldm1uqWx9238ouzzpQnl1PDLmmYZw7uUgGcjXOqjsTFIOpAyU4eVANGTerKs3Enagy4NSBchiODQltSf36e97bWPALof7yQHCOoE3W0lf0d/u9MBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvfC5iSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD247C4CEE4;
+	Wed, 19 Mar 2025 14:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394876;
-	bh=Ih9JSC8h6wTdKiq9TfdSUUi9P3yYfLCNB5dsf8N3aS4=;
+	s=korg; t=1742395031;
+	bh=AiTtqeNkKu4t9tfbiYvSHIZHCu3whTEv10MDZgpnZ+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSXYHFZrBzMcXiL6tS8URXm580ceft+xVzh1uMnIajTXbPakq04QpS7Wn8ua0ZvpI
-	 9QxjNFE9qlVQ56eFW9oryWZr105/lJEUj8oYdfGKQKfD6WERB3wh46jADvjhoy5d06
-	 bEjESpq8zhxLq5isJlBs8dBYXQTnt3MOreW6fAvY=
+	b=VvfC5iSfiBkUw0oKFwT7TFo7JOMfVJKec5M22U62BuO7uyI8W+Z3nsBeh/xb8XV1y
+	 HdrN9aL6xmJ+XWszItiZEa/rJf37E+kBa0hAFjXObSRYZ+dL+lh8jtCh50vgaGzUE/
+	 1tpTZfMpUKczLVuWxwlaO9o6CJ2MkaC+fIWEE0zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 074/241] vboxsf: fix building with GCC 15
-Date: Wed, 19 Mar 2025 07:29:04 -0700
-Message-ID: <20250319143029.556032025@linuxfoundation.org>
+Subject: [PATCH 6.12 052/231] net/mlx5: Fix incorrect IRQ pool usage when releasing IRQs
+Date: Wed, 19 Mar 2025 07:29:05 -0700
+Message-ID: <20250319143028.110926197@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 4e7487245abcbc5a1a1aea54e4d3b33c53804bda ]
+[ Upstream commit 32d2724db5b2361ab293427ccd5c24f4f2bcca14 ]
 
-Building with GCC 15 results in build error
-fs/vboxsf/super.c:24:54: error: initializer-string for array of ‘unsigned char’ is too long [-Werror=unterminated-string-initialization]
-   24 | static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-      |                                                      ^~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+mlx5_irq_pool_get() is a getter for completion IRQ pool only.
+However, after the cited commit, mlx5_irq_pool_get() is called during
+ctrl IRQ release flow to retrieve the pool, resulting in the use of an
+incorrect IRQ pool.
 
-Due to GCC having enabled -Werror=unterminated-string-initialization[0]
-by default. Separately initializing each array element of
-VBSF_MOUNT_SIGNATURE to ensure NUL termination, thus satisfying GCC 15
-and fixing the build error.
+Hence, use the newly introduced mlx5_irq_get_pool() getter to retrieve
+the correct IRQ pool based on the IRQ itself. While at it, rename
+mlx5_irq_pool_get() to mlx5_irq_table_get_comp_irq_pool() which
+accurately reflects its purpose and improves code readability.
 
-[0]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wno-unterminated-string-initialization
-
-Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
-Link: https://lore.kernel.org/r/20250121162648.1408743-1-brahmajit.xyz@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 0477d5168bbb ("net/mlx5: Expose SFs IRQs")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1741644104-97767-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/vboxsf/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/eq.c        |  2 +-
+ .../net/ethernet/mellanox/mlx5/core/irq_affinity.c  |  2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h  |  4 +++-
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c   | 13 ++++++++++---
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h   |  2 +-
+ 5 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/fs/vboxsf/super.c b/fs/vboxsf/super.c
-index e95b8a48d8a02..1d94bb7841081 100644
---- a/fs/vboxsf/super.c
-+++ b/fs/vboxsf/super.c
-@@ -21,7 +21,8 @@
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eq.c b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+index 68cb86b37e561..4241cf07a0306 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eq.c
+@@ -887,8 +887,8 @@ static void comp_irq_release_sf(struct mlx5_core_dev *dev, u16 vecidx)
  
- #define VBOXSF_SUPER_MAGIC 0x786f4256 /* 'VBox' little endian */
+ static int comp_irq_request_sf(struct mlx5_core_dev *dev, u16 vecidx)
+ {
++	struct mlx5_irq_pool *pool = mlx5_irq_table_get_comp_irq_pool(dev);
+ 	struct mlx5_eq_table *table = dev->priv.eq_table;
+-	struct mlx5_irq_pool *pool = mlx5_irq_pool_get(dev);
+ 	struct irq_affinity_desc af_desc = {};
+ 	struct mlx5_irq *irq;
  
--static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-+static const unsigned char VBSF_MOUNT_SIGNATURE[4] = { '\000', '\377', '\376',
-+						       '\375' };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
+index 1477db7f5307e..2691d88cdee1f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
+@@ -175,7 +175,7 @@ mlx5_irq_affinity_request(struct mlx5_core_dev *dev, struct mlx5_irq_pool *pool,
  
- static int follow_symlinks;
- module_param(follow_symlinks, int, 0444);
+ void mlx5_irq_affinity_irq_release(struct mlx5_core_dev *dev, struct mlx5_irq *irq)
+ {
+-	struct mlx5_irq_pool *pool = mlx5_irq_pool_get(dev);
++	struct mlx5_irq_pool *pool = mlx5_irq_get_pool(irq);
+ 	int cpu;
+ 
+ 	cpu = cpumask_first(mlx5_irq_get_affinity_mask(irq));
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h
+index 0881e961d8b17..586688da9940e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_irq.h
+@@ -10,12 +10,15 @@
+ 
+ struct mlx5_irq;
+ struct cpu_rmap;
++struct mlx5_irq_pool;
+ 
+ int mlx5_irq_table_init(struct mlx5_core_dev *dev);
+ void mlx5_irq_table_cleanup(struct mlx5_core_dev *dev);
+ int mlx5_irq_table_create(struct mlx5_core_dev *dev);
+ void mlx5_irq_table_destroy(struct mlx5_core_dev *dev);
+ void mlx5_irq_table_free_irqs(struct mlx5_core_dev *dev);
++struct mlx5_irq_pool *
++mlx5_irq_table_get_comp_irq_pool(struct mlx5_core_dev *dev);
+ int mlx5_irq_table_get_num_comp(struct mlx5_irq_table *table);
+ int mlx5_irq_table_get_sfs_vec(struct mlx5_irq_table *table);
+ struct mlx5_irq_table *mlx5_irq_table_get(struct mlx5_core_dev *dev);
+@@ -38,7 +41,6 @@ struct cpumask *mlx5_irq_get_affinity_mask(struct mlx5_irq *irq);
+ int mlx5_irq_get_index(struct mlx5_irq *irq);
+ int mlx5_irq_get_irq(const struct mlx5_irq *irq);
+ 
+-struct mlx5_irq_pool;
+ #ifdef CONFIG_MLX5_SF
+ struct mlx5_irq *mlx5_irq_affinity_irq_request_auto(struct mlx5_core_dev *dev,
+ 						    struct cpumask *used_cpus, u16 vecidx);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+index d9362eabc6a1c..2c5f850c31f68 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+@@ -378,6 +378,11 @@ int mlx5_irq_get_index(struct mlx5_irq *irq)
+ 	return irq->map.index;
+ }
+ 
++struct mlx5_irq_pool *mlx5_irq_get_pool(struct mlx5_irq *irq)
++{
++	return irq->pool;
++}
++
+ /* irq_pool API */
+ 
+ /* requesting an irq from a given pool according to given index */
+@@ -405,18 +410,20 @@ static struct mlx5_irq_pool *sf_ctrl_irq_pool_get(struct mlx5_irq_table *irq_tab
+ 	return irq_table->sf_ctrl_pool;
+ }
+ 
+-static struct mlx5_irq_pool *sf_irq_pool_get(struct mlx5_irq_table *irq_table)
++static struct mlx5_irq_pool *
++sf_comp_irq_pool_get(struct mlx5_irq_table *irq_table)
+ {
+ 	return irq_table->sf_comp_pool;
+ }
+ 
+-struct mlx5_irq_pool *mlx5_irq_pool_get(struct mlx5_core_dev *dev)
++struct mlx5_irq_pool *
++mlx5_irq_table_get_comp_irq_pool(struct mlx5_core_dev *dev)
+ {
+ 	struct mlx5_irq_table *irq_table = mlx5_irq_table_get(dev);
+ 	struct mlx5_irq_pool *pool = NULL;
+ 
+ 	if (mlx5_core_is_sf(dev))
+-		pool = sf_irq_pool_get(irq_table);
++		pool = sf_comp_irq_pool_get(irq_table);
+ 
+ 	/* In some configs, there won't be a pool of SFs IRQs. Hence, returning
+ 	 * the PF IRQs pool in case the SF pool doesn't exist.
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
+index c4d377f8df308..cc064425fe160 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
+@@ -28,7 +28,6 @@ struct mlx5_irq_pool {
+ 	struct mlx5_core_dev *dev;
+ };
+ 
+-struct mlx5_irq_pool *mlx5_irq_pool_get(struct mlx5_core_dev *dev);
+ static inline bool mlx5_irq_pool_is_sf_pool(struct mlx5_irq_pool *pool)
+ {
+ 	return !strncmp("mlx5_sf", pool->name, strlen("mlx5_sf"));
+@@ -40,5 +39,6 @@ struct mlx5_irq *mlx5_irq_alloc(struct mlx5_irq_pool *pool, int i,
+ int mlx5_irq_get_locked(struct mlx5_irq *irq);
+ int mlx5_irq_read_locked(struct mlx5_irq *irq);
+ int mlx5_irq_put(struct mlx5_irq *irq);
++struct mlx5_irq_pool *mlx5_irq_get_pool(struct mlx5_irq *irq);
+ 
+ #endif /* __PCI_IRQ_H__ */
 -- 
 2.39.5
 
