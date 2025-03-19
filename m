@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D1BA691C5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:57:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE34AA690D4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30EE81B6519F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:40:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE03F88795E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD38E20A5C4;
-	Wed, 19 Mar 2025 14:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C748D21B9CF;
+	Wed, 19 Mar 2025 14:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4TLGd0M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNujpLVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73315209F53;
-	Wed, 19 Mar 2025 14:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849C821B9C0;
+	Wed, 19 Mar 2025 14:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394995; cv=none; b=TINZrEBHxLagxtKxMwnqay6kMQAle1k9PpjR5zTXYpnBazYJq7FB3hz8dvvkSNpNHWF/JcxlBAz2lcenTmNwJYQIEnxlbWsoabhPIizpB2QiWCKPaOxRYYHhqoD0PvfWRjsi9ncpDSgkKgWPivtmJJWmraPqXrGVFMBDVxy34EY=
+	t=1742395118; cv=none; b=PGU4qOlUWlAb6LVt4kuQPzS3HvJsxMtBQ7xAcHh6/XYo5wLgK/e9xwOYQ7dY8h6rsM3/qYzlK9Jyn42tWW7iP7PFY/FPcA+8RgTyOZ4mNzbfbjBWzBDg9nc3y5nNBPEM/VwGkJF9PxSnpINrik5ixrKKmB+Is3V292CED6NNojY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394995; c=relaxed/simple;
-	bh=rmIadZQy6ttwExkcvD3SGc3q4S+gvlw/ojGjoLpUKzE=;
+	s=arc-20240116; t=1742395118; c=relaxed/simple;
+	bh=E/YjpBNM8ezPnqLCQEMZe4umP1eJ/kT6pP1Kqms2Q9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDgWq1XNHwm+tXmOZl0gUr1lLEnSHElNsjI0OY73oG+z07/ceEAom0UlsbC8Y9RiPrBXSlDkD894OO6h6C1pbR2JjsH585FrdPq6N8bsPUjFXqwlEiTg60LUDptdaaH1WTb8VdVX4v2c8uRPuvVgRosz+IRTfe7VKANpDejWmFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4TLGd0M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49962C4CEE4;
-	Wed, 19 Mar 2025 14:36:35 +0000 (UTC)
+	 MIME-Version; b=XPvzzrLMxd8VvwxuN6yFQ93jx6sLSVAH002due6H5Uf3sXmRWC1QU0YIhKH8yr2WKVjTo6XLMpOlHJ0G8RIOY4xh1cqpKIgM4JemhxwjOVebyeYerGA+8/fFMqAuo6idRfba9JoNcOkFSW4gat87mZ3ahQriNI6kEm3vtPu4Ci8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNujpLVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52050C4CEE4;
+	Wed, 19 Mar 2025 14:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394995;
-	bh=rmIadZQy6ttwExkcvD3SGc3q4S+gvlw/ojGjoLpUKzE=;
+	s=korg; t=1742395118;
+	bh=E/YjpBNM8ezPnqLCQEMZe4umP1eJ/kT6pP1Kqms2Q9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4TLGd0M1QkDHdKfP3559yhMbtYI3QNiweGn0dupxN9adCILnxlDQttRO1mAKZwhm
-	 /iTZx9aKKUbVUPaKZTDtUfXpYOZ5mjyiOoyJyuK7V009srwLvJE/iRvSH1QGgL9uBK
-	 Tleftr0ifcOjZOQbbNnxXWb4f1qpkeYnoKVbQDBs=
+	b=vNujpLVk0xcM0FjU0k8TSFo+G5HzwvVhulX2DbjolrJimtA4lnWMfs5+o6NBUCmb4
+	 lFo19IGgggXDaXQyRn0uILsjFSDXaYLCohJ5r3oNuJ+pWUtOT7P19T1BAgD1qBlba2
+	 ide6t4k4Dq3C10SeGMJ+WeZ2OQVL0Npqi9AB54p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Williamson <awilliam@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.13 201/241] smb: client: fix regression with guest option
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 178/231] drm/amd/display: fix default brightness
 Date: Wed, 19 Mar 2025 07:31:11 -0700
-Message-ID: <20250319143032.698020385@linuxfoundation.org>
+Message-ID: <20250319143031.235605244@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit fc99045effa81fdf509c2a97cbb7e6e8f2fd4443 upstream.
+commit b5a981e1b34e44f94a5967f730fff4166f2101e8 upstream.
 
-When mounting a CIFS share with 'guest' mount option, mount.cifs(8)
-will set empty password= and password2= options.  Currently we only
-handle empty strings from user= and password= options, so the mount
-will fail with
+[Why]
+To avoid flickering during boot default brightness level set by BIOS
+should be maintained for as much of the boot as feasible.
+commit 2fe87f54abdc ("drm/amd/display: Set default brightness according
+to ACPI") attempted to set the right levels for AC vs DC, but brightness
+still got reset to maximum level in initialization code for
+setup_backlight_device().
 
-	cifs: Bad value for 'password2'
+[How]
+Remove the hardcoded initialization in setup_backlight_device() and
+instead program brightness value to match BIOS (AC or DC).  This avoids a
+brightness flicker from kernel changing the value.  Userspace may however
+still change it during boot.
 
-Fix this by handling empty string from password2= option as well.
-
-Link: https://bbs.archlinux.org/viewtopic.php?id=303927
-Reported-by: Adam Williamson <awilliam@redhat.com>
-Closes: https://lore.kernel.org/r/83c00b5fea81c07f6897a5dd3ef50fd3b290f56c.camel@redhat.com
-Fixes: 35f834265e0d ("smb3: fix broken reconnect when password changing on the server by allowing password rotation")
+Fixes: 2fe87f54abdc ("drm/amd/display: Set default brightness according to ACPI")
+Acked-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0747acf3311229e22009bec4a9e7fc30c879e842)
 Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/fs_context.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -170,6 +170,7 @@ const struct fs_parameter_spec smb3_fs_p
- 	fsparam_string("username", Opt_user),
- 	fsparam_string("pass", Opt_pass),
- 	fsparam_string("password", Opt_pass),
-+	fsparam_string("pass2", Opt_pass2),
- 	fsparam_string("password2", Opt_pass2),
- 	fsparam_string("ip", Opt_ip),
- 	fsparam_string("addr", Opt_ip),
-@@ -1071,6 +1072,9 @@ static int smb3_fs_context_parse_param(s
- 		} else if (!strcmp("user", param->key) || !strcmp("username", param->key)) {
- 			skip_parsing = true;
- 			opt = Opt_user;
-+		} else if (!strcmp("pass2", param->key) || !strcmp("password2", param->key)) {
-+			skip_parsing = true;
-+			opt = Opt_pass2;
- 		}
- 	}
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4822,6 +4822,7 @@ amdgpu_dm_register_backlight_device(stru
+ 	dm->backlight_dev[aconnector->bl_idx] =
+ 		backlight_device_register(bl_name, aconnector->base.kdev, dm,
+ 					  &amdgpu_dm_backlight_ops, &props);
++	dm->brightness[aconnector->bl_idx] = props.brightness;
+ 
+ 	if (IS_ERR(dm->backlight_dev[aconnector->bl_idx])) {
+ 		DRM_ERROR("DM: Backlight registration failed!\n");
+@@ -4889,7 +4890,6 @@ static void setup_backlight_device(struc
+ 	aconnector->bl_idx = bl_idx;
+ 
+ 	amdgpu_dm_update_backlight_caps(dm, bl_idx);
+-	dm->brightness[bl_idx] = AMDGPU_MAX_BL_LEVEL;
+ 	dm->backlight_link[bl_idx] = link;
+ 	dm->num_of_edps++;
  
 
 
