@@ -1,88 +1,56 @@
-Return-Path: <stable+bounces-124898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA42A68A00
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 11:51:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4500EA68A07
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 11:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 471847A2573
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 10:50:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C6FE3BF901
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 10:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F33253B5E;
-	Wed, 19 Mar 2025 10:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DEE253F24;
+	Wed, 19 Mar 2025 10:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cGvsf5ea"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q62PP3w3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DB51AB50D
-	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 10:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C1D251796
+	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 10:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742381483; cv=none; b=O6/Qj7e6ui/Oa1s3nvRTOy0mXjUNqrhceM48dy6iJa7VuEyqrQlyla9ixDlwzBA7hexIjTRH8le1z8Ivt9PqgjIGDtXKvUkjS2hFZ1XygqNOu86AfjEA6yytQThJx4ycsQnTrgiWC7rS7sD2/up3ABMSH78IgLdmUAHWLKoxMbE=
+	t=1742381650; cv=none; b=HORNdR1ya3UbWa3TEI3ox3Y8eYkhvJRpnoEeXvJ4PRskZi7QTH0fnC8Cwn2m7ba5eQiC9j5+MI74VWMb5rVzGEoaoTxRpPqnw951n1NXd1yaIkjsuujQzhGOXCTuYRLeAUOK/B0EAMlId6OeK2/DD63lmEcpBMq/j9+EIlfBlwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742381483; c=relaxed/simple;
-	bh=aY+wT718jcd7J9zYcBPNjAxxvgMi/7jJqwdrk3HqTIE=;
+	s=arc-20240116; t=1742381650; c=relaxed/simple;
+	bh=an+WgFVse1usF3HhjsrsWF0AUsRbMPruBabEbqUrhn0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jqR2YLRJ6QgUM6/yIxRjHo24aIYV6yEeGQaKaeWp54lpT97/ZPHVVenFJqCEmtEz2pgaVUa0hMDFqdjc1dfLYQlHC1c+Gr87MMYPQ9Xvp17FGprDsBZC/9fT+fwc8o2so/MzA4Dl3m35w3loTRyecDLYhzer1CLbqG8Jz5sDUcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cGvsf5ea; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43d2d952eb1so28478275e9.1
-        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 03:51:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742381480; x=1742986280; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yqFmyb1JpY335n5hykX+2u4g/6H0xVX+LFgESzsIi/w=;
-        b=cGvsf5eadSVa5djy8M0PXnNB3O4I6qPurrJwV5oW41jt8wKJtNsM0MdskNHk2ELAk1
-         /XGf9AkVvNnb2FGYxoGqIHh4hAUJxTPNF2fxTOEtW1hN2zH8IucdMQTZ3DZdEOYGtRC5
-         eL5idnUE4J+iA2ihnOKdWgwmyzM+0bjsc6Cv0CQrdY6YSmFckVt0tjzhiGfF7opNwjrr
-         usrJ5/sl29o2BP1Tf9XaiNXDvGuqfAKXfjCDMSuSpRxF7gWBOPSaLBH89FZfMuc/YMNA
-         3wmH0f2o70wgKff9Vp3Kq+48nGbrAB2jbxGFP/Qzv0bUkba5E4T9GYALunAWkuCUrMKB
-         wRng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742381480; x=1742986280;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yqFmyb1JpY335n5hykX+2u4g/6H0xVX+LFgESzsIi/w=;
-        b=pkYrDjyHOK7Crw8frwxXqBc42tttA7TL5xBSZIXq9cCWkVI7QcpyyMd+Zy8YUskUaB
-         KdZ0oJxdak87zcVNI2pfjqVncngDphU53MMHM9zp6AdOvvOXvlRRucPcA2IBfVdDnrIe
-         BDtucapDn8ZCIAaDvYg9qiDaoFISqbeECkLQRDL8/geTdau8zCTiYDULN7eIzVp9+Am5
-         F1mhh7FO+PVJBjeWU0bkqgMlxnKy31+mN/ivm1N7x3VxQZEO8P2dN6o86OMQtamWoFo6
-         0+Xu1Sgt57hkggSHrO0ePDOyPB8WOqu2moI+Wg2ebFGTxUUSGpljEDe8k+KLyr5fX8Nz
-         AoDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXs7S6duXLQ9/HEXXZgGCRcBCJyRiVbvF991evq736HUfXoaeVEKBYPUFQBHgKi8vUduZhYjmE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtD0sopw4Fgg316fxEPoRK9SyyaCNLZc1agyIKFGNIhhkjvOKW
-	FbmpcK3rbbJnK2NhbjupHwYFLBOWaDwsUtdRNIXCeKxB7ofbK5KQ+vZoTw==
-X-Gm-Gg: ASbGncsb+4FfomnaYmGjbWwnwz66S+NtZO0KskgMlnijKeRhHJMXjcevMJRh8MBqOCj
-	lyY9+UBlbWpuNKCpRYO6laNLF/JB3Kw5fCfIRH4oAHHz+IRlsIWfAyMDRr57RzOPQwH+Z3qx116
-	8c99ZdmD2DA/DjS+bIuyi9MKBanJSookXlSTXdFB64v2yZt1zDVXTlaM9PNOMnRVJ4YfW2WKUys
-	/hxrKOaY56g1HKGCsWvT/ZI8SBIGKtdYhuF1eiHtm1tVPqorAQ6UKa23XqN7/XlOLZvj6F1uNlc
-	AcGI08c0DH+0ZbcGmPKQammouEu0pnqHQlaRGqLkCdseMcF+zLr3UPpJCQ==
-X-Google-Smtp-Source: AGHT+IH9FRBtEm0zl/It/vymMpRwuZUssIHZt+F8O/mAoL4FRuD8LOG1RLUGuwHWcI0U33zvtgH2Ig==
-X-Received: by 2002:a05:600c:4503:b0:43c:fab3:4fad with SMTP id 5b1f17b1804b1-43d437c3354mr20919835e9.16.1742381479303;
-        Wed, 19 Mar 2025 03:51:19 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:c7c:6696:8300:7659:65a:5e42:31a9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43f74c2asm15027005e9.31.2025.03.19.03.51.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 03:51:18 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: 
-Cc: Qasim Ijaz <qasdev00@gmail.com>,
-	syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/4] net: fix uninitialised access in mii_nway_restart()
-Date: Wed, 19 Mar 2025 10:50:42 +0000
-Message-Id: <20250319105045.43385-2-qasdev00@gmail.com>
+	 MIME-Version; b=jACJ8HSErNTJeyRoum9I9NjFEFtD1gN10JRnqNtkAoa9/D6SYdXioh0rNCp16qEs+B/Nf9+srgaZ3oJiPAJim/5Pi+xdQqsoreAVBtZ/DajP9hsXayBtrL0L9+x1UI21X44jDkM6g2jrQjAD4QMaqWsDBXfQN9mviZ5DchFY1Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q62PP3w3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9A7C4CEE9;
+	Wed, 19 Mar 2025 10:54:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742381650;
+	bh=an+WgFVse1usF3HhjsrsWF0AUsRbMPruBabEbqUrhn0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Q62PP3w3MAh/WaBJlXRJ8dWctS+fuiEntZAhiJHcIy2AVJ0+DVJ0v8Y9FAqjus2au
+	 58JOdwqpoo0F+asFxssPNNcE6Ge79SwJQYAXIYsKbP7/uM9osCzXLQHzjqSQrmM0qP
+	 n6GUqTiusmNhAkYasUsjvaBH+QdFG/lxHzE516aJeEFqCowaBErwi93I91hxBRrJCm
+	 4FtsfGKWM6zscxJjHju94YiVW97PviHJ5amR+HN6aT6KjDnbAWEzgOJGEa8kT0Yv50
+	 f3YrzReJS4a8OfkzPRauQYzMZYKsTt/sUUWwO7sm7ksiS7jAxXLTqGrYwqd0Gfrt9f
+	 GXILoXDSnPfHA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: bin.lan.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] media: mediatek: vcodec: Fix VP8 stateless decoder smatch warning
+Date: Wed, 19 Mar 2025 06:54:07 -0400
+Message-Id: <20250319054649-f8a943d9c3ca80af@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250319105045.43385-1-qasdev00@gmail.com>
-References: <20250319105045.43385-1-qasdev00@gmail.com>
+In-Reply-To:  <20250319024937.530352-1-bin.lan.cn@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,85 +59,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In mii_nway_restart() during the line:
+[ Sasha's backport helper bot ]
 
-        bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
+Hi,
 
-The code attempts to call mii->mdio_read which is ch9200_mdio_read().
+The upstream commit SHA1 provided is correct: b113bc7c0e83b32f4dd2d291a2b6c4803e0a2c44
 
-ch9200_mdio_read() utilises a local buffer, which is initialised
-with control_read():
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: bin.lan.cn@windriver.com
+Commit author: Yunfei Dong<yunfei.dong@mediatek.com>
 
-        unsigned char buff[2];
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: dbe5b7373801)
 
-However buff is conditionally initialised inside control_read():
-
-        if (err == size) {
-                memcpy(data, buf, size);
-        }
-
-If the condition of "err == size" is not met, then buff remains
-uninitialised. Once this happens the uninitialised buff is accessed
-and returned during ch9200_mdio_read():
-
-        return (buff[0] | buff[1] << 8);
-
-The problem stems from the fact that ch9200_mdio_read() ignores the
-return value of control_read(), leading to uinit-access of buff.
-
-To fix this we should check the return value of control_read()
-and return early on error.
-
-Reported-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=3361c2d6f78a3e0892f9
-Tested-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Note: The patch differs from the upstream commit:
 ---
- drivers/net/mii.c        | 2 ++
- drivers/net/usb/ch9200.c | 7 +++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+1:  b113bc7c0e83b ! 1:  7220bc28bdb34 media: mediatek: vcodec: Fix VP8 stateless decoder smatch warning
+    @@ Metadata
+      ## Commit message ##
+         media: mediatek: vcodec: Fix VP8 stateless decoder smatch warning
+     
+    +    [ Upstream commit b113bc7c0e83b32f4dd2d291a2b6c4803e0a2c44 ]
+    +
+         Fix a smatch static checker warning on vdec_vp8_req_if.c.
+         Which leads to a kernel crash when fb is NULL.
+     
+    @@ Commit message
+         Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+         Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+         Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+     
+    - ## drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_req_if.c ##
+    -@@ drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_req_if.c: static int vdec_vp8_slice_decode(void *h_vdec, struct mtk_vcodec_mem *bs,
+    + ## drivers/media/platform/mediatek/vcodec/vdec/vdec_vp8_req_if.c ##
+    +@@ drivers/media/platform/mediatek/vcodec/vdec/vdec_vp8_req_if.c: static int vdec_vp8_slice_decode(void *h_vdec, struct mtk_vcodec_mem *bs,
+      	src_buf_info = container_of(bs, struct mtk_video_dec_buf, bs_buffer);
+      
+      	fb = inst->ctx->dev->vdec_pdata->get_cap_buffer(inst->ctx);
+     -	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
+     +	if (!fb) {
+    -+		mtk_vdec_err(inst->ctx, "fb buffer is NULL");
+    ++		mtk_vcodec_err(inst, "fb buffer is NULL");
+     +		return -ENOMEM;
+     +	}
+      
+---
 
-diff --git a/drivers/net/mii.c b/drivers/net/mii.c
-index 37bc3131d31a..e305bf0f1d04 100644
---- a/drivers/net/mii.c
-+++ b/drivers/net/mii.c
-@@ -464,6 +464,8 @@ int mii_nway_restart (struct mii_if_info *mii)
- 
- 	/* if autoneg is off, it's an error */
- 	bmcr = mii->mdio_read(mii->dev, mii->phy_id, MII_BMCR);
-+	if (bmcr < 0)
-+		return bmcr;
- 
- 	if (bmcr & BMCR_ANENABLE) {
- 		bmcr |= BMCR_ANRESTART;
-diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
-index f69d9b902da0..a206ffa76f1b 100644
---- a/drivers/net/usb/ch9200.c
-+++ b/drivers/net/usb/ch9200.c
-@@ -178,6 +178,7 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
- {
- 	struct usbnet *dev = netdev_priv(netdev);
- 	unsigned char buff[2];
-+	int ret;
- 
- 	netdev_dbg(netdev, "%s phy_id:%02x loc:%02x\n",
- 		   __func__, phy_id, loc);
-@@ -185,8 +186,10 @@ static int ch9200_mdio_read(struct net_device *netdev, int phy_id, int loc)
- 	if (phy_id != 0)
- 		return -ENODEV;
- 
--	control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
--		     CONTROL_TIMEOUT_MS);
-+	ret = control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
-+			   CONTROL_TIMEOUT_MS);
-+	if (ret < 0)
-+		return ret;
- 
- 	return (buff[0] | buff[1] << 8);
- }
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
