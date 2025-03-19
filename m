@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-125058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FAFA68FA3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0315BA6904C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A381F16A460
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 800841661A1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9E21E284C;
-	Wed, 19 Mar 2025 14:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9840F1E284C;
+	Wed, 19 Mar 2025 14:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7F1+5qL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmRtOtzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDFD1D88C3;
-	Wed, 19 Mar 2025 14:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EF31B2194;
+	Wed, 19 Mar 2025 14:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394926; cv=none; b=JiaebKbz+nEP7bNQoENqhzAFHS2cXGEYxd7oqKZHzg5iaiibFQT5VASCkjWMJmLhM8porlD8X12iJ9u/gD16VHPdkaC8UuMLtm3NupK3AnQyyVsintGL/eYcuUcvNtyV5fggsimFswe6u3cxX7drGg48cMuoyhpaC+6OF/V2JaY=
+	t=1742395076; cv=none; b=QvhX/2CiFctqWWhtm7ZJaWkVcroyheLhZw9qh91HpddfO2YGsZCKPsz9Ol0M2Ujdlscj58XhK2Kj7LDTDtB0ozzptFXuQwCHdui1/IggBso/N/MjQj21O/yPejhtX68HZudoE3YgMSczTDugYpUo5cNzRl7o2XiUBkGCtvxfJlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394926; c=relaxed/simple;
-	bh=pWsxl5rWtly8gUQrhddc1ycejo1K8oDRKB9dOoYccak=;
+	s=arc-20240116; t=1742395076; c=relaxed/simple;
+	bh=VNLOgO2QvWoYsOWCNlRdNj8iiCXfuqlNPTU07FxdSgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpJcWLqm2lJkcfSgP56f3HeysrlzCymkhtfX41ofzfyxLLaSURtuRFjKPVz9u3pofuP+CuN1CsXpcmOMsOB7rgZERHoOk7b+oNIs2UubsREwjTgwlAZTRmDYX2T8cCUI116FYd1edjtZucznv0AK5ywFfIYd/umhaXP4qWEyfw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7F1+5qL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F7AC4CEE4;
-	Wed, 19 Mar 2025 14:35:26 +0000 (UTC)
+	 MIME-Version; b=tke0VdNYJlseXVLsm8OdRZjMYbURLBFlUcvHe89Svt3EuToNEl89QNLVNvjlFvRPH6VNldXtmcbqebqgs05BRbFaUkr1++QSDH4314Tj/3enKQRUA00kHcvKMiIYCWwWgecZEGcTzZZCAWldmE1RXRjnLs01TMgHQgCXuL7V9ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmRtOtzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C86AC4CEE4;
+	Wed, 19 Mar 2025 14:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394926;
-	bh=pWsxl5rWtly8gUQrhddc1ycejo1K8oDRKB9dOoYccak=;
+	s=korg; t=1742395076;
+	bh=VNLOgO2QvWoYsOWCNlRdNj8iiCXfuqlNPTU07FxdSgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7F1+5qLgtBr/wDhaPPAhv8h1zpdrMmhr47p9EhVEBioFan9QtCVUGSGYqpaV2aN+
-	 5VLt11SG21ZnsFl9Om2pYilYuJPotWx+opmeKh1/XG0dRsZhV7nMHAzQs7V1NNUASm
-	 oJH79/iQ4IO8fPMuZMsmLjBlRGM2TC+N3mKjBCAU=
+	b=nmRtOtzKg4HS8kVKOTh9m1uAQntGRdjqNeGfZE0MngrSlZhE7oQTqT87bS7BLhu/H
+	 wya3cmamx0KGOzjjesUfjyh5DWnRep0DFWjvZW5RfN8/IMQ/eNSIrdUVdkAVHuPu74
+	 TCUz0PAhWeVch9oTrFaQh12V4gIHTwnbZTrxRIt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 138/241] ASoC: dapm-graph: set fill colour of turned on nodes
+Subject: [PATCH 6.12 115/231] ASoC: SOF: Intel: pci-ptl: Add support for PTL-H
 Date: Wed, 19 Mar 2025 07:30:08 -0700
-Message-ID: <20250319143031.139071753@linuxfoundation.org>
+Message-ID: <20250319143029.687952830@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +65,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit d31babd7e304d3b800d36ff74be6739405b985f2 ]
+[ Upstream commit 4e9c87cfcd0584f2a2e2f352a43ff003d688f3a4 ]
 
-Some tools like KGraphViewer interpret the "ON" nodes not having an
-explicitly set fill colour as them being entirely black, which obscures
-the text on them and looks funny. In fact, I thought they were off for
-the longest time. Comparing to the output of the `dot` tool, I assume
-they are supposed to be white.
+PTL-H uses the same configuration as PTL.
 
-Instead of speclawyering over who's in the wrong and must immediately
-atone for their wickedness at the altar of RFC2119, just be explicit
-about it, set the fillcolor to white, and nobody gets confused.
-
-Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://patch.msgid.link/20250221-dapm-graph-node-colour-v1-1-514ed0aa7069@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250210081730.22916-4-peter.ujfalusi@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/sound/dapm-graph | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/intel/pci-ptl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/sound/dapm-graph b/tools/sound/dapm-graph
-index f14bdfedee8f1..b6196ee5065a4 100755
---- a/tools/sound/dapm-graph
-+++ b/tools/sound/dapm-graph
-@@ -10,7 +10,7 @@ set -eu
- 
- STYLE_COMPONENT_ON="color=dodgerblue;style=bold"
- STYLE_COMPONENT_OFF="color=gray40;style=filled;fillcolor=gray90"
--STYLE_NODE_ON="shape=box,style=bold,color=green4"
-+STYLE_NODE_ON="shape=box,style=bold,color=green4,fillcolor=white"
- STYLE_NODE_OFF="shape=box,style=filled,color=gray30,fillcolor=gray95"
- 
- # Print usage and exit
+diff --git a/sound/soc/sof/intel/pci-ptl.c b/sound/soc/sof/intel/pci-ptl.c
+index 69195b5e7b1a9..f54d098d616f6 100644
+--- a/sound/soc/sof/intel/pci-ptl.c
++++ b/sound/soc/sof/intel/pci-ptl.c
+@@ -50,6 +50,7 @@ static const struct sof_dev_desc ptl_desc = {
+ /* PCI IDs */
+ static const struct pci_device_id sof_pci_ids[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, HDA_PTL, &ptl_desc) }, /* PTL */
++	{ PCI_DEVICE_DATA(INTEL, HDA_PTL_H, &ptl_desc) }, /* PTL-H */
+ 	{ 0, }
+ };
+ MODULE_DEVICE_TABLE(pci, sof_pci_ids);
 -- 
 2.39.5
 
