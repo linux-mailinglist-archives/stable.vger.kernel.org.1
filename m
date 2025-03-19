@@ -1,214 +1,111 @@
-Return-Path: <stable+bounces-124891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CF6A687AC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 10:16:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2925CA68888
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 10:47:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DAF93AE9CF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 09:15:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5CE03B692A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 09:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60B3252915;
-	Wed, 19 Mar 2025 09:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D073253F23;
+	Wed, 19 Mar 2025 09:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HLOT7lcf"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OD/6+peC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9C8209F32;
-	Wed, 19 Mar 2025 09:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF449253F22;
+	Wed, 19 Mar 2025 09:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742375757; cv=none; b=W/qb/qKsaTZknpFqn9F9sOGJqgQ44BewBlzw1YrGq3RDyFRwOzhJN+m0xb6sqDf/n7zNzGhNVff2JfJV6CQcjdxgHlp7Ur3yN4MV+UuOvozFbNq0t3NLk+QYyYOFQ/R+VS5IOYRQUxYx+3dYHSZ3N26pao6ApBEuK9nfvdvVFKM=
+	t=1742376843; cv=none; b=H7cf2F5hBFTAov2GAKJOXFa99UGjGCm6r6ZJlmD9RSXWtWZZYDJQ7IL+LbhEispbf6N5YMJgON92WEDdg/O2GEsQKG2pTsD5bqouoJqEtU0tlBLt/t4Pr9+hMeSBrSm7LF8SUFUJpABHcI0KzGqM0Wxg0u7/EiKKH5t6uTVXi9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742375757; c=relaxed/simple;
-	bh=VFcDyvuCt7vsiepWpgHUSSaWYSKC23V508SsmP0qre4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JG1hkVY3CF+OI5w/UqXO9Jq4rEg1dn6tQuT1REJfuiCrrYqdnjNi280uql+XcxC2TNdx2nW+NeuaHdH7YcVmw5ZwDAn/9tGRxZ6mV5ajU9E6IMDmVWH76LO3TPX6uSn6rFkapfYgsUHXuV27UsAOPdaSatlKjhDG3dcqqh/KLuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HLOT7lcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17242C4CEE9;
-	Wed, 19 Mar 2025 09:15:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742375757;
-	bh=VFcDyvuCt7vsiepWpgHUSSaWYSKC23V508SsmP0qre4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HLOT7lcfwBmNcUq6yIpkjNGivfFTHjfKPA+fnS/O5DEy/y9kDJ0uI4fC46Nq9AFn7
-	 +03a0nRHPbzHmeVXOZ34ICCWO8Xz0RvMSBwxvUKI7njmmPi2sXccF3YS3dKfAHFR+M
-	 Nj9N25i9iKzlglAz9Tzhxioza/En8gpwYFF+KRbzgznpNh+WUx0NbOfEdNiqiIpfca
-	 l7rTGKW9MX8/b/FcaMf2gGRMMuVPVH6eguCe9NLVFCcVAmJa2e7sIUVbsERDD9u2Hw
-	 cqIuJ0P9NJFJi/lB5AQHoK+cX+Q/d2BGkOKH/zMNqxPiQMoDf8hOVGYofERf/ADOvi
-	 /5afcVh01qMrA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tupWk-00EzPO-L3;
-	Wed, 19 Mar 2025 09:15:54 +0000
-Date: Wed, 19 Mar 2025 09:15:54 +0000
-Message-ID: <86r02tmldh.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Mark Brown <broonie@kernel.org>, Gavin Shan <gshan@redhat.com>
-Cc: 		Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH 6.12 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
-In-Reply-To: <019afc2d-b047-4e33-971c-7debbbaec84d@redhat.com>
-References: <20250314-stable-sve-6-12-v1-0-ddc16609d9ba@kernel.org>
-	<20250314-stable-sve-6-12-v1-8-ddc16609d9ba@kernel.org>
-	<019afc2d-b047-4e33-971c-7debbbaec84d@redhat.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1742376843; c=relaxed/simple;
+	bh=QcE3Exv6KWMB/patQRXwotoVumCkfcWotNC0z3khxKI=;
+	h=Message-ID:From:Subject:Date:To:Cc; b=KRKuJSOV11rn4tIPzjsDuH1itOk7+ZQmVQzYoArtFsl5BL1Xl8CJsY80LoKP1W9iPiWPlFtlo9p9NOpb3PFpMhf1YXhjRbqctuo9yP6WQBYWaqF+6fm0le6vymO4Z1u5iY9qdD1VxHkvpmpfJ9IFMYo/kpM0+iXSGcWiBrb5xxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OD/6+peC; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfout.stl.internal (Postfix) with ESMTP id A9FC31140144;
+	Wed, 19 Mar 2025 05:34:00 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Wed, 19 Mar 2025 05:34:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1742376840; x=1742463240; bh=UNJGVlQxrzCOJumx5WZITHasmGjw
+	CM9NyMzgM9QYtKc=; b=OD/6+peCmuxTSXRUCQWGZfopfD6PZhAVlCQD5TsB5Kh+
+	725BFyzE++f4lptAgiKvQSvALEXLRGWubd/GaCqcdFFiiAayf+pgcAYP76tjX0Em
+	RHgu75m80GpRe5A00BtxkfzXqFx9lsandKcU2yRNCz3QVwBfM1NcP7RTFOL6xp/R
+	nes4kx+qHszMqgRjoQ06hAx+nu6jZuCljDliClvqfdbURCtVJK9doxDj65F1QK2L
+	bKJHbdxHldKd2A4H3/GrFO49ggiZgUCedSbWzgtpZg4hPYBL4lgoXL1xqjSbcTEa
+	QvNUxFRBBm56MtexMpgeoVluVCaULzElKn4eIxdvww==
+X-ME-Sender: <xms:h4_aZx27oWXba03aWNDIPiZS3zfyYceJ4VeaQ-ZMaS0SB1zBnhRUcA>
+    <xme:h4_aZ4HVqoBTKFS084MHE9pHjA2xSmFsLyEpq6OaexrINlh0t3tTecmJTTGIEx-mu
+    abt8pN-pY_uijmCtw4>
+X-ME-Received: <xmr:h4_aZx4m2-zm_HOoXh-Y2bcgNCLHW8Y8cP7IQHEFAsOwENObwNxru8oYZ1sf46W3aLENokNEKL-9tEzS3Aas12FlxE9PAGNU7tU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeegleelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepkffhufffvfevsedttdertddttddtnecuhfhr
+    ohhmpefhihhnnhcuvfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorh
+    hgqeenucggtffrrghtthgvrhhnpeehffdukeetffdutedvffffheegtdetkeekfeevgfei
+    tefhvedvtdelhfduudettdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgt
+    phhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgvggvrhhtsehlih
+    hnuhigqdhmieekkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhg
+    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmieekkheslhhish
+    htshdrlhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:h4_aZ-2aGSobBImGG39kDFVfKxbwL1FZVcZ6RBrZJ4vGWkMKoNlCzg>
+    <xmx:h4_aZ0Gp14Jp4fiPeSqpOKeRs4LhFdvGx70xCGve0b9EwZX__O8O3Q>
+    <xmx:h4_aZ_8Stl7_q5f7MifNo2YdCwRi7R0Kucy1e8AQ6G5SAShHT6VTvQ>
+    <xmx:h4_aZxnCSADfSZILkRgGBar5zZTCbs6WycrjgTQiKRdarwU6abKckQ>
+    <xmx:iI_aZwgbfSPy4latJ58DFYmd_z3eDTeccdmKvwgb_5zbT1AFm9_PkHFz>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 19 Mar 2025 05:33:58 -0400 (EDT)
+Message-ID: <cover.1742376675.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH v2 0/3] m68k: Bug fix and cleanup for framebuffer debug console
+Date: Wed, 19 Mar 2025 20:31:15 +1100
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-kernel@vger.kernel.org,
+    linux-m68k@lists.linux-m68k.org,
+    stable@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: gregkh@linuxfoundation.org, broonie@kernel.org, gshan@redhat.com, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, catalin.marinas@arm.com, will@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, mark.rutland@arm.com, tabba@google.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 19 Mar 2025 00:26:14 +0000,
-Gavin Shan <gshan@redhat.com> wrote:
-> 
-> Hi Mark,
-> 
-> On 3/14/25 10:35 AM, Mark Brown wrote:
-> > From: Mark Rutland <mark.rutland@arm.com>
-> > 
-> > [ Upstream commit 59419f10045bc955d2229819c7cf7a8b0b9c5b59 ]
-> > 
-> > In non-protected KVM modes, while the guest FPSIMD/SVE/SME state is live on the
-> > CPU, the host's active SVE VL may differ from the guest's maximum SVE VL:
-> > 
-> > * For VHE hosts, when a VM uses NV, ZCR_EL2 contains a value constrained
-> >    by the guest hypervisor, which may be less than or equal to that
-> >    guest's maximum VL.
-> > 
-> >    Note: in this case the value of ZCR_EL1 is immaterial due to E2H.
-> > 
-> > * For nVHE/hVHE hosts, ZCR_EL1 contains a value written by the guest,
-> >    which may be less than or greater than the guest's maximum VL.
-> > 
-> >    Note: in this case hyp code traps host SVE usage and lazily restores
-> >    ZCR_EL2 to the host's maximum VL, which may be greater than the
-> >    guest's maximum VL.
-> > 
-> > This can be the case between exiting a guest and kvm_arch_vcpu_put_fp().
-> > If a softirq is taken during this period and the softirq handler tries
-> > to use kernel-mode NEON, then the kernel will fail to save the guest's
-> > FPSIMD/SVE state, and will pend a SIGKILL for the current thread.
-> > 
-> > This happens because kvm_arch_vcpu_ctxsync_fp() binds the guest's live
-> > FPSIMD/SVE state with the guest's maximum SVE VL, and
-> > fpsimd_save_user_state() verifies that the live SVE VL is as expected
-> > before attempting to save the register state:
-> > 
-> > | if (WARN_ON(sve_get_vl() != vl)) {
-> > |         force_signal_inject(SIGKILL, SI_KERNEL, 0, 0);
-> > |         return;
-> > | }
-> > 
-> > Fix this and make this a bit easier to reason about by always eagerly
-> > switching ZCR_EL{1,2} at hyp during guest<->host transitions. With this
-> > happening, there's no need to trap host SVE usage, and the nVHE/nVHE
-> > __deactivate_cptr_traps() logic can be simplified to enable host access
-> > to all present FPSIMD/SVE/SME features.
-> > 
-> > In protected nVHE/hVHE modes, the host's state is always saved/restored
-> > by hyp, and the guest's state is saved prior to exit to the host, so
-> > from the host's PoV the guest never has live FPSIMD/SVE/SME state, and
-> > the host's ZCR_EL1 is never clobbered by hyp.
-> > 
-> > Fixes: 8c8010d69c132273 ("KVM: arm64: Save/restore SVE state for nVHE")
-> > Fixes: 2e3cf82063a00ea0 ("KVM: arm64: nv: Ensure correct VL is loaded before saving SVE state")
-> > Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> > Reviewed-by: Mark Brown <broonie@kernel.org>
-> > Tested-by: Mark Brown <broonie@kernel.org>
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Fuad Tabba <tabba@google.com>
-> > Cc: Marc Zyngier <maz@kernel.org>
-> > Cc: Oliver Upton <oliver.upton@linux.dev>
-> > Cc: Will Deacon <will@kernel.org>
-> > Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-> > Link: https://lore.kernel.org/r/20250210195226.1215254-9-mark.rutland@arm.com
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > Signed-off-by: Mark Brown <broonie@kernel.org>
-> > ---
-> >   arch/arm64/kvm/fpsimd.c                 | 30 -----------------
-> >   arch/arm64/kvm/hyp/entry.S              |  5 +++
-> >   arch/arm64/kvm/hyp/include/hyp/switch.h | 59 +++++++++++++++++++++++++++++++++
-> >   arch/arm64/kvm/hyp/nvhe/hyp-main.c      | 13 ++++----
-> >   arch/arm64/kvm/hyp/nvhe/switch.c        | 33 +++++++++++++++---
-> >   arch/arm64/kvm/hyp/vhe/switch.c         |  4 +++
-> >   6 files changed, 103 insertions(+), 41 deletions(-)
-> > 
-> 
-> [...]
-> 
-> > diff --git a/arch/arm64/kvm/hyp/nvhe/hyp-main.c b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-> > index 4e757a77322c9efc59cdff501745f7c80d452358..1c8e2ad32e8c396fc4b11d5fec2e86728f2829d9 100644
-> > --- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-> > +++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-> > @@ -5,6 +5,7 @@
-> >    */
-> >     #include <hyp/adjust_pc.h>
-> > +#include <hyp/switch.h>
-> >     #include <asm/pgtable-types.h>
-> >   #include <asm/kvm_asm.h>
-> > @@ -176,8 +177,12 @@ static void handle___kvm_vcpu_run(struct kvm_cpu_context *host_ctxt)
-> >   		sync_hyp_vcpu(hyp_vcpu);
-> >   		pkvm_put_hyp_vcpu(hyp_vcpu);
-> >   	} else {
-> > +		struct kvm_vcpu *vcpu = kern_hyp_va(host_vcpu);
-> > +
-> >   		/* The host is fully trusted, run its vCPU directly. */
-> > -		ret = __kvm_vcpu_run(host_vcpu);
-> > +		fpsimd_lazy_switch_to_guest(vcpu);
-> > +		ret = __kvm_vcpu_run(vcpu);
-> > +		fpsimd_lazy_switch_to_host(vcpu);
-> >   	}
-> >   
-> 
-> @host_vcpu should have been hypervisor's linear mapping address in v6.12. It looks
-> incorrect to assume it's a kernel's linear mapping address and convert it (@host_vcpu)
-> to the hypervisor's linear address agin, if I don't miss anything.
+This series has a bug fix for the early bootconsole as well as
+some related efficiency improvements and cleanup.
 
-host_vcpu is passed as a parameter to the hypercall, and is definitely
-a kernel address.
+The relevant code is subject to CONSOLE_DEBUG, which is only used
+on Macs at present.
 
-However, at this stage, we have *already* converted it to a HYP VA:
+---
+Changed since v1: 
+ - Solved problem with line wrap while scrolling.
+ - Added two additional patches.
 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/arch/arm64/kvm/hyp/nvhe/hyp-main.c?h=linux-6.12.y#n147
 
-The result is that this change is turning a perfectly valid HYP VA
-into... something. Odds are that the masking/patching will not mess up
-the address, but this is completely buggy anyway. In general,
-kern_hyp_va() is not an idempotent operation.
+Finn Thain (3):
+  m68k: Fix lost column on framebuffer debug console
+  m68k: Avoid pointless recursion in debug console rendering
+  m68k: Remove unused "cursor home" code from debug console
 
-Thanks for noticing that something was wrong.
-
-Broonie, can you please look into this?
-
-Greg, it may be more prudent to unstage this series from 6.12-stable
-until we know for sure this is the only problem.
-
-	M.
+ arch/m68k/kernel/head.S | 73 +++++++++++++++++++++--------------------
+ 1 file changed, 37 insertions(+), 36 deletions(-)
 
 -- 
-Without deviation from the norm, progress is not possible.
+2.45.3
+
 
