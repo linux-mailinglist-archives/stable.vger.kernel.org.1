@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D92A68FAD
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0F6A690BE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D402B16E60E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8087688163B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C501E572A;
-	Wed, 19 Mar 2025 14:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745501E5B6E;
+	Wed, 19 Mar 2025 14:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHP1CrKZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIHKWgHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572121C7013;
-	Wed, 19 Mar 2025 14:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334E01DC9A7;
+	Wed, 19 Mar 2025 14:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394939; cv=none; b=tpKxjRX5RMaJcp5khZaBJKPrHnch6bG777oU7/qPjo7llr74M6rvZD4z5AjTkeLQvThAETXGnCU0rBBOasJ1aGUsRPkLVUtqcCGZsZ5KMGHuzzOb3XeVquoC0VH2V6OdmrJRc/kmZpF0GZqLe6E3V3OLtjjf7KDxNz3zkkvwJrE=
+	t=1742395103; cv=none; b=Xh5FcUiAVKLTRvTQ7i1Hi38V+PmVyJ4hgaVhZRSTk7AX7U/oycbYVfjW8+G26QSsENJBp+XiXHHsbrRUfKH1CAFPA5tgnC21ov1xV+5a6qAOAHU9jCR9fdh3zma0REFloO0XIW+JqkfLhUV6tvx0J4ZJmT8D2o0xKRDu3X9Wj5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394939; c=relaxed/simple;
-	bh=04VRuoB4ImKtXXIZ6+JjK4LvIXs280cSbG3bTB1Td38=;
+	s=arc-20240116; t=1742395103; c=relaxed/simple;
+	bh=D0Sd18Ycv7nCo2nHn+XZm3Y/0gETg1hpHupOLEsKgUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUsu+Br2BTEvqUzCMLH2G7H0dMI9U8RfeDasVpi9THIOM05DIy3iDR5XpcOWfuJIROnXuuwrfYqCx70VtvDkJG9ddnvJ9nx8SpQYrqXdExVUOkF6fCPBlBEDCapBGfULjeDWWYxkum79OyOFF4HQUqHZaJGM6fB4ylqHMt4c9l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHP1CrKZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E34C4CEE4;
-	Wed, 19 Mar 2025 14:35:39 +0000 (UTC)
+	 MIME-Version; b=cLYbsMsvS0wle2dQCMclz+EeXRMvhR0cGkg9d/eTA3MVS6ZXvpZ6SzPNFczqKddHrmr69GuspDQjL8++OLC6XPS/FC2C3b9Ak8nTLtK2joJUuJC0jj8DDs6xItL/PeSpD/Y7ArNxdrEKRPoCv20n9MBzBrIC1C6w2f6WIOMfGVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIHKWgHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C68C4CEE4;
+	Wed, 19 Mar 2025 14:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394939;
-	bh=04VRuoB4ImKtXXIZ6+JjK4LvIXs280cSbG3bTB1Td38=;
+	s=korg; t=1742395103;
+	bh=D0Sd18Ycv7nCo2nHn+XZm3Y/0gETg1hpHupOLEsKgUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHP1CrKZsTNYNNaCYtqi66yhJaKwPCDCX8qDxFWDGqUUj+172I2kQH3XOIYKrT+aZ
-	 vjYnp7/uXCEdjSH8xscCmd3LyCU+Jj3PleXYI+J0KyvwNGM6c6Km9EynOXHbPwEWUp
-	 sdt6VGfzdtEmeuFrGC/xc5xMWb7m3O947leM4LEs=
+	b=rIHKWgHJYWwxG3KzHkw4v9mAOM4HTwfenNiwdnHbnfL2PMjBNqXPZH6mARMN/sWbl
+	 +1sk/yH7S9uTk7t4b7MmCi6snEr/dT55+QeC7aQjTDqUlxH4AioMVlLqnBE4oXp7qA
+	 +0RvGwHghmpBbqiIBKtJ+Om0DX9FDB1aOw+jA7yQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.13 151/241] Input: ads7846 - fix gpiod allocation
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 128/231] ASoC: tas2770: Fix volume scale
 Date: Wed, 19 Mar 2025 07:30:21 -0700
-Message-ID: <20250319143031.453149162@linuxfoundation.org>
+Message-ID: <20250319143029.999819818@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Nikolaus Schaller <hns@goldelico.com>
+From: Hector Martin <marcan@marcan.st>
 
-commit c9ccb88f534ca760d06590b67571c353a2f0cbcd upstream.
+[ Upstream commit 579cd64b9df8a60284ec3422be919c362de40e41 ]
 
-commit 767d83361aaa ("Input: ads7846 - Convert to use software nodes")
+The scale starts at -100dB, not -128dB.
 
-has simplified the code but accidentially converted a devm_gpiod_get()
-to gpiod_get(). This leaves the gpio reserved on module remove and the
-driver can no longer be loaded again.
-
-Fixes: 767d83361aaa ("Input: ads7846 - Convert to use software nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
-Link: https://lore.kernel.org/r/6e9b143f19cdfda835711a8a7a3966e5a2494cff.1738410204.git.hns@goldelico.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2770-v1-1-cf50ff1d59a3@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ads7846.c |    2 +-
+ sound/soc/codecs/tas2770.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -1021,7 +1021,7 @@ static int ads7846_setup_pendown(struct
- 	if (pdata->get_pendown_state) {
- 		ts->get_pendown_state = pdata->get_pendown_state;
- 	} else {
--		ts->gpio_pendown = gpiod_get(&spi->dev, "pendown", GPIOD_IN);
-+		ts->gpio_pendown = devm_gpiod_get(&spi->dev, "pendown", GPIOD_IN);
- 		if (IS_ERR(ts->gpio_pendown)) {
- 			dev_err(&spi->dev, "failed to request pendown GPIO\n");
- 			return PTR_ERR(ts->gpio_pendown);
+diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
+index 9f93b230652a5..863c3f672ba98 100644
+--- a/sound/soc/codecs/tas2770.c
++++ b/sound/soc/codecs/tas2770.c
+@@ -506,7 +506,7 @@ static int tas2770_codec_probe(struct snd_soc_component *component)
+ }
+ 
+ static DECLARE_TLV_DB_SCALE(tas2770_digital_tlv, 1100, 50, 0);
+-static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -12750, 50, 0);
++static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -10050, 50, 0);
+ 
+ static const struct snd_kcontrol_new tas2770_snd_controls[] = {
+ 	SOC_SINGLE_TLV("Speaker Playback Volume", TAS2770_PLAY_CFG_REG2,
+-- 
+2.39.5
+
 
 
 
