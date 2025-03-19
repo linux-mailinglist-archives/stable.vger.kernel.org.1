@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-125299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798A6A69174
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1B5A69104
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C2DB1B8824C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A407F1714FF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A941E5201;
-	Wed, 19 Mar 2025 14:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8276F22156D;
+	Wed, 19 Mar 2025 14:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uK+qtDWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx50urYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9052521A443;
-	Wed, 19 Mar 2025 14:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409521C8618;
+	Wed, 19 Mar 2025 14:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395091; cv=none; b=R6ZMn2R616hqjHKKym8c8/QMOcmkRGhsSPPNG2kXncfhobJJHjpA/b+H7Kbje+JTLaPSBbOPEUcsLOHquRwWw61phIXkdFBaq1fOZMTXGAB6faU+8INK+qB1RyQ56DDevCtpeHH3Ra7FArUhFwD8Ok/wXMIuCuIzR3HBCcx+5KM=
+	t=1742395200; cv=none; b=UvJ0Da7UfRZaahM0tXD0XJ+D3o9Wfw8uWy/ufcTfGELU3jboNoV+eWBuIt+zZZ1QOgTVVENkAHhmEva/ayLaIls1vHFXAmIFrgssgfLI/2Ng9mDTB69MvDhGCVVf8vbstpyN6+RGFnU5cLEJQRMFiYbH0unYvFpSZy+f4hYKtH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395091; c=relaxed/simple;
-	bh=tXFRggG4YInR5P+SE6u3g49ilDd0IhP+qJiU7y/MtL4=;
+	s=arc-20240116; t=1742395200; c=relaxed/simple;
+	bh=h4HMfQq9x4TxRVTY65R/73bSsjgDSH0V4Puqefk0wW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQ6H4UIYP89c4R9ve3Eqbf6rcDXQoEoxGRPb8ffLcxGZ2+XXhlA7RpJGpnogg54KdZTscKtFmemxo5vhKnViQNpxmyXJCr4umI7iHUmyzF8lv3j3Iz2VWwMpsoLzarRExty9jvWmeG1P3h8QHU4FPFHwRIM3iTi1GH+nPquHmxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uK+qtDWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680F1C4CEE4;
-	Wed, 19 Mar 2025 14:38:11 +0000 (UTC)
+	 MIME-Version; b=pHsGNwtfPi1Fl25wSi700zoZ9kjOUNIqORCJ2SuxupNN4BVw/1ErtDynXUIYISXzKlPEuIvc9NC/iaVyzudZ4E87rLskEf6PmdJEFDwECQNWVsb37WNu2Ed+KgyOBU0mXlf9loANKkazROnsXbidAuGqehMlY6EPAVNtxwDrXZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx50urYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB19C4CEE8;
+	Wed, 19 Mar 2025 14:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395091;
-	bh=tXFRggG4YInR5P+SE6u3g49ilDd0IhP+qJiU7y/MtL4=;
+	s=korg; t=1742395200;
+	bh=h4HMfQq9x4TxRVTY65R/73bSsjgDSH0V4Puqefk0wW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uK+qtDWOKy3TgSq/qqm04lr+o7BCHHDz/iZSAk96zJF+IJnnrc6vRM5o/y2IiLJci
-	 3RSha/o/EwzlvRINIaD+5uXSUIrK2reo/itI8zw1ijIU0pgfHP/2BAeAbMBulWxyvt
-	 vdI1DIiUis9KWVHNLvTRmljaxkp+elVgGWue8vvo=
+	b=Wx50urYiLDlFhNrKo+0pFT2Pb1cp2jLd1KLBqpGfjUtdqbqH0GugJCtNn5oqBJ7dW
+	 ArZVwnOcIpuxwZM1Roes96eJVKIVqasLRBuVsConFdDk7vi2MiJFIYQ3cjoR9pxYAa
+	 GKQYxP4MiT9bWcRQjoWlFjD7ajJX1YLqEMhE666E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 139/231] mptcp: safety check before fallback
-Date: Wed, 19 Mar 2025 07:30:32 -0700
-Message-ID: <20250319143030.272827716@linuxfoundation.org>
+Subject: [PATCH 6.6 062/166] thermal/cpufreq_cooling: Remove structure member documentation
+Date: Wed, 19 Mar 2025 07:30:33 -0700
+Message-ID: <20250319143021.687612554@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
+[ Upstream commit a6768c4f92e152265590371975d44c071a5279c7 ]
 
-Recently, some fallback have been initiated, while the connection was
-not supposed to fallback.
+The structure member documentation refers to a member which does not
+exist any more. Remove it.
 
-Add a safety check with a warning to detect when an wrong attempt to
-fallback is being done. This should help detecting any future issues
-quicker.
-
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/all/202501220046.h3PMBCti-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501220046.h3PMBCti-lkp@intel.com/
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/20250211084712.2746705-1-daniel.lezcano@linaro.org
+[ rjw: Minor changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/thermal/cpufreq_cooling.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index b70a303e08287..7e2f70f22b05b 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1194,6 +1194,8 @@ static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
- 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
- 		return;
- 	}
-+	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
-+		return;
- 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
- }
- 
+diff --git a/drivers/thermal/cpufreq_cooling.c b/drivers/thermal/cpufreq_cooling.c
+index e2cc7bd308620..874b4838d2c92 100644
+--- a/drivers/thermal/cpufreq_cooling.c
++++ b/drivers/thermal/cpufreq_cooling.c
+@@ -57,8 +57,6 @@ struct time_in_idle {
+  * @max_level: maximum cooling level. One less than total number of valid
+  *	cpufreq frequencies.
+  * @em: Reference on the Energy Model of the device
+- * @cdev: thermal_cooling_device pointer to keep track of the
+- *	registered cooling device.
+  * @policy: cpufreq policy.
+  * @cooling_ops: cpufreq callbacks to thermal cooling device ops
+  * @idle_time: idle time stats
 -- 
 2.39.5
 
