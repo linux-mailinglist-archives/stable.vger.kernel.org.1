@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-125482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C87CA6911C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4117AA690FB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DE784263A6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 193493AA315
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990B3207E0E;
-	Wed, 19 Mar 2025 14:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2381D5CE7;
+	Wed, 19 Mar 2025 14:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZjQj++S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjx1mUG0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B1E1C9B6C;
-	Wed, 19 Mar 2025 14:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7991A841C;
+	Wed, 19 Mar 2025 14:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395220; cv=none; b=ZJ1SuEf2qto3Gw17WYHkDrDrMthNK5oMiAznaiBg2JsufI+/T3WAKhfwUDtksghyd0Clv57m8iHOf4nn4t6R3AtZ5xW+OctJuZ2TyYLZ87zzCmt9gELPJxAsJbhKMsy0wGZLubSnl8FmY0LOu6gnGhSrHDyQ+Yr3+DQvBJzZy7o=
+	t=1742395147; cv=none; b=O0RGyMpp6Ribw1hqxOVLipUA/+wWV9MScP8LGx9xNvNtKUsoeZW+BnJ6hj9E9UTeF/bvbTuNDtT6VHNKG5lc4Cc0qI3O3RtQZCFd2OZ4lcz+ixabXTRBVv1zj1j9a+X3IlMgVzFJr6KM4rnTEaBUe/0bcGE+z3mzxrEogcpiguM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395220; c=relaxed/simple;
-	bh=U6dLSraKUc/JSHhNglrGU5h1WYOz3nnmjQ9f9cSqeY4=;
+	s=arc-20240116; t=1742395147; c=relaxed/simple;
+	bh=kSXmQqqJrBliQeeEFHHzRT4cbRf/0ERVdStRR4sIi0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bd3SibVWlwDfaUDuPFhmL2vWSRTs7wcqiS4kEXLPbVLne4MF3I8FgtfGcwvWugpgVHvWWoI6AsqALLs/xBG37Ak7R/cNtfZCiU0f+gFFTt4kKMkzX0aJ/ACw+bBuHaPC0yE3G+LO2Cq5TW7bIsAiMTXe8bqeKyv7QzS2l5DzD38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZjQj++S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7B0C4CEE4;
-	Wed, 19 Mar 2025 14:40:19 +0000 (UTC)
+	 MIME-Version; b=rkVl+tt7Hpt9jZVV0eSJWybsekz/X5XyFfnPFq7hO40KvhUwPCab+WC+re1te8iTcKGZlAdm1y6PMFs5pdp50uHaPD4tujD1emuAWC8fXlRmUuSb/UCmMJpOhtAFv+MqjanhMCArD6HI7sxq+sFTCV7zI9W+HG0ZT3L+DuDMeS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjx1mUG0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27E0C4CEE8;
+	Wed, 19 Mar 2025 14:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395220;
-	bh=U6dLSraKUc/JSHhNglrGU5h1WYOz3nnmjQ9f9cSqeY4=;
+	s=korg; t=1742395146;
+	bh=kSXmQqqJrBliQeeEFHHzRT4cbRf/0ERVdStRR4sIi0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ZjQj++ShT7iidm0bz9l9dYpoABDZw5NbT5s92R7ymrBI0t0w5PYcJto/JgqQKXsr
-	 42Y9qqwuctvDgtSfESq0MqAmi4b2EoKxFJgqMH7mb7P+Fq4whq3zXdx1dDw3utDjQg
-	 TaRG2++Mca26edOD7m9/fBzdkWOPdW9hOxiKJ3mU=
+	b=xjx1mUG0iPd4XbrybIfvgPueOeHIg/wPEXrljJfeXBYIx/YUKhyW9ECLFLOqTJiPY
+	 7wqjl5esRFhGSOwtheyOW7UQRvLSfqKh7K8fSmTcYvBhp8WQnCBvqK1ExLGsi2ryOb
+	 KB8qJmRz+/GakxFha/PWrpZ03R77RapOhRKwZqXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/166] mptcp: safety check before fallback
+	Conor Dooley <conor.dooley@microchip.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 168/231] spi: microchip-core: prevent RX overflows when transmit size > FIFO size
 Date: Wed, 19 Mar 2025 07:31:01 -0700
-Message-ID: <20250319143022.460093076@linuxfoundation.org>
+Message-ID: <20250319143030.993330774@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
+commit 91cf42c63f2d8a9c1bcdfe923218e079b32e1a69 upstream.
 
-Recently, some fallback have been initiated, while the connection was
-not supposed to fallback.
+When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
+overflows will be generated and receive data will be corrupted and
+warnings will be produced. For example, here's an error generated by a
+transfer of 36 bytes:
 
-Add a safety check with a warning to detect when an wrong attempt to
-fallback is being done. This should help detecting any future issues
-quicker.
+  spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The driver is currently split between handling receiving in the
+interrupt handler, and sending outside of it. Move all handling out of
+the interrupt handling, and explicitly link the number of bytes read of
+of the RX FIFO to the number written into the TX one. This both resolves
+the overflow problems as well as simplifying the flow of the driver.
+
+CC: stable@vger.kernel.org
+Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20250303-veal-snooper-712c1dfad336@wendy
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-microchip-core.c |   41 +++++++++++++++++----------------------
+ 1 file changed, 18 insertions(+), 23 deletions(-)
 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 0bb0386aa0897..d67add91c9b90 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1103,6 +1103,8 @@ static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
- 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
- 		return;
- 	}
-+	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
-+		return;
- 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
+--- a/drivers/spi/spi-microchip-core.c
++++ b/drivers/spi/spi-microchip-core.c
+@@ -70,8 +70,7 @@
+ #define INT_RX_CHANNEL_OVERFLOW		BIT(2)
+ #define INT_TX_CHANNEL_UNDERRUN		BIT(3)
+ 
+-#define INT_ENABLE_MASK (CONTROL_RX_DATA_INT | CONTROL_TX_DATA_INT | \
+-			 CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
++#define INT_ENABLE_MASK (CONTROL_RX_OVER_INT | CONTROL_TX_UNDER_INT)
+ 
+ #define REG_CONTROL		(0x00)
+ #define REG_FRAME_SIZE		(0x04)
+@@ -133,10 +132,15 @@ static inline void mchp_corespi_disable(
+ 	mchp_corespi_write(spi, REG_CONTROL, control);
  }
  
--- 
-2.39.5
-
+-static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi)
++static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi, int fifo_max)
+ {
+-	while (spi->rx_len >= spi->n_bytes && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)) {
+-		u32 data = mchp_corespi_read(spi, REG_RX_DATA);
++	for (int i = 0; i < fifo_max; i++) {
++		u32 data;
++
++		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_EMPTY)
++			;
++
++		data = mchp_corespi_read(spi, REG_RX_DATA);
+ 
+ 		spi->rx_len -= spi->n_bytes;
+ 
+@@ -211,11 +215,10 @@ static inline void mchp_corespi_set_xfer
+ 	mchp_corespi_write(spi, REG_FRAMESUP, len);
+ }
+ 
+-static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
++static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi, int fifo_max)
+ {
+-	int fifo_max, i = 0;
++	int i = 0;
+ 
+-	fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
+ 	mchp_corespi_set_xfer_size(spi, fifo_max);
+ 
+ 	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_TXFIFO_FULL)) {
+@@ -413,19 +416,6 @@ static irqreturn_t mchp_corespi_interrup
+ 	if (intfield == 0)
+ 		return IRQ_NONE;
+ 
+-	if (intfield & INT_TXDONE)
+-		mchp_corespi_write(spi, REG_INT_CLEAR, INT_TXDONE);
+-
+-	if (intfield & INT_RXRDY) {
+-		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RXRDY);
+-
+-		if (spi->rx_len)
+-			mchp_corespi_read_fifo(spi);
+-	}
+-
+-	if (!spi->rx_len && !spi->tx_len)
+-		finalise = true;
+-
+ 	if (intfield & INT_RX_CHANNEL_OVERFLOW) {
+ 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RX_CHANNEL_OVERFLOW);
+ 		finalise = true;
+@@ -512,9 +502,14 @@ static int mchp_corespi_transfer_one(str
+ 
+ 	mchp_corespi_write(spi, REG_SLAVE_SELECT, spi->pending_slave_select);
+ 
+-	while (spi->tx_len)
+-		mchp_corespi_write_fifo(spi);
++	while (spi->tx_len) {
++		int fifo_max = DIV_ROUND_UP(min(spi->tx_len, FIFO_DEPTH), spi->n_bytes);
++
++		mchp_corespi_write_fifo(spi, fifo_max);
++		mchp_corespi_read_fifo(spi, fifo_max);
++	}
+ 
++	spi_finalize_current_transfer(host);
+ 	return 1;
+ }
+ 
 
 
 
