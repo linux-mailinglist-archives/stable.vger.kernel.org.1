@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-125506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5DEA690E0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16EF7A68FCC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 507F17AE116
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C0CF3BEFC9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE74221F00;
-	Wed, 19 Mar 2025 14:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFD81EB5EA;
+	Wed, 19 Mar 2025 14:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiIMfCzg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4hlvUBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9951420A5D3;
-	Wed, 19 Mar 2025 14:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3761EB5EE;
+	Wed, 19 Mar 2025 14:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395238; cv=none; b=idieRs8LNPTkF2V31/Ky8AosA24fjG5LqJd4rk0DHHsbFqWPYsYAROw23El9oaOVCv9xfSAaMQKWPHqU/JV8w1AQ/8XszG16TW+hoA+ArdfnoYUz38CdtoEg9XsRnJ5Q44ZwWtuM/gzeAfip2kSp9nMvyER1vgq5vnNlGo4wZiM=
+	t=1742394952; cv=none; b=Lgzw1BvrhZvYFaI5su6VIjVH32LsRhOUF4MHyRtqg8wwXlGdba4NdqIGtIWxm0ymlGGg//93Jl4gkC0mWEmFyNzs9OhRsY2cGtr/ves9cTGHHFvD97bd0lCsYhCfQeRDaQSLUPNettKJ4OviOqS5cMxsZQiuS+hVNyLgahUglHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395238; c=relaxed/simple;
-	bh=Q8ZYfUcvD1F6rlaSmx7ZTgR4A5f6EYWG+cp7RaKIAd4=;
+	s=arc-20240116; t=1742394952; c=relaxed/simple;
+	bh=hLPfvmeKyvHUg++WofdjPKlWYUryUiPWks4n1Lf2ZTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGqvPYVEtRGjUNJCnAPU0j2/a9hORn9AomMIzX2qp+A2kpLBox23tXtbc3iBKlp8LFXNYmRRqvgYSfk268vg6Rifu2As2OiQ1PsiVn43CLUxLXFHk0WA+Lx911MQ5a3oAiJ8azU/z1UTWi4E7wFEsDai/NsCEJ13aSiHh+buB3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiIMfCzg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B8CC4CEE8;
-	Wed, 19 Mar 2025 14:40:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L1tqktl5WggvB8jdrRRPd99MafgCO9ZbeavXRID3Ty1PP2wXJb0L7qgPwp5/DzRZ4RYKJebvw5EuZEPgiNUjooAC2fEplaf4S7Rpjs1ZIIexDZtIjZvlnSa1jDuWRf3u47kD2fd+kRij+gqWV4Fy1nSizA2T0B+KKDEdJYigw3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4hlvUBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0EDC4CEE4;
+	Wed, 19 Mar 2025 14:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395238;
-	bh=Q8ZYfUcvD1F6rlaSmx7ZTgR4A5f6EYWG+cp7RaKIAd4=;
+	s=korg; t=1742394952;
+	bh=hLPfvmeKyvHUg++WofdjPKlWYUryUiPWks4n1Lf2ZTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiIMfCzgsA0R3lDp5xh0Dn0oNzifN/COH34Qd4iVvXSXyoDI1xKU0s/SIJgVKvH0+
-	 ZJMe+r1HcL8ENYTjW0WCERLX1qekc41YfoeuQykd7/LUmUsMh8N6YCi7OO6AtQO6el
-	 al/XmH7DFr729bxH4yC/52492pJbnrRWVVNLW5GM=
+	b=u4hlvUBuFhu2m9avGwVyA2NZYl12IkYeSyGgfFH9niwP4K9/8GFotb5dbMa5Ww13W
+	 QsYEkBmRJU8eGZNDN91DrChY9v1c2N93733k/txXE1yr1uPqnv+EvvJcnzpCz9Wfn1
+	 s86e9KVtV2/KMzPEbKRtfrbmaH7Vs478gWMO8im8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Lentocha <christopherericlentocha@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/166] nvme-pci: quirk Acer FA100 for non-uniqueue identifiers
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Subject: [PATCH 6.13 177/241] drm/atomic: Filter out redundant DPMS calls
 Date: Wed, 19 Mar 2025 07:30:47 -0700
-Message-ID: <20250319143022.068384086@linuxfoundation.org>
+Message-ID: <20250319143032.112956135@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher Lentocha <christopherericlentocha@gmail.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit fcd875445866a5219cf2be3101e276b21fc843f3 ]
+commit de93ddf88088f7624b589d0ff3af9effb87e8f3b upstream.
 
-In order for two Acer FA100 SSDs to work in one PC (in the case of
-myself, a Lenovo Legion T5 28IMB05), and not show one drive and not
-the other, and sometimes mix up what drive shows up (randomly), these
-two lines of code need to be added, and then both of the SSDs will
-show up and not conflict when booting off of one of them. If you boot
-up your computer with both SSDs installed without this patch, you may
-also randomly get into a kernel panic (if the initrd is not set up) or
-stuck in the initrd "/init" process, it is set up, however, if you do
-apply this patch, there should not be problems with booting or seeing
-both contents of the drive. Tested with the btrfs filesystem with a
-RAID configuration of having the root drive '/' combined to make two
-256GB Acer FA100 SSDs become 512GB in total storage.
+Video players (eg. mpv) do periodic XResetScreenSaver() calls to
+keep the screen on while the video playing. The modesetting ddx
+plumbs these straight through into the kernel as DPMS setproperty
+ioctls, without any filtering whatsoever. When implemented via
+atomic these end up as empty commits on the crtc (which will
+nonetheless take one full frame), which leads to a dropped
+frame every time XResetScreenSaver() is called.
 
-Kernel Logs with patch applied (`dmesg -t | grep -i nvm`):
+Let's just filter out redundant DPMS property changes in the
+kernel to avoid this issue.
 
-```
-...
-nvme 0000:04:00.0: platform quirk: setting simple suspend
-nvme nvme0: pci function 0000:04:00.0
-nvme 0000:05:00.0: platform quirk: setting simple suspend
-nvme nvme1: pci function 0000:05:00.0
-nvme nvme1: missing or invalid SUBNQN field.
-nvme nvme1: allocated 64 MiB host memory buffer.
-nvme nvme0: missing or invalid SUBNQN field.
-nvme nvme0: allocated 64 MiB host memory buffer.
-nvme nvme1: 8/0/0 default/read/poll queues
-nvme nvme1: Ignoring bogus Namespace Identifiers
-nvme nvme0: 8/0/0 default/read/poll queues
-nvme nvme0: Ignoring bogus Namespace Identifiers
-nvme0n1: p1 p2
-...
-```
+v2: Explain the resulting commits a bit better (Sima)
+    Document the behaviour in uapi docs (Sima)
 
-Kernel Logs with patch not applied (`dmesg -t | grep -i nvm`):
-
-```
-...
-nvme 0000:04:00.0: platform quirk: setting simple suspend
-nvme nvme0: pci function 0000:04:00.0
-nvme 0000:05:00.0: platform quirk: setting simple suspend
-nvme nvme1: pci function 0000:05:00.0
-nvme nvme0: missing or invalid SUBNQN field.
-nvme nvme1: missing or invalid SUBNQN field.
-nvme nvme0: allocated 64 MiB host memory buffer.
-nvme nvme1: allocated 64 MiB host memory buffer.
-nvme nvme0: 8/0/0 default/read/poll queues
-nvme nvme1: 8/0/0 default/read/poll queues
-nvme nvme1: globally duplicate IDs for nsid 1
-nvme nvme1: VID:DID 1dbe:5216 model:Acer SSD FA100 256GB firmware:1.Z.J.2X
-nvme0n1: p1 p2
-...
-```
-
-Signed-off-by: Christopher Lentocha <christopherericlentocha@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Testcase: igt/kms_flip/flip-vs-dpms-on-nop
+Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250219160239.17502-1-ville.syrjala@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_atomic_uapi.c |    4 ++++
+ drivers/gpu/drm/drm_connector.c   |    4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index b1310e69d07da..a36ec6df6624b 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3509,6 +3509,8 @@ static const struct pci_device_id nvme_id_table[] = {
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1cc1, 0x5350),   /* ADATA XPG GAMMIX S50 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-+	{ PCI_DEVICE(0x1dbe, 0x5216),   /* Acer/INNOGRIT FA100/5216 NVMe SSD */
-+		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1dbe, 0x5236),   /* ADATA XPG GAMMIX S70 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1e49, 0x0021),   /* ZHITAI TiPro5000 NVMe SSD */
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/drm_atomic_uapi.c
++++ b/drivers/gpu/drm/drm_atomic_uapi.c
+@@ -956,6 +956,10 @@ int drm_atomic_connector_commit_dpms(str
+ 
+ 	if (mode != DRM_MODE_DPMS_ON)
+ 		mode = DRM_MODE_DPMS_OFF;
++
++	if (connector->dpms == mode)
++		goto out;
++
+ 	connector->dpms = mode;
+ 
+ 	crtc = connector->state->crtc;
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -1308,6 +1308,10 @@ EXPORT_SYMBOL(drm_hdmi_connector_get_out
+  * 	callback. For atomic drivers the remapping to the "ACTIVE" property is
+  * 	implemented in the DRM core.
+  *
++ * 	On atomic drivers any DPMS setproperty ioctl where the value does not
++ * 	change is completely skipped, otherwise a full atomic commit will occur.
++ * 	On legacy drivers the exact behavior is driver specific.
++ *
+  * 	Note that this property cannot be set through the MODE_ATOMIC ioctl,
+  * 	userspace must use "ACTIVE" on the CRTC instead.
+  *
 
 
 
