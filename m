@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B60A690E6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6ED8A691B4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B7E37ACC0E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315E71B8659E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5AC221F3A;
-	Wed, 19 Mar 2025 14:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FD61DEFE6;
+	Wed, 19 Mar 2025 14:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNPy5Z9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvb5wj6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD7320AF67;
-	Wed, 19 Mar 2025 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C5B1DEFD8;
+	Wed, 19 Mar 2025 14:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395248; cv=none; b=i96xqP7On7m2oQtLaiYCFR8Nz5MUnMnEMf6nAQigBrVjV8sFI1OlnRr8k5xWnWDqfwj7DxssWgvZHl7JIpFDyo+LsS2++vqFaCUSWaRWsEKx3rGwc9N4qhE3LYzsgzubD+vUYx1IQlzrmWWd00Mk6xGd/JECiMAd5JjNQ6XvVIU=
+	t=1742394989; cv=none; b=dBWdlyKcJNuDzDeAL3ITM4SamCq8XPqOQN4R+onEkWO+40jaGDrQ62tkwgwI2GqcueEjbWZBzelDdm9VrXSfzJ4LJpuEK1jyM7QoVoqnvf28erIlqZSVM/O7IJC+pUFT/ZOF/6xfJkCYpghGzb568U2yZB56ksRBbjc3N/mAhek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395248; c=relaxed/simple;
-	bh=htYRCph1yTMM2kbjwLDJbXY8t2GXmlfhRykAzF3C7IA=;
+	s=arc-20240116; t=1742394989; c=relaxed/simple;
+	bh=oyBET26Uhyd/dQy4PEPX48X+OlwnwBLjhytLMb+Fc+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlIn4PSgjixApW7SbXWvUEe+VmIzSFuLHx6bFkaOtHXl136fzWOUViOZBoyG81ie8H0BBzEWitgwSN2mO6Br0vAieFtRx1u8WculAcGOBTyGgOP0RK1spBTSS57vOhCc0h1hKVkht4Z0S/0MmszDe8UH0/lUmsrDXQq0mBSPzE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNPy5Z9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE576C4CEE8;
-	Wed, 19 Mar 2025 14:40:48 +0000 (UTC)
+	 MIME-Version; b=iyl6pxiIo/GrkgWek44H0VSa+GF1eKhmolCWOojZ1KDXpoFZ/X73zpHL89b9VE7kldlwpOz+aLKC8sJ/QulSCIiWwPaKx9pzr2mZ+oQ6GZGIEUCqaaiCTKGEYpClssFmWSq7OS0DdOT5t3OSK2Iq7BM56+euGttJ3hmRi97zrWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvb5wj6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E83EC4CEEE;
+	Wed, 19 Mar 2025 14:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395248;
-	bh=htYRCph1yTMM2kbjwLDJbXY8t2GXmlfhRykAzF3C7IA=;
+	s=korg; t=1742394989;
+	bh=oyBET26Uhyd/dQy4PEPX48X+OlwnwBLjhytLMb+Fc+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNPy5Z9Ss1od7WVjqftKt7RvwMdOIpfzhGaszS8slhwP1JNB3Ver6TMPuxqmW67XY
-	 q54BgX+p1MR9T8RbSgqLsHW0kwT+XsoQiYQXzq0sVyCrQAT6S9MOfjfrkymuLG6SOz
-	 uNDHVpHbUfRHIGpOO14yTAntPbokwFWlsk9t7e2g=
+	b=nvb5wj6KhDhxKyBEeq7Z3qzScPD6HcC4mfjfLeiN0G7Wio1i3gCuAwy2PL3TCVP2D
+	 kL9yNzncLVGXLF+87YCB/Q5Q0cftBKY+STW27YjFnxYTS/aaGuQAgy7j9D4SDcFHt1
+	 og2Kvg3lBqzD3TbNFA6U0WcpobuIDpdYd23COO+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Varada Pavani <v.pavani@samsung.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.6 129/166] clk: samsung: update PLL locktime for PLL142XX used on FSD platform
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 230/241] i2c: ali15x3: Fix an error handling path in ali15x3_probe()
 Date: Wed, 19 Mar 2025 07:31:40 -0700
-Message-ID: <20250319143023.508785062@linuxfoundation.org>
+Message-ID: <20250319143033.431672404@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varada Pavani <v.pavani@samsung.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 53517a70873c7a91675f7244768aad5006cc45de upstream.
+[ Upstream commit 6e55caaf30c88209d097e575a169b1dface1ab69 ]
 
-Currently PLL142XX locktime is 270. As per spec, it should be 150. Hence
-update PLL142XX controller locktime to 150.
+If i2c_add_adapter() fails, the request_region() call in ali15x3_setup()
+must be undone by a corresponding release_region() call, as done in the
+remove function.
 
-Cc: stable@vger.kernel.org
-Fixes: 4f346005aaed ("clk: samsung: fsd: Add initial clock support")
-Signed-off-by: Varada Pavani <v.pavani@samsung.com>
-Link: https://lore.kernel.org/r/20250225131918.50925-3-v.pavani@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/9b2090cbcc02659f425188ea05f2e02745c4e67b.1741031878.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/samsung/clk-pll.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-ali15x3.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/clk/samsung/clk-pll.c
-+++ b/drivers/clk/samsung/clk-pll.c
-@@ -206,6 +206,7 @@ static const struct clk_ops samsung_pll3
-  */
- /* Maximum lock time can be 270 * PDIV cycles */
- #define PLL35XX_LOCK_FACTOR	(270)
-+#define PLL142XX_LOCK_FACTOR	(150)
+diff --git a/drivers/i2c/busses/i2c-ali15x3.c b/drivers/i2c/busses/i2c-ali15x3.c
+index 4761c72081022..418d11266671e 100644
+--- a/drivers/i2c/busses/i2c-ali15x3.c
++++ b/drivers/i2c/busses/i2c-ali15x3.c
+@@ -472,6 +472,8 @@ MODULE_DEVICE_TABLE (pci, ali15x3_ids);
  
- #define PLL35XX_MDIV_MASK       (0x3FF)
- #define PLL35XX_PDIV_MASK       (0x3F)
-@@ -272,7 +273,11 @@ static int samsung_pll35xx_set_rate(stru
- 	}
+ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ {
++	int ret;
++
+ 	if (ali15x3_setup(dev)) {
+ 		dev_err(&dev->dev,
+ 			"ALI15X3 not detected, module not inserted.\n");
+@@ -483,7 +485,15 @@ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
  
- 	/* Set PLL lock time. */
--	writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
-+	if (pll->type == pll_142xx)
-+		writel_relaxed(rate->pdiv * PLL142XX_LOCK_FACTOR,
-+			pll->lock_reg);
-+	else
-+		writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
- 			pll->lock_reg);
+ 	snprintf(ali15x3_adapter.name, sizeof(ali15x3_adapter.name),
+ 		"SMBus ALI15X3 adapter at %04x", ali15x3_smba);
+-	return i2c_add_adapter(&ali15x3_adapter);
++	ret = i2c_add_adapter(&ali15x3_adapter);
++	if (ret)
++		goto release_region;
++
++	return 0;
++
++release_region:
++	release_region(ali15x3_smba, ALI15X3_SMB_IOSIZE);
++	return ret;
+ }
  
- 	/* Change PLL PMS values */
+ static void ali15x3_remove(struct pci_dev *dev)
+-- 
+2.39.5
+
 
 
 
