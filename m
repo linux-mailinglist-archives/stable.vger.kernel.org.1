@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-125510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF178A6913F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7D8A690C2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBA4A4641ED
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F07388A201A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F2220A5F0;
-	Wed, 19 Mar 2025 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268B121ABCB;
+	Wed, 19 Mar 2025 14:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOr327nZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6bu8uXw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D48D209679;
-	Wed, 19 Mar 2025 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D776221ABB9;
+	Wed, 19 Mar 2025 14:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395241; cv=none; b=cFum/CztiwJLlKZKX3JtwKpGDwWCvQx6TePoWBUtr81TUNLXQK3QR5DFZxB4/lpRrXzdePdxNodlu7B1PTQlR+FtvLF5e+MREL1kkEhj4drcxZcUB+IP+gLRbaQ1sK8xh9nmg5S2h2oB2bcGrcEbubAgIaQVarfu2oegHEZVAUA=
+	t=1742395103; cv=none; b=rrUTzwFWSD4gzIkD7MtuZgmoJChUNFX10Ujbx6VK6q6cAev/sNbte+/r/0ZugxSvMk3p9pGz0cdfDOqpAtJnxrqbp3y8hBdtxmGHqweXrg6vq14V+ZHqK3/6ORjMWuHyWyywo9mGmrzMci58eEi5Rb1ogej1TbyGwlW0/362VeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395241; c=relaxed/simple;
-	bh=RH+o4hE+UdUpWYcGERx3CyvwgLqbNwK6b+W0uoPckso=;
+	s=arc-20240116; t=1742395103; c=relaxed/simple;
+	bh=S0cjj1F9U3/7stkTzX7RlkrO/0YK1rcoO/LAwweV+ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hDpsD/CVRQC2KPwNDwy7j8BLEmb9KfVvYjG/Cb4BhqX1j54XK9BSUr12GElzwVtcG0/pWxeKWt/VvbFiAHiLBk1VosU/jiThX+w0Oluloc/0TZ7t+47TkfegtuSFWzIhQ1V1+gsKpNPfE9eqkX/Dgo+7y1aKfEeRs1dNV+CftT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOr327nZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288BFC4CEE4;
-	Wed, 19 Mar 2025 14:40:41 +0000 (UTC)
+	 MIME-Version; b=o7h+BZLh1xlfc9H4L3+c1PswIAryth8uj3alqTEhnVAy+6aRIFlQCCfY629dyuITTIYJuNkdaRjYPNNkCJcYsTJz7ZxvOxQwV5FDgd6lysX7wTZJ5DXqW2YCdHhbSrUedeBTGtYxwoxj0dK37H4DMaw0lvkAJXxqfl4Pvski+yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6bu8uXw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8027C4CEE4;
+	Wed, 19 Mar 2025 14:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395241;
-	bh=RH+o4hE+UdUpWYcGERx3CyvwgLqbNwK6b+W0uoPckso=;
+	s=korg; t=1742395103;
+	bh=S0cjj1F9U3/7stkTzX7RlkrO/0YK1rcoO/LAwweV+ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOr327nZRNkEZ6wLkEH5kq5UJjoTFlFLBIZE4AiS87530Tj6nbjD3DfGjoEGu2ixE
-	 b9JvpYCHo+e+BWrX3ItwxbKT7iALVDtEEf6KqtQxd5ADi+ZsPMAMgLqyipLl6jmPUb
-	 uAKMu6LuKGZOnnreDDd6zV2Fsb5O6tPSjY82FqSI=
+	b=P6bu8uXw4knVNezwYV0y6glCeFya1t2PHG9tyQID7xaRIBdyWaat3F/BFK5ks+deg
+	 G/NPpkzfCyB12XH2xpsShRxAN/OiJQ98zmVIN07mBvE5MsRl5gM0B7UXFeIUdgRvmd
+	 FhnKSij894yk79R+wZ8h2Xm7rJNL5pNZ3EoHEhCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/166] nvme-tcp: add basic support for the C2HTermReq PDU
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 155/231] Input: i8042 - add required quirks for missing old boardnames
 Date: Wed, 19 Mar 2025 07:30:48 -0700
-Message-ID: <20250319143022.095159488@linuxfoundation.org>
+Message-ID: <20250319143030.665345076@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit 84e009042d0f3dfe91bec60bcd208ee3f866cbcd ]
+commit 9ed468e17d5b80e7116fd35842df3648e808ae47 upstream.
 
-Previously, the NVMe/TCP host driver did not handle the C2HTermReq PDU,
-instead printing "unsupported pdu type (3)" when received. This patch adds
-support for processing the C2HTermReq PDU, allowing the driver
-to print the Fatal Error Status field.
+Some older Clevo barebones have problems like no or laggy keyboard after
+resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
+quirk.
 
-Example of output:
-nvme nvme4: Received C2HTermReq (FES = Invalid PDU Header Field)
+The PB71RD keyboard is sometimes laggy after resume and the PC70DR, PB51RF,
+P640RE, and PCX0DX_GN20 keyboard is sometimes unresponsive after resume.
+This quirk fixes that.
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://lore.kernel.org/r/20250221230137.70292-2-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/tcp.c  | 43 ++++++++++++++++++++++++++++++++++++++++
- include/linux/nvme-tcp.h |  2 ++
- 2 files changed, 45 insertions(+)
+ drivers/input/serio/i8042-acpipnpio.h |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index be04c5f3856d2..83366a8f0f916 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -707,6 +707,40 @@ static int nvme_tcp_handle_r2t(struct nvme_tcp_queue *queue,
- 	return 0;
- }
- 
-+static void nvme_tcp_handle_c2h_term(struct nvme_tcp_queue *queue,
-+		struct nvme_tcp_term_pdu *pdu)
-+{
-+	u16 fes;
-+	const char *msg;
-+	u32 plen = le32_to_cpu(pdu->hdr.plen);
-+
-+	static const char * const msg_table[] = {
-+		[NVME_TCP_FES_INVALID_PDU_HDR] = "Invalid PDU Header Field",
-+		[NVME_TCP_FES_PDU_SEQ_ERR] = "PDU Sequence Error",
-+		[NVME_TCP_FES_HDR_DIGEST_ERR] = "Header Digest Error",
-+		[NVME_TCP_FES_DATA_OUT_OF_RANGE] = "Data Transfer Out Of Range",
-+		[NVME_TCP_FES_R2T_LIMIT_EXCEEDED] = "R2T Limit Exceeded",
-+		[NVME_TCP_FES_UNSUPPORTED_PARAM] = "Unsupported Parameter",
-+	};
-+
-+	if (plen < NVME_TCP_MIN_C2HTERM_PLEN ||
-+	    plen > NVME_TCP_MAX_C2HTERM_PLEN) {
-+		dev_err(queue->ctrl->ctrl.device,
-+			"Received a malformed C2HTermReq PDU (plen = %u)\n",
-+			plen);
-+		return;
-+	}
-+
-+	fes = le16_to_cpu(pdu->fes);
-+	if (fes && fes < ARRAY_SIZE(msg_table))
-+		msg = msg_table[fes];
-+	else
-+		msg = "Unknown";
-+
-+	dev_err(queue->ctrl->ctrl.device,
-+		"Received C2HTermReq (FES = %s)\n", msg);
-+}
-+
- static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		unsigned int *offset, size_t *len)
- {
-@@ -728,6 +762,15 @@ static int nvme_tcp_recv_pdu(struct nvme_tcp_queue *queue, struct sk_buff *skb,
- 		return 0;
- 
- 	hdr = queue->pdu;
-+	if (unlikely(hdr->type == nvme_tcp_c2h_term)) {
-+		/*
-+		 * C2HTermReq never includes Header or Data digests.
-+		 * Skip the checks.
-+		 */
-+		nvme_tcp_handle_c2h_term(queue, (void *)queue->pdu);
-+		return -EINVAL;
-+	}
-+
- 	if (queue->hdr_digest) {
- 		ret = nvme_tcp_verify_hdgst(queue, queue->pdu, hdr->hlen);
- 		if (unlikely(ret))
-diff --git a/include/linux/nvme-tcp.h b/include/linux/nvme-tcp.h
-index e07e8978d691b..e435250fcb4d0 100644
---- a/include/linux/nvme-tcp.h
-+++ b/include/linux/nvme-tcp.h
-@@ -13,6 +13,8 @@
- #define NVME_TCP_ADMIN_CCSZ	SZ_8K
- #define NVME_TCP_DIGEST_LENGTH	4
- #define NVME_TCP_MIN_MAXH2CDATA 4096
-+#define NVME_TCP_MIN_C2HTERM_PLEN	24
-+#define NVME_TCP_MAX_C2HTERM_PLEN	152
- 
- enum nvme_tcp_pfv {
- 	NVME_TCP_PFV_1_0 = 0x0,
--- 
-2.39.5
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1261,6 +1261,12 @@ static const struct dmi_system_id i8042_
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
+ 	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "P640RE"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
+ 		/*
+ 		 * This is only a partial board_name and might be followed by
+ 		 * another letter or number. DMI_MATCH however does do partial
+@@ -1337,11 +1343,35 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PB51RF"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PB71RD"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PC70DR"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX_GN20"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
++	},
+ 	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
+ 	{
+ 		.matches = {
 
 
 
