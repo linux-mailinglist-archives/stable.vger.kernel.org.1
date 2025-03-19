@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51ACCA69059
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D9FA69228
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:03:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 230C67ABB8D
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F75D1BA0BD1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633BC1DDA39;
-	Wed, 19 Mar 2025 14:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A652221552;
+	Wed, 19 Mar 2025 14:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzS++Rkz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHwtsPp3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215021DDC01;
-	Wed, 19 Mar 2025 14:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1880D1DED78;
+	Wed, 19 Mar 2025 14:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395115; cv=none; b=rGyL/dmbWMp6SwiNP8vW25tV3rHPZqZ+woMbI22EPwefkbZVVilgqmBCM6OrHeI4hB/Tjr9jfabT573+Rjtrf5Fj53CpXrvRJuhQxM4FW+iGKm1WhRsOQInLUMY7C0+LtKgGCxyr4Op2wUJR7v2Gl+/SxZjSj2rcblk9XkwMODc=
+	t=1742395194; cv=none; b=tSkeg+jqVG6nk4Y2VHts+D6V+7JuyvbNfM8MfM48wus7PwsGrtt6dZqvko3M8hrGT9dR86gtytlv/sEpw62m2OgD77suleWriuIW71O23qBoV0L+51borkwfbIs2zuumdZdGQNgfazPtE3Lbk0meWuQ/rlslcdH57RZbO+1L4DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395115; c=relaxed/simple;
-	bh=G5RhAinuUW1355JjmnRAl3T2XfnyQ07tIqYACKpSZCI=;
+	s=arc-20240116; t=1742395194; c=relaxed/simple;
+	bh=WNVWxj+UwbfTa69vHY84WmajjTN24hUbH+XYYHHewcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qf2bMPY4EtARML8QbA3F/RmT/pa3c3xOruo7QjgvN+OQgUWgexJ/erGLHeBLF3eBeYuGbyJWytzdob8xs0pEqOjxLprFC3c5xsXMqqrfe4lCn/wSkPxrdbx2/87MMmiyamOFiangy4uOLpaE0CRlnb1YnRCJvxr6I4pRI/BEftA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzS++Rkz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C5EC4CEE4;
-	Wed, 19 Mar 2025 14:38:34 +0000 (UTC)
+	 MIME-Version; b=eE7NdPcNWytlyJu2IsBUO4j/AdXjRs7CySJSDN7unRB9IuGYjw++m+Jt87j55u/KiNdcVTEC4mA1F+waCiuEWp+mLb3R5wGd5bCdX9cedg2dh+rZDkh7f01a5etnm3DoYR7BQzuhgFD6Feu6BEKks7vekWJ0hiY2Z5FXY934/ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHwtsPp3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DAEC4CEE4;
+	Wed, 19 Mar 2025 14:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395115;
-	bh=G5RhAinuUW1355JjmnRAl3T2XfnyQ07tIqYACKpSZCI=;
+	s=korg; t=1742395194;
+	bh=WNVWxj+UwbfTa69vHY84WmajjTN24hUbH+XYYHHewcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kzS++RkzrZAUTxeSw+sopCRjObsHXax9EgXnQ+hcn0xBcvvHi02po5hm3SyajX0cV
-	 LDtu6FmgeyMaSrNFVkotlrASSK+4g81nM1PmIBOlKUBI/oPTAb9zohempSai8n3L3m
-	 AWmhwDgVtrkL7e6avu3rXVcd5HrEjWuIn9dtUJr8=
+	b=AHwtsPp3QgHGH9w0a8h63sHj/UkoK5N7nsECHzOty32FxU7JB2kD2MI8OhJv2jp/t
+	 vIHF74LzaCHuL3NixxadV8orput17klapX42U5OnwMPVEPmY47KckC+x2pMqkyZUm7
+	 Jy21uuAKVCcoYb4yeoCMywYy/HI1wiFsYQeUOftQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Brackenbury <daniel.brackenbury@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 132/231] ASoC: dapm-graph: set fill colour of turned on nodes
+Subject: [PATCH 6.6 054/166] HID: topre: Fix n-key rollover on Realforce R3S TKL boards
 Date: Wed, 19 Mar 2025 07:30:25 -0700
-Message-ID: <20250319143030.096558533@linuxfoundation.org>
+Message-ID: <20250319143021.457540795@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+From: Daniel Brackenbury <daniel.brackenbury@gmail.com>
 
-[ Upstream commit d31babd7e304d3b800d36ff74be6739405b985f2 ]
+[ Upstream commit 9271af9d846c7e49c8709b58d5853cb73c00b193 ]
 
-Some tools like KGraphViewer interpret the "ON" nodes not having an
-explicitly set fill colour as them being entirely black, which obscures
-the text on them and looks funny. In fact, I thought they were off for
-the longest time. Comparing to the output of the `dot` tool, I assume
-they are supposed to be white.
+Newer model R3* Topre Realforce keyboards share an issue with their older
+R2 cousins where a report descriptor fixup is needed in order for n-key
+rollover to work correctly, otherwise only 6-key rollover is available.
+This patch adds some new hardware IDs for the R3S 87-key keyboard and
+makes amendments to the existing hid-topre driver in order to change the
+correct byte in the new model.
 
-Instead of speclawyering over who's in the wrong and must immediately
-atone for their wickedness at the altar of RFC2119, just be explicit
-about it, set the fillcolor to white, and nobody gets confused.
-
-Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://patch.msgid.link/20250221-dapm-graph-node-colour-v1-1-514ed0aa7069@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Daniel Brackenbury <daniel.brackenbury@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/sound/dapm-graph | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/Kconfig     | 3 ++-
+ drivers/hid/hid-ids.h   | 1 +
+ drivers/hid/hid-topre.c | 7 +++++++
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tools/sound/dapm-graph b/tools/sound/dapm-graph
-index f14bdfedee8f1..b6196ee5065a4 100755
---- a/tools/sound/dapm-graph
-+++ b/tools/sound/dapm-graph
-@@ -10,7 +10,7 @@ set -eu
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index 9e2cde55b465c..979ebe69c8e30 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -1151,7 +1151,8 @@ config HID_TOPRE
+ 	tristate "Topre REALFORCE keyboards"
+ 	depends on HID
+ 	help
+-	  Say Y for N-key rollover support on Topre REALFORCE R2 108/87 key keyboards.
++	  Say Y for N-key rollover support on Topre REALFORCE R2 108/87 key and
++          Topre REALFORCE R3S 87 key keyboards.
  
- STYLE_COMPONENT_ON="color=dodgerblue;style=bold"
- STYLE_COMPONENT_OFF="color=gray40;style=filled;fillcolor=gray90"
--STYLE_NODE_ON="shape=box,style=bold,color=green4"
-+STYLE_NODE_ON="shape=box,style=bold,color=green4,fillcolor=white"
- STYLE_NODE_OFF="shape=box,style=filled,color=gray30,fillcolor=gray95"
+ config HID_THINGM
+ 	tristate "ThingM blink(1) USB RGB LED"
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index ff996accd371d..b807d01ecca6e 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1285,6 +1285,7 @@
+ #define USB_VENDOR_ID_TOPRE			0x0853
+ #define USB_DEVICE_ID_TOPRE_REALFORCE_R2_108			0x0148
+ #define USB_DEVICE_ID_TOPRE_REALFORCE_R2_87			0x0146
++#define USB_DEVICE_ID_TOPRE_REALFORCE_R3S_87			0x0313
  
- # Print usage and exit
+ #define USB_VENDOR_ID_TOPSEED		0x0766
+ #define USB_DEVICE_ID_TOPSEED_CYBERLINK	0x0204
+diff --git a/drivers/hid/hid-topre.c b/drivers/hid/hid-topre.c
+index d1d5ca310eadc..e69367267d841 100644
+--- a/drivers/hid/hid-topre.c
++++ b/drivers/hid/hid-topre.c
+@@ -29,6 +29,11 @@ static __u8 *topre_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		hid_info(hdev,
+ 			"fixing up Topre REALFORCE keyboard report descriptor\n");
+ 		rdesc[72] = 0x02;
++	} else if (*rsize >= 106 && rdesc[28] == 0x29 && rdesc[29] == 0xe7 &&
++				    rdesc[30] == 0x81 && rdesc[31] == 0x00) {
++		hid_info(hdev,
++			"fixing up Topre REALFORCE keyboard report descriptor\n");
++		rdesc[31] = 0x02;
+ 	}
+ 	return rdesc;
+ }
+@@ -38,6 +43,8 @@ static const struct hid_device_id topre_id_table[] = {
+ 			 USB_DEVICE_ID_TOPRE_REALFORCE_R2_108) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_TOPRE,
+ 			 USB_DEVICE_ID_TOPRE_REALFORCE_R2_87) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_TOPRE,
++			 USB_DEVICE_ID_TOPRE_REALFORCE_R3S_87) },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, topre_id_table);
 -- 
 2.39.5
 
