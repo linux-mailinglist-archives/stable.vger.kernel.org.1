@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-125239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64259A69254
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:07:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229E9A692FE
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D6251B61261
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E9201B83DF9
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D161D5CF9;
-	Wed, 19 Mar 2025 14:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236591F4C88;
+	Wed, 19 Mar 2025 14:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifBa65VW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQLrDJjX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B7B1E1E11;
-	Wed, 19 Mar 2025 14:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D632C1DE4EA;
+	Wed, 19 Mar 2025 14:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395050; cv=none; b=Qhk1F5KvrQLZ65eZFocKRY33wZ55OKt6QS8I9bvtxjpuaCrqIQSGCcKPs4JYbWzNSYlKBYBytQc59MQeF1A865afsmYEf+y6zqNb9v4sQSM8td7ToTbFLS7lbArXV+KWKDJXuILDrYb4rx2IGqhRw24DPqwwlA8MHOGmd07sqNY=
+	t=1742395162; cv=none; b=bCOfR0xcOFYBENRYMQ7Sm7zCO5TWX44my1+X4hQAsv5mFE0qAqTt6uuWs1ZX9GiHLSQlbsEvzMNZU8K/Wx38iylFJLKm/N6CCTWTx1ZhJeAuQJLwpgHYw/Lu+up2RJwuaZw4+RjFGqyMcZAif4hTHiULPZU+4DkxlGY+SosUO1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395050; c=relaxed/simple;
-	bh=l/6oIgKxa7ETyrfTDiP0GaNYvTjkYAYAdfAksnJsRc4=;
+	s=arc-20240116; t=1742395162; c=relaxed/simple;
+	bh=88mN1vNbfy6CLLkjlFa1BzObKgYeQg1HqAeCJ9zntFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgUV/es/pBZ36DtECBmBAgF8HwX2ADw4FkqRpfDwQ9ddDjbb+AtcRCEzef9dB31a3hVFrZMtRFEaPosG6OAkvzNnu44iGlksdYd3aBM3zHu4nUfsg4SP0sf7oNLASNYSq1GiUCWn0qMUsu4O5zwUwf4a5k6xZfwjrTZJagq4DI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifBa65VW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398C6C4CEE4;
-	Wed, 19 Mar 2025 14:37:30 +0000 (UTC)
+	 MIME-Version; b=W8ByJTdwSNs0gHoOn7rUpeeNYb2GXo7d3+sG0JH/LVgz+dcFLVW5OgyzO8myzYznF/Oyozm+7qkONFJVGnxSJATLRS/lHfFw2ErLp8dMa0hpb5cg460oHOKLF/r2P9w/NpzIJaallGfZ8uV1SWcFxSfdaN/uxAaHfB75YfmGyus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQLrDJjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC878C4CEE4;
+	Wed, 19 Mar 2025 14:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395050;
-	bh=l/6oIgKxa7ETyrfTDiP0GaNYvTjkYAYAdfAksnJsRc4=;
+	s=korg; t=1742395162;
+	bh=88mN1vNbfy6CLLkjlFa1BzObKgYeQg1HqAeCJ9zntFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifBa65VWT5JtNbUxkxwB5d29xcCbsvbQeLzlZPesQlsb7IgBMYGYnf2FeMZjGoUMa
-	 SzFdfOJPths2Ycb5uDVV722NvR3XtipRI0RaHe9+Hw7sOf/sPqn7zzvRrBpQ3/CUiX
-	 0yHmjqMozfo1iKZe21mOio3/Wg77/6qLw17ZSgfs=
+	b=gQLrDJjX6VIkcDGLwhDsx1DKUFPy5PS3MuvU7IcdthS3acUGwMIuWm6CVMsgY72/T
+	 E+x8bACJ+As8tP4bapMBv391OCVT/PML8kfbXkrbfXcYwGk++FDhS0SP4P/py6syU7
+	 LIzidQqkZj1XYssIJ3nIBRfq6PtQbMHO87doLrtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/231] HID: ignore non-functional sensor in HP 5MP Camera
-Date: Wed, 19 Mar 2025 07:29:30 -0700
-Message-ID: <20250319143028.735313445@linuxfoundation.org>
+	Chris von Recklinghausen <crecklin@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Phil Auld <pauld@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+Subject: [PATCH 6.6 002/166] sched/isolation: Prevent boot crash when the boot CPU is nohz_full
+Date: Wed, 19 Mar 2025 07:29:33 -0700
+Message-ID: <20250319143020.050156974@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +66,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 363236d709e75610b628c2a4337ccbe42e454b6d ]
+Documentation/timers/no_hz.rst states that the "nohz_full=" mask must not
+include the boot CPU, which is no longer true after:
 
-The HP 5MP Camera (USB ID 0408:5473) reports a HID sensor interface that
-is not actually implemented. Attempting to access this non-functional
-sensor via iio_info causes system hangs as runtime PM tries to wake up
-an unresponsive sensor.
+  08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full").
 
-  [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
-  [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff
+However after:
 
-Add this device to the HID ignore list since the sensor interface is
-non-functional by design and should not be exposed to userspace.
+  aae17ebb53cd ("workqueue: Avoid using isolated cpus' timers on queue_delayed_work")
 
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+the kernel will crash at boot time in this case; housekeeping_any_cpu()
+returns an invalid CPU number until smp_init() brings the first
+housekeeping CPU up.
+
+Change housekeeping_any_cpu() to check the result of cpumask_any_and() and
+return smp_processor_id() in this case.
+
+This is just the simple and backportable workaround which fixes the
+symptom, but smp_processor_id() at boot time should be safe at least for
+type == HK_TYPE_TIMER, this more or less matches the tick_do_timer_boot_cpu
+logic.
+
+There is no worry about cpu_down(); tick_nohz_cpu_down() will not allow to
+offline tick_do_timer_cpu (the 1st online housekeeping CPU).
+
+[ Apply only documentation changes as commit which causes boot
+  crash when boot CPU is nohz_full is not backported to stable
+  kernels - Krishanth ]
+
+Reported-by: Chris von Recklinghausen <crecklin@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20240411143905.GA19288@redhat.com
+Closes: https://lore.kernel.org/all/20240402105847.GA24832@redhat.com/
+Signed-off-by: Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+[ strip out upstream commit and Fixes: so tools don't get confused that
+  this commit actually does anything real - gregkh]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h    | 1 +
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
+ Documentation/timers/no_hz.rst |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index ceb3b1a72e235..6e8bcb1518bd7 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1089,6 +1089,7 @@
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3001		0x3001
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3003		0x3003
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3008		0x3008
-+#define USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473		0x5473
+--- a/Documentation/timers/no_hz.rst
++++ b/Documentation/timers/no_hz.rst
+@@ -129,11 +129,8 @@ adaptive-tick CPUs:  At least one non-ad
+ online to handle timekeeping tasks in order to ensure that system
+ calls like gettimeofday() returns accurate values on adaptive-tick CPUs.
+ (This is not an issue for CONFIG_NO_HZ_IDLE=y because there are no running
+-user processes to observe slight drifts in clock rate.)  Therefore, the
+-boot CPU is prohibited from entering adaptive-ticks mode.  Specifying a
+-"nohz_full=" mask that includes the boot CPU will result in a boot-time
+-error message, and the boot CPU will be removed from the mask.  Note that
+-this means that your system must have at least two CPUs in order for
++user processes to observe slight drifts in clock rate.) Note that this
++means that your system must have at least two CPUs in order for
+ CONFIG_NO_HZ_FULL=y to do anything for you.
  
- #define I2C_VENDOR_ID_RAYDIUM		0x2386
- #define I2C_PRODUCT_ID_RAYDIUM_4B33	0x4b33
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index e0bbf0c6345d6..5d7a418ccdbec 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -891,6 +891,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SYNAPTICS, USB_DEVICE_ID_SYNAPTICS_DPAD) },
- #endif
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
- 	{ }
- };
- 
--- 
-2.39.5
-
+ Finally, adaptive-ticks CPUs must have their RCU callbacks offloaded.
 
 
 
