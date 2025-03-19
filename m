@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-125103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C36A690E1
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED26A6904F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9A61B64C3A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0CA77AE0C5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB451EF37C;
-	Wed, 19 Mar 2025 14:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FF321ADAE;
+	Wed, 19 Mar 2025 14:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z59Iwv5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUiyoTsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09F71DDC2B;
-	Wed, 19 Mar 2025 14:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED8621ABD2;
+	Wed, 19 Mar 2025 14:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394957; cv=none; b=ua45u5CE7URd7qkHza+Ri7Y7wc2vqQS22lxhVmB3XtHU7qI4PoO0k/h3OrDrx3txpEWlCImyOR6PpJ9X3F2DIba8M2atpy+YhI3eiCPYgUt2arRxvVLeKHHpYYX1X8PpkGBPARPtXRRV9tqmRsxiW2k8qlLlrUbrpUvhs9+6JeU=
+	t=1742395107; cv=none; b=Ln3GzjgBsXn0/CwVIG1rt4f5SMQ3lMFrasQb1jpgn0e0RUK7KIeU/b0jhv3IYfIrocv7zwZwFsEjBklV3LznAiqvpGX//itQMSXX5VitOiF7anhtVOERbVEMGtaUF0R4xsV8LqCbUCO7xaUyf3GLgBMLnIM60gY4x9FeCZ5rGEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394957; c=relaxed/simple;
-	bh=BBvVMF9jPCLk8X6Il9TV86QY/tqJYRjBbK0c6EdXpGM=;
+	s=arc-20240116; t=1742395107; c=relaxed/simple;
+	bh=F6TIjrxbcnlmzv8k4iYS8LhgQ5HACgAOTUGuHFaDie8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ME+NVZLaW5C1dF7ulbnAU6Rqq+7t33UyBuN8P+C1Znre5Zn8tCv6zNB41d6ALktxfq+9UfdDP4tqy/SIl7JKcCVp7x5JI8iYH4akwaHmP9zMDuKty2N9eyComI4wrXHvkQv728IsScdNRCKq6RkPIdd1NN0MXfwRk7HH2mvlDPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z59Iwv5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AD2C4CEE4;
-	Wed, 19 Mar 2025 14:35:56 +0000 (UTC)
+	 MIME-Version; b=Ivgf5u5coMG6KZ/nKb+CwRxgakNMja9S9DALzR0+gwM8alYJkHvpNfMizJFwUaJFqv/CuoohTTynNS1y+M/JeARnRvw9E7cZn++1+Pj1pyHN+sqPMDH7sbZuR1qZAXV6PLWRD1g4AnGawUlKtKnCT2MYFW39Fp/MQBj+cw3kCNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUiyoTsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31870C4CEE4;
+	Wed, 19 Mar 2025 14:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394956;
-	bh=BBvVMF9jPCLk8X6Il9TV86QY/tqJYRjBbK0c6EdXpGM=;
+	s=korg; t=1742395107;
+	bh=F6TIjrxbcnlmzv8k4iYS8LhgQ5HACgAOTUGuHFaDie8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z59Iwv5X51QHHVGwTzAHiDh2LWyxdCY3Ujp2i8nur3l/M9RsJRkbuKGVLL8aT9w7M
-	 MYCWPOnRE++PezcopmQaL99LTGtBkYdgcsU+uFG1iF++JldRWqWsJqABsQxFj0Xi/f
-	 ESvYQINpluSCvrNCCPs8B6d+fXb4hr0r+szXNtrU=
+	b=RUiyoTskN5yLutCqmTUtztan6c3Jrbl89lkDrUBflJAPYA9M5oYanZtyVjlb3Rv4n
+	 d5A1XMYIqe7xk71b8PeCJSmr3BJ93VKJGmswPqGJ8sN+ysxTwbOnR1nFS6h8TGObbm
+	 g1h1QiqSse1oVeRuLSK0tqMcKHPFKZ9Qg8LIeu8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.13 183/241] drm/amd/display: Disable unneeded hpd interrupts during dm_init
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 160/231] USB: serial: option: fix Telit Cinterion FE990A name
 Date: Wed, 19 Mar 2025 07:30:53 -0700
-Message-ID: <20250319143032.254116936@linuxfoundation.org>
+Message-ID: <20250319143030.791129305@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,166 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Li <sunpeng.li@amd.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit 40b8c14936bd2726354c856251f6baed9869e760 upstream.
+commit 6232f0d8e100a26275bbd773fc56a60af2c95322 upstream.
 
-[Why]
+The correct name for FE990 is FE990A so use it in order to avoid
+confusion with FE990B.
 
-It seems HPD interrupts are enabled by default for all connectors, even
-if the hpd source isn't valid. An eDP for example, does not have a valid
-hpd source (but does have a valid hpdrx source; see construct_phy()).
-Thus, eDPs should have their hpd interrupt disabled.
-
-In the past, this wasn't really an issue. Although the driver gets
-interrupted, then acks by writing to hw registers, there weren't any
-subscribed handlers that did anything meaningful (see
-register_hpd_handlers()).
-
-But things changed with the introduction of IPS. s2idle requires that
-the driver allows IPS for DMUB fw to put hw to sleep. Since register
-access requires hw to be awake, the driver will block IPS entry to do
-so. And no IPS means no hw sleep during s2idle.
-
-This was the observation on DCN35 systems with an eDP. During suspend,
-the eDP toggled its hpd pin as part of the panel power down sequence.
-The driver was then interrupted, and acked by writing to registers,
-blocking IPS entry.
-
-[How]
-
-Since DC marks eDP connections as having invalid hpd sources (see
-construct_phy()), DM should disable them at the hw level. Do so in
-amdgpu_dm_hpd_init() by disabling all hpd ints first, then selectively
-enabling ones for connectors that have valid hpd sources.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7b1ba19eb15f88e70782642ce2d934211269337b)
 Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c |   64 ++++++++++++------
- 1 file changed, 45 insertions(+), 19 deletions(-)
+ drivers/usb/serial/option.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-@@ -894,8 +894,16 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
- 	struct drm_device *dev = adev_to_drm(adev);
- 	struct drm_connector *connector;
- 	struct drm_connector_list_iter iter;
-+	int irq_type;
- 	int i;
- 
-+	/* First, clear all hpd and hpdrx interrupts */
-+	for (i = DC_IRQ_SOURCE_HPD1; i <= DC_IRQ_SOURCE_HPD6RX; i++) {
-+		if (!dc_interrupt_set(adev->dm.dc, i, false))
-+			drm_err(dev, "Failed to clear hpd(rx) source=%d on init\n",
-+				i);
-+	}
-+
- 	drm_connector_list_iter_begin(dev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
- 		struct amdgpu_dm_connector *amdgpu_dm_connector;
-@@ -908,10 +916,31 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
- 
- 		dc_link = amdgpu_dm_connector->dc_link;
- 
-+		/*
-+		 * Get a base driver irq reference for hpd ints for the lifetime
-+		 * of dm. Note that only hpd interrupt types are registered with
-+		 * base driver; hpd_rx types aren't. IOW, amdgpu_irq_get/put on
-+		 * hpd_rx isn't available. DM currently controls hpd_rx
-+		 * explicitly with dc_interrupt_set()
-+		 */
- 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
--			dc_interrupt_set(adev->dm.dc,
--					dc_link->irq_source_hpd,
--					true);
-+			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
-+			/*
-+			 * TODO: There's a mismatch between mode_info.num_hpd
-+			 * and what bios reports as the # of connectors with hpd
-+			 * sources. Since the # of hpd source types registered
-+			 * with base driver == mode_info.num_hpd, we have to
-+			 * fallback to dc_interrupt_set for the remaining types.
-+			 */
-+			if (irq_type < adev->mode_info.num_hpd) {
-+				if (amdgpu_irq_get(adev, &adev->hpd_irq, irq_type))
-+					drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n",
-+						dc_link->irq_source_hpd);
-+			} else {
-+				dc_interrupt_set(adev->dm.dc,
-+						 dc_link->irq_source_hpd,
-+						 true);
-+			}
- 		}
- 
- 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
-@@ -921,12 +950,6 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
- 		}
- 	}
- 	drm_connector_list_iter_end(&iter);
--
--	/* Update reference counts for HPDs */
--	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
--		if (amdgpu_irq_get(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
--			drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n", i);
--	}
- }
- 
- /**
-@@ -942,7 +965,7 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
- 	struct drm_device *dev = adev_to_drm(adev);
- 	struct drm_connector *connector;
- 	struct drm_connector_list_iter iter;
--	int i;
-+	int irq_type;
- 
- 	drm_connector_list_iter_begin(dev, &iter);
- 	drm_for_each_connector_iter(connector, &iter) {
-@@ -956,9 +979,18 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
- 		dc_link = amdgpu_dm_connector->dc_link;
- 
- 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
--			dc_interrupt_set(adev->dm.dc,
--					dc_link->irq_source_hpd,
--					false);
-+			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
-+
-+			/* TODO: See same TODO in amdgpu_dm_hpd_init() */
-+			if (irq_type < adev->mode_info.num_hpd) {
-+				if (amdgpu_irq_put(adev, &adev->hpd_irq, irq_type))
-+					drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n",
-+						dc_link->irq_source_hpd);
-+			} else {
-+				dc_interrupt_set(adev->dm.dc,
-+						 dc_link->irq_source_hpd,
-+						 false);
-+			}
- 		}
- 
- 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
-@@ -968,10 +1000,4 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
- 		}
- 	}
- 	drm_connector_list_iter_end(&iter);
--
--	/* Update reference counts for HPDs */
--	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
--		if (amdgpu_irq_put(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
--			drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n", i);
--	}
- }
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1368,13 +1368,13 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
+ 	  .driver_info = RSVD(0) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990 (rmnet) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1080, 0xff),	/* Telit FE990A (rmnet) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990 (MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1081, 0xff),	/* Telit FE990A (MBIM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990 (RNDIS) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1082, 0xff),	/* Telit FE990A (RNDIS) */
+ 	  .driver_info = NCTRL(2) | RSVD(3) },
+-	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990 (ECM) */
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1083, 0xff),	/* Telit FE990A (ECM) */
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
 
 
 
