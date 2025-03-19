@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-125540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA4FA69220
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:02:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD6FA6923D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:05:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B12231B66E8C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2003A1B66C5F
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190C3222573;
-	Wed, 19 Mar 2025 14:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B486521D001;
+	Wed, 19 Mar 2025 14:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00leedIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWuUdfZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7D11DEFD6;
-	Wed, 19 Mar 2025 14:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C941DE4E0;
+	Wed, 19 Mar 2025 14:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395261; cv=none; b=sv0GRufyB4CA1ROMrZOgA8kEUHS+XpC1aM+a6ys/hhBbyXxrztau+94uVz7Gi0TRVqtS2fA3y/KpFBjqD6zCl9iwC5wsqJPIOyrxK0aFZGrE9l5rE1WD6aCValHu9ZM/1uFPc+y5uPQBnvah0bglXh1DZJB/DxIIftiyIHQV2YE=
+	t=1742395150; cv=none; b=fUIsw41yEQGO9SG+UEP376LBtuunRebw15Elpi29KbtsN9SFYf22qluPjbhkg255UKqjGzEguO6rZUzh/N6kiXPKS8XNU/LWhYBKDQbNJpWG8C73Ax9MGvLVa6BTLNEHpobHpw8hKcSWMZvBOtARRgrwYZXCeSpBGUgSLlZU+so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395261; c=relaxed/simple;
-	bh=mswuODvXakAtDvSCj7UbCOGGakB21diBaGyKd5rdSOE=;
+	s=arc-20240116; t=1742395150; c=relaxed/simple;
+	bh=+5KJTNngA54WDvNL6BCm5X24mb0y4f4xypr6Kt45yVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lMECfML+Ds8fJIJGxUnOZ0yl3xJw0XXOwc91vMU/i57SvNdcxvciunQ15B7W36JZ5v96Kf6uQfxaTKfJEtfdKrDvJO6NK8YjtddFKkBkJlfuXhp0FngR10c2Vx5fuCfXMwRgxYxylYaeXvcD4LRuWq7FVWwc0rI50J68qUCGUZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00leedIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC44C4CEE4;
-	Wed, 19 Mar 2025 14:41:01 +0000 (UTC)
+	 MIME-Version; b=NjPb0Q1o3Xc00amtoJd3OkUdMPqF8nS3d0o6htXDxb1IqI7Plv2mUjT4ZJ43dvup+4mZ60lHi+1aUGzGcGrX/5ubXydq1/D1PjQGt6ptIGoboc2UnhasYmuuF9lZo5nPBtjeIqP1f+4neY2aCW36FpqQR7osC2MCIc9vq/LSgow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWuUdfZI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45225C4CEE4;
+	Wed, 19 Mar 2025 14:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395261;
-	bh=mswuODvXakAtDvSCj7UbCOGGakB21diBaGyKd5rdSOE=;
+	s=korg; t=1742395150;
+	bh=+5KJTNngA54WDvNL6BCm5X24mb0y4f4xypr6Kt45yVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00leedIHHvrKmMiePX0MIaDY1s4X04gSeKEAsfhu9mNJcyAlGlwVEVi4v0XYFvtaP
-	 Ec+no/g3gVfwMwDzH3gdCMLacjNKtKFL/22ETUR23xaSGHW2A0grW+NeAYW7DZEr3V
-	 2zpd6WJiqVrwzzJfAZ0P+l98yrF+3mSSKn5sTr40=
+	b=wWuUdfZI8wb8/zUPs/lRDaVPdzF0YJIGkMZPEVEQVJFE4aTRAYiFTG2mKJjLAhH4w
+	 1omM9TlxxE83iUTYv3YD6zHFtf4wg6zZUMKtML0RV0RJVWQ/lArsJLMy6xViDjTXw8
+	 ZShsuxvOzbHxnsfv5dUbMY+n8yN9AvsmM1zozWvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Behrens <me@kloenk.dev>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Chayim Refael Friedman <chayimfr@gmail.com>
-Subject: [PATCH 6.6 146/166] scripts: generate_rust_analyzer: add missing macros deps
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 224/231] smb3: add support for IAKerb
 Date: Wed, 19 Mar 2025 07:31:57 -0700
-Message-ID: <20250319143023.979002652@linuxfoundation.org>
+Message-ID: <20250319143032.371155652@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +61,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@gmail.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 2e0f91aba507a3cb59f7a12fc3ea2b7d4d6675b7 ]
+[ Upstream commit eea5119fa5979c350af5783a8148eacdd4219715 ]
 
-The macros crate has depended on std and proc_macro since its
-introduction in commit 1fbde52bde73 ("rust: add `macros` crate"). These
-dependencies were omitted from commit 8c4555ccc55c ("scripts: add
-`generate_rust_analyzer.py`") resulting in missing go-to-definition and
-autocomplete, and false-positive warnings emitted from rust-analyzer
-such as:
+There are now more servers which advertise support for IAKerb (passthrough
+Kerberos authentication via proxy).  IAKerb is a public extension industry
+standard Kerberos protocol that allows a client without line-of-sight
+to a Domain Controller to authenticate. There can be cases where we
+would fail to mount if the server only advertises the OID for IAKerb
+in SPNEGO/GSSAPI.  Add code to allow us to still upcall to userspace
+in these cases to obtain the Kerberos ticket.
 
-  [{
-  	"resource": "/Users/tamird/src/linux/rust/macros/module.rs",
-  	"owner": "_generated_diagnostic_collection_name_#1",
-  	"code": {
-  		"value": "non_snake_case",
-  		"target": {
-  			"$mid": 1,
-  			"path": "/rustc/",
-  			"scheme": "https",
-  			"authority": "doc.rust-lang.org",
-  			"query": "search=non_snake_case"
-  		}
-  	},
-  	"severity": 4,
-  	"message": "Variable `None` should have snake_case name, e.g. `none`",
-  	"source": "rust-analyzer",
-  	"startLineNumber": 123,
-  	"startColumn": 17,
-  	"endLineNumber": 123,
-  	"endColumn": 21
-  }]
-
-Add the missing dependencies to improve the developer experience.
-
-  [ Fiona had a different approach (thanks!) at:
-
-        https://lore.kernel.org/rust-for-linux/20241205115438.234221-1-me@kloenk.dev/
-
-    But Tamir and Fiona agreed to this one. - Miguel ]
-
-Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Diagnosed-by: Chayim Refael Friedman <chayimfr@gmail.com>
-Link: https://github.com/rust-lang/rust-analyzer/issues/17759#issuecomment-2646328275
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
-Link: https://lore.kernel.org/r/20250210-rust-analyzer-macros-core-dep-v3-1-45eb4836f218@gmail.com
-[ Removed `return`. Changed tag name. Added Link. Slightly
-  reworded. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 605b249ea967 ("smb: client: Fix match_session bug preventing session reuse")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/generate_rust_analyzer.py | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ fs/smb/client/asn1.c        | 2 ++
+ fs/smb/client/cifs_spnego.c | 4 +++-
+ fs/smb/client/cifsglob.h    | 4 ++++
+ fs/smb/client/sess.c        | 3 ++-
+ fs/smb/client/smb2pdu.c     | 2 +-
+ 5 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index fc52bc41d3e7b..c99173e4b8f3e 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -49,14 +49,26 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-             }
-         })
+diff --git a/fs/smb/client/asn1.c b/fs/smb/client/asn1.c
+index b5724ef9f182f..214a44509e7b9 100644
+--- a/fs/smb/client/asn1.c
++++ b/fs/smb/client/asn1.c
+@@ -52,6 +52,8 @@ int cifs_neg_token_init_mech_type(void *context, size_t hdrlen,
+ 		server->sec_kerberos = true;
+ 	else if (oid == OID_ntlmssp)
+ 		server->sec_ntlmssp = true;
++	else if (oid == OID_IAKerb)
++		server->sec_iakerb = true;
+ 	else {
+ 		char buf[50];
  
--    # First, the ones in `rust/` since they are a bit special.
--    append_crate(
--        "core",
--        sysroot_src / "core" / "src" / "lib.rs",
--        [],
--        cfg=crates_cfgs.get("core", []),
--        is_workspace_member=False,
--    )
-+    def append_sysroot_crate(
-+        display_name,
-+        deps,
-+        cfg=[],
-+    ):
-+        append_crate(
-+            display_name,
-+            sysroot_src / display_name / "src" / "lib.rs",
-+            deps,
-+            cfg,
-+            is_workspace_member=False,
-+        )
-+
-+    # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
-+    # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
-+    # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
-+    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
-+    append_sysroot_crate("alloc", ["core"])
-+    append_sysroot_crate("std", ["alloc", "core"])
-+    append_sysroot_crate("proc_macro", ["core", "std"])
+diff --git a/fs/smb/client/cifs_spnego.c b/fs/smb/client/cifs_spnego.c
+index af7849e5974ff..2ad067886ec3f 100644
+--- a/fs/smb/client/cifs_spnego.c
++++ b/fs/smb/client/cifs_spnego.c
+@@ -130,11 +130,13 @@ cifs_get_spnego_key(struct cifs_ses *sesInfo,
  
-     append_crate(
-         "compiler_builtins",
-@@ -74,7 +86,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-     append_crate(
-         "macros",
-         srctree / "rust" / "macros" / "lib.rs",
--        [],
-+        ["std", "proc_macro"],
-         is_proc_macro=True,
-     )
-     crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
+ 	dp = description + strlen(description);
+ 
+-	/* for now, only sec=krb5 and sec=mskrb5 are valid */
++	/* for now, only sec=krb5 and sec=mskrb5 and iakerb are valid */
+ 	if (server->sec_kerberos)
+ 		sprintf(dp, ";sec=krb5");
+ 	else if (server->sec_mskerberos)
+ 		sprintf(dp, ";sec=mskrb5");
++	else if (server->sec_iakerb)
++		sprintf(dp, ";sec=iakerb");
+ 	else {
+ 		cifs_dbg(VFS, "unknown or missing server auth type, use krb5\n");
+ 		sprintf(dp, ";sec=krb5");
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index b630beb757a44..a8484af7a2fbc 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -151,6 +151,7 @@ enum securityEnum {
+ 	NTLMv2,			/* Legacy NTLM auth with NTLMv2 hash */
+ 	RawNTLMSSP,		/* NTLMSSP without SPNEGO, NTLMv2 hash */
+ 	Kerberos,		/* Kerberos via SPNEGO */
++	IAKerb,			/* Kerberos proxy */
+ };
+ 
+ enum cifs_reparse_type {
+@@ -743,6 +744,7 @@ struct TCP_Server_Info {
+ 	bool	sec_kerberosu2u;	/* supports U2U Kerberos */
+ 	bool	sec_kerberos;		/* supports plain Kerberos */
+ 	bool	sec_mskerberos;		/* supports legacy MS Kerberos */
++	bool	sec_iakerb;		/* supports pass-through auth for Kerberos (krb5 proxy) */
+ 	bool	large_buf;		/* is current buffer large? */
+ 	/* use SMBD connection instead of socket */
+ 	bool	rdma;
+@@ -2115,6 +2117,8 @@ static inline char *get_security_type_str(enum securityEnum sectype)
+ 		return "Kerberos";
+ 	case NTLMv2:
+ 		return "NTLMv2";
++	case IAKerb:
++		return "IAKerb";
+ 	default:
+ 		return "Unknown";
+ 	}
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index c88e9657f47a8..95e14977baeab 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -1263,12 +1263,13 @@ cifs_select_sectype(struct TCP_Server_Info *server, enum securityEnum requested)
+ 		switch (requested) {
+ 		case Kerberos:
+ 		case RawNTLMSSP:
++		case IAKerb:
+ 			return requested;
+ 		case Unspecified:
+ 			if (server->sec_ntlmssp &&
+ 			    (global_secflags & CIFSSEC_MAY_NTLMSSP))
+ 				return RawNTLMSSP;
+-			if ((server->sec_kerberos || server->sec_mskerberos) &&
++			if ((server->sec_kerberos || server->sec_mskerberos || server->sec_iakerb) &&
+ 			    (global_secflags & CIFSSEC_MAY_KRB5))
+ 				return Kerberos;
+ 			fallthrough;
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 89a9b8ffe9d92..75b13175a2e78 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -1435,7 +1435,7 @@ smb2_select_sectype(struct TCP_Server_Info *server, enum securityEnum requested)
+ 		if (server->sec_ntlmssp &&
+ 			(global_secflags & CIFSSEC_MAY_NTLMSSP))
+ 			return RawNTLMSSP;
+-		if ((server->sec_kerberos || server->sec_mskerberos) &&
++		if ((server->sec_kerberos || server->sec_mskerberos || server->sec_iakerb) &&
+ 			(global_secflags & CIFSSEC_MAY_KRB5))
+ 			return Kerberos;
+ 		fallthrough;
 -- 
 2.39.5
 
