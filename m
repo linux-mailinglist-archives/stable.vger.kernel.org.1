@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-125301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF517A690B0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2EDA69106
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CDE43B3981
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F729175598
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395611E5205;
-	Wed, 19 Mar 2025 14:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A372066C8;
+	Wed, 19 Mar 2025 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGXVz34i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEXYvj/4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB72421A445;
-	Wed, 19 Mar 2025 14:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850DE1CAA60;
+	Wed, 19 Mar 2025 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395093; cv=none; b=pSQ7DutF7SQ6dCBXXbovChM/PXLzM2fDVqns9pYCOYvC2UnuD8ElsYY5TmLjaVbYHiGqQO6gJqLGAYRkKn1dLBiNfLac+BEEDXvUIObO4mtiCu9yZTq/tMg8rsDKWnZchzFriUJNV55mwUF3BVdX5gvByvgu+rUW29VlAvP0ZTA=
+	t=1742395201; cv=none; b=KjicMZp6/BddyV1baOOsA+oy9k73wF8RIZ5UgTC4XKmH35q9uEa8U0a5n6g4wDeYyb8tqYiwLynW/nY2PWPFqo3T5VeTvMi0Bhi2+wkzQqnEGzMpO0DM7S6M/duc/p68mEbqj0jkG0RwLU2k5WikdtWz+X3PpeXP6ufW5ztCS28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395093; c=relaxed/simple;
-	bh=zASWCdzNrIAGkAHqSOMrqMlxnvk+4Y5J873zcVbLGRI=;
+	s=arc-20240116; t=1742395201; c=relaxed/simple;
+	bh=+cKPNDf1vWpO8Ep1rtcu0O+zk5ijHsgzOh6B5SfDtlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DF05TCaB+tWAKKc07o0rq1yQQ9MBiqmxY90auBsbMsBVzNfM2oEIynyKgjEnMMym1ZPgzevIUkRBWjwfLsKNLJkFQGAuJkyy7Mdh8JUXPx4fQFgC+zFs39Xh98GbsltwVq4KCcjy6gIjmjmmw/gpGT/Pf7jZjlPYXueo8DQPXvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGXVz34i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43FFC4CEE4;
-	Wed, 19 Mar 2025 14:38:12 +0000 (UTC)
+	 MIME-Version; b=PdOUjIUwA3iJFNWx43nE2VBMHoeggAay1h078WUbPk7+VRio8DXuvVGP6otIgrNQG3lgOZyOTqcz1mVMUvvTlHa+BvL7ARjQjlgxaQEgSO3kyoxqMEpv9mFq3HgB03rZtzfgCYgkKNKVr1DxxZFsT4rr64BvkwSbNKrufujgOyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEXYvj/4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59931C4CEE4;
+	Wed, 19 Mar 2025 14:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395092;
-	bh=zASWCdzNrIAGkAHqSOMrqMlxnvk+4Y5J873zcVbLGRI=;
+	s=korg; t=1742395201;
+	bh=+cKPNDf1vWpO8Ep1rtcu0O+zk5ijHsgzOh6B5SfDtlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xGXVz34iw61Eh75C4mpdtbAgezDAgWaZWR+EwDU2Fr/RObtyZrfOAiKG9nJqJZcPA
-	 w/xFRnZzBm7iLj+bw+pYANkFYUvnwaljqo4D8z3ANybf8DUVkTNQ+88x3ev6U8aVOE
-	 HdyLpPyOcmp7oIWWCbYI1PPHwk9KCNoy1iPeIt7Q=
+	b=KEXYvj/40t5y6c6toFBsvus77vq9YLDdI0CCiS45iAUpcKo4xay+HYseyUIn4SSy5
+	 RjWR2LrWaSggnlhKhb2S3vExdI6kcz2rMl3NLXCypmlK4L/5yaKgEntGa/EHNve26K
+	 b4WQYuO2rX2AjbsgoG3lwiPpmcyME5PvGey4X99Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Francois Romieu <romieu@fr.zoreil.com>,
-	Breno Leitao <leitao@debian.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
+	syzbot+31c2f641b850a348a734@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 141/231] net: Handle napi_schedule() calls from non-interrupt
-Date: Wed, 19 Mar 2025 07:30:34 -0700
-Message-ID: <20250319143030.320626291@linuxfoundation.org>
+Subject: [PATCH 6.6 064/166] Bluetooth: L2CAP: Fix slab-use-after-free Read in l2cap_send_cmd
+Date: Wed, 19 Mar 2025 07:30:35 -0700
+Message-ID: <20250319143021.744173131@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +63,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 77e45145e3039a0fb212556ab3f8c87f54771757 ]
+[ Upstream commit b4f82f9ed43aefa79bec2504ae8c29be0c0f5d1d ]
 
-napi_schedule() is expected to be called either:
+After the hci sync command releases l2cap_conn, the hci receive data work
+queue references the released l2cap_conn when sending to the upper layer.
+Add hci dev lock to the hci receive data work queue to synchronize the two.
 
-* From an interrupt, where raised softirqs are handled on IRQ exit
+[1]
+BUG: KASAN: slab-use-after-free in l2cap_send_cmd+0x187/0x8d0 net/bluetooth/l2cap_core.c:954
+Read of size 8 at addr ffff8880271a4000 by task kworker/u9:2/5837
 
-* From a softirq disabled section, where raised softirqs are handled on
-  the next call to local_bh_enable().
+CPU: 0 UID: 0 PID: 5837 Comm: kworker/u9:2 Not tainted 6.13.0-rc5-syzkaller-00163-gab75170520d4 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: hci1 hci_rx_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ l2cap_build_cmd net/bluetooth/l2cap_core.c:2964 [inline]
+ l2cap_send_cmd+0x187/0x8d0 net/bluetooth/l2cap_core.c:954
+ l2cap_sig_send_rej net/bluetooth/l2cap_core.c:5502 [inline]
+ l2cap_sig_channel net/bluetooth/l2cap_core.c:5538 [inline]
+ l2cap_recv_frame+0x221f/0x10db0 net/bluetooth/l2cap_core.c:6817
+ hci_acldata_packet net/bluetooth/hci_core.c:3797 [inline]
+ hci_rx_work+0x508/0xdb0 net/bluetooth/hci_core.c:4040
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
-* From a softirq handler, where raised softirqs are handled on the next
-  round in do_softirq(), or further deferred to a dedicated kthread.
+Allocated by task 5837:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __kmalloc_cache_noprof+0x243/0x390 mm/slub.c:4329
+ kmalloc_noprof include/linux/slab.h:901 [inline]
+ kzalloc_noprof include/linux/slab.h:1037 [inline]
+ l2cap_conn_add+0xa9/0x8e0 net/bluetooth/l2cap_core.c:6860
+ l2cap_connect_cfm+0x115/0x1090 net/bluetooth/l2cap_core.c:7239
+ hci_connect_cfm include/net/bluetooth/hci_core.h:2057 [inline]
+ hci_remote_features_evt+0x68e/0xac0 net/bluetooth/hci_event.c:3726
+ hci_event_func net/bluetooth/hci_event.c:7473 [inline]
+ hci_event_packet+0xac2/0x1540 net/bluetooth/hci_event.c:7525
+ hci_rx_work+0x3f3/0xdb0 net/bluetooth/hci_core.c:4035
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Other bare tasks context may end up ignoring the raised NET_RX vector
-until the next random softirq handling opportunity, which may not
-happen before a while if the CPU goes idle afterwards with the tick
-stopped.
+Freed by task 54:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:582
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x59/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2353 [inline]
+ slab_free mm/slub.c:4613 [inline]
+ kfree+0x196/0x430 mm/slub.c:4761
+ l2cap_connect_cfm+0xcc/0x1090 net/bluetooth/l2cap_core.c:7235
+ hci_connect_cfm include/net/bluetooth/hci_core.h:2057 [inline]
+ hci_conn_failed+0x287/0x400 net/bluetooth/hci_conn.c:1266
+ hci_abort_conn_sync+0x56c/0x11f0 net/bluetooth/hci_sync.c:5603
+ hci_cmd_sync_work+0x22b/0x400 net/bluetooth/hci_sync.c:332
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Such "misuses" have been detected on several places thanks to messages
-of the kind:
-
-	"NOHZ tick-stop error: local softirq work is pending, handler #08!!!"
-
-For example:
-
-       __raise_softirq_irqoff
-        __napi_schedule
-        rtl8152_runtime_resume.isra.0
-        rtl8152_resume
-        usb_resume_interface.isra.0
-        usb_resume_both
-        __rpm_callback
-        rpm_callback
-        rpm_resume
-        __pm_runtime_resume
-        usb_autoresume_device
-        usb_remote_wakeup
-        hub_event
-        process_one_work
-        worker_thread
-        kthread
-        ret_from_fork
-        ret_from_fork_asm
-
-And also:
-
-* drivers/net/usb/r8152.c::rtl_work_func_t
-* drivers/net/netdevsim/netdev.c::nsim_start_xmit
-
-There is a long history of issues of this kind:
-
-	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
-	330068589389 ("idpf: disable local BH when scheduling napi for marker packets")
-	e3d5d70cb483 ("net: lan78xx: fix "softirq work is pending" error")
-	e55c27ed9ccf ("mt76: mt7615: add missing bh-disable around rx napi schedule")
-	c0182aa98570 ("mt76: mt7915: add missing bh-disable around tx napi enable/schedule")
-	970be1dff26d ("mt76: disable BH around napi_schedule() calls")
-	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
-	30bfec4fec59 ("can: rx-offload: can_rx_offload_threaded_irq_finish(): add new  function to be called from threaded interrupt")
-	e63052a5dd3c ("mlx5e: add add missing BH locking around napi_schdule()")
-	83a0c6e58901 ("i40e: Invoke softirqs after napi_reschedule")
-	bd4ce941c8d5 ("mlx4: Invoke softirqs after napi_reschedule")
-	8cf699ec849f ("mlx4: do not call napi_schedule() without care")
-	ec13ee80145c ("virtio_net: invoke softirqs after __napi_schedule")
-
-This shows that relying on the caller to arrange a proper context for
-the softirqs to be handled while calling napi_schedule() is very fragile
-and error prone. Also fixing them can also prove challenging if the
-caller may be called from different kinds of contexts.
-
-Therefore fix this from napi_schedule() itself with waking up ksoftirqd
-when softirqs are raised from task contexts.
-
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: Francois Romieu <romieu@fr.zoreil.com>
-Closes: https://lore.kernel.org/lkml/354a2690-9bbf-4ccb-8769-fa94707a9340@molgen.mpg.de/
-Cc: Breno Leitao <leitao@debian.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250223221708.27130-1-frederic@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+31c2f641b850a348a734@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=31c2f641b850a348a734
+Tested-by: syzbot+31c2f641b850a348a734@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/l2cap_core.c | 39 +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index c761f862bc5a2..d286e400c0d87 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4608,7 +4608,7 @@ static inline void ____napi_schedule(struct softnet_data *sd,
- 	 * we have to raise NET_RX_SOFTIRQ.
- 	 */
- 	if (!sd->in_net_rx_action)
--		__raise_softirq_irqoff(NET_RX_SOFTIRQ);
-+		raise_softirq_irqoff(NET_RX_SOFTIRQ);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 76a85d8b17574..f0d40b4918e59 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -949,6 +949,16 @@ static u8 l2cap_get_ident(struct l2cap_conn *conn)
+ 	return id;
  }
  
- #ifdef CONFIG_RPS
++static void l2cap_send_acl(struct l2cap_conn *conn, struct sk_buff *skb,
++			   u8 flags)
++{
++	/* Check if the hcon still valid before attempting to send */
++	if (hci_conn_valid(conn->hcon->hdev, conn->hcon))
++		hci_send_acl(conn->hchan, skb, flags);
++	else
++		kfree_skb(skb);
++}
++
+ static void l2cap_send_cmd(struct l2cap_conn *conn, u8 ident, u8 code, u16 len,
+ 			   void *data)
+ {
+@@ -971,7 +981,7 @@ static void l2cap_send_cmd(struct l2cap_conn *conn, u8 ident, u8 code, u16 len,
+ 	bt_cb(skb)->force_active = BT_POWER_FORCE_ACTIVE_ON;
+ 	skb->priority = HCI_PRIO_MAX;
+ 
+-	hci_send_acl(conn->hchan, skb, flags);
++	l2cap_send_acl(conn, skb, flags);
+ }
+ 
+ static void l2cap_do_send(struct l2cap_chan *chan, struct sk_buff *skb)
+@@ -1793,13 +1803,10 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
+ 
+ 	mutex_unlock(&conn->chan_lock);
+ 
+-	hci_chan_del(conn->hchan);
+-
+ 	if (conn->info_state & L2CAP_INFO_FEAT_MASK_REQ_SENT)
+ 		cancel_delayed_work_sync(&conn->info_timer);
+ 
+ 	hcon->l2cap_data = NULL;
+-	conn->hchan = NULL;
+ 	l2cap_conn_put(conn);
+ }
+ 
+@@ -1807,6 +1814,7 @@ static void l2cap_conn_free(struct kref *ref)
+ {
+ 	struct l2cap_conn *conn = container_of(ref, struct l2cap_conn, ref);
+ 
++	hci_chan_del(conn->hchan);
+ 	hci_conn_put(conn->hcon);
+ 	kfree(conn);
+ }
+@@ -7478,14 +7486,33 @@ static void l2cap_recv_reset(struct l2cap_conn *conn)
+ 	conn->rx_len = 0;
+ }
+ 
++static struct l2cap_conn *l2cap_conn_hold_unless_zero(struct l2cap_conn *c)
++{
++	BT_DBG("conn %p orig refcnt %u", c, kref_read(&c->ref));
++
++	if (!kref_get_unless_zero(&c->ref))
++		return NULL;
++
++	return c;
++}
++
+ void l2cap_recv_acldata(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
+ {
+-	struct l2cap_conn *conn = hcon->l2cap_data;
++	struct l2cap_conn *conn;
+ 	int len;
+ 
++	/* Lock hdev to access l2cap_data to avoid race with l2cap_conn_del */
++	hci_dev_lock(hcon->hdev);
++
++	conn = hcon->l2cap_data;
++
+ 	if (!conn)
+ 		conn = l2cap_conn_add(hcon);
+ 
++	conn = l2cap_conn_hold_unless_zero(conn);
++
++	hci_dev_unlock(hcon->hdev);
++
+ 	if (!conn)
+ 		goto drop;
+ 
+@@ -7577,6 +7604,8 @@ void l2cap_recv_acldata(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
+ 		break;
+ 	}
+ 
++	l2cap_conn_put(conn);
++
+ drop:
+ 	kfree_skb(skb);
+ }
 -- 
 2.39.5
 
