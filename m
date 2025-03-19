@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-125338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE34AA690D4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F32A690D8
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE03F88795E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B9847AC9A1
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C748D21B9CF;
-	Wed, 19 Mar 2025 14:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A15221D9B;
+	Wed, 19 Mar 2025 14:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNujpLVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pf+BNOkS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849C821B9C0;
-	Wed, 19 Mar 2025 14:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FA0209F50;
+	Wed, 19 Mar 2025 14:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395118; cv=none; b=PGU4qOlUWlAb6LVt4kuQPzS3HvJsxMtBQ7xAcHh6/XYo5wLgK/e9xwOYQ7dY8h6rsM3/qYzlK9Jyn42tWW7iP7PFY/FPcA+8RgTyOZ4mNzbfbjBWzBDg9nc3y5nNBPEM/VwGkJF9PxSnpINrik5ixrKKmB+Is3V292CED6NNojY=
+	t=1742395229; cv=none; b=HxiWMJXcKb8TD9/mknxFvTVbKL2avHnjsLQjLcgyL+TxvFoD7bDMp8q3rnYaeKs42ik0nAuDCkTivGoEP9kjhE/GyRkIZN7nfts8q4XWto4iqfqGG/OL4hQQIRETSZ6VtnzUqo9gojP2TFJUimDvpAhf6ZIa8FStNXpARXKRXjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395118; c=relaxed/simple;
-	bh=E/YjpBNM8ezPnqLCQEMZe4umP1eJ/kT6pP1Kqms2Q9A=;
+	s=arc-20240116; t=1742395229; c=relaxed/simple;
+	bh=mr+B9fVcZBD8oWOkm1G4EuClIv22IrDF7dX3IJJDDWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPvzzrLMxd8VvwxuN6yFQ93jx6sLSVAH002due6H5Uf3sXmRWC1QU0YIhKH8yr2WKVjTo6XLMpOlHJ0G8RIOY4xh1cqpKIgM4JemhxwjOVebyeYerGA+8/fFMqAuo6idRfba9JoNcOkFSW4gat87mZ3ahQriNI6kEm3vtPu4Ci8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNujpLVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52050C4CEE4;
-	Wed, 19 Mar 2025 14:38:38 +0000 (UTC)
+	 MIME-Version; b=ZieCficNZkwr+bQ3FvK3kk8QyqdMbVQ0I62BGIS1riiCwekyQLOUFKOtjEMY6Fds7hxyfpaY1+34mrXxWiOZBmfhTO4Fr/g5w61Tn3+h8t+IZXdZlst2bcVhOSU+h8WlNE1p+mB4UQNUXtJKrfIUHC7jmdJ6RtMA9wTHatfsgvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pf+BNOkS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1E7C4CEE8;
+	Wed, 19 Mar 2025 14:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395118;
-	bh=E/YjpBNM8ezPnqLCQEMZe4umP1eJ/kT6pP1Kqms2Q9A=;
+	s=korg; t=1742395229;
+	bh=mr+B9fVcZBD8oWOkm1G4EuClIv22IrDF7dX3IJJDDWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNujpLVk0xcM0FjU0k8TSFo+G5HzwvVhulX2DbjolrJimtA4lnWMfs5+o6NBUCmb4
-	 lFo19IGgggXDaXQyRn0uILsjFSDXaYLCohJ5r3oNuJ+pWUtOT7P19T1BAgD1qBlba2
-	 ide6t4k4Dq3C10SeGMJ+WeZ2OQVL0Npqi9AB54p4=
+	b=Pf+BNOkS00qPtpsGWM3XcAZyEBN6AWM5S2qBMn1mLn9PwWhPzuENoyIdKvqJwhmoQ
+	 +wKDn6ZP/8y2axhVnY03e3skMptoQRojQDN/DD97Wv/+Ra6VcoLd21Kvl5NkfFNEiX
+	 uNyo0Lo2baWexD1htyYGStDP68CCiqRXFZLunUY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 178/231] drm/amd/display: fix default brightness
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 100/166] io_uring/kbuf: vmap pinned buffer ring
 Date: Wed, 19 Mar 2025 07:31:11 -0700
-Message-ID: <20250319143031.235605244@linuxfoundation.org>
+Message-ID: <20250319143022.725359077@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +60,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit b5a981e1b34e44f94a5967f730fff4166f2101e8 upstream.
+Commit e270bfd22a2a10d1cfbaddf23e79b6d0b405d21e upstream.
 
-[Why]
-To avoid flickering during boot default brightness level set by BIOS
-should be maintained for as much of the boot as feasible.
-commit 2fe87f54abdc ("drm/amd/display: Set default brightness according
-to ACPI") attempted to set the right levels for AC vs DC, but brightness
-still got reset to maximum level in initialization code for
-setup_backlight_device().
+This avoids needing to care about HIGHMEM, and it makes the buffer
+indexing easier as both ring provided buffer methods are now virtually
+mapped in a contigious fashion.
 
-[How]
-Remove the hardcoded initialization in setup_backlight_device() and
-instead program brightness value to match BIOS (AC or DC).  This avoids a
-brightness flicker from kernel changing the value.  Userspace may however
-still change it during boot.
-
-Fixes: 2fe87f54abdc ("drm/amd/display: Set default brightness according to ACPI")
-Acked-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0747acf3311229e22009bec4a9e7fc30c879e842)
-Cc: stable@vger.kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/kbuf.c |   39 +++++++++++++++------------------------
+ 1 file changed, 15 insertions(+), 24 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4822,6 +4822,7 @@ amdgpu_dm_register_backlight_device(stru
- 	dm->backlight_dev[aconnector->bl_idx] =
- 		backlight_device_register(bl_name, aconnector->base.kdev, dm,
- 					  &amdgpu_dm_backlight_ops, &props);
-+	dm->brightness[aconnector->bl_idx] = props.brightness;
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -7,6 +7,7 @@
+ #include <linux/slab.h>
+ #include <linux/namei.h>
+ #include <linux/poll.h>
++#include <linux/vmalloc.h>
+ #include <linux/io_uring.h>
  
- 	if (IS_ERR(dm->backlight_dev[aconnector->bl_idx])) {
- 		DRM_ERROR("DM: Backlight registration failed!\n");
-@@ -4889,7 +4890,6 @@ static void setup_backlight_device(struc
- 	aconnector->bl_idx = bl_idx;
+ #include <uapi/linux/io_uring.h>
+@@ -153,15 +154,7 @@ static void __user *io_ring_buffer_selec
+ 		return NULL;
  
- 	amdgpu_dm_update_backlight_caps(dm, bl_idx);
--	dm->brightness[bl_idx] = AMDGPU_MAX_BL_LEVEL;
- 	dm->backlight_link[bl_idx] = link;
- 	dm->num_of_edps++;
+ 	head &= bl->mask;
+-	/* mmaped buffers are always contig */
+-	if (bl->is_mmap || head < IO_BUFFER_LIST_BUF_PER_PAGE) {
+-		buf = &br->bufs[head];
+-	} else {
+-		int off = head & (IO_BUFFER_LIST_BUF_PER_PAGE - 1);
+-		int index = head / IO_BUFFER_LIST_BUF_PER_PAGE;
+-		buf = page_address(bl->buf_pages[index]);
+-		buf += off;
+-	}
++	buf = &br->bufs[head];
+ 	if (*len == 0 || *len > buf->len)
+ 		*len = buf->len;
+ 	req->flags |= REQ_F_BUFFER_RING;
+@@ -249,6 +242,7 @@ static int __io_remove_buffers(struct io
+ 			for (j = 0; j < bl->buf_nr_pages; j++)
+ 				unpin_user_page(bl->buf_pages[j]);
+ 			kvfree(bl->buf_pages);
++			vunmap(bl->buf_ring);
+ 			bl->buf_pages = NULL;
+ 			bl->buf_nr_pages = 0;
+ 		}
+@@ -501,9 +495,9 @@ err:
+ static int io_pin_pbuf_ring(struct io_uring_buf_reg *reg,
+ 			    struct io_buffer_list *bl)
+ {
+-	struct io_uring_buf_ring *br;
++	struct io_uring_buf_ring *br = NULL;
++	int nr_pages, ret, i;
+ 	struct page **pages;
+-	int i, nr_pages;
  
+ 	pages = io_pin_pages(reg->ring_addr,
+ 			     flex_array_size(br, bufs, reg->ring_entries),
+@@ -511,18 +505,12 @@ static int io_pin_pbuf_ring(struct io_ur
+ 	if (IS_ERR(pages))
+ 		return PTR_ERR(pages);
+ 
+-	/*
+-	 * Apparently some 32-bit boxes (ARM) will return highmem pages,
+-	 * which then need to be mapped. We could support that, but it'd
+-	 * complicate the code and slowdown the common cases quite a bit.
+-	 * So just error out, returning -EINVAL just like we did on kernels
+-	 * that didn't support mapped buffer rings.
+-	 */
+-	for (i = 0; i < nr_pages; i++)
+-		if (PageHighMem(pages[i]))
+-			goto error_unpin;
++	br = vmap(pages, nr_pages, VM_MAP, PAGE_KERNEL);
++	if (!br) {
++		ret = -ENOMEM;
++		goto error_unpin;
++	}
+ 
+-	br = page_address(pages[0]);
+ #ifdef SHM_COLOUR
+ 	/*
+ 	 * On platforms that have specific aliasing requirements, SHM_COLOUR
+@@ -533,8 +521,10 @@ static int io_pin_pbuf_ring(struct io_ur
+ 	 * should use IOU_PBUF_RING_MMAP instead, and liburing will handle
+ 	 * this transparently.
+ 	 */
+-	if ((reg->ring_addr | (unsigned long) br) & (SHM_COLOUR - 1))
++	if ((reg->ring_addr | (unsigned long) br) & (SHM_COLOUR - 1)) {
++		ret = -EINVAL;
+ 		goto error_unpin;
++	}
+ #endif
+ 	bl->buf_pages = pages;
+ 	bl->buf_nr_pages = nr_pages;
+@@ -546,7 +536,8 @@ error_unpin:
+ 	for (i = 0; i < nr_pages; i++)
+ 		unpin_user_page(pages[i]);
+ 	kvfree(pages);
+-	return -EINVAL;
++	vunmap(br);
++	return ret;
+ }
+ 
+ /*
 
 
 
