@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0AC2A69198
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A90DA69250
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8251883C4A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:41:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086D81B844D2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B009921146D;
-	Wed, 19 Mar 2025 14:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1A01D63FC;
+	Wed, 19 Mar 2025 14:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXDBTY/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1AymK/Y3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6148C210F58;
-	Wed, 19 Mar 2025 14:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE81D1C1F02;
+	Wed, 19 Mar 2025 14:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395013; cv=none; b=jxYw1KooL6MQhq9GoECSuE6I4Z6s1DvQ8HEGpsBP5Ecc3yFxN3KQrO1hZkmPd6ph0eOab8G+2F2jH6rWxwiEmUuC1biH2Bdd6cMwHinn/q4K7TYWprlXg/PiHlnBUjlULfplzvKwobeUuTKESK4x3zDSg7oK2UK767FqUcDbcXo=
+	t=1742394859; cv=none; b=NlwudSILQMzNy/UpoqwqntzWqoPt1bUXO1YLdSzk9Rgu181WBPrDDxH0sE0QO9JQVwfNFdgRIuJUFZkldomlR+u0Ie2idEiVvKFXs9XEROftdZPq/aQIoVbM7ngez9+5umi0obGr5NaGLWqbcumQMlBj2hHsH894mOu+CE7quSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395013; c=relaxed/simple;
-	bh=iq94qkHdhrKyYJMN61Zrf3JOhsSXDXIUpLak6JkPNhM=;
+	s=arc-20240116; t=1742394859; c=relaxed/simple;
+	bh=WupQ9Cgz+LV4eisKB3pI+ZV+9el17+JSOhtajCGKiQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gx9zm0JWmdMor2pmd03Ba6KwLNEiUNRSjlYOlFuroRygBTuuqy2V2ZFixpxz0IOpiWBjYs2IXZrglAXKvOJSX5eQJOm2otr+3h42w0is9hk3sOzLT5Myjy2woJF0O4Sj243rbkgkKoBWOExdQwVBvK3Bd3zGG3z9exhX8FI2Pv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXDBTY/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38716C4CEE4;
-	Wed, 19 Mar 2025 14:36:53 +0000 (UTC)
+	 MIME-Version; b=kiKYW8pNyl0WsjSltrOOVupRkB7EnXd2mIKENXcYMZnDzGvBjyh/z+ut01a2vv8yixtmev1veswIFAnpzzkuz33LYMvSDSfNcDb3axQVb2CeKG8tLpVH6jhqQmPe2R85PRButUW040VL8FXcJjXhwiW3Nvrt3+ZdMdnd/+t7ydg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1AymK/Y3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61E7C4CEE9;
+	Wed, 19 Mar 2025 14:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395013;
-	bh=iq94qkHdhrKyYJMN61Zrf3JOhsSXDXIUpLak6JkPNhM=;
+	s=korg; t=1742394858;
+	bh=WupQ9Cgz+LV4eisKB3pI+ZV+9el17+JSOhtajCGKiQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXDBTY/w21lr8nn2YfZX7akpbaO59JTXKaSRnayXH8LpZjTiCjbdbNeg7FG0m8b8/
-	 JCjNpRjkYbwfTbW20sg2O4ps5FVebusi/zpOFN0Q3ZVZEU+Ff4REXexZUQV1vzV9t+
-	 QRNGoMO5vOCdj1QarVLNdb/2X5BfK1R/tEpdMtrE=
+	b=1AymK/Y3vVrorlxM2zpx96VN+EXS6FuFdzrVgcDgIviEJA2QmrO3XoI+s3No9JP9G
+	 g8k/7SC2H5DYFV17E/cxeDjvaWH2sWWZCwWWsiFtGZTeAYJlak/lx3Pt1JuApqNfKW
+	 nKrf/s4JXSgTti8Tg5xKv14WmdyL+mfm76nozolg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/231] drm/hyperv: Fix address space leak when Hyper-V DRM device is removed
-Date: Wed, 19 Mar 2025 07:28:37 -0700
-Message-ID: <20250319143027.422884325@linuxfoundation.org>
+Subject: [PATCH 6.13 048/241] gre: Fix IPv6 link-local address generation.
+Date: Wed, 19 Mar 2025 07:28:38 -0700
+Message-ID: <20250319143028.913772571@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit aed709355fd05ef747e1af24a1d5d78cd7feb81e ]
+[ Upstream commit 183185a18ff96751db52a46ccf93fff3a1f42815 ]
 
-When a Hyper-V DRM device is probed, the driver allocates MMIO space for
-the vram, and maps it cacheable. If the device removed, or in the error
-path for device probing, the MMIO space is released but no unmap is done.
-Consequently the kernel address space for the mapping is leaked.
+Use addrconf_addr_gen() to generate IPv6 link-local addresses on GRE
+devices in most cases and fall back to using add_v4_addrs() only in
+case the GRE configuration is incompatible with addrconf_addr_gen().
 
-Fix this by adding iounmap() calls in the device removal path, and in the
-error path during device probing.
+GRE used to use addrconf_addr_gen() until commit e5dd729460ca
+("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL
+address") restricted this use to gretap and ip6gretap devices, and
+created add_v4_addrs() (borrowed from SIT) for non-Ethernet GRE ones.
 
-Fixes: f1f63cbb705d ("drm/hyperv: Fix an error handling path in hyperv_vmbus_probe()")
-Fixes: a0ab5abced55 ("drm/hyperv : Removing the restruction of VRAM allocation with PCI bar size")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250210193441.2414-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250210193441.2414-1-mhklinux@outlook.com>
+The original problem came when commit 9af28511be10 ("addrconf: refuse
+isatap eui64 for INADDR_ANY") made __ipv6_isatap_ifid() fail when its
+addr parameter was 0. The commit says that this would create an invalid
+address, however, I couldn't find any RFC saying that the generated
+interface identifier would be wrong. Anyway, since gre over IPv4
+devices pass their local tunnel address to __ipv6_isatap_ifid(), that
+commit broke their IPv6 link-local address generation when the local
+address was unspecified.
+
+Then commit e5dd729460ca ("ip/ip6_gre: use the same logic as SIT
+interfaces when computing v6LL address") tried to fix that case by
+defining add_v4_addrs() and calling it to generate the IPv6 link-local
+address instead of using addrconf_addr_gen() (apart for gretap and
+ip6gretap devices, which would still use the regular
+addrconf_addr_gen(), since they have a MAC address).
+
+That broke several use cases because add_v4_addrs() isn't properly
+integrated into the rest of IPv6 Neighbor Discovery code. Several of
+these shortcomings have been fixed over time, but add_v4_addrs()
+remains broken on several aspects. In particular, it doesn't send any
+Router Sollicitations, so the SLAAC process doesn't start until the
+interface receives a Router Advertisement. Also, add_v4_addrs() mostly
+ignores the address generation mode of the interface
+(/proc/sys/net/ipv6/conf/*/addr_gen_mode), thus breaking the
+IN6_ADDR_GEN_MODE_RANDOM and IN6_ADDR_GEN_MODE_STABLE_PRIVACY cases.
+
+Fix the situation by using add_v4_addrs() only in the specific scenario
+where the normal method would fail. That is, for interfaces that have
+all of the following characteristics:
+
+  * run over IPv4,
+  * transport IP packets directly, not Ethernet (that is, not gretap
+    interfaces),
+  * tunnel endpoint is INADDR_ANY (that is, 0),
+  * device address generation mode is EUI64.
+
+In all other cases, revert back to the regular addrconf_addr_gen().
+
+Also, remove the special case for ip6gre interfaces in add_v4_addrs(),
+since ip6gre devices now always use addrconf_addr_gen() instead.
+
+Fixes: e5dd729460ca ("ip/ip6_gre: use the same logic as SIT interfaces when computing v6LL address")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/559c32ce5c9976b269e6337ac9abb6a96abe5096.1741375285.git.gnault@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hyperv/hyperv_drm_drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/addrconf.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-index ff93e08d5036d..5f02a5a39ab4a 100644
---- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-@@ -154,6 +154,7 @@ static int hyperv_vmbus_probe(struct hv_device *hdev,
- 	return 0;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 0e765466d7f79..bdf39388e514b 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3237,16 +3237,13 @@ static void add_v4_addrs(struct inet6_dev *idev)
+ 	struct in6_addr addr;
+ 	struct net_device *dev;
+ 	struct net *net = dev_net(idev->dev);
+-	int scope, plen, offset = 0;
++	int scope, plen;
+ 	u32 pflags = 0;
  
- err_free_mmio:
-+	iounmap(hv->vram);
- 	vmbus_free_mmio(hv->mem->start, hv->fb_size);
- err_vmbus_close:
- 	vmbus_close(hdev->channel);
-@@ -172,6 +173,7 @@ static void hyperv_vmbus_remove(struct hv_device *hdev)
- 	vmbus_close(hdev->channel);
- 	hv_set_drvdata(hdev, NULL);
+ 	ASSERT_RTNL();
  
-+	iounmap(hv->vram);
- 	vmbus_free_mmio(hv->mem->start, hv->fb_size);
- }
+ 	memset(&addr, 0, sizeof(struct in6_addr));
+-	/* in case of IP6GRE the dev_addr is an IPv6 and therefore we use only the last 4 bytes */
+-	if (idev->dev->addr_len == sizeof(struct in6_addr))
+-		offset = sizeof(struct in6_addr) - 4;
+-	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr + offset, 4);
++	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr, 4);
  
+ 	if (!(idev->dev->flags & IFF_POINTOPOINT) && idev->dev->type == ARPHRD_SIT) {
+ 		scope = IPV6_ADDR_COMPATv4;
+@@ -3557,7 +3554,13 @@ static void addrconf_gre_config(struct net_device *dev)
+ 		return;
+ 	}
+ 
+-	if (dev->type == ARPHRD_ETHER) {
++	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
++	 * unless we have an IPv4 GRE device not bound to an IP address and
++	 * which is in EUI64 mode (as __ipv6_isatap_ifid() would fail in this
++	 * case). Such devices fall back to add_v4_addrs() instead.
++	 */
++	if (!(dev->type == ARPHRD_IPGRE && *(__be32 *)dev->dev_addr == 0 &&
++	      idev->cnf.addr_gen_mode == IN6_ADDR_GEN_MODE_EUI64)) {
+ 		addrconf_addr_gen(idev, true);
+ 		return;
+ 	}
 -- 
 2.39.5
 
