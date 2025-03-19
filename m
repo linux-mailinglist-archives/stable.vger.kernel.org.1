@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FF2A69095
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ECECA68FA5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2730D8A012B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C15E63AD1EB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E59B1E231D;
-	Wed, 19 Mar 2025 14:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643621D7E5B;
+	Wed, 19 Mar 2025 14:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ts2BTMxI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGsOPC8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E905F214A9E;
-	Wed, 19 Mar 2025 14:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A0D1C5F2D;
+	Wed, 19 Mar 2025 14:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395070; cv=none; b=jXJSUJFCGZ6SBevwOpLhUVfQ3ojnkadhShwyN+FCA5cN34HIemdrmTBvz8OpKsUE5L4fLKJQBv/+9j/jJOMZQYFYwy0QXNwAVt2FkAVEdF2Uqcg7aYAl1qYV2Rrwr98Uii/fm3QAUlXmGVVOloTVPwXsy8HQeRM7ur5Nft67qoI=
+	t=1742394920; cv=none; b=Ss9tsYb00bCZMab0/tzhP2nkDf8RBe/zFrkTddjKQy8CavGQq1ufNqypJhAWbVVkGkFbBCU0J8rAe/yS0bUIwp/wgONQBBXg3ZeGWpoykmFQw5R0tTxTuMHLZDF9kev96V4Rg2twiwIVhX5P/0X9W2+UnoQVh93Mv3/Q16t4k5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395070; c=relaxed/simple;
-	bh=wPDXHV2kcXRpWgMdDHC63YcXS9xxRCVMXsyRhcmo3Qw=;
+	s=arc-20240116; t=1742394920; c=relaxed/simple;
+	bh=Tlb694bVZIz1PGr/J02v9mEkxmbuAZGeHMVf3G52oaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aao3Sa++ss+6voML2m5dd+bvoiTbezaSKHkxqDoIdIYOBWAoPqBhTYwbRlx3fiGuJq/B6XG4FPD5v+vvk7MornX68Sd3tu6UqSOb9RzjQsEY1QzXCvOCLi8P2YIRKOsQ911L7wKmDmStpXZ1p4d224qhlx2Ka9R+4S6VJ1J9cQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ts2BTMxI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63FD5C4CEE4;
-	Wed, 19 Mar 2025 14:37:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eOk8CEXo6GUmQ6WblcX58hTdjOBskZw1SbvWKLybk3vnfmW2fy+9IpA/MIbmvidSbySpVAkmKhBPLzTER58wk8CGqQAGJtZY4dK34FEhlv9G5VJo9S96saqoxs3pOM/w0Ws50sa+gv/8GWBESI2If1dMh7a+7Hi+j3tvF7azLhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGsOPC8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB78DC4CEE4;
+	Wed, 19 Mar 2025 14:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395069;
-	bh=wPDXHV2kcXRpWgMdDHC63YcXS9xxRCVMXsyRhcmo3Qw=;
+	s=korg; t=1742394920;
+	bh=Tlb694bVZIz1PGr/J02v9mEkxmbuAZGeHMVf3G52oaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ts2BTMxIpb9o5nkr6WgKh2nEvKlCifMdfYvARsPpXaNfml24aVxRwVfus4YjG5W4O
-	 XNqGa5gg9uoRml8mx3wA50f43Drc5hNgJuK1yD2CRkQLCKm4aexuCq21qqAHdbOkDc
-	 xfZM5xegXcOjggTQOJQwfMqUggqoqqlEch9TLsNY=
+	b=IGsOPC8JBYdZz47ssI3PXtSRVadnZhwzneFSzvTR5VikIJzK8sCtbiD7kWf5jIFIx
+	 E0iJRsiN4c9yB6wKOm8WQ5KFye3+OOZPPLJ3EYieiETomiZz5DAEIfMZIyv5OIroJT
+	 du6NmpmPDCOMnD+zrCOzIH7ckfUmPW1swoQxdDiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/231] ASoC: simple-card-utils.c: add missing dlc->of_node
-Date: Wed, 19 Mar 2025 07:29:59 -0700
-Message-ID: <20250319143029.456657195@linuxfoundation.org>
+Subject: [PATCH 6.13 130/241] cifs: Treat unhandled directory name surrogate reparse points as mount directory nodes
+Date: Wed, 19 Mar 2025 07:30:00 -0700
+Message-ID: <20250319143030.942252721@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit dabbd325b25edb5cdd99c94391817202dd54b651 ]
+[ Upstream commit b587fd128660d48cd2122f870f720ff8e2b4abb3 ]
 
-commit 90de551c1bf ("ASoC: simple-card-utils.c: enable multi Component
-support") added muiti Component support, but was missing to add
-dlc->of_node. Because of it, Sound device list will indicates strange
-name if it was DPCM connection and driver supports dai->driver->dai_args,
-like below
+If the reparse point was not handled (indicated by the -EOPNOTSUPP from
+ops->parse_reparse_point() call) but reparse tag is of type name surrogate
+directory type, then treat is as a new mount point.
 
-	> aplay -l
-	card X: sndulcbmix [xxxx], device 0: fe.(null).rsnd-dai.0 (*) []
-	...                                     ^^^^^^
+Name surrogate reparse point represents another named entity in the system.
 
-It will be fixed by this patch
+>From SMB client point of view, this another entity is resolved on the SMB
+server, and server serves its content automatically. Therefore from Linux
+client point of view, this name surrogate reparse point of directory type
+crosses mount point.
 
-	> aplay -l
-	card X: sndulcbmix [xxxx], device 0: fe.sound@ec500000.rsnd-dai.0 (*) []
-	...                                     ^^^^^^^^^^^^^^
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/87ikpp2rtb.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/generic/simple-card-utils.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/inode.c    | 13 +++++++++++++
+ fs/smb/common/smbfsctl.h |  3 +++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
-index fedae7f6f70cc..975ffd2cad292 100644
---- a/sound/soc/generic/simple-card-utils.c
-+++ b/sound/soc/generic/simple-card-utils.c
-@@ -1097,6 +1097,7 @@ int graph_util_parse_dai(struct device *dev, struct device_node *ep,
- 	args.np = ep;
- 	dai = snd_soc_get_dai_via_args(&args);
- 	if (dai) {
-+		dlc->of_node  = node;
- 		dlc->dai_name = snd_soc_dai_name_get(dai);
- 		dlc->dai_args = snd_soc_copy_dai_args(dev, &args);
- 		if (!dlc->dai_args)
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 4d8effe78be57..a1b06ca07fcc7 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1215,6 +1215,19 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 			rc = server->ops->parse_reparse_point(cifs_sb,
+ 							      full_path,
+ 							      iov, data);
++			/*
++			 * If the reparse point was not handled but it is the
++			 * name surrogate which points to directory, then treat
++			 * is as a new mount point. Name surrogate reparse point
++			 * represents another named entity in the system.
++			 */
++			if (rc == -EOPNOTSUPP &&
++			    IS_REPARSE_TAG_NAME_SURROGATE(data->reparse.tag) &&
++			    (le32_to_cpu(data->fi.Attributes) & ATTR_DIRECTORY)) {
++				rc = 0;
++				cifs_create_junction_fattr(fattr, sb);
++				goto out;
++			}
+ 		}
+ 		break;
+ 	}
+diff --git a/fs/smb/common/smbfsctl.h b/fs/smb/common/smbfsctl.h
+index 4b379e84c46b9..3253a18ecb5cb 100644
+--- a/fs/smb/common/smbfsctl.h
++++ b/fs/smb/common/smbfsctl.h
+@@ -159,6 +159,9 @@
+ #define IO_REPARSE_TAG_LX_CHR	     0x80000025
+ #define IO_REPARSE_TAG_LX_BLK	     0x80000026
+ 
++/* If Name Surrogate Bit is set, the file or directory represents another named entity in the system. */
++#define IS_REPARSE_TAG_NAME_SURROGATE(tag) (!!((tag) & 0x20000000))
++
+ /* fsctl flags */
+ /* If Flags is set to this value, the request is an FSCTL not ioctl request */
+ #define SMB2_0_IOCTL_IS_FSCTL		0x00000001
 -- 
 2.39.5
 
