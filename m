@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-125230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873C5A69027
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:45:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1B0A68F92
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBB82427581
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E635C174A8A
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCA12144DD;
-	Wed, 19 Mar 2025 14:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24B51DFE0B;
+	Wed, 19 Mar 2025 14:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15MxjMtS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnUzmn9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC771D5CEA;
-	Wed, 19 Mar 2025 14:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BD71DFD98;
+	Wed, 19 Mar 2025 14:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395044; cv=none; b=Jt7FiAv3d56spuME1VSUs/o98Kq7UlNTJOR7VxjJvGBq+8sLJwjXnFVJ5Jp7L/6cC8ZiIjxkq0d3Aqvkm9nn95VOMWuwfYZ6+qHNrEVd5jFMIsShMyuugeiwR4FR4bUkVPfesaV+1edpGogk36w4eWLSXa6aHzg0EdnmM3b1o1A=
+	t=1742394889; cv=none; b=hLNSQDBElqyWS92KWdgDZl6FkNPFkk4rZjXlaYsaB5AXKDw6G5w//4XzyTIlomNh2IyaPXiT7Rj8CXkRJznFk4q+QYvyxqrN3XC+3DQS7LCi33I9DHZxLNzYtFOyib3hejl27nDiCHy3K+FdmH37kjUEJmhvPMh2ghO3lAY8HKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395044; c=relaxed/simple;
-	bh=7hUG8WHpQ3ynOIsJTSWMaIjkY0qvzHqDVs5vt1X1e7A=;
+	s=arc-20240116; t=1742394889; c=relaxed/simple;
+	bh=o3+cTxsmpmc7lNZlXM+chykFY8lPupPce7A1hKjs+PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnSzi6GbS/R94q73QxE8hzbruigfRYUbazwXo5Kutg6bbBUbOwe0o/QXFGKlZ1z0RKChrHkpsq9FD78IYqH6SdeGJc6mprVanyOdJI9Y8HO+c2bcgVbcN3jJ8u3Tmr0aKAimUS/qNBfS3cphRO15ZuYwxcEPsBNmVimJzisxR3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15MxjMtS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BDAC4CEE4;
-	Wed, 19 Mar 2025 14:37:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k/VqQOzEDYQBDtWK8shcKE87fPHzenxu1V1bj8Xuk7rcBEGn758i4HAQ8Ud6AicTBjNvWSEjJO7YsMDW5xZQRqhZY8xoI0CNyd4mElhhR4qg5wRdC510/tpsoBBtJSpI8BFTXe38NrsOIw2f7t2XMnOc6tjLwBvXiK4lMCyjxwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnUzmn9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46050C4CEE4;
+	Wed, 19 Mar 2025 14:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395044;
-	bh=7hUG8WHpQ3ynOIsJTSWMaIjkY0qvzHqDVs5vt1X1e7A=;
+	s=korg; t=1742394889;
+	bh=o3+cTxsmpmc7lNZlXM+chykFY8lPupPce7A1hKjs+PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15MxjMtS6MJBc8kEaFhXylmVQXn/60EHOHq0ZEKWw5xKSkMNvNROxemJtnPggFSaU
-	 QXNzCY0e/EZWTYyBXqyJnonvkYX7igHqk1nqFqqWrhoEoLJI+IjRyhMZSa/BiAw3mY
-	 gVsSSTbs1PLgDQP77QX/PB0WLX6mm3k8y9qjWsdY=
+	b=KnUzmn9HjHJzqJ5tmluazgL0LliwDbJgvaiQ8uGCOtZSaZFGpMTmqEl+FWm6rXhA6
+	 IAA95pNxLi3Uu59SADI02mc2KieR9IPCL6qkO8jBm1Tg+fSQ9bpdzDWP1mc1kIJCMA
+	 BtqiT5uE+8rppAKMx+qqpPlO4GG7RZGiafIDXvv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gannon Kolding <gannon.kolding@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/231] ACPI: resource: IRQ override for Eluktronics MECH-17
+Subject: [PATCH 6.13 092/241] platform/x86: int3472: Use correct type for "polarity", call it gpio_flags
 Date: Wed, 19 Mar 2025 07:29:22 -0700
-Message-ID: <20250319143028.537258313@linuxfoundation.org>
+Message-ID: <20250319143030.000474702@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,177 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gannon Kolding <gannon.kolding@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 607ab6f85f4194b644ea95ac5fe660ef575db3b4 ]
+[ Upstream commit fc22b06fbd2afefa1eddff69a6fd30c539cef577 ]
 
-The Eluktronics MECH-17 (GM7RG7N) needs IRQ overriding for the
-keyboard to work.
+Struct gpiod_lookup flags field's type is unsigned long. Thus use unsigned
+long for values to be assigned to that field. Similarly, also call the
+field gpio_flags which it really is.
 
-Adding a DMI_MATCH entry for this laptop model makes the internal
-keyboard function normally.
-
-Signed-off-by: Gannon Kolding <gannon.kolding@gmail.com>
-Link: https://patch.msgid.link/20250127093902.328361-1-gannon.kolding@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250211072841.7713-2-sakari.ailus@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/platform/x86/intel/int3472/discrete.c | 39 ++++++++++---------
+ 1 file changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 90aaec923889c..b4cd14e7fa76c 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -563,6 +563,12 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
-+			DMI_MATCH(DMI_BOARD_NAME, "MECH-17"),
-+		},
-+	},
- 	{
- 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
- 		.matches = {
+diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
+index 09fff213b0911..8205993d3b5c4 100644
+--- a/drivers/platform/x86/intel/int3472/discrete.c
++++ b/drivers/platform/x86/intel/int3472/discrete.c
+@@ -55,7 +55,7 @@ static void skl_int3472_log_sensor_module_name(struct int3472_discrete_device *i
+ 
+ static int skl_int3472_fill_gpiod_lookup(struct gpiod_lookup *table_entry,
+ 					 struct acpi_resource_gpio *agpio,
+-					 const char *func, u32 polarity)
++					 const char *func, unsigned long gpio_flags)
+ {
+ 	char *path = agpio->resource_source.string_ptr;
+ 	struct acpi_device *adev;
+@@ -70,14 +70,14 @@ static int skl_int3472_fill_gpiod_lookup(struct gpiod_lookup *table_entry,
+ 	if (!adev)
+ 		return -ENODEV;
+ 
+-	*table_entry = GPIO_LOOKUP(acpi_dev_name(adev), agpio->pin_table[0], func, polarity);
++	*table_entry = GPIO_LOOKUP(acpi_dev_name(adev), agpio->pin_table[0], func, gpio_flags);
+ 
+ 	return 0;
+ }
+ 
+ static int skl_int3472_map_gpio_to_sensor(struct int3472_discrete_device *int3472,
+ 					  struct acpi_resource_gpio *agpio,
+-					  const char *func, u32 polarity)
++					  const char *func, unsigned long gpio_flags)
+ {
+ 	int ret;
+ 
+@@ -87,7 +87,7 @@ static int skl_int3472_map_gpio_to_sensor(struct int3472_discrete_device *int347
+ 	}
+ 
+ 	ret = skl_int3472_fill_gpiod_lookup(&int3472->gpios.table[int3472->n_sensor_gpios],
+-					    agpio, func, polarity);
++					    agpio, func, gpio_flags);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -100,7 +100,7 @@ static int skl_int3472_map_gpio_to_sensor(struct int3472_discrete_device *int347
+ static struct gpio_desc *
+ skl_int3472_gpiod_get_from_temp_lookup(struct int3472_discrete_device *int3472,
+ 				       struct acpi_resource_gpio *agpio,
+-				       const char *func, u32 polarity)
++				       const char *func, unsigned long gpio_flags)
+ {
+ 	struct gpio_desc *desc;
+ 	int ret;
+@@ -111,7 +111,7 @@ skl_int3472_gpiod_get_from_temp_lookup(struct int3472_discrete_device *int3472,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	lookup->dev_id = dev_name(int3472->dev);
+-	ret = skl_int3472_fill_gpiod_lookup(&lookup->table[0], agpio, func, polarity);
++	ret = skl_int3472_fill_gpiod_lookup(&lookup->table[0], agpio, func, gpio_flags);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+@@ -122,32 +122,33 @@ skl_int3472_gpiod_get_from_temp_lookup(struct int3472_discrete_device *int3472,
+ 	return desc;
+ }
+ 
+-static void int3472_get_func_and_polarity(u8 type, const char **func, u32 *polarity)
++static void int3472_get_func_and_polarity(u8 type, const char **func,
++					  unsigned long *gpio_flags)
+ {
+ 	switch (type) {
+ 	case INT3472_GPIO_TYPE_RESET:
+ 		*func = "reset";
+-		*polarity = GPIO_ACTIVE_LOW;
++		*gpio_flags = GPIO_ACTIVE_LOW;
+ 		break;
+ 	case INT3472_GPIO_TYPE_POWERDOWN:
+ 		*func = "powerdown";
+-		*polarity = GPIO_ACTIVE_LOW;
++		*gpio_flags = GPIO_ACTIVE_LOW;
+ 		break;
+ 	case INT3472_GPIO_TYPE_CLK_ENABLE:
+ 		*func = "clk-enable";
+-		*polarity = GPIO_ACTIVE_HIGH;
++		*gpio_flags = GPIO_ACTIVE_HIGH;
+ 		break;
+ 	case INT3472_GPIO_TYPE_PRIVACY_LED:
+ 		*func = "privacy-led";
+-		*polarity = GPIO_ACTIVE_HIGH;
++		*gpio_flags = GPIO_ACTIVE_HIGH;
+ 		break;
+ 	case INT3472_GPIO_TYPE_POWER_ENABLE:
+ 		*func = "power-enable";
+-		*polarity = GPIO_ACTIVE_HIGH;
++		*gpio_flags = GPIO_ACTIVE_HIGH;
+ 		break;
+ 	default:
+ 		*func = "unknown";
+-		*polarity = GPIO_ACTIVE_HIGH;
++		*gpio_flags = GPIO_ACTIVE_HIGH;
+ 		break;
+ 	}
+ }
+@@ -194,7 +195,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
+ 	struct gpio_desc *gpio;
+ 	const char *err_msg;
+ 	const char *func;
+-	u32 polarity;
++	unsigned long gpio_flags;
+ 	int ret;
+ 
+ 	if (!acpi_gpio_get_io_resource(ares, &agpio))
+@@ -217,7 +218,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
+ 
+ 	type = FIELD_GET(INT3472_GPIO_DSM_TYPE, obj->integer.value);
+ 
+-	int3472_get_func_and_polarity(type, &func, &polarity);
++	int3472_get_func_and_polarity(type, &func, &gpio_flags);
+ 
+ 	pin = FIELD_GET(INT3472_GPIO_DSM_PIN, obj->integer.value);
+ 	if (pin != agpio->pin_table[0])
+@@ -227,16 +228,16 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
+ 
+ 	active_value = FIELD_GET(INT3472_GPIO_DSM_SENSOR_ON_VAL, obj->integer.value);
+ 	if (!active_value)
+-		polarity ^= GPIO_ACTIVE_LOW;
++		gpio_flags ^= GPIO_ACTIVE_LOW;
+ 
+ 	dev_dbg(int3472->dev, "%s %s pin %d active-%s\n", func,
+ 		agpio->resource_source.string_ptr, agpio->pin_table[0],
+-		str_high_low(polarity == GPIO_ACTIVE_HIGH));
++		str_high_low(gpio_flags == GPIO_ACTIVE_HIGH));
+ 
+ 	switch (type) {
+ 	case INT3472_GPIO_TYPE_RESET:
+ 	case INT3472_GPIO_TYPE_POWERDOWN:
+-		ret = skl_int3472_map_gpio_to_sensor(int3472, agpio, func, polarity);
++		ret = skl_int3472_map_gpio_to_sensor(int3472, agpio, func, gpio_flags);
+ 		if (ret)
+ 			err_msg = "Failed to map GPIO pin to sensor\n";
+ 
+@@ -244,7 +245,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
+ 	case INT3472_GPIO_TYPE_CLK_ENABLE:
+ 	case INT3472_GPIO_TYPE_PRIVACY_LED:
+ 	case INT3472_GPIO_TYPE_POWER_ENABLE:
+-		gpio = skl_int3472_gpiod_get_from_temp_lookup(int3472, agpio, func, polarity);
++		gpio = skl_int3472_gpiod_get_from_temp_lookup(int3472, agpio, func, gpio_flags);
+ 		if (IS_ERR(gpio)) {
+ 			ret = PTR_ERR(gpio);
+ 			err_msg = "Failed to get GPIO\n";
 -- 
 2.39.5
 
