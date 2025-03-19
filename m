@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C656A6910B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66049A69176
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:55:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1ABC3B92E2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD16D464908
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FCB1C5D7F;
-	Wed, 19 Mar 2025 14:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657D820B1F9;
+	Wed, 19 Mar 2025 14:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qK3LyWjb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVcfAzwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F7421D011;
-	Wed, 19 Mar 2025 14:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E89E22257D;
+	Wed, 19 Mar 2025 14:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395151; cv=none; b=QvmcYm5P4HONGq38qVtemj2TlAY4mIEKXUhSPjJ8jkd0qfpd0YPuyZatVFUeTY/2xs6rXkILOLDBdnYh7VpMHREWMlHev15Rkwf4fyaHYes98wrbNrWHs/Hrwb5KplulzHMCgonsmxOPA6R06FUfurqSe9bENLyIh/neAOt212Y=
+	t=1742395263; cv=none; b=i8/2Yf6dV+u+aKae1ZG6yoX0GpOAGZs5kKPVQVaDtA24YOt1P2XOlTcAAl4cgyBOkWSfCOx0TYuruxPJtZBVbY1+5YGKgMHEj4YG6C00vKXHPbmtFl6ms9oQkUKdXT9JgTXaPal8K+H9m3Hph1mOz9bt42eMDy7sXPKZzhdu9dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395151; c=relaxed/simple;
-	bh=Sngmd6U3Rnkf5K7O0sq5ZxXysZudZb2snCg5L5f2loI=;
+	s=arc-20240116; t=1742395263; c=relaxed/simple;
+	bh=73nGemykkPt2eSNb1aiDrlueOVujt6XfYjDL0oMY2kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpfNPvA7cxfmiWwEk6MVeD8pthPs2dqYiwyp4qTY0+E/onMUGrnXdtK46acexafArnMN9fbvaqzqV/ataJDQo5WiVpcT1OCRBGXpURVq2LlchZTarsWkJCYxVKIS8Bix2tGv0HRiQrW9zBLukESym3OEC/8UeOMlqVzQBggj2yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qK3LyWjb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982BEC4CEE4;
-	Wed, 19 Mar 2025 14:39:11 +0000 (UTC)
+	 MIME-Version; b=Td8QP5rOf4HX2gMszGcFU3+VFHTIUAjK27gH2QeSktnjNddD6N5CfeRG5Ypcaw4/w/R3ICPg0TCEZkdO065kkfQVXyks8hmSVFr97wthv1BoCJD2aYqPT1gyIK5p5BzZlc/1oiFajzWsH3gS6lRM1d3xcOdOnivBM9mte5EOLSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVcfAzwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72E8C4CEE8;
+	Wed, 19 Mar 2025 14:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395151;
-	bh=Sngmd6U3Rnkf5K7O0sq5ZxXysZudZb2snCg5L5f2loI=;
+	s=korg; t=1742395263;
+	bh=73nGemykkPt2eSNb1aiDrlueOVujt6XfYjDL0oMY2kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qK3LyWjbA3vXuqEixYtdBeJ8lAPM2JZaMuTOuPvjOB7dcF6CIgIjZZIkZrxeEEI8c
-	 UNlZ1k8CMCnMTcRQrffTfyGtSuiIztgJq7kpkAa80JYxWCSngSdkxC3RdbEI0ca02P
-	 KpGSecLspwNemoHFlNESONE/zVmINLMQxpHg28w8=
+	b=vVcfAzwj8QzsG86NyuBbqmtYJWH9/O6w071lcXzHCAnU6c0RlBRO2YLV5JBprUh3a
+	 SWA0idweiJJEWK/D11SkeL6UqVksggfVUML8oxUlS83pRLokxnvltgmgAy0Fah8wst
+	 hUtH3ubQBJ6W5JA8y9IXFPwI60P1lrWP3AS677RI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 226/231] sched_ext: selftests/dsp_local_on: Fix selftest on UP systems
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 148/166] cifs: Fix integer overflow while processing acdirmax mount option
 Date: Wed, 19 Mar 2025 07:31:59 -0700
-Message-ID: <20250319143032.422892176@linuxfoundation.org>
+Message-ID: <20250319143024.035343079@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <arighi@nvidia.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 3c7d51b0d29954c40ea3a097e0ec7884b4344331 upstream.
+[ Upstream commit 5b29891f91dfb8758baf1e2217bef4b16b2b165b ]
 
-In UP systems p->migration_disabled is not available. Fix this by using
-the portable helper is_migration_disabled(p).
+User-provided mount parameter acdirmax of type u32 is intended to have
+an upper limit, but before it is validated, the value is converted from
+seconds to jiffies which can lead to an integer overflow.
 
-Fixes: e9fe182772dc ("sched_ext: selftests/dsp_local_on: Fix sporadic failures")
-Signed-off-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 4c9f948142a5 ("cifs: Add new mount parameter "acdirmax" to allow caching directory metadata")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/sched_ext/dsp_local_on.bpf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/fs_context.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
-+++ b/tools/testing/selftests/sched_ext/dsp_local_on.bpf.c
-@@ -43,7 +43,7 @@ void BPF_STRUCT_OPS(dsp_local_on_dispatc
- 	if (!p)
- 		return;
- 
--	if (p->nr_cpus_allowed == nr_cpus && !p->migration_disabled)
-+	if (p->nr_cpus_allowed == nr_cpus && !is_migration_disabled(p))
- 		target = bpf_get_prandom_u32() % nr_cpus;
- 	else
- 		target = scx_bpf_task_cpu(p);
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 82a0987f4f868..479801187c762 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1273,11 +1273,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		ctx->acregmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_acdirmax:
+-		ctx->acdirmax = HZ * result.uint_32;
+-		if (ctx->acdirmax > CIFS_MAX_ACTIMEO) {
++		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
+ 			cifs_errorf(fc, "acdirmax too large\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		ctx->acdirmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_actimeo:
+ 		if (HZ * result.uint_32 > CIFS_MAX_ACTIMEO) {
+-- 
+2.39.5
+
 
 
 
