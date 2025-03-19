@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A2DA6909F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26E8A68FA7
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 525848A09AE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 790BF16BE73
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37301E3790;
-	Wed, 19 Mar 2025 14:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628711E412A;
+	Wed, 19 Mar 2025 14:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+ZdFByS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULgAXel3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708B21C1F02;
-	Wed, 19 Mar 2025 14:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EA91B87D5;
+	Wed, 19 Mar 2025 14:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395080; cv=none; b=SuFj66sXNswijDojZsdWLS4bISxv2Gu6Fph/8pBCXfxaP7jkVObuWyEUPifpKi7PNGhxdZGBDrHAcQ016bhijKGiqWIBom2PUXvRTy056/7w9M4mzDYZsWOJxjkgfEsobpep1kIfjb+j8k+2MNLrFtE5UX//RSFSw/4TjGs3IVI=
+	t=1742394931; cv=none; b=qHiKlq6QdcSS8yoMbyNmN65ruzO1wCij7cltpzMc0FaRH7BG/hjAmNoTdveIEYjEWwi9zYzlfqAAUI24JL/nihAcx61WxDPWFlmR4hqiQat4tTChiCfxZr7m+c25PjOhjdElu13AMCQScjNAb/YUGnD7XLUj16Alox4JnENkgEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395080; c=relaxed/simple;
-	bh=QkRzlk4NNcdOn5s0f8K97mAt+Awx3DV/i1Px1q49Rgc=;
+	s=arc-20240116; t=1742394931; c=relaxed/simple;
+	bh=jvWZhihzaUK81cKRXWhLZiL/UnYAfUkmx7PcMuiJ5Tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqTdF2Ri7dv8bRlQqEDzrsXhE9pydXvaTy/2OxwflrE1QMQGA1cq/BZJQEd0i1Ro2biUFFeukZIifgRg0ddY+hoaId6E4M5dLvABcnBRjYPEHtdbSl05TNUQjd8kTm62UoJ/8rqtDiGF982yYttCbWoIuYuUalMLS61+E0TMz2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+ZdFByS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4421EC4CEE4;
-	Wed, 19 Mar 2025 14:38:00 +0000 (UTC)
+	 MIME-Version; b=sAtLvPyBJSa7pMTuuE/xAvc8naCIbfR/iTXMtADdjuAo1zNW2orDCLaJg4kqdpqBEk4wqVudHccJzWsRQLyStAO28xNnGOloIGI5kGy7ybUXe3Bf5zCuXkiUU3XW1FRWZdxLkN0gUa5n0teWjQuoYh5p31YgSLMnlkrxQxDznUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULgAXel3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12CAC4CEE4;
+	Wed, 19 Mar 2025 14:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395080;
-	bh=QkRzlk4NNcdOn5s0f8K97mAt+Awx3DV/i1Px1q49Rgc=;
+	s=korg; t=1742394931;
+	bh=jvWZhihzaUK81cKRXWhLZiL/UnYAfUkmx7PcMuiJ5Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+ZdFBySspkAtUZI5+U2cH5OlwqX2syuUrGEUgmvPbpxw9MxymBoDuHsHKnHQBBA3
-	 Vz+ah8D0Apfu0zEnaF+vZivSNcsQ8ZTUDD5TWnRjThjb30Y1CJCEApRHTWQr6IZOm5
-	 U4j3bMUWLpY9PUayBivflUNACdXrJeaSgKe4gras=
+	b=ULgAXel3H3AhY2JErSq+sOe+ukapO/z4FrBDEn1P1N74Qa0UqoUpv6UsOFNmEj2tp
+	 keGByiTbdqRYBiHo30m3cLC0im14xdviW53+eAv199uhB9CO7Cv4KB+gXzwoRmX33l
+	 L264fo7L/VRHqMHquywMmL0jNDCWlaJrzayWJ/B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Lentocha <christopherericlentocha@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/231] nvme-pci: quirk Acer FA100 for non-uniqueue identifiers
-Date: Wed, 19 Mar 2025 07:30:14 -0700
-Message-ID: <20250319143029.831420330@linuxfoundation.org>
+Subject: [PATCH 6.13 145/241] mptcp: safety check before fallback
+Date: Wed, 19 Mar 2025 07:30:15 -0700
+Message-ID: <20250319143031.307683628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher Lentocha <christopherericlentocha@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit fcd875445866a5219cf2be3101e276b21fc843f3 ]
+[ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
 
-In order for two Acer FA100 SSDs to work in one PC (in the case of
-myself, a Lenovo Legion T5 28IMB05), and not show one drive and not
-the other, and sometimes mix up what drive shows up (randomly), these
-two lines of code need to be added, and then both of the SSDs will
-show up and not conflict when booting off of one of them. If you boot
-up your computer with both SSDs installed without this patch, you may
-also randomly get into a kernel panic (if the initrd is not set up) or
-stuck in the initrd "/init" process, it is set up, however, if you do
-apply this patch, there should not be problems with booting or seeing
-both contents of the drive. Tested with the btrfs filesystem with a
-RAID configuration of having the root drive '/' combined to make two
-256GB Acer FA100 SSDs become 512GB in total storage.
+Recently, some fallback have been initiated, while the connection was
+not supposed to fallback.
 
-Kernel Logs with patch applied (`dmesg -t | grep -i nvm`):
+Add a safety check with a warning to detect when an wrong attempt to
+fallback is being done. This should help detecting any future issues
+quicker.
 
-```
-...
-nvme 0000:04:00.0: platform quirk: setting simple suspend
-nvme nvme0: pci function 0000:04:00.0
-nvme 0000:05:00.0: platform quirk: setting simple suspend
-nvme nvme1: pci function 0000:05:00.0
-nvme nvme1: missing or invalid SUBNQN field.
-nvme nvme1: allocated 64 MiB host memory buffer.
-nvme nvme0: missing or invalid SUBNQN field.
-nvme nvme0: allocated 64 MiB host memory buffer.
-nvme nvme1: 8/0/0 default/read/poll queues
-nvme nvme1: Ignoring bogus Namespace Identifiers
-nvme nvme0: 8/0/0 default/read/poll queues
-nvme nvme0: Ignoring bogus Namespace Identifiers
-nvme0n1: p1 p2
-...
-```
-
-Kernel Logs with patch not applied (`dmesg -t | grep -i nvm`):
-
-```
-...
-nvme 0000:04:00.0: platform quirk: setting simple suspend
-nvme nvme0: pci function 0000:04:00.0
-nvme 0000:05:00.0: platform quirk: setting simple suspend
-nvme nvme1: pci function 0000:05:00.0
-nvme nvme0: missing or invalid SUBNQN field.
-nvme nvme1: missing or invalid SUBNQN field.
-nvme nvme0: allocated 64 MiB host memory buffer.
-nvme nvme1: allocated 64 MiB host memory buffer.
-nvme nvme0: 8/0/0 default/read/poll queues
-nvme nvme1: 8/0/0 default/read/poll queues
-nvme nvme1: globally duplicate IDs for nsid 1
-nvme nvme1: VID:DID 1dbe:5216 model:Acer SSD FA100 256GB firmware:1.Z.J.2X
-nvme0n1: p1 p2
-...
-```
-
-Signed-off-by: Christopher Lentocha <christopherericlentocha@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 ++
+ net/mptcp/protocol.h | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index e1329d4974fd6..1fbb5f7a9f239 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3669,6 +3669,8 @@ static const struct pci_device_id nvme_id_table[] = {
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1cc1, 0x5350),   /* ADATA XPG GAMMIX S50 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-+	{ PCI_DEVICE(0x1dbe, 0x5216),   /* Acer/INNOGRIT FA100/5216 NVMe SSD */
-+		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1dbe, 0x5236),   /* ADATA XPG GAMMIX S70 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1e49, 0x0021),   /* ZHITAI TiPro5000 NVMe SSD */
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index b70a303e08287..7e2f70f22b05b 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1194,6 +1194,8 @@ static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
+ 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
+ 		return;
+ 	}
++	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
++		return;
+ 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
+ }
+ 
 -- 
 2.39.5
 
