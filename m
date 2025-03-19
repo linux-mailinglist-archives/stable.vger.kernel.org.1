@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-125403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9247A69117
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA54A68F87
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:38:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E11B3B0EA5
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:48:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34A6F7A67AC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D8421D3F9;
-	Wed, 19 Mar 2025 14:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311FE1E5204;
+	Wed, 19 Mar 2025 14:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/voabCs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zYeHRvG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEA41DE4EA;
-	Wed, 19 Mar 2025 14:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34361DA314;
+	Wed, 19 Mar 2025 14:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395163; cv=none; b=V8IzvYAEgP7rJayNMSse5rneG8weXYAq8wsRG42IN6+np9tPDA7HrNXWQReTGdOdVLJ2aDNaMb7dn9F+7wYgzJd/XN3POEBqTDiLCL6rO+En8wWEC2EBCd+ZPRHkUo2V51GlGKhINiYUU2CRiHCfyFI+Ep3gvpuZDFlpfkQXefE=
+	t=1742394936; cv=none; b=ulIp25pr6Z4s+Khj8O9hIZq3O0FVxNYClmzV52pZs1qDfpMqBALd76/1pmKAuwGR+QkTDUWXS18u06iOzR2eN9zL39phOCyJRLF93/GblVtBILaGH2JRH/W1GhynBbJGPROxUVE5VjAWTkDDQRwfcE7/Px6gkGgvD3OdnlZP93o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395163; c=relaxed/simple;
-	bh=Hofi9DAOxFZ/1tCuZdYDtV0hQYXPL5gFNi3lyy3xTnw=;
+	s=arc-20240116; t=1742394936; c=relaxed/simple;
+	bh=n7QhkMSV02sTAh8EMKJcc4gWvu+fO1PHjVXI8gynouM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPpfuC4Gk/qQceb45430UUL0RF6aJ9//XzCSvYVRiP2HGpk0xCWaAqEi99sEQPI+y9P52dXXMz9GdgHWEV4A0wVsX2ipWyJVX+u/JetN/TcrzEiaYZUAV2HowcoS3Vbgu01u2nC+XzZfuWZUHFZBRwEMFJjMNTZEN58VwPUfJU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/voabCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559DEC4CEE4;
-	Wed, 19 Mar 2025 14:39:23 +0000 (UTC)
+	 MIME-Version; b=mtRBaZHRtB6/MALnkGgwYohuJ3VE/+IY4RPKeFMoYujFDLbvZ327rM12ZGZpbq0HotsAh59XL3lbVph4qBv8EYme9NRxp4Q00Vj4N24qgIGjTiRVJofov4DSRF/zpYHyXNmqD8oyvD6MzkHkth/zZ7pDMCeGBh0R2g7l/1kq8TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zYeHRvG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DB0C4CEE4;
+	Wed, 19 Mar 2025 14:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395163;
-	bh=Hofi9DAOxFZ/1tCuZdYDtV0hQYXPL5gFNi3lyy3xTnw=;
+	s=korg; t=1742394935;
+	bh=n7QhkMSV02sTAh8EMKJcc4gWvu+fO1PHjVXI8gynouM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/voabCs6tiokxR2ml++kMKUX1ZoBmIwX3ueJcdOhflAz8wMMi5gdWKekF5do100G
-	 LRzn9zfkC6qWf5eeEVzsp85xSjQOOhS04doilOrfXVGyShsfNSjqc0I4GGBd/+iXvB
-	 3lf4sFX2ew3hqCJBowTKWD0k1ctWPgP6CLjFtQBU=
+	b=1zYeHRvGBEUfS9Xbq4g2wTXdoOarQvqiOf85N02O1om7c6ohdaAAi1AEiXcg+JeyN
+	 WAm7VQT3cAYK6bsGxynGQE7fkWVIfqHVjw29UI9mcel7kTbpeBsaLwECS7dmYW1Wee
+	 gEbKTd9fcOvvSsu7uka8d6Ehcq7djSAVk7WkfPXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.6 011/166] ice: fix memory leak in aRFS after reset
-Date: Wed, 19 Mar 2025 07:29:42 -0700
-Message-ID: <20250319143020.289602728@linuxfoundation.org>
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 113/241] ASoC: rsnd: dont indicate warning on rsnd_kctrl_accept_runtime()
+Date: Wed, 19 Mar 2025 07:29:43 -0700
+Message-ID: <20250319143030.521171135@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 23d97f18901ef5e4e264e3b1777fe65c760186b5 ]
+[ Upstream commit c3fc002b206c6c83d1e3702b979733002ba6fb2c ]
 
-Fix aRFS (accelerated Receive Flow Steering) structures memory leak by
-adding a checker to verify if aRFS memory is already allocated while
-configuring VSI. aRFS objects are allocated in two cases:
-- as part of VSI initialization (at probe), and
-- as part of reset handling
+rsnd_kctrl_accept_runtime() (1) is used for runtime convert rate
+(= Synchronous SRC Mode). Now, rsnd driver has 2 kctrls for it
 
-However, VSI reconfiguration executed during reset involves memory
-allocation one more time, without prior releasing already allocated
-resources. This led to the memory leak with the following signature:
+(A):	"SRC Out Rate Switch"
+(B):	"SRC Out Rate"		// it calls (1)
 
-[root@os-delivery ~]# cat /sys/kernel/debug/kmemleak
-unreferenced object 0xff3c1ca7252e6000 (size 8192):
-  comm "kworker/0:0", pid 8, jiffies 4296833052
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 0):
-    [<ffffffff991ec485>] __kmalloc_cache_noprof+0x275/0x340
-    [<ffffffffc0a6e06a>] ice_init_arfs+0x3a/0xe0 [ice]
-    [<ffffffffc09f1027>] ice_vsi_cfg_def+0x607/0x850 [ice]
-    [<ffffffffc09f244b>] ice_vsi_setup+0x5b/0x130 [ice]
-    [<ffffffffc09c2131>] ice_init+0x1c1/0x460 [ice]
-    [<ffffffffc09c64af>] ice_probe+0x2af/0x520 [ice]
-    [<ffffffff994fbcd3>] local_pci_probe+0x43/0xa0
-    [<ffffffff98f07103>] work_for_cpu_fn+0x13/0x20
-    [<ffffffff98f0b6d9>] process_one_work+0x179/0x390
-    [<ffffffff98f0c1e9>] worker_thread+0x239/0x340
-    [<ffffffff98f14abc>] kthread+0xcc/0x100
-    [<ffffffff98e45a6d>] ret_from_fork+0x2d/0x50
-    [<ffffffff98e083ba>] ret_from_fork_asm+0x1a/0x30
-    ...
+(A): can be called anytime
+(B): can be called only runtime, and will indicate warning if it was used
+   at non-runtime.
 
-Fixes: 28bf26724fdb ("ice: Implement aRFS")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+To use runtime convert rate (= Synchronous SRC Mode), user might uses
+command in below order.
+
+(X):	> amixer set "SRC Out Rate" on
+	> aplay xxx.wav &
+(Y):	> amixer set "SRC Out Rate" 48010 // convert rate to 48010Hz
+
+(Y): calls B
+(X): calls both A and B.
+
+In this case, when user calls (X), it calls both (A) and (B), but it is not
+yet start running. So, (B) will indicate warning.
+
+This warning was added by commit b5c088689847 ("ASoC: rsnd: add warning
+message to rsnd_kctrl_accept_runtime()"), but the message sounds like the
+operation was not correct. Let's update warning message.
+
+The message is very SRC specific, implement it in src.c
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://patch.msgid.link/8734gt2qed.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_arfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/renesas/rcar/core.c | 14 --------------
+ sound/soc/renesas/rcar/rsnd.h |  1 -
+ sound/soc/renesas/rcar/src.c  | 18 +++++++++++++++++-
+ 3 files changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
-index cca0e753f38ff..d7e0116f67737 100644
---- a/drivers/net/ethernet/intel/ice/ice_arfs.c
-+++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
-@@ -510,7 +510,7 @@ void ice_init_arfs(struct ice_vsi *vsi)
- 	struct hlist_head *arfs_fltr_list;
- 	unsigned int i;
+diff --git a/sound/soc/renesas/rcar/core.c b/sound/soc/renesas/rcar/core.c
+index d3709fd0409e4..f3f0c3f0bb9f5 100644
+--- a/sound/soc/renesas/rcar/core.c
++++ b/sound/soc/renesas/rcar/core.c
+@@ -1770,20 +1770,6 @@ int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io)
+ 	return 1;
+ }
  
--	if (!vsi || vsi->type != ICE_VSI_PF)
-+	if (!vsi || vsi->type != ICE_VSI_PF || ice_is_arfs_active(vsi))
- 		return;
+-int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io)
+-{
+-	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
+-	struct rsnd_priv *priv = rsnd_io_to_priv(io);
+-	struct device *dev = rsnd_priv_to_dev(priv);
+-
+-	if (!runtime) {
+-		dev_warn(dev, "Can't update kctrl when idle\n");
+-		return 0;
+-	}
+-
+-	return 1;
+-}
+-
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg)
+ {
+ 	cfg->cfg.val = cfg->val;
+diff --git a/sound/soc/renesas/rcar/rsnd.h b/sound/soc/renesas/rcar/rsnd.h
+index a5f54b65313c4..04c70690f7a25 100644
+--- a/sound/soc/renesas/rcar/rsnd.h
++++ b/sound/soc/renesas/rcar/rsnd.h
+@@ -742,7 +742,6 @@ struct rsnd_kctrl_cfg_s {
+ #define rsnd_kctrl_vals(x)	((x).val)	/* = (x).cfg.val[0] */
  
- 	arfs_fltr_list = kcalloc(ICE_MAX_ARFS_LIST, sizeof(*arfs_fltr_list),
+ int rsnd_kctrl_accept_anytime(struct rsnd_dai_stream *io);
+-int rsnd_kctrl_accept_runtime(struct rsnd_dai_stream *io);
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_m(struct rsnd_kctrl_cfg_m *cfg);
+ struct rsnd_kctrl_cfg *rsnd_kctrl_init_s(struct rsnd_kctrl_cfg_s *cfg);
+ int rsnd_kctrl_new(struct rsnd_mod *mod,
+diff --git a/sound/soc/renesas/rcar/src.c b/sound/soc/renesas/rcar/src.c
+index e7f86db0d94c3..3099180297722 100644
+--- a/sound/soc/renesas/rcar/src.c
++++ b/sound/soc/renesas/rcar/src.c
+@@ -531,6 +531,22 @@ static irqreturn_t rsnd_src_interrupt(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
+ 
++static int rsnd_src_kctrl_accept_runtime(struct rsnd_dai_stream *io)
++{
++	struct snd_pcm_runtime *runtime = rsnd_io_to_runtime(io);
++
++	if (!runtime) {
++		struct rsnd_priv *priv = rsnd_io_to_priv(io);
++		struct device *dev = rsnd_priv_to_dev(priv);
++
++		dev_warn(dev, "\"SRC Out Rate\" can use during running\n");
++
++		return 0;
++	}
++
++	return 1;
++}
++
+ static int rsnd_src_probe_(struct rsnd_mod *mod,
+ 			   struct rsnd_dai_stream *io,
+ 			   struct rsnd_priv *priv)
+@@ -594,7 +610,7 @@ static int rsnd_src_pcm_new(struct rsnd_mod *mod,
+ 			       rsnd_io_is_play(io) ?
+ 			       "SRC Out Rate" :
+ 			       "SRC In Rate",
+-			       rsnd_kctrl_accept_runtime,
++			       rsnd_src_kctrl_accept_runtime,
+ 			       rsnd_src_set_convert_rate,
+ 			       &src->sync, 192000);
+ 
 -- 
 2.39.5
 
