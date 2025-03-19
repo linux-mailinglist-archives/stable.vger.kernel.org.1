@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAFAA6908F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:49:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E212AA690CD
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B54C3BDE83
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:43:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63B581B6436B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17276215073;
-	Wed, 19 Mar 2025 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9CC1D6199;
+	Wed, 19 Mar 2025 14:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8j6Df1+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JP9MHrqX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66F1214A97;
-	Wed, 19 Mar 2025 14:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA471B2194;
+	Wed, 19 Mar 2025 14:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395063; cv=none; b=poe9qTtB+6P0VUVfas5a5FRbNH8DXX5IIG2pLBPbHTiE5ilBaVaGrnUfYPrfQSjqcCbd8k0OUFQ7jIxN2RYFuBUDWkJuNWY+LC8lK3XTpIKN6MCvUCj8rk7nkec/UKySGe8QYj64T0EzxWbdEaMmTC61LvU8sqWupaha9/rZwA0=
+	t=1742394910; cv=none; b=N48BB2i6LFVwSjhYAdRUtFSCeIUCcotcFAHoqFxnrdfIwIv1Y5qG7VPS6jkHm+6C8wbTwKZs8lBw2H4d4o8aTUYlqQsyIXXhidb9EuC/oZd8GB5TGXKOChmTr5llF3zWOlYRoMjMtVO2Qvu76yWh1HJQjZleJhua20i7Mub4cmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395063; c=relaxed/simple;
-	bh=xAk4rj7kDrsfF50yHJ4gbd8JgjRHP/ILeuF1X1srDC4=;
+	s=arc-20240116; t=1742394910; c=relaxed/simple;
+	bh=vip2BsLhadVS/Rzflp2LLLx0cdpbOLcgp8TJ2VzcW/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4ebXKNNvd+5+wxx5xuj+kV53LZ3h5umGtqZ7yLXhf9AFQphhqwti4zT0n7WLdlIXEtbmBB/o3akVrU7Hd09pV4dJrVX2GWPwsmTm3a9/6Le/3ZBsizFJvpkbDnAZpDzwCm8fcKVjNgc/9m16bN1znlv6pOqojSvUasDmNvwrDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8j6Df1+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7D2C4CEE8;
-	Wed, 19 Mar 2025 14:37:43 +0000 (UTC)
+	 MIME-Version; b=nAY4rRV3LHqZ7B8AMeAwDrii7HmVON9dUsbXNvAZqyTjpH68fYP3zIWvKetL5WoctnWvC3HT/x/aGKv4EnIy51j+h0Wo0Z7ng0KJ32XIFLZ4tYzyfR3/GzSt0I2VVmb/2wqd/5e57lx8CgvfevRz6iPKCSS67osVgdRVn91wWvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JP9MHrqX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B74C4CEE4;
+	Wed, 19 Mar 2025 14:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395063;
-	bh=xAk4rj7kDrsfF50yHJ4gbd8JgjRHP/ILeuF1X1srDC4=;
+	s=korg; t=1742394910;
+	bh=vip2BsLhadVS/Rzflp2LLLx0cdpbOLcgp8TJ2VzcW/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R8j6Df1+UlW/a1Necn2Rt8jOEekso5UpqfFahqe8rV7kwa3Rb27bhdyCRYFMd2/DX
-	 +w6xquxuGZRNqqnyUGG3EN9OkIxxpeD4WU66PHL2M2xThFgKvTm9Qp6qWytP1nEf52
-	 kquoO157PQLcRTV9MN29j678jH/wsR2CzZiT++ZM=
+	b=JP9MHrqXmd4y6hulYKjDvASWm0tNkZ18xfUNGHUtqPYMJusevN8mgCPzrjBE7bXke
+	 pURu60cMIZUEjlsDOTUedO+lek3kYjRzQ8VDPzsdkiMf5CR6mUXPj+V5Pn+SutiNjh
+	 0hmHkTP979noAhuw9LMdarHJIZZtTszIAmvAHJuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+31c2f641b850a348a734@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/231] Bluetooth: L2CAP: Fix slab-use-after-free Read in l2cap_send_cmd
+Subject: [PATCH 6.13 121/241] ASoC: SOF: amd: Add post_fw_run_delay ACP quirk
 Date: Wed, 19 Mar 2025 07:29:51 -0700
-Message-ID: <20250319143029.263021020@linuxfoundation.org>
+Message-ID: <20250319143030.717556287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,198 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit b4f82f9ed43aefa79bec2504ae8c29be0c0f5d1d ]
+[ Upstream commit 91b98d5a6e8067c5226207487681a48f0d651e46 ]
 
-After the hci sync command releases l2cap_conn, the hci receive data work
-queue references the released l2cap_conn when sending to the upper layer.
-Add hci dev lock to the hci receive data work queue to synchronize the two.
+Stress testing resume from suspend on Valve Steam Deck OLED (Galileo)
+revealed that the DSP firmware could enter an unrecoverable faulty
+state, where the kernel ring buffer is flooded with IPC related error
+messages:
 
-[1]
-BUG: KASAN: slab-use-after-free in l2cap_send_cmd+0x187/0x8d0 net/bluetooth/l2cap_core.c:954
-Read of size 8 at addr ffff8880271a4000 by task kworker/u9:2/5837
+[  +0.017002] snd_sof_amd_vangogh 0000:04:00.5: acp_sof_ipc_send_msg: Failed to acquire HW lock
+[  +0.000054] snd_sof_amd_vangogh 0000:04:00.5: ipc3_tx_msg_unlocked: ipc message send for 0x30100000 failed: -22
+[  +0.000005] snd_sof_amd_vangogh 0000:04:00.5: Failed to setup widget PIPELINE.6.ACPHS1.IN
+[  +0.000004] snd_sof_amd_vangogh 0000:04:00.5: Failed to restore pipeline after resume -22
+[  +0.000003] snd_sof_amd_vangogh 0000:04:00.5: PM: dpm_run_callback(): pci_pm_resume returns -22
+[  +0.000009] snd_sof_amd_vangogh 0000:04:00.5: PM: failed to resume async: error -22
+[...]
+[  +0.002582] PM: suspend exit
+[  +0.065085] snd_sof_amd_vangogh 0000:04:00.5: ipc tx error for 0x30130000 (msg/reply size: 12/0): -22
+[  +0.000499] snd_sof_amd_vangogh 0000:04:00.5: error: failed widget list set up for pcm 1 dir 0
+[  +0.000011] snd_sof_amd_vangogh 0000:04:00.5: error: set pcm hw_params after resume
+[  +0.000006] snd_sof_amd_vangogh 0000:04:00.5: ASoC: error at snd_soc_pcm_component_prepare on 0000:04:00.5: -22
+[...]
 
-CPU: 0 UID: 0 PID: 5837 Comm: kworker/u9:2 Not tainted 6.13.0-rc5-syzkaller-00163-gab75170520d4 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: hci1 hci_rx_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:489
- kasan_report+0x143/0x180 mm/kasan/report.c:602
- l2cap_build_cmd net/bluetooth/l2cap_core.c:2964 [inline]
- l2cap_send_cmd+0x187/0x8d0 net/bluetooth/l2cap_core.c:954
- l2cap_sig_send_rej net/bluetooth/l2cap_core.c:5502 [inline]
- l2cap_sig_channel net/bluetooth/l2cap_core.c:5538 [inline]
- l2cap_recv_frame+0x221f/0x10db0 net/bluetooth/l2cap_core.c:6817
- hci_acldata_packet net/bluetooth/hci_core.c:3797 [inline]
- hci_rx_work+0x508/0xdb0 net/bluetooth/hci_core.c:4040
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3310
- worker_thread+0x870/0xd30 kernel/workqueue.c:3391
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
+A system reboot would be necessary to restore the speakers
+functionality.
 
-Allocated by task 5837:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __kmalloc_cache_noprof+0x243/0x390 mm/slub.c:4329
- kmalloc_noprof include/linux/slab.h:901 [inline]
- kzalloc_noprof include/linux/slab.h:1037 [inline]
- l2cap_conn_add+0xa9/0x8e0 net/bluetooth/l2cap_core.c:6860
- l2cap_connect_cfm+0x115/0x1090 net/bluetooth/l2cap_core.c:7239
- hci_connect_cfm include/net/bluetooth/hci_core.h:2057 [inline]
- hci_remote_features_evt+0x68e/0xac0 net/bluetooth/hci_event.c:3726
- hci_event_func net/bluetooth/hci_event.c:7473 [inline]
- hci_event_packet+0xac2/0x1540 net/bluetooth/hci_event.c:7525
- hci_rx_work+0x3f3/0xdb0 net/bluetooth/hci_core.c:4035
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3310
- worker_thread+0x870/0xd30 kernel/workqueue.c:3391
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+However, by delaying a bit any host to DSP transmission right after
+the firmware boot completed, the issue could not be reproduced anymore
+and sound continued to work flawlessly even after performing thousands
+of suspend/resume cycles.
 
-Freed by task 54:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:582
- poison_slab_object mm/kasan/common.c:247 [inline]
- __kasan_slab_free+0x59/0x70 mm/kasan/common.c:264
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2353 [inline]
- slab_free mm/slub.c:4613 [inline]
- kfree+0x196/0x430 mm/slub.c:4761
- l2cap_connect_cfm+0xcc/0x1090 net/bluetooth/l2cap_core.c:7235
- hci_connect_cfm include/net/bluetooth/hci_core.h:2057 [inline]
- hci_conn_failed+0x287/0x400 net/bluetooth/hci_conn.c:1266
- hci_abort_conn_sync+0x56c/0x11f0 net/bluetooth/hci_sync.c:5603
- hci_cmd_sync_work+0x22b/0x400 net/bluetooth/hci_sync.c:332
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3310
- worker_thread+0x870/0xd30 kernel/workqueue.c:3391
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+Introduce the post_fw_run_delay ACP quirk to allow providing the
+aforementioned delay via the snd_sof_dsp_ops->post_fw_run() callback for
+the affected devices.
 
-Reported-by: syzbot+31c2f641b850a348a734@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=31c2f641b850a348a734
-Tested-by: syzbot+31c2f641b850a348a734@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20250207-sof-vangogh-fixes-v1-1-67824c1e4c9a@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 39 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ sound/soc/sof/amd/acp.c     |  1 +
+ sound/soc/sof/amd/acp.h     |  1 +
+ sound/soc/sof/amd/vangogh.c | 18 ++++++++++++++++++
+ 3 files changed, 20 insertions(+)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 4db2d6363bbb5..09c08d0a13321 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -949,6 +949,16 @@ static u8 l2cap_get_ident(struct l2cap_conn *conn)
- 	return id;
- }
+diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
+index 33648ff8b8336..9e13c96528be3 100644
+--- a/sound/soc/sof/amd/acp.c
++++ b/sound/soc/sof/amd/acp.c
+@@ -27,6 +27,7 @@ MODULE_PARM_DESC(enable_fw_debug, "Enable Firmware debug");
+ static struct acp_quirk_entry quirk_valve_galileo = {
+ 	.signed_fw_image = true,
+ 	.skip_iram_dram_size_mod = true,
++	.post_fw_run_delay = true,
+ };
  
-+static void l2cap_send_acl(struct l2cap_conn *conn, struct sk_buff *skb,
-+			   u8 flags)
+ const struct dmi_system_id acp_sof_quirk_table[] = {
+diff --git a/sound/soc/sof/amd/acp.h b/sound/soc/sof/amd/acp.h
+index 800594440f739..2a19d82d62002 100644
+--- a/sound/soc/sof/amd/acp.h
++++ b/sound/soc/sof/amd/acp.h
+@@ -220,6 +220,7 @@ struct sof_amd_acp_desc {
+ struct acp_quirk_entry {
+ 	bool signed_fw_image;
+ 	bool skip_iram_dram_size_mod;
++	bool post_fw_run_delay;
+ };
+ 
+ /* Common device data struct for ACP devices */
+diff --git a/sound/soc/sof/amd/vangogh.c b/sound/soc/sof/amd/vangogh.c
+index 8e2672106ac60..d5f1dddd43e72 100644
+--- a/sound/soc/sof/amd/vangogh.c
++++ b/sound/soc/sof/amd/vangogh.c
+@@ -11,6 +11,7 @@
+  * Hardware interface for Audio DSP on Vangogh platform
+  */
+ 
++#include <linux/delay.h>
+ #include <linux/platform_device.h>
+ #include <linux/module.h>
+ 
+@@ -136,6 +137,20 @@ static struct snd_soc_dai_driver vangogh_sof_dai[] = {
+ 	},
+ };
+ 
++static int sof_vangogh_post_fw_run_delay(struct snd_sof_dev *sdev)
 +{
-+	/* Check if the hcon still valid before attempting to send */
-+	if (hci_conn_valid(conn->hcon->hdev, conn->hcon))
-+		hci_send_acl(conn->hchan, skb, flags);
-+	else
-+		kfree_skb(skb);
++	/*
++	 * Resuming from suspend in some cases my cause the DSP firmware
++	 * to enter an unrecoverable faulty state.  Delaying a bit any host
++	 * to DSP transmission right after firmware boot completion seems
++	 * to resolve the issue.
++	 */
++	if (!sdev->first_boot)
++		usleep_range(100, 150);
++
++	return 0;
 +}
 +
- static void l2cap_send_cmd(struct l2cap_conn *conn, u8 ident, u8 code, u16 len,
- 			   void *data)
- {
-@@ -971,7 +981,7 @@ static void l2cap_send_cmd(struct l2cap_conn *conn, u8 ident, u8 code, u16 len,
- 	bt_cb(skb)->force_active = BT_POWER_FORCE_ACTIVE_ON;
- 	skb->priority = HCI_PRIO_MAX;
+ /* Vangogh ops */
+ struct snd_sof_dsp_ops sof_vangogh_ops;
+ EXPORT_SYMBOL_NS(sof_vangogh_ops, "SND_SOC_SOF_AMD_COMMON");
+@@ -157,6 +172,9 @@ int sof_vangogh_ops_init(struct snd_sof_dev *sdev)
  
--	hci_send_acl(conn->hchan, skb, flags);
-+	l2cap_send_acl(conn, skb, flags);
- }
- 
- static void l2cap_do_send(struct l2cap_chan *chan, struct sk_buff *skb)
-@@ -1793,13 +1803,10 @@ static void l2cap_conn_del(struct hci_conn *hcon, int err)
- 
- 	mutex_unlock(&conn->chan_lock);
- 
--	hci_chan_del(conn->hchan);
--
- 	if (conn->info_state & L2CAP_INFO_FEAT_MASK_REQ_SENT)
- 		cancel_delayed_work_sync(&conn->info_timer);
- 
- 	hcon->l2cap_data = NULL;
--	conn->hchan = NULL;
- 	l2cap_conn_put(conn);
- }
- 
-@@ -1807,6 +1814,7 @@ static void l2cap_conn_free(struct kref *ref)
- {
- 	struct l2cap_conn *conn = container_of(ref, struct l2cap_conn, ref);
- 
-+	hci_chan_del(conn->hchan);
- 	hci_conn_put(conn->hcon);
- 	kfree(conn);
- }
-@@ -7472,14 +7480,33 @@ static void l2cap_recv_reset(struct l2cap_conn *conn)
- 	conn->rx_len = 0;
- }
- 
-+static struct l2cap_conn *l2cap_conn_hold_unless_zero(struct l2cap_conn *c)
-+{
-+	BT_DBG("conn %p orig refcnt %u", c, kref_read(&c->ref));
+ 		if (quirks->signed_fw_image)
+ 			sof_vangogh_ops.load_firmware = acp_sof_load_signed_firmware;
 +
-+	if (!kref_get_unless_zero(&c->ref))
-+		return NULL;
-+
-+	return c;
-+}
-+
- void l2cap_recv_acldata(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
- {
--	struct l2cap_conn *conn = hcon->l2cap_data;
-+	struct l2cap_conn *conn;
- 	int len;
- 
-+	/* Lock hdev to access l2cap_data to avoid race with l2cap_conn_del */
-+	hci_dev_lock(hcon->hdev);
-+
-+	conn = hcon->l2cap_data;
-+
- 	if (!conn)
- 		conn = l2cap_conn_add(hcon);
- 
-+	conn = l2cap_conn_hold_unless_zero(conn);
-+
-+	hci_dev_unlock(hcon->hdev);
-+
- 	if (!conn)
- 		goto drop;
- 
-@@ -7571,6 +7598,8 @@ void l2cap_recv_acldata(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
- 		break;
++		if (quirks->post_fw_run_delay)
++			sof_vangogh_ops.post_fw_run = sof_vangogh_post_fw_run_delay;
  	}
  
-+	l2cap_conn_put(conn);
-+
- drop:
- 	kfree_skb(skb);
- }
+ 	return 0;
 -- 
 2.39.5
 
