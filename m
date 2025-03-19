@@ -1,80 +1,82 @@
-Return-Path: <stable+bounces-125572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B625BA6937F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:33:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8D0A693C3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:41:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 412F616A0B0
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:30:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF3191B65ED5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CF81D5AC6;
-	Wed, 19 Mar 2025 15:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997BD1DC9B4;
+	Wed, 19 Mar 2025 15:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o7Z6D9mv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xGrx0gRJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDC51B0F1E
-	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 15:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618921D61B9
+	for <stable@vger.kernel.org>; Wed, 19 Mar 2025 15:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742398233; cv=none; b=DolfkBif+fEiH3PFQ3nIWm4YM+e0f+Fj7K1TXornxba5NatF9l5ZJmKn5iUSpQ0H6iyiPu1gCT/yN+yBuZ1AowV3MsAbEzG1g7TBT6EYHsJMsU81eC7g/5HyroktNfPZCb8T6YaCkz5F5M+GsdLor0Ke3aMZnd8GvTyaw/txDbI=
+	t=1742398235; cv=none; b=r+OSUlGNG2FwwHm2oFZONYGOqq+mgsAHpjt14px85ztPfqpkqnS5Njy5E/zIoIFRBq6wRfzQIUDsQMpYifp7MSY9dihHuCf7YCZ1v7ZBHlQ07v8Mhr7XWVF4Q45XK/+6/Bs4Otmg0hSDmlX42aKHNzYhhUeGKDgDVaIdbZ7z7kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742398233; c=relaxed/simple;
-	bh=/wdQQT8Uza3QQ8DxhowYsgtSCAG+eJfAgNfJhMqT56E=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XKDHHG45DGlHUNJ08eNoz9ohtKt76KTMxrqlxOJ8/t/dV6xId64bw/hQGPolRbisO8osdxP7aokvpJVtnX1xPsW3vQM6iVlpwlN18VLrLC+nbGq6vyLhajesSWiPP7O1rU5az04bVWCZ5x2L1fzv1QQRlamdqnqaTgGzMU28Uuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o7Z6D9mv; arc=none smtp.client-ip=209.85.221.43
+	s=arc-20240116; t=1742398235; c=relaxed/simple;
+	bh=kk2fMHoWjrLcXHxUi5sF6uFu10/CFkKdnFWw4ZC84VE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=aRqYFbcDm46rAJ8q0fM7IgYNL/SV1P6PtKf3caMQZ1urfK0h6Sk1AqRWwfel9X+/hCMNd26mypX5Xlz6Ov63WIcXyeBw0wT7PvbQqfjQzMMtBsC9wLNymsTSr8XKLu5bu5i2qjeEgNJNf2rlNl6eLGHf4ZLMYBP3/NijnZQcwFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xGrx0gRJ; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-399744f74e9so679865f8f.1
-        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 08:30:29 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43cf06eabdaso46485345e9.2
+        for <stable@vger.kernel.org>; Wed, 19 Mar 2025 08:30:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742398228; x=1743003028; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qEZeyPH3DN6EY3kRLphvmTruJ5WHhFKumGbsm0McfOM=;
-        b=o7Z6D9mvwWUc4ik5kMr0HVes3KqDqxi/izaFuSV6KFk0Jz3eOCZ97XGRtH6ovusEQB
-         ZQKjDocnTrZ16Mth0FSAbNIbBavwaBePvlntrAJhMKxjKQ5/cpbf3W7Kr6CdS6bbWyco
-         WhaE9fGwXxe89H+YUM3jke5gPrPiL1chiEbPdBu8RYLU/f9PsW0QLz+5nPKLMG1aduPg
-         F7YUqnyUgX4CfihEnzVrn0TtSpoyHKqHF3opBM/DgFB7kowHfQ4QC7fHYX1twTXowVzD
-         04sWdBLP1WZYpSlowIFfGuCWVHL1Da84uOUoBCxN9OFuLTbcDh5fJqQ4YJy5udr3i+at
-         4jcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742398228; x=1743003028;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1742398231; x=1743003031; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qEZeyPH3DN6EY3kRLphvmTruJ5WHhFKumGbsm0McfOM=;
-        b=sKe3R9fk30QsA142d03Gs8yrDRQtIYEIcfpNzhzmXshRDcbYmSuUJNJjEBuFP/9CrB
-         JtA2qsmhAEuk4FPeY50CDmwRXJ8wNA4d0t/nUuj6A8wHzXUve8Bg3HgKFR0zm12Sw1Ra
-         +LBomqylVtRHLd+wS9cpZ5D+k4PHLWniNzKk48Ix+KA9fraM2Hh3aWI1LXsTk/e0WH6M
-         bQqKoWJmQWWSTUQ1H/rtbavTU8RZ9nPJ+848R3rzxDqo+DjIroG99Dac9ZO3zRCqiETP
-         kW4RfnMcok5B+ZLKGLCiu0aaDD7FiVoL+0GZhTezAL8Z1piHskSOoP8fi0KP68jXc2uv
-         XuNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWFPeutlWLUxmsbxBsQE52/0+xKnc/lJXM9EI/+6PVT1IR6FCWZT7WuTKOtpxNFWNSISOs+8kk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+6bWCRjJ2n/jW3TPlFWtjtuGLv8uU0+ovNGYe8r760JMNWNNZ
-	8FIsW3h/yU6dfFomnczoKxfbT6lBNoxZzPs/h8tE4pvLZhSODcQflxlV6JLpMA8=
-X-Gm-Gg: ASbGncvLPwywj87NxwbhLFge9FYSMzHpl+Wa3JK2oiNy/H0ei1wgYt8KpVMcsTAmVEc
-	xTK48ERVJi+N+7Oqvqd6cH0bD8Z5jMPBL6QqfV5VQob5DjuQeqEUXcXjGWlnFVZjH4MBBvnxpZ2
-	W1nnNq42VJoPYAPYiopqPu08eEj1pXXRPbXeXkRWVvUAXk8SYn0QgC52j3anAq0lU0yM/p0k4ee
-	w1cd0W1lHVfkwT6WC1w4pDle3tz5Qc0holtPhOEcU1IKxoHSTJ3BnSmIJI1TSMUfuidtek52uET
-	tWThbhaeRVBCnEETvkfe43h3oRKUi6hPCgFtYXUwGX+MDYF5Fog1cdkj9976prcLBFSUmPp6wCd
-	P
-X-Google-Smtp-Source: AGHT+IGjnNjwq+MehcbC/hNwNMnENA+yaAifRw6JfmAvbNb+L/5ZJ5fX1A2xaTQSRDS1Im7e3lx1xA==
-X-Received: by 2002:a5d:6d8e:0:b0:391:1222:b444 with SMTP id ffacd0b85a97d-399739bedaamr3628438f8f.20.1742398228350;
-        Wed, 19 Mar 2025 08:30:28 -0700 (PDT)
+        bh=CbRxaKlUuHAcCVOLOqHWcjXZo8Uzm/9NfQH6A8RUPPo=;
+        b=xGrx0gRJusIhma5VwQDItBNyzSTMtmptBA8xPYrb28W7TR2ZYo0mbPYs12AepDsAhp
+         ISLezKhUmrO5uGm83hdb0B0s8j2Gl+xj39kEz2dtdvxw3hNk57NEX6odtEZOFB8nWCWz
+         PQgOQGetJYjMe1wD1uHbTCVe766Mo9KHxYDxLBw0rKAFMhJhX8ALPTtGBVzMQ2d9lnEU
+         RB9lktxZiCnwWAdmBUkpB23mU0TY7s+Lof3onNcqD62XaEEd39biXjgQ1JcuVVw3VU08
+         B1GLvhNKmaf8BUJ9OmH1ArxAe42Y3FbrbPWIdFwTEI/RFhbaExt9qioGNY/R/d4zQ2Py
+         ppDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742398231; x=1743003031;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CbRxaKlUuHAcCVOLOqHWcjXZo8Uzm/9NfQH6A8RUPPo=;
+        b=jbB/52/7Dlssnju2RWsI5MyP2ISRj1US7YtioiHEdv0TlYwTqUJta2WedhlbIYAzXd
+         sM/DIDesO5RefLDqVzZFRPt8QnkCswSTGudGzRlm/zBUOuJRaZ3OgOYsCc45KaRzdT5E
+         /wlzEOsV9ws/2zqqzDg3khWlgyPT14O2mklfywxvKs94DYKCLQFPu9NIerRAMGrdj8xa
+         UoBKVxr+77zqn+/kOe1DPIcjN6xswd+Av60EFeh3jVOsP9B4mwVbPedkVq1iRiPm4vl3
+         CGZAFA4uRl36L4VeyGMJ2zq56h5BUtCH/fzurJFKEYt2M2CbEQ7kcWzeV12rAftAlVBX
+         X6kA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxeDy9W1vOl5qadE+xPnhVpIWqjz0la3qRcEBzI+tiDID6D3O8/lt59JY+okjBWUG0+5NE0ow=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIZzEaOWD05fAHCmnoKjxAhPPM84M43bvQJKtaB0GcI3rCPKrv
+	bOJnq6AaXPv7kf3zFiBhFeTY0ffxtyolI4NzM0ro6zW7J0TY5sZ3wk36Zotk48w=
+X-Gm-Gg: ASbGncsFOaQ8egbCntGZ1j9iUTw/8Ke3VwTRRFPh7h608wO2e3IhaRj+s3lXdkUN5s3
+	WQIMfcshW//0dfeGO96uleWtSYl4phNNyEAEQaYCBfP5GpIJ1tGQhBCoEzGahYT8EVKRRuHLav+
+	sWSMs19x1a6isbTbOXnGwyRHQZwNFue8bnfR+C9BaQx3ifKlZ2vFEU2iesL3ZWnbyKV6TxORCVT
+	rS/k3qZvhMC7DSRfaEh/oIBmcs/88BoGDb54XHyrNxLYgtXOVWOgemn5O84ZPimOp9qo5e9pSCm
+	b5PR97MlQ78qzhQITg73qquTczxJpwon2grDLgPpU77vJCAzBFnRJoDHuCnK3uzcCymB0AgXNt1
+	C
+X-Google-Smtp-Source: AGHT+IELKtB9DSmyHJ5USLUFwjbcpHPlTWl70nzCTJQEQMbPy4AR/0qWpG/lQtpCuf9vNJ/yfeJDGw==
+X-Received: by 2002:a05:600c:1d18:b0:43c:ec28:d31b with SMTP id 5b1f17b1804b1-43d4875087cmr10638485e9.10.1742398231440;
+        Wed, 19 Mar 2025 08:30:31 -0700 (PDT)
 Received: from gpeter-l.roam.corp.google.com ([212.105.145.136])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43fdaca8sm22590635e9.28.2025.03.19.08.30.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43fdaca8sm22590635e9.28.2025.03.19.08.30.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 08:30:27 -0700 (PDT)
+        Wed, 19 Mar 2025 08:30:30 -0700 (PDT)
 From: Peter Griffin <peter.griffin@linaro.org>
-Subject: [PATCH v2 0/7] ufs-exynos stability fixes for gs101
-Date: Wed, 19 Mar 2025 15:30:17 +0000
-Message-Id: <20250319-exynos-ufs-stability-fixes-v2-0-96722cc2ba1b@linaro.org>
+Date: Wed, 19 Mar 2025 15:30:19 +0000
+Subject: [PATCH v2 2/7] scsi: ufs: exynos: move ufs shareability value to
+ drvdata
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,10 +85,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAnj2mcC/x2M0QpGQBQGX0Xn2ilWhFeRi2U/nNLSHv8fybvbX
- E7TzE2KIFBqk5sC/qKy+QgmTWhcrJ/B4iKTyUyZFXnDOC+/Kf8mZT3sIKscF09yQhm1s01dGRR
- upDjYAz4R+65/nhfznIBRbAAAAA==
-X-Change-ID: 20250319-exynos-ufs-stability-fixes-e8da9862e3dc
+Message-Id: <20250319-exynos-ufs-stability-fixes-v2-2-96722cc2ba1b@linaro.org>
+References: <20250319-exynos-ufs-stability-fixes-v2-0-96722cc2ba1b@linaro.org>
+In-Reply-To: <20250319-exynos-ufs-stability-fixes-v2-0-96722cc2ba1b@linaro.org>
 To: Alim Akhtar <alim.akhtar@samsung.com>, 
  "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
  "Martin K. Petersen" <martin.petersen@oracle.com>, 
@@ -100,73 +101,119 @@ Cc: linux-scsi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
  andre.draszik@linaro.org, Peter Griffin <peter.griffin@linaro.org>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2074;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3658;
  i=peter.griffin@linaro.org; h=from:subject:message-id;
- bh=/wdQQT8Uza3QQ8DxhowYsgtSCAG+eJfAgNfJhMqT56E=;
- b=owEBbQKS/ZANAwAKAc7ouNYCNHK6AcsmYgBn2uMPIIUjvTrJwB/bf6NJvAEfmLtzYJjS2lH1T
- 7BfK9xyJDKJAjMEAAEKAB0WIQQO/I5vVXh1DVa1SfzO6LjWAjRyugUCZ9rjDwAKCRDO6LjWAjRy
- unajD/9Cn7tx2QPnMfbWKfUHujf8hPZa1cu0fDAlEehSOmtXXbYACAJh5RMKun3s4cmXI1SLDV1
- NDgRqHDRg7+OfgTquDBmQBnRltEdbiw5hMN0u6W0+SxUc+7d8cdPvTqml4b3PQY4Hofg77kYdqW
- zDVjS+FgJLNTPm1jAgKGVydFbUxn6uovbzmpPPOJfosNwhRlOqreukBWwmGKVuCjs1/KGv/O4v2
- dzj1Mo+GYACOZPMqttC4X7VB6mFkyb5QnsokohAIhQ11/G8Kom7x0NITrwU7d/B/3ZioHJ4T42t
- uRQ0jqf10+jt3lFQ0fgiLV052oMwmFjEdRA9vMlcAGprcKr2kEvbR3hJxQR/VdRgULSs5LJfPx1
- JX9vgQ4LtCK8b2FlxMNcDCi0RSnIrkAM0Husi1ATJTpelimGuB3TnuT4xN7WouTrCy/UhnhRhrE
- tiym0DZ+nj26EBNIPz9eSmEZc5DrL06IWb4BfEQ9HoTzq7glC/+W36RbVgvG1wic4OovGYK6C2G
- /aGtXnyrs/KBTZDX6rw/1J2piiasyKTZ9/JYcGS5UnCfb//OXZhZcL9teaQCwLUJ0ThNnPykKPw
- oBwHDzjnJvThNpzL/J0fPTOciSwv/SNhaDqxsxRPsge01ie9OD9hS/O9C7z2y2ZBIzpUQok0BWj
- 8Fe9IXbmzfPYBtg==
+ bh=kk2fMHoWjrLcXHxUi5sF6uFu10/CFkKdnFWw4ZC84VE=;
+ b=kA0DAAoBzui41gI0croByyZiAGfa4xDIJTsN0uisLZOrLYYCRsUsZ9bj4xzs6meMp1naqn+9m
+ IkCMwQAAQoAHRYhBA78jm9VeHUNVrVJ/M7ouNYCNHK6BQJn2uMQAAoJEM7ouNYCNHK626MP/RX1
+ hguCvwUaqq1KsdNef95QH4hzFhmOnCDMHgq6vkV/3KzUCesSc5/uIcRUjzonwsuY/X8Z6SuoDWl
+ fRguDV0JgQjP9AQWyoPuorF6XLuZBGlFe1uoueH8WgK8A4nE445OeRNb9g5Qxs6vChRvbPZryVD
+ x7Z3L5Kgdv+25WRmpp2NxMcUl26IywhKBGw0a69w43ERY315QLo539L0eUhdO2LrJl7Y52DShDl
+ O/CgBENeYlvos96Z5QM6pqVw5h4aM2FQAHnK1B3ItnXZQNxP93ACgYNJX6Uub5Dm1ECCZuRyDig
+ idFAShyOwK/LsU70tQQR97PRYlkGIqEMQiM0BGS/TtJ0+FZbKcEAuMdo9QRwVQEKizkIKQu1PSH
+ hugssFgNx5yQDMOK2bj1JVCvYe/FuIAW3RdthgoO+15dBxjY9SXt9Dy+uT1opsf6E6l+SG1Qys+
+ k/JeytF/wU98FfsW3cqStRGEyShGp82LwY+4yPog6OVxfU+0T0E85e59Jqpo1n/sytK6XVbWE8t
+ 2akSDrZTd7mNmrAgwjOQ1pDs3UVOSHayKeMYSYzNjdJCv64uWdalQfozeCwIHKAnepCiHK21+4i
+ XbNhRMDt6YcpeoSfc/RYNE7XcRSqpA1rD+ib8NY8qYObuzk4sGVH1+K8HdvxDsADpHyGiJsJZ5/
+ KC1Ax
 X-Developer-Key: i=peter.griffin@linaro.org; a=openpgp;
  fpr=0EFC8E6F5578750D56B549FCCEE8B8D6023472BA
 
-Hi folks,
+gs101 IO coherency shareability bits differ from exynosauto SoC. To
+support both SoCs move this info the SoC drvdata.
 
-This series fixes several stability issues with the upstream ufs-exynos
-driver, specifically for the gs101 SoC found in Pixel 6.
-
-The main fix is regarding the IO cache coherency setting and ensuring
-that it is correctly applied depending on if the dma-coherent property
-is specified in device tree. This fixes the UFS stability issues on gs101
-and I would imagine will also fix issues on exynosauto platform that
-seems to have similar iocc shareability bits.
-
-Additionally the phy reference counting is fixed which allows module
-load/unload to work reliably and keeps the phy state machine in sync
-with the controller glue driver.
-
-regards,
-
-Peter
-
-Changes since v1:
- * Added patch for correct handling of iocc depedent on dma-coherent property
- * Rebased onto next-20250319
- * Add a gs101 specific suspend hook (Bart)
- * Drop asserting GPIO_OUT in .exit() (Peter)
- * Remove superfluous blank line (Bart)
- * Update PRDT_PREFECT_EN to PRDT_PREFETCH_EN (Bart)
- * Update commit description for desctype type 3 (Eric)
- * https://lore.kernel.org/lkml/20250226220414.343659-1-peter.griffin@linaro.org/
+Currently both the value and mask are the same for both gs101 and
+exynosauto, thus we use the same value.
 
 Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Fixes: d11e0a318df8 ("scsi: ufs: exynos: Add support for Tensor gs101 SoC")
+Cc: stable@vger.kernel.org
 ---
-Peter Griffin (7):
-      scsi: ufs: exynos: ensure pre_link() executes before exynos_ufs_phy_init()
-      scsi: ufs: exynos: move ufs shareability value to drvdata
-      scsi: ufs: exynos: disable iocc if dma-coherent property isn't set
-      scsi: ufs: exynos: ensure consistent phy reference counts
-      scsi: ufs: exynos: Enable PRDT pre-fetching with UFSHCD_CAP_CRYPTO
-      scsi: ufs: exynos: Move phy calls to .exit() callback
-      scsi: ufs: exynos: gs101: put ufs device in reset on .suspend()
+ drivers/ufs/host/ufs-exynos.c | 20 ++++++++++++++------
+ drivers/ufs/host/ufs-exynos.h |  2 ++
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
- drivers/ufs/host/ufs-exynos.c | 85 ++++++++++++++++++++++++++++++++-----------
- drivers/ufs/host/ufs-exynos.h |  6 ++-
- 2 files changed, 68 insertions(+), 23 deletions(-)
----
-base-commit: 433ccb6f2e879866b8601fcb1de14e316cdb0d39
-change-id: 20250319-exynos-ufs-stability-fixes-e8da9862e3dc
+diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
+index 0c8c2e41e851cdbefc80a66d87273b7e8fcf9d4d..f393d42a659f821225e67e3e5d323478456ca3af 100644
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -92,11 +92,16 @@
+ 				 UIC_TRANSPORT_NO_CONNECTION_RX |\
+ 				 UIC_TRANSPORT_BAD_TC)
+ 
+-/* FSYS UFS Shareability */
+-#define UFS_WR_SHARABLE		BIT(2)
+-#define UFS_RD_SHARABLE		BIT(1)
+-#define UFS_SHARABLE		(UFS_WR_SHARABLE | UFS_RD_SHARABLE)
+-#define UFS_SHAREABILITY_OFFSET	0x710
++/* UFS Shareability */
++#define UFS_EXYNOSAUTO_WR_SHARABLE	BIT(2)
++#define UFS_EXYNOSAUTO_RD_SHARABLE	BIT(1)
++#define UFS_EXYNOSAUTO_SHARABLE		(UFS_EXYNOSAUTO_WR_SHARABLE | \
++					 UFS_EXYNOSAUTO_RD_SHARABLE)
++#define UFS_GS101_WR_SHARABLE		BIT(1)
++#define UFS_GS101_RD_SHARABLE		BIT(0)
++#define UFS_GS101_SHARABLE		(UFS_GS101_WR_SHARABLE | \
++					 UFS_GS101_RD_SHARABLE)
++#define UFS_SHAREABILITY_OFFSET		0x710
+ 
+ /* Multi-host registers */
+ #define MHCTRL			0xC4
+@@ -210,7 +215,7 @@ static int exynos_ufs_shareability(struct exynos_ufs *ufs)
+ 	if (ufs->sysreg) {
+ 		return regmap_update_bits(ufs->sysreg,
+ 					  ufs->shareability_reg_offset,
+-					  UFS_SHARABLE, UFS_SHARABLE);
++					  ufs->iocc_mask, ufs->iocc_mask);
+ 	}
+ 
+ 	return 0;
+@@ -1174,6 +1179,7 @@ static int exynos_ufs_parse_dt(struct device *dev, struct exynos_ufs *ufs)
+ 		}
+ 	}
+ 
++	ufs->iocc_mask = ufs->drv_data->iocc_mask;
+ 	ufs->pclk_avail_min = PCLK_AVAIL_MIN;
+ 	ufs->pclk_avail_max = PCLK_AVAIL_MAX;
+ 
+@@ -2035,6 +2041,7 @@ static const struct exynos_ufs_drv_data exynosauto_ufs_drvs = {
+ 	.opts			= EXYNOS_UFS_OPT_BROKEN_AUTO_CLK_CTRL |
+ 				  EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR |
+ 				  EXYNOS_UFS_OPT_BROKEN_RX_SEL_IDX,
++	.iocc_mask		= UFS_EXYNOSAUTO_SHARABLE,
+ 	.drv_init		= exynosauto_ufs_drv_init,
+ 	.post_hce_enable	= exynosauto_ufs_post_hce_enable,
+ 	.pre_link		= exynosauto_ufs_pre_link,
+@@ -2136,6 +2143,7 @@ static const struct exynos_ufs_drv_data gs101_ufs_drvs = {
+ 	.opts			= EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR |
+ 				  EXYNOS_UFS_OPT_UFSPR_SECURE |
+ 				  EXYNOS_UFS_OPT_TIMER_TICK_SELECT,
++	.iocc_mask		= UFS_GS101_SHARABLE,
+ 	.drv_init		= gs101_ufs_drv_init,
+ 	.pre_link		= gs101_ufs_pre_link,
+ 	.post_link		= gs101_ufs_post_link,
+diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
+index aac5172761899a5dd8ad98f9ee34b1671dd27880..17696b3768debd641188b5089585b6d303de7451 100644
+--- a/drivers/ufs/host/ufs-exynos.h
++++ b/drivers/ufs/host/ufs-exynos.h
+@@ -181,6 +181,7 @@ struct exynos_ufs_drv_data {
+ 	struct exynos_ufs_uic_attr *uic_attr;
+ 	unsigned int quirks;
+ 	unsigned int opts;
++	u32 iocc_mask;
+ 	/* SoC's specific operations */
+ 	int (*drv_init)(struct exynos_ufs *ufs);
+ 	int (*pre_link)(struct exynos_ufs *ufs);
+@@ -231,6 +232,7 @@ struct exynos_ufs {
+ 	const struct exynos_ufs_drv_data *drv_data;
+ 	struct regmap *sysreg;
+ 	u32 shareability_reg_offset;
++	u32 iocc_mask;
+ 
+ 	u32 opts;
+ #define EXYNOS_UFS_OPT_HAS_APB_CLK_CTRL		BIT(0)
 
-Best regards,
 -- 
-Peter Griffin <peter.griffin@linaro.org>
+2.49.0.rc1.451.g8f38331e32-goog
 
 
