@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-125130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2960A69139
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85369A690DB
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DD9B1B86202
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61DDA8A2625
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD6C1F8745;
-	Wed, 19 Mar 2025 14:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09111E9B17;
+	Wed, 19 Mar 2025 14:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYK2g/VH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PadSFvyG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502E21F872A;
-	Wed, 19 Mar 2025 14:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCF51E5B97;
+	Wed, 19 Mar 2025 14:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394975; cv=none; b=j0HsTKM7NvymDKcX3NI2lZlRKfv6MzcxI5y158FuYpHNjaCV9LZeBwAJkrFDRjIzOWkJjmcNpT3RFlZcL/mHWa5jJIcL8uNXpcQpZRYgMU8wJWKAGY+Y7qVtwoN8oe7eCH3u6Tk2MDhMAkAxj/JyvDw8gFn9a9p8brfBRV/GejA=
+	t=1742395126; cv=none; b=GuqQN06up0REcFHLBOM4Lrj/LbQb2HQCFAozeN4oKCZrwE5gjrftq77Tx+/rwMkCB9GIc5Ih0In7ptAQ7Jp7yVC0AEgu2cwy1+HlkZFJZKUthoTjKDAQ+eSbG76XtaNbVct0015dD6Jkfk6sl644LI579ib581VcfaNbiuayji0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394975; c=relaxed/simple;
-	bh=A4JuUUsWpdrLeDliUlfF1J2OAn7TP14ejV9At+cQNCU=;
+	s=arc-20240116; t=1742395126; c=relaxed/simple;
+	bh=WmxnX+pVBhrAhDeRqQKzQ6h69LjuTj4GtmO7FxJ9BXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGtgbUhksAGrd1YaG1EcK54E6vqOJaoabVg7K6AOeyzeyK00sEQCMCCuGkibSQ+B8v84BEZNq9bCtRS6bqAOTQUeUJwwHta7Pb1R3h6iyM4Dq0r6fDkJfZygTWpAyqm1cqwxDQ+RbplVVloSC7vL0XMROms15IwEaEuvM0ZcwzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYK2g/VH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DC0C4CEE8;
-	Wed, 19 Mar 2025 14:36:15 +0000 (UTC)
+	 MIME-Version; b=eyUUbpphrv5Y8r8TokgpohZ4Db8DpsuoZ70TeMtA3/CBnCLQWjCwwWl9ZxBuESiUZRo6AsUi8r29yoQ7odMrYt1sl1OeX1pKJK5ihhCi0khpl342982Aoa1RF6pdPFOhNv6/Wanv5YRMGlzGv8ZXA6bOYobI4An+MSPuOMJyW/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PadSFvyG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5438DC4CEE9;
+	Wed, 19 Mar 2025 14:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394975;
-	bh=A4JuUUsWpdrLeDliUlfF1J2OAn7TP14ejV9At+cQNCU=;
+	s=korg; t=1742395126;
+	bh=WmxnX+pVBhrAhDeRqQKzQ6h69LjuTj4GtmO7FxJ9BXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kYK2g/VHPDj+bq8V+2sc5sZbEMS4jIJgRfdixWcapE21rpUT5ARTERlHevuLz41xG
-	 mMsUpRFv3clXTxQNW4xrkZn2rkgUuXDKuu5dspZ4wpInhwlTntWbS7Ohfor63Kg/yp
-	 mEt/6CGvsCScp+5qhTLVVVT+gNom+hq40ryld1/g=
+	b=PadSFvyGqbinMsEstnd/mXREcubbMfBLGBXuD8hPc1QirgYkg0jasaOHvCG7vvLeu
+	 UV7HJ3BKKXqH/mfK/bFVuUJ7PneMh/tA4LGnwyHhJNTNNru2QC0HkNp3fL1BFdy5aJ
+	 f8JGEU7qnQrqRiB+scd92Z6qulxwciNH48JnFNqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 212/241] drm/xe: cancel pending job timer before freeing scheduler
+	Jakub Kicinski <kuba@kernel.org>,
+	Mina Almasry <almasrymina@google.com>
+Subject: [PATCH 6.12 189/231] netmem: prevent TX of unreadable skbs
 Date: Wed, 19 Mar 2025 07:31:22 -0700
-Message-ID: <20250319143032.998317154@linuxfoundation.org>
+Message-ID: <20250319143031.505256910@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Mina Almasry <almasrymina@google.com>
 
-[ Upstream commit 12c2f962fe71f390951d9242725bc7e608f55927 ]
+commit f3600c867c99a2cc8038680ecf211089c50e7971 upstream.
 
-The async call to __guc_exec_queue_fini_async frees the scheduler
-while a submission may time out and restart. To prevent this race
-condition, the pending job timer should be canceled before freeing
-the scheduler.
+Currently on stable trees we have support for netmem/devmem RX but not
+TX. It is not safe to forward/redirect an RX unreadable netmem packet
+into the device's TX path, as the device may call dma-mapping APIs on
+dma addrs that should not be passed to it.
 
-V3(MattB):
- - Adjust position of cancel pending job
- - Remove gitlab issue# from commit message
-V2(MattB):
- - Cancel pending jobs before scheduler finish
+Fix this by preventing the xmit of unreadable skbs.
 
-Fixes: a20c75dba192 ("drm/xe: Call __guc_exec_queue_fini_async direct for KERNEL exec_queues")
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250225045754.600905-1-tejas.upadhyay@intel.com
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-(cherry picked from commit 18fbd567e75f9b97b699b2ab4f1fa76b7cf268f6)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Stable-dep-of: 10c7988418d8 ("drm/xe: Release guc ids before cancelling work")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested by configuring tc redirect:
+
+sudo tc qdisc add dev eth1 ingress
+sudo tc filter add dev eth1 ingress protocol ip prio 1 flower ip_proto \
+	tcp src_ip 192.168.1.12 action mirred egress redirect dev eth1
+
+Before, I see unreadable skbs in the driver's TX path passed to dma
+mapping APIs.
+
+After, I don't see unreadable skbs in the driver's TX path passed to dma
+mapping APIs.
+
+Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250306215520.1415465-1-almasrymina@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index 6f4a9812b4f4a..fe17e9ba86725 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1238,6 +1238,8 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3723,6 +3723,9 @@ static struct sk_buff *validate_xmit_skb
+ {
+ 	netdev_features_t features;
  
- 	if (xe_exec_queue_is_lr(q))
- 		cancel_work_sync(&ge->lr_tdr);
-+	/* Confirm no work left behind accessing device structures */
-+	cancel_delayed_work_sync(&ge->sched.base.work_tdr);
- 	release_guc_id(guc, q);
- 	xe_sched_entity_fini(&ge->entity);
- 	xe_sched_fini(&ge->sched);
--- 
-2.39.5
-
++	if (!skb_frags_readable(skb))
++		goto out_kfree_skb;
++
+ 	features = netif_skb_features(skb);
+ 	skb = validate_xmit_vlan(skb, features);
+ 	if (unlikely(!skb))
 
 
 
