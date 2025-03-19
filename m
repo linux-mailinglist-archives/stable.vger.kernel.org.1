@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4185A69083
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:48:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6D7A69236
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84E197AA539
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C9CF1BA1601
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F951DDC36;
-	Wed, 19 Mar 2025 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19405222592;
+	Wed, 19 Mar 2025 14:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMokv2Tr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwelYzQd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24911F03E0;
-	Wed, 19 Mar 2025 14:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB26C1CAA86;
+	Wed, 19 Mar 2025 14:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395153; cv=none; b=Rn1WY62UFYtSgGgydGkkR9BSF4BxgpaHv2XlabzuDqRlOmfHYO/mBtT6n0fXIs2X+C4jSrkPQOzGAVUNtY+Hmo+6wjpzVWdrPATJLLrlYpkfob2p/ePgB0EpgOK4Ea4Y/l5mCqeRR/FQukvr1wXKZkkBu8oUwqj7kwmtWp8dBHM=
+	t=1742395265; cv=none; b=kvw/End86xhjpLwbr0MsAn/U8E6y/CWa67QMGWy9kKRMHt/5gJChxh0/WXB3Pryv28YFWXFJTtDkaldea0cXaF/rigp71egnhzSA3xBxgAhdSuHxIvQSE7PlnzJYrihYZBKoTYASZwBitPBsJaIFaq53uDhV2Rz4J9Xi1I4sHi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395153; c=relaxed/simple;
-	bh=TzLc1R+l2JOIAU5NAY/TvXWDhDb7gvvb2eid0KexSLY=;
+	s=arc-20240116; t=1742395265; c=relaxed/simple;
+	bh=eoknnpDP6BNEtg1AO+gauQZ0hZe1aFSHIkd5Ss5MQNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SM5mUfrvbF+DL3myqB/Ak7+nwfb5riajqB15of/Ju9fktXToBV+RBoEz9XgZbEeD5v2ukGf5Z5Zla97xTUxkg5MGwNm4hHC4yruaGjY2NZ4e5No4oR3eokv7VcVDD5ltPZ3wXilR/TZg5+iqHB1Bt1nBrI20WsmMJ2yMrVpw0fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMokv2Tr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A6BC4CEE4;
-	Wed, 19 Mar 2025 14:39:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mMAmxk3hm8JI/kVEpidENoQShCZ3kE/+2NPDD2g9wM24kgpc6XOYDn1xLCHWb663HttooUOYc7uNLlcXD3LDueCN9nJ7LlZShrIZF58Zxm9tIEHhfIyRILTZsevJpN7+io9vMvhfWbAWCaSwtQJRLy/7SH5GnESw4j4SWbcJfgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwelYzQd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03BBC4CEE4;
+	Wed, 19 Mar 2025 14:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395153;
-	bh=TzLc1R+l2JOIAU5NAY/TvXWDhDb7gvvb2eid0KexSLY=;
+	s=korg; t=1742395265;
+	bh=eoknnpDP6BNEtg1AO+gauQZ0hZe1aFSHIkd5Ss5MQNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMokv2TrVMYAE91FNyxbSzJcLzxaxedNPZHgX0dT7SRghI9neJDAKc/RmwopihtBM
-	 1PVUwvQpfByXKRF+lA4+2ApBwDuYAdGdxAwfNN6/5BcaUSiC3/rL2lvY1IEPkHwmqX
-	 71ID5VoVb+h14EObeWPhlBp1d0RdsBU/ErIQZcXI=
+	b=QwelYzQdaPG63wtoHK0pqwgL2wYaW0H9brm9ATa4NbzHDXJbRO0ywHT7HutvFpOo1
+	 +NDYreAOt7kKxVAhGFgpyNl8IfNwP5ozAVeOQ656BadZfxaudiOolAk9zW8eri+LeK
+	 cuJr38bNnoK0HC0AR05PhbnsyhjBjtreJpmiZRZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 229/231] nvme-fc: rely on state transitions to handle connectivity loss
-Date: Wed, 19 Mar 2025 07:32:02 -0700
-Message-ID: <20250319143032.497635490@linuxfoundation.org>
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 152/166] cifs: Throw -EOPNOTSUPP error on unsupported reparse point type from parse_reparse_point()
+Date: Wed, 19 Mar 2025 07:32:03 -0700
+Message-ID: <20250319143024.142005977@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,145 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Pali Rohár <pali@kernel.org>
 
-commit f13409bb3f9140dad7256febcb478f0c9600312c upstream.
+[ Upstream commit cad3fc0a4c8cef07b07ceddc137f582267577250 ]
 
-It's not possible to call nvme_state_ctrl_state with holding a spin
-lock, because nvme_state_ctrl_state calls cancel_delayed_work_sync
-when fastfail is enabled.
+This would help to track and detect by caller if the reparse point type was
+processed or not.
 
-Instead syncing the ASSOC_FLAG and state transitions using a lock, it's
-possible to only rely on the state machine transitions. That means
-nvme_fc_ctrl_connectivity_loss should unconditionally call
-nvme_reset_ctrl which avoids the read race on the ctrl state variable.
-Actually, it's not necessary to test in which state the ctrl is, the
-reset work will only scheduled when the state machine is in LIVE state.
-
-In nvme_fc_create_association, the LIVE state can only be entered if it
-was previously CONNECTING. If this is not possible then the reset
-handler got triggered. Thus just error out here.
-
-Fixes: ee59e3820ca9 ("nvme-fc: do not ignore connectivity loss during connecting")
-Closes: https://lore.kernel.org/all/denqwui6sl5erqmz2gvrwueyxakl5txzbbiu3fgebryzrfxunm@iwxuthct377m/
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c |   67 ++++---------------------------------------------
- 1 file changed, 6 insertions(+), 61 deletions(-)
+ fs/smb/client/reparse.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -782,61 +782,12 @@ restart:
- static void
- nvme_fc_ctrl_connectivity_loss(struct nvme_fc_ctrl *ctrl)
- {
--	enum nvme_ctrl_state state;
--	unsigned long flags;
--
- 	dev_info(ctrl->ctrl.device,
- 		"NVME-FC{%d}: controller connectivity lost. Awaiting "
- 		"Reconnect", ctrl->cnum);
- 
--	spin_lock_irqsave(&ctrl->lock, flags);
- 	set_bit(ASSOC_FAILED, &ctrl->flags);
--	state = nvme_ctrl_state(&ctrl->ctrl);
--	spin_unlock_irqrestore(&ctrl->lock, flags);
--
--	switch (state) {
--	case NVME_CTRL_NEW:
--	case NVME_CTRL_LIVE:
--		/*
--		 * Schedule a controller reset. The reset will terminate the
--		 * association and schedule the reconnect timer.  Reconnects
--		 * will be attempted until either the ctlr_loss_tmo
--		 * (max_retries * connect_delay) expires or the remoteport's
--		 * dev_loss_tmo expires.
--		 */
--		if (nvme_reset_ctrl(&ctrl->ctrl)) {
--			dev_warn(ctrl->ctrl.device,
--				"NVME-FC{%d}: Couldn't schedule reset.\n",
--				ctrl->cnum);
--			nvme_delete_ctrl(&ctrl->ctrl);
--		}
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index bd8808e50d127..bb246ef0458fb 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -656,13 +656,12 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 				 le32_to_cpu(buf->ReparseTag));
+ 			return -EIO;
+ 		}
 -		break;
--
--	case NVME_CTRL_CONNECTING:
--		/*
--		 * The association has already been terminated and the
--		 * controller is attempting reconnects.  No need to do anything
--		 * futher.  Reconnects will be attempted until either the
--		 * ctlr_loss_tmo (max_retries * connect_delay) expires or the
--		 * remoteport's dev_loss_tmo expires.
--		 */
++		return 0;
+ 	default:
+ 		cifs_tcon_dbg(VFS | ONCE, "unhandled reparse tag: 0x%08x\n",
+ 			      le32_to_cpu(buf->ReparseTag));
 -		break;
--
--	case NVME_CTRL_RESETTING:
--		/*
--		 * Controller is already in the process of terminating the
--		 * association.  No need to do anything further. The reconnect
--		 * step will kick in naturally after the association is
--		 * terminated.
--		 */
--		break;
--
--	case NVME_CTRL_DELETING:
--	case NVME_CTRL_DELETING_NOIO:
--	default:
--		/* no action to take - let it delete */
--		break;
--	}
-+	nvme_reset_ctrl(&ctrl->ctrl);
++		return -EOPNOTSUPP;
+ 	}
+-	return 0;
  }
  
- /**
-@@ -3072,7 +3023,6 @@ nvme_fc_create_association(struct nvme_f
- 	struct nvmefc_ls_rcv_op *disls = NULL;
- 	unsigned long flags;
- 	int ret;
--	bool changed;
- 
- 	++ctrl->ctrl.nr_reconnects;
- 
-@@ -3178,23 +3128,18 @@ nvme_fc_create_association(struct nvme_f
- 		else
- 			ret = nvme_fc_recreate_io_queues(ctrl);
- 	}
-+	if (!ret && test_bit(ASSOC_FAILED, &ctrl->flags))
-+		ret = -EIO;
- 	if (ret)
- 		goto out_term_aen_ops;
- 
--	spin_lock_irqsave(&ctrl->lock, flags);
--	if (!test_bit(ASSOC_FAILED, &ctrl->flags))
--		changed = nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_LIVE);
--	else
-+	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_LIVE)) {
- 		ret = -EIO;
--	spin_unlock_irqrestore(&ctrl->lock, flags);
--
--	if (ret)
- 		goto out_term_aen_ops;
-+	}
- 
- 	ctrl->ctrl.nr_reconnects = 0;
--
--	if (changed)
--		nvme_start_ctrl(&ctrl->ctrl);
-+	nvme_start_ctrl(&ctrl->ctrl);
- 
- 	return 0;	/* Success */
- 
+ int smb2_parse_reparse_point(struct cifs_sb_info *cifs_sb,
+-- 
+2.39.5
+
 
 
 
