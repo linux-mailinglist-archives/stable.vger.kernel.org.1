@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-125328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FC1A692C2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:15:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB99A69306
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:20:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C7C21B83F84
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6F601B85081
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2241E5B8D;
-	Wed, 19 Mar 2025 14:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA6C21CC5D;
+	Wed, 19 Mar 2025 14:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bp4b9skX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mLkweQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD4F1C82F4;
-	Wed, 19 Mar 2025 14:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B7E1DE2B2;
+	Wed, 19 Mar 2025 14:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395111; cv=none; b=Y2c9rrNKybHq1FH0WLZsttkmzFWsVcYP22SekG9E4m2RBTg+y48GTxh7MJIO6eTtgQ5VndWZiNrA0vqlQ3DrhszlIq1JpdSXIpk+tYpt7g9hqXJE4QTVu+2CXMTP5zrqUv2M1qFQGaiLEbdW4CjE8ol15avyxh73/N3qQrnfxso=
+	t=1742395141; cv=none; b=fpfI9LWatohhSr2RI/x4XYhtoRiekVvrml34KLVcyzv8YYwxpeXC4cA6k4G8bJbOa4pglHZT4QvkiYaV1bNcZKo/DxTlGj4U/U8gTd59WMd+qqUYm8c7SPK2LzkI/QI3weBl9xtmYQ0CzFRawWwPBpFr4Jlo6pNdEtmnwCCPHRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395111; c=relaxed/simple;
-	bh=/i6SHqbDrDql4mtbJUEaF0kI2sowVmt2tFe0r9ygCNM=;
+	s=arc-20240116; t=1742395141; c=relaxed/simple;
+	bh=YD1TmsQ8Hm9Uqa3Nfx6NfBFTFKj2xGwY7KyrtkFrMrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSN0pMTcvpa2IIEoP57GZjNFnhvHLw00rg0lDvfDcnvpSZMn84iDQq0QMBAzgRCaXH8vcWapzrLZ7AewVTay0FPXJ7wEPq29mZPgx5AjJ4itWUVjGpEXicL5lS06DZOSdm+iCmVIR9fQPm+AjeXvQv0PLjIPGzZ+ml0byovAs2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bp4b9skX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5239FC4CEE4;
-	Wed, 19 Mar 2025 14:38:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oc0sAAS4xGOLdtaQ949Zq0giSnQSTsNEosx5QPBEitYAnPwrnYhEpVaVpkY4gWLylk+Yc611tPLI/PjJGscKIMi77yL+DMdIBbOddBjmb7zLjcXKWXxvS3w4fXH7eo4tQXPK0Bk52WwqH/JHxWcjtDrI8jw0D5UTu9aFq/6hJGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mLkweQb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83735C4CEE4;
+	Wed, 19 Mar 2025 14:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395111;
-	bh=/i6SHqbDrDql4mtbJUEaF0kI2sowVmt2tFe0r9ygCNM=;
+	s=korg; t=1742395140;
+	bh=YD1TmsQ8Hm9Uqa3Nfx6NfBFTFKj2xGwY7KyrtkFrMrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bp4b9skXusLtd6g+U81TlP0DViLlg8lt5t7+m8rNoRTpDXNsTpY9rD+yO0mrqM08v
-	 bgtJRN6No1Te7m0XSUu2iIY6zxU8AK5qX/pq3GB90WXpc3t20jo6VyTN1hrDOMtm1l
-	 5VoYr21mOeSLg1veKxeauEExSo+RVfXOrU/zcDxk=
+	b=0mLkweQbJCFqeXduKjY1k4Zq5f/yIVYfV93fXzpqb4qmTxd9AWYLiRqVo3T1BjuoU
+	 StziTL0esRCWZ51RyOYKgtokJup9jTZ9WS1XgZFB5aykB4pmd36P8oYoxcK8qYogtN
+	 vZ9nIH6mrTwOvv3DlItIgcJyS+u/WXVlo9O9Cc7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Maurer <mmaurer@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 165/231] rust: Disallow BTF generation with Rust + LTO
-Date: Wed, 19 Mar 2025 07:30:58 -0700
-Message-ID: <20250319143030.917300876@linuxfoundation.org>
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Subject: [PATCH 6.12 172/231] drm/atomic: Filter out redundant DPMS calls
+Date: Wed, 19 Mar 2025 07:31:05 -0700
+Message-ID: <20250319143031.093387558@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
 References: <20250319143026.865956961@linuxfoundation.org>
@@ -59,44 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Maurer <mmaurer@google.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 5daa0c35a1f0e7a6c3b8ba9cb721e7d1ace6e619 upstream.
+commit de93ddf88088f7624b589d0ff3af9effb87e8f3b upstream.
 
-The kernel cannot currently self-parse BTF containing Rust debug
-information. pahole uses the language of the CU to determine whether to
-filter out debug information when generating the BTF. When LTO is
-enabled, Rust code can cross CU boundaries, resulting in Rust debug
-information in CUs labeled as C. This results in a system which cannot
-parse its own BTF.
+Video players (eg. mpv) do periodic XResetScreenSaver() calls to
+keep the screen on while the video playing. The modesetting ddx
+plumbs these straight through into the kernel as DPMS setproperty
+ioctls, without any filtering whatsoever. When implemented via
+atomic these end up as empty commits on the crtc (which will
+nonetheless take one full frame), which leads to a dropped
+frame every time XResetScreenSaver() is called.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
+Let's just filter out redundant DPMS property changes in the
+kernel to avoid this issue.
+
+v2: Explain the resulting commits a bit better (Sima)
+    Document the behaviour in uapi docs (Sima)
+
 Cc: stable@vger.kernel.org
-Fixes: c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
-Link: https://lore.kernel.org/r/20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Testcase: igt/kms_flip/flip-vs-dpms-on-nop
+Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250219160239.17502-1-ville.syrjala@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_atomic_uapi.c |    4 ++++
+ drivers/gpu/drm/drm_connector.c   |    4 ++++
+ 2 files changed, 8 insertions(+)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1958,7 +1958,7 @@ config RUST
- 	depends on !MODVERSIONS
- 	depends on !GCC_PLUGIN_RANDSTRUCT
- 	depends on !RANDSTRUCT
--	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-+	depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && !LTO)
- 	depends on !CFI_CLANG || HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
- 	select CFI_ICALL_NORMALIZE_INTEGERS if CFI_CLANG
- 	depends on !CALL_PADDING || RUSTC_VERSION >= 108100
+--- a/drivers/gpu/drm/drm_atomic_uapi.c
++++ b/drivers/gpu/drm/drm_atomic_uapi.c
+@@ -956,6 +956,10 @@ int drm_atomic_connector_commit_dpms(str
+ 
+ 	if (mode != DRM_MODE_DPMS_ON)
+ 		mode = DRM_MODE_DPMS_OFF;
++
++	if (connector->dpms == mode)
++		goto out;
++
+ 	connector->dpms = mode;
+ 
+ 	crtc = connector->state->crtc;
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -1308,6 +1308,10 @@ EXPORT_SYMBOL(drm_hdmi_connector_get_out
+  * 	callback. For atomic drivers the remapping to the "ACTIVE" property is
+  * 	implemented in the DRM core.
+  *
++ * 	On atomic drivers any DPMS setproperty ioctl where the value does not
++ * 	change is completely skipped, otherwise a full atomic commit will occur.
++ * 	On legacy drivers the exact behavior is driver specific.
++ *
+  * 	Note that this property cannot be set through the MODE_ATOMIC ioctl,
+  * 	userspace must use "ACTIVE" on the CRTC instead.
+  *
 
 
 
