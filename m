@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-125357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ADACA6906C
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1E9A68FEA
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29E497AD7E2
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BDE33A65D6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B59321CA10;
-	Wed, 19 Mar 2025 14:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D79F1DED58;
+	Wed, 19 Mar 2025 14:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1meX/Uv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2q7Jui1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34BB21CA00;
-	Wed, 19 Mar 2025 14:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AE11C9EAA;
+	Wed, 19 Mar 2025 14:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395131; cv=none; b=Nuay8fycIDPnqsijtDnWAm2gtuU45z+WQBqaxP6IQ85EuituAopT3tYVl9UXMFyeQXAMlQjHibEFhGTqglfFPOZ8iouRnu8JiNhbP9+kpBHGsKBVTG5QG7R0k/HsTujnkMsYQNNs6fdQc+La3gDNkBFitwGvajmmpdjgxKtM2S4=
+	t=1742394980; cv=none; b=oin5EPi7Rb1r1NUy28cnFznxjoY5iHCR8XRQJiW4jBfx4MmZOHNGdQ04a6Z78HID8rcZ6sGU2oUFGKo9zP2CrEc9PKM/PXiO7hKPMuafURaDvymeW/m43cuyC3Zvsag0Ed36pah8ogm2XxfJk/2fTnoyZa8AkX44z82Cw2jyfrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395131; c=relaxed/simple;
-	bh=hNabgOodPPX9DRXA3OiKRQ+tE4I67lnV6sHY9bqPZxg=;
+	s=arc-20240116; t=1742394980; c=relaxed/simple;
+	bh=5V6mPOluwy37qDnOgT4CqS6tekHjtYOzs36ZMlm+yOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s+ffcD8S5pXyexrU+pgYoyirDKJtynOzjFN2+Kza5JFC6MQ/V059jWfCptsgFmIQ3+3Wa+mpyTEj6ZNIYlan7+qz2oHDwSqucmAeJQuU8if/m1AqyuSVwbLBK/clWoz7CTjxTFb0kAtIH9SjK/B6ionfzVNSD0N9IJ4ymgorb2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1meX/Uv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B91CC4CEE8;
-	Wed, 19 Mar 2025 14:38:51 +0000 (UTC)
+	 MIME-Version; b=EdH8pRwlpKLqNN/e1cmB2deT2102QhaTfPAb5SGfkE81E/JjdLpdCr8/bzPN18feqA2rIuGJQYiZxGcNLW3PP64G8zFRkiG4+kGRNzGEYtM2GgmRpkwjpL9eFMqBO+NMlGfOtXnKmQkaiQ4upciaQReooSF8HbtvKqPAOsI5qeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2q7Jui1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C78C4CEE4;
+	Wed, 19 Mar 2025 14:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395131;
-	bh=hNabgOodPPX9DRXA3OiKRQ+tE4I67lnV6sHY9bqPZxg=;
+	s=korg; t=1742394980;
+	bh=5V6mPOluwy37qDnOgT4CqS6tekHjtYOzs36ZMlm+yOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1meX/UvSRE+m4B3AtlEcIttdmvK6LSVyVUOqpDPTE0ip4V9NlWM24L/X2uKnumnl
-	 l+SKv1TxRJb4YLEiw1XJLE6joumCzZuiZmx3tpRe70P4PZ9EEKQm44mKxbqcP40c6k
-	 X2/j6SmkAQPt+TV+UjORqMA2SUW6MzMY3ckp1hX0=
+	b=T2q7Jui1R8dnfy5JSO66t7yTWvA9pzM1l2JJLke/BNDRXZ+xrH0iVBVyxxmrp3FvE
+	 JIExR8GyiDx9eqDPTt7uRHuWPz1NnmEqtQFi8gN33hHAaFrsbSEDAgq0l3gsvXSyyS
+	 p0eS5DE6klGBclys/KtkilniN9LokBbUL6KYQLT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Botila <andrei.botila@oss.nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 196/231] net: phy: nxp-c45-tja11xx: add TJA112XB SGMII PCS restart errata
+	Fiona Behrens <me@kloenk.dev>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Chayim Refael Friedman <chayimfr@gmail.com>
+Subject: [PATCH 6.13 219/241] scripts: generate_rust_analyzer: add missing macros deps
 Date: Wed, 19 Mar 2025 07:31:29 -0700
-Message-ID: <20250319143031.682981603@linuxfoundation.org>
+Message-ID: <20250319143033.164566114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,86 +63,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Botila <andrei.botila@oss.nxp.com>
+From: Tamir Duberstein <tamird@gmail.com>
 
-commit 48939523843e4813e78920f54937944a8787134b upstream.
+[ Upstream commit 2e0f91aba507a3cb59f7a12fc3ea2b7d4d6675b7 ]
 
-TJA1120B/TJA1121B can achieve a stable operation of SGMII after
-a startup event by putting the SGMII PCS into power down mode and
-restart afterwards.
+The macros crate has depended on std and proc_macro since its
+introduction in commit 1fbde52bde73 ("rust: add `macros` crate"). These
+dependencies were omitted from commit 8c4555ccc55c ("scripts: add
+`generate_rust_analyzer.py`") resulting in missing go-to-definition and
+autocomplete, and false-positive warnings emitted from rust-analyzer
+such as:
 
-It is necessary to put the SGMII PCS into power down mode and back up.
+  [{
+  	"resource": "/Users/tamird/src/linux/rust/macros/module.rs",
+  	"owner": "_generated_diagnostic_collection_name_#1",
+  	"code": {
+  		"value": "non_snake_case",
+  		"target": {
+  			"$mid": 1,
+  			"path": "/rustc/",
+  			"scheme": "https",
+  			"authority": "doc.rust-lang.org",
+  			"query": "search=non_snake_case"
+  		}
+  	},
+  	"severity": 4,
+  	"message": "Variable `None` should have snake_case name, e.g. `none`",
+  	"source": "rust-analyzer",
+  	"startLineNumber": 123,
+  	"startColumn": 17,
+  	"endLineNumber": 123,
+  	"endColumn": 21
+  }]
 
-Cc: stable@vger.kernel.org
-Fixes: f1fe5dff2b8a ("net: phy: nxp-c45-tja11xx: add TJA1120 support")
-Signed-off-by: Andrei Botila <andrei.botila@oss.nxp.com>
-Link: https://patch.msgid.link/20250304160619.181046-3-andrei.botila@oss.nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add the missing dependencies to improve the developer experience.
+
+  [ Fiona had a different approach (thanks!) at:
+
+        https://lore.kernel.org/rust-for-linux/20241205115438.234221-1-me@kloenk.dev/
+
+    But Tamir and Fiona agreed to this one. - Miguel ]
+
+Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Diagnosed-by: Chayim Refael Friedman <chayimfr@gmail.com>
+Link: https://github.com/rust-lang/rust-analyzer/issues/17759#issuecomment-2646328275
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+Link: https://lore.kernel.org/r/20250210-rust-analyzer-macros-core-dep-v3-1-45eb4836f218@gmail.com
+[ Removed `return`. Changed tag name. Added Link. Slightly
+  reworded. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/nxp-c45-tja11xx.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ scripts/generate_rust_analyzer.py | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
---- a/drivers/net/phy/nxp-c45-tja11xx.c
-+++ b/drivers/net/phy/nxp-c45-tja11xx.c
-@@ -113,6 +113,9 @@
- #define MII_BASIC_CONFIG_RMII		0x5
- #define MII_BASIC_CONFIG_MII		0x4
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 09e1d166d8d23..8cf278aceba7b 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -49,14 +49,26 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+             }
+         })
  
-+#define VEND1_SGMII_BASIC_CONTROL	0xB000
-+#define SGMII_LPM			BIT(11)
+-    # First, the ones in `rust/` since they are a bit special.
+-    append_crate(
+-        "core",
+-        sysroot_src / "core" / "src" / "lib.rs",
+-        [],
+-        cfg=crates_cfgs.get("core", []),
+-        is_workspace_member=False,
+-    )
++    def append_sysroot_crate(
++        display_name,
++        deps,
++        cfg=[],
++    ):
++        append_crate(
++            display_name,
++            sysroot_src / display_name / "src" / "lib.rs",
++            deps,
++            cfg,
++            is_workspace_member=False,
++        )
 +
- #define VEND1_SYMBOL_ERROR_CNT_XTD	0x8351
- #define EXTENDED_CNT_EN			BIT(15)
- #define VEND1_MONITOR_STATUS		0xAC80
-@@ -1588,11 +1591,11 @@ static int nxp_c45_set_phy_mode(struct p
- 	return 0;
- }
++    # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
++    # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
++    # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
++    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
++    append_sysroot_crate("alloc", ["core"])
++    append_sysroot_crate("std", ["alloc", "core"])
++    append_sysroot_crate("proc_macro", ["core", "std"])
  
--/* Errata: ES_TJA1120 and ES_TJA1121 Rev. 1.0 — 28 November 2024 Section 3.1 */
-+/* Errata: ES_TJA1120 and ES_TJA1121 Rev. 1.0 — 28 November 2024 Section 3.1 & 3.2 */
- static void nxp_c45_tja1120_errata(struct phy_device *phydev)
- {
-+	bool macsec_ability, sgmii_ability;
- 	int silicon_version, sample_type;
--	bool macsec_ability;
- 	int phy_abilities;
- 	int ret = 0;
- 
-@@ -1609,6 +1612,7 @@ static void nxp_c45_tja1120_errata(struc
- 	phy_abilities = phy_read_mmd(phydev, MDIO_MMD_VEND1,
- 				     VEND1_PORT_ABILITIES);
- 	macsec_ability = !!(phy_abilities & MACSEC_ABILITY);
-+	sgmii_ability = !!(phy_abilities & SGMII_ABILITY);
- 	if ((!macsec_ability && silicon_version == 2) ||
- 	    (macsec_ability && silicon_version == 1)) {
- 		/* TJA1120/TJA1121 PHY configuration errata workaround.
-@@ -1629,6 +1633,18 @@ static void nxp_c45_tja1120_errata(struc
- 
- 		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F8, 0x0);
- 		phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x01F9, 0x0);
-+
-+		if (sgmii_ability) {
-+			/* TJA1120B/TJA1121B SGMII PCS restart errata workaround.
-+			 * Put SGMII PCS into power down mode and back up.
-+			 */
-+			phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
-+					 VEND1_SGMII_BASIC_CONTROL,
-+					 SGMII_LPM);
-+			phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1,
-+					   VEND1_SGMII_BASIC_CONTROL,
-+					   SGMII_LPM);
-+		}
- 	}
- }
- 
+     append_crate(
+         "compiler_builtins",
+@@ -67,7 +79,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+     append_crate(
+         "macros",
+         srctree / "rust" / "macros" / "lib.rs",
+-        [],
++        ["std", "proc_macro"],
+         is_proc_macro=True,
+     )
+     crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
+-- 
+2.39.5
+
 
 
 
