@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-125462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B87A692E9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:18:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C16A69269
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C221C1B85885
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C8491B85D68
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92907221579;
-	Wed, 19 Mar 2025 14:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FEE1E832C;
+	Wed, 19 Mar 2025 14:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSZnl9ib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxEIQ8/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521DB1CAA60;
-	Wed, 19 Mar 2025 14:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391901C0DED;
+	Wed, 19 Mar 2025 14:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395204; cv=none; b=Wn+fRovGH7+wRnQFQqmFZ5WR9iB1JSSVE3T331hvUeLBF7Pkm8RdFbwh0URXjNkMV4WKY5VyvgS/4CX+m+vrEacgAJCarhOAAaJUmKOLQTWkeIqEQBKmrp2Zxxno8HQn8FYyUQYKkG7O/5cdIp3W9f6st+bQG1PXd9GoU8hBUjA=
+	t=1742394951; cv=none; b=eJHrAxP5pXXlaSzaPdp5nnO32eD9qShfJxRKXYVfvnuci/AKAfRnkcDu8Jl3U7jAELAhH/WHFKQ3RwLuoZq2HqRXqk2mbTV5w4v9rQqgK5tguDmB7mp6y6T+Fh90tJwsuzr55GUF3mc40CMRWM++gwiNTcx0kiWEDB1L38qNd9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395204; c=relaxed/simple;
-	bh=xfY8lhcRfjwA7Omv3RfDAP75Quas+7VBjJ8DJgZmiHw=;
+	s=arc-20240116; t=1742394951; c=relaxed/simple;
+	bh=5r1/S7rl0wYlrWGlA+ZTmxRuPn9XHlKtObucOnXsy/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvnL0Ja9Tw4mBeSFdZnbGxx/gQ4Mvtn409sDX1/TCuL8lnVx3nZrCqtoWjfvUDhYZrPx00YD66dZTSxl0ZWzQAEB7PzSX8CSrYKRsQ/0kbXdq+PH4rpQm5wVWcKQl4kvUEgHYeIosXHrdUXiudLOTAedqZK0AIolWXcgJOkeoHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSZnl9ib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232FAC4CEE4;
-	Wed, 19 Mar 2025 14:40:04 +0000 (UTC)
+	 MIME-Version; b=JE/pq+7MrAReP4cOdws4Fx9oHMj8KivUGg8ggmtDW/G60IXcXG8bCZWmRvs9rxa/qP29WoCQpFyPT1nkO+fgwjg1VphXrFkU2ynhw9d6BSwkf3uUe9Rn+EAPr4Fq7zoYywT/1I/4V2Jsq3nZtoPIJwqU5/nd1WiqSSh9Rv7gteg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxEIQ8/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5885C4CEE4;
+	Wed, 19 Mar 2025 14:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395204;
-	bh=xfY8lhcRfjwA7Omv3RfDAP75Quas+7VBjJ8DJgZmiHw=;
+	s=korg; t=1742394950;
+	bh=5r1/S7rl0wYlrWGlA+ZTmxRuPn9XHlKtObucOnXsy/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSZnl9ib7deAWwv3qaroC3qrFCuxLe2cEQgwuT/ntaJv/4DtiDhx9rcPxAmKlpARb
-	 A8I5LDFjKtjJ1yWn9c7ZXE1590booSGqyvGZMi72F0HDQRcxfanKWW9pLoWAtzh3pV
-	 bAGr+2tw8MMeUS7Q4DE6R0s2uy/nNHvonjYmv0XU=
+	b=kxEIQ8/ZS+t/+PrZWjbuvANG/A7H/EloC0SimjI2GpdIhubb4PhocJ7jwke9ASZ38
+	 EiHAw17z8ZB9enDA5KOakT2eQqmocVZOG4n3uKdhDSKqYhLgHXYFa7JKN3TdzYFYry
+	 XDOiXj7APNPsExh42edF7NcT7yX38Rv3yVmCFsqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/166] ASoC: rsnd: indicate unsupported clock rate
-Date: Wed, 19 Mar 2025 07:30:39 -0700
-Message-ID: <20250319143021.856834498@linuxfoundation.org>
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 6.13 175/241] drm/panic: use `div_ceil` to clean Clippy warning
+Date: Wed, 19 Mar 2025 07:30:45 -0700
+Message-ID: <20250319143032.065062242@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 796106e29e5df6cd4b4e2b51262a8a19e9fa0625 ]
+commit 986c2e9ca818b0b74cfc737517549fd0b80ff15d upstream.
 
-It will indicate "unsupported clock rate" when setup clock failed.
-But it is unclear what kind of rate was failed. Indicate it.
+Starting with the upcoming Rust 1.86.0 (to be released 2025-04-03),
+Clippy warns:
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://patch.msgid.link/874j192qej.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    error: manually reimplementing `div_ceil`
+       --> drivers/gpu/drm/drm_panic_qr.rs:548:26
+        |
+    548 |         let pad_offset = (offset + 7) / 8;
+        |                          ^^^^^^^^^^^^^^^^ help: consider using `.div_ceil()`: `offset.div_ceil(8)`
+        |
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#manual_div_ceil
+
+And similarly for `stride`. Thus apply the suggestion to both.
+
+The behavior (and thus codegen) is not exactly equivalent [1][2], since
+`div_ceil()` returns the right value for the values that currently
+would overflow.
+
+Link: https://github.com/rust-lang/rust-clippy/issues/14333 [1]
+Link: https://godbolt.org/z/dPq6nGnv3 [2]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
+Cc: stable@vger.kernel.org # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250301231602.917580-1-ojeda@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sh/rcar/ssi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panic_qr.rs |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sh/rcar/ssi.c b/sound/soc/sh/rcar/ssi.c
-index 690ac0d6ef41a..2a9e8d20c23c3 100644
---- a/sound/soc/sh/rcar/ssi.c
-+++ b/sound/soc/sh/rcar/ssi.c
-@@ -334,7 +334,8 @@ static int rsnd_ssi_master_clk_start(struct rsnd_mod *mod,
- 	return 0;
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -545,7 +545,7 @@ impl EncodedMsg<'_> {
+         }
+         self.push(&mut offset, (MODE_STOP, 4));
  
- rate_err:
--	dev_err(dev, "unsupported clock rate\n");
-+	dev_err(dev, "unsupported clock rate (%d)\n", rate);
-+
- 	return ret;
- }
+-        let pad_offset = (offset + 7) / 8;
++        let pad_offset = offset.div_ceil(8);
+         for i in pad_offset..self.version.max_data() {
+             self.data[i] = PADDING[(i & 1) ^ (pad_offset & 1)];
+         }
+@@ -659,7 +659,7 @@ struct QrImage<'a> {
+ impl QrImage<'_> {
+     fn new<'a, 'b>(em: &'b EncodedMsg<'b>, qrdata: &'a mut [u8]) -> QrImage<'a> {
+         let width = em.version.width();
+-        let stride = (width + 7) / 8;
++        let stride = width.div_ceil(8);
+         let data = qrdata;
  
--- 
-2.39.5
-
+         let mut qr_image = QrImage {
 
 
 
