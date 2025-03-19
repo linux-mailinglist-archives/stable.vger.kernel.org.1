@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-125296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090FAA69290
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:11:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6445FA69285
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59A921B88212
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A066119C67F3
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EC61E503D;
-	Wed, 19 Mar 2025 14:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE5B1E5214;
+	Wed, 19 Mar 2025 14:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGbzzQaq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hM7FUv/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784FD1E47D6;
-	Wed, 19 Mar 2025 14:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8651C7013;
+	Wed, 19 Mar 2025 14:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395089; cv=none; b=thCexZtyyL6frv2ICSo3v0yCIlki25d7Q8SUCCwy0sLRil6S/q5PAPGBIH6fZHWscFJU3q4qBHO7NQCMDHY+RrXs/vCh26QqD2YSmsk9SFBsiCcLkx7go9p/q060ZhCyR0u8nH/OeR+xeMW1pg2L6ADfwcbTMZd9J2Eu1fEn32w=
+	t=1742394940; cv=none; b=bkN6afuvIve9xDzhGIM1DehQuosEq5IViTBFli6Gqe9YOdAoCqhZxKKQfpK1IEBIPPxSNESrwjUCbIGaeuknP5BfvVdUrsOlE6nLw0H+FWpdRgeHn2dgSoVG6pyLrzNIM+AMte3ZVP4+ooLS0BRFMX7QLryB1DrlAX9AFwTLStg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395089; c=relaxed/simple;
-	bh=L0HDrEaGSgGWLnd4ONieOE1EfRQVM/HcqCxV9mYra1U=;
+	s=arc-20240116; t=1742394940; c=relaxed/simple;
+	bh=7E57Kd7wGXM8KfY63R+IRR64VaPMhcBZwViEsOFQH7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GxXWWtndx2QgrZfDaO091bhPieFC/xdHd93maf+ee2kFUsXkR1HQnvYKwb0/ug4ivnciBJCCBibJsTyxtksXSIPG+zZ98mQKCyCbAYO1+EvdwBhlBadT2XpYtTMGTFu6e2MxxSX9i+c7CR9vuxbmUj+ZeZ12/TtOHUXKEE7Rp/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGbzzQaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C901C4CEE4;
-	Wed, 19 Mar 2025 14:38:09 +0000 (UTC)
+	 MIME-Version; b=KVdcyC/xA+JIDWZuQrRSIJ6bq6OZ45ZTBBTV5GaU/M9A5qN9Dh+r8T1Wdgb3E95lwhDm/h+j5WEkd14+t0XIVSKlBiwmQthI25WgrnpMO+DJTDerYrIRrrt42GyrQ4TDg9Y3fI1O+aVofzWPIj+6ycU/grdgfgbQtq3xvON4/rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hM7FUv/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A88C4CEE4;
+	Wed, 19 Mar 2025 14:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395089;
-	bh=L0HDrEaGSgGWLnd4ONieOE1EfRQVM/HcqCxV9mYra1U=;
+	s=korg; t=1742394939;
+	bh=7E57Kd7wGXM8KfY63R+IRR64VaPMhcBZwViEsOFQH7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGbzzQaqeH4PiM9JKIoA69JwpbHoHX8ahkNiaPT/njd5EMx1x61GFR4BeNTc1ChSM
-	 9nZ0n6D+RmhmXmGKgGQfBE4kqZE3/5SXS3xdmGgDRpoXQ7uU1ADfZj2DqEapOwR0un
-	 hSiIMT7FSPsO0NsN1v1hiC4WsXhFnnz7Hzl1n12Y=
+	b=hM7FUv/e33+M0GNrugxs5D/c5vRb9RPxSEaO+HYEwtXQSInt2azsHd1nXXqiwsvM1
+	 tbnN4rupswezlcFNbAjCJ1p1FldUlBtBgeNwthMft3RNLwYQdYuv90Olws9u085yxy
+	 iQdEr7FOZoy5HYbLJb/qK11QyBNrq/Fahjb9JCzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmytro Maluka <dmaluka@chromium.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/231] x86/of: Dont use DTB for SMP setup if ACPI is enabled
-Date: Wed, 19 Mar 2025 07:30:29 -0700
-Message-ID: <20250319143030.195660563@linuxfoundation.org>
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.13 160/241] Input: i8042 - swap old quirk combination with new quirk for several devices
+Date: Wed, 19 Mar 2025 07:30:30 -0700
+Message-ID: <20250319143031.682937681@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmytro Maluka <dmaluka@chromium.org>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit 96f41f644c4885761b0d117fc36dc5dcf92e15ec ]
+commit 75ee4ebebbbe8dc4b55ba37f388924fa96bf1564 upstream.
 
-There are cases when it is useful to use both ACPI and DTB provided by
-the bootloader, however in such cases we should make sure to prevent
-conflicts between the two. Namely, don't try to use DTB for SMP setup
-if ACPI is enabled.
+Some older Clevo barebones have problems like no or laggy keyboard after
+resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
+quirk.
 
-Precisely, this prevents at least:
+While the old quirk combination did not show negative effects on these
+devices specifically, the new quirk works just as well and seems more
+stable in general.
 
-- incorrectly calling register_lapic_address(APIC_DEFAULT_PHYS_BASE)
-  after the LAPIC was already successfully enumerated via ACPI, causing
-  noisy kernel warnings and probably potential real issues as well
-
-- failed IOAPIC setup in the case when IOAPIC is enumerated via mptable
-  instead of ACPI (e.g. with acpi=noirq), due to
-  mpparse_parse_smp_config() overridden by x86_dtb_parse_smp_config()
-
-Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250105172741.3476758-2-dmaluka@chromium.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://lore.kernel.org/r/20250221230137.70292-3-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/devicetree.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h |   40 +++++++++++-----------------------
+ 1 file changed, 14 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-index 59d23cdf4ed0f..dd8748c45529a 100644
---- a/arch/x86/kernel/devicetree.c
-+++ b/arch/x86/kernel/devicetree.c
-@@ -2,6 +2,7 @@
- /*
-  * Architecture specific OF callbacks.
-  */
-+#include <linux/acpi.h>
- #include <linux/export.h>
- #include <linux/io.h>
- #include <linux/interrupt.h>
-@@ -313,6 +314,6 @@ void __init x86_flattree_get_config(void)
- 	if (initial_dtb)
- 		early_memunmap(dt, map_len);
- #endif
--	if (of_have_populated_dt())
-+	if (acpi_disabled && of_have_populated_dt())
- 		x86_init.mpparse.parse_smp_cfg = x86_dtb_parse_smp_config;
- }
--- 
-2.39.5
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1080,16 +1080,14 @@ static const struct dmi_system_id i8042_
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "AURA1501"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "EDUBOOK1502"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		/* Mivvy M310 */
+@@ -1171,8 +1169,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "LAPQC71A"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1205,8 +1202,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NH5xAx"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1218,8 +1214,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	/*
+ 	 * At least one modern Clevo barebone has the touchpad connected both
+@@ -1235,17 +1230,15 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NS50MU"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
+-					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
+-					SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
++					SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NS50_70MU"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
+-					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
+-					SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
++					SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1319,8 +1312,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "P65_67RS"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		/*
+@@ -1338,8 +1330,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "PB50_70DFx,DDx"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1363,8 +1354,7 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+@@ -1383,15 +1373,13 @@ static const struct dmi_system_id i8042_
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "X170KM-G"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		/*
 
 
 
