@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-124999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FBCA68F75
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDC1A69066
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:47:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D0663A9514
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC92D3AAD79
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B421DF73E;
-	Wed, 19 Mar 2025 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E023A214229;
+	Wed, 19 Mar 2025 14:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+um65Kp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFb/ZkrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C571919DF99;
-	Wed, 19 Mar 2025 14:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F61221422E;
+	Wed, 19 Mar 2025 14:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394881; cv=none; b=slvt3wJtUMseQMHevqkDs6H9hhAYQUmoLGpugftTq7Dd6ytJdkdnNIqZPm5qGtenFR+TXAPIFptlkIvENMuMdWa2RRges9/Bzyur5uPizawz8InGgsvCM3XVVAiXrA8IW3QTdcB5OB9ZFQunva0iTn5sb9y7M68aPnpjj4JuXHg=
+	t=1742395036; cv=none; b=tqjhP2378fBi0zhC0fB+gXR8bhSLSM8cDBjKHUPtjP3/0secD+8tlHcVB/T5REdpgA/SNkieUniqktxGz3BG5qWQXvuOjwrlCIg/eB9HIqpiKwWB2+JnNWdIHOzdXVRFzDgMxN4KUGvoV3t/Wty8TkUHSzeNN4TN3lY8uw9oXB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394881; c=relaxed/simple;
-	bh=ZNIwamaDOE0fb3U5JxZMLACHyePNgZQC3e1uaf3LY9M=;
+	s=arc-20240116; t=1742395036; c=relaxed/simple;
+	bh=sb7+iJA4hNB5XYqHuvmbNdyzx8xT2Xk94HRxIQoUMUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ogWbgHp+rNq/Ct0R8vj5a/QdS4u4zT1B74Bd+4x3enkx4o5h+r4xAM+Z0RFMkio9uhSZbcnN5mi0eetdlX9P8oipAUmmp84P4jSG1e17+0Gd5vNiKNHmsX3aVlb07xvrLmMNpX8Qhvt+m4MfhugmfHGqMVkxJJMJkRYsnd8VEyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+um65Kp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C8CC4CEE8;
-	Wed, 19 Mar 2025 14:34:41 +0000 (UTC)
+	 MIME-Version; b=X5j++ov+akOuHO6KZ47IrrM95zK6KB7g/RVKVadaHjOj6/56vp2SfbbxVxzEMTmXF8EK8EemM2lxBjoZcQAVCzte9/NcSDjG4sYucmzkb+Ab2R9hgs3qAwZqTxT2uO+4ronwuHTHNyyRejN2yIUfzBN40N8sOiTtSkTXao+0zn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFb/ZkrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75929C4CEE4;
+	Wed, 19 Mar 2025 14:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394881;
-	bh=ZNIwamaDOE0fb3U5JxZMLACHyePNgZQC3e1uaf3LY9M=;
+	s=korg; t=1742395036;
+	bh=sb7+iJA4hNB5XYqHuvmbNdyzx8xT2Xk94HRxIQoUMUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+um65KpIFAwV12jZA/RLNLE/qrZTEus97P6je2Q3p7SdPt4UaVxjwR0u9PNf4fBz
-	 Zav+UJhnN64L0WPS7HFdsc+UydguNCHrgD18f05p9/sOXo2lUFAPe409SVedF3Orfv
-	 2Vvs7ToxF8KCkAYStNlhgaMQPFkjg/tlFVIYApYo=
+	b=lFb/ZkrNPA5TeveoqibKxR6yfeb4MjV7VK6iWXwGUn/hJGJ7usEs4ShJQCy1EopFI
+	 rTBzj2BzfOPbir9xY9q9IHyPAToWWlqJZaHj4rGC8mEeLzpzjat29uZTcgupSZnTZA
+	 JXw6l1/oDMKUB5JHx3lOGnfz8rToZh5Na3zPPkMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 082/241] HID: intel-ish-hid: ipc: Add Panther Lake PCI device IDs
+Subject: [PATCH 6.12 059/231] powercap: call put_device() on an error path in powercap_register_control_type()
 Date: Wed, 19 Mar 2025 07:29:12 -0700
-Message-ID: <20250319143029.760041022@linuxfoundation.org>
+Message-ID: <20250319143028.283018215@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 18c966b62819b9d3b99eac8fb8cdc8950826e0c2 ]
+[ Upstream commit 93c66fbc280747ea700bd6199633d661e3c819b3 ]
 
-Add device IDs of Panther Lake-H and Panther Lake-P into ishtp support
-list.
+powercap_register_control_type() calls device_register(), but does not
+release the refcount of the device when it fails.
 
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Call put_device() before returning an error to balance the refcount.
+
+Since the kfree(control_type) will be done by powercap_release(), remove
+the lines in powercap_register_control_type() before returning the error.
+
+This bug was found by an experimental verifier that I am developing.
+
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20250110010554.1583411-1-joe@pf.is.s.u-tokyo.ac.jp
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/hw-ish.h  | 2 ++
- drivers/hid/intel-ish-hid/ipc/pci-ish.c | 7 +++++++
- 2 files changed, 9 insertions(+)
+ drivers/powercap/powercap_sys.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/hw-ish.h b/drivers/hid/intel-ish-hid/ipc/hw-ish.h
-index cdd80c653918b..07e90d51f073c 100644
---- a/drivers/hid/intel-ish-hid/ipc/hw-ish.h
-+++ b/drivers/hid/intel-ish-hid/ipc/hw-ish.h
-@@ -36,6 +36,8 @@
- #define PCI_DEVICE_ID_INTEL_ISH_ARL_H		0x7745
- #define PCI_DEVICE_ID_INTEL_ISH_ARL_S		0x7F78
- #define PCI_DEVICE_ID_INTEL_ISH_LNL_M		0xA845
-+#define PCI_DEVICE_ID_INTEL_ISH_PTL_H		0xE345
-+#define PCI_DEVICE_ID_INTEL_ISH_PTL_P		0xE445
- 
- #define	REVISION_ID_CHT_A0	0x6
- #define	REVISION_ID_CHT_Ax_SI	0x0
-diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-index 9e2401291a2f6..ff0fc80100728 100644
---- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-+++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-@@ -26,9 +26,11 @@
- enum ishtp_driver_data_index {
- 	ISHTP_DRIVER_DATA_NONE,
- 	ISHTP_DRIVER_DATA_LNL_M,
-+	ISHTP_DRIVER_DATA_PTL,
- };
- 
- #define ISH_FW_GEN_LNL_M "lnlm"
-+#define ISH_FW_GEN_PTL "ptl"
- 
- #define ISH_FIRMWARE_PATH(gen) "intel/ish/ish_" gen ".bin"
- #define ISH_FIRMWARE_PATH_ALL "intel/ish/ish_*.bin"
-@@ -37,6 +39,9 @@ static struct ishtp_driver_data ishtp_driver_data[] = {
- 	[ISHTP_DRIVER_DATA_LNL_M] = {
- 		.fw_generation = ISH_FW_GEN_LNL_M,
- 	},
-+	[ISHTP_DRIVER_DATA_PTL] = {
-+		.fw_generation = ISH_FW_GEN_PTL,
-+	},
- };
- 
- static const struct pci_device_id ish_pci_tbl[] = {
-@@ -63,6 +68,8 @@ static const struct pci_device_id ish_pci_tbl[] = {
- 	{PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ISH_ARL_H)},
- 	{PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ISH_ARL_S)},
- 	{PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ISH_LNL_M), .driver_data = ISHTP_DRIVER_DATA_LNL_M},
-+	{PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ISH_PTL_H), .driver_data = ISHTP_DRIVER_DATA_PTL},
-+	{PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_ISH_PTL_P), .driver_data = ISHTP_DRIVER_DATA_PTL},
- 	{}
- };
- MODULE_DEVICE_TABLE(pci, ish_pci_tbl);
+diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
+index 52c32dcbf7d84..4112a00973382 100644
+--- a/drivers/powercap/powercap_sys.c
++++ b/drivers/powercap/powercap_sys.c
+@@ -627,8 +627,7 @@ struct powercap_control_type *powercap_register_control_type(
+ 	dev_set_name(&control_type->dev, "%s", name);
+ 	result = device_register(&control_type->dev);
+ 	if (result) {
+-		if (control_type->allocated)
+-			kfree(control_type);
++		put_device(&control_type->dev);
+ 		return ERR_PTR(result);
+ 	}
+ 	idr_init(&control_type->idr);
 -- 
 2.39.5
 
