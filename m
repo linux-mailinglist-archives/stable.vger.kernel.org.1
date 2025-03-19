@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-125365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6408AA690EC
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E11A68FF2
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A02CD3B28BF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0051B3AE2C4
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DFF21CC54;
-	Wed, 19 Mar 2025 14:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CAB202981;
+	Wed, 19 Mar 2025 14:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKKkedlz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9jjCQFS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F22F21CC51;
-	Wed, 19 Mar 2025 14:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E1D2054EF;
+	Wed, 19 Mar 2025 14:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395137; cv=none; b=QuUt7RlRFO2lOLcy/yZrLx7cSMuWMtcJnvGnPuQQ40rW9MqGFL6YkPYEedw8N8JGKp11EXaYFIyxdVLU4p+5OkObgnC5mT6FC2m1wl6lHayLSF05j+HakT2j68MzwcfYSYyzlvjWTLOk1U1JiOW2Uu2YuVVhRrvHL2qFsD9Kr7k=
+	t=1742394986; cv=none; b=ZPJ9r9DgNvfXPNkNPsiQiJSgqU/oYqF1GmCZ0zOC5GxdQNTDsO1k5n2UkUTob9177ut9lzVLifsyZ8eoisJG2bzMRIuQT1d6wPYhEfVjYUuQjSY+7Vuduc493YvPCZ69IT2thERbIzu/saCo6XDpV7uKG6hoYhXPn4Vk6TAbffc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395137; c=relaxed/simple;
-	bh=0BPZ7hqfCQQiCzD2ZqECW38VSCKvRK/sZPJILZYWweM=;
+	s=arc-20240116; t=1742394986; c=relaxed/simple;
+	bh=qaO/8g0pc2iwnBEWC+/rKo/USxWj1vRNlc5OZrPYtCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxzUgHuafxycmRwN9m4dDc8xo9kna9W+ddsdscvJ3T+ygk+KS38N/HCyGVXhJAkf7+eUQk1Oj8TBLBl+jNfCpIeyZ2y2Tjwx5TRv9W1AME39Wn5CDq801r1bMAY57Hr/Bi73gNxSCJ1K4b85GHGaamD5H00zrMw4X5oSOrX337Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKKkedlz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE17FC4CEE8;
-	Wed, 19 Mar 2025 14:38:56 +0000 (UTC)
+	 MIME-Version; b=LFXFM5pyfm3JYsXUv8yiu6IN3l+yJmxGv6TTra9jQlZZFMUcjU+YEy4fYmOgmXcZrhBneNuhAT1OUOOAmqxMHrqRm7nJEWBgMku4FoB/zRfEJVqNWMQTywpcrt2N4vAAfOSOBrp2XnzwTBtlVSbafeDm87VKQQ0Hezp4+QW3YRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9jjCQFS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531F0C4CEE4;
+	Wed, 19 Mar 2025 14:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395136;
-	bh=0BPZ7hqfCQQiCzD2ZqECW38VSCKvRK/sZPJILZYWweM=;
+	s=korg; t=1742394986;
+	bh=qaO/8g0pc2iwnBEWC+/rKo/USxWj1vRNlc5OZrPYtCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKKkedlzOQn38+V9O6hTNQZsWNYJ5ZUMt0hj4aQqEPHJIDt1sA+OQlHBv4zaimOEU
-	 DHFp1um+UpiTwl2hJHZ425jf1jRrEx/qBK9ziInQdF+dxNkp1hh3bFVquvjju/ceih
-	 qUxxSG2D7akcVhLuh+SI5XoKt06QCG2rCF1GmgRI=
+	b=u9jjCQFSZh/UZaVbtmSp/yuta0LPvqIe3b5n3mENN4x49YD9RmSp6Ws49D+WfgmaI
+	 bP3bLyDZqjlQCsSTJ/KGtL0ThMdOqjO+eL3PBSK1fVTSAtR5A6wLze6NrHIKHD/EW9
+	 UwOMhMSYo1uvXUIDf8UU7hFBaEz3wzJgFjonEp+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Shuming Fan <shumingf@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 203/231] ASoC: rt722-sdca: add missing readable registers
+Subject: [PATCH 6.13 226/241] cifs: Fix integer overflow while processing actimeo mount option
 Date: Wed, 19 Mar 2025 07:31:36 -0700
-Message-ID: <20250319143031.858147104@linuxfoundation.org>
+Message-ID: <20250319143033.335920393@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 247fba13416af65b155949bae582d55c310f58b6 ]
+[ Upstream commit 64f690ee22c99e16084e0e45181b2a1eed2fa149 ]
 
-SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_FU15,
-RT722_SDCA_CTL_FU_CH_GAIN, CH_01) ... SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY,
-RT722_SDCA_ENT_FU15, RT722_SDCA_CTL_FU_CH_GAIN, CH_04) are used by the
-"FU15 Boost Volume" control, but not marked as readable.
-And the mbq size are 2 for those registers.
+User-provided mount parameter actimeo of type u32 is intended to have
+an upper limit, but before it is validated, the value is converted from
+seconds to jiffies which can lead to an integer overflow.
 
-Fixes: 7f5d6036ca005 ("ASoC: rt722-sdca: Add RT722 SDCA driver")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Shuming Fan <shumingf@realtek.com>
-Link: https://patch.msgid.link/20250310080440.58797-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 6d20e8406f09 ("cifs: add attribute cache timeout (actimeo) tunable")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt722-sdca-sdw.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/client/fs_context.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt722-sdca-sdw.c b/sound/soc/codecs/rt722-sdca-sdw.c
-index d5c985ff5ac55..5449d6b5cf3d1 100644
---- a/sound/soc/codecs/rt722-sdca-sdw.c
-+++ b/sound/soc/codecs/rt722-sdca-sdw.c
-@@ -86,6 +86,10 @@ static bool rt722_sdca_mbq_readable_register(struct device *dev, unsigned int re
- 	case 0x6100067:
- 	case 0x6100070 ... 0x610007c:
- 	case 0x6100080:
-+	case SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_FU15, RT722_SDCA_CTL_FU_CH_GAIN,
-+			  CH_01) ...
-+	     SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_FU15, RT722_SDCA_CTL_FU_CH_GAIN,
-+			  CH_04):
- 	case SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_USER_FU1E, RT722_SDCA_CTL_FU_VOLUME,
- 			CH_01):
- 	case SDW_SDCA_CTL(FUNC_NUM_MIC_ARRAY, RT722_SDCA_ENT_USER_FU1E, RT722_SDCA_CTL_FU_VOLUME,
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 6d7091ddec16e..55bc036b243e4 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1298,7 +1298,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		ctx->acdirmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_actimeo:
+-		if (HZ * result.uint_32 > CIFS_MAX_ACTIMEO) {
++		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
+ 			cifs_errorf(fc, "timeout too large\n");
+ 			goto cifs_parse_mount_err;
+ 		}
 -- 
 2.39.5
 
