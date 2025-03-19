@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-125067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63167A690FF
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89592A68FB7
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4954718865F3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BC053B163E
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B860B1DA10C;
-	Wed, 19 Mar 2025 14:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8190F1E5201;
+	Wed, 19 Mar 2025 14:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfEcIfLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUMau3ID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7450D1B87D5;
-	Wed, 19 Mar 2025 14:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEC01DB122;
+	Wed, 19 Mar 2025 14:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394932; cv=none; b=QJcvj2Ub0Xup3WyunZChPvGtMrHCE7mA2IrpfqH1e+ApAGHNtk8O1+sgJmGW4kvOm9fqhvKLxmgDYe3pHft8D96zykfsJUPZY26V50jycPZ6gz7XDIeRe2j48LaDO1uIjcH2LnMooMOyI2CPXb6eX2U5NaoSZliIywPdIVKwLQk=
+	t=1742394935; cv=none; b=Z+4UWopT7apVEMUztwh83OhGB/MjyCl8EYPyYRO2bBc0gccnhNJESfTDbVxqDelx8HliHDyxOhJ1pXKTgtzLPJDEJKjnXoscsVsqiKlSvychnuwEl44gde++SRZyp8vtu2kXm0id3458xooS7B5s1gdZ6o6R/i6/2WAg7u1dZ6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394932; c=relaxed/simple;
-	bh=iYM00TEcqBkjjJlyUmyqEc+SYWW63hRKuCzulyupUkg=;
+	s=arc-20240116; t=1742394935; c=relaxed/simple;
+	bh=HvHDul91zpTaoK4hlN/gDBiH6lHfMiIpUG6N9HrDDOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t6lhxN1jxNdN3BilSwy+L0zCHQKx5+PatELi0rTeQbO4asccLoPT6+3x+t6wOHiUxWL9UqOMZq96Ol0esox5ChIttqfdEP5sMFrUhYTJ5yZ6x7B1C4Chllmg3UJaeKjcviIrx0FhrtFZlmjWQbi7x15KY129O3uHYBBoRPxnU2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfEcIfLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44423C4CEE4;
-	Wed, 19 Mar 2025 14:35:32 +0000 (UTC)
+	 MIME-Version; b=RZpPkykf71sslpWfqEZbPAJTlw1MldosuUCx4L2gHKPoD40nFXVkgbGLNPQKPDDd5ntgt4KLASJQERz8ovrkfv8DbYiZ0QZiu0RVDyRM+XiYqIKFpMJjkXB81AKl37W6GmJD0SuoDS9dB8SW4baurWfn5YSoftoYBlyPGRqMHDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUMau3ID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141E5C4CEE8;
+	Wed, 19 Mar 2025 14:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394932;
-	bh=iYM00TEcqBkjjJlyUmyqEc+SYWW63hRKuCzulyupUkg=;
+	s=korg; t=1742394935;
+	bh=HvHDul91zpTaoK4hlN/gDBiH6lHfMiIpUG6N9HrDDOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VfEcIfLq1kUdq92BMxGQUfS361gi0aQ3aH0S9brBnzsrIzF2aTAOIxIrG7C0Zidy+
-	 07R/t/CRqmPNnH6fk7TBQJdU8YyhI9cEueNyKCVyOTRHTlj8dREWBtVmgr2K+p60w5
-	 36Z2OHEdl6UC2xnQvKdj2OCpRHIgiH62LnBXQ+64=
+	b=RUMau3IDUpztEynzMM3jHTxyTRFBRWrZkRvlqRKQkNgOLKd8LaPpWaXQw8VrmFGMu
+	 B3s4jf0s2Xpb2oRhGeJoY4tQFS1KzLjXQDUo3piSeK24doxhLsYrgcdNJ2Word3n+1
+	 jxIq0ZBQPLrLZPUBy9s6AQBT+1F5E2+rxVfg2qhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 111/241] ALSA: hda/realtek: Limit mic boost on Positivo ARN50
-Date: Wed, 19 Mar 2025 07:29:41 -0700
-Message-ID: <20250319143030.471346384@linuxfoundation.org>
+Subject: [PATCH 6.13 112/241] ASoC: rsnd: indicate unsupported clock rate
+Date: Wed, 19 Mar 2025 07:29:42 -0700
+Message-ID: <20250319143030.495969995@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
 References: <20250319143027.685727358@linuxfoundation.org>
@@ -66,34 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 76b0a22d4cf7dc9091129560fdc04e73eb9db4cb ]
+[ Upstream commit 796106e29e5df6cd4b4e2b51262a8a19e9fa0625 ]
 
-The internal mic boost on the Positivo ARN50 is too high.
-Fix this by applying the ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine
-to limit the gain.
+It will indicate "unsupported clock rate" when setup clock failed.
+But it is unclear what kind of rate was failed. Indicate it.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Link: https://patch.msgid.link/20250201143930.25089-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://patch.msgid.link/874j192qej.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/renesas/rcar/ssi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 10e9ec74104d2..f952918191ef2 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11096,6 +11096,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+diff --git a/sound/soc/renesas/rcar/ssi.c b/sound/soc/renesas/rcar/ssi.c
+index b3d4e8ae07eff..0c6424a1fcac0 100644
+--- a/sound/soc/renesas/rcar/ssi.c
++++ b/sound/soc/renesas/rcar/ssi.c
+@@ -336,7 +336,8 @@ static int rsnd_ssi_master_clk_start(struct rsnd_mod *mod,
+ 	return 0;
+ 
+ rate_err:
+-	dev_err(dev, "unsupported clock rate\n");
++	dev_err(dev, "unsupported clock rate (%d)\n", rate);
++
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
