@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-125194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1BFA691B3
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1508DA68F54
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33C271B87216
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727653BA41B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38E01C5D57;
-	Wed, 19 Mar 2025 14:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4621DB55D;
+	Wed, 19 Mar 2025 14:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irTAKY3/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoSxoj/k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932D21E0B67;
-	Wed, 19 Mar 2025 14:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF2B1C7013;
+	Wed, 19 Mar 2025 14:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395019; cv=none; b=al/BP42A5PifzorMCjJwQExiFa/WWpZdX0fLJQ+bIFYpKm80LNVOzpc7P+d5C67wSzwJp7B5JxXagWRnsPVSUNP78OHo4hLtGzFVlE5SVLpQca9Fi2SDoo4ffUlRBA28NCef5MyWuvEsOvPcAoLNLsLIjd4mgXPDFw8ahSGCBBs=
+	t=1742394864; cv=none; b=QQy6KCgCxa9gVh3cPF9dveBpgvhhwda+r0nZuRaiX9KWlSw1M36A8m3mCaunteaJ8cCdA++O2f5hY5zUK1/wa4/tNgxMOQ60E1cfLrGxIXIn9DYyZn72sfaYqkpGDSZzwBtW4qJsFyG1FcvyIY0ADT2CY57c7g+RnnPmc89Nd5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395019; c=relaxed/simple;
-	bh=bMDeevO2dlKtNQuvs2UCnCdOohgc3gkM/duIyIwajEQ=;
+	s=arc-20240116; t=1742394864; c=relaxed/simple;
+	bh=XKuNocVFsgddL+zS69tHYFmBXW6WVjhgHf88zCCkfDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gACsL2SppIsnb0WVodGDaNO0iyTikAtUsTOd7SiUzGIxIntDLuvncudawzXbDTIYYe52UzTJtETjfmCwIa4rQL/aZbT/q2fK9xDwFsJYdza2AESHTZbolo2fvf1yW2M89+csmoHsNwHmBUKuqeB8jtHKHl4NZmEc2pk8ADPUYQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irTAKY3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66ACCC4CEE8;
-	Wed, 19 Mar 2025 14:36:59 +0000 (UTC)
+	 MIME-Version; b=BkDt1RaBN77kdPD7HZPAemQT0aIhBWKmVWvYQ9HDe5zUwTAySR83rCKBnk6ty4lbKJ1sh9E4STBz7UpD4lCqRbWu+y6Cy38/1UdNLRVjCIgQsp5RjCZuKqkia9qGR0z0KQvtrkTwOMZDyh4BEDWkMT+MVoDm57hp6zynNMHGynw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoSxoj/k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DFCC4CEE4;
+	Wed, 19 Mar 2025 14:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395019;
-	bh=bMDeevO2dlKtNQuvs2UCnCdOohgc3gkM/duIyIwajEQ=;
+	s=korg; t=1742394864;
+	bh=XKuNocVFsgddL+zS69tHYFmBXW6WVjhgHf88zCCkfDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irTAKY3/hKEQ+9kr79tPi4xubZB9hLbbgmBMz4sqw9uYfMHHj0TcUh8ybBDQ9XFvG
-	 PtbEZ9ET7l4HexM5egURhqWRoU2lup8JZaBW97/Rivamp8ojOf2FBZGcGYkYJBNF2j
-	 HDKCvpPN8hscyzL3uCYSDRf3ja5DTK6oNq6fxslY=
+	b=qoSxoj/kguCkAVqYETpenRCxb6l6OrjVQzNgVfxWm3jCL1017WCZk15fifIazrC1s
+	 JDSWamWqo1cdDXXQhJs2mb1UmJ2u4v6Qbo3mcTUzIClRxUGrhG1seS01cpSG1MDfwt
+	 AU2xIFSn6P/gN7ov8ETAr0NC4N29qigUg0+WtxDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Taehee Yoo <ap420073@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/231] eth: bnxt: do not use BNXT_VNIC_NTUPLE unconditionally in queue restart logic
+Subject: [PATCH 6.13 055/241] net/mlx5e: Prevent bridge link show failure for non-eswitch-allowed devices
 Date: Wed, 19 Mar 2025 07:28:45 -0700
-Message-ID: <20250319143027.607429242@linuxfoundation.org>
+Message-ID: <20250319143029.087180227@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 661958552eda5bf64bfafb4821cbdded935f1f68 ]
+[ Upstream commit e92df790d07a8eea873efcb84776e7b71f81c7d5 ]
 
-When a queue is restarted, it sets MRU to 0 for stopping packet flow.
-MRU variable is a member of vnic_info[], the first vnic_info is default
-and the second is ntuple.
-Only when ntuple is enabled(ethtool -K eth0 ntuple on), vnic_info for
-ntuple is allocated in init logic.
-The bp->nr_vnics indicates how many vnic_info are allocated.
-However bnxt_queue_{start | stop}() accesses vnic_info[BNXT_VNIC_NTUPLE]
-regardless of ntuple state.
+mlx5_eswitch_get_vepa returns -EPERM if the device lacks
+eswitch_manager capability, blocking mlx5e_bridge_getlink from
+retrieving VEPA mode. Since mlx5e_bridge_getlink implements
+ndo_bridge_getlink, returning -EPERM causes bridge link show to fail
+instead of skipping devices without this capability.
 
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Fixes: b9d2956e869c ("bnxt_en: stop packet flow during bnxt_queue_stop/start")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Link: https://patch.msgid.link/20250309134219.91670-4-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To avoid this, return -EOPNOTSUPP from mlx5e_bridge_getlink when
+mlx5_eswitch_get_vepa fails, ensuring the command continues processing
+other devices while ignoring those without the necessary capability.
+
+Fixes: 4b89251de024 ("net/mlx5: Support ndo bridge_setlink and getlink")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1741644104-97767-7-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index a476f9da40c27..442c85b3ea3f3 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -15287,7 +15287,7 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
- 	cpr = &rxr->bnapi->cp_ring;
- 	cpr->sw_stats->rx.rx_resets++;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index cb93f46eaa7c3..e02bb589104a5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5131,11 +5131,9 @@ static int mlx5e_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 	struct mlx5e_priv *priv = netdev_priv(dev);
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u8 mode, setting;
+-	int err;
  
--	for (i = 0; i <= BNXT_VNIC_NTUPLE; i++) {
-+	for (i = 0; i <= bp->nr_vnics; i++) {
- 		vnic = &bp->vnic_info[i];
- 
- 		rc = bnxt_hwrm_vnic_set_rss_p5(bp, vnic, true);
-@@ -15315,7 +15315,7 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
- 	struct bnxt_vnic_info *vnic;
- 	int i;
- 
--	for (i = 0; i <= BNXT_VNIC_NTUPLE; i++) {
-+	for (i = 0; i <= bp->nr_vnics; i++) {
- 		vnic = &bp->vnic_info[i];
- 		vnic->mru = 0;
- 		bnxt_hwrm_vnic_update(bp, vnic,
+-	err = mlx5_eswitch_get_vepa(mdev->priv.eswitch, &setting);
+-	if (err)
+-		return err;
++	if (mlx5_eswitch_get_vepa(mdev->priv.eswitch, &setting))
++		return -EOPNOTSUPP;
+ 	mode = setting ? BRIDGE_MODE_VEPA : BRIDGE_MODE_VEB;
+ 	return ndo_dflt_bridge_getlink(skb, pid, seq, dev,
+ 				       mode,
 -- 
 2.39.5
 
