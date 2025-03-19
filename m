@@ -1,86 +1,95 @@
-Return-Path: <stable+bounces-124919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB54A68D8D
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:17:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3156DA68E56
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9951E1894EC4
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 13:14:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92B4C425745
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 13:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA305256C98;
-	Wed, 19 Mar 2025 13:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3C1156C69;
+	Wed, 19 Mar 2025 13:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psc+4RN6"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064DF2571B0;
-	Wed, 19 Mar 2025 13:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D952D35963;
+	Wed, 19 Mar 2025 13:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742390069; cv=none; b=gW/OLgkEkr3ZQ99Fh/1YPZnj+WJ66K+Io9qBGpkjI6lIgDiJj9sRB+kDu+JKlcizXNR/vZTzMV7e/+rBbMBDJg0HwRs2x1bNFuGkrGhXmowueShSSY/nVCIAA0d/2eobBOSG7vXOJpsL4xJ8OqCrxAqq8V3VpRTC3QxGPfQOYXc=
+	t=1742392634; cv=none; b=O75VTNV2bN9//h1FKz+TxzahdHxhzT1ZTUklWgD6hIWIzjflLIUpPUVRYSww+a4NLTDvY5NwLrIf0DFO6A+06EJ8rozKWoqPkLk0Qlbf/PFHuRxub9U2L3u5KSHpemzyOR5wisv4dssskPiGbrqXXvy3cUQ1h7FcSbDI/yOdoPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742390069; c=relaxed/simple;
-	bh=zGMWT/v3NEfu/Nxxc0UVV03hRv2PMBqqu4MGkwowWKI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WO1fy2+0WHU8Xb0WeS4SLsgFveCeGDPQTc/2/tTt95b/j51SB9cs4bpo92C0rjdjbTPM6olYVGHx5dKISpkQu4MbdzPJQs8UaT4rhaXWFRiJYDDK8+myY8RW8vwdPZwyRCZBgE8jC6qp3OvKSGCgqZeaWjHYCbMdZMnnLb5+ZP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4FACEFEC;
-	Wed, 19 Mar 2025 06:14:35 -0700 (PDT)
-Received: from e127648.arm.com (unknown [10.57.85.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D884D3F673;
-	Wed, 19 Mar 2025 06:14:24 -0700 (PDT)
-From: Christian Loehle <christian.loehle@arm.com>
-To: linux-kernel@vger.kernel.org,
-	peterz@infradead.org,
-	mingo@redhat.com
-Cc: juri.lelli@redhat.com,
-	dietmar.eggemann@arm.com,
-	vincent.guittot@linaro.org,
-	Christian Loehle <christian.loehle@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] sched/topology: Fix EAS freq-invariance print
-Date: Wed, 19 Mar 2025 13:13:24 +0000
-Message-Id: <20250319131324.224228-3-christian.loehle@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250319131324.224228-1-christian.loehle@arm.com>
-References: <20250319131324.224228-1-christian.loehle@arm.com>
+	s=arc-20240116; t=1742392634; c=relaxed/simple;
+	bh=jQ1cEr/6AbNtz49EtndMJS/a0gCN5LVsu6g9KKQFAjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mDkD/f0fAlZRFGiso+rjCRqyTJfJmMINVymfFeLsK0SoUEg438jO3TM5Arp5b/x7yi6P9EnheVHFG5c/bLD9pP0PTjVEhF4gzzbmHuqZPUlUwS9vlx4t6C/o1wUGs/o2Ey/1l17nOQ4R9uQojr3nTydxmEgEs4GOl8uhvqpna7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psc+4RN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1DEC4CEE4;
+	Wed, 19 Mar 2025 13:57:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1742392633;
+	bh=jQ1cEr/6AbNtz49EtndMJS/a0gCN5LVsu6g9KKQFAjQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=psc+4RN60eKgIkfk01Oa1tQs/VmjegMBVZjtFSq6b9IDRKqtw4ZIqGWlPZxAhNtKf
+	 Z3y8ChxfZjafO6QobtaPFvXcfn2CMjZMi3wGeT8Efr6UpPHeoC3ZizHPZm3kuV13q7
+	 Vo4rJOeaqm3nYPa8M4rmbFQnI2BUJw0ic37STMQY=
+Date: Wed, 19 Mar 2025 06:55:54 -0700
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>,
+	Gavin Shan <gshan@redhat.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH 6.12 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+Message-ID: <2025031946-myself-underling-0f4d@gregkh>
+References: <20250314-stable-sve-6-12-v1-0-ddc16609d9ba@kernel.org>
+ <20250314-stable-sve-6-12-v1-8-ddc16609d9ba@kernel.org>
+ <019afc2d-b047-4e33-971c-7debbbaec84d@redhat.com>
+ <86r02tmldh.wl-maz@kernel.org>
+ <Z9qaW_H9UFqdc1bI@J2N7QTR9R3>
+ <83ba4e5b-7700-4527-8376-2c60507bd0d7@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <83ba4e5b-7700-4527-8376-2c60507bd0d7@sirena.org.uk>
 
-Add the missing newline on frequency invariance check to ensure the EAS
-abort reason doesn't go missing.
+On Wed, Mar 19, 2025 at 01:02:30PM +0000, Mark Brown wrote:
+> On Wed, Mar 19, 2025 at 10:20:11AM +0000, Mark Rutland wrote:
+> > On Wed, Mar 19, 2025 at 09:15:54AM +0000, Marc Zyngier wrote:
+> 
+> > > The result is that this change is turning a perfectly valid HYP VA
+> > > into... something. Odds are that the masking/patching will not mess up
+> > > the address, but this is completely buggy anyway. In general,
+> > > kern_hyp_va() is not an idempotent operation.
+> 
+> > IIUC today it *happens* to be idempotent, but as you say that is not
+> > guaranteed to remain the case, and this is definitely a logical bug.
+> 
+> I think so, yes.  I suspect the idempotency confused me.
+> 
+> > > Greg, it may be more prudent to unstage this series from 6.12-stable
+> > > until we know for sure this is the only problem.
+> 
+> > As above, likewise with the v6.13 version.
+> 
+> Yes, please unstage these.  I'll send out new versions.
 
-Fixes: fa50e2b452c6 ("sched/topology: Condition EAS enablement on FIE support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Loehle <christian.loehle@arm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
----
- kernel/sched/topology.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+All now dropped from both queues, thanks.
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 27f14a775004..18e804b416f5 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -245,7 +245,7 @@ static bool sched_is_eas_possible(const struct cpumask *cpu_mask)
- 
- 	if (!arch_scale_freq_invariant()) {
- 		if (sched_debug()) {
--			pr_info("rd %*pbl: Checking EAS: frequency-invariant load tracking not yet supported",
-+			pr_info("rd %*pbl: Checking EAS: frequency-invariant load tracking not yet supported\n",
- 				cpumask_pr_args(cpu_mask));
- 		}
- 		return false;
--- 
-2.34.1
-
+greg k-h
 
