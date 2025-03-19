@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-125143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4D6A68FAA
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F4063A690FA
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:53:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93EA57A9E59
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86A927A832C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEF112045A1;
-	Wed, 19 Mar 2025 14:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04ED122259E;
+	Wed, 19 Mar 2025 14:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEJlMnyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6m80fNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430971DED54;
-	Wed, 19 Mar 2025 14:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76791DF258;
+	Wed, 19 Mar 2025 14:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394984; cv=none; b=S2C+fC2NtG2VJBH0PV+ye9swIt2XaknGAX6ZloMbG4+PuuwgsGG9UasHhA5jsmB0mDC36+CDZ36aFnXCHPIk1MwbBrZVhnS6PA6lT2VCqcz+jJIDBfITBRHUnp9m2CagaarFgxVKLNGA7HpZoPUTm9K1CrFG5GZDkq7ife8K+Pk=
+	t=1742395272; cv=none; b=srPCpc3fcOm2kiVBsJvqQzt8CJUifWRIgw/mM6E7X8zSkW8KD68U2jCQ5TWSxI3P9IqZjLE2k1F0oQEFGzkELLVurBds6HBOtuh3X5V3Vog2JJTF9SJPEh3tZgnFbysy8fBFB3W6Oahoa4CXEtoL2rqLCA3eNlvaixJrrp0RPtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394984; c=relaxed/simple;
-	bh=rfJbMEXGED84BgqTzF2TNHrgmjcscDiwRk2/1IumLCs=;
+	s=arc-20240116; t=1742395272; c=relaxed/simple;
+	bh=K7r8tFroOS4xG336iIuEwdTIa9jRtg7p2A2pHiqEd4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHXqdzVxQc1YXBlEj3W0BYxyVH8qHOz4Y8QJdsvgmzRQxauChF1nXQ/70V1kClVB5W7cH/MI2amDLttjKh7hFKak4vzd2jMQrtbV5qpsdY9I4rL2vZ0GQt8FaiNvl+tO8NdYI2/HVYMOCv7usxZA+SNmLqCPjvS2hcXB/EswiMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEJlMnyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D960C4CEE8;
-	Wed, 19 Mar 2025 14:36:24 +0000 (UTC)
+	 MIME-Version; b=pCnvObfOlNItGasII7ey4OCjPoY7jBUut1FPlZsQnGvkiK5LctoomFZYsA6pmXUd//gEHjVlLqHZiQEAgt0S+GMR0NhdSlqkyr/+dRAheB6B/LFWWajtWH6ZN1Sm9CA/d2PY3w5/+m3tya7TKgQnQFAPDuKVDqIbuEwWvEyCpP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6m80fNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF94C4CEE4;
+	Wed, 19 Mar 2025 14:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394984;
-	bh=rfJbMEXGED84BgqTzF2TNHrgmjcscDiwRk2/1IumLCs=;
+	s=korg; t=1742395272;
+	bh=K7r8tFroOS4xG336iIuEwdTIa9jRtg7p2A2pHiqEd4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEJlMnygmWSAUMCQN1cmocV5SpJ9FiaTNbT7TMHEQI3SK4rboeSKTIPbouk0FCdIq
-	 mS0vzsG2lcPnweuvKFcWuGQECM8ceKwLKxDZ5VqT4l1A92CoM7hpP8tFzUjm2wo+hM
-	 7q9Jqn5i/nFUACtfa8iPJt6jnMlpngX3vOVpLl7I=
+	b=n6m80fNPtDkSI5ZzILb+phXX24mI0dCTKkLI9j/utzgA74KjH/s/zKrUh1GLiYk23
+	 icNNFgVVziFvG7PmeQ+wC/uOrt0+0RLdJYUU8wywqSxRB66hP5FKNOI1c4l5w606xz
+	 UXn6O4x+oHm7nGoOYR2ahTBcAv2rA9TR410nKf50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jander <david@protonic.nl>,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 223/241] gpio: cdev: use raw notifier for line state events
-Date: Wed, 19 Mar 2025 07:31:33 -0700
-Message-ID: <20250319143033.264835125@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 123/166] drm/amd/display: Disable unneeded hpd interrupts during dm_init
+Date: Wed, 19 Mar 2025 07:31:34 -0700
+Message-ID: <20250319143023.346326455@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +65,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Leo Li <sunpeng.li@amd.com>
 
-[ Upstream commit dcb73cbaaeb39c9fd00bf2e019f911725945e2fe ]
+commit 40b8c14936bd2726354c856251f6baed9869e760 upstream.
 
-We use a notifier to implement the mechanism of informing the user-space
-about changes in GPIO line status. We register with the notifier when
-the GPIO character device file is opened and unregister when the last
-reference to the associated file descriptor is dropped.
+[Why]
 
-Since commit fcc8b637c542 ("gpiolib: switch the line state notifier to
-atomic") we use the atomic notifier variant. Atomic notifiers call
-rcu_synchronize in atomic_notifier_chain_unregister() which caused a
-significant performance regression in some circumstances, observed by
-user-space when calling close() on the GPIO device file descriptor.
+It seems HPD interrupts are enabled by default for all connectors, even
+if the hpd source isn't valid. An eDP for example, does not have a valid
+hpd source (but does have a valid hpdrx source; see construct_phy()).
+Thus, eDPs should have their hpd interrupt disabled.
 
-Replace the atomic notifier with the raw variant and provide
-synchronization with a read-write spinlock.
+In the past, this wasn't really an issue. Although the driver gets
+interrupted, then acks by writing to hw registers, there weren't any
+subscribed handlers that did anything meaningful (see
+register_hpd_handlers()).
 
-Fixes: fcc8b637c542 ("gpiolib: switch the line state notifier to atomic")
-Reported-by: David Jander <david@protonic.nl>
-Closes: https://lore.kernel.org/all/20250311110034.53959031@erd003.prtnl/
-Tested-by: David Jander <david@protonic.nl>
-Tested-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20250311-gpiolib-line-state-raw-notifier-v2-1-138374581e1e@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But things changed with the introduction of IPS. s2idle requires that
+the driver allows IPS for DMUB fw to put hw to sleep. Since register
+access requires hw to be awake, the driver will block IPS entry to do
+so. And no IPS means no hw sleep during s2idle.
+
+This was the observation on DCN35 systems with an eDP. During suspend,
+the eDP toggled its hpd pin as part of the panel power down sequence.
+The driver was then interrupted, and acked by writing to registers,
+blocking IPS entry.
+
+[How]
+
+Since DC marks eDP connections as having invalid hpd sources (see
+construct_phy()), DM should disable them at the hw level. Do so in
+amdgpu_dm_hpd_init() by disabling all hpd ints first, then selectively
+enabling ones for connectors that have valid hpd sources.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7b1ba19eb15f88e70782642ce2d934211269337b)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 15 +++++++++------
- drivers/gpio/gpiolib.c      |  8 +++++---
- drivers/gpio/gpiolib.h      |  5 ++++-
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c |   64 ++++++++++++------
+ 1 file changed, 45 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 40f76a90fd7db..107d75558b5a8 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -2729,8 +2729,9 @@ static int gpio_chrdev_open(struct inode *inode, struct file *file)
- 	cdev->gdev = gpio_device_get(gdev);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
+@@ -891,8 +891,16 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
+ 	struct drm_device *dev = adev_to_drm(adev);
+ 	struct drm_connector *connector;
+ 	struct drm_connector_list_iter iter;
++	int irq_type;
+ 	int i;
  
- 	cdev->lineinfo_changed_nb.notifier_call = lineinfo_changed_notify;
--	ret = atomic_notifier_chain_register(&gdev->line_state_notifier,
--					     &cdev->lineinfo_changed_nb);
-+	scoped_guard(write_lock_irqsave, &gdev->line_state_lock)
-+		ret = raw_notifier_chain_register(&gdev->line_state_notifier,
-+						  &cdev->lineinfo_changed_nb);
- 	if (ret)
- 		goto out_free_bitmap;
++	/* First, clear all hpd and hpdrx interrupts */
++	for (i = DC_IRQ_SOURCE_HPD1; i <= DC_IRQ_SOURCE_HPD6RX; i++) {
++		if (!dc_interrupt_set(adev->dm.dc, i, false))
++			drm_err(dev, "Failed to clear hpd(rx) source=%d on init\n",
++				i);
++	}
++
+ 	drm_connector_list_iter_begin(dev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
+ 		struct amdgpu_dm_connector *amdgpu_dm_connector =
+@@ -900,10 +908,31 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
  
-@@ -2754,8 +2755,9 @@ static int gpio_chrdev_open(struct inode *inode, struct file *file)
- 	blocking_notifier_chain_unregister(&gdev->device_notifier,
- 					   &cdev->device_unregistered_nb);
- out_unregister_line_notifier:
--	atomic_notifier_chain_unregister(&gdev->line_state_notifier,
--					 &cdev->lineinfo_changed_nb);
-+	scoped_guard(write_lock_irqsave, &gdev->line_state_lock)
-+		raw_notifier_chain_unregister(&gdev->line_state_notifier,
-+					      &cdev->lineinfo_changed_nb);
- out_free_bitmap:
- 	gpio_device_put(gdev);
- 	bitmap_free(cdev->watched_lines);
-@@ -2779,8 +2781,9 @@ static int gpio_chrdev_release(struct inode *inode, struct file *file)
+ 		const struct dc_link *dc_link = amdgpu_dm_connector->dc_link;
  
- 	blocking_notifier_chain_unregister(&gdev->device_notifier,
- 					   &cdev->device_unregistered_nb);
--	atomic_notifier_chain_unregister(&gdev->line_state_notifier,
--					 &cdev->lineinfo_changed_nb);
-+	scoped_guard(write_lock_irqsave, &gdev->line_state_lock)
-+		raw_notifier_chain_unregister(&gdev->line_state_notifier,
-+					      &cdev->lineinfo_changed_nb);
- 	bitmap_free(cdev->watched_lines);
- 	gpio_device_put(gdev);
- 	kfree(cdev);
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 19878bc75e94c..2509b723b34db 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1025,7 +1025,8 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
++		/*
++		 * Get a base driver irq reference for hpd ints for the lifetime
++		 * of dm. Note that only hpd interrupt types are registered with
++		 * base driver; hpd_rx types aren't. IOW, amdgpu_irq_get/put on
++		 * hpd_rx isn't available. DM currently controls hpd_rx
++		 * explicitly with dc_interrupt_set()
++		 */
+ 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
+-			dc_interrupt_set(adev->dm.dc,
+-					dc_link->irq_source_hpd,
+-					true);
++			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
++			/*
++			 * TODO: There's a mismatch between mode_info.num_hpd
++			 * and what bios reports as the # of connectors with hpd
++			 * sources. Since the # of hpd source types registered
++			 * with base driver == mode_info.num_hpd, we have to
++			 * fallback to dc_interrupt_set for the remaining types.
++			 */
++			if (irq_type < adev->mode_info.num_hpd) {
++				if (amdgpu_irq_get(adev, &adev->hpd_irq, irq_type))
++					drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n",
++						dc_link->irq_source_hpd);
++			} else {
++				dc_interrupt_set(adev->dm.dc,
++						 dc_link->irq_source_hpd,
++						 true);
++			}
+ 		}
+ 
+ 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
+@@ -913,12 +942,6 @@ void amdgpu_dm_hpd_init(struct amdgpu_de
  		}
  	}
- 
--	ATOMIC_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
-+	rwlock_init(&gdev->line_state_lock);
-+	RAW_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
- 	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
- 
- 	ret = init_srcu_struct(&gdev->srcu);
-@@ -4171,8 +4172,9 @@ EXPORT_SYMBOL_GPL(gpiod_set_array_value_cansleep);
- 
- void gpiod_line_state_notify(struct gpio_desc *desc, unsigned long action)
- {
--	atomic_notifier_call_chain(&desc->gdev->line_state_notifier,
--				   action, desc);
-+	guard(read_lock_irqsave)(&desc->gdev->line_state_lock);
-+
-+	raw_notifier_call_chain(&desc->gdev->line_state_notifier, action, desc);
+ 	drm_connector_list_iter_end(&iter);
+-
+-	/* Update reference counts for HPDs */
+-	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
+-		if (amdgpu_irq_get(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
+-			drm_err(dev, "DM_IRQ: Failed get HPD for source=%d)!\n", i);
+-	}
  }
  
  /**
-diff --git a/drivers/gpio/gpiolib.h b/drivers/gpio/gpiolib.h
-index 147156ec502b2..c129a03e20408 100644
---- a/drivers/gpio/gpiolib.h
-+++ b/drivers/gpio/gpiolib.h
-@@ -16,6 +16,7 @@
- #include <linux/gpio/driver.h>
- #include <linux/module.h>
- #include <linux/notifier.h>
-+#include <linux/spinlock.h>
- #include <linux/srcu.h>
- #include <linux/workqueue.h>
+@@ -934,7 +957,7 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
+ 	struct drm_device *dev = adev_to_drm(adev);
+ 	struct drm_connector *connector;
+ 	struct drm_connector_list_iter iter;
+-	int i;
++	int irq_type;
  
-@@ -45,6 +46,7 @@
-  * @list: links gpio_device:s together for traversal
-  * @line_state_notifier: used to notify subscribers about lines being
-  *                       requested, released or reconfigured
-+ * @line_state_lock: RW-spinlock protecting the line state notifier
-  * @line_state_wq: used to emit line state events from a separate thread in
-  *                 process context
-  * @device_notifier: used to notify character device wait queues about the GPIO
-@@ -72,7 +74,8 @@ struct gpio_device {
- 	const char		*label;
- 	void			*data;
- 	struct list_head        list;
--	struct atomic_notifier_head line_state_notifier;
-+	struct raw_notifier_head line_state_notifier;
-+	rwlock_t		line_state_lock;
- 	struct workqueue_struct	*line_state_wq;
- 	struct blocking_notifier_head device_notifier;
- 	struct srcu_struct	srcu;
--- 
-2.39.5
-
+ 	drm_connector_list_iter_begin(dev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
+@@ -943,9 +966,18 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
+ 		const struct dc_link *dc_link = amdgpu_dm_connector->dc_link;
+ 
+ 		if (dc_link->irq_source_hpd != DC_IRQ_SOURCE_INVALID) {
+-			dc_interrupt_set(adev->dm.dc,
+-					dc_link->irq_source_hpd,
+-					false);
++			irq_type = dc_link->irq_source_hpd - DC_IRQ_SOURCE_HPD1;
++
++			/* TODO: See same TODO in amdgpu_dm_hpd_init() */
++			if (irq_type < adev->mode_info.num_hpd) {
++				if (amdgpu_irq_put(adev, &adev->hpd_irq, irq_type))
++					drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n",
++						dc_link->irq_source_hpd);
++			} else {
++				dc_interrupt_set(adev->dm.dc,
++						 dc_link->irq_source_hpd,
++						 false);
++			}
+ 		}
+ 
+ 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
+@@ -955,10 +987,4 @@ void amdgpu_dm_hpd_fini(struct amdgpu_de
+ 		}
+ 	}
+ 	drm_connector_list_iter_end(&iter);
+-
+-	/* Update reference counts for HPDs */
+-	for (i = DC_IRQ_SOURCE_HPD1; i <= adev->mode_info.num_hpd; i++) {
+-		if (amdgpu_irq_put(adev, &adev->hpd_irq, i - DC_IRQ_SOURCE_HPD1))
+-			drm_err(dev, "DM_IRQ: Failed put HPD for source=%d!\n", i);
+-	}
+ }
 
 
 
