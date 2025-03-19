@@ -1,118 +1,144 @@
-Return-Path: <stable+bounces-124887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-124888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264F8A685B9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 08:22:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AADC3A6864B
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 09:03:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7AC43B1D83
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 07:21:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8A73164EA0
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 08:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7E4211484;
-	Wed, 19 Mar 2025 07:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JQMoc20U"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2290F20DD4B;
+	Wed, 19 Mar 2025 08:03:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB6FE552;
-	Wed, 19 Mar 2025 07:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F7EE552;
+	Wed, 19 Mar 2025 08:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742368918; cv=none; b=MRHMk0rGTPIuegVGf5V222xnDqpFkQY7hp/mu9QOsM0q7m7fkR5l1ZRu0tUIr750Tx+nv72q8Yo9wOEbtwDU4I5+xGZAGUKHavU04PeThuvraarMbKb+/nnD3E6qWXoTWVZdUCtvBF+7RQt04AVc5N9U8D/NuMgt+PDAvxD0lJA=
+	t=1742371396; cv=none; b=WJTi89ogWcSAYAcV7kwZlJ0l0xa+FOXmYD+aA1Oec5BuHwD17j2uCkWvVwt/eMzKRX7+Z6SrMQTQlCwHBQjrgo5VQUk/KjhX+zvK5YBwNqteJz9hweI71bRD0KiH8oA4dfHmwKMSXVAw2yJ/Xvz0ezxAzTKQlv8/OgT3k237Me0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742368918; c=relaxed/simple;
-	bh=oPPCjbVwlCBSzHMDYmBre+f2rjt00v1FQMFj074Xsdg=;
-	h=Date:To:From:Subject:Message-Id; b=Agvo7zYHEsrfa+NtoVJDp35Va86G0kpFfSaHwsbcQoxmQzIhlWrThryABaryHp68y24NfJ0BwJXWqJBAe2mmOdePx5jOKinDk+asfRfKxESdipPYk9QK9mOw1jDXo0AthLdJbTm6yRGpO6WnTMh8dKt+DdOUQLkWc5JnDMPjX4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JQMoc20U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3E5C4CEE9;
-	Wed, 19 Mar 2025 07:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1742368916;
-	bh=oPPCjbVwlCBSzHMDYmBre+f2rjt00v1FQMFj074Xsdg=;
-	h=Date:To:From:Subject:From;
-	b=JQMoc20UT1uqIL7dYwvA1kHL3LHt3tWVhcbye7c37MXCigkJ2eGSy7V1ISsopzj8S
-	 tBZyOgJyiwD8bU+0FQJ8A/1UhbnxqRoRLxIty9OvEXH2phTwLmz3R6+DEpBRteyPD2
-	 Ib7NwCeRZ9emmpY+E8WivklaWd05mdPLnQ/UigKk=
-Date: Wed, 19 Mar 2025 00:21:56 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,muchun.song@linux.dev,anshuman.khandual@arm.com,Marc.Herbert@linux.intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-move-hugetlb_sysctl_init-to-the-__init-section.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250319072156.AE3E5C4CEE9@smtp.kernel.org>
+	s=arc-20240116; t=1742371396; c=relaxed/simple;
+	bh=WcYNaSjfXzS/GEKzqJtSGfn4MzzRLOOG5FCgssavhkI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PyuX37o6xHnVs2FfQnuE6UdEqsFXKAjqLmT1EdFQgNTRlN1MqVbERbZXatcu6q00coIZuBomNxD6WHScnxaAxsGGZWoomfr7z5+cVxuFztGIs1pdYzaNb9LUX6VY/ebLfeJjSN3rkU/2U7jwqTEVYMoTJDqMjMkCeof1IrQ3iJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowABnbysqetpnGlpAFg--.36380S2;
+	Wed, 19 Mar 2025 16:03:00 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: mchehab@kernel.org,
+	hverkuil@xs4all.nl,
+	make24@iscas.ac.cn,
+	sebastian.fricke@collabora.com,
+	ribalda@chromium.org,
+	benjamin.gaignard@collabora.com,
+	viro@zeniv.linux.org.uk,
+	bartosz.golaszewski@linaro.org,
+	hljunggr@cisco.com,
+	sakari.ailus@linux.intel.com
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] media: v4l2-dev: fix error handling in __video_register_device()
+Date: Wed, 19 Mar 2025 16:02:48 +0800
+Message-Id: <20250319080248.1746847-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABnbysqetpnGlpAFg--.36380S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WryrKw45Jr17XryrKrWDCFg_yoW8KF1kp3
+	4S9ay3tFWUKw4IkwsxXa1DXFyruw4Sy3WrArWrAw10k3s3urWfJry8tryUX3yUt392yF4j
+	qry2qw4rXF1UZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
+Once device_register() failed, we should call put_device() to
+decrement reference count for cleanup. Or it could cause memory leak.
+And move callback function v4l2_device_release() and v4l2_device_get()
+before put_device().
 
-The patch titled
-     Subject: mm/hugetlb: move hugetlb_sysctl_init() to the __init section
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-move-hugetlb_sysctl_init-to-the-__init-section.patch
+As comment of device_register() says, 'NOTE: _Never_ directly free
+@dev after calling this function, even if it returned an error! Always
+use put_device() to give up the reference initialized in this function
+instead.'
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-move-hugetlb_sysctl_init-to-the-__init-section.patch
+Found by code review.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Marc Herbert <Marc.Herbert@linux.intel.com>
-Subject: mm/hugetlb: move hugetlb_sysctl_init() to the __init section
-Date: Wed, 19 Mar 2025 06:00:30 +0000
-
-hugetlb_sysctl_init() is only invoked once by an __init function and is
-merely a wrapper around another __init function so there is not reason to
-keep it.
-
-Fixes the following warning when toning down some GCC inline options:
-
- WARNING: modpost: vmlinux: section mismatch in reference:
-   hugetlb_sysctl_init+0x1b (section: .text) ->
-     __register_sysctl_init (section: .init.text)
-
-Link: https://lkml.kernel.org/r/20250319060041.2737320-1-marc.herbert@linux.intel.com
-Signed-off-by: Marc Herbert <Marc.Herbert@linux.intel.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: dc93a70cc7f9 ("V4L/DVB (9973): v4l2-dev: use the release callback from device instead of cdev")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
+Changes in v3:
+- modified the patch to balance the v4l2_device reference count;
+- changed the Fix tag as suggestions;
+Changes in v2:
+- modified the patch as no callback function before put_device().
+---
+ drivers/media/v4l2-core/v4l2-dev.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
- mm/hugetlb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-move-hugetlb_sysctl_init-to-the-__init-section
-+++ a/mm/hugetlb.c
-@@ -4912,7 +4912,7 @@ static const struct ctl_table hugetlb_ta
- 	},
- };
+diff --git a/drivers/media/v4l2-core/v4l2-dev.c b/drivers/media/v4l2-core/v4l2-dev.c
+index 5bcaeeba4d09..4c7e1008a152 100644
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1054,25 +1054,25 @@ int __video_register_device(struct video_device *vdev,
+ 	vdev->dev.class = &video_class;
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
++	vdev->dev.release = v4l2_device_release;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++
++	/* Increase v4l2_device refcount*/
++	v4l2_device_get(vdev->v4l2_dev);
++
+ 	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
+ 		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+-		goto cleanup;
++		put_device(&vdev->dev);
++		return ret;
+ 	}
+-	/* Register the release callback that will be called when the last
+-	   reference to the device goes away. */
+-	vdev->dev.release = v4l2_device_release;
+-
++
+ 	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
+ 		pr_warn("%s: requested %s%d, got %s\n", __func__,
+ 			name_base, nr, video_device_node_name(vdev));
  
--static void hugetlb_sysctl_init(void)
-+static void __init hugetlb_sysctl_init(void)
- {
- 	register_sysctl_init("vm", hugetlb_table);
- }
-_
-
-Patches currently in -mm which might be from Marc.Herbert@linux.intel.com are
-
-mm-hugetlb-move-hugetlb_sysctl_init-to-the-__init-section.patch
+-	/* Increase v4l2_device refcount */
+-	v4l2_device_get(vdev->v4l2_dev);
+-
+ 	/* Part 5: Register the entity. */
+ 	ret = video_register_media_controller(vdev);
+ 
+-- 
+2.25.1
 
 
