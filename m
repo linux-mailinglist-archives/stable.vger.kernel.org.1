@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-125285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80E3A6918E
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C411A68FAC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:40:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 490E01B67214
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BAFD3AAC99
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F162165EC;
-	Wed, 19 Mar 2025 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B241E32C6;
+	Wed, 19 Mar 2025 14:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1pC9Fg5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4dEUhqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2E6215F78;
-	Wed, 19 Mar 2025 14:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB981D6DBC;
+	Wed, 19 Mar 2025 14:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395082; cv=none; b=o52foWmmx7B/aihlrm9Do274YW43IiqSwdDpznpkLUi6umiF4QTZxPu8tQcOdIRfzZLhVJ3efw4t5fYFEGxHx1S+pj9KLJh5j7mvgOF9SEbpYnAJaZhTA3QPU3OeCcQolwHzS9z1CSe+FmtVOoX+t0yBtNzwE+dhTP2XwTy7eNc=
+	t=1742394924; cv=none; b=ZIJMrU0ZPA8PgNxMlRptZtWdJ0Zym9foTrnVypqbX9Iu9e+4w29Fv/vA2pU/G5aepILcbY3IZJ/ZJmNSifBu/ShAJQUqG9IParOpFtMWvxLBgrL/05n44GJqorV6g3G2+OXlwva3WJFWcuMfSoqGXqGnQLBfpInECy1G2IocVoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395082; c=relaxed/simple;
-	bh=SAP1bF47rpw1G++TYoWut0K2Hfk9VKNDW+YjsabTyPI=;
+	s=arc-20240116; t=1742394924; c=relaxed/simple;
+	bh=R278BY4aQrC4rNO+RgGLmV1EyAJZxdkDO77nyXpZF94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5ST04lYuScBKSke5JrBMevBwsTpfsQUkOVUKJfyd24EBJaZuZbRj+UTW7VK+sbRU0eqLWOMRNXmFC3YOsOJX9bw04hqPQzh3WFvpWypc2gf6BU6DQSbD3DdmF75cr/rfcJv74Q6unMINqF8VVe5CTgT9m2reDO3/pCi+NLl2Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1pC9Fg5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A701AC4CEE8;
-	Wed, 19 Mar 2025 14:38:01 +0000 (UTC)
+	 MIME-Version; b=cRJbZIILAOjKdGoxREvjtor0bqKISv+TU7IsGokdv65fyVz3qO7UN1IaFyD1jEhFd3eXu/g8Sp015vJnFqqfewql8heZltgcvZ7RuCXkmK9qeUzjY+PIKpsnMhPHTEyBr8E5ZI4R15vhPi2ggZ0YmiOqZzQxlpiVNR+mwo2qoaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4dEUhqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB72C4CEE4;
+	Wed, 19 Mar 2025 14:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395081;
-	bh=SAP1bF47rpw1G++TYoWut0K2Hfk9VKNDW+YjsabTyPI=;
+	s=korg; t=1742394924;
+	bh=R278BY4aQrC4rNO+RgGLmV1EyAJZxdkDO77nyXpZF94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1pC9Fg5whuOp257ssf/+ADYZ0Xp8IFpwVc1nXthQE42hYzM366oXyFJUCUsNQbdn
-	 h3O3UY5LjPJw1L8Je6zO98RBo5aOlFZXyHvDxm7z0ZC3v/H0/DjDLrvyFxqsBAIwyC
-	 pgmq3QfGXqJyytx7KyIrzbZc2l05rkhUktgqa1Zo=
+	b=Z4dEUhqiMwDYdqUlgM8F6dIrtZ1fit6o5cNOhTPXr6qfv70LVcjIVPPsYJy+0kQI1
+	 GJRVbGbujWhyruZbt1CI0ehnSRwPHeaiK/CYyNiVqzRKjcj7ayV9uN4WI8rVM3LKVg
+	 CO25qWWkxq6ldVdJzVQ5gHkbgSyEEWic4tMeL7go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/231] sched: Clarify wake_up_q()s write to task->wake_q.next
+Subject: [PATCH 6.13 110/241] ASoC: simple-card-utils.c: add missing dlc->of_node
 Date: Wed, 19 Mar 2025 07:29:40 -0700
-Message-ID: <20250319143028.990754799@linuxfoundation.org>
+Message-ID: <20250319143030.446591588@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit bcc6244e13b4d4903511a1ea84368abf925031c0 ]
+[ Upstream commit dabbd325b25edb5cdd99c94391817202dd54b651 ]
 
-Clarify that wake_up_q() does an atomic write to task->wake_q.next, after
-which a concurrent __wake_q_add() can immediately overwrite
-task->wake_q.next again.
+commit 90de551c1bf ("ASoC: simple-card-utils.c: enable multi Component
+support") added muiti Component support, but was missing to add
+dlc->of_node. Because of it, Sound device list will indicates strange
+name if it was DPCM connection and driver supports dai->driver->dai_args,
+like below
 
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250129-sched-wakeup-prettier-v1-1-2f51f5f663fa@google.com
+	> aplay -l
+	card X: sndulcbmix [xxxx], device 0: fe.(null).rsnd-dai.0 (*) []
+	...                                     ^^^^^^
+
+It will be fixed by this patch
+
+	> aplay -l
+	card X: sndulcbmix [xxxx], device 0: fe.sound@ec500000.rsnd-dai.0 (*) []
+	...                                     ^^^^^^^^^^^^^^
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://patch.msgid.link/87ikpp2rtb.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/generic/simple-card-utils.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 9803f10a082a7..1f817d0c5d2d0 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1058,9 +1058,10 @@ void wake_up_q(struct wake_q_head *head)
- 		struct task_struct *task;
- 
- 		task = container_of(node, struct task_struct, wake_q);
--		/* Task can safely be re-inserted now: */
- 		node = node->next;
--		task->wake_q.next = NULL;
-+		/* pairs with cmpxchg_relaxed() in __wake_q_add() */
-+		WRITE_ONCE(task->wake_q.next, NULL);
-+		/* Task can safely be re-inserted now. */
- 
- 		/*
- 		 * wake_up_process() executes a full barrier, which pairs with
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index 24b371f320663..5b6c2f7f288a0 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -1103,6 +1103,7 @@ int graph_util_parse_dai(struct device *dev, struct device_node *ep,
+ 	args.np = ep;
+ 	dai = snd_soc_get_dai_via_args(&args);
+ 	if (dai) {
++		dlc->of_node  = node;
+ 		dlc->dai_name = snd_soc_dai_name_get(dai);
+ 		dlc->dai_args = snd_soc_copy_dai_args(dev, &args);
+ 		if (!dlc->dai_args)
 -- 
 2.39.5
 
