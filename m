@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-125444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86381A6930B
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:20:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AAAA6925D
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAA491B63923
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:49:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F1451BA0017
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B4B221546;
-	Wed, 19 Mar 2025 14:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29061DD0E7;
+	Wed, 19 Mar 2025 14:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVoycncw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IUbVkqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0721D1DED78;
-	Wed, 19 Mar 2025 14:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D061E8322;
+	Wed, 19 Mar 2025 14:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395192; cv=none; b=XuHBA5a5pRgegihldHxv9wjcRAlXjGW1iVPWdXXMWV+EEg1fE6pNQ1GACKvSSuGHoDlV5je0VFSiUgzi0gTCYhLIigKEWP0vNV0zWbu915GpulYKqEOxDtpxbxUnwUsD/0zExs2qC5gqEzxtX55wYuhxI7FTWhVWjthsWE+ta6I=
+	t=1742395116; cv=none; b=ALXyI7M65kmrmS7jLEpbGoKnLSruJZ/+7VcxNTVp32vG9dVaT7vQAb23sC9zYtxpKvBhGqkGxsj/oK26Uocq8tANvctUfAU4VyDofcuo2a66l/rXBjVWqJaZ3UYKqR1MUPJcWZg6KWaTrklKEQRj1KK3auz5hdf6Q1qJEUSwKH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395192; c=relaxed/simple;
-	bh=mydYcSKqYc457+Pg8fTlbrw9vgZ2auq7Rip5DE94K9E=;
+	s=arc-20240116; t=1742395116; c=relaxed/simple;
+	bh=WJ4VoFhyce+voy4fwTsARW7DSstEXwzlGGZBxS53ujg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7XhZzOyhvsHCzwspeK8hyn12Co1yZ4HcZcuNaaa0jJrFGQzTvDPXl0KD2EwcmBHzcyWH02mmdh1/7smJuGhYX1FSyaJnug/11kRX2d3V4rtaqziP3B4qq82otuNr/D0DOYl87/YIIO8NioxsN0PsHh3M/5uzFYYi0lAcwiBAaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVoycncw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B9DC4CEE4;
-	Wed, 19 Mar 2025 14:39:51 +0000 (UTC)
+	 MIME-Version; b=GbLPtxEFZIF2RnBH+YKDrRAEZDKLlkygo/OSG8NrvccPS+FSXvElaxHa0Y3n5ysb4cL1U3YOSAnm9DMYrVdTgmP1p10JDKpYJKhADoUwltUxmmGauhux+maSrF+E4aLHQ+UTxS2BCb8E46/H72S8l1enHtPZxOGTNYbm8lB86nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IUbVkqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D659C4CEE4;
+	Wed, 19 Mar 2025 14:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395191;
-	bh=mydYcSKqYc457+Pg8fTlbrw9vgZ2auq7Rip5DE94K9E=;
+	s=korg; t=1742395116;
+	bh=WJ4VoFhyce+voy4fwTsARW7DSstEXwzlGGZBxS53ujg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVoycncwXRj1ThcM84Y+vz7Upvz8LRY3a5dJijzaP72DmCpT7BFpcTsUM4X+fcrJw
-	 lkIHpSiZatSc+ySWcVLyxdigTI3ClOz6sRgGxo9QC98SP9jcWz7ckOGImtJIK5N8qb
-	 YzodEzJycAHRgM8K0wcN4WcuEtAfPowQ3yWrnBFA=
+	b=2IUbVkqMIQNMD30ShUkOBUxDdUl2fptfk5heIXPh+El4t6e3qBXXUG88FzoqFo3uq
+	 A6oC5dMgYaFYobH2M+DicXZOnuX7+YCVJ/eSIoBfUK8KOlNY8eX18uwAlOEfXZyJYU
+	 Rf8I/BRGv6iJ/dQbSnvA1oK6vlH6Rb1q0J0rwWFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/166] HID: intel-ish-hid: Send clock sync message immediately after reset
-Date: Wed, 19 Mar 2025 07:30:22 -0700
-Message-ID: <20250319143021.371978656@linuxfoundation.org>
+Subject: [PATCH 6.12 134/231] drm/vkms: Round fixp2int conversion in lerp_u16
+Date: Wed, 19 Mar 2025 07:30:27 -0700
+Message-ID: <20250319143030.143860079@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 7e0d1cff12b895f44f4ddc8cf50311bc1f775201 ]
+[ Upstream commit 8ec43c58d3be615a71548bc09148212013fb7e5f ]
 
-The ISH driver performs a clock sync with the firmware once at system
-startup and then every 20 seconds. If a firmware reset occurs right
-after a clock sync, the driver would wait 20 seconds before performing
-another clock sync with the firmware. This is particularly problematic
-with the introduction of the "load firmware from host" feature, where
-the driver performs a clock sync with the bootloader and then has to
-wait 20 seconds before syncing with the main firmware.
+fixp2int always rounds down, fixp2int_ceil rounds up. We need
+the new fixp2int_round.
 
-This patch clears prev_sync immediately upon receiving an IPC reset,
-so that the main firmware and driver will perform a clock sync
-immediately after completing the IPC handshake.
-
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241220043410.416867-3-alex.hung@amd.com
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/ipc.c         | 9 ++++++---
- drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h | 2 ++
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vkms/vkms_composer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
-index b1a41c90c5741..42141a78bdb4b 100644
---- a/drivers/hid/intel-ish-hid/ipc/ipc.c
-+++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
-@@ -517,6 +517,10 @@ static int ish_fw_reset_handler(struct ishtp_device *dev)
- 	/* ISH FW is dead */
- 	if (!ish_is_input_ready(dev))
- 		return	-EPIPE;
-+
-+	/* Send clock sync at once after reset */
-+	ishtp_dev->prev_sync = 0;
-+
- 	/*
- 	 * Set HOST2ISH.ILUP. Apparently we need this BEFORE sending
- 	 * RESET_NOTIFY_ACK - FW will be checking for it
-@@ -576,13 +580,12 @@ static void fw_reset_work_fn(struct work_struct *unused)
-  */
- static void _ish_sync_fw_clock(struct ishtp_device *dev)
- {
--	static unsigned long	prev_sync;
- 	struct ipc_time_update_msg time = {};
+diff --git a/drivers/gpu/drm/vkms/vkms_composer.c b/drivers/gpu/drm/vkms/vkms_composer.c
+index e7441b227b3ce..3d6785d081f2c 100644
+--- a/drivers/gpu/drm/vkms/vkms_composer.c
++++ b/drivers/gpu/drm/vkms/vkms_composer.c
+@@ -98,7 +98,7 @@ static u16 lerp_u16(u16 a, u16 b, s64 t)
  
--	if (prev_sync && time_before(jiffies, prev_sync + 20 * HZ))
-+	if (dev->prev_sync && time_before(jiffies, dev->prev_sync + 20 * HZ))
- 		return;
+ 	s64 delta = drm_fixp_mul(b_fp - a_fp,  t);
  
--	prev_sync = jiffies;
-+	dev->prev_sync = jiffies;
- 	/* The fields of time would be updated while sending message */
- 	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &time, sizeof(time));
+-	return drm_fixp2int(a_fp + delta);
++	return drm_fixp2int_round(a_fp + delta);
  }
-diff --git a/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h b/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
-index 32142c7d9a043..9b2ee3fe04b8f 100644
---- a/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
-+++ b/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
-@@ -212,6 +212,8 @@ struct ishtp_device {
- 	unsigned int	ipc_tx_cnt;
- 	unsigned long long	ipc_tx_bytes_cnt;
  
-+	/* Time of the last clock sync */
-+	unsigned long prev_sync;
- 	const struct ishtp_hw_ops *ops;
- 	size_t	mtu;
- 	uint32_t	ishtp_msg_hdr;
+ static s64 get_lut_index(const struct vkms_color_lut *lut, u16 channel_value)
 -- 
 2.39.5
 
