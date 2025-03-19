@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-125518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0472CA6929F
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:12:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95005A6927C
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 16:10:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A6D1B847A6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:51:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E36B41BA04C6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD8C20AF6D;
-	Wed, 19 Mar 2025 14:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A8121CC68;
+	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPHAh9OG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0C6CFbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3334221F2E;
-	Wed, 19 Mar 2025 14:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EEC1A841C;
+	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395246; cv=none; b=XLKH3ZnI+xWqwCoSab9nO72Nwm6xSxtJfEcqqRfykxUl7u8KoQFG+UEdMoEJQSAWrJAIE4mlYTw301CRrNTdKe+onwzMCM1+7oL0u8r7yXj0kPCfI3uZdaL0O0KtdTw/XahCPXmCBl47QCN6Zl/NWXy2he3jFuOMg4V2gGkvf44=
+	t=1742395142; cv=none; b=SNUlTglzdZCsE7q1vtkOkU8gL45udUffbY8rwJeSMOrE0MJimMCDlFC2oXAsspOjGwDRCRLrJis2faf+LILamOAjW6eutJ/n/E543y/7H8JZOmhIxeFYGJV10reaaxQViIn8ou3gUOJhvg0tgn9DpUVYURlR0+L4B6Z/S3xVM2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395246; c=relaxed/simple;
-	bh=8/OnQzltoiV+A9uQmXYnL8/VmcssR+2ZDJrOV+CszGM=;
+	s=arc-20240116; t=1742395142; c=relaxed/simple;
+	bh=H137YHE3XHz57/2N+0igsRM2qAh/UKbQjxd9wS3buXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2pggK68K+F5lV3GpSGjT22Yb7siI3Y3mozq+hUraWPHzo/tljQFt88WDej1gyHgPs9i8AqqafAjeyvHlTz7As/b5E8Qn6Dc/XjVkpuZS8bF+mh26SOZGdhvIW4kl/hhB0Md2d4C5AJ7ovriNFm4zgBW0OcZ6HRHRbU4Hvi6kro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPHAh9OG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C59C4CEE8;
-	Wed, 19 Mar 2025 14:40:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RB+RFpcHBCyXlk4HJbAqVmPqAol+F7kKgZECIKk1yvBCBLcvMmWGq4236r3naS+shD85EzVFqbjpT8QMbqq1y+5phH2icODu/ba+5fNyhTK1OJPNQWF77vaTda17NR/cgqwlPhpM3gt1asWiA+QfmGc2hWvtanh9QZ+Aqbssz8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0C6CFbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D441C4CEE4;
+	Wed, 19 Mar 2025 14:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395246;
-	bh=8/OnQzltoiV+A9uQmXYnL8/VmcssR+2ZDJrOV+CszGM=;
+	s=korg; t=1742395142;
+	bh=H137YHE3XHz57/2N+0igsRM2qAh/UKbQjxd9wS3buXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPHAh9OG2vs12KSL0NVL09J+gXf/1/Y4U+lgwnr4gxlqc+gHrI0u4YhLVyGrUHF2E
-	 fipY4fuFwGbm4WKCTN77e5IM1j6k26Y2SBoqw95GLUXu8TYgyc2kCSGEqb2Y5QfpNj
-	 1BTyAH/aYKB4v3rPktfedxg9EbraSRoVO+1WoTEs=
+	b=v0C6CFbZn6ov6F2LZ8DvM6D+gCvDwXycFdDaLjWPTcSCqcqD4grQHNOMYzoQG8aOG
+	 vliOil1PkLEuXloPDVx/khYNx1nUELHBfFEQQCMeASRdswMQRkIjwXdgYSEdveGPS6
+	 2wq5Q/uhAumUpAEOkkdhau5mubtpKVxlHs6Er+WI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 126/166] drm/amd/display: Fix slab-use-after-free on hdcp_work
-Date: Wed, 19 Mar 2025 07:31:37 -0700
-Message-ID: <20250319143023.427502258@linuxfoundation.org>
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 210/231] drm/i915: Increase I915_PARAM_MMAP_GTT_VERSION version to indicate support for partial mmaps
+Date: Wed, 19 Mar 2025 07:31:43 -0700
+Message-ID: <20250319143032.039194576@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-References: <20250319143019.983527953@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: José Roberto de Souza <jose.souza@intel.com>
 
-commit e65e7bea220c3ce8c4c793b4ba35557f4994ab2b upstream.
+[ Upstream commit a8045e46c508b70fe4b30cc020fd0a2b0709b2e5 ]
 
-[Why]
-A slab-use-after-free is reported when HDCP is destroyed but the
-property_validate_dwork queue is still running.
+Commit 255fc1703e42 ("drm/i915/gem: Calculate object page offset for partial memory mapping")
+was the last patch of several patches fixing multiple partial mmaps.
+But without a bump in I915_PARAM_MMAP_GTT_VERSION there is no clean
+way for UMD to know if it can do multiple partial mmaps.
 
-[How]
-Cancel the delayed work when destroying workqueue.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
-Fixes: da3fd7ac0bcf ("drm/amd/display: Update CP property based on HW query")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 725a04ba5a95e89c89633d4322430cfbca7ce128)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 255fc1703e42 ("drm/i915/gem: Calculate object page offset for partial memory mapping")
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306210827.171147-1-jose.souza@intel.com
+(cherry picked from commit bfef148f3680e6b9d28e7fca46d9520f80c5e50e)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-@@ -455,6 +455,7 @@ void hdcp_destroy(struct kobject *kobj,
- 	for (i = 0; i < hdcp_work->max_link; i++) {
- 		cancel_delayed_work_sync(&hdcp_work[i].callback_dwork);
- 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
-+		cancel_delayed_work_sync(&hdcp_work[i].property_validate_dwork);
- 	}
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_mman.c b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+index 21274aa9bdddc..c3dabb8579605 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -164,6 +164,9 @@ static unsigned int tile_row_pages(const struct drm_i915_gem_object *obj)
+  * 4 - Support multiple fault handlers per object depending on object's
+  *     backing storage (a.k.a. MMAP_OFFSET).
+  *
++ * 5 - Support multiple partial mmaps(mmap part of BO + unmap a offset, multiple
++ *     times with different size and offset).
++ *
+  * Restrictions:
+  *
+  *  * snoopable objects cannot be accessed via the GTT. It can cause machine
+@@ -191,7 +194,7 @@ static unsigned int tile_row_pages(const struct drm_i915_gem_object *obj)
+  */
+ int i915_gem_mmap_gtt_version(void)
+ {
+-	return 4;
++	return 5;
+ }
  
- 	sysfs_remove_bin_file(kobj, &hdcp_work[0].attr);
+ static inline struct i915_gtt_view
+-- 
+2.39.5
+
 
 
 
