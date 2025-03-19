@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-124988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8F0A691AB
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D077EA691DC
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:58:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 188391B84C4A
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:36:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F2A51B61A56
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC651DE3DF;
-	Wed, 19 Mar 2025 14:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252371D5161;
+	Wed, 19 Mar 2025 14:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Su2QKKC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOoGRR8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF981C9EAA;
-	Wed, 19 Mar 2025 14:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51CA1E0DE2;
+	Wed, 19 Mar 2025 14:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394873; cv=none; b=B2LNTMLh1anyxYk0AUOzUHNXVLgHECdmIui5aAFxMZ9noiSQanMP29azYcJeI0tm0X21gJcZSZA8ny93FUcsXy3CKBNRT9jo1Ixnze2NCFjLHWZaKVlXTHIW6DEKgi0CluncItNRWZ4l1WmvNj0hnUiuRWgr9P+z3lAZWJ6FYos=
+	t=1742395026; cv=none; b=nuImPHCPqcWyJ/1ZvyTm4/AKfPeo0nEAQucrsA5gbH5KCi2IjdtGv9qJxCdZewcMhZFyb+gKlDXoJZ8+AXbhk5VkS0OVEoOVc6PtOTfxCJEiqz6BXyBW0BcVdNZObKFUXY/TjI2vUBFVeBfCSnPf1oL5dgogtQXBAJI331OWwik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394873; c=relaxed/simple;
-	bh=JWOAKaXtoXk01JJM4QiqoncrMSfPWP6IrjnEMHgN2Js=;
+	s=arc-20240116; t=1742395026; c=relaxed/simple;
+	bh=TP6Df54oQjU97KF6b24ylRNQrh7Q3PewKeU2NArSST8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxLvMsSfR4t+f8bAtkqwU7695XuMNSOvaV4DZSiViPux7SvBxZCdTESlarIuarzZacVnB+GVkuzRhSLp7gaU8zwFHNgjJOzgyDzFlUgRSHamWMC95PI3pIGuJIgaQ6kvUOHQazY5/Bq4ZwD/Qtv+ub1s6yPzV3syQg9cCS+JRG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Su2QKKC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5035AC4CEE4;
-	Wed, 19 Mar 2025 14:34:33 +0000 (UTC)
+	 MIME-Version; b=mYEgYopC2OGs2/eb3BqFplWwRFwLM/kNC1TxO8GJwjxXOa2iJU8iTKFJ8LqTbMZwqhC0iHnmZTUGMIMDaXIhvtFXU7RGa8Lb7L4ib5q0mFaM+JpjlcsV/T4ya3NC5qq4BaKReXW4b2xHtLdxhteetBoyo7pG41nL7/cNlUKcIN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOoGRR8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450D8C4CEE4;
+	Wed, 19 Mar 2025 14:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394873;
-	bh=JWOAKaXtoXk01JJM4QiqoncrMSfPWP6IrjnEMHgN2Js=;
+	s=korg; t=1742395026;
+	bh=TP6Df54oQjU97KF6b24ylRNQrh7Q3PewKeU2NArSST8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Su2QKKCGW4QPxyzHKLNKWXkOzOo9POcwRB/2t/Z9yxcXqGbpcBX40HtYPt3zktWp
-	 So7U267+HFSvLOHL5rCncqIzp9yQYGfxB3u5k2kPPuGrBlrG4YjViHZWX0dqcoqNc9
-	 BAaSDHRXhunCZyD+8+sIfdRAPHuyqm1a0SfVaKe0=
+	b=fOoGRR8/9BENwY7mxNJoSJKJjVbnrl1zrOyRkzU6ooPsR21UTOjkxQSex1dPzOLIa
+	 IIU75YbzTXXF93JoSXaYvboqUSdhUOAwSLT80cq11g/QNF/W1TSU84/dD9oIHhaN5I
+	 GdZUHuniU+xmWfXgo2mWiz1i1UzuXygfEMvgJdXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Charles Han <hanchunchao@inspur.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 029/241] fbdev: hyperv_fb: Allow graceful removal of framebuffer
+Subject: [PATCH 6.12 006/231] pinctrl: nuvoton: npcm8xx: Add NULL check in npcm8xx_gpio_fw
 Date: Wed, 19 Mar 2025 07:28:19 -0700
-Message-ID: <20250319143028.435824596@linuxfoundation.org>
+Message-ID: <20250319143027.024739759@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit ea2f45ab0e53b255f72c85ccd99e2b394fc5fceb ]
+[ Upstream commit acf40ab42799e4ae1397ee6f5c5941092d66f999 ]
 
-When a Hyper-V framebuffer device is unbind, hyperv_fb driver tries to
-release the framebuffer forcefully. If this framebuffer is in use it
-produce the following WARN and hence this framebuffer is never released.
+devm_kasprintf() calls can return null pointers on failure.
+But the return values were not checked in npcm8xx_gpio_fw().
+Add NULL check in npcm8xx_gpio_fw(), to handle kernel NULL
+pointer dereference error.
 
-[   44.111220] WARNING: CPU: 35 PID: 1882 at drivers/video/fbdev/core/fb_info.c:70 framebuffer_release+0x2c/0x40
-< snip >
-[   44.111289] Call Trace:
-[   44.111290]  <TASK>
-[   44.111291]  ? show_regs+0x6c/0x80
-[   44.111295]  ? __warn+0x8d/0x150
-[   44.111298]  ? framebuffer_release+0x2c/0x40
-[   44.111300]  ? report_bug+0x182/0x1b0
-[   44.111303]  ? handle_bug+0x6e/0xb0
-[   44.111306]  ? exc_invalid_op+0x18/0x80
-[   44.111308]  ? asm_exc_invalid_op+0x1b/0x20
-[   44.111311]  ? framebuffer_release+0x2c/0x40
-[   44.111313]  ? hvfb_remove+0x86/0xa0 [hyperv_fb]
-[   44.111315]  vmbus_remove+0x24/0x40 [hv_vmbus]
-[   44.111323]  device_remove+0x40/0x80
-[   44.111325]  device_release_driver_internal+0x20b/0x270
-[   44.111327]  ? bus_find_device+0xb3/0xf0
-
-Fix this by moving the release of framebuffer and assosiated memory
-to fb_ops.fb_destroy function, so that framebuffer framework handles
-it gracefully.
-
-While we fix this, also replace manual registrations/unregistration of
-framebuffer with devm_register_framebuffer.
-
-Fixes: 68a2d20b79b1 ("drivers/video: add Hyper-V Synthetic Video Frame Buffer Driver")
-
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1740845791-19977-3-git-send-email-ssengar@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1740845791-19977-3-git-send-email-ssengar@linux.microsoft.com>
+Fixes: acf4884a5717 ("pinctrl: nuvoton: add NPCM8XX pinctrl and GPIO driver")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/20250212100532.4317-1-hanchunchao@inspur.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/hyperv_fb.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-index 9798a34ac571f..75338ffc703fb 100644
---- a/drivers/video/fbdev/hyperv_fb.c
-+++ b/drivers/video/fbdev/hyperv_fb.c
-@@ -282,6 +282,8 @@ static uint screen_depth;
- static uint screen_fb_size;
- static uint dio_fb_size; /* FB size for deferred IO */
- 
-+static void hvfb_putmem(struct fb_info *info);
+diff --git a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
+index 471f644c5eef2..d09a5e9b2eca5 100644
+--- a/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
++++ b/drivers/pinctrl/nuvoton/pinctrl-npcm8xx.c
+@@ -2374,6 +2374,9 @@ static int npcm8xx_gpio_fw(struct npcm8xx_pinctrl *pctrl)
+ 		pctrl->gpio_bank[id].gc.parent = dev;
+ 		pctrl->gpio_bank[id].gc.fwnode = child;
+ 		pctrl->gpio_bank[id].gc.label = devm_kasprintf(dev, GFP_KERNEL, "%pfw", child);
++		if (pctrl->gpio_bank[id].gc.label == NULL)
++			return -ENOMEM;
 +
- /* Send message to Hyper-V host */
- static inline int synthvid_send(struct hv_device *hdev,
- 				struct synthvid_msg *msg)
-@@ -862,6 +864,17 @@ static void hvfb_ops_damage_area(struct fb_info *info, u32 x, u32 y, u32 width,
- 		hvfb_ondemand_refresh_throttle(par, x, y, width, height);
- }
- 
-+/*
-+ * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
-+ * of unregister_framebuffer() or fb_release(). Do any cleanup related to
-+ * framebuffer here.
-+ */
-+static void hvfb_destroy(struct fb_info *info)
-+{
-+	hvfb_putmem(info);
-+	framebuffer_release(info);
-+}
-+
- /*
-  * TODO: GEN1 codepaths allocate from system or DMA-able memory. Fix the
-  *       driver to use the _SYSMEM_ or _DMAMEM_ helpers in these cases.
-@@ -877,6 +890,7 @@ static const struct fb_ops hvfb_ops = {
- 	.fb_set_par = hvfb_set_par,
- 	.fb_setcolreg = hvfb_setcolreg,
- 	.fb_blank = hvfb_blank,
-+	.fb_destroy	= hvfb_destroy,
- };
- 
- /* Get options from kernel paramenter "video=" */
-@@ -1178,7 +1192,7 @@ static int hvfb_probe(struct hv_device *hdev,
- 	if (ret)
- 		goto error;
- 
--	ret = register_framebuffer(info);
-+	ret = devm_register_framebuffer(&hdev->device, info);
- 	if (ret) {
- 		pr_err("Unable to register framebuffer\n");
- 		goto error;
-@@ -1226,14 +1240,10 @@ static void hvfb_remove(struct hv_device *hdev)
- 
- 	fb_deferred_io_cleanup(info);
- 
--	unregister_framebuffer(info);
- 	cancel_delayed_work_sync(&par->dwork);
- 
- 	vmbus_close(hdev->channel);
- 	hv_set_drvdata(hdev, NULL);
--
--	hvfb_putmem(info);
--	framebuffer_release(info);
- }
- 
- static int hvfb_suspend(struct hv_device *hdev)
+ 		pctrl->gpio_bank[id].gc.dbg_show = npcmgpio_dbg_show;
+ 		pctrl->gpio_bank[id].direction_input = pctrl->gpio_bank[id].gc.direction_input;
+ 		pctrl->gpio_bank[id].gc.direction_input = npcmgpio_direction_input;
 -- 
 2.39.5
 
