@@ -1,67 +1,54 @@
-Return-Path: <stable+bounces-125157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF9CA68FFE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:43:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5580CA69121
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DADB8A0CDE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:40:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96C4D4635D6
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62616209673;
-	Wed, 19 Mar 2025 14:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DC720899C;
+	Wed, 19 Mar 2025 14:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pejy3geX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOQZ7lUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA441DEFD6;
-	Wed, 19 Mar 2025 14:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FE11DF270;
+	Wed, 19 Mar 2025 14:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394994; cv=none; b=XR7NUXC350cUMI2TgLHfDI2g04cBX70oZyfqpmRANatnn93fNf2vkzXG8HUzdomDp7rII+fEn3ZOFbCn9VDI0wbkoQoa8cDSbO7blK96tlxSgrdNaTv69MtN4OQ8KdsoSESKmHm/Zs6TGbHdqUlxeaOOR/fRh4utnWa2zlZ9XpQ=
+	t=1742395228; cv=none; b=nmVTq37Q+e70DKFzAcECz6/ZI6Vs0IGnSHATiR4l6kpqX68hoarpnhLxGtBnTf5JAGhyV4y3cDf1BCTXcRdTuh8iqsEqIYTGZ7y4XTs1kyY4EdOVjByOZMQBuK78R5Eh2IjbCk7pARJZwxj/+vVC5EugYeHTmksDg4ix6l2RVjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394994; c=relaxed/simple;
-	bh=/SqmxPhiN7ldbpBkht0grZFZ+2BUSs0J1qDm57iP3MU=;
+	s=arc-20240116; t=1742395228; c=relaxed/simple;
+	bh=t2E6tqYUVNUO7d6UbMi16CEqU/FHVT5OhQdbFI8HCoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ms6tkkCT6g3hfl/I1/kRXRZrK1J4jSFd1HfcfqgUcBCNIldkYyqizi2ibqU16XBxP/FcO2+7dwTt/zTRKaMJlMIRXEtk06ucJNK5x6Ad1+1Hc/2xc7wQV7rxhyizprKudA9ICwZ4DE+f3aOPFk68lGdlz/vGcEr9GHxRnaNiAzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pejy3geX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC93C4CEE4;
-	Wed, 19 Mar 2025 14:36:33 +0000 (UTC)
+	 MIME-Version; b=QDtSGfc2MEU8mq3Gzi7oCMc5LurZ89xS3LT5KlhLhdNsEvFQidx5WHH7sHyaILLp228w3txIqXLw6CsQsqzfre8Dzb0GOkQwBgLnVIsu9NAjl/wvseFcScVdBX4IXNgswn97ghnkOgka03hxg09vRvlq7tuJqeymmEyESqVdKso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOQZ7lUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22925C4CEE4;
+	Wed, 19 Mar 2025 14:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394994;
-	bh=/SqmxPhiN7ldbpBkht0grZFZ+2BUSs0J1qDm57iP3MU=;
+	s=korg; t=1742395228;
+	bh=t2E6tqYUVNUO7d6UbMi16CEqU/FHVT5OhQdbFI8HCoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pejy3geX6HMsej2duFXbby43pJnEHkvTB8kODukJVPqU23+Aq8Mxpr7EHFgvCA2Ef
-	 eyKOLzHU6K2wbRAMK1Cx/JxluU4DkN1c/4twMStWEzABMHZynFkI6OAQVnNRQ5IAVu
-	 ozIycKvcG3YX6Ct+tAz08s5Mue5zHql6jyix57o4=
+	b=aOQZ7lUnUaZUkaBp20ApCBdbYhFrpyw8A4a6laG2VMyDtCZSMRZ/RkARfmoOSA3R2
+	 glNmibdP/WYm+Mu5CqYwiNULMjEZFXpK4Wya9qX3OxIYCXn9YwIITk4C/9X8ovnzCw
+	 pmnED2WZvNCbV1pA1Xm5nqp3qYe71Oc1SwAHLGvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Piotr Jaroszynski <pjaroszynski@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	SeongJae Park <sj@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.13 199/241] Fix mmu notifiers for range-based invalidates
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 098/166] io_uring: use vmap() for ring mapping
 Date: Wed, 19 Mar 2025 07:31:09 -0700
-Message-ID: <20250319143032.645686776@linuxfoundation.org>
+Message-ID: <20250319143022.670590107@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,103 +60,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit f7edb07ad7c66eab3dce57384f33b9799d579133 upstream.
+Commit 09fc75e0c035a2cabb8caa15cec6e85159dd94f0 upstream.
 
-Update the __flush_tlb_range_op macro not to modify its parameters as
-these are unexepcted semantics. In practice, this fixes the call to
-mmu_notifier_arch_invalidate_secondary_tlbs() in
-__flush_tlb_range_nosync() to use the correct range instead of an empty
-range with start=end. The empty range was (un)lucky as it results in
-taking the invalidate-all path that doesn't cause correctness issues,
-but can certainly result in suboptimal perf.
+This is the last holdout which does odd page checking, convert it to
+vmap just like what is done for the non-mmap path.
 
-This has been broken since commit 6bbd42e2df8f ("mmu_notifiers: call
-invalidate_range() when invalidating TLBs") when the call to the
-notifiers was added to __flush_tlb_range(). It predates the addition of
-the __flush_tlb_range_op() macro from commit 360839027a6e ("arm64: tlb:
-Refactor the core flush algorithm of __flush_tlb_range") that made the
-bug hard to spot.
-
-Fixes: 6bbd42e2df8f ("mmu_notifiers: call invalidate_range() when invalidating TLBs")
-
-Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Raghavendra Rao Ananta <rananta@google.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Nicolin Chen <nicolinc@nvidia.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: iommu@lists.linux.dev
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Link: https://lore.kernel.org/r/20250304085127.2238030-1-pjaroszynski@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/tlbflush.h |   22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ io_uring/io_uring.c |   38 +++++++++-----------------------------
+ 1 file changed, 9 insertions(+), 29 deletions(-)
 
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -396,33 +396,35 @@ static inline void arch_tlbbatch_flush(s
- #define __flush_tlb_range_op(op, start, pages, stride,			\
- 				asid, tlb_level, tlbi_user, lpa2)	\
- do {									\
-+	typeof(start) __flush_start = start;				\
-+	typeof(pages) __flush_pages = pages;				\
- 	int num = 0;							\
- 	int scale = 3;							\
- 	int shift = lpa2 ? 16 : PAGE_SHIFT;				\
- 	unsigned long addr;						\
- 									\
--	while (pages > 0) {						\
-+	while (__flush_pages > 0) {					\
- 		if (!system_supports_tlb_range() ||			\
--		    pages == 1 ||					\
--		    (lpa2 && start != ALIGN(start, SZ_64K))) {		\
--			addr = __TLBI_VADDR(start, asid);		\
-+		    __flush_pages == 1 ||				\
-+		    (lpa2 && __flush_start != ALIGN(__flush_start, SZ_64K))) {	\
-+			addr = __TLBI_VADDR(__flush_start, asid);	\
- 			__tlbi_level(op, addr, tlb_level);		\
- 			if (tlbi_user)					\
- 				__tlbi_user_level(op, addr, tlb_level);	\
--			start += stride;				\
--			pages -= stride >> PAGE_SHIFT;			\
-+			__flush_start += stride;			\
-+			__flush_pages -= stride >> PAGE_SHIFT;		\
- 			continue;					\
- 		}							\
- 									\
--		num = __TLBI_RANGE_NUM(pages, scale);			\
-+		num = __TLBI_RANGE_NUM(__flush_pages, scale);		\
- 		if (num >= 0) {						\
--			addr = __TLBI_VADDR_RANGE(start >> shift, asid, \
-+			addr = __TLBI_VADDR_RANGE(__flush_start >> shift, asid, \
- 						scale, num, tlb_level);	\
- 			__tlbi(r##op, addr);				\
- 			if (tlbi_user)					\
- 				__tlbi_user(r##op, addr);		\
--			start += __TLBI_RANGE_PAGES(num, scale) << PAGE_SHIFT; \
--			pages -= __TLBI_RANGE_PAGES(num, scale);	\
-+			__flush_start += __TLBI_RANGE_PAGES(num, scale) << PAGE_SHIFT; \
-+			__flush_pages -= __TLBI_RANGE_PAGES(num, scale);\
- 		}							\
- 		scale--;						\
- 	}								\
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -64,7 +64,6 @@
+ #include <linux/sched/mm.h>
+ #include <linux/uaccess.h>
+ #include <linux/nospec.h>
+-#include <linux/highmem.h>
+ #include <linux/fsnotify.h>
+ #include <linux/fadvise.h>
+ #include <linux/task_work.h>
+@@ -2745,7 +2744,7 @@ static void *__io_uaddr_map(struct page
+ 	struct page **page_array;
+ 	unsigned int nr_pages;
+ 	void *page_addr;
+-	int ret, i, pinned;
++	int ret, pinned;
+ 
+ 	*npages = 0;
+ 
+@@ -2767,34 +2766,13 @@ static void *__io_uaddr_map(struct page
+ 		goto free_pages;
+ 	}
+ 
+-	page_addr = page_address(page_array[0]);
+-	for (i = 0; i < nr_pages; i++) {
+-		ret = -EINVAL;
+-
+-		/*
+-		 * Can't support mapping user allocated ring memory on 32-bit
+-		 * archs where it could potentially reside in highmem. Just
+-		 * fail those with -EINVAL, just like we did on kernels that
+-		 * didn't support this feature.
+-		 */
+-		if (PageHighMem(page_array[i]))
+-			goto free_pages;
+-
+-		/*
+-		 * No support for discontig pages for now, should either be a
+-		 * single normal page, or a huge page. Later on we can add
+-		 * support for remapping discontig pages, for now we will
+-		 * just fail them with EINVAL.
+-		 */
+-		if (page_address(page_array[i]) != page_addr)
+-			goto free_pages;
+-		page_addr += PAGE_SIZE;
++	page_addr = vmap(page_array, nr_pages, VM_MAP, PAGE_KERNEL);
++	if (page_addr) {
++		*pages = page_array;
++		*npages = nr_pages;
++		return page_addr;
+ 	}
+-
+-	*pages = page_array;
+-	*npages = nr_pages;
+-	return page_to_virt(page_array[0]);
+-
++	ret = -ENOMEM;
+ free_pages:
+ 	io_pages_free(&page_array, pinned > 0 ? pinned : 0);
+ 	return ERR_PTR(ret);
+@@ -2824,6 +2802,8 @@ static void io_rings_free(struct io_ring
+ 		ctx->n_ring_pages = 0;
+ 		io_pages_free(&ctx->sqe_pages, ctx->n_sqe_pages);
+ 		ctx->n_sqe_pages = 0;
++		vunmap(ctx->rings);
++		vunmap(ctx->sq_sqes);
+ 	}
+ 
+ 	ctx->rings = NULL;
 
 
 
