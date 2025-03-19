@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-125326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB06A690C9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:51:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3689A68FD5
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5056E8A20E6
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:45:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A9A2887477
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEDB1D90DD;
-	Wed, 19 Mar 2025 14:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B641DE3CF;
+	Wed, 19 Mar 2025 14:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpQ8Qn3n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdfiG9rN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAAF1C82F4;
-	Wed, 19 Mar 2025 14:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4549E1DE3CA;
+	Wed, 19 Mar 2025 14:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742395110; cv=none; b=P6j9sbjVX2wuBOlc30r6Hz9iW95TEVVaOwKgut2PSdCkakAbSxaB18UE+N/WOU6xBQjWu/6px3SFVPn1V9S40oPkDt/geKzbCrOekCQyoUpCFC37W9KNWygiicOt2z/A/mPKC7vrqpkRSEUD6tPEuHff8efGzI3TgUXgIi9v19c=
+	t=1742394960; cv=none; b=sofjFOF18wFc/bictz8+BwikBYvKq1KCNZrZ/DRKj8PdmDEP4Q7jXp61rZxuWa0CSZ6/wBXg+Bu+nR7meAIWv6LWIBcbiDaePDi6GAyiUC2mnf6MFPrpgqH1gzJcGQ7EOa9pgLkICHS3Yq97ZEve+bc0bK4Tz4IZ8YgQal05kS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742395110; c=relaxed/simple;
-	bh=tWUWwBSJp4HJ4b/iSeUFtJJGPIoN4RwlHD0VPXUCGIk=;
+	s=arc-20240116; t=1742394960; c=relaxed/simple;
+	bh=cyR23pjeg8l4NrC7MVo5sPhrzWUloHiFnNrzzNKiNU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h52MkLktYKsM1ogppqL6SUaDmcWXfawtb9Hi1OesPfp+dSWcRx8ojeOhW6A8o16GlcbUZj8fKYADIg6zugA9cBGJZiBEslibLpnciynriMJjaiHGINZSe+wtTIR84caecRXLpGk1ZN+EmZJNGxhYGDxN5dWPO8UTlldvF2XhSco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpQ8Qn3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC66AC4CEE4;
-	Wed, 19 Mar 2025 14:38:29 +0000 (UTC)
+	 MIME-Version; b=K1uty7Jcj6FD7DJqknT/cjwIOwYmafDBssIVfAxoUGZgJvTguwjuJbipbIl8OlDx/vWBXY7b0MqPjl/yUEvd14MzzSNd6VfGzy9TEyUryrwtN1bUVtP8y0ncLKSDMpM6XlWkvOlK5DAISfgyqFg/if2gprAg7OBV/gHlT27gbSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdfiG9rN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8F7C4CEE4;
+	Wed, 19 Mar 2025 14:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742395110;
-	bh=tWUWwBSJp4HJ4b/iSeUFtJJGPIoN4RwlHD0VPXUCGIk=;
+	s=korg; t=1742394960;
+	bh=cyR23pjeg8l4NrC7MVo5sPhrzWUloHiFnNrzzNKiNU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BpQ8Qn3n/GP6Sriyf+3cGIOk0UZWLRXmoYL55KGXX5Fptq44Z2wBIyINq+TcdUUKS
-	 SLundyiIua1HYZ/QvF/u3/lIptP1C6Ofg5+cgdZ1Jnaz6tYKVJjk6AA/w57UIWlH5/
-	 g5TSELr+6ahg52SQ+/n5DvDT6nizpSZz2xXjawZw=
+	b=YdfiG9rN/dsSPPSxB5tays42PK9gxOTX/XbV277HcB+PUXHyvmxrineNfqniFldnD
+	 viH95gd9LhybNWDholSaTvjgo3npmQ7QNk8/cYsHHfVy/cUkGaLUxwp0maVZKyFdsM
+	 0YtAvggBeKy7mBz2C/IwcTPNH7tdn0lN6oqua3uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 164/231] rust: alloc: satisfy POSIX alignment requirement
-Date: Wed, 19 Mar 2025 07:30:57 -0700
-Message-ID: <20250319143030.892916572@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.13 188/241] drm/amd/display: Fix slab-use-after-free on hdcp_work
+Date: Wed, 19 Mar 2025 07:30:58 -0700
+Message-ID: <20250319143032.371506397@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
-References: <20250319143026.865956961@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+References: <20250319143027.685727358@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ff64846bee0e7e3e7bc9363ebad3bab42dd27e24 upstream.
+commit e65e7bea220c3ce8c4c793b4ba35557f4994ab2b upstream.
 
-ISO C's `aligned_alloc` is partially implementation-defined; on some
-systems it inherits stricter requirements from POSIX's `posix_memalign`.
+[Why]
+A slab-use-after-free is reported when HDCP is destroyed but the
+property_validate_dwork queue is still running.
 
-This causes the call added in commit dd09538fb409 ("rust: alloc:
-implement `Cmalloc` in module allocator_test") to fail on macOS because
-it doesn't meet the requirements of `posix_memalign`.
+[How]
+Cancel the delayed work when destroying workqueue.
 
-Adjust the call to meet the POSIX requirement and add a comment. This
-fixes failures in `make rusttest` on macOS.
-
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
+Fixes: da3fd7ac0bcf ("drm/amd/display: Update CP property based on HW query")
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 725a04ba5a95e89c89633d4322430cfbca7ce128)
 Cc: stable@vger.kernel.org
-Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module allocator_test")
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20250213-aligned-alloc-v7-1-d2a2d0be164b@gmail.com
-[ Added Cc: stable. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/alloc/allocator_test.rs |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/rust/kernel/alloc/allocator_test.rs
-+++ b/rust/kernel/alloc/allocator_test.rs
-@@ -62,6 +62,24 @@ unsafe impl Allocator for Cmalloc {
-             ));
-         }
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+@@ -455,6 +455,7 @@ void hdcp_destroy(struct kobject *kobj,
+ 	for (i = 0; i < hdcp_work->max_link; i++) {
+ 		cancel_delayed_work_sync(&hdcp_work[i].callback_dwork);
+ 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
++		cancel_delayed_work_sync(&hdcp_work[i].property_validate_dwork);
+ 	}
  
-+        // ISO C (ISO/IEC 9899:2011) defines `aligned_alloc`:
-+        //
-+        // > The value of alignment shall be a valid alignment supported by the implementation
-+        // [...].
-+        //
-+        // As an example of the "supported by the implementation" requirement, POSIX.1-2001 (IEEE
-+        // 1003.1-2001) defines `posix_memalign`:
-+        //
-+        // > The value of alignment shall be a power of two multiple of sizeof (void *).
-+        //
-+        // and POSIX-based implementations of `aligned_alloc` inherit this requirement. At the time
-+        // of writing, this is known to be the case on macOS (but not in glibc).
-+        //
-+        // Satisfy the stricter requirement to avoid spurious test failures on some platforms.
-+        let min_align = core::mem::size_of::<*const crate::ffi::c_void>();
-+        let layout = layout.align_to(min_align).map_err(|_| AllocError)?;
-+        let layout = layout.pad_to_align();
-+
-         // SAFETY: Returns either NULL or a pointer to a memory allocation that satisfies or
-         // exceeds the given size and alignment requirements.
-         let dst = unsafe { libc_aligned_alloc(layout.align(), layout.size()) } as *mut u8;
+ 	sysfs_remove_bin_file(kobj, &hdcp_work[0].attr);
 
 
 
