@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-125118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1938A690AE
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6811DA690AF
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 15:50:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1A911B671B9
-	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7C4D8A1500
+	for <lists+stable@lfdr.de>; Wed, 19 Mar 2025 14:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638ED1F09B0;
-	Wed, 19 Mar 2025 14:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7D5219A8A;
+	Wed, 19 Mar 2025 14:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WF8ZZqgT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymOVMAzM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2143F1DE2D8;
-	Wed, 19 Mar 2025 14:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3211DA11B;
+	Wed, 19 Mar 2025 14:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394967; cv=none; b=UFFLl7dNj9xfUJVBuS3K7etLascC4WWqkn0SGyb8q2RKPjGVzG3UhWIg8oUnyzg1KwxtraM7WcYmK0m0PrzRuQXUq2HLX4UMV6IOhXoZgv/5F17LYOMhSQTL6dp7frxPq7hPbBL5ZutaRGMXmMRhSKdustGe0r9Vz6EYUatSGFk=
+	t=1742395090; cv=none; b=PqatQtMb5N7VhH1Rvmr9XZWjTTECa1ydwLHM8wjoHizm49iCy0tVTNFefxI3zNvsulzir5/F+441vPu+DcZcfpNYFtfk36aAHdOhkE9ylEUdnorZN6WYiZ6DHH1OL7lavs898oLeCjmvq0KnT1TZ+83wR4ozd9mNacnuZcSL/iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394967; c=relaxed/simple;
-	bh=rlx30Z1s9G6QeKpt82oe2ScVuc14I8yPIB25Sc4RFRs=;
+	s=arc-20240116; t=1742395090; c=relaxed/simple;
+	bh=MfixoiuiFVGGiOaFL/HLFvuVBadmhqe9+cKMqDVGEI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFWlmPRmLMY1M6emAb2n5uSz2P8DCsZRWzeXNAyCipQpAXY+2QU7CmJ5crBQc4R+eWHMVN/yW/mwIET7d4tr/DGYbrrjXo5DdA92KBmPqPueJKKoV6oFeKKnjrJDmDjLzzENN61JY+iLK/PrbmXP3seOD89so5hLuTMR1jSykaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WF8ZZqgT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37EFC4CEE4;
-	Wed, 19 Mar 2025 14:36:06 +0000 (UTC)
+	 MIME-Version; b=Z9sNKlasqnB0y1Gtd5dZr25/B1hWXt9cgOr5X+3SLLimAdFxJejEi8E5Km6w5pXWm7ysbGIGcMXOQWpXfISmsQEEkLJeQOI5Yt3EIBMGfD8hzbvFs8MihrSE+mmyF6rinb3HJNg+9pdl0kcnlumnYHl5qWAJqC5z/PPRLNxGheU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymOVMAzM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D71C4CEE4;
+	Wed, 19 Mar 2025 14:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394967;
-	bh=rlx30Z1s9G6QeKpt82oe2ScVuc14I8yPIB25Sc4RFRs=;
+	s=korg; t=1742395090;
+	bh=MfixoiuiFVGGiOaFL/HLFvuVBadmhqe9+cKMqDVGEI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WF8ZZqgTwEQfT7P5fODTPtxkyUh7YuFF9u7QNivNHL6JuiWeftqlyZF5x/dxGukmy
-	 f6IKfvUjww7BrO8WLb9txO1ka4sErVf4PEVZl+wTKfAhV9VDp5MRpdx8Nc+FExsD4A
-	 1hHCMgQc8hGmZi4rlipTknmqvdalMwdNRCztRI7E=
+	b=ymOVMAzMdf1kT1be6T0qQ1kcVqVPWQWrnLdA4K9bY3+Uke98G/mUthNARdN48IWrv
+	 WGfEkpeOwb3sYbrG2dM1j4Px8kbp8ksToPWkTab+SCWORi7FcipDkFUmKYsJV+bYg0
+	 w2STD8Eyfl2UzETTQM2cMMYXMKa2Ag3uCOM6TTBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.13 159/241] Input: i8042 - add required quirks for missing old boardnames
-Date: Wed, 19 Mar 2025 07:30:29 -0700
-Message-ID: <20250319143031.659601085@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 137/231] x86/irq: Define trace events conditionally
+Date: Wed, 19 Mar 2025 07:30:30 -0700
+Message-ID: <20250319143030.222010670@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143026.865956961@linuxfoundation.org>
+References: <20250319143026.865956961@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9ed468e17d5b80e7116fd35842df3648e808ae47 upstream.
+[ Upstream commit 9de7695925d5d2d2085681ba935857246eb2817d ]
 
-Some older Clevo barebones have problems like no or laggy keyboard after
-resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
-quirk.
+When both of X86_LOCAL_APIC and X86_THERMAL_VECTOR are disabled,
+the irq tracing produces a W=1 build warning for the tracing
+definitions:
 
-The PB71RD keyboard is sometimes laggy after resume and the PC70DR, PB51RF,
-P640RE, and PCX0DX_GN20 keyboard is sometimes unresponsive after resume.
-This quirk fixes that.
+  In file included from include/trace/trace_events.h:27,
+                 from include/trace/define_trace.h:113,
+                 from arch/x86/include/asm/trace/irq_vectors.h:383,
+                 from arch/x86/kernel/irq.c:29:
+  include/trace/stages/init.h:2:23: error: 'str__irq_vectors__trace_system_name' defined but not used [-Werror=unused-const-variable=]
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://lore.kernel.org/r/20250221230137.70292-2-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make the tracepoints conditional on the same symbosl that guard
+their usage.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250225213236.3141752-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ arch/x86/kernel/irq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1261,6 +1261,12 @@ static const struct dmi_system_id i8042_
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
- 	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "P640RE"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
-+	},
-+	{
- 		/*
- 		 * This is only a partial board_name and might be followed by
- 		 * another letter or number. DMI_MATCH however does do partial
-@@ -1337,11 +1343,35 @@ static const struct dmi_system_id i8042_
- 	},
- 	{
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "PB51RF"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "PB71RD"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "PC70DR"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
-+	},
-+	{
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX"),
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX_GN20"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
-+	},
- 	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
- 	{
- 		.matches = {
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index 385e3a5fc3045..feca4f20b06aa 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -25,8 +25,10 @@
+ #include <asm/posted_intr.h>
+ #include <asm/irq_remapping.h>
+ 
++#if defined(CONFIG_X86_LOCAL_APIC) || defined(CONFIG_X86_THERMAL_VECTOR)
+ #define CREATE_TRACE_POINTS
+ #include <asm/trace/irq_vectors.h>
++#endif
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(irq_cpustat_t, irq_stat);
+ EXPORT_PER_CPU_SYMBOL(irq_stat);
+-- 
+2.39.5
+
 
 
 
