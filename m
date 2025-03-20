@@ -1,318 +1,160 @@
-Return-Path: <stable+bounces-125645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57645A6A67A
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 13:51:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9104AA6A663
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 13:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 966341893633
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 12:51:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E2643B1668
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 12:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CC612B73;
-	Thu, 20 Mar 2025 12:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D59D1DF247;
+	Thu, 20 Mar 2025 12:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="TpnsNzUk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X0lfyI2E"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7170BEC5
-	for <stable@vger.kernel.org>; Thu, 20 Mar 2025 12:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6771E1DE4F6;
+	Thu, 20 Mar 2025 12:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742475104; cv=none; b=frEcdRWxeEXHVEQGsUV0L9dKiA3Yd8xuQYB0b32w6eSi8JPxWPgDGfWS2WQcqTrNB2E2ZBqBN5Mi5zTbImqWg/L7bEhPxJ2dbVMq1U1Z77V62Mq97pDl47ujA1gHi6Bn1iRSbS7cPIeCxakZOIEG7NtWhB2lYSReaeC6yoaZRT4=
+	t=1742474582; cv=none; b=fRBXGEdYtTMM65f5vft7HKpAPA1F0uwQ9nRnjqKSV3hfM7M/7lvt2QSK2EXJ353t+E0+/cz/IJc6plKevk/kLfDwz2kBpkhaLIpyvea739djduZkyONm8EYYLtZkirVJF0ugU7Clk6taaWqllr7TtRWTCQEwxOEdyNRmAFdsiTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742475104; c=relaxed/simple;
-	bh=uJNgNdZDQ/2PC9hcIrOpRPEGx0wzupEKlnOR05eG9pg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e8jVZJNxEdmkTdlGvFN7qiA9eRiCBGsphZHiEtSRu7+9JkuOmKFt4e5RutIlHm62jiAJrDLVvUkhI+68f7SrPU54Mah0ZPs/GeupuhxtSnqSNPzwlHC3P6RzbbUmOS4K966HhG/9JZTzSTMN8R5sCRxiOAeDagFdBXNqDC1VU9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=TpnsNzUk; arc=none smtp.client-ip=185.136.65.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 20250320124121d771fcd26b952b0679
-        for <stable@vger.kernel.org>;
-        Thu, 20 Mar 2025 13:41:21 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=felix.moessbauer@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=c0r9K1Oai3gyP+GjxoUNl2fOIbRrTnrWaZYsOLsZDrA=;
- b=TpnsNzUkkIAoVd4x7s9CvjzuD+tAhg7LpBA6ux7k6lj+suGNGWIl12pyXTS2uV057EwtB3
- XakJO5HyqgzA9UhHGivAMY8rgVLRECLGUN9ZXVGCK8RJ1oTbRqahVh1wOO/i2RX+Xpt5l7wQ
- ZKmaMWFgzrQ7PTTB6iTtV9dsn3myv7FCq/x5E05tmxTtUwskJaMnN2I6/2hLFvKDh7lz3gqL
- lBSvRwa/sLgTaS+d7hcu1Ii5PucocJPxzYebjo0oJ3V5YlBjeu29BYLsQLk2NTuxuQfTYeFJ
- 1oWoMHqZIpKXRqp4fG8vAIjxjj30lAj56X5DPSDS1ntKUEFgGl5fbKgQ==;
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
-To: stable@vger.kernel.org
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	williams@redhat.com,
-	pablo@netfilter.org,
-	kadlec@netfilter.org,
-	fw@strlen.de,
-	jan.kiszka@siemens.com,
-	netfilter-devel@vger.kernel.org,
-	linux-rt-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Felix Moessbauer <felix.moessbauer@siemens.com>
-Subject: [PATCH 6.1.y 6.6.y 1/1] netfilter: nft_counter: Use u64_stats_t for statistic.
-Date: Thu, 20 Mar 2025 13:41:08 +0100
-Message-ID: <20250320124108.338412-1-felix.moessbauer@siemens.com>
+	s=arc-20240116; t=1742474582; c=relaxed/simple;
+	bh=wTdaPTDa0jCwylQO/d7LcQaRxibO4+U7IE3VzJvXwMA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QzqJ2RAwXELxUFTjrkcrDSzPQaFWllDWjEBcCIAj8zxgAzES5hw0j1Zrg/+2Q80z7N8mmxNpKbHp7F0n5/dtuNepofrRkMuGvQnLhYmQNC8mOjz28MCKdqH00/a9FvBtuBIaPP5aATuAAPdEaNG9EPjwgCswrEHXaQmBQ2DzF9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X0lfyI2E; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-301e05b90caso649795a91.2;
+        Thu, 20 Mar 2025 05:43:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742474581; x=1743079381; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+uL3IGjTjiuqrVnOz2Ww5dOwcBX+a3DDkjY6XFGUpLc=;
+        b=X0lfyI2EXw7DjPF1/kcpayZBdHt/m4Vfm0ibDhceqR31AL5qih2eL8crX6iPqwWSRe
+         sMEUM+DVEjINbqmEBQKcpp2yAAIvYYXCbgsC7ex54ZpVrOnzllzR03AN8jfGXTzQRsT1
+         gU+sJVlgkfrqyRHr8QoSlEMVKsxGCF0AqLzSJapy2HQmaT1x8Cdt+WktXIFCZwlvk1CZ
+         7h7yQ4mcdNSq/EMvM+ChDVmNObT2lmJ1F7XO669TAuvbxB/lWTP3rEz1zfFIJPx8atzT
+         Mx5IHrcj6eR4tzQ3Z9x3tNppWV3hZaDEIbCJr2JesvgvrY/sc7uCdH6sN53qChPcnkFc
+         tWuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742474581; x=1743079381;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+uL3IGjTjiuqrVnOz2Ww5dOwcBX+a3DDkjY6XFGUpLc=;
+        b=MXSuwE4Zqryp1QFmN8U3OWZb4uXXXtvpVZcW3U15Pt78UwYWvI0vyVDituhc0E2VsE
+         8vMK/L6XnNeEQ1JheGp7XBmPBGK1uehkJ+c/WQFVreYXMidlB4JshHpxw2F/baH3StRb
+         bq5Osu9Ry/+gHrL4mlFfPJFABBh7Od2hv8/fdFUi4AVz8h5HpYB/biYUpv6XitkxDAHK
+         HEiz3tldyMObeR6q1wwMcZ9s+ReyJKFMKp0FQRaaKxuIXY7D4JJmsczde2k84lX+lMug
+         80GFTlTgqL7Q8SBSv+ziWCvTr4826Kj/lUOeVVa+Vz1EYRrEW1aTUcVZRG5MiAZmp27l
+         ly5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUmf4IXohd5FsEjnG+Mj9p+E5ZmQqzmb/0AQV/G0yNvLDwBAZYSlULVLuXgw0wYmv3lcGo3g56o@vger.kernel.org, AJvYcCVzItY7qAJqgIDE9BITK/eqyNMcvNV9cJvu6RxckIkkOkDbj1pSfqaMZbLqKnkRUdQvddYf32ApCtdqf68=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwU/1/xZInT95uk+v0XKW0DM7BI65vANunNVDEXlvDxeLvR5KW2
+	64VErDdYdED+Ia3qlPTjTc9Uvqxi3b5AMOv18y8M7KZwH51du9+C115MMjDG06MTO5KAqE+uVYL
+	0UMKSAzsAJUlUiR/9GZR4Ml2/uBs=
+X-Gm-Gg: ASbGncuIqHm0Pd9Q/vDfiPNHtrrxS7R021Yi6w+UAV7/cf9kgyere1aTxPhRep11rtK
+	bfa5o2aMjVLPhWCmj7idMKBjdr//we+4FlYpzTXsUdQ0RwDyN4haa96CPl9V7n8IYgxztn26URg
+	bya0gfxQVdQL7YqAFvfsia3tqRrcs=
+X-Google-Smtp-Source: AGHT+IG3IAgXvK8pSWNiHSoRiODV5fRdTOwPg8f+TG2YtMLkTzQixdJdL1YxVKheImSCU2oRd0FUdqQX1TmgTyEHAIg=
+X-Received: by 2002:a17:90b:4a92:b0:2ee:74a1:fba2 with SMTP id
+ 98e67ed59e1d1-301bdf93ed2mr10044571a91.20.1742474580671; Thu, 20 Mar 2025
+ 05:43:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1321639:519-21489:flowmailer
+References: <20250319143027.685727358@linuxfoundation.org> <20250319165703.51651-1-sj@kernel.org>
+In-Reply-To: <20250319165703.51651-1-sj@kernel.org>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Thu, 20 Mar 2025 12:42:48 +0000
+X-Gm-Features: AQ5f1JpMvwcK-1U-hbVAN0-qz9U6SBJvwStCRYbt1diHejdo2BJVf9HMKmOCCEk
+Message-ID: <CADo9pHg+iuBtM_cz1jJKS82Cw1oP4G7KoJiaRwFzed1Af1uWCw@mail.gmail.com>
+Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
+To: SeongJae Park <sj@kernel.org>, Luna Jernberg <droidbittin@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	damon@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Works fine on my Dell Latitude 7390 laptop with model name    :
+Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz
+and Arch Linux with testing repos enabled
 
-commit 4a1d3acd6ea86075e77fcc1188c3fc372833ba73 upstream.
+Tested-by: Luna Jernberg <droidbittin@gmail.com>
 
-The nft_counter uses two s64 counters for statistics. Those two are
-protected by a seqcount to ensure that the 64bit variable is always
-properly seen during updates even on 32bit architectures where the store
-is performed by two writes. A side effect is that the two counter (bytes
-and packet) are written and read together in the same window.
-
-This can be replaced with u64_stats_t. write_seqcount_begin()/ end() is
-replaced with u64_stats_update_begin()/ end() and behaves the same way
-as with seqcount_t on 32bit architectures. Additionally there is a
-preempt_disable on PREEMPT_RT to ensure that a reader does not preempt a
-writer.
-On 64bit architectures the macros are removed and the reads happen
-without any retries. This also means that the reader can observe one
-counter (bytes) from before the update and the other counter (packets)
-but that is okay since there is no requirement to have both counter from
-the same update window.
-
-Convert the statistic to u64_stats_t. There is one optimisation:
-nft_counter_do_init() and nft_counter_clone() allocate a new per-CPU
-counter and assign a value to it. During this assignment preemption is
-disabled which is not needed because the counter is not yet exposed to
-the system so there can not be another writer or reader. Therefore
-disabling preemption is omitted and raw_cpu_ptr() is used to obtain a
-pointer to a counter for the assignment.
-
-Cc: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
----
-I propose the backport, as this is a performance improvement. Note,
-that this is a bugfix on RT kernels.
-
- net/netfilter/nft_counter.c | 90 +++++++++++++++++++------------------
- 1 file changed, 46 insertions(+), 44 deletions(-)
-
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index 781d3a26f5df..8d19bd001277 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -8,7 +8,7 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/module.h>
--#include <linux/seqlock.h>
-+#include <linux/u64_stats_sync.h>
- #include <linux/netlink.h>
- #include <linux/netfilter.h>
- #include <linux/netfilter/nf_tables.h>
-@@ -17,6 +17,11 @@
- #include <net/netfilter/nf_tables_offload.h>
- 
- struct nft_counter {
-+	u64_stats_t	bytes;
-+	u64_stats_t	packets;
-+};
-+
-+struct nft_counter_tot {
- 	s64		bytes;
- 	s64		packets;
- };
-@@ -25,25 +30,24 @@ struct nft_counter_percpu_priv {
- 	struct nft_counter __percpu *counter;
- };
- 
--static DEFINE_PER_CPU(seqcount_t, nft_counter_seq);
-+static DEFINE_PER_CPU(struct u64_stats_sync, nft_counter_sync);
- 
- static inline void nft_counter_do_eval(struct nft_counter_percpu_priv *priv,
- 				       struct nft_regs *regs,
- 				       const struct nft_pktinfo *pkt)
- {
-+	struct u64_stats_sync *nft_sync;
- 	struct nft_counter *this_cpu;
--	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
--	myseq = this_cpu_ptr(&nft_counter_seq);
--
--	write_seqcount_begin(myseq);
-+	nft_sync = this_cpu_ptr(&nft_counter_sync);
- 
--	this_cpu->bytes += pkt->skb->len;
--	this_cpu->packets++;
-+	u64_stats_update_begin(nft_sync);
-+	u64_stats_add(&this_cpu->bytes, pkt->skb->len);
-+	u64_stats_inc(&this_cpu->packets);
-+	u64_stats_update_end(nft_sync);
- 
--	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
- 
-@@ -66,17 +70,16 @@ static int nft_counter_do_init(const struct nlattr * const tb[],
- 	if (cpu_stats == NULL)
- 		return -ENOMEM;
- 
--	preempt_disable();
--	this_cpu = this_cpu_ptr(cpu_stats);
-+	this_cpu = raw_cpu_ptr(cpu_stats);
- 	if (tb[NFTA_COUNTER_PACKETS]) {
--	        this_cpu->packets =
--			be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_PACKETS]));
-+		u64_stats_set(&this_cpu->packets,
-+			      be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_PACKETS])));
- 	}
- 	if (tb[NFTA_COUNTER_BYTES]) {
--		this_cpu->bytes =
--			be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_BYTES]));
-+		u64_stats_set(&this_cpu->bytes,
-+			      be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_BYTES])));
- 	}
--	preempt_enable();
-+
- 	priv->counter = cpu_stats;
- 	return 0;
- }
-@@ -104,40 +107,41 @@ static void nft_counter_obj_destroy(const struct nft_ctx *ctx,
- }
- 
- static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
--			      struct nft_counter *total)
-+			      struct nft_counter_tot *total)
- {
-+	struct u64_stats_sync *nft_sync;
- 	struct nft_counter *this_cpu;
--	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
--	myseq = this_cpu_ptr(&nft_counter_seq);
-+	nft_sync = this_cpu_ptr(&nft_counter_sync);
-+
-+	u64_stats_update_begin(nft_sync);
-+	u64_stats_add(&this_cpu->packets, -total->packets);
-+	u64_stats_add(&this_cpu->bytes, -total->bytes);
-+	u64_stats_update_end(nft_sync);
- 
--	write_seqcount_begin(myseq);
--	this_cpu->packets -= total->packets;
--	this_cpu->bytes -= total->bytes;
--	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
- 
- static void nft_counter_fetch(struct nft_counter_percpu_priv *priv,
--			      struct nft_counter *total)
-+			      struct nft_counter_tot *total)
- {
- 	struct nft_counter *this_cpu;
--	const seqcount_t *myseq;
- 	u64 bytes, packets;
- 	unsigned int seq;
- 	int cpu;
- 
- 	memset(total, 0, sizeof(*total));
- 	for_each_possible_cpu(cpu) {
--		myseq = per_cpu_ptr(&nft_counter_seq, cpu);
-+		struct u64_stats_sync *nft_sync = per_cpu_ptr(&nft_counter_sync, cpu);
-+
- 		this_cpu = per_cpu_ptr(priv->counter, cpu);
- 		do {
--			seq	= read_seqcount_begin(myseq);
--			bytes	= this_cpu->bytes;
--			packets	= this_cpu->packets;
--		} while (read_seqcount_retry(myseq, seq));
-+			seq	= u64_stats_fetch_begin(nft_sync);
-+			bytes	= u64_stats_read(&this_cpu->bytes);
-+			packets	= u64_stats_read(&this_cpu->packets);
-+		} while (u64_stats_fetch_retry(nft_sync, seq));
- 
- 		total->bytes	+= bytes;
- 		total->packets	+= packets;
-@@ -148,7 +152,7 @@ static int nft_counter_do_dump(struct sk_buff *skb,
- 			       struct nft_counter_percpu_priv *priv,
- 			       bool reset)
- {
--	struct nft_counter total;
-+	struct nft_counter_tot total;
- 
- 	nft_counter_fetch(priv, &total);
- 
-@@ -236,7 +240,7 @@ static int nft_counter_clone(struct nft_expr *dst, const struct nft_expr *src, g
- 	struct nft_counter_percpu_priv *priv_clone = nft_expr_priv(dst);
- 	struct nft_counter __percpu *cpu_stats;
- 	struct nft_counter *this_cpu;
--	struct nft_counter total;
-+	struct nft_counter_tot total;
- 
- 	nft_counter_fetch(priv, &total);
- 
-@@ -244,11 +248,9 @@ static int nft_counter_clone(struct nft_expr *dst, const struct nft_expr *src, g
- 	if (cpu_stats == NULL)
- 		return -ENOMEM;
- 
--	preempt_disable();
--	this_cpu = this_cpu_ptr(cpu_stats);
--	this_cpu->packets = total.packets;
--	this_cpu->bytes = total.bytes;
--	preempt_enable();
-+	this_cpu = raw_cpu_ptr(cpu_stats);
-+	u64_stats_set(&this_cpu->packets, total.packets);
-+	u64_stats_set(&this_cpu->bytes, total.bytes);
- 
- 	priv_clone->counter = cpu_stats;
- 	return 0;
-@@ -266,17 +268,17 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
- 				      const struct flow_stats *stats)
- {
- 	struct nft_counter_percpu_priv *priv = nft_expr_priv(expr);
-+	struct u64_stats_sync *nft_sync;
- 	struct nft_counter *this_cpu;
--	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
--	myseq = this_cpu_ptr(&nft_counter_seq);
-+	nft_sync = this_cpu_ptr(&nft_counter_sync);
- 
--	write_seqcount_begin(myseq);
--	this_cpu->packets += stats->pkts;
--	this_cpu->bytes += stats->bytes;
--	write_seqcount_end(myseq);
-+	u64_stats_update_begin(nft_sync);
-+	u64_stats_add(&this_cpu->packets, stats->pkts);
-+	u64_stats_add(&this_cpu->bytes, stats->bytes);
-+	u64_stats_update_end(nft_sync);
- 	local_bh_enable();
- }
- 
-@@ -285,7 +287,7 @@ void nft_counter_init_seqcount(void)
- 	int cpu;
- 
- 	for_each_possible_cpu(cpu)
--		seqcount_init(per_cpu_ptr(&nft_counter_seq, cpu));
-+		u64_stats_init(per_cpu_ptr(&nft_counter_sync, cpu));
- }
- 
- struct nft_expr_type nft_counter_type;
--- 
-2.49.0
-
+Den tors 20 mars 2025 kl 02:40 skrev SeongJae Park <sj@kernel.org>:
+>
+> Hello,
+>
+> On Wed, 19 Mar 2025 07:27:50 -0700 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> > This is the start of the stable review cycle for the 6.13.8 release.
+> > There are 241 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Fri, 21 Mar 2025 14:29:55 +0000.
+> > Anything received after that time might be too late.
+>
+> This rc kernel passes DAMON functionality test[1] on my test machine.
+> Attaching the test results summary below.  Please note that I retrieved the
+> kernel from linux-stable-rc tree[2].
+>
+> Tested-by: SeongJae Park <sj@kernel.org>
+>
+> [1] https://github.com/damonitor/damon-tests/tree/next/corr
+> [2] 14de9a7d510f ("Linux 6.13.8-rc1")
+>
+> Thanks,
+> SJ
+>
+> [...]
+>
+> ---
+>
+> ok 9 selftests: damon: damos_tried_regions.py
+> ok 10 selftests: damon: damon_nr_regions.py
+> ok 11 selftests: damon: reclaim.sh
+> ok 12 selftests: damon: lru_sort.sh
+> ok 13 selftests: damon: debugfs_empty_targets.sh
+> ok 14 selftests: damon: debugfs_huge_count_read_write.sh
+> ok 15 selftests: damon: debugfs_duplicate_context_creation.sh
+> ok 16 selftests: damon: debugfs_rm_non_contexts.sh
+> ok 17 selftests: damon: debugfs_target_ids_read_before_terminate_race.sh
+> ok 18 selftests: damon: debugfs_target_ids_pid_leak.sh
+> ok 19 selftests: damon: sysfs_update_removed_scheme_dir.sh
+> ok 20 selftests: damon: sysfs_update_schemes_tried_regions_hang.py
+> ok 1 selftests: damon-tests: kunit.sh
+> ok 2 selftests: damon-tests: huge_count_read_write.sh
+> ok 3 selftests: damon-tests: buffer_overflow.sh
+> ok 4 selftests: damon-tests: rm_contexts.sh
+> ok 5 selftests: damon-tests: record_null_deref.sh
+> ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+> ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+> ok 8 selftests: damon-tests: damo_tests.sh
+> ok 9 selftests: damon-tests: masim-record.sh
+> ok 10 selftests: damon-tests: build_i386.sh
+> ok 11 selftests: damon-tests: build_arm64.sh # SKIP
+> ok 12 selftests: damon-tests: build_m68k.sh # SKIP
+> ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+> ok 14 selftests: damon-tests: build_i386_highpte.sh
+> ok 15 selftests: damon-tests: build_nomemcg.sh
+>  [33m
+>  [92mPASS [39m
+>
 
