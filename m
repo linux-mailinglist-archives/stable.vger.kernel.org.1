@@ -1,200 +1,116 @@
-Return-Path: <stable+bounces-125662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7624A6A86C
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 15:26:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93849A6A889
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 15:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 537363B6168
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 14:22:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A8233AEBBC
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 14:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773992248BE;
-	Thu, 20 Mar 2025 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9BC1684A4;
+	Thu, 20 Mar 2025 14:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P56VTVfM"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="XC+YA15D"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE04A224224;
-	Thu, 20 Mar 2025 14:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9215C6A33F
+	for <stable@vger.kernel.org>; Thu, 20 Mar 2025 14:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742480514; cv=none; b=JudMpeDwFpZgVkqht8JBdc1FuMzZJCFzI3PJHbL4nK7H0S1tLmzFZwOumkcOAVVNZbBpEJ3P8q45um+nTJJPf0o/XUNiHQnzqeVCSLHniiwSWFfWTPqgFtyE076RTvD/vni/DQCsUlW4l8/NrgqzLuZsFgWRyANUrnS4186trCY=
+	t=1742481085; cv=none; b=gaed4l11y2dnrBvXdhUyuDkgxCCb+xeLUQNLeY6u30Pt8OhjcOR9RriEvWdm1oY+odLwQTj7e6ZbRpVs+TayWsZqnNrdYbRHsMsb9omhdGZKeaUQM0tfQFj4NYVCTRrNOwYRXC8gMRNSrfyS45NzbbQTuPcAgVWbwWnCki1ZVRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742480514; c=relaxed/simple;
-	bh=HWKsylmiW+BtMJkGcvcEyJY9de3c+e5FoR9mNHAPy0U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oebNduOCBmOSCKf4gutC2n0eo0fLihBgvTuux/mffuf6W4/AD5gttMsgxfY761Z2W5fSVGWCzfWUZwFhTabX0TE9W1P+UTOhhfAbqXRVQT+a0QoqLZYeWepq8tx9ZrV1LpRXeEC/w/1i5gyms0tOvAXZcViPeexqW0BrpLUMBBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P56VTVfM; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2264aefc45dso23171385ad.0;
-        Thu, 20 Mar 2025 07:21:52 -0700 (PDT)
+	s=arc-20240116; t=1742481085; c=relaxed/simple;
+	bh=3CHNjWoueBLbLDZLpfNs+bhOpWOCPmvhUc/aFQKcApY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ciY6HPBj6TmvPZer8Cwtj0bQxZ/sl3OGbyi4NriENFPdf46VMR369GJUmdr9MDu1dil4Ak7+mOoHT83XXBRI7Kd7XFTRcWTF79a+JvFd3yYsWTmDLAJAPMjm/ql0eu0IfmSj+28/g3rKL+guGOAmaavSJXVNr//tqm+1k8qZbVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=XC+YA15D; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3996af42857so1335818f8f.0
+        for <stable@vger.kernel.org>; Thu, 20 Mar 2025 07:31:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742480512; x=1743085312; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zuntvFFwYkgUpcM/9nWOVbv7/IiYbYMm3ul7xyRax3Y=;
-        b=P56VTVfMV/bPqzl8UZ1dn9g/h+px22u7Pb46bCVKB6zx0Q70IpVROLD+FYT8CwMdWt
-         SMkubBMvdlSUgNSoD51+aghJZKV5NzNz1sw49KphFD+KIi3AKA6UQ49hZ6zC43C9jJug
-         +f5hXaMMtvcd2Q3i9TpTf6cljLVEIR2e4wYzLq4fURwc/xP/GkWAs4ctLBotL2dX79Ex
-         aou2xFqznMRwk67f6TQHo4NoOirG6o423lj+urvfGaBjAOvluVDSca24ZjdPvVY+fhTp
-         9uanCes8nVW3EdEGhqeEFJFTGePBByP5pzZxcoQrtRqbNOgE3LKa8rk7G1f5ummv4quA
-         7xnA==
+        d=suse.com; s=google; t=1742481082; x=1743085882; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3CHNjWoueBLbLDZLpfNs+bhOpWOCPmvhUc/aFQKcApY=;
+        b=XC+YA15DM1oQsGQxp0KvksFJKuLNXZEG0yV1CbP1Nku2PdR7milXKdvtssNH685j3+
+         SyvOggzcp629eWQ9IUKGMM38LorZA3xJMZk91Wv2jTswodNY/bYOxRZGTPbe58OLEZqH
+         KyCKUW24+5dbsfv8wUG3iLKnntYGIeAIeysw4DasT6klD5ZizBBLB2wbgKQr9hrT9huC
+         u9wvTYHn9o7xW+socBVv9He/xEPOXYsc1K/zeGeOrB+nKT3qtYUU5gl0pT8V4fAG0GqC
+         3kCPEOaeWRXss3nsSlBpRfT3jyA/s5QkBx3Wd5Y5fEDko69IDGs0I1qaKPOlnhTPsjBA
+         Lixg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742480512; x=1743085312;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zuntvFFwYkgUpcM/9nWOVbv7/IiYbYMm3ul7xyRax3Y=;
-        b=wSVm1zkTq12kbZnUeq9qowpmzoLP3753BAINSW30IQ9MLVFHe8OzfzNKWmCIGiqpQ2
-         ylthUnpXtKz2zK88vMMuERAsW+q4izxuNjKYPcmFEncjzlBHQ9TORUTorYBSQmiTAaYQ
-         Sr700oiNMbylwfIUV9IlK1o2vNobjpVrMy+dvus4FNvj7SrI/sY3Lrz1683stob1W9BE
-         JiL84ECajMlpRSGEl8ftH2vne4zUvCZ6f4bPendZWgnC0DFSsdgX+dYvWr/LCjhptBfd
-         ZTzwXP615Ral5zHNcYQ+zcgnbYq3FdAnFA0U3l9LImiEDYZwxSm1sdegsDEjs8i6kKH4
-         R4vg==
-X-Forwarded-Encrypted: i=1; AJvYcCVlzJbiDc2e5Qc1XyRPKAq23D1YGjc90N1sSCjbFKhYW38NfiaDhXQninjC8JkdOF57SuDCcT0QqOqOa2E=@vger.kernel.org, AJvYcCW4rBAL/0C7WXrAplrtzmcGrjJgt/5wSnknKlFu+aiV1mxm2U7WxpjD17E9AU99ATalvCM9EnFE@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzr6g7oYlvKAcoi1Y8Y5DKPAFOKj9eOboalM9nbQ1/ApAkKidbi
-	Oa6Zq5YtOOmW7b7hB627P9c0dkIWOyuT7uk++1PP+MUHDUduOS5utauBCjA6YpDCtUCdaIh4lxu
-	Yd8ob39tLyI8uGDMWx4kcTloBH3Y=
-X-Gm-Gg: ASbGncv2Bh/xDcZDDEPG+1ubFwJr5PDfWMi09MYl8s+BopEpdwE2Cm1RupcusmtuRxS
-	EBHKMqGAYNKXBeo+vFqyJeix+IbdiMRnS/uxGU+MQVYC+n81t33vUef6steqIW8PZEnt76FvYm/
-	iwH8Ygjr1Df+sjndiamb/Xcncc
-X-Google-Smtp-Source: AGHT+IEmYnUjCOXTNebABlXp5ns/0/fK6wHTVWN79SrrFblEXcoUnIgnSXUvB8rlNMcc/HVHPlN1hjo8fPoqtb++oe0=
-X-Received: by 2002:a17:902:f711:b0:223:28a8:6101 with SMTP id
- d9443c01a7336-2265ee1ce6amr66594665ad.29.1742480511710; Thu, 20 Mar 2025
- 07:21:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742481082; x=1743085882;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3CHNjWoueBLbLDZLpfNs+bhOpWOCPmvhUc/aFQKcApY=;
+        b=bYUiSOj06XjH59EJvs1/R7d7hAl34jPI/lq/7v7rE3l9vh4lNi+nrXTDYSRM6kB1Ja
+         0CifxC6biYtewezHt7JbFIqh+3ckqBInQe0JxkIfqYU9F7iMgg+cELzMphPXF2/cEbe+
+         m8/L+jpLJo19Hko3ovfA9a24Lql1IqUnhbVOKA3StZXuHyvTA7W2pNGUAZUAHXgiQwYa
+         vH1Dr4jgEcHoYOc0sVxE+asCwaRnNIHvEwSFlXL1fKmEJsKU5OH4pf4RjYq/JTevsTCR
+         OOB7cybT/tJmPE+DNxjN1hDeiJYN1EQwI72Ebwsl3ayKv40GxZ+FfMPd8lmZJ0SCOnRC
+         8fNA==
+X-Gm-Message-State: AOJu0YwRRbbU4+Khy0aVa/LCwsECn1DvG8T/3+W4yq8/71J41/W7GXW2
+	V9VkI0Zpw7No+6+Gl9snVLsRpKTktTjhcvn+j1WyuVKqD9uNFs7/l2eaJbAKnSvCduSHi/BTROk
+	TcnI=
+X-Gm-Gg: ASbGncuOlPzIlB/dBgMwUmp65gCyrWj7FCCX/9fHazdl//ObzK5fpvureeFVt4gG4ng
+	EMo7RlcVROa6mdx4LSbZMqUA9Csdx1VbNMea1Hwy5+i56KCvNqOxFMzgOkpO6DDJ9HgluHU8TTH
+	HEz5NzxLTdDk+OoU3tZDwX55ub5eRWBi7At2hMoKHXo+RNIw80iWsK+kSv3hslkeB4A+aXBJXp5
+	r3OkjnALDtzZq0ji3PIJ/3lfBbhPUCkRR0D6bU23V5SbAujNI9QZOLanveCkQkgeZG/m5gdV1n6
+	NY1n9YMivnwwtHH3pZXIZFqDb1R2HnezcKmA+Ps=
+X-Google-Smtp-Source: AGHT+IExwvrQyry/JWwWtqjS+PUdMZLpyZW/AeonUnJCOBJBNf82ROI1NsMAkejpxBGPoL8zUNdamg==
+X-Received: by 2002:a5d:59ab:0:b0:391:2884:9dfa with SMTP id ffacd0b85a97d-39979575675mr3677121f8f.13.1742481081613;
+        Thu, 20 Mar 2025 07:31:21 -0700 (PDT)
+Received: from u94a ([2401:e180:8852:a021:9b71:2de4:479:d6cf])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22637cf43ffsm53342595ad.129.2025.03.20.07.31.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Mar 2025 07:31:21 -0700 (PDT)
+Date: Thu, 20 Mar 2025 22:31:16 +0800
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Subject: Clarifying stable kernel rule on selftest backporting
+Message-ID: <oy6rjahx5grqer7yfhts5y2s6mivgjhevf5gtgkzlytiqznk4i@fglskeuhoilh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAG8fp8S92hXFxMKQtMBkGqk1sWGu7pdHYDowsYbmurt0BGjfww@mail.gmail.com>
- <20250314084818.2826-1-akihiro.suda.cz@hco.ntt.co.jp> <Z9s5lam2QzWCOOKi@gmail.com>
-In-Reply-To: <Z9s5lam2QzWCOOKi@gmail.com>
-From: Akihiro Suda <suda.kyoto@gmail.com>
-Date: Thu, 20 Mar 2025 23:21:40 +0900
-X-Gm-Features: AQ5f1JoCemEwjjJ1t8QAlfRbPd3hmNLLAzSmBA2xrOQAsbuzCMbLQ9EipLAQ1bc
-Message-ID: <CAG8fp8RgxFz2pwv3BXJ=dMWxoLSKjBL8PN0N8kWqkDOCB2_ivg@mail.gmail.com>
-Subject: Re: [PATCH] x86/pkeys: Disable PKU when XFEATURE_PKRU is missing
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Akihiro Suda <suda.gitsendemail@gmail.com>, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, stable@vger.kernel.org, regressions@lists.linux.dev, 
-	aruna.ramakrishna@oracle.com, tglx@linutronix.de, 
-	Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks Ingo, but we may have to reconsider whether cpu_has_xfeatures
-works in this place
-https://lore.kernel.org/all/1b8745e0-ae80-4add-b015-affdaa69b369@intel.com/
+Hi,
 
-The current code might be accidentally disabling PKU on other
-PKU-compatible environments?
+Do we have any rule regarding whether a patch that adds a new test case
+in tools/testing/selftests/ can be considered for backport?
 
-2025=E5=B9=B43=E6=9C=8820=E6=97=A5(=E6=9C=A8) 6:39 Ingo Molnar <mingo@kerne=
-l.org>:
->
->
-> * Akihiro Suda <suda.gitsendemail@gmail.com> wrote:
->
-> > Even when X86_FEATURE_PKU and X86_FEATURE_OSPKE are available,
-> > XFEATURE_PKRU can be missing.
-> > In such a case, pkeys has to be disabled to avoid hanging up.
-> >
-> >   WARNING: CPU: 0 PID: 1 at arch/x86/kernel/fpu/xstate.c:1003 get_xsave=
-_addr_user+0x28/0x40
-> >   (...)
-> >   Call Trace:
-> >    <TASK>
-> >    ? get_xsave_addr_user+0x28/0x40
-> >    ? __warn.cold+0x8e/0xea
-> >    ? get_xsave_addr_user+0x28/0x40
-> >    ? report_bug+0xff/0x140
-> >    ? handle_bug+0x3b/0x70
-> >    ? exc_invalid_op+0x17/0x70
-> >    ? asm_exc_invalid_op+0x1a/0x20
-> >    ? get_xsave_addr_user+0x28/0x40
-> >    copy_fpstate_to_sigframe+0x1be/0x380
-> >    ? __put_user_8+0x11/0x20
-> >    get_sigframe+0xf1/0x280
-> >    x64_setup_rt_frame+0x67/0x2c0
-> >    arch_do_signal_or_restart+0x1b3/0x240
-> >    syscall_exit_to_user_mode+0xb0/0x130
-> >    do_syscall_64+0xab/0x1a0
-> >    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> >
-> > This fix is known to be needed on Apple Virtualization.
-> > Tested with macOS 13.5.2 running on MacBook Pro 2020 with
-> > Intel(R) Core(TM) i7-1068NG7 CPU @ 2.30GHz.
-> >
-> > Fixes: 70044df250d0 ("x86/pkeys: Update PKRU to enable all pkeys before=
- XSAVE")
-> > Link: https://lore.kernel.org/regressions/CAG8fp8QvH71Wi_y7b7tgFp7knK38=
-rfrF7rRHh-gFKqeS0gxY6Q@mail.gmail.com/T/#u
-> > Link: https://github.com/lima-vm/lima/issues/3334
-> >
-> > Signed-off-by: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
-> > ---
-> >  arch/x86/kernel/cpu/common.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.=
-c
-> > index e9464fe411ac..4c2c268af214 100644
-> > --- a/arch/x86/kernel/cpu/common.c
-> > +++ b/arch/x86/kernel/cpu/common.c
-> > @@ -517,7 +517,8 @@ static bool pku_disabled;
-> >  static __always_inline void setup_pku(struct cpuinfo_x86 *c)
-> >  {
-> >       if (c =3D=3D &boot_cpu_data) {
-> > -             if (pku_disabled || !cpu_feature_enabled(X86_FEATURE_PKU)=
-)
-> > +             if (pku_disabled || !cpu_feature_enabled(X86_FEATURE_PKU)=
- ||
-> > +                 !cpu_has_xfeatures(XFEATURE_PKRU, NULL))
-> >                       return;
->
-> Note that silent quirks are counterproductive, as they don't give VM
-> vendors any incentives to fix their VM for such bugs.
->
-> So I changed your quirk to be:
->
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -519,6 +519,17 @@ static __always_inline void setup_pku(struct cpuinfo=
-_x86 *c)
->         if (c =3D=3D &boot_cpu_data) {
->                 if (pku_disabled || !cpu_feature_enabled(X86_FEATURE_PKU)=
-)
->                         return;
-> +               if (!cpu_has_xfeatures(XFEATURE_PKRU, NULL)) {
-> +                       /*
-> +                        * Missing XFEATURE_PKRU is not really a valid CP=
-U
-> +                        * configuration at this point, but apparently
-> +                        * Apple Virtualization is affected by this,
-> +                        * so return with a FW warning instead of crashin=
-g
-> +                        * the bootup:
-> +                        */
-> +                       WARN_ONCE(1, FW_BUG "Invalid XFEATURE_PKRU config=
-uration.\n");
-> +                       return;
-> +               }
->                 /*
->                  * Setting CR4.PKE will cause the X86_FEATURE_OSPKE cpuid
->                  * bit to be set.  Enforce it.
->
-> This is noisy in the syslog, but it's a WARN_ONCE() and it doesn't
-> crash the bootup.
->
-> Thanks,
->
->         Ingo
+For example, consider commit 0a5d2efa3827 ("selftests/bpf: Add test case
+for the freeing of bpf_timer"), it adds a test case for the issue
+addressed in the same series -- commit 58f038e6d209 ("bpf: Cancel the
+running bpf_timer through kworker for PREEMPT_RT"). The latter has been
+backported to 6.12.y.
+
+Would commit 0a5d2efa3827 be a worthwhile add to 6.12.y as well?
+
+IMO having such test case added would be helpful to check whether the
+backported fix really works (assuming someone is willing to do the extra
+work of finding, testing, and sending such tests); yet it does not seem
+to fit into the current stable kernel rule set of:
+- It or an equivalent fix must already exist in Linux mainline (upstream).
+- It must be obviously correct and tested.
+- It cannot be bigger than 100 lines, with context.
+- It must follow the Documentation/process/submitting-patches.rst rules.
+- It must either fix a real bug that bothers people or just add a device ID
+
+Appreciate any clarification and/or feedback on this matter.
+
+Thanks,
+Shung-Hsi Yu
 
