@@ -1,176 +1,318 @@
-Return-Path: <stable+bounces-125643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B50A6A56F
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 12:53:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57645A6A67A
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 13:51:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFD0116F4D4
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 11:50:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 966341893633
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 12:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44624221548;
-	Thu, 20 Mar 2025 11:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CC612B73;
+	Thu, 20 Mar 2025 12:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="exwxpcum"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="TpnsNzUk"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
+Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1D81EB5CA
-	for <stable@vger.kernel.org>; Thu, 20 Mar 2025 11:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7170BEC5
+	for <stable@vger.kernel.org>; Thu, 20 Mar 2025 12:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742471377; cv=none; b=VBJxBMDLJDlvcB++uXKn2rGnvetk7kq3Eqnp2DkfaS0e4z0fy2bPG0m6zR4B9Z0QNXVezGsWe9sEI2reEXRzihlZBwzfmHmWkvpO1kTqTL/nuozZxDsuoyuB1LhDf227a7SvEK9cAbIqqPG8L0Bld8boCSaFdTZSMOay7OUcx7U=
+	t=1742475104; cv=none; b=frEcdRWxeEXHVEQGsUV0L9dKiA3Yd8xuQYB0b32w6eSi8JPxWPgDGfWS2WQcqTrNB2E2ZBqBN5Mi5zTbImqWg/L7bEhPxJ2dbVMq1U1Z77V62Mq97pDl47ujA1gHi6Bn1iRSbS7cPIeCxakZOIEG7NtWhB2lYSReaeC6yoaZRT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742471377; c=relaxed/simple;
-	bh=1ZX+1uAXca9Y2kIxWXCIA9GvOn0yyYynQfJVEA3PdLU=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=uScTen1JiYsET6B9IZCS0JQyJkI2tT/MJWPfAWFMQAy1iL4C827bkvn2uC9UojaMIClUjIU3KutVAyi7bdcRrD1zAbERpgvfr4AKUVvsH8wonXd6Ksrfw6fQqA6Grw2+dYoMdBDNLjZgA91aqkpiInfq4dFtdCgnfc5DatTbWwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=exwxpcum; arc=none smtp.client-ip=203.205.221.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1742471363;
-	bh=yYz2lvXRz6wWXNolfZztZWAfp4NMCpBdeKovR/vLEx0=;
-	h=From:To:Cc:Subject:Date;
-	b=exwxpcumTx1dnY6xUwOEqGAZNSHbgvQV714vPoGa4pgYiEs+DJbKEvRMsZmEbTeAt
-	 Dqifv3UUYKzPyY4djbIyxVtnmOI4OF1/Yx4UQG8jAJWMO+awY40tt4pd4LeRoXb7L8
-	 Ca0cAt2o9bd/aW0kMaDIKmKf4n58WTp3JQeTZ1QU=
-Received: from pek-blan-cn-l1.corp.ad.wrs.com ([120.244.194.128])
-	by newxmesmtplogicsvrszb21-0.qq.com (NewEsmtp) with SMTP
-	id AC28AAC3; Thu, 20 Mar 2025 19:43:02 +0800
-X-QQ-mid: xmsmtpt1742470982tppebuh3g
-Message-ID: <tencent_A61660721BA068D56A023F1625A5ACED7009@qq.com>
-X-QQ-XMAILINFO: N7h1OCCDntujl7IrbIzTB8veoy3k92bgkp5Rnu77LKsDUXiH33ALpuCu49bnzm
-	 FUcUsiYfMYwpCvlJn7d0aqmP9U+zwAxp5inCv6SGvwPZ5MTqvfEU3amZopQkvjf5iUQlVAsFVfBJ
-	 WZA2ZBB57Vbc/yuQ4ibg5IxobxUNEi7xcDZ1B8dQ+r/dPmlThhOCc3ayScKDRI3lRCL91mZNg1XG
-	 RH+VAmHWCqNTCsHccHqhYPPrYgBrJUilVzT1LO/J9Odcci/vW/u5UUc2l2V7d4QNBQXCLQ8noGlc
-	 7//9LIU2fjdXjmnVSD3Gyu1Z95mkofckjBporV5KcUrbZvcHq9+MMeTNIwyUIITzAN7d0holhmav
-	 qR+87xV7bjmRHakXfxMTRtSe5Ecm0x9RJAI+zO172/Jc42FhRgSz7S08D56pH8IItPxzllw1wnq2
-	 IlfnL2Ui3eUxOofSNe81mR6JNwmGEJ0oy+Qk7UszvWEWIWuoy79RY725JzMUju40ucA+pyh37DzL
-	 WcCPrtNn1WR7WvHAxFXOaaIFzAoeXhfrSYg3xnZh9X0Gk3bUUIvw1I9eTJpD4Tyj5m8d0jx9X82G
-	 dnYTHnOP5Nshlzxs/ICI/rof7V+LxvS40DnJmwDplE+2I+I8eQwGsEE31o1mlsFks8tCOysewSib
-	 sNaKKl8lrXEha+WVO5DzLQVw2tTF7UPeT5lCVXkG5W1M3+bvczK1GeVWE7Wfg9uf0WyHfe1CmDm4
-	 S7Jjs1+shcR+gLFalan8dqfEN6SBieL8+Fz2GiPiCSs1ZexEVbj6aZOBKjsz7bLJMoKAxi+rDjap
-	 1hmNFCtxuoRHY0o/ReCY89PAPWbigJ9hv7Rd0bwrOODVVz7E7WFGe4oGFmFDjRKWM3W8ymjWwddb
-	 +PDEdqQI0OxUpPcfwcRJ17eMuYH9yDAVDZc5RYYUv3uHvr+Vz1f5Q7GLBSaNz4BboyTYAaA0ND90
-	 8jxNAbjOaWpaLZhQgXOKxn4jKnk97hrQo3gAhmmg8=
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-From: alvalan9@foxmail.com
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: Kang Yang <quic_kangyang@quicinc.com>,
-	David Ruth <druth@chromium.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.10.y] wifi: ath10k: avoid NULL pointer error during sdio remove
-Date: Thu, 20 Mar 2025 19:42:54 +0800
-X-OQ-MSGID: <20250320114254.690-1-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1742475104; c=relaxed/simple;
+	bh=uJNgNdZDQ/2PC9hcIrOpRPEGx0wzupEKlnOR05eG9pg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e8jVZJNxEdmkTdlGvFN7qiA9eRiCBGsphZHiEtSRu7+9JkuOmKFt4e5RutIlHm62jiAJrDLVvUkhI+68f7SrPU54Mah0ZPs/GeupuhxtSnqSNPzwlHC3P6RzbbUmOS4K966HhG/9JZTzSTMN8R5sCRxiOAeDagFdBXNqDC1VU9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=TpnsNzUk; arc=none smtp.client-ip=185.136.65.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 20250320124121d771fcd26b952b0679
+        for <stable@vger.kernel.org>;
+        Thu, 20 Mar 2025 13:41:21 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=felix.moessbauer@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=c0r9K1Oai3gyP+GjxoUNl2fOIbRrTnrWaZYsOLsZDrA=;
+ b=TpnsNzUkkIAoVd4x7s9CvjzuD+tAhg7LpBA6ux7k6lj+suGNGWIl12pyXTS2uV057EwtB3
+ XakJO5HyqgzA9UhHGivAMY8rgVLRECLGUN9ZXVGCK8RJ1oTbRqahVh1wOO/i2RX+Xpt5l7wQ
+ ZKmaMWFgzrQ7PTTB6iTtV9dsn3myv7FCq/x5E05tmxTtUwskJaMnN2I6/2hLFvKDh7lz3gqL
+ lBSvRwa/sLgTaS+d7hcu1Ii5PucocJPxzYebjo0oJ3V5YlBjeu29BYLsQLk2NTuxuQfTYeFJ
+ 1oWoMHqZIpKXRqp4fG8vAIjxjj30lAj56X5DPSDS1ntKUEFgGl5fbKgQ==;
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
+To: stable@vger.kernel.org
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	williams@redhat.com,
+	pablo@netfilter.org,
+	kadlec@netfilter.org,
+	fw@strlen.de,
+	jan.kiszka@siemens.com,
+	netfilter-devel@vger.kernel.org,
+	linux-rt-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>
+Subject: [PATCH 6.1.y 6.6.y 1/1] netfilter: nft_counter: Use u64_stats_t for statistic.
+Date: Thu, 20 Mar 2025 13:41:08 +0100
+Message-ID: <20250320124108.338412-1-felix.moessbauer@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1321639:519-21489:flowmailer
 
-From: Kang Yang <quic_kangyang@quicinc.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a ]
+commit 4a1d3acd6ea86075e77fcc1188c3fc372833ba73 upstream.
 
-When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
-workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
-is set to yes, kernel panic will happen:
-Call trace:
- destroy_workqueue+0x1c/0x258
- ath10k_sdio_remove+0x84/0x94
- sdio_bus_remove+0x50/0x16c
- device_release_driver_internal+0x188/0x25c
- device_driver_detach+0x20/0x2c
+The nft_counter uses two s64 counters for statistics. Those two are
+protected by a seqcount to ensure that the 64bit variable is always
+properly seen during updates even on 32bit architectures where the store
+is performed by two writes. A side effect is that the two counter (bytes
+and packet) are written and read together in the same window.
 
-This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
-ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
-will finally be called in ath10k_core_destroy(). This function will free
-struct cfg80211_registered_device *rdev and all its members, including
-wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
-workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
+This can be replaced with u64_stats_t. write_seqcount_begin()/ end() is
+replaced with u64_stats_update_begin()/ end() and behaves the same way
+as with seqcount_t on 32bit architectures. Additionally there is a
+preempt_disable on PREEMPT_RT to ensure that a reader does not preempt a
+writer.
+On 64bit architectures the macros are removed and the reads happen
+without any retries. This also means that the reader can observe one
+counter (bytes) from before the update and the other counter (packets)
+but that is okay since there is no requirement to have both counter from
+the same update window.
 
-After device release, destroy_workqueue() will use NULL pointer then the
-kernel panic happen.
+Convert the statistic to u64_stats_t. There is one optimisation:
+nft_counter_do_init() and nft_counter_clone() allocate a new per-CPU
+counter and assign a value to it. During this assignment preemption is
+disabled which is not needed because the counter is not yet exposed to
+the system so there can not be another writer or reader. Therefore
+disabling preemption is omitted and raw_cpu_ptr() is used to obtain a
+pointer to a counter for the assignment.
 
-Call trace:
-ath10k_sdio_remove
-  ->ath10k_core_unregister
-    ……
-    ->ath10k_core_stop
-      ->ath10k_hif_stop
-        ->ath10k_sdio_irq_disable
-    ->ath10k_hif_power_down
-      ->del_timer_sync(&ar_sdio->sleep_timer)
-  ->ath10k_core_destroy
-    ->ath10k_mac_destroy
-      ->ieee80211_free_hw
-        ->wiphy_free
-    ……
-          ->wiphy_dev_release
-  ->destroy_workqueue
-
-Need to call destroy_workqueue() before ath10k_core_destroy(), free
-the work queue buffer first and then free pointer of work queue by
-ath10k_core_destroy(). This order matches the error path order in
-ath10k_sdio_probe().
-
-No work will be queued on sdio workqueue between it is destroyed and
-ath10k_core_destroy() is called. Based on the call_stack above, the
-reason is:
-Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
-ath10k_sdio_irq_disable() will queue work on sdio workqueue.
-Sleep timer will be deleted before ath10k_core_destroy() in
-ath10k_hif_power_down().
-ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
-ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
-bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
-
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
-
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Tested-by: David Ruth <druth@chromium.org>
-Reviewed-by: David Ruth <druth@chromium.org>
-Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
 ---
- drivers/net/wireless/ath/ath10k/sdio.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+I propose the backport, as this is a performance improvement. Note,
+that this is a bugfix on RT kernels.
 
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 9d1b0890f310..418e40560f59 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2004-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
-+ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
+ net/netfilter/nft_counter.c | 90 +++++++++++++++++++------------------
+ 1 file changed, 46 insertions(+), 44 deletions(-)
+
+diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
+index 781d3a26f5df..8d19bd001277 100644
+--- a/net/netfilter/nft_counter.c
++++ b/net/netfilter/nft_counter.c
+@@ -8,7 +8,7 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
  #include <linux/module.h>
-@@ -2649,9 +2650,9 @@ static void ath10k_sdio_remove(struct sdio_func *func)
+-#include <linux/seqlock.h>
++#include <linux/u64_stats_sync.h>
+ #include <linux/netlink.h>
+ #include <linux/netfilter.h>
+ #include <linux/netfilter/nf_tables.h>
+@@ -17,6 +17,11 @@
+ #include <net/netfilter/nf_tables_offload.h>
  
- 	netif_napi_del(&ar->napi);
- 
--	ath10k_core_destroy(ar);
--
- 	destroy_workqueue(ar_sdio->workqueue);
+ struct nft_counter {
++	u64_stats_t	bytes;
++	u64_stats_t	packets;
++};
 +
-+	ath10k_core_destroy(ar);
++struct nft_counter_tot {
+ 	s64		bytes;
+ 	s64		packets;
+ };
+@@ -25,25 +30,24 @@ struct nft_counter_percpu_priv {
+ 	struct nft_counter __percpu *counter;
+ };
+ 
+-static DEFINE_PER_CPU(seqcount_t, nft_counter_seq);
++static DEFINE_PER_CPU(struct u64_stats_sync, nft_counter_sync);
+ 
+ static inline void nft_counter_do_eval(struct nft_counter_percpu_priv *priv,
+ 				       struct nft_regs *regs,
+ 				       const struct nft_pktinfo *pkt)
+ {
++	struct u64_stats_sync *nft_sync;
+ 	struct nft_counter *this_cpu;
+-	seqcount_t *myseq;
+ 
+ 	local_bh_disable();
+ 	this_cpu = this_cpu_ptr(priv->counter);
+-	myseq = this_cpu_ptr(&nft_counter_seq);
+-
+-	write_seqcount_begin(myseq);
++	nft_sync = this_cpu_ptr(&nft_counter_sync);
+ 
+-	this_cpu->bytes += pkt->skb->len;
+-	this_cpu->packets++;
++	u64_stats_update_begin(nft_sync);
++	u64_stats_add(&this_cpu->bytes, pkt->skb->len);
++	u64_stats_inc(&this_cpu->packets);
++	u64_stats_update_end(nft_sync);
+ 
+-	write_seqcount_end(myseq);
+ 	local_bh_enable();
  }
  
- static const struct sdio_device_id ath10k_sdio_devices[] = {
+@@ -66,17 +70,16 @@ static int nft_counter_do_init(const struct nlattr * const tb[],
+ 	if (cpu_stats == NULL)
+ 		return -ENOMEM;
+ 
+-	preempt_disable();
+-	this_cpu = this_cpu_ptr(cpu_stats);
++	this_cpu = raw_cpu_ptr(cpu_stats);
+ 	if (tb[NFTA_COUNTER_PACKETS]) {
+-	        this_cpu->packets =
+-			be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_PACKETS]));
++		u64_stats_set(&this_cpu->packets,
++			      be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_PACKETS])));
+ 	}
+ 	if (tb[NFTA_COUNTER_BYTES]) {
+-		this_cpu->bytes =
+-			be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_BYTES]));
++		u64_stats_set(&this_cpu->bytes,
++			      be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_BYTES])));
+ 	}
+-	preempt_enable();
++
+ 	priv->counter = cpu_stats;
+ 	return 0;
+ }
+@@ -104,40 +107,41 @@ static void nft_counter_obj_destroy(const struct nft_ctx *ctx,
+ }
+ 
+ static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
+-			      struct nft_counter *total)
++			      struct nft_counter_tot *total)
+ {
++	struct u64_stats_sync *nft_sync;
+ 	struct nft_counter *this_cpu;
+-	seqcount_t *myseq;
+ 
+ 	local_bh_disable();
+ 	this_cpu = this_cpu_ptr(priv->counter);
+-	myseq = this_cpu_ptr(&nft_counter_seq);
++	nft_sync = this_cpu_ptr(&nft_counter_sync);
++
++	u64_stats_update_begin(nft_sync);
++	u64_stats_add(&this_cpu->packets, -total->packets);
++	u64_stats_add(&this_cpu->bytes, -total->bytes);
++	u64_stats_update_end(nft_sync);
+ 
+-	write_seqcount_begin(myseq);
+-	this_cpu->packets -= total->packets;
+-	this_cpu->bytes -= total->bytes;
+-	write_seqcount_end(myseq);
+ 	local_bh_enable();
+ }
+ 
+ static void nft_counter_fetch(struct nft_counter_percpu_priv *priv,
+-			      struct nft_counter *total)
++			      struct nft_counter_tot *total)
+ {
+ 	struct nft_counter *this_cpu;
+-	const seqcount_t *myseq;
+ 	u64 bytes, packets;
+ 	unsigned int seq;
+ 	int cpu;
+ 
+ 	memset(total, 0, sizeof(*total));
+ 	for_each_possible_cpu(cpu) {
+-		myseq = per_cpu_ptr(&nft_counter_seq, cpu);
++		struct u64_stats_sync *nft_sync = per_cpu_ptr(&nft_counter_sync, cpu);
++
+ 		this_cpu = per_cpu_ptr(priv->counter, cpu);
+ 		do {
+-			seq	= read_seqcount_begin(myseq);
+-			bytes	= this_cpu->bytes;
+-			packets	= this_cpu->packets;
+-		} while (read_seqcount_retry(myseq, seq));
++			seq	= u64_stats_fetch_begin(nft_sync);
++			bytes	= u64_stats_read(&this_cpu->bytes);
++			packets	= u64_stats_read(&this_cpu->packets);
++		} while (u64_stats_fetch_retry(nft_sync, seq));
+ 
+ 		total->bytes	+= bytes;
+ 		total->packets	+= packets;
+@@ -148,7 +152,7 @@ static int nft_counter_do_dump(struct sk_buff *skb,
+ 			       struct nft_counter_percpu_priv *priv,
+ 			       bool reset)
+ {
+-	struct nft_counter total;
++	struct nft_counter_tot total;
+ 
+ 	nft_counter_fetch(priv, &total);
+ 
+@@ -236,7 +240,7 @@ static int nft_counter_clone(struct nft_expr *dst, const struct nft_expr *src, g
+ 	struct nft_counter_percpu_priv *priv_clone = nft_expr_priv(dst);
+ 	struct nft_counter __percpu *cpu_stats;
+ 	struct nft_counter *this_cpu;
+-	struct nft_counter total;
++	struct nft_counter_tot total;
+ 
+ 	nft_counter_fetch(priv, &total);
+ 
+@@ -244,11 +248,9 @@ static int nft_counter_clone(struct nft_expr *dst, const struct nft_expr *src, g
+ 	if (cpu_stats == NULL)
+ 		return -ENOMEM;
+ 
+-	preempt_disable();
+-	this_cpu = this_cpu_ptr(cpu_stats);
+-	this_cpu->packets = total.packets;
+-	this_cpu->bytes = total.bytes;
+-	preempt_enable();
++	this_cpu = raw_cpu_ptr(cpu_stats);
++	u64_stats_set(&this_cpu->packets, total.packets);
++	u64_stats_set(&this_cpu->bytes, total.bytes);
+ 
+ 	priv_clone->counter = cpu_stats;
+ 	return 0;
+@@ -266,17 +268,17 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
+ 				      const struct flow_stats *stats)
+ {
+ 	struct nft_counter_percpu_priv *priv = nft_expr_priv(expr);
++	struct u64_stats_sync *nft_sync;
+ 	struct nft_counter *this_cpu;
+-	seqcount_t *myseq;
+ 
+ 	local_bh_disable();
+ 	this_cpu = this_cpu_ptr(priv->counter);
+-	myseq = this_cpu_ptr(&nft_counter_seq);
++	nft_sync = this_cpu_ptr(&nft_counter_sync);
+ 
+-	write_seqcount_begin(myseq);
+-	this_cpu->packets += stats->pkts;
+-	this_cpu->bytes += stats->bytes;
+-	write_seqcount_end(myseq);
++	u64_stats_update_begin(nft_sync);
++	u64_stats_add(&this_cpu->packets, stats->pkts);
++	u64_stats_add(&this_cpu->bytes, stats->bytes);
++	u64_stats_update_end(nft_sync);
+ 	local_bh_enable();
+ }
+ 
+@@ -285,7 +287,7 @@ void nft_counter_init_seqcount(void)
+ 	int cpu;
+ 
+ 	for_each_possible_cpu(cpu)
+-		seqcount_init(per_cpu_ptr(&nft_counter_seq, cpu));
++		u64_stats_init(per_cpu_ptr(&nft_counter_sync, cpu));
+ }
+ 
+ struct nft_expr_type nft_counter_type;
 -- 
-2.34.1
+2.49.0
 
 
