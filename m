@@ -1,152 +1,130 @@
-Return-Path: <stable+bounces-125628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71EADA6A373
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 11:20:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDD5A6A364
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 11:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D47AF8A7550
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 10:20:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18D6D189E259
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 10:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DB621C188;
-	Thu, 20 Mar 2025 10:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E7E211711;
+	Thu, 20 Mar 2025 10:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="kGM6LjAQ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="KVzzrbTP"
 X-Original-To: stable@vger.kernel.org
-Received: from master.debian.org (master.debian.org [82.195.75.110])
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258CD213E78;
-	Thu, 20 Mar 2025 10:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB1D26AF5
+	for <stable@vger.kernel.org>; Thu, 20 Mar 2025 10:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742466043; cv=none; b=F44kmRPju1KarI6qHfUXePJGB1TQTva1Rev5P2NjEvHdAUNfIf2C3HbARlc5ejge68SCh8J56lQg4Qb+60UC2dXMBE4ipWmgoFhJofZ3NfXBMFxXBXDDHx81JnXc5JFw3mB3jsdNXTHTo1urXessfMKIPHgVK7Elh9BaEdsNLic=
+	t=1742465741; cv=none; b=qdBHGFHDKO2QO9z+qdVwTuYav1hcOucUT+sD8h9y+VDul9V6zERHb8K5wtZcQkD5g4RIPRCAJO10E/aW8gWkQzmgDRsxi7Xvz//NRb4QZgr8nFaFCUrxHdPhvcP6c8WCflily/BVMF3BMB+9vxBxnH6aHGFVAix6EjG7iSQMgjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742466043; c=relaxed/simple;
-	bh=yBCsYOVE7AT2oYGlWBsDG7Zxgx+jh1YRne+Nj/HKJwU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b19c1m/slQiWUiixijUNVqSjthw9dWeT8h1HA9/cri+IdjQxk7KNp5Q9Yb7GCRf9nKlJO+g87tf9UpQYfz+rC6HZ6Vtyd/fFi1XJfoCFVQsLvKfZE5hMiclXAy6NE/BNFG4fqL3yEWigYFolvXDviIUst27soR8SE3XSqZX7cRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=master.debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=kGM6LjAQ; arc=none smtp.client-ip=82.195.75.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=master.debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.master; h=In-Reply-To:Content-Type:MIME-Version:References:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description;
-	bh=DqDIP5URxHBbU7xo7G+yo2Ah9fSiO+S3KlhCrFB+gWM=; b=kGM6LjAQHidYvv+RmkeYAMZQXA
-	bWJ3stQJHTvQ+5FzkDeLLedfYg50wvVs7zJcDxUu3xnhQnXl7fLEy6sh4KSetsxlLK34dAQ5TGSbo
-	p1uB6teVnGc082ro/KvQrJy10MvbkJphUfs8UFLb/7o91IAD0Za6GGlterEQ4lZWovjwTo44exwJq
-	DkbTO9A18Z/Ykqg+v80KKGWtHH3JDsG7+E1Rh6RJxNC0gVJT+HpQNyz8pPpWGCJbYlaOjkPKyImbY
-	egb/yNu8Y2PeW6Zp/g1VB/YF9Bl1YPgINQKSYuZfyXd8gzN9Y10bGH0T43yCLzMiUWKYLNZ0vnZbg
-	ssj/7hTw==;
-Received: from ukleinek by master.debian.org with local (Exim 4.94.2)
-	(envelope-from <ukleinek@master.debian.org>)
-	id 1tvCrQ-00BNjk-NZ; Thu, 20 Mar 2025 10:10:48 +0000
-Date: Thu, 20 Mar 2025 11:10:47 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@debian.org>
-To: Lee Jones <lee@kernel.org>, 
-	Sebastian Reichel <sebastian.reichel@collabora.com>, Mark Brown <broonie@kernel.org>, 
-	Wolfram Sang <wsa@the-dreams.de>
-Cc: Dmitrii Osipenko <dmitry.osipenko@collabora.com>, Urja <urja@urja.dev>, 
-	Heiko Stuebner <heiko@sntech.de>, linux-rockchip@lists.infradead.org, linux-spi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel@collabora.com, stable@vger.kernel.org
-Subject: SPI transfers in atomic context [Was: Re: [PATCH v1 1/1] mfd: rk8xx:
- Fix shutdown handler]
-Message-ID: <sg5kgo5qjqyzfyk5nyjbkpgvbx6sfb7agc67ch6wsdq3etrsbf@h6xbtfs45k4w>
-References: <20240730180903.81688-1-sebastian.reichel@collabora.com>
- <20240801131823.GB1019230@google.com>
- <ih7hiojzuvqzpyipj66mgu5pmcderltabim7s5dnfzm6qpztbh@jqkst5tfw5ra>
+	s=arc-20240116; t=1742465741; c=relaxed/simple;
+	bh=4VTXpDEltRP9tmY/UY7UmnYkLoz+YKNmwptimwr2jj4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kO4j4yORxelft4gKCbFMa/dlvHI8ANe2jpg6y2CrdYgbmJvyN65/dTS6bTw3fEF6KLTGVJ1oAHbsSjfKDFu9fRCuzpbNOccblK8SE664o7GLyu6Cfp1evy5p/UCL7EPq72LrmFaZdQFgQqzYLBBqd4MQqh05rfWgyOJajCVgjRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=KVzzrbTP; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
+	by cmsmtp with ESMTPS
+	id v7OVteuqOzZPavCw0tW5l1; Thu, 20 Mar 2025 10:15:32 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id vCvzt3eOVclD2vCvzt04nR; Thu, 20 Mar 2025 10:15:31 +0000
+X-Authority-Analysis: v=2.4 cv=abFnnwot c=1 sm=1 tr=0 ts=67dbeac3
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CugIFSejTzcMExHdPSZF6GXe9DEmJbUCSV3ntiluwGY=; b=KVzzrbTP0ctNDWfQvbMHFwGiDE
+	leWcpLa2HUUXT8nnJSe0fbz/xdRdhXaZtQ8Hi1uIQUnRAzDk+MtmvJxO1JcLB7PkPgaRG0Df0xm6I
+	RgfCjBA92uQNdCT4/JXLW2dFDoCJTFSLGSwf9H0UCkNg6A06R+vCcMoiQMgLw6sq7zZBeEN5qKiX4
+	INmQwMPbCdcY133xUIQNGtc+ZiO27aGmkyeEhrOMztjji/xIy6As2l11Vpz/K/GeFqec/GZoerawC
+	/7/K7alxk3tUlgCcK6/yue0Vb/QscPHpOMxvz7Po+DrkkImXOEzdtkMnGlHvTSyoYkNTpTkQTvWBB
+	K+m1v2kA==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:48944 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1tvCvx-00000003IPl-0Xg1;
+	Thu, 20 Mar 2025 04:15:29 -0600
+Message-ID: <7d7f1f1c-72e7-49a0-abdd-fa1f8d924196@w6rz.net>
+Date: Thu, 20 Mar 2025 03:15:25 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="whhetjwkeqmqacim"
-Content-Disposition: inline
-In-Reply-To: <ih7hiojzuvqzpyipj66mgu5pmcderltabim7s5dnfzm6qpztbh@jqkst5tfw5ra>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250319143027.685727358@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1tvCvx-00000003IPl-0Xg1
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:48944
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 18
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfKY4q8JcRQirsx9xz48D+yPXnc3ednAxUcx+5V+70OAmigAHSdlQUfR0b9dR5/Eeg2ZA4QgtLp2TWg8HZGH+NqgVoPAydny8udrycTNUZ4LdQD4L41x5
+ bpFc/0E8Vqo0p0ann96FUFWE0zn/WMMZ7/EQ+LCwzArDgtkULhVFbjmtnPSdYSCWKiGqC27va0TKcg==
 
+On 3/19/25 07:27, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.13.8 release.
+> There are 241 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 21 Mar 2025 14:29:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
---whhetjwkeqmqacim
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: SPI transfers in atomic context [Was: Re: [PATCH v1 1/1] mfd: rk8xx:
- Fix shutdown handler]
-MIME-Version: 1.0
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Hi,
+Tested-by: Ron Economos <re@w6rz.net>
 
-On Thu, Aug 01, 2024 at 05:22:24PM +0200, Sebastian Reichel wrote:
-> On Thu, Aug 01, 2024 at 02:18:23PM GMT, Lee Jones wrote:
-> > > +	/*
-> > > +	 * Currently the Rockchip SPI driver always sleeps when doing SPI
-> > > +	 * transfers. This is not allowed in the SYS_OFF_MODE_POWER_OFF
-> > > +	 * handler, so we are using the prepare handler as a workaround.
-> > > +	 * This should be removed once the Rockchip SPI driver has been
-> > > +	 * adapted.
-> > > +	 */
-> >=20
-> > So why not just adapt the SPI driver now?
->=20
-> This patch is simple and thus can easily be backported, so that the
-> Acer Chromebook shutdown is fixed in the stable kernels. SPI based
-> rkxx has been using SYS_OFF_MODE_POWER_OFF_PREPARE from the start,
-> so it's not a regression.
->=20
-> As far as I could see the SPI framework does not have something
-> comparable to the I2C .xfer_atomic handler. So fixing up the
-> Rockchip SPI driver probably involves creating some SPI core
-> helpers. I'm not yet sure about the best way to deal with this.
-> But I guess it will be better not having to backport all of the
-> requires changes to stable.
->=20
-> In any case I think the next step in this direction is discussing
-> how to handle this in general for SPI.
->=20
-> > What's the bet that if accepted, this hack is still here in 5 years tim=
-e?
->=20
-> Even if I don't work on this now, I would expect somebody to have
-> issues with broken shutdown on RK3588 boards before 5 years are
-> over :)
-
-I'd like to have power-off working on Qnap TS-433 in the next Debian
-stable. With my Debian Kernel hat on I'd say cherry-picking such a
-commit (if it's in mainline) is acceptable. Backporting a major
-extension to the spi framework isn't.
-
-So: Expectation confirmed! And while I agree that hacks are not nice,
-I prefer a hack now over a machine that doesn't shut down properly over
-the next five years (if Lee's expectation is also correct).
-
-Can we maybe go forward and do both? Accept this hack patch now and work
-on spi to make atomic xfers possible?
-
-Mark, are there concerns from your side?=20
-Wolfram, are there things you would recommend to do differently in spi
-than what you have in i2c?
-
-Best regards
-Uwe
-
---whhetjwkeqmqacim
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmfb6aQACgkQj4D7WH0S
-/k4lVAgApKR/SmJy+eGu8P1FQH4+6mX1fHsmZUxzeXY41MV39695K+4iGZFvDggc
-knS/G5Vv8Q2nVucvZFCWY7HejNsG8Z7VdMijGpxl/cfVccwXHeJZy8Pwzo8+lmtn
-TXNTVYAhO5tEP/90mkx4sZLWn2rtrkniRGQEEb1XGBfRZi1WFwY8zVrTSY7GPPST
-QyC0tju6/9IC/vWvCMIirPXdj1dfPR9hBVdZc26roBQ/mrcUgqN7FhV8g9hbNuAB
-U38RZbhrm6lqfCyzl6nwO0BUgigcEdVxNi3DAbNdIeXCEBL1MFb++bDrq3Ep6BDQ
-kSSQoR/oxxHxoviZhQkceHHsh8SHdw==
-=hNBd
------END PGP SIGNATURE-----
-
---whhetjwkeqmqacim--
 
