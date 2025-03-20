@@ -1,199 +1,141 @@
-Return-Path: <stable+bounces-125688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D936EA6AD54
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 19:52:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8DDA6AE42
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 20:13:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ACE01897935
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 18:52:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 851C67AE2A9
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 19:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFDF227E84;
-	Thu, 20 Mar 2025 18:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B682288E3;
+	Thu, 20 Mar 2025 19:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EYIzxQ8x"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="szANa/5a"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15B226D14
-	for <stable@vger.kernel.org>; Thu, 20 Mar 2025 18:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD6D1C5F2C;
+	Thu, 20 Mar 2025 19:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742496728; cv=none; b=NDKbzmKbX+WM9b5zUGfFU2sOEZ41aukR3qtLJ7eYIektwXrcj9BfiWxk8PrcvLckc5q3xs9ZJ0hM1dXkT/6kwIQa+sXqav4P0tF/H4gvaD20yjq0180yIR3MZAFM1bFZENsGOVZKrszX0m9v5mUVEgqa8iuLURMnuf10MIh/N2I=
+	t=1742497799; cv=none; b=WijRL1EH5GUUj1Lc91fTbc1bVc0hGLhk5284fLQXReiRG2wySgm9DyXqv93xV+IGqyAqMIG2F7f2Nr/P10AZ2OUfMZHnGGocsw/6Wnljdp43nDNTlwzLQojsbMkJy2YQB5CBYh0KxbfNoGtOeyIk5NOj2PbUHtAQ59iz7vyEWA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742496728; c=relaxed/simple;
-	bh=X2OpYnKwhgcCKv5ixMN2zzlAolO88TSzl2cNHMuaauQ=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:References:Cc:
-	 In-Reply-To:Content-Type; b=mDRFlOuOGcfOyDizpwbgb67da8AV4p+LUArPiAE/ojIfr/GLfEjX92V+NWM9Lxt7RmlDO6YuXU2gAzLTm5mlUWygTCjBVFgc04LBiBhT0sts+ZOrNFD/3Y4z2DSDvH+/QiTGXVDiSQV3MPcxWrhqrp2bH+i3DZaDwqHdvu6zN08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EYIzxQ8x; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742496725;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m1k55B5xhcakMKOiOpFLhvz9gfJXnsz7lGEA/a0h9Z4=;
-	b=EYIzxQ8xZsZZM0xPUMTIKaD1G3o4Abq3UrCqbnUsk8hTuWW1NnckecsJaUfHHyQoijKy3a
-	ZcQUCrbtZMTPz47pMCdhRqnxp82vMj0MwsYwx2P3DPeImEOSCpi82uF6y8GiezBxCKHgat
-	fD+YKXG96kXVVnRklsbc9Jgf7RvT8eM=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-pxFG5uvzM7OtPftDKyXgbA-1; Thu, 20 Mar 2025 14:52:04 -0400
-X-MC-Unique: pxFG5uvzM7OtPftDKyXgbA-1
-X-Mimecast-MFC-AGG-ID: pxFG5uvzM7OtPftDKyXgbA_1742496724
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6e91054ea4eso16549936d6.3
-        for <stable@vger.kernel.org>; Thu, 20 Mar 2025 11:52:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742496723; x=1743101523;
-        h=content-transfer-encoding:in-reply-to:cc:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=m1k55B5xhcakMKOiOpFLhvz9gfJXnsz7lGEA/a0h9Z4=;
-        b=u60Qk/MDUUEJlvy3lsklEt0tjCMpNfRvy797JXggIG/Wfu0mhg/4wNwKGdNbqT64UR
-         35jcxQ04gkgrR8C6RQ86DPD/uI3FTf5htwvcP2PqFmFBMytg8pzWDz6YwYAYauw1Yygo
-         UIusOzDrwOPWUjKM/vXYayCrnDwYVZnYv/y7QcTXD9bLoUIx6DZQlCh5uAs4Yczpy1sz
-         XbfTLCRTO6kkBqKP5fLBag02KKZra10F7hkYSt5BzNMHEXzUFw25cH0f99FXEXCqICIC
-         6lVv9WRVK9ZWdLrU7YUiazTJg1pwP3hmHyawL9V/8Z06gS3Zmo60kZOPiQqfkw6+1wEM
-         sDkA==
-X-Gm-Message-State: AOJu0YyBMp+IjByjuvIPq1bMB9+hJJJdvs/l84EQpMSUdLd5qcQs/LuX
-	MCvyqnOGkDsvZ3IsyVnMxzQHdDJDVYQiAq0olDxyjb2LL5qyOVhvKWdkl996o4vgwTGmVQh4VJl
-	AY8gfT0YBVTsEcsQzfHY5ZaBUMe8U8+o37cUAmQf49bydqDNrX4oM2iptOacODg==
-X-Gm-Gg: ASbGnct7QWWXdk1RRLFXKCojCFcnFn1C7RxCyK5ppRZt3yotGDcCUdzgzNunv9sLraS
-	3JHJO6V7oo1ysQoEO9p2dT1rDVxKRlsKICpYw1+Bn90tGZKT5zLO+lLmMCNhEKEDnitsFv+BifL
-	UO/Mwa5oI5NTqFiTi4h1oabCh68cwPrtnpD3+qlv2OQAECRgCzVor9chn+uCjCXLM0/ZiWti3hF
-	7oofD8D4f13P3v2PGqBwejo+F6OBIVhWOAj648hIFX/GGu7lA/Pjd8VtwuF1yt/fz+7jSaW3LJq
-	ziwksddOZOdh7IPocgu+wBzj+DpTf6zMQgi1chHf7KPiVOSpScmP+P6SCGUU8g==
-X-Received: by 2002:ad4:5cae:0:b0:6e6:6599:edf6 with SMTP id 6a1803df08f44-6eb3f32bbbcmr6229876d6.34.1742496723152;
-        Thu, 20 Mar 2025 11:52:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFvh77Q26yZkIaOjE9rN2gWPWPTOxr8NTa7GBcQHCf5dZw1w9tTeKP1KQzRIFczUKcY7bIj4A==
-X-Received: by 2002:ad4:5cae:0:b0:6e6:6599:edf6 with SMTP id 6a1803df08f44-6eb3f32bbbcmr6229676d6.34.1742496722804;
-        Thu, 20 Mar 2025 11:52:02 -0700 (PDT)
-Received: from ?IPV6:2601:188:c100:5710:315f:57b3:b997:5fca? ([2601:188:c100:5710:315f:57b3:b997:5fca])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3ef251c7sm1578376d6.49.2025.03.20.11.52.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Mar 2025 11:52:02 -0700 (PDT)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <36fab78e-9ac3-48ce-b23e-90edc4523603@redhat.com>
-Date: Thu, 20 Mar 2025 14:52:01 -0400
+	s=arc-20240116; t=1742497799; c=relaxed/simple;
+	bh=TJPs+6wmIiv7YBBthqS5uAj/EfP7DIgfa/FVnOx9cNc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AK2Irm6RplW1R7IoAnOQ+Rh4KEnH24H2hCKk6YqDkNeAuLKHiXgCY20SQ9K60BpF7iDB4CUTrqcD2PFwT8lh6cIzkdDF+Zb0lsGC3kItzPMumniNRdA5tcag9dDQkQBBXoV/rvnaZxphV81BKsE/nIjBOOqdvE/NFxnFiZ4mkEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=szANa/5a; arc=none smtp.client-ip=212.227.126.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1742497781; x=1743102581; i=christian@heusel.eu;
+	bh=dN7Ji6DtQjkkoXTgLs8+LwmmvBuvr5b2CCS+MInyr4Y=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=szANa/5a4iwCELE7d7JBQQ+CAv+YgAtp0WSb1Sqy8g7vzScFAXT+GWhzOFExSuN0
+	 /LpryzDxAM3H/drbOTPjHJTpjgivzSFfd1u/pAfdayYatovznivPq8AhsOV8NmtnN
+	 fxuDziye6eTRQXuwvlb4Mdnc99C2r4u5Zba9b/bx9MdxijOWR2EzTviyG9KZ0i8Fh
+	 l6wlvH1eDSm0ZWdkQreEHLrSxIO0hIM43vFNYKpEBgzD5KTqepggh29+NTBEUO+bc
+	 Az++cktr78peXvwAbb5CWKfI04mo4WOekLj/7YjU1UMqBjuoIKmLn+d+/bYivJf5H
+	 JtnvMYGxytUZ6O6XNg==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([147.142.150.221]) by mrelayeu.kundenserver.de
+ (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1N5mWp-1t7d7S0mXz-016eyf; Thu, 20 Mar 2025 19:54:49 +0100
+Date: Thu, 20 Mar 2025 19:54:46 +0100
+From: Christian Heusel <christian@heusel.eu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
+Message-ID: <7ab191ab-448f-476a-a54e-31113996b110@heusel.eu>
+References: <20250319143027.685727358@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: BUG in LTS 5.15.x cpusets with tasks launched by newer systemd
-To: James Thomas <james.thomas@codethink.co.uk>
-References: <c5c7fe20-61a6-4228-876e-055ee9ab43b6@codethink.co.uk>
-Content-Language: en-US
-Cc: stable <stable@vger.kernel.org>, cgroups@vger.kernel.org
-In-Reply-To: <c5c7fe20-61a6-4228-876e-055ee9ab43b6@codethink.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="xw3vwn7ep3f4np5v"
+Content-Disposition: inline
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+X-Provags-ID: V03:K1:qS2mWgbyy4p+6ATI4UNi8W2UsUcEoRtG63M2FiZ4bB/p3WEqOkD
+ MFXP4hUkttdmZW+Kt8ApPjcvr1F58NOr4B53AOby9TcTVQybuP1zK337lRpSz3jDh+1MeUs
+ 6YYKwFqi5E3lJh22eBhMkj5YmYKQVjUyDLZSCwQ9VR/wylgVev8k80Dxc0ay4fuVQpUaLth
+ 8aobssraWGqkAe/kkQjaw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:lNB/bmmMXEs=;MLmfs0EPjz6VTOr6arRdkm2iOZf
+ 0u52w5A2WbnIGiIO/htPgAhtp34rBmeJBjRDCLR1GJ+GVDxs1EQgHS+gZxYW6EgfyJzwoToL9
+ ZOAu1r4BBZURZgrPOitVAKLvdMxD34GBRpv8HovQuRh5dTPyVmb88tRQWXlB7CWBlMtMAfVvD
+ e/Kjtfsjp++kKTF5dhQyyT1kOpoZtIfYjJmlXvm96tjipnVoysS+n10NfppeKJfNsD8BC7RqY
+ 37bL5cRxbUPl11sIYXrkYubH+0ELs1EriFTxBGANCOxvPloGHN0k0NMUKrX5iJz5+LWv7Ugb1
+ uMpb5SE2LTt+QL3mwEy907yQlkMScLdB1YqU7l59An136Hz69BjW3gX9L5vSsWOCUAnZ08XwT
+ Z/ZXYEnW7lW+0aR8y/LKdCpQuuf871w+Idhf0jAak2y9KqwN5QZ8oaM+2w0ZGn91lDMS0SfSX
+ vYlRNsOwJR+BKuGHoZN7GK8NI2d8G4iO3R7ZLN6gM2RBFoFek6rZ4EHoLtrKynAY6SV+zgBwZ
+ uQj1X2oNzG4POSI6/of5A+bwUDqOq9L1HqsZm0NvvWMV5aOg8RA1Uf17iHeehLPDNPag5NgCV
+ YV2FJ08RSSMSnWO47C/cxlvgiX8RnMkTJ4FNMAh2iOt8403ViuW9JCyVJyNY8ZpXl/0QOT9kF
+ cg3ywCTMZ2ykeUd4p6n0+ok5NILs98xM7Lufot4okT2eNyByogBXAG9RzIi1SLl9WZB+bHJrl
+ 3/f8jcdKLJPHzl4oLik4esSV7vVMiEFhAsDD+uTNSZmFuHzNs9m5K/q/kbNvjY17lOU0fawSz
+ FeKnJfVtWkzm9G+FACFT0FyItwrhMxfVgzS+EQTYz3WsKf4gnnEKEKjV3YQvBonDP9obRUHxX
+ 1GFBQrMqxTXWemdQz3L6lg6qnE5lNn7Zneoq1k1pJLBR4xBUNUbGnX2iOv191hWqMdfStm3rY
+ OSMkZ0ea1YSWkyOQKj09Iass8EdDCU+mTpJGoPUMytaJzYYfVaneXO+e3p4M+VjHDI2xqloOD
+ 6ATaFb3mDP6j0QIoF5I/rrBuHZwpNj+oF4vNSd9qEDx9HKAerHCh37KD/tBp1gziyf8Y4x+FX
+ Ffk00z5iCpzc0ycfdSkw/tBFzbJmiZdDjjc07NZUwaoii+r9z2FhpWMd6YLabQp73SKkdEd2O
+ TlKI7GBtaDPyQJ1ytcfxz9J2NzkCztMZmx5USP6DKqPjc4aAjTdwNp/zOOW1KERrxNPkw7yG0
+ RdpZr2pwCSx1hm3S0J59Zhbs3EBMzL+q63tIGA2rY8hebJ3PtRDCHs8Tea2U1don3pWd3OtRl
+ JZwuO3Tf85QGN9n8qquHAlDUDK1O1yWE03dqKKcalBk6UEK8InvVkocKJYoi7PbgWmmYefzgo
+ L5hLx8Kq2hiS2gGt0cvaoEBRa8kRnMkS2cFY8=
 
 
-On 3/20/25 6:07 AM, James Thomas wrote:
-> Hello all,
->
-> I encountered an issue with the CPU affinity of tasks launched by systemd in a
-> slice, after updating from systemd 254 to by systemd >= 256, on the LTS 5.15.x
-> branch (tested on v5.15.179).
->
-> Despite the slice file stipulating AllowedCPUS=2 (and confirming this was set in
-> /sys/fs/cgroup/test.slice/cpuset.cpus) tasks launched in the slice would have
-> the CPU affinity of the system.slice (i.e all by default) rather than 2.
->
-> To reproduce:
->
-> * Check kernel version and systemd version (I used a debian testing image for
-> testing)
->
-> ```
-> # uname -r
-> 5.15.179
-> # systemctl --version
-> systemd 257 (257.4-3)
-> ...
-> ```
->
-> * Create a test.slice with AllowedCPUS=2
->
-> ```
-> # cat <<EOF > /usr/lib/systemd/system/test.slice
-> [Unit]
-> Description=Test slice
-> Before=slices.target
-> [Slice]
-> AllowedCPUs=2
-> [Install]
-> WantedBy=slices.target
-> EOF
-> # systemctl daemon-reload && systemctl start test.slice
-> ```
->
-> * Confirm cpuset
->
-> ```
-> # cat /sys/fs/cgroup/test.slice/cpuset.cpus
-> 2
-> ```
->
-> * Launch task in slice
->
-> ```
-> # systemd-run --slice test.slice yes
-> Running as unit: run-r9187b97c6958498aad5bba213289ac56.service; invocation ID:
-> f470f74047ac43b7a60861d03a7ef6f9
-> # cat
-> /sys/fs/cgroup/test.slice/run-r9187b97c6958498aad5bba213289ac56.service/cgroup.procs
->
-> 317
-> ```
->
-> # Check affinity
->
-> ```
-> # taskset -pc 317
-> pid 317's current affinity list: 0-7
-> ```
->
-> This issue is fixed by applying upstream commits:
->
-> 18f9a4d47527772515ad6cbdac796422566e6440
-> cgroup/cpuset: Skip spread flags update on v2
-> and
-> 42a11bf5c5436e91b040aeb04063be1710bb9f9c
-> cgroup/cpuset: Make cpuset_fork() handle CLONE_INTO_CGROUP properly
->
-> With these applied:
->
-> ```
-> # systemd-run --slice test.slice yes
-> Running as unit: run-r442c444559ff49f48c6c2b8325b3b500.service; invocation ID:
-> 5211167267154e9292cb6b854585cb91
-> # cat /sys/fs/cgroup/test.slice/run-r442c444559ff49f48c6c2b8325b3b500.service
-> 291
-> # taskset -pc 291
-> pid 291's current affinity list: 2
-> ```
->
-> Perhaps these are a good candidate for backport onto the 5.15 LTS branch?
->
-> Thanks
-> James
->
-You should also send this email to stable@vger.kernel.org for 
-consideration into the 5.15 LTS branch.
+--xw3vwn7ep3f4np5v
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
+MIME-Version: 1.0
 
-Cheers,
-Longman
+On 25/03/19 07:27AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.13.8 release.
+> There are 241 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Fri, 21 Mar 2025 14:29:55 +0000.
+> Anything received after that time might be too late.
 
+Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU, on the
+Steam Deck (LCD variant) aswell as the Framework Desktop.
 
+--xw3vwn7ep3f4np5v
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmfcZHYACgkQwEfU8yi1
+JYV7ExAAsTcCSYipslyJJfjqj46cseSWoEVf/H3DawpIPeCrTX0vp284cL2uRz7n
+6KHXAWp0KP3hSxXo5i/NyPhQ5SZus8BNYkbKmkMSUciC/vrTY9b5PrnQ//mndhUa
+luM5yE6SAShkbl69LuMIxr8Jg9+/Lzk6HYdLeiOE+dvy/tR6izcKEhrulDn08qCD
+qrIGMYGlvTNtAKrrwQYnHqBOv3akXUtXv8xrdoa5e7XeyArFbIXwU1wTJllLaevn
+UQdAOjRD7PKAQYLV0HA6iY0Uic1yICZ2kEueSgfn7iEuvkijeS2rXLjynoev5YSA
+J9LNHY7UQTQVzVyvRr72TmodRUwLFsETRwpYqPbhj37p7tYVfSV+YCHoEfI65IgS
+LkMlZe0QdH8ywSsGbBs3chPcrA+y/bKeJ4pzSnuLLBOcrZPwK6qcxm9nQGcFMqu+
+LmC3BxekambG6f+B4rF15vtuiK0QU1VlkJeFy5IGGJKSEDeQmqHmpbz+6i8AJplq
+M9SfI6nmNyI0NNDiG7QtHYvnmD8Hcyst3Oiip+1gwfkN2WVn9v8vXiw1l3H4AcOZ
+qAzA78xhnjZhpTN+WKPZNJVhQB0tdrpC0E6H7LSbeGh+3vS1WH5LrAhgCiRz/Zhy
+uVfvQL+BJFJPn1AyVSXa6CYOMYKGHdQHghY0qOy1to1SkqxwJpk=
+=ejVD
+-----END PGP SIGNATURE-----
+
+--xw3vwn7ep3f4np5v--
 
