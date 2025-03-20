@@ -1,91 +1,98 @@
-Return-Path: <stable+bounces-125639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64F9A6A4EF
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 12:28:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66777A6A50A
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 12:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41DE57A4874
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 11:27:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 091EE8A7326
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 11:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F085D21CA04;
-	Thu, 20 Mar 2025 11:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5882F21B9FC;
+	Thu, 20 Mar 2025 11:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="i1iCmRPj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEMBAnlN"
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA0421C9EB
-	for <stable@vger.kernel.org>; Thu, 20 Mar 2025 11:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1079979C4;
+	Thu, 20 Mar 2025 11:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742470109; cv=none; b=c8BSxHFrE87K31SQNIX3CkdQuwEwEkGLqQu3qyCWE5oyLGCRD2JwinNxCiUv2WqFZiRmAKfUlb6NeB5KQGAlNHtVVMmMYBdvATr/zHkPEyhKmSCsr4k3dQyNaT0cQw9o0N5q5aoPx5GeLp5msXcSG701F2ie+dddP2RHrlZhw4M=
+	t=1742470465; cv=none; b=RpruDj2LHlYk3+eftC6lUdzz2N0/kUx8RJCpq8TnKWpj+3wvtCGio94nSX6zgiMYyRnbof6Gz9gOOc/IhZVrUm0r1bEDuv8ZqC8jb9y4by3IvvEAsyff28gwbWAnJmFnTNyNjZFbC72Um4fZDI7Er5xeyQQPJxTiVru4We/uCgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742470109; c=relaxed/simple;
-	bh=T7vz6zVyLZ8Lpn3WyFzpjP+8wK0Ao+auEG5F9mLd0Og=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JFP8QrHeqNlfLp87epN7bsWTdzE4Bg2v8Btvrwch4AeV84JDRi6eydjkLgCA0coXiEEhzT08SS00u/KzuYD2yGhzUoP4bKXVPdO10e7Slu1VfdSZpmL9z+AxSYTEKttlLSexK1mncOr96nmJ/2sfjMUXCFESzf0oTDolBKxs7bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=i1iCmRPj; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1742470105;
-	bh=T7vz6zVyLZ8Lpn3WyFzpjP+8wK0Ao+auEG5F9mLd0Og=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1iCmRPjrTqCtCOcqJyxaCUW4HYKf5/b3wQvgcyGwlaO9zGSGCO9hqxWhnqkoyi1W
-	 oogI6qPcJPeJo8AO4IiK/wV5efdWnwkFQSWPIf83YJ9Fo3JDJtEPe8dNJWM3g1Jdvb
-	 zu/U19GQ665QVkhNXeGo0hDvYDcx98p0DmovZWQg+QysXXqBwrfQXGgVri+/wHFlwh
-	 qH2Y4imCmj6228klajSmxlUt48TNL3a8w2ssPzU9as4L3FRirH1snrX6/5BQhepWRO
-	 dQSf8M6HiQpitHLDfnsq31IbjnFvOwCGjkZ58LHtLdWGXf9Q0jnMDwCtDxAdP37Pec
-	 zECOGG5jXy8kg==
-Received: from laura.lan (unknown [IPv6:2001:b07:646b:e2:d88b:5c7c:6d41:68dc])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 95A4917E0599;
-	Thu, 20 Mar 2025 12:28:25 +0100 (CET)
-From: Laura Nao <laura.nao@collabora.com>
-To: philm@manjaro.org
-Cc: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Subject: Re: 5.10 kernel series fails to build on newer toolchain: FAILED unresolved symbol filp_close
-Date: Thu, 20 Mar 2025 12:28:06 +0100
-Message-Id: <20250320112806.332385-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <34d5cd2e-1a9e-4898-8528-9e8c2e32b2a4@manjaro.org>
-References: <34d5cd2e-1a9e-4898-8528-9e8c2e32b2a4@manjaro.org>
+	s=arc-20240116; t=1742470465; c=relaxed/simple;
+	bh=twDOHZtwATwzEptT5F2OxG0CqVkfEqW2mvpie+Zq1DM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FmSi46sRZuiBMubvejuonE1bj7QblB3Q5J7RXMoe9gcOCDinCybbjh6hgaKn09MLP/gugC1/Wh/+X351jaDvKqedTmOSlUzgkLMei15TKD2z5Hxf1sMHdYZadAHIy5smDMrxWQo8cMlxiUtfo2RI27vaZNIoPVTtCXqJyAPkpo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEMBAnlN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE8FC4CEDD;
+	Thu, 20 Mar 2025 11:34:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742470464;
+	bh=twDOHZtwATwzEptT5F2OxG0CqVkfEqW2mvpie+Zq1DM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hEMBAnlN0aePxZCL9iR27VfNabwMdEk9vOI8nrRIBmkmf5G1uUfAChxttQbwrI6Si
+	 9zz6szR69s1F8g5HDK/4ncNHn+4MlcbOYSZBdDdLPTcWubVGJT7e0hzLVc8TaIe8pi
+	 qK5cdUq8Fxyw3EheD34hEFZFpjM7XSztDfJxNueZ4H4n+lxQUYhNRG/JFQfD/7e/L8
+	 CpkNd8ududYoB0CZGoGx2nSy4DKz8Swf7YLUd26xoobB96qRVeSEZ+WB2Rn57YZ+0l
+	 q5HLO2g27COsqkO3Xff545GgLmsc+/t/sYC1TXduZEdVyvpPPN6/Z69DHNKSxMaDeQ
+	 It25TzymJ5ceg==
+Date: Thu, 20 Mar 2025 11:34:18 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
+Message-ID: <28cd837c-2537-4520-a130-1262bad106b0@sirena.org.uk>
+References: <20250319143027.685727358@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="F3JSvU06hCLg/7BK"
+Content-Disposition: inline
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+X-Cookie: Do not fold, spindle or mutilate.
 
-Hello,
 
-On Fri, 14 Mar 2025 16:19:13 +0700, Philip Müller wrote:
-> On 14/3/25 12:39, Greg Kroah-Hartman wrote:
->> Can you bisect down to the offending commit?
->> 
->> And I think I saw kernelci hit this as well, but I don't have an answer
->> for it...
->
-> The same kernel compiles fine with the older toolchain. No changes were 
-> made to config nor patch-set when we tried to recompile the 5.10.234 
-> kernel with the newer toolchain. 5.10.235 fails similar to 5.10.234 on 
-> the same toolchain.
->
-> So maybe a commit is missing, which is present in either 5.4 or 5.15 series.
+--F3JSvU06hCLg/7BK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-KernelCI is now reporting a pass on the stable-rc build (5.10.236-rc1),
-though I was not able to spot exactly what fixed this.
+On Wed, Mar 19, 2025 at 07:27:50AM -0700, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.13.8 release.
+> There are 241 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Best,
-Laura
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--F3JSvU06hCLg/7BK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfb/TkACgkQJNaLcl1U
+h9Dkjgf/Q2ru1hyufk/4RFHSx/kxmussEXOcPMeBSJQbhAeTEEIGHS67sZdM+0ry
+kmN1CRGNiucOGpTVhOSmjJ3y+knWyKo8hFe5TAZcndZ0UeNy5qwa3p6SwnxltAJ2
+7zCd/qERy5JgT5F+5w6Iz7pcPpgbSHIygmaRPj774O0bBXtpV3txU7c9TXiNBTy7
+J8V9KI9g8crVLmT7/1fdP0W8keg9AAg+dMz/PUPwYK1qEyo3Auta81tMFywxvMbM
+y6Hu2m14JK1BMBfqZbNnRC5wqQsnyjyWqoT/Gvo2oZNaI1D5XRhUU+Dnu7o9zNhh
+zAaTKShaGyl3xYjsqFlqWKddBPJz0A==
+=Be05
+-----END PGP SIGNATURE-----
+
+--F3JSvU06hCLg/7BK--
 
