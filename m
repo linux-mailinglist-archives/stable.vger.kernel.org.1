@@ -1,160 +1,305 @@
-Return-Path: <stable+bounces-125617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3117FA69E98
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 04:01:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02916A69E9C
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 04:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE7263BFDA5
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 03:01:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40367189694D
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 03:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA63138F9C;
-	Thu, 20 Mar 2025 03:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4CD1C6FFD;
+	Thu, 20 Mar 2025 03:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCOywEWC"
+	dkim=permerror (0-bit key) header.d=darkrain42.org header.i=@darkrain42.org header.b="igmVJ8fP";
+	dkim=pass (2048-bit key) header.d=darkrain42.org header.i=@darkrain42.org header.b="TxaKk4rm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from o-chul.darkrain42.org (o-chul.darkrain42.org [74.207.241.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B3C4690;
-	Thu, 20 Mar 2025 03:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD12149DFF;
+	Thu, 20 Mar 2025 03:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.207.241.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742439705; cv=none; b=e5whHvIunyqYNZsZ151zA0J7gFHmWFNx+3LM1xkofi4vHeVqHXXrsV1ov+N2IpKPEyVcTBdWLuHH3b4v6uM3bJLvuVkFxj32x8YMpeY57OjlFJORg9NZUfyEuWa8DF0bhlbomPz9SA2dgvNspB+75CpDE4AMsUjNaWYT4iO6CQk=
+	t=1742440515; cv=none; b=o4LQ/mEOFTgGboTCWyzeIL0IMyRVbXMRNF8T/HbC/tBmXmndDlGlEOMP06jn/jD0YPeCzBn0wB4bz5J4ZpBN3uPwwZBjeyjX5IR2UKlLYwDnLkzIxsM/QRi0jQ29+4Ew4udLGKFuKtQeErohL4zdBEASU0paRfN/i450gKCy+ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742439705; c=relaxed/simple;
-	bh=c0OVR0nfnZkRWysIpPR89Iqk1G7jQnsqPpst6EHgn+E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BLZtoiY4TiFBPBquIfHGiLgCk5+P4pXWvc9W5+BT/EA5hBxeQpEbE97LZbG7oUz5U7iEVebBoxcXcRi9HN/xQ0iGAGNqoz6PpdTZw3u5e+Myw7lOhavo2hw7nmlAnAcD4Upj3i0gnB3tX4gvoNI0+KIqzkrS7M96HxcgaipVx7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCOywEWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FFBC4CEE4;
-	Thu, 20 Mar 2025 03:01:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742439705;
-	bh=c0OVR0nfnZkRWysIpPR89Iqk1G7jQnsqPpst6EHgn+E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fCOywEWC8hsTk1aoRHzQ52l8BWo7neTLdqYqX3JJYjXLHwB6sDYKlPTzyyizODc5k
-	 2Y/ihlh8w4EOz7t7Bqe68tTBu6wYl4WCvhfbmyv30wR8JwNEh5I3ABHC33BAXJHOjX
-	 B/WrlIhZceIXIlRSvvBFbfyA0qclpy1BMWNluIbk86wkLs6YUzQbDWge5a68tJM5PS
-	 FUth/Z+nf04nkO65CCwcfFtPK4FVFXDij/aTM/JI/WXzK/G4zKgqQwesJXM8iC8/h0
-	 VpPM52Ax7ghnGeWClj1ch86NpW5g9DG7jTmh+RVEVzala+qDaoBrf6LgokG6WN+IQk
-	 G7SEQHBelOOhw==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5e5cd420781so601713a12.2;
-        Wed, 19 Mar 2025 20:01:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV02CBN2boRXKBe76dsVwDEUhfLw8+PTJDH7mJZzo6Rbwxp58GX1BaHhNNVES9YszrwlMGyn1nq@vger.kernel.org, AJvYcCVbzAsDFNfi3S1iGKd/Vh/B/Wk6gJz1A7R/N+WqdYeJsbO0z/I2j/Hp/5SIMyZcOTq8TB1ARrFGUCRhzkb0@vger.kernel.org, AJvYcCXKtM5G6MaT6vFCDXRyuL5F+wKyFET38rxP59ogIE9FOZxoUpgwVqhKRP5LXjtE22Y7asfQJbzItA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLRtuFlieBOL3LZ3BHbYkxScuKAxHXq8mJ510/4Q+ycJkXf1sD
-	QJfl6fAl1f7t3b5S68UCcbZeHw2ZauC3NkjWcQAeGw1QatoIKcCd67DvSWAizn9Q/P+L5dgC2xW
-	BlMZ7uxnvxE15DrkduJQn8nIpgU0=
-X-Google-Smtp-Source: AGHT+IHqWokcgREOirPHE31mMWzf5yAqDBsDiehm2ro+I/2WbRrfdrFc22+YmYMAdH+fNLU8SlaD6kHofdbWyes0A54=
-X-Received: by 2002:a05:6402:1d54:b0:5e5:49af:411d with SMTP id
- 4fb4d7f45d1cf-5eb80d487b5mr5702524a12.17.1742439703352; Wed, 19 Mar 2025
- 20:01:43 -0700 (PDT)
+	s=arc-20240116; t=1742440515; c=relaxed/simple;
+	bh=yewg5HkvsdyUnlB9lfKwgx278aL8ikfLs6sLa6hf+MM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jIZD/pbFQMYV6nqbe5LgZT66K0Xlg3/DO2lTm1NMXfuMC8lKcOEXJICxh9yAOwQyiZgzqQlXa0IP92cAREatyXN6gJDBmsKv5I8ja0bzbp74lTbsP6c3wuSb/VqNVyqErsn59LAONXW9hDKVh2kx2vSwp+TRi5JNcsoHKokzMe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=darkrain42.org; spf=pass smtp.mailfrom=darkrain42.org; dkim=permerror (0-bit key) header.d=darkrain42.org header.i=@darkrain42.org header.b=igmVJ8fP; dkim=pass (2048-bit key) header.d=darkrain42.org header.i=@darkrain42.org header.b=TxaKk4rm; arc=none smtp.client-ip=74.207.241.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=darkrain42.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=darkrain42.org
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+ d=darkrain42.org; i=@darkrain42.org; q=dns/txt; s=ed25519-2022-03;
+ t=1742439946; h=date : from : to : cc : subject : message-id :
+ references : mime-version : content-type : in-reply-to : from;
+ bh=RcdODk4dVl8NFMpBY+o248G8mPL+2nAl9dG24FV5U/0=;
+ b=igmVJ8fPELk1Rbt5F1e2zIVgk9DdXVXLciVteuRCRCGpH6rgbPwZidzbSBnA73sYAP8+M
+ Z4TbUeGlwVFqRz5Ag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=darkrain42.org;
+ i=@darkrain42.org; q=dns/txt; s=rsa-2022-03; t=1742439946; h=date :
+ from : to : cc : subject : message-id : references : mime-version :
+ content-type : in-reply-to : from;
+ bh=RcdODk4dVl8NFMpBY+o248G8mPL+2nAl9dG24FV5U/0=;
+ b=TxaKk4rmQEUx5ne2SCeXv+sYF8cdTPEeBMrcpXjqEjByzVX/CSe/5Rnt2t2yUR6OKckH7
+ RDG3TO0tqDwgx92wXTRvuiS+xEVKXcwQevVpYyrz8O+gyJ2HR11KKtD5Z/Sm/jThqIm7nNH
+ /v2KkHnnXCp85hRi8HgA1putoirI/aCHnsnAWs+5oIuiLCiKRLWythMb5qqWZ1mMP/EgKot
+ N3yFLKGJ10KQ3fN4ezI3k9pRewseOww/a1f9wENoUzjsNqMMYuhuodHB8g2FHK43NdHTkx3
+ Yqu1vHqKPe7eGEtdrXJAOEN1ggdSWSLfZAjjxSmJ3afu1bSMgW6Bys+EAbqw==
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
+	 client-signature ED25519)
+	(Client CN "otters", Issuer "otters" (not verified))
+	by o-chul.darkrain42.org (Postfix) with ESMTPS id EB90984E6;
+	Wed, 19 Mar 2025 20:05:45 -0700 (PDT)
+Received: by vaarsuvius.home.arpa (Postfix, from userid 1000)
+	id 7F9198C1E64; Wed, 19 Mar 2025 20:05:45 -0700 (PDT)
+Date: Wed, 19 Mar 2025 20:05:45 -0700
+From: Paul Aurich <paul@darkrain42.org>
+To: Cliff Liu <donghua.liu@windriver.com>
+Cc: stable@vger.kernel.org, sfrench@samba.org, pc@cjr.nz,
+	lsahlber@redhat.com, sprasad@microsoft.com, tom@talpey.com,
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+	linux-kernel@vger.kernel.org, Zhe.He@windriver.com
+Subject: Re: [PATCH 6.1.y] smb: prevent use-after-free due to open_cached_dir
+ error paths
+Message-ID: <Z9uGCaxYJgs1gvwM@vaarsuvius.home.arpa>
+Mail-Followup-To: Cliff Liu <donghua.liu@windriver.com>,
+	stable@vger.kernel.org, sfrench@samba.org, pc@cjr.nz,
+	lsahlber@redhat.com, sprasad@microsoft.com, tom@talpey.com,
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+	linux-kernel@vger.kernel.org, Zhe.He@windriver.com
+References: <20250319090839.3631424-1-donghua.liu@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250319064031.2971073-1-chenhuacai@loongson.cn>
- <20250319064031.2971073-4-chenhuacai@loongson.cn> <2025031943-disparity-dash-cfa3@gregkh>
- <Z9rYQy3l5V5cvW7W@t14s> <2025031942-portside-finite-34a9@gregkh> <CAASaF6zNsiwUOcSD177aORwfBu4kaq8EKh1XdZkO13kgedcOPA@mail.gmail.com>
-In-Reply-To: <CAASaF6zNsiwUOcSD177aORwfBu4kaq8EKh1XdZkO13kgedcOPA@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 20 Mar 2025 11:01:32 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4-GnvqJrnJu_Z6EBKBH5WBTiZ9xRh1vGhBmuoYNw=r9w@mail.gmail.com>
-X-Gm-Features: AQ5f1JpRALxCtqgxc8zE1UNEpDT5tsnLLr1ILnleluG0qpKgmpr6B4OtD1rd5lQ
-Message-ID: <CAAhV-H4-GnvqJrnJu_Z6EBKBH5WBTiZ9xRh1vGhBmuoYNw=r9w@mail.gmail.com>
-Subject: Re: [PATCH 6.1&6.6 V3 3/3] sign-file,extract-cert: use pkcs11
- provider for OPENSSL MAJOR >= 3
-To: Jan Stancek <jstancek@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen <chenhuacai@loongson.cn>, 
-	Sasha Levin <sashal@kernel.org>, Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org, 
-	David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, R Nageswara Sastry <rnsastry@linux.ibm.com>, 
-	Neal Gompa <neal@gompa.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250319090839.3631424-1-donghua.liu@windriver.com>
 
-Hi, all,
+Thanks for backporting this!  I think you should pick up these patches as 
+pre-requisites for the one here:
 
-On Thu, Mar 20, 2025 at 12:53=E2=80=AFAM Jan Stancek <jstancek@redhat.com> =
-wrote:
->
-> On Wed, Mar 19, 2025 at 5:26=E2=80=AFPM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Wed, Mar 19, 2025 at 03:44:19PM +0100, Jan Stancek wrote:
-> > > On Wed, Mar 19, 2025 at 07:13:13AM -0700, Greg Kroah-Hartman wrote:
-> > > > On Wed, Mar 19, 2025 at 02:40:31PM +0800, Huacai Chen wrote:
-> > > > > From: Jan Stancek <jstancek@redhat.com>
-> > > > >
-> > > > > commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
-> > > > >
-> > > > > ENGINE API has been deprecated since OpenSSL version 3.0 [1].
-> > > > > Distros have started dropping support from headers and in future
-> > > > > it will likely disappear also from library.
-> > > > >
-> > > > > It has been superseded by the PROVIDER API, so use it instead
-> > > > > for OPENSSL MAJOR >=3D 3.
-> > > > >
-> > > > > [1] https://github.com/openssl/openssl/blob/master/README-ENGINES=
-.md
-> > > > >
-> > > > > [jarkko: fixed up alignment issues reported by checkpatch.pl --st=
-rict]
-> > > > >
-> > > > > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> > > > > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > > Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-> > > > > Reviewed-by: Neal Gompa <neal@gompa.dev>
-> > > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > > ---
-> > > > >  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------=
-------
-> > > > >  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++-----------=
--
-> > > > >  2 files changed, 138 insertions(+), 58 deletions(-)
-> > > >
-> > > > This seems to differ from what is upstream by a lot, please documen=
-t
-> > > > what you changed from it and why when you resend this series again.
-> > >
-> > > Hunks are arranged differently, but code appears to be identical.
-> > > When I apply the series to v6.6.83 and compare with upstream I get:
-> >
-> > If so, why is the diffstat different?  Also why are the hunks arranged
-> > differently,
->
-> He appears to be using "--diff-algorithm=3Dminimal", while you probably
-> patience or histogram.
->
-> $ git format-patch -1 --stdout --diff-algorithm=3Dminimal 558bdc45dfb2 |
-> grep -A3 -m1 -- "---"
-> ---
->  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
->  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
->  2 files changed, 138 insertions(+), 58 deletions(-)
->
-> Should be easy to regenerate with different diff-alg for v4.
-I use the default configuration to generate patches, and since the
-code is identical, should I really send a V4?
+- 5c86919455c1 ("smb: client: fix use-after-free in 
+   smb2_query_info_compound()")
+- 7afb86733685 ("smb: Don't leak cfid when reconnect races with 
+   open_cached_dir")
 
-Huacai
+All three of these patches touch on how the cached directory handling of the 
+'has_lease' field works, and my work was built on top of those.
 
+On 2025-03-19 17:08:39 +0800, Cliff Liu wrote:
+>From: Paul Aurich <paul@darkrain42.org>
 >
-> Regards,
-> Jan
+>If open_cached_dir() encounters an error parsing the lease from the
+>server, the error handling may race with receiving a lease break,
+>resulting in open_cached_dir() freeing the cfid while the queued work is
+>pending.
 >
-> > that's a hint to me that something went wrong and I can't
-> > trust the patch at all.
-> >
-> > thanks,
-> >
-> > greg k-h
-> >
+>Update open_cached_dir() to drop refs rather than directly freeing the
+>cfid.
 >
+>Have cached_dir_lease_break(), cfids_laundromat_worker(), and
+>invalidate_all_cached_dirs() clear has_lease immediately while still
+>holding cfids->cfid_list_lock, and then use this to also simplify the
+>reference counting in cfids_laundromat_worker() and
+>invalidate_all_cached_dirs().
+>
+>Fixes this KASAN splat (which manually injects an error and lease break
+>in open_cached_dir()):
+>
+>==================================================================
+>BUG: KASAN: slab-use-after-free in smb2_cached_lease_break+0x27/0xb0
+>Read of size 8 at addr ffff88811cc24c10 by task kworker/3:1/65
+>
+>CPU: 3 UID: 0 PID: 65 Comm: kworker/3:1 Not tainted 6.12.0-rc6-g255cf264e6e5-dirty #87
+>Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+>Workqueue: cifsiod smb2_cached_lease_break
+>Call Trace:
+> <TASK>
+> dump_stack_lvl+0x77/0xb0
+> print_report+0xce/0x660
+> kasan_report+0xd3/0x110
+> smb2_cached_lease_break+0x27/0xb0
+> process_one_work+0x50a/0xc50
+> worker_thread+0x2ba/0x530
+> kthread+0x17c/0x1c0
+> ret_from_fork+0x34/0x60
+> ret_from_fork_asm+0x1a/0x30
+> </TASK>
+>
+>Allocated by task 2464:
+> kasan_save_stack+0x33/0x60
+> kasan_save_track+0x14/0x30
+> __kasan_kmalloc+0xaa/0xb0
+> open_cached_dir+0xa7d/0x1fb0
+> smb2_query_path_info+0x43c/0x6e0
+> cifs_get_fattr+0x346/0xf10
+> cifs_get_inode_info+0x157/0x210
+> cifs_revalidate_dentry_attr+0x2d1/0x460
+> cifs_getattr+0x173/0x470
+> vfs_statx_path+0x10f/0x160
+> vfs_statx+0xe9/0x150
+> vfs_fstatat+0x5e/0xc0
+> __do_sys_newfstatat+0x91/0xf0
+> do_syscall_64+0x95/0x1a0
+> entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>
+>Freed by task 2464:
+> kasan_save_stack+0x33/0x60
+> kasan_save_track+0x14/0x30
+> kasan_save_free_info+0x3b/0x60
+> __kasan_slab_free+0x51/0x70
+> kfree+0x174/0x520
+> open_cached_dir+0x97f/0x1fb0
+> smb2_query_path_info+0x43c/0x6e0
+> cifs_get_fattr+0x346/0xf10
+> cifs_get_inode_info+0x157/0x210
+> cifs_revalidate_dentry_attr+0x2d1/0x460
+> cifs_getattr+0x173/0x470
+> vfs_statx_path+0x10f/0x160
+> vfs_statx+0xe9/0x150
+> vfs_fstatat+0x5e/0xc0
+> __do_sys_newfstatat+0x91/0xf0
+> do_syscall_64+0x95/0x1a0
+> entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>
+>Last potentially related work creation:
+> kasan_save_stack+0x33/0x60
+> __kasan_record_aux_stack+0xad/0xc0
+> insert_work+0x32/0x100
+> __queue_work+0x5c9/0x870
+> queue_work_on+0x82/0x90
+> open_cached_dir+0x1369/0x1fb0
+> smb2_query_path_info+0x43c/0x6e0
+> cifs_get_fattr+0x346/0xf10
+> cifs_get_inode_info+0x157/0x210
+> cifs_revalidate_dentry_attr+0x2d1/0x460
+> cifs_getattr+0x173/0x470
+> vfs_statx_path+0x10f/0x160
+> vfs_statx+0xe9/0x150
+> vfs_fstatat+0x5e/0xc0
+> __do_sys_newfstatat+0x91/0xf0
+> do_syscall_64+0x95/0x1a0
+> entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>
+>The buggy address belongs to the object at ffff88811cc24c00
+> which belongs to the cache kmalloc-1k of size 1024
+>The buggy address is located 16 bytes inside of
+> freed 1024-byte region [ffff88811cc24c00, ffff88811cc25000)
+>
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Paul Aurich <paul@darkrain42.org>
+>Signed-off-by: Steve French <stfrench@microsoft.com>
+>[ Do not apply the change for cfids_laundromat_worker() since there is no
+>  this function and related feature on 6.1.y. Update open_cached_dir()
+>  according to method of upstream patch. ]
+>Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+>Signed-off-by: He Zhe <Zhe.He@windriver.com>
+>---
+>Verified the build test.
+>---
+> fs/smb/client/cached_dir.c | 39 ++++++++++++++++----------------------
+> 1 file changed, 16 insertions(+), 23 deletions(-)
+>
+>diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+>index d09226c1ac90..d65d5fe5b8fe 100644
+>--- a/fs/smb/client/cached_dir.c
+>+++ b/fs/smb/client/cached_dir.c
+>@@ -320,17 +320,13 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+> 		/*
+> 		 * We are guaranteed to have two references at this point.
+> 		 * One for the caller and one for a potential lease.
+>-		 * Release the Lease-ref so that the directory will be closed
+>-		 * when the caller closes the cached handle.
+>+		 * Release one here, and the second below.
+> 		 */
+> 		kref_put(&cfid->refcount, smb2_close_cached_fid);
+> 	}
+> 	if (rc) {
+>-		if (cfid->is_open)
+>-			SMB2_close(0, cfid->tcon, cfid->fid.persistent_fid,
+>-				   cfid->fid.volatile_fid);
+>-		free_cached_dir(cfid);
+>-		cfid = NULL;
+>+		cfid->has_lease = false;
+
+This should be cleared while holding cfids->cfid_list_lock, which is what the 
+upstream version of this backport (a9685b409a0) does, because of how this 
+error handling was adjusted in 5c86919455c1 ("smb: client: fix use-after-free 
+in smb2_query_info_compound()")
+
+>+		kref_put(&cfid->refcount, smb2_close_cached_fid);
+> 	}
+>
+> 	if (rc == 0) {
+>@@ -462,25 +458,24 @@ void invalidate_all_cached_dirs(struct cifs_tcon *tcon)
+> 		cfids->num_entries--;
+> 		cfid->is_open = false;
+> 		cfid->on_list = false;
+>-		/* To prevent race with smb2_cached_lease_break() */
+>-		kref_get(&cfid->refcount);
+>+		if (cfid->has_lease) {
+>+			/*
+>+			 * The lease was never cancelled from the server,
+>+			 * so steal that reference.
+>+			 */
+>+			cfid->has_lease = false;
+>+		} else
+>+			kref_get(&cfid->refcount);
+> 	}
+> 	spin_unlock(&cfids->cfid_list_lock);
+>
+> 	list_for_each_entry_safe(cfid, q, &entry, entry) {
+> 		list_del(&cfid->entry);
+> 		cancel_work_sync(&cfid->lease_break);
+>-		if (cfid->has_lease) {
+>-			/*
+>-			 * We lease was never cancelled from the server so we
+>-			 * need to drop the reference.
+>-			 */
+>-			spin_lock(&cfids->cfid_list_lock);
+>-			cfid->has_lease = false;
+>-			spin_unlock(&cfids->cfid_list_lock);
+>-			kref_put(&cfid->refcount, smb2_close_cached_fid);
+>-		}
+>-		/* Drop the extra reference opened above*/
+>+		/*
+>+		 * Drop the ref-count from above, either the lease-ref (if there
+>+		 * was one) or the extra one acquired.
+>+		 */
+> 		kref_put(&cfid->refcount, smb2_close_cached_fid);
+> 	}
+> }
+>@@ -491,9 +486,6 @@ smb2_cached_lease_break(struct work_struct *work)
+> 	struct cached_fid *cfid = container_of(work,
+> 				struct cached_fid, lease_break);
+>
+>-	spin_lock(&cfid->cfids->cfid_list_lock);
+>-	cfid->has_lease = false;
+>-	spin_unlock(&cfid->cfids->cfid_list_lock);
+> 	kref_put(&cfid->refcount, smb2_close_cached_fid);
+> }
+>
+>@@ -511,6 +503,7 @@ int cached_dir_lease_break(struct cifs_tcon *tcon, __u8 lease_key[16])
+> 		    !memcmp(lease_key,
+> 			    cfid->fid.lease_key,
+> 			    SMB2_LEASE_KEY_SIZE)) {
+>+			cfid->has_lease = false;
+> 			cfid->time = 0;
+> 			/*
+> 			 * We found a lease remove it from the list
+>-- 
+>2.43.0
+>
+
+~Paul
+
 
