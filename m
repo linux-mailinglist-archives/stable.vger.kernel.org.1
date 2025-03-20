@@ -1,154 +1,91 @@
-Return-Path: <stable+bounces-125674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D96A6AADF
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 17:16:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4138DA6AB02
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 17:27:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D02D4161815
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 16:14:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D190F7A5A3F
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 16:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B00A16D32A;
-	Thu, 20 Mar 2025 16:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0FD219A67;
+	Thu, 20 Mar 2025 16:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OtN0CmcP"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="DjPOXP8K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CB21EB198;
-	Thu, 20 Mar 2025 16:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671941EB1A8;
+	Thu, 20 Mar 2025 16:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742487261; cv=none; b=WSnQ5pg2hPDVcyfutVN6K6gT2AS+jn6s3+D0/C3ZeIRrjhtycYFV5UwKfje2qCzUOfwP6GgO6IJmhZJEUZI59nnWBx7mOU9+GV9g4yvnQkSlpv3urqWgE//VDR/Fte1UHsoVgY40wmqKOlykkvAl48yW1u3Zj1CLJZpBfiEhxl8=
+	t=1742488043; cv=none; b=CmQoHPi2zXCsrtGapYU+f2r0AYhKwPYA2Ky3s6qQGeV6afySLg0lT/oAhW528b0M8uIbHa8Jsk+ltd8TTl1tFbMKitqT/6262Z0dSRFFPzgg61d90sCwQvk4a4DvdE2BddvjFuHvAynmZlUtr6lVvhbVnH2LmAl1AGMIUkUY/qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742487261; c=relaxed/simple;
-	bh=Fn9pXh4lxMLX31zHxont+zvhZMtgvYJNY46WZiexzOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LQiXs+DokYkdvbmnz8yu8RvnAJv4UVLF50aJBaGinYVjKg6VAQGPcet+3rklUl0tND1vLiU+DnMlRPW2q7BLg8S4zzeWGGRX7yMHqIm9R5hhUzFOQibcckc6Ivu4K9Um4CIQDKVyIVLoejyxteU/Fe/zqhFx1I3O4AP5QkPDPNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OtN0CmcP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16672C4CEDD;
-	Thu, 20 Mar 2025 16:14:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742487260;
-	bh=Fn9pXh4lxMLX31zHxont+zvhZMtgvYJNY46WZiexzOk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OtN0CmcP94HKckc21kYxVbm0rKzb5PNwwH6AGGvLJuxusGlWt+Lhc4u3hA+tGm+F7
-	 F6XXRQj9URQEhixVOSFtaqTm9LqiQAjBOZTE+GMug+v+PhFa6k/j7LyDLhdbeYIPNV
-	 oc/YXnNoeMFFyuNZW6MH9fyETelTonxUavVNSYDfrurTuvsAcN3hEOdQ1/51q1KdCV
-	 0Lpsi8wqyZCw4uzKv8FPCD9btVS00zr1/E8odwGnlG+K5b2sxeQOy5sE+uBnFhN0ET
-	 28L7UtAD0sY46SbQsn7NyBOMmN+hgjtsqNSc7ThA+wO9V2NuUqgAUefy4elzBVael6
-	 aoMg1DBUyELhg==
-Date: Thu, 20 Mar 2025 18:14:15 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Kees Cook <kees@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Josh Drake <josh@delphoslabs.com>,
-	Suraj Sonawane <surajsonawane0215@gmail.com>,
-	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-	security@kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] keys: Fix UAF in key_put()
-Message-ID: <Z9w-10St-WYpSnKC@kernel.org>
-References: <2874581.1742399866@warthog.procyon.org.uk>
+	s=arc-20240116; t=1742488043; c=relaxed/simple;
+	bh=bfhieFFF5xFk6YbXZg31H+sZx2cavKu2QXKL1UtFJM8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=jnx0X+pHVE9wIbg2XpnPH1ZMzBvCe7fhv+F3S1sid7bWCT16wO53RUFNVoKRLERYiQR4JGrPuKQh1o/P1vQ5CDLN0tVspHqVp281qVddxqcuOuCBNYUmr0Oiv8Bv93EKeedjrH7b00lEA6qfS79eyHZ9RfH7ZdF8RQJn8T/27P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=DjPOXP8K; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id D85A32116B4D; Thu, 20 Mar 2025 09:27:21 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D85A32116B4D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1742488041;
+	bh=k46qvSEd0Lp8ccJUs1FV6dMFtYIyo56KkHz/uKLy7zk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DjPOXP8KQjLGpzJ9B3DVK53xn4qiuw4bJbB2jEyNo/j7MG8m+UfSV4o2v/fv+9Ud8
+	 VYbl/N+WMcHL5Y6NaoH58Tjnf2jlOWMeALo1Cm4C9QusiROL6I/OVtrwBM9LMGw5QA
+	 GSZDfxIfuabgVRp8X+9ee0RF9OfEv1ihjqf+pJgY=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org
+Subject: Re: [PATCH 6.6 000/166] 6.6.84-rc1 review
+Date: Thu, 20 Mar 2025 09:27:21 -0700
+Message-Id: <1742488041-4614-1-git-send-email-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
+References: <20250319143019.983527953@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2874581.1742399866@warthog.procyon.org.uk>
 
-On Wed, Mar 19, 2025 at 03:57:46PM +0000, David Howells wrote:
->     
-> Once a key's reference count has been reduced to 0, the garbage collector
-> thread may destroy it at any time and so key_put() is not allowed to touch
-> the key after that point.  The most key_put() is normally allowed to do is
-> to touch key_gc_work as that's a static global variable.
-> 
-> However, in an effort to speed up the reclamation of quota, this is now
-> done in key_put() once the key's usage is reduced to 0 - but now the code
-> is looking at the key after the deadline, which is forbidden.
-> 
-> Fix this by using a flag to indicate that a key can be gc'd now rather than
-> looking at the key's refcount in the garbage collector.
-> 
-> Fixes: 9578e327b2b4 ("keys: update key quotas in key_put()")
-> Reported-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> Tested-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
-> cc: Jarkko Sakkinen <jarkko@kernel.org>
-> cc: Oleg Nesterov <oleg@redhat.com>
-> cc: Kees Cook <kees@kernel.org>
-> cc: Hillf Danton <hdanton@sina.com>,
-> cc: keyrings@vger.kernel.org
-> Cc: stable@vger.kernel.org # v6.10+
-> ---
->  include/linux/key.h |    1 +
->  security/keys/gc.c  |    4 +++-
->  security/keys/key.c |    2 ++
->  3 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/key.h b/include/linux/key.h
-> index 074dca3222b9..ba05de8579ec 100644
-> --- a/include/linux/key.h
-> +++ b/include/linux/key.h
-> @@ -236,6 +236,7 @@ struct key {
->  #define KEY_FLAG_ROOT_CAN_INVAL	7	/* set if key can be invalidated by root without permission */
->  #define KEY_FLAG_KEEP		8	/* set if key should not be removed */
->  #define KEY_FLAG_UID_KEYRING	9	/* set if key is a user or user session keyring */
-> +#define KEY_FLAG_FINAL_PUT	10	/* set if final put has happened on key */
->  
->  	/* the key type and key description string
->  	 * - the desc is used to match a key against search criteria
-> diff --git a/security/keys/gc.c b/security/keys/gc.c
-> index 7d687b0962b1..f27223ea4578 100644
-> --- a/security/keys/gc.c
-> +++ b/security/keys/gc.c
-> @@ -218,8 +218,10 @@ static void key_garbage_collector(struct work_struct *work)
->  		key = rb_entry(cursor, struct key, serial_node);
->  		cursor = rb_next(cursor);
->  
-> -		if (refcount_read(&key->usage) == 0)
-> +		if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
-> +			smp_mb(); /* Clobber key->user after FINAL_PUT seen. */
+The kernel, bpf tool, perf tool, and kselftest builds fine for v6.6.84-rc1 on x86 and arm64 Azure VM.
 
-test_bit() is already atomic.
+Kernel binary size for x86 build:
+text      data      bss      dec       hex      filename
+27318662  16715490  4640768  48674920  2e6b868  vmlinux
 
-https://docs.kernel.org/core-api/wrappers/atomic_bitops.html
+Kernel binary size for arm64 build:
+text      data      bss      dec       hex      filename
+34684949  13845466  970368   49500783  2f3526f  vmlinux
 
->  			goto found_unreferenced_key;
-> +		}
->  
->  		if (unlikely(gc_state & KEY_GC_REAPING_DEAD_1)) {
->  			if (key->type == key_gc_dead_keytype) {
-> diff --git a/security/keys/key.c b/security/keys/key.c
-> index 3d7d185019d3..7198cd2ac3a3 100644
-> --- a/security/keys/key.c
-> +++ b/security/keys/key.c
-> @@ -658,6 +658,8 @@ void key_put(struct key *key)
->  				key->user->qnbytes -= key->quotalen;
->  				spin_unlock_irqrestore(&key->user->lock, flags);
->  			}
-> +			smp_mb(); /* key->user before FINAL_PUT set. */
-> +			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
 
-Ditto.
+Tested-by: Hardik Garg <hargar@linux.microsoft.com>
 
-Nit: I'm just thinking should the name imply more like that "now
-key_put() is actually done". E.g., even something like KEY_FLAG_PUT_DONE
-would be more self-descriptive.
 
->  			schedule_work(&key_gc_work);
->  		}
->  	}
-> 
-> 
 
-BR, Jarkko
+
+Thanks,
+Hardik
 
