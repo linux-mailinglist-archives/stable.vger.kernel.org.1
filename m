@@ -1,141 +1,196 @@
-Return-Path: <stable+bounces-125689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8DDA6AE42
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 20:13:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612CFA6AE87
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 20:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 851C67AE2A9
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 19:12:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 094B3484D55
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 19:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B682288E3;
-	Thu, 20 Mar 2025 19:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6928F229B02;
+	Thu, 20 Mar 2025 19:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="szANa/5a"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ue+uI5MD"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD6D1C5F2C;
-	Thu, 20 Mar 2025 19:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC33227B8C;
+	Thu, 20 Mar 2025 19:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742497799; cv=none; b=WijRL1EH5GUUj1Lc91fTbc1bVc0hGLhk5284fLQXReiRG2wySgm9DyXqv93xV+IGqyAqMIG2F7f2Nr/P10AZ2OUfMZHnGGocsw/6Wnljdp43nDNTlwzLQojsbMkJy2YQB5CBYh0KxbfNoGtOeyIk5NOj2PbUHtAQ59iz7vyEWA8=
+	t=1742499021; cv=none; b=EKMKUs1zeO9FMxqyYozxogCI+JmZE9EPDfsqGEKK0SrjLkmhBelhbXRjI1KP0Bm9XkNUpBe5xnYL03WDCYFW8080ObOzIDGIPAHL0Y7TeM+qTF2tSJbl5BdY681lz6A6vQSy3sBeABL7/7Y4jqPCKUDPYzSX+k1STif1GlkidAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742497799; c=relaxed/simple;
-	bh=TJPs+6wmIiv7YBBthqS5uAj/EfP7DIgfa/FVnOx9cNc=;
+	s=arc-20240116; t=1742499021; c=relaxed/simple;
+	bh=cjrQ7/A+o0M9kLVQ8XCMiZxelReUueYnwhxfM4/ol8E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AK2Irm6RplW1R7IoAnOQ+Rh4KEnH24H2hCKk6YqDkNeAuLKHiXgCY20SQ9K60BpF7iDB4CUTrqcD2PFwT8lh6cIzkdDF+Zb0lsGC3kItzPMumniNRdA5tcag9dDQkQBBXoV/rvnaZxphV81BKsE/nIjBOOqdvE/NFxnFiZ4mkEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=szANa/5a; arc=none smtp.client-ip=212.227.126.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1742497781; x=1743102581; i=christian@heusel.eu;
-	bh=dN7Ji6DtQjkkoXTgLs8+LwmmvBuvr5b2CCS+MInyr4Y=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=szANa/5a4iwCELE7d7JBQQ+CAv+YgAtp0WSb1Sqy8g7vzScFAXT+GWhzOFExSuN0
-	 /LpryzDxAM3H/drbOTPjHJTpjgivzSFfd1u/pAfdayYatovznivPq8AhsOV8NmtnN
-	 fxuDziye6eTRQXuwvlb4Mdnc99C2r4u5Zba9b/bx9MdxijOWR2EzTviyG9KZ0i8Fh
-	 l6wlvH1eDSm0ZWdkQreEHLrSxIO0hIM43vFNYKpEBgzD5KTqepggh29+NTBEUO+bc
-	 Az++cktr78peXvwAbb5CWKfI04mo4WOekLj/7YjU1UMqBjuoIKmLn+d+/bYivJf5H
-	 JtnvMYGxytUZ6O6XNg==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([147.142.150.221]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1N5mWp-1t7d7S0mXz-016eyf; Thu, 20 Mar 2025 19:54:49 +0100
-Date: Thu, 20 Mar 2025 19:54:46 +0100
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
-Message-ID: <7ab191ab-448f-476a-a54e-31113996b110@heusel.eu>
-References: <20250319143027.685727358@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ba0r5JN7R3SDLsygfKLo176yBPuLogJBMjJ+oTRYKKJvCGESJdRq3GYYXrXzzI1a7AIhoR/QNqXjTvrGTA4TZbLMQemGv+qliFtfNgAZ5HP2GmgbhZKeme96JBQ1ID0LiK1oYKcpAkiTtBk+y8XHeb0w2BI8+nONVm9jo/24J/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ue+uI5MD; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac289147833so229446566b.2;
+        Thu, 20 Mar 2025 12:30:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742499017; x=1743103817; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rnlUos378azUvuCBgqiYKu7ZcTNbQdf2U1HIKDB6jhM=;
+        b=Ue+uI5MDNPOeg0q6ykY937qTPo9O7oBlao1/BRPEPBxPNxy0f1AMxGSBsSNvbXc7j6
+         nKp8torqGqDUCi7Tjoj9QYpLnE79lN+v7sOe8TU5X8iTesiQKQyTYLtScbqw3g8D0aNv
+         /s3XKlamKuYdk/MOUvLtzlWkmuSa2qv1zFss8WsbpOmhdj9bf+kuIPin7iNVwPbiShAz
+         4IJrsV9VHXYsH7+qt1V1xPMknOPl4oWEN0M7Sw7IGz1D0Xbe8Cl3chcf+gtD8GwHL+nP
+         E7KOl5/6d/bHhAUPtRatVDyY9BHiP//EkNXLuGNADKbRYMJmZ/T7amWbn2FbAWJ0d6qZ
+         2Cgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742499017; x=1743103817;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rnlUos378azUvuCBgqiYKu7ZcTNbQdf2U1HIKDB6jhM=;
+        b=UzX2TFlpbnhinsdJ8yjV7ATNgcdmAXb3jpsfdbO5RG5esJtmmbtwbecDyFs5Ymc1zY
+         BKTpBcoQIG79ule8g0Oof5i1y6LUVG81wr9X50YZn99IbXM7Slk4IjyaFnzYL6plqAOD
+         LiuHhLgNrNTTP7nH6a8vtzcR+CW/rqXemtfncv2B1RKXJIW77c2XYQOIZgbxacA7UBQB
+         OozTL+wso72lIwpd4BX+MjfRd4CWkczW5K/0smeUPHtn4xPqsaoG6bQR3iVCLNb/z6sf
+         aCt80OlLG0SHXCyvzETZ8e5NCVyeGRuJwNvtUeMit/NyA75iBKoj6oYLyXgwAkKHHqf/
+         uhPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDPzLhOMygsS+TmYt3MsVSVXfeC/HF6zHapVAszIYxIPf705G8TVCp2GP9ERkQKHAf8C7Wxy0MA9pghZE=@vger.kernel.org, AJvYcCVcL76hDwMnjTNTNx+DePsPmIl9Wilrvh+GYxDQ+QuMzQPV0rer6cVxnZJzultBhrsdT+y+5yQM@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWPR+YeTFOPqYbQB1ZDw4TLNwojO0JNtIwXCkQqthnblSARB9x
+	Awk+fA/8AEKX7q5KnskyJ7XPGs5czfgV0QeyCwLBpA4hvC7LOL2l4xZs4a6f
+X-Gm-Gg: ASbGncuVSGbHURaNS1yFK8WKKEJ2Uew48ofRQ0JWTU1eF0ozbeWJqrUzSh35/HBeU76
+	1t3btmOmxzs4Y44OdF+NUfYM8etDLgubzi++Zn26UZX4qIQCZuuBvw7VF18BTKDtImetokRtG8q
+	BA6NAScuBk46Pv9ydWKRtlJ1UNohppE6fmgxF17MvhIwoeFNJJ284zuKiJl3Vdw6zlWRqmtPS3e
+	2alYwHYyADTT4owP+6JhZ9GSE2SdqzCjBcFQKXPAEokesNAxw+jEioIA/2hYV78EtxySUDHFLqq
+	ivPoVRTPXMBUBiOqNQZpsP7kwEZYhVODgLyI3LdwhAG9HDBs30DO/SJGQjkjjOT5x6QsRA3L7Wu
+	yPw==
+X-Google-Smtp-Source: AGHT+IGixscxCkTYfDVvi1DbrSr0AdhyZkhqAfzSfKOrjBwSF3czxPS6d+7fx+I4sGD3g6Dt7F5uzQ==
+X-Received: by 2002:a17:906:c111:b0:ac3:8feb:26d2 with SMTP id a640c23a62f3a-ac3f20b9bedmr49710566b.2.1742499017006;
+        Thu, 20 Mar 2025 12:30:17 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3efd24f6esm24958966b.154.2025.03.20.12.30.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Mar 2025 12:30:16 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 4C8A5BE2DE0; Thu, 20 Mar 2025 20:30:15 +0100 (CET)
+Date: Thu, 20 Mar 2025 20:30:15 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Vasiliy Kovalev <kovalev@altlinux.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lvc-patches@linuxtesting.org, dutyrok@altlinux.org,
+	gerben@altlinux.org,
+	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
+Message-ID: <Z9xsx-w4YCBuYjx5@eldamar.lan>
+References: <20241019191303.24048-1-kovalev@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="xw3vwn7ep3f4np5v"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
-X-Provags-ID: V03:K1:qS2mWgbyy4p+6ATI4UNi8W2UsUcEoRtG63M2FiZ4bB/p3WEqOkD
- MFXP4hUkttdmZW+Kt8ApPjcvr1F58NOr4B53AOby9TcTVQybuP1zK337lRpSz3jDh+1MeUs
- 6YYKwFqi5E3lJh22eBhMkj5YmYKQVjUyDLZSCwQ9VR/wylgVev8k80Dxc0ay4fuVQpUaLth
- 8aobssraWGqkAe/kkQjaw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lNB/bmmMXEs=;MLmfs0EPjz6VTOr6arRdkm2iOZf
- 0u52w5A2WbnIGiIO/htPgAhtp34rBmeJBjRDCLR1GJ+GVDxs1EQgHS+gZxYW6EgfyJzwoToL9
- ZOAu1r4BBZURZgrPOitVAKLvdMxD34GBRpv8HovQuRh5dTPyVmb88tRQWXlB7CWBlMtMAfVvD
- e/Kjtfsjp++kKTF5dhQyyT1kOpoZtIfYjJmlXvm96tjipnVoysS+n10NfppeKJfNsD8BC7RqY
- 37bL5cRxbUPl11sIYXrkYubH+0ELs1EriFTxBGANCOxvPloGHN0k0NMUKrX5iJz5+LWv7Ugb1
- uMpb5SE2LTt+QL3mwEy907yQlkMScLdB1YqU7l59An136Hz69BjW3gX9L5vSsWOCUAnZ08XwT
- Z/ZXYEnW7lW+0aR8y/LKdCpQuuf871w+Idhf0jAak2y9KqwN5QZ8oaM+2w0ZGn91lDMS0SfSX
- vYlRNsOwJR+BKuGHoZN7GK8NI2d8G4iO3R7ZLN6gM2RBFoFek6rZ4EHoLtrKynAY6SV+zgBwZ
- uQj1X2oNzG4POSI6/of5A+bwUDqOq9L1HqsZm0NvvWMV5aOg8RA1Uf17iHeehLPDNPag5NgCV
- YV2FJ08RSSMSnWO47C/cxlvgiX8RnMkTJ4FNMAh2iOt8403ViuW9JCyVJyNY8ZpXl/0QOT9kF
- cg3ywCTMZ2ykeUd4p6n0+ok5NILs98xM7Lufot4okT2eNyByogBXAG9RzIi1SLl9WZB+bHJrl
- 3/f8jcdKLJPHzl4oLik4esSV7vVMiEFhAsDD+uTNSZmFuHzNs9m5K/q/kbNvjY17lOU0fawSz
- FeKnJfVtWkzm9G+FACFT0FyItwrhMxfVgzS+EQTYz3WsKf4gnnEKEKjV3YQvBonDP9obRUHxX
- 1GFBQrMqxTXWemdQz3L6lg6qnE5lNn7Zneoq1k1pJLBR4xBUNUbGnX2iOv191hWqMdfStm3rY
- OSMkZ0ea1YSWkyOQKj09Iass8EdDCU+mTpJGoPUMytaJzYYfVaneXO+e3p4M+VjHDI2xqloOD
- 6ATaFb3mDP6j0QIoF5I/rrBuHZwpNj+oF4vNSd9qEDx9HKAerHCh37KD/tBp1gziyf8Y4x+FX
- Ffk00z5iCpzc0ycfdSkw/tBFzbJmiZdDjjc07NZUwaoii+r9z2FhpWMd6YLabQp73SKkdEd2O
- TlKI7GBtaDPyQJ1ytcfxz9J2NzkCztMZmx5USP6DKqPjc4aAjTdwNp/zOOW1KERrxNPkw7yG0
- RdpZr2pwCSx1hm3S0J59Zhbs3EBMzL+q63tIGA2rY8hebJ3PtRDCHs8Tea2U1don3pWd3OtRl
- JZwuO3Tf85QGN9n8qquHAlDUDK1O1yWE03dqKKcalBk6UEK8InvVkocKJYoi7PbgWmmYefzgo
- L5hLx8Kq2hiS2gGt0cvaoEBRa8kRnMkS2cFY8=
+In-Reply-To: <20241019191303.24048-1-kovalev@altlinux.org>
 
+Hi
 
---xw3vwn7ep3f4np5v
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
-MIME-Version: 1.0
+On Sat, Oct 19, 2024 at 10:13:03PM +0300, Vasiliy Kovalev wrote:
+> Syzbot reported an issue in hfs subsystem:
+> 
+> BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
+> BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+> BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+> Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
+> 
+> Call Trace:
+>  <TASK>
+>  __dump_stack lib/dump_stack.c:94 [inline]
+>  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+>  print_address_description mm/kasan/report.c:377 [inline]
+>  print_report+0x169/0x550 mm/kasan/report.c:488
+>  kasan_report+0x143/0x180 mm/kasan/report.c:601
+>  kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+>  __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+>  memcpy_from_page include/linux/highmem.h:423 [inline]
+>  hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+>  hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+>  hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
+>  hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
+>  hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
+>  vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+>  do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+>  __do_sys_mkdir fs/namei.c:4300 [inline]
+>  __se_sys_mkdir fs/namei.c:4298 [inline]
+>  __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
+>  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+>  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7fbdd6057a99
+> 
+> Add a check for key length in hfs_bnode_read_key to prevent
+> out-of-bounds memory access. If the key length is invalid, the
+> key buffer is cleared, improving stability and reliability.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+> ---
+>  fs/hfs/bnode.c     | 6 ++++++
+>  fs/hfsplus/bnode.c | 6 ++++++
+>  2 files changed, 12 insertions(+)
+> 
+> diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+> index 6add6ebfef8967..cb823a8a6ba960 100644
+> --- a/fs/hfs/bnode.c
+> +++ b/fs/hfs/bnode.c
+> @@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode *node, void *key, int off)
+>  	else
+>  		key_len = tree->max_key_len + 1;
+>  
+> +	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
+> +		memset(key, 0, sizeof(hfs_btree_key));
+> +		pr_err("hfs: Invalid key length: %d\n", key_len);
+> +		return;
+> +	}
+> +
+>  	hfs_bnode_read(node, key, off, key_len);
+>  }
+>  
+> diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+> index 87974d5e679156..079ea80534f7de 100644
+> --- a/fs/hfsplus/bnode.c
+> +++ b/fs/hfsplus/bnode.c
+> @@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode *node, void *key, int off)
+>  	else
+>  		key_len = tree->max_key_len + 2;
+>  
+> +	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
+> +		memset(key, 0, sizeof(hfsplus_btree_key));
+> +		pr_err("hfsplus: Invalid key length: %d\n", key_len);
+> +		return;
+> +	}
+> +
+>  	hfs_bnode_read(node, key, off, key_len);
+>  }
+>  
+> -- 
+> 2.33.8
 
-On 25/03/19 07:27AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.8 release.
-> There are 241 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Fri, 21 Mar 2025 14:29:55 +0000.
-> Anything received after that time might be too late.
+I do realize that the HFS filesystem is "Orphan". But in the light of
+the disclosure in
+https://ssd-disclosure.com/ssd-advisory-linux-kernel-hfsplus-slab-out-of-bounds-write/
+is there still something which needs to be done here?
 
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU, on the
-Steam Deck (LCD variant) aswell as the Framework Desktop.
+Does the above needs to be picked in mainline and then propagated to
+the supported stable versions?
 
---xw3vwn7ep3f4np5v
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmfcZHYACgkQwEfU8yi1
-JYV7ExAAsTcCSYipslyJJfjqj46cseSWoEVf/H3DawpIPeCrTX0vp284cL2uRz7n
-6KHXAWp0KP3hSxXo5i/NyPhQ5SZus8BNYkbKmkMSUciC/vrTY9b5PrnQ//mndhUa
-luM5yE6SAShkbl69LuMIxr8Jg9+/Lzk6HYdLeiOE+dvy/tR6izcKEhrulDn08qCD
-qrIGMYGlvTNtAKrrwQYnHqBOv3akXUtXv8xrdoa5e7XeyArFbIXwU1wTJllLaevn
-UQdAOjRD7PKAQYLV0HA6iY0Uic1yICZ2kEueSgfn7iEuvkijeS2rXLjynoev5YSA
-J9LNHY7UQTQVzVyvRr72TmodRUwLFsETRwpYqPbhj37p7tYVfSV+YCHoEfI65IgS
-LkMlZe0QdH8ywSsGbBs3chPcrA+y/bKeJ4pzSnuLLBOcrZPwK6qcxm9nQGcFMqu+
-LmC3BxekambG6f+B4rF15vtuiK0QU1VlkJeFy5IGGJKSEDeQmqHmpbz+6i8AJplq
-M9SfI6nmNyI0NNDiG7QtHYvnmD8Hcyst3Oiip+1gwfkN2WVn9v8vXiw1l3H4AcOZ
-qAzA78xhnjZhpTN+WKPZNJVhQB0tdrpC0E6H7LSbeGh+3vS1WH5LrAhgCiRz/Zhy
-uVfvQL+BJFJPn1AyVSXa6CYOMYKGHdQHghY0qOy1to1SkqxwJpk=
-=ejVD
------END PGP SIGNATURE-----
-
---xw3vwn7ep3f4np5v--
+Regards,
+Salvatore
 
