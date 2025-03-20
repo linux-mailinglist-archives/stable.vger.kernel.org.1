@@ -1,196 +1,117 @@
-Return-Path: <stable+bounces-125668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B79A6AA37
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 16:47:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A030A6AAA8
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 17:08:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C3351897B0F
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 15:47:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 327424870F9
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 16:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88B61EB195;
-	Thu, 20 Mar 2025 15:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368141EDA18;
+	Thu, 20 Mar 2025 16:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="viO4x2F2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kucE7pW2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAAF1E2852;
-	Thu, 20 Mar 2025 15:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E959E1EDA05
+	for <stable@vger.kernel.org>; Thu, 20 Mar 2025 16:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742485614; cv=none; b=gcW6hks+xNHgE8L4Zls1XzHt2zl23omoCDMcYR5LzDEFhJroW48s8VHalzDFVA31VLkVlekQzSUToVoHblnAfQXVYj30X/99bbuMxL7or2quKOjc9hpPjC3hIusnrdeQd1TxX6dZa4RzELQL2f8vvF0TxRU4SsNLfcbpGa3R5Pg=
+	t=1742486614; cv=none; b=avqhJPTjEzi2vvvJi/+YHeRMSIXeNUGEUsM3bw66SMP0F/PhD644nVDfgduPgG2qaN0YXV/Tj1Iht9YvoRMEzk7If+9HCnUwvnd6LkIz51SpAwEwhQv6Cxc7/XUQu+td+ZPFjbBV7rBwJu4zvZqQ0wOU3hf5WVmyoAXWaZrS+0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742485614; c=relaxed/simple;
-	bh=QlzjqiyXxem5/96A8SeWhR/8S3BS/BqcGio0FD718r8=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=sCxsEZMwTKTu+tJ7eio51OoDh79fwzKKSYkEaIEQuQ3k6YXzCzc54sk3XonCyvTfZ1IznYWwo0kp+H6r4TMgu8U3MwwFBbMQQ0TPiPAq9Q8Wr/AASXSOZ/9XxXnE2sDqY27dDQJSYw7WeESo1EsgT6V02PtnR38UDnzqZo/97Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=viO4x2F2; arc=none smtp.client-ip=99.78.197.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1742485612; x=1774021612;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=XcPv3CbdUSM7iTcNveWy76kFCLMhX0n3GxNEQsZcAro=;
-  b=viO4x2F2Viz4vX+GhAdsbJP5KiihogFBE7JHPQb59JPqvAS4pJLGHXZR
-   Gfh/Bwprm9IsiBMwXrzzHPdQRN2exOnnI3kwtW/JUqJEeN/y8++Onn38x
-   WkP2H1eWoNQNHRQMoBPdGJkU2ChWFGwVyVfpj98pOFmoZ4tot7b0dfU28
-   M=;
-X-IronPort-AV: E=Sophos;i="6.14,262,1736812800"; 
-   d="scan'208";a="183620688"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2025 15:46:51 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [10.0.17.79:56646]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.33.52:2525] with esmtp (Farcaster)
- id 54ef2665-6285-4618-b050-7a48e99ebad3; Thu, 20 Mar 2025 15:46:50 +0000 (UTC)
-X-Farcaster-Flow-ID: 54ef2665-6285-4618-b050-7a48e99ebad3
-Received: from EX19D019EUB002.ant.amazon.com (10.252.51.33) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 20 Mar 2025 15:46:49 +0000
-Received: from EX19D019EUB003.ant.amazon.com (10.252.51.50) by
- EX19D019EUB002.ant.amazon.com (10.252.51.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 20 Mar 2025 15:46:49 +0000
-Received: from EX19D019EUB003.ant.amazon.com ([fe80::531b:a721:1f0c:7896]) by
- EX19D019EUB003.ant.amazon.com ([fe80::531b:a721:1f0c:7896%3]) with mapi id
- 15.02.1544.014; Thu, 20 Mar 2025 15:46:49 +0000
-From: "Acs, Jakub" <acsjakub@amazon.de>
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>
-CC: "acsjakub@amazon.com" <acsjakub@amazon.com>, Theodore Ts'o
-	<tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, Mahmoud Adam
-	<mngyadam@amazon.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"security@kernel.org" <security@kernel.org>
-Subject: [PATCH v2] ext4: fix OOB read when checking dotdot dir
-Thread-Topic: [PATCH v2] ext4: fix OOB read when checking dotdot dir
-Thread-Index: AQHbma9L44YWgUtfIkGCovMFjqZb+Q==
-Date: Thu, 20 Mar 2025 15:46:49 +0000
-Message-ID: <b3ae36a6794c4a01944c7d70b403db5b@amazon.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1742486614; c=relaxed/simple;
+	bh=LV7rwrmodQ4U6u1JO4NZ5hLGx+kHI9F3A5tCpnHzvuk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eo98rA0F6w4efbYCn++jCCK3+9nwoG3QVGhYz5Ko9lm42fCNLjpJf8jD0psqxH9T0O8LfpE8//L2lswQ55f60pninwi8E0UHevmRaMnTizxc2yS+R4x0Skc9YXfVJ051dqsNjfHGCfV1fh9arQMkJKZ581MF+HupJ2RbCIDmQ4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kucE7pW2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF79C4CEE7;
+	Thu, 20 Mar 2025 16:03:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742486613;
+	bh=LV7rwrmodQ4U6u1JO4NZ5hLGx+kHI9F3A5tCpnHzvuk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kucE7pW2xv+l4PGFvb8faIE2rugIW9C1y6JF1xdTdZo832ALQvJ3Ii4kQxbTeYBET
+	 l+fmA1Cc144BCzZU8ByY7RBuELQcnwrwHGHZ1GqTlIZ4BQkBrk8Yq/FNyBjXxMDDi3
+	 ZsjUGiQ3bHJ37opKOgokdga2xaqfWi5Om9HPWWP6b9hdQqJrS4TKdlMNWekfuJp34o
+	 UTqV7EPin6cXUjtLMXemSiqvUQbkK5bJqwgyRHy8NcOKjBeoMHlLB9wiBjIDUraY3N
+	 6E3H3bcgTR4dDKMit2xNuS2xQp1KQD3kCqHs3Hs7Esz7ALw1gEjl4JX1DHqPgiLM3R
+	 tmeEIRKvwXOWg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: alvalan9@foxmail.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10.y] wifi: ath10k: avoid NULL pointer error during sdio remove
+Date: Thu, 20 Mar 2025 12:03:21 -0400
+Message-Id: <20250320113401-5371335b6c570924@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <tencent_A61660721BA068D56A023F1625A5ACED7009@qq.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Mounting a corrupted filesystem with directory which contains '.' dir=0A=
-entry with rec_len =3D=3D block size results in out-of-bounds read (later=
-=0A=
-on, when the corrupted directory is removed).=0A=
-=0A=
-ext4_empty_dir() assumes every ext4 directory contains at least '.'=0A=
-and '..' as directory entries in the first data block. It first loads=0A=
-the '.' dir entry, performs sanity checks by calling ext4_check_dir_entry()=
-=0A=
-and then uses its rec_len member to compute the location of '..' dir=0A=
-entry (in ext4_next_entry). It assumes the '..' dir entry fits into the=0A=
-same data block.=0A=
-=0A=
-If the rec_len of '.' is precisely one block (4KB), it slips through the=0A=
-sanity checks (it is considered the last directory entry in the data=0A=
-block) and leaves "struct ext4_dir_entry_2 *de" point exactly past the=0A=
-memory slot allocated to the data block. The following call to=0A=
-ext4_check_dir_entry() on new value of de then dereferences this pointer=0A=
-which results in out-of-bounds mem access.=0A=
-=0A=
-Fix this by extending __ext4_check_dir_entry() to check for '.' dir=0A=
-entries that reach the end of data block. Make sure to ignore the phony=0A=
-dir entries for checksum (by checking name_len for non-zero).=0A=
-=0A=
-Note: This is reported by KASAN as use-after-free in case another=0A=
-structure was recently freed from the slot past the bound, but it is=0A=
-really an OOB read.=0A=
-=0A=
-This issue was found by syzkaller tool.=0A=
-=0A=
-Call Trace:=0A=
-[   38.594108] BUG: KASAN: slab-use-after-free in __ext4_check_dir_entry+0x=
-67e/0x710=0A=
-[   38.594649] Read of size 2 at addr ffff88802b41a004 by task syz-executor=
-/5375=0A=
-[   38.595158]=0A=
-[   38.595288] CPU: 0 UID: 0 PID: 5375 Comm: syz-executor Not tainted 6.14.=
-0-rc7 #1=0A=
-[   38.595298] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS =
-rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014=0A=
-[   38.595304] Call Trace:=0A=
-[   38.595308]  <TASK>=0A=
-[   38.595311]  dump_stack_lvl+0xa7/0xd0=0A=
-[   38.595325]  print_address_description.constprop.0+0x2c/0x3f0=0A=
-[   38.595339]  ? __ext4_check_dir_entry+0x67e/0x710=0A=
-[   38.595349]  print_report+0xaa/0x250=0A=
-[   38.595359]  ? __ext4_check_dir_entry+0x67e/0x710=0A=
-[   38.595368]  ? kasan_addr_to_slab+0x9/0x90=0A=
-[   38.595378]  kasan_report+0xab/0xe0=0A=
-[   38.595389]  ? __ext4_check_dir_entry+0x67e/0x710=0A=
-[   38.595400]  __ext4_check_dir_entry+0x67e/0x710=0A=
-[   38.595410]  ext4_empty_dir+0x465/0x990=0A=
-[   38.595421]  ? __pfx_ext4_empty_dir+0x10/0x10=0A=
-[   38.595432]  ext4_rmdir.part.0+0x29a/0xd10=0A=
-[   38.595441]  ? __dquot_initialize+0x2a7/0xbf0=0A=
-[   38.595455]  ? __pfx_ext4_rmdir.part.0+0x10/0x10=0A=
-[   38.595464]  ? __pfx___dquot_initialize+0x10/0x10=0A=
-[   38.595478]  ? down_write+0xdb/0x140=0A=
-[   38.595487]  ? __pfx_down_write+0x10/0x10=0A=
-[   38.595497]  ext4_rmdir+0xee/0x140=0A=
-[   38.595506]  vfs_rmdir+0x209/0x670=0A=
-[   38.595517]  ? lookup_one_qstr_excl+0x3b/0x190=0A=
-[   38.595529]  do_rmdir+0x363/0x3c0=0A=
-[   38.595537]  ? __pfx_do_rmdir+0x10/0x10=0A=
-[   38.595544]  ? strncpy_from_user+0x1ff/0x2e0=0A=
-[   38.595561]  __x64_sys_unlinkat+0xf0/0x130=0A=
-[   38.595570]  do_syscall_64+0x5b/0x180=0A=
-[   38.595583]  entry_SYSCALL_64_after_hwframe+0x76/0x7e=0A=
-=0A=
-Fixes: ac27a0ec112a0 ("[PATCH] ext4: initial copy of files from ext3")=0A=
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>=0A=
-Cc: "Theodore Ts'o" <tytso@mit.edu>=0A=
-Cc: Andreas Dilger <adilger.kernel@dilger.ca>=0A=
-Cc: linux-ext4@vger.kernel.org=0A=
-Cc: linux-kernel@vger.kernel.org=0A=
-Cc: Mahmoud Adam <mngyadam@amazon.com>=0A=
-Cc: stable@vger.kernel.org=0A=
-Cc: security@kernel.org=0A=
----=0A=
-v1: https://lore.kernel.org/all/20250319110134.10071-1-acsjakub@amazon.com/=
-=0A=
-v1->v2:=0A=
-- optimize condition as per suggestions=0A=
-- remove questions=0A=
-- move this section to correct place=0A=
-=0A=
-I ran 'kvm-xfstests smoke' and '-c ext4/4k -g quick' as suggested in=0A=
-reply to v1. Some were skipped, none failed.=0A=
-=0A=
- fs/ext4/dir.c | 3 +++=0A=
- 1 file changed, 3 insertions(+)=0A=
-=0A=
-diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c=0A=
-index 02d47a64e8d1..253992fcf57c 100644=0A=
---- a/fs/ext4/dir.c=0A=
-+++ b/fs/ext4/dir.c=0A=
-@@ -104,6 +104,9 @@ int __ext4_check_dir_entry(const char *function, unsign=
-ed int line,=0A=
- 	else if (unlikely(le32_to_cpu(de->inode) >=0A=
- 			le32_to_cpu(EXT4_SB(dir->i_sb)->s_es->s_inodes_count)))=0A=
- 		error_msg =3D "inode out of bounds";=0A=
-+	else if (unlikely(next_offset =3D=3D size && de->name_len =3D=3D 1 &&=0A=
-+			  de->name[0] =3D=3D '.'))=0A=
-+		error_msg =3D "'.' directory cannot be the last in data block";=0A=
- 	else=0A=
- 		return 0;=0A=
- =0A=
--- =0A=
-2.47.1=0A=
+[ Sasha's backport helper bot ]
+
+Hi,
+
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
+
+The upstream commit SHA1 provided is correct: 95c38953cb1ecf40399a676a1f85dfe2b5780a9a
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: alvalan9@foxmail.com
+Commit author: Kang Yang<quic_kangyang@quicinc.com>
+
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: 543c0924d446)
+6.6.y | Present (different SHA1: b35de9e01fc7)
+6.1.y | Present (different SHA1: 6e5dbd1c04ab)
+5.15.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  95c38953cb1ec ! 1:  d70f5cd84923c wifi: ath10k: avoid NULL pointer error during sdio remove
+    @@ Metadata
+      ## Commit message ##
+         wifi: ath10k: avoid NULL pointer error during sdio remove
+     
+    +    [ Upstream commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a ]
+    +
+         When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
+         workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
+         is set to yes, kernel panic will happen:
+    @@ Commit message
+         Reviewed-by: David Ruth <druth@chromium.org>
+         Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
+         Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+     
+      ## drivers/net/wireless/ath/ath10k/sdio.c ##
+     @@
+       * Copyright (c) 2004-2011 Atheros Communications Inc.
+       * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
+       * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
+    -- * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+     + * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+       */
+      
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.10.y       |  Success    |  Success   |
 
