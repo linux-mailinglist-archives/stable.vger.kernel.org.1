@@ -1,87 +1,62 @@
-Return-Path: <stable+bounces-125685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6691CA6AD24
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 19:31:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E63A6AD41
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 19:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D717D17AFBD
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 18:31:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36D2B883B35
+	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 18:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEDA226D1E;
-	Thu, 20 Mar 2025 18:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58D9226D14;
+	Thu, 20 Mar 2025 18:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="WfbHmWmW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUi9HQt8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E38192B86
-	for <stable@vger.kernel.org>; Thu, 20 Mar 2025 18:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681E61E47C5;
+	Thu, 20 Mar 2025 18:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742495497; cv=none; b=l86L/0Hk5Q58XAfladDL78LP4lmHwESiIxTgO01Y5UguaeTKlOJRnKUrLXnFAEhUm31+QOPJKNd6Lgev/0suMu/Pzav4NdTUA6iel9676u2IX2dso6cxFLDZoOU9qV0KXYQNVEfMOuhqKRx52il+CIq+yb5ViVSCtiC5DsPQ8bc=
+	t=1742496401; cv=none; b=EU1SbbiGQrptgUBiJwm9I85fN96pS+mORBKRLYY3hjNdXxe/C1+ihlXkxw9wXMjNQHnbe3bGz8esa2vmh4MZ9fhq39kSJmke8fixivZdL7qimSgcpmFOeY5vhq1bBzKDZoui6xOJSEBFOnw2MX80OhKt2+yavz4e/WRxn1DD9MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742495497; c=relaxed/simple;
-	bh=KW7c5R9LPeRvdEkyrrPNb19Z7ay+Q1gA6RBTzjIj+9Y=;
+	s=arc-20240116; t=1742496401; c=relaxed/simple;
+	bh=ZRmVkviGr2SMUpx3X9P264GBbzsua9ORauvN0D6d+8w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hkkz61PcoGLOYQW58hPQQAlXqndGbvGAVf2HCUYkHYh3sqYvhbUPC5Q15kxgsIfN3JCKmD30eb9OTS3kJsoLcUsT7euqJ4N/x0NaBOukh9Mx75KAcGnT6rWBUikR7dP6ptnKAsoDmnv5f992VELoHaYZcY47SYxqgCF8icbHvvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=WfbHmWmW; arc=none smtp.client-ip=209.85.166.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-3cf8e017abcso5070875ab.1
-        for <stable@vger.kernel.org>; Thu, 20 Mar 2025 11:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1742495493; x=1743100293; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xs9sWGtkq4Oqg7PObi/N0JVnImd5J4EMGp3yDmOQZM4=;
-        b=WfbHmWmW/z1LpK8pe87aezjgqxjIMA1eMWPRTq/11QndkF0ZT7kWhoYqAUiW26/WCx
-         EfcH9r95qfaTL0GrFMhL1Cn+87efV/rPlG1+axrm1EZ47USYrF5I64Qs8RwpHjRgoA2F
-         e/b0xlJuZf+NzyvG4pWXtiBpV1rMZfLurxIFs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742495493; x=1743100293;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xs9sWGtkq4Oqg7PObi/N0JVnImd5J4EMGp3yDmOQZM4=;
-        b=Zkefg4SaEyRK/TaPExnj0snfVKQwmhmb16O5L9E5wwSIZkorZUTJQvwHHSkvbu11Ty
-         CNbxDk+te/zPOg0dm0uMPB28Pa9AecC46aH3TssXpfbdQ+HPlNYzyLcTlAXD+TkQrJQT
-         p+Feov52lhntBhNmfX1mLqD0PvmE4VJ/Zz7BWsZUzZnHvJ5JyHAZliXp0y95V15G8+Dh
-         5r1TrM2k5eXX2w827Bqm2K5zsIZCSN+0/L82Q20JZ0uaBnMjmvo3zcJ82gOqPmPQJwAj
-         MrVQHZK4f/t9wAkO4+ygKx8jW1NtQzleIn6AfTdRKsOFzNmOAdmYWGmHgPCR2NhH3lTP
-         oCiw==
-X-Gm-Message-State: AOJu0YwiiEJHOOKMfyJE9lk3403mxwwB+/4VLXeovrWHKVIviPSxiWt7
-	UskHvcNAA100cj+7kvD/TqFrl1GqEMALkQavOxWZaWmhHpCQ74KBGTVfKG05lA==
-X-Gm-Gg: ASbGncu9o/dJsdttAspTza6UULZrDGajGAhK2rHaRW3VqWd/8S1LLnPXZ3UzI09aCYY
-	L7CE5MVQoIrdYkokfmX+ZPzrY0Ntfw4NkSnQLfEw6YZCALPA47f8CId2CsK/GmpxA8Hgfqw7Vve
-	Xe7NJozAekAf99sGbUi37x9+oxfNht4m5WZHdyQpkeeb1I1L3bu++gpbwLt4jKPhJKgl6MSYJF2
-	i6VJ99kTn2ujS3ZAttqR3WQm9lYKpf+na1T/OKaJap8HkJg4ds+t9kGdWifEVFUx6wR7lC5D6gq
-	yWTGvHTeHFgc5FQ+tvUtKIpzs+tiTSyzq+/Pt7h0LGIALhdMSeUQnZIC+9kp0g==
-X-Google-Smtp-Source: AGHT+IH1B/ENspb1EAT9798Q5mHyvjf0wtm7TPVZ0us1pA6jy9nfdcYp5nR3VG+erfS7FWqlo6BnRQ==
-X-Received: by 2002:a05:6e02:188b:b0:3d2:b0f1:f5bd with SMTP id e9e14a558f8ab-3d5960bf875mr5574885ab.3.1742495493404;
-        Thu, 20 Mar 2025 11:31:33 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([72.42.103.70])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f2cbdd17f0sm45233173.45.2025.03.20.11.31.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Mar 2025 11:31:33 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Thu, 20 Mar 2025 12:31:31 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
-Message-ID: <Z9xfA8UujBjRf5l0@fedora64.linuxtx.org>
-References: <20250319143027.685727358@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dCkziyP1kRRvkZbGL5gPb0lpKxM1fmh1JjLXdWxpXGS+Zg48c4tBJ+tN7Li1FTXJfs2PL5NYAHDd9o9Qk/Gh1RKbgGHhumP/LoTNA0M0hsKleqPaUP1xEJvejVlX8pBVzC5MB6fS30NrHYQ7AvgPW29cB9MXF357JqlJsPtmPoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUi9HQt8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BB5C4CEDD;
+	Thu, 20 Mar 2025 18:46:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742496401;
+	bh=ZRmVkviGr2SMUpx3X9P264GBbzsua9ORauvN0D6d+8w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VUi9HQt82htf0+Go+nOSGUoK3TFvNWzMRETLul/r89c1w4SQVyAD0iNA6CoYZ5t+t
+	 cEwdc9NJZsiEXj+6LBKpAADTNBJdyZFxZjvh69KFZKE3Sl1GrEaNIcb37hNoHIZY5p
+	 Fc6S4a11G9UTKFMF6kWmEGclPLOi2I27zh+ZkvXc3rgwkfRJ4BkORLK9Q1n1qb8Z/l
+	 Vq6aJuWuw3BgknUbNAIIJFypXC6YrAhuuR+fnGRLYkf3GMQHbhR9w5Sbabq7LenNSR
+	 De+jzqOYGdM/ssOKs7v0AF0vdeScftNv1mdt4GzuNrkW5g9DLrhgq4ym8psCPFP8ZN
+	 c8IGuVjPRHmOA==
+Date: Thu, 20 Mar 2025 20:46:37 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Kees Cook <kees@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Josh Drake <josh@delphoslabs.com>,
+	Suraj Sonawane <surajsonawane0215@gmail.com>,
+	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+	security@kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] keys: Fix UAF in key_put()
+Message-ID: <Z9xijTBHY93HCsLW@kernel.org>
+References: <Z9w-10St-WYpSnKC@kernel.org>
+ <2874581.1742399866@warthog.procyon.org.uk>
+ <3176471.1742488751@warthog.procyon.org.uk>
+ <Z9xQP0uhBEr3B890@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,29 +65,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <Z9xQP0uhBEr3B890@kernel.org>
 
-On Wed, Mar 19, 2025 at 07:27:50AM -0700, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.8 release.
-> There are 241 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, Mar 20, 2025 at 07:28:36PM +0200, Jarkko Sakkinen wrote:
+> On Thu, Mar 20, 2025 at 04:39:11PM +0000, David Howells wrote:
+> > Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > 
+> > > > +		if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
+> > > > +			smp_mb(); /* Clobber key->user after FINAL_PUT seen. */
+> > > 
+> > > test_bit() is already atomic.
+> > 
+> > Atomiticity doesn't apply to test_bit() - it only matters when it does two (or
+> > more) accesses that must be perceptually indivisible (e.g. set_bit doing RMW).
+> > 
+> > But atomiticity isn't the issue here, hence the barrier.  You need to be
+> > looking at memory-barriers.txt, not atomic_bitops.txt.
+> > 
+> > We have two things to correctly order and set_bit() does not imply sufficient
+> > barriering; test_and_set_bit() does, but not set_bit(), hence Linus's comment
+> > about really wanting a set_bit_release().
 > 
-> Responses should be made by Fri, 21 Mar 2025 14:29:55 +0000.
-> Anything received after that time might be too late.
+> Oops, I was hallucinating here. And yeah, test_and_set_bit() does
+> imply full mb as you said.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.8-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-> and the diffstat can be found below.
+> I was somehow remembering what I did in SGX driver incorrectly and
+> that led me into misconclusions, sorry.
 > 
-> thanks,
+> if (test_and_set_bit(SGX_ENCL_IOCTL, &encl->flags))
+> 	return -EBUSY;
 > 
-> greg k-h
+> > 
+> > > > +			smp_mb(); /* key->user before FINAL_PUT set. */
+> > > > +			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
+> > > 
+> > > Ditto.
+> > 
+> > Ditto. ;-)
+> 
+> Duh, no need poke with the stick further (or deeper) ;-)
+> 
+> > 
+> > > Nit: I'm just thinking should the name imply more like that "now
+> > > key_put() is actually done". E.g., even something like KEY_FLAG_PUT_DONE
+> > > would be more self-descriptive.
+> > 
+> > KEY_FLAG_PUT_DONE isn't right.  There can be lots of puts on a single key -
+> > only the one that reduces it to 0 matters for this.  You could call it
+> > KEY_FLAG_CAN_NOW_GC or KEY_FLAG_GC_ABLE.
+> 
+> Well all alternatives are fine but my thinking was that one that finally
+> zeros the refcount, "finalizes put" (pick whatever you want anyway).
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+I'll pick this one up tomorrow and put a PR out within this week.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+BR, Jarkko
 
