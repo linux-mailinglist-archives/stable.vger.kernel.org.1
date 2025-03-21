@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-125779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A01A6C17F
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DD6A6C180
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B2627A84F2
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:28:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFD747A8696
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF4222D79F;
-	Fri, 21 Mar 2025 17:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9B822D79F;
+	Fri, 21 Mar 2025 17:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tol2mdx2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K6fBMgHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400FC1DEFFC
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 17:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1082F1DEFFC
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 17:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742578173; cv=none; b=f9jc4kRqTPM0oPpZ/1BXWG/4KEN7GavIDZSDMzcUHHOGLVZ770z9kV1kQHvz40YCHReTqNl84LZNlmHzPtjtYKi5qTr+eUCec3F7GPW5IisvAauIIa7LGiYTTAJsdg3q/2ppI3ick51WYX4PQjWFzf6D1z/6bUIEhI7rw/vnfHg=
+	t=1742578186; cv=none; b=fJt9gI1ySoO1YZ0SZuGrUS9LCjQ1lvu7x1xEQRepcMFldnDy15hk5OnvZbfKX+i3Lc0JDqxac6EXwkQvn+o0XkcvPN9TScm26pEd8M14ism0ZMV+ZzZaxyHQxY0XgCSSplBuyZmtE3VhzN7H2GUXySzTlak4xikN68l/jsPLDBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742578173; c=relaxed/simple;
-	bh=j7ORES7P/ueQKwgoEQrBhgrJwivJl14902o3LnkHna8=;
+	s=arc-20240116; t=1742578186; c=relaxed/simple;
+	bh=HszzOyKs+iljEmJTwVisd8n62XxkCE/7Qm24CDSn+N8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eTiYFU5IkYDFA7DvnzgUwAK0d3QrTo3B6KHNdza7zLme04oN9e+GDWVUrm89GPKgAQ+POkmthEsaXBt8ImRr5B+BoNXSzJJI5+Gqo2UzkmhrvnIHWweKSsKAb5Yt4gZouYjd64C1TOPek+V+sYv5bhRhxrLuUtQ5QmI9eCwAqoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tol2mdx2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8363C4CEE3;
-	Fri, 21 Mar 2025 17:29:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S6JAsa+Rfydnzrz5DVojrcWnwQLB5QFNKIO6kB162MBAVZ5QgByN/jnWS3zb0Yxkq2hnR5KmqEgICA8T29K7v94pvfteAD4UmZcF9seVtjAi4B+ljRN/7m7emA/AjU7GyUpf3hPY96Y15DHDwByd42HzXrvc900NZJUn6RT4yCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K6fBMgHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1441CC4CEE3;
+	Fri, 21 Mar 2025 17:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742578173;
-	bh=j7ORES7P/ueQKwgoEQrBhgrJwivJl14902o3LnkHna8=;
+	s=k20201202; t=1742578185;
+	bh=HszzOyKs+iljEmJTwVisd8n62XxkCE/7Qm24CDSn+N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tol2mdx27olN+lvF3T7nhTmVW2Lp/sZNSh+/MkqHs4/BFxGrncCdBN9jscewZ2hWr
-	 2mhm/IQPN0IkNxuEJH8Yk4kCqE3DJ5FSTel1v6Jv/NOBC85lAD3cijw2B/zTfeVZBS
-	 jc/s/4upVbPoNWqXfOHw8bkoPbwFFAQ1hrGqVWBtSVpXCsNYKlRtp49YzKJucoJHbK
-	 p77Jcr8asyON+k7UzBoWM2In4IwaiIkTo5pgDgbSDTEdo3QiMqydEavsFlao4HwIjO
-	 o3osv/Owa/LZksziYlXO11Clhs0EzTwgqXz2J84TO9C6QgWB57NTCTFSFWV29fRyqS
-	 7DPjVYz7bJR6A==
+	b=K6fBMgHdoei/zpQ68ieHamYbwI2bLPNyE3l4POnnZApHC8F63MdyZ+vpWmGAzaRvQ
+	 mROLy/iFNCo97GPg/B3QF1WpZCiyk3eVSu/TxyNNDq6ECni0SVXEb+yY/fU1Qp9Hut
+	 8DaOSKXAf5q/KQHoV/B7Db/wO1JC73lzicC7mfOArKCwI7egqBP5W2KWSk04JzdlZY
+	 DPaQPrEp7Cgh39zVZny/AnECjPqrGnpbSTutcaWgjsqeicorY5v5fSmFH2Kwhbpr5x
+	 tmCLeQ+1X/9zxMSJWjOn4uzu7Z3ZXE3Rl4vThElwIzcyJpnipKcP9hsLoC6aIx2gK4
+	 eeDVQXuJ2XeBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 v2 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
-Date: Fri, 21 Mar 2025 13:29:21 -0400
-Message-Id: <20250321113123-9f46ac0217b2be25@stable.kernel.org>
+Subject: Re: [PATCH 6.6 8/8] KVM: arm64: Eagerly switch ZCR_EL{1,2}
+Date: Fri, 21 Mar 2025 13:29:33 -0400
+Message-Id: <20250321123838-32204d9ff1988e33@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250321-stable-sve-6-12-v2-8-417ca2278d18@kernel.org>
+In-Reply-To:  <20250321-stable-sve-6-6-v1-8-0b3a6a14ea53@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,150 +75,17 @@ Commit author: Mark Rutland<mark.rutland@arm.com>
 
 Status in newer kernel trees:
 6.13.y | Present (different SHA1: 69fedc3eecf4)
+6.12.y | Present (different SHA1: 9fa40dcf88c9)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  59419f10045bc ! 1:  d31eb2cc8dc13 KVM: arm64: Eagerly switch ZCR_EL{1,2}
-    @@ Metadata
-      ## Commit message ##
-         KVM: arm64: Eagerly switch ZCR_EL{1,2}
-     
-    +    [ Upstream commit 59419f10045bc955d2229819c7cf7a8b0b9c5b59 ]
-    +
-         In non-protected KVM modes, while the guest FPSIMD/SVE/SME state is live on the
-         CPU, the host's active SVE VL may differ from the guest's maximum SVE VL:
-     
-    @@ Commit message
-         Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-         Link: https://lore.kernel.org/r/20250210195226.1215254-9-mark.rutland@arm.com
-         Signed-off-by: Marc Zyngier <maz@kernel.org>
-    +    Signed-off-by: Mark Brown <broonie@kernel.org>
-     
-      ## arch/arm64/kvm/fpsimd.c ##
-     @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
-    @@ arch/arm64/kvm/hyp/nvhe/hyp-main.c
-      #include <asm/pgtable-types.h>
-      #include <asm/kvm_asm.h>
-     @@ arch/arm64/kvm/hyp/nvhe/hyp-main.c: static void handle___kvm_vcpu_run(struct kvm_cpu_context *host_ctxt)
-    - 
-    - 		sync_hyp_vcpu(hyp_vcpu);
-    + 		pkvm_put_hyp_vcpu(hyp_vcpu);
-      	} else {
-    -+		struct kvm_vcpu *vcpu = kern_hyp_va(host_vcpu);
-    -+
-      		/* The host is fully trusted, run its vCPU directly. */
-    --		ret = __kvm_vcpu_run(kern_hyp_va(host_vcpu));
-    -+		fpsimd_lazy_switch_to_guest(vcpu);
-    -+		ret = __kvm_vcpu_run(vcpu);
-    -+		fpsimd_lazy_switch_to_host(vcpu);
-    ++		fpsimd_lazy_switch_to_guest(host_vcpu);
-    + 		ret = __kvm_vcpu_run(host_vcpu);
-    ++		fpsimd_lazy_switch_to_host(host_vcpu);
-      	}
-    + 
-      out:
-    - 	cpu_reg(host_ctxt, 1) =  ret;
-     @@ arch/arm64/kvm/hyp/nvhe/hyp-main.c: void handle_trap(struct kvm_cpu_context *host_ctxt)
-      	case ESR_ELx_EC_SMC64:
-      		handle_host_smc(host_ctxt);
-      		break;
-     -	case ESR_ELx_EC_SVE:
-    --		cpacr_clear_set(0, CPACR_EL1_ZEN);
-    +-		cpacr_clear_set(0, CPACR_ELx_ZEN);
-     -		isb();
-     -		sve_cond_update_zcr_vq(sve_vq_from_vl(kvm_host_sve_max_vl) - 1,
-     -				       SYS_ZCR_EL2);
-    @@ arch/arm64/kvm/hyp/nvhe/hyp-main.c: void handle_trap(struct kvm_cpu_context *hos
-     
-      ## arch/arm64/kvm/hyp/nvhe/switch.c ##
-     @@ arch/arm64/kvm/hyp/nvhe/switch.c: static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
-    - 
-    - static void __deactivate_cptr_traps(struct kvm_vcpu *vcpu)
-      {
-    --	struct kvm *kvm = kern_hyp_va(vcpu->kvm);
-    --
-    + 	u64 val = CPTR_EL2_TAM;	/* Same bit irrespective of E2H */
-    + 
-    ++	if (!guest_owns_fp_regs())
-    ++		__activate_traps_fpsimd32(vcpu);
-    ++
-      	if (has_hvhe()) {
-    - 		u64 val = CPACR_EL1_FPEN;
-    + 		val |= CPACR_ELx_TTA;
-      
-    --		if (!kvm_has_sve(kvm) || !guest_owns_fp_regs())
-    -+		if (cpus_have_final_cap(ARM64_SVE))
-    - 			val |= CPACR_EL1_ZEN;
-    - 		if (cpus_have_final_cap(ARM64_SME))
-    - 			val |= CPACR_EL1_SMEN;
-    -@@ arch/arm64/kvm/hyp/nvhe/switch.c: static void __deactivate_cptr_traps(struct kvm_vcpu *vcpu)
-    +@@ arch/arm64/kvm/hyp/nvhe/switch.c: static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
-    + 			if (vcpu_has_sve(vcpu))
-    + 				val |= CPACR_ELx_ZEN;
-    + 		}
-    ++
-    ++		write_sysreg(val, cpacr_el1);
-      	} else {
-    - 		u64 val = CPTR_NVHE_EL2_RES1;
-    + 		val |= CPTR_EL2_TTA | CPTR_NVHE_EL2_RES1;
-      
-    --		if (kvm_has_sve(kvm) && guest_owns_fp_regs())
-    +@@ arch/arm64/kvm/hyp/nvhe/switch.c: static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
-    + 
-    + 		if (!guest_owns_fp_regs())
-    + 			val |= CPTR_EL2_TFP;
-    ++
-    ++		write_sysreg(val, cptr_el2);
-    + 	}
-    ++}
-    + 
-    +-	if (!guest_owns_fp_regs())
-    +-		__activate_traps_fpsimd32(vcpu);
-    ++static void __deactivate_cptr_traps(struct kvm_vcpu *vcpu)
-    ++{
-    ++	if (has_hvhe()) {
-    ++		u64 val = CPACR_ELx_FPEN;
-    ++
-    ++		if (cpus_have_final_cap(ARM64_SVE))
-    ++			val |= CPACR_ELx_ZEN;
-    ++		if (cpus_have_final_cap(ARM64_SME))
-    ++			val |= CPACR_ELx_SMEN;
-    ++
-    ++		write_sysreg(val, cpacr_el1);
-    ++	} else {
-    ++		u64 val = CPTR_NVHE_EL2_RES1;
-    ++
-     +		if (!cpus_have_final_cap(ARM64_SVE))
-    - 			val |= CPTR_EL2_TZ;
-    - 		if (!cpus_have_final_cap(ARM64_SME))
-    - 			val |= CPTR_EL2_TSM;
-    ++			val |= CPTR_EL2_TZ;
-    ++		if (!cpus_have_final_cap(ARM64_SME))
-    ++			val |= CPTR_EL2_TSM;
-    + 
-    +-	kvm_write_cptr_el2(val);
-    ++		write_sysreg(val, cptr_el2);
-    ++	}
-    + }
-    + 
-    + static void __activate_traps(struct kvm_vcpu *vcpu)
-    +@@ arch/arm64/kvm/hyp/nvhe/switch.c: static void __deactivate_traps(struct kvm_vcpu *vcpu)
-    + 
-    + 	write_sysreg(this_cpu_ptr(&kvm_init_params)->hcr_el2, hcr_el2);
-    + 
-    +-	kvm_reset_cptr_el2(vcpu);
-    ++	__deactivate_cptr_traps(vcpu);
-    + 	write_sysreg(__kvm_hyp_host_vector, vbar_el2);
-    + }
-    + 
-     
-      ## arch/arm64/kvm/hyp/vhe/switch.c ##
-     @@ arch/arm64/kvm/hyp/vhe/switch.c: static int __kvm_vcpu_run_vhe(struct kvm_vcpu *vcpu)
+1:  59419f10045bc < -:  ------------- KVM: arm64: Eagerly switch ZCR_EL{1,2}
+-:  ------------- > 1:  c16e8204920ff KVM: arm64: Eagerly switch ZCR_EL{1,2}
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.13.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
