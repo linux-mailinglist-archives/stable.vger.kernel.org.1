@@ -1,236 +1,162 @@
-Return-Path: <stable+bounces-125738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BBDA6B80A
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 10:51:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2EBA6B819
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 10:52:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BF6A3B16BC
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 09:49:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 946851727C8
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 09:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675EA1F152F;
-	Fri, 21 Mar 2025 09:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A191F1315;
+	Fri, 21 Mar 2025 09:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QoW3CxCL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="liheWtiS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6321EBFF9
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 09:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D211F0E37;
+	Fri, 21 Mar 2025 09:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742550572; cv=none; b=MrDLG+CwZY99ro1mXwowuVN4c6mQyA2dbqRRceUF4u+1yuO6X0+jJrl89/lNLlrcs68cDAokdRXErnjbX1y67+aHDdcT+Sd/hlkFKn6jl1h6d375FqtNpOxVdcMrPVsHZh3d/WPc5KNRQ7WZIu82C06GzDtuszmBugaftQXKFXY=
+	t=1742550765; cv=none; b=nrnuMoVg7sN3UA+iHCYpBVe9z06X8fQFli2W/sm0UwFiU20taH9zOis4BcTRCbcAqXRo4qvWZPSTdFelInbNTLQ90VlXAIvXQ3ffzzV5rGYwzmrf6etXDw1nmfMxpGMzfx6Th5THUlnjD9HxtZSFmrkdGjzMokRi7x1AtQh3PNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742550572; c=relaxed/simple;
-	bh=FBNNN1T3t59Tmpv8LEr3stQJ8rv7s00/+6zV37RZu2g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CmUqPVXrvx7p6mMzo5nNIPyiXV+2fkzoFtDAFGSpiH+Eg8mr5QY/sOyD3RHb41Yd9p4lCGHiHrRcwk6StK1ompx12ZwdDvJHuFyI37qeR89lPvXC+EqEwPOOCtBi3xTd6ItnGIXhD95uysFZctL6dg1Ngvy/OBLMvRGF1cG+qvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QoW3CxCL; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-523ffbe0dbcso1822054e0c.0
-        for <stable@vger.kernel.org>; Fri, 21 Mar 2025 02:49:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742550569; x=1743155369; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2rK/B5DzwT3J1GRA+EoLqTvc3oEK9I7okqvwd1BTbP4=;
-        b=QoW3CxCLuPdQoU3d5zVzyVvtO7Y4mklFGZ04joWQpKlfm2B99ol+Z3xh1Ew80tfzIu
-         Fp+okgFkMUSqq+RGeIBtkK+jJIZHpvBnfE8TawUWNxmU4B0hzzEY+xAbqUBIfHC091wI
-         YBGnwq+e4uMgsjoPQl7Rbe5F9jfl8nB8rcJt7dTkflrBMavoVYsLUqBSr4jIMPIQ15S9
-         PFjCnd8lSr/wud1AM1aaL3sag5kzRGwj4u6kCDT0HbyKvnyRLAE6mxyXXNRffteP3DaA
-         zg9M79k9zbEVEFOgfsMu0eYyIWs46mrgPTurxzzt23hv9akQk/zNGFUnQZeDUIZzTOhN
-         UBGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742550569; x=1743155369;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2rK/B5DzwT3J1GRA+EoLqTvc3oEK9I7okqvwd1BTbP4=;
-        b=NywF8rXSu+uZUu/sBJIKUqWS27e0k1TZPs75A4aae/W3LOlQzWxagXuJB7MNI8uNGE
-         ZKv9jStuIo161EOKQPHQd5vUBobPmxzKrywLYz8IFrmIyxGDGwGqwiel4RL0pwC0i2rS
-         EjMgu+aEl8Clof12kaoHtXPbcAbin7cCrdRKEc2CqrgW+j55ZKrOhHSGI/XFk41/noMl
-         IJme+R+Vthkp7Y6sg+oWrGq+ySVqmn3sLxeDhyfO2cnrgu0PKYpEd8DMfmpJ1zUDIXMr
-         GK0YF4HfLmrByUYHYxO7hvIQatyd8/wGTBCWJvfHNcI+C6u1c4CFeoSneitp/IX4YQsJ
-         hb5A==
-X-Gm-Message-State: AOJu0Yx1pEGfXcE5I0MP72OZpU2uarbKuoIhssHUnhR3uq98rZgx0oFh
-	zlx1n0irKvtXchr4nRw3bmqOQRSyhXbaIXkY4zRoDqh/OoJ/2AWcH31YAQQYk/d5DyOLfKL0y8G
-	YWRBc7Q0tQECJhr9nG3nyQx1WvnG5iSS5ZEty9A==
-X-Gm-Gg: ASbGnct17Kr//v3DEDnT/zqkrFgY5SlfMBqKnXsYV2Ir7tigJV1JV3mbaiK4EfdAlZV
-	1BAfY/cCfWiF9p3QEhweFA4md4dr8KctvB5w/XBMopLCxJF4DeLWS5UPpsF7JLy2f0SqDztm+Og
-	qh+WeJzyqulRbmSUog1uAgAmlxiduDyeelmxJivIs=
-X-Google-Smtp-Source: AGHT+IGdqoAmjUZRBYqe9DYKyE/4py+xLqdJc6eJ3pKGIusC+9ialfwtptmVRFX5uDkAPwEKoscc2iWLcC0KHsFY6CA=
-X-Received: by 2002:a05:6122:f1b:b0:525:9dd5:d55a with SMTP id
- 71dfb90a1353d-525a8503a51mr1933130e0c.8.1742550569080; Fri, 21 Mar 2025
- 02:49:29 -0700 (PDT)
+	s=arc-20240116; t=1742550765; c=relaxed/simple;
+	bh=NSVAITNBqV2fChMLATBR7BnFfMZSXgBvEHhNVh9sGMI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tJStJngn/cdowe6sMRp+ZXp5QSp+QjPc6U07rjXVXzRft2fNdWgW0SlFEanJx3BJTrRZ9bbyByuQk4XNTOLdT3SpmPobXxJQCXfdWVm/tZ53jFzjqLH9QnX0MI3m5P6/E4igUQDMvLH22o9P/nZ/KMQyADb7/uq5vfoJFN853CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=liheWtiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90ADAC4CEE3;
+	Fri, 21 Mar 2025 09:52:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742550764;
+	bh=NSVAITNBqV2fChMLATBR7BnFfMZSXgBvEHhNVh9sGMI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=liheWtiSlemz6WGHszVKHmgrdO5t8mc5pNqvSBtAfZL+XpiKWTQWbQIAcomAKUGZk
+	 NeRbbF87LAsjlG8VIbIsBsrOWod1yn0S1VFlAhaLJPh4kBj9yhIu7ACNqSXmixKLjj
+	 d3qC4+2YcIHNCkbb4rzw3t4FZW/mvpUAEO1Q0p5+XpPLmUgLjr59Qj/MLJiVKTNbvv
+	 ZKuWp0M5MRPsS+hRVGeC6bg3/0q2eJEespSlF9/f/keoJ7ENchU+9AyN4bhwbtcY8S
+	 47Zfn2D5XC0r1V0Oa7jV8cnfHVX+Pn7Lh5Y8Q1H9CbQsqiR2TJ4HeqVomigTjx1FZX
+	 ALl+YoqIcYrPw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1tvZ3W-0000000053C-26Gm;
+	Fri, 21 Mar 2025 10:52:46 +0100
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Steev Klimaszewski <steev@kali.org>,
+	Clayton Craft <clayton@craftyguy.net>,
+	Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
+	ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: ath12k: fix ring-buffer corruption
+Date: Fri, 21 Mar 2025 10:52:19 +0100
+Message-ID: <20250321095219.19369-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250320165654.807128435@linuxfoundation.org>
-In-Reply-To: <20250320165654.807128435@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 21 Mar 2025 15:19:17 +0530
-X-Gm-Features: AQ5f1JpaG9WtwrsAMyoghNfS-3hKzliKLZSvBSeYdymXpnaW4rCJ_budV-dCn_o
-Message-ID: <CA+G9fYs5n0NVPKok7bNwwySMEpY0EKrdDYF03yxHONTuS3vDuA@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/166] 6.6.84-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, 20 Mar 2025 at 23:24, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.84 release.
-> There are 166 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 22 Mar 2025 16:56:28 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.84-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Users of the Lenovo ThinkPad X13s have reported that Wi-Fi sometimes
+breaks and the log fills up with errors like:
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
+    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+which based on a quick look at the ath11k driver seemed to indicate some
+kind of ring-buffer corruption.
 
-## Build
-* kernel: 6.6.84-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: bddc6e9322072ac3aa15bd972c5bcbf9f447d246
-* git describe: v6.6.83-167-gbddc6e932207
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.8=
-3-167-gbddc6e932207
+Miaoqing Pan tracked it down to the host seeing the updated destination
+ring head pointer before the updated descriptor, and the error handling
+for that in turn leaves the ring buffer in an inconsistent state.
 
-## Test Regressions (compared to v6.6.81-152-ge7347110295b)
+While this has not yet been observed with ath12k, the ring-buffer
+implementation is very similar to the ath11k one and it suffers from the
+same bugs.
 
-## Metric Regressions (compared to v6.6.81-152-ge7347110295b)
+Add the missing memory barrier to make sure that the descriptor is read
+after the head pointer to address the root cause of the corruption while
+fixing up the error handling in case there are ever any (ordering) bugs
+on the device side.
 
-## Test Fixes (compared to v6.6.81-152-ge7347110295b)
+Note that the READ_ONCE() are only needed to avoid compiler mischief in
+case the ring-buffer helpers are ever inlined.
 
-## Metric Fixes (compared to v6.6.81-152-ge7347110295b)
+Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-## Test result summary
-total: 129260, pass: 106043, fail: 3203, skip: 19527, xfail: 487
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org	# 6.3
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218623
+Link: https://lore.kernel.org/20250310010217.3845141-3-quic_miaoqing@quicinc.com
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/net/wireless/ath/ath12k/ce.c  | 11 +++++------
+ drivers/net/wireless/ath/ath12k/hal.c |  4 ++--
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-## Build Summary
-* arc: 6 total, 5 passed, 1 failed
-* arm: 133 total, 133 passed, 0 failed
-* arm64: 46 total, 42 passed, 4 failed
-* i386: 31 total, 26 passed, 5 failed
-* mips: 30 total, 25 passed, 5 failed
-* parisc: 5 total, 5 passed, 0 failed
-* powerpc: 36 total, 33 passed, 3 failed
-* riscv: 23 total, 22 passed, 1 failed
-* s390: 18 total, 14 passed, 4 failed
-* sh: 12 total, 10 passed, 2 failed
-* sparc: 9 total, 8 passed, 1 failed
-* x86_64: 38 total, 37 passed, 1 failed
+diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
+index be0d669d31fc..740586fe49d1 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -343,11 +343,10 @@ static int ath12k_ce_completed_recv_next(struct ath12k_ce_pipe *pipe,
+ 		goto err;
+ 	}
+ 
++	/* Make sure descriptor is read after the head pointer. */
++	dma_rmb();
++
+ 	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
+-	if (*nbytes == 0) {
+-		ret = -EIO;
+-		goto err;
+-	}
+ 
+ 	*skb = pipe->dest_ring->skb[sw_index];
+ 	pipe->dest_ring->skb[sw_index] = NULL;
+@@ -380,8 +379,8 @@ static void ath12k_ce_recv_process_cb(struct ath12k_ce_pipe *pipe)
+ 		dma_unmap_single(ab->dev, ATH12K_SKB_RXCB(skb)->paddr,
+ 				 max_nbytes, DMA_FROM_DEVICE);
+ 
+-		if (unlikely(max_nbytes < nbytes)) {
+-			ath12k_warn(ab, "rxed more than expected (nbytes %d, max %d)",
++		if (unlikely(max_nbytes < nbytes || nbytes == 0)) {
++			ath12k_warn(ab, "unexpected rx length (nbytes %d, max %d)",
+ 				    nbytes, max_nbytes);
+ 			dev_kfree_skb_any(skb);
+ 			continue;
+diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
+index cd59ff8e6c7b..91d5126ca149 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -1962,7 +1962,7 @@ u32 ath12k_hal_ce_dst_status_get_length(struct hal_ce_srng_dst_status_desc *desc
+ {
+ 	u32 len;
+ 
+-	len = le32_get_bits(desc->flags, HAL_CE_DST_STATUS_DESC_FLAGS_LEN);
++	len = le32_get_bits(READ_ONCE(desc->flags), HAL_CE_DST_STATUS_DESC_FLAGS_LEN);
+ 	desc->flags &= ~cpu_to_le32(HAL_CE_DST_STATUS_DESC_FLAGS_LEN);
+ 
+ 	return len;
+@@ -2132,7 +2132,7 @@ void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
+ 		srng->u.src_ring.cached_tp =
+ 			*(volatile u32 *)srng->u.src_ring.tp_addr;
+ 	else
+-		srng->u.dst_ring.cached_hp = *srng->u.dst_ring.hp_addr;
++		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+ }
+ 
+ /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
+-- 
+2.48.1
 
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
