@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-125768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D46A6C16E
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:27:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39302A6C170
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA58A3B27EA
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:27:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 804A87A6F99
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33B922D7B2;
-	Fri, 21 Mar 2025 17:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A03D22D7B9;
+	Fri, 21 Mar 2025 17:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aSXwa702"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bWu+9N2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947991DEFFC
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 17:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5B5224B1C
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 17:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742578036; cv=none; b=PVGq7Cc8CTC5MpBRKCUVAAxZ5NbkCDGI99CB1a+Ka82yblERKBeW32MqTAhC4MA9VUvJ+1WCyTxYPVYCzYZBFxIjH/K/oCXq82r4HKgK38dYp8pMNZz3CKnC7D3NdQr1LJwF5ssIRd0eZNK6VTBJPkXBzsQz9yxBjVo/zYaCw0U=
+	t=1742578049; cv=none; b=hsbtqdy3USzL/y3vu4hpIFXoRhJRckBlWkb9ZIFWnwiAM4P5lvqVeQUorNw3Rw9P3T0ouv5RZKr/bNF9363Bmiy21vlmoqEgvyS/GfhU3zA5XF4QXH0vpIZ/k/vLU0UfJyPQteNpvBTwI3dMh2izYYX6njvx130RNKvhW49+lzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742578036; c=relaxed/simple;
-	bh=8Tpi+DRwKds4Fw4EI3ZEpNEw6Sv+5nCMA0bNZNtXt38=;
+	s=arc-20240116; t=1742578049; c=relaxed/simple;
+	bh=EFS8Q/l95oTQItbRyhN2b9ntIOH01EUiNXNSt6g7uCw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bagIQtw7Nrm+Pme7KRjVv8rLxSHQ8hITDAya3to2Zky/BN5gDX8IAmS/+nzAhAv+WtODBHK838SlZJlesLf4tnD5JmDSV7Zo2u4cHAIRFIGXH1JGghilIYiHMfJD1XY2oEDBsRR5cJk4DV0WDP+iZ3ecpUPHFKJG4QT7JEXtSH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aSXwa702; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03693C4CEE3;
-	Fri, 21 Mar 2025 17:27:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DR/vvuJ1ts8++dLrKlPe9sPqyRLX00K25CNwrsRlC9OfNjRYXX4Xvv6zfSuXe+HEgCTwtlqfgex8W24D22JGeSqMyMfMFNC3UaUTAeIiUcn50CaESqPBuwMo425as4y+qKgQFdp3BOfmY83rSAqkezfGRw/KEw4jg6Ddlbj5rb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bWu+9N2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE06C4CEE3;
+	Fri, 21 Mar 2025 17:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742578036;
-	bh=8Tpi+DRwKds4Fw4EI3ZEpNEw6Sv+5nCMA0bNZNtXt38=;
+	s=k20201202; t=1742578048;
+	bh=EFS8Q/l95oTQItbRyhN2b9ntIOH01EUiNXNSt6g7uCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSXwa702ishMWgk61U9K7GczK9UTj7YlEbmRp4gcSCu3JkKtza7+FSUgc69H9cNS5
-	 plXmnPImFRf+EaCBwtPcpvq5LVimzdwUQD2jmxqNCScisoH+RHD8JKexBQfVNLqC6R
-	 mqV1wNboCKpMshfcEU+zjc/90HM+OoZUjx/ey973nuFCWyz29b2cP6ZVMtHq4TPHL6
-	 G6BtCB1pyckmRMznQR2OKDUqxh2Jq656A3pKdd00GfUAfP5xwP27Db9XFn9RMTIT6V
-	 AneIY2u3FIG4KNBQ/H9Ar3i6FxRLqu5O3gXl6gzlqx7H7SC66rtrWtHo4nHB835D1v
-	 JKlUYO8LdWtzQ==
+	b=bWu+9N2/z38jf9hTnfIZm5wKhlt92JZNm+dp21wlCYeVtA8Njif+e9Eqf2p1MIt2g
+	 pVWEp0NjJhlh94op884PjEY8UqfJqrnBwyZIqbSMHHWfmmDfQ/mR8hmnQWpZPZ7oMj
+	 WZLCwbPz9rXuzkq+AbrcaMAeRT5dkRBU7+3ywzuo/BUrKxCRSIl6HFSc/kDN1BwNBx
+	 zNjbcpLlMb4UBHh836E8TTYmZMngrYINpBojBb3i4iTjXUPXGiUmw/a9u5W+43fDdd
+	 BltVMgHWL0Wl3SUvQJJcJ2559vj7gTBElb2cdOVQ8lrEGrvtKMB8kOnSwZSPYJPUYT
+	 zd9Cdk1v1ABhA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 7/8] KVM: arm64: Mark some header functions as inline
-Date: Fri, 21 Mar 2025 13:27:04 -0400
-Message-Id: <20250321123044-15c5536f8478b50d@stable.kernel.org>
+Subject: Re: [PATCH 6.6 1/8] KVM: arm64: Calculate cptr_el2 traps on activating traps
+Date: Fri, 21 Mar 2025 13:27:16 -0400
+Message-Id: <20250321114127-3f2ba7f63e627759@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250321-stable-sve-6-6-v1-7-0b3a6a14ea53@kernel.org>
+In-Reply-To:  <20250321-stable-sve-6-6-v1-1-0b3a6a14ea53@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,54 +67,25 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: f9dd00de1e53a47763dfad601635d18542c3836d
+The upstream commit SHA1 provided is correct: 2fd5b4b0e7b440602455b79977bfa64dea101e6c
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Mark Brown<broonie@kernel.org>
-Commit author: Mark Rutland<mark.rutland@arm.com>
+Commit author: Fuad Tabba<tabba@google.com>
 
 Status in newer kernel trees:
-6.13.y | Present (different SHA1: 315c35c0aeff)
-6.12.y | Present (different SHA1: bb7146694891)
+6.13.y | Present (different SHA1: 341a0c20c99b)
+6.12.y | Present (different SHA1: 2ca27353e642)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f9dd00de1e53a ! 1:  57de9b6af7aaf KVM: arm64: Mark some header functions as inline
-    @@ Metadata
-      ## Commit message ##
-         KVM: arm64: Mark some header functions as inline
-     
-    +    [ Upstream commit f9dd00de1e53a47763dfad601635d18542c3836d ]
-    +
-         The shared hyp switch header has a number of static functions which
-         might not be used by all files that include the header, and when unused
-         they will provoke compiler warnings, e.g.
-    @@ Commit message
-         Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-         Link: https://lore.kernel.org/r/20250210195226.1215254-8-mark.rutland@arm.com
-         Signed-off-by: Marc Zyngier <maz@kernel.org>
-    +    Signed-off-by: Mark Brown <broonie@kernel.org>
-     
-      ## arch/arm64/kvm/hyp/include/hyp/switch.h ##
-    -@@ arch/arm64/kvm/hyp/include/hyp/switch.h: static inline bool __populate_fault_info(struct kvm_vcpu *vcpu)
-    - 	return __get_fault_info(vcpu->arch.fault.esr_el2, &vcpu->arch.fault);
-    - }
-    - 
-    --static bool kvm_hyp_handle_mops(struct kvm_vcpu *vcpu, u64 *exit_code)
-    -+static inline bool kvm_hyp_handle_mops(struct kvm_vcpu *vcpu, u64 *exit_code)
-    - {
-    - 	*vcpu_pc(vcpu) = read_sysreg_el2(SYS_ELR);
-    - 	arm64_mops_reset_regs(vcpu_gp_regs(vcpu), vcpu->arch.fault.esr_el2);
-    -@@ arch/arm64/kvm/hyp/include/hyp/switch.h: static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
-    +@@ arch/arm64/kvm/hyp/include/hyp/switch.h: static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
-       * If FP/SIMD is not implemented, handle the trap and inject an undefined
-       * instruction exception to the guest. Similarly for trapped SVE accesses.
-       */
+1:  2fd5b4b0e7b44 < -:  ------------- KVM: arm64: Calculate cptr_el2 traps on activating traps
+-:  ------------- > 1:  caa9f52b94cb4 KVM: arm64: Calculate cptr_el2 traps on activating traps
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
