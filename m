@@ -1,124 +1,263 @@
-Return-Path: <stable+bounces-125729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662E4A6B256
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 01:37:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2C9A6B356
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 04:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0A867B167D
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 00:36:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9C3D3B8538
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 03:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3707D1E48A;
-	Fri, 21 Mar 2025 00:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E571E5B7A;
+	Fri, 21 Mar 2025 03:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="WBj3XUqm"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="efsqqC+I"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F0C1EA84;
-	Fri, 21 Mar 2025 00:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AED78F5B;
+	Fri, 21 Mar 2025 03:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742517423; cv=none; b=djEwJKYGe4ZEbxX7z2dZO31kmqPSwgED4BQl/C394qq29ZDb02RjT58PbwcNze6/Qb/dTTlyPbIDZl3brlNPk//fvIySlh9GYNji5M2i/mfaRoLPVoaou3ZBbPvugVlJqobj7tGgzkrh3ZPjWziifvkhf93h9lQ7xQ8hcDQjOQw=
+	t=1742527744; cv=none; b=FvXDyIbzWeClD4lLg1e2jU5x0y5auNncrbIfRpcTUIVB51jwJTK2Ap4sZKEqlWgnIKYc0UlV8X/hydCoPyzydlSEqaa/WljSTOaeDMHl9jJTLWWy+5QnRscpYUGkPffXIqjZ5VKa/RqiC/J6q4zvPUkeW972BPr36P0f0ZS6KRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742517423; c=relaxed/simple;
-	bh=2z2RHDJm+LH1XHYv8vwtILZIc8Ji7eD8BNHKPWzg2vA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eduWkBzB7iP9kBFCjUOv6AlZ4B1Cf6YlLL7yUKzxkKPMAtpSrHT69yceLjCT4tvkVCKPQsh6zggmltOKfpVfLGtPj74TxXfa9pxLPF8ciyIZdRahcB8Bc1X7+/KXsHF+m++tYeLiz6l2WCYAOp9XbTm/G/RdwbfR8GFBydgRIwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=WBj3XUqm; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43690d4605dso9625385e9.0;
-        Thu, 20 Mar 2025 17:36:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1742517418; x=1743122218; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YqUcVj28ADCuEV5WcvgqcjEh/QhHQb8TbIe4WSOMGp8=;
-        b=WBj3XUqm4FnbRm0/AjgEkPKuwWWxvwYBekfvqjTMtT/OOMPSQF5zyDwinJ+0JHSvMk
-         c+ZOZC+y/pzh6ixTCKsuOPYOMn7gpMZf0xmzcRPGcC3ImWdv0jb8KCPra5LSavAP32ux
-         amlINMVMRhky8jZ0Kbm43EVx/KXRA0pFIp2SYOMf2gYyuv2f8TsSAmcVyJseGknp0g6m
-         oQt/i972WCRQ939ErFr/0QAyc/FaufIMXGVhAdMxT+3EZRrQu50DECJqZNGsbjM61TvZ
-         qJPwO2Ik2G8La/K9f3MSYCAQtFfA2PJ5ZMQ9A2dW2jzACsQCumbdTWf3yC6yGKvc0ORr
-         /spQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742517418; x=1743122218;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YqUcVj28ADCuEV5WcvgqcjEh/QhHQb8TbIe4WSOMGp8=;
-        b=GQX+PAEz5+xb3RQzjuFzTwldqV4BXLplbiHGSYp7BI6Uvrkx2H7rdlEaeDnzTBfbAF
-         7xRWsQYaQN1hvjoXc7UDX1ow8/IsUn+26cOGBQNCsmMQ5jvBKi6sGSRKxlnILWx8Jwgc
-         UOArkTN9aTSeHjOHGtT9gGQc/MENDS+Wg3Smu0TPjhu3AsaoZ6WaIyo1Txt/OEzvxBWD
-         2vhavOHTQPdrR/g4PJGosigsfqbLf8vqHINDAbbr2IdXPH5nRbxRrf7TKWM9sECghmka
-         U9XIeBmrcW+q1pUtUN2oGE69fgVMjC1onemHlyqXDDIXRkxJjN1epL9OMpmLoo4MKYvz
-         BvMw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8im8Jzbsf8WqretLLuyxAm037bgWwYgexMcZaYEtepMEa7Z0v/sUFhEScAdRkwlEPZ7AI42rQ@vger.kernel.org, AJvYcCWzHJSAUL1/DLXCgWN6YYENUmreIc03f75zjXGGySv0QdKmrqARRqqipIkRzsAxoatCZzi7gJO67uHxplo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjKNFjSAhb2JCfTw3xFFajhLBnZhhNpke4DdsUU4EFanzHS6/8
-	x4rL7QkhKLcKzPmGCAQ1/SfxqmGQz1LXQ3YTMk3gsGVQdSjwtuvgB3Jv
-X-Gm-Gg: ASbGnctLu6BcRykS2SNAzhP23/BztwIl25gM4NM14i65jH2w7/+UeXQszMIlmdyWfFJ
-	63YwEVv2Q4gdPEl6RpIcigslfD2B2vc76BEqpyTpdR7VM9CBCd4fqpbTwkUpcckZOzkoXUJU/ac
-	LqTOEcQLm4FIj4WN7GjO82SJhGlgERNChpa8My0iu/JHlJ2RXuGgNaKrd2fJEDcBV0YqC6gY164
-	PwLZ4kklSJoweqbvqpbXuN2RwRTUc+g5fySjtpL4ySFnc+iZeOig9KznDsMbe6skTzgBXDsorF+
-	f6KC185M+zDOBH/iwInKrmMw7/zNEFNwgI+frDrYvOZguUEMOt8HYUFrmxZJHYwEFhFtdw3KJ7p
-	Q6uUXlkqtiT8E5QFmFIvBSw==
-X-Google-Smtp-Source: AGHT+IHvGLjMkOgQHJeFISgsZU+mKKIo64KH7v61/RWdA0q63XnnMd2pNMchgRNfh+u1zcQOFJefnw==
-X-Received: by 2002:a05:600c:4503:b0:43c:fabf:9146 with SMTP id 5b1f17b1804b1-43d509f5a43mr11075975e9.17.1742517417855;
-        Thu, 20 Mar 2025 17:36:57 -0700 (PDT)
-Received: from [192.168.1.3] (p5b0579be.dip0.t-ipconnect.de. [91.5.121.190])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d3ae04a94sm45405785e9.0.2025.03.20.17.36.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Mar 2025 17:36:56 -0700 (PDT)
-Message-ID: <d5f238f2-2ffd-4e85-9667-9a7398b42516@googlemail.com>
-Date: Fri, 21 Mar 2025 01:36:54 +0100
+	s=arc-20240116; t=1742527744; c=relaxed/simple;
+	bh=VLdzNTb4ENqsioNfG08wfvdE6JVwxPuGTnBZHq6pp5Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NbwqzEZul0icRR34EXHtg+fZL2u+UXtdEsYTQa1y0Yu159BtJfzddHq/zJs9mPrreAL7fkHOHTa6+cRofHB0PJqBKF03ZJakeea7rAqDlOhNxmYakpZmzR77HFApTnHl85kLiQQbMKVGWEcPYbh6wki5QNYeHsDad0iatrz4HJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=efsqqC+I; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+From: Dragan Simic <dsimic@manjaro.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1742527737;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TvimR6SKo0jtW7eTJ4niI635OpzUmByoQ1ePS3vCVMo=;
+	b=efsqqC+In51YqG17swWvtDJmtXPw/VfdVPNwfuCEPtWye0J0e3juf/qxyhpq6e38T9cmjx
+	psIlggfq4gYjKmDY12xsnKMfzBUyPvcDgPbzZboB5JpXzv6VValNa6hnK/5DCCsVU2Boag
+	+h3tq7LhyDyoFJSwTul01XrJ0ObfKkm1Nr4PP2YotgGcwntmOZdfNzN3J6aOX3vW0w0aEI
+	i0ONlST1c908yXV9jfKeBqHf/YKasM6poA8P3cSmzKLFzXB88OY2M6uVKETwFQCdTM6zx8
+	Yf3ZOuWUiCj4TujmlOBAdtgCmBsH4i6Sgojwu2rCOe5EOa239fQvs6/KIaSi9w==
+To: linux-rockchip@lists.infradead.org
+Cc: heiko@sntech.de,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	stable@vger.kernel.org,
+	Alexey Charkov <alchark@gmail.com>,
+	Quentin Schulz <quentin.schulz@cherry.de>
+Subject: [PATCH] arm64: dts: rockchip: Remove overdrive-mode OPPs from RK3588J SoC dtsi
+Date: Fri, 21 Mar 2025 04:28:49 +0100
+Message-Id: <f929da061de35925ea591c969f985430e23c4a7e.1742526811.git.dsimic@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 000/166] 6.6.84-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250319143019.983527953@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250319143019.983527953@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-Am 19.03.2025 um 15:29 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.84 release.
-> There are 166 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+The differences in the vendor-approved CPU and GPU OPPs for the standard
+Rockchip RK3588 variant [1] and the industrial Rockchip RK3588J variant [2]
+come from the latter, presumably, supporting an extended temperature range
+that's usually associated with industrial applications, despite the two SoC
+variant datasheets specifying the same upper limit for the allowed ambient
+temperature for both variants.  However, the lower temperature limit is
+specified much lower for the RK3588J variant. [1][2]
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+To be on the safe side and to ensure maximum longevity of the RK3588J SoCs,
+only the CPU and GPU OPPs that are declared by the vendor to be always safe
+for this SoC variant may be provided.  As explained by the vendor [3] and
+according to its datasheet, [2] the RK3588J variant can actually run safely
+at higher CPU and GPU OPPs as well, but only when not enjoying the assumed
+extended temperature range that the RK3588J, as an SoC variant targeted
+specifically at industrial applications, is made (or binned) for.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Thus, only the CPU and GPU OPPs that are specified by the vendor to be safe
+throughout the entire RK3588J's extended temperature range may be provided,
+while anyone who actually can ensure that their RK3588J-based board is
+never going to run within the extended temperature range, may probably
+safely apply a DT overlay that adds the higher CPU and GPU OPPs.  As we
+obviously can't know what will be the runtime temperature conditions for
+a particular board, we may provide only the always-safe OPPs.
 
+With all this and the downstream RK3588(J) DT definitions [4][5] in mind,
+let's delete the RK3588J CPU and GPU OPPs that are not considered belonging
+to the normal operation mode for this SoC variant.  To quote the RK3588J
+datasheet [2], "normal mode means the chipset works under safety voltage
+and frequency;  for the industrial environment, highly recommend to keep in
+normal mode, the lifetime is reasonably guaranteed", while "overdrive mode
+brings higher frequency, and the voltage will increase accordingly;  under
+the overdrive mode for a long time, the chipset may shorten the lifetime,
+especially in high temperature condition".
 
-Beste Grüße,
-Peter Schneider
+To sum up the RK3588J datasheet [2] and the vendor-provided DTs, [4][5]
+the maximum allowed CPU core and GPU frequencies are as follows:
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+   IP core    | Normal mode | Overdrive mode
+  ------------+-------------+----------------
+   Cortex-A55 |   1,296 MHz |      1,704 MHz
+   Cortex-A76 |   1,608 MHz |      2,016 MHz
+   GPU        |     700 MHz |        850 MHz
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Unfortunately, when it comes to the actual voltages for the RK3588J CPU and
+GPU OPPs, there's a discrepancy between the RK3588J datasheet [2] and the
+downstream kernel code. [4][5]  The RK3588J datasheet states that "the max.
+working voltage of CPU/GPU/NPU is 0.75 V under the normal mode", while the
+downstream kernel code actually allows voltage ranges that go up to 0.95 V,
+which is still within the voltage range allowed by the datasheet.  However,
+the RK3588J datasheet also tells us to "strictly refer to the software
+configuration of SDK and the hardware reference design", so let's embrace
+the voltage ranges provided by the downstream kernel code, which also
+prevents the undesirable theoretical outcome of ending up with no usable
+OPPs on a particular board, as a result of the board's voltage regulator(s)
+being unable to deliver the exact voltages, for whatever reason.
+
+The above-described voltage ranges for the RK3588J CPU OPPs remain taken
+from the downstream kernel code [4][5] by picking the highest, worst-bin
+values, which ensure that all RK3588J bins will work reliably.  Yes, with
+some power inevitably wasted as unnecessarily generated heat, but the
+reliability is paramount, together with the longevity.  This deficiency
+may be revisited separately at some point in the future.
+
+The provided RK3588J CPU OPPs follow the slightly debatable "provide only
+the highest-frequency OPP from the same-voltage group" approach that's been
+established earlier, [6] as a result of the "same-voltage, lower-frequency"
+OPPs being considered inefficient from the IPA governor's standpoint, which
+may also be revisited separately at some point in the future.
+
+[1] https://wiki.friendlyelec.com/wiki/images/e/ee/Rockchip_RK3588_Datasheet_V1.6-20231016.pdf
+[2] https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2403201054_Rockchip-RK3588J_C22364189.pdf
+[3] https://lore.kernel.org/linux-rockchip/e55125ed-64fb-455e-b1e4-cebe2cf006e4@cherry.de/T/#u
+[4] https://raw.githubusercontent.com/rockchip-linux/kernel/604cec4004abe5a96c734f2fab7b74809d2d742f/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
+[5] https://raw.githubusercontent.com/rockchip-linux/kernel/604cec4004abe5a96c734f2fab7b74809d2d742f/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
+[6] https://lore.kernel.org/all/20240229-rk-dts-additions-v3-5-6afe8473a631@gmail.com/
+
+Fixes: 667885a68658 ("arm64: dts: rockchip: Add OPP data for CPU cores on RK3588j")
+Fixes: a7b2070505a2 ("arm64: dts: rockchip: Split GPU OPPs of RK3588 and RK3588j")
+Cc: stable@vger.kernel.org
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Alexey Charkov <alchark@gmail.com>
+Helped-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+---
+ arch/arm64/boot/dts/rockchip/rk3588j.dtsi | 53 ++++++++---------------
+ 1 file changed, 17 insertions(+), 36 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588j.dtsi b/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
+index bce72bac4503..3045cb3bd68c 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588j.dtsi
+@@ -11,74 +11,59 @@ cluster0_opp_table: opp-table-cluster0 {
+ 		compatible = "operating-points-v2";
+ 		opp-shared;
+ 
+-		opp-1416000000 {
+-			opp-hz = /bits/ 64 <1416000000>;
++		opp-1200000000 {
++			opp-hz = /bits/ 64 <1200000000>;
+ 			opp-microvolt = <750000 750000 950000>;
+ 			clock-latency-ns = <40000>;
+ 			opp-suspend;
+ 		};
+-		opp-1608000000 {
+-			opp-hz = /bits/ 64 <1608000000>;
+-			opp-microvolt = <887500 887500 950000>;
+-			clock-latency-ns = <40000>;
+-		};
+-		opp-1704000000 {
+-			opp-hz = /bits/ 64 <1704000000>;
+-			opp-microvolt = <937500 937500 950000>;
++		opp-1296000000 {
++			opp-hz = /bits/ 64 <1296000000>;
++			opp-microvolt = <775000 775000 950000>;
+ 			clock-latency-ns = <40000>;
+ 		};
+ 	};
+ 
+ 	cluster1_opp_table: opp-table-cluster1 {
+ 		compatible = "operating-points-v2";
+ 		opp-shared;
+ 
++		opp-1200000000{
++			opp-hz = /bits/ 64 <1200000000>;
++			opp-microvolt = <750000 750000 950000>;
++			clock-latency-ns = <40000>;
++		};
+ 		opp-1416000000 {
+ 			opp-hz = /bits/ 64 <1416000000>;
+-			opp-microvolt = <750000 750000 950000>;
++			opp-microvolt = <762500 762500 950000>;
+ 			clock-latency-ns = <40000>;
+ 		};
+ 		opp-1608000000 {
+ 			opp-hz = /bits/ 64 <1608000000>;
+ 			opp-microvolt = <787500 787500 950000>;
+ 			clock-latency-ns = <40000>;
+ 		};
+-		opp-1800000000 {
+-			opp-hz = /bits/ 64 <1800000000>;
+-			opp-microvolt = <875000 875000 950000>;
+-			clock-latency-ns = <40000>;
+-		};
+-		opp-2016000000 {
+-			opp-hz = /bits/ 64 <2016000000>;
+-			opp-microvolt = <950000 950000 950000>;
+-			clock-latency-ns = <40000>;
+-		};
+ 	};
+ 
+ 	cluster2_opp_table: opp-table-cluster2 {
+ 		compatible = "operating-points-v2";
+ 		opp-shared;
+ 
++		opp-1200000000{
++			opp-hz = /bits/ 64 <1200000000>;
++			opp-microvolt = <750000 750000 950000>;
++			clock-latency-ns = <40000>;
++		};
+ 		opp-1416000000 {
+ 			opp-hz = /bits/ 64 <1416000000>;
+-			opp-microvolt = <750000 750000 950000>;
++			opp-microvolt = <762500 762500 950000>;
+ 			clock-latency-ns = <40000>;
+ 		};
+ 		opp-1608000000 {
+ 			opp-hz = /bits/ 64 <1608000000>;
+ 			opp-microvolt = <787500 787500 950000>;
+ 			clock-latency-ns = <40000>;
+ 		};
+-		opp-1800000000 {
+-			opp-hz = /bits/ 64 <1800000000>;
+-			opp-microvolt = <875000 875000 950000>;
+-			clock-latency-ns = <40000>;
+-		};
+-		opp-2016000000 {
+-			opp-hz = /bits/ 64 <2016000000>;
+-			opp-microvolt = <950000 950000 950000>;
+-			clock-latency-ns = <40000>;
+-		};
+ 	};
+ 
+ 	gpu_opp_table: opp-table {
+@@ -104,10 +89,6 @@ opp-700000000 {
+ 			opp-hz = /bits/ 64 <700000000>;
+ 			opp-microvolt = <750000 750000 850000>;
+ 		};
+-		opp-850000000 {
+-			opp-hz = /bits/ 64 <800000000>;
+-			opp-microvolt = <787500 787500 850000>;
+-		};
+ 	};
+ };
+ 
 
