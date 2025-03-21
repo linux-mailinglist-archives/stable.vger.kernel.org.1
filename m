@@ -1,126 +1,125 @@
-Return-Path: <stable+bounces-125745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F48A6B956
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 11:58:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3842A6BA36
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 13:00:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC48D462333
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 10:56:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB5777A7356
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 11:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF0322D7B8;
-	Fri, 21 Mar 2025 10:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9414C22256E;
+	Fri, 21 Mar 2025 12:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b="U7oNcNCK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mz1D0YZs"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21BE22D78E;
-	Fri, 21 Mar 2025 10:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4868B86250;
+	Fri, 21 Mar 2025 12:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742554426; cv=none; b=Y35ItC5wvl1QddNwxwsuv5uD3ZmMNO8M5sINzrFAoJXxh+IH3DMso7YEUi0UzAiS4R4NlZ65nTE6fc0vHaLILPx+oeTWF1Ku56h9SLc6SVb3XLo8gUGxuzOA9/Z0NzMgNFKjDL59u466V4etN3Q80i8pZvRyfXWICD/xWziNRew=
+	t=1742558450; cv=none; b=JLOkH0QlYjnGLaL6eF5wGuxx23dA7GqVgWZ5U9khlTqMPSZSL9lm31qS0keSkoK4+q5j9aqdvbsK7VwsLwM+BqqerGXAidVloCS1IGsEdpz8o4c9fuYq42Wk0OSJTsFXyWlvesmO6hIGe4PEZXhUukbc2Y2SGqFw3baf9L+1i0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742554426; c=relaxed/simple;
-	bh=310JQR8rsk+AyCKTdp1SbuSXRQ/gUbmrT2H4Xe03Zls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jQDQmcsPYFKVq3qVum/pfdOutnQigaN8m4KxN0wq5QDkN9gG1/wMJH9o7t7f97JTM2SviNpujK+jBDsy1HU5kg0rempOlN7v9LRyO2nV6p9+4HpgApKk9ZVwTS8N2KajlpHpyvc13w3SsDZv2azIJpDkF6JVV/ZK0jWTva0wIdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b=U7oNcNCK; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1742554413; x=1743159213; i=frank.scheiner@web.de;
-	bh=310JQR8rsk+AyCKTdp1SbuSXRQ/gUbmrT2H4Xe03Zls=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=U7oNcNCKYBoI2OXlNNqQOZkjrXB70PZk34zh5auMywaQqdyguXGOsmMjkcfcwsR6
-	 op2Ax1rdAq7nbiLp9z6bGxD3csqom3S7TWK7IFBfZHJp4qlPFQ8gsFZxGycn/HuYp
-	 bpwIoCk4DB2cHhW6SgBMFnqJVtpx05XOs0oDjqabJgvCkNTD44IRTaG6UsPGXFgIh
-	 gmkEgeOVICjE233pAVTR2krk7siP3tpHi0MgqgFAufhcnB9z/2W52Qm/KkHHQbWnG
-	 M6gl/6Oog8NqSW66/xtTrn0tK9O5ySOHb63MyjSmuHbWzcu89ZBfWf4xfEvKZIpvH
-	 xn9hDDNwDPXR62mWGg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.30] ([79.200.218.204]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MPKFF-1tVxTc0EH7-00MR3S; Fri, 21
- Mar 2025 11:53:33 +0100
-Message-ID: <ac138eb3-de5c-4fd2-814d-8ff674428008@web.de>
-Date: Fri, 21 Mar 2025 11:53:32 +0100
+	s=arc-20240116; t=1742558450; c=relaxed/simple;
+	bh=74QhnzKbW9aHnDTtmDERlGimhlX1E287SbG7cG+icRI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mbeSOG3PFpHd6Re9lZHH8UhfIM1wSEJOJF41e3pp0zTNbc54XByLfHuAoRU/Ej2kUjquXht6nkj0xXHR1/bRDxqoDnUnO9F+qcE57oPb6YyVSbQOt0o3f158EeyJKBufX81/5xTTdU0v6hM2gWd/FAuvZ6naKWlv6RjWZmt28BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mz1D0YZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EFEC4CEE7;
+	Fri, 21 Mar 2025 12:00:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742558449;
+	bh=74QhnzKbW9aHnDTtmDERlGimhlX1E287SbG7cG+icRI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mz1D0YZsM2pLNIT1SCovFGLqEX7Q46WY5mFHIv68qrOetghCx1G8lHbKRd07Ffv1J
+	 UBVxom9NWgR60qqeI3mF3qVuiFGjN7uZLE9aiIhYyKPxTEhjjDPHi6HhNlU/ai24rq
+	 8sKQhZfzQZ6Vo+E8iVoO1g6a+bix0YGC1q3p4lSHk4+rC5WQb9EF94avfYxQajTupR
+	 YpoKL/ClJlFneRPeBYYYrMkEt3WOg26K0AE7WuPiZdtpT1ApK08485OWeKsov2Vx7m
+	 CDHzr7ZJ2CqSLyL4iRsh7HgISo79zx1ztKvCqMl9jPsmsAq3MSTNh1CioibDEcjpaF
+	 /q6XMPci5Rfvw==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2c1c9b7bd9aso958408fac.0;
+        Fri, 21 Mar 2025 05:00:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVr5eP8MNguHjMfRehT/1UxOZ5bx64JeGegXwGmOhzqReSwX12A/K/5YmuNXV6XQwM+JzLGZsyJtDX0F6lX@vger.kernel.org, AJvYcCWZzZNqB6cAwhfamHJ0bL0hVv+dIrFeGQdsQnWrD2VEFpboJh23R7jyWK2ohtXtaJW2vVE7lzYd@vger.kernel.org, AJvYcCWhd/gKzl3AaXeg0p6bm/9YS2AwH/bMWetHiii/MBaEyhTrYa6iC7+HDn8v8y8EkmKELovE/ZoZ0Eey7MrT@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaCr4YqEFtwP3h277G3cHkXqXMUqXVPNJI/tfGx9WhIGuL1ihn
+	Dxa/JdHYkh29QmOBO1kfD+0jH3YlPMjcFk7Hg0O3YQKcpfJzirkQLciBFsCRjCrskIMgEdLqVly
+	A2KYI8/RopZTausZ7fbCvZoHBRxY=
+X-Google-Smtp-Source: AGHT+IGg70qn+JL2hDJ2egmXLZUTud2yr+t4hljxG8JLcN5gpp6kww4yC+6Y1ZvsgXF4Xmo0tmRupqHE60axkjxAFp0=
+X-Received: by 2002:a05:6870:aa91:b0:288:6a16:fe1 with SMTP id
+ 586e51a60fabf-2c7802ffef7mr2087934fac.18.1742558449048; Fri, 21 Mar 2025
+ 05:00:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: 6.1.132-rc1 build regression on Azure x86 and arm64 VM
-Content-Language: en-US
-To: Leah Rumancik <lrumancik@google.com>
-Cc: dchinner@redhat.com, djwong@kernel.org, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Hardik Garg <hargar@linux.microsoft.com>
-References: <8c6125d7-363c-42b3-bdbb-f802cb8b4408@web.de>
- <1742423150-5185-1-git-send-email-hargar@linux.microsoft.com>
- <CAMxqPXXrfMs4zHuOOmTtDp2T5uTbJYnnXQ0E04gFRr62W3SJjw@mail.gmail.com>
-From: Frank Scheiner <frank.scheiner@web.de>
-In-Reply-To: <CAMxqPXXrfMs4zHuOOmTtDp2T5uTbJYnnXQ0E04gFRr62W3SJjw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+References: <CGME20250321063454epcas1p2194c3e69371dd4f025202d727bfb93a4@epcas1p2.samsung.com>
+ <158453976.61742539083228.JavaMail.epsvc@epcpadp2new>
+In-Reply-To: <158453976.61742539083228.JavaMail.epsvc@epcpadp2new>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Fri, 21 Mar 2025 21:00:37 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd_S3t6PX-TMJH5WiY1YqyFBLu=_fBKiCw=uDfb+n=xXPw@mail.gmail.com>
+X-Gm-Features: AQ5f1JrZ_3lOK7hGKG_opFQuodPfEiB2Cjbi9_TFj8psvCs0xxwOXRVvTfPkCZs
+Message-ID: <CAKYAXd_S3t6PX-TMJH5WiY1YqyFBLu=_fBKiCw=uDfb+n=xXPw@mail.gmail.com>
+Subject: Re: [PATCH v2] exfat: fix random stack corruption after get_block
+To: Sungjong Seo <sj1557.seo@samsung.com>
+Cc: yuezhang.mo@sony.com, sjdev.seo@gmail.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, cpgs@samsung.com, stable@vger.kernel.org, 
+	Yeongjin Gil <youngjin.gil@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tLCl5C9rDJK9ilFqCwJA7UNwH/ojJ4RHTmu/pS5+vkZliCgR/UT
- q9LvE5Fspic+eRa7wE+/OR6Dh73jQka7uODMJzD8VMJ+YbGkZpp6Yq4Ere66zIEv1+hAvT1
- h7WdF0TD9DFS7MgWzuu+9WyxzL3TasZISKNUNs93iOALFkSDw5FvYD4fd2LCa5WpWLAk0hv
- lwojcbG/5AJ/tXbwVFrRA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:39F/bGuTwxM=;FqZdPudSvRQ3ggl96w+OnlJnVqY
- QTK7oMqMA6mERBufmkJ0Lrd2V4DL5NO0+ZonR2xeqHm4UhYN91fEEKgyTaBgR3xbS+dXiLbBQ
- 9qgPMvL95EkOYgKS5h9FQJicDsOJl62+ibsrd+fqBHs59POJg8121S+nnA+5QSjM2hyuCWYGH
- ihxrhvxbY6dnH0TL5WGJLRruTOJPfbecMwFDI7sCyqAYGcptPN/vIUHnWx2dKNwuW4hFGFdAI
- UW39SIMPAI4ONLSfQ2V3osLvalnMuUmWeu3iQGhRawqS2CRY1SVp/djO1DUtbRLAAfHPVM5gK
- PZvn2kChrsdGVWBl0kTf7wdnBZoTOXs9PWKCqlSLociNFiU2cH70egJGKf/OiSTdbIqSFwg0V
- KbtVOI8EjOx1QeeF0eRCVtWmRCXy8/6jA0pyfv3sSHJ1PtGXm5h1Afi27HvSxfGlMzBTZ7WMT
- dLFgtZlhCBCj1R5is7M4tdNpbma6j0VAObL1PCgh40dDEkImJxpz3T41HgZN+A7rdp4jAX5Gd
- cazGsiWUHM6gBjgGbsfFZidBEfv+0lcGSqIsfK/o22m/51iJHA4ieRAcEO0Mn6wRZWPJM6w/M
- G5h4alTxYdfjoqMy1AWB+B+BGLKAnQJfBLXZ5o/MciOmw2wE8XdNaFBpUr9UaWLTUPaUvw2//
- smyaNkpCrN+3GrdQSjQfVyGs1pWV+Tv6PNKFbDL5LT1y0DyT0J6hj8OukLMvzwYx9rMVK0zF5
- 4npeKoLYjgfYeRarDAdDZe8ffyW0R6Hfxg47lx8UhSQ3+uHge7wnQhiK4xB8b0/YjHDwAExS3
- rqqQvYkvBCtxr6vMrnBRT8wo8/kXrOuYXZDRldEOA6Z84+n5J7RU7odCyIaQCm58SfYN4BIc5
- Fk2sMOhezZbW6Rj+bdLN3aI0STgjv93jUc+E0+p3f8HOoPzN0ag+cKrz8VfOwPRyac7tg0U+c
- ndRxyUhJDuBQ0T2/EyEVAXlz5mkt2QN9gU+VP2PgJF7Nd6JcwUHi+0bA+V+aEAGCuaVkJ382X
- zlKnilo6PIv90oHjOXpcRS+tIAhD84zKAZdHI03cFdwumQRQjAc9zT1WazvHmvV8vkxtzm5Ac
- iUnj93Weu7rEv6FO/X8MRtdiO/Z3siNHXGTHh3YEw4SjLxivT36UcbazU9IxuKvUkG2Fa35f/
- GBmx04wJavz9aStSOqF8Fy+97bwR07bGUhsykfNBbiXK46nupFtHsUmX95hw4eAJCM8SE/dnI
- fc9bwHzKnCbu66IEWs2srZsVNt6F8hEffHY9jnpgPylLONa7N8bYqv62qxi8v42TSe6U7Y1h9
- CyV4j4bF8OtXKJnRX9beZczQesg9e8HlprKPK+Y3/xsu0qYjVQlqNNEKY4jwbcgikxZN73UAi
- BHs2l8IQol+phz8fZJk5zv2uytruhe6ooNxjBXzqJRtUeFCKBAZS0SYcn0/an+xmTSBKI1Jij
- TxZlzPg==
 
-Hi Leah,
-
-On 20.03.25 00:50, Leah Rumancik wrote:
-> Hey this is my bad, I cherry picked the fix to my local 6.1.y, running
-> tests now, should be out for review tomo or friday.
-
-Ah, ok, looking into [1] again, I should have CCed to all Signed-of-bys
-when sending [2] in the first place. :-)
-
-[1]: https://web.git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git/commit/?h=3Dlinux-6.1.y&id=3D4fc6b15f590bc7a15cb94af58668d9c9380=
-15d79
-
-[2]: https://lore.kernel.org/lkml/8c6125d7-363c-42b3-bdbb-f802cb8b4408@web=
-.de/
-
-> Thanks Frank for finding the missing commit!
-> (https://lore.kernel.org/stable/8c6125d7-363c-42b3-bdbb-f802cb8b4408@web=
-.de/)
-
-You're welcome.
-
-Cheers,
-Frank
+On Fri, Mar 21, 2025 at 3:38=E2=80=AFPM Sungjong Seo <sj1557.seo@samsung.co=
+m> wrote:
+>
+> When get_block is called with a buffer_head allocated on the stack, such
+> as do_mpage_readpage, stack corruption due to buffer_head UAF may occur i=
+n
+> the following race condition situation.
+>
+>      <CPU 0>                      <CPU 1>
+> mpage_read_folio
+>   <<bh on stack>>
+>   do_mpage_readpage
+>     exfat_get_block
+>       bh_read
+>         __bh_read
+>           get_bh(bh)
+>           submit_bh
+>           wait_on_buffer
+>                               ...
+>                               end_buffer_read_sync
+>                                 __end_buffer_read_notouch
+>                                    unlock_buffer
+>           <<keep going>>
+>         ...
+>       ...
+>     ...
+>   ...
+> <<bh is not valid out of mpage_read_folio>>
+>    .
+>    .
+> another_function
+>   <<variable A on stack>>
+>                                    put_bh(bh)
+>                                      atomic_dec(bh->b_count)
+>   * stack corruption here *
+>
+> This patch returns -EAGAIN if a folio does not have buffers when bh_read
+> needs to be called. By doing this, the caller can fallback to functions
+> like block_read_full_folio(), create a buffer_head in the folio, and then
+> call get_block again.
+>
+> Let's do not call bh_read() with on-stack buffer_head.
+>
+> Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
+> Cc: stable@vger.kernel.org
+> Tested-by: Yeongjin Gil <youngjin.gil@samsung.com>
+> Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Applied it to #dev.
+Thanks!
 
