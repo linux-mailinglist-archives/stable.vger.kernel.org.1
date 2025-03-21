@@ -1,163 +1,137 @@
-Return-Path: <stable+bounces-125750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B34A6BB6F
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 14:08:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 360A8A6BBFD
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 14:48:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AA9E189F542
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 13:08:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECE6E189537A
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 13:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914132248BE;
-	Fri, 21 Mar 2025 13:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F075E38FB9;
+	Fri, 21 Mar 2025 13:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=codethink.co.uk header.i=@codethink.co.uk header.b="0ha4hkew"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="wOkiygT5"
 X-Original-To: stable@vger.kernel.org
-Received: from imap5.colo.codethink.co.uk (imap5.colo.codethink.co.uk [78.40.148.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A346C1F8F09
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 13:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.40.148.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1913CA5E
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 13:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742562495; cv=none; b=XpeYMwJVGwL03O612nw+0PIo8167f4LroDjjSR4MgAnb6NeLu7Hi+3i2NGzJU4dhCS38+IVX9HNuje/j4vVU4PnGBaH869pDE1A/PEAT4pzpQJ5NUCplgsj4DTccd2ITp1Zp21pwnVJdp/UdMe58MhOA3amjWuJ4vJihuEjGXY4=
+	t=1742564867; cv=none; b=RS/lR2JhxR8PULvKWYMGCCebel+KkBb1asCQ98/DSbuqIHio2JaLp2QqUVLusWmCFHCM/lceZYHlcyx3nJ9DVeA4rv8tBdG7O25d/90Mf75lXJHQqxEp+UQv+0qOhCdspdfEvCmqbJ/Y5a/YDIKhJ0DTDOXAbSrtP+sFryOPQDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742562495; c=relaxed/simple;
-	bh=otWxX9wRt2P0VpmqZic1q5LY41p+eMQn82/c3tJh078=;
-	h=MIME-Version:Date:From:To:Subject:Message-ID:Content-Type; b=GwX1RLnj2alHEKnevXWR4iJJalYvqciXGLFxZJGn8IcrkMj8bjHKwxpKcc9IKGDBzAzMCut/cRuNSTfZUuvzz9lPGbErdB6T/iTUYA7CK//vBRJfKhlrYcZrvu4mYFpmAiCeJ5O8bZSn/TvJItR6Tjg7A9AEcSm3HdOI/TZOxEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=codethink.co.uk; spf=pass smtp.mailfrom=codethink.co.uk; dkim=pass (2048-bit key) header.d=codethink.co.uk header.i=@codethink.co.uk header.b=0ha4hkew; arc=none smtp.client-ip=78.40.148.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=codethink.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codethink.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=codethink.co.uk; s=imap5-20230908; h=Sender:Content-Transfer-Encoding:
-	Content-Type:Message-ID:Subject:To:From:Date:MIME-Version:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=e3Kt/yRz2W8/ucIcA+BjHBa7Yewvv7wg+EEC+DtagM8=; b=0ha4hkew6/vWjukmonmcF/YeUY
-	40uVxArqAFd7hNXCRC1+d1CGOYrryzJS2/eiIfAdaihhUXIlbzg0E0olR8UFhsxjNIQeFOYt0W8Hj
-	poPeCKmo2AW3X3ySNRDvXdxlKjcOm92/11i0T3lyMqtSTVwjMasuHRw34aERNGDRTDfN13OrqjEVv
-	Qm5y0pPxum0INX8WWL29ZqnWGDUsALNYlRXWyloyoJZgl2q0XP8EcQ8b00TMEE/ijjOwbiaLYWGac
-	vUmiunx7KnH8hP4excRjTOY562PfffccBLGt2CKVAX1ninDUzksQJzF/Jy6IP5QforbMtTrFA+5nx
-	zg3UGdVQ==;
-Received: from ipa12.colo.codethink.co.uk ([78.40.148.178] helo=webmail.codethink.co.uk)
-	by imap5.colo.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
-	id 1tvc6U-001JgO-FA
-	for <stable@vger.kernel.org> ; Fri, 21 Mar 2025 13:08:03 +0000
+	s=arc-20240116; t=1742564867; c=relaxed/simple;
+	bh=zto+hD4T8Rl0wGhIV/0xoa9IwhY4ZDqaQa3d6Xj1HKA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VGiNdYjoNbuqt4cs1lsmMs9VozcDCdlJbN0BbuZYlgPdG9z0sge0d+vGd9vECb/y23hCCcCH/G3FXSbszk1U/BN/03GBTc/1Tc6BLsCUdVtwoWr7KLlIeku/2kkGbrfnRo0c8yopgv2u90HqM6npMWvuBEDgPE4xdgCeF5aeKjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=wOkiygT5; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3014678689aso2886410a91.0
+        for <stable@vger.kernel.org>; Fri, 21 Mar 2025 06:47:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl.com; s=google; t=1742564864; x=1743169664; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O8nQgLdmlUqdr9aYe+VPc8RjHS/d3j/W4qOBy0BpvdI=;
+        b=wOkiygT5XK5gKLnLsEQp3gFauTepjz0CUsmqpUhuGOX6J1HoAitIm6bVkqJvPYyRDZ
+         d7NmNKOMhXFHp+Z+rIh03cr6VvB5KU06Eho0GISuRUToruQoVUordXQxM/wcDWNXo9Hc
+         XKEPj6kcWHFm6aM5Ojp0gtR5Ys7xZXQ3u1xmtB5xj7Lxsv5LB5HpdA3cEAZTNd2qqfou
+         1nkVoTz9Oq9nPsy78OpjqGSzmDGN0XvK3+ejAxjMco8nJwC73E39Vq2vCYM2+q7qyjQp
+         YYqk/AHZ/C4aAWTwrxXgF5NcdBMdA80IVJEbWEtYaKPjhSZCpUg9K6YG340r/m593ygv
+         KHew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742564864; x=1743169664;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O8nQgLdmlUqdr9aYe+VPc8RjHS/d3j/W4qOBy0BpvdI=;
+        b=tlugGXFIvsOKNvoautXw6dr/oGsOLqFE5DRujfYwalCYJwU0dsLiWYz60dDRxsWlDr
+         FwmIcDCCkw/d7hiDcpN5+zpaXq1DRLMLX0+hoeJpd1oH+liY9qR9qPyKHAwmb5Maw742
+         VRQfhQZzG9RDV9ZOnDEWBvCnoYoVFeA0oQ6bUfbvYQ9WFKdnXqGbcvjHDDntdgCAgjTu
+         +0eEC32DJ9VnnVeFKs2SKSNUoRWHEivwUjYSt9Y+OhLH3RRDyH9EtBZw9xYoIi1l9KA3
+         v48tgJz592fkLIFh2S5YV71EwHHk1L+LdO4Zw+402olpZuxEUn+MJG4cF+ijSJaONUr+
+         urkA==
+X-Gm-Message-State: AOJu0YwAkDtDtaY80+K/Nj8QWUnvMx9LdtQbZmb2QeTKg9j4fx9P3pm+
+	Sko1c9G/rApI5ArPr4vUKhskeOsmtxs8cmRs6EYvqmLVD8US37Q+awQ5JpOv9yGBOM6xoQfupoe
+	nbIFnkS8+tebhcTt6uZibT7Q/RgPK+tcYPzhsRCFKZtXcs+c217zD2Q==
+X-Gm-Gg: ASbGnctAbkfdwmchVVSlLuGUOWPJZFvi2XyCSRgJbj3Y3uFECXA9g1KMSgtAMIiX+vh
+	VRhzZTlNnRwh9vyeDk+CWeWL/g21TWp5yYoj2/h9FmtkHFESKlj0Aam53zS1gN+WpJilZo6F3Qt
+	EDbQPtXDmKifBCcpmdgJMCpQKDIQ97Bt1j9Wa7
+X-Google-Smtp-Source: AGHT+IG9gHzXZS2MDHa4IE9fwTzJ1H0FhHqAo4iMsZRn/mh9NpHgxYoGlNF8O6uvXxiYLj+Zs6L/giMBpxyi7SPgYGU=
+X-Received: by 2002:a17:90b:2dc8:b0:2ee:f80c:6889 with SMTP id
+ 98e67ed59e1d1-3030ff07367mr5795406a91.33.1742564864003; Fri, 21 Mar 2025
+ 06:47:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 21 Mar 2025 13:08:03 +0000
-From: James Thomas <james.thomas@codethink.co.uk>
-To: stable@vger.kernel.org
-Subject: BUG in LTS 5.15.x cpusets with tasks launched by newer systemd
-Message-ID: <d3bbf1997bae30253a7be05c7e2a06fb@codethink.co.uk>
-X-Sender: james.thomas@codethink.co.uk
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Sender: james.thomas@codethink.co.uk
+References: <20250319143027.685727358@linuxfoundation.org>
+In-Reply-To: <20250319143027.685727358@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Fri, 21 Mar 2025 22:47:27 +0900
+X-Gm-Features: AQ5f1Jq_-0xkKqLvecUc-RyuF4NKyutsPZK2DjPZzNY6v7pHHsBsKKACW7x7r0o
+Message-ID: <CAKL4bV6JL0A2eqhC3wkppUyJLEXfTZW9qqVOHnY4p4qy8zLjAw@mail.gmail.com>
+Subject: Re: [PATCH 6.13 000/241] 6.13.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello all,
+Hi Greg
 
-I encountered an issue with the CPU affinity of tasks launched by 
-systemd in a
-slice, after updating from systemd 254 to by systemd >= 256, on the LTS 
-5.15.x
-branch (tested on v5.15.179).
+On Wed, Mar 19, 2025 at 11:35=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.13.8 release.
+> There are 241 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 21 Mar 2025 14:29:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.13.8-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.13.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Despite the slice file stipulating AllowedCPUS=2 (and confirming this 
-was set in
-/sys/fs/cgroup/test.slice/cpuset.cpus) tasks launched in the slice would 
-have
-the CPU affinity of the system.slice (i.e all by default) rather than 2.
+6.13.8-rc1 tested.
 
-To reproduce:
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-* Check kernel version and systemd version (I used a debian testing 
-image for
-testing)
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-```
-# uname -r
-5.15.179
-# systemctl --version
-systemd 257 (257.4-3)
-...
-```
-
-* Create a test.slice with AllowedCPUS=2
-
-```
-# cat <<EOF > /usr/lib/systemd/system/test.slice
-[Unit]
-Description=Test slice
-Before=slices.target
-[Slice]
-AllowedCPUs=2
-[Install]
-WantedBy=slices.target
-EOF
-# systemctl daemon-reload && systemctl start test.slice
-```
-
-* Confirm cpuset
-
-```
-# cat /sys/fs/cgroup/test.slice/cpuset.cpus
-2
-```
-
-* Launch task in slice
-
-```
-# systemd-run --slice test.slice yes
-Running as unit: run-r9187b97c6958498aad5bba213289ac56.service; 
-invocation ID:
-f470f74047ac43b7a60861d03a7ef6f9
-# cat
-/sys/fs/cgroup/test.slice/run-r9187b97c6958498aad5bba213289ac56.service/cgroup.procs
-
-317
-```
-
-# Check affinity
-
-```
-# taskset -pc 317
-pid 317's current affinity list: 0-7
-```
-
-This issue is fixed by applying upstream commits:
-
-18f9a4d47527772515ad6cbdac796422566e6440
-cgroup/cpuset: Skip spread flags update on v2
-and
-42a11bf5c5436e91b040aeb04063be1710bb9f9c
-cgroup/cpuset: Make cpuset_fork() handle CLONE_INTO_CGROUP properly
-
-With these applied:
-
-```
-# systemd-run --slice test.slice yes
-Running as unit: run-r442c444559ff49f48c6c2b8325b3b500.service; 
-invocation ID:
-5211167267154e9292cb6b854585cb91
-# cat 
-/sys/fs/cgroup/test.slice/run-r442c444559ff49f48c6c2b8325b3b500.service/cgroup.procs
-291
-# taskset -pc 291
-pid 291's current affinity list: 2
-```
-
-Perhaps these are a good candidate for backport onto the 5.15 LTS 
-branch?
+[    0.000000] Linux version 6.13.8-rc1rv-g14de9a7d510f
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20250207, GNU ld (GNU
+Binutils) 2.44) #1 SMP PREEMPT_DYNAMIC Fri Mar 21 21:51:52 JST 2025
 
 Thanks
-James
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
