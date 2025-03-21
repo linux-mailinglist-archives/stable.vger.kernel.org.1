@@ -1,90 +1,63 @@
-Return-Path: <stable+bounces-125753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29C0A6BD3B
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 15:40:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C078A6BDC3
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 15:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0173188935D
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 14:39:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A4691725FC
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 14:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B251D9A5F;
-	Fri, 21 Mar 2025 14:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C631D6DDA;
+	Fri, 21 Mar 2025 14:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IbNbmAJ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fj1I1XTL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883431D63F7
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 14:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8A41D54D1;
+	Fri, 21 Mar 2025 14:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742567917; cv=none; b=npPK+SIGsei6MXGnSJkRCN8xgUJm2UrB/xveIlUPoIjxd7RlrWWTwdpRSNqWSd7F3vQLh63sJfqXzg/naejEw29heKVbxZ081cIlhh1w1sJ8D3mPeNZxzmLz2N61TuyWpp5zTmjuhv3FCLsZQlYO/l3B+vQNcc8xo3sXsVwyihk=
+	t=1742568930; cv=none; b=o80Ycs6v2MX+g7vd9uJfZKNM8tlvYliGTAneDVXzKGiucAJ0DrhRU5JGTDDCEPtdfvX8uXHNpOhZm0UtdT9FZFEyiw8PY8NoHbcewzAKgXUqb6r4YY9xj65+6MySzPztE7wLG6GalYpvM6LMWw3Uz2k2HCFjYtDDjomyOq6vMJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742567917; c=relaxed/simple;
-	bh=somCsdwAZwSYpVOFZ7+NaJb7TDarJS/nC+HR7pvWjx0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLpU7mRwt2sBHgDoljA7cAyl56WosYpoXoP2FoyjXf3w3pImFg3nOenMk9A6CFwwEqqVLKF+AWBB8l8pyLXyXl6Rt3ajUCgvdDVZNhZs3Crey6XvPZlEayNxofiVQmGxKxZic10PYOfHur0UOnIV74sK54r4B7BwtwpRoEBtkLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IbNbmAJ5; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac29af3382dso329967266b.2
-        for <stable@vger.kernel.org>; Fri, 21 Mar 2025 07:38:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1742567914; x=1743172714; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YpYeREYD441841zmxzfOu57tf5+TRBtE3JtUo8WB5k8=;
-        b=IbNbmAJ5ndgMTdBDPQ9/jYKcCSeQM3Ag+E8/WYkzwNjF9eIuUp6dWPZaxaTIss7Dry
-         HcKqx3rc9bGYXEgt76+9PchNyD/BJV5paYUxDZQsjvGlcUoD6wgy0AXcMr2fNHqAtmZU
-         0AajppGLYkfmmIrTttZ6c11pfOIl+YnjDroTU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742567914; x=1743172714;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YpYeREYD441841zmxzfOu57tf5+TRBtE3JtUo8WB5k8=;
-        b=SPQgAsq9gyY7yL1OGxsYXROvMeNC9mpHiW7xfVo2pm6Jq2D9z4+D26LeyaWjWJzHIs
-         sbu+SK2Bw0IBfLQdQ84YdMirbyQHk3Y3fV6AqZXhKNCqKbtgWLBs1WrG3kQI5uoZhtu8
-         7fliWwF2A6pYtyhFCpSaUBAJF/IB6PNS7QrBpZTybb+zYMWZnTqQtECpspQ2jlEd+iFY
-         W0gGkme5gLiF6fODZlvmZNRBS6s8IiR0gaQX8q22JdQD3AQJNYlyq8Wn/8armdHXXloJ
-         8B4ylqG0zOvFPZI4Pwrr2ayZRRuAzx/TrHBrvTec47dvLr/ls8wAE4RQMlu2pqVmln/D
-         T4cQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUN6YQ/05megGPEeWXkhc9hU/YYlGnV14b1fLA84D8e9lHxRlw5GWoaHks0YjH1QGKqIyQaKyM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY9Xe85eWnLYuGcCxonoHdOKKK9lN8x2+VrTfJL9qzuQKK5Ton
-	C0kfg6DfLGUoOF2lXUcm/+e9q4EH9s47whNtNmjQnshSbJ48gftOc32ZN//ijA==
-X-Gm-Gg: ASbGncshp/buE0KR56Ak0fZgah2GVP2OcLSDf/7gAuB4tiXge0jUVuMZOjIW9V4F9ut
-	Qobt1rDZnZnJoo9Cjpa4mSTvYQ8pxZ5xp5sHx+SyzZ0tpB1dxUyR/y1Z1Q6ir9gPe6jEX5VHNS1
-	/PTRn+h3nZDPKCc3nU+eEBxMBRHoy3+RRv78tTG3wnKP3Bz3MiY037RnEa+Sy/FOmeapXpzkFYS
-	91GQStsnr/cGpYHYLJBLuiAC2zG79Asiet+bUlxnfiSryhER5dh8qIYJ6aTQOLS6fOKfDnuINPb
-	tP0y95GC+GOVsqmeAwx9eewQdPbeBZ7lCsbX9pVeKlrMDpoYrq7UbN3liU+1G9jUMH7iusHrL3D
-	pdffFTqpRhjvJhptTTPh9SGAo1mUBjEnG33w=
-X-Google-Smtp-Source: AGHT+IFx6Z5++sXoujB2L8zFX/kIAOeEopfZFF9EvYWaukAV92ezO0xWR/S1jldFyiEhLEo4ae0bLg==
-X-Received: by 2002:a17:907:3fa3:b0:ac3:bf36:80e2 with SMTP id a640c23a62f3a-ac3f211183amr353993066b.20.1742567913806;
-        Fri, 21 Mar 2025 07:38:33 -0700 (PDT)
-Received: from akuchynski.c.googlers.com.com (140.20.91.34.bc.googleusercontent.com. [34.91.20.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3ef8d3d43sm165303566b.51.2025.03.21.07.38.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 07:38:33 -0700 (PDT)
-From: Andrei Kuchynski <akuchynski@chromium.org>
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Benson Leung <bleung@chromium.org>,
-	Jameson Thies <jthies@google.com>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
+	s=arc-20240116; t=1742568930; c=relaxed/simple;
+	bh=ZcznbrIAimjf3k62jvVeyb7mB0mKsIZKqhT19/qFcrU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WXYQqd7p/TM2g+7Lde+f/eW13SEwdsdMtmH1bUUatfumElUkwkv91FpMobUIqmAjJWPlPxQD3Schg94OI1sQOybjM+4EV7JYf9eSleiLnGsItDmihprZp8aHRB/SCmtmEyDGEOPaWg9ndyipAk4BHUfAtB3QTmwTOQclz1Yec74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fj1I1XTL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26852C4CEE3;
+	Fri, 21 Mar 2025 14:55:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742568930;
+	bh=ZcznbrIAimjf3k62jvVeyb7mB0mKsIZKqhT19/qFcrU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fj1I1XTLpatdDoMn/FxSugWTyGK7E+FjNTLy4iZKkEMwiKi9c37fmNLq7tfYgKh6R
+	 jpSBCM0etC4El4sFneH3ypiwPBBxk2Zpm+0/6jKv162xZRI+1Xv0NJ/ohFNQxkXrj7
+	 bbJwwYLEM3OCnqatatjFMFp94Wnj3lBfGhdUA3bsMmfuGGesUFMFzUXvDGBiXo1fAV
+	 ExTl2webDHgNPiR6bJ+u6gS7E1K3oj9Ka5ZXdElp1Dag4lViA1smoGsFtXWEVFlzLB
+	 Putl9MXyEzh3pWVpEM2GxW66u1kb13LLjU9+WC2QU7gSLtSRNT7pso8qkPCo286Xji
+	 Z1+cn+kq/Jmnw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1tvdmW-000000001IG-2WDN;
+	Fri, 21 Mar 2025 15:55:32 +0100
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Steev Klimaszewski <steev@kali.org>,
+	Clayton Craft <clayton@craftyguy.net>,
+	Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/2] usb: typec: class: Invalidate USB device pointers on partner unregistration
-Date: Fri, 21 Mar 2025 14:37:27 +0000
-Message-ID: <20250321143728.4092417-3-akuchynski@chromium.org>
-X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
-In-Reply-To: <20250321143728.4092417-1-akuchynski@chromium.org>
-References: <20250321143728.4092417-1-akuchynski@chromium.org>
+Subject: [PATCH] wifi: ath11k: fix rx completion meta data corruption
+Date: Fri, 21 Mar 2025 15:53:02 +0100
+Message-ID: <20250321145302.4775-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,39 +66,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To avoid using invalid USB device pointers after a Type-C partner
-disconnects, this patch clears the pointers upon partner unregistration.
-This ensures a clean state for future connections.
+Add the missing memory barrier to make sure that the REO dest ring
+descriptor is read after the head pointer to avoid using stale data on
+weakly ordered architectures like aarch64.
 
-Cc: stable@vger.kernel.org
-Fixes: 59de2a56d127 ("usb: typec: Link enumerated USB devices with Type-C partner")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+This may fix the ring-buffer corruption worked around by commit
+f9fff67d2d7c ("wifi: ath11k: Fix SKB corruption in REO destination
+ring") by silently discarding data, and may possibly also address user
+reported errors like:
+
+	ath11k_pci 0006:01:00.0: msdu_done bit in attention is not set
+
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org	# 5.6
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218005
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- drivers/usb/typec/class.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index eadb150223f8..3df3e3736916 100644
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -1086,10 +1086,14 @@ void typec_unregister_partner(struct typec_partner *partner)
- 	port = to_typec_port(partner->dev.parent);
+As I reported here:
+
+	https://lore.kernel.org/lkml/Z9G5zEOcTdGKm7Ei@hovoldconsulting.com/
+
+the ath11k and ath12k appear to be missing a number of memory barriers
+that are required on weakly ordered architectures like aarch64 to avoid
+memory corruption issues.
+
+Here's a fix for one more such case which people already seem to be
+hitting.
+
+Note that I've seen one "msdu_done" bit not set warning also with this
+patch so whether it helps with that at all remains to be seen. I'm CCing
+Jens and Steev that see these warnings frequently and that may be able
+to help out with testing.
+
+Johan
+
+
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index 029ecf51c9ef..0a57b337e4c6 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -2646,7 +2646,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ 	struct ath11k *ar;
+ 	struct hal_reo_dest_ring *desc;
+ 	enum hal_reo_dest_ring_push_reason push_reason;
+-	u32 cookie;
++	u32 cookie, info0, rx_msdu_info0, rx_mpdu_info0;
+ 	int i;
  
- 	mutex_lock(&port->partner_link_lock);
--	if (port->usb2_dev)
-+	if (port->usb2_dev) {
- 		typec_partner_unlink_device(partner, port->usb2_dev);
--	if (port->usb3_dev)
-+		port->usb2_dev = NULL;
-+	}
-+	if (port->usb3_dev) {
- 		typec_partner_unlink_device(partner, port->usb3_dev);
-+		port->usb3_dev = NULL;
-+	}
+ 	for (i = 0; i < MAX_RADIOS; i++)
+@@ -2659,11 +2659,14 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ try_again:
+ 	ath11k_hal_srng_access_begin(ab, srng);
  
- 	device_unregister(&partner->dev);
- 	mutex_unlock(&port->partner_link_lock);
++	/* Make sure descriptor is read after the head pointer. */
++	dma_rmb();
++
+ 	while (likely(desc =
+ 	      (struct hal_reo_dest_ring *)ath11k_hal_srng_dst_get_next_entry(ab,
+ 									     srng))) {
+ 		cookie = FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
+-				   desc->buf_addr_info.info1);
++				   READ_ONCE(desc->buf_addr_info.info1));
+ 		buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID,
+ 				   cookie);
+ 		mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie);
+@@ -2692,8 +2695,9 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ 
+ 		num_buffs_reaped[mac_id]++;
+ 
++		info0 = READ_ONCE(desc->info0);
+ 		push_reason = FIELD_GET(HAL_REO_DEST_RING_INFO0_PUSH_REASON,
+-					desc->info0);
++					info0);
+ 		if (unlikely(push_reason !=
+ 			     HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION)) {
+ 			dev_kfree_skb_any(msdu);
+@@ -2701,18 +2705,21 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ 			continue;
+ 		}
+ 
+-		rxcb->is_first_msdu = !!(desc->rx_msdu_info.info0 &
++		rx_msdu_info0 = READ_ONCE(desc->rx_msdu_info.info0);
++		rx_mpdu_info0 = READ_ONCE(desc->rx_mpdu_info.info0);
++
++		rxcb->is_first_msdu = !!(rx_msdu_info0 &
+ 					 RX_MSDU_DESC_INFO0_FIRST_MSDU_IN_MPDU);
+-		rxcb->is_last_msdu = !!(desc->rx_msdu_info.info0 &
++		rxcb->is_last_msdu = !!(rx_msdu_info0 &
+ 					RX_MSDU_DESC_INFO0_LAST_MSDU_IN_MPDU);
+-		rxcb->is_continuation = !!(desc->rx_msdu_info.info0 &
++		rxcb->is_continuation = !!(rx_msdu_info0 &
+ 					   RX_MSDU_DESC_INFO0_MSDU_CONTINUATION);
+ 		rxcb->peer_id = FIELD_GET(RX_MPDU_DESC_META_DATA_PEER_ID,
+-					  desc->rx_mpdu_info.meta_data);
++					  READ_ONCE(desc->rx_mpdu_info.meta_data));
+ 		rxcb->seq_no = FIELD_GET(RX_MPDU_DESC_INFO0_SEQ_NUM,
+-					 desc->rx_mpdu_info.info0);
++					 rx_mpdu_info0);
+ 		rxcb->tid = FIELD_GET(HAL_REO_DEST_RING_INFO0_RX_QUEUE_NUM,
+-				      desc->info0);
++				      info0);
+ 
+ 		rxcb->mac_id = mac_id;
+ 		__skb_queue_tail(&msdu_list[mac_id], msdu);
 -- 
-2.49.0.395.g12beb8f557-goog
+2.48.1
 
 
