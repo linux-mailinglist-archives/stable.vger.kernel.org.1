@@ -1,100 +1,132 @@
-Return-Path: <stable+bounces-125743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539DAA6B83C
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 10:57:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A34A6B947
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 11:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 044F87A9048
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 09:56:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B22903BC636
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 10:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E941F2BA7;
-	Fri, 21 Mar 2025 09:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2724322B8D7;
+	Fri, 21 Mar 2025 10:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mG15eRAP"
+	dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b="K97B5S5B"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA2D1F1906
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 09:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13DC2206BE;
+	Fri, 21 Mar 2025 10:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742550999; cv=none; b=Cj/46dwmst/J605LCa0n4ZOU08KH1oxtagvrStnJPPD7M5Yz4Hmf2nC3xoflgigz/FhncsNmi/6M5m4ajjdueWqF/iYrPEeTAJMPwBEvohnqGO57wc+gxRNQtDT8R5uJTXUnJ2ZEClTtsSndEvNRZBCmUyq6eqlvzwI2EMK2tp4=
+	t=1742554417; cv=none; b=SI/IsXXtfIvX5a2nqKriYj+V5cBZESPXb/vJgaGaVeVdMDSyFOsnnnFu5Sa0rBFIykRvq98/eu9ZvD/KEkliSTcqR6WonQ8gd6eVlDGONF6tcQcD2mEbGGlxrcX4ux0Ur932CVXcHj2BHj4JsR/dekW1EpXx4CAiFYQVoIWDnsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742550999; c=relaxed/simple;
-	bh=xWatFwpngzVeM+HdADz7k+Xx6TBXz0dAa0QBt3NgBk4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=IgGwL3/HAJRykro84aD4XxNvo1rDOLUiJmREgOhcURKQTGJvlD+FYu/b/WWgP2GwagHI9JAPLiTbxEsNk5PPgef9zWsEJZRsuT368hiMaC9MhxL6XSgMUiKsJWOYtxkEdi+8dj95XeRG5cNx87K5tyj5mLcahK7JMPua8MqSr18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mG15eRAP; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742550998; x=1774086998;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=xWatFwpngzVeM+HdADz7k+Xx6TBXz0dAa0QBt3NgBk4=;
-  b=mG15eRAPt8z3EGUrUo6dQdy/rS0tx99wRQrEXQwguH0C9IwqT2HdrIQB
-   S33PjjA754sRt/a/tp+JBC5PnASYeRG8ppfusNfprOHliK14aeBoAfvXM
-   V9ejrYXtSz+p0xwDiFj6pfY6ST3mUd9rmpSgVejVUYyyKKvR5XoyXBm35
-   bPm0iY0dLmVJ4xvhXiFw4b/5WIpd63PwaD3bdRL0Tn383E3UxuRfmcpIN
-   Ua5wuT8cYR2Mjzo+RI9uoM0ZmxLCiTEYQEJaSpyjQEQwbZC9LN2tHKI6J
-   /FJMvfFoNXoDXzEUnmIQzJ2/ORHtUu7h5NrSfeEcwAiirps18sW8xS/eX
-   w==;
-X-CSE-ConnectionGUID: 5hR9HTGuQri5mvHKW7hyhg==
-X-CSE-MsgGUID: eygBgMvIQFOBbd60FEjG9g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11379"; a="54479290"
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; 
-   d="scan'208";a="54479290"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2025 02:56:37 -0700
-X-CSE-ConnectionGUID: dzpQIuGhQuGnq1DOBcEopA==
-X-CSE-MsgGUID: Oz8hbjUPRxSdcNJ/sxDNGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; 
-   d="scan'208";a="123530879"
-Received: from lkp-server02.sh.intel.com (HELO e98e3655d6d2) ([10.239.97.151])
-  by fmviesa008.fm.intel.com with ESMTP; 21 Mar 2025 02:56:36 -0700
-Received: from kbuild by e98e3655d6d2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tvZ6z-0001FP-2x;
-	Fri, 21 Mar 2025 09:56:26 +0000
-Date: Fri, 21 Mar 2025 17:55:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ran Xiaokai <ranxiaokai627@163.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH V2] tracing/osnoise: Fix possible recursive locking for
- cpus_read_lock()
-Message-ID: <Z903jcd6JTJ7DH2-@f921524d7199>
+	s=arc-20240116; t=1742554417; c=relaxed/simple;
+	bh=AAb0Rqht8NtXcQ8HqvSZghQDhlfn2elQnUndnHkGw8o=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=GWKQJrzLvVQ6PgAytTpasE3tdGHES3jtRZ5R2byahsdAEKzOoTxf51vwVtRHvJ+69QYlfPU7jMBONtwnChrexk5l2t7y5xm+U4jc94b6pORv+ufK4bU+7s3eKhs08+0spX6ncw62SqCeEm2w/n5jg6LgoVVRd/VX4PQkjqEb06Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b=K97B5S5B; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1742554376; x=1743159176; i=frank.scheiner@web.de;
+	bh=lj+ks7erNgDIgdRVjnC5pt2bxvom2mserscxEkZYLa4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=K97B5S5BXSv5Ih4r6ioaV3lxtpwB1bu0OQnZaHSWyU+mj/sX6PW8GpDtT0kiG6WC
+	 UksG/EkEfr0/Kxj5i3ewqgYp6F1Kl4NP93QojFUtneDdTHXW4Clm0Aqim7pLfrNKk
+	 dX6o5SQwcYoEh9S1ry/zyFlKKH0zau8ogjaRSNp7zuPIUGOrQCPvbY95tK2Ox5Pmx
+	 ofCiCfwqBaaTVF0AFyREG+07wTak3d6Jye1uZGSsOXHo3M4+gvgeExgfkV16jEBx+
+	 k2o+dR9OvYrcLFnX6Mw8SVucTz0YHpCC0Jev9pj0pqOqaoHEVizhBzArZOFKZNNQh
+	 h7RTUa91Rg2IoNr6gg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.30] ([79.200.218.204]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MZB01-1ti5Un189h-00XrJt; Fri, 21
+ Mar 2025 11:52:56 +0100
+Message-ID: <9cafd34b-60b0-47d8-bfc8-1caa210bb20a@web.de>
+Date: Fri, 21 Mar 2025 11:52:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250321095249.2739397-1-ranxiaokai627@163.com>
+User-Agent: Mozilla Thunderbird
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org, broonie@kernel.org, conor@kernel.org,
+ f.fainelli@gmail.com, hargar@microsoft.com, jonathanh@nvidia.com,
+ linux-kernel@vger.kernel.org, linux@roeck-us.net,
+ lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev,
+ pavel@denx.de, rwarsow@gmx.de, shuah@kernel.org, srw@sladewatkins.net,
+ stable@vger.kernel.org, sudipm.mukherjee@gmail.com,
+ torvalds@linux-foundation.org, linux-ia64@vger.kernel.org
+References: <20250320165654.807128435@linuxfoundation.org>
+Subject: Re: [PATCH 6.6 000/166] 6.6.84-rc2 review
+Content-Language: en-US
+From: Frank Scheiner <frank.scheiner@web.de>
+In-Reply-To: <20250320165654.807128435@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:FZOMuxYWfkGNPUx+egv2Is+x3xkGsYHfthlaElf7yQ6ILZTFjll
+ m1CR2/m6A79XWR1FkXzoA5BI4UO68rFwQlhL645Q26Ci5NO3/yQMGHdx9YZ6/ZZVb7IfQJt
+ CsN0tH8kM7TyBZgKUsZGH2UOXiLfRAL7tZ12AyMWLR4kGXExibRpGiWFcYO8hXrjwaTv81I
+ t0yhHpTez1+MzG8r/LFZw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:RBEAxNVhH8M=;GaZqruuE+5pIFIvaV7pKOvz8OFd
+ StQ0iwX7b3KewJZOz7s9dJ9bnbXqIdVR1wLo/RKMbEwJSdvTCbBSd6WhlVASxX5IXZqGZFo6r
+ 9ivIVUYxaj9juaQw5OJT4NYjuUEnx8xWP8Qnv6PqN2LfjXmsgrzOMOB80GtVUBFLWKj5aXvrK
+ CtOD6bWfjc2TKO47mBa5KXqKKeoPyJT0eO4fzDIQe0RDjuh1WkdHDYQej0Fu9m196A10Bo6vI
+ yH0g2PNS7IMq0gS32LGHiNfCTD8GkXteRgicH+baYGjCfAh9vYgrkCzZzPNA8FTsrz64v09NC
+ H8FSc6VDEvVSXeKhqp/vgb+YaYGVISXF5I7IKKFFhn8wU6uHp1+a6Nq+wQRLGbBcx24uu35Ns
+ XsKH5cegroxMaiYx7vSQCGCD0PRGvYv5PFXClnXs3uKArrrA28d1is1DadcN8K3KTNdmOXvMI
+ 1JRIJ/Zj+vL2qYVtGfodvWBva67kuspSc9aqOwEiqVhq+jQ78Sy0f4RKzjpIS6BG4rTLMC5IS
+ 4DEluZkPAgr7AxvfoYG/fTdon2JE16+iRHC5UbFlS7HSvTVtkZhEt9ksOBSAaxKuPBR8QWUh4
+ PHGZG+xwzDnCerFqzIPxYNviaDM9R0iZ2Z984pN/Kth8JIQuIblV/8dmrR4FvX+oxOwHY2xCG
+ u4slgJqKUrx460TYK/mCL6jDXUEwVaehbtI/WIG8Qt2hAN7DzplgdDpkA80US4Hx8SlL3QxTi
+ CAOoHTRAQn+HFRdT5QBJ4DvzQk1llGn5vMCfTTpM0St2yekuOs4f5MlvR3TfFGhqDrceplazY
+ 0/ovx7CNW3pkrji4oTEbUvjX1UpIH2x/DlqsqMYUXKc7nhxHttbwdWjQ1HKf1V+esgEnzTjVM
+ LdZ21R4X7Jh9sMsPrhRWHN9z34eKzRTg6IEJz7uvioEAo4m4rpNe1rL27kh6/QQMDWWuthEnY
+ G7MDyZ4OxzRhyYUpRxmyVeAGkPsuUUI52v3k/mKz9DEfNy6j2jvtTKLYaDbQue+bEIx7NtPbi
+ jnmLimhgQiSxVmGh4wv4paI9pzdqXDXsFyFg/QG6wnD0ZBwg2qMy6VvQl3Jihxh1cnSuAFY0n
+ gEx1ZnrHEHMK4bH27C8VycCRyqpgnve9MNvRhBNsoiK17hr/c3lQ+TAUQzGSCRm5PogMdJXhh
+ V5g/Bbm1FowUjzIB66k8P1E6k91FYImGE0yl3vdQ7gWtrIBkg2u5wwsAHePkHk18gIf/3gpSy
+ q8bL5Uqs3ROdieluuTV2u32cxR09CUtoxEhu0bfFF4sCzBFzBKVsJh2Nr8+HFBJwXtPCfRqVq
+ KZj4BKcfAtc5yfpuXY7a/TY7HcHKf9iJUudNpqvjI50POP1fjUNliKzrnylbQkyVos3Pn3veI
+ kYW9Bb2lBViNY+QschEUiUP6xd0w7PdtJad6mmyRYYxJz5BHEOp8YIVJ0rNWNNMQXxtUR0TXr
+ Rkhu5a08XygD603TbmhpxNR9wwc98HmhSFUbPphU/IKKk26v8
 
-Hi,
+> This is the start of the stable review cycle for the 6.6.84 release.
+> There are 166 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 22 Mar 2025 16:56:28 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.84=
+-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.gi=
+t linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Thanks for your patch.
+Cross-builds for ia64/hp-sim and runs fine in Ski ([1]).
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+[1]: https://github.com/linux-ia64/linux-stable-rc/actions/runs/1398396707=
+8#summary-39154720796
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Tested-by: Frank Scheiner <frank.scheiner@web.de>
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH V2] tracing/osnoise: Fix possible recursive locking for cpus_read_lock()
-Link: https://lore.kernel.org/stable/20250321095249.2739397-1-ranxiaokai627%40163.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Cheers,
+Frank
 
