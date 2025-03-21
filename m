@@ -1,128 +1,99 @@
-Return-Path: <stable+bounces-125789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3080DA6C229
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 19:10:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF02A6C227
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 19:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A43473B7659
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:10:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41EC07A9108
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFCA22F17C;
-	Fri, 21 Mar 2025 18:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CEA22FE0C;
+	Fri, 21 Mar 2025 18:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GSRdmfC8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KzBEiM9Z"
 X-Original-To: stable@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D2322D4F1;
-	Fri, 21 Mar 2025 18:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8A322FDE8;
+	Fri, 21 Mar 2025 18:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742580627; cv=none; b=DzaTv96fp3tFYY15fNZOIzaoz4f0gm7rzBA9wJQStpjmyTcWBvVlC8PTJW3nhMgIAXd1wW6pzsOQPnDEm1a08l12vQLksUXfnfiOCV4u+EDVaQzoK1KtV6Rjt4GJvOMu/QDrMwBg4L9Jt0pMh9Uwkaj5gP/cI111xEHTp2lm4YY=
+	t=1742580599; cv=none; b=J+xwIscMS7giXQADDDz4l/WV+rj09lsbBS3XTZ1X828hQwoQkFZT92UZAqLvSbbW+2qpcgjEKryKm0rRbwWTTx9+mCOYT1blT0xVtxZ/cTCelQuebr+g1uVUPnIhHOTnksOBTUU+aMEUys3W9pXtdXMvpalu9UJpmcydNqwifRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742580627; c=relaxed/simple;
-	bh=0GMyBgFgIU8OMphBQEuitGH4xaRXJZUVqbrCrD4NoDk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=UuHLQ5JV0n//r4fNDeqXadxG0q2nP8G326t4NtIz8ktJHvtDqCsPIEpvZTp6CIzNwy6a+iTma2phQierp7NjxPKz7n0OFhCPWH3kr4UdKK8h5dhzBY59FM6PzmXME7uxF91ol/HcG24VGFha2w+odX+snG3O9DvIFtG126JU4vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GSRdmfC8; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7EAA420481;
-	Fri, 21 Mar 2025 18:10:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742580616;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qO8SVWZzm28x0uUOfozdcQEEmEUOpSa6EXOznWkuxJE=;
-	b=GSRdmfC8EmLK74LNH9kn9+LksUdvV16M5bNPsCnJE89ewvaAtsaErv5zmSIbVzJKtCM6h/
-	BJHHtOtvOCFzY2uNEcXkBvtoloEyzTJLbtnDH0Y86GBqUVV3oL70P3Rl2wQbca3SBXXtCi
-	Tnm/5MOxeNQ7DxBhL/U/zyBw1EHuLrs+XjSpYsB8J504/JgPmmfbYJj4jUqQYznmA15Whs
-	sQTuGAEQUDkQNk53V+peyH4+6gv+0jTPffcpq5ICf/xltMIzOKj8IxNp60PaXe0Ir/BbR1
-	icEXbGH2kiBLqIrXitS1GylCuTOKOB/Y0mlFJGh4m5USWDYj4Kn6X8lrlOpjlg==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Fri, 21 Mar 2025 19:10:00 +0100
-Subject: [PATCH] iio: light: opt3001: fix deadlock due to concurrent flag
- access
+	s=arc-20240116; t=1742580599; c=relaxed/simple;
+	bh=+wBfr9S9cNjj8/xFM+HmotmhdevX1l4hpYUE3G4YEOM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=EsqG/a4t7B0v8xabyP15e1R5VjGIZFU8tH1e70zwfDwUEoA8hNvHktDbiU4vQ3Pj5Tuf9iQfsWkmo5Lo2oL1xPj60G67k6BcPYUvVUhHEo7kRrBHAqrUbldIY9HU9RXYhca+m9PcnUbd2BneBgJn1E0YPNKlQJtkBVvED0EqMBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KzBEiM9Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A85C4CEED;
+	Fri, 21 Mar 2025 18:09:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742580598;
+	bh=+wBfr9S9cNjj8/xFM+HmotmhdevX1l4hpYUE3G4YEOM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=KzBEiM9ZwGFcuvdU8Q5SycJo3tqJYbPresmAZC8RiVG/POZMUUhMRnLHk/DfzVaOJ
+	 9tv6LSdry3FusqSnhQuF481sTXsSWzryzv1y0cNQ7qKNj+pkl3EcXLt3AvRYUXbchS
+	 2kvvE1Xb4ccl1HYMeIP4U+DYKnkyXNnLoe3FwksjfXa8GE7PzBy/F0v6j3feuzh8vO
+	 brtX3X7LP2rdoZtKVm6BXBfSndbvcabp3M2QaxaU2Y2H38cMAwUaRuaq5I6JxYEczU
+	 uLTIt28raJ6hM1CLWP3e29hGQGpV6gzc/u8FDI8DjaPKWoN5fJlVg417iUlXJuX8f8
+	 3J5mxQOZcphHw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE163806659;
+	Fri, 21 Mar 2025 18:10:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAHer3WcC/x2MOwqAMBAFryJbu5CPInoVsZDkqdskmogI4t0Nl
- jMw81BGEmQaqocSLskSQwFdV+S2Oaxg8YXJKNMqazTH/bRKaZZ08CI3Lx3gfAOD3lGp9oSi/+M
- 4ve8HpxSJM2EAAAA=
-X-Change-ID: 20250321-opt3001-irq-fix-f7eecd4e2e9c
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Felipe Balbi <balbi@ti.com>
-Cc: Andreas Dannenberg <dannenberg@ti.com>, David Frey <dpfrey@gmail.com>, 
- Emil Gedenryd <emil.gedenryd@axis.com>, 
- Alexander Koch <mail@alexanderkoch.net>, Jiri Valek - 2N <valek@2n.cz>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduhedujeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefghfffgeekhfdtveffheeuudeltefhfeduteekleffvefgfffgkeevfeejtdekkeenucfkphepvddttddumegstdejmeeigeeileemtgeiugeimeegtgduleemfeefkegvmeejvgejvgemtgdtjedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumegstdejmeeigeeileemtgeiugeimeegtgduleemfeefkegvmeejvgejvgemtgdtjedupdhhvghloheplgduledvrdduieekrddurdeigegnpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudegpdhrtghpthhtoheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegvmhhilhdrghgvuggvnhhrhigusegrgihishdrtghomhdprhgtphhtthhopehlihhnuhigqdhiihhosehvghgvrhdrkhgvrhhnvghlrdhorhhgp
- dhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhitgdvfeeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrihhlsegrlhgvgigrnhguvghrkhhotghhrdhnvghtpdhrtghpthhtohepuggrnhhnvghnsggvrhhgsehtihdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/3] mptcp: fix data stream corruption and missing
+ sockopts
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174258063476.2577757.8120263638217782204.git-patchwork-notify@kernel.org>
+Date: Fri, 21 Mar 2025 18:10:34 +0000
+References: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
+In-Reply-To: <20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-0-122dbb249db3@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, fw@strlen.de, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, amongodin@randorisec.fr, stable@vger.kernel.org
 
-The threaded IRQ function in this driver is reading the flag twice: once to
-lock a mutex and once to unlock it. Even though the code setting the flag
-is designed to prevent it, there are subtle cases where the flag could be
-true at the mutex_lock stage and false at the mutex_unlock stage. This
-results in the mutex not being unlocked, resulting in a deadlock.
+Hello:
 
-Fix it by making the opt3001_irq() code generally more robust, reading the
-flag into a variable and using the variable value at both stages.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- drivers/iio/light/opt3001.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+On Fri, 14 Mar 2025 21:11:30 +0100 you wrote:
+> Here are 3 unrelated fixes for the net tree.
+> 
+> - Patch 1: fix data stream corruption when ending up not sending an
+>   ADD_ADDR.
+> 
+> - Patch 2: fix missing getsockopt(IPV6_V6ONLY) support -- the set part
+>   is supported.
+> 
+> [...]
 
-diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-index 65b295877b41588d40234ca7681bfee291e937c2..393a3d2fbe1d7320a243d3b6720e98b90f17baca 100644
---- a/drivers/iio/light/opt3001.c
-+++ b/drivers/iio/light/opt3001.c
-@@ -788,8 +788,9 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
- 	int ret;
- 	bool wake_result_ready_queue = false;
- 	enum iio_chan_type chan_type = opt->chip_info->chan_type;
-+	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
- 
--	if (!opt->ok_to_ignore_lock)
-+	if (!ok_to_ignore_lock)
- 		mutex_lock(&opt->lock);
- 
- 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
-@@ -826,7 +827,7 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
- 	}
- 
- out:
--	if (!opt->ok_to_ignore_lock)
-+	if (!ok_to_ignore_lock)
- 		mutex_unlock(&opt->lock);
- 
- 	if (wake_result_ready_queue)
+Here is the summary with links:
+  - [net,1/3] mptcp: Fix data stream corruption in the address announcement
+    (no matching commit)
+  - [net,2/3] mptcp: sockopt: fix getting IPV6_V6ONLY
+    https://git.kernel.org/netdev/net-next/c/8c3963375988
+  - [net,3/3] mptcp: sockopt: fix getting freebind & transparent
+    https://git.kernel.org/netdev/net-next/c/e2f4ac7bab22
 
----
-base-commit: 250a4b882cf37d9719874253f055aad211f2c317
-change-id: 20250321-opt3001-irq-fix-f7eecd4e2e9c
-
-Best regards,
+You are awesome, thank you!
 -- 
-Luca Ceresoli <luca.ceresoli@bootlin.com>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
