@@ -1,162 +1,106 @@
-Return-Path: <stable+bounces-125760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD24DA6BF2D
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:09:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CB9A6C16D
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:27:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5EBC3ACB53
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 16:07:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40D671B604FD
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3291C5F14;
-	Fri, 21 Mar 2025 16:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894F622D7B2;
+	Fri, 21 Mar 2025 17:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="c5lSIsRs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UAXm/iMW"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824CD23BE
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 16:07:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1401DEFFC
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 17:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742573261; cv=none; b=oeCt2bb48IAIvld5NXca/b1+C8BeKkc9heYvvvPswV6QPEM3rLtuwI5/F6WP8hvWtVyJBVIjQJh+EvpEkuG/j1DvdRf7eUETKBTHQFggQ/FobpsbuMAX7L0dRMnfln7RnEHeRxpVY5CV4OKUB4JrJnbL2lowSkLAnABwOT/eAeE=
+	t=1742577950; cv=none; b=WO4AQDNRLmBBhiEGeS+E3THQkVpoK15bewXTFbnqsYFgqGU9XF9d75YKaw4LaHC42fRlY0+kLAgAzIA8+f5Ne8tkQ94JPVOUkttyAf1wY3t+wA0RlwISdQlOgGhjhFiD8kcvyUN7pPwLr108gu8WYncJHa3lwbBYybWwEz0HaGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742573261; c=relaxed/simple;
-	bh=SdiCIhrTBarDgLN9oEDarofNp34/gFdYUmSF4tTKMlA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uj4nY4hDieCVJg/7WRxlE9k399Y74DvSQ4FYzuN/fobEA9jntIXlzWtpg+EzXJPc0jwUepEA1LGXF9GpZyD+buG6G9fAW7bYj/Xq/zeJUMbWkX9tiVuXpZdZ7+9CCsKLo0XGsrM+j7P5IckTSgLDRUhGgddx/JE5ROVWtnVbk3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=c5lSIsRs; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=craftyguy.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
-Message-ID: <981e83c5-6531-4939-b0ad-eebeb02d00af@craftyguy.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
-	s=key1; t=1742573256;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Trfnl0mlXgOimQXZYhYIs6u/12k9GzhtwYKbj7vbYfU=;
-	b=c5lSIsRsfbLSTGbwlLgODbiZ+bgfgqhgVdijjJwwyoSX1UiL4s2gVslmK3rQdH0qaYySrZ
-	Ut/akmLHNDz++s8KB1kSWUMzGc3FkD/N8sv8TamHvuhqhIzJQz0SDc7ZlhTHXEtiJp/C6W
-	x4UfLKzmbCGUtjot79oDQNGIUdhbbo8FFmBa4stmbmSBErjlQEKno+oPb4fcvBwMCJB+Ub
-	Rnt7tXNvCZnH2C09upHIRMjAW6PNKwHR58uVbu1gJ82FITtTWDNeRek2odgRbE5rIryDnt
-	Ajl6vtcHLQ63KVVGlv49N7bYQjFGBiMBmQqmBhJz3gSBIi29oXxFDvt28MdHPg==
-Date: Fri, 21 Mar 2025 09:07:31 -0700
+	s=arc-20240116; t=1742577950; c=relaxed/simple;
+	bh=fRZi2OdN5hZx6ICgxtlGLcTjBK7mYG1ule/w4YOljfQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NvkNgu3uavm4AWYVMBuJVrNm84ofm2paZ2Jfdh8Q85WHZu2V0qNKRvKiP4QxCXN6cuX+LJXAjA6KVFyXejLuRtOtJXSdx4U6isL+mIrBzyxyer/9x4B54+ek67IN3UP33M1eqigozGKyFbgPh2vaTQakkwSjCwIB1sYZP5nAd18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UAXm/iMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49995C4CEEA;
+	Fri, 21 Mar 2025 17:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742577949;
+	bh=fRZi2OdN5hZx6ICgxtlGLcTjBK7mYG1ule/w4YOljfQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UAXm/iMWTcuVX46q9zv6lJcp8PA3laMuBqRBoEW+uW2VqgHjqUY6V70Q9vbCyMH9K
+	 OuIB81oARahbRwWMClc/nq5A5Kqsja9H482ocwllLTXiSOyKbJBbpfmOVAqvmnnoPj
+	 f522MaJK2oNIAjqc38HNnVQHqBH1R2KEh/H3GangFZqaEa6OEcBP9OM++FaJOZhITY
+	 7mofUAJ2xRcBLktls1C4VhSc7a2NNNv1sIyPZ34wAb2X8jJjn6EqUVsYTZJvG9YLfQ
+	 6bHi7z8KnDqxcqUAIDRymXIlI09c3lqt7PWiiM5r1LXbzZkk6/IKuFOo+lPN3UHNbL
+	 bafvJSCt+oyBw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 v2 6/8] KVM: arm64: Refactor exit handlers
+Date: Fri, 21 Mar 2025 13:25:37 -0400
+Message-Id: <20250321111958-2e23752f95b11f0c@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250321-stable-sve-6-12-v2-6-417ca2278d18@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] wifi: ath11k: fix ring-buffer corruption
-To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
- Steev Klimaszewski <steev@kali.org>,
- Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
- ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250321094916.19098-1-johan+linaro@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Clayton Craft <clayton@craftyguy.net>
-In-Reply-To: <20250321094916.19098-1-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 3/21/25 02:49, Johan Hovold wrote:
-> Users of the Lenovo ThinkPad X13s have reported that Wi-Fi sometimes
-> breaks and the log fills up with errors like:
-> 
->      ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
->      ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
-> 
-> which based on a quick look at the driver seemed to indicate some kind
-> of ring-buffer corruption.
-> 
-> Miaoqing Pan tracked it down to the host seeing the updated destination
-> ring head pointer before the updated descriptor, and the error handling
-> for that in turn leaves the ring buffer in an inconsistent state.
-> 
-> Add the missing memory barrier to make sure that the descriptor is read
-> after the head pointer to address the root cause of the corruption while
-> fixing up the error handling in case there are ever any (ordering) bugs
-> on the device side.
-> 
-> Note that the READ_ONCE() are only needed to avoid compiler mischief in
-> case the ring-buffer helpers are ever inlined.
-> 
-> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-> 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218623
-> Link: https://lore.kernel.org/20250310010217.3845141-3-quic_miaoqing@quicinc.com
-> Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>
-> Cc: stable@vger.kernel.org	# 5.6
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->   drivers/net/wireless/ath/ath11k/ce.c  | 11 +++++------
->   drivers/net/wireless/ath/ath11k/hal.c |  4 ++--
->   2 files changed, 7 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
-> index e66e86bdec20..9d8efec46508 100644
-> --- a/drivers/net/wireless/ath/ath11k/ce.c
-> +++ b/drivers/net/wireless/ath/ath11k/ce.c
-> @@ -393,11 +393,10 @@ static int ath11k_ce_completed_recv_next(struct ath11k_ce_pipe *pipe,
->   		goto err;
->   	}
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
-> -	if (*nbytes == 0) {
-> -		ret = -EIO;
-> -		goto err;
-> -	}
->   
->   	*skb = pipe->dest_ring->skb[sw_index];
->   	pipe->dest_ring->skb[sw_index] = NULL;
-> @@ -430,8 +429,8 @@ static void ath11k_ce_recv_process_cb(struct ath11k_ce_pipe *pipe)
->   		dma_unmap_single(ab->dev, ATH11K_SKB_RXCB(skb)->paddr,
->   				 max_nbytes, DMA_FROM_DEVICE);
->   
-> -		if (unlikely(max_nbytes < nbytes)) {
-> -			ath11k_warn(ab, "rxed more than expected (nbytes %d, max %d)",
-> +		if (unlikely(max_nbytes < nbytes || nbytes == 0)) {
-> +			ath11k_warn(ab, "unexpected rx length (nbytes %d, max %d)",
->   				    nbytes, max_nbytes);
->   			dev_kfree_skb_any(skb);
->   			continue;
-> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-> index 61f4b6dd5380..8cb1505a5a0c 100644
-> --- a/drivers/net/wireless/ath/ath11k/hal.c
-> +++ b/drivers/net/wireless/ath/ath11k/hal.c
-> @@ -599,7 +599,7 @@ u32 ath11k_hal_ce_dst_status_get_length(void *buf)
->   	struct hal_ce_srng_dst_status_desc *desc = buf;
->   	u32 len;
->   
-> -	len = FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, desc->flags);
-> +	len = FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, READ_ONCE(desc->flags));
->   	desc->flags &= ~HAL_CE_DST_STATUS_DESC_FLAGS_LEN;
->   
->   	return len;
-> @@ -829,7 +829,7 @@ void ath11k_hal_srng_access_begin(struct ath11k_base *ab, struct hal_srng *srng)
->   		srng->u.src_ring.cached_tp =
->   			*(volatile u32 *)srng->u.src_ring.tp_addr;
->   	} else {
-> -		srng->u.dst_ring.cached_hp = *srng->u.dst_ring.hp_addr;
-> +		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
->   
->   		/* Try to prefetch the next descriptor in the ring */
->   		if (srng->flags & HAL_SRNG_FLAGS_CACHED)
+[ Sasha's backport helper bot ]
 
-I was experiencing this issue several times per day, but haven't hit it 
-once in the last few days while testing this patch.
+Hi,
 
-Tested-by: Clayton Craft <clayton@craftyguy.net>
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
+
+The upstream commit SHA1 provided is correct: 9b66195063c5a145843547b1d692bd189be85287
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Mark Brown<broonie@kernel.org>
+Commit author: Mark Rutland<mark.rutland@arm.com>
+
+Status in newer kernel trees:
+6.13.y | Present (different SHA1: 4c68a146aaaa)
+
+Note: The patch differs from the upstream commit:
+---
+1:  9b66195063c5a ! 1:  33e42968ad9d7 KVM: arm64: Refactor exit handlers
+    @@ Metadata
+      ## Commit message ##
+         KVM: arm64: Refactor exit handlers
+     
+    +    [ Upstream commit 9b66195063c5a145843547b1d692bd189be85287 ]
+    +
+         The hyp exit handling logic is largely shared between VHE and nVHE/hVHE,
+         with common logic in arch/arm64/kvm/hyp/include/hyp/switch.h. The code
+         in the header depends on function definitions provided by
+    @@ Commit message
+         Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+         Link: https://lore.kernel.org/r/20250210195226.1215254-7-mark.rutland@arm.com
+         Signed-off-by: Marc Zyngier <maz@kernel.org>
+    +    Signed-off-by: Mark Brown <broonie@kernel.org>
+     
+      ## arch/arm64/kvm/hyp/include/hyp/switch.h ##
+     @@ arch/arm64/kvm/hyp/include/hyp/switch.h: static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.13.y       |  Success    |  Success   |
 
