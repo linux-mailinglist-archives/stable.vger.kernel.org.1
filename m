@@ -1,97 +1,126 @@
-Return-Path: <stable+bounces-125696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1926FA6B1AC
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 00:30:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F0AA6B1EE
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 01:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D97A7AD7DC
-	for <lists+stable@lfdr.de>; Thu, 20 Mar 2025 23:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF87189C0A5
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 00:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F120822259E;
-	Thu, 20 Mar 2025 23:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8735628E7;
+	Fri, 21 Mar 2025 00:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b="fNgr/Eey"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8G17aTX"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nixnet.email (mx.nixnet.email [5.161.67.119])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AB321577D;
-	Thu, 20 Mar 2025 23:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.161.67.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0F67E1;
+	Fri, 21 Mar 2025 00:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742513416; cv=none; b=b87SvYQJCjwcDuvKknuBYR4GzvJuphHLmz4yBwqyoyXQ0IqJvaVtjPIXvLXEwln2rceQlI+wpuFgdhEnDbSRzNY3PYy79fWsOIcSvRWL9X4FjlKe33eMI15Wxy/geiIuuvIBOGYKk92FQwFyf1d0AXBnLEfqNhHbZBsf3qfMUEc=
+	t=1742515839; cv=none; b=oA9IGnNjPGXEfUsVZfzde5cD3+wT2Z98F8swqSzT1xa9h5FlmzK+r90lyCWK9PHKZQjLhxd+svByHkCmcW7W45CfSPuf7OTYLPb5eh4ZXq92I5/oeRaR49azqPhiG0vmBZbBwoh0fX1DN/39Hz70LyHmTOauDYU8DnbepH6bxm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742513416; c=relaxed/simple;
-	bh=SYuzpk+px42U3u0B0b6aH3gUKA150zqr0yAGUPT6MkY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=EIHi+g+mRx+Wrl+lBZF1iKf7DFHzb5SELvB3mripUrYE683mZ6EDtjyqzLSnmi1r5qYq0qoDjPyje3lJtZqzQQP0F0W7q52EMpOh4bUZH5bKtAP2TuWI4y7k2y3gJtfB6tsW0LffrBWD2Z1/mhJbpf3TUqFD2IqkmUAYnHWIeqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life; spf=pass smtp.mailfrom=pwned.life; dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b=fNgr/Eey; arc=none smtp.client-ip=5.161.67.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pwned.life
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by mx.nixnet.email (Postfix) with ESMTPSA id 9B1CD7D2E3;
-	Fri, 21 Mar 2025 00:20:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pwned.life; s=202002021149;
-	t=1742512842;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=avCcyNinvHxHfLjLW9hb3JXsotFCmyMou6TeLSEEHuA=;
-	b=fNgr/EeyA5/GxyI0wJjivl4bb8ZmCHEPa55i55BX2qKVnKZeg+Esbl7RXBWg0Xbj6NLhtZ
-	A2hbvK7Jiq11p7YImesnNkOcnLNN5KT0v7483mBWXzpedppBPcPjIaTFaiBVJz4u5r1vtp
-	h/UXo7LB2+A/35wbor03NjRvMyVJ65c=
+	s=arc-20240116; t=1742515839; c=relaxed/simple;
+	bh=UnwmEOzkbVYA12kIeylZ6mRzOZdlCojdMzHgIqtEWHg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iP4OT46Mx2H7YURitOlT71UJrpd4h/IBdDolW7POGsvtYjBvr6fiT4A9oVtNhCutBnjWBksf6ZbCQRtURuKxVL4O3l/PbpfKBkQKfz4aMQUAAXpuQRaDhpl0LOTgJa7q2Q7o8qaDwpUWo+ZabWttYcThEtWySyEvsSN3oEwgGKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8G17aTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1F8C4CEDD;
+	Fri, 21 Mar 2025 00:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742515838;
+	bh=UnwmEOzkbVYA12kIeylZ6mRzOZdlCojdMzHgIqtEWHg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=h8G17aTXy7pKB7dyU4WVLaw42gkw94O6XAMEfaS3aQnsrNmFmPTaTor/HkUgy6nFZ
+	 tDzudy0Z/oT3KtveAIGQM/x6igV8OEhQyheHxruDNoGH7DmiB1wyexwZA3iE9SiN9k
+	 QibC0QttzPFh9F5CdTbkNPIPapAQ3UzDQtDdYODq1TdBydkiR07/QqgW26BlSx1soU
+	 yfRVfEvDamE2bM5e64ZrMWkrU7E6Qi+fUtpD8WXcD69etMilrdpQNbitD0I2smoslz
+	 50jGqPQ/JE63txaELirqjPK7NSxu2o8ATN5Ba0WRc5sruJvpM2Xt2JzcqlpD47fRXy
+	 KQiEUywJgPB3w==
+From: Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 v2 0/8] KVM: arm64: Backport of SVE fixes to v6.13
+Date: Fri, 21 Mar 2025 00:10:09 +0000
+Message-Id: <20250321-stable-sve-6-13-v2-0-3150e3370c40@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 21 Mar 2025 00:20:38 +0100
-Message-Id: <D8LH8Z7F0IO7.210MAQO7ZF8DT@pwned.life>
-Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
- <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
- <lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
- <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
- <srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
- <hargar@microsoft.com>, <broonie@kernel.org>
-Subject: Re: [PATCH 6.13 000/207] 6.13.7-rc1 review
-From: "Achill Gilgenast" <fossdd@pwned.life>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- <stable@vger.kernel.org>
-X-Greeting: Hi mom! Look, I'm in somebodys mail client!
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250310170447.729440535@linuxfoundation.org>
-In-Reply-To: <20250310170447.729440535@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGKu3GcC/2WNwQ6DIBBEf8XsuWtgVWh66n80HsAuSmqwAUPaG
+ P+9hGuPbybz5oDE0XOCW3NA5OyT30IBujQwLSbMjP5ZGEjQIIg0pt3YlTFlRoWyw2Fi43pxtYP
+ TUFbvyM5/qvEBqpUdjCVdfNq3+K03WdauGjtJf8YsUeCkrRHaKNc7fX9xDLy2W5xhPM/zB8DQU
+ Uy1AAAA
+X-Change-ID: 20250227-stable-sve-6-13-5ceaf408b5f7
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+ Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>, Fuad Tabba <tabba@google.com>, 
+ James Clark <james.clark@linaro.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Eric Auger <eauger@redhat.com>, Wilco Dijkstra <wilco.dijkstra@arm.com>, 
+ Eric Auger <eric.auger@redhat.com>, Florian Weimer <fweimer@redhat.com>, 
+ Jeremy Linton <jeremy.linton@arm.com>, Paolo Bonzini <pbonzini@redhat.com>
+X-Mailer: b4 0.15-dev-1b0d6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1702; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=UnwmEOzkbVYA12kIeylZ6mRzOZdlCojdMzHgIqtEWHg=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBn3K5z+OUtTc8Yn+JX7kpLLlAGN05FTJOgpvs9yukl
+ 5RHjDbmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ9yucwAKCRAk1otyXVSH0IDuB/
+ 9Qx4rfSQv9RPjp4QcG5wJW92CPAHkXG0TJCQuGzbqNllI333pq6rZqHS3xbJBW+tTqBOK2D47PCNLZ
+ TwKkUeEE2V4oXfP9VfSVii7YsX3zgKiNJzmJXccaGRNqZjpdoM6nprl9N/5E/Ypchg0s6XJAk4OLvF
+ zng/O9IcBn6yg5yKu6SDB5O2iCfnZZm+j3LiJDIaYGV9dPBtRDp2KB/uXIBry+dypUiDiI/nanQt27
+ NA+peMIwULuUVSfgw4eaHTE1NWC3C962IKydHWzbhyssLydTRgi6xgusBnry/wSdGSM0OIIqMyzBAF
+ Qkj4F4RPpYiXktijmdIYj1PW6/bD8Z
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon Mar 10, 2025 at 6:03 PM CET, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.7 release.
-> There are 207 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 12 Mar 2025 17:04:00 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.7-=
-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
- linux-6.13.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+This series backports some recent fixes for SVE/KVM interactions from
+Mark Rutland to v6.13.
 
-Thanks! Builded and tested with Alpine Linux configs.
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+Changes in v2:
+- Remove an erronious kern_hyp_va().
+- Move standard cherry pick to stable format in patch 8.
+- Link to v1: https://lore.kernel.org/r/20250312-stable-sve-6-13-v1-0-c7ba07a6f4f7@kernel.org
 
-Tested-By: Achill Gilgenast <fossdd@pwned.life>
+---
+Fuad Tabba (1):
+      KVM: arm64: Calculate cptr_el2 traps on activating traps
+
+Mark Rutland (7):
+      KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state
+      KVM: arm64: Remove host FPSIMD saving for non-protected KVM
+      KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
+      KVM: arm64: Remove VHE host restore of CPACR_EL1.SMEN
+      KVM: arm64: Refactor exit handlers
+      KVM: arm64: Mark some header functions as inline
+      KVM: arm64: Eagerly switch ZCR_EL{1,2}
+
+ arch/arm64/include/asm/kvm_host.h       |  25 ++----
+ arch/arm64/kernel/fpsimd.c              |  25 ------
+ arch/arm64/kvm/arm.c                    |   9 ---
+ arch/arm64/kvm/fpsimd.c                 | 100 ++----------------------
+ arch/arm64/kvm/hyp/entry.S              |   5 ++
+ arch/arm64/kvm/hyp/include/hyp/switch.h | 133 ++++++++++++++++++++++---------
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c      |  11 +--
+ arch/arm64/kvm/hyp/nvhe/pkvm.c          |  30 -------
+ arch/arm64/kvm/hyp/nvhe/switch.c        | 134 ++++++++++++++++++--------------
+ arch/arm64/kvm/hyp/vhe/switch.c         |  21 ++---
+ 10 files changed, 201 insertions(+), 292 deletions(-)
+---
+base-commit: 648e04a805652f513af04b47035cde896addf9b0
+change-id: 20250227-stable-sve-6-13-5ceaf408b5f7
+
+Best regards,
+-- 
+Mark Brown <broonie@kernel.org>
+
 
