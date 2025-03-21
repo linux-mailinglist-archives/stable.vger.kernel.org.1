@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-125795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E56EA6C65C
-	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 00:19:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6BFA6C662
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 00:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 356213BB51A
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 23:19:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82A701742EF
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 23:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464D123237A;
-	Fri, 21 Mar 2025 23:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5ED02343D4;
+	Fri, 21 Mar 2025 23:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="083mogp6"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZCAjuQP2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFDC230D0F
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 23:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32ACE230BDF
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 23:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742599013; cv=none; b=hF2C/xM/Hy1q4IsLRjxnJEShB7k+1AYNEdsjh+yrm/YnGD21MoCUr6zu7ivo7BHj/xY99IaaB8+OwcvYPHYCtrKA+FhjPG7hd7vIQ++qJpCodxkr8n5zxg0w1XDYEjaf6zbhT2r8daUnHrQ6ncR6SVXhk34ZUAHCvGLDxZKHC80=
+	t=1742599149; cv=none; b=dMtrUep9hvc6bd1gfhXcfJQORaHkveNtr597H+08/cQLhhCuD2/mqz9ohaNescO9ncmU14UVNw8shBAknqObIRcCvtlTT9Wf9uK36mzIstysbwKWFZL5G4aB/iXnIq04dXM35YxzA1U2sW/t79yl+iyqD1kyAObdQh2okcXjt88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742599013; c=relaxed/simple;
-	bh=8DKaaQsE+scs9IafPhGAEN9NCbmfrSyJ0w8/Xd4IlfY=;
+	s=arc-20240116; t=1742599149; c=relaxed/simple;
+	bh=7R7aUV+pTd9zyynGBCXb4GYWyEVGu6gupsqBeQ35lLo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BVyL1166jlKNVfcsN2b5/agNU15+2AiHwBWaA3zYoexvLKpfz6HPACfhwWpqaYjji+SSMatIL5wO0HbCcn4gxoEXAgC/mvL/g5cUWt1/sAVyyNnyWwPSEJM5mbScTn4gR7ls8nAt33wzoaSrmhXzxRVL7VULAnz0XQAWLOAD/oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=083mogp6; arc=none smtp.client-ip=209.85.214.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=cwnniBts3gnmmYsH8cGVoBUvzt0u5QBH0BGTqQT0Ljh+yy3kzyDtZ4uW/gcDF7lUaU3qAku1dmXCOLD2WcO7BpulvEOLmqVyTYggdS+L3zXELFxgrDz4DC4pu3rxLfdm41mcfUd2lm742Wgc1MzVGgiV4x5ftuPkqt3cu2YRrfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZCAjuQP2; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-225e3002dffso37714045ad.1
-        for <stable@vger.kernel.org>; Fri, 21 Mar 2025 16:16:51 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2254e0b4b79so27321595ad.2
+        for <stable@vger.kernel.org>; Fri, 21 Mar 2025 16:19:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742599011; x=1743203811; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742599147; x=1743203947; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OIH7ijeBPiqYRtbzIPfbeGjnxQWH5Tz1Ymx0+lmARm8=;
-        b=083mogp6PTA20FKNijOETmLv9aZtDH212EAJBGgs6DaPl1IGtRZspiCRxofSUmVGcf
-         l2aYeIdHzGFqnyBdsh16TMhHAbeUI/B8SGQkcSget+a0bPeLb2Qaj4nrX7rYmZgaYeQB
-         ZuL+cr+3bTolgbfY368hH9/H+8BFSHUKzNL5Y+Wu4bDuJzy6FGMouSI4urYRnQ6wno0d
-         +68tqci+8nXz7v0Qsqor0iHl+UQ68/MdE+TbegoYpCcg7VliuD2CKtcJlXnDfY96w40Y
-         2kxQnoYGV5PJH7qd+YvGExYCL5tNn1Kd1W4eeD0ShKpFSwvG3U4en9gOupYUG3RZ5Z/K
-         xgvA==
+        bh=yLVVtEiYY62MhsiRQ4vP6SNkQCOsvwGGW3jtnlnRhnQ=;
+        b=ZCAjuQP2FAacEUDfJlVLeLg/0KuuKIUUuS9g4/o7Ht+KiGjd/AzTrlxbKxTudSwmLU
+         vooqOqnMpS14fuPWhFV2Yzo+06+J3mPtE7og9gRkYoQLrI3efZZKDR6tyjfmGw9I7VnD
+         w8hU0mlfH4xuh3aW1C+cbN6wj+WcP5aPeF7dd/BwDQV5OkVXt5oozJ8VqAfEB9ZITW2/
+         WPhGSlrzRdJMqmWO1wlptlVAvFgAJu4wGEJwYFj1l4IOu+KSISp50oBv60Khz0eMB56R
+         2Ma204k/ZWRWOPYi17zXgFc9NWzrJhAjTUWX175R9b5dYTuluGoVheRVmoMRdedE6gWH
+         TcyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742599011; x=1743203811;
+        d=1e100.net; s=20230601; t=1742599147; x=1743203947;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OIH7ijeBPiqYRtbzIPfbeGjnxQWH5Tz1Ymx0+lmARm8=;
-        b=cvOkTo8wl4P5guaZLzLiyFqry0BYpOwzc+FU5GFdGnDOi/Hr+QKnNJA/4NR4B3rkQS
-         3/rQhgglW98cG8QN3h3+M2o1kxXwonmy1aGPbuPCYpPQoxMxiqoKhOoB+vE+ZEyyY64p
-         vdiVCyzSSM0pUxAsPp6ooi70EWigKhHRChLFTlL2v7KxE28g7CjtWdTd187CWPuZvuVK
-         yNhiJyfGT+AsiY1+H6+H1p8P/4qbHDuwTtx2vtvafz6paCk/0izUhN/V4FrZsnKxgPZd
-         S1KdcHK3vlZmbpPDNlHeKHirBLVLp7WUbeBbupdrJ0S5ekiShzQAATHulx81vS8JJbsW
-         cxlg==
-X-Forwarded-Encrypted: i=1; AJvYcCW9o3RB/DNIA94G8HI2sbS73vNjRYimXyNm5dH1o/3f7G2EzXzyg29l79VPMGOXsKmB2Nt55o0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNjcMO1mZ8vg0VBWrvknPBYa7STE3MwTtyfa7WwGEzWQnnjJrh
-	Wesr5sISaIcYpYIl3K6+tMO6+x4cSvdycZbVbpixtDN9MjqcLPsny/DjzWrydA==
-X-Gm-Gg: ASbGncvmq2nwxKD+7P/MUTX6NP0MDOBvl/PJghMrXeXi3mJODajbcXIMxr+r1lN4fD3
-	lUmL9UFLS+U2TSC4N5qTlpeqbtVldDrir7tB5y8/mc94RPZ9xutziCnwKemCJ+aknX/YRj/eK8i
-	3U5q1D0inejL/bHR7cU8mQ/Hb9TJ7BEa8ebhAfgsRZ+o/lCuSXFbgXaMLHaKKbtaia6aCcmPkQA
-	LltLpLfRjJVXswV2UQfxNB2dMDks5zl2ol9BjGlrFnWGD9jExcLMfS5K5y+qyHGQBjt/QDL2a2x
-	cSzBNXKo1FxzBf+UuEeICsnj564Hy0n7N2bxoBAGZ/lkMETNRWAb7zfakwygpJ2FFHupoP8OXVN
-	P1FsV3XA=
-X-Google-Smtp-Source: AGHT+IG+S/vbJZ8UdHGhIlmSLgyiSEb9xnXeh1Dx5wYWoCCxNEnUuuhrUbiG8myJeH5qClc9kzs0uw==
-X-Received: by 2002:a05:6a00:1393:b0:730:9801:d3e2 with SMTP id d2e1a72fcca58-7390599a142mr8273307b3a.8.1742599010047;
-        Fri, 21 Mar 2025 16:16:50 -0700 (PDT)
+        bh=yLVVtEiYY62MhsiRQ4vP6SNkQCOsvwGGW3jtnlnRhnQ=;
+        b=ZjI64YIQCBs/GtUWDJHswt1WPolO6n33cvPsrPzmsMKDz7lfYtO/hgDdTSLbX0R1uo
+         sGpSqP8bz9Is9093CgdDtwKKZkEcV0X90w2FiTu9Ff//0uWQhiNRzEySO0kNyGkYLOxF
+         yFZnuxGZCyqZPXgjjK/PXsSSHtEQgNsBYceMc5JNXZxrSxdePPUka92zNweA3wXDcig0
+         3u/qxCoXYMAlnA7TV828pTY9DIDyhTTTycZNyOFpZANsds1bpdVtVVMuQQ24qpbzqTA6
+         g9fpwQRzTr7W5mAt+gDx15ld3rxgkNod8oJMwR4Yp2o0HtKgxLJQ/JlBza3BosnpTiec
+         6Qcg==
+X-Forwarded-Encrypted: i=1; AJvYcCXuITL4lqgJo4qxKBv562aEBXb9tl0AfSaYAGMXXeimPZOWSo9Y3fLFGxY6HYI04lF3cQiYy3w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxtv70R4WxzQCIEcefwHPkV6BGdwPaQmesLL5j4Apjk0hZOR+hW
+	Y1bePj09z5fhCkiQYDDM275H9ItE2EisaAPng4oQJsVnY/7XBOJ5zAbKXxYYzw==
+X-Gm-Gg: ASbGncu8ZL8GhcPRsvRsogZbLH2+6PyXeJ6Ng0/R26NGLFV6RVsQTrok+6e4E2tRtqk
+	EAPfVrXj1UoTMh8ioOLaHdJxzV2Ss80MHTwLUV6yvT2zkoqjh3cqvmV2ELBZpN1l5q5MP/quLHi
+	0tOjqBI4q1XWcMZ1EN4gVbrI9t9XPnSU6U9B5+ENVGhEmMXTJ5qeD1DjSsV/m38eSV4FgUxMNuc
+	Y9T84HjJwe1Qi2nLMWix8tbxI0lC6b03kYcUgGs7cUUzN3L9xlieZN5Gn9VEOKmm9sp39Nwv300
+	P1Ray2FpR7MF52U8HkVe/P+HuiRYAh7p7edzuiyjB4KXa6rxgxw5IbXeuH1WdMGpwYCt96ll37M
+	9NhDyGbAkwYw6lWt7ng==
+X-Google-Smtp-Source: AGHT+IF195diPWEKYH6Ae8Xu5+le/VenNZhzDbi1MXz0VeJbXGBB6rQE3KK3GWeNmszmqE1ZmR6hRg==
+X-Received: by 2002:a17:902:ea07:b0:224:179a:3b8f with SMTP id d9443c01a7336-22780d83b53mr70549105ad.23.1742599147135;
+        Fri, 21 Mar 2025 16:19:07 -0700 (PDT)
 Received: from google.com (132.111.125.34.bc.googleusercontent.com. [34.125.111.132])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73905fa92dfsm2639905b3a.5.2025.03.21.16.16.48
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-227811c1b8fsm23330555ad.154.2025.03.21.16.19.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 16:16:48 -0700 (PDT)
-Date: Fri, 21 Mar 2025 23:16:44 +0000
+        Fri, 21 Mar 2025 16:19:05 -0700 (PDT)
+Date: Fri, 21 Mar 2025 23:19:01 +0000
 From: Benson Leung <bleung@google.com>
 To: Andrei Kuchynski <akuchynski@chromium.org>
 Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
@@ -80,10 +80,11 @@ Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Benson Leung <bleung@chromium.org>,
 	Jameson Thies <jthies@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] usb: typec: class: Fix NULL pointer access
-Message-ID: <Z93zXHJPO3UHY_YF@google.com>
+Subject: Re: [PATCH 2/2] usb: typec: class: Invalidate USB device pointers on
+ partner unregistration
+Message-ID: <Z93z5WqL-u4ZyBhH@google.com>
 References: <20250321143728.4092417-1-akuchynski@chromium.org>
- <20250321143728.4092417-2-akuchynski@chromium.org>
+ <20250321143728.4092417-3-akuchynski@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,160 +92,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="oA1blLjyxrjfEY96"
+	protocol="application/pgp-signature"; boundary="cN3cAe1kDpvEvgtB"
 Content-Disposition: inline
-In-Reply-To: <20250321143728.4092417-2-akuchynski@chromium.org>
+In-Reply-To: <20250321143728.4092417-3-akuchynski@chromium.org>
 
 
---oA1blLjyxrjfEY96
+--cN3cAe1kDpvEvgtB
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi Andrei,
 
-
-On Fri, Mar 21, 2025 at 02:37:26PM +0000, Andrei Kuchynski wrote:
-> Concurrent calls to typec_partner_unlink_device can lead to a NULL pointer
-> dereference. This patch adds a mutex to protect USB device pointers and
-> prevent this issue. The same mutex protects both the device pointers and
-> the partner device registration.
+On Fri, Mar 21, 2025 at 02:37:27PM +0000, Andrei Kuchynski wrote:
+> To avoid using invalid USB device pointers after a Type-C partner
+> disconnects, this patch clears the pointers upon partner unregistration.
+> This ensures a clean state for future connections.
 >=20
 > Cc: stable@vger.kernel.org
 > Fixes: 59de2a56d127 ("usb: typec: Link enumerated USB devices with Type-C=
- partner")      =20
+ partner")
 > Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
 
 Reviewed-by: Benson Leung <bleung@chromium.org>
 
 > ---
->  drivers/usb/typec/class.c | 15 +++++++++++++--
->  drivers/usb/typec/class.h |  1 +
->  2 files changed, 14 insertions(+), 2 deletions(-)
+>  drivers/usb/typec/class.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 >=20
 > diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-> index 9c76c3d0c6cf..eadb150223f8 100644
+> index eadb150223f8..3df3e3736916 100644
 > --- a/drivers/usb/typec/class.c
 > +++ b/drivers/usb/typec/class.c
-> @@ -1052,6 +1052,7 @@ struct typec_partner *typec_register_partner(struct=
- typec_port *port,
->  		partner->usb_mode =3D USB_MODE_USB3;
->  	}
-> =20
-> +	mutex_lock(&port->partner_link_lock);
->  	ret =3D device_register(&partner->dev);
->  	if (ret) {
->  		dev_err(&port->dev, "failed to register partner (%d)\n", ret);
-> @@ -1063,6 +1064,7 @@ struct typec_partner *typec_register_partner(struct=
- typec_port *port,
->  		typec_partner_link_device(partner, port->usb2_dev);
->  	if (port->usb3_dev)
->  		typec_partner_link_device(partner, port->usb3_dev);
-> +	mutex_unlock(&port->partner_link_lock);
-> =20
->  	return partner;
->  }
-> @@ -1083,12 +1085,14 @@ void typec_unregister_partner(struct typec_partne=
+> @@ -1086,10 +1086,14 @@ void typec_unregister_partner(struct typec_partne=
 r *partner)
-> =20
 >  	port =3D to_typec_port(partner->dev.parent);
 > =20
-> +	mutex_lock(&port->partner_link_lock);
->  	if (port->usb2_dev)
+>  	mutex_lock(&port->partner_link_lock);
+> -	if (port->usb2_dev)
+> +	if (port->usb2_dev) {
 >  		typec_partner_unlink_device(partner, port->usb2_dev);
->  	if (port->usb3_dev)
+> -	if (port->usb3_dev)
+> +		port->usb2_dev =3D NULL;
+> +	}
+> +	if (port->usb3_dev) {
 >  		typec_partner_unlink_device(partner, port->usb3_dev);
+> +		port->usb3_dev =3D NULL;
+> +	}
 > =20
 >  	device_unregister(&partner->dev);
-> +	mutex_unlock(&port->partner_link_lock);
->  }
->  EXPORT_SYMBOL_GPL(typec_unregister_partner);
-> =20
-> @@ -2041,10 +2045,11 @@ static struct typec_partner *typec_get_partner(st=
-ruct typec_port *port)
->  static void typec_partner_attach(struct typec_connector *con, struct dev=
-ice *dev)
->  {
->  	struct typec_port *port =3D container_of(con, struct typec_port, con);
-> -	struct typec_partner *partner =3D typec_get_partner(port);
-> +	struct typec_partner *partner;
->  	struct usb_device *udev =3D to_usb_device(dev);
->  	enum usb_mode usb_mode;
-> =20
-> +	mutex_lock(&port->partner_link_lock);
->  	if (udev->speed < USB_SPEED_SUPER) {
->  		usb_mode =3D USB_MODE_USB2;
->  		port->usb2_dev =3D dev;
-> @@ -2053,18 +2058,22 @@ static void typec_partner_attach(struct typec_con=
-nector *con, struct device *dev
->  		port->usb3_dev =3D dev;
->  	}
-> =20
-> +	partner =3D typec_get_partner(port);
->  	if (partner) {
->  		typec_partner_set_usb_mode(partner, usb_mode);
->  		typec_partner_link_device(partner, dev);
->  		put_device(&partner->dev);
->  	}
-> +	mutex_unlock(&port->partner_link_lock);
->  }
-> =20
->  static void typec_partner_deattach(struct typec_connector *con, struct d=
-evice *dev)
->  {
->  	struct typec_port *port =3D container_of(con, struct typec_port, con);
-> -	struct typec_partner *partner =3D typec_get_partner(port);
-> +	struct typec_partner *partner;
-> =20
-> +	mutex_lock(&port->partner_link_lock);
-> +	partner =3D typec_get_partner(port);
->  	if (partner) {
->  		typec_partner_unlink_device(partner, dev);
->  		put_device(&partner->dev);
-> @@ -2074,6 +2083,7 @@ static void typec_partner_deattach(struct typec_con=
-nector *con, struct device *d
->  		port->usb2_dev =3D NULL;
->  	else if (port->usb3_dev =3D=3D dev)
->  		port->usb3_dev =3D NULL;
-> +	mutex_unlock(&port->partner_link_lock);
->  }
-> =20
->  /**
-> @@ -2614,6 +2624,7 @@ struct typec_port *typec_register_port(struct devic=
-e *parent,
-> =20
->  	ida_init(&port->mode_ids);
->  	mutex_init(&port->port_type_lock);
-> +	mutex_init(&port->partner_link_lock);
-> =20
->  	port->id =3D id;
->  	port->ops =3D cap->ops;
-> diff --git a/drivers/usb/typec/class.h b/drivers/usb/typec/class.h
-> index b3076a24ad2e..db2fe96c48ff 100644
-> --- a/drivers/usb/typec/class.h
-> +++ b/drivers/usb/typec/class.h
-> @@ -59,6 +59,7 @@ struct typec_port {
->  	enum typec_port_type		port_type;
->  	enum usb_mode			usb_mode;
->  	struct mutex			port_type_lock;
-> +	struct mutex			partner_link_lock;
-> =20
->  	enum typec_orientation		orientation;
->  	struct typec_switch		*sw;
+>  	mutex_unlock(&port->partner_link_lock);
 > --=20
 > 2.49.0.395.g12beb8f557-goog
 >=20
 
---oA1blLjyxrjfEY96
+--cN3cAe1kDpvEvgtB
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQQCtZK6p/AktxXfkOlzbaomhzOwwgUCZ93zWwAKCRBzbaomhzOw
-whHhAQD+8sY8h9MFvLXXJX6m474QUzZ0HHuNX40P6R8IYKKqagD9GKf8CySd6Duo
-INhWr5qPzNJGGbEPtJO1uox4DHWFuQg=
-=yS43
+iHUEABYIAB0WIQQCtZK6p/AktxXfkOlzbaomhzOwwgUCZ93z5QAKCRBzbaomhzOw
+wuFRAP4tlk6s6adpSCRvWDdtv0FaODRXc1HiADy+70TI9ectMAD/bOW7B2uK9KrQ
+c+EbKHzy8PaWNAxKs4biseORVjHi6gU=
+=CBy0
 -----END PGP SIGNATURE-----
 
---oA1blLjyxrjfEY96--
+--cN3cAe1kDpvEvgtB--
 
