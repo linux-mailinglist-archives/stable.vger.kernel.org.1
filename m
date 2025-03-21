@@ -1,121 +1,91 @@
-Return-Path: <stable+bounces-125756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AEABA6BE5B
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 16:33:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D949EA6BE9B
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 16:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 976187A44F2
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 15:31:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDE9C482154
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 15:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444361CAA87;
-	Fri, 21 Mar 2025 15:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F4E22ACFA;
+	Fri, 21 Mar 2025 15:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="pfPW0hQP"
+	dkim=pass (2048-bit key) header.d=glasklarteknik.se header.i=@glasklarteknik.se header.b="lygATNJo"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
+Received: from mail-01.sigsum.org (mail-01.sigsum.org [91.223.231.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956099461;
-	Fri, 21 Mar 2025 15:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.244.183.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A281E22FA
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 15:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.223.231.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742571172; cv=none; b=TNEdfHF/4c718xscCVKDtxMLO6BpRBzOolDXFRcQpap4QWaVu25NIuWxWk2qCmRk6vfVj/v1A6szCUuqblNqWGcTMXROzyhhBlWAS4zI6bFfMsUg/yG08d/MP6yYUZ+r5ceskb8LM9Sx5qZr0PEVQgNKmQPvdC1NH0zWMVCNnkI=
+	t=1742572016; cv=none; b=LpgYjtTYDrxmksdmd1QcoN3WpyBPWkV34cLeNkvYSWxGCEG2s6vMfy1BULUtlNJ5eH9G9o0QD5rGjrWbEUB9tuzIDKEuGkmgew0s+t+NB5dw7EAZ46eH5sCtCU3hvIGhlyiM+SzryXbWsSZbiy/2E8PouKB+Sqv6SsLm0qbUrO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742571172; c=relaxed/simple;
-	bh=ZrXLkydeiMW9PLt4uCF3ve2+57IWGeHbUunRpNSBEWQ=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=OmvXsqHJ7/JMuKZoyE/QX9iUOLsDUDf6D4jhiccYMZ2Y2P6VjZqieWqWY0nPvd2EHhaXvTi9gM/v48qYstfXnekaoH/8Hat8LhKoSmxe4IXkaC+kGINuexOkuJyboKsgBSVJKPlGPK31gBCqCGGCGk5KPYhtxK9vbU6vrVjY5rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru; spf=pass smtp.mailfrom=infotecs.ru; dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b=pfPW0hQP; arc=none smtp.client-ip=91.244.183.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=infotecs.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infotecs.ru
-Received: from mx0.infotecs-nt (localhost [127.0.0.1])
-	by mx0.infotecs.ru (Postfix) with ESMTP id 0AED3108CF52;
-	Fri, 21 Mar 2025 18:32:39 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 0AED3108CF52
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
-	t=1742571159; bh=3hzkxewlzAw9gqGNtlUqfJTSgMas1vCBFJRghfKnQ6Y=;
-	h=From:To:CC:Subject:Date:From;
-	b=pfPW0hQPoTLhWyEmanmS18h9FNjtYTE3Oxhdbwc0jsqZRRNcuRexrx5xBp3kZtJx0
-	 iA55nYoVVRVCXTKjfqwa7aCjHEaxocl3pitcI8j8MwYS/7sf1nKJBAR4Si3At8q8O7
-	 L4ZRunM4j5ImwD1H811kAaSgJIjxazDc2efZ3pmc=
-Received: from msk-exch-02.infotecs-nt (msk-exch-02.infotecs-nt [10.0.7.192])
-	by mx0.infotecs-nt (Postfix) with ESMTP id 051393042F4F;
-	Fri, 21 Mar 2025 18:32:39 +0300 (MSK)
-From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, David Sterba
-	<dsterba@suse.com>, "linux-btrfs@vger.kernel.org"
-	<linux-btrfs@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH 5.10] btrfs: have proper error handling in
- btrfs_init_reloc_root
-Thread-Topic: [PATCH 5.10] btrfs: have proper error handling in
- btrfs_init_reloc_root
-Thread-Index: AQHbmnZ6U2b+tEjdAE2Ihn3R2kCLZg==
-Date: Fri, 21 Mar 2025 15:32:38 +0000
-Message-ID: <20250321153238.918616-1-Ilia.Gavrilov@infotecs.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1742572016; c=relaxed/simple;
+	bh=l5uXOQgUtf9vCYbWInTQrj8XEm/DQMTvTvhEflApOHg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=W31WfKyREQw5IXbs1bOUqqy0ZLir59MFoZn/qN2cl3iab89ZFgMsOXL6KrhIgcRn4a20IYOyz48BG04BjGUMy+YEXiU0ZQWLBpvq9/+xS1pdaXfpoPvOQ/+H6dmrVeFj51Img4YtnwepJiFh/eFA7DL5mPQPvyveZHfR0bUWAcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=glasklarteknik.se; spf=pass smtp.mailfrom=glasklarteknik.se; dkim=pass (2048-bit key) header.d=glasklarteknik.se header.i=@glasklarteknik.se header.b=lygATNJo; arc=none smtp.client-ip=91.223.231.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=glasklarteknik.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=glasklarteknik.se
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3E3CCC13C8;
+	Fri, 21 Mar 2025 16:41:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=glasklarteknik.se;
+	s=dkim; t=1742571687;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language;
+	bh=luqQiyuyjNAsw515KM4PvvMhNhUysTYJueyAxpe0yug=;
+	b=lygATNJoRFpCcBPZcqZ5jOsFBYAu0MqpGNT7OULyMBgUr16YQySZeU2yKf5xjiCvxEzSX+
+	tV86wwUevzDxyNtCg+8N5qcE7VjULqbtSmywi1d12pkOUfF95QUmcvtF/JqwQeI7mNnOHt
+	qduse6qPmJfM6i6Bx0oXOPc6t2tED4ohRfdCZR9WCbJIAkcBtgxcW2qSsxD7FqdA3kJhm6
+	AwTTZOm0N+1VqP+1Hj4SsTsrj35lfKOUyPogBsZvU75iau7uiWwLthk9pUJfkb4wLnBYIg
+	ILNsmTrOpgKNL/w3yyPF/59tmBolmIwgDXK/O7LbxzTjQWZ/mcJqwwoCr5iPnw==
+Message-ID: <c368b604-9022-470b-8c23-60bf53892cb0@glasklarteknik.se>
+Date: Fri, 21 Mar 2025 16:41:24 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KLMS-Rule-ID: 5
-X-KLMS-Message-Action: clean
-X-KLMS-AntiSpam-Status: not scanned, disabled by settings
-X-KLMS-AntiSpam-Interceptor-Info: not scanned
-X-KLMS-AntiPhishing: Clean, bases: 2025/03/21 14:01:00
-X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2025/03/21 09:53:00 #27808853
-X-KLMS-AntiVirus-Status: Clean, skipped
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, kexec@lists.infradead.org
+From: Elias Rudberg <elias@glasklarteknik.se>
+Subject: x86 kexec problem in stable 6.1.129 and later due to change related
+ to PGD allocation
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Josef Bacik <josef@toxicpanda.com>
+Hello,
 
-commit 00bb36a0e76ab7e94bdd70d561baf25f9bc1415d upstream.
+The following change seems to cause kexec to sometimes fail (not every 
+time but about 50% chance) for the stable 6.1 kernels, 6.1.129 and later:
 
-create_reloc_root will return errors in the future, and __add_reloc_root
-can return ENOMEM or EEXIST, so handle these errors properly.
+6821918f4519 ("x86/kexec: Allocate PGD for x86_64 transition page tables 
+separately")
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
----
- fs/btrfs/relocation.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+The commit message for that commit states that it is dependent on 
+another change "x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating 
+userspace page tables" but that change does not seem to have been done 
+in the 6.1 kernel series, which could explain why the 6821918f4519 
+change causes problems for 6.1.
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 5b921e6ed94e..b0d34879e267 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -878,9 +878,15 @@ int btrfs_init_reloc_root(struct btrfs_trans_handle *t=
-rans,
- 	reloc_root =3D create_reloc_root(trans, root, root->root_key.objectid);
- 	if (clear_rsv)
- 		trans->block_rsv =3D rsv;
-+	if (IS_ERR(reloc_root))
-+		return PTR_ERR(reloc_root);
-=20
- 	ret =3D __add_reloc_root(reloc_root);
--	BUG_ON(ret < 0);
-+	if (ret) {
-+		/* Pairs with create_reloc_root */
-+		btrfs_put_root(reloc_root);
-+		return ret;
-+	}
- 	root->reloc_root =3D btrfs_grab_root(reloc_root);
- 	return 0;
- }
---=20
-2.39.5
+This appears to be a problem only for 6.1, for the 6.6 and later stable 
+kernels there is no problem.
+
+I think the reason this problem is seen only for 6.1 and not for 6.6 and 
+later is that the change "x86/kexec: Allocate PGD for x86_64 transition 
+page tables separately" relies on things that are not available in 6.1.
+
+In the tests I have done, kexec is called via u-root.
+More details are available here: 
+https://git.glasklar.is/system-transparency/core/stboot/-/issues/227
+
+Cheers,
+Elias
 
