@@ -1,153 +1,250 @@
-Return-Path: <stable+bounces-125794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6280A6C5DC
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 23:21:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E56EA6C65C
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 00:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECA243AE6E4
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 22:21:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 356213BB51A
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 23:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A341F3BB7;
-	Fri, 21 Mar 2025 22:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464D123237A;
+	Fri, 21 Mar 2025 23:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RYgPCnOX"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="083mogp6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4842D8BEE;
-	Fri, 21 Mar 2025 22:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFDC230D0F
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 23:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742595696; cv=none; b=e6wBiNj2W5Dj/MJLqsxiRyuHFWJcXTJZ9VNdAQ0ZZYqtQ/W+c3tMkn3msZQC9F8hpsHMlikHcH4qWsPtAJasR6I4Osl98AoJEQDRZIxzay51303jpXT5x9E8PUP6rmP5r4jubc4NOhOEWLZzEiACMZoGkbp5O94RqAGPOYgsSG4=
+	t=1742599013; cv=none; b=hF2C/xM/Hy1q4IsLRjxnJEShB7k+1AYNEdsjh+yrm/YnGD21MoCUr6zu7ivo7BHj/xY99IaaB8+OwcvYPHYCtrKA+FhjPG7hd7vIQ++qJpCodxkr8n5zxg0w1XDYEjaf6zbhT2r8daUnHrQ6ncR6SVXhk34ZUAHCvGLDxZKHC80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742595696; c=relaxed/simple;
-	bh=HJFvVXl45GjCHB77vkVbfYG2LXCQM1Yu7VkVLSHwgtg=;
+	s=arc-20240116; t=1742599013; c=relaxed/simple;
+	bh=8DKaaQsE+scs9IafPhGAEN9NCbmfrSyJ0w8/Xd4IlfY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z6rbvUIdAn+BmLlmPGNQMFlCYbOwb1dFgB5H2FE9G+a6zNpNx0Wa+xf+ShmpUKXmvxdPvlDlNrZwugN8RgqJj4E2LCC6kmOvYqgcZU/JqWA1kWgUEls/SgT4YteYk9abdJfQQTKZ4Jl43u3zFgijOMB/OOf7CX36odPLOP62P9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RYgPCnOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2BAC4CEE3;
-	Fri, 21 Mar 2025 22:21:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742595695;
-	bh=HJFvVXl45GjCHB77vkVbfYG2LXCQM1Yu7VkVLSHwgtg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RYgPCnOX2/NYKWyQPW6LLib0j+Q3H9+rHSpNI2L2Cb1laNKAJiZhik9jvwjU0dPQ7
-	 pq/4kAmagE0IORsYyhGLuoooKAOMPPiRu98d2vywU/FmIvED6MeRose+GkaS3LUyJT
-	 to/3Kj1w1J1AHdd5z3FfpyS2/UNXHaw0wT1a8IxP1lqTo3WKHLw1oEo+YUdDbpaXil
-	 5LhjUHwzgEalhhpc1RRNs/TdE9DO5wgFbTdPHT3lcd2WthohavgGfkJXUVOJslwSPw
-	 JnmozSN195VoD86b7eMlo6wgF04gbHq7FvJzu//UP1Pkin43h44fNWJqG//dx/cI7R
-	 iP+PQ5DVxZvWA==
-Date: Fri, 21 Mar 2025 17:21:33 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, stable <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] remoteproc: Add device awake calls in rproc boot and
- shutdown path
-Message-ID: <6lyuwfypd5sq5fqu2ibgpxiulvq3txe6igxhrpqd4443z4zex4@5bvlrpohwg5c>
-References: <20250317114057.1725151-1-quic_schowdhu@quicinc.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=BVyL1166jlKNVfcsN2b5/agNU15+2AiHwBWaA3zYoexvLKpfz6HPACfhwWpqaYjji+SSMatIL5wO0HbCcn4gxoEXAgC/mvL/g5cUWt1/sAVyyNnyWwPSEJM5mbScTn4gR7ls8nAt33wzoaSrmhXzxRVL7VULAnz0XQAWLOAD/oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=083mogp6; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-225e3002dffso37714045ad.1
+        for <stable@vger.kernel.org>; Fri, 21 Mar 2025 16:16:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742599011; x=1743203811; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OIH7ijeBPiqYRtbzIPfbeGjnxQWH5Tz1Ymx0+lmARm8=;
+        b=083mogp6PTA20FKNijOETmLv9aZtDH212EAJBGgs6DaPl1IGtRZspiCRxofSUmVGcf
+         l2aYeIdHzGFqnyBdsh16TMhHAbeUI/B8SGQkcSget+a0bPeLb2Qaj4nrX7rYmZgaYeQB
+         ZuL+cr+3bTolgbfY368hH9/H+8BFSHUKzNL5Y+Wu4bDuJzy6FGMouSI4urYRnQ6wno0d
+         +68tqci+8nXz7v0Qsqor0iHl+UQ68/MdE+TbegoYpCcg7VliuD2CKtcJlXnDfY96w40Y
+         2kxQnoYGV5PJH7qd+YvGExYCL5tNn1Kd1W4eeD0ShKpFSwvG3U4en9gOupYUG3RZ5Z/K
+         xgvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742599011; x=1743203811;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OIH7ijeBPiqYRtbzIPfbeGjnxQWH5Tz1Ymx0+lmARm8=;
+        b=cvOkTo8wl4P5guaZLzLiyFqry0BYpOwzc+FU5GFdGnDOi/Hr+QKnNJA/4NR4B3rkQS
+         3/rQhgglW98cG8QN3h3+M2o1kxXwonmy1aGPbuPCYpPQoxMxiqoKhOoB+vE+ZEyyY64p
+         vdiVCyzSSM0pUxAsPp6ooi70EWigKhHRChLFTlL2v7KxE28g7CjtWdTd187CWPuZvuVK
+         yNhiJyfGT+AsiY1+H6+H1p8P/4qbHDuwTtx2vtvafz6paCk/0izUhN/V4FrZsnKxgPZd
+         S1KdcHK3vlZmbpPDNlHeKHirBLVLp7WUbeBbupdrJ0S5ekiShzQAATHulx81vS8JJbsW
+         cxlg==
+X-Forwarded-Encrypted: i=1; AJvYcCW9o3RB/DNIA94G8HI2sbS73vNjRYimXyNm5dH1o/3f7G2EzXzyg29l79VPMGOXsKmB2Nt55o0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNjcMO1mZ8vg0VBWrvknPBYa7STE3MwTtyfa7WwGEzWQnnjJrh
+	Wesr5sISaIcYpYIl3K6+tMO6+x4cSvdycZbVbpixtDN9MjqcLPsny/DjzWrydA==
+X-Gm-Gg: ASbGncvmq2nwxKD+7P/MUTX6NP0MDOBvl/PJghMrXeXi3mJODajbcXIMxr+r1lN4fD3
+	lUmL9UFLS+U2TSC4N5qTlpeqbtVldDrir7tB5y8/mc94RPZ9xutziCnwKemCJ+aknX/YRj/eK8i
+	3U5q1D0inejL/bHR7cU8mQ/Hb9TJ7BEa8ebhAfgsRZ+o/lCuSXFbgXaMLHaKKbtaia6aCcmPkQA
+	LltLpLfRjJVXswV2UQfxNB2dMDks5zl2ol9BjGlrFnWGD9jExcLMfS5K5y+qyHGQBjt/QDL2a2x
+	cSzBNXKo1FxzBf+UuEeICsnj564Hy0n7N2bxoBAGZ/lkMETNRWAb7zfakwygpJ2FFHupoP8OXVN
+	P1FsV3XA=
+X-Google-Smtp-Source: AGHT+IG+S/vbJZ8UdHGhIlmSLgyiSEb9xnXeh1Dx5wYWoCCxNEnUuuhrUbiG8myJeH5qClc9kzs0uw==
+X-Received: by 2002:a05:6a00:1393:b0:730:9801:d3e2 with SMTP id d2e1a72fcca58-7390599a142mr8273307b3a.8.1742599010047;
+        Fri, 21 Mar 2025 16:16:50 -0700 (PDT)
+Received: from google.com (132.111.125.34.bc.googleusercontent.com. [34.125.111.132])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73905fa92dfsm2639905b3a.5.2025.03.21.16.16.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Mar 2025 16:16:48 -0700 (PDT)
+Date: Fri, 21 Mar 2025 23:16:44 +0000
+From: Benson Leung <bleung@google.com>
+To: Andrei Kuchynski <akuchynski@chromium.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] usb: typec: class: Fix NULL pointer access
+Message-ID: <Z93zXHJPO3UHY_YF@google.com>
+References: <20250321143728.4092417-1-akuchynski@chromium.org>
+ <20250321143728.4092417-2-akuchynski@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="oA1blLjyxrjfEY96"
+Content-Disposition: inline
+In-Reply-To: <20250321143728.4092417-2-akuchynski@chromium.org>
+
+
+--oA1blLjyxrjfEY96
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250317114057.1725151-1-quic_schowdhu@quicinc.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 17, 2025 at 05:10:57PM +0530, Souradeep Chowdhury wrote:
-> Add device awake calls in case of rproc boot and rproc shutdown path.
-> Currently, device awake call is only present in the recovery path
-> of remoteproc. If a user stops and starts rproc by using the sysfs
-> interface, then on pm suspension the firmware loading fails. Keep the
-> device awake in such a case just like it is done for the recovery path.
-> 
+Hi Andrei,
 
-Please rewrite this in the form expressed in
-https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
 
-Clearly describe the problem you're solving - not just the change in
-behavior.
-
-What do you mean that "firmware loading fails" if we hit a suspend
-during stop and start through sysfs? At what point does it fail?
-
-> Fixes: a781e5aa59110 ("remoteproc: core: Prevent system suspend during remoteproc recovery")
-
-That patch clearly states that it intends to keep the system from
-suspending during recovery. As far as I can tell you're changing the
-start and stop sequences.
-
-As such, I don't think the referred to patch was broken and you're not
-fixing it.
-
-> Signed-off-by: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
+On Fri, Mar 21, 2025 at 02:37:26PM +0000, Andrei Kuchynski wrote:
+> Concurrent calls to typec_partner_unlink_device can lead to a NULL pointer
+> dereference. This patch adds a mutex to protect USB device pointers and
+> prevent this issue. The same mutex protects both the device pointers and
+> the partner device registration.
+>=20
 > Cc: stable@vger.kernel.org
+> Fixes: 59de2a56d127 ("usb: typec: Link enumerated USB devices with Type-C=
+ partner")      =20
+> Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
 
-It's not clear to me from the commit message why this should be
-backported to stable kernel.
+Reviewed-by: Benson Leung <bleung@chromium.org>
 
 > ---
-> Changes in v3
-> 
-> *Add the stability mailing list in commit message
->  
->  drivers/remoteproc/remoteproc_core.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-> index c2cf0d277729..908a7b8f6c7e 100644
-> --- a/drivers/remoteproc/remoteproc_core.c
-> +++ b/drivers/remoteproc/remoteproc_core.c
-> @@ -1916,7 +1916,8 @@ int rproc_boot(struct rproc *rproc)
->  		pr_err("invalid rproc handle\n");
->  		return -EINVAL;
+>  drivers/usb/typec/class.c | 15 +++++++++++++--
+>  drivers/usb/typec/class.h |  1 +
+>  2 files changed, 14 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+> index 9c76c3d0c6cf..eadb150223f8 100644
+> --- a/drivers/usb/typec/class.c
+> +++ b/drivers/usb/typec/class.c
+> @@ -1052,6 +1052,7 @@ struct typec_partner *typec_register_partner(struct=
+ typec_port *port,
+>  		partner->usb_mode =3D USB_MODE_USB3;
 >  	}
-> -
-> +	
-
-You're replacing an empty line with a tab...
-
-
-Other than that, the change looks sensible.
-
-Regards,
-Bjorn
-
-> +	pm_stay_awake(rproc->dev.parent);
->  	dev = &rproc->dev;
->  
->  	ret = mutex_lock_interruptible(&rproc->lock);
-> @@ -1961,6 +1962,7 @@ int rproc_boot(struct rproc *rproc)
->  		atomic_dec(&rproc->power);
->  unlock_mutex:
->  	mutex_unlock(&rproc->lock);
-> +	pm_relax(rproc->dev.parent);
->  	return ret;
->  }
->  EXPORT_SYMBOL(rproc_boot);
-> @@ -1991,6 +1993,7 @@ int rproc_shutdown(struct rproc *rproc)
->  	struct device *dev = &rproc->dev;
->  	int ret = 0;
->  
-> +	pm_stay_awake(rproc->dev.parent);
->  	ret = mutex_lock_interruptible(&rproc->lock);
+> =20
+> +	mutex_lock(&port->partner_link_lock);
+>  	ret =3D device_register(&partner->dev);
 >  	if (ret) {
->  		dev_err(dev, "can't lock rproc %s: %d\n", rproc->name, ret);
-> @@ -2027,6 +2030,7 @@ int rproc_shutdown(struct rproc *rproc)
->  	rproc->table_ptr = NULL;
->  out:
->  	mutex_unlock(&rproc->lock);
-> +	pm_relax(rproc->dev.parent);
->  	return ret;
+>  		dev_err(&port->dev, "failed to register partner (%d)\n", ret);
+> @@ -1063,6 +1064,7 @@ struct typec_partner *typec_register_partner(struct=
+ typec_port *port,
+>  		typec_partner_link_device(partner, port->usb2_dev);
+>  	if (port->usb3_dev)
+>  		typec_partner_link_device(partner, port->usb3_dev);
+> +	mutex_unlock(&port->partner_link_lock);
+> =20
+>  	return partner;
 >  }
->  EXPORT_SYMBOL(rproc_shutdown);
-> -- 
-> 2.34.1
-> 
+> @@ -1083,12 +1085,14 @@ void typec_unregister_partner(struct typec_partne=
+r *partner)
+> =20
+>  	port =3D to_typec_port(partner->dev.parent);
+> =20
+> +	mutex_lock(&port->partner_link_lock);
+>  	if (port->usb2_dev)
+>  		typec_partner_unlink_device(partner, port->usb2_dev);
+>  	if (port->usb3_dev)
+>  		typec_partner_unlink_device(partner, port->usb3_dev);
+> =20
+>  	device_unregister(&partner->dev);
+> +	mutex_unlock(&port->partner_link_lock);
+>  }
+>  EXPORT_SYMBOL_GPL(typec_unregister_partner);
+> =20
+> @@ -2041,10 +2045,11 @@ static struct typec_partner *typec_get_partner(st=
+ruct typec_port *port)
+>  static void typec_partner_attach(struct typec_connector *con, struct dev=
+ice *dev)
+>  {
+>  	struct typec_port *port =3D container_of(con, struct typec_port, con);
+> -	struct typec_partner *partner =3D typec_get_partner(port);
+> +	struct typec_partner *partner;
+>  	struct usb_device *udev =3D to_usb_device(dev);
+>  	enum usb_mode usb_mode;
+> =20
+> +	mutex_lock(&port->partner_link_lock);
+>  	if (udev->speed < USB_SPEED_SUPER) {
+>  		usb_mode =3D USB_MODE_USB2;
+>  		port->usb2_dev =3D dev;
+> @@ -2053,18 +2058,22 @@ static void typec_partner_attach(struct typec_con=
+nector *con, struct device *dev
+>  		port->usb3_dev =3D dev;
+>  	}
+> =20
+> +	partner =3D typec_get_partner(port);
+>  	if (partner) {
+>  		typec_partner_set_usb_mode(partner, usb_mode);
+>  		typec_partner_link_device(partner, dev);
+>  		put_device(&partner->dev);
+>  	}
+> +	mutex_unlock(&port->partner_link_lock);
+>  }
+> =20
+>  static void typec_partner_deattach(struct typec_connector *con, struct d=
+evice *dev)
+>  {
+>  	struct typec_port *port =3D container_of(con, struct typec_port, con);
+> -	struct typec_partner *partner =3D typec_get_partner(port);
+> +	struct typec_partner *partner;
+> =20
+> +	mutex_lock(&port->partner_link_lock);
+> +	partner =3D typec_get_partner(port);
+>  	if (partner) {
+>  		typec_partner_unlink_device(partner, dev);
+>  		put_device(&partner->dev);
+> @@ -2074,6 +2083,7 @@ static void typec_partner_deattach(struct typec_con=
+nector *con, struct device *d
+>  		port->usb2_dev =3D NULL;
+>  	else if (port->usb3_dev =3D=3D dev)
+>  		port->usb3_dev =3D NULL;
+> +	mutex_unlock(&port->partner_link_lock);
+>  }
+> =20
+>  /**
+> @@ -2614,6 +2624,7 @@ struct typec_port *typec_register_port(struct devic=
+e *parent,
+> =20
+>  	ida_init(&port->mode_ids);
+>  	mutex_init(&port->port_type_lock);
+> +	mutex_init(&port->partner_link_lock);
+> =20
+>  	port->id =3D id;
+>  	port->ops =3D cap->ops;
+> diff --git a/drivers/usb/typec/class.h b/drivers/usb/typec/class.h
+> index b3076a24ad2e..db2fe96c48ff 100644
+> --- a/drivers/usb/typec/class.h
+> +++ b/drivers/usb/typec/class.h
+> @@ -59,6 +59,7 @@ struct typec_port {
+>  	enum typec_port_type		port_type;
+>  	enum usb_mode			usb_mode;
+>  	struct mutex			port_type_lock;
+> +	struct mutex			partner_link_lock;
+> =20
+>  	enum typec_orientation		orientation;
+>  	struct typec_switch		*sw;
+> --=20
+> 2.49.0.395.g12beb8f557-goog
+>=20
+
+--oA1blLjyxrjfEY96
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQQCtZK6p/AktxXfkOlzbaomhzOwwgUCZ93zWwAKCRBzbaomhzOw
+whHhAQD+8sY8h9MFvLXXJX6m474QUzZ0HHuNX40P6R8IYKKqagD9GKf8CySd6Duo
+INhWr5qPzNJGGbEPtJO1uox4DHWFuQg=
+=yS43
+-----END PGP SIGNATURE-----
+
+--oA1blLjyxrjfEY96--
 
