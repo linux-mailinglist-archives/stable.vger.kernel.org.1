@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-125781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4A2A6C185
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:30:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF10FA6C188
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:30:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BA297A8D24
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:29:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A15D1B61402
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4629722E3E9;
-	Fri, 21 Mar 2025 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88EB2C181;
+	Fri, 21 Mar 2025 17:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AkOODAHd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOxiFPF/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072F522DFAC
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682F1225A20
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 17:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742578198; cv=none; b=ITvYNxzQ1+Si2rz8NQBNUnGGgfLYw5NZce8GCDpXjIQWy/Ltrl/XWP3O6ki/icCy7BEeRpdQtvyapcGm1D2dZgR2WDyQAFgegoka4HZbiRawbSNkpe0NJaxytyoWuyweqkgMLCNm3sxKl+DHU4MPFkR4iAbpwrQJrIXIvGGcwfw=
+	t=1742578210; cv=none; b=tSZGxUhuJ9xaGDS2NBXgYkQ7rsf3PSG4xS1UkUwoTQF7vnhM7diiH6hvSp3nlfWAiBaB311xzvRy4UJkQVKuQYTqpU+ETmW48tXWTd2WioqnSMT4ZgkcaUtodizaCLtWDOZ5l34NdL8+zRPTX6V3ELbZe/TPls1zQ2Ld/QjmS7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742578198; c=relaxed/simple;
-	bh=VOoKe8uP9iYJZTmUTEWNqC3FiV18kh+C5x60VoB4J/k=;
+	s=arc-20240116; t=1742578210; c=relaxed/simple;
+	bh=dM1mvq8bGxuDuXsI03GrIpDNNkASHUFR2I96QgGGSLA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aObxqHmtqNATdCZ/FXnrB5O3VPuL+b8cqypemAINokTIprUrg6yRSDfVTzatuRDaKfFdZBxqdjgqXZmpGWLT4Qy1mdx97g26NEyknrjMRXD6yyJSNBSJ/FFhF+qCCEX3cWnVLdfHI6ZpgmZgpjHFHvw5ykHcIlg52HGOuRR5ryU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AkOODAHd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C31EC4CEE8;
-	Fri, 21 Mar 2025 17:29:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VnDeoaX9bDi0NNZsU1GmCan60Skdy+eh/hGz39EJgdUhrTKU7cNa6Lpdd4mE7hZiuepqTNM4X0Agf9N2xEa1hIKiBES8eU+70SImZZMsUCFE98LRVJEqQGAnil1ynmd4Dp2mXvnK8wQyFoa+p6SqV0ssf2zCxN7dXkkmkKq9NSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOxiFPF/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A56C4CEE3;
+	Fri, 21 Mar 2025 17:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742578197;
-	bh=VOoKe8uP9iYJZTmUTEWNqC3FiV18kh+C5x60VoB4J/k=;
+	s=k20201202; t=1742578210;
+	bh=dM1mvq8bGxuDuXsI03GrIpDNNkASHUFR2I96QgGGSLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AkOODAHd6op3a7TV1a+t8qWK5Ein4cnWplNssEWLr+Tu8jy1q0C5EqlaXZ6Lda6k8
-	 zdhj4eqfyywId4zvLSinXni8ltzzL+IJvATGAz3aFWtaoF9XLdUmaIc14V1GC6zNjq
-	 hbFkDsO8+qABy2CrZaRFKjp4QuAntyJLlekxlHpYN0/OIYDndgGa8YLgx3wpObrZRn
-	 CrJBDmYmf1VXPLc8BKK5axXKZ4WQ1s9Fy8mgGOCQfszi+MiEFMSupnGNmc5DG9zw9A
-	 I5N5ATjuutvIPvkg/1i6CCi07Zh3oEcP276LfUreZVzxUEX0gs3bbsbGc0f30Ex/Pk
-	 O1uej7JNJTMEA==
+	b=cOxiFPF/RmwsOPHh3prnT783J8HetjYspGaOk/44HFjnJdy8lH/wlNo4qgrn/pn8C
+	 lte6j8b+rEeHQojocJe3Ok39O2bLYQgkwCqETjOhVqggYUawYq5IDuIm/0w5FQXV6i
+	 khVDFkTwMg127HoVbXSUT25FT11VeOrBxC4F0v5vpHbV+jJhgfBvJZmXeSukyryRNw
+	 +0LBC7vRSdxHxM8x1cZEa3HOnMeP7p1RgaWjrbZ5ui72AURIgZcvTOBDZjgi73Iudj
+	 NOtXY5jHsP5dSejXmYxhrT8xrK2UeJOzEsnob6i1RVBXcXFlZqbhFOIh4RelIkzovZ
+	 dnHg7ufWD5YlA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 6/8] KVM: arm64: Refactor exit handlers
-Date: Fri, 21 Mar 2025 13:29:45 -0400
-Message-Id: <20250321122229-0babb15d2822d69c@stable.kernel.org>
+Subject: Re: [PATCH 6.12 v2 5/8] KVM: arm64: Remove VHE host restore of CPACR_EL1.SMEN
+Date: Fri, 21 Mar 2025 13:29:58 -0400
+Message-Id: <20250321111412-417dad2a95814802@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250321-stable-sve-6-6-v1-6-0b3a6a14ea53@kernel.org>
+In-Reply-To:  <20250321-stable-sve-6-12-v2-5-417ca2278d18@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,69 +67,83 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 9b66195063c5a145843547b1d692bd189be85287
+The upstream commit SHA1 provided is correct: 407a99c4654e8ea65393f412c421a55cac539f5b
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Mark Brown<broonie@kernel.org>
 Commit author: Mark Rutland<mark.rutland@arm.com>
 
 Status in newer kernel trees:
-6.13.y | Present (different SHA1: 4c68a146aaaa)
-6.12.y | Present (different SHA1: 14aab4391836)
+6.13.y | Present (different SHA1: bc7676732238)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  9b66195063c5a ! 1:  15cf8a2271ac3 KVM: arm64: Refactor exit handlers
+1:  407a99c4654e8 ! 1:  1b4d413932773 KVM: arm64: Remove VHE host restore of CPACR_EL1.SMEN
     @@ Metadata
       ## Commit message ##
-         KVM: arm64: Refactor exit handlers
+         KVM: arm64: Remove VHE host restore of CPACR_EL1.SMEN
      
-    +    [ Upstream commit 9b66195063c5a145843547b1d692bd189be85287 ]
+    +    [ Upstream commit 407a99c4654e8ea65393f412c421a55cac539f5b ]
     +
-         The hyp exit handling logic is largely shared between VHE and nVHE/hVHE,
-         with common logic in arch/arm64/kvm/hyp/include/hyp/switch.h. The code
-         in the header depends on function definitions provided by
+         When KVM is in VHE mode, the host kernel tries to save and restore the
+         configuration of CPACR_EL1.SMEN (i.e. CPTR_EL2.SMEN when HCR_EL2.E2H=1)
+         across kvm_arch_vcpu_load_fp() and kvm_arch_vcpu_put_fp(), since the
     @@ Commit message
          Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-         Link: https://lore.kernel.org/r/20250210195226.1215254-7-mark.rutland@arm.com
+         Link: https://lore.kernel.org/r/20250210195226.1215254-5-mark.rutland@arm.com
          Signed-off-by: Marc Zyngier <maz@kernel.org>
+    +    [Update for rework of flags storage -- broonie]
     +    Signed-off-by: Mark Brown <broonie@kernel.org>
      
-      ## arch/arm64/kvm/hyp/include/hyp/switch.h ##
-     @@ arch/arm64/kvm/hyp/include/hyp/switch.h: static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
-    @@ arch/arm64/kvm/hyp/nvhe/switch.c: static const exit_handler_fn *kvm_get_exit_han
-     +static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
-      {
-     +	const exit_handler_fn *handlers = kvm_get_exit_handler_array(vcpu);
-    -+
-    + 	struct kvm *kvm = kern_hyp_va(vcpu->kvm);
+      ## arch/arm64/include/asm/kvm_host.h ##
+    -@@ arch/arm64/include/asm/kvm_host.h: struct cpu_sve_state {
+    - struct kvm_host_data {
+    - #define KVM_HOST_DATA_FLAG_HAS_SPE			0
+    - #define KVM_HOST_DATA_FLAG_HAS_TRBE			1
+    --#define KVM_HOST_DATA_FLAG_HOST_SME_ENABLED		3
+    - #define KVM_HOST_DATA_FLAG_TRBE_ENABLED			4
+    - #define KVM_HOST_DATA_FLAG_EL1_TRACING_CONFIGURED	5
+    - 	unsigned long flags;
+    +@@ arch/arm64/include/asm/kvm_host.h: struct kvm_vcpu_arch {
+    + /* Save TRBE context if active  */
+    + #define DEBUG_STATE_SAVE_TRBE	__vcpu_single_flag(iflags, BIT(6))
     + 
-     +	synchronize_vcpu_pstate(vcpu, exit_code);
-     +
-     +	/*
-    @@ arch/arm64/kvm/hyp/nvhe/switch.c: static const exit_handler_fn *kvm_get_exit_han
-     +	 * it.  The check below is based on the one in
-     +	 * kvm_arch_vcpu_ioctl_run().
-     +	 */
-    - 	if (unlikely(vcpu_is_protected(vcpu) && vcpu_mode_is_32bit(vcpu))) {
-    + 	if (kvm_vm_is_protected(kvm) && vcpu_mode_is_32bit(vcpu)) {
-      		/*
-      		 * As we have caught the guest red-handed, decide that it isn't
-     @@ arch/arm64/kvm/hyp/nvhe/switch.c: static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code)
-    @@ arch/arm64/kvm/hyp/nvhe/switch.c: static void early_exit_filter(struct kvm_vcpu
+    +-/* SME enabled for EL0 */
+    +-#define HOST_SME_ENABLED	__vcpu_single_flag(sflags, BIT(1))
+    + /* Physical CPU not in supported_cpus */
+    + #define ON_UNSUPPORTED_CPU	__vcpu_single_flag(sflags, BIT(2))
+    + /* WFIT instruction trapped */
      
-      ## arch/arm64/kvm/hyp/vhe/switch.c ##
-     @@ arch/arm64/kvm/hyp/vhe/switch.c: static const exit_handler_fn hyp_exit_handlers[] = {
-    - 	[ESR_ELx_EC_MOPS]		= kvm_hyp_handle_mops,
-    + 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
-      };
+      ## arch/arm64/kvm/fpsimd.c ##
+     @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+    @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+      	*host_data_ptr(fp_owner) = FP_STATE_FREE;
       
-     -static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu)
+     -	if (system_supports_sme()) {
+    --		host_data_clear_flag(HOST_SME_ENABLED);
+    +-		vcpu_clear_flag(vcpu, HOST_SME_ENABLED);
+     -		if (read_sysreg(cpacr_el1) & CPACR_EL1_SMEN_EL0EN)
+    --			host_data_set_flag(HOST_SME_ENABLED);
+    +-			vcpu_set_flag(vcpu, HOST_SME_ENABLED);
+     -	}
+     -
+      	/*
+    @@ arch/arm64/kvm/fpsimd.c: void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
+     -	 */
+     -	if (has_vhe() && system_supports_sme()) {
+     -		/* Also restore EL0 state seen on entry */
+    --		if (host_data_test_flag(HOST_SME_ENABLED))
+    --			sysreg_clear_set(CPACR_EL1, 0, CPACR_EL1_SMEN);
+    +-		if (vcpu_get_flag(vcpu, HOST_SME_ENABLED))
+    +-			sysreg_clear_set(CPACR_EL1, 0, CPACR_ELx_SMEN);
+     -		else
+     -			sysreg_clear_set(CPACR_EL1,
+     -					 CPACR_EL1_SMEN_EL0EN,
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.13.y       |  Success    |  Success   |
 
