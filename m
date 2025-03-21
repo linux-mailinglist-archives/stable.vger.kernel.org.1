@@ -1,108 +1,80 @@
-Return-Path: <stable+bounces-125785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9C5A6C1C3
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:42:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB668A6C1E4
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 18:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6048A189249D
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:42:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FFC43A996B
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 17:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9372022DF8A;
-	Fri, 21 Mar 2025 17:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966C522E3FD;
+	Fri, 21 Mar 2025 17:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eYF6vHtg"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=patcody.io header.i=@patcody.io header.b="rWmuvsVa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DE418E76B
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 17:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37CE1D5AC0
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 17:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742578939; cv=none; b=JzAOM1rxUqNktc7k9jdLNplMMflPTg2YS0y1TB5qHiBZPiKWDVkNiJq7gvFonYIlTK5T5ICtewcN/QFzfmfgsygQ62lrtDbMvQCa/OL+JTHKroxPC0n+Pv0lejCzMBgnRARqtbwRyQQ9blLitgNDiATyJ+RGX767/C55IiUYg5s=
+	t=1742579559; cv=none; b=iM0+dYGWiqerobwDC9YB6E9bwpzTPAY6sMTCSzVtIciEt+VE3AFaJDdTCB+aqI9jqsI3WIE6fp4nfZqvh4RP3prpUe58h6DV8wECf+8TwgO7lxHi01nxTPBNEDB7M7UH+8lbmtW7o4oqMBs+COQHMN1kg8kKLORoCEKi0v1iDsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742578939; c=relaxed/simple;
-	bh=O8HNSU/IcyXH5CqMkoZUbUdAcq22bl16ho3hMHgyci0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oGtsw6MwK8ZLxc/oRKzRnkoFH5xY05xsr2wQiYx4DqPR7y1mZBNQr+A9FR55KiQTpw8eeE0SqAWi2p0s1eSr/ITIMg3pOV4rPi8/HnQN0/Hf2dV/kOy+6FIoesUTzJlYTWwW1dpSXD82S2fU82mo+bloT12kbjgUHb2rvhOAf0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eYF6vHtg; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e5372a2fbddso1999182276.3
-        for <stable@vger.kernel.org>; Fri, 21 Mar 2025 10:42:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742578936; x=1743183736; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O8HNSU/IcyXH5CqMkoZUbUdAcq22bl16ho3hMHgyci0=;
-        b=eYF6vHtg+tZUArQIDbpqEU3fOMFe6z8fGx+yB8KOauzMY7JcQUz7HqCnUjVUbm6BYh
-         rLgoJkx/T0qmI9rirIkYaN1EMRb8n2mKALBhGgKcvfTxL44Z4VQYUs3+s4qsCoPh0zlG
-         yW8mFIfYrA4VRXNapbjq3ZiGFKrcjFdr70LVRAolWe41xtYA9PM0Wpo/eHWJ1Uy3/R6U
-         654iRROe1qh2Sf9ecS5CW4ki1asr5chqZMyDqAmXyv9NFhjIQGltZuLS1keeqhszSAZn
-         tl5Th8KdXt3t+0cjETSf+DQ1nDcStExHjEjOmJ1hwm91T6jsefFSSJ50xVaOGO9/BoVN
-         6agQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742578936; x=1743183736;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O8HNSU/IcyXH5CqMkoZUbUdAcq22bl16ho3hMHgyci0=;
-        b=xKP1pUcuuGreybNlzMNtwncPKhWX+2kajlC7beAGjkKMFmrr3VJb9LT/+IH4FStXQp
-         MXHs+kFaQEv84phgcmLhwnBCuMCrXwt7KoHWx0Vs01WbikBEFx1TJMfiL9u/GNpQrWaC
-         7lHZdXwkNem9h3uQVtS6GaYfIzxUlpZNt1lQCwSyt1SAvFc72A3XE+IKoYEoEEfiWnuH
-         mmQKVMoOiwMawkmJ/NUZS/QPjqTjI45Sss6nPgBmozJ0JpBx4IFwTd/MFzqPlwzGSJpe
-         PtN/b+nPxG4l+lFEhAhFhvR76XI5f6X7e8Cfvgr1WUxRqEQ9+HURzMCqYPWUmtRA8k1X
-         2htA==
-X-Gm-Message-State: AOJu0YzN6jW7cXk0UU6KICyhNpluwKFY1wAsJVnVdzqbWDRLHTqB0SB2
-	x4p802O2VJaKz736T7TSIh3+mSg7gJlTCscopEGsvWEL3EzdRuOR4/TOsqzVYcXM9t3o1kLrOVA
-	qgsvSkP6nJxXdbyRAc4UFghjyrtA=
-X-Gm-Gg: ASbGncvUzY7pZJlRGhXF0QtALSaF/HCaiR80BLJoJO8MOhbo1pPmPu/ogjIkWZO86vX
-	wigLvP1SVaVtBwxbqAbTldJLKM+gQWlINmDN+eepblcn3qbaMzP6/KaLjfQkn4pTbHVzetlDnMJ
-	6JDNWt/SJaVzrnNBeJW5u+ueceDg==
-X-Google-Smtp-Source: AGHT+IHJr615eXXIZU6bwZWXsBDn/nD1fjL5diPEpU9KTVY0IQ52JPSejW3pyrEbSpNOjBSF3l+bEmN+TQys6B3922U=
-X-Received: by 2002:a05:6902:250e:b0:e60:b1ba:5778 with SMTP id
- 3f1490d57ef6-e66a4ffca63mr5353925276.47.1742578935639; Fri, 21 Mar 2025
- 10:42:15 -0700 (PDT)
+	s=arc-20240116; t=1742579559; c=relaxed/simple;
+	bh=3KbwbiIdZD9SwPO5/Ys1Ipv2htc083kqYRR4qOWVVyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zf38OnKBdVVyfTVgqNVxpQhmUvpoqd1UAY6SnAQOsCdAxsu4o3YGDHHWYilE/+vkm7fBKLdq8otgjqj+otOOMSC38+xGFAVPZqiSysIcNnMCn2AIqpbpikpH2On9pIbz5i/3zX2m33YDyr6mQDk9js5riKWeT3ykfmqQPv+Qweg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=patcody.io; spf=pass smtp.mailfrom=patcody.io; dkim=pass (2048-bit key) header.d=patcody.io header.i=@patcody.io header.b=rWmuvsVa; arc=none smtp.client-ip=109.224.244.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=patcody.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=patcody.io
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=patcody.io;
+	s=protonmail; t=1742579553; x=1742838753;
+	bh=ZFYA/cCQuoMCq2M/VnoisL8CaGvvio8pJRHM3dKEtuU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:In-Reply-To:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=rWmuvsVaxRl8KnWGiWrSB96AwDf9LpIrCYLbb/o7HkRJ2JzPDWPf+kwQt50rNNMXR
+	 19zu4gTUqJKU21r63k5C6oxaiKB+kISPaud5/4J0nuH41X/OIi2166areV3zxgYojW
+	 qHp0AbMOoqazmxPb1EJCx9s9h4xVxXms7DtNLcGeWURFnS+8gnrw2Z94uPYTmp//6R
+	 wHORoctjh4diZDuxsEZXTbsPW/TKhpp0NE3ZIqoYap1zoMdzzUJjk61fkkSOP+tdCF
+	 L7jxVcbjaosjPorH4xClsvuVBf+VHfYHOdiWA6ETNKWYzuk/7tKbBnAKgzRTp4A3l7
+	 388A3bUKXwHQw==
+X-Pm-Submission-Id: 4ZK95B2lg8zNx
+Date: Fri, 21 Mar 2025 10:52:29 -0700
+From: Pat Cody <pat@patcody.io>
+To: Christian Loehle <christian.loehle@arm.com>
+Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	vschneid@redhat.com, linux-kernel@vger.kernel.org, riel@surriel.com,
+	patcody@meta.com, kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH] sched/fair: Add null pointer check to pick_next_entity()
+Message-ID: <Z92nQ8fQRGoEh4+k@devvm1948.rva0.facebook.com>
+References: <20250320205310.779888-1-pat@patcody.io>
+ <72cb8df7-42e7-4266-b014-7d43796b14d8@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250313202550.2257219-15-leah.rumancik@gmail.com> <6pxyzwujo52p4bp2otliyssjcvsfydd6ju32eusdlyhzhpjh4q@eze6eh7rtidg>
-In-Reply-To: <6pxyzwujo52p4bp2otliyssjcvsfydd6ju32eusdlyhzhpjh4q@eze6eh7rtidg>
-From: Leah Rumancik <leah.rumancik@gmail.com>
-Date: Fri, 21 Mar 2025 10:42:04 -0700
-X-Gm-Features: AQ5f1Jo_oQUlRsboZQD1E30h89p6Le4WZFdnGod5zsWv_F3bYE_prYs5yPaJHO0
-Message-ID: <CACzhbgRpgGFvmizpS16L4bRqtAzGAhspkO1Gs2NP67RTpfn-vA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 14/29] xfs: use xfs_defer_pending objects to recover
- intent items
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: stable@vger.kernel.org, xfs-stable@lists.linux.dev, 
-	"Darrick J. Wong" <djwong@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Catherine Hoang <catherine.hoang@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, lvc-project@linuxtesting.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <72cb8df7-42e7-4266-b014-7d43796b14d8@arm.com>
 
-Hey Fedor,
+On Thu, Mar 20, 2025 at 10:42:44PM +0000, Christian Loehle wrote:
+> Did this happen on mainline? Any chance it's reproducible?
 
-Thanks a bunch for the report! I don't see xfs/235 running on my
-setup. I will look into why and see if I can repro.
+We have the following back-ported on top of 6.13:
 
-Few questions,
+sched/fair: Adhere to place_entity() constraints (not upstreamed, see https://lore.kernel.org/all/20250207111141.GD7145@noisy.programming.kicks-ass.net/)
+a430d99e3490 sched/fair: Fix value reported by hot tasks pulled in /proc/schedstat
+2a77e4be12cb sched/fair: Untangle NEXT_BUDDY and pick_next_task()
 
-Were you able to confirm that e5f1a5146ec3 fixes the issue on 6.1.y?
-If so, we can just port this patch, otherwise we might want to drop
-the xfs set while we investigate further.
-
-Also, the backport set you mentioned was based on a set from 6.6.y. I
-don't see the suggested fix (e5f1a5146ec3) there either. If it's not
-too much hassle, could you see if we have the same problem for 6.6.y
-as well?
-
-Best,
-Leah
+We don't have a repro, but the crash in pick_task_fair happens more
+often than MCE crashes with our limited deployment of 6.13. 
 
