@@ -1,73 +1,154 @@
-Return-Path: <stable+bounces-125731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB973A6B3E8
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 06:04:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C27A6B47E
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 07:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8203D7A5F15
-	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 05:03:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DA24840DA
+	for <lists+stable@lfdr.de>; Fri, 21 Mar 2025 06:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0071CAA81;
-	Fri, 21 Mar 2025 05:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D601EA7C8;
+	Fri, 21 Mar 2025 06:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="BIOkUoSN"
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD11E1E7C05
-	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 05:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98135184F
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 06:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742533453; cv=none; b=Z17aGj1jlar9mIeNhXdsKmXh3Ft/ZEgHxuYc7+d/uJH2LEB+WHwcIASci6Kaeq61c+tiJxLacXwCpPWRiVAqyrmnxIYtrhj7Wsr+McwVF9Rk8vatnheGpcVbj8wEJD3T3L1yRbpLk7Gw0meN2TX37OwpirQwalvaOkMCwwE4h78=
+	t=1742538913; cv=none; b=FtxVBqR3fDTiHqSDHUDK+nX0G++2a0gOnv6+yofOWidtPbWzaaCbPq5+2USDjuidLaDrG86g+g1YQpQqqLjPQnZOhwX9qAxNbv4ZZkLOtyCEaa3B/FHRo8vK/xOy6eHZaV1+eOguEF7Kv7xPteieVuiMcfGW/7M+eUfyl8paPvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742533453; c=relaxed/simple;
-	bh=k3aRHFcNldUWetmuSyA8ckpn2xNWFy4NQ23Oj8LtJQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=toccdGM2+FnWovJhqcGZsgdPNP4kLCXqn8hCzVb3NWeKg3CA0kSicvU6J5TUJNULrrAFoOaYGS1gdlYWUeiZiJTZr1TmhcFNpwpxvzZ5RVEMU9OYy9XedICBbveH7gcle4Qtho5/OwXbExHdLUczoWv1QwtEnhDb03dBOK6cSps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from trampoline.thunk.org (pool-173-48-82-222.bstnma.fios.verizon.net [173.48.82.222])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 52L53rw1019049
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 01:03:53 -0400
-Received: by trampoline.thunk.org (Postfix, from userid 15806)
-	id E21112E010B; Fri, 21 Mar 2025 01:03:52 -0400 (EDT)
-Date: Fri, 21 Mar 2025 01:03:52 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Qasim Ijaz <qasdev00@gmail.com>
-Cc: adilger.kernel@dilger.ca, shikemeng@huaweicloud.com,
-        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] ext4: Fix potential NULL pointer dereferences in
- test_mb_mark_used() and test_mb_free_blocks()
-Message-ID: <20250321050352.GB1161423@mit.edu>
-References: <20250313000021.18170-1-qasdev00@gmail.com>
+	s=arc-20240116; t=1742538913; c=relaxed/simple;
+	bh=ypno/VfSFoHOwVqheRJVTlW/U5+RXZSu9hpvuqS8ryc=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Type:References; b=GTVx51DPKxRVYc/lF36J+ZIiWIb/1SOOAZ3zchqStUy8G28uqcFKUVAKi3Z5XYXbCS4UAfnI1yHEXy0JgtBX0V+9nuLhdrZoxJfYHrySHnOux712bfTdlomYumUYiN66heiA2KLhUzYv4fkEkTIZr/uiiWfa+W6swxKbRkDzFr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=BIOkUoSN; arc=none smtp.client-ip=203.254.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250321063503epoutp0494f5e8491f8f82ee418291d7ca4efcdf~uveaGRCV52097620976epoutp04m
+	for <stable@vger.kernel.org>; Fri, 21 Mar 2025 06:35:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250321063503epoutp0494f5e8491f8f82ee418291d7ca4efcdf~uveaGRCV52097620976epoutp04m
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1742538903;
+	bh=rgXBgm2j3OYKUDvQQeIioghWI/eaGLrzGCp2iTJH39Y=;
+	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+	b=BIOkUoSNbE5RUDFrsKpm7lWu3VaumgiuSwVytA+lXoJotilQiw7EBqSZ6E+YVQ1ID
+	 qLlDDqBoQo1VFovGwjBPONVpw/gA6aUUKU10daktSs7iJqSb4C2xO3F9g3Ou3ga3tp
+	 qixiYMurHnRr0j+1jFDDOgjJ0R+tSWellSD1S5rM=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+	epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+	20250321063503epcas1p3a317c22f6b03526139896c3b9807332e~uveZh7yjM2008420084epcas1p3Q;
+	Fri, 21 Mar 2025 06:35:03 +0000 (GMT)
+Received: from epcpadp1new (unknown [182.195.40.141]) by
+	epsnrtp3.localdomain (Postfix) with ESMTP id 4ZJt3V7317z4x9Pr; Fri, 21 Mar
+	2025 06:35:02 +0000 (GMT)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
+	20250321061945epcas1p439de78c05f457d53c2afa962c281636e~uvRDYlDpW0146001460epcas1p4f;
+	Fri, 21 Mar 2025 06:19:45 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20250321061945epsmtrp1ba2b6490db22e6883c18d245b5764263~uvRDXvUIe2174821748epsmtrp1N;
+	Fri, 21 Mar 2025 06:19:45 +0000 (GMT)
+X-AuditID: b6c32a2a-38bf570000004a05-d4-67dd05010a26
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	16.5E.18949.1050DD76; Fri, 21 Mar 2025 15:19:45 +0900 (KST)
+Received: from W10PB11329 (unknown [10.253.152.129]) by epsmtip1.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20250321061945epsmtip1087de96b0e989478930ecb3355251fd8~uvRDNvC1Y1126911269epsmtip1M;
+	Fri, 21 Mar 2025 06:19:45 +0000 (GMT)
+From: "Sungjong Seo" <sj1557.seo@samsung.com>
+To: <Yuezhang.Mo@sony.com>, <linkinjeon@kernel.org>
+Cc: <sjdev.seo@gmail.com>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <cpgs@samsung.com>,
+	<stable@vger.kernel.org>, "'Yeongjin Gil'" <youngjin.gil@samsung.com>
+In-Reply-To: <PUZPR04MB6316CA3B8281D08C2A85435A81D82@PUZPR04MB6316.apcprd04.prod.outlook.com>
+Subject: RE: [PATCH] exfat: fix random stack corruption after get_block
+Date: Fri, 21 Mar 2025 15:19:45 +0900
+Message-ID: <1296674576.21742538902983.JavaMail.epsvc@epcpadp1new>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250313000021.18170-1-qasdev00@gmail.com>
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 15.0
+Thread-Index: AQGqPMDwLKOI+5AXW2VZtJVBhfOd4ANqS2Y2AmcVG+WzsUpqUA==
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpjkeLIzCtJLcpLzFFi42LZdlhJTpeR9W66QdcHQ4uXhzQtJk5bymyx
+	Z+9JFovLu+awWbz4sIHNYsHGR4wWM/Y/Zbe4/uYhqwOHx85Zd9k9Nq3qZPPo27KK0aN9wk5m
+	j8+b5AJYo7hsUlJzMstSi/TtErgy9u76wlKwi7vi5PzVjA2MJ9i6GDk5JARMJJpudAPZXBxC
+	ArsZJa49e8TcxcgBlJCSOLhPE8IUljh8uBii5DmjxI7JPYwgvWwCuhJPbvxkBrFFBEwlvlyG
+	mMkssJ9R4tlcPYiGJ4wS7WeWgSU4BWIlZv4/xwRiCwu4S0xp3ckCYrMIqEpMenwFzOYVsJLo
+	v7CFFcIWlDg58wkLxFA9ifXr5zBC2PIS29/OYYZ4QEFi96ejrBBHOEnsXA9TLyIxu7ONeQKj
+	8Cwko2YhGTULyahZSFoWMLKsYpRMLSjOTc8tNiwwykst1ytOzC0uzUvXS87P3cQIjiotrR2M
+	e1Z90DvEyMTBeIhRgoNZSYRXpON2uhBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHeb697U4QE0hNL
+	UrNTUwtSi2CyTBycUg1MmY3+5w9/6O24bzaX5Ywac20Qz/4pdcIMRm557536i+SLEj/r345g
+	i5TKst59PTK6trxVfHvbv2tyVh/S+X82T+Yqf/BavcI4yUamdv55e4MM4b+5KX6nesxjGIRf
+	8/HX5r3OvXH628YzXwVnNySt08/Jva+2ZduzN6zsTxZ3/9xu8Wv2lyMWCRfa1NR9nlZPLki/
+	unr2fzuvmqa9K1MFfs+133pcc2OV6RaNBYmFX7KYfyavCFxs6WKmJufIyjqzrOhfvGu3qtyR
+	QJX5VyuYKuUtXqqfyNzTFPDp9fwYc3Upm8dbFM/bTpU54fmG29p4lYpdVdr682ukF+lKz78V
+	zJq6M1atfctD5qhoRSWW4oxEQy3mouJEAAeoXfYZAwAA
+X-CMS-MailID: 20250321061945epcas1p439de78c05f457d53c2afa962c281636e
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 101P
+X-CPGSPASS: Y
+X-ArchiveUser: EV
+X-Hop-Count: 3
+X-CMS-RootMailID: 20250320052646epcas1p384845fdc17bf572784c99ca81cd4c9dc
+References: <CGME20250320052646epcas1p384845fdc17bf572784c99ca81cd4c9dc@epcas1p3.samsung.com>
+	<158453976.61742448904639.JavaMail.epsvc@epcpadp1new>
+	<PUZPR04MB6316CA3B8281D08C2A85435A81D82@PUZPR04MB6316.apcprd04.prod.outlook.com>
 
-On Thu, Mar 13, 2025 at 12:00:21AM +0000, Qasim Ijaz wrote:
-> test_mb_mark_used() and test_mb_free_blocks() call kunit_kzalloc() to 
-> allocate memory, however both fail to ensure that the allocations 
-> succeeded. If kunit_kzalloc() returns NULL, then dereferencing the 
-> corresponding pointer without checking for NULL will lead to 
-> a NULL pointer dereference.
+Hi Yuezhang,
+> Subject: Re: [PATCH] exfat: fix random stack corruption after get_block
 > 
-> To fix this call KUNIT_ASSERT_NOT_ERR_OR_NULL() to ensure 
-> the allocation succeeded.
+> +                       /*
+> +                        * No buffer_head is allocated.
+> +                        * (1) bmap: It's enough to fill bh_result without
+I/O.
+> +                        * (2) read: The unwritten part should be filled
+with 0
+> +                        *           If a folio does not have any buffers,
+> +                        *           let's returns -EAGAIN to fallback to
+> +                        *           per-bh IO like
+block_read_full_folio().
+> +                        */
+> +                       if (!folio_buffers(bh_result->b_folio)) {
+> +                               err = -EAGAIN;
+> +                               goto done;
+> +                       }
+> 
+> bh_result is set as mapped by map_bh(), should we need to clear it if
+> return an error?
+I looked a little deeper into do_mpage_readpage() and
+block_read_full_folio(), and from a security perspective, it seems that
+unmap is necessary in all error situations. Otherwise, unwritten areas
+may be exposed.
 
-Thanks; other folks have sent this fix.
+> 
+> +
+> +                       BUG_ON(size > sb->s_blocksize);
+> 
+> This check is equivalent to the following condition and is not necessary.
+> 
+>                 } else if (iblock == valid_blks &&
+>                            (ei->valid_size & (sb->s_blocksize - 1))) {
 
-	      	    	      	   - Ted
+Yes, I think so, I'll remove it with v2.
+
+Thanks
+
+
+
 
