@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-125803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C66A6CA3D
-	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 14:16:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D40FA6CA43
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 14:22:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE2C9482848
-	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 13:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D1713A87F7
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 13:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98CB1FA164;
-	Sat, 22 Mar 2025 13:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F813214A7A;
+	Sat, 22 Mar 2025 13:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="L+3p6cJa"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="hYlTovW2"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BD91DF26B
-	for <stable@vger.kernel.org>; Sat, 22 Mar 2025 13:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBE32E337D
+	for <stable@vger.kernel.org>; Sat, 22 Mar 2025 13:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742649379; cv=none; b=kJo/xIwCMho+XcFdftL23OY4qVvlP8ZhuxMN42uNswv6fgUPZspf5prN1MSmvEY2ikENFEAoeuHHgGO/FCvX9j0CVRzbMXnna6RJNOxcZQFsVeQgyBVKoNoXL91hNnzstIPR8dCkn4dN/6VDV5XFuKqOQjf1N5EDw1b7RFBQ70g=
+	t=1742649748; cv=none; b=pMY+MWOvXQF87+PVJtEXWiqFVKSV059w4AQlQcYBYwkNHTDyRaDZqQJCCFJNDcTQNREBwjttagIUN9bQK+83Y7b8GHaDGBlPzFsRxRH68Rws4dPqdAmQBWiFXZJxNFkn4eXwhpmQ3d98LvDARbF3638BQTE1VKY5QZzNHQeY4qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742649379; c=relaxed/simple;
-	bh=0m9TqFXfvPXrSoNM7TwFXNHjnozUNUhF6Sx9m/kLHr4=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=r1xAzmvgpf1CW6a7h0I8ef1XMjVXhTZUDRsVbIEk3A0+qHc5iunU9LA4STk5NXLChpXJoq+E5I86WqlOuRI/K9Mh2j4Fw3cQGC6jiSwS+vg3vzh+7UoG1eVOJ+QmSPtHhQR5d5Lgm2+8FiH6PtDj3WOY/oS8MXxgYixI26C8rZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=L+3p6cJa; arc=none smtp.client-ip=162.62.57.137
+	s=arc-20240116; t=1742649748; c=relaxed/simple;
+	bh=9E4GTeSONW1b9sMold4C8JwoJCUACRfu9bfQgf0i1lc=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=PArvGROD6ktBKP3HPeplQSuElZu46m76+3xN19hS2yHEhAHPLh5Qz/jcTd+6tV1SbssThmQszTgX+mHAEgPx87C8/v9UWKWkdcYBabajYhebHqIC9psqI2b7D5jcQ2Lr21iC283mh4JKmcI/Dx8jV2j6/yOuQnuw4Ijd2376Mec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=hYlTovW2; arc=none smtp.client-ip=162.62.57.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1742649370;
-	bh=uvnR+cSkNvxVtWAjYeZRzWL0evuLpodcYJIA7Risvz0=;
+	s=s201512; t=1742649434;
+	bh=sS4r10wBV9m8+Md3CTlv2u0c233DGQvZuAY7+0okET0=;
 	h=From:To:Cc:Subject:Date;
-	b=L+3p6cJa9xFsPslhEtl9PJ3DIo57Kz/gUCfQYm9YLVGkTqH2cYHp3LcEnmUCZULZs
-	 0WJ3uM8QojyIXNb40fm+VwcpzVFQcshx4GTOk+dqC/15NTRqtC3UUHONIWMWX0Werr
-	 M/PLr6Zdjvft7NzNYYrk4ECrc+mVZw6AC+4F/2do=
+	b=hYlTovW2/v/Z14t1x3WrtBgUGMRI5MaXBA094DF1NyV/fXoaUmFaP+WPoDOHD8eNW
+	 /SFZvFfUTd+puUHOvhvrnq8atFKf0FDXMyYkxhOskF/k+CIZbaGyLSzBAsb8S3s6ye
+	 BmCLbfYpaebgxjgFv4y+49hsNngDF1GrqWLbxq28=
 Received: from pek-blan-cn-l1.corp.ad.wrs.com ([120.244.194.128])
-	by newxmesmtplogicsvrszgpua8-1.qq.com (NewEsmtp) with SMTP
-	id 278A8899; Sat, 22 Mar 2025 21:09:56 +0800
-X-QQ-mid: xmsmtpt1742648996t1za7j7dk
-Message-ID: <tencent_AEDE0F1C493C6B7F1C1E18D586255ACD9A07@qq.com>
-X-QQ-XMAILINFO: NmRjDopJZVxOc5DnyoKBNOmzfIqz+WNamUKhehHSl61x7V0aEzKNY3iWEpxerp
-	 OMLJsB/oYuROlS8bV1Pyc282hbHKDT/q3KJNgRjIZlSTE7FJ9OTjBiyKUjFV+zoPIZLCy63oH2NV
-	 UIVhPWFyy8HvYF0hZ5R8It1ikSFgq2lcLV4J1KM/ju96EA6wxXlWZPRNydo+CetExEHT1vvEbNKS
-	 XZAOzXKunQ5/Ry7876DzsJUX7kNL8Iby40COb7gUrvio4EC1lXZm/6Bh8zQxRmSFO/tGx1W0wc4F
-	 0ixHI0Dl95dGWyU4l1z5Ck/b6ZnyB9CM7AYopMDu50m2CLsWTaIp/Q1NPUGAkwQg6KOJ4qS7sd/L
-	 n24Qi9kwe1IPHvKAW6UgyySYBmGBWcl5Ij8Mdy/go4GlWoJSkofS+LKGGKnciQIBJD4hJmplUf1A
-	 VEJSj/AMJrzm12/+k6nnOKlO60eO0Z89ER+Qu+kham6ft21J85MQqqDcSCYCNpjyY+xGNtbeBdCb
-	 yl7ElkdlDscn8Mtlh5tZTsLooE7dtAmpMDJVBxtolT6ug0UwgJ6KpsVND4x1HglG+2UrhZnt/MMy
-	 11BIcJ8kKx/8hAGeRoAxuawKAGksjCAjjElXSz0OrOy28OdpoQZhguBzu2JQJyeF+T7Q9RyG/2Z2
-	 yDZB4mM1NRkTIZ3xPCOiYm4sUKMjpm73cQlS/GhinYc3S4IyZBRg/7p9PP6LzRYpMxvPsUVoTX2N
-	 AEcSnzVEqOUSoqzCX4wGnLjRXoP2kYIbt3AYjq1RfbJcJUJBz01J1hlrzyCohEfpdcz2+7ds94V9
-	 FajT1dtdetQdj/Q0uhfU4hvHB0N/I1Xh/ek/HTx6/n/71eTBg9a+QcR7ZG5707OgOaJtKTYiZE2W
-	 CcW2oQVXvHfQNRkWM8ZggjVerSrxXgZs3QyO5lkJO9/XxEGXfUOy7h7TK0MVMnUTCS8iodrvnCrw
-	 IkIlmeMlfV8+/eDZKxonO3c+GG8K39/QDq4ldKSyM=
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
+	id 2B0956ED; Sat, 22 Mar 2025 21:10:48 +0800
+X-QQ-mid: xmsmtpt1742649048tl3xbakz0
+Message-ID: <tencent_E426386D30240DE4B48C35371F2E921AD608@qq.com>
+X-QQ-XMAILINFO: OVFdYp27KdlJJkX9TAriN/M1nuSTfhJMXJz2gM5++txK5CglRgeAxQjajUTtfM
+	 mvrQk2Qcil6K/WnIerRjVK4G1rsVDjo5e4bjS3RRqqq9sWU3Gf92ggLuw79TL5+6giySPB0CRwK0
+	 aKfbK9FiinXFJa6JBbmf0L2N8zbGsHQyIj9sUBX1ASON5Q+WwH39VzskF3X0HeLFxaOdDxYxJAOx
+	 aSSHjIHsYxH3OkNJWYUgQzXunf+GfPOKzTdSYVhvg2LtngL30Dhf55v9ZEF4Wl3hnE8eL1Ru6Y2D
+	 Pvj/Sw+Brb09lpoSPXh882Z3skuLusEG87wVaE1FwN/n9bVdYp3Gi41/K+jFdWzfJPN5nczFLMTi
+	 UQB3CKaCgAmouZfkgoxx8z74Kw5XbavbUnFwhX6sFSQGkZ38A+icbQqyfGhqIrZnmnjhnSBgJjob
+	 hbIMxyCzR/AP6ugQEVu7VDyMY1P8FACckp7yfcuKAra+b0/wPvAH8UYLe7a2o54N5u7bH7MB+xZv
+	 2C8bs8/eQZYxP/ArtD5C1iffUr2g12aDAi3d7uegNiPzfacZccNTMFjGTnmHCOoXfRXPqBtAkuti
+	 yZcM+MZ6kUDwESpTdKI6XvvMDvNZ5NyHCis2L6w1HehwlhyK1Taa35g4rxM5OrlzkuWqA/AZQ1TR
+	 RRopWvknuO/601Z14TspXvtr6HbX990eSd2bJVdt0oExkcCaFj5AtQuJNFAwZp2pt5JsNE+snQkr
+	 kaB5DwmF4BW7JiPZS4tFS5cNwCQ2/F2oGYUeulJLmi60heBboc+19KwP4/WCJ3gwCDSkdSYIWEcn
+	 +Mfu7Z1CXQjwZpzPOhVcY2YJxNbSKgm5QRHVOmm3rInvXPl37iXY+wtrZzYiahY2F9/Hm0cdmBYs
+	 kddBdp3fxit8Zpcg1XpXeZ8tEKaedMKtePENuh/AWXRz+5yNILGUZhHMc6AnP6JbdCeDxWqHOuVi
+	 INv6a+jB1IonJzTO5a5nB5tnJ6dqeoIultmr5vueYeSR822GQy600iEDPIr4S7EkRDg7FsHt0HI+
+	 1D8INygNzb6M2Vgq7r95vCE7Yrz6MKIwZNOy9mzA==
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
 From: alvalan9@foxmail.com
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
@@ -64,9 +65,9 @@ Cc: Miaoqian Lin <linmq006@gmail.com>,
 	Thierry Reding <treding@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.15.y] phy: tegra: xusb: Fix return value of tegra_xusb_find_port_node function
-Date: Sat, 22 Mar 2025 21:09:29 +0800
-X-OQ-MSGID: <20250322130929.843-1-alvalan9@foxmail.com>
+Subject: [PATCH 5.10.y] phy: tegra: xusb: Fix return value of tegra_xusb_find_port_node function
+Date: Sat, 22 Mar 2025 21:10:45 +0800
+X-OQ-MSGID: <20250322131045.1157-1-alvalan9@foxmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -94,10 +95,10 @@ Signed-off-by: Alva Lan <alvalan9@foxmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
-index bf7706bf101a..be31b1e25b38 100644
+index 856397def89a..8bd8d1f8eba2 100644
 --- a/drivers/phy/tegra/xusb.c
 +++ b/drivers/phy/tegra/xusb.c
-@@ -455,7 +455,7 @@ tegra_xusb_find_port_node(struct tegra_xusb_padctl *padctl, const char *type,
+@@ -449,7 +449,7 @@ tegra_xusb_find_port_node(struct tegra_xusb_padctl *padctl, const char *type,
  	name = kasprintf(GFP_KERNEL, "%s-%u", type, index);
  	if (!name) {
  		of_node_put(ports);
