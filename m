@@ -1,233 +1,147 @@
-Return-Path: <stable+bounces-125821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8ACA6CC45
-	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 21:32:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68D7A6CCA6
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 22:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 707983A125E
-	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 20:32:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9460D7A79A5
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 21:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC98221569;
-	Sat, 22 Mar 2025 20:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A401DED79;
+	Sat, 22 Mar 2025 21:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b="b3bDNhVP"
+	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="mFJLjLox";
+	dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="IdXYFKlE";
+	dkim=pass (1024-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="i2dRR+8j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from e2i673.smtp2go.com (e2i673.smtp2go.com [103.2.142.161])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEC6145A03
-	for <stable@vger.kernel.org>; Sat, 22 Mar 2025 20:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AD2522A
+	for <stable@vger.kernel.org>; Sat, 22 Mar 2025 21:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.142.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742675544; cv=none; b=B3pEwhIUR7w0JYo/NJnJvwDpAPokjvNdB1dPPN1bTOQP3kp1ONh/ZjV0K+HL/HrrodAN4USgczrN8BGIdjeSsJc3yQlXXj9ABHWX3UciibBhEgnGMNB5bZt7SVnrokZPym4KNgauS8cKOePanvtAzt0/1CvVG963SJeTK8uXhio=
+	t=1742678848; cv=none; b=VZIMNDX3mnLL5RtIStW/AqwctrDUtsTeHfDhVwly+s4Xwk6DfzT6gNZCLj1WtCQOMdzbr0VNJwgl8onJDiBCHQvahH2l1bVJHKCqD3RD8tFwosCeJGI9jfhJaU4Awmok2WCn6qr01d/slVjzyAD+zVyGnraYHF5iiVSfrKxB88U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742675544; c=relaxed/simple;
-	bh=D6xw3hIsJ2aRRajmvqQhUs8BD4FYVV0vhxPiULPlv3A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FLA1tk+ivGlhFP4kprZQ63ken4MlmAuYsYW+bO1ocuZHDsGzVUpToYAKPb1WoAjgJSFdaK9zm4mAeOqYTw0Xzf1MEyfPh/eU1bz+Dk2+IoXOMAA53B9DM1ey0YqKQKp5oB5QPdSXaCyqA6cNDjGW+xkWe5iDIAkx8VCY5fmruj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org; spf=pass smtp.mailfrom=kali.org; dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b=b3bDNhVP; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kali.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e8be1c6ff8so5517424a12.1
-        for <stable@vger.kernel.org>; Sat, 22 Mar 2025 13:32:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kali.org; s=google; t=1742675541; x=1743280341; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MBaCnQErjphWQ/6DEDPtyGgc1KmN6LXb9upYohAu4Nc=;
-        b=b3bDNhVPeNmzKd/jOrwLQqknPm3PUVY1yqDJEuZvqkJpseXbQdv9I1AWvnUwU5eNHE
-         MWkyA0pjpl9Tin2FHueDDOsMdlvJlDICslZiHAWKxkgHwkr+XJ57wN8ovAFlkB+zv6yD
-         V4kwE4RRKZE6Wc2uuB5m+OcU+yBHqVDQSDqpvZkqVHh/Ab8Nma2YlJVpHrRtJkH0zIv8
-         iKOXunTP0A+yh4677m6fU8iEnip+eI4yZNUzRH0R0SdrbN0cKcNdIN0H8gCPWImkQNNx
-         YrfBbalczmwPPWbXYRRUs349ZjSMPCOWKZIqB8aeBWINcngF1vz6Ze4YFxPrnUxXu0yY
-         FIkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742675541; x=1743280341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MBaCnQErjphWQ/6DEDPtyGgc1KmN6LXb9upYohAu4Nc=;
-        b=V0dcePutKlZynlE2M79QltIqX5OIh7o3Y+dWjyXuCu5gayySV4BX0ep1uk1Tayq+1S
-         9wnKPKnQcrdLs4lEV1sysu4lg++YZrkC0eE7SOtxJ6uXBQwTvx+T++2Glxfsnl/23Oz/
-         h5dxQbzUlxcMvXfSeRX74ZFlvBv+tRh65XsTBLWb5OVUsHphRLkKXnfq7Mny+T150+Ss
-         N2vJzhZSHfM0TbDzXUvVmY1qaz9Si3ofbFrZybpqsD7EI3pi+fsELxEc4AzLDikQlZxN
-         5YxWbWlpnS8qCf19k69bS0NKnAdalXGchK2VtdaDzK92YX8Qglb8aUBmrqogGynfa8lt
-         rdoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWyXdszHqqpL00WJIi8HjwtdZ/gPORNEp4ZkUlAe8oBLePR87exl24HicURfitHtLDBoQTZC0g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2B/45LAS94CEW6WQkoBiAMN0fw3NTPVKTD+Zn5L35s8cWXZJQ
-	3qBmolKl6bca09+GAHTAFMPMmdQTN4Zrg8tTsmwXLIp+GS7Cl1fOA1mUHD2zbE1nWaDmSATVYjx
-	U5xRqkmtoDKgwvAzrQWVvk1mztt4hwdmidLjeIQ==
-X-Gm-Gg: ASbGncuyKhjSbp9gewAZZ9gDTg7rX093Rhk58P8UMrAkW4v/uZeJSMQnlANy9D6R0u3
-	v3ctRLmBWY9b05MorhZ3oe7zR/WZ5bygSwjCFYNiCdmMKpaZzpz6WzzCS8K49VfuqHWNWNI1EE3
-	sb4TSNtk2gb53jvnxATtPLZ/mLtbZo2tdt/GMF6w==
-X-Google-Smtp-Source: AGHT+IFtgOvQ/ipQ5UFSn66TToxJyVI3SzkIjV049UlX5bGqRqNfgfHmq7s9TmGxajhk9iLQXeErbCLQrAMLvdy2238=
-X-Received: by 2002:a17:906:d552:b0:ac3:1373:8a3d with SMTP id
- a640c23a62f3a-ac3f226dfc0mr719120366b.20.1742675541018; Sat, 22 Mar 2025
- 13:32:21 -0700 (PDT)
+	s=arc-20240116; t=1742678848; c=relaxed/simple;
+	bh=Mb79DNtCDH+YprnnK7anYxnTAMJUcCMlahmLdHiruXo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BO7JOzgjKHtp+fLejdJhWke6ntpZzb10PMyDL0Leqi/Jc23jVeTNin4aiUyWzFwZP1Fyzw2FuT8djuUsRvio9T2HdTHWZFpVB2OWpadGgja7dGGok6cwCrlLLYP1EVZh21qVO5jTgWGvxhYJi3BX3o2e6aaq9m6PJKFMiLuvJ1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu; spf=pass smtp.mailfrom=em1174286.fjasle.eu; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=mFJLjLox reason="unknown key version"; dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=IdXYFKlE; dkim=pass (1024-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=i2dRR+8j; arc=none smtp.client-ip=103.2.142.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1174286.fjasle.eu
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=smtpservice.net; s=mp6320.a1-4.dyn; x=1742679736; h=Feedback-ID:
+	X-Smtpcorp-Track:Message-ID:Subject:To:From:Date:Reply-To:Sender:
+	List-Unsubscribe:List-Unsubscribe-Post;
+	bh=ZkOds2VlnsYuYQLmdf8w6Ep7Uph1rKBP3ZEzdDiDdsg=; b=mFJLjLoxa0UHT2KZjdznh55yDe
+	9TnmNtpGxUIn2pW4Qgg2hFMrVS+KXSKsK9/lV2oIZApqZf80/gRFYtQ1KY5vIzp+KkyYv0A20iVf8
+	2EryeRQ59UwdcGYZKredV4SMUAmqj1k6V8cpA/bQP+dQk8wsoB1vDIwQHX/+jrSzVS7HMs4HqUil4
+	QVXQmD5gnvIoDC5jXrkS4dDwjvXE9oRDSllb2p8PQkaj+pQSc8CEqlMZKHUwcczhvzN6+Hp97b4p4
+	8BdnefRI8L/fWIIrCHWUMsCqGe01kap6yV+6zZrQTJL3rwxLYt4EAolC2wuIfza2q1ibYEjhw8Zuj
+	+CKIV46g==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fjasle.eu;
+ i=@fjasle.eu; q=dns/txt; s=s1174286; t=1742678836; h=from : subject :
+ to : message-id : date;
+ bh=ZkOds2VlnsYuYQLmdf8w6Ep7Uph1rKBP3ZEzdDiDdsg=;
+ b=IdXYFKlElpUoOS8Sd2xYi8xfFjUXIjMa0rsrknhytF2vdAxWuZeHyE1pc9XH8U+TQTJzI
+ SaBlPtUne3usKLZ7C0bYISL2u2A7JiYLzqky74Cy29JMx6CiBg9OTvB8rbhYebQpohsSL2g
+ laKeAlXHAwWd3IpOp3M1XOWrbMnQXYPEswDaWeQFxIURdMkszfOq0H8wb/9JgI5jomd7RVV
+ lSYdhDwR8Ddl3LwYM+XJgctAANE8QnhBIkiIy0gUlsg4zqrGi02S+52WYtLn2aWn5eQcKrX
+ FnlCDbdanOFMOeFtGqzCWK6hafDotGkhB/B8x5RRX8KTInLI6hssWJRMHbuA==
+Received: from [10.139.162.187] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.94.2-S2G) (envelope-from <nicolas@fjasle.eu>)
+ id 1tw6MF-qt4Caj-2k; Sat, 22 Mar 2025 21:26:20 +0000
+Received: from [10.85.249.164] (helo=leknes.fjasle.eu)
+ by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.97.1-S2G) (envelope-from <nicolas@fjasle.eu>)
+ id 1tw6ME-4o5NDgrqv8S-km5i; Sat, 22 Mar 2025 21:26:18 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
+ t=1742678776; bh=Mb79DNtCDH+YprnnK7anYxnTAMJUcCMlahmLdHiruXo=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=i2dRR+8j6qpe7Lr05Ew/b/2waRuShb9V6VCoVHZHZQzdHQa0Vu6l0QnxuHdPs9pTD
+ K32Ymx+ZJJZw3kdfQ310kflq/waV3fcLieVrlLXL2kUckhY7IIU75tlWkuxp3bFtfe
+ VKWIFWQcF0HrGMa2a9FiDxgKOe9LZ9D4mTEZbRQM=
+Received: by leknes.fjasle.eu (Postfix, from userid 1000)
+ id 65D913CBC9; Sat, 22 Mar 2025 22:26:16 +0100 (CET)
+Date: Sat, 22 Mar 2025 22:26:16 +0100
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Khem Raj <raj.khem@gmail.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>,
+ linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mips: Add '-std=gnu11' to vdso CFLAGS
+Message-ID: <Z98q-CurZoru9Qr3@fjasle.eu>
+References: <20250322000940.778730-1-raj.khem@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250321145302.4775-1-johan+linaro@kernel.org>
-In-Reply-To: <20250321145302.4775-1-johan+linaro@kernel.org>
-From: Steev Klimaszewski <steev@kali.org>
-Date: Sat, 22 Mar 2025 15:32:08 -0500
-X-Gm-Features: AQ5f1Jo_ng3ufW9UOehzcLhlOEtOWJZFpCerf42h3io3os1P4AkoGlgh3Ackpds
-Message-ID: <CAKXuJqh0_7fduDgDXWzCE2fYNHV-mDa29Lxq15h7-vam2Nin6w@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ath11k: fix rx completion meta data corruption
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Jeff Johnson <jjohnson@kernel.org>, Miaoqing Pan <quic_miaoqing@quicinc.com>, 
-	Clayton Craft <clayton@craftyguy.net>, Jens Glathe <jens.glathe@oldschoolsolutions.biz>, 
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250322000940.778730-1-raj.khem@gmail.com>
+X-Smtpcorp-Track: psCCH0NQUDdS.LGiTr4FKaMTA.I2TZcAi85ah
+Feedback-ID: 1174286m:1174286a9YXZ7r:1174286smZycWegRd
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
 
-Hi Johan,
-
-On Fri, Mar 21, 2025 at 9:55=E2=80=AFAM Johan Hovold <johan+linaro@kernel.o=
-rg> wrote:
->
-> Add the missing memory barrier to make sure that the REO dest ring
-> descriptor is read after the head pointer to avoid using stale data on
-> weakly ordered architectures like aarch64.
->
-> This may fix the ring-buffer corruption worked around by commit
-> f9fff67d2d7c ("wifi: ath11k: Fix SKB corruption in REO destination
-> ring") by silently discarding data, and may possibly also address user
-> reported errors like:
->
->         ath11k_pci 0006:01:00.0: msdu_done bit in attention is not set
->
-> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LIT=
-E-3.6510.41
->
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Cc: stable@vger.kernel.org      # 5.6
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D218005
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+On Fri, Mar 21, 2025 at 05:09:40PM -0700 Khem Raj wrote:
+> GCC 15 changed the default C standard dialect from gnu17 to gnu23,
+> which should not have impacted the kernel because it explicitly requests
+> the gnu11 standard in the main Makefile. However, mips/vdso code uses
+> its own CFLAGS without a '-std=' value, which break with this dialect
+> change because of the kernel's own definitions of bool, false, and true
+> conflicting with the C23 reserved keywords.
+> 
+>   include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+>      11 |         false   = 0,
+>         |         ^~~~~
+>   include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+>   include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+>      35 | typedef _Bool                   bool;
+>         |                                 ^~~~
+>   include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+> 
+> Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
+> these errors and make the C standard version of these areas match the
+> rest of the kernel.
+> 
+> Signed-off-by: Khem Raj <raj.khem@gmail.com>
+> Cc: stable@vger.kernel.org
 > ---
->
-> As I reported here:
->
->         https://lore.kernel.org/lkml/Z9G5zEOcTdGKm7Ei@hovoldconsulting.co=
-m/
->
-> the ath11k and ath12k appear to be missing a number of memory barriers
-> that are required on weakly ordered architectures like aarch64 to avoid
-> memory corruption issues.
->
-> Here's a fix for one more such case which people already seem to be
-> hitting.
->
-> Note that I've seen one "msdu_done" bit not set warning also with this
-> patch so whether it helps with that at all remains to be seen. I'm CCing
-> Jens and Steev that see these warnings frequently and that may be able
-> to help out with testing.
->
-> Johan
->
->
->  drivers/net/wireless/ath/ath11k/dp_rx.c | 25 ++++++++++++++++---------
->  1 file changed, 16 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wirele=
-ss/ath/ath11k/dp_rx.c
-> index 029ecf51c9ef..0a57b337e4c6 100644
-> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-> @@ -2646,7 +2646,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, in=
-t ring_id,
->         struct ath11k *ar;
->         struct hal_reo_dest_ring *desc;
->         enum hal_reo_dest_ring_push_reason push_reason;
-> -       u32 cookie;
-> +       u32 cookie, info0, rx_msdu_info0, rx_mpdu_info0;
->         int i;
->
->         for (i =3D 0; i < MAX_RADIOS; i++)
-> @@ -2659,11 +2659,14 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, =
-int ring_id,
->  try_again:
->         ath11k_hal_srng_access_begin(ab, srng);
->
-> +       /* Make sure descriptor is read after the head pointer. */
-> +       dma_rmb();
-> +
->         while (likely(desc =3D
->               (struct hal_reo_dest_ring *)ath11k_hal_srng_dst_get_next_en=
-try(ab,
->                                                                          =
-    srng))) {
->                 cookie =3D FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
-> -                                  desc->buf_addr_info.info1);
-> +                                  READ_ONCE(desc->buf_addr_info.info1));
->                 buf_id =3D FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID,
->                                    cookie);
->                 mac_id =3D FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie)=
-;
-> @@ -2692,8 +2695,9 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, in=
-t ring_id,
->
->                 num_buffs_reaped[mac_id]++;
->
-> +               info0 =3D READ_ONCE(desc->info0);
->                 push_reason =3D FIELD_GET(HAL_REO_DEST_RING_INFO0_PUSH_RE=
-ASON,
-> -                                       desc->info0);
-> +                                       info0);
->                 if (unlikely(push_reason !=3D
->                              HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRU=
-CTION)) {
->                         dev_kfree_skb_any(msdu);
-> @@ -2701,18 +2705,21 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, =
-int ring_id,
->                         continue;
->                 }
->
-> -               rxcb->is_first_msdu =3D !!(desc->rx_msdu_info.info0 &
-> +               rx_msdu_info0 =3D READ_ONCE(desc->rx_msdu_info.info0);
-> +               rx_mpdu_info0 =3D READ_ONCE(desc->rx_mpdu_info.info0);
-> +
-> +               rxcb->is_first_msdu =3D !!(rx_msdu_info0 &
->                                          RX_MSDU_DESC_INFO0_FIRST_MSDU_IN=
-_MPDU);
-> -               rxcb->is_last_msdu =3D !!(desc->rx_msdu_info.info0 &
-> +               rxcb->is_last_msdu =3D !!(rx_msdu_info0 &
->                                         RX_MSDU_DESC_INFO0_LAST_MSDU_IN_M=
-PDU);
-> -               rxcb->is_continuation =3D !!(desc->rx_msdu_info.info0 &
-> +               rxcb->is_continuation =3D !!(rx_msdu_info0 &
->                                            RX_MSDU_DESC_INFO0_MSDU_CONTIN=
-UATION);
->                 rxcb->peer_id =3D FIELD_GET(RX_MPDU_DESC_META_DATA_PEER_I=
-D,
-> -                                         desc->rx_mpdu_info.meta_data);
-> +                                         READ_ONCE(desc->rx_mpdu_info.me=
-ta_data));
->                 rxcb->seq_no =3D FIELD_GET(RX_MPDU_DESC_INFO0_SEQ_NUM,
-> -                                        desc->rx_mpdu_info.info0);
-> +                                        rx_mpdu_info0);
->                 rxcb->tid =3D FIELD_GET(HAL_REO_DEST_RING_INFO0_RX_QUEUE_=
-NUM,
-> -                                     desc->info0);
-> +                                     info0);
->
->                 rxcb->mac_id =3D mac_id;
->                 __skb_queue_tail(&msdu_list[mac_id], msdu);
-> --
-> 2.48.1
->
+>  arch/mips/vdso/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+> index b289b2c1b294..15521004c563 100644
+> --- a/arch/mips/vdso/Makefile
+> +++ b/arch/mips/vdso/Makefile
+> @@ -30,7 +30,7 @@ cflags-vdso := $(ccflags-vdso) \
+>  	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
+>  	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
+>  	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+> -	$(call cc-option, -fno-asynchronous-unwind-tables)
+> +	$(call cc-option, -fno-asynchronous-unwind-tables) -std=gnu11
+>  aflags-vdso := $(ccflags-vdso) \
+>  	-D__ASSEMBLY__ -Wa,-gdwarf-2
+>  
 
-While the fix is definitely a fix, it does not seem to help with the
-`msdu_done bit in attention is not set` message as I have seen it 43
-times in the last 12 hours.
+Thanks for the patch.  Did you evaluate adding a line like
 
--- Steev
+    $(filter -std=%,$(KBUILD_CFLAGS)) \
+
+to the assignment of ccflags-vdso?  Then MIPS VDSO C standard keeps aligned
+with top-level.
+
+Nevertheless,
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+
 
