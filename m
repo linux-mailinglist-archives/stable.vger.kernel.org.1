@@ -1,162 +1,120 @@
-Return-Path: <stable+bounces-125812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA936A6CB61
-	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 17:09:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4C5A6CBF3
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 20:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4178316CA13
-	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 16:09:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A7893B2433
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 19:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705EB233120;
-	Sat, 22 Mar 2025 16:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B864C6C;
+	Sat, 22 Mar 2025 19:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ri4rRLfx"
+	dkim=pass (2048-bit key) header.d=grabatoulnz.fr header.i=@grabatoulnz.fr header.b="MnzIXJGb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A8C223709;
-	Sat, 22 Mar 2025 16:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7602542AB0;
+	Sat, 22 Mar 2025 19:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742659746; cv=none; b=OMeA2v69SITvQESDkHtXkj5qSGRo0ttPugg/Nl0aBeixUO/f1vczV8NQTviwFn6oPTWESxs1MBdv/SUujAGWrELf5cz6lXwOqThX+s7w5Wer3jH5xkSxuQypLjej2ikGd6CAJxNHzcQzRn3H7CYE/7OgkPY7x7MW9XR1O1d50GM=
+	t=1742670719; cv=none; b=GFsyNL7r4IGh3PgO9hHWbXhLxTrhgwsq4GSku/XdU2/np1FsTOV3uYQ4DdmsUVadGLYAww+lXn8FEGWfA4iXRR/vb7ZtcUWyplk55dyf9ZzIZpCxleyqprnOLOoLpdqZ3+CGyhNWRNau0kX2xwWcA76hR3+aQ2kWdF/hmzlQehI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742659746; c=relaxed/simple;
-	bh=ogiup8WnQslTGUZU0BFHkkJFFWNXpnnTIqwzlBuFulU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kU8NELaZJEQHkkBGUecZYL1lWVJIixjCMAOdgkIsrHeCrLEa3YHdUIMx1HXJ4F1QZ+6z7StISpKCtgUng2nWbU2o/W7ovP7wSSvR+HO2LWLO4RkQqhZGDh4jeac8T9bbSuX5G0iLXecw7kNi6N82KqSh6CS6UnVM4HpuyThHfVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ri4rRLfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7927DC4CEED;
-	Sat, 22 Mar 2025 16:09:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742659744;
-	bh=ogiup8WnQslTGUZU0BFHkkJFFWNXpnnTIqwzlBuFulU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ri4rRLfxX7aIjGdZAAhS9qz7ccVBs5oNk/dIcBLue0hMc7mCHXw3jQcmnsvJkGXmT
-	 aouPq4Av7yAWEzOROtPnuRvFClbUt/mQI05eds5Y6ia1SWPfWNAzCwx/b8NjXKcPzN
-	 VweTjel+vYKN6LXlcMdE8wEnPBdcKjmGBond/75w2N7zPgvdQjkswNH3SzMQVT2nF/
-	 XrgowwjqQOUl+DOWqerKIUws6AQ+/lQHlzL9QU4aC2ve7Z3ltd+VOt+5JthKZc4z9d
-	 Zoo3+Fo/dMJYPFYqe6/MNWvgp6KwwTLXYzy5tJceC6qxxbnYZX8U8qd+usVfbG0KNm
-	 qIrKLby/W3mLQ==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54963160818so3624787e87.2;
-        Sat, 22 Mar 2025 09:09:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUlYuVP7kjupH1LLv3BOKUflS9wv9uz8ckXyRigCCymo/2MU/WQDb79FuZZBac2+zo8mNbeZJ9c0d2IAZw=@vger.kernel.org, AJvYcCW+HMNWdgo/ihVkEZphppxd5ifd0IGSMFRzDQJDwLVLkfo7me7Zu1V7UQxTQjqDNo/GF1SueTFJ@vger.kernel.org, AJvYcCW/s78pjDecgxQowzcuRULzn4oAbSNqzcYUlRNI4USYs8KFac2jxSBNJwa1kd45JDTY7YGhSJI4adyVtUsU@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm/ES+wGzaH3vBuBXp0Q5m2StlH+9cBqXUc//s69+XgyXEYgBn
-	OknH24X34fxVql4zsQi1Myfr9cqTXYUJffiEZ5XOnxblN/lsnT9Ej0VOE0DMWk61m78O0TDMvzW
-	1rX4nva/Y2RqtJl19MExeEiWLFFs=
-X-Google-Smtp-Source: AGHT+IHCu2qN8+d+VY8tTgzZzAo4gDNQdYleZGDJ/W5aoEZnsWS/CKUr4A91/bE5y84QOhQBiRXO2CUU/oBb2M7QUyI=
-X-Received: by 2002:a05:6512:304f:b0:542:91a5:2478 with SMTP id
- 2adb3069b0e04-54ad64ef057mr2786069e87.32.1742659743092; Sat, 22 Mar 2025
- 09:09:03 -0700 (PDT)
+	s=arc-20240116; t=1742670719; c=relaxed/simple;
+	bh=rl7XHTSALGkshOTWUCTsRWgHWs7NO3dE7n+XvjAhlzk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NyFbWAjJorLmTeXQ7m8zzSgkJgIL/sgjxibeh+zdZN5teeM0rFYZ6DlSxIDEXgJFxQ/F4JHrMQ6S3gEanQUsFgmA6iQUWyeUmq+JZCgeO2QVFePcougZh7k5aGzxsM0/cNhZvAVB3rDc1r8uwaLTHvaudlu9ELygjQRRaGvv3i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grabatoulnz.fr; spf=pass smtp.mailfrom=grabatoulnz.fr; dkim=pass (2048-bit key) header.d=grabatoulnz.fr header.i=@grabatoulnz.fr header.b=MnzIXJGb; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grabatoulnz.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=grabatoulnz.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5423D42D43;
+	Sat, 22 Mar 2025 19:11:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grabatoulnz.fr;
+	s=gm1; t=1742670709;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rl7XHTSALGkshOTWUCTsRWgHWs7NO3dE7n+XvjAhlzk=;
+	b=MnzIXJGbzH9aBGTWVzWft+nr4lWZuKKQAQIclR6n/qrpJ0bsbiQGO6XARftEd0+fptD9I5
+	dU3zfFp+VFxNVI7rG7884Cttz/kBQIGFWD3AHtS61jDH0E5E7v0vZT/rwCrrxvbnzh6+xn
+	FV19y39qcy/iWr9qJPgFlrTUhCwqPLIqWgoz6aap6ATa8Az/xbbJqKxe9iu7LppFdEBggp
+	FNrTHglsS6F5zVXLaze07yGtNRPUePz/vcDhOWII23/ZIVl7M5dMqx89E3jUb9GxP9sdI2
+	h+zZ1wtSzZO2Pb21qLKZy2QK2B4JoaSfkGwVyw/ckeNngzltr25F74pdixECkg==
+Message-ID: <4c0764e6-586d-42c1-9d6b-5283097f96ec@grabatoulnz.fr>
+Date: Sat, 22 Mar 2025 20:11:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250314131053.23360-1-alexandru.gagniuc@hp.com>
-In-Reply-To: <20250314131053.23360-1-alexandru.gagniuc@hp.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sun, 23 Mar 2025 01:08:26 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASL=t4Lm5kdTqiLeBnB8dsZ81EK52Nw7=sHOvPdpW7r5A@mail.gmail.com>
-X-Gm-Features: AQ5f1JpFKM1999iqmiY1vCfrOJKxjfEvsR-BTXIsQnOoZXOP4gjqQX9TgEfFZqk
-Message-ID: <CAK7LNASL=t4Lm5kdTqiLeBnB8dsZ81EK52Nw7=sHOvPdpW7r5A@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: deb-pkg: don't set KBUILD_BUILD_VERSION unconditionally
-To: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Cc: nathan@kernel.org, linux-kbuild@vger.kernel.org, nicolas@fjasle.eu, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: Regression from 7627a0edef54 ("ata: ahci: Drop low power policy
+ board type") on reboot (but not cold boot)
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+ Salvatore Bonaccorso <carnil@debian.org>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Damien Le Moal <dlemoal@kernel.org>, Jian-Hong Pan <jhp@endlessos.org>,
+ regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, linux-ide@vger.kernel.org,
+ Dieter Mummenschanz <dmummenschanz@web.de>
+References: <383d5740-7740-4051-b39a-b8c74b035ec2@redhat.com>
+ <Z9BFSM059Wj2cYX5@ryzen> <9ac6e1ab-f2af-4bff-9d50-24df68ca1bb9@redhat.com>
+ <Z9LUH2IkwoMElSDg@ryzen> <d5470665-4fee-432a-9cb7-fff9813b3e97@redhat.com>
+ <Z9L5p6hTp6MATJ80@ryzen> <6d125c69-35b2-45b5-9790-33f3ea06f171@redhat.com>
+ <Z9hXRYQw1-fX0_PY@ryzen>
+ <06f76ca1-1a07-4df5-ba50-e36046f58d88@grabatoulnz.fr>
+ <5fe0557a-b9ec-4600-a10f-20c494aa2339@grabatoulnz.fr>
+ <Z9k4ic4nSkbUMAPA@ryzen>
+Content-Language: en-US
+From: Eric <eric.4.debian@grabatoulnz.fr>
+In-Reply-To: <Z9k4ic4nSkbUMAPA@ryzen>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduheegjeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepgfhrihgtuceovghrihgtrdegrdguvggsihgrnhesghhrrggsrghtohhulhhniidrfhhrqeenucggtffrrghtthgvrhhnpeffgfdufeeigedtleelteetvefhgffguedtueejvdelueekieduiefggeejgfeikeenucfkphepvdgrtddumegtsgdtgeemleegudemsgdutddtmeegvdduieemjegvfhhfmehfvgdvheemleehrgdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdtgeemleegudemsgdutddtmeegvdduieemjegvfhhfmehfvgdvheemleehrgdupdhhvghloheplgfkrfggieemvdgrtddumegtsgdtgeemleegudemsgdutddtmeegvdduieemjegvfhhfmehfvgdvheemleehrgdungdpmhgrihhlfhhrohhmpegvrhhitgdrgedruggvsghirghnsehgrhgrsggrthhouhhlnhiirdhfrhdpnhgspghrtghpthhtohepudefpdhrtghpthhtoheptggrshhsvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhuggvghhovgguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheptggrrhhnihhls
+ eguvggsihgrnhdrohhrghdprhgtphhtthhopehmrghrihhordhlihhmohhntghivghllhhosegrmhgurdgtohhmpdhrtghpthhtohephhgthhesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehmihhkrgdrfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepughlvghmohgrlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhhphesvghnughlvghsshhoshdrohhrgh
+X-GND-Sasl: eric.degenetais@grabatoulnz.fr
 
-On Tue, Mar 18, 2025 at 7:42=E2=80=AFAM Alexandru Gagniuc
-<alexandru.gagniuc@hp.com> wrote:
+Hi Niklas, hi Hans
+
+Le 18/03/2025 à 10:10, Niklas Cassel a écrit :
+> Hello Eric,
 >
-> In ThinPro, we use the convention <upstream_ver>+hp<patchlevel> for
-> the kernel package. This does not have a dash in the name or version.
-> This is built by editing ".version" before a build, and setting
-> EXTRAVERSION=3D"+hp" and KDEB_PKGVERSION make variables:
+> On Tue, Mar 18, 2025 at 01:04:48AM +0100, Eric wrote:
+>> Hi Niklas, hi Hans,
+>>
+>> [...]
+>> The test is a success as far as I am concerned. With this new patch, DIPM is
+>> disabled on the Samsung SSD, but not the Maxtor disk on the same controller:
+>>
+>>
+>> [...]
+>>
+>>
+>> and the SSD is successfully detected at reboot by both the UEFI and the
+>> linux kernel.
+> Thank you for all your perseverance!
 >
->     echo 68 > .version
->     make -j<n> EXTRAVERSION=3D"+hp" bindeb-pkg KDEB_PKGVERSION=3D6.12.2+h=
-p69
+> Hopefully, your efforts will make sure that others with ATI AHCI do not
+> encounter the same issue that you faced.
+Thank you for your work !
 >
->     .deb name: linux-image-6.12.2+hp_6.12.2+hp69_amd64.deb
->
-> Since commit 7d4f07d5cb71 ("kbuild: deb-pkg: squash
-> scripts/package/deb-build-option to debian/rules"), this no longer
-> works. The deb build logic changed, even though, the commit message
-> implies that the logic should be unmodified.
->
-> Before, KBUILD_BUILD_VERSION was not set if the KDEB_PKGVERSION did
-> not contain a dash. After the change KBUILD_BUILD_VERSION is always
-> set to KDEB_PKGVERSION. Since this determines UTS_VERSION,the uname
-> output to look off:
->
->     (now)      uname -a: version 6.12.2+hp ... #6.12.2+hp69
->     (expected) uname -a: version 6.12.2+hp ... #69
->
-> Update the debian/rules logic to restore the original behavior.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: 7d4f07d5cb71 ("kbuild: deb-pkg: squash scripts/package/deb-build-o=
-ption to debian/rules")
-> Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-> Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-> ---
-> Changes since v1:
->  * Rework logic so that dpkg-parsechangelog is invoked just once
->  * Adjust commit message to reflect review feedback
->
->  scripts/package/debian/rules | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/scripts/package/debian/rules b/scripts/package/debian/rules
-> index ca07243bd5cd..d1f400685682 100755
-> --- a/scripts/package/debian/rules
-> +++ b/scripts/package/debian/rules
-> @@ -21,9 +21,11 @@ ifeq ($(origin KBUILD_VERBOSE),undefined)
->      endif
->  endif
->
-> -revision =3D $(lastword $(subst -, ,$(shell dpkg-parsechangelog -S Versi=
-on)))
-> +revision =3D $(shell dpkg-parsechangelog -S Version | sed -n 's/.*-//p')
->  CROSS_COMPILE ?=3D $(filter-out $(DEB_BUILD_GNU_TYPE)-, $(DEB_HOST_GNU_T=
-YPE)-)
-> -make-opts =3D ARCH=3D$(ARCH) KERNELRELEASE=3D$(KERNELRELEASE) KBUILD_BUI=
-LD_VERSION=3D$(revision) $(addprefix CROSS_COMPILE=3D,$(CROSS_COMPILE))
-> +make-opts =3D ARCH=3D$(ARCH) KERNELRELEASE=3D$(KERNELRELEASE) $(addprefi=
-x \
-> +               KBUILD_BUILD_VERSION=3D,$(revision)) $(addprefix \
-> +               CROSS_COMPILE=3D,$(CROSS_COMPILE))
+> Kind regards,
+> Niklas
 
 
+Kind regards,
 
-Applied to linux-kbuild.
+Eric
 
-I fixed the place for wrapping for readability.
-(In my previous reply, the code was wrapped by Gmail
- in unintended places)
-
-Thanks.
-
-
-
-
-
-
->  binary-targets :=3D $(addprefix binary-, image image-dbg headers libc-de=
-v)
->
-> --
-> 2.48.1
->
-
-
---=20
-Best Regards
-Masahiro Yamada
 
