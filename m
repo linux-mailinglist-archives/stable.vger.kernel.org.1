@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-125820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF647A6CC40
-	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 21:30:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8ACA6CC45
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 21:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7D6B188474A
-	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 20:30:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 707983A125E
+	for <lists+stable@lfdr.de>; Sat, 22 Mar 2025 20:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F21235340;
-	Sat, 22 Mar 2025 20:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC98221569;
+	Sat, 22 Mar 2025 20:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b="MRW+w1WV"
+	dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b="b3bDNhVP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D46B23534F
-	for <stable@vger.kernel.org>; Sat, 22 Mar 2025 20:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEC6145A03
+	for <stable@vger.kernel.org>; Sat, 22 Mar 2025 20:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742675407; cv=none; b=fnguql6ye2XwDO0VJO37uijfYW8pYzru9y+djfYmIfj92BkGalQ7WzQIkr9jy5LoDXTrtggWieV34T9c2BdR3MMFLiRCEfyOB6dOTCnycuNB2cPlmHK9FvCLpZz6H4WcsPiokFTJROENIjzY75L6Gn2aa5x2gXNjxAQaGWY1iq8=
+	t=1742675544; cv=none; b=B3pEwhIUR7w0JYo/NJnJvwDpAPokjvNdB1dPPN1bTOQP3kp1ONh/ZjV0K+HL/HrrodAN4USgczrN8BGIdjeSsJc3yQlXXj9ABHWX3UciibBhEgnGMNB5bZt7SVnrokZPym4KNgauS8cKOePanvtAzt0/1CvVG963SJeTK8uXhio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742675407; c=relaxed/simple;
-	bh=23pANsHNneeXWCHFPR720EsnKizCIuI1/wb/1+/Tu2Q=;
+	s=arc-20240116; t=1742675544; c=relaxed/simple;
+	bh=D6xw3hIsJ2aRRajmvqQhUs8BD4FYVV0vhxPiULPlv3A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dWZ6p7BMN5n6AJwJXO8eYjcZUPMlTtTE7ko13hne1D6oOeTtahaGkiJlX6FqMEW+5Cd5alJjShcimMBMGM/e7SDydiRlRokqypTEzMjoyuICw+mXgo7iy2vPfSw5StABTbkAR8NbiKhWEz+T/ejWwiUH0zdPLvCZGDqR3rzn9hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org; spf=pass smtp.mailfrom=kali.org; dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b=MRW+w1WV; arc=none smtp.client-ip=209.85.208.45
+	 To:Cc:Content-Type; b=FLA1tk+ivGlhFP4kprZQ63ken4MlmAuYsYW+bO1ocuZHDsGzVUpToYAKPb1WoAjgJSFdaK9zm4mAeOqYTw0Xzf1MEyfPh/eU1bz+Dk2+IoXOMAA53B9DM1ey0YqKQKp5oB5QPdSXaCyqA6cNDjGW+xkWe5iDIAkx8VCY5fmruj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org; spf=pass smtp.mailfrom=kali.org; dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b=b3bDNhVP; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kali.org
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5e5e1a38c1aso4031358a12.2
-        for <stable@vger.kernel.org>; Sat, 22 Mar 2025 13:30:05 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5e8be1c6ff8so5517424a12.1
+        for <stable@vger.kernel.org>; Sat, 22 Mar 2025 13:32:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kali.org; s=google; t=1742675404; x=1743280204; darn=vger.kernel.org;
+        d=kali.org; s=google; t=1742675541; x=1743280341; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u6cSUgatbqKhRbZTmyK9VSh/Zt9MhUeI55/TCtex2OE=;
-        b=MRW+w1WVrF0Mg//g20zfB55EBGp1f4ozxaBHyq3ait8RAcWniB26tDsnxWAfmU0JRD
-         i4XxkNxlkzsM3v4RKwKynvhJZ4tAroctlzfgTe5U9XNkCe6wNUf4rWBVo2mtA2r1FLcN
-         RQjHPxOMD2ou7qswx7KNP531wFcMsfk/urhoab22xPCS6Mwv/IqKZaCafVrBz9pBmoTV
-         +ie+bu+3MmzdTycAdLBkzmwk6DXAfJCcR85apxxRdaUqZ6aiDaamZSnNLEaknYC1qog2
-         axSpdmAKaEAcUB1btcBfstjSACSJIIfAnA7Fgno0Uchj8GIrII0qseMM1AIdLxZhABm2
-         Fzxg==
+        bh=MBaCnQErjphWQ/6DEDPtyGgc1KmN6LXb9upYohAu4Nc=;
+        b=b3bDNhVPeNmzKd/jOrwLQqknPm3PUVY1yqDJEuZvqkJpseXbQdv9I1AWvnUwU5eNHE
+         MWkyA0pjpl9Tin2FHueDDOsMdlvJlDICslZiHAWKxkgHwkr+XJ57wN8ovAFlkB+zv6yD
+         V4kwE4RRKZE6Wc2uuB5m+OcU+yBHqVDQSDqpvZkqVHh/Ab8Nma2YlJVpHrRtJkH0zIv8
+         iKOXunTP0A+yh4677m6fU8iEnip+eI4yZNUzRH0R0SdrbN0cKcNdIN0H8gCPWImkQNNx
+         YrfBbalczmwPPWbXYRRUs349ZjSMPCOWKZIqB8aeBWINcngF1vz6Ze4YFxPrnUxXu0yY
+         FIkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742675404; x=1743280204;
+        d=1e100.net; s=20230601; t=1742675541; x=1743280341;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=u6cSUgatbqKhRbZTmyK9VSh/Zt9MhUeI55/TCtex2OE=;
-        b=c96/RDn88lhQsjH6o5w3MH572i4VWdzc4lzBytiKhRiVY9DA8o06yzOzXeQqUGvBrh
-         ZvG1auf7UkDTF3Dg6oaSA4RVLeCWSrJizZGFcZcYmyIwALPPsSOTbe3fX/Y8Bn6QkVtL
-         DfrV1cJGf1qTJ87qe8KGce4+7sC5j+pQbEPvJWbqqUYuwXyOjj2IdFQ+ZSadPpuU8dHF
-         1so2PgILQTgoXMszlZFhIrnsVLkRygBlknCMTHSgreRi08mENeU35LEV3SSv3DcOP6Qq
-         R5ktnWXjxglFI9En6yN0o/o1buwFaVxOlcTWJpqfMvGxGSziCw/TrI+yiK+Rihi6jZcl
-         yjHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGSmXueYvTjyqmicJiAagtgSiilqr7r1SFkgs3qoP+zp5hoip/2yxtkc0dVg1WSLPJi3iuYks=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv1QIlxefbGoVmlVa8Kh/TuqYJL1b2Hulk4bHez1pbqO85y3jM
-	ZOXhZxM8DYkRI5V8/8fWzMMSjpRpyrFVohlKmGOduLguHsyYNsIVN3VQSl5hxrjtV29hzacmG85
-	vu57sNRmzuDnaIPGc7QoJuajA7BVMw8sy5Tcojg==
-X-Gm-Gg: ASbGncuRaiZXn/DZzvwxb7AjjcyVj1X5PJBHirK1qfJKv6kolQ7agjeJKlxdLJuzd3f
-	KwdTIkhOjhkwjjh0bEZoNgpWNzwslKZsW41Oj36hHTM+MJ9MbAHxQz1YMZy0LpI8ORTNCr554p3
-	6enPac4hNFfHReAkCFwMZkfYYVDjo=
-X-Google-Smtp-Source: AGHT+IFBIVXZYDtiJpjWV/LcWygCCyM8XLLo2e1nj12IRbPwY/47eV7JcCDI5vBSVRn6rhZYRnytHKUjzgf552Rs/uQ=
-X-Received: by 2002:a05:6402:524e:b0:5dc:6e27:e6e8 with SMTP id
- 4fb4d7f45d1cf-5ebcd4fa24dmr7390153a12.24.1742675403691; Sat, 22 Mar 2025
- 13:30:03 -0700 (PDT)
+        bh=MBaCnQErjphWQ/6DEDPtyGgc1KmN6LXb9upYohAu4Nc=;
+        b=V0dcePutKlZynlE2M79QltIqX5OIh7o3Y+dWjyXuCu5gayySV4BX0ep1uk1Tayq+1S
+         9wnKPKnQcrdLs4lEV1sysu4lg++YZrkC0eE7SOtxJ6uXBQwTvx+T++2Glxfsnl/23Oz/
+         h5dxQbzUlxcMvXfSeRX74ZFlvBv+tRh65XsTBLWb5OVUsHphRLkKXnfq7Mny+T150+Ss
+         N2vJzhZSHfM0TbDzXUvVmY1qaz9Si3ofbFrZybpqsD7EI3pi+fsELxEc4AzLDikQlZxN
+         5YxWbWlpnS8qCf19k69bS0NKnAdalXGchK2VtdaDzK92YX8Qglb8aUBmrqogGynfa8lt
+         rdoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWyXdszHqqpL00WJIi8HjwtdZ/gPORNEp4ZkUlAe8oBLePR87exl24HicURfitHtLDBoQTZC0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2B/45LAS94CEW6WQkoBiAMN0fw3NTPVKTD+Zn5L35s8cWXZJQ
+	3qBmolKl6bca09+GAHTAFMPMmdQTN4Zrg8tTsmwXLIp+GS7Cl1fOA1mUHD2zbE1nWaDmSATVYjx
+	U5xRqkmtoDKgwvAzrQWVvk1mztt4hwdmidLjeIQ==
+X-Gm-Gg: ASbGncuyKhjSbp9gewAZZ9gDTg7rX093Rhk58P8UMrAkW4v/uZeJSMQnlANy9D6R0u3
+	v3ctRLmBWY9b05MorhZ3oe7zR/WZ5bygSwjCFYNiCdmMKpaZzpz6WzzCS8K49VfuqHWNWNI1EE3
+	sb4TSNtk2gb53jvnxATtPLZ/mLtbZo2tdt/GMF6w==
+X-Google-Smtp-Source: AGHT+IFtgOvQ/ipQ5UFSn66TToxJyVI3SzkIjV049UlX5bGqRqNfgfHmq7s9TmGxajhk9iLQXeErbCLQrAMLvdy2238=
+X-Received: by 2002:a17:906:d552:b0:ac3:1373:8a3d with SMTP id
+ a640c23a62f3a-ac3f226dfc0mr719120366b.20.1742675541018; Sat, 22 Mar 2025
+ 13:32:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250321094916.19098-1-johan+linaro@kernel.org>
-In-Reply-To: <20250321094916.19098-1-johan+linaro@kernel.org>
+References: <20250321145302.4775-1-johan+linaro@kernel.org>
+In-Reply-To: <20250321145302.4775-1-johan+linaro@kernel.org>
 From: Steev Klimaszewski <steev@kali.org>
-Date: Sat, 22 Mar 2025 15:29:52 -0500
-X-Gm-Features: AQ5f1JoCXYzLr6Wcr5GEM3kx8AqnGOONhGWVUVet26agDhGD1qrhlsAqp0-B4Hs
-Message-ID: <CAKXuJqjTP9Pr_AFOfNwzzi9F=qOO8zdo7Ga+6-a8x1ihsN4SpA@mail.gmail.com>
-Subject: Re: [PATCH] wifi: ath11k: fix ring-buffer corruption
+Date: Sat, 22 Mar 2025 15:32:08 -0500
+X-Gm-Features: AQ5f1Jo_ng3ufW9UOehzcLhlOEtOWJZFpCerf42h3io3os1P4AkoGlgh3Ackpds
+Message-ID: <CAKXuJqh0_7fduDgDXWzCE2fYNHV-mDa29Lxq15h7-vam2Nin6w@mail.gmail.com>
+Subject: Re: [PATCH] wifi: ath11k: fix rx completion meta data corruption
 To: Johan Hovold <johan+linaro@kernel.org>
 Cc: Jeff Johnson <jjohnson@kernel.org>, Miaoqing Pan <quic_miaoqing@quicinc.com>, 
 	Clayton Craft <clayton@craftyguy.net>, Jens Glathe <jens.glathe@oldschoolsolutions.biz>, 
@@ -91,115 +91,143 @@ Content-Transfer-Encoding: quoted-printable
 
 Hi Johan,
 
-On Fri, Mar 21, 2025 at 4:51=E2=80=AFAM Johan Hovold <johan+linaro@kernel.o=
+On Fri, Mar 21, 2025 at 9:55=E2=80=AFAM Johan Hovold <johan+linaro@kernel.o=
 rg> wrote:
 >
-> Users of the Lenovo ThinkPad X13s have reported that Wi-Fi sometimes
-> breaks and the log fills up with errors like:
+> Add the missing memory barrier to make sure that the REO dest ring
+> descriptor is read after the head pointer to avoid using stale data on
+> weakly ordered architectures like aarch64.
 >
->     ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expec=
-ted 1492
->     ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expec=
-ted 1484
+> This may fix the ring-buffer corruption worked around by commit
+> f9fff67d2d7c ("wifi: ath11k: Fix SKB corruption in REO destination
+> ring") by silently discarding data, and may possibly also address user
+> reported errors like:
 >
-> which based on a quick look at the driver seemed to indicate some kind
-> of ring-buffer corruption.
->
-> Miaoqing Pan tracked it down to the host seeing the updated destination
-> ring head pointer before the updated descriptor, and the error handling
-> for that in turn leaves the ring buffer in an inconsistent state.
->
-> Add the missing memory barrier to make sure that the descriptor is read
-> after the head pointer to address the root cause of the corruption while
-> fixing up the error handling in case there are ever any (ordering) bugs
-> on the device side.
->
-> Note that the READ_ONCE() are only needed to avoid compiler mischief in
-> case the ring-buffer helpers are ever inlined.
+>         ath11k_pci 0006:01:00.0: msdu_done bit in attention is not set
 >
 > Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LIT=
 E-3.6510.41
 >
 > Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D218623
-> Link: https://lore.kernel.org/20250310010217.3845141-3-quic_miaoqing@quic=
-inc.com
-> Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>
 > Cc: stable@vger.kernel.org      # 5.6
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D218005
 > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > ---
->  drivers/net/wireless/ath/ath11k/ce.c  | 11 +++++------
->  drivers/net/wireless/ath/ath11k/hal.c |  4 ++--
->  2 files changed, 7 insertions(+), 8 deletions(-)
 >
-> diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/=
-ath/ath11k/ce.c
-> index e66e86bdec20..9d8efec46508 100644
-> --- a/drivers/net/wireless/ath/ath11k/ce.c
-> +++ b/drivers/net/wireless/ath/ath11k/ce.c
-> @@ -393,11 +393,10 @@ static int ath11k_ce_completed_recv_next(struct ath=
-11k_ce_pipe *pipe,
->                 goto err;
->         }
+> As I reported here:
+>
+>         https://lore.kernel.org/lkml/Z9G5zEOcTdGKm7Ei@hovoldconsulting.co=
+m/
+>
+> the ath11k and ath12k appear to be missing a number of memory barriers
+> that are required on weakly ordered architectures like aarch64 to avoid
+> memory corruption issues.
+>
+> Here's a fix for one more such case which people already seem to be
+> hitting.
+>
+> Note that I've seen one "msdu_done" bit not set warning also with this
+> patch so whether it helps with that at all remains to be seen. I'm CCing
+> Jens and Steev that see these warnings frequently and that may be able
+> to help out with testing.
+>
+> Johan
+>
+>
+>  drivers/net/wireless/ath/ath11k/dp_rx.c | 25 ++++++++++++++++---------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wirele=
+ss/ath/ath11k/dp_rx.c
+> index 029ecf51c9ef..0a57b337e4c6 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> @@ -2646,7 +2646,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, in=
+t ring_id,
+>         struct ath11k *ar;
+>         struct hal_reo_dest_ring *desc;
+>         enum hal_reo_dest_ring_push_reason push_reason;
+> -       u32 cookie;
+> +       u32 cookie, info0, rx_msdu_info0, rx_mpdu_info0;
+>         int i;
+>
+>         for (i =3D 0; i < MAX_RADIOS; i++)
+> @@ -2659,11 +2659,14 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, =
+int ring_id,
+>  try_again:
+>         ath11k_hal_srng_access_begin(ab, srng);
 >
 > +       /* Make sure descriptor is read after the head pointer. */
 > +       dma_rmb();
 > +
->         *nbytes =3D ath11k_hal_ce_dst_status_get_length(desc);
-> -       if (*nbytes =3D=3D 0) {
-> -               ret =3D -EIO;
-> -               goto err;
-> -       }
+>         while (likely(desc =3D
+>               (struct hal_reo_dest_ring *)ath11k_hal_srng_dst_get_next_en=
+try(ab,
+>                                                                          =
+    srng))) {
+>                 cookie =3D FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
+> -                                  desc->buf_addr_info.info1);
+> +                                  READ_ONCE(desc->buf_addr_info.info1));
+>                 buf_id =3D FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID,
+>                                    cookie);
+>                 mac_id =3D FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie)=
+;
+> @@ -2692,8 +2695,9 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, in=
+t ring_id,
 >
->         *skb =3D pipe->dest_ring->skb[sw_index];
->         pipe->dest_ring->skb[sw_index] =3D NULL;
-> @@ -430,8 +429,8 @@ static void ath11k_ce_recv_process_cb(struct ath11k_c=
-e_pipe *pipe)
->                 dma_unmap_single(ab->dev, ATH11K_SKB_RXCB(skb)->paddr,
->                                  max_nbytes, DMA_FROM_DEVICE);
+>                 num_buffs_reaped[mac_id]++;
 >
-> -               if (unlikely(max_nbytes < nbytes)) {
-> -                       ath11k_warn(ab, "rxed more than expected (nbytes =
-%d, max %d)",
-> +               if (unlikely(max_nbytes < nbytes || nbytes =3D=3D 0)) {
-> +                       ath11k_warn(ab, "unexpected rx length (nbytes %d,=
- max %d)",
->                                     nbytes, max_nbytes);
->                         dev_kfree_skb_any(skb);
+> +               info0 =3D READ_ONCE(desc->info0);
+>                 push_reason =3D FIELD_GET(HAL_REO_DEST_RING_INFO0_PUSH_RE=
+ASON,
+> -                                       desc->info0);
+> +                                       info0);
+>                 if (unlikely(push_reason !=3D
+>                              HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRU=
+CTION)) {
+>                         dev_kfree_skb_any(msdu);
+> @@ -2701,18 +2705,21 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, =
+int ring_id,
 >                         continue;
-> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless=
-/ath/ath11k/hal.c
-> index 61f4b6dd5380..8cb1505a5a0c 100644
-> --- a/drivers/net/wireless/ath/ath11k/hal.c
-> +++ b/drivers/net/wireless/ath/ath11k/hal.c
-> @@ -599,7 +599,7 @@ u32 ath11k_hal_ce_dst_status_get_length(void *buf)
->         struct hal_ce_srng_dst_status_desc *desc =3D buf;
->         u32 len;
+>                 }
 >
-> -       len =3D FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, desc->flags);
-> +       len =3D FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, READ_ONCE(des=
-c->flags));
->         desc->flags &=3D ~HAL_CE_DST_STATUS_DESC_FLAGS_LEN;
+> -               rxcb->is_first_msdu =3D !!(desc->rx_msdu_info.info0 &
+> +               rx_msdu_info0 =3D READ_ONCE(desc->rx_msdu_info.info0);
+> +               rx_mpdu_info0 =3D READ_ONCE(desc->rx_mpdu_info.info0);
+> +
+> +               rxcb->is_first_msdu =3D !!(rx_msdu_info0 &
+>                                          RX_MSDU_DESC_INFO0_FIRST_MSDU_IN=
+_MPDU);
+> -               rxcb->is_last_msdu =3D !!(desc->rx_msdu_info.info0 &
+> +               rxcb->is_last_msdu =3D !!(rx_msdu_info0 &
+>                                         RX_MSDU_DESC_INFO0_LAST_MSDU_IN_M=
+PDU);
+> -               rxcb->is_continuation =3D !!(desc->rx_msdu_info.info0 &
+> +               rxcb->is_continuation =3D !!(rx_msdu_info0 &
+>                                            RX_MSDU_DESC_INFO0_MSDU_CONTIN=
+UATION);
+>                 rxcb->peer_id =3D FIELD_GET(RX_MPDU_DESC_META_DATA_PEER_I=
+D,
+> -                                         desc->rx_mpdu_info.meta_data);
+> +                                         READ_ONCE(desc->rx_mpdu_info.me=
+ta_data));
+>                 rxcb->seq_no =3D FIELD_GET(RX_MPDU_DESC_INFO0_SEQ_NUM,
+> -                                        desc->rx_mpdu_info.info0);
+> +                                        rx_mpdu_info0);
+>                 rxcb->tid =3D FIELD_GET(HAL_REO_DEST_RING_INFO0_RX_QUEUE_=
+NUM,
+> -                                     desc->info0);
+> +                                     info0);
 >
->         return len;
-> @@ -829,7 +829,7 @@ void ath11k_hal_srng_access_begin(struct ath11k_base =
-*ab, struct hal_srng *srng)
->                 srng->u.src_ring.cached_tp =3D
->                         *(volatile u32 *)srng->u.src_ring.tp_addr;
->         } else {
-> -               srng->u.dst_ring.cached_hp =3D *srng->u.dst_ring.hp_addr;
-> +               srng->u.dst_ring.cached_hp =3D READ_ONCE(*srng->u.dst_rin=
-g.hp_addr);
->
->                 /* Try to prefetch the next descriptor in the ring */
->                 if (srng->flags & HAL_SRNG_FLAGS_CACHED)
+>                 rxcb->mac_id =3D mac_id;
+>                 __skb_queue_tail(&msdu_list[mac_id], msdu);
 > --
 > 2.48.1
 >
 
-Like the others, I was seeing this message multiple times a day, and
-on a not so rare occasion it would also take the wifi device offline,
-with this patch applied, I do not see that at all here.
+While the fix is definitely a fix, it does not seem to help with the
+`msdu_done bit in attention is not set` message as I have seen it 43
+times in the last 12 hours.
 
-Tested-by: Steev Klimaszewski <steev@kali.org>
+-- Steev
 
