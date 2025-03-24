@@ -1,230 +1,134 @@
-Return-Path: <stable+bounces-125972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333D5A6E49D
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:47:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DF1A6E49F
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:47:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1DF2188BB55
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 20:47:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6D3916FDED
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 20:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB541A08CA;
-	Mon, 24 Mar 2025 20:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4FD188A3A;
+	Mon, 24 Mar 2025 20:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FbDwT0Kp"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="cpv+Hbq0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f65.google.com (mail-oa1-f65.google.com [209.85.160.65])
+Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com [209.85.210.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232CC188A3A
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 20:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A4219E99A
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 20:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742849265; cv=none; b=pIjN+AXS/lZu9uTUXujo6oFiDRIUHQiWE6LnkFKBkzqAmTdZMcB1eBRhMo0NsT9xyufv8ydWsWyzvn/xW4376WHVX/I56dEpm3nNiGRxDBfqBKzMh2LU8sEal4ebWf7bX3831aZFz0gRoGHTn9ilFSWrh3n2lqQb7AU2DPNcR1I=
+	t=1742849269; cv=none; b=EGJ1gghUvo4VbpXnAXP3mjzZXJCSFmyHAo9VSMl4i3ZShXrL+yWRg4Knq6L3ZTkdB1YFpogl5/voB1P+xKR7NiWOUGh25odzuIOwmQQb987wKsh76m5CTFckNThzfc5N4i6flnZFf54xiJw07BhvvEceA6GihgowvNoaL/IgqPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742849265; c=relaxed/simple;
-	bh=Y/fGKeukbRRdYd9HAdrqdc+Ww5vxvuN8L0TDWLKeyb4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=JNgIoAtM/fnLHS17XCwSWPiuHJbD97lhDToF4VSRwZCVoxw3TTmMZYm3AYRKVRohgXad4F0uDIsI649CEdLjOHoaUcfniAgjOMT6OiU0iGLm78fgXxL2/OKlHUW7pppwi0NemcdZcUhEEzjLwGcv+otDrXyr3hH0O/kt2HVYch8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FbDwT0Kp; arc=none smtp.client-ip=209.85.160.65
+	s=arc-20240116; t=1742849269; c=relaxed/simple;
+	bh=g5+KGivb5bkhp7xB4PeT8S/tD0FNEkmAn9VDhoT1rns=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=UtoMWYhZs9b5zbYiIUPdaM45oAJQaaetLieyoAZTythceuIHrHDe+5QHl4S1RUU9GPmYCxvRhbGqf+3p6laE0SMPpC4HG1MKceMjXcVfprvZbwDiYZ6tQGXaHsmdRosFTXqd77sfsy6iPca1fKOwnNJasMgXh5p8YV6JRulNh/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=cpv+Hbq0; arc=none smtp.client-ip=209.85.210.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-oa1-f65.google.com with SMTP id 586e51a60fabf-2c2dc6c30c2so1170762fac.2
-        for <stable@vger.kernel.org>; Mon, 24 Mar 2025 13:47:43 -0700 (PDT)
+Received: by mail-ot1-f67.google.com with SMTP id 46e09a7af769-72c1425fbfcso1399843a34.3
+        for <stable@vger.kernel.org>; Mon, 24 Mar 2025 13:47:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1742849263; x=1743454063; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1742849264; x=1743454064; darn=vger.kernel.org;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=WTCHPcQcF05vSjvDkbTHLywGzk90qemE1sdRxR2q4NM=;
-        b=FbDwT0KpaTzB3bscRkoMlm+7NHWdHu2tQCYDNVZ42/Q3NSyFA4Lm/FPDzhw4ovsxbR
-         RNVXoNesnOC+maOYCYJstPFXMt8Kq2g2oDOB88hyr/qG+irZcAucwY+7N5raOE7rWycf
-         xFCpGEI/mVUy//LWZUm94LqFqzkW54yO9rXQ8=
+        bh=+LSFHSoalAZ07w6VDW1lgdrvU1OpL++pjEBu5OXzZIc=;
+        b=cpv+Hbq0HX9ct0KqKD7TaLO3P0oAT7kx1D6MWqjgMGL5EpqZ3ayUsvCDww6EsHekm2
+         SSm5EWyQTuxsOQ7aLkh4r2LhBoTkoRD6ng5VYeesG9hDFGkx9Ccd1qZ0uQFYOe2zjz3J
+         nhWamjel0y9T/kFTVs4+v7kQC3DSn9pLtJnzw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742849263; x=1743454063;
+        d=1e100.net; s=20230601; t=1742849264; x=1743454064;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WTCHPcQcF05vSjvDkbTHLywGzk90qemE1sdRxR2q4NM=;
-        b=YtL6RkgE+j2662tvhP6DaUZxVCLrGRtcswoUud10GvZuzF/+T844uQUkRwTdvUZHcL
-         DXdN72GwaT44WbwercRp4wVntdElXcsdjdi/mZEytFC19nWdlF5yjAwoAFDtSuaEuiCG
-         sKDyovhc18OKNEVoCWOLyIe2juxtLUimMfEEhYehIgbpaUnMSpbg5ptmecKqt9KFEd+x
-         OSBLSbWExcvho1EAY558WXEXMP0rsn1WJLHzVSZ533iYANwaPYBlj7aF6tRvXjiCLhZm
-         9ttj8dGGCEKP3UkyDBCBWLiovj5zRtt/vrJZPQtVMbjwKFfqHeY3vze2o1a6xe+SXu4U
-         G8xg==
-X-Gm-Message-State: AOJu0YzGNy73/qvvSAabB5cVx9Dk4mFAnkCPhNAjY3XgeL/kWPLDQUDh
-	j8J7Jl/Ibwi+13wu+AIVQaVJOBABXpN8gAg8OdAQv8y9AbJ/Xqgx0m8MtzvYMcLdhmgCBIeqQkC
-	YghwEAsxMsI7sgLFJdYaU8SoGH9XS13rCq1aw4eC2kl4rtl5WU8AXzfmlb0X8HA88DFVY+7OU0F
-	Ss6rVIfgwFVHR/99otsM/sSM2xTeCWjabpxYjzB9Ue88M=
-X-Gm-Gg: ASbGncsNVWyeoFOPVS6kQEDWde1BSSPHooJ8c3NXjJkT769TTtf5gT/ODeLHRCcyCet
-	WtUgTvpxpiB6QtlTMgvIppk82hxTL5bXnESwed7N7tNC2QNg+vbAZw8lsUtLmEPqW2YyQTxKIS0
-	GBj8ISvgd/O8sLkGKBSvVT0AlYgXjwIprhSPre/ALqpUqvQdWVNDbwn86s14ygbzALKu55v0CQd
-	7GjU6+x+Qv/LcynxfYCmPv6j5NxkYeM3dXpPYhDSDMn6f5cD+kwbNXKDZLX8aVUV+V0q7zTjv59
-	maBI+o1J1tLX77xeOFtq/1I+U+P6mAS5luNMIQSlhs9XecHPSp+73jvzX9Od9cidtsjkyE2QoTl
-	rzNar
-X-Google-Smtp-Source: AGHT+IFpv3dghzDMqGhpgnv4NzpxRACpnDRXx35I8NKo2CkBQEInslUiejPDgKMWwry7LWraQHOiuw==
-X-Received: by 2002:a05:6871:3291:b0:2c2:3e54:553 with SMTP id 586e51a60fabf-2c780516238mr9723695fac.28.1742849262596;
-        Mon, 24 Mar 2025 13:47:42 -0700 (PDT)
+        bh=+LSFHSoalAZ07w6VDW1lgdrvU1OpL++pjEBu5OXzZIc=;
+        b=Grkc/CPby9sDuiRE+NS88Zo9UgRJbs+BBUfCJm6i1f50ihTLd9NpJZ5b6rh2rjuTcH
+         ed7WLhC2A6U1WZW0WaF7UMtbR6/OAVfkOdM6+ovya1B3Sg3K+XtqNj4pAeCj6HCBAk1D
+         kZpnqbHIgGTcj+W6kC3QpXqTcLP6fOadh0e7J2PvY3qivKbDgNLqgtNYH2NKwLJDDlzk
+         8GotxiInK0F1+C32HIpeIRSvLI0LV0ifsR1qTt0t9GIFWNHe1R9a1e0k9qnrSMAQ2nA0
+         K290PRZ0BUDcMmAV7vCdikl+/IfVcTm5umVDOMMG7ytBDZ1jS8zja6P5NrWFW0lhgyVv
+         ogPQ==
+X-Gm-Message-State: AOJu0Yx8dtWoen14Kw0xRMP9YecRk5cZFLOKdfIJqXwfZkp0wk0x8Lf2
+	NaC6UALzaQIOlxAWVK7oqaSrfJHk0y6hFAbVBMnNJl68YPkmUKHm2rf1gLN7MRs1L11J2iRp6mS
+	o7Cy6WmBHN0k9Z40u+7CTYRnkNRkmdwo+CWvcEnKfHYql92z6lg84nYZTxwFumWOlJOlCuInsGT
+	q6xz/VWz75tDQbFmKKR7nkz4Fw/GGbBioCducwvWObegk=
+X-Gm-Gg: ASbGnctMo9F7DTO4puVdbPWaX1Va6c7op7bTedZGl2h3LqfzdOB7DNQKpZ81Kg0CDg0
+	sc6Lpm+qYHht2/jQWI4UKCl8NCcZxEjcl88SPdwcJex5LlYoMGsOymZuGSWV1D12CfVGmP6YrSX
+	jAFSpQVCwWRHllBMsTPVozK4Nnim46qixkGmyN3k9xLEBFH17XBQqK2PmB9ryKqGCuUJvHmCIjS
+	gp22WkB8/Q579gcLpgBXsFza4PZl0lrG2OPW4mnmPzrsAadHeCDN6rLTQCis2aPl6d/pdQJNO92
+	1RAv+KtvA+ejv28IPIsdDFDKbmieN6gFYWbDtpVP5Psras9WTzCLjg4Ebtp/yKTB7raUWr8l8FI
+	Ixuea
+X-Google-Smtp-Source: AGHT+IHyhQWjPBreQsUGIex36U5Zqfl8d0BaMljOEM+7z4qmAd+oetzSn5io+KZRnjqx4stZ2rgjMA==
+X-Received: by 2002:a05:6830:380e:b0:72a:18a6:d431 with SMTP id 46e09a7af769-72c0ae99824mr8858364a34.14.1742849264255;
+        Mon, 24 Mar 2025 13:47:44 -0700 (PDT)
 Received: from mail.broadcom.net ([192.19.144.250])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c77f0f6825sm2181080fac.43.2025.03.24.13.47.41
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c77f0f6825sm2181080fac.43.2025.03.24.13.47.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 13:47:41 -0700 (PDT)
+        Mon, 24 Mar 2025 13:47:43 -0700 (PDT)
 From: Kamal Dasu <kamal.dasu@broadcom.com>
 To: stable@vger.kernel.org
-Cc: Kamal Dasu <kdasu.kdev@gmail.com>,
-	Al Cooper <alcooperx@gmail.com>,
+Cc: Nathan Chancellor <nathan@kernel.org>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Kamal Dasu <kamal.dasu@broadcom.com>
-Subject: [PATCH 5.10.y 1/4] mmc: sdhci-brcmstb: Add ability to increase max clock rate for 72116b0
-Date: Mon, 24 Mar 2025 16:46:36 -0400
-Message-Id: <20250324204639.17505-1-kamal.dasu@broadcom.com>
+Subject: [PATCH 5.10.y 2/4] mmc: sdhci-brcmstb: Initialize base_clk to NULL in sdhci_brcmstb_probe()
+Date: Mon, 24 Mar 2025 16:46:37 -0400
+Message-Id: <20250324204639.17505-2-kamal.dasu@broadcom.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <2025032414-unsheathe-greedily-1d17@gregkh>
+In-Reply-To: <20250324204639.17505-1-kamal.dasu@broadcom.com>
 References: <2025032414-unsheathe-greedily-1d17@gregkh>
+ <20250324204639.17505-1-kamal.dasu@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-From: Kamal Dasu <kdasu.kdev@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
- [ upstream commit 97904a59855c7ac7c613085bc6bdc550d48524ff ]
+ [ upstream commit c3c0ed75ffbff5c70667030b5139bbb75b0a30f5 ]
 
-The 72116B0 has improved SDIO controllers that allow the max clock
-rate to be increased from a max of 100MHz to a max of 150MHz. The
-driver will need to get the clock and increase it's default rate
-and override the caps register, that still indicates a max of 100MHz.
-The new clock will be named "sdio_freq" in the DT node's "clock-names"
-list. The driver will use a DT property, "clock-frequency", to
-enable this functionality and will get the actual rate in MHz
-from the property to allow various speeds to be requested.
+Clang warns a few times along the lines of:
+
+  drivers/mmc/host/sdhci-brcmstb.c:302:6: warning: variable 'base_clk' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+          if (res)
+              ^~~
+  drivers/mmc/host/sdhci-brcmstb.c:376:24: note: uninitialized use occurs here
+          clk_disable_unprepare(base_clk);
+                                ^~~~~~~~
+
+base_clk is used in the error path before it is initialized. Initialize
+it to NULL, as clk_disable_unprepare() calls clk_disable() and
+clk_unprepare(), which both handle NULL pointers gracefully.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Al Cooper <alcooperx@gmail.com>
-Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1650
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://lore.kernel.org/r/20220520183108.47358-3-kdasu.kdev@gmail.com
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20220608152757.82529-1-nathan@kernel.org
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
 ---
- drivers/mmc/host/sdhci-brcmstb.c | 69 +++++++++++++++++++++++++++++++-
- 1 file changed, 68 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-brcmstb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-index 4d42b1810ace..8fb23b122887 100644
+index 8fb23b122887..931b34bf2af1 100644
 --- a/drivers/mmc/host/sdhci-brcmstb.c
 +++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -32,6 +32,8 @@
- struct sdhci_brcmstb_priv {
- 	void __iomem *cfg_regs;
- 	unsigned int flags;
-+	struct clk *base_clk;
-+	u32 base_freq_hz;
- };
- 
- struct brcmstb_match_priv {
-@@ -251,9 +253,11 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
- 	struct sdhci_pltfm_host *pltfm_host;
- 	const struct of_device_id *match;
- 	struct sdhci_brcmstb_priv *priv;
-+	u32 actual_clock_mhz;
+@@ -257,7 +257,7 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
  	struct sdhci_host *host;
  	struct resource *iomem;
  	struct clk *clk;
-+	struct clk *base_clk;
+-	struct clk *base_clk;
++	struct clk *base_clk = NULL;
  	int res;
  
  	match = of_match_node(sdhci_brcm_of_match, pdev->dev.of_node);
-@@ -331,6 +335,35 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
- 	if (match_priv->flags & BRCMSTB_MATCH_FLAGS_BROKEN_TIMEOUT)
- 		host->quirks |= SDHCI_QUIRK_BROKEN_TIMEOUT_VAL;
- 
-+	/* Change the base clock frequency if the DT property exists */
-+	if (device_property_read_u32(&pdev->dev, "clock-frequency",
-+				     &priv->base_freq_hz) != 0)
-+		goto add_host;
-+
-+	base_clk = devm_clk_get_optional(&pdev->dev, "sdio_freq");
-+	if (IS_ERR(base_clk)) {
-+		dev_warn(&pdev->dev, "Clock for \"sdio_freq\" not found\n");
-+		goto add_host;
-+	}
-+
-+	res = clk_prepare_enable(base_clk);
-+	if (res)
-+		goto err;
-+
-+	/* set improved clock rate */
-+	clk_set_rate(base_clk, priv->base_freq_hz);
-+	actual_clock_mhz = clk_get_rate(base_clk) / 1000000;
-+
-+	host->caps &= ~SDHCI_CLOCK_V3_BASE_MASK;
-+	host->caps |= (actual_clock_mhz << SDHCI_CLOCK_BASE_SHIFT);
-+	/* Disable presets because they are now incorrect */
-+	host->quirks2 |= SDHCI_QUIRK2_PRESET_VALUE_BROKEN;
-+
-+	dev_dbg(&pdev->dev, "Base Clock Frequency changed to %dMHz\n",
-+		actual_clock_mhz);
-+	priv->base_clk = base_clk;
-+
-+add_host:
- 	res = sdhci_brcmstb_add_host(host, priv);
- 	if (res)
- 		goto err;
-@@ -341,6 +374,7 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
- err:
- 	sdhci_pltfm_free(pdev);
- err_clk:
-+	clk_disable_unprepare(base_clk);
- 	clk_disable_unprepare(clk);
- 	return res;
- }
-@@ -352,11 +386,44 @@ static void sdhci_brcmstb_shutdown(struct platform_device *pdev)
- 
- MODULE_DEVICE_TABLE(of, sdhci_brcm_of_match);
- 
-+#ifdef CONFIG_PM_SLEEP
-+static int sdhci_brcmstb_suspend(struct device *dev)
-+{
-+	struct sdhci_host *host = dev_get_drvdata(dev);
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
-+
-+	clk_disable_unprepare(priv->base_clk);
-+	return sdhci_pltfm_suspend(dev);
-+}
-+
-+static int sdhci_brcmstb_resume(struct device *dev)
-+{
-+	struct sdhci_host *host = dev_get_drvdata(dev);
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
-+	int ret;
-+
-+	ret = sdhci_pltfm_resume(dev);
-+	if (!ret && priv->base_freq_hz) {
-+		ret = clk_prepare_enable(priv->base_clk);
-+		if (!ret)
-+			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
-+	}
-+
-+	return ret;
-+}
-+#endif
-+
-+static const struct dev_pm_ops sdhci_brcmstb_pmops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(sdhci_brcmstb_suspend, sdhci_brcmstb_resume)
-+};
-+
- static struct platform_driver sdhci_brcmstb_driver = {
- 	.driver		= {
- 		.name	= "sdhci-brcmstb",
- 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
--		.pm	= &sdhci_pltfm_pmops,
-+		.pm	= &sdhci_brcmstb_pmops,
- 		.of_match_table = of_match_ptr(sdhci_brcm_of_match),
- 	},
- 	.probe		= sdhci_brcmstb_probe,
 -- 
 2.17.1
 
