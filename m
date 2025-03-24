@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-125930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EF3A6DED5
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:34:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6176FA6DEDB
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D40C3AA8D1
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:33:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D37B16BF5A
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C5A25F982;
-	Mon, 24 Mar 2025 15:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48657261386;
+	Mon, 24 Mar 2025 15:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6L60PZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUn3R3ua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BB425E446
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072CCF513
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742830433; cv=none; b=TIKWpFU7qBbvE8lDTGkvdewX/2aAZjYUeYT749w6gFd2sU3cDSbCryZoB7mJ8xtAA3jGe5O7uHDAZItQKV+EIHsmUD3sBcC5jHE76dVCYibgxn2jTasaHBBLsG0F91wfzKzDkpF0a3wZf1wQ9kjyCBH4kNtRLzRzqGS5oXKG8Jk=
+	t=1742830472; cv=none; b=NsNDosFiAISOmfllCUQJL8+h97bzaRD/D3clYNJ1WITbqJLSzdErc4z31Y/5WqsZAU4pc6bV4Ydeiy5AP1OBO8h0I6fY8Q6QyBdOf7Ie9/xgpgk7YomyoSRyfZbCUo7cYXUCZImkxA+R22+uMllIxOurTHW6Qs9vsOU7KoIn2KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742830433; c=relaxed/simple;
-	bh=6NEgnyHQ26lRiOzhiMtveSk4/z7X6EBLLPoNWy8k/Iw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JW4ttQHEumGukI9PdxortLFi4mwmaWhLuLWtnIWYTSdJBVNSnegb9edIhm0D4bFwtci8KixoQ1nWG8mkQy+olsLoBMJajuewvy9CKVs5rDgV62Odf5mT1WRdaqecUYGdCxJtds8iUDC2SEvq3pI1QNDNlgeoAyZUvUhFdg6EvDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6L60PZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980C6C4CEDD;
-	Mon, 24 Mar 2025 15:33:52 +0000 (UTC)
+	s=arc-20240116; t=1742830472; c=relaxed/simple;
+	bh=IVmBR5zzpKEly6Z9LgCLl4r2zkXv2hVLSUdTCjWf5fE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OLJ9qk5zxbF4KBQLosthq7wGJ7ofckv+xcT7fES/xA7AJNpqyo74sc0kmv7ST+BKscWp4erKrH8jagcrSOpLR5KMHHAwDy9ZBygpB+jbXpOZGNeuU/U9q52J/hzijbYygqP+ciLb2Noq4MEPxC+fsY05oadrzAa4n3Ag7eHtB+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUn3R3ua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A85BC4CEDD;
+	Mon, 24 Mar 2025 15:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742830432;
-	bh=6NEgnyHQ26lRiOzhiMtveSk4/z7X6EBLLPoNWy8k/Iw=;
+	s=korg; t=1742830471;
+	bh=IVmBR5zzpKEly6Z9LgCLl4r2zkXv2hVLSUdTCjWf5fE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=x6L60PZZj0q9d7XGg0hiBT43JSbXmrqVmZeBm67zRKH66R2Y84zlO8kLbkFay7+Iz
-	 WK0hkGO5Dix/ICUl6saGnKsLTyIlky4iOYWA/Dcmkk8lTH/5ffxvoAumC+HhmQ0WW7
-	 oSaG821vEP/16QWDdE7fqfXfcmvMQBaMK3W3hLu8=
-Subject: FAILED: patch "[PATCH] mm/huge_memory: drop beyond-EOF folios with the right number" failed to apply to 6.12-stable tree
-To: ziy@nvidia.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,david@redhat.com,hughd@google.com,jhubbard@nvidia.com,kirill.shutemov@linux.intel.com,linmiaohe@huawei.com,mcgrof@kernel.org,p.raghav@samsung.com,ryan.roberts@arm.com,stable@vger.kernel.org,wangkefeng.wang@huawei.com,willy@infradead.org,yang@os.amperecomputing.com,yuzhao@google.com
+	b=yUn3R3uaIAqYsqu17A88hdxC4FRB8ciy5jX2BhQMnIN1AecJZbP7XT3ku1mD4SHbz
+	 m477AveIdJTeU8RafWwQwmWePwCeUwG2CiN1fMKUe9I6rGo/k3hvXnd4IJnwL0jf7v
+	 kNuxugYYTBwArITKyLulO1FavdjgC27aZI+2Dywg=
+Subject: FAILED: patch "[PATCH] proc: fix UAF in proc_get_inode()" failed to apply to 5.4-stable tree
+To: yebin10@huawei.com,adobriyan@gmail.com,akpm@linux-foundation.org,davem@davemloft.net,stable@vger.kernel.org,viro@zeniv.linux.org.uk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Mar 2025 08:32:30 -0700
-Message-ID: <2025032430-granny-hunter-c6a5@gregkh>
+Date: Mon, 24 Mar 2025 08:33:09 -0700
+Message-ID: <2025032409-unnamable-entertain-9026@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 14efb4793519d73fb2902bb0ece319b886e4b4b9
+git cherry-pick -x 654b33ada4ab5e926cd9c570196fefa7bec7c1df
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032430-granny-hunter-c6a5@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032409-unnamable-entertain-9026@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,53 +77,179 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 14efb4793519d73fb2902bb0ece319b886e4b4b9 Mon Sep 17 00:00:00 2001
-From: Zi Yan <ziy@nvidia.com>
-Date: Mon, 10 Mar 2025 11:57:27 -0400
-Subject: [PATCH] mm/huge_memory: drop beyond-EOF folios with the right number
- of refs
+From 654b33ada4ab5e926cd9c570196fefa7bec7c1df Mon Sep 17 00:00:00 2001
+From: Ye Bin <yebin10@huawei.com>
+Date: Sat, 1 Mar 2025 15:06:24 +0300
+Subject: [PATCH] proc: fix UAF in proc_get_inode()
 
-When an after-split folio is large and needs to be dropped due to EOF,
-folio_put_refs(folio, folio_nr_pages(folio)) should be used to drop all
-page cache refs.  Otherwise, the folio will not be freed, causing memory
-leak.
+Fix race between rmmod and /proc/XXX's inode instantiation.
 
-This leak would happen on a filesystem with blocksize > page_size and a
-truncate is performed, where the blocksize makes folios split to >0 order
-ones, causing truncated folios not being freed.
+The bug is that pde->proc_ops don't belong to /proc, it belongs to a
+module, therefore dereferencing it after /proc entry has been registered
+is a bug unless use_pde/unuse_pde() pair has been used.
 
-Link: https://lkml.kernel.org/r/20250310155727.472846-1-ziy@nvidia.com
-Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: Hugh Dickins <hughd@google.com>
-Closes: https://lore.kernel.org/all/fcbadb7f-dd3e-21df-f9a7-2853b53183c4@google.com/
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Kirill A. Shuemov <kirill.shutemov@linux.intel.com>
-Cc: Luis Chamberalin <mcgrof@kernel.org>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Pankaj Raghav <p.raghav@samsung.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yang Shi <yang@os.amperecomputing.com>
-Cc: Yu Zhao <yuzhao@google.com>
+use_pde/unuse_pde can be avoided (2 atomic ops!) because pde->proc_ops
+never changes so information necessary for inode instantiation can be
+saved _before_ proc_register() in PDE itself and used later, avoiding
+pde->proc_ops->...  dereference.
+
+      rmmod                         lookup
+sys_delete_module
+                         proc_lookup_de
+			   pde_get(de);
+			   proc_get_inode(dir->i_sb, de);
+  mod->exit()
+    proc_remove
+      remove_proc_subtree
+       proc_entry_rundown(de);
+  free_module(mod);
+
+                               if (S_ISREG(inode->i_mode))
+	                         if (de->proc_ops->proc_read_iter)
+                           --> As module is already freed, will trigger UAF
+
+BUG: unable to handle page fault for address: fffffbfff80a702b
+PGD 817fc4067 P4D 817fc4067 PUD 817fc0067 PMD 102ef4067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 26 UID: 0 PID: 2667 Comm: ls Tainted: G
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+RIP: 0010:proc_get_inode+0x302/0x6e0
+RSP: 0018:ffff88811c837998 EFLAGS: 00010a06
+RAX: dffffc0000000000 RBX: ffffffffc0538140 RCX: 0000000000000007
+RDX: 1ffffffff80a702b RSI: 0000000000000001 RDI: ffffffffc0538158
+RBP: ffff8881299a6000 R08: 0000000067bbe1e5 R09: 1ffff11023906f20
+R10: ffffffffb560ca07 R11: ffffffffb2b43a58 R12: ffff888105bb78f0
+R13: ffff888100518048 R14: ffff8881299a6004 R15: 0000000000000001
+FS:  00007f95b9686840(0000) GS:ffff8883af100000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffffbfff80a702b CR3: 0000000117dd2000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ proc_lookup_de+0x11f/0x2e0
+ __lookup_slow+0x188/0x350
+ walk_component+0x2ab/0x4f0
+ path_lookupat+0x120/0x660
+ filename_lookup+0x1ce/0x560
+ vfs_statx+0xac/0x150
+ __do_sys_newstat+0x96/0x110
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[adobriyan@gmail.com: don't do 2 atomic ops on the common path]
+Link: https://lkml.kernel.org/r/3d25ded0-1739-447e-812b-e34da7990dcf@p183
+Fixes: 778f3dd5a13c ("Fix procfs compat_ioctl regression")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: David S. Miller <davem@davemloft.net>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 3d3ebdc002d5..373781b21e5c 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3304,7 +3304,7 @@ static void __split_huge_page(struct page *page, struct list_head *list,
- 				folio_account_cleaned(tail,
- 					inode_to_wb(folio->mapping->host));
- 			__filemap_remove_folio(tail, NULL);
--			folio_put(tail);
-+			folio_put_refs(tail, folio_nr_pages(tail));
- 		} else if (!folio_test_anon(folio)) {
- 			__xa_store(&folio->mapping->i_pages, tail->index,
- 					tail, 0);
+diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+index 8ec90826a49e..a3e22803cddf 100644
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -559,10 +559,16 @@ struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
+ 	return p;
+ }
+ 
+-static inline void pde_set_flags(struct proc_dir_entry *pde)
++static void pde_set_flags(struct proc_dir_entry *pde)
+ {
+ 	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+ 		pde->flags |= PROC_ENTRY_PERMANENT;
++	if (pde->proc_ops->proc_read_iter)
++		pde->flags |= PROC_ENTRY_proc_read_iter;
++#ifdef CONFIG_COMPAT
++	if (pde->proc_ops->proc_compat_ioctl)
++		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
++#endif
+ }
+ 
+ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+@@ -626,6 +632,7 @@ struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
+ 	p->proc_ops = &proc_seq_ops;
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_seq_private);
+@@ -656,6 +663,7 @@ struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
+ 		return NULL;
+ 	p->proc_ops = &proc_single_ops;
+ 	p->single_show = show;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_single_data);
+diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+index 626ad7bd94f2..a3eb3b740f76 100644
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -656,13 +656,13 @@ struct inode *proc_get_inode(struct super_block *sb, struct proc_dir_entry *de)
+ 
+ 	if (S_ISREG(inode->i_mode)) {
+ 		inode->i_op = de->proc_iops;
+-		if (de->proc_ops->proc_read_iter)
++		if (pde_has_proc_read_iter(de))
+ 			inode->i_fop = &proc_iter_file_ops;
+ 		else
+ 			inode->i_fop = &proc_reg_file_ops;
+ #ifdef CONFIG_COMPAT
+-		if (de->proc_ops->proc_compat_ioctl) {
+-			if (de->proc_ops->proc_read_iter)
++		if (pde_has_proc_compat_ioctl(de)) {
++			if (pde_has_proc_read_iter(de))
+ 				inode->i_fop = &proc_iter_file_ops_compat;
+ 			else
+ 				inode->i_fop = &proc_reg_file_ops_compat;
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index 1695509370b8..77a517f91821 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -85,6 +85,20 @@ static inline void pde_make_permanent(struct proc_dir_entry *pde)
+ 	pde->flags |= PROC_ENTRY_PERMANENT;
+ }
+ 
++static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
++{
++	return pde->flags & PROC_ENTRY_proc_read_iter;
++}
++
++static inline bool pde_has_proc_compat_ioctl(const struct proc_dir_entry *pde)
++{
++#ifdef CONFIG_COMPAT
++	return pde->flags & PROC_ENTRY_proc_compat_ioctl;
++#else
++	return false;
++#endif
++}
++
+ extern struct kmem_cache *proc_dir_entry_cache;
+ void pde_free(struct proc_dir_entry *pde);
+ 
+diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
+index 0b2a89854440..ea62201c74c4 100644
+--- a/include/linux/proc_fs.h
++++ b/include/linux/proc_fs.h
+@@ -20,10 +20,13 @@ enum {
+ 	 * If in doubt, ignore this flag.
+ 	 */
+ #ifdef MODULE
+-	PROC_ENTRY_PERMANENT = 0U,
++	PROC_ENTRY_PERMANENT		= 0U,
+ #else
+-	PROC_ENTRY_PERMANENT = 1U << 0,
++	PROC_ENTRY_PERMANENT		= 1U << 0,
+ #endif
++
++	PROC_ENTRY_proc_read_iter	= 1U << 1,
++	PROC_ENTRY_proc_compat_ioctl	= 1U << 2,
+ };
+ 
+ struct proc_ops {
 
 
