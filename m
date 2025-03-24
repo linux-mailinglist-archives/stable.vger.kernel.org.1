@@ -1,167 +1,158 @@
-Return-Path: <stable+bounces-125978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDCBA6E54C
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 22:15:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03687A6E55F
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 22:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A5DF174E9C
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:12:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 860827A7756
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B241DF73D;
-	Mon, 24 Mar 2025 21:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442201E98F2;
+	Mon, 24 Mar 2025 21:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbpfAzhb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bixBpWlw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109831DF971
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 21:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FC81DF72C;
+	Mon, 24 Mar 2025 21:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742850618; cv=none; b=HfM/dRGmIb37zKST3W2tUQYKV8UiQK0KuA/wXzXPFOt27AjNeMx6wrgoT0/XFKT9QSCVZX7YEV0QodKeORe7F5DHxDCXu1ywQeMdOzWobtuipZ9RUQY/i1UoyS13lHq+tTK7mstHuhkRofuJb/J0SUkwdHUUqyO0b6vmSVZ6UJ4=
+	t=1742850948; cv=none; b=ZrrZhLXTAnPLTNeyQggWenl8W2Po/qGmg+/C9tL3pLfJKhkO7s6rNqfSJTqUf/SohKcSEqSBgbu4Nd9MwZh3iCExEyn590BWkuyXU+0wke6BfC+V4Xgyy7XXNuOd8E0g1NZijIB+JynA4m/0L2eInVXBja24cKdxUm4RwcRRX5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742850618; c=relaxed/simple;
-	bh=YRZbxcF9Di2VYHWGkzvCqQPBnLYjWa0qGJ8pQ0rENWw=;
+	s=arc-20240116; t=1742850948; c=relaxed/simple;
+	bh=sg90PfFqCUCmU+2v+BsRP6GS/5oxOs7ge6RVmWp0PvA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bx19UtT1VaZQvTEjxo+iha4ab36d2aflcH+cdNoUwNbEYJ0xVASi+thnUYdBxgmdhxzEfoNudRpPy6rYSTO4nLy2v3CJM/dNgqNmJBTrLXkocL/CLdPe3Nl777DzhLJM/LwriqjwFBxNX2FgyYAELnA3cwvi5e73iN/JglHUA8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbpfAzhb; arc=none smtp.client-ip=209.85.219.181
+	 To:Cc:Content-Type; b=VBuur6TPQHNDVvAUTflF7yE3MYPWvj22GKZFiMuZvToyqzSW5wb9zzoYfJB07++kEe1gkdOqbQMcruArXU3nqgB/IL0etbCOFkPKfudRdtVdEIZc9vgXLWtmxrxANa4R6TiwhauvzYznE9CRgLKAqZiF2VRcsgNkZ670wG2SiiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bixBpWlw; arc=none smtp.client-ip=209.85.219.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e637669ef11so3297302276.1
-        for <stable@vger.kernel.org>; Mon, 24 Mar 2025 14:10:15 -0700 (PDT)
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6e8f4c50a8fso41012586d6.1;
+        Mon, 24 Mar 2025 14:15:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742850615; x=1743455415; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742850945; x=1743455745; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9K3UkVzO6u1eafgMPvZcwTg1nhlQ6wrhXV7skiiCRrk=;
-        b=BbpfAzhbb6sbVemVGOaY7EfLRfl+HsNuaOmsQiEFKZvyoli13yapb+eaImkgjP9IMk
-         PYcabnodW1C/ZrCv9Nxnq5HB3eWCjbiWxw5jbjqv/NyWelNjC47Z1j2KFAH4ylDTgmLx
-         seR9PB2q18aR79JMzpX16K8lXxLvJc7GRMpttok1xfKca20en2GF50HNca16zU3DKr75
-         ESXJssL7ixUNfOVhl4maNgMPmZMuSUwt1TCC6EAcJKf22RS/IrwgXuHPPP8OhhGHQcQq
-         1sjy65q2esH+MSm81xOFm48ewieKjKLgubzfW+dG+G7OVxEW8+VcKdTzMAND2e/tU76S
-         vbHA==
+        bh=lSKBIP8Mkd5GDvgLOVXFICnmH/X830uwa0zqRwzeZJE=;
+        b=bixBpWlwkkM4MCwC5oPsIVmGd8D9Nm9lAgIwlHFI7Vwmk2zgqPU17JEUGRE2oUcZe0
+         9HJ5DC15HYE6O41OJnNp7cjzeBOvWE4D/6LL2J6jE9/5Q1BB7mSCXM3jN+yK0dRQgpm9
+         QVT6n1w+NVTnytlPo6AuUL0V9we+FTiJ0dVoI2h4iP68JmZFUU1NPfdkv8Id1XUCQZyw
+         kpgHHPhnbd/a3kIsERYSjj+dkyNBZ5RKSVWYRXYXN55Pnl4Z0xkSyd2FDce7yXFxUf0t
+         vB8V077ZNMx+Xa7cn7ISV9IzxUODu3PJjrvTLwbl9UupaAavIIHdW3pBblJaXmMX9+Jr
+         EMyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742850615; x=1743455415;
+        d=1e100.net; s=20230601; t=1742850945; x=1743455745;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9K3UkVzO6u1eafgMPvZcwTg1nhlQ6wrhXV7skiiCRrk=;
-        b=f6U+Hg8yjOPB6ScN0yrqjT+9haC1VRNnQcSXnc94Bm9EgWVEPtHOjrz/IYZ0Sg1tbT
-         I8ZjVOzIt1lEeW6VOJn7ksi4vO/ca1DWH/cCfNYeCyzxPWzvJGRaCY1EOBJhAvuzLC3Z
-         7XvqPs1tfD0MFsRQ4krVM9a+8FoTGPyh3jTIOoH9dRYC9LUhLpfBT8qqNUglaf5Cifc+
-         AZ14OVx6iPAdeN5mQ3EcZAIuPnUb/W5A1fvkkZJUPCuKc0Dp8W7SGS4pL76lu4SdT58t
-         TXZDb99pWOh/lni4ogqH7Jn2AetNb7yduhPCtVJyYXgMBfkHd0+hGZI4W0n6qgDoPP8n
-         oh7g==
-X-Gm-Message-State: AOJu0Yw4i36JsZKWWDLw9mQjfAZ8XcY5pWmEzIMOgPHjtWQXZM2IFTZo
-	ltPh+rsmWboTkztiro/VTKeB3l/HIbA4J3SHpHW66GgHD7SGlKPcWQML4ZVVp43ht81bOvqiU0u
-	u2O2hZ1rvX1NVShzkfUGIhZVIIbk=
-X-Gm-Gg: ASbGnctTzkhkinryAL9rTeHjd1PChZ/+Lw8Yl0Ev4yqWoQ16kcthZeRIJJLkjS2WB6X
-	UI4ZATkqFLcscl4nn/fs3RxeQLJe9bB35hi4UkA5mpBstvUDskBmxUBK/o0J7Jf37kFwAIB74uM
-	kfZFa7c9GxoeHnGH5ymKtwDjx2wl7DUosZ4PKouv8doBE4HwkRafcwwPzGry4R
-X-Google-Smtp-Source: AGHT+IFerCxCCwUUpDBIAiN7KAA7euu+0sIt9AIHc7jrhXc125Ajrapc5AB1zqBgXQleiZB5PWXL93vA3meHFQlaihQ=
-X-Received: by 2002:a05:6902:1682:b0:e63:f2e6:9a4b with SMTP id
- 3f1490d57ef6-e66a4db0158mr17773691276.16.1742850614492; Mon, 24 Mar 2025
- 14:10:14 -0700 (PDT)
+        bh=lSKBIP8Mkd5GDvgLOVXFICnmH/X830uwa0zqRwzeZJE=;
+        b=GDDtwTDoUNIPA2Kvmukf0Egx2kZ/YTZt9/eZfweYLY1suwI8LjSeiAbJI99HpomoHQ
+         7VK+wBI0yc7/fU0CcDCytCgX1zkLEpDIjNc+rfxOCRrI2FWEmi5AhiOMZ595tlae2nPi
+         6pajqvkVWDuycKhd0CXrQDsd8g7EeR3cg0RDTbavk+cCW6CI+SekAKmGysU7oy6czwVx
+         OaquSNYGx1UEOymNOk8ldBreHkX4/X06WDrucd52R+ayPJnm0vqiOzw1X8f2ju+Ic8Ra
+         3d2I7Gu1zfqkY6/wTydNF76S0oflgm7cy4l4xb/oFO7GdsMS+gauEWFkVQX3HEVV6f0o
+         T6QA==
+X-Forwarded-Encrypted: i=1; AJvYcCUurusHZWjyn45c7tjZLkNEEMdGOqc7Q6cjsRfjWcByJFhdwCX0c+8WBPuMhtzmfuyBcNhwaNnx@vger.kernel.org, AJvYcCXU7BiWSBHqY/OGAlKbLL4skmA3/OxCPQLStIHBXsvSkd5HVBnVmaGngJIznwGyMnEw23GtPHQR8ekeobE=@vger.kernel.org, AJvYcCXfIljA8NfpXnN0NO1VWo30Gx8FM9bZ4Ca4FPlpzD//K22rbVmkYMpWUq8Mcl6H2tkEyy7DDhRiEDa/fM+u@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsSmdS6hwaUbt4yYsN62gZFwWal2rhU+4q+gO8sraNw6FDgK+O
+	V4OxsV58o+zL2SFktVepR4BZt4xI3HLrJi3fEUakbQoTNUjRUwTxzR3MvvdYZZMoFu65+hd+0le
+	NaM3ZIuSznlWQgI4ZhC+uFOBN1hw=
+X-Gm-Gg: ASbGnctQdikd1r5LcpMlQoLNvnXVYWDWoRWVYeBcmj5FNv8p24rcKbizIl0Wq3hjACM
+	Cp19pYncKg4P6HqBT7vquT5CWkgL481SZBt0iES3nUKQGv/zySJIqfPaxl82JZAdDBqSv91u2JD
+	D/PVgF3BKbacw2gI52mExSqHA5
+X-Google-Smtp-Source: AGHT+IFiDPL/9ISevfih3CU+IAz3/VPVmZN+89C5TtaK3nDklX0FR4qkhj35fyVMgxs6lvCDmNrjxWYjkj+AwQVv5+8=
+X-Received: by 2002:a05:6214:ca9:b0:6e8:9a2a:145b with SMTP id
+ 6a1803df08f44-6eb3f2d6f65mr232017376d6.23.1742850944891; Mon, 24 Mar 2025
+ 14:15:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250313202550.2257219-15-leah.rumancik@gmail.com>
- <6pxyzwujo52p4bp2otliyssjcvsfydd6ju32eusdlyhzhpjh4q@eze6eh7rtidg>
- <CACzhbgRpgGFvmizpS16L4bRqtAzGAhspkO1Gs2NP67RTpfn-vA@mail.gmail.com>
- <oowb64nazgqkj2ozqfodnqgihyviwkfrdassz7ou5nacpuppr3@msmmbqpp355i>
- <CACzhbgQ4k6Lk33CrdPsO12aiy1gEpvodvtLMWp6Ue7V2J4pu4Q@mail.gmail.com> <wv2if5xumnqjlw6dnedf5644swcdxkc6yrpf7lplrkyqxwdy4r@rt4ccsmvgby4>
-In-Reply-To: <wv2if5xumnqjlw6dnedf5644swcdxkc6yrpf7lplrkyqxwdy4r@rt4ccsmvgby4>
-From: Leah Rumancik <leah.rumancik@gmail.com>
-Date: Mon, 24 Mar 2025 14:10:03 -0700
-X-Gm-Features: AQ5f1Jq7PETmJp_Xhit-cP_ru4m2aFCBfqXg2exRGW7xMe38WTTmErP4Zzt3J3M
-Message-ID: <CACzhbgQ2dD7A4hYDES-QdcCQtkMsrdifsaTORTDebPHEooZSLg@mail.gmail.com>
-Subject: Re: [PATCH 6.1 14/29] xfs: use xfs_defer_pending objects to recover
- intent items
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: stable@vger.kernel.org, xfs-stable@lists.linux.dev, 
-	"Darrick J. Wong" <djwong@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Catherine Hoang <catherine.hoang@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, lvc-project@linuxtesting.org
+References: <20250226185625.2672936-1-yosry.ahmed@linux.dev>
+In-Reply-To: <20250226185625.2672936-1-yosry.ahmed@linux.dev>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 24 Mar 2025 17:15:33 -0400
+X-Gm-Features: AQ5f1Jr-uvoD-QGCe-ufQ2MPjnSeMYo7k_udyRgT5ya7AQurboow-ceIHS0yntI
+Message-ID: <CAKEwX=NmSaLdUHTdaCYamtdNhLVsDgzdkGbByFXmEcWe1w_esQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: zswap: fix crypto_free_acomp() deadlock in zswap_cpu_comp_dead()
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "David S. Miller" <davem@davemloft.net>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, 
+	syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-This sounds good to me.
-
-Greg, can we drop the following patches?
-
-'[PATCH 6.1 14/29] xfs: use xfs_defer_pending objects to recover'
-'[PATCH 6.1 15/29] xfs: pass the xfs_defer_pending object to iop_recover'
-'[PATCH 6.1 16/29] xfs: transfer recovered intent item ownership in
-->iop_recover'
-
-Thanks,
-leah
-
-On Mon, Mar 24, 2025 at 1:53=E2=80=AFAM Fedor Pchelkin <pchelkin@ispras.ru>=
+On Wed, Feb 26, 2025 at 1:56=E2=80=AFPM Yosry Ahmed <yosry.ahmed@linux.dev>=
  wrote:
 >
-> On Sun, 23. Mar 17:29, Leah Rumancik wrote:
-> > Okay so a summary from my understanding, correct me if I'm wrong:
-> >
-> > 03f7767c9f612 introduced the issue in both 6.1 and 6.6.
-> >
-> > On mainline, this is resolved by e5f1a5146ec3. This commit is painful
-> > to apply to 6.1 but does apply to 6.6 along with the rest of the
-> > patchset it was a part of (which is the set you just sent out for
-> > 6.6).
+> Currently, zswap_cpu_comp_dead() calls crypto_free_acomp() while holding
+> the per-CPU acomp_ctx mutex. crypto_free_acomp() then holds scomp_lock
+> (through crypto_exit_scomp_ops_async()).
 >
-> Yeah, that's all correct.
+> On the other hand, crypto_alloc_acomp_node() holds the scomp_lock
+> (through crypto_scomp_init_tfm()), and then allocates memory.
+> If the allocation results in reclaim, we may attempt to hold the per-CPU
+> acomp_ctx mutex.
 >
-> >
-> > With the stable branches we try to balance the risk of introducing new
-> > bugs via huge fixes with the benefit of the fix itself. Especially if
-> > the patches don't apply cleanly, it might not be worth the risk and
-> > effort to do the porting. Hmm, since it seems like we might not even
-> > end up taking 03f7767c9f6120 to stable, I'd propose we just drop
-> > 03f7767c9f6120 for now. If the rest of the subsequent patches in the
-> > original set apply cleanly, I don't think we need to drop them all. We
-> > can then try to fix the UAF with a more targeted approach in a later
-> > patch instead of via direct cherry-picks.
-> >
-> >  What do you think?
+> The above dependencies can cause an ABBA deadlock. For example in the
+> following scenario:
 >
-> 03f7767c9f6120 is '[PATCH 6.1 14/29] xfs: use xfs_defer_pending objects t=
-o recover'
+> (1) Task A running on CPU #1:
+>     crypto_alloc_acomp_node()
+>       Holds scomp_lock
+>       Enters reclaim
+>       Reads per_cpu_ptr(pool->acomp_ctx, 1)
 >
-> Two subsequent patches depend on it logically so should also be dropped:
+> (2) Task A is descheduled
 >
-> '[PATCH 6.1 15/29] xfs: pass the xfs_defer_pending object to iop_recover'
-> '[PATCH 6.1 16/29] xfs: transfer recovered intent item ownership in ->iop=
-_recover'
+> (3) CPU #1 goes offline
+>     zswap_cpu_comp_dead(CPU #1)
+>       Holds per_cpu_ptr(pool->acomp_ctx, 1))
+>       Calls crypto_free_acomp()
+>       Waits for scomp_lock
 >
+> (4) Task A running on CPU #2:
+>       Waits for per_cpu_ptr(pool->acomp_ctx, 1) // Read on CPU #1
+>       DEADLOCK
 >
-> On the other side, '[PATCH 6.1 13/29] xfs: don't leak recovered attri int=
-ent items'
-> which is at the start of the original patchset [1] looks OK to be taken.
-> It's rather aside from the subsequent rework patches and fixes a pinpoint
-> bug.
+> Since there is no requirement to call crypto_free_acomp() with the
+> per-CPU acomp_ctx mutex held in zswap_cpu_comp_dead(), move it after the
+> mutex is unlocked. Also move the acomp_request_free() and kfree() calls
+> for consistency and to avoid any potential sublte locking dependencies
+> in the future.
 >
-> [1]: https://lore.kernel.org/linux-xfs/170191741007.1195961.1009253680913=
-6830257.stg-ugh@frogsfrogsfrogs/
+> With this, only setting acomp_ctx fields to NULL occurs with the mutex
+> held. This is similar to how zswap_cpu_comp_prepare() only initializes
+> acomp_ctx fields with the mutex held, after performing all allocations
+> before holding the mutex.
 >
+> Opportunistically, move the NULL check on acomp_ctx so that it takes
+> place before the mutex dereference.
 >
-> So I've tried the current xfs backport series with three dropped commits:
->
-> [PATCH 6.1 14/29] xfs: use xfs_defer_pending objects to recover
-> [PATCH 6.1 15/29] xfs: pass the xfs_defer_pending object to iop_recover
-> [PATCH 6.1 16/29] xfs: transfer recovered intent item ownership in ->iop_=
-recover
->
-> (everything before and after that still applies cleanly and touches
-> other things)
->
-> and no regressions seen on my side.
+> Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources d=
+uring CPU hotunplug")
+> Reported-by: syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/67bcea51.050a0220.bbfd1.0096.GAE@goog=
+le.com/
+> Cc: <stable@vger.kernel.org>
+> Co-developed-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+As per:
+
+https://lore.kernel.org/linux-mm/Z-GjbPTEEoo76uQu@google.com/T/#m6ccc248da7=
+5acb73b75c9bf05c90c40d626b12c9
+
+Tested-by: Nhat Pham <nphamcs@gmail.com>
 
