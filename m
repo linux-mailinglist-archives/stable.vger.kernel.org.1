@@ -1,230 +1,220 @@
-Return-Path: <stable+bounces-125857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24978A6D526
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 08:35:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D48A6D54D
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 08:42:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F2903ABD11
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 07:35:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F2F318852B6
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 07:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A592512C8;
-	Mon, 24 Mar 2025 07:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559FA257451;
+	Mon, 24 Mar 2025 07:41:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E48250BF0;
-	Mon, 24 Mar 2025 07:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742801709; cv=none; b=KsnXPO5iatWhSrtHbcfVFzmrLFvFGxNXH8TEEmAHyFAhil2cofpkleftxlHeRgrkfOTsEY4weOBzecFtq3m+OvyjIc7NciycjQqU+OGEVr4kLOtHP07Jhn1GrsoJvxS35Q/XzZ5HTPw/bdrrFKzCR9vdxICe07kmCSXGnUAOEUg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742801709; c=relaxed/simple;
-	bh=kNdkIG9UPAH3v2U1o048RTeCISVVguBVoM06LHnz1Ds=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=g5kpUmyvsyykNfuC2UQHzLFnbdRvqfGzwL7rNKL0lWNo2yf70LJVBok8JenV6175KyCcTkmNxMluYMdVvUjiszF+TEyj9z6iRF9uSUjHryse+PlFLs50H99UxBPSQW+6awq6ovDIKX5F7TNGgaqO7dM3SzFPrw1N3k8WsfiVTt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB5B19ADBA
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 07:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742802116; cv=fail; b=FXjjnOY98u4Igz09Kd6pz4x60TABD+jxP6wsk57h1l22ipqx3y1o1Br/ct1ESuhJaRBB6Ppx87YAtweE0Ilww4ZUKHeY/Ct1nT+iUBjbkP8PKXhOfa3ECHDy9X1nTgNxyz2Dox6+hRmhdlqu5eFPC830zfYfsloRmCfEJxFQfC0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742802116; c=relaxed/simple;
+	bh=6JFU+/QRb2JrUWjA4iPg2UPKSz6nQ+Bt6IbZZCmzGu4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=YbJRMv7ij07CAaDaQvY86AeRYGH1IZyAWXOwLhXU7qVqO2nd7MBHqPDh8uz2zMmVDaWAwGYIyXpdd4PrcYt/25D/7XTmRwHYABjHGaOeOsMX0YPmvXd01hxPi3AY+e6TUkwRHsRFksKv8pE0AdU4kv1QtEd7llxwVOs+aRZ0UFY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O60OUf018528;
-	Mon, 24 Mar 2025 00:34:59 -0700
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hrg41mrd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 24 Mar 2025 00:34:58 -0700 (PDT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Mon, 24 Mar 2025 00:34:57 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Mon, 24 Mar 2025 00:34:55 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>,
-        <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>,
-        <linux-btrfs@vger.kernel.org>, <llfamsec@gmail.com>, <wqu@suse.com>
-Subject: [PATCH 6.6.y] btrfs: make sure that WRITTEN is set on all metadata blocks
-Date: Mon, 24 Mar 2025 15:34:54 +0800
-Message-ID: <20250324073454.3796450-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O603k9028482;
+	Mon, 24 Mar 2025 07:41:50 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2175.outbound.protection.outlook.com [104.47.57.175])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hje1hupw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Mar 2025 07:41:49 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Hq/zC67QH3onlbdYs19bdqlkbkYupwXVJvEjSPgJfA0VH3/ZRoaqUGXny5SNOIgwrYFTWYPgURnSCP5xhL1O3wI8L/MV/vDmcFPtUTNSzqwLvasdRaThr8HvJj2/vT5ILU2JNvIOYu64jaTUTtOMR+B9K5/kcE/vkblxZ54uvEDNq71MxIhX9m0eumaXFk85BHOEi7OLePiJK8SOjS6vRFpuJzXtdmLxbJKksD2WszNppUVzyST3O5jsAKE/xr0DkCj8K6NRrFdMuvo1VCjjWlR82atbd8xxaN6FRXjyN6ZRsWFK4i+9k1Qo35OtfdtZorhuFnIoHCY54pNogfjn4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xYnOK0h07bWEsdw8J70RywQCS8j73nfI8qRbQDM77vQ=;
+ b=hvFCUYn7QMm6YdmlCQVi/TeKAQ+DGo4d0H0ERDb26WvbHSJzXzkmUdcx9jWNlUFnrdxegFdF+NFIgylVZBMEx68qn+B97HqOg+Jx0K0nItZyibtei9hrXZkhqXuxMhGGLVr1veYY5VqTzKBXrGTs9JVP/+AsdENfA6QYuEfs9HgKg5nEO5Y+yNs0CxHQee2EoXQyxui9nR/4GhHiF99QpOUjPOq6Va7KxzfiHoFjIzPOatVsJnalNx25hf/LSVRiApHcfG8qh0CQh1BIyThLdkd5kAyH9WZmEE4JHqDA4m1q8GJv68uVHxWGkFGGLzsCzRbQtRhgctTptiKItxoalg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10)
+ by SJ2PR11MB8449.namprd11.prod.outlook.com (2603:10b6:a03:56f::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
+ 2025 07:41:45 +0000
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0]) by CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0%2]) with mapi id 15.20.8534.040; Mon, 24 Mar 2025
+ 07:41:45 +0000
+From: bin.lan.cn@windriver.com
+To: gregkh@linuxfoundation.org, stable@vger.kernel.org
+Cc: luiz.von.dentz@intel.com, kiran.k@intel.com, bin.lan.cn@windriver.com
+Subject: [PATCH 5.15.y] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
+Date: Mon, 24 Mar 2025 15:41:29 +0800
+Message-Id: <20250324074129.1066447-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0044.apcprd02.prod.outlook.com
+ (2603:1096:4:196::17) To CH3PR11MB8701.namprd11.prod.outlook.com
+ (2603:10b6:610:1c8::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=HZwUTjE8 c=1 sm=1 tr=0 ts=67e10b22 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=gEA-OUY-moF3Uf1y:21 a=Vs1iUdzkB0EA:10 a=maIFttP_AAAA:8 a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=iox4zFpeAAAA:8
- a=t7CeM3EgAAAA:8 a=xqbIuppjPMaPyYIW3jgA:9 a=qR24C9TJY6iBuJVj_x8Y:22 a=WzC6qhA0u3u7Ye7llzcV:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: XKmDfec6X6tV-aNjrxe3Hfm0-dMsJgX6
-X-Proofpoint-ORIG-GUID: XKmDfec6X6tV-aNjrxe3Hfm0-dMsJgX6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8701:EE_|SJ2PR11MB8449:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4c898dd2-2b97-4625-1915-08dd6aa753ab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ypNQW9QYXw83F79TgPGyT/3phQ+58uoV7fY6yxwuipbDqol9NYy1s1kuem4G?=
+ =?us-ascii?Q?2dIS+fdnWyOf0U8OfDWzJdDBlHeKRlQeu+dXouZE5K58+eMR1Lr4F/e+f2KF?=
+ =?us-ascii?Q?sC0NdD2+IUxOZLD5K6sltltmScbLFwgDfJeaYLvS0y4Imkjj0kjRw3oG8p+w?=
+ =?us-ascii?Q?99JS/7o9LRvVOMMzDXy9vk5OYrrDClo/P0krSC4sh3DPvNpu+ZRHg9tNILcJ?=
+ =?us-ascii?Q?B+Qpt9w65l3V9RDT/vQzhj5MXeovwC/qwp2xUCEZju4QUTjG5LMrtXRrvZ/b?=
+ =?us-ascii?Q?hcOCKLulIc3ZoUuXXRToDasFRD3+V8gXpCuHklgo+AX90B1LjaSteSW/wWnr?=
+ =?us-ascii?Q?2Hm3jnhnQQV/uX6UoOu5NJmLLkCKEZ5j8I3K0WJzxDtbz99JJkIw6ONpnano?=
+ =?us-ascii?Q?IWEKfjPa505V2XEsAMvGyUEeETb/24tYhSZcghaWHh9A74Hqhz2k2DVhm/Jn?=
+ =?us-ascii?Q?vQsnHC2ZU+2SUt5zA/20OPcXJCIPe8Ft7FFG+pnEEoLp1tIfMtAnAQAfA8VJ?=
+ =?us-ascii?Q?wT1KyJ/Z8iEDbeqKqJk6IXADq/iwKbU4gY+LNyTmC7jBc46iHxo6ZVIuHaOE?=
+ =?us-ascii?Q?wlNl+RHL4NpknFaCbiH0BOYhANgIxNwQZhx53h20bQ526axPkYKZXMC5mzUS?=
+ =?us-ascii?Q?kDNEK1vk9PlObaNf+bnL+wn+ZJhnGUNhccxfuobKUUjfRSH2HY1YVDMf0iMG?=
+ =?us-ascii?Q?WYTOsW8Nr6nUj+JtMHXgdo2Fndq7q1cWHUIZ2xBfaOOgNt3qN1gfg+AvTkD3?=
+ =?us-ascii?Q?FA1MlkE/ob7GUFQ8S+anGTzN96KRG57M7SO2XNPT3QYH6WymsYoTu2puHZSE?=
+ =?us-ascii?Q?IrSwizKQEgX3hwQg0vC7W2sBylg/oHz8wCKbjQlC8pQOYV1SIYaO+NcQZdl+?=
+ =?us-ascii?Q?0gSgCy7smqsJZQLNm7JXJqmBAklAV0wXk/nFdXNG29qR3Vdr3kFxavl+T08U?=
+ =?us-ascii?Q?oNx+c3vH3wHDtz0TcFbUfKLTtMu7Cvd302CBtS/6rr9iyvcTGXMnsLESoJK/?=
+ =?us-ascii?Q?od8ZrYpNsMPIwax5GInypoRfQZT7icsNP5PH9rQE+AqSb9XUSud4kANacSA2?=
+ =?us-ascii?Q?w4GyjDHlFxSCraS5jI+g7mgqo82zilr5W73dVgJ5vrW/jDuUkMtw5Px430Xs?=
+ =?us-ascii?Q?9lF12TYsKZgJuwwss/UcSijzOhlo+2/e00AxqVY9PCfoZYDIYZZssDDE4RM2?=
+ =?us-ascii?Q?E/T6GUAOH2LskFdQOwSzLMuMra38Yy1xO2wvfP479qUWJfhmkKLfuCdtpxwa?=
+ =?us-ascii?Q?e13197K0OEvHF2ubxKYlbscJ/stIehE8ITFRtbFDl7uxPZxUGon4UbTJBf9V?=
+ =?us-ascii?Q?KkFdNsKy/mSoZ64v11JCapq5983BEgaa+8iDYwJAvO2EiSjJDmm1rtMh8fhi?=
+ =?us-ascii?Q?eTC1C1m2QZtfIhQGigfg7qLBZPj8lQgKMHkw7FQ7Ok8GDcV05bYS0yDeUulu?=
+ =?us-ascii?Q?OQrltR2G4W5bXiBN2+23I0ESWuAnBIC2?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8701.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/pmkJnk2jPW53Hju5EC8a+vLH21iSIVYZNN3xdtS1SWKqn4syO6OKfNTu7di?=
+ =?us-ascii?Q?7DsK/n3ix5Vam6sE212dqvsZBKRwyxlTFEbDDcs45rnYdLX15j6pjr8fFY16?=
+ =?us-ascii?Q?lOaLbBkbpEwc2BmEcPfMkjnzsL4l3fTf0FKqAUPaDwvLBADQ5g0npX57X4JA?=
+ =?us-ascii?Q?d8EPiz4EXcdvqgI/KooJTLpXmic4297fnFDL1uRYOP3Ig9EPib7wCTZDipCS?=
+ =?us-ascii?Q?qCbGiYLeDicpgs6ALMrrIGVn+5OBd7Oee1u+uxZQ6+hQXbcqONjCFzvk+OFU?=
+ =?us-ascii?Q?2ZYtAMArMJaJkTMRCb1WrhxR8XF3kQMU+LxEZtN25TqyirvS55HYMdZxNHpi?=
+ =?us-ascii?Q?FS3oDNd1k2qkg5FU06QsUtrlauyworyGgVZjWx8FxedU7oYoXvAbhSOGLyrb?=
+ =?us-ascii?Q?nIFDhCYsUc6SECLswgCSsQm1+gjcGCvbkfnY3+EQELv8R6ulK5cE0qmKaiOZ?=
+ =?us-ascii?Q?TRBorc6R//lm+mZW78OPQrwJs3R8NbQQyK+dq+Uf+JLVKHfWW3Pw1v+G/+NY?=
+ =?us-ascii?Q?8GUB7BoQhkiiOFkpzXvzi94SfxwjAnuvJI0WdtVXHo150Q0u0s88ViqN7tx2?=
+ =?us-ascii?Q?FBzk3F+tduvVmZ/42yXVZzCAgpRMlOA2uJZeMZ5/2Kuj/mlfOlhcj1pJZwOX?=
+ =?us-ascii?Q?d4QSEXgZ69bVSS8ACSiVyL24tKQofAK716OCZv3pO5NqqIHmypV0XZUMh9m/?=
+ =?us-ascii?Q?zQwVLO803itdJwJhn0PKigivilD7heYO48AnU3+NYlbZWq9pQFAySX4raiuv?=
+ =?us-ascii?Q?uX4MJ0jVXjq+rcM/fGPLwc9HrchKASFs00k+SZ/D70ysod/YmPCNDJE/9R7+?=
+ =?us-ascii?Q?RLjZ2idfR4d6+4iNCs7+R3jQEYTZFiqtDSNq2xK2+A3kzYh6leIuaGX9MeUN?=
+ =?us-ascii?Q?jupV1RuFuQY8Sl69nci2pUauIHFpIdYOUO+gfWBuf3kbxVWxXgniNoaoJGcm?=
+ =?us-ascii?Q?gHAIAUWbcZnxhGcS3o1zFkhif1VSv6zSVJTw9mwBt3VGeoPu2enNGYQgXhg1?=
+ =?us-ascii?Q?sm3nGKKNinDvp4lyF2lWZpWnA0n+jhEciSjZH/1zlISjiNmE+hJVWJr666qd?=
+ =?us-ascii?Q?OFwvstz5UgIYNdl6+mi+2h83RKQfKticnQ6m0yVDBM2C8AeetytCcKk+qOaa?=
+ =?us-ascii?Q?BKWTTvWnzsfsHb2pGqZFtCsLlMKBosoLFSBMv6Yh19ogVCCXkWXmk+z29zwx?=
+ =?us-ascii?Q?2YYMAqhVnj3oDPF+RrZReIyb4mlF1Ka17kGsl7aiijopgHb/RpsLWKv1FhHZ?=
+ =?us-ascii?Q?/nw46UPdTrIETPPGNSdT9+uQDPtx/GPjh0vnFuYrORDA+z79CL1Pxb4IWJxU?=
+ =?us-ascii?Q?WTmyb+0HABaUGxcm0eNDNkO+02IJPu/SeYakK0NBdcGE9SUXjNsoBBlKbDbr?=
+ =?us-ascii?Q?52bVqRN4dy9B4o83x/07ktBCthh84UQCyYalQp/NZTyisJ7dcnL+dQh5bu0p?=
+ =?us-ascii?Q?a+V9TJKGs4NVwS44D2i/GWWKlI0rZ1DaStD/B8WK7jTySRVT3nwBh0YcUNLD?=
+ =?us-ascii?Q?G3FpCKskspvM8pEZhTVV4aSkLVChDQGJn1UZadywTP53fY61MjNieEoVZNr6?=
+ =?us-ascii?Q?aOdQ9DUyNiR17YQYhfBjea+21kHHGhuQJEE9V7q+DeB4TnxgN2HA5loJDM5/?=
+ =?us-ascii?Q?fQ=3D=3D?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c898dd2-2b97-4625-1915-08dd6aa753ab
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8701.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 07:41:45.3886
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: h161V4rSMQh+9Qtm2Y5/UEGmjzWLIA7JpiaoggwROVzsKfIvNcRapw0/w4TuM6TgLigD3S4+s4dm+plsqVR6NA87HgrWlQPuKdO3Fb9ouKw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8449
+X-Authority-Analysis: v=2.4 cv=KPVaDEFo c=1 sm=1 tr=0 ts=67e10cbd cx=c_pps a=p6j+uggflNHdUAyuNTtjyw==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=Vs1iUdzkB0EA:10
+ a=H5OGdu5hBBwA:10 a=QyXUC8HyAAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=hN8hb0Oo4Tne0L3IsIcA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: gNwhQZgr-7asCeI6KcuRqN4ok-Cy-rvO
+X-Proofpoint-ORIG-GUID: gNwhQZgr-7asCeI6KcuRqN4ok-Cy-rvO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-24_03,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- suspectscore=0 bulkscore=0 phishscore=0 malwarescore=0 adultscore=0
- clxscore=1011 impostorscore=0 spamscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
+ adultscore=0 impostorscore=0 mlxlogscore=999 malwarescore=0 spamscore=0
+ bulkscore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501
+ clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2503240054
+ definitions=main-2503240055
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit e03418abde871314e1a3a550f4c8afb7b89cb273 ]
+[ Upstream commit b25e11f978b63cb7857890edb3a698599cddb10e ]
 
-We previously would call btrfs_check_leaf() if we had the check
-integrity code enabled, which meant that we could only run the extended
-leaf checks if we had WRITTEN set on the header flags.
+This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
+("Bluetooth: Always request for user confirmation for Just Works")
+always request user confirmation with confirm_hint set since the
+likes of bluetoothd have dedicated policy around JUST_WORKS method
+(e.g. main.conf:JustWorksRepairing).
 
-This leaves a gap in our checking, because we could end up with
-corruption on disk where WRITTEN isn't set on the leaf, and then the
-extended leaf checks don't get run which we rely on to validate all of
-the item pointers to make sure we don't access memory outside of the
-extent buffer.
-
-However, since 732fab95abe2 ("btrfs: check-integrity: remove
-CONFIG_BTRFS_FS_CHECK_INTEGRITY option") we no longer call
-btrfs_check_leaf() from btrfs_mark_buffer_dirty(), which means we only
-ever call it on blocks that are being written out, and thus have WRITTEN
-set, or that are being read in, which should have WRITTEN set.
-
-Add checks to make sure we have WRITTEN set appropriately, and then make
-sure __btrfs_check_leaf() always does the item checking.  This will
-protect us from file systems that have been corrupted and no longer have
-WRITTEN set on some of the blocks.
-
-This was hit on a crafted image tweaking the WRITTEN bit and reported by
-KASAN as out-of-bound access in the eb accessors. The example is a dir
-item at the end of an eb.
-
-  [2.042] BTRFS warning (device loop1): bad eb member start: ptr 0x3fff start 30572544 member offset 16410 size 2
-  [2.040] general protection fault, probably for non-canonical address 0xe0009d1000000003: 0000 [#1] PREEMPT SMP KASAN NOPTI
-  [2.537] KASAN: maybe wild-memory-access in range [0x0005088000000018-0x000508800000001f]
-  [2.729] CPU: 0 PID: 2587 Comm: mount Not tainted 6.8.2 #1
-  [2.729] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  [2.621] RIP: 0010:btrfs_get_16+0x34b/0x6d0
-  [2.621] RSP: 0018:ffff88810871fab8 EFLAGS: 00000206
-  [2.621] RAX: 0000a11000000003 RBX: ffff888104ff8720 RCX: ffff88811b2288c0
-  [2.621] RDX: dffffc0000000000 RSI: ffffffff81dd8aca RDI: ffff88810871f748
-  [2.621] RBP: 000000000000401a R08: 0000000000000001 R09: ffffed10210e3ee9
-  [2.621] R10: ffff88810871f74f R11: 205d323430333737 R12: 000000000000001a
-  [2.621] R13: 000508800000001a R14: 1ffff110210e3f5d R15: ffffffff850011e8
-  [2.621] FS:  00007f56ea275840(0000) GS:ffff88811b200000(0000) knlGS:0000000000000000
-  [2.621] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [2.621] CR2: 00007febd13b75c0 CR3: 000000010bb50000 CR4: 00000000000006f0
-  [2.621] Call Trace:
-  [2.621]  <TASK>
-  [2.621]  ? show_regs+0x74/0x80
-  [2.621]  ? die_addr+0x46/0xc0
-  [2.621]  ? exc_general_protection+0x161/0x2a0
-  [2.621]  ? asm_exc_general_protection+0x26/0x30
-  [2.621]  ? btrfs_get_16+0x33a/0x6d0
-  [2.621]  ? btrfs_get_16+0x34b/0x6d0
-  [2.621]  ? btrfs_get_16+0x33a/0x6d0
-  [2.621]  ? __pfx_btrfs_get_16+0x10/0x10
-  [2.621]  ? __pfx_mutex_unlock+0x10/0x10
-  [2.621]  btrfs_match_dir_item_name+0x101/0x1a0
-  [2.621]  btrfs_lookup_dir_item+0x1f3/0x280
-  [2.621]  ? __pfx_btrfs_lookup_dir_item+0x10/0x10
-  [2.621]  btrfs_get_tree+0xd25/0x1910
-
-Reported-by: lei lu <llfamsec@gmail.com>
-CC: stable@vger.kernel.org # 6.7+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ copy more details from report ]
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+CVE: CVE-2024-8805
+Cc: stable@vger.kernel.org
+Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
-Verified the build test
+Build test passed.
 ---
- fs/btrfs/tree-checker.c | 30 +++++++++++++++---------------
- fs/btrfs/tree-checker.h |  1 +
- 2 files changed, 16 insertions(+), 15 deletions(-)
+ net/bluetooth/hci_event.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
-index 53c74010140e..6d16506bbdc0 100644
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1889,6 +1889,11 @@ enum btrfs_tree_block_status __btrfs_check_leaf(struct extent_buffer *leaf)
- 		return BTRFS_TREE_BLOCK_INVALID_LEVEL;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 50e21f67a73d..83af50c3838a 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4859,19 +4859,16 @@ static void hci_user_confirm_request_evt(struct hci_dev *hdev,
+ 		goto unlock;
  	}
  
-+	if (unlikely(!btrfs_header_flag(leaf, BTRFS_HEADER_FLAG_WRITTEN))) {
-+		generic_err(leaf, 0, "invalid flag for leaf, WRITTEN not set");
-+		return BTRFS_TREE_BLOCK_WRITTEN_NOT_SET;
-+	}
-+
- 	/*
- 	 * Extent buffers from a relocation tree have a owner field that
- 	 * corresponds to the subvolume tree they are based on. So just from an
-@@ -1950,6 +1955,7 @@ enum btrfs_tree_block_status __btrfs_check_leaf(struct extent_buffer *leaf)
- 	for (slot = 0; slot < nritems; slot++) {
- 		u32 item_end_expected;
- 		u64 item_data_end;
-+		enum btrfs_tree_block_status ret;
+-	/* If no side requires MITM protection; auto-accept */
++	/* If no side requires MITM protection; use JUST_CFM method */
+ 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
+ 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
  
- 		btrfs_item_key_to_cpu(leaf, &key, slot);
- 
-@@ -2005,21 +2011,10 @@ enum btrfs_tree_block_status __btrfs_check_leaf(struct extent_buffer *leaf)
- 			return BTRFS_TREE_BLOCK_INVALID_OFFSETS;
- 		}
- 
--		/*
--		 * We only want to do this if WRITTEN is set, otherwise the leaf
--		 * may be in some intermediate state and won't appear valid.
--		 */
--		if (btrfs_header_flag(leaf, BTRFS_HEADER_FLAG_WRITTEN)) {
--			enum btrfs_tree_block_status ret;
--
--			/*
--			 * Check if the item size and content meet other
--			 * criteria
--			 */
--			ret = check_leaf_item(leaf, &key, slot, &prev_key);
--			if (unlikely(ret != BTRFS_TREE_BLOCK_CLEAN))
--				return ret;
--		}
-+		/* Check if the item size and content meet other criteria. */
-+		ret = check_leaf_item(leaf, &key, slot, &prev_key);
-+		if (unlikely(ret != BTRFS_TREE_BLOCK_CLEAN))
-+			return ret;
- 
- 		prev_key.objectid = key.objectid;
- 		prev_key.type = key.type;
-@@ -2049,6 +2044,11 @@ enum btrfs_tree_block_status __btrfs_check_node(struct extent_buffer *node)
- 	int level = btrfs_header_level(node);
- 	u64 bytenr;
- 
-+	if (unlikely(!btrfs_header_flag(node, BTRFS_HEADER_FLAG_WRITTEN))) {
-+		generic_err(node, 0, "invalid flag for node, WRITTEN not set");
-+		return BTRFS_TREE_BLOCK_WRITTEN_NOT_SET;
-+	}
-+
- 	if (unlikely(level <= 0 || level >= BTRFS_MAX_LEVEL)) {
- 		generic_err(node, 0,
- 			"invalid level for node, have %d expect [1, %d]",
-diff --git a/fs/btrfs/tree-checker.h b/fs/btrfs/tree-checker.h
-index 3c2a02a72f64..43f2ceb78f34 100644
---- a/fs/btrfs/tree-checker.h
-+++ b/fs/btrfs/tree-checker.h
-@@ -51,6 +51,7 @@ enum btrfs_tree_block_status {
- 	BTRFS_TREE_BLOCK_INVALID_BLOCKPTR,
- 	BTRFS_TREE_BLOCK_INVALID_ITEM,
- 	BTRFS_TREE_BLOCK_INVALID_OWNER,
-+	BTRFS_TREE_BLOCK_WRITTEN_NOT_SET,
- };
- 
- /*
+-		/* If we're not the initiators request authorization to
+-		 * proceed from user space (mgmt_user_confirm with
+-		 * confirm_hint set to 1). The exception is if neither
+-		 * side had MITM or if the local IO capability is
+-		 * NoInputNoOutput, in which case we do auto-accept
++		/* If we're not the initiator of request authorization and the
++		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
++		 * method (mgmt_user_confirm with confirm_hint set to 1).
+ 		 */
+ 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
+-		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
+-		    (loc_mitm || rem_mitm)) {
++		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
+ 			BT_DBG("Confirming auto-accept as acceptor");
+ 			confirm_hint = 1;
+ 			goto confirm;
 -- 
-2.25.1
+2.34.1
 
 
