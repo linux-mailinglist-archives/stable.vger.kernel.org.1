@@ -1,158 +1,155 @@
-Return-Path: <stable+bounces-125979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03687A6E55F
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 22:16:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE9CA6E597
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 22:23:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 860827A7756
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:15:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 056C93A8409
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442201E98F2;
-	Mon, 24 Mar 2025 21:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bixBpWlw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBF11DED49;
+	Mon, 24 Mar 2025 21:17:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FC81DF72C;
-	Mon, 24 Mar 2025 21:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBDA1DE2A6;
+	Mon, 24 Mar 2025 21:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742850948; cv=none; b=ZrrZhLXTAnPLTNeyQggWenl8W2Po/qGmg+/C9tL3pLfJKhkO7s6rNqfSJTqUf/SohKcSEqSBgbu4Nd9MwZh3iCExEyn590BWkuyXU+0wke6BfC+V4Xgyy7XXNuOd8E0g1NZijIB+JynA4m/0L2eInVXBja24cKdxUm4RwcRRX5A=
+	t=1742851075; cv=none; b=nTxTo+XuwYCKMYKmLJYbGd13q5nuJi87sBXKJQ4+73tYAfueH2QLgYn85z6sM1Z4ECAMILAeyayAVlJhRKGhMXY077Ej8N6wLBAlJi2CZF+C6/6/qCMpGuT2EXKEipjqJUWylXcUe3wzcJuKcws6PLCbAS6velsGLahtT0Q7CJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742850948; c=relaxed/simple;
-	bh=sg90PfFqCUCmU+2v+BsRP6GS/5oxOs7ge6RVmWp0PvA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VBuur6TPQHNDVvAUTflF7yE3MYPWvj22GKZFiMuZvToyqzSW5wb9zzoYfJB07++kEe1gkdOqbQMcruArXU3nqgB/IL0etbCOFkPKfudRdtVdEIZc9vgXLWtmxrxANa4R6TiwhauvzYznE9CRgLKAqZiF2VRcsgNkZ670wG2SiiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bixBpWlw; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6e8f4c50a8fso41012586d6.1;
-        Mon, 24 Mar 2025 14:15:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742850945; x=1743455745; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lSKBIP8Mkd5GDvgLOVXFICnmH/X830uwa0zqRwzeZJE=;
-        b=bixBpWlwkkM4MCwC5oPsIVmGd8D9Nm9lAgIwlHFI7Vwmk2zgqPU17JEUGRE2oUcZe0
-         9HJ5DC15HYE6O41OJnNp7cjzeBOvWE4D/6LL2J6jE9/5Q1BB7mSCXM3jN+yK0dRQgpm9
-         QVT6n1w+NVTnytlPo6AuUL0V9we+FTiJ0dVoI2h4iP68JmZFUU1NPfdkv8Id1XUCQZyw
-         kpgHHPhnbd/a3kIsERYSjj+dkyNBZ5RKSVWYRXYXN55Pnl4Z0xkSyd2FDce7yXFxUf0t
-         vB8V077ZNMx+Xa7cn7ISV9IzxUODu3PJjrvTLwbl9UupaAavIIHdW3pBblJaXmMX9+Jr
-         EMyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742850945; x=1743455745;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lSKBIP8Mkd5GDvgLOVXFICnmH/X830uwa0zqRwzeZJE=;
-        b=GDDtwTDoUNIPA2Kvmukf0Egx2kZ/YTZt9/eZfweYLY1suwI8LjSeiAbJI99HpomoHQ
-         7VK+wBI0yc7/fU0CcDCytCgX1zkLEpDIjNc+rfxOCRrI2FWEmi5AhiOMZ595tlae2nPi
-         6pajqvkVWDuycKhd0CXrQDsd8g7EeR3cg0RDTbavk+cCW6CI+SekAKmGysU7oy6czwVx
-         OaquSNYGx1UEOymNOk8ldBreHkX4/X06WDrucd52R+ayPJnm0vqiOzw1X8f2ju+Ic8Ra
-         3d2I7Gu1zfqkY6/wTydNF76S0oflgm7cy4l4xb/oFO7GdsMS+gauEWFkVQX3HEVV6f0o
-         T6QA==
-X-Forwarded-Encrypted: i=1; AJvYcCUurusHZWjyn45c7tjZLkNEEMdGOqc7Q6cjsRfjWcByJFhdwCX0c+8WBPuMhtzmfuyBcNhwaNnx@vger.kernel.org, AJvYcCXU7BiWSBHqY/OGAlKbLL4skmA3/OxCPQLStIHBXsvSkd5HVBnVmaGngJIznwGyMnEw23GtPHQR8ekeobE=@vger.kernel.org, AJvYcCXfIljA8NfpXnN0NO1VWo30Gx8FM9bZ4Ca4FPlpzD//K22rbVmkYMpWUq8Mcl6H2tkEyy7DDhRiEDa/fM+u@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsSmdS6hwaUbt4yYsN62gZFwWal2rhU+4q+gO8sraNw6FDgK+O
-	V4OxsV58o+zL2SFktVepR4BZt4xI3HLrJi3fEUakbQoTNUjRUwTxzR3MvvdYZZMoFu65+hd+0le
-	NaM3ZIuSznlWQgI4ZhC+uFOBN1hw=
-X-Gm-Gg: ASbGnctQdikd1r5LcpMlQoLNvnXVYWDWoRWVYeBcmj5FNv8p24rcKbizIl0Wq3hjACM
-	Cp19pYncKg4P6HqBT7vquT5CWkgL481SZBt0iES3nUKQGv/zySJIqfPaxl82JZAdDBqSv91u2JD
-	D/PVgF3BKbacw2gI52mExSqHA5
-X-Google-Smtp-Source: AGHT+IFiDPL/9ISevfih3CU+IAz3/VPVmZN+89C5TtaK3nDklX0FR4qkhj35fyVMgxs6lvCDmNrjxWYjkj+AwQVv5+8=
-X-Received: by 2002:a05:6214:ca9:b0:6e8:9a2a:145b with SMTP id
- 6a1803df08f44-6eb3f2d6f65mr232017376d6.23.1742850944891; Mon, 24 Mar 2025
- 14:15:44 -0700 (PDT)
+	s=arc-20240116; t=1742851075; c=relaxed/simple;
+	bh=/7xUjyQ71qt6xLI7T22mNaf0aqdpgvoYzL/3hPcOD7Q=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=mKcY2hi7C0TGeWbB7op9V7qhgX/xJoo54iyoXUpAKpkV9SYw+RWDqcY69BK1+jRzAJiZV1bMohxCu+Gy10qz7XXecz+6w9VFgNVJSR6UalPxT2XvqTkReFMGP8L7+MgYCKpUfpSXNRSuAICdBXaNJwjarVxAOxxpO4UfpwBBVZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BA7C4CEED;
+	Mon, 24 Mar 2025 21:17:54 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1twpBt-00000002AdK-24HW;
+	Mon, 24 Mar 2025 17:18:37 -0400
+Message-ID: <20250324211837.344696769@goodmis.org>
+User-Agent: quilt/0.68
+Date: Mon, 24 Mar 2025 17:18:23 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ Zheng Yejian <zhengyejian1@huawei.com>,
+ Kairui Song <kasong@tencent.com>,
+ Tengda Wu <wutengda@huaweicloud.com>
+Subject: [for-next][PATCH 2/3] tracing: Fix use-after-free in print_graph_function_flags during
+ tracer switching
+References: <20250324211821.731702961@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250226185625.2672936-1-yosry.ahmed@linux.dev>
-In-Reply-To: <20250226185625.2672936-1-yosry.ahmed@linux.dev>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 24 Mar 2025 17:15:33 -0400
-X-Gm-Features: AQ5f1Jr-uvoD-QGCe-ufQ2MPjnSeMYo7k_udyRgT5ya7AQurboow-ceIHS0yntI
-Message-ID: <CAKEwX=NmSaLdUHTdaCYamtdNhLVsDgzdkGbByFXmEcWe1w_esQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: zswap: fix crypto_free_acomp() deadlock in zswap_cpu_comp_dead()
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "David S. Miller" <davem@davemloft.net>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, 
-	syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-On Wed, Feb 26, 2025 at 1:56=E2=80=AFPM Yosry Ahmed <yosry.ahmed@linux.dev>=
- wrote:
->
-> Currently, zswap_cpu_comp_dead() calls crypto_free_acomp() while holding
-> the per-CPU acomp_ctx mutex. crypto_free_acomp() then holds scomp_lock
-> (through crypto_exit_scomp_ops_async()).
->
-> On the other hand, crypto_alloc_acomp_node() holds the scomp_lock
-> (through crypto_scomp_init_tfm()), and then allocates memory.
-> If the allocation results in reclaim, we may attempt to hold the per-CPU
-> acomp_ctx mutex.
->
-> The above dependencies can cause an ABBA deadlock. For example in the
-> following scenario:
->
-> (1) Task A running on CPU #1:
->     crypto_alloc_acomp_node()
->       Holds scomp_lock
->       Enters reclaim
->       Reads per_cpu_ptr(pool->acomp_ctx, 1)
->
-> (2) Task A is descheduled
->
-> (3) CPU #1 goes offline
->     zswap_cpu_comp_dead(CPU #1)
->       Holds per_cpu_ptr(pool->acomp_ctx, 1))
->       Calls crypto_free_acomp()
->       Waits for scomp_lock
->
-> (4) Task A running on CPU #2:
->       Waits for per_cpu_ptr(pool->acomp_ctx, 1) // Read on CPU #1
->       DEADLOCK
->
-> Since there is no requirement to call crypto_free_acomp() with the
-> per-CPU acomp_ctx mutex held in zswap_cpu_comp_dead(), move it after the
-> mutex is unlocked. Also move the acomp_request_free() and kfree() calls
-> for consistency and to avoid any potential sublte locking dependencies
-> in the future.
->
-> With this, only setting acomp_ctx fields to NULL occurs with the mutex
-> held. This is similar to how zswap_cpu_comp_prepare() only initializes
-> acomp_ctx fields with the mutex held, after performing all allocations
-> before holding the mutex.
->
-> Opportunistically, move the NULL check on acomp_ctx so that it takes
-> place before the mutex dereference.
->
-> Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources d=
-uring CPU hotunplug")
-> Reported-by: syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/67bcea51.050a0220.bbfd1.0096.GAE@goog=
-le.com/
-> Cc: <stable@vger.kernel.org>
-> Co-developed-by: Herbert Xu <herbert@gondor.apana.org.au>
-> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-As per:
+Kairui reported a UAF issue in print_graph_function_flags() during
+ftrace stress testing [1]. This issue can be reproduced if puting a
+'mdelay(10)' after 'mutex_unlock(&trace_types_lock)' in s_start(),
+and executing the following script:
 
-https://lore.kernel.org/linux-mm/Z-GjbPTEEoo76uQu@google.com/T/#m6ccc248da7=
-5acb73b75c9bf05c90c40d626b12c9
+  $ echo function_graph > current_tracer
+  $ cat trace > /dev/null &
+  $ sleep 5  # Ensure the 'cat' reaches the 'mdelay(10)' point
+  $ echo timerlat > current_tracer
 
-Tested-by: Nhat Pham <nphamcs@gmail.com>
+The root cause lies in the two calls to print_graph_function_flags
+within print_trace_line during each s_show():
+
+  * One through 'iter->trace->print_line()';
+  * Another through 'event->funcs->trace()', which is hidden in
+    print_trace_fmt() before print_trace_line returns.
+
+Tracer switching only updates the former, while the latter continues
+to use the print_line function of the old tracer, which in the script
+above is print_graph_function_flags.
+
+Moreover, when switching from the 'function_graph' tracer to the
+'timerlat' tracer, s_start only calls graph_trace_close of the
+'function_graph' tracer to free 'iter->private', but does not set
+it to NULL. This provides an opportunity for 'event->funcs->trace()'
+to use an invalid 'iter->private'.
+
+To fix this issue, set 'iter->private' to NULL immediately after
+freeing it in graph_trace_close(), ensuring that an invalid pointer
+is not passed to other tracers. Additionally, clean up the unnecessary
+'iter->private = NULL' during each 'cat trace' when using wakeup and
+irqsoff tracers.
+
+ [1] https://lore.kernel.org/all/20231112150030.84609-1-ryncsn@gmail.com/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Link: https://lore.kernel.org/20250320122137.23635-1-wutengda@huaweicloud.com
+Fixes: eecb91b9f98d ("tracing: Fix memleak due to race between current_tracer and trace")
+Closes: https://lore.kernel.org/all/CAMgjq7BW79KDSCyp+tZHjShSzHsScSiJxn5ffskp-QzVM06fxw@mail.gmail.com/
+Reported-by: Kairui Song <kasong@tencent.com>
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace_functions_graph.c | 1 +
+ kernel/trace/trace_irqsoff.c         | 2 --
+ kernel/trace/trace_sched_wakeup.c    | 2 --
+ 3 files changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/kernel/trace/trace_functions_graph.c b/kernel/trace/trace_functions_graph.c
+index ed61ff719aa4..2f077d4158e5 100644
+--- a/kernel/trace/trace_functions_graph.c
++++ b/kernel/trace/trace_functions_graph.c
+@@ -1611,6 +1611,7 @@ void graph_trace_close(struct trace_iterator *iter)
+ 	if (data) {
+ 		free_percpu(data->cpu_data);
+ 		kfree(data);
++		iter->private = NULL;
+ 	}
+ }
+ 
+diff --git a/kernel/trace/trace_irqsoff.c b/kernel/trace/trace_irqsoff.c
+index c8bfa7310a91..40c39e946940 100644
+--- a/kernel/trace/trace_irqsoff.c
++++ b/kernel/trace/trace_irqsoff.c
+@@ -250,8 +250,6 @@ static void irqsoff_trace_open(struct trace_iterator *iter)
+ {
+ 	if (is_graph(iter->tr))
+ 		graph_trace_open(iter);
+-	else
+-		iter->private = NULL;
+ }
+ 
+ static void irqsoff_trace_close(struct trace_iterator *iter)
+diff --git a/kernel/trace/trace_sched_wakeup.c b/kernel/trace/trace_sched_wakeup.c
+index c9ba4259e03e..a0db3404f7f7 100644
+--- a/kernel/trace/trace_sched_wakeup.c
++++ b/kernel/trace/trace_sched_wakeup.c
+@@ -188,8 +188,6 @@ static void wakeup_trace_open(struct trace_iterator *iter)
+ {
+ 	if (is_graph(iter->tr))
+ 		graph_trace_open(iter);
+-	else
+-		iter->private = NULL;
+ }
+ 
+ static void wakeup_trace_close(struct trace_iterator *iter)
+-- 
+2.47.2
+
+
 
