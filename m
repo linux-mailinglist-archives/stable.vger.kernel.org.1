@@ -1,132 +1,128 @@
-Return-Path: <stable+bounces-125879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A2FA6D858
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 11:34:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7FCA6D861
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 11:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5280169882
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 10:34:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 554013B072F
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 10:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F0925DCF5;
-	Mon, 24 Mar 2025 10:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61BE25DB18;
+	Mon, 24 Mar 2025 10:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="tzBmpe6y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F9oo3QVi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CD21953A9;
-	Mon, 24 Mar 2025 10:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF151953A9;
+	Mon, 24 Mar 2025 10:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742812444; cv=none; b=DsUqtElZiwmCKXQh/oH4umt7l73uTO+nL8rMUTzD1l107HBP/2of09LgJLoDt7QLD01Cetgthe5UBEBVsy9mOMgOVabhay+u9a41MgHTMXKhnvZ80pWk8ET5GOG7RdrvalWs4WUD/7zJI1YQMniQhSvXlafOIDOhB2sMax/6Tlg=
+	t=1742812579; cv=none; b=F42GPR7RuUSEd5kTeCmnTGp0mhrPqRPLXqocRc2sGm4JkxPKM1xsJxHzAKEuoCMvV1+JsYNAD1kVt8iKOfmbMq5UvK5wpSe/VLZCDWM3SFX9qe5z5Bg32ZOYtrrQo+zAp/5gDCLyK6dhbacB1J816xSIfp+pAYfC1+d2OvJrbec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742812444; c=relaxed/simple;
-	bh=yWHN60OPmraLqhtBq5lhjheIQXR/F7iBUPLr7BPi7R8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=S+n4n1vJE2NJc8xowjeAmJi0I1t7yZjRkmKyBU9N15vkA4h0HqJcdzbAb7Nn3y3kGA7wiY1Jzpihnilteccrv/lFDMS4dflOUGNaZy9XTb3mwlOKx0B7vptMKJhe6fxkBC3kaY54B5DceJigqfjKVm2Gju5HhkYPTwnN8dQQNvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=tzBmpe6y; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1742812579; c=relaxed/simple;
+	bh=g36vJ2OyxStHe8QDcLMn5mm8sOgJSZtKgCusIVzPoZA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=T4ObK90MFTN+1qBJv1To7n6yrdVQils0/2ZqzRxRw2PTxhybyFgIBBMtpdSL+loc/4jw9SnW1A5GIx9/BOiy1CdqrRFQT3fHkgvZCVRl7bd3WjRiMz696C8oGn+npYVNB/ucMKXM53PwXd7JEUe9hfclRjSIhK9nt/4lqX8QF+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F9oo3QVi; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43ce70f9afbso41939765e9.0;
+        Mon, 24 Mar 2025 03:36:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742812576; x=1743417376; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q5B/CeWfDacun7Zfi2gtOkvWcKPOtTpzUBlClnAfjEs=;
+        b=F9oo3QVihvndQWOrirZ2Qttb6g7oHm7NvMZ+4F4A7inJ3xxMKrG+jayLBFqPr0DncE
+         fUAxFJFx6lmaPs3ogpPdUbetaMBjI2P8+ztUj+Qx+E9ZreRtW2vpgrZJgiAHOJo6QSbo
+         j/bkvtiPEiFE7Ya+PhzBmTVIDORWK1iwkwe8LwoaitW7c5Rm2/gI9Oq6rkCo/Z4emMTm
+         uDFska4hzo3BX78pL9GVv+RNw9jjU1fV6j1KerrRkPj2D9tv0KhR+XuPh10vGLZm3XD9
+         O3Mm5cSQtvtDbO1brZCtEy2PYY47AthzmPAFOhES3B10vuRrjolNff/kIKkdSlThAjau
+         b4mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742812576; x=1743417376;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q5B/CeWfDacun7Zfi2gtOkvWcKPOtTpzUBlClnAfjEs=;
+        b=sVY0FyRhs9WqfJ7KxgeoFglerciXp1PtR8Dxs9UmYm7PcXB5G0fYHQf+tpmF+xt4KE
+         c3jcE/bE5chBWzk5yiqIZ2ryrs3+gsXsCdPI9vUznraINWlSDLEKDUrrTM+oQZm4Bgq4
+         P+And1HxittIT+JWza9IZcuiEkRrKFfkZWH1nzrKjRo/nyTx3umttnBmc7GrVvfQ2oaP
+         36EKJ1lxpafDEQzqqmBTgW8+NbRZH+ZCv/rUG1gUL2Bzf16egvJOaUFYolZ7/6BtdJob
+         SVxnM0BNzZ9edxit2sj8rKb2CojoX8L7zn9ZK77Wx76v0JQ+8IJ77CARQTdwTPHfntLY
+         n1mQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHDmPMGjFtSWDaia8rypaNBUBEeUn7rRjBGrMla5Gz911F8SdZqoOP7Bx40PMtRIXi9cyTwExU@vger.kernel.org, AJvYcCUTvKqmy4buf0TaDCzdLFNrxaM2xby3OJPN/CXfjIL7VoTT3iv0jEOikPTN5CWmjRMcf8Ss1X+8wMaqtaw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGpeRb4ZucPiIbl1/0Iu2tCu9Ax9AfbbRSkSKhpQGrV8f+grjZ
+	aKM1upnwucP/wegKKcisN3BRZirJyubq9CHQ1U1v2Y/oAJMKub65
+X-Gm-Gg: ASbGncuPp5bKYzPkYUalimQVYCSUjL6DofzLB0ZCDi6Xop66+k1fR8KdrPmWw50UitU
+	NyuS1Dlfe/a8VpMx0F1xr2rtTJuV6XJ8IYCFK/AbCKmYIyjwLypUp/moKH3rXq2VJsjwSCISHgQ
+	fdDUas8F+/IC8GXMs3qE5+MFlnSTUSu2ypU6kMQD2FWRyN4SUMHK4KE8VrTkTDNhAnPCx3v48Ea
+	lnEv6Ew2RBZjGpZA4vaf9sZVTk+2ja5zMr7H/GMj3AgNnw6MD/oVnl6H+OztPQjh8XtdDvaYWSd
+	6WvML9oZHhedcNtONDbCiH/lFX8BRmD1AdRFONsDIcCrbw==
+X-Google-Smtp-Source: AGHT+IFShNovJTwwGEmC89w1rjnLGPeYGnDCT0HO5gsvqMah4azhcYyuI3lba+zIt/Six4HniXcLoQ==
+X-Received: by 2002:a5d:6d0d:0:b0:391:41c9:7a87 with SMTP id ffacd0b85a97d-3997f940870mr11497856f8f.51.1742812575912;
+        Mon, 24 Mar 2025 03:36:15 -0700 (PDT)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:6c2b:a0d1:ba6d:a00f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9eff9asm10760895f8f.92.2025.03.24.03.36.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 03:36:15 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: mdf@kernel.org,
+	hao.wu@intel.com,
+	yilun.xu@intel.com,
+	trix@redhat.com,
+	marpagan@redhat.com,
+	russ.weight@linux.dev
+Cc: linux-fpga@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Marco Pagani <marco.pagani@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] fpga: fix potential null pointer deref in fpga_mgr_test_img_load_sgt()
+Date: Mon, 24 Mar 2025 10:35:51 +0000
+Message-Id: <20250324103551.6350-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1742812433;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eI7gPyQYRsRBMrw/lvACQBiN3JsT2YD+lfGEOC2JxYU=;
-	b=tzBmpe6y4C9C1mC187Q2hITuYbsywdQEk9ISEptzHhtaaMWMEXT9wyejk/K91P70RuDFt0
-	yh7LOLNj0Jig/SUKDRxlqgdmqpmo0oMmeKIK+xwWSbNxWJvDZzxuDLw3c6wLJ/E1WGOGGb
-	pD3aBw//mpNMo6fV55zHDAWQde+ldynndHLyeALFMMmKhlOk4AcDxIJegLTXfDXjcvBPbf
-	8y2M8OTgqv4oGnaNXRnoe31cVUh3p/UVivt/saEZKVSXm6SlwMWeDd/yvLXwB55zljrROj
-	ibghbX+nD1lzry+Y3YGz+tUT2YxukwHAEsvzw5tGERCd5xpDHei8z2x4TjtOBg==
-Date: Mon, 24 Mar 2025 11:33:53 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: linux-rockchip@lists.infradead.org, heiko@sntech.de,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, stable@vger.kernel.org, Alexey Charkov
- <alchark@gmail.com>
-Subject: Re: [PATCH] arm64: dts: rockchip: Remove overdrive-mode OPPs from
- RK3588J SoC dtsi
-In-Reply-To: <170e4d8d-33ca-4c53-9ae7-ca9d674540a9@cherry.de>
-References: <f929da061de35925ea591c969f985430e23c4a7e.1742526811.git.dsimic@manjaro.org>
- <71b7c81b-6a4e-442b-a661-04d63639962a@cherry.de>
- <960c038ad9f7b83fe14d0ded388b42f7@manjaro.org>
- <2ece5cca-50ea-4ec9-927e-e757c9c10c18@cherry.de>
- <4d25c9af4380598b35a0d55e7c77ac3d@manjaro.org>
- <170e4d8d-33ca-4c53-9ae7-ca9d674540a9@cherry.de>
-Message-ID: <17b55e889838f2c989bd0efc6528801b@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-On 2025-03-24 11:20, Quentin Schulz wrote:
-> On 3/24/25 10:53 AM, Dragan Simic wrote:
->> On 2025-03-24 10:23, Quentin Schulz wrote:
->>> On 3/23/25 11:19 AM, Dragan Simic wrote:
->>>> On 2025-03-21 10:53, Quentin Schulz wrote:
->>>>> On 3/21/25 4:28 AM, Dragan Simic wrote:
->>>>>> The differences in the vendor-approved CPU and GPU OPPs for the 
->>>>>> standard
->>>>>> Rockchip RK3588 variant [1] and the industrial Rockchip RK3588J 
->>>>>> variant [2]
->>>>>> come from the latter, presumably, supporting an extended 
->>>>>> temperature range
->>>>>> that's usually associated with industrial applications, despite 
->>>>>> the two SoC
->>>>>> variant datasheets specifying the same upper limit for the allowed 
->>>>>> ambient
->>>>>> temperature for both variants.  However, the lower temperature 
->>>>>> limit is
->>>>> 
->>>>> RK3588 is rated for 0-80°C, RK3588J for -40-85°C, c.f. Recommended
->>>>> Operating Conditions, Table 3-2, Ambient Operating Temperature.
->>>> 
->>>> Indeed, which is why I specifically wrote "specifying the same upper
->>>> limit", because having a lower negative temperature limit could 
->>>> hardly
->>>> put the RK3588J in danger of overheating or running hotter. :)
->>> 
->>> """
->>> despite the two SoC variant datasheets specifying the same upper 
->>> limit
->>> for the allowed temperature for both variants
->>> """
->>> 
->>> is incorrect. The whole range is different, yes it's only a 5°C
->>> difference for the upper limit, but they still are different.
->> 
->> I just commented on this separately, with a couple of datasheet
->> screenshots, before I saw your latest response.  Please, have
->> a look at that message.
-> 
-> I see, I had a v1.3 datasheet opened:
-> 
-> https://github.com/FanX-Tek/rk3588-TRM-and-Datasheet/blob/master/Rockchip_RK3588_Datasheet_V1.3-20220328.pdf
+fpga_mgr_test_img_load_sgt() allocates memory for sgt using
+kunit_kzalloc() however it does not check if the allocation failed. 
+It then passes sgt to sg_alloc_table(), which passes it to
+__sg_alloc_table(). This function calls memset() on sgt in an attempt to
+zero it out. If the allocation fails then sgt will be NULL and the
+memset will trigger a NULL pointer dereference.
 
-Yup, the v1.6 of the RK3588 datasheet increased the upper ambient
-temperature limit from 80 to 85 oC.
+Fix this by checking the allocation with KUNIT_ASSERT_NOT_ERR_OR_NULL().
 
-> Interestingly, it seems the RK3588S (still?) has a smaller operating 
-> range:
-> 
-> https://www.armboard.cn/download/Rockchip_RK3588S_Datasheet_V1.6-20240821.pdf
+Reviewed-by: Marco Pagani <marco.pagani@linux.dev>
+Fixes: ccbc1c302115 ("fpga: add an initial KUnit suite for the FPGA Manager")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+---
+ drivers/fpga/tests/fpga-mgr-test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Oh, that's quite interesting, I had the v1.5 as the newest version.
-The v1.6 of the RK3588S datasheet actually lowered the upper ambient
-temperature limit from 85 down to 80 oC.
+diff --git a/drivers/fpga/tests/fpga-mgr-test.c b/drivers/fpga/tests/fpga-mgr-test.c
+index 9cb37aefbac4..1902ebf5a298 100644
+--- a/drivers/fpga/tests/fpga-mgr-test.c
++++ b/drivers/fpga/tests/fpga-mgr-test.c
+@@ -263,6 +263,7 @@ static void fpga_mgr_test_img_load_sgt(struct kunit *test)
+ 	img_buf = init_test_buffer(test, IMAGE_SIZE);
+ 
+ 	sgt = kunit_kzalloc(test, sizeof(*sgt), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, sgt);
+ 	ret = sg_alloc_table(sgt, 1, GFP_KERNEL);
+ 	KUNIT_ASSERT_EQ(test, ret, 0);
+ 	sg_init_one(sgt->sgl, img_buf, IMAGE_SIZE);
+-- 
+2.39.5
+
 
