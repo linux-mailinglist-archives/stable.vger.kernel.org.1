@@ -1,115 +1,131 @@
-Return-Path: <stable+bounces-125889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C204A6DA6A
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 13:54:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD60A6DA8E
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 13:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ED3E3B1E11
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 12:54:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854E716E4E0
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 12:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D180261369;
-	Mon, 24 Mar 2025 12:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C92F25EF8A;
+	Mon, 24 Mar 2025 12:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mH3BhXIR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RZPwQE7h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6511953A2;
-	Mon, 24 Mar 2025 12:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0674225E46C
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 12:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742820770; cv=none; b=a+aq/KvDYnrtwYsQPSeEvqTiDpwJQIBLNtD8VfGzt0klcQLQWmVySqhNe2weAvC5Ag2chds70/eQF952gZLn1xVVUOcb9cqsENwCrS/mcm/CSyuxNFYVDR8FO/o+RKrd1aSajcrk5C/6QtMidPu+r13D6YI2qmyhb1yL9J8n5Tg=
+	t=1742821006; cv=none; b=BAYY5kDHdQyb4rclHW85NdEXaqfq3ZryKy//dYzM0fmf9ehHAJostmH28h7WiZuCipw4lQY58bZrQ6Zf9zCNtp7d/wZRKMLuLAZgCUOp7L5Dh6+KWJbO7mQCRT36DE5Xz97UwZ9AzMb2Feh/0pYF598Akwi5V8YacyI8vx+Hh/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742820770; c=relaxed/simple;
-	bh=l0GeOJz16oW6SGdnb06/aK2t7USSqgz1qqgSmbO45sM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L1XJeTZ1ChdQuTrAd3aoD538hjMQClLHdxNuG24qPzoygQOvR0fp91BXedTsbMq9gWWdXG68R/XzzkBuSi5clNaey1QvyScwGoSVUTv41gAbEiPnlI6+Is5zU1AOlG9x9MXi1hLADRf+LK3ZIt73Moc8ANv1jtz6nmCEVPYEVqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mH3BhXIR; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-476977848c4so43697601cf.1;
-        Mon, 24 Mar 2025 05:52:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742820768; x=1743425568; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vme9H9wmsAwxUfbsVKtvTuLGOlzu2k2VT8Gp2wTq77Q=;
-        b=mH3BhXIRtl1QPfnx97v36SLpDxHOTcYsM0cZOGnQgweIXyRsyY5UHRFLLK0hrXPb8q
-         2/Em/SdL83o49UHoYkO+YAsXTRWrfXUEMtrUp+r8lU09AOMnX6APC8uG9MMwPPvhWIus
-         pS70mn5A5KNaZFZWTSephL9wUWxovKIPsPzhXr1Y5e28MNk5AHhbevTOWsrCBnabO4Yr
-         lYdZ2m2iq7jCdGjm9dNBBiQOTd3gBHGa5G+1rI3oD3sdMeMBazXXXDwRLVXF9By/8WUE
-         6gLWbdaFYRIDvMZtqzGs6GuLT4/ul6uqsleVCi1fcFLEbokiPXXZZ+dKOyNnI6B5Zmht
-         +KcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742820768; x=1743425568;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vme9H9wmsAwxUfbsVKtvTuLGOlzu2k2VT8Gp2wTq77Q=;
-        b=wzKAY9wePM7WCFz1gVLsg4gGRTZjGgt09UBTlkNI3RqH1loscXOsvDxoV8x385Qmym
-         g92ah6VN8LSINLR79vDv0bq845Z9CSrE84M4cYvOyJg84+MaDjr++cv1hZ29gTClLeYt
-         hRbpkX07jUTsJJW4vi96c9T+hakGkQGytpjojvUpgJQxuMKwLHc64Uz4mScdA//MG4OH
-         OjqVSPUEk32xNExfqmgL7Wr5HvZkbUmboPI4O4UyOVSTf+k1Tw1UNEtplsUbdHZlZRfZ
-         mmgx/1T+v6QSZzbaB+vTYqdq2Ph036/O+dPU1pJeTqwYEVAjYuvzB2VsZljo9mxBJVvo
-         uOkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWWZsH4tH4bdBdv5QIdDMUKDrI3KrL5MzOk/9Y3cfbgZrrVoGk5mY+3dte2gBlIMddjWydDB60CWXx/1LvgcNQknS1CRw==@vger.kernel.org, AJvYcCXJqZx5joocfEbtJ+E9GUWlgvDDPIJSL60oOPTA98qdKZGQpiGbAg/BWEySQUpZBXgX19fLQufm@vger.kernel.org, AJvYcCXr7e0/gm3/eAz4dBhbF7gCfab3+arHFmM3iw35oARlVNCrIDmR2uRuY9x2+Tk9ot7ltLYL4bPwZyRHQF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6zk6l2psQaNp8QN9V41B3IwO4LguLR9OnaFtzpkr2do2GAFK6
-	8+kjTg4MuLvaxPxRkPzbDfGbnVho1mmlxEqwBCJP0g3dS5HiwuT+
-X-Gm-Gg: ASbGncs4aDVm0zBtyMVEbhszUEKqccwzVMy9Ri53xgPnXXvUdaH4HBSwSTQ7v+kwRJC
-	PLPpVutDBtOOF1dKzCGP/vx48NhK6B3YC8RkuPZHbXE5SnXyjdbXBmsAeLcee/y8h+H97eca7XU
-	1FmzAVhA81XqSIJhHmdWMMivokFlV6G3hausVL7cvIfJr19is20b8q4DgWNCUGT/i/5uCuYgOAr
-	fHnLycsFlmF3IjiV1c1zu5mqwcajsfmMHoZqcVn3nFMuOAKHqbKFp1UiralNsZR5p6aEqn7Xmhn
-	/aze6Ids0k3wDObrpVKL7rRHGtVS7bEraLhgZ65l1eQA/st7BQhVnkr8ajuQstZE3CmCO2HrirD
-	C
-X-Google-Smtp-Source: AGHT+IFBjEOy7vbR53CK0B/QWpq+o5gZGcznEE5+haT6GVIZen5thERBPa5VSCwyNKU9DrTsad2dHw==
-X-Received: by 2002:a05:620a:4556:b0:7c5:61b2:b95 with SMTP id af79cd13be357-7c5ba1840a2mr1757424785a.30.1742820768120;
-        Mon, 24 Mar 2025 05:52:48 -0700 (PDT)
-Received: from localhost (pat-199-212-65-32.resnet.yorku.ca. [199.212.65.32])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7c5b9348358sm507353785a.71.2025.03.24.05.52.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 05:52:47 -0700 (PDT)
-Date: Mon, 24 Mar 2025 08:54:21 -0400
-From: Seyediman Seyedarab <imandevel@gmail.com>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: hmh@hmh.eng.br, Hans de Goede <hdegoede@redhat.com>, 
-	ibm-acpi-devel@lists.sourceforge.net, platform-driver-x86@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org, 
-	Vlastimil Holer <vlastimil.holer@gmail.com>, crok <crok.bic@gmail.com>, 
-	Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>, Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
-Subject: Re: [PATCH v2] platform/x86: thinkpad_acpi: disable ACPI fan access
- for T495* and E560
-Message-ID: <euxpp6zdhlpg3eutc3omspt2exmsyulo5ytbpbqwxovzcy6xey@fuuhsp2agtrx>
-References: <20250324012911.68343-1-ImanDevel@gmail.com>
- <f4567e02-8478-682f-0947-765ef9258ab5@linux.intel.com>
+	s=arc-20240116; t=1742821006; c=relaxed/simple;
+	bh=Yw8mKDKj4A5P3nno8n0/AvNsmNsgLb9K768q7zqzFrw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pS7efH5hpo1m0f2xb4ouT3/e+F8dD5r3EqYy1oNZoqKvACAkO2cc9qYkppdCWhds+8c/F/SJTO9RrVgZLCHkZZeOCPcWC74HQvezbBPR+MnLw65QCIs0utYQc6FU9XYGnxcheODMykUnF9aC9mlwu3Kr8fbJDtOaJIg3KOqIi3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RZPwQE7h; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742821004; x=1774357004;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=Yw8mKDKj4A5P3nno8n0/AvNsmNsgLb9K768q7zqzFrw=;
+  b=RZPwQE7hhW8d9ZXfYqEJenbqekR+Elw0Y8/nByB1PEg3lrjPhPNTJmTU
+   xerx9pz/B5rsAp2Yt3wNZ2XelSf537qIbQj1W5hAXfu7BpccPVXh+/fxy
+   ZmksXXlr4pYnRSketbpfvjaXIlgZ81h8UZzT152BwqH4AZKvLxwMSrZfu
+   Zm+OEd5T+8Qx4T9n37KFl4M9i3sGvUXBjOZIwjlv9B3m6OagRLbRmfiKj
+   Shy9K6IH0u0zxNYVPEiB7SKxWMIdJwaRApFjTqV/0FFKQJKxOt1PKFiGY
+   jB6Q3HSF8ZhoVMW7MW3YrRiC7bcADXRrjc2XHACB1+wl4sxjUPZsiy+oh
+   A==;
+X-CSE-ConnectionGUID: LD8/b3qLTxmFIicTneV6/Q==
+X-CSE-MsgGUID: rdK3wLvXQRe/ytZl12DMNQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="47897237"
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
+   d="scan'208";a="47897237"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 05:56:42 -0700
+X-CSE-ConnectionGUID: MEoT5RkMRFiEdaKjS/hAkg==
+X-CSE-MsgGUID: PIRSDpiYSi2Ywp9dx8LvHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
+   d="scan'208";a="128732811"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.30])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 05:56:38 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Nicolas Chauvet <kwizart@gmail.com>
+Cc: Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang
+ <zhi.wang.linux@gmail.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ intel-gvt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ stable@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH 2/3] [RFC] drm/i915/gvt: Fix opregion_header->signature
+ size
+In-Reply-To: <CABr+WTmQ3rZ-UZH2Wv0R6qKegyjCovn3R7PWBeWiciAj+NbtnQ@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250324083755.12489-1-kwizart@gmail.com>
+ <20250324083755.12489-3-kwizart@gmail.com> <87pli6bwxi.fsf@intel.com>
+ <87h63ibwma.fsf@intel.com>
+ <CABr+WTmQ3rZ-UZH2Wv0R6qKegyjCovn3R7PWBeWiciAj+NbtnQ@mail.gmail.com>
+Date: Mon, 24 Mar 2025 14:56:35 +0200
+Message-ID: <87msdaa8os.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f4567e02-8478-682f-0947-765ef9258ab5@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
-Thank you for your response.
+On Mon, 24 Mar 2025, Nicolas Chauvet <kwizart@gmail.com> wrote:
+> Le lun. 24 mars 2025 =C3=A0 10:34, Jani Nikula
+> <jani.nikula@linux.intel.com> a =C3=A9crit :
+>>
+>> On Mon, 24 Mar 2025, Jani Nikula <jani.nikula@linux.intel.com> wrote:
+>> > On Mon, 24 Mar 2025, Nicolas Chauvet <kwizart@gmail.com> wrote:
+>> >> Enlarge the signature field to accept the string termination.
+>> >>
+>> >> Cc: stable@vger.kernel.org
+>> >> Fixes: 93615d59912 ("Revert drm/i915/gvt: Fix out-of-bounds buffer wr=
+ite into opregion->signature[]")
+>> >> Signed-off-by: Nicolas Chauvet <kwizart@gmail.com>
+>> >
+>> > Nope, can't do that. The packed struct is used for parsing data in
+>> > memory.
+>>
+>> Okay, so I mixed this up with display/intel_opregion.c. So it's not used
+>> for parsing here... but it's used for generating the data in memory, and
+>> we can't change the layout or contents.
+>>
+>> Regardless, we can't do either patch 2 or patch 3.
+>
+> Thanks for review.
+> So does it means the only "Fix" is to drop Werror, at least for intel/gvt=
+ code ?
 
-> > Tested-by: crok <crok.bic@gmail.com>
-> > Tested-by: Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>
-> 
-> Did these two person either give you those Tested-by tags or gave 
-> you green light to add theirs Tested-by tags? I don't see the tags given 
-> in the bugzilla entry. If they didn't yet, please ask if they're fine with 
-> you adding their Tested-by tags.
-Alireza Elikahi gave me the green light to add his Tested-by tag
-after testing on the E560. I haven't reached out to crok yet, but
-I'll send PATCH v3 as soon as I hear back from them and get their
-permission.
+Of course not. The fix is to address the warning.
 
-Kindest Regards,
-Seyediman
+There's another thread about this, see my suggestion there [1].
+
+BR,
+Jani.
+
+
+[1] https://lore.kernel.org/r/87r02ma8s3.fsf@intel.com
+
+
+> I have CONFIG_DRM_I915_WERROR not set but CONFIG_DRM_WERROR=3Dy, (same as=
+ Fedora)
+> Unsure why the current Fedora kernel is unaffected by this build failure.
+
+--=20
+Jani Nikula, Intel
 
