@@ -1,144 +1,209 @@
-Return-Path: <stable+bounces-125951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC636A6E090
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 18:07:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E27A6E0C2
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 18:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55684170FC6
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 17:06:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B63CD1888B36
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 17:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0B42641F0;
-	Mon, 24 Mar 2025 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49B12627F5;
+	Mon, 24 Mar 2025 17:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="WfIBASoi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QCZoHtE3"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E5C2641C5
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 17:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6131F1DD873
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 17:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742835968; cv=none; b=ZRpPwzvahQCodO8ZlMQ5PlW/n8Cw/lIogv8H5Xt6hbr0kgXdmah55mRD4JSTXW0sC0dCVyQjd770tYPTUU3+Z0fvi9CUfuDC+jeul4jwn7g8GhVkzEFEtPctkjcwlIIYcCHDEabBJsBw6LkCJoJAiNGGWiSfZcsXfMzTwYyYgvA=
+	t=1742837042; cv=none; b=tmtMG6SiXZSENGi6T0jrYB8HHOasmtgdlF7Qg/dnwDT/h1D6Xkj26IiHUA70iZQT+pFSlwKXbd0f7WmZsDJTm1ZC4BPMBEB8za8cYzGQ31hgJkTeSJLmM1seM2CDf31XrXwkpi49O9TECl11OBSMv73H3pI74GKtgOnIzHVhvFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742835968; c=relaxed/simple;
-	bh=tmqHuzhAZXTG4eAuu0ZnQgAzD2ivCoMGn/5U74rRFp8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o38PXedwqrStBEpYw2H2pqeTOfbaCxiKDZOIyWbrAFoGHZC/SdfP5Yy2LP98oISZUoEsNL1BpHCRjQAzVO5smVWs5YhV1XT/qqLM+9GdJGiLBU8ml4YsEF8FKjQOR/MIVgkL3Mwsjgg1JsRwIZr5TvUuTitctNVna/Chrgzja0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=WfIBASoi; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=craftyguy.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
-Message-ID: <dd1bc01c-75f4-4071-a2ac-534a12dd3029@craftyguy.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
-	s=key1; t=1742835951;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y0MUSaxC+hQA+rUwUSVWGGTFbI21s/8Et44mf+YXe3o=;
-	b=WfIBASoiCff/K2GUmPuwz0CoE4OwEWKBKn3IQq+nmjO+FBltsURxhaGA4Vl/fjgP+DY+IJ
-	eEY+5l6QH8RwNHHD0sJYmdvftHUB765X+GWF3OdpXYV+wRyOW27SDL4+me6h+nn5ixVq12
-	hbZU0RxRulGKzcSH3gy4cXzzygj9Q5sEIviMkDivvFOuV2p/JRVMxoOvDTkAJEqjD6cBXH
-	8xxTDARNCpIjG2UhXGpPqSmNX04DjWEh5f6z+W4DbHfzyLSW42oYghSM8sECjYcOCk84so
-	IfaPIQUfDIbk7Nj33LJ0Cxvs/D5kRSMoiOvWSvg0yNeDj1EOnuJG9kgpm3Fg7A==
-Date: Mon, 24 Mar 2025 10:05:44 -0700
+	s=arc-20240116; t=1742837042; c=relaxed/simple;
+	bh=65W/GePM1H/ICF2PcTOgaH636Q+aPXrrzB0iltev/Lw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KYg3PXq2ZmF5BbBiwvvNtT6dOfaDu4tSpvSJ8McciYK5NM71uH7aus5iy0KKew0VbX5DNalZd7NTdu6sifDKY8MxHngd/KQW1gqtQVNXUQaPDo/O8Fxv2UQv5JuPL1aFplpyNaMgqUTIeRR14KUrCXqeN/isIP6LvXNKIyn4PA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QCZoHtE3; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742837040; x=1774373040;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=65W/GePM1H/ICF2PcTOgaH636Q+aPXrrzB0iltev/Lw=;
+  b=QCZoHtE3wKPIKw8VkwNiLO7bU2v1iSNNsH6xVrxsL7tSBBmm4Ty/neYj
+   Qp2xDg4UCOtBgLsH4nH6bOyyvjx1HHJVFsRlApeKv7s8c8mtb2VRk0QpG
+   TRRmWPaZIEtL3pkJ9ShgXryY6IMeN8NYMRVMOylyyVFQnaCZKTMzT/Llb
+   Uz/FP/+nxbTmez7lc4OfELgOVyWA929xw1NdahSU1UuvQMpJBv5p6qpf1
+   Bh0naNZRlNXvd3j6+kwkyIA/248aJIZe8kcK9qUc2AW22WVHuO1FXvPWW
+   StMq7xGF+j4cpjLhQkichZs+iLm2Z4V11w6iXsdDzLDGJykm4j0oB9usP
+   Q==;
+X-CSE-ConnectionGUID: lav/Yn+hQIa1HtEx7r16Lg==
+X-CSE-MsgGUID: 7bLf07zFTP2I1n7jg0Ox9A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="44074046"
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
+   d="scan'208";a="44074046"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 10:24:00 -0700
+X-CSE-ConnectionGUID: iwhdbD+NR3qKv+luB1eF5Q==
+X-CSE-MsgGUID: tm95WdshT8aKckebLQ7Xnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
+   d="scan'208";a="147309727"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 10:23:59 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: <intel-xe@lists.freedesktop.org>,
+	intel-gfx@lists.freedesktop.org,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	stable@vger.kernel.org,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH v2] drm/i915/xe2hpd: Identify the memory type for SKUs with
+ GDDR + ECC
+Date: Mon, 24 Mar 2025 10:22:33 -0700
+Message-ID: <20250324-tip-v2-1-38397de319f8@intel.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] soc: qcom: pmic_glink_altmode: fix spurious DP hotplug
- events
-To: Johan Hovold <johan+linaro@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250324132448.6134-1-johan+linaro@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Clayton Craft <clayton@craftyguy.net>
-In-Reply-To: <20250324132448.6134-1-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20250321-tip-23d2af2e3291
+X-Mailer: b4 0.15-dev-c25d1
+Content-Transfer-Encoding: quoted-printable
 
-On 3/24/25 06:24, Johan Hovold wrote:
-> The PMIC GLINK driver is currently generating DisplayPort hotplug
-> notifications whenever something is connected to (or disconnected from)
-> a port regardless of the type of notification sent by the firmware.
-> 
-> These notifications are forwarded to user space by the DRM subsystem as
-> connector "change" uevents:
-> 
->      KERNEL[1556.223776] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
->      ACTION=change
->      DEVPATH=/devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0
->      SUBSYSTEM=drm
->      HOTPLUG=1
->      CONNECTOR=36
->      DEVNAME=/dev/dri/card0
->      DEVTYPE=drm_minor
->      SEQNUM=4176
->      MAJOR=226
->      MINOR=0
-> 
-> On the Lenovo ThinkPad X13s and T14s, the PMIC GLINK firmware sends two
-> identical notifications with orientation information when connecting a
-> charger, each generating a bogus DRM hotplug event. On the X13s, two
-> such notification are also sent every 90 seconds while a charger remains
-> connected, which again are forwarded to user space:
-> 
->      port = 1, svid = ff00, mode = 255, hpd_state = 0
->      payload = 01 00 00 00 00 00 00 ff 00 00 00 00 00 00 00 00
-> 
-> Note that the firmware only sends on of these when connecting an
-> ethernet adapter.
-> 
-> Fix the spurious hotplug events by only forwarding hotplug notifications
-> for the Type-C DisplayPort service id. This also reduces the number of
-> uevents from four to two when an actual DisplayPort altmode device is
-> connected:
-> 
->      port = 0, svid = ff01, mode = 2, hpd_state = 0
->      payload = 00 01 02 00 f2 0c 01 ff 03 00 00 00 00 00 00 00
->      port = 0, svid = ff01, mode = 2, hpd_state = 1
->      payload = 00 01 02 00 f2 0c 01 ff 43 00 00 00 00 00 00 00
-> 
-> Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
-> Cc: stable@vger.kernel.org	# 6.3
-> Cc: Bjorn Andersson <andersson@kernel.org>
-> Reported-by: Clayton Craft <clayton@craftyguy.net>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
-> 
-> Clayton reported seeing display flickering with recent RC kernels, which
-> may possibly be related to these spurious events being generated with
-> even greater frequency.
-> 
-> That still remains to be fully understood, but the spurious events, that
-> on the X13s are generated every 90 seconds, should be fixed either way.
-
-When a display/dock (which has ethernet) is connected, I see this 
-hotplug change event 2 times (every 30 seconds) which I think you said 
-this is expected now?
-
-> UDEV  [236.150574] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
-> UDEV  [236.588696] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
-> UDEV  [266.208175] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
-> UDEV  [266.644710] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
-> UDEV  [296.243187] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
-> UDEV  [296.678177] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
-> UDEV  [326.276256] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
-> UDEV  [326.712248] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
-
-Not sure about you seeing it every 90s vs my 30s... anyways, I no longer 
-see these events when a PD charger is connected though, so this patch 
-seems to help with that!
-
-Tested-by: Clayton Craft <clayton@craftyguy.net>
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>=0D
+=0D
+Some SKUs of Xe2_HPD platforms (such as BMG) have GDDR memory type=0D
+with ECC enabled. We need to identify this scenario and add a new=0D
+case in xelpdp_get_dram_info() to handle it. In addition, the=0D
+derating value needs to be adjusted accordingly to compensate for=0D
+the limited bandwidth.=0D
+=0D
+Bspec: 64602=0D
+Cc: Matt Roper <matthew.d.roper@intel.com>=0D
+Fixes: 3adcf970dc7e ("drm/xe/bmg: Drop force_probe requirement")=0D
+Cc: stable@vger.kernel.org=0D
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>=0D
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>=0D
+---=0D
+Changes in v2:=0D
+- Add a separate sa_info for the ecc case (Lucas)=0D
+- Link to v1: https://lore.kernel.org/r/20250214215944.187407-1-vivek.kasir=
+eddy@intel.com=0D
+---=0D
+ drivers/gpu/drm/i915/display/intel_bw.c | 12 ++++++++++++=0D
+ drivers/gpu/drm/i915/i915_drv.h         |  1 +=0D
+ drivers/gpu/drm/i915/soc/intel_dram.c   |  4 ++++=0D
+ drivers/gpu/drm/xe/xe_device_types.h    |  1 +=0D
+ 4 files changed, 18 insertions(+)=0D
+=0D
+diff --git a/drivers/gpu/drm/i915/display/intel_bw.c b/drivers/gpu/drm/i915=
+/display/intel_bw.c=0D
+index dc7612658a9da..bb81efec08a01 100644=0D
+--- a/drivers/gpu/drm/i915/display/intel_bw.c=0D
++++ b/drivers/gpu/drm/i915/display/intel_bw.c=0D
+@@ -250,6 +250,7 @@ static int icl_get_qgv_points(struct intel_display *dis=
+play,=0D
+ 			qi->deinterleave =3D 4;=0D
+ 			break;=0D
+ 		case INTEL_DRAM_GDDR:=0D
++		case INTEL_DRAM_GDDR_ECC:=0D
+ 			qi->channel_width =3D 32;=0D
+ 			break;=0D
+ 		default:=0D
+@@ -404,6 +405,12 @@ static const struct intel_sa_info xe2_hpd_sa_info =3D =
+{=0D
+ 	/* Other values not used by simplified algorithm */=0D
+ };=0D
+ =0D
++static const struct intel_sa_info xe2_hpd_ecc_sa_info =3D {=0D
++	.derating =3D 45,=0D
++	.deprogbwlimit =3D 53,=0D
++	/* Other values not used by simplified algorithm */=0D
++};=0D
++=0D
+ static const struct intel_sa_info xe3lpd_sa_info =3D {=0D
+ 	.deburst =3D 32,=0D
+ 	.deprogbwlimit =3D 65, /* GB/s */=0D
+@@ -756,11 +763,16 @@ static unsigned int icl_qgv_bw(struct intel_display *=
+display,=0D
+ =0D
+ void intel_bw_init_hw(struct intel_display *display)=0D
+ {=0D
++	const struct dram_info *dram_info =3D &to_i915(display->drm)->dram_info;=
+=0D
++=0D
+ 	if (!HAS_DISPLAY(display))=0D
+ 		return;=0D
+ =0D
+ 	if (DISPLAY_VER(display) >=3D 30)=0D
+ 		tgl_get_bw_info(display, &xe3lpd_sa_info);=0D
++	else if (DISPLAY_VERx100(display) >=3D 1401 && display->platform.dgfx &&=
+=0D
++		 dram_info->type =3D=3D INTEL_DRAM_GDDR_ECC)=0D
++		xe2_hpd_get_bw_info(display, &xe2_hpd_ecc_sa_info);=0D
+ 	else if (DISPLAY_VERx100(display) >=3D 1401 && display->platform.dgfx)=0D
+ 		xe2_hpd_get_bw_info(display, &xe2_hpd_sa_info);=0D
+ 	else if (DISPLAY_VER(display) >=3D 14)=0D
+diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_dr=
+v.h=0D
+index ffc346379cc2c..54538b6f85df5 100644=0D
+--- a/drivers/gpu/drm/i915/i915_drv.h=0D
++++ b/drivers/gpu/drm/i915/i915_drv.h=0D
+@@ -305,6 +305,7 @@ struct drm_i915_private {=0D
+ 			INTEL_DRAM_DDR5,=0D
+ 			INTEL_DRAM_LPDDR5,=0D
+ 			INTEL_DRAM_GDDR,=0D
++			INTEL_DRAM_GDDR_ECC,=0D
+ 		} type;=0D
+ 		u8 num_qgv_points;=0D
+ 		u8 num_psf_gv_points;=0D
+diff --git a/drivers/gpu/drm/i915/soc/intel_dram.c b/drivers/gpu/drm/i915/s=
+oc/intel_dram.c=0D
+index 9e310f4099f42..f60eedb0e92cf 100644=0D
+--- a/drivers/gpu/drm/i915/soc/intel_dram.c=0D
++++ b/drivers/gpu/drm/i915/soc/intel_dram.c=0D
+@@ -687,6 +687,10 @@ static int xelpdp_get_dram_info(struct drm_i915_privat=
+e *i915)=0D
+ 		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));=0D
+ 		dram_info->type =3D INTEL_DRAM_GDDR;=0D
+ 		break;=0D
++	case 9:=0D
++		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));=0D
++		dram_info->type =3D INTEL_DRAM_GDDR_ECC;=0D
++		break;=0D
+ 	default:=0D
+ 		MISSING_CASE(val);=0D
+ 		return -EINVAL;=0D
+diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_d=
+evice_types.h=0D
+index 1334174388afe..20239d6a2e985 100644=0D
+--- a/drivers/gpu/drm/xe/xe_device_types.h=0D
++++ b/drivers/gpu/drm/xe/xe_device_types.h=0D
+@@ -587,6 +587,7 @@ struct xe_device {=0D
+ 			INTEL_DRAM_DDR5,=0D
+ 			INTEL_DRAM_LPDDR5,=0D
+ 			INTEL_DRAM_GDDR,=0D
++			INTEL_DRAM_GDDR_ECC,=0D
+ 		} type;=0D
+ 		u8 num_qgv_points;=0D
+ 		u8 num_psf_gv_points;=0D
+=0D
+---=0D
+base-commit: 74f632d1bd3b90ed79883361ca25f1225c0aee58=0D
+change-id: 20250321-tip-23d2af2e3291=0D
+=0D
+Best regards,=0D
+-- =0D
+Lucas De Marchi <lucas.demarchi@intel.com>=0D
+=0D
 
