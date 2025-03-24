@@ -1,147 +1,152 @@
-Return-Path: <stable+bounces-125954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD7CA6E1D9
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 18:59:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2DFA6E24C
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 19:32:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1AE4166C17
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 17:57:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 185D23AE0EB
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 18:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A172627F5;
-	Mon, 24 Mar 2025 17:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BF21993A3;
+	Mon, 24 Mar 2025 18:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="PBL5wDwg"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="A+dKL14N"
 X-Original-To: stable@vger.kernel.org
-Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [178.154.239.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E399450;
-	Mon, 24 Mar 2025 17:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D916FF507
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 18:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742839049; cv=none; b=Hxx/0ZAl7EnOUEMIpBa+lJpaBDebyw9+SLR4Khg3g211trMLrPPwPsgZzMIEjHSYrT9iiRQSKNUIREReudqj32iV0qxnqzaxKunUvI9TZ4dgawvsVt90P6UZf+Mep+X3/tPebBxdc+L1KmoKLL2NGbQarJFFqRUPu+7Ijk4uNKE=
+	t=1742841116; cv=none; b=KIQAOuyNu3xyVWOobOqm/HSrDxg8Tuw5fpcqXSkaW6Xs6FdsXiDraMhEzy+pNKW0DtBEkDKSRVXj0geWKmTLLMneKsg8MljQdHj7/5MogRvyV8EDHGYrcI3fZgONhvDqbcxncfRL3g7LvHixyX/cI8EvZKJmXIuxTI7/EfixcBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742839049; c=relaxed/simple;
-	bh=NWMa0LZi+vB8RiQmxqV47sxMrBDDPBMaWAHnbcE9oBY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hY8XCr8Kg/6FkYJlpkM4LdoNkzIcbG5dCTzeKskURSuP20MnIOLfFC6kIZtTeQLRLDbqTtIOAuEUweC58GiJbzRB82/Mz2oN4eQ/XCXIXSmla8YyGI/attkZE7JHfRotEaNOxETD8MdINfpxh50Dw67GwYiPtvMkti/jL/kzWAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=PBL5wDwg; arc=none smtp.client-ip=178.154.239.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
-Received: from mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:4795:0:640:c576:0])
-	by forward100a.mail.yandex.net (Yandex) with ESMTPS id C05DB46D06;
-	Mon, 24 Mar 2025 20:57:14 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id CvSVLw4LiqM0-RnaISLm5;
-	Mon, 24 Mar 2025 20:57:14 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
-	t=1742839034; bh=f0JglIfLdiJdCiELGSM17hESlAkEOahyf16djTIKSYU=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=PBL5wDwg7MAbXY6t78q8y4M1UiOLqiX617xviqHqJ2ktIE/d3tDeMXk/wm0aHN50V
-	 3ZohWMKB6dxSCAGPydPlTZ37jGToShxnfpU0e0WQpPgnLeLm3mbNSKJWgA8eMptyiK
-	 130MFmmr8WJp16rc+sai/9YGhgTxj9lKB9h2NtG0=
-Authentication-Results: mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
+	s=arc-20240116; t=1742841116; c=relaxed/simple;
+	bh=Rd9f1W4SUoTIrQdR8+hMtMIoh7qDTbEspD3QsW+JBi0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N67Zhzh1PYhNpRcgBgDc2jdBLGSMGXwB9TGgYpqHondDBlb6yloFh5WQLtfzOhPOG+VrkQ6NztV9f/PPqmNmTsi0n3YE+f0tlUTe9WXztxjl0FItY5y1Wtm3f4IQQGciGMIrhZcG6qXN+tsHGYMRlaTiKIPZBwl1Cg8vEuV+mno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=A+dKL14N; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3913290f754so660421f8f.1
+        for <stable@vger.kernel.org>; Mon, 24 Mar 2025 11:31:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1742841113; x=1743445913; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s1yQlub4UdGmwkrMUv8AADmJGdzZU0hE4K3hK6gkYrM=;
+        b=A+dKL14NdJlTOxlV4vIEHNF+kkgpOxzb9GfeljOfcQ/biW/XqO1HH0xA62R5+JSndX
+         K5A8gRf1lbARcP5z8ISmU4wSt25DL+ZZZgOBViT9nUEJWXtln4AU1rBPjhB5swU2CY+S
+         ywUtToCZOyLmrCqv8X6iZbwVyLW5phqW8GoyD4r+S7u0FdbBvztBt/U+AncKfnIeromJ
+         lnxyWEBn/KtzxOmrjwaX+tEeXhTxdbRYjjBoHcgkQE564Ft2RPx5fqMzc0zswze6G4uU
+         mw1rQJ56JlxCwnxgo9/N6zdcla6yFvTTFjDlIJxi73KpLOehNuvcMOanU5iXpErg2kdf
+         4bpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742841113; x=1743445913;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s1yQlub4UdGmwkrMUv8AADmJGdzZU0hE4K3hK6gkYrM=;
+        b=m8lW4BScWVtwUtvDkCasGHLOvGI7bRh8vlERNqMID6KKO9014Do2TxDa1BuxD//n4n
+         FeOMrDF/DffWM9b3nqztEgPsuXGdbm3oYwN/GxWv33I/mygBgjkrEknZJA5pmV9REy9X
+         PjiANzKqXE27vX3w1mKNnzgOoMQce21zBuuQdqvNXP297D6vsY7wfWaXhDYB6sQ5u1M5
+         90DGU218OrIR6EzCJS3BmGIReaX2EJyEKXjmEcfprN1CYqJUXkXQSelfnGH4hDirLEIu
+         6lLTluhqhS2YfEnQukZt7bjn+IBcrot6fnPyzXZia0blkcs+Pc1gwErUh37TaRdqHCJx
+         ZBlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWv0egbwGds/BUkFmgL6Nd1G+LlqnkG7XJePThfGq6Zc4YrOQt53Tw+vil+4gP0CzFR+FkhmEU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYPD2XuXVVJGP17Gv+RwjLs6VlYqabJftffiob9cE0nssaxmb4
+	Fv40yrWG47JP372vsecZWr3evQcodAJPFZqb9uQUKv/Ayumr5s/pWvVlEfxOT40=
+X-Gm-Gg: ASbGncsQpnek0afhEQLpdBJF7qjcVDS4gvtp7Kv4YzBh67oeps0hfOW2mpL6FxJY+lF
+	/AOC9PXoYjSHNb0N4fueSgds3Im2uL1nS8FZfnkGH7PDSUQUsVrGCax/uTG6Jd8INyKlGaFhE4U
+	YFxZoZdY5V1bmOo++Ko2WYSnE1cEvtKl5p3ou51YxH0zioDJSywFSDFkSPQjKe0Cw7pSboGoUH0
+	NhQY6vPuWYtu11+TaIw4PX6tReOWAavCkatg8k/3CbbFATYElyMkiGwLJwR3dvgxGcseOQwB2Hw
+	tUgqy4m/C7p1SBOIIB3atGFutuYUO7zCRXwjD28yWAaHW3BEBRkW
+X-Google-Smtp-Source: AGHT+IE9v8F78f/HQFwsh+bXXo2tcFdaV4BstEJx4mi3doJWf2aCSypK98C6M4tA5dxJYVwLRCfWqw==
+X-Received: by 2002:a05:6000:2c8:b0:391:320d:95de with SMTP id ffacd0b85a97d-3997f8fd165mr4955100f8f.4.1742841113007;
+        Mon, 24 Mar 2025 11:31:53 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200:88bb:b389:fb44:fa3b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9a3f6bsm11877289f8f.39.2025.03.24.11.31.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 11:31:52 -0700 (PDT)
+From: =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
+To: ventana-sw-patches@ventanamicro.com
+Cc: Anup Patel <apatel@ventanamicro.com>,
+	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] KVM: x86: forcibly leave SMM mode on vCPU reset
-Date: Mon, 24 Mar 2025 20:57:07 +0300
-Message-ID: <20250324175707.19925-1-m.lobanov@rosa.ru>
-X-Mailer: git-send-email 2.47.2
+Subject: [PATCH] KVM: RISC-V: reset smstateen CSRs
+Date: Mon, 24 Mar 2025 19:26:30 +0100
+Message-ID: <20250324182626.540964-5-rkrcmar@ventanamicro.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Previously, commit ed129ec9057f ("KVM: x86: forcibly leave nested mode
-on vCPU reset") addressed an issue where a triple fault occurring in
-nested mode could lead to use-after-free scenarios. However, the commit
-did not handle the analogous situation for System Management Mode (SMM).
+Hi, I'm sending this early to ventana-sw as we hit the issue in today's
+slack discussion.  I only compile-tested it so far and it will take me a
+while to trigger a bug and verify the solution.
 
-This omission results in triggering a WARN when a vCPU reset occurs
-while still in SMM mode, due to the check in kvm_vcpu_reset(). This
-situation was reprodused using Syzkaller by:
-1) Creating a KVM VM and vCPU
-2) Sending a KVM_SMI ioctl to explicitly enter SMM
-3) Executing invalid instructions causing consecutive exceptions and
-eventually a triple fault
+---8<--
+The smstateen CSRs control which stateful features are enabled in
+VU-mode.  SU-mode must properly context switch the state of all enabled
+features.
 
-The issue manifests as follows:
+Reset the smstateen CSRs, because SU-mode might not know that it must
+context switch the state.  Reset unconditionally as it is shorter and
+safer, and not that much slower.
 
-WARNING: CPU: 0 PID: 25506 at arch/x86/kvm/x86.c:12112
-kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
-Modules linked in:
-CPU: 0 PID: 25506 Comm: syz-executor.0 Not tainted
-6.1.130-syzkaller-00157-g164fe5dde9b6 #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS 1.12.0-1 04/01/2014
-RIP: 0010:kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
-Call Trace:
- <TASK>
- shutdown_interception+0x66/0xb0 arch/x86/kvm/svm/svm.c:2136
- svm_invoke_exit_handler+0x110/0x530 arch/x86/kvm/svm/svm.c:3395
- svm_handle_exit+0x424/0x920 arch/x86/kvm/svm/svm.c:3457
- vcpu_enter_guest arch/x86/kvm/x86.c:10959 [inline]
- vcpu_run+0x2c43/0x5a90 arch/x86/kvm/x86.c:11062
- kvm_arch_vcpu_ioctl_run+0x50f/0x1cf0 arch/x86/kvm/x86.c:11283
- kvm_vcpu_ioctl+0x570/0xf00 arch/x86/kvm/../../../virt/kvm/kvm_main.c:4122
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:870 [inline]
- __se_sys_ioctl fs/ioctl.c:856 [inline]
- __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:856
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Considering that hardware CPUs exit SMM mode completely upon receiving
-a triple fault by triggering a hardware reset (which inherently leads
-to exiting SMM), explicitly perform SMM exit prior to the WARN check.
-Although subsequent code clears vCPU hflags, including the SMM flag,
-calling kvm_smm_changed ensures the exit from SMM is handled correctly
-and explicitly, aligning precisely with hardware behavior.
-
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: ed129ec9057f ("KVM: x86: forcibly leave nested mode on vCPU reset")
+Fixes: 81f0f314fec9 ("RISCV: KVM: Add sstateen0 context save/restore")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
 ---
- arch/x86/kvm/x86.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/riscv/include/asm/kvm_host.h | 3 +++
+ arch/riscv/kvm/vcpu.c             | 4 ++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 4b64ab350bcd..f1c95c21703a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -12409,6 +12409,9 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
- 	if (is_guest_mode(vcpu))
- 		kvm_leave_nested(vcpu);
+diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+index cc33e35cd628..1e9fe3cbecd3 100644
+--- a/arch/riscv/include/asm/kvm_host.h
++++ b/arch/riscv/include/asm/kvm_host.h
+@@ -234,6 +234,9 @@ struct kvm_vcpu_arch {
+ 	/* CPU CSR context upon Guest VCPU reset */
+ 	struct kvm_vcpu_csr guest_reset_csr;
  
-+	if (is_smm(vcpu))
-+		kvm_smm_changed(vcpu, false);
++	/* CPU smstateen CSR context upon Guest VCPU reset */
++	struct kvm_vcpu_smstateen_csr reset_smstateen_csr;
 +
- 	kvm_lapic_reset(vcpu, init_event);
+ 	/*
+ 	 * VCPU interrupts
+ 	 *
+diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+index 60d684c76c58..b11b4027a859 100644
+--- a/arch/riscv/kvm/vcpu.c
++++ b/arch/riscv/kvm/vcpu.c
+@@ -57,6 +57,8 @@ static void kvm_riscv_reset_vcpu(struct kvm_vcpu *vcpu)
+ 	struct kvm_vcpu_csr *reset_csr = &vcpu->arch.guest_reset_csr;
+ 	struct kvm_cpu_context *cntx = &vcpu->arch.guest_context;
+ 	struct kvm_cpu_context *reset_cntx = &vcpu->arch.guest_reset_context;
++	struct kvm_vcpu_smstateen_csr *smstateen_csr = &vcpu->arch.smstateen_csr;
++	struct kvm_vcpu_smstateen_csr *reset_smstateen_csr = &vcpu->arch.reset_smstateen_csr;
+ 	bool loaded;
  
- 	WARN_ON_ONCE(is_guest_mode(vcpu) || is_smm(vcpu));
+ 	/**
+@@ -73,6 +75,8 @@ static void kvm_riscv_reset_vcpu(struct kvm_vcpu *vcpu)
+ 
+ 	memcpy(csr, reset_csr, sizeof(*csr));
+ 
++	memcpy(smstateen_csr, reset_smstateen_csr, sizeof(*smstateen_csr));
++
+ 	spin_lock(&vcpu->arch.reset_cntx_lock);
+ 	memcpy(cntx, reset_cntx, sizeof(*cntx));
+ 	spin_unlock(&vcpu->arch.reset_cntx_lock);
 -- 
-2.47.2
+2.48.1
 
 
