@@ -1,355 +1,230 @@
-Return-Path: <stable+bounces-125856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88AA5A6D512
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 08:27:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24978A6D526
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 08:35:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16509188D496
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 07:27:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F2903ABD11
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 07:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD20209F2D;
-	Mon, 24 Mar 2025 07:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A592512C8;
+	Mon, 24 Mar 2025 07:35:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2C518FDA5
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 07:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742801258; cv=fail; b=GXsE86KDCND1mflImiGVS8KkNOOqQzMxf3WVJzSjJmfqJ0lsHf2g6aXbDDix1EUBP04Ku57UOj23guAwH2WVykQrxUyKMgHK46zkGwqKzPUAsn1KEi32GdTZqOTSJMJEx7rkJ5TgNM0mbA6Bi+61As94OBAcxXlODqFHyjMBEtM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742801258; c=relaxed/simple;
-	bh=RBGvRtWJPhMztZ8pIUe4xB0CKx9jtAAL6V2aAl7+xBc=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=tHBIQ5Jj5ZiCxmVr9mtqq+36IMZFyMgOxaWyF+T6rYZCXjuSjVO4hFUOkb6CnXqg15C17MZO7PxDA7YYVYSArzhygXYkDkKVR/EOvECHQo/SCQXzsrL5cQdceGsXxK0EPOpFDrVzvswBH7V9QLAuIvqmweA6owHuH+VLMC+odoQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E48250BF0;
+	Mon, 24 Mar 2025 07:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742801709; cv=none; b=KsnXPO5iatWhSrtHbcfVFzmrLFvFGxNXH8TEEmAHyFAhil2cofpkleftxlHeRgrkfOTsEY4weOBzecFtq3m+OvyjIc7NciycjQqU+OGEVr4kLOtHP07Jhn1GrsoJvxS35Q/XzZ5HTPw/bdrrFKzCR9vdxICe07kmCSXGnUAOEUg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742801709; c=relaxed/simple;
+	bh=kNdkIG9UPAH3v2U1o048RTeCISVVguBVoM06LHnz1Ds=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=g5kpUmyvsyykNfuC2UQHzLFnbdRvqfGzwL7rNKL0lWNo2yf70LJVBok8JenV6175KyCcTkmNxMluYMdVvUjiszF+TEyj9z6iRF9uSUjHryse+PlFLs50H99UxBPSQW+6awq6ovDIKX5F7TNGgaqO7dM3SzFPrw1N3k8WsfiVTt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O5NIqK006164;
-	Mon, 24 Mar 2025 07:27:34 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hje1hubd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Mar 2025 07:27:33 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GJD1UV9D/sMZacmg46ZwKnItBKSquJGYihwfkZ7DzFt8Fmqu/kyuQP/LILgHnyjHjWt+bJMVinbYAGUW71wiFlChSwLaOZh/qu7YKP6nvOjt+YgUvWBGsGJMuuensUlCFOUGfcjMdveVEODbqPjPz+IUvIwzqQVEUMTrBXeqQ5Q6jzPrpS3N7+TI0XXAxVL3Wk+y6+CBdlu6g57NMaogdf5QXui3aHrbbAeOhxVT2+dqkdcCiZfD8cna8G1rYGoujRg0N7GMbEFBRM5vnGnrCKw9VZBXA0Y4/keBKdgSa+Ab8IgkaAB6g3UJF1iCHjMX7Qzw6+Y9Tszf6p/Fm/YJCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RzfxSHTSq+s5WNiF9H8aTM609IMMyWYKaRRdVqNInM4=;
- b=g0PA9xCFLw124xJPHoN+l/5byky5B+oRnBHYd35yoYKJTBPOHTVF13b5ZjnMZE2+cSAuIw0sk3tyFb+aNOB3IjDUbUjDiP4GWwp1HXNlg/W99Z/ZevCM9K1siGo7JSWGrqXrO5m3MRWLJYeTR0PhDv7aEMNfjOvgYJALr39fhl+YAVebV9XGG2RV9/gi/b4sQILSJmjy3txfWQ7zVuRlcOW0fuakHgWvIWvcpdqR9D1NSM6jK8bckt55K5sqB1HYo7olF87NUxnupa4cavNQ6jk+IFmxuR4F0DGXjKMgAzHOfOYUJ+4ns6Fy0ZJ/iBRsuGuhXFrahWScKWDV5qT8Aw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10)
- by SJ0PR11MB4848.namprd11.prod.outlook.com (2603:10b6:a03:2af::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
- 2025 07:27:29 +0000
-Received: from CH3PR11MB8701.namprd11.prod.outlook.com
- ([fe80::5727:1867:fb60:69d0]) by CH3PR11MB8701.namprd11.prod.outlook.com
- ([fe80::5727:1867:fb60:69d0%2]) with mapi id 15.20.8534.040; Mon, 24 Mar 2025
- 07:27:29 +0000
-From: bin.lan.cn@windriver.com
-To: gregkh@linuxfoundation.org, stable@vger.kernel.org
-Cc: vitaly.prosyak@amd.com, christian.koenig@amd.com,
-        alexander.deucher@amd.com, bin.lan.cn@windriver.com
-Subject: [PATCH 6.1.y] drm/amdgpu: fix use-after-free bug
-Date: Mon, 24 Mar 2025 15:27:12 +0800
-Message-Id: <20250324072712.761233-1-bin.lan.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2PR02CA0046.apcprd02.prod.outlook.com
- (2603:1096:4:196::15) To CH3PR11MB8701.namprd11.prod.outlook.com
- (2603:10b6:610:1c8::10)
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O60OUf018528;
+	Mon, 24 Mar 2025 00:34:59 -0700
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hrg41mrd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 24 Mar 2025 00:34:58 -0700 (PDT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 24 Mar 2025 00:34:57 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 24 Mar 2025 00:34:55 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>,
+        <clm@fb.com>, <josef@toxicpanda.com>, <dsterba@suse.com>,
+        <linux-btrfs@vger.kernel.org>, <llfamsec@gmail.com>, <wqu@suse.com>
+Subject: [PATCH 6.6.y] btrfs: make sure that WRITTEN is set on all metadata blocks
+Date: Mon, 24 Mar 2025 15:34:54 +0800
+Message-ID: <20250324073454.3796450-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8701:EE_|SJ0PR11MB4848:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5284d479-f6e1-4cbb-ae97-08dd6aa55554
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|1800799024|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZUVVNjc0RmJsMnc1QkRGTERscXByMVY0MFlFeFZTcXdJZW9RcXNDWDl0bGpB?=
- =?utf-8?B?a2dkYUhBYkhBcTEzcG56SHlxQm9MRHMxcEU2UmhtQitRY0xUWHp0Y3A3cUpM?=
- =?utf-8?B?bktJaXc1b0Y4blpCeThXQmYwU3RsMjFGLzJXc3hLWDJablluczY5d0JIcmFM?=
- =?utf-8?B?aEE3aFJMakU4UndIL3ZwWGZTbnRzM1V6eVgxRlBTeU1iVVF1TDRZRzlGMDlI?=
- =?utf-8?B?SkVxRE9vemlib2d3V25wNENrSnlaYVM3L0JTZlRUSytubXl4K1p3WklET1Vt?=
- =?utf-8?B?blVrL2ZqNmtOaWtQck55UmRONWVUbC9IbndYQTlMOERwTm4zdjk0ZTFxWU1t?=
- =?utf-8?B?bDFaMHdHOWhnUVRJZndNSVFhU3lPdG5kSWx5TTFqUCtrM2xtTGlvVXZjdzhj?=
- =?utf-8?B?a1ZpN0pWdDBkUVB4Q2VuOVZEMmp0S290UFJnSzZabWpZclB4b0JJY2ZBbG1p?=
- =?utf-8?B?bFF2SWFia2c1Nm43S1VKOWNBSUJMelQ1N3pEd1dYdDhZVCsxSUQ3R094MDlC?=
- =?utf-8?B?dEhxYkdYOXdUQ3EvY2FVZ2xrMjV5SFMwSU9DbHVTKzZUVzRJRWZkK2dld01K?=
- =?utf-8?B?Sm5wVFhCTXV1N2sxTVdtczQ0cnVaN2gxLzloWlRodGZtbjF1TnJ6OExjWCtx?=
- =?utf-8?B?dnRFNGd6VGtoRFBwN1RraEN2TnFOMHNCVGtIcVBveDJ5MUNRMmFxRUc4ejVv?=
- =?utf-8?B?cnlHSG1DV3VnNFYyRG1FNHY3SGZHc1JuSTI3NjhMUWs5ZVNiQ2JzMzlkNm8x?=
- =?utf-8?B?dHd2SmEyTjIwczVtZ01oSko1OWhiTkdiai9ubTQvM3dldUlVUjFqVmw0WU5v?=
- =?utf-8?B?WEdjdm9kSzBVZHg5empvYU1xT1ZuaHkwWUVKcGMzOHJ3eHliUVR4ZWRGbFhW?=
- =?utf-8?B?cHFZeWo5d29EWGJycUVxeGtSMW9mSVlZbXQ4QlorWVdMbWJ1dkRvTGFzVWpG?=
- =?utf-8?B?SEFGNFh5cG9sTTduZThhWkhxenpmTzlNaUNVZStuOFhvZWszREdHeEhRazFl?=
- =?utf-8?B?YzFjeURkdWhJTkdHajZaR1hHMjFzekFaNDVNdVgzaGV1WkRsdWtEVTJodTJQ?=
- =?utf-8?B?Q3J0eEM3bXBmK3lxSHQ2cjVOamNXM3pyMmZPY0RWR21ZTFdIaWRINWp5bEhh?=
- =?utf-8?B?emhjTGhVMi92aDlGOGNGRGhJT1RwQXgvNDIyY283T2JPQ0Z5NHpSc2xaTk1Q?=
- =?utf-8?B?QWM4ZGVwWWloTUNjSEk2MGlLQ25wMFRuMXhKNlY5Z2gycW96WDRscmlXeHNB?=
- =?utf-8?B?OU05d1ZTa2MyTng2bktzOGpCU2dtU242TnM4NW5IQ1NFMzhtRmJGVzVKbS9M?=
- =?utf-8?B?R1psWTZtekZ4a3dsS21FL2JrbnJaSVhaOWJOb1JQOXlPWWN0U2VqRitmSThW?=
- =?utf-8?B?cDFaMUNDTlhrSFhwUzZDeUMzU2c1QVVjYTNkNy8yU3RHRkFqTnpaWWl0L3BC?=
- =?utf-8?B?YlRLNVFpN2tyb0g3U3UvbVo4WFFMa2JLSjdUSDJhTTRyTTdFWjdVak80aXZJ?=
- =?utf-8?B?MlQ5TS9SU2Yzc0l5VmZ0cEtGS3hlU3Q5LzhtUU5IcVAzOFRRQ0ZWd3ovbVM5?=
- =?utf-8?B?dUJyRTE4bVljZzljWmlWOTdxdkFpV3FoeDNoaWZuTkZJeTFmWXhCTUNzcEo2?=
- =?utf-8?B?YVBsSTZ3Tmc1YUVjcStQZE9hUlg0b2lOcCt1RmZFTjlJYXBqYVE3Q2d0RUdC?=
- =?utf-8?B?bnlmazlUTXBpRlFiQUZwMmpVcUczK2tXbWFiMDIyL0RvQ0ZKL2pkaU5ZQXFJ?=
- =?utf-8?B?K1MxNjFQVm94bjR5SlRFNFQ4N25CcjRWZmdWZ0luRTd5dmxFVG5xOFpHd1ZG?=
- =?utf-8?B?Y3hwdk5OMzRBTHhvRGlZSVRrQ2F0OURXZkp4N1NvTGgvSjFYUWttajV6dENE?=
- =?utf-8?B?Uko0QmpCQmRHM0x3aVcvU28yRlc5TTB6OTFkUDBYZy9WWnVaQkNzVE4zcU9I?=
- =?utf-8?Q?dDtKYyxEcSNiED0iLjQ32ltCn5Rw/kw7?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8701.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QW5kN1RjTzR6SjhhV3UxbFJ4VDZXc3FHMGxCdGswTHd5QzBVUGNudHZtTzYw?=
- =?utf-8?B?YlE3cjZ4VytSKy9ualFsZXB0SkpBWDZxb2l3Z2NicXI0R2VVL1RXaXE3SG1T?=
- =?utf-8?B?a0dzSUF5MmxxRHpsZXE0cGh2M3gxcHJoc05IbjduTnJKSlNybjZwVFR0eTJv?=
- =?utf-8?B?RVoyRklhenhXeEx5aUJLOFVIdGFVQ3l1M0ErTytVVzJUL0pZRDZocEI5VnNj?=
- =?utf-8?B?azlvRjJjVEhVZXovVGJNNDJXakpCSTBTbTFybGlyNGdaYU9sdWJjVUMzazBK?=
- =?utf-8?B?UGV2Mk53c0JwTllmUmltTlBJSk9LSzhnZmhMQlZBRG9TQWx5K3RNQTJzVHJt?=
- =?utf-8?B?WFBDNW5XbUViTnRoSko3Q2NvZzRIWGhOUU85aE12OWcwU0RqbTlITER4Qlpj?=
- =?utf-8?B?NlpjQWM2bjUxajFtYkIwTWxZMjF6MFNScmdGdVc4djliNDR1dE9QeW90RERm?=
- =?utf-8?B?VzhPWnZERUwyVkEwSFBieFNtSjlwWFBwZTZwbjUxNk5RdElnL1ZLVm1qSDM0?=
- =?utf-8?B?QmlhOUgxU3NWQUcrRGtOWWEyUDVvMGgyaGxyM05CN0JUdFdOWFAxTmxORVA3?=
- =?utf-8?B?c0IwdUtkNHlGUzRHbmNzNzVTeVJoekJOck1kc0lzWDlNd2JLczg5OVNoRFln?=
- =?utf-8?B?QVk2dXJLN0dQNXVJNTVNeHpMQjkvb2dRNjMzODFtNDlZeXg5SWRheEVKMmZT?=
- =?utf-8?B?MG9jOFdRNFNlL0RnNWZzU01LRmVYeUdNcE1wbmlINXdvQ3RSVUp2L1lnSmc5?=
- =?utf-8?B?cHRBUXRwMFNGdXJ5NVhGS2pPMi8yK0Q4Zk02ZHQyUFRIMG13QnJHaGl1MGNM?=
- =?utf-8?B?NzJsWnhWbTczRHNmS2FQNDRLVjF2QW9yTWVOK2p6SzNqYTZGZG9SRWlTUUNY?=
- =?utf-8?B?eUkvSzRHMTdhR0pnZWNUTnpGcnVyaDlyTGVSZXVybzJVL04zVzNPV1JqZ2pj?=
- =?utf-8?B?S2pzcGlId2d3cnZzMSt5c0lMdzBZTlVoK3V1a2ticmlzdmVicStOOWxOWllL?=
- =?utf-8?B?aks0Y3NHZ0RMb0VSWXBCclg5bldaSWZrTlN1TmhITHFMWjJtZGpIdmZqdzFa?=
- =?utf-8?B?QmhoUU94elNJaGcvd1hJbnZxVityT0U0THRySFQ0Ry8reG4xcThzVzNMQ3FN?=
- =?utf-8?B?RnFkU24zaEljMHFYV1BzVnZvcGJMbkZrK0x2M0l4MzdrL1YwbytnVXI2RUVE?=
- =?utf-8?B?SDlWbnpRL0Z2VHNRV3lCR3U1bmw0TVd4anFGcFhoTUpYUkYzZEdoRFdaNGtP?=
- =?utf-8?B?R3I5U2tMVTFCSE5hSndJMHlnOEozSFlWTlUvNUUrb3lWZDIwOEZUcDR5bU5h?=
- =?utf-8?B?dGZQbE9HaDJieG9iTExERnc3Nzd1VnNydlJsUXJ6c1B3Y3lKTVlOdG1Sa1Zk?=
- =?utf-8?B?YjR0VS90bEQvZzFSQkNuSGd4RE0xejRYTzl0T0ZFcG9zWGN5Wis4RWdVajl5?=
- =?utf-8?B?NHRtS3p5U0xDUWtMTytoWXhMWXNaMWpId0dvaXJ2V1dCMTZqb3FYbXNEN2s3?=
- =?utf-8?B?eHVIOER6SzB6cXAyZnhGcHBsRHVpdTkzUXFIbVZsendlOHJlZlU2bFBaMlgr?=
- =?utf-8?B?R1B1ZHdjNXZnMEFFVUJVb1U5eFg0WUNDeHh6SXNWdnVqNWRSZU81SFpBY2Vw?=
- =?utf-8?B?cyswYnk1YkRPd0NISzFqMmdQSkJyNGVvWllpUmhGRzd1eDNKY3lEcHczMDV5?=
- =?utf-8?B?bHVocHpvUUhRUnFqU25ZVGExSFlmR0dJdmU4d3JRTE16WHNRaXQ0RHlodDZ5?=
- =?utf-8?B?d0s5dmtDUnpTVU1JckhuSWRhT09rdUJGeERBNFkxSE5XOVllejlBc2RUTDlh?=
- =?utf-8?B?T2tOWjZVVEdyVENaK2s1WXJsS0xjdUxIbk1yQVhXK2dmNnZjc1B3UEowZzlO?=
- =?utf-8?B?K0ZoNWhHUkpwSEFkQTA3ejRKUzVBQXBsdkJnQXVSY3RJMzJZbXpyZHdRUUR6?=
- =?utf-8?B?SVpLd203S1JqK0xSaERvNFJkN25URzhLZjZHYmIvaE9tZ25pd2ZtQ05DWkM4?=
- =?utf-8?B?ZGE4UzVoUGJJNjdIdkdUc2xRVlFoOFJRQ3BuMWgxUzJRZEhDRGhiYmN0T2xF?=
- =?utf-8?B?ekJDbFBMYnlXc3Z0ckExUDFvdnNsVnF0MXBLRDQ0U3BPVktKMkd2bVA4bnBI?=
- =?utf-8?B?REFKSmt5bjAvVU12dkdJRlRRQnZ5U0dqZGtCeXpRUnAwMzZlcGdiMS80T0Mx?=
- =?utf-8?B?cVE9PQ==?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5284d479-f6e1-4cbb-ae97-08dd6aa55554
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8701.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 07:27:29.2087
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jUCEYog5kWPbtkqFyFNJVKhHDv4LHyX05Myr+8XmUaPWSn4DhKCxRmZcRKSuYjZvZK3wmS2RpQQJE55PVDGiPhWJDuxdL9O7T44YXUM3jEI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4848
-X-Authority-Analysis: v=2.4 cv=KPVaDEFo c=1 sm=1 tr=0 ts=67e10965 cx=c_pps a=7lEIVCGJCL/qymYIH7Lzhw==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Vs1iUdzkB0EA:10 a=H5OGdu5hBBwA:10 a=zd2uoN0lAAAA:8 a=t7CeM3EgAAAA:8 a=yujlmxJUa9f4s2p8SREA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: -6RCOfOYvq2O6apCoIg8wRU7GojqYiyb
-X-Proofpoint-ORIG-GUID: -6RCOfOYvq2O6apCoIg8wRU7GojqYiyb
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=HZwUTjE8 c=1 sm=1 tr=0 ts=67e10b22 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=gEA-OUY-moF3Uf1y:21 a=Vs1iUdzkB0EA:10 a=maIFttP_AAAA:8 a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=iox4zFpeAAAA:8
+ a=t7CeM3EgAAAA:8 a=xqbIuppjPMaPyYIW3jgA:9 a=qR24C9TJY6iBuJVj_x8Y:22 a=WzC6qhA0u3u7Ye7llzcV:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: XKmDfec6X6tV-aNjrxe3Hfm0-dMsJgX6
+X-Proofpoint-ORIG-GUID: XKmDfec6X6tV-aNjrxe3Hfm0-dMsJgX6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-24_03,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
- adultscore=0 impostorscore=0 mlxlogscore=999 malwarescore=0 spamscore=0
- bulkscore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501
- clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 malwarescore=0 adultscore=0
+ clxscore=1011 impostorscore=0 spamscore=0 priorityscore=1501
+ mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2503240053
+ definitions=main-2503240054
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 22207fd5c80177b860279653d017474b2812af5e ]
+[ Upstream commit e03418abde871314e1a3a550f4c8afb7b89cb273 ]
 
-The bug can be triggered by sending a single amdgpu_gem_userptr_ioctl
-to the AMDGPU DRM driver on any ASICs with an invalid address and size.
-The bug was reported by Joonkyo Jung <joonkyoj@yonsei.ac.kr>.
-For example the following code:
+We previously would call btrfs_check_leaf() if we had the check
+integrity code enabled, which meant that we could only run the extended
+leaf checks if we had WRITTEN set on the header flags.
 
-static void Syzkaller1(int fd)
-{
-	struct drm_amdgpu_gem_userptr arg;
-	int ret;
+This leaves a gap in our checking, because we could end up with
+corruption on disk where WRITTEN isn't set on the leaf, and then the
+extended leaf checks don't get run which we rely on to validate all of
+the item pointers to make sure we don't access memory outside of the
+extent buffer.
 
-	arg.addr = 0xffffffffffff0000;
-	arg.size = 0x80000000; /*2 Gb*/
-	arg.flags = 0x7;
-	ret = drmIoctl(fd, 0xc1186451/*amdgpu_gem_userptr_ioctl*/, &arg);
-}
+However, since 732fab95abe2 ("btrfs: check-integrity: remove
+CONFIG_BTRFS_FS_CHECK_INTEGRITY option") we no longer call
+btrfs_check_leaf() from btrfs_mark_buffer_dirty(), which means we only
+ever call it on blocks that are being written out, and thus have WRITTEN
+set, or that are being read in, which should have WRITTEN set.
 
-Due to the address and size are not valid there is a failure in
-amdgpu_hmm_register->mmu_interval_notifier_insert->__mmu_interval_notifier_insert->
-check_shl_overflow, but we even the amdgpu_hmm_register failure we still call
-amdgpu_hmm_unregister into  amdgpu_gem_object_free which causes access to a bad address.
-The following stack is below when the issue is reproduced when Kazan is enabled:
+Add checks to make sure we have WRITTEN set appropriately, and then make
+sure __btrfs_check_leaf() always does the item checking.  This will
+protect us from file systems that have been corrupted and no longer have
+WRITTEN set on some of the blocks.
 
-[  +0.000014] Hardware name: ASUS System Product Name/ROG STRIX B550-F GAMING (WI-FI), BIOS 1401 12/03/2020
-[  +0.000009] RIP: 0010:mmu_interval_notifier_remove+0x327/0x340
-[  +0.000017] Code: ff ff 49 89 44 24 08 48 b8 00 01 00 00 00 00 ad de 4c 89 f7 49 89 47 40 48 83 c0 22 49 89 47 48 e8 ce d1 2d 01 e9 32 ff ff ff <0f> 0b e9 16 ff ff ff 4c 89 ef e8 fa 14 b3 ff e9 36 ff ff ff e8 80
-[  +0.000014] RSP: 0018:ffffc90002657988 EFLAGS: 00010246
-[  +0.000013] RAX: 0000000000000000 RBX: 1ffff920004caf35 RCX: ffffffff8160565b
-[  +0.000011] RDX: dffffc0000000000 RSI: 0000000000000004 RDI: ffff8881a9f78260
-[  +0.000010] RBP: ffffc90002657a70 R08: 0000000000000001 R09: fffff520004caf25
-[  +0.000010] R10: 0000000000000003 R11: ffffffff8161d1d6 R12: ffff88810e988c00
-[  +0.000010] R13: ffff888126fb5a00 R14: ffff88810e988c0c R15: ffff8881a9f78260
-[  +0.000011] FS:  00007ff9ec848540(0000) GS:ffff8883cc880000(0000) knlGS:0000000000000000
-[  +0.000012] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  +0.000010] CR2: 000055b3f7e14328 CR3: 00000001b5770000 CR4: 0000000000350ef0
-[  +0.000010] Call Trace:
-[  +0.000006]  <TASK>
-[  +0.000007]  ? show_regs+0x6a/0x80
-[  +0.000018]  ? __warn+0xa5/0x1b0
-[  +0.000019]  ? mmu_interval_notifier_remove+0x327/0x340
-[  +0.000018]  ? report_bug+0x24a/0x290
-[  +0.000022]  ? handle_bug+0x46/0x90
-[  +0.000015]  ? exc_invalid_op+0x19/0x50
-[  +0.000016]  ? asm_exc_invalid_op+0x1b/0x20
-[  +0.000017]  ? kasan_save_stack+0x26/0x50
-[  +0.000017]  ? mmu_interval_notifier_remove+0x23b/0x340
-[  +0.000019]  ? mmu_interval_notifier_remove+0x327/0x340
-[  +0.000019]  ? mmu_interval_notifier_remove+0x23b/0x340
-[  +0.000020]  ? __pfx_mmu_interval_notifier_remove+0x10/0x10
-[  +0.000017]  ? kasan_save_alloc_info+0x1e/0x30
-[  +0.000018]  ? srso_return_thunk+0x5/0x5f
-[  +0.000014]  ? __kasan_kmalloc+0xb1/0xc0
-[  +0.000018]  ? srso_return_thunk+0x5/0x5f
-[  +0.000013]  ? __kasan_check_read+0x11/0x20
-[  +0.000020]  amdgpu_hmm_unregister+0x34/0x50 [amdgpu]
-[  +0.004695]  amdgpu_gem_object_free+0x66/0xa0 [amdgpu]
-[  +0.004534]  ? __pfx_amdgpu_gem_object_free+0x10/0x10 [amdgpu]
-[  +0.004291]  ? do_syscall_64+0x5f/0xe0
-[  +0.000023]  ? srso_return_thunk+0x5/0x5f
-[  +0.000017]  drm_gem_object_free+0x3b/0x50 [drm]
-[  +0.000489]  amdgpu_gem_userptr_ioctl+0x306/0x500 [amdgpu]
-[  +0.004295]  ? __pfx_amdgpu_gem_userptr_ioctl+0x10/0x10 [amdgpu]
-[  +0.004270]  ? srso_return_thunk+0x5/0x5f
-[  +0.000014]  ? __this_cpu_preempt_check+0x13/0x20
-[  +0.000015]  ? srso_return_thunk+0x5/0x5f
-[  +0.000013]  ? sysvec_apic_timer_interrupt+0x57/0xc0
-[  +0.000020]  ? srso_return_thunk+0x5/0x5f
-[  +0.000014]  ? asm_sysvec_apic_timer_interrupt+0x1b/0x20
-[  +0.000022]  ? drm_ioctl_kernel+0x17b/0x1f0 [drm]
-[  +0.000496]  ? __pfx_amdgpu_gem_userptr_ioctl+0x10/0x10 [amdgpu]
-[  +0.004272]  ? drm_ioctl_kernel+0x190/0x1f0 [drm]
-[  +0.000492]  drm_ioctl_kernel+0x140/0x1f0 [drm]
-[  +0.000497]  ? __pfx_amdgpu_gem_userptr_ioctl+0x10/0x10 [amdgpu]
-[  +0.004297]  ? __pfx_drm_ioctl_kernel+0x10/0x10 [drm]
-[  +0.000489]  ? srso_return_thunk+0x5/0x5f
-[  +0.000011]  ? __kasan_check_write+0x14/0x20
-[  +0.000016]  drm_ioctl+0x3da/0x730 [drm]
-[  +0.000475]  ? __pfx_amdgpu_gem_userptr_ioctl+0x10/0x10 [amdgpu]
-[  +0.004293]  ? __pfx_drm_ioctl+0x10/0x10 [drm]
-[  +0.000506]  ? __pfx_rpm_resume+0x10/0x10
-[  +0.000016]  ? srso_return_thunk+0x5/0x5f
-[  +0.000011]  ? __kasan_check_write+0x14/0x20
-[  +0.000010]  ? srso_return_thunk+0x5/0x5f
-[  +0.000011]  ? _raw_spin_lock_irqsave+0x99/0x100
-[  +0.000015]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[  +0.000014]  ? srso_return_thunk+0x5/0x5f
-[  +0.000013]  ? srso_return_thunk+0x5/0x5f
-[  +0.000011]  ? srso_return_thunk+0x5/0x5f
-[  +0.000011]  ? preempt_count_sub+0x18/0xc0
-[  +0.000013]  ? srso_return_thunk+0x5/0x5f
-[  +0.000010]  ? _raw_spin_unlock_irqrestore+0x27/0x50
-[  +0.000019]  amdgpu_drm_ioctl+0x7e/0xe0 [amdgpu]
-[  +0.004272]  __x64_sys_ioctl+0xcd/0x110
-[  +0.000020]  do_syscall_64+0x5f/0xe0
-[  +0.000021]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-[  +0.000015] RIP: 0033:0x7ff9ed31a94f
-[  +0.000012] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <41> 89 c0 3d 00 f0 ff ff 77 1f 48 8b 44 24 18 64 48 2b 04 25 28 00
-[  +0.000013] RSP: 002b:00007fff25f66790 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-[  +0.000016] RAX: ffffffffffffffda RBX: 000055b3f7e133e0 RCX: 00007ff9ed31a94f
-[  +0.000012] RDX: 000055b3f7e133e0 RSI: 00000000c1186451 RDI: 0000000000000003
-[  +0.000010] RBP: 00000000c1186451 R08: 0000000000000000 R09: 0000000000000000
-[  +0.000009] R10: 0000000000000008 R11: 0000000000000246 R12: 00007fff25f66ca8
-[  +0.000009] R13: 0000000000000003 R14: 000055b3f7021ba8 R15: 00007ff9ed7af040
-[  +0.000024]  </TASK>
-[  +0.000007] ---[ end trace 0000000000000000 ]---
+This was hit on a crafted image tweaking the WRITTEN bit and reported by
+KASAN as out-of-bound access in the eb accessors. The example is a dir
+item at the end of an eb.
 
-v2: Consolidate any error handling into amdgpu_hmm_register
-    which applied to kfd_bo also. (Christian)
-v3: Improve syntax and comment (Christian)
+  [2.042] BTRFS warning (device loop1): bad eb member start: ptr 0x3fff start 30572544 member offset 16410 size 2
+  [2.040] general protection fault, probably for non-canonical address 0xe0009d1000000003: 0000 [#1] PREEMPT SMP KASAN NOPTI
+  [2.537] KASAN: maybe wild-memory-access in range [0x0005088000000018-0x000508800000001f]
+  [2.729] CPU: 0 PID: 2587 Comm: mount Not tainted 6.8.2 #1
+  [2.729] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  [2.621] RIP: 0010:btrfs_get_16+0x34b/0x6d0
+  [2.621] RSP: 0018:ffff88810871fab8 EFLAGS: 00000206
+  [2.621] RAX: 0000a11000000003 RBX: ffff888104ff8720 RCX: ffff88811b2288c0
+  [2.621] RDX: dffffc0000000000 RSI: ffffffff81dd8aca RDI: ffff88810871f748
+  [2.621] RBP: 000000000000401a R08: 0000000000000001 R09: ffffed10210e3ee9
+  [2.621] R10: ffff88810871f74f R11: 205d323430333737 R12: 000000000000001a
+  [2.621] R13: 000508800000001a R14: 1ffff110210e3f5d R15: ffffffff850011e8
+  [2.621] FS:  00007f56ea275840(0000) GS:ffff88811b200000(0000) knlGS:0000000000000000
+  [2.621] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [2.621] CR2: 00007febd13b75c0 CR3: 000000010bb50000 CR4: 00000000000006f0
+  [2.621] Call Trace:
+  [2.621]  <TASK>
+  [2.621]  ? show_regs+0x74/0x80
+  [2.621]  ? die_addr+0x46/0xc0
+  [2.621]  ? exc_general_protection+0x161/0x2a0
+  [2.621]  ? asm_exc_general_protection+0x26/0x30
+  [2.621]  ? btrfs_get_16+0x33a/0x6d0
+  [2.621]  ? btrfs_get_16+0x34b/0x6d0
+  [2.621]  ? btrfs_get_16+0x33a/0x6d0
+  [2.621]  ? __pfx_btrfs_get_16+0x10/0x10
+  [2.621]  ? __pfx_mutex_unlock+0x10/0x10
+  [2.621]  btrfs_match_dir_item_name+0x101/0x1a0
+  [2.621]  btrfs_lookup_dir_item+0x1f3/0x280
+  [2.621]  ? __pfx_btrfs_lookup_dir_item+0x10/0x10
+  [2.621]  btrfs_get_tree+0xd25/0x1910
 
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Felix Kuehling <felix.kuehling@amd.com>
-Cc: Joonkyo Jung <joonkyoj@yonsei.ac.kr>
-Cc: Dokyung Song <dokyungs@yonsei.ac.kr>
-Cc: <jisoo.jang@yonsei.ac.kr>
-Cc: <yw9865@yonsei.ac.kr>
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c is renamed from
-  drivers/gpu/drm/amd/amdgpu/amdgpu_mn.c since
-  d9483ecd327b ("drm/amdgpu: rename the files for HMM handling").
-  The path is changed accordingly to apply the patch on 6.1.y. ]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Reported-by: lei lu <llfamsec@gmail.com>
+CC: stable@vger.kernel.org # 6.7+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ copy more details from report ]
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
 Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
-Build test passed.
+Verified the build test
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_mn.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ fs/btrfs/tree-checker.c | 30 +++++++++++++++---------------
+ fs/btrfs/tree-checker.h |  1 +
+ 2 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mn.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mn.c
-index b86c0b8252a5..031b6d974f26 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mn.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mn.c
-@@ -132,13 +132,25 @@ static const struct mmu_interval_notifier_ops amdgpu_mn_hsa_ops = {
-  */
- int amdgpu_mn_register(struct amdgpu_bo *bo, unsigned long addr)
- {
-+	int r;
-+
- 	if (bo->kfd_bo)
--		return mmu_interval_notifier_insert(&bo->notifier, current->mm,
-+		r = mmu_interval_notifier_insert(&bo->notifier, current->mm,
- 						    addr, amdgpu_bo_size(bo),
- 						    &amdgpu_mn_hsa_ops);
--	return mmu_interval_notifier_insert(&bo->notifier, current->mm, addr,
--					    amdgpu_bo_size(bo),
--					    &amdgpu_mn_gfx_ops);
-+	else
-+		r = mmu_interval_notifier_insert(&bo->notifier, current->mm, addr,
-+							amdgpu_bo_size(bo),
-+							&amdgpu_mn_gfx_ops);
-+	if (r)
-+		/*
-+		 * Make sure amdgpu_hmm_unregister() doesn't call
-+		 * mmu_interval_notifier_remove() when the notifier isn't properly
-+		 * initialized.
-+		 */
-+		bo->notifier.mm = NULL;
-+
-+	return r;
- }
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index 53c74010140e..6d16506bbdc0 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1889,6 +1889,11 @@ enum btrfs_tree_block_status __btrfs_check_leaf(struct extent_buffer *leaf)
+ 		return BTRFS_TREE_BLOCK_INVALID_LEVEL;
+ 	}
  
- /**
++	if (unlikely(!btrfs_header_flag(leaf, BTRFS_HEADER_FLAG_WRITTEN))) {
++		generic_err(leaf, 0, "invalid flag for leaf, WRITTEN not set");
++		return BTRFS_TREE_BLOCK_WRITTEN_NOT_SET;
++	}
++
+ 	/*
+ 	 * Extent buffers from a relocation tree have a owner field that
+ 	 * corresponds to the subvolume tree they are based on. So just from an
+@@ -1950,6 +1955,7 @@ enum btrfs_tree_block_status __btrfs_check_leaf(struct extent_buffer *leaf)
+ 	for (slot = 0; slot < nritems; slot++) {
+ 		u32 item_end_expected;
+ 		u64 item_data_end;
++		enum btrfs_tree_block_status ret;
+ 
+ 		btrfs_item_key_to_cpu(leaf, &key, slot);
+ 
+@@ -2005,21 +2011,10 @@ enum btrfs_tree_block_status __btrfs_check_leaf(struct extent_buffer *leaf)
+ 			return BTRFS_TREE_BLOCK_INVALID_OFFSETS;
+ 		}
+ 
+-		/*
+-		 * We only want to do this if WRITTEN is set, otherwise the leaf
+-		 * may be in some intermediate state and won't appear valid.
+-		 */
+-		if (btrfs_header_flag(leaf, BTRFS_HEADER_FLAG_WRITTEN)) {
+-			enum btrfs_tree_block_status ret;
+-
+-			/*
+-			 * Check if the item size and content meet other
+-			 * criteria
+-			 */
+-			ret = check_leaf_item(leaf, &key, slot, &prev_key);
+-			if (unlikely(ret != BTRFS_TREE_BLOCK_CLEAN))
+-				return ret;
+-		}
++		/* Check if the item size and content meet other criteria. */
++		ret = check_leaf_item(leaf, &key, slot, &prev_key);
++		if (unlikely(ret != BTRFS_TREE_BLOCK_CLEAN))
++			return ret;
+ 
+ 		prev_key.objectid = key.objectid;
+ 		prev_key.type = key.type;
+@@ -2049,6 +2044,11 @@ enum btrfs_tree_block_status __btrfs_check_node(struct extent_buffer *node)
+ 	int level = btrfs_header_level(node);
+ 	u64 bytenr;
+ 
++	if (unlikely(!btrfs_header_flag(node, BTRFS_HEADER_FLAG_WRITTEN))) {
++		generic_err(node, 0, "invalid flag for node, WRITTEN not set");
++		return BTRFS_TREE_BLOCK_WRITTEN_NOT_SET;
++	}
++
+ 	if (unlikely(level <= 0 || level >= BTRFS_MAX_LEVEL)) {
+ 		generic_err(node, 0,
+ 			"invalid level for node, have %d expect [1, %d]",
+diff --git a/fs/btrfs/tree-checker.h b/fs/btrfs/tree-checker.h
+index 3c2a02a72f64..43f2ceb78f34 100644
+--- a/fs/btrfs/tree-checker.h
++++ b/fs/btrfs/tree-checker.h
+@@ -51,6 +51,7 @@ enum btrfs_tree_block_status {
+ 	BTRFS_TREE_BLOCK_INVALID_BLOCKPTR,
+ 	BTRFS_TREE_BLOCK_INVALID_ITEM,
+ 	BTRFS_TREE_BLOCK_INVALID_OWNER,
++	BTRFS_TREE_BLOCK_WRITTEN_NOT_SET,
+ };
+ 
+ /*
 -- 
-2.34.1
+2.25.1
 
 
