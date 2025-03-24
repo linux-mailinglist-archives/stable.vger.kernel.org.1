@@ -1,385 +1,141 @@
-Return-Path: <stable+bounces-125892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0CAA6DD69
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:50:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7515A6DDC6
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:07:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C41E03B09DE
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 14:50:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EADFC3AE755
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DB425E81A;
-	Mon, 24 Mar 2025 14:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A53825F983;
+	Mon, 24 Mar 2025 15:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b="ytjjesj4";
-	dkim=pass (1024-bit key) header.d=IMGTecCRM.onmicrosoft.com header.i=@IMGTecCRM.onmicrosoft.com header.b="b0czEYCB"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="N7Q4LOYX"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com [185.132.180.163])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9019B25D536;
-	Mon, 24 Mar 2025 14:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.132.180.163
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742827837; cv=fail; b=HFdzPEgPonqTKn+nWhp2LMJgGx15Kd+ZedPLYtfO1PeIxPMlTHd4jE5tu8DNEoJEQdAi9FUWw5+cNAnGvji7azk71f7lS7liXtltHrt6RUsOlGn38SfJSmcWywnJrlW6eYgfhPuv4+y0N0iguGejj38IYvt2rVBpM4OP+mz8OOk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742827837; c=relaxed/simple;
-	bh=KpINCoI1Czxw9ftbGqPoyU41XMFS/9fwJjWmQzJFQp0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=uhNfoAnW8sZHIEdh3JggQRMK7aAp2iJ19Aye5FEb7QQJlQ+8rJkLJboaOPL5ukQZaQfYz9kvxxN+wuxlA31uo9w5XU1sZVIfFLQu0uSH527Qyf6yDBvZnbsB0DAtViUisykUUjx/1iFnXYQbGVFSDTWQ6ybRbrbih4cMtpAiLF0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=ytjjesj4; dkim=pass (1024-bit key) header.d=IMGTecCRM.onmicrosoft.com header.i=@IMGTecCRM.onmicrosoft.com header.b=b0czEYCB; arc=fail smtp.client-ip=185.132.180.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imgtec.com
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
-	by mx07-00376f01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O6Nwsf023878;
-	Mon, 24 Mar 2025 14:50:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=dk201812; bh=4A0TFgR0fdBHZy+aYAL1VrHuh
-	p2+EiNosweNVLlcl2A=; b=ytjjesj4VsFl0D8hefsV1y2mh9ekZWNpIwH9d9P6A
-	zpDqaxkuN8bBIPSqj/sBfK77UBWwvM1UDKe3wavdfQKIzTEW/a3M8CCCHwiySaY1
-	h8+3N4K4DbefP3gljuvjGEXU8YUeZALEzPA1PQ8YKHFSSvanPwwJ5cr3c2nhufrS
-	J9kKtO7wwqnS6VBnEDsQNRzeBMEyLT+J34AF+F8NPReZzL8eIRYdQSdIAPkA2cis
-	dGoWc8q8DUidEdzX8K82SXVMYaorhAliCirmZkzkXyGEcwq02mqXPZ0KlthiO+8i
-	Rr0LxGD+2ZtsyoyYdeHDShGZohRTaohGmFV1z2kyumJ8A==
-Received: from cwxp265cu009.outbound.protection.outlook.com (mail-ukwestazlp17011030.outbound.protection.outlook.com [40.93.68.30])
-	by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 45hp60sh0g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Mar 2025 14:50:08 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UG0tPjVMyAVM1Y8hdbDQdEJ4lawpzVmh5LOQtIsxWO4JOdkUOAPO8uuk6SQlLxyjan8B7HPFiaETWotK1uI45rY+ppEZEbRXi0ZIUG6ZYmw60uZXS7dJoR7NkSlW8jZBYpKiYTxbOMl8OZHiu8DmiGiSwcrjrPfmap+07dk+A6tiBR3CmkBQLbAH4wDEWC40DzJqKT8nO2WeFHyC309ClSsQavteQEZp6qEn2ahNpesYMdxf/ynaVZg+MI5Yacx//xC9/xPGgrWCUKkwJ+D0nmdE/Uj900w8ERTgSScneZo5T9SS97zyy3LMtlDIastwwq1NarrR3mWnsZ8rURkZ7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4A0TFgR0fdBHZy+aYAL1VrHuhp2+EiNosweNVLlcl2A=;
- b=VodntHh5SjTQ/QOq9EBoBPA3ISwgyPY8XYrWykIc4b1x6GW40Ed550ItizQa74WZrWEJel+QSeD6UCexDV7143sta/9hPuh2TQv1feX6+H297GDp2G+OzrYBAk24Q16Gawt+wC9M8L8Hs8B6Ju0G3IUbftFcDgENMVoDJgwZdbo7TB3II1Tv2U2TmVBcm3AfIy48uaYZG0XP+q2B092e7PMGFwvhUkBliM1qqbv5YpW0ucAKhqKrRuJ/6ChPgsLq0hbYe2ZWWxCCTcS+AenYKzjIoNa+yuLOXr/5LFvCQcEsUy/bimtiAIZplmEow+0G/y0Bd7FApxIvjqxRc9e6jQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=imgtec.com; dmarc=pass action=none header.from=imgtec.com;
- dkim=pass header.d=imgtec.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=IMGTecCRM.onmicrosoft.com; s=selector2-IMGTecCRM-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4A0TFgR0fdBHZy+aYAL1VrHuhp2+EiNosweNVLlcl2A=;
- b=b0czEYCBmPBqrDi+T5PWAq1WiHFWXws6rt+a5eIYe3DIE7L+qb7WnrRiDMEXUJj47twrQz3I9WPRY/m9sajk+mjX5V7wLhd32ukSe//AAuah/FZCnhlIIMttXhkSf3U+3oqY5tNnuCui6QQAX2h9bkC9+TRYSXTX0rndz/7fd2s=
-Received: from CWXP265MB3397.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:e7::8) by
- CWLP265MB2211.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:6f::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8583.25; Mon, 24 Mar 2025 14:50:06 +0000
-Received: from CWXP265MB3397.GBRP265.PROD.OUTLOOK.COM
- ([fe80::8e9d:6b2f:9881:1e15]) by CWXP265MB3397.GBRP265.PROD.OUTLOOK.COM
- ([fe80::8e9d:6b2f:9881:1e15%4]) with mapi id 15.20.8583.023; Mon, 24 Mar 2025
- 14:50:06 +0000
-From: Matt Coster <Matt.Coster@imgtec.com>
-To: Brendan King <Brendan.King@imgtec.com>
-CC: Frank Binns <Frank.Binns@imgtec.com>,
-        Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/imagination: fix firmware memory leaks
-Thread-Topic: [PATCH] drm/imagination: fix firmware memory leaks
-Thread-Index: AQHbmBXghfCmgZj+zUuFLJLy8+YLkrOCZ+OA
-Date: Mon, 24 Mar 2025 14:50:05 +0000
-Message-ID: <af290775-f690-475c-8458-5047b9cf59c4@imgtec.com>
-References:
- <20250318-ddkopsrc-1339-firmware-related-memory-leak-on-module-unload-v1-1-155337c57bb4@imgtec.com>
-In-Reply-To:
- <20250318-ddkopsrc-1339-firmware-related-memory-leak-on-module-unload-v1-1-155337c57bb4@imgtec.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CWXP265MB3397:EE_|CWLP265MB2211:EE_
-x-ms-office365-filtering-correlation-id: 551305e4-9bac-4147-24a3-08dd6ae32a88
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|366016|38070700018|4053099003;
-x-microsoft-antispam-message-info:
- =?utf-8?B?Q0hUQllZaGhZSGtDVnZoeEdMTm81U0FmT0Fxd2tsVk5CU1N4MkJQU3pxL2g3?=
- =?utf-8?B?U0JBUWFMT3RRS2xneWVXY1c1OE1sbUd3cFN2M1hIVHEzQVhzMGJOb1BGUFAx?=
- =?utf-8?B?cU1Tdk5yRTRab3lsMUNIK1R6VHErRVNFajRsU0VKSE5udHM0L3gveFh6TUI5?=
- =?utf-8?B?MmRXcWpHTk1sMERWSmxXWHF4bUREa1dzempjL1VDV3h0N2MzUEVBcERDMUVz?=
- =?utf-8?B?amNsR3Z4NXdkbDV0dHdFbE5ydUQzRU9XTDR1dHAwdXB6dUVqM0Y3TVpxeFg5?=
- =?utf-8?B?NU9aT2tMNFNTTUpSQXFSK01TdEszbmdSWG13TjczRXRxZExqdGR6SXBLK3h4?=
- =?utf-8?B?NGlLNHgrNTAxcnZyTFV1L3NlZkZDd3l0N1dFbHA5WGV6bThpR3F5d0xXa3lz?=
- =?utf-8?B?cFhucmNENXNlb2cxZDZNYSs1SkVmcEZsQ2V5bWF5UjUrSDdCazQ0Mm9jcFUr?=
- =?utf-8?B?emtza3Z4Rkw4MlFWMmF3bXRNUDhmVmFCOC9Sbkg2RDV1SXVpN0ViRk90aGUr?=
- =?utf-8?B?V1pmaC9pNStVMnAxZmowclNCVlJ6R3ltSnVWZmQ2Qzl4VTkrOEZvYWttM1VH?=
- =?utf-8?B?NldOUkJ5MGxyYXl6QVYwNlViN2Y4OThjd09ZTFRRSHo4Tm8rSS9nV2RHTHhk?=
- =?utf-8?B?bFNEaytQMWQvd0N6VG9jTWxVM1czaW51eXBDY0xLTDByaDBDbk1OU2FURDhu?=
- =?utf-8?B?MENmM3FSVGV5RnoxS2VEM1ZPWDVMaXhzSjREVnE3eS82NzhFcHlXbXNsaWcy?=
- =?utf-8?B?N2NQTXRPWElpVXRlOHR6UUgwekhXcFZIUDhpZFIvR2d2RXExY3FUVFJ6VnFF?=
- =?utf-8?B?cHE3VjBVQzNOQko1emdGTm5RR0JkVXdielJmdUNpSTJpR00xVUk4cFFpZHN4?=
- =?utf-8?B?OXdQeHREcE5aM0VpV3pySjZERlhNUFp1eEx4NDZHTWNXUUc5VXVrcUhoclpy?=
- =?utf-8?B?QkN0V2hDRUc4enVLNlA5OWNlVEU5M1YrVHRGS0NCRWF5Sk5jVlk2SW9CTVVZ?=
- =?utf-8?B?aThzanBwUkdXaE1aVmpERnJUeEJCRG0vV1hTSWg1bEpIekdVQXZ2U3cwNTgr?=
- =?utf-8?B?L2RFVmY0cTA2bDgwRXovcUNobWdNMTJPWlIwK1ErYjdsb0JoV1h5K1EvK3BM?=
- =?utf-8?B?S1RwdE1UZ0RzL0FSYld0VnoyZlNiUms4N2N0Y1ROOElGSGp1WWRmb0N4Y2J1?=
- =?utf-8?B?UFErR2hLaUhNT2tURFphbWlMVWdnTUhFRHZ4SnVVYVFvdG1ET2ZROUZpeUpD?=
- =?utf-8?B?MzNUeVVlbHBJZDR3cjNJM0xWK3dETDZicFh3b2hCUkUrbEZKcjNBRnpPeWIz?=
- =?utf-8?B?SmNGeTJOYXg4UDZOckdLNE1oc2pzV0xJa0hOTG9kTGhvLy9vSFczTFh6RUVU?=
- =?utf-8?B?Z0ZvOUZGMGN4ZFV0N2ZST0JBR2Ivb1pxckJYUEdTalRhV0lHYjU5TCs0RDd4?=
- =?utf-8?B?SHF0dUp5TFExcitFTVVWWDVobDFsWW5nMnFDOXE5SUVuTnB4bjVLbjBPdWpL?=
- =?utf-8?B?Tzk4cndrQ0FvdU80dHJrN01QUW5VWXJ6L0VVLy9YZWtTWnhVV1dDR2tyOW9I?=
- =?utf-8?B?SXpTMTFVbHYvdTZDOE8yMitUeDdxcmNuYkNHUDlJdHBDdWZJNmpWQzdPMXV4?=
- =?utf-8?B?ZDlISHkvQUtERVJ0QkhmaG5sR1I5WkU4M3QvUndiMjBZczZVTHBIK1A0cEhO?=
- =?utf-8?B?eGlBVEpsbFBONkR5VjVlZC92aTFRYzRaOG5NbVVwMzF3UEVtSnZzUHA2aFN6?=
- =?utf-8?B?SUtsZUhKaHdyWHBrQ2ZTR0ZNZ0FVRUJvZ0s0cnBYVTJjZHRsd0x1V1dDUjdW?=
- =?utf-8?B?NUwzcy85QkhXcDhHZ1pITlA3aldmRTFmWHgwUnA5K1VxdFlpKzJka3BDTmVi?=
- =?utf-8?B?TEJ0Qmk3RjVZVkhxelFGMStCZDlLcDZtdjdxUVFwYW4wVjNPejl4aXRlY1ZC?=
- =?utf-8?Q?5CmuK75p0+AcoJWKBNwiw+QudcA9OXqz?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWXP265MB3397.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018)(4053099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?VlplLzdPbURqSDliVkxQUjczem95am1ZbGtNZVo4RzFFUUFxbUZUVzVlL0pH?=
- =?utf-8?B?Uzk1WndoZk5ZSGoxR01uTEFZejNJYVQwc29HOE9LcHk1bFhoYUlrRDY1YTBY?=
- =?utf-8?B?eGRoWk5acThQT0JHTDQ3U2FUb1pUMm56M0NyZzB3OTZNUTlDQWRYRTdiZWhX?=
- =?utf-8?B?eFNnbDN0SGJJbVpKNjhwWEJHb1duNWp1OFZkbWtocE15d01PUWVTMHpWR2Vm?=
- =?utf-8?B?MkxPV21rcFVPRGdnWllqSzlVQ044M21uUnhmN05xQ2pXVTJHOU8rekZoZ1dX?=
- =?utf-8?B?b3Npa05QWEpxZE1TVVlJT1pqbmFFbWNUbGtzT21DOVhsa1UxOHl6akt4T1RV?=
- =?utf-8?B?TVUvRlkxWTBYR3hqbmZFcmlzamtLT2NTbUJVbE1meW5Uc1UxZHhwOXpZeTdq?=
- =?utf-8?B?amZubDBkVXVSTCsyNm82QWkvQldka0haSkhuNituV21DVTdmaWRtNEYvQ1Ez?=
- =?utf-8?B?dlFjdU5TWDJmTWRMenRnKzgvNFF1Y2Jnd3lkVmVWdG9rNlpZVU9TMWE5U1cx?=
- =?utf-8?B?ZDVDaGVLSFk1cTErMFN0cmpwTWIvbXh1ZkdQODZFNHBJNm1TZkhDYnduU1Ur?=
- =?utf-8?B?eUNvQWpWeWhXaGk1UU45Z3ZtRVZGZFhabDBoMFNpcjBkQzdhUzlKbjM5RTBD?=
- =?utf-8?B?dzI2YTNVam9KZ21mTjFVMWNndGZ5Z1E3Z0oreHBhMVdXZ09WSitXTVk3NTZh?=
- =?utf-8?B?L05INFlxT1RTaGVaWmFBRmRGb0VzK1NGNUFmaWlLUStBaENUMnJsbldWZmdh?=
- =?utf-8?B?V1JVeW1UUTB3U1VsRzdUaitadjRCVkxXbXVnc3ZLemJMako3TlRsTWQweFh2?=
- =?utf-8?B?dFdWSWpUd3hJaVZjbG5xQVphVlFZK0Zzd2tlSmdhdXJhdTBmd1dzS1pkZ3VP?=
- =?utf-8?B?dWZKSjFiVW8rRkFsbEhwM3c4bUVuYXZjZHVSMHpZVENJQlowSFZlQzY0Ui8w?=
- =?utf-8?B?MnRXbXFDS3hBTzB4V29BM2lzck1ubjh5Y29TNnlmbU1lS3NKSFZTRnN6RFRn?=
- =?utf-8?B?d0FWRGx4N215LzF0bkxkcklFNXY4U05iWm84MHVTUkJCMDArVkEweHQvTTVS?=
- =?utf-8?B?U2NaRHV5Uzd0VGpyNTBFNzNINnlmZld3YnUvYk9OWHBOeUhNWXlCR2MwZDVw?=
- =?utf-8?B?dXREd1VnZVFiWVMwbWQ4U3pEYmR4V2xjNHNPQndGWnJKRW5QUU9VcnNjZHVy?=
- =?utf-8?B?NVVXVUZRZDZVRm54ZkpnMmVOc21IOHR4YWVOOXpUcjhoclZ2WlRMSE8zK1Fr?=
- =?utf-8?B?TmprcXYwNWhHS1BSTnlYbytHZmQyUlRaVEtJNVNYNnh6STVNZnAxVEl4alJL?=
- =?utf-8?B?Nk12MCtTVVJxNHI4U0JWWi9rajIzbm83MVNzYXd6eVhycVhvbms5Q2ZlMGdE?=
- =?utf-8?B?ZExEbTRYOWFjOUwvOHNlY2xWNFpFYTNKY3Z4RmpOU3pISVdzME5KU2l1MDlL?=
- =?utf-8?B?djZFUENIbStiU1hoZFpJb1BNQWlYcEMyNFFLWUxOYWtURUpyT3BaWW53Qzkw?=
- =?utf-8?B?clczbElpV3ZMbzBNZGVoZ0tETXEwRG5HTXJINEdFRWhneFlrRFFyQWtYdWZa?=
- =?utf-8?B?bEMrQ2hwRmFJSUVOZVV0UU1yb2kraWZLNFJTRE1zTTlrRjdkbjhteWYxcUk0?=
- =?utf-8?B?TTYvQTNzTlZMRkI4SDRoa0c1Q3BnZkZ0elB0TEk0aGNlQ3BzTGptYzZPNU5v?=
- =?utf-8?B?UmRhSlRDVWd5WkxUTHB6a1F4SmdURjdtNGY1U0Q4clFzZHVaaytGcFF2VFFy?=
- =?utf-8?B?NDhUWlNzV2dDU3B6US9zMmRIVFdldUluTUVuT1BoOC9ES0dCSmdQNC9OVldY?=
- =?utf-8?B?b1hsZkVTQXd4M2tOQ2VkWE0wdCttam5zd3NlZWxRczZtM0UxZE9ZeGZTdWtj?=
- =?utf-8?B?MkJwSXg3T1FyYzVpVy90a3gxS1RXbDI1Mm1kS01MQlluRENqblFPVlRKOWxG?=
- =?utf-8?B?bnFoRUt6dHJyN2tmZnVhUFRuRVZNSWs3Z2RzZEw2MlV3Z2lwU2t0QlI5MVV1?=
- =?utf-8?B?aFYrMDUxaElqT3VDUlE5bFQ5TWVXZWZnciszOXlCc245eWpEaEFDYyt3V1Vl?=
- =?utf-8?B?MjFnNzljMllTUEozWEhBOFFkZXNLbWtGYU1QblhmL0k5c1hwS3dld1lHZjJT?=
- =?utf-8?B?NUdJbzJteUovT3RiSXVGWXliSUVqYTBNdktGb0p5NnRZaHdGVWxuQ01rWlFq?=
- =?utf-8?B?cEE9PQ==?=
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature";
-	boundary="------------5swW1qIISZurWzrCaei0660s"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A6C1EB5B
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742828601; cv=none; b=RvibIXrQ8tOg+efGVbXb0J2YwSN42mjrkTZLCC/eHWi6P5gjbzDe/taFarHS8YKUln57zZ98vU4V2OKAuT3ghcgtQu6qMASIXNzxal1OrEbgqqKrZHR/Xq+HaS0d0TkRPvrkkKiaA1yeI0TRNbnEaaeDkbWXfWeiL8OsSrP6HBg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742828601; c=relaxed/simple;
+	bh=65mc09JnOzcVvzzTPHmhpq+II+Xcs2gKiHWnDOta5Xc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xza5ELF4D5QRA7gShPaT+DKoWNVsJ9CC5Md8cHMY9W3RujdfyjUyNzJrNN7Wyxz61pwo0VeYY9GdWDRjJmxok0hNpyV3ylkpJQtMLLxVudieIf5l7UiGbyehauIC9Wseqk1nfdHMCdN89IhN6no1N+bJb90aZPTj2VKoXjAKiME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=N7Q4LOYX; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O9PPxl017954
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:03:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	nH4aeoaJ2bY3RhjpBvj4Vxj6NTdJ/AFDG5izM2nQcDw=; b=N7Q4LOYXUuaaVvgi
+	l1okrk8+L6tEVc8sAsxHzYetGgDplc1MWqBxjnTEowSOjZEgv8QGguRmkZ05WtYb
+	R1mm2WLw0wdrJHTatytur6YWKvL1r2QAFCQhDzhcev9gxk/kEd3tzr63UXa8EMdZ
+	ieYH0z7dYOy8CBc/TfrD+N57+pzYyDkYUmiQ6SiBYZP9a0nii/cg/HraHMLU/RqH
+	ok3LtIVzOKEwDW1mTNoGn8hBQnnvZQ5QBZHdDWf7pxY8IiDk6l2tgA17k64vtKKg
+	dG7c6ezC3oFrXpD+BkUx4C45w6OPZxg38wmz574mWg9ts3f5N1BIrRL0iD+NVklw
+	x7Uw5Q==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45hne5vrak-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:03:18 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2254bdd4982so116409605ad.1
+        for <stable@vger.kernel.org>; Mon, 24 Mar 2025 08:03:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742828598; x=1743433398;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nH4aeoaJ2bY3RhjpBvj4Vxj6NTdJ/AFDG5izM2nQcDw=;
+        b=ZbikGslngjQdxyeV8jHoWd1Izsa4VvKUpQ/MwgxLRWS0KV1lf6iieSIM1XYrV9yXW6
+         hQHucvy++PSUWOuGlh9+B0k9n0OXd4yEM5euvRpG8k9qyOruJjhtrswU4XUdHoMlcGJ3
+         KueOBVtrM3lT0ydYJa2z+nfLa6jbK71nMyTgx1Gyp704GQlnzb1cnEOPg+8gI7Zwx/ON
+         v1jrNe2M1UR3HAHhlpbIjknMwU0Vufjv6ri7caag0UoWI8YREVu9lMZvYOv6itKkytyY
+         i7ZqMGmBZ9fthfaILqKVlR51EFqqWNkHWOZJu74MTVlgj3Uvv32bNyFVL2WCwZv2we5A
+         E9ew==
+X-Forwarded-Encrypted: i=1; AJvYcCUdGGpums7wzgcCgI6TOcgxnvv0JF18rMNamCSr+/ez1AREabYJNrTqPkfEe4srfmi7NP703Cs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3q94aYt/rt0fCXzuxJue34Y49xdAhYQQFkVc635fBrn8Ikxah
+	jNH823kSr6SVZlxbLnfEalgNpFXMtJyNbnR6C3TAnVmY8I7Lp3M0ULyIhv7iwmkpzc9xzKp6k+c
+	YQymFIEfL2YOyoFN5SQPfqSeOULmGIwRERlXs6p8Yc3C63cGOG64U/z8=
+X-Gm-Gg: ASbGncvA2KTmYW+IzJfysSGAvak7GwcKMulnlkF0Aj3/uC1qMzfyhGi8kUT9R3Bc+hm
+	xoe3IU7rq+t7WkNA1kA3cWWmlJQhxzsaQlj+LG8pOgZcqGnbyurq1A7x/nFPOqAZ/d5YDUNjgeZ
+	Tb9d+eOQliLKrHW0P5QAz1RZ5DkjpkT9yNEa/zGaHUWE6Ny6WQpTanVnHzIP0MQJnH/FSnZnVi2
+	fNy074WTHdvo3QdFYLcEWWDTYABv2ietd7ocqNcnWJCxpAvu2n8F42gK5X4iKCHzU3v23x4DiG9
+	ADl5bM4s2GFYKEDYCAuchXU6Z/cV4wEOd16idgb4pyD9TiefPFNEpMlIdmXnxmCAyPVo/TQ=
+X-Received: by 2002:a17:902:f70c:b0:224:c76:5e57 with SMTP id d9443c01a7336-22780e02a4emr237465355ad.39.1742828597673;
+        Mon, 24 Mar 2025 08:03:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH828wzul6klWb3XsCB3+zMsH7vOJ7XnnAtFTDduSHSdwmPgp6DaMF6OMFiOhDbgCT/iquEMg==
+X-Received: by 2002:a17:902:f70c:b0:224:c76:5e57 with SMTP id d9443c01a7336-22780e02a4emr237464745ad.39.1742828597066;
+        Mon, 24 Mar 2025 08:03:17 -0700 (PDT)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22780f459fbsm72138365ad.78.2025.03.24.08.03.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Mar 2025 08:03:16 -0700 (PDT)
+Message-ID: <5d872cf0-ca57-4017-b06e-fce9c11813dc@oss.qualcomm.com>
+Date: Mon, 24 Mar 2025 08:03:15 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: imgtec.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CWXP265MB3397.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 551305e4-9bac-4147-24a3-08dd6ae32a88
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Mar 2025 14:50:05.9982
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0d5fd8bb-e8c2-4e0a-8dd5-2c264f7140fe
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RIsOtEUYcfFNAI0B0prYdDHjy9yLmDrAMAIbpCxa1F2oFwsBI/9voB7ANTjnYNSHl3Xcs31F9bnDODpJls+b1g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2211
-X-Proofpoint-GUID: 2j1fn4WW4Naeq6NMNMcKuwrMa6XY-OCf
-X-Authority-Analysis: v=2.4 cv=Qb5mvtbv c=1 sm=1 tr=0 ts=67e17121 cx=c_pps a=h72tj/vcfevIRsfYUpnJeg==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=Vs1iUdzkB0EA:10
- a=H5OGdu5hBBwA:10 a=NgoYpvdbvlAA:10 a=r_1tXGB3AAAA:8 a=VwQbUJbxAAAA:8 a=i4s8dUDdjnhDxNR2G6AA:9 a=QEXdDO2ut3YA:10 a=400PYHpdZu8KaQM2OfoA:9 a=FfaGCDsud1wA:10 a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-ORIG-GUID: 2j1fn4WW4Naeq6NMNMcKuwrMa6XY-OCf
-
---------------5swW1qIISZurWzrCaei0660s
-Content-Type: multipart/mixed; boundary="------------k6JQAX0lwQTsxryGuICCzOOQ";
- protected-headers="v1"
-From: Matt Coster <matt.coster@imgtec.com>
-To: Brendan King <brendan.king@imgtec.com>
-Cc: Frank Binns <frank.binns@imgtec.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Message-ID: <af290775-f690-475c-8458-5047b9cf59c4@imgtec.com>
-Subject: Re: [PATCH] drm/imagination: fix firmware memory leaks
-References: <20250318-ddkopsrc-1339-firmware-related-memory-leak-on-module-unload-v1-1-155337c57bb4@imgtec.com>
-In-Reply-To: <20250318-ddkopsrc-1339-firmware-related-memory-leak-on-module-unload-v1-1-155337c57bb4@imgtec.com>
-
---------------k6JQAX0lwQTsxryGuICCzOOQ
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: fix rx completion meta data corruption
+To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
+        Steev Klimaszewski <steev@kali.org>,
+        Clayton Craft <clayton@craftyguy.net>,
+        Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
+        ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20250321145302.4775-1-johan+linaro@kernel.org>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20250321145302.4775-1-johan+linaro@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: pDd3WvhUzUpZdOtDsN2hXlCKxWBZvfEw
+X-Proofpoint-ORIG-GUID: pDd3WvhUzUpZdOtDsN2hXlCKxWBZvfEw
+X-Authority-Analysis: v=2.4 cv=JvPxrN4C c=1 sm=1 tr=0 ts=67e17436 cx=c_pps a=IZJwPbhc+fLeJZngyXXI0A==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=GSe8ykzKO7dVpNIIvtwA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
+ a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-24_04,2025-03-21_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=963
+ malwarescore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ suspectscore=0 phishscore=0 impostorscore=0 adultscore=0 clxscore=1015
+ mlxscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503240109
 
-On 18/03/2025 14:55, Brendan King via B4 Relay wrote:
-> From: Brendan King <Brendan.King@imgtec.com>
->=20
-> Free the memory used to hold the results of firmware image processing
-> when the module is unloaded.
->=20
-> Fix the related issue of the same memory being leaked if processing
-> of the firmware image fails during module load.
->=20
-> Ensure all firmware GEM objects are destroyed if firmware image
-> processing fails.
->=20
-> Fixes memory leaks on powervr module unload detected by Kmemleak:
->=20
-> unreferenced object 0xffff000042e20000 (size 94208):
->   comm "modprobe", pid 470, jiffies 4295277154
->   hex dump (first 32 bytes):
->     02 ae 7f ed bf 45 84 00 3c 5b 1f ed 9f 45 45 05  .....E..<[...EE.
->     d5 4f 5d 14 6c 00 3d 23 30 d0 3a 4a 66 0e 48 c8  .O].l.=3D#0.:Jf.H.=
+On 3/21/2025 7:53 AM, Johan Hovold wrote:
+> Add the missing memory barrier to make sure that the REO dest ring
+> descriptor is read after the head pointer to avoid using stale data on
+> weakly ordered architectures like aarch64.
+> 
+> This may fix the ring-buffer corruption worked around by commit
+> f9fff67d2d7c ("wifi: ath11k: Fix SKB corruption in REO destination
+> ring") by silently discarding data, and may possibly also address user
+> reported errors like:
+> 
+> 	ath11k_pci 0006:01:00.0: msdu_done bit in attention is not set
+> 
+> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Cc: stable@vger.kernel.org	# 5.6
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=218005
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 
->   backtrace (crc dd329dec):
->     kmemleak_alloc+0x30/0x40
->     ___kmalloc_large_node+0x140/0x188
->     __kmalloc_large_node_noprof+0x2c/0x13c
->     __kmalloc_noprof+0x48/0x4c0
->     pvr_fw_init+0xaa4/0x1f50 [powervr]
->=20
-> unreferenced object 0xffff000042d20000 (size 20480):
->   comm "modprobe", pid 470, jiffies 4295277154
->   hex dump (first 32 bytes):
->     00 00 00 00 00 00 00 00 09 00 00 00 0b 00 00 00  ................
->     00 00 00 00 00 00 00 00 07 00 00 00 08 00 00 00  ................
->   backtrace (crc 395b02e3):
->     kmemleak_alloc+0x30/0x40
->     ___kmalloc_large_node+0x140/0x188
->     __kmalloc_large_node_noprof+0x2c/0x13c
->     __kmalloc_noprof+0x48/0x4c0
->     pvr_fw_init+0xb0c/0x1f50 [powervr]
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructur=
-e and META FW support")
-> Signed-off-by: Brendan King <brendan.king@imgtec.com>
-
-Reviewed-by: Matt Coster <matt.coster@imgtec.com>
-
-I'll apply this to drm-misc-fixes tomorrow if there are no objections.
-
-> ---
->  drivers/gpu/drm/imagination/pvr_fw.c | 27 ++++++++++++++++++++-------
->  1 file changed, 20 insertions(+), 7 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/imagination/pvr_fw.c b/drivers/gpu/drm/ima=
-gination/pvr_fw.c
-> index 3debc9870a82ae7de9b2dc173df84c466c137bb3..d09c4c68411627714c14dee=
-5ed4e61b07baca1ba 100644
-> --- a/drivers/gpu/drm/imagination/pvr_fw.c
-> +++ b/drivers/gpu/drm/imagination/pvr_fw.c
-> @@ -732,7 +732,7 @@ pvr_fw_process(struct pvr_device *pvr_dev)
->  					       fw_mem->core_data, fw_mem->core_code_alloc_size);
-> =20
->  	if (err)
-> -		goto err_free_fw_core_data_obj;
-> +		goto err_free_kdata;
-> =20
->  	memcpy(fw_code_ptr, fw_mem->code, fw_mem->code_alloc_size);
->  	memcpy(fw_data_ptr, fw_mem->data, fw_mem->data_alloc_size);
-> @@ -742,10 +742,14 @@ pvr_fw_process(struct pvr_device *pvr_dev)
->  		memcpy(fw_core_data_ptr, fw_mem->core_data, fw_mem->core_data_alloc_=
-size);
-> =20
->  	/* We're finished with the firmware section memory on the CPU, unmap.=
- */
-> -	if (fw_core_data_ptr)
-> +	if (fw_core_data_ptr) {
->  		pvr_fw_object_vunmap(fw_mem->core_data_obj);
-> -	if (fw_core_code_ptr)
-> +		fw_core_data_ptr =3D NULL;
-> +	}
-> +	if (fw_core_code_ptr) {
->  		pvr_fw_object_vunmap(fw_mem->core_code_obj);
-> +		fw_core_code_ptr =3D NULL;
-> +	}
->  	pvr_fw_object_vunmap(fw_mem->data_obj);
->  	fw_data_ptr =3D NULL;
->  	pvr_fw_object_vunmap(fw_mem->code_obj);
-> @@ -753,7 +757,7 @@ pvr_fw_process(struct pvr_device *pvr_dev)
-> =20
->  	err =3D pvr_fw_create_fwif_connection_ctl(pvr_dev);
->  	if (err)
-> -		goto err_free_fw_core_data_obj;
-> +		goto err_free_kdata;
-> =20
->  	return 0;
-> =20
-> @@ -763,13 +767,16 @@ pvr_fw_process(struct pvr_device *pvr_dev)
->  	kfree(fw_mem->data);
->  	kfree(fw_mem->code);
-> =20
-> -err_free_fw_core_data_obj:
->  	if (fw_core_data_ptr)
-> -		pvr_fw_object_unmap_and_destroy(fw_mem->core_data_obj);
-> +		pvr_fw_object_vunmap(fw_mem->core_data_obj);
-> +	if (fw_mem->core_data_obj)
-> +		pvr_fw_object_destroy(fw_mem->core_data_obj);
-> =20
->  err_free_fw_core_code_obj:
->  	if (fw_core_code_ptr)
-> -		pvr_fw_object_unmap_and_destroy(fw_mem->core_code_obj);
-> +		pvr_fw_object_vunmap(fw_mem->core_code_obj);
-> +	if (fw_mem->core_code_obj)
-> +		pvr_fw_object_destroy(fw_mem->core_code_obj);
-> =20
->  err_free_fw_data_obj:
->  	if (fw_data_ptr)
-> @@ -836,6 +843,12 @@ pvr_fw_cleanup(struct pvr_device *pvr_dev)
->  	struct pvr_fw_mem *fw_mem =3D &pvr_dev->fw_dev.mem;
-> =20
->  	pvr_fw_fini_fwif_connection_ctl(pvr_dev);
-> +
-> +	kfree(fw_mem->core_data);
-> +	kfree(fw_mem->core_code);
-> +	kfree(fw_mem->data);
-> +	kfree(fw_mem->code);
-> +
->  	if (fw_mem->core_code_obj)
->  		pvr_fw_object_destroy(fw_mem->core_code_obj);
->  	if (fw_mem->core_data_obj)
->=20
-> ---
-> base-commit: 96c85e428ebaeacd2c640eba075479ab92072ccd
-> change-id: 20250318-ddkopsrc-1339-firmware-related-memory-leak-on-modul=
-e-unload-c18a9a4fd0db
->=20
-> Best regards,
-
-
---=20
-Matt Coster
-E: matt.coster@imgtec.com
-
---------------k6JQAX0lwQTsxryGuICCzOOQ--
-
---------------5swW1qIISZurWzrCaei0660s
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQS4qDmoJvwmKhjY+nN5vBnz2d5qsAUCZ+FxHQUDAAAAAAAKCRB5vBnz2d5qsKL0
-AQD5tik2tAEDVCsrHY1yaLSIud95buAF0iObBnjXsccr1QD9HNGxrgXeZVTM7RDoI1gXlZPGINUo
-gkHBLnGzGx+RtgU=
-=V5zr
------END PGP SIGNATURE-----
-
---------------5swW1qIISZurWzrCaei0660s--
+Does this supersede:
+[PATCH] wifi: ath11k: fix ring-buffer corruption
 
