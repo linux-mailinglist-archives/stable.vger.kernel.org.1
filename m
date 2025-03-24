@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-125927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD297A6DECB
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:32:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0355EA6DED1
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:33:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CF0A16616A
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:32:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4A791886E3F
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FC3261379;
-	Mon, 24 Mar 2025 15:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE3F25E446;
+	Mon, 24 Mar 2025 15:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zw//Q6VO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmxA0HnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC3B25E81C
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E87481DD
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742830365; cv=none; b=YBb7dDL4H7e773fkLR0KSKjivy5K6f9nlKl2H3rNegQQGLWS95x9SIUMPdIdjeZTvzJL+L5jP04TJDUoeu/hGelvkiN09d3wA0cjU/k+xfeocAotpAtl8Eyv8GA7Ydp7AF30x0ibBqBdk6FWkgKDBLujjHcaOIeM1WzwcHt74Ok=
+	t=1742830406; cv=none; b=CbGRiWCu3i7tUqLG9xPctj2FqoiJS7NuI3tnpdLZVmxqmp8Z8ryeHgi0n2UPMlP7KxXjeyTzxtGNTFAQwcwQG9x9A9S8TIMZu333tJqgA0aMkDyPyrcv21Nq9gbjefhVqapaR8ZA9B4bCHpoGdQKr3l503g24XM3N1iU+y/cUHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742830365; c=relaxed/simple;
-	bh=W9MtAPILWyc9E+lDWgWznFR1EUgWdHt6pWwAMK7hwPE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=At6eeOEvizqf9H1Q9syC+2N/EelXeysteLp3h2QpdW32K1BVd552eMrFH2UJg19y5ctKc6j1WIKw/Pn4mgGC54wHPwHwtkwH8ksGEclR6KN25JioCWVLUQ2bmSw4cdYN0zCGMZN0psVtk+xOciNyPdWHFe6CcbBfMjRqReOZ6fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zw//Q6VO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF80C4CEDD;
-	Mon, 24 Mar 2025 15:32:44 +0000 (UTC)
+	s=arc-20240116; t=1742830406; c=relaxed/simple;
+	bh=9zlFC0PmvebAuZL/vPD9OhRwaXvtia+p9Cvs3Ij0V7M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=anfzSxBLHs7C/GMAr5TwOZClX5WTe6AHALcE1saN++Hf1QYH+4hEHvpZvoVEih6uE3wPy1hmKflmKKHCBIBf1vaLiKbI2hZdPPdQDGiaOfg19GcAb6qmF6YHuDNotObBtvOnV1TCE5x6De+PK3aqC6YZQUtItJ1myXXVrhn4Q+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmxA0HnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE592C4CEDD;
+	Mon, 24 Mar 2025 15:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742830365;
-	bh=W9MtAPILWyc9E+lDWgWznFR1EUgWdHt6pWwAMK7hwPE=;
+	s=korg; t=1742830406;
+	bh=9zlFC0PmvebAuZL/vPD9OhRwaXvtia+p9Cvs3Ij0V7M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zw//Q6VOrPd6jwWneQ4slVwwro6FxsC6F8m2nMiFP4crCcWp+QP7h0R1PmWpDInml
-	 RwHQ8C1oQUXam3bJhqYNXF/tPraqMprHqe9hsXXfkzOaYo4cJKKq7GrJOky+Xq0zwr
-	 sI+rrGvAFnQeZlPaTN9diWBEGTKzGE00/PGCuuNQ=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops" failed to apply to 5.10-stable tree
-To: kamal.dasu@broadcom.com,florian.fainelli@broadcom.com,ulf.hansson@linaro.org
+	b=CmxA0HnFK3zmlVdNvd/yonBR18nKsJXrJf/kYU0HpUdP02T/J5v+Kk10+surj20jp
+	 ssYYoGi/5Arah7P5oOykaTE/NKmteO9AVP1ffgq70Arup8nL1Pi/yoojkU76CwEVF7
+	 r7i8O1bi4rgQARW5/FM3cAWXJuVBDObM4GQVQNzg=
+Subject: FAILED: patch "[PATCH] mm/migrate: fix shmem xarray update during migration" failed to apply to 6.1-stable tree
+To: ziy@nvidia.com,akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,david@redhat.com,hughd@google.com,ioworker0@gmail.com,liushixin2@huawei.com,quic_charante@quicinc.com,ryan.roberts@arm.com,stable@vger.kernel.org,wangkefeng.wang@huawei.com,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Mar 2025 08:31:14 -0700
-Message-ID: <2025032414-unsheathe-greedily-1d17@gregkh>
+Date: Mon, 24 Mar 2025 08:32:03 -0700
+Message-ID: <2025032403-craziness-tactics-91af@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 723ef0e20dbb2aa1b5406d2bb75374fc48187daa
+git cherry-pick -x 60cf233b585cdf1f3c5e52d1225606b86acd08b0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032414-unsheathe-greedily-1d17@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032403-craziness-tactics-91af@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,56 +77,75 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 723ef0e20dbb2aa1b5406d2bb75374fc48187daa Mon Sep 17 00:00:00 2001
-From: Kamal Dasu <kamal.dasu@broadcom.com>
-Date: Tue, 11 Mar 2025 12:59:35 -0400
-Subject: [PATCH] mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops
+From 60cf233b585cdf1f3c5e52d1225606b86acd08b0 Mon Sep 17 00:00:00 2001
+From: Zi Yan <ziy@nvidia.com>
+Date: Wed, 5 Mar 2025 15:04:03 -0500
+Subject: [PATCH] mm/migrate: fix shmem xarray update during migration
 
-cqhci timeouts observed on brcmstb platforms during suspend:
-  ...
-  [  164.832853] mmc0: cqhci: timeout for tag 18
-  ...
+A shmem folio can be either in page cache or in swap cache, but not at the
+same time.  Namely, once it is in swap cache, folio->mapping should be
+NULL, and the folio is no longer in a shmem mapping.
 
-Adding cqhci_suspend()/resume() calls to disable cqe
-in sdhci_brcmstb_suspend()/resume() respectively to fix
-CQE timeouts seen on PM suspend.
+In __folio_migrate_mapping(), to determine the number of xarray entries to
+update, folio_test_swapbacked() is used, but that conflates shmem in page
+cache case and shmem in swap cache case.  It leads to xarray multi-index
+entry corruption, since it turns a sibling entry to a normal entry during
+xas_store() (see [1] for a userspace reproduction).  Fix it by only using
+folio_test_swapcache() to determine whether xarray is storing swap cache
+entries or not to choose the right number of xarray entries to update.
 
-Fixes: d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20250311165946.28190-1-kamal.dasu@broadcom.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[1] https://lore.kernel.org/linux-mm/Z8idPCkaJW1IChjT@casper.infradead.org/
 
-diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-index 0ef4d578ade8..48cdcba0f39c 100644
---- a/drivers/mmc/host/sdhci-brcmstb.c
-+++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -503,8 +503,15 @@ static int sdhci_brcmstb_suspend(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
-+	int ret;
- 
- 	clk_disable_unprepare(priv->base_clk);
-+	if (host->mmc->caps2 & MMC_CAP2_CQE) {
-+		ret = cqhci_suspend(host->mmc);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return sdhci_pltfm_suspend(dev);
- }
- 
-@@ -529,6 +536,9 @@ static int sdhci_brcmstb_resume(struct device *dev)
- 			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
+Note:
+In __split_huge_page(), folio_test_anon() && folio_test_swapcache() is
+used to get swap_cache address space, but that ignores the shmem folio in
+swap cache case.  It could lead to NULL pointer dereferencing when a
+in-swap-cache shmem folio is split at __xa_store(), since
+!folio_test_anon() is true and folio->mapping is NULL.  But fortunately,
+its caller split_huge_page_to_list_to_order() bails out early with EBUSY
+when folio->mapping is NULL.  So no need to take care of it here.
+
+Link: https://lkml.kernel.org/r/20250305200403.2822855-1-ziy@nvidia.com
+Fixes: fc346d0a70a1 ("mm: migrate high-order folios in swap cache correctly")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: Liu Shixin <liushixin2@huawei.com>
+Closes: https://lore.kernel.org/all/28546fb4-5210-bf75-16d6-43e1f8646080@huawei.com/
+Suggested-by: Hugh Dickins <hughd@google.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Charan Teja Kalla <quic_charante@quicinc.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Lance Yang <ioworker0@gmail.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index fb19a18892c8..97f0edf0c032 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -518,15 +518,13 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 	if (folio_test_anon(folio) && folio_test_large(folio))
+ 		mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
+ 	folio_ref_add(newfolio, nr); /* add cache reference */
+-	if (folio_test_swapbacked(folio)) {
++	if (folio_test_swapbacked(folio))
+ 		__folio_set_swapbacked(newfolio);
+-		if (folio_test_swapcache(folio)) {
+-			folio_set_swapcache(newfolio);
+-			newfolio->private = folio_get_private(folio);
+-		}
++	if (folio_test_swapcache(folio)) {
++		folio_set_swapcache(newfolio);
++		newfolio->private = folio_get_private(folio);
+ 		entries = nr;
+ 	} else {
+-		VM_BUG_ON_FOLIO(folio_test_swapcache(folio), folio);
+ 		entries = 1;
  	}
  
-+	if (host->mmc->caps2 & MMC_CAP2_CQE)
-+		ret = cqhci_resume(host->mmc);
-+
- 	return ret;
- }
- #endif
 
 
