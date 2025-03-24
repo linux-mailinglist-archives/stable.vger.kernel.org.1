@@ -1,84 +1,129 @@
-Return-Path: <stable+bounces-125884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE6EA6D99E
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 12:57:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDE8A6D9B1
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 13:02:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BA2A1888B95
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 11:56:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AFDC167DFB
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 12:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD37B25E453;
-	Mon, 24 Mar 2025 11:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D992325DCF1;
+	Mon, 24 Mar 2025 12:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="CNOYkmr+"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="BFotkZBy"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA42BA53;
-	Mon, 24 Mar 2025 11:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BED025C6F5;
+	Mon, 24 Mar 2025 12:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742817385; cv=none; b=LxMhzAyes2055THEpN5fWFld1k/xfSvRbqe7VzbNlALV3FTPUwDSJqVWLhomTeRHvGVQ3M0U/HqYJVqd7keELzaq7zsECEadvLMHRzJM1G5TdMBlAx5AtIXzHdryzFzr86heSFGYRZyZWaOXBkShfFiHUIlp0Kunj0U9mq2zrD0=
+	t=1742817724; cv=none; b=BEGgm6EPMJ2OhQYI3SvgOEtE6HkT0aefg7Bjc6qaP28BOkbJwxVCTf7lMsEDBsiIPy9+KztTthfSyGv/XqFJlZaQLTJfm6HaJsno1N3Pm+Vs2zdBxhIEAvYBG/9chji89II+/EZTrQh6/xSFoPqSWcXWvkhllXSOnxklf6sQ5Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742817385; c=relaxed/simple;
-	bh=J9q5/4scy6kn1TygtUSXvAe4e5iF9WBAkzy7kqTWp14=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X2DlxFCaroq9Esru481O9QYQ9U71Mh7HbLCfqxl6MrUoDFUAw6ontMJY2mI/KF1Hsw/9xUfNAnOFFwJmhmHyyKJIhvIcX7mWkQgIWCQcoRKXpxAJm+k4+bKRAx0b/gmLS+/BXQWdh0XLSn672YQS+2VTOtONlQcvvRDmi1SmXOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=CNOYkmr+; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=lGxJjqthPFxv5zjZw6mg4SKFplIL29l3gQ4hoQnCdaE=; b=CNOYkmr+qNhgUz1mwC0VVTERaO
-	5O2j3na1cFLYhGRnL6+kVSYjkkgZFbvbCpQS8NONq0Pn39b8nr+SpIDCEc6ZfFHrPi6hVfkJSzTJj
-	2dpxsjlK/Nni2ETWazM538v4kD1tMwVO2q9hZCcKJiTm7TJ/6ZoDSOts2QRGruahLWFAxU1iaVFsH
-	xwsrFXM+ZkVdKSLHQAvStMuoQv2uWOYgfjyK+7Vb27eghfraAMVlYCsomX1dxLlQmBjrNYJIviXBW
-	5ItLDNYZMd3xKex6leLf/ZNrV5xFMvQ43g1N+Yhc6JZCp36c+4f2nnPBZ3KJSkIJobykiXnsSg6+U
-	y4hKUGsw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1twgPe-00000005E3u-27Bi;
-	Mon, 24 Mar 2025 11:56:14 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 00D9E3004AF; Mon, 24 Mar 2025 12:56:13 +0100 (CET)
-Date: Mon, 24 Mar 2025 12:56:13 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Pat Cody <pat@patcody.io>
-Cc: mingo@redhat.com, juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, linux-kernel@vger.kernel.org,
-	riel@surriel.com, patcody@meta.com, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] sched/fair: Add null pointer check to pick_next_entity()
-Message-ID: <20250324115613.GD14944@noisy.programming.kicks-ass.net>
-References: <20250320205310.779888-1-pat@patcody.io>
+	s=arc-20240116; t=1742817724; c=relaxed/simple;
+	bh=/dV9MUc2Op5+pvhi2Vp2s8XMfSAPhlqmS8TGQ+mYzVs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gkmFKUSfe6dtL7G2BYaCKJVEqB1z239k/NIOYWghaahzXIFOgkrVywruEJjtzwZTaok80nQE9qWgB9NsKIIz/6sDGpkep4ItxSWQkK+wFuY+Qmxo/PRsFWz5/IcS+b452k6brsakpUku4WIujja4d5ItyM5yd4/LL6Maygotf/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=BFotkZBy; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from mail.ideasonboard.com (unknown [IPv6:2401:4900:1c68:904a:b2d:8d57:4705:738e])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1374B455;
+	Mon, 24 Mar 2025 13:00:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1742817614;
+	bh=/dV9MUc2Op5+pvhi2Vp2s8XMfSAPhlqmS8TGQ+mYzVs=;
+	h=From:Subject:Date:To:Cc:From;
+	b=BFotkZBydLc/D29WHWTjW/VcMx+0FxyWmJzzsqBuiTn/uoeYtX0MrvPU8C+Kd9GIF
+	 ohsSCuwhq16DFOVIpARhfaFYYbmePVXApo+MGMVtIGAY9NoqrE/jf8h+W1FwfsF0MB
+	 vVVtyhB74iYx/n8VVDNkSHs2NBqrn0WLbd6LqLtQ=
+From: Jai Luthra <jai.luthra@ideasonboard.com>
+Subject: [PATCH 0/6] media: ti, cdns: Multiple pixel support and misc fixes
+Date: Mon, 24 Mar 2025 17:31:36 +0530
+Message-Id: <20250324-probe_fixes-v1-0-5cd5b9e1cfac@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250320205310.779888-1-pat@patcody.io>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKBJ4WcC/x3LQQqAIBBG4avErBMsC6GrRETZX81GYwYiCO+et
+ Px4vJcUwlAaqpcENyunWNDUFYVziQcMb8XU2ra3runMJWnFvPMDNR4Wwbngd4DKcQn+UIZxyvk
+ DW8rKSl0AAAA=
+X-Change-ID: 20250314-probe_fixes-7e0ec33c7fee
+To: Jai Luthra <jai.luthra@linux.dev>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil@xs4all.nl>, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>
+Cc: Devarsh Thakkar <devarsht@ti.com>, 
+ Rishikesh Donadkar <r-donadkar@ti.com>, Vaishnav Achath <vaishnav.a@ti.com>, 
+ Changhuang Liang <changhuang.liang@starfivetech.com>, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jai Luthra <jai.luthra@ideasonboard.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1684;
+ i=jai.luthra@ideasonboard.com; h=from:subject:message-id;
+ bh=/dV9MUc2Op5+pvhi2Vp2s8XMfSAPhlqmS8TGQ+mYzVs=;
+ b=owEBbQKS/ZANAwAIAUPekfkkmnFFAcsmYgBn4UmwMEkRFw1FySwIxcsufydfvWSBoDgiU0Lg/
+ xB7h8vSBqiJAjMEAAEIAB0WIQRN4NgY5dV16NRar8VD3pH5JJpxRQUCZ+FJsAAKCRBD3pH5JJpx
+ RRXjEACLSZph72bUqCMJyyKWbRMFfuXXOtWEYPFxioZmeoVfmGWSCnIfsCigmyt+vaXYilxRwkk
+ +Lq87Pk/IH3hDxtzNNY5yFTuClcnXQxS0lJegWFPLpLGncetu/9nVnEG/Mc9DQwWjTaUp1x8Go1
+ P9IfbjzpjtGxUb9xhwV6ti7uLFe1459uji04mEAHSyQDhEHZDLLFibey7quepzAJ+1GES1jzI8H
+ tFRt8zZfTauo5mUNGIFivJRxWlNCUdsHnYRNuMKLtb7JLQpDwMFE/QHcCBoay0Wpww8Xx70ttMC
+ pvCijN6X31d80r5Tl6ea9eIJ69qhyV0g4mXasdpsLMgaYWR4xQWODxKqFsgXzqgX5cbqba/3WGv
+ zx9WGbLGHZa2RtbJhd0PmIitWuEROB9Fg19LO+RtOO4xf1z1+3aZTDC2Wt8srkbLt50Cdy4r40y
+ zWVUsraNpa6rdIdOiZzCy6BOdupXBtJhbFTHHkm5ngDBlBls6ynO6/6guZzvA9Vkk/0Vm6qgolo
+ nw5ydQ/917FSb1wqHy0sSap5PJFk74/86+uXheQsNg177fkWYK31NxDdYch5AZmCK2CMqt3x7X+
+ bEI0MH8wAf6o83RlFII29KmS8dq60ypP/R2mZAMSbFS7Scx6JtG3fVe+kLnjWq5NWXWXyBhJ2MU
+ HG9+A0KGuNe3ULQ==
+X-Developer-Key: i=jai.luthra@ideasonboard.com; a=openpgp;
+ fpr=4DE0D818E5D575E8D45AAFC543DE91F9249A7145
 
-On Thu, Mar 20, 2025 at 01:53:10PM -0700, Pat Cody wrote:
-> pick_eevdf() can return null, resulting in a null pointer dereference
-> crash in pick_next_entity()
+Hi,
 
-If it returns NULL while nr_queued, something is really badly wrong.
+The first four patches in this series are miscellaneous fixes and
+improvements in the Cadence and TI CSI-RX drivers around probing, fwnode
+and link creation.
 
-Your check will hide this badness.
+The last two patches add support for transmitting multiple pixels per
+clock on the internal bus between Cadence CSI-RX bridge and TI CSI-RX
+wrapper. As this internal bus is 32-bit wide, the maximum number of
+pixels that can be transmitted per cycle depend upon the format's bit
+width. Secondly, the downstream element must support unpacking of
+multiple pixels.
 
-Does something like:
+Thus we export a module function that can be used by the downstream
+driver to negotiate the pixels per cycle on the output pixel stream of
+the Cadence bridge.
 
-  https://lkml.kernel.org/r/20250128143949.GD7145@noisy.programming.kicks-ass.net
+Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+---
+Jai Luthra (6):
+      media: ti: j721e-csi2rx: Use devm_of_platform_populate
+      media: ti: j721e-csi2rx: Use fwnode_get_named_child_node
+      media: ti: j721e-csi2rx: Fix source subdev link creation
+      media: cadence: csi2rx: Implement get_fwnode_pad op
+      media: cadence: cdns-csi2rx: Support multiple pixels per clock cycle
+      media: ti: j721e-csi2rx: Support multiple pixels per clock
 
-help?
+ drivers/media/platform/cadence/cdns-csi2rx.c       | 75 ++++++++++++++++------
+ drivers/media/platform/cadence/cdns-csi2rx.h       | 19 ++++++
+ drivers/media/platform/ti/Kconfig                  |  3 +-
+ .../media/platform/ti/j721e-csi2rx/j721e-csi2rx.c  | 66 ++++++++++++++-----
+ 4 files changed, 128 insertions(+), 35 deletions(-)
+---
+base-commit: 586de92313fcab8ed84ac5f78f4d2aae2db92c59
+change-id: 20250314-probe_fixes-7e0ec33c7fee
+
+Best regards,
+-- 
+Jai Luthra <jai.luthra@ideasonboard.com>
+
 
