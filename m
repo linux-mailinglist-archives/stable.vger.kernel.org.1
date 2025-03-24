@@ -1,209 +1,217 @@
-Return-Path: <stable+bounces-125952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E27A6E0C2
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 18:24:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAF6A6E1E8
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 19:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B63CD1888B36
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 17:24:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EDF71887D6E
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 17:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49B12627F5;
-	Mon, 24 Mar 2025 17:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D112627F5;
+	Mon, 24 Mar 2025 17:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QCZoHtE3"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ey8acH8B"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6131F1DD873
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 17:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F371DC985;
+	Mon, 24 Mar 2025 17:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742837042; cv=none; b=tmtMG6SiXZSENGi6T0jrYB8HHOasmtgdlF7Qg/dnwDT/h1D6Xkj26IiHUA70iZQT+pFSlwKXbd0f7WmZsDJTm1ZC4BPMBEB8za8cYzGQ31hgJkTeSJLmM1seM2CDf31XrXwkpi49O9TECl11OBSMv73H3pI74GKtgOnIzHVhvFs=
+	t=1742838977; cv=none; b=Wcv3jV7XrHF65iP/vTtmygOt6PbSpI6Hrrs4W3KQtn48ya+9qVvf0ocp778Rp0PNUvHl/TuTGMeljWvRi/2vIpKZ7fiesoaei350XXRaUPE0JqOVAScxRpgRCgXvsHp2Ie5f+aecaytCqjA0JYv0SOdDuLxq8kTAu3cZCiVoR3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742837042; c=relaxed/simple;
-	bh=65W/GePM1H/ICF2PcTOgaH636Q+aPXrrzB0iltev/Lw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KYg3PXq2ZmF5BbBiwvvNtT6dOfaDu4tSpvSJ8McciYK5NM71uH7aus5iy0KKew0VbX5DNalZd7NTdu6sifDKY8MxHngd/KQW1gqtQVNXUQaPDo/O8Fxv2UQv5JuPL1aFplpyNaMgqUTIeRR14KUrCXqeN/isIP6LvXNKIyn4PA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QCZoHtE3; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742837040; x=1774373040;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=65W/GePM1H/ICF2PcTOgaH636Q+aPXrrzB0iltev/Lw=;
-  b=QCZoHtE3wKPIKw8VkwNiLO7bU2v1iSNNsH6xVrxsL7tSBBmm4Ty/neYj
-   Qp2xDg4UCOtBgLsH4nH6bOyyvjx1HHJVFsRlApeKv7s8c8mtb2VRk0QpG
-   TRRmWPaZIEtL3pkJ9ShgXryY6IMeN8NYMRVMOylyyVFQnaCZKTMzT/Llb
-   Uz/FP/+nxbTmez7lc4OfELgOVyWA929xw1NdahSU1UuvQMpJBv5p6qpf1
-   Bh0naNZRlNXvd3j6+kwkyIA/248aJIZe8kcK9qUc2AW22WVHuO1FXvPWW
-   StMq7xGF+j4cpjLhQkichZs+iLm2Z4V11w6iXsdDzLDGJykm4j0oB9usP
-   Q==;
-X-CSE-ConnectionGUID: lav/Yn+hQIa1HtEx7r16Lg==
-X-CSE-MsgGUID: 7bLf07zFTP2I1n7jg0Ox9A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="44074046"
-X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
-   d="scan'208";a="44074046"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 10:24:00 -0700
-X-CSE-ConnectionGUID: iwhdbD+NR3qKv+luB1eF5Q==
-X-CSE-MsgGUID: tm95WdshT8aKckebLQ7Xnw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
-   d="scan'208";a="147309727"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 10:23:59 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: <intel-xe@lists.freedesktop.org>,
-	intel-gfx@lists.freedesktop.org,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	stable@vger.kernel.org,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH v2] drm/i915/xe2hpd: Identify the memory type for SKUs with
- GDDR + ECC
-Date: Mon, 24 Mar 2025 10:22:33 -0700
-Message-ID: <20250324-tip-v2-1-38397de319f8@intel.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1742838977; c=relaxed/simple;
+	bh=55aSHf+XbnaEkNNtZWAap9c2eiaxcY92LDR82+5KUkE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=I1U/7IGDhHXntW0kDWRxDQ88i/NCnPBRjyIShpL68NTUsUWr4uhqecc4C0RA+v1Bj7nPe9ab88FjANvcTB0p+t8nLIMIfvdE6oA8Oz042JOuZxdnQeDkjQNRBw0hH80YzsuaVKlcEBen572yjSZXLfYdMAjqjLqLmHPIvVisDtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ey8acH8B; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52OHBZPn027062;
+	Mon, 24 Mar 2025 17:56:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=prxcL7
+	Ol0gDHWADygOhfxw4rXA3/txwyq4L2EIdtr0o=; b=ey8acH8BhQQpV7Rkkcv3qk
+	iYB1qdSCJmXBJGd5tKEllxA4e4tHn0M8AaS5H/npjL1f62a34tG0sEoSVSmmvkGo
+	/g+qF9pA6KqTiYYMh/8IqXXEByZvU8t6HNij+2AwOXo4fVEpKZGZyfVgYs3K5QNw
+	858npq/6lkGam1ZJ8E/osa1RPW4zcKFLJ5aDph5BZzVe1oizfHkY3wS3aJUFHeik
+	r8irsF+5AfGF8s0f5my4vKdFcu1HykPo+9L183UaOSMJO1fKRbhBtT7RXDng1LJD
+	+SPOA7N6PkSBOGzaElIOq6FlJA5LY+06l3eHd9I/4gzGsLBdeSPRPuVV2kvU93yA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45kbjwr6v4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Mar 2025 17:56:06 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52OFKECV030330;
+	Mon, 24 Mar 2025 17:56:06 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j7ht7nw4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Mar 2025 17:56:06 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52OHu4RE33292630
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Mar 2025 17:56:04 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5DF7220043;
+	Mon, 24 Mar 2025 17:56:04 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3654120040;
+	Mon, 24 Mar 2025 17:56:04 +0000 (GMT)
+Received: from li-9b52914c-2c8b-11b2-a85c-a36f6d484b4a.boeblingen.de.ibm.com (unknown [9.155.199.15])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 24 Mar 2025 17:56:04 +0000 (GMT)
+Message-ID: <3920c0f0da1b6e324d6367cbff22d313d6981742.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/1] virtio_console: fix missing byte order handling for
+ cols and rows
+From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+To: Halil Pasic <pasic@linux.ibm.com>, Amit Shah <amit@kernel.org>,
+        Arnd
+ Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: stable@vger.kernel.org
+Date: Mon, 24 Mar 2025 18:56:03 +0100
+In-Reply-To: <20250322002954.3129282-1-pasic@linux.ibm.com>
+References: <20250322002954.3129282-1-pasic@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Change-ID: 20250321-tip-23d2af2e3291
-X-Mailer: b4 0.15-dev-c25d1
-Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: INZKdWk_pasSNB8PIaiuDorK7o5Zx59a
+X-Proofpoint-ORIG-GUID: INZKdWk_pasSNB8PIaiuDorK7o5Zx59a
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-24_06,2025-03-21_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 spamscore=0
+ clxscore=1011 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503240125
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>=0D
-=0D
-Some SKUs of Xe2_HPD platforms (such as BMG) have GDDR memory type=0D
-with ECC enabled. We need to identify this scenario and add a new=0D
-case in xelpdp_get_dram_info() to handle it. In addition, the=0D
-derating value needs to be adjusted accordingly to compensate for=0D
-the limited bandwidth.=0D
-=0D
-Bspec: 64602=0D
-Cc: Matt Roper <matthew.d.roper@intel.com>=0D
-Fixes: 3adcf970dc7e ("drm/xe/bmg: Drop force_probe requirement")=0D
-Cc: stable@vger.kernel.org=0D
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>=0D
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>=0D
----=0D
-Changes in v2:=0D
-- Add a separate sa_info for the ecc case (Lucas)=0D
-- Link to v1: https://lore.kernel.org/r/20250214215944.187407-1-vivek.kasir=
-eddy@intel.com=0D
----=0D
- drivers/gpu/drm/i915/display/intel_bw.c | 12 ++++++++++++=0D
- drivers/gpu/drm/i915/i915_drv.h         |  1 +=0D
- drivers/gpu/drm/i915/soc/intel_dram.c   |  4 ++++=0D
- drivers/gpu/drm/xe/xe_device_types.h    |  1 +=0D
- 4 files changed, 18 insertions(+)=0D
-=0D
-diff --git a/drivers/gpu/drm/i915/display/intel_bw.c b/drivers/gpu/drm/i915=
-/display/intel_bw.c=0D
-index dc7612658a9da..bb81efec08a01 100644=0D
---- a/drivers/gpu/drm/i915/display/intel_bw.c=0D
-+++ b/drivers/gpu/drm/i915/display/intel_bw.c=0D
-@@ -250,6 +250,7 @@ static int icl_get_qgv_points(struct intel_display *dis=
-play,=0D
- 			qi->deinterleave =3D 4;=0D
- 			break;=0D
- 		case INTEL_DRAM_GDDR:=0D
-+		case INTEL_DRAM_GDDR_ECC:=0D
- 			qi->channel_width =3D 32;=0D
- 			break;=0D
- 		default:=0D
-@@ -404,6 +405,12 @@ static const struct intel_sa_info xe2_hpd_sa_info =3D =
-{=0D
- 	/* Other values not used by simplified algorithm */=0D
- };=0D
- =0D
-+static const struct intel_sa_info xe2_hpd_ecc_sa_info =3D {=0D
-+	.derating =3D 45,=0D
-+	.deprogbwlimit =3D 53,=0D
-+	/* Other values not used by simplified algorithm */=0D
-+};=0D
-+=0D
- static const struct intel_sa_info xe3lpd_sa_info =3D {=0D
- 	.deburst =3D 32,=0D
- 	.deprogbwlimit =3D 65, /* GB/s */=0D
-@@ -756,11 +763,16 @@ static unsigned int icl_qgv_bw(struct intel_display *=
-display,=0D
- =0D
- void intel_bw_init_hw(struct intel_display *display)=0D
- {=0D
-+	const struct dram_info *dram_info =3D &to_i915(display->drm)->dram_info;=
-=0D
-+=0D
- 	if (!HAS_DISPLAY(display))=0D
- 		return;=0D
- =0D
- 	if (DISPLAY_VER(display) >=3D 30)=0D
- 		tgl_get_bw_info(display, &xe3lpd_sa_info);=0D
-+	else if (DISPLAY_VERx100(display) >=3D 1401 && display->platform.dgfx &&=
-=0D
-+		 dram_info->type =3D=3D INTEL_DRAM_GDDR_ECC)=0D
-+		xe2_hpd_get_bw_info(display, &xe2_hpd_ecc_sa_info);=0D
- 	else if (DISPLAY_VERx100(display) >=3D 1401 && display->platform.dgfx)=0D
- 		xe2_hpd_get_bw_info(display, &xe2_hpd_sa_info);=0D
- 	else if (DISPLAY_VER(display) >=3D 14)=0D
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_dr=
-v.h=0D
-index ffc346379cc2c..54538b6f85df5 100644=0D
---- a/drivers/gpu/drm/i915/i915_drv.h=0D
-+++ b/drivers/gpu/drm/i915/i915_drv.h=0D
-@@ -305,6 +305,7 @@ struct drm_i915_private {=0D
- 			INTEL_DRAM_DDR5,=0D
- 			INTEL_DRAM_LPDDR5,=0D
- 			INTEL_DRAM_GDDR,=0D
-+			INTEL_DRAM_GDDR_ECC,=0D
- 		} type;=0D
- 		u8 num_qgv_points;=0D
- 		u8 num_psf_gv_points;=0D
-diff --git a/drivers/gpu/drm/i915/soc/intel_dram.c b/drivers/gpu/drm/i915/s=
-oc/intel_dram.c=0D
-index 9e310f4099f42..f60eedb0e92cf 100644=0D
---- a/drivers/gpu/drm/i915/soc/intel_dram.c=0D
-+++ b/drivers/gpu/drm/i915/soc/intel_dram.c=0D
-@@ -687,6 +687,10 @@ static int xelpdp_get_dram_info(struct drm_i915_privat=
-e *i915)=0D
- 		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));=0D
- 		dram_info->type =3D INTEL_DRAM_GDDR;=0D
- 		break;=0D
-+	case 9:=0D
-+		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));=0D
-+		dram_info->type =3D INTEL_DRAM_GDDR_ECC;=0D
-+		break;=0D
- 	default:=0D
- 		MISSING_CASE(val);=0D
- 		return -EINVAL;=0D
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_d=
-evice_types.h=0D
-index 1334174388afe..20239d6a2e985 100644=0D
---- a/drivers/gpu/drm/xe/xe_device_types.h=0D
-+++ b/drivers/gpu/drm/xe/xe_device_types.h=0D
-@@ -587,6 +587,7 @@ struct xe_device {=0D
- 			INTEL_DRAM_DDR5,=0D
- 			INTEL_DRAM_LPDDR5,=0D
- 			INTEL_DRAM_GDDR,=0D
-+			INTEL_DRAM_GDDR_ECC,=0D
- 		} type;=0D
- 		u8 num_qgv_points;=0D
- 		u8 num_psf_gv_points;=0D
-=0D
----=0D
-base-commit: 74f632d1bd3b90ed79883361ca25f1225c0aee58=0D
-change-id: 20250321-tip-23d2af2e3291=0D
-=0D
-Best regards,=0D
--- =0D
-Lucas De Marchi <lucas.demarchi@intel.com>=0D
-=0D
+On Sat, 2025-03-22 at 01:29 +0100, Halil Pasic wrote:
+> As per virtio spec the fields cols and rows are specified as little
+> endian. Although there is no legacy interface requirement that would
+> state that cols and rows need to be handled as native endian when
+> legacy
+> interface is used, unlike for the fields of the adjacent struct
+> virtio_console_control, I decided to err on the side of caution based
+> on some non-conclusive virtio spec repo archaeology and opt for using
+> virtio16_to_cpu() much like for virtio_console_control.event.
+> Strictly
+> by the letter of the spec virtio_le_to_cpu() would have been
+> sufficient.
+> But when the legacy interface is not used, it boils down to the same.
+>=20
+> And when using the legacy interface, the device formatting these as
+> little endian when the guest is big endian would surprise me more
+> than
+> it using guest native byte order (which would make it compatible with
+> the current implementation). Nevertheless somebody trying to
+> implement
+> the spec following it to the letter could end up forcing little
+> endian
+> byte order when the legacy interface is in use. So IMHO this
+> ultimately
+> needs a judgement call by the maintainers.
+>=20
+> Fixes: 8345adbf96fc1 ("virtio: console: Accept console size along
+> with resize control message")
+> Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
+> Cc: stable@vger.kernel.org=C2=A0# v2.6.35+
+> ---
+>=20
+> @Michael: I think it would be nice to add a clarification on the byte
+> order to be used for cols and rows when the legacy interface is used
+> to
+> the spec, regardless of what we decide the right byte order is. If
+> it is native endian that shall be stated much like it is stated for
+> virtio_console_control. If it is little endian, I would like to add
+> a sentence that states that unlike for the fields of
+> virtio_console_control
+> the byte order of the fields of struct virtio_console_resize is
+> little
+> endian also when the legacy interface is used.
+>=20
+> @Maximilian: Would you mind giving this a spin with your
+> implementation
+> on the device side of things in QEMU?
+> ---
+> =C2=A0drivers/char/virtio_console.c | 7 ++++---
+> =C2=A01 file changed, 4 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/char/virtio_console.c
+> b/drivers/char/virtio_console.c
+> index 18f92dd44d45..fc698e2b1da1 100644
+> --- a/drivers/char/virtio_console.c
+> +++ b/drivers/char/virtio_console.c
+> @@ -1579,8 +1579,8 @@ static void handle_control_message(struct
+> virtio_device *vdev,
+> =C2=A0		break;
+> =C2=A0	case VIRTIO_CONSOLE_RESIZE: {
+> =C2=A0		struct {
+> -			__u16 rows;
+> -			__u16 cols;
+> +			__virtio16 rows;
+> +			__virtio16 cols;
+> =C2=A0		} size;
+> =C2=A0
+> =C2=A0		if (!is_console_port(port))
+> @@ -1588,7 +1588,8 @@ static void handle_control_message(struct
+> virtio_device *vdev,
+> =C2=A0
+> =C2=A0		memcpy(&size, buf->buf + buf->offset +
+> sizeof(*cpkt),
+> =C2=A0		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(size));
+> -		set_console_size(port, size.rows, size.cols);
+> +		set_console_size(port, virtio16_to_cpu(vdev,
+> size.rows),
+> +				 virtio16_to_cpu(vdev, size.cols));
+> =C2=A0
+> =C2=A0		port->cons.hvc->irq_requested =3D 1;
+> =C2=A0		resize_console(port);
+>=20
+> base-commit: b3ee1e4609512dfff642a96b34d7e5dfcdc92d05
+
+It took me a while to recompile the kernel, but now that it has
+compiled it works! Unfortunately, images don't lend themselves well to
+mailing lists, but here is tmux running at 18x55(you'll just have to
+trust me that it's over a virtio serial console)
+
+                           =E2=94=82top - 12:54:04 up 4 min,  1
+~                          =E2=94=82Tasks: 222 total,   1 runni
+~                          =E2=94=82%Cpu(s):  0.0 us,  0.0 sy,=20
+~                          =E2=94=82MiB Mem :  15987.2 total, =20
+~                          =E2=94=82MiB Swap:   8192.0 total, =20
+~                          =E2=94=82
+~                          =E2=94=82    PID USER      PR  NI=20
+~                          =E2=94=82      1 root      20   0=20
+~                          =E2=94=82      2 root      20   0=20
+~                          =E2=94=82      3 root      20   0=20
+~                          =E2=94=82      4 root       0 -20=20
+~                          =E2=94=82      5 root       0 -20=20
+~                          =E2=94=82      6 root       0 -20=20
+~                          =E2=94=82      7 root       0 -20=20
+~                          =E2=94=82      8 root       0 -20=20
+[No Name]     0,0-1     All=E2=94=82      9 root      20   0=20
+                           =E2=94=82     10 root       0 -20=20
+[0] 0:zsh*                     "fedora" 12:53 24-Mar-25
+
+Cheers,
+Max
+
 
