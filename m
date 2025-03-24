@@ -1,94 +1,100 @@
-Return-Path: <stable+bounces-125834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35274A6D2CE
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 02:29:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848CCA6D334
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 04:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA6216AAE1
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 01:28:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE01816DBED
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 03:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A5527442;
-	Mon, 24 Mar 2025 01:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7F31EB3E;
+	Mon, 24 Mar 2025 03:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kk8cTPbV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MrF805CX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2BD2E3386;
-	Mon, 24 Mar 2025 01:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D2F79F5
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 03:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742779720; cv=none; b=WRlzA32mgBG2CNxfWzJvkfsto+Cw5PJsaVG5vTq9MvFsxHIMxVpDSRyM6EVNI8EdfYVBc158Tw+03+lZcrHMHPIf8+mdhXZTzpwGmhOngHVsPTMuf98sFu+XdPX6iuUbhg2k0Zg6NWWLDV2JZ2qfISm7gt/prqfOkaadZgsMEgE=
+	t=1742785363; cv=none; b=sANg3gmb4ffuFEndtLcTURqM10fIU0jR1dTIvf1FKcveVysGu+68Ii1eZopFLe111arqV5PdqU8uHes5pigoY8+DGZXoFM+QW3T1KLoiVOSQO09ArLC2uk3kGsUsJjE+cPhq76LLie1Zht8YG8eVYMWh+ElWnDkfJdxOdz1zo20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742779720; c=relaxed/simple;
-	bh=zl1uo13BNwoUbqVeza6eeYjMNp9ZX9eFVZuNCiIEkJs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Iqxi9Tz0MIGNTnRzmhjdndM2blF3iPn3/SWcEzrS8YvUriOO95fGFBoz6rVY6Eq+/QWdEmefZX0st/O5GLgQ6z0neMb3bMXSuppjM1XcsWYVYsZogTT2uYSGMiZsWHvAAx+MYOf6QF2yUJV3jgRxrgxrqDDtDetiTeSHMYWzVJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kk8cTPbV; arc=none smtp.client-ip=209.85.222.181
+	s=arc-20240116; t=1742785363; c=relaxed/simple;
+	bh=IFV7KJD8VoJJK2IzBTq45zJuCQd8SK0HFOS2V7eokCo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nRv8gkAGLF2Jn7MSrxiBZNztbj1Mu84LgOdjVGcXi0aQKRIH+/fMigBnekGqbbFdxUlHU5WgjyuQY6xSWkpUKovxK+eF0/6CLAeB6Dyw7rKOMrSxY84c/FNdPlVN7GEAyyOfMAT8gq1CK3pxabYjf0/oGWwwWgKTGJr1jMshB94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MrF805CX; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c0e135e953so407699885a.2;
-        Sun, 23 Mar 2025 18:28:38 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-223fb0f619dso74838975ad.1
+        for <stable@vger.kernel.org>; Sun, 23 Mar 2025 20:02:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742779718; x=1743384518; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZAX3pOyUJIm0P+4HIZbRycp3jrlF0/5qEeunqKwtosk=;
-        b=Kk8cTPbVI+YByFJtOfNj90vF+8XkUmTSl/96Fa+qeCoWLVj6YU2w9vdBlzer7M0Sgm
-         Amzx7JtbnzPuG9Og0SB1PaPZjxhK3pZd4CQW5xWb0yoB67XlbxnnMC/qz1A6prD8/vVL
-         y42eASFDIoavIDDwMCYf9D7ykHBudLnJIICNufJq5xFlvSQf12UCQtKWHKGI2pJRGU+4
-         EKgA99wadf/MaVKSzZn7izrvq3DJ3TfA/zLHrew4VP5FKZcOGMobKMCGK7qs+ST22NmW
-         I549QujCcN3vQyHR1OV0JoZBfsr5zTQWU9sgXv3Uto4j0sp3a6q+Po7ypjsFr6lzbdRH
-         OnXA==
+        d=gmail.com; s=20230601; t=1742785360; x=1743390160; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h+l7w6YVclRU1veLb1P6QKLsVP0T/fgc/by4ealGnWA=;
+        b=MrF805CXMIeTHos/igL2IcnTCnYUQuo/tccfJOLUdwcE6kIQVR165lYS2nqxq0G7au
+         C4b3sAMFgJYG2e1nvpgy0+KcKR1ScDdD8Hv3U1fd9BcQWvSCANH9IYrnJdtFpHQHlIau
+         2lLhRwlfZJYmxJEL6lQKoyjlVhXw2+3rzYNjFKq7N6JbS4LAbPJxliGClQPEo5Xy8nnn
+         jGWAfIJ9lPLORtj3nxrgDsPaXyK531jRfHQPXIVHeIb2Sg9eznXrG6LvJvBwFqthQPvM
+         DrQR5pU7eRaROJQac2QVSHyKDq4j3ekS8eesDDvi2btFDlU5K+/iS5ax7a8nZbDvtyy7
+         LJOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742779718; x=1743384518;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZAX3pOyUJIm0P+4HIZbRycp3jrlF0/5qEeunqKwtosk=;
-        b=pB0rrbTPV/IV6p+IUNtrWic3pZ4AeAkFIe0Qyv1LRbT0ZsOF+0XLFMfdH4kTxoPH4x
-         DuWpBL/0twlD3adFdH51I21a59ng0m/YW3io9dxXc5g4PIL71sc+zVz+LDjWIq0ivviF
-         qaqmiX/OwXDV9gh2g6igvJKefqcIxoBSeLotsonV4cA4XRpDNhsV+nq7Vuv9UkZDXie2
-         TFLOsJKTDS+fc6+rDmZ76LLnERR9VlJNuAIGzxengAA7nkDhPIkp1Tk2wI2rL+bva8SE
-         MhenM7gVSauFp6+qyjC1J+Y5R8hvJwhmyvRDx/9WicIv0fKa8lmaEJ8hpz+S0rWsbjnj
-         3SgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/VzPb36qrz8dq2bUNd5HM7qm6Sw/enelIdH6lGIDN9tJkQFZJPmcd/pZ1D51ABX2NSrJTSV5HonKELqLSmJzsHtj5kg==@vger.kernel.org, AJvYcCXQqSsmI6hGDyflp5eIWlMeK0eg+p7/UscrOa96LUHtTu0z57SO7qLxv6WM5UfStGovU8hwMngZ@vger.kernel.org, AJvYcCXrHETMKhpkrIBwcuY2tE7UAsnYs/TwXn0PJS4wwJaoFizn8kHTvO9rOdYHjVlTgwOe35V8yGEEHl2LDws=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyK3y8dzCcRwknPpbpl74fgPXugF1HPhs5cRPcUmphnFUJQHVKs
-	NmryVBQ/foYSxzI9daREuwX/pM5FoUzCxs27+a6/RZ81+Nni2dTw
-X-Gm-Gg: ASbGnctxsEdGh8hjHMLNDrYU5HvdeTdwJRTEluPxIYvJ4IgtcNw5EkSyvF6sa485/7o
-	7Osl4pWTp4xqLHyt2VDqs/78qmrS8zcfGMgBk6yu0ZyXXQFKNW/NJQ2rGWcJ8QF3dpBCvDPmEj7
-	KwkaWztK51QScolKc7Q4gc6ukN2xQ2TC+fjJ8146jSYAWl+zjp+WmUQiy1YOia0CDJqluD1gr2w
-	SdXfR3t8QC94MIN64C8ycpig148bDURxDNZk11QWPayNwMnLjCNqfCqovgbkI1u0OnBu7XqDSSz
-	39cY1vKUFxMacaY5XkDdvZaZgG2DgeT43tL1tGLC7rv8GmpU0wEw3SGyUb1Kgk2rVweu/pV3uN7
-	vKHePbfNMACr8wnBH
-X-Google-Smtp-Source: AGHT+IGwG5eh3S+TrFNbHnxQrv5/7+azus75LhM16CP2UKvOVeh8+DlJYDdvd+W55eF7BLAjJ3mgZQ==
-X-Received: by 2002:a05:620a:4496:b0:7c5:a536:91e5 with SMTP id af79cd13be357-7c5ba166b0cmr1613207185a.20.1742779718011;
-        Sun, 23 Mar 2025 18:28:38 -0700 (PDT)
-Received: from localhost.localdomain (pat-199-212-65-32.resnet.yorku.ca. [199.212.65.32])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c5b92ec648sm431841685a.61.2025.03.23.18.28.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Mar 2025 18:28:37 -0700 (PDT)
-From: Seyediman Seyedarab <imandevel@gmail.com>
-X-Google-Original-From: Seyediman Seyedarab <ImanDevel@gmail.com>
-To: hmh@hmh.eng.br,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com
-Cc: ibm-acpi-devel@lists.sourceforge.net,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Seyediman Seyedarab <ImanDevel@gmail.com>,
+        d=1e100.net; s=20230601; t=1742785360; x=1743390160;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h+l7w6YVclRU1veLb1P6QKLsVP0T/fgc/by4ealGnWA=;
+        b=g5Py1OmXBkT1HgHEYIref2SQgZv/+FT8aH4NyJ5GEQP3qCP62t1ODaAk4tFqkcExng
+         cAs7rEl+mWyFtIfSF3d8gbykmzDcxRcuVA+LaYsnKp0z3Vxao4KBm5fXpPelkj7FQtTB
+         36c3UvGMn/m4WP5n7ZyW6rtCuEmEu0yTK2Kr1sjjJigiDeWr2F/Gqv1KR7AdA80o8Fm9
+         PJpjotSM3d49yIT0UrBlLAIEBmHB61OeXdjVtGu5KxVmw1w0OB1rHFJFNtL8NLqY1Nj4
+         mJ7eeQhxQBnvvlthXa9i82znU8bEm8gmXPlwbRkN/98/G8IKdtr4Y32R4DyZ6aHPuy9n
+         k2gg==
+X-Forwarded-Encrypted: i=1; AJvYcCXi9k4PC/iJ+CKbrzhpfiYXrLfUBuscfEYTAVYYFFrCOZxNpoScq8efeVnWeCyuv33TTgUYpZQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAgGKHY+aZZ7XW6UD6nb9fqfXMiIaFehMq8JmD9HMCkI+JGlrA
+	S6VdDVMqFY4a4CmZO1HDkqNtCcvXooKqLQ+tdpwa0PFzW5J9M1fy
+X-Gm-Gg: ASbGnctYUhQk6i6+KuJxqlvIlg0CHzvGmhQT/s6z8iYJit1/dlkoQicbYBZZN7ZiylL
+	Pj5N2irqRRGoDBzx1skNoJtxyG3IauiPucxeVjsJ1uyPOMf6pruwiWcYV5UUkmDC5nykJWGKEYh
+	UyW3+HdXGpKAfbz1Y/5SUKsug1MLfsxLvVcU3GATHgRQc4SlRGXU1Hi2RJoJMe1zcYfkKdadYLo
+	rOhh2PVNIP5ee9FGkaRiLGEQ9CZgMCWZPY9Wmbsox9yg3yPJqrOzer7P7C/+Zzy9yhWkb2n20ij
+	oazjIjDodml8Uwg0XVUvTLIm/OVCJ86q6Ih5Z0J/UuSRRZsns0cYIjwj8I2G8ggxnPVflLkDwTN
+	f0SnF
+X-Google-Smtp-Source: AGHT+IGvlHUYNSmaORVI045cPDXtYriK0azQzUrN/p8vZbmhQ11excCaFQHsNthOaJHHDvztQbNBzQ==
+X-Received: by 2002:a17:902:e74d:b0:223:5e6a:57ab with SMTP id d9443c01a7336-22780e10df0mr170951605ad.39.1742785360068;
+        Sun, 23 Mar 2025 20:02:40 -0700 (PDT)
+Received: from localhost.localdomain ([39.144.106.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301b9e19ceesm11026239a91.0.2025.03.23.20.02.36
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 23 Mar 2025 20:02:39 -0700 (PDT)
+From: Yafang Shao <laoar.shao@gmail.com>
+To: torvalds@linux-foundation.org
+Cc: axboe@kernel.dk,
+	brauner@kernel.org,
+	clm@meta.com,
+	ct@flyingcircus.io,
+	david@fromorbit.com,
+	dhowells@redhat.com,
+	dqminh@cloudflare.com,
+	gregkh@linuxfoundation.org,
+	kasong@tencent.com,
+	laoar.shao@gmail.com,
+	ryncsn@gmail.com,
+	sam@gentoo.org,
 	stable@vger.kernel.org,
-	Vlastimil Holer <vlastimil.holer@gmail.com>,
-	crok <crok.bic@gmail.com>,
-	Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>,
-	Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
-Subject: [PATCH v2] platform/x86: thinkpad_acpi: disable ACPI fan access for T495* and E560
-Date: Sun, 23 Mar 2025 21:29:11 -0400
-Message-ID: <20250324012911.68343-1-ImanDevel@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	willy@infradead.org
+Subject: [PATCH 6.1.y] Revert "xfs: Support large folios"
+Date: Mon, 24 Mar 2025 11:02:31 +0800
+Message-Id: <20250324030231.14056-1-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
+In-Reply-To: <CAHk-=whVD8B=jJveFQGggyHD7srr_43aR96qZicETSNBJ65Akw@mail.gmail.com>
+References: <CAHk-=whVD8B=jJveFQGggyHD7srr_43aR96qZicETSNBJ65Akw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,85 +103,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
+This reverts commit 6795801366da0cd3d99e27c37f020a8f16714886.
 
-The bug was introduced in commit 57d0557dfa49 ("platform/x86:
-thinkpad_acpi: Add Thinkpad Edge E531 fan support") which adds a new
-fan control method via the FANG and FANW ACPI methods.
+Even after resolving the page cache corruption issue [0], problems persist
+with XFS large folios. Recently, we encountered random core dumps in one of
+our Hadoop services. These core dumps occurred sporadically over several
+weeks, and it took significant effort to pinpoint XFS large folios as the
+root cause. After reverting the related commit, the issues disappeared
+entirely. Given these issues, it seems premature to adopt large folios on
+stable kernels. Therefore, we propose reverting this change.
 
-T945, T495s, and E560 laptops have the FANG+FANW ACPI methods (therefore
-fang_handle and fanw_handle are not NULL) but they do not actually work,
-which results in the dreaded "No such device or address" error. Fan access
-and control is restored after forcing the legacy non-ACPI fan control
-method by setting both fang_handle and fanw_handle to NULL.
-
-The DSDT table code for the FANG+FANW methods doesn't seem to do anything
-special regarding the fan being secondary.
-
-This patch adds a quirk for T495, T495s, and E560 to make them avoid the
-FANG/FANW methods.
-
-Cc: stable@vger.kernel.org
-Fixes: 57d0557dfa49 ("platform/x86: thinkpad_acpi: Add Thinkpad Edge E531 fan support")
-Reported-by: Vlastimil Holer <vlastimil.holer@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219643
-Tested-by: crok <crok.bic@gmail.com>
-Tested-by: Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>
-Signed-off-by: Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
-Co-developed-by: Seyediman Seyedarab <ImanDevel@gmail.com>
-Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
+Link: https://lore.kernel.org/all/20241001210625.95825-1-ryncsn@gmail.com/ [0]
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 ---
-Changes in v2:
-- Added the From: tag for the original author
-- Replaced the Co-authored-by tag with Co-developed-by
-- Cc'd stable@vger.kernel.org
-- Removed the extra space inside the comment
-- Dropped nullification of sfan/gfan_handle, as it's unrelated to
-  the current fix
+ fs/xfs/xfs_icache.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Kindest Regards,
-Seyediman
-
- drivers/platform/x86/thinkpad_acpi.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index d8df1405edfa..27fd67a2f2d1 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -8793,6 +8793,7 @@ static const struct attribute_group fan_driver_attr_group = {
- #define TPACPI_FAN_NS		0x0010		/* For EC with non-Standard register addresses */
- #define TPACPI_FAN_DECRPM	0x0020		/* For ECFW's with RPM in register as decimal */
- #define TPACPI_FAN_TPR		0x0040		/* Fan speed is in Ticks Per Revolution */
-+#define TPACPI_FAN_NOACPI	0x0080		/* Don't use ACPI methods even if detected */
+diff --git a/fs/xfs/xfs_icache.c b/fs/xfs/xfs_icache.c
+index dd5a664c294f..f59890430f40 100644
+--- a/fs/xfs/xfs_icache.c
++++ b/fs/xfs/xfs_icache.c
+@@ -88,7 +88,6 @@ xfs_inode_alloc(
+ 	/* VFS doesn't initialise i_mode or i_state! */
+ 	VFS_I(ip)->i_mode = 0;
+ 	VFS_I(ip)->i_state = 0;
+-	mapping_set_large_folios(VFS_I(ip)->i_mapping);
  
- static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
- 	TPACPI_QEC_IBM('1', 'Y', TPACPI_FAN_Q1),
-@@ -8823,6 +8824,9 @@ static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
- 	TPACPI_Q_LNV3('N', '1', 'O', TPACPI_FAN_NOFAN),	/* X1 Tablet (2nd gen) */
- 	TPACPI_Q_LNV3('R', '0', 'Q', TPACPI_FAN_DECRPM),/* L480 */
- 	TPACPI_Q_LNV('8', 'F', TPACPI_FAN_TPR),		/* ThinkPad x120e */
-+	TPACPI_Q_LNV3('R', '0', '0', TPACPI_FAN_NOACPI),/* E560 */
-+	TPACPI_Q_LNV3('R', '1', '2', TPACPI_FAN_NOACPI),/* T495 */
-+	TPACPI_Q_LNV3('R', '1', '3', TPACPI_FAN_NOACPI),/* T495s */
- };
+ 	XFS_STATS_INC(mp, vn_active);
+ 	ASSERT(atomic_read(&ip->i_pincount) == 0);
+@@ -323,7 +322,6 @@ xfs_reinit_inode(
+ 	inode->i_rdev = dev;
+ 	inode->i_uid = uid;
+ 	inode->i_gid = gid;
+-	mapping_set_large_folios(inode->i_mapping);
+ 	return error;
+ }
  
- static int __init fan_init(struct ibm_init_struct *iibm)
-@@ -8874,6 +8878,13 @@ static int __init fan_init(struct ibm_init_struct *iibm)
- 		tp_features.fan_ctrl_status_undef = 1;
- 	}
- 
-+	if (quirks & TPACPI_FAN_NOACPI) {
-+		/* E560, T495, T495s */
-+		pr_info("Ignoring buggy ACPI fan access method\n");
-+		fang_handle = NULL;
-+		fanw_handle = NULL;
-+	}
-+
- 	if (gfan_handle) {
- 		/* 570, 600e/x, 770e, 770x */
- 		fan_status_access_mode = TPACPI_FAN_RD_ACPI_GFAN;
 -- 
-2.48.1
+2.43.5
 
 
