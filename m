@@ -1,176 +1,162 @@
-Return-Path: <stable+bounces-125896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C95A6DE87
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:25:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05463A6DEA0
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB35A16AC95
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:24:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E2321899668
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B786E262819;
-	Mon, 24 Mar 2025 15:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00A2257448;
+	Mon, 24 Mar 2025 15:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cSsxW11M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhrKSjiL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EB3262803;
-	Mon, 24 Mar 2025 15:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8189D26AFC
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742829790; cv=none; b=LHN7mVK0N+j2yPvnw+nxH7wYR7eBEEDPOrPvx9TzFuSOs9paJ8XErARGdJvbeAnrDpnAPl/Rzewgvs/MGTx6JD/hIMdTAGJE4viGQz7wjMXv4xVGWi9F+3jvJgG3LJAn82dfmaYWJfjYXXE2C0bZfVxesnavy/cXXiNbTVaZCx8=
+	t=1742830016; cv=none; b=V8HT95i0nvnAnH4etI90+uoVOK+8ShgD381jp44M6AgkJUdTU/BfCZOyy/DJWhPIKYKwAOgnjOAoilt0docOMfYElw9NQNYtWi9bfjafVaSdFuskxO+/gy2qpo8pSOiHICKd0RIKx7URoTLBRW806BTgXEpDDGwYeh98gd0ksg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742829790; c=relaxed/simple;
-	bh=Y+VRdVpwOlC73AoQoXEyIDCA/Ok0ui6Sh1G1sOPmJxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K3zyOfkX+3mJcPDy/1qy4z/dnw6v6iOk1qZKLOkgvwXOfhoek1eYApztkk0Y7+JxxM9HDxB4nSpQt2nfql9685r+9Zqn2sTdMsLQJcnHEK22w83AoUT6Gs0dgc05PEhDLZmPSLApewDwydTpX+JD2zVqAnm6U5ngc0rirTBYjHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cSsxW11M; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6e90b8d4686so38974266d6.2;
-        Mon, 24 Mar 2025 08:23:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742829788; x=1743434588; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aq+e0nVBUfZDGO12W2xzeQN6WR8rPyJfLm4xkEeaFh4=;
-        b=cSsxW11MRmxGF7AChIhsLfOJc9LsdsA6K5brTSgw4t8JgGPNeaJqQMpniVZSh5/yYV
-         CKzKdi5XXBC3Awfw8cbkwDQ28zX9IYvf51EUwSpcSthZJZsv92R7bvYqmodPMytJwPRt
-         yYEJoYseimrzUMXKJoyfR7rrZkSMe5nTAd6mhao+b0NWlpzxcvvJkWiQYBmjS/5AJIKJ
-         dVcVwR/vnoYwglE087ZYErtyIXrhXroAGwof+jgj7TIyb96rxFM0OmAhoLR9NOBZhSZ0
-         kNcK73ENtExLYUlm7V4MpOMS5IpknXvt2WL7Eiky87B/B346jehImk6t0G6cX64Ry/rz
-         44Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742829788; x=1743434588;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aq+e0nVBUfZDGO12W2xzeQN6WR8rPyJfLm4xkEeaFh4=;
-        b=IAuWqsZO8yd6LUh23m7JoTChfQ7ato+BWsYl2PVsWhMoQnJNNnhiZerRIK5CRrajqr
-         qMABTVEvddKhvtcPGQzhT5DWU00s8IlBzDc/M2xoTw5FO3/6qys/+qz/kcPdvDb4gkVB
-         I73hLQ3zvh1VRSdJxX3RYUld1SnfBKQh1ibCjrBAbNZK5F+miHikJHKkpvyOFK0fxHJw
-         7TvVsQ9B/NLX5qrSJl6IqBhIcHmIr8zsF/ijGQe1tM0otezOFJB3b/7Zdx23OTs2Jgcm
-         0ICSXud76eEovwkGBHhDKDEU2/TofQGY8OXXaJ6BHeloDybWtH2rYO0p+siJtaJimqhP
-         VD1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUN72hVKj/d4sIcb6/1Em3MoSqJT+MvnJrdcN5NLtP5rh4Qsbnh/CqGjZlSkf0HcAK3N/pn3f0cmmbuUQq5stnoIK2NOw==@vger.kernel.org, AJvYcCUeGlMFIShZC7npXOQgA3lIrnaORrh9CnfZguJk7nRBWvT3poDTgrhX+UrKpQ+JdeQCxSirxZvq@vger.kernel.org, AJvYcCXxE/Hj3JbWb9LHrIttmuAcDDrDzrFj5E0IXOWIPgjNcXYjKnysYVrbDqU1o84uCcboeF9Y1HHqrcRk6Jc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXH4Elro8baQ53bclVJqieVUcRkceF3KPboAE0H4L612oO5utU
-	LQ/KSDU0ymjmP7gKFBWDjlaoHoLx+LWlRt2Nt5LHI89UZ+r6BjpiPK4qlIQR
-X-Gm-Gg: ASbGncv8lLrkRXVteQt6Qu1laJMAUDD3mqKgjNxqF29IsVX0OsvkmwoFgSleaKszOPN
-	J/09mtdjy/+vdm1HF8LOUnrM6mZ/mypVacxhcxVoxx15DQE4rvfs5STJz1SvgZ37OAWuzn+gfcX
-	GLU9HvuSx59JHZ40SQSK9DDW+hFC604anrFjvgmTh+YFKYK1IjRTdQdz6eGfoq92PyzGRnUsHhp
-	qXOgpATnGjJoWok4tMtXLrxAVbcHvVfnmN/eVIQk1BjjB5Pj0q0MmgjrjNLKWKcFf0mV0vhM4t2
-	xhCsj1/TnLbIOrLiumXR621Dv6KvVaLaT3vT3dVE6TcsXQ3vBesUjIZ9zyU3jXHh1xY0FAv9/Ea
-	p9APp94LLFjDLKNq+
-X-Google-Smtp-Source: AGHT+IFQuygfgUW9Jk9gPam5XKOoHmIVZjqt+AxtwMSiNCDBATW+TtjWKumzOzDQl3cfAPFVoP8ZGQ==
-X-Received: by 2002:a05:6214:2504:b0:6e8:ea29:fdd1 with SMTP id 6a1803df08f44-6eb3f27ef5emr198766886d6.3.1742829787510;
-        Mon, 24 Mar 2025 08:23:07 -0700 (PDT)
-Received: from localhost.localdomain (pat-199-212-65-32.resnet.yorku.ca. [199.212.65.32])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3ef1f5b5sm45582896d6.35.2025.03.24.08.23.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 08:23:07 -0700 (PDT)
-From: Seyediman Seyedarab <imandevel@gmail.com>
-X-Google-Original-From: Seyediman Seyedarab <ImanDevel@gmail.com>
-To: hmh@hmh.eng.br,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com
-Cc: ibm-acpi-devel@lists.sourceforge.net,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Seyediman Seyedarab <ImanDevel@gmail.com>,
-	Vlastimil Holer <vlastimil.holer@gmail.com>,
-	stable@vger.kernel.org,
-	Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>,
-	Kurt Borja <kuurtb@gmail.com>,
-	Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
-Subject: [PATCH v3] platform/x86: thinkpad_acpi: disable ACPI fan access for T495* and E560
-Date: Mon, 24 Mar 2025 11:24:42 -0400
-Message-ID: <20250324152442.106113-1-ImanDevel@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1742830016; c=relaxed/simple;
+	bh=yVLx4gwlLucJp9OBW8S0UDl4UPKOGVbCiwdSwq3kuKQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m8qVlxag9QMuj7pZTLlg67F3Cipb4rx20cbIX6cRRMXZVLaGd0TIqepTjAxdNuqo7iEFIyBvnhuME+8x6CKVwvw2FTtq+sBHjgIGYUeYVHrCkqBPR+cNmQrEhRtmr18+cz79cdRtBozq2HMrEJ/03iGHOHNTCmfYMbupxCRS2uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhrKSjiL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD027C4CEDD;
+	Mon, 24 Mar 2025 15:26:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1742830016;
+	bh=yVLx4gwlLucJp9OBW8S0UDl4UPKOGVbCiwdSwq3kuKQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=AhrKSjiLq+NcT9pU/uVdUqQvyQFwrLsd5Vyka1fDW9YmnXC9Our3Uis49JA1JjzAx
+	 E32T8XIXldc5MWyhRchqddjlpEqEOPu5z/tESOd61/6/llOM9rglZpR4RY7Lxl1owV
+	 kDrQfpzsgOwzC0lH+sPprS4BU0aCq9QVDo4jxq5M=
+Subject: FAILED: patch "[PATCH] tracing: Correct the refcount if the hist/hist_debug file" failed to apply to 6.13-stable tree
+To: wutengda@huaweicloud.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,rostedt@goodmis.org,zhengyejian1@huawei.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 24 Mar 2025 08:25:33 -0700
+Message-ID: <2025032433-fancied-equate-04ec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
 
-T495, T495s, and E560 laptops have the FANG+FANW ACPI methods (therefore
-fang_handle and fanw_handle are not NULL) but they do not actually work,
-which results in a "No such device or address" error. The DSDT table code
-for the FANG+FANW methods doesn't seem to do anything special regarding
-the fan being secondary. Fan access and control is restored after forcing
-the legacy non-ACPI fan control method by setting both fang_handle and
-fanw_handle to NULL. The bug was introduced in commit 57d0557dfa49
-("platform/x86: thinkpad_acpi: Add Thinkpad Edge E531 fan support"),
-which added a new fan control method via the FANG+FANW ACPI methods.
+The patch below does not apply to the 6.13-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Add a quirk for T495, T495s, and E560 to avoid the FANG+FANW methods.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Reported-by: Vlastimil Holer <vlastimil.holer@gmail.com>
-Fixes: 57d0557dfa49 ("platform/x86: thinkpad_acpi: Add Thinkpad Edge E531 fan support")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219643
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0b4ffbe4888a2c71185eaf5c1a02dd3586a9bc04
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032433-fancied-equate-04ec@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 0b4ffbe4888a2c71185eaf5c1a02dd3586a9bc04 Mon Sep 17 00:00:00 2001
+From: Tengda Wu <wutengda@huaweicloud.com>
+Date: Fri, 14 Mar 2025 06:53:35 +0000
+Subject: [PATCH] tracing: Correct the refcount if the hist/hist_debug file
+ fails to open
+
+The function event_{hist,hist_debug}_open() maintains the refcount of
+'file->tr' and 'file' through tracing_open_file_tr(). However, it does
+not roll back these counts on subsequent failure paths, resulting in a
+refcount leak.
+
+A very obvious case is that if the hist/hist_debug file belongs to a
+specific instance, the refcount leak will prevent the deletion of that
+instance, as it relies on the condition 'tr->ref == 1' within
+__remove_instance().
+
+Fix this by calling tracing_release_file_tr() on all failure paths in
+event_{hist,hist_debug}_open() to correct the refcount.
+
 Cc: stable@vger.kernel.org
-Tested-by: Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>
-Reviewed-by: Kurt Borja <kuurtb@gmail.com>
-Signed-off-by: Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
-Co-developed-by: Seyediman Seyedarab <ImanDevel@gmail.com>
-Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
----
-Changes in v3:
-- Reordered paragraphs in the changelog and made minor adjusments
-- Reorded tags
-- Added Kurt Borja as a reviewer
-- Removed Tested-by: crok <crok.bic@gmail.com> as crok didn't test
-  the patch
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Link: https://lore.kernel.org/20250314065335.1202817-1-wutengda@huaweicloud.com
+Fixes: 1cc111b9cddc ("tracing: Fix uaf issue when open the hist or hist_debug file")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-Kindest Regards,
-Seyediman
-
- drivers/platform/x86/thinkpad_acpi.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index d8df1405edfa..27fd67a2f2d1 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -8793,6 +8793,7 @@ static const struct attribute_group fan_driver_attr_group = {
- #define TPACPI_FAN_NS		0x0010		/* For EC with non-Standard register addresses */
- #define TPACPI_FAN_DECRPM	0x0020		/* For ECFW's with RPM in register as decimal */
- #define TPACPI_FAN_TPR		0x0040		/* Fan speed is in Ticks Per Revolution */
-+#define TPACPI_FAN_NOACPI	0x0080		/* Don't use ACPI methods even if detected */
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index ad7419e24055..53dc6719181e 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5689,12 +5689,16 @@ static int event_hist_open(struct inode *inode, struct file *file)
+ 	guard(mutex)(&event_mutex);
  
- static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
- 	TPACPI_QEC_IBM('1', 'Y', TPACPI_FAN_Q1),
-@@ -8823,6 +8824,9 @@ static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
- 	TPACPI_Q_LNV3('N', '1', 'O', TPACPI_FAN_NOFAN),	/* X1 Tablet (2nd gen) */
- 	TPACPI_Q_LNV3('R', '0', 'Q', TPACPI_FAN_DECRPM),/* L480 */
- 	TPACPI_Q_LNV('8', 'F', TPACPI_FAN_TPR),		/* ThinkPad x120e */
-+	TPACPI_Q_LNV3('R', '0', '0', TPACPI_FAN_NOACPI),/* E560 */
-+	TPACPI_Q_LNV3('R', '1', '2', TPACPI_FAN_NOACPI),/* T495 */
-+	TPACPI_Q_LNV3('R', '1', '3', TPACPI_FAN_NOACPI),/* T495s */
- };
- 
- static int __init fan_init(struct ibm_init_struct *iibm)
-@@ -8874,6 +8878,13 @@ static int __init fan_init(struct ibm_init_struct *iibm)
- 		tp_features.fan_ctrl_status_undef = 1;
- 	}
- 
-+	if (quirks & TPACPI_FAN_NOACPI) {
-+		/* E560, T495, T495s */
-+		pr_info("Ignoring buggy ACPI fan access method\n");
-+		fang_handle = NULL;
-+		fanw_handle = NULL;
+ 	event_file = event_file_data(file);
+-	if (!event_file)
+-		return -ENODEV;
++	if (!event_file) {
++		ret = -ENODEV;
++		goto err;
 +	}
-+
- 	if (gfan_handle) {
- 		/* 570, 600e/x, 770e, 770x */
- 		fan_status_access_mode = TPACPI_FAN_RD_ACPI_GFAN;
--- 
-2.48.1
+ 
+ 	hist_file = kzalloc(sizeof(*hist_file), GFP_KERNEL);
+-	if (!hist_file)
+-		return -ENOMEM;
++	if (!hist_file) {
++		ret = -ENOMEM;
++		goto err;
++	}
+ 
+ 	hist_file->file = file;
+ 	hist_file->last_act = get_hist_hit_count(event_file);
+@@ -5702,9 +5706,14 @@ static int event_hist_open(struct inode *inode, struct file *file)
+ 	/* Clear private_data to avoid warning in single_open() */
+ 	file->private_data = NULL;
+ 	ret = single_open(file, hist_show, hist_file);
+-	if (ret)
++	if (ret) {
+ 		kfree(hist_file);
++		goto err;
++	}
+ 
++	return 0;
++err:
++	tracing_release_file_tr(inode, file);
+ 	return ret;
+ }
+ 
+@@ -5979,7 +5988,10 @@ static int event_hist_debug_open(struct inode *inode, struct file *file)
+ 
+ 	/* Clear private_data to avoid warning in single_open() */
+ 	file->private_data = NULL;
+-	return single_open(file, hist_debug_show, file);
++	ret = single_open(file, hist_debug_show, file);
++	if (ret)
++		tracing_release_file_tr(inode, file);
++	return ret;
+ }
+ 
+ const struct file_operations event_hist_debug_fops = {
 
 
