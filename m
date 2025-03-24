@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-125907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296E6A6DEB0
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:31:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 790EDA6DEB1
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12D773AE0F8
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:28:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 432B83ABE19
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16A725F7B2;
-	Mon, 24 Mar 2025 15:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A2025E444;
+	Mon, 24 Mar 2025 15:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLQdyYUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IodFoRrp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB0225D55A
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0176B257448
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742830093; cv=none; b=DZE04Mo7itAd+r9/5cbq/oaR08ZnN7dnACQiCJCLBaqljo6N/CGVmrF018iNCz99/IhjHRJn8yHjuaJhN35lHin89qoorunrpLAij/3lq0J35uvejqCo2SQa9VJyiSuNcGK9ZCXnKBHgwtTJ7mJjs/L9Zrv4BK+v8cSKvpEz6Zo=
+	t=1742830109; cv=none; b=QumcFHbO9JnkjLtMxSWS9SJXnE+zuL0CsN7RLMOwjseMoT95dNtUtG5ZomgV+2hjrI0jJJksk5/oUbD9eOG7RhXTCliqBNla8+hvq6uj7aAaijlodOWjmHSCfxGMeVgLjaVZ0M3aQxSPAvQ9PjMvUbiE5HdtMbxzv1pMFI4LE/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742830093; c=relaxed/simple;
-	bh=qkkKsL4O6/etbLvT5ncdOzC2rSes8U+GwCyB145RnrE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fFJaI0YDa9BBc9t0Fp2F6meBwWPnXrmzM6antq5QHM7/eWZvvM6LrthONin2z6DM0JMoB8Uvh2sjbqqLO0lVYCvQRhb6GLJOIjFE7+7ZI4tiIyda8ULqr603Vl/HdUbDv/1hjC9Lx6cXxDvx2RHzNUMeLgtyZqASaHtueunPH54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLQdyYUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E694C4CEDD;
-	Mon, 24 Mar 2025 15:28:13 +0000 (UTC)
+	s=arc-20240116; t=1742830109; c=relaxed/simple;
+	bh=D6Iul5oVwGznIBEsz7sfUFJmRyNgNa8jB2plMPw6+QI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A2ijii97/FHdbKzeOFJdWYE//3pILiH4mRcFPrrqJMV+6c9SR1iQFA8X0qrIqoq7KifKpyGac4R3n4Mci4R0tzD4eE+xxRy3abfsbZBA5RDSbuG5nzIVt9A70uisn14duQS3xvK6jZmdu841i2XlCoSN/quVfrArX/JmNm4v/24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IodFoRrp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9221AC4CEDD;
+	Mon, 24 Mar 2025 15:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742830093;
-	bh=qkkKsL4O6/etbLvT5ncdOzC2rSes8U+GwCyB145RnrE=;
+	s=korg; t=1742830108;
+	bh=D6Iul5oVwGznIBEsz7sfUFJmRyNgNa8jB2plMPw6+QI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HLQdyYUCjkFoARxCJRSyMdgQ6LL2SWxnhN6LyST8WLKJU87J2Y67Nv8AaCsLUlphf
-	 NKSrKqtXlObq27Z2hwh9VdD/OhRsWN3yJS1xEvZLRo7sOrFSUGb2mzlFgmBb844Pi0
-	 ZUnks/jRjPxj5lgTiEeVwOAQnAhfepLDW34ZMXeI=
-Subject: FAILED: patch "[PATCH] can: rcar_canfd: Fix page entries in the AFL list" failed to apply to 5.4-stable tree
-To: biju.das.jz@bp.renesas.com,geert+renesas@glider.be,mkl@pengutronix.de
+	b=IodFoRrpDd/fiD73lwsOJFjIkB61ti/uhNJrBuuwcO7c7KP0n2FPTWTWS5vlaWET1
+	 kQZ8EMPky2oAMmeVmjkFPTbtW90VN6UjVbN+Mt2ELzj+mdpT2jjYsj6cRGtSW855Bn
+	 i4idv1wviLya4OKyAYZk1PqB3GRiB2Is9ZrY3IDY=
+Subject: FAILED: patch "[PATCH] can: flexcan: only change CAN state when link up in system PM" failed to apply to 5.15-stable tree
+To: haibo.chen@nxp.com,mkl@pengutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Mar 2025 08:26:40 -0700
-Message-ID: <2025032440-process-busload-c8bf@gregkh>
+Date: Mon, 24 Mar 2025 08:27:06 -0700
+Message-ID: <2025032406-deplored-habitat-e672@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1dba0a37644ed3022558165bbb5cb9bda540eaf7
+git cherry-pick -x fd99d6ed20234b83d65b9c5417794343577cf3e5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032440-process-busload-c8bf@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032406-deplored-habitat-e672@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,95 +77,69 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1dba0a37644ed3022558165bbb5cb9bda540eaf7 Mon Sep 17 00:00:00 2001
-From: Biju Das <biju.das.jz@bp.renesas.com>
-Date: Fri, 7 Mar 2025 17:03:27 +0000
-Subject: [PATCH] can: rcar_canfd: Fix page entries in the AFL list
+From fd99d6ed20234b83d65b9c5417794343577cf3e5 Mon Sep 17 00:00:00 2001
+From: Haibo Chen <haibo.chen@nxp.com>
+Date: Fri, 14 Mar 2025 19:01:44 +0800
+Subject: [PATCH] can: flexcan: only change CAN state when link up in system PM
 
-There are a total of 96 AFL pages and each page has 16 entries with
-registers CFDGAFLIDr, CFDGAFLMr, CFDGAFLP0r, CFDGAFLP1r holding
-the rule entries (r = 0..15).
+After a suspend/resume cycle on a down interface, it will come up as
+ERROR-ACTIVE.
 
-Currently, RCANFD_GAFL* macros use a start variable to find AFL entries,
-which is incorrect as the testing on RZ/G3E shows ch1 and ch4
-gets a start value of 0 and the register contents are overwritten.
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
 
-Fix this issue by using rule_entry corresponding to the channel
-to find the page entries in the AFL list.
+$ sudo systemctl suspend
 
-Fixes: dd3bd23eb438 ("can: rcar_canfd: Add Renesas R-Car CAN FD driver")
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+
+And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
+has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+
+Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
 Cc: stable@vger.kernel.org
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250307170330.173425-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
+[mkl: add newlines]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index df1a5d0b37b2..aa3df0d05b85 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -787,22 +787,14 @@ static void rcar_canfd_configure_controller(struct rcar_canfd_global *gpriv)
+diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+index ac1a860986df..3a71fd235722 100644
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -2266,8 +2266,9 @@ static int __maybe_unused flexcan_suspend(struct device *device)
+ 		}
+ 		netif_stop_queue(dev);
+ 		netif_device_detach(dev);
++
++		priv->can.state = CAN_STATE_SLEEPING;
+ 	}
+-	priv->can.state = CAN_STATE_SLEEPING;
+ 
+ 	return 0;
  }
+@@ -2278,7 +2279,6 @@ static int __maybe_unused flexcan_resume(struct device *device)
+ 	struct flexcan_priv *priv = netdev_priv(dev);
+ 	int err;
  
- static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *gpriv,
--					   u32 ch)
-+					   u32 ch, u32 rule_entry)
- {
--	u32 cfg;
--	int offset, start, page, num_rules = RCANFD_CHANNEL_NUMRULES;
-+	int offset, page, num_rules = RCANFD_CHANNEL_NUMRULES;
-+	u32 rule_entry_index = rule_entry % 16;
- 	u32 ridx = ch + RCANFD_RFFIFO_IDX;
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	if (netif_running(dev)) {
+ 		netif_device_attach(dev);
+ 		netif_start_queue(dev);
+@@ -2298,6 +2298,8 @@ static int __maybe_unused flexcan_resume(struct device *device)
  
--	if (ch == 0) {
--		start = 0; /* Channel 0 always starts from 0th rule */
--	} else {
--		/* Get number of Channel 0 rules and adjust */
--		cfg = rcar_canfd_read(gpriv->base, RCANFD_GAFLCFG(ch));
--		start = RCANFD_GAFLCFG_GETRNC(gpriv, 0, cfg);
--	}
--
- 	/* Enable write access to entry */
--	page = RCANFD_GAFL_PAGENUM(start);
-+	page = RCANFD_GAFL_PAGENUM(rule_entry);
- 	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLECTR,
- 			   (RCANFD_GAFLECTR_AFLPN(gpriv, page) |
- 			    RCANFD_GAFLECTR_AFLDAE));
-@@ -818,13 +810,13 @@ static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *gpriv,
- 		offset = RCANFD_C_GAFL_OFFSET;
- 
- 	/* Accept all IDs */
--	rcar_canfd_write(gpriv->base, RCANFD_GAFLID(offset, start), 0);
-+	rcar_canfd_write(gpriv->base, RCANFD_GAFLID(offset, rule_entry_index), 0);
- 	/* IDE or RTR is not considered for matching */
--	rcar_canfd_write(gpriv->base, RCANFD_GAFLM(offset, start), 0);
-+	rcar_canfd_write(gpriv->base, RCANFD_GAFLM(offset, rule_entry_index), 0);
- 	/* Any data length accepted */
--	rcar_canfd_write(gpriv->base, RCANFD_GAFLP0(offset, start), 0);
-+	rcar_canfd_write(gpriv->base, RCANFD_GAFLP0(offset, rule_entry_index), 0);
- 	/* Place the msg in corresponding Rx FIFO entry */
--	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLP1(offset, start),
-+	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLP1(offset, rule_entry_index),
- 			   RCANFD_GAFLP1_GAFLFDP(ridx));
- 
- 	/* Disable write access to page */
-@@ -1851,6 +1843,7 @@ static int rcar_canfd_probe(struct platform_device *pdev)
- 	unsigned long channels_mask = 0;
- 	int err, ch_irq, g_irq;
- 	int g_err_irq, g_recc_irq;
-+	u32 rule_entry = 0;
- 	bool fdmode = true;			/* CAN FD only mode - default */
- 	char name[9] = "channelX";
- 	int i;
-@@ -2023,7 +2016,8 @@ static int rcar_canfd_probe(struct platform_device *pdev)
- 		rcar_canfd_configure_tx(gpriv, ch);
- 
- 		/* Configure receive rules */
--		rcar_canfd_configure_afl_rules(gpriv, ch);
-+		rcar_canfd_configure_afl_rules(gpriv, ch, rule_entry);
-+		rule_entry += RCANFD_CHANNEL_NUMRULES;
+ 			flexcan_chip_interrupts_enable(dev);
+ 		}
++
++		priv->can.state = CAN_STATE_ERROR_ACTIVE;
  	}
  
- 	/* Configure common interrupts */
+ 	return 0;
 
 
