@@ -1,312 +1,231 @@
-Return-Path: <stable+bounces-125971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B50A6E3E1
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:02:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333D5A6E49D
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:47:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 695D23AE8B2
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 20:02:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1DF2188BB55
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 20:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A791533981;
-	Mon, 24 Mar 2025 20:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB541A08CA;
+	Mon, 24 Mar 2025 20:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ORvQgvBJ"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="FbDwT0Kp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f65.google.com (mail-oa1-f65.google.com [209.85.160.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ADC2E338E
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 20:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742846550; cv=fail; b=bKWbyeu3psBGpp0zp1riToOFDYe4QvBM3Gz5kTnI9rQKIEpCZcUFooxsNjmiRQa+zkNBJTWLsWFnIhQWbnBeALhNlEhTghTVXFsU/bpxIvkYBog1Vd3mKtscNcJcY63Njk5/odRhxgiHSQ8jH7XY0+DpF5lSNapbQ7YtlXmjb/Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742846550; c=relaxed/simple;
-	bh=B2UF34jIuO3gK60ptDZbLhes2eA5knx5MI+XWD97tNc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QasFZiEDA59ltx2qOa8Pr2opUoshKYIcbHViv365pjIxbMLeqwBYYG6ppsDKIKy+z2AOdC7C6nwnSSSM//si1SsPo9HaKGqfRguvlm3EMPK+gfD4CePCsoJQlJ7SSV5LmXCjTg4EumpXiV0FpVdWoLVI9XXFtVT/6UGnrDzBfhQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ORvQgvBJ; arc=fail smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742846548; x=1774382548;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=B2UF34jIuO3gK60ptDZbLhes2eA5knx5MI+XWD97tNc=;
-  b=ORvQgvBJBW3HzQklvsjJacdFrA38dsNy2r1yKAj1YiQWcZdkIn2Mqbx5
-   pinBiIALWxqxI7FHa5/Ezli0g/d0z00vkWadvvuGoZkjoHUgaRmYwE2ss
-   ncitvNy9Lze3gqhQ7zve8V66ZlY12dQmp7gc3jnD5SCbDkckRaKAE29RE
-   p5Ki1jSiwVSGrdJprXMIerL4D/vEJudVDZ+8IpB+Wrpk9C7pboSikbDG2
-   hu3T5ogNukx5VJDEHG5/jb9VMSfS9aNLOR0ieaOh4S3y/PCFHlpNePPDg
-   7Etz5+Q0QY7/Zb634GZb5y+/XcW7ObevMZ6e3BdrqDTskQ/YVwkQu1UYI
-   A==;
-X-CSE-ConnectionGUID: aAh/eyBFSnyNs3Z9nAcszA==
-X-CSE-MsgGUID: Scjh29sBQfWy0LtQqII52g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="54712025"
-X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
-   d="scan'208";a="54712025"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 13:02:28 -0700
-X-CSE-ConnectionGUID: Y/UxIrETTZaAXdcKg+cBFw==
-X-CSE-MsgGUID: ChIzI9TBTyibd+puwxcHRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,272,1736841600"; 
-   d="scan'208";a="155063160"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 24 Mar 2025 13:02:28 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 24 Mar 2025 13:02:27 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Mon, 24 Mar 2025 13:02:27 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.171)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 24 Mar 2025 13:02:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zR1LgcXKWtS5HncFwxlT6Zl1LyFhSrzRwJH96UM/9nNanGbDchH/uwfQV+QiyTZB2iP4rTr13z29pp4Vbw15lmEgIZTKj8PZsyHYqYFV4aJlYR2lroA7yFRcjBlmmdg29EcHlSB3JQuKChMeD69N+9mXsVrdLCy15TGeUB7YUwM8xp6xcxLq6kDkUhnRfSxDxyx89hWWHdabi/U6Goh4316Zv/CjfGOHmYmG84a533vLAGZ2qM4Av21Cj2GtwQ8SK/t4iD0Oi9/dsE6sfAETw7DVxAkKBjw8Ayl0hZ310j2mXpsSbAGi+DzbgbXO66yrTi/g00Di8XA2SHkCCmPF2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bbYxbLiXgJqkgAhAh8yy4uWbhSMPk4j+w1w9ZM3ycw0=;
- b=odub6p9SFf042lFnHlDglLxCFhDAegPTjeQiQSNpzogjvL5VLiVsbiViO5FE6u2UwyD+1nNX+mOQvQWVgf8CrKcompYtfIcgFbcdKsIljNDlpAdN4kBw4iUYPPV/lwu318TDPGKRBN2TOAq++QWMp1U1mNezpjHdpZJPxk8FX9gZgbEvXcMsITc42WjYh0FqauoCwXCkKwfbXiT0nsgxVocAzUZnvCjkAYx/rrDkq6L9EuLzmlougVC5EwNMT91qUENzZRTTn24Bl8mHtlaCsgq5HwlPizvox2VGth4JQ0p7TKkWOJiE2bxab/iBn3p3UjOMqzu2EgIpkAfqGa9ZGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by IA0PR11MB7212.namprd11.prod.outlook.com (2603:10b6:208:43e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
- 2025 20:02:10 +0000
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::8dd1:f169:5266:e16e]) by DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::8dd1:f169:5266:e16e%6]) with mapi id 15.20.8534.040; Mon, 24 Mar 2025
- 20:02:09 +0000
-Date: Mon, 24 Mar 2025 13:02:07 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-CC: <intel-xe@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
-	"Vivek Kasireddy" <vivek.kasireddy@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] drm/i915/xe2hpd: Identify the memory type for SKUs
- with GDDR + ECC
-Message-ID: <20250324200207.GN3175483@mdroper-desk1.amr.corp.intel.com>
-References: <20250324-tip-v2-1-38397de319f8@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250324-tip-v2-1-38397de319f8@intel.com>
-X-ClientProxiedBy: BY3PR03CA0009.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::14) To DS0PR11MB8182.namprd11.prod.outlook.com
- (2603:10b6:8:163::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232CC188A3A
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 20:47:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742849265; cv=none; b=pIjN+AXS/lZu9uTUXujo6oFiDRIUHQiWE6LnkFKBkzqAmTdZMcB1eBRhMo0NsT9xyufv8ydWsWyzvn/xW4376WHVX/I56dEpm3nNiGRxDBfqBKzMh2LU8sEal4ebWf7bX3831aZFz0gRoGHTn9ilFSWrh3n2lqQb7AU2DPNcR1I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742849265; c=relaxed/simple;
+	bh=Y/fGKeukbRRdYd9HAdrqdc+Ww5vxvuN8L0TDWLKeyb4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=JNgIoAtM/fnLHS17XCwSWPiuHJbD97lhDToF4VSRwZCVoxw3TTmMZYm3AYRKVRohgXad4F0uDIsI649CEdLjOHoaUcfniAgjOMT6OiU0iGLm78fgXxL2/OKlHUW7pppwi0NemcdZcUhEEzjLwGcv+otDrXyr3hH0O/kt2HVYch8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=FbDwT0Kp; arc=none smtp.client-ip=209.85.160.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-oa1-f65.google.com with SMTP id 586e51a60fabf-2c2dc6c30c2so1170762fac.2
+        for <stable@vger.kernel.org>; Mon, 24 Mar 2025 13:47:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1742849263; x=1743454063; darn=vger.kernel.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WTCHPcQcF05vSjvDkbTHLywGzk90qemE1sdRxR2q4NM=;
+        b=FbDwT0KpaTzB3bscRkoMlm+7NHWdHu2tQCYDNVZ42/Q3NSyFA4Lm/FPDzhw4ovsxbR
+         RNVXoNesnOC+maOYCYJstPFXMt8Kq2g2oDOB88hyr/qG+irZcAucwY+7N5raOE7rWycf
+         xFCpGEI/mVUy//LWZUm94LqFqzkW54yO9rXQ8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742849263; x=1743454063;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WTCHPcQcF05vSjvDkbTHLywGzk90qemE1sdRxR2q4NM=;
+        b=YtL6RkgE+j2662tvhP6DaUZxVCLrGRtcswoUud10GvZuzF/+T844uQUkRwTdvUZHcL
+         DXdN72GwaT44WbwercRp4wVntdElXcsdjdi/mZEytFC19nWdlF5yjAwoAFDtSuaEuiCG
+         sKDyovhc18OKNEVoCWOLyIe2juxtLUimMfEEhYehIgbpaUnMSpbg5ptmecKqt9KFEd+x
+         OSBLSbWExcvho1EAY558WXEXMP0rsn1WJLHzVSZ533iYANwaPYBlj7aF6tRvXjiCLhZm
+         9ttj8dGGCEKP3UkyDBCBWLiovj5zRtt/vrJZPQtVMbjwKFfqHeY3vze2o1a6xe+SXu4U
+         G8xg==
+X-Gm-Message-State: AOJu0YzGNy73/qvvSAabB5cVx9Dk4mFAnkCPhNAjY3XgeL/kWPLDQUDh
+	j8J7Jl/Ibwi+13wu+AIVQaVJOBABXpN8gAg8OdAQv8y9AbJ/Xqgx0m8MtzvYMcLdhmgCBIeqQkC
+	YghwEAsxMsI7sgLFJdYaU8SoGH9XS13rCq1aw4eC2kl4rtl5WU8AXzfmlb0X8HA88DFVY+7OU0F
+	Ss6rVIfgwFVHR/99otsM/sSM2xTeCWjabpxYjzB9Ue88M=
+X-Gm-Gg: ASbGncsNVWyeoFOPVS6kQEDWde1BSSPHooJ8c3NXjJkT769TTtf5gT/ODeLHRCcyCet
+	WtUgTvpxpiB6QtlTMgvIppk82hxTL5bXnESwed7N7tNC2QNg+vbAZw8lsUtLmEPqW2YyQTxKIS0
+	GBj8ISvgd/O8sLkGKBSvVT0AlYgXjwIprhSPre/ALqpUqvQdWVNDbwn86s14ygbzALKu55v0CQd
+	7GjU6+x+Qv/LcynxfYCmPv6j5NxkYeM3dXpPYhDSDMn6f5cD+kwbNXKDZLX8aVUV+V0q7zTjv59
+	maBI+o1J1tLX77xeOFtq/1I+U+P6mAS5luNMIQSlhs9XecHPSp+73jvzX9Od9cidtsjkyE2QoTl
+	rzNar
+X-Google-Smtp-Source: AGHT+IFpv3dghzDMqGhpgnv4NzpxRACpnDRXx35I8NKo2CkBQEInslUiejPDgKMWwry7LWraQHOiuw==
+X-Received: by 2002:a05:6871:3291:b0:2c2:3e54:553 with SMTP id 586e51a60fabf-2c780516238mr9723695fac.28.1742849262596;
+        Mon, 24 Mar 2025 13:47:42 -0700 (PDT)
+Received: from mail.broadcom.net ([192.19.144.250])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c77f0f6825sm2181080fac.43.2025.03.24.13.47.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 13:47:41 -0700 (PDT)
+From: Kamal Dasu <kamal.dasu@broadcom.com>
+To: stable@vger.kernel.org
+Cc: Kamal Dasu <kdasu.kdev@gmail.com>,
+	Al Cooper <alcooperx@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Kamal Dasu <kamal.dasu@broadcom.com>
+Subject: [PATCH 5.10.y 1/4] mmc: sdhci-brcmstb: Add ability to increase max clock rate for 72116b0
+Date: Mon, 24 Mar 2025 16:46:36 -0400
+Message-Id: <20250324204639.17505-1-kamal.dasu@broadcom.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <2025032414-unsheathe-greedily-1d17@gregkh>
+References: <2025032414-unsheathe-greedily-1d17@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|IA0PR11MB7212:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9fc06d8-7c6f-4a39-6115-08dd6b0ec2b8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Y/ET5sXmEdKx0k62fyf2zqcN3fFiGHSBuT7V7nUA4gROHZIrdyWcGio4F+dQ?=
- =?us-ascii?Q?tVx4di797jFoKSDorLzq2hvDygI+jsiApZxli/PO8Es/ZTQ9nv/UbYTWSkSb?=
- =?us-ascii?Q?gvDcPkyjON7/iRYhmjSuCDcyRfnZfmQ9OZb9Xc2dwQ/IeEb/IToSugXCnuVX?=
- =?us-ascii?Q?/BOKP6dmvhmbKpN5p3LXfXTkZMgg3vlYC8fRdA0LZUpCvL979EG5k3sz6CaK?=
- =?us-ascii?Q?aebTvbzPtIgrGxUupQPiJXLjFPGWRLcjlPAkEEhBjVgaw8dNBon50HC70nzD?=
- =?us-ascii?Q?E9hmKNGQTMAYe8J08ShYnsmelSwN2HNj2qTf037furpXYVBPUQITj7Tz2lnU?=
- =?us-ascii?Q?ZW70ZrTZ1P2iw0QCMXU6PPkz0j/COswIl1METhYTS8SuBRQSeZCDgbnrYbPT?=
- =?us-ascii?Q?ZypWZEhGBWkGY8PORQcww+iscOTusi3BOFsjUY4bDJky+2zSEm4oAtCYPlBQ?=
- =?us-ascii?Q?BojvTKP55/0gWXE2PUiWvXSarxhqHTU8KjMWNomEqV4igIwJUr+5E5WOO9R2?=
- =?us-ascii?Q?nIuBhVarb4t9qSTa9sk/467/rAO6EkrTLi0ZhrH/MQX6RhyinvFshPcLRK2O?=
- =?us-ascii?Q?I6X6XFydfeNlo5QGDDZ5Nm3rwneB4I1nxg9vwQBWZndND2pgakt8zJ+JHgtA?=
- =?us-ascii?Q?rMGXH28pIw+yjMZGWKAzacg9Xx+kkqpIIxJ278yevFE93iDJ26Sjvp+1NzQn?=
- =?us-ascii?Q?eh2C1x5cQ0vCLEVshyg9X/J4P/OapYYy28bA3PhAYqDRUldfrjqb4rZv8xqt?=
- =?us-ascii?Q?lCvEP/9n5G1xzGlIujXb9qyGZBSFFMb4pQBGgeI7n8Ir5A3u4YIPergLtyoi?=
- =?us-ascii?Q?wZQw7XzxdvSVSL+V4aPBfQsVbTkKpPetvmN70IWgDixLdtpJDnXDbAlWDx9f?=
- =?us-ascii?Q?6RCcZQkCDceQC2nrvkwc7GJ2jWIkFHVTU56P//Oi8i8KBAiJeZyKhNm1Y5Or?=
- =?us-ascii?Q?0Fh5TnVL8OEFNo2JjSYQ53FckQY9v00aSYyYO6VEzkSbMic84Oxuyx7p+1w4?=
- =?us-ascii?Q?yyQ1lY3ytEWcrdMrkdF4m3mrNWi3XDaHC7gxvYsqIc4bh7Cc1mtPSeN2yfO3?=
- =?us-ascii?Q?tYmqZhIpHIAeBgmuZflDp+DS/tWtPSYJkBF49yOrQW2KKOvtzlKJiaYrreox?=
- =?us-ascii?Q?VHO0ZAZYcipGY8sknZfIX4WUgqG83f9el2bdS/e+0cTt91byj5kC26m6GGH9?=
- =?us-ascii?Q?wM5pWuKu+El3vfgKzPycADxa2xHZ+R1n53qO1tELXKgUR+ETWdRwrmrKwCzs?=
- =?us-ascii?Q?7s70D4PxX7WGUwLqSNehUs1aLDrpAF6KOWbRf85TcaTNOZCcMTsSUFOia74+?=
- =?us-ascii?Q?EryGMtK4qRZrDQVPOFr0uMS8p/yzB49tKWpNiCnf4gtmCHAUJCIay6yhaK4P?=
- =?us-ascii?Q?q5vrWFfZig5h+iw3b8EPs2e8mYaC?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?96qmSYUiFg9M9abOeRvSXIGQjhLXCab1qtg/dtsLaBWqpCJiEPdX395icdg1?=
- =?us-ascii?Q?/EGhzQbudPOZwxmG1DWv/LHaK1mtA58ztPoJ2E8D4i2QqnktpCAoYjbw4awo?=
- =?us-ascii?Q?m85fP+Bv+nG2cOS3/zG1vO4RoEESB5/eszxZ56fxEKnPsLkHHWuL7f1SgjUR?=
- =?us-ascii?Q?oq3FFmvbRNuD6RvicuC0dvXBSniR7mmJA3bqcoSDMo/+PsbJsI9RlK7xzSl1?=
- =?us-ascii?Q?mhbjrAdi47/JeoOT+V52Wmbg/IvXo2ZayVoc6JIsmRBg8EUj2wZtahXmkfGr?=
- =?us-ascii?Q?WFzT9eKvrWQsMt+pddy0p/P1JqmM3mNXx+puh9aF1UqrJvHgA+CocqZBQ9rq?=
- =?us-ascii?Q?NdsJyKEIOLHZkheUrOjGOK/QM0QZBiyx9yhyFc1MYKZzujq9Aa87RE9QAbMa?=
- =?us-ascii?Q?FD3iEHcXve38z1Wp1nbPKepU1aVrlc6rT36/+iwjHsXgSQrt0aQXJBrqrl/O?=
- =?us-ascii?Q?zV9L2edpP4Kq0YIdEbgap6KECd7NNwiePOpbMhc9R90EjAMxWryljDYwlzq/?=
- =?us-ascii?Q?l64tjGDgS+ymMPkF8hfxIRa3a1rDA+VtRqAOCCJFZ+/pDlF933c15/eg/mlr?=
- =?us-ascii?Q?0K32WBMc1YwrlBjrZbjQppDlE2yVT7ektrNhJ+7xHJEPQ/9Srhej5UJBj0eA?=
- =?us-ascii?Q?HarkqWalATp6iGUicuBWJuPr28ZCu/pBcMrd++oaU1dysNBzrVsmqpr9juql?=
- =?us-ascii?Q?IZjOcZUi+0cfytThvHfWFMIdHMtRpp3qU+D7yTyJ+qSOEz4hMb4RJaQshKXq?=
- =?us-ascii?Q?yFvb/Y6iRPJIEahMbLP1zqCDqnvLCpBDfi2LM8VP715op1Qz9wAjb03pfSp9?=
- =?us-ascii?Q?HYsNWs8IPs7fMn3bbbmbRHesgmwGuCp9SchUMjNqbsEnYknLwmjD5D54legZ?=
- =?us-ascii?Q?tuxAv68JCqlEJMJ2rLTGTuKRh/lBPX3ZRpEohwF2hJGAkat60RaeMHZGthJU?=
- =?us-ascii?Q?IV7sDtYIqZl/IqlYXn4X8JKXqHI3aQP7/sm1J/sciFQftyD+IzVRG+yyHHTP?=
- =?us-ascii?Q?yfpvuMyR0XNWJuaYZ+po8roJ3TQaiTJFHqSM43ywQ4NWlY7OlBDcXZoGpD1c?=
- =?us-ascii?Q?z5LqdSuvxVDYKq4hMRiMjGJ4arsFJjXALnBMkZmPm4I3izIQbez9xfyX+qMl?=
- =?us-ascii?Q?OZfXg7htB0M81NwMyVCANkN3nv4r6nG2WnXdt2UEF3rUh/PwEYW3CJQqnm1N?=
- =?us-ascii?Q?RyMPZ7cCECrog6mPxJSXLd2RqpVY8ytWSFyItdttX0DhkemhBQEpSgoyJCrx?=
- =?us-ascii?Q?y3/FPd8w7NnQExz1l10SS9wYcSE6wslx4uuhHbSptmM6M04KZqKaCIb2wT2P?=
- =?us-ascii?Q?C9DjaMJY103oMo0pODw+StWTS9I3o4mhL0B6f8CyUzzXu29Ltp26vzZ/8hEn?=
- =?us-ascii?Q?j7tje5bXOWjnnpRx8NbLTHxjWfmiBHb8MSG99C4bCZl9YMYyIHqkK/3+Qy8f?=
- =?us-ascii?Q?NoGVhdCRIBJP+LFjzJ8nGIvta2qRn1o+jcQXTYXm5pUuca70G9RStYySis5z?=
- =?us-ascii?Q?HbByIXOxB8FMU+sRk+BItIwkwCKnEh6DwN2CD0/MWMLKjBHdvFoGXpcCoYE5?=
- =?us-ascii?Q?vaBXo96VBCrcea/poEmiSNWxGmAPTgta+GxiTkwdcOKMTJegQJRSDv2smm3h?=
- =?us-ascii?Q?7w=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9fc06d8-7c6f-4a39-6115-08dd6b0ec2b8
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 20:02:09.8545
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K/8uB16E391f3VTqUn17ITCJ+tKfGcy4nAZTPO0oOxuUKzHP0sbac8nNf4fWk4ZyLS4LowCAxUvvf4dEGwqNI7Wi8oCTJ87d85nthEGmX30=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7212
-X-OriginatorOrg: intel.com
 
-On Mon, Mar 24, 2025 at 10:22:33AM -0700, Lucas De Marchi wrote:
-> From: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> 
-> Some SKUs of Xe2_HPD platforms (such as BMG) have GDDR memory type
-> with ECC enabled. We need to identify this scenario and add a new
-> case in xelpdp_get_dram_info() to handle it. In addition, the
-> derating value needs to be adjusted accordingly to compensate for
-> the limited bandwidth.
-> 
-> Bspec: 64602
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Fixes: 3adcf970dc7e ("drm/xe/bmg: Drop force_probe requirement")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Kamal Dasu <kdasu.kdev@gmail.com>
 
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+ [ upstream commit 97904a59855c7ac7c613085bc6bdc550d48524ff ]
 
-> ---
-> Changes in v2:
-> - Add a separate sa_info for the ecc case (Lucas)
-> - Link to v1: https://lore.kernel.org/r/20250214215944.187407-1-vivek.kasireddy@intel.com
-> ---
->  drivers/gpu/drm/i915/display/intel_bw.c | 12 ++++++++++++
->  drivers/gpu/drm/i915/i915_drv.h         |  1 +
->  drivers/gpu/drm/i915/soc/intel_dram.c   |  4 ++++
->  drivers/gpu/drm/xe/xe_device_types.h    |  1 +
->  4 files changed, 18 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/intel_bw.c b/drivers/gpu/drm/i915/display/intel_bw.c
-> index dc7612658a9da..bb81efec08a01 100644
-> --- a/drivers/gpu/drm/i915/display/intel_bw.c
-> +++ b/drivers/gpu/drm/i915/display/intel_bw.c
-> @@ -250,6 +250,7 @@ static int icl_get_qgv_points(struct intel_display *display,
->  			qi->deinterleave = 4;
->  			break;
->  		case INTEL_DRAM_GDDR:
-> +		case INTEL_DRAM_GDDR_ECC:
->  			qi->channel_width = 32;
->  			break;
->  		default:
-> @@ -404,6 +405,12 @@ static const struct intel_sa_info xe2_hpd_sa_info = {
->  	/* Other values not used by simplified algorithm */
->  };
->  
-> +static const struct intel_sa_info xe2_hpd_ecc_sa_info = {
-> +	.derating = 45,
-> +	.deprogbwlimit = 53,
-> +	/* Other values not used by simplified algorithm */
-> +};
-> +
->  static const struct intel_sa_info xe3lpd_sa_info = {
->  	.deburst = 32,
->  	.deprogbwlimit = 65, /* GB/s */
-> @@ -756,11 +763,16 @@ static unsigned int icl_qgv_bw(struct intel_display *display,
->  
->  void intel_bw_init_hw(struct intel_display *display)
->  {
-> +	const struct dram_info *dram_info = &to_i915(display->drm)->dram_info;
-> +
->  	if (!HAS_DISPLAY(display))
->  		return;
->  
->  	if (DISPLAY_VER(display) >= 30)
->  		tgl_get_bw_info(display, &xe3lpd_sa_info);
-> +	else if (DISPLAY_VERx100(display) >= 1401 && display->platform.dgfx &&
-> +		 dram_info->type == INTEL_DRAM_GDDR_ECC)
-> +		xe2_hpd_get_bw_info(display, &xe2_hpd_ecc_sa_info);
->  	else if (DISPLAY_VERx100(display) >= 1401 && display->platform.dgfx)
->  		xe2_hpd_get_bw_info(display, &xe2_hpd_sa_info);
->  	else if (DISPLAY_VER(display) >= 14)
-> diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-> index ffc346379cc2c..54538b6f85df5 100644
-> --- a/drivers/gpu/drm/i915/i915_drv.h
-> +++ b/drivers/gpu/drm/i915/i915_drv.h
-> @@ -305,6 +305,7 @@ struct drm_i915_private {
->  			INTEL_DRAM_DDR5,
->  			INTEL_DRAM_LPDDR5,
->  			INTEL_DRAM_GDDR,
-> +			INTEL_DRAM_GDDR_ECC,
->  		} type;
->  		u8 num_qgv_points;
->  		u8 num_psf_gv_points;
-> diff --git a/drivers/gpu/drm/i915/soc/intel_dram.c b/drivers/gpu/drm/i915/soc/intel_dram.c
-> index 9e310f4099f42..f60eedb0e92cf 100644
-> --- a/drivers/gpu/drm/i915/soc/intel_dram.c
-> +++ b/drivers/gpu/drm/i915/soc/intel_dram.c
-> @@ -687,6 +687,10 @@ static int xelpdp_get_dram_info(struct drm_i915_private *i915)
->  		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));
->  		dram_info->type = INTEL_DRAM_GDDR;
->  		break;
-> +	case 9:
-> +		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));
-> +		dram_info->type = INTEL_DRAM_GDDR_ECC;
-> +		break;
->  	default:
->  		MISSING_CASE(val);
->  		return -EINVAL;
-> diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-> index 1334174388afe..20239d6a2e985 100644
-> --- a/drivers/gpu/drm/xe/xe_device_types.h
-> +++ b/drivers/gpu/drm/xe/xe_device_types.h
-> @@ -587,6 +587,7 @@ struct xe_device {
->  			INTEL_DRAM_DDR5,
->  			INTEL_DRAM_LPDDR5,
->  			INTEL_DRAM_GDDR,
-> +			INTEL_DRAM_GDDR_ECC,
->  		} type;
->  		u8 num_qgv_points;
->  		u8 num_psf_gv_points;
-> 
-> ---
-> base-commit: 74f632d1bd3b90ed79883361ca25f1225c0aee58
-> change-id: 20250321-tip-23d2af2e3291
-> 
-> Best regards,
-> -- 
-> Lucas De Marchi <lucas.demarchi@intel.com>
-> 
+The 72116B0 has improved SDIO controllers that allow the max clock
+rate to be increased from a max of 100MHz to a max of 150MHz. The
+driver will need to get the clock and increase it's default rate
+and override the caps register, that still indicates a max of 100MHz.
+The new clock will be named "sdio_freq" in the DT node's "clock-names"
+list. The driver will use a DT property, "clock-frequency", to
+enable this functionality and will get the actual rate in MHz
+from the property to allow various speeds to be requested.
 
+Cc: stable@vger.kernel.org
+Signed-off-by: Al Cooper <alcooperx@gmail.com>
+Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Link: https://lore.kernel.org/r/20220520183108.47358-3-kdasu.kdev@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+---
+ drivers/mmc/host/sdhci-brcmstb.c | 69 +++++++++++++++++++++++++++++++-
+ 1 file changed, 68 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
+index 4d42b1810ace..8fb23b122887 100644
+--- a/drivers/mmc/host/sdhci-brcmstb.c
++++ b/drivers/mmc/host/sdhci-brcmstb.c
+@@ -32,6 +32,8 @@
+ struct sdhci_brcmstb_priv {
+ 	void __iomem *cfg_regs;
+ 	unsigned int flags;
++	struct clk *base_clk;
++	u32 base_freq_hz;
+ };
+ 
+ struct brcmstb_match_priv {
+@@ -251,9 +253,11 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
+ 	struct sdhci_pltfm_host *pltfm_host;
+ 	const struct of_device_id *match;
+ 	struct sdhci_brcmstb_priv *priv;
++	u32 actual_clock_mhz;
+ 	struct sdhci_host *host;
+ 	struct resource *iomem;
+ 	struct clk *clk;
++	struct clk *base_clk;
+ 	int res;
+ 
+ 	match = of_match_node(sdhci_brcm_of_match, pdev->dev.of_node);
+@@ -331,6 +335,35 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
+ 	if (match_priv->flags & BRCMSTB_MATCH_FLAGS_BROKEN_TIMEOUT)
+ 		host->quirks |= SDHCI_QUIRK_BROKEN_TIMEOUT_VAL;
+ 
++	/* Change the base clock frequency if the DT property exists */
++	if (device_property_read_u32(&pdev->dev, "clock-frequency",
++				     &priv->base_freq_hz) != 0)
++		goto add_host;
++
++	base_clk = devm_clk_get_optional(&pdev->dev, "sdio_freq");
++	if (IS_ERR(base_clk)) {
++		dev_warn(&pdev->dev, "Clock for \"sdio_freq\" not found\n");
++		goto add_host;
++	}
++
++	res = clk_prepare_enable(base_clk);
++	if (res)
++		goto err;
++
++	/* set improved clock rate */
++	clk_set_rate(base_clk, priv->base_freq_hz);
++	actual_clock_mhz = clk_get_rate(base_clk) / 1000000;
++
++	host->caps &= ~SDHCI_CLOCK_V3_BASE_MASK;
++	host->caps |= (actual_clock_mhz << SDHCI_CLOCK_BASE_SHIFT);
++	/* Disable presets because they are now incorrect */
++	host->quirks2 |= SDHCI_QUIRK2_PRESET_VALUE_BROKEN;
++
++	dev_dbg(&pdev->dev, "Base Clock Frequency changed to %dMHz\n",
++		actual_clock_mhz);
++	priv->base_clk = base_clk;
++
++add_host:
+ 	res = sdhci_brcmstb_add_host(host, priv);
+ 	if (res)
+ 		goto err;
+@@ -341,6 +374,7 @@ static int sdhci_brcmstb_probe(struct platform_device *pdev)
+ err:
+ 	sdhci_pltfm_free(pdev);
+ err_clk:
++	clk_disable_unprepare(base_clk);
+ 	clk_disable_unprepare(clk);
+ 	return res;
+ }
+@@ -352,11 +386,44 @@ static void sdhci_brcmstb_shutdown(struct platform_device *pdev)
+ 
+ MODULE_DEVICE_TABLE(of, sdhci_brcm_of_match);
+ 
++#ifdef CONFIG_PM_SLEEP
++static int sdhci_brcmstb_suspend(struct device *dev)
++{
++	struct sdhci_host *host = dev_get_drvdata(dev);
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
++
++	clk_disable_unprepare(priv->base_clk);
++	return sdhci_pltfm_suspend(dev);
++}
++
++static int sdhci_brcmstb_resume(struct device *dev)
++{
++	struct sdhci_host *host = dev_get_drvdata(dev);
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
++	int ret;
++
++	ret = sdhci_pltfm_resume(dev);
++	if (!ret && priv->base_freq_hz) {
++		ret = clk_prepare_enable(priv->base_clk);
++		if (!ret)
++			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
++	}
++
++	return ret;
++}
++#endif
++
++static const struct dev_pm_ops sdhci_brcmstb_pmops = {
++	SET_SYSTEM_SLEEP_PM_OPS(sdhci_brcmstb_suspend, sdhci_brcmstb_resume)
++};
++
+ static struct platform_driver sdhci_brcmstb_driver = {
+ 	.driver		= {
+ 		.name	= "sdhci-brcmstb",
+ 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+-		.pm	= &sdhci_pltfm_pmops,
++		.pm	= &sdhci_brcmstb_pmops,
+ 		.of_match_table = of_match_ptr(sdhci_brcm_of_match),
+ 	},
+ 	.probe		= sdhci_brcmstb_probe,
 -- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+2.17.1
+
 
