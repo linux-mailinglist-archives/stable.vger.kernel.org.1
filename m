@@ -1,138 +1,261 @@
-Return-Path: <stable+bounces-125975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1324A6E4A2
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:49:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA918A6E4B6
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 21:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C64E3A80E9
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 20:47:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EECE21896298
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 20:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C9A1D63D5;
-	Mon, 24 Mar 2025 20:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD941DF99D;
+	Mon, 24 Mar 2025 20:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="iBihvzcX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xX0ujGO3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D421B0406
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 20:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB291DC9BB
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 20:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742849269; cv=none; b=lVI6LZcDZIlkTQ/h+W8a17+T3/0+1vX6LvmajmLEDtsZIBAeDwXGK5Nas/goxiGm7PbR3YldIoAt6AY3L9W2O6Rs3WjBp9lzrMKfaeLrNOHyJJwkFtn+nXD42FAgkdLVDQ3Vv606L9KZwPlEUR7jxQiR5ATyqP2krsnVrTgKTdY=
+	t=1742849445; cv=none; b=MuohFXek8WarVKOzLvykwwtG9EyGAQ6dVJL92wLmh3QrKv6/Vtu5nkeCWT+2tDeDBgAnS0BlVDGeyCGDHQLZnzjnHar8WpiSJuGxPsHY3yMtLkQF1sltUETERYSL/AAAYrhLER2dpcg9YrEDl1gTSZfphoYKvZ/rBF8ucnQSX28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742849269; c=relaxed/simple;
-	bh=P3H3yWNOTU7Jx5ICD3CTnIYzj80n61dEQx302ZRspv8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=g3rb8YF/45lUNim/MTv7cGButiUgaX9omZLD0cyR02yqc0hE4UT1ej9ej+vEL5knn+tonh376ZY5z0DSbUko1zG6Erl+YcGipaOgwLWg3B9/zKn6kVbk8jci60NMqVfWuCIK72fgmYLcFUiNZGLWrQIw1aU3DWV4kSa2l1K3+/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=iBihvzcX; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-602513d21fdso358094eaf.0
-        for <stable@vger.kernel.org>; Mon, 24 Mar 2025 13:47:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1742849267; x=1743454067; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wDHxaRphamGmnxyvpLWbK14rCZzk5U7NR+E3kzCo3X8=;
-        b=iBihvzcXFK9BK3g21Xe8Qxpwc65u58E20ARnnitRs5aAJ58UA9TFX9yAI155SQ0cfv
-         UM7pdczi7W197SSlfLWAWoJ+YBvWLqkBqmFIf6nePSyZTDu2F5O6ZPlGk6zAEgSCDOXl
-         mIsOAuQ4qndHsXLlwCaMXn7IqcqIUdK0kE9Vs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742849267; x=1743454067;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wDHxaRphamGmnxyvpLWbK14rCZzk5U7NR+E3kzCo3X8=;
-        b=qF9UMRYOjzacNhEa+y6Pp9C1zlsbYOoRLp2xT2cq18eHRChgyI6I/VbHxaFByAJTbo
-         JV6dBEKSdtCdya7JZurJfgc4YG5uVG7w0ocsFiVDr7JJRbHczR55mmtLcfRiTQoXrB2Q
-         czCPFxILF7hoMbfRQUlDfKQ3DGVDXWMZ2sjddXR3gmP6enCZIx4ruj+7vgNXWtbSjGbo
-         R628YwuywI9e1eIfnBihuCdO/Y6TQXSxwHBuBBC6TBuRXd6i+vJQf+/uFAVy/GLX6VxC
-         aCoerymY7zniaXZGjcvjPHEBo+2FtqEALpRaBOceHnSXxeR/cnrDO3rQ6dNFMownOANM
-         PNhw==
-X-Gm-Message-State: AOJu0YzLt7S9USTqxrtMdtr5/nD1aD0he0ZZauI9Ic1LE0eeISmB+271
-	upQcBYGww0qsaf/6DOTE1ccAbs6pz3rrnq4E78gjDG47aZ5EyA4bzza4l1fwFSKnlUIjfySbh3O
-	XQtpLcaXXP1igMZTQufM8RxVorJoXsyC4KLKL4Gc9fNI3lTeNp/KjDX+ik51wgO9IlZvxeH0haL
-	L1dFBTpbcnpNYXhdjB03dS2zK+nQaXQgs8RDHGsIg4
-X-Gm-Gg: ASbGncsSioYtBZGeOfXncGNfwenlOGBoL8ZzGERDccU80oNz4UEm8wr5PXKL187xrxd
-	NQRxuqq7p+n/MPrwBZdMdXBYf3aoEWnthCrK1pSYZxsy/HU+18H/BW7lqsunw4/dJoMLBiyekOb
-	0OkkB7uGs8Bfb/a5gJ59MI4I00QsybzmT3kKkmbeQ0kNkB7l1nwrO3tsgjw/epqF5LQk3OxH8Xd
-	c8lGOJYYAA1NcG3Fssglur5Gg0gbJ+hoZ8acyseH6Pst2Uy/ravq40vHUc5IZx7XwCcS2wF1T+O
-	fSMf8tWJMiCtb1nhmSYg4hyknZRt4Nhdn127lKTjoZv4scUEXHhA3sI/sibtWhnntGGBMf/bcBl
-	dQxIo
-X-Google-Smtp-Source: AGHT+IF9F42DRq4ffVAaenhmYzaiLdXilWXdCTCAeXnyxi7BLjFdRdPowGzMwzUjQCo/3V99RJGN8A==
-X-Received: by 2002:a05:6871:400c:b0:29e:503a:7ea3 with SMTP id 586e51a60fabf-2c7805c6e03mr9477235fac.36.1742849266607;
-        Mon, 24 Mar 2025 13:47:46 -0700 (PDT)
-Received: from mail.broadcom.net ([192.19.144.250])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c77f0f6825sm2181080fac.43.2025.03.24.13.47.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 13:47:46 -0700 (PDT)
-From: Kamal Dasu <kamal.dasu@broadcom.com>
-To: stable@vger.kernel.org
-Cc: Kamal Dasu <kamal.dasu@broadcom.com>
-Subject: [PATCH 5.10.y 4/4] mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops
-Date: Mon, 24 Mar 2025 16:46:39 -0400
-Message-Id: <20250324204639.17505-4-kamal.dasu@broadcom.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250324204639.17505-1-kamal.dasu@broadcom.com>
-References: <2025032414-unsheathe-greedily-1d17@gregkh>
- <20250324204639.17505-1-kamal.dasu@broadcom.com>
+	s=arc-20240116; t=1742849445; c=relaxed/simple;
+	bh=fPgeKoCydVuC+o9VI3ffWH0sWcb64qCFgzccenvzf3Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UDILbd3DDEQB19DmxTMIyb86NYfo70z7shDefIfF/dHUcjKqr4KsTwtD9GT6YAlh8Zrtrk3ps5FiNixU1EhMnbmdeD/sLXseatbR3uIIbjiWrswph+uNVeBmUiAqgbcfElMtzGCtOSCYrSPhNwczEGTyVRMykSJyPLlCapITMvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xX0ujGO3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B4DC4CEE4;
+	Mon, 24 Mar 2025 20:50:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1742849444;
+	bh=fPgeKoCydVuC+o9VI3ffWH0sWcb64qCFgzccenvzf3Y=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xX0ujGO3PZ3K7wRw6fdpq9F1twsvK1hcSadqQiAKr5uVLpb1RBP9i/VrzQTQ02bmQ
+	 HmSwziIzSGATFQ0ogWYQ2dTLsPCxHZk8NdI6tc9qnT1A5y4w6SzvKUyjcwLfd0sr1m
+	 SVLyrUKJM2YEfyivxqaTlvsOt2dpEfnJF+9U1z2Y=
+Subject: FAILED: patch "[PATCH] Revert "sched/core: Reduce cost of sched_move_task when" failed to apply to 6.6-stable tree
+To: dietmar.eggemann@arm.com,abuehaze@amazon.com,hagarhem@amazon.com,mingo@kernel.org,peterz@infradead.org,torvalds@linux-foundation.org,vincent.guittot@linaro.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 24 Mar 2025 16:49:22 -0400
+Message-ID: <2025032422-giblet-smelting-2a62@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-commit 7116ceb621274510ccbc7e9511f44ba6c3456ff8 upstream
 
-cqhci timeouts observed on brcmstb platforms during suspend:
-  ...
-  [  164.832853] mmc0: cqhci: timeout for tag 18
-  ...
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Adding cqhci_suspend()/resume() calls to disable cqe
-in sdhci_brcmstb_suspend()/resume() respectively to fix
-CQE timeouts seen on PM suspend.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
----
- drivers/mmc/host/sdhci-brcmstb.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 76f970ce51c80f625eb6ddbb24e9cb51b977b598
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032422-giblet-smelting-2a62@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-diff --git a/drivers/mmc/host/sdhci-brcmstb.c b/drivers/mmc/host/sdhci-brcmstb.c
-index ff0404d591d1..05b06fcc90bf 100644
---- a/drivers/mmc/host/sdhci-brcmstb.c
-+++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -392,8 +392,15 @@ static int sdhci_brcmstb_suspend(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
-+	int ret;
- 
- 	clk_disable_unprepare(priv->base_clk);
-+	if (host->mmc->caps2 & MMC_CAP2_CQE) {
-+		ret = cqhci_suspend(host->mmc);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return sdhci_pltfm_suspend(dev);
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 76f970ce51c80f625eb6ddbb24e9cb51b977b598 Mon Sep 17 00:00:00 2001
+From: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Date: Fri, 14 Mar 2025 16:13:45 +0100
+Subject: [PATCH] Revert "sched/core: Reduce cost of sched_move_task when
+ config autogroup"
+
+This reverts commit eff6c8ce8d4d7faef75f66614dd20bb50595d261.
+
+Hazem reported a 30% drop in UnixBench spawn test with commit
+eff6c8ce8d4d ("sched/core: Reduce cost of sched_move_task when config
+autogroup") on a m6g.xlarge AWS EC2 instance with 4 vCPUs and 16 GiB RAM
+(aarch64) (single level MC sched domain):
+
+  https://lkml.kernel.org/r/20250205151026.13061-1-hagarhem@amazon.com
+
+There is an early bail from sched_move_task() if p->sched_task_group is
+equal to p's 'cpu cgroup' (sched_get_task_group()). E.g. both are
+pointing to taskgroup '/user.slice/user-1000.slice/session-1.scope'
+(Ubuntu '22.04.5 LTS').
+
+So in:
+
+  do_exit()
+
+    sched_autogroup_exit_task()
+
+      sched_move_task()
+
+        if sched_get_task_group(p) == p->sched_task_group
+          return
+
+        /* p is enqueued */
+        dequeue_task()              \
+        sched_change_group()        |
+          task_change_group_fair()  |
+            detach_task_cfs_rq()    |                              (1)
+            set_task_rq()           |
+            attach_task_cfs_rq()    |
+        enqueue_task()              /
+
+(1) isn't called for p anymore.
+
+Turns out that the regression is related to sgs->group_util in
+group_is_overloaded() and group_has_capacity(). If (1) isn't called for
+all the 'spawn' tasks then sgs->group_util is ~900 and
+sgs->group_capacity = 1024 (single CPU sched domain) and this leads to
+group_is_overloaded() returning true (2) and group_has_capacity() false
+(3) much more often compared to the case when (1) is called.
+
+I.e. there are much more cases of 'group_is_overloaded' and
+'group_fully_busy' in WF_FORK wakeup sched_balance_find_dst_cpu() which
+then returns much more often a CPU != smp_processor_id() (5).
+
+This isn't good for these extremely short running tasks (FORK + EXIT)
+and also involves calling sched_balance_find_dst_group_cpu() unnecessary
+(single CPU sched domain).
+
+Instead if (1) is called for 'p->flags & PF_EXITING' then the path
+(4),(6) is taken much more often.
+
+  select_task_rq_fair(..., wake_flags = WF_FORK)
+
+    cpu = smp_processor_id()
+
+    new_cpu = sched_balance_find_dst_cpu(..., cpu, ...)
+
+      group = sched_balance_find_dst_group(..., cpu)
+
+        do {
+
+          update_sg_wakeup_stats()
+
+            sgs->group_type = group_classify()
+
+              if group_is_overloaded()                             (2)
+                return group_overloaded
+
+              if !group_has_capacity()                             (3)
+                return group_fully_busy
+
+              return group_has_spare                               (4)
+
+        } while group
+
+        if local_sgs.group_type > idlest_sgs.group_type
+          return idlest                                            (5)
+
+        case group_has_spare:
+
+          if local_sgs.idle_cpus >= idlest_sgs.idle_cpus
+            return NULL                                            (6)
+
+Unixbench Tests './Run -c 4 spawn' on:
+
+(a) VM AWS instance (m7gd.16xlarge) with v6.13 ('maxcpus=4 nr_cpus=4')
+    and Ubuntu 22.04.5 LTS (aarch64).
+
+    Shell & test run in '/user.slice/user-1000.slice/session-1.scope'.
+
+    w/o patch	w/ patch
+    21005	27120
+
+(b) i7-13700K with tip/sched/core ('nosmt maxcpus=8 nr_cpus=8') and
+    Ubuntu 22.04.5 LTS (x86_64).
+
+    Shell & test run in '/A'.
+
+    w/o patch	w/ patch
+    67675	88806
+
+CONFIG_SCHED_AUTOGROUP=y & /sys/proc/kernel/sched_autogroup_enabled equal
+0 or 1.
+
+Reported-by: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
+Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Tested-by: Hagar Hemdan <hagarhem@amazon.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250314151345.275739-1-dietmar.eggemann@arm.com
+
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 67189907214d..042351c7afce 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9016,7 +9016,7 @@ void sched_release_group(struct task_group *tg)
+ 	spin_unlock_irqrestore(&task_group_lock, flags);
  }
  
-@@ -418,6 +425,9 @@ static int sdhci_brcmstb_resume(struct device *dev)
- 			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
- 	}
+-static struct task_group *sched_get_task_group(struct task_struct *tsk)
++static void sched_change_group(struct task_struct *tsk)
+ {
+ 	struct task_group *tg;
  
-+	if (host->mmc->caps2 & MMC_CAP2_CQE)
-+		ret = cqhci_resume(host->mmc);
-+
- 	return ret;
- }
- #endif
--- 
-2.17.1
+@@ -9028,13 +9028,7 @@ static struct task_group *sched_get_task_group(struct task_struct *tsk)
+ 	tg = container_of(task_css_check(tsk, cpu_cgrp_id, true),
+ 			  struct task_group, css);
+ 	tg = autogroup_task_group(tsk, tg);
+-
+-	return tg;
+-}
+-
+-static void sched_change_group(struct task_struct *tsk, struct task_group *group)
+-{
+-	tsk->sched_task_group = group;
++	tsk->sched_task_group = tg;
+ 
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+ 	if (tsk->sched_class->task_change_group)
+@@ -9055,20 +9049,11 @@ void sched_move_task(struct task_struct *tsk, bool for_autogroup)
+ {
+ 	int queued, running, queue_flags =
+ 		DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
+-	struct task_group *group;
+ 	struct rq *rq;
+ 
+ 	CLASS(task_rq_lock, rq_guard)(tsk);
+ 	rq = rq_guard.rq;
+ 
+-	/*
+-	 * Esp. with SCHED_AUTOGROUP enabled it is possible to get superfluous
+-	 * group changes.
+-	 */
+-	group = sched_get_task_group(tsk);
+-	if (group == tsk->sched_task_group)
+-		return;
+-
+ 	update_rq_clock(rq);
+ 
+ 	running = task_current_donor(rq, tsk);
+@@ -9079,7 +9064,7 @@ void sched_move_task(struct task_struct *tsk, bool for_autogroup)
+ 	if (running)
+ 		put_prev_task(rq, tsk);
+ 
+-	sched_change_group(tsk, group);
++	sched_change_group(tsk);
+ 	if (!for_autogroup)
+ 		scx_cgroup_move_task(tsk);
+ 
 
 
