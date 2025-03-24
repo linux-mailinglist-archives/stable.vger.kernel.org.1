@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-125918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C691BA6DEC5
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:32:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C25A6DEC9
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 16:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D03603AB339
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:31:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8F7B3ABC9C
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 15:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF43261379;
-	Mon, 24 Mar 2025 15:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A20926139F;
+	Mon, 24 Mar 2025 15:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCAr5bzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAu4ry1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C31E25E446
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404E525DB0B
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 15:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742830308; cv=none; b=eJlm4mG7TMW/MKhFKwL4Sdogfny2GxDkeZTEkgXu/n0TzIZllM0Y+yY8LTCYJ9OlIFJ84juTyXT4b5kJRML6+KX206lFYrYp7fdyUno4H8MecV5wicLApSroEMBh8WL9zuBEn+YxwM6RupXLwKkHBq62nPdxi+z5WksLUkm0ZKA=
+	t=1742830315; cv=none; b=F0A6LwavRNDaGq0dKuZOO6euHccnTk14dPIz6GOjXxnVoDjrbIDeTM6XIyIfXN3wZlS8nSCWHw7aFq4G5T5wp1Npm99ltfmKwtc4PpHFiLknGg2xJDNeM+CDiqfS6qIBDW9K/5xC7RCDwSsR3tf5N+pC9sy3rcQ5+givQqK/kMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742830308; c=relaxed/simple;
-	bh=obWV347qpc6t4WLrBv1YRxGO6poEE3bZBPnSQMiYswo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XdM8x9InU0LjDtL/RkO0ElDWP7oEgC2Q1XJFbksuTrvnRvzSGxBXG67aH1qVyY7fxZOF4IHEpx/ttRigd77srZMQCMtfrlFlml8EdaKBUt6hIFLMrKFDVxaqaErNjiCwrPuPR81d3HznqS0NzNRPAzyEL/q3AWc8eJ0Ltnk6jy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCAr5bzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A121FC4CEDD;
-	Mon, 24 Mar 2025 15:31:47 +0000 (UTC)
+	s=arc-20240116; t=1742830315; c=relaxed/simple;
+	bh=8n/OZCDRX8majv4+MjL3qpO9V7W17eh1CSJ2KtyvWKs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gW+2YYRrSXvSqd1YSHKlPmtJNMCxyruSIDiIKzeH2MOjlA9wE1PVLg4qbD+frxnxp1WqtyQPDeh6Y03LeethOYaYggKpZBH7uYNx/nO84yQvyALEGxiKPEP+K47NqyJzhxGnuPiSIarjO/7u+D5uL6ThhFlEZSjZQ8CaQMAEUaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAu4ry1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E04C4CEEF;
+	Mon, 24 Mar 2025 15:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742830307;
-	bh=obWV347qpc6t4WLrBv1YRxGO6poEE3bZBPnSQMiYswo=;
+	s=korg; t=1742830314;
+	bh=8n/OZCDRX8majv4+MjL3qpO9V7W17eh1CSJ2KtyvWKs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=CCAr5bzoGbLS3i9SbdEzSOjjAS3ND4whuN5l/HeVWwa91fmfo6le6UmEduk50ZWPR
-	 PNvSRvKEnDEeK+cMAn5YJXGHHGAA8OiIf3NjgBNdjxXJGmJ4N4o7gO/ie7ANSofIGs
-	 bq19JeAsgm/LxfJ0Ztq2KJqpWZlr5WTST9u/hrMI=
-Subject: FAILED: patch "[PATCH] arm64: dts: rockchip: fix u2phy1_host status for NanoPi R4S" failed to apply to 5.15-stable tree
-To: justin@tidylabs.net,dsimic@manjaro.org,heiko@sntech.de
+	b=dAu4ry1TqwG1jojQMcLw+EW51uGSu+s2oUgSjuj74BOptz1U/wB4jiz29Awqv1B/J
+	 fPZJ1WJCfI7uq6EFqrkeWIzb7WaQcKbMY3HAobt6ywO2GRA69u9qnUOZX+ksKg0F7W
+	 bC9W9eGSottFGz+2/C487eFknarmS6nf9XrZL2B4=
+Subject: FAILED: patch "[PATCH] arm64: dts: rockchip: Add avdd HDMI supplies to RockPro64" failed to apply to 6.12-stable tree
+To: dsimic@manjaro.org,didi.debian@cknow.org,heiko@sntech.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Mar 2025 08:30:21 -0700
-Message-ID: <2025032421-charging-glucose-8b79@gregkh>
+Date: Mon, 24 Mar 2025 08:30:32 -0700
+Message-ID: <2025032432-catsup-glory-c916@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 38f4aa34a5f737ea8588dac320d884cc2e762c03
+git cherry-pick -x bd1c959f37f384b477f51572331b0dc828bd009a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032421-charging-glucose-8b79@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025032432-catsup-glory-c916@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,37 +77,69 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 38f4aa34a5f737ea8588dac320d884cc2e762c03 Mon Sep 17 00:00:00 2001
-From: Justin Klaassen <justin@tidylabs.net>
-Date: Tue, 25 Feb 2025 17:03:58 +0000
-Subject: [PATCH] arm64: dts: rockchip: fix u2phy1_host status for NanoPi R4S
+From bd1c959f37f384b477f51572331b0dc828bd009a Mon Sep 17 00:00:00 2001
+From: Dragan Simic <dsimic@manjaro.org>
+Date: Sun, 2 Mar 2025 19:48:03 +0100
+Subject: [PATCH] arm64: dts: rockchip: Add avdd HDMI supplies to RockPro64
+ board dtsi
 
-The u2phy1_host should always have the same status as usb_host1_ehci
-and usb_host1_ohci, otherwise the EHCI and OHCI drivers may be
-initialized for a disabled usb port.
+Add missing "avdd-0v9-supply" and "avdd-1v8-supply" properties to the "hdmi"
+node in the Pine64 RockPro64 board dtsi file.  To achieve this, also add the
+associated "vcca_0v9" regulator that produces the 0.9 V supply, [1][2] which
+hasn't been defined previously in the board dtsi file.
 
-Per the NanoPi R4S schematic, the phy-supply for u2phy1_host is set to
-the vdd_5v regulator.
+This also eliminates the following warnings from the kernel log:
 
-Fixes: db792e9adbf8 ("rockchip: rk3399: Add support for FriendlyARM NanoPi R4S")
+  dwhdmi-rockchip ff940000.hdmi: supply avdd-0v9 not found, using dummy regulator
+  dwhdmi-rockchip ff940000.hdmi: supply avdd-1v8 not found, using dummy regulator
+
+There are no functional changes to the way board works with these additions,
+because the "vcc1v8_dvp" and "vcca_0v9" regulators are always enabled, [1][2]
+but these additions improve the accuracy of hardware description.
+
+These changes apply to the both supported hardware revisions of the Pine64
+RockPro64, i.e. to the production-run revisions 2.0 and 2.1. [1][2]
+
+[1] https://files.pine64.org/doc/rockpro64/rockpro64_v21-SCH.pdf
+[2] https://files.pine64.org/doc/rockpro64/rockpro64_v20-SCH.pdf
+
+Fixes: e4f3fb490967 ("arm64: dts: rockchip: add initial dts support for Rockpro64")
 Cc: stable@vger.kernel.org
-Signed-off-by: Justin Klaassen <justin@tidylabs.net>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250225170420.3898-1-justin@tidylabs.net
+Suggested-by: Diederik de Haas <didi.debian@cknow.org>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Tested-by: Diederik de Haas <didi.debian@cknow.org>
+Link: https://lore.kernel.org/r/df3d7e8fe74ed5e727e085b18c395260537bb5ac.1740941097.git.dsimic@manjaro.org
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi
-index b1c9bd0e63ef..8d94d9f91a5c 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi
-@@ -115,7 +115,7 @@ &u2phy0_host {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
+index 69a9d6170649..47dc198706c8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
+@@ -227,6 +227,16 @@ vcc5v0_usb: regulator-vcc5v0-usb {
+ 		vin-supply = <&vcc12v_dcin>;
+ 	};
+ 
++	vcca_0v9: regulator-vcca-0v9 {
++		compatible = "regulator-fixed";
++		regulator-name = "vcca_0v9";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <900000>;
++		regulator-max-microvolt = <900000>;
++		vin-supply = <&vcc3v3_sys>;
++	};
++
+ 	vdd_log: regulator-vdd-log {
+ 		compatible = "pwm-regulator";
+ 		pwms = <&pwm2 0 25000 1>;
+@@ -312,6 +322,8 @@ &gmac {
  };
  
- &u2phy1_host {
--	status = "disabled";
-+	phy-supply = <&vdd_5v>;
- };
- 
- &uart0 {
+ &hdmi {
++	avdd-0v9-supply = <&vcca_0v9>;
++	avdd-1v8-supply = <&vcc1v8_dvp>;
+ 	ddc-i2c-bus = <&i2c3>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&hdmi_cec>;
 
 
