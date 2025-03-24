@@ -1,120 +1,202 @@
-Return-Path: <stable+bounces-125876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C13A6D7D8
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 10:49:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2610BA6D7DD
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 10:54:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69DC51685E4
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 09:49:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D71D167B0C
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 09:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FEC143895;
-	Mon, 24 Mar 2025 09:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA00325D52A;
+	Mon, 24 Mar 2025 09:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="FobUkMLH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDA010F9
-	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 09:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6038E8494;
+	Mon, 24 Mar 2025 09:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742809740; cv=none; b=rg+IhNIuiUKW1I/uI1Nw3Sj7VZNWufQ526ux5Rx6UN29sKmUL2KAq8eV2BP4qvk28yBLfPbGXk+ZYYX33NcXiVY4M9Os7uks1MjrtAMrQBVf2Wq4LrN+rB29LibJB0fHlUpua9dB8sV7GZtaZQlYutRenRON8rbQkGjDdMIa00A=
+	t=1742810034; cv=none; b=g4ceRSxEvEfW6CqdmlD5WFH+s97Ni23Q0Gszc0U/5ssSpI3I4aKPZs+sZFRnzYf8gWQXY7HFXVHznoEgxChwhD7L38kD0AFmsTkclHHRQCCvnuKmn9EYmEOKiglbneZ8fb3z/JX4RXwbX82WJsz0ewBKBl/OY4tX/mVbSCZG6tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742809740; c=relaxed/simple;
-	bh=gXvZ2F7TsAu/aFx7uGjtTdvyEkExAOzgbPcJN5SxrYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EW7uhzg1loSF+6A/vQtRrxeQkrwjIvJo2KeZTjMNrPBDII7UtVRUQmhNGn+vsmyVzbr0Cb0kOKZlT0M/qWo6OZYOcF8exLKZae0O+Yni4BMt7CWPEDLf8bBvMAdMzSwn6oiIuqTkJC/qW0xZjBcvnbaD/Mu5Lor8QWIYGKjWnNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B903221172;
-	Mon, 24 Mar 2025 09:48:56 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9005113874;
-	Mon, 24 Mar 2025 09:48:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id UFbYIYgq4Wf3aAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 24 Mar 2025 09:48:56 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: jfalempe@redhat.com,
-	airlied@redhat.com
-Cc: dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/3] drm/ast: Fix comment on modeset lock
-Date: Mon, 24 Mar 2025 10:44:09 +0100
-Message-ID: <20250324094520.192974-2-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250324094520.192974-1-tzimmermann@suse.de>
-References: <20250324094520.192974-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1742810034; c=relaxed/simple;
+	bh=qgqPMtRSr40Ccfot6UgbHPRueY6p7D9B661XBz7lvAM=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=sYRfbg7/qbirok1pJ1MT3kCaF6Et49b8bY2tCVPXUoT/1kO8A/q7TAYFUFzlzX3er/hbBgqpycAmgHECZt03ZhUZHty29s8dsUEsNuz8YonYZRK7/ZyR5xbp1J0YClCBGWwipBbDkFQwwmXdAC/vnH2jPwfKAr5hKsqc0UWSG6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=FobUkMLH; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1742810030;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XERG4fHTRlBSKZ7O9h54QbkOrIztH+Lz87Rz4mphs4o=;
+	b=FobUkMLHzOSyOc4vvxt3chAceAe1ueFbrWsmTvLcLgLFx6DMMUAhCGlPBGdfebE2Xstk0x
+	cJ8CDVdI3836LwlxSq8VN6AGAVGCu78x/jzI+aDgpAniinYsuelmTsdcbwAZ8qB+0MXaa3
+	YUn+eTXy1rPLPvLp35oVNOb0t+jZUFbJjwqwAyp4J/VfrTnKeKwwXTl5sBJTfUgWH84iBq
+	nZ9Nz5aFtN1PH2IJo6IwVmCLx9bAfntiZ4AH+eB17tyZYQc6ZQ2KUFOqtoXKILr63YX+5+
+	04yl2AjaiVUyJAhsp32aKUocxWx4ZpCiMRhXlGa7dNMh5xiJSUTWM0ekHBnCXQ==
+Date: Mon, 24 Mar 2025 10:53:49 +0100
+From: Dragan Simic <dsimic@manjaro.org>
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: linux-rockchip@lists.infradead.org, heiko@sntech.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, stable@vger.kernel.org, Alexey Charkov
+ <alchark@gmail.com>
+Subject: Re: [PATCH] arm64: dts: rockchip: Remove overdrive-mode OPPs from
+ RK3588J SoC dtsi
+In-Reply-To: <2ece5cca-50ea-4ec9-927e-e757c9c10c18@cherry.de>
+References: <f929da061de35925ea591c969f985430e23c4a7e.1742526811.git.dsimic@manjaro.org>
+ <71b7c81b-6a4e-442b-a661-04d63639962a@cherry.de>
+ <960c038ad9f7b83fe14d0ded388b42f7@manjaro.org>
+ <2ece5cca-50ea-4ec9-927e-e757c9c10c18@cherry.de>
+Message-ID: <4d25c9af4380598b35a0d55e7c77ac3d@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: B903221172
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-The ast driver protects the commit tail against concurrent reads
-of the display modes by acquiring a lock. The comment is misleading
-as the lock is not released in atomic_flush, but at the end of the
-commit-tail helper. Rewrite the comment.
+Hello Quentin,
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 1fe182154984 ("drm/ast: Acquire I/O-register lock in atomic_commit_tail function")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.2+
----
- drivers/gpu/drm/ast/ast_mode.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On 2025-03-24 10:23, Quentin Schulz wrote:
+> On 3/23/25 11:19 AM, Dragan Simic wrote:
+>> On 2025-03-21 10:53, Quentin Schulz wrote:
+>>> On 3/21/25 4:28 AM, Dragan Simic wrote:
+>>>> The differences in the vendor-approved CPU and GPU OPPs for the 
+>>>> standard
+>>>> Rockchip RK3588 variant [1] and the industrial Rockchip RK3588J 
+>>>> variant [2]
+>>>> come from the latter, presumably, supporting an extended temperature 
+>>>> range
+>>>> that's usually associated with industrial applications, despite the 
+>>>> two SoC
+>>>> variant datasheets specifying the same upper limit for the allowed 
+>>>> ambient
+>>>> temperature for both variants.  However, the lower temperature limit 
+>>>> is
+>>> 
+>>> RK3588 is rated for 0-80°C, RK3588J for -40-85°C, c.f. Recommended
+>>> Operating Conditions, Table 3-2, Ambient Operating Temperature.
+>> 
+>> Indeed, which is why I specifically wrote "specifying the same upper
+>> limit", because having a lower negative temperature limit could hardly
+>> put the RK3588J in danger of overheating or running hotter. :)
+> 
+> """
+> despite the two SoC variant datasheets specifying the same upper limit
+> for the allowed temperature for both variants
+> """
+> 
+> is incorrect. The whole range is different, yes it's only a 5°C
+> difference for the upper limit, but they still are different.
 
-diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
-index 4cac5c7f4547..20fbea11b710 100644
---- a/drivers/gpu/drm/ast/ast_mode.c
-+++ b/drivers/gpu/drm/ast/ast_mode.c
-@@ -939,9 +939,9 @@ static void ast_mode_config_helper_atomic_commit_tail(struct drm_atomic_state *s
- 
- 	/*
- 	 * Concurrent operations could possibly trigger a call to
--	 * drm_connector_helper_funcs.get_modes by trying to read the
--	 * display modes. Protect access to I/O registers by acquiring
--	 * the I/O-register lock. Released in atomic_flush().
-+	 * drm_connector_helper_funcs.get_modes by reading the display
-+	 * modes. Protect access to registers by acquiring the modeset
-+	 * lock.
- 	 */
- 	mutex_lock(&ast->modeset_lock);
- 	drm_atomic_helper_commit_tail(state);
--- 
-2.48.1
+I just commented on this separately, with a couple of datasheet
+screenshots, before I saw your latest response.  Please, have
+a look at that message.
 
+>>>> specified much lower for the RK3588J variant. [1][2]
+>>>> 
+>>>> To be on the safe side and to ensure maximum longevity of the 
+>>>> RK3588J SoCs,
+>>>> only the CPU and GPU OPPs that are declared by the vendor to be 
+>>>> always safe
+>>>> for this SoC variant may be provided.  As explained by the vendor 
+>>>> [3] and
+>>>> according to its datasheet, [2] the RK3588J variant can actually run 
+>>>> safely
+>>>> at higher CPU and GPU OPPs as well, but only when not enjoying the 
+>>>> assumed
+>>>> extended temperature range that the RK3588J, as an SoC variant 
+>>>> targeted
+>>> 
+>>> "only when not enjoying the assumed extended temperature range" is
+>>> extrapolated by me/us and not confirmed by Rockchip themselves. I've
+>>> asked for a statement on what "industrial environment" they specify 
+>>> in
+>>> the Normal Mode explanation means since it's the only time they use
+>>> the term. I've yet to receive an answer. The only thing Rockchip in
+>>> their datasheet is that the overdrive mode will shorten lifetime when
+>>> used for a long time, especially in high temperature conditions. It's
+>>> not clear whether we can use the overdrive mode even within the 
+>>> RK3588
+>>> typical range of operation.
+>> 
+>> True.  I'll see to rephrase the patch description a bit in the v2,
+>> to avoid this kind of speculation.  I mean, perhaps the speculation
+>> is right, but it hasn't been confirmed officially by Rockchip.
+> 
+> Speculation is fine, but it should be worded as such.
+
+Agreed, because that's our understanding so far, but it needs
+to be explained a bit better.
+
+>>>> The provided RK3588J CPU OPPs follow the slightly debatable "provide 
+>>>> only
+>>>> the highest-frequency OPP from the same-voltage group" approach 
+>>>> that's been
+>>> 
+>>> Interesting that we went for a different strategy for the GPU OPPs :)
+>> 
+>> Good point, and I'm fully aware of that. :)  Actually, I'm rather
+>> sure that omitting the additional CPU OPPs does no good to us, but
+>> I didn't want to argue about that when they were dropped originally,
+>> before I can have some hard numbers to prove it in a repeatable way.
+> 
+> I assume we'll have some patch in the future with those added and
+> those hard numbers you're talking about, so looking forward to seeing
+> it on the ML :)
+
+Indeed, that's the plan, and there should be even more patches,
+which should remove the slightly annoying "xyz OPP is inefficient"
+warnings emitted by the IPA governor. :)
+
+>>>> Helped-by: Quentin Schulz <quentin.schulz@cherry.de>
+>>> 
+>>> Reported-by/Suggested-by?
+>>> 
+>>> I don't see Helped-by in
+>>> https://eur02.safelinks.protection.outlook.com/? 
+>>> url=https%3A%2F%2Fwww.kernel.org%2Fdoc%2Fhtml%2Flatest%2Fprocess%2Fsubmitting-patches.html%23using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes&data=05%7C02%7Cquentin.schulz%40cherry.de%7Cdc754791b6844506b11c08dd69f444a7%7C5e0e1b5221b54e7b83bb514ec460677e%7C0%7C0%7C638783220330058516%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=4bv9pUh6aSD0GVLJ4Zvuyvox1K0xxwf83KXX86QsvMo%3D&reserved=0
+>>> 
+>>> I see 2496b2aaacf137250f4ca449f465e2cadaabb0e8 got the Helped-by
+>>> replaced by a Suggested-by for example, but I see other patches with
+>>> Helped-by... if that is a standard trailer for kernel patches, then
+>>> maybe we should add it to that doc?
+>> 
+>> Actually, I already tried to get the Helped-by tag added to the
+>> kernel documentation, by submitting a small patch series. [*]
+>> Unfortunately, it got rejected. :/
+>> 
+>> However, Heiko accepts Helped-by tags and nobody higher up the
+>> tree seems to complain, so we should be fine. :)  It isn't the
+>> case with all maintainers, though.
+>> 
+>> [*] https://eur02.safelinks.protection.outlook.com/? 
+>> url=https%3A%2F%2Flore.kernel.org%2Fall%2Fcover.1730874296.git.dsimic%40manjaro.org%2FT%2F%23u&data=05%7C02%7Cquentin.schulz%40cherry.de%7Cdc754791b6844506b11c08dd69f444a7%7C5e0e1b5221b54e7b83bb514ec460677e%7C0%7C0%7C638783220330070422%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3dZgSG%2FBT6f%2Ffqs7D30HvEl18SzqYPwNeUGWBZfMAqM%3D&reserved=0
+> 
+> Are you trying to up the numbers of Helped-by in commit logs to make
+> it a reasonable request to add the trailer in the documentation :) ?
+
+It's just that Helped-by is, to me, of a bit "higher value" than
+Suggested-by or Reported-by, because Helped-by means that the
+tagged person contributed more to the patch than just suggesting
+it or reporting a bug.  In addition, having more Helped-by tags
+present in various commits can help a bit with, possibly, making
+it officially supported at some point in the future. :)
 
