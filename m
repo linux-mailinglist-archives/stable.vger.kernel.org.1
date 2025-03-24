@@ -1,156 +1,123 @@
-Return-Path: <stable+bounces-125839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE2AA6D3BA
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 06:35:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B04A6D40F
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 07:16:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A02441679CB
-	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 05:35:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 345361887DDD
+	for <lists+stable@lfdr.de>; Mon, 24 Mar 2025 06:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC9814EC46;
-	Mon, 24 Mar 2025 05:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8860743159;
+	Mon, 24 Mar 2025 06:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guLB0uAi"
+	dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b="AW+seEM8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5A42E3392;
-	Mon, 24 Mar 2025 05:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACB9BE5E
+	for <stable@vger.kernel.org>; Mon, 24 Mar 2025 06:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742794503; cv=none; b=exgBC5aXM+IHpbnid+s661vrAaxc03M9f1CypufbbRRwLB0B38Z9RMAt4E9Wh06gTSwbSUrkSV3Y6xPO8MmS/Z852TYLMHs8DUMVoVAnrTmxf7EyyfFi35bJHD0k8432JMy7K/By6Rg+L8M68UPTRL6+MUDrXf3f1o3cZJ7qWuU=
+	t=1742796967; cv=none; b=h+nHZvH5i/0lCwE+BOp41+cfcxiTMhPmPFCiY+lQMNsXnIdf6Hu+uaZpn7cc4qmTdx9+gk7MhHjQmJx9/K/6CFcGydQVtRHGO8BMcQftEKTGG9oxGjY+6eDuS4UCilo14tTVaNC0s6ndWPzzG8M3xRPxJzcCvwPIx+kS7SzkNJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742794503; c=relaxed/simple;
-	bh=52w8Wpv5PinsOVJq2d+oGkiibjsHyI9Z1MEiD2pJ5pw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rFJQls7BuQRywxADTi+x7PBBr0WToY71MkpJmedaotsXQ1q31MXDobRp7VI4nion9rHsOa0K2EC8cThOtMVd6SGngYbw7xQx9KJPHsSrOor5SytWDo52PcpI1IkFoSm7y5eJIdmFa43T6u5GBA0tvvul36iE5eJHw90LrzzZ6XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guLB0uAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC1EC4CEDD;
-	Mon, 24 Mar 2025 05:35:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742794502;
-	bh=52w8Wpv5PinsOVJq2d+oGkiibjsHyI9Z1MEiD2pJ5pw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=guLB0uAi7STxIafoYt5winJJgEWHBLI2BrBB5omOq33rrsuKtaEw6wQYZeOg65QZ0
-	 Rw6oiw3Jt/UOPRCd5Commlp93fzOTuCCfq4P46ZVdwe+dGBkDlojgbKkeby2yMKbgH
-	 zCz2ETwJvRHrM8LOlDFq7+EUPgmJ3NI0MPzLyCOSgPdE/lg5nJ+kLV/O+fiWYr01h/
-	 SLp2kcCzdGKv+07L1UIAiIi0oWbXXLMHdoswd72TogFYAL931rsZVlu5tv7lE2fIcS
-	 bZLGTMADlZfg9414ZA3sjoACYIHsftxxB9F4sWccZcqNzD0oMFEw7hM3jhGIlF8mIy
-	 Iog4F2WCv8Eyw==
-From: Chao Yu <chao@kernel.org>
-To: jaegeuk@kernel.org
-Cc: linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Chao Yu <chao@kernel.org>,
-	stable@vger.kernel.org,
-	syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com
-Subject: [PATCH] f2fs: fix to do sanity check on ino and xnid
-Date: Mon, 24 Mar 2025 13:33:39 +0800
-Message-ID: <20250324053339.2994251-1-chao@kernel.org>
-X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
+	s=arc-20240116; t=1742796967; c=relaxed/simple;
+	bh=T0fMoQbxKTs+J5RN/iwSWQZM40qUvOQCb8V4cNqTR+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bI5wqDYacXWp5btOQVcGxv2mpABoZXwfDtK13JzxCR84bt0Wymkmft7YmV9dKc/S2ldz/nw2KqKDl6J0a/FYps9H4mRu4wWQssv/FnliZwjF73HvxCpjc/F7bAfHF5LQ13Pqo39LZhAPqSphe88mEQWfqMJj2G1KOBJyffSP9DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=craftyguy.net; spf=pass smtp.mailfrom=craftyguy.net; dkim=pass (2048-bit key) header.d=craftyguy.net header.i=@craftyguy.net header.b=AW+seEM8; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=craftyguy.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=craftyguy.net
+Message-ID: <51a59b41-4214-4e24-bfe8-3d8174ba1a3b@craftyguy.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=craftyguy.net;
+	s=key1; t=1742796960;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C8JLMiI733S4xTq1mEOv/zfYlCWUzTNqm+0T4v8oraU=;
+	b=AW+seEM8/syKljhEMGkSA3KPt7Al/dEjX1dKgxcynyPa3TzM90Nkz9NV5h8KEnLn5A68h3
+	FxZ6EH8ioKxSvJL8hLKfdMixNTsT1QFvBtLxgxyOianttCUaek8gCrrGfuPeTP8L4ClgDk
+	/oflXwoN9AcoCuO9PVKg40w3+QxUYU0r/IkmqPYasPmFdRgNfNiDACSNNgGvkkf3+046cO
+	4Wv+hZdpFk9byAk/ls69EtsmpsGckON7smiMeAU+T6Mrv3dhjmYhxhQrl9bNv3OcFeluYF
+	2Z5lRmC8sbkYx5+7Aj/ikPyxRWFKIhxg2f3ojVkpM27iEeSnQZIfZ/kXVurXSA==
+Date: Sun, 23 Mar 2025 23:15:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] wifi: ath11k: fix rx completion meta data corruption
+To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
+ Steev Klimaszewski <steev@kali.org>,
+ Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
+ ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250321145302.4775-1-johan+linaro@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Clayton Craft <clayton@craftyguy.net>
+In-Reply-To: <20250321145302.4775-1-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-syzbot reported a f2fs bug as below:
+On 3/21/25 07:53, Johan Hovold wrote:
+> Add the missing memory barrier to make sure that the REO dest ring
+> descriptor is read after the head pointer to avoid using stale data on
+> weakly ordered architectures like aarch64.
+> 
+> This may fix the ring-buffer corruption worked around by commit
+> f9fff67d2d7c ("wifi: ath11k: Fix SKB corruption in REO destination
+> ring") by silently discarding data, and may possibly also address user
+> reported errors like:
+> 
+> 	ath11k_pci 0006:01:00.0: msdu_done bit in attention is not set
+> 
+> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Cc: stable@vger.kernel.org	# 5.6
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=218005
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+> 
+> As I reported here:
+> 
+> 	https://lore.kernel.org/lkml/Z9G5zEOcTdGKm7Ei@hovoldconsulting.com/
+> 
+> the ath11k and ath12k appear to be missing a number of memory barriers
+> that are required on weakly ordered architectures like aarch64 to avoid
+> memory corruption issues.
+> 
+> Here's a fix for one more such case which people already seem to be
+> hitting.
+> 
+> Note that I've seen one "msdu_done" bit not set warning also with this
+> patch so whether it helps with that at all remains to be seen. I'm CCing
+> Jens and Steev that see these warnings frequently and that may be able
+> to help out with testing.
+> 
 
-INFO: task syz-executor140:5308 blocked for more than 143 seconds.
-      Not tainted 6.14.0-rc7-syzkaller-00069-g81e4f8d68c66 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor140 state:D stack:24016 pid:5308  tgid:5308  ppid:5306   task_flags:0x400140 flags:0x00000006
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5378 [inline]
- __schedule+0x190e/0x4c90 kernel/sched/core.c:6765
- __schedule_loop kernel/sched/core.c:6842 [inline]
- schedule+0x14b/0x320 kernel/sched/core.c:6857
- io_schedule+0x8d/0x110 kernel/sched/core.c:7690
- folio_wait_bit_common+0x839/0xee0 mm/filemap.c:1317
- __folio_lock mm/filemap.c:1664 [inline]
- folio_lock include/linux/pagemap.h:1163 [inline]
- __filemap_get_folio+0x147/0xb40 mm/filemap.c:1917
- pagecache_get_page+0x2c/0x130 mm/folio-compat.c:87
- find_get_page_flags include/linux/pagemap.h:842 [inline]
- f2fs_grab_cache_page+0x2b/0x320 fs/f2fs/f2fs.h:2776
- __get_node_page+0x131/0x11b0 fs/f2fs/node.c:1463
- read_xattr_block+0xfb/0x190 fs/f2fs/xattr.c:306
- lookup_all_xattrs fs/f2fs/xattr.c:355 [inline]
- f2fs_getxattr+0x676/0xf70 fs/f2fs/xattr.c:533
- __f2fs_get_acl+0x52/0x870 fs/f2fs/acl.c:179
- f2fs_acl_create fs/f2fs/acl.c:375 [inline]
- f2fs_init_acl+0xd7/0x9b0 fs/f2fs/acl.c:418
- f2fs_init_inode_metadata+0xa0f/0x1050 fs/f2fs/dir.c:539
- f2fs_add_inline_entry+0x448/0x860 fs/f2fs/inline.c:666
- f2fs_add_dentry+0xba/0x1e0 fs/f2fs/dir.c:765
- f2fs_do_add_link+0x28c/0x3a0 fs/f2fs/dir.c:808
- f2fs_add_link fs/f2fs/f2fs.h:3616 [inline]
- f2fs_mknod+0x2e8/0x5b0 fs/f2fs/namei.c:766
- vfs_mknod+0x36d/0x3b0 fs/namei.c:4191
- unix_bind_bsd net/unix/af_unix.c:1286 [inline]
- unix_bind+0x563/0xe30 net/unix/af_unix.c:1379
- __sys_bind_socket net/socket.c:1817 [inline]
- __sys_bind+0x1e4/0x290 net/socket.c:1848
- __do_sys_bind net/socket.c:1853 [inline]
- __se_sys_bind net/socket.c:1851 [inline]
- __x64_sys_bind+0x7a/0x90 net/socket.c:1851
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Before this patch I was seeing this "msdu_done bit" an average of about 
+40 times per hour... e.g. a recent boot period of 43hrs saw 1600 of 
+these msgs. I've been testing this patch for about 10 hours now 
+connected to the same network etc, and haven't seen this "msdu_done bit" 
+message once. So, even if it's not completely resolving this for 
+everyone, it seems to be a huge improvement for me.
 
-Let's dump and check metadata of corrupted inode, it shows its xattr_nid
-is the same to its i_ino.
+0006:01:00.0 Network controller: Qualcomm Technologies, Inc QCNFA765 
+Wireless Network Adapter (rev 01)
+ath11k_pci 0006:01:00.0: chip_id 0x2 chip_family 0xb board_id 0x8c 
+soc_id 0x400c0210
+ath11k_pci 0006:01:00.0: fw_version 0x11088c35 fw_build_timestamp 
+2024-04-17 08:34 fw_build_id 
+WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
-dump.f2fs -i 3 chaseyu.img.raw
-i_xattr_nid                             [0x       3 : 3]
-
-So that, during mknod in the corrupted directory, it tries to get and
-lock inode page twice, result in deadlock.
-
-- f2fs_mknod
- - f2fs_add_inline_entry
-  - f2fs_get_inode_page --- lock dir's inode page
-   - f2fs_init_acl
-    - f2fs_acl_create(dir,..)
-     - __f2fs_get_acl
-      - f2fs_getxattr
-       - lookup_all_xattrs
-        - __get_node_page --- try to lock dir's inode page
-
-In order to fix this, let's add sanity check on ino and xnid.
-
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/67e06150.050a0220.21942d.0005.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
----
- fs/f2fs/inode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 83f862578fc8..5c8634eaef7b 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -286,6 +286,12 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
- 		return false;
- 	}
- 
-+	if (ino_of_node(node_page) == fi->i_xattr_nid) {
-+		f2fs_warn(sbi, "%s: corrupted inode i_ino=%lx, xnid=%x, run fsck to fix.",
-+			  __func__, inode->i_ino, fi->i_xattr_nid);
-+		return false;
-+	}
-+
- 	if (f2fs_has_extra_attr(inode)) {
- 		if (!f2fs_sb_has_extra_attr(sbi)) {
- 			f2fs_warn(sbi, "%s: inode (ino=%lx) is with extra_attr, but extra_attr feature is off",
--- 
-2.48.1
-
+Tested-by: Clayton Craft <clayton@craftyguy.net>
 
