@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-126228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7CFA6FFDD
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DC6A700F1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFD0D175BF3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:01:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B53AE841EF6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307F0267AF5;
-	Tue, 25 Mar 2025 12:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210C929C35B;
+	Tue, 25 Mar 2025 12:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLBnEsju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BICAHKIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1788267AEE;
-	Tue, 25 Mar 2025 12:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DA629C354;
+	Tue, 25 Mar 2025 12:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905838; cv=none; b=CdeA4479sVUxqx9/TqaqcfAGpFmmsqxU6GtqqcJdswDQan/wkfiggLJTwKU+2rERGwehPYtFMwg0OloUFeaJjoKAQRtWwMUSbEKCPR1Uu8JH6FchmpIe6mJBDMCp+Xz77JaDaYey1auIwiDRsd/PY1OHv+c4Pia9IMPqUZgOmKQ=
+	t=1742906195; cv=none; b=lTsU/FLvK+D/mmhqQs4zuqZiF/fd4qgIm1No/P78nzTHW7wqjyYl/7LFwf65VCKYOuaeT7zEEIlSfSqTTzWcLeK+/YxdAPKEsDLpLipwMGm1I/soDr6NrCwTFc3570BSngy+f1/LmAuao+ZFFAj1qAi952/bBTMXeSKvJQqCiuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905838; c=relaxed/simple;
-	bh=IX9Evmcz5mdJu5KQYfWk04UmCiTc1NrCj6MX9DrspB0=;
+	s=arc-20240116; t=1742906195; c=relaxed/simple;
+	bh=K4VqFj7PK9nrpOzN2O3fU2rG3fAyj9Nzu3XEoU/9XZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LyaqaNtQLjXHcdXJTScYpnF8EQEkRGeIdlalv2mNr8WFwGzMavJBto1H5+8UO0H57CQ4qyXyQqRcMaCV1WeC+tJqXPDXCfof45s18L9yjsTBf8bA/FsMB+vjNVv7QI/GC/7laDKFG+1GyhJot/c7fVxCQDWZK5bjGUJLRT9AFnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLBnEsju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAE8C4CEE4;
-	Tue, 25 Mar 2025 12:30:37 +0000 (UTC)
+	 MIME-Version; b=gTpXapW4Co4Mnuziajetoz+gyciUmWRNpkczujbUeornMDyJTrXbFyKYg3s6hcwo2SQFQafuu8eld8HnbzqNYezOJfjZpomSyaCpsed6vIVwheDTlaJWsZZcpJND9uyKL8raWIWHfTwMT70xqIELuD5GGzuzXpaI4Xq44z+387Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BICAHKIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB01C4CEE4;
+	Tue, 25 Mar 2025 12:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905837;
-	bh=IX9Evmcz5mdJu5KQYfWk04UmCiTc1NrCj6MX9DrspB0=;
+	s=korg; t=1742906195;
+	bh=K4VqFj7PK9nrpOzN2O3fU2rG3fAyj9Nzu3XEoU/9XZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLBnEsjuQteIxl217h+crBpPM33Bwlw6DxXQF050BVHAuxlOVjTtxWx5NgZkaZudr
-	 bwYHHeHRIZz5FLakspoaRTASFDjhN8qB0vLcLiF0Q8TWhyaTAoqSLdGC6HuqwQ3icX
-	 +EdcPe04sriE56bkLjF/moxmGes1n1i0aGWnhBfM=
+	b=BICAHKILuXEu/JvbPdF8QJUekt5ghtIqSB29yvBqd6Un6u5ncwULKOkwanWfay2qa
+	 0foL1ZM7sUm5ZQRjvpEbAd8w78y6nvsqelXg3qZHm/CKwrzdY5TGmDgrPui4VZIBAr
+	 UtjznMTFWkyh/lDjtWceVaY6+vYh0M8Ag+ilLD5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Felix Moessbauer <felix.moessbauer@siemens.com>
-Subject: [PATCH 6.1 190/198] netfilter: nft_counter: Use u64_stats_t for statistic.
+	Christian Eggers <ceggers@arri.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 37/77] regulator: check that dummy regulator has been probed before using it
 Date: Tue, 25 Mar 2025 08:22:32 -0400
-Message-ID: <20250325122201.634635061@linuxfoundation.org>
+Message-ID: <20250325122145.324670626@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,250 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Christian Eggers <ceggers@arri.de>
 
-commit 4a1d3acd6ea86075e77fcc1188c3fc372833ba73 upstream.
+commit 2c7a50bec4958f1d1c84d19cde518d0e96a676fd upstream.
 
-The nft_counter uses two s64 counters for statistics. Those two are
-protected by a seqcount to ensure that the 64bit variable is always
-properly seen during updates even on 32bit architectures where the store
-is performed by two writes. A side effect is that the two counter (bytes
-and packet) are written and read together in the same window.
+Due to asynchronous driver probing there is a chance that the dummy
+regulator hasn't already been probed when first accessing it.
 
-This can be replaced with u64_stats_t. write_seqcount_begin()/ end() is
-replaced with u64_stats_update_begin()/ end() and behaves the same way
-as with seqcount_t on 32bit architectures. Additionally there is a
-preempt_disable on PREEMPT_RT to ensure that a reader does not preempt a
-writer.
-On 64bit architectures the macros are removed and the reads happen
-without any retries. This also means that the reader can observe one
-counter (bytes) from before the update and the other counter (packets)
-but that is okay since there is no requirement to have both counter from
-the same update window.
-
-Convert the statistic to u64_stats_t. There is one optimisation:
-nft_counter_do_init() and nft_counter_clone() allocate a new per-CPU
-counter and assign a value to it. During this assignment preemption is
-disabled which is not needed because the counter is not yet exposed to
-the system so there can not be another writer or reader. Therefore
-disabling preemption is omitted and raw_cpu_ptr() is used to obtain a
-pointer to a counter for the assignment.
-
-Cc: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Link: https://patch.msgid.link/20250313103051.32430-3-ceggers@arri.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_counter.c |   90 ++++++++++++++++++++++----------------------
- 1 file changed, 46 insertions(+), 44 deletions(-)
+ drivers/regulator/core.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -8,7 +8,7 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/module.h>
--#include <linux/seqlock.h>
-+#include <linux/u64_stats_sync.h>
- #include <linux/netlink.h>
- #include <linux/netfilter.h>
- #include <linux/netfilter/nf_tables.h>
-@@ -17,6 +17,11 @@
- #include <net/netfilter/nf_tables_offload.h>
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2084,6 +2084,10 @@ static int regulator_resolve_supply(stru
  
- struct nft_counter {
-+	u64_stats_t	bytes;
-+	u64_stats_t	packets;
-+};
-+
-+struct nft_counter_tot {
- 	s64		bytes;
- 	s64		packets;
- };
-@@ -25,25 +30,24 @@ struct nft_counter_percpu_priv {
- 	struct nft_counter __percpu *counter;
- };
- 
--static DEFINE_PER_CPU(seqcount_t, nft_counter_seq);
-+static DEFINE_PER_CPU(struct u64_stats_sync, nft_counter_sync);
- 
- static inline void nft_counter_do_eval(struct nft_counter_percpu_priv *priv,
- 				       struct nft_regs *regs,
- 				       const struct nft_pktinfo *pkt)
- {
-+	struct u64_stats_sync *nft_sync;
- 	struct nft_counter *this_cpu;
--	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
--	myseq = this_cpu_ptr(&nft_counter_seq);
--
--	write_seqcount_begin(myseq);
-+	nft_sync = this_cpu_ptr(&nft_counter_sync);
- 
--	this_cpu->bytes += pkt->skb->len;
--	this_cpu->packets++;
-+	u64_stats_update_begin(nft_sync);
-+	u64_stats_add(&this_cpu->bytes, pkt->skb->len);
-+	u64_stats_inc(&this_cpu->packets);
-+	u64_stats_update_end(nft_sync);
- 
--	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
- 
-@@ -66,17 +70,16 @@ static int nft_counter_do_init(const str
- 	if (cpu_stats == NULL)
- 		return -ENOMEM;
- 
--	preempt_disable();
--	this_cpu = this_cpu_ptr(cpu_stats);
-+	this_cpu = raw_cpu_ptr(cpu_stats);
- 	if (tb[NFTA_COUNTER_PACKETS]) {
--	        this_cpu->packets =
--			be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_PACKETS]));
-+		u64_stats_set(&this_cpu->packets,
-+			      be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_PACKETS])));
+ 		if (have_full_constraints()) {
+ 			r = dummy_regulator_rdev;
++			if (!r) {
++				ret = -EPROBE_DEFER;
++				goto out;
++			}
+ 			get_device(&r->dev);
+ 		} else {
+ 			dev_err(dev, "Failed to resolve %s-supply for %s\n",
+@@ -2101,6 +2105,10 @@ static int regulator_resolve_supply(stru
+ 			goto out;
+ 		}
+ 		r = dummy_regulator_rdev;
++		if (!r) {
++			ret = -EPROBE_DEFER;
++			goto out;
++		}
+ 		get_device(&r->dev);
  	}
- 	if (tb[NFTA_COUNTER_BYTES]) {
--		this_cpu->bytes =
--			be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_BYTES]));
-+		u64_stats_set(&this_cpu->bytes,
-+			      be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_BYTES])));
- 	}
--	preempt_enable();
-+
- 	priv->counter = cpu_stats;
- 	return 0;
- }
-@@ -104,40 +107,41 @@ static void nft_counter_obj_destroy(cons
- }
  
- static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
--			      struct nft_counter *total)
-+			      struct nft_counter_tot *total)
- {
-+	struct u64_stats_sync *nft_sync;
- 	struct nft_counter *this_cpu;
--	seqcount_t *myseq;
+@@ -2209,8 +2217,10 @@ struct regulator *_regulator_get(struct
+ 			 * enabled, even if it isn't hooked up, and just
+ 			 * provide a dummy.
+ 			 */
+-			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			rdev = dummy_regulator_rdev;
++			if (!rdev)
++				return ERR_PTR(-EPROBE_DEFER);
++			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			get_device(&rdev->dev);
+ 			break;
  
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
--	myseq = this_cpu_ptr(&nft_counter_seq);
-+	nft_sync = this_cpu_ptr(&nft_counter_sync);
-+
-+	u64_stats_update_begin(nft_sync);
-+	u64_stats_add(&this_cpu->packets, -total->packets);
-+	u64_stats_add(&this_cpu->bytes, -total->bytes);
-+	u64_stats_update_end(nft_sync);
- 
--	write_seqcount_begin(myseq);
--	this_cpu->packets -= total->packets;
--	this_cpu->bytes -= total->bytes;
--	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
- 
- static void nft_counter_fetch(struct nft_counter_percpu_priv *priv,
--			      struct nft_counter *total)
-+			      struct nft_counter_tot *total)
- {
- 	struct nft_counter *this_cpu;
--	const seqcount_t *myseq;
- 	u64 bytes, packets;
- 	unsigned int seq;
- 	int cpu;
- 
- 	memset(total, 0, sizeof(*total));
- 	for_each_possible_cpu(cpu) {
--		myseq = per_cpu_ptr(&nft_counter_seq, cpu);
-+		struct u64_stats_sync *nft_sync = per_cpu_ptr(&nft_counter_sync, cpu);
-+
- 		this_cpu = per_cpu_ptr(priv->counter, cpu);
- 		do {
--			seq	= read_seqcount_begin(myseq);
--			bytes	= this_cpu->bytes;
--			packets	= this_cpu->packets;
--		} while (read_seqcount_retry(myseq, seq));
-+			seq	= u64_stats_fetch_begin(nft_sync);
-+			bytes	= u64_stats_read(&this_cpu->bytes);
-+			packets	= u64_stats_read(&this_cpu->packets);
-+		} while (u64_stats_fetch_retry(nft_sync, seq));
- 
- 		total->bytes	+= bytes;
- 		total->packets	+= packets;
-@@ -148,7 +152,7 @@ static int nft_counter_do_dump(struct sk
- 			       struct nft_counter_percpu_priv *priv,
- 			       bool reset)
- {
--	struct nft_counter total;
-+	struct nft_counter_tot total;
- 
- 	nft_counter_fetch(priv, &total);
- 
-@@ -236,7 +240,7 @@ static int nft_counter_clone(struct nft_
- 	struct nft_counter_percpu_priv *priv_clone = nft_expr_priv(dst);
- 	struct nft_counter __percpu *cpu_stats;
- 	struct nft_counter *this_cpu;
--	struct nft_counter total;
-+	struct nft_counter_tot total;
- 
- 	nft_counter_fetch(priv, &total);
- 
-@@ -244,11 +248,9 @@ static int nft_counter_clone(struct nft_
- 	if (cpu_stats == NULL)
- 		return -ENOMEM;
- 
--	preempt_disable();
--	this_cpu = this_cpu_ptr(cpu_stats);
--	this_cpu->packets = total.packets;
--	this_cpu->bytes = total.bytes;
--	preempt_enable();
-+	this_cpu = raw_cpu_ptr(cpu_stats);
-+	u64_stats_set(&this_cpu->packets, total.packets);
-+	u64_stats_set(&this_cpu->bytes, total.bytes);
- 
- 	priv_clone->counter = cpu_stats;
- 	return 0;
-@@ -266,17 +268,17 @@ static void nft_counter_offload_stats(st
- 				      const struct flow_stats *stats)
- {
- 	struct nft_counter_percpu_priv *priv = nft_expr_priv(expr);
-+	struct u64_stats_sync *nft_sync;
- 	struct nft_counter *this_cpu;
--	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
--	myseq = this_cpu_ptr(&nft_counter_seq);
-+	nft_sync = this_cpu_ptr(&nft_counter_sync);
- 
--	write_seqcount_begin(myseq);
--	this_cpu->packets += stats->pkts;
--	this_cpu->bytes += stats->bytes;
--	write_seqcount_end(myseq);
-+	u64_stats_update_begin(nft_sync);
-+	u64_stats_add(&this_cpu->packets, stats->pkts);
-+	u64_stats_add(&this_cpu->bytes, stats->bytes);
-+	u64_stats_update_end(nft_sync);
- 	local_bh_enable();
- }
- 
-@@ -285,7 +287,7 @@ void nft_counter_init_seqcount(void)
- 	int cpu;
- 
- 	for_each_possible_cpu(cpu)
--		seqcount_init(per_cpu_ptr(&nft_counter_seq, cpu));
-+		u64_stats_init(per_cpu_ptr(&nft_counter_sync, cpu));
- }
- 
- struct nft_expr_type nft_counter_type;
 
 
 
