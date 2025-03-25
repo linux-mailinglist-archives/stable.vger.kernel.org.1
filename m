@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-126272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCA5A7002A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40EA4A6FFBC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5959719A20EF
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E858119A1353
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6587D268C4C;
-	Tue, 25 Mar 2025 12:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA6D266F1D;
+	Tue, 25 Mar 2025 12:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifAXwNaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROHISj4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22094E55B;
-	Tue, 25 Mar 2025 12:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7391225A337;
+	Tue, 25 Mar 2025 12:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905918; cv=none; b=U3zwXfueL5l0samWB58ww0/X6LZXIJ7WG1TP9uwxx+qYCv/3TFfxAtNTlQfyPy2OhQUKvCjFpTiLMhbjh8AJ7N922OEvO/ibjs0mC31HMoQ2oYQzKoe+HoP6HrrRVyAElWg3nZWML662guJowEgrfggOh1fpaZJYoz+/SL0eB1E=
+	t=1742905730; cv=none; b=hqL00ORwWy8hPp3q2L0Z+ldGU+nbTK63zr6ufgaOZ1L4Pk3QOF/kU1G/EOyLStpNeSs/I0s1kxawIDcGdy1e9D/iFQpJUB1cEvkHkt8kO+BSs7qQz/3tVSoJlYCW9sloJQqa47Krni4QxQ8+qCXmyK+PWfVvuLmpCvC+PI1iBNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905918; c=relaxed/simple;
-	bh=4Yoad1X9FChufHyyVM0NoP2IQllLx76NYLtJ3Hhbqy8=;
+	s=arc-20240116; t=1742905730; c=relaxed/simple;
+	bh=gg5fDFOFdyoX5DkM/ht1maDNqi0aSpQDQ+n0+29DVRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXrcXhjUVqJaLNk29QlIKeqAxY0d4/OcleSq60J2MMoULuVQdgWl+R3ofLE8YR4XrpeeVcxm7b6hGTM4kokAzfHARNU9YfqC4WDnj20yFWFMtsPNZCgNJI3GZgi4jIiLCUkYL5sV62/bgltKop0Gw4C6JKQG98ayZq0oaXgodNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifAXwNaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F50C4CEE9;
-	Tue, 25 Mar 2025 12:31:57 +0000 (UTC)
+	 MIME-Version; b=pkVYI263H3kkp0fYbr+2iwS+ne9pL927jr930i9nQuFp3FBgMDb+BH5hiT+XzdOKG8NxY6NpzbCw2OcC1jLMjzbDdaWgLc1t7qwhABbc6TV52LMbMacZAMce1PCR69YZJathZ0TKegkO0jR5zCfFuT8wYL9W8m9jG4afoF4poOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROHISj4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24435C4CEE4;
+	Tue, 25 Mar 2025 12:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905918;
-	bh=4Yoad1X9FChufHyyVM0NoP2IQllLx76NYLtJ3Hhbqy8=;
+	s=korg; t=1742905730;
+	bh=gg5fDFOFdyoX5DkM/ht1maDNqi0aSpQDQ+n0+29DVRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifAXwNaKnUKVV5zJKDR9kkTq244Jj4+PUXHRMJN11G6+S7JsnROEUCPPCUZKXfIh1
-	 7VucLd6rjBHd0F96h7Wr48j01I1wWDNE+tEwvSDYFhoGrn6OGXI3FjIDjiSbPYwn03
-	 XAtVGBvouU2fZFgimJSmVVN1x/woNEc2Wq/URuuI=
+	b=ROHISj4YoMWW8Y/n1VMnpNEL/3EXWGdW8hupc2JT010m1+6UedtCcRHCRUhIkFi6d
+	 r5OnMojXa3nx6C560GusXTD44sayurMH7b8u7XUTABwHCWg+vMelULX2mxn6SwEwEB
+	 Hf94Fh9TNB+q9iuhhfuiioTYSDljXwZrIrUimhmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Eric <eric.4.debian@grabatoulnz.fr>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 036/119] ata: libata-core: Add ATA_QUIRK_NO_LPM_ON_ATI for certain Samsung SSDs
+	Fiona Behrens <me@kloenk.dev>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Chayim Refael Friedman <chayimfr@gmail.com>
+Subject: [PATCH 6.1 132/198] scripts: generate_rust_analyzer: add missing macros deps
 Date: Tue, 25 Mar 2025 08:21:34 -0400
-Message-ID: <20250325122149.984960958@linuxfoundation.org>
+Message-ID: <20250325122200.116490605@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +65,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Tamir Duberstein <tamird@gmail.com>
 
-[ Upstream commit f2aac4c73c9945cce156fd58a9a2f31f2c8a90c7 ]
+[ Upstream commit 2e0f91aba507a3cb59f7a12fc3ea2b7d4d6675b7 ]
 
-Before commit 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-the ATI AHCI controllers specified board type 'board_ahci' rather than
-board type 'board_ahci'. This means that LPM was historically not enabled
-for the ATI AHCI controllers.
+The macros crate has depended on std and proc_macro since its
+introduction in commit 1fbde52bde73 ("rust: add `macros` crate"). These
+dependencies were omitted from commit 8c4555ccc55c ("scripts: add
+`generate_rust_analyzer.py`") resulting in missing go-to-definition and
+autocomplete, and false-positive warnings emitted from rust-analyzer
+such as:
 
-By looking at commit 7a8526a5cd51 ("libata: Add ATA_HORKAGE_NO_NCQ_ON_ATI
-for Samsung 860 and 870 SSD."), it is clear that, for some unknown reason,
-that Samsung SSDs do not play nice with ATI AHCI controllers. (When using
-other AHCI controllers, NCQ can be enabled on these Samsung SSDs without
-issues.)
+  [{
+  	"resource": "/Users/tamird/src/linux/rust/macros/module.rs",
+  	"owner": "_generated_diagnostic_collection_name_#1",
+  	"code": {
+  		"value": "non_snake_case",
+  		"target": {
+  			"$mid": 1,
+  			"path": "/rustc/",
+  			"scheme": "https",
+  			"authority": "doc.rust-lang.org",
+  			"query": "search=non_snake_case"
+  		}
+  	},
+  	"severity": 4,
+  	"message": "Variable `None` should have snake_case name, e.g. `none`",
+  	"source": "rust-analyzer",
+  	"startLineNumber": 123,
+  	"startColumn": 17,
+  	"endLineNumber": 123,
+  	"endColumn": 21
+  }]
 
-In a similar way, from user reports, it is clear the ATI AHCI controllers
-can enable LPM on e.g. Maxtor HDDs perfectly fine, but when enabling LPM
-on certain Samsung SSDs, things break. (E.g. the SSDs will not get detected
-by the ATI AHCI controller even after a COMRESET.)
+Add the missing dependencies to improve the developer experience.
 
-Yet, when using LPM on these Samsung SSDs with other AHCI controllers, e.g.
-Intel AHCI controllers, these Samsung drives appear to work perfectly fine.
+  [ Fiona had a different approach (thanks!) at:
 
-Considering that the combination of ATI + Samsung, for some unknown reason,
-does not seem to work well, disable LPM when detecting an ATI AHCI
-controller with a problematic Samsung SSD.
+        https://lore.kernel.org/rust-for-linux/20241205115438.234221-1-me@kloenk.dev/
 
-Apply this new ATA_QUIRK_NO_LPM_ON_ATI quirk for all Samsung SSDs that have
-already been reported to not play nice with ATI (ATA_QUIRK_NO_NCQ_ON_ATI).
+    But Tamir and Fiona agreed to this one. - Miguel ]
 
-Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Reported-by: Eric <eric.4.debian@grabatoulnz.fr>
-Closes: https://lore.kernel.org/linux-ide/Z8SBZMBjvVXA7OAK@eldamar.lan/
-Tested-by: Eric <eric.4.debian@grabatoulnz.fr>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250317170348.1748671-2-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Diagnosed-by: Chayim Refael Friedman <chayimfr@gmail.com>
+Link: https://github.com/rust-lang/rust-analyzer/issues/17759#issuecomment-2646328275
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+Link: https://lore.kernel.org/r/20250210-rust-analyzer-macros-core-dep-v3-1-45eb4836f218@gmail.com
+[ Removed `return`. Changed tag name. Added Link. Slightly
+  reworded. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c | 14 +++++++++++---
- include/linux/libata.h    |  2 ++
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ scripts/generate_rust_analyzer.py | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index c085dd81ebe7f..d956735e2a764 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2845,6 +2845,10 @@ int ata_dev_configure(struct ata_device *dev)
- 	    (id[ATA_ID_SATA_CAPABILITY] & 0xe) == 0x2)
- 		dev->quirks |= ATA_QUIRK_NOLPM;
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 030e26ef87c25..1093c540e3240 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -49,14 +49,26 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+             }
+         })
  
-+	if (dev->quirks & ATA_QUIRK_NO_LPM_ON_ATI &&
-+	    ata_dev_check_adapter(dev, PCI_VENDOR_ID_ATI))
-+		dev->quirks |= ATA_QUIRK_NOLPM;
+-    # First, the ones in `rust/` since they are a bit special.
+-    append_crate(
+-        "core",
+-        sysroot_src / "core" / "src" / "lib.rs",
+-        [],
+-        cfg=crates_cfgs.get("core", []),
+-        is_workspace_member=False,
+-    )
++    def append_sysroot_crate(
++        display_name,
++        deps,
++        cfg=[],
++    ):
++        append_crate(
++            display_name,
++            sysroot_src / display_name / "src" / "lib.rs",
++            deps,
++            cfg,
++            is_workspace_member=False,
++        )
 +
- 	if (ap->flags & ATA_FLAG_NO_LPM)
- 		dev->quirks |= ATA_QUIRK_NOLPM;
++    # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
++    # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
++    # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
++    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
++    append_sysroot_crate("alloc", ["core"])
++    append_sysroot_crate("std", ["alloc", "core"])
++    append_sysroot_crate("proc_macro", ["core", "std"])
  
-@@ -3897,6 +3901,7 @@ static const char * const ata_quirk_names[] = {
- 	[__ATA_QUIRK_MAX_SEC_1024]	= "maxsec1024",
- 	[__ATA_QUIRK_MAX_TRIM_128M]	= "maxtrim128m",
- 	[__ATA_QUIRK_NO_NCQ_ON_ATI]	= "noncqonati",
-+	[__ATA_QUIRK_NO_LPM_ON_ATI]	= "nolpmonati",
- 	[__ATA_QUIRK_NO_ID_DEV_LOG]	= "noiddevlog",
- 	[__ATA_QUIRK_NO_LOG_DIR]	= "nologdir",
- 	[__ATA_QUIRK_NO_FUA]		= "nofua",
-@@ -4142,13 +4147,16 @@ static const struct ata_dev_quirks_entry __ata_dev_quirks[] = {
- 						ATA_QUIRK_ZERO_AFTER_TRIM },
- 	{ "Samsung SSD 860*",		NULL,	ATA_QUIRK_NO_NCQ_TRIM |
- 						ATA_QUIRK_ZERO_AFTER_TRIM |
--						ATA_QUIRK_NO_NCQ_ON_ATI },
-+						ATA_QUIRK_NO_NCQ_ON_ATI |
-+						ATA_QUIRK_NO_LPM_ON_ATI },
- 	{ "Samsung SSD 870*",		NULL,	ATA_QUIRK_NO_NCQ_TRIM |
- 						ATA_QUIRK_ZERO_AFTER_TRIM |
--						ATA_QUIRK_NO_NCQ_ON_ATI },
-+						ATA_QUIRK_NO_NCQ_ON_ATI |
-+						ATA_QUIRK_NO_LPM_ON_ATI },
- 	{ "SAMSUNG*MZ7LH*",		NULL,	ATA_QUIRK_NO_NCQ_TRIM |
- 						ATA_QUIRK_ZERO_AFTER_TRIM |
--						ATA_QUIRK_NO_NCQ_ON_ATI, },
-+						ATA_QUIRK_NO_NCQ_ON_ATI |
-+						ATA_QUIRK_NO_LPM_ON_ATI },
- 	{ "FCCT*M500*",			NULL,	ATA_QUIRK_NO_NCQ_TRIM |
- 						ATA_QUIRK_ZERO_AFTER_TRIM },
- 
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index c1a85d46eba6d..4f62c43059c21 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -88,6 +88,7 @@ enum ata_quirks {
- 	__ATA_QUIRK_MAX_SEC_1024,	/* Limit max sects to 1024 */
- 	__ATA_QUIRK_MAX_TRIM_128M,	/* Limit max trim size to 128M */
- 	__ATA_QUIRK_NO_NCQ_ON_ATI,	/* Disable NCQ on ATI chipset */
-+	__ATA_QUIRK_NO_LPM_ON_ATI,	/* Disable LPM on ATI chipset */
- 	__ATA_QUIRK_NO_ID_DEV_LOG,	/* Identify device log missing */
- 	__ATA_QUIRK_NO_LOG_DIR,		/* Do not read log directory */
- 	__ATA_QUIRK_NO_FUA,		/* Do not use FUA */
-@@ -432,6 +433,7 @@ enum {
- 	ATA_QUIRK_MAX_SEC_1024		= (1U << __ATA_QUIRK_MAX_SEC_1024),
- 	ATA_QUIRK_MAX_TRIM_128M		= (1U << __ATA_QUIRK_MAX_TRIM_128M),
- 	ATA_QUIRK_NO_NCQ_ON_ATI		= (1U << __ATA_QUIRK_NO_NCQ_ON_ATI),
-+	ATA_QUIRK_NO_LPM_ON_ATI		= (1U << __ATA_QUIRK_NO_LPM_ON_ATI),
- 	ATA_QUIRK_NO_ID_DEV_LOG		= (1U << __ATA_QUIRK_NO_ID_DEV_LOG),
- 	ATA_QUIRK_NO_LOG_DIR		= (1U << __ATA_QUIRK_NO_LOG_DIR),
- 	ATA_QUIRK_NO_FUA		= (1U << __ATA_QUIRK_NO_FUA),
+     append_crate(
+         "compiler_builtins",
+@@ -74,7 +86,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+     append_crate(
+         "macros",
+         srctree / "rust" / "macros" / "lib.rs",
+-        [],
++        ["std", "proc_macro"],
+         is_proc_macro=True,
+     )
+     crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
 -- 
 2.39.5
 
