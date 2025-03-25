@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-126114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73984A6FF62
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C76A1A6FEF5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7000F1777EE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:57:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 786431741F5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A8425A2B9;
-	Tue, 25 Mar 2025 12:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897422857E2;
+	Tue, 25 Mar 2025 12:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEhK2erp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yF1oyIzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CFB25A2C0;
-	Tue, 25 Mar 2025 12:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3712D28541F;
+	Tue, 25 Mar 2025 12:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905627; cv=none; b=cuN4Qn7gpnlqu5MKiK7UdNcNtuc+CZ7nOIHtI6ufuausvFonSRidCHokj46gjTuy02pD0BWiqf2vwuCbJOZBfWAAggQkcnZc6d/pWgbLJL2/L1qoX1Sh/R1oKdMH3G69NUGZh5Un07Dg3EtMpfTdij97nT59NPkQNEIPKbvwzJs=
+	t=1742905573; cv=none; b=iLo67eBJPBynJ94zgBkkY8ovumFpSGEP8N5IO+jaeCEx70DCmyr9FwUgmCSMaUyfUhWg9kjUAt8nBh/oQAtIPj2suip62JBLCreoFbMSbrC9P3v6S5cp/l8u2HM49Jf1gQ77A3VIPIyaXZp1iFp7liR0zGmnozhIkivg5sAQP+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905627; c=relaxed/simple;
-	bh=2pVnc9MyCOLx7Own0exTV/0pqPS2ONUNH5pMgq1Pc04=;
+	s=arc-20240116; t=1742905573; c=relaxed/simple;
+	bh=qiw5Twl5AedFNHJqqq4QIWN1zPqVXsChQt5TApW6rOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n4g0+d8peeL7C6Wugqeg5nqamNnDsOXohyYLnEXfL+hfxLd2bim7DPrPhKe7ZOET1JdXWbZh8MWdTaMmEGS66VzhtmPOj/E/vKNbbEkuqXDJu0ZjpLE4kazVL382dVYieUhm/7htkcaefxCjWo66NuK1oSC16N3PQ6JdYpzifgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEhK2erp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAAEC4CEE9;
-	Tue, 25 Mar 2025 12:27:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oHzH12gWH2xxscUzu9Wo+0ZH6LlVt8+N0VwACuHveDFhCCK1zdCzf6i9mQr/W4bHhsgyahCwihqrpeJGLW74RRa95tfvbzQNUD+aEeLzazHmTIow4SFxTXS00SrpAQih0F+KzKQy/RDptEhpneiy8DXPDwdK9r7bG0gE8xGT0QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yF1oyIzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EE2C4CEF1;
+	Tue, 25 Mar 2025 12:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905626;
-	bh=2pVnc9MyCOLx7Own0exTV/0pqPS2ONUNH5pMgq1Pc04=;
+	s=korg; t=1742905572;
+	bh=qiw5Twl5AedFNHJqqq4QIWN1zPqVXsChQt5TApW6rOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEhK2erpKsOetGmYPBxFKzbf/yCCk24avCtfHhKxa9qv3zc3vKk5y+foY99yGmBqp
-	 kvdxI9QHLpowHU81gN5BmUVbyTG6mvI8wTWFZEr3lio8SZLAkZ669r8Yerr96U5WZw
-	 byrM6sj6LAQuNYP5JICiktKa45lfn/Tf88Y5MQFM=
+	b=yF1oyIzWKHrAoFgA8zoKWflWQuzEDGoIAuT9DFhcx0YQpDsQNnqUtFgcK79ZyIGTJ
+	 DokYhfb8jjIwIvktHn6sxSNMxSM9XoYlQCG5uN3WO4zVNGkhB3BH1M6EMjSXbUSet7
+	 4oayJBB/A7Db1aLklLfBRYTv8dixdBRLqlhXORFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sybil Isabel Dorsett <sybdorsett@proton.me>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/198] platform/x86: thinkpad_acpi: Fix invalid fan speed on ThinkPad X120e
-Date: Tue, 25 Mar 2025 08:20:09 -0400
-Message-ID: <20250325122157.868275101@linuxfoundation.org>
+Subject: [PATCH 6.1 048/198] platform/x86: thinkpad_acpi: Support for V9 DYTC platform profiles
+Date: Tue, 25 Mar 2025 08:20:10 -0400
+Message-ID: <20250325122157.894225702@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -67,101 +67,117 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sybil Isabel Dorsett <sybdorsett@proton.me>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 1046cac109225eda0973b898e053aeb3d6c10e1d ]
+[ Upstream commit 9cff907cbf8c7fb5345918dbcc7b74a01656f34f ]
 
-On ThinkPad X120e, fan speed is reported in ticks per revolution
-rather than RPM.
+Newer Thinkpad AMD platforms are using V9 DYTC and this changes the
+profiles used for PSC mode. Add support for this update.
+Tested on P14s G5 AMD
 
-Recalculate the fan speed value reported for ThinkPad X120e
-to RPM based on a 22.5 kHz clock.
-
-Based on the information on
-https://www.thinkwiki.org/wiki/How_to_control_fan_speed,
-the same problem is highly likely to be relevant to at least Edge11,
-but Edge11 is not addressed in this patch.
-
-Signed-off-by: Sybil Isabel Dorsett <sybdorsett@proton.me>
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250206193953.58365-1-mpearson-lenovo@squebb.ca
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250203163255.5525-1-sybdorsett@proton.me
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 34 ++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index a57e236be0504..a8b6f38d344fd 100644
+index a8b6f38d344fd..26ca9c453a59c 100644
 --- a/drivers/platform/x86/thinkpad_acpi.c
 +++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -8161,6 +8161,7 @@ static struct ibm_struct volume_driver_data = {
+@@ -10485,6 +10485,10 @@ static struct ibm_struct proxsensor_driver_data = {
+ #define DYTC_MODE_PSC_BALANCE  5  /* Default mode aka balanced */
+ #define DYTC_MODE_PSC_PERFORM  7  /* High power mode aka performance */
  
- #define FAN_NS_CTRL_STATUS	BIT(2)		/* Bit which determines control is enabled or not */
- #define FAN_NS_CTRL		BIT(4)		/* Bit which determines control is by host or EC */
-+#define FAN_CLOCK_TPM		(22500*60)	/* Ticks per minute for a 22.5 kHz clock */
++#define DYTC_MODE_PSCV9_LOWPOWER 1  /* Low power mode */
++#define DYTC_MODE_PSCV9_BALANCE  3  /* Default mode aka balanced */
++#define DYTC_MODE_PSCV9_PERFORM  4  /* High power mode aka performance */
++
+ #define DYTC_ERR_MASK       0xF  /* Bits 0-3 in cmd result are the error result */
+ #define DYTC_ERR_SUCCESS      1  /* CMD completed successful */
  
- enum {					/* Fan control constants */
- 	fan_status_offset = 0x2f,	/* EC register 0x2f */
-@@ -8214,6 +8215,7 @@ static int fan_watchdog_maxinterval;
+@@ -10505,6 +10509,10 @@ static int dytc_capabilities;
+ static bool dytc_mmc_get_available;
+ static int profile_force;
  
- static bool fan_with_ns_addr;
- static bool ecfw_with_fan_dec_rpm;
-+static bool fan_speed_in_tpr;
- 
- static struct mutex fan_mutex;
- 
-@@ -8396,8 +8398,11 @@ static int fan_get_speed(unsigned int *speed)
- 			     !acpi_ec_read(fan_rpm_offset + 1, &hi)))
- 			return -EIO;
- 
--		if (likely(speed))
-+		if (likely(speed)) {
- 			*speed = (hi << 8) | lo;
-+			if (fan_speed_in_tpr && *speed != 0)
-+				*speed = FAN_CLOCK_TPM / *speed;
-+		}
++static int platform_psc_profile_lowpower = DYTC_MODE_PSC_LOWPOWER;
++static int platform_psc_profile_balanced = DYTC_MODE_PSC_BALANCE;
++static int platform_psc_profile_performance = DYTC_MODE_PSC_PERFORM;
++
+ static int convert_dytc_to_profile(int funcmode, int dytcmode,
+ 		enum platform_profile_option *profile)
+ {
+@@ -10526,19 +10534,15 @@ static int convert_dytc_to_profile(int funcmode, int dytcmode,
+ 		}
+ 		return 0;
+ 	case DYTC_FUNCTION_PSC:
+-		switch (dytcmode) {
+-		case DYTC_MODE_PSC_LOWPOWER:
++		if (dytcmode == platform_psc_profile_lowpower)
+ 			*profile = PLATFORM_PROFILE_LOW_POWER;
+-			break;
+-		case DYTC_MODE_PSC_BALANCE:
++		else if (dytcmode == platform_psc_profile_balanced)
+ 			*profile =  PLATFORM_PROFILE_BALANCED;
+-			break;
+-		case DYTC_MODE_PSC_PERFORM:
++		else if (dytcmode == platform_psc_profile_performance)
+ 			*profile =  PLATFORM_PROFILE_PERFORMANCE;
+-			break;
+-		default: /* Unknown mode */
++		else
+ 			return -EINVAL;
+-		}
++
+ 		return 0;
+ 	case DYTC_FUNCTION_AMT:
+ 		/* For now return balanced. It's the closest we have to 'auto' */
+@@ -10559,19 +10563,19 @@ static int convert_profile_to_dytc(enum platform_profile_option profile, int *pe
+ 		if (dytc_capabilities & BIT(DYTC_FC_MMC))
+ 			*perfmode = DYTC_MODE_MMC_LOWPOWER;
+ 		else if (dytc_capabilities & BIT(DYTC_FC_PSC))
+-			*perfmode = DYTC_MODE_PSC_LOWPOWER;
++			*perfmode = platform_psc_profile_lowpower;
  		break;
- 	case TPACPI_FAN_RD_TPEC_NS:
- 		if (!acpi_ec_read(fan_rpm_status_ns, &lo))
-@@ -8430,8 +8435,11 @@ static int fan2_get_speed(unsigned int *speed)
- 		if (rc)
- 			return -EIO;
- 
--		if (likely(speed))
-+		if (likely(speed)) {
- 			*speed = (hi << 8) | lo;
-+			if (fan_speed_in_tpr && *speed != 0)
-+				*speed = FAN_CLOCK_TPM / *speed;
-+		}
+ 	case PLATFORM_PROFILE_BALANCED:
+ 		if (dytc_capabilities & BIT(DYTC_FC_MMC))
+ 			*perfmode = DYTC_MODE_MMC_BALANCE;
+ 		else if (dytc_capabilities & BIT(DYTC_FC_PSC))
+-			*perfmode = DYTC_MODE_PSC_BALANCE;
++			*perfmode = platform_psc_profile_balanced;
  		break;
+ 	case PLATFORM_PROFILE_PERFORMANCE:
+ 		if (dytc_capabilities & BIT(DYTC_FC_MMC))
+ 			*perfmode = DYTC_MODE_MMC_PERFORM;
+ 		else if (dytc_capabilities & BIT(DYTC_FC_PSC))
+-			*perfmode = DYTC_MODE_PSC_PERFORM;
++			*perfmode = platform_psc_profile_performance;
+ 		break;
+ 	default: /* Unknown profile */
+ 		return -EOPNOTSUPP;
+@@ -10760,6 +10764,7 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
+ 	if (output & BIT(DYTC_QUERY_ENABLE_BIT))
+ 		dytc_version = (output >> DYTC_QUERY_REV_BIT) & 0xF;
  
- 	case TPACPI_FAN_RD_TPEC_NS:
-@@ -8959,6 +8967,7 @@ static const struct attribute_group fan_driver_attr_group = {
- #define TPACPI_FAN_NOFAN	0x0008		/* no fan available */
- #define TPACPI_FAN_NS		0x0010		/* For EC with non-Standard register addresses */
- #define TPACPI_FAN_DECRPM	0x0020		/* For ECFW's with RPM in register as decimal */
-+#define TPACPI_FAN_TPR		0x0040		/* Fan speed is in Ticks Per Revolution */
- 
- static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
- 	TPACPI_QEC_IBM('1', 'Y', TPACPI_FAN_Q1),
-@@ -8981,6 +8990,7 @@ static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
- 	TPACPI_Q_LNV3('N', '2', 'U', TPACPI_FAN_NS),	/* X13 Yoga Gen 2*/
- 	TPACPI_Q_LNV3('N', '1', 'O', TPACPI_FAN_NOFAN),	/* X1 Tablet (2nd gen) */
- 	TPACPI_Q_LNV3('R', '0', 'Q', TPACPI_FAN_DECRPM),/* L480 */
-+	TPACPI_Q_LNV('8', 'F', TPACPI_FAN_TPR),		/* ThinkPad x120e */
- };
- 
- static int __init fan_init(struct ibm_init_struct *iibm)
-@@ -9044,6 +9054,8 @@ static int __init fan_init(struct ibm_init_struct *iibm)
- 
- 			if (quirks & TPACPI_FAN_Q1)
- 				fan_quirk1_setup();
-+			if (quirks & TPACPI_FAN_TPR)
-+				fan_speed_in_tpr = true;
- 			/* Try and probe the 2nd fan */
- 			tp_features.second_fan = 1; /* needed for get_speed to work */
- 			res = fan2_get_speed(&speed);
++	dbg_printk(TPACPI_DBG_INIT, "DYTC version %d\n", dytc_version);
+ 	/* Check DYTC is enabled and supports mode setting */
+ 	if (dytc_version < 5)
+ 		return -ENODEV;
+@@ -10798,6 +10803,11 @@ static int tpacpi_dytc_profile_init(struct ibm_init_struct *iibm)
+ 		}
+ 	} else if (dytc_capabilities & BIT(DYTC_FC_PSC)) { /* PSC MODE */
+ 		pr_debug("PSC is supported\n");
++		if (dytc_version >= 9) { /* update profiles for DYTC 9 and up */
++			platform_psc_profile_lowpower = DYTC_MODE_PSCV9_LOWPOWER;
++			platform_psc_profile_balanced = DYTC_MODE_PSCV9_BALANCE;
++			platform_psc_profile_performance = DYTC_MODE_PSCV9_PERFORM;
++		}
+ 	} else {
+ 		dbg_printk(TPACPI_DBG_INIT, "No DYTC support available\n");
+ 		return -ENODEV;
 -- 
 2.39.5
 
