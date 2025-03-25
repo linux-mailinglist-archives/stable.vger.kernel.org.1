@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBB8A70007
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F6CA7012C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BAC53BF8E3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0A819A2F37
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D403A256C7D;
-	Tue, 25 Mar 2025 12:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EDF25D20E;
+	Tue, 25 Mar 2025 12:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFkcANXy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WanBZNws"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936262561C8;
-	Tue, 25 Mar 2025 12:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F0B2571AC;
+	Tue, 25 Mar 2025 12:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905811; cv=none; b=KJDOmLTC6k5H1j+cjx+gH/oXwgDsXa6bPHED0JbCscwml0+RURirBZZeJGkrZYKmb3nBmKH4eghfjKjMTa5U0VPIBAF/lBsBni3N9E2+THVUb4SARmLlvQXqua+iOyD8tQ+bJSpwL2YS9avnLfqodqFysfmG5nxJ5sSMz34iG+8=
+	t=1742906238; cv=none; b=NbTgI+aBbCsVM9yHu/H45kBqFTIkPIKWUL/k3oZRgQ/gTosv4x+RifrLzGslsvhuG6UB/gwZkjM2jA20rV57cDqaPFEsi93CCDGfEiWGIOmrbIc6FghU0o1B11a7euAH6iJQvV3hxa1h3bRPkJXqUWqxVbDn/aIUZpZjeO7Rfus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905811; c=relaxed/simple;
-	bh=/q3Y45F6LdYG18NHlbMbxRnD0sk/mhhn0sQR7Bu9++E=;
+	s=arc-20240116; t=1742906238; c=relaxed/simple;
+	bh=Z0FHriZyfOfPd+JeTtmDeKwRHHE3IrR4xiltfermZJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PATzK0KWDbrijMSlDzhSlATbo9lrCccB3pjbLZ2Ht1Xn9+B6q2pvQ7w8SBhB/uNpl0qK3FgCbOXjfyHNqx91lHaibx13J/vZRqFxo76RKdxAzk2gflMtBI1thbD7onz9364ArWyUjmiOfNyCijTc4vyAdKxHwuSX0op8LFlntMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFkcANXy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42690C4CEE4;
-	Tue, 25 Mar 2025 12:30:11 +0000 (UTC)
+	 MIME-Version; b=Yd48362H3Wk/6YIBRkMVnGLvY0sE2aJFWEHnaDRTBljouz4v54evMCVvtO60a+rg3OoU1K3kyw2yQS2cTN4fTeuY4j6mCqAh69KhHt911SThBGyqp6ftf9udgjsVyObkbfHZluDLPg1IFaj7SIAXalVlbSGhalbD3QPOd6W9A6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WanBZNws; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C417AC4CEE4;
+	Tue, 25 Mar 2025 12:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905811;
-	bh=/q3Y45F6LdYG18NHlbMbxRnD0sk/mhhn0sQR7Bu9++E=;
+	s=korg; t=1742906238;
+	bh=Z0FHriZyfOfPd+JeTtmDeKwRHHE3IrR4xiltfermZJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFkcANXy1OK81mmu/ccuOo6CUvvJYA7UiWJuIQ1l/W31uPk0H6fAiHdEAAsMgct2b
-	 LLCY5l84IoeL0QGp55v5G+Mo7z1x9r24b5ERR27ZU5AsSEbGYr+H0ZglquWkBY9trl
-	 F888IXyFcRWSLby5J8dd6v0Wq791cqaQOmAuF4eU=
+	b=WanBZNwst6NOlsqFiG/nJVyGkn1dMZWt68SxafVE73IHm/Gg/Mr0e28dka5d2nnTt
+	 dXmWcf0w2GGfWDMVBzlJ2qqHrkBH3LeWo0Hz8FtA+s7Bka7GrgKWNwn4dMNxPruEMJ
+	 BKjqoRH1sWovIop8rRlKoSpGN1OB1yR8ewsSCwlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Steve French <stfrench@microsoft.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/198] cifs: Fix integer overflow while processing closetimeo mount option
+Subject: [PATCH 6.12 011/116] ARM: dts: bcm2711: Fix xHCI power-domain
 Date: Tue, 25 Mar 2025 08:21:38 -0400
-Message-ID: <20250325122200.219871029@linuxfoundation.org>
+Message-ID: <20250325122149.503416693@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit d5a30fddfe2f2e540f6c43b59cf701809995faef ]
+[ Upstream commit f44fa354a0715577ca32b085f6f60bcf32c748dd ]
 
-User-provided mount parameter closetimeo of type u32 is intended to have
-an upper limit, but before it is validated, the value is converted from
-seconds to jiffies which can lead to an integer overflow.
+During s2idle tests on the Raspberry CM4 the VPU firmware always crashes
+on xHCI power-domain resume:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+root@raspberrypi:/sys/power# echo freeze > state
+[   70.724347] xhci_suspend finished
+[   70.727730] xhci_plat_suspend finished
+[   70.755624] bcm2835-power bcm2835-power: Power grafx off
+[   70.761127]  USB: Set power to 0
 
-Fixes: 5efdd9122eff ("smb3: allow deferred close timeout to be configurable")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+[   74.653040]  USB: Failed to set power to 1 (-110)
+
+This seems to be caused because of the mixed usage of
+raspberrypi-power and bcm2835-power at the same time. So avoid
+the usage of the VPU firmware power-domain driver, which
+prevents the VPU crash.
+
+Fixes: 522c35e08b53 ("ARM: dts: bcm2711: Add BCM2711 xHCI support")
+Link: https://github.com/raspberrypi/linux/issues/6537
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250201112729.31509-1-wahrenst@gmx.net
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi | 5 -----
+ arch/arm/boot/dts/broadcom/bcm2711.dtsi     | 1 +
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 76842fbd2bb83..de2366d05767f 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1104,11 +1104,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 		ctx->acdirmax = ctx->acregmax = HZ * result.uint_32;
- 		break;
- 	case Opt_closetimeo:
--		ctx->closetimeo = HZ * result.uint_32;
--		if (ctx->closetimeo > SMB3_MAX_DCLOSETIMEO) {
-+		if (result.uint_32 > SMB3_MAX_DCLOSETIMEO / HZ) {
- 			cifs_errorf(fc, "closetimeo too large\n");
- 			goto cifs_parse_mount_err;
- 		}
-+		ctx->closetimeo = HZ * result.uint_32;
- 		break;
- 	case Opt_echo_interval:
- 		ctx->echo_interval = result.uint_32;
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi b/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi
+index 6bf4241fe3b73..c78ed064d1667 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "bcm2835-rpi.dtsi"
+ 
+-#include <dt-bindings/power/raspberrypi-power.h>
+ #include <dt-bindings/reset/raspberrypi,firmware-reset.h>
+ 
+ / {
+@@ -101,7 +100,3 @@ &v3d {
+ &vchiq {
+ 	interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
+ };
+-
+-&xhci {
+-	power-domains = <&power RPI_POWER_DOMAIN_USB>;
+-};
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+index e4e42af21ef3a..5eaec6c6a1df3 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+@@ -610,6 +610,7 @@ xhci: usb@7e9c0000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
++			power-domains = <&pm BCM2835_POWER_DOMAIN_USB>;
+ 			/* DWC2 and this IP block share the same USB PHY,
+ 			 * enabling both at the same time results in lockups.
+ 			 * So keep this node disabled and let the bootloader
 -- 
 2.39.5
 
