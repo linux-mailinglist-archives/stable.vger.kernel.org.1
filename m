@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-126161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD3DA70000
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06927A70050
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 046AF3B5A15
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47092843B21
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21674266F12;
-	Tue, 25 Mar 2025 12:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5319268FDB;
+	Tue, 25 Mar 2025 12:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eo3hfQI4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWLz6uvr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B51257AD8;
-	Tue, 25 Mar 2025 12:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F0125B673;
+	Tue, 25 Mar 2025 12:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905713; cv=none; b=lUQSwc/kpxJ342aka7BF222EC8gFQjuI9EFv6ULh1+lu2tshB87zcJdoIzA7Jg07DlZpTGo4gyAWbNtMtsYnJCPK8s+YHsi7fi0DAIZbHm7BPR4Ws1gpfWTJYDNCPIXvaTr4hEQDo03gTIzBPCRn/QUmK7hO5xaRJrECesFWD04=
+	t=1742905960; cv=none; b=m4/JPQuFbJnNh5y6hmSR0BpdvfyE8ZHj+mTE6Z3/Bsr9x5027uzIyfgCYG4ESoWOwuDsWXNUZkIdFj+/RQeXAl9GozcrzRQy3bj2QCV+Qu3r9y5IIXlM9MUYsop5W6lyh75YaSpkv6w83D6QTSYORNX1Ts6uObehQCIq5wAX2S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905713; c=relaxed/simple;
-	bh=0ZKTG1Pyjjs2AFiGaaFLpgF/SgiO1lvNWwbjTzazT+s=;
+	s=arc-20240116; t=1742905960; c=relaxed/simple;
+	bh=a+qeyKDTyPf4KKvtnDuf01Qz5CfZ8DGAOIG+rDcJm0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pw7VsbiipF6VOWzFb+D+PRWzyX+dwlIbP0c+mjsxxzQrqG+UFsopOPSQgB4rY9F2TDkkqYIXbkLLcvhr3ZeQ5oMAww4H/hUaMaA0SpGcYKhYqhIr5bUlDqzIell68yVmeCWNXgQvbZQHiPGpMWVJX4a+mPxuD4U/lppR10GImpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eo3hfQI4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85179C4CEE4;
-	Tue, 25 Mar 2025 12:28:33 +0000 (UTC)
+	 MIME-Version; b=is9PAL3JM7zEfGN1FxpAHL7ILJ6t/Q1TxsXgUMk38HLDo+W12fU82+a7nsL0AE6Ilvkxj9RuJmTvXQX1TaLChUsbYZG+OX9QYRhY7Qkgk8ZYFT5Js7FOXVnBsMFXClk6jToSXQtohAk44oYX/YxLQGSAmJXNbgOzdVgD5IO+twE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWLz6uvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B03C4CEE9;
+	Tue, 25 Mar 2025 12:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905713;
-	bh=0ZKTG1Pyjjs2AFiGaaFLpgF/SgiO1lvNWwbjTzazT+s=;
+	s=korg; t=1742905960;
+	bh=a+qeyKDTyPf4KKvtnDuf01Qz5CfZ8DGAOIG+rDcJm0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eo3hfQI4irUd/gnbVXZ8IpZ16BMtTDF4WlzR+tvdcHvQmtYUpSQJtRF462IIuKh2c
-	 md612iBWd9HUVbbMEN0yP/7/gr9jmjtZSe2L48Fy9A6Ytlt0Kfxv++THW7yg8Es0Pt
-	 pFF7ylMutExbAKEm3/xm5sbnC5TU5WNlEwBKeAw0=
+	b=uWLz6uvrD0EayAxT47yKSE5UBT7XbDRTgwabjA5uyu2rXqWR2q6KgEakCXz06tWa8
+	 JswgTgjBW33ZgzZDA/oY6JVxVMkvuCH5d1HaE/gqNaIm7bRxMzPiN/3y6WVosqiyTo
+	 tqgaldISK7CnVL8mdLWDh/8iGm1IpOs3gL1K08Gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Youngmin Nam <youngmin.nam@samsung.com>
-Subject: [PATCH 6.1 123/198] tcp: fix races in tcp_abort()
-Date: Tue, 25 Mar 2025 08:21:25 -0400
-Message-ID: <20250325122159.880259357@linuxfoundation.org>
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 028/119] RDMA/hns: Fix wrong value of max_sge_rd
+Date: Tue, 25 Mar 2025 08:21:26 -0400
+Message-ID: <20250325122149.784832862@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit 5ce4645c23cf5f048eb8e9ce49e514bababdee85 upstream.
+[ Upstream commit 6b5e41a8b51fce520bb09bd651a29ef495e990de ]
 
-tcp_abort() has the same issue than the one fixed in the prior patch
-in tcp_write_err().
+There is no difference between the sge of READ and non-READ
+operations in hns RoCE. Set max_sge_rd to the same value as
+max_send_sge.
 
-In order to get consistent results from tcp_poll(), we must call
-sk_error_report() after tcp_done().
-
-We can use tcp_done_with_error() to centralize this logic.
-
-Fixes: c1e64e298b8c ("net: diag: Support destroying TCP sockets.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240528125253.1966136-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[youngmin: Resolved minor conflict in net/ipv4/tcp.c]
-Signed-off-by: Youngmin Nam <youngmin.nam@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250311084857.3803665-8-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4755,13 +4755,9 @@ int tcp_abort(struct sock *sk, int err)
- 	bh_lock_sock(sk);
- 
- 	if (!sock_flag(sk, SOCK_DEAD)) {
--		WRITE_ONCE(sk->sk_err, err);
--		/* This barrier is coupled with smp_rmb() in tcp_poll() */
--		smp_wmb();
--		sk_error_report(sk);
- 		if (tcp_need_reset(sk->sk_state))
- 			tcp_send_active_reset(sk, GFP_ATOMIC);
--		tcp_done(sk);
-+		tcp_done_with_error(sk, err);
- 	}
- 
- 	bh_unlock_sock(sk);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index ae24c81c9812d..cf89a8db4f64c 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -183,7 +183,7 @@ static int hns_roce_query_device(struct ib_device *ib_dev,
+ 				  IB_DEVICE_RC_RNR_NAK_GEN;
+ 	props->max_send_sge = hr_dev->caps.max_sq_sg;
+ 	props->max_recv_sge = hr_dev->caps.max_rq_sg;
+-	props->max_sge_rd = 1;
++	props->max_sge_rd = hr_dev->caps.max_sq_sg;
+ 	props->max_cq = hr_dev->caps.num_cqs;
+ 	props->max_cqe = hr_dev->caps.max_cqes;
+ 	props->max_mr = hr_dev->caps.num_mtpts;
+-- 
+2.39.5
+
 
 
 
