@@ -1,159 +1,80 @@
-Return-Path: <stable+bounces-126580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A19BA7060B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 17:08:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58549A70670
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 17:14:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1C81886C30
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 16:08:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5D6C1884DC6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 16:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9071D253B62;
-	Tue, 25 Mar 2025 16:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66A825B668;
+	Tue, 25 Mar 2025 16:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="qj2LXlrp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GtUQMttc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CBB25A64A;
-	Tue, 25 Mar 2025 16:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E43E255E20;
+	Tue, 25 Mar 2025 16:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742918880; cv=none; b=bEapgfUI1BJmI3C4N3jMq6AxITgPkq0eMg6SoeJHuXJz0008JEWhq3ScI/Rx1AZx/h7Qs6Z7KAfJELte2vUQRQjHJW88FfE2rxf6hBiVLVfGIqBPnXNDvbDXn2li94SUS/LbdpQ/h5to7X9pTYy684Ckm/6XYnQsmjIho7UMXDw=
+	t=1742919228; cv=none; b=KZoQBHEk1372QUGAcFACwIyYZV5oMZHHyxE941vdJRyimHrcuYZRMnklmp3c1Y0884OIprfrF3Zzc+2Q8JafMQqbIGgEsOr+DNAAxhkQ70z1vpjOr5wWGs9Cy4wBAfeWMKo8gaVAnyvt+kuzLm3Kj4B+P8fmCjkux4F8dAmcrm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742918880; c=relaxed/simple;
-	bh=6e1FS+eqBxQFG2Js5x/rV0J66TJrITnWPVuwHWmUG44=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=o7YQZRxIGUxOsn0PyE7J9gVlF1fXFw129yUG6ay+MWzM9FA7DtRYq97thi8UTRD8eLwsdQPY9LrGLs11yp7c4Y4G7xo9yebpNveirsEwu8TAmBrT3+4+1EpdvjOj5qtl0Wcx3bjMx6lbA76Hc4ixQxXbg0rJLhS+HpJHbcJNmlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=qj2LXlrp; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1742919228; c=relaxed/simple;
+	bh=o5iqLNYHvWWuh4+BP/whWUchWJw/jZnSjKIg78yGgxY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jNF4YWkJtX7YxqTIkoXjkpg3ME/7cx5hZ9q3HpTY1H1etUDGaMZJGnxaaC0ueRKx33wU5NQh880nYIyIQSYMq/ypj3w7U/kxBFuK3CpUxcu2R+r0mjx5a547nOGCtTEYf8NxNrII7yJHBqj7QkXo3etlhg7I5Je5giNcR4WyCbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GtUQMttc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DF7C4CEEA;
+	Tue, 25 Mar 2025 16:13:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742919228;
+	bh=o5iqLNYHvWWuh4+BP/whWUchWJw/jZnSjKIg78yGgxY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GtUQMttceRLoiK2pJwHCsiI50LMlR1+GN74eCrv2d/6gppnHAOFgvWuqWCPZ5hP0f
+	 lcwSpzatYgn3WKwxjcwuR8T8EVWiOM6TNGzG9sB3FprVFTQCfWNVKmfRg6bsvVuIDx
+	 q/qS+w/zAgrX7xgvrVvfxCd35LDOJVaa+86Yh4Lbj3Qx22rel36fYbZi2+FHvk3CLb
+	 jOpiUzUG9uQpM8k6Ni2r+qeiMx0Im4aTXYekEpJpf3SZvnghy2HToSsQGRprTfvtTI
+	 tiOAxCXtkx5dGpGVNhgUc2DIHA8Ul5zDasnJ4itO0wej6IpJoOl7Cq7r0MwMUJKa/w
+	 +cK4K3yYIty4Q==
+Date: Tue, 25 Mar 2025 09:13:35 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ decui@microsoft.com, stephen@networkplumber.org, kys@microsoft.com,
+ paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
+ davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, leon@kernel.org, longli@microsoft.com,
+ ssengar@linux.microsoft.com, linux-rdma@vger.kernel.org,
+ daniel@iogearbox.net, john.fastabend@gmail.com, bpf@vger.kernel.org,
+ ast@kernel.org, hawk@kernel.org, tglx@linutronix.de,
+ shradhagupta@linux.microsoft.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] net: mana: Switch to page pool for jumbo frames
+Message-ID: <20250325091335.6833ed27@kernel.org>
+In-Reply-To: <1742605475-26937-1-git-send-email-haiyangz@microsoft.com>
+References: <1742605475-26937-1-git-send-email-haiyangz@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1742918873;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PmBcPArKT86cQNqXZe9hljvX1PmEnOQmPn7lfAPyquI=;
-	b=qj2LXlrpWu6oLLUp/hzMPjEtqmvFrOFsofEV9ok4MX6JkcGJ8EHMODf9cjhaaIjVCtRTKz
-	O0zLQIaGKjoNrbMeRSkX5xARJ0AzI3R9vM7CHvaaWDPmrkIF5FiESuiBd0ZNcjsXbc+O7Y
-	+TpZNXMlDoFon5i1cZdhBEyGu9q6q4zWX5q+OJNFjCmauYGkwXQy+4zNxU9YwmQN4M+WIh
-	FvaoX+QQ+Lx1/MM9nPlu/c838/EjL+eIPkuQYTWG260aer3cn9Js/vkYFlBiaF/rdMckyj
-	LZ7D/i459c3p6ml5ptVKoodxJWJumiX7OdrIERh+bsJ1AhPCUZqtMM6LUPq9gg==
-Date: Tue, 25 Mar 2025 17:07:53 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell
- <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, Heiko Stuebner
- <heiko@sntech.de>, jorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH 6.1 000/198] 6.1.132-rc1 review
-In-Reply-To: <CA+G9fYss7RcH=ocag66EM4z26O-6o-gaq+Jo+GOUr2W773vQOw@mail.gmail.com>
-References: <20250325122156.633329074@linuxfoundation.org>
- <CA+G9fYss7RcH=ocag66EM4z26O-6o-gaq+Jo+GOUr2W773vQOw@mail.gmail.com>
-Message-ID: <8b1620dc4508571f56a0d360e3722174@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-Hello Naresh,
+On Fri, 21 Mar 2025 18:04:35 -0700 Haiyang Zhang wrote:
+> Since commit 8218f62c9c9b ("mm: page_frag: use initial zero offset for
+> page_frag_alloc_align()"), the netdev_alloc_frag() no longer works for
+> fragsz > PAGE_SIZE. And, this behavior is by design.
 
-On 2025-03-25 16:22, Naresh Kamboju wrote:
-> On Tue, 25 Mar 2025 at 17:55, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
->> 
->> This is the start of the stable review cycle for the 6.1.132 release.
->> There are 198 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, 
->> please
->> let me know.
->> 
->> Responses should be made by Thu, 27 Mar 2025 12:21:27 +0000.
->> Anything received after that time might be too late.
->> 
->> The whole patch series can be found in one patch at:
->>         
->> https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.132-rc1.gz
->> or in the git tree and branch at:
->>         
->> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git 
->> linux-6.1.y
->> and the diffstat can be found below.
->> 
->> thanks,
->> 
->> greg k-h
-> 
-> Regressions on arm64 rk3399 dtb builds failed with gcc-13 the
-> stable-rc 6.1.132-rc1
-> 
-> First seen on the v6.1.131-199-gc8f0cb669e59
->  Good: v6.1.131
->  Bad: 6.1.132-rc1
-> 
-> * arm64, build
->   - gcc-13-defconfig
-> 
-> Regression Analysis:
->  - New regression? yes
->  - Reproducibility? Yes
-> 
-> Build regression: arm64 dtb rockchip non-existent node or label 
-> "vcca_0v9"
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> ## Build log
-> arch/arm64/boot/dts/rockchip/rk3399.dtsi:221.23-266.4: ERROR
-> (phandle_references):
->   /pcie@f8000000: Reference to non-existent node or label "vcca_0v9"
-> 
->   also defined at 
-> arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi:665.8-675.3
-> 
-> ## Source
-> * Kernel version: 6.1.132-rc1
-> * Git tree:
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> * Git sha: c8f0cb669e590c6c73c274b9fc56270ec33fa06b
-> * Git describe: v6.1.131-199-gc8f0cb669e59
-> * Project details:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.131-199-gc8f0cb669e59/
-> 
-> ## Build
-> * Build log:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.131-199-gc8f0cb669e59/testrun/27755718/suite/build/test/gcc-13-lkftconfig-devicetree/log
-> * Build history:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.131-199-gc8f0cb669e59/testrun/27755718/suite/build/test/gcc-13-lkftconfig-devicetree/history/
-> * Build details:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.131-199-gc8f0cb669e59/testrun/27755718/suite/build/test/gcc-13-lkftconfig-devicetree/details/
-> * Build link:
-> https://storage.tuxsuite.com/public/linaro/lkft/builds/2uoE2WrLPnhBvFm7ejgwd6QJxk8/
-> * Kernel config:
-> https://storage.tuxsuite.com/public/linaro/lkft/builds/2uoE2WrLPnhBvFm7ejgwd6QJxk8/config
-> 
-> ## Steps to reproduce
->  - # tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
-> --kconfig defconfig
-
-This is caused by another patch from the original series failing
-to apply due to some bulk regulator renaming.  I'll send backported
-version of that patch soon, which should make everything fine.
+This is inaccurate, AFAIU. The user of frag allocator with fragsz >
+PAGE_SIZE has _always_ been incorrect. It's just that it fails in
+a more obvious way now? Please correct the commit message.
+-- 
+pw-bot: cr
 
