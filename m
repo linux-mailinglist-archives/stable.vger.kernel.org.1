@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-126239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21F0A70078
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A87EA6FFF6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4261C842B53
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:02:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E8757A7919
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B4329B226;
-	Tue, 25 Mar 2025 12:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62431269CF7;
+	Tue, 25 Mar 2025 12:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quD73EF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCpVFtne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CBC29B222;
-	Tue, 25 Mar 2025 12:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFC8269CE6;
+	Tue, 25 Mar 2025 12:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905858; cv=none; b=Np9xNhxCl8ysArmAD5qQ2WU4SiKcOLR9oJb1r9lQMROYHMrpzLGiZsuFR7DnJw8V45SwXJqZGF+BnST4bdzZ7ygcECk5Gt8t7oYQtmS6PbFOK8Z6uRFhWamDW1BormN7OgpgeEegJ/XLBJtg9dLTjr7mfNHvsJQFrDOfOpyIxx8=
+	t=1742906113; cv=none; b=OD6Wvv/wsHLXNgPAniv+dbRP6IWe/8AIG3xHACwuDu2zdwKHcTRmBvuvBBasPhfzCvvXWvdISiIo2DXFaTH1omSmIgvSXkgXfXBSPEaH6UC4u9T7QeWgglgD7HbQBKv0aqC8eabRgctjdBIuQ1CrFSA6tadk+iWvyiQiQByPR4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905858; c=relaxed/simple;
-	bh=dJdJi1qP8zhOQ21wxXukquza8J1lEq+Om9tx6SbXV+8=;
+	s=arc-20240116; t=1742906113; c=relaxed/simple;
+	bh=Q1K1ICsNb9Tz+QAXLxOwIs+rQbrGBfoaKXuBaUEaGeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uq106N2x8W9S0ML0TMCZ+MAORAsNc/XqxjwSjX96TFKOUVWejP5bsLKCfEONCeGlMUXPtksNX1Rv4gRV6x09bT6vo2+uDdsRDLjIHbafqioJ/xxpjCB97Uq3yvH7JmDFYyXojsECmj7Mp73xThzNikyg6PJs2yqUCzIaTO5s86g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quD73EF5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F49AC4CEED;
-	Tue, 25 Mar 2025 12:30:57 +0000 (UTC)
+	 MIME-Version; b=lbVPrGOCGZiLAVwIs3e496xA/ulo+CP4iAHcili8xmei1saC8cEmA0GP25tI38FKo3i8ZqH6O/Ch7ezpUOOVu2MCWaWC++qQUA2btrJEBzyCA6th9Cbqb+bB4IQGgdDYjNTH05MSevmyuZxloGUMWhE+hWsZjHeagSfS8SgS2Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCpVFtne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C476CC4CEE4;
+	Tue, 25 Mar 2025 12:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905857;
-	bh=dJdJi1qP8zhOQ21wxXukquza8J1lEq+Om9tx6SbXV+8=;
+	s=korg; t=1742906113;
+	bh=Q1K1ICsNb9Tz+QAXLxOwIs+rQbrGBfoaKXuBaUEaGeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=quD73EF5cL83tFEd0nvVolDzz/wkcV/AK92kA0w5GiH021hx8DBO6wKKlNauNxmob
-	 fsTFxNcGTWdbMhfIgqzvXGWZl4ti3AQQATgj3di2BlXye0uWEhpKYszHql9vWp5lFS
-	 oQMtawawqQQ0qy9kseIvyZ3Zi2gHMeQV7gIzGfsM=
+	b=oCpVFtneW0iSFE2po11vVpib4qV+mWyC3RL7EYKJL0Rj7TpeJKvZQwU6TrWcu/m6E
+	 iSt6vtB9d2cb7SIzKGSU+ZWMKGOy1DW0SCn/YrtokaSVFd+7iKKSMMuaPhkHfXUhgG
+	 0W6VRY0LTuPz7zTSmnhsEObAEAjOYQtiD3kcAoO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.1 174/198] arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Troy Hanson <quic_thanson@quicinc.com>,
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 21/77] accel/qaic: Fix possible data corruption in BOs > 2G
 Date: Tue, 25 Mar 2025 08:22:16 -0400
-Message-ID: <20250325122201.210988673@linuxfoundation.org>
+Message-ID: <20250325122144.908431530@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
-commit 2c1092823eb03f8508d6769e2f38eef7e1fe62a0 upstream.
+[ Upstream commit 84a833d90635e4b846333e2df0ae72f9cbecac39 ]
 
-The simple-audio-card's microphone widget currently connects to the
-headphone jack. Routing the microphone input to the microphone jack
-allows for independent operation of the microphone and headphones.
+When slicing a BO, we need to iterate through the BO's sgt to find the
+right pieces to construct the slice. Some of the data types chosen for
+this process are incorrectly too small, and can overflow. This can
+result in the incorrect slice construction, which can lead to data
+corruption in workload execution.
 
-This resolves the following boot-time kernel log message, which
-indicated a conflict when the microphone and headphone functions were
-not separated:
-  debugfs: File 'Headphone Jack' in directory 'dapm' already present!
+The device can only handle 32-bit sized transfers, and the scatterlist
+struct only supports 32-bit buffer sizes, so our upper limit for an
+individual transfer is an unsigned int. Using an int is incorrect due to
+the reservation of the sign bit. Upgrade the length of a scatterlist
+entry and the offsets into a scatterlist entry to unsigned int for a
+correct representation.
 
-Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While each transfer may be limited to 32-bits, the overall BO may exceed
+that size. For counting the total length of the BO, we need a type that
+can represent the largest allocation possible on the system. That is the
+definition of size_t, so use it.
+
+Fixes: ff13be830333 ("accel/qaic: Add datapath")
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
+Reviewed-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306171959.853466-1-jeff.hugo@oss.qualcomm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/accel/qaic/qaic_data.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
-@@ -16,10 +16,10 @@
- 			"Headphone Jack", "HPOUTR",
- 			"IN2L", "Line In Jack",
- 			"IN2R", "Line In Jack",
--			"Headphone Jack", "MICBIAS",
--			"IN1L", "Headphone Jack";
-+			"Microphone Jack", "MICBIAS",
-+			"IN1L", "Microphone Jack";
- 		simple-audio-card,widgets =
--			"Microphone", "Headphone Jack",
-+			"Microphone", "Microphone Jack",
- 			"Headphone", "Headphone Jack",
- 			"Line", "Line In Jack";
+diff --git a/drivers/accel/qaic/qaic_data.c b/drivers/accel/qaic/qaic_data.c
+index d2f8c70a77a5b..e8e6eb85f5f13 100644
+--- a/drivers/accel/qaic/qaic_data.c
++++ b/drivers/accel/qaic/qaic_data.c
+@@ -165,9 +165,10 @@ static void free_slice(struct kref *kref)
+ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_table **sgt_out,
+ 					struct sg_table *sgt_in, u64 size, u64 offset)
+ {
+-	int total_len, len, nents, offf = 0, offl = 0;
+ 	struct scatterlist *sg, *sgn, *sgf, *sgl;
++	unsigned int len, nents, offf, offl;
+ 	struct sg_table *sgt;
++	size_t total_len;
+ 	int ret, j;
  
+ 	/* find out number of relevant nents needed for this mem */
+@@ -175,6 +176,8 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
+ 	sgf = NULL;
+ 	sgl = NULL;
+ 	nents = 0;
++	offf = 0;
++	offl = 0;
+ 
+ 	size = size ? size : PAGE_SIZE;
+ 	for_each_sgtable_dma_sg(sgt_in, sg, j) {
+-- 
+2.39.5
+
 
 
 
