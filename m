@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-126385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9C3A700AB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B333BA700F4
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA6C03B09B5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB533BC5BC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91C0269D17;
-	Tue, 25 Mar 2025 12:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FF4269808;
+	Tue, 25 Mar 2025 12:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws2dLz+b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQjNWuLJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782B62580F6;
-	Tue, 25 Mar 2025 12:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B932C2561A2;
+	Tue, 25 Mar 2025 12:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906126; cv=none; b=RkThifliXzQ5sTrC6RHD1CmKRTPM+LD7aZKBG9O5ku7GH8Rb8tTpqaWAyOAh3fOKqt9JkfbeWQeUWo8E7xHS/wP33HJYmbjNIDHcFWG7nSWLeozux7lRJWuD4lgIf6gW/wcsiyRfcYUZ03yXwmjzXbmTA3lvBqWDqm+ySVeijcY=
+	t=1742906084; cv=none; b=PXLylKKWOGVgWDvlaH9P0oEGYugyBWLDvmgkaUKeS/I8KQKylQkL/q3GZDi6FRFimy2aAbicr7Wq3eUg369vdr7e+CgfX2I25pC/YgVvDkCUK4UzaeYGelRkU9T85ejLso5GT2gOXZK3qWZmjPxD4EtVnA6DnVXHU7qO5IYF5Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906126; c=relaxed/simple;
-	bh=KzOJOF1Nz9lB0gU59DAOjny+L5kN5Qe2OprHnBMpquo=;
+	s=arc-20240116; t=1742906084; c=relaxed/simple;
+	bh=KnnB9cw0q4FDpYPC6jDTP37hmXAitHkPmm62lQQqybM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1PS1b2HCIpMZLY0ae9U7R8jJtQUVTMGuKQtvn7BMvP95pt/sfDvrEJP/98hNGauDnGB1H2BZKCwWAIq0e9lmIl92W5IOHs14Ob8MpR2QpkU7zInZTgKIQo/3uc+0JcoZlFdIUGK5GKF5x7n38ehNoijLIANWFIUiwyYuLNlG5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws2dLz+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5AFC4CEE4;
-	Tue, 25 Mar 2025 12:35:26 +0000 (UTC)
+	 MIME-Version; b=eV6y0XnNhEB555ZhzZKyK13NoXOVPBgbMpJOgV7kIF7vk6oAot2OGndZDM3XmBnXgGfxuKTjOtcGHqDiDncZsruWm163fvmywAyYJDIm8mK4yyovenktHSuJl4n8Ot6/BtnDNKEm8XMgNKd67CHMLgOG0xVXRgEctJ0B5fmes+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQjNWuLJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B4EC4CEE4;
+	Tue, 25 Mar 2025 12:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906126;
-	bh=KzOJOF1Nz9lB0gU59DAOjny+L5kN5Qe2OprHnBMpquo=;
+	s=korg; t=1742906083;
+	bh=KnnB9cw0q4FDpYPC6jDTP37hmXAitHkPmm62lQQqybM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ws2dLz+bIpkvvokGla5BGVsvwtA5yDfAUHRHJDCR0FNEeRDxdhTzYIIuvM1FKNlmx
-	 3PaYLk+l1eQ8IJM26wr4i7H8dIva5WXvQAG1KU1v5OaXAT7NEdBkLwTRzh7JF3nKpL
-	 i7UswAcvTj5lwOUBIMNmMt7pcTo/O9KqHZGbUT6o=
+	b=XQjNWuLJIdAJPiqVOTVglcEk9QdKC3RrDIssozAGvcWmbQST4UDhGCp5hAAgqLHFL
+	 r9JB9E6uyJRiazR5kUJwJ+EYABS2uUhiHCoBOsUdAUgFRLIbY8pDFIqaY5t0BlSG0p
+	 0YhAUbg6jd9+CKEsvOuIw12Lf9n24L1+fFz962H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 28/77] Revert "gre: Fix IPv6 link-local address generation."
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.13 085/119] ARM: dts: imx6qdl-apalis: Fix poweroff on Apalis iMX6
 Date: Tue, 25 Mar 2025 08:22:23 -0400
-Message-ID: <20250325122145.090221659@linuxfoundation.org>
+Message-ID: <20250325122151.230998120@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-[ Upstream commit fc486c2d060f67d672ddad81724f7c8a4d329570 ]
+commit 83964a29379cb08929a39172780a4c2992bc7c93 upstream.
 
-This reverts commit 183185a18ff96751db52a46ccf93fff3a1f42815.
+The current solution for powering off the Apalis iMX6 is not functioning
+as intended. To resolve this, it is necessary to power off the
+vgen2_reg, which will also set the POWER_ENABLE_MOCI signal to a low
+state. This ensures the carrier board is properly informed to initiate
+its power-off sequence.
 
-This patch broke net/forwarding/ip6gre_custom_multipath_hash.sh in some
-circumstances (https://lore.kernel.org/netdev/Z9RIyKZDNoka53EO@mini-arch/).
-Let's revert it while the problem is being investigated.
+The new solution uses the regulator-poweroff driver, which will power
+off the regulator during a system shutdown.
 
-Fixes: 183185a18ff9 ("gre: Fix IPv6 link-local address generation.")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/8b1ce738eb15dd841aab9ef888640cab4f6ccfea.1742418408.git.gnault@redhat.com
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 4eb56e26f92e ("ARM: dts: imx6q-apalis: Command pmic to standby for poweroff")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index db07d3bbaf379..8360939acf85a 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3189,13 +3189,16 @@ static void add_v4_addrs(struct inet6_dev *idev)
- 	struct in6_addr addr;
- 	struct net_device *dev;
- 	struct net *net = dev_net(idev->dev);
--	int scope, plen;
-+	int scope, plen, offset = 0;
- 	u32 pflags = 0;
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
+@@ -108,6 +108,11 @@
+ 		};
+ 	};
  
- 	ASSERT_RTNL();
++	poweroff {
++		compatible = "regulator-poweroff";
++		cpu-supply = <&vgen2_reg>;
++	};
++
+ 	reg_module_3v3: regulator-module-3v3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-always-on;
+@@ -236,10 +241,6 @@
+ 	status = "disabled";
+ };
  
- 	memset(&addr, 0, sizeof(struct in6_addr));
--	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr, 4);
-+	/* in case of IP6GRE the dev_addr is an IPv6 and therefore we use only the last 4 bytes */
-+	if (idev->dev->addr_len == sizeof(struct in6_addr))
-+		offset = sizeof(struct in6_addr) - 4;
-+	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr + offset, 4);
+-&clks {
+-	fsl,pmic-stby-poweroff;
+-};
+-
+ /* Apalis SPI1 */
+ &ecspi1 {
+ 	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
+@@ -527,7 +528,6 @@
  
- 	if (!(idev->dev->flags & IFF_POINTOPOINT) && idev->dev->type == ARPHRD_SIT) {
- 		scope = IPV6_ADDR_COMPATv4;
-@@ -3505,13 +3508,7 @@ static void addrconf_gre_config(struct net_device *dev)
- 		return;
- 	}
+ 	pmic: pmic@8 {
+ 		compatible = "fsl,pfuze100";
+-		fsl,pmic-stby-poweroff;
+ 		reg = <0x08>;
  
--	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
--	 * unless we have an IPv4 GRE device not bound to an IP address and
--	 * which is in EUI64 mode (as __ipv6_isatap_ifid() would fail in this
--	 * case). Such devices fall back to add_v4_addrs() instead.
--	 */
--	if (!(dev->type == ARPHRD_IPGRE && *(__be32 *)dev->dev_addr == 0 &&
--	      idev->cnf.addr_gen_mode == IN6_ADDR_GEN_MODE_EUI64)) {
-+	if (dev->type == ARPHRD_ETHER) {
- 		addrconf_addr_gen(idev, true);
- 		return;
- 	}
--- 
-2.39.5
-
+ 		regulators {
 
 
 
