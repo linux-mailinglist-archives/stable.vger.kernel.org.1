@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-126155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD57A6FF9D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFE4A700A2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA347841F3D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AA463BCA60
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9486B266EEB;
-	Tue, 25 Mar 2025 12:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7819268C5C;
+	Tue, 25 Mar 2025 12:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSE+sVv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHAReDK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5097C1D959B;
-	Tue, 25 Mar 2025 12:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69E82571DB;
+	Tue, 25 Mar 2025 12:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905703; cv=none; b=MN1yofEq3G2oNqNhG01nFZO+rGqbB6aT+zareAE8unTXaIgqELC1WoJaJBo361FAHUT5UHfWpTdPCgX1uI5/NQqba7cGHZuWeAHH2Cx2hF8JPdPhBwDFNFJ604zA99wAt9kHBsev4u+4iur0xX3xKM/0mSnd/0eCN89EhoF5yD4=
+	t=1742905925; cv=none; b=dOfK5w5K9yXYsSYL4vE4mflTSjKfuNDGmiI9FDsLGp1sciQ0yJRLfP5L70I0S6Oa3oSwsfJiLpKw91a3PwwGYcBW4CF9rDAyCY0/A/gtdhiggPHyYxIPUjYIyrRyUhjOnVgJAKry4p+LC1LgQ6T+iZqEFM46qlHy8ARoxrgJ4Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905703; c=relaxed/simple;
-	bh=0vqwjhUKoK5pgdJwmOmNXDj6YxBuyRBKR+DWNSW6PQ4=;
+	s=arc-20240116; t=1742905925; c=relaxed/simple;
+	bh=8iovvrGktmPR/ZGQUiyynB/T5ggQtzd69SvGbu3uIUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjXfsxAerBhwN/LsiAQyH7ZnVUXpI1ZyzWWPHBoa34iaS85fAMVlqukXO1ihIw9cp7WQYcudh1B+Mqq7HcQ5e15WcsJV9CS8vso8LRZzRw5ThhVJ+CHIzhXKArH/MMe8khsdlBilzFKWw9WnvY9ODQmaNKBE7hyMNeazSXZiYjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSE+sVv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7DCC4CEE4;
-	Tue, 25 Mar 2025 12:28:22 +0000 (UTC)
+	 MIME-Version; b=TkMmsLUX2d7xQBqrJucjh2nZuuStll+zXSUnU6k0Dtx8Fu5f2Fw0q+r/wO3YK+VE+8qheE9o7g4+pX274CyvT0onr1bOlzGqb/m9TE+WR0AmMi/pbs+JG18svexXhjRvnEbzKgAEVNhcUhiQqQpm6vWfcbRhcZYLA/DC9RxY0X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHAReDK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5281FC4CEE4;
+	Tue, 25 Mar 2025 12:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905702;
-	bh=0vqwjhUKoK5pgdJwmOmNXDj6YxBuyRBKR+DWNSW6PQ4=;
+	s=korg; t=1742905925;
+	bh=8iovvrGktmPR/ZGQUiyynB/T5ggQtzd69SvGbu3uIUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSE+sVv5ywB42yusHsIY4slSmheNwCqnnALgVgZW4RyqFIRTI4sYruC+GfQ+jZDLu
-	 NsPiqw36ZfH+qL6BFlSk3zaVt95MnSF7xJpyRt/F1bYxIl3BcinNVYvlGhIZJgfIwP
-	 M8qpwZzEgFlnJNk4ahCnbWRK4djeILC17mE3+e4Q=
+	b=SHAReDK7tmGxxtJw505XvMktnwlKTkX8Ya05jNsj1RamnR7sHSFNW1D/j8CKGmLZM
+	 w4sPMfFXC8iOM+6Hu23hY4ftcDkoMim0LNvB/FaFykOweRTEu44MJcTIpBF5Jwu6RU
+	 QGhv/jmLSzsmU7/wTKaWlnsSG8OGHsN0jmgIso5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Varada Pavani <v.pavani@samsung.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.1 118/198] clk: samsung: update PLL locktime for PLL142XX used on FSD platform
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 022/119] RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
 Date: Tue, 25 Mar 2025 08:21:20 -0400
-Message-ID: <20250325122159.750652777@linuxfoundation.org>
+Message-ID: <20250325122149.637155525@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varada Pavani <v.pavani@samsung.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-commit 53517a70873c7a91675f7244768aad5006cc45de upstream.
+[ Upstream commit 81c0db302a674f8004ed805393d17fd76f552e83 ]
 
-Currently PLL142XX locktime is 270. As per spec, it should be 150. Hence
-update PLL142XX controller locktime to 150.
+Driver is always clearing the mask that sets the VLAN ID/Service Level
+in the adapter. Recent change for supporting multiple traffic class
+exposed this issue.
 
-Cc: stable@vger.kernel.org
-Fixes: 4f346005aaed ("clk: samsung: fsd: Add initial clock support")
-Signed-off-by: Varada Pavani <v.pavani@samsung.com>
-Link: https://lore.kernel.org/r/20250225131918.50925-3-v.pavani@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Allow setting SL and VLAN_ID while QP is moved from INIT to RTR state.
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Fixes: c64b16a37b6d ("RDMA/bnxt_re: Support different traffic class")
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1741670196-2919-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/samsung/clk-pll.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/clk/samsung/clk-pll.c
-+++ b/drivers/clk/samsung/clk-pll.c
-@@ -206,6 +206,7 @@ static const struct clk_ops samsung_pll3
-  */
- /* Maximum lock time can be 270 * PDIV cycles */
- #define PLL35XX_LOCK_FACTOR	(270)
-+#define PLL142XX_LOCK_FACTOR	(150)
- 
- #define PLL35XX_MDIV_MASK       (0x3FF)
- #define PLL35XX_PDIV_MASK       (0x3F)
-@@ -272,7 +273,11 @@ static int samsung_pll35xx_set_rate(stru
- 	}
- 
- 	/* Set PLL lock time. */
--	writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
-+	if (pll->type == pll_142xx)
-+		writel_relaxed(rate->pdiv * PLL142XX_LOCK_FACTOR,
-+			pll->lock_reg);
-+	else
-+		writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
- 			pll->lock_reg);
- 
- 	/* Change PLL PMS values */
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 5336f74297f81..457eecb99f969 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1217,8 +1217,6 @@ static void __modify_flags_from_init_state(struct bnxt_qplib_qp *qp)
+ 			qp->path_mtu =
+ 				CMDQ_MODIFY_QP_PATH_MTU_MTU_2048;
+ 		}
+-		qp->modify_flags &=
+-			~CMDQ_MODIFY_QP_MODIFY_MASK_VLAN_ID;
+ 		/* Bono FW require the max_dest_rd_atomic to be >= 1 */
+ 		if (qp->max_dest_rd_atomic < 1)
+ 			qp->max_dest_rd_atomic = 1;
+-- 
+2.39.5
+
 
 
 
