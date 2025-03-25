@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-126322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E956DA70033
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02382A70065
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AFA119A3805
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1F7E178CA9
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC2026980B;
-	Tue, 25 Mar 2025 12:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD76269D13;
+	Tue, 25 Mar 2025 12:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNvPK4j4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D+CcpeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18BB2580DE;
-	Tue, 25 Mar 2025 12:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD972580F6;
+	Tue, 25 Mar 2025 12:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906009; cv=none; b=eV+skoJNnbDg0RDS738azKbrvIlJoC8x/QdoxO4lxP195qZovA7xRUrGGBVPgW9eZT/AIn51aHPmeS+Tn+2FU15+drC8YqRtG0SUWrnd3VjQmFu4SPYSMaKgJPrECjHfGa72BoZ8xpivPxFzAhmhmisf47GTWlfBbEJMV6foFFM=
+	t=1742906124; cv=none; b=q12Ncs28yuvv2DgqbDMeTN3n6YOrM8HbWfB5VX9uVW/dT4e79RVyp7MgxUVRqmYZIGcH83Lan988sPbUlP2EDyXTedfDQxW9pUyjBRXeEGQHtRTnEbB0AtJRalsZFJWwfozCOu7+s6oTrrpVFeLC5YjT2Yw0MoEGW5nAyxM4P7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906009; c=relaxed/simple;
-	bh=PTFiKX4j1r4pQ3LojLA4syYKH8JiZxE1mkSxQp1cQ24=;
+	s=arc-20240116; t=1742906124; c=relaxed/simple;
+	bh=mCkBDzY0QKmH9fJUo3rfBLCaWDb63BFUqXW056a0Ufw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfPyhfYviH7XSqynk2NgJD1Igdy3wMpFpcIP/YhUpybukBelGfKagjrBugS3l9tI513qoHSWtGEarsMPG1r+o0ibUR6wE6P/eFA7d7pZ9c9Qr795EH80wFOYJtiWd+d6ku47++Hefbtn+6KdwmzlIFgW3rbufwCybNyljSehzSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNvPK4j4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FE9C4CEE4;
-	Tue, 25 Mar 2025 12:33:29 +0000 (UTC)
+	 MIME-Version; b=f+KDH1+Y5vk27iPN6Is+2bcsnDfOFBAHnBW43zGXYmNq7zIPi38w/FAoZUz9dS7OxfH6iC4vpwcc+guNHBYW2NLdxZzzIP64u63w2cY1+ghCipbbin5ilnQjl+MJHb8qJz0KU7k2cESrU5dEpmUSWrPpv27MgaXwbDv+okhPvp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D+CcpeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A48C4CEE4;
+	Tue, 25 Mar 2025 12:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906009;
-	bh=PTFiKX4j1r4pQ3LojLA4syYKH8JiZxE1mkSxQp1cQ24=;
+	s=korg; t=1742906124;
+	bh=mCkBDzY0QKmH9fJUo3rfBLCaWDb63BFUqXW056a0Ufw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNvPK4j4IGsCxSoT8cxTUyis1Xtprr39LISm++H1JxC9k/ZuJP2/tWILhFIvVQG6G
-	 kjPwg5JnMg7+Z6oXykQvluekPibbKqPFtLiJmgzVqCODVldZzggRLjWdcehUEodUxF
-	 3L90+Q1vHQTbAvoRMWoOhnrAS2aDmzgZPyQx1uwk=
+	b=0D+CcpeEXnNH75WbWnBXoTJsgcs1wdQA6om7LA3JofVFEXU9oYMD2fBT8inpggvYv
+	 zjAjLMtUR6MtyDHZmh2qnsMyhfCRvNw9slZI6mXp9HV1p5uJ6DhvqkJJxrM52I3T2l
+	 ZBF1pc8ENglsDi1kTri1AWvwOAvhJg/78PtLhlM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 084/119] memcg: drain obj stock on cpu hotplug teardown
+	Lin Ma <linma@zju.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 27/77] net/neighbor: add missing policy for NDTPA_QUEUE_LENBYTES
 Date: Tue, 25 Mar 2025 08:22:22 -0400
-Message-ID: <20250325122151.205652640@linuxfoundation.org>
+Message-ID: <20250325122145.062822001@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit 9f01b4954490d4ccdbcc2b9be34a9921ceee9cbb upstream.
+[ Upstream commit 90a7138619a0c55e2aefaad27b12ffc2ddbeed78 ]
 
-Currently on cpu hotplug teardown, only memcg stock is drained but we
-need to drain the obj stock as well otherwise we will miss the stats
-accumulated on the target cpu as well as the nr_bytes cached. The stats
-include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
-addition we are leaking reference to struct obj_cgroup object.
+Previous commit 8b5c171bb3dc ("neigh: new unresolved queue limits")
+introduces new netlink attribute NDTPA_QUEUE_LENBYTES to represent
+approximative value for deprecated QUEUE_LEN. However, it forgot to add
+the associated nla_policy in nl_ntbl_parm_policy array. Fix it with one
+simple NLA_U32 type policy.
 
-Link: https://lkml.kernel.org/r/20250310230934.2913113-1-shakeel.butt@linux.dev
-Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8b5c171bb3dc ("neigh: new unresolved queue limits")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://patch.msgid.link/20250315165113.37600-1-linma@zju.edu.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/core/neighbour.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1909,9 +1909,18 @@ void drain_all_stock(struct mem_cgroup *
- static int memcg_hotplug_cpu_dead(unsigned int cpu)
- {
- 	struct memcg_stock_pcp *stock;
-+	struct obj_cgroup *old;
-+	unsigned long flags;
- 
- 	stock = &per_cpu(memcg_stock, cpu);
-+
-+	/* drain_obj_stock requires stock_lock */
-+	local_lock_irqsave(&memcg_stock.stock_lock, flags);
-+	old = drain_obj_stock(stock);
-+	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
-+
- 	drain_stock(stock);
-+	obj_cgroup_put(old);
- 
- 	return 0;
- }
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index e44feb39d459a..1e2e60ffe7662 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -2293,6 +2293,7 @@ static const struct nla_policy nl_neightbl_policy[NDTA_MAX+1] = {
+ static const struct nla_policy nl_ntbl_parm_policy[NDTPA_MAX+1] = {
+ 	[NDTPA_IFINDEX]			= { .type = NLA_U32 },
+ 	[NDTPA_QUEUE_LEN]		= { .type = NLA_U32 },
++	[NDTPA_QUEUE_LENBYTES]		= { .type = NLA_U32 },
+ 	[NDTPA_PROXY_QLEN]		= { .type = NLA_U32 },
+ 	[NDTPA_APP_PROBES]		= { .type = NLA_U32 },
+ 	[NDTPA_UCAST_PROBES]		= { .type = NLA_U32 },
+-- 
+2.39.5
+
 
 
 
