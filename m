@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-126286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE74A7001D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4413DA701A6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61461169D62
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1622419A052A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6CB268C6D;
-	Tue, 25 Mar 2025 12:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F22D26B2AA;
+	Tue, 25 Mar 2025 12:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZFjQI3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMEphNu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1082561D7;
-	Tue, 25 Mar 2025 12:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE7925D524;
+	Tue, 25 Mar 2025 12:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905944; cv=none; b=D8nwjECZcr+3UmdnF76Tt8HFQeo+QP3JTT+r5SVVHn8YHBsR63KSet1mkqLIQmvUsFUi8OoVNa8rKpw+C6HcbGIXTde9m9lW+LnBlpbwLhdgxnWQ1WNBQF/1FgXntO62sdIVEKmva5dxxMZglXmg5fCKrxJPak5wWzKkLlPBUNo=
+	t=1742906258; cv=none; b=nrPySkb3ftYiI3GWdTwyteqei0gG74LTYmke9pjX4JfNRApdNFXIK7UE1XYZyuop3/MfNOaAwa58z1r8gLRI25+ZjHBFVAFK1BF27TMCUPlvEqtsoRhXBrdr/OwJm4CWNcNhmmv90VUIiC9yU3B12agtbRQ3oAyI/yrJsWT0r10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905944; c=relaxed/simple;
-	bh=NexElz9PouWnG0mwfnn4F9+psSH7gDNxpdBrKgJFqq4=;
+	s=arc-20240116; t=1742906258; c=relaxed/simple;
+	bh=1sI4imO+WRkV5lRje8WkTFcCeMko9hm0zrZhjZ9L+A0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBkaBe7zMFgBGMZ5/EWDPBkSvlJWTnVF+Um63eXJP66g4H20sQ3LFGeinp44ZOSzfojxS54Apw8WJGXOs+onI8hHsow3NIZoCEVwdFMzqJbguvViYD1klxND3nIWyayZtqmdEI9h6x4MBfgygHocKIdbncdUC8tZv/gFjqadcP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZFjQI3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92A4C4CEE4;
-	Tue, 25 Mar 2025 12:32:23 +0000 (UTC)
+	 MIME-Version; b=P8UqoRPpNIOUTIUNF3aERVTsFhr+cRNzvOUuY6UttMMwfQo5za4+6linJ6Lkx7uteuXR3FKaKmOhqgllMasDdXkxwnynezeC2J32eZFlrgXI8L+WQZ1lRDuhApaz6F3UhSXIFdo5hz/W1sppA7MBbyklQ8LgTPkZ4WxeDwkD1hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMEphNu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E04C4CEE4;
+	Tue, 25 Mar 2025 12:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905944;
-	bh=NexElz9PouWnG0mwfnn4F9+psSH7gDNxpdBrKgJFqq4=;
+	s=korg; t=1742906258;
+	bh=1sI4imO+WRkV5lRje8WkTFcCeMko9hm0zrZhjZ9L+A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZFjQI3YqkJR09HclH4OkjC2zj6u9YUekDM1oaG6Nz+xhfK640u8MoEBT5q8F3Esc
-	 fM6TTfIFxDJhDnc1AkwF5whKgRhGCdap+478g6lfpduH5LUJbFnHL8vcQ14O3vAEA4
-	 5Ha7yTcOX1aMcgH6iwX9XEIi4AlTU3faAdVJ23Dc=
+	b=WMEphNu4YQUrunBwXH2wXa6gP55LrvnszomvlAPAt/qR1dB0UgOcTzjt96EHAiiHA
+	 QxEWjwk3EvSNQB8Qmd48/XlvJTuOorMp+VUzdlBK5OoR2FmX7d5zUBm3dFeef3x0Iz
+	 nFjPF6uiX+celxntyKyYL8eRV8eUwRZ/FFWi05oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongjian Sun <sunyongjian1@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Tom Brautaset <tbrautaset@gmail.com>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 049/119] libfs: Fix duplicate directory entry in offset_dir_lookup
-Date: Tue, 25 Mar 2025 08:21:47 -0400
-Message-ID: <20250325122150.308146817@linuxfoundation.org>
+Subject: [PATCH 6.12 021/116] ARM: dts: BCM5301X: Fix switch port labels of ASUS RT-AC3200
+Date: Tue, 25 Mar 2025 08:21:48 -0400
+Message-ID: <20250325122149.760588289@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+From: Chester A. Unal <chester.a.unal@arinc9.com>
 
-[ Upstream commit f70681e9e6066ab7b102e6b46a336a8ed67812ae ]
+[ Upstream commit 24d4c56dd68906bf55ff8fc2e2d36760f97dce5f ]
 
-There is an issue in the kernel:
+After using the device for a while, Tom reports that he initially described
+the switch port labels incorrectly. Apparently, ASUS's own firmware also
+describes them incorrectly. Correct them to what is seen on the chassis.
 
-In tmpfs, when using the "ls" command to list the contents
-of a directory with a large number of files, glibc performs
-the getdents call in multiple rounds. If a concurrent unlink
-occurs between these getdents calls, it may lead to duplicate
-directory entries in the ls output. One possible reproduction
-scenario is as follows:
-
-Create 1026 files and execute ls and rm concurrently:
-
-for i in {1..1026}; do
-    echo "This is file $i" > /tmp/dir/file$i
-done
-
-ls /tmp/dir				rm /tmp/dir/file4
-	->getdents(file1026-file5)
-						->unlink(file4)
-
-	->getdents(file5,file3,file2,file1)
-
-It is expected that the second getdents call to return file3
-through file1, but instead it returns an extra file5.
-
-The root cause of this problem is in the offset_dir_lookup
-function. It uses mas_find to determine the starting position
-for the current getdents call. Since mas_find locates the first
-position that is greater than or equal to mas->index, when file4
-is deleted, it ends up returning file5.
-
-It can be fixed by replacing mas_find with mas_find_rev, which
-finds the first position that is less than or equal to mas->index.
-
-Fixes: b9b588f22a0c ("libfs: Use d_children list to iterate simple_offset directories")
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Link: https://lore.kernel.org/r/20250320034417.555810-1-sunyongjian@huaweicloud.com
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: Tom Brautaset <tbrautaset@gmail.com>
+Fixes: b116239094d8 ("ARM: dts: BCM5301X: Add DT for ASUS RT-AC3200")
+Signed-off-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Link: https://lore.kernel.org/r/20250304-for-broadcom-fix-rt-ac3200-switch-ports-v1-1-7e249a19a13e@arinc9.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/libfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 279442b1fe968..54822b559827c 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -496,7 +496,7 @@ offset_dir_lookup(struct dentry *parent, loff_t offset)
- 		found = find_positive_dentry(parent, NULL, false);
- 	else {
- 		rcu_read_lock();
--		child = mas_find(&mas, DIR_OFFSET_MAX);
-+		child = mas_find_rev(&mas, DIR_OFFSET_MIN);
- 		found = find_positive_dentry(parent, child, false);
- 		rcu_read_unlock();
- 	}
+diff --git a/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts b/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts
+index 53cb0c58f6d05..3da2daee0c849 100644
+--- a/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts
++++ b/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts
+@@ -124,19 +124,19 @@ port@0 {
+ 		};
+ 
+ 		port@1 {
+-			label = "lan1";
++			label = "lan4";
+ 		};
+ 
+ 		port@2 {
+-			label = "lan2";
++			label = "lan3";
+ 		};
+ 
+ 		port@3 {
+-			label = "lan3";
++			label = "lan2";
+ 		};
+ 
+ 		port@4 {
+-			label = "lan4";
++			label = "lan1";
+ 		};
+ 	};
+ };
 -- 
 2.39.5
 
