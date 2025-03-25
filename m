@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-126101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22D8A6FF9F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885C0A6FFB6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E0E8189E05B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:56:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 339331884BBD
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D80290BC3;
-	Tue, 25 Mar 2025 12:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1402B257459;
+	Tue, 25 Mar 2025 12:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKP5Crd/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExW74+mj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E161290BB4;
-	Tue, 25 Mar 2025 12:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45C7255E47;
+	Tue, 25 Mar 2025 12:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905604; cv=none; b=McPR+/cnbmcEBiWdu4a6Xb6yd8g4q7RCwGTPnqF338qONv1OCr5tsBz+pIFKyjtRXHRLxX2T9cn3PbXsvi5fjT8JhNkJ/6LbespSwyDYb/p/i+kBiegRdThdYxBxdDq1/hsMfxsMGPsyYU4yqy+0ZRtB+J6EMQbYyR5VjKWLQDk=
+	t=1742905689; cv=none; b=hTMxSR1DRLlpAhpgQW6xJNvC5gTEF8Me5B295gAcLZyaBgdhBLEHLBtQ71IglULROY60zD4niKeqvzoO5cbB2pC1NhYOnw2TD6Vo1JJ7b5O5xGB3/GCl6LGn278ZBOiLhB7b003bR6/5IZK5EsG2cEHUgR2LXXK12iZ2JhsEavk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905604; c=relaxed/simple;
-	bh=FCrjv6qTU6QgliBHuC7IHxNz8HjTi6Ma6bwqerhfVQ8=;
+	s=arc-20240116; t=1742905689; c=relaxed/simple;
+	bh=pBRh2qGYRgHE/rVllQ7jqrYcIzklJpKokwbORUz9dyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZZZ7yBe8Tmcha62iQft+YOCOHTpJKvxBxltJNkl6Uufjy8Ml0agJ5T80pHipOmhrk3tKtlVWBKpkwTjxg12ObcSDfwAaGfDjq9mp30qad8hbOr1Bx9qxSrZTYgaGFFu9J8zYG7liD5x37XZE6RxBAdzlfFw7/EZhbL8cDbwiIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKP5Crd/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95BEC4CEEF;
-	Tue, 25 Mar 2025 12:26:42 +0000 (UTC)
+	 MIME-Version; b=DxoB0AxFom5N2qQgIU4B8E1n1Jc03mLSdDsuQ1Vm1U3+BV3VQXIckmDdazguzBYumhGjWFD/7MrD+wBnj7jCzSMkPMUznXG6uO0zvmzv+dlXR0vNyxuyiGZeAM9u4sVR42cR1kzmESygKu2zRMfYmmknWUjQm6CVLy/anS15hlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExW74+mj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7844AC4CEE4;
+	Tue, 25 Mar 2025 12:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905603;
-	bh=FCrjv6qTU6QgliBHuC7IHxNz8HjTi6Ma6bwqerhfVQ8=;
+	s=korg; t=1742905689;
+	bh=pBRh2qGYRgHE/rVllQ7jqrYcIzklJpKokwbORUz9dyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKP5Crd/Mzhal+FII/VJjJGcScShx0j959yvja+/8RBsEUJEFiwxpmOXpf9bo3Cav
-	 gvQakzUd25/NKPqoFo3XQDuagJLyPqI2lAeZ3wBZdPONzrF/NNrW8VuLRwIC9lx+70
-	 6whqevc98nWA8DuBLmj0RUzqp/zlPA4jUrvC0tIc=
+	b=ExW74+mj4oxy0wLsA3ZY6Ikkq5mVdVAwXhFcuK+SRZ4u3dTE/Rn+LBYguyjJhNNIL
+	 iJ4wju+hgFQicHJRPItSiwzAwUefns4znnYrw8WD6JiL/sp0XJi3hm6t5e7BQjEUYm
+	 7gf6OAvoM+7NrPAnDDHrhd/Nl9ox1AjhLM9uBmy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lyude Paul <lyude@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/198] ASoC: tas2770: Fix volume scale
-Date: Tue, 25 Mar 2025 08:20:25 -0400
-Message-ID: <20250325122158.298164514@linuxfoundation.org>
+Subject: [PATCH 6.1 070/198] drm/nouveau: Do not override forced connector status
+Date: Tue, 25 Mar 2025 08:20:32 -0400
+Message-ID: <20250325122158.478682978@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -66,34 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 579cd64b9df8a60284ec3422be919c362de40e41 ]
+[ Upstream commit 01f1d77a2630e774ce33233c4e6723bca3ae9daa ]
 
-The scale starts at -100dB, not -128dB.
+Keep user-forced connector status even if it cannot be programmed. Same
+behavior as for the rest of the drivers.
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2770-v1-1-cf50ff1d59a3@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250114100214.195386-1-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2770.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
-index 8557759acb1f2..e284a3a854591 100644
---- a/sound/soc/codecs/tas2770.c
-+++ b/sound/soc/codecs/tas2770.c
-@@ -508,7 +508,7 @@ static int tas2770_codec_probe(struct snd_soc_component *component)
- }
+diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
+index bdf5262ebd35e..5a30d115525ad 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -755,7 +755,6 @@ nouveau_connector_force(struct drm_connector *connector)
+ 	if (!nv_encoder) {
+ 		NV_ERROR(drm, "can't find encoder to force %s on!\n",
+ 			 connector->name);
+-		connector->status = connector_status_disconnected;
+ 		return;
+ 	}
  
- static DECLARE_TLV_DB_SCALE(tas2770_digital_tlv, 1100, 50, 0);
--static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -12750, 50, 0);
-+static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -10050, 50, 0);
- 
- static const struct snd_kcontrol_new tas2770_snd_controls[] = {
- 	SOC_SINGLE_TLV("Speaker Playback Volume", TAS2770_PLAY_CFG_REG2,
 -- 
 2.39.5
 
