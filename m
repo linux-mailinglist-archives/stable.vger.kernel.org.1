@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-126136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB394A6FFA4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AC1A70079
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01B953B41FE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FB25840044
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FA325A2DF;
-	Tue, 25 Mar 2025 12:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A50C268699;
+	Tue, 25 Mar 2025 12:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejCXCle/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tc+imzCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC0F25745F;
-	Tue, 25 Mar 2025 12:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0243268697;
+	Tue, 25 Mar 2025 12:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905668; cv=none; b=Ru0tq9sLhliuUoijqqJ57TcKNhFWClNBCGyX0xve48PE1ABPetqPQdaJhBLcjBNJ8LNfvqd0UaSF1kk1PKsCH2/rIgCp8bE2knKJ2PUVgXNudYpWkP7HSrjxPCKsNA6k9/WIrl9yqV4hXCDTx6X6AA18O27bwPqj+Kbg+CYTLxo=
+	t=1742905888; cv=none; b=tjwHFvMAA9pOpr6DfdCs9iYTsH+4XADJKiKRokQ1LS6wH1OxGnGT+HBSGdFPnk67ErxwlHAMnh8k+jE195A3w8qhWPkDW1yhis3yj9ASf/z9m4XWnGicAzlj2G6VAwlVwTeZsJzjrBIbFuDsTlyAPdtPLXzale2X/QMLA8BvzRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905668; c=relaxed/simple;
-	bh=JE6nTQIKA2MI8mJOQS2Oka+UWqJK4d+KB5xPj/fopYI=;
+	s=arc-20240116; t=1742905888; c=relaxed/simple;
+	bh=YLQG7YsQ4SqZY9zN0VOjhohw8csLi1U5eL5L0d4yL8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BUbkOH1HhHSUnGjqOoS9MsIFY/V5Pvy2kBjqiCrVY14XuwkOIIBQQXGvDY7MkTrMndUdFOxlYhdCx5OVqXSueAwua+4pzSatqmjDDa5kTWKq3dWoo7DKjz5thsjJ+GLMthDz2JdiiqoUGkwzeqemxezP9+zqlVZbNCgUL6YN/90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejCXCle/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08EFC4CEE4;
-	Tue, 25 Mar 2025 12:27:47 +0000 (UTC)
+	 MIME-Version; b=KnE9BqkhJRl92iEKm6j5EBLu4Q4SSDkM6a0clNah1/fuHGVdNdHFeLFPh+5sun8Yixvvt0I5T2KpEe+46m4C5qx0nlJx8IdmBKKL5pGzYdFiQTdIojbDnu5kdG9Aq7lxT2FVZqljOvrVXHcD6fCL7NFytV6xTZmZXxYjxGH/fMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tc+imzCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75970C4CEE4;
+	Tue, 25 Mar 2025 12:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905667;
-	bh=JE6nTQIKA2MI8mJOQS2Oka+UWqJK4d+KB5xPj/fopYI=;
+	s=korg; t=1742905888;
+	bh=YLQG7YsQ4SqZY9zN0VOjhohw8csLi1U5eL5L0d4yL8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejCXCle/zqHUuMT7DX381+sHzOaqk6qckJd3RkGFNgVcEJvRtkf2u4c0gVwdpYIU/
-	 ENKilUDQmg4RuaQ1GTzDDDmbYkb2kngoPevjLMH77QijjxIzX78pJw0s3xD9Rb0fK1
-	 vAGzTIlW9r9PWsrg2QaSU4xq2QhY6J6JNSm3594E=
+	b=Tc+imzCVPG0T9Ossgt2IMVq2YM+lbr9Ewt3Gxih/C1UtWt6fPWfrMu3R69xpBLhpN
+	 BnmGgQQqKgXaKGUIIjUkKwK2iyYvg97vzSq7eOwNEQa9Wn0wA43OFBhxHmx+GAlYZJ
+	 mX7EwsrBx8/KOM0Y060Lx4ngDGhCFgCAhiH6c4r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 098/198] xfs: add lock protection when remove perag from radix tree
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 002/119] firmware: imx-scu: fix OF node leak in .probe()
 Date: Tue, 25 Mar 2025 08:21:00 -0400
-Message-ID: <20250325122159.222411906@linuxfoundation.org>
+Message-ID: <20250325122149.124285706@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 07afd3173d0c6d24a47441839a835955ec6cf0d4 ]
+[ Upstream commit fbf10b86f6057cf79300720da4ea4b77e6708b0d ]
 
-[ 6.1: resolved conflict in xfs_ag.c ]
+imx_scu_probe() calls of_parse_phandle_with_args(), but does not
+release the OF node reference obtained by it. Add a of_node_put() call
+after done with the node.
 
-Take mp->m_perag_lock for deletions from the perag radix tree in
-xfs_initialize_perag to prevent racing with tagging operations.
-Lookups are fine - they are RCU protected so already deal with the
-tree changing shape underneath the lookup - but tagging operations
-require the tree to be stable while the tags are propagated back up
-to the root.
-
-Right now there's nothing stopping radix tree tagging from operating
-while a growfs operation is progress and adding/removing new entries
-into the radix tree.
-
-Hence we can have traversals that require a stable tree occurring at
-the same time we are removing unused entries from the radix tree which
-causes the shape of the tree to change.
-
-Likely this hasn't caused a problem in the past because we are only
-doing append addition and removal so the active AG part of the tree
-is not changing shape, but that doesn't mean it is safe. Just making
-the radix tree modifications serialise against each other is obviously
-correct.
-
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f25a066d1a07 ("firmware: imx-scu: Support one TX and one RX")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_ag.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/firmware/imx/imx-scu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/xfs/libxfs/xfs_ag.c
-+++ b/fs/xfs/libxfs/xfs_ag.c
-@@ -345,13 +345,17 @@ xfs_initialize_perag(
- 	return 0;
+diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
+index 1dd4362ef9a3f..8c28e25ddc8a6 100644
+--- a/drivers/firmware/imx/imx-scu.c
++++ b/drivers/firmware/imx/imx-scu.c
+@@ -280,6 +280,7 @@ static int imx_scu_probe(struct platform_device *pdev)
+ 		return ret;
  
- out_remove_pag:
-+	spin_lock(&mp->m_perag_lock);
- 	radix_tree_delete(&mp->m_perag_tree, index);
-+	spin_unlock(&mp->m_perag_lock);
- out_free_pag:
- 	kmem_free(pag);
- out_unwind_new_pags:
- 	/* unwind any prior newly initialized pags */
- 	for (index = first_initialised; index < agcount; index++) {
-+		spin_lock(&mp->m_perag_lock);
- 		pag = radix_tree_delete(&mp->m_perag_tree, index);
-+		spin_unlock(&mp->m_perag_lock);
- 		if (!pag)
- 			break;
- 		xfs_buf_hash_destroy(pag);
+ 	sc_ipc->fast_ipc = of_device_is_compatible(args.np, "fsl,imx8-mu-scu");
++	of_node_put(args.np);
+ 
+ 	num_channel = sc_ipc->fast_ipc ? 2 : SCU_MU_CHAN_NUM;
+ 	for (i = 0; i < num_channel; i++) {
+-- 
+2.39.5
+
 
 
 
