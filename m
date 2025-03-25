@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-126613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78AEAA7095D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:48:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DEAFA7094E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:46:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A45F189CF99
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:45:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D892F3A4A2B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F45E1F4CB6;
-	Tue, 25 Mar 2025 18:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE8B1DFD96;
+	Tue, 25 Mar 2025 18:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rjz9shN2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HX5TFQ3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A992C1F4C82;
-	Tue, 25 Mar 2025 18:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8111AE875;
+	Tue, 25 Mar 2025 18:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742928168; cv=none; b=VUQoZtuQ72Af5CaDabIddzPBa+nAdyyGF+sGfA9Tpo2UNE0B5I0rHKMkzW3Uqy5SQG0W++wtiNmcYiIK/P8SbqVijtQfNneuMylIrqOnMjnwZQd0fGfR+7BTCVM5113wbDxDzxJcjLsi/cKl1mYIZ2zSgJ54sTFJav08dgi3RdI=
+	t=1742928175; cv=none; b=t8bB/C4uQi6OB9KspsDFAmj8hgXVgowd5+XeF97uw5mGUc1LSCJvtU+gh7oO/0uX8YweMzKlq9yRxq+G96J1rjPzJSXwv8EUBLcFKSa8/TIx8Ml6BakXfHC/rqR5C9w2BGPL/cIZ/NxvX4l1yHPxB5xd+nJ2gdnjj2j0FpwAYhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742928168; c=relaxed/simple;
-	bh=70LDVfYt6ryFikxs5Zc6nLO59eM2YSuiLbb1gCwwUno=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kkrL0vn8oNHs1bmq/bGsOADQV725NbcVfW22z0aImcboRrxBKhY6j/CoVtCQ2JmgFxR/Wl/1A6cZFLL/ZC3czT6A1rUOw2bDzRHW2GRhz5SG/CjXWRHd8K6uVSyvPSE2tBarY9v8aeb5LjCL5ig+gSFRSqRHzR0AMiEubBzmYfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rjz9shN2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F160C4CEED;
-	Tue, 25 Mar 2025 18:42:47 +0000 (UTC)
+	s=arc-20240116; t=1742928175; c=relaxed/simple;
+	bh=eUJdDnj4ZjDq9dOPlJ/JUG00bt0PnCuHCHjtlNK0khE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pT3/1FN2y6ArWjNdhxsf1Jex43LFrlS27Rh9q8qA1UDI73BlXcmameWKvqanwhxq+MVbnAdg0yzt31mCfZKlQ9Fs3ODZ/bZmomvVXT90sIWHYYd1sznnoWCaylg6YVomT9MPhQwPz3DnQt6vow9Z4dJ2aWCMf/7SblDJYsFGXzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HX5TFQ3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F2FC4CEE4;
+	Tue, 25 Mar 2025 18:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742928168;
-	bh=70LDVfYt6ryFikxs5Zc6nLO59eM2YSuiLbb1gCwwUno=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rjz9shN2irRSBpxq/82Abq9qdU3ZlnrGxnI6XQ/V9K8PsuHFjPYNGvZk3zI8vGI0R
-	 zSMe9+G/e/nb6S4g11uoGMuIwMnoI9GngBH8kx/VbsfYYtC3gUrKgLPO1H6fRmKKhV
-	 kqaNOcP95W0H/xifnS6TH9ONRDn7MnygcmdNsh492sacpWJoN9HITT6jxvaj8i83TC
-	 1JoLKAaXsIhrL7QLse2UZfgsOh0ZcCxKo/y1zlvBzTCHd5lz3XUimleXU7j31JqLVv
-	 6CXUJ84zbJD2ybNSeSfReLxI98Or1jZal7iCTq1K9BPzN2rCEQvJPTybiY8ZE8Q/8x
-	 AR+lPKbZLloYw==
+	s=k20201202; t=1742928174;
+	bh=eUJdDnj4ZjDq9dOPlJ/JUG00bt0PnCuHCHjtlNK0khE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HX5TFQ3ylizajvG33Q0bmyBusppP99u0pXgJFHWYAJiFsrCINX0YffdSTP+a7P1Fe
+	 PvnIMwVpdS2lDxDQFQs6iHisSOkrL9x7ZuJouPgJ2luA/9uqVl4CPrNnqIbZDwMuzw
+	 iTN4v69udInPRAKbS5mtpGRoZOttMHmDiddcxAjK59161gdt0Jx13SfTf0/nqKco9f
+	 w7eIUVxI/a5tk9O04zUarhULIMGNos7X6YePXPuw0dOajd8vip02atUAJvX6AQvlRS
+	 Ls8BEKJd4jTr1m0oLEm8QCzGqMXPPr0LXKlxQSj8ersHA+P0Li7l9s1BsT/6YtJdiL
+	 T3nBKfBcImH9Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	ceph-devel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Oliver Hartkopp <socketcan@hartkopp.net>,
+	syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	netfs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 5/5] netfs: Fix netfs_unbuffered_read() to return ssize_t rather than int
-Date: Tue, 25 Mar 2025 14:42:35 -0400
-Message-Id: <20250325184236.2152255-5-sashal@kernel.org>
+	linux-can@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 1/3] can: statistics: use atomic access in hot path
+Date: Tue, 25 Mar 2025 14:42:46 -0400
+Message-Id: <20250325184249.2152329-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250325184236.2152255-1-sashal@kernel.org>
-References: <20250325184236.2152255-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,55 +61,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.20
+X-stable-base: Linux 6.6.84
 Content-Transfer-Encoding: 8bit
 
-From: David Howells <dhowells@redhat.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 07c574eb53d4cc9aa7b985bc8bfcb302e5dc4694 ]
+[ Upstream commit 80b5f90158d1364cbd80ad82852a757fc0692bf2 ]
 
-Fix netfs_unbuffered_read() to return an ssize_t rather than an int as
-netfs_wait_for_read() returns ssize_t and this gets implicitly truncated.
+In can_send() and can_receive() CAN messages and CAN filter matches are
+counted to be visible in the CAN procfs files.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20250314164201.1993231-5-dhowells@redhat.com
-Acked-by: "Paulo Alcantara (Red Hat)" <pc@manguebit.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: Alex Markuze <amarkuze@redhat.com>
-cc: Ilya Dryomov <idryomov@gmail.com>
-cc: ceph-devel@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+KCSAN detected a data race within can_send() when two CAN frames have
+been generated by a timer event writing to the same CAN netdevice at the
+same time. Use atomic operations to access the statistics in the hot path
+to fix the KCSAN complaint.
+
+Reported-by: syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67cd717d.050a0220.e1a89.0006.GAE@google.com
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250310143353.3242-1-socketcan@hartkopp.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/direct_read.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/can/af_can.c | 12 ++++++------
+ net/can/af_can.h | 12 ++++++------
+ net/can/proc.c   | 46 +++++++++++++++++++++++++++-------------------
+ 3 files changed, 39 insertions(+), 31 deletions(-)
 
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index b1a66a6e6bc2d..917b7edc34ef5 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -108,9 +108,9 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
-  * Perform a read to an application buffer, bypassing the pagecache and the
-  * local disk cache.
-  */
--static int netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
-+static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
- {
--	int ret;
-+	ssize_t ret;
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index c469fc187f0c7..cdad0be43e8ff 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -287,8 +287,8 @@ int can_send(struct sk_buff *skb, int loop)
+ 		netif_rx(newskb);
  
- 	_enter("R=%x %llx-%llx",
- 	       rreq->debug_id, rreq->start, rreq->start + rreq->len - 1);
-@@ -149,7 +149,7 @@ static int netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
+ 	/* update statistics */
+-	pkg_stats->tx_frames++;
+-	pkg_stats->tx_frames_delta++;
++	atomic_long_inc(&pkg_stats->tx_frames);
++	atomic_long_inc(&pkg_stats->tx_frames_delta);
+ 
+ 	return 0;
+ 
+@@ -647,8 +647,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ 	int matches;
+ 
+ 	/* update statistics */
+-	pkg_stats->rx_frames++;
+-	pkg_stats->rx_frames_delta++;
++	atomic_long_inc(&pkg_stats->rx_frames);
++	atomic_long_inc(&pkg_stats->rx_frames_delta);
+ 
+ 	/* create non-zero unique skb identifier together with *skb */
+ 	while (!(can_skb_prv(skb)->skbcnt))
+@@ -669,8 +669,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ 	consume_skb(skb);
+ 
+ 	if (matches > 0) {
+-		pkg_stats->matches++;
+-		pkg_stats->matches_delta++;
++		atomic_long_inc(&pkg_stats->matches);
++		atomic_long_inc(&pkg_stats->matches_delta);
  	}
- 
- out:
--	_leave(" = %d", ret);
-+	_leave(" = %zd", ret);
- 	return ret;
  }
+ 
+diff --git a/net/can/af_can.h b/net/can/af_can.h
+index 7c2d9161e2245..22f3352c77fec 100644
+--- a/net/can/af_can.h
++++ b/net/can/af_can.h
+@@ -66,9 +66,9 @@ struct receiver {
+ struct can_pkg_stats {
+ 	unsigned long jiffies_init;
+ 
+-	unsigned long rx_frames;
+-	unsigned long tx_frames;
+-	unsigned long matches;
++	atomic_long_t rx_frames;
++	atomic_long_t tx_frames;
++	atomic_long_t matches;
+ 
+ 	unsigned long total_rx_rate;
+ 	unsigned long total_tx_rate;
+@@ -82,9 +82,9 @@ struct can_pkg_stats {
+ 	unsigned long max_tx_rate;
+ 	unsigned long max_rx_match_ratio;
+ 
+-	unsigned long rx_frames_delta;
+-	unsigned long tx_frames_delta;
+-	unsigned long matches_delta;
++	atomic_long_t rx_frames_delta;
++	atomic_long_t tx_frames_delta;
++	atomic_long_t matches_delta;
+ };
+ 
+ /* persistent statistics */
+diff --git a/net/can/proc.c b/net/can/proc.c
+index bbce97825f13f..25fdf060e30d0 100644
+--- a/net/can/proc.c
++++ b/net/can/proc.c
+@@ -118,6 +118,13 @@ void can_stat_update(struct timer_list *t)
+ 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
+ 	unsigned long j = jiffies; /* snapshot */
+ 
++	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
++	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
++	long matches = atomic_long_read(&pkg_stats->matches);
++	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
++	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
++	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
++
+ 	/* restart counting in timer context on user request */
+ 	if (user_reset)
+ 		can_init_stats(net);
+@@ -127,35 +134,33 @@ void can_stat_update(struct timer_list *t)
+ 		can_init_stats(net);
+ 
+ 	/* prevent overflow in calc_rate() */
+-	if (pkg_stats->rx_frames > (ULONG_MAX / HZ))
++	if (rx_frames > (LONG_MAX / HZ))
+ 		can_init_stats(net);
+ 
+ 	/* prevent overflow in calc_rate() */
+-	if (pkg_stats->tx_frames > (ULONG_MAX / HZ))
++	if (tx_frames > (LONG_MAX / HZ))
+ 		can_init_stats(net);
+ 
+ 	/* matches overflow - very improbable */
+-	if (pkg_stats->matches > (ULONG_MAX / 100))
++	if (matches > (LONG_MAX / 100))
+ 		can_init_stats(net);
+ 
+ 	/* calc total values */
+-	if (pkg_stats->rx_frames)
+-		pkg_stats->total_rx_match_ratio = (pkg_stats->matches * 100) /
+-			pkg_stats->rx_frames;
++	if (rx_frames)
++		pkg_stats->total_rx_match_ratio = (matches * 100) / rx_frames;
+ 
+ 	pkg_stats->total_tx_rate = calc_rate(pkg_stats->jiffies_init, j,
+-					    pkg_stats->tx_frames);
++					    tx_frames);
+ 	pkg_stats->total_rx_rate = calc_rate(pkg_stats->jiffies_init, j,
+-					    pkg_stats->rx_frames);
++					    rx_frames);
+ 
+ 	/* calc current values */
+-	if (pkg_stats->rx_frames_delta)
++	if (rx_frames_delta)
+ 		pkg_stats->current_rx_match_ratio =
+-			(pkg_stats->matches_delta * 100) /
+-			pkg_stats->rx_frames_delta;
++			(matches_delta * 100) /	rx_frames_delta;
+ 
+-	pkg_stats->current_tx_rate = calc_rate(0, HZ, pkg_stats->tx_frames_delta);
+-	pkg_stats->current_rx_rate = calc_rate(0, HZ, pkg_stats->rx_frames_delta);
++	pkg_stats->current_tx_rate = calc_rate(0, HZ, tx_frames_delta);
++	pkg_stats->current_rx_rate = calc_rate(0, HZ, rx_frames_delta);
+ 
+ 	/* check / update maximum values */
+ 	if (pkg_stats->max_tx_rate < pkg_stats->current_tx_rate)
+@@ -168,9 +173,9 @@ void can_stat_update(struct timer_list *t)
+ 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
+ 
+ 	/* clear values for 'current rate' calculation */
+-	pkg_stats->tx_frames_delta = 0;
+-	pkg_stats->rx_frames_delta = 0;
+-	pkg_stats->matches_delta   = 0;
++	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
++	atomic_long_set(&pkg_stats->matches_delta, 0);
+ 
+ 	/* restart timer (one second) */
+ 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
+@@ -214,9 +219,12 @@ static int can_stats_proc_show(struct seq_file *m, void *v)
+ 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
+ 
+ 	seq_putc(m, '\n');
+-	seq_printf(m, " %8ld transmitted frames (TXF)\n", pkg_stats->tx_frames);
+-	seq_printf(m, " %8ld received frames (RXF)\n", pkg_stats->rx_frames);
+-	seq_printf(m, " %8ld matched frames (RXMF)\n", pkg_stats->matches);
++	seq_printf(m, " %8ld transmitted frames (TXF)\n",
++		   atomic_long_read(&pkg_stats->tx_frames));
++	seq_printf(m, " %8ld received frames (RXF)\n",
++		   atomic_long_read(&pkg_stats->rx_frames));
++	seq_printf(m, " %8ld matched frames (RXMF)\n",
++		   atomic_long_read(&pkg_stats->matches));
+ 
+ 	seq_putc(m, '\n');
  
 -- 
 2.39.5
