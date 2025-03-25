@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-126229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D510A6FFDB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCEE7A70080
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC252840E0E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:01:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4978F3BC25A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFC5267AEA;
-	Tue, 25 Mar 2025 12:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1CA25B683;
+	Tue, 25 Mar 2025 12:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hk9Rlzs3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wj3c/pnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E22267B01;
-	Tue, 25 Mar 2025 12:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DA22571AB;
+	Tue, 25 Mar 2025 12:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905839; cv=none; b=aSPc2lpyF+MsEVortnFcEmfm5GnOe06wTpBoKL3jQBz6UjoVxQ2XR2h/c4Md04KyCbiO61a009oZI3uqwGDRFS00BDasOHkMfxceQcYCqChereg02gBFcXvln1O4+BDlogqkP6FQfkFMzioN0SqMTq1DQVXjj2Z+r9qD1+l2cj0=
+	t=1742906026; cv=none; b=Q7P/ioEcdmtiYW8ljrZW19Lpqa1RGA2Ho6PDl0vR0yvnTymqgpOO5xHj40OGNiuPePO+gqF7ZfEx57wBWrq0bX2D0pWy8dDr1SoscQwoeopPgreiPFbFUnSbFLB8zu4NzmgH5vD02cQN3Ao+CV6ubDFLT0tyvEbauqwRa5VidUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905839; c=relaxed/simple;
-	bh=A4ZbTQ2FdbW2s5/ZKy++UrgTrKUzc/Ytw0ZPQF/MQvk=;
+	s=arc-20240116; t=1742906026; c=relaxed/simple;
+	bh=AFnEYVPAaqWftawgJiR0TQuZ/MuYDxF98kkIkrD9XtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KI0CJsrukUr+I+JR0rbBqV5wO2O4EhkQb2In0X2lpeAuoH9sbMNODXfpArJjsrRXsXX6uJzF3Wy4Cg/1NKSokPelMY+idElS56M74CN/AcR4FVBCYupk5ip6Z1PnEGDcbCujEq2vUAILxk1vx77TvZRNNq1yoi4raMLI9s20nMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hk9Rlzs3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE09FC4CEED;
-	Tue, 25 Mar 2025 12:30:38 +0000 (UTC)
+	 MIME-Version; b=i3AXUrR1zBDXD/5b7RU3pXX2yKVhaisXzLZ3Rae9sYITDrtX/K5SQQEQwI/YyqYO7O89Y2ZgG/qbNMfRLXXwagcRknjXkQqPCRkabDa1pLxsx3qhqLjThxBKa6CgZq10lwBXthJCLn7rfNcRENQaM4BR17qTJmAwM2qiwjC84yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wj3c/pnM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D619AC4CEE4;
+	Tue, 25 Mar 2025 12:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905839;
-	bh=A4ZbTQ2FdbW2s5/ZKy++UrgTrKUzc/Ytw0ZPQF/MQvk=;
+	s=korg; t=1742906026;
+	bh=AFnEYVPAaqWftawgJiR0TQuZ/MuYDxF98kkIkrD9XtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hk9Rlzs3VGg3wdeMv7sjmR9hGdJExjlnMX1HxohQEhuMSPE3qJTGTga9l1BDMONdW
-	 U0RC/v1ZIJL5/qTZgeGPRRDgOgZ6Qsyw6n1fMuTPMn5CVcPJ7XRcWln0y7iakYaKqE
-	 BH/BdoZcwcuE/xJ0abs3Q+urgPNnQ2955ghcDOrM=
+	b=wj3c/pnMJCxVreRtIVodq4ImWikH2dz1aJkSqsEHl0N2WZzSVTjdt1Ty465BMMOBS
+	 1F6R6hBARfPNOr6vXJEWgn8O6bSFY5GQRShC8Jpr8h9cO7bFtwFnVpjdbpI2yzejoD
+	 6EmisGodcUlYIHBvhEUxM4wAqQ6ZSHmu+RywqCe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 191/198] drm/mediatek: Fix coverity issue with unintentional integer overflow
+	qianyi liu <liuqianyi125@gmail.com>,
+	Philipp Stanner <phasta@kernel.org>
+Subject: [PATCH 6.13 095/119] drm/sched: Fix fence reference count leak
 Date: Tue, 25 Mar 2025 08:22:33 -0400
-Message-ID: <20250325122201.660162861@linuxfoundation.org>
+Message-ID: <20250325122151.488104664@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: qianyi liu <liuqianyi125@gmail.com>
 
-commit b0b0d811eac6b4c52cb9ad632fa6384cf48869e7 upstream.
+commit a952f1ab696873be124e31ce5ef964d36bce817f upstream.
 
-1. Instead of multiplying 2 variable of different types. Change to
-assign a value of one variable and then multiply the other variable.
+The last_scheduled fence leaks when an entity is being killed and adding
+the cleanup callback fails.
 
-2. Add a int variable for multiplier calculation instead of calculating
-different types multiplier with dma_addr_t variable directly.
+Decrement the reference count of prev when dma_fence_add_callback()
+fails, ensuring proper balance.
 
-Fixes: 1a64a7aff8da ("drm/mediatek: Fix cursor plane no update")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230907091425.9526-1-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-[ For certain code segments with coverity issue do not exist in
-  function mtk_plane_update_new_state(), those not present in v6.1 are
-  not back ported. ]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Cc: stable@vger.kernel.org	# v6.2+
+[phasta: add git tag info for stable kernel]
+Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
+Signed-off-by: qianyi liu <liuqianyi125@gmail.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250311060251.4041101-1-liuqianyi125@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_gem.c   |    9 ++++++++-
- drivers/gpu/drm/mediatek/mtk_drm_plane.c |   13 +++++++++++--
- 2 files changed, 19 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/scheduler/sched_entity.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-@@ -119,7 +119,14 @@ int mtk_drm_gem_dumb_create(struct drm_f
- 	int ret;
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -259,9 +259,16 @@ static void drm_sched_entity_kill(struct
+ 		struct drm_sched_fence *s_fence = job->s_fence;
  
- 	args->pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
--	args->size = args->pitch * args->height;
-+
-+	/*
-+	 * Multiply 2 variables of different types,
-+	 * for example: args->size = args->spacing * args->height;
-+	 * may cause coverity issue with unintentional overflow.
-+	 */
-+	args->size = args->pitch;
-+	args->size *= args->height;
+ 		dma_fence_get(&s_fence->finished);
+-		if (!prev || dma_fence_add_callback(prev, &job->finish_cb,
+-					   drm_sched_entity_kill_jobs_cb))
++		if (!prev ||
++		    dma_fence_add_callback(prev, &job->finish_cb,
++					   drm_sched_entity_kill_jobs_cb)) {
++			/*
++			 * Adding callback above failed.
++			 * dma_fence_put() checks for NULL.
++			 */
++			dma_fence_put(prev);
+ 			drm_sched_entity_kill_jobs_cb(NULL, &job->finish_cb);
++		}
  
- 	mtk_gem = mtk_drm_gem_create(dev, args->size, false);
- 	if (IS_ERR(mtk_gem))
---- a/drivers/gpu/drm/mediatek/mtk_drm_plane.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
-@@ -120,6 +120,7 @@ static void mtk_plane_update_new_state(s
- 	struct mtk_drm_gem_obj *mtk_gem;
- 	unsigned int pitch, format;
- 	dma_addr_t addr;
-+	int offset;
- 
- 	gem = fb->obj[0];
- 	mtk_gem = to_mtk_gem_obj(gem);
-@@ -127,8 +128,16 @@ static void mtk_plane_update_new_state(s
- 	pitch = fb->pitches[0];
- 	format = fb->format->format;
- 
--	addr += (new_state->src.x1 >> 16) * fb->format->cpp[0];
--	addr += (new_state->src.y1 >> 16) * pitch;
-+	/*
-+	 * Using dma_addr_t variable to calculate with multiplier of different types,
-+	 * for example: addr += (new_state->src.x1 >> 16) * fb->format->cpp[0];
-+	 * may cause coverity issue with unintentional overflow.
-+	 */
-+	offset = (new_state->src.x1 >> 16) * fb->format->cpp[0];
-+	addr += offset;
-+	offset = (new_state->src.y1 >> 16) * pitch;
-+	addr += offset;
-+
- 
- 	mtk_plane_state->pending.enable = true;
- 	mtk_plane_state->pending.pitch = pitch;
+ 		prev = &s_fence->finished;
+ 	}
 
 
 
