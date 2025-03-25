@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4EEA6F427
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:34:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D13EBA6F420
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:33:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09D933AD700
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:33:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 398971891933
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2869C255E4E;
-	Tue, 25 Mar 2025 11:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88811255E3D;
+	Tue, 25 Mar 2025 11:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R80bpBqr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRSlYbA0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE381EA7F5
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5DEBA36
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742902412; cv=none; b=r8qP6Eg3pmabOKSNmgFHytFfYOicYnx8YP2J05F85ycazUJLDa++qQvCu94kWr9ZmnjpqBL4k5bC9EaN+b/bDIyO/3hnTaWJyyc1jrptqHxmHd6YQ0wNRGgLWLq4jkB5dOXu0kEWyQjbD4zOdlyxpma207/8Xct5UVJiRZInCvs=
+	t=1742902415; cv=none; b=Qnr5Z3IzQRfholfyBUkwOKTxq145OmZyb3jjMXp7Z/vyGoLIYj23Ci6mxC8Fg+cBEj+QGMk1VwpSZ2GC00QPkYQLHkAN2IBGhd8ob5jVd8fsIdXO0286W51VFfalQhCPZKG1zaUKIVTLrn+CnUARxCdj2lvVToib8URjL07tKRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742902412; c=relaxed/simple;
-	bh=gkSNhdDMqwPOUmS+3en7ezE2TPuG7g196WZDx4cO6ZI=;
+	s=arc-20240116; t=1742902415; c=relaxed/simple;
+	bh=wv1XtDBLtURfva0Fx/0XK5HaU5FeFySJPVmMWv9w+pw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a8PmiRci1K2dmMElv+X3MyiyJ2vwa9vjGSw0tcsb4CpfNtTVYJ/w5sf2rsTjUywiba9Zuq83o3jpy5OclWTezvZEr5wHbFkKsL3B3Vmf3egHGYZsymBK+Ryso89lqsIL2quviIsPy5a8YF14rWJxjoA07iA6021kv8TgYa1USo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R80bpBqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E3BC4CEE4;
-	Tue, 25 Mar 2025 11:33:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=peagJQF6fIfI1FO0rJ9kmycVpS0NxslY5VdbryCpHUW/274SpjZkVLyG3w9+lrQZWKFtfnYomOo4ZolgpuWUiJGkErjAAqNV3d3xezs2FzG9nb/BUdTvhKYb92YwvqgWPIMo8XjFZaSE0uHZKAk6ySk3zi930BU72FmOvMYhhCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRSlYbA0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CEBC4CEE4;
+	Tue, 25 Mar 2025 11:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742902412;
-	bh=gkSNhdDMqwPOUmS+3en7ezE2TPuG7g196WZDx4cO6ZI=;
+	s=k20201202; t=1742902414;
+	bh=wv1XtDBLtURfva0Fx/0XK5HaU5FeFySJPVmMWv9w+pw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R80bpBqr7KHcVdblWmpuMTeGB7jiqIgTHS3pg3oSjyyWTmZqtTA0gc5dQoVgFP0Af
-	 okNqUBEAsUjkNIrXgCaEohD1i1nrRoV3SLvaGLpcMuE/y1SXM/LcTjTQcQRoP8C1pb
-	 V8OeSm0qAG6N5tG3Wbhw7sY2+zmmnaVPNPJrQ8h7Egwef36t/YwUZC2IVnKIhTwoDs
-	 T3WFt04hJGhU8SaxS53e9Ly1dEtJ+d9uao4IWKhwkcjFZPFTB7NX2eStMVY2uZ4MkN
-	 t248MRbyZ6k+wmVveHV0wc1MN+TaomeFUeWSeELueb9IDXuVe0i7DW4FSCWnHmk1iz
-	 2J5BkdDpeD09Q==
+	b=YRSlYbA01Hkm+p3y98AvXldbb3Qelk06kARWMWK+6dScp73K732zzrp6x4wJUuOHs
+	 xO2xYttafhk4LPnD5C2QrsX7F0dAVyCyztz0nlsn2ezjor12513bT0/dhh1iZIgot7
+	 +yPqma800lolXfYgeWc16l5Wbp6oTDbU6TPPTmBAeJALGZr94VoDnVr1BYGB6eXf4p
+	 xfbK7VmhNDI7o5sr3fBcavOP71oXkwPKfzxlUY6LgnwB9tU5EnsQ5wi7irbtDIev/2
+	 tMTJ3ObDRQsXGzN35e0Cam0fyf3uCbTXDstmITznK5cN3ajaQkV621Z5HzoUSzFOEc
+	 gpyEzQ8HiqGsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Kang Wenlin <wenlin.kang@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y 7/7] mm: Remove unused vm_brk()
-Date: Tue, 25 Mar 2025 07:33:31 -0400
-Message-Id: <20250324231430-2c7f5efdb1bd16bf@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y 4/7] binfmt_elf: Use elf_load() for interpreter
+Date: Tue, 25 Mar 2025 07:33:33 -0400
+Message-Id: <20250324222233-f7b100f939b2b4ca@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250324071942.2553928-8-wenlin.kang@windriver.com>
+In-Reply-To:  <20250324071942.2553928-5-wenlin.kang@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 2632bb84d1d53cfd6cf65261064273ded4f759d5
+The upstream commit SHA1 provided is correct: 8b04d32678e3c46b8a738178e0e55918eaa3be17
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Kang Wenlin<wenlin.kang@windriver.com>
@@ -80,24 +80,24 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2632bb84d1d53 ! 1:  c5b8fd8379e4c mm: Remove unused vm_brk()
+1:  8b04d32678e3c ! 1:  3b015308f7b5b binfmt_elf: Use elf_load() for interpreter
     @@ Metadata
       ## Commit message ##
-         mm: Remove unused vm_brk()
+         binfmt_elf: Use elf_load() for interpreter
      
-    +    commit 2632bb84d1d53cfd6cf65261064273ded4f759d5 upstream
+    +    commit 8b04d32678e3c46b8a738178e0e55918eaa3be17 upstream
     +
-         With fs/binfmt_elf.c fully refactored to use the new elf_load() helper,
-         there are no more users of vm_brk(), so remove it.
-     
+         Handle arbitrary memsz>filesz in interpreter ELF segments, instead of
+         only supporting it in the last segment (which is expected to be the
+         BSS).
     @@ Commit message
          Signed-off-by: Sebastian Ott <sebott@redhat.com>
-         Link: https://lore.kernel.org/r/20230929032435.2391507-6-keescook@chromium.org
+         Link: https://lore.kernel.org/r/20230929032435.2391507-3-keescook@chromium.org
          Signed-off-by: Kees Cook <keescook@chromium.org>
     +    Signed-off-by: Wenlin Kang <wenlin.kang@windriver.com>
      
-      ## include/linux/mm.h ##
-     @@ include/linux/mm.h: static inline void mm_populate(unsigned long addr, unsigned long len)
+      ## fs/binfmt_elf.c ##
+     @@ fs/binfmt_elf.c: static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
 ---
 
 Results of testing on various branches:
