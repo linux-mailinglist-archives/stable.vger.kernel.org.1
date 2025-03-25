@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-126119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B375A6FF79
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:05:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4C4A6FF8B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:05:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 064D61776D4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81A631676FE
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9694526658F;
-	Tue, 25 Mar 2025 12:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE34C266593;
+	Tue, 25 Mar 2025 12:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIIhXIYS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJP36jgH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5410E26656F;
-	Tue, 25 Mar 2025 12:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D209265CBF;
+	Tue, 25 Mar 2025 12:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905636; cv=none; b=UqznmQdUHO+tz7CXagRgtDusy77KxlhLr9FNq6EVoEyRCUwKrMbye0Lkmd7oM/2VrpWnbUdngKUsDHU8guekf9Il1lHT5Vax6GI6nisDvP2V/YuRCOM5ZCIkZLMgMUlRVttv35krh+fHMBiJ7CPYnlHDeVGl3M7cwzZMr/Ejl1g=
+	t=1742905643; cv=none; b=NQwDdE34umWm3Ui9cRdrAmieFKFDOaEtMtsonOWxaK6zo7zpf8t//ROz9VxzLTT/W6wUGlzsWYmYRk9x00kubPnzHh/HnSTVsOG54i+qIUNWA8uY0a/qfnvqV/9X9Wd8otStTlf2OQP8TQ3X8gqlEufHlfa0usTkEIzgeDkqvM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905636; c=relaxed/simple;
-	bh=m29PFHZDg3DQzkygNXFqSB8jiNoNyvZxMWls/hG3BFs=;
+	s=arc-20240116; t=1742905643; c=relaxed/simple;
+	bh=Tw+SeGWLmsQybVHKv4hZQgr68y6MWtwfsCVDlyrJAAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fp++ZhDYH+y07COTcED7g//kZfpPyoxLXoRsbmPLvFVaSqnY/BeRPOLemTFNZeFK/p59cGKvtDCq5yC8VPTRI0+1zm1CvW5CT7yGJfVe2q2a7u3mERQp4/L/bgLTkeAOtY4warR8l7qOSkRRLaq5EMSbQaNIZKGNUz39o0iffQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIIhXIYS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C1BC4CEE4;
-	Tue, 25 Mar 2025 12:27:15 +0000 (UTC)
+	 MIME-Version; b=p0XgtjbSOR4kPihagzb/syKjC7PkwKunuFodM4EgmHXSRIaF3nEqXEM3xD5rYCJPzEfU1cXeaFcInaFTHQ1NoT464+wHV6c5mzLzNkDpzD6ZjxlTVEPoqvQkdTizcROUI9bv8oRxeHSTWm9T8nPY2IkKxov+2zouqnHgQSLU0s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJP36jgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4130DC4CEE4;
+	Tue, 25 Mar 2025 12:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905636;
-	bh=m29PFHZDg3DQzkygNXFqSB8jiNoNyvZxMWls/hG3BFs=;
+	s=korg; t=1742905643;
+	bh=Tw+SeGWLmsQybVHKv4hZQgr68y6MWtwfsCVDlyrJAAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yIIhXIYSknJpccHZxhs26+ufrtYVwcrNFJr91UDg5ss5fmbjvv4TtXXb/lF5zN5sB
-	 jVGtdnSEqaOOkJni3fUM6vxadX61KOwawF9ohZG/olXI1WlAMIlSlI08n5IrZfrQkK
-	 V2Ka1oOkWuTTSenWA6+oiYx/vw27SwWvYKz0oabw=
+	b=eJP36jgH39jT88UMHUUAZ3gxHRdKdGtrlL/PGncNnuBTwKRkc5ZF+dMGj4SqA7/cI
+	 /iiHJcsIcHiSg3qRNnjnLxLWgesR9SbrwHHLEF50ERFm18dEaXt7/caJT+DT0gxQVt
+	 lzYQ8bW47Ow2+lMgxvq6t/j0Fbq2Easv3oZGw/Ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Wengang Wang <wen.gang.wang@oracle.com>,
+	Srikanth C S <srikanth.c.s@oracle.com>,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Dave Chinner <dchinner@redhat.com>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 082/198] xfs: pass per-ag references to xfs_free_extent
-Date: Tue, 25 Mar 2025 08:20:44 -0400
-Message-ID: <20250325122158.794143491@linuxfoundation.org>
+Subject: [PATCH 6.1 086/198] xfs: reserve less log space when recovering log intent items
+Date: Tue, 25 Mar 2025 08:20:48 -0400
+Message-ID: <20250325122158.901418724@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -68,198 +70,285 @@ Content-Transfer-Encoding: 8bit
 
 From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit b2ccab3199aa7cea9154d80ea2585312c5f6eba0 ]
+[ Upstream commit 3c919b0910906cc69d76dea214776f0eac73358b ]
 
-Pass a reference to the per-AG structure to xfs_free_extent.  Most
-callers already have one, so we can eliminate unnecessary lookups.  The
-one exception to this is the EFI code, which the next patch will fix.
+Wengang Wang reports that a customer's system was running a number of
+truncate operations on a filesystem with a very small log.  Contention
+on the reserve heads lead to other threads stalling on smaller updates
+(e.g.  mtime updates) long enough to result in the node being rebooted
+on account of the lack of responsivenes.  The node failed to recover
+because log recovery of an EFI became stuck waiting for a grant of
+reserve space.  From Wengang's report:
 
+"For the file deletion, log bytes are reserved basing on
+xfs_mount->tr_itruncate which is:
+
+    tr_logres = 175488,
+    tr_logcount = 2,
+    tr_logflags = XFS_TRANS_PERM_LOG_RES,
+
+"You see it's a permanent log reservation with two log operations (two
+transactions in rolling mode).  After calculation (xlog_calc_unit_res()
+adds space for various log headers), the final log space needed per
+transaction changes from  175488 to 180208 bytes.  So the total log
+space needed is 360416 bytes (180208 * 2).  [That quantity] of log space
+(360416 bytes) needs to be reserved for both run time inode removing
+(xfs_inactive_truncate()) and EFI recover (xfs_efi_item_recover())."
+
+In other words, runtime pre-reserves 360K of space in anticipation of
+running a chain of two transactions in which each transaction gets a
+180K reservation.
+
+Now that we've allocated the transaction, we delete the bmap mapping,
+log an EFI to free the space, and roll the transaction as part of
+finishing the deferops chain.  Rolling creates a new xfs_trans which
+shares its ticket with the old transaction.  Next, xfs_trans_roll calls
+__xfs_trans_commit with regrant == true, which calls xlog_cil_commit
+with the same regrant parameter.
+
+xlog_cil_commit calls xfs_log_ticket_regrant, which decrements t_cnt and
+subtracts t_curr_res from the reservation and write heads.
+
+If the filesystem is fresh and the first transaction only used (say)
+20K, then t_curr_res will be 160K, and we give that much reservation
+back to the reservation head.  Or if the file is really fragmented and
+the first transaction actually uses 170K, then t_curr_res will be 10K,
+and that's what we give back to the reservation.
+
+Having done that, we're now headed into the second transaction with an
+EFI and 180K of reservation.  Other threads apparently consumed all the
+reservation for smaller transactions, such as timestamp updates.
+
+Now let's say the first transaction gets written to disk and we crash
+without ever completing the second transaction.  Now we remount the fs,
+log recovery finds the unfinished EFI, and calls xfs_efi_recover to
+finish the EFI.  However, xfs_efi_recover starts a new tr_itruncate
+tranasction, which asks for 360K log reservation.  This is a lot more
+than the 180K that we had reserved at the time of the crash.  If the
+first EFI to be recovered is also pinning the tail of the log, we will
+be unable to free any space in the log, and recovery livelocks.
+
+Wengang confirmed this:
+
+"Now we have the second transaction which has 180208 log bytes reserved
+too. The second transaction is supposed to process intents including
+extent freeing.  With my hacking patch, I blocked the extent freeing 5
+hours. So in that 5 hours, 180208 (NOT 360416) log bytes are reserved.
+
+"With my test case, other transactions (update timestamps) then happen.
+As my hacking patch pins the journal tail, those timestamp-updating
+transactions finally use up (almost) all the left available log space
+(in memory in on disk).  And finally the on disk (and in memory)
+available log space goes down near to 180208 bytes.  Those 180208 bytes
+are reserved by [the] second (extent-free) transaction [in the chain]."
+
+Wengang and I noticed that EFI recovery starts a transaction, completes
+one step of the chain, and commits the transaction without completing
+any other steps of the chain.  Those subsequent steps are completed by
+xlog_finish_defer_ops, which allocates yet another transaction to
+finish the rest of the chain.  That transaction gets the same tr_logres
+as the head transaction, but with tr_logcount = 1 to force regranting
+with every roll to avoid livelocks.
+
+In other words, we already figured this out in commit 929b92f64048d
+("xfs: xfs_defer_capture should absorb remaining transaction
+reservation"), but should have applied that logic to each intent item's
+recovery function.  For Wengang's case, the xfs_trans_alloc call in the
+EFI recovery function should only be asking for a single transaction's
+worth of log reservation -- 180K, not 360K.
+
+Quoting Wengang again:
+
+"With log recovery, during EFI recovery, we use tr_itruncate again to
+reserve two transactions that needs 360416 log bytes.  Reserving 360416
+bytes fails [stalls] because we now only have about 180208 available.
+
+"Actually during the EFI recover, we only need one transaction to free
+the extents just like the 2nd transaction at RUNTIME.  So it only needs
+to reserve 180208 rather than 360416 bytes.  We have (a bit) more than
+180208 available log bytes on disk, so [if we decrease the reservation
+to 180K] the reservation goes and the recovery [finishes].  That is to
+say: we can fix the log recover part to fix the issue. We can introduce
+a new xfs_trans_res xfs_mount->tr_ext_free
+
+{
+  tr_logres = 175488,
+  tr_logcount = 0,
+  tr_logflags = 0,
+}
+
+"and use tr_ext_free instead of tr_itruncate in EFI recover."
+
+However, I don't think it quite makes sense to create an entirely new
+transaction reservation type to handle single-stepping during log
+recovery.  Instead, we should copy the transaction reservation
+information in the xfs_mount, change tr_logcount to 1, and pass that
+into xfs_trans_alloc.  We know this won't risk changing the min log size
+computation since we always ask for a fraction of the reservation for
+all known transaction types.
+
+This looks like it's been lurking in the codebase since commit
+3d3c8b5222b92, which changed the xfs_trans_reserve call in
+xlog_recover_process_efi to use the tr_logcount in tr_itruncate.
+That changed the EFI recovery transaction from making a
+non-XFS_TRANS_PERM_LOG_RES request for one transaction's worth of log
+space to a XFS_TRANS_PERM_LOG_RES request for two transactions worth.
+
+Fixes: 3d3c8b5222b92 ("xfs: refactor xfs_trans_reserve() interface")
+Complements: 929b92f64048d ("xfs: xfs_defer_capture should absorb remaining transaction reservation")
+Suggested-by: Wengang Wang <wen.gang.wang@oracle.com>
+Cc: Srikanth C S <srikanth.c.s@oracle.com>
+[djwong: apply the same transformation to all log intent recovery]
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
 Reviewed-by: Dave Chinner <dchinner@redhat.com>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_ag.c             |    6 ++----
- fs/xfs/libxfs/xfs_alloc.c          |   15 +++++----------
- fs/xfs/libxfs/xfs_alloc.h          |    8 +++++---
- fs/xfs/libxfs/xfs_ialloc_btree.c   |    7 +++++--
- fs/xfs/libxfs/xfs_refcount_btree.c |    5 +++--
- fs/xfs/scrub/repair.c              |    3 ++-
- fs/xfs/xfs_extfree_item.c          |    8 ++++++--
- 7 files changed, 28 insertions(+), 24 deletions(-)
+ fs/xfs/libxfs/xfs_log_recover.h |   22 ++++++++++++++++++++++
+ fs/xfs/xfs_attr_item.c          |    7 ++++---
+ fs/xfs/xfs_bmap_item.c          |    4 +++-
+ fs/xfs/xfs_extfree_item.c       |    4 +++-
+ fs/xfs/xfs_refcount_item.c      |    6 ++++--
+ fs/xfs/xfs_rmap_item.c          |    6 ++++--
+ 6 files changed, 40 insertions(+), 9 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_ag.c
-+++ b/fs/xfs/libxfs/xfs_ag.c
-@@ -981,10 +981,8 @@ xfs_ag_extend_space(
- 	if (error)
- 		return error;
+--- a/fs/xfs/libxfs/xfs_log_recover.h
++++ b/fs/xfs/libxfs/xfs_log_recover.h
+@@ -131,4 +131,26 @@ void xlog_check_buf_cancel_table(struct
+ #define xlog_check_buf_cancel_table(log) do { } while (0)
+ #endif
  
--	error = xfs_free_extent(tp, XFS_AGB_TO_FSB(pag->pag_mount, pag->pag_agno,
--					be32_to_cpu(agf->agf_length) - len),
--				len, &XFS_RMAP_OINFO_SKIP_UPDATE,
--				XFS_AG_RESV_NONE);
-+	error = xfs_free_extent(tp, pag, be32_to_cpu(agf->agf_length) - len,
-+			len, &XFS_RMAP_OINFO_SKIP_UPDATE, XFS_AG_RESV_NONE);
- 	if (error)
- 		return error;
- 
---- a/fs/xfs/libxfs/xfs_alloc.c
-+++ b/fs/xfs/libxfs/xfs_alloc.c
-@@ -3447,7 +3447,8 @@ xfs_free_extent_fix_freelist(
- int
- __xfs_free_extent(
- 	struct xfs_trans		*tp,
--	xfs_fsblock_t			bno,
-+	struct xfs_perag		*pag,
-+	xfs_agblock_t			agbno,
- 	xfs_extlen_t			len,
- 	const struct xfs_owner_info	*oinfo,
- 	enum xfs_ag_resv_type		type,
-@@ -3455,12 +3456,9 @@ __xfs_free_extent(
- {
- 	struct xfs_mount		*mp = tp->t_mountp;
- 	struct xfs_buf			*agbp;
--	xfs_agnumber_t			agno = XFS_FSB_TO_AGNO(mp, bno);
--	xfs_agblock_t			agbno = XFS_FSB_TO_AGBNO(mp, bno);
- 	struct xfs_agf			*agf;
++/*
++ * Transform a regular reservation into one suitable for recovery of a log
++ * intent item.
++ *
++ * Intent recovery only runs a single step of the transaction chain and defers
++ * the rest to a separate transaction.  Therefore, we reduce logcount to 1 here
++ * to avoid livelocks if the log grant space is nearly exhausted due to the
++ * recovered intent pinning the tail.  Keep the same logflags to avoid tripping
++ * asserts elsewhere.  Struct copies abound below.
++ */
++static inline struct xfs_trans_res
++xlog_recover_resv(const struct xfs_trans_res *r)
++{
++	struct xfs_trans_res ret = {
++		.tr_logres	= r->tr_logres,
++		.tr_logcount	= 1,
++		.tr_logflags	= r->tr_logflags,
++	};
++
++	return ret;
++}
++
+ #endif	/* __XFS_LOG_RECOVER_H__ */
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -547,7 +547,7 @@ xfs_attri_item_recover(
+ 	struct xfs_inode		*ip;
+ 	struct xfs_da_args		*args;
+ 	struct xfs_trans		*tp;
+-	struct xfs_trans_res		tres;
++	struct xfs_trans_res		resv;
+ 	struct xfs_attri_log_format	*attrp;
+ 	struct xfs_attri_log_nameval	*nv = attrip->attri_nameval;
  	int				error;
- 	unsigned int			busy_flags = 0;
--	struct xfs_perag		*pag;
- 
- 	ASSERT(len != 0);
- 	ASSERT(type != XFS_AG_RESV_AGFL);
-@@ -3469,10 +3467,9 @@ __xfs_free_extent(
- 			XFS_ERRTAG_FREE_EXTENT))
- 		return -EIO;
- 
--	pag = xfs_perag_get(mp, agno);
- 	error = xfs_free_extent_fix_freelist(tp, pag, &agbp);
- 	if (error)
--		goto err;
-+		return error;
- 	agf = agbp->b_addr;
- 
- 	if (XFS_IS_CORRUPT(mp, agbno >= mp->m_sb.sb_agblocks)) {
-@@ -3486,20 +3483,18 @@ __xfs_free_extent(
- 		goto err_release;
+@@ -618,8 +618,9 @@ xfs_attri_item_recover(
+ 		goto out;
  	}
  
--	error = xfs_free_ag_extent(tp, agbp, agno, agbno, len, oinfo, type);
-+	error = xfs_free_ag_extent(tp, agbp, pag->pag_agno, agbno, len, oinfo,
-+			type);
+-	xfs_init_attr_trans(args, &tres, &total);
+-	error = xfs_trans_alloc(mp, &tres, total, 0, XFS_TRANS_RESERVE, &tp);
++	xfs_init_attr_trans(args, &resv, &total);
++	resv = xlog_recover_resv(&resv);
++	error = xfs_trans_alloc(mp, &resv, total, 0, XFS_TRANS_RESERVE, &tp);
  	if (error)
- 		goto err_release;
+ 		goto out;
  
- 	if (skip_discard)
- 		busy_flags |= XFS_EXTENT_BUSY_SKIP_DISCARD;
- 	xfs_extent_busy_insert(tp, pag, agbno, len, busy_flags);
--	xfs_perag_put(pag);
- 	return 0;
- 
- err_release:
- 	xfs_trans_brelse(tp, agbp);
--err:
--	xfs_perag_put(pag);
- 	return error;
- }
- 
---- a/fs/xfs/libxfs/xfs_alloc.h
-+++ b/fs/xfs/libxfs/xfs_alloc.h
-@@ -130,7 +130,8 @@ xfs_alloc_vextent(
- int				/* error */
- __xfs_free_extent(
- 	struct xfs_trans	*tp,	/* transaction pointer */
--	xfs_fsblock_t		bno,	/* starting block number of extent */
-+	struct xfs_perag	*pag,
-+	xfs_agblock_t		agbno,
- 	xfs_extlen_t		len,	/* length of extent */
- 	const struct xfs_owner_info	*oinfo,	/* extent owner */
- 	enum xfs_ag_resv_type	type,	/* block reservation type */
-@@ -139,12 +140,13 @@ __xfs_free_extent(
- static inline int
- xfs_free_extent(
- 	struct xfs_trans	*tp,
--	xfs_fsblock_t		bno,
-+	struct xfs_perag	*pag,
-+	xfs_agblock_t		agbno,
- 	xfs_extlen_t		len,
- 	const struct xfs_owner_info	*oinfo,
- 	enum xfs_ag_resv_type	type)
+--- a/fs/xfs/xfs_bmap_item.c
++++ b/fs/xfs/xfs_bmap_item.c
+@@ -457,6 +457,7 @@ xfs_bui_item_recover(
+ 	struct list_head		*capture_list)
  {
--	return __xfs_free_extent(tp, bno, len, oinfo, type, false);
-+	return __xfs_free_extent(tp, pag, agbno, len, oinfo, type, false);
- }
+ 	struct xfs_bmap_intent		fake = { };
++	struct xfs_trans_res		resv;
+ 	struct xfs_bui_log_item		*buip = BUI_ITEM(lip);
+ 	struct xfs_trans		*tp;
+ 	struct xfs_inode		*ip = NULL;
+@@ -482,7 +483,8 @@ xfs_bui_item_recover(
+ 		return error;
  
- int				/* error */
---- a/fs/xfs/libxfs/xfs_ialloc_btree.c
-+++ b/fs/xfs/libxfs/xfs_ialloc_btree.c
-@@ -156,9 +156,12 @@ __xfs_inobt_free_block(
- 	struct xfs_buf		*bp,
- 	enum xfs_ag_resv_type	resv)
+ 	/* Allocate transaction and do the work. */
+-	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_itruncate,
++	resv = xlog_recover_resv(&M_RES(mp)->tr_itruncate);
++	error = xfs_trans_alloc(mp, &resv,
+ 			XFS_EXTENTADD_SPACE_RES(mp, XFS_DATA_FORK), 0, 0, &tp);
+ 	if (error)
+ 		goto err_rele;
+--- a/fs/xfs/xfs_extfree_item.c
++++ b/fs/xfs/xfs_extfree_item.c
+@@ -598,6 +598,7 @@ xfs_efi_item_recover(
+ 	struct xfs_log_item		*lip,
+ 	struct list_head		*capture_list)
  {
-+	xfs_fsblock_t		fsbno;
-+
- 	xfs_inobt_mod_blockcount(cur, -1);
--	return xfs_free_extent(cur->bc_tp,
--			XFS_DADDR_TO_FSB(cur->bc_mp, xfs_buf_daddr(bp)), 1,
-+	fsbno = XFS_DADDR_TO_FSB(cur->bc_mp, xfs_buf_daddr(bp));
-+	return xfs_free_extent(cur->bc_tp, cur->bc_ag.pag,
-+			XFS_FSB_TO_AGBNO(cur->bc_mp, fsbno), 1,
- 			&XFS_RMAP_OINFO_INOBT, resv);
- }
++	struct xfs_trans_res		resv;
+ 	struct xfs_efi_log_item		*efip = EFI_ITEM(lip);
+ 	struct xfs_mount		*mp = lip->li_log->l_mp;
+ 	struct xfs_efd_log_item		*efdp;
+@@ -620,7 +621,8 @@ xfs_efi_item_recover(
+ 		}
+ 	}
  
---- a/fs/xfs/libxfs/xfs_refcount_btree.c
-+++ b/fs/xfs/libxfs/xfs_refcount_btree.c
-@@ -112,8 +112,9 @@ xfs_refcountbt_free_block(
- 			XFS_FSB_TO_AGBNO(cur->bc_mp, fsbno), 1);
- 	be32_add_cpu(&agf->agf_refcount_blocks, -1);
- 	xfs_alloc_log_agf(cur->bc_tp, agbp, XFS_AGF_REFCOUNT_BLOCKS);
--	error = xfs_free_extent(cur->bc_tp, fsbno, 1, &XFS_RMAP_OINFO_REFC,
--			XFS_AG_RESV_METADATA);
-+	error = xfs_free_extent(cur->bc_tp, cur->bc_ag.pag,
-+			XFS_FSB_TO_AGBNO(cur->bc_mp, fsbno), 1,
-+			&XFS_RMAP_OINFO_REFC, XFS_AG_RESV_METADATA);
+-	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_itruncate, 0, 0, 0, &tp);
++	resv = xlog_recover_resv(&M_RES(mp)->tr_itruncate);
++	error = xfs_trans_alloc(mp, &resv, 0, 0, 0, &tp);
+ 	if (error)
+ 		return error;
+ 	efdp = xfs_trans_get_efd(tp, efip, efip->efi_format.efi_nextents);
+--- a/fs/xfs/xfs_refcount_item.c
++++ b/fs/xfs/xfs_refcount_item.c
+@@ -453,6 +453,7 @@ xfs_cui_item_recover(
+ 	struct xfs_log_item		*lip,
+ 	struct list_head		*capture_list)
+ {
++	struct xfs_trans_res		resv;
+ 	struct xfs_cui_log_item		*cuip = CUI_ITEM(lip);
+ 	struct xfs_cud_log_item		*cudp;
+ 	struct xfs_trans		*tp;
+@@ -490,8 +491,9 @@ xfs_cui_item_recover(
+ 	 * doesn't fit.  We need to reserve enough blocks to handle a
+ 	 * full btree split on either end of the refcount range.
+ 	 */
+-	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_itruncate,
+-			mp->m_refc_maxlevels * 2, 0, XFS_TRANS_RESERVE, &tp);
++	resv = xlog_recover_resv(&M_RES(mp)->tr_itruncate);
++	error = xfs_trans_alloc(mp, &resv, mp->m_refc_maxlevels * 2, 0,
++			XFS_TRANS_RESERVE, &tp);
  	if (error)
  		return error;
  
---- a/fs/xfs/scrub/repair.c
-+++ b/fs/xfs/scrub/repair.c
-@@ -582,7 +582,8 @@ xrep_reap_block(
- 	else if (resv == XFS_AG_RESV_AGFL)
- 		error = xrep_put_freelist(sc, agbno);
- 	else
--		error = xfs_free_extent(sc->tp, fsbno, 1, oinfo, resv);
-+		error = xfs_free_extent(sc->tp, sc->sa.pag, agbno, 1, oinfo,
-+				resv);
- 	if (agf_bp != sc->sa.agf_bp)
- 		xfs_trans_brelse(sc->tp, agf_bp);
- 	if (error)
---- a/fs/xfs/xfs_extfree_item.c
-+++ b/fs/xfs/xfs_extfree_item.c
-@@ -350,6 +350,7 @@ xfs_trans_free_extent(
- 	struct xfs_owner_info		oinfo = { };
- 	struct xfs_mount		*mp = tp->t_mountp;
- 	struct xfs_extent		*extp;
-+	struct xfs_perag		*pag;
- 	uint				next_extent;
- 	xfs_agnumber_t			agno = XFS_FSB_TO_AGNO(mp,
- 							xefi->xefi_startblock);
-@@ -366,9 +367,12 @@ xfs_trans_free_extent(
- 	trace_xfs_bmap_free_deferred(tp->t_mountp, agno, 0, agbno,
- 			xefi->xefi_blockcount);
+--- a/fs/xfs/xfs_rmap_item.c
++++ b/fs/xfs/xfs_rmap_item.c
+@@ -492,6 +492,7 @@ xfs_rui_item_recover(
+ 	struct xfs_log_item		*lip,
+ 	struct list_head		*capture_list)
+ {
++	struct xfs_trans_res		resv;
+ 	struct xfs_rui_log_item		*ruip = RUI_ITEM(lip);
+ 	struct xfs_map_extent		*rmap;
+ 	struct xfs_rud_log_item		*rudp;
+@@ -519,8 +520,9 @@ xfs_rui_item_recover(
+ 		}
+ 	}
  
--	error = __xfs_free_extent(tp, xefi->xefi_startblock,
--			xefi->xefi_blockcount, &oinfo, XFS_AG_RESV_NONE,
-+	pag = xfs_perag_get(mp, agno);
-+	error = __xfs_free_extent(tp, pag, agbno, xefi->xefi_blockcount,
-+			&oinfo, XFS_AG_RESV_NONE,
- 			xefi->xefi_flags & XFS_EFI_SKIP_DISCARD);
-+	xfs_perag_put(pag);
-+
- 	/*
- 	 * Mark the transaction dirty, even on error. This ensures the
- 	 * transaction is aborted, which:
+-	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_itruncate,
+-			mp->m_rmap_maxlevels, 0, XFS_TRANS_RESERVE, &tp);
++	resv = xlog_recover_resv(&M_RES(mp)->tr_itruncate);
++	error = xfs_trans_alloc(mp, &resv, mp->m_rmap_maxlevels, 0,
++			XFS_TRANS_RESERVE, &tp);
+ 	if (error)
+ 		return error;
+ 	rudp = xfs_trans_get_rud(tp, ruip);
 
 
 
