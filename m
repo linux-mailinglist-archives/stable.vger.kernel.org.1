@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-126308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C4FA70083
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C8EA700AC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 183213BC1CE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD80C189B705
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51F72690C0;
-	Tue, 25 Mar 2025 12:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B7E2676EB;
+	Tue, 25 Mar 2025 12:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgQXZWoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wE9eiBK1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627D425522E;
-	Tue, 25 Mar 2025 12:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B1A259CAD;
+	Tue, 25 Mar 2025 12:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905984; cv=none; b=P9wL38GCCVtbZL9rrKFhh/m7AwT4O8eWGRm5+5b6rolMTowepjuKAX83TjG9ah7+MwaMGJlZbh56WuSTX2GUT0IVFaewjLMgWpfz6lladxOrNfZbmG+0nTVCXoBX/InfJpdhe6260KAZBJE4tuOdlfy36gSQ2N5RzY1tQe1JHW0=
+	t=1742905798; cv=none; b=EfX5I7kWJgVNoRHp7p0UxJZloJqIYraT117qRsv45zncBg5aOOtff3doWoWKhKs53tcu/wfq23TxmDrmEfsbamkSwTI7+SLvV4+TZqskqCf/t4DbqlfS7lpTGNh7mdmWkw/Bn8wDjJPRWV6ovsDfp8wspZVSq+MIJ+7ZtJjTafw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905984; c=relaxed/simple;
-	bh=SUUyrfqWXg13ldRJjQl6wgbo6c61io0q3nljWXtDG/M=;
+	s=arc-20240116; t=1742905798; c=relaxed/simple;
+	bh=itNMSGOaJUpbdYPFMLME9zflVxw4JL4fY9L2hqk65to=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6FWlRlyokEvA9kr9IZkj1osImsS6zBwwrnA3holySu1b406nhU5n+ESi+/C2i+XMj5Jt4kipFN4F10UaI7O3cnsHOOldIUbV2x41JzDkG7eScnRLFSyYXd94IsJtm7b4jdQU0sDV/nRbhq/zEBk4oJCyaiDdpb9QGDmPiY2ucg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgQXZWoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1761DC4CEE4;
-	Tue, 25 Mar 2025 12:33:04 +0000 (UTC)
+	 MIME-Version; b=ovqtR44PnEg/bhUhhKN+qAqpxCKPEqZehI2nJp+9icvsDAXZz9kAUZPb8EZpcjvLO7qCCitSGeXh6kxWy7L8l68a7YwdMcnAFu6kgPr5sLZz+H/m5yUl6HJwIcM8dmYAykMxt9ta29D4oQo622OeaRGT8Hrg3mp4Zdhq8jiMQgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wE9eiBK1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFC0C4CEED;
+	Tue, 25 Mar 2025 12:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905984;
-	bh=SUUyrfqWXg13ldRJjQl6wgbo6c61io0q3nljWXtDG/M=;
+	s=korg; t=1742905798;
+	bh=itNMSGOaJUpbdYPFMLME9zflVxw4JL4fY9L2hqk65to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TgQXZWoK/qcG+JuFhXzn6t9XPnTgETsAySnrfipCPUC4EvUxrOXrZUe1akchEXZ6a
-	 YjE/26vSe2lGUF4C721aPcxDkYxFm8r7VjWXp73f/2Z8y0/NL8S4pHNJiNx2oDK2lo
-	 BrCRcPvquUXn7eMwAa598sgP1iwXuiwo5ZfGXWlo=
+	b=wE9eiBK1zi7EnGJyYUUAjLS49f6hdStW7tocqohpUaa2WKzrPnX6YINQojx4gBphM
+	 nd0yf0xs5z+iW268jWfQTr2aazpXsoEuJxNI4EW0y/iO2+vGa1+J4GL+WZjtIC7Ya/
+	 FLa8M9+2Zunq2hm3YOcR/9+ub1cJgwckBets+BsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.13 072/119] arm64: dts: rockchip: fix pinmux of UART5 for PX30 Ringneck on Haikou
+	stable@kernel.org,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Nishanth Menon <nm@ti.com>,
+	Aniket Limaye <a-limaye@ti.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 168/198] i2c: omap: fix IRQ storms
 Date: Tue, 25 Mar 2025 08:22:10 -0400
-Message-ID: <20250325122150.897952236@linuxfoundation.org>
+Message-ID: <20250325122201.054136061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-commit 55de171bba1b8c0e3dd18b800955ac4b46a63d4b upstream.
+commit 285df995f90e3d61d97f327d34b9659d92313314 upstream.
 
-UART5 uses GPIO0_B5 as UART RTS but muxed in its GPIO function,
-therefore UART5 must request this pin to be muxed in that function, so
-let's do that.
+On the GTA04A5 writing a reset command to the gyroscope causes IRQ
+storms because NACK IRQs are enabled and therefore triggered but not
+acked.
 
-Fixes: 5963d97aa780 ("arm64: dts: rockchip: add rs485 support on uart5 of px30-ringneck-haikou")
-Cc: stable@vger.kernel.org
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Link: https://lore.kernel.org/r/20250225-ringneck-dtbos-v3-2-853a9a6dd597@cherry.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Sending a reset command to the gyroscope by
+i2cset 1 0x69 0x14 0xb6
+with an additional debug print in the ISR (not the thread) itself
+causes
+
+[ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
+[ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
+[ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
+[ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
+[ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+repeating till infinity
+[...]
+(0x2 = NACK, 0x100 = Bus free, which is not enabled)
+Apparently no other IRQ bit gets set, so this stalls.
+
+Do not ignore enabled interrupts and make sure they are acked.
+If the NACK IRQ is not needed, it should simply not enabled, but
+according to the above log, caring about it is necessary unless
+the Bus free IRQ is enabled and handled. The assumption that is
+will always come with a ARDY IRQ, which was the idea behind
+ignoring it, proves wrong.
+It is true for simple reads from an unused address.
+
+To still avoid the i2cdetect trouble which is the reason for
+commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
+avoid doing much about NACK in omap_i2c_xfer_data() which is used
+by both IRQ mode and polling mode, so also the false detection fix
+is extended to polling usage and IRQ storms are avoided.
+
+By changing this, the hardirq handler is not needed anymore to filter
+stuff.
+
+The mentioned gyro reset now just causes a -ETIMEDOUT instead of
+hanging the system.
+
+Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
+CC: stable@kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Tested-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Aniket Limaye <a-limaye@ti.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250228140420.379498-1-andreas@kemnade.info
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/i2c/busses/i2c-omap.c |   26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
-+++ b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
-@@ -194,6 +194,13 @@
- 			  <3 RK_PB3 RK_FUNC_GPIO &pcfg_pull_none>;
- 		};
- 	};
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1049,23 +1049,6 @@ static int omap_i2c_transmit_data(struct
+ 	return 0;
+ }
+ 
+-static irqreturn_t
+-omap_i2c_isr(int irq, void *dev_id)
+-{
+-	struct omap_i2c_dev *omap = dev_id;
+-	irqreturn_t ret = IRQ_HANDLED;
+-	u16 mask;
+-	u16 stat;
+-
+-	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
+-	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
+-
+-	if (stat & mask)
+-		ret = IRQ_WAKE_THREAD;
+-
+-	return ret;
+-}
+-
+ static int omap_i2c_xfer_data(struct omap_i2c_dev *omap)
+ {
+ 	u16 bits;
+@@ -1096,8 +1079,13 @@ static int omap_i2c_xfer_data(struct oma
+ 		}
+ 
+ 		if (stat & OMAP_I2C_STAT_NACK) {
+-			err |= OMAP_I2C_STAT_NACK;
++			omap->cmd_err |= OMAP_I2C_STAT_NACK;
+ 			omap_i2c_ack_stat(omap, OMAP_I2C_STAT_NACK);
 +
-+	uart {
-+		uart5_rts_pin: uart5-rts-pin {
-+			rockchip,pins =
-+			  <0 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+	};
- };
++			if (!(stat & ~OMAP_I2C_STAT_NACK)) {
++				err = -EAGAIN;
++				break;
++			}
+ 		}
  
- &pwm0 {
-@@ -228,6 +235,9 @@
- };
+ 		if (stat & OMAP_I2C_STAT_AL) {
+@@ -1475,7 +1463,7 @@ omap_i2c_probe(struct platform_device *p
+ 				IRQF_NO_SUSPEND, pdev->name, omap);
+ 	else
+ 		r = devm_request_threaded_irq(&pdev->dev, omap->irq,
+-				omap_i2c_isr, omap_i2c_isr_thread,
++				NULL, omap_i2c_isr_thread,
+ 				IRQF_NO_SUSPEND | IRQF_ONESHOT,
+ 				pdev->name, omap);
  
- &uart5 {
-+	/* Add pinmux for rts-gpios (uart5_rts_pin) */
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart5_xfer &uart5_rts_pin>;
- 	rts-gpios = <&gpio0 RK_PB5 GPIO_ACTIVE_HIGH>;
- 	status = "okay";
- };
 
 
 
