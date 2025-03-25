@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-126170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40EA4A6FFBC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3926EA700D4
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E858119A1353
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A21D81881797
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA6D266F1D;
-	Tue, 25 Mar 2025 12:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85B625D540;
+	Tue, 25 Mar 2025 12:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROHISj4Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTm46/GV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7391225A337;
-	Tue, 25 Mar 2025 12:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C7E26B2DD;
+	Tue, 25 Mar 2025 12:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905730; cv=none; b=hqL00ORwWy8hPp3q2L0Z+ldGU+nbTK63zr6ufgaOZ1L4Pk3QOF/kU1G/EOyLStpNeSs/I0s1kxawIDcGdy1e9D/iFQpJUB1cEvkHkt8kO+BSs7qQz/3tVSoJlYCW9sloJQqa47Krni4QxQ8+qCXmyK+PWfVvuLmpCvC+PI1iBNg=
+	t=1742906284; cv=none; b=W7NxccJHbxxQj/eJFpYF1hHBAxmUbRwEpUScIKf3FJBzntqSlIcKSOkUrPknNn6YbMsePcpzuprTZ25+DVzE//TVUHuefiIdaF3w31ECFWxdv0MzH/XGO0vF0YcRDxi5sbrdg1Ag0JKWBiMAKwjgDRBaX8dcw2mqjAGGrKA14Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905730; c=relaxed/simple;
-	bh=gg5fDFOFdyoX5DkM/ht1maDNqi0aSpQDQ+n0+29DVRI=;
+	s=arc-20240116; t=1742906284; c=relaxed/simple;
+	bh=XU/iR8Ql7OtWDQa/Xs4Iph4N/3vKxrDpMmb/LtSngJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkVYI263H3kkp0fYbr+2iwS+ne9pL927jr930i9nQuFp3FBgMDb+BH5hiT+XzdOKG8NxY6NpzbCw2OcC1jLMjzbDdaWgLc1t7qwhABbc6TV52LMbMacZAMce1PCR69YZJathZ0TKegkO0jR5zCfFuT8wYL9W8m9jG4afoF4poOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROHISj4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24435C4CEE4;
-	Tue, 25 Mar 2025 12:28:50 +0000 (UTC)
+	 MIME-Version; b=pmg0bqqbssG4bdHphcdxO5Daa5nmnvGOIFkwnPosnvvMxpkcT2oYvTGKBHqpXmVwcmizgEI2w4zAC0D4hy1ob+JdFHDw3MEIBW6ncuajtBFN7kZz4t7sUdB13U4t21jolcU9Qc8ZAdPqbFu06ZOwF4Tit/FMAMP2q2Fq/8oAVwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTm46/GV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC2DC4CEE4;
+	Tue, 25 Mar 2025 12:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905730;
-	bh=gg5fDFOFdyoX5DkM/ht1maDNqi0aSpQDQ+n0+29DVRI=;
+	s=korg; t=1742906284;
+	bh=XU/iR8Ql7OtWDQa/Xs4Iph4N/3vKxrDpMmb/LtSngJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROHISj4YoMWW8Y/n1VMnpNEL/3EXWGdW8hupc2JT010m1+6UedtCcRHCRUhIkFi6d
-	 r5OnMojXa3nx6C560GusXTD44sayurMH7b8u7XUTABwHCWg+vMelULX2mxn6SwEwEB
-	 Hf94Fh9TNB+q9iuhhfuiioTYSDljXwZrIrUimhmQ=
+	b=qTm46/GVP9rqlF9z/o3LIvfY++HejoKKixtcS3IOHAbSU9qI+GWhlBK0KI+y7vXJC
+	 3e4vNueOjcJ63ESS+wkaet8YNHLziNx7wiwCyFPqyA9G2xNVL0vRs+IrhdE9X3uYF5
+	 D61Tip9Yl/J0kNTShJMmILbtaRS7QGVNqV6QHq30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Behrens <me@kloenk.dev>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Chayim Refael Friedman <chayimfr@gmail.com>
-Subject: [PATCH 6.1 132/198] scripts: generate_rust_analyzer: add missing macros deps
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 007/116] xfrm_output: Force software GSO only in tunnel mode
 Date: Tue, 25 Mar 2025 08:21:34 -0400
-Message-ID: <20250325122200.116490605@linuxfoundation.org>
+Message-ID: <20250325122149.400811557@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@gmail.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 2e0f91aba507a3cb59f7a12fc3ea2b7d4d6675b7 ]
+[ Upstream commit 0aae2867aa6067f73d066bc98385e23c8454a1d7 ]
 
-The macros crate has depended on std and proc_macro since its
-introduction in commit 1fbde52bde73 ("rust: add `macros` crate"). These
-dependencies were omitted from commit 8c4555ccc55c ("scripts: add
-`generate_rust_analyzer.py`") resulting in missing go-to-definition and
-autocomplete, and false-positive warnings emitted from rust-analyzer
-such as:
+The cited commit fixed a software GSO bug with VXLAN + IPSec in tunnel
+mode. Unfortunately, it is slightly broader than necessary, as it also
+severely affects performance for Geneve + IPSec transport mode over a
+device capable of both HW GSO and IPSec crypto offload. In this case,
+xfrm_output unnecessarily triggers software GSO instead of letting the
+HW do it. In simple iperf3 tests over Geneve + IPSec transport mode over
+a back-2-back pair of NICs with MTU 1500, the performance was observed
+to be up to 6x worse when doing software GSO compared to leaving it to
+the hardware.
 
-  [{
-  	"resource": "/Users/tamird/src/linux/rust/macros/module.rs",
-  	"owner": "_generated_diagnostic_collection_name_#1",
-  	"code": {
-  		"value": "non_snake_case",
-  		"target": {
-  			"$mid": 1,
-  			"path": "/rustc/",
-  			"scheme": "https",
-  			"authority": "doc.rust-lang.org",
-  			"query": "search=non_snake_case"
-  		}
-  	},
-  	"severity": 4,
-  	"message": "Variable `None` should have snake_case name, e.g. `none`",
-  	"source": "rust-analyzer",
-  	"startLineNumber": 123,
-  	"startColumn": 17,
-  	"endLineNumber": 123,
-  	"endColumn": 21
-  }]
+This commit makes xfrm_output only trigger software GSO in crypto
+offload cases for already encapsulated packets in tunnel mode, as not
+doing so would then cause the inner tunnel skb->inner_networking_header
+to be overwritten and break software GSO for that packet later if the
+device turns out to not be capable of HW GSO.
 
-Add the missing dependencies to improve the developer experience.
+Taking a closer look at the conditions for the original bug, to better
+understand the reasons for this change:
+- vxlan_build_skb -> iptunnel_handle_offloads sets inner_protocol and
+  inner network header.
+- then, udp_tunnel_xmit_skb -> ip_tunnel_xmit adds outer transport and
+  network headers.
+- later in the xmit path, xfrm_output -> xfrm_outer_mode_output ->
+  xfrm4_prepare_output -> xfrm4_tunnel_encap_add overwrites the inner
+  network header with the one set in ip_tunnel_xmit before adding the
+  second outer header.
+- __dev_queue_xmit -> validate_xmit_skb checks whether GSO segmentation
+  needs to happen based on dev features. In the original bug, the hw
+  couldn't segment the packets, so skb_gso_segment was invoked.
+- deep in the .gso_segment callback machinery, __skb_udp_tunnel_segment
+  tries to use the wrong inner network header, expecting the one set in
+  iptunnel_handle_offloads but getting the one set by xfrm instead.
+- a bit later, ipv6_gso_segment accesses the wrong memory based on that
+  wrong inner network header.
 
-  [ Fiona had a different approach (thanks!) at:
+With the new change, the original bug (or similar ones) cannot happen
+again, as xfrm will now trigger software GSO before applying a tunnel.
+This concern doesn't exist in packet offload mode, when the HW adds
+encapsulation headers. For the non-offloaded packets (crypto in SW),
+software GSO is still done unconditionally in the else branch.
 
-        https://lore.kernel.org/rust-for-linux/20241205115438.234221-1-me@kloenk.dev/
-
-    But Tamir and Fiona agreed to this one. - Miguel ]
-
-Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Diagnosed-by: Chayim Refael Friedman <chayimfr@gmail.com>
-Link: https://github.com/rust-lang/rust-analyzer/issues/17759#issuecomment-2646328275
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
-Link: https://lore.kernel.org/r/20250210-rust-analyzer-macros-core-dep-v3-1-45eb4836f218@gmail.com
-[ Removed `return`. Changed tag name. Added Link. Slightly
-  reworded. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/generate_rust_analyzer.py | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ net/xfrm/xfrm_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 030e26ef87c25..1093c540e3240 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -49,14 +49,26 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-             }
-         })
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index 9160a5e09041d..a30538a980cc7 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -793,7 +793,7 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
+ 		skb->encapsulation = 1;
  
--    # First, the ones in `rust/` since they are a bit special.
--    append_crate(
--        "core",
--        sysroot_src / "core" / "src" / "lib.rs",
--        [],
--        cfg=crates_cfgs.get("core", []),
--        is_workspace_member=False,
--    )
-+    def append_sysroot_crate(
-+        display_name,
-+        deps,
-+        cfg=[],
-+    ):
-+        append_crate(
-+            display_name,
-+            sysroot_src / display_name / "src" / "lib.rs",
-+            deps,
-+            cfg,
-+            is_workspace_member=False,
-+        )
-+
-+    # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
-+    # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
-+    # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
-+    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
-+    append_sysroot_crate("alloc", ["core"])
-+    append_sysroot_crate("std", ["alloc", "core"])
-+    append_sysroot_crate("proc_macro", ["core", "std"])
+ 		if (skb_is_gso(skb)) {
+-			if (skb->inner_protocol)
++			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
+ 				return xfrm_output_gso(net, sk, skb);
  
-     append_crate(
-         "compiler_builtins",
-@@ -74,7 +86,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-     append_crate(
-         "macros",
-         srctree / "rust" / "macros" / "lib.rs",
--        [],
-+        ["std", "proc_macro"],
-         is_proc_macro=True,
-     )
-     crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
+ 			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
 -- 
 2.39.5
 
