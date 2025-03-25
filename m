@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAF4A70104
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4579FA70102
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB025176A6A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE6C83BDEC7
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F055426E158;
-	Tue, 25 Mar 2025 12:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486F726A085;
+	Tue, 25 Mar 2025 12:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIgY40fo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdd+0A4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F0C25D55A;
-	Tue, 25 Mar 2025 12:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C4B2580F6;
+	Tue, 25 Mar 2025 12:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906327; cv=none; b=ebGOUJ2ipz7gkarXhKciCsT/WPZK2kKRB0PZIfCnm9RUWsqjBIozh3+yn50EZpuEv2GsEJxeIayEAOZwWxov4MmC8Pfe7g6r9egjkF0lN6iIfJGtik3fAKxb9ET2xfapnqmWmcCXlH0Qr9nhkMZFKrwl9M3vgI9Kr9YnfM26TfM=
+	t=1742906132; cv=none; b=DqIBUCB/z72RrLt870DFUKTLc93QwnZOiR4nzmV+xJulPEaD8olIIRTdpCUrAp4EUErGEqnRTlg7aZEDvj/Buz78cgAaeFv446Qb8BYqQrsBuhgw4zNmZ+kVJIHKqoUJF3JaVSLAOx38ziEWFHPjQ2tYvo5sXh6XxBZhTFaTX78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906327; c=relaxed/simple;
-	bh=J8eviI9mqACx2HUrQfjPPm7/PS2OQl1jKgl2gPlIK8g=;
+	s=arc-20240116; t=1742906132; c=relaxed/simple;
+	bh=gIGPzaoYwvciBw5IFIFZJnshe2QXnqtDGCutBd8I1OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9dmNdksEbk6Jp0pjNvtXUUQMnsDJG7XYaXHMLlsYhYT7GO6CMWBr2UC5XjXwufQAQLl5bGFP1L5mf4JiAjG+NwyYLzv0WrU3gIdZndk3UAdoQbcvFhGFJwz/OrfwVdVvnhYIyrGRU7qFhn/D9UUMvH+fjpkIAbAOX7qIAXlYWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIgY40fo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36757C4CEE9;
-	Tue, 25 Mar 2025 12:38:47 +0000 (UTC)
+	 MIME-Version; b=JnzFjIhjxr1A8fZTcaJOu7ihvTe99O9WbR05qJmFbTpPCau1xX+cfGZHmm6nXO6Rzb6eRlgpNF1kLnWr+iT1f3QDOIrZw9OFvmMtJDggmCx2NFWOAJzmv7ZC8L7WhddCHU+6W+HHW0uv7JooPz0jBb0I2tDR8uc/78yiFCq3Sns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdd+0A4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA563C4CEE9;
+	Tue, 25 Mar 2025 12:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906327;
-	bh=J8eviI9mqACx2HUrQfjPPm7/PS2OQl1jKgl2gPlIK8g=;
+	s=korg; t=1742906131;
+	bh=gIGPzaoYwvciBw5IFIFZJnshe2QXnqtDGCutBd8I1OI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIgY40fogeSY+yf1SjPBovyZC7rLUtgymdRgHILByf4Cn+v0P1Mw2RC1o8exxHAp+
-	 +FMvwWEjGBhIHsW9W+ERVf62DLAl9KdTP/JFTj7655Vd/D+8oTj4554h05mQY7przu
-	 6R2vvCXZQqWkJHplCxEmfFOAssM7e4Yz7rSZ4fCk=
+	b=zdd+0A4NU6QYLCdpa0rMywSGD6YnOtd1OngkL+W6+7iWW8YHNXJ+Ix/WUH1O5RKiB
+	 1v6gbeQclUAhaVKKWXmYIAZC1xLrYdZ6H4QiLVVfvOAPqpoXwR9JyKItm8YnnhMoyB
+	 gR1AtW4X/nhLk97tb/GMDnAI91NKqQctJYaEwv9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <frank.li@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 058/116] can: flexcan: disable transceiver during system PM
+Subject: [PATCH 6.6 30/77] can: rcar_canfd: Fix page entries in the AFL list
 Date: Tue, 25 Mar 2025 08:22:25 -0400
-Message-ID: <20250325122150.693559462@linuxfoundation.org>
+Message-ID: <20250325122145.140973824@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 5a19143124be42900b3fbc9ada3c919632eb45eb upstream.
+commit 1dba0a37644ed3022558165bbb5cb9bda540eaf7 upstream.
 
-During system PM, if no wakeup requirement, disable transceiver to
-save power.
+There are a total of 96 AFL pages and each page has 16 entries with
+registers CFDGAFLIDr, CFDGAFLMr, CFDGAFLP0r, CFDGAFLP1r holding
+the rule entries (r = 0..15).
 
-Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
+Currently, RCANFD_GAFL* macros use a start variable to find AFL entries,
+which is incorrect as the testing on RZ/G3E shows ch1 and ch4
+gets a start value of 0 and the register contents are overwritten.
+
+Fix this issue by using rule_entry corresponding to the channel
+to find the page entries in the AFL list.
+
+Fixes: dd3bd23eb438 ("can: rcar_canfd: Add Renesas R-Car CAN FD driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <frank.li@nxp.com>
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250314110145.899179-2-haibo.chen@nxp.com
-[mkl: add newlines]
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250307170330.173425-3-biju.das.jz@bp.renesas.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/flexcan/flexcan-core.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/can/rcar/rcar_canfd.c |   28 +++++++++++-----------------
+ 1 file changed, 11 insertions(+), 17 deletions(-)
 
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -2260,6 +2260,10 @@ static int __maybe_unused flexcan_suspen
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -793,22 +793,14 @@ static void rcar_canfd_configure_control
+ }
  
- 			flexcan_chip_interrupts_disable(dev);
+ static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *gpriv,
+-					   u32 ch)
++					   u32 ch, u32 rule_entry)
+ {
+-	u32 cfg;
+-	int offset, start, page, num_rules = RCANFD_CHANNEL_NUMRULES;
++	int offset, page, num_rules = RCANFD_CHANNEL_NUMRULES;
++	u32 rule_entry_index = rule_entry % 16;
+ 	u32 ridx = ch + RCANFD_RFFIFO_IDX;
  
-+			err = flexcan_transceiver_disable(priv);
-+			if (err)
-+				return err;
-+
- 			err = pinctrl_pm_select_sleep_state(device);
- 			if (err)
- 				return err;
-@@ -2292,10 +2296,16 @@ static int __maybe_unused flexcan_resume
- 			if (err)
- 				return err;
+-	if (ch == 0) {
+-		start = 0; /* Channel 0 always starts from 0th rule */
+-	} else {
+-		/* Get number of Channel 0 rules and adjust */
+-		cfg = rcar_canfd_read(gpriv->base, RCANFD_GAFLCFG(ch));
+-		start = RCANFD_GAFLCFG_GETRNC(gpriv, 0, cfg);
+-	}
+-
+ 	/* Enable write access to entry */
+-	page = RCANFD_GAFL_PAGENUM(start);
++	page = RCANFD_GAFL_PAGENUM(rule_entry);
+ 	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLECTR,
+ 			   (RCANFD_GAFLECTR_AFLPN(gpriv, page) |
+ 			    RCANFD_GAFLECTR_AFLDAE));
+@@ -824,13 +816,13 @@ static void rcar_canfd_configure_afl_rul
+ 		offset = RCANFD_C_GAFL_OFFSET;
  
--			err = flexcan_chip_start(dev);
-+			err = flexcan_transceiver_enable(priv);
- 			if (err)
- 				return err;
+ 	/* Accept all IDs */
+-	rcar_canfd_write(gpriv->base, RCANFD_GAFLID(offset, start), 0);
++	rcar_canfd_write(gpriv->base, RCANFD_GAFLID(offset, rule_entry_index), 0);
+ 	/* IDE or RTR is not considered for matching */
+-	rcar_canfd_write(gpriv->base, RCANFD_GAFLM(offset, start), 0);
++	rcar_canfd_write(gpriv->base, RCANFD_GAFLM(offset, rule_entry_index), 0);
+ 	/* Any data length accepted */
+-	rcar_canfd_write(gpriv->base, RCANFD_GAFLP0(offset, start), 0);
++	rcar_canfd_write(gpriv->base, RCANFD_GAFLP0(offset, rule_entry_index), 0);
+ 	/* Place the msg in corresponding Rx FIFO entry */
+-	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLP1(offset, start),
++	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLP1(offset, rule_entry_index),
+ 			   RCANFD_GAFLP1_GAFLFDP(ridx));
  
-+			err = flexcan_chip_start(dev);
-+			if (err) {
-+				flexcan_transceiver_disable(priv);
-+				return err;
-+			}
-+
- 			flexcan_chip_interrupts_enable(dev);
- 		}
+ 	/* Disable write access to page */
+@@ -1857,6 +1849,7 @@ static int rcar_canfd_probe(struct platf
+ 	unsigned long channels_mask = 0;
+ 	int err, ch_irq, g_irq;
+ 	int g_err_irq, g_recc_irq;
++	u32 rule_entry = 0;
+ 	bool fdmode = true;			/* CAN FD only mode - default */
+ 	char name[9] = "channelX";
+ 	int i;
+@@ -2033,7 +2026,8 @@ static int rcar_canfd_probe(struct platf
+ 		rcar_canfd_configure_tx(gpriv, ch);
  
+ 		/* Configure receive rules */
+-		rcar_canfd_configure_afl_rules(gpriv, ch);
++		rcar_canfd_configure_afl_rules(gpriv, ch, rule_entry);
++		rule_entry += RCANFD_CHANNEL_NUMRULES;
+ 	}
+ 
+ 	/* Configure common interrupts */
 
 
 
