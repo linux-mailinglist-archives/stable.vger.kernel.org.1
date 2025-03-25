@@ -1,104 +1,113 @@
-Return-Path: <stable+bounces-126625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D04AA70971
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:49:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D1FA70993
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:54:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F2FB3AC3F0
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:48:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 098583BF9CF
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5ED1FC0E4;
-	Tue, 25 Mar 2025 18:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A4A1A3157;
+	Tue, 25 Mar 2025 18:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nSAPzkjj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4EYSlkYM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C90A1F0E5B;
-	Tue, 25 Mar 2025 18:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEF51A3154
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 18:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742928207; cv=none; b=lpgeAHFeFy7gnjfRsUNoP3LyS6kr2izylBXyFsnnC5+qodYt+dfyX4c/2/hn3+//5Oo3uJKKECe6m2aQs2u2KB3lAc0E5LgzqQGdA6gpCZidZO6dtQvXl8aL06dzR1+pSPlZKq9xEY2VnmbSMHE20aNy3iYFvDbBGvuwOL15+WQ=
+	t=1742928551; cv=none; b=lA3Gj9/D2n3zg4btg3ODjKvS8HNHZN2fyKCXnaEvQh52V25KfWaEakXBNyWaecWUHtOEwzaYE4J3cSA8Rs1HAetwt52hsfTkx0nfHHSNydSOebTrPTJol0hQfr/FVv6xo8ZbEUwDQGdbdg0ttDOgM2rTd4E7pIrmidX2trQPUqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742928207; c=relaxed/simple;
-	bh=YDQnXBii9ZTIwMRIdbdy4sMkR9kIMVftvK2/KqRgcwI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gN+Qhxdo/0GeljcarWu+cB2nmfggP+OFkinCjsO+2bYRL/EYv1EW5ge2NZSUVIXjY48hxEMjNE8IyT8eHW+xHuc+eBLQ9bMT97IREt/vW4oSw37tmpf/Wxbeog8YGsSRkZLE2PvFIGNn7pChu0Vqq9ds/x/1Hr4MHVoJ2dYihGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nSAPzkjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCC0C4CEE8;
-	Tue, 25 Mar 2025 18:43:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742928207;
-	bh=YDQnXBii9ZTIwMRIdbdy4sMkR9kIMVftvK2/KqRgcwI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSAPzkjjsH0oCasaPjtiJjDuNqu1ViRM17xK+M1q4hv0tLBpLLzmNxiyWlkNbgM1G
-	 1UF0gGr/LJrSVHvTj3BjjC/Lx8EhgYB6pFrPuPFntZwZQp2kuusSrmjKUhQmj8W95G
-	 xZoD0UeBzkYA0LknNc2SCNnzH/8htgJcXN1MTT++B0zW4cVTVBu71h7t36FkKtPLmx
-	 YV57A0g0deYb0YiYcO1PlCB/xTJD8emAoF/wJ82XswpTdO3RiGHSgKCfbEOD1KrC5L
-	 l9lh3g76wpji+CFL9JC9y/MqnreRYFigxwrjhlu6Jyg3d/TewJDtNGuqkUEpg13sF2
-	 57Fjn428z7xKw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Tasos Sahanidis <tasos@tasossah.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>,
-	jdelvare@suse.com,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/2] hwmon: (nct6775-core) Fix out of bounds access for NCT679{8,9}
-Date: Tue, 25 Mar 2025 14:43:19 -0400
-Message-Id: <20250325184320.2152507-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250325184320.2152507-1-sashal@kernel.org>
-References: <20250325184320.2152507-1-sashal@kernel.org>
+	s=arc-20240116; t=1742928551; c=relaxed/simple;
+	bh=6AKG+4MIU3nFkzhQI1KPFHDmJM4sAAvKCqzFZ2pchRM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=txidOAl/EG8JxGGf1o5Kg5qg+VV0NswUkfTsopq7dzX7JpzgtlmW3/7IYC79HvTulfk28DdJOtjDC2mZZIMC9H74lpOgHTJakN1jCZKx3jyvRQ4cfS53MoLlWiF/zZ62I0TmhOueu7PX4VjrHSRt/jPUU7Wejw6vE7gNeJ1B1OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4EYSlkYM; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-300fefb8e05so7589456a91.3
+        for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:49:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742928550; x=1743533350; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+GYzbbMon8zBFYnMfBByCIqb+0VFAaEep9NdHw4CNu8=;
+        b=4EYSlkYM2zHNZ7lYAjytaJNEMkXEMarq568obbxlDzWgGhYw1ENd9KHYAdzDO4eZOH
+         0sJU+cAfUvnptluNFYkQlUv/RLSlbEUwYOs1CXxv5eti85XxvsENNv9Z7dI9nU7K+Sbr
+         AicBI6jq9u9tQbarHeBaCXzOA/7MexU7CWJ5W+T0S7YWXzK9Ik0XNXgqQFHDbmW1Mqkf
+         A7Ko3mNOfDR/VQe0cQnCFzsE0VMsu9WXHj9EYey3O+xd8OUYzDzwdFsso6QV22dBIa3U
+         FdK4I+V9K2rrREbQTXUO8npkuVH4l02Fk4jP4Td/nQg7jCLgOIq8C3Ftmc4npnmF02Xq
+         3gvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742928550; x=1743533350;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+GYzbbMon8zBFYnMfBByCIqb+0VFAaEep9NdHw4CNu8=;
+        b=QUVFfu3T3In1ABmkmrlcKDGbubhQQrzknM1BfYUDYWfmLXD6jM2yt0xTs13QzfUlMx
+         v0PU7MYAf75fbqDUQbbnCeJre4UWRN40FeJ82a006BTVCHGenMUj+1X8+q8Rc1kpEekL
+         zjrHJZDB4TsY0wFeJ7d1rrpuOF9QzEGuwCtyZeed28z7vFwT9/tInJkeTm7+4i4sxocd
+         RF8iP4OgolSC3bpoTyUzSNlrO9womzeYCl8MGosoRQ69IyxW7DBhyURZMzAmZHXn0eRC
+         Ow5U68SEdKtKYiSEtMCy569ArteA47+f96NsO8bMwctSLxQJgN9sKHxijLWtRu4jar+M
+         MzCg==
+X-Forwarded-Encrypted: i=1; AJvYcCVk41MuoFYYKZeipnAy4IQ+PDXPkbNg9i8qRgOnCfpIqo7xMeJ0VgUTN5IPRx+tT//+SQvBiWQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKXRGoqij0fSHwtca9oK6VnS06IVRA3J7oFhMIFL7o0gJ8QUEs
+	gYvrI9NNn2dCXqik1u1ecZNxcLoyCUzN0iQjYm4D30zX7OSvPbUX/MHnXEd6+gIAtvNXmfhsTns
+	IqoNw8OW/9g==
+X-Google-Smtp-Source: AGHT+IFLLKVhdVugqD5pcE0y+fL5jXQTQK+4ePWC9LHMiExN+AlvX4zavqO6tq0PKuWuySMriKun4+wfAAS6zQ==
+X-Received: from pjm7.prod.google.com ([2002:a17:90b:2fc7:b0:2f8:49ad:406c])
+ (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:134c:b0:2ff:53ad:a0f4 with SMTP id 98e67ed59e1d1-3030fe93f0dmr35266909a91.12.1742928549694;
+ Tue, 25 Mar 2025 11:49:09 -0700 (PDT)
+Date: Tue, 25 Mar 2025 18:49:00 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.291
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
+Message-ID: <20250325184902.587138-1-cmllamas@google.com>
+Subject: [PATCH] binder: fix offset calculation in debug log
+From: Carlos Llamas <cmllamas@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@android.com, 
+	"Tiffany Y. Yang" <ynaffit@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+The vma start address should be substracted from the buffer's user data
+address and not the other way around.
 
-[ Upstream commit 815f80ad20b63830949a77c816e35395d5d55144 ]
-
-pwm_num is set to 7 for these chips, but NCT6776_REG_PWM_MODE and
-NCT6776_PWM_MODE_MASK only contain 6 values.
-
-Fix this by adding another 0 to the end of each array.
-
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Link: https://lore.kernel.org/r/20250312030832.106475-1-tasos@tasossah.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Tiffany Y. Yang <ynaffit@google.com>
+Cc: stable@vger.kernel.org
+Fixes: 162c79731448 ("binder: avoid user addresses in debug logs")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
- drivers/hwmon/nct6775.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/android/binder.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/nct6775.c b/drivers/hwmon/nct6775.c
-index da6bbfca15fee..a6b7919ab63fe 100644
---- a/drivers/hwmon/nct6775.c
-+++ b/drivers/hwmon/nct6775.c
-@@ -420,8 +420,8 @@ static const s8 NCT6776_BEEP_BITS[] = {
- static const u16 NCT6776_REG_TOLERANCE_H[] = {
- 	0x10c, 0x20c, 0x30c, 0x80c, 0x90c, 0xa0c, 0xb0c };
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 76052006bd87..5fc2c8ee61b1 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -6373,7 +6373,7 @@ static void print_binder_transaction_ilocked(struct seq_file *m,
+ 		seq_printf(m, " node %d", buffer->target_node->debug_id);
+ 	seq_printf(m, " size %zd:%zd offset %lx\n",
+ 		   buffer->data_size, buffer->offsets_size,
+-		   proc->alloc.vm_start - buffer->user_data);
++		   buffer->user_data - proc->alloc.vm_start);
+ }
  
--static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0 };
--static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0, 0 };
-+static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0, 0 };
- 
- static const u16 NCT6776_REG_FAN_MIN[] = {
- 	0x63a, 0x63c, 0x63e, 0x640, 0x642, 0x64a, 0x64c };
+ static void print_binder_work_ilocked(struct seq_file *m,
 -- 
-2.39.5
+2.49.0.395.g12beb8f557-goog
 
 
