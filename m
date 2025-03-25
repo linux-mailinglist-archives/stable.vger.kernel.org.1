@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-126442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D052FA70108
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A4BA70147
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 170A23BE42B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87EA8842861
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0E725C718;
-	Tue, 25 Mar 2025 12:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09B626FA6E;
+	Tue, 25 Mar 2025 12:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUvLKRoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3VxZZMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BBBF9E6;
-	Tue, 25 Mar 2025 12:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2AD26FA6B;
+	Tue, 25 Mar 2025 12:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906232; cv=none; b=N65i6NiUNBrLrdM24qPZxNm/tTh2czJWQyqGY6PwdLvKIKBFNsNUKWAFm830YCk/55qOcSQpI0VwjzT7Rup9VE55QySJ+L0MWGCctnK7v8cb7PvOMcgM3C+0kcc0UloKDdpWhgoANcrVBBK6uGpvdC/u3CNALnBBjxFrN/KQ/Rk=
+	t=1742906397; cv=none; b=Ik+ra1J9wAM4DtNRwVKaC/O+HVZFJNzulN7pLpWI8x4S/Y38e+qV1cuPNFB+1FUI93TSXR8qZJLs7PxRavuK3xckK9qq1JaOLMqiwwcoFcGQY5Mhy546OttL/s/WPCKGrnwk7/XuXoOQgGH6ZYXBfn+bedVJ5aQo3KUTIgfvrlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906232; c=relaxed/simple;
-	bh=qvL2+ORmiNeaJXWO5Xej2cOWYyZAULWLup0vVkZECMg=;
+	s=arc-20240116; t=1742906397; c=relaxed/simple;
+	bh=aQ14J8CrarrYkCs7u9EKGnARn+yGsK5O+h3NmjZVUfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+JGog2c+wIANsHyoghU1GSo2oiGFOdAyYfhs+l6GujAS6uPwEdnV8uj6qhEcZ1sOxVhNhueLkeBvZFynzTqWSGtzcQCDB5mm9JLcXUF7DBGCslhg+cBA8o8puILsT+1+OAgP0koLvdky7C6jYG6UT2UyoJ7kA363H9fz/GOjSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUvLKRoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2855C4CEE9;
-	Tue, 25 Mar 2025 12:37:11 +0000 (UTC)
+	 MIME-Version; b=uliSnnbOsLgUK/ifJXe13/gNZ+dEGtauOSgxswicy6xWj6/Y+/3gj4Jm6uKWSYdXx8lH8E3CQORivTg1hCMzOvSrdadUy5MqIUFqDyVasOprT7K5Qxi+jWd3fzDWvdaehcK6XAyVNL2dSSlqBtMkhu/kxPt9fnwAUUjom9SiFrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3VxZZMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9013C4CEE4;
+	Tue, 25 Mar 2025 12:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906232;
-	bh=qvL2+ORmiNeaJXWO5Xej2cOWYyZAULWLup0vVkZECMg=;
+	s=korg; t=1742906396;
+	bh=aQ14J8CrarrYkCs7u9EKGnARn+yGsK5O+h3NmjZVUfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nUvLKRoeAXPQCJpBqIR9NmEKb0tb2ZCgkMaFfrL0ANPXuwXRSwClCT1upWMDfQWJw
-	 lSNq1Cyy9El40Pas42DRYPTajgVuKLv4FVwNUS2QkuqVRMcuQaNGdgg40vOCqnXv92
-	 n4tJjSsmy996rk3DkZllR1Dgz69L6QKpidPwCXuA=
+	b=u3VxZZMzNIJQ0r2Pi5eR+2c26hajFDSVp4oyw7hWlijAx0GbWWupjVNKFEYUBoijx
+	 fSVk+0YmZSicqOMdNo3gS8aVJbvY/eKT8XMxa4x1NgSmt+4K2bvX+fWTaXl149lPbP
+	 HYZzGfLGnTaFBRM52DZwtiKtRSUBp4iejCQXWDO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.6 65/77] KVM: arm64: Remove host FPSIMD saving for non-protected KVM
-Date: Tue, 25 Mar 2025 08:23:00 -0400
-Message-ID: <20250325122146.069418959@linuxfoundation.org>
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 094/116] drm/amd/pm: add unique_id for gfx12
+Date: Tue, 25 Mar 2025 08:23:01 -0400
+Message-ID: <20250325122151.612347852@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 
-[ Upstream commit 8eca7f6d5100b6997df4f532090bc3f7e0203bef ]
+commit 19b53f96856b5316ee1fd6ca485af0889e001677 upstream.
 
-Now that the host eagerly saves its own FPSIMD/SVE/SME state,
-non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
-and the code to do this is never used. Protected KVM still needs to
-save/restore the host FPSIMD/SVE state to avoid leaking guest state to
-the host (and to avoid revealing to the host whether the guest used
-FPSIMD/SVE/SME), and that code needs to be retained.
+Expose unique_id for gfx12
 
-Remove the unused code and data structures.
-
-To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
-VHE hyp code, the nVHE/hVHE version is moved into the shared switch
-header, where it is only invoked when KVM is in protected mode.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250210195226.1215254-3-mark.rutland@arm.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 16fbc18cb07470cd33fb5f37ad181b51583e6dc0)
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/kvm_host.h       |    1 -
- arch/arm64/kvm/fpsimd.c                 |    2 --
- arch/arm64/kvm/hyp/include/hyp/switch.h |    4 ----
- arch/arm64/kvm/hyp/nvhe/hyp-main.c      |    1 -
- 4 files changed, 8 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -535,7 +535,6 @@ struct kvm_vcpu_arch {
- 	struct kvm_guest_debug_arch vcpu_debug_state;
- 	struct kvm_guest_debug_arch external_debug_state;
- 
--	struct user_fpsimd_state *host_fpsimd_state;	/* hyp VA */
- 	struct task_struct *parent_task;
- 
- 	struct {
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -49,8 +49,6 @@ int kvm_arch_vcpu_run_map_fp(struct kvm_
- 	if (ret)
- 		return ret;
- 
--	vcpu->arch.host_fpsimd_state = kern_hyp_va(fpsimd);
--
- 	/*
- 	 * We need to keep current's task_struct pinned until its data has been
- 	 * unshared with the hypervisor to make sure it is not re-used by the
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -321,10 +321,6 @@ static bool kvm_hyp_handle_fpsimd(struct
- 	}
- 	isb();
- 
--	/* Write out the host state if it's in the registers */
--	if (vcpu->arch.fp_state == FP_STATE_HOST_OWNED)
--		__fpsimd_save_state(vcpu->arch.host_fpsimd_state);
--
- 	/* Restore the guest state */
- 	if (sve_guest)
- 		__hyp_sve_restore_guest(vcpu);
---- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-+++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-@@ -41,7 +41,6 @@ static void flush_hyp_vcpu(struct pkvm_h
- 	hyp_vcpu->vcpu.arch.fp_state	= host_vcpu->arch.fp_state;
- 
- 	hyp_vcpu->vcpu.arch.debug_ptr	= kern_hyp_va(host_vcpu->arch.debug_ptr);
--	hyp_vcpu->vcpu.arch.host_fpsimd_state = host_vcpu->arch.host_fpsimd_state;
- 
- 	hyp_vcpu->vcpu.arch.vsesr_el2	= host_vcpu->arch.vsesr_el2;
- 
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -2493,6 +2493,8 @@ static int default_attr_update(struct am
+ 		case IP_VERSION(11, 0, 1):
+ 		case IP_VERSION(11, 0, 2):
+ 		case IP_VERSION(11, 0, 3):
++		case IP_VERSION(12, 0, 0):
++		case IP_VERSION(12, 0, 1):
+ 			*states = ATTR_STATE_SUPPORTED;
+ 			break;
+ 		default:
 
 
 
