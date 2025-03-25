@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-126073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7426BA6FED1
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:57:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BDAA6FF3C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:01:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0053C16DABC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:52:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EAE8189B58C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F1C26560C;
-	Tue, 25 Mar 2025 12:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800F0265628;
+	Tue, 25 Mar 2025 12:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4TOzs97"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULbpMI3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE5C264FA2;
-	Tue, 25 Mar 2025 12:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6C1264F99;
+	Tue, 25 Mar 2025 12:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905551; cv=none; b=soWjGxMD2R9+8dakf9k7NSGlyVcAb0bXma6L3lLXsogNxuBBNA9K2PqnPjx/uV725tMegPSt/a7BDEODu9DNP09/KeP7k3Qq6ODSv+UbR70fCEWBsxT/RRpwQv9+iFPyiTboEUTGIKJ9ODQWYgVe+9qDtTkuAJ82QBwsVN6jxBA=
+	t=1742905558; cv=none; b=eZFm2Gn+aju5F14IaTWyY4Xiyu8NZ2NIdcd7Xa4m2reFiwua0LQTO8wUBi64NMSj1GAsaf6vy0p3HnyiRgFoLgq4uvP1a/QLo7LelW8jseoYH03qCyKHVELVbTsYrM4ZNeqTXFc2Hh/ltAn8mIFmDohfY2yKmM4R4I7xoVVOO6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905551; c=relaxed/simple;
-	bh=nGwcwrnWCPtSvBgSjFP3Tm1cl46AT3soL5tiWQ870GA=;
+	s=arc-20240116; t=1742905558; c=relaxed/simple;
+	bh=iAHAL7blJPW3ycLMnPfpNr/NYMW+04WooDRbFQJFDg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1hvsaUMvrSnPeCh2Q358gEXns73NLu0SS+xknXdd7khs7qh3z3jBPPjSevp2nEMaEs2aCPAH085kXjlU2EIh9qXs1jvI0h9P/JVh25kAmihB6bwrMR0RFDgRn0ofNomwhNI7n9liCHLYeXj0I4tgSFLOFK2Kd79XAz6nTMZO7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4TOzs97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545F4C4CEE9;
-	Tue, 25 Mar 2025 12:25:50 +0000 (UTC)
+	 MIME-Version; b=cLxincgr00I46Pft9ZXgDkbsUvKC4Ch4JPLjNSn+T7WVdGSpcmOaH+7Kpl4Y4RsAm6SWTCjbYhzRmMzSKnmmHAzOVcAePcd/iHWng9WB33u7MVsg4lNJwr1fyCm1TVQ4t1JSIknQkEDd9PukYBTloUDUCy++LhXPZJuuYLR3gnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULbpMI3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9148FC4CEEE;
+	Tue, 25 Mar 2025 12:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905550;
-	bh=nGwcwrnWCPtSvBgSjFP3Tm1cl46AT3soL5tiWQ870GA=;
+	s=korg; t=1742905557;
+	bh=iAHAL7blJPW3ycLMnPfpNr/NYMW+04WooDRbFQJFDg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4TOzs978qXknqwIpPJa4o5wIbshhfCaJZU9pNeG3j9fb6JcErDY6k2JK4C97irDY
-	 H5roySsIU8OIAfUg9EBLRNOd3uIaycuW3CvP657C9dgPYpJ0fsCJG9GdQs/pTO6ZJ1
-	 FvY7h5BxgwIziWfEkTXzdKzM4wtOfIDPLyV2Q4+0=
+	b=ULbpMI3ZlEXC8WidkrWe32dit9b5Bcy6nQ0Vp6mBVeiSaV86Nn+4m1I9C9/+XBQwN
+	 +dqcBSJGgmUmISuDVvpHQapTLlSSqqhwLIDWnvqxvFYkj+rAm6H/RXwaVhPWTnguY6
+	 OUPC1reXX9Z0J3Zrh/nSi+vXKkcMIudIHrKJMQVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.1 008/198] ice: fix memory leak in aRFS after reset
-Date: Tue, 25 Mar 2025 08:19:30 -0400
-Message-ID: <20250325122156.859977044@linuxfoundation.org>
+	Nicklas Bo Jensen <njensen@akamai.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 009/198] netfilter: nf_conncount: garbage collection is not skipped when jiffies wrap around
+Date: Tue, 25 Mar 2025 08:19:31 -0400
+Message-ID: <20250325122156.884986316@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -69,66 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Nicklas Bo Jensen <njensen@akamai.com>
 
-[ Upstream commit 23d97f18901ef5e4e264e3b1777fe65c760186b5 ]
+[ Upstream commit df08c94baafb001de6cf44bb7098bb557f36c335 ]
 
-Fix aRFS (accelerated Receive Flow Steering) structures memory leak by
-adding a checker to verify if aRFS memory is already allocated while
-configuring VSI. aRFS objects are allocated in two cases:
-- as part of VSI initialization (at probe), and
-- as part of reset handling
+nf_conncount is supposed to skip garbage collection if it has already
+run garbage collection in the same jiffy. Unfortunately, this is broken
+when jiffies wrap around which this patch fixes.
 
-However, VSI reconfiguration executed during reset involves memory
-allocation one more time, without prior releasing already allocated
-resources. This led to the memory leak with the following signature:
+The problem is that last_gc in the nf_conncount_list struct is an u32,
+but jiffies is an unsigned long which is 8 bytes on my systems. When
+those two are compared it only works until last_gc wraps around.
 
-[root@os-delivery ~]# cat /sys/kernel/debug/kmemleak
-unreferenced object 0xff3c1ca7252e6000 (size 8192):
-  comm "kworker/0:0", pid 8, jiffies 4296833052
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 0):
-    [<ffffffff991ec485>] __kmalloc_cache_noprof+0x275/0x340
-    [<ffffffffc0a6e06a>] ice_init_arfs+0x3a/0xe0 [ice]
-    [<ffffffffc09f1027>] ice_vsi_cfg_def+0x607/0x850 [ice]
-    [<ffffffffc09f244b>] ice_vsi_setup+0x5b/0x130 [ice]
-    [<ffffffffc09c2131>] ice_init+0x1c1/0x460 [ice]
-    [<ffffffffc09c64af>] ice_probe+0x2af/0x520 [ice]
-    [<ffffffff994fbcd3>] local_pci_probe+0x43/0xa0
-    [<ffffffff98f07103>] work_for_cpu_fn+0x13/0x20
-    [<ffffffff98f0b6d9>] process_one_work+0x179/0x390
-    [<ffffffff98f0c1e9>] worker_thread+0x239/0x340
-    [<ffffffff98f14abc>] kthread+0xcc/0x100
-    [<ffffffff98e45a6d>] ret_from_fork+0x2d/0x50
-    [<ffffffff98e083ba>] ret_from_fork_asm+0x1a/0x30
-    ...
+See bug report: https://bugzilla.netfilter.org/show_bug.cgi?id=1778
+for more details.
 
-Fixes: 28bf26724fdb ("ice: Implement aRFS")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
+Signed-off-by: Nicklas Bo Jensen <njensen@akamai.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_arfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conncount.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
-index fba178e076009..79074f041e39b 100644
---- a/drivers/net/ethernet/intel/ice/ice_arfs.c
-+++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
-@@ -510,7 +510,7 @@ void ice_init_arfs(struct ice_vsi *vsi)
- 	struct hlist_head *arfs_fltr_list;
- 	unsigned int i;
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 5885810da412f..71869ad466467 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -132,7 +132,7 @@ static int __nf_conncount_add(struct net *net,
+ 	struct nf_conn *found_ct;
+ 	unsigned int collect = 0;
  
--	if (!vsi || vsi->type != ICE_VSI_PF)
-+	if (!vsi || vsi->type != ICE_VSI_PF || ice_is_arfs_active(vsi))
- 		return;
+-	if (time_is_after_eq_jiffies((unsigned long)list->last_gc))
++	if ((u32)jiffies == list->last_gc)
+ 		goto add_new_node;
  
- 	arfs_fltr_list = kcalloc(ICE_MAX_ARFS_LIST, sizeof(*arfs_fltr_list),
+ 	/* check the saved connections */
+@@ -234,7 +234,7 @@ bool nf_conncount_gc_list(struct net *net,
+ 	bool ret = false;
+ 
+ 	/* don't bother if we just did GC */
+-	if (time_is_after_eq_jiffies((unsigned long)READ_ONCE(list->last_gc)))
++	if ((u32)jiffies == READ_ONCE(list->last_gc))
+ 		return false;
+ 
+ 	/* don't bother if other cpu is already doing GC */
 -- 
 2.39.5
 
