@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-126082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4210A6FF14
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D724A6FEAB
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 995CD189B96C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:53:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC6D519A19A5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6778259CBC;
-	Tue, 25 Mar 2025 12:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A95E280CF4;
+	Tue, 25 Mar 2025 12:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plWCYTNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSmh3/Zp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C952580E1;
-	Tue, 25 Mar 2025 12:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C697A280CE9;
+	Tue, 25 Mar 2025 12:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905567; cv=none; b=aiO8PEUQUPjpQWiN2WI+wxsksMzn7t4sDHsXJa4X7u9krp5FxRbMu2XBHNILrtXcBYna4qtz0GzqB8+NsVekN4FG++UxUBxIUd4cIv0YrXUrF5S0OeAa9Hrej2rcBXp75lu6jIWtgt6yUiKL7Di3VIRkIf4hFEPnUx+fhrB52wQ=
+	t=1742905511; cv=none; b=YU5gA1uHvuvR1Q8B0GXHtlPGN6JtDSpQOPW11huTxFIb9fBQm97zzXvOes6s7u9S3reb7U/st6lcqKX/gtBuC/+jjAYIROEUJEj6QOMK+63kBPpma7M1t/OQQgNfVQV0zkJ/iI9+syw4iJMNORUcGqE2WekeEuS87FnpTIijLJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905567; c=relaxed/simple;
-	bh=HHK4ycfJb53L+KdBgz+moksYiLdpLGEinX7bfQyZN5I=;
+	s=arc-20240116; t=1742905511; c=relaxed/simple;
+	bh=1EVWgSRWouHt8D4f+DXlcP5PVKAl70ylpqNsHMk4gWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TyQrvFYqej7jaOTwxdPpjnwd4HR+dTEpBFq5ElHNB4IYvoE1/iJARlHBJEnD/FBzwZWmhneqV+t6o2ohUOmQ1URkO5/bXss6C+ablbnmhM5Ytmq5VZMLiBZqlUnAKjdCNB5BW63Y0fDPMG5Nt0b1w/zIrg3xsYbC5FWo4bvaS1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plWCYTNP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3736C4CEE4;
-	Tue, 25 Mar 2025 12:26:06 +0000 (UTC)
+	 MIME-Version; b=YCgyExWj9x3eze2SuLTqSO55m38H1UR4st2oNECfWyAFY9NpymMMRaVsGmKUPIvlFoiJorX/4ZLxVcAdNp6R74WVkdLQMiY3lsh6KifSW2nlRJ/YdeqfRyIgO+nvszv3Vfaev6uA3OWLSNCkRIyakcIikE5zRwHTR6ORxMautrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSmh3/Zp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD7CC4CEE4;
+	Tue, 25 Mar 2025 12:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905567;
-	bh=HHK4ycfJb53L+KdBgz+moksYiLdpLGEinX7bfQyZN5I=;
+	s=korg; t=1742905511;
+	bh=1EVWgSRWouHt8D4f+DXlcP5PVKAl70ylpqNsHMk4gWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=plWCYTNP7PcnL3xbJ7qzc3sXTmHq3tUsOwtRptlWxCVPlknPAS91uqZ80qYfE+Z+p
-	 7QFQVyNc/yapE8kifDo/tuB2Q4IcThmZonhpnDX14Kf45i8utDxPNBkh8/9paI7Asi
-	 N/+tK2Nj4ksU7X6hG5Td4NIULD1AI2aREmhkrZjs=
+	b=DSmh3/ZpCvX9PVU5cMIDO7UIVxA4Il8D4s37rtttO/A7XqwPDk3VVVybYl+c49RKm
+	 7pMdCXVwyhCtrg89bKomwgxRVWv7ZKsxRzfOfoTQO5u3NWbjxzMoobC5xbDaa4ivMO
+	 QjbCe8uiT70CrPhdCRC1IF1UqQyeqGxCKShpIpTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Huang <Joseph.Huang@garmin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Matt Johnston <matt@codeconstruct.com.au>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/198] net: dsa: mv88e6xxx: Verify after ATU Load ops
-Date: Tue, 25 Mar 2025 08:19:36 -0400
-Message-ID: <20250325122157.015679737@linuxfoundation.org>
+Subject: [PATCH 6.1 015/198] net: mctp i2c: Copy headers if cloned
+Date: Tue, 25 Mar 2025 08:19:37 -0400
+Message-ID: <20250325122157.041543756@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -67,135 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joseph Huang <Joseph.Huang@garmin.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit dc5340c3133a3ebe54853fd299116149e528cfaa ]
+[ Upstream commit df8ce77ba8b7c012a3edd1ca7368b46831341466 ]
 
-ATU Load operations could fail silently if there's not enough space
-on the device to hold the new entry. When this happens, the symptom
-depends on the unknown flood settings. If unknown multicast flood is
-disabled, the multicast packets are dropped when the ATU table is
-full. If unknown multicast flood is enabled, the multicast packets
-will be flooded to all ports. Either way, IGMP snooping is broken
-when the ATU Load operation fails silently.
+Use skb_cow_head() prior to modifying the TX SKB. This is necessary
+when the SKB has been cloned, to avoid modifying other shared clones.
 
-Do a Read-After-Write verification after each fdb/mdb add operation
-to make sure that the operation was really successful, and return
--ENOSPC otherwise.
-
-Fixes: defb05b9b9b4 ("net: dsa: mv88e6xxx: Add support for fdb_add, fdb_del, and fdb_getnext")
-Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250306172306.3859214-1-Joseph.Huang@garmin.com
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+Link: https://patch.msgid.link/20250306-matt-mctp-i2c-cow-v1-1-293827212681@codeconstruct.com.au
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 59 ++++++++++++++++++++++++++------
- 1 file changed, 48 insertions(+), 11 deletions(-)
+ drivers/net/mctp/mctp-i2c.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index d94b46316a117..af0565c3a364c 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -2107,13 +2107,11 @@ mv88e6xxx_port_vlan_prepare(struct dsa_switch *ds, int port,
- 	return err;
- }
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index 7635a8b3c35cd..17619d011689f 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -543,6 +543,7 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+ 	struct mctp_i2c_hdr *hdr;
+ 	struct mctp_hdr *mhdr;
+ 	u8 lldst, llsrc;
++	int rc;
  
--static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
--					const unsigned char *addr, u16 vid,
--					u8 state)
-+static int mv88e6xxx_port_db_get(struct mv88e6xxx_chip *chip,
-+				 const unsigned char *addr, u16 vid,
-+				 u16 *fid, struct mv88e6xxx_atu_entry *entry)
- {
--	struct mv88e6xxx_atu_entry entry;
- 	struct mv88e6xxx_vtu_entry vlan;
--	u16 fid;
- 	int err;
+ 	if (len > MCTP_I2C_MAXMTU)
+ 		return -EMSGSIZE;
+@@ -553,6 +554,10 @@ static int mctp_i2c_header_create(struct sk_buff *skb, struct net_device *dev,
+ 	lldst = *((u8 *)daddr);
+ 	llsrc = *((u8 *)saddr);
  
- 	/* Ports have two private address databases: one for when the port is
-@@ -2124,7 +2122,7 @@ static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
- 	 * VLAN ID into the port's database used for VLAN-unaware bridging.
- 	 */
- 	if (vid == 0) {
--		fid = MV88E6XXX_FID_BRIDGED;
-+		*fid = MV88E6XXX_FID_BRIDGED;
- 	} else {
- 		err = mv88e6xxx_vtu_get(chip, vid, &vlan);
- 		if (err)
-@@ -2134,14 +2132,39 @@ static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
- 		if (!vlan.valid)
- 			return -EOPNOTSUPP;
- 
--		fid = vlan.fid;
-+		*fid = vlan.fid;
- 	}
- 
--	entry.state = 0;
--	ether_addr_copy(entry.mac, addr);
--	eth_addr_dec(entry.mac);
-+	entry->state = 0;
-+	ether_addr_copy(entry->mac, addr);
-+	eth_addr_dec(entry->mac);
++	rc = skb_cow_head(skb, sizeof(struct mctp_i2c_hdr));
++	if (rc)
++		return rc;
 +
-+	return mv88e6xxx_g1_atu_getnext(chip, *fid, entry);
-+}
-+
-+static bool mv88e6xxx_port_db_find(struct mv88e6xxx_chip *chip,
-+				   const unsigned char *addr, u16 vid)
-+{
-+	struct mv88e6xxx_atu_entry entry;
-+	u16 fid;
-+	int err;
- 
--	err = mv88e6xxx_g1_atu_getnext(chip, fid, &entry);
-+	err = mv88e6xxx_port_db_get(chip, addr, vid, &fid, &entry);
-+	if (err)
-+		return false;
-+
-+	return entry.state && ether_addr_equal(entry.mac, addr);
-+}
-+
-+static int mv88e6xxx_port_db_load_purge(struct mv88e6xxx_chip *chip, int port,
-+					const unsigned char *addr, u16 vid,
-+					u8 state)
-+{
-+	struct mv88e6xxx_atu_entry entry;
-+	u16 fid;
-+	int err;
-+
-+	err = mv88e6xxx_port_db_get(chip, addr, vid, &fid, &entry);
- 	if (err)
- 		return err;
- 
-@@ -2739,6 +2762,13 @@ static int mv88e6xxx_port_fdb_add(struct dsa_switch *ds, int port,
- 	mv88e6xxx_reg_lock(chip);
- 	err = mv88e6xxx_port_db_load_purge(chip, port, addr, vid,
- 					   MV88E6XXX_G1_ATU_DATA_STATE_UC_STATIC);
-+	if (err)
-+		goto out;
-+
-+	if (!mv88e6xxx_port_db_find(chip, addr, vid))
-+		err = -ENOSPC;
-+
-+out:
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	return err;
-@@ -6502,6 +6532,13 @@ static int mv88e6xxx_port_mdb_add(struct dsa_switch *ds, int port,
- 	mv88e6xxx_reg_lock(chip);
- 	err = mv88e6xxx_port_db_load_purge(chip, port, mdb->addr, mdb->vid,
- 					   MV88E6XXX_G1_ATU_DATA_STATE_MC_STATIC);
-+	if (err)
-+		goto out;
-+
-+	if (!mv88e6xxx_port_db_find(chip, mdb->addr, mdb->vid))
-+		err = -ENOSPC;
-+
-+out:
- 	mv88e6xxx_reg_unlock(chip);
- 
- 	return err;
+ 	skb_push(skb, sizeof(struct mctp_i2c_hdr));
+ 	skb_reset_mac_header(skb);
+ 	hdr = (void *)skb_mac_header(skb);
 -- 
 2.39.5
 
