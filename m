@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-126175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0833BA6FF75
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:05:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2EDA6FF71
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 338B17A5018
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4BC97A4380
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0B0267390;
-	Tue, 25 Mar 2025 12:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB92266EE2;
+	Tue, 25 Mar 2025 12:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9Gb/WvC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qg+oBuss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A18B2571DC;
-	Tue, 25 Mar 2025 12:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2EE1D959B;
+	Tue, 25 Mar 2025 12:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905739; cv=none; b=MgEuykZnhLMSei7sInR0+Ql6OG0h36NlmF9x312hpJ5eF3XnaHJRFAap0A/y85y4uadRFjWBQszuAmKWjBy3uFy7V+o26YHWStnGWck522rFvisq9sfcqLgf4KEkSCvlhCDh2hKkX+8HqkkqvCtu3YOVfur462sHtXjSwzLij64=
+	t=1742905695; cv=none; b=hvhkY5rkgAUB1BPx7WE56qQT2ZTNVo95MtUnCEuU1lMnWbcbvIEM/bYzozrKghl9dSxKL5wycUt93pgAZus+6Iie4tR2MhqfWZrOEo04J2HkEDABbGQ0+Qb4lBov2KvxaRnzU3U7sqpXCE9bczOMNc84fA6B0gMWJF02A5aE/vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905739; c=relaxed/simple;
-	bh=EYVUaRgPZq/5DH0C84qC8dhNBfemQuKgqcXIb9gwg4c=;
+	s=arc-20240116; t=1742905695; c=relaxed/simple;
+	bh=rgqUWwmzXWUmT2TuHp41ynTWalCZsfbfzvqStFCYG+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cm7Vg2YDLtsIqQP4W7FEZxh3dLIo8OKJw+9NkttBcSaK5MXHu+qQDqBOdV58BqgESyGQ5bPFb1N0eduOC5thEhmyWVNla8H0GtenbI4MuYs0DRDZPapiyjnU5VK0XJmu4fW0/uLLkE61GoyU8Pq8QABW3te5AxCH+Jzi4LrhK4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9Gb/WvC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A28C4CEE4;
-	Tue, 25 Mar 2025 12:28:59 +0000 (UTC)
+	 MIME-Version; b=t4y2Z/6CUoIW7MamTx68HLgBEquh+29Cp9qc9YwcAGCmRfWfG3SYYBW4qIwihvc4RiXrOw6Yy9UIAK7yGulea8U6uZnckIL55fITT91PBiYQ+m7H1d13wtl2L+DLplhGFi+5aoO6MzU0/8kiE6AxUZRMhxPTzKv3axLJEoOrGCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qg+oBuss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3759C4CEE4;
+	Tue, 25 Mar 2025 12:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905739;
-	bh=EYVUaRgPZq/5DH0C84qC8dhNBfemQuKgqcXIb9gwg4c=;
+	s=korg; t=1742905695;
+	bh=rgqUWwmzXWUmT2TuHp41ynTWalCZsfbfzvqStFCYG+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q9Gb/WvCaoCP+tdyzJFuySwnYwaIGV8FskW5HN+/rr0S+B0vo0633IGA5RK8aevYK
-	 3mEPJVM9VBgcTMeIkjXQ2dNNjcTxndR7wItA7JqREqADfd3lTOwfhIt8lN7iyNzwZM
-	 bd1430T4bt8v6+mLaa6mueKw/Sw7F+Rpdx1/olao=
+	b=Qg+oBuss9zazi2aKyP2wq60hsLtfqV3gSBKsXxCmb04mlOR8EaT4tV1mWMo2a3Hza
+	 dXPv6KmSHpKTpsdcO6Px38iOn4WYJisGj9a99295rG7uUB/gwZjP2nb3n8/1g9O28p
+	 9EL6W2OhyQIcx/Dds14iLK+CV4WlGv5jsY6wbmbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 107/198] Input: i8042 - swap old quirk combination with new quirk for more devices
-Date: Tue, 25 Mar 2025 08:21:09 -0400
-Message-ID: <20250325122159.460125072@linuxfoundation.org>
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.1 114/198] drm/dp_mst: Fix locking when skipping CSN before topology probing
+Date: Tue, 25 Mar 2025 08:21:16 -0400
+Message-ID: <20250325122159.644876275@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -65,126 +66,125 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit d85862ccca452eeb19329e9f4f9a6ce1d1e53561 upstream.
+commit 12d8f318347b1d4feac48e8ac351d3786af39599 upstream.
 
-Some older Clevo barebones have problems like no or laggy keyboard after
-resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
-quirk.
+The handling of the MST Connection Status Notify message is skipped if
+the probing of the topology is still pending. Acquiring the
+drm_dp_mst_topology_mgr::probe_lock for this in
+drm_dp_mst_handle_up_req() is problematic: the task/work this function
+is called from is also responsible for handling MST down-request replies
+(in drm_dp_mst_handle_down_rep()). Thus drm_dp_mst_link_probe_work() -
+holding already probe_lock - could be blocked waiting for an MST
+down-request reply while drm_dp_mst_handle_up_req() is waiting for
+probe_lock while processing a CSN message. This leads to the probe
+work's down-request message timing out.
 
-We could not activly retest these devices because we no longer have them in
-our archive, but based on the other old Clevo barebones we tested where the
-new quirk had the same or a better behaviour I think it would be good to
-apply it on these too.
+A scenario similar to the above leading to a down-request timeout is
+handling a CSN message in drm_dp_mst_handle_conn_stat(), holding the
+probe_lock and sending down-request messages while a second CSN message
+sent by the sink subsequently is handled by drm_dp_mst_handle_up_req().
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://lore.kernel.org/r/20250221230137.70292-4-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fix the above by moving the logic to skip the CSN handling to
+drm_dp_mst_process_up_req(). This function is called from a work
+(separate from the task/work handling new up/down messages), already
+holding probe_lock. This solves the above timeout issue, since handling
+of down-request replies won't be blocked by probe_lock.
+
+Fixes: ddf983488c3e ("drm/dp_mst: Skip CSN if topology probing is not done yet")
+Cc: Wayne Lin <Wayne.Lin@amd.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: stable@vger.kernel.org # v6.6+
+Reviewed-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250307183152.3822170-1-imre.deak@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   31 ++++++++++---------------------
- 1 file changed, 10 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |   40 +++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 16 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1157,9 +1157,7 @@ static const struct dmi_system_id i8042_
- 	},
- 	/*
- 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
--	 * after suspend fixable with nomux + reset + noloop + nopnp. Luckily,
--	 * none of them have an external PS/2 port so this can safely be set for
--	 * all of them.
-+	 * after suspend fixable with the forcenorestore quirk.
- 	 * Clevo barebones come with board_vendor and/or system_vendor set to
- 	 * either the very generic string "Notebook" and/or a different value
- 	 * for each individual reseller. The only somewhat universal way to
-@@ -1175,22 +1173,19 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "LAPQC71B"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "N140CU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "N141CU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1250,8 +1245,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NJ50_70CU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1268,16 +1262,14 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "P65xH"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/* Clevo P650RS, 650RP6, Sager NP8152-S, and others */
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "P65xRP"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/*
-@@ -1288,8 +1280,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "P65_P67H"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/*
-@@ -1300,8 +1291,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "P65_67RP"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/*
-@@ -1323,8 +1313,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "P67xRP"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3959,6 +3959,22 @@ out:
+ 	return 0;
+ }
+ 
++static bool primary_mstb_probing_is_done(struct drm_dp_mst_topology_mgr *mgr)
++{
++	bool probing_done = false;
++
++	mutex_lock(&mgr->lock);
++
++	if (mgr->mst_primary && drm_dp_mst_topology_try_get_mstb(mgr->mst_primary)) {
++		probing_done = mgr->mst_primary->link_address_sent;
++		drm_dp_mst_topology_put_mstb(mgr->mst_primary);
++	}
++
++	mutex_unlock(&mgr->lock);
++
++	return probing_done;
++}
++
+ static inline bool
+ drm_dp_mst_process_up_req(struct drm_dp_mst_topology_mgr *mgr,
+ 			  struct drm_dp_pending_up_req *up_req)
+@@ -3989,8 +4005,12 @@ drm_dp_mst_process_up_req(struct drm_dp_
+ 
+ 	/* TODO: Add missing handler for DP_RESOURCE_STATUS_NOTIFY events */
+ 	if (msg->req_type == DP_CONNECTION_STATUS_NOTIFY) {
+-		dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
+-		hotplug = true;
++		if (!primary_mstb_probing_is_done(mgr)) {
++			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.\n");
++		} else {
++			dowork = drm_dp_mst_handle_conn_stat(mstb, &msg->u.conn_stat);
++			hotplug = true;
++		}
+ 	}
+ 
+ 	drm_dp_mst_topology_put_mstb(mstb);
+@@ -4069,10 +4089,11 @@ static int drm_dp_mst_handle_up_req(stru
+ 	drm_dp_send_up_ack_reply(mgr, mst_primary, up_req->msg.req_type,
+ 				 false);
+ 
++	drm_dp_mst_topology_put_mstb(mst_primary);
++
+ 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
+ 		const struct drm_dp_connection_status_notify *conn_stat =
+ 			&up_req->msg.u.conn_stat;
+-		bool handle_csn;
+ 
+ 		drm_dbg_kms(mgr->dev, "Got CSN: pn: %d ldps:%d ddps: %d mcs: %d ip: %d pdt: %d\n",
+ 			    conn_stat->port_number,
+@@ -4081,16 +4102,6 @@ static int drm_dp_mst_handle_up_req(stru
+ 			    conn_stat->message_capability_status,
+ 			    conn_stat->input_port,
+ 			    conn_stat->peer_device_type);
+-
+-		mutex_lock(&mgr->probe_lock);
+-		handle_csn = mst_primary->link_address_sent;
+-		mutex_unlock(&mgr->probe_lock);
+-
+-		if (!handle_csn) {
+-			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
+-			kfree(up_req);
+-			goto out_put_primary;
+-		}
+ 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
+ 		const struct drm_dp_resource_status_notify *res_stat =
+ 			&up_req->msg.u.resource_stat;
+@@ -4105,9 +4116,6 @@ static int drm_dp_mst_handle_up_req(stru
+ 	list_add_tail(&up_req->next, &mgr->up_req_list);
+ 	mutex_unlock(&mgr->up_req_lock);
+ 	queue_work(system_long_wq, &mgr->up_req_work);
+-
+-out_put_primary:
+-	drm_dp_mst_topology_put_mstb(mst_primary);
+ out_clear_reply:
+ 	memset(&mgr->up_req_recv, 0, sizeof(struct drm_dp_sideband_msg_rx));
+ 	return 0;
 
 
 
