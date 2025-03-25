@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-126061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0801EA6FEBB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:56:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8055DA6FF02
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:59:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CAB43BB9E5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:50:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 001411881EED
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDBB283681;
-	Tue, 25 Mar 2025 12:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95AD264FA1;
+	Tue, 25 Mar 2025 12:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gdmama6h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIzU/BLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AED281529;
-	Tue, 25 Mar 2025 12:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CBE264F97;
+	Tue, 25 Mar 2025 12:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905528; cv=none; b=WSqrrh/CF/B61t7Bryg7nHytWr3Ki3EJTfoa/Xvwk9UHRqMvWKNIdi/l3Z1t0J8YRJd2eSnabm+g1n4AfnRWgfPSMl7r2gxYOU4cSVzvXXBVcptq67o/eYwIQUP1T7reGY0waDm7xv4vlNyayHPLWucz0BJ6jHefGL8pC6FoigM=
+	t=1742905532; cv=none; b=j/g3uKxkVVZB4PCSsksDAHuagw+olWLmjOxBaboxfN1l7HI7A+ZW5SN7/Ry758xrEJTJbCgGzUSoEbQK7Kfiq4siB2POCAGhI64LIDI0shy6k0ob7qNoI6lGiQfTNrA5mtc6qnJkLX0lSLQJqE5aOlaH0adtmgRxYcqTEQ5nric=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905528; c=relaxed/simple;
-	bh=QlP5A69xt2vaCERDK+/nAmEneXH1b9c0/rdkDR0AYQQ=;
+	s=arc-20240116; t=1742905532; c=relaxed/simple;
+	bh=BZmy/0TZsfbLeWJc/4mrOpu/MlfBB4jt2zkcPkOIre8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHvaxiW13L4QCCGEhCurEkMOFnXpEyHdEKw4osLDxaL1tLYF88Pg30gtX6FPYR6x2SqLi4H9haPdAyVOpLyb+bMwuJJ2GhRiB96w5Sz3uFfjBw/unwM852nKnA+rcFW0Sfd9OtINWLFMMvV9Tx4sKLmiDvsQSoJHdPJ3T638iUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gdmama6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EAAC4AF09;
-	Tue, 25 Mar 2025 12:25:27 +0000 (UTC)
+	 MIME-Version; b=Y+p/vimOd65Kqt3InktpKXFlLmzDDVulhQVLb3ngRPCyI5mjpS33Rmxb0ZH5xn5IQEPQ89YYjzyn8FDhLE8xPYTEsXZwHlM9v4tRIm8xEgtrHmYAakcNbcTRUJ7bMmvfRiC4MJdYAgpA8MJxSwYyTP+7f90XtbvT5N2cukW6cg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cIzU/BLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE590C4CEE9;
+	Tue, 25 Mar 2025 12:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905528;
-	bh=QlP5A69xt2vaCERDK+/nAmEneXH1b9c0/rdkDR0AYQQ=;
+	s=korg; t=1742905532;
+	bh=BZmy/0TZsfbLeWJc/4mrOpu/MlfBB4jt2zkcPkOIre8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gdmama6hcViql5qmBDewLXdbQzdwj1ZZTUuTbcARhAUoT9PBZxDz844zS7KwOZoia
-	 DIDurpWCs3dDSVQdmv7sUZb+V8QElzwImviB5w+jxBgULfCsQCVWV142ILQblOL9iS
-	 YH2Cz5QOxcExDy7PB7UZrl2rSZsVtqZzUMy+XqHE=
+	b=cIzU/BLXrnleQEZ5qpE7aBXgUWVW7Yv3ofrmPidxkaw/2fEqwwhKKebRzauUZ/i/0
+	 CxY9RbryTF5xvgGvPVEEceGre/htsBsXQ1sRkvq3s1vjK08l9mWl7gNsmQRtHmypSc
+	 6fvawAouxwSNKhKmJe3yt3CYTgjMZUrfMkPPJcf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/198] ipvs: prevent integer overflow in do_ip_vs_get_ctl()
-Date: Tue, 25 Mar 2025 08:19:46 -0400
-Message-ID: <20250325122157.274173654@linuxfoundation.org>
+Subject: [PATCH 6.1 025/198] net_sched: Prevent creation of classes with TC_H_ROOT
+Date: Tue, 25 Mar 2025 08:19:47 -0400
+Message-ID: <20250325122157.300215706@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -67,66 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 80b78c39eb86e6b55f56363b709eb817527da5aa ]
+[ Upstream commit 0c3057a5a04d07120b3d0ec9c79568fceb9c921e ]
 
-The get->num_services variable is an unsigned int which is controlled by
-the user.  The struct_size() function ensures that the size calculation
-does not overflow an unsigned long, however, we are saving the result to
-an int so the calculation can overflow.
+The function qdisc_tree_reduce_backlog() uses TC_H_ROOT as a termination
+condition when traversing up the qdisc tree to update parent backlog
+counters. However, if a class is created with classid TC_H_ROOT, the
+traversal terminates prematurely at this class instead of reaching the
+actual root qdisc, causing parent statistics to be incorrectly maintained.
+In case of DRR, this could lead to a crash as reported by Mingi Cho.
 
-Both "len" and "get->num_services" come from the user.  This check is
-just a sanity check to help the user and ensure they are using the API
-correctly.  An integer overflow here is not a big deal.  This has no
-security impact.
+Prevent the creation of any Qdisc class with classid TC_H_ROOT
+(0xFFFFFFFF) across all qdisc types, as suggested by Jamal.
 
-Save the result from struct_size() type size_t to fix this integer
-overflow bug.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 066a3b5b2346 ("[NET_SCHED] sch_api: fix qdisc_tree_decrease_qlen() loop")
+Link: https://patch.msgid.link/20250306232355.93864-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sched/sch_api.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 18e37b32a5d61..6cc50f05c46c1 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -2854,12 +2854,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_SERVICES:
- 	{
- 		struct ip_vs_get_services *get;
--		int size;
-+		size_t size;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index cb379849c51a4..c395e7a98232d 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -2200,6 +2200,12 @@ static int tc_ctl_tclass(struct sk_buff *skb, struct nlmsghdr *n,
+ 		return -EOPNOTSUPP;
+ 	}
  
- 		get = (struct ip_vs_get_services *)arg;
- 		size = struct_size(get, entrytable, get->num_services);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
-@@ -2895,12 +2895,12 @@ do_ip_vs_get_ctl(struct sock *sk, int cmd, void __user *user, int *len)
- 	case IP_VS_SO_GET_DESTS:
- 	{
- 		struct ip_vs_get_dests *get;
--		int size;
-+		size_t size;
- 
- 		get = (struct ip_vs_get_dests *)arg;
- 		size = struct_size(get, entrytable, get->num_dests);
- 		if (*len != size) {
--			pr_err("length: %u != %u\n", *len, size);
-+			pr_err("length: %u != %zu\n", *len, size);
- 			ret = -EINVAL;
- 			goto out;
- 		}
++	/* Prevent creation of traffic classes with classid TC_H_ROOT */
++	if (clid == TC_H_ROOT) {
++		NL_SET_ERR_MSG(extack, "Cannot create traffic class with classid TC_H_ROOT");
++		return -EINVAL;
++	}
++
+ 	new_cl = cl;
+ 	err = -EOPNOTSUPP;
+ 	if (cops->change)
 -- 
 2.39.5
 
