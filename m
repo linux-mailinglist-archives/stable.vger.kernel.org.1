@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-126227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E537A7002C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3826A70167
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CE1C3BFFFF
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:01:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B8A2189041D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEF126773A;
-	Tue, 25 Mar 2025 12:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DFE26AA9A;
+	Tue, 25 Mar 2025 12:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4YV43uc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tam6wi1V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F54267734;
-	Tue, 25 Mar 2025 12:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCBD26AA8C;
+	Tue, 25 Mar 2025 12:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905836; cv=none; b=Hs4fTU1DaavrNl0Tq9HSKEdX3yuVHw/pa2VmEefvFLDT6LrfiP7MfEKP6i4PjHFWG5GMPr8J8wouFSyutCn/skm0kJRgr3Te8cOKZbKQqoFDNPzPBLBHzrtEno9/y+n5xt6e5vQv/2dpaN3yoHKeHijSjGF8KJriSdVDG8IOALg=
+	t=1742906190; cv=none; b=ePW1WAv8hZFEshZOnRnzrlNpaafa+1SRDR1jS310EtfXghXoNOQ1rMegM0FEP4iJYnqTswSSMg0MfmrzArYtUVcN7WkEFQlUTlWQwTAzhHHKA4c6gRFf8bt9M3x2UWJ7IBernoIjkrSfZAp2gv7L0jARni4eabGWSQfptKi0c/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905836; c=relaxed/simple;
-	bh=3LuGyXzhSDdqlyOYjY+s5fvjVGKu3zpO1sxWxd4liSs=;
+	s=arc-20240116; t=1742906190; c=relaxed/simple;
+	bh=xOJouAcBtkIOdsWUAmhr3NrWaQBTonN+++K+sNTZd9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnB1gCnqOA5wClu1mYH1Ve/nNg/2a6OK0Y1BEXcqfhCYkKsDWtamFODxJ65K/UN7yfXwnXXhzvkGJGY6kVkAVynsvq7mFJUhBQHy1RPZ3pWPbcWERJTHmVU7zbofvG3sWY7IncB1YMZHtWjAxDOREz6TnF17H2h47Xpx5BHeEnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4YV43uc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362F1C4CEED;
-	Tue, 25 Mar 2025 12:30:35 +0000 (UTC)
+	 MIME-Version; b=cfgqtjGzjEzf/BngK185zojp0IxQ2hRWbYWL84zejcc74ENdJPze5DB7LGUEArpkFrWp6EAx+b8oroGyOkF8Lbuea7R+pTi7glbP4RiOoq8QERUYNfEX+6gxy4nyYw8V5a8CbUvOGKafOhGTOt7xWJi8lKmgP2KvRV5w2KTGXRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tam6wi1V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA0FC4CEE4;
+	Tue, 25 Mar 2025 12:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905835;
-	bh=3LuGyXzhSDdqlyOYjY+s5fvjVGKu3zpO1sxWxd4liSs=;
+	s=korg; t=1742906190;
+	bh=xOJouAcBtkIOdsWUAmhr3NrWaQBTonN+++K+sNTZd9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u4YV43ucaCBkOmvVbT0Mp7yS38k7Plxun/lCvuQ4qDNoaMUujnYNMh/1MdlKtzrlD
-	 PExDc2LALdyqbHLhc1CBM09dg0yK+utUNiWGWEbevP7z+LFanyUnTYMB3PItrjGKrd
-	 bGjWZmXdpP5q9naeHMdA2H068rlIgwvDEaH2Ed4Q=
+	b=Tam6wi1Vg/8PpAVdfAwIanIPtqLSSC0PYYX74HcXLPGtRsCJ9hZVIb+nqHRedKRur
+	 kOXSJ63XhTWTTzsqsz2LpVPho2nSfnQO468FVqgXUqVTDm7TKQb5zPkHUE8XovOfe/
+	 RLTENDMuMI53Wq9W5nDeTuzBvgwhsVBQCywq5p+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Arthur Mongodin <amongodin@randorisec.fr>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.1 189/198] mptcp: Fix data stream corruption in the address announcement
+	Christian Eggers <ceggers@arri.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 36/77] regulator: dummy: force synchronous probing
 Date: Tue, 25 Mar 2025 08:22:31 -0400
-Message-ID: <20250325122201.607775451@linuxfoundation.org>
+Message-ID: <20250325122145.297603209@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arthur Mongodin <amongodin@randorisec.fr>
+From: Christian Eggers <ceggers@arri.de>
 
-commit 2c1f97a52cb827a5f2768e67a9dddffae1ed47ab upstream.
+commit 8619909b38eeebd3e60910158d7d68441fc954e9 upstream.
 
-Because of the size restriction in the TCP options space, the MPTCP
-ADD_ADDR option is exclusive and cannot be sent with other MPTCP ones.
-For this reason, in the linked mptcp_out_options structure, group of
-fields linked to different options are part of the same union.
+Sometimes I get a NULL pointer dereference at boot time in kobject_get()
+with the following call stack:
 
-There is a case where the mptcp_pm_add_addr_signal() function can modify
-opts->addr, but not ended up sending an ADD_ADDR. Later on, back in
-mptcp_established_options, other options will be sent, but with
-unexpected data written in other fields due to the union, e.g. in
-opts->ext_copy. This could lead to a data stream corruption in the next
-packet.
+anatop_regulator_probe()
+ devm_regulator_register()
+  regulator_register()
+   regulator_resolve_supply()
+    kobject_get()
 
-Using an intermediate variable, prevents from corrupting previously
-established DSS option. The assignment of the ADD_ADDR option
-parameters is now done once we are sure this ADD_ADDR option can be set
-in the packet, e.g. after having dropped other suboptions.
+By placing some extra BUG_ON() statements I could verify that this is
+raised because probing of the 'dummy' regulator driver is not completed
+('dummy_regulator_rdev' is still NULL).
 
-Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
+In the JTAG debugger I can see that dummy_regulator_probe() and
+anatop_regulator_probe() can be run by different kernel threads
+(kworker/u4:*).  I haven't further investigated whether this can be
+changed or if there are other possibilities to force synchronization
+between these two probe routines.  On the other hand I don't expect much
+boot time penalty by probing the 'dummy' regulator synchronously.
+
 Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Arthur Mongodin <amongodin@randorisec.fr>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-[ Matt: the commit message has been updated: long lines splits and some
-  clarifications. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-1-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in 4.14")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Link: https://patch.msgid.link/20250311091803.31026-1-ceggers@arri.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/regulator/dummy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -649,6 +649,7 @@ static bool mptcp_established_options_ad
- 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
- 	bool drop_other_suboptions = false;
- 	unsigned int opt_size = *size;
-+	struct mptcp_addr_info addr;
- 	bool echo;
- 	int len;
+diff --git a/drivers/regulator/dummy.c b/drivers/regulator/dummy.c
+index 5b9b9e4e762d..9f59889129ab 100644
+--- a/drivers/regulator/dummy.c
++++ b/drivers/regulator/dummy.c
+@@ -60,7 +60,7 @@ static struct platform_driver dummy_regulator_driver = {
+ 	.probe		= dummy_regulator_probe,
+ 	.driver		= {
+ 		.name		= "reg-dummy",
+-		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
++		.probe_type	= PROBE_FORCE_SYNCHRONOUS,
+ 	},
+ };
  
-@@ -657,7 +658,7 @@ static bool mptcp_established_options_ad
- 	 */
- 	if (!mptcp_pm_should_add_signal(msk) ||
- 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
--	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &opts->addr,
-+	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
- 		    &echo, &drop_other_suboptions))
- 		return false;
- 
-@@ -670,7 +671,7 @@ static bool mptcp_established_options_ad
- 	else if (opts->suboptions & OPTION_MPTCP_DSS)
- 		return false;
- 
--	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
-+	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
- 	if (remaining < len)
- 		return false;
- 
-@@ -687,6 +688,7 @@ static bool mptcp_established_options_ad
- 		opts->ahmac = 0;
- 		*size -= opt_size;
- 	}
-+	opts->addr = addr;
- 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
- 	if (!echo) {
- 		opts->ahmac = add_addr_generate_hmac(msk->local_key,
+-- 
+2.49.0
+
 
 
 
