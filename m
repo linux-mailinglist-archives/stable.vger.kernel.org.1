@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563E2A6FFFE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F886A70031
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E96537A3C73
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FB6419A2EC9
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81AF425BAD0;
-	Tue, 25 Mar 2025 12:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F1D25A351;
+	Tue, 25 Mar 2025 12:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohbK2B04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccAGeepl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECEF25BAAD;
-	Tue, 25 Mar 2025 12:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42AC259CAD;
+	Tue, 25 Mar 2025 12:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906146; cv=none; b=bmpLk78gydgxwyey343wUkLfN82FMCDgqVzbqve1TWk0P5uqjh9Gxvfl/89k3VsXQGprBDEnDRx458xgOtQBaI+5ny9R28stJKtUmvb/6T5HQwWGyXZ8UKG93PItHlbbRn7EPH0/vxsFOofYel5+IJkkYA6mg+pcCceoBVg0QRU=
+	t=1742905786; cv=none; b=uI28vI+vKID18YxiPOZk9b+sknZSROBtRq6q+YxfGR1ZnK5WhSR/778TZ1L13/IFSAikCKKEvUryamTfhxIVkU0n8e6VN24W8wrzrzA6Jc1b4OIyKOml396P9p2WPosyIIkazVLrZoVrJVpFQPxHaY4BpopByalkE4GcecCtlF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906146; c=relaxed/simple;
-	bh=1phvZtGy7xjP21mNhPzJlLIF1FLgEhiGfIjQelreaEg=;
+	s=arc-20240116; t=1742905786; c=relaxed/simple;
+	bh=k/vZmNE6Jzwx1F8QQ0y+DaWb4qKAHFd7N04VHZ/SKkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5nm95C7SI9ZxiqCRUDqyTXiTTaDj3f9Xhj0TCNVZDHF5c7mgshJ87MTlLx0GUrn89vEkI3ufsQ4ID1mEzs5SnvlwctomgNt39cR3fu9XN6TIavjykp+cFk/XmS8DXNHPQ1vJWvCMImDesY4PHJeMiMCK4vcOmpy3Om22mBDOwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohbK2B04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47B7C4CEE4;
-	Tue, 25 Mar 2025 12:35:45 +0000 (UTC)
+	 MIME-Version; b=eQXZFDV7lbGtSp+jc4P8Imc22+jEPPJEUy9DleC7nmhlIApdJd2s8akGEzQBS7/cN/qLEngoF5+CPGh9t7l2T+rCE8UbRDh3ynXJ4LIV0QVzGaz7S8nQp0YOsswaR3WmHTjIy3gG588tQp9JIdB4Gl0gmaAjHtiJ5JCD0vouHZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccAGeepl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95879C4CEE4;
+	Tue, 25 Mar 2025 12:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906146;
-	bh=1phvZtGy7xjP21mNhPzJlLIF1FLgEhiGfIjQelreaEg=;
+	s=korg; t=1742905785;
+	bh=k/vZmNE6Jzwx1F8QQ0y+DaWb4qKAHFd7N04VHZ/SKkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohbK2B04wJm8HUS6UrTGJH2qbfqPea15XpARmSjsF004En97iCIpIPVGwyXWvOTS9
-	 PI/wehe+F8NSXXrInf4Ct3fjtA/yORm2jEqWt8bm2H5amXc3SAVGOUBPeV9CCtWW7u
-	 Q/Lfvy8DgP2iJHoWiR1Zwj2mWJMqr98vJmtQQM30=
+	b=ccAGeepl5ZXgoQ4RssfPQw5QbHTjDLypSk8IinV/BWWkKlTaZydUFdCo9SaEqzBti
+	 OWNFOB9vKls1wcPQZHCkfBGzLxeqllWIKoJeMqjw/zs3s3k81bjSdcEksBK773WLLO
+	 LOZLyajdRVUD+EVDKQg+agJ6XvrvTyCWnyyUn/o8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 09/77] arm64: dts: rockchip: Remove undocumented sdmmc property from lubancat-1
+Subject: [PATCH 6.1 162/198] ipv6: Fix memleak of nhc_pcpu_rth_output in fib_check_nh_v6_gw().
 Date: Tue, 25 Mar 2025 08:22:04 -0400
-Message-ID: <20250325122144.562786354@linuxfoundation.org>
+Message-ID: <20250325122200.903803082@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 43c854c65e47d2f3763345683b06257b4d12e4e3 ]
+[ Upstream commit 9740890ee20e01f99ff1dde84c63dcf089fabb98 ]
 
-Property "supports-sd" isn't documented anywhere and is unnecessary for
-mainline driver to function. It seems a property used by downstream
-kernel was brought into mainline.
+fib_check_nh_v6_gw() expects that fib6_nh_init() cleans up everything
+when it fails.
 
-This should be reported by dtbs_check, but mmc-controller-common.yaml
-defaults additionalProperties to true thus allows it. Remove the
-property to clean the devicetree up and avoid possible confusion.
+Commit 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
+moved fib_nh_common_init() before alloc_percpu_gfp() within fib6_nh_init()
+but forgot to add cleanup for fib6_nh->nh_common.nhc_pcpu_rth_output in
+case it fails to allocate fib6_nh->rt6i_pcpu, resulting in memleak.
 
-Fixes: 8d94da58de53 ("arm64: dts: rockchip: Add EmbedFire LubanCat 1")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Link: https://lore.kernel.org/r/20250228163117.47318-2-ziyao@disroot.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Let's call fib_nh_common_release() and clear nhc_pcpu_rth_output in the
+error path.
+
+Note that we can remove the fib6_nh_release() call in nh_create_ipv6()
+later in net-next.git.
+
+Fixes: 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250312010333.56001-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts | 1 -
- 1 file changed, 1 deletion(-)
+ net/ipv6/route.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
-index c1e611c040a2c..df68a59694fb2 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
-@@ -513,7 +513,6 @@ &sdhci {
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 17918f411386a..c72b4117fc757 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3637,7 +3637,8 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ 		in6_dev_put(idev);
  
- &sdmmc0 {
- 	max-frequency = <150000000>;
--	supports-sd;
- 	bus-width = <4>;
- 	cap-mmc-highspeed;
- 	cap-sd-highspeed;
+ 	if (err) {
+-		lwtstate_put(fib6_nh->fib_nh_lws);
++		fib_nh_common_release(&fib6_nh->nh_common);
++		fib6_nh->nh_common.nhc_pcpu_rth_output = NULL;
+ 		fib6_nh->fib_nh_lws = NULL;
+ 		dev_put(dev);
+ 	}
 -- 
 2.39.5
 
