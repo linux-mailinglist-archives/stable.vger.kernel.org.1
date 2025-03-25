@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-126106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653DBA6FFAF
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E873DA6FFA1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E451F189F66C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A1FE19A2BA1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F868296140;
-	Tue, 25 Mar 2025 12:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D29A2980C4;
+	Tue, 25 Mar 2025 12:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYu3nJJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hk7efoRc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E997290BD0;
-	Tue, 25 Mar 2025 12:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D192980C9;
+	Tue, 25 Mar 2025 12:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905612; cv=none; b=m13HE5w4pmXCLfdV78ruLr+8nIn5pS8zvZR0eWJBAOlDOVe4oX2DDWNlBYA7DyHqE8yH4NoqsxJp/9TgHedxl/I1qVGYLEJM51D8tMTAN5M8C0rrz6kiFtKP2EzcZrCYmyC+ESJrFOP/Ej6D0iKVNfc/wNwJF2S7/1+2Cru7Jgg=
+	t=1742905618; cv=none; b=StVwet3esDGs4SxnIUdlyPSHZp9RgjWy51FR3gW2MSSjIskCOhZO3N+Wj2jLtcFqd7LWSZrTsqW28/RWcnyNxRQhjSklumTl5oF+2/Vq23cw47AvofGnyjgaP9PvX/A4YxJXMe5RBbiL031vScpmXrB3Cslhg7QsTJatp5tK/bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905612; c=relaxed/simple;
-	bh=ZGIyY0xd27AZhqlowsTh7khnhdPx0Mr9bH9wDkMLuao=;
+	s=arc-20240116; t=1742905618; c=relaxed/simple;
+	bh=+GlbbgXKkP1coDOG+7D8SsWsZAzlKcr/p2Kbh/iiF/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOpOfSKGq2ERIF63UrjhsV2DxqgyK4G6/XHd6JLGjWBYv45dGDSiABnpAjdJQgoJVeMDKDOEWKWtjsAcXwtzq1C30w0DIzsNVUweb9bykoMV8nZBVLN6ibPKC9yBY8nR5r9ggZgPTUk1vBzxvnaAISskzcZRc++Im7w91fzJn7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYu3nJJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D49C4CEEE;
-	Tue, 25 Mar 2025 12:26:51 +0000 (UTC)
+	 MIME-Version; b=Vzxmc1xzPXFN1Y2bd8qQaMDDDxJnPb1pJ99hvvRITZBuHMh0tNi7SawGTXEvxmcx0Fw/AJ7Cnxa9Pp1MY61WGx1JmYaC2nqzrTK/8FBhaTInvUfHkcTD5T9YulvIqLkrLisi6kR7KXuHxuC9uEdc724VkGzpnUvarc6Ei8ziYmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hk7efoRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D60C4CEED;
+	Tue, 25 Mar 2025 12:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905612;
-	bh=ZGIyY0xd27AZhqlowsTh7khnhdPx0Mr9bH9wDkMLuao=;
+	s=korg; t=1742905617;
+	bh=+GlbbgXKkP1coDOG+7D8SsWsZAzlKcr/p2Kbh/iiF/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYu3nJJ7VPE+efOzbTGHExQluEnlP/WDet0+ODXWLrXaq1jp4hNqh/7tziQ/4Oz9M
-	 DuPc4K3XbEZ4ZHG9Hw7SnXIzHLnRM+1kbQF84uI+4nc1BYs+TnA51CcxTjwLJz0i7B
-	 ObUgHi9tgjAHbGm+Bj0CvJYmhhGKYBnQqHos99tA=
+	b=Hk7efoRcOcoC5CwTWD2fok4vwB8fRmL8RwKwQUsCLL02YB8+ASoT0J5RwnDd4aL4s
+	 pskRH2crDm5Bm3+SVqBwGCA35tIc3yKmAMxQ3mMoSWtxTdizsDp7mTaxLi8CEipORH
+	 PgaxIqAgUy30O/mo6eNziGT2yNkdIGlWOZdgkMkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/198] HID: intel-ish-hid: fix the length of MNG_SYNC_FW_CLOCK in doorbell
-Date: Tue, 25 Mar 2025 08:20:03 -0400
-Message-ID: <20250325122157.717847004@linuxfoundation.org>
+Subject: [PATCH 6.1 042/198] HID: intel-ish-hid: Send clock sync message immediately after reset
+Date: Tue, 25 Mar 2025 08:20:04 -0400
+Message-ID: <20250325122157.742688993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -69,52 +69,73 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit 4b54ae69197b9f416baa0fceadff7e89075f8454 ]
+[ Upstream commit 7e0d1cff12b895f44f4ddc8cf50311bc1f775201 ]
 
-The timestamps in the Firmware log and HID sensor samples are incorrect.
-They show 1970-01-01 because the current IPC driver only uses the first
-8 bytes of bootup time when synchronizing time with the firmware. The
-firmware converts the bootup time to UTC time, which results in the
-display of 1970-01-01.
+The ISH driver performs a clock sync with the firmware once at system
+startup and then every 20 seconds. If a firmware reset occurs right
+after a clock sync, the driver would wait 20 seconds before performing
+another clock sync with the firmware. This is particularly problematic
+with the introduction of the "load firmware from host" feature, where
+the driver performs a clock sync with the bootloader and then has to
+wait 20 seconds before syncing with the main firmware.
 
-In write_ipc_from_queue(), when sending the MNG_SYNC_FW_CLOCK message,
-the clock is updated according to the definition of ipc_time_update_msg.
-However, in _ish_sync_fw_clock(), the message length is specified as the
-size of uint64_t when building the doorbell. As a result, the firmware
-only receives the first 8 bytes of struct ipc_time_update_msg.
-This patch corrects the length in the doorbell to ensure the entire
-ipc_time_update_msg is sent, fixing the timestamp issue.
+This patch clears prev_sync immediately upon receiving an IPC reset,
+so that the main firmware and driver will perform a clock sync
+immediately after completing the IPC handshake.
 
 Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
 Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/intel-ish-hid/ipc/ipc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/intel-ish-hid/ipc/ipc.c         | 9 ++++++---
+ drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h | 2 ++
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/hid/intel-ish-hid/ipc/ipc.c b/drivers/hid/intel-ish-hid/ipc/ipc.c
-index dd5fc60874ba1..b1a41c90c5741 100644
+index b1a41c90c5741..42141a78bdb4b 100644
 --- a/drivers/hid/intel-ish-hid/ipc/ipc.c
 +++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
-@@ -577,14 +577,14 @@ static void fw_reset_work_fn(struct work_struct *unused)
+@@ -517,6 +517,10 @@ static int ish_fw_reset_handler(struct ishtp_device *dev)
+ 	/* ISH FW is dead */
+ 	if (!ish_is_input_ready(dev))
+ 		return	-EPIPE;
++
++	/* Send clock sync at once after reset */
++	ishtp_dev->prev_sync = 0;
++
+ 	/*
+ 	 * Set HOST2ISH.ILUP. Apparently we need this BEFORE sending
+ 	 * RESET_NOTIFY_ACK - FW will be checking for it
+@@ -576,13 +580,12 @@ static void fw_reset_work_fn(struct work_struct *unused)
+  */
  static void _ish_sync_fw_clock(struct ishtp_device *dev)
  {
- 	static unsigned long	prev_sync;
--	uint64_t	usec;
-+	struct ipc_time_update_msg time = {};
+-	static unsigned long	prev_sync;
+ 	struct ipc_time_update_msg time = {};
  
- 	if (prev_sync && time_before(jiffies, prev_sync + 20 * HZ))
+-	if (prev_sync && time_before(jiffies, prev_sync + 20 * HZ))
++	if (dev->prev_sync && time_before(jiffies, dev->prev_sync + 20 * HZ))
  		return;
  
- 	prev_sync = jiffies;
--	usec = ktime_to_us(ktime_get_boottime());
--	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &usec, sizeof(uint64_t));
-+	/* The fields of time would be updated while sending message */
-+	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &time, sizeof(time));
+-	prev_sync = jiffies;
++	dev->prev_sync = jiffies;
+ 	/* The fields of time would be updated while sending message */
+ 	ipc_send_mng_msg(dev, MNG_SYNC_FW_CLOCK, &time, sizeof(time));
  }
+diff --git a/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h b/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
+index 32142c7d9a043..9b2ee3fe04b8f 100644
+--- a/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
++++ b/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
+@@ -212,6 +212,8 @@ struct ishtp_device {
+ 	unsigned int	ipc_tx_cnt;
+ 	unsigned long long	ipc_tx_bytes_cnt;
  
- /**
++	/* Time of the last clock sync */
++	unsigned long prev_sync;
+ 	const struct ishtp_hw_ops *ops;
+ 	size_t	mtu;
+ 	uint32_t	ishtp_msg_hdr;
 -- 
 2.39.5
 
