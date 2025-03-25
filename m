@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-126532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFF4A7010C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 768FDA700DF
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F94017B3B0
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66FAB1738AF
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FDB26FD93;
-	Tue, 25 Mar 2025 12:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C97B26B081;
+	Tue, 25 Mar 2025 12:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwAtEKyR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZt06ndM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EDF26FD83;
-	Tue, 25 Mar 2025 12:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C2125C6F8;
+	Tue, 25 Mar 2025 12:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906400; cv=none; b=rX1bKfzwlB1Ybd5ftO/3+9GmpS2d7QhImmqxM4bU//4QzlXrlQO/7pL+cxMOqR8as7HR0agvMl0c9S3PiIwc9gCfL+uyBckRlljXzs7PEad6u3k8sT6qvWheekaMlaSCEfblFYvi5Y3XTwFkVUPXPXjxfXH5FZ9eSKe/b0bNasU=
+	t=1742906199; cv=none; b=grGUGiXL/YaIbawYobeQxssL9TGcWTWQv0KGbLwaC8GJl31E0A0Ot8k6Gy8QGRRIEcJJJij3jzawS3BudHwK1VwEewiBo9C8M/zMaZ+0grnYEXKbsTxdeqPTfzg7SDGTDIhbjooHxu424XuGdkqs55kfZ7stH47J8daa7Kbx+LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906400; c=relaxed/simple;
-	bh=us7SxGKFNgpXVge1fR2QZkeVvL8Rv28zUTshUvPtkS4=;
+	s=arc-20240116; t=1742906199; c=relaxed/simple;
+	bh=cJ/EfJ3NDw+Z93QQXLRBAnHq30LjEKmI71DajttgFfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=By9oO7hj6OANViz69cDsKFuPNQ7gLBhOV9BZzuF1jzzKIfw7wZ3PuyGo6AYv5UVgme+tMJHnrvOda+JVWpiLug+T9P4oZQHymqdoDmFlDIfdZJgqxUtDwjH5Uqove9uWF5VTBS+xei4XO+IVDheaR9ljHSedYwKqK8n2tT5vp+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwAtEKyR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421E4C4CEE4;
-	Tue, 25 Mar 2025 12:40:00 +0000 (UTC)
+	 MIME-Version; b=vCyGdHgnZidJa+EpOE+xYbcrDp0vVxlPOiZlLQqRynQI6wdaY0SdT7BPwGKgowqvU1uEHLOq/CO7F3HZZCXOGAO6MqLSPVuptlNw3Z08vy399jA9GCkG2ydX8/URF3M8y3zyhtA2AoMlS+kc6Eh0+N1jKm4vVIUuykuQf26WZNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZt06ndM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC87C4CEE4;
+	Tue, 25 Mar 2025 12:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906400;
-	bh=us7SxGKFNgpXVge1fR2QZkeVvL8Rv28zUTshUvPtkS4=;
+	s=korg; t=1742906199;
+	bh=cJ/EfJ3NDw+Z93QQXLRBAnHq30LjEKmI71DajttgFfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwAtEKyRK5A5G7ujiWbnLtdNMYOukgxnett9uWGnz6FpkO4EB+ruWI64QX/Q5D+2O
-	 PPtqzPfxSkM97bUs5JzpXNq6w4C5JdDnvd3os+rCURetp89WG9eJKQKzxlaqQC+nvZ
-	 XvUtCYMMipyw+O+QDHJBi9ufpsYsMfjwtdzpNTxs=
+	b=oZt06ndM6GZfjHFSIWEzyuXLS1xmXIraZto/KdxzMXeiITuTFdy49guG5+YBOA45m
+	 5TxZhcRWORgqMXZXx4tBZkQGhT0CdEBnILMaDbIraAkG5pPZPTFu+JzylpxFD7VYqn
+	 eP5gGvZ/99v9G+pAoUmOdeDGbzwzkciCAXnOUL4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
 	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.12 067/116] arm64: dts: freescale: imx8mp-verdin-dahlia: add Microphone Jack to sound card
+Subject: [PATCH 6.6 39/77] arm64: dts: freescale: imx8mp-verdin-dahlia: add Microphone Jack to sound card
 Date: Tue, 25 Mar 2025 08:22:34 -0400
-Message-ID: <20250325122150.922464139@linuxfoundation.org>
+Message-ID: <20250325122145.375012675@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,7 +91,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-@@ -28,10 +28,10 @@
+@@ -16,10 +16,10 @@
  			"Headphone Jack", "HPOUTR",
  			"IN2L", "Line In Jack",
  			"IN2R", "Line In Jack",
