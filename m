@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-126456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4413DA701A6
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:27:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D73A700CC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1622419A052A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1E663B1E09
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F22D26B2AA;
-	Tue, 25 Mar 2025 12:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02245268FC9;
+	Tue, 25 Mar 2025 12:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMEphNu4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGTeif0E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE7925D524;
-	Tue, 25 Mar 2025 12:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41D52561D7;
+	Tue, 25 Mar 2025 12:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906258; cv=none; b=nrPySkb3ftYiI3GWdTwyteqei0gG74LTYmke9pjX4JfNRApdNFXIK7UE1XYZyuop3/MfNOaAwa58z1r8gLRI25+ZjHBFVAFK1BF27TMCUPlvEqtsoRhXBrdr/OwJm4CWNcNhmmv90VUIiC9yU3B12agtbRQ3oAyI/yrJsWT0r10=
+	t=1742905947; cv=none; b=G4q8wKRfP0JpmIHVSRZSyTtld9z7kfzTn2cO6WrvYbEezIsJSZJn45fCSG0RNger8RaWfpe9gJBJVfhAg6BX1Xo1Lk+Aq7VP3dZp44baxj3IxaeHjO+BVdGN2AywWX4s7GZ8DiD4tPN9XbmbjGRzAapdMOlXUmvQEGCLk5DcZUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906258; c=relaxed/simple;
-	bh=1sI4imO+WRkV5lRje8WkTFcCeMko9hm0zrZhjZ9L+A0=;
+	s=arc-20240116; t=1742905947; c=relaxed/simple;
+	bh=9Eq1bVsY5CRRspzaFC+FPXEPICkJ8RkNdRF2bFZTOL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8UqoRPpNIOUTIUNF3aERVTsFhr+cRNzvOUuY6UttMMwfQo5za4+6linJ6Lkx7uteuXR3FKaKmOhqgllMasDdXkxwnynezeC2J32eZFlrgXI8L+WQZ1lRDuhApaz6F3UhSXIFdo5hz/W1sppA7MBbyklQ8LgTPkZ4WxeDwkD1hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMEphNu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E04C4CEE4;
-	Tue, 25 Mar 2025 12:37:37 +0000 (UTC)
+	 MIME-Version; b=ID9ZRGg+BmVtu89SzXJBK6gQMsnU5LLtOcE+s1PxQuIX4GDHCDK5orzTkF/bQGmWGJXtFP+zDVmr2ebenPP+L+r2W7irtezHKVSyxHO70l5uS4YQHNzhM9c3Yj6Efrd3YZbDtfeofDVmcIrdjtZsuj7RjTe0hmS1hN6jpXbkV6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGTeif0E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682E8C4CEE4;
+	Tue, 25 Mar 2025 12:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906258;
-	bh=1sI4imO+WRkV5lRje8WkTFcCeMko9hm0zrZhjZ9L+A0=;
+	s=korg; t=1742905947;
+	bh=9Eq1bVsY5CRRspzaFC+FPXEPICkJ8RkNdRF2bFZTOL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMEphNu4YQUrunBwXH2wXa6gP55LrvnszomvlAPAt/qR1dB0UgOcTzjt96EHAiiHA
-	 QxEWjwk3EvSNQB8Qmd48/XlvJTuOorMp+VUzdlBK5OoR2FmX7d5zUBm3dFeef3x0Iz
-	 nFjPF6uiX+celxntyKyYL8eRV8eUwRZ/FFWi05oo=
+	b=aGTeif0EEJARbe0u6Rkazy2RBKs1i/hd7vLMhQ0b7zAcKA+c54K0rm6Dm4VgxNglt
+	 4ug6svrLtxD7bkVWAo1/mv1yWYoevwvPoZjX2GVBmUy2iqkNPla7Hi35SCkYem+8YM
+	 2Z72j+LtetwBpHqlMSGDocBOucSxcmePdHB/l+/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Brautaset <tbrautaset@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Lin Ma <linma@zju.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/116] ARM: dts: BCM5301X: Fix switch port labels of ASUS RT-AC3200
+Subject: [PATCH 6.13 050/119] net/neighbor: add missing policy for NDTPA_QUEUE_LENBYTES
 Date: Tue, 25 Mar 2025 08:21:48 -0400
-Message-ID: <20250325122149.760588289@linuxfoundation.org>
+Message-ID: <20250325122150.333960973@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chester A. Unal <chester.a.unal@arinc9.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 24d4c56dd68906bf55ff8fc2e2d36760f97dce5f ]
+[ Upstream commit 90a7138619a0c55e2aefaad27b12ffc2ddbeed78 ]
 
-After using the device for a while, Tom reports that he initially described
-the switch port labels incorrectly. Apparently, ASUS's own firmware also
-describes them incorrectly. Correct them to what is seen on the chassis.
+Previous commit 8b5c171bb3dc ("neigh: new unresolved queue limits")
+introduces new netlink attribute NDTPA_QUEUE_LENBYTES to represent
+approximative value for deprecated QUEUE_LEN. However, it forgot to add
+the associated nla_policy in nl_ntbl_parm_policy array. Fix it with one
+simple NLA_U32 type policy.
 
-Reported-by: Tom Brautaset <tbrautaset@gmail.com>
-Fixes: b116239094d8 ("ARM: dts: BCM5301X: Add DT for ASUS RT-AC3200")
-Signed-off-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20250304-for-broadcom-fix-rt-ac3200-switch-ports-v1-1-7e249a19a13e@arinc9.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 8b5c171bb3dc ("neigh: new unresolved queue limits")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://patch.msgid.link/20250315165113.37600-1-linma@zju.edu.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/core/neighbour.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts b/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts
-index 53cb0c58f6d05..3da2daee0c849 100644
---- a/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts
-@@ -124,19 +124,19 @@ port@0 {
- 		};
- 
- 		port@1 {
--			label = "lan1";
-+			label = "lan4";
- 		};
- 
- 		port@2 {
--			label = "lan2";
-+			label = "lan3";
- 		};
- 
- 		port@3 {
--			label = "lan3";
-+			label = "lan2";
- 		};
- 
- 		port@4 {
--			label = "lan4";
-+			label = "lan1";
- 		};
- 	};
- };
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index bd0251bd74a1f..1a620f903c56e 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -2250,6 +2250,7 @@ static const struct nla_policy nl_neightbl_policy[NDTA_MAX+1] = {
+ static const struct nla_policy nl_ntbl_parm_policy[NDTPA_MAX+1] = {
+ 	[NDTPA_IFINDEX]			= { .type = NLA_U32 },
+ 	[NDTPA_QUEUE_LEN]		= { .type = NLA_U32 },
++	[NDTPA_QUEUE_LENBYTES]		= { .type = NLA_U32 },
+ 	[NDTPA_PROXY_QLEN]		= { .type = NLA_U32 },
+ 	[NDTPA_APP_PROBES]		= { .type = NLA_U32 },
+ 	[NDTPA_UCAST_PROBES]		= { .type = NLA_U32 },
 -- 
 2.39.5
 
