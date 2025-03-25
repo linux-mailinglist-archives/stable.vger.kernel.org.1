@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1924DA6FFD1
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D181AA70127
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65CF9173724
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:01:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3E019A312F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595B42580CE;
-	Tue, 25 Mar 2025 12:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACF726B086;
+	Tue, 25 Mar 2025 12:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fefJFuxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKjvEX49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A3125A627;
-	Tue, 25 Mar 2025 12:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466DD25C6F8;
+	Tue, 25 Mar 2025 12:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905843; cv=none; b=KWHSPg03fUifB/wglUYWeIYUS+M/+l6vZgR67znEeAGkC++uCtKyvtH7wEjj9XslA80T3r31+37AOgvlFfJMY9av3R82KYZWqbpWSvFhbswkZ+3aG+n0oaAMrdkU0BswPwohvs8kOL0yaY40skT3HCwMbcc5d4xtphOHyFGxhvY=
+	t=1742906201; cv=none; b=LwqYrblBynyBn2jasSiRzkOpKjf4o/hw+Vm2gJ3R4xfD7AzVntC9fe9ME2kKcSsC52FYYafI+h88LhOJKhuvc5OyJm/iJiCwnKg8Ju8d5sIsJn+0ZcdTVjqQgMinst9uekFkHqvr59QR6Y60V22XmB2PIbdo9iUoSev/ZZCin44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905843; c=relaxed/simple;
-	bh=mf/chrfCRU62DCI+Tu1TIyHXGPfLG4kTFq0Qy6mV0+k=;
+	s=arc-20240116; t=1742906201; c=relaxed/simple;
+	bh=kE43gokTSO6OTTi8qaffz7BJepijtOb9E6B8ysX451M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6iMU46N2caEyEAHk3S6QUxkpSfxYajCSPT1bUD3W9n58HABCC+ybg1nuGaqkvk6HliVsAAXbbWNM1W5g+6t5Gj6RyorJemPALWqRj4+HN0CfssM+T4va2mMEo3Ck/a0mgw5cPhHtkfccMqCK6WU1ESHnbCVNXMNlsUk1DgFor0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fefJFuxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C58C4CEED;
-	Tue, 25 Mar 2025 12:30:42 +0000 (UTC)
+	 MIME-Version; b=dWMfNtAlTtcPUy72ItL49SJj05y8kM1UGfETeF+p4T1fmqOhL3aSAgj2MxYbA5FSx8h19MMFGwXyqkpTfgpTejQsU14p0VP3aQXvmMf2lxW+CPHnjCuJX30IF9kjrGLEKZNxhtboU8UnaTB4uWr1zIJR8W6K7WFaTczW6Z0vwZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKjvEX49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E571CC4CEED;
+	Tue, 25 Mar 2025 12:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905842;
-	bh=mf/chrfCRU62DCI+Tu1TIyHXGPfLG4kTFq0Qy6mV0+k=;
+	s=korg; t=1742906201;
+	bh=kE43gokTSO6OTTi8qaffz7BJepijtOb9E6B8ysX451M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fefJFuxJiTRyWi+cGQeocz6RFfXQbJ1wHexZvZGdmMtViBQOQmQgjy9RBTyw2WK90
-	 JUaLHLPz1uy3wl7NzyAwzo02TMYDLUMKJHPOUJLTFTVTRWDIQMDNv52g1d+rEm1Wxg
-	 YZOi4HeWO1hqRXPMyKOAh4RD95QBXOqd6kb/BKJ4=
+	b=XKjvEX49aLxCI2xCQ64jLQaIJZ9yqc48oMFH2S5Ygdq1Ujy+Tkeo8MCDykoxUUKc0
+	 xT9HsSvSxQh+DMiIdshDymFKHSG3Y+616OEjRfMZkG40WgUjWZ7ijDB7VY96y6aJnk
+	 Sp3Ssi8TGnrOAOOzvdBWmhgDVH+v/hVnpSwiCp8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Klaassen <justin@tidylabs.net>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.1 193/198] arm64: dts: rockchip: fix u2phy1_host status for NanoPi R4S
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.6 40/77] arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card
 Date: Tue, 25 Mar 2025 08:22:35 -0400
-Message-ID: <20250325122201.714925520@linuxfoundation.org>
+Message-ID: <20250325122145.399945113@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Klaassen <justin@tidylabs.net>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit 38f4aa34a5f737ea8588dac320d884cc2e762c03 upstream.
+commit 2c1092823eb03f8508d6769e2f38eef7e1fe62a0 upstream.
 
-The u2phy1_host should always have the same status as usb_host1_ehci
-and usb_host1_ohci, otherwise the EHCI and OHCI drivers may be
-initialized for a disabled usb port.
+The simple-audio-card's microphone widget currently connects to the
+headphone jack. Routing the microphone input to the microphone jack
+allows for independent operation of the microphone and headphones.
 
-Per the NanoPi R4S schematic, the phy-supply for u2phy1_host is set to
-the vdd_5v regulator.
+This resolves the following boot-time kernel log message, which
+indicated a conflict when the microphone and headphone functions were
+not separated:
+  debugfs: File 'Headphone Jack' in directory 'dapm' already present!
 
-Fixes: db792e9adbf8 ("rockchip: rk3399: Add support for FriendlyARM NanoPi R4S")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Klaassen <justin@tidylabs.net>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250225170420.3898-1-justin@tidylabs.net
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
-@@ -117,7 +117,7 @@
- };
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
+@@ -16,10 +16,10 @@
+ 			"Headphone Jack", "HPOUTR",
+ 			"IN2L", "Line In Jack",
+ 			"IN2R", "Line In Jack",
+-			"Headphone Jack", "MICBIAS",
+-			"IN1L", "Headphone Jack";
++			"Microphone Jack", "MICBIAS",
++			"IN1L", "Microphone Jack";
+ 		simple-audio-card,widgets =
+-			"Microphone", "Headphone Jack",
++			"Microphone", "Microphone Jack",
+ 			"Headphone", "Headphone Jack",
+ 			"Line", "Line In Jack";
  
- &u2phy1_host {
--	status = "disabled";
-+	phy-supply = <&vdd_5v>;
- };
- 
- &uart0 {
 
 
 
