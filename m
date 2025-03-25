@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-126193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D890A7008A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A210CA700EB
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A291883A66
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 128B517A1BC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477822676D0;
-	Tue, 25 Mar 2025 12:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719F4265600;
+	Tue, 25 Mar 2025 12:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gP7B2XxV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHRcXHq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F2025A342;
-	Tue, 25 Mar 2025 12:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302852586CD;
+	Tue, 25 Mar 2025 12:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905773; cv=none; b=jZWcA2J//0dGvKE+6ZwrZLeAjP7c5wMJm/JuQNZv0wEQ3uNkRbVzDtmpaTJbNBKW09Vbx72oSgC6Gvs/UZ4vf93lJ4iqgNlWOG2U+DZrnrSXGDbJmLaYY1zleXMmjjD1QWUAyX15BWzfkZqO2ph6K9YcERbtLGPtXXvRewqjeVw=
+	t=1742906242; cv=none; b=ulmnWZgnE1FQm+fB7LpBuK478wXomu2ItKAKb8N2Zsd6JWZoQgHQfhqZiyfpXZnMKutXNnH12PGI0yQTcyLj4eEYHhDiEbUR1fiuzFK6Nxi9gCc11W5Sn9kJmE5EcoebA/ec5EOKmcJORl6P5WnW8MfBXS9hapIehZN6HqPXuXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905773; c=relaxed/simple;
-	bh=SlEBQjR+xyeS0t0eU8mmG7OJPdoNhb0FTaWyv2B3Q6g=;
+	s=arc-20240116; t=1742906242; c=relaxed/simple;
+	bh=gRyTswpi64yG+09e+yrQJKAJjRjEve3+zwjvTAIQCqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCooedeaidYYS7RDWFRXjlMncQDSzolR7/5cn3uuVanp5cF5LoKp8E6ZQH3ZcAH4lTbKJFvZCmX44/GnQ20O02c9eiap+59y4WS4OaAtTpegIiOTp0ClL2sOLbJ+aXfa7xDURUKaGIHJ1opemg/Lop86bHG60A9TZrK3IK9e3dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gP7B2XxV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76EDC4CEE4;
-	Tue, 25 Mar 2025 12:29:32 +0000 (UTC)
+	 MIME-Version; b=lbC3DEW22+U0oZGpIlE5fInJyixJH6+pZcc9Q52Www5bVoemzzfy3ipQtTqiIJVVVHESIokR3iAhnP0iNTbwr2ffMMTmAI/OXV/uv2yHnnzaoSSCnQjkl4evnML3WVP2BxBjQwscMOqeXUa0WeW2x/Dfd+dkYFXzz+j8TvIBs3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHRcXHq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70521C4CEE4;
+	Tue, 25 Mar 2025 12:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905772;
-	bh=SlEBQjR+xyeS0t0eU8mmG7OJPdoNhb0FTaWyv2B3Q6g=;
+	s=korg; t=1742906241;
+	bh=gRyTswpi64yG+09e+yrQJKAJjRjEve3+zwjvTAIQCqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gP7B2XxVeuZubby5AFgTlflZXfigIw63Ma7Ic7Ep+TPucXjudayc89DUGZTF27+cp
-	 Y2jUgSIAXjVP2HZe1nxzEL27nFr05HZGBCnlt3QsXbsVpMLRMMRxWuMv907TBFzob5
-	 eecsJYxQVOZshm/44tD/AXWHEIGKayL1gEQe4GnY=
+	b=NHRcXHq0HOYU68oRwu98YKDU2as2tnTL59yDa4AQWgM8vR8SnRmrV/Icag5ADv79w
+	 TTIKFtEjqPK5ln//4dNClApsX0rhrpeZhvKEYuCk6cZsCovfNjyR/reD29dBfMPkgD
+	 3yt+wnKKt3HBit6k7ue4riwY9oR1H+0fOpx7oqKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Phil Elwell <phil@raspberrypi.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/198] i2c: ali15x3: Fix an error handling path in ali15x3_probe()
+Subject: [PATCH 6.12 013/116] arm64: dts: bcm2712: PL011 UARTs are actually r1p5
 Date: Tue, 25 Mar 2025 08:21:40 -0400
-Message-ID: <20250325122200.272978605@linuxfoundation.org>
+Message-ID: <20250325122149.559813786@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Phil Elwell <phil@raspberrypi.com>
 
-[ Upstream commit 6e55caaf30c88209d097e575a169b1dface1ab69 ]
+[ Upstream commit 768953614c1c13fdf771be5742f1be573eea8fa4 ]
 
-If i2c_add_adapter() fails, the request_region() call in ali15x3_setup()
-must be undone by a corresponding release_region() call, as done in the
-remove function.
+The ARM PL011 UART instances in BCM2712 are r1p5 spec, which means they
+have 32-entry FIFOs. The correct periphid value for this is 0x00341011.
+Thanks to N Buchwitz for pointing this out.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/9b2090cbcc02659f425188ea05f2e02745c4e67b.1741031878.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250223125614.3592-3-wahrenst@gmx.net
+Fixes: faa3381267d0 ("arm64: dts: broadcom: Add minimal support for Raspberry Pi 5")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-ali15x3.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/broadcom/bcm2712.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-ali15x3.c b/drivers/i2c/busses/i2c-ali15x3.c
-index cc58feacd0821..28a57cb6efb99 100644
---- a/drivers/i2c/busses/i2c-ali15x3.c
-+++ b/drivers/i2c/busses/i2c-ali15x3.c
-@@ -473,6 +473,8 @@ MODULE_DEVICE_TABLE (pci, ali15x3_ids);
+diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
+index 26a29e5e5078d..447bfa060918c 100644
+--- a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
++++ b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
+@@ -232,7 +232,7 @@ uart10: serial@7d001000 {
+ 			interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&clk_uart>, <&clk_vpu>;
+ 			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
++			arm,primecell-periphid = <0x00341011>;
+ 			status = "disabled";
+ 		};
  
- static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
- {
-+	int ret;
-+
- 	if (ali15x3_setup(dev)) {
- 		dev_err(&dev->dev,
- 			"ALI15X3 not detected, module not inserted.\n");
-@@ -484,7 +486,15 @@ static int ali15x3_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 
- 	snprintf(ali15x3_adapter.name, sizeof(ali15x3_adapter.name),
- 		"SMBus ALI15X3 adapter at %04x", ali15x3_smba);
--	return i2c_add_adapter(&ali15x3_adapter);
-+	ret = i2c_add_adapter(&ali15x3_adapter);
-+	if (ret)
-+		goto release_region;
-+
-+	return 0;
-+
-+release_region:
-+	release_region(ali15x3_smba, ALI15X3_SMB_IOSIZE);
-+	return ret;
- }
- 
- static void ali15x3_remove(struct pci_dev *dev)
 -- 
 2.39.5
 
