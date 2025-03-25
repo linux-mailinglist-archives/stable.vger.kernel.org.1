@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-126280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF722A70029
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103FAA7009A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0228840429
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B442189DA1F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49884268C69;
-	Tue, 25 Mar 2025 12:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD8E25A35E;
+	Tue, 25 Mar 2025 12:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NS957P7T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oF0vUyhk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B1425A64A;
-	Tue, 25 Mar 2025 12:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AA3259CAD;
+	Tue, 25 Mar 2025 12:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905933; cv=none; b=fZ49PZnW+qHmHPpZH2rPRct6d/kCTlTXdcbSem+Fx/oKnJGtYtiXf3bMtszyR+4b15cjZokXwsQcaEO3MQ7QmLE8sURJi8YFzRc3GbXotMKYQDo+fQh1WbbZgHXYNr4IXLSF4UdRem7pQv+s7u4K41XmUsAI+gMHKz0dYMiO1sA=
+	t=1742905800; cv=none; b=uwf4IHUf5cU8RW/m+mrPR5mMLdfDOoftyR+efDUmqflxQ2s7DN6vJXpL+vWid9ISKsXEH1HQslnU1mvFMgmQukjhSlZUezYmBEMMh+5TB7Lk528Z5vJjrkClos+o22HsLweq/Catv3K6w7gK0xL9bw9z9CXq9ohGNnJsry9IW44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905933; c=relaxed/simple;
-	bh=V6+iZTNE73lY9hBWMJDG/Lyo7/xylm1vsUk4D52KswI=;
+	s=arc-20240116; t=1742905800; c=relaxed/simple;
+	bh=77SsWQj4J0NJ37DppBeK4UBMYXYLx+ZOgfyeXQzdTL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ut0ygir4Jug8grHq2vpdrDi47y5DGIkue62IwFVoTvjaiLPICb+XmPUpc1AVF7GJqZ93iw6Jd+LXEyd8YwTlnVi66eaWUzuAaFxSnW6z3QYAlPVTTk3jUsxfkdmjkt4MmGzZtkWBe63a6n0brIbxQyKHxfgxOPsqqkZEsFV6bOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NS957P7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74E8C4CEE4;
-	Tue, 25 Mar 2025 12:32:12 +0000 (UTC)
+	 MIME-Version; b=oVs2wpur0XwaHfGTmm4dlgqTE9Xmau6S17KAdpGAfFALshmCWVqpLnxQmUpsidWRxhdkw2yRBrr5OjYuCITCNkyOT2fZ34QjMBN29Aryt4hGu0gIGtmtMS4Sn/q9ltkIUf2bl2r5gDbm48ibeEDobhnx/VgEHNxU4IK9bBl+UcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oF0vUyhk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8D8C4CEE4;
+	Tue, 25 Mar 2025 12:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905932;
-	bh=V6+iZTNE73lY9hBWMJDG/Lyo7/xylm1vsUk4D52KswI=;
+	s=korg; t=1742905800;
+	bh=77SsWQj4J0NJ37DppBeK4UBMYXYLx+ZOgfyeXQzdTL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NS957P7T64zNY5EwA/NF58KErCw2sMzBmIp/SNIaHDoKR54D2bHMGhrM1Epw4dux+
-	 RuBu5aAhnLkBitzXhRuAzm07bdDlN8IEjZN4ZQMYLijHqOEbO69NjVwRSoOUWVqlvK
-	 r/hhsicfmpY932uLVjDAGw79VQ/4CDZysBut6z8w=
+	b=oF0vUyhkAZZsNNfc4usmTSy+PPVZ5UnTp5QpENntI4B3h7wMTafQ+Oh54CVEnxGMB
+	 cumoLTDv3nNdU9Jek+AXQUOi12W7z7u5eTq3+VUWxxLXSSBG/ICeFS/QEiM/3akdy9
+	 iyxz64CJKRQchYz/cf9jZxTK27IufxOMa2MZGrs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	David Hildenbrand <david@redhat.com>,
+	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 043/119] phy: fix xa_alloc_cyclic() error handling
-Date: Tue, 25 Mar 2025 08:21:41 -0400
-Message-ID: <20250325122150.156292665@linuxfoundation.org>
+Subject: [PATCH 6.1 140/198] arm64: mm: Populate vmemmap at the page level if not section aligned
+Date: Tue, 25 Mar 2025 08:21:42 -0400
+Message-ID: <20250325122200.326136956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
 
-[ Upstream commit 3178d2b048365fe2c078cd53f85f2abf1487733b ]
+[ Upstream commit d4234d131b0a3f9e65973f1cdc71bb3560f5d14b ]
 
-xa_alloc_cyclic() can return 1, which isn't an error. To prevent
-situation when the caller of this function will treat it as no error do
-a check only for negative here.
+On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
+to 27, making one section 128M. The related page struct which vmemmap
+points to is 2M then.
+Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
+vmemmap to populate at the PMD section level which was suitable
+initially since hot plug granule is always one section(128M). However,
+commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
+existing arm64 assumptions.
 
-Fixes: 384968786909 ("net: phy: Introduce ethernet link topology representation")
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The first problem is that if start or end is not aligned to a section
+boundary, such as when a subsection is hot added, populating the entire
+section is wasteful.
+
+The next problem is if we hotplug something that spans part of 128 MiB
+section (subsections, let's call it memblock1), and then hotplug something
+that spans another part of a 128 MiB section(subsections, let's call it
+memblock2), and subsequently unplug memblock1, vmemmap_free() will clear
+the entire PMD entry which also supports memblock2 even though memblock2
+is still active.
+
+Assuming hotplug/unplug sizes are guaranteed to be symmetric. Do the
+fix similar to x86-64: populate to pages levels if start/end is not aligned
+with section boundary.
+
+Cc: stable@vger.kernel.org # v5.4+
+Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20250304072700.3405036-1-quic_zhenhuah@quicinc.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_link_topology.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/mm/mmu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
-index 4a5d73002a1a8..0e9e987f37dd8 100644
---- a/drivers/net/phy/phy_link_topology.c
-+++ b/drivers/net/phy/phy_link_topology.c
-@@ -73,7 +73,7 @@ int phy_link_topo_add_phy(struct net_device *dev,
- 				      xa_limit_32b, &topo->next_phy_index,
- 				      GFP_KERNEL);
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 6a4f118fb25f4..f095b99bb2144 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1209,8 +1209,11 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+ 	pmd_t *pmdp;
  
--	if (ret)
-+	if (ret < 0)
- 		goto err;
+ 	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
++	/* [start, end] should be within one section */
++	WARN_ON_ONCE(end - start > PAGES_PER_SECTION * sizeof(struct page));
  
- 	return 0;
+-	if (!ARM64_KERNEL_USES_PMD_MAPS)
++	if (!ARM64_KERNEL_USES_PMD_MAPS ||
++	    (end - start < PAGES_PER_SECTION * sizeof(struct page)))
+ 		return vmemmap_populate_basepages(start, end, node, altmap);
+ 
+ 	do {
 -- 
 2.39.5
 
