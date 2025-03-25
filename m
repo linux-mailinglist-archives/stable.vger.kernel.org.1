@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-126404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1266FA70097
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E3CA7007B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBA191655CD
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B611178704
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6085826A1AE;
-	Tue, 25 Mar 2025 12:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5EA269883;
+	Tue, 25 Mar 2025 12:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNB10iDq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9ySOHJ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB4D25BAD8;
-	Tue, 25 Mar 2025 12:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3322580E4;
+	Tue, 25 Mar 2025 12:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906161; cv=none; b=LF5OLjGcE/M54M3aKmJo809gcdOsAiJW5NW8PaYIPw3c/VQy2HwQhx15CCnJpUPWTFjqu+jEY5rXuu+tGskIPAHChM2ZzpnsX5767WAanm5PJ+XkCK8OANvPUABwqF3YHrbXMoeEEWz/UmD3cI1UGTO14M5HBCc/3UCwWpcbJLg=
+	t=1742906046; cv=none; b=TU0kY6xZLhhaG/NKQoPSDzZNjvyN05+LsjVk48mVTOTtXi1wKjjLlY4PK1bpKGN5qZuk/MyCUCjXu2Berr3nxfQ/C+S4qZyXAiBqH9qUyGC5gVjD9Zk80j9/buHQnhgiGRxDP+IQRRCNXm+sRYrOu5jtJBTRoKIgaBEL+eirssg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906161; c=relaxed/simple;
-	bh=HlqQ0z4BoZeKvr8jiz0/kowszEeOWI9xojkYoEqbrM8=;
+	s=arc-20240116; t=1742906046; c=relaxed/simple;
+	bh=0d+iuxtCGv2twXvAUScfjZonnKtSD9gH/FgNryb1tno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtkPYpjxwnQ35tC4gwL0uxXByJbr6PfY0QOEfmlKoTW6snnJvxHAU5ffNRObntosz+SA3ZwownpyHDzZWYMyWlsVvN76HxQ+FAbxS20F4lpZbf4xV2T6EJN4X4WCGPy0uzAK4x5swPX4p29bHYtPV7JGn83ovrpiHc6Y8ilqudo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNB10iDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65B8C4CEE4;
-	Tue, 25 Mar 2025 12:36:00 +0000 (UTC)
+	 MIME-Version; b=OUtvN+8mB+C/Gmn9YJ3zRwvmzEFr//IIY7ZoDnRrjVM//brO+f+/BJUD8lLTbz0R4NDegKli51VApR5KqU8xoQtvF0tS6Yd6XBnB89exGdMDANenL+eW9yrkvQKeSRo0e04TLiQKAVdAfiHTh1+l43IV1YWfUVl3ODRdzH7UGIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9ySOHJ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA64C4CEE4;
+	Tue, 25 Mar 2025 12:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906161;
-	bh=HlqQ0z4BoZeKvr8jiz0/kowszEeOWI9xojkYoEqbrM8=;
+	s=korg; t=1742906046;
+	bh=0d+iuxtCGv2twXvAUScfjZonnKtSD9gH/FgNryb1tno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNB10iDq7pH3JCT2qBPZz3dES7aWA0ONVxIigV6yyPpWLgFp+M0MF/p2FeSCL7iTR
-	 AWLMeY9Hws7BnGAAnbggqnGD2dP/RPSS7h2vJxQ2MCpFv3NJmOgUpaHX4OiGRbzJRP
-	 lxgiPpMBvyJy+maSEPY72FS4IBVbnZ0mZNZtst60=
+	b=W9ySOHJ66/0yFdC9/qXiy3Rxsj9bERl/6w6u+3FnXmXZfw9OsmYYpmlJXD47txuRQ
+	 Edk0A8baOs0970CxolUsW/RjJaX3oXKZqjZMFA2Qe8H+0KguoNKePQumQopwrZRNt4
+	 bx3F7qCp8y75WnpuN9Ef1+IaKtu5hZ3NwOjIhJw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 48/77] memcg: drain obj stock on cpu hotplug teardown
+	David Rosca <david.rosca@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>
+Subject: [PATCH 6.13 105/119] drm/amdgpu: Fix JPEG video caps max size for navi1x and raven
 Date: Tue, 25 Mar 2025 08:22:43 -0400
-Message-ID: <20250325122145.609831262@linuxfoundation.org>
+Message-ID: <20250325122151.737319863@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: David Rosca <david.rosca@amd.com>
 
-commit 9f01b4954490d4ccdbcc2b9be34a9921ceee9cbb upstream.
+commit ec33964d9d88488fa954a03d476a8b811efc6e85 upstream.
 
-Currently on cpu hotplug teardown, only memcg stock is drained but we
-need to drain the obj stock as well otherwise we will miss the stats
-accumulated on the target cpu as well as the nr_bytes cached. The stats
-include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
-addition we are leaking reference to struct obj_cgroup object.
+8192x8192 is the maximum supported resolution.
 
-Link: https://lkml.kernel.org/r/20250310230934.2913113-1-shakeel.butt@linux.dev
-Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Rosca <david.rosca@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6e0d2fde3ae8fdb5b47e10389f23ed2cb4daec5d)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memcontrol.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/nv.c    |    2 +-
+ drivers/gpu/drm/amd/amdgpu/soc15.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2378,9 +2378,18 @@ static void drain_all_stock(struct mem_c
- static int memcg_hotplug_cpu_dead(unsigned int cpu)
- {
- 	struct memcg_stock_pcp *stock;
-+	struct obj_cgroup *old;
-+	unsigned long flags;
+--- a/drivers/gpu/drm/amd/amdgpu/nv.c
++++ b/drivers/gpu/drm/amd/amdgpu/nv.c
+@@ -83,7 +83,7 @@ static const struct amdgpu_video_codec_i
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 8192, 8192, 0)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
+ };
  
- 	stock = &per_cpu(memcg_stock, cpu);
-+
-+	/* drain_obj_stock requires stock_lock */
-+	local_lock_irqsave(&memcg_stock.stock_lock, flags);
-+	old = drain_obj_stock(stock);
-+	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
-+
- 	drain_stock(stock);
-+	obj_cgroup_put(old);
+--- a/drivers/gpu/drm/amd/amdgpu/soc15.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
+@@ -124,7 +124,7 @@ static const struct amdgpu_video_codec_i
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 4096, 186)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 8192, 8192, 0)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 4096, 4096, 0)},
+ };
  
- 	return 0;
- }
 
 
 
