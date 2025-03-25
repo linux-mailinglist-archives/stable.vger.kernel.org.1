@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-126276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFE4A700A2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D245A7006B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AA463BCA60
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2E3D19A43AC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7819268C5C;
-	Tue, 25 Mar 2025 12:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CF6266EF9;
+	Tue, 25 Mar 2025 12:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHAReDK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gpyv2OFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69E82571DB;
-	Tue, 25 Mar 2025 12:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD20D41C85;
+	Tue, 25 Mar 2025 12:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905925; cv=none; b=dOfK5w5K9yXYsSYL4vE4mflTSjKfuNDGmiI9FDsLGp1sciQ0yJRLfP5L70I0S6Oa3oSwsfJiLpKw91a3PwwGYcBW4CF9rDAyCY0/A/gtdhiggPHyYxIPUjYIyrRyUhjOnVgJAKry4p+LC1LgQ6T+iZqEFM46qlHy8ARoxrgJ4Is=
+	t=1742905704; cv=none; b=YD71B2Q8FQ7uQ65RTm6rjZqLb+XkIPq39zZINtZyjdF4WPMtHwCwxfH5j4ZBByRJPHmXgQXx8q8chbme+p2k8HR7P39tlV+08/vRTUz1QWc/bklH+L6pGpUrVwE8g6spe6if0hiPDd0nuxEoLTDqc5YpOslPAFg7w+GMLex/pVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905925; c=relaxed/simple;
-	bh=8iovvrGktmPR/ZGQUiyynB/T5ggQtzd69SvGbu3uIUU=;
+	s=arc-20240116; t=1742905704; c=relaxed/simple;
+	bh=GKcVi+TSE0jWFzuxDmiYdGkKwiWlS84om56u5TfFyLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkMmsLUX2d7xQBqrJucjh2nZuuStll+zXSUnU6k0Dtx8Fu5f2Fw0q+r/wO3YK+VE+8qheE9o7g4+pX274CyvT0onr1bOlzGqb/m9TE+WR0AmMi/pbs+JG18svexXhjRvnEbzKgAEVNhcUhiQqQpm6vWfcbRhcZYLA/DC9RxY0X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHAReDK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5281FC4CEE4;
-	Tue, 25 Mar 2025 12:32:05 +0000 (UTC)
+	 MIME-Version; b=m8LhCFQ28BJaejv5XUZQ+XzsIoRyXVkp3WFUdaDMniymh7R8GrZOQP709fX8ImbmGnIxLee2xTD3rx+xicQu6663aGwJJu0S1N7pslwypfwNGafe8yfwhHo9Lr0DmivfA9aU2Unb5L3CKg09lhQVDVVpRldiAIwNCrYxMfEbrHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gpyv2OFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E5DC4CEE4;
+	Tue, 25 Mar 2025 12:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905925;
-	bh=8iovvrGktmPR/ZGQUiyynB/T5ggQtzd69SvGbu3uIUU=;
+	s=korg; t=1742905704;
+	bh=GKcVi+TSE0jWFzuxDmiYdGkKwiWlS84om56u5TfFyLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHAReDK7tmGxxtJw505XvMktnwlKTkX8Ya05jNsj1RamnR7sHSFNW1D/j8CKGmLZM
-	 w4sPMfFXC8iOM+6Hu23hY4ftcDkoMim0LNvB/FaFykOweRTEu44MJcTIpBF5Jwu6RU
-	 QGhv/jmLSzsmU7/wTKaWlnsSG8OGHsN0jmgIso5o=
+	b=Gpyv2OFPFLGTk2CtYh9B7BkjMPKFut4yfbdUe4Wj0MgHiA4+NeSeqOUHH5QbuJpFc
+	 8FRceV7DSDReS+aknT3eoHDLNIRuNdyQ867FUSZiLWAGVNd+Py/eXrimc9TQ1cGob3
+	 Y21p3h+2VhpYQhFe5mwSS2HxMFK/wZgcq9lWurCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 022/119] RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
-Date: Tue, 25 Mar 2025 08:21:20 -0400
-Message-ID: <20250325122149.637155525@linuxfoundation.org>
+	Thomas Mizrahi <thomasmizra@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 119/198] ASoC: amd: yc: Support mic on another Lenovo ThinkPad E16 Gen 2 model
+Date: Tue, 25 Mar 2025 08:21:21 -0400
+Message-ID: <20250325122159.777197077@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Thomas Mizrahi <thomasmizra@gmail.com>
 
-[ Upstream commit 81c0db302a674f8004ed805393d17fd76f552e83 ]
+commit 0704a15b930cf97073ce091a0cd7ad32f2304329 upstream.
 
-Driver is always clearing the mask that sets the VLAN ID/Service Level
-in the adapter. Recent change for supporting multiple traffic class
-exposed this issue.
+The internal microphone on the Lenovo ThinkPad E16 model requires a
+quirk entry to work properly. This was fixed in a previous patch (linked
+below), but depending on the specific variant of the model, the product
+name may be "21M5" or "21M6".
 
-Allow setting SL and VLAN_ID while QP is moved from INIT to RTR state.
+The following patch fixed this issue for the 21M5 variant:
+  https://lore.kernel.org/all/20240725065442.9293-1-tiwai@suse.de/
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Fixes: c64b16a37b6d ("RDMA/bnxt_re: Support different traffic class")
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1741670196-2919-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adds support for the microphone on the 21M6 variant.
+
+Link: https://github.com/ramaureirac/thinkpad-e14-linux/issues/31
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Mizrahi <thomasmizra@gmail.com>
+Link: https://patch.msgid.link/20250308041303.198765-1-thomasmizra@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 5336f74297f81..457eecb99f969 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1217,8 +1217,6 @@ static void __modify_flags_from_init_state(struct bnxt_qplib_qp *qp)
- 			qp->path_mtu =
- 				CMDQ_MODIFY_QP_PATH_MTU_MTU_2048;
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -252,6 +252,13 @@ static const struct dmi_system_id yc_acp
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21M6"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
  		}
--		qp->modify_flags &=
--			~CMDQ_MODIFY_QP_MODIFY_MASK_VLAN_ID;
- 		/* Bono FW require the max_dest_rd_atomic to be >= 1 */
- 		if (qp->max_dest_rd_atomic < 1)
- 			qp->max_dest_rd_atomic = 1;
--- 
-2.39.5
-
+ 	},
 
 
 
