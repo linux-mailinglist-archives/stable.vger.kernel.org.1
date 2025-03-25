@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-126146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF148A6FFFF
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84744A6FFB0
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9862819A2C19
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1944B3BCDF1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DBC266B78;
-	Tue, 25 Mar 2025 12:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB04266599;
+	Tue, 25 Mar 2025 12:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiS9FLLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rc+Mp6wP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C420264A85;
-	Tue, 25 Mar 2025 12:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF7C265CBF;
+	Tue, 25 Mar 2025 12:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905686; cv=none; b=meaAiTtOeopEMhfr2m7YT1Ur9U7thPPPwPmPzrYJRrsEl8lY7CxVPt45qkqxygKQEc00liBvYLSNFBtGAVad4xeg8DO4bk1MkToraxqQHj8BRZ3GA8w0x2yRnV0/ObbRfWy1vNsp4jdO6Kh4elH9gXrO6jdUybG5oBXfAXhbozQ=
+	t=1742905638; cv=none; b=S/v5zDXKN0YAjChjYxIxaNU6PWGqULh8tqhWoZIi1VWLqJTOSfyTqQF4Lt4EMcmHBD3ajorvUXtU/VZtG77dPOCy13ODmdmkeIBQUIo4q1DGjYhS/SpWQVAxSJETCBVFNgoqIZF7pMVBPPU8tU2CpVk8pMpda4QXTGxBm54/vOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905686; c=relaxed/simple;
-	bh=SKTxH2HaDS6kgmNrRbZnEEj/cg+0OvgXMEoP3sBX47U=;
+	s=arc-20240116; t=1742905638; c=relaxed/simple;
+	bh=VOmTGRRfQstQIetMLhdESPsgf1B2SBB9xGBS3Pu072I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RbzUqFcx4HjY2laDX8TCds62wTZKJ2UfDaKQo5R2Jlg+SC5CYvegzQaL9m586rkO7asGfxfgkMKYLWOeqz1KtgzPr9wvDV2pZFj3VJGtAf+6VVSa1L1WTokVM7o1/Fl/EVlSMNukiMiMu2Cek7Nw9hVpr9p2zdCLEuB535RmqTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiS9FLLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEB5C4CEE4;
-	Tue, 25 Mar 2025 12:28:05 +0000 (UTC)
+	 MIME-Version; b=MSMn9Vv3dsh/jNGvuq9+9iVH5ONfZuiaYO/D6Emoq7LYla1Z0HEM/AN1XHvfz86jukUYHOkFG9UktMjLUtiemItEr3yxzU5pBzKX3yv5Qg/sprSlg10Uq25Z++Mlpl+1L/O9Z01/h6SoV854fwCZ16CPXxvmPz8RMo+qV0NhAHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rc+Mp6wP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C6EC4CEE4;
+	Tue, 25 Mar 2025 12:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905686;
-	bh=SKTxH2HaDS6kgmNrRbZnEEj/cg+0OvgXMEoP3sBX47U=;
+	s=korg; t=1742905638;
+	bh=VOmTGRRfQstQIetMLhdESPsgf1B2SBB9xGBS3Pu072I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiS9FLLwhMp4OmPdAgKxkrWadfVOD0yvh6dqm6XhrqZZLzK4VUVOgGyNcwaZoBhfT
-	 y55VQI/qaeCOedjwEhmtxDpQRT+piLKnE8iR5wftbUy6hFOb4mHGWcFdCLG46cxLHr
-	 iowT+hz6SQMa1MKPpwcLfS3qXzjRZ0s3JTzrCfRE=
+	b=rc+Mp6wPjAaGI5MvbKFd0q9C8cC2VtUShpBYwf+2h68KD+CcrDzqmPIjgAb+m/eQd
+	 YEUaDha4nHT2ofGvTZxrKbAwnHOWjexJuvs1G+55jamhqf98jRiBVmxhvLu0z1p6qJ
+	 /zcR5AbayVdCdnKOTYIFCFoXtFAVFdSeRa6gD1L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dave Chinner <dchinner@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
 	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 078/198] xfs: pass refcount intent directly through the log intent code
-Date: Tue, 25 Mar 2025 08:20:40 -0400
-Message-ID: <20250325122158.685041576@linuxfoundation.org>
+Subject: [PATCH 6.1 083/198] xfs: validate block number being freed before adding to xefi
+Date: Tue, 25 Mar 2025 08:20:45 -0400
+Message-ID: <20250325122158.820669257@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -65,404 +68,309 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit 0b11553ec54a6d88907e60d0595dbcef98539747 ]
+[ Upstream commit 7dfee17b13e5024c5c0ab1911859ded4182de3e5 ]
 
-Pass the incore refcount intent through the CUI logging code instead of
-repeatedly boxing and unboxing parameters.
+Bad things happen in defered extent freeing operations if it is
+passed a bad block number in the xefi. This can come from a bogus
+agno/agbno pair from deferred agfl freeing, or just a bad fsbno
+being passed to __xfs_free_extent_later(). Either way, it's very
+difficult to diagnose where a null perag oops in EFI creation
+is coming from when the operation that queued the xefi has already
+been completed and there's no longer any trace of it around....
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Dave Chinner <david@fromorbit.com>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_refcount.c |   96 +++++++++++++++++++------------------------
- fs/xfs/libxfs/xfs_refcount.h |    4 -
- fs/xfs/xfs_refcount_item.c   |   62 +++++++++++----------------
- fs/xfs/xfs_trace.h           |   15 +-----
- 4 files changed, 74 insertions(+), 103 deletions(-)
+ fs/xfs/libxfs/xfs_ag.c         |    5 ++++-
+ fs/xfs/libxfs/xfs_alloc.c      |   16 +++++++++++++---
+ fs/xfs/libxfs/xfs_alloc.h      |    6 +++---
+ fs/xfs/libxfs/xfs_bmap.c       |   10 ++++++++--
+ fs/xfs/libxfs/xfs_bmap_btree.c |    7 +++++--
+ fs/xfs/libxfs/xfs_ialloc.c     |   24 ++++++++++++++++--------
+ fs/xfs/libxfs/xfs_refcount.c   |   13 ++++++++++---
+ fs/xfs/xfs_reflink.c           |    4 +++-
+ 8 files changed, 62 insertions(+), 23 deletions(-)
 
+--- a/fs/xfs/libxfs/xfs_ag.c
++++ b/fs/xfs/libxfs/xfs_ag.c
+@@ -906,7 +906,10 @@ xfs_ag_shrink_space(
+ 		if (err2 != -ENOSPC)
+ 			goto resv_err;
+ 
+-		__xfs_free_extent_later(*tpp, args.fsbno, delta, NULL, true);
++		err2 = __xfs_free_extent_later(*tpp, args.fsbno, delta, NULL,
++				true);
++		if (err2)
++			goto resv_err;
+ 
+ 		/*
+ 		 * Roll the transaction before trying to re-init the per-ag
+--- a/fs/xfs/libxfs/xfs_alloc.c
++++ b/fs/xfs/libxfs/xfs_alloc.c
+@@ -2485,7 +2485,7 @@ xfs_agfl_reset(
+  * the real allocation can proceed. Deferring the free disconnects freeing up
+  * the AGFL slot from freeing the block.
+  */
+-STATIC void
++static int
+ xfs_defer_agfl_block(
+ 	struct xfs_trans		*tp,
+ 	xfs_agnumber_t			agno,
+@@ -2504,16 +2504,20 @@ xfs_defer_agfl_block(
+ 	xefi->xefi_blockcount = 1;
+ 	xefi->xefi_owner = oinfo->oi_owner;
+ 
++	if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbno(mp, xefi->xefi_startblock)))
++		return -EFSCORRUPTED;
++
+ 	trace_xfs_agfl_free_defer(mp, agno, 0, agbno, 1);
+ 
+ 	xfs_defer_add(tp, XFS_DEFER_OPS_TYPE_AGFL_FREE, &xefi->xefi_list);
++	return 0;
+ }
+ 
+ /*
+  * Add the extent to the list of extents to be free at transaction end.
+  * The list is maintained sorted (by block number).
+  */
+-void
++int
+ __xfs_free_extent_later(
+ 	struct xfs_trans		*tp,
+ 	xfs_fsblock_t			bno,
+@@ -2540,6 +2544,9 @@ __xfs_free_extent_later(
+ #endif
+ 	ASSERT(xfs_extfree_item_cache != NULL);
+ 
++	if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
++		return -EFSCORRUPTED;
++
+ 	xefi = kmem_cache_zalloc(xfs_extfree_item_cache,
+ 			       GFP_KERNEL | __GFP_NOFAIL);
+ 	xefi->xefi_startblock = bno;
+@@ -2561,6 +2568,7 @@ __xfs_free_extent_later(
+ 			XFS_FSB_TO_AGNO(tp->t_mountp, bno), 0,
+ 			XFS_FSB_TO_AGBNO(tp->t_mountp, bno), len);
+ 	xfs_defer_add(tp, XFS_DEFER_OPS_TYPE_FREE, &xefi->xefi_list);
++	return 0;
+ }
+ 
+ #ifdef DEBUG
+@@ -2720,7 +2728,9 @@ xfs_alloc_fix_freelist(
+ 			goto out_agbp_relse;
+ 
+ 		/* defer agfl frees */
+-		xfs_defer_agfl_block(tp, args->agno, bno, &targs.oinfo);
++		error = xfs_defer_agfl_block(tp, args->agno, bno, &targs.oinfo);
++		if (error)
++			goto out_agbp_relse;
+ 	}
+ 
+ 	targs.tp = tp;
+--- a/fs/xfs/libxfs/xfs_alloc.h
++++ b/fs/xfs/libxfs/xfs_alloc.h
+@@ -213,7 +213,7 @@ xfs_buf_to_agfl_bno(
+ 	return bp->b_addr;
+ }
+ 
+-void __xfs_free_extent_later(struct xfs_trans *tp, xfs_fsblock_t bno,
++int __xfs_free_extent_later(struct xfs_trans *tp, xfs_fsblock_t bno,
+ 		xfs_filblks_t len, const struct xfs_owner_info *oinfo,
+ 		bool skip_discard);
+ 
+@@ -233,14 +233,14 @@ struct xfs_extent_free_item {
+ #define XFS_EFI_ATTR_FORK	(1U << 1) /* freeing attr fork block */
+ #define XFS_EFI_BMBT_BLOCK	(1U << 2) /* freeing bmap btree block */
+ 
+-static inline void
++static inline int
+ xfs_free_extent_later(
+ 	struct xfs_trans		*tp,
+ 	xfs_fsblock_t			bno,
+ 	xfs_filblks_t			len,
+ 	const struct xfs_owner_info	*oinfo)
+ {
+-	__xfs_free_extent_later(tp, bno, len, oinfo, false);
++	return __xfs_free_extent_later(tp, bno, len, oinfo, false);
+ }
+ 
+ 
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -572,8 +572,12 @@ xfs_bmap_btree_to_extents(
+ 	cblock = XFS_BUF_TO_BLOCK(cbp);
+ 	if ((error = xfs_btree_check_block(cur, cblock, 0, cbp)))
+ 		return error;
++
+ 	xfs_rmap_ino_bmbt_owner(&oinfo, ip->i_ino, whichfork);
+-	xfs_free_extent_later(cur->bc_tp, cbno, 1, &oinfo);
++	error = xfs_free_extent_later(cur->bc_tp, cbno, 1, &oinfo);
++	if (error)
++		return error;
++
+ 	ip->i_nblocks--;
+ 	xfs_trans_mod_dquot_byino(tp, ip, XFS_TRANS_DQ_BCOUNT, -1L);
+ 	xfs_trans_binval(tp, cbp);
+@@ -5202,10 +5206,12 @@ xfs_bmap_del_extent_real(
+ 		if (xfs_is_reflink_inode(ip) && whichfork == XFS_DATA_FORK) {
+ 			xfs_refcount_decrease_extent(tp, del);
+ 		} else {
+-			__xfs_free_extent_later(tp, del->br_startblock,
++			error = __xfs_free_extent_later(tp, del->br_startblock,
+ 					del->br_blockcount, NULL,
+ 					(bflags & XFS_BMAPI_NODISCARD) ||
+ 					del->br_state == XFS_EXT_UNWRITTEN);
++			if (error)
++				goto done;
+ 		}
+ 	}
+ 
+--- a/fs/xfs/libxfs/xfs_bmap_btree.c
++++ b/fs/xfs/libxfs/xfs_bmap_btree.c
+@@ -285,11 +285,14 @@ xfs_bmbt_free_block(
+ 	struct xfs_trans	*tp = cur->bc_tp;
+ 	xfs_fsblock_t		fsbno = XFS_DADDR_TO_FSB(mp, xfs_buf_daddr(bp));
+ 	struct xfs_owner_info	oinfo;
++	int			error;
+ 
+ 	xfs_rmap_ino_bmbt_owner(&oinfo, ip->i_ino, cur->bc_ino.whichfork);
+-	xfs_free_extent_later(cur->bc_tp, fsbno, 1, &oinfo);
+-	ip->i_nblocks--;
++	error = xfs_free_extent_later(cur->bc_tp, fsbno, 1, &oinfo);
++	if (error)
++		return error;
+ 
++	ip->i_nblocks--;
+ 	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
+ 	xfs_trans_mod_dquot_byino(tp, ip, XFS_TRANS_DQ_BCOUNT, -1L);
+ 	return 0;
+--- a/fs/xfs/libxfs/xfs_ialloc.c
++++ b/fs/xfs/libxfs/xfs_ialloc.c
+@@ -1827,7 +1827,7 @@ xfs_dialloc(
+  * might be sparse and only free the regions that are allocated as part of the
+  * chunk.
+  */
+-STATIC void
++static int
+ xfs_difree_inode_chunk(
+ 	struct xfs_trans		*tp,
+ 	xfs_agnumber_t			agno,
+@@ -1844,10 +1844,10 @@ xfs_difree_inode_chunk(
+ 
+ 	if (!xfs_inobt_issparse(rec->ir_holemask)) {
+ 		/* not sparse, calculate extent info directly */
+-		xfs_free_extent_later(tp, XFS_AGB_TO_FSB(mp, agno, sagbno),
+-				  M_IGEO(mp)->ialloc_blks,
+-				  &XFS_RMAP_OINFO_INODES);
+-		return;
++		return xfs_free_extent_later(tp,
++				XFS_AGB_TO_FSB(mp, agno, sagbno),
++				M_IGEO(mp)->ialloc_blks,
++				&XFS_RMAP_OINFO_INODES);
+ 	}
+ 
+ 	/* holemask is only 16-bits (fits in an unsigned long) */
+@@ -1864,6 +1864,8 @@ xfs_difree_inode_chunk(
+ 						XFS_INOBT_HOLEMASK_BITS);
+ 	nextbit = startidx + 1;
+ 	while (startidx < XFS_INOBT_HOLEMASK_BITS) {
++		int error;
++
+ 		nextbit = find_next_zero_bit(holemask, XFS_INOBT_HOLEMASK_BITS,
+ 					     nextbit);
+ 		/*
+@@ -1889,8 +1891,11 @@ xfs_difree_inode_chunk(
+ 
+ 		ASSERT(agbno % mp->m_sb.sb_spino_align == 0);
+ 		ASSERT(contigblk % mp->m_sb.sb_spino_align == 0);
+-		xfs_free_extent_later(tp, XFS_AGB_TO_FSB(mp, agno, agbno),
+-				  contigblk, &XFS_RMAP_OINFO_INODES);
++		error = xfs_free_extent_later(tp,
++				XFS_AGB_TO_FSB(mp, agno, agbno),
++				contigblk, &XFS_RMAP_OINFO_INODES);
++		if (error)
++			return error;
+ 
+ 		/* reset range to current bit and carry on... */
+ 		startidx = endidx = nextbit;
+@@ -1898,6 +1903,7 @@ xfs_difree_inode_chunk(
+ next:
+ 		nextbit++;
+ 	}
++	return 0;
+ }
+ 
+ STATIC int
+@@ -1998,7 +2004,9 @@ xfs_difree_inobt(
+ 			goto error0;
+ 		}
+ 
+-		xfs_difree_inode_chunk(tp, pag->pag_agno, &rec);
++		error = xfs_difree_inode_chunk(tp, pag->pag_agno, &rec);
++		if (error)
++			goto error0;
+ 	} else {
+ 		xic->deleted = false;
+ 
 --- a/fs/xfs/libxfs/xfs_refcount.c
 +++ b/fs/xfs/libxfs/xfs_refcount.c
-@@ -1213,37 +1213,33 @@ out_error:
- STATIC int
- xfs_refcount_adjust(
- 	struct xfs_btree_cur	*cur,
--	xfs_agblock_t		agbno,
--	xfs_extlen_t		aglen,
--	xfs_agblock_t		*new_agbno,
--	xfs_extlen_t		*new_aglen,
-+	xfs_agblock_t		*agbno,
-+	xfs_extlen_t		*aglen,
- 	enum xfs_refc_adjust_op	adj)
- {
- 	bool			shape_changed;
- 	int			shape_changes = 0;
- 	int			error;
+@@ -1129,8 +1129,10 @@ xfs_refcount_adjust_extents(
+ 				fsbno = XFS_AGB_TO_FSB(cur->bc_mp,
+ 						cur->bc_ag.pag->pag_agno,
+ 						tmp.rc_startblock);
+-				xfs_free_extent_later(cur->bc_tp, fsbno,
++				error = xfs_free_extent_later(cur->bc_tp, fsbno,
+ 						  tmp.rc_blockcount, NULL);
++				if (error)
++					goto out_error;
+ 			}
  
--	*new_agbno = agbno;
--	*new_aglen = aglen;
- 	if (adj == XFS_REFCOUNT_ADJUST_INCREASE)
--		trace_xfs_refcount_increase(cur->bc_mp, cur->bc_ag.pag->pag_agno,
--				agbno, aglen);
-+		trace_xfs_refcount_increase(cur->bc_mp,
-+				cur->bc_ag.pag->pag_agno, *agbno, *aglen);
- 	else
--		trace_xfs_refcount_decrease(cur->bc_mp, cur->bc_ag.pag->pag_agno,
--				agbno, aglen);
-+		trace_xfs_refcount_decrease(cur->bc_mp,
-+				cur->bc_ag.pag->pag_agno, *agbno, *aglen);
- 
- 	/*
- 	 * Ensure that no rcextents cross the boundary of the adjustment range.
- 	 */
- 	error = xfs_refcount_split_extent(cur, XFS_REFC_DOMAIN_SHARED,
--			agbno, &shape_changed);
-+			*agbno, &shape_changed);
- 	if (error)
- 		goto out_error;
- 	if (shape_changed)
- 		shape_changes++;
- 
- 	error = xfs_refcount_split_extent(cur, XFS_REFC_DOMAIN_SHARED,
--			agbno + aglen, &shape_changed);
-+			*agbno + *aglen, &shape_changed);
- 	if (error)
- 		goto out_error;
- 	if (shape_changed)
-@@ -1253,7 +1249,7 @@ xfs_refcount_adjust(
- 	 * Try to merge with the left or right extents of the range.
- 	 */
- 	error = xfs_refcount_merge_extents(cur, XFS_REFC_DOMAIN_SHARED,
--			new_agbno, new_aglen, adj, &shape_changed);
-+			agbno, aglen, adj, &shape_changed);
- 	if (error)
- 		goto out_error;
- 	if (shape_changed)
-@@ -1262,7 +1258,7 @@ xfs_refcount_adjust(
- 		cur->bc_ag.refc.shape_changes++;
- 
- 	/* Now that we've taken care of the ends, adjust the middle extents */
--	error = xfs_refcount_adjust_extents(cur, new_agbno, new_aglen, adj);
-+	error = xfs_refcount_adjust_extents(cur, agbno, aglen, adj);
- 	if (error)
- 		goto out_error;
- 
-@@ -1298,21 +1294,20 @@ xfs_refcount_finish_one_cleanup(
- static inline int
- xfs_refcount_continue_op(
- 	struct xfs_btree_cur		*cur,
--	xfs_fsblock_t			startblock,
--	xfs_agblock_t			new_agbno,
--	xfs_extlen_t			new_len,
--	xfs_fsblock_t			*new_fsbno)
-+	struct xfs_refcount_intent	*ri,
-+	xfs_agblock_t			new_agbno)
- {
- 	struct xfs_mount		*mp = cur->bc_mp;
- 	struct xfs_perag		*pag = cur->bc_ag.pag;
- 
--	if (XFS_IS_CORRUPT(mp, !xfs_verify_agbext(pag, new_agbno, new_len)))
-+	if (XFS_IS_CORRUPT(mp, !xfs_verify_agbext(pag, new_agbno,
-+					ri->ri_blockcount)))
- 		return -EFSCORRUPTED;
- 
--	*new_fsbno = XFS_AGB_TO_FSB(mp, pag->pag_agno, new_agbno);
-+	ri->ri_startblock = XFS_AGB_TO_FSB(mp, pag->pag_agno, new_agbno);
- 
--	ASSERT(xfs_verify_fsbext(mp, *new_fsbno, new_len));
--	ASSERT(pag->pag_agno == XFS_FSB_TO_AGNO(mp, *new_fsbno));
-+	ASSERT(xfs_verify_fsbext(mp, ri->ri_startblock, ri->ri_blockcount));
-+	ASSERT(pag->pag_agno == XFS_FSB_TO_AGNO(mp, ri->ri_startblock));
- 
- 	return 0;
- }
-@@ -1327,11 +1322,7 @@ xfs_refcount_continue_op(
- int
- xfs_refcount_finish_one(
- 	struct xfs_trans		*tp,
--	enum xfs_refcount_intent_type	type,
--	xfs_fsblock_t			startblock,
--	xfs_extlen_t			blockcount,
--	xfs_fsblock_t			*new_fsb,
--	xfs_extlen_t			*new_len,
-+	struct xfs_refcount_intent	*ri,
- 	struct xfs_btree_cur		**pcur)
- {
- 	struct xfs_mount		*mp = tp->t_mountp;
-@@ -1339,17 +1330,16 @@ xfs_refcount_finish_one(
- 	struct xfs_buf			*agbp = NULL;
- 	int				error = 0;
- 	xfs_agblock_t			bno;
--	xfs_agblock_t			new_agbno;
- 	unsigned long			nr_ops = 0;
- 	int				shape_changes = 0;
- 	struct xfs_perag		*pag;
- 
--	pag = xfs_perag_get(mp, XFS_FSB_TO_AGNO(mp, startblock));
--	bno = XFS_FSB_TO_AGBNO(mp, startblock);
-+	pag = xfs_perag_get(mp, XFS_FSB_TO_AGNO(mp, ri->ri_startblock));
-+	bno = XFS_FSB_TO_AGBNO(mp, ri->ri_startblock);
- 
--	trace_xfs_refcount_deferred(mp, XFS_FSB_TO_AGNO(mp, startblock),
--			type, XFS_FSB_TO_AGBNO(mp, startblock),
--			blockcount);
-+	trace_xfs_refcount_deferred(mp, XFS_FSB_TO_AGNO(mp, ri->ri_startblock),
-+			ri->ri_type, XFS_FSB_TO_AGBNO(mp, ri->ri_startblock),
-+			ri->ri_blockcount);
- 
- 	if (XFS_TEST_ERROR(false, mp, XFS_ERRTAG_REFCOUNT_FINISH_ONE)) {
- 		error = -EIO;
-@@ -1380,42 +1370,42 @@ xfs_refcount_finish_one(
- 	}
- 	*pcur = rcur;
- 
--	switch (type) {
-+	switch (ri->ri_type) {
- 	case XFS_REFCOUNT_INCREASE:
--		error = xfs_refcount_adjust(rcur, bno, blockcount, &new_agbno,
--				new_len, XFS_REFCOUNT_ADJUST_INCREASE);
-+		error = xfs_refcount_adjust(rcur, &bno, &ri->ri_blockcount,
-+				XFS_REFCOUNT_ADJUST_INCREASE);
- 		if (error)
- 			goto out_drop;
--		if (*new_len > 0)
--			error = xfs_refcount_continue_op(rcur, startblock,
--					new_agbno, *new_len, new_fsb);
-+		if (ri->ri_blockcount > 0)
-+			error = xfs_refcount_continue_op(rcur, ri, bno);
- 		break;
- 	case XFS_REFCOUNT_DECREASE:
--		error = xfs_refcount_adjust(rcur, bno, blockcount, &new_agbno,
--				new_len, XFS_REFCOUNT_ADJUST_DECREASE);
-+		error = xfs_refcount_adjust(rcur, &bno, &ri->ri_blockcount,
-+				XFS_REFCOUNT_ADJUST_DECREASE);
- 		if (error)
- 			goto out_drop;
--		if (*new_len > 0)
--			error = xfs_refcount_continue_op(rcur, startblock,
--					new_agbno, *new_len, new_fsb);
-+		if (ri->ri_blockcount > 0)
-+			error = xfs_refcount_continue_op(rcur, ri, bno);
- 		break;
- 	case XFS_REFCOUNT_ALLOC_COW:
--		*new_fsb = startblock + blockcount;
--		*new_len = 0;
--		error = __xfs_refcount_cow_alloc(rcur, bno, blockcount);
-+		error = __xfs_refcount_cow_alloc(rcur, bno, ri->ri_blockcount);
-+		if (error)
-+			goto out_drop;
-+		ri->ri_blockcount = 0;
- 		break;
- 	case XFS_REFCOUNT_FREE_COW:
--		*new_fsb = startblock + blockcount;
--		*new_len = 0;
--		error = __xfs_refcount_cow_free(rcur, bno, blockcount);
-+		error = __xfs_refcount_cow_free(rcur, bno, ri->ri_blockcount);
-+		if (error)
-+			goto out_drop;
-+		ri->ri_blockcount = 0;
- 		break;
- 	default:
- 		ASSERT(0);
- 		error = -EFSCORRUPTED;
- 	}
--	if (!error && *new_len > 0)
--		trace_xfs_refcount_finish_one_leftover(mp, pag->pag_agno, type,
--				bno, blockcount, new_agbno, *new_len);
-+	if (!error && ri->ri_blockcount > 0)
-+		trace_xfs_refcount_finish_one_leftover(mp, pag->pag_agno,
-+				ri->ri_type, bno, ri->ri_blockcount);
- out_drop:
- 	xfs_perag_put(pag);
- 	return error;
---- a/fs/xfs/libxfs/xfs_refcount.h
-+++ b/fs/xfs/libxfs/xfs_refcount.h
-@@ -75,9 +75,7 @@ void xfs_refcount_decrease_extent(struct
- extern void xfs_refcount_finish_one_cleanup(struct xfs_trans *tp,
- 		struct xfs_btree_cur *rcur, int error);
- extern int xfs_refcount_finish_one(struct xfs_trans *tp,
--		enum xfs_refcount_intent_type type, xfs_fsblock_t startblock,
--		xfs_extlen_t blockcount, xfs_fsblock_t *new_fsb,
--		xfs_extlen_t *new_len, struct xfs_btree_cur **pcur);
-+		struct xfs_refcount_intent *ri, struct xfs_btree_cur **pcur);
- 
- extern int xfs_refcount_find_shared(struct xfs_btree_cur *cur,
- 		xfs_agblock_t agbno, xfs_extlen_t aglen, xfs_agblock_t *fbno,
---- a/fs/xfs/xfs_refcount_item.c
-+++ b/fs/xfs/xfs_refcount_item.c
-@@ -252,17 +252,12 @@ static int
- xfs_trans_log_finish_refcount_update(
- 	struct xfs_trans		*tp,
- 	struct xfs_cud_log_item		*cudp,
--	enum xfs_refcount_intent_type	type,
--	xfs_fsblock_t			startblock,
--	xfs_extlen_t			blockcount,
--	xfs_fsblock_t			*new_fsb,
--	xfs_extlen_t			*new_len,
-+	struct xfs_refcount_intent	*ri,
- 	struct xfs_btree_cur		**pcur)
- {
- 	int				error;
- 
--	error = xfs_refcount_finish_one(tp, type, startblock,
--			blockcount, new_fsb, new_len, pcur);
-+	error = xfs_refcount_finish_one(tp, ri, pcur);
- 
- 	/*
- 	 * Mark the transaction dirty, even on error. This ensures the
-@@ -378,25 +373,20 @@ xfs_refcount_update_finish_item(
- 	struct list_head		*item,
- 	struct xfs_btree_cur		**state)
- {
--	struct xfs_refcount_intent	*refc;
--	xfs_fsblock_t			new_fsb;
--	xfs_extlen_t			new_aglen;
-+	struct xfs_refcount_intent	*ri;
- 	int				error;
- 
--	refc = container_of(item, struct xfs_refcount_intent, ri_list);
--	error = xfs_trans_log_finish_refcount_update(tp, CUD_ITEM(done),
--			refc->ri_type, refc->ri_startblock, refc->ri_blockcount,
--			&new_fsb, &new_aglen, state);
-+	ri = container_of(item, struct xfs_refcount_intent, ri_list);
-+	error = xfs_trans_log_finish_refcount_update(tp, CUD_ITEM(done), ri,
-+			state);
- 
- 	/* Did we run out of reservation?  Requeue what we didn't finish. */
--	if (!error && new_aglen > 0) {
--		ASSERT(refc->ri_type == XFS_REFCOUNT_INCREASE ||
--		       refc->ri_type == XFS_REFCOUNT_DECREASE);
--		refc->ri_startblock = new_fsb;
--		refc->ri_blockcount = new_aglen;
-+	if (!error && ri->ri_blockcount > 0) {
-+		ASSERT(ri->ri_type == XFS_REFCOUNT_INCREASE ||
-+		       ri->ri_type == XFS_REFCOUNT_DECREASE);
- 		return -EAGAIN;
- 	}
--	kmem_cache_free(xfs_refcount_intent_cache, refc);
-+	kmem_cache_free(xfs_refcount_intent_cache, ri);
- 	return error;
- }
- 
-@@ -463,18 +453,13 @@ xfs_cui_item_recover(
- 	struct xfs_log_item		*lip,
- 	struct list_head		*capture_list)
- {
--	struct xfs_bmbt_irec		irec;
- 	struct xfs_cui_log_item		*cuip = CUI_ITEM(lip);
--	struct xfs_phys_extent		*refc;
- 	struct xfs_cud_log_item		*cudp;
- 	struct xfs_trans		*tp;
- 	struct xfs_btree_cur		*rcur = NULL;
- 	struct xfs_mount		*mp = lip->li_log->l_mp;
--	xfs_fsblock_t			new_fsb;
--	xfs_extlen_t			new_len;
- 	unsigned int			refc_type;
- 	bool				requeue_only = false;
--	enum xfs_refcount_intent_type	type;
- 	int				i;
- 	int				error = 0;
- 
-@@ -513,6 +498,9 @@ xfs_cui_item_recover(
- 	cudp = xfs_trans_get_cud(tp, cuip);
- 
- 	for (i = 0; i < cuip->cui_format.cui_nextents; i++) {
-+		struct xfs_refcount_intent	fake = { };
-+		struct xfs_phys_extent		*refc;
-+
- 		refc = &cuip->cui_format.cui_extents[i];
- 		refc_type = refc->pe_flags & XFS_REFCOUNT_EXTENT_TYPE_MASK;
- 		switch (refc_type) {
-@@ -520,7 +508,7 @@ xfs_cui_item_recover(
- 		case XFS_REFCOUNT_DECREASE:
- 		case XFS_REFCOUNT_ALLOC_COW:
- 		case XFS_REFCOUNT_FREE_COW:
--			type = refc_type;
-+			fake.ri_type = refc_type;
- 			break;
- 		default:
- 			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
-@@ -529,13 +517,12 @@ xfs_cui_item_recover(
- 			error = -EFSCORRUPTED;
- 			goto abort_error;
+ 			(*agbno) += tmp.rc_blockcount;
+@@ -1188,8 +1190,10 @@ xfs_refcount_adjust_extents(
+ 			fsbno = XFS_AGB_TO_FSB(cur->bc_mp,
+ 					cur->bc_ag.pag->pag_agno,
+ 					ext.rc_startblock);
+-			xfs_free_extent_later(cur->bc_tp, fsbno,
++			error = xfs_free_extent_later(cur->bc_tp, fsbno,
+ 					ext.rc_blockcount, NULL);
++			if (error)
++				goto out_error;
  		}
--		if (requeue_only) {
--			new_fsb = refc->pe_startblock;
--			new_len = refc->pe_len;
--		} else
-+
-+		fake.ri_startblock = refc->pe_startblock;
-+		fake.ri_blockcount = refc->pe_len;
-+		if (!requeue_only)
- 			error = xfs_trans_log_finish_refcount_update(tp, cudp,
--				type, refc->pe_startblock, refc->pe_len,
--				&new_fsb, &new_len, &rcur);
-+					&fake, &rcur);
- 		if (error == -EFSCORRUPTED)
- 			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
- 					&cuip->cui_format,
-@@ -544,10 +531,13 @@ xfs_cui_item_recover(
- 			goto abort_error;
  
- 		/* Requeue what we didn't finish. */
--		if (new_len > 0) {
--			irec.br_startblock = new_fsb;
--			irec.br_blockcount = new_len;
--			switch (type) {
-+		if (fake.ri_blockcount > 0) {
-+			struct xfs_bmbt_irec	irec = {
-+				.br_startblock	= fake.ri_startblock,
-+				.br_blockcount	= fake.ri_blockcount,
-+			};
-+
-+			switch (fake.ri_type) {
- 			case XFS_REFCOUNT_INCREASE:
- 				xfs_refcount_increase_extent(tp, &irec);
- 				break;
---- a/fs/xfs/xfs_trace.h
-+++ b/fs/xfs/xfs_trace.h
-@@ -3208,17 +3208,14 @@ DEFINE_REFCOUNT_DEFERRED_EVENT(xfs_refco
+ skip:
+@@ -1958,7 +1962,10 @@ xfs_refcount_recover_cow_leftovers(
+ 				rr->rr_rrec.rc_blockcount);
  
- TRACE_EVENT(xfs_refcount_finish_one_leftover,
- 	TP_PROTO(struct xfs_mount *mp, xfs_agnumber_t agno,
--		 int type, xfs_agblock_t agbno, xfs_extlen_t len,
--		 xfs_agblock_t new_agbno, xfs_extlen_t new_len),
--	TP_ARGS(mp, agno, type, agbno, len, new_agbno, new_len),
-+		 int type, xfs_agblock_t agbno, xfs_extlen_t len),
-+	TP_ARGS(mp, agno, type, agbno, len),
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
- 		__field(xfs_agnumber_t, agno)
- 		__field(int, type)
- 		__field(xfs_agblock_t, agbno)
- 		__field(xfs_extlen_t, len)
--		__field(xfs_agblock_t, new_agbno)
--		__field(xfs_extlen_t, new_len)
- 	),
- 	TP_fast_assign(
- 		__entry->dev = mp->m_super->s_dev;
-@@ -3226,17 +3223,13 @@ TRACE_EVENT(xfs_refcount_finish_one_left
- 		__entry->type = type;
- 		__entry->agbno = agbno;
- 		__entry->len = len;
--		__entry->new_agbno = new_agbno;
--		__entry->new_len = new_len;
- 	),
--	TP_printk("dev %d:%d type %d agno 0x%x agbno 0x%x fsbcount 0x%x new_agbno 0x%x new_fsbcount 0x%x",
-+	TP_printk("dev %d:%d type %d agno 0x%x agbno 0x%x fsbcount 0x%x",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
- 		  __entry->type,
- 		  __entry->agno,
- 		  __entry->agbno,
--		  __entry->len,
--		  __entry->new_agbno,
--		  __entry->new_len)
-+		  __entry->len)
- );
+ 		/* Free the block. */
+-		xfs_free_extent_later(tp, fsb, rr->rr_rrec.rc_blockcount, NULL);
++		error = xfs_free_extent_later(tp, fsb,
++				rr->rr_rrec.rc_blockcount, NULL);
++		if (error)
++			goto out_trans;
  
- /* simple inode-based error/%ip tracepoint class */
+ 		error = xfs_trans_commit(tp);
+ 		if (error)
+--- a/fs/xfs/xfs_reflink.c
++++ b/fs/xfs/xfs_reflink.c
+@@ -618,8 +618,10 @@ xfs_reflink_cancel_cow_blocks(
+ 			xfs_refcount_free_cow_extent(*tpp, del.br_startblock,
+ 					del.br_blockcount);
+ 
+-			xfs_free_extent_later(*tpp, del.br_startblock,
++			error = xfs_free_extent_later(*tpp, del.br_startblock,
+ 					  del.br_blockcount, NULL);
++			if (error)
++				break;
+ 
+ 			/* Roll the transaction */
+ 			error = xfs_defer_finish(tpp);
 
 
 
