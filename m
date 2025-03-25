@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A498EA70089
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08ACA70114
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD71819A2DA4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14C598403AE
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2624620311;
-	Tue, 25 Mar 2025 12:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0F326E160;
+	Tue, 25 Mar 2025 12:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x61vBv6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDltou9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9965A95E;
-	Tue, 25 Mar 2025 12:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2A425D91C;
+	Tue, 25 Mar 2025 12:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905827; cv=none; b=XqyN2tqYKNM7oNZoDNN8+xJdx4bWsU+bcod3Nm8Fiy3+HLEq4onI14a0jf1U6VIRLYVBxY1b4d6RXfdlyzQFJ8WqSSSQlvbNh9TtjCxVPpDv7YTPYEFOy+i6MuRKnKZcSXDaCZvaRfcDxQ2gwjP3/8l4JtvCmaBbCnXOVh3btqU=
+	t=1742906335; cv=none; b=jXOvYzh3WNdh+7lYZhnyQQ/diDYFCB1lJGod6xUgnZ1s+yKSLwNp0cL2tR2A92pHJXTOKPmLLpOit8aUyqx5FEzbveMbbLS/88dQuvHD5mVHaowKgaXIzxDlicAu9uPWP4VEE9wgJAT6998hBAFRm/5y9z/kywYQOqFzIvCdDuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905827; c=relaxed/simple;
-	bh=ARaOmLcGZUVfLU8WbOxilDdL/DyScu4MoqUS+0Dsypw=;
+	s=arc-20240116; t=1742906335; c=relaxed/simple;
+	bh=aoJqRYXzjpVpCMq8RVpoVimP7dvcV29MT0VVFxDXAHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRPrVR3NXy7ZWMTHPrDcrhA7l0jMJ32gdy4fKULGx02yFQyx/h53kSulkvkFkCCcqYGwJSSDPZvTol0OSurEQbdZiwkC32xrQ68MxtVcmTMqK/GUUsakWB5GEMauWSz5FBUwWwn/ffdthO9FaESMOpNhZrNGljnp8NUyWfyQbFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x61vBv6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F55DC4CEE4;
-	Tue, 25 Mar 2025 12:30:27 +0000 (UTC)
+	 MIME-Version; b=iTGnthHGPS/3FQ9T4UYPBynRMKdqGlXqAFjKlX1KTMYVy01TDt3SpHKcQ1oNPWyZOYAuc8UBTdVLePExCj2MT7cznkiirUMxql8XwQUaDcm0h6gZaotrrmgCpMBmvp4Z7podVxfhvJFXIdC0JyPrEhw1hw+4rp45ETqMAuiud/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDltou9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9802CC4CEE4;
+	Tue, 25 Mar 2025 12:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905827;
-	bh=ARaOmLcGZUVfLU8WbOxilDdL/DyScu4MoqUS+0Dsypw=;
+	s=korg; t=1742906334;
+	bh=aoJqRYXzjpVpCMq8RVpoVimP7dvcV29MT0VVFxDXAHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x61vBv6BKK711+XJHdYhowDVr+UaMHzPTCleqfoqTA3Iff1jF5QwShZdMAe5EvyCW
-	 alwdA0UTHUDRstNALPjX9k3lNk7X/W/g3PKKZkS0ZtqwtG+hq9nE24GXDBkDTI2VeJ
-	 fjshpdAE0/gDBf3eq+1TrgGyhDo0KCx0Qg3amHT0=
+	b=iDltou9PozOmEXHF2ypZUxGKpxLrnpBGAdfbaqj3ufFVxQszCnuJomOY7iFJMVg01
+	 TvxMoFshaDF9DO0AaKyIMPYxN54FlxSRzB7he4JrYzMoNJ8oMYnlMD+3pKxkZbHqIR
+	 4i0d9xmz3RryW5tbZhCLxqyT0110jKwywM4je64o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>
-Subject: [PATCH 6.1 186/198] drm/amdgpu: Fix JPEG video caps max size for navi1x and raven
+	David Wei <dw@davidwei.uk>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 061/116] io_uring/net: dont clear REQ_F_NEED_CLEANUP unconditionally
 Date: Tue, 25 Mar 2025 08:22:28 -0400
-Message-ID: <20250325122201.527277544@linuxfoundation.org>
+Message-ID: <20250325122150.769281825@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit ec33964d9d88488fa954a03d476a8b811efc6e85 upstream.
+commit cc34d8330e036b6bffa88db9ea537bae6b03948f upstream.
 
-8192x8192 is the maximum supported resolution.
+io_req_msg_cleanup() relies on the fact that io_netmsg_recycle() will
+always fully recycle, but that may not be the case if the msg cache
+was already full. To ensure that normal cleanup always gets run,
+let io_netmsg_recycle() deal with clearing the relevant cleanup flags,
+as it knows exactly when that should be done.
 
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6e0d2fde3ae8fdb5b47e10389f23ed2cb4daec5d)
 Cc: stable@vger.kernel.org
+Reported-by: David Wei <dw@davidwei.uk>
+Fixes: 75191341785e ("io_uring/net: add iovec recycling")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nv.c    |    2 +-
- drivers/gpu/drm/amd/amdgpu/soc15.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ io_uring/net.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/nv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nv.c
-@@ -87,7 +87,7 @@ static const struct amdgpu_video_codec_i
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 8192, 8192, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
- };
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -152,7 +152,7 @@ static void io_netmsg_recycle(struct io_
+ 		if (iov)
+ 			kasan_mempool_poison_object(iov);
+ 		req->async_data = NULL;
+-		req->flags &= ~REQ_F_ASYNC_DATA;
++		req->flags &= ~(REQ_F_ASYNC_DATA|REQ_F_NEED_CLEANUP);
+ 	}
+ }
  
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -125,7 +125,7 @@ static const struct amdgpu_video_codec_i
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 4096, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 8192, 8192, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 4096, 4096, 0)},
- };
+@@ -447,7 +447,6 @@ int io_sendmsg_prep(struct io_kiocb *req
+ static void io_req_msg_cleanup(struct io_kiocb *req,
+ 			       unsigned int issue_flags)
+ {
+-	req->flags &= ~REQ_F_NEED_CLEANUP;
+ 	io_netmsg_recycle(req, issue_flags);
+ }
  
 
 
