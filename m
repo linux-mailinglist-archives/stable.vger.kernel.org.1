@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1E3A70001
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DA6A6FFB1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80B091891593
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 458297A45F6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC502673A4;
-	Tue, 25 Mar 2025 12:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF05429C321;
+	Tue, 25 Mar 2025 12:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlvAMpsh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVtXGGPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C916267392;
-	Tue, 25 Mar 2025 12:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7008626868F;
+	Tue, 25 Mar 2025 12:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905749; cv=none; b=Y/xmv2pQqXTO1j/GkQLKQhhYI19Pw3yTO2x4PWxKgiz6muDDbql7Fgu0FdEuRnT6lLpy1aoLzDhrgAXItFyCC8aWuCqOvxPaISC0myx3+CLuAr+ItwHtzV0wvH4zTObmdlubh+LSrN7RxkvoMofxaeIBBmbgTeDxcIurOO78Eys=
+	t=1742905883; cv=none; b=PFqr52U89LlDEjaWOBjArcombY+WVOAmD8FkxqMLVY77Pb7i+KXcQNhbvPBnFdkT1lOxPVwMSSEwLV/spsNxDC+sF0pQDz7ftG/MaWSSOQDQpg7IFfPm5prsaIdPOmAwNl6luuHroG911htXjSH4YNsKz7tgKE8Ag6rnwCtmo+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905749; c=relaxed/simple;
-	bh=HFOntlfb4cKWP5g6W6Gei/iUWSa3QY4Og9QkoE/v7gI=;
+	s=arc-20240116; t=1742905883; c=relaxed/simple;
+	bh=T/V55C074dibtQyHKKoMPQJshgxliBufofwdgsDY0KQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NmE2FNiq7+snosnIlcA8i9cYZkuzQYZfgh6ZINerILRWNkw81o3lz00KcolxHazLQCW7drR02WwYkP7xLfNPqWHCWcpBewUVr6UYZOAv8c1FDf+G2OLsMv6rO06Cj8ga3XUrfxYmqoZ8nIuVVQM6FZT7TPZXIsTlDbtl+DWfWHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlvAMpsh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A06C4CEE4;
-	Tue, 25 Mar 2025 12:29:08 +0000 (UTC)
+	 MIME-Version; b=VejCl+DFW+7I0u632jK4I9jTMBN61DKN24ihiR/7YXggcdtNSoUiajaunw5+uctwVfMAGZM1cz1vh75fHBI8c8yjOuxUMt18UScxXQn3HB6Klg6bC0zYUABQlOyt/gbiBzdO7VTfRPECbdaspQPoRt1Us+MjMFHI48pHVO+3vzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVtXGGPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24876C4CEE4;
+	Tue, 25 Mar 2025 12:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905749;
-	bh=HFOntlfb4cKWP5g6W6Gei/iUWSa3QY4Og9QkoE/v7gI=;
+	s=korg; t=1742905883;
+	bh=T/V55C074dibtQyHKKoMPQJshgxliBufofwdgsDY0KQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlvAMpshFB7xN+egV+isHEyLkEPvDmbCArccw3d3p36AUB2pfg58MlKaaVcW7cfSK
-	 jSTq2pZbnaqnqnKSvaEt//dWjYrzmhwYmo81TEXvikiDTHDN61AuyJ5tnXwsZKg+tz
-	 zaL5T308sUM5qPDZdc97LjK8KrNn8IHk+0yO9OEE=
+	b=XVtXGGPyVvjDHyqwP8x73IvOsKqA7+z43pB0XcYGeJNSHLlRRNPCzwLnpa949Nr6z
+	 qOjhW0gEz8b77g4RiwcfWB3lh6ETJVS7/2KUl+OYgAvADOEAcW50Vfmu9ZV9jksR8o
+	 vqBkU7POY+0ySX7NFDpXuZBqFgxrg9dX7NdQIqa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florent Revest <revest@chromium.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 112/198] x86/microcode/AMD: Fix out-of-bounds on systems with CPU-less NUMA nodes
-Date: Tue, 25 Mar 2025 08:21:14 -0400
-Message-ID: <20250325122159.591824042@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 017/119] ARM: OMAP1: select CONFIG_GENERIC_IRQ_CHIP
+Date: Tue, 25 Mar 2025 08:21:15 -0400
+Message-ID: <20250325122149.504504185@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florent Revest <revest@chromium.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit e3e89178a9f4a80092578af3ff3c8478f9187d59 upstream.
+[ Upstream commit 98f3ab18a0a55aa1ff2cd6b74bd0c02c8f76f17e ]
 
-Currently, load_microcode_amd() iterates over all NUMA nodes, retrieves their
-CPU masks and unconditionally accesses per-CPU data for the first CPU of each
-mask.
+When GENERIC_IRQ_CHIP is disabled, OMAP1 kernels fail to link:
 
-According to Documentation/admin-guide/mm/numaperf.rst:
+arm-linux-gnueabi-ld: arch/arm/mach-omap1/irq.o: in function `omap1_init_irq':
+irq.c:(.init.text+0x1e8): undefined reference to `irq_alloc_generic_chip'
+arm-linux-gnueabi-ld: irq.c:(.init.text+0x228): undefined reference to `irq_setup_generic_chip'
+arm-linux-gnueabi-ld: irq.c:(.init.text+0x2a8): undefined reference to `irq_gc_set_wake'
+arm-linux-gnueabi-ld: irq.c:(.init.text+0x2b0): undefined reference to `irq_gc_mask_set_bit'
+arm-linux-gnueabi-ld: irq.c:(.init.text+0x2b4): undefined reference to `irq_gc_mask_clr_bit'
 
-  "Some memory may share the same node as a CPU, and others are provided as
-  memory only nodes."
+This has apparently been the case for many years, but I never caught it
+in randconfig builds until now, as there are dozens of other drivers
+that also 'select GENERIC_IRQ_CHIP' and statistically there is almost
+always one of them enabled.
 
-Therefore, some node CPU masks may be empty and wouldn't have a "first CPU".
-
-On a machine with far memory (and therefore CPU-less NUMA nodes):
-- cpumask_of_node(nid) is 0
-- cpumask_first(0) is CONFIG_NR_CPUS
-- cpu_data(CONFIG_NR_CPUS) accesses the cpu_info per-CPU array at an
-  index that is 1 out of bounds
-
-This does not have any security implications since flashing microcode is
-a privileged operation but I believe this has reliability implications by
-potentially corrupting memory while flashing a microcode update.
-
-When booting with CONFIG_UBSAN_BOUNDS=y on an AMD machine that flashes
-a microcode update. I get the following splat:
-
-  UBSAN: array-index-out-of-bounds in arch/x86/kernel/cpu/microcode/amd.c:X:Y
-  index 512 is out of range for type 'unsigned long[512]'
-  [...]
-  Call Trace:
-   dump_stack
-   __ubsan_handle_out_of_bounds
-   load_microcode_amd
-   request_microcode_amd
-   reload_store
-   kernfs_fop_write_iter
-   vfs_write
-   ksys_write
-   do_syscall_64
-   entry_SYSCALL_64_after_hwframe
-
-Change the loop to go over only NUMA nodes which have CPUs before determining
-whether the first CPU on the respective node needs microcode update.
-
-  [ bp: Massage commit message, fix typo. ]
-
-Fixes: 7ff6edf4fef3 ("x86/microcode/AMD: Fix mixed steppings support")
-Signed-off-by: Florent Revest <revest@chromium.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250310144243.861978-1-revest@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 55b447744389 ("ARM: OMAP1: Switch to use generic irqchip in preparation for sparse IRQ")
+Link: https://lore.kernel.org/r/20250205121151.289535-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-omap1/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -867,7 +867,7 @@ static enum ucode_state load_microcode_a
- 		return ret;
- 	}
- 
--	for_each_node(nid) {
-+	for_each_node_with_cpus(nid) {
- 		cpu = cpumask_first(cpumask_of_node(nid));
- 		c = &cpu_data(cpu);
- 
+diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
+index a643b71e30a35..08ec6bd84ada5 100644
+--- a/arch/arm/mach-omap1/Kconfig
++++ b/arch/arm/mach-omap1/Kconfig
+@@ -8,6 +8,7 @@ menuconfig ARCH_OMAP1
+ 	select ARCH_OMAP
+ 	select CLKSRC_MMIO
+ 	select FORCE_PCI if PCCARD
++	select GENERIC_IRQ_CHIP
+ 	select GPIOLIB
+ 	help
+ 	  Support for older TI OMAP1 (omap7xx, omap15xx or omap16xx)
+-- 
+2.39.5
+
 
 
 
