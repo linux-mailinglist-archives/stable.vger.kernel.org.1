@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55653A70106
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7F2A6FFD2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B93AA843F36
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA5D0188E015
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8694525D52C;
-	Tue, 25 Mar 2025 12:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73542676CE;
+	Tue, 25 Mar 2025 12:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmjPIAjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xF1PbTmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4203225B69D;
-	Tue, 25 Mar 2025 12:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6434B259CAD;
+	Tue, 25 Mar 2025 12:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906273; cv=none; b=GrVkArb0T73tCKNv1waMabHeyMV5KkWBn9XxsQGxi2po487HFQAOEF/FFSfmrjXVPL17FGL8WA908bxoI5rmEn24H19SVcYYY94dgqJltTppUg6gd3aX8rr53y5nnuuR3svxJxSUtS/F3FXmPa5iWVf3kv4P5NqW+9EceM9Z8Gw=
+	t=1742905769; cv=none; b=Q/QtglNGV9Az8IIYip8KM3nyo+C8vqsXokcA2wpJEUpEq4cv/YT8okOxfdJvYfdBIr3T6Qb6GUnd0S3EF9fb05OglKdJovMkvr6jwdI8oJJJxx19TVUg883UPghvG1edoLD82PsczyZkJtBW7ZmztaUl4DeUyZPErX8a2vYjfvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906273; c=relaxed/simple;
-	bh=FeNPbcgvfLwXS/uxqolQTIAWVTHM+DkymjRHcwszzSk=;
+	s=arc-20240116; t=1742905769; c=relaxed/simple;
+	bh=Sv2ZImZOgUhO9zzn1bSTr1YMFSmIv9nJPx3Mk2MugDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCWmxs8ghLbc6Qo5YTJ463V2IbES/E14IOnJ0L1k1sxybdbRgIcjC9gm4laJ0VBxL02cgLy4GMzm0ZIk85XFn1/pTv2BTSIAUvU6thfYCnWYEylXQRFsa8lOvnoqL5qHiEy4mUqM1LN6PWZqTT6gSZYsF6QQR6RE6KFufSHZnJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmjPIAjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB516C4CEE4;
-	Tue, 25 Mar 2025 12:37:52 +0000 (UTC)
+	 MIME-Version; b=bsUvtFybj74IYpmHpuj6nHwAJdvv3Opwtz9FQNg4HwCnBTyJHYIlmR7no38X6G3gWUtmDK/oG8DI36IIURdwaXEXdgKFK5UmV/0ghwbC9sXzdZn3pJjN69Z+IIu50FLOBN6SEdymQ9Paz1tHWPVIfqPyaL/lfeFlZX1BItv4HnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xF1PbTmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C7AC4CEED;
+	Tue, 25 Mar 2025 12:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906273;
-	bh=FeNPbcgvfLwXS/uxqolQTIAWVTHM+DkymjRHcwszzSk=;
+	s=korg; t=1742905769;
+	bh=Sv2ZImZOgUhO9zzn1bSTr1YMFSmIv9nJPx3Mk2MugDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmjPIAjMiS97rS/9FkZ8w7G10KTgLl6lIgaRRMcKnizsmvIvtdUEkSipWdnM2uJ+j
-	 1v+NC1fzpur1N2KpCJr4d1PczbcpClGQD7AVhuNLheECFDK1S/yvwE638tofSqFiaT
-	 FiN5wpwaUYhP2sGZFPCUlHVRFmOLl0ww+QNoNGkk=
+	b=xF1PbTmLOkPLQ+IkU/hVtQ3vmP717qi/vkuT48CCvjB75sqYHwD5MY732scpHLH/a
+	 Lwf/mIe7eRiJr6CadT9nDT3pbWvF+4xPDTf0kVs2f6tiaIKhgbluHP1PvbPrZGMhnU
+	 KYjphYkM2xUkW7D9wqfttDR8VebTQ8F6BWuCau5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/116] RDMA/hns: Fix wrong value of max_sge_rd
+Subject: [PATCH 6.1 154/198] ARM: OMAP1: select CONFIG_GENERIC_IRQ_CHIP
 Date: Tue, 25 Mar 2025 08:21:56 -0400
-Message-ID: <20250325122149.959503889@linuxfoundation.org>
+Message-ID: <20250325122200.698321683@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 6b5e41a8b51fce520bb09bd651a29ef495e990de ]
+[ Upstream commit 98f3ab18a0a55aa1ff2cd6b74bd0c02c8f76f17e ]
 
-There is no difference between the sge of READ and non-READ
-operations in hns RoCE. Set max_sge_rd to the same value as
-max_send_sge.
+When GENERIC_IRQ_CHIP is disabled, OMAP1 kernels fail to link:
 
-Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-8-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+arm-linux-gnueabi-ld: arch/arm/mach-omap1/irq.o: in function `omap1_init_irq':
+irq.c:(.init.text+0x1e8): undefined reference to `irq_alloc_generic_chip'
+arm-linux-gnueabi-ld: irq.c:(.init.text+0x228): undefined reference to `irq_setup_generic_chip'
+arm-linux-gnueabi-ld: irq.c:(.init.text+0x2a8): undefined reference to `irq_gc_set_wake'
+arm-linux-gnueabi-ld: irq.c:(.init.text+0x2b0): undefined reference to `irq_gc_mask_set_bit'
+arm-linux-gnueabi-ld: irq.c:(.init.text+0x2b4): undefined reference to `irq_gc_mask_clr_bit'
+
+This has apparently been the case for many years, but I never caught it
+in randconfig builds until now, as there are dozens of other drivers
+that also 'select GENERIC_IRQ_CHIP' and statistically there is almost
+always one of them enabled.
+
+Fixes: 55b447744389 ("ARM: OMAP1: Switch to use generic irqchip in preparation for sparse IRQ")
+Link: https://lore.kernel.org/r/20250205121151.289535-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-omap1/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index ae24c81c9812d..cf89a8db4f64c 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -183,7 +183,7 @@ static int hns_roce_query_device(struct ib_device *ib_dev,
- 				  IB_DEVICE_RC_RNR_NAK_GEN;
- 	props->max_send_sge = hr_dev->caps.max_sq_sg;
- 	props->max_recv_sge = hr_dev->caps.max_rq_sg;
--	props->max_sge_rd = 1;
-+	props->max_sge_rd = hr_dev->caps.max_sq_sg;
- 	props->max_cq = hr_dev->caps.num_cqs;
- 	props->max_cqe = hr_dev->caps.max_cqes;
- 	props->max_mr = hr_dev->caps.num_mtpts;
+diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
+index 7ec7ada287e05..16bf3bed38feb 100644
+--- a/arch/arm/mach-omap1/Kconfig
++++ b/arch/arm/mach-omap1/Kconfig
+@@ -9,6 +9,7 @@ menuconfig ARCH_OMAP1
+ 	select ARCH_OMAP
+ 	select CLKSRC_MMIO
+ 	select FORCE_PCI if PCCARD
++	select GENERIC_IRQ_CHIP
+ 	select GPIOLIB
+ 	help
+ 	  Support for older TI OMAP1 (omap7xx, omap15xx or omap16xx)
 -- 
 2.39.5
 
