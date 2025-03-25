@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-126210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411A9A6FFEA
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E060A700EA
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 000DF1893FB6
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26CF03BDFCC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555D3267704;
-	Tue, 25 Mar 2025 12:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A8326B2B2;
+	Tue, 25 Mar 2025 12:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xc5z8FSZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+U8DYB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13495267700;
-	Tue, 25 Mar 2025 12:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FE026B2AA;
+	Tue, 25 Mar 2025 12:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905804; cv=none; b=K64OCzGTOfiBsQFTLYu0j+M0cmazJ7Levjmcz/Mr5nlR8IOFxeSMBprSKdzPjE05UmIif7AGk1sPfcKWwb5VT/KtHKKsYWSRHc0uVP78ZLfebaV4S4nPIDnavBEplLifyPJ38mZuWWLS2GpFmDRwWNTPNivxsZ9RzE55ULRg7LE=
+	t=1742906249; cv=none; b=e/TGiW+NUKUcvd2BqzflB32OwcvyYo7Oko6bRYFsazWJEoSgOIr9QxSajXyFryosuuE32+YbBJF1FQA4nzNidCO0Scar+K3lQ9wIu/+XPNzvNULnvfVAPz0wgz0FKG9mslfdA91TVBF2O3jG0nGgDXUJn1YWSU9V7arloFXwViM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905804; c=relaxed/simple;
-	bh=6LuDw8RrRA+22cRNRs30JjGt7T04/fUkpPR5yNNCSag=;
+	s=arc-20240116; t=1742906249; c=relaxed/simple;
+	bh=HOEh4NGdZ/HkWXfCJYUs+V2xbWN67cCB+ZtxO/xvak4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZB4SXDhCl0aBJu+ssiEW3p4uWsQFTA0K42aTyt7unfhn2BrS8s9zYueH/yVR5kYAv9lS4Pv8mTZUQI6suU2ODpc5IXF+Dvw7y1aaZ2xfJzpNZa4KEpd4JjRXdJii2Unl17IdHFFen3f38bPOpzQY5ubJx1J23UfkiDxksyoaqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xc5z8FSZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81DDC4CEE4;
-	Tue, 25 Mar 2025 12:30:03 +0000 (UTC)
+	 MIME-Version; b=I3cY6JlVuRL03aQX6R1SczQ+ke5DKWHyls5EBmC3QPfasMgdDLNERAOOYYaRJNfKUqlvmRBu1yAIBIfmLNq/MR2e1tsI6AkY+1EiUQNzjJGlYlBxfMVqM2idTIv13fFtiIHc1sEIZRJYUq38PD0iWHn0gRlPdg9tlOZrv2CBrLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+U8DYB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD2FC4CEE4;
+	Tue, 25 Mar 2025 12:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905803;
-	bh=6LuDw8RrRA+22cRNRs30JjGt7T04/fUkpPR5yNNCSag=;
+	s=korg; t=1742906249;
+	bh=HOEh4NGdZ/HkWXfCJYUs+V2xbWN67cCB+ZtxO/xvak4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xc5z8FSZFJA8OxjcFI7hrjyn479jZBgkerUQZ0FJZM7dDaTTAvJbe3UeJYqwUKAMB
-	 MnjlgKKvXLqAIvtQgD8YzLdSt/oOj9tVkfPSJwYfdLM3++EKJrxLaOINAcb3NwQfPO
-	 4ckFwevuWHcSCH/H/1/eN6w+Gp/cluk6TJUEJV0s=
+	b=w+U8DYB5soK6a/C2mdUWLO7PNVclgpUd0+D0qC9m8Jj7gnEPY/A5jdY0twj7hQg9r
+	 brqJYC9kcchuUOn9tL4mhDND9zK0Z+PbQZ0BMJsSR/zeAEIbM0ZwRIQAPCJ9X2TTG8
+	 NPJBs+eq6teYk4SgDFRp9DzzLri9IQP/r1nz6W+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Steve French <stfrench@microsoft.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/198] smb: client: Fix match_session bug preventing session reuse
+Subject: [PATCH 6.12 017/116] RDMA/mlx5: Handle errors returned from mlx5r_ib_rate()
 Date: Tue, 25 Mar 2025 08:21:44 -0400
-Message-ID: <20250325122200.382209903@linuxfoundation.org>
+Message-ID: <20250325122149.661753749@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit 605b249ea96770ac4fac4b8510a99e0f8442be5e ]
+[ Upstream commit 556f93b90c1872ad85e216e613c0b33803e621cb ]
 
-Fix a bug in match_session() that can causes the session to not be
-reused in some cases.
+In function create_ib_ah() the following line attempts
+to left shift the return value of mlx5r_ib_rate() by 4
+and store it in the stat_rate_sl member of av:
 
-Reproduction steps:
+However the code overlooks the fact that mlx5r_ib_rate()
+may return -EINVAL if the rate passed to it is less than
+IB_RATE_2_5_GBPS or greater than IB_RATE_800_GBPS.
 
-mount.cifs //server/share /mnt/a -o credentials=creds
-mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
+Because of this, the code may invoke undefined behaviour when
+shifting a signed negative value when doing "-EINVAL << 4".
 
-mount.cifs //server/share /mnt/b -o credentials=creds,sec=ntlmssp
-mount.cifs //server/share /mnt/a -o credentials=creds
-cat /proc/fs/cifs/DebugData | grep SessionId | wc -l
+To fix this check for errors before assigning stat_rate_sl and
+propagate any error value to the callers.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: c534ffda781f ("RDMA/mlx5: Fix AH static rate parsing")
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Link: https://patch.msgid.link/20250304140246.205919-1-qasdev00@gmail.com
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/mlx5/ah.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index db30c4b8a2211..01ce81f77e891 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1881,9 +1881,8 @@ cifs_get_tcp_session(struct smb3_fs_context *ctx,
- /* this function must be called with ses_lock and chan_lock held */
- static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+diff --git a/drivers/infiniband/hw/mlx5/ah.c b/drivers/infiniband/hw/mlx5/ah.c
+index 99036afb3aef0..531a57f9ee7e8 100644
+--- a/drivers/infiniband/hw/mlx5/ah.c
++++ b/drivers/infiniband/hw/mlx5/ah.c
+@@ -50,11 +50,12 @@ static __be16 mlx5_ah_get_udp_sport(const struct mlx5_ib_dev *dev,
+ 	return sport;
+ }
+ 
+-static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
++static int create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 			 struct rdma_ah_init_attr *init_attr)
  {
--	if (ctx->sectype != Unspecified &&
--	    ctx->sectype != ses->sectype)
--		return 0;
-+	struct TCP_Server_Info *server = ses->server;
-+	enum securityEnum ctx_sec, ses_sec;
+ 	struct rdma_ah_attr *ah_attr = init_attr->ah_attr;
+ 	enum ib_gid_type gid_type;
++	int rate_val;
  
- 	/*
- 	 * If an existing session is limited to less channels than
-@@ -1892,11 +1891,20 @@ static int match_session(struct cifs_ses *ses, struct smb3_fs_context *ctx)
- 	if (ses->chan_max < ctx->max_channels)
- 		return 0;
+ 	if (rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH) {
+ 		const struct ib_global_route *grh = rdma_ah_read_grh(ah_attr);
+@@ -67,8 +68,10 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 		ah->av.tclass = grh->traffic_class;
+ 	}
  
--	switch (ses->sectype) {
-+	ctx_sec = server->ops->select_sectype(server, ctx->sectype);
-+	ses_sec = server->ops->select_sectype(server, ses->sectype);
+-	ah->av.stat_rate_sl =
+-		(mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
++	rate_val = mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr));
++	if (rate_val < 0)
++		return rate_val;
++	ah->av.stat_rate_sl = rate_val << 4;
+ 
+ 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
+ 		if (init_attr->xmit_slave)
+@@ -89,6 +92,8 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 		ah->av.fl_mlid = rdma_ah_get_path_bits(ah_attr) & 0x7f;
+ 		ah->av.stat_rate_sl |= (rdma_ah_get_sl(ah_attr) & 0xf);
+ 	}
 +
-+	if (ctx_sec != ses_sec)
-+		return 0;
-+
-+	switch (ctx_sec) {
-+	case IAKerb:
- 	case Kerberos:
- 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
- 			return 0;
- 		break;
-+	case NTLMv2:
-+	case RawNTLMSSP:
- 	default:
- 		/* NULL username means anonymous session */
- 		if (ses->user_name == NULL) {
++	return 0;
+ }
+ 
+ int mlx5_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
+@@ -121,8 +126,7 @@ int mlx5_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
+ 			return err;
+ 	}
+ 
+-	create_ib_ah(dev, ah, init_attr);
+-	return 0;
++	return create_ib_ah(dev, ah, init_attr);
+ }
+ 
+ int mlx5_ib_query_ah(struct ib_ah *ibah, struct rdma_ah_attr *ah_attr)
 -- 
 2.39.5
 
