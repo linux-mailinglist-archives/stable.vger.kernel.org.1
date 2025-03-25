@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0956DA6F44A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:35:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF66EA6F457
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:38:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C6BF16B383
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:34:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85FB7164E31
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826A0255E4E;
-	Tue, 25 Mar 2025 11:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582D11EFF95;
+	Tue, 25 Mar 2025 11:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jow2AcZi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvlCMmQG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BB7BA36
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1899619F111
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742902445; cv=none; b=ptZdGHfC5Wh7PGoyty5VTEVQCFBfUIIgDkCNpjh97vhOF0TmA8IeO4a7JS8nasYQpSjnLB1hG1Dq96ioghS1tCeqJsmik6kQnKQb213uO8uurnfc4R9Wx4tSBmcoqbROmKC7+givdWb3k9tC96vTufL6jVoTS1Zylk/xhNWV30Q=
+	t=1742902689; cv=none; b=r9gv4QkNWGVOKabEELxUTKsp7MY5+CkvXgzgNMkZeep/qM6es5kcf3lv/UC2DkkYh5p+g/5sEjk4l6t/8ytuECuQJD6T7iTB8R8+H0CepsXxqx6S372asVDNFX461W4JlrXeOFMGzg2X5MROVUSOmAaQAR8jwfmImls5aH5e5Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742902445; c=relaxed/simple;
-	bh=bGpmSQqlI60wcwSDlp68dJk5D2MjCQnHpMKtf19gHM0=;
+	s=arc-20240116; t=1742902689; c=relaxed/simple;
+	bh=KKII46K1/GjPZGI3U/wkOmZ1hh3Onv0HcF8pZlyqR1E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jP43vYJIibAPnAi4fYRPUc0XsR5CIZTP8BMdOoPc+1kh4tlWKAJ1C1/zomrtAR0JX/yP77D3r17lTLpl6sk1nACVcYPVF7KtJc0mim8QXOaHHzRad9vD3Oa/SSZDdVMXaP6cVWMG/mPH29NCP/SglMeoU1yyYJZeiFiLz+opq00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jow2AcZi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC05CC4CEE4;
-	Tue, 25 Mar 2025 11:34:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HGt6QhNjXmG1/xMB9sXH6/E1mAXEAaYrVuI0RkACZufy/QVuD6zOrJWNz/gD6ed2KS+TUY6S63FaX8tC/zdEMOOFZv9dwhTGY256XFcUZ9LiyvH88wvamKkoEjbYfTgxFeoch1bhNUfE9sEBJbZg3KhKR4FH/uhufbJp9of34Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvlCMmQG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E86C4CEE4;
+	Tue, 25 Mar 2025 11:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742902445;
-	bh=bGpmSQqlI60wcwSDlp68dJk5D2MjCQnHpMKtf19gHM0=;
+	s=k20201202; t=1742902688;
+	bh=KKII46K1/GjPZGI3U/wkOmZ1hh3Onv0HcF8pZlyqR1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jow2AcZi6N7nKuUqgvskc3Hzaqhp/1D1O/HEP8tn2pmDxeXf69XYHI1YifRR4tGIn
-	 KLULRFlSoanU6XnfPL3moA5kgxpDynA6ahbfeOmLwxUGGufrm6guHJpdYrNmcT4pAk
-	 iNLY4kgTO2ZJSiHKYwycsJtISF3wTMtZUZPI3GzVVaMDypAxAs5wUV4Ae4hafUK4io
-	 o64gnB6+PDVgZMI/Xw1u25w5M90wF/54g8FGD6QCIvh0mvC3A1wHNDdyX8ugezsw87
-	 SJcYJb4/vyDOncgEH/WGgru13NPU+BZ0tBcdPzJDP3e1TExTQZ13C46JnQSayN7Pn0
-	 SXXOfGSNKAqkg==
+	b=HvlCMmQGZ2Q7M/xK0vGL9OfqpLIV0oOoZ7OAWvLIiSAiIWzlX7e7tfSJUnlUMFXx/
+	 49t+E7CBaQ+qST0ZpS9gG/+G/q2QhOlYg03oLimPZJbBwayxxbuWcntArVf7q4GGFv
+	 MQQZbwrrEzx0DyoDlUZYweh4l+18N/gCbGh4bVtFJFMTuTdHKrW/YiM7dj8LAhwC7q
+	 tW+gf+MfRXoWLBWVgoLd15PNuojDc+fpeVx2tq5JFGsJSCKHgC2T8SBbu7swZvNCgf
+	 AziTUBN8RBdVxqEpqy74uWQ+/Ggd9G2HUSnUWsAyR2TR7kSW4hYmCnahR+U/7zilhA
+	 osdlpUkUACVNw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com,
+Cc: Kang Wenlin <wenlin.kang@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] libsubcmd: Silence compiler warning
-Date: Tue, 25 Mar 2025 07:34:03 -0400
-Message-Id: <20250324211143-20c5597cf447387f@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y 5/7] binfmt_elf: Use elf_load() for library
+Date: Tue, 25 Mar 2025 07:38:06 -0400
+Message-Id: <20250324222857-fbbfbce71b29a55f@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250324062003.1203741-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20250324071942.2553928-6-wenlin.kang@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,41 +67,42 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 7a4ffec9fd54ea27395e24dff726dbf58e2fe06b
+The upstream commit SHA1 provided is correct: d5ca24f639588811af57ceac513183fa2004bd3a
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: bin.lan.cn@windriver.com
-Commit author: Eder Zulian<ezulian@redhat.com>
+Backport author: Kang Wenlin<wenlin.kang@windriver.com>
+Commit author: Kees Cook<keescook@chromium.org>
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  7a4ffec9fd54e ! 1:  eada5c1cb53ec libsubcmd: Silence compiler warning
+1:  d5ca24f639588 ! 1:  ccf2de90c4543 binfmt_elf: Use elf_load() for library
     @@ Metadata
       ## Commit message ##
-         libsubcmd: Silence compiler warning
+         binfmt_elf: Use elf_load() for library
      
-    +    [ Upstream commit 7a4ffec9fd54ea27395e24dff726dbf58e2fe06b ]
+    +    commit d5ca24f639588811af57ceac513183fa2004bd3a upstream
     +
-         Initialize the pointer 'o' in options__order to NULL to prevent a
-         compiler warning/error which is observed when compiling with the '-Og'
-         option, but is not emitted by the compiler with the current default
-    @@ Commit message
-         Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-         Acked-by: Jiri Olsa <jolsa@kernel.org>
-         Link: https://lore.kernel.org/bpf/20241022172329.3871958-4-ezulian@redhat.com
-    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+         While load_elf_library() is a libc5-ism, we can still replace most of
+         its contents with elf_load() as well, further simplifying the code.
      
-      ## tools/lib/subcmd/parse-options.c ##
-     @@ tools/lib/subcmd/parse-options.c: static int option__cmp(const void *va, const void *vb)
+    @@ Commit message
+         Signed-off-by: Sebastian Ott <sebott@redhat.com>
+         Link: https://lore.kernel.org/r/20230929032435.2391507-4-keescook@chromium.org
+         Signed-off-by: Kees Cook <keescook@chromium.org>
+    +    Signed-off-by: Wenlin Kang <wenlin.kang@windriver.com>
+     
+      ## fs/binfmt_elf.c ##
+     @@ fs/binfmt_elf.c: static int load_elf_library(struct file *file)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
