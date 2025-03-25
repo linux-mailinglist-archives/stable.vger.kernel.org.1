@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-126181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 736BFA7003B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C89A700B0
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91D2189D594
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F8518433E9
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14642673A6;
-	Tue, 25 Mar 2025 12:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFEE2686B1;
+	Tue, 25 Mar 2025 12:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCyovLf1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hWeVrWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F913266595;
-	Tue, 25 Mar 2025 12:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3A31DBB13;
+	Tue, 25 Mar 2025 12:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905751; cv=none; b=MJSF6QP6weu9rpmNLTfBTL/H/uG3YC+COVSRqZcMrA1Gb0gLjuBj0bgCbVCpKW2LabknazSWvoP+mtEmxhzzbticAVxgU31wwgRPCnLb6GOFBHzMl1CJCNjn5a7mUddcZQfizS+yo36RsCHqGb8qQopXGwMw8NPgLnj5YBuwpWo=
+	t=1742905900; cv=none; b=BXOxcXb8wzmh+ZT0TyfH5u0cYmKg45pH+fNWHrt7WLp2tFNuTtP2ffHFwex8YZAce1e7tGasLCorQK6sGWcTAsP/nVvlJlkpjgdHMR8e8xdpO0GDWde3GFc2Q8v7lU6ZeDFe+0zMq0dd6WqdkaP1ZfDvWdxYTbmHIeWwtwc+R6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905751; c=relaxed/simple;
-	bh=s1prWTeFJZKHLrj3GH4Ad1HdY2hjqMHELNYUQM/b81g=;
+	s=arc-20240116; t=1742905900; c=relaxed/simple;
+	bh=/9Cv38kXIz06+8LLFRjUz9Vogg7H215cNutLO4luRHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eh6xNka0nWDJqBoh+zAMzuDVTw1EKVWwGL2tr9rNi+ibM1EBsMXqUJmkR3vPEnz2tNLsITzbVoG5Lq8E7FlVZQdumtkKCjTpLJfAXew1fJAqaaHHv8SlcFRoM4+T9iwXyxvhItEUoY2XphVbqGIKkuc1xReMrlzMQseZ7Ptxurg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCyovLf1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA14C4CEE4;
-	Tue, 25 Mar 2025 12:29:10 +0000 (UTC)
+	 MIME-Version; b=fo3yTdhVGxINC4J7kbfqgd7oquT907ibyZA5Ng68IRL0OiZJgIEQeiQkvqFh8D6kgDvmpM05ViASC+R8tcN7yP+DXWUb+h6uFmW/qULedoWlyPjfM1Nosa7LJ4DFyfCXhSujsFd0ejUHLn4ZAy45WEeh8v+rQIIALqmhWQm/UmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hWeVrWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6C0C4CEE9;
+	Tue, 25 Mar 2025 12:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905751;
-	bh=s1prWTeFJZKHLrj3GH4Ad1HdY2hjqMHELNYUQM/b81g=;
+	s=korg; t=1742905900;
+	bh=/9Cv38kXIz06+8LLFRjUz9Vogg7H215cNutLO4luRHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nCyovLf1PaZvG6HR2BO6m0mEwURtLR9dbHMtXaaVei4HkyZtycKbwKtSEXsgC6wRr
-	 LstvvErhKHawyDstt8mH7vl2xCVm3nyT8gQ21qSoXa9W+dlbOjhfuKS9IA/Laa/baj
-	 oTdWwnBYDpI++02PcfpTiuaxGop8R0VjnrW2P+Mg=
+	b=1hWeVrWMvwk6SGD/s5s8fKORt3ji9F+RF9uBVARbT9fASWaqHjIeJjOnNd9M/zlwH
+	 mQUQA1sOGb2FLrByKVZxc8JZtAXINPIWcRBEi6R2qt07sRSbsIW+SYvkvEoV0H6vRh
+	 5A7ArYn5ZHX+zxYC476itRvOX6umlF/ZPdnTpzzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 103/198] xfs: remove conditional building of rt geometry validator functions
-Date: Tue, 25 Mar 2025 08:21:05 -0400
-Message-ID: <20250325122159.357476765@linuxfoundation.org>
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 008/119] soc: imx8m: Unregister cpufreq and soc dev in cleanup path
+Date: Tue, 25 Mar 2025 08:21:06 -0400
+Message-ID: <20250325122149.273751034@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,172 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 881f78f472556ed05588172d5b5676b48dc48240 ]
+[ Upstream commit cf7139aac463880cbd5c5e999c118fbe91631411 ]
 
-[ 6.1: used 6.6 backport to minimize conflicts ]
+Unregister the cpufreq device and soc device when resource unwinding,
+otherwise there will be warning when do removing test:
+sysfs: cannot create duplicate filename '/devices/platform/imx-cpufreq-dt'
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.13.0-rc1-next-20241204
+Hardware name: NXP i.MX8MPlus EVK board (DT)
 
-[backport: resolve merge conflicts due to refactoring rtbitmap/summary
-macros and accessors]
-
-I mistakenly turned off CONFIG_XFS_RT in the Kconfig file for arm64
-variant of the djwong-wtf git branch.  Unfortunately, it took me a good
-hour to figure out that RT wasn't built because this is what got printed
-to dmesg:
-
-XFS (sda2): realtime geometry sanity check failed
-XFS (sda2): Metadata corruption detected at xfs_sb_read_verify+0x170/0x190 [xfs], xfs_sb block 0x0
-
-Whereas I would have expected:
-
-XFS (sda2): Not built with CONFIG_XFS_RT
-XFS (sda2): RT mount failed
-
-The root cause of these problems is the conditional compilation of the
-new functions xfs_validate_rtextents and xfs_compute_rextslog that I
-introduced in the two commits listed below.  The !RT versions of these
-functions return false and 0, respectively, which causes primary
-superblock validation to fail, which explains the first message.
-
-Move the two functions to other parts of libxfs that are not
-conditionally defined by CONFIG_XFS_RT and remove the broken stubs so
-that validation works again.
-
-Fixes: e14293803f4e ("xfs: don't allow overly small or large realtime volumes")
-Fixes: a6a38f309afc ("xfs: make rextslog computation consistent with mkfs")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9cc832d37799 ("soc: imx8m: Probe the SoC driver as platform driver")
+Cc: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_rtbitmap.c |   14 --------------
- fs/xfs/libxfs/xfs_rtbitmap.h |   16 ----------------
- fs/xfs/libxfs/xfs_sb.c       |   14 ++++++++++++++
- fs/xfs/libxfs/xfs_sb.h       |    2 ++
- fs/xfs/libxfs/xfs_types.h    |   12 ++++++++++++
- fs/xfs/scrub/rtbitmap.c      |    1 +
- 6 files changed, 29 insertions(+), 30 deletions(-)
+ drivers/soc/imx/soc-imx8m.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_rtbitmap.c
-+++ b/fs/xfs/libxfs/xfs_rtbitmap.c
-@@ -1131,17 +1131,3 @@ xfs_rtalloc_extent_is_free(
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index 8ac7658e3d525..3ed8161d7d28b 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -192,9 +192,20 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
+ 	devm_kasprintf((dev), GFP_KERNEL, "%d.%d", ((soc_rev) >> 4) & 0xf, (soc_rev) & 0xf) : \
+ 	"unknown"
+ 
++static void imx8m_unregister_soc(void *data)
++{
++	soc_device_unregister(data);
++}
++
++static void imx8m_unregister_cpufreq(void *data)
++{
++	platform_device_unregister(data);
++}
++
+ static int imx8m_soc_probe(struct platform_device *pdev)
+ {
+ 	struct soc_device_attribute *soc_dev_attr;
++	struct platform_device *cpufreq_dev;
+ 	const struct imx8_soc_data *data;
+ 	struct device *dev = &pdev->dev;
+ 	const struct of_device_id *id;
+@@ -239,11 +250,22 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(soc_dev))
+ 		return PTR_ERR(soc_dev);
+ 
++	ret = devm_add_action(dev, imx8m_unregister_soc, soc_dev);
++	if (ret)
++		return ret;
++
+ 	pr_info("SoC: %s revision %s\n", soc_dev_attr->soc_id,
+ 		soc_dev_attr->revision);
+ 
+-	if (IS_ENABLED(CONFIG_ARM_IMX_CPUFREQ_DT))
+-		platform_device_register_simple("imx-cpufreq-dt", -1, NULL, 0);
++	if (IS_ENABLED(CONFIG_ARM_IMX_CPUFREQ_DT)) {
++		cpufreq_dev = platform_device_register_simple("imx-cpufreq-dt", -1, NULL, 0);
++		if (IS_ERR(cpufreq_dev))
++			return dev_err_probe(dev, PTR_ERR(cpufreq_dev),
++					     "Failed to register imx-cpufreq-dev device\n");
++		ret = devm_add_action(dev, imx8m_unregister_cpufreq, cpufreq_dev);
++		if (ret)
++			return ret;
++	}
+ 
  	return 0;
  }
- 
--/*
-- * Compute the maximum level number of the realtime summary file, as defined by
-- * mkfs.  The historic use of highbit32 on a 64-bit quantity prohibited correct
-- * use of rt volumes with more than 2^32 extents.
-- */
--uint8_t
--xfs_compute_rextslog(
--	xfs_rtbxlen_t		rtextents)
--{
--	if (!rtextents)
--		return 0;
--	return xfs_highbit64(rtextents);
--}
--
---- a/fs/xfs/libxfs/xfs_rtbitmap.h
-+++ b/fs/xfs/libxfs/xfs_rtbitmap.h
-@@ -71,20 +71,6 @@ xfs_rtfree_extent(
- int xfs_rtfree_blocks(struct xfs_trans *tp, xfs_fsblock_t rtbno,
- 		xfs_filblks_t rtlen);
- 
--uint8_t xfs_compute_rextslog(xfs_rtbxlen_t rtextents);
--
--/* Do we support an rt volume having this number of rtextents? */
--static inline bool
--xfs_validate_rtextents(
--	xfs_rtbxlen_t		rtextents)
--{
--	/* No runt rt volumes */
--	if (rtextents == 0)
--		return false;
--
--	return true;
--}
--
- #else /* CONFIG_XFS_RT */
- # define xfs_rtfree_extent(t,b,l)			(-ENOSYS)
- # define xfs_rtfree_blocks(t,rb,rl)			(-ENOSYS)
-@@ -92,8 +78,6 @@ xfs_validate_rtextents(
- # define xfs_rtalloc_query_all(m,t,f,p)			(-ENOSYS)
- # define xfs_rtbuf_get(m,t,b,i,p)			(-ENOSYS)
- # define xfs_rtalloc_extent_is_free(m,t,s,l,i)		(-ENOSYS)
--# define xfs_compute_rextslog(rtx)			(0)
--# define xfs_validate_rtextents(rtx)			(false)
- #endif /* CONFIG_XFS_RT */
- 
- #endif /* __XFS_RTBITMAP_H__ */
---- a/fs/xfs/libxfs/xfs_sb.c
-+++ b/fs/xfs/libxfs/xfs_sb.c
-@@ -1367,3 +1367,17 @@ xfs_validate_stripe_geometry(
- 	}
- 	return true;
- }
-+
-+/*
-+ * Compute the maximum level number of the realtime summary file, as defined by
-+ * mkfs.  The historic use of highbit32 on a 64-bit quantity prohibited correct
-+ * use of rt volumes with more than 2^32 extents.
-+ */
-+uint8_t
-+xfs_compute_rextslog(
-+	xfs_rtbxlen_t		rtextents)
-+{
-+	if (!rtextents)
-+		return 0;
-+	return xfs_highbit64(rtextents);
-+}
---- a/fs/xfs/libxfs/xfs_sb.h
-+++ b/fs/xfs/libxfs/xfs_sb.h
-@@ -38,4 +38,6 @@ extern int	xfs_sb_get_secondary(struct x
- extern bool	xfs_validate_stripe_geometry(struct xfs_mount *mp,
- 		__s64 sunit, __s64 swidth, int sectorsize, bool silent);
- 
-+uint8_t xfs_compute_rextslog(xfs_rtbxlen_t rtextents);
-+
- #endif	/* __XFS_SB_H__ */
---- a/fs/xfs/libxfs/xfs_types.h
-+++ b/fs/xfs/libxfs/xfs_types.h
-@@ -228,4 +228,16 @@ bool xfs_verify_fileoff(struct xfs_mount
- bool xfs_verify_fileext(struct xfs_mount *mp, xfs_fileoff_t off,
- 		xfs_fileoff_t len);
- 
-+/* Do we support an rt volume having this number of rtextents? */
-+static inline bool
-+xfs_validate_rtextents(
-+	xfs_rtbxlen_t		rtextents)
-+{
-+	/* No runt rt volumes */
-+	if (rtextents == 0)
-+		return false;
-+
-+	return true;
-+}
-+
- #endif	/* __XFS_TYPES_H__ */
---- a/fs/xfs/scrub/rtbitmap.c
-+++ b/fs/xfs/scrub/rtbitmap.c
-@@ -14,6 +14,7 @@
- #include "xfs_rtbitmap.h"
- #include "xfs_inode.h"
- #include "xfs_bmap.h"
-+#include "xfs_sb.h"
- #include "scrub/scrub.h"
- #include "scrub/common.h"
- 
+-- 
+2.39.5
+
 
 
 
