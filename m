@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-126199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E046A6FFAC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE8AA701A5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7702175BC1
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B931C189B203
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CF925A352;
-	Tue, 25 Mar 2025 12:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A211C26E16B;
+	Tue, 25 Mar 2025 12:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZdMT+3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBOsaz2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1432E25A323;
-	Tue, 25 Mar 2025 12:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5B125D8F6;
+	Tue, 25 Mar 2025 12:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905784; cv=none; b=BvIF3OU+w+ubA78SGFJ8EJ1UOML1XapR7k8/1WTxISL7FfWxmYz1mfZOdjq/IBIQENZGIeSTDtrEZp08oEHZuZbcSMpPvnhQhy45n5e5ky6SvVa1Of2o12ZzG2VtIhesUp8wGO9bt66VKzn48AMIuf+JPsC8+xB6SRVRgS2Y1ks=
+	t=1742906341; cv=none; b=dHOSi+feEW5IBRKIBYgetRM4LHZa/mALxknPKPms1iRgfKNcxPD37ZSQQhNrx7KukPJgdWjyO6b5pH3gnz/uH06+Z3jaBg5mklG5FxHkFCnLbEBC55IAvdyZpVB9EKJ+Lml0P4THUfB2qwVX2C+hkCf3yHwL1rA1HUcjPAT+HtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905784; c=relaxed/simple;
-	bh=0wXUQbi8WmcrOyYi5g2tk42joW9gS3LNs2aD0zbkMkc=;
+	s=arc-20240116; t=1742906341; c=relaxed/simple;
+	bh=SZYQ2rwkpKu4zHylKGmadWQGLDQUZ43s2vh+ZQdMkX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQid0qInJZrpzB5oX28cZ9vOhA1y4JdEP5sKyhHsd4Ihzzx/IgfEC8GXdd2idK76YZp1Ap7QY/rTFbXvMRqXKV/2d6o7ybUk6rcCYfkFXnaXL08vPNjuVdY5m42CfSG2mU4ui9baMMv8rUtDCPDdNy8p5mxSIARSO0n/zSJBaRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZdMT+3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78D0C4CEE4;
-	Tue, 25 Mar 2025 12:29:43 +0000 (UTC)
+	 MIME-Version; b=aVUTku7LzY90Mq9+TV2hDCi/i/SrK7XSs2mfhknmLXpcPo955jIzMchvZN6qFmvwAiaki700T3jpjXDb2VgfKpup5LzMkfFW3Enw4PrdlEmzY19zV3vsTjMRyzA9Yi8d9qRESwdecDXLJdoviuN0NLzwjmGahOD8qUdv+SCF7yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBOsaz2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F43C4CEF4;
+	Tue, 25 Mar 2025 12:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905783;
-	bh=0wXUQbi8WmcrOyYi5g2tk42joW9gS3LNs2aD0zbkMkc=;
+	s=korg; t=1742906341;
+	bh=SZYQ2rwkpKu4zHylKGmadWQGLDQUZ43s2vh+ZQdMkX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZdMT+3B7eM2VxrNi9F7eT0GQA6Iy1deJarKv0wKIgatYRW9ZA5ISEfu+VdpXZX4o
-	 Kl8aNTRfHPRefOam69x8m4dQh8UU+/uRVFhGZT1rWQuPphoId5ET5f4JOER4nsTB1o
-	 VabnEzF2SaiXJ59RqjXhvl58/Lxhll9bKqph+hxQ=
+	b=IBOsaz2ZjRzBnIEpHo9Aojrpkj5JS9Xd724LPZ8aLuinj1QgVu9jlJPnYB+cwKaum
+	 gYtNbdY/OHlN3BTjAM/A0J8oTnkaopqZhLmC7xLdlN+l+fb8cx143JBvQcw6qJNK5L
+	 4T5Ol+ipGTwcUJWaiguMdNowexGGp6IVUWUNjcqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/198] Bluetooth: Fix error code in chan_alloc_skb_cb()
+Subject: [PATCH 6.12 036/116] net: ethernet: ti: am65-cpsw: Fix NAPI registration sequence
 Date: Tue, 25 Mar 2025 08:22:03 -0400
-Message-ID: <20250325122200.878422396@linuxfoundation.org>
+Message-ID: <20250325122150.132464170@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 
-[ Upstream commit 72d061ee630d0dbb45c2920d8d19b3861c413e54 ]
+[ Upstream commit 5f079290e5913a0060e059500b7d440990ac1066 ]
 
-The chan_alloc_skb_cb() function is supposed to return error pointers on
-error.  Returning NULL will lead to a NULL dereference.
+Registering the interrupts for TX or RX DMA Channels prior to registering
+their respective NAPI callbacks can result in a NULL pointer dereference.
+This is seen in practice as a random occurrence since it depends on the
+randomness associated with the generation of traffic by Linux and the
+reception of traffic from the wire.
 
-Fixes: 6b8d4a6a0314 ("Bluetooth: 6LoWPAN: Use connected oriented channel instead of fixed one")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 681eb2beb3ef ("net: ethernet: ti: am65-cpsw: ensure proper channel cleanup in error path")
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Co-developed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://patch.msgid.link/20250311154259.102865-1-s-vadapalli@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 32 +++++++++++++-----------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 4eb1b3ced0d27..db119071a0ea0 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -825,11 +825,16 @@ static struct sk_buff *chan_alloc_skb_cb(struct l2cap_chan *chan,
- 					 unsigned long hdr_len,
- 					 unsigned long len, int nb)
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 3e090f87f97eb..308a2b72a65de 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2225,14 +2225,18 @@ static void am65_cpsw_nuss_remove_tx_chns(struct am65_cpsw_common *common)
+ static int am65_cpsw_nuss_ndev_add_tx_napi(struct am65_cpsw_common *common)
  {
-+	struct sk_buff *skb;
-+
- 	/* Note that we must allocate using GFP_ATOMIC here as
- 	 * this function is called originally from netdev hard xmit
- 	 * function in atomic context.
- 	 */
--	return bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
-+	skb = bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
-+	if (!skb)
-+		return ERR_PTR(-ENOMEM);
-+	return skb;
- }
+ 	struct device *dev = common->dev;
++	struct am65_cpsw_tx_chn *tx_chn;
+ 	int i, ret = 0;
  
- static void chan_suspend_cb(struct l2cap_chan *chan)
+ 	for (i = 0; i < common->tx_ch_num; i++) {
+-		struct am65_cpsw_tx_chn *tx_chn = &common->tx_chns[i];
++		tx_chn = &common->tx_chns[i];
+ 
+ 		hrtimer_init(&tx_chn->tx_hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_PINNED);
+ 		tx_chn->tx_hrtimer.function = &am65_cpsw_nuss_tx_timer_callback;
+ 
++		netif_napi_add_tx(common->dma_ndev, &tx_chn->napi_tx,
++				  am65_cpsw_nuss_tx_poll);
++
+ 		ret = devm_request_irq(dev, tx_chn->irq,
+ 				       am65_cpsw_nuss_tx_irq,
+ 				       IRQF_TRIGGER_HIGH,
+@@ -2242,19 +2246,16 @@ static int am65_cpsw_nuss_ndev_add_tx_napi(struct am65_cpsw_common *common)
+ 				tx_chn->id, tx_chn->irq, ret);
+ 			goto err;
+ 		}
+-
+-		netif_napi_add_tx(common->dma_ndev, &tx_chn->napi_tx,
+-				  am65_cpsw_nuss_tx_poll);
+ 	}
+ 
+ 	return 0;
+ 
+ err:
+-	for (--i ; i >= 0 ; i--) {
+-		struct am65_cpsw_tx_chn *tx_chn = &common->tx_chns[i];
+-
+-		netif_napi_del(&tx_chn->napi_tx);
++	netif_napi_del(&tx_chn->napi_tx);
++	for (--i; i >= 0; i--) {
++		tx_chn = &common->tx_chns[i];
+ 		devm_free_irq(dev, tx_chn->irq, tx_chn);
++		netif_napi_del(&tx_chn->napi_tx);
+ 	}
+ 
+ 	return ret;
+@@ -2488,6 +2489,9 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
+ 			     HRTIMER_MODE_REL_PINNED);
+ 		flow->rx_hrtimer.function = &am65_cpsw_nuss_rx_timer_callback;
+ 
++		netif_napi_add(common->dma_ndev, &flow->napi_rx,
++			       am65_cpsw_nuss_rx_poll);
++
+ 		ret = devm_request_irq(dev, flow->irq,
+ 				       am65_cpsw_nuss_rx_irq,
+ 				       IRQF_TRIGGER_HIGH,
+@@ -2496,11 +2500,8 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
+ 			dev_err(dev, "failure requesting rx %d irq %u, %d\n",
+ 				i, flow->irq, ret);
+ 			flow->irq = -EINVAL;
+-			goto err_flow;
++			goto err_request_irq;
+ 		}
+-
+-		netif_napi_add(common->dma_ndev, &flow->napi_rx,
+-			       am65_cpsw_nuss_rx_poll);
+ 	}
+ 
+ 	/* setup classifier to route priorities to flows */
+@@ -2508,11 +2509,14 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
+ 
+ 	return 0;
+ 
++err_request_irq:
++	netif_napi_del(&flow->napi_rx);
++
+ err_flow:
+-	for (--i; i >= 0 ; i--) {
++	for (--i; i >= 0; i--) {
+ 		flow = &rx_chn->flows[i];
+-		netif_napi_del(&flow->napi_rx);
+ 		devm_free_irq(dev, flow->irq, flow);
++		netif_napi_del(&flow->napi_rx);
+ 	}
+ 
+ err:
 -- 
 2.39.5
 
