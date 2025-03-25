@@ -1,65 +1,54 @@
-Return-Path: <stable+bounces-126549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A941A70197
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:26:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755AEA70186
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:25:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DA4D841274
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB5A8447E5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6B8270EB4;
-	Tue, 25 Mar 2025 12:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06A42566CC;
+	Tue, 25 Mar 2025 12:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5hSh02n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FviM090t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C1725E444;
-	Tue, 25 Mar 2025 12:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F79725DAEB;
+	Tue, 25 Mar 2025 12:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906431; cv=none; b=owm/wWgC4+p0c7/si4rBAbTWEb+7ehj9sLptDeXU3WCCD/ioAmxPzEpxDvrnuvu8HZQGgd/T419+1Q3IB22ea9+PnXEdKAOja/baEFae0xkVl/UK3ShR5wCfnf+WJ8D6iAwA9snb4Ayp8INE+K5ivBhtwTkK0pBB3tH6Hpq5dFA=
+	t=1742906435; cv=none; b=sUZfjz07jX7bzJGfbOZtMrEebvMkDQ/PC7DjWGCErVPB34Aw26QKD1/HaXdFXzhCnuuOjcpc5qU2cJAw19fSm2n7IxHGE59BTLvTvZJv23BEw7kLe5pXIpJI6BQ1CFUUqMZ1aj0IIrgsJ15bJY1N2L4CiDGPZl/oDCsA4dDIK94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906431; c=relaxed/simple;
-	bh=eqjxK2UXxrUYWn51YSVzOFb4SRHzRoAc5hmnX5Lg5w4=;
+	s=arc-20240116; t=1742906435; c=relaxed/simple;
+	bh=84EhEmbEZP/a26jflbNXZEb1EAkAzbl4a+H6+emxKEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRiVXlZhIctzuL4TWeKxdxg/QiGR7qEghfK8jva3VHYdI0f3a4u+5sS6LUb7RTtp4JX491TGedlSQpQX0HoLQe98geSQq5cuvj1eRLc8Q9dqJgAEG9LACqXol7GI/Zn64JZDh3+eRePVU5eFgkDGlYtHB0bkuJR5bxLKfoIYTXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5hSh02n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63745C4CEE4;
-	Tue, 25 Mar 2025 12:40:31 +0000 (UTC)
+	 MIME-Version; b=suX1IM8+jfbs7khGIxD2Uw/tRAwh/0UVZinUfC9TIcs2vMVX989lps1gCmc2HSYYkfe1ujWsJQUDAdrwVOrXAc48k7IedAEbJaFUFbWpDTE4bM3BzxV7Ii7qWgxWaszjNNHTKcSKUtqfBTFQ8sBh6u2yZ0uvUgqhCKqzWWRvDSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FviM090t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3254EC4CEE4;
+	Tue, 25 Mar 2025 12:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906431;
-	bh=eqjxK2UXxrUYWn51YSVzOFb4SRHzRoAc5hmnX5Lg5w4=;
+	s=korg; t=1742906435;
+	bh=84EhEmbEZP/a26jflbNXZEb1EAkAzbl4a+H6+emxKEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5hSh02nE6M1AusQrk5AmtdLnEyzkMat5T7VJnH3NEYYFlX7w8s5doO1bTbLfyMwB
-	 PfA4pY+kqdPpBI43iDi0n8PWQYy2GMFF2p1i1U6yTaFL9NX29G9bccB7AQchGfh4+t
-	 1c1F8O/2oYNbiwx9X4wARy7e97r/9DGbG+6Idq3Q=
+	b=FviM090tT4xgT0dGQZ3GSlmQUH9HbRe0fA8mZryFf2vvjOFn8dW3h8bGn2kXY8BhB
+	 xGC/qbPWsP3S6nyvy+lVA5/OzYIa5Nwu9TsxhITKCjp+p2n6mG03C6l7fyqgRKC2LJ
+	 FcGVDhpNr6NrONXJqI2dgIynFToT/AnTukPoweEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Kirill A. Shuemov" <kirill.shutemov@linux.intel.com>,
-	Luis Chamberalin <mcgrof@kernel.org>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 115/116] mm/huge_memory: drop beyond-EOF folios with the right number of refs
-Date: Tue, 25 Mar 2025 08:23:22 -0400
-Message-ID: <20250325122152.146866223@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Arthur Mongodin <amongodin@randorisec.fr>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 6.12 116/116] mptcp: Fix data stream corruption in the address announcement
+Date: Tue, 25 Mar 2025 08:23:23 -0400
+Message-ID: <20250325122152.175590397@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
 References: <20250325122149.207086105@linuxfoundation.org>
@@ -78,54 +67,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Arthur Mongodin <amongodin@randorisec.fr>
 
-commit 14efb4793519d73fb2902bb0ece319b886e4b4b9 upstream.
+commit 2c1f97a52cb827a5f2768e67a9dddffae1ed47ab upstream.
 
-When an after-split folio is large and needs to be dropped due to EOF,
-folio_put_refs(folio, folio_nr_pages(folio)) should be used to drop all
-page cache refs.  Otherwise, the folio will not be freed, causing memory
-leak.
+Because of the size restriction in the TCP options space, the MPTCP
+ADD_ADDR option is exclusive and cannot be sent with other MPTCP ones.
+For this reason, in the linked mptcp_out_options structure, group of
+fields linked to different options are part of the same union.
 
-This leak would happen on a filesystem with blocksize > page_size and a
-truncate is performed, where the blocksize makes folios split to >0 order
-ones, causing truncated folios not being freed.
+There is a case where the mptcp_pm_add_addr_signal() function can modify
+opts->addr, but not ended up sending an ADD_ADDR. Later on, back in
+mptcp_established_options, other options will be sent, but with
+unexpected data written in other fields due to the union, e.g. in
+opts->ext_copy. This could lead to a data stream corruption in the next
+packet.
 
-Link: https://lkml.kernel.org/r/20250310155727.472846-1-ziy@nvidia.com
-Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: Hugh Dickins <hughd@google.com>
-Closes: https://lore.kernel.org/all/fcbadb7f-dd3e-21df-f9a7-2853b53183c4@google.com/
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Kirill A. Shuemov <kirill.shutemov@linux.intel.com>
-Cc: Luis Chamberalin <mcgrof@kernel.org>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Pankaj Raghav <p.raghav@samsung.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yang Shi <yang@os.amperecomputing.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Using an intermediate variable, prevents from corrupting previously
+established DSS option. The assignment of the ADD_ADDR option
+parameters is now done once we are sure this ADD_ADDR option can be set
+in the packet, e.g. after having dropped other suboptions.
+
+Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
+Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Arthur Mongodin <amongodin@randorisec.fr>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+[ Matt: the commit message has been updated: long lines splits and some
+  clarifications. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-1-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/options.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3224,7 +3224,7 @@ static void __split_huge_page(struct pag
- 				folio_account_cleaned(tail,
- 					inode_to_wb(folio->mapping->host));
- 			__filemap_remove_folio(tail, NULL);
--			folio_put(tail);
-+			folio_put_refs(tail, folio_nr_pages(tail));
- 		} else if (!PageAnon(page)) {
- 			__xa_store(&folio->mapping->i_pages, head[i].index,
- 					head + i, 0);
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -651,6 +651,7 @@ static bool mptcp_established_options_ad
+ 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
+ 	bool drop_other_suboptions = false;
+ 	unsigned int opt_size = *size;
++	struct mptcp_addr_info addr;
+ 	bool echo;
+ 	int len;
+ 
+@@ -659,7 +660,7 @@ static bool mptcp_established_options_ad
+ 	 */
+ 	if (!mptcp_pm_should_add_signal(msk) ||
+ 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
+-	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &opts->addr,
++	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
+ 		    &echo, &drop_other_suboptions))
+ 		return false;
+ 
+@@ -672,7 +673,7 @@ static bool mptcp_established_options_ad
+ 	else if (opts->suboptions & OPTION_MPTCP_DSS)
+ 		return false;
+ 
+-	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
++	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
+ 	if (remaining < len)
+ 		return false;
+ 
+@@ -689,6 +690,7 @@ static bool mptcp_established_options_ad
+ 		opts->ahmac = 0;
+ 		*size -= opt_size;
+ 	}
++	opts->addr = addr;
+ 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
+ 	if (!echo) {
+ 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ADDADDRTX);
 
 
 
