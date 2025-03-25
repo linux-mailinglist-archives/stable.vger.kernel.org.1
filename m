@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18BB7A70091
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 565D2A6FFF1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 412A5188A4BC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4000E18A0013
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFD2268FF4;
-	Tue, 25 Mar 2025 12:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2AF2676E6;
+	Tue, 25 Mar 2025 12:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQ/4lqvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZS0PGJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6761DD9D3;
-	Tue, 25 Mar 2025 12:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4C8259CAD;
+	Tue, 25 Mar 2025 12:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905980; cv=none; b=HW5Z7doafcsAh+SWM5hVxZCROKdk5sfh9t/0gPznbjiYxk6RgWAn938Pf6+bn0Hs+SFonz3t5yka3iWhvofHZQ2jcAbzm142N32rwRaqgDJ42WAirvqAMqE5FLkcNEG40gJxX4b8j0mlbX7Kd/JT3VYeqrsF1egUS+++6TBe7As=
+	t=1742905795; cv=none; b=I12O89jhoYbiHLPqeD0PRE1tZRqUxjJ6OzaT37CrL5xpirY+nh1xpqNpCsiJeNvD8CWmpzDB/W5DrXt+7to3dRC6kgo0sr3Ik2XbengygmkQld8my87YzdXBmBIPMXiDMsRjFaTnNpXtHrgmKAYoXw1pmov2rMkLQdXCMG/gHaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905980; c=relaxed/simple;
-	bh=VLbOzDZzTPVgfz2E29uPAqj+aYfdM8XGxqbf0rYReuU=;
+	s=arc-20240116; t=1742905795; c=relaxed/simple;
+	bh=6PXrR39ef/iTh6MJoflNf3xSY/Y9fbE0WBZP69Q3HoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t85Jjlmdnb8v5GEb2/n112cnTatwMC/Wweww1jQcavUaBqe0o5UgCMNlFPxVYsiVMWOLkhBabQ+aRbHxW1tMoYv0oVtTPTTeiZa28hztn7xoMdu7qQ1gX4VQFt2NwpJZgdxucSW/egNxIsmouqETORsln1wcFLmsgQqqQjJQ/3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQ/4lqvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ED7C4CEE4;
-	Tue, 25 Mar 2025 12:33:00 +0000 (UTC)
+	 MIME-Version; b=XT2xY38CmwsCuuUrj/IFNvVSZX1yRl/QWYqbAk51YW3MMb/o4wgM9Ge4Bg5HZMmnvyHZouomGeuoSlOdQttPZxnte0pPpzlLMY00+er64T5QYXe72WpbEVfc4npFRK/8c98LKl66NcQWZzgAywPGUkUqhAAwrbwAh4xaq4cCGzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZS0PGJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D258EC4CEE4;
+	Tue, 25 Mar 2025 12:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905980;
-	bh=VLbOzDZzTPVgfz2E29uPAqj+aYfdM8XGxqbf0rYReuU=;
+	s=korg; t=1742905795;
+	bh=6PXrR39ef/iTh6MJoflNf3xSY/Y9fbE0WBZP69Q3HoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQ/4lqvFIN2bTFFU1KPK9zc2OVkgdRmYRxvbpxV1BWxzLOS2xgSAoWJmPxd+vhMnl
-	 ckZn1RntDDrGr4goLMtE3uQ4gi9d7WUpcRR2VgPyuepilqmQri2ICihN7Wk4HJWsG5
-	 YYzS2OiQz2sD40VFkDceQ/OmjJodTaMPqtAp8ZEo=
+	b=CZS0PGJSHzCxD9vAfX67qcm5HSWxk3XDOz796xLRD7kfaj02Tn8xTKJFaxzA/aVgw
+	 ZK1LyQ9tAiz/6dEq7vcWV/b5ECt5wajys+4RIHfdCxjs3OzaXSjbvAmAw2U8FvIneS
+	 vhhUmbonZXLg3+tvXBIaLbqUVeyf83ksjHR6X5H0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.13 070/119] arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card
+	Lin Ma <linma@zju.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 166/198] net/neighbor: add missing policy for NDTPA_QUEUE_LENBYTES
 Date: Tue, 25 Mar 2025 08:22:08 -0400
-Message-ID: <20250325122150.844865379@linuxfoundation.org>
+Message-ID: <20250325122201.003665032@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit 2c1092823eb03f8508d6769e2f38eef7e1fe62a0 upstream.
+[ Upstream commit 90a7138619a0c55e2aefaad27b12ffc2ddbeed78 ]
 
-The simple-audio-card's microphone widget currently connects to the
-headphone jack. Routing the microphone input to the microphone jack
-allows for independent operation of the microphone and headphones.
+Previous commit 8b5c171bb3dc ("neigh: new unresolved queue limits")
+introduces new netlink attribute NDTPA_QUEUE_LENBYTES to represent
+approximative value for deprecated QUEUE_LEN. However, it forgot to add
+the associated nla_policy in nl_ntbl_parm_policy array. Fix it with one
+simple NLA_U32 type policy.
 
-This resolves the following boot-time kernel log message, which
-indicated a conflict when the microphone and headphone functions were
-not separated:
-  debugfs: File 'Headphone Jack' in directory 'dapm' already present!
-
-Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8b5c171bb3dc ("neigh: new unresolved queue limits")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://patch.msgid.link/20250315165113.37600-1-linma@zju.edu.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/neighbour.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
-@@ -16,10 +16,10 @@
- 			"Headphone Jack", "HPOUTR",
- 			"IN2L", "Line In Jack",
- 			"IN2R", "Line In Jack",
--			"Headphone Jack", "MICBIAS",
--			"IN1L", "Headphone Jack";
-+			"Microphone Jack", "MICBIAS",
-+			"IN1L", "Microphone Jack";
- 		simple-audio-card,widgets =
--			"Microphone", "Headphone Jack",
-+			"Microphone", "Microphone Jack",
- 			"Headphone", "Headphone Jack",
- 			"Line", "Line In Jack";
- 
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 2e2c009b5a2db..bcc3950638b91 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -2283,6 +2283,7 @@ static const struct nla_policy nl_neightbl_policy[NDTA_MAX+1] = {
+ static const struct nla_policy nl_ntbl_parm_policy[NDTPA_MAX+1] = {
+ 	[NDTPA_IFINDEX]			= { .type = NLA_U32 },
+ 	[NDTPA_QUEUE_LEN]		= { .type = NLA_U32 },
++	[NDTPA_QUEUE_LENBYTES]		= { .type = NLA_U32 },
+ 	[NDTPA_PROXY_QLEN]		= { .type = NLA_U32 },
+ 	[NDTPA_APP_PROBES]		= { .type = NLA_U32 },
+ 	[NDTPA_UCAST_PROBES]		= { .type = NLA_U32 },
+-- 
+2.39.5
+
 
 
 
