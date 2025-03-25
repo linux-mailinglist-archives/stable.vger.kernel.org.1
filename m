@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-126513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0677A7017A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:25:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB214A6FFE7
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5229819A4C80
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C97D37A6826
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB7226F453;
-	Tue, 25 Mar 2025 12:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CC1269894;
+	Tue, 25 Mar 2025 12:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjvPiwnv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrXGXmsB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC4A25D525;
-	Tue, 25 Mar 2025 12:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24F72571AB;
+	Tue, 25 Mar 2025 12:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906365; cv=none; b=qmPsObeDh8V+ftAb627Z5yBMMB8iGkALT5Q+WpdqaQ54orBiEGi8pyWz9uanSQEPhrZhHORibDtbrfCtHhoUBSa+WEhSBWntQGPFszHviWZNM5DmG3kyUgGyX4Rs9QgigaI3VYK+wkW6z5I4lWpRjrAs1VyAOxT1PKVNzYVtdnU=
+	t=1742906051; cv=none; b=h/6Qgs744feHKn0sc/8I0QGPl44D5Ez08MgWbzIJp9tQAHGQkVCxLQkiRxmxO8w046cfJNPWWnKK7BQ6qsaIKd5xkxsWidJ0I56wrLRwg5SG17ATHAzQCDzDmV2Tso0NScW8//Vbv3hN02fMYMMaRUlhB3nWYjudBU6URqmUsNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906365; c=relaxed/simple;
-	bh=Nmr/wWMsFqfEfKXU9OrY5uhbIXY51NcGKFARWzCq9QI=;
+	s=arc-20240116; t=1742906051; c=relaxed/simple;
+	bh=rjg/uKQ4r4qvQCzKa8WkJGSx1WX3/xJDjlrXNO5Sc4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViFI9w9wtegbP/D2OYeXKupA1BeuSVeDizxZEJrKLxoGDhC8ekMU0HdSRBaj/s/6I+5N2jMFNEzdAbvUT9NHXX5fGT5U1sUD22pAW771Yp5XZtIzaE7JgyR23AUe0TQhvXpENK+vcbMa7PmQ8eUpjK6AQpsI9Ta+bfP4eVCx0ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjvPiwnv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63151C4CEE4;
-	Tue, 25 Mar 2025 12:39:25 +0000 (UTC)
+	 MIME-Version; b=CGEx78j4HHq4IEHPt2XFlgPVgoGnK2sBe4JxVpxcyh2kGIaPUZhecg0kpGt7LPkHvG3+sBJk4Nqs/wAwO+N6l63PdcOu71KXNTANKNQEF+FIs9mPzfp1L/C7XOO7JYyr4FP4kir/QcIj1Z8Yn2qUvnEHrU2vmoBLIlWeqdklruw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrXGXmsB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F019C4CEE4;
+	Tue, 25 Mar 2025 12:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906365;
-	bh=Nmr/wWMsFqfEfKXU9OrY5uhbIXY51NcGKFARWzCq9QI=;
+	s=korg; t=1742906051;
+	bh=rjg/uKQ4r4qvQCzKa8WkJGSx1WX3/xJDjlrXNO5Sc4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjvPiwnvL7W2qqeaIy1ekKy4PSD54Nl0Oq8j+g6drfBLUUQ0R2ZD8bfvB3Zv5xGy9
-	 w3iZGjvjfCgr3MmO00Y1/E1u9mNy3oOfG4g19Rw32EY9W1Pca5FWXtlffatec1Q/Pu
-	 l7p8XPIMokMBTfBzSc0KyXuVJ+T94ewayuJn46fg=
+	b=IrXGXmsBtEzg5wmBUMLnlhXZcCm0LnGS2Nws+gVrrz0uoXeT4HrgSBxY/BIObn56R
+	 hD6dJ+AGr8rYhuGmnbLmesULrTJPrGrbyGvybP9eKIwZB+jA/TwiZKShxmYB2qfFxD
+	 4pId3ti0Me02m1EDPIIz3cu4+bXO7Y1yiDbf7zjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 079/116] memcg: drain obj stock on cpu hotplug teardown
+	Igor Leite Ladessa <igor-ladessa@hotmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.13 108/119] ksmbd: fix incorrect validation for num_aces field of smb_acl
 Date: Tue, 25 Mar 2025 08:22:46 -0400
-Message-ID: <20250325122151.229353306@linuxfoundation.org>
+Message-ID: <20250325122151.812469396@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 9f01b4954490d4ccdbcc2b9be34a9921ceee9cbb upstream.
+commit 1b8b67f3c5e5169535e26efedd3e422172e2db64 upstream.
 
-Currently on cpu hotplug teardown, only memcg stock is drained but we
-need to drain the obj stock as well otherwise we will miss the stats
-accumulated on the target cpu as well as the nr_bytes cached. The stats
-include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
-addition we are leaking reference to struct obj_cgroup object.
+parse_dcal() validate num_aces to allocate posix_ace_state_array.
 
-Link: https://lkml.kernel.org/r/20250310230934.2913113-1-shakeel.butt@linux.dev
-Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
+
+It is an incorrect validation that we can create an array of size ULONG_MAX.
+smb_acl has ->size field to calculate actual number of aces in request buffer
+size. Use this to check invalid num_aces.
+
+Reported-by: Igor Leite Ladessa <igor-ladessa@hotmail.com>
+Tested-by: Igor Leite Ladessa <igor-ladessa@hotmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memcontrol.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/smb/server/smbacl.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1882,9 +1882,18 @@ void drain_all_stock(struct mem_cgroup *
- static int memcg_hotplug_cpu_dead(unsigned int cpu)
- {
- 	struct memcg_stock_pcp *stock;
-+	struct obj_cgroup *old;
-+	unsigned long flags;
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -398,7 +398,9 @@ static void parse_dacl(struct mnt_idmap
+ 	if (num_aces <= 0)
+ 		return;
  
- 	stock = &per_cpu(memcg_stock, cpu);
-+
-+	/* drain_obj_stock requires stock_lock */
-+	local_lock_irqsave(&memcg_stock.stock_lock, flags);
-+	old = drain_obj_stock(stock);
-+	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
-+
- 	drain_stock(stock);
-+	obj_cgroup_put(old);
+-	if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
++	if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
++			(offsetof(struct smb_ace, sid) +
++			 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
+ 		return;
  
- 	return 0;
- }
+ 	ret = init_acl_state(&acl_state, num_aces);
+@@ -432,6 +434,7 @@ static void parse_dacl(struct mnt_idmap
+ 			offsetof(struct smb_sid, sub_auth);
+ 
+ 		if (end_of_acl - acl_base < acl_size ||
++		    ppace[i]->sid.num_subauth == 0 ||
+ 		    ppace[i]->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
+ 		    (end_of_acl - acl_base <
+ 		     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth) ||
 
 
 
