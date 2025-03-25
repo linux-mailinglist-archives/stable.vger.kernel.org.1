@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-126307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E52A70101
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 566B1A700F5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A56B19A20C4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F5C78422E5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DFF267F66;
-	Tue, 25 Mar 2025 12:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFF526B96E;
+	Tue, 25 Mar 2025 12:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feDLn0C5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuX0/F3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F74C1DD9D3;
-	Tue, 25 Mar 2025 12:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A998526B96A;
+	Tue, 25 Mar 2025 12:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905983; cv=none; b=DrKm9fWoOjL5j+w5B4+EwhyLyf7BfjL2dhcXbQJtIR9xwqCX46UKUcnrZrqrGQUQCE4TV3cW1rQ/cKxb3BMdqHLwGwHZcLtx1w/sq5bEhwav33q26s9B7QTXVeA6kZezId1Cw6TDu5UpgTn3Dg9llJ0P5X44HsItt3FI0A4KgTg=
+	t=1742906295; cv=none; b=ENeqREQKxshYoFsIuo6gpqJhBkjxewPOcRfmARM3qVq5+FQgI3Rpa22QoVgrLXYS4dRTm+3bQEiS7YIBznnET+y0PftbDe4q34wCdhGqvq1aqdGsubfhjBxG2leVrJKpeUc0IrjMYwkMRAHT/FcAAQIqqr/AM+uYe5OgUKtWfOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905983; c=relaxed/simple;
-	bh=TyHI5oWYqU4HG7cGcIDZ+G8k/wTL4R0K0ftNplnyDrc=;
+	s=arc-20240116; t=1742906295; c=relaxed/simple;
+	bh=HJX515fAMP2FBc5FiaW35Q6JvYrd8AVOnHdyNcFYZx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GEyWyMrj+8ZPXpq9A3qKYL5/axSKZo6xLxUtD/qL7T1wNxQvvCeOtsYgXfonBHeLzrHkXPssFMQ2hlSSIu7KngzUZuiXFn0zpC8E8axztRtOMQme/YjoEDjdb+XIw0n23Uk/yD7oGneJGuKpq1tmbGWfm7KmqO1OvG86lx18DsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feDLn0C5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57069C4CEE4;
-	Tue, 25 Mar 2025 12:33:02 +0000 (UTC)
+	 MIME-Version; b=gxxk8kTePhmPZ3xehtLXIXa6ytKB1I3EoE43ucVBkM04wr1Z+xCDVDIyteAdx/kB/zKzts35xTQyeTkfzwHVKG0IhRpe2+Yl69WigHpbF9vt886fZfmPkd8EIVvD6CM3q8S6MmdBECXzZ2KuhhsKLyG9J4jkB0PcMsRY9pAUw5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuX0/F3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C97EC4CEE4;
+	Tue, 25 Mar 2025 12:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905982;
-	bh=TyHI5oWYqU4HG7cGcIDZ+G8k/wTL4R0K0ftNplnyDrc=;
+	s=korg; t=1742906295;
+	bh=HJX515fAMP2FBc5FiaW35Q6JvYrd8AVOnHdyNcFYZx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=feDLn0C5nYQFOdc4jd6m17lQ+1/lc+IAZAPCcVGvuV5LzxIY+Gwwgl/VDJ+cXx5Ka
-	 EUYzAYL3Mxkx/WxRa9z8wM23JRKCQOndhD1WlNOjbPrEC69VzuKzP4frDTYFp0DqI1
-	 UjF1To3aujpnN5a+x2bP//Z0KfoAmkO8VwzU41BY=
+	b=nuX0/F3QPhiQkqngPBQWcQdbd4Yj7L+LZCdoe6/gCvs67+rJna+lER5sjlE4KxuMe
+	 Up/gB8pSq3Ay0ifxk9WY0xl8i9iqw+wWOOexE27scXsOxqUJrzpJ5m/rX9i6yUj+Jz
+	 +9I+kcXeYbgkqddcVW3cNxaNGwmcDuARMmPfYItU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.13 071/119] arm64: dts: rockchip: fix pinmux of UART0 for PX30 Ringneck on Haikou
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 042/116] phy: fix xa_alloc_cyclic() error handling
 Date: Tue, 25 Mar 2025 08:22:09 -0400
-Message-ID: <20250325122150.868627821@linuxfoundation.org>
+Message-ID: <20250325122150.280909942@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-commit 2db7d29c7b1629ced3cbab3de242511eb3c22066 upstream.
+[ Upstream commit 3178d2b048365fe2c078cd53f85f2abf1487733b ]
 
-UART0 pinmux by default configures GPIO0_B5 in its UART RTS function for
-UART0. However, by default on Haikou, it is used as GPIO as UART RTS for
-UART5.
+xa_alloc_cyclic() can return 1, which isn't an error. To prevent
+situation when the caller of this function will treat it as no error do
+a check only for negative here.
 
-Therefore, let's update UART0 pinmux to not configure the pin in that
-mode, a later commit will make UART5 request the GPIO pinmux.
-
-Fixes: c484cf93f61b ("arm64: dts: rockchip: add PX30-µQ7 (Ringneck) SoM with Haikou baseboard")
-Cc: stable@vger.kernel.org
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Link: https://lore.kernel.org/r/20250225-ringneck-dtbos-v3-1-853a9a6dd597@cherry.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 384968786909 ("net: phy: Introduce ethernet link topology representation")
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/phy/phy_link_topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
-+++ b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
-@@ -222,6 +222,8 @@
- };
+diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+index 4a5d73002a1a8..0e9e987f37dd8 100644
+--- a/drivers/net/phy/phy_link_topology.c
++++ b/drivers/net/phy/phy_link_topology.c
+@@ -73,7 +73,7 @@ int phy_link_topo_add_phy(struct net_device *dev,
+ 				      xa_limit_32b, &topo->next_phy_index,
+ 				      GFP_KERNEL);
  
- &uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_xfer>;
- 	status = "okay";
- };
+-	if (ret)
++	if (ret < 0)
+ 		goto err;
  
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
