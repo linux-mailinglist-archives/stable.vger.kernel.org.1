@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87687A70162
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:23:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35692A70053
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87B0B19A1541
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05F75188E19F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFEE25DB0B;
-	Tue, 25 Mar 2025 12:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234D925BAAC;
+	Tue, 25 Mar 2025 12:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3v0A5jP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZYWZY3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD99025DB14;
-	Tue, 25 Mar 2025 12:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E4D2561A2;
+	Tue, 25 Mar 2025 12:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906373; cv=none; b=JTmHd5ALeMQCeEndbTNEoYpzmCp+ciZ9+8QjPy7JYxIdLxeULgzzhQdP9mkv8k1O9ubQ5PrREY7ero6h+t5GIXB3i3NZdOZ+45/5y9NOpjNq6GaxEYKvBSwvdQjv8FTWVnBgFd66hX4AOXmIgiZWtCFR7Ssan/mzSdAMgE5Epdg=
+	t=1742906081; cv=none; b=YUaQPu0wxN7dJvQFDKvA02NctDItteb75siZaQ7qHoQ5JR1wdZhe17Anb36lid4Jh9b7YzNy1usdcLKGmE8WbXEXGdrkUUe647so0rvvI5qkx3hU0TzWboUZjJzSyzWBy4EP8bswUuyC5pRAcA1XG8gJvA/mdS5X/niuaBdHsj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906373; c=relaxed/simple;
-	bh=fmvEn8kGrb0ZaFk5xFX9BZA/hC69HAM4Hy4k9Vf7Bnw=;
+	s=arc-20240116; t=1742906081; c=relaxed/simple;
+	bh=9JzOy+m3Rsg0OrOFUyg8CKWd/FjzRwSIBO97LTr4U7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBJtyDAWaYzv2/uuPD5A3yuLO/6uu9xeluV4sq7zDxo4IQkNobUmk/XUiYpaJQ57/nzVrrcx9ZRsb1gpkUgK3vdzkcc9i8POcw+mwkjQaz20ktzbQ2Y6Sxa+2YP8X2BaTaBF5K4brVlVt9Q5W7lFnkDcFm1cl0h1ZBQoFxnXG+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3v0A5jP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E95C4CEE4;
-	Tue, 25 Mar 2025 12:39:32 +0000 (UTC)
+	 MIME-Version; b=ZtLBOi7HF8lgIn/hsKMeIeB5F8ANgaS4CEo3+DcjZEr9ZKTTmmDV0UJx/M/PVVTKKzgNKyll8ovCnvQ7blI1IK84C5ih4UjxWdY5Q415B288ITkamrMGzPnSV3/fH1F7/MnghJIaBJFn4wck/A66MEckYZpICVzl+yPsLTMPdW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZYWZY3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3241FC4CEE4;
+	Tue, 25 Mar 2025 12:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906372;
-	bh=fmvEn8kGrb0ZaFk5xFX9BZA/hC69HAM4Hy4k9Vf7Bnw=;
+	s=korg; t=1742906081;
+	bh=9JzOy+m3Rsg0OrOFUyg8CKWd/FjzRwSIBO97LTr4U7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h3v0A5jPd104VBpLphFvkH/9pNl1lZAzdJSduM0Y2pDknL2NpHISLRl/sxemhYrDW
-	 zdli3CP6Zz7pDMFAhHG1I7NUUQkqiiIHqNn2xGyuYmB9v2wd8ob8Q8+u6OrUs2B3XO
-	 3XLkKclUDFEg79l46LIVaIJ501HA+5mlPYTn0BJI=
+	b=PZYWZY3NYeQjAGScAbUqJEQJgrLOFnP9qWcS/Tc5YzFODHiMe+jnpoUHGF12WjWwj
+	 2QvPFhehsrhpScAIg3q4LD6+SuW65Y167c1Wp43PsCzkXOX3wBU2KrP5nrOKaYbnWI
+	 buBJu9rjs2rn5rOWtsS8Wtl0uoKq6no9prfSJ8l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 065/116] regulator: check that dummy regulator has been probed before using it
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 094/119] drm/radeon: fix uninitialized size issue in radeon_vce_cs_parse()
 Date: Tue, 25 Mar 2025 08:22:32 -0400
-Message-ID: <20250325122150.871559389@linuxfoundation.org>
+Message-ID: <20250325122151.461372282@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 2c7a50bec4958f1d1c84d19cde518d0e96a676fd upstream.
+commit dd8689b52a24807c2d5ce0a17cb26dc87f75235c upstream.
 
-Due to asynchronous driver probing there is a chance that the dummy
-regulator hasn't already been probed when first accessing it.
+On the off chance that command stream passed from userspace via
+ioctl() call to radeon_vce_cs_parse() is weirdly crafted and
+first command to execute is to encode (case 0x03000001), the function
+in question will attempt to call radeon_vce_cs_reloc() with size
+argument that has not been properly initialized. Specifically, 'size'
+will point to 'tmp' variable before the latter had a chance to be
+assigned any value.
 
+Play it safe and init 'tmp' with 0, thus ensuring that
+radeon_vce_cs_reloc() will catch an early error in cases like these.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 2fc5703abda2 ("drm/radeon: check VCE relocation buffer range v3")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2d52de55f9ee7aaee0e09ac443f77855989c6b68)
 Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Link: https://patch.msgid.link/20250313103051.32430-3-ceggers@arri.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/core.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/radeon_vce.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -2024,6 +2024,10 @@ static int regulator_resolve_supply(stru
- 
- 		if (have_full_constraints()) {
- 			r = dummy_regulator_rdev;
-+			if (!r) {
-+				ret = -EPROBE_DEFER;
-+				goto out;
-+			}
- 			get_device(&r->dev);
- 		} else {
- 			dev_err(dev, "Failed to resolve %s-supply for %s\n",
-@@ -2041,6 +2045,10 @@ static int regulator_resolve_supply(stru
- 			goto out;
- 		}
- 		r = dummy_regulator_rdev;
-+		if (!r) {
-+			ret = -EPROBE_DEFER;
-+			goto out;
-+		}
- 		get_device(&r->dev);
- 	}
- 
-@@ -2166,8 +2174,10 @@ struct regulator *_regulator_get_common(
- 			 * enabled, even if it isn't hooked up, and just
- 			 * provide a dummy.
- 			 */
--			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
- 			rdev = dummy_regulator_rdev;
-+			if (!rdev)
-+				return ERR_PTR(-EPROBE_DEFER);
-+			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
- 			get_device(&rdev->dev);
- 			break;
+--- a/drivers/gpu/drm/radeon/radeon_vce.c
++++ b/drivers/gpu/drm/radeon/radeon_vce.c
+@@ -557,7 +557,7 @@ int radeon_vce_cs_parse(struct radeon_cs
+ {
+ 	int session_idx = -1;
+ 	bool destroyed = false, created = false, allocated = false;
+-	uint32_t tmp, handle = 0;
++	uint32_t tmp = 0, handle = 0;
+ 	uint32_t *size = &tmp;
+ 	int i, r = 0;
  
 
 
