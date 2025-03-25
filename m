@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD55A70052
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C4AA700B6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 161A2170DD1
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36C73BCACF
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2923B269CE1;
-	Tue, 25 Mar 2025 12:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980AB2690DB;
+	Tue, 25 Mar 2025 12:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEm9JJWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER8r+q/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FC8269CE6;
-	Tue, 25 Mar 2025 12:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E0D25522E;
+	Tue, 25 Mar 2025 12:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906107; cv=none; b=uG4/afPkYhim1kt93MAFxN4yLa6Z/BieQ+mvn8SIpXb0IjyIWoKqfHUaTKXdzDy7nInoxftTORYMzqPYaKVzhJuECc56ebPC+AdUp82jUCNtpOBPyzNDtVVRR/wPQ/FNadWZPMdpvaM8OxW9ax5YjwB4fElSl7IXC/KHFd8o9g8=
+	t=1742905995; cv=none; b=cr5bXFKWEvJPbjWYtp4eHeR6b0B6F3sTmVU61kn98IYml7uqKS+URSxmsdooow+hdFoImlXOSArVxZhp8xCO5GaU74+YpxlpUKo0GwTmjVytRPnzMW+7wfJq6DhQqFDPM5KkWvbeh8+vC4JSBm9PWo7YrGXQJ6hMkN5niMmePo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906107; c=relaxed/simple;
-	bh=SjpVfmIq8lRSp1ky13lVCE5vZCrtyOkIqE8yI51jC1I=;
+	s=arc-20240116; t=1742905995; c=relaxed/simple;
+	bh=ae7qyvO39Bo1EsWu9VvuJBTrQTfxxU0ggITXaMdgh8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4QL95pusfzXNfU3L5zkjuoHV5xeaGcXaQsh6yogIcJXKml1IcXjuFhc5bytpM++1QoVKNUeefBRcW7wFXSnIvc1Y9KYwM/9Om63DgSzs4hPAxsTpcnAyRx0WPJgtSAe/oGt0GVo/PDXZNi5+mDCRGI/7cSJU7HnTEUg+42geN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEm9JJWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F500C4CEE4;
-	Tue, 25 Mar 2025 12:35:07 +0000 (UTC)
+	 MIME-Version; b=srh+Sm6tIWdK8e3OFyR+viZJSU+rZ4shKtoXdwbTlGwNFlxKtpwkpWyXaykuN2CZLLEO1V9BndecncNAdEzXZazBdy2We10yWsHQFt5DrP81zBbsDtLAP7pbz2gkzZKb9axM4lzQ5CEKNgWrucKTxJ2NT//odZGPeiNtPsr2iYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER8r+q/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2C2C4CEE4;
+	Tue, 25 Mar 2025 12:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906107;
-	bh=SjpVfmIq8lRSp1ky13lVCE5vZCrtyOkIqE8yI51jC1I=;
+	s=korg; t=1742905995;
+	bh=ae7qyvO39Bo1EsWu9VvuJBTrQTfxxU0ggITXaMdgh8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CEm9JJWEKx88BUHSy0wQbM5PAFvUWBcWPDj9IUSIplIo5hNhSLhmy+PnvPoFdrkIV
-	 yDu5pdDAihWP9IPS42KzL5PPHEhHxz/COsE7cry9wXaYviHRwdp38FAANhhTiBYOOO
-	 kPRMCna80Xm6eHXGnmHlzpYi+DbnpH7VL1enu3PE=
+	b=ER8r+q/PZ+j93JSN58pJ+smiJuup3cnGaLNQGhGphdeYmYfh4F54i1ulbryDRmgsd
+	 P7UuYtkIulem3pyQNsRI2HMwOLBuGW7FsMMX/FUKRd8bhcuzi/CK/Tu+/gUgd+asbw
+	 Ah4f47Uvq28639jBw7nIrRCxWCB3jRym7zbkZp+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 19/77] Bluetooth: Fix error code in chan_alloc_skb_cb()
-Date: Tue, 25 Mar 2025 08:22:14 -0400
-Message-ID: <20250325122144.852897881@linuxfoundation.org>
+	Gu Bowen <gubowen5@huawei.com>,
+	Aubin Constans <aubin.constans@microchip.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.13 077/119] mmc: atmel-mci: Add missing clk_disable_unprepare()
+Date: Tue, 25 Mar 2025 08:22:15 -0400
+Message-ID: <20250325122151.025372191@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Gu Bowen <gubowen5@huawei.com>
 
-[ Upstream commit 72d061ee630d0dbb45c2920d8d19b3861c413e54 ]
+commit e51a349d2dcf1df8422dabb90b2f691dc7df6f92 upstream.
 
-The chan_alloc_skb_cb() function is supposed to return error pointers on
-error.  Returning NULL will lead to a NULL dereference.
+The error path when atmci_configure_dma() set dma fails in atmci driver
+does not correctly disable the clock.
+Add the missing clk_disable_unprepare() to the error path for pair with
+clk_prepare_enable().
 
-Fixes: 6b8d4a6a0314 ("Bluetooth: 6LoWPAN: Use connected oriented channel instead of fixed one")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 467e081d23e6 ("mmc: atmel-mci: use probe deferring if dma controller is not ready yet")
+Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+Acked-by: Aubin Constans <aubin.constans@microchip.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225022856.3452240-1-gubowen5@huawei.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/6lowpan.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/mmc/host/atmel-mci.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 3bcc15c9415fc..13b752c169bed 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -825,11 +825,16 @@ static struct sk_buff *chan_alloc_skb_cb(struct l2cap_chan *chan,
- 					 unsigned long hdr_len,
- 					 unsigned long len, int nb)
- {
-+	struct sk_buff *skb;
-+
- 	/* Note that we must allocate using GFP_ATOMIC here as
- 	 * this function is called originally from netdev hard xmit
- 	 * function in atomic context.
- 	 */
--	return bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
-+	skb = bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
-+	if (!skb)
-+		return ERR_PTR(-ENOMEM);
-+	return skb;
- }
- 
- static void chan_suspend_cb(struct l2cap_chan *chan)
--- 
-2.39.5
-
+--- a/drivers/mmc/host/atmel-mci.c
++++ b/drivers/mmc/host/atmel-mci.c
+@@ -2499,8 +2499,10 @@ static int atmci_probe(struct platform_d
+ 	/* Get MCI capabilities and set operations according to it */
+ 	atmci_get_cap(host);
+ 	ret = atmci_configure_dma(host);
+-	if (ret == -EPROBE_DEFER)
++	if (ret == -EPROBE_DEFER) {
++		clk_disable_unprepare(host->mck);
+ 		goto err_dma_probe_defer;
++	}
+ 	if (ret == 0) {
+ 		host->prepare_data = &atmci_prepare_data_dma;
+ 		host->submit_data = &atmci_submit_data_dma;
 
 
 
