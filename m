@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-126329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC0FA700B2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA547A6FFD5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8E423BD4E2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E34A19A14A3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279062580EB;
-	Tue, 25 Mar 2025 12:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1572676C0;
+	Tue, 25 Mar 2025 12:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljcT9KWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSIWSFvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B702571AE;
-	Tue, 25 Mar 2025 12:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5832673B8;
+	Tue, 25 Mar 2025 12:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906022; cv=none; b=tVg+fEtfmEosBvNSDxOT2qE1ouzRhxcDMdvsJuqmwd4Qf4RHhQjV9lOYUzm4q9YB/woTehhxtpRMX0wPOPTBXk4xBWE38rnik+LIZtggzcQDGoMkHGp6zPOR47Pbc/W+scPLAZ9k2uWMQzs4luz+DNbrexCOqp8IUtKHtYW7inQ=
+	t=1742905760; cv=none; b=ICmhwj9OVHYRXCfdMb86UGBgqxIwkRwGyMh3IqPnY0dTh+Y+8CYwUnrQsRaTTvjFoxVZff6avsFDtZkU7LLW3DuxPDF9zCMme/F0hMjptC7q62OR9nsFOc9wVC/K17Nku3tW5/8yxSDfhQlHUFrzHfu0WZAId9OevqMLY06ivLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906022; c=relaxed/simple;
-	bh=0gBmFSO1jYwDbKGh2he7uCd0cb51yWs+kUtYggTTS7o=;
+	s=arc-20240116; t=1742905760; c=relaxed/simple;
+	bh=MYg+8cQBprQm26urVtrcnv0y7yBUhs8XwfbgvZV2Z04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nt3ekaU1GOsErBRjljSC8nYaF/ofHpD0Nzv0L4g300MchNctadAV2+TExDYGKRVbyvOpnWmxp8dVrIdu3PIkYEBkO+pUQkfyJdbgj38hhOS0czc0qhZY+DNMt8ujW/cpu0sB+WhWirgTykDY/2A25WxGheyvQKps/+zb1lPsjBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljcT9KWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30497C4CEE4;
-	Tue, 25 Mar 2025 12:33:42 +0000 (UTC)
+	 MIME-Version; b=U+Ub8mjdjezQZc/dFS6FsQ+YXBWhpwdmRZdrV3xrFL596rFR2lMgqihHVGrIlHPdFIMjT2dIpJ8w3tzcKNsNxX5cMgvqZh26pOtZTbhbfF7PtMrnKXfm7V0LhZ9m0psUL5iTrxprrWipvXV7QGiguIvNF6Nb0OsnAH3ci45YQQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSIWSFvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA52C4CEE4;
+	Tue, 25 Mar 2025 12:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906022;
-	bh=0gBmFSO1jYwDbKGh2he7uCd0cb51yWs+kUtYggTTS7o=;
+	s=korg; t=1742905760;
+	bh=MYg+8cQBprQm26urVtrcnv0y7yBUhs8XwfbgvZV2Z04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljcT9KWKpdeWdUxRK3+BTZc1E5u2i8Q0A5sWsPk7wMGc6kpkV1z7TFIjI6BSoH95F
-	 CwY4GvGnx/w5nswzRYgo6jRa+kqL8f42dtF8+0pbIvcmZA+vF9rXcimXF6idQd5lkk
-	 akQ45YtBupRe1Oqu1vmxHzELWGUqlEBOQ6qIcMTs=
+	b=gSIWSFvvaxpBCrLK5U6DO+/aDf5AP19QPJWqeknFW1rPvHPCaN5O1NWeKcEBx13mM
+	 TZjqvSFtUE+99H7/fu0Ms5N35C/zFE0QHvPD81pkF/QEAOsvIXTuaqZKgkJez5frfF
+	 xINNUd9IIhn0o6V6v5mQcmbJyLrb173WLknLCAO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.13 053/119] tracing: tprobe-events: Fix leakage of module refcount
+	Marek Vasut <marex@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 149/198] soc: imx8m: Remove global soc_uid
 Date: Tue, 25 Mar 2025 08:21:51 -0400
-Message-ID: <20250325122150.408471091@linuxfoundation.org>
+Message-ID: <20250325122200.566836202@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Marek Vasut <marex@denx.de>
 
-commit ac91052f0ae5be9e46211ba92cc31c0e3b0a933a upstream.
+[ Upstream commit 9c1c02fe8d7f33c18547b79c41f3fa41ef7bae8f ]
 
-When enabling the tracepoint at loading module, the target module
-refcount is incremented by find_tracepoint_in_module(). But it is
-unnecessary because the module is not unloaded while processing
-module loading callbacks.
-Moreover, the refcount is not decremented in that function.
-To be clear the module refcount handling, move the try_module_get()
-callsite to trace_fprobe_create_internal(), where it is actually
-required.
+The static global soc_uid is only ever used as kasprintf() parameter in
+imx8m_soc_probe(). Pass pointer to local u64 variable to .soc_revision()
+callback instead and let the .soc_revision() callback fill in the content.
+Remove the unnecessary static global variable.
 
-Link: https://lore.kernel.org/all/174182761071.83274.18334217580449925882.stgit@devnote2/
-
-Fixes: 57a7e6de9e30 ("tracing/fprobe: Support raw tracepoints on future loaded modules")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: cf7139aac463 ("soc: imx8m: Unregister cpufreq and soc dev in cleanup path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_fprobe.c |   21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ drivers/soc/imx/soc-imx8m.c | 31 +++++++++++++++----------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
---- a/kernel/trace/trace_fprobe.c
-+++ b/kernel/trace/trace_fprobe.c
-@@ -889,13 +889,8 @@ static void __find_tracepoint_module_cb(
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index a160854a19178..9587641e0c4f9 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -30,11 +30,9 @@
  
- 	if (!data->tpoint && !strcmp(data->tp_name, tp->name)) {
- 		data->tpoint = tp;
--		if (!data->mod) {
-+		if (!data->mod)
- 			data->mod = mod;
--			if (!try_module_get(data->mod)) {
--				data->tpoint = NULL;
--				data->mod = NULL;
--			}
--		}
- 	}
- }
+ struct imx8_soc_data {
+ 	char *name;
+-	int (*soc_revision)(u32 *socrev);
++	int (*soc_revision)(u32 *socrev, u64 *socuid);
+ };
  
-@@ -907,13 +902,7 @@ static void __find_tracepoint_cb(struct
- 		data->tpoint = tp;
- }
- 
--/*
-- * Find a tracepoint from kernel and module. If the tracepoint is in a module,
-- * this increments the module refcount to prevent unloading until the
-- * trace_fprobe is registered to the list. After registering the trace_fprobe
-- * on the trace_fprobe list, the module refcount is decremented because
-- * tracepoint_probe_module_cb will handle it.
-- */
-+/* Find a tracepoint from kernel and module. */
- static struct tracepoint *find_tracepoint(const char *tp_name,
- 					  struct module **tp_mod)
+-static u64 soc_uid;
+-
+ #ifdef CONFIG_HAVE_ARM_SMCCC
+ static u32 imx8mq_soc_revision_from_atf(void)
  {
-@@ -942,6 +931,7 @@ static void reenable_trace_fprobe(struct
+@@ -51,7 +49,7 @@ static u32 imx8mq_soc_revision_from_atf(void)
+ static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
+ #endif
+ 
+-static int imx8mq_soc_revision(u32 *socrev)
++static int imx8mq_soc_revision(u32 *socrev, u64 *socuid)
+ {
+ 	struct device_node *np;
+ 	void __iomem *ocotp_base;
+@@ -89,9 +87,9 @@ static int imx8mq_soc_revision(u32 *socrev)
+ 			rev = REV_B1;
  	}
+ 
+-	soc_uid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH);
+-	soc_uid <<= 32;
+-	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
++	*socuid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH);
++	*socuid <<= 32;
++	*socuid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
+ 
+ 	*socrev = rev;
+ 
+@@ -109,7 +107,7 @@ static int imx8mq_soc_revision(u32 *socrev)
+ 	return ret;
  }
  
-+/* Find a tracepoint from specified module. */
- static struct tracepoint *find_tracepoint_in_module(struct module *mod,
- 						    const char *tp_name)
+-static int imx8mm_soc_uid(void)
++static int imx8mm_soc_uid(u64 *socuid)
  {
-@@ -1177,6 +1167,11 @@ static int __trace_fprobe_create(int arg
- 	if (is_tracepoint) {
- 		ctx.flags |= TPARG_FL_TPOINT;
- 		tpoint = find_tracepoint(symbol, &tp_mod);
-+		/* lock module until register this tprobe. */
-+		if (tp_mod && !try_module_get(tp_mod)) {
-+			tpoint = NULL;
-+			tp_mod = NULL;
-+		}
- 		if (tpoint) {
- 			ctx.funcname = kallsyms_lookup(
- 				(unsigned long)tpoint->probestub,
+ 	void __iomem *ocotp_base;
+ 	struct device_node *np;
+@@ -136,9 +134,9 @@ static int imx8mm_soc_uid(void)
+ 
+ 	clk_prepare_enable(clk);
+ 
+-	soc_uid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH + offset);
+-	soc_uid <<= 32;
+-	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
++	*socuid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH + offset);
++	*socuid <<= 32;
++	*socuid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
+ 
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
+@@ -151,7 +149,7 @@ static int imx8mm_soc_uid(void)
+ 	return ret;
+ }
+ 
+-static int imx8mm_soc_revision(u32 *socrev)
++static int imx8mm_soc_revision(u32 *socrev, u64 *socuid)
+ {
+ 	struct device_node *np;
+ 	void __iomem *anatop_base;
+@@ -172,7 +170,7 @@ static int imx8mm_soc_revision(u32 *socrev)
+ 	iounmap(anatop_base);
+ 	of_node_put(np);
+ 
+-	return imx8mm_soc_uid();
++	return imx8mm_soc_uid(socuid);
+ 
+ err_iomap:
+ 	of_node_put(np);
+@@ -215,10 +213,11 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
+ static int imx8m_soc_probe(struct platform_device *pdev)
+ {
+ 	struct soc_device_attribute *soc_dev_attr;
+-	struct soc_device *soc_dev;
++	const struct imx8_soc_data *data;
+ 	const struct of_device_id *id;
++	struct soc_device *soc_dev;
+ 	u32 soc_rev = 0;
+-	const struct imx8_soc_data *data;
++	u64 soc_uid = 0;
+ 	int ret;
+ 
+ 	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
+@@ -241,7 +240,7 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+ 	if (data) {
+ 		soc_dev_attr->soc_id = data->name;
+ 		if (data->soc_revision) {
+-			ret = data->soc_revision(&soc_rev);
++			ret = data->soc_revision(&soc_rev, &soc_uid);
+ 			if (ret)
+ 				goto free_soc;
+ 		}
+-- 
+2.39.5
+
 
 
 
