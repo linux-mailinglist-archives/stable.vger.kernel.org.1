@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA77A700A0
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7693FA70164
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:23:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2F6617BB73
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A15C83B9B92
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBE326A086;
-	Tue, 25 Mar 2025 12:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7A1258CC8;
+	Tue, 25 Mar 2025 12:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipJxwQLk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbnJoGjT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9DB1E5B91;
-	Tue, 25 Mar 2025 12:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381D426E15E;
+	Tue, 25 Mar 2025 12:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906135; cv=none; b=Q7DF+2xDN/6N+vcbnKxMvafZmEEPaZfATfC+jp4oYWPHNnoFxcGa47lcZWAKYMJ5OvpL9knqov6/kjbZ3qAibvLN8b1549c/2omrJv/MRdz1ZgM9YBa0bO7/+vji7X6iPI7ui20CEDGtQKrTfQZkK3ld00RO3TmzWU3+curyrSY=
+	t=1742906331; cv=none; b=GKTKh641/JVQl4ZpFG1qaK1TKsC0TXzGGj66nnDoh6aRvSjh/1jHZKXb2j1VEmWHFMUe4BHZTp31UljKbB4CPBNmwHxiVQdEh6NefA/6L7oBJ4rLri2dLN690z1P/KgRL+9swmD5C88vZ9Q1vwl44kcufKYZu9PIORNBFIhATU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906135; c=relaxed/simple;
-	bh=hUBS7C1YerxcnCW7neyhhdhhgXhM6LFK7hRkT2JQJqk=;
+	s=arc-20240116; t=1742906331; c=relaxed/simple;
+	bh=vrHaK+Cr5Rnu3Hg6LBYViEgkTwn1hkoXDwtv4YOQDVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cA0Qq0UMArDnNOkLlp6IXOQy+uu4pNd3rvCnc1p95I1RwR91ATpXjxFYAy8JdLDA2WhdZw5pGJVQSffP9dGdwUKLv11h3MxNXt1yjhUZyq6chgSyBhqhIPgwtRBq6nKMts7G8H14zvapccQyGv8JJg0YZE+KAv4xHTyRpUhKkBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipJxwQLk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAAEC4CEE9;
-	Tue, 25 Mar 2025 12:35:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UP5jrn44LKh4IMyhF8nwMsGScaE7uSRnmPrQ3ptCUgarCf4qZzx3d5t2v7m3tV9XI6j+DXm4lM9REqD+V4G8XYnUgzwkVn4WMr+oCHEqTahfH3lwlUSCVbwBjUOaf3T/Ohibce77OQVGZFSDMjtVjUQi4RLNWtR3icp6kn8ZOpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbnJoGjT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA620C4CEE4;
+	Tue, 25 Mar 2025 12:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906135;
-	bh=hUBS7C1YerxcnCW7neyhhdhhgXhM6LFK7hRkT2JQJqk=;
+	s=korg; t=1742906331;
+	bh=vrHaK+Cr5Rnu3Hg6LBYViEgkTwn1hkoXDwtv4YOQDVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ipJxwQLkEGWwmHydum/9gBZ/FvgSl6NRf0a52CE4y5r1xE9BHl/XdOfLm0NWJkdej
-	 iGZnLYRFpEIBoivdF9TYDipTlZx3sbmJ+4xYpWIAbGPP56AFi5wzc30IqvY4fzYwuR
-	 9H/SimTBLNDkWvL8T3fnqkdaU1jFI+pZZNOsoUro=
+	b=HbnJoGjT80fgnpMu9P4PcYJOfRMgDBlIpD2WB4+XTRxnM/cLTWn2ChAWg9EG6Ckyk
+	 wUu7Nrow3/JkEcjZnX8fdBJibCRJYIatIpquOPaAAioxYbz0xD1LyrQyJJqIdHCSeS
+	 lVp96RV/LdwHxxmT6q76EwllAztdrHfk3yFQ1hlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 32/77] can: flexcan: only change CAN state when link up in system PM
+	Iago Toral Quiroga <itoral@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.12 060/116] drm/v3d: Dont run jobs that have errors flagged in its fence
 Date: Tue, 25 Mar 2025 08:22:27 -0400
-Message-ID: <20250325122145.193629385@linuxfoundation.org>
+Message-ID: <20250325122150.744164311@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +59,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit fd99d6ed20234b83d65b9c5417794343577cf3e5 upstream.
+commit 80cbee810e4e13cdbd3ae9654e9ecddf17f3e828 upstream.
 
-After a suspend/resume cycle on a down interface, it will come up as
-ERROR-ACTIVE.
+The V3D driver still relies on `drm_sched_increase_karma()` and
+`drm_sched_resubmit_jobs()` for resubmissions when a timeout occurs.
+The function `drm_sched_increase_karma()` marks the job as guilty, while
+`drm_sched_resubmit_jobs()` sets an error (-ECANCELED) in the DMA fence of
+that guilty job.
 
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
+Because of this, we must check whether the job’s DMA fence has been
+flagged with an error before executing the job. Otherwise, the same guilty
+job may be resubmitted indefinitely, causing repeated GPU resets.
 
-$ sudo systemctl suspend
+This patch adds a check for an error on the job's fence to prevent running
+a guilty job that was previously flagged when the GPU timed out.
 
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+Note that the CPU and CACHE_CLEAN queues do not require this check, as
+their jobs are executed synchronously once the DRM scheduler starts them.
 
-And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
-has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
-
-Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
-[mkl: add newlines]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
+Fixes: 1584f16ca96e ("drm/v3d: Add support for submitting jobs to the TFU.")
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250313-v3d-gpu-reset-fixes-v4-1-c1e780d8e096@igalia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/flexcan/flexcan-core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/v3d/v3d_sched.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -2251,8 +2251,9 @@ static int __maybe_unused flexcan_suspen
- 		}
- 		netif_stop_queue(dev);
- 		netif_device_detach(dev);
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -319,11 +319,15 @@ v3d_tfu_job_run(struct drm_sched_job *sc
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct dma_fence *fence;
+ 
++	if (unlikely(job->base.base.s_fence->finished.error))
++		return NULL;
 +
-+		priv->can.state = CAN_STATE_SLEEPING;
- 	}
--	priv->can.state = CAN_STATE_SLEEPING;
- 
- 	return 0;
- }
-@@ -2263,7 +2264,6 @@ static int __maybe_unused flexcan_resume
- 	struct flexcan_priv *priv = netdev_priv(dev);
- 	int err;
- 
--	priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	if (netif_running(dev)) {
- 		netif_device_attach(dev);
- 		netif_start_queue(dev);
-@@ -2283,6 +2283,8 @@ static int __maybe_unused flexcan_resume
- 
- 			flexcan_chip_interrupts_enable(dev);
- 		}
++	v3d->tfu_job = job;
 +
-+		priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	}
+ 	fence = v3d_fence_create(v3d, V3D_TFU);
+ 	if (IS_ERR(fence))
+ 		return NULL;
  
- 	return 0;
+-	v3d->tfu_job = job;
+ 	if (job->base.irq_fence)
+ 		dma_fence_put(job->base.irq_fence);
+ 	job->base.irq_fence = dma_fence_get(fence);
+@@ -361,6 +365,9 @@ v3d_csd_job_run(struct drm_sched_job *sc
+ 	struct dma_fence *fence;
+ 	int i, csd_cfg0_reg;
+ 
++	if (unlikely(job->base.base.s_fence->finished.error))
++		return NULL;
++
+ 	v3d->csd_job = job;
+ 
+ 	v3d_invalidate_caches(v3d);
 
 
 
