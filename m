@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-126248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD9CA700D7
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BADDA6FFB3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8661919A1869
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDD3016B544
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22D8267F73;
-	Tue, 25 Mar 2025 12:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E812571DC;
+	Tue, 25 Mar 2025 12:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urCjnU+D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reg/oDfH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81560267F6B;
-	Tue, 25 Mar 2025 12:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8189E267393;
+	Tue, 25 Mar 2025 12:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905874; cv=none; b=hhSsbb6seD8mGMNy6Zh+tM38qwCtphKnt7xubIPgAQM5Pe/V3Vk5+Z3mjDzve/Tpy23wox3EHVXKJUUVE21CmxHJhpxbWeabSwTRDt+2uc8tsP5NPNp+7AMngKuTBLrvwE3D2xheE8+qgkNQeYHPyOZ7WaCYPDlN/F0LgGwfWlg=
+	t=1742905741; cv=none; b=u+/CjDZQxD8ByqlltrgwZcLnV2nNtsfqjZnzN3Q6YB+yHkQCu+yERS26n1jqhqVPfP4q8RB1zCH+Ryqbhpqqjoll9ae+s5QhSNkNNLiV3035eLUOQ3AuE10S26KIM5PMWHKIzvi7Yu0aHNCn9FfuPiZinXzhSP/lobylGZ0i24I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905874; c=relaxed/simple;
-	bh=6mKYwLWOYvr1unuYOcU6EOcPkg4s6JH2cSDHcWWVyE4=;
+	s=arc-20240116; t=1742905741; c=relaxed/simple;
+	bh=5bV5DW8dyxI9O7MKOc9zt/7dYEbC9LBWBB59ZcqRQQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdUAUjkxo8FAeV3sZejAMc8HOCh66DNUWS1w3QxARv0CtdApP7xt0ENQ7TOJoAcQSccge5GWZNe5eDfGw3Jw7XaBDx5CKuFtCFtCZPUNzuPPolAg5ErnWAyZwE6hsZUfxGfs+Mgy8pa64ouR+kWhXfh8UIb6HhPMFST0x2Rg9QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urCjnU+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35221C4CEE4;
-	Tue, 25 Mar 2025 12:31:14 +0000 (UTC)
+	 MIME-Version; b=dV4mbZiapg4MqnhvoYJjI15jdNhtQiVt6PO+4RKX/AQQX/u5/1zDwe+1C9Wsf3LZncbKaWzIqbVDEPlS3VU+tIT1eVw8AKirOlCC2OHfgvueV6VH3eyPPD2C/9Ne4HW2MHphHMy8M+obGztrP5JHnCmRaDtDW4+rU0sWXHTZRu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reg/oDfH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6ECC4CEE4;
+	Tue, 25 Mar 2025 12:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905874;
-	bh=6mKYwLWOYvr1unuYOcU6EOcPkg4s6JH2cSDHcWWVyE4=;
+	s=korg; t=1742905741;
+	bh=5bV5DW8dyxI9O7MKOc9zt/7dYEbC9LBWBB59ZcqRQQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=urCjnU+DVfbjAXFTzpxkVntMJ7zQ2aPAQvab/rQ96UYBP5EGMDibUTl2iRgYahRVS
-	 cbEaLSTEoBUgC6mMNr748H64x8mwb4MLt33RStv6bgmdCVXG1K2306D7zsG/Z4BDa7
-	 sE4Uiaz+glTVmIHck+xzy8bYfb7wFeEYkSpo/EXs=
+	b=reg/oDfHAPPa2begPIx90bvVEG0PKgYisuWaBLCQHY58bzD+MG7uhnAQPP9K7HnHo
+	 EwNP/O3mjinSbwt13CfKWrd9vDEZZxqWFVR2HiII8c8CHa9LuCvGLrLVNkLGum40IC
+	 3F1DNB37U+v47b/pJIsh1+ldFKx+BD9b/P+O7Jds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Elwell <phil@raspberrypi.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 012/119] arm64: dts: bcm2712: PL011 UARTs are actually r1p5
+	Boon Khai Ng <boon.khai.ng@intel.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 108/198] USB: serial: ftdi_sio: add support for Altera USB Blaster 3
 Date: Tue, 25 Mar 2025 08:21:10 -0400
-Message-ID: <20250325122149.374378745@linuxfoundation.org>
+Message-ID: <20250325122159.487989529@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Boon Khai Ng <boon.khai.ng@intel.com>
 
-[ Upstream commit 768953614c1c13fdf771be5742f1be573eea8fa4 ]
+commit 18e0885bd2ca738407036434418a26a58394a60e upstream.
 
-The ARM PL011 UART instances in BCM2712 are r1p5 spec, which means they
-have 32-entry FIFOs. The correct periphid value for this is 0x00341011.
-Thanks to N Buchwitz for pointing this out.
+The Altera USB Blaster 3, available as both a cable and an on-board
+solution, is primarily used for programming and debugging FPGAs.
 
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250223125614.3592-3-wahrenst@gmx.net
-Fixes: faa3381267d0 ("arm64: dts: broadcom: Add minimal support for Raspberry Pi 5")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It interfaces with host software such as Quartus Programmer,
+System Console, SignalTap, and Nios Debugger. The device utilizes
+either an FT2232 or FT4232 chip.
+
+Enabling the support for various configurations of the on-board
+USB Blaster 3 by including the appropriate VID/PID pairs,
+allowing it to function as a serial device via ftdi_sio.
+
+Note that this check-in does not include support for the
+cable solution, as it does not support UART functionality.
+The supported configurations are determined by the
+hardware design and include:
+
+1) PID 0x6022, FT2232, 1 JTAG port (Port A) + Port B as UART
+2) PID 0x6025, FT4232, 1 JTAG port (Port A) + Port C as UART
+3) PID 0x6026, FT4232, 1 JTAG port (Port A) + Port C, D as UART
+4) PID 0x6029, FT4232, 1 JTAG port (Port B) + Port C as UART
+5) PID 0x602a, FT4232, 1 JTAG port (Port B) + Port C, D as UART
+6) PID 0x602c, FT4232, 1 JTAG port (Port A) + Port B as UART
+7) PID 0x602d, FT4232, 1 JTAG port (Port A) + Port B, C as UART
+8) PID 0x602e, FT4232, 1 JTAG port (Port A) + Port B, C, D as UART
+
+These configurations allow for flexibility in how the USB Blaster 3 is
+used, depending on the specific needs of the hardware design.
+
+Signed-off-by: Boon Khai Ng <boon.khai.ng@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/broadcom/bcm2712.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/ftdi_sio.c     |   14 ++++++++++++++
+ drivers/usb/serial/ftdi_sio_ids.h |   13 +++++++++++++
+ 2 files changed, 27 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-index 26a29e5e5078d..447bfa060918c 100644
---- a/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-+++ b/arch/arm64/boot/dts/broadcom/bcm2712.dtsi
-@@ -232,7 +232,7 @@ uart10: serial@7d001000 {
- 			interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&clk_uart>, <&clk_vpu>;
- 			clock-names = "uartclk", "apb_pclk";
--			arm,primecell-periphid = <0x00241011>;
-+			arm,primecell-periphid = <0x00341011>;
- 			status = "disabled";
- 		};
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1079,6 +1079,20 @@ static const struct usb_device_id id_tab
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+ 	/* GMC devices */
+ 	{ USB_DEVICE(GMC_VID, GMC_Z216C_PID) },
++	/* Altera USB Blaster 3 */
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6022_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6025_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6026_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6026_PID, 3) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_6029_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602A_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602A_PID, 3) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602C_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602D_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602D_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 2) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 3) },
+ 	{ }					/* Terminating entry */
+ };
  
--- 
-2.39.5
-
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -1612,3 +1612,16 @@
+  */
+ #define GMC_VID				0x1cd7
+ #define GMC_Z216C_PID			0x0217 /* GMC Z216C Adapter IR-USB */
++
++/*
++ *  Altera USB Blaster 3 (http://www.altera.com).
++ */
++#define ALTERA_VID			0x09fb
++#define ALTERA_UB3_6022_PID		0x6022
++#define ALTERA_UB3_6025_PID		0x6025
++#define ALTERA_UB3_6026_PID		0x6026
++#define ALTERA_UB3_6029_PID		0x6029
++#define ALTERA_UB3_602A_PID		0x602a
++#define ALTERA_UB3_602C_PID		0x602c
++#define ALTERA_UB3_602D_PID		0x602d
++#define ALTERA_UB3_602E_PID		0x602e
 
 
 
