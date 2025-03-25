@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-126305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD6FA700B1
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4CFA70133
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2A74189E99E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D94D6840543
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2D2268FF6;
-	Tue, 25 Mar 2025 12:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B6725D918;
+	Tue, 25 Mar 2025 12:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDSmzpXy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGe4Vp3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB3525B68D;
-	Tue, 25 Mar 2025 12:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4543525D525;
+	Tue, 25 Mar 2025 12:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905979; cv=none; b=n9hmJnJufN62+e2ormuEdLygIh6myYWHPAvtskoVOknf+O2IkZB04MQ8a1tMNKi9V6oA6s7Itsi2ymPVyQfM2sATvKwCs3/AzmjUFuh+r2ZWR2wb5wZRME1NlUH2JK0QTjsLlzEy8E8842c2gT49eZddQZV5huxd4LrSQf2SHB4=
+	t=1742906349; cv=none; b=Q5Tu83HzrmPj1z3YW15ioPwdQwg69mZvrU7x7N/4g1N/cg0YY/iy+tZdbx+sPMY9WPUDmaQOAJ2AE/GsaL1gMjSjlIHf+YP7uZxeKUCJULcxsK9QTpzVH4FI4kqmWOT0R7ZO5pbghbNSiTwR2pfVasPy8YFw/SAsQdxi6FQq9UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905979; c=relaxed/simple;
-	bh=ifYaLnBN53qhqk8v2obPiM+paexPZn1IMWa0NtYimhw=;
+	s=arc-20240116; t=1742906349; c=relaxed/simple;
+	bh=jIGDIWxke1U76KELTLDa1FrZbDpb+6vaZBHxxAihR3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MB7UbBumwkPUKELb2H9YMNegZ0ffRlagqTPJXFZEOHz9mYZGbtuOrLDtwz10mrjAS3cleRDIIkO9fSLcNX7rXVZYrF++7zDQlN8MMIsZMeWGBObuKIobFu9W7Plx/KAKlH57k/tDa48PwGaRkvda6MF/o3/judHgZ1gDuRXO/18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDSmzpXy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FC0C4CEE4;
-	Tue, 25 Mar 2025 12:32:58 +0000 (UTC)
+	 MIME-Version; b=COBYRPLIG+zPZBpoLln5hGYbJ7dtJ7woEKckHjpHL4VTZ7ZD4o5VUujbQVhREmBWmI1dxg16JuQl1PWVWMzEu6InMW17A8mGtiszyBObdx3Q9JI+IYHBIK/pL8LAeX5YShuKZeQQMIX6/UnFRIHv0f2aDPHG8QBPLeBIxCrVGpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGe4Vp3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F50C4CEE4;
+	Tue, 25 Mar 2025 12:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905978;
-	bh=ifYaLnBN53qhqk8v2obPiM+paexPZn1IMWa0NtYimhw=;
+	s=korg; t=1742906349;
+	bh=jIGDIWxke1U76KELTLDa1FrZbDpb+6vaZBHxxAihR3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDSmzpXyPNCYqd/DGysc8/oA7WYrLXiS20UMGfGcH13vLCsUi23KsQ+wNaJK5WXil
-	 BqBOzzYxOrnoXBiLiQsI81Sd/rigddbGidi22CvAXBjBpNS+wuh7wInOPUTtHTcx0a
-	 DqREaFWdT/rWBWapi+FZN4B5qHWE4o0ziQtyo53k=
+	b=DGe4Vp3VEumlog3AHbQUAOm+jbcipZ91iG05+o7MUy2RYc0hn80oDM5TVeDj4mOqN
+	 Qy8oFcI69xGSQbqv09JfYHN3r27UeE5l9B1+RmwjyvQ59OOZooLLMk/andAt8mRGAw
+	 uuojLU0GYgBCg96psu4E8k8sp24fdW4njZNQUFqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.13 069/119] arm64: dts: freescale: imx8mp-verdin-dahlia: add Microphone Jack to sound card
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 040/116] devlink: fix xa_alloc_cyclic() error handling
 Date: Tue, 25 Mar 2025 08:22:07 -0400
-Message-ID: <20250325122150.819779554@linuxfoundation.org>
+Message-ID: <20250325122150.229582583@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-commit b0612fdba9afdce261bfb8684e0cece6f2e2b0bb upstream.
+[ Upstream commit f3b97b7d4bf316c3991e5634c9f4847c2df35478 ]
 
-The simple-audio-card's microphone widget currently connects to the
-headphone jack. Routing the microphone input to the microphone jack
-allows for independent operation of the microphone and headphones.
+In case of returning 1 from xa_alloc_cyclic() (wrapping) ERR_PTR(1) will
+be returned, which will cause IS_ERR() to be false. Which can lead to
+dereference not allocated pointer (rel).
 
-This resolves the following boot-time kernel log message, which
-indicated a conflict when the microphone and headphone functions were
-not separated:
-  debugfs: File 'Headphone Jack' in directory 'dapm' already present!
+Fix it by checking if err is lower than zero.
 
-Fixes: 874958916844 ("arm64: dts: freescale: verdin-imx8mp: dahlia: add sound card")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This wasn't found in real usecase, only noticed. Credit to Pierre.
+
+Fixes: c137743bce02 ("devlink: introduce object and nested devlink relationship infra")
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/devlink/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-@@ -28,10 +28,10 @@
- 			"Headphone Jack", "HPOUTR",
- 			"IN2L", "Line In Jack",
- 			"IN2R", "Line In Jack",
--			"Headphone Jack", "MICBIAS",
--			"IN1L", "Headphone Jack";
-+			"Microphone Jack", "MICBIAS",
-+			"IN1L", "Microphone Jack";
- 		simple-audio-card,widgets =
--			"Microphone", "Headphone Jack",
-+			"Microphone", "Microphone Jack",
- 			"Headphone", "Headphone Jack",
- 			"Line", "Line In Jack";
+diff --git a/net/devlink/core.c b/net/devlink/core.c
+index f49cd83f1955f..7203c39532fcc 100644
+--- a/net/devlink/core.c
++++ b/net/devlink/core.c
+@@ -117,7 +117,7 @@ static struct devlink_rel *devlink_rel_alloc(void)
  
+ 	err = xa_alloc_cyclic(&devlink_rels, &rel->index, rel,
+ 			      xa_limit_32b, &next, GFP_KERNEL);
+-	if (err) {
++	if (err < 0) {
+ 		kfree(rel);
+ 		return ERR_PTR(err);
+ 	}
+-- 
+2.39.5
+
 
 
 
