@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-126243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C346DA70002
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C81FA70119
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F200175EDB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3763019A2B3F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBAC267F5D;
-	Tue, 25 Mar 2025 12:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2734425D553;
+	Tue, 25 Mar 2025 12:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmXADaQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rr8ByTZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49584267F58;
-	Tue, 25 Mar 2025 12:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8474258CC8;
+	Tue, 25 Mar 2025 12:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905865; cv=none; b=PLEhf3brfFi2GR9+d9cDpplfGoPvwMe9hF9ukzcGFQH5B/7o3J2HxbIj56y0fby+V2unHn4FxJYilkfXt/WNCs71XYkwt4SlAAX+hdqrw9w89IfXPvevyQlvLgsPh7f+iYI7s6e6kDE+q0Lnl93yaTWwmx6MJ4QBmLyir/62h3o=
+	t=1742906319; cv=none; b=FLX1i0zTyLqDAH/dMCaR8TaaW70eGYPtyHPnsncVOGXEHRMFsPPphhrgz377ONc/4Ok/vLNTI4BNiHG5W/goI/zyMyTRjB4HycS3w7J6yMSVWRJwmAwQTY6R/ROTclY4dzL4hgNwjVQa56klMTsw2uwt3QNOLi5Ujf8vI7CBMRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905865; c=relaxed/simple;
-	bh=UMp5A7UVm2L92Sif/XKY61wGgxodFD8Ybdihs7KTVM4=;
+	s=arc-20240116; t=1742906319; c=relaxed/simple;
+	bh=o/S+NrM2eI0WThpIzyfkbXOHRQMQvUB25EwvMqJoQZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dusr5eb8w4ysA6zSq3vqnL00ivY94qk7mY7mvX+adG8M4RRjcYkta0VkCBR2EqOV0t+o/EQSYGg1yTcXmursi4akav6tGPn2u/nhB9lQbqfq7YtZoYCMqkQbh9qglKA6eU3FSFWijIaioLdowo9ePECxizg1NToBP9o4DCQfN88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmXADaQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB55C4CEE9;
-	Tue, 25 Mar 2025 12:31:04 +0000 (UTC)
+	 MIME-Version; b=Tw6OhBXXZRTNepp8snNGJ/AS3PzLREN2EGOtV+xcJWBCRGnXuA+usQk+QiiYu1AlkHDWPcFsfj7YY3walBpSDOGZ4bTCr6utbdoFVVO7TnjrZ4Vjue9l4DQRcU0frYHBvRLy36bBqnE//G6WNCYagOHVb9IjpcF9/9i1yx5EqB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rr8ByTZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863A4C4CEE4;
+	Tue, 25 Mar 2025 12:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905865;
-	bh=UMp5A7UVm2L92Sif/XKY61wGgxodFD8Ybdihs7KTVM4=;
+	s=korg; t=1742906319;
+	bh=o/S+NrM2eI0WThpIzyfkbXOHRQMQvUB25EwvMqJoQZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmXADaQLeSR0U98SqOWvnQzNYUKVlY+4SPaktt4bnBJYV3eOKzTDFOAkZHKt5zR2A
-	 GIMrtW6rw1NFLj/3D2Qjo+TwnucXY9eLctmw/WzE+TZ2m1uTXIgpa7lO1E+1xtXCJO
-	 CJESG5FrqNV0UIQmGQEq15mSWD6On5FOVHFrm0R0=
+	b=Rr8ByTZFoRdrRqfLU7DnomRYgYLqx+bfiXwg4DlDle0kPg1V27bsaqzAGVBqNBxSR
+	 VCMl3w+dqQDzBA7uD5ElwjZL3ec2CQzatSizoRVYDGQ/rMy6BIhoZZJ1U83l5mEfZh
+	 sHpAiaIytEEX/msPN0AxBlwVxWSG9vfqq+m7eGN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 178/198] proc: fix UAF in proc_get_inode()
-Date: Tue, 25 Mar 2025 08:22:20 -0400
-Message-ID: <20250325122201.318068991@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 054/116] dt-bindings: can: renesas,rcar-canfd: Fix typo in pattern properties for R-Car V4M
+Date: Tue, 25 Mar 2025 08:22:21 -0400
+Message-ID: <20250325122150.589706293@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,182 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 654b33ada4ab5e926cd9c570196fefa7bec7c1df upstream.
+commit 51f6fc9eb1d77ae5cacc796fc043dedc1f0f0073 upstream.
 
-Fix race between rmmod and /proc/XXX's inode instantiation.
+The Renesas R-Car V4M(R8A779H0) SoC, supports up to four channels.
+Fix the typo 5->4 in pattern properties.
 
-The bug is that pde->proc_ops don't belong to /proc, it belongs to a
-module, therefore dereferencing it after /proc entry has been registered
-is a bug unless use_pde/unuse_pde() pair has been used.
-
-use_pde/unuse_pde can be avoided (2 atomic ops!) because pde->proc_ops
-never changes so information necessary for inode instantiation can be
-saved _before_ proc_register() in PDE itself and used later, avoiding
-pde->proc_ops->...  dereference.
-
-      rmmod                         lookup
-sys_delete_module
-                         proc_lookup_de
-			   pde_get(de);
-			   proc_get_inode(dir->i_sb, de);
-  mod->exit()
-    proc_remove
-      remove_proc_subtree
-       proc_entry_rundown(de);
-  free_module(mod);
-
-                               if (S_ISREG(inode->i_mode))
-	                         if (de->proc_ops->proc_read_iter)
-                           --> As module is already freed, will trigger UAF
-
-BUG: unable to handle page fault for address: fffffbfff80a702b
-PGD 817fc4067 P4D 817fc4067 PUD 817fc0067 PMD 102ef4067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 26 UID: 0 PID: 2667 Comm: ls Tainted: G
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-RIP: 0010:proc_get_inode+0x302/0x6e0
-RSP: 0018:ffff88811c837998 EFLAGS: 00010a06
-RAX: dffffc0000000000 RBX: ffffffffc0538140 RCX: 0000000000000007
-RDX: 1ffffffff80a702b RSI: 0000000000000001 RDI: ffffffffc0538158
-RBP: ffff8881299a6000 R08: 0000000067bbe1e5 R09: 1ffff11023906f20
-R10: ffffffffb560ca07 R11: ffffffffb2b43a58 R12: ffff888105bb78f0
-R13: ffff888100518048 R14: ffff8881299a6004 R15: 0000000000000001
-FS:  00007f95b9686840(0000) GS:ffff8883af100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: fffffbfff80a702b CR3: 0000000117dd2000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- proc_lookup_de+0x11f/0x2e0
- __lookup_slow+0x188/0x350
- walk_component+0x2ab/0x4f0
- path_lookupat+0x120/0x660
- filename_lookup+0x1ce/0x560
- vfs_statx+0xac/0x150
- __do_sys_newstat+0x96/0x110
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-[adobriyan@gmail.com: don't do 2 atomic ops on the common path]
-Link: https://lkml.kernel.org/r/3d25ded0-1739-447e-812b-e34da7990dcf@p183
-Fixes: 778f3dd5a13c ("Fix procfs compat_ioctl regression")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ced52c6ed257 ("dt-bindings: can: renesas,rcar-canfd: Document R-Car V4M support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: "Rob Herring (Arm)" <robh@kernel.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20250307170330.173425-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/generic.c       |   10 +++++++++-
- fs/proc/inode.c         |    6 +++---
- fs/proc/internal.h      |   14 ++++++++++++++
- include/linux/proc_fs.h |    7 +++++--
- 4 files changed, 31 insertions(+), 6 deletions(-)
+ .../devicetree/bindings/net/can/renesas,rcar-canfd.yaml         | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -558,10 +558,16 @@ struct proc_dir_entry *proc_create_reg(c
- 	return p;
- }
- 
--static inline void pde_set_flags(struct proc_dir_entry *pde)
-+static void pde_set_flags(struct proc_dir_entry *pde)
- {
- 	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
- 		pde->flags |= PROC_ENTRY_PERMANENT;
-+	if (pde->proc_ops->proc_read_iter)
-+		pde->flags |= PROC_ENTRY_proc_read_iter;
-+#ifdef CONFIG_COMPAT
-+	if (pde->proc_ops->proc_compat_ioctl)
-+		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-+#endif
- }
- 
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
-@@ -625,6 +631,7 @@ struct proc_dir_entry *proc_create_seq_p
- 	p->proc_ops = &proc_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_seq_private);
-@@ -655,6 +662,7 @@ struct proc_dir_entry *proc_create_singl
- 		return NULL;
- 	p->proc_ops = &proc_single_ops;
- 	p->single_show = show;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_single_data);
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -679,13 +679,13 @@ struct inode *proc_get_inode(struct supe
- 
- 	if (S_ISREG(inode->i_mode)) {
- 		inode->i_op = de->proc_iops;
--		if (de->proc_ops->proc_read_iter)
-+		if (pde_has_proc_read_iter(de))
- 			inode->i_fop = &proc_iter_file_ops;
- 		else
- 			inode->i_fop = &proc_reg_file_ops;
- #ifdef CONFIG_COMPAT
--		if (de->proc_ops->proc_compat_ioctl) {
--			if (de->proc_ops->proc_read_iter)
-+		if (pde_has_proc_compat_ioctl(de)) {
-+			if (pde_has_proc_read_iter(de))
- 				inode->i_fop = &proc_iter_file_ops_compat;
- 			else
- 				inode->i_fop = &proc_reg_file_ops_compat;
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -84,6 +84,20 @@ static inline void pde_make_permanent(st
- 	pde->flags |= PROC_ENTRY_PERMANENT;
- }
- 
-+static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_proc_read_iter;
-+}
-+
-+static inline bool pde_has_proc_compat_ioctl(const struct proc_dir_entry *pde)
-+{
-+#ifdef CONFIG_COMPAT
-+	return pde->flags & PROC_ENTRY_proc_compat_ioctl;
-+#else
-+	return false;
-+#endif
-+}
-+
- extern struct kmem_cache *proc_dir_entry_cache;
- void pde_free(struct proc_dir_entry *pde);
- 
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -20,10 +20,13 @@ enum {
- 	 * If in doubt, ignore this flag.
- 	 */
- #ifdef MODULE
--	PROC_ENTRY_PERMANENT = 0U,
-+	PROC_ENTRY_PERMANENT		= 0U,
- #else
--	PROC_ENTRY_PERMANENT = 1U << 0,
-+	PROC_ENTRY_PERMANENT		= 1U << 0,
- #endif
-+
-+	PROC_ENTRY_proc_read_iter	= 1U << 1,
-+	PROC_ENTRY_proc_compat_ioctl	= 1U << 2,
- };
- 
- struct proc_ops {
+diff --git a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+index 7c5ac5d2e880..f6884f6e59e7 100644
+--- a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
++++ b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+@@ -170,7 +170,7 @@ allOf:
+             const: renesas,r8a779h0-canfd
+     then:
+       patternProperties:
+-        "^channel[5-7]$": false
++        "^channel[4-7]$": false
+     else:
+       if:
+         not:
+-- 
+2.49.0
+
 
 
 
