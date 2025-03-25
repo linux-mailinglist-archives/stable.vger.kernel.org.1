@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-126261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97068A70046
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 736BFA7003B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA30184337F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91D2189D594
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936B92686AA;
-	Tue, 25 Mar 2025 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14642673A6;
+	Tue, 25 Mar 2025 12:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uh4SNmZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCyovLf1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A10268698;
-	Tue, 25 Mar 2025 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F913266595;
+	Tue, 25 Mar 2025 12:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905898; cv=none; b=ULiowoUVm75t5W7B41MGcurrq3qpMPNLHTcVeer7UZqi3NFvZsi3NEGUsVrpiFTn3PKKkTOG6/8baSlUf7GTZ0O1kftO/UKtX/cIN7S/aaV2i6WpqQ733RircPGjY8jmbcFP1w5ASog3aH9ercnr9/QlsGSPZHXMQo6AJHEGL94=
+	t=1742905751; cv=none; b=MJSF6QP6weu9rpmNLTfBTL/H/uG3YC+COVSRqZcMrA1Gb0gLjuBj0bgCbVCpKW2LabknazSWvoP+mtEmxhzzbticAVxgU31wwgRPCnLb6GOFBHzMl1CJCNjn5a7mUddcZQfizS+yo36RsCHqGb8qQopXGwMw8NPgLnj5YBuwpWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905898; c=relaxed/simple;
-	bh=ygRgEea2J/kyF+wldbSVjAjPh+ipQtjFuFF9pe40jx0=;
+	s=arc-20240116; t=1742905751; c=relaxed/simple;
+	bh=s1prWTeFJZKHLrj3GH4Ad1HdY2hjqMHELNYUQM/b81g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CR/f45ddT5hxkOD2wdcf4MAse7sTD61zh9t9/N1aAoNe/izXpFvCQ4vJ0yd+WltrdOXw9/eCcsS5Xcs4hzvMkg1vJrnerjECZRY/6nWrsO+Bl0eLgS6LMQ5Jode7NmBs0kRJ3WIPv+47PWu2bxwTbZSKVcKWYhduz7yFui2yrHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uh4SNmZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F230AC4CEE4;
-	Tue, 25 Mar 2025 12:31:37 +0000 (UTC)
+	 MIME-Version; b=Eh6xNka0nWDJqBoh+zAMzuDVTw1EKVWwGL2tr9rNi+ibM1EBsMXqUJmkR3vPEnz2tNLsITzbVoG5Lq8E7FlVZQdumtkKCjTpLJfAXew1fJAqaaHHv8SlcFRoM4+T9iwXyxvhItEUoY2XphVbqGIKkuc1xReMrlzMQseZ7Ptxurg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCyovLf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA14C4CEE4;
+	Tue, 25 Mar 2025 12:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905898;
-	bh=ygRgEea2J/kyF+wldbSVjAjPh+ipQtjFuFF9pe40jx0=;
+	s=korg; t=1742905751;
+	bh=s1prWTeFJZKHLrj3GH4Ad1HdY2hjqMHELNYUQM/b81g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uh4SNmZbasW2LVn2V6g3LSHGjnoi7oN3UHR3WIea3nf/QatysLz4bRAyW03TneEOw
-	 1Svn2XVR/yKtiQ/7t04y7f7rYQQcnvVUK4OrhrlOdvf+bmFzeUwvP7AlqKDeDv8yKX
-	 LRvXdfDNyzb+pl0ZjxQ7EtvIPtL86EVBjkg62QxM=
+	b=nCyovLf1PaZvG6HR2BO6m0mEwURtLR9dbHMtXaaVei4HkyZtycKbwKtSEXsgC6wRr
+	 LstvvErhKHawyDstt8mH7vl2xCVm3nyT8gQ21qSoXa9W+dlbOjhfuKS9IA/Laa/baj
+	 oTdWwnBYDpI++02PcfpTiuaxGop8R0VjnrW2P+Mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 007/119] xfrm_output: Force software GSO only in tunnel mode
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 103/198] xfs: remove conditional building of rt geometry validator functions
 Date: Tue, 25 Mar 2025 08:21:05 -0400
-Message-ID: <20250325122149.247640515@linuxfoundation.org>
+Message-ID: <20250325122159.357476765@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 0aae2867aa6067f73d066bc98385e23c8454a1d7 ]
+[ Upstream commit 881f78f472556ed05588172d5b5676b48dc48240 ]
 
-The cited commit fixed a software GSO bug with VXLAN + IPSec in tunnel
-mode. Unfortunately, it is slightly broader than necessary, as it also
-severely affects performance for Geneve + IPSec transport mode over a
-device capable of both HW GSO and IPSec crypto offload. In this case,
-xfrm_output unnecessarily triggers software GSO instead of letting the
-HW do it. In simple iperf3 tests over Geneve + IPSec transport mode over
-a back-2-back pair of NICs with MTU 1500, the performance was observed
-to be up to 6x worse when doing software GSO compared to leaving it to
-the hardware.
+[ 6.1: used 6.6 backport to minimize conflicts ]
 
-This commit makes xfrm_output only trigger software GSO in crypto
-offload cases for already encapsulated packets in tunnel mode, as not
-doing so would then cause the inner tunnel skb->inner_networking_header
-to be overwritten and break software GSO for that packet later if the
-device turns out to not be capable of HW GSO.
+[backport: resolve merge conflicts due to refactoring rtbitmap/summary
+macros and accessors]
 
-Taking a closer look at the conditions for the original bug, to better
-understand the reasons for this change:
-- vxlan_build_skb -> iptunnel_handle_offloads sets inner_protocol and
-  inner network header.
-- then, udp_tunnel_xmit_skb -> ip_tunnel_xmit adds outer transport and
-  network headers.
-- later in the xmit path, xfrm_output -> xfrm_outer_mode_output ->
-  xfrm4_prepare_output -> xfrm4_tunnel_encap_add overwrites the inner
-  network header with the one set in ip_tunnel_xmit before adding the
-  second outer header.
-- __dev_queue_xmit -> validate_xmit_skb checks whether GSO segmentation
-  needs to happen based on dev features. In the original bug, the hw
-  couldn't segment the packets, so skb_gso_segment was invoked.
-- deep in the .gso_segment callback machinery, __skb_udp_tunnel_segment
-  tries to use the wrong inner network header, expecting the one set in
-  iptunnel_handle_offloads but getting the one set by xfrm instead.
-- a bit later, ipv6_gso_segment accesses the wrong memory based on that
-  wrong inner network header.
+I mistakenly turned off CONFIG_XFS_RT in the Kconfig file for arm64
+variant of the djwong-wtf git branch.  Unfortunately, it took me a good
+hour to figure out that RT wasn't built because this is what got printed
+to dmesg:
 
-With the new change, the original bug (or similar ones) cannot happen
-again, as xfrm will now trigger software GSO before applying a tunnel.
-This concern doesn't exist in packet offload mode, when the HW adds
-encapsulation headers. For the non-offloaded packets (crypto in SW),
-software GSO is still done unconditionally in the else branch.
+XFS (sda2): realtime geometry sanity check failed
+XFS (sda2): Metadata corruption detected at xfs_sb_read_verify+0x170/0x190 [xfs], xfs_sb block 0x0
 
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Whereas I would have expected:
+
+XFS (sda2): Not built with CONFIG_XFS_RT
+XFS (sda2): RT mount failed
+
+The root cause of these problems is the conditional compilation of the
+new functions xfs_validate_rtextents and xfs_compute_rextslog that I
+introduced in the two commits listed below.  The !RT versions of these
+functions return false and 0, respectively, which causes primary
+superblock validation to fail, which explains the first message.
+
+Move the two functions to other parts of libxfs that are not
+conditionally defined by CONFIG_XFS_RT and remove the broken stubs so
+that validation works again.
+
+Fixes: e14293803f4e ("xfs: don't allow overly small or large realtime volumes")
+Fixes: a6a38f309afc ("xfs: make rextslog computation consistent with mkfs")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_output.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_rtbitmap.c |   14 --------------
+ fs/xfs/libxfs/xfs_rtbitmap.h |   16 ----------------
+ fs/xfs/libxfs/xfs_sb.c       |   14 ++++++++++++++
+ fs/xfs/libxfs/xfs_sb.h       |    2 ++
+ fs/xfs/libxfs/xfs_types.h    |   12 ++++++++++++
+ fs/xfs/scrub/rtbitmap.c      |    1 +
+ 6 files changed, 29 insertions(+), 30 deletions(-)
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index 9160a5e09041d..a30538a980cc7 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -793,7 +793,7 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
- 		skb->encapsulation = 1;
+--- a/fs/xfs/libxfs/xfs_rtbitmap.c
++++ b/fs/xfs/libxfs/xfs_rtbitmap.c
+@@ -1131,17 +1131,3 @@ xfs_rtalloc_extent_is_free(
+ 	return 0;
+ }
  
- 		if (skb_is_gso(skb)) {
--			if (skb->inner_protocol)
-+			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
- 				return xfrm_output_gso(net, sk, skb);
+-/*
+- * Compute the maximum level number of the realtime summary file, as defined by
+- * mkfs.  The historic use of highbit32 on a 64-bit quantity prohibited correct
+- * use of rt volumes with more than 2^32 extents.
+- */
+-uint8_t
+-xfs_compute_rextslog(
+-	xfs_rtbxlen_t		rtextents)
+-{
+-	if (!rtextents)
+-		return 0;
+-	return xfs_highbit64(rtextents);
+-}
+-
+--- a/fs/xfs/libxfs/xfs_rtbitmap.h
++++ b/fs/xfs/libxfs/xfs_rtbitmap.h
+@@ -71,20 +71,6 @@ xfs_rtfree_extent(
+ int xfs_rtfree_blocks(struct xfs_trans *tp, xfs_fsblock_t rtbno,
+ 		xfs_filblks_t rtlen);
  
- 			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
--- 
-2.39.5
-
+-uint8_t xfs_compute_rextslog(xfs_rtbxlen_t rtextents);
+-
+-/* Do we support an rt volume having this number of rtextents? */
+-static inline bool
+-xfs_validate_rtextents(
+-	xfs_rtbxlen_t		rtextents)
+-{
+-	/* No runt rt volumes */
+-	if (rtextents == 0)
+-		return false;
+-
+-	return true;
+-}
+-
+ #else /* CONFIG_XFS_RT */
+ # define xfs_rtfree_extent(t,b,l)			(-ENOSYS)
+ # define xfs_rtfree_blocks(t,rb,rl)			(-ENOSYS)
+@@ -92,8 +78,6 @@ xfs_validate_rtextents(
+ # define xfs_rtalloc_query_all(m,t,f,p)			(-ENOSYS)
+ # define xfs_rtbuf_get(m,t,b,i,p)			(-ENOSYS)
+ # define xfs_rtalloc_extent_is_free(m,t,s,l,i)		(-ENOSYS)
+-# define xfs_compute_rextslog(rtx)			(0)
+-# define xfs_validate_rtextents(rtx)			(false)
+ #endif /* CONFIG_XFS_RT */
+ 
+ #endif /* __XFS_RTBITMAP_H__ */
+--- a/fs/xfs/libxfs/xfs_sb.c
++++ b/fs/xfs/libxfs/xfs_sb.c
+@@ -1367,3 +1367,17 @@ xfs_validate_stripe_geometry(
+ 	}
+ 	return true;
+ }
++
++/*
++ * Compute the maximum level number of the realtime summary file, as defined by
++ * mkfs.  The historic use of highbit32 on a 64-bit quantity prohibited correct
++ * use of rt volumes with more than 2^32 extents.
++ */
++uint8_t
++xfs_compute_rextslog(
++	xfs_rtbxlen_t		rtextents)
++{
++	if (!rtextents)
++		return 0;
++	return xfs_highbit64(rtextents);
++}
+--- a/fs/xfs/libxfs/xfs_sb.h
++++ b/fs/xfs/libxfs/xfs_sb.h
+@@ -38,4 +38,6 @@ extern int	xfs_sb_get_secondary(struct x
+ extern bool	xfs_validate_stripe_geometry(struct xfs_mount *mp,
+ 		__s64 sunit, __s64 swidth, int sectorsize, bool silent);
+ 
++uint8_t xfs_compute_rextslog(xfs_rtbxlen_t rtextents);
++
+ #endif	/* __XFS_SB_H__ */
+--- a/fs/xfs/libxfs/xfs_types.h
++++ b/fs/xfs/libxfs/xfs_types.h
+@@ -228,4 +228,16 @@ bool xfs_verify_fileoff(struct xfs_mount
+ bool xfs_verify_fileext(struct xfs_mount *mp, xfs_fileoff_t off,
+ 		xfs_fileoff_t len);
+ 
++/* Do we support an rt volume having this number of rtextents? */
++static inline bool
++xfs_validate_rtextents(
++	xfs_rtbxlen_t		rtextents)
++{
++	/* No runt rt volumes */
++	if (rtextents == 0)
++		return false;
++
++	return true;
++}
++
+ #endif	/* __XFS_TYPES_H__ */
+--- a/fs/xfs/scrub/rtbitmap.c
++++ b/fs/xfs/scrub/rtbitmap.c
+@@ -14,6 +14,7 @@
+ #include "xfs_rtbitmap.h"
+ #include "xfs_inode.h"
+ #include "xfs_bmap.h"
++#include "xfs_sb.h"
+ #include "scrub/scrub.h"
+ #include "scrub/common.h"
+ 
 
 
 
