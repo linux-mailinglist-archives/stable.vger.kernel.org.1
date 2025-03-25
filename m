@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C253A6FFAB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2355FA6FFCC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 505C43BD14D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3FDF7A2D9F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42A6266EFC;
-	Tue, 25 Mar 2025 12:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B7C267B9B;
+	Tue, 25 Mar 2025 12:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMk6uRPP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaEQYqwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F2A266EF3;
-	Tue, 25 Mar 2025 12:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083162561D7;
+	Tue, 25 Mar 2025 12:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905706; cv=none; b=ZBlXbtaLmN9GxtUvqKqQeYEjUU8zWZRNHvY0FuFFcK/CR4MMdlno6MsN55OvzK9mlK1bSkPVSKmJfPXRsO8dL42f9jBKYdeVnTLeFXiXF1nHl3EP4Kj9Vdbt7hiJET/LOLZhrJNRmwqbPfbAwlIpqQuMSCcE6yZXgrSzLtfd2yQ=
+	t=1742905955; cv=none; b=MI71/CkgL9Sv4BqeTTL5GVrFARBfR4jFwLZUddv04J0ud6gtnmGosWFXaMKMenWK4IY/ZQs6eRSQrEUK9HYUWNCpYTbC3v2LyDaAL7mnrPQUjgCLbeQ8AFN4J+MKn/wVgKQjTwSgLF3WBzAsW5Au6wvm77Y/xO1XFYV8N/JVxzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905706; c=relaxed/simple;
-	bh=XxV1pgqI5+VCskBM3NYfxzKS8yh2fQh1vDUcG7WMKzo=;
+	s=arc-20240116; t=1742905955; c=relaxed/simple;
+	bh=6jEga7tE3ildlNeNG7shdR/wsPbun0jVZ5pn0wvBU1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6ch7aDJHLlm2+Ym4mqE12RlVgJjmUe3YBCWLEAV4tq+zWF2eh21ssNJL6FFyoQMdfOH7O0/5uRqBoBC+DUz1dN7HN4H2byDsf23VaEy/o9DtFYl7AJsB/8O5nN9o1oFJyg+Svn9z8/2NVyzy7NkvXbSkeneGDhFwoAG1camTtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMk6uRPP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3156AC4CEED;
-	Tue, 25 Mar 2025 12:28:26 +0000 (UTC)
+	 MIME-Version; b=MxkaRPWBhBN+jJQYk73f8wLzyEZ6abFMwbRj1OAw7jTwSbe5exYMibUlAH0OMfisBLEnKfmkTopAdEfVrUA9soQbH9n8RMQ6h/bl8GJzrIkS8WonlGgE8cpGKzL3af+95+45J2sYHFAYuzJQiUl5AxM5qXETKYlecFpENyDJBp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaEQYqwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B82C4CEE4;
+	Tue, 25 Mar 2025 12:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905706;
-	bh=XxV1pgqI5+VCskBM3NYfxzKS8yh2fQh1vDUcG7WMKzo=;
+	s=korg; t=1742905954;
+	bh=6jEga7tE3ildlNeNG7shdR/wsPbun0jVZ5pn0wvBU1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMk6uRPPljZCUMS6zCSjdUqP04b3c2mImB9zBBSSgpiZl4YCpjBXGQF5VMq2uuej2
-	 OTVvXJ4TUbYLyjvXzsVfCl2tCeTpe3UzT8JPtPiAhDtuSyMyddg+GIOlfyjybivCwO
-	 EJdxIhNKIB8T8zP1zXBGPZ2rL2m6b1EcR/8a1Ez0=
+	b=EaEQYqwH0wjUHGff5RtZnt9CAgW7DcvKhIdKeqfSSx47Wze3qLZ1F9UJsMiFvZ+LU
+	 w+thmbz2A8zElGmrdZtyMhpM+kxM9A0D7b5EFjk4OgHjwi0zKn+YtmWDDd149GTwjp
+	 xXAPcopo6hQ28fMJX7MJIfgvsO4ixtYz0ejLKfGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 120/198] qlcnic: fix memory leak issues in qlcnic_sriov_common.c
-Date: Tue, 25 Mar 2025 08:21:22 -0400
-Message-ID: <20250325122159.803335499@linuxfoundation.org>
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 025/119] RDMA/hns: Fix invalid sq params not being blocked
+Date: Tue, 25 Mar 2025 08:21:23 -0400
+Message-ID: <20250325122149.710255107@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit d2b9d97e89c79c95f8b517e4fa43fd100f936acc upstream.
+[ Upstream commit 13c90c222049764bb7e6a1689bd785f424bd8bd5 ]
 
-Add qlcnic_sriov_free_vlans() in qlcnic_sriov_alloc_vlans() if
-any sriov_vlans fails to be allocated.
-Add qlcnic_sriov_free_vlans() to free the memory allocated by
-qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
-be allocated.
+SQ params from userspace are checked in by set_user_sq_size(). But
+when the check fails, the function doesn't return but instead keep
+running and overwrite 'ret'. As a result, the invalid params will
+not get blocked actually.
 
-Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20250307094952.14874-1-haoxiang_li2024@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a return right after the failed check. Besides, although the
+check result of kernel sq params will not be overwritten, to keep
+coding style unified, move default_congest_type() before
+set_kernel_sq_size().
+
+Fixes: 6ec429d5887a ("RDMA/hns: Support userspace configuring congestion control algorithm with QP granularity")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250311084857.3803665-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_m
- 
- 	num_vlans = sriov->num_allowed_vlans;
- 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
--	if (!sriov->allowed_vlans)
-+	if (!sriov->allowed_vlans) {
-+		qlcnic_sriov_free_vlans(adapter);
- 		return -ENOMEM;
-+	}
- 
- 	vlans = (u16 *)&cmd->rsp.arg[3];
- 	for (i = 0; i < num_vlans; i++)
-@@ -2167,8 +2169,10 @@ int qlcnic_sriov_alloc_vlans(struct qlcn
- 		vf = &sriov->vf_info[i];
- 		vf->sriov_vlans = kcalloc(sriov->num_allowed_vlans,
- 					  sizeof(*vf->sriov_vlans), GFP_KERNEL);
--		if (!vf->sriov_vlans)
-+		if (!vf->sriov_vlans) {
-+			qlcnic_sriov_free_vlans(adapter);
- 			return -ENOMEM;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index a97348a1c61f1..8408f9a5c309d 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -1121,24 +1121,23 @@ static int set_qp_param(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp,
+ 						 ibucontext);
+ 		hr_qp->config = uctx->config;
+ 		ret = set_user_sq_size(hr_dev, &init_attr->cap, hr_qp, ucmd);
+-		if (ret)
++		if (ret) {
+ 			ibdev_err(ibdev,
+ 				  "failed to set user SQ size, ret = %d.\n",
+ 				  ret);
++			return ret;
 +		}
+ 
+ 		ret = set_congest_param(hr_dev, hr_qp, ucmd);
+-		if (ret)
+-			return ret;
+ 	} else {
+ 		if (hr_dev->pci_dev->revision >= PCI_REVISION_ID_HIP09)
+ 			hr_qp->config = HNS_ROCE_EXSGE_FLAGS;
++		default_congest_type(hr_dev, hr_qp);
+ 		ret = set_kernel_sq_size(hr_dev, &init_attr->cap, hr_qp);
+ 		if (ret)
+ 			ibdev_err(ibdev,
+ 				  "failed to set kernel SQ size, ret = %d.\n",
+ 				  ret);
+-
+-		default_congest_type(hr_dev, hr_qp);
  	}
  
- 	return 0;
+ 	return ret;
+-- 
+2.39.5
+
 
 
 
