@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-126457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC240A701A8
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:27:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E8CA7012B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60A1D189F2F7
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E5719A5C08
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557C026B2C8;
-	Tue, 25 Mar 2025 12:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F252571DB;
+	Tue, 25 Mar 2025 12:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+E1ouhS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btlDw49r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1144525C717;
-	Tue, 25 Mar 2025 12:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716142561D7;
+	Tue, 25 Mar 2025 12:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906260; cv=none; b=uU3GS4uFyZXFgkP20ymMCsBJ0aWjoycOTI4mNyrXYA/h5bhxjBqmam1WhoIrq6IM1mEhj43bxGiRvSkBybuyHXVWuHIBFwyH1bbzyYVaWKGcW5Bbo9K9Et4aAPtUjYdPEWt9QRl4KjzbC5ahxd9tzX9juW9VulQcjrbBwDNgi5w=
+	t=1742905949; cv=none; b=EPZX2bOxv6crNrl36AlF0rUyZ7cdctL4XgydKQk9/iNROlXyv65nPTvX1NcQmCkXfpRXOWsYX1IMvFwa9xX394wDCu3DfLLiSLC/1LzGRW0WDNalTQ9KQnEPyEIr4RGQS6OpPLjedRQa4oOuTciqoL0cwjobjthEPY0XUnL80rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906260; c=relaxed/simple;
-	bh=he2HYiAAnHOMYLX4QYDfddtxUcK70wb0KmqDPkCBTlo=;
+	s=arc-20240116; t=1742905949; c=relaxed/simple;
+	bh=hAhwMwnsdCVZrfH9moa+9AcCYtYB/E4Q89jgtgm5geQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwrAadBFeZbdPzgcb+uSHO/bRfIeA0mLnFGsGB5EOfPN3ZEEC1/brYwp+6ekFJOBIx/eQW5OwRROdltnCDAEEuhl+/pX7kgYTxPOqFDkYy+ieCpEgWKi9sPCVniWKKOAgRlg1VT4sWGtI0RLE+SkcJO4aAKcWUYdUMvA9JmbYbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+E1ouhS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93F5C4CEE4;
-	Tue, 25 Mar 2025 12:37:39 +0000 (UTC)
+	 MIME-Version; b=KEnMNq2e89nRkQUH1nVxZ0JGOfZfyBsnHkZY9FmDs2lOV/TMcpaqvSPJImQ3PIIAWnypz6iBFaFbP4p+2f2MIBZMXrPzL6+1jOSbVoD1DRkAkcyecBO0ONnR6Ce/t7RcLSxtgELd8dkYdF06ExGad8GAvLMqE0mjuzkYDbGSnQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btlDw49r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25099C4CEE4;
+	Tue, 25 Mar 2025 12:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906259;
-	bh=he2HYiAAnHOMYLX4QYDfddtxUcK70wb0KmqDPkCBTlo=;
+	s=korg; t=1742905949;
+	bh=hAhwMwnsdCVZrfH9moa+9AcCYtYB/E4Q89jgtgm5geQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+E1ouhS00tIW0/p930cYBie7XrjeTgbpTS+ObXdxK3U2xrWiZNOm/t8NiHv+ff2V
-	 ya54sN+T0GQk2ixo3MzrxBZpVtwKHAopx0T0/6lu98zWD8OWwRCCR0ymEnubksZOdF
-	 MuhLesNRxnetBKI6A/Q0i43fyOndrCWtQdKtGYSA=
+	b=btlDw49rG84bEpjLGaHjIgFtvyDdZIohqWLNoEzvHRcFKvYkuLJ3lN0uX6N4ot/3L
+	 XV3VIG9cEkMb7YG3VXc2SNpAbZEqW5A39bn3WG+hD/SB+wM4DrzeVRkx55vA+CnO5B
+	 Ib1CgMEje7i0ao/oOLHOjAdsbwyiQVTxmcE32S2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/116] dma-mapping: fix missing clear bdr in check_ram_in_range_map()
+Subject: [PATCH 6.13 051/119] Revert "gre: Fix IPv6 link-local address generation."
 Date: Tue, 25 Mar 2025 08:21:49 -0400
-Message-ID: <20250325122149.785195450@linuxfoundation.org>
+Message-ID: <20250325122150.359490006@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 8324993f60305e50f27b98358b01b9837e10d159 ]
+[ Upstream commit fc486c2d060f67d672ddad81724f7c8a4d329570 ]
 
-As discussed in [1], if 'bdr' is set once, it would never get
-cleared, hence 0 is always returned.
+This reverts commit 183185a18ff96751db52a46ccf93fff3a1f42815.
 
-Refactor the range check hunk into a new helper dma_find_range(),
-which allows 'bdr' to be cleared in each iteration.
+This patch broke net/forwarding/ip6gre_custom_multipath_hash.sh in some
+circumstances (https://lore.kernel.org/netdev/Z9RIyKZDNoka53EO@mini-arch/).
+Let's revert it while the problem is being investigated.
 
-Link: https://lore.kernel.org/all/64931fac-085b-4ff3-9314-84bac2fa9bdb@quicinc.com/ # [1]
-Fixes: a409d9600959 ("dma-mapping: fix dma_addressing_limited() if dma_range_map can't cover all system RAM")
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://lore.kernel.org/r/20250307030350.69144-1-quic_bqiang@quicinc.com
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Fixes: 183185a18ff9 ("gre: Fix IPv6 link-local address generation.")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Link: https://patch.msgid.link/8b1ce738eb15dd841aab9ef888640cab4f6ccfea.1742418408.git.gnault@redhat.com
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/direct.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ net/ipv6/addrconf.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 5b4e6d3bf7bcc..b8fe0b3d0ffb6 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -584,6 +584,22 @@ int dma_direct_supported(struct device *dev, u64 mask)
- 	return mask >= phys_to_dma_unencrypted(dev, min_mask);
- }
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index bdf39388e514b..0e765466d7f79 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3237,13 +3237,16 @@ static void add_v4_addrs(struct inet6_dev *idev)
+ 	struct in6_addr addr;
+ 	struct net_device *dev;
+ 	struct net *net = dev_net(idev->dev);
+-	int scope, plen;
++	int scope, plen, offset = 0;
+ 	u32 pflags = 0;
  
-+static const struct bus_dma_region *dma_find_range(struct device *dev,
-+						   unsigned long start_pfn)
-+{
-+	const struct bus_dma_region *m;
-+
-+	for (m = dev->dma_range_map; PFN_DOWN(m->size); m++) {
-+		unsigned long cpu_start_pfn = PFN_DOWN(m->cpu_start);
-+
-+		if (start_pfn >= cpu_start_pfn &&
-+		    start_pfn - cpu_start_pfn < PFN_DOWN(m->size))
-+			return m;
-+	}
-+
-+	return NULL;
-+}
-+
- /*
-  * To check whether all ram resource ranges are covered by dma range map
-  * Returns 0 when further check is needed
-@@ -593,20 +609,12 @@ static int check_ram_in_range_map(unsigned long start_pfn,
- 				  unsigned long nr_pages, void *data)
- {
- 	unsigned long end_pfn = start_pfn + nr_pages;
--	const struct bus_dma_region *bdr = NULL;
--	const struct bus_dma_region *m;
- 	struct device *dev = data;
+ 	ASSERT_RTNL();
  
- 	while (start_pfn < end_pfn) {
--		for (m = dev->dma_range_map; PFN_DOWN(m->size); m++) {
--			unsigned long cpu_start_pfn = PFN_DOWN(m->cpu_start);
-+		const struct bus_dma_region *bdr;
+ 	memset(&addr, 0, sizeof(struct in6_addr));
+-	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr, 4);
++	/* in case of IP6GRE the dev_addr is an IPv6 and therefore we use only the last 4 bytes */
++	if (idev->dev->addr_len == sizeof(struct in6_addr))
++		offset = sizeof(struct in6_addr) - 4;
++	memcpy(&addr.s6_addr32[3], idev->dev->dev_addr + offset, 4);
  
--			if (start_pfn >= cpu_start_pfn &&
--			    start_pfn - cpu_start_pfn < PFN_DOWN(m->size)) {
--				bdr = m;
--				break;
--			}
--		}
-+		bdr = dma_find_range(dev, start_pfn);
- 		if (!bdr)
- 			return 1;
+ 	if (!(idev->dev->flags & IFF_POINTOPOINT) && idev->dev->type == ARPHRD_SIT) {
+ 		scope = IPV6_ADDR_COMPATv4;
+@@ -3554,13 +3557,7 @@ static void addrconf_gre_config(struct net_device *dev)
+ 		return;
+ 	}
  
+-	/* Generate the IPv6 link-local address using addrconf_addr_gen(),
+-	 * unless we have an IPv4 GRE device not bound to an IP address and
+-	 * which is in EUI64 mode (as __ipv6_isatap_ifid() would fail in this
+-	 * case). Such devices fall back to add_v4_addrs() instead.
+-	 */
+-	if (!(dev->type == ARPHRD_IPGRE && *(__be32 *)dev->dev_addr == 0 &&
+-	      idev->cnf.addr_gen_mode == IN6_ADDR_GEN_MODE_EUI64)) {
++	if (dev->type == ARPHRD_ETHER) {
+ 		addrconf_addr_gen(idev, true);
+ 		return;
+ 	}
 -- 
 2.39.5
 
