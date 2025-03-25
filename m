@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-126450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902FEA70142
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:21:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A460A7005B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A66F019A721B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB09284399C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A230926B2AD;
-	Tue, 25 Mar 2025 12:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA786268C79;
+	Tue, 25 Mar 2025 12:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnvLUEPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltkvqnFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BCB2586CD;
-	Tue, 25 Mar 2025 12:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8822A268C5F;
+	Tue, 25 Mar 2025 12:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906247; cv=none; b=OnCQTZZRMUWSZg7BEgDV1qfgHAtux6ywAhCuhCu4Xw1XbmcBpnsYG+u01rXyMXwHga6bmF/ZUCMy6wZvOXFZv7g9Xllm6dtLXqpB9ZwDiHvLUpW6Im+MnhtAsm7X2WOCoyoeW5KIENm4v3zBS10A4KLb3KzoQVlz7FwzyfS+Fks=
+	t=1742905938; cv=none; b=EsNjLZ8ghWf+xHqj27KHQCEoOTDX+BAHovBypqRmSvaj9IMm/YdRLvwoj3GWQGP9yRwsAGhksYPcVIy4kDuXtSePAvGKHIzz/wLtcpyMd3SGsGGqQYoPEapjbYKAgQs5YU8u4yrSLCiaYI5BQ+CMkNFQvkNeiZlG8tJYhnIN6gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906247; c=relaxed/simple;
-	bh=dxB/3L4iR+hLrFvkaxxz7Rm0hs6BH3pEIASLNPOSmUs=;
+	s=arc-20240116; t=1742905938; c=relaxed/simple;
+	bh=r+fmedAwAGzSVUQDk4q9swmGvyehmDBgIWVghi8hbX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jdi4RxzRhkd6OL7KfhN/kj7tVxB37B326VelfnH2+RLQ2RmD0d6qVA9W8ok3jfIz3h14SGQDg5UOQS0vxuvUV9uHKWPOty9d3RvIdYWfjPOdMHeTlbvzTP+p4e3mVqRXyDnw67K8TgSAS4IsVbAmGn7wtwNDcVpExT2GdP93vm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnvLUEPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAB0C4CEE4;
-	Tue, 25 Mar 2025 12:37:26 +0000 (UTC)
+	 MIME-Version; b=YJ7PVC9i7hYSK4S33wxmecB/ZMZOJIZ4yll4yviDp33C7vLFd8zLPpq0Q+5Sl7bg/vKnt4Q6igibXU0EObcIs6hP3dpalKy6usaNO4UOP4VZ76vuseYRS39Bu4aO+olx4sx7xaanfxigXhQPuKRYEnsVMnZqs0UaJfR4lGsMb/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltkvqnFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF3BC4CEE9;
+	Tue, 25 Mar 2025 12:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906247;
-	bh=dxB/3L4iR+hLrFvkaxxz7Rm0hs6BH3pEIASLNPOSmUs=;
+	s=korg; t=1742905938;
+	bh=r+fmedAwAGzSVUQDk4q9swmGvyehmDBgIWVghi8hbX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mnvLUEPxSHa5I8BOz5H2aXRVmhbHJWu4K7sKMHwIin8GieQvOU1EuwRUkIq8nU0Bi
-	 ynEl7cfxQUbKjkpqsiyQeAOK3v+2FPr57xEifQVlFa9/IzlP2gzWFqR1v9gGcyVCfU
-	 8uNL6v3iST/Rwg6ed/NrMOyI605tj1ixuQWPJh3E=
+	b=ltkvqnFeeiPLSxfe/f1Hjiqo7F4darG6A/zRAHCy7JlDo2dF8m2y+hNlBXV0KhMkG
+	 EwNxvxN4pO3UmlEnnwFCpvAt/2CFxsjEdSHCDFpD0mP4cDMCPVvjXryJCFufJAK6QS
+	 mQVez94pxvrCRYETYXJroETbQINKHcMP951aICTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/116] RDMA/bnxt_re: Add missing paranthesis in map_qp_id_to_tbl_indx
-Date: Tue, 25 Mar 2025 08:21:43 -0400
-Message-ID: <20250325122149.636703350@linuxfoundation.org>
+Subject: [PATCH 6.13 046/119] net: ti: icssg-prueth: Add lock to stats
+Date: Tue, 25 Mar 2025 08:21:44 -0400
+Message-ID: <20250325122150.230163589@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: MD Danish Anwar <danishanwar@ti.com>
 
-[ Upstream commit 67ee8d496511ad8e1cb88f72944847e7b3e4e47c ]
+[ Upstream commit 47a9b5e52abd2b717dfc8b9460589f89936d93cf ]
 
-The modulo operation returns wrong result without the
-paranthesis and that resulted in wrong QP table indexing.
+Currently the API emac_update_hardware_stats() reads different ICSSG
+stats without any lock protection.
 
-Fixes: 84cf229f4001 ("RDMA/bnxt_re: Fix the qp table indexing")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1741021178-2569-3-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This API gets called by .ndo_get_stats64() which is only under RCU
+protection and nothing else. Add lock to this API so that the reading of
+statistics happens during lock.
+
+Fixes: c1e10d5dc7a1 ("net: ti: icssg-prueth: Add ICSSG Stats")
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314102721.1394366-1-danishanwar@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 1 +
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h | 2 ++
+ drivers/net/ethernet/ti/icssg/icssg_stats.c  | 4 ++++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
-index 07779aeb75759..a4deb45ec849f 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.h
-@@ -283,9 +283,10 @@ int bnxt_qplib_deinit_rcfw(struct bnxt_qplib_rcfw *rcfw);
- int bnxt_qplib_init_rcfw(struct bnxt_qplib_rcfw *rcfw,
- 			 struct bnxt_qplib_ctx *ctx, int is_virtfn);
- void bnxt_qplib_mark_qp_error(void *qp_handle);
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index d76fe6d05e10a..74a044dc1b001 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -1598,6 +1598,7 @@ static int prueth_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	spin_lock_init(&prueth->vtbl_lock);
++	spin_lock_init(&prueth->stats_lock);
+ 	/* setup netdev interfaces */
+ 	if (eth0_node) {
+ 		ret = prueth_netdev_init(prueth, eth0_node);
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+index 5473315ea2040..e456a11c5d4e3 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+@@ -297,6 +297,8 @@ struct prueth {
+ 	int default_vlan;
+ 	/** @vtbl_lock: Lock for vtbl in shared memory */
+ 	spinlock_t vtbl_lock;
++	/** @stats_lock: Lock for reading icssg stats */
++	spinlock_t stats_lock;
+ };
+ 
+ struct emac_tx_ts_response {
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_stats.c b/drivers/net/ethernet/ti/icssg/icssg_stats.c
+index 8800bd3a8d074..6f0edae38ea24 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_stats.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_stats.c
+@@ -26,6 +26,8 @@ void emac_update_hardware_stats(struct prueth_emac *emac)
+ 	u32 val, reg;
+ 	int i;
+ 
++	spin_lock(&prueth->stats_lock);
 +
- static inline u32 map_qp_id_to_tbl_indx(u32 qid, struct bnxt_qplib_rcfw *rcfw)
- {
- 	/* Last index of the qp_tbl is for QP1 ie. qp_tbl_size - 1*/
--	return (qid == 1) ? rcfw->qp_tbl_size - 1 : qid % rcfw->qp_tbl_size - 2;
-+	return (qid == 1) ? rcfw->qp_tbl_size - 1 : (qid % (rcfw->qp_tbl_size - 2));
+ 	for (i = 0; i < ARRAY_SIZE(icssg_all_miig_stats); i++) {
+ 		regmap_read(prueth->miig_rt,
+ 			    base + icssg_all_miig_stats[i].offset,
+@@ -51,6 +53,8 @@ void emac_update_hardware_stats(struct prueth_emac *emac)
+ 			emac->pa_stats[i] += val;
+ 		}
+ 	}
++
++	spin_unlock(&prueth->stats_lock);
  }
- #endif /* __BNXT_QPLIB_RCFW_H__ */
+ 
+ void icssg_stats_work_handler(struct work_struct *work)
 -- 
 2.39.5
 
