@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3826A70167
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:23:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40740A700E3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B8A2189041D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA43217B390
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DFE26AA9A;
-	Tue, 25 Mar 2025 12:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D1426F441;
+	Tue, 25 Mar 2025 12:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tam6wi1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkWfQ90n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCBD26AA8C;
-	Tue, 25 Mar 2025 12:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DC226F440;
+	Tue, 25 Mar 2025 12:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906190; cv=none; b=ePW1WAv8hZFEshZOnRnzrlNpaafa+1SRDR1jS310EtfXghXoNOQ1rMegM0FEP4iJYnqTswSSMg0MfmrzArYtUVcN7WkEFQlUTlWQwTAzhHHKA4c6gRFf8bt9M3x2UWJ7IBernoIjkrSfZAp2gv7L0jARni4eabGWSQfptKi0c/w=
+	t=1742906353; cv=none; b=Q/OUbxwkPMIUUNxy1iLGCGkf6t3di0bmewBnRJjYEUAOKVyX1VWv2RPGYkn+tKea5289KCbJllNGktr4tKBeT0YmpM4eDsEJjfz0E7FJJGFoPJTWr0rpdPt5sUMw2EnoFi3VLNXpZTd5zoxhCL29tsn3EYaNDDcnN2QIHs7UYLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906190; c=relaxed/simple;
-	bh=xOJouAcBtkIOdsWUAmhr3NrWaQBTonN+++K+sNTZd9w=;
+	s=arc-20240116; t=1742906353; c=relaxed/simple;
+	bh=geX7i1Lu//a18HNEdl4y9mCTYFDD/VaRHrIeKCFl4DQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfgqtjGzjEzf/BngK185zojp0IxQ2hRWbYWL84zejcc74ENdJPze5DB7LGUEArpkFrWp6EAx+b8oroGyOkF8Lbuea7R+pTi7glbP4RiOoq8QERUYNfEX+6gxy4nyYw8V5a8CbUvOGKafOhGTOt7xWJi8lKmgP2KvRV5w2KTGXRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tam6wi1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA0FC4CEE4;
-	Tue, 25 Mar 2025 12:36:30 +0000 (UTC)
+	 MIME-Version; b=cR11169Qi0AiBkGC7GXMjJAiJBQ3YP9fMPZSGxdv/fznDcdUcpOfSwHj9chhcAXs/QrMVQCwgF5/PiWVPFol7UiytBDBPnDMxigkRPGzMoHpXBQ5INn+w4wYnyKPSzP7pOexVukJiCSux1AEfCPaNfyDL90yoMmdH2ugfscYRxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkWfQ90n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6FDC4CEED;
+	Tue, 25 Mar 2025 12:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906190;
-	bh=xOJouAcBtkIOdsWUAmhr3NrWaQBTonN+++K+sNTZd9w=;
+	s=korg; t=1742906353;
+	bh=geX7i1Lu//a18HNEdl4y9mCTYFDD/VaRHrIeKCFl4DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tam6wi1Vg/8PpAVdfAwIanIPtqLSSC0PYYX74HcXLPGtRsCJ9hZVIb+nqHRedKRur
-	 kOXSJ63XhTWTTzsqsz2LpVPho2nSfnQO468FVqgXUqVTDm7TKQb5zPkHUE8XovOfe/
-	 RLTENDMuMI53Wq9W5nDeTuzBvgwhsVBQCywq5p+k=
+	b=xkWfQ90n+zfM4MyrURZSIUv12MoqZ0UMVMYKXpkYrhs4WnFkYQb+6huVhU3xuF419
+	 BPr3wXX+VjCONN0e2T2ttL+neICtPNfjI74MsHznoTG8gZcUMEa246E0ktiW3IO+Ae
+	 jrFHmtL//jcaBpSCnZlO38O5IwyEiG8OFVKcP4YA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Christian Eggers <ceggers@arri.de>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 36/77] regulator: dummy: force synchronous probing
+Subject: [PATCH 6.12 064/116] regulator: dummy: force synchronous probing
 Date: Tue, 25 Mar 2025 08:22:31 -0400
-Message-ID: <20250325122145.297603209@linuxfoundation.org>
+Message-ID: <20250325122150.847271054@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -96,14 +96,12 @@ Link: https://patch.msgid.link/20250311091803.31026-1-ceggers@arri.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/dummy.c | 2 +-
+ drivers/regulator/dummy.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/dummy.c b/drivers/regulator/dummy.c
-index 5b9b9e4e762d..9f59889129ab 100644
 --- a/drivers/regulator/dummy.c
 +++ b/drivers/regulator/dummy.c
-@@ -60,7 +60,7 @@ static struct platform_driver dummy_regulator_driver = {
+@@ -60,7 +60,7 @@ static struct platform_driver dummy_regu
  	.probe		= dummy_regulator_probe,
  	.driver		= {
  		.name		= "reg-dummy",
@@ -112,9 +110,6 @@ index 5b9b9e4e762d..9f59889129ab 100644
  	},
  };
  
--- 
-2.49.0
-
 
 
 
