@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-126304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FE6A7004A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AACA7005E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E910C17B1D4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3310F19A42D5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41E325B688;
-	Tue, 25 Mar 2025 12:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311AC269AF1;
+	Tue, 25 Mar 2025 12:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzjMCTrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikhMkTga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BE91DD9D3;
-	Tue, 25 Mar 2025 12:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26D02571AC;
+	Tue, 25 Mar 2025 12:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905977; cv=none; b=drD0wYaOA1I8fOfsM6rCnBMqGXv8i8ngcaUSWADfQtVM1e1Ef7YG+FdxRjb4jEVu4LjqJHN5kTybbydirzxConLqfFJSsFsoA8ERQgSP02cX6pK0nptpmZ3lDH1xzqhhioi7fTH+/I4jjprTwLDPkyX1cvgNVyk6+9hn1UX0PJ4=
+	t=1742906093; cv=none; b=ct7bfPj+ShfdMKqDyojMSRvPVAKw3NZLMNmy/I/rtEluYt68dnbJgTaV5rYKuEwu6PwZ6gdio5dyVBX/Pu6HNCHROj1VeiJRisn0+uebSjJ3WadprZy/APCMQT6UL7eHMiD6GGkDXY5yp80U2a9PcZ+MaZcsvY7J75d4Y/embc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905977; c=relaxed/simple;
-	bh=UOlK1dwEYbAsTvd8h58a3NRFPm5SO6iFwz/928wcZJg=;
+	s=arc-20240116; t=1742906093; c=relaxed/simple;
+	bh=U52pNWErLo6fR8mmxSFV6QQ/R+tYCmW6ZMPs2nkgt+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jt6yAFhUqCsL8tymNaqAb0Vhmil8bRnCtWllb0SvnwWVkSMWhZh2A+P8lKlJmFpWjndPiIeHkWiso7wF3ZWK7RWTXV9YRY0ELWUNhfLRViIZp7y9y6jxHIxrDFkcNb31RVDwTMt6KRLAP3VnBaEmbxAOB4SneKD3kpxVCE1h9Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzjMCTrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4516C4CEE4;
-	Tue, 25 Mar 2025 12:32:56 +0000 (UTC)
+	 MIME-Version; b=fpqf7WK9oEnifI0L1bzDryKkRG0HkxiP8gHk4A/5npTBtbO4UPMZYtm7/i8fyNzz58zDF56o9pfWPXbg0H7Mqg9z6p7/YfOTco4oal73ea71plC5XkvQworX/2KLSQ/O9jIQvSOos+Hn4Wmc3J5++PtIMlFplaEQ3lzDpR9Q+Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikhMkTga; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37653C4CEE4;
+	Tue, 25 Mar 2025 12:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905976;
-	bh=UOlK1dwEYbAsTvd8h58a3NRFPm5SO6iFwz/928wcZJg=;
+	s=korg; t=1742906092;
+	bh=U52pNWErLo6fR8mmxSFV6QQ/R+tYCmW6ZMPs2nkgt+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KzjMCTrGDki9aGT0hgjz0Pa+Ux9vQXegMKdoZ4zbuTKMQJKD3FX1Zy8ArllV3Bvsy
-	 UCLYWTNefx4evDUBb+OGPlPnl2uFjKDAdhOfTzK7qczpG1goU0L0xVqp6DOdYAlb+a
-	 GVUMkP2d3zpAGPKDgZCzE0q1Fyu4mHS9lGo6FqsU=
+	b=ikhMkTgaqyXTiMslhRuwpRolgKFU2uRZnHPGT9LYb7U5QwEjDmHqUUfAbVyyQLi9m
+	 xEmDr9nf1d7122OFrbucKiMjU9naJeZJz4/T4GxyKhQlBYwIKws3yUc2k1Y5CwmlPl
+	 qtrhUEhwXCo5X/IjeeS0Ssk9kHjPz4Utg/NjJUpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Subject: [PATCH 6.13 068/119] accel/qaic: Fix integer overflow in qaic_validate_req()
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 11/77] RDMA/mlx5: Handle errors returned from mlx5r_ib_rate()
 Date: Tue, 25 Mar 2025 08:22:06 -0400
-Message-ID: <20250325122150.793415561@linuxfoundation.org>
+Message-ID: <20250325122144.624541729@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit 67d15c7aa0864dfd82325c7e7e7d8548b5224c7b upstream.
+[ Upstream commit 556f93b90c1872ad85e216e613c0b33803e621cb ]
 
-These are u64 variables that come from the user via
-qaic_attach_slice_bo_ioctl().  Use check_add_overflow() to ensure that
-the math doesn't have an integer wrapping bug.
+In function create_ib_ah() the following line attempts
+to left shift the return value of mlx5r_ib_rate() by 4
+and store it in the stat_rate_sl member of av:
 
-Cc: stable@vger.kernel.org
-Fixes: ff13be830333 ("accel/qaic: Add datapath")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/176388fa-40fe-4cb4-9aeb-2c91c22130bd@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However the code overlooks the fact that mlx5r_ib_rate()
+may return -EINVAL if the rate passed to it is less than
+IB_RATE_2_5_GBPS or greater than IB_RATE_800_GBPS.
+
+Because of this, the code may invoke undefined behaviour when
+shifting a signed negative value when doing "-EINVAL << 4".
+
+To fix this check for errors before assigning stat_rate_sl and
+propagate any error value to the callers.
+
+Fixes: c534ffda781f ("RDMA/mlx5: Fix AH static rate parsing")
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Link: https://patch.msgid.link/20250304140246.205919-1-qasdev00@gmail.com
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_data.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/ah.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/accel/qaic/qaic_data.c
-+++ b/drivers/accel/qaic/qaic_data.c
-@@ -557,6 +557,7 @@ static bool invalid_sem(struct qaic_sem
- static int qaic_validate_req(struct qaic_device *qdev, struct qaic_attach_slice_entry *slice_ent,
- 			     u32 count, u64 total_size)
+diff --git a/drivers/infiniband/hw/mlx5/ah.c b/drivers/infiniband/hw/mlx5/ah.c
+index 99036afb3aef0..531a57f9ee7e8 100644
+--- a/drivers/infiniband/hw/mlx5/ah.c
++++ b/drivers/infiniband/hw/mlx5/ah.c
+@@ -50,11 +50,12 @@ static __be16 mlx5_ah_get_udp_sport(const struct mlx5_ib_dev *dev,
+ 	return sport;
+ }
+ 
+-static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
++static int create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 			 struct rdma_ah_init_attr *init_attr)
  {
-+	u64 total;
- 	int i;
+ 	struct rdma_ah_attr *ah_attr = init_attr->ah_attr;
+ 	enum ib_gid_type gid_type;
++	int rate_val;
  
- 	for (i = 0; i < count; i++) {
-@@ -566,7 +567,8 @@ static int qaic_validate_req(struct qaic
- 		      invalid_sem(&slice_ent[i].sem2) || invalid_sem(&slice_ent[i].sem3))
- 			return -EINVAL;
- 
--		if (slice_ent[i].offset + slice_ent[i].size > total_size)
-+		if (check_add_overflow(slice_ent[i].offset, slice_ent[i].size, &total) ||
-+		    total > total_size)
- 			return -EINVAL;
+ 	if (rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH) {
+ 		const struct ib_global_route *grh = rdma_ah_read_grh(ah_attr);
+@@ -67,8 +68,10 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 		ah->av.tclass = grh->traffic_class;
  	}
  
+-	ah->av.stat_rate_sl =
+-		(mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
++	rate_val = mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr));
++	if (rate_val < 0)
++		return rate_val;
++	ah->av.stat_rate_sl = rate_val << 4;
+ 
+ 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
+ 		if (init_attr->xmit_slave)
+@@ -89,6 +92,8 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 		ah->av.fl_mlid = rdma_ah_get_path_bits(ah_attr) & 0x7f;
+ 		ah->av.stat_rate_sl |= (rdma_ah_get_sl(ah_attr) & 0xf);
+ 	}
++
++	return 0;
+ }
+ 
+ int mlx5_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
+@@ -121,8 +126,7 @@ int mlx5_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
+ 			return err;
+ 	}
+ 
+-	create_ib_ah(dev, ah, init_attr);
+-	return 0;
++	return create_ib_ah(dev, ah, init_attr);
+ }
+ 
+ int mlx5_ib_query_ah(struct ib_ah *ibah, struct rdma_ah_attr *ah_attr)
+-- 
+2.39.5
+
 
 
 
