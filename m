@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65CBA701BF
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:29:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D63CA70150
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BC811886B38
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 513C6844521
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BCD26FA5F;
-	Tue, 25 Mar 2025 12:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5AA26FA55;
+	Tue, 25 Mar 2025 12:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzqmInjD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nznnnutV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514F226FA48;
-	Tue, 25 Mar 2025 12:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7A925D8F6;
+	Tue, 25 Mar 2025 12:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906391; cv=none; b=Mf6Q5dwzKw8adozB4P/a0P/JprLcve0CMy5xUUclpi3K5hbk2z90JondJfcIjxf17KhqmmFqsutvg2Ke3RPw+3qTXNIiBBawXmTrXoITUdX1KKkTV+g3rbmX8l50bimk2WYGZscEYBZ+TYTB4jm845z/JBEa81fKZTRChSCYSR4=
+	t=1742906395; cv=none; b=qzcKAKN0wmupMBOxxd8XwM6GIdrmteC9d6BsJwHKocmCesU1WDdPKSBdhSWttAiGuFt1gdalvndb2A4G58ZcWvQpUzZD/OLAxT6OHbSTedqVa0nloQcig9MyGXYv2N8eATAuW0hNaQgPH60CevEoyIxfio9gX8XPXlEGqN0kBEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906391; c=relaxed/simple;
-	bh=9ikQk7QulwB2y9M8FsQbmc11/hFMNu9aoJrJh9XvZg8=;
+	s=arc-20240116; t=1742906395; c=relaxed/simple;
+	bh=kKXO4uZb4qeAHz06C7IOJZOwcTYfmOqeqDJ5k3i8Xfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qT0zErqm/hkjTK8kRnm5lvJxOCgIRnSGEAjJ56Rz5talltLHfz/0HDiPWz2BOqK94Lv971OtWxogISGlsbbRRb5ITWs8iHNZL/JvN63cL7X0IghuwVZcav14dMcjleC3TMJR/o58PJYSB4oRjT6MB+aDwhqYQpys/g092/Z3+e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzqmInjD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034B6C4CEE9;
-	Tue, 25 Mar 2025 12:39:50 +0000 (UTC)
+	 MIME-Version; b=pACa/VhKjoQ9wIQ7dKT//gTQTZuA+lu8rFqbL66oxfNCUicHVXAyu+kOinyGzUHXFvsKn2n+uko0JxqvhIEjyWxNB95mOm892Y0wdsPl+RrWp6CU1H0NogldPmfDuwcfkIR8geueF1e7t/iUGU+YuuTfhoB1+t3OdqU2nI8lEDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nznnnutV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB073C4CEE4;
+	Tue, 25 Mar 2025 12:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906391;
-	bh=9ikQk7QulwB2y9M8FsQbmc11/hFMNu9aoJrJh9XvZg8=;
+	s=korg; t=1742906395;
+	bh=kKXO4uZb4qeAHz06C7IOJZOwcTYfmOqeqDJ5k3i8Xfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzqmInjD8Ocm9x0DspzG1YjaFxL6rB/DnsmvxIL+wTrckxZhLnXykaqRWQxPMdfn+
-	 UnsMEbUNTzBS1OZt0wBCYIuJn+b7g4o/0T8dfdY1AC//JV1+KPswV7q27kuqqQNyUf
-	 gnMONOp+FOikIpRp++EtdvvzDyoZ67MLcdSL5kYg=
+	b=nznnnutVrGQF6DBoRTlYl2I53/qppeibHCxjv1l2m7VLPrZU4vUbjnum8/x0cEvGg
+	 Q9labIGrNDsR4iIGqabQlLJTaH7DkHMhlwkJ3BOL0SmQWzQ8fCWKymGdp9cSdIVh2K
+	 UVyxVtpFclyGBHf3NEQoITOPuNtzUvzKN3HsCafU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Yilin Chen <Yilin.Chen@amd.com>,
+	ChiaHsuan Chung <chiahsuan.chung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Hung <alex.hung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 092/116] drm/amd/display: Fix message for support_edp0_on_dp1
-Date: Tue, 25 Mar 2025 08:22:59 -0400
-Message-ID: <20250325122151.562659075@linuxfoundation.org>
+Subject: [PATCH 6.12 093/116] drm/amd/display: Use HW lock mgr for PSR1 when only one eDP
+Date: Tue, 25 Mar 2025 08:23:00 -0400
+Message-ID: <20250325122151.589302290@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
 References: <20250325122149.207086105@linuxfoundation.org>
@@ -68,40 +68,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yilin Chen <Yilin.Chen@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 35f0f9f421390f66cb062f4d79f4924af5f55b04 upstream.
+commit acbf16a6ae775b4db86f537448cc466288aa307e upstream.
 
 [WHY]
-The info message was wrong when support_edp0_on_dp1 is enabled
+DMUB locking is important to make sure that registers aren't accessed
+while in PSR.  Previously it was enabled but caused a deadlock in
+situations with multiple eDP panels.
 
 [HOW]
-Use correct info message for support_edp0_on_dp1
+Detect if multiple eDP panels are in use to decide whether to use
+lock. Refactor the function so that the first check is for PSR-SU
+and then replay is in use to prevent having to look up number
+of eDP panels for those configurations.
 
-Fixes: f6d17270d18a ("drm/amd/display: add a quirk to enable eDP0 on DP1")
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Yilin Chen <Yilin.Chen@amd.com>
+Fixes: f245b400a223 ("Revert "drm/amd/display: Use HW lock mgr for PSR1"")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3965
+Reviewed-by: ChiaHsuan Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 79538e6365c99d7b1c3e560d1ea8d11ef8313465)
+(cherry picked from commit ed569e1279a3045d6b974226c814e071fa0193a6)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1720,7 +1720,7 @@ static void retrieve_dmi_info(struct amd
- 	}
- 	if (quirk_entries.support_edp0_on_dp1) {
- 		init_data->flags.support_edp0_on_dp1 = true;
--		drm_info(dev, "aux_hpd_discon_quirk attached\n");
-+		drm_info(dev, "support_edp0_on_dp1 attached\n");
- 	}
- }
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+@@ -69,5 +69,16 @@ bool should_use_dmub_lock(struct dc_link
+ 	if (link->replay_settings.replay_feature_enabled)
+ 		return true;
  
++	/* only use HW lock for PSR1 on single eDP */
++	if (link->psr_settings.psr_version == DC_PSR_VERSION_1) {
++		struct dc_link *edp_links[MAX_NUM_EDP];
++		int edp_num;
++
++		dc_get_edp_links(link->dc, edp_links, &edp_num);
++
++		if (edp_num == 1)
++			return true;
++	}
++
+ 	return false;
+ }
 
 
 
