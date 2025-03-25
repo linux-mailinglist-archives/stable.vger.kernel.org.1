@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E52A70075
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B332A7010B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F112B188EB07
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65CE717B0DF
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F502580ED;
-	Tue, 25 Mar 2025 12:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F8A26E157;
+	Tue, 25 Mar 2025 12:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDW99uzR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIn/R6T7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CC52571AB;
-	Tue, 25 Mar 2025 12:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8721118BC3B;
+	Tue, 25 Mar 2025 12:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906024; cv=none; b=a7YDQGAH/e6ZkCfm/qh1AkvzkX/5rNxKTtbTyXL+QRW45W6b6smzVTPxP/YfAvEQm5v19lReQLqXPu4Bu1M0OILzd2UQyiQ0n8mmbRKFKX6NwGF2Tn2Te6vhxItjIKwOYXXQcgARWCLxUxiH6q4UUWgdsXJRYYGn4I4Q2CEvot4=
+	t=1742906325; cv=none; b=iATrZI0f5lpwBddct/1mHt0vdvLV7DrzFXUPdQrYhzJtGVi8DncLl3Sjp1nTtL9slcGSu4jnEKGm+ctv846Hirch8CIoWolXZA+kSZ1sxymSFO8OX/qLG85AJ9ke65BaOhRgGfs05yY1rD9/EDlaWv6Zry0V4pPzXdmVjOhZgXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906024; c=relaxed/simple;
-	bh=dv4M0z0eAxNoQeFItUfw4GrXJ9Q7DyuWHMg5HS5BGYE=;
+	s=arc-20240116; t=1742906325; c=relaxed/simple;
+	bh=DHlMgyBFVGACPGG0/N7RlXojviTQmFixd/NJueHHgCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWnKpcOuLWu9v0g5X4Bw4Q2aCdeeUOU7EKQlX6hGGlqu9I1ZB8XoY+6wGNB55efscgjyL/mEyLoeMhQ9iHugEM+59hjWc7cMP7DcEiV/07Tn+lmod56+35Hc1i9wh5ZVAfmTP8bgCIAvrrl6egW66YOPsKamw1mlBW+WW/NX/Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDW99uzR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11321C4CEE4;
-	Tue, 25 Mar 2025 12:33:43 +0000 (UTC)
+	 MIME-Version; b=uJ77Efg+v0REZtH4B+6nIM+WaAAtG7h2jxN0b8cjfNJT1B0amJlZjDbaXqNYOdxyNV0qVxqu/Bm+vHA9bhjr7ZFW/Ywj4MMA+uXkkr6JqywWtKQYylQD0Bt/VSIzC4oyCxLBhoCJLMcjQRuD7Zg8hajxW1klibrOaRMit8Jd3ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIn/R6T7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38115C4CEE4;
+	Tue, 25 Mar 2025 12:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906024;
-	bh=dv4M0z0eAxNoQeFItUfw4GrXJ9Q7DyuWHMg5HS5BGYE=;
+	s=korg; t=1742906325;
+	bh=DHlMgyBFVGACPGG0/N7RlXojviTQmFixd/NJueHHgCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDW99uzR/t3LxkDylJkv6E43GdAGGZvPcb1itEsLOhmVvy16EprQwfS2/0e3TFG6S
-	 k2VDvDSgnBdT1zpr5jFD2qRK4814GyWTqezHELTRTAlZc8w0tzaff26Wz6QoNeQa0Y
-	 wGd/jaR7zKp0SGf0/gpAo/EUdj5TW7DT2jjEZPVg=
+	b=MIn/R6T7Q2fbotGumrMVNKZBa+1PT0+OwVS1650qHHhPSno9dtmp3GXWCAq05rAOq
+	 4kSWFhfGTyyswWXyqjqO/QVxWuBDa1XUfTKoKsZG43i+BPDElXtyv1jjAe6XnrNrsq
+	 lli6HWq0PaBL01DZN8sb0mNYYmTxGIqWdMNs64s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 6.13 086/119] ARM: shmobile: smp: Enforce shmobile_smp_* alignment
+	Haibo Chen <haibo.chen@nxp.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 057/116] can: flexcan: only change CAN state when link up in system PM
 Date: Tue, 25 Mar 2025 08:22:24 -0400
-Message-ID: <20250325122151.256962426@linuxfoundation.org>
+Message-ID: <20250325122150.667625162@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-commit 379c590113ce46f605439d4887996c60ab8820cc upstream.
+commit fd99d6ed20234b83d65b9c5417794343577cf3e5 upstream.
 
-When the addresses of the shmobile_smp_mpidr, shmobile_smp_fn, and
-shmobile_smp_arg variables are not multiples of 4 bytes, secondary CPU
-bring-up fails:
+After a suspend/resume cycle on a down interface, it will come up as
+ERROR-ACTIVE.
 
-    smp: Bringing up secondary CPUs ...
-    CPU1: failed to come online
-    CPU2: failed to come online
-    CPU3: failed to come online
-    smp: Brought up 1 node, 1 CPU
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
 
-Fix this by adding the missing alignment directive.
+$ sudo systemctl suspend
 
-Fixes: 4e960f52fce16a3b ("ARM: shmobile: Move shmobile_smp_{mpidr, fn, arg}[] from .text to .bss")
-Closes: https://lore.kernel.org/r/CAMuHMdU=QR-JLgEHKWpsr6SbaZRc-Hz9r91JfpP8c3n2G-OjqA@mail.gmail.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/c499234d559a0d95ad9472883e46077311051cd8.1741612208.git.geert+renesas@glider.be
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+
+And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
+has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+
+Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
 Cc: stable@vger.kernel.org
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
+[mkl: add newlines]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-shmobile/headsmp.S |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/flexcan/flexcan-core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/arm/mach-shmobile/headsmp.S
-+++ b/arch/arm/mach-shmobile/headsmp.S
-@@ -136,6 +136,7 @@ ENDPROC(shmobile_smp_sleep)
- 	.long	shmobile_smp_arg - 1b
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -2266,8 +2266,9 @@ static int __maybe_unused flexcan_suspen
+ 		}
+ 		netif_stop_queue(dev);
+ 		netif_device_detach(dev);
++
++		priv->can.state = CAN_STATE_SLEEPING;
+ 	}
+-	priv->can.state = CAN_STATE_SLEEPING;
  
- 	.bss
-+	.align	2
- 	.globl	shmobile_smp_mpidr
- shmobile_smp_mpidr:
- 	.space	NR_CPUS * 4
+ 	return 0;
+ }
+@@ -2278,7 +2279,6 @@ static int __maybe_unused flexcan_resume
+ 	struct flexcan_priv *priv = netdev_priv(dev);
+ 	int err;
+ 
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	if (netif_running(dev)) {
+ 		netif_device_attach(dev);
+ 		netif_start_queue(dev);
+@@ -2298,6 +2298,8 @@ static int __maybe_unused flexcan_resume
+ 
+ 			flexcan_chip_interrupts_enable(dev);
+ 		}
++
++		priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	}
+ 
+ 	return 0;
 
 
 
