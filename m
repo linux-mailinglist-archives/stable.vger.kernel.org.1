@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D31A6FFD7
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D69A70156
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8758E3B8796
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 100993AB5E9
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46436267385;
-	Tue, 25 Mar 2025 12:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BA826B946;
+	Tue, 25 Mar 2025 12:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rn+fCeRX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GN+rjgrb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A922571DC;
-	Tue, 25 Mar 2025 12:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B3226B2B8;
+	Tue, 25 Mar 2025 12:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905734; cv=none; b=D2g0/fCCuoGRCpKAJueX2ptikSqFrftwhyQcTkvQW4OifSXkSoMVb0YqCLuJjMwF6afK7KYGTYv5a1l1JFzzderK8ompb2HPO9W4cOP4No0zMsvP/sNBxZNah4MINS3EAAH+FrJjh2uQggCTmMSjlnqfO8ofzRxTLToLA1Cu5Sw=
+	t=1742906286; cv=none; b=gXl0cKJzHom8AFnqvdZxI9wjju69n/Obs5oh5yb/DtUokeXxdtYVgjqatDPIksgOBhqTcgoPtJNLGpRsjUS6bi50jbHMblva8wsin1vddCUK9N8IgYDvdWi5mX2k2m8Cd3X8Ct4JoQK1f1M6cMYB8mbB6QQTex8YEcHCC0xd29c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905734; c=relaxed/simple;
-	bh=pfcC5D0z4d56x5t7Sj9a7GUWj5Cqsu/Ew2GpYCCXE24=;
+	s=arc-20240116; t=1742906286; c=relaxed/simple;
+	bh=NVyQmfXJvleTFP+bW8WR3OxE0NimQPgFWg6VEJlTfcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOUMYDQ7o4yAJK0kJcVNGX8xod3Rd5YTxxGhNKPqlrspNe083a4XrLhp0ZWyTFBhpBMbD8GvLnO+6bWKU/nRZUgO+VQavH7xajHlJAU/psH69J+QYJ5x0/2JaWqamMkmrZS6sTPb5RVXQo3oLjBoXeErm2J1uxY6KzXVbCsTzNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rn+fCeRX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8EEC4CEE9;
-	Tue, 25 Mar 2025 12:28:53 +0000 (UTC)
+	 MIME-Version; b=eXicqwlii4cSkWt9UWxqX+olbJRNwnjMyHmuLs8aZSA6NonRCY7hFi581970vA3cRovOKPsLsxRjm5icd/T9RlDSygQif8dffLPLbDj4wmj+FMGn6RnlGM+Rbzm1S8oOOZJbgEkjwhzHSf/v6LCOT51IKOzjFSaFHSJ13j80mQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GN+rjgrb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48880C4CEE4;
+	Tue, 25 Mar 2025 12:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905733;
-	bh=pfcC5D0z4d56x5t7Sj9a7GUWj5Cqsu/Ew2GpYCCXE24=;
+	s=korg; t=1742906286;
+	bh=NVyQmfXJvleTFP+bW8WR3OxE0NimQPgFWg6VEJlTfcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rn+fCeRX/0hPZ1Z3CLVrK8wiY4GGEtunGwdjTlAzT9gOsEWGFERxETLYE+hwRON6m
-	 h5u9LHZODSUDfFh1/z5yBi1/GaGbuiYhYz+aNgfvory6DfK+bRqW52m5ty4eJ8jngH
-	 ztVHkwf25QWvSb3y0hqySaYU+8dDZ2kZ2VLqnK9M=
+	b=GN+rjgrbxll46qE2kB9sylkeJKHEpCCfWq3SP8gSC4i5UBo31P48kF5kYZKtAFkoL
+	 jPV+qq7rKvZihjVjgkWLI3AByVTEOUxJF3KTZHodll/kBi7jOEfafpWrK8+LokV0pA
+	 CYN08ZiYTM1lQfyiFXnWn00v7odJl1dzQ5ZnwAK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Steve French <stfrench@microsoft.com>,
+	Marek Vasut <marex@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/198] cifs: Fix integer overflow while processing acregmax mount option
+Subject: [PATCH 6.12 008/116] soc: imx8m: Remove global soc_uid
 Date: Tue, 25 Mar 2025 08:21:35 -0400
-Message-ID: <20250325122200.143151392@linuxfoundation.org>
+Message-ID: <20250325122149.427899854@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 7489161b1852390b4413d57f2457cd40b34da6cc ]
+[ Upstream commit 9c1c02fe8d7f33c18547b79c41f3fa41ef7bae8f ]
 
-User-provided mount parameter acregmax of type u32 is intended to have
-an upper limit, but before it is validated, the value is converted from
-seconds to jiffies which can lead to an integer overflow.
+The static global soc_uid is only ever used as kasprintf() parameter in
+imx8m_soc_probe(). Pass pointer to local u64 variable to .soc_revision()
+callback instead and let the .soc_revision() callback fill in the content.
+Remove the unnecessary static global variable.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 5780464614f6 ("cifs: Add new parameter "acregmax" for distinct file and directory metadata timeout")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: cf7139aac463 ("soc: imx8m: Unregister cpufreq and soc dev in cleanup path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/imx/soc-imx8m.c | 31 +++++++++++++++----------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index ca39d01077cdf..b9a47dd5db632 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1078,11 +1078,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 		ctx->got_wsize = true;
- 		break;
- 	case Opt_acregmax:
--		ctx->acregmax = HZ * result.uint_32;
--		if (ctx->acregmax > CIFS_MAX_ACTIMEO) {
-+		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
- 			cifs_errorf(fc, "acregmax too large\n");
- 			goto cifs_parse_mount_err;
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index 5ea8887828c06..966593320e28d 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -30,11 +30,9 @@
+ 
+ struct imx8_soc_data {
+ 	char *name;
+-	int (*soc_revision)(u32 *socrev);
++	int (*soc_revision)(u32 *socrev, u64 *socuid);
+ };
+ 
+-static u64 soc_uid;
+-
+ #ifdef CONFIG_HAVE_ARM_SMCCC
+ static u32 imx8mq_soc_revision_from_atf(void)
+ {
+@@ -51,7 +49,7 @@ static u32 imx8mq_soc_revision_from_atf(void)
+ static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
+ #endif
+ 
+-static int imx8mq_soc_revision(u32 *socrev)
++static int imx8mq_soc_revision(u32 *socrev, u64 *socuid)
+ {
+ 	struct device_node *np;
+ 	void __iomem *ocotp_base;
+@@ -89,9 +87,9 @@ static int imx8mq_soc_revision(u32 *socrev)
+ 			rev = REV_B1;
+ 	}
+ 
+-	soc_uid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH);
+-	soc_uid <<= 32;
+-	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
++	*socuid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH);
++	*socuid <<= 32;
++	*socuid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
+ 
+ 	*socrev = rev;
+ 
+@@ -109,7 +107,7 @@ static int imx8mq_soc_revision(u32 *socrev)
+ 	return ret;
+ }
+ 
+-static int imx8mm_soc_uid(void)
++static int imx8mm_soc_uid(u64 *socuid)
+ {
+ 	void __iomem *ocotp_base;
+ 	struct device_node *np;
+@@ -136,9 +134,9 @@ static int imx8mm_soc_uid(void)
+ 
+ 	clk_prepare_enable(clk);
+ 
+-	soc_uid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH + offset);
+-	soc_uid <<= 32;
+-	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
++	*socuid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH + offset);
++	*socuid <<= 32;
++	*socuid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
+ 
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
+@@ -151,7 +149,7 @@ static int imx8mm_soc_uid(void)
+ 	return ret;
+ }
+ 
+-static int imx8mm_soc_revision(u32 *socrev)
++static int imx8mm_soc_revision(u32 *socrev, u64 *socuid)
+ {
+ 	struct device_node *np;
+ 	void __iomem *anatop_base;
+@@ -172,7 +170,7 @@ static int imx8mm_soc_revision(u32 *socrev)
+ 	iounmap(anatop_base);
+ 	of_node_put(np);
+ 
+-	return imx8mm_soc_uid();
++	return imx8mm_soc_uid(socuid);
+ 
+ err_iomap:
+ 	of_node_put(np);
+@@ -215,10 +213,11 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
+ static int imx8m_soc_probe(struct platform_device *pdev)
+ {
+ 	struct soc_device_attribute *soc_dev_attr;
+-	struct soc_device *soc_dev;
++	const struct imx8_soc_data *data;
+ 	const struct of_device_id *id;
++	struct soc_device *soc_dev;
+ 	u32 soc_rev = 0;
+-	const struct imx8_soc_data *data;
++	u64 soc_uid = 0;
+ 	int ret;
+ 
+ 	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
+@@ -241,7 +240,7 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+ 	if (data) {
+ 		soc_dev_attr->soc_id = data->name;
+ 		if (data->soc_revision) {
+-			ret = data->soc_revision(&soc_rev);
++			ret = data->soc_revision(&soc_rev, &soc_uid);
+ 			if (ret)
+ 				goto free_soc;
  		}
-+		ctx->acregmax = HZ * result.uint_32;
- 		break;
- 	case Opt_acdirmax:
- 		ctx->acdirmax = HZ * result.uint_32;
 -- 
 2.39.5
 
