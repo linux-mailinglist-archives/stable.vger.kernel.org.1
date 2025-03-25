@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADFCAA70126
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C34AA7008C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00BFE1741F5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA41517340A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BB025DAE6;
-	Tue, 25 Mar 2025 12:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE54A25C6E5;
+	Tue, 25 Mar 2025 12:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkJw3OvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaaKgYQu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E896426F455;
-	Tue, 25 Mar 2025 12:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B35925BADD;
+	Tue, 25 Mar 2025 12:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906368; cv=none; b=UJ7im7f4+dFuNI7Y+MZHkwBEA4GFpta2JLVkPev27ohOSkmS5muNjoSvs7IHGQKSSPfrLBqxl+fJdIC0qBDObhIe6guk+3I3o5/ftDhjfBIEWNXy+aBcYnc5PN8Z7Wwp546YBmz/NuzLQsOWPcjKaZklBSOakm9/m5ffdecqT8c=
+	t=1742906168; cv=none; b=bOJiWSXWYeCNqc7t/iLoMtfePp7CzA2cXOK4IOTv0/tqwxw3KLn3/3f0XezlAEKDRRWLlJ3LnKh+25mT8yDAu446mQp0H8GQlUCAKhQpMmuLOF2wThjbV0Bl1nYi1Ans9Gc9aptFfqqaSNZPshMWpTItd2r2Oiuqc8/wNMWrwG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906368; c=relaxed/simple;
-	bh=xXoObsU5IiMyGt2kJki6C9oLkeqAO9zJp4FvfGlKKPE=;
+	s=arc-20240116; t=1742906168; c=relaxed/simple;
+	bh=dYf+e7Q65hn46QSAL+ccO8dHfRv1jEfT3QmgRfyCf2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/RqPVAys+2USaeyANYehKTThvWVgcqBYdcSV3sIee1IAe3EhIqKSNXSmdi9/u1t4mt5F/opEb69jxUjjTotdSUHbE6ZgA0j2EPrw1N2tdKMn5cwEPeLe5WwSs+7KLi7ZaM1BhnevdEbpLcSJYW/jFnfKhC72AYCmJBfnOp3sjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkJw3OvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29884C4CEE4;
-	Tue, 25 Mar 2025 12:39:27 +0000 (UTC)
+	 MIME-Version; b=k565JSELlX3HaSL0KtaKkIhdxF2m3rNO6CwOe1i8MTK3mc7+JuBlxUulsvBLlDLvARNjUbmpP7Atj2jwYs00SGcOeixn4qdudpTiXLyFhsvYsIEz5aVccl1OA7XbT53fpUlUI8zscI+fdLq+1MkIb8Oikw6NZpIhf/CKaz0ap5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaaKgYQu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472B4C4CEE4;
+	Tue, 25 Mar 2025 12:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906367;
-	bh=xXoObsU5IiMyGt2kJki6C9oLkeqAO9zJp4FvfGlKKPE=;
+	s=korg; t=1742906168;
+	bh=dYf+e7Q65hn46QSAL+ccO8dHfRv1jEfT3QmgRfyCf2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkJw3OvUOm+cc6RtU5ziCRkm4STNWuihvsqVUSbHM48GUtXzk/yE87KTqRKSTAUmM
-	 7NOkW2mTJYluUYVsspaEppjJh8Svk5/H3K5DrJ73H4MwKmtFTgZX+ax/xxWka2DovW
-	 tSmQQPbBdkD7W15wbfQyx32bnLsxrsCl697L3hlk=
+	b=OaaKgYQuT+9WqmgkxMG72423ET5W1hYvbsvKP+em1ao7S9NWs3ixyCcSR/Va3TV1+
+	 AbaYGJhAAoSyUOLGnUhu2Lo63eBgD9e/pSMUcfZChzmobbMSzERyMF7RxH9LiQqJbD
+	 co57oab0hXiX79MRnBCkfZz55yO3a4S0WUBDxXWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.12 080/116] ARM: dts: imx6qdl-apalis: Fix poweroff on Apalis iMX6
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 52/77] xsk: fix an integer overflow in xp_create_and_assign_umem()
 Date: Tue, 25 Mar 2025 08:22:47 -0400
-Message-ID: <20250325122151.256494461@linuxfoundation.org>
+Message-ID: <20250325122145.713166262@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-commit 83964a29379cb08929a39172780a4c2992bc7c93 upstream.
+commit 559847f56769037e5b2e0474d3dbff985b98083d upstream.
 
-The current solution for powering off the Apalis iMX6 is not functioning
-as intended. To resolve this, it is necessary to power off the
-vgen2_reg, which will also set the POWER_ENABLE_MOCI signal to a low
-state. This ensures the carrier board is properly informed to initiate
-its power-off sequence.
+Since the i and pool->chunk_size variables are of type 'u32',
+their product can wrap around and then be cast to 'u64'.
+This can lead to two different XDP buffers pointing to the same
+memory area.
 
-The new solution uses the regulator-poweroff driver, which will power
-off the regulator during a system shutdown.
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 4eb56e26f92e ("ARM: dts: imx6q-apalis: Command pmic to standby for poweroff")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 94033cd8e73b ("xsk: Optimize for aligned case")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Link: https://patch.msgid.link/20250313085007.3116044-1-Ilia.Gavrilov@infotecs.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/xdp/xsk_buff_pool.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-@@ -108,6 +108,11 @@
- 		};
- 	};
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -104,7 +104,7 @@ struct xsk_buff_pool *xp_create_and_assi
+ 		if (pool->unaligned)
+ 			pool->free_heads[i] = xskb;
+ 		else
+-			xp_init_xskb_addr(xskb, pool, i * pool->chunk_size);
++			xp_init_xskb_addr(xskb, pool, (u64)i * pool->chunk_size);
+ 	}
  
-+	poweroff {
-+		compatible = "regulator-poweroff";
-+		cpu-supply = <&vgen2_reg>;
-+	};
-+
- 	reg_module_3v3: regulator-module-3v3 {
- 		compatible = "regulator-fixed";
- 		regulator-always-on;
-@@ -236,10 +241,6 @@
- 	status = "disabled";
- };
- 
--&clks {
--	fsl,pmic-stby-poweroff;
--};
--
- /* Apalis SPI1 */
- &ecspi1 {
- 	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
-@@ -527,7 +528,6 @@
- 
- 	pmic: pmic@8 {
- 		compatible = "fsl,pfuze100";
--		fsl,pmic-stby-poweroff;
- 		reg = <0x08>;
- 
- 		regulators {
+ 	return pool;
 
 
 
