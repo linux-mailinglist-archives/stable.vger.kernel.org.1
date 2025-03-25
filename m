@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EEBA6FF8A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:05:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2140A6FF7F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A48D177795
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81E32172FE1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FF9266B56;
-	Tue, 25 Mar 2025 12:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC315266B66;
+	Tue, 25 Mar 2025 12:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bY9mANlp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yT8LmCrX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF32325745F;
-	Tue, 25 Mar 2025 12:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F1C266B63;
+	Tue, 25 Mar 2025 12:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905669; cv=none; b=jAMLyObnSl3hVAUf1JkdCRjhXOYLx2nbnbsMgcANRUlZUkyi/Ke9TMEwySQsxsOD4lv8R6hpe1/Oc0AlQxGGGmQuRMvNoIPJq/3Pl0Vujeu0nZN+XaGqPUv80qoSwOAzI2HXF0cL1G3SE4KE/JmUaOwCi7Bcr+Gxnkky3ymptaA=
+	t=1742905677; cv=none; b=jKXoeMJb9dc3z8xprRNI68qOhDFlFexkPEtgJ/Tt2n8Z560N9XoPqr/9xmSI0OBPDhIptQ4UjjgT6EPHRjMBg0A7OcIU58dDRjQmWk9RBx5f5e9jMhEfA2bQAsmopJRz4SAT7jvMz4ut8zU/V9qA9DR84RaQUYiLy+Uc3mdH2M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905669; c=relaxed/simple;
-	bh=8tRmqafhXgPULLasVK5YxwZo601+CCPalOMA3xz2G0A=;
+	s=arc-20240116; t=1742905677; c=relaxed/simple;
+	bh=O0IA928cLXMNfQkfsU6Z+qgeyEqqZZ0QSS+nP3FGtQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JseNEBBYrdWJYhptr/+NpDtacT60c/C77cNaGZIDxkWW8dsMNPUjcCV/HRUANvgo9K97UF5lH5egAbn08VQSycp7YJd56MmoE+FdO50iWJYE03cQ7Nqc+fz4Zq0blGFYuqV2X2iL+DbJpWLyM4ch/T2swv5sr7nsA391ry+jTYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bY9mANlp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6490AC4CEE4;
-	Tue, 25 Mar 2025 12:27:49 +0000 (UTC)
+	 MIME-Version; b=RqFnGx08uuR9bKaNPWhOupkSX0KaAgXKBeDKLEALU1PJwkGJf2EsKuG1tR3wMiKHDVtUmzA8hWuoE1CDvnal9L9FEc55MKIrUL3MMOr0fOlzYGuAf9kpFl98zoIw+b2onYtFygR7H60zaQKRpaTTjbd/f4A8Dw0WbC/8dJOqz64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yT8LmCrX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B095FC4CEE4;
+	Tue, 25 Mar 2025 12:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905669;
-	bh=8tRmqafhXgPULLasVK5YxwZo601+CCPalOMA3xz2G0A=;
+	s=korg; t=1742905676;
+	bh=O0IA928cLXMNfQkfsU6Z+qgeyEqqZZ0QSS+nP3FGtQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bY9mANlpOakIGoF1ayRTgMsbrD8a5dObjLLVC/nj8gpJKQq1i/EFERgw94ahBBuP4
-	 ym/b9G0YdFIeB/gZllwu4amymAomUljxGZy5r+vuEelLhM0F1GgkRGuBwFzWoveWud
-	 /su4NSJ3ImkLu220DJXQDwRvjxduiqWX/J4VohEU=
+	b=yT8LmCrXbHIW5R7vtE2Yil4yPVxCbbHw88VKSJrzJLbX9OS0eN09YScxhpGuilAx3
+	 Kv1AOdTeyWBjkS1m5GM02uhAc4vtovBvCyzPin7mChPmR6BIn4ycaO3cJExG5fNrMr
+	 xl7+q6AqNmsYrmWX/cVIgNCyOOhUMWuVdKYq+iFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
+	Andrey Albershteyn <aalbersh@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 099/198] xfs: fix perag leak when growfs fails
-Date: Tue, 25 Mar 2025 08:21:01 -0400
-Message-ID: <20250325122159.248314607@linuxfoundation.org>
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: [PATCH 6.1 102/198] xfs: reset XFS_ATTR_INCOMPLETE filter on node removal
+Date: Tue, 25 Mar 2025 08:21:04 -0400
+Message-ID: <20250325122159.328590930@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -68,150 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Andrey Albershteyn <aalbersh@redhat.com>
 
-[ Upstream commit 7823921887750b39d02e6b44faafdd1cc617c651 ]
+[ Upstream commit 82ef1a5356572219f41f9123ca047259a77bd67b ]
 
-[ 6.1: resolved conflicts in xfs_ag.c and xfs_ag.h ]
+In XFS_DAS_NODE_REMOVE_ATTR case, xfs_attr_mode_remove_attr() sets
+filter to XFS_ATTR_INCOMPLETE. The filter is then reset in
+xfs_attr_complete_op() if XFS_DA_OP_REPLACE operation is performed.
 
-During growfs, if new ag in memory has been initialized, however
-sb_agcount has not been updated, if an error occurs at this time it
-will cause perag leaks as follows, these new AGs will not been freed
-during umount , because of these new AGs are not visible(that is
-included in mp->m_sb.sb_agcount).
+The filter is not reset though if XFS just removes the attribute
+(args->value == NULL) with xfs_attr_defer_remove(). attr code goes
+to XFS_DAS_DONE state.
 
-unreferenced object 0xffff88810be40200 (size 512):
-  comm "xfs_growfs", pid 857, jiffies 4294909093
-  hex dump (first 32 bytes):
-    00 c0 c1 05 81 88 ff ff 04 00 00 00 00 00 00 00  ................
-    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 381741e2):
-    [<ffffffff8191aef6>] __kmalloc+0x386/0x4f0
-    [<ffffffff82553e65>] kmem_alloc+0xb5/0x2f0
-    [<ffffffff8238dac5>] xfs_initialize_perag+0xc5/0x810
-    [<ffffffff824f679c>] xfs_growfs_data+0x9bc/0xbc0
-    [<ffffffff8250b90e>] xfs_file_ioctl+0x5fe/0x14d0
-    [<ffffffff81aa5194>] __x64_sys_ioctl+0x144/0x1c0
-    [<ffffffff83c3d81f>] do_syscall_64+0x3f/0xe0
-    [<ffffffff83e00087>] entry_SYSCALL_64_after_hwframe+0x62/0x6a
-unreferenced object 0xffff88810be40800 (size 512):
-  comm "xfs_growfs", pid 857, jiffies 4294909093
-  hex dump (first 32 bytes):
-    20 00 00 00 00 00 00 00 57 ef be dc 00 00 00 00   .......W.......
-    10 08 e4 0b 81 88 ff ff 10 08 e4 0b 81 88 ff ff  ................
-  backtrace (crc bde50e2d):
-    [<ffffffff8191b43a>] __kmalloc_node+0x3da/0x540
-    [<ffffffff81814489>] kvmalloc_node+0x99/0x160
-    [<ffffffff8286acff>] bucket_table_alloc.isra.0+0x5f/0x400
-    [<ffffffff8286bdc5>] rhashtable_init+0x405/0x760
-    [<ffffffff8238dda3>] xfs_initialize_perag+0x3a3/0x810
-    [<ffffffff824f679c>] xfs_growfs_data+0x9bc/0xbc0
-    [<ffffffff8250b90e>] xfs_file_ioctl+0x5fe/0x14d0
-    [<ffffffff81aa5194>] __x64_sys_ioctl+0x144/0x1c0
-    [<ffffffff83c3d81f>] do_syscall_64+0x3f/0xe0
-    [<ffffffff83e00087>] entry_SYSCALL_64_after_hwframe+0x62/0x6a
+Fix this by always resetting XFS_ATTR_INCOMPLETE filter. The replace
+operation already resets this filter in anyway and others are
+completed at this step hence don't need it.
 
-Factor out xfs_free_unused_perag_range() from xfs_initialize_perag(),
-used for freeing unused perag within a specified range in error handling,
-included in the error path of the growfs failure.
-
-Fixes: 1c1c6ebcf528 ("xfs: Replace per-ag array with a radix tree")
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Fixes: fdaf1bb3cafc ("xfs: ATTR_REPLACE algorithm with LARP enabled needs rework")
+Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_ag.c |   34 +++++++++++++++++++++++++---------
- fs/xfs/libxfs/xfs_ag.h |    3 +++
- fs/xfs/xfs_fsops.c     |    5 ++++-
- 3 files changed, 32 insertions(+), 10 deletions(-)
+ fs/xfs/libxfs/xfs_attr.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_ag.c
-+++ b/fs/xfs/libxfs/xfs_ag.c
-@@ -259,6 +259,30 @@ xfs_agino_range(
- 	return __xfs_agino_range(mp, xfs_ag_block_count(mp, agno), first, last);
- }
+--- a/fs/xfs/libxfs/xfs_attr.c
++++ b/fs/xfs/libxfs/xfs_attr.c
+@@ -421,10 +421,10 @@ xfs_attr_complete_op(
+ 	bool			do_replace = args->op_flags & XFS_DA_OP_REPLACE;
  
-+/*
-+ * Free perag within the specified AG range, it is only used to free unused
-+ * perags under the error handling path.
-+ */
-+void
-+xfs_free_unused_perag_range(
-+	struct xfs_mount	*mp,
-+	xfs_agnumber_t		agstart,
-+	xfs_agnumber_t		agend)
-+{
-+	struct xfs_perag	*pag;
-+	xfs_agnumber_t		index;
-+
-+	for (index = agstart; index < agend; index++) {
-+		spin_lock(&mp->m_perag_lock);
-+		pag = radix_tree_delete(&mp->m_perag_tree, index);
-+		spin_unlock(&mp->m_perag_lock);
-+		if (!pag)
-+			break;
-+		xfs_buf_hash_destroy(pag);
-+		kmem_free(pag);
-+	}
-+}
-+
- int
- xfs_initialize_perag(
- 	struct xfs_mount	*mp,
-@@ -352,15 +376,7 @@ out_free_pag:
- 	kmem_free(pag);
- out_unwind_new_pags:
- 	/* unwind any prior newly initialized pags */
--	for (index = first_initialised; index < agcount; index++) {
--		spin_lock(&mp->m_perag_lock);
--		pag = radix_tree_delete(&mp->m_perag_tree, index);
--		spin_unlock(&mp->m_perag_lock);
--		if (!pag)
--			break;
--		xfs_buf_hash_destroy(pag);
--		kmem_free(pag);
+ 	args->op_flags &= ~XFS_DA_OP_REPLACE;
+-	if (do_replace) {
+-		args->attr_filter &= ~XFS_ATTR_INCOMPLETE;
++	args->attr_filter &= ~XFS_ATTR_INCOMPLETE;
++	if (do_replace)
+ 		return replace_state;
 -	}
-+	xfs_free_unused_perag_range(mp, first_initialised, agcount);
- 	return error;
- }
- 
---- a/fs/xfs/libxfs/xfs_ag.h
-+++ b/fs/xfs/libxfs/xfs_ag.h
-@@ -106,6 +106,9 @@ struct xfs_perag {
- #endif /* __KERNEL__ */
- };
- 
 +
-+void xfs_free_unused_perag_range(struct xfs_mount *mp, xfs_agnumber_t agstart,
-+			xfs_agnumber_t agend);
- int xfs_initialize_perag(struct xfs_mount *mp, xfs_agnumber_t agcount,
- 			xfs_rfsblock_t dcount, xfs_agnumber_t *maxagi);
- int xfs_initialize_perag_data(struct xfs_mount *mp, xfs_agnumber_t agno);
---- a/fs/xfs/xfs_fsops.c
-+++ b/fs/xfs/xfs_fsops.c
-@@ -153,7 +153,7 @@ xfs_growfs_data_private(
- 			(delta > 0 ? XFS_GROWFS_SPACE_RES(mp) : -delta), 0,
- 			XFS_TRANS_RESERVE, &tp);
- 	if (error)
--		return error;
-+		goto out_free_unused_perag;
- 
- 	last_pag = xfs_perag_get(mp, oagcount - 1);
- 	if (delta > 0) {
-@@ -227,6 +227,9 @@ xfs_growfs_data_private(
- 
- out_trans_cancel:
- 	xfs_trans_cancel(tp);
-+out_free_unused_perag:
-+	if (nagcount > oagcount)
-+		xfs_free_unused_perag_range(mp, oagcount, nagcount);
- 	return error;
+ 	return XFS_DAS_DONE;
  }
  
 
