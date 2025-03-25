@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-126320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA66A700E8
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851CAA70059
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88F55843D13
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E491B7A268D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7FB25A359;
-	Tue, 25 Mar 2025 12:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F74926B2D9;
+	Tue, 25 Mar 2025 12:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMzaLYqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+1lDpxO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496ED2690FF;
-	Tue, 25 Mar 2025 12:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D115A26B2B3;
+	Tue, 25 Mar 2025 12:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906006; cv=none; b=nLKh5ZCilVKXKObVjLSx43TguphFiR8AaV+N9CE02UiOy2bUYqz7AZ5R0GQef/KBA7HdqcyPU2vmx09kL0Fnn1C8+YCRKCiNfa+esJ6eM5/fLVd3hrHqZVqxMPB+my25nXzsy3sJr9xy3vRvkgTyqnDz32M+Ng1iRpIZr5O4oq4=
+	t=1742906269; cv=none; b=OBqyNGMdFR5swRVeA4UOgeUPikjkmCqeDkMSj1OZ5o/54tQVipT3MyZR5hoKbHQqex+JhWdi/2AtXKIcTCsxlHdwPzVgskJ2iWoS+RtH/gQfz9CJYXxwSXJANOJrXwFt6rp9zN8+q6SAZRKBRmnF07W8u8zXxU9rpWz+L7rgRpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906006; c=relaxed/simple;
-	bh=AI4m7FcNGF1eW9R1qWPUN2Q8Ptvp5OttdcIwa+DsAz8=;
+	s=arc-20240116; t=1742906269; c=relaxed/simple;
+	bh=mihGpEh87Ea2GDSMfIn32bIjwtZVN5AI+OIpLtwSr/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/56btZCl459SVQYMY68sODFVq+g7Atw+D9TbZEsnnN+vnN0//Ye90siIFwRR36MDyzBgYGJpIcMotg6vQ1SqFS6+DPw1GddiNNi5ANoTkPbZxnDJzMRYM+yEIPOU2zidzyuX+lep0c+zEhQU1pNFSka0rt208Yk4JIpescDkQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMzaLYqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F017AC4CEE4;
-	Tue, 25 Mar 2025 12:33:25 +0000 (UTC)
+	 MIME-Version; b=J92BOfr2g5A+OCFhgG6CbU4G2cr9fpHOFVcM+WdW6PxZCU1kOVgDBGbDIQKnC1Tj3LfuF6J8myVLhqb565OHoviK5yWtuZEjhQKX5vwgl+D7EOGgIOzTMT9JuzE4CQ4+K2Ty4i3j6xB54o81vgMkbGYS7e5JZ28PmX22Sx00Ue8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+1lDpxO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2761CC4CEE4;
+	Tue, 25 Mar 2025 12:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906006;
-	bh=AI4m7FcNGF1eW9R1qWPUN2Q8Ptvp5OttdcIwa+DsAz8=;
+	s=korg; t=1742906269;
+	bh=mihGpEh87Ea2GDSMfIn32bIjwtZVN5AI+OIpLtwSr/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMzaLYqXcTnKElKDu+x6WXmbOEZ2uj2c9erPKIKSoouYGrcozK2kPItY9PjkSAfAY
-	 CeFQtaYnkX7Ch62HQ+5/JGiZdsw/M8zkZyp66uRj0s3z97xQHmWr+kFrq5lIQIW3YT
-	 SDYBcQ0ScO6enOrnkqEz4AlJLccTH+kcswQRFN9c=
+	b=P+1lDpxOK+qO4HglqjVHb0MO6F9atrgAJ42jEsj8ienp53LmdkxMGHDBoTYZ4q1+G
+	 Xsb4/eXzrzsiV2bp16mtHlZH6HHHyenswh2l9C4QLggK8OVwo/AA0kLzf44NZ/vXVV
+	 5VsUOi2F6oOaz9mlAbAEXO0Vd2JhjiuRQvfW4kmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.13 056/119] dt-bindings: can: renesas,rcar-canfd: Fix typo in pattern properties for R-Car V4M
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 027/116] RDMA/hns: Fix a missing rollback in error path of hns_roce_create_qp_common()
 Date: Tue, 25 Mar 2025 08:21:54 -0400
-Message-ID: <20250325122150.485552724@linuxfoundation.org>
+Message-ID: <20250325122149.909833125@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit 51f6fc9eb1d77ae5cacc796fc043dedc1f0f0073 upstream.
+[ Upstream commit 444907dd45cbe62fd69398805b6e2c626fab5b3a ]
 
-The Renesas R-Car V4M(R8A779H0) SoC, supports up to four channels.
-Fix the typo 5->4 in pattern properties.
+When ib_copy_to_udata() fails in hns_roce_create_qp_common(),
+hns_roce_qp_remove() should be called in the error path to
+clean up resources in hns_roce_qp_store().
 
-Fixes: ced52c6ed257 ("dt-bindings: can: renesas,rcar-canfd: Document R-Car V4M support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: "Rob Herring (Arm)" <robh@kernel.org>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20250307170330.173425-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0f00571f9433 ("RDMA/hns: Use new SQ doorbell register for HIP09")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250311084857.3803665-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml |    2 +-
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
-+++ b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
-@@ -170,7 +170,7 @@ allOf:
-             const: renesas,r8a779h0-canfd
-     then:
-       patternProperties:
--        "^channel[5-7]$": false
-+        "^channel[4-7]$": false
-     else:
-       if:
-         not:
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index 8408f9a5c309d..52b671156246b 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -1220,7 +1220,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
+ 				       min(udata->outlen, sizeof(resp)));
+ 		if (ret) {
+ 			ibdev_err(ibdev, "copy qp resp failed!\n");
+-			goto err_store;
++			goto err_flow_ctrl;
+ 		}
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
