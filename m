@@ -1,140 +1,114 @@
-Return-Path: <stable+bounces-126006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1702FA6EE23
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:47:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 112B5A6F19F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:18:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA6A3AB8DE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 10:46:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0958188D13F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4CE253F00;
-	Tue, 25 Mar 2025 10:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38651EFF85;
+	Tue, 25 Mar 2025 11:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BdAuEhfM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NBgiS/uH"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E15C1EBA1C
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 10:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A5C2E337C;
+	Tue, 25 Mar 2025 11:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742899603; cv=none; b=QyoXIdn1STyqGzSKVvHPacIqUj4PLxklLNG+OVXYa7XzS0/qy64b/+NJ3PQBrZlGV7a0NYIlmydzVmOdFJHsIuuvkPjK19pynIFBgdD0HA9dhtDTCpTahNM5UClxGFQl1jhcOx0ftqCUGLwQXnlEEEX/ST49AliWXWPtAOW2mwY=
+	t=1742901496; cv=none; b=JfKOEliJ27jGtc+HayQNxw7Yv5EVDnC0YXSVwyfhN8XHTA2AS/+DxdRvtqFVqrZpmXtt2RUXrGxrygAghRBxBQmVvh3KwcHL1LzNHn4CGx6wBHPvFLyOi++LuY1n1/XJMQkXb+TPbSKB50rFeyGWmUPSLUsyPAKLeXkGdK6ymNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742899603; c=relaxed/simple;
-	bh=vkbpeFmqD668MPanvRonoQwCZ0BQK81IhaRcc7RnYTo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AhJkkWVUTk7mmNFc22MGTcIMdcQqLyXzycy3keGYswfTiCbg9n45+vMxt2aS46aNBrxfntAU3zJOQLEdyXGG+0MrJ3HbgXNlF7/ZxdterL6fHPEOWBrZzg3rLyZTAqxk2kmppnXEqImX3qBEiF3hqs8ijLy6gRsT1LMexfzB/rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BdAuEhfM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742899600;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IL/6aR5DxlrxjOnL/vY3X0cqTZslpUhOi/XOXuXLhhE=;
-	b=BdAuEhfMfQEehbJjjvBbU7Ve4u6pCdIsoND/YqcigEQuuPbJPrbuz07YQbtSgvKzUL25xv
-	XcM3xwVUKMuryOa2cgym1ud5Jj9p1pqbkp7mzLJtyrjzIr8lZtkIAeWYzBxcljPEnPt8KJ
-	AcvG8z79YmlNCaiKL0owTvPlWX/GnMk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-6ljh4DScM2ScaEDG0u-VTQ-1; Tue, 25 Mar 2025 06:46:38 -0400
-X-MC-Unique: 6ljh4DScM2ScaEDG0u-VTQ-1
-X-Mimecast-MFC-AGG-ID: 6ljh4DScM2ScaEDG0u-VTQ_1742899597
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-39134c762ebso2171753f8f.0
-        for <stable@vger.kernel.org>; Tue, 25 Mar 2025 03:46:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742899597; x=1743504397;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IL/6aR5DxlrxjOnL/vY3X0cqTZslpUhOi/XOXuXLhhE=;
-        b=Zm4rtlYkfr9SqQlGr0shkjNweOoneb4TSqOd9vTXYpQ9v42mvCpQJ1ztnQN63XSr9b
-         25PKVzUDR/3hknfa3n3ISlGYl2Z1CeKIHBk6vNg77PB/Hp4ds/Y5dyG7wdJE7bz5uO1z
-         wfUvHizSZ+RjHTjCv086mOHFdxehAJdjcvrrpnt6DsIalhtsmTA5cQ76J1pRp23fypR8
-         K4mI8tzkCaRpcOO0gtZlqYsXKrBSxKhoWlgZBOr7/fC21zIVUpzzIsqUEgdpn91KYOFS
-         J9//wOhGbfIMx3DLLtLwf/dYE33j9R2Y8ek+YP/AEAv7L0ceiqn2MnKfO+h7nGYn8P+3
-         iLhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0ktxuVyeXqMxOfFjRlYchciXKLb5gOds0XTSYa9tUQECTQXrRENQW7itIqfgCwZ08lRZawG0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAF/8Rwtlrhb0Cv8ASSx9RcWunKvdCPbWFsW1nLWThBEBllS2r
-	gmUDLjan16puPXUuZq6kVnNURiuAq0UwWLhMOqdxE6OaZ55VTdSaZ8dhQAZlsK6ETVT2DsQT8Vx
-	56U+FxD7jlgoFuIXjo+FyREP5hH3n/R30d+KQnJUh2Ahcn0bUPrdHXA==
-X-Gm-Gg: ASbGncse+m2TPHerU6Lgn7xb79aCey423bfv6poAONDuv9Tw5Jswv1xk/8pdmIzOsMo
-	VqRCvoKJmJa/6BirtXAvLlxsIhs/dhZS/OAF7iXzAox/K+jXUZmhqFBRPIq049W+wyNpcSw5HjR
-	ssDUZdP98sgGvo9uL2k6dKNkR98lbylx25ZYY8rgnBEAZyz303uyqVixCF74uZvp+QN1pAK+cL5
-	Bc9h0UXystHtUFtQgY7Sx3pkivIDVTzM41Bq9eqyJpRUXB7H9v291TQVBboFKsd4N7lkAd+h4rT
-	aPDT5zCMfMxqWMGuV1WWtgbtQUOArzkl0YFvOQKPGyc1i89lT5PpINiUv7isAF/KEj0=
-X-Received: by 2002:a05:6000:2cd:b0:391:2f2f:818 with SMTP id ffacd0b85a97d-3997f8edc1dmr15905511f8f.9.1742899597445;
-        Tue, 25 Mar 2025 03:46:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEw5sCn6O0eZPQdrxPvOONhB4Ut43Nqsv6iiLVmfKeBePtnVQmM3EmzBo2MGDhKqQ2BMNL+cw==
-X-Received: by 2002:a05:6000:2cd:b0:391:2f2f:818 with SMTP id ffacd0b85a97d-3997f8edc1dmr15905478f8f.9.1742899597091;
-        Tue, 25 Mar 2025 03:46:37 -0700 (PDT)
-Received: from maszat.piliscsaba.szeredi.hu (87-97-53-119.pool.digikabel.hu. [87.97.53.119])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9a50c1sm13572203f8f.38.2025.03.25.03.46.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Mar 2025 03:46:36 -0700 (PDT)
-From: Miklos Szeredi <mszeredi@redhat.com>
-To: linux-unionfs@vger.kernel.org
-Cc: Amir Goldstein <amir73il@gmail.com>,
-	linux-fsdevel@vger.kernel.org,
-	Giuseppe Scrivano <gscrivan@redhat.com>,
-	Alexander Larsson <alexl@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/5] ovl: don't allow datadir only
-Date: Tue, 25 Mar 2025 11:46:29 +0100
-Message-ID: <20250325104634.162496-2-mszeredi@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325104634.162496-1-mszeredi@redhat.com>
-References: <20250325104634.162496-1-mszeredi@redhat.com>
+	s=arc-20240116; t=1742901496; c=relaxed/simple;
+	bh=YKEx+3kZIuqatXHZs92dkeyJl2HsuW8fMwoN685s2eM=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=W/Wd0gT5lJv42ebPoitQAQqk/7QlAFRrWmmihdWgOkDKZu47dhZQb7QoEyf+8D7EXHH4Hl6j2/1LGAtB+jg8hHg0Q7SWk0WKzsMMhWDLSaIx4zRoA+Ip1Pqq4TbH/8aac/Fnucm00I1E0f3uGulD2k3S6x6vAjdBQ64y/4+EJVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NBgiS/uH; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742901495; x=1774437495;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=YKEx+3kZIuqatXHZs92dkeyJl2HsuW8fMwoN685s2eM=;
+  b=NBgiS/uHfWGA1UQXzMRjaVTxN3Cgs7+DWwX8i6OeFKGmpBvsjgIQSp/H
+   O5VCLiQRXmFWv47aG8OVryUxwWFal9EFUp7OG2Ij+FY7Q/UzuJBB/mr0D
+   XTV6EhErUxOENFATrwoihtzXZnWVcbSAQpcL8pRosgPdPaeT/QN/XVdf4
+   E3lyZLDcOBrlsNEoNVImZHp4GMLRkL1LJyrKe8TWLmEnUAXxn0QrxUGsI
+   dkZDxQrnUdOtMon8N3xxgGeZge0uiEU/SJ88KpwsxjykCF73UriMxtUiU
+   48FUIwZeHWv2OlrgKzwmZNQpQEfyLyovWWKXdf+jnFq4wRedi+4gZegz1
+   w==;
+X-CSE-ConnectionGUID: mfGZA3zaTHeEGYztOec0pg==
+X-CSE-MsgGUID: xdSb7O34TDisk3Z6Bfyg2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="61533507"
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; 
+   d="scan'208";a="61533507"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 04:18:14 -0700
+X-CSE-ConnectionGUID: ETlaG+zjShyFflCXccd3gQ==
+X-CSE-MsgGUID: GG82ann7Qt2dq55Y88P8Ug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; 
+   d="scan'208";a="129175108"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.158])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 04:18:12 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 25 Mar 2025 13:18:08 +0200 (EET)
+To: Denis Arefev <arefev@swemel.ru>
+cc: Corentin Chary <corentin.chary@gmail.com>, 
+    "Luke D. Jones" <luke@ljones.dev>, Hans de Goede <hdegoede@redhat.com>, 
+    platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: [PATCH] asus-laptop: Fix an uninitialized variable
+In-Reply-To: <20250325095739.20310-1-arefev@swemel.ru>
+Message-ID: <88f06d15-0f98-2f24-7e68-eefb6434f108@linux.intel.com>
+References: <20250325095739.20310-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-In theory overlayfs could support upper layer directly referring to a data
-layer, but there's no current use case for this.
+On Tue, 25 Mar 2025, Denis Arefev wrote:
 
-Originally, when data-only layers were introduced, this wasn't allowed,
-only introduced by the "datadir+" feature, but without actually handling
-this case, resulting in an Oops.
+> The value returned by the acpi_evaluate_integer() function is not
+> checked, but the result is not always successful, so an uninitialized
+> 'val' variable may be used in calculations.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: b23910c2194e ("asus-laptop: Pegatron Lucid accelerometer")
+> Cc: stable@vger.kernel.org 
+> Signed-off-by: Denis Arefev <arefev@swemel.ru>
+> ---
+>  drivers/platform/x86/asus-laptop.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/platform/x86/asus-laptop.c b/drivers/platform/x86/asus-laptop.c
+> index d460dd194f19..b74b7d0eb6c2 100644
+> --- a/drivers/platform/x86/asus-laptop.c
+> +++ b/drivers/platform/x86/asus-laptop.c
+> @@ -427,7 +427,7 @@ static int asus_pega_lucid_set(struct asus_laptop *asus, int unit, bool enable)
+>  static int pega_acc_axis(struct asus_laptop *asus, int curr, char *method)
+>  {
+>  	int i, delta;
+> -	unsigned long long val;
+> +	unsigned long long val = PEGA_ACC_CLAMP;
+>  	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
+>  		acpi_evaluate_integer(asus->handle, method, NULL, &val);
 
-Fix by disallowing datadir without lowerdir.
+Shouldn't you handle the error from acpi_evaluate_integer() properly 
+instead?
 
-Reported-by: Giuseppe Scrivano <gscrivan@redhat.com>
-Fixes: 24e16e385f22 ("ovl: add support for appending lowerdirs one by one")
-Cc: <stable@vger.kernel.org> # v6.7
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
----
- fs/overlayfs/super.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 86ae6f6da36b..b11094acdd8f 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1137,6 +1137,11 @@ static struct ovl_entry *ovl_get_lowerstack(struct super_block *sb,
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-+	if (ctx->nr == ctx->nr_data) {
-+		pr_err("at least one non-data lowerdir is required\n");
-+		return ERR_PTR(-EINVAL);
-+	}
-+
- 	err = -EINVAL;
- 	for (i = 0; i < ctx->nr; i++) {
- 		l = &ctx->lower[i];
 -- 
-2.49.0
+ i.
 
 
