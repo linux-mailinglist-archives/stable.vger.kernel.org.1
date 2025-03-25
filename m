@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-126474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6588EA700F9
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596A0A6FFFB
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1006616F6F9
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 538C67A2A37
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F92626B95B;
-	Tue, 25 Mar 2025 12:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925AB26A08D;
+	Tue, 25 Mar 2025 12:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Onv9jN+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1XjRn9G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2229E26B956;
-	Tue, 25 Mar 2025 12:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB831E5B91;
+	Tue, 25 Mar 2025 12:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906292; cv=none; b=g4b/GyRdVh8tSFpW7uyvIdeqvCqDibjctYfSupqIv3plLm0mO3pzx3wBfsLrvMuYYnMk/gOtJ0/nYOvEKJ45Vvb6p7gdfM6hVENUqBcmxf/m6M19EUrchqklkwS0h10LjXboe0AWfd7lLV7mWMhZiOjw4wTpAPhRx4er1UIt7Pg=
+	t=1742906137; cv=none; b=XU3ufo4Fqw9/ZtWX9zR6neJ6hM6rS12kO+Qj1wOnM9ex25jZjPE16/7FMLwUo+uV4dCieKqSEjbyfJxg61rJWuzjl+6PlGDxok5mJILgSzMZ/Hj9iUp1ZrnFIsuiQ+OttrsldnarikBvK1oqxxGL6x+2u10SfwWGXcYG6tSKVU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906292; c=relaxed/simple;
-	bh=VQ4Kdy5qKaPKnxXcm5GwthaGs8mWiOZ+87K/584/9Cs=;
+	s=arc-20240116; t=1742906137; c=relaxed/simple;
+	bh=UEEMlfdEngmupF1SNIp3D5JFqi6jnPjbvI1T54p+lTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCrme4qW2YHeloBWlNpj62ZugjO0x+O0IRzwSI9bsrGMSTvw5Nsm0+JuwbUETul8Nh5x+4wQ6Z+CVoU2rdGGAqID2vJEpCoSOmbZOlwjAWrpB/eAwnsH9514QYR+KM/h1Y1SyJMDRCj29GhO6zXgifJcq5jBX+lNRlyUnrumElk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Onv9jN+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CB8C4CEE4;
-	Tue, 25 Mar 2025 12:38:11 +0000 (UTC)
+	 MIME-Version; b=JyQoUrqe3pNol/T/Ep5cdHgkm3M1YAvUozpJEpZFaPfo9rAVz1A6r2Ra3M9GZE0nfDDxrtG5/31Y2CduU2rKqiZqHFZNTi5iNkf5o1dU+806vMUDqiwWJZvWIg8bev7sj6NzosUNQ00KS3niWKFcwzF+zEFafpRPfFES4D73zHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1XjRn9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A2EC4CEE4;
+	Tue, 25 Mar 2025 12:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906292;
-	bh=VQ4Kdy5qKaPKnxXcm5GwthaGs8mWiOZ+87K/584/9Cs=;
+	s=korg; t=1742906137;
+	bh=UEEMlfdEngmupF1SNIp3D5JFqi6jnPjbvI1T54p+lTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Onv9jN+4zG7aqWtxWaqWAtbclxf01kqA5cbXtrnXhE0ctr1S5yf+T8K/ayz+tHkrL
-	 9UcY0cxrv3bxNsybPsUdwj6NW6U5anrW26xaaZWYOZTrh/lekO4oo1e6XCh9NKIWbN
-	 mYPrzdFt8NpofMyckay3dgIZef6/ZKcCkGHzU8iE=
+	b=l1XjRn9GFJCw20yonNKhfQ90WfrvlBGuKDRAP20Ev3uvS2MrQasbMPuZRW1ujZH17
+	 0nRe1nQBEcx0Wxj34V6/KXbyilD2+LYBFUeUOmImUeHc5iwoCekRPt47EHvvH6nk2J
+	 mhWLboupjvxnZasZHgrPOPvgHyWAnKhrd6FMttBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Troy Hanson <quic_thanson@quicinc.com>,
-	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/116] accel/qaic: Fix possible data corruption in BOs > 2G
+Subject: [PATCH 6.6 04/77] xfrm_output: Force software GSO only in tunnel mode
 Date: Tue, 25 Mar 2025 08:21:59 -0400
-Message-ID: <20250325122150.033758259@linuxfoundation.org>
+Message-ID: <20250325122144.408474920@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 84a833d90635e4b846333e2df0ae72f9cbecac39 ]
+[ Upstream commit 0aae2867aa6067f73d066bc98385e23c8454a1d7 ]
 
-When slicing a BO, we need to iterate through the BO's sgt to find the
-right pieces to construct the slice. Some of the data types chosen for
-this process are incorrectly too small, and can overflow. This can
-result in the incorrect slice construction, which can lead to data
-corruption in workload execution.
+The cited commit fixed a software GSO bug with VXLAN + IPSec in tunnel
+mode. Unfortunately, it is slightly broader than necessary, as it also
+severely affects performance for Geneve + IPSec transport mode over a
+device capable of both HW GSO and IPSec crypto offload. In this case,
+xfrm_output unnecessarily triggers software GSO instead of letting the
+HW do it. In simple iperf3 tests over Geneve + IPSec transport mode over
+a back-2-back pair of NICs with MTU 1500, the performance was observed
+to be up to 6x worse when doing software GSO compared to leaving it to
+the hardware.
 
-The device can only handle 32-bit sized transfers, and the scatterlist
-struct only supports 32-bit buffer sizes, so our upper limit for an
-individual transfer is an unsigned int. Using an int is incorrect due to
-the reservation of the sign bit. Upgrade the length of a scatterlist
-entry and the offsets into a scatterlist entry to unsigned int for a
-correct representation.
+This commit makes xfrm_output only trigger software GSO in crypto
+offload cases for already encapsulated packets in tunnel mode, as not
+doing so would then cause the inner tunnel skb->inner_networking_header
+to be overwritten and break software GSO for that packet later if the
+device turns out to not be capable of HW GSO.
 
-While each transfer may be limited to 32-bits, the overall BO may exceed
-that size. For counting the total length of the BO, we need a type that
-can represent the largest allocation possible on the system. That is the
-definition of size_t, so use it.
+Taking a closer look at the conditions for the original bug, to better
+understand the reasons for this change:
+- vxlan_build_skb -> iptunnel_handle_offloads sets inner_protocol and
+  inner network header.
+- then, udp_tunnel_xmit_skb -> ip_tunnel_xmit adds outer transport and
+  network headers.
+- later in the xmit path, xfrm_output -> xfrm_outer_mode_output ->
+  xfrm4_prepare_output -> xfrm4_tunnel_encap_add overwrites the inner
+  network header with the one set in ip_tunnel_xmit before adding the
+  second outer header.
+- __dev_queue_xmit -> validate_xmit_skb checks whether GSO segmentation
+  needs to happen based on dev features. In the original bug, the hw
+  couldn't segment the packets, so skb_gso_segment was invoked.
+- deep in the .gso_segment callback machinery, __skb_udp_tunnel_segment
+  tries to use the wrong inner network header, expecting the one set in
+  iptunnel_handle_offloads but getting the one set by xfrm instead.
+- a bit later, ipv6_gso_segment accesses the wrong memory based on that
+  wrong inner network header.
 
-Fixes: ff13be830333 ("accel/qaic: Add datapath")
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
-Reviewed-by: Youssef Samir <quic_yabdulra@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306171959.853466-1-jeff.hugo@oss.qualcomm.com
+With the new change, the original bug (or similar ones) cannot happen
+again, as xfrm will now trigger software GSO before applying a tunnel.
+This concern doesn't exist in packet offload mode, when the HW adds
+encapsulation headers. For the non-offloaded packets (crypto in SW),
+software GSO is still done unconditionally in the else branch.
+
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_data.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/xfrm/xfrm_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/accel/qaic/qaic_data.c b/drivers/accel/qaic/qaic_data.c
-index c20eb63750f51..ffcdf5738d099 100644
---- a/drivers/accel/qaic/qaic_data.c
-+++ b/drivers/accel/qaic/qaic_data.c
-@@ -172,9 +172,10 @@ static void free_slice(struct kref *kref)
- static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_table **sgt_out,
- 					struct sg_table *sgt_in, u64 size, u64 offset)
- {
--	int total_len, len, nents, offf = 0, offl = 0;
- 	struct scatterlist *sg, *sgn, *sgf, *sgl;
-+	unsigned int len, nents, offf, offl;
- 	struct sg_table *sgt;
-+	size_t total_len;
- 	int ret, j;
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index 9160a5e09041d..a30538a980cc7 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -793,7 +793,7 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
+ 		skb->encapsulation = 1;
  
- 	/* find out number of relevant nents needed for this mem */
-@@ -182,6 +183,8 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
- 	sgf = NULL;
- 	sgl = NULL;
- 	nents = 0;
-+	offf = 0;
-+	offl = 0;
+ 		if (skb_is_gso(skb)) {
+-			if (skb->inner_protocol)
++			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
+ 				return xfrm_output_gso(net, sk, skb);
  
- 	size = size ? size : PAGE_SIZE;
- 	for_each_sgtable_dma_sg(sgt_in, sg, j) {
+ 			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
 -- 
 2.39.5
 
