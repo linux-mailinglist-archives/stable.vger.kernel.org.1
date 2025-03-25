@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-126126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D040CA6FF72
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:05:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE328A6FF7B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78F22178651
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1140F169E9F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7217266B48;
-	Tue, 25 Mar 2025 12:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AB4266B4C;
+	Tue, 25 Mar 2025 12:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tFTWN9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozTYWg+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846C825743D;
-	Tue, 25 Mar 2025 12:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41F125743D;
+	Tue, 25 Mar 2025 12:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905649; cv=none; b=M1J3gu6+OS2x0LosaiC2LtZDARIjNzn6PH10Lt/CfEJi1PfGSC2O/lu86TJIFjZCtDocVP+5YmCS6qHeqa7cN49cEpu1wo57g9Sv7ZxeNwnWtiKKowQuEorUVDf50aU7fEPVLyeXql1sMF4tO/mdMKMq6J6nw8aLdTIgigQ6Vbc=
+	t=1742905653; cv=none; b=FW/WzgY+uHOM3/lABNZPNzUUtWM1cG6SHxeijwnx7bG9q9Yf5ditritKUgnTvsbxzPNKFePGZLyyTkROEobo5+w4KgKPURsGexLdqEE0JkgtbgFLRNv7cvrgH5LRdagM9RgHq18oKrNR2yCatnFg8U4FdU7MZCk92rdg0rWY6/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905649; c=relaxed/simple;
-	bh=2g+qD3gtPh+3DhfICcL/MiBrVgOQ5ISve/ToXR+N1/s=;
+	s=arc-20240116; t=1742905653; c=relaxed/simple;
+	bh=QeNFMx18qo/seDWqDVDQtLg5MlevDPyk9gHkjK3ZyJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnpJ6Ul+LPImWnYD6BjRlVEF2pxOG0WqfF0a35jU4PHJuns5E3MuI/xaUicQf6Pulfq4jhhHdU8ZDRAmekNUpRlvaUaPvko88isUfImlwtqK4GPUDmSn/JYvL0C/KtHKfhfgbqpSy/OTBpTHb6KlHj4wN0z2u24jiFDSp/a2xQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tFTWN9Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E66C4CEE4;
-	Tue, 25 Mar 2025 12:27:28 +0000 (UTC)
+	 MIME-Version; b=PHKJeWF/n5sLFQ3ouAXqWgIgbu57ufmjgVtwNhBQzDnWQNwsyUAwrax/9gxnjtzXB0UjYnvQyOcR2StnJAC9xJLT+eCel9ccyQ1/Bki8elG1xLqk+ZngGuijv1rVrI2W4Ghe3YqhwqlY7uioyrrTmb2gDLNooK11Tv7VCQDLMjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozTYWg+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DD4C4CEED;
+	Tue, 25 Mar 2025 12:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905649;
-	bh=2g+qD3gtPh+3DhfICcL/MiBrVgOQ5ISve/ToXR+N1/s=;
+	s=korg; t=1742905652;
+	bh=QeNFMx18qo/seDWqDVDQtLg5MlevDPyk9gHkjK3ZyJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tFTWN9ZEjeMGFbVG1ycSmnh5DlKsIfe+LepehmUCMFpw1spY4K5tkGfgoa4WQnr7
-	 CRfYcmuOEYzWsLnWj6qiag2LU7ov6O6Li6eXaSg4LHd/rmcEI4FAqnPGnDPgI3JUjE
-	 KDitx9evf6HCnrSgvXvxStV/oIOEVv8iLxjOGEB4=
+	b=ozTYWg+Nu1KlplYaw1JmRyXIawCcLACVWTQeM+9JmW5TTdkCfj1WR/3uKcFjRDVMB
+	 ycEOlA493B1+787RSYfSvCpKnyGaFULYvBdIXjbNi9UuoPI6MmYmdlBJH54/amFW7U
+	 rhvoyQCFd34GB1HV/LaADcmrOCl5uJOhuoq6RgIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
 	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 089/198] xfs: consider minlen sized extents in xfs_rtallocate_extent_block
-Date: Tue, 25 Mar 2025 08:20:51 -0400
-Message-ID: <20250325122158.980156472@linuxfoundation.org>
+Subject: [PATCH 6.1 090/198] xfs: dont leak recovered attri intent items
+Date: Tue, 25 Mar 2025 08:20:52 -0400
+Message-ID: <20250325122159.006839872@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -67,37 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 944df75958807d56f2db9fdc769eb15dd9f0366a ]
+[ Upstream commit 07bcbdf020c9fd3c14bec51c50225a2a02707b94 ]
 
-minlen is the lower bound on the extent length that the caller can
-accept, and maxlen is at this point the maximal available length.
-This means a minlen extent is perfectly fine to use, so do it.  This
-matches the equivalent logic in xfs_rtallocate_extent_exact that also
-accepts a minlen sized extent.
+If recovery finds an xattr log intent item calling for the removal of an
+attribute and the file doesn't even have an attr fork, we know that the
+removal is trivially complete.  However, we can't just exit the recovery
+function without doing something about the recovered log intent item --
+it's still on the AIL, and not logging an attrd item means it stays
+there forever.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+This has likely not been seen in practice because few people use LARP
+and the runtime code won't log the attri for a no-attrfork removexattr
+operation.  But let's fix this anyway.
+
+Also we shouldn't really be testing the attr fork presence until we've
+taken the ILOCK, though this doesn't matter much in recovery, which is
+single threaded.
+
+Fixes: fdaf1bb3cafc ("xfs: ATTR_REPLACE algorithm with LARP enabled needs rework")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_rtalloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_attr_item.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -318,7 +318,7 @@ xfs_rtallocate_extent_block(
- 	/*
- 	 * Searched the whole thing & didn't find a maxlen free extent.
- 	 */
--	if (minlen < maxlen && besti != -1) {
-+	if (minlen <= maxlen && besti != -1) {
- 		xfs_extlen_t	p;	/* amount to trim length by */
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -329,6 +329,13 @@ xfs_xattri_finish_update(
+ 		goto out;
+ 	}
  
- 		/*
++	/* If an attr removal is trivially complete, we're done. */
++	if (attr->xattri_op_flags == XFS_ATTRI_OP_FLAGS_REMOVE &&
++	    !xfs_inode_hasattr(args->dp)) {
++		error = 0;
++		goto out;
++	}
++
+ 	error = xfs_attr_set_iter(attr);
+ 	if (!error && attr->xattri_dela_state != XFS_DAS_DONE)
+ 		error = -EAGAIN;
+@@ -608,8 +615,6 @@ xfs_attri_item_recover(
+ 			attr->xattri_dela_state = xfs_attr_init_add_state(args);
+ 		break;
+ 	case XFS_ATTRI_OP_FLAGS_REMOVE:
+-		if (!xfs_inode_hasattr(args->dp))
+-			goto out;
+ 		attr->xattri_dela_state = xfs_attr_init_remove_state(args);
+ 		break;
+ 	default:
 
 
 
