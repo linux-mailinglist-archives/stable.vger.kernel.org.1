@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EE6A6F458
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:38:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DC6A6F459
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 747201642F3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:38:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EA1D166B8C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E1D255E58;
-	Tue, 25 Mar 2025 11:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A1D2561AC;
+	Tue, 25 Mar 2025 11:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NamrZRgQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evuyrwxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B6619F111
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1375D19F111
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742902691; cv=none; b=JGPu0S+BsEwNeZaBl2/nQJebO8PowScQN6GmMWiAGDDpxQoi2VIOVUcOfGYqwU+3wKXSNloENZnSH0QaEyQeBof2LRd1nU8Wc/xGy8jbl70y6ML5+g2dQ72zEVpkuSVEUyjzf7eWAvIKRT5R5JoPtG2Cl6A9BpHtXYfJ/fHoY6M=
+	t=1742902693; cv=none; b=l+veLyocdeKpoNJ6TGEWWzgteqshwCwGzq1XuqD7qRg6Q+B7x0HDSJrW9yY6gGu5Hnn9/N/FfZa+pZWhrzjfrCIgTHWgPXiJhmeouz5/jBiIZi5SWJ2B3JYX3zt5srcucjxL4AOuAJiOf6agkcprbHhJoOS7DqtHvGu0DSfYziI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742902691; c=relaxed/simple;
-	bh=03dhfMLpbJt1HUVt1aBOj4FzjztkSJGfPJotnosXOso=;
+	s=arc-20240116; t=1742902693; c=relaxed/simple;
+	bh=XrH6D5AVLTry0eBUyC3tGJJXd0S3KO201Gllkbj0Hb8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fXMmb0g0/82/sCVcbuJCwt2Zkys9clVA49n12uvX0efumJPbKg8ZN+veTb8Ntjqe1zMzU5AtTzOhsZQM1e5n+6E2UOgdbc1cDOJ+2FzbbDhU2e3NDutxh3NBpSmju1BWuCIwokyuSsv4MEgxkDvjQDp+9TEeM2lqFUse3th3KNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NamrZRgQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202DAC4CEE4;
-	Tue, 25 Mar 2025 11:38:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nNzy6Do5oDz7NaTd7/3RNlkZY48Y8TQocAffZoSYYDe9hGko030wY2GdmNMeVpLqRvJBE8Pa8sDaa7VYVIOvxAwu+18zJrhd9T6ZVKJ/cpBnV9Byf+Gq9xe8PF1qepyD0NmJe4WlSKx4aLDuEPdNjcmuhv7m1GS+/4I444uqCNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evuyrwxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191DCC4CEE8;
+	Tue, 25 Mar 2025 11:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742902690;
-	bh=03dhfMLpbJt1HUVt1aBOj4FzjztkSJGfPJotnosXOso=;
+	s=k20201202; t=1742902692;
+	bh=XrH6D5AVLTry0eBUyC3tGJJXd0S3KO201Gllkbj0Hb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NamrZRgQoOQLAwMJJGjehrMqjSEJ67Ta//PCj5cwTVIj1uRJmcNKT6+t6CjVRxWzU
-	 m2cu6Vw8rpj3/njq5Ucb+DiC3ZasypOVlcYB9RCDSQdW71MrjKFciBkJrVW+DU91ek
-	 LUDVg68/fW7O4XIi0tnOFZVr6R5JVCvdenSR2jS1hjc8jT4gWTD+E1oTJn0/JyDo8Y
-	 1WV6dNnLGU2NZs++Pemy9SIAzRP6dhYbEKY05ypxsESgb/JxAmxhxFhpUp2feCtUtN
-	 74ZvwVSnLrINm+ZJEajWhZaIS7NDN5esgmwl9S2+ib4z5VDeNddiOtCTGp8ZwK03bK
-	 BWpFYggebCxDA==
+	b=evuyrwxxuqNTdJfF8B78tvlpx6gpxmMh+ju+0pywDCsVayoS6JHPvTrgA35Mf6VKz
+	 dJDgYMCKDqCzdHTA2dXgk1n4LFCBdXbWseJBaMGY1v1SNLw1ME2x7frCO1iv3F4Kdj
+	 cnWOkzv2q3GUV+8f4jC5tTkzRSsPlF2fh/WkKrZsrSNO9gGcwXd+s9fJgL2XsdOiDQ
+	 ktZDSdDlC1rjPwh6GN3SV03B8hMqYDw0SsBZmJ8bhQlD2C6w1ZVQgiKulV25O1FLK9
+	 hE06sI+3tEnSV/1DnSnQrV4gOOkpgkMyGMmwR5IabOzk4GReVHj7LM7Nz5ET3SURLH
+	 BAxiJOYfLBiIQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	ziy@nvidia.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] mm/huge_memory: drop beyond-EOF folios with the right number of refs
-Date: Tue, 25 Mar 2025 07:38:08 -0400
-Message-Id: <20250324211615-37f7b03bf4b2ca3a@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] smb: client: fix potential UAF in cifs_dump_full_key()
+Date: Tue, 25 Mar 2025 07:38:10 -0400
+Message-Id: <20250324204921-67c70fea9df986f6@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250324185007.142918-1-ziy@nvidia.com>
+In-Reply-To:  <20250324070725.3795964-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,40 +64,30 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 14efb4793519d73fb2902bb0ece319b886e4b4b9
+The upstream commit SHA1 provided is correct: 58acd1f497162e7d282077f816faa519487be045
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Paulo Alcantara<pc@manguebit.com>
 
 Status in newer kernel trees:
-6.13.y | Not found
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 10e17ca4000e)
+6.1.y | Present (different SHA1: 405c7b7970e0)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  14efb4793519d ! 1:  8e2adc6066c3d mm/huge_memory: drop beyond-EOF folios with the right number of refs
-    @@ Commit message
-         Cc: Yu Zhao <yuzhao@google.com>
-         Cc: <stable@vger.kernel.org>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    (cherry picked from commit 14efb4793519d73fb2902bb0ece319b886e4b4b9)
-     
-      ## mm/huge_memory.c ##
-     @@ mm/huge_memory.c: static void __split_huge_page(struct page *page, struct list_head *list,
-    @@ mm/huge_memory.c: static void __split_huge_page(struct page *page, struct list_h
-      			__filemap_remove_folio(tail, NULL);
-     -			folio_put(tail);
-     +			folio_put_refs(tail, folio_nr_pages(tail));
-    - 		} else if (!folio_test_anon(folio)) {
-    - 			__xa_store(&folio->mapping->i_pages, tail->index,
-    - 					tail, 0);
-    + 		} else if (!PageAnon(page)) {
-    + 			__xa_store(&folio->mapping->i_pages, head[i].index,
-    + 					head + i, 0);
+1:  58acd1f497162 < -:  ------------- smb: client: fix potential UAF in cifs_dump_full_key()
+-:  ------------- > 1:  9a0e9999a34a7 smb: client: fix potential UAF in cifs_dump_full_key()
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
