@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF57EA701BA
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:28:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC44A7021B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC73178810
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:19:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA70F3B1638
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E1F25A62F;
-	Tue, 25 Mar 2025 13:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A65D25A632;
+	Tue, 25 Mar 2025 13:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXexVP+5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AKRHbPfY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7EB25A627
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 13:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2693B25A627
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 13:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742907743; cv=none; b=KQvCKSGZADGOuhYw0FBM48SYfjFI5xFALvjVamKKI4gaQnJm4mNg2COKrXne/teQmapwmegHOd2rjEEkFaoU0htlIJmHnGStWqqTAnghWw1GCpbcLKxalMS2uO5jSWc+i2cwlwXZTvB5pgOEG4HfxNlylktMNstL2FoebZnfvu8=
+	t=1742907764; cv=none; b=VFG8pdKXtHMgPhK3C7WchTVel62I5gCkl1JMMdM3kvB7EvfYuNA4VPo+Oj9aDom5t5x10TJVeaZApfpuoG27Uz5wviV5yXVOeGsZkqRN/VQYpN5wOYOQAyIm6nRQUANe5LUt5NFDkKnC+Ku4pBMjp1Mr64uOH9bSKYBJA/4FlTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742907743; c=relaxed/simple;
-	bh=KMA3T0il600Y/0tEMPfignHfKxkFsamhLLYxT4TDZts=;
+	s=arc-20240116; t=1742907764; c=relaxed/simple;
+	bh=QRw2WY/ky+7Jq3OHo49BTXSd+eaPtajgoFfGb22uE7I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q2ZvEcOYaJME5I4wLcaqsAQ18a9wVFpRVnTOVWN76uIP+nFF2D09Jl0N0NiPVUdPiy99qPMby2myVxs68aFXLOPB3zeNocPvMMwKqvOj8wuOb88xTN6Ng4O8f6Z7WNEp7lvuXPG04UAUna8XfJ1xcukJNKptkEOgh+C4hn8+IXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXexVP+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B526C4CEE4;
-	Tue, 25 Mar 2025 13:02:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WBaX8o2ylt5tpHdM9uh0E3mlOr/89Z2Pnv4Ajfu9T7ec0fxw3rAg4CR81KG/G2JpJfMNFQCbz4rSMBoaLkzf0OAUZoi8UnsLtRn/zWJrsv7TX/t1TAqFGaZOI/nPBYbDVmHaV0zEF7XNesQqJI4iHrkaEN2yqQwct5yd9Ag1EUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AKRHbPfY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31713C4CEE4;
+	Tue, 25 Mar 2025 13:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742907742;
-	bh=KMA3T0il600Y/0tEMPfignHfKxkFsamhLLYxT4TDZts=;
+	s=k20201202; t=1742907763;
+	bh=QRw2WY/ky+7Jq3OHo49BTXSd+eaPtajgoFfGb22uE7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXexVP+5Js3m41ncMCsqxZgEAlUwvIzVjjjh3BfFkCmsRRn7vmqBkyPRrIzt8ruKx
-	 oJbTKP7ZOLkKFRtQf1IIgObX/oKCC4WWYe2LMC2875Ceyu43mfl2PY0p7K2KoJcRsg
-	 Gf34pN+OVflB1bxI2MUCiRLxrst2SyMekm8dHLCw7iiSvxR4ATejskz8Nh29SEmsrJ
-	 4m7U0dhXSdmCOOmYkd3Dh/yBWgjwiZQeSK3215h+inDbij+Sdcvkuoy7lMTGP3SESU
-	 ELsvcIfTR4jAxLlr7ZU5eEVRroCcjHacvms2Lircftqd+8rTcH+hkt3MbIMo5iPcfS
-	 VSZkyULdaoHeQ==
+	b=AKRHbPfYJDVNW72TaVeORN9Qh/hjsVBF/ZPTuSzyxQEaoZ75oWzQUSlBBDZCqCHqZ
+	 qJCCoyMwPl+lybNlwbQDf+y/rEZkU/VruRW5xR5diQbACESPJde/N1Zam/jVOwxdOY
+	 vGeU3cYNkn6buup4/ArNkAdGg0z0l81Ti0OiTzAsaYyEiRC2G0fEqVolWXLlWn3deP
+	 9/xlrQ+xVnwRUaLVDko8IPbk7Z6gkSGm1Kuz9KbHa4U2oUvVkFN97IA5V9PgNicAFy
+	 PCX74s0XTD2st4RS+SJvRd9vA+HqzSnKaKPCgsTjm7WbdfD3JqrFcdi9kigA3enk4w
+	 hr+YrbLFglpCw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: bin.lan.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] bpf, sockmap: Fix race between element replace and close()
-Date: Tue, 25 Mar 2025 09:02:20 -0400
-Message-Id: <20250325074934-d8a1a35ac67e38b7@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y] bpf, sockmap: Fix race between element replace and close()
+Date: Tue, 25 Mar 2025 09:02:41 -0400
+Message-Id: <20250325080137-8cae29482cfd40aa@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250325081045.2210079-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20250325080929.2209140-1-bin.lan.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,11 +78,10 @@ Status in newer kernel trees:
 6.12.y | Present (different SHA1: bf2318e288f6)
 6.6.y | Present (different SHA1: b015f19fedd2)
 6.1.y | Present (different SHA1: b79a0d1e9a37)
-5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  ed1fc5d76b81a ! 1:  a13e934a36451 bpf, sockmap: Fix race between element replace and close()
+1:  ed1fc5d76b81a ! 1:  73ba52105b298 bpf, sockmap: Fix race between element replace and close()
     @@ Metadata
       ## Commit message ##
          bpf, sockmap: Fix race between element replace and close()
@@ -119,5 +118,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
