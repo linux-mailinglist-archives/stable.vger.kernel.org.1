@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C208A70113
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FE4A70157
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:22:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8AB19A28AB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBF1617788B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBDF29CB4E;
-	Tue, 25 Mar 2025 12:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFB929DB76;
+	Tue, 25 Mar 2025 12:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF/dV8OQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEAxy6q3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2D629CB49;
-	Tue, 25 Mar 2025 12:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B27729DB77;
+	Tue, 25 Mar 2025 12:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906204; cv=none; b=MAIqFVlQwnVKYcsfhQe7iyY1xJaZoVLsHIUpBmathrR7W1Wq2bch0axMMdHsYoImDLKf43At7mzZp1PF+ZQxVZ1lmG2Hpj3QrFVg4hXOzZaQOHgaQyv3UYb/RBCYk7t1L+cXSdvlIkXrzHgr0yKLch82A3WNgDJD4rOlLT/aiEo=
+	t=1742906404; cv=none; b=T13L0TIE+mtBKcPdaHnDjtNwrseYYWmWj2x3bzgVO59+R1SzXgyJmmR8XSiigWpBmKKjkOAzW82m+z5kW3wjpVXVMGxMj/AbD2RAgJ+afv6T4RvXB9ydt/CzJhtBL2fLW1ImihBauvsvgkCUuBwCgPy78d2VBiulCzo7L3Glp8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906204; c=relaxed/simple;
-	bh=gjtAJYjmO79nW3Wv5ZKd09XJnrhH75nOYzABsYNIQ/s=;
+	s=arc-20240116; t=1742906404; c=relaxed/simple;
+	bh=HUIsFRDIzHRMS4/AiGf3B/XKDVgw6AyD/qKjN4HwleA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mY0bxofs+l7g9/9y9tJV8z9SjcUYhC9NZ5LNgz7djoCeuMq+y68FQEAAgdExQxNfEtPdF8uAK6Fx/jq3zCq+JG4vX2VPL+1GNjE2ciF4P+/xgN7Y44drQ84vBZbZZa3CwM80euE8PBfmcJDVXPq0Uo/4kut26SBkuoDPMwNW3xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF/dV8OQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EDBC4CEE4;
-	Tue, 25 Mar 2025 12:36:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XmcLZRoJPFpogAdtKAs0A3abyApSofrvWkYZsibB8C8FT1ZDNbCwBd6M5Lz7C3mv4X30tSSvXneS+hAmx/Qb3Ox7DqqFSAdARa2crnGKo8DyA0gghZTQ3IsOQNqUrHKfSvnWHlUxMsQW+eHKFe0g9ND9qEkn0K88dK+3oTIn06Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEAxy6q3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D375BC4CEE4;
+	Tue, 25 Mar 2025 12:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906202;
-	bh=gjtAJYjmO79nW3Wv5ZKd09XJnrhH75nOYzABsYNIQ/s=;
+	s=korg; t=1742906404;
+	bh=HUIsFRDIzHRMS4/AiGf3B/XKDVgw6AyD/qKjN4HwleA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JF/dV8OQwtKhwOp/coxvXM1gqmFwXrOqWfYHIGPvr0jkWFg7vHYaCvnVuxvLOm/RB
-	 dEVpnhQB10j9wOgAcoEVyp5863ma6YvGvGFmRgoDBSI5bQPAP3ZtjoaUCyZnvENimo
-	 LV0KwrAzJYtOwjlflaSsnH/UAQjw4m6qEH4bcweQ=
+	b=tEAxy6q36taNQShf4shlyV6dDJfh3Src6zYlUSGhK5xlR22OoB9Vj7Y6NNC/5OqwM
+	 WUDj7aN56mWAsMFrAohfKDpnOJnnCxuS7/YbySudOoqEDW8MqA+aUwk1KylpXypcoc
+	 Jt5z8d9KwqB10l5lIdqxY9WLYygNAyLCgh/aHE6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Quentin Schulz <quentin.schulz@cherry.de>,
 	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.6 41/77] arm64: dts: rockchip: fix pinmux of UART0 for PX30 Ringneck on Haikou
+Subject: [PATCH 6.12 069/116] arm64: dts: rockchip: fix pinmux of UART0 for PX30 Ringneck on Haikou
 Date: Tue, 25 Mar 2025 08:22:36 -0400
-Message-ID: <20250325122145.426427077@linuxfoundation.org>
+Message-ID: <20250325122150.972275275@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -89,7 +89,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
 +++ b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
-@@ -221,6 +221,8 @@
+@@ -222,6 +222,8 @@
  };
  
  &uart0 {
