@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-126391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596A0A6FFFB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EEB7A6FFD8
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 538C67A2A37
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BD777A5129
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925AB26A08D;
-	Tue, 25 Mar 2025 12:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741612571AF;
+	Tue, 25 Mar 2025 12:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1XjRn9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EibxTp5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB831E5B91;
-	Tue, 25 Mar 2025 12:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332772571AB;
+	Tue, 25 Mar 2025 12:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906137; cv=none; b=XU3ufo4Fqw9/ZtWX9zR6neJ6hM6rS12kO+Qj1wOnM9ex25jZjPE16/7FMLwUo+uV4dCieKqSEjbyfJxg61rJWuzjl+6PlGDxok5mJILgSzMZ/Hj9iUp1ZrnFIsuiQ+OttrsldnarikBvK1oqxxGL6x+2u10SfwWGXcYG6tSKVU4=
+	t=1742906019; cv=none; b=p/ojga2ykwcHObdTZyG8DrynHLHk02BrLzrDMd/kKqugGYnsW1uchi2ebogU48lqWPxZTBRFkpnFlL+llvkNZtVy1EmRNNlFptTBf68Ne0Y8czXAecwvhoB1AMgqQiR3G467relHGpR7KLMVf87iYE11gG0zP/u6X98jilg7WKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906137; c=relaxed/simple;
-	bh=UEEMlfdEngmupF1SNIp3D5JFqi6jnPjbvI1T54p+lTE=;
+	s=arc-20240116; t=1742906019; c=relaxed/simple;
+	bh=C664BOA0oq5Rf7LtYL7IDHtjgZwtwOEUhVUBKzIXows=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyQoUrqe3pNol/T/Ep5cdHgkm3M1YAvUozpJEpZFaPfo9rAVz1A6r2Ra3M9GZE0nfDDxrtG5/31Y2CduU2rKqiZqHFZNTi5iNkf5o1dU+806vMUDqiwWJZvWIg8bev7sj6NzosUNQ00KS3niWKFcwzF+zEFafpRPfFES4D73zHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1XjRn9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A2EC4CEE4;
-	Tue, 25 Mar 2025 12:35:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LloSWVepe3mkQUJish82nYMc61KoaJgRhFyJIhmUlXFgYZNSdC1KQhLs7L3Vwp99KCVNVHxSOooEoU4FjlRi8uCUhMz+8Sv66lRrKbG31Vr24A7nU21WxzNmvmUg3K1np5GUuQXDbUkbMLdUdNPuGaBTAUWRS0KopPJCY7X9J9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EibxTp5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67860C4CEE4;
+	Tue, 25 Mar 2025 12:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906137;
-	bh=UEEMlfdEngmupF1SNIp3D5JFqi6jnPjbvI1T54p+lTE=;
+	s=korg; t=1742906018;
+	bh=C664BOA0oq5Rf7LtYL7IDHtjgZwtwOEUhVUBKzIXows=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1XjRn9GFJCw20yonNKhfQ90WfrvlBGuKDRAP20Ev3uvS2MrQasbMPuZRW1ujZH17
-	 0nRe1nQBEcx0Wxj34V6/KXbyilD2+LYBFUeUOmImUeHc5iwoCekRPt47EHvvH6nk2J
-	 mhWLboupjvxnZasZHgrPOPvgHyWAnKhrd6FMttBs=
+	b=EibxTp5JmidQC8ww2+C27FR2gxKb7YWIgDlB7bUT/cdeWyxpN50Y43PfRKWp4gEpC
+	 6caK5dy8WvLxDXdxy63bxdRrvvR34nntQxtoS1uY9IYvcylpll2xP/4N7REpfFDn2T
+	 hZF3fNgi57eByEZvLLJcYYJEEHnovyg9Gz2pFV4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 04/77] xfrm_output: Force software GSO only in tunnel mode
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	intel-xe@lists.freedesktop.org,
+	Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.13 061/119] drm/xe: Fix exporting xe buffers multiple times
 Date: Tue, 25 Mar 2025 08:21:59 -0400
-Message-ID: <20250325122144.408474920@linuxfoundation.org>
+Message-ID: <20250325122150.614190714@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +68,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
 
-[ Upstream commit 0aae2867aa6067f73d066bc98385e23c8454a1d7 ]
+commit 50af7cab7520e46680cf4633bba6801443b75856 upstream.
 
-The cited commit fixed a software GSO bug with VXLAN + IPSec in tunnel
-mode. Unfortunately, it is slightly broader than necessary, as it also
-severely affects performance for Geneve + IPSec transport mode over a
-device capable of both HW GSO and IPSec crypto offload. In this case,
-xfrm_output unnecessarily triggers software GSO instead of letting the
-HW do it. In simple iperf3 tests over Geneve + IPSec transport mode over
-a back-2-back pair of NICs with MTU 1500, the performance was observed
-to be up to 6x worse when doing software GSO compared to leaving it to
-the hardware.
+The `struct ttm_resource->placement` contains TTM_PL_FLAG_* flags, but
+it was incorrectly tested for XE_PL_* flags.
+This caused xe_dma_buf_pin() to always fail when invoked for
+the second time. Fix this by checking the `mem_type` field instead.
 
-This commit makes xfrm_output only trigger software GSO in crypto
-offload cases for already encapsulated packets in tunnel mode, as not
-doing so would then cause the inner tunnel skb->inner_networking_header
-to be overwritten and break software GSO for that packet later if the
-device turns out to not be capable of HW GSO.
-
-Taking a closer look at the conditions for the original bug, to better
-understand the reasons for this change:
-- vxlan_build_skb -> iptunnel_handle_offloads sets inner_protocol and
-  inner network header.
-- then, udp_tunnel_xmit_skb -> ip_tunnel_xmit adds outer transport and
-  network headers.
-- later in the xmit path, xfrm_output -> xfrm_outer_mode_output ->
-  xfrm4_prepare_output -> xfrm4_tunnel_encap_add overwrites the inner
-  network header with the one set in ip_tunnel_xmit before adding the
-  second outer header.
-- __dev_queue_xmit -> validate_xmit_skb checks whether GSO segmentation
-  needs to happen based on dev features. In the original bug, the hw
-  couldn't segment the packets, so skb_gso_segment was invoked.
-- deep in the .gso_segment callback machinery, __skb_udp_tunnel_segment
-  tries to use the wrong inner network header, expecting the one set in
-  iptunnel_handle_offloads but getting the one set by xfrm instead.
-- a bit later, ipv6_gso_segment accesses the wrong memory based on that
-  wrong inner network header.
-
-With the new change, the original bug (or similar ones) cannot happen
-again, as xfrm will now trigger software GSO before applying a tunnel.
-This concern doesn't exist in packet offload mode, when the HW adds
-encapsulation headers. For the non-offloaded packets (crypto in SW),
-software GSO is still done unconditionally in the else branch.
-
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7764222d54b7 ("drm/xe: Disallow pinning dma-bufs in VRAM")
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: intel-xe@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.8+
+Signed-off-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250218100353.2137964-1-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+(cherry picked from commit b96dabdba9b95f71ded50a1c094ee244408b2a8e)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_output.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_bo.h      |    2 --
+ drivers/gpu/drm/xe/xe_dma_buf.c |    2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index 9160a5e09041d..a30538a980cc7 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -793,7 +793,7 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
- 		skb->encapsulation = 1;
+--- a/drivers/gpu/drm/xe/xe_bo.h
++++ b/drivers/gpu/drm/xe/xe_bo.h
+@@ -318,7 +318,6 @@ static inline unsigned int xe_sg_segment
+ 	return round_down(max / 2, PAGE_SIZE);
+ }
  
- 		if (skb_is_gso(skb)) {
--			if (skb->inner_protocol)
-+			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
- 				return xfrm_output_gso(net, sk, skb);
- 
- 			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
--- 
-2.39.5
-
+-#if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
+ /**
+  * xe_bo_is_mem_type - Whether the bo currently resides in the given
+  * TTM memory type
+@@ -333,4 +332,3 @@ static inline bool xe_bo_is_mem_type(str
+ 	return bo->ttm.resource->mem_type == mem_type;
+ }
+ #endif
+-#endif
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -58,7 +58,7 @@ static int xe_dma_buf_pin(struct dma_buf
+ 	 * 1) Avoid pinning in a placement not accessible to some importers.
+ 	 * 2) Pinning in VRAM requires PIN accounting which is a to-do.
+ 	 */
+-	if (xe_bo_is_pinned(bo) && bo->ttm.resource->placement != XE_PL_TT) {
++	if (xe_bo_is_pinned(bo) && !xe_bo_is_mem_type(bo, XE_PL_TT)) {
+ 		drm_dbg(&xe->drm, "Can't migrate pinned bo for dma-buf pin.\n");
+ 		return -EINVAL;
+ 	}
 
 
 
