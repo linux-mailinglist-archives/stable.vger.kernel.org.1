@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-126525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CA7A70128
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9703CA70093
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AA821674CB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4304D17C0D2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BA426FA43;
-	Tue, 25 Mar 2025 12:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA13226AA96;
+	Tue, 25 Mar 2025 12:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scOa1tWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwmFbx4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51C726FA40;
-	Tue, 25 Mar 2025 12:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987A725C6E4;
+	Tue, 25 Mar 2025 12:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906387; cv=none; b=GCod6SWljlZoSoImY2/4/T/dUwHP05/sCC/I8HtF+g2dWyXy8z04S2tc6TS36nDM6z4ZhcbEcCKfLyK2TYmlmOaA37qA/F64zvF/1iupegSGv1NJVfURZcYpOLo/XGeBrPW/vdWjk69ZDs46rzzUCe2Dr/qhV6vmfhIqo9J/yZE=
+	t=1742906188; cv=none; b=tfHc3tl6opjtSmmcoNqJgGEfBcTXmus+w7LZ/cggylZEVSyCAyWQj16lhGV/+HJealbiVtv7qBo2VPu+6/qfLVJydi92Qlpvent7Fh6wKc17PvcXYgrHWIvzSLDtkVs2zJM5Om60zCiC/fJkn73TfRIsfotwRxR+ej9kybsRxc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906387; c=relaxed/simple;
-	bh=3or3sOsK7q+0BQYFeb1Az3bUc23d6u3k9SbCDWcTpTs=;
+	s=arc-20240116; t=1742906188; c=relaxed/simple;
+	bh=48kVKPuqRcX+uCl7v/f3SUNXQkZUqRphhN89ZhgQ6Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewTG8Ge6XrBEJqypx33ANqFGEBNHdZL8y/dmxtf/+L4XkzsenRK6vABekkwDP72AaR5zUJVHok3pO0YnEvFwfM+dDKoTf+R2mlKkhO2GIBmtDepOV35tS4P3QLqx/5lv2brbQ23E1AfVcf7mRMxQxVjzoZvGu26Xrgu67b5PmFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scOa1tWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7616DC4CEE4;
-	Tue, 25 Mar 2025 12:39:47 +0000 (UTC)
+	 MIME-Version; b=LpGMrlMRl9dz+JxjqDxJqzc4dPJlEHs+JH4rKFT7/QEEiwhRgiQQ1QsumeYuwX+BYha9yl+U1S33B6RdPk0ZGdrjfOIvedlaBLmpWjjhtClYBhlOu2iw28zFOo9fmrGrpT+IMyEZb8ucsGhmxcVnx2jw2Y+/y6NENxe6WLTWagI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwmFbx4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4950DC4CEE4;
+	Tue, 25 Mar 2025 12:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906387;
-	bh=3or3sOsK7q+0BQYFeb1Az3bUc23d6u3k9SbCDWcTpTs=;
+	s=korg; t=1742906188;
+	bh=48kVKPuqRcX+uCl7v/f3SUNXQkZUqRphhN89ZhgQ6Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=scOa1tWWpSY2W9WO15SOeqRQmsbiagh46VWjWFI33zpMI8OVRTfuzB/BHTnnX3Fg4
-	 p5u04EfH1xmInUmMLdTwnb41dlgjT6joGlOhnSNF4sQIYcApjXqp8NDL1cIpzNlb+h
-	 V5kZI/obyUAzZYa1VWrkALws79H803YdegS43+g0=
+	b=fwmFbx4jPV4j8pGMBcKFsV9dDSFIUmWrSmmTNLXl2RCYVlpPjSU6Xmp9ZxOzn45kG
+	 8LeEyOvF7dhQLcMbRqdZxR/3x2gifqyNKTVbmnjhb4kWATsSp1cD9KwnWUNNUQmXlW
+	 kNGr/FQ8wlZb6h4/THeKFg1PhFUvQ6aqlpi47opM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	qianyi liu <liuqianyi125@gmail.com>,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.12 090/116] drm/sched: Fix fence reference count leak
+	Paolo Abeni <pabeni@redhat.com>,
+	Arthur Mongodin <amongodin@randorisec.fr>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 6.6 62/77] mptcp: Fix data stream corruption in the address announcement
 Date: Tue, 25 Mar 2025 08:22:57 -0400
-Message-ID: <20250325122151.511972112@linuxfoundation.org>
+Message-ID: <20250325122145.976427527@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: qianyi liu <liuqianyi125@gmail.com>
+From: Arthur Mongodin <amongodin@randorisec.fr>
 
-commit a952f1ab696873be124e31ce5ef964d36bce817f upstream.
+commit 2c1f97a52cb827a5f2768e67a9dddffae1ed47ab upstream.
 
-The last_scheduled fence leaks when an entity is being killed and adding
-the cleanup callback fails.
+Because of the size restriction in the TCP options space, the MPTCP
+ADD_ADDR option is exclusive and cannot be sent with other MPTCP ones.
+For this reason, in the linked mptcp_out_options structure, group of
+fields linked to different options are part of the same union.
 
-Decrement the reference count of prev when dma_fence_add_callback()
-fails, ensuring proper balance.
+There is a case where the mptcp_pm_add_addr_signal() function can modify
+opts->addr, but not ended up sending an ADD_ADDR. Later on, back in
+mptcp_established_options, other options will be sent, but with
+unexpected data written in other fields due to the union, e.g. in
+opts->ext_copy. This could lead to a data stream corruption in the next
+packet.
 
-Cc: stable@vger.kernel.org	# v6.2+
-[phasta: add git tag info for stable kernel]
-Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
-Signed-off-by: qianyi liu <liuqianyi125@gmail.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250311060251.4041101-1-liuqianyi125@gmail.com
+Using an intermediate variable, prevents from corrupting previously
+established DSS option. The assignment of the ADD_ADDR option
+parameters is now done once we are sure this ADD_ADDR option can be set
+in the packet, e.g. after having dropped other suboptions.
+
+Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
+Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Arthur Mongodin <amongodin@randorisec.fr>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+[ Matt: the commit message has been updated: long lines splits and some
+  clarifications. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-1-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/mptcp/options.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -259,9 +259,16 @@ static void drm_sched_entity_kill(struct
- 		struct drm_sched_fence *s_fence = job->s_fence;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -651,6 +651,7 @@ static bool mptcp_established_options_ad
+ 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
+ 	bool drop_other_suboptions = false;
+ 	unsigned int opt_size = *size;
++	struct mptcp_addr_info addr;
+ 	bool echo;
+ 	int len;
  
- 		dma_fence_get(&s_fence->finished);
--		if (!prev || dma_fence_add_callback(prev, &job->finish_cb,
--					   drm_sched_entity_kill_jobs_cb))
-+		if (!prev ||
-+		    dma_fence_add_callback(prev, &job->finish_cb,
-+					   drm_sched_entity_kill_jobs_cb)) {
-+			/*
-+			 * Adding callback above failed.
-+			 * dma_fence_put() checks for NULL.
-+			 */
-+			dma_fence_put(prev);
- 			drm_sched_entity_kill_jobs_cb(NULL, &job->finish_cb);
-+		}
+@@ -659,7 +660,7 @@ static bool mptcp_established_options_ad
+ 	 */
+ 	if (!mptcp_pm_should_add_signal(msk) ||
+ 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
+-	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &opts->addr,
++	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
+ 		    &echo, &drop_other_suboptions))
+ 		return false;
  
- 		prev = &s_fence->finished;
+@@ -672,7 +673,7 @@ static bool mptcp_established_options_ad
+ 	else if (opts->suboptions & OPTION_MPTCP_DSS)
+ 		return false;
+ 
+-	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
++	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
+ 	if (remaining < len)
+ 		return false;
+ 
+@@ -689,6 +690,7 @@ static bool mptcp_established_options_ad
+ 		opts->ahmac = 0;
+ 		*size -= opt_size;
  	}
++	opts->addr = addr;
+ 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
+ 	if (!echo) {
+ 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ADDADDRTX);
 
 
 
