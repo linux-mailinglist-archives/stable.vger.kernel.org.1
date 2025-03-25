@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-126333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20EFFA70049
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C208A70113
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE43D19A61C2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8AB19A28AB
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517572690EA;
-	Tue, 25 Mar 2025 12:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBDF29CB4E;
+	Tue, 25 Mar 2025 12:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ta2O3su8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF/dV8OQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108462580E4;
-	Tue, 25 Mar 2025 12:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2D629CB49;
+	Tue, 25 Mar 2025 12:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906030; cv=none; b=bQ7pxABqsU8DmXWIUEEtdl5WqZkKDXF3lpwJBfpvZDwgS+WfRwlGX0cfIgwm5pnC7sx1MOSppSXtRj9NHB4yB/8kIgHj1mmk2keGVKMYVBG80qLQNU3PWAnf3WElsQKBtJ+ttkUAkjvZQ80X0NKGJ6h75AJIuYSlohDuxm4aDAs=
+	t=1742906204; cv=none; b=MAIqFVlQwnVKYcsfhQe7iyY1xJaZoVLsHIUpBmathrR7W1Wq2bch0axMMdHsYoImDLKf43At7mzZp1PF+ZQxVZ1lmG2Hpj3QrFVg4hXOzZaQOHgaQyv3UYb/RBCYk7t1L+cXSdvlIkXrzHgr0yKLch82A3WNgDJD4rOlLT/aiEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906030; c=relaxed/simple;
-	bh=r2KiH2BD3E2+HuyiR7ZzLGPF3LAJlQ7vcCnYk2rTReY=;
+	s=arc-20240116; t=1742906204; c=relaxed/simple;
+	bh=gjtAJYjmO79nW3Wv5ZKd09XJnrhH75nOYzABsYNIQ/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3pYjHEDhUgREXM+FOFzrzoFn/PZrC5DYRWG01fqCywAh71Q00uMPedTAUICDV+scWjWBOYh7IDxfvuKET0Giu3JnAGRXHrayg7ypuzsByjazLtUHVkVC1RTZizecHDhbXRvwdFjlEaU9qjn1Rmz1TGmOB51aWIv85dh03F5fXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ta2O3su8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A8AC4CEE4;
-	Tue, 25 Mar 2025 12:33:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mY0bxofs+l7g9/9y9tJV8z9SjcUYhC9NZ5LNgz7djoCeuMq+y68FQEAAgdExQxNfEtPdF8uAK6Fx/jq3zCq+JG4vX2VPL+1GNjE2ciF4P+/xgN7Y44drQ84vBZbZZa3CwM80euE8PBfmcJDVXPq0Uo/4kut26SBkuoDPMwNW3xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF/dV8OQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EDBC4CEE4;
+	Tue, 25 Mar 2025 12:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906029;
-	bh=r2KiH2BD3E2+HuyiR7ZzLGPF3LAJlQ7vcCnYk2rTReY=;
+	s=korg; t=1742906202;
+	bh=gjtAJYjmO79nW3Wv5ZKd09XJnrhH75nOYzABsYNIQ/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ta2O3su8zk6JEh0AfUCiDZNZ8r3Kp74TL7fR5Un+ql2PNREWaxZmWmGF7+lG8A0yx
-	 EtrKjseK4asOY1rUcVoOVj+B8WtsGBvVF53mLQ0WWqFhLSu1N01r/Sg8k5kG/GtXjP
-	 SScwUl23GALVUb2TIvMZ38gE0O9sOZcl2XJZUdvk=
+	b=JF/dV8OQwtKhwOp/coxvXM1gqmFwXrOqWfYHIGPvr0jkWFg7vHYaCvnVuxvLOm/RB
+	 dEVpnhQB10j9wOgAcoEVyp5863ma6YvGvGFmRgoDBSI5bQPAP3ZtjoaUCyZnvENimo
+	 LV0KwrAzJYtOwjlflaSsnH/UAQjw4m6qEH4bcweQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Yilin Chen <Yilin.Chen@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 097/119] drm/amd/display: Fix message for support_edp0_on_dp1
-Date: Tue, 25 Mar 2025 08:22:35 -0400
-Message-ID: <20250325122151.538742655@linuxfoundation.org>
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.6 41/77] arm64: dts: rockchip: fix pinmux of UART0 for PX30 Ringneck on Haikou
+Date: Tue, 25 Mar 2025 08:22:36 -0400
+Message-ID: <20250325122145.426427077@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yilin Chen <Yilin.Chen@amd.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-commit 35f0f9f421390f66cb062f4d79f4924af5f55b04 upstream.
+commit 2db7d29c7b1629ced3cbab3de242511eb3c22066 upstream.
 
-[WHY]
-The info message was wrong when support_edp0_on_dp1 is enabled
+UART0 pinmux by default configures GPIO0_B5 in its UART RTS function for
+UART0. However, by default on Haikou, it is used as GPIO as UART RTS for
+UART5.
 
-[HOW]
-Use correct info message for support_edp0_on_dp1
+Therefore, let's update UART0 pinmux to not configure the pin in that
+mode, a later commit will make UART5 request the GPIO pinmux.
 
-Fixes: f6d17270d18a ("drm/amd/display: add a quirk to enable eDP0 on DP1")
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Yilin Chen <Yilin.Chen@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 79538e6365c99d7b1c3e560d1ea8d11ef8313465)
+Fixes: c484cf93f61b ("arm64: dts: rockchip: add PX30-µQ7 (Ringneck) SoM with Haikou baseboard")
 Cc: stable@vger.kernel.org
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Link: https://lore.kernel.org/r/20250225-ringneck-dtbos-v3-1-853a9a6dd597@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1744,7 +1744,7 @@ static void retrieve_dmi_info(struct amd
- 	}
- 	if (quirk_entries.support_edp0_on_dp1) {
- 		init_data->flags.support_edp0_on_dp1 = true;
--		drm_info(dev, "aux_hpd_discon_quirk attached\n");
-+		drm_info(dev, "support_edp0_on_dp1 attached\n");
- 	}
- }
+--- a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
++++ b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
+@@ -221,6 +221,8 @@
+ };
+ 
+ &uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_xfer>;
+ 	status = "okay";
+ };
  
 
 
