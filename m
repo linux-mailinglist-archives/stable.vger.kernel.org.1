@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62119A6F446
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:35:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4753A6F42E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CA63169913
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:34:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA1E3B8F3C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CBF255E4E;
-	Tue, 25 Mar 2025 11:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C5F1F0E31;
+	Tue, 25 Mar 2025 11:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCWWpvTt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVRBuf7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D331F0E31
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E43255E47
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742902439; cv=none; b=ReMZmEk6/LnHGXGm7Wm1Qups4AEUrV/k9l8/zb9C3XP8F4k03d7qMZHIgVxLVVU9Ypl74h8VG1l1eyxHYRnLXdt/6mDSN4dcUSxeVNbA9R4v1YszUkFx3HNx1oR2u5qK22RzWkOSaqlEPId543yHFD5sDKkks1dfLClqw5+foso=
+	t=1742902441; cv=none; b=tE6DMLEgPvf4MIHq6dbavZyObekqUAB4msvKrc5//t/v7yHk9ZT2rVV3Jyb+jqp0LFYWbI5IiFdH4bsOqFYUorojh8y7oIKnESGgwS7rej1rXFBi95+MHu3om62IGKYJ42vShCNGC8HEi3Or0xyygApqYVyL76R+dIRcK45Njhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742902439; c=relaxed/simple;
-	bh=xgqp0XrrU5ju97spGiL/gKX4M58758Cx59+1SIOThzo=;
+	s=arc-20240116; t=1742902441; c=relaxed/simple;
+	bh=hKJ4wklozwRYxkWxbUPl5nE3mQ4xyAdYZhaxpr34dxM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g4ZqwmAjn7Nbz+AuzT88yDceluq9bQb7teWmJlUsAIMljMRSjriNs8ys/9od0Ks6FtJnmaTfIlVMIwa0d5HMTFfDrDjl40YNXUxjRRJue6+fA0YY22bUR9Edik5vv1uYiWl1Q6Ot8zo08fFFQnC3ytvO841RqQrYv62iwSnRpt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCWWpvTt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D410C4CEE4;
-	Tue, 25 Mar 2025 11:33:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j/0leOCfTee9NGEeBdf0bHQZhAK4DObphdI1xJ8N3Nk7Ci3jvvQ1HBbJ1RPu6VOxT5NOIewle+Plo5UI6iyBwCSxL499YhHzwjKxFU2ogNXS67D0MD53n36REVst/P7BlNqPOU6RP/W/9pznjxlTMLi/P8V6kq8nQU1tYOUcm8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVRBuf7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E86C4CEE4;
+	Tue, 25 Mar 2025 11:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742902439;
-	bh=xgqp0XrrU5ju97spGiL/gKX4M58758Cx59+1SIOThzo=;
+	s=k20201202; t=1742902441;
+	bh=hKJ4wklozwRYxkWxbUPl5nE3mQ4xyAdYZhaxpr34dxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SCWWpvTtQGvkyuhw0aBYlbXBuAP+dKkW7zRt7Xr4bHDq2fsx5YbqwwD31F8T8c+ww
-	 E9l4T9bx3hB9NvYPk4bAGRQCSAUkx8RvJHwnVS6HIS0GE7yTDTkZ+xCHLViYRsulzd
-	 xwnS6d6mCF6GgpvOKCkxcUDW5sV3fGSTvado9jjMMOX8XSdO2rRH53yrdp2EBtXnv3
-	 ZzxNncyjyVutyMnRQ9R/AriCrCig/PiX/Q8/WCjyVLXH4a+nGe/c3n3VANAK0S6Ep1
-	 WLPZMocjtW/ueai1cMICjMWOqD1FTNDZ6oVMCwgopFMxJiJ38GFhokmpnfVqwRO1am
-	 b92Cupr7Nnqzg==
+	b=MVRBuf7s9sdnr3FHrpsZopJ+2c3fu8xBualIX23I4qJEjc+o6wFWdiQ/NQq9berLn
+	 xieuanW9PJl0Uk1qZiktFftgp0Vgm+aHzBq6KWRTAPBflHGtsOfAnobLGKA4lLl+Gx
+	 n+5eBOf/NORI8LsYEydpZ1owEerfE5ifK6MJMGtZXlKCKd+vnA1IVoCvxksNQS+jUi
+	 3CYheMP/QGh2oXvqdaMaezWDuE+hJQO+M7pT1dtJTqHg/804P2bGZtLFbl9JzFomFb
+	 DeDTKs/Q1Hv6utgTXicrvkqDi0FbykigFCDZJ+BaIkhfOrtgNLeuhx2HsrWKjcKlM6
+	 W6vhRiXXKLs4A==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: jianqi.ren.cn@windriver.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] wifi: iwlwifi: mvm: ensure offloading TID queue exists
-Date: Tue, 25 Mar 2025 07:33:57 -0400
-Message-Id: <20250324213209-d0debd6f522b2fdb@stable.kernel.org>
+To: stable@vger.kernel.org,
+	superm1@kernel.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] drm/amd/display: Use HW lock mgr for PSR1 when only one eDP
+Date: Tue, 25 Mar 2025 07:33:59 -0400
+Message-Id: <20250324234036-5755290f6b437c1e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250324072404.3796160-1-jianqi.ren.cn@windriver.com>
+In-Reply-To:  <20250324155629.2588451-1-superm1@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,54 +64,61 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 78f65fbf421a61894c14a1b91fe2fb4437b3fe5f
+Found matching upstream commit: acbf16a6ae775b4db86f537448cc466288aa307e
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: <jianqi.ren.cn@windriver.com>
-Commit author: Benjamin Berg<benjamin.berg@intel.com>
+WARNING: Author mismatch between patch and found commit:
+Backport author: Mario Limonciello<superm1@kernel.org>
+Commit author: Mario Limonciello<mario.limonciello@amd.com>
 
 Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
+6.13.y | Not found
+6.12.y | Not found
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  78f65fbf421a6 ! 1:  68d3d313ef5fc wifi: iwlwifi: mvm: ensure offloading TID queue exists
-    @@ Metadata
-      ## Commit message ##
-         wifi: iwlwifi: mvm: ensure offloading TID queue exists
-     
-    +    [ Upstream commit 78f65fbf421a61894c14a1b91fe2fb4437b3fe5f ]
-    +
-         The resume code path assumes that the TX queue for the offloading TID
-         has been configured. At resume time it then tries to sync the write
-         pointer as it may have been updated by the firmware.
+1:  acbf16a6ae775 ! 1:  798c6bedbaa1a drm/amd/display: Use HW lock mgr for PSR1 when only one eDP
     @@ Commit message
-         Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-         Link: https://msgid.link/20240218194912.6632e6dc7b35.Ie6e6a7488c9c7d4529f13d48f752b5439d8ac3c4@changeid
-         Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+         Fixes: f245b400a223 ("Revert "drm/amd/display: Use HW lock mgr for PSR1"")
+         Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3965
+         Reviewed-by: ChiaHsuan Chung <chiahsuan.chung@amd.com>
+    -    Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+         Signed-off-by: Alex Hung <alex.hung@amd.com>
+         Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    -    (cherry picked from commit ed569e1279a3045d6b974226c814e071fa0193a6)
+         Cc: stable@vger.kernel.org
+    +    (cherry picked from commit acbf16a6ae775b4db86f537448cc466288aa307e)
+    +    [superm1: Adjust for missing replay support bfeefe6ea5f1,
+    +              Adjust for dc_get_edp_links not being renamed from get_edp_links()]
+    +    Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
      
-      ## drivers/net/wireless/intel/iwlwifi/mvm/d3.c ##
-     @@ drivers/net/wireless/intel/iwlwifi/mvm/d3.c: static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
-    @@ drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-     @@
-      /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
-      /*
-    -- * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
-    +- * Copyright (C) 2012-2014, 2018-2022 Intel Corporation
-     + * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
-       * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-       * Copyright (C) 2015-2016 Intel Deutschland GmbH
+      ## drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c ##
+     @@ drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c: bool should_use_dmub_lock(struct dc_link *link)
+    - 	if (link->replay_settings.replay_feature_enabled)
+    + {
+    + 	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
+      		return true;
+    - 
+    ++
+     +	/* only use HW lock for PSR1 on single eDP */
+     +	if (link->psr_settings.psr_version == DC_PSR_VERSION_1) {
+     +		struct dc_link *edp_links[MAX_NUM_EDP];
+     +		int edp_num;
+     +
+    -+		dc_get_edp_links(link->dc, edp_links, &edp_num);
+    ++		get_edp_links(link->dc, edp_links, &edp_num);
+     +
+     +		if (edp_num == 1)
+     +			return true;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
