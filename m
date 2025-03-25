@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE952A70037
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A756A7011E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB92717789C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3F3717CAF8
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27D32690D6;
-	Tue, 25 Mar 2025 12:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B81B26E142;
+	Tue, 25 Mar 2025 12:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXcB7W4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKFIiF3w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9F725522E;
-	Tue, 25 Mar 2025 12:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA4F26B972;
+	Tue, 25 Mar 2025 12:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905993; cv=none; b=rNaOvjrir75OWWZqbG8bJE0eXC6iIF26AXhBSPAq54g7opP9FvqeRmtW/d9s/b2eQPUpBu4yWjxesUFYatm+9mFcDkdMnzWFpk8lMc9wn2630F+ND5l05g6KdGHQtT70MbE1OW9o0BmxkTHawDbyF9UTxdYj6AIlEQ0F6oFd6UA=
+	t=1742906305; cv=none; b=Rf9p1MbmimkNze3UFqHyxGQd7T/vndwmnCIUexLnwpPTtzrWuySor8x7UAdbe1LYmKV/f0iFEVfDNJGDjQb0ZxEASqb8adCF15Oz0X+IaLJ8U2KDOQUVtfQvT3zDUcAE3ZeknSJ5jrZYpPKuTyQgxzZRgqJRDq86ouIthkD+2Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905993; c=relaxed/simple;
-	bh=YhBt0Ktrk6qRwT95rTa5TnX6Bs8W+zPSD2GKqdb0BiM=;
+	s=arc-20240116; t=1742906305; c=relaxed/simple;
+	bh=MqeoZE67U3K542aY/IEa6nkJOIaacvPfvdvQFjwWIig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7l10KmrInrXyFa8SdufSjYxXyc7sHOc1zcNNFif3k4MNI4QOTr874qltCG1/CCLu38Vo/otFJvxWjuPcd6PKMn+Dm1HD3VnhcSdjkpntT0tVU7Lc76oZARRKBOCM/FDJgLUqnJk1DBGxf0926ibyt4ndSa86w5SDK7eZcyoy5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXcB7W4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389BFC4CEE4;
-	Tue, 25 Mar 2025 12:33:13 +0000 (UTC)
+	 MIME-Version; b=JQPrd3X4WgjVGB/qu2SG5aVssKdyOVdYi4EXltsur9rsmXRRWBfcPniyoSIxo1d1xyRXUyuTrQ0JKCfgHctqCu2lWUeEGedQ6I8BAwaNq3KtyTUC2a9iEUmBACrjtbd4A6Ay3DH8tkxYnebIC8V8Qc9eZiFMy0j0LDnY0UXPx4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKFIiF3w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2EDC4CEE4;
+	Tue, 25 Mar 2025 12:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905993;
-	bh=YhBt0Ktrk6qRwT95rTa5TnX6Bs8W+zPSD2GKqdb0BiM=;
+	s=korg; t=1742906304;
+	bh=MqeoZE67U3K542aY/IEa6nkJOIaacvPfvdvQFjwWIig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXcB7W4oNf56OdaDSCf1VoyM6HMHGRpWXr7xmdKu3qKMP9KH7qW8TKGjZZkfFuEYV
-	 7rAV0Bh3GlW14mhdLCZUj/YYOf2U2pScl0dSnpA0fX8ZfZX2ABgsqwcnaaVc3u6w5x
-	 TD/9/jYDXmlrtUNQaB0C8paJYThyDEUYia+DNEeo=
+	b=WKFIiF3w+n36Pv7q7pK7jYKdXYOV4r/to3458rqHujmr49MNB70sCtLi0Nh9/Is1p
+	 V5tn+/lITYybnB1LNjTVeyOj83Bi8fT/z9cZ2J1mYcedZkCysBYybP95JQIX3R8AcY
+	 bG+Oumcn+vNLqe+B7Mcki6KJOZEUIcxEL5zqkhJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.13 076/119] mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 047/116] net: ipv6: ioam6: fix lwtunnel_output() loop
 Date: Tue, 25 Mar 2025 08:22:14 -0400
-Message-ID: <20250325122150.997359607@linuxfoundation.org>
+Message-ID: <20250325122150.408501598@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-commit 723ef0e20dbb2aa1b5406d2bb75374fc48187daa upstream.
+[ Upstream commit 3e7a60b368eadf6c30a4a79dea1eb8f88b6d620d ]
 
-cqhci timeouts observed on brcmstb platforms during suspend:
-  ...
-  [  164.832853] mmc0: cqhci: timeout for tag 18
-  ...
+Fix the lwtunnel_output() reentry loop in ioam6_iptunnel when the
+destination is the same after transformation. Note that a check on the
+destination address was already performed, but it was not enough. This
+is the example of a lwtunnel user taking care of loops without relying
+only on the last resort detection offered by lwtunnel.
 
-Adding cqhci_suspend()/resume() calls to disable cqe
-in sdhci_brcmstb_suspend()/resume() respectively to fix
-CQE timeouts seen on PM suspend.
-
-Fixes: d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20250311165946.28190-1-kamal.dasu@broadcom.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Link: https://patch.msgid.link/20250314120048.12569-3-justin.iurman@uliege.be
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-brcmstb.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/ipv6/ioam6_iptunnel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/mmc/host/sdhci-brcmstb.c
-+++ b/drivers/mmc/host/sdhci-brcmstb.c
-@@ -503,8 +503,15 @@ static int sdhci_brcmstb_suspend(struct
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
-+	int ret;
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index 4215cebe7d85a..647dd8417c6cf 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -339,7 +339,6 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct dst_entry *dst = skb_dst(skb), *cache_dst = NULL;
+-	struct in6_addr orig_daddr;
+ 	struct ioam6_lwt *ilwt;
+ 	int err = -EINVAL;
+ 	u32 pkt_cnt;
+@@ -354,8 +353,6 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	if (pkt_cnt % ilwt->freq.n >= ilwt->freq.k)
+ 		goto out;
  
- 	clk_disable_unprepare(priv->base_clk);
-+	if (host->mmc->caps2 & MMC_CAP2_CQE) {
-+		ret = cqhci_suspend(host->mmc);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return sdhci_pltfm_suspend(dev);
- }
- 
-@@ -529,6 +536,9 @@ static int sdhci_brcmstb_resume(struct d
- 			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
+-	orig_daddr = ipv6_hdr(skb)->daddr;
+-
+ 	local_bh_disable();
+ 	cache_dst = dst_cache_get(&ilwt->cache);
+ 	local_bh_enable();
+@@ -424,7 +421,10 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
  	}
  
-+	if (host->mmc->caps2 & MMC_CAP2_CQE)
-+		ret = cqhci_resume(host->mmc);
-+
- 	return ret;
- }
- #endif
+-	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
++	/* avoid lwtunnel_output() reentry loop when destination is the same
++	 * after transformation (e.g., with the inline mode)
++	 */
++	if (dst->lwtstate != cache_dst->lwtstate) {
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, cache_dst);
+ 		return dst_output(net, sk, skb);
+-- 
+2.39.5
+
 
 
 
