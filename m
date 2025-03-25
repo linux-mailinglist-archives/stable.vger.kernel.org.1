@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-126500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE8AA701A5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:27:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ADDAA700C6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B931C189B203
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F2903BC38A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A211C26E16B;
-	Tue, 25 Mar 2025 12:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0317525B682;
+	Tue, 25 Mar 2025 12:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBOsaz2Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgaHN1tV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5B125D8F6;
-	Tue, 25 Mar 2025 12:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB76F1DD9D3;
+	Tue, 25 Mar 2025 12:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906341; cv=none; b=dHOSi+feEW5IBRKIBYgetRM4LHZa/mALxknPKPms1iRgfKNcxPD37ZSQQhNrx7KukPJgdWjyO6b5pH3gnz/uH06+Z3jaBg5mklG5FxHkFCnLbEBC55IAvdyZpVB9EKJ+Lml0P4THUfB2qwVX2C+hkCf3yHwL1rA1HUcjPAT+HtY=
+	t=1742905971; cv=none; b=GBxs4P6l9dUpg4OJfMFjkTvkF5Q8HW9+SNahHd/fnvSBzGbuSDMoAQe57NedQMmVM6S+mD+xcZFSi5yqbczPjnjsxhRhEfviMVKAAyYRF8+U4NUvekgNacgBgCywo05IUM1YdV2RWWacSOmeJQcRAlwW/uV5ADSM6EEkSU1IIE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906341; c=relaxed/simple;
-	bh=SZYQ2rwkpKu4zHylKGmadWQGLDQUZ43s2vh+ZQdMkX4=;
+	s=arc-20240116; t=1742905971; c=relaxed/simple;
+	bh=2CNd3Rknkdg7eU4W7zZ58Mhb5X4t5PmEEQK/wbRZsms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVUTku7LzY90Mq9+TV2hDCi/i/SrK7XSs2mfhknmLXpcPo955jIzMchvZN6qFmvwAiaki700T3jpjXDb2VgfKpup5LzMkfFW3Enw4PrdlEmzY19zV3vsTjMRyzA9Yi8d9qRESwdecDXLJdoviuN0NLzwjmGahOD8qUdv+SCF7yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBOsaz2Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F43C4CEF4;
-	Tue, 25 Mar 2025 12:39:00 +0000 (UTC)
+	 MIME-Version; b=UKE2DgmCGEqEwPapRwjdAjzvChae8SSiE5zfkVXyePJKTEdAtTjE8ad7B05L6QZ+fqIlPaB5yHgZlaIZTiWxBNMHB5N3ww11Zxj0bfheAcgtAAoI+RKqzWRoFpyi+Y1+s+JUHtSTlxOhDF47K+1p7YqhM0/+DuZZ6CEJgToNExg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgaHN1tV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F967C4CEE4;
+	Tue, 25 Mar 2025 12:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906341;
-	bh=SZYQ2rwkpKu4zHylKGmadWQGLDQUZ43s2vh+ZQdMkX4=;
+	s=korg; t=1742905971;
+	bh=2CNd3Rknkdg7eU4W7zZ58Mhb5X4t5PmEEQK/wbRZsms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBOsaz2ZjRzBnIEpHo9Aojrpkj5JS9Xd724LPZ8aLuinj1QgVu9jlJPnYB+cwKaum
-	 gYtNbdY/OHlN3BTjAM/A0J8oTnkaopqZhLmC7xLdlN+l+fb8cx143JBvQcw6qJNK5L
-	 4T5Ol+ipGTwcUJWaiguMdNowexGGp6IVUWUNjcqA=
+	b=fgaHN1tVyRYj32kHHcV6fOOAr7wTmfSOBuC02w0257ik1dT5G2pcLwOqLoy1LWg0c
+	 UYzRTG7J3h2ZU37XGMK735xhClBPWaeR4n1WKagNx1Y1605p7gAQx0suLjabxDeoHN
+	 SP/HAM0t+QmeM1tTaa+SLja7+XMUb9yX3HCEo+g8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/116] net: ethernet: ti: am65-cpsw: Fix NAPI registration sequence
+	Max Kellermann <max.kellermann@ionos.com>,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.13 065/119] netfs: Call `invalidate_cache` only if implemented
 Date: Tue, 25 Mar 2025 08:22:03 -0400
-Message-ID: <20250325122150.132464170@linuxfoundation.org>
+Message-ID: <20250325122150.721104001@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +66,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Raghavendra <vigneshr@ti.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit 5f079290e5913a0060e059500b7d440990ac1066 ]
+commit 344b7ef248f420ed4ba3a3539cb0a0fc18df9a6c upstream.
 
-Registering the interrupts for TX or RX DMA Channels prior to registering
-their respective NAPI callbacks can result in a NULL pointer dereference.
-This is seen in practice as a random occurrence since it depends on the
-randomness associated with the generation of traffic by Linux and the
-reception of traffic from the wire.
+Many filesystems such as NFS and Ceph do not implement the
+`invalidate_cache` method.  On those filesystems, if writing to the
+cache (`NETFS_WRITE_TO_CACHE`) fails for some reason, the kernel
+crashes like this:
 
-Fixes: 681eb2beb3ef ("net: ethernet: ti: am65-cpsw: ensure proper channel cleanup in error path")
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Co-developed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://patch.msgid.link/20250311154259.102865-1-s-vadapalli@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor instruction fetch in kernel mode
+ #PF: error_code(0x0010) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0010 [#1] SMP PTI
+ CPU: 9 UID: 0 PID: 3380 Comm: kworker/u193:11 Not tainted 6.13.3-cm4all1-hp #437
+ Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 10/17/2018
+ Workqueue: events_unbound netfs_write_collection_worker
+ RIP: 0010:0x0
+ Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+ RSP: 0018:ffff9b86e2ca7dc0 EFLAGS: 00010202
+ RAX: 0000000000000000 RBX: 0000000000000000 RCX: 7fffffffffffffff
+ RDX: 0000000000000001 RSI: ffff89259d576a18 RDI: ffff89259d576900
+ RBP: ffff89259d5769b0 R08: ffff9b86e2ca7d28 R09: 0000000000000002
+ R10: ffff89258ceaca80 R11: 0000000000000001 R12: 0000000000000020
+ R13: ffff893d158b9338 R14: ffff89259d576900 R15: ffff89259d5769b0
+ FS:  0000000000000000(0000) GS:ffff893c9fa40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: ffffffffffffffd6 CR3: 000000054442e003 CR4: 00000000001706f0
+ Call Trace:
+  <TASK>
+  ? __die+0x1f/0x60
+  ? page_fault_oops+0x15c/0x460
+  ? try_to_wake_up+0x2d2/0x530
+  ? exc_page_fault+0x5e/0x100
+  ? asm_exc_page_fault+0x22/0x30
+  netfs_write_collection_worker+0xe9f/0x12b0
+  ? xs_poll_check_readable+0x3f/0x80
+  ? xs_stream_data_receive_workfn+0x8d/0x110
+  process_one_work+0x134/0x2d0
+  worker_thread+0x299/0x3a0
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xba/0xe0
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x30/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ Modules linked in:
+ CR2: 0000000000000000
+
+This patch adds the missing `NULL` check.
+
+Fixes: 0e0f2dfe880f ("netfs: Dispatch write requests to process a writeback slice")
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20250314164201.1993231-3-dhowells@redhat.com
+Acked-by: "Paulo Alcantara (Red Hat)" <pc@manguebit.com>
+cc: netfs@lists.linux.dev
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 32 +++++++++++++-----------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+ fs/netfs/write_collect.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 3e090f87f97eb..308a2b72a65de 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2225,14 +2225,18 @@ static void am65_cpsw_nuss_remove_tx_chns(struct am65_cpsw_common *common)
- static int am65_cpsw_nuss_ndev_add_tx_napi(struct am65_cpsw_common *common)
- {
- 	struct device *dev = common->dev;
-+	struct am65_cpsw_tx_chn *tx_chn;
- 	int i, ret = 0;
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -575,7 +575,8 @@ void netfs_write_collection_worker(struc
+ 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
  
- 	for (i = 0; i < common->tx_ch_num; i++) {
--		struct am65_cpsw_tx_chn *tx_chn = &common->tx_chns[i];
-+		tx_chn = &common->tx_chns[i];
- 
- 		hrtimer_init(&tx_chn->tx_hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_PINNED);
- 		tx_chn->tx_hrtimer.function = &am65_cpsw_nuss_tx_timer_callback;
- 
-+		netif_napi_add_tx(common->dma_ndev, &tx_chn->napi_tx,
-+				  am65_cpsw_nuss_tx_poll);
-+
- 		ret = devm_request_irq(dev, tx_chn->irq,
- 				       am65_cpsw_nuss_tx_irq,
- 				       IRQF_TRIGGER_HIGH,
-@@ -2242,19 +2246,16 @@ static int am65_cpsw_nuss_ndev_add_tx_napi(struct am65_cpsw_common *common)
- 				tx_chn->id, tx_chn->irq, ret);
- 			goto err;
- 		}
--
--		netif_napi_add_tx(common->dma_ndev, &tx_chn->napi_tx,
--				  am65_cpsw_nuss_tx_poll);
- 	}
- 
- 	return 0;
- 
- err:
--	for (--i ; i >= 0 ; i--) {
--		struct am65_cpsw_tx_chn *tx_chn = &common->tx_chns[i];
--
--		netif_napi_del(&tx_chn->napi_tx);
-+	netif_napi_del(&tx_chn->napi_tx);
-+	for (--i; i >= 0; i--) {
-+		tx_chn = &common->tx_chns[i];
- 		devm_free_irq(dev, tx_chn->irq, tx_chn);
-+		netif_napi_del(&tx_chn->napi_tx);
- 	}
- 
- 	return ret;
-@@ -2488,6 +2489,9 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
- 			     HRTIMER_MODE_REL_PINNED);
- 		flow->rx_hrtimer.function = &am65_cpsw_nuss_rx_timer_callback;
- 
-+		netif_napi_add(common->dma_ndev, &flow->napi_rx,
-+			       am65_cpsw_nuss_rx_poll);
-+
- 		ret = devm_request_irq(dev, flow->irq,
- 				       am65_cpsw_nuss_rx_irq,
- 				       IRQF_TRIGGER_HIGH,
-@@ -2496,11 +2500,8 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
- 			dev_err(dev, "failure requesting rx %d irq %u, %d\n",
- 				i, flow->irq, ret);
- 			flow->irq = -EINVAL;
--			goto err_flow;
-+			goto err_request_irq;
- 		}
--
--		netif_napi_add(common->dma_ndev, &flow->napi_rx,
--			       am65_cpsw_nuss_rx_poll);
- 	}
- 
- 	/* setup classifier to route priorities to flows */
-@@ -2508,11 +2509,14 @@ static int am65_cpsw_nuss_init_rx_chns(struct am65_cpsw_common *common)
- 
- 	return 0;
- 
-+err_request_irq:
-+	netif_napi_del(&flow->napi_rx);
-+
- err_flow:
--	for (--i; i >= 0 ; i--) {
-+	for (--i; i >= 0; i--) {
- 		flow = &rx_chn->flows[i];
--		netif_napi_del(&flow->napi_rx);
- 		devm_free_irq(dev, flow->irq, flow);
-+		netif_napi_del(&flow->napi_rx);
- 	}
- 
- err:
--- 
-2.39.5
-
+ 	if (wreq->io_streams[1].active &&
+-	    wreq->io_streams[1].failed) {
++	    wreq->io_streams[1].failed &&
++	    ictx->ops->invalidate_cache) {
+ 		/* Cache write failure doesn't prevent writeback completion
+ 		 * unless we're in disconnected mode.
+ 		 */
 
 
 
