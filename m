@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C4AA700B6
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A4CA70061
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36C73BCACF
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 114A9189D607
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980AB2690DB;
-	Tue, 25 Mar 2025 12:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C5229B212;
+	Tue, 25 Mar 2025 12:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER8r+q/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZVWCkuw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E0D25522E;
-	Tue, 25 Mar 2025 12:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BF5267B9F;
+	Tue, 25 Mar 2025 12:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905995; cv=none; b=cr5bXFKWEvJPbjWYtp4eHeR6b0B6F3sTmVU61kn98IYml7uqKS+URSxmsdooow+hdFoImlXOSArVxZhp8xCO5GaU74+YpxlpUKo0GwTmjVytRPnzMW+7wfJq6DhQqFDPM5KkWvbeh8+vC4JSBm9PWo7YrGXQJ6hMkN5niMmePo4=
+	t=1742905856; cv=none; b=ddbtx+9MJn2q2moohVVw56P88ZhXFNpFIdu5hYRbAQXP6IUqKCcbb03FBgsgUdIb2woqWOkgnrzWtRMuc1ymvU9RA8hbEFy5LSQKnb1BSQLLtJiVUuiF4TsanhD8BKGDwq5nGbCLdmNW8fP3xU+RGGeKY77tBLWSQBqtaLKTz30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905995; c=relaxed/simple;
-	bh=ae7qyvO39Bo1EsWu9VvuJBTrQTfxxU0ggITXaMdgh8c=;
+	s=arc-20240116; t=1742905856; c=relaxed/simple;
+	bh=TWHJs0Rgtgi/gjhepEJSMveLJDGM7aytLh+EYC+hBNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srh+Sm6tIWdK8e3OFyR+viZJSU+rZ4shKtoXdwbTlGwNFlxKtpwkpWyXaykuN2CZLLEO1V9BndecncNAdEzXZazBdy2We10yWsHQFt5DrP81zBbsDtLAP7pbz2gkzZKb9axM4lzQ5CEKNgWrucKTxJ2NT//odZGPeiNtPsr2iYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER8r+q/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2C2C4CEE4;
-	Tue, 25 Mar 2025 12:33:14 +0000 (UTC)
+	 MIME-Version; b=plIWcNM5gLLDYirM+L3VWHoFrM7ov7wv6FltvUj8x8Fpwwman6gXChwJo0atuaGfOB7mYELZlGOU2KUDqyaiG8Qam2ISbnfYNsXUtDU0+3lhNqCmETNJt/7eTA3egvKiZyDwOgC+/LQxQVgf1PzNH83+hx1g8VahJ28P8slB474=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZVWCkuw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F66C4CEE4;
+	Tue, 25 Mar 2025 12:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905995;
-	bh=ae7qyvO39Bo1EsWu9VvuJBTrQTfxxU0ggITXaMdgh8c=;
+	s=korg; t=1742905856;
+	bh=TWHJs0Rgtgi/gjhepEJSMveLJDGM7aytLh+EYC+hBNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ER8r+q/PZ+j93JSN58pJ+smiJuup3cnGaLNQGhGphdeYmYfh4F54i1ulbryDRmgsd
-	 P7UuYtkIulem3pyQNsRI2HMwOLBuGW7FsMMX/FUKRd8bhcuzi/CK/Tu+/gUgd+asbw
-	 Ah4f47Uvq28639jBw7nIrRCxWCB3jRym7zbkZp+c=
+	b=SZVWCkuwUqynREwBj2IfmAag9RXrViAnQJV1eT7d1iOCXmbuCugdutYIp6Q4Qf53X
+	 IZCyKkOyEjRWQO99v3b8B/kOShFupHIYqi9HtA9HJUYyRHIovqSJTePoQe1ghIOP9g
+	 +wwSF/pNS4fxbbx+y4rFx8/cIrEGPO7GQFBa+kAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gu Bowen <gubowen5@huawei.com>,
-	Aubin Constans <aubin.constans@microchip.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.13 077/119] mmc: atmel-mci: Add missing clk_disable_unprepare()
+	Christian Eggers <ceggers@arri.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 173/198] regulator: check that dummy regulator has been probed before using it
 Date: Tue, 25 Mar 2025 08:22:15 -0400
-Message-ID: <20250325122151.025372191@linuxfoundation.org>
+Message-ID: <20250325122201.183300195@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gu Bowen <gubowen5@huawei.com>
+From: Christian Eggers <ceggers@arri.de>
 
-commit e51a349d2dcf1df8422dabb90b2f691dc7df6f92 upstream.
+commit 2c7a50bec4958f1d1c84d19cde518d0e96a676fd upstream.
 
-The error path when atmci_configure_dma() set dma fails in atmci driver
-does not correctly disable the clock.
-Add the missing clk_disable_unprepare() to the error path for pair with
-clk_prepare_enable().
+Due to asynchronous driver probing there is a chance that the dummy
+regulator hasn't already been probed when first accessing it.
 
-Fixes: 467e081d23e6 ("mmc: atmel-mci: use probe deferring if dma controller is not ready yet")
-Signed-off-by: Gu Bowen <gubowen5@huawei.com>
-Acked-by: Aubin Constans <aubin.constans@microchip.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225022856.3452240-1-gubowen5@huawei.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Link: https://patch.msgid.link/20250313103051.32430-3-ceggers@arri.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/atmel-mci.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/regulator/core.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/atmel-mci.c
-+++ b/drivers/mmc/host/atmel-mci.c
-@@ -2499,8 +2499,10 @@ static int atmci_probe(struct platform_d
- 	/* Get MCI capabilities and set operations according to it */
- 	atmci_get_cap(host);
- 	ret = atmci_configure_dma(host);
--	if (ret == -EPROBE_DEFER)
-+	if (ret == -EPROBE_DEFER) {
-+		clk_disable_unprepare(host->mck);
- 		goto err_dma_probe_defer;
-+	}
- 	if (ret == 0) {
- 		host->prepare_data = &atmci_prepare_data_dma;
- 		host->submit_data = &atmci_submit_data_dma;
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2091,6 +2091,10 @@ static int regulator_resolve_supply(stru
+ 
+ 		if (have_full_constraints()) {
+ 			r = dummy_regulator_rdev;
++			if (!r) {
++				ret = -EPROBE_DEFER;
++				goto out;
++			}
+ 			get_device(&r->dev);
+ 		} else {
+ 			dev_err(dev, "Failed to resolve %s-supply for %s\n",
+@@ -2108,6 +2112,10 @@ static int regulator_resolve_supply(stru
+ 			goto out;
+ 		}
+ 		r = dummy_regulator_rdev;
++		if (!r) {
++			ret = -EPROBE_DEFER;
++			goto out;
++		}
+ 		get_device(&r->dev);
+ 	}
+ 
+@@ -2216,8 +2224,10 @@ struct regulator *_regulator_get(struct
+ 			 * enabled, even if it isn't hooked up, and just
+ 			 * provide a dummy.
+ 			 */
+-			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			rdev = dummy_regulator_rdev;
++			if (!rdev)
++				return ERR_PTR(-EPROBE_DEFER);
++			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			get_device(&rdev->dev);
+ 			break;
+ 
 
 
 
