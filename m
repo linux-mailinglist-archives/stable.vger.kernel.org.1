@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B075DA7017E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:25:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E65A700A3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EED2B188E78D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F28B9166805
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C54226FA69;
-	Tue, 25 Mar 2025 12:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E6626AABF;
+	Tue, 25 Mar 2025 12:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxzoAwVx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaSSaXfq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC7526F47B;
-	Tue, 25 Mar 2025 12:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B79226AABE;
+	Tue, 25 Mar 2025 12:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906393; cv=none; b=QYGUsKevQRRODvz3dR3kS/2ssZdiPsFpLBy8bb0W6huWwGn7EajTO/05ozUftYPvkeId9AdgTcIRBs2Rog8anWN2VyzhOTRIcqTMZrYTimDIT7CCiz+PjBr9cd64zgPqKMPs8TGmfcoTrTm9+nzRBnYLu3Vk8IidDKucQO5yBdo=
+	t=1742906197; cv=none; b=Dsjiy24bQnXbKyDhs3T7gOUXJ0LSDivTcivmx7lGRZXiMGqbls7WquBMTNVUwBnwAlz8qR/06TGa60eLratCDrSjpUHJxs7LcOFgTy/piZ3WmQEqI7rh+l8uMjHKGB/Bk5hfyQYc8IBAJYA28r39KVwZGS5HZF0RJCTQVNWuQi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906393; c=relaxed/simple;
-	bh=KdRcj19A2BlXwqXwAodBcueXtHqEybJL7KeycZ/v9SE=;
+	s=arc-20240116; t=1742906197; c=relaxed/simple;
+	bh=BdSdIj8w9TKsZ2mB5SPAk87anPGrzhi/zDN5SEXMg94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qkNKwhUDDCygQYdrpOs94KrPQbSkUU8uqSnlGytOsEZXmdPfommnZql7s2VqkvpUFoguGOPr+WQziIONancr2Kn0mDpbGc/aA1p+o57hk+Mb9P0bDvM+guuuWE8QsbZ3HWOKnyXIUgn9EJjCy/dHdkaAveqIbDkXEtauMegLTBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxzoAwVx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D49A1C4CEE4;
-	Tue, 25 Mar 2025 12:39:52 +0000 (UTC)
+	 MIME-Version; b=WIX6Z09/MjC/NgB5XFSTHLYQJK1d2eeglo9pusCiYFk560jOTJa+LzaO18wtWy1RxltJAI34d/YEQEpQjDGwXi9W1hb+r+ZrdmJsfysEXOj51SkEEbDasE5uGnNbAzVtYUnT9LJ2/bFU4hlOHgdwB+XfO4S4/3EHY40sQICKRG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaSSaXfq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD71C4CEED;
+	Tue, 25 Mar 2025 12:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906393;
-	bh=KdRcj19A2BlXwqXwAodBcueXtHqEybJL7KeycZ/v9SE=;
+	s=korg; t=1742906197;
+	bh=BdSdIj8w9TKsZ2mB5SPAk87anPGrzhi/zDN5SEXMg94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxzoAwVxf0u27YSD0qBTobZAMQvdFXBIGAiAWX5M9iuXaE6wth7oN7ti7vlC1nT6D
-	 dBPdwj0eEHjEC/UDiqlfT9SJiG5kEB64xtJD1XQG4QX7+sE7yP0UDQxsz1TSoUNOxn
-	 qPCj+iGdLTjbrWY1WDVrV/hGBn3RXoAu+XVWlA/M=
+	b=yaSSaXfqZNZEIE2uX5UjbbIvkwNlKWJ1rE7PZcf+tBQkaBtVFbbQOmbTQp7eM2bRF
+	 GHbkdu9evXvefI892UEWBlXMZn0245bLZUcIsavWWLFRfTWNWVm9kj+026DQ+55HMl
+	 zARJqDvMGXHCHZEoDQTAIp6qBggsrpRFARa8/cIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Dan Carpenter <dan.carpenter@linaro.org>,
 	Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Subject: [PATCH 6.12 066/116] accel/qaic: Fix integer overflow in qaic_validate_req()
+Subject: [PATCH 6.6 38/77] accel/qaic: Fix integer overflow in qaic_validate_req()
 Date: Tue, 25 Mar 2025 08:22:33 -0400
-Message-ID: <20250325122150.898692900@linuxfoundation.org>
+Message-ID: <20250325122145.348357978@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,7 +86,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/accel/qaic/qaic_data.c
 +++ b/drivers/accel/qaic/qaic_data.c
-@@ -557,6 +557,7 @@ static bool invalid_sem(struct qaic_sem
+@@ -550,6 +550,7 @@ static bool invalid_sem(struct qaic_sem
  static int qaic_validate_req(struct qaic_device *qdev, struct qaic_attach_slice_entry *slice_ent,
  			     u32 count, u64 total_size)
  {
@@ -94,7 +94,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	int i;
  
  	for (i = 0; i < count; i++) {
-@@ -566,7 +567,8 @@ static int qaic_validate_req(struct qaic
+@@ -559,7 +560,8 @@ static int qaic_validate_req(struct qaic
  		      invalid_sem(&slice_ent[i].sem2) || invalid_sem(&slice_ent[i].sem3))
  			return -EINVAL;
  
