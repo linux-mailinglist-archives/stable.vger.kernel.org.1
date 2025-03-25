@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-126265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2A2A70017
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD57A6FF9D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71BB38408C4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA347841F3D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EE0268698;
-	Tue, 25 Mar 2025 12:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9486B266EEB;
+	Tue, 25 Mar 2025 12:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B64YIa4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSE+sVv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A6525D54A;
-	Tue, 25 Mar 2025 12:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5097C1D959B;
+	Tue, 25 Mar 2025 12:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905905; cv=none; b=Ix4KxDGiS6WkqD/PQ+cF5/khzjn6juF006NC19YlH5bmQ8pVFqhhEYd+rifloBMHzka1ceJPfchPk2tTSq4oyCJvkS9xLhmTotqh4Ys0D9IN2DozFAYfAywZKLCGiM00X8Uj2Pm2ueXEfiYAU6WGDjOegusmmBfZdcetQLhXxHQ=
+	t=1742905703; cv=none; b=MN1yofEq3G2oNqNhG01nFZO+rGqbB6aT+zareAE8unTXaIgqELC1WoJaJBo361FAHUT5UHfWpTdPCgX1uI5/NQqba7cGHZuWeAHH2Cx2hF8JPdPhBwDFNFJ604zA99wAt9kHBsev4u+4iur0xX3xKM/0mSnd/0eCN89EhoF5yD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905905; c=relaxed/simple;
-	bh=cjk2z2kGuYtesOrFoKl+1PbIAQncOIbq4GObz/7QQ5A=;
+	s=arc-20240116; t=1742905703; c=relaxed/simple;
+	bh=0vqwjhUKoK5pgdJwmOmNXDj6YxBuyRBKR+DWNSW6PQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpVMxHaf80lt0pWixdJE9UQKIUobA/ByRb71+zJWFrCEygCQhtOwxHNidxVN+5Kr/9IW0yyurWsn/1bGWbcLOjmbnUG6rTVHYyIvkM7XiwA4xEiGuN0gY1eQDSmQ8zkP+EL6S6JV9I9nkWCQoSdxPx6g4d6ZFItYKc72MMEofHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B64YIa4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E96C4CEE4;
-	Tue, 25 Mar 2025 12:31:45 +0000 (UTC)
+	 MIME-Version; b=jjXfsxAerBhwN/LsiAQyH7ZnVUXpI1ZyzWWPHBoa34iaS85fAMVlqukXO1ihIw9cp7WQYcudh1B+Mqq7HcQ5e15WcsJV9CS8vso8LRZzRw5ThhVJ+CHIzhXKArH/MMe8khsdlBilzFKWw9WnvY9ODQmaNKBE7hyMNeazSXZiYjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSE+sVv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7DCC4CEE4;
+	Tue, 25 Mar 2025 12:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905905;
-	bh=cjk2z2kGuYtesOrFoKl+1PbIAQncOIbq4GObz/7QQ5A=;
+	s=korg; t=1742905702;
+	bh=0vqwjhUKoK5pgdJwmOmNXDj6YxBuyRBKR+DWNSW6PQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B64YIa4p+kdJzLqsMULZ0lai1qVn3Hjkp5SFNXAXjmSQczSZmzPT60KaI+D2zRHyT
-	 xeL/TyEc6oQQiQ8FOv/YCDmUC3Xldi01vCE+qKSmlDMBRlBORw4UP2fxIcZnk3QTj0
-	 fip6D9l1isD+gB48OljmIr+bzjiNwqpj7m5EnP2A=
+	b=TSE+sVv5ywB42yusHsIY4slSmheNwCqnnALgVgZW4RyqFIRTI4sYruC+GfQ+jZDLu
+	 NsPiqw36ZfH+qL6BFlSk3zaVt95MnSF7xJpyRt/F1bYxIl3BcinNVYvlGhIZJgfIwP
+	 M8qpwZzEgFlnJNk4ahCnbWRK4djeILC17mE3+e4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 021/119] dma-mapping: fix missing clear bdr in check_ram_in_range_map()
-Date: Tue, 25 Mar 2025 08:21:19 -0400
-Message-ID: <20250325122149.611672548@linuxfoundation.org>
+	Varada Pavani <v.pavani@samsung.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.1 118/198] clk: samsung: update PLL locktime for PLL142XX used on FSD platform
+Date: Tue, 25 Mar 2025 08:21:20 -0400
+Message-ID: <20250325122159.750652777@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Varada Pavani <v.pavani@samsung.com>
 
-[ Upstream commit 8324993f60305e50f27b98358b01b9837e10d159 ]
+commit 53517a70873c7a91675f7244768aad5006cc45de upstream.
 
-As discussed in [1], if 'bdr' is set once, it would never get
-cleared, hence 0 is always returned.
+Currently PLL142XX locktime is 270. As per spec, it should be 150. Hence
+update PLL142XX controller locktime to 150.
 
-Refactor the range check hunk into a new helper dma_find_range(),
-which allows 'bdr' to be cleared in each iteration.
-
-Link: https://lore.kernel.org/all/64931fac-085b-4ff3-9314-84bac2fa9bdb@quicinc.com/ # [1]
-Fixes: a409d9600959 ("dma-mapping: fix dma_addressing_limited() if dma_range_map can't cover all system RAM")
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://lore.kernel.org/r/20250307030350.69144-1-quic_bqiang@quicinc.com
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4f346005aaed ("clk: samsung: fsd: Add initial clock support")
+Signed-off-by: Varada Pavani <v.pavani@samsung.com>
+Link: https://lore.kernel.org/r/20250225131918.50925-3-v.pavani@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/direct.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ drivers/clk/samsung/clk-pll.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 5b4e6d3bf7bcc..b8fe0b3d0ffb6 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -584,6 +584,22 @@ int dma_direct_supported(struct device *dev, u64 mask)
- 	return mask >= phys_to_dma_unencrypted(dev, min_mask);
- }
+--- a/drivers/clk/samsung/clk-pll.c
++++ b/drivers/clk/samsung/clk-pll.c
+@@ -206,6 +206,7 @@ static const struct clk_ops samsung_pll3
+  */
+ /* Maximum lock time can be 270 * PDIV cycles */
+ #define PLL35XX_LOCK_FACTOR	(270)
++#define PLL142XX_LOCK_FACTOR	(150)
  
-+static const struct bus_dma_region *dma_find_range(struct device *dev,
-+						   unsigned long start_pfn)
-+{
-+	const struct bus_dma_region *m;
-+
-+	for (m = dev->dma_range_map; PFN_DOWN(m->size); m++) {
-+		unsigned long cpu_start_pfn = PFN_DOWN(m->cpu_start);
-+
-+		if (start_pfn >= cpu_start_pfn &&
-+		    start_pfn - cpu_start_pfn < PFN_DOWN(m->size))
-+			return m;
-+	}
-+
-+	return NULL;
-+}
-+
- /*
-  * To check whether all ram resource ranges are covered by dma range map
-  * Returns 0 when further check is needed
-@@ -593,20 +609,12 @@ static int check_ram_in_range_map(unsigned long start_pfn,
- 				  unsigned long nr_pages, void *data)
- {
- 	unsigned long end_pfn = start_pfn + nr_pages;
--	const struct bus_dma_region *bdr = NULL;
--	const struct bus_dma_region *m;
- 	struct device *dev = data;
+ #define PLL35XX_MDIV_MASK       (0x3FF)
+ #define PLL35XX_PDIV_MASK       (0x3F)
+@@ -272,7 +273,11 @@ static int samsung_pll35xx_set_rate(stru
+ 	}
  
- 	while (start_pfn < end_pfn) {
--		for (m = dev->dma_range_map; PFN_DOWN(m->size); m++) {
--			unsigned long cpu_start_pfn = PFN_DOWN(m->cpu_start);
-+		const struct bus_dma_region *bdr;
+ 	/* Set PLL lock time. */
+-	writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
++	if (pll->type == pll_142xx)
++		writel_relaxed(rate->pdiv * PLL142XX_LOCK_FACTOR,
++			pll->lock_reg);
++	else
++		writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
+ 			pll->lock_reg);
  
--			if (start_pfn >= cpu_start_pfn &&
--			    start_pfn - cpu_start_pfn < PFN_DOWN(m->size)) {
--				bdr = m;
--				break;
--			}
--		}
-+		bdr = dma_find_range(dev, start_pfn);
- 		if (!bdr)
- 			return 1;
- 
--- 
-2.39.5
-
+ 	/* Change PLL PMS values */
 
 
 
