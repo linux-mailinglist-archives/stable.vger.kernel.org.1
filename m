@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-126194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AF2A70006
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D71A700E2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE13F1883C23
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E9F6171665
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA592676D9;
-	Tue, 25 Mar 2025 12:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5398B26E17B;
+	Tue, 25 Mar 2025 12:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyyXqSeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPIZRS9A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF01525A342;
-	Tue, 25 Mar 2025 12:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1255826E155;
+	Tue, 25 Mar 2025 12:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905774; cv=none; b=EGTs8sTYgvWmmvMF+PiefGimNUNs2pSzwCDvgkSFGehgdkEdftnCFBMhRJZ8j0RZEXvwc6li5tA9E9bMkD6Tl1MIpDSm8E9/rKimiMxDxcs8VBvOeKk0PosUvllSHMwF1Pwra/tVqrHkDpR8L7wZQzniZh4r37ZqpKJE260b4ek=
+	t=1742906351; cv=none; b=P8j3wL5TsbjbEcGDW6/0Sq7Oms7p+C4Q10G4pwB4GWqVu2ksesZNlAKeXq4pnl/ryyGjzDG2OEdJ0yjo9gnV3T4tZD1Ae8PIxu9QuqCXLnnywC1puapwQTuozpFvBnu7EBcnt3cc8gBwpsn9sOb/LZWo6TInAroDu+uKIeKfFlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905774; c=relaxed/simple;
-	bh=MoQw0M63GIfd9mbOSZDqYxnwX+pLmlc5jOxs50FfWaM=;
+	s=arc-20240116; t=1742906351; c=relaxed/simple;
+	bh=6knjCtz10noC2KHHuLCqPZPwuQrfUqrNuIvNG8yaNGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJ80LhikQ1pHVY7nxuVkLe+7MKer0gS7HBmLLZKFoOI07UWeyhooUy74PoOTyzWnLONQHKp/4tFIuEhy2fw77qAkjQY5CkjucEfHyvZ5vd13I61bPDrGjc6BEqnQf+BFVhODtoTBfzhdUkEKvtpD053mmKoEN2zuxmfgNcxlK6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyyXqSeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C32C4CEE4;
-	Tue, 25 Mar 2025 12:29:34 +0000 (UTC)
+	 MIME-Version; b=hXq92z1nK6ZblZbyZ4Td8/l3QVG0sA5KF+7QecuZVO+0BsKEHha3JHHBC41wMwMO2yFNlVrfyhSTsnNKbQACjMw0EcwIAHZwtcN9fSU4Paf9nU6qGXzI+Q9HgoOA0DQTutasJ5Wrn8icSnEeEOSd2EGSOOaeXusOTWXa57AAuCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPIZRS9A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6800C4CEEF;
+	Tue, 25 Mar 2025 12:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905774;
-	bh=MoQw0M63GIfd9mbOSZDqYxnwX+pLmlc5jOxs50FfWaM=;
+	s=korg; t=1742906350;
+	bh=6knjCtz10noC2KHHuLCqPZPwuQrfUqrNuIvNG8yaNGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZyyXqSehcOND3AuFdCPLtm9saf7aEcCvrZMUv7AwA6EYhy+nSpH1I4vLqsKJ9cwy8
-	 AZv2Yfgj2nNH6etN0EKfCxKDNHpkB+9ucP8RgFEy9acuNjxl9Pxp5hxMLO2+MWk+Vn
-	 ti7drUIwAFru0qdfy38ArwdgTug03dXRIih7iUaM=
+	b=vPIZRS9ABRzl1Kxnj6Dp5rtwOId+0qdW1llj7YogL5Oe/NuRLTQrRSYvWH7MhKtU+
+	 zlD+bNrp+wue5YGYAzGK3/0LjEyPi/xoaF2nPcQn5UO2/zbYkcOt9wpv18jPNtsm5R
+	 TZQze0HmZc0SU+GLJJ9HPs6yUE9UWgY88hPOl8tE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/198] RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
+Subject: [PATCH 6.12 031/116] Bluetooth: hci_event: Fix connection regression between LE and non-LE adapters
 Date: Tue, 25 Mar 2025 08:21:58 -0400
-Message-ID: <20250325122200.749236431@linuxfoundation.org>
+Message-ID: <20250325122150.006443750@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
 
-[ Upstream commit 81c0db302a674f8004ed805393d17fd76f552e83 ]
+[ Upstream commit f6685a96c8c8a07e260e39bac86d4163cfb38a4d ]
 
-Driver is always clearing the mask that sets the VLAN ID/Service Level
-in the adapter. Recent change for supporting multiple traffic class
-exposed this issue.
+Due to a typo during defining HCI errors it is not possible to connect
+LE-capable device with BR/EDR only adapter. The connection is terminated
+by the LE adapter because the invalid LL params error code is treated
+as unsupported remote feature.
 
-Allow setting SL and VLAN_ID while QP is moved from INIT to RTR state.
-
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Fixes: c64b16a37b6d ("RDMA/bnxt_re: Support different traffic class")
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1741670196-2919-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 79c0868ad65a ("Bluetooth: hci_event: Use HCI error defines instead of magic values")
+Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 --
- 1 file changed, 2 deletions(-)
+ include/net/bluetooth/hci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index 23f9a48828dca..15a62d0d243ce 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1186,8 +1186,6 @@ static void __modify_flags_from_init_state(struct bnxt_qplib_qp *qp)
- 			qp->path_mtu =
- 				CMDQ_MODIFY_QP_PATH_MTU_MTU_2048;
- 		}
--		qp->modify_flags &=
--			~CMDQ_MODIFY_QP_MODIFY_MASK_VLAN_ID;
- 		/* Bono FW require the max_dest_rd_atomic to be >= 1 */
- 		if (qp->max_dest_rd_atomic < 1)
- 			qp->max_dest_rd_atomic = 1;
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 5bb4eaa52e14c..dd10e02bfc746 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -683,7 +683,7 @@ enum {
+ #define HCI_ERROR_REMOTE_POWER_OFF	0x15
+ #define HCI_ERROR_LOCAL_HOST_TERM	0x16
+ #define HCI_ERROR_PAIRING_NOT_ALLOWED	0x18
+-#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1e
++#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1a
+ #define HCI_ERROR_INVALID_LL_PARAMS	0x1e
+ #define HCI_ERROR_UNSPECIFIED		0x1f
+ #define HCI_ERROR_ADVERTISING_TIMEOUT	0x3c
 -- 
 2.39.5
 
