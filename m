@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-126614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DEAFA7094E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:46:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3B9A7094C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:46:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D892F3A4A2B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:45:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4E667A5B54
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE8B1DFD96;
-	Tue, 25 Mar 2025 18:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76101E1E04;
+	Tue, 25 Mar 2025 18:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HX5TFQ3y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ssM4E46W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8111AE875;
-	Tue, 25 Mar 2025 18:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9124E1F5826;
+	Tue, 25 Mar 2025 18:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742928175; cv=none; b=t8bB/C4uQi6OB9KspsDFAmj8hgXVgowd5+XeF97uw5mGUc1LSCJvtU+gh7oO/0uX8YweMzKlq9yRxq+G96J1rjPzJSXwv8EUBLcFKSa8/TIx8Ml6BakXfHC/rqR5C9w2BGPL/cIZ/NxvX4l1yHPxB5xd+nJ2gdnjj2j0FpwAYhw=
+	t=1742928176; cv=none; b=a77HlmdsZ3GklKrJqRuZW/XrK4SdPTenQd4j7hUN+KUhQHhK9KcBI23XM4nlP9MbemtDR9OPOVA6Pm59z4ZBJoN9Py07wUA6zk80sqecCVJzxZIv2sEpijDiwo/o98coYi/3C+rxwmBWtSrrr0GiAyfQGgPFQWhxIG/VprU9C8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742928175; c=relaxed/simple;
-	bh=eUJdDnj4ZjDq9dOPlJ/JUG00bt0PnCuHCHjtlNK0khE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pT3/1FN2y6ArWjNdhxsf1Jex43LFrlS27Rh9q8qA1UDI73BlXcmameWKvqanwhxq+MVbnAdg0yzt31mCfZKlQ9Fs3ODZ/bZmomvVXT90sIWHYYd1sznnoWCaylg6YVomT9MPhQwPz3DnQt6vow9Z4dJ2aWCMf/7SblDJYsFGXzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HX5TFQ3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F2FC4CEE4;
-	Tue, 25 Mar 2025 18:42:53 +0000 (UTC)
+	s=arc-20240116; t=1742928176; c=relaxed/simple;
+	bh=kd5dlfIxAlbmT1YLtBm+KAJIrE3p0y+2brAJD8SAj2k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hgrOJ+v+6LjycKE5na9QpObCbgNbRRXm6Whmb8mNIEmsLWyqOOqDfoUAiAOgCMQV0bioYAKppavFucMkdpe2AlNcaMLakRDu+3K4s1A97EgD+SEeO7K5tvotCa9llvi8/na/JmpKJ2MMpXFXXkmrk7ugqLeuxUNKnuE1vkBZmvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ssM4E46W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8DBC4CEEE;
+	Tue, 25 Mar 2025 18:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742928174;
-	bh=eUJdDnj4ZjDq9dOPlJ/JUG00bt0PnCuHCHjtlNK0khE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HX5TFQ3ylizajvG33Q0bmyBusppP99u0pXgJFHWYAJiFsrCINX0YffdSTP+a7P1Fe
-	 PvnIMwVpdS2lDxDQFQs6iHisSOkrL9x7ZuJouPgJ2luA/9uqVl4CPrNnqIbZDwMuzw
-	 iTN4v69udInPRAKbS5mtpGRoZOttMHmDiddcxAjK59161gdt0Jx13SfTf0/nqKco9f
-	 w7eIUVxI/a5tk9O04zUarhULIMGNos7X6YePXPuw0dOajd8vip02atUAJvX6AQvlRS
-	 Ls8BEKJd4jTr1m0oLEm8QCzGqMXPPr0LXKlxQSj8ersHA+P0Li7l9s1BsT/6YtJdiL
-	 T3nBKfBcImH9Q==
+	s=k20201202; t=1742928176;
+	bh=kd5dlfIxAlbmT1YLtBm+KAJIrE3p0y+2brAJD8SAj2k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ssM4E46WQRfRpie8Q5qKAGn0OWBrYc/du+xH8zT+JcRB0Bw+fMh4/55Qsuz8O0C91
+	 RErJsM71q7Qh2Ou2oJo/KaK8qaOLVA3suEiMwHJRoW/2GtOHF71790WOQEBO6etq7k
+	 gHlrutZChLOiIMEF+R3LGMx/jIX+jaTQ0XZ0QnrjU129sWf8MI5W7hmQPHWQhI8nqu
+	 oOAM7Fu7EuqJ2lKjxI3ZxMSmnqP6vSHF3IRl0jp3xR/ATh0Q7VRqThpXnriZ7Z7uTW
+	 UrHlMqpFGSiauNXmtys0dwjdMx90EkFiKmYOsZ77DNmlQ4WxY2qxxIzkqTYEmkBHeO
+	 Ab0rV75ubasMw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oliver Hartkopp <socketcan@hartkopp.net>,
-	syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: Roger Quadros <rogerq@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-can@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 1/3] can: statistics: use atomic access in hot path
-Date: Tue, 25 Mar 2025 14:42:46 -0400
-Message-Id: <20250325184249.2152329-1-sashal@kernel.org>
+	tony@atomide.com,
+	krzk@kernel.org,
+	linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 2/3] memory: omap-gpmc: drop no compatible check
+Date: Tue, 25 Mar 2025 14:42:47 -0400
+Message-Id: <20250325184249.2152329-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250325184249.2152329-1-sashal@kernel.org>
+References: <20250325184249.2152329-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,192 +69,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.84
 Content-Transfer-Encoding: 8bit
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit 80b5f90158d1364cbd80ad82852a757fc0692bf2 ]
+[ Upstream commit edcccc6892f65eff5fd3027a13976131dc7fd733 ]
 
-In can_send() and can_receive() CAN messages and CAN filter matches are
-counted to be visible in the CAN procfs files.
+We are no longer depending on legacy device trees so
+drop the no compatible check for NAND and OneNAND
+nodes.
 
-KCSAN detected a data race within can_send() when two CAN frames have
-been generated by a timer event writing to the same CAN netdevice at the
-same time. Use atomic operations to access the statistics in the hot path
-to fix the KCSAN complaint.
-
-Reported-by: syzbot+78ce4489b812515d5e4d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67cd717d.050a0220.e1a89.0006.GAE@google.com
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250310143353.3242-1-socketcan@hartkopp.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Suggested-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://lore.kernel.org/r/20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/af_can.c | 12 ++++++------
- net/can/af_can.h | 12 ++++++------
- net/can/proc.c   | 46 +++++++++++++++++++++++++++-------------------
- 3 files changed, 39 insertions(+), 31 deletions(-)
+ drivers/memory/omap-gpmc.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index c469fc187f0c7..cdad0be43e8ff 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -287,8 +287,8 @@ int can_send(struct sk_buff *skb, int loop)
- 		netif_rx(newskb);
- 
- 	/* update statistics */
--	pkg_stats->tx_frames++;
--	pkg_stats->tx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->tx_frames);
-+	atomic_long_inc(&pkg_stats->tx_frames_delta);
- 
- 	return 0;
- 
-@@ -647,8 +647,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	int matches;
- 
- 	/* update statistics */
--	pkg_stats->rx_frames++;
--	pkg_stats->rx_frames_delta++;
-+	atomic_long_inc(&pkg_stats->rx_frames);
-+	atomic_long_inc(&pkg_stats->rx_frames_delta);
- 
- 	/* create non-zero unique skb identifier together with *skb */
- 	while (!(can_skb_prv(skb)->skbcnt))
-@@ -669,8 +669,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- 	consume_skb(skb);
- 
- 	if (matches > 0) {
--		pkg_stats->matches++;
--		pkg_stats->matches_delta++;
-+		atomic_long_inc(&pkg_stats->matches);
-+		atomic_long_inc(&pkg_stats->matches_delta);
+diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
+index d78f73db37c88..ab0985bb5789a 100644
+--- a/drivers/memory/omap-gpmc.c
++++ b/drivers/memory/omap-gpmc.c
+@@ -2247,26 +2247,6 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
+ 		goto err;
  	}
- }
  
-diff --git a/net/can/af_can.h b/net/can/af_can.h
-index 7c2d9161e2245..22f3352c77fec 100644
---- a/net/can/af_can.h
-+++ b/net/can/af_can.h
-@@ -66,9 +66,9 @@ struct receiver {
- struct can_pkg_stats {
- 	unsigned long jiffies_init;
- 
--	unsigned long rx_frames;
--	unsigned long tx_frames;
--	unsigned long matches;
-+	atomic_long_t rx_frames;
-+	atomic_long_t tx_frames;
-+	atomic_long_t matches;
- 
- 	unsigned long total_rx_rate;
- 	unsigned long total_tx_rate;
-@@ -82,9 +82,9 @@ struct can_pkg_stats {
- 	unsigned long max_tx_rate;
- 	unsigned long max_rx_match_ratio;
- 
--	unsigned long rx_frames_delta;
--	unsigned long tx_frames_delta;
--	unsigned long matches_delta;
-+	atomic_long_t rx_frames_delta;
-+	atomic_long_t tx_frames_delta;
-+	atomic_long_t matches_delta;
- };
- 
- /* persistent statistics */
-diff --git a/net/can/proc.c b/net/can/proc.c
-index bbce97825f13f..25fdf060e30d0 100644
---- a/net/can/proc.c
-+++ b/net/can/proc.c
-@@ -118,6 +118,13 @@ void can_stat_update(struct timer_list *t)
- 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
- 	unsigned long j = jiffies; /* snapshot */
- 
-+	long rx_frames = atomic_long_read(&pkg_stats->rx_frames);
-+	long tx_frames = atomic_long_read(&pkg_stats->tx_frames);
-+	long matches = atomic_long_read(&pkg_stats->matches);
-+	long rx_frames_delta = atomic_long_read(&pkg_stats->rx_frames_delta);
-+	long tx_frames_delta = atomic_long_read(&pkg_stats->tx_frames_delta);
-+	long matches_delta = atomic_long_read(&pkg_stats->matches_delta);
-+
- 	/* restart counting in timer context on user request */
- 	if (user_reset)
- 		can_init_stats(net);
-@@ -127,35 +134,33 @@ void can_stat_update(struct timer_list *t)
- 		can_init_stats(net);
- 
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->rx_frames > (ULONG_MAX / HZ))
-+	if (rx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* prevent overflow in calc_rate() */
--	if (pkg_stats->tx_frames > (ULONG_MAX / HZ))
-+	if (tx_frames > (LONG_MAX / HZ))
- 		can_init_stats(net);
- 
- 	/* matches overflow - very improbable */
--	if (pkg_stats->matches > (ULONG_MAX / 100))
-+	if (matches > (LONG_MAX / 100))
- 		can_init_stats(net);
- 
- 	/* calc total values */
--	if (pkg_stats->rx_frames)
--		pkg_stats->total_rx_match_ratio = (pkg_stats->matches * 100) /
--			pkg_stats->rx_frames;
-+	if (rx_frames)
-+		pkg_stats->total_rx_match_ratio = (matches * 100) / rx_frames;
- 
- 	pkg_stats->total_tx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->tx_frames);
-+					    tx_frames);
- 	pkg_stats->total_rx_rate = calc_rate(pkg_stats->jiffies_init, j,
--					    pkg_stats->rx_frames);
-+					    rx_frames);
- 
- 	/* calc current values */
--	if (pkg_stats->rx_frames_delta)
-+	if (rx_frames_delta)
- 		pkg_stats->current_rx_match_ratio =
--			(pkg_stats->matches_delta * 100) /
--			pkg_stats->rx_frames_delta;
-+			(matches_delta * 100) /	rx_frames_delta;
- 
--	pkg_stats->current_tx_rate = calc_rate(0, HZ, pkg_stats->tx_frames_delta);
--	pkg_stats->current_rx_rate = calc_rate(0, HZ, pkg_stats->rx_frames_delta);
-+	pkg_stats->current_tx_rate = calc_rate(0, HZ, tx_frames_delta);
-+	pkg_stats->current_rx_rate = calc_rate(0, HZ, rx_frames_delta);
- 
- 	/* check / update maximum values */
- 	if (pkg_stats->max_tx_rate < pkg_stats->current_tx_rate)
-@@ -168,9 +173,9 @@ void can_stat_update(struct timer_list *t)
- 		pkg_stats->max_rx_match_ratio = pkg_stats->current_rx_match_ratio;
- 
- 	/* clear values for 'current rate' calculation */
--	pkg_stats->tx_frames_delta = 0;
--	pkg_stats->rx_frames_delta = 0;
--	pkg_stats->matches_delta   = 0;
-+	atomic_long_set(&pkg_stats->tx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->rx_frames_delta, 0);
-+	atomic_long_set(&pkg_stats->matches_delta, 0);
- 
- 	/* restart timer (one second) */
- 	mod_timer(&net->can.stattimer, round_jiffies(jiffies + HZ));
-@@ -214,9 +219,12 @@ static int can_stats_proc_show(struct seq_file *m, void *v)
- 	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
- 
- 	seq_putc(m, '\n');
--	seq_printf(m, " %8ld transmitted frames (TXF)\n", pkg_stats->tx_frames);
--	seq_printf(m, " %8ld received frames (RXF)\n", pkg_stats->rx_frames);
--	seq_printf(m, " %8ld matched frames (RXMF)\n", pkg_stats->matches);
-+	seq_printf(m, " %8ld transmitted frames (TXF)\n",
-+		   atomic_long_read(&pkg_stats->tx_frames));
-+	seq_printf(m, " %8ld received frames (RXF)\n",
-+		   atomic_long_read(&pkg_stats->rx_frames));
-+	seq_printf(m, " %8ld matched frames (RXMF)\n",
-+		   atomic_long_read(&pkg_stats->matches));
- 
- 	seq_putc(m, '\n');
- 
+-	if (of_node_name_eq(child, "nand")) {
+-		/* Warn about older DT blobs with no compatible property */
+-		if (!of_property_read_bool(child, "compatible")) {
+-			dev_warn(&pdev->dev,
+-				 "Incompatible NAND node: missing compatible");
+-			ret = -EINVAL;
+-			goto err;
+-		}
+-	}
+-
+-	if (of_node_name_eq(child, "onenand")) {
+-		/* Warn about older DT blobs with no compatible property */
+-		if (!of_property_read_bool(child, "compatible")) {
+-			dev_warn(&pdev->dev,
+-				 "Incompatible OneNAND node: missing compatible");
+-			ret = -EINVAL;
+-			goto err;
+-		}
+-	}
+-
+ 	if (of_match_node(omap_nand_ids, child)) {
+ 		/* NAND specific setup */
+ 		val = 8;
 -- 
 2.39.5
 
