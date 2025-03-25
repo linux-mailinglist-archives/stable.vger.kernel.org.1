@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-126165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70CCA6FFA3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C50A6FFC0
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5F573B9D8A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B32A7A28CC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613E725A333;
-	Tue, 25 Mar 2025 12:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDFF268C44;
+	Tue, 25 Mar 2025 12:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4/h1OPc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z14QVR5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAA22571DC;
-	Tue, 25 Mar 2025 12:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05A8E55B;
+	Tue, 25 Mar 2025 12:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905721; cv=none; b=fjIkYwS8QjRhwm8sWYySo0G5i3LzoElMoNfBSAWySgfXK2zlHFJBbYEMUP9peleq79Fsole/9sXAwr+B43jdZvh5otAczQswwpOpdt/sRyBt7x0sy+71fCbV24JLOGv1jMaE6CrHPhrSIPOL1XthjHprAsDFE89ciLCw9ykFKp8=
+	t=1742905911; cv=none; b=lapCnslHDp2eC5KGiHkCo07qsQiVGCQEDnd5AS0EFTwnC66GbyvVts8pIPwSmXC4D/bskksLymrIOJ8PrW14hPY5OCl+W/q2FF6UGDrSdtS8sdQ/M4GQJPvO5ND6LKBbzgZcsm2ZVPu+I5M6pdK5jlZO8OtZTRGbGmScJaVLc8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905721; c=relaxed/simple;
-	bh=SES/wls+wQAxyGV3mJ3jxTmRJj8DJxU41vL+o98Y/eU=;
+	s=arc-20240116; t=1742905911; c=relaxed/simple;
+	bh=sDQjGI/FQbDeliczrsHg2jfwVKEciWjka/Op3pkSH/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ja3TOsRsgXixWPQh5qEKJ7h/n3hpS5q3rxiYRtzMZXU5XKgAmZVr6MPXyXnp5XWMkgWZpYx6Xt6paKrl5hA67jor3nIRKC4xeB6Y7x/C4V6XeOybBQXPpOA3NMMK2+/emDrYJ5I8h6haXyjGHuyxR/3tAVUbwvM57ojQtMcRMNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4/h1OPc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77BDC4CEE4;
-	Tue, 25 Mar 2025 12:28:40 +0000 (UTC)
+	 MIME-Version; b=nDwVMl73+uLGIDXNdgPPV1h75Y01GBLXHFV5kER8flxAgE5RC802ND5jrdY9ze13uDpRcHufSonM1PPG3FsThY8Bmd6a28cGauLErvJ1PqMzn6eV6R66EAcnaoa/tDx92QGTgWHgr/0senz9mM9ekIAyECWYvUUAQCPiXHgRHmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z14QVR5P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39F9C4CEE9;
+	Tue, 25 Mar 2025 12:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905721;
-	bh=SES/wls+wQAxyGV3mJ3jxTmRJj8DJxU41vL+o98Y/eU=;
+	s=korg; t=1742905910;
+	bh=sDQjGI/FQbDeliczrsHg2jfwVKEciWjka/Op3pkSH/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4/h1OPcpJh1z/WPy0erzJO8QiyY9fSaSkE9GzpZJOEUKc2Ef5BEMEy0ksWQgDwwv
-	 s/YDXvnHucDXG1jNs4r5a2bsdGvLs/d0LOjlYkLxA8zwJ/CJrG/Eoh0rWRVpvK1/VC
-	 +boEEIgNchV4K0J2R6gnmfWirS6uwVnI2SDo6/So=
+	b=Z14QVR5PCq6F4GDVSMnKgG3+bd0hJxjxdda34ub+eWngSOuSUnTpimsVGDFRRcdR9
+	 dcMnZYscVft55YWwt4GBm/HC7C+7Nc0AVr6yrIu2nCv5158lN/q1pelTQIAe3vaj2r
+	 e9XDntgRI5xEvT/xgnGvjZrTfNkabladjgA40Wb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Troy Hanson <quic_thanson@quicinc.com>,
+	Youssef Samir <quic_yabdulra@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/198] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
-Date: Tue, 25 Mar 2025 08:21:29 -0400
-Message-ID: <20250325122159.983644921@linuxfoundation.org>
+Subject: [PATCH 6.13 032/119] accel/qaic: Fix possible data corruption in BOs > 2G
+Date: Tue, 25 Mar 2025 08:21:30 -0400
+Message-ID: <20250325122149.885053172@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
-[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
+[ Upstream commit 84a833d90635e4b846333e2df0ae72f9cbecac39 ]
 
-Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
-pci_gfx_root in the mid_get_vbt_data().
+When slicing a BO, we need to iterate through the BO's sgt to find the
+right pieces to construct the slice. Some of the data types chosen for
+this process are incorrectly too small, and can overflow. This can
+result in the incorrect slice construction, which can lead to data
+corruption in workload execution.
 
-This change is similar to the checks implemented in mid_get_fuse_settings()
-and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
-("gma500: Final enables for Oaktrail") as "additional minor
-bulletproofing".
+The device can only handle 32-bit sized transfers, and the scatterlist
+struct only supports 32-bit buffer sizes, so our upper limit for an
+individual transfer is an unsigned int. Using an int is incorrect due to
+the reservation of the sign bit. Upgrade the length of a scatterlist
+entry and the offsets into a scatterlist entry to unsigned int for a
+correct representation.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+While each transfer may be limited to 32-bits, the overall BO may exceed
+that size. For counting the total length of the BO, we need a type that
+can represent the largest allocation possible on the system. That is the
+definition of size_t, so use it.
 
-Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
+Fixes: ff13be830333 ("accel/qaic: Add datapath")
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
+Reviewed-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306171959.853466-1-jeff.hugo@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/accel/qaic/qaic_data.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
-index 7e76790c6a81f..cba97d7db131d 100644
---- a/drivers/gpu/drm/gma500/mid_bios.c
-+++ b/drivers/gpu/drm/gma500/mid_bios.c
-@@ -279,6 +279,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
- 					    0, PCI_DEVFN(2, 0));
- 	int ret = -1;
+diff --git a/drivers/accel/qaic/qaic_data.c b/drivers/accel/qaic/qaic_data.c
+index c20eb63750f51..ffcdf5738d099 100644
+--- a/drivers/accel/qaic/qaic_data.c
++++ b/drivers/accel/qaic/qaic_data.c
+@@ -172,9 +172,10 @@ static void free_slice(struct kref *kref)
+ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_table **sgt_out,
+ 					struct sg_table *sgt_in, u64 size, u64 offset)
+ {
+-	int total_len, len, nents, offf = 0, offl = 0;
+ 	struct scatterlist *sg, *sgn, *sgf, *sgl;
++	unsigned int len, nents, offf, offl;
+ 	struct sg_table *sgt;
++	size_t total_len;
+ 	int ret, j;
  
-+	if (pci_gfx_root == NULL) {
-+		WARN_ON(1);
-+		return;
-+	}
-+
- 	/* Get the address of the platform config vbt */
- 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
- 	pci_dev_put(pci_gfx_root);
+ 	/* find out number of relevant nents needed for this mem */
+@@ -182,6 +183,8 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
+ 	sgf = NULL;
+ 	sgl = NULL;
+ 	nents = 0;
++	offf = 0;
++	offl = 0;
+ 
+ 	size = size ? size : PAGE_SIZE;
+ 	for_each_sgtable_dma_sg(sgt_in, sg, j) {
 -- 
 2.39.5
 
