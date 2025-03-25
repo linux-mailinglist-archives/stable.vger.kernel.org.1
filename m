@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-126469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D2FA7017B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:25:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA27A6FFC8
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BCBD18917FE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7D583BE04E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2579E26B2D7;
-	Tue, 25 Mar 2025 12:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF67A25E45D;
+	Tue, 25 Mar 2025 12:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqmLeR9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHUGVh3f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D617926B2B8;
-	Tue, 25 Mar 2025 12:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8222571DC;
+	Tue, 25 Mar 2025 12:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906282; cv=none; b=l5TROLuByo7O77qdU+eYvFcNRxTAPPsyFglvRCxTKFRxyf8rk/xxRdriqg6fcau5uADV64ArHvlhhzB6/iEuak2yy08Uho85QtdPTyZgqXsXssctv/Rwaw97W6pKbPzlzgGESQ138rYZ8auGg0laMnZJzJW++blNCyrvgheDZYU=
+	t=1742905728; cv=none; b=Iyqxl66tHdYHVww2sRu65Ncm+m/wsbSlBpgc00DRVlA3DUQ+v4GQqMup1Q83QHIlzbv76AMFIo0/kaD3QxEA2pmIV5urTjDK8AUL9xBo8/H/ZfhkBVqwKnqdm7NsGVmwI7jO4tvsiJqBgKao0+ZZmbS3d5AHHb5SyWSt0paGaQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906282; c=relaxed/simple;
-	bh=v3ehHMb8XhLDxt8bCukdHv6g3GLaqZnjfnRCLyaEZFo=;
+	s=arc-20240116; t=1742905728; c=relaxed/simple;
+	bh=O7Fvt7zErft/bswnBWFRkEgxrOY/Tw6EU4WMWtPJfEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p50Wk7XrZsI3uAYSSRvnqe/hKlfaWAVxQfD3IFjGcXqvihRaBs8E6a/HWi1dwSfF6II8V9/jsAIO8HhXdHSfP+v6qMMHXL8sH1fmzYDwWl5iIY3hAF8sfrCGWslYIoKgCawg+r5I0niqoLYwfX3GrY8ouOuTLy6RVR31JqvYdoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqmLeR9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897E1C4CEE4;
-	Tue, 25 Mar 2025 12:38:02 +0000 (UTC)
+	 MIME-Version; b=sZ8e22cEgvhMTcguHMLhkQt5yq39Lyo/2e+3+htKoBDKhhFy2BRRne60U5gLQjrqWU0ADmxwAlAKDhpCEUOdwM4Ne2VJ0pk+FRPOFx4yM9ufQp0w1MpPnEwnRx095XiOX7qzTUQhEp6O3K+TyH1YjPVja4kTGXt/mz880MxGfFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHUGVh3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4346DC4CEE4;
+	Tue, 25 Mar 2025 12:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906282;
-	bh=v3ehHMb8XhLDxt8bCukdHv6g3GLaqZnjfnRCLyaEZFo=;
+	s=korg; t=1742905728;
+	bh=O7Fvt7zErft/bswnBWFRkEgxrOY/Tw6EU4WMWtPJfEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqmLeR9VxRNVKPwImEcXHM6wWgO6crZFnhYaRj7uHjQNNAbT/F5HDRSpcIh0++XM4
-	 rlHIn2ysU+QU0HWezQV3HHzJZ7onSHNth2KuW2cx59Y9acl1q11WzraVLTAtUp2own
-	 vCtq9b8mcBrQZQsR+0CzT1MAtv7f7wKBY1i/jRZA=
+	b=iHUGVh3fC9NuxNrxQJBhpf55uNpu3lfDt8xw1m7JzcMAuntDHNhr1FklR6m+Whodt
+	 MubZLo/inAPqZPgxuZThnyl4BhoA++f2bYLt9EW0nDdBNF55Zs+X5pO8I/bEEFkQPS
+	 3E1837Ug4wpXrTgvMAVlaVGoQetNCks68y/m4mws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Cassen <acassen@corp.free.fr>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/116] xfrm: fix tunnel mode TX datapath in packet offload mode
+Subject: [PATCH 6.1 131/198] scripts: generate_rust_analyzer: provide `cfg`s for `core` and `alloc`
 Date: Tue, 25 Mar 2025 08:21:33 -0400
-Message-ID: <20250325122149.373341236@linuxfoundation.org>
+Message-ID: <20250325122200.090215006@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Cassen <acassen@corp.free.fr>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 
-[ Upstream commit 5eddd76ec2fd1988f0a3450fde9730b10dd22992 ]
+[ Upstream commit 4f353e0d1282dfe6b8082290fe8e606c5739a954 ]
 
-Packets that match the output xfrm policy are delivered to the netstack.
-In IPsec packet mode for tunnel mode, the HW is responsible for building
-the hard header and outer IP header. In such a situation, the inner
-header may refer to a network that is not directly reachable by the host,
-resulting in a failed neighbor resolution. The packet is then dropped.
-xfrm policy defines the netdevice to use for xmit so we can send packets
-directly to it.
+Both `core` and `alloc` have their `cfgs` (such as `no_rc`) missing
+in `rust-project.json`.
 
-Makes direct xmit exclusive to tunnel mode, since some rules may apply
-in transport mode.
+To remedy this, pass the flags to `generate_rust_analyzer.py` for
+them to be added to a dictionary where each key corresponds to
+a crate and each value to a list of `cfg`s. The dictionary is then
+used to pass the `cfg`s to each crate in the generated file (for
+`core` and `alloc` only).
 
-Fixes: f8a70afafc17 ("xfrm: add TX datapath support for IPsec packet offload mode")
-Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Link: https://lore.kernel.org/r/20230804171448.54976-1-yakoyoku@gmail.com
+[ Removed `Suggested-by` as discussed in mailing list. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Stable-dep-of: 2e0f91aba507 ("scripts: generate_rust_analyzer: add missing macros deps")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_output.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ rust/Makefile                     |  1 +
+ scripts/generate_rust_analyzer.py | 16 ++++++++++++++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index e5722c95b8bb3..9160a5e09041d 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -610,6 +610,40 @@ int xfrm_output_resume(struct sock *sk, struct sk_buff *skb, int err)
- }
- EXPORT_SYMBOL_GPL(xfrm_output_resume);
+diff --git a/rust/Makefile b/rust/Makefile
+index 003a1277d705f..ec737bad7fbb0 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -345,6 +345,7 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
  
-+static int xfrm_dev_direct_output(struct sock *sk, struct xfrm_state *x,
-+				  struct sk_buff *skb)
-+{
-+	struct dst_entry *dst = skb_dst(skb);
-+	struct net *net = xs_net(x);
-+	int err;
-+
-+	dst = skb_dst_pop(skb);
-+	if (!dst) {
-+		XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-+		kfree_skb(skb);
-+		return -EHOSTUNREACH;
-+	}
-+	skb_dst_set(skb, dst);
-+	nf_reset_ct(skb);
-+
-+	err = skb_dst(skb)->ops->local_out(net, sk, skb);
-+	if (unlikely(err != 1)) {
-+		kfree_skb(skb);
-+		return err;
-+	}
-+
-+	/* In transport mode, network destination is
-+	 * directly reachable, while in tunnel mode,
-+	 * inner packet network may not be. In packet
-+	 * offload type, HW is responsible for hard
-+	 * header packet mangling so directly xmit skb
-+	 * to netdevice.
-+	 */
-+	skb->dev = x->xso.dev;
-+	__skb_push(skb, skb->dev->hard_header_len);
-+	return dev_queue_xmit(skb);
-+}
-+
- static int xfrm_output2(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
- 	return xfrm_output_resume(sk, skb, 1);
-@@ -729,6 +763,13 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
- 			return -EHOSTUNREACH;
- 		}
+ rust-analyzer:
+ 	$(Q)$(srctree)/scripts/generate_rust_analyzer.py \
++		--cfgs='core=$(core-cfgs)' --cfgs='alloc=$(alloc-cfgs)' \
+ 		$(abs_srctree) $(abs_objtree) \
+ 		$(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
+ 		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index a7fcacc1c72e7..030e26ef87c25 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -10,7 +10,15 @@ import os
+ import pathlib
+ import sys
  
-+		/* Exclusive direct xmit for tunnel mode, as
-+		 * some filtering or matching rules may apply
-+		 * in transport mode.
-+		 */
-+		if (x->props.mode == XFRM_MODE_TUNNEL)
-+			return xfrm_dev_direct_output(sk, x, skb);
+-def generate_crates(srctree, objtree, sysroot_src, external_src):
++def args_crates_cfgs(cfgs):
++    crates_cfgs = {}
++    for cfg in cfgs:
++        crate, vals = cfg.split("=", 1)
++        crates_cfgs[crate] = vals.replace("--cfg", "").split()
 +
- 		return xfrm_output_resume(sk, skb, 0);
- 	}
++    return crates_cfgs
++
++def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+     # Generate the configuration list.
+     cfg = []
+     with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
+@@ -24,6 +32,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src):
+     # Avoid O(n^2) iterations by keeping a map of indexes.
+     crates = []
+     crates_indexes = {}
++    crates_cfgs = args_crates_cfgs(cfgs)
+ 
+     def append_crate(display_name, root_module, deps, cfg=[], is_workspace_member=True, is_proc_macro=False):
+         crates_indexes[display_name] = len(crates)
+@@ -45,6 +54,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src):
+         "core",
+         sysroot_src / "core" / "src" / "lib.rs",
+         [],
++        cfg=crates_cfgs.get("core", []),
+         is_workspace_member=False,
+     )
+ 
+@@ -58,6 +68,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src):
+         "alloc",
+         srctree / "rust" / "alloc" / "lib.rs",
+         ["core", "compiler_builtins"],
++        cfg=crates_cfgs.get("alloc", []),
+     )
+ 
+     append_crate(
+@@ -125,6 +136,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src):
+ def main():
+     parser = argparse.ArgumentParser()
+     parser.add_argument('--verbose', '-v', action='store_true')
++    parser.add_argument('--cfgs', action='append', default=[])
+     parser.add_argument("srctree", type=pathlib.Path)
+     parser.add_argument("objtree", type=pathlib.Path)
+     parser.add_argument("sysroot_src", type=pathlib.Path)
+@@ -137,7 +149,7 @@ def main():
+     )
+ 
+     rust_project = {
+-        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree),
++        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs),
+         "sysroot_src": str(args.sysroot_src),
+     }
  
 -- 
 2.39.5
