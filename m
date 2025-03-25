@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-126491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E240DA700E5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED43AA70096
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18A8717195C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3E3174ACD
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA4F26B978;
-	Tue, 25 Mar 2025 12:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFF6269D1B;
+	Tue, 25 Mar 2025 12:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lc+VZoDc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsqqSj1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE4725D8F6;
-	Tue, 25 Mar 2025 12:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0EA269D16;
+	Tue, 25 Mar 2025 12:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906323; cv=none; b=KkBxutkXbbVc587lZvMgVLgbGPjiJRJLij3/WhqCyBSNhpk+BFZl1dSba44xR1AVzn6nbeQR8sdLBCXcMt8qP/d/2Y9URDRvBLgYVrUdewQyB8+8caqHsLn/IqGhpFe4wlWrTuvqOEdrC9UvUx0NWo0+VEmhTNj0p3dxeCFtzp4=
+	t=1742906128; cv=none; b=ltuFlxtzz9NQ17veoT4wIU/aD4KjK9wst/JFlGkcT1acCBTXUOdLQFe8s1u6/Pst12ORkGyRBTVa2HtAoOXzY8FvQhnYSp2WPDndxMmgdKhwPNIH3Q0qpS2PCk3bOm2nDNWOfScPZ4sZj12tiD4kXHhnSLKw3ZyL67+PFOjcMuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906323; c=relaxed/simple;
-	bh=TLl0zf+hkOIQmCVmNyC1DiJ0WR+//OpPzQF+W8ph4Lk=;
+	s=arc-20240116; t=1742906128; c=relaxed/simple;
+	bh=HNmryvZ7zri8DY/aGlx1lQDlF9vifnmrA3SCeAibOsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qz39LksGS338/Jk1gP2zdf0dxgE/yzAjnyrrO7X8NYNQgQe1j0q28GD9yVfCat1qednH/85GMgII18fXtuVux+pH6Gcujk50Hxm3cg8YVNxGx7cjBv0uV9LOdj3wnfgCUCWuq+yy+ymEknB8dnDtpa5/MFF3B3anFUDuG6XODvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lc+VZoDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DC3C4CEE4;
-	Tue, 25 Mar 2025 12:38:43 +0000 (UTC)
+	 MIME-Version; b=cq8ElQ7/XGubLOtR5WrGFYCBbX8Zj8+W0GoF2bRSZbbMKiHxuOPdIbLX0t04Qn5g1/NWeBSHoBuxp+/q3ixIyZ1FKorCEHIcz/Ml5rKrWO1K7B3oH3lpSAaWy6Gg07MSNfbrAZTLfN+Jw2kyNIdFLfmvBqmOuxTshkoY0A5vWaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsqqSj1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C9CC4CEE9;
+	Tue, 25 Mar 2025 12:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906323;
-	bh=TLl0zf+hkOIQmCVmNyC1DiJ0WR+//OpPzQF+W8ph4Lk=;
+	s=korg; t=1742906128;
+	bh=HNmryvZ7zri8DY/aGlx1lQDlF9vifnmrA3SCeAibOsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lc+VZoDcnLu2Eb4J71dbvpeuMxAsXojK1Ow/fnX0TSKjGnZx+eNDfuZu1uYgi0QJP
-	 S79bTqIe6318nNs0L2/dMLVAk45YGl5HHocS3troM2tSLpiTDUwszp42I8+mvXOr9V
-	 fH/1S2QA6zk1xtEpfeg8EvPE4857sneuUIvWNvBw=
+	b=OsqqSj1yO9MR0QGkh3qvUaNsdOBOvaEApRl6r6wW0tEcxBmXUMwL/qADUr/qwVtzc
+	 xwAtLsYLzOV2ZC7hRSutPonH1I09SL9xZF7+ELG4T/EYXRvoNvzoQhSGH4UG8rQi9q
+	 YZHtH4ULbrFDvywtPRL9jj7qRsbVJTxEz56/r41w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7d8c418e8317899e88c@syzkaller.appspotmail.com,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 056/116] can: ucan: fix out of bound read in strscpy() source
-Date: Tue, 25 Mar 2025 08:22:23 -0400
-Message-ID: <20250325122150.642033080@linuxfoundation.org>
+	stable@kernel.org,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Nishanth Menon <nm@ti.com>,
+	Aniket Limaye <a-limaye@ti.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 29/77] i2c: omap: fix IRQ storms
+Date: Tue, 25 Mar 2025 08:22:24 -0400
+Message-ID: <20250325122145.115115556@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-commit 1d22a122ffb116c3cf78053e812b8b21f8852ee9 upstream.
+commit 285df995f90e3d61d97f327d34b9659d92313314 upstream.
 
-Commit 7fdaf8966aae ("can: ucan: use strscpy() to instead of strncpy()")
-unintentionally introduced a one byte out of bound read on strscpy()'s
-source argument (which is kind of ironic knowing that strscpy() is meant
-to be a more secure alternative :)).
+On the GTA04A5 writing a reset command to the gyroscope causes IRQ
+storms because NACK IRQs are enabled and therefore triggered but not
+acked.
 
-Let's consider below buffers:
+Sending a reset command to the gyroscope by
+i2cset 1 0x69 0x14 0xb6
+with an additional debug print in the ISR (not the thread) itself
+causes
 
-  dest[len + 1]; /* will be NUL terminated */
-  src[len]; /* may not be NUL terminated */
+[ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
+[ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
+[ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
+[ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
+[ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+[ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
+repeating till infinity
+[...]
+(0x2 = NACK, 0x100 = Bus free, which is not enabled)
+Apparently no other IRQ bit gets set, so this stalls.
 
-When doing:
+Do not ignore enabled interrupts and make sure they are acked.
+If the NACK IRQ is not needed, it should simply not enabled, but
+according to the above log, caring about it is necessary unless
+the Bus free IRQ is enabled and handled. The assumption that is
+will always come with a ARDY IRQ, which was the idea behind
+ignoring it, proves wrong.
+It is true for simple reads from an unused address.
 
-  strncpy(dest, src, len);
-  dest[len] = '\0';
+To still avoid the i2cdetect trouble which is the reason for
+commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
+avoid doing much about NACK in omap_i2c_xfer_data() which is used
+by both IRQ mode and polling mode, so also the false detection fix
+is extended to polling usage and IRQ storms are avoided.
 
-strncpy() will read up to len bytes from src.
+By changing this, the hardirq handler is not needed anymore to filter
+stuff.
 
-On the other hand:
+The mentioned gyro reset now just causes a -ETIMEDOUT instead of
+hanging the system.
 
-  strscpy(dest, src, len + 1);
-
-will read up to len + 1 bytes from src, that is to say, an out of bound
-read of one byte will occur on src if it is not NUL terminated. Note
-that the src[len] byte is never copied, but strscpy() still needs to
-read it to check whether a truncation occurred or not.
-
-This exact pattern happened in ucan.
-
-The root cause is that the source is not NUL terminated. Instead of
-doing a copy in a local buffer, directly NUL terminate it as soon as
-usb_control_msg() returns. With this, the local firmware_str[] variable
-can be removed.
-
-On top of this do a couple refactors:
-
-  - ucan_ctl_payload->raw is only used for the firmware string, so
-    rename it to ucan_ctl_payload->fw_str and change its type from u8 to
-    char.
-
-  - ucan_device_request_in() is only used to retrieve the firmware
-    string, so rename it to ucan_get_fw_str() and refactor it to make it
-    directly handle all the string termination logic.
-
-Reported-by: syzbot+d7d8c418e8317899e88c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-can/67b323a4.050a0220.173698.002b.GAE@google.com/
-Fixes: 7fdaf8966aae ("can: ucan: use strscpy() to instead of strncpy()")
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250218143515.627682-2-mailhol.vincent@wanadoo.fr
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
+CC: stable@kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Tested-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Aniket Limaye <a-limaye@ti.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250228140420.379498-1-andreas@kemnade.info
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/ucan.c |   43 ++++++++++++++++++-------------------------
- 1 file changed, 18 insertions(+), 25 deletions(-)
+ drivers/i2c/busses/i2c-omap.c |   26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -186,7 +186,7 @@ union ucan_ctl_payload {
- 	 */
- 	struct ucan_ctl_cmd_get_protocol_version cmd_get_protocol_version;
- 
--	u8 raw[128];
-+	u8 fw_str[128];
- } __packed;
- 
- enum {
-@@ -424,18 +424,20 @@ static int ucan_ctrl_command_out(struct
- 			       UCAN_USB_CTL_PIPE_TIMEOUT);
- }
- 
--static int ucan_device_request_in(struct ucan_priv *up,
--				  u8 cmd, u16 subcmd, u16 datalen)
-+static void ucan_get_fw_str(struct ucan_priv *up, char *fw_str, size_t size)
- {
--	return usb_control_msg(up->udev,
--			       usb_rcvctrlpipe(up->udev, 0),
--			       cmd,
--			       USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
--			       subcmd,
--			       0,
--			       up->ctl_msg_buffer,
--			       datalen,
--			       UCAN_USB_CTL_PIPE_TIMEOUT);
-+	int ret;
-+
-+	ret = usb_control_msg(up->udev, usb_rcvctrlpipe(up->udev, 0),
-+			      UCAN_DEVICE_GET_FW_STRING,
-+			      USB_DIR_IN | USB_TYPE_VENDOR |
-+			      USB_RECIP_DEVICE,
-+			      0, 0, fw_str, size - 1,
-+			      UCAN_USB_CTL_PIPE_TIMEOUT);
-+	if (ret > 0)
-+		fw_str[ret] = '\0';
-+	else
-+		strscpy(fw_str, "unknown", size);
- }
- 
- /* Parse the device information structure reported by the device and
-@@ -1314,7 +1316,6 @@ static int ucan_probe(struct usb_interfa
- 	u8 in_ep_addr;
- 	u8 out_ep_addr;
- 	union ucan_ctl_payload *ctl_msg_buffer;
--	char firmware_str[sizeof(union ucan_ctl_payload) + 1];
- 
- 	udev = interface_to_usbdev(intf);
- 
-@@ -1527,17 +1528,6 @@ static int ucan_probe(struct usb_interfa
- 	 */
- 	ucan_parse_device_info(up, &ctl_msg_buffer->cmd_get_device_info);
- 
--	/* just print some device information - if available */
--	ret = ucan_device_request_in(up, UCAN_DEVICE_GET_FW_STRING, 0,
--				     sizeof(union ucan_ctl_payload));
--	if (ret > 0) {
--		/* copy string while ensuring zero termination */
--		strscpy(firmware_str, up->ctl_msg_buffer->raw,
--			sizeof(union ucan_ctl_payload) + 1);
--	} else {
--		strcpy(firmware_str, "unknown");
--	}
--
- 	/* device is compatible, reset it */
- 	ret = ucan_ctrl_command_out(up, UCAN_COMMAND_RESET, 0, 0);
- 	if (ret < 0)
-@@ -1555,7 +1545,10 @@ static int ucan_probe(struct usb_interfa
- 
- 	/* initialisation complete, log device info */
- 	netdev_info(up->netdev, "registered device\n");
--	netdev_info(up->netdev, "firmware string: %s\n", firmware_str);
-+	ucan_get_fw_str(up, up->ctl_msg_buffer->fw_str,
-+			sizeof(up->ctl_msg_buffer->fw_str));
-+	netdev_info(up->netdev, "firmware string: %s\n",
-+		    up->ctl_msg_buffer->fw_str);
- 
- 	/* success */
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -1049,23 +1049,6 @@ static int omap_i2c_transmit_data(struct
  	return 0;
+ }
+ 
+-static irqreturn_t
+-omap_i2c_isr(int irq, void *dev_id)
+-{
+-	struct omap_i2c_dev *omap = dev_id;
+-	irqreturn_t ret = IRQ_HANDLED;
+-	u16 mask;
+-	u16 stat;
+-
+-	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
+-	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
+-
+-	if (stat & mask)
+-		ret = IRQ_WAKE_THREAD;
+-
+-	return ret;
+-}
+-
+ static int omap_i2c_xfer_data(struct omap_i2c_dev *omap)
+ {
+ 	u16 bits;
+@@ -1096,8 +1079,13 @@ static int omap_i2c_xfer_data(struct oma
+ 		}
+ 
+ 		if (stat & OMAP_I2C_STAT_NACK) {
+-			err |= OMAP_I2C_STAT_NACK;
++			omap->cmd_err |= OMAP_I2C_STAT_NACK;
+ 			omap_i2c_ack_stat(omap, OMAP_I2C_STAT_NACK);
++
++			if (!(stat & ~OMAP_I2C_STAT_NACK)) {
++				err = -EAGAIN;
++				break;
++			}
+ 		}
+ 
+ 		if (stat & OMAP_I2C_STAT_AL) {
+@@ -1475,7 +1463,7 @@ omap_i2c_probe(struct platform_device *p
+ 				IRQF_NO_SUSPEND, pdev->name, omap);
+ 	else
+ 		r = devm_request_threaded_irq(&pdev->dev, omap->irq,
+-				omap_i2c_isr, omap_i2c_isr_thread,
++				NULL, omap_i2c_isr_thread,
+ 				IRQF_NO_SUSPEND | IRQF_ONESHOT,
+ 				pdev->name, omap);
+ 
 
 
 
