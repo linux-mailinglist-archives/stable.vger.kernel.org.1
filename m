@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-126511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B9FA70160
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:22:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BC8A70040
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 961AF8411A8
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAD3119A637E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6722F26F44E;
-	Tue, 25 Mar 2025 12:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F49026988C;
+	Tue, 25 Mar 2025 12:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSiKhtE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEzN8IxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F2726F44C;
-	Tue, 25 Mar 2025 12:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08402580E4;
+	Tue, 25 Mar 2025 12:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906362; cv=none; b=MEu7oEwL84jEAJ2tm2YEN9cxZLVs4zKkCDWSvwPEHeOioOhhSGZaohOaCEFV6GhmcytTNNgg+fV3kHiZ23i+fXpIZc73wMSk61d3PHbJ/h3H4BZH//SRRCZ6upKEr0zBSa5IlmEt769E3jkSx1VasuHIFqEDcO0t7/h3Gv2P0HE=
+	t=1742906048; cv=none; b=spcBdjy8gP7Kietln0/6dJQRkc08vvZlypPhbq+6olAdJZGrgnsdvmN9dcerZY26XTI0Qs2C6PI4BmVRirwenP3oirwQ0MpFGZyMNoY2GT6zUkjBaPRrSWLrn48M5AL93wsXccRAr2KQGzjsLdiGjQcxtFQurZD3MBpBoqNhCos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906362; c=relaxed/simple;
-	bh=asKXlGWNoe5PV/3NE9tfjL3u+pg3bodzz2kO3A0IMnY=;
+	s=arc-20240116; t=1742906048; c=relaxed/simple;
+	bh=JGDHWmAOMK9r8rWkCvaLrzW9ZB+RckxkBKPTGPI6IDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZR+yX6Zl/CC2384FXN/IaIXcOnsfHh/jM/UnCUkhWR6HXS/xr5MBr+M8FuASsV/LtQT/NWgi8lrUXV+hiikeyf3WOrRbNI0cM00FVFeODRuqZ28hosgNdNdk2sy1kgmZM0AtB6OwSu6dfhkIvS6zvhcblFbFEuLQHMY7VMDpBtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSiKhtE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23F1C4CEE4;
-	Tue, 25 Mar 2025 12:39:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TDMWFSSfnIx0mZG0aL8xxqk4HFcY2OnBdyW7DxaNMcsRK2bZ/DSNGln6NnHFbBK9bOApVk3/e3Ec2c93bFzF1Bh5PWpNo4ouxo+4H5H7rjCefoGpKP9Dlp8srf+vDWEJ59mb3d+x5iMXtB0iGoaiGgxM/Rtqy7/4/2/0tZHdPKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEzN8IxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D26C4CEE4;
+	Tue, 25 Mar 2025 12:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906362;
-	bh=asKXlGWNoe5PV/3NE9tfjL3u+pg3bodzz2kO3A0IMnY=;
+	s=korg; t=1742906047;
+	bh=JGDHWmAOMK9r8rWkCvaLrzW9ZB+RckxkBKPTGPI6IDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSiKhtE1JiVnOJKQE/IoCpZEv05OT9I/7bJ1yMOYgv7e4HmY4MRsmKAB00uHkbuWE
-	 bKej8Tn9anQfjxjC8DwL7NxCGjYxxRfKIygsJEzzPcUmI+iNfxjn3GaMsVPs1m5Phx
-	 3jrOWwNOBlHcEThJ2Uh2+ukVA4++e9sKn4cSqs5E=
+	b=YEzN8IxXcXK7FH3f8LkJcNqUBQwQEevzK+O6jSjwYWT4L0fCUBdo4uHv4hgeb1hky
+	 a4TLocbMjGsrSP7fESoH0u/5gR7RJgUyqvdt6v1XVu7iGoch1BQ8W5PQxj+7yErKjT
+	 tco0BRuz4RFLLokvA4NvMbvZwf8sdY8efnabfaNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Farrah Chen <farrah.chen@intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Thomas Lendacky <thomas.lendacky@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 077/116] mm/page_alloc: fix memory accept before watermarks gets initialized
+	=?UTF-8?q?Tom=C3=A1=C5=A1=20Trnka?= <trnka@scm.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 106/119] drm/amdkfd: Fix user queue validation on Gfx7/8
 Date: Tue, 25 Mar 2025 08:22:44 -0400
-Message-ID: <20250325122151.177696651@linuxfoundation.org>
+Message-ID: <20250325122151.760743041@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit 800f1059c99e2b39899bdc67a7593a7bea6375d8 upstream.
+commit 542c3bb836733a1325874310d54d25b4907ed10e upstream.
 
-Watermarks are initialized during the postcore initcall.  Until then, all
-watermarks are set to zero.  This causes cond_accept_memory() to
-incorrectly skip memory acceptance because a watermark of 0 is always met.
+To workaround queue full h/w issue on Gfx7/8, when application create
+AQL queue, the ring buffer bo allocate size is queue_size/2 and
+map queue_size ring buffer to GPU in 2 pieces using 2 attachments, each
+attachment map size is queue_size/2, with same ring_bo backing memory.
 
-This can lead to a premature OOM on boot.
+For Gfx7/8, user queue buffer validation should use queue_size/2 to
+verify ring_bo allocation and mapping size.
 
-To ensure progress, accept one MAX_ORDER page if the watermark is zero.
-
-Link: https://lkml.kernel.org/r/20250310082855.2587122-1-kirill.shutemov@linux.intel.com
-Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Cc: Ashish Kalra <ashish.kalra@amd.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
-Cc: Thomas Lendacky <thomas.lendacky@amd.com>
-Cc: <stable@vger.kernel.org>	[6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 68e599db7a54 ("drm/amdkfd: Validate user queue buffers")
+Suggested-by: Tomáš Trnka <trnka@scm.com>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e7a477735f1771b9a9346a5fbd09d7ff0641723a)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_queue.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7094,7 +7094,7 @@ static inline bool has_unaccepted_memory
- 
- static bool cond_accept_memory(struct zone *zone, unsigned int order)
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
+@@ -233,6 +233,7 @@ void kfd_queue_buffer_put(struct amdgpu_
+ int kfd_queue_acquire_buffers(struct kfd_process_device *pdd, struct queue_properties *properties)
  {
--	long to_accept;
-+	long to_accept, wmark;
- 	bool ret = false;
+ 	struct kfd_topology_device *topo_dev;
++	u64 expected_queue_size;
+ 	struct amdgpu_vm *vm;
+ 	u32 total_cwsr_size;
+ 	int err;
+@@ -241,6 +242,15 @@ int kfd_queue_acquire_buffers(struct kfd
+ 	if (!topo_dev)
+ 		return -EINVAL;
  
- 	if (!has_unaccepted_memory())
-@@ -7103,8 +7103,18 @@ static bool cond_accept_memory(struct zo
- 	if (list_empty(&zone->unaccepted_pages))
- 		return false;
++	/* AQL queues on GFX7 and GFX8 appear twice their actual size */
++	if (properties->type == KFD_QUEUE_TYPE_COMPUTE &&
++	    properties->format == KFD_QUEUE_FORMAT_AQL &&
++	    topo_dev->node_props.gfx_target_version >= 70000 &&
++	    topo_dev->node_props.gfx_target_version < 90000)
++		expected_queue_size = properties->queue_size / 2;
++	else
++		expected_queue_size = properties->queue_size;
++
+ 	vm = drm_priv_to_vm(pdd->drm_priv);
+ 	err = amdgpu_bo_reserve(vm->root.bo, false);
+ 	if (err)
+@@ -255,7 +265,7 @@ int kfd_queue_acquire_buffers(struct kfd
+ 		goto out_err_unreserve;
  
-+	wmark = promo_wmark_pages(zone);
-+
-+	/*
-+	 * Watermarks have not been initialized yet.
-+	 *
-+	 * Accepting one MAX_ORDER page to ensure progress.
-+	 */
-+	if (!wmark)
-+		return try_to_accept_memory_one(zone);
-+
- 	/* How much to accept to get to promo watermark? */
--	to_accept = promo_wmark_pages(zone) -
-+	to_accept = wmark -
- 		    (zone_page_state(zone, NR_FREE_PAGES) -
- 		    __zone_watermark_unusable_free(zone, order, 0) -
- 		    zone_page_state(zone, NR_UNACCEPTED));
+ 	err = kfd_queue_buffer_get(vm, (void *)properties->queue_address,
+-				   &properties->ring_bo, properties->queue_size);
++				   &properties->ring_bo, expected_queue_size);
+ 	if (err)
+ 		goto out_err_unreserve;
+ 
 
 
 
