@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BE6A6F426
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:34:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0386CA6F42C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CC67188640F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:34:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4612E3B893B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F212255E51;
-	Tue, 25 Mar 2025 11:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558782561A8;
+	Tue, 25 Mar 2025 11:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jg6w2TuX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JexeCldD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8AABA36
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148B6255E47
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742902429; cv=none; b=Ew6BGxRANdiQAO8EpE9T37gAeeCopte1LaHZr6y7A0igUxAayf4dhdyuHGRvInwM8FQ/b0d6+heLAmkw8fVfS9xDckf1L9PR4akFHfb5tWNBDUxzgAjHe0a428JHRdsI35ZbclWckqJ8hYgatDJf1DDsJ0bVYVFCEbMxKZmtpTI=
+	t=1742902431; cv=none; b=pIzOP+sfxeEEou19d+2EbBZltuqxHjxsqoUOzmMhqdp9HTrc8hJ0Q/hfJgSnBUCCutzkCcYTTCUsgJ/HfqNj1t0jczEKKFVd7iTz6FYrdegpG466aI4XXdwfLPaOrFhaCX7JCCVZcI/fJNF3eEOaJxOh8tj83vAvHDKFlQhzyTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742902429; c=relaxed/simple;
-	bh=0rrqszwN3gK/zQw5ehiXPcCG2Z9xrvPgIAsuC4cjM+Q=;
+	s=arc-20240116; t=1742902431; c=relaxed/simple;
+	bh=1nvub6VmcPWBU5DeaJMe39ZPNnlVg0YiEQNScqiABx0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CCPaA35I1foXkigd//T9gM8lwtm4rzdjGXttdRm73bt4adiHKmIjThYFI8404+TtASohKOkMQSs9dYIe8CRzM3TmGV0+rIKwAFkOIZr2E+eUnJ/oBIhjw1KDAzYxlKG5DPm3Ml2yP5BSqGWdV+ZMKqWIcAWW6PSzwl24EbXD3Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jg6w2TuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F4DC4CEE4;
-	Tue, 25 Mar 2025 11:33:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k1HNBwHLDi3ST4rs8lfMUHnckpQAJ5hyaRcWkMLmDLlYL9cPptzJ+xTypsK0s/j35ffXOiMyvFYR9EdhwSI9RjyhSnI82hO/baMh+BrhTcdzYkEthozzqhk7SqrHBzVS/auptwJPMA1LYepWv0aPYCM2LMaXPF89S2hY/hrTU7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JexeCldD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6952EC4CEE4;
+	Tue, 25 Mar 2025 11:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742902428;
-	bh=0rrqszwN3gK/zQw5ehiXPcCG2Z9xrvPgIAsuC4cjM+Q=;
+	s=k20201202; t=1742902430;
+	bh=1nvub6VmcPWBU5DeaJMe39ZPNnlVg0YiEQNScqiABx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jg6w2TuXw0f4azsU0t3Tqha0zuH8iQp9wziyouWT9lywy+vBckqd1AlSsp33pQNG9
-	 3xkdBqgCaKTJfGE+g15p1XKSJQML/f+B6c04MfaV3ycQVR3BZBs5oacnXnAnUIA6NO
-	 kPXEUz9fv3fo2GYjaLpFn+nVRwsEFLqo7KRZOUXlxPxMosEcDuSXK+0oXhaYlIRKC2
-	 kz3Jhf3ZLnXRgch3stEabn8vthSnFZrDQPmpjl2rlnyw2Qo1CIJgCAuOCfJ/hDM1r7
-	 +TscRi7jgZbLp7pf3eBL3oVjcuAMOGJx/Dbq4tIPQ2sMofzaS8zApWTZDEuDDWhknJ
-	 Ag9oEBckH/LIg==
+	b=JexeCldDxkoV5cw07DeplE3CKQOZ7GC6cmgeuehuP5NrJFfWA9uxZde0m0iSzzZQh
+	 AOkob+2n3KWqsJsL7LRoo6g4Rj3ztxjdgYXBUBYLxs5nu2ZnFigxySIrcMUXQoJX2J
+	 lmTaemmydXrqJLaGQsX4bSJ4U6VB9BLtw+DUNg8uii5iDtTOqcJLAItIduhuwxXgoO
+	 p9rgnp0etS9ACOMBexBtIXjJgWf9KVxxMw+DJU+QuamfrqanHfM8AQKLNvQe+DEWqM
+	 7+xKGyub8vGSWW23WnYRfJYPog1fs7Z4fqZ0lgalAgjfx34CdZ/6bVJ3TELaOFDyXY
+	 CgNCtgg56HpFw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com,
+Cc: Hagar Hemdan <hagarhem@amazon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] drm/amdgpu: fix use-after-free bug
-Date: Tue, 25 Mar 2025 07:33:47 -0400
-Message-Id: <20250324213830-1c1fdba41792047b@stable.kernel.org>
+Subject: Re: [PATCH 6.6] Revert "sched/core: Reduce cost of sched_move_task when config autogroup"
+Date: Tue, 25 Mar 2025 07:33:49 -0400
+Message-Id: <20250324203640-8a44c31bfa09fb2f@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250324072712.761233-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20250324213706.8335-1-hagarhem@amazon.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,73 +67,96 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 22207fd5c80177b860279653d017474b2812af5e
+The upstream commit SHA1 provided is correct: 76f970ce51c80f625eb6ddbb24e9cb51b977b598
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: bin.lan.cn@windriver.com
-Commit author: Vitaly Prosyak<vitaly.prosyak@amd.com>
+Backport author: Hagar Hemdan<hagarhem@amazon.com>
+Commit author: Dietmar Eggemann<dietmar.eggemann@arm.com>
 
 Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: e87e08c94c95)
+6.13.y | Not found
+6.12.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  22207fd5c8017 ! 1:  e10d8c3a85ee4 drm/amdgpu: fix use-after-free bug
-    @@ Metadata
+1:  76f970ce51c80 ! 1:  03098b8360be3 Revert "sched/core: Reduce cost of sched_move_task when config autogroup"
+    @@
+      ## Metadata ##
+    -Author: Dietmar Eggemann <dietmar.eggemann@arm.com>
+    +Author: Hagar Hemdan <hagarhem@amazon.com>
+     
       ## Commit message ##
-         drm/amdgpu: fix use-after-free bug
+         Revert "sched/core: Reduce cost of sched_move_task when config autogroup"
      
-    +    [ Upstream commit 22207fd5c80177b860279653d017474b2812af5e ]
+    +    commit 76f970ce51c80f625eb6ddbb24e9cb51b977b598 upstream.
     +
-         The bug can be triggered by sending a single amdgpu_gem_userptr_ioctl
-         to the AMDGPU DRM driver on any ASICs with an invalid address and size.
-         The bug was reported by Joonkyo Jung <joonkyoj@yonsei.ac.kr>.
-    @@ Commit message
-         Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-         Reviewed-by: Christian König <christian.koenig@amd.com>
-         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-    +    [ drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c is renamed from
-    +      drivers/gpu/drm/amd/amdgpu/amdgpu_mn.c since
-    +      d9483ecd327b ("drm/amdgpu: rename the files for HMM handling").
-    +      The path is changed accordingly to apply the patch on 6.1.y. ]
-    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+         This reverts commit eff6c8ce8d4d7faef75f66614dd20bb50595d261.
      
-    - ## drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c ##
-    -@@ drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c: static const struct mmu_interval_notifier_ops amdgpu_hmm_hsa_ops = {
-    + ## drivers/gpu/drm/amd/amdgpu/amdgpu_mn.c ##
-    +@@ drivers/gpu/drm/amd/amdgpu/amdgpu_mn.c: static const struct mmu_interval_notifier_ops amdgpu_mn_hsa_ops = {
-       */
-    - int amdgpu_hmm_register(struct amdgpu_bo *bo, unsigned long addr)
-    + int amdgpu_mn_register(struct amdgpu_bo *bo, unsigned long addr)
+         Hazem reported a 30% drop in UnixBench spawn test with commit
+    @@ Commit message
+         Tested-by: Hagar Hemdan <hagarhem@amazon.com>
+         Cc: Linus Torvalds <torvalds@linux-foundation.org>
+         Link: https://lore.kernel.org/r/20250314151345.275739-1-dietmar.eggemann@arm.com
+    +    [Hagar: clean revert of eff6c8ce8dd7 to make it work on 6.6]
+    +    Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+     
+      ## kernel/sched/core.c ##
+     @@ kernel/sched/core.c: void sched_release_group(struct task_group *tg)
+    @@ kernel/sched/core.c: static struct task_group *sched_get_task_group(struct task_
+      
+      #ifdef CONFIG_FAIR_GROUP_SCHED
+      	if (tsk->sched_class->task_change_group)
+    -@@ kernel/sched/core.c: void sched_move_task(struct task_struct *tsk, bool for_autogroup)
+    +@@ kernel/sched/core.c: void sched_move_task(struct task_struct *tsk)
       {
-     +	int r;
-     +
-    @@ drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c: static const struct mmu_interval_notifi
-     -		return mmu_interval_notifier_insert(&bo->notifier, current->mm,
-     +		r = mmu_interval_notifier_insert(&bo->notifier, current->mm,
-      						    addr, amdgpu_bo_size(bo),
-    - 						    &amdgpu_hmm_hsa_ops);
-    + 						    &amdgpu_mn_hsa_ops);
-     -	return mmu_interval_notifier_insert(&bo->notifier, current->mm, addr,
-     -					    amdgpu_bo_size(bo),
-    --					    &amdgpu_hmm_gfx_ops);
-    +-					    &amdgpu_mn_gfx_ops);
-     +	else
-     +		r = mmu_interval_notifier_insert(&bo->notifier, current->mm, addr,
-     +							amdgpu_bo_size(bo),
-    -+							&amdgpu_hmm_gfx_ops);
-    ++							&amdgpu_mn_gfx_ops);
-     +	if (r)
-     +		/*
-     +		 * Make sure amdgpu_hmm_unregister() doesn't call
+      	int queued, running, queue_flags =
+      		DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
+     -	struct task_group *group;
+    + 	struct rq_flags rf;
+      	struct rq *rq;
+      
+    - 	CLASS(task_rq_lock, rq_guard)(tsk);
+    - 	rq = rq_guard.rq;
+    - 
+    + 	rq = task_rq_lock(tsk, &rf);
+     -	/*
+     -	 * Esp. with SCHED_AUTOGROUP enabled it is possible to get superfluous
+     -	 * group changes.
+     -	 */
+     -	group = sched_get_task_group(tsk);
+     -	if (group == tsk->sched_task_group)
+    --		return;
+    +-		goto unlock;
+     -
+      	update_rq_clock(rq);
+      
+    - 	running = task_current_donor(rq, tsk);
+    -@@ kernel/sched/core.c: void sched_move_task(struct task_struct *tsk, bool for_autogroup)
+    + 	running = task_current(rq, tsk);
+    +@@ kernel/sched/core.c: void sched_move_task(struct task_struct *tsk)
+      	if (running)
+      		put_prev_task(rq, tsk);
+      
+     -	sched_change_group(tsk, group);
+     +	sched_change_group(tsk);
+    - 	if (!for_autogroup)
+    - 		scx_cgroup_move_task(tsk);
+    + 
+    + 	if (queued)
+    + 		enqueue_task(rq, tsk, queue_flags);
+    +@@ kernel/sched/core.c: void sched_move_task(struct task_struct *tsk)
+    + 		resched_curr(rq);
+    + 	}
+    + 
+    +-unlock:
+    + 	task_rq_unlock(rq, tsk, &rf);
+    + }
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
