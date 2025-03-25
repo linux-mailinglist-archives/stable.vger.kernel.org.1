@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-126465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA55A70175
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:24:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0CBA6FFE2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EADD019A5807
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 300323BDDD5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C0E25D537;
-	Tue, 25 Mar 2025 12:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A6D25A338;
+	Tue, 25 Mar 2025 12:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLJkIfZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rY2E0Stu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2399E2586E0;
-	Tue, 25 Mar 2025 12:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261F3257AD8;
+	Tue, 25 Mar 2025 12:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906275; cv=none; b=Eve1f1Frp1nesXjA/9/mn8uaXhQS/kMPctY95cJWn2YdECDM/xhWxp81sxiWarYvptq7ZxY7dMyzcGTTf2UClVYQWfhMMxntC9K/zWwMhwdZLUbZJ/zKVWMjwWSzGULuJIMfqATo8BodScotcNgCbaFMtvot5iUs0v25SP8p3fU=
+	t=1742905723; cv=none; b=g0kyxp+7FlxOE/naKfZtakulKo96T8YjTa+yywZmSIZCK9vddB1dogrMNHExNO7RomDwKe8OZllSwq9DYIeHzKQitZiE/ja5zfmDsuLy2tGGHcekfUkKmNYvhTE0Qy2Hr0dGJgTIp9pasAb4igutnRBuVOnwPrnwCUmytsIp3LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906275; c=relaxed/simple;
-	bh=+zJtqvB1qO+xQ2OE4g245vIEZjrfNvI8jaNNyc06Qaw=;
+	s=arc-20240116; t=1742905723; c=relaxed/simple;
+	bh=xtdYSRVqxh49G16nqJ2wuKfM3CllwJ5Amrs+T5mnHOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMI+NQnYRmve1x4hlFksWfnFSOpp4LX27Poojb7s7ypRxXDIkaZ+1twpY013OsbSbjqZ6OJcSJUfmV2U57yjNPVf0PMTkt5elbwX8owoLQ+l9kuCj/DcgFTKOeLQxH3+3P0R2Hi4GbS7Jk3YdKnX4sEaQT3Z5fXQhn0WPNoEtec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLJkIfZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6F5C4CEE4;
-	Tue, 25 Mar 2025 12:37:54 +0000 (UTC)
+	 MIME-Version; b=t3AvfAmjvLFPo59RJhe8SCX7QvdXsClEGqKGrnXogTU8G/XqE9enn68fAdC80kchMC4yfIsOEhn0nTqQsbwd1KcaXfyyA/tlHYhtLivPgthQwyc7UuLlEPsroXXFs1IC7/2QQ94qCYSv/wZmXBQiZyzXBzoEM0anl6KOUK2pDhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rY2E0Stu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9F1C4CEE4;
+	Tue, 25 Mar 2025 12:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906275;
-	bh=+zJtqvB1qO+xQ2OE4g245vIEZjrfNvI8jaNNyc06Qaw=;
+	s=korg; t=1742905723;
+	bh=xtdYSRVqxh49G16nqJ2wuKfM3CllwJ5Amrs+T5mnHOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLJkIfZW7SrmoRlroAHomr9dJZbg/AlHleD0d/gkcDG5u9OpJGemQfVVIO2DtKPid
-	 eigZWu45N5RA1KWHkaT1H/ymYlX7g72WLac/bxwnMGr6ev2EzWoUnta9BB65cP4reo
-	 T/eMcQW+QkGWHJFpxca0hqq4wCnUy9wU/7L9KZLo=
+	b=rY2E0StuldSl0PMea2Ggu3G3bnvC238TA+EUbi1cCfKBP7WQbNsWyUeJEv8EhpTLH
+	 rw08frdcM4lCzK5IIpDz9SEz3th0adR1F5GCtNFjw2vBcKCLoLOgds0VomFxzdGjHG
+	 owwAKGH073aKvSCHM6SweovvTK3dh19XVi7yl8M4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/116] arm64: dts: freescale: tqma8mpql: Fix vqmmc-supply
+Subject: [PATCH 6.1 128/198] ASoC: codecs: wm0010: Fix error handling path in wm0010_spi_probe()
 Date: Tue, 25 Mar 2025 08:21:30 -0400
-Message-ID: <20250325122149.295339925@linuxfoundation.org>
+Message-ID: <20250325122200.010083865@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 38f59e0e8bd2b3e1319716e4aeaeb9a6223b006d ]
+[ Upstream commit ed92bc5264c4357d4fca292c769ea9967cd3d3b6 ]
 
-eMMC is supplied by BUCK5 rail. Use the actual regulator instead of
-a virtual fixed regulator.
+Free some resources in the error handling path of the probe, as already
+done in the remove function.
 
-Fixes: 418d1d840e421 ("arm64: dts: freescale: add initial device tree for TQMa8MPQL with i.MX8MP")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: e3523e01869d ("ASoC: wm0010: Add initial wm0010 DSP driver")
+Fixes: fd8b96574456 ("ASoC: wm0010: Clear IRQ as wake source and include missing header")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/5139ba1ab8c4c157ce04e56096a0f54a1683195c.1741549792.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-tqma8mpql.dtsi     | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ sound/soc/codecs/wm0010.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-index 336785a9fba89..3ddc5aaa7c5f0 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-@@ -1,7 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
- /*
-- * Copyright 2021-2022 TQ-Systems GmbH
-- * Author: Alexander Stein <alexander.stein@tq-group.com>
-+ * Copyright 2021-2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Alexander Stein
-  */
+diff --git a/sound/soc/codecs/wm0010.c b/sound/soc/codecs/wm0010.c
+index 034a4e858c7e6..602fa7cc2c5e2 100644
+--- a/sound/soc/codecs/wm0010.c
++++ b/sound/soc/codecs/wm0010.c
+@@ -951,7 +951,7 @@ static int wm0010_spi_probe(struct spi_device *spi)
+ 	if (ret) {
+ 		dev_err(wm0010->dev, "Failed to set IRQ %d as wake source: %d\n",
+ 			irq, ret);
+-		return ret;
++		goto free_irq;
+ 	}
  
- #include "imx8mp.dtsi"
-@@ -23,15 +24,6 @@ reg_vcc3v3: regulator-vcc3v3 {
- 		regulator-max-microvolt = <3300000>;
- 		regulator-always-on;
- 	};
--
--	/* e-MMC IO, needed for HS modes */
--	reg_vcc1v8: regulator-vcc1v8 {
--		compatible = "regulator-fixed";
--		regulator-name = "VCC1V8";
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <1800000>;
--		regulator-always-on;
--	};
- };
+ 	if (spi->max_speed_hz)
+@@ -963,9 +963,18 @@ static int wm0010_spi_probe(struct spi_device *spi)
+ 				     &soc_component_dev_wm0010, wm0010_dai,
+ 				     ARRAY_SIZE(wm0010_dai));
+ 	if (ret < 0)
+-		return ret;
++		goto disable_irq_wake;
  
- &A53_0 {
-@@ -197,7 +189,7 @@ &usdhc3 {
- 	no-sd;
- 	no-sdio;
- 	vmmc-supply = <&reg_vcc3v3>;
--	vqmmc-supply = <&reg_vcc1v8>;
-+	vqmmc-supply = <&buck5_reg>;
- 	status = "okay";
- };
+ 	return 0;
++
++disable_irq_wake:
++	irq_set_irq_wake(wm0010->irq, 0);
++
++free_irq:
++	if (wm0010->irq)
++		free_irq(wm0010->irq, wm0010);
++
++	return ret;
+ }
  
+ static void wm0010_spi_remove(struct spi_device *spi)
 -- 
 2.39.5
 
