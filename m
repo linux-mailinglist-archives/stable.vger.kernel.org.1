@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-126615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3B9A7094C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:46:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FCFA70952
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:47:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4E667A5B54
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:45:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECFF43B2A00
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76101E1E04;
-	Tue, 25 Mar 2025 18:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69961F63F5;
+	Tue, 25 Mar 2025 18:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ssM4E46W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mdrn68Ud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9124E1F5826;
-	Tue, 25 Mar 2025 18:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810C21F5850;
+	Tue, 25 Mar 2025 18:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742928176; cv=none; b=a77HlmdsZ3GklKrJqRuZW/XrK4SdPTenQd4j7hUN+KUhQHhK9KcBI23XM4nlP9MbemtDR9OPOVA6Pm59z4ZBJoN9Py07wUA6zk80sqecCVJzxZIv2sEpijDiwo/o98coYi/3C+rxwmBWtSrrr0GiAyfQGgPFQWhxIG/VprU9C8M=
+	t=1742928177; cv=none; b=dNaZRbg2nRHSMCW26wEPilCwSyaZndV/RNiCjg314RaZ21NkHdTFR+iuugCbfypOC5lvZUp622SGldo9SFlLRAx0NcYVXUWF4+Kim/eJfYHQPulnArOU05FX19lrOzf9c7BhD1hYFkIa45pmgbGxZNi9j9JCSVIOqjyq97JIMzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742928176; c=relaxed/simple;
-	bh=kd5dlfIxAlbmT1YLtBm+KAJIrE3p0y+2brAJD8SAj2k=;
+	s=arc-20240116; t=1742928177; c=relaxed/simple;
+	bh=l/WlSBPbgeikRatvuWUrCIvA8q+Wqd1bhbZrL6hGL7s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hgrOJ+v+6LjycKE5na9QpObCbgNbRRXm6Whmb8mNIEmsLWyqOOqDfoUAiAOgCMQV0bioYAKppavFucMkdpe2AlNcaMLakRDu+3K4s1A97EgD+SEeO7K5tvotCa9llvi8/na/JmpKJ2MMpXFXXkmrk7ugqLeuxUNKnuE1vkBZmvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ssM4E46W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8DBC4CEEE;
-	Tue, 25 Mar 2025 18:42:54 +0000 (UTC)
+	 MIME-Version; b=njtC6FZ9xkUU7SjIwox5LtwgtUXlfRCEnkiNgUclOWwY7ZLaXWiSYflgy9o4Uf25Y9cRta5QbYM8ddwPHbo2UdquxGJtbWQhh23qzxgpeWgEVmnZwmNH7LaLsVrlUOhIW0uVuMoLNDSRi/ap2GN8o348AduF5jaAqZynPWI4dOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mdrn68Ud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B90DC4CEE4;
+	Tue, 25 Mar 2025 18:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742928176;
-	bh=kd5dlfIxAlbmT1YLtBm+KAJIrE3p0y+2brAJD8SAj2k=;
+	s=k20201202; t=1742928177;
+	bh=l/WlSBPbgeikRatvuWUrCIvA8q+Wqd1bhbZrL6hGL7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ssM4E46WQRfRpie8Q5qKAGn0OWBrYc/du+xH8zT+JcRB0Bw+fMh4/55Qsuz8O0C91
-	 RErJsM71q7Qh2Ou2oJo/KaK8qaOLVA3suEiMwHJRoW/2GtOHF71790WOQEBO6etq7k
-	 gHlrutZChLOiIMEF+R3LGMx/jIX+jaTQ0XZ0QnrjU129sWf8MI5W7hmQPHWQhI8nqu
-	 oOAM7Fu7EuqJ2lKjxI3ZxMSmnqP6vSHF3IRl0jp3xR/ATh0Q7VRqThpXnriZ7Z7uTW
-	 UrHlMqpFGSiauNXmtys0dwjdMx90EkFiKmYOsZ77DNmlQ4WxY2qxxIzkqTYEmkBHeO
-	 Ab0rV75ubasMw==
+	b=mdrn68Ud0z7X4kjKppyOm28nPYFskG6FjvhL5JuuiakRlK//lC5YMX4ljHQlsqY/O
+	 cAXR2yh8Inco47at405Q1/G1G4kEqwosnkNEKii6G4gwT+fzaCngM36FrXFXOG7jFc
+	 jxQO7T+SAqS1FiThv6VB6JWD8JR/i+X/CRaqXNUl5fe98XuyhJ4l682BY4RdE9EFdT
+	 aqeT4oVIDhfTl+StQAq3Jjdck5ShK6S1nKubVQLWNCeOZnQzyfUISHpX3LKzvrsgUQ
+	 NT6pQpZm93yuP1K3TqU4z69SU6SpVjPbrOQLANtjFQ2nD9vFraLIPTZqEG3DvsBMUS
+	 L6e4T8XjR24+w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roger Quadros <rogerq@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+Cc: Tasos Sahanidis <tasos@tasossah.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>,
-	tony@atomide.com,
-	krzk@kernel.org,
-	linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 2/3] memory: omap-gpmc: drop no compatible check
-Date: Tue, 25 Mar 2025 14:42:47 -0400
-Message-Id: <20250325184249.2152329-2-sashal@kernel.org>
+	jdelvare@suse.com,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 3/3] hwmon: (nct6775-core) Fix out of bounds access for NCT679{8,9}
+Date: Tue, 25 Mar 2025 14:42:48 -0400
+Message-Id: <20250325184249.2152329-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250325184249.2152329-1-sashal@kernel.org>
 References: <20250325184249.2152329-1-sashal@kernel.org>
@@ -69,56 +66,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.84
 Content-Transfer-Encoding: 8bit
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Tasos Sahanidis <tasos@tasossah.com>
 
-[ Upstream commit edcccc6892f65eff5fd3027a13976131dc7fd733 ]
+[ Upstream commit 815f80ad20b63830949a77c816e35395d5d55144 ]
 
-We are no longer depending on legacy device trees so
-drop the no compatible check for NAND and OneNAND
-nodes.
+pwm_num is set to 7 for these chips, but NCT6776_REG_PWM_MODE and
+NCT6776_PWM_MODE_MASK only contain 6 values.
 
-Suggested-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://lore.kernel.org/r/20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fix this by adding another 0 to the end of each array.
+
+Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
+Link: https://lore.kernel.org/r/20250312030832.106475-1-tasos@tasossah.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/omap-gpmc.c | 20 --------------------
- 1 file changed, 20 deletions(-)
+ drivers/hwmon/nct6775-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index d78f73db37c88..ab0985bb5789a 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2247,26 +2247,6 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
- 		goto err;
- 	}
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index 16f6b7ba2a5de..da4c3425d2d1d 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -273,8 +273,8 @@ static const s8 NCT6776_BEEP_BITS[NUM_BEEP_BITS] = {
+ static const u16 NCT6776_REG_TOLERANCE_H[] = {
+ 	0x10c, 0x20c, 0x30c, 0x80c, 0x90c, 0xa0c, 0xb0c };
  
--	if (of_node_name_eq(child, "nand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible NAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
--
--	if (of_node_name_eq(child, "onenand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible OneNAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
--
- 	if (of_match_node(omap_nand_ids, child)) {
- 		/* NAND specific setup */
- 		val = 8;
+-static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0 };
+-static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0 };
++static const u8 NCT6776_REG_PWM_MODE[] = { 0x04, 0, 0, 0, 0, 0, 0 };
++static const u8 NCT6776_PWM_MODE_MASK[] = { 0x01, 0, 0, 0, 0, 0, 0 };
+ 
+ static const u16 NCT6776_REG_FAN_MIN[] = {
+ 	0x63a, 0x63c, 0x63e, 0x640, 0x642, 0x64a, 0x64c };
 -- 
 2.39.5
 
