@@ -1,77 +1,72 @@
-Return-Path: <stable+bounces-125992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-125993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CEEAA6E983
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 07:15:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE7CA6EB21
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 09:10:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9157E3B1E0F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 06:15:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B3F169558
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 08:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F662528E7;
-	Tue, 25 Mar 2025 06:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C20D1A5B86;
+	Tue, 25 Mar 2025 08:10:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D666FC5;
-	Tue, 25 Mar 2025 06:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFCA19E98A
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 08:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742883329; cv=fail; b=V7gOdP5/FOdLwcqxRWwZ0MAqgtuznUhORGe7A+Luo8+sqMVk/jigR6tGa/HjcP+rJD3E/kZ5XJaJ99Arz603v93Ss1BSQJ+wzztFSGegXbl61tfCFwvaUYx4/7J5dfkmIm6vrTotPhGRMRLV1AZQCwwkdlE+2LLlYFji7EZX5nU=
+	t=1742890221; cv=fail; b=LRjwYPLk7C2ksEBIZmiJ8QUIWEmzRHExtUPIP8LLoq0NCczJvH2LA4Hcc9s8Oxeb0QMkfmIic/XuobJtXF1hmHZ7anAGdHD05C8Scd6HYEhDLJ9YH6S9vA/AivVKDqtTq0XK1Tw30+v44Wh+Pvni1b7ylIPkr3hdQXtBSFRqEeI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742883329; c=relaxed/simple;
-	bh=JfLHv66jLGskheSUvxSYnd8m3yXqE/kHfsgdK4e2Ing=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tPHTsp/C8CqdzgiOu6H/DbTVzt/ygQdvZ+eWSFujkHOEtb2ZB8rE4x7KC288/atld1W3hwyXvY4PU1wlkc2za1w/GSL3spYM7Og/9EB4GWvKN3o60pFOFCX4BhjUACv1op4y4w8UqjC/t0C5NkGTMNjivDWViQUumZzULHDESXQ=
+	s=arc-20240116; t=1742890221; c=relaxed/simple;
+	bh=7SAKyEE8qmibs3SSVwh50eMIkHL5V+D4IUqQ+J4iWNY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=aPZAKz/DIsTT9XGCd2+Jjw8HxPWgyOc9SXQt+wg6Lod7CG4RSSRXpOFD8ub72O1CWRTmYrZ0jMqyPXJV1en5QSP2jZGQJ5X4KnB67bX9eLetM7Vuc5cX0B35caxAc0/ZCVRIvRs5J2pEMkoobueyxZ/GcTIduLo+Wfbqk+qMykg=
 ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52P60NIW027946;
-	Mon, 24 Mar 2025 23:14:57 -0700
-Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2042.outbound.protection.outlook.com [104.47.51.42])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hvqkakke-1
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52P6v2At013972;
+	Tue, 25 Mar 2025 01:09:51 -0700
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2043.outbound.protection.outlook.com [104.47.55.43])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hvqkap7h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Mar 2025 23:14:56 -0700 (PDT)
+	Tue, 25 Mar 2025 01:09:50 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mhi6D+4SLSoPLmYRO8YR40aLGqN6IL5i6VbpoS5EevCSkgbOWXsJ6Z6snrUNhipRgJTuCG4dUhf+fbE3BR7c7+5sSSMgKswHR/8WZOLQHwcM29eB0zTlTXH2jOVyUYsByLMOqhK2pMmM9B2kJ7ASeXUOeA7ClK82NkOEQ7A1xD3T3hR/AEcFr3+0AeTRQSDlHq3ID+O5TNgxlBK/35LGiHi5nwNpR/aooudhz2kOf2VRgCtTX1O2huuXgoZeDfTM4Cop/t3WzpEm/dCI9QBWyV5RIS43eAcRwnzfLL1EPNihd2+9rtQtUuBWObfgUlNgiG3r+snluroUC4W95f5R7g==
+ b=Hsp1dxuGXY4hmqW22LYyxeXR/pGoJbe5aDCRmaZf6tb0brWOm/H77qc3llIUyCQCp7CtV0BrZVlmv1gx9ZJ5jjPvFN3yu3IMCFkFeI0ByrXXNzWAGIHorEf0CAT8e7YN2J8gJ7w3jjcIRkfFaikgcQ5LV2n2vbha9M/J2cLQdI2stKNejfv6vD54YiqboEmkSW/k05YEn28YTElSdCsXhrBD++Gbdq3ZDd2QkYqA6y7ZJjjteeAxtuOOv9+wRDyc87J/69PqKDxu7y42YlN4LoznsAX7eexpVwEBPcnxjNU8FxO57aq8v8tHd6cPHb6MZYbOmBzS/5+0xy+uCweHLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7/8uubyoo8eaeBEI9leNhNWqrMOjzAbw6gdbCVEAPW8=;
- b=Pr0g0ddWh1pj2Ztz/KNNYoWrYcFtn5ayugcok/26GbTmdITwHyPWfVA8KPio4fHJRRYR0JdTzNNI/ABhIWGzCMPe2OigPrOXWhhmz1BEOtKpD6kFVqeEnxszXrQyTxpAinYO78/5KQ4sXkveSzZO/7aJEC3UFKpNr4p5OTiPvdONjLUJVwOU+YufRb9Nje3QqbQgM1dnUHKGbu625sEgsnBpL2LspBkLhCObIWC06WClQvtT1fR+f0uRVnGgyW6yhtDaWTtGtIwr0FV+AmnUnlpYK0+zz6ntGXAcdLNOe5YvKhMs/Ey9ojATMxyAyOw/IIGhqNprT0ufvAQo652sxQ==
+ bh=haEEytFu8sZhoF6UKlvljHRlzxT7FjrdqwjELH52dPE=;
+ b=e11P+nDwAY1aTIxaVGo95DHuhtKNyhKOYimJ2qtat8z9Y6Y7lTDLol9QcUdpy8RMCXNdNX/2OltvsMjrnCTXyHQBEt3LDa67ARNfMOtyTU/g6iLwpbWPecbJJfxV1VWY4Oec3vUAeE6DXMUsWQ4OsBueL3r48z6PMzI0Ge/5celYvO5XjtrXUFproV56PIty66EixNv+QOFA2eZlrbSNi4sCtHK3HwedzMAWKR5vqohtUg4ZOM+zwRPXKagR1J4zfVWBB8PhdYYZ260rpuZm7esD+AG1TH755t3Y0MB/xPvZyHQTKPbz6xs/8RIHf8DuwiLbSltVWxJqlLwzFcycbA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CY8PR11MB7012.namprd11.prod.outlook.com (2603:10b6:930:54::6)
- by DM4PR11MB5246.namprd11.prod.outlook.com (2603:10b6:5:389::11) with
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10)
+ by SA1PR11MB6568.namprd11.prod.outlook.com (2603:10b6:806:253::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Tue, 25 Mar
- 2025 06:14:52 +0000
-Received: from CY8PR11MB7012.namprd11.prod.outlook.com
- ([fe80::83d5:946f:3692:8c0d]) by CY8PR11MB7012.namprd11.prod.outlook.com
- ([fe80::83d5:946f:3692:8c0d%4]) with mapi id 15.20.8534.040; Tue, 25 Mar 2025
- 06:14:52 +0000
-From: Cliff Liu <donghua.liu@windriver.com>
-To: stable@vger.kernel.org
-Cc: wensong@linux-vs.org, horms@verge.net.au, ja@ssi.bg, pablo@netfilter.org,
-        kadlec@netfilter.org, fw@strlen.de, davem@davemloft.net,
-        kuba@kernel.org, marcoangaroni@gmail.com, netdev@vger.kernel.org,
-        lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, linux-kernel@vger.kernel.org,
-        chenhx.fnst@fujitsu.com, Zhe.He@windriver.com,
-        donghua.liu@windriver.com
-Subject: [PATCH 5.10.y] ipvs: properly dereference pe in ip_vs_add_service
-Date: Tue, 25 Mar 2025 14:14:39 +0800
-Message-ID: <20250325061439.3334363-1-donghua.liu@windriver.com>
-X-Mailer: git-send-email 2.43.0
+ 2025 08:09:47 +0000
+Received: from CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0]) by CH3PR11MB8701.namprd11.prod.outlook.com
+ ([fe80::5727:1867:fb60:69d0%2]) with mapi id 15.20.8534.040; Tue, 25 Mar 2025
+ 08:09:47 +0000
+From: bin.lan.cn@windriver.com
+To: gregkh@linuxfoundation.org, stable@vger.kernel.org
+Cc: bin.lan.cn@windriver.com, john.fastabend@gmail.com, mhal@rbox.co,
+        daniel@iogearbox.net
+Subject: [PATCH 5.15.y] bpf, sockmap: Fix race between element replace and close()
+Date: Tue, 25 Mar 2025 16:09:29 +0800
+Message-Id: <20250325080929.2209140-1-bin.lan.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: TYCP286CA0338.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:38e::17) To CY8PR11MB7012.namprd11.prod.outlook.com
- (2603:10b6:930:54::6)
+X-ClientProxiedBy: TY2PR02CA0047.apcprd02.prod.outlook.com
+ (2603:1096:404:a6::35) To CH3PR11MB8701.namprd11.prod.outlook.com
+ (2603:10b6:610:1c8::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,147 +74,347 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7012:EE_|DM4PR11MB5246:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a6edc2d-1cc6-481e-56d5-08dd6b645afd
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8701:EE_|SA1PR11MB6568:EE_
+X-MS-Office365-Filtering-Correlation-Id: 06d1c759-f87a-42c4-b367-08dd6b746861
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|52116014|38350700014;
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?R7NH+dj+eLGNOhmhSsV06/usOuX28AlGnaeihQYqUFfS7rIvK214lIZGA+YO?=
- =?us-ascii?Q?2y2H8Ba6LvuXVmm2YUvlKqKcKmb+QUUqoqSZ9ICJIxSDY8HZ6pkFDVWa4jl9?=
- =?us-ascii?Q?7m6KmeZsFBLfzfduQQs6+ODyVoUFPPhYWqlSIEUylLRaqLPkq/8VU9vKuUmU?=
- =?us-ascii?Q?db8Cta9EAeRK0EChB8nEMI48PHfdPrQ+7Bli+ld7dA/E+nmnKyKyjnz+6tNB?=
- =?us-ascii?Q?syrucemQXlgrVsksDI+4wP+rPhhpt/mJADwmhv40kNog4eoCx0/p5zW2uAi8?=
- =?us-ascii?Q?HQYvCYW+uvX7tSUFIdEgNXAy8AbIIlt2a+6jecKmZlQ6PVRQ4gQdcxnhGIu1?=
- =?us-ascii?Q?hS66m+RylP3BiDBDZZ1YrlVlkjGEPknzg6+m7EA8+uW1dFBsm6t9BLU9C2pg?=
- =?us-ascii?Q?SgW0jb52u6BKwCaoh8F1z+mrpHsXtfTdGcucTJFgyayGcPYAtfv+tx7eQYYD?=
- =?us-ascii?Q?3yYPiiqc7VJUdVZ+KOA/aOSZOcHqK/c8TmjiJF2cErb1tMwLg2GuZeBih3qC?=
- =?us-ascii?Q?EBwzgoTZ1otEUJRp/JU9T14R4LEdrruZkPkDdHLJy3CQXjK0zZlwTcl4HUM3?=
- =?us-ascii?Q?1ckfDVFFLKTpVn0pH1Cs8OCGtJv2oG4hxvAPhTGukTz1zN2giFH23i7Ap9jD?=
- =?us-ascii?Q?gP+RtMb1gOZH0CYDiVh1p5/HzLmYNR+4TXpXeFu7u+SdAhaL/MnmUVAqTixx?=
- =?us-ascii?Q?z+kVmPY5k7lw5CEKCxUfv57ZZq8Nauy33Es/BUdeIlb67f0GTxph1SCeYURp?=
- =?us-ascii?Q?mFK4wsbQdlmCUZhM+9GzJwkYsqCJF8OxBg6ZRhwB4dOGgb87bjTz2CJ/r6bK?=
- =?us-ascii?Q?gyCcayiQiuzS+vWbbEiMCnahxqrY1xgaeBLq2uXE8Jv/vG4D5znsRyi14nHr?=
- =?us-ascii?Q?9RlZCEi7lILrV5UrBsH/gr+wTRL79+JmAQZ67IZsHLIxip4knlXKhiK1s5cr?=
- =?us-ascii?Q?hiJSIJzkGI9KOvFu2tmTJCjFxAJHQCTeXr7GCaPlRiFpk9YIZU4+E7peyUqm?=
- =?us-ascii?Q?mWSSQSVHIKm0iqVfDvezEKAqeTK9b7hqVtGskGj8mYe0tpbvr/HsN+U2e0NX?=
- =?us-ascii?Q?/DOFF67k7LSbwhiOx926fOYQLD7MjCnzwM5bcSDT9O2I/U2xm76vcNgYwxDF?=
- =?us-ascii?Q?AgqFlo2RRKlMTyjBqQJ02Zksf97ynI7vqVqeWL66Wo6vZyEHB+RpqCaibZgh?=
- =?us-ascii?Q?Jo7BV2+c/RlY8Ds06K74W5jjZ3nGNsLEe65ZqTrf4w1ZZlN09lB17jQC/MIM?=
- =?us-ascii?Q?oEhDNJzh63GXu7LyeIP48NtHkqPqGA3AG1GphS7VAgxsFktJjpc6K8f6dXbc?=
- =?us-ascii?Q?WyDEPypHnB/Tj87SF/ugKSVnRxdelwtGj4aozOTMR1Rk2PsmL5LbfTYEY7ej?=
- =?us-ascii?Q?MNwqZHNqFGdXhbI5qv/tKBrs6Y6f587vpEPrrEm55aPPbcB7xELgXiR++CL0?=
- =?us-ascii?Q?GUKUEZtI1E1maRQc7a+GlzxfNzUC0RND?=
+	=?us-ascii?Q?wu1vO2f80ArFSsUCdnVZ4ZaTFWM4Cc0wBCMezYmzAy6Qrt8zoa9sExNWzuXb?=
+ =?us-ascii?Q?J5syo2L34llhakyyWz8WNuI0Nu2mywFdsnzhRupwIgjtOIylGUeMi2WKv1Cq?=
+ =?us-ascii?Q?hoDafg2JquzWGttmUeKLKqxyhSGgpK8fkbrJ99GJkeZm8jO7QHJm2o0wYt+6?=
+ =?us-ascii?Q?TbXB0YhzzorCX7flv7mwd7F+61SpbF4EyU6AtvxkE9E9rPXXcnggumELnThj?=
+ =?us-ascii?Q?pxIG8OfUACgxb9M5ICV9n+Xt5NNdvO6GzkxHXcasbtYUGAOuGuH0kTHZDhYz?=
+ =?us-ascii?Q?OyKBmfXiVBgfPpBtcxjSI8IDRId/RHUVcZYD8HEkQr4u15oUeAFSqv7xAkvi?=
+ =?us-ascii?Q?9372b/1Nj0BS3P7/iN5l+hZmVezUIywGflBLzlouFEhPmj89XCm4lHhdryHF?=
+ =?us-ascii?Q?7luy4sp39YmqOGa8ODm8dM92c/OwqKzuOV96S+fWTPz4m6UrJeFuJ84zzl19?=
+ =?us-ascii?Q?GwDp6+F5e/chkwpAj1Mc2RWzC41mz3vxulP6+zNb4url0ws+VAmj7pH1s+9u?=
+ =?us-ascii?Q?SwJCcg5oOPqA/vrZpaTs+8sFBalU75usvxRQCUV82NzufiCTVSD1szcqMsjl?=
+ =?us-ascii?Q?6MJnMAG/UGu0t3/R0r8twcCyKHAdmOjqdmPvrEndTfrgrN1W+ls3HQ8UHAzM?=
+ =?us-ascii?Q?4THSoXfd+QGaev/bYHRRzFkaD/IWCaTIoa9KvgscsXVH35gQqwuja6ViKMS3?=
+ =?us-ascii?Q?z+/u94ypzwp6VUaonaX2HblU5bV3dlRLE6FE36IIOTfUI7rssXbyu2xlppi1?=
+ =?us-ascii?Q?Nb9O8ySpyRbIir+gBsF8quInRviOGixlhbKVQD1w/PrgUf8DwV/By42Cb7mq?=
+ =?us-ascii?Q?l3mcVhqdIdqpKng17/WNEoKOQvDzMKxP+polaixKkM0ArfijEeI6r5+Uda1k?=
+ =?us-ascii?Q?HbZ3pSUpTUgQz6GAAZ9h6KnNCyogGGZAMJM4gnWW5Nz3qIb7/IGuThslEsJS?=
+ =?us-ascii?Q?ceM/lw/RzLkTu0hUzlKjlaij+/8GGsIXMwi4+LW1iX7enBIKCxu+ocfjEZvH?=
+ =?us-ascii?Q?b+5llIsRS3GtYd1m3A9UNVidD67u/+yTMeuVL/MxvucPhcYSsauOtP1AVvJm?=
+ =?us-ascii?Q?kSIWc//dvvAcOxXa/fgdw/XXLyvIDXLyZ2f+VJ0EjVyn1uEjveDG8weLWZTW?=
+ =?us-ascii?Q?Zhpxbv+DKWEbZdcLNtN2cL4L5CYgKsP9pDaOxOXMN4mTHZL4Bi02/Rw7p8kr?=
+ =?us-ascii?Q?gqYM2o7ztoUUQjUe5I9WeVn+UDqYf5zk6HpAGhkgfRZeWnPCBG4jucCMSfLR?=
+ =?us-ascii?Q?W7NYad0Xa0lEpMfBfNwc+tAsPCO+w2JTDETgcyPuMKNzDCqzkxh28itk2cd8?=
+ =?us-ascii?Q?TmdKb/qWNmymxt+X/BjfZKctG9f6Sl0tSkxS0viS2yTVE3d1os3KnjZ/mhGA?=
+ =?us-ascii?Q?Nit3v9WiMYUK8wTRc9VtS5VGkKNqFmpPodAsJuXoDxGOu8vMUAm8v3PswJ9h?=
+ =?us-ascii?Q?8mzvSErK2Znn/B2edm2Hx+8Ioh1N2Eid?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7012.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8701.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?17+V7MUPfPrkCQGdf30KGcgefjUSJ97bE8PJpuZza7ZISYkdcoDB+oYfZoxQ?=
- =?us-ascii?Q?zKHH3dyQ88gDJFLJPlt4UdE1lG0QemujZaX6KVrUaruFjpbYQC/RE/bRb/RQ?=
- =?us-ascii?Q?FngA/L1KFOjEpB5Ub0hXAg0/pYVt6i8XKzJtC5tNtWqOnC/1IUGfCzFjp/bp?=
- =?us-ascii?Q?+ymY3p1ZEl3t9CbUieo9OJJ/1otkWtRwSORGqC/ESX+6WRN8yztUgQaqO8D/?=
- =?us-ascii?Q?yX6qO3jCscrHLKaoPQqm8iucQscMf7CJdtr0or8LgjR/af0zy5x+Z4DR1pyM?=
- =?us-ascii?Q?+Aqm/OcPxPoVlrQZ+RkE1EJGuJGyNy1Oub1VI8bFAAMu3XZYlfGgoF4FH0CT?=
- =?us-ascii?Q?vgusCQGrNITqE25Wis/tEuX4F/SvStInn7+ujj0zbOGdN5zY2ch+rO5EmOem?=
- =?us-ascii?Q?fcA02B4L1L2owtnTWCroODxgmS/ZFFtSny3kTeFrDWITWGKh/JqRy9nqBMli?=
- =?us-ascii?Q?nIyHfFK2/2cBNIzRAqyNWGsnMQE1N4YER4lP1qqJz39wEW+RpjL4KNi6WkKr?=
- =?us-ascii?Q?+zXNuvoUcvsV/BUVDN6YxPv6M55Hv9M9lYQ6aAgiZDR9fEJIHpjufo1/tWnt?=
- =?us-ascii?Q?fVtoft/b+D4xLnKiz8yDKgYSaMtWgHkFwzxmwe/p9ABXUw+Bc4hvOkXXgXHn?=
- =?us-ascii?Q?0R32M2pzy9MDg3uRljjnL0tdRHSnVTqGQ2WXOqvx0JWyLNXOtI+Ve/+cyNvX?=
- =?us-ascii?Q?U6MrCxBGA333yE61tUfME9xHmjRlAGOmirfxeicSyt7Tju7j9bz1f4GgZwXA?=
- =?us-ascii?Q?ttGJ6sB7ZGe4kiY3ekvFv0/+nGxgMSqXSL3NXh2DWCdF3h/2pR+ooGjMsxBP?=
- =?us-ascii?Q?5iBPatgXLOYhy0VXZ9KCq3aYO4RI+IaGmxTLYsrK8HJrlzSwGJDFnxJ6Pfv9?=
- =?us-ascii?Q?NLK2b1cBk8kIeYaBrrjtUeVGeUIjdMoGAAopQvTSh37zFsXPB6zsWKfpKlYb?=
- =?us-ascii?Q?j9vOT8l+me/h1YRsTo5yERjnG4Sg5YVWG2s3oObV6lpHcINJwTvjwgVwkYxN?=
- =?us-ascii?Q?msaiOlUjrnSi2k7Vxnd2/rmD8949v0A5Yo5reTFDV/hDo7Kpi95kuKw4qpfc?=
- =?us-ascii?Q?O85EFoEOBv0CmwzxWydsfsYN8QWL1iFqc5gedloCYeYf4ef4NPtG+42nIdss?=
- =?us-ascii?Q?YBhexObs9kfZ6uUxXdhXFVnPNlU6p7hXQqr5OBcM6Rb97tsbxPHECfE8mR/O?=
- =?us-ascii?Q?mxp8yVKtqcr+NfI4kmBZYmCuvRKLhlt+KeekGcMHJg1izWmT6cwesG0eb+49?=
- =?us-ascii?Q?ktHH+IDJHRVoIfXkeDqXcDsOF6Wkj3QUGj77Y8uPkWQBY7sKFK9cDn0Z6phP?=
- =?us-ascii?Q?n+1AWpXXeHbCcPFQaZANvU0MreVGeYjX0hrPlWKzI7Ch+tFEYJQTohjnfY51?=
- =?us-ascii?Q?oiazJhwr2VEEO2z5xvQ0XXwbKKAiKdxIQ+zX26P5L2VVEtONHvMQroeBnkXw?=
- =?us-ascii?Q?6IFP5Vf4ndfPveLctGkeuPERbEh99VfcSxhbO35pD0LE3TozDlutf+gubdY3?=
- =?us-ascii?Q?9ov7hi0vrDEhCLJbqT7ltUxZN8wci3VObeVjc6gWXpq36h1kmGEl6xfOYR/B?=
- =?us-ascii?Q?u0FCzAxfwuey8IF74kBgHB63/Q83WXp9MycZj1TJZIFxB40o+K2O7Fg8IgVv?=
- =?us-ascii?Q?2g=3D=3D?=
+	=?us-ascii?Q?CZdr00BB2gJ32GpvWqfpXb8x9kD9gD+hCo43KVyaf1MAaTKgSta637Rh9sAB?=
+ =?us-ascii?Q?8xPo9D+JxOlQyzMfRntsXSsrYeFsPnaBLhqqeu/Mal6A7zxj2MZAc9lKS2xb?=
+ =?us-ascii?Q?DKt+MGtPXvd543azp9ClbbHhR62L3TvXUXG/dlAhXaK7o7YUbtgupVY7QGXx?=
+ =?us-ascii?Q?uELS/rYHV97Ns2Rt/CIRsxvOmY7Yndo/chcSSl7yc/UTfeEvRSzBEFFmaNhq?=
+ =?us-ascii?Q?2O41v/pcKP3DHnkr/2VOagrC3m2y3jn7m70ryyNt9Ul+zh7cW2xSRDsbB0xB?=
+ =?us-ascii?Q?m31DedjcWBlQ2GGapwmbXNiXiA2b5a1uhRAlAfeJLKhXNvdpq0tVjq7bVTvn?=
+ =?us-ascii?Q?GxGWL5FzYQwRIZQMl96O47Whhqj3VNZr3btdovgqi/069cb+h48iiNP92hB5?=
+ =?us-ascii?Q?VPXkiFHTP/QaiXqzySW7vjMQhnL3t0gmcpyI3FQuC1r+iepZBQxQnK1fh95a?=
+ =?us-ascii?Q?rlHNAT6s3rljZA2iPuP7Sc7ik3eovm4mWdOV4OqJo67yqxEO88OG4eY7EEuj?=
+ =?us-ascii?Q?xhJ5QJno377KhzPRLudJGGsTYPzCXhD+KfRLK6JPwaBVoudEW5CbeLUnzO1b?=
+ =?us-ascii?Q?tJRUCN8k17MmM/j9kcmwLl5PztD4bNVK01XIkZ85aDs8SBCXECM+TUXpVvkX?=
+ =?us-ascii?Q?+ldem0ykMPzbqfXFmL75N9suayaE5AYwdW3NFm3mnDEAyFe3KhoQkxKBshU3?=
+ =?us-ascii?Q?3sflb3EfnrxYtNRmZD+hLS4ZZpXg15xgBesRSipU2r7tPJ0poFzzzQak6da/?=
+ =?us-ascii?Q?r7AuCuEQY8GNFNM/JZ66mdttrZIox7wy4732tpzyvk4kmIsK+LGypgYSJZX1?=
+ =?us-ascii?Q?YWjkC69E7A7U1tBLRrKE+mUA5VOcCxTk4puXWN/h2mjtgz3owH29oBE7SLd9?=
+ =?us-ascii?Q?BSWrSHFbap0SHp6hrJxg9/P4pQACAPraeZquKOaNkqIMfMY9LpI5XRKwA2Ck?=
+ =?us-ascii?Q?fGo/V6t/g3oa2fKqY5XBHqVX6CkPCS476Jk7YqqsAqnWJemc/zqtA1SoHkN7?=
+ =?us-ascii?Q?jnMHDqFlPCHXmh9nCEE7FwqQCowm/Fi1b977G7oyo4RAmfxQDCdhSSXzYqWs?=
+ =?us-ascii?Q?XwBkVY+AR+ZLda+MmHtfbguKXu5oz1REzayWcNqtrslP+RDOa5lFDzyvWjFr?=
+ =?us-ascii?Q?SmTF7a/KQbBtLcSddpTXN9X0gRlmPLL1TasF7cVOKxgXmwhxcyGXXMyLrcsO?=
+ =?us-ascii?Q?TeIeXqCpWA0YX9FFcV5dmqIGFI2QOQ4S4KgXRHCfsuFKYq+N4UlTXaCoicK3?=
+ =?us-ascii?Q?cVxFAAp43hKkTsWO2XI/CnMZSUeGTC2apP+uNdo7pb9aS+6U11BdvdBzL+87?=
+ =?us-ascii?Q?W/WimBQonJkcD5CKf1gQP6D6Bqjf/JeYRjwIKs+1MVYYyUI1EQCux7woHGtL?=
+ =?us-ascii?Q?AO/txGQKvKhQl5DYuVmg4ztisQP6604KD2QMClOUtFfFjMJbWgdeQJ4/tGf8?=
+ =?us-ascii?Q?ULk6Lol59A7gq+IVpvRn1Ggaih4avyovLQPk7E3khuTfRheNe47hPofR43LZ?=
+ =?us-ascii?Q?Zs7WSzTOpW9GJ3T1SLhG1XXU+JKmWNRXQ8H0ma5hYaGDRZGDm4IrRo8sK2wK?=
+ =?us-ascii?Q?qI6y1IHPOfZaWNG9BR6SohzV0GcSFf/Egavzr+pVwCyJCYeG1IhdiS7Uy93R?=
+ =?us-ascii?Q?Dw=3D=3D?=
 X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a6edc2d-1cc6-481e-56d5-08dd6b645afd
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7012.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 06d1c759-f87a-42c4-b367-08dd6b746861
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8701.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2025 06:14:52.5876
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2025 08:09:47.1173
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SdamOiwYyn4i0TY3rJQO8JZJcO+/kG6k9XweI3KlVzB7AMoS1qfCdAc8b3TkBImNMoMx4ClKrVOiLd2pbIMgZ+lAXyBIaDHFbHzsBkDsRVI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5246
-X-Authority-Analysis: v=2.4 cv=XNkwSRhE c=1 sm=1 tr=0 ts=67e249e0 cx=c_pps a=x8A/wAfU1CBlff9R7r/2ew==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=Vs1iUdzkB0EA:10
- a=H5OGdu5hBBwA:10 a=omOdbC7AAAAA:8 a=VwQbUJbxAAAA:8 a=3HDBlxybAAAA:8 a=t7CeM3EgAAAA:8 a=EJnz0eeEf27LpUW9eyUA:9 a=laEoCiVfU_Unz3mSdgXN:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: uVQUOpABsmT-qriurU2m6PMdUCI-R-Va
-X-Proofpoint-ORIG-GUID: uVQUOpABsmT-qriurU2m6PMdUCI-R-Va
+X-MS-Exchange-CrossTenant-UserPrincipalName: MNfGcgLlyfal14RfTevbTpWQdYr807rR4BbTq+3X1EYpDuUrjZYQZ6MZPzrzyRgBgpZEeUIEOPVaQZIPu7/MjpFtniZoMAIm88kDxZ/gU5c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6568
+X-Authority-Analysis: v=2.4 cv=XNkwSRhE c=1 sm=1 tr=0 ts=67e264ce cx=c_pps a=2TzYObwzRp/N0knVItohZg==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=Vs1iUdzkB0EA:10
+ a=H5OGdu5hBBwA:10 a=VwQbUJbxAAAA:8 a=hWMQpYRtAAAA:8 a=pGLkceISAAAA:8 a=t7CeM3EgAAAA:8 a=jWF0KBuXk48DT8NqCIAA:9 a=KCsI-UfzjElwHeZNREa_:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: E5J3OwAmiM6Vb0ByS2ujcXAfp2kG5qfu
+X-Proofpoint-ORIG-GUID: E5J3OwAmiM6Vb0ByS2ujcXAfp2kG5qfu
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-25_02,2025-03-21_01,2024-11-22_01
+ definitions=2025-03-25_03,2025-03-21_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
  mlxscore=0 impostorscore=0 adultscore=0 spamscore=0 phishscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ mlxlogscore=600 malwarescore=0 lowpriorityscore=0 suspectscore=0
  priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2503250041
+ definitions=main-2503250056
 
-From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
+[ Upstream commit ed1fc5d76b81a4d681211333c026202cad4d5649 ]
 
-Use pe directly to resolve sparse warning:
+Element replace (with a socket different from the one stored) may race
+with socket's close() link popping & unlinking. __sock_map_delete()
+unconditionally unrefs the (wrong) element:
 
-  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
+// set map[0] = s0
+map_update_elem(map, 0, s0)
 
-Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
-Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
+// drop fd of s0
+close(s0)
+  sock_map_close()
+    lock_sock(sk)               (s0!)
+    sock_map_remove_links(sk)
+      link = sk_psock_link_pop()
+      sock_map_unlink(sk, link)
+        sock_map_delete_from_link
+                                        // replace map[0] with s1
+                                        map_update_elem(map, 0, s1)
+                                          sock_map_update_elem
+                                (s1!)       lock_sock(sk)
+                                            sock_map_update_common
+                                              psock = sk_psock(sk)
+                                              spin_lock(&stab->lock)
+                                              osk = stab->sks[idx]
+                                              sock_map_add_link(..., &stab->sks[idx])
+                                              sock_map_unref(osk, &stab->sks[idx])
+                                                psock = sk_psock(osk)
+                                                sk_psock_put(sk, psock)
+                                                  if (refcount_dec_and_test(&psock))
+                                                    sk_psock_drop(sk, psock)
+                                              spin_unlock(&stab->lock)
+                                            unlock_sock(sk)
+          __sock_map_delete
+            spin_lock(&stab->lock)
+            sk = *psk                        // s1 replaced s0; sk == s1
+            if (!sk_test || sk_test == sk)   // sk_test (s0) != sk (s1); no branch
+              sk = xchg(psk, NULL)
+            if (sk)
+              sock_map_unref(sk, psk)        // unref s1; sks[idx] will dangle
+                psock = sk_psock(sk)
+                sk_psock_put(sk, psock)
+                  if (refcount_dec_and_test())
+                    sk_psock_drop(sk, psock)
+            spin_unlock(&stab->lock)
+    release_sock(sk)
+
+Then close(map) enqueues bpf_map_free_deferred, which finally calls
+sock_map_free(). This results in some refcount_t warnings along with
+a KASAN splat [1].
+
+Fix __sock_map_delete(), do not allow sock_map_unref() on elements that
+may have been replaced.
+
+[1]:
+BUG: KASAN: slab-use-after-free in sock_map_free+0x10e/0x330
+Write of size 4 at addr ffff88811f5b9100 by task kworker/u64:12/1063
+
+CPU: 14 UID: 0 PID: 1063 Comm: kworker/u64:12 Not tainted 6.12.0+ #125
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+Workqueue: events_unbound bpf_map_free_deferred
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x68/0x90
+ print_report+0x174/0x4f6
+ kasan_report+0xb9/0x190
+ kasan_check_range+0x10f/0x1e0
+ sock_map_free+0x10e/0x330
+ bpf_map_free_deferred+0x173/0x320
+ process_one_work+0x846/0x1420
+ worker_thread+0x5b3/0xf80
+ kthread+0x29e/0x360
+ ret_from_fork+0x2d/0x70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Allocated by task 1202:
+ kasan_save_stack+0x1e/0x40
+ kasan_save_track+0x10/0x30
+ __kasan_slab_alloc+0x85/0x90
+ kmem_cache_alloc_noprof+0x131/0x450
+ sk_prot_alloc+0x5b/0x220
+ sk_alloc+0x2c/0x870
+ unix_create1+0x88/0x8a0
+ unix_create+0xc5/0x180
+ __sock_create+0x241/0x650
+ __sys_socketpair+0x1ce/0x420
+ __x64_sys_socketpair+0x92/0x100
+ do_syscall_64+0x93/0x180
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 46:
+ kasan_save_stack+0x1e/0x40
+ kasan_save_track+0x10/0x30
+ kasan_save_free_info+0x37/0x60
+ __kasan_slab_free+0x4b/0x70
+ kmem_cache_free+0x1a1/0x590
+ __sk_destruct+0x388/0x5a0
+ sk_psock_destroy+0x73e/0xa50
+ process_one_work+0x846/0x1420
+ worker_thread+0x5b3/0xf80
+ kthread+0x29e/0x360
+ ret_from_fork+0x2d/0x70
+ ret_from_fork_asm+0x1a/0x30
+
+The buggy address belongs to the object at ffff88811f5b9080
+ which belongs to the cache UNIX-STREAM of size 1984
+The buggy address is located 128 bytes inside of
+ freed 1984-byte region [ffff88811f5b9080, ffff88811f5b9840)
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x11f5b8
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+memcg:ffff888127d49401
+flags: 0x17ffffc0000040(head|node=0|zone=2|lastcpupid=0x1fffff)
+page_type: f5(slab)
+raw: 0017ffffc0000040 ffff8881042e4500 dead000000000122 0000000000000000
+raw: 0000000000000000 00000000800f000f 00000001f5000000 ffff888127d49401
+head: 0017ffffc0000040 ffff8881042e4500 dead000000000122 0000000000000000
+head: 0000000000000000 00000000800f000f 00000001f5000000 ffff888127d49401
+head: 0017ffffc0000003 ffffea00047d6e01 ffffffffffffffff 0000000000000000
+head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff88811f5b9000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88811f5b9080: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                   ^
+ ffff88811f5b9180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88811f5b9200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+Disabling lock debugging due to kernel taint
+
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 14 PID: 1063 at lib/refcount.c:25 refcount_warn_saturate+0xce/0x150
+CPU: 14 UID: 0 PID: 1063 Comm: kworker/u64:12 Tainted: G    B              6.12.0+ #125
+Tainted: [B]=BAD_PAGE
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+Workqueue: events_unbound bpf_map_free_deferred
+RIP: 0010:refcount_warn_saturate+0xce/0x150
+Code: 34 73 eb 03 01 e8 82 53 ad fe 0f 0b eb b1 80 3d 27 73 eb 03 00 75 a8 48 c7 c7 80 bd 95 84 c6 05 17 73 eb 03 01 e8 62 53 ad fe <0f> 0b eb 91 80 3d 06 73 eb 03 00 75 88 48 c7 c7 e0 bd 95 84 c6 05
+RSP: 0018:ffff88815c49fc70 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff88811f5b9100 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
+RBP: 0000000000000002 R08: 0000000000000001 R09: ffffed10bcde6349
+R10: ffff8885e6f31a4b R11: 0000000000000000 R12: ffff88813be0b000
+R13: ffff88811f5b9100 R14: ffff88811f5b9080 R15: ffff88813be0b024
+FS:  0000000000000000(0000) GS:ffff8885e6f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055dda99b0250 CR3: 000000015dbac000 CR4: 0000000000752ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __warn.cold+0x5f/0x1ff
+ ? refcount_warn_saturate+0xce/0x150
+ ? report_bug+0x1ec/0x390
+ ? handle_bug+0x58/0x90
+ ? exc_invalid_op+0x13/0x40
+ ? asm_exc_invalid_op+0x16/0x20
+ ? refcount_warn_saturate+0xce/0x150
+ sock_map_free+0x2e5/0x330
+ bpf_map_free_deferred+0x173/0x320
+ process_one_work+0x846/0x1420
+ worker_thread+0x5b3/0xf80
+ kthread+0x29e/0x360
+ ret_from_fork+0x2d/0x70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+irq event stamp: 10741
+hardirqs last  enabled at (10741): [<ffffffff84400ec6>] asm_sysvec_apic_timer_interrupt+0x16/0x20
+hardirqs last disabled at (10740): [<ffffffff811e532d>] handle_softirqs+0x60d/0x770
+softirqs last  enabled at (10506): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
+softirqs last disabled at (10301): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
+
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 14 PID: 1063 at lib/refcount.c:28 refcount_warn_saturate+0xee/0x150
+CPU: 14 UID: 0 PID: 1063 Comm: kworker/u64:12 Tainted: G    B   W          6.12.0+ #125
+Tainted: [B]=BAD_PAGE, [W]=WARN
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+Workqueue: events_unbound bpf_map_free_deferred
+RIP: 0010:refcount_warn_saturate+0xee/0x150
+Code: 17 73 eb 03 01 e8 62 53 ad fe 0f 0b eb 91 80 3d 06 73 eb 03 00 75 88 48 c7 c7 e0 bd 95 84 c6 05 f6 72 eb 03 01 e8 42 53 ad fe <0f> 0b e9 6e ff ff ff 80 3d e6 72 eb 03 00 0f 85 61 ff ff ff 48 c7
+RSP: 0018:ffff88815c49fc70 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff88811f5b9100 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
+RBP: 0000000000000003 R08: 0000000000000001 R09: ffffed10bcde6349
+R10: ffff8885e6f31a4b R11: 0000000000000000 R12: ffff88813be0b000
+R13: ffff88811f5b9100 R14: ffff88811f5b9080 R15: ffff88813be0b024
+FS:  0000000000000000(0000) GS:ffff8885e6f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055dda99b0250 CR3: 000000015dbac000 CR4: 0000000000752ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __warn.cold+0x5f/0x1ff
+ ? refcount_warn_saturate+0xee/0x150
+ ? report_bug+0x1ec/0x390
+ ? handle_bug+0x58/0x90
+ ? exc_invalid_op+0x13/0x40
+ ? asm_exc_invalid_op+0x16/0x20
+ ? refcount_warn_saturate+0xee/0x150
+ sock_map_free+0x2d3/0x330
+ bpf_map_free_deferred+0x173/0x320
+ process_one_work+0x846/0x1420
+ worker_thread+0x5b3/0xf80
+ kthread+0x29e/0x360
+ ret_from_fork+0x2d/0x70
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+irq event stamp: 10741
+hardirqs last  enabled at (10741): [<ffffffff84400ec6>] asm_sysvec_apic_timer_interrupt+0x16/0x20
+hardirqs last disabled at (10740): [<ffffffff811e532d>] handle_softirqs+0x60d/0x770
+softirqs last  enabled at (10506): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
+softirqs last disabled at (10301): [<ffffffff811e55a9>] __irq_exit_rcu+0x109/0x210
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241202-sockmap-replace-v1-3-1e88579e7bd5@rbox.co
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
-Verified the build test.
+Build test passed.
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/core/sock_map.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index d0b64c36471d..0f1531e0ce4e 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1384,20 +1384,20 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
- 		sched = NULL;
- 	}
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index f591ec106cd6..487a571c28c1 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -411,15 +411,14 @@ static void *sock_map_lookup_sys(struct bpf_map *map, void *key)
+ static int __sock_map_delete(struct bpf_stab *stab, struct sock *sk_test,
+ 			     struct sock **psk)
+ {
+-	struct sock *sk;
++	struct sock *sk = NULL;
+ 	int err = 0;
  
--	/* Bind the ct retriever */
--	RCU_INIT_POINTER(svc->pe, pe);
--	pe = NULL;
--
- 	/* Update the virtual service counters */
- 	if (svc->port == FTPPORT)
- 		atomic_inc(&ipvs->ftpsvc_counter);
- 	else if (svc->port == 0)
- 		atomic_inc(&ipvs->nullsvc_counter);
--	if (svc->pe && svc->pe->conn_out)
-+	if (pe && pe->conn_out)
- 		atomic_inc(&ipvs->conn_out_counter);
+ 	if (irqs_disabled())
+ 		return -EOPNOTSUPP; /* locks here are hardirq-unsafe */
  
- 	ip_vs_start_estimator(ipvs, &svc->stats);
+ 	raw_spin_lock_bh(&stab->lock);
+-	sk = *psk;
+-	if (!sk_test || sk_test == sk)
++	if (!sk_test || sk_test == *psk)
+ 		sk = xchg(psk, NULL);
  
-+	/* Bind the ct retriever */
-+	RCU_INIT_POINTER(svc->pe, pe);
-+	pe = NULL;
-+
- 	/* Count only IPv4 services for old get/setsockopt interface */
- 	if (svc->af == AF_INET)
- 		ipvs->num_services++;
+ 	if (likely(sk))
 -- 
-2.43.0
+2.34.1
 
 
