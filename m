@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-126326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B93A70055
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AF2A70006
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF6FC16E489
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE13F1883C23
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEF7269812;
-	Tue, 25 Mar 2025 12:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA592676D9;
+	Tue, 25 Mar 2025 12:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3CS0TN1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyyXqSeh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C40D2571AB;
-	Tue, 25 Mar 2025 12:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF01525A342;
+	Tue, 25 Mar 2025 12:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906017; cv=none; b=sPgkV3ewyQGmEHHzz2SK1/Bo+B2+5HVltCICSNN4Ynthviy/XSarCwfZ0EXI5v2VnvCHk9BqWTepXA/XBt7BUftDmT8sRwRioT+JUQEnnJ7bYSxQkwUVrIsCtlpledAcx8CJqFzk4puJhs77DUGlKmvHeexSQWKRu4NVamps7fw=
+	t=1742905774; cv=none; b=EGTs8sTYgvWmmvMF+PiefGimNUNs2pSzwCDvgkSFGehgdkEdftnCFBMhRJZ8j0RZEXvwc6li5tA9E9bMkD6Tl1MIpDSm8E9/rKimiMxDxcs8VBvOeKk0PosUvllSHMwF1Pwra/tVqrHkDpR8L7wZQzniZh4r37ZqpKJE260b4ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906017; c=relaxed/simple;
-	bh=c1+0BDk/oZ4dy7RItT3G5Z5S8UD4NG9ZFMRB0z96O64=;
+	s=arc-20240116; t=1742905774; c=relaxed/simple;
+	bh=MoQw0M63GIfd9mbOSZDqYxnwX+pLmlc5jOxs50FfWaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXRMIr2YUfFJd399I5ZdXO5xFdgAVdAUgNMtnWfHZph/k9gvjWHm7Xfd0hSEm2phm3SRJ9CmFVIlDZelrsWtpod29wDdLLeFRN2OqxmmEviXbhh5qGraIAKxABLQIupx0sJbC77fqr2qyjXN3LmNE2KbEmCfLRBRzPRY3EZWLkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3CS0TN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADACBC4CEE4;
-	Tue, 25 Mar 2025 12:33:36 +0000 (UTC)
+	 MIME-Version; b=IJ80LhikQ1pHVY7nxuVkLe+7MKer0gS7HBmLLZKFoOI07UWeyhooUy74PoOTyzWnLONQHKp/4tFIuEhy2fw77qAkjQY5CkjucEfHyvZ5vd13I61bPDrGjc6BEqnQf+BFVhODtoTBfzhdUkEKvtpD053mmKoEN2zuxmfgNcxlK6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyyXqSeh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C32C4CEE4;
+	Tue, 25 Mar 2025 12:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906016;
-	bh=c1+0BDk/oZ4dy7RItT3G5Z5S8UD4NG9ZFMRB0z96O64=;
+	s=korg; t=1742905774;
+	bh=MoQw0M63GIfd9mbOSZDqYxnwX+pLmlc5jOxs50FfWaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3CS0TN12wjTqL+BFcY2/NEX4nxgY6S0S/1z8M+LPxLVrOL4ZUEZAlLLFg3v6BqTH
-	 xQy8V784uIGSgjhj1zgwIul8pEpzhI6k7531uDRcGX4LADppOC6WwM3p9p3WhgTzjy
-	 jkAA5fu2YQwp4py4tVaNSbkD9Jb3D5PeVmTmcKKw=
+	b=ZyyXqSehcOND3AuFdCPLtm9saf7aEcCvrZMUv7AwA6EYhy+nSpH1I4vLqsKJ9cwy8
+	 AZv2Yfgj2nNH6etN0EKfCxKDNHpkB+9ucP8RgFEy9acuNjxl9Pxp5hxMLO2+MWk+Vn
+	 ti7drUIwAFru0qdfy38ArwdgTug03dXRIih7iUaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <frank.li@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.13 060/119] can: flexcan: disable transceiver during system PM
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 156/198] RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
 Date: Tue, 25 Mar 2025 08:21:58 -0400
-Message-ID: <20250325122150.587117726@linuxfoundation.org>
+Message-ID: <20250325122200.749236431@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-commit 5a19143124be42900b3fbc9ada3c919632eb45eb upstream.
+[ Upstream commit 81c0db302a674f8004ed805393d17fd76f552e83 ]
 
-During system PM, if no wakeup requirement, disable transceiver to
-save power.
+Driver is always clearing the mask that sets the VLAN ID/Service Level
+in the adapter. Recent change for supporting multiple traffic class
+exposed this issue.
 
-Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <frank.li@nxp.com>
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250314110145.899179-2-haibo.chen@nxp.com
-[mkl: add newlines]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Allow setting SL and VLAN_ID while QP is moved from INIT to RTR state.
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Fixes: c64b16a37b6d ("RDMA/bnxt_re: Support different traffic class")
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1741670196-2919-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/flexcan/flexcan-core.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -2260,6 +2260,10 @@ static int __maybe_unused flexcan_suspen
- 
- 			flexcan_chip_interrupts_disable(dev);
- 
-+			err = flexcan_transceiver_disable(priv);
-+			if (err)
-+				return err;
-+
- 			err = pinctrl_pm_select_sleep_state(device);
- 			if (err)
- 				return err;
-@@ -2292,10 +2296,16 @@ static int __maybe_unused flexcan_resume
- 			if (err)
- 				return err;
- 
--			err = flexcan_chip_start(dev);
-+			err = flexcan_transceiver_enable(priv);
- 			if (err)
- 				return err;
- 
-+			err = flexcan_chip_start(dev);
-+			if (err) {
-+				flexcan_transceiver_disable(priv);
-+				return err;
-+			}
-+
- 			flexcan_chip_interrupts_enable(dev);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index 23f9a48828dca..15a62d0d243ce 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1186,8 +1186,6 @@ static void __modify_flags_from_init_state(struct bnxt_qplib_qp *qp)
+ 			qp->path_mtu =
+ 				CMDQ_MODIFY_QP_PATH_MTU_MTU_2048;
  		}
- 
+-		qp->modify_flags &=
+-			~CMDQ_MODIFY_QP_MODIFY_MASK_VLAN_ID;
+ 		/* Bono FW require the max_dest_rd_atomic to be >= 1 */
+ 		if (qp->max_dest_rd_atomic < 1)
+ 			qp->max_dest_rd_atomic = 1;
+-- 
+2.39.5
+
 
 
 
