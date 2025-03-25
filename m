@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-126610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB49BA70942
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:45:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F44BA70957
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:47:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADA563A4FFD
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:44:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37B69189A427
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76C71F417D;
-	Tue, 25 Mar 2025 18:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A42B1F428D;
+	Tue, 25 Mar 2025 18:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsVuSoYG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PPZT5m9r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E54D1CAA9C;
-	Tue, 25 Mar 2025 18:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6191F427D;
+	Tue, 25 Mar 2025 18:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742928163; cv=none; b=REmC4QLBQ+Rr7HaxKnccXUgCaB8T4o3ns5izZLp2T7vEsqbLAgR9ZptMXxvj0+AG4dRafPJHszNl/QRK9QafURvdt4RXKcbNPvvxV6GAsPUME9RyJnRRRnJUEAu1sB5aMBONWykKyyLf59IyNlXMAsjH8NWrGxBNAfnFje0J29E=
+	t=1742928165; cv=none; b=eg3tV7gmSU/QaQDshw34dSAPPPCGDaYNoUZk6yCHeJMJSVXT3QNmsDs7ysDrA+AlI9EzMEJw/OfheiJHtf+iQpI8xilxO1W8CVQE2y++TrOgSt1ooraFT3Lis/3VRJfmfbTdqqAMNgR2bZVq66AYgaTvOfx2ALjzMOy8amfcQiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742928163; c=relaxed/simple;
-	bh=hUopFbWefBjwpkwKa0EhQ0rpTliQRL/S9stZoNjVRYc=;
+	s=arc-20240116; t=1742928165; c=relaxed/simple;
+	bh=TBgMuS1DCUARS49jx/ImUj47QzARzkwymwcWUlk+3hU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K82SI0k923SZDdTstglwDrPtC4JzPsjoqRue/g03CQXHLMOoo7EukDxPnAzBx3dXDzgo6vsH8Hg11M7coSMbquOfmef1PiJGMmF+sZtd6tPyk5pNH6oiX/djSyfvTXYaQAYJ3toveFYoz2voFOurfVmmJMzIvaVDpajxALaO5ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsVuSoYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E692C4CEEE;
-	Tue, 25 Mar 2025 18:42:42 +0000 (UTC)
+	 MIME-Version; b=CuW3+b8fYIF5r6p7myjjjsW3JhYREZN+aqLNsUKTswJODjDDOgZOCqa9O+DDECRci+HPNPMAgf83EiUXYXgFs+A5wW2UrysfYc9vTEijLwxY6ZS4nxli6ZqcuxCjSXt8HtsWD2DH1BiujwFh+BaY0l+l8WBQ6nXUifSI1E163LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PPZT5m9r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01627C4CEE8;
+	Tue, 25 Mar 2025 18:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742928163;
-	bh=hUopFbWefBjwpkwKa0EhQ0rpTliQRL/S9stZoNjVRYc=;
+	s=k20201202; t=1742928165;
+	bh=TBgMuS1DCUARS49jx/ImUj47QzARzkwymwcWUlk+3hU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DsVuSoYGKnC0zdz8ZPOCy8Y61JnENpqeXiZQZ/fJ3DvsmMqJsXOIpECdXw65v8yEZ
-	 R0k0u5E2sOsEO+A8IQl14mRcBCbbfwruCb6kA0AjoNNrOIwlTCtUqP86Pyp/8hYrJ8
-	 FI2KiNGFLvAzhVvtkZz0k5HhJbmbjASFjxIIfRhf2Ckx/owLtSg8112Gr3i+iyY1nK
-	 sz6HOpHmraLTHFN5zfkdNaSHCtoNmcbriWBx5L5LU0xEN35he7HOHkgdzIOM2m3ZOq
-	 RCvDsqQq3oHfOtK9SikEU7iJjlJjyVefGWpuJKQdiCiJxrKavKE0WG0KC8D4u5dAES
-	 wd9C82QWFudbA==
+	b=PPZT5m9r9NA7K+kz8LUrnkCDJVts+5nz9E7Iq6tNkndYBPVePc8ADAclWIrcGwYty
+	 SYWaicODPca64KsJUvuutEMiZkAUdNbnh0ntkA/2N1H0tQv8tDFWs1Myc9q+cjHFUU
+	 6jLY8s4DOLBFlgCwQ9BA1OzbZ2ziyllZP24Yb1k8Ozf0Oz30V4e6NjzVh+LrfIP5Ji
+	 DyZ76fVBcksLXSDVsLcGdBdLPLVEQY7anKYNqfoU10lxvBr+a54q94qYZ9qpEolXMu
+	 oLUEjuiaL4MjPLCOUZznJGfCxwPdvxg+Fw4DUcLMI5WWsIWiFYBt1vgNJhmlUlF+PG
+	 gEJn0C5+mv+EA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roger Quadros <rogerq@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tony@atomide.com,
-	krzk@kernel.org,
-	linux-omap@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 2/5] memory: omap-gpmc: drop no compatible check
-Date: Tue, 25 Mar 2025 14:42:32 -0400
-Message-Id: <20250325184236.2152255-2-sashal@kernel.org>
+	mingo@redhat.com,
+	juri.lelli@redhat.com
+Subject: [PATCH AUTOSEL 6.12 3/5] Revert "sched/core: Reduce cost of sched_move_task when config autogroup"
+Date: Tue, 25 Mar 2025 14:42:33 -0400
+Message-Id: <20250325184236.2152255-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250325184236.2152255-1-sashal@kernel.org>
 References: <20250325184236.2152255-1-sashal@kernel.org>
@@ -69,56 +71,188 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.20
 Content-Transfer-Encoding: 8bit
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Dietmar Eggemann <dietmar.eggemann@arm.com>
 
-[ Upstream commit edcccc6892f65eff5fd3027a13976131dc7fd733 ]
+[ Upstream commit 76f970ce51c80f625eb6ddbb24e9cb51b977b598 ]
 
-We are no longer depending on legacy device trees so
-drop the no compatible check for NAND and OneNAND
-nodes.
+This reverts commit eff6c8ce8d4d7faef75f66614dd20bb50595d261.
 
-Suggested-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://lore.kernel.org/r/20250114-omap-gpmc-drop-no-compatible-check-v1-1-262c8d549732@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Hazem reported a 30% drop in UnixBench spawn test with commit
+eff6c8ce8d4d ("sched/core: Reduce cost of sched_move_task when config
+autogroup") on a m6g.xlarge AWS EC2 instance with 4 vCPUs and 16 GiB RAM
+(aarch64) (single level MC sched domain):
+
+  https://lkml.kernel.org/r/20250205151026.13061-1-hagarhem@amazon.com
+
+There is an early bail from sched_move_task() if p->sched_task_group is
+equal to p's 'cpu cgroup' (sched_get_task_group()). E.g. both are
+pointing to taskgroup '/user.slice/user-1000.slice/session-1.scope'
+(Ubuntu '22.04.5 LTS').
+
+So in:
+
+  do_exit()
+
+    sched_autogroup_exit_task()
+
+      sched_move_task()
+
+        if sched_get_task_group(p) == p->sched_task_group
+          return
+
+        /* p is enqueued */
+        dequeue_task()              \
+        sched_change_group()        |
+          task_change_group_fair()  |
+            detach_task_cfs_rq()    |                              (1)
+            set_task_rq()           |
+            attach_task_cfs_rq()    |
+        enqueue_task()              /
+
+(1) isn't called for p anymore.
+
+Turns out that the regression is related to sgs->group_util in
+group_is_overloaded() and group_has_capacity(). If (1) isn't called for
+all the 'spawn' tasks then sgs->group_util is ~900 and
+sgs->group_capacity = 1024 (single CPU sched domain) and this leads to
+group_is_overloaded() returning true (2) and group_has_capacity() false
+(3) much more often compared to the case when (1) is called.
+
+I.e. there are much more cases of 'group_is_overloaded' and
+'group_fully_busy' in WF_FORK wakeup sched_balance_find_dst_cpu() which
+then returns much more often a CPU != smp_processor_id() (5).
+
+This isn't good for these extremely short running tasks (FORK + EXIT)
+and also involves calling sched_balance_find_dst_group_cpu() unnecessary
+(single CPU sched domain).
+
+Instead if (1) is called for 'p->flags & PF_EXITING' then the path
+(4),(6) is taken much more often.
+
+  select_task_rq_fair(..., wake_flags = WF_FORK)
+
+    cpu = smp_processor_id()
+
+    new_cpu = sched_balance_find_dst_cpu(..., cpu, ...)
+
+      group = sched_balance_find_dst_group(..., cpu)
+
+        do {
+
+          update_sg_wakeup_stats()
+
+            sgs->group_type = group_classify()
+
+              if group_is_overloaded()                             (2)
+                return group_overloaded
+
+              if !group_has_capacity()                             (3)
+                return group_fully_busy
+
+              return group_has_spare                               (4)
+
+        } while group
+
+        if local_sgs.group_type > idlest_sgs.group_type
+          return idlest                                            (5)
+
+        case group_has_spare:
+
+          if local_sgs.idle_cpus >= idlest_sgs.idle_cpus
+            return NULL                                            (6)
+
+Unixbench Tests './Run -c 4 spawn' on:
+
+(a) VM AWS instance (m7gd.16xlarge) with v6.13 ('maxcpus=4 nr_cpus=4')
+    and Ubuntu 22.04.5 LTS (aarch64).
+
+    Shell & test run in '/user.slice/user-1000.slice/session-1.scope'.
+
+    w/o patch	w/ patch
+    21005	27120
+
+(b) i7-13700K with tip/sched/core ('nosmt maxcpus=8 nr_cpus=8') and
+    Ubuntu 22.04.5 LTS (x86_64).
+
+    Shell & test run in '/A'.
+
+    w/o patch	w/ patch
+    67675	88806
+
+CONFIG_SCHED_AUTOGROUP=y & /sys/proc/kernel/sched_autogroup_enabled equal
+0 or 1.
+
+Reported-by: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
+Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Tested-by: Hagar Hemdan <hagarhem@amazon.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250314151345.275739-1-dietmar.eggemann@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/omap-gpmc.c | 20 --------------------
- 1 file changed, 20 deletions(-)
+ kernel/sched/core.c | 21 +++------------------
+ 1 file changed, 3 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/memory/omap-gpmc.c b/drivers/memory/omap-gpmc.c
-index c8a0d82f9c27d..719225c09a4d6 100644
---- a/drivers/memory/omap-gpmc.c
-+++ b/drivers/memory/omap-gpmc.c
-@@ -2245,26 +2245,6 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
- 		goto err;
- 	}
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 1f817d0c5d2d0..e9bb1b4c58421 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8919,7 +8919,7 @@ void sched_release_group(struct task_group *tg)
+ 	spin_unlock_irqrestore(&task_group_lock, flags);
+ }
  
--	if (of_node_name_eq(child, "nand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible NAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
+-static struct task_group *sched_get_task_group(struct task_struct *tsk)
++static void sched_change_group(struct task_struct *tsk)
+ {
+ 	struct task_group *tg;
+ 
+@@ -8931,13 +8931,7 @@ static struct task_group *sched_get_task_group(struct task_struct *tsk)
+ 	tg = container_of(task_css_check(tsk, cpu_cgrp_id, true),
+ 			  struct task_group, css);
+ 	tg = autogroup_task_group(tsk, tg);
 -
--	if (of_node_name_eq(child, "onenand")) {
--		/* Warn about older DT blobs with no compatible property */
--		if (!of_property_read_bool(child, "compatible")) {
--			dev_warn(&pdev->dev,
--				 "Incompatible OneNAND node: missing compatible");
--			ret = -EINVAL;
--			goto err;
--		}
--	}
+-	return tg;
+-}
 -
- 	if (of_match_node(omap_nand_ids, child)) {
- 		/* NAND specific setup */
- 		val = 8;
+-static void sched_change_group(struct task_struct *tsk, struct task_group *group)
+-{
+-	tsk->sched_task_group = group;
++	tsk->sched_task_group = tg;
+ 
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+ 	if (tsk->sched_class->task_change_group)
+@@ -8958,20 +8952,11 @@ void sched_move_task(struct task_struct *tsk, bool for_autogroup)
+ {
+ 	int queued, running, queue_flags =
+ 		DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
+-	struct task_group *group;
+ 	struct rq *rq;
+ 
+ 	CLASS(task_rq_lock, rq_guard)(tsk);
+ 	rq = rq_guard.rq;
+ 
+-	/*
+-	 * Esp. with SCHED_AUTOGROUP enabled it is possible to get superfluous
+-	 * group changes.
+-	 */
+-	group = sched_get_task_group(tsk);
+-	if (group == tsk->sched_task_group)
+-		return;
+-
+ 	update_rq_clock(rq);
+ 
+ 	running = task_current(rq, tsk);
+@@ -8982,7 +8967,7 @@ void sched_move_task(struct task_struct *tsk, bool for_autogroup)
+ 	if (running)
+ 		put_prev_task(rq, tsk);
+ 
+-	sched_change_group(tsk, group);
++	sched_change_group(tsk);
+ 	if (!for_autogroup)
+ 		scx_cgroup_move_task(tsk);
+ 
 -- 
 2.39.5
 
