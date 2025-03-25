@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-126095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8169A6FF30
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:01:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 072ABA6FF92
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C924884038E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:54:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24DF719A3E71
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85F8265CC0;
-	Tue, 25 Mar 2025 12:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A3F26656D;
+	Tue, 25 Mar 2025 12:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQzwY3qz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doCYwD4v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860B825745C;
-	Tue, 25 Mar 2025 12:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80172980CB;
+	Tue, 25 Mar 2025 12:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905591; cv=none; b=mUOFVKz/oeC1wWJ3Q4uO0VfzsZj3QK8yB9sVEVckiUoY7SdPi7OoT8IGioMDYbzV2kJC4iDLHm/7HuL6jUrMVW5sSbbrpI32ecI1ctU+D8y23CXM9u0dzWKFHnvijNsksp9CMsQtSt0LDqKsWdmL1o/6318XI12J2iqRPG0nxCY=
+	t=1742905619; cv=none; b=VKBqF6dcoQwYRPhbcVeNoPYgtvD3bDCJdj16yyiwTdbrauI+jALODFlBya+nNkSWMSF9SsMMhUjdbNnnCZ6ubyRWWNdKUPta3cnItpt3Q/XknNdn/GL0FrR2hD/ZxSbA72IoKXaVHIwaOcho8QAiAAlO/Ky2VWxqt4gW+vRVUI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905591; c=relaxed/simple;
-	bh=dHFqGZB/o+zvBVM1Np0QC6tdfZwG1YyL1xBe94SUimw=;
+	s=arc-20240116; t=1742905619; c=relaxed/simple;
+	bh=KoQd8C8/O9CUsZHT1YbRjBJG7DRGI1Zpa5EZWsyLy10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G0VFtcE3qZzIBnmhpIehWcsI1m5PXJbWK8CsECPGnKHTR8tnlugtuUUem0OrjUdNnPJATFNMA5waoqZgnmWf5zVpB6kWIJ86k6RUy8rKx8513txE9w7/Kl5H2ku7A2WnTO6/biflbC10M/cCAkcRe27dqjbLRKeCLEwYwRGiaUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQzwY3qz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0ADC4CEF1;
-	Tue, 25 Mar 2025 12:26:30 +0000 (UTC)
+	 MIME-Version; b=QpMjUUqUdeGgQBKpUPxgCfQsGbl8z1Hzp9aWso/tfxJ24+gqNW+nFtqbM8J5C1Hwfgx6AnfVLodMOhb0MCfD5eoosorRqjRcVF+dqFaK2TySglaYAh2sSCYNy6UO9XWIdhASYqFeBTlmJhjPD4ReY+PKHrvX8Wat3swZfnPs4Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doCYwD4v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F5DC4CEE9;
+	Tue, 25 Mar 2025 12:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905591;
-	bh=dHFqGZB/o+zvBVM1Np0QC6tdfZwG1YyL1xBe94SUimw=;
+	s=korg; t=1742905619;
+	bh=KoQd8C8/O9CUsZHT1YbRjBJG7DRGI1Zpa5EZWsyLy10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQzwY3qz4TS6TICigPiWMF8TwDoe7H4cyWADN6zecZ/I//8X2d8SMQNanA7YFHSLS
-	 o6YV4fh+3VGmrAFbGhGXrOktD9Decqu+oQuyvFXAF+SLMvaupYrZNaZOwM9uFDc8ac
-	 iZ4IbroeBhrnIy0wIyb5IW0AE74Rk8SRexEj/yFk=
+	b=doCYwD4vA240//tEZo0bVX01iATEfwyYF2AnOFaBTWSWz+doQNzz8/owS+85SSgn+
+	 9OtuHb3VCJytBCd/v9xWBo9zZ7y0dKWuqgakkn+k4SsDRn3I8LZrHvfQPE9mHxpssl
+	 On85SCU8BtY70bD5RQfUJzIhwnOYY9HvxumsgD0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/198] vboxsf: fix building with GCC 15
-Date: Tue, 25 Mar 2025 08:20:02 -0400
-Message-ID: <20250325122157.693448563@linuxfoundation.org>
+Subject: [PATCH 6.1 043/198] HID: ignore non-functional sensor in HP 5MP Camera
+Date: Tue, 25 Mar 2025 08:20:05 -0400
+Message-ID: <20250325122157.767235380@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -61,53 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
+From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 
-[ Upstream commit 4e7487245abcbc5a1a1aea54e4d3b33c53804bda ]
+[ Upstream commit 363236d709e75610b628c2a4337ccbe42e454b6d ]
 
-Building with GCC 15 results in build error
-fs/vboxsf/super.c:24:54: error: initializer-string for array of ‘unsigned char’ is too long [-Werror=unterminated-string-initialization]
-   24 | static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-      |                                                      ^~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+The HP 5MP Camera (USB ID 0408:5473) reports a HID sensor interface that
+is not actually implemented. Attempting to access this non-functional
+sensor via iio_info causes system hangs as runtime PM tries to wake up
+an unresponsive sensor.
 
-Due to GCC having enabled -Werror=unterminated-string-initialization[0]
-by default. Separately initializing each array element of
-VBSF_MOUNT_SIGNATURE to ensure NUL termination, thus satisfying GCC 15
-and fixing the build error.
+  [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
+  [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff
 
-[0]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wno-unterminated-string-initialization
+Add this device to the HID ignore list since the sensor interface is
+non-functional by design and should not be exposed to userspace.
 
-Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
-Link: https://lore.kernel.org/r/20250121162648.1408743-1-brahmajit.xyz@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/vboxsf/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/fs/vboxsf/super.c b/fs/vboxsf/super.c
-index 74952e58cca06..48f33d4994dc8 100644
---- a/fs/vboxsf/super.c
-+++ b/fs/vboxsf/super.c
-@@ -21,7 +21,8 @@
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index d8c5e24e7d44c..29b8c96ce9f4d 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1072,6 +1072,7 @@
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3001		0x3001
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3003		0x3003
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3008		0x3008
++#define USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473		0x5473
  
- #define VBOXSF_SUPER_MAGIC 0x786f4256 /* 'VBox' little endian */
+ #define I2C_VENDOR_ID_RAYDIUM		0x2386
+ #define I2C_PRODUCT_ID_RAYDIUM_4B33	0x4b33
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index debc49272a5c0..875c44e5cf6c2 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -882,6 +882,7 @@ static const struct hid_device_id hid_ignore_list[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SYNAPTICS, USB_DEVICE_ID_SYNAPTICS_DPAD) },
+ #endif
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
+ 	{ }
+ };
  
--static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
-+static const unsigned char VBSF_MOUNT_SIGNATURE[4] = { '\000', '\377', '\376',
-+						       '\375' };
- 
- static int follow_symlinks;
- module_param(follow_symlinks, int, 0444);
 -- 
 2.39.5
 
