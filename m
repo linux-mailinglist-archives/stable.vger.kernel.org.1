@@ -1,343 +1,165 @@
-Return-Path: <stable+bounces-126571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F7BA7044F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 15:52:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A61EA70496
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 16:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E92031891530
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:52:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A02FE166935
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 15:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA1D25A33A;
-	Tue, 25 Mar 2025 14:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4951025B67E;
+	Tue, 25 Mar 2025 15:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EZgHsOhG"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lJ2c7OP2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5851D1DE3D9
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 14:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742914335; cv=fail; b=cFJb/lrLK1zHCoYci9OHHwpfsdr2tTcM/bOXZQB3QrLqYS+kpX4P7pQ9FFG/hBuuaGF8sTezzlW+KIgdPKVru9ukYs9nG3VOQUBjSqd3ir1EJBavr39wO81G6txv7Tcb1TsA2Nx/H/llcyRK5+IamW/Z5mKDlBi+LOCC4nlo3w8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742914335; c=relaxed/simple;
-	bh=Og7xUOkPoPr5odia7+K6bHkKFfnirDIF4RMBXpjeiuo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=s+PZk2o8DUUFG9wiUa5qhPomqE26iXvWx5E5+KxPAfuu40Y3BrmNagILWVQitp1d5YbkAveTXr3QLhfjIA1gcj1dSKVwmqRWz7uepbfDgFckiuG54g10PZRGxf+gbAcHH48rj+c4O7RylVJuvtpH2t+FTHSqK0O8IMDKGTE1ZI0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EZgHsOhG; arc=fail smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742914333; x=1774450333;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=Og7xUOkPoPr5odia7+K6bHkKFfnirDIF4RMBXpjeiuo=;
-  b=EZgHsOhGS6V727Zqbm7D5Kf8d6LKJTodG9c+JuXh8VrJFiLTLV+j8wqe
-   zMqfWlyltLzPv+p3hFoEb6KjWpLYECoYD59uxCbH7JdqFWuFRCHQx8H6y
-   oRrVBd6bn7JVTmhECIfsgwFrqCfVLbjNOmcQACiwXaOKWbNtIhZ9OuFX3
-   XIh8IcT+3eJzq2CCIKLl7o+Bs7mflWTkMnaIfCalr+CTTqAdxgcwfPXrz
-   Q1ZFFQq6Nt79vR00vD4ENvClmbnQabrw9tUq4tBegElsYDWSkGc2MEUs5
-   BdSFDG89mVIMheqEK3sJojHz5SKV8QvuNU2ntbI0jI7kiccVILyNkjXNu
-   g==;
-X-CSE-ConnectionGUID: 7ZuYrCXTRG+NZCiGK312eA==
-X-CSE-MsgGUID: 4nhgaLw3TIebx9f0bfBdcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="54829366"
-X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; 
-   d="scan'208";a="54829366"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 07:52:13 -0700
-X-CSE-ConnectionGUID: I3klUg7RSGO7Vi6gKxCekg==
-X-CSE-MsgGUID: aocUFeL+TcevnXZu3hRisg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; 
-   d="scan'208";a="129242284"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 07:52:13 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 25 Mar 2025 07:52:12 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Tue, 25 Mar 2025 07:52:12 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.173)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 25 Mar 2025 07:52:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cNg7PdY/DuKNTSbU33W07J9Ni0JsGOEAbXNMnJubJQ8wp86q0bZroCrFMKB4TV692aZQmYGl8VB+kjwp/8UDVHN3DxgvU03R6vaqGgDTaC2HVY6sikfrYUDmI7FkIyFmESQ4h/yor1DwcQcAlYryyK1KF9HX9pcC6ddWtfwQpNRXz77iZ4fg3bx4gkuZiSsu3HAw+wSqCxpwBENknYLcabcB7PjUYHijbsVpCwT69zcZfYIz7Q3JqtWwXyBSFyjuYJxyBhdjmSi2eItAo1viW9o2d5apnD2o5XJEf8BndT81NVHSgciu2F2WfqOWScCBRb24gW5/L5rUl/WXMDqSFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DZrZOzSzr3u1/K3HAGvt8TXjCMc+tXP89Axsefavzp0=;
- b=HdkXqbThEf0m84MnljV4Xc2xBGHTrl5NghFNwE4lnAz9aykMhjudlp/um/J+zjj+lrKPjRz1nq4lTCv/WCPt/PFmadYsrm4D/8hshXDHELGxQI6ZC/hqWwEdySPUHRndFwpKtJaQOGFQa4IIBwszQWaqi/EUEEJyzoFzjY+pHFk3blupZZhpNUhOlQzOZPsuNjRlk21lowbtdnoFz/DU6aNqLctEowAHcTt2oCFr4aHJS+WwlSh2y6I+Bw6Z7lI2QjU30/LiN5UYR/1gEa591DDLzw+AijVpV1gCgHOdV2TKxwv92zIrgORrzKBs0hst1jwzsx6vz6e2H6/gyEd3cg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by SA2PR11MB5146.namprd11.prod.outlook.com (2603:10b6:806:116::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.43; Tue, 25 Mar
- 2025 14:52:08 +0000
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::7141:316f:77a0:9c44%3]) with mapi id 15.20.8534.040; Tue, 25 Mar 2025
- 14:52:07 +0000
-Date: Tue, 25 Mar 2025 09:52:04 -0500
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-CC: Matt Roper <matthew.d.roper@intel.com>, <intel-xe@lists.freedesktop.org>,
-	<intel-gfx@lists.freedesktop.org>, Vivek Kasireddy
-	<vivek.kasireddy@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] drm/i915/xe2hpd: Identify the memory type for SKUs
- with GDDR + ECC
-Message-ID: <3lydvtc7tikmhr4cmtzkt23bgjehmzucfyjvdbcitejwax5vkp@epdi3bkvq7fr>
-References: <20250324-tip-v2-1-38397de319f8@intel.com>
- <20250324200207.GN3175483@mdroper-desk1.amr.corp.intel.com>
- <32lakxysapix2hgoh5e7n2b6zlv544nh6vcvmg6zllzjnlikmd@7k37w7pqy4p2>
- <87bjtpa3e6.fsf@intel.com>
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-Content-Disposition: inline
-In-Reply-To: <87bjtpa3e6.fsf@intel.com>
-X-ClientProxiedBy: MW4P223CA0012.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:303:80::17) To CY5PR11MB6139.namprd11.prod.outlook.com
- (2603:10b6:930:29::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FE913D8A0
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 15:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742915277; cv=none; b=YNjFzYV9iaQSV/xZw0In5b3O90JJxs6E4wMF6t0ynk0SQBT0Zs8+9TaZWEGle2wGNB6nOW1SbJcGZqg/1W3xI5VIQCGh9hoUJ8UTSUwpiN9aj/ugt5EB2wkxKnfefd7TB7TWw5YOEe845H7wyN3oDRwJ7aEQbJOuYWybBpdtoAg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742915277; c=relaxed/simple;
+	bh=iSmodtdY7Dchcz1A/sUPS+H3SHiLLQyywM4beAv33u0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=edZPr4Iw27Z/A7BlS75+b80bSL1etNpWWb7pZNFKdxVhq7p6Atj6YwaMKHHRjWBbEHrzgsIUsuv3wBQYu3WrMJ5wBeD6P3wjtG2g/l/7ogI2M1n2x5xGOrxVu3Bwljk1J3Rq0pQdTOY2pnOAeBNw9S2/1bEGZZAQEcZgmpMqExg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lJ2c7OP2; arc=none smtp.client-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5259331b31eso2635174e0c.0
+        for <stable@vger.kernel.org>; Tue, 25 Mar 2025 08:07:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742915274; x=1743520074; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ASRZZn4DjAVCiGVwyErb4eVcqvprss3kx2mpnoqQ/Aw=;
+        b=lJ2c7OP2ctgy0sc4pykNStYO3q/NHZCwjiKUv8QE7ho11GEihMp+VE05S2NYUJmUJb
+         jM4U3gtcEogTOOSekGOjc5BlpmuF47WJqVR9d3r/9HeJgxW+yap4dEDtdMcoD766bCD9
+         kF0R5PjdemnYDPc6/fKm4++DrneK0PHlcs6BKRwu03DEDVONg9l/QK0nk/No1op2BaM9
+         Owfget9il+fzpy3iTpkw4x35Lnz12id8pVHkNnkvp34+ftBAX9kK27njAfra5KRjfaGY
+         V+EQbo72jEYebQHN2MpsRL8UuiHMKgzPFTWMPBmdN9Hykk6lhmXxdcEl3xCMUZ42cosM
+         pjrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742915274; x=1743520074;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ASRZZn4DjAVCiGVwyErb4eVcqvprss3kx2mpnoqQ/Aw=;
+        b=v0HzHuRbhKsZcuCY6yhRngH6PmXpf5XuofazjK9m8hj4E98gYY3TScJSOerk7K9kXB
+         GZSYWQRG0V8ZLgvaKjP/Vw7J1KY4/lQlVO3Z9bAIPdb2IZ5cndpSl45laosCt/E6S9/H
+         yIb3ZRQpzkIdndajQ+TsbUHFANzhR1+5Anbfbsf30aXvb7YEgLl8HMRZyUprY1GxA+y+
+         uN1adL3Zx0r8W77NWhV3tG3BckgpYD4htWjPnoTDom3FMXmsw4ylP4Sx4KX5mrBfTAQY
+         KCz2Ays4/zzKhQUKl2vpmhgjaaR88GIgqrtCiQFkbBfZZVXrrKTdc/iXgJnWtmAsPRGe
+         Y+Jg==
+X-Gm-Message-State: AOJu0YxWtxbRCdizJpxNvnNMqxWyGS1Da2HDKXLsTKBuFL4J+K8M4E2Q
+	Pqk5Mj6r18mgP0nplc9Te47/26H7yBAs+JMHHjZv+46ZmztadzpCgLmiqVcR4YvnGgptNXd5i1Y
+	K2s9BUziJROvacRUYae0XBP0MJUZQoxFPX+qOnQ==
+X-Gm-Gg: ASbGncuZC1gE5M5dS9EvoNqYNykuw2GaET1+MK6wZFe3T8qL4oJ6hh60yHKyDp/pInd
+	XyHiWXBMtU9wNfyIw4CiAbC7P1GAgLVCEM/3WKaK3fwhOpcwHsoqwIS5K1IHIW2jdH1U65/dcEI
+	mZ0N5X2JVLMR396vLxu/TBokBGvLvE0+cjF5puV8Ha/ufjEyqyuZFpWGH0HTM=
+X-Google-Smtp-Source: AGHT+IGJxNNn58Pr6BXkc8yTC7dt3Dz8oYa2jVHYnOw8DdFwyMT+9nGnrZ/TQ+Sepc3obyBo9xvaY36PFzfQAXxFVmo=
+X-Received: by 2002:a05:6122:2810:b0:520:60c2:3fb with SMTP id
+ 71dfb90a1353d-525a80d5eb4mr10912049e0c.0.1742915273945; Tue, 25 Mar 2025
+ 08:07:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|SA2PR11MB5146:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25208851-a056-4c46-b89e-08dd6bac9d40
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?5fpKANSfomkvhI9y1xa0aaiSz5dkF6LSjcwY2P0X6b8c8oDMRr1nY3+nbNU0?=
- =?us-ascii?Q?yhVuhN2oVqt4JsBMSZqjwesMDuh8UIy+TL8wbMbbnoWRB8C361m8ccHppX9y?=
- =?us-ascii?Q?jDM+Q7XNN3RW+mP093asHj9GsXi6RIopvxwxm8GpdokbLC8sEfsLsOCH9FHi?=
- =?us-ascii?Q?Jkn1dcPe14uo8mwxSjhPgXlCJ38SjSGBavcrLTeuAeZ+NPs/9s92lJ8PehFB?=
- =?us-ascii?Q?GtZKnVtdD1neFSArNrLcnVdAsBL7KKK0JzKaN+J2UMV9HLDRi7NfNV3zRLBR?=
- =?us-ascii?Q?grQNb9rfVV3f26wW2dhnh4Pv+ZUMRAxdQTYhkj4whL/58fSEHg7ImzFPpimp?=
- =?us-ascii?Q?/xLXG5CTVlwGcgPlKhoAaKCQ924OhYtySY5fxqCZz+xfudnbACjO1PP1ZZAB?=
- =?us-ascii?Q?rf2sS6y2xcgdO4PjRy0U2Ayxcn8BFW8u0A44zanwPA7BFRC6M+vIzFrLAdiJ?=
- =?us-ascii?Q?/irU4hlBJGHyN6Ou7zS1m0X8lWMJ/MzZ+SXN9vPea4oSHnLZSgyNzmSVc0eW?=
- =?us-ascii?Q?Dd57q6V+60I06rPeiSvKSqrSK2tqNLsDe8iVlFtMhMIPYwjwBhmXuEPpMbaI?=
- =?us-ascii?Q?XsLWPXTD0hM9zYVoyGsy5UXJ2rezIMqKQMG4YvOrsqfvkim5HcNm29O2NMbg?=
- =?us-ascii?Q?Kc9kJfU3griuSSNTEVtfuoHYJ75b6O9Ewk0+yn8NZvugYYa6mD7S+8WZSki9?=
- =?us-ascii?Q?VIITF32BmGQ5pNEdJNB4FKxDe88Ggrwi+tWR5nj7Q6FuDYHTEZSFsW5xGOI+?=
- =?us-ascii?Q?JSVsqp1s75cpmBlG7mKVjVPnEJe3voVvShAI1gXQMHefD/9rsoVf1tthNO/i?=
- =?us-ascii?Q?+yI3dzFjcjxrETwPweHIW5A8tsVA168L8w1IQiBJPmKpuHrhs8IzhTj7f1b5?=
- =?us-ascii?Q?CfGAx1+D+jenQOLViwUQ2hjzL5uB90sRnYkQAP24xgt3zqteC6pLZ0Q0qGuS?=
- =?us-ascii?Q?JFg9Wi9CV6jO6mha0HnR2Xp6S836Gb+WH/G8zfVhetlNOPnwHYTDpC0jmsUG?=
- =?us-ascii?Q?Msp8Dg2HsaN237ZTPKTEXhFssRn6zUc7wNMFEDQrJeX2otSiWTrPVg2I3iTJ?=
- =?us-ascii?Q?4j+iP6gwoK7V/ooyPkdvuXKMvVKJUiuNzQim2oRS1JMmH9yLgSSRVgw0JkVL?=
- =?us-ascii?Q?B37bt1Xe7SUPYCGHv7RqrNmkvXl8SV7E4oiL37BtlOm5RO5RDUEpVUXfEj33?=
- =?us-ascii?Q?/IisKZnhdV+Q2+5qM/z83ZirWNdMm0wFWqqZFF+FrZQuGqj9ekqUdn0dxH00?=
- =?us-ascii?Q?zLGD2SkR0UGOTSv+0kUku62YA0BHyn4fqvkoTSK5ou23bhcRqmX16vPhTKRx?=
- =?us-ascii?Q?I3oNn5fFQ3heQbQpb7KpspLXGyI641C9hB1gjHI4OQDFWQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6139.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?YBSvehXN5Vjsjf33HT6m44Dphh+Zg0vTatJQZ8BX6WRX3sqdAUWIJXcO7Sj1?=
- =?us-ascii?Q?tdewazL3O/V8bJjZaKv6759qI3wdjFtrNQdC09pUB/8oHCMcvylH2dCWcRVh?=
- =?us-ascii?Q?JSrvqd6Fpfd1E4PRF11fUoRnT10Mg+V2aL3WtBIYy9f2F4zKVgAeGSAEVh5N?=
- =?us-ascii?Q?1iAvF9gvzr3dJvlolQhcG0AY/fOg/46Mc7OO2iNj3DgBYLu0cd8wpGaBtJyD?=
- =?us-ascii?Q?OtDMADcC/f6rwSQzt1p2B7bHLQCyalNsJkptgVdMW/jKwBLaKjBTjgoggE4N?=
- =?us-ascii?Q?FMgiAeT7zI2+eUUUKU1rcvsU/QjLd4V+segqU4f4CrMgClcWhuQD8RV3xnil?=
- =?us-ascii?Q?BDhU6HUtTBAQiIGndz0xtHCgRKcapg7WJKPma3pJhGbWc8vc9ZybVSUTQN/L?=
- =?us-ascii?Q?5xHz8+Pg+q1wXk0Yx6wUHui00Atl2F8OaaFeDbSUJS05QTYbloUMDHEMimbA?=
- =?us-ascii?Q?BPM6lv31pis//QIFOnRL3mh1ZXDYx5X7OlvI0eQy5OwL8wJ1wKXTRgJ/Vi+h?=
- =?us-ascii?Q?jFbjbrdSJHsYtb955KZ1HvI86diZkdkA3VUVeyNl9FBpXF5pTim0ctQlEldv?=
- =?us-ascii?Q?cmdEkD3Ow7nRouHNmzM5ZRkX0l8rsYZjUJvLE6lGbpDo2N82DYdjyFgdb+BE?=
- =?us-ascii?Q?IWGKoY+TkNXgLAcGvhI9EXA1Cm734qRYeNUuYdbUsdJ6t5h2O7gPKKVmtkwE?=
- =?us-ascii?Q?+xyxgwKcqubark4MYNSyE2uB4xXfrxS9D9I8g/JCin+bPsjkPuZA9My1lprx?=
- =?us-ascii?Q?9A4TcOfIOzsKJ+Jjb6+fyUNnh1fB+xKo2J4gkCMPwLZBDAbijB/qTqDG/6Y2?=
- =?us-ascii?Q?akIcQI9IOUVr7/P0qs8+o0lpzEhZOs+A97sAukj9ILE+xYjePS6oUCji3GV0?=
- =?us-ascii?Q?6PEvBiKapXNZsE1AkvwtNvlTjJmWzqJgg6iOAyo1XTzQngilhtcOyCZis0tp?=
- =?us-ascii?Q?poxqcu5KpSMqixb4P6A0eHszyjt9Q0AMPbp5SfbIqRxV4VnEUWn1YLBxUYz0?=
- =?us-ascii?Q?rk+C/8CnOpAn3HXTlnU4H6hoxa0YYi3PjBSuxCcWiA36TFug17n99lhCrIcE?=
- =?us-ascii?Q?nP/3aGoMz2oDokJR1MEFOOz9YIh63g+4HCX8wn5UK289bhqu/eP1AnYdEWaL?=
- =?us-ascii?Q?528TzIp5DwYF4Q2VW9zvPiton52TlUcgFFzC9cg6/BGvY9jBx0z5XeYD4vT0?=
- =?us-ascii?Q?lLDDGMpzF/gw6kLaDuk+6mQ2/H+axYiujOGQy0Yckt0FXqU46kK3bnskueMa?=
- =?us-ascii?Q?T9IVFgavS6hfjTh+NiL2/UZwTp8/7KIRD0HTrR7RrlnBr/DoXC5LK0MEnOWo?=
- =?us-ascii?Q?gIYFU12a+0Jzyt6ytaG8U9wPnZVRIVMMr3+8LhkXTexaPlCrMFnH9zX4Yzds?=
- =?us-ascii?Q?7mXkXgXk9dmn9gdXmppwXvKnMsQbcncOYBml8vx2nuZd1n19ifML+VG6b7dg?=
- =?us-ascii?Q?HATdQpIRi2FJV7CtOWvb5BZmkPnxmKvOq4FShoxJ8akugzVIRBWsDT//F9zl?=
- =?us-ascii?Q?0fZ5a/FAdBS/Dye71eJEE/bAKVTtwVaxGppTWS2qnTTKGsPJdowlmEiULUfv?=
- =?us-ascii?Q?QfpYpZt+v+ZLYHPRMBngXO+iyi40k0bYIkVjiOlNhfp4bcjW5JK5LE+qOUwO?=
- =?us-ascii?Q?Rw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25208851-a056-4c46-b89e-08dd6bac9d40
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2025 14:52:07.7835
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KRrnPfKn9n8Sa+D2bFSI/xgu7vHUR0Fu3tnQGDrTW9JY2scrgoAnGT6mQQbk2i/w9vs/8ZTxKjq7GFUJRL0bKvaCegdwFu2O4A3FpBjGSjw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5146
-X-OriginatorOrg: intel.com
+References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 25 Mar 2025 20:37:42 +0530
+X-Gm-Features: AQ5f1Jo5lbttZtSAb6LnZgDq3AuZotqFT2rixgG9lx0L7Z-hkj4vcw5915tDF-M
+Message-ID: <CA+G9fYvWau1nC8wmpWkxG8gWPaRMP9pbkh2eNsAZoUMeRPgzqA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 00/77] 6.6.85-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, Heiko Stuebner <heiko@sntech.de>, Dragan Simic <dsimic@manjaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Mar 25, 2025 at 11:03:13AM +0200, Jani Nikula wrote:
->On Mon, 24 Mar 2025, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
->> On Mon, Mar 24, 2025 at 01:02:07PM -0700, Matt Roper wrote:
->>>On Mon, Mar 24, 2025 at 10:22:33AM -0700, Lucas De Marchi wrote:
->>>> From: Vivek Kasireddy <vivek.kasireddy@intel.com>
->>>>
->>>> Some SKUs of Xe2_HPD platforms (such as BMG) have GDDR memory type
->>>> with ECC enabled. We need to identify this scenario and add a new
->>>> case in xelpdp_get_dram_info() to handle it. In addition, the
->>>> derating value needs to be adjusted accordingly to compensate for
->>>> the limited bandwidth.
->>>>
->>>> Bspec: 64602
->>>> Cc: Matt Roper <matthew.d.roper@intel.com>
->>>> Fixes: 3adcf970dc7e ("drm/xe/bmg: Drop force_probe requirement")
->>>> Cc: stable@vger.kernel.org
+On Tue, 25 Mar 2025 at 18:05, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
->FYI, this does not cherry-pick cleanly to drm-intel-next-fixes, and
->needs a backport.
+> This is the start of the stable review cycle for the 6.6.85 release.
+> There are 77 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
->There are dependencies on at least
+> Responses should be made by Thu, 27 Mar 2025 12:21:27 +0000.
+> Anything received after that time might be too late.
 >
->4051c59e2a6a ("drm/i915/xe3lpd: Update bandwidth parameters")
->9377c00cfdb5 ("drm/i915/display: Convert intel_bw.c internally to intel_display")
->d706998b6da6 ("drm/i915/display: Convert intel_bw.c externally to intel_display")
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.85-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
 >
->but I don't think we want to backport those.
+> thanks,
+>
+> greg k-h
 
-yeah, I expected issues like that and was going to provide the specific
-patch for stable. However I thought it would at least apply to
-drm-intel-next-fixes :(. Below is the patch to drm-intel-next-fixes. It
-also applies cleanly to 6.13. For 6.12 there's an additional small
-conflict due to the DISPLAY_VER_FULL conversion.
 
-Also available at https://gitlab.freedesktop.org/demarchi/xe/-/commit/14cb226dc4526971fb7cfd1e79bb3196734f2ab4
+Regressions on arm64 rk3399 dtb builds failed with gcc-13 the
+stable-rc 6.6.85-rc1
 
-Thanks
-Lucas De Marchi
--------
+First seen on the v6.6.83-245-gc1fb5424adea
+ Good: v6.6.84
+ Bad: 6.6.85-rc1
 
- From f61fd762498be6291626cb9cfcb8da28be6485e3 Mon Sep 17 00:00:00 2001
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Date: Mon, 24 Mar 2025 10:22:33 -0700
-Subject: [PATCH] drm/i915/xe2hpd: Identify the memory type for SKUs with GDDR
-  + ECC
+* arm64, build
+  - gcc-13-defconfig
 
-Some SKUs of Xe2_HPD platforms (such as BMG) have GDDR memory type
-with ECC enabled. We need to identify this scenario and add a new
-case in xelpdp_get_dram_info() to handle it. In addition, the
-derating value needs to be adjusted accordingly to compensate for
-the limited bandwidth.
+Regression Analysis:
+ - New regression? yes
+ - Reproducibility? Yes
 
-Bspec: 64602
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Fixes: 3adcf970dc7e ("drm/xe/bmg: Drop force_probe requirement")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Acked-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250324-tip-v2-1-38397de319f8@intel.com
-(cherry picked from commit 327e30123cafcb45c0fc5843da0367b90332999d)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
-  drivers/gpu/drm/i915/display/intel_bw.c | 14 +++++++++++++-
-  drivers/gpu/drm/i915/i915_drv.h         |  1 +
-  drivers/gpu/drm/i915/soc/intel_dram.c   |  4 ++++
-  drivers/gpu/drm/xe/xe_device_types.h    |  1 +
-  4 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_bw.c b/drivers/gpu/drm/i915/display/intel_bw.c
-index 048be28722477..5e49f8f7c9804 100644
---- a/drivers/gpu/drm/i915/display/intel_bw.c
-+++ b/drivers/gpu/drm/i915/display/intel_bw.c
-@@ -244,6 +244,7 @@ static int icl_get_qgv_points(struct drm_i915_private *dev_priv,
-  			qi->deinterleave = 4;
-  			break;
-  		case INTEL_DRAM_GDDR:
-+		case INTEL_DRAM_GDDR_ECC:
-  			qi->channel_width = 32;
-  			break;
-  		default:
-@@ -398,6 +399,12 @@ static const struct intel_sa_info xe2_hpd_sa_info = {
-  	/* Other values not used by simplified algorithm */
-  };
-  
-+static const struct intel_sa_info xe2_hpd_ecc_sa_info = {
-+	.derating = 45,
-+	.deprogbwlimit = 53,
-+	/* Other values not used by simplified algorithm */
-+};
-+
-  static int icl_get_bw_info(struct drm_i915_private *dev_priv, const struct intel_sa_info *sa)
-  {
-  	struct intel_qgv_info qi = {};
-@@ -740,10 +747,15 @@ static unsigned int icl_qgv_bw(struct drm_i915_private *i915,
-  
-  void intel_bw_init_hw(struct drm_i915_private *dev_priv)
-  {
-+	const struct dram_info *dram_info = &dev_priv->dram_info;
-+
-  	if (!HAS_DISPLAY(dev_priv))
-  		return;
-  
--	if (DISPLAY_VERx100(dev_priv) >= 1401 && IS_DGFX(dev_priv))
-+	if (DISPLAY_VERx100(dev_priv) >= 1401 && IS_DGFX(dev_priv) &&
-+	    dram_info->type == INTEL_DRAM_GDDR_ECC)
-+		xe2_hpd_get_bw_info(dev_priv, &xe2_hpd_ecc_sa_info);
-+	else if (DISPLAY_VERx100(dev_priv) >= 1401 && IS_DGFX(dev_priv))
-  		xe2_hpd_get_bw_info(dev_priv, &xe2_hpd_sa_info);
-  	else if (DISPLAY_VER(dev_priv) >= 14)
-  		tgl_get_bw_info(dev_priv, &mtl_sa_info);
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index ffc346379cc2c..54538b6f85df5 100644
---- a/drivers/gpu/drm/i915/i915_drv.h
-+++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -305,6 +305,7 @@ struct drm_i915_private {
-  			INTEL_DRAM_DDR5,
-  			INTEL_DRAM_LPDDR5,
-  			INTEL_DRAM_GDDR,
-+			INTEL_DRAM_GDDR_ECC,
-  		} type;
-  		u8 num_qgv_points;
-  		u8 num_psf_gv_points;
-diff --git a/drivers/gpu/drm/i915/soc/intel_dram.c b/drivers/gpu/drm/i915/soc/intel_dram.c
-index 9e310f4099f42..f60eedb0e92cf 100644
---- a/drivers/gpu/drm/i915/soc/intel_dram.c
-+++ b/drivers/gpu/drm/i915/soc/intel_dram.c
-@@ -687,6 +687,10 @@ static int xelpdp_get_dram_info(struct drm_i915_private *i915)
-  		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));
-  		dram_info->type = INTEL_DRAM_GDDR;
-  		break;
-+	case 9:
-+		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));
-+		dram_info->type = INTEL_DRAM_GDDR_ECC;
-+		break;
-  	default:
-  		MISSING_CASE(val);
-  		return -EINVAL;
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-index 72ef0b6fc4250..9f8667ebba853 100644
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -585,6 +585,7 @@ struct xe_device {
-  			INTEL_DRAM_DDR5,
-  			INTEL_DRAM_LPDDR5,
-  			INTEL_DRAM_GDDR,
-+			INTEL_DRAM_GDDR_ECC,
-  		} type;
-  		u8 num_qgv_points;
-  		u8 num_psf_gv_points;
--- 
-2.49.0
+Build regression: arm64 dtb rockchip non-existent node or label "vcca_0v9"
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build log
+arch/arm64/boot/dts/rockchip/rk3399.dtsi:221.23-266.4: ERROR
+(phandle_references):
+/pcie@f8000000: Reference to non-existent node or label "vcca_0v9"
+
+  also defined at arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi:659.8-669.3
+
+## Source
+* Kernel version: 6.6.85-rc1
+* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* Git sha: c1fb5424adea53e3a4d8b2018c5e974f7772af29
+* Git describe: v6.6.83-245-gc1fb5424adea
+* Project details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/
+
+## Build
+* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/testrun/27760755/suite/build/test/gcc-13-defconfig/log
+* Build history:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/testrun/27763720/suite/build/test/gcc-13-defconfig/history/
+* Build details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/testrun/27760755/suite/build/test/gcc-13-defconfig/
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2uoHmBcVLd60GQ0SVHWAaZRZfNd/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2uoHmBcVLd60GQ0SVHWAaZRZfNd/config
+
+## Steps to reproduce
+ - # tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
+--kconfig defconfig
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
