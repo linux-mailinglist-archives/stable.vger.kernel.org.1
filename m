@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFEDA70087
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD6FA700B1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12324175488
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2A74189E99E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A78269B03;
-	Tue, 25 Mar 2025 12:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2D2268FF6;
+	Tue, 25 Mar 2025 12:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgSMDmwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDSmzpXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E002571AC;
-	Tue, 25 Mar 2025 12:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB3525B68D;
+	Tue, 25 Mar 2025 12:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906094; cv=none; b=QqQCCv6UiUT/hRlMFJacwA/F8Z4CNF5JprqZkF2XBbFzexK8KZ0w82alSzMCaDvwAP7JTDmFy/yF/k9IRtKnMU61F+lC9nbSu7bsIWRgEiayqcur3GvFbtZYiyLBGWoyzrlYethKB+vpn5Eg/AxsAf8QOeT6bLwOsBuPh2+nUZs=
+	t=1742905979; cv=none; b=n9hmJnJufN62+e2ormuEdLygIh6myYWHPAvtskoVOknf+O2IkZB04MQ8a1tMNKi9V6oA6s7Itsi2ymPVyQfM2sATvKwCs3/AzmjUFuh+r2ZWR2wb5wZRME1NlUH2JK0QTjsLlzEy8E8842c2gT49eZddQZV5huxd4LrSQf2SHB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906094; c=relaxed/simple;
-	bh=TXqjaYeIXmyY6/RgS271turChjqz9D8uLIJwOPbvdkY=;
+	s=arc-20240116; t=1742905979; c=relaxed/simple;
+	bh=ifYaLnBN53qhqk8v2obPiM+paexPZn1IMWa0NtYimhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ekuiTurpKXy8hippnipBeqjgVfckmKHOSc1ha10yfLZPawMCrskZB2ScYmkbLPmAbpjyC3JTLDpM79/YKN/flKfOCh2dZ3U7j2yvWMCLQq5Hi7cvqxt0bIjKBlowgjxN1oX1si6uABpFkWINVB5LqtVKEufqOeZd5xt9irv1dU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgSMDmwl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26685C4CEE4;
-	Tue, 25 Mar 2025 12:34:54 +0000 (UTC)
+	 MIME-Version; b=MB7UbBumwkPUKELb2H9YMNegZ0ffRlagqTPJXFZEOHz9mYZGbtuOrLDtwz10mrjAS3cleRDIIkO9fSLcNX7rXVZYrF++7zDQlN8MMIsZMeWGBObuKIobFu9W7Plx/KAKlH57k/tDa48PwGaRkvda6MF/o3/judHgZ1gDuRXO/18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDSmzpXy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FC0C4CEE4;
+	Tue, 25 Mar 2025 12:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906094;
-	bh=TXqjaYeIXmyY6/RgS271turChjqz9D8uLIJwOPbvdkY=;
+	s=korg; t=1742905978;
+	bh=ifYaLnBN53qhqk8v2obPiM+paexPZn1IMWa0NtYimhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgSMDmwlqpsBWYrhnma0Wof0WPvyjoiigzatPa6zoIHJj1TIli+eBvCPWr7CZT9XU
-	 F7J5hQNYJr4d98t9/o7ZfnarOkxy5+pxSQ/I/ZxOqlULoregIW/wAyqp1W67lXgfUq
-	 aortMdwZT2dbmk7Q2h7wjYUVfzqP6nZGYFabA1oM=
+	b=hDSmzpXyPNCYqd/DGysc8/oA7WYrLXiS20UMGfGcH13vLCsUi23KsQ+wNaJK5WXil
+	 BqBOzzYxOrnoXBiLiQsI81Sd/rigddbGidi22CvAXBjBpNS+wuh7wInOPUTtHTcx0a
+	 DqREaFWdT/rWBWapi+FZN4B5qHWE4o0ziQtyo53k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 12/77] ARM: OMAP1: select CONFIG_GENERIC_IRQ_CHIP
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.13 069/119] arm64: dts: freescale: imx8mp-verdin-dahlia: add Microphone Jack to sound card
 Date: Tue, 25 Mar 2025 08:22:07 -0400
-Message-ID: <20250325122144.652342497@linuxfoundation.org>
+Message-ID: <20250325122150.819779554@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-[ Upstream commit 98f3ab18a0a55aa1ff2cd6b74bd0c02c8f76f17e ]
+commit b0612fdba9afdce261bfb8684e0cece6f2e2b0bb upstream.
 
-When GENERIC_IRQ_CHIP is disabled, OMAP1 kernels fail to link:
+The simple-audio-card's microphone widget currently connects to the
+headphone jack. Routing the microphone input to the microphone jack
+allows for independent operation of the microphone and headphones.
 
-arm-linux-gnueabi-ld: arch/arm/mach-omap1/irq.o: in function `omap1_init_irq':
-irq.c:(.init.text+0x1e8): undefined reference to `irq_alloc_generic_chip'
-arm-linux-gnueabi-ld: irq.c:(.init.text+0x228): undefined reference to `irq_setup_generic_chip'
-arm-linux-gnueabi-ld: irq.c:(.init.text+0x2a8): undefined reference to `irq_gc_set_wake'
-arm-linux-gnueabi-ld: irq.c:(.init.text+0x2b0): undefined reference to `irq_gc_mask_set_bit'
-arm-linux-gnueabi-ld: irq.c:(.init.text+0x2b4): undefined reference to `irq_gc_mask_clr_bit'
+This resolves the following boot-time kernel log message, which
+indicated a conflict when the microphone and headphone functions were
+not separated:
+  debugfs: File 'Headphone Jack' in directory 'dapm' already present!
 
-This has apparently been the case for many years, but I never caught it
-in randconfig builds until now, as there are dozens of other drivers
-that also 'select GENERIC_IRQ_CHIP' and statistically there is almost
-always one of them enabled.
-
-Fixes: 55b447744389 ("ARM: OMAP1: Switch to use generic irqchip in preparation for sparse IRQ")
-Link: https://lore.kernel.org/r/20250205121151.289535-1-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 874958916844 ("arm64: dts: freescale: verdin-imx8mp: dahlia: add sound card")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-omap1/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
-index cbf703f0d850f..c5bd2535e0f4c 100644
---- a/arch/arm/mach-omap1/Kconfig
-+++ b/arch/arm/mach-omap1/Kconfig
-@@ -9,6 +9,7 @@ menuconfig ARCH_OMAP1
- 	select ARCH_OMAP
- 	select CLKSRC_MMIO
- 	select FORCE_PCI if PCCARD
-+	select GENERIC_IRQ_CHIP
- 	select GPIOLIB
- 	help
- 	  Support for older TI OMAP1 (omap7xx, omap15xx or omap16xx)
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
+@@ -28,10 +28,10 @@
+ 			"Headphone Jack", "HPOUTR",
+ 			"IN2L", "Line In Jack",
+ 			"IN2R", "Line In Jack",
+-			"Headphone Jack", "MICBIAS",
+-			"IN1L", "Headphone Jack";
++			"Microphone Jack", "MICBIAS",
++			"IN1L", "Microphone Jack";
+ 		simple-audio-card,widgets =
+-			"Microphone", "Headphone Jack",
++			"Microphone", "Microphone Jack",
+ 			"Headphone", "Headphone Jack",
+ 			"Line", "Line In Jack";
+ 
 
 
 
