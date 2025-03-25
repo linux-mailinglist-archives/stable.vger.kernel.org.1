@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-126533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B931A701D1
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:30:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20EFFA70049
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23C5D19A19E4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE43D19A61C2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F3626FD88;
-	Tue, 25 Mar 2025 12:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517572690EA;
+	Tue, 25 Mar 2025 12:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Npcc8cD0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ta2O3su8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9E626FDB5;
-	Tue, 25 Mar 2025 12:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108462580E4;
+	Tue, 25 Mar 2025 12:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906402; cv=none; b=XAY7nzFJ3nf88LToC71Nx92RWaagx77HTEI25kl1Wk1nJ3SGYWAV0DNcoz1CLw9XsZSS4nHtm+OU4AXos1/1RwXpJsWMyGGnTgLNcPXTT3C+WEUDSZ3NnQYOvray2vB9AvtGpjkzyygBYyqyo4nskXJKVongJFRrUBlB74UP1Jg=
+	t=1742906030; cv=none; b=bQ7pxABqsU8DmXWIUEEtdl5WqZkKDXF3lpwJBfpvZDwgS+WfRwlGX0cfIgwm5pnC7sx1MOSppSXtRj9NHB4yB/8kIgHj1mmk2keGVKMYVBG80qLQNU3PWAnf3WElsQKBtJ+ttkUAkjvZQ80X0NKGJ6h75AJIuYSlohDuxm4aDAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906402; c=relaxed/simple;
-	bh=8M6mxTrZ5Y2KMvvjbn8ipZ21ihw9FI90Wc+6hvWg07E=;
+	s=arc-20240116; t=1742906030; c=relaxed/simple;
+	bh=r2KiH2BD3E2+HuyiR7ZzLGPF3LAJlQ7vcCnYk2rTReY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aieaQdS0nVXF+i5YHfJNNmdcPigt0Xow5Xk8JFx6DptYthwDWiiq4+GR69tVWiJPH2GCCse7uNpjDoyMUwTWYt84ON2bR4TEnd8o3g8QiYSoBZ6ZdXX5FV972MQSVx8Dz90RCLvUcvoN5uBXt9KtBkhGj+wiabzwnlZk0TZRIck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Npcc8cD0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12441C4CEE4;
-	Tue, 25 Mar 2025 12:40:01 +0000 (UTC)
+	 MIME-Version; b=r3pYjHEDhUgREXM+FOFzrzoFn/PZrC5DYRWG01fqCywAh71Q00uMPedTAUICDV+scWjWBOYh7IDxfvuKET0Giu3JnAGRXHrayg7ypuzsByjazLtUHVkVC1RTZizecHDhbXRvwdFjlEaU9qjn1Rmz1TGmOB51aWIv85dh03F5fXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ta2O3su8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A8AC4CEE4;
+	Tue, 25 Mar 2025 12:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906402;
-	bh=8M6mxTrZ5Y2KMvvjbn8ipZ21ihw9FI90Wc+6hvWg07E=;
+	s=korg; t=1742906029;
+	bh=r2KiH2BD3E2+HuyiR7ZzLGPF3LAJlQ7vcCnYk2rTReY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Npcc8cD0d1SlsjmNIDnMh8/204qCrSDi66p4Z1JGXoQAU3YBHz2LPQS7UmKuef+B9
-	 DFgIqGJv8sa7fGhAgDUbMr9KELJQVjCOdiMWE6arym8zLNMax9utYyrFSD3k3dSv1w
-	 J2cgLjxwNCZNnLzGhGAulB8SFY3pXxGnlJ2/rWQw=
+	b=Ta2O3su8zk6JEh0AfUCiDZNZ8r3Kp74TL7fR5Un+ql2PNREWaxZmWmGF7+lG8A0yx
+	 EtrKjseK4asOY1rUcVoOVj+B8WtsGBvVF53mLQ0WWqFhLSu1N01r/Sg8k5kG/GtXjP
+	 SScwUl23GALVUb2TIvMZ38gE0O9sOZcl2XJZUdvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.12 068/116] arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Yilin Chen <Yilin.Chen@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 097/119] drm/amd/display: Fix message for support_edp0_on_dp1
 Date: Tue, 25 Mar 2025 08:22:35 -0400
-Message-ID: <20250325122150.947248811@linuxfoundation.org>
+Message-ID: <20250325122151.538742655@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Yilin Chen <Yilin.Chen@amd.com>
 
-commit 2c1092823eb03f8508d6769e2f38eef7e1fe62a0 upstream.
+commit 35f0f9f421390f66cb062f4d79f4924af5f55b04 upstream.
 
-The simple-audio-card's microphone widget currently connects to the
-headphone jack. Routing the microphone input to the microphone jack
-allows for independent operation of the microphone and headphones.
+[WHY]
+The info message was wrong when support_edp0_on_dp1 is enabled
 
-This resolves the following boot-time kernel log message, which
-indicated a conflict when the microphone and headphone functions were
-not separated:
-  debugfs: File 'Headphone Jack' in directory 'dapm' already present!
+[HOW]
+Use correct info message for support_edp0_on_dp1
 
-Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: f6d17270d18a ("drm/amd/display: add a quirk to enable eDP0 on DP1")
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Yilin Chen <Yilin.Chen@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 79538e6365c99d7b1c3e560d1ea8d11ef8313465)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
-@@ -16,10 +16,10 @@
- 			"Headphone Jack", "HPOUTR",
- 			"IN2L", "Line In Jack",
- 			"IN2R", "Line In Jack",
--			"Headphone Jack", "MICBIAS",
--			"IN1L", "Headphone Jack";
-+			"Microphone Jack", "MICBIAS",
-+			"IN1L", "Microphone Jack";
- 		simple-audio-card,widgets =
--			"Microphone", "Headphone Jack",
-+			"Microphone", "Microphone Jack",
- 			"Headphone", "Headphone Jack",
- 			"Line", "Line In Jack";
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1744,7 +1744,7 @@ static void retrieve_dmi_info(struct amd
+ 	}
+ 	if (quirk_entries.support_edp0_on_dp1) {
+ 		init_data->flags.support_edp0_on_dp1 = true;
+-		drm_info(dev, "aux_hpd_discon_quirk attached\n");
++		drm_info(dev, "support_edp0_on_dp1 attached\n");
+ 	}
+ }
  
 
 
