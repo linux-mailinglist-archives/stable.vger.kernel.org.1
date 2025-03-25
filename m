@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCEE7A70080
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFF4A7010C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4978F3BC25A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F94017B3B0
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1CA25B683;
-	Tue, 25 Mar 2025 12:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FDB26FD93;
+	Tue, 25 Mar 2025 12:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wj3c/pnM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwAtEKyR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DA22571AB;
-	Tue, 25 Mar 2025 12:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EDF26FD83;
+	Tue, 25 Mar 2025 12:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906026; cv=none; b=Q7P/ioEcdmtiYW8ljrZW19Lpqa1RGA2Ho6PDl0vR0yvnTymqgpOO5xHj40OGNiuPePO+gqF7ZfEx57wBWrq0bX2D0pWy8dDr1SoscQwoeopPgreiPFbFUnSbFLB8zu4NzmgH5vD02cQN3Ao+CV6ubDFLT0tyvEbauqwRa5VidUA=
+	t=1742906400; cv=none; b=rX1bKfzwlB1Ybd5ftO/3+9GmpS2d7QhImmqxM4bU//4QzlXrlQO/7pL+cxMOqR8as7HR0agvMl0c9S3PiIwc9gCfL+uyBckRlljXzs7PEad6u3k8sT6qvWheekaMlaSCEfblFYvi5Y3XTwFkVUPXPXjxfXH5FZ9eSKe/b0bNasU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906026; c=relaxed/simple;
-	bh=AFnEYVPAaqWftawgJiR0TQuZ/MuYDxF98kkIkrD9XtA=;
+	s=arc-20240116; t=1742906400; c=relaxed/simple;
+	bh=us7SxGKFNgpXVge1fR2QZkeVvL8Rv28zUTshUvPtkS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3AXUrR1zBDXD/5b7RU3pXX2yKVhaisXzLZ3Rae9sYITDrtX/K5SQQEQwI/YyqYO7O89Y2ZgG/qbNMfRLXXwagcRknjXkQqPCRkabDa1pLxsx3qhqLjThxBKa6CgZq10lwBXthJCLn7rfNcRENQaM4BR17qTJmAwM2qiwjC84yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wj3c/pnM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D619AC4CEE4;
-	Tue, 25 Mar 2025 12:33:45 +0000 (UTC)
+	 MIME-Version; b=By9oO7hj6OANViz69cDsKFuPNQ7gLBhOV9BZzuF1jzzKIfw7wZ3PuyGo6AYv5UVgme+tMJHnrvOda+JVWpiLug+T9P4oZQHymqdoDmFlDIfdZJgqxUtDwjH5Uqove9uWF5VTBS+xei4XO+IVDheaR9ljHSedYwKqK8n2tT5vp+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwAtEKyR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421E4C4CEE4;
+	Tue, 25 Mar 2025 12:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906026;
-	bh=AFnEYVPAaqWftawgJiR0TQuZ/MuYDxF98kkIkrD9XtA=;
+	s=korg; t=1742906400;
+	bh=us7SxGKFNgpXVge1fR2QZkeVvL8Rv28zUTshUvPtkS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wj3c/pnMJCxVreRtIVodq4ImWikH2dz1aJkSqsEHl0N2WZzSVTjdt1Ty465BMMOBS
-	 1F6R6hBARfPNOr6vXJEWgn8O6bSFY5GQRShC8Jpr8h9cO7bFtwFnVpjdbpI2yzejoD
-	 6EmisGodcUlYIHBvhEUxM4wAqQ6ZSHmu+RywqCe8=
+	b=lwAtEKyRK5A5G7ujiWbnLtdNMYOukgxnett9uWGnz6FpkO4EB+ruWI64QX/Q5D+2O
+	 PPtqzPfxSkM97bUs5JzpXNq6w4C5JdDnvd3os+rCURetp89WG9eJKQKzxlaqQC+nvZ
+	 XvUtCYMMipyw+O+QDHJBi9ufpsYsMfjwtdzpNTxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	qianyi liu <liuqianyi125@gmail.com>,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 6.13 095/119] drm/sched: Fix fence reference count leak
-Date: Tue, 25 Mar 2025 08:22:33 -0400
-Message-ID: <20250325122151.488104664@linuxfoundation.org>
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.12 067/116] arm64: dts: freescale: imx8mp-verdin-dahlia: add Microphone Jack to sound card
+Date: Tue, 25 Mar 2025 08:22:34 -0400
+Message-ID: <20250325122150.922464139@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: qianyi liu <liuqianyi125@gmail.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit a952f1ab696873be124e31ce5ef964d36bce817f upstream.
+commit b0612fdba9afdce261bfb8684e0cece6f2e2b0bb upstream.
 
-The last_scheduled fence leaks when an entity is being killed and adding
-the cleanup callback fails.
+The simple-audio-card's microphone widget currently connects to the
+headphone jack. Routing the microphone input to the microphone jack
+allows for independent operation of the microphone and headphones.
 
-Decrement the reference count of prev when dma_fence_add_callback()
-fails, ensuring proper balance.
+This resolves the following boot-time kernel log message, which
+indicated a conflict when the microphone and headphone functions were
+not separated:
+  debugfs: File 'Headphone Jack' in directory 'dapm' already present!
 
-Cc: stable@vger.kernel.org	# v6.2+
-[phasta: add git tag info for stable kernel]
-Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
-Signed-off-by: qianyi liu <liuqianyi125@gmail.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250311060251.4041101-1-liuqianyi125@gmail.com
+Fixes: 874958916844 ("arm64: dts: freescale: verdin-imx8mp: dahlia: add sound card")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -259,9 +259,16 @@ static void drm_sched_entity_kill(struct
- 		struct drm_sched_fence *s_fence = job->s_fence;
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
+@@ -28,10 +28,10 @@
+ 			"Headphone Jack", "HPOUTR",
+ 			"IN2L", "Line In Jack",
+ 			"IN2R", "Line In Jack",
+-			"Headphone Jack", "MICBIAS",
+-			"IN1L", "Headphone Jack";
++			"Microphone Jack", "MICBIAS",
++			"IN1L", "Microphone Jack";
+ 		simple-audio-card,widgets =
+-			"Microphone", "Headphone Jack",
++			"Microphone", "Microphone Jack",
+ 			"Headphone", "Headphone Jack",
+ 			"Line", "Line In Jack";
  
- 		dma_fence_get(&s_fence->finished);
--		if (!prev || dma_fence_add_callback(prev, &job->finish_cb,
--					   drm_sched_entity_kill_jobs_cb))
-+		if (!prev ||
-+		    dma_fence_add_callback(prev, &job->finish_cb,
-+					   drm_sched_entity_kill_jobs_cb)) {
-+			/*
-+			 * Adding callback above failed.
-+			 * dma_fence_put() checks for NULL.
-+			 */
-+			dma_fence_put(prev);
- 			drm_sched_entity_kill_jobs_cb(NULL, &job->finish_cb);
-+		}
- 
- 		prev = &s_fence->finished;
- 	}
 
 
 
