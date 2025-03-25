@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-126412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5FCA700FC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10995A7007E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DD6E841B4B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E379F7A3307
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026E326A1D9;
-	Tue, 25 Mar 2025 12:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DB625DD03;
+	Tue, 25 Mar 2025 12:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+BHxEfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqhOpzh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D7C25C6E4;
-	Tue, 25 Mar 2025 12:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9008225DB11;
+	Tue, 25 Mar 2025 12:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906175; cv=none; b=OytxHsxOU60FvLNPLSLrztLgawOTAWW2ulTOhKoGtPzQZeoCupQa11cjzVdEjWrIOsBx1gaxyAnTmJbQue2B3EgMeaSm6G0a0exB4JjSN4eIyiBxlGgn4LboOKdcZ6OS7YnHkEQ7cySgP+Jz5rioikSTvlw6W/sxawmu03dkEJM=
+	t=1742906376; cv=none; b=LpO6bvRMkDJj/JtRVJAy0IB6SCICTvxtCxIVJmWSeM8vRlNahBsElEBffLcf2Np3zP7d0FTY96E8Kh9/BrQreYVStItRZwhJNNQz5Wqw4cliwezYFYhVh65VmVSRoYHHgz/o4mWP+2+p+YL5GiB5MO3UkNx7yikOm+luEqaJx0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906175; c=relaxed/simple;
-	bh=3wP7bpwxOpd+kOpZbAGX4NB2/WLmHq5/ITuTW7mVprw=;
+	s=arc-20240116; t=1742906376; c=relaxed/simple;
+	bh=dN4cHZgQGkT7qf/1VxEeLXaLWJHpmOQDmJ6zJQq/or0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXPrdghXH0tlmChPd9KFJEKr+yzTLDkubaadKAmLsZq3yLMOEibAbCKuD8/41Lplt/5MtuLKzuQuJdvbvyvyfoIwJWgQ9d8CV7aQOMUWTq0JgSIemaIyG1ti1+bRVrRjBIV6hxOIOtAtcdbSlj9TzAwfdr+DHd5B7IOBfMcAEmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+BHxEfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A672C4CEE4;
-	Tue, 25 Mar 2025 12:36:15 +0000 (UTC)
+	 MIME-Version; b=ZPgs5tMuRFKnHwt6kMbdowXghgwIJaTBtRUPbD/Mb7rDN1lJVS8tJqgN3py8g1W+93hq2A+a3zWbc63RE5SQ3XvK1WIcf4bdRXEAkKsoe+niRorChUeaRB5aEjcTEXlie9r3TlMXrbgX/9T1pfWjBU6H+NRNZuh0zFaqxZcOXlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqhOpzh9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40630C4CEE4;
+	Tue, 25 Mar 2025 12:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906175;
-	bh=3wP7bpwxOpd+kOpZbAGX4NB2/WLmHq5/ITuTW7mVprw=;
+	s=korg; t=1742906376;
+	bh=dN4cHZgQGkT7qf/1VxEeLXaLWJHpmOQDmJ6zJQq/or0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+BHxEfhHrRSrvhIBe3x0XRAc471dU1zRjX1J950bZhP6b+VmERrcRG1JxQmH/0yO
-	 fsu+fbUnNga7lkxO5H+Zc1TYBskT0D36zPki93bY/q+W2VAAv8Kihn1iGjTsjjLslO
-	 u9CgGtqHonGFuIsY5wg3P0XOw21yhWaRuFKBu7tM=
+	b=LqhOpzh9TWjvMti6GpU/31+eXcDQRnVhhG8nPrUSXsNI7+Ms8WUcEvOmVXrVfVGRt
+	 OEuYPG4EhIaYFMMbkn6muaegqrW4R037aCSxACPgpxmeaZha3qkqNC39qE/RGvmm7R
+	 qGR4kXXwgK1p/hHsVsgk54sL3EAqhyLixpudAzCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 55/77] drm/radeon: fix uninitialized size issue in radeon_vce_cs_parse()
-Date: Tue, 25 Mar 2025 08:22:50 -0400
-Message-ID: <20250325122145.789690454@linuxfoundation.org>
+	syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com,
+	David Howells <dhowells@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.12 084/116] keys: Fix UAF in key_put()
+Date: Tue, 25 Mar 2025 08:22:51 -0400
+Message-ID: <20250325122151.359494355@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: David Howells <dhowells@redhat.com>
 
-commit dd8689b52a24807c2d5ce0a17cb26dc87f75235c upstream.
+commit 75845c6c1a64483e9985302793dbf0dfa5f71e32 upstream.
 
-On the off chance that command stream passed from userspace via
-ioctl() call to radeon_vce_cs_parse() is weirdly crafted and
-first command to execute is to encode (case 0x03000001), the function
-in question will attempt to call radeon_vce_cs_reloc() with size
-argument that has not been properly initialized. Specifically, 'size'
-will point to 'tmp' variable before the latter had a chance to be
-assigned any value.
+Once a key's reference count has been reduced to 0, the garbage collector
+thread may destroy it at any time and so key_put() is not allowed to touch
+the key after that point.  The most key_put() is normally allowed to do is
+to touch key_gc_work as that's a static global variable.
 
-Play it safe and init 'tmp' with 0, thus ensuring that
-radeon_vce_cs_reloc() will catch an early error in cases like these.
+However, in an effort to speed up the reclamation of quota, this is now
+done in key_put() once the key's usage is reduced to 0 - but now the code
+is looking at the key after the deadline, which is forbidden.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+Fix this by using a flag to indicate that a key can be gc'd now rather than
+looking at the key's refcount in the garbage collector.
 
-Fixes: 2fc5703abda2 ("drm/radeon: check VCE relocation buffer range v3")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2d52de55f9ee7aaee0e09ac443f77855989c6b68)
-Cc: stable@vger.kernel.org
+Fixes: 9578e327b2b4 ("keys: update key quotas in key_put()")
+Reported-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/673b6aec.050a0220.87769.004a.GAE@google.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_vce.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/key.h |    1 +
+ security/keys/gc.c  |    4 +++-
+ security/keys/key.c |    2 ++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/radeon/radeon_vce.c
-+++ b/drivers/gpu/drm/radeon/radeon_vce.c
-@@ -557,7 +557,7 @@ int radeon_vce_cs_parse(struct radeon_cs
- {
- 	int session_idx = -1;
- 	bool destroyed = false, created = false, allocated = false;
--	uint32_t tmp, handle = 0;
-+	uint32_t tmp = 0, handle = 0;
- 	uint32_t *size = &tmp;
- 	int i, r = 0;
+--- a/include/linux/key.h
++++ b/include/linux/key.h
+@@ -236,6 +236,7 @@ struct key {
+ #define KEY_FLAG_ROOT_CAN_INVAL	7	/* set if key can be invalidated by root without permission */
+ #define KEY_FLAG_KEEP		8	/* set if key should not be removed */
+ #define KEY_FLAG_UID_KEYRING	9	/* set if key is a user or user session keyring */
++#define KEY_FLAG_FINAL_PUT	10	/* set if final put has happened on key */
  
+ 	/* the key type and key description string
+ 	 * - the desc is used to match a key against search criteria
+--- a/security/keys/gc.c
++++ b/security/keys/gc.c
+@@ -218,8 +218,10 @@ continue_scanning:
+ 		key = rb_entry(cursor, struct key, serial_node);
+ 		cursor = rb_next(cursor);
+ 
+-		if (refcount_read(&key->usage) == 0)
++		if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
++			smp_mb(); /* Clobber key->user after FINAL_PUT seen. */
+ 			goto found_unreferenced_key;
++		}
+ 
+ 		if (unlikely(gc_state & KEY_GC_REAPING_DEAD_1)) {
+ 			if (key->type == key_gc_dead_keytype) {
+--- a/security/keys/key.c
++++ b/security/keys/key.c
+@@ -658,6 +658,8 @@ void key_put(struct key *key)
+ 				key->user->qnbytes -= key->quotalen;
+ 				spin_unlock_irqrestore(&key->user->lock, flags);
+ 			}
++			smp_mb(); /* key->user before FINAL_PUT set. */
++			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
+ 			schedule_work(&key_gc_work);
+ 		}
+ 	}
 
 
 
