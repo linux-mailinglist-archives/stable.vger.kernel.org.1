@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-126179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3230AA7008E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4D8A70004
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54BAE1886FC4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5B8416D054
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDF42673A0;
-	Tue, 25 Mar 2025 12:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9D226868C;
+	Tue, 25 Mar 2025 12:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z07G6t9I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OT3cK617"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A44C267393;
-	Tue, 25 Mar 2025 12:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1E5268685;
+	Tue, 25 Mar 2025 12:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905747; cv=none; b=iCpMGDqGMqJsecMuwckLYi4KqTNDgcIvaL+2MoVpkZs3TrdtIGb4L3St1zRNsRAFSbRLgU0C2SanIp15IfNYb9ywsPHLx3x+jbjksgxTRtWXJmwBwgWBj+n4IgHd3DvrfEScXcOCvNSE7lcO2OSbG9Qy9iHWixog2CD2RnQIk7s=
+	t=1742905881; cv=none; b=srCD4MSL+NoeBRyrASuO3/FRFHwjiiN9E3UWeM8F6tn1bcOUtMJYI2eQ9Miu5w+PWKObnvu7BHT7V52+9Oo36q8xMTMyiouqxQcIXWDnvxX6PJ1wFt8apOleM8JGyFjz0Malq2wfbm2Sc5G9roNDtvlPJrzxTI6TncqjZefN+WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905747; c=relaxed/simple;
-	bh=FpMVxYoI2Lz8V3EGDDKJUkN2+vJqswum4QXu3w1pwg0=;
+	s=arc-20240116; t=1742905881; c=relaxed/simple;
+	bh=CWAZnQ/VWujiuOUdHmAzebzysgDQyANP3wkpa7/b5UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAZMlIl2gDiIXxBCFEA2JhYuxm9Z9dkQU3RUj7+BEDIOu2OoZB5C+O2aay0XbffbcAfXa7KdF7s8kH9AVso/WadoUMtWVbs1Cv/kwpXbVrMr4/3F/F37B0e86NvgCKnBhpsS0/avOHfH15Dmew/Lu119mih5pooeUrJsds1g0xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z07G6t9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BD9C4CEE4;
-	Tue, 25 Mar 2025 12:29:06 +0000 (UTC)
+	 MIME-Version; b=K1Kot7XsuWNwv3wqYHfevsZMfP/AiFKTZO15n4AWl/YmFcgiOOrTzlP3MjEMbMdciYxbMHcKmYQJ8EkAyB8DGs/HnlexKopGhcR1ZJCb470VUJmQDOMqlYvveHoEh+Wo5SqkzHfv/ijZK1tGxkvA1Rs0NjrQSFDngZ47BnUlewM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OT3cK617; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C47C4CEE4;
+	Tue, 25 Mar 2025 12:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905747;
-	bh=FpMVxYoI2Lz8V3EGDDKJUkN2+vJqswum4QXu3w1pwg0=;
+	s=korg; t=1742905881;
+	bh=CWAZnQ/VWujiuOUdHmAzebzysgDQyANP3wkpa7/b5UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z07G6t9Ie/sw5Flxk++uJEVOFdfHgm7BH6//gku/MUWkVjwBOiyFsV2rJbQu1b7ab
-	 UnGJQhxZBCgR78VQZvLaW5SFIwe9QBTXrFEyqu9HMJ34Dg+F+7MGFbTPuswNyQ9fr6
-	 oI2m3SYtRxbhE7gA8lPZup7GwPjL/4aDt/DHuW2Q=
+	b=OT3cK617Kr3+vLqCLWpySkLsnz3BfdrXNW7GdmR5Gv8seia8JgDkptaeTIMrEAzEG
+	 XGpxfysuYaCVO53gQVYXws0KY7F2AlqWOwXYXZ1KMDgCbxN/LAxW9rE4yd/lhEBH9v
+	 XCN+wXloVUjyK1fIa48ZjD7HNnUd7g4Kr9x6AdlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 111/198] USB: serial: option: match on interface class for Telit FN990B
-Date: Tue, 25 Mar 2025 08:21:13 -0400
-Message-ID: <20250325122159.565773855@linuxfoundation.org>
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 016/119] RDMA/mlx5: Handle errors returned from mlx5r_ib_rate()
+Date: Tue, 25 Mar 2025 08:21:14 -0400
+Message-ID: <20250325122149.478676715@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit 9a665fe3d967fe46edb4fd2497c7a5cc2dac2f55 upstream.
+[ Upstream commit 556f93b90c1872ad85e216e613c0b33803e621cb ]
 
-The device id entries for Telit FN990B ended up matching only on the
-interface protocol. While this works, the protocol is qualified by the
-interface class (and subclass) which should have been included.
+In function create_ib_ah() the following line attempts
+to left shift the return value of mlx5r_ib_rate() by 4
+and store it in the stat_rate_sl member of av:
 
-Switch to matching using USB_DEVICE_AND_INTERFACE_INFO() while keeping
-the entries sorted also by protocol for consistency.
+However the code overlooks the fact that mlx5r_ib_rate()
+may return -EINVAL if the rate passed to it is less than
+IB_RATE_2_5_GBPS or greater than IB_RATE_800_GBPS.
 
-Link: https://lore.kernel.org/20250227110655.3647028-2-fabio.porcedda@gmail.com/
-Cc: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Because of this, the code may invoke undefined behaviour when
+shifting a signed negative value when doing "-EINVAL << 4".
+
+To fix this check for errors before assigning stat_rate_sl and
+propagate any error value to the callers.
+
+Fixes: c534ffda781f ("RDMA/mlx5: Fix AH static rate parsing")
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Link: https://patch.msgid.link/20250304140246.205919-1-qasdev00@gmail.com
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/infiniband/hw/mlx5/ah.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1410,22 +1410,22 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x60) },	/* Telit FN990B (rmnet) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d0, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x30),	/* Telit FN990B (rmnet) */
- 	  .driver_info = NCTRL(5) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x60) },	/* Telit FN990B (MBIM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d1, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x60) },	/* Telit FN990B (RNDIS) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d2, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x30),	/* Telit FN990B (RNDIS) */
- 	  .driver_info = NCTRL(6) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x60) },	/* Telit FN990B (ECM) */
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x40) },
--	{ USB_DEVICE_INTERFACE_PROTOCOL(TELIT_VENDOR_ID, 0x10d3, 0x30),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d2, 0xff, 0xff, 0x60) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x30),	/* Telit FN990B (ECM) */
- 	  .driver_info = NCTRL(6) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d3, 0xff, 0xff, 0x60) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
+diff --git a/drivers/infiniband/hw/mlx5/ah.c b/drivers/infiniband/hw/mlx5/ah.c
+index 99036afb3aef0..531a57f9ee7e8 100644
+--- a/drivers/infiniband/hw/mlx5/ah.c
++++ b/drivers/infiniband/hw/mlx5/ah.c
+@@ -50,11 +50,12 @@ static __be16 mlx5_ah_get_udp_sport(const struct mlx5_ib_dev *dev,
+ 	return sport;
+ }
+ 
+-static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
++static int create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 			 struct rdma_ah_init_attr *init_attr)
+ {
+ 	struct rdma_ah_attr *ah_attr = init_attr->ah_attr;
+ 	enum ib_gid_type gid_type;
++	int rate_val;
+ 
+ 	if (rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH) {
+ 		const struct ib_global_route *grh = rdma_ah_read_grh(ah_attr);
+@@ -67,8 +68,10 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 		ah->av.tclass = grh->traffic_class;
+ 	}
+ 
+-	ah->av.stat_rate_sl =
+-		(mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr)) << 4);
++	rate_val = mlx5r_ib_rate(dev, rdma_ah_get_static_rate(ah_attr));
++	if (rate_val < 0)
++		return rate_val;
++	ah->av.stat_rate_sl = rate_val << 4;
+ 
+ 	if (ah_attr->type == RDMA_AH_ATTR_TYPE_ROCE) {
+ 		if (init_attr->xmit_slave)
+@@ -89,6 +92,8 @@ static void create_ib_ah(struct mlx5_ib_dev *dev, struct mlx5_ib_ah *ah,
+ 		ah->av.fl_mlid = rdma_ah_get_path_bits(ah_attr) & 0x7f;
+ 		ah->av.stat_rate_sl |= (rdma_ah_get_sl(ah_attr) & 0xf);
+ 	}
++
++	return 0;
+ }
+ 
+ int mlx5_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
+@@ -121,8 +126,7 @@ int mlx5_ib_create_ah(struct ib_ah *ibah, struct rdma_ah_init_attr *init_attr,
+ 			return err;
+ 	}
+ 
+-	create_ib_ah(dev, ah, init_attr);
+-	return 0;
++	return create_ib_ah(dev, ah, init_attr);
+ }
+ 
+ int mlx5_ib_query_ah(struct ib_ah *ibah, struct rdma_ah_attr *ah_attr)
+-- 
+2.39.5
+
 
 
 
