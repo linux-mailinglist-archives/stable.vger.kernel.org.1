@@ -1,60 +1,69 @@
-Return-Path: <stable+bounces-126606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC381A70936
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:43:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F47A7093F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 19:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E27D189294D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:43:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD177A6070
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF881EF0A1;
-	Tue, 25 Mar 2025 18:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE871F2C5B;
+	Tue, 25 Mar 2025 18:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g7SPUZTZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rZFfbhnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D1C1ACEAF;
-	Tue, 25 Mar 2025 18:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8341C84AE;
+	Tue, 25 Mar 2025 18:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742928148; cv=none; b=dF3CbUFXk/JoXctIV+dQdfHzroMQgqYA4aEFU+V3piLHyLdHPfKPhOcXLn18Bu9lpErPcJaPL1eaKiMl9NqWkDurW0SArBKp9PujKFn3jxSceyJPgEoPZqrhL6s+mxacRyq8iLinb55uyyi1xvclMSjQiS1uocbXCBBYy+l/w+s=
+	t=1742928154; cv=none; b=m06eFcLCxZMSsQfL9zd6ZapszJkj9cq5P7oC6LsKP8uI2gXxGi7wU85kCwzL40Vbn+lG1sKUH4EiFP00B0bXdUiAYu1KTQF5yPq0mW+nAivMdJS3PbxsXA5df6V1LWmbeJ/C2JXpsB604Y8E0LEd6tFkySOoZvWE7L0q0QtNXTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742928148; c=relaxed/simple;
-	bh=UuhNhHmsCai/OKW+CiwgEP7JQe/3sSD6DbKl78C/SFE=;
+	s=arc-20240116; t=1742928154; c=relaxed/simple;
+	bh=UTL901inkbdnXMs+G/Z6z+kgEDFCe5XJ5SSbeGhGR8c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LT7s7Uge1kHdu+rN5DSQJ+WCE3sNZYZBrBkLCSgZxmW0G6WVOSG4KoYTA4KWwMA9eXUIwGf75HSRfOhq241Xat2XIUr0NJOC85nESM+eZfWGmzuqpEzSy5cZFVnWN3pbPlxokSuf46z+ta2YiEjoL/ihuE1hUziUrGVoSbRCGd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g7SPUZTZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B7AC4CEE4;
-	Tue, 25 Mar 2025 18:42:26 +0000 (UTC)
+	 MIME-Version; b=M8pNqr9Fn9T0xHbzeSt2jKYoB7FRuIydZbGREu8wImjK1w+qKxF/EJ/UKomdlw4b0bkvXZcqQBptQfE8lfg8reVdncQMEMI5OHjzVpVGCFPGVTANE/tk3zC8cbiahRqXDASsTUdWPDvZwGTf0LYBzgxwfPYP7FP52RCx3Hugrqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rZFfbhnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC98C113D0;
+	Tue, 25 Mar 2025 18:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742928148;
-	bh=UuhNhHmsCai/OKW+CiwgEP7JQe/3sSD6DbKl78C/SFE=;
+	s=k20201202; t=1742928153;
+	bh=UTL901inkbdnXMs+G/Z6z+kgEDFCe5XJ5SSbeGhGR8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g7SPUZTZ0YeuwtVf9cjpleunSpATK+cQGkH0cdNJ5vRML247DY87PVJFMKYcidwHt
-	 5IQR4O7xkDpIjX/ZNKnig3WrKdSVbeNgGuzd5kvNNv2taamwR5bIxYY5azt3yxf8qS
-	 /IS4vsseZ2WBnhemIKqEjFYQ8AIYXLtm0JRNIkrsdcExhUySO+2wPqjWc4hLUWq/hV
-	 DGfN4wNC1giuxVbTvtCgNrcy1ktx86Hs4QaG8yT/67NVLuiOUHych5/z/qsDR7V4iu
-	 jObM8vjcDtIcZbIFKLy1FWy+6e3DabcRpi/vYQoAw14jwWhmpg5iW0aYVxFXp9qxzP
-	 B9mo0gPQ2B8PA==
+	b=rZFfbhnNXWmuU/o9PRcxacRwP9ntjhDAkD8RwFVI6BQls04fqCzD0FPiAGCKTC9LV
+	 Tk9AFK02rYuB+dJVFGVAqqiiqvmrL+1oqYtYv+J6vJ9d2O1eRiXQQCdXfo34NBsCsa
+	 PWePPfV4I5zo1q/CMvqiqm7aPOugNTWf06R/me2J5je5cuEywCFnWIdrlfJpiGQx67
+	 IAIjrzI0XcGrT13nfW6YTxBsMMmCZlpkXnchrzrc1Yxa/6Hicz4S7ymgEc9QgSjFWn
+	 /wrl3e5i4q2t50SQoVain4OpE/JF5HRDCPmEOT6GOpuLMTjR0lY+sKWT7aUch6T9tI
+	 +aDnVUOwvuC9A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Paulo Alcantara <pc@manguebit.com>,
-	David Howells <dhowells@redhat.com>,
-	Jay Shin <jaeshin@redhat.com>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Lo-an Chen <lo-an.chen@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.13 5/7] smb: client: don't retry IO on failed negprotos with soft mounts
-Date: Tue, 25 Mar 2025 14:42:13 -0400
-Message-Id: <20250325184215.2152123-5-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	aurabindo.pillai@amd.com,
+	rodrigo.siqueira@amd.com,
+	duncan.ma@amd.com,
+	jinze.xu@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.13 6/7] drm/amd/display: Fix incorrect fw_state address in dmub_srv
+Date: Tue, 25 Mar 2025 14:42:14 -0400
+Message-Id: <20250325184215.2152123-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250325184215.2152123-1-sashal@kernel.org>
 References: <20250325184215.2152123-1-sashal@kernel.org>
@@ -69,227 +78,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.8
 Content-Transfer-Encoding: 8bit
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Lo-an Chen <lo-an.chen@amd.com>
 
-[ Upstream commit 7643dbd9db09fffebb4a62cd27599f17f4148b17 ]
+[ Upstream commit d60073294cc3b46b73d6de247e0e5ae8684a6241 ]
 
-If @server->tcpStatus is set to CifsNeedReconnect after acquiring
-@ses->session_mutex in smb2_reconnect() or cifs_reconnect_tcon(), it
-means that a concurrent thread failed to negotiate, in which case the
-server is no longer responding to any SMB requests, so there is no
-point making the caller retry the IO by returning -EAGAIN.
+[WHY]
+The fw_state in dmub_srv was assigned with wrong address.
+The address was pointed to the firmware region.
 
-Fix this by returning -EHOSTDOWN to the callers on soft mounts.
+[HOW]
+Fix the firmware state by using DMUB_DEBUG_FW_STATE_OFFSET
+in dmub_cmd.h.
 
-Cc: David Howells <dhowells@redhat.com>
-Reported-by: Jay Shin <jaeshin@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Lo-an Chen <lo-an.chen@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f57b38ac85a01bf03020cc0a9761d63e5c0ce197)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 46 ++++++++++++--------
- fs/smb/client/smb2pdu.c | 96 ++++++++++++++++++-----------------------
- 2 files changed, 69 insertions(+), 73 deletions(-)
+ drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index a993d4ac58411..dd5211d268f48 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -114,19 +114,23 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+index a3f3ff5d49ace..9d2250d84f291 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+@@ -708,7 +708,7 @@ enum dmub_status dmub_srv_hw_init(struct dmub_srv *dmub,
+ 	cw6.region.base = DMUB_CW6_BASE;
+ 	cw6.region.top = cw6.region.base + fw_state_fb->size;
  
- 	mutex_lock(&ses->session_mutex);
- 	/*
--	 * Recheck after acquire mutex. If another thread is negotiating
--	 * and the server never sends an answer the socket will be closed
--	 * and tcpStatus set to reconnect.
-+	 * Handle the case where a concurrent thread failed to negotiate or
-+	 * killed a channel.
- 	 */
- 	spin_lock(&server->srv_lock);
--	if (server->tcpStatus == CifsNeedReconnect) {
-+	switch (server->tcpStatus) {
-+	case CifsExiting:
- 		spin_unlock(&server->srv_lock);
- 		mutex_unlock(&ses->session_mutex);
--
--		if (tcon->retry)
--			goto again;
--		rc = -EHOSTDOWN;
--		goto out;
-+		return -EHOSTDOWN;
-+	case CifsNeedReconnect:
-+		spin_unlock(&server->srv_lock);
-+		mutex_unlock(&ses->session_mutex);
-+		if (!tcon->retry)
-+			return -EHOSTDOWN;
-+		goto again;
-+	default:
-+		break;
- 	}
- 	spin_unlock(&server->srv_lock);
+-	dmub->fw_state = fw_state_fb->cpu_addr;
++	dmub->fw_state = (void *)((uintptr_t)(fw_state_fb->cpu_addr) + DMUB_DEBUG_FW_STATE_OFFSET);
  
-@@ -152,16 +156,20 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
- 	spin_unlock(&ses->ses_lock);
- 
- 	rc = cifs_negotiate_protocol(0, ses, server);
--	if (!rc) {
--		rc = cifs_setup_session(0, ses, server, ses->local_nls);
--		if ((rc == -EACCES) || (rc == -EHOSTDOWN) || (rc == -EKEYREVOKED)) {
--			/*
--			 * Try alternate password for next reconnect if an alternate
--			 * password is available.
--			 */
--			if (ses->password2)
--				swap(ses->password2, ses->password);
--		}
-+	if (rc) {
-+		mutex_unlock(&ses->session_mutex);
-+		if (!tcon->retry)
-+			return -EHOSTDOWN;
-+		goto again;
-+	}
-+	rc = cifs_setup_session(0, ses, server, ses->local_nls);
-+	if ((rc == -EACCES) || (rc == -EHOSTDOWN) || (rc == -EKEYREVOKED)) {
-+		/*
-+		 * Try alternate password for next reconnect if an alternate
-+		 * password is available.
-+		 */
-+		if (ses->password2)
-+			swap(ses->password2, ses->password);
- 	}
- 
- 	/* do we need to reconnect tcon? */
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 7ece98c742bdb..23ae73c9c5e97 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -300,32 +300,23 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 
- 	mutex_lock(&ses->session_mutex);
- 	/*
--	 * if this is called by delayed work, and the channel has been disabled
--	 * in parallel, the delayed work can continue to execute in parallel
--	 * there's a chance that this channel may not exist anymore
-+	 * Handle the case where a concurrent thread failed to negotiate or
-+	 * killed a channel.
- 	 */
- 	spin_lock(&server->srv_lock);
--	if (server->tcpStatus == CifsExiting) {
-+	switch (server->tcpStatus) {
-+	case CifsExiting:
- 		spin_unlock(&server->srv_lock);
- 		mutex_unlock(&ses->session_mutex);
--		rc = -EHOSTDOWN;
--		goto out;
--	}
--
--	/*
--	 * Recheck after acquire mutex. If another thread is negotiating
--	 * and the server never sends an answer the socket will be closed
--	 * and tcpStatus set to reconnect.
--	 */
--	if (server->tcpStatus == CifsNeedReconnect) {
-+		return -EHOSTDOWN;
-+	case CifsNeedReconnect:
- 		spin_unlock(&server->srv_lock);
- 		mutex_unlock(&ses->session_mutex);
--
--		if (tcon->retry)
--			goto again;
--
--		rc = -EHOSTDOWN;
--		goto out;
-+		if (!tcon->retry)
-+			return -EHOSTDOWN;
-+		goto again;
-+	default:
-+		break;
- 	}
- 	spin_unlock(&server->srv_lock);
- 
-@@ -350,43 +341,41 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 	spin_unlock(&ses->ses_lock);
- 
- 	rc = cifs_negotiate_protocol(0, ses, server);
--	if (!rc) {
--		/*
--		 * if server stopped supporting multichannel
--		 * and the first channel reconnected, disable all the others.
--		 */
--		if (ses->chan_count > 1 &&
--		    !(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
--			rc = cifs_chan_skip_or_disable(ses, server,
--						       from_reconnect);
--			if (rc) {
--				mutex_unlock(&ses->session_mutex);
--				goto out;
--			}
--		}
--
--		rc = cifs_setup_session(0, ses, server, ses->local_nls);
--		if ((rc == -EACCES) || (rc == -EKEYEXPIRED) || (rc == -EKEYREVOKED)) {
--			/*
--			 * Try alternate password for next reconnect (key rotation
--			 * could be enabled on the server e.g.) if an alternate
--			 * password is available and the current password is expired,
--			 * but do not swap on non pwd related errors like host down
--			 */
--			if (ses->password2)
--				swap(ses->password2, ses->password);
--		}
--
--		if ((rc == -EACCES) && !tcon->retry) {
--			mutex_unlock(&ses->session_mutex);
--			rc = -EHOSTDOWN;
--			goto failed;
--		} else if (rc) {
-+	if (rc) {
-+		mutex_unlock(&ses->session_mutex);
-+		if (!tcon->retry)
-+			return -EHOSTDOWN;
-+		goto again;
-+	}
-+	/*
-+	 * if server stopped supporting multichannel
-+	 * and the first channel reconnected, disable all the others.
-+	 */
-+	if (ses->chan_count > 1 &&
-+	    !(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
-+		rc = cifs_chan_skip_or_disable(ses, server,
-+					       from_reconnect);
-+		if (rc) {
- 			mutex_unlock(&ses->session_mutex);
- 			goto out;
- 		}
--	} else {
-+	}
-+
-+	rc = cifs_setup_session(0, ses, server, ses->local_nls);
-+	if ((rc == -EACCES) || (rc == -EKEYEXPIRED) || (rc == -EKEYREVOKED)) {
-+		/*
-+		 * Try alternate password for next reconnect (key rotation
-+		 * could be enabled on the server e.g.) if an alternate
-+		 * password is available and the current password is expired,
-+		 * but do not swap on non pwd related errors like host down
-+		 */
-+		if (ses->password2)
-+			swap(ses->password2, ses->password);
-+	}
-+	if (rc) {
- 		mutex_unlock(&ses->session_mutex);
-+		if (rc == -EACCES && !tcon->retry)
-+			return -EHOSTDOWN;
- 		goto out;
- 	}
- 
-@@ -490,7 +479,6 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 	case SMB2_IOCTL:
- 		rc = -EAGAIN;
- 	}
--failed:
- 	return rc;
- }
- 
+ 	region6.offset.quad_part = shared_state_fb->gpu_addr;
+ 	region6.region.base = DMUB_CW6_BASE;
 -- 
 2.39.5
 
