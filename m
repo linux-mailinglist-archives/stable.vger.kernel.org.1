@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-126315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BA5A7009C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D21F0A70078
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FDCB19A335E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4261C842B53
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837FC2690E7;
-	Tue, 25 Mar 2025 12:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B4329B226;
+	Tue, 25 Mar 2025 12:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfJAgU3n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quD73EF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436391DD9D3;
-	Tue, 25 Mar 2025 12:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CBC29B222;
+	Tue, 25 Mar 2025 12:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905997; cv=none; b=NBKBULnQUnvjGnf1D4R/sbMXHqhtyFMYWu+FOZyjHk7CcoK369OVH1GIaVk+miuxS4/TZEIpecNUyzQ4CzrYPcZcUPWkH8Za65bRW20I5ZcXFMkGvCGhycYMyxC6nnqFUumC5D8O6Huw0pt+J9Miv41KKqCQL3puWW3z5GqRSkw=
+	t=1742905858; cv=none; b=Np9xNhxCl8ysArmAD5qQ2WU4SiKcOLR9oJb1r9lQMROYHMrpzLGiZsuFR7DnJw8V45SwXJqZGF+BnST4bdzZ7ygcECk5Gt8t7oYQtmS6PbFOK8Z6uRFhWamDW1BormN7OgpgeEegJ/XLBJtg9dLTjr7mfNHvsJQFrDOfOpyIxx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905997; c=relaxed/simple;
-	bh=bZAeLUJcFxejPtybDaWcuoagkkxTE55jr7YvUlFKxXs=;
+	s=arc-20240116; t=1742905858; c=relaxed/simple;
+	bh=dJdJi1qP8zhOQ21wxXukquza8J1lEq+Om9tx6SbXV+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0eji+vkuoFIYlboL7sQytRatOH6zk3TvsMNJHlSauke0quTtikQ2JI4tFlMWWMNdmX7yYOjbrwuM14SlEUR8Gp9XNvBz2TQbWzi1cfOVPK7Bf3+bwqt16MPXpRB63zhuvLnzQJu+ubF3C1MTUts2Tyok+e3W4UU8ChT0to/bv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfJAgU3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E703AC4CEE4;
-	Tue, 25 Mar 2025 12:33:16 +0000 (UTC)
+	 MIME-Version; b=uq106N2x8W9S0ML0TMCZ+MAORAsNc/XqxjwSjX96TFKOUVWejP5bsLKCfEONCeGlMUXPtksNX1Rv4gRV6x09bT6vo2+uDdsRDLjIHbafqioJ/xxpjCB97Uq3yvH7JmDFYyXojsECmj7Mp73xThzNikyg6PJs2yqUCzIaTO5s86g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quD73EF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F49AC4CEED;
+	Tue, 25 Mar 2025 12:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905997;
-	bh=bZAeLUJcFxejPtybDaWcuoagkkxTE55jr7YvUlFKxXs=;
+	s=korg; t=1742905857;
+	bh=dJdJi1qP8zhOQ21wxXukquza8J1lEq+Om9tx6SbXV+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lfJAgU3nNXNJtomIu2HS3hh8vfM3Pq28E6CpSPcaoKKpDFVsQJvvIQhDieSHTu+iE
-	 6x1aVKT8xDSJej8riPb+vIo+xJ9JjWSrJ7q226hfchpnDpH4egiBtquKFuvePOmM1u
-	 OfAdSrSJoTenb3uxi6PE2h8qk0piAiVPlsu/jLC8=
+	b=quD73EF5cL83tFEd0nvVolDzz/wkcV/AK92kA0w5GiH021hx8DBO6wKKlNauNxmob
+	 fsTFxNcGTWdbMhfIgqzvXGWZl4ti3AQQATgj3di2BlXye0uWEhpKYszHql9vWp5lFS
+	 oQMtawawqQQ0qy9kseIvyZ3Zi2gHMeQV7gIzGfsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Aquini <raquini@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.13 078/119] selftests/mm: run_vmtests.sh: fix half_ufd_size_MB calculation
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.1 174/198] arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card
 Date: Tue, 25 Mar 2025 08:22:16 -0400
-Message-ID: <20250325122151.051037358@linuxfoundation.org>
+Message-ID: <20250325122201.210988673@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Aquini <raquini@redhat.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit 67a2f86846f244d81601cf2e1552c4656b8556d6 upstream.
+commit 2c1092823eb03f8508d6769e2f38eef7e1fe62a0 upstream.
 
-We noticed that uffd-stress test was always failing to run when invoked
-for the hugetlb profiles on x86_64 systems with a processor count of 64 or
-bigger:
+The simple-audio-card's microphone widget currently connects to the
+headphone jack. Routing the microphone input to the microphone jack
+allows for independent operation of the microphone and headphones.
 
-  ...
-  # ------------------------------------
-  # running ./uffd-stress hugetlb 128 32
-  # ------------------------------------
-  # ERROR: invalid MiB (errno=9, @uffd-stress.c:459)
-  ...
-  # [FAIL]
-  not ok 3 uffd-stress hugetlb 128 32 # exit=1
-  ...
+This resolves the following boot-time kernel log message, which
+indicated a conflict when the microphone and headphone functions were
+not separated:
+  debugfs: File 'Headphone Jack' in directory 'dapm' already present!
 
-The problem boils down to how run_vmtests.sh (mis)calculates the size of
-the region it feeds to uffd-stress.  The latter expects to see an amount
-of MiB while the former is just giving out the number of free hugepages
-halved down.  This measurement discrepancy ends up violating uffd-stress'
-assertion on number of hugetlb pages allocated per CPU, causing it to bail
-out with the error above.
-
-This commit fixes that issue by adjusting run_vmtests.sh's
-half_ufd_size_MB calculation so it properly renders the region size in
-MiB, as expected, while maintaining all of its original constraints in
-place.
-
-Link: https://lkml.kernel.org/r/20250218192251.53243-1-aquini@redhat.com
-Fixes: 2e47a445d7b3 ("selftests/mm: run_vmtests.sh: fix hugetlb mem size calculation")
-Signed-off-by: Rafael Aquini <raquini@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
+Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/run_vmtests.sh |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -302,7 +302,9 @@ uffd_stress_bin=./uffd-stress
- CATEGORY="userfaultfd" run_test ${uffd_stress_bin} anon 20 16
- # Hugetlb tests require source and destination huge pages. Pass in half
- # the size of the free pages we have, which is used for *each*.
--half_ufd_size_MB=$((freepgs / 2))
-+# uffd-stress expects a region expressed in MiB, so we adjust
-+# half_ufd_size_MB accordingly.
-+half_ufd_size_MB=$(((freepgs * hpgsize_KB) / 1024 / 2))
- CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb "$half_ufd_size_MB" 32
- CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb-private "$half_ufd_size_MB" 32
- CATEGORY="userfaultfd" run_test ${uffd_stress_bin} shmem 20 16
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi
+@@ -16,10 +16,10 @@
+ 			"Headphone Jack", "HPOUTR",
+ 			"IN2L", "Line In Jack",
+ 			"IN2R", "Line In Jack",
+-			"Headphone Jack", "MICBIAS",
+-			"IN1L", "Headphone Jack";
++			"Microphone Jack", "MICBIAS",
++			"IN1L", "Microphone Jack";
+ 		simple-audio-card,widgets =
+-			"Microphone", "Headphone Jack",
++			"Microphone", "Microphone Jack",
+ 			"Headphone", "Headphone Jack",
+ 			"Line", "Line In Jack";
+ 
 
 
 
