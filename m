@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC922A7009B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B9AA7000B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8399219A0575
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 959863BE985
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D371C269CE4;
-	Tue, 25 Mar 2025 12:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF207267726;
+	Tue, 25 Mar 2025 12:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e53H0bMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ap/V5rL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9128B2571AC;
-	Tue, 25 Mar 2025 12:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAB6267722;
+	Tue, 25 Mar 2025 12:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906105; cv=none; b=qsuyXwG0YXJHv15R8xMyjD8jZnRjDnHd9VqTSR6T6K+uXhnyJd4YaMUt0g4cha9xLgGS8OGqgtxeCWX8YfmAf6uGO8aVwKgtCNX/4BWk3CQ++4IceJ8KJ76onD1gBjN95PjuGn6nmwl7IlQvp4e1G1CkH1BiyanC9mqg+HXzW7M=
+	t=1742905833; cv=none; b=m4Sx9ALi4xT7O5DUKK+RsLTUC+fq4JEOw2noywoSQ2ybbynSPLHt7WmtOQc3HDm1pbAXtj7xAqpoP0rxEFRTRCcpyzBIhMHRBv7Jp/2i4oeDBb6W7lnAGizr7GblLQj39QywlCcu3xdijzZbILgpxz5WLIHr1XVi4/xMY+gmhTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906105; c=relaxed/simple;
-	bh=NOLNjKZKj0S1NOcTcl38Kc0gUePuHMD5DgkmMV4+rtA=;
+	s=arc-20240116; t=1742905833; c=relaxed/simple;
+	bh=NYZQAmNNLgu1b6AUqEa9C1TbNIIkZOERHObZYwY/X5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WH+RhDS3Ll0uh80+st/OPZmwQJH5Of2oskXjYoJu8mHLxCGafiFlRly5WLyc8BhBGG10unQe94rH7as57PwjcdNXPDeKd63GwjDIQXftda/5RCqplZmgpTPAdZiLAyxsHJLT0I1tA81++syuxb/cujKBjjPsYLbLpkgZw7A8cLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e53H0bMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC27C4CEE4;
-	Tue, 25 Mar 2025 12:35:05 +0000 (UTC)
+	 MIME-Version; b=fmtKlX+HWhn1fZLZj3OBNZeokovkqiLJysNuo6nyWQOd2u47NGgCO6BdgVWoa/NMy09DvbOC/v14uPESCBQUgMKUU3HItBhkAJERzMpJse+7p1bevL8cWDlDh6ya4w2DDTlQuS8IK8g8MxHhW6sVOFXksW6EiWflCe3XOxg4Bq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ap/V5rL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23296C4CEED;
+	Tue, 25 Mar 2025 12:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906105;
-	bh=NOLNjKZKj0S1NOcTcl38Kc0gUePuHMD5DgkmMV4+rtA=;
+	s=korg; t=1742905833;
+	bh=NYZQAmNNLgu1b6AUqEa9C1TbNIIkZOERHObZYwY/X5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e53H0bMn2C1gXibiw1FUBaduAe+oVRle0IplOqtB8mNnFPJXnk7G7YBEsJRXRFoWL
-	 fCj+3PuFfUAAegA2xOvtYEJSdMeib75h6EPVehfmos9uJfLfZFb27gM5RQgW5cLzlw
-	 d6kj+eAcGPdd4ehk4AH+A9HKaWEndQl5lzRLSLWw=
+	b=ap/V5rL2CFp/n/NbnDhBJjUZvPTS3x/zBdr9NDExLmBKkpDNo6KnbvhdVfMEuqMHH
+	 VYtKPvSLAyrf34D7uiiIQLE2DwPaS/MqWjFbSVSmQ1vy47Y++KMuOLmR4YsGfVmpQE
+	 Dy/FL9c5pFZ+6UJUkCMLGVQvuCfMEJMbT3c3dViE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/77] RDMA/hns: Fix wrong value of max_sge_rd
+	Frank Li <frank.li@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 171/198] can: flexcan: disable transceiver during system PM
 Date: Tue, 25 Mar 2025 08:22:13 -0400
-Message-ID: <20250325122144.823027826@linuxfoundation.org>
+Message-ID: <20250325122201.133060949@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit 6b5e41a8b51fce520bb09bd651a29ef495e990de ]
+commit 5a19143124be42900b3fbc9ada3c919632eb45eb upstream.
 
-There is no difference between the sge of READ and non-READ
-operations in hns RoCE. Set max_sge_rd to the same value as
-max_send_sge.
+During system PM, if no wakeup requirement, disable transceiver to
+save power.
 
-Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-8-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <frank.li@nxp.com>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250314110145.899179-2-haibo.chen@nxp.com
+[mkl: add newlines]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/flexcan/flexcan-core.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index c8c49110a3378..dcd763dbb636d 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -182,7 +182,7 @@ static int hns_roce_query_device(struct ib_device *ib_dev,
- 				  IB_DEVICE_RC_RNR_NAK_GEN;
- 	props->max_send_sge = hr_dev->caps.max_sq_sg;
- 	props->max_recv_sge = hr_dev->caps.max_rq_sg;
--	props->max_sge_rd = 1;
-+	props->max_sge_rd = hr_dev->caps.max_sq_sg;
- 	props->max_cq = hr_dev->caps.num_cqs;
- 	props->max_cqe = hr_dev->caps.max_cqes;
- 	props->max_mr = hr_dev->caps.num_mtpts;
--- 
-2.39.5
-
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -2230,6 +2230,10 @@ static int __maybe_unused flexcan_suspen
+ 
+ 			flexcan_chip_interrupts_disable(dev);
+ 
++			err = flexcan_transceiver_disable(priv);
++			if (err)
++				return err;
++
+ 			err = pinctrl_pm_select_sleep_state(device);
+ 			if (err)
+ 				return err;
+@@ -2262,10 +2266,16 @@ static int __maybe_unused flexcan_resume
+ 			if (err)
+ 				return err;
+ 
+-			err = flexcan_chip_start(dev);
++			err = flexcan_transceiver_enable(priv);
+ 			if (err)
+ 				return err;
+ 
++			err = flexcan_chip_start(dev);
++			if (err) {
++				flexcan_transceiver_disable(priv);
++				return err;
++			}
++
+ 			flexcan_chip_interrupts_enable(dev);
+ 		}
+ 
 
 
 
