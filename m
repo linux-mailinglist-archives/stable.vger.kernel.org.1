@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A668A7003E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFE9A70074
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E20B17627A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDA457A3A7F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C5E25B67F;
-	Tue, 25 Mar 2025 12:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D879526E16E;
+	Tue, 25 Mar 2025 12:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nW5pXszp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVQGPdW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7355E1DD9D3;
-	Tue, 25 Mar 2025 12:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950BB25D525;
+	Tue, 25 Mar 2025 12:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905973; cv=none; b=A8GszPzCbKjE6bfQhOE3Gizy8ZLQyk2CjVAi7r3YjWmLBRuXwwRMMCKdbKA7uWpAiNVTXRvLCc+YnPLObOP039Ey3QzmteamqFMnO9/bHjjD+6MJrf0b95PRScKzDboleGTfKYby5HDp2hYu1hXCwyWoODYNr77/0TKa9Xi0D8E=
+	t=1742906343; cv=none; b=JoMfm3qnEKxvHUm+C96CJQ4rVmUGK4QRZTI7M+cU62gM7LrtPjwcMfEFEHvX5YJpx5WQasLUFPuCzR+0fodcBasdkw8P1c5B5qhbv8+79EVh7rKBLLoDg4I8n8yEf35jlEaprnJAahTm3fVO7foW8A8AoHY+OE0LjC8oWShqWqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905973; c=relaxed/simple;
-	bh=9RWDGuRF/zMDQL3h+wTiFhNMcwf1K1Tq/iDxPpyr6eY=;
+	s=arc-20240116; t=1742906343; c=relaxed/simple;
+	bh=irZaXBWk107geJvwoQUUjXJsO/Wv8i13debshdW9Wu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9d2WWC5z8WrUZEHHhIOAQLmEJk9qzWEu8tmvs1PdBxMln04fOJGeFfO+d209YS3k30ZAG+H2JNgEz0eiOE5q6eHl5ava4eosDMgKSd1jjV1bp8XjiWOV+61NWRhhOkUEMxjs+iQTGpOcRj1T2pYMYzkOTtSgHpb6uSvYUCWmt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW5pXszp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258A3C2BCB6;
-	Tue, 25 Mar 2025 12:32:53 +0000 (UTC)
+	 MIME-Version; b=TGHZlMdVPMfRzq59W0h2phIGIoc5D1/VAyM5/gipRHuDUEe6igQbT4+A/rUNhM/ytwB1+NXeQ7r7ZQKkp5vrKZzilcDe1p0SuzauUSPD3fCSCC8KhZe0Cy9f82uRB/RyuoQn9VePM2+2pzYVxQQF1aEItARmCnEhiZ/1o0ej/cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVQGPdW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19829C4CEF0;
+	Tue, 25 Mar 2025 12:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905973;
-	bh=9RWDGuRF/zMDQL3h+wTiFhNMcwf1K1Tq/iDxPpyr6eY=;
+	s=korg; t=1742906343;
+	bh=irZaXBWk107geJvwoQUUjXJsO/Wv8i13debshdW9Wu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nW5pXszpE8M126c7O7EgxyzLe8Hvl7XD3QpDRBdc/DWcfF7+3CeK0o7bbkfyfnDSx
-	 5Ys/UqQcbCjCbXwepJN/f7yUNcPieIgif9QXfcA1QaScQkIs6xJ7U3708uMx2EJsNN
-	 gVT3bdBL2nVrqrlnUzg3i7tssj0BMCYVCVI85O1g=
+	b=KVQGPdW37wm1ZGVIG8mVWRRqz9lRAE6n+8UjHdtqpGA12U2DRlufDiNGmk6vTFwey
+	 qcmi4MyaxIW7LQ4qHkCp4BIRR++JoUar3R04cTn6oXAcSLSNIKS2TpMafW8Mxx4dEs
+	 dHAgK5H39xWkXIXfp/FbysVN/dvnGyMzHZ+lDNOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.13 066/119] regulator: dummy: force synchronous probing
+	Felix Fietkau <nbd@nbd.name>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 037/116] net: ipv6: fix TCP GSO segmentation with NAT
 Date: Tue, 25 Mar 2025 08:22:04 -0400
-Message-ID: <20250325122150.744535334@linuxfoundation.org>
+Message-ID: <20250325122150.155928815@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 8619909b38eeebd3e60910158d7d68441fc954e9 upstream.
+[ Upstream commit daa624d3c2ddffdcbad140a9625a4064371db44f ]
 
-Sometimes I get a NULL pointer dereference at boot time in kobject_get()
-with the following call stack:
+When updating the source/destination address, the TCP/UDP checksum needs to
+be updated as well.
 
-anatop_regulator_probe()
- devm_regulator_register()
-  regulator_register()
-   regulator_resolve_supply()
-    kobject_get()
-
-By placing some extra BUG_ON() statements I could verify that this is
-raised because probing of the 'dummy' regulator driver is not completed
-('dummy_regulator_rdev' is still NULL).
-
-In the JTAG debugger I can see that dummy_regulator_probe() and
-anatop_regulator_probe() can be run by different kernel threads
-(kworker/u4:*).  I haven't further investigated whether this can be
-changed or if there are other possibilities to force synchronization
-between these two probe routines.  On the other hand I don't expect much
-boot time penalty by probing the 'dummy' regulator synchronously.
-
-Cc: stable@vger.kernel.org
-Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in 4.14")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Link: https://patch.msgid.link/20250311091803.31026-1-ceggers@arri.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bee88cd5bd83 ("net: add support for segmenting TCP fraglist GSO packets")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20250311212530.91519-1-nbd@nbd.name
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/dummy.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/tcpv6_offload.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/regulator/dummy.c
-+++ b/drivers/regulator/dummy.c
-@@ -60,7 +60,7 @@ static struct platform_driver dummy_regu
- 	.probe		= dummy_regulator_probe,
- 	.driver		= {
- 		.name		= "reg-dummy",
--		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
-+		.probe_type	= PROBE_FORCE_SYNCHRONOUS,
- 	},
- };
+diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
+index a45bf17cb2a17..ae2da28f9dfb1 100644
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -94,14 +94,23 @@ INDIRECT_CALLABLE_SCOPE int tcp6_gro_complete(struct sk_buff *skb, int thoff)
+ }
  
+ static void __tcpv6_gso_segment_csum(struct sk_buff *seg,
++				     struct in6_addr *oldip,
++				     const struct in6_addr *newip,
+ 				     __be16 *oldport, __be16 newport)
+ {
+-	struct tcphdr *th;
++	struct tcphdr *th = tcp_hdr(seg);
++
++	if (!ipv6_addr_equal(oldip, newip)) {
++		inet_proto_csum_replace16(&th->check, seg,
++					  oldip->s6_addr32,
++					  newip->s6_addr32,
++					  true);
++		*oldip = *newip;
++	}
+ 
+ 	if (*oldport == newport)
+ 		return;
+ 
+-	th = tcp_hdr(seg);
+ 	inet_proto_csum_replace2(&th->check, seg, *oldport, newport, false);
+ 	*oldport = newport;
+ }
+@@ -129,10 +138,10 @@ static struct sk_buff *__tcpv6_gso_segment_list_csum(struct sk_buff *segs)
+ 		th2 = tcp_hdr(seg);
+ 		iph2 = ipv6_hdr(seg);
+ 
+-		iph2->saddr = iph->saddr;
+-		iph2->daddr = iph->daddr;
+-		__tcpv6_gso_segment_csum(seg, &th2->source, th->source);
+-		__tcpv6_gso_segment_csum(seg, &th2->dest, th->dest);
++		__tcpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
++					 &th2->source, th->source);
++		__tcpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
++					 &th2->dest, th->dest);
+ 	}
+ 
+ 	return segs;
+-- 
+2.39.5
+
 
 
 
