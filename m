@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-126403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FB9A700A5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 338EBA701AB
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7723817428B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEBBF19A2C07
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F46726A1AC;
-	Tue, 25 Mar 2025 12:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD89B26F44A;
+	Tue, 25 Mar 2025 12:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZxr/5jU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFh2qJ+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA7D25BAD8;
-	Tue, 25 Mar 2025 12:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7995326F440;
+	Tue, 25 Mar 2025 12:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906159; cv=none; b=h/GUNP/w859ulHUiEhxqIFC4M9p1bMSOe6+BakBZv0m3ypW+H10LptZz8lUXEjIQnxY0A0yibR+S2fsmAcUQtasVxWEnU05zKnQBnyTyYNTm8ZbPLRGa66qZvrxKQe/mJ4QP7ESerVABMTLmLfENNCcrNIM0SQvdxPWednxKBVY=
+	t=1742906358; cv=none; b=S+4ASy5NNxrGmgRDTLfSev4XazbzoFTaok3sN+b4WkRKJKjB4Y0yARao6zU/f8lDqhoh3GgLIcif+DvmvMfaQ3ebe1yN3Y6jycZ6Qg5CLNG8Mu5Ya3omQYPaHFwCSkU4ZCs1a+x7fSogs6y/qxe6EsIm9haqISXX/0dezCRxQRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906159; c=relaxed/simple;
-	bh=UJ67/YsuETMEaiKL+Twiu+3U/nIWAz7GWcT4Byv+N84=;
+	s=arc-20240116; t=1742906358; c=relaxed/simple;
+	bh=+mNDA01syf//Ta9a9+EMbih9agk+cnBv9KaE2DU37Zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlZMU7dC9DKo3KEIbj6nOnKCti9G/WER/1Cir70p0RZ2tJ0d38r+2LnfyGEIZhGuiPFpuAgeKju+VtEJv6L0ys2IezQu5eCdBR5nvA3r3TIQujEqzjk8LZ730aIqahSyLHLg843a/mr56MyqXCSlsGsEtMUo5hcWlSSSkq24Wqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZxr/5jU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2623C4CEE4;
-	Tue, 25 Mar 2025 12:35:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R6CktNG/LRw/TgSQQnoAe/7W9D8IudrihMf80Od+wTfObOi0Rj4P3RHgYzb6TELeNyO+gdaPvrXOme7UbFk1+wRdavuULpHjy2xRidlh2SkpnwhMIf2AM4I3cSt5VzMVUWf65Wwf8hzpzXXXi6KDhf0/pxQAlEOfKnB2wEDUstE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFh2qJ+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303C4C4CEE4;
+	Tue, 25 Mar 2025 12:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906159;
-	bh=UJ67/YsuETMEaiKL+Twiu+3U/nIWAz7GWcT4Byv+N84=;
+	s=korg; t=1742906358;
+	bh=+mNDA01syf//Ta9a9+EMbih9agk+cnBv9KaE2DU37Zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZxr/5jUgYmc0KnDcsCwqkSHo6P9iAYOhU506D6j6C95BBFteHfWhCCA+TnVVib/N
-	 0a678JJxvoT1B1KPMZTTfxVQdPyuaOoiRWQ5Si1tjn56ZkvcQbHF4JxdrJF2dnBM32
-	 mTFVnuZCrJ5Q/jo7NzBK1qVVkWLvoFX5IfIfNuds=
+	b=OFh2qJ+S0IXPNA2Rk/Gb54wiHuj9Tp6FRsHSjIlCFxTnTtqzTogCurVNiCNbkszPv
+	 XMb5vxCnXjG1788ZxuSn/XcLr1QS0v5E6qKAIXjD7Ht5bYeZo+v+kfSUrpKJ0KrkAi
+	 IGomD8ZDC0JGpXxGPwZc2FqH0up2pyRQsmRQ3loQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Raphael S. Carvalho" <raphaelsc@scylladb.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 47/77] proc: fix UAF in proc_get_inode()
+Subject: [PATCH 6.12 075/116] mm: fix error handling in __filemap_get_folio() with FGP_NOWAIT
 Date: Tue, 25 Mar 2025 08:22:42 -0400
-Message-ID: <20250325122145.582355111@linuxfoundation.org>
+Message-ID: <20250325122151.126508201@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,184 +63,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Raphael S. Carvalho <raphaelsc@scylladb.com>
 
-commit 654b33ada4ab5e926cd9c570196fefa7bec7c1df upstream.
+commit 182db972c9568dc530b2f586a2f82dfd039d9f2a upstream.
 
-Fix race between rmmod and /proc/XXX's inode instantiation.
+original report:
+https://lore.kernel.org/all/CAKhLTr1UL3ePTpYjXOx2AJfNk8Ku2EdcEfu+CH1sf3Asr=B-Dw@mail.gmail.com/T/
 
-The bug is that pde->proc_ops don't belong to /proc, it belongs to a
-module, therefore dereferencing it after /proc entry has been registered
-is a bug unless use_pde/unuse_pde() pair has been used.
+When doing buffered writes with FGP_NOWAIT, under memory pressure, the
+system returned ENOMEM despite there being plenty of available memory, to
+be reclaimed from page cache.  The user space used io_uring interface,
+which in turn submits I/O with FGP_NOWAIT (the fast path).
 
-use_pde/unuse_pde can be avoided (2 atomic ops!) because pde->proc_ops
-never changes so information necessary for inode instantiation can be
-saved _before_ proc_register() in PDE itself and used later, avoiding
-pde->proc_ops->...  dereference.
+retsnoop pointed to iomap_get_folio:
 
-      rmmod                         lookup
-sys_delete_module
-                         proc_lookup_de
-			   pde_get(de);
-			   proc_get_inode(dir->i_sb, de);
-  mod->exit()
-    proc_remove
-      remove_proc_subtree
-       proc_entry_rundown(de);
-  free_module(mod);
+00:34:16.180612 -> 00:34:16.180651 TID/PID 253786/253721
+(reactor-1/combined_tests):
 
-                               if (S_ISREG(inode->i_mode))
-	                         if (de->proc_ops->proc_read_iter)
-                           --> As module is already freed, will trigger UAF
+                    entry_SYSCALL_64_after_hwframe+0x76
+                    do_syscall_64+0x82
+                    __do_sys_io_uring_enter+0x265
+                    io_submit_sqes+0x209
+                    io_issue_sqe+0x5b
+                    io_write+0xdd
+                    xfs_file_buffered_write+0x84
+                    iomap_file_buffered_write+0x1a6
+    32us [-ENOMEM]  iomap_write_begin+0x408
+iter=&{.inode=0xffff8c67aa031138,.len=4096,.flags=33,.iomap={.addr=0xffffffffffffffff,.length=4096,.type=1,.flags=3,.bdev=0x…
+pos=0 len=4096 foliop=0xffffb32c296b7b80
+!    4us [-ENOMEM]  iomap_get_folio
+iter=&{.inode=0xffff8c67aa031138,.len=4096,.flags=33,.iomap={.addr=0xffffffffffffffff,.length=4096,.type=1,.flags=3,.bdev=0x…
+pos=0 len=4096
 
-BUG: unable to handle page fault for address: fffffbfff80a702b
-PGD 817fc4067 P4D 817fc4067 PUD 817fc0067 PMD 102ef4067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 26 UID: 0 PID: 2667 Comm: ls Tainted: G
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-RIP: 0010:proc_get_inode+0x302/0x6e0
-RSP: 0018:ffff88811c837998 EFLAGS: 00010a06
-RAX: dffffc0000000000 RBX: ffffffffc0538140 RCX: 0000000000000007
-RDX: 1ffffffff80a702b RSI: 0000000000000001 RDI: ffffffffc0538158
-RBP: ffff8881299a6000 R08: 0000000067bbe1e5 R09: 1ffff11023906f20
-R10: ffffffffb560ca07 R11: ffffffffb2b43a58 R12: ffff888105bb78f0
-R13: ffff888100518048 R14: ffff8881299a6004 R15: 0000000000000001
-FS:  00007f95b9686840(0000) GS:ffff8883af100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: fffffbfff80a702b CR3: 0000000117dd2000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- proc_lookup_de+0x11f/0x2e0
- __lookup_slow+0x188/0x350
- walk_component+0x2ab/0x4f0
- path_lookupat+0x120/0x660
- filename_lookup+0x1ce/0x560
- vfs_statx+0xac/0x150
- __do_sys_newstat+0x96/0x110
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This is likely a regression caused by 66dabbb65d67 ("mm: return an ERR_PTR
+from __filemap_get_folio"), which moved error handling from
+io_map_get_folio() to __filemap_get_folio(), but broke FGP_NOWAIT
+handling, so ENOMEM is being escaped to user space.  Had it correctly
+returned -EAGAIN with NOWAIT, either io_uring or user space itself would
+be able to retry the request.
 
-[adobriyan@gmail.com: don't do 2 atomic ops on the common path]
-Link: https://lkml.kernel.org/r/3d25ded0-1739-447e-812b-e34da7990dcf@p183
-Fixes: 778f3dd5a13c ("Fix procfs compat_ioctl regression")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: David S. Miller <davem@davemloft.net>
+It's not enough to patch io_uring since the iomap interface is the one
+responsible for it, and pwritev2(RWF_NOWAIT) and AIO interfaces must
+return the proper error too.
+
+The patch was tested with scylladb test suite (its original reproducer),
+and the tests all pass now when memory is pressured.
+
+Link: https://lkml.kernel.org/r/20250224143700.23035-1-raphaelsc@scylladb.com
+Fixes: 66dabbb65d67 ("mm: return an ERR_PTR from __filemap_get_folio")
+Signed-off-by: Raphael S. Carvalho <raphaelsc@scylladb.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/generic.c       |   10 +++++++++-
- fs/proc/inode.c         |    6 +++---
- fs/proc/internal.h      |   14 ++++++++++++++
- include/linux/proc_fs.h |    7 +++++--
- 4 files changed, 31 insertions(+), 6 deletions(-)
+ mm/filemap.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -557,10 +557,16 @@ struct proc_dir_entry *proc_create_reg(c
- 	return p;
- }
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1966,8 +1966,19 @@ no_page:
  
--static inline void pde_set_flags(struct proc_dir_entry *pde)
-+static void pde_set_flags(struct proc_dir_entry *pde)
- {
- 	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
- 		pde->flags |= PROC_ENTRY_PERMANENT;
-+	if (pde->proc_ops->proc_read_iter)
-+		pde->flags |= PROC_ENTRY_proc_read_iter;
-+#ifdef CONFIG_COMPAT
-+	if (pde->proc_ops->proc_compat_ioctl)
-+		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-+#endif
- }
- 
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
-@@ -624,6 +630,7 @@ struct proc_dir_entry *proc_create_seq_p
- 	p->proc_ops = &proc_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_seq_private);
-@@ -654,6 +661,7 @@ struct proc_dir_entry *proc_create_singl
- 		return NULL;
- 	p->proc_ops = &proc_single_ops;
- 	p->single_show = show;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_single_data);
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -679,13 +679,13 @@ struct inode *proc_get_inode(struct supe
- 
- 	if (S_ISREG(inode->i_mode)) {
- 		inode->i_op = de->proc_iops;
--		if (de->proc_ops->proc_read_iter)
-+		if (pde_has_proc_read_iter(de))
- 			inode->i_fop = &proc_iter_file_ops;
- 		else
- 			inode->i_fop = &proc_reg_file_ops;
- #ifdef CONFIG_COMPAT
--		if (de->proc_ops->proc_compat_ioctl) {
--			if (de->proc_ops->proc_read_iter)
-+		if (pde_has_proc_compat_ioctl(de)) {
-+			if (pde_has_proc_read_iter(de))
- 				inode->i_fop = &proc_iter_file_ops_compat;
- 			else
- 				inode->i_fop = &proc_reg_file_ops_compat;
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -84,6 +84,20 @@ static inline void pde_make_permanent(st
- 	pde->flags |= PROC_ENTRY_PERMANENT;
- }
- 
-+static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_proc_read_iter;
-+}
-+
-+static inline bool pde_has_proc_compat_ioctl(const struct proc_dir_entry *pde)
-+{
-+#ifdef CONFIG_COMPAT
-+	return pde->flags & PROC_ENTRY_proc_compat_ioctl;
-+#else
-+	return false;
-+#endif
-+}
-+
- extern struct kmem_cache *proc_dir_entry_cache;
- void pde_free(struct proc_dir_entry *pde);
- 
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -20,10 +20,13 @@ enum {
- 	 * If in doubt, ignore this flag.
- 	 */
- #ifdef MODULE
--	PROC_ENTRY_PERMANENT = 0U,
-+	PROC_ENTRY_PERMANENT		= 0U,
- #else
--	PROC_ENTRY_PERMANENT = 1U << 0,
-+	PROC_ENTRY_PERMANENT		= 1U << 0,
- #endif
-+
-+	PROC_ENTRY_proc_read_iter	= 1U << 1,
-+	PROC_ENTRY_proc_compat_ioctl	= 1U << 2,
- };
- 
- struct proc_ops {
+ 		if (err == -EEXIST)
+ 			goto repeat;
+-		if (err)
++		if (err) {
++			/*
++			 * When NOWAIT I/O fails to allocate folios this could
++			 * be due to a nonblocking memory allocation and not
++			 * because the system actually is out of memory.
++			 * Return -EAGAIN so that there caller retries in a
++			 * blocking fashion instead of propagating -ENOMEM
++			 * to the application.
++			 */
++			if ((fgp_flags & FGP_NOWAIT) && err == -ENOMEM)
++				err = -EAGAIN;
+ 			return ERR_PTR(err);
++		}
+ 		/*
+ 		 * filemap_add_folio locks the page, and for mmap
+ 		 * we expect an unlocked page.
 
 
 
