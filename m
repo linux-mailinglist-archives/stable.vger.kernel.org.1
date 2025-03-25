@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EE1A7001B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A92AA70028
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD8DB3B65B9
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985A58419B6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE7526770E;
-	Tue, 25 Mar 2025 12:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6956268C7F;
+	Tue, 25 Mar 2025 12:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvAderSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+cxI0NX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D513F26770A;
-	Tue, 25 Mar 2025 12:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EEE268C6D;
+	Tue, 25 Mar 2025 12:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905808; cv=none; b=j822aF1CBsQXe15/knx61blzqcdvMWd/0FIFfN52mp1O00cHoFN4E2NEEMp7afmg+pjE4keR/8YHmjIQLBJmD7NCrzXIJaAnLRH0M7yDYGkwjo2ibeA+OF3qQ3FQOzpaXUB/Y/ev9LBOJGOc6RsmBMYr+BLpMTHznQzyzhyytuo=
+	t=1742905942; cv=none; b=UfZbjUfNjNAs0chljeajFewW6XRe0edM9wCJMdh2bRdLcKZpXwI1kb5gTT0ug15bQZXH7eyuCkcSr9/9alZzgYMVdpNoxbNh5pt0qXFLAb9M6PZnnRLEL2zSTS4Pr7TJkSVHxTeE8KDMd2blekZpfXPKGIJaAEhYYKbhN1tlw5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905808; c=relaxed/simple;
-	bh=1ClDAEhZBpv5k0XdZXnyKLovgg9R3FWQmvBsSRKNObU=;
+	s=arc-20240116; t=1742905942; c=relaxed/simple;
+	bh=oi0uZcDAKzc9tqqoiCfsjBHIaQrhzSes1p04ueMoGN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxG8TVbXvHMusa4UdzYACOOMDf2YoAc7DF1iEt4uVgOo/JQQYK9kHB/Ir9rUZQMTNu2kSt9Ula62ErSiFs5DyV7AYexoL4YLGPH/FjS2XVk0kP2dV1IM47oW3Vr34KP7VsXPa0MuYWX+JuwXc4Dl8hD9QDyw+lhWzKMjur4XWpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvAderSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE0FC4CEED;
-	Tue, 25 Mar 2025 12:30:07 +0000 (UTC)
+	 MIME-Version; b=Pi1tkqZK650dphhVHxdo9+NtApF7MR7a8jkSRZFLuSizTppLWkJPJE++sKLehVqTmAOiNbCvpHZ9XTEFL5T3TDKTZYMkPYCjtUQ9SVr7LtL2lqKTnkEv152ascj+oSyDJjU7z03YqqnF3iHlMHaGm2XZnyfl/bL1zYstjsQJp88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+cxI0NX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B778C4CEE4;
+	Tue, 25 Mar 2025 12:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905807;
-	bh=1ClDAEhZBpv5k0XdZXnyKLovgg9R3FWQmvBsSRKNObU=;
+	s=korg; t=1742905942;
+	bh=oi0uZcDAKzc9tqqoiCfsjBHIaQrhzSes1p04ueMoGN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KvAderSq2TU8s52eOGt/zbE4gyg0bN5rX72RU9JyV6Cv4OQyvPVNhEIMtozcrHLb1
-	 bYtjNge+bq52oTF2YJzQLkC7oOzhPur972pp4VDHisZ+zxQuBlmZxHmDdh5XzX3EoP
-	 Aw39XjxNC6CV4zRi884fMsxA9fI7JT92fp/3rN3U=
+	b=w+cxI0NX7M0IIHLjDbNS9VLNgflrLk+HQjQqq+rGqGlQ26+GlVm2z1Wzx2k/3vT/K
+	 AnMGw6NGSCF8mKAkdPDIgUDsOsEZS+QgPuT5NXnorcTlpvemdKi9b+J8PW9Euru+g8
+	 gFkqmwDuQq9EuovTkBVD5BG/UqzHRDAVcO2rfur0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.1 144/198] nvme-tcp: Fix a C2HTermReq error message
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 048/119] net: ipv6: ioam6: fix lwtunnel_output() loop
 Date: Tue, 25 Mar 2025 08:21:46 -0400
-Message-ID: <20250325122200.437134243@linuxfoundation.org>
+Message-ID: <20250325122150.280264206@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-commit afb41b08c44e5386f2f52fa859010ac4afd2b66f upstream.
+[ Upstream commit 3e7a60b368eadf6c30a4a79dea1eb8f88b6d620d ]
 
-In H2CTermReq, a FES with value 0x05 means "R2T Limit Exceeded"; but
-in C2HTermReq the same value has a different meaning (Data Transfer Limit
-Exceeded).
+Fix the lwtunnel_output() reentry loop in ioam6_iptunnel when the
+destination is the same after transformation. Note that a check on the
+destination address was already performed, but it was not enough. This
+is the example of a lwtunnel user taking care of loops without relying
+only on the last resort detection offered by lwtunnel.
 
-Fixes: 84e009042d0f ("nvme-tcp: add basic support for the C2HTermReq PDU")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Link: https://patch.msgid.link/20250314120048.12569-3-justin.iurman@uliege.be
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ioam6_iptunnel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -706,7 +706,7 @@ static void nvme_tcp_handle_c2h_term(str
- 		[NVME_TCP_FES_PDU_SEQ_ERR] = "PDU Sequence Error",
- 		[NVME_TCP_FES_HDR_DIGEST_ERR] = "Header Digest Error",
- 		[NVME_TCP_FES_DATA_OUT_OF_RANGE] = "Data Transfer Out Of Range",
--		[NVME_TCP_FES_R2T_LIMIT_EXCEEDED] = "R2T Limit Exceeded",
-+		[NVME_TCP_FES_DATA_LIMIT_EXCEEDED] = "Data Transfer Limit Exceeded",
- 		[NVME_TCP_FES_UNSUPPORTED_PARAM] = "Unsupported Parameter",
- 	};
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index 2c383c12a4315..09065187378e6 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -337,7 +337,6 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
+ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct dst_entry *dst = skb_dst(skb), *cache_dst = NULL;
+-	struct in6_addr orig_daddr;
+ 	struct ioam6_lwt *ilwt;
+ 	int err = -EINVAL;
+ 	u32 pkt_cnt;
+@@ -352,8 +351,6 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	if (pkt_cnt % ilwt->freq.n >= ilwt->freq.k)
+ 		goto out;
  
+-	orig_daddr = ipv6_hdr(skb)->daddr;
+-
+ 	local_bh_disable();
+ 	cache_dst = dst_cache_get(&ilwt->cache);
+ 	local_bh_enable();
+@@ -422,7 +419,10 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 	}
+ 
+-	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
++	/* avoid lwtunnel_output() reentry loop when destination is the same
++	 * after transformation (e.g., with the inline mode)
++	 */
++	if (dst->lwtstate != cache_dst->lwtstate) {
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, cache_dst);
+ 		return dst_output(net, sk, skb);
+-- 
+2.39.5
+
 
 
 
