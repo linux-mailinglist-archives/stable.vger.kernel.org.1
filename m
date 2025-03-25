@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-126486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD004A700D2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C22A700CE
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D18F5176CE5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1557419A52E3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E04126E151;
-	Tue, 25 Mar 2025 12:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF54725A640;
+	Tue, 25 Mar 2025 12:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXSEOk6J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hz93LE/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B42D25C717;
-	Tue, 25 Mar 2025 12:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9C7267B9B;
+	Tue, 25 Mar 2025 12:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906314; cv=none; b=iGuxJoxpHcpYCQXleDVCQJSh8siVGivlut150esMh3cP5dpRIerEkXC7g+bRggd/LPh+7iEw/JYTcY1HBfMyn8Yy2My0wS5H/TOIk92D378dmCJvUZYw+N/T0XX7g1gk1ln8g8VMbLbA+IXQ+/VAeKG0KHYLkHo75RcBcW+OBkA=
+	t=1742905861; cv=none; b=eQik3p49sxHsQVzF8Na0X0UbqknGzHWGzKDvJGR7py6my93rnoZyp5s1xHbznpgmn22szILLqnjb4L47eqSWhDMdlDRszZ2h0L+RDzGbi6Dc2W1o9Glk/KOgK38a0FCtM+Ei3KRhaAruEsStchz3oE740tgOMnGLqtm2Bm2UAS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906314; c=relaxed/simple;
-	bh=S3t4Hr/ZWWQezniPLldv4O8HgdmKMxvzLUp+MUsNtcA=;
+	s=arc-20240116; t=1742905861; c=relaxed/simple;
+	bh=RlUHZAqh7m2Gikk/ljHAKjY9DWF/1q/8E1NU00ANySw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRbVOwOiyOyo4hbexxLdzQiS7+YMeYDp/kvAmE4FvN51XGKaE4zJTX7aX5QTGOvPr3Oc09c3HTYwltcqwLQXigGq86jr7uDd5uxpvCWJSmTIZFEeVrknnHbM8s90mBMprBeD5d3YW8/J7wuDSncLDmnjvb1jm+R/Owqrn2nXwTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXSEOk6J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103C9C4CEE4;
-	Tue, 25 Mar 2025 12:38:33 +0000 (UTC)
+	 MIME-Version; b=f/+Zcik8dU1FUGuUWQJzJQ8VRl/dFAgN83n8/92qm2CByM1Glg+w8gI4MIMggAJEAfoNeJ6wo3FSOH7ZZfzYevBw7NjhOasWBgf5+zgIFVUS4RKlHmzuASyob+UNCqGPhAw2HcY6UiafZsx9ttVwABWZ3b0EdF08kUILJ8xy2ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hz93LE/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3199DC4CEE4;
+	Tue, 25 Mar 2025 12:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906314;
-	bh=S3t4Hr/ZWWQezniPLldv4O8HgdmKMxvzLUp+MUsNtcA=;
+	s=korg; t=1742905861;
+	bh=RlUHZAqh7m2Gikk/ljHAKjY9DWF/1q/8E1NU00ANySw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXSEOk6J7u0FfXDfq4VaES5JPgdZGQZUwqq5l/L2Z4y4FoI1UeCintP5S0wo0Gcvm
-	 syjs7669Iu+kaQ8j0NYyPNQaUBgPcKvsCvoJ+zXkEN4/RwV4UtS20uP0FJsMAwHuoE
-	 41Cf6FxzelIbAVZjBc5K6xJhIx1zN9oFUbdaZNx4=
+	b=hz93LE/ul1GN/aT3Afp9AXfVwRkVEmb3bCVbmlnL79pU3Z/pArVTxmULpNszMG3qK
+	 EGStxep5pXrRawiqT6Ph40gD7pFI3nY4I8q4f8rCWvPqCBurBAsuXXuUIYGW8qVBCR
+	 BAXppaySc6TLRrX1xhsCQgTmOx/YJ9TrzIakdT4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.12 051/116] tracing: tprobe-events: Fix leakage of module refcount
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 176/198] mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops
 Date: Tue, 25 Mar 2025 08:22:18 -0400
-Message-ID: <20250325122150.511958085@linuxfoundation.org>
+Message-ID: <20250325122201.264983647@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-commit ac91052f0ae5be9e46211ba92cc31c0e3b0a933a upstream.
+commit 723ef0e20dbb2aa1b5406d2bb75374fc48187daa upstream.
 
-When enabling the tracepoint at loading module, the target module
-refcount is incremented by find_tracepoint_in_module(). But it is
-unnecessary because the module is not unloaded while processing
-module loading callbacks.
-Moreover, the refcount is not decremented in that function.
-To be clear the module refcount handling, move the try_module_get()
-callsite to trace_fprobe_create_internal(), where it is actually
-required.
+cqhci timeouts observed on brcmstb platforms during suspend:
+  ...
+  [  164.832853] mmc0: cqhci: timeout for tag 18
+  ...
 
-Link: https://lore.kernel.org/all/174182761071.83274.18334217580449925882.stgit@devnote2/
+Adding cqhci_suspend()/resume() calls to disable cqe
+in sdhci_brcmstb_suspend()/resume() respectively to fix
+CQE timeouts seen on PM suspend.
 
-Fixes: 57a7e6de9e30 ("tracing/fprobe: Support raw tracepoints on future loaded modules")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)")
 Cc: stable@vger.kernel.org
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20250311165946.28190-1-kamal.dasu@broadcom.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_fprobe.c |   21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ drivers/mmc/host/sdhci-brcmstb.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/kernel/trace/trace_fprobe.c
-+++ b/kernel/trace/trace_fprobe.c
-@@ -889,13 +889,8 @@ static void __find_tracepoint_module_cb(
+--- a/drivers/mmc/host/sdhci-brcmstb.c
++++ b/drivers/mmc/host/sdhci-brcmstb.c
+@@ -396,8 +396,15 @@ static int sdhci_brcmstb_suspend(struct
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
++	int ret;
  
- 	if (!data->tpoint && !strcmp(data->tp_name, tp->name)) {
- 		data->tpoint = tp;
--		if (!data->mod) {
-+		if (!data->mod)
- 			data->mod = mod;
--			if (!try_module_get(data->mod)) {
--				data->tpoint = NULL;
--				data->mod = NULL;
--			}
--		}
+ 	clk_disable_unprepare(priv->base_clk);
++	if (host->mmc->caps2 & MMC_CAP2_CQE) {
++		ret = cqhci_suspend(host->mmc);
++		if (ret)
++			return ret;
++	}
++
+ 	return sdhci_pltfm_suspend(dev);
+ }
+ 
+@@ -422,6 +429,9 @@ static int sdhci_brcmstb_resume(struct d
+ 			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
  	}
- }
  
-@@ -907,13 +902,7 @@ static void __find_tracepoint_cb(struct
- 		data->tpoint = tp;
++	if (host->mmc->caps2 & MMC_CAP2_CQE)
++		ret = cqhci_resume(host->mmc);
++
+ 	return ret;
  }
- 
--/*
-- * Find a tracepoint from kernel and module. If the tracepoint is in a module,
-- * this increments the module refcount to prevent unloading until the
-- * trace_fprobe is registered to the list. After registering the trace_fprobe
-- * on the trace_fprobe list, the module refcount is decremented because
-- * tracepoint_probe_module_cb will handle it.
-- */
-+/* Find a tracepoint from kernel and module. */
- static struct tracepoint *find_tracepoint(const char *tp_name,
- 					  struct module **tp_mod)
- {
-@@ -942,6 +931,7 @@ static void reenable_trace_fprobe(struct
- 	}
- }
- 
-+/* Find a tracepoint from specified module. */
- static struct tracepoint *find_tracepoint_in_module(struct module *mod,
- 						    const char *tp_name)
- {
-@@ -1177,6 +1167,11 @@ static int __trace_fprobe_create(int arg
- 	if (is_tracepoint) {
- 		ctx.flags |= TPARG_FL_TPOINT;
- 		tpoint = find_tracepoint(symbol, &tp_mod);
-+		/* lock module until register this tprobe. */
-+		if (tp_mod && !try_module_get(tp_mod)) {
-+			tpoint = NULL;
-+			tp_mod = NULL;
-+		}
- 		if (tpoint) {
- 			ctx.funcname = kallsyms_lookup(
- 				(unsigned long)tpoint->probestub,
+ #endif
 
 
 
