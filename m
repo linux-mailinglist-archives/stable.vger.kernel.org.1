@@ -1,75 +1,97 @@
-Return-Path: <stable+bounces-126004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BDEA6EDA3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:27:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1702FA6EE23
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:47:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C33C31896D1A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 10:27:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA6A3AB8DE
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 10:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650782561B8;
-	Tue, 25 Mar 2025 10:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4CE253F00;
+	Tue, 25 Mar 2025 10:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkyeH/HT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BdAuEhfM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE8E255249;
-	Tue, 25 Mar 2025 10:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E15C1EBA1C
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 10:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742898396; cv=none; b=Ontt9pQ4OD0mg1pNkCZyDtnZNBZ4qmRzT381v7DO0voadKB5c+CJ3Z8Bnajv9j2uVBUgAVqLXaJLh7THjIcnMtlbKyozL4PvjljDLRyA5ch0FeuKtQLECYCgjXdlAyAIg/JKV9h9q1xlpJD5hHyqOBEqxMLyKtjWayd7ZULVCOM=
+	t=1742899603; cv=none; b=QyoXIdn1STyqGzSKVvHPacIqUj4PLxklLNG+OVXYa7XzS0/qy64b/+NJ3PQBrZlGV7a0NYIlmydzVmOdFJHsIuuvkPjK19pynIFBgdD0HA9dhtDTCpTahNM5UClxGFQl1jhcOx0ftqCUGLwQXnlEEEX/ST49AliWXWPtAOW2mwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742898396; c=relaxed/simple;
-	bh=Oh9hzrub7V3yA6gRUAWaXuxAVYkgTAMlh3xgo9/9ols=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lLAzAuJPBCTtwTO2AV3ZExs1Rm5ATiZeSkdwraR2BJC5TGZpU4X4Rj77WRUWmvXXACcJ56HsxHK3h8tjO5FeuBiiQU/q0VG0KZqpqt2MV18m77T6R0eSx6ZSbj4/WUdj+l1SH6wN6VxfIJZFh1J90GQQVto1GlYa+qLzkXzs9Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkyeH/HT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBEAC4AF0B;
-	Tue, 25 Mar 2025 10:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742898395;
-	bh=Oh9hzrub7V3yA6gRUAWaXuxAVYkgTAMlh3xgo9/9ols=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkyeH/HTmIBNAjo7Dx7nqIpBRB79DCVMvI1u2Su7let3jQAlYRaI68+tDB4KPdA6l
-	 mz2Wv/ydl61gRRiKN5/MEOLl7ckni3Lcs8nOTYeUOW8IEnGRcwTB9nSVd1+7tZyca6
-	 C1II+sfocYNKda4dr1+JC4lwYhRNLZPakozchoBPKivqOQTgWZhkgOIDv5Zkk2/kFb
-	 7E+LCI6r7E5mjD+zu5o2nS/d3CTr3GMa/vQCBEvZB1iaBjeLCtpM198N0tqnm+j8qp
-	 FFxyx3iuq2nm3JhGnXPl7vDgACZIP5DziqXBrRd5KmZoi1jNt17ix68m40ETZuzeaa
-	 E0296fJI8B9sg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tx1UQ-00GsRS-0l;
-	Tue, 25 Mar 2025 10:26:34 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: linux-arm-kernel@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev
-Cc: Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Janne Grunau <j@jannau.net>,
-	Hector Martin <marcan@marcan.st>,
-	Sven Peter <sven@svenpeter.dev>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	s=arc-20240116; t=1742899603; c=relaxed/simple;
+	bh=vkbpeFmqD668MPanvRonoQwCZ0BQK81IhaRcc7RnYTo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AhJkkWVUTk7mmNFc22MGTcIMdcQqLyXzycy3keGYswfTiCbg9n45+vMxt2aS46aNBrxfntAU3zJOQLEdyXGG+0MrJ3HbgXNlF7/ZxdterL6fHPEOWBrZzg3rLyZTAqxk2kmppnXEqImX3qBEiF3hqs8ijLy6gRsT1LMexfzB/rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BdAuEhfM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742899600;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IL/6aR5DxlrxjOnL/vY3X0cqTZslpUhOi/XOXuXLhhE=;
+	b=BdAuEhfMfQEehbJjjvBbU7Ve4u6pCdIsoND/YqcigEQuuPbJPrbuz07YQbtSgvKzUL25xv
+	XcM3xwVUKMuryOa2cgym1ud5Jj9p1pqbkp7mzLJtyrjzIr8lZtkIAeWYzBxcljPEnPt8KJ
+	AcvG8z79YmlNCaiKL0owTvPlWX/GnMk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-447-6ljh4DScM2ScaEDG0u-VTQ-1; Tue, 25 Mar 2025 06:46:38 -0400
+X-MC-Unique: 6ljh4DScM2ScaEDG0u-VTQ-1
+X-Mimecast-MFC-AGG-ID: 6ljh4DScM2ScaEDG0u-VTQ_1742899597
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-39134c762ebso2171753f8f.0
+        for <stable@vger.kernel.org>; Tue, 25 Mar 2025 03:46:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742899597; x=1743504397;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IL/6aR5DxlrxjOnL/vY3X0cqTZslpUhOi/XOXuXLhhE=;
+        b=Zm4rtlYkfr9SqQlGr0shkjNweOoneb4TSqOd9vTXYpQ9v42mvCpQJ1ztnQN63XSr9b
+         25PKVzUDR/3hknfa3n3ISlGYl2Z1CeKIHBk6vNg77PB/Hp4ds/Y5dyG7wdJE7bz5uO1z
+         wfUvHizSZ+RjHTjCv086mOHFdxehAJdjcvrrpnt6DsIalhtsmTA5cQ76J1pRp23fypR8
+         K4mI8tzkCaRpcOO0gtZlqYsXKrBSxKhoWlgZBOr7/fC21zIVUpzzIsqUEgdpn91KYOFS
+         J9//wOhGbfIMx3DLLtLwf/dYE33j9R2Y8ek+YP/AEAv7L0ceiqn2MnKfO+h7nGYn8P+3
+         iLhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV0ktxuVyeXqMxOfFjRlYchciXKLb5gOds0XTSYa9tUQECTQXrRENQW7itIqfgCwZ08lRZawG0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAF/8Rwtlrhb0Cv8ASSx9RcWunKvdCPbWFsW1nLWThBEBllS2r
+	gmUDLjan16puPXUuZq6kVnNURiuAq0UwWLhMOqdxE6OaZ55VTdSaZ8dhQAZlsK6ETVT2DsQT8Vx
+	56U+FxD7jlgoFuIXjo+FyREP5hH3n/R30d+KQnJUh2Ahcn0bUPrdHXA==
+X-Gm-Gg: ASbGncse+m2TPHerU6Lgn7xb79aCey423bfv6poAONDuv9Tw5Jswv1xk/8pdmIzOsMo
+	VqRCvoKJmJa/6BirtXAvLlxsIhs/dhZS/OAF7iXzAox/K+jXUZmhqFBRPIq049W+wyNpcSw5HjR
+	ssDUZdP98sgGvo9uL2k6dKNkR98lbylx25ZYY8rgnBEAZyz303uyqVixCF74uZvp+QN1pAK+cL5
+	Bc9h0UXystHtUFtQgY7Sx3pkivIDVTzM41Bq9eqyJpRUXB7H9v291TQVBboFKsd4N7lkAd+h4rT
+	aPDT5zCMfMxqWMGuV1WWtgbtQUOArzkl0YFvOQKPGyc1i89lT5PpINiUv7isAF/KEj0=
+X-Received: by 2002:a05:6000:2cd:b0:391:2f2f:818 with SMTP id ffacd0b85a97d-3997f8edc1dmr15905511f8f.9.1742899597445;
+        Tue, 25 Mar 2025 03:46:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEw5sCn6O0eZPQdrxPvOONhB4Ut43Nqsv6iiLVmfKeBePtnVQmM3EmzBo2MGDhKqQ2BMNL+cw==
+X-Received: by 2002:a05:6000:2cd:b0:391:2f2f:818 with SMTP id ffacd0b85a97d-3997f8edc1dmr15905478f8f.9.1742899597091;
+        Tue, 25 Mar 2025 03:46:37 -0700 (PDT)
+Received: from maszat.piliscsaba.szeredi.hu (87-97-53-119.pool.digikabel.hu. [87.97.53.119])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9a50c1sm13572203f8f.38.2025.03.25.03.46.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Mar 2025 03:46:36 -0700 (PDT)
+From: Miklos Szeredi <mszeredi@redhat.com>
+To: linux-unionfs@vger.kernel.org
+Cc: Amir Goldstein <amir73il@gmail.com>,
+	linux-fsdevel@vger.kernel.org,
+	Giuseppe Scrivano <gscrivan@redhat.com>,
+	Alexander Larsson <alexl@redhat.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 08/13] PCI: apple: Set only available ports up
-Date: Tue, 25 Mar 2025 10:26:05 +0000
-Message-Id: <20250325102610.2073863-9-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250325102610.2073863-1-maz@kernel.org>
-References: <20250325102610.2073863-1-maz@kernel.org>
+Subject: [PATCH v2 1/5] ovl: don't allow datadir only
+Date: Tue, 25 Mar 2025 11:46:29 +0100
+Message-ID: <20250325104634.162496-2-mszeredi@redhat.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250325104634.162496-1-mszeredi@redhat.com>
+References: <20250325104634.162496-1-mszeredi@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,48 +99,42 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, asahi@lists.linux.dev, alyssa@rosenzweig.io, j@jannau.net, marcan@marcan.st, sven@svenpeter.dev, bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org, krzk+dt@kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Janne Grunau <j@jannau.net>
+In theory overlayfs could support upper layer directly referring to a data
+layer, but there's no current use case for this.
 
-Iterating over disabled ports results in of_irq_parse_raw() parsing
-the wrong "interrupt-map" entries, as it takes the status of the node
-into account.
+Originally, when data-only layers were introduced, this wasn't allowed,
+only introduced by the "datadir+" feature, but without actually handling
+this case, resulting in an Oops.
 
-Switching from for_each_child_of_node() to for_each_available_child_of_node()
-solves this issue.
+Fix by disallowing datadir without lowerdir.
 
-This became apparent after disabling unused PCIe ports in the Apple
-Silicon device trees instead of deleting them.
-
-Link: https://lore.kernel.org/asahi/20230214-apple_dts_pcie_disable_unused-v1-0-5ea0d3ddcde3@jannau.net/
-Link: https://lore.kernel.org/asahi/1ea2107a-bb86-8c22-0bbc-82c453ab08ce@linaro.org/
-Fixes: 1e33888fbe44 ("PCI: apple: Add initial hardware bring-up")
-Cc: stable@vger.kernel.org
-Signed-off-by: Janne Grunau <j@jannau.net>
-Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reported-by: Giuseppe Scrivano <gscrivan@redhat.com>
+Fixes: 24e16e385f22 ("ovl: add support for appending lowerdirs one by one")
+Cc: <stable@vger.kernel.org> # v6.7
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 ---
- drivers/pci/controller/pcie-apple.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/super.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
-index 6271533f1b042..23d9f62bd2ad4 100644
---- a/drivers/pci/controller/pcie-apple.c
-+++ b/drivers/pci/controller/pcie-apple.c
-@@ -747,7 +747,7 @@ static int apple_pcie_init(struct pci_config_window *cfg)
- 	struct device_node *of_port;
- 	int ret;
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 86ae6f6da36b..b11094acdd8f 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1137,6 +1137,11 @@ static struct ovl_entry *ovl_get_lowerstack(struct super_block *sb,
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
--	for_each_child_of_node(dev->of_node, of_port) {
-+	for_each_available_child_of_node(dev->of_node, of_port) {
- 		ret = apple_pcie_setup_port(pcie, of_port);
- 		if (ret) {
- 			dev_err(dev, "Port %pOF setup fail: %d\n", of_port, ret);
++	if (ctx->nr == ctx->nr_data) {
++		pr_err("at least one non-data lowerdir is required\n");
++		return ERR_PTR(-EINVAL);
++	}
++
+ 	err = -EINVAL;
+ 	for (i = 0; i < ctx->nr; i++) {
+ 		l = &ctx->lower[i];
 -- 
-2.39.2
+2.49.0
 
 
