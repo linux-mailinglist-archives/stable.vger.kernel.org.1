@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-126381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9805A7013C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:21:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670FBA70035
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6853A189F521
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FD9E3A87AF
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E206269D08;
-	Tue, 25 Mar 2025 12:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3DA2690F4;
+	Tue, 25 Mar 2025 12:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dl9xJRBn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twQyJGyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B018269CE6;
-	Tue, 25 Mar 2025 12:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D31125B66A;
+	Tue, 25 Mar 2025 12:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906119; cv=none; b=mbI8mi/rVBGCmHmRe1O+yj5KCxESjOitxhTrFHB/obL2jnyDz8PYYYMUO8ULxRtp0SQcGhSCTRDl7nSrFkHMM0EkdqCdsKHePzk5n/H6DYGTf8g6WRQudbQz0DGshOdjXBft9IoMfKZiinuZ5zz+jTawrPy4L/bLN9x2P9aRo3g=
+	t=1742906002; cv=none; b=hOgdlPP5iaRC8O80oCI9/XqPUG6W/pvAhXV6l2b8MXJV0tGU4/ZvXdfjAcNbnyNJPSYGAWUjml43mfXxhJMEUuoTFvNPz4UP8YCOO1pYf01dtTGqqZfJsn/htGDrtEJHU6rNfUmEp8WXHKod+mwUomfRvAPKs8WSQBoSpWfjN/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906119; c=relaxed/simple;
-	bh=VEgZ969WZaHYrCT3uN53jGdsLXK2uL2eQkRsnHbEJkY=;
+	s=arc-20240116; t=1742906002; c=relaxed/simple;
+	bh=+LPhEJvP5FRLC+fd8yiyURRzfZSWZDwB5nRGM4Ho04w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flGvQRnrMMPwYFo5znRr+iQCefK3w7gP16C4V80yra5oLRqMyFwxGop15aYFJJsqBwHr8SxOiv2zXWsvoKvyrUe7SgF5kpkYOHn+383pSZfEFyaPCYwhhKyqgA4PLHigSs9s/2qwpFbiGAUwZ8mAzholOSRNccCZV+c9akbLLb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dl9xJRBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDEAC4CEE9;
-	Tue, 25 Mar 2025 12:35:18 +0000 (UTC)
+	 MIME-Version; b=jBF+KDRy3Kled8Ikxrt9m/YHVdIK0VejqqlAYTIsB9rG7L3GCvA4v0IIKc0KMKecrTIiwlj2yWTHLdvklXausQUR95jPfPeCisEjb3NCsfyjCLBdKxpI7aC9Z0uY3DYDqYnj5I6w1YCkL9yKM+FFJKcf0wpAS3h7waRjayZEIA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twQyJGyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ABCC4CEE4;
+	Tue, 25 Mar 2025 12:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906119;
-	bh=VEgZ969WZaHYrCT3uN53jGdsLXK2uL2eQkRsnHbEJkY=;
+	s=korg; t=1742906002;
+	bh=+LPhEJvP5FRLC+fd8yiyURRzfZSWZDwB5nRGM4Ho04w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dl9xJRBn+kr/dAxTWU4oc4F3+UbUeQQoTxy5wFtJFXKhYa6zkTi6yfgVoo4V8uy0f
-	 qELdY5tvJBJLAsQ6iZr6Vb9y+hSJLszx7ssjjXdVquTo+U9Q8VRD+DvpvNk2FFouc/
-	 5QYKmgbdjwnqQCzQA2ZCSyW1d3VKaklosMuNG9Ks=
+	b=twQyJGygK6OldL4/HywZ5CJqkMFKYTMTXc9M5M8sMmBV07NJ5BsrgHgc90yD6s5ld
+	 8cE4AbVGDNd8429wyUWN4Au2JwXIv471ZyucK20otW7nRjmFtVnOndKS3ul/i9xY+/
+	 /Y1yY9/FkBns5sPvFhIcmNzzh5f4Bul5XS8pqhig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 24/77] ipv6: Set errno after ip_fib_metrics_init() in ip6_route_info_create().
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Farrah Chen <farrah.chen@intel.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Thomas Lendacky <thomas.lendacky@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 081/119] mm/page_alloc: fix memory accept before watermarks gets initialized
 Date: Tue, 25 Mar 2025 08:22:19 -0400
-Message-ID: <20250325122144.986680404@linuxfoundation.org>
+Message-ID: <20250325122151.127017834@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +70,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit 9a81fc3480bf5dbe2bf80e278c440770f6ba2692 ]
+commit 800f1059c99e2b39899bdc67a7593a7bea6375d8 upstream.
 
-While creating a new IPv6, we could get a weird -ENOMEM when
-RTA_NH_ID is set and either of the conditions below is true:
+Watermarks are initialized during the postcore initcall.  Until then, all
+watermarks are set to zero.  This causes cond_accept_memory() to
+incorrectly skip memory acceptance because a watermark of 0 is always met.
 
-  1) CONFIG_IPV6_SUBTREES is enabled and rtm_src_len is specified
-  2) nexthop_get() fails
+This can lead to a premature OOM on boot.
 
-e.g.)
+To ensure progress, accept one MAX_ORDER page if the watermark is zero.
 
-  # strace ip -6 route add fe80::dead:beef:dead:beef nhid 1 from ::
-  recvmsg(3, {msg_iov=[{iov_base=[...[
-    {error=-ENOMEM, msg=[... [...]]},
-    [{nla_len=49, nla_type=NLMSGERR_ATTR_MSG}, "Nexthops can not be used with so"...]
-  ]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 148
-
-Let's set err explicitly after ip_fib_metrics_init() in
-ip6_route_info_create().
-
-Fixes: f88d8ea67fbd ("ipv6: Plumb support for nexthop object in a fib6_info")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250312013854.61125-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250310082855.2587122-1-kirill.shutemov@linux.intel.com
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Cc: Ashish Kalra <ashish.kalra@amd.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
+Cc: Thomas Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/page_alloc.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index f13b2eb904633..3ab5ea55ff8c3 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3797,10 +3797,12 @@ static struct fib6_info *ip6_route_info_create(struct fib6_config *cfg,
- 	if (nh) {
- 		if (rt->fib6_src.plen) {
- 			NL_SET_ERR_MSG(extack, "Nexthops can not be used with source routing");
-+			err = -EINVAL;
- 			goto out_free;
- 		}
- 		if (!nexthop_get(nh)) {
- 			NL_SET_ERR_MSG(extack, "Nexthop has been deleted");
-+			err = -ENOENT;
- 			goto out_free;
- 		}
- 		rt->nh = nh;
--- 
-2.39.5
-
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6961,7 +6961,7 @@ static inline bool has_unaccepted_memory
+ 
+ static bool cond_accept_memory(struct zone *zone, unsigned int order)
+ {
+-	long to_accept;
++	long to_accept, wmark;
+ 	bool ret = false;
+ 
+ 	if (!has_unaccepted_memory())
+@@ -6970,8 +6970,18 @@ static bool cond_accept_memory(struct zo
+ 	if (list_empty(&zone->unaccepted_pages))
+ 		return false;
+ 
++	wmark = promo_wmark_pages(zone);
++
++	/*
++	 * Watermarks have not been initialized yet.
++	 *
++	 * Accepting one MAX_ORDER page to ensure progress.
++	 */
++	if (!wmark)
++		return try_to_accept_memory_one(zone);
++
+ 	/* How much to accept to get to promo watermark? */
+-	to_accept = promo_wmark_pages(zone) -
++	to_accept = wmark -
+ 		    (zone_page_state(zone, NR_FREE_PAGES) -
+ 		    __zone_watermark_unusable_free(zone, order, 0) -
+ 		    zone_page_state(zone, NR_UNACCEPTED));
 
 
 
