@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-126426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D181AA70127
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B931A701D1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3E019A312F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23C5D19A19E4
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACF726B086;
-	Tue, 25 Mar 2025 12:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F3626FD88;
+	Tue, 25 Mar 2025 12:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKjvEX49"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Npcc8cD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466DD25C6F8;
-	Tue, 25 Mar 2025 12:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9E626FDB5;
+	Tue, 25 Mar 2025 12:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906201; cv=none; b=LwqYrblBynyBn2jasSiRzkOpKjf4o/hw+Vm2gJ3R4xfD7AzVntC9fe9ME2kKcSsC52FYYafI+h88LhOJKhuvc5OyJm/iJiCwnKg8Ju8d5sIsJn+0ZcdTVjqQgMinst9uekFkHqvr59QR6Y60V22XmB2PIbdo9iUoSev/ZZCin44=
+	t=1742906402; cv=none; b=XAY7nzFJ3nf88LToC71Nx92RWaagx77HTEI25kl1Wk1nJ3SGYWAV0DNcoz1CLw9XsZSS4nHtm+OU4AXos1/1RwXpJsWMyGGnTgLNcPXTT3C+WEUDSZ3NnQYOvray2vB9AvtGpjkzyygBYyqyo4nskXJKVongJFRrUBlB74UP1Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906201; c=relaxed/simple;
-	bh=kE43gokTSO6OTTi8qaffz7BJepijtOb9E6B8ysX451M=;
+	s=arc-20240116; t=1742906402; c=relaxed/simple;
+	bh=8M6mxTrZ5Y2KMvvjbn8ipZ21ihw9FI90Wc+6hvWg07E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWMfNtAlTtcPUy72ItL49SJj05y8kM1UGfETeF+p4T1fmqOhL3aSAgj2MxYbA5FSx8h19MMFGwXyqkpTfgpTejQsU14p0VP3aQXvmMf2lxW+CPHnjCuJX30IF9kjrGLEKZNxhtboU8UnaTB4uWr1zIJR8W6K7WFaTczW6Z0vwZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKjvEX49; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E571CC4CEED;
-	Tue, 25 Mar 2025 12:36:40 +0000 (UTC)
+	 MIME-Version; b=aieaQdS0nVXF+i5YHfJNNmdcPigt0Xow5Xk8JFx6DptYthwDWiiq4+GR69tVWiJPH2GCCse7uNpjDoyMUwTWYt84ON2bR4TEnd8o3g8QiYSoBZ6ZdXX5FV972MQSVx8Dz90RCLvUcvoN5uBXt9KtBkhGj+wiabzwnlZk0TZRIck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Npcc8cD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12441C4CEE4;
+	Tue, 25 Mar 2025 12:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906201;
-	bh=kE43gokTSO6OTTi8qaffz7BJepijtOb9E6B8ysX451M=;
+	s=korg; t=1742906402;
+	bh=8M6mxTrZ5Y2KMvvjbn8ipZ21ihw9FI90Wc+6hvWg07E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKjvEX49aLxCI2xCQ64jLQaIJZ9yqc48oMFH2S5Ygdq1Ujy+Tkeo8MCDykoxUUKc0
-	 xT9HsSvSxQh+DMiIdshDymFKHSG3Y+616OEjRfMZkG40WgUjWZ7ijDB7VY96y6aJnk
-	 Sp3Ssi8TGnrOAOOzvdBWmhgDVH+v/hVnpSwiCp8U=
+	b=Npcc8cD0d1SlsjmNIDnMh8/204qCrSDi66p4Z1JGXoQAU3YBHz2LPQS7UmKuef+B9
+	 DFgIqGJv8sa7fGhAgDUbMr9KELJQVjCOdiMWE6arym8zLNMax9utYyrFSD3k3dSv1w
+	 J2cgLjxwNCZNnLzGhGAulB8SFY3pXxGnlJ2/rWQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
 	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.6 40/77] arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card
+Subject: [PATCH 6.12 068/116] arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card
 Date: Tue, 25 Mar 2025 08:22:35 -0400
-Message-ID: <20250325122145.399945113@linuxfoundation.org>
+Message-ID: <20250325122150.947248811@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
