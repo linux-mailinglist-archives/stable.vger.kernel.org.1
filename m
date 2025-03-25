@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-126475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306D3A70112
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04ADA70072
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BADCF3BF5DF
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAC60172A2D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331B926B962;
-	Tue, 25 Mar 2025 12:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D680269B12;
+	Tue, 25 Mar 2025 12:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0rfVEjo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJnhmuLV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FE926B954;
-	Tue, 25 Mar 2025 12:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB0E2571AC;
+	Tue, 25 Mar 2025 12:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906294; cv=none; b=UJ3ZT7CR3wDTkzULRiKyNXZumPBQoBfBzS/7W71prwtRX4GHPvHf3KQnTVpDc62Klh/k6kGD8BaasQCF8cv2hWKiQbsHqJLOie3mgQJMgmOHJ5BzvrzY29jBHWJXXl8pQL4uUTUSMg6STVhiK1hu8AnPm6nXuyWfL9rSd9uwwpc=
+	t=1742906098; cv=none; b=EP9sdH/VVPNtdWF3Zw0I4veHcs5xIF0pV4Fld2OTJkWqjXjH5soiXhmXPY8+UKY9qYTEYblDEDfGfo2nxRrEWOPbcCLGOOytBH8t/Y7yfossEXr7hXsSdU3uvuNFVVJWXMA1WwVnCi2KQ8JdlX8YcngeyTvHY/OpHhydCOKRGdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906294; c=relaxed/simple;
-	bh=pHRe5d9q0fCz0F3gBOrozDMST1gEdpFAdJ+3kb+iq3I=;
+	s=arc-20240116; t=1742906098; c=relaxed/simple;
+	bh=rXnogmdeCHokgsxtKtwvCIOr0Lva8IPBBMDwqIgzIGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1+UCBQQARnnJ5/q70CdY/qhy9e0DpGbLHnv2NQjyCIjrTU2/J0+cZznbE0I6zwrnqVXDg0+yt9McRLeyv85pNd9Tben5TRuOi7C42bM1yBiZYc4lAywd2QXda3lt7sn8qAAizRDowba02DxHKmHxHqhHtK6sUZuE2MeZlkWwPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0rfVEjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90912C4CEE4;
-	Tue, 25 Mar 2025 12:38:13 +0000 (UTC)
+	 MIME-Version; b=CjKYfXiZg2EH/GCqWW0KrObP9e0Idho5OeoAwibUer0ayHr+VW7aWvefiOXWvlhfB9I2tuko+RTejAlTUDr3S0QTWw9+p5Q+dsTav/HhO1AyCJ63HzDfL4LgHRa3mE47PXHi+KWIG1+mpkdEVFV8d1frugCPn0amIkWDuYGs4ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJnhmuLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1470C4AF0B;
+	Tue, 25 Mar 2025 12:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906293;
-	bh=pHRe5d9q0fCz0F3gBOrozDMST1gEdpFAdJ+3kb+iq3I=;
+	s=korg; t=1742906098;
+	bh=rXnogmdeCHokgsxtKtwvCIOr0Lva8IPBBMDwqIgzIGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u0rfVEjoR2B8ozLE3bs4+KKvQhHnk2nCZIoB0pYI3mGII/flsEDKyU+q8H6wVuVg+
-	 nuneJldzC4NCSyYBWHgQHcQCvFBOs37uA7oVthD0vVGnnT/jevhS44DoErKAT0xnYa
-	 tTy5NsGgnW6Xph3478HJjFNriKFD4EbhSdf1lyvc=
+	b=cJnhmuLV/GaGPcz9G8Jt2n8KA1oJjtnlnaEMvu1c0mx4XhwUMhty6VltQDjvwO0te
+	 JNQ4ARJ0U7e4BcuAv/kCmLd7Sg03p5e6qqIod5XRx/qVq5zkumdIadPNC2waUrkCuj
+	 h6rCBDhTBeHvaDnp8c3J3EncXlKF0Xqty3gDtpos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/116] dpll: fix xa_alloc_cyclic() error handling
-Date: Tue, 25 Mar 2025 08:22:08 -0400
-Message-ID: <20250325122150.256169914@linuxfoundation.org>
+Subject: [PATCH 6.6 14/77] RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
+Date: Tue, 25 Mar 2025 08:22:09 -0400
+Message-ID: <20250325122144.708946225@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit 3614bf90130d60f191a5fe218d04f6251c678e13 ]
+[ Upstream commit 81c0db302a674f8004ed805393d17fd76f552e83 ]
 
-In case of returning 1 from xa_alloc_cyclic() (wrapping) ERR_PTR(1) will
-be returned, which will cause IS_ERR() to be false. Which can lead to
-dereference not allocated pointer (pin).
+Driver is always clearing the mask that sets the VLAN ID/Service Level
+in the adapter. Recent change for supporting multiple traffic class
+exposed this issue.
 
-Fix it by checking if err is lower than zero.
+Allow setting SL and VLAN_ID while QP is moved from INIT to RTR state.
 
-This wasn't found in real usecase, only noticed. Credit to Pierre.
-
-Fixes: 97f265ef7f5b ("dpll: allocate pin ids in cycle")
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Fixes: c64b16a37b6d ("RDMA/bnxt_re: Support different traffic class")
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1741670196-2919-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dpll/dpll_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index 32019dc33cca7..1877201d1aa9f 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -505,7 +505,7 @@ dpll_pin_alloc(u64 clock_id, u32 pin_idx, struct module *module,
- 	xa_init_flags(&pin->parent_refs, XA_FLAGS_ALLOC);
- 	ret = xa_alloc_cyclic(&dpll_pin_xa, &pin->id, pin, xa_limit_32b,
- 			      &dpll_pin_xa_id, GFP_KERNEL);
--	if (ret)
-+	if (ret < 0)
- 		goto err_xa_alloc;
- 	return pin;
- err_xa_alloc:
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+index c4f10498c79d8..68ea4ed0b171b 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+@@ -1197,8 +1197,6 @@ static void __modify_flags_from_init_state(struct bnxt_qplib_qp *qp)
+ 			qp->path_mtu =
+ 				CMDQ_MODIFY_QP_PATH_MTU_MTU_2048;
+ 		}
+-		qp->modify_flags &=
+-			~CMDQ_MODIFY_QP_MODIFY_MASK_VLAN_ID;
+ 		/* Bono FW require the max_dest_rd_atomic to be >= 1 */
+ 		if (qp->max_dest_rd_atomic < 1)
+ 			qp->max_dest_rd_atomic = 1;
 -- 
 2.39.5
 
