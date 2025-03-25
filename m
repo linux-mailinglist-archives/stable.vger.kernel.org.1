@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-126509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338EBA701AB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:28:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1F6A7005C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEBBF19A2C07
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6951E177EC8
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD89B26F44A;
-	Tue, 25 Mar 2025 12:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2305269838;
+	Tue, 25 Mar 2025 12:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFh2qJ+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hC1V5WPV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7995326F440;
-	Tue, 25 Mar 2025 12:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A026C2580E4;
+	Tue, 25 Mar 2025 12:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906358; cv=none; b=S+4ASy5NNxrGmgRDTLfSev4XazbzoFTaok3sN+b4WkRKJKjB4Y0yARao6zU/f8lDqhoh3GgLIcif+DvmvMfaQ3ebe1yN3Y6jycZ6Qg5CLNG8Mu5Ya3omQYPaHFwCSkU4ZCs1a+x7fSogs6y/qxe6EsIm9haqISXX/0dezCRxQRk=
+	t=1742906042; cv=none; b=U3M8xHVtCUBFMzwdMmpGg3oZajen7Hc59QKKqv4xG51lWB2DnfrjtGHx0mKBZAF7dcuITXisZ82D7OtFB9ksxYixepFhw5wtCyZOM5ccfohWukeLdyjl7oTamCRvtbxNFnpKetgltzLJKePn19Y+AnYJVyIvJNbF1gy1sXzGRc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906358; c=relaxed/simple;
-	bh=+mNDA01syf//Ta9a9+EMbih9agk+cnBv9KaE2DU37Zo=;
+	s=arc-20240116; t=1742906042; c=relaxed/simple;
+	bh=+VykZiQq1jTG60HTXRy47xY+SHX0M0JFgYRFy/+nl6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R6CktNG/LRw/TgSQQnoAe/7W9D8IudrihMf80Od+wTfObOi0Rj4P3RHgYzb6TELeNyO+gdaPvrXOme7UbFk1+wRdavuULpHjy2xRidlh2SkpnwhMIf2AM4I3cSt5VzMVUWf65Wwf8hzpzXXXi6KDhf0/pxQAlEOfKnB2wEDUstE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFh2qJ+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303C4C4CEE4;
-	Tue, 25 Mar 2025 12:39:18 +0000 (UTC)
+	 MIME-Version; b=Add/Cdz5TEoivDYrYmkqOcBDc3CYp5SNMheNi4s3bafd1u7TZBC45UnPV1omDZieinxVZM7WJDNAsdZdi8tiVvZmF0CYJ8tv9QoSUYFGV4qGqJ58sB9wWHZQZkIcmuebXpPLHr+9EWPB0luwbcij5fbfgr6VoKDIEhPypKEJ/+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hC1V5WPV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54ABAC4CEE4;
+	Tue, 25 Mar 2025 12:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906358;
-	bh=+mNDA01syf//Ta9a9+EMbih9agk+cnBv9KaE2DU37Zo=;
+	s=korg; t=1742906042;
+	bh=+VykZiQq1jTG60HTXRy47xY+SHX0M0JFgYRFy/+nl6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFh2qJ+S0IXPNA2Rk/Gb54wiHuj9Tp6FRsHSjIlCFxTnTtqzTogCurVNiCNbkszPv
-	 XMb5vxCnXjG1788ZxuSn/XcLr1QS0v5E6qKAIXjD7Ht5bYeZo+v+kfSUrpKJ0KrkAi
-	 IGomD8ZDC0JGpXxGPwZc2FqH0up2pyRQsmRQ3loQ=
+	b=hC1V5WPVkRaGpF57VgRkmKbn6Z1uEAej8WSdtieUPot4eP+ACcrY4twV8HJLI5u4F
+	 SPrQCHGmmbSTJxDf+O7L7Lz0GH33h0+Ys6Y42NyZkyjNjwJZa0/NkReDojqGhAbdLs
+	 MSp4+hDzsayW/nLL8ePgIyZS1NbTA29t1noA9YF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Raphael S. Carvalho" <raphaelsc@scylladb.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 075/116] mm: fix error handling in __filemap_get_folio() with FGP_NOWAIT
+	David Rosca <david.rosca@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>
+Subject: [PATCH 6.13 104/119] drm/amdgpu: Fix MPEG2, MPEG4 and VC1 video caps max size
 Date: Tue, 25 Mar 2025 08:22:42 -0400
-Message-ID: <20250325122151.126508201@linuxfoundation.org>
+Message-ID: <20250325122151.712807209@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +60,193 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael S. Carvalho <raphaelsc@scylladb.com>
+From: David Rosca <david.rosca@amd.com>
 
-commit 182db972c9568dc530b2f586a2f82dfd039d9f2a upstream.
+commit f0105e173103c9d30a2bb959f7399437d536c848 upstream.
 
-original report:
-https://lore.kernel.org/all/CAKhLTr1UL3ePTpYjXOx2AJfNk8Ku2EdcEfu+CH1sf3Asr=B-Dw@mail.gmail.com/T/
+1920x1088 is the maximum supported resolution.
 
-When doing buffered writes with FGP_NOWAIT, under memory pressure, the
-system returned ENOMEM despite there being plenty of available memory, to
-be reclaimed from page cache.  The user space used io_uring interface,
-which in turn submits I/O with FGP_NOWAIT (the fast path).
-
-retsnoop pointed to iomap_get_folio:
-
-00:34:16.180612 -> 00:34:16.180651 TID/PID 253786/253721
-(reactor-1/combined_tests):
-
-                    entry_SYSCALL_64_after_hwframe+0x76
-                    do_syscall_64+0x82
-                    __do_sys_io_uring_enter+0x265
-                    io_submit_sqes+0x209
-                    io_issue_sqe+0x5b
-                    io_write+0xdd
-                    xfs_file_buffered_write+0x84
-                    iomap_file_buffered_write+0x1a6
-    32us [-ENOMEM]  iomap_write_begin+0x408
-iter=&{.inode=0xffff8c67aa031138,.len=4096,.flags=33,.iomap={.addr=0xffffffffffffffff,.length=4096,.type=1,.flags=3,.bdev=0x…
-pos=0 len=4096 foliop=0xffffb32c296b7b80
-!    4us [-ENOMEM]  iomap_get_folio
-iter=&{.inode=0xffff8c67aa031138,.len=4096,.flags=33,.iomap={.addr=0xffffffffffffffff,.length=4096,.type=1,.flags=3,.bdev=0x…
-pos=0 len=4096
-
-This is likely a regression caused by 66dabbb65d67 ("mm: return an ERR_PTR
-from __filemap_get_folio"), which moved error handling from
-io_map_get_folio() to __filemap_get_folio(), but broke FGP_NOWAIT
-handling, so ENOMEM is being escaped to user space.  Had it correctly
-returned -EAGAIN with NOWAIT, either io_uring or user space itself would
-be able to retry the request.
-
-It's not enough to patch io_uring since the iomap interface is the one
-responsible for it, and pwritev2(RWF_NOWAIT) and AIO interfaces must
-return the proper error too.
-
-The patch was tested with scylladb test suite (its original reproducer),
-and the tests all pass now when memory is pressured.
-
-Link: https://lkml.kernel.org/r/20250224143700.23035-1-raphaelsc@scylladb.com
-Fixes: 66dabbb65d67 ("mm: return an ERR_PTR from __filemap_get_folio")
-Signed-off-by: Raphael S. Carvalho <raphaelsc@scylladb.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Rosca <david.rosca@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1a0807feb97082bff2b1342dbbe55a2a9a8bdb88)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/nv.c    |   18 +++++++++---------
+ drivers/gpu/drm/amd/amdgpu/soc15.c |   18 +++++++++---------
+ drivers/gpu/drm/amd/amdgpu/vi.c    |   36 ++++++++++++++++++------------------
+ 3 files changed, 36 insertions(+), 36 deletions(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1966,8 +1966,19 @@ no_page:
+--- a/drivers/gpu/drm/amd/amdgpu/nv.c
++++ b/drivers/gpu/drm/amd/amdgpu/nv.c
+@@ -78,10 +78,10 @@ static const struct amdgpu_video_codecs
  
- 		if (err == -EEXIST)
- 			goto repeat;
--		if (err)
-+		if (err) {
-+			/*
-+			 * When NOWAIT I/O fails to allocate folios this could
-+			 * be due to a nonblocking memory allocation and not
-+			 * because the system actually is out of memory.
-+			 * Return -EAGAIN so that there caller retries in a
-+			 * blocking fashion instead of propagating -ENOMEM
-+			 * to the application.
-+			 */
-+			if ((fgp_flags & FGP_NOWAIT) && err == -ENOMEM)
-+				err = -EAGAIN;
- 			return ERR_PTR(err);
-+		}
- 		/*
- 		 * filemap_add_folio locks the page, and for mmap
- 		 * we expect an unlocked page.
+ /* Navi1x */
+ static const struct amdgpu_video_codec_info nv_video_codecs_decode_array[] = {
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 1920, 1088, 3)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 1920, 1088, 5)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
+@@ -104,10 +104,10 @@ static const struct amdgpu_video_codecs
+ };
+ 
+ static const struct amdgpu_video_codec_info sc_video_codecs_decode_array_vcn0[] = {
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 1920, 1088, 3)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 1920, 1088, 5)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 16384, 16384, 0)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
+@@ -115,10 +115,10 @@ static const struct amdgpu_video_codec_i
+ };
+ 
+ static const struct amdgpu_video_codec_info sc_video_codecs_decode_array_vcn1[] = {
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 1920, 1088, 3)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 1920, 1088, 5)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 16384, 16384, 0)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
+--- a/drivers/gpu/drm/amd/amdgpu/soc15.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
+@@ -103,10 +103,10 @@ static const struct amdgpu_video_codecs
+ /* Vega */
+ static const struct amdgpu_video_codec_info vega_video_codecs_decode_array[] =
+ {
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 1920, 1088, 3)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 1920, 1088, 5)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 4096, 186)},
+ };
+ 
+@@ -119,10 +119,10 @@ static const struct amdgpu_video_codecs
+ /* Raven */
+ static const struct amdgpu_video_codec_info rv_video_codecs_decode_array[] =
+ {
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 1920, 1088, 3)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 1920, 1088, 5)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 4096, 186)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 4096, 4096, 0)},
+@@ -137,10 +137,10 @@ static const struct amdgpu_video_codecs
+ /* Renoir, Arcturus */
+ static const struct amdgpu_video_codec_info rn_video_codecs_decode_array[] =
+ {
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 4096, 4096, 5)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 1920, 1088, 3)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4, 1920, 1088, 5)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 16384, 16384, 0)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
+--- a/drivers/gpu/drm/amd/amdgpu/vi.c
++++ b/drivers/gpu/drm/amd/amdgpu/vi.c
+@@ -167,16 +167,16 @@ static const struct amdgpu_video_codec_i
+ {
+ 	{
+ 		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2,
+-		.max_width = 4096,
+-		.max_height = 4096,
+-		.max_pixels_per_frame = 4096 * 4096,
++		.max_width = 1920,
++		.max_height = 1088,
++		.max_pixels_per_frame = 1920 * 1088,
+ 		.max_level = 3,
+ 	},
+ 	{
+ 		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4,
+-		.max_width = 4096,
+-		.max_height = 4096,
+-		.max_pixels_per_frame = 4096 * 4096,
++		.max_width = 1920,
++		.max_height = 1088,
++		.max_pixels_per_frame = 1920 * 1088,
+ 		.max_level = 5,
+ 	},
+ 	{
+@@ -188,9 +188,9 @@ static const struct amdgpu_video_codec_i
+ 	},
+ 	{
+ 		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1,
+-		.max_width = 4096,
+-		.max_height = 4096,
+-		.max_pixels_per_frame = 4096 * 4096,
++		.max_width = 1920,
++		.max_height = 1088,
++		.max_pixels_per_frame = 1920 * 1088,
+ 		.max_level = 4,
+ 	},
+ };
+@@ -206,16 +206,16 @@ static const struct amdgpu_video_codec_i
+ {
+ 	{
+ 		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2,
+-		.max_width = 4096,
+-		.max_height = 4096,
+-		.max_pixels_per_frame = 4096 * 4096,
++		.max_width = 1920,
++		.max_height = 1088,
++		.max_pixels_per_frame = 1920 * 1088,
+ 		.max_level = 3,
+ 	},
+ 	{
+ 		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4,
+-		.max_width = 4096,
+-		.max_height = 4096,
+-		.max_pixels_per_frame = 4096 * 4096,
++		.max_width = 1920,
++		.max_height = 1088,
++		.max_pixels_per_frame = 1920 * 1088,
+ 		.max_level = 5,
+ 	},
+ 	{
+@@ -227,9 +227,9 @@ static const struct amdgpu_video_codec_i
+ 	},
+ 	{
+ 		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1,
+-		.max_width = 4096,
+-		.max_height = 4096,
+-		.max_pixels_per_frame = 4096 * 4096,
++		.max_width = 1920,
++		.max_height = 1088,
++		.max_pixels_per_frame = 1920 * 1088,
+ 		.max_level = 4,
+ 	},
+ 	{
 
 
 
