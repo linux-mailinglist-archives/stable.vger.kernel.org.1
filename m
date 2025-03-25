@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-126419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9703CA70093
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD59DA7010A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4304D17C0D2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C00A019A3C93
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA13226AA96;
-	Tue, 25 Mar 2025 12:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F579269AF8;
+	Tue, 25 Mar 2025 12:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwmFbx4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnPFdDsm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987A725C6E4;
-	Tue, 25 Mar 2025 12:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D484269AF1;
+	Tue, 25 Mar 2025 12:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906188; cv=none; b=tfHc3tl6opjtSmmcoNqJgGEfBcTXmus+w7LZ/cggylZEVSyCAyWQj16lhGV/+HJealbiVtv7qBo2VPu+6/qfLVJydi92Qlpvent7Fh6wKc17PvcXYgrHWIvzSLDtkVs2zJM5Om60zCiC/fJkn73TfRIsfotwRxR+ej9kybsRxc8=
+	t=1742906085; cv=none; b=D6jbJPCRFbJBityJsbk89GFDPEzMMJUM2JEQfd79Zxe4AAq1oNQ6SK6cnW1Yayrhz8DO7GyYsOZkf3nIJFS4gfzpebAJ9Rm/Yv0RxlrhDI8FIo8cl+JD9HMwmiPESsAaFel8ovbO7NMao+pEdJDPv4b/4BYFomRD6wMU+pZmZcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906188; c=relaxed/simple;
-	bh=48kVKPuqRcX+uCl7v/f3SUNXQkZUqRphhN89ZhgQ6Uo=;
+	s=arc-20240116; t=1742906085; c=relaxed/simple;
+	bh=HHdLmss/Ioasdwqh7lSxRYvkxcECkPdtXucriDK0eqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpGMrlMRl9dz+JxjqDxJqzc4dPJlEHs+JH4rKFT7/QEEiwhRgiQQ1QsumeYuwX+BYha9yl+U1S33B6RdPk0ZGdrjfOIvedlaBLmpWjjhtClYBhlOu2iw28zFOo9fmrGrpT+IMyEZb8ucsGhmxcVnx2jw2Y+/y6NENxe6WLTWagI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwmFbx4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4950DC4CEE4;
-	Tue, 25 Mar 2025 12:36:28 +0000 (UTC)
+	 MIME-Version; b=TkrwBKtqTmZjaB0MkjUvOzzDXzvqBj3B8sZXcZFw/K0mNLgMUjrfLbXJEMT+xz2UkTd2KnuRw0SbVm4YTBaLIYp9e57Rchw1MqadXZRCU3nedkGwqD1xhBCDoIrmGlz8kuRv8M1PXWv518j86a4bnq5EfRzuHTccGqDrThIBEzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnPFdDsm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4571C4CEE9;
+	Tue, 25 Mar 2025 12:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906188;
-	bh=48kVKPuqRcX+uCl7v/f3SUNXQkZUqRphhN89ZhgQ6Uo=;
+	s=korg; t=1742906085;
+	bh=HHdLmss/Ioasdwqh7lSxRYvkxcECkPdtXucriDK0eqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwmFbx4jPV4j8pGMBcKFsV9dDSFIUmWrSmmTNLXl2RCYVlpPjSU6Xmp9ZxOzn45kG
-	 8LeEyOvF7dhQLcMbRqdZxR/3x2gifqyNKTVbmnjhb4kWATsSp1cD9KwnWUNNUQmXlW
-	 kNGr/FQ8wlZb6h4/THeKFg1PhFUvQ6aqlpi47opM=
+	b=MnPFdDsm+9N+kqmd8bdgXrgq6/+RAc+g6gLim8TZuy3OwaGHGapUdaU1A3IjyvU1o
+	 581UuUOZP5+XICMNAntb8qAhRddr+SEr0m8tpwvBMueDZJ5StDh0chflPo84spf205
+	 u3FjixxqURMqfRAkBfkWrE62rU/2MPvrST8XxtMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Arthur Mongodin <amongodin@randorisec.fr>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.6 62/77] mptcp: Fix data stream corruption in the address announcement
+Subject: [PATCH 6.13 119/119] mptcp: Fix data stream corruption in the address announcement
 Date: Tue, 25 Mar 2025 08:22:57 -0400
-Message-ID: <20250325122145.976427527@linuxfoundation.org>
+Message-ID: <20250325122152.096163562@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
