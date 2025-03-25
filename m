@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F886A70031
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A668A7003E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FB6419A2EC9
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E20B17627A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F1D25A351;
-	Tue, 25 Mar 2025 12:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C5E25B67F;
+	Tue, 25 Mar 2025 12:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccAGeepl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nW5pXszp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42AC259CAD;
-	Tue, 25 Mar 2025 12:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7355E1DD9D3;
+	Tue, 25 Mar 2025 12:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905786; cv=none; b=uI28vI+vKID18YxiPOZk9b+sknZSROBtRq6q+YxfGR1ZnK5WhSR/778TZ1L13/IFSAikCKKEvUryamTfhxIVkU0n8e6VN24W8wrzrzA6Jc1b4OIyKOml396P9p2WPosyIIkazVLrZoVrJVpFQPxHaY4BpopByalkE4GcecCtlF0=
+	t=1742905973; cv=none; b=A8GszPzCbKjE6bfQhOE3Gizy8ZLQyk2CjVAi7r3YjWmLBRuXwwRMMCKdbKA7uWpAiNVTXRvLCc+YnPLObOP039Ey3QzmteamqFMnO9/bHjjD+6MJrf0b95PRScKzDboleGTfKYby5HDp2hYu1hXCwyWoODYNr77/0TKa9Xi0D8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905786; c=relaxed/simple;
-	bh=k/vZmNE6Jzwx1F8QQ0y+DaWb4qKAHFd7N04VHZ/SKkQ=;
+	s=arc-20240116; t=1742905973; c=relaxed/simple;
+	bh=9RWDGuRF/zMDQL3h+wTiFhNMcwf1K1Tq/iDxPpyr6eY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQXZFDV7lbGtSp+jc4P8Imc22+jEPPJEUy9DleC7nmhlIApdJd2s8akGEzQBS7/cN/qLEngoF5+CPGh9t7l2T+rCE8UbRDh3ynXJ4LIV0QVzGaz7S8nQp0YOsswaR3WmHTjIy3gG588tQp9JIdB4Gl0gmaAjHtiJ5JCD0vouHZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccAGeepl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95879C4CEE4;
-	Tue, 25 Mar 2025 12:29:45 +0000 (UTC)
+	 MIME-Version; b=n9d2WWC5z8WrUZEHHhIOAQLmEJk9qzWEu8tmvs1PdBxMln04fOJGeFfO+d209YS3k30ZAG+H2JNgEz0eiOE5q6eHl5ava4eosDMgKSd1jjV1bp8XjiWOV+61NWRhhOkUEMxjs+iQTGpOcRj1T2pYMYzkOTtSgHpb6uSvYUCWmt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW5pXszp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258A3C2BCB6;
+	Tue, 25 Mar 2025 12:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905785;
-	bh=k/vZmNE6Jzwx1F8QQ0y+DaWb4qKAHFd7N04VHZ/SKkQ=;
+	s=korg; t=1742905973;
+	bh=9RWDGuRF/zMDQL3h+wTiFhNMcwf1K1Tq/iDxPpyr6eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccAGeepl5ZXgoQ4RssfPQw5QbHTjDLypSk8IinV/BWWkKlTaZydUFdCo9SaEqzBti
-	 OWNFOB9vKls1wcPQZHCkfBGzLxeqllWIKoJeMqjw/zs3s3k81bjSdcEksBK773WLLO
-	 LOZLyajdRVUD+EVDKQg+agJ6XvrvTyCWnyyUn/o8=
+	b=nW5pXszpE8M126c7O7EgxyzLe8Hvl7XD3QpDRBdc/DWcfF7+3CeK0o7bbkfyfnDSx
+	 5Ys/UqQcbCjCbXwepJN/f7yUNcPieIgif9QXfcA1QaScQkIs6xJ7U3708uMx2EJsNN
+	 gVT3bdBL2nVrqrlnUzg3i7tssj0BMCYVCVI85O1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/198] ipv6: Fix memleak of nhc_pcpu_rth_output in fib_check_nh_v6_gw().
+	Christian Eggers <ceggers@arri.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 066/119] regulator: dummy: force synchronous probing
 Date: Tue, 25 Mar 2025 08:22:04 -0400
-Message-ID: <20250325122200.903803082@linuxfoundation.org>
+Message-ID: <20250325122150.744535334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit 9740890ee20e01f99ff1dde84c63dcf089fabb98 ]
+commit 8619909b38eeebd3e60910158d7d68441fc954e9 upstream.
 
-fib_check_nh_v6_gw() expects that fib6_nh_init() cleans up everything
-when it fails.
+Sometimes I get a NULL pointer dereference at boot time in kobject_get()
+with the following call stack:
 
-Commit 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
-moved fib_nh_common_init() before alloc_percpu_gfp() within fib6_nh_init()
-but forgot to add cleanup for fib6_nh->nh_common.nhc_pcpu_rth_output in
-case it fails to allocate fib6_nh->rt6i_pcpu, resulting in memleak.
+anatop_regulator_probe()
+ devm_regulator_register()
+  regulator_register()
+   regulator_resolve_supply()
+    kobject_get()
 
-Let's call fib_nh_common_release() and clear nhc_pcpu_rth_output in the
-error path.
+By placing some extra BUG_ON() statements I could verify that this is
+raised because probing of the 'dummy' regulator driver is not completed
+('dummy_regulator_rdev' is still NULL).
 
-Note that we can remove the fib6_nh_release() call in nh_create_ipv6()
-later in net-next.git.
+In the JTAG debugger I can see that dummy_regulator_probe() and
+anatop_regulator_probe() can be run by different kernel threads
+(kworker/u4:*).  I haven't further investigated whether this can be
+changed or if there are other possibilities to force synchronization
+between these two probe routines.  On the other hand I don't expect much
+boot time penalty by probing the 'dummy' regulator synchronously.
 
-Fixes: 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250312010333.56001-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in 4.14")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Link: https://patch.msgid.link/20250311091803.31026-1-ceggers@arri.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/regulator/dummy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 17918f411386a..c72b4117fc757 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3637,7 +3637,8 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
- 		in6_dev_put(idev);
+--- a/drivers/regulator/dummy.c
++++ b/drivers/regulator/dummy.c
+@@ -60,7 +60,7 @@ static struct platform_driver dummy_regu
+ 	.probe		= dummy_regulator_probe,
+ 	.driver		= {
+ 		.name		= "reg-dummy",
+-		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
++		.probe_type	= PROBE_FORCE_SYNCHRONOUS,
+ 	},
+ };
  
- 	if (err) {
--		lwtstate_put(fib6_nh->fib_nh_lws);
-+		fib_nh_common_release(&fib6_nh->nh_common);
-+		fib6_nh->nh_common.nhc_pcpu_rth_output = NULL;
- 		fib6_nh->fib_nh_lws = NULL;
- 		dev_put(dev);
- 	}
--- 
-2.39.5
-
 
 
 
