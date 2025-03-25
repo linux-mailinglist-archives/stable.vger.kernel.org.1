@@ -1,82 +1,84 @@
-Return-Path: <stable+bounces-126042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77203A6F7CA
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:52:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D62A6F900
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:54:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82E423ADE2E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:51:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AFFB1686A6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E8A1E833A;
-	Tue, 25 Mar 2025 11:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCB32561DB;
+	Tue, 25 Mar 2025 11:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmZYKBPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPSPgycB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA40537E9;
-	Tue, 25 Mar 2025 11:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26CC1EE7A7
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742903524; cv=none; b=AUyklEUCTrah3Eyse/NWuVs5aP6DhXOomtdesrb1cKuwJ0J+EzUCWAwmYi0k545XHRbX7j0uk0IIQj0e69rMCdnJGfgfTi08vSi5bhr+LgO1vLQxiP7TUxfVxI7SWyMVNtBvK3gxi535gf7W/bgMAK8d1OTwMjzpSRYtw0VXv84=
+	t=1742903676; cv=none; b=qfHfre/jNmxPbzV2UEGWM591Ol4SmCizsKy69L7Yw9uls4N9ARIKL8V6sohy9GymrLR434LavhbThO76EIDVU5EWwkQVl+EhZkZU0Cr0Bh5pdY8zvuf46WpTo2wBbWgGLf46DpT8fp99zOfzR+cHKlP0JrirBuQeq/YZVd1lkBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742903524; c=relaxed/simple;
-	bh=njnwEJyt8K7lwR132JkMh3c5yfD1915hNCz0lyDEn7Y=;
+	s=arc-20240116; t=1742903676; c=relaxed/simple;
+	bh=AiIWHnfXTWOGMJ3ZCHz9VLxivBHZ/SYRYngA9pQvQUM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QcrnyR7wo+vyyhGw0azu8vsEI16RN1dHsWX+yFrajmZELxXdkYT5xyv+/ULBj9PjjlPB5fR0Vns75D2lQkjOOqww1C5I/o14mSXSnKBeCThj7sPA8TeZXhIrgdSR7LMJrTZc1cccs+C8Fbf17KnqlS/w38V3/C0SfJOROK+gl4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmZYKBPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B46C4CEE4;
-	Tue, 25 Mar 2025 11:52:03 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=DKY1Ko2G5oi5iZTDRmgSMPdv1jHyKBw0SGXwnyKL2LvG32SVEJ5JK5AVEoVOiWwoiFQFItyApwQQl1TTvSCVcjZ4uKYNknSWvQho59QB1WQ6bABW5xgX5uaWJKIvBLiDHRBcDfgEbGg/rOk0MaciTJ9O/Bxfw4inXQ7zrgxlOHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPSPgycB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6D9C4CEE4;
+	Tue, 25 Mar 2025 11:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742903523;
-	bh=njnwEJyt8K7lwR132JkMh3c5yfD1915hNCz0lyDEn7Y=;
+	s=korg; t=1742903674;
+	bh=AiIWHnfXTWOGMJ3ZCHz9VLxivBHZ/SYRYngA9pQvQUM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CmZYKBPykLYm/lxF6jdD0FuC625MHxmv4jbvDmkWadDgiqaSDi2NzBCoV11oZFJ4y
-	 BLij/uOryidNB9aT7tglkxlVNzt0+g1ET6U4hNo4/JncAUp2tBrm/fagkvI/TTdXcY
-	 ELwrSJcQRF0igJgLQADi2cvaG9lL5Qi1JdP2C5M0=
-Date: Tue, 25 Mar 2025 07:50:40 -0400
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Leah Rumancik <leah.rumancik@gmail.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>, stable@vger.kernel.org,
-	xfs-stable@lists.linux.dev, "Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH 6.1 14/29] xfs: use xfs_defer_pending objects to recover
- intent items
-Message-ID: <2025032533-bamboo-dagger-7ba7@gregkh>
-References: <20250313202550.2257219-15-leah.rumancik@gmail.com>
- <6pxyzwujo52p4bp2otliyssjcvsfydd6ju32eusdlyhzhpjh4q@eze6eh7rtidg>
- <CACzhbgRpgGFvmizpS16L4bRqtAzGAhspkO1Gs2NP67RTpfn-vA@mail.gmail.com>
- <oowb64nazgqkj2ozqfodnqgihyviwkfrdassz7ou5nacpuppr3@msmmbqpp355i>
- <CACzhbgQ4k6Lk33CrdPsO12aiy1gEpvodvtLMWp6Ue7V2J4pu4Q@mail.gmail.com>
- <wv2if5xumnqjlw6dnedf5644swcdxkc6yrpf7lplrkyqxwdy4r@rt4ccsmvgby4>
- <CACzhbgQ2dD7A4hYDES-QdcCQtkMsrdifsaTORTDebPHEooZSLg@mail.gmail.com>
+	b=SPSPgycB/W6Ps+ulTWGof++lt8vKkyLA+Wtt1Oq/68iGCKIXcqz5eBV+6HUe8bPGs
+	 gJsiPx5zNu9tUrs/s111IggbkyaGjUyWkfUsrKHmGEjL7rMWuVD4p9xeECc7evzlk+
+	 /3hws4OfFXkGz0dMngGMyd8hWS2/q5JrT3oROgjo=
+Date: Tue, 25 Mar 2025 07:53:11 -0400
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] mm/migrate: fix shmem xarray update during
+ migration
+Message-ID: <2025032549-arousal-grout-a4df@gregkh>
+References: <20250324210259-4c1c4c7f7c182ab8@stable.kernel.org>
+ <D37260CA-F91D-4293-963F-C9863B47FDCA@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CACzhbgQ2dD7A4hYDES-QdcCQtkMsrdifsaTORTDebPHEooZSLg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D37260CA-F91D-4293-963F-C9863B47FDCA@nvidia.com>
 
-On Mon, Mar 24, 2025 at 02:10:03PM -0700, Leah Rumancik wrote:
-> This sounds good to me.
+On Tue, Mar 25, 2025 at 07:44:57AM -0400, Zi Yan wrote:
+> Hi Sasha,
 > 
-> Greg, can we drop the following patches?
+> On 25 Mar 2025, at 7:33, Sasha Levin wrote:
 > 
-> '[PATCH 6.1 14/29] xfs: use xfs_defer_pending objects to recover'
-> '[PATCH 6.1 15/29] xfs: pass the xfs_defer_pending object to iop_recover'
-> '[PATCH 6.1 16/29] xfs: transfer recovered intent item ownership in
-> ->iop_recover'
+> > [ Sasha's backport helper bot ]
+> >
+> > Hi,
+> >
+> > Summary of potential issues:
+> > ⚠️ Found matching upstream commit but patch is missing proper reference to it
+> >
+> 
+> What is the proper way of referring to the original upstream commit? I see
+> “(cherry picked from commit 60cf233b585cdf1f3c5e52d1225606b86acd08b0)” was
+> added in the git log.
 
-Now dropped, thanks!
+Yes, that works, but for some reason Sasha's bot doesn't seem to pick
+that up :(
+
+So no worries here, I've taken this patch now.
 
 greg k-h
 
