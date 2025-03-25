@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40740A700E3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB21A70116
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA43217B390
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E018188F8A7
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D1426F441;
-	Tue, 25 Mar 2025 12:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36513269AF4;
+	Tue, 25 Mar 2025 12:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkWfQ90n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkKfF0Uo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DC226F440;
-	Tue, 25 Mar 2025 12:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C70269AF1;
+	Tue, 25 Mar 2025 12:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906353; cv=none; b=Q/OUbxwkPMIUUNxy1iLGCGkf6t3di0bmewBnRJjYEUAOKVyX1VWv2RPGYkn+tKea5289KCbJllNGktr4tKBeT0YmpM4eDsEJjfz0E7FJJGFoPJTWr0rpdPt5sUMw2EnoFi3VLNXpZTd5zoxhCL29tsn3EYaNDDcnN2QIHs7UYLI=
+	t=1742906080; cv=none; b=WaZQnHVBlZD/QLgJ8T7+JOUuukedYuK6Vc4iXKYUEsUyeAHBV7J8HBcOmtBrOF7rZiHSBaI4KV69FxqdcND8WF9h61WaybjObZj9Im6MIMUYF8IlOCzhqoVhbOTddpb4Pue/FBhNF5CWVEsuS1vuhSOSP92wI2KXPZU7F6a6TU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906353; c=relaxed/simple;
-	bh=geX7i1Lu//a18HNEdl4y9mCTYFDD/VaRHrIeKCFl4DQ=;
+	s=arc-20240116; t=1742906080; c=relaxed/simple;
+	bh=eyds6wM7M6uzmEB3D/lGJdA3lnfmbZH9CI7rCO93Rpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cR11169Qi0AiBkGC7GXMjJAiJBQ3YP9fMPZSGxdv/fznDcdUcpOfSwHj9chhcAXs/QrMVQCwgF5/PiWVPFol7UiytBDBPnDMxigkRPGzMoHpXBQ5INn+w4wYnyKPSzP7pOexVukJiCSux1AEfCPaNfyDL90yoMmdH2ugfscYRxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkWfQ90n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6FDC4CEED;
-	Tue, 25 Mar 2025 12:39:12 +0000 (UTC)
+	 MIME-Version; b=FwuIpnONMkyo0exCMbalYHKXIAmXUs3IhpHJi6ord+o8YB4VLZRMRK9UBSEekWtdguVq/ZsoBmIVoPU+DfDO8bvydARoGIS3YWkCeziq7jj+zrnnY69w4vbNgUmm/nTAGBFaksgHy1Djob5JgT/hC20AaWiD5mQV5NE20i5qDCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkKfF0Uo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4F6C4CEE4;
+	Tue, 25 Mar 2025 12:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906353;
-	bh=geX7i1Lu//a18HNEdl4y9mCTYFDD/VaRHrIeKCFl4DQ=;
+	s=korg; t=1742906079;
+	bh=eyds6wM7M6uzmEB3D/lGJdA3lnfmbZH9CI7rCO93Rpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xkWfQ90n+zfM4MyrURZSIUv12MoqZ0UMVMYKXpkYrhs4WnFkYQb+6huVhU3xuF419
-	 BPr3wXX+VjCONN0e2T2ttL+neICtPNfjI74MsHznoTG8gZcUMEa246E0ktiW3IO+Ae
-	 jrFHmtL//jcaBpSCnZlO38O5IwyEiG8OFVKcP4YA=
+	b=bkKfF0UoehMx5+tSkCQ21ErhhqJcm6RufWRqNrC0rkbrsRfb7/atKoAzyfbe4Cdz7
+	 V0vqU1o821qGZpZN3AecFpqO7RA++Of0PASAqTM5TnpacucJwRydE0mY/cCl2COELa
+	 fBYH2CXEjw+JyncdHjj34b7Q2qvRYGhJzhTrDEcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 064/116] regulator: dummy: force synchronous probing
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.13 093/119] pmdomain: amlogic: fix T7 ISP secpower
 Date: Tue, 25 Mar 2025 08:22:31 -0400
-Message-ID: <20250325122150.847271054@linuxfoundation.org>
+Message-ID: <20250325122151.437472884@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-commit 8619909b38eeebd3e60910158d7d68441fc954e9 upstream.
+commit ef17b519088ee0c167cf507820609732ec8bad1a upstream.
 
-Sometimes I get a NULL pointer dereference at boot time in kobject_get()
-with the following call stack:
+ISP and MIPI_ISP, these two have a parent-child relationship,
+ISP depends on MIPI_ISP.
 
-anatop_regulator_probe()
- devm_regulator_register()
-  regulator_register()
-   regulator_resolve_supply()
-    kobject_get()
-
-By placing some extra BUG_ON() statements I could verify that this is
-raised because probing of the 'dummy' regulator driver is not completed
-('dummy_regulator_rdev' is still NULL).
-
-In the JTAG debugger I can see that dummy_regulator_probe() and
-anatop_regulator_probe() can be run by different kernel threads
-(kworker/u4:*).  I haven't further investigated whether this can be
-changed or if there are other possibilities to force synchronization
-between these two probe routines.  On the other hand I don't expect much
-boot time penalty by probing the 'dummy' regulator synchronously.
-
+Fixes: ca75e4b214c6 ("pmdomain: amlogic: Add support for T7 power domains controller")
+Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Cc: stable@vger.kernel.org
-Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in 4.14")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Link: https://patch.msgid.link/20250311091803.31026-1-ceggers@arri.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250303-fix-t7-pwrc-v1-1-b563612bcd86@amlogic.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/dummy.c |    2 +-
+ drivers/pmdomain/amlogic/meson-secure-pwrc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/regulator/dummy.c
-+++ b/drivers/regulator/dummy.c
-@@ -60,7 +60,7 @@ static struct platform_driver dummy_regu
- 	.probe		= dummy_regulator_probe,
- 	.driver		= {
- 		.name		= "reg-dummy",
--		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
-+		.probe_type	= PROBE_FORCE_SYNCHRONOUS,
- 	},
- };
- 
+--- a/drivers/pmdomain/amlogic/meson-secure-pwrc.c
++++ b/drivers/pmdomain/amlogic/meson-secure-pwrc.c
+@@ -221,7 +221,7 @@ static const struct meson_secure_pwrc_do
+ 	SEC_PD(T7_VI_CLK2,	0),
+ 	/* ETH is for ethernet online wakeup, and should be always on */
+ 	SEC_PD(T7_ETH,		GENPD_FLAG_ALWAYS_ON),
+-	SEC_PD(T7_ISP,		0),
++	TOP_PD(T7_ISP,		0, PWRC_T7_MIPI_ISP_ID),
+ 	SEC_PD(T7_MIPI_ISP,	0),
+ 	TOP_PD(T7_GDC,		0, PWRC_T7_NIC3_ID),
+ 	TOP_PD(T7_DEWARP,	0, PWRC_T7_NIC3_ID),
 
 
 
