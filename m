@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-126363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD59DA7010A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9ABEA701B3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:28:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C00A019A3C93
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0C919A777A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F579269AF8;
-	Tue, 25 Mar 2025 12:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80BA26FA4D;
+	Tue, 25 Mar 2025 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnPFdDsm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XC89wDpL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D484269AF1;
-	Tue, 25 Mar 2025 12:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864E526FA45;
+	Tue, 25 Mar 2025 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906085; cv=none; b=D6jbJPCRFbJBityJsbk89GFDPEzMMJUM2JEQfd79Zxe4AAq1oNQ6SK6cnW1Yayrhz8DO7GyYsOZkf3nIJFS4gfzpebAJ9Rm/Yv0RxlrhDI8FIo8cl+JD9HMwmiPESsAaFel8ovbO7NMao+pEdJDPv4b/4BYFomRD6wMU+pZmZcs=
+	t=1742906389; cv=none; b=TfI0gB3C6dV9XDXcgZTawjoMJXeHljGJGMxNyLSMF2V7zLwvD3QxC43XoQo6yIAre9efTCIyd/CXZnYy3kgU7sJzrjtHGrB/nubL2aETw0VicWekc0XL7F9+X0RXPWrqq0gEx86hxsc+vgU+ariNd7XeCkcb6GLbtrGuSdDtqiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906085; c=relaxed/simple;
-	bh=HHdLmss/Ioasdwqh7lSxRYvkxcECkPdtXucriDK0eqQ=;
+	s=arc-20240116; t=1742906389; c=relaxed/simple;
+	bh=nMKjN8mt05kli6QUZFV0DwfefupBhbpMxIxr4yPXh3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkrwBKtqTmZjaB0MkjUvOzzDXzvqBj3B8sZXcZFw/K0mNLgMUjrfLbXJEMT+xz2UkTd2KnuRw0SbVm4YTBaLIYp9e57Rchw1MqadXZRCU3nedkGwqD1xhBCDoIrmGlz8kuRv8M1PXWv518j86a4bnq5EfRzuHTccGqDrThIBEzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnPFdDsm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4571C4CEE9;
-	Tue, 25 Mar 2025 12:34:44 +0000 (UTC)
+	 MIME-Version; b=FOQCTVFeCJOiOB57n2XLw/a38ka7eRTGic2TeanDI+S1cZyYQWm+yH7wIcIIoZfnmH5QlNv1oi9C9Obbahb+FDhM53DZj+1JnRXVpma0a3DcCNuo3ELM1ZP2qqq1ARPLUOIKFktrmcZ9o+4vcBnqlwyH4s6F4h+VjxF+1pq8ifQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XC89wDpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3936AC4CEE4;
+	Tue, 25 Mar 2025 12:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906085;
-	bh=HHdLmss/Ioasdwqh7lSxRYvkxcECkPdtXucriDK0eqQ=;
+	s=korg; t=1742906389;
+	bh=nMKjN8mt05kli6QUZFV0DwfefupBhbpMxIxr4yPXh3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnPFdDsm+9N+kqmd8bdgXrgq6/+RAc+g6gLim8TZuy3OwaGHGapUdaU1A3IjyvU1o
-	 581UuUOZP5+XICMNAntb8qAhRddr+SEr0m8tpwvBMueDZJ5StDh0chflPo84spf205
-	 u3FjixxqURMqfRAkBfkWrE62rU/2MPvrST8XxtMU=
+	b=XC89wDpLmq0HN1Ee3ltqeQ7zEg6pw/JMKjUWYrqDkByY2MhH7+gQCpYcdrshsXvB3
+	 BAEfS7yNf3D1eEBax4WB4VLX8/PNyqIh18LZsoFNNQEe1s4u55nn1ScxqqblQ38ZZg
+	 /EYI7IHu+kiiln8RLRcitjv2gUZmE1nhpDpLeYNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Arthur Mongodin <amongodin@randorisec.fr>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.13 119/119] mptcp: Fix data stream corruption in the address announcement
-Date: Tue, 25 Mar 2025 08:22:57 -0400
-Message-ID: <20250325122152.096163562@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 091/116] drm/amdgpu/gfx12: correct cleanup of me field with gfx_v12_0_me_fini()
+Date: Tue, 25 Mar 2025 08:22:58 -0400
+Message-ID: <20250325122151.538551387@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arthur Mongodin <amongodin@randorisec.fr>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 2c1f97a52cb827a5f2768e67a9dddffae1ed47ab upstream.
+commit 86730b5261d4d8dae3f5b97709d40d694ecf1ddf upstream.
 
-Because of the size restriction in the TCP options space, the MPTCP
-ADD_ADDR option is exclusive and cannot be sent with other MPTCP ones.
-For this reason, in the linked mptcp_out_options structure, group of
-fields linked to different options are part of the same union.
+In gfx_v12_0_cp_gfx_load_me_microcode_rs64(), gfx_v12_0_pfp_fini() is
+incorrectly used to free 'me' field of 'gfx', since gfx_v12_0_pfp_fini()
+can only release 'pfp' field of 'gfx'. The release function of 'me' field
+should be gfx_v12_0_me_fini().
 
-There is a case where the mptcp_pm_add_addr_signal() function can modify
-opts->addr, but not ended up sending an ADD_ADDR. Later on, back in
-mptcp_established_options, other options will be sent, but with
-unexpected data written in other fields due to the union, e.g. in
-opts->ext_copy. This could lead to a data stream corruption in the next
-packet.
-
-Using an intermediate variable, prevents from corrupting previously
-established DSS option. The assignment of the ADD_ADDR option
-parameters is now done once we are sure this ADD_ADDR option can be set
-in the packet, e.g. after having dropped other suboptions.
-
-Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Arthur Mongodin <amongodin@randorisec.fr>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-[ Matt: the commit message has been updated: long lines splits and some
-  clarifications. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-1-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 52cb80c12e8a ("drm/amdgpu: Add gfx v12_0 ip block support (v6)")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ebdc52607a46cda08972888178c6aa9cd6965141)
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -651,6 +651,7 @@ static bool mptcp_established_options_ad
- 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
- 	bool drop_other_suboptions = false;
- 	unsigned int opt_size = *size;
-+	struct mptcp_addr_info addr;
- 	bool echo;
- 	int len;
- 
-@@ -659,7 +660,7 @@ static bool mptcp_established_options_ad
- 	 */
- 	if (!mptcp_pm_should_add_signal(msk) ||
- 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
--	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &opts->addr,
-+	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
- 		    &echo, &drop_other_suboptions))
- 		return false;
- 
-@@ -672,7 +673,7 @@ static bool mptcp_established_options_ad
- 	else if (opts->suboptions & OPTION_MPTCP_DSS)
- 		return false;
- 
--	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
-+	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
- 	if (remaining < len)
- 		return false;
- 
-@@ -689,6 +690,7 @@ static bool mptcp_established_options_ad
- 		opts->ahmac = 0;
- 		*size -= opt_size;
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+@@ -2395,7 +2395,7 @@ static int gfx_v12_0_cp_gfx_load_me_micr
+ 				      (void **)&adev->gfx.me.me_fw_data_ptr);
+ 	if (r) {
+ 		dev_err(adev->dev, "(%d) failed to create me data bo\n", r);
+-		gfx_v12_0_pfp_fini(adev);
++		gfx_v12_0_me_fini(adev);
+ 		return r;
  	}
-+	opts->addr = addr;
- 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
- 	if (!echo) {
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ADDADDRTX);
+ 
 
 
 
