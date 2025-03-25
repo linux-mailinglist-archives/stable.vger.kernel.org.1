@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-126110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072ABA6FF92
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73984A6FF62
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:03:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24DF719A3E71
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:57:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7000F1777EE
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A3F26656D;
-	Tue, 25 Mar 2025 12:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A8425A2B9;
+	Tue, 25 Mar 2025 12:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doCYwD4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEhK2erp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80172980CB;
-	Tue, 25 Mar 2025 12:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CFB25A2C0;
+	Tue, 25 Mar 2025 12:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905619; cv=none; b=VKBqF6dcoQwYRPhbcVeNoPYgtvD3bDCJdj16yyiwTdbrauI+jALODFlBya+nNkSWMSF9SsMMhUjdbNnnCZ6ubyRWWNdKUPta3cnItpt3Q/XknNdn/GL0FrR2hD/ZxSbA72IoKXaVHIwaOcho8QAiAAlO/Ky2VWxqt4gW+vRVUI4=
+	t=1742905627; cv=none; b=cuN4Qn7gpnlqu5MKiK7UdNcNtuc+CZ7nOIHtI6ufuausvFonSRidCHokj46gjTuy02pD0BWiqf2vwuCbJOZBfWAAggQkcnZc6d/pWgbLJL2/L1qoX1Sh/R1oKdMH3G69NUGZh5Un07Dg3EtMpfTdij97nT59NPkQNEIPKbvwzJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905619; c=relaxed/simple;
-	bh=KoQd8C8/O9CUsZHT1YbRjBJG7DRGI1Zpa5EZWsyLy10=;
+	s=arc-20240116; t=1742905627; c=relaxed/simple;
+	bh=2pVnc9MyCOLx7Own0exTV/0pqPS2ONUNH5pMgq1Pc04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QpMjUUqUdeGgQBKpUPxgCfQsGbl8z1Hzp9aWso/tfxJ24+gqNW+nFtqbM8J5C1Hwfgx6AnfVLodMOhb0MCfD5eoosorRqjRcVF+dqFaK2TySglaYAh2sSCYNy6UO9XWIdhASYqFeBTlmJhjPD4ReY+PKHrvX8Wat3swZfnPs4Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doCYwD4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F5DC4CEE9;
-	Tue, 25 Mar 2025 12:26:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n4g0+d8peeL7C6Wugqeg5nqamNnDsOXohyYLnEXfL+hfxLd2bim7DPrPhKe7ZOET1JdXWbZh8MWdTaMmEGS66VzhtmPOj/E/vKNbbEkuqXDJu0ZjpLE4kazVL382dVYieUhm/7htkcaefxCjWo66NuK1oSC16N3PQ6JdYpzifgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEhK2erp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAAEC4CEE9;
+	Tue, 25 Mar 2025 12:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905619;
-	bh=KoQd8C8/O9CUsZHT1YbRjBJG7DRGI1Zpa5EZWsyLy10=;
+	s=korg; t=1742905626;
+	bh=2pVnc9MyCOLx7Own0exTV/0pqPS2ONUNH5pMgq1Pc04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doCYwD4vA240//tEZo0bVX01iATEfwyYF2AnOFaBTWSWz+doQNzz8/owS+85SSgn+
-	 9OtuHb3VCJytBCd/v9xWBo9zZ7y0dKWuqgakkn+k4SsDRn3I8LZrHvfQPE9mHxpssl
-	 On85SCU8BtY70bD5RQfUJzIhwnOYY9HvxumsgD0k=
+	b=AEhK2erpKsOetGmYPBxFKzbf/yCCk24avCtfHhKxa9qv3zc3vKk5y+foY99yGmBqp
+	 kvdxI9QHLpowHU81gN5BmUVbyTG6mvI8wTWFZEr3lio8SZLAkZ669r8Yerr96U5WZw
+	 byrM6sj6LAQuNYP5JICiktKa45lfn/Tf88Y5MQFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Sybil Isabel Dorsett <sybdorsett@proton.me>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/198] HID: ignore non-functional sensor in HP 5MP Camera
-Date: Tue, 25 Mar 2025 08:20:05 -0400
-Message-ID: <20250325122157.767235380@linuxfoundation.org>
+Subject: [PATCH 6.1 047/198] platform/x86: thinkpad_acpi: Fix invalid fan speed on ThinkPad X120e
+Date: Tue, 25 Mar 2025 08:20:09 -0400
+Message-ID: <20250325122157.868275101@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -61,60 +60,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+From: Sybil Isabel Dorsett <sybdorsett@proton.me>
 
-[ Upstream commit 363236d709e75610b628c2a4337ccbe42e454b6d ]
+[ Upstream commit 1046cac109225eda0973b898e053aeb3d6c10e1d ]
 
-The HP 5MP Camera (USB ID 0408:5473) reports a HID sensor interface that
-is not actually implemented. Attempting to access this non-functional
-sensor via iio_info causes system hangs as runtime PM tries to wake up
-an unresponsive sensor.
+On ThinkPad X120e, fan speed is reported in ticks per revolution
+rather than RPM.
 
-  [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
-  [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff
+Recalculate the fan speed value reported for ThinkPad X120e
+to RPM based on a 22.5 kHz clock.
 
-Add this device to the HID ignore list since the sensor interface is
-non-functional by design and should not be exposed to userspace.
+Based on the information on
+https://www.thinkwiki.org/wiki/How_to_control_fan_speed,
+the same problem is highly likely to be relevant to at least Edge11,
+but Edge11 is not addressed in this patch.
 
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sybil Isabel Dorsett <sybdorsett@proton.me>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250203163255.5525-1-sybdorsett@proton.me
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 1 +
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/platform/x86/thinkpad_acpi.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index d8c5e24e7d44c..29b8c96ce9f4d 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1072,6 +1072,7 @@
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3001		0x3001
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3003		0x3003
- #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3008		0x3008
-+#define USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473		0x5473
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index a57e236be0504..a8b6f38d344fd 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -8161,6 +8161,7 @@ static struct ibm_struct volume_driver_data = {
  
- #define I2C_VENDOR_ID_RAYDIUM		0x2386
- #define I2C_PRODUCT_ID_RAYDIUM_4B33	0x4b33
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index debc49272a5c0..875c44e5cf6c2 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -882,6 +882,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SYNAPTICS, USB_DEVICE_ID_SYNAPTICS_DPAD) },
- #endif
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
- 	{ }
+ #define FAN_NS_CTRL_STATUS	BIT(2)		/* Bit which determines control is enabled or not */
+ #define FAN_NS_CTRL		BIT(4)		/* Bit which determines control is by host or EC */
++#define FAN_CLOCK_TPM		(22500*60)	/* Ticks per minute for a 22.5 kHz clock */
+ 
+ enum {					/* Fan control constants */
+ 	fan_status_offset = 0x2f,	/* EC register 0x2f */
+@@ -8214,6 +8215,7 @@ static int fan_watchdog_maxinterval;
+ 
+ static bool fan_with_ns_addr;
+ static bool ecfw_with_fan_dec_rpm;
++static bool fan_speed_in_tpr;
+ 
+ static struct mutex fan_mutex;
+ 
+@@ -8396,8 +8398,11 @@ static int fan_get_speed(unsigned int *speed)
+ 			     !acpi_ec_read(fan_rpm_offset + 1, &hi)))
+ 			return -EIO;
+ 
+-		if (likely(speed))
++		if (likely(speed)) {
+ 			*speed = (hi << 8) | lo;
++			if (fan_speed_in_tpr && *speed != 0)
++				*speed = FAN_CLOCK_TPM / *speed;
++		}
+ 		break;
+ 	case TPACPI_FAN_RD_TPEC_NS:
+ 		if (!acpi_ec_read(fan_rpm_status_ns, &lo))
+@@ -8430,8 +8435,11 @@ static int fan2_get_speed(unsigned int *speed)
+ 		if (rc)
+ 			return -EIO;
+ 
+-		if (likely(speed))
++		if (likely(speed)) {
+ 			*speed = (hi << 8) | lo;
++			if (fan_speed_in_tpr && *speed != 0)
++				*speed = FAN_CLOCK_TPM / *speed;
++		}
+ 		break;
+ 
+ 	case TPACPI_FAN_RD_TPEC_NS:
+@@ -8959,6 +8967,7 @@ static const struct attribute_group fan_driver_attr_group = {
+ #define TPACPI_FAN_NOFAN	0x0008		/* no fan available */
+ #define TPACPI_FAN_NS		0x0010		/* For EC with non-Standard register addresses */
+ #define TPACPI_FAN_DECRPM	0x0020		/* For ECFW's with RPM in register as decimal */
++#define TPACPI_FAN_TPR		0x0040		/* Fan speed is in Ticks Per Revolution */
+ 
+ static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
+ 	TPACPI_QEC_IBM('1', 'Y', TPACPI_FAN_Q1),
+@@ -8981,6 +8990,7 @@ static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
+ 	TPACPI_Q_LNV3('N', '2', 'U', TPACPI_FAN_NS),	/* X13 Yoga Gen 2*/
+ 	TPACPI_Q_LNV3('N', '1', 'O', TPACPI_FAN_NOFAN),	/* X1 Tablet (2nd gen) */
+ 	TPACPI_Q_LNV3('R', '0', 'Q', TPACPI_FAN_DECRPM),/* L480 */
++	TPACPI_Q_LNV('8', 'F', TPACPI_FAN_TPR),		/* ThinkPad x120e */
  };
  
+ static int __init fan_init(struct ibm_init_struct *iibm)
+@@ -9044,6 +9054,8 @@ static int __init fan_init(struct ibm_init_struct *iibm)
+ 
+ 			if (quirks & TPACPI_FAN_Q1)
+ 				fan_quirk1_setup();
++			if (quirks & TPACPI_FAN_TPR)
++				fan_speed_in_tpr = true;
+ 			/* Try and probe the 2nd fan */
+ 			tp_features.second_fan = 1; /* needed for get_speed to work */
+ 			res = fan2_get_speed(&speed);
 -- 
 2.39.5
 
