@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-126477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1AFA70120
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0FFA7004D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76AA83BF486
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FA4B188C439
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A8326B976;
-	Tue, 25 Mar 2025 12:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B8A29B237;
+	Tue, 25 Mar 2025 12:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6cIoZwD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqkrVN7M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846D426B96B;
-	Tue, 25 Mar 2025 12:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011A529B233;
+	Tue, 25 Mar 2025 12:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906297; cv=none; b=HJvaCTqgvfztzWoYulqMnOUv55sq4HBFAinc0XucVxptqGxo1TUDbaTSAsqtytpo8J5hm+Ukp6/Ho/oVVONm0AoS9lvjwM+vkeoFl0nJ1KNcACcPPZHVl03F7EEl32AL5louyXYOj4rBInn0qZCogxvy3ffccKEm/hpOv9yXfzk=
+	t=1742905867; cv=none; b=UdnKYx01OoRMW2NcD2V4Z/RXKCE2WVKgsmQcXQNEojJUL9r43Lj0Q3nm4dezSIFKVu9MW1wuKj1XRO4DwG6fxoMOZ+VUkUFMt65Htsn23YwlAwDr3POMHETuH86dt2aCb1FiMtzsLbOs9ZvGPOBNc3jLkijJ5bBX2fE/zMEksuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906297; c=relaxed/simple;
-	bh=JYKhM14Bqi7EaYyWPiSxPvJbcm02IrK9Fr/j4/7xvds=;
+	s=arc-20240116; t=1742905867; c=relaxed/simple;
+	bh=K5z3lHx/r0Wq7JpVWttljqRVyKGtly4Ty8XX5LmUNkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecFTgDKtC9WwaF/RTFFFVZ+OpV2Tdh74gw1xwUpbIiL1u1oNS0Q5T6AHF8lw+dYAQUrw9VpT79UP4t8qCJXi/D28fAm6G0AsV2LCHwcw/QmlNycF4izqpukRbY+GjUSecqJWG3twRiLstnZ4Q0PXnN1RURqhcaHbWn8ze12ETc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6cIoZwD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299B1C4CEE4;
-	Tue, 25 Mar 2025 12:38:17 +0000 (UTC)
+	 MIME-Version; b=u/Bbc9lBdCYL2FFbFe8Xz77incgchmz5Sp97OdIjZqWYUDxbxAxMlEsgN454EmejxUO3GeT5fPeXXh5XzY7xcF+hqPvyUYtmSOmbFDOZfIu1njUh749IsUzP1Ub5jK9d0PjFgQq1wn+9LxmcQS8181JptSvJ++0jEAYpwEHG+Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqkrVN7M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC17C4CEE4;
+	Tue, 25 Mar 2025 12:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906297;
-	bh=JYKhM14Bqi7EaYyWPiSxPvJbcm02IrK9Fr/j4/7xvds=;
+	s=korg; t=1742905866;
+	bh=K5z3lHx/r0Wq7JpVWttljqRVyKGtly4Ty8XX5LmUNkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6cIoZwDSXfBgWhwz+jzqL/yzLtYM1sGtVLm0KD2nkPl7rHDWBlSpDuT1jbiOuBBX
-	 pZnHIMIOrmfb2iRwCVymGpcdRyq8FJMaXDZ6TMAlEdUfdjmGZA+s0c1QQ8ANw+COmC
-	 TaGoLUiJPt9aB9Gg97X0uBV63MuW7srZxWtGl8o8=
+	b=PqkrVN7M3tdIWkfVKs9a3WeVYFPVCwTZliJ5/N+8UBZ3WYAv05UqYLFU1vEN18o0S
+	 9LVd0avzv1j/XWmVEzFnPP/oNYiQJcNpPUCCxPpr7B4kUgojiclBm+8YkaH6ik5284
+	 Aah/VSornTI2VsnTNrsE8W3LK/M+x0lfGQGmx9BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/116] gpu: host1x: Do not assume that a NULL domain means no DMA IOMMU
-Date: Tue, 25 Mar 2025 08:22:10 -0400
-Message-ID: <20250325122150.308325801@linuxfoundation.org>
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 169/198] can: rcar_canfd: Fix page entries in the AFL list
+Date: Tue, 25 Mar 2025 08:22:11 -0400
+Message-ID: <20250325122201.082160607@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit cb83f4b965a66d85e9a03621ef3b22c044f4a033 ]
+commit 1dba0a37644ed3022558165bbb5cb9bda540eaf7 upstream.
 
-Previously with tegra-smmu, even with CONFIG_IOMMU_DMA, the default domain
-could have been left as NULL. The NULL domain is specially recognized by
-host1x_iommu_attach() as meaning it is not the DMA domain and
-should be replaced with the special shared domain.
+There are a total of 96 AFL pages and each page has 16 entries with
+registers CFDGAFLIDr, CFDGAFLMr, CFDGAFLP0r, CFDGAFLP1r holding
+the rule entries (r = 0..15).
 
-This happened prior to the below commit because tegra-smmu was using the
-NULL domain to mean IDENTITY.
+Currently, RCANFD_GAFL* macros use a start variable to find AFL entries,
+which is incorrect as the testing on RZ/G3E shows ch1 and ch4
+gets a start value of 0 and the register contents are overwritten.
 
-Now that the domain is properly labled the test in DRM doesn't see NULL.
-Check for IDENTITY as well to enable the special domains.
+Fix this issue by using rule_entry corresponding to the channel
+to find the page entries in the AFL list.
 
-This is the same issue and basic fix as seen in
-commit fae6e669cdc5 ("drm/tegra: Do not assume that a NULL domain means no
-DMA IOMMU").
-
-Fixes: c8cc2655cc6c ("iommu/tegra-smmu: Implement an IDENTITY domain")
-Reported-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Closes: https://lore.kernel.org/all/c6a6f114-3acd-4d56-a13b-b88978e927dc@tecnico.ulisboa.pt/
-Tested-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/0-v1-10dcc8ce3869+3a7-host1x_identity_jgg@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dd3bd23eb438 ("can: rcar_canfd: Add Renesas R-Car CAN FD driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250307170330.173425-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/host1x/dev.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/can/rcar/rcar_canfd.c |   28 +++++++++++-----------------
+ 1 file changed, 11 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/host1x/dev.c b/drivers/gpu/host1x/dev.c
-index 710674ef40a97..3f23a7d91519f 100644
---- a/drivers/gpu/host1x/dev.c
-+++ b/drivers/gpu/host1x/dev.c
-@@ -367,6 +367,10 @@ static bool host1x_wants_iommu(struct host1x *host1x)
- 	return true;
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -772,22 +772,14 @@ static void rcar_canfd_configure_control
  }
  
-+/*
-+ * Returns ERR_PTR on failure, NULL if the translation is IDENTITY, otherwise a
-+ * valid paging domain.
-+ */
- static struct iommu_domain *host1x_iommu_attach(struct host1x *host)
+ static void rcar_canfd_configure_afl_rules(struct rcar_canfd_global *gpriv,
+-					   u32 ch)
++					   u32 ch, u32 rule_entry)
  {
- 	struct iommu_domain *domain = iommu_get_domain_for_dev(host->dev);
-@@ -391,6 +395,8 @@ static struct iommu_domain *host1x_iommu_attach(struct host1x *host)
- 	 * Similarly, if host1x is already attached to an IOMMU (via the DMA
- 	 * API), don't try to attach again.
- 	 */
-+	if (domain && domain->type == IOMMU_DOMAIN_IDENTITY)
-+		domain = NULL;
- 	if (!host1x_wants_iommu(host) || domain)
- 		return domain;
+-	u32 cfg;
+-	int offset, start, page, num_rules = RCANFD_CHANNEL_NUMRULES;
++	int offset, page, num_rules = RCANFD_CHANNEL_NUMRULES;
++	u32 rule_entry_index = rule_entry % 16;
+ 	u32 ridx = ch + RCANFD_RFFIFO_IDX;
  
--- 
-2.39.5
-
+-	if (ch == 0) {
+-		start = 0; /* Channel 0 always starts from 0th rule */
+-	} else {
+-		/* Get number of Channel 0 rules and adjust */
+-		cfg = rcar_canfd_read(gpriv->base, RCANFD_GAFLCFG(ch));
+-		start = RCANFD_GAFLCFG_GETRNC(gpriv, 0, cfg);
+-	}
+-
+ 	/* Enable write access to entry */
+-	page = RCANFD_GAFL_PAGENUM(start);
++	page = RCANFD_GAFL_PAGENUM(rule_entry);
+ 	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLECTR,
+ 			   (RCANFD_GAFLECTR_AFLPN(gpriv, page) |
+ 			    RCANFD_GAFLECTR_AFLDAE));
+@@ -803,13 +795,13 @@ static void rcar_canfd_configure_afl_rul
+ 		offset = RCANFD_C_GAFL_OFFSET;
+ 
+ 	/* Accept all IDs */
+-	rcar_canfd_write(gpriv->base, RCANFD_GAFLID(offset, start), 0);
++	rcar_canfd_write(gpriv->base, RCANFD_GAFLID(offset, rule_entry_index), 0);
+ 	/* IDE or RTR is not considered for matching */
+-	rcar_canfd_write(gpriv->base, RCANFD_GAFLM(offset, start), 0);
++	rcar_canfd_write(gpriv->base, RCANFD_GAFLM(offset, rule_entry_index), 0);
+ 	/* Any data length accepted */
+-	rcar_canfd_write(gpriv->base, RCANFD_GAFLP0(offset, start), 0);
++	rcar_canfd_write(gpriv->base, RCANFD_GAFLP0(offset, rule_entry_index), 0);
+ 	/* Place the msg in corresponding Rx FIFO entry */
+-	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLP1(offset, start),
++	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLP1(offset, rule_entry_index),
+ 			   RCANFD_GAFLP1_GAFLFDP(ridx));
+ 
+ 	/* Disable write access to page */
+@@ -1825,6 +1817,7 @@ static int rcar_canfd_probe(struct platf
+ 	unsigned long channels_mask = 0;
+ 	int err, ch_irq, g_irq;
+ 	int g_err_irq, g_recc_irq;
++	u32 rule_entry = 0;
+ 	bool fdmode = true;			/* CAN FD only mode - default */
+ 	enum rcanfd_chip_id chip_id;
+ 	int max_channels;
+@@ -2003,7 +1996,8 @@ static int rcar_canfd_probe(struct platf
+ 		rcar_canfd_configure_tx(gpriv, ch);
+ 
+ 		/* Configure receive rules */
+-		rcar_canfd_configure_afl_rules(gpriv, ch);
++		rcar_canfd_configure_afl_rules(gpriv, ch, rule_entry);
++		rule_entry += RCANFD_CHANNEL_NUMRULES;
+ 	}
+ 
+ 	/* Configure common interrupts */
 
 
 
