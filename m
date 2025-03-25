@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-126062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B507A6FEB9
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:56:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7426BA6FED1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AFCD16A21F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:51:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0053C16DABC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2D4264F9D;
-	Tue, 25 Mar 2025 12:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F1C26560C;
+	Tue, 25 Mar 2025 12:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G57O7GWP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4TOzs97"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A808D264F94;
-	Tue, 25 Mar 2025 12:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE5C264FA2;
+	Tue, 25 Mar 2025 12:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905530; cv=none; b=pLJTXksjSmx6LeMZwdiyDcINB4QJT7eTC99bOC1uADKqrtxuq8UucJvkSmXmTdCE6DILwIeZB3U9P8jJEENn5PLXJVIhcaRJ2ugbfwzx1qI+ldJdVb04vBD8/+kVb27DyTeUNVoQY0Uj5tNy6NdQI6zO3X15RPhO85u1tObo60Y=
+	t=1742905551; cv=none; b=soWjGxMD2R9+8dakf9k7NSGlyVcAb0bXma6L3lLXsogNxuBBNA9K2PqnPjx/uV725tMegPSt/a7BDEODu9DNP09/KeP7k3Qq6ODSv+UbR70fCEWBsxT/RRpwQv9+iFPyiTboEUTGIKJ9ODQWYgVe+9qDtTkuAJ82QBwsVN6jxBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905530; c=relaxed/simple;
-	bh=Q47xbCZeo2paoEnjm0S47VBOuelJ6NQuMnoi+YSqakE=;
+	s=arc-20240116; t=1742905551; c=relaxed/simple;
+	bh=nGwcwrnWCPtSvBgSjFP3Tm1cl46AT3soL5tiWQ870GA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=de1koeURannB9jblF7+/3kiByWu8UdkNIaK+nsXtAL7SnGMr9QSaIO3kVKDn+Sj3L0Jx66o8vccgFVBYlnMdUNS5tUG3l8APPpVgBphcZ3hQahAUTaHpHPqUSF/ubONN/RSrzsS4zxqL0bRPIdVd3YxM47nzGW7vdN9Xx8CyBH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G57O7GWP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E50C4CEED;
-	Tue, 25 Mar 2025 12:25:29 +0000 (UTC)
+	 MIME-Version; b=j1hvsaUMvrSnPeCh2Q358gEXns73NLu0SS+xknXdd7khs7qh3z3jBPPjSevp2nEMaEs2aCPAH085kXjlU2EIh9qXs1jvI0h9P/JVh25kAmihB6bwrMR0RFDgRn0ofNomwhNI7n9liCHLYeXj0I4tgSFLOFK2Kd79XAz6nTMZO7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4TOzs97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545F4C4CEE9;
+	Tue, 25 Mar 2025 12:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905530;
-	bh=Q47xbCZeo2paoEnjm0S47VBOuelJ6NQuMnoi+YSqakE=;
+	s=korg; t=1742905550;
+	bh=nGwcwrnWCPtSvBgSjFP3Tm1cl46AT3soL5tiWQ870GA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G57O7GWP76vkY7Q8jz5t7ZnHxUMcib7Ni7iYao8iOP8c7I90cTtIELGBxRzOEcB/2
-	 PCmHt1wbxd5ORfFUMbJGhgMiod/m3UgQkaBBQ4/xXho2VheXLhJtVyjfdD/2Ow/IPH
-	 v/Cjp1G/aersDiYXRzoE+FfpjCl/Sl34MXIHv8ec=
+	b=F4TOzs978qXknqwIpPJa4o5wIbshhfCaJZU9pNeG3j9fb6JcErDY6k2JK4C97irDY
+	 H5roySsIU8OIAfUg9EBLRNOd3uIaycuW3CvP657C9dgPYpJ0fsCJG9GdQs/pTO6ZJ1
+	 FvY7h5BxgwIziWfEkTXzdKzM4wtOfIDPLyV2Q4+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/198] netfilter: nft_ct: Use __refcount_inc() for per-CPU nft_ct_pcpu_template.
-Date: Tue, 25 Mar 2025 08:19:29 -0400
-Message-ID: <20250325122156.832173771@linuxfoundation.org>
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.1 008/198] ice: fix memory leak in aRFS after reset
+Date: Tue, 25 Mar 2025 08:19:30 -0400
+Message-ID: <20250325122156.859977044@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -67,60 +69,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-[ Upstream commit 5cfe5612ca9590db69b9be29dc83041dbf001108 ]
+[ Upstream commit 23d97f18901ef5e4e264e3b1777fe65c760186b5 ]
 
-nft_ct_pcpu_template is a per-CPU variable and relies on disabled BH for its
-locking. The refcounter is read and if its value is set to one then the
-refcounter is incremented and variable is used - otherwise it is already
-in use and left untouched.
+Fix aRFS (accelerated Receive Flow Steering) structures memory leak by
+adding a checker to verify if aRFS memory is already allocated while
+configuring VSI. aRFS objects are allocated in two cases:
+- as part of VSI initialization (at probe), and
+- as part of reset handling
 
-Without per-CPU locking in local_bh_disable() on PREEMPT_RT the
-read-then-increment operation is not atomic and therefore racy.
+However, VSI reconfiguration executed during reset involves memory
+allocation one more time, without prior releasing already allocated
+resources. This led to the memory leak with the following signature:
 
-This can be avoided by using unconditionally __refcount_inc() which will
-increment counter and return the old value as an atomic operation.
-In case the returned counter is not one, the variable is in use and we
-need to decrement counter. Otherwise we can use it.
+[root@os-delivery ~]# cat /sys/kernel/debug/kmemleak
+unreferenced object 0xff3c1ca7252e6000 (size 8192):
+  comm "kworker/0:0", pid 8, jiffies 4296833052
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    [<ffffffff991ec485>] __kmalloc_cache_noprof+0x275/0x340
+    [<ffffffffc0a6e06a>] ice_init_arfs+0x3a/0xe0 [ice]
+    [<ffffffffc09f1027>] ice_vsi_cfg_def+0x607/0x850 [ice]
+    [<ffffffffc09f244b>] ice_vsi_setup+0x5b/0x130 [ice]
+    [<ffffffffc09c2131>] ice_init+0x1c1/0x460 [ice]
+    [<ffffffffc09c64af>] ice_probe+0x2af/0x520 [ice]
+    [<ffffffff994fbcd3>] local_pci_probe+0x43/0xa0
+    [<ffffffff98f07103>] work_for_cpu_fn+0x13/0x20
+    [<ffffffff98f0b6d9>] process_one_work+0x179/0x390
+    [<ffffffff98f0c1e9>] worker_thread+0x239/0x340
+    [<ffffffff98f14abc>] kthread+0xcc/0x100
+    [<ffffffff98e45a6d>] ret_from_fork+0x2d/0x50
+    [<ffffffff98e083ba>] ret_from_fork_asm+0x1a/0x30
+    ...
 
-Use __refcount_inc() instead of read and a conditional increment.
-
-Fixes: edee4f1e9245 ("netfilter: nft_ct: add zone id set support")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 28bf26724fdb ("ice: Implement aRFS")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_ct.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_arfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 6157f8b4a3cea..3641043ca8cc5 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -240,6 +240,7 @@ static void nft_ct_set_zone_eval(const struct nft_expr *expr,
- 	enum ip_conntrack_info ctinfo;
- 	u16 value = nft_reg_load16(&regs->data[priv->sreg]);
- 	struct nf_conn *ct;
-+	int oldcnt;
+diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
+index fba178e076009..79074f041e39b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_arfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
+@@ -510,7 +510,7 @@ void ice_init_arfs(struct ice_vsi *vsi)
+ 	struct hlist_head *arfs_fltr_list;
+ 	unsigned int i;
  
- 	ct = nf_ct_get(skb, &ctinfo);
- 	if (ct) /* already tracked */
-@@ -260,10 +261,11 @@ static void nft_ct_set_zone_eval(const struct nft_expr *expr,
+-	if (!vsi || vsi->type != ICE_VSI_PF)
++	if (!vsi || vsi->type != ICE_VSI_PF || ice_is_arfs_active(vsi))
+ 		return;
  
- 	ct = this_cpu_read(nft_ct_pcpu_template);
- 
--	if (likely(refcount_read(&ct->ct_general.use) == 1)) {
--		refcount_inc(&ct->ct_general.use);
-+	__refcount_inc(&ct->ct_general.use, &oldcnt);
-+	if (likely(oldcnt == 1)) {
- 		nf_ct_zone_add(ct, &zone);
- 	} else {
-+		refcount_dec(&ct->ct_general.use);
- 		/* previous skb got queued to userspace, allocate temporary
- 		 * one until percpu template can be reused.
- 		 */
+ 	arfs_fltr_list = kcalloc(ICE_MAX_ARFS_LIST, sizeof(*arfs_fltr_list),
 -- 
 2.39.5
 
