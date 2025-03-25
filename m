@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-126285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A92AA70028
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9EFBA700C2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985A58419B6
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B30E719A728C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6956268C7F;
-	Tue, 25 Mar 2025 12:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8431326B2BB;
+	Tue, 25 Mar 2025 12:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+cxI0NX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ck9KY5Vr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EEE268C6D;
-	Tue, 25 Mar 2025 12:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4268826B2BA;
+	Tue, 25 Mar 2025 12:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905942; cv=none; b=UfZbjUfNjNAs0chljeajFewW6XRe0edM9wCJMdh2bRdLcKZpXwI1kb5gTT0ug15bQZXH7eyuCkcSr9/9alZzgYMVdpNoxbNh5pt0qXFLAb9M6PZnnRLEL2zSTS4Pr7TJkSVHxTeE8KDMd2blekZpfXPKGIJaAEhYYKbhN1tlw5g=
+	t=1742906253; cv=none; b=i2yMrECIZeDWY09UB0FWDt1lh+UetCkv8QgenEvqy+QlU6yWSqEFYGbE2CogFQGezx8qJpIID1JGRCa2NbEaxpX0Ea8QA3wFF/PTmnKbmn/utVaaqRUd5CMHGcs45XaaNANYn22KRFiC/UB8Yicsg0SAw97Rw2XT1YbbxSt2avA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905942; c=relaxed/simple;
-	bh=oi0uZcDAKzc9tqqoiCfsjBHIaQrhzSes1p04ueMoGN8=;
+	s=arc-20240116; t=1742906253; c=relaxed/simple;
+	bh=/0HG64hFgr01Ng9P7Is/1tg6t1y1Ae3VA5OU09CizLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pi1tkqZK650dphhVHxdo9+NtApF7MR7a8jkSRZFLuSizTppLWkJPJE++sKLehVqTmAOiNbCvpHZ9XTEFL5T3TDKTZYMkPYCjtUQ9SVr7LtL2lqKTnkEv152ascj+oSyDJjU7z03YqqnF3iHlMHaGm2XZnyfl/bL1zYstjsQJp88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+cxI0NX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B778C4CEE4;
-	Tue, 25 Mar 2025 12:32:21 +0000 (UTC)
+	 MIME-Version; b=HZ+qJZbyX57napCy+esRokbzF1KvHj56MauX8ysYrimLo46WLnUrBkGWsfcXTqVzzV9q/ZrWCuwLqT5hwBn1Ia7yTbAQvHZnDnD3Vk8Em68sHXb+vVoYTo3R1H+Ksgu6DVAn3TOek+KUADHwv9HoLpc2RBEF/GF7fw8LVboplww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ck9KY5Vr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0DDC4CEE4;
+	Tue, 25 Mar 2025 12:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905942;
-	bh=oi0uZcDAKzc9tqqoiCfsjBHIaQrhzSes1p04ueMoGN8=;
+	s=korg; t=1742906252;
+	bh=/0HG64hFgr01Ng9P7Is/1tg6t1y1Ae3VA5OU09CizLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w+cxI0NX7M0IIHLjDbNS9VLNgflrLk+HQjQqq+rGqGlQ26+GlVm2z1Wzx2k/3vT/K
-	 AnMGw6NGSCF8mKAkdPDIgUDsOsEZS+QgPuT5NXnorcTlpvemdKi9b+J8PW9Euru+g8
-	 gFkqmwDuQq9EuovTkBVD5BG/UqzHRDAVcO2rfur0=
+	b=Ck9KY5VrEG1HYMhG+YhxanEBRFTc/VpT5pIWGbEIfwLAAbyUsYLaZUTsysJm5CG+7
+	 5HrVW3rpDn/e2ek5tyr/GD9UlnkcZVdcqYukTXajADPb8YzGqFPSTBdpBROkAzmxN6
+	 6FqengxbIzG7TeahDFr5xsBkjNalkCmOv3zbBkh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Phil Elwell <phil@raspberrypi.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 048/119] net: ipv6: ioam6: fix lwtunnel_output() loop
+Subject: [PATCH 6.12 019/116] ARM: dts: bcm2711: Dont mark timer regs unconfigured
 Date: Tue, 25 Mar 2025 08:21:46 -0400
-Message-ID: <20250325122150.280264206@linuxfoundation.org>
+Message-ID: <20250325122149.710661697@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Phil Elwell <phil@raspberrypi.com>
 
-[ Upstream commit 3e7a60b368eadf6c30a4a79dea1eb8f88b6d620d ]
+[ Upstream commit c24f272ae751a9f54f8816430e7f2d56031892cc ]
 
-Fix the lwtunnel_output() reentry loop in ioam6_iptunnel when the
-destination is the same after transformation. Note that a check on the
-destination address was already performed, but it was not enough. This
-is the example of a lwtunnel user taking care of loops without relying
-only on the last resort detection offered by lwtunnel.
+During upstream process of Raspberry Pi 4 back in 2019 the ARMv7 stubs
+didn't configured the ARM architectural timer. This firmware issue has
+been fixed in 2020, which gave users enough time to update their system.
 
-Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Link: https://patch.msgid.link/20250314120048.12569-3-justin.iurman@uliege.be
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+So drop this property to allow the use of the vDSO version of
+clock_gettime.
+
+Link: https://github.com/raspberrypi/tools/pull/113
+Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250222094113.48198-1-wahrenst@gmx.net
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ioam6_iptunnel.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/broadcom/bcm2711.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
-index 2c383c12a4315..09065187378e6 100644
---- a/net/ipv6/ioam6_iptunnel.c
-+++ b/net/ipv6/ioam6_iptunnel.c
-@@ -337,7 +337,6 @@ static int ioam6_do_encap(struct net *net, struct sk_buff *skb,
- static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
- 	struct dst_entry *dst = skb_dst(skb), *cache_dst = NULL;
--	struct in6_addr orig_daddr;
- 	struct ioam6_lwt *ilwt;
- 	int err = -EINVAL;
- 	u32 pkt_cnt;
-@@ -352,8 +351,6 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	if (pkt_cnt % ilwt->freq.n >= ilwt->freq.k)
- 		goto out;
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+index 4fd0732a34d32..c06d9f5e53c80 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+@@ -451,8 +451,6 @@ IRQ_TYPE_LEVEL_LOW)>,
+ 					  IRQ_TYPE_LEVEL_LOW)>,
+ 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) |
+ 					  IRQ_TYPE_LEVEL_LOW)>;
+-		/* This only applies to the ARMv7 stub */
+-		arm,cpu-registers-not-fw-configured;
+ 	};
  
--	orig_daddr = ipv6_hdr(skb)->daddr;
--
- 	local_bh_disable();
- 	cache_dst = dst_cache_get(&ilwt->cache);
- 	local_bh_enable();
-@@ -422,7 +419,10 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 	}
- 
--	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
-+	/* avoid lwtunnel_output() reentry loop when destination is the same
-+	 * after transformation (e.g., with the inline mode)
-+	 */
-+	if (dst->lwtstate != cache_dst->lwtstate) {
- 		skb_dst_drop(skb);
- 		skb_dst_set(skb, cache_dst);
- 		return dst_output(net, sk, skb);
+ 	cpus: cpus {
 -- 
 2.39.5
 
