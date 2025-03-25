@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A7FA7001C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59808A700CA
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AFE1177274
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 975D41768EF
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22355268C53;
-	Tue, 25 Mar 2025 12:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DD426B2B8;
+	Tue, 25 Mar 2025 12:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvCPkkco"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOJNA8d8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41F7E55B;
-	Tue, 25 Mar 2025 12:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F2C25D541;
+	Tue, 25 Mar 2025 12:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905921; cv=none; b=Jy4qxdyYsHh10YvlDVo74Ka6fikYA4lWATGulEjXxxQv5l3RxfadJpP9/z4doIHu0iUDY75jkGShHYw+zwNOK5kEZ1go9EgehYLmkYnTzOM1CIW0av9xFJmCE+hKjBlsRtfK2wfnWH2nenq0cQaKJmdBKoa17Pu5SZKzjyL4J7I=
+	t=1742906288; cv=none; b=hxQL89Wpg5F994L0xS3dysyRnVIMNppDMxrCI6q1hRu2FIxfflByOCNQ0aKQmIouM1vIY04e6OaZmAg7auPbH0xNeyWv9SVi315Z+WNIssb6od0Q12QJ7yqsk5H8c22syV3GT8TYx2GSQM3ALVnNmfhSdcqWwvYMIZP9/LfQsBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905921; c=relaxed/simple;
-	bh=VIJ8mnOVkB+AZ+CBftavfYr7liKq7PyddXWQSTBfabo=;
+	s=arc-20240116; t=1742906288; c=relaxed/simple;
+	bh=vBcXWTiLCw2v2U1Ppme0vPbuu6YwXcHPcI5p/ITOZGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLI9VYzEbHXIySsrTcSJoezMtdkghO9Ek0xNvSJDD0cRfLxk3l+X7k/0GBwF+1OPXnN9RxJfH/YIVK0BwIBo9cNj9U3Fg6+QzYvXRfizP+q/KpVuwR/6ffJL47NV4GZ7K8spuoN8wPKRDoyiQbTweXHYxQhB4MrPEjJ86peZPUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvCPkkco; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829EAC4CEE4;
-	Tue, 25 Mar 2025 12:32:01 +0000 (UTC)
+	 MIME-Version; b=oqsQDmSyJuyrbvQDM80qA35QNmADUw1jY8ulp7s5gVmd4p2x6fhF0YxwFs/7+fV0+sc9DxElcRKOa0TdYxFXLVvnWKsr3d89XGogHIRXr9f4gRjUbvoo4lV3VidwtIjUjrc6pSAJPfAG7XppRT8cJye5BiiO6gLR4DIoYxf7qgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOJNA8d8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E2EC4CEE4;
+	Tue, 25 Mar 2025 12:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905921;
-	bh=VIJ8mnOVkB+AZ+CBftavfYr7liKq7PyddXWQSTBfabo=;
+	s=korg; t=1742906288;
+	bh=vBcXWTiLCw2v2U1Ppme0vPbuu6YwXcHPcI5p/ITOZGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvCPkkcos+Lpql4aaYAdsvYvH6uxrYO2/SxR82buJDUxfFiaTQs9Oa3U+RmRriMfn
-	 d9JvRdoAjnHd/i7YN2UNzJmrS76r6K6CvMNCuoQbsyO7apCUiExu3cHSwEeWIxUFgU
-	 eERYcaS5bdaM2es4cy6VJ2Tbgpygtuu62vDXo7OE=
+	b=KOJNA8d87Dk+/e+ILnqKZR41Akxv9lB0mljn23fQYJGLOk00yOKBLYIAuGKl1tzyJ
+	 iSZTAYLgjgEcZFyU2wfTTaPyW+pgrYJ5H20mbN/6B4R9sHw5lkZlgzx17jpayX4JBv
+	 CDKhdS75aV8htpdYY/prAPN628IJVNqyoUCkYhtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Marek Vasut <marex@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 038/119] net: ipv6: fix TCP GSO segmentation with NAT
+Subject: [PATCH 6.12 009/116] soc: imx8m: Use devm_* to simplify probe failure handling
 Date: Tue, 25 Mar 2025 08:21:36 -0400
-Message-ID: <20250325122150.034289532@linuxfoundation.org>
+Message-ID: <20250325122149.452868249@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,237 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit daa624d3c2ddffdcbad140a9625a4064371db44f ]
+[ Upstream commit 22b03a4e957e462b380a982759ccf0f6554735d3 ]
 
-When updating the source/destination address, the TCP/UDP checksum needs to
-be updated as well.
+Use device managed functions to simplify handling of failures during
+probe. Remove fail paths which are no longer necessary.
 
-Fixes: bee88cd5bd83 ("net: add support for segmenting TCP fraglist GSO packets")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20250311212530.91519-1-nbd@nbd.name
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: cf7139aac463 ("soc: imx8m: Unregister cpufreq and soc dev in cleanup path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/tcpv6_offload.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/soc/imx/soc-imx8m.c | 92 ++++++++++++-------------------------
+ 1 file changed, 29 insertions(+), 63 deletions(-)
 
-diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
-index a45bf17cb2a17..ae2da28f9dfb1 100644
---- a/net/ipv6/tcpv6_offload.c
-+++ b/net/ipv6/tcpv6_offload.c
-@@ -94,14 +94,23 @@ INDIRECT_CALLABLE_SCOPE int tcp6_gro_complete(struct sk_buff *skb, int thoff)
- }
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index 966593320e28d..8ac7658e3d525 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -51,22 +51,20 @@ static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
  
- static void __tcpv6_gso_segment_csum(struct sk_buff *seg,
-+				     struct in6_addr *oldip,
-+				     const struct in6_addr *newip,
- 				     __be16 *oldport, __be16 newport)
+ static int imx8mq_soc_revision(u32 *socrev, u64 *socuid)
  {
--	struct tcphdr *th;
-+	struct tcphdr *th = tcp_hdr(seg);
-+
-+	if (!ipv6_addr_equal(oldip, newip)) {
-+		inet_proto_csum_replace16(&th->check, seg,
-+					  oldip->s6_addr32,
-+					  newip->s6_addr32,
-+					  true);
-+		*oldip = *newip;
-+	}
+-	struct device_node *np;
++	struct device_node *np __free(device_node) =
++		of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
+ 	void __iomem *ocotp_base;
+ 	u32 magic;
+ 	u32 rev;
+ 	struct clk *clk;
+ 	int ret;
  
- 	if (*oldport == newport)
- 		return;
+-	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
+ 	if (!np)
+ 		return -EINVAL;
  
--	th = tcp_hdr(seg);
- 	inet_proto_csum_replace2(&th->check, seg, *oldport, newport, false);
- 	*oldport = newport;
+ 	ocotp_base = of_iomap(np, 0);
+-	if (!ocotp_base) {
+-		ret = -EINVAL;
+-		goto err_iomap;
+-	}
++	if (!ocotp_base)
++		return -EINVAL;
+ 
+ 	clk = of_clk_get_by_name(np, NULL);
+ 	if (IS_ERR(clk)) {
+@@ -96,35 +94,30 @@ static int imx8mq_soc_revision(u32 *socrev, u64 *socuid)
+ 	clk_disable_unprepare(clk);
+ 	clk_put(clk);
+ 	iounmap(ocotp_base);
+-	of_node_put(np);
+ 
+ 	return 0;
+ 
+ err_clk:
+ 	iounmap(ocotp_base);
+-err_iomap:
+-	of_node_put(np);
+ 	return ret;
  }
-@@ -129,10 +138,10 @@ static struct sk_buff *__tcpv6_gso_segment_list_csum(struct sk_buff *segs)
- 		th2 = tcp_hdr(seg);
- 		iph2 = ipv6_hdr(seg);
  
--		iph2->saddr = iph->saddr;
--		iph2->daddr = iph->daddr;
--		__tcpv6_gso_segment_csum(seg, &th2->source, th->source);
--		__tcpv6_gso_segment_csum(seg, &th2->dest, th->dest);
-+		__tcpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
-+					 &th2->source, th->source);
-+		__tcpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
-+					 &th2->dest, th->dest);
+ static int imx8mm_soc_uid(u64 *socuid)
+ {
++	struct device_node *np __free(device_node) =
++		of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
+ 	void __iomem *ocotp_base;
+-	struct device_node *np;
+ 	struct clk *clk;
+ 	int ret = 0;
+ 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
+ 		     IMX8MP_OCOTP_UID_OFFSET : 0;
+ 
+-	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
+ 	if (!np)
+ 		return -EINVAL;
+ 
+ 	ocotp_base = of_iomap(np, 0);
+-	if (!ocotp_base) {
+-		ret = -EINVAL;
+-		goto err_iomap;
+-	}
++	if (!ocotp_base)
++		return -EINVAL;
+ 
+ 	clk = of_clk_get_by_name(np, NULL);
+ 	if (IS_ERR(clk)) {
+@@ -143,38 +136,27 @@ static int imx8mm_soc_uid(u64 *socuid)
+ 
+ err_clk:
+ 	iounmap(ocotp_base);
+-err_iomap:
+-	of_node_put(np);
+-
+ 	return ret;
+ }
+ 
+ static int imx8mm_soc_revision(u32 *socrev, u64 *socuid)
+ {
+-	struct device_node *np;
++	struct device_node *np __free(device_node) =
++		of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
+ 	void __iomem *anatop_base;
+-	int ret;
+ 
+-	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
+ 	if (!np)
+ 		return -EINVAL;
+ 
+ 	anatop_base = of_iomap(np, 0);
+-	if (!anatop_base) {
+-		ret = -EINVAL;
+-		goto err_iomap;
+-	}
++	if (!anatop_base)
++		return -EINVAL;
+ 
+ 	*socrev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
+ 
+ 	iounmap(anatop_base);
+-	of_node_put(np);
+ 
+ 	return imx8mm_soc_uid(socuid);
+-
+-err_iomap:
+-	of_node_put(np);
+-	return ret;
+ }
+ 
+ static const struct imx8_soc_data imx8mq_soc_data = {
+@@ -205,22 +187,23 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
+ 	{ }
+ };
+ 
+-#define imx8_revision(soc_rev) \
+-	soc_rev ? \
+-	kasprintf(GFP_KERNEL, "%d.%d", (soc_rev >> 4) & 0xf,  soc_rev & 0xf) : \
++#define imx8_revision(dev, soc_rev) \
++	(soc_rev) ? \
++	devm_kasprintf((dev), GFP_KERNEL, "%d.%d", ((soc_rev) >> 4) & 0xf, (soc_rev) & 0xf) : \
+ 	"unknown"
+ 
+ static int imx8m_soc_probe(struct platform_device *pdev)
+ {
+ 	struct soc_device_attribute *soc_dev_attr;
+ 	const struct imx8_soc_data *data;
++	struct device *dev = &pdev->dev;
+ 	const struct of_device_id *id;
+ 	struct soc_device *soc_dev;
+ 	u32 soc_rev = 0;
+ 	u64 soc_uid = 0;
+ 	int ret;
+ 
+-	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
++	soc_dev_attr = devm_kzalloc(dev, sizeof(*soc_dev_attr), GFP_KERNEL);
+ 	if (!soc_dev_attr)
+ 		return -ENOMEM;
+ 
+@@ -228,13 +211,11 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+ 
+ 	ret = of_property_read_string(of_root, "model", &soc_dev_attr->machine);
+ 	if (ret)
+-		goto free_soc;
++		return ret;
+ 
+ 	id = of_match_node(imx8_soc_match, of_root);
+-	if (!id) {
+-		ret = -ENODEV;
+-		goto free_soc;
+-	}
++	if (!id)
++		return -ENODEV;
+ 
+ 	data = id->data;
+ 	if (data) {
+@@ -242,27 +223,21 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+ 		if (data->soc_revision) {
+ 			ret = data->soc_revision(&soc_rev, &soc_uid);
+ 			if (ret)
+-				goto free_soc;
++				return ret;
+ 		}
  	}
  
- 	return segs;
+-	soc_dev_attr->revision = imx8_revision(soc_rev);
+-	if (!soc_dev_attr->revision) {
+-		ret = -ENOMEM;
+-		goto free_soc;
+-	}
++	soc_dev_attr->revision = imx8_revision(dev, soc_rev);
++	if (!soc_dev_attr->revision)
++		return -ENOMEM;
+ 
+-	soc_dev_attr->serial_number = kasprintf(GFP_KERNEL, "%016llX", soc_uid);
+-	if (!soc_dev_attr->serial_number) {
+-		ret = -ENOMEM;
+-		goto free_rev;
+-	}
++	soc_dev_attr->serial_number = devm_kasprintf(dev, GFP_KERNEL, "%016llX", soc_uid);
++	if (!soc_dev_attr->serial_number)
++		return -ENOMEM;
+ 
+ 	soc_dev = soc_device_register(soc_dev_attr);
+-	if (IS_ERR(soc_dev)) {
+-		ret = PTR_ERR(soc_dev);
+-		goto free_serial_number;
+-	}
++	if (IS_ERR(soc_dev))
++		return PTR_ERR(soc_dev);
+ 
+ 	pr_info("SoC: %s revision %s\n", soc_dev_attr->soc_id,
+ 		soc_dev_attr->revision);
+@@ -271,15 +246,6 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+ 		platform_device_register_simple("imx-cpufreq-dt", -1, NULL, 0);
+ 
+ 	return 0;
+-
+-free_serial_number:
+-	kfree(soc_dev_attr->serial_number);
+-free_rev:
+-	if (strcmp(soc_dev_attr->revision, "unknown"))
+-		kfree(soc_dev_attr->revision);
+-free_soc:
+-	kfree(soc_dev_attr);
+-	return ret;
+ }
+ 
+ static struct platform_driver imx8m_soc_driver = {
 -- 
 2.39.5
 
