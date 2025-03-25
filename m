@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-126448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0663BA700E6
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF722A70029
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50ECE17C677
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0228840429
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E2B26B2A5;
-	Tue, 25 Mar 2025 12:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49884268C69;
+	Tue, 25 Mar 2025 12:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvUTOVTx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NS957P7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0390A25D521;
-	Tue, 25 Mar 2025 12:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B1425A64A;
+	Tue, 25 Mar 2025 12:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906244; cv=none; b=OCObs/IaRCKf4lmAuLPr02EGcLXeWmVmFFHikhMuTnEaGFMU77K3mQL8uDrlvns+WCvQvkCB5Z8ZLqw2NWSihkVeiHgJ2t9Dvf8DPKMO4ZLnldaLcPhzUJD6+6Nogkvi/Ytnv3uRibZnlEr4kZ0hUSxGx/Uf1dSF7UwoEQmf7d4=
+	t=1742905933; cv=none; b=fZ49PZnW+qHmHPpZH2rPRct6d/kCTlTXdcbSem+Fx/oKnJGtYtiXf3bMtszyR+4b15cjZokXwsQcaEO3MQ7QmLE8sURJi8YFzRc3GbXotMKYQDo+fQh1WbbZgHXYNr4IXLSF4UdRem7pQv+s7u4K41XmUsAI+gMHKz0dYMiO1sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906244; c=relaxed/simple;
-	bh=bpQNZWNwKU0trb7YCpk5ctAthT93RxEcb8DNHjcfXxc=;
+	s=arc-20240116; t=1742905933; c=relaxed/simple;
+	bh=V6+iZTNE73lY9hBWMJDG/Lyo7/xylm1vsUk4D52KswI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KZH3mHhehayehINj+mL5gs7hEbANlSy6PejGANDibLSZqGnGKS7+nvPo4y1uz5lwFfFwJl+zlmGH8i06rRGqWIpgWB79H/HGhiAKzX7ROY1zBnROswHmHv/oFkQB7DKoaK0eHhfIGjos8W8B7oLXBhan8wiXXecqcZmEHO3VD8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvUTOVTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4654AC4CEE4;
-	Tue, 25 Mar 2025 12:37:23 +0000 (UTC)
+	 MIME-Version; b=ut0ygir4Jug8grHq2vpdrDi47y5DGIkue62IwFVoTvjaiLPICb+XmPUpc1AVF7GJqZ93iw6Jd+LXEyd8YwTlnVi66eaWUzuAaFxSnW6z3QYAlPVTTk3jUsxfkdmjkt4MmGzZtkWBe63a6n0brIbxQyKHxfgxOPsqqkZEsFV6bOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NS957P7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74E8C4CEE4;
+	Tue, 25 Mar 2025 12:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906243;
-	bh=bpQNZWNwKU0trb7YCpk5ctAthT93RxEcb8DNHjcfXxc=;
+	s=korg; t=1742905932;
+	bh=V6+iZTNE73lY9hBWMJDG/Lyo7/xylm1vsUk4D52KswI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvUTOVTxyWUU0DTAhkuDN1nZC9i6bdK0m8oH0LDLbe8WUNTCoi+v8yyue8qS4Wnre
-	 UpgUPspek7H5Q6HT1OfyIxiQaNmPGO04PgAnJqVCp9EO3P7VUvO/kgkBm7yKb6tOQr
-	 PZXwQkoOaSRSqnxC/KfUqQlVwfbRXZUgkRJx//Ec=
+	b=NS957P7T64zNY5EwA/NF58KErCw2sMzBmIp/SNIaHDoKR54D2bHMGhrM1Epw4dux+
+	 RuBu5aAhnLkBitzXhRuAzm07bdDlN8IEjZN4ZQMYLijHqOEbO69NjVwRSoOUWVqlvK
+	 r/hhsicfmpY932uLVjDAGw79VQ/4CDZysBut6z8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/116] arm64: dts: rockchip: Remove undocumented sdmmc property from lubancat-1
+Subject: [PATCH 6.13 043/119] phy: fix xa_alloc_cyclic() error handling
 Date: Tue, 25 Mar 2025 08:21:41 -0400
-Message-ID: <20250325122149.584246580@linuxfoundation.org>
+Message-ID: <20250325122150.156292665@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 43c854c65e47d2f3763345683b06257b4d12e4e3 ]
+[ Upstream commit 3178d2b048365fe2c078cd53f85f2abf1487733b ]
 
-Property "supports-sd" isn't documented anywhere and is unnecessary for
-mainline driver to function. It seems a property used by downstream
-kernel was brought into mainline.
+xa_alloc_cyclic() can return 1, which isn't an error. To prevent
+situation when the caller of this function will treat it as no error do
+a check only for negative here.
 
-This should be reported by dtbs_check, but mmc-controller-common.yaml
-defaults additionalProperties to true thus allows it. Remove the
-property to clean the devicetree up and avoid possible confusion.
-
-Fixes: 8d94da58de53 ("arm64: dts: rockchip: Add EmbedFire LubanCat 1")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Link: https://lore.kernel.org/r/20250228163117.47318-2-ziyao@disroot.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 384968786909 ("net: phy: Introduce ethernet link topology representation")
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/phy/phy_link_topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
-index 9a2f59a351dee..48ccdd6b47118 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
-@@ -512,7 +512,6 @@ &sdhci {
+diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+index 4a5d73002a1a8..0e9e987f37dd8 100644
+--- a/drivers/net/phy/phy_link_topology.c
++++ b/drivers/net/phy/phy_link_topology.c
+@@ -73,7 +73,7 @@ int phy_link_topo_add_phy(struct net_device *dev,
+ 				      xa_limit_32b, &topo->next_phy_index,
+ 				      GFP_KERNEL);
  
- &sdmmc0 {
- 	max-frequency = <150000000>;
--	supports-sd;
- 	bus-width = <4>;
- 	cap-mmc-highspeed;
- 	cap-sd-highspeed;
+-	if (ret)
++	if (ret < 0)
+ 		goto err;
+ 
+ 	return 0;
 -- 
 2.39.5
 
