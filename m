@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-126339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03391A700A8
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE33EA70148
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1AD63B361C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CDDF189D571
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF26269833;
-	Tue, 25 Mar 2025 12:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E673F26E170;
+	Tue, 25 Mar 2025 12:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzjV/vg9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdpS9q4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04362586CD;
-	Tue, 25 Mar 2025 12:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A580825D525;
+	Tue, 25 Mar 2025 12:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906040; cv=none; b=uyyD/5l9IGVxfaYSU7Qlcc13Ov3EfQRA4FXFRlcWG7VYaePeN9eED0FeVrtcBf6HaOVbbiOGf3h9cEl1YO5woodK/yj0GEGDo2H7yBqonGTm8AlSuHPaYDiEQZmELHQvqiEMIP0S2zGhIBqvgqQP/QIWOFtrsIwPxjebyPQR4/k=
+	t=1742906356; cv=none; b=Cht3bAsuep+aqv0CtW7UYmr3z7RMz50ACbnXG9itbrxTu9BZYM+R62o49tzD4CSEnNbMPxfktLepw5Qstzjw1q+Jz9HuWk/l7YLDaaYuatlvghJwhQ+6TqJemhOfpgjqN4wtmYhoHnWbqKYwPGwhuPG/pPziLzSyJR2gvF/ppzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906040; c=relaxed/simple;
-	bh=Vn6NF3sTawKNfYdCTHXhv7NtusTFf2lIb4drePCi+OE=;
+	s=arc-20240116; t=1742906356; c=relaxed/simple;
+	bh=f0QSWPUmIq2NqpKUrgg8ekO+85Lf3ReHzDLyjk7foKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxfoxrWp8B1WJW2cufmEhlexqpHD+K5u4k4b9JOprELX6PtwcC5EztFZ60L3T+r9cp+OqW+jfyNHq5lMu+mJp9k65o18tz2d2NjQ3lap2+ikK13ylQiXlpwWfJVwUOLUcpKAwWyHl/Ry1n7VIjABFwOhhl/Te7IA3G72Oj8xadg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzjV/vg9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85924C4CEE4;
-	Tue, 25 Mar 2025 12:34:00 +0000 (UTC)
+	 MIME-Version; b=pik394JLyI645imw4HWoqyvTubwZALCEDhzaKLCpOc6B46xQOliodwJz8QRf109LWdtCehi9OOf8yXEqzZ+Ef8v0VIVr4HCe2QzNhYhS2IKBGUSFkY4YK96TmHuZGoMwo0xVBIIA+gjkJY14CCebR7JofLVoMSx6WJ6L05IA/P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdpS9q4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594EBC4CEE4;
+	Tue, 25 Mar 2025 12:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906040;
-	bh=Vn6NF3sTawKNfYdCTHXhv7NtusTFf2lIb4drePCi+OE=;
+	s=korg; t=1742906356;
+	bh=f0QSWPUmIq2NqpKUrgg8ekO+85Lf3ReHzDLyjk7foKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zzjV/vg9gJy/OR4aqZsaw5JftmH52tXXOHWFgTq9fO7yhLlS4KHlgPwUY1dN9L1zH
-	 ZrnOwU5yQOo2GKzmkOpuiARZs6omy6CciR+xIMyKXGbihNEBlxp7QaQ3QMVKl+ixc1
-	 5aWko+eDn2REKnQZwj1R7mP/4c/c5hbWqjVM+IpA=
+	b=CdpS9q4+FjzWjykYyv2vsaJq02jKPQkOawGjq9L4SeYiy3N7IULuwDEOezHOo9Ze3
+	 xhjbZEQqjZdj/4LDsIEhBlpCRmBrUkd6fZkLvKozlEsuUY+LpUG2QLUlJODBLnlAPh
+	 avFaXvVat60QEES2NKGrWlh8IkYp/h6XxTm1/0Jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>
-Subject: [PATCH 6.13 103/119] drm/amdgpu: Remove JPEG from vega and carrizo video caps
+	Rafael Aquini <raquini@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 074/116] selftests/mm: run_vmtests.sh: fix half_ufd_size_MB calculation
 Date: Tue, 25 Mar 2025 08:22:41 -0400
-Message-ID: <20250325122151.688234723@linuxfoundation.org>
+Message-ID: <20250325122151.101571606@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Rafael Aquini <raquini@redhat.com>
 
-commit 7fc0765208502e53297ce72c49ca43729f9d6ff3 upstream.
+commit 67a2f86846f244d81601cf2e1552c4656b8556d6 upstream.
 
-JPEG is only supported for VCN1+.
+We noticed that uffd-stress test was always failing to run when invoked
+for the hugetlb profiles on x86_64 systems with a processor count of 64 or
+bigger:
 
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0a6e7b06bdbead2e43d56a2274b7e0c9c86d536e)
-Cc: stable@vger.kernel.org
+  ...
+  # ------------------------------------
+  # running ./uffd-stress hugetlb 128 32
+  # ------------------------------------
+  # ERROR: invalid MiB (errno=9, @uffd-stress.c:459)
+  ...
+  # [FAIL]
+  not ok 3 uffd-stress hugetlb 128 32 # exit=1
+  ...
+
+The problem boils down to how run_vmtests.sh (mis)calculates the size of
+the region it feeds to uffd-stress.  The latter expects to see an amount
+of MiB while the former is just giving out the number of free hugepages
+halved down.  This measurement discrepancy ends up violating uffd-stress'
+assertion on number of hugetlb pages allocated per CPU, causing it to bail
+out with the error above.
+
+This commit fixes that issue by adjusting run_vmtests.sh's
+half_ufd_size_MB calculation so it properly renders the region size in
+MiB, as expected, while maintaining all of its original constraints in
+place.
+
+Link: https://lkml.kernel.org/r/20250218192251.53243-1-aquini@redhat.com
+Fixes: 2e47a445d7b3 ("selftests/mm: run_vmtests.sh: fix hugetlb mem size calculation")
+Signed-off-by: Rafael Aquini <raquini@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc15.c |    1 -
- drivers/gpu/drm/amd/amdgpu/vi.c    |    7 -------
- 2 files changed, 8 deletions(-)
+ tools/testing/selftests/mm/run_vmtests.sh |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -108,7 +108,6 @@ static const struct amdgpu_video_codec_i
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 4096, 4096, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 4096, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
- };
- 
- static const struct amdgpu_video_codecs vega_video_codecs_decode =
---- a/drivers/gpu/drm/amd/amdgpu/vi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vi.c
-@@ -239,13 +239,6 @@ static const struct amdgpu_video_codec_i
- 		.max_pixels_per_frame = 4096 * 4096,
- 		.max_level = 186,
- 	},
--	{
--		.codec_type = AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG,
--		.max_width = 4096,
--		.max_height = 4096,
--		.max_pixels_per_frame = 4096 * 4096,
--		.max_level = 0,
--	},
- };
- 
- static const struct amdgpu_video_codecs cz_video_codecs_decode =
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -300,7 +300,9 @@ uffd_stress_bin=./uffd-stress
+ CATEGORY="userfaultfd" run_test ${uffd_stress_bin} anon 20 16
+ # Hugetlb tests require source and destination huge pages. Pass in half
+ # the size of the free pages we have, which is used for *each*.
+-half_ufd_size_MB=$((freepgs / 2))
++# uffd-stress expects a region expressed in MiB, so we adjust
++# half_ufd_size_MB accordingly.
++half_ufd_size_MB=$(((freepgs * hpgsize_KB) / 1024 / 2))
+ CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb "$half_ufd_size_MB" 32
+ CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb-private "$half_ufd_size_MB" 32
+ CATEGORY="userfaultfd" run_test ${uffd_stress_bin} shmem 20 16
 
 
 
