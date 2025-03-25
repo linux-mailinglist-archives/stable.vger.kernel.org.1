@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-126240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A88A70003
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9120BA700FB
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11D2516A231
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B9E53BE915
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A1A267F4E;
-	Tue, 25 Mar 2025 12:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71630269CF5;
+	Tue, 25 Mar 2025 12:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhVZyauC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6jwtBrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C94267B9B;
-	Tue, 25 Mar 2025 12:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6DA2571AC;
+	Tue, 25 Mar 2025 12:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905859; cv=none; b=f/uvuRzR1AW3rkCFDUID9QiSnvbPi8DcYXjUrY/xaz7wi8oJp5ryy53/NBhnJRDUsJaAfF3weOAB/my9Xa955/7w0TV9uYOpUHSLThEdCQD1LvbDK6vAb5X2RGKn+PeYDxar/rITN/MvFU35M7fFbfJdezHHVunGM1j+HgT9aDE=
+	t=1742906117; cv=none; b=IaRCZQpo4TSjjIoPcQreUixuvyBrHdh+Eo/nJlb3M5njwEQB2BgYCseMhP9ETnw31eVwC1HJ9tLzM4AxOrycMFzo2BRHvjHFWHNa8Flv7q8XXSdQCIJdujyVVYZglzzCKprJReSV6Fw5nDjyqIHBD7SkW1H6yeN/aNXWeNGiZzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905859; c=relaxed/simple;
-	bh=l6rc74CJ5hUctE7IR9CScqRXrDIpaFio05wKuGfiR5o=;
+	s=arc-20240116; t=1742906117; c=relaxed/simple;
+	bh=Azv1tyy1/NzwPk4RVtJuyJ2zj9zOF4dXCBkPi0yyihs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUir/MNWeFsFy9CoZJ1cVo/HkUZSzTQ3Qh7TSaVBScCsMZlONa4PfszG0O1fxqHGvBgZf0Jfllsr35r1iLWauGrcsG+iZpi/mjWrUPWRvdT1IofKVfQvob4hIhdjQhEXs3o/lImnsfplFfUUmLFRAT7ldlH6DGqBp6uqTPNicjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhVZyauC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D44DC4CEE4;
-	Tue, 25 Mar 2025 12:30:59 +0000 (UTC)
+	 MIME-Version; b=X0Sm8zX3RnaCp0MOfymw4PsY+Cd/u1NVgP10aJlVB59tHpsoyckleSayt5M3g7A7sMsz6iQRVss1Ed8aV+zkcQr8G02UlXA3PFWxfk9iIKEp12wBqLuDunggKBo2jJlQL5w1o6g3hA35s2n5ZD+ofcDrcXxbrTo4S/PR1Q1iWoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6jwtBrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16A5C4CEE4;
+	Tue, 25 Mar 2025 12:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905859;
-	bh=l6rc74CJ5hUctE7IR9CScqRXrDIpaFio05wKuGfiR5o=;
+	s=korg; t=1742906117;
+	bh=Azv1tyy1/NzwPk4RVtJuyJ2zj9zOF4dXCBkPi0yyihs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhVZyauCOgGpHRLPzXcKN/frsb5W/OekVyJepiIs6N1p5Ipq7bAPjVlyWFRKe/Tq7
-	 5/y8o2Fn6F12+L8c0eo6Xb/sigNnYmn5p/+jnqKZTZUBCwANTooqgR/yW8dBtO045Q
-	 bj0buARvCP0KT2URBfie+MeWzJp+Uw7Y8WiReTII=
+	b=h6jwtBrSfoYhbtEoZVHNp8Sz0NyJQixOnWb0FfNrxoiGtyGTCg2j1g/Goe3DIaJ9E
+	 kt1lflsw0sAk0vvxHg9ZggM8F3tPFjlG2zQdwMHRspp9M8v98ojhRSvskKMwJd+T+M
+	 BsOmvpUD1IKWfZ86tvFEyz1OD4m2t6B5mwW1TClY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-	Peter Geis <pgwipeout@gmail.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Chris Vogel <chris@z9.de>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.1 175/198] arm64: dts: rockchip: Add missing PCIe supplies to RockPro64 board dtsi
-Date: Tue, 25 Mar 2025 08:22:17 -0400
-Message-ID: <20250325122201.238151439@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 23/77] ipv6: Fix memleak of nhc_pcpu_rth_output in fib_check_nh_v6_gw().
+Date: Tue, 25 Mar 2025 08:22:18 -0400
+Message-ID: <20250325122144.960288088@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit ffcef3df680c437ca33ff434be18ec24d72907c2 upstream.
+[ Upstream commit 9740890ee20e01f99ff1dde84c63dcf089fabb98 ]
 
-Add missing "vpcie0v9-supply" and "vpcie1v8-supply" properties to the "pcie0"
-node in the Pine64 RockPro64 board dtsi file.  This eliminates the following
-warnings from the kernel log:
+fib_check_nh_v6_gw() expects that fib6_nh_init() cleans up everything
+when it fails.
 
-  rockchip-pcie f8000000.pcie: supply vpcie1v8 not found, using dummy regulator
-  rockchip-pcie f8000000.pcie: supply vpcie0v9 not found, using dummy regulator
+Commit 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
+moved fib_nh_common_init() before alloc_percpu_gfp() within fib6_nh_init()
+but forgot to add cleanup for fib6_nh->nh_common.nhc_pcpu_rth_output in
+case it fails to allocate fib6_nh->rt6i_pcpu, resulting in memleak.
 
-These additions improve the accuracy of hardware description of the RockPro64
-and, in theory, they should result in no functional changes to the way board
-works after the changes, because the "vcca_0v9" and "vcca_1v8" regulators are
-always enabled. [1][2]  However, extended reliability testing, performed by
-Chris, [3] has proven that the age-old issues with some PCI Express cards,
-when used with a Pine64 RockPro64, are also resolved.
+Let's call fib_nh_common_release() and clear nhc_pcpu_rth_output in the
+error path.
 
-Those issues were already mentioned in the commit 43853e843aa6 (arm64: dts:
-rockchip: Remove unsupported node from the Pinebook Pro dts, 2024-04-01),
-together with a brief description of the out-of-tree enumeration delay patch
-that reportedly resolves those issues.  In a nutshell, booting a RockPro64
-with some PCI Express cards attached to it caused a kernel oops. [4]
+Note that we can remove the fib6_nh_release() call in nh_create_ipv6()
+later in net-next.git.
 
-Symptomatically enough, to the commit author's best knowledge, only the Pine64
-RockPro64, out of all RK3399-based boards and devices supported upstream, has
-been reported to suffer from those PCI Express issues, and only the RockPro64
-had some of the PCI Express supplies missing in its DT.  Thus, perhaps some
-weird timing issues exist that caused the "vcca_1v8" always-on regulator,
-which is part of the RK808 PMIC, to actually not be enabled before the PCI
-Express is initialized and enumerated on the RockPro64, causing oopses with
-some PCIe cards, and the aforementioned enumeration delay patch [4] probably
-acted as just a workaround for the underlying timing issue.
-
-Admittedly, the Pine64 RockPro64 is a bit specific board by having a standard
-PCI Express slot, allowing use of various standard cards, but pretty much
-standard PCI Express cards have been attached to other RK3399 boards as well,
-and the commit author is unaware ot such issues reported for them.
-
-It's quite hard to be sure that the PCI Express issues are fully resolved by
-these additions to the DT, without some really extensive and time-consuming
-testing.  However, these additions to the DT can result in good things and
-improvements anyway, making them perfectly safe from the standpoint of being
-unable to do any harm or cause some unforeseen regressions.
-
-These changes apply to the both supported hardware revisions of the Pine64
-RockPro64, i.e. to the production-run revisions 2.0 and 2.1. [1][2]
-
-[1] https://files.pine64.org/doc/rockpro64/rockpro64_v21-SCH.pdf
-[2] https://files.pine64.org/doc/rockpro64/rockpro64_v20-SCH.pdf
-[3] https://z9.de/hedgedoc/s/nF4d5G7rg#reboot-tests-for-PCIe-improvements
-[4] https://lore.kernel.org/lkml/20230509153912.515218-1-vincenzopalazzodev@gmail.com/T/#u
-
-Fixes: bba821f5479e ("arm64: dts: rockchip: add PCIe nodes on rk3399-rockpro64")
-Cc: stable@vger.kernel.org
-Cc: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Cc: Peter Geis <pgwipeout@gmail.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>
-Reported-by: Diederik de Haas <didi.debian@cknow.org>
-Tested-by: Chris Vogel <chris@z9.de>
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Tested-by: Diederik de Haas <didi.debian@cknow.org>
-Link: https://lore.kernel.org/r/b39cfd7490d8194f053bf3971f13a43472d1769e.1740941097.git.dsimic@manjaro.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250312010333.56001-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/route.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi
-@@ -667,6 +667,8 @@
- 	num-lanes = <4>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pcie_perst>;
-+	vpcie0v9-supply = <&vcca_0v9>;
-+	vpcie1v8-supply = <&vcca_1v8>;
- 	vpcie12v-supply = <&vcc12v_dcin>;
- 	vpcie3v3-supply = <&vcc3v3_pcie>;
- 	status = "okay";
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 5715d54f3d0be..f13b2eb904633 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3636,7 +3636,8 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ 		in6_dev_put(idev);
+ 
+ 	if (err) {
+-		lwtstate_put(fib6_nh->fib_nh_lws);
++		fib_nh_common_release(&fib6_nh->nh_common);
++		fib6_nh->nh_common.nhc_pcpu_rth_output = NULL;
+ 		fib6_nh->fib_nh_lws = NULL;
+ 		netdev_put(dev, dev_tracker);
+ 	}
+-- 
+2.39.5
+
 
 
 
