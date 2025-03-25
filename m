@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-126072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2814DA6FEEA
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:58:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9BFA6FEE2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:58:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6253B2BA9
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:51:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F3DB16B1F4
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0F3265609;
-	Tue, 25 Mar 2025 12:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38F5265612;
+	Tue, 25 Mar 2025 12:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZYM+0lv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtYK2bYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCB12566F6;
-	Tue, 25 Mar 2025 12:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC952566F6;
+	Tue, 25 Mar 2025 12:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905549; cv=none; b=dRyYR5DbNfSOewpB1O3P1V+VJkfCQbwYnC725zkl47WcvLIFZa8ifFI3pQ8qOeOLh4F2DYbkqxA7l76eOwIURjDTg79oRr4G4FeQFjyrih4DBfMX77DNVFwMuqDjx2apBwdY+u2mKjhj2rZ0hnQRfVArsF9Imp9KMXNOoWl6HA4=
+	t=1742905552; cv=none; b=oI8BaZEgK0RxhJIEDzuY4lrpLYYkooSSCEABSP3SyYrDOJJV58At/voheEwqfwOsKNBN6hQoa6dFF6iP80vyavtrH2KO8g2L2IMQ9lVBw6tQQ0v9qMq828QMTPXdNmMGFmE/G8j3lV4cSvI50IeLJGbHIlR7xzPL6HAMznXyBQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905549; c=relaxed/simple;
-	bh=ABHkyN4/4sYiB3bYcWFyHfrW749ETodvgwQI1nNd3KE=;
+	s=arc-20240116; t=1742905552; c=relaxed/simple;
+	bh=Et9kzSbCLZ14ZQt1L0Q36+5yVaJXnxXByb6DBJQ38rE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tpq7JLcGrpzsfj8UCOp7ilFNM/9+rksWOG/KI9Z/8HLv1diQ4QoDHugjUxH0s/UDnoBHL4m0wyNBAu9O6ys+Ze1Wi0CA73QHhRfky7az5EoD+dS96WTC5heeRMU6QkD/erjer9xcwNLB3/AQbPzOA4FGYmwMwwTT/wFvpl/JKeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZYM+0lv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8871EC4CEE9;
-	Tue, 25 Mar 2025 12:25:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n/A5G+xoRE2VUYCFadBgdabfcNqDuo1vywYlFaRijtTTER2YiVHvTOenkaG/sfauGsi+tvmWkxXPOsPyY/qBtD17CxNca/qBlgS1WJ2hsxRr7tnqycbGpbfMypQcQdkIQjh23hMdPgJplGYTszUaKTsMOyzniopBW2k1hZpk0Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtYK2bYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24116C4CEE9;
+	Tue, 25 Mar 2025 12:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905548;
-	bh=ABHkyN4/4sYiB3bYcWFyHfrW749ETodvgwQI1nNd3KE=;
+	s=korg; t=1742905552;
+	bh=Et9kzSbCLZ14ZQt1L0Q36+5yVaJXnxXByb6DBJQ38rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZYM+0lv0clE2f+M3HnvM6gBqZBEqPAtTo5BlUpFtrs5guxcxeSyaMpya1wGlMjY3
-	 4+RIkgW9PpmIRF5p7CopMrHhcGVy7tbl6bDugemaKDQHnvSU+7Nub93IOobSbsywV7
-	 aN1Z2Y/C5ZqhZ5KNxSWKlEanWc8e044ERGH56qhA=
+	b=RtYK2bYtO9olFtCy7XwtZjHzH2L1a+xDQNF+9xm5EbdvyEdVj6jr5MmUJ0mSD+ATE
+	 03ZUN8rQCRdZblQ6IlwUYBFtvkTJxu3hP+nwBGGb9vdHxJw3HnFVuXfqW0r+fcEh3E
+	 PvWbhBsSD7GL3IKmyEgE7YVSyRQIyuIQlWfJK+xM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengen Du <chengen.du@canonical.com>,
-	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
+	Rik van Riel <riel@surriel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/198] iscsi_ibft: Fix UBSAN shift-out-of-bounds warning in ibft_attr_show_nic()
-Date: Tue, 25 Mar 2025 08:19:56 -0400
-Message-ID: <20250325122157.533988289@linuxfoundation.org>
+Subject: [PATCH 6.1 035/198] scsi: core: Use GFP_NOIO to avoid circular locking dependency
+Date: Tue, 25 Mar 2025 08:19:57 -0400
+Message-ID: <20250325122157.561309561@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -60,45 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengen Du <chengen.du@canonical.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 07e0d99a2f701123ad3104c0f1a1e66bce74d6e5 ]
+[ Upstream commit 5363ee9d110e139584c2d92a0b640bc210588506 ]
 
-When performing an iSCSI boot using IPv6, iscsistart still reads the
-/sys/firmware/ibft/ethernetX/subnet-mask entry. Since the IPv6 prefix
-length is 64, this causes the shift exponent to become negative,
-triggering a UBSAN warning. As the concept of a subnet mask does not
-apply to IPv6, the value is set to ~0 to suppress the warning message.
+Filesystems can write to disk from page reclaim with __GFP_FS
+set. Marc found a case where scsi_realloc_sdev_budget_map() ends up in
+page reclaim with GFP_KERNEL, where it could try to take filesystem
+locks again, leading to a deadlock.
 
-Signed-off-by: Chengen Du <chengen.du@canonical.com>
-Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+WARNING: possible circular locking dependency detected
+6.13.0 #1 Not tainted
+------------------------------------------------------
+kswapd0/70 is trying to acquire lock:
+ffff8881025d5d78 (&q->q_usage_counter(io)){++++}-{0:0}, at: blk_mq_submit_bio+0x461/0x6e0
+
+but task is already holding lock:
+ffffffff81ef5f40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0x9f/0x760
+
+The full lockdep splat can be found in Marc's report:
+
+https://lkml.org/lkml/2025/1/24/1101
+
+Avoid the potential deadlock by doing the allocation with GFP_NOIO, which
+prevents both filesystem and block layer recursion.
+
+Reported-by: Marc Aurèle La France <tsi@tuyoix.net>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Link: https://lore.kernel.org/r/20250129104525.0ae8421e@fangorn
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/iscsi_ibft.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/iscsi_ibft.c b/drivers/firmware/iscsi_ibft.c
-index 6e9788324fea5..371f24569b3b2 100644
---- a/drivers/firmware/iscsi_ibft.c
-+++ b/drivers/firmware/iscsi_ibft.c
-@@ -310,7 +310,10 @@ static ssize_t ibft_attr_show_nic(void *data, int type, char *buf)
- 		str += sprintf_ipaddr(str, nic->ip_addr);
- 		break;
- 	case ISCSI_BOOT_ETH_SUBNET_MASK:
--		val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
-+		if (nic->subnet_mask_prefix > 32)
-+			val = cpu_to_be32(~0);
-+		else
-+			val = cpu_to_be32(~((1 << (32-nic->subnet_mask_prefix))-1));
- 		str += sprintf(str, "%pI4", &val);
- 		break;
- 	case ISCSI_BOOT_ETH_PREFIX_LEN:
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index 852d509b19b2b..69288303e6004 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -245,7 +245,7 @@ static int scsi_realloc_sdev_budget_map(struct scsi_device *sdev,
+ 	}
+ 	ret = sbitmap_init_node(&sdev->budget_map,
+ 				scsi_device_max_queue_depth(sdev),
+-				new_shift, GFP_KERNEL,
++				new_shift, GFP_NOIO,
+ 				sdev->request_queue->node, false, true);
+ 	if (!ret)
+ 		sbitmap_resize(&sdev->budget_map, depth);
 -- 
 2.39.5
 
