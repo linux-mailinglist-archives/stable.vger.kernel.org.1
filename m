@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-126382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0069CA70073
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D90BA70066
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 882F219A677B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42C7A189FAF6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545A9269D0A;
-	Tue, 25 Mar 2025 12:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E1E2690F9;
+	Tue, 25 Mar 2025 12:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4/pYoaN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5aGJ+aN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DC02580F6;
-	Tue, 25 Mar 2025 12:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B0E2690EA;
+	Tue, 25 Mar 2025 12:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906121; cv=none; b=uIXEkhFN9frVzTJ0SQZIF4bxOEOBd129T7knOwpNHFy+JO3y0AKN4tVARD84eY80atJnLlOBoeSR0FROvO3Y0kTTOMpZtAkIa2ybNf7pSGUaWBOsnpPvcbjXxAz3i9wYcRaNmvUw2a8WWD5GGRWfWWFcgsQOPBamJ9zaD3O/6k4=
+	t=1742906004; cv=none; b=Vwomu4dqRzOnVy8sfd7XRAuRmZM2tNKN1kyXZbAMk/UwmoF6E/myW5kcM82H9AP+EBC0dA6IfIE52bYyYCo69quExMH7oITg6cOIP8o4ab2rLlJtQnVCKYDYUKLXdU9eCLD8ghS6iSzH5Za43aprSLZhrlynZ/Bia2Ya5ksm3BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906121; c=relaxed/simple;
-	bh=Oe8pMpKKihjt2nECnK9Z41jbBmrF877qxWDgNpBKLbk=;
+	s=arc-20240116; t=1742906004; c=relaxed/simple;
+	bh=4HOst9jgk64iAqD53GK/7VkMe1eAtSiCeos/ZQfAhu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCiWNTEirzzcNGxiIu0srEAle4Hfs3v0jFUpZ7DhcFtxn/54xqPTSNi/EYf8Iw8ML6tRug6sEtmU5TpHyp6/ArQa7X/VFvd60xOV9/Ihrc7sxaJJb9PPFzPqw50SX+Jq41wgl36Lq7c7wQ8I1+d5oC26xG8Oqj7U0dEr7QBcjD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4/pYoaN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B030DC4CEE9;
-	Tue, 25 Mar 2025 12:35:20 +0000 (UTC)
+	 MIME-Version; b=hUvDmurIvIIVwA4Qum8lwt45NR7pla8Qd7Uk3YM1bzcGr/dEzP9kyhhlOzBr2L79oQ/YgrEedt8evlL7EqFTyOfaoltEKxBih0waKVpdIST8V4Fc2xZ3ue00BPo+uQb8QzYBIR72WN2HQz6uKqxFUNkSDI3foKN/4DglJ7na7MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5aGJ+aN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2E7C4CEE4;
+	Tue, 25 Mar 2025 12:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906120;
-	bh=Oe8pMpKKihjt2nECnK9Z41jbBmrF877qxWDgNpBKLbk=;
+	s=korg; t=1742906004;
+	bh=4HOst9jgk64iAqD53GK/7VkMe1eAtSiCeos/ZQfAhu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4/pYoaNSez9MhtqQmw/75uKWAyc1dJQwXK9L16kDfz96alm32uln5j5W7zIUwgx8
-	 XH0fJz1NGfZZn961rmZtSss2WpO2dNYih0cNM4A5EKj4U65Qvpv/HQ+ungdbKo/XTY
-	 drF/e/rdoH0g/NBJgVKOYCQqyiUuLtSkqjNWPC9w=
+	b=W5aGJ+aNDXwFbAOg2U0cZNShGNAMsI/826zzrMl9pKLw7egx7OWQPuVW63tKm1zaO
+	 9xLdosNSyGL8khP3lWEToHrdasXt4igu6jqA/IHP9dasb94nurMWQniP37HkNKAiev
+	 Mn//tdJpAld2/SK1qIb44e3FjTT2oQar9aJchE5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 25/77] net: atm: fix use after free in lec_send()
+	Zi Yan <ziy@nvidia.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Kirill A. Shuemov" <kirill.shutemov@linux.intel.com>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 082/119] mm/huge_memory: drop beyond-EOF folios with the right number of refs
 Date: Tue, 25 Mar 2025 08:22:20 -0400
-Message-ID: <20250325122145.011024764@linuxfoundation.org>
+Message-ID: <20250325122151.156014947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +74,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zi Yan <ziy@nvidia.com>
 
-[ Upstream commit f3009d0d6ab78053117f8857b921a8237f4d17b3 ]
+commit 14efb4793519d73fb2902bb0ece319b886e4b4b9 upstream.
 
-The ->send() operation frees skb so save the length before calling
-->send() to avoid a use after free.
+When an after-split folio is large and needs to be dropped due to EOF,
+folio_put_refs(folio, folio_nr_pages(folio)) should be used to drop all
+page cache refs.  Otherwise, the folio will not be freed, causing memory
+leak.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/c751531d-4af4-42fe-affe-6104b34b791d@stanley.mountain
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leak would happen on a filesystem with blocksize > page_size and a
+truncate is performed, where the blocksize makes folios split to >0 order
+ones, causing truncated folios not being freed.
+
+Link: https://lkml.kernel.org/r/20250310155727.472846-1-ziy@nvidia.com
+Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: Hugh Dickins <hughd@google.com>
+Closes: https://lore.kernel.org/all/fcbadb7f-dd3e-21df-f9a7-2853b53183c4@google.com/
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Kirill A. Shuemov <kirill.shutemov@linux.intel.com>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Pankaj Raghav <p.raghav@samsung.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Yang Shi <yang@os.amperecomputing.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/atm/lec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/huge_memory.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index 6257bf12e5a00..ac3cfc1ae5102 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -181,6 +181,7 @@ static void
- lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
- {
- 	struct net_device *dev = skb->dev;
-+	unsigned int len = skb->len;
- 
- 	ATM_SKB(skb)->vcc = vcc;
- 	atm_account_tx(vcc, skb);
-@@ -191,7 +192,7 @@ lec_send(struct atm_vcc *vcc, struct sk_buff *skb)
- 	}
- 
- 	dev->stats.tx_packets++;
--	dev->stats.tx_bytes += skb->len;
-+	dev->stats.tx_bytes += len;
- }
- 
- static void lec_tx_timeout(struct net_device *dev, unsigned int txqueue)
--- 
-2.39.5
-
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3298,7 +3298,7 @@ static void __split_huge_page(struct pag
+ 				folio_account_cleaned(tail,
+ 					inode_to_wb(folio->mapping->host));
+ 			__filemap_remove_folio(tail, NULL);
+-			folio_put(tail);
++			folio_put_refs(tail, folio_nr_pages(tail));
+ 		} else if (!folio_test_anon(folio)) {
+ 			__xa_store(&folio->mapping->i_pages, tail->index,
+ 					tail, 0);
 
 
 
