@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-126207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C8EA700AC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1AFA70120
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD80C189B705
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76AA83BF486
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B7E2676EB;
-	Tue, 25 Mar 2025 12:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A8326B976;
+	Tue, 25 Mar 2025 12:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wE9eiBK1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6cIoZwD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B1A259CAD;
-	Tue, 25 Mar 2025 12:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846D426B96B;
+	Tue, 25 Mar 2025 12:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905798; cv=none; b=EfX5I7kWJgVNoRHp7p0UxJZloJqIYraT117qRsv45zncBg5aOOtff3doWoWKhKs53tcu/wfq23TxmDrmEfsbamkSwTI7+SLvV4+TZqskqCf/t4DbqlfS7lpTGNh7mdmWkw/Bn8wDjJPRWV6ovsDfp8wspZVSq+MIJ+7ZtJjTafw=
+	t=1742906297; cv=none; b=HJvaCTqgvfztzWoYulqMnOUv55sq4HBFAinc0XucVxptqGxo1TUDbaTSAsqtytpo8J5hm+Ukp6/Ho/oVVONm0AoS9lvjwM+vkeoFl0nJ1KNcACcPPZHVl03F7EEl32AL5louyXYOj4rBInn0qZCogxvy3ffccKEm/hpOv9yXfzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905798; c=relaxed/simple;
-	bh=itNMSGOaJUpbdYPFMLME9zflVxw4JL4fY9L2hqk65to=;
+	s=arc-20240116; t=1742906297; c=relaxed/simple;
+	bh=JYKhM14Bqi7EaYyWPiSxPvJbcm02IrK9Fr/j4/7xvds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovqtR44PnEg/bhUhhKN+qAqpxCKPEqZehI2nJp+9icvsDAXZz9kAUZPb8EZpcjvLO7qCCitSGeXh6kxWy7L8l68a7YwdMcnAFu6kgPr5sLZz+H/m5yUl6HJwIcM8dmYAykMxt9ta29D4oQo622OeaRGT8Hrg3mp4Zdhq8jiMQgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wE9eiBK1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFC0C4CEED;
-	Tue, 25 Mar 2025 12:29:58 +0000 (UTC)
+	 MIME-Version; b=ecFTgDKtC9WwaF/RTFFFVZ+OpV2Tdh74gw1xwUpbIiL1u1oNS0Q5T6AHF8lw+dYAQUrw9VpT79UP4t8qCJXi/D28fAm6G0AsV2LCHwcw/QmlNycF4izqpukRbY+GjUSecqJWG3twRiLstnZ4Q0PXnN1RURqhcaHbWn8ze12ETc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6cIoZwD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299B1C4CEE4;
+	Tue, 25 Mar 2025 12:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905798;
-	bh=itNMSGOaJUpbdYPFMLME9zflVxw4JL4fY9L2hqk65to=;
+	s=korg; t=1742906297;
+	bh=JYKhM14Bqi7EaYyWPiSxPvJbcm02IrK9Fr/j4/7xvds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wE9eiBK1zi7EnGJyYUUAjLS49f6hdStW7tocqohpUaa2WKzrPnX6YINQojx4gBphM
-	 nd0yf0xs5z+iW268jWfQTr2aazpXsoEuJxNI4EW0y/iO2+vGa1+J4GL+WZjtIC7Ya/
-	 FLa8M9+2Zunq2hm3YOcR/9+ub1cJgwckBets+BsE=
+	b=q6cIoZwDSXfBgWhwz+jzqL/yzLtYM1sGtVLm0KD2nkPl7rHDWBlSpDuT1jbiOuBBX
+	 pZnHIMIOrmfb2iRwCVymGpcdRyq8FJMaXDZ6TMAlEdUfdjmGZA+s0c1QQ8ANw+COmC
+	 TaGoLUiJPt9aB9Gg97X0uBV63MuW7srZxWtGl8o8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Nishanth Menon <nm@ti.com>,
-	Aniket Limaye <a-limaye@ti.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.1 168/198] i2c: omap: fix IRQ storms
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 043/116] gpu: host1x: Do not assume that a NULL domain means no DMA IOMMU
 Date: Tue, 25 Mar 2025 08:22:10 -0400
-Message-ID: <20250325122201.054136061@linuxfoundation.org>
+Message-ID: <20250325122150.308325801@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 285df995f90e3d61d97f327d34b9659d92313314 upstream.
+[ Upstream commit cb83f4b965a66d85e9a03621ef3b22c044f4a033 ]
 
-On the GTA04A5 writing a reset command to the gyroscope causes IRQ
-storms because NACK IRQs are enabled and therefore triggered but not
-acked.
+Previously with tegra-smmu, even with CONFIG_IOMMU_DMA, the default domain
+could have been left as NULL. The NULL domain is specially recognized by
+host1x_iommu_attach() as meaning it is not the DMA domain and
+should be replaced with the special shared domain.
 
-Sending a reset command to the gyroscope by
-i2cset 1 0x69 0x14 0xb6
-with an additional debug print in the ISR (not the thread) itself
-causes
+This happened prior to the below commit because tegra-smmu was using the
+NULL domain to mean IDENTITY.
 
-[ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
-[ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
-[ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
-[ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
-[ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-[ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-[ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-repeating till infinity
-[...]
-(0x2 = NACK, 0x100 = Bus free, which is not enabled)
-Apparently no other IRQ bit gets set, so this stalls.
+Now that the domain is properly labled the test in DRM doesn't see NULL.
+Check for IDENTITY as well to enable the special domains.
 
-Do not ignore enabled interrupts and make sure they are acked.
-If the NACK IRQ is not needed, it should simply not enabled, but
-according to the above log, caring about it is necessary unless
-the Bus free IRQ is enabled and handled. The assumption that is
-will always come with a ARDY IRQ, which was the idea behind
-ignoring it, proves wrong.
-It is true for simple reads from an unused address.
+This is the same issue and basic fix as seen in
+commit fae6e669cdc5 ("drm/tegra: Do not assume that a NULL domain means no
+DMA IOMMU").
 
-To still avoid the i2cdetect trouble which is the reason for
-commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
-avoid doing much about NACK in omap_i2c_xfer_data() which is used
-by both IRQ mode and polling mode, so also the false detection fix
-is extended to polling usage and IRQ storms are avoided.
-
-By changing this, the hardirq handler is not needed anymore to filter
-stuff.
-
-The mentioned gyro reset now just causes a -ETIMEDOUT instead of
-hanging the system.
-
-Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
-CC: stable@kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Tested-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Aniket Limaye <a-limaye@ti.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250228140420.379498-1-andreas@kemnade.info
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8cc2655cc6c ("iommu/tegra-smmu: Implement an IDENTITY domain")
+Reported-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Closes: https://lore.kernel.org/all/c6a6f114-3acd-4d56-a13b-b88978e927dc@tecnico.ulisboa.pt/
+Tested-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/0-v1-10dcc8ce3869+3a7-host1x_identity_jgg@nvidia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-omap.c |   26 +++++++-------------------
- 1 file changed, 7 insertions(+), 19 deletions(-)
+ drivers/gpu/host1x/dev.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1049,23 +1049,6 @@ static int omap_i2c_transmit_data(struct
- 	return 0;
+diff --git a/drivers/gpu/host1x/dev.c b/drivers/gpu/host1x/dev.c
+index 710674ef40a97..3f23a7d91519f 100644
+--- a/drivers/gpu/host1x/dev.c
++++ b/drivers/gpu/host1x/dev.c
+@@ -367,6 +367,10 @@ static bool host1x_wants_iommu(struct host1x *host1x)
+ 	return true;
  }
  
--static irqreturn_t
--omap_i2c_isr(int irq, void *dev_id)
--{
--	struct omap_i2c_dev *omap = dev_id;
--	irqreturn_t ret = IRQ_HANDLED;
--	u16 mask;
--	u16 stat;
--
--	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
--	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
--
--	if (stat & mask)
--		ret = IRQ_WAKE_THREAD;
--
--	return ret;
--}
--
- static int omap_i2c_xfer_data(struct omap_i2c_dev *omap)
++/*
++ * Returns ERR_PTR on failure, NULL if the translation is IDENTITY, otherwise a
++ * valid paging domain.
++ */
+ static struct iommu_domain *host1x_iommu_attach(struct host1x *host)
  {
- 	u16 bits;
-@@ -1096,8 +1079,13 @@ static int omap_i2c_xfer_data(struct oma
- 		}
+ 	struct iommu_domain *domain = iommu_get_domain_for_dev(host->dev);
+@@ -391,6 +395,8 @@ static struct iommu_domain *host1x_iommu_attach(struct host1x *host)
+ 	 * Similarly, if host1x is already attached to an IOMMU (via the DMA
+ 	 * API), don't try to attach again.
+ 	 */
++	if (domain && domain->type == IOMMU_DOMAIN_IDENTITY)
++		domain = NULL;
+ 	if (!host1x_wants_iommu(host) || domain)
+ 		return domain;
  
- 		if (stat & OMAP_I2C_STAT_NACK) {
--			err |= OMAP_I2C_STAT_NACK;
-+			omap->cmd_err |= OMAP_I2C_STAT_NACK;
- 			omap_i2c_ack_stat(omap, OMAP_I2C_STAT_NACK);
-+
-+			if (!(stat & ~OMAP_I2C_STAT_NACK)) {
-+				err = -EAGAIN;
-+				break;
-+			}
- 		}
- 
- 		if (stat & OMAP_I2C_STAT_AL) {
-@@ -1475,7 +1463,7 @@ omap_i2c_probe(struct platform_device *p
- 				IRQF_NO_SUSPEND, pdev->name, omap);
- 	else
- 		r = devm_request_threaded_irq(&pdev->dev, omap->irq,
--				omap_i2c_isr, omap_i2c_isr_thread,
-+				NULL, omap_i2c_isr_thread,
- 				IRQF_NO_SUSPEND | IRQF_ONESHOT,
- 				pdev->name, omap);
- 
+-- 
+2.39.5
+
 
 
 
