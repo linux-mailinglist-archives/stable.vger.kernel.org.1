@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-126359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E2CA7005F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E537A7002C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7B0E179187
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CE1C3BFFFF
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139B2269AEE;
-	Tue, 25 Mar 2025 12:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEF126773A;
+	Tue, 25 Mar 2025 12:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2W5W8cs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4YV43uc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C295A2561A2;
-	Tue, 25 Mar 2025 12:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F54267734;
+	Tue, 25 Mar 2025 12:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906077; cv=none; b=Lma5cS6DfnzLCCOb85pRnzjwCS+T83EC7lOloeeuC+p4O4EdjsPSRXyvmOSFS5ls/2tHnS/JxN37Vq5uqBqmGxRVpwEWxg2zqlqdvr41jnpPXbuFup/s25Ebb7vMUPlauH3XM7CosXFWHJZrpoCWlk5F6qsPq4ELFh2rIt8Pt+M=
+	t=1742905836; cv=none; b=Hs4fTU1DaavrNl0Tq9HSKEdX3yuVHw/pa2VmEefvFLDT6LrfiP7MfEKP6i4PjHFWG5GMPr8J8wouFSyutCn/skm0kJRgr3Te8cOKZbKQqoFDNPzPBLBHzrtEno9/y+n5xt6e5vQv/2dpaN3yoHKeHijSjGF8KJriSdVDG8IOALg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906077; c=relaxed/simple;
-	bh=qIueGOdeBF+sUXfr1tLnQIvIbpolc5IN/AaqMBdtyyI=;
+	s=arc-20240116; t=1742905836; c=relaxed/simple;
+	bh=3LuGyXzhSDdqlyOYjY+s5fvjVGKu3zpO1sxWxd4liSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KnyYb/qxFQnRAT2frzJuhJU8N6eo0KVKzsqurnY8vXRZO7OZjZYdsZAXrgKK77Jlsvn6LzzXF0FplvI8ZaWdH6z+2C2TZtQY889E7y897riLr2KN70fcUtpJJTaX341wWKEFiMVtZup+az4lcPPcKA2M5dawqx6vfR4NsGBKqT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2W5W8cs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7591EC4CEE4;
-	Tue, 25 Mar 2025 12:34:37 +0000 (UTC)
+	 MIME-Version; b=JnB1gCnqOA5wClu1mYH1Ve/nNg/2a6OK0Y1BEXcqfhCYkKsDWtamFODxJ65K/UN7yfXwnXXhzvkGJGY6kVkAVynsvq7mFJUhBQHy1RPZ3pWPbcWERJTHmVU7zbofvG3sWY7IncB1YMZHtWjAxDOREz6TnF17H2h47Xpx5BHeEnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4YV43uc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362F1C4CEED;
+	Tue, 25 Mar 2025 12:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906077;
-	bh=qIueGOdeBF+sUXfr1tLnQIvIbpolc5IN/AaqMBdtyyI=;
+	s=korg; t=1742905835;
+	bh=3LuGyXzhSDdqlyOYjY+s5fvjVGKu3zpO1sxWxd4liSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2W5W8csB9twwm1xPnRgYYTWAkSgKsWjujhC2pIRhXeeAoerJBnPF+lBiTvlqNOZu
-	 RM8RlS/FUlxEp8g5aTrxLSIAuqKa+wkgxFmgQmbH+VUn75hNfcUbb+zK8DUhY9QDo/
-	 2Y7Qt2jXGI+lIl+b3AmU+7F0OmNpao5OV5pueuPQ=
+	b=u4YV43ucaCBkOmvVbT0Mp7yS38k7Plxun/lCvuQ4qDNoaMUujnYNMh/1MdlKtzrlD
+	 PExDc2LALdyqbHLhc1CBM09dg0yK+utUNiWGWEbevP7z+LFanyUnTYMB3PItrjGKrd
+	 bGjWZmXdpP5q9naeHMdA2H068rlIgwvDEaH2Ed4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Saranya R <quic_sarar@quicinc.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 092/119] soc: qcom: pdr: Fix the potential deadlock
-Date: Tue, 25 Mar 2025 08:22:30 -0400
-Message-ID: <20250325122151.410705557@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Arthur Mongodin <amongodin@randorisec.fr>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 6.1 189/198] mptcp: Fix data stream corruption in the address announcement
+Date: Tue, 25 Mar 2025 08:22:31 -0400
+Message-ID: <20250325122201.607775451@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saranya R <quic_sarar@quicinc.com>
+From: Arthur Mongodin <amongodin@randorisec.fr>
 
-commit 2eeb03ad9f42dfece63051be2400af487ddb96d2 upstream.
+commit 2c1f97a52cb827a5f2768e67a9dddffae1ed47ab upstream.
 
-When some client process A call pdr_add_lookup() to add the look up for
-the service and does schedule locator work, later a process B got a new
-server packet indicating locator is up and call pdr_locator_new_server()
-which eventually sets pdr->locator_init_complete to true which process A
-sees and takes list lock and queries domain list but it will timeout due
-to deadlock as the response will queued to the same qmi->wq and it is
-ordered workqueue and process B is not able to complete new server
-request work due to deadlock on list lock.
+Because of the size restriction in the TCP options space, the MPTCP
+ADD_ADDR option is exclusive and cannot be sent with other MPTCP ones.
+For this reason, in the linked mptcp_out_options structure, group of
+fields linked to different options are part of the same union.
 
-Fix it by removing the unnecessary list iteration as the list iteration
-is already being done inside locator work, so avoid it here and just
-call schedule_work() here.
+There is a case where the mptcp_pm_add_addr_signal() function can modify
+opts->addr, but not ended up sending an ADD_ADDR. Later on, back in
+mptcp_established_options, other options will be sent, but with
+unexpected data written in other fields due to the union, e.g. in
+opts->ext_copy. This could lead to a data stream corruption in the next
+packet.
 
-       Process A                        Process B
+Using an intermediate variable, prevents from corrupting previously
+established DSS option. The assignment of the ADD_ADDR option
+parameters is now done once we are sure this ADD_ADDR option can be set
+in the packet, e.g. after having dropped other suboptions.
 
-                                     process_scheduled_works()
-pdr_add_lookup()                      qmi_data_ready_work()
- process_scheduled_works()             pdr_locator_new_server()
-                                         pdr->locator_init_complete=true;
-   pdr_locator_work()
-    mutex_lock(&pdr->list_lock);
-
-     pdr_locate_service()                  mutex_lock(&pdr->list_lock);
-
-      pdr_get_domain_list()
-       pr_err("PDR: %s get domain list
-               txn wait failed: %d\n",
-               req->service_name,
-               ret);
-
-Timeout error log due to deadlock:
-
-"
- PDR: tms/servreg get domain list txn wait failed: -110
- PDR: service lookup for msm/adsp/sensor_pd:tms/servreg failed: -110
-"
-
-Thanks to Bjorn and Johan for letting me know that this commit also fixes
-an audio regression when using the in-kernel pd-mapper as that makes it
-easier to hit this race. [1]
-
-Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/ # [1]
-Fixes: fbe639b44a82 ("soc: qcom: Introduce Protection Domain Restart helpers")
-CC: stable@vger.kernel.org
-Reviewed-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Tested-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Saranya R <quic_sarar@quicinc.com>
-Co-developed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250212163720.1577876-1-mukesh.ojha@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
+Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Arthur Mongodin <amongodin@randorisec.fr>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+[ Matt: the commit message has been updated: long lines splits and some
+  clarifications. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-1-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/pdr_interface.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ net/mptcp/options.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/soc/qcom/pdr_interface.c
-+++ b/drivers/soc/qcom/pdr_interface.c
-@@ -75,7 +75,6 @@ static int pdr_locator_new_server(struct
- {
- 	struct pdr_handle *pdr = container_of(qmi, struct pdr_handle,
- 					      locator_hdl);
--	struct pdr_service *pds;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -649,6 +649,7 @@ static bool mptcp_established_options_ad
+ 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
+ 	bool drop_other_suboptions = false;
+ 	unsigned int opt_size = *size;
++	struct mptcp_addr_info addr;
+ 	bool echo;
+ 	int len;
  
- 	mutex_lock(&pdr->lock);
- 	/* Create a local client port for QMI communication */
-@@ -87,12 +86,7 @@ static int pdr_locator_new_server(struct
- 	mutex_unlock(&pdr->lock);
+@@ -657,7 +658,7 @@ static bool mptcp_established_options_ad
+ 	 */
+ 	if (!mptcp_pm_should_add_signal(msk) ||
+ 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
+-	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &opts->addr,
++	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
+ 		    &echo, &drop_other_suboptions))
+ 		return false;
  
- 	/* Service pending lookup requests */
--	mutex_lock(&pdr->list_lock);
--	list_for_each_entry(pds, &pdr->lookups, node) {
--		if (pds->need_locator_lookup)
--			schedule_work(&pdr->locator_work);
--	}
--	mutex_unlock(&pdr->list_lock);
-+	schedule_work(&pdr->locator_work);
+@@ -670,7 +671,7 @@ static bool mptcp_established_options_ad
+ 	else if (opts->suboptions & OPTION_MPTCP_DSS)
+ 		return false;
  
- 	return 0;
- }
+-	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
++	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
+ 	if (remaining < len)
+ 		return false;
+ 
+@@ -687,6 +688,7 @@ static bool mptcp_established_options_ad
+ 		opts->ahmac = 0;
+ 		*size -= opt_size;
+ 	}
++	opts->addr = addr;
+ 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
+ 	if (!echo) {
+ 		opts->ahmac = add_addr_generate_hmac(msk->local_key,
 
 
 
