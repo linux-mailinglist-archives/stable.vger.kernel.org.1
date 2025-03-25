@@ -1,144 +1,176 @@
-Return-Path: <stable+bounces-126591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70A7A707BD
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:09:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904CFA707FC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 18:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C3D07A52AD
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 17:07:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E93007A2579
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 17:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443BD25FA27;
-	Tue, 25 Mar 2025 17:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3591926158F;
+	Tue, 25 Mar 2025 17:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="ercp4n63"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="K/zUfGJZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cERb1X96";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="K/zUfGJZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cERb1X96"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B442E339B
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 17:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E7626139D
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 17:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742922522; cv=none; b=sXWAV5uQSsXth2ikdDhefjFDrQs787yiKQ6YcIabyhiaxz9HotzvB1ioiaCYC8xdfa+Z6HcRzVknNnjrOqnYUUg5qNDw+PjF9SCbq5NZjrwmZedseBNa/bi45mi32PB99ifD1JvVKZTjFYj+nkzwaLf3LfzPIDCjZ/EKWzgy9yQ=
+	t=1742923246; cv=none; b=SrLUesnaG6vCfuoUKW2o1bZFEJVegyH8UVTR4uGJm/9LWTP1f+yldKaZ4g6jYxWVROzeK8cYfYpWic6Tzo148W0nNHKcRi5A+7YSSXezDI5rZ1793OKDT696ep+2kjYLItLSmLaHeAayRyRPHbVYtYmQuJEYlcybPgiXvPWVZBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742922522; c=relaxed/simple;
-	bh=cbFmzm+2OrbXVtRx4gt1gAeuAB+ibGjA5byGKoxpE7c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=WejF/BQrhImoWSXztjPqO1xcm3DmkczDMi7iDRHQXtLgOWgD1zXfRLxCj6XFCQs+8g1edJXzEC5BLtxN3xQ3ntBbYItDQrx+Gw9vAiigOz1N5FHsQV8AAQQI0w3tbgW9fegkiqOZe8mLuzarA6NgDKSrB6fT1eRyE0JOBaG1y6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=ercp4n63; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-39ab85402c9so236766f8f.2
-        for <stable@vger.kernel.org>; Tue, 25 Mar 2025 10:08:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1742922518; x=1743527318; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DWc3lERK8x5oB4BFSb37YbyfunqsGk6BA1tSYrjGs9I=;
-        b=ercp4n63lhRm2+iti3kjPA+FqKSOWweuII0zeMS5QVwwBZMD7DpetNdi08WRVz7d/W
-         2k9GZo96B3KRNwMPLf4Kjl/LrCyfaBTNN36YTQMDpPEpFDIW9ofUi2/IBeeNat0EbZPB
-         8uE6IrV8GJQLG+d+SeBSerJhFMOl+JFDuzobY7UnyUw1j5NCFqF3Ow4mFnA6Lv6P6nxY
-         pNC2wwuIbLc09767FfM/XcKPtL9cMl7tKxd5ak4Whk/KRSGGrgS+7G95vVkHjuW8KkGI
-         IJvBQijjekzGfi0t3WGryYiibNSHkzhSFtmuOGVgro3SFU/YaRfxT9oVZbRwjGTQ3+NN
-         353Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742922518; x=1743527318;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DWc3lERK8x5oB4BFSb37YbyfunqsGk6BA1tSYrjGs9I=;
-        b=tvns1lTjuVDn10w2Egutc8kkTX5ZjfMPgyXUP6PAQWd+/Vmc0rwaHMqMdGuAL7cov4
-         igYa6u3f/Ecd/hvM2yN6LH4PX7m9HLku75DzoJ4DJvECjv6kstKq9eV6O02zde6MUs7a
-         Wq9zxs70xm57ntbc+ZOqaPjxI2y6Q7Aj7lCjHup1O23k6OL28963mpfObbWiKbQ0sIp4
-         y5FnPXmb7rs4CFFfPKSmGwD/4IYfVYxIATHO3La92S4ZMQZV9Og99LlyGiQlHc4wFpu0
-         d9bk2stQFch0fXf4HECdbUOOr30sIqwix77OBPXY+ZGy3FL/Q/xKK7AiugSLgf2mJFfF
-         mExA==
-X-Forwarded-Encrypted: i=1; AJvYcCVKiUhPYNWfmbWR4ndMcvyluu1UR+X3ZbFXzPJDIOY1e7YBnhTevosaPtRCDqT9tr3oaU16KT4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxftwWaLdyfZhS8UuJ61OUbdym0QWSszo63mEn0O+oK1T8/jDpX
-	o+FQAsbhs7B4gBCt8/iQ8R7zQLOfJ54Fo3pPnqYiCWtbOcoC6eyjWDZX2lLImautNo0M47DwnaC
-	U
-X-Gm-Gg: ASbGncuNF9/rfRw66zlli78IuZ1ekPRmRlKadNgmosJ/y5rJJ7W6wwPh0b1ag8V7hn4
-	vSNWSF/xsd6oP7E8fAnMT/C3mGAqMs9yiH5i0/isDm1f+SyhpXDDFKrbaMPipx57jSXC+lbSoMO
-	sVUBHwDkkbKxwrR7etCrW6nNXFqIX7tUYJFPcLG4H5v4I/IqKQQeR3jQYrF6U4ydXb5KD4dW1af
-	t37vgkZcAwmTrK37yYNqRkhzaunawO6rcWeG6LHvnpQ/eF7nZr7YXzjM5SkozJ3irH+OvBevKiT
-	gbhuU45qiYAnqW9H1bLdjaPdbGCz/4Y9QXCWh8LiiJ7oX70rh+89
-X-Google-Smtp-Source: AGHT+IEXGxAFFcjjSGkBgGP/l6W8ujAzLnKetpMQQsy2kHqIf5tqu6BrFMeMIZUyW9LZ9pOUTnjPGg==
-X-Received: by 2002:a5d:47a5:0:b0:391:3110:dff5 with SMTP id ffacd0b85a97d-3997f903a65mr6037407f8f.5.1742922518387;
-        Tue, 25 Mar 2025 10:08:38 -0700 (PDT)
-Received: from localhost ([2a02:8308:a00c:e200:f097:1b00:1a61:887a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9e6539sm14301338f8f.77.2025.03.25.10.08.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Mar 2025 10:08:38 -0700 (PDT)
+	s=arc-20240116; t=1742923246; c=relaxed/simple;
+	bh=Wws4LjmTc9B1O9BxJT9fmDVrnDzw4nn0cqYHWAHQxVw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uvXqadlR6cFYw3+ON78cCuZiJWGKI0yifZFQfYaBuB5fRWXuYHwqsVFfhTwmCUaEcFNZBgxpIwS+c8t6mgRM3RkYFHLI1Tlu/MpDxUyEQ7N+FRVZCTG7s8ZQpEGD4+mSD6LNiOhjbuiWx/4/kKC4WbIxHE6qzZfATF3ZOvGkvKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=K/zUfGJZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cERb1X96; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=K/zUfGJZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cERb1X96; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3936E21197;
+	Tue, 25 Mar 2025 17:20:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1742923242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=94+Hm3zQsjU5rvfPJl6l6h8vvqdpKhGRnLCm3EDKDUw=;
+	b=K/zUfGJZuATqezCKRJKryWWxl9zsIHjvsNbyO0AWe7DHI2sMBu6EyXtXcR6ZCXvF744S9G
+	lD95HXNaOjvz+TDN3IrNSiUvMoW/e4e8B87QduPxNLR3KgtJirpWUq1GhtI0C70r08ZthQ
+	nGlSq2gtiDn2zm7LUymt7V+Mei5uJXk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1742923242;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=94+Hm3zQsjU5rvfPJl6l6h8vvqdpKhGRnLCm3EDKDUw=;
+	b=cERb1X961vbCvnajT2ntQx1lEOO8p9bBZRc6nGEFsikgc6TcCSmN8l5vPb210QSWm9RMXH
+	MA6slY0EF3BwWCAQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1742923242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=94+Hm3zQsjU5rvfPJl6l6h8vvqdpKhGRnLCm3EDKDUw=;
+	b=K/zUfGJZuATqezCKRJKryWWxl9zsIHjvsNbyO0AWe7DHI2sMBu6EyXtXcR6ZCXvF744S9G
+	lD95HXNaOjvz+TDN3IrNSiUvMoW/e4e8B87QduPxNLR3KgtJirpWUq1GhtI0C70r08ZthQ
+	nGlSq2gtiDn2zm7LUymt7V+Mei5uJXk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1742923242;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=94+Hm3zQsjU5rvfPJl6l6h8vvqdpKhGRnLCm3EDKDUw=;
+	b=cERb1X961vbCvnajT2ntQx1lEOO8p9bBZRc6nGEFsikgc6TcCSmN8l5vPb210QSWm9RMXH
+	MA6slY0EF3BwWCAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ECB2D13A41;
+	Tue, 25 Mar 2025 17:20:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id eD1YOOnl4mfzWAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 25 Mar 2025 17:20:41 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: kraxel@redhat.com,
+	airlied@redhat.com
+Cc: virtualization@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Adam Jackson <ajax@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] drm/cirrus-qemu: Fix pitch programming
+Date: Tue, 25 Mar 2025 18:12:49 +0100
+Message-ID: <20250325171716.154097-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250325171716.154097-1-tzimmermann@suse.de>
+References: <20250325171716.154097-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 25 Mar 2025 18:08:37 +0100
-Message-Id: <D8PIGUPV6622.4Z9G0C5FRLRK@ventanamicro.com>
-Subject: Re: [PATCH] KVM: RISC-V: reset smstateen CSRs
-Cc: <ventana-sw-patches@ventanamicro.com>, "Daniel Henrique Barboza"
- <dbarboza@ventanamicro.com>, "Andrew Jones" <ajones@ventanamicro.com>,
- <stable@vger.kernel.org>
-To: "Anup Patel" <apatel@ventanamicro.com>
-From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
-References: <20250324182626.540964-5-rkrcmar@ventanamicro.com>
- <CAK9=C2WFQxKYnKeteeS94CqfwWkOgMWG69y5WWiun8129z6wsg@mail.gmail.com>
- <CAK9=C2V90_GX6u_M2hOh62J1xxVx-ioenSqz316BNWPt3Lr0dw@mail.gmail.com>
-In-Reply-To: <CAK9=C2V90_GX6u_M2hOh62J1xxVx-ioenSqz316BNWPt3Lr0dw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -6.80
+X-Spamd-Result: default: False [-6.80 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-2025-03-25T22:27:41+05:30, Anup Patel <apatel@ventanamicro.com>:
-> On Tue, Mar 25, 2025 at 8:58=E2=80=AFPM Anup Patel <apatel@ventanamicro.c=
-om> wrote:
->>
->> On Tue, Mar 25, 2025 at 12:01=E2=80=AFAM Radim Kr=C4=8Dm=C3=A1=C5=99 <rk=
-rcmar@ventanamicro.com> wrote:
->> >
->> > Hi, I'm sending this early to ventana-sw as we hit the issue in today'=
-s
->> > slack discussion.  I only compile-tested it so far and it will take me=
- a
->> > while to trigger a bug and verify the solution.
->> >
->> > ---8<--
->> > The smstateen CSRs control which stateful features are enabled in
->> > VU-mode.  SU-mode must properly context switch the state of all enable=
-d
->> > features.
->> >
->> > Reset the smstateen CSRs, because SU-mode might not know that it must
->> > context switch the state.  Reset unconditionally as it is shorter and
->> > safer, and not that much slower.
->> >
->> > Fixes: 81f0f314fec9 ("RISCV: KVM: Add sstateen0 context save/restore")
->> > Cc: stable@vger.kernel.org
->> > Signed-off-by: Radim Kr=C4=8Dm=C3=A1=C5=99 <rkrcmar@ventanamicro.com>
->>
->> How about moving "struct kvm_vcpu_smstateen_csr smstateen" from
->> "struct kvm_vcpu_arch" to "struct kvm_vcpu_csr". This way we will not
->> need an extra "struct kvm_vcpu_smstateen_csr reset_smstateen_csr"
->> in "struct kvm_vcpu_csr".
+Do not set CR1B[6] when programming the pitch. The bit effects VGA
+text mode and is not interpreted by qemu. [1] It has no affect on
+the scanline pitch.
 
-It is tricky, because kvm_riscv_vcpu_general_set_csr calculates the
-amount of registers accessible to userspace based the on size of
-kvm_vcpu_csr.
+The scanline bit that is set into CR1B[6] belongs into CR13[7], which
+the driver sets up correctly.
 
-We'd have to make changes to logic before expanding kvm_vcpu_csr with
-kvm_vcpu_smstateen_csr.  At that point, I think it be much easier to
-just put all csrs to kvm_vcpu_csr directly, which would also simplify
-future extensions.
+This bug goes back to the driver's initial commit.
 
-> Other than my comment, this looks good for upstreaming.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://gitlab.com/qemu-project/qemu/-/blob/stable-9.2/hw/display/cirrus_vga.c?ref_type=heads#L1112 # 1
+Fixes: f9aa76a85248 ("drm/kms: driver for virtual cirrus under qemu")
+Cc: Adam Jackson <ajax@redhat.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: <stable@vger.kernel.org> # v3.5+
+---
+ drivers/gpu/drm/tiny/cirrus-qemu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-I think the current version is more appropriate for stable, and we can
-implement your suggestion afterwards.
+diff --git a/drivers/gpu/drm/tiny/cirrus-qemu.c b/drivers/gpu/drm/tiny/cirrus-qemu.c
+index 52ec1e4ea9e5..a00d3b7ded6c 100644
+--- a/drivers/gpu/drm/tiny/cirrus-qemu.c
++++ b/drivers/gpu/drm/tiny/cirrus-qemu.c
+@@ -318,7 +318,6 @@ static void cirrus_pitch_set(struct cirrus_device *cirrus, unsigned int pitch)
+ 	/* Enable extended blanking and pitch bits, and enable full memory */
+ 	cr1b = 0x22;
+ 	cr1b |= (pitch >> 7) & 0x10;
+-	cr1b |= (pitch >> 6) & 0x40;
+ 	wreg_crt(cirrus, 0x1b, cr1b);
+ 
+ 	cirrus_set_start_address(cirrus, 0);
+-- 
+2.48.1
 
-Thanks.
 
