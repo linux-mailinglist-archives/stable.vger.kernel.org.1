@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87572A700DB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E00A6FFBB
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D89D3BCA52
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88FD73BEE9F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F358D269CE0;
-	Tue, 25 Mar 2025 12:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17612267714;
+	Tue, 25 Mar 2025 12:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzCtouzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+ZPNqlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF56E2571AC;
-	Tue, 25 Mar 2025 12:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7365267706;
+	Tue, 25 Mar 2025 12:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906103; cv=none; b=ItdAkUQLdL4EpPL57yvtUQ3SmOuwLRKYVNTDbMtemu1plTBnb9gXgMzzegbvr5O1cYKhtjfagUBmb8M/5b4X/NZ1jKv8KGDrAd3w/o32dnrY+Cs/OOWI3v/+wIyojAQ8UdM3tMa2/Yw9Oaj+rNU9Sf0NQm8ZV5vTAUYvHd40O5s=
+	t=1742905813; cv=none; b=rn3pxuKTSoqX0cLoeqWHoYBVYAaQapjNUyLBwk6RARlVPeMu5xKpvdsm1F9/DqzZmB+drB4VY94FqtJ9Jtr5fNKMknAqdCHibKaTwz/eG4oZwhkcE7m/pJqlkpjk2zy8KAhkoFXEB3o0erkYdqKFUyHDKWUg6SSpVlzydwahVtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906103; c=relaxed/simple;
-	bh=Z2un9KLc5Ete6KMzEL1hv/ku1nAnyjlUCaBeApRx/B0=;
+	s=arc-20240116; t=1742905813; c=relaxed/simple;
+	bh=pVgAqK2lcITxhvecXujQJFhvAjcA7jX95KLkBu1L7GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6eX1V2Eo8y0smCIZk6KfpWeH0rpO57QyI9mKrWikoEZkFgUD8aZt3bvOAZEKhSOrZLQxl64JlwSgdhz+b+T6Nl84pxUdlM7Md3MXcGDliWwpn31QVYvB0OlVMiElMFPKyxa1Nfmj7DHceEcc++yHiwiw3wr9MOSD9kmSIQIkLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzCtouzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FCCC4CEE4;
-	Tue, 25 Mar 2025 12:35:03 +0000 (UTC)
+	 MIME-Version; b=PGnKFgiwboasdMkpEuUr66YEmKPHrr4VdYBvdmtOMa0tLKpMbx62ckNZsECO8hdxpjMXVGlhpcHhFhtGz3inKalCkCQcTnymvCNS17nVG7SGd5fp4SZ//unJ1/ISjNVwv6b9n1Tdv2uZ2PdY9Juht5lRBLpHdzpxsY+yw9on4ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+ZPNqlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15268C4CEE4;
+	Tue, 25 Mar 2025 12:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906103;
-	bh=Z2un9KLc5Ete6KMzEL1hv/ku1nAnyjlUCaBeApRx/B0=;
+	s=korg; t=1742905813;
+	bh=pVgAqK2lcITxhvecXujQJFhvAjcA7jX95KLkBu1L7GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VzCtouzXb/1w3BJ1nhOlmSzEI8owHd0m5B/s7A3L7OeyTM2/olk+pMNE3j1CBG9Ef
-	 gyxiKuTDfAQTHFJPRw7MTSdFwIGcVgplLc+3V6NcGd8/EoA/C8HoiwYQ57NHTceZ6K
-	 5ALax42iBIeUzhQicr53kXcvn6hjgRaKdk226crw=
+	b=H+ZPNqlzz18hj5sUuirqQkQWBrgicPlDD42aDSMO6aFjiopcOZy0p3vhp6cMULVb9
+	 eeyzuK3NXcU9qDXP/Gqe27Nb6S23SisWKLOJfaUtxpIdk4yUna5rU4EJYlnSuzIFk/
+	 GRj211t40Aczn0FTMMF2nnyJThKYSkSsAlIJDPLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 17/77] RDMA/hns: Fix a missing rollback in error path of hns_roce_create_qp_common()
+	Haibo Chen <haibo.chen@nxp.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 170/198] can: flexcan: only change CAN state when link up in system PM
 Date: Tue, 25 Mar 2025 08:22:12 -0400
-Message-ID: <20250325122144.796646380@linuxfoundation.org>
+Message-ID: <20250325122201.107986275@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit 444907dd45cbe62fd69398805b6e2c626fab5b3a ]
+commit fd99d6ed20234b83d65b9c5417794343577cf3e5 upstream.
 
-When ib_copy_to_udata() fails in hns_roce_create_qp_common(),
-hns_roce_qp_remove() should be called in the error path to
-clean up resources in hns_roce_qp_store().
+After a suspend/resume cycle on a down interface, it will come up as
+ERROR-ACTIVE.
 
-Fixes: 0f00571f9433 ("RDMA/hns: Use new SQ doorbell register for HIP09")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-6-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
+
+$ sudo systemctl suspend
+
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+
+And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
+has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+
+Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
+[mkl: add newlines]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/flexcan/flexcan-core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index 0b054b708d515..0cad6fc7bf32c 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -1149,7 +1149,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
- 				       min(udata->outlen, sizeof(resp)));
- 		if (ret) {
- 			ibdev_err(ibdev, "copy qp resp failed!\n");
--			goto err_store;
-+			goto err_flow_ctrl;
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -2236,8 +2236,9 @@ static int __maybe_unused flexcan_suspen
  		}
+ 		netif_stop_queue(dev);
+ 		netif_device_detach(dev);
++
++		priv->can.state = CAN_STATE_SLEEPING;
+ 	}
+-	priv->can.state = CAN_STATE_SLEEPING;
+ 
+ 	return 0;
+ }
+@@ -2248,7 +2249,6 @@ static int __maybe_unused flexcan_resume
+ 	struct flexcan_priv *priv = netdev_priv(dev);
+ 	int err;
+ 
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	if (netif_running(dev)) {
+ 		netif_device_attach(dev);
+ 		netif_start_queue(dev);
+@@ -2268,6 +2268,8 @@ static int __maybe_unused flexcan_resume
+ 
+ 			flexcan_chip_interrupts_enable(dev);
+ 		}
++
++		priv->can.state = CAN_STATE_ERROR_ACTIVE;
  	}
  
--- 
-2.39.5
-
+ 	return 0;
 
 
 
