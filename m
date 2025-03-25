@@ -1,160 +1,164 @@
-Return-Path: <stable+bounces-126643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D923A70DAC
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 00:38:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B86FA70DBF
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 00:44:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 227D83B2683
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 23:37:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA75016F5D3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 23:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A866B266B64;
-	Tue, 25 Mar 2025 23:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794E2269CFD;
+	Tue, 25 Mar 2025 23:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkeblEwJ"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="XAbRax3e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBA2199934;
-	Tue, 25 Mar 2025 23:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851A9254B1A
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 23:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742945868; cv=none; b=dU1UVSeKX66loYw0ooYmugscjUr4DEksw1pdct/NIkb8QBLxKiC+roHxNfT+0ihvhSkV84XCGmYn1zMjtOddOHCoaBD67/l9/Z2AVeBjbk/am1d7bVwbOs7m/Bqb9MzRj/IJ0Po2rP0p+wwrMw45a6rKkkoowE2TUaOd/6+vXnk=
+	t=1742946294; cv=none; b=j+S8wkM54VRpjKJH08Yz0wwF2RtqRlMb2D8bcRSG3DdJlS00aBCcdmmwuulDQD6DyPMkAHcRmlNhaHReBOODOEf2u7YX0wEFtLYIgaTLvC8W5I+VRIfd8JEeWYDM3YwkHZNMNST8dnCsfr102+bMtq8gazz9eus1sJUKY4RBef8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742945868; c=relaxed/simple;
-	bh=00/ArSjIQEZNs37g+f5KqAlg1L1Kwu+QoXBNEaLDdA4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aPwl9k7PyfhwX/oEIwaZ0hbKxOtzDI2UgftYJ9kDH7qqZ1+YOj8J1ENaeaiXU7/on9PY8suGAPgKRkAHduj1+80RAsKQOPGF2cIOTRfJgNtr8n42pjC7kK9L6pCwmwrazuQN1FrISGk7QpeOQS8hEJUBzuln0PPyssrhMYuIOLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkeblEwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659C2C4CEE4;
-	Tue, 25 Mar 2025 23:37:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742945867;
-	bh=00/ArSjIQEZNs37g+f5KqAlg1L1Kwu+QoXBNEaLDdA4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QkeblEwJcGEu19kTCnrKzhnz2M7cJmU/cnC2SBixBbgwn2LyZYpsatZ1pNX5vD+cw
-	 J7JRWmMtT0hWyoi5qRo2EgPRpSdUeSRMIn2pupgr/nRYN1L8LSbFWfwOgrWu3Ov43G
-	 frGd/KqrFVbdYF4iqOyajnHG4JMSe54RtoOZ56z4=
-Date: Tue, 25 Mar 2025 19:36:20 -0400
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dragan Simic <dsimic@manjaro.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: Re: [PATCH 6.6 00/77] 6.6.85-rc1 review
-Message-ID: <2025032556-faceplate-stingy-fe31@gregkh>
-References: <20250325122144.259256924@linuxfoundation.org>
- <CA+G9fYvWau1nC8wmpWkxG8gWPaRMP9pbkh2eNsAZoUMeRPgzqA@mail.gmail.com>
- <a823454af9915fe3acfcb66fd84dc826@manjaro.org>
+	s=arc-20240116; t=1742946294; c=relaxed/simple;
+	bh=5hc9k3osfaqw0Bqo8AzzRsABtaJ3x4fPy1xau/HPG2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h+3V5iW79yij1QaTmHE9epfdm7N/mvDGpavUFyboAtPccZEg/o7Or1aMuFXdZVlwdUCS1vGq3jbBraiBjJy2oYBNVUMDAj7n2Z4WHFc76umjqAIncwRJpu//jHANBtNNYj7u1u72IM1wZUpzxo7ZDOeD1kuKbe1UvrlXVVsXCaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=XAbRax3e; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52PLtvYJ025363;
+	Tue, 25 Mar 2025 23:44:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=koErJwERXF6Um/NgPSIm0Q7JyhkvZ
+	T5qAyuSmJhKHTQ=; b=XAbRax3ewNdzqDGksy/wH6uBdHCnFGfVRQ/EFPxaCqa6X
+	eFLSLXk1nl0SD6nij5nZcYqUyP9/OHIOq9gpLUO4KZme0FeLkZDoIpWgxoYsqkDD
+	mA1STg7aLppZwKG05BuwFWmgK5zWkOKl4uL7/REXuXnK/11FKfotpbnVb90tH/dp
+	PoKxZDf6UULVEMbnMwSM6Qn/kEM04gxh1Isp3JQSzQ6nClrylEl9p5mB0BFKMQyd
+	0jSklzv8LT6MHXem2GRYlqllxumO0Z+YJ+APVsE0alMGgyVi66pQ2EI/tG0YnN6c
+	mnr0r8hzY6vfrDJ71SeA1YdDAtRCBB8P24JiSXFDA==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45hn8707w8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Mar 2025 23:44:38 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 52PN9xl4015177;
+	Tue, 25 Mar 2025 23:44:36 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 45jj92nb48-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Mar 2025 23:44:36 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 52PNiaL3038603;
+	Tue, 25 Mar 2025 23:44:36 GMT
+Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 45jj92nb3v-1;
+	Tue, 25 Mar 2025 23:44:36 +0000
+From: Larry Bassel <larry.bassel@oracle.com>
+To: stable@vger.kernel.org
+Cc: xieyongji@bytedance.com, jasowang@redhat.com, kuba@kernel.org,
+        harshit.m.mogalapalli@oracle.com
+Subject: [PATCH 5.4.y] virtio-net: Add validation for used length
+Date: Tue, 25 Mar 2025 16:44:02 -0700
+Message-ID: <20250325234402.2735260-1-larry.bassel@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a823454af9915fe3acfcb66fd84dc826@manjaro.org>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-25_10,2025-03-25_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 adultscore=0
+ mlxlogscore=999 mlxscore=0 phishscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2502280000
+ definitions=main-2503250156
+X-Proofpoint-GUID: eQ08XEJYIQXBb5akdc7bnszNEysC8K72
+X-Proofpoint-ORIG-GUID: eQ08XEJYIQXBb5akdc7bnszNEysC8K72
 
-On Tue, Mar 25, 2025 at 05:07:16PM +0100, Dragan Simic wrote:
-> Hello Naresh,
-> 
-> On 2025-03-25 16:07, Naresh Kamboju wrote:
-> > On Tue, 25 Mar 2025 at 18:05, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > > 
-> > > This is the start of the stable review cycle for the 6.6.85 release.
-> > > There are 77 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied,
-> > > please
-> > > let me know.
-> > > 
-> > > Responses should be made by Thu, 27 Mar 2025 12:21:27 +0000.
-> > > Anything received after that time might be too late.
-> > > 
-> > > The whole patch series can be found in one patch at:
-> > > https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.85-rc1.gz
-> > > or in the git tree and branch at:
+From: Xie Yongji <xieyongji@bytedance.com>
 
-> > > git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> > > linux-6.6.y
-> > > and the diffstat can be found below.
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > 
-> > 
-> > Regressions on arm64 rk3399 dtb builds failed with gcc-13 the
-> > stable-rc 6.6.85-rc1
-> > 
-> > First seen on the v6.6.83-245-gc1fb5424adea
-> >  Good: v6.6.84
-> >  Bad: 6.6.85-rc1
-> > 
-> > * arm64, build
-> >   - gcc-13-defconfig
-> > 
-> > Regression Analysis:
-> >  - New regression? yes
-> >  - Reproducibility? Yes
-> > 
-> > 
-> > Build regression: arm64 dtb rockchip non-existent node or label
-> > "vcca_0v9"
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > 
-> > ## Build log
-> > arch/arm64/boot/dts/rockchip/rk3399.dtsi:221.23-266.4: ERROR
-> > (phandle_references):
-> > /pcie@f8000000: Reference to non-existent node or label "vcca_0v9"
-> > 
-> >   also defined at
-> > arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi:659.8-669.3
-> > 
-> > ## Source
-> > * Kernel version: 6.6.85-rc1
-> > * Git tree:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> > * Git sha: c1fb5424adea53e3a4d8b2018c5e974f7772af29
-> > * Git describe: v6.6.83-245-gc1fb5424adea
-> > * Project details:
-> > https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/
-> > 
-> > ## Build
-> > * Build log:
-> > https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/testrun/27760755/suite/build/test/gcc-13-defconfig/log
-> > * Build history:
-> > https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/testrun/27763720/suite/build/test/gcc-13-defconfig/history/
-> > * Build details:
-> > https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/testrun/27760755/suite/build/test/gcc-13-defconfig/
-> > * Build link:
-> > https://storage.tuxsuite.com/public/linaro/lkft/builds/2uoHmBcVLd60GQ0SVHWAaZRZfNd/
-> > * Kernel config:
-> > https://storage.tuxsuite.com/public/linaro/lkft/builds/2uoHmBcVLd60GQ0SVHWAaZRZfNd/config
-> > 
-> > ## Steps to reproduce
-> >  - # tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
-> > --kconfig defconfig
-> 
-> This is caused by another patch from the original series failing
-> to apply due to some bulk regulator renaming.  I'll send backported
-> version of that patch soon, which should make everything fine.
-> 
+commit ad993a95c508 ("virtio-net: Add validation for used length")
 
-What commit id needs to be backported?  Or did you submit the fix
-already and I just missed it?
+This adds validation for used length (might come
+from an untrusted device) to avoid data corruption
+or loss.
 
-thanks,
+Signed-off-by: Xie Yongji <xieyongji@bytedance.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://lore.kernel.org/r/20210531135852.113-1-xieyongji@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit ad993a95c508417acdeb15244109e009e50d8758)
+[Larry: backport to 5.4.y. Minor conflict resolved due to missing commit 9ce6146ec7b50
+virtio_net: Add XDP frame size in two code paths]
+Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
+---
+ drivers/net/virtio_net.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-greg k-h
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 182b67270044..215c546bf50a 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -717,6 +717,12 @@ static struct sk_buff *receive_small(struct net_device *dev,
+ 	len -= vi->hdr_len;
+ 	stats->bytes += len;
+ 
++	if (unlikely(len > GOOD_PACKET_LEN)) {
++		pr_debug("%s: rx error: len %u exceeds max size %d\n",
++			 dev->name, len, GOOD_PACKET_LEN);
++		dev->stats.rx_length_errors++;
++		goto err_len;
++	}
+ 	rcu_read_lock();
+ 	xdp_prog = rcu_dereference(rq->xdp_prog);
+ 	if (xdp_prog) {
+@@ -819,6 +825,7 @@ static struct sk_buff *receive_small(struct net_device *dev,
+ err_xdp:
+ 	rcu_read_unlock();
+ 	stats->xdp_drops++;
++err_len:
+ 	stats->drops++;
+ 	put_page(page);
+ xdp_xmit:
+@@ -871,6 +878,13 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 	head_skb = NULL;
+ 	stats->bytes += len - vi->hdr_len;
+ 
++	truesize = mergeable_ctx_to_truesize(ctx);
++	if (unlikely(len > truesize)) {
++		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
++			 dev->name, len, (unsigned long)ctx);
++		dev->stats.rx_length_errors++;
++		goto err_skb;
++	}
+ 	rcu_read_lock();
+ 	xdp_prog = rcu_dereference(rq->xdp_prog);
+ 	if (xdp_prog) {
+@@ -990,14 +1004,6 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 	}
+ 	rcu_read_unlock();
+ 
+-	truesize = mergeable_ctx_to_truesize(ctx);
+-	if (unlikely(len > truesize)) {
+-		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
+-			 dev->name, len, (unsigned long)ctx);
+-		dev->stats.rx_length_errors++;
+-		goto err_skb;
+-	}
+-
+ 	head_skb = page_to_skb(vi, rq, page, offset, len, truesize, !xdp_prog,
+ 			       metasize);
+ 	curr_skb = head_skb;
+-- 
+2.46.0
+
 
