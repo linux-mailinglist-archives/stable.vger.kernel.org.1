@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA547A6FFD5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA76A70152
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:22:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E34A19A14A3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A1A4188B8A0
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1572676C0;
-	Tue, 25 Mar 2025 12:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D46726B2D0;
+	Tue, 25 Mar 2025 12:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSIWSFvv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ld+C7hHZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5832673B8;
-	Tue, 25 Mar 2025 12:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDF425C717;
+	Tue, 25 Mar 2025 12:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905760; cv=none; b=ICmhwj9OVHYRXCfdMb86UGBgqxIwkRwGyMh3IqPnY0dTh+Y+8CYwUnrQsRaTTvjFoxVZff6avsFDtZkU7LLW3DuxPDF9zCMme/F0hMjptC7q62OR9nsFOc9wVC/K17Nku3tW5/8yxSDfhQlHUFrzHfu0WZAId9OevqMLY06ivLI=
+	t=1742906266; cv=none; b=l2Yk5L8fcADf0hl7V6giqYWjQBqgmukUzM7rgCAFOuYkspA/MEg9rg39xqa2V/OgYyOCgScQdmuG8O4MaEMQVbCavOfU7ujoDozkbBkROt7wXr2qZnpgF90Awo0tFMkcR1ydC/+9q1I+eaqhCGpdyB5pU7F1oOg522dYi8scXHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905760; c=relaxed/simple;
-	bh=MYg+8cQBprQm26urVtrcnv0y7yBUhs8XwfbgvZV2Z04=;
+	s=arc-20240116; t=1742906266; c=relaxed/simple;
+	bh=VwjpwRIhCTv/ZioPtgsuMpd9KSNLU1bkI768yZQRc9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+Ub8mjdjezQZc/dFS6FsQ+YXBWhpwdmRZdrV3xrFL596rFR2lMgqihHVGrIlHPdFIMjT2dIpJ8w3tzcKNsNxX5cMgvqZh26pOtZTbhbfF7PtMrnKXfm7V0LhZ9m0psUL5iTrxprrWipvXV7QGiguIvNF6Nb0OsnAH3ci45YQQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSIWSFvv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA52C4CEE4;
-	Tue, 25 Mar 2025 12:29:19 +0000 (UTC)
+	 MIME-Version; b=D6iJd28it8tBrWHdy5rMvwxr/9uwsm2GVg7ITaTAjY5vc3J9LDjQNGS01/J2azUaEm/3OjCk5mqzLebfMagmYF60vc4ifA7Vm81NShuI3BW4byuju20AgAmUlyAlOSie8m7G5crHPlBuTHV9F/dIMNvfM+LoRhK9YUCENt97tkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ld+C7hHZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469C9C4CEE4;
+	Tue, 25 Mar 2025 12:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905760;
-	bh=MYg+8cQBprQm26urVtrcnv0y7yBUhs8XwfbgvZV2Z04=;
+	s=korg; t=1742906265;
+	bh=VwjpwRIhCTv/ZioPtgsuMpd9KSNLU1bkI768yZQRc9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSIWSFvvaxpBCrLK5U6DO+/aDf5AP19QPJWqeknFW1rPvHPCaN5O1NWeKcEBx13mM
-	 TZjqvSFtUE+99H7/fu0Ms5N35C/zFE0QHvPD81pkF/QEAOsvIXTuaqZKgkJez5frfF
-	 xINNUd9IIhn0o6V6v5mQcmbJyLrb173WLknLCAO0=
+	b=ld+C7hHZZz+MOXtZrmgGuaDXMHJ9rDZYHgioZZ7xFP/py9DMPfo/jil+SDJ2g3I8u
+	 WDr5O2Sd2WzhpNtmatvElcMjkO4rQjBschyas0yGqyXZIiiUS6KhJ//DEbD1TNZ5Gt
+	 8piHKEjq4Iq41JNwW9rMnO4T3f2gFCsbK4/5OfxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/198] soc: imx8m: Remove global soc_uid
-Date: Tue, 25 Mar 2025 08:21:51 -0400
-Message-ID: <20250325122200.566836202@linuxfoundation.org>
+Subject: [PATCH 6.12 025/116] RDMA/hns: Fix unmatched condition in error path of alloc_user_qp_db()
+Date: Tue, 25 Mar 2025 08:21:52 -0400
+Message-ID: <20250325122149.858106280@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 9c1c02fe8d7f33c18547b79c41f3fa41ef7bae8f ]
+[ Upstream commit b9f59a24ba35a7d955a9f8e148dd9f85b7b40a01 ]
 
-The static global soc_uid is only ever used as kasprintf() parameter in
-imx8m_soc_probe(). Pass pointer to local u64 variable to .soc_revision()
-callback instead and let the .soc_revision() callback fill in the content.
-Remove the unnecessary static global variable.
+Currently the condition of unmapping sdb in error path is not exactly
+the same as the condition of mapping in alloc_user_qp_db(). This may
+cause a problem of unmapping an unmapped db in some case, such as
+when the QP is XRC TGT. Unified the two conditions.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: cf7139aac463 ("soc: imx8m: Unregister cpufreq and soc dev in cleanup path")
+Fixes: 90ae0b57e4a5 ("RDMA/hns: Combine enable flags of qp")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250311084857.3803665-4-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/imx/soc-imx8m.c | 31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index a160854a19178..9587641e0c4f9 100644
---- a/drivers/soc/imx/soc-imx8m.c
-+++ b/drivers/soc/imx/soc-imx8m.c
-@@ -30,11 +30,9 @@
- 
- struct imx8_soc_data {
- 	char *name;
--	int (*soc_revision)(u32 *socrev);
-+	int (*soc_revision)(u32 *socrev, u64 *socuid);
- };
- 
--static u64 soc_uid;
--
- #ifdef CONFIG_HAVE_ARM_SMCCC
- static u32 imx8mq_soc_revision_from_atf(void)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index 9e2e76c594063..a97348a1c61f1 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -868,12 +868,14 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
+ 			    struct hns_roce_ib_create_qp *ucmd,
+ 			    struct hns_roce_ib_create_qp_resp *resp)
  {
-@@ -51,7 +49,7 @@ static u32 imx8mq_soc_revision_from_atf(void)
- static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
- #endif
- 
--static int imx8mq_soc_revision(u32 *socrev)
-+static int imx8mq_soc_revision(u32 *socrev, u64 *socuid)
- {
- 	struct device_node *np;
- 	void __iomem *ocotp_base;
-@@ -89,9 +87,9 @@ static int imx8mq_soc_revision(u32 *socrev)
- 			rev = REV_B1;
- 	}
- 
--	soc_uid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH);
--	soc_uid <<= 32;
--	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
-+	*socuid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH);
-+	*socuid <<= 32;
-+	*socuid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
- 
- 	*socrev = rev;
- 
-@@ -109,7 +107,7 @@ static int imx8mq_soc_revision(u32 *socrev)
- 	return ret;
- }
- 
--static int imx8mm_soc_uid(void)
-+static int imx8mm_soc_uid(u64 *socuid)
- {
- 	void __iomem *ocotp_base;
- 	struct device_node *np;
-@@ -136,9 +134,9 @@ static int imx8mm_soc_uid(void)
- 
- 	clk_prepare_enable(clk);
- 
--	soc_uid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH + offset);
--	soc_uid <<= 32;
--	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
-+	*socuid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH + offset);
-+	*socuid <<= 32;
-+	*socuid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
- 
- 	clk_disable_unprepare(clk);
- 	clk_put(clk);
-@@ -151,7 +149,7 @@ static int imx8mm_soc_uid(void)
- 	return ret;
- }
- 
--static int imx8mm_soc_revision(u32 *socrev)
-+static int imx8mm_soc_revision(u32 *socrev, u64 *socuid)
- {
- 	struct device_node *np;
- 	void __iomem *anatop_base;
-@@ -172,7 +170,7 @@ static int imx8mm_soc_revision(u32 *socrev)
- 	iounmap(anatop_base);
- 	of_node_put(np);
- 
--	return imx8mm_soc_uid();
-+	return imx8mm_soc_uid(socuid);
- 
- err_iomap:
- 	of_node_put(np);
-@@ -215,10 +213,11 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
- static int imx8m_soc_probe(struct platform_device *pdev)
- {
- 	struct soc_device_attribute *soc_dev_attr;
--	struct soc_device *soc_dev;
-+	const struct imx8_soc_data *data;
- 	const struct of_device_id *id;
-+	struct soc_device *soc_dev;
- 	u32 soc_rev = 0;
--	const struct imx8_soc_data *data;
-+	u64 soc_uid = 0;
++	bool has_sdb = user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd);
+ 	struct hns_roce_ucontext *uctx = rdma_udata_to_drv_context(udata,
+ 		struct hns_roce_ucontext, ibucontext);
++	bool has_rdb = user_qp_has_rdb(hr_dev, init_attr, udata, resp);
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
  	int ret;
  
- 	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
-@@ -241,7 +240,7 @@ static int imx8m_soc_probe(struct platform_device *pdev)
- 	if (data) {
- 		soc_dev_attr->soc_id = data->name;
- 		if (data->soc_revision) {
--			ret = data->soc_revision(&soc_rev);
-+			ret = data->soc_revision(&soc_rev, &soc_uid);
- 			if (ret)
- 				goto free_soc;
- 		}
+-	if (user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd)) {
++	if (has_sdb) {
+ 		ret = hns_roce_db_map_user(uctx, ucmd->sdb_addr, &hr_qp->sdb);
+ 		if (ret) {
+ 			ibdev_err(ibdev,
+@@ -884,7 +886,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
+ 		hr_qp->en_flags |= HNS_ROCE_QP_CAP_SQ_RECORD_DB;
+ 	}
+ 
+-	if (user_qp_has_rdb(hr_dev, init_attr, udata, resp)) {
++	if (has_rdb) {
+ 		ret = hns_roce_db_map_user(uctx, ucmd->db_addr, &hr_qp->rdb);
+ 		if (ret) {
+ 			ibdev_err(ibdev,
+@@ -898,7 +900,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
+ 	return 0;
+ 
+ err_sdb:
+-	if (hr_qp->en_flags & HNS_ROCE_QP_CAP_SQ_RECORD_DB)
++	if (has_sdb)
+ 		hns_roce_db_unmap_user(uctx, &hr_qp->sdb);
+ err_out:
+ 	return ret;
 -- 
 2.39.5
 
