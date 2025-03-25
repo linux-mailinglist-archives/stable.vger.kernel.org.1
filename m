@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-126108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B70A6FF8C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:05:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CDAA6FF6D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:04:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 776DA19A1E03
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:57:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 388547A2F73
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7252025A2C1;
-	Tue, 25 Mar 2025 12:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CB525A2CD;
+	Tue, 25 Mar 2025 12:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s38a7fUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBwvhi0u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1F925A2B7;
-	Tue, 25 Mar 2025 12:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1621525743D;
+	Tue, 25 Mar 2025 12:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905616; cv=none; b=Swa56ZVBEKJQIsiQyhI50qqlNoiBPzQwIBVQVtMbEfx6mAiXTZw1oTzBnzt8hAPSS15xsSEztIibBJhwVNJ1AYWwmh0yraczB0ndRkEKBrHjCuks5I111rETtt1GuV6eO14BfV9PP7Yi2AZtg0wYz4mgQVW0EI4gDa2jl0wsfE8=
+	t=1742905651; cv=none; b=AqxaBhlHnLoHPsRKXOXTZcfqSiSlzX2qyr11RFMTUoi2juWh5hnc2Wn8rbeFgMVSUD8mLyc1ehRrlja6VRiCl2k0xVLDCUPMODA3Y4B/lfVi1Au922UUPxIeQGTw0STWaEtt9/A+uGkfwWVC/4Nra96Oceg+4aeiPn/FYinsZaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905616; c=relaxed/simple;
-	bh=OBwoZUAfsAzTo3jX2S1O3c4HNUEptGHwxOnp0zw8EYY=;
+	s=arc-20240116; t=1742905651; c=relaxed/simple;
+	bh=eDQvQ5HtviaaZJ7qgL6ke177Rw2PahsLQTj9D7EuKT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFHBYaMVDaJ2KEwaCnGx6KbgNphC03VAvejAC7CMS3lgF3UY12Ibu7VYlQ4xtlCmBVNufHkgDp1Y92Z8IGi4fyTPn1UOZoAcNbyDPmVVt67SmXgEdji1o5h66rqBZQNQuCOTfsBXkb9AAY54pDKn0QfgoRrkIBOFHi8yYSIy0nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s38a7fUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D792AC4CEE4;
-	Tue, 25 Mar 2025 12:26:55 +0000 (UTC)
+	 MIME-Version; b=o3FDaCR48h8MjAWz9AcJfmVWO4VSjhpwn4G/lSSW/LIP9PLFdruIl6JAiS4N2sT/0NNja8eCtwrFNYiLJJODux2Q6UI3xWRC40epPZXq95SO4jHUMWZV4QtqSSAiiw2JRR15xJ/ADHMioJwniNlfyGXkmm+Emxvv8VExNxy1FYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBwvhi0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE799C4CEE4;
+	Tue, 25 Mar 2025 12:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905616;
-	bh=OBwoZUAfsAzTo3jX2S1O3c4HNUEptGHwxOnp0zw8EYY=;
+	s=korg; t=1742905651;
+	bh=eDQvQ5HtviaaZJ7qgL6ke177Rw2PahsLQTj9D7EuKT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s38a7fUvkUWPSmj7EK2F/1JHLeyUaECCaAtlHP2U4FBkr/oiQ0dI+WIn9j4GmuSoT
-	 +xPikLJ168MDPHm2Lpnlza+nDfxBeh3dqRLa7MSzKjF8LWE27U1dHk5hvEx1/MZWqE
-	 mP2zotVn0oyZ4fAf0xxr0qtFLHlNfvtNJPMD8Ylw=
+	b=IBwvhi0undHwDoaACgxqOObVGjvwkGJG3jA6xlya3NZgtaGwVE2I3LSzB/bPB+H4Z
+	 n9QK8O16fdOJBn6SrAFPydRAQWkm3jvrrYCewgZHDXQBLmwKi/KSFF46cRx21nGMss
+	 U0QvHK4zSY/rT0PQYXTW/Rx4UyiNFRetvXTBReZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/198] mptcp: safety check before fallback
-Date: Tue, 25 Mar 2025 08:20:31 -0400
-Message-ID: <20250325122158.453189591@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 072/198] io_uring: return error pointer from io_mem_alloc()
+Date: Tue, 25 Mar 2025 08:20:34 -0400
+Message-ID: <20250325122158.530269171@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -67,42 +64,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit db75a16813aabae3b78c06b1b99f5e314c1f55d3 ]
+Commit e27cef86a0edd4ef7f8b4670f508a03b509cbbb2 upstream.
 
-Recently, some fallback have been initiated, while the connection was
-not supposed to fallback.
+In preparation for having more than one time of ring allocator, make the
+existing one return valid/error-pointer rather than just NULL.
 
-Add a safety check with a warning to detect when an wrong attempt to
-fallback is being done. This should help detecting any future issues
-quicker.
-
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250224-net-mptcp-misc-fixes-v1-3-f550f636b435@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.h | 2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/io_uring.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 77e727d81cc24..25c1cda5c1bcf 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -981,6 +981,8 @@ static inline void __mptcp_do_fallback(struct mptcp_sock *msk)
- 		pr_debug("TCP fallback already done (msk=%p)\n", msk);
- 		return;
- 	}
-+	if (WARN_ON_ONCE(!READ_ONCE(msk->allow_infinite_fallback)))
-+		return;
- 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2528,8 +2528,12 @@ static void io_mem_free(void *ptr)
+ static void *io_mem_alloc(size_t size)
+ {
+ 	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN | __GFP_COMP;
++	void *ret;
+ 
+-	return (void *) __get_free_pages(gfp, get_order(size));
++	ret = (void *) __get_free_pages(gfp, get_order(size));
++	if (ret)
++		return ret;
++	return ERR_PTR(-ENOMEM);
  }
  
--- 
-2.39.5
-
+ static unsigned long rings_size(struct io_ring_ctx *ctx, unsigned int sq_entries,
+@@ -3422,6 +3426,7 @@ static __cold int io_allocate_scq_urings
+ {
+ 	struct io_rings *rings;
+ 	size_t size, sq_array_offset;
++	void *ptr;
+ 
+ 	/* make sure these are sane, as we already accounted them */
+ 	ctx->sq_entries = p->sq_entries;
+@@ -3432,8 +3437,8 @@ static __cold int io_allocate_scq_urings
+ 		return -EOVERFLOW;
+ 
+ 	rings = io_mem_alloc(size);
+-	if (!rings)
+-		return -ENOMEM;
++	if (IS_ERR(rings))
++		return PTR_ERR(rings);
+ 
+ 	ctx->rings = rings;
+ 	ctx->sq_array = (u32 *)((char *)rings + sq_array_offset);
+@@ -3452,13 +3457,14 @@ static __cold int io_allocate_scq_urings
+ 		return -EOVERFLOW;
+ 	}
+ 
+-	ctx->sq_sqes = io_mem_alloc(size);
+-	if (!ctx->sq_sqes) {
++	ptr = io_mem_alloc(size);
++	if (IS_ERR(ptr)) {
+ 		io_mem_free(ctx->rings);
+ 		ctx->rings = NULL;
+-		return -ENOMEM;
++		return PTR_ERR(ptr);
+ 	}
+ 
++	ctx->sq_sqes = ptr;
+ 	return 0;
+ }
+ 
 
 
 
