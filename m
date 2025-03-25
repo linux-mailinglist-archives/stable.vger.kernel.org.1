@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-126470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3926EA700D4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D31A6FFD7
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A21D81881797
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8758E3B8796
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85B625D540;
-	Tue, 25 Mar 2025 12:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46436267385;
+	Tue, 25 Mar 2025 12:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTm46/GV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rn+fCeRX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C7E26B2DD;
-	Tue, 25 Mar 2025 12:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A922571DC;
+	Tue, 25 Mar 2025 12:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906284; cv=none; b=W7NxccJHbxxQj/eJFpYF1hHBAxmUbRwEpUScIKf3FJBzntqSlIcKSOkUrPknNn6YbMsePcpzuprTZ25+DVzE//TVUHuefiIdaF3w31ECFWxdv0MzH/XGO0vF0YcRDxi5sbrdg1Ag0JKWBiMAKwjgDRBaX8dcw2mqjAGGrKA14Ck=
+	t=1742905734; cv=none; b=D2g0/fCCuoGRCpKAJueX2ptikSqFrftwhyQcTkvQW4OifSXkSoMVb0YqCLuJjMwF6afK7KYGTYv5a1l1JFzzderK8ompb2HPO9W4cOP4No0zMsvP/sNBxZNah4MINS3EAAH+FrJjh2uQggCTmMSjlnqfO8ofzRxTLToLA1Cu5Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906284; c=relaxed/simple;
-	bh=XU/iR8Ql7OtWDQa/Xs4Iph4N/3vKxrDpMmb/LtSngJw=;
+	s=arc-20240116; t=1742905734; c=relaxed/simple;
+	bh=pfcC5D0z4d56x5t7Sj9a7GUWj5Cqsu/Ew2GpYCCXE24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmg0bqqbssG4bdHphcdxO5Daa5nmnvGOIFkwnPosnvvMxpkcT2oYvTGKBHqpXmVwcmizgEI2w4zAC0D4hy1ob+JdFHDw3MEIBW6ncuajtBFN7kZz4t7sUdB13U4t21jolcU9Qc8ZAdPqbFu06ZOwF4Tit/FMAMP2q2Fq/8oAVwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTm46/GV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC2DC4CEE4;
-	Tue, 25 Mar 2025 12:38:04 +0000 (UTC)
+	 MIME-Version; b=QOUMYDQ7o4yAJK0kJcVNGX8xod3Rd5YTxxGhNKPqlrspNe083a4XrLhp0ZWyTFBhpBMbD8GvLnO+6bWKU/nRZUgO+VQavH7xajHlJAU/psH69J+QYJ5x0/2JaWqamMkmrZS6sTPb5RVXQo3oLjBoXeErm2J1uxY6KzXVbCsTzNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rn+fCeRX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8EEC4CEE9;
+	Tue, 25 Mar 2025 12:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906284;
-	bh=XU/iR8Ql7OtWDQa/Xs4Iph4N/3vKxrDpMmb/LtSngJw=;
+	s=korg; t=1742905733;
+	bh=pfcC5D0z4d56x5t7Sj9a7GUWj5Cqsu/Ew2GpYCCXE24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTm46/GVP9rqlF9z/o3LIvfY++HejoKKixtcS3IOHAbSU9qI+GWhlBK0KI+y7vXJC
-	 3e4vNueOjcJ63ESS+wkaet8YNHLziNx7wiwCyFPqyA9G2xNVL0vRs+IrhdE9X3uYF5
-	 D61Tip9Yl/J0kNTShJMmILbtaRS7QGVNqV6QHq30=
+	b=rn+fCeRX/0hPZ1Z3CLVrK8wiY4GGEtunGwdjTlAzT9gOsEWGFERxETLYE+hwRON6m
+	 h5u9LHZODSUDfFh1/z5yBi1/GaGbuiYhYz+aNgfvory6DfK+bRqW52m5ty4eJ8jngH
+	 ztVHkwf25QWvSb3y0hqySaYU+8dDZ2kZ2VLqnK9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/116] xfrm_output: Force software GSO only in tunnel mode
-Date: Tue, 25 Mar 2025 08:21:34 -0400
-Message-ID: <20250325122149.400811557@linuxfoundation.org>
+Subject: [PATCH 6.1 133/198] cifs: Fix integer overflow while processing acregmax mount option
+Date: Tue, 25 Mar 2025 08:21:35 -0400
+Message-ID: <20250325122200.143151392@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 0aae2867aa6067f73d066bc98385e23c8454a1d7 ]
+[ Upstream commit 7489161b1852390b4413d57f2457cd40b34da6cc ]
 
-The cited commit fixed a software GSO bug with VXLAN + IPSec in tunnel
-mode. Unfortunately, it is slightly broader than necessary, as it also
-severely affects performance for Geneve + IPSec transport mode over a
-device capable of both HW GSO and IPSec crypto offload. In this case,
-xfrm_output unnecessarily triggers software GSO instead of letting the
-HW do it. In simple iperf3 tests over Geneve + IPSec transport mode over
-a back-2-back pair of NICs with MTU 1500, the performance was observed
-to be up to 6x worse when doing software GSO compared to leaving it to
-the hardware.
+User-provided mount parameter acregmax of type u32 is intended to have
+an upper limit, but before it is validated, the value is converted from
+seconds to jiffies which can lead to an integer overflow.
 
-This commit makes xfrm_output only trigger software GSO in crypto
-offload cases for already encapsulated packets in tunnel mode, as not
-doing so would then cause the inner tunnel skb->inner_networking_header
-to be overwritten and break software GSO for that packet later if the
-device turns out to not be capable of HW GSO.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Taking a closer look at the conditions for the original bug, to better
-understand the reasons for this change:
-- vxlan_build_skb -> iptunnel_handle_offloads sets inner_protocol and
-  inner network header.
-- then, udp_tunnel_xmit_skb -> ip_tunnel_xmit adds outer transport and
-  network headers.
-- later in the xmit path, xfrm_output -> xfrm_outer_mode_output ->
-  xfrm4_prepare_output -> xfrm4_tunnel_encap_add overwrites the inner
-  network header with the one set in ip_tunnel_xmit before adding the
-  second outer header.
-- __dev_queue_xmit -> validate_xmit_skb checks whether GSO segmentation
-  needs to happen based on dev features. In the original bug, the hw
-  couldn't segment the packets, so skb_gso_segment was invoked.
-- deep in the .gso_segment callback machinery, __skb_udp_tunnel_segment
-  tries to use the wrong inner network header, expecting the one set in
-  iptunnel_handle_offloads but getting the one set by xfrm instead.
-- a bit later, ipv6_gso_segment accesses the wrong memory based on that
-  wrong inner network header.
-
-With the new change, the original bug (or similar ones) cannot happen
-again, as xfrm will now trigger software GSO before applying a tunnel.
-This concern doesn't exist in packet offload mode, when the HW adds
-encapsulation headers. For the non-offloaded packets (crypto in SW),
-software GSO is still done unconditionally in the else branch.
-
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 5780464614f6 ("cifs: Add new parameter "acregmax" for distinct file and directory metadata timeout")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_output.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/fs_context.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index 9160a5e09041d..a30538a980cc7 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -793,7 +793,7 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
- 		skb->encapsulation = 1;
- 
- 		if (skb_is_gso(skb)) {
--			if (skb->inner_protocol)
-+			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
- 				return xfrm_output_gso(net, sk, skb);
- 
- 			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index ca39d01077cdf..b9a47dd5db632 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1078,11 +1078,11 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 		ctx->got_wsize = true;
+ 		break;
+ 	case Opt_acregmax:
+-		ctx->acregmax = HZ * result.uint_32;
+-		if (ctx->acregmax > CIFS_MAX_ACTIMEO) {
++		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
+ 			cifs_errorf(fc, "acregmax too large\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		ctx->acregmax = HZ * result.uint_32;
+ 		break;
+ 	case Opt_acdirmax:
+ 		ctx->acdirmax = HZ * result.uint_32;
 -- 
 2.39.5
 
