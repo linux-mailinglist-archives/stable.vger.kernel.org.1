@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-126138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B6FA6FFA2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D32AA6FFB8
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79EE43B14E3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87891841E16
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD27266B5C;
-	Tue, 25 Mar 2025 12:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192D3266B64;
+	Tue, 25 Mar 2025 12:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfOwoHdU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9FHGemO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CD825A2DE;
-	Tue, 25 Mar 2025 12:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE52266B63;
+	Tue, 25 Mar 2025 12:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905671; cv=none; b=XMEdLRbYjc/mudbCbKpKwmXJRctcImnN8lZlsjmtf5SuZsyTn856DJe0evtwVKsTfH02Nre3UR7/zZBJ0c60c7myPGsVBxF47unLN77W1WYBsWcaIrexaY1cBazwrJB1nC4cOxZY65dbc+SxQYIBv3ycpb7P56JGdsb4ECo+ekA=
+	t=1742905678; cv=none; b=h65CZAKsAQhnjhbifUmfWjherAbucWZfoa8mbHJb59FfIryQSbC1CWuPBoYb+eQCee5uWk0WF9jx/NlR4sHxkhcpi/JYQHXc2XFzUkoiRpcom7FbJE/ENRS2QMFMl6HEyyQ9eHwg0mMVE/+rb80QKYWbOJdjN5i/HGKRdMsLNl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905671; c=relaxed/simple;
-	bh=1w6VYJO4ERwQEPCsmxXExaxBwFxqysOEjxkjlUfLvZM=;
+	s=arc-20240116; t=1742905678; c=relaxed/simple;
+	bh=o6VQgI8AtMN9VO+cFjOnxl3wO2Mzp/UQx8IFOjcyFMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ReH+eEFFgyxhkfiFL5JeCjjckzemEh7KgMs8bp5ozFs7sPxhZiYPC0OE1Wn+0aYSEA827/zEYXNICjeCv1cBJmT0P4/E0IrLxqBYicx4MJnYU5sE6B378RajOFvNXmgdVibphxDU60Vkjf1yN/I2cPOkDRSM4WFbB9C24uh71+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfOwoHdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D846C4CEE4;
-	Tue, 25 Mar 2025 12:27:51 +0000 (UTC)
+	 MIME-Version; b=bDIXhW6hxuDcc3qt6pcZ/UmaS8YE8yANy9NZ6NzEtKmetB2mn9XxOkeGC6VmNmKrP5B7IV0KO2nxfrxuRB3wfL8R0zI5gPyYMN3PfvOjxMH/jJytMsqQcyNZ3ag/LOpas5yF2w+ooRENOV32v7VUfKetOQCgpYTiEzZGnodafzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9FHGemO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809F8C4CEE4;
+	Tue, 25 Mar 2025 12:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905671;
-	bh=1w6VYJO4ERwQEPCsmxXExaxBwFxqysOEjxkjlUfLvZM=;
+	s=korg; t=1742905678;
+	bh=o6VQgI8AtMN9VO+cFjOnxl3wO2Mzp/UQx8IFOjcyFMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfOwoHdU5ZKsYqI63qcUBpFcroMNF9VD3rZoPDD+j8EhNTEcT1XMXuDwMrKmksZCh
-	 7q+kfc7jZwlzRsGrtF++G0UE6RGVaV1qUKEoLNhC8h59olOPMgBW9mrtuooQtZGTiH
-	 30FDz/bqjddcJizEd+anj3w82bt1RMGwO2qqu2Pg=
+	b=R9FHGemOZrE+g5TwC3xHEAn2jO7dwpbhrSssICPNi41KxcZddM07mkVHcgWs2PzsR
+	 DMxQeml784Xf3gMO7Y+z70yAW5JWYDJkXou2ljqQ5LFg2zIx3uO5tZL6MshZa8Yr9x
+	 RHfyGxnEkHMKMStPrmbjLIDiiR95M42FS4fMyrKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 073/198] io_uring: add ring freeing helper
-Date: Tue, 25 Mar 2025 08:20:35 -0400
-Message-ID: <20250325122158.555292469@linuxfoundation.org>
+Subject: [PATCH 6.1 074/198] mm: add nommu variant of vm_insert_pages()
+Date: Tue, 25 Mar 2025 08:20:36 -0400
+Message-ID: <20250325122158.580528034@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -66,62 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Jens Axboe <axboe@kernel.dk>
 
-Commit 9c189eee73af1825ea9c895fafad469de5f82641 upstream.
+Commit 62346c6cb28b043f2a6e95337d9081ec0b37b5f5 upstream.
 
-We do rings and sqes separately, move them into a helper that does both
-the freeing and clearing of the memory.
+An identical one exists for vm_insert_page(), add one for
+vm_insert_pages() to avoid needing to check for CONFIG_MMU in code using
+it.
 
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ mm/nommu.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2525,6 +2525,14 @@ static void io_mem_free(void *ptr)
- 		free_compound_page(page);
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -357,6 +357,13 @@ int vm_insert_page(struct vm_area_struct
  }
+ EXPORT_SYMBOL(vm_insert_page);
  
-+static void io_rings_free(struct io_ring_ctx *ctx)
++int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
++			struct page **pages, unsigned long *num)
 +{
-+	io_mem_free(ctx->rings);
-+	io_mem_free(ctx->sq_sqes);
-+	ctx->rings = NULL;
-+	ctx->sq_sqes = NULL;
++	return -EINVAL;
 +}
++EXPORT_SYMBOL(vm_insert_pages);
 +
- static void *io_mem_alloc(size_t size)
+ int vm_map_pages(struct vm_area_struct *vma, struct page **pages,
+ 			unsigned long num)
  {
- 	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN | __GFP_COMP;
-@@ -2684,8 +2692,7 @@ static __cold void io_ring_ctx_free(stru
- 		mmdrop(ctx->mm_account);
- 		ctx->mm_account = NULL;
- 	}
--	io_mem_free(ctx->rings);
--	io_mem_free(ctx->sq_sqes);
-+	io_rings_free(ctx);
- 
- 	percpu_ref_exit(&ctx->refs);
- 	free_uid(ctx->user);
-@@ -3452,15 +3459,13 @@ static __cold int io_allocate_scq_urings
- 	else
- 		size = array_size(sizeof(struct io_uring_sqe), p->sq_entries);
- 	if (size == SIZE_MAX) {
--		io_mem_free(ctx->rings);
--		ctx->rings = NULL;
-+		io_rings_free(ctx);
- 		return -EOVERFLOW;
- 	}
- 
- 	ptr = io_mem_alloc(size);
- 	if (IS_ERR(ptr)) {
--		io_mem_free(ctx->rings);
--		ctx->rings = NULL;
-+		io_rings_free(ctx);
- 		return PTR_ERR(ptr);
- 	}
- 
 
 
 
