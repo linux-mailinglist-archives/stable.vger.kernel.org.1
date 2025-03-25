@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-126512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB37DA70124
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B509A700DD
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B12417CDF8
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65A91188E071
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F3626F44F;
-	Tue, 25 Mar 2025 12:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353E126988F;
+	Tue, 25 Mar 2025 12:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UK/2ChRP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbZLa6GK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70B526F440;
-	Tue, 25 Mar 2025 12:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EF52571AB;
+	Tue, 25 Mar 2025 12:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906364; cv=none; b=eoTpnuxagzmP98zWnf+oLufQo5+e3vNumIZw2UIn10h+0oB/S9SFYB8pz+AoqYiUWlFJyQI6jY8bqqGFNm5GOkf8j5ftYbCWt0ER5gphRwfZNEurn9izM5pnBTDQ1IVpXtRYcrz5zcj9K9iP9oUulk2UIu7TKaSwPHZ+myxLnoE=
+	t=1742906050; cv=none; b=j9sUQ5ktgECfqJB2PRmO+oC+2O3CXUm7nKgSygZyrKMSbtQycnPLqtZQnjnCIfZUoYKJVHc9BrjVSl1GxlP4AxsX6xsdCBhKc+CH6zHURbGb/NKG74AMERbwpmj96hXtqknE4nKj0rgoX4cTkjarJaH7SXoI6y48plLe1vlv6o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906364; c=relaxed/simple;
-	bh=l2rU2F5BiJd5p+B95DhtbO/pxnM9pjz9uBHBBtXAav4=;
+	s=arc-20240116; t=1742906050; c=relaxed/simple;
+	bh=ZMRdHprwQx5kcET09qW15WJj/RyWLmUHfocS/vS+rAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6f3/rIBPGt0lj5vZqlOZ2fPME1sUjy0fMOKZiLd2DETKp2T+M5x0BZURSymnSqy8mZFeLJDUeHOivfCkotfEYAp/13/mB+iB+1oR/Kl3hhIks2xd3AuO1tlZWMTzPZpxXkjgQV3rkywRYDoKdHWhdwIyVJWv4MwjCfsvWQUpss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UK/2ChRP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A43BC4CEE9;
-	Tue, 25 Mar 2025 12:39:23 +0000 (UTC)
+	 MIME-Version; b=ovhCzjZDiFz6C6AL6WYRyJGv0PV5TY5J5+BS/C9YB+4YmleSxg3JnVzOI9FpzzG0Y2SAKzQdEQlvQHS7y9J87JkduZsK3g1REJIzvmc0/JI5mvGsuBjPm6CPjA9PuUROPdPVaMQLGVfIj/p/tavdzrUDuR2U5Ywm+sQ+UiuW/gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbZLa6GK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C06CC4CEE4;
+	Tue, 25 Mar 2025 12:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906363;
-	bh=l2rU2F5BiJd5p+B95DhtbO/pxnM9pjz9uBHBBtXAav4=;
+	s=korg; t=1742906049;
+	bh=ZMRdHprwQx5kcET09qW15WJj/RyWLmUHfocS/vS+rAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UK/2ChRPst8bNkknsTQEZvGpU9ASoYnliMXQ2Py4wxgInussDoSY39TFoQ51B4mRX
-	 mYtRBBBT//IbEUWj2oKT0CRBevuWDtHuM38fTn+RplceaigA1FJx3c2IzPGLEJNgTW
-	 PmSGHHv6RmyT2CLOWWVYiBNzT4mfaRjXm/3+6DqM=
+	b=LbZLa6GKBHxpr8ZyvKfEBq555GLFvIskX3fAnXLYdSMUJxayx/YaIdIVyeKm6y123
+	 Sr6S/JMwA5r8q05Ea/BELArMnNrH7xZ7Ey1MjGsu/kos9CNccSfJUCdCKUn8PHP/TV
+	 4bOQ5AEWxOkiHCYUFto1m0Teswr/Gi4jhLHaZzZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 078/116] proc: fix UAF in proc_get_inode()
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Lancelot Six <lancelot.six@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 107/119] drm/amdkfd: Fix instruction hazard in gfx12 trap handler
 Date: Tue, 25 Mar 2025 08:22:45 -0400
-Message-ID: <20250325122151.203912278@linuxfoundation.org>
+Message-ID: <20250325122151.786985447@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,182 +62,930 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Jay Cornwall <jay.cornwall@amd.com>
 
-commit 654b33ada4ab5e926cd9c570196fefa7bec7c1df upstream.
+commit 424648c3838133f93a34fdfe4f9d5597551e7b3b upstream.
 
-Fix race between rmmod and /proc/XXX's inode instantiation.
+VALU instructions with SGPR source need wait states to avoid hazard
+with SALU using different SGPR.
 
-The bug is that pde->proc_ops don't belong to /proc, it belongs to a
-module, therefore dereferencing it after /proc entry has been registered
-is a bug unless use_pde/unuse_pde() pair has been used.
+v2: Eliminate some hazards to reduce code explosion
 
-use_pde/unuse_pde can be avoided (2 atomic ops!) because pde->proc_ops
-never changes so information necessary for inode instantiation can be
-saved _before_ proc_register() in PDE itself and used later, avoiding
-pde->proc_ops->...  dereference.
-
-      rmmod                         lookup
-sys_delete_module
-                         proc_lookup_de
-			   pde_get(de);
-			   proc_get_inode(dir->i_sb, de);
-  mod->exit()
-    proc_remove
-      remove_proc_subtree
-       proc_entry_rundown(de);
-  free_module(mod);
-
-                               if (S_ISREG(inode->i_mode))
-	                         if (de->proc_ops->proc_read_iter)
-                           --> As module is already freed, will trigger UAF
-
-BUG: unable to handle page fault for address: fffffbfff80a702b
-PGD 817fc4067 P4D 817fc4067 PUD 817fc0067 PMD 102ef4067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 26 UID: 0 PID: 2667 Comm: ls Tainted: G
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-RIP: 0010:proc_get_inode+0x302/0x6e0
-RSP: 0018:ffff88811c837998 EFLAGS: 00010a06
-RAX: dffffc0000000000 RBX: ffffffffc0538140 RCX: 0000000000000007
-RDX: 1ffffffff80a702b RSI: 0000000000000001 RDI: ffffffffc0538158
-RBP: ffff8881299a6000 R08: 0000000067bbe1e5 R09: 1ffff11023906f20
-R10: ffffffffb560ca07 R11: ffffffffb2b43a58 R12: ffff888105bb78f0
-R13: ffff888100518048 R14: ffff8881299a6004 R15: 0000000000000001
-FS:  00007f95b9686840(0000) GS:ffff8883af100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: fffffbfff80a702b CR3: 0000000117dd2000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- proc_lookup_de+0x11f/0x2e0
- __lookup_slow+0x188/0x350
- walk_component+0x2ab/0x4f0
- path_lookupat+0x120/0x660
- filename_lookup+0x1ce/0x560
- vfs_statx+0xac/0x150
- __do_sys_newstat+0x96/0x110
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-[adobriyan@gmail.com: don't do 2 atomic ops on the common path]
-Link: https://lkml.kernel.org/r/3d25ded0-1739-447e-812b-e34da7990dcf@p183
-Fixes: 778f3dd5a13c ("Fix procfs compat_ioctl regression")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Jay Cornwall <jay.cornwall@amd.com>
+Reviewed-by: Lancelot Six <lancelot.six@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7e0459d453b911435673edd7a86eadc600c63238)
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/generic.c       |   10 +++++++++-
- fs/proc/inode.c         |    6 +++---
- fs/proc/internal.h      |   14 ++++++++++++++
- include/linux/proc_fs.h |    7 +++++--
- 4 files changed, 31 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h         |  677 +++++++++--------
+ drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm |   82 +-
+ 2 files changed, 404 insertions(+), 355 deletions(-)
 
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -557,10 +557,16 @@ struct proc_dir_entry *proc_create_reg(c
- 	return p;
- }
- 
--static inline void pde_set_flags(struct proc_dir_entry *pde)
-+static void pde_set_flags(struct proc_dir_entry *pde)
- {
- 	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
- 		pde->flags |= PROC_ENTRY_PERMANENT;
-+	if (pde->proc_ops->proc_read_iter)
-+		pde->flags |= PROC_ENTRY_proc_read_iter;
-+#ifdef CONFIG_COMPAT
-+	if (pde->proc_ops->proc_compat_ioctl)
-+		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-+#endif
- }
- 
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
-@@ -624,6 +630,7 @@ struct proc_dir_entry *proc_create_seq_p
- 	p->proc_ops = &proc_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_seq_private);
-@@ -654,6 +661,7 @@ struct proc_dir_entry *proc_create_singl
- 		return NULL;
- 	p->proc_ops = &proc_single_ops;
- 	p->single_show = show;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_single_data);
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -656,13 +656,13 @@ struct inode *proc_get_inode(struct supe
- 
- 	if (S_ISREG(inode->i_mode)) {
- 		inode->i_op = de->proc_iops;
--		if (de->proc_ops->proc_read_iter)
-+		if (pde_has_proc_read_iter(de))
- 			inode->i_fop = &proc_iter_file_ops;
- 		else
- 			inode->i_fop = &proc_reg_file_ops;
- #ifdef CONFIG_COMPAT
--		if (de->proc_ops->proc_compat_ioctl) {
--			if (de->proc_ops->proc_read_iter)
-+		if (pde_has_proc_compat_ioctl(de)) {
-+			if (pde_has_proc_read_iter(de))
- 				inode->i_fop = &proc_iter_file_ops_compat;
- 			else
- 				inode->i_fop = &proc_reg_file_ops_compat;
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -85,6 +85,20 @@ static inline void pde_make_permanent(st
- 	pde->flags |= PROC_ENTRY_PERMANENT;
- }
- 
-+static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_proc_read_iter;
-+}
-+
-+static inline bool pde_has_proc_compat_ioctl(const struct proc_dir_entry *pde)
-+{
-+#ifdef CONFIG_COMPAT
-+	return pde->flags & PROC_ENTRY_proc_compat_ioctl;
-+#else
-+	return false;
-+#endif
-+}
-+
- extern struct kmem_cache *proc_dir_entry_cache;
- void pde_free(struct proc_dir_entry *pde);
- 
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -20,10 +20,13 @@ enum {
- 	 * If in doubt, ignore this flag.
- 	 */
- #ifdef MODULE
--	PROC_ENTRY_PERMANENT = 0U,
-+	PROC_ENTRY_PERMANENT		= 0U,
- #else
--	PROC_ENTRY_PERMANENT = 1U << 0,
-+	PROC_ENTRY_PERMANENT		= 1U << 0,
- #endif
-+
-+	PROC_ENTRY_proc_read_iter	= 1U << 1,
-+	PROC_ENTRY_proc_compat_ioctl	= 1U << 2,
+--- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
++++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler.h
+@@ -3640,7 +3640,7 @@ static const uint32_t cwsr_trap_gfx9_4_3
  };
  
- struct proc_ops {
+ static const uint32_t cwsr_trap_gfx12_hex[] = {
+-	0xbfa00001, 0xbfa0024b,
++	0xbfa00001, 0xbfa002a2,
+ 	0xb0804009, 0xb8f8f804,
+ 	0x9178ff78, 0x00008c00,
+ 	0xb8fbf811, 0x8b6eff78,
+@@ -3714,7 +3714,15 @@ static const uint32_t cwsr_trap_gfx12_he
+ 	0x00011677, 0xd7610000,
+ 	0x00011a79, 0xd7610000,
+ 	0x00011c7e, 0xd7610000,
+-	0x00011e7f, 0xbefe00ff,
++	0x00011e7f, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xbefe00ff,
+ 	0x00003fff, 0xbeff0080,
+ 	0xee0a407a, 0x000c0000,
+ 	0x00004000, 0xd760007a,
+@@ -3751,38 +3759,46 @@ static const uint32_t cwsr_trap_gfx12_he
+ 	0x00000200, 0xbef600ff,
+ 	0x01000000, 0x7e000280,
+ 	0x7e020280, 0x7e040280,
+-	0xbefd0080, 0xbe804ec2,
+-	0xbf94fffe, 0xb8faf804,
+-	0x8b7a847a, 0x91788478,
+-	0x8c787a78, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xd7610002, 0x0000fa6c,
+-	0x807d817d, 0x917aff6d,
+-	0x80000000, 0xd7610002,
+-	0x0000fa7a, 0x807d817d,
+-	0xd7610002, 0x0000fa6e,
+-	0x807d817d, 0xd7610002,
+-	0x0000fa6f, 0x807d817d,
+-	0xd7610002, 0x0000fa78,
+-	0x807d817d, 0xb8faf811,
+-	0xd7610002, 0x0000fa7a,
+-	0x807d817d, 0xd7610002,
+-	0x0000fa7b, 0x807d817d,
+-	0xb8f1f801, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xb8f1f814, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xb8f1f815, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xb8f1f812, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
+-	0xb8f1f813, 0xd7610002,
+-	0x0000fa71, 0x807d817d,
++	0xbe804ec2, 0xbf94fffe,
++	0xb8faf804, 0x8b7a847a,
++	0x91788478, 0x8c787a78,
++	0x917aff6d, 0x80000000,
++	0xd7610002, 0x00010071,
++	0xd7610002, 0x0001026c,
++	0xd7610002, 0x0001047a,
++	0xd7610002, 0x0001066e,
++	0xd7610002, 0x0001086f,
++	0xd7610002, 0x00010a78,
++	0xd7610002, 0x00010e7b,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xd8500000, 0x00000000,
++	0xb8faf811, 0xd7610002,
++	0x00010c7a, 0xb8faf801,
++	0xd7610002, 0x0001107a,
++	0xb8faf814, 0xd7610002,
++	0x0001127a, 0xb8faf815,
++	0xd7610002, 0x0001147a,
++	0xb8faf812, 0xd7610002,
++	0x0001167a, 0xb8faf813,
++	0xd7610002, 0x0001187a,
+ 	0xb8faf802, 0xd7610002,
+-	0x0000fa7a, 0x807d817d,
+-	0xbefa50c1, 0xbfc70000,
+-	0xd7610002, 0x0000fa7a,
+-	0x807d817d, 0xbefe00ff,
++	0x00011a7a, 0xbefa50c1,
++	0xbfc70000, 0xd7610002,
++	0x00011c7a, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xbefe00ff,
+ 	0x0000ffff, 0xbeff0080,
+ 	0xc4068070, 0x008ce802,
+ 	0x00000000, 0xbefe00c1,
+@@ -3797,329 +3813,356 @@ static const uint32_t cwsr_trap_gfx12_he
+ 	0xbe824102, 0xbe844104,
+ 	0xbe864106, 0xbe884108,
+ 	0xbe8a410a, 0xbe8c410c,
+-	0xbe8e410e, 0xd7610002,
+-	0x0000f200, 0x80798179,
+-	0xd7610002, 0x0000f201,
+-	0x80798179, 0xd7610002,
+-	0x0000f202, 0x80798179,
+-	0xd7610002, 0x0000f203,
+-	0x80798179, 0xd7610002,
+-	0x0000f204, 0x80798179,
+-	0xd7610002, 0x0000f205,
+-	0x80798179, 0xd7610002,
+-	0x0000f206, 0x80798179,
+-	0xd7610002, 0x0000f207,
+-	0x80798179, 0xd7610002,
+-	0x0000f208, 0x80798179,
+-	0xd7610002, 0x0000f209,
+-	0x80798179, 0xd7610002,
+-	0x0000f20a, 0x80798179,
+-	0xd7610002, 0x0000f20b,
+-	0x80798179, 0xd7610002,
+-	0x0000f20c, 0x80798179,
+-	0xd7610002, 0x0000f20d,
+-	0x80798179, 0xd7610002,
+-	0x0000f20e, 0x80798179,
+-	0xd7610002, 0x0000f20f,
+-	0x80798179, 0xbf06a079,
+-	0xbfa10007, 0xc4068070,
++	0xbe8e410e, 0xbf068079,
++	0xbfa10032, 0xd7610002,
++	0x00010000, 0xd7610002,
++	0x00010201, 0xd7610002,
++	0x00010402, 0xd7610002,
++	0x00010603, 0xd7610002,
++	0x00010804, 0xd7610002,
++	0x00010a05, 0xd7610002,
++	0x00010c06, 0xd7610002,
++	0x00010e07, 0xd7610002,
++	0x00011008, 0xd7610002,
++	0x00011209, 0xd7610002,
++	0x0001140a, 0xd7610002,
++	0x0001160b, 0xd7610002,
++	0x0001180c, 0xd7610002,
++	0x00011a0d, 0xd7610002,
++	0x00011c0e, 0xd7610002,
++	0x00011e0f, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0x80799079,
++	0xbfa00038, 0xd7610002,
++	0x00012000, 0xd7610002,
++	0x00012201, 0xd7610002,
++	0x00012402, 0xd7610002,
++	0x00012603, 0xd7610002,
++	0x00012804, 0xd7610002,
++	0x00012a05, 0xd7610002,
++	0x00012c06, 0xd7610002,
++	0x00012e07, 0xd7610002,
++	0x00013008, 0xd7610002,
++	0x00013209, 0xd7610002,
++	0x0001340a, 0xd7610002,
++	0x0001360b, 0xd7610002,
++	0x0001380c, 0xd7610002,
++	0x00013a0d, 0xd7610002,
++	0x00013c0e, 0xd7610002,
++	0x00013e0f, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0x80799079,
++	0xc4068070, 0x008ce802,
++	0x00000000, 0x8070ff70,
++	0x00000080, 0xbef90080,
++	0x7e040280, 0x807d907d,
++	0xbf0aff7d, 0x00000060,
++	0xbfa2ff88, 0xbe804100,
++	0xbe824102, 0xbe844104,
++	0xbe864106, 0xbe884108,
++	0xbe8a410a, 0xd7610002,
++	0x00010000, 0xd7610002,
++	0x00010201, 0xd7610002,
++	0x00010402, 0xd7610002,
++	0x00010603, 0xd7610002,
++	0x00010804, 0xd7610002,
++	0x00010a05, 0xd7610002,
++	0x00010c06, 0xd7610002,
++	0x00010e07, 0xd7610002,
++	0x00011008, 0xd7610002,
++	0x00011209, 0xd7610002,
++	0x0001140a, 0xd7610002,
++	0x0001160b, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xd8500000,
++	0x00000000, 0xc4068070,
+ 	0x008ce802, 0x00000000,
++	0xbefe00c1, 0x857d9973,
++	0x8b7d817d, 0xbf06817d,
++	0xbfa20002, 0xbeff0080,
++	0xbfa00001, 0xbeff00c1,
++	0xb8fb4306, 0x8b7bc17b,
++	0xbfa10044, 0x8b7aff6d,
++	0x80000000, 0xbfa10041,
++	0x847b897b, 0xbef6007b,
++	0xb8f03b05, 0x80708170,
++	0xbf0d9973, 0xbfa20002,
++	0x84708970, 0xbfa00001,
++	0x84708a70, 0xb8fa1e06,
++	0x847a8a7a, 0x80707a70,
++	0x8070ff70, 0x00000200,
+ 	0x8070ff70, 0x00000080,
+-	0xbef90080, 0x7e040280,
+-	0x807d907d, 0xbf0aff7d,
+-	0x00000060, 0xbfa2ffbb,
+-	0xbe804100, 0xbe824102,
+-	0xbe844104, 0xbe864106,
+-	0xbe884108, 0xbe8a410a,
+-	0xd7610002, 0x0000f200,
+-	0x80798179, 0xd7610002,
+-	0x0000f201, 0x80798179,
+-	0xd7610002, 0x0000f202,
+-	0x80798179, 0xd7610002,
+-	0x0000f203, 0x80798179,
+-	0xd7610002, 0x0000f204,
+-	0x80798179, 0xd7610002,
+-	0x0000f205, 0x80798179,
+-	0xd7610002, 0x0000f206,
+-	0x80798179, 0xd7610002,
+-	0x0000f207, 0x80798179,
+-	0xd7610002, 0x0000f208,
+-	0x80798179, 0xd7610002,
+-	0x0000f209, 0x80798179,
+-	0xd7610002, 0x0000f20a,
+-	0x80798179, 0xd7610002,
+-	0x0000f20b, 0x80798179,
+-	0xc4068070, 0x008ce802,
+-	0x00000000, 0xbefe00c1,
+-	0x857d9973, 0x8b7d817d,
+-	0xbf06817d, 0xbfa20002,
+-	0xbeff0080, 0xbfa00001,
+-	0xbeff00c1, 0xb8fb4306,
+-	0x8b7bc17b, 0xbfa10044,
+-	0x8b7aff6d, 0x80000000,
+-	0xbfa10041, 0x847b897b,
+-	0xbef6007b, 0xb8f03b05,
+-	0x80708170, 0xbf0d9973,
+-	0xbfa20002, 0x84708970,
+-	0xbfa00001, 0x84708a70,
+-	0xb8fa1e06, 0x847a8a7a,
+-	0x80707a70, 0x8070ff70,
+-	0x00000200, 0x8070ff70,
+-	0x00000080, 0xbef600ff,
+-	0x01000000, 0xd71f0000,
+-	0x000100c1, 0xd7200000,
+-	0x000200c1, 0x16000084,
+-	0x857d9973, 0x8b7d817d,
+-	0xbf06817d, 0xbefd0080,
+-	0xbfa20013, 0xbe8300ff,
+-	0x00000080, 0xbf800000,
+-	0xbf800000, 0xbf800000,
+-	0xd8d80000, 0x01000000,
+-	0xbf8a0000, 0xc4068070,
+-	0x008ce801, 0x00000000,
+-	0x807d037d, 0x80700370,
+-	0xd5250000, 0x0001ff00,
+-	0x00000080, 0xbf0a7b7d,
+-	0xbfa2fff3, 0xbfa00012,
+-	0xbe8300ff, 0x00000100,
++	0xbef600ff, 0x01000000,
++	0xd71f0000, 0x000100c1,
++	0xd7200000, 0x000200c1,
++	0x16000084, 0x857d9973,
++	0x8b7d817d, 0xbf06817d,
++	0xbefd0080, 0xbfa20013,
++	0xbe8300ff, 0x00000080,
+ 	0xbf800000, 0xbf800000,
+ 	0xbf800000, 0xd8d80000,
+ 	0x01000000, 0xbf8a0000,
+ 	0xc4068070, 0x008ce801,
+ 	0x00000000, 0x807d037d,
+ 	0x80700370, 0xd5250000,
+-	0x0001ff00, 0x00000100,
++	0x0001ff00, 0x00000080,
+ 	0xbf0a7b7d, 0xbfa2fff3,
+-	0xbefe00c1, 0x857d9973,
+-	0x8b7d817d, 0xbf06817d,
+-	0xbfa20004, 0xbef000ff,
+-	0x00000200, 0xbeff0080,
+-	0xbfa00003, 0xbef000ff,
+-	0x00000400, 0xbeff00c1,
+-	0xb8fb3b05, 0x807b817b,
+-	0x847b827b, 0x857d9973,
+-	0x8b7d817d, 0xbf06817d,
+-	0xbfa2001b, 0xbef600ff,
+-	0x01000000, 0xbefd0084,
+-	0xbf0a7b7d, 0xbfa10040,
+-	0x7e008700, 0x7e028701,
+-	0x7e048702, 0x7e068703,
+-	0xc4068070, 0x008ce800,
+-	0x00000000, 0xc4068070,
+-	0x008ce801, 0x00008000,
+-	0xc4068070, 0x008ce802,
+-	0x00010000, 0xc4068070,
+-	0x008ce803, 0x00018000,
+-	0x807d847d, 0x8070ff70,
+-	0x00000200, 0xbf0a7b7d,
+-	0xbfa2ffeb, 0xbfa0002a,
++	0xbfa00012, 0xbe8300ff,
++	0x00000100, 0xbf800000,
++	0xbf800000, 0xbf800000,
++	0xd8d80000, 0x01000000,
++	0xbf8a0000, 0xc4068070,
++	0x008ce801, 0x00000000,
++	0x807d037d, 0x80700370,
++	0xd5250000, 0x0001ff00,
++	0x00000100, 0xbf0a7b7d,
++	0xbfa2fff3, 0xbefe00c1,
++	0x857d9973, 0x8b7d817d,
++	0xbf06817d, 0xbfa20004,
++	0xbef000ff, 0x00000200,
++	0xbeff0080, 0xbfa00003,
++	0xbef000ff, 0x00000400,
++	0xbeff00c1, 0xb8fb3b05,
++	0x807b817b, 0x847b827b,
++	0x857d9973, 0x8b7d817d,
++	0xbf06817d, 0xbfa2001b,
+ 	0xbef600ff, 0x01000000,
+ 	0xbefd0084, 0xbf0a7b7d,
+-	0xbfa10015, 0x7e008700,
++	0xbfa10040, 0x7e008700,
+ 	0x7e028701, 0x7e048702,
+ 	0x7e068703, 0xc4068070,
+ 	0x008ce800, 0x00000000,
+ 	0xc4068070, 0x008ce801,
+-	0x00010000, 0xc4068070,
+-	0x008ce802, 0x00020000,
++	0x00008000, 0xc4068070,
++	0x008ce802, 0x00010000,
+ 	0xc4068070, 0x008ce803,
+-	0x00030000, 0x807d847d,
+-	0x8070ff70, 0x00000400,
++	0x00018000, 0x807d847d,
++	0x8070ff70, 0x00000200,
+ 	0xbf0a7b7d, 0xbfa2ffeb,
+-	0xb8fb1e06, 0x8b7bc17b,
+-	0xbfa1000d, 0x847b837b,
+-	0x807b7d7b, 0xbefe00c1,
+-	0xbeff0080, 0x7e008700,
++	0xbfa0002a, 0xbef600ff,
++	0x01000000, 0xbefd0084,
++	0xbf0a7b7d, 0xbfa10015,
++	0x7e008700, 0x7e028701,
++	0x7e048702, 0x7e068703,
+ 	0xc4068070, 0x008ce800,
+-	0x00000000, 0x807d817d,
+-	0x8070ff70, 0x00000080,
+-	0xbf0a7b7d, 0xbfa2fff7,
+-	0xbfa0016e, 0xbef4007e,
+-	0x8b75ff7f, 0x0000ffff,
+-	0x8c75ff75, 0x00040000,
+-	0xbef60080, 0xbef700ff,
+-	0x10807fac, 0xbef1007f,
+-	0xb8f20742, 0x84729972,
+-	0x8b6eff7f, 0x04000000,
+-	0xbfa1003b, 0xbefe00c1,
+-	0x857d9972, 0x8b7d817d,
+-	0xbf06817d, 0xbfa20002,
+-	0xbeff0080, 0xbfa00001,
+-	0xbeff00c1, 0xb8ef4306,
+-	0x8b6fc16f, 0xbfa10030,
+-	0x846f896f, 0xbef6006f,
++	0x00000000, 0xc4068070,
++	0x008ce801, 0x00010000,
++	0xc4068070, 0x008ce802,
++	0x00020000, 0xc4068070,
++	0x008ce803, 0x00030000,
++	0x807d847d, 0x8070ff70,
++	0x00000400, 0xbf0a7b7d,
++	0xbfa2ffeb, 0xb8fb1e06,
++	0x8b7bc17b, 0xbfa1000d,
++	0x847b837b, 0x807b7d7b,
++	0xbefe00c1, 0xbeff0080,
++	0x7e008700, 0xc4068070,
++	0x008ce800, 0x00000000,
++	0x807d817d, 0x8070ff70,
++	0x00000080, 0xbf0a7b7d,
++	0xbfa2fff7, 0xbfa0016e,
++	0xbef4007e, 0x8b75ff7f,
++	0x0000ffff, 0x8c75ff75,
++	0x00040000, 0xbef60080,
++	0xbef700ff, 0x10807fac,
++	0xbef1007f, 0xb8f20742,
++	0x84729972, 0x8b6eff7f,
++	0x04000000, 0xbfa1003b,
++	0xbefe00c1, 0x857d9972,
++	0x8b7d817d, 0xbf06817d,
++	0xbfa20002, 0xbeff0080,
++	0xbfa00001, 0xbeff00c1,
++	0xb8ef4306, 0x8b6fc16f,
++	0xbfa10030, 0x846f896f,
++	0xbef6006f, 0xb8f83b05,
++	0x80788178, 0xbf0d9972,
++	0xbfa20002, 0x84788978,
++	0xbfa00001, 0x84788a78,
++	0xb8ee1e06, 0x846e8a6e,
++	0x80786e78, 0x8078ff78,
++	0x00000200, 0x8078ff78,
++	0x00000080, 0xbef600ff,
++	0x01000000, 0x857d9972,
++	0x8b7d817d, 0xbf06817d,
++	0xbefd0080, 0xbfa2000d,
++	0xc4050078, 0x0080e800,
++	0x00000000, 0xbf8a0000,
++	0xdac00000, 0x00000000,
++	0x807dff7d, 0x00000080,
++	0x8078ff78, 0x00000080,
++	0xbf0a6f7d, 0xbfa2fff4,
++	0xbfa0000c, 0xc4050078,
++	0x0080e800, 0x00000000,
++	0xbf8a0000, 0xdac00000,
++	0x00000000, 0x807dff7d,
++	0x00000100, 0x8078ff78,
++	0x00000100, 0xbf0a6f7d,
++	0xbfa2fff4, 0xbef80080,
++	0xbefe00c1, 0x857d9972,
++	0x8b7d817d, 0xbf06817d,
++	0xbfa20002, 0xbeff0080,
++	0xbfa00001, 0xbeff00c1,
++	0xb8ef3b05, 0x806f816f,
++	0x846f826f, 0x857d9972,
++	0x8b7d817d, 0xbf06817d,
++	0xbfa2002c, 0xbef600ff,
++	0x01000000, 0xbeee0078,
++	0x8078ff78, 0x00000200,
++	0xbefd0084, 0xbf0a6f7d,
++	0xbfa10061, 0xc4050078,
++	0x008ce800, 0x00000000,
++	0xc4050078, 0x008ce801,
++	0x00008000, 0xc4050078,
++	0x008ce802, 0x00010000,
++	0xc4050078, 0x008ce803,
++	0x00018000, 0xbf8a0000,
++	0x7e008500, 0x7e028501,
++	0x7e048502, 0x7e068503,
++	0x807d847d, 0x8078ff78,
++	0x00000200, 0xbf0a6f7d,
++	0xbfa2ffea, 0xc405006e,
++	0x008ce800, 0x00000000,
++	0xc405006e, 0x008ce801,
++	0x00008000, 0xc405006e,
++	0x008ce802, 0x00010000,
++	0xc405006e, 0x008ce803,
++	0x00018000, 0xbf8a0000,
++	0xbfa0003d, 0xbef600ff,
++	0x01000000, 0xbeee0078,
++	0x8078ff78, 0x00000400,
++	0xbefd0084, 0xbf0a6f7d,
++	0xbfa10016, 0xc4050078,
++	0x008ce800, 0x00000000,
++	0xc4050078, 0x008ce801,
++	0x00010000, 0xc4050078,
++	0x008ce802, 0x00020000,
++	0xc4050078, 0x008ce803,
++	0x00030000, 0xbf8a0000,
++	0x7e008500, 0x7e028501,
++	0x7e048502, 0x7e068503,
++	0x807d847d, 0x8078ff78,
++	0x00000400, 0xbf0a6f7d,
++	0xbfa2ffea, 0xb8ef1e06,
++	0x8b6fc16f, 0xbfa1000f,
++	0x846f836f, 0x806f7d6f,
++	0xbefe00c1, 0xbeff0080,
++	0xc4050078, 0x008ce800,
++	0x00000000, 0xbf8a0000,
++	0x7e008500, 0x807d817d,
++	0x8078ff78, 0x00000080,
++	0xbf0a6f7d, 0xbfa2fff6,
++	0xbeff00c1, 0xc405006e,
++	0x008ce800, 0x00000000,
++	0xc405006e, 0x008ce801,
++	0x00010000, 0xc405006e,
++	0x008ce802, 0x00020000,
++	0xc405006e, 0x008ce803,
++	0x00030000, 0xbf8a0000,
+ 	0xb8f83b05, 0x80788178,
+ 	0xbf0d9972, 0xbfa20002,
+ 	0x84788978, 0xbfa00001,
+ 	0x84788a78, 0xb8ee1e06,
+ 	0x846e8a6e, 0x80786e78,
+ 	0x8078ff78, 0x00000200,
+-	0x8078ff78, 0x00000080,
++	0x80f8ff78, 0x00000050,
+ 	0xbef600ff, 0x01000000,
+-	0x857d9972, 0x8b7d817d,
+-	0xbf06817d, 0xbefd0080,
+-	0xbfa2000d, 0xc4050078,
+-	0x0080e800, 0x00000000,
+-	0xbf8a0000, 0xdac00000,
+-	0x00000000, 0x807dff7d,
+-	0x00000080, 0x8078ff78,
+-	0x00000080, 0xbf0a6f7d,
+-	0xbfa2fff4, 0xbfa0000c,
+-	0xc4050078, 0x0080e800,
+-	0x00000000, 0xbf8a0000,
+-	0xdac00000, 0x00000000,
+-	0x807dff7d, 0x00000100,
+-	0x8078ff78, 0x00000100,
+-	0xbf0a6f7d, 0xbfa2fff4,
+-	0xbef80080, 0xbefe00c1,
+-	0x857d9972, 0x8b7d817d,
+-	0xbf06817d, 0xbfa20002,
+-	0xbeff0080, 0xbfa00001,
+-	0xbeff00c1, 0xb8ef3b05,
+-	0x806f816f, 0x846f826f,
+-	0x857d9972, 0x8b7d817d,
+-	0xbf06817d, 0xbfa2002c,
+-	0xbef600ff, 0x01000000,
+-	0xbeee0078, 0x8078ff78,
+-	0x00000200, 0xbefd0084,
+-	0xbf0a6f7d, 0xbfa10061,
+-	0xc4050078, 0x008ce800,
+-	0x00000000, 0xc4050078,
+-	0x008ce801, 0x00008000,
+-	0xc4050078, 0x008ce802,
+-	0x00010000, 0xc4050078,
+-	0x008ce803, 0x00018000,
+-	0xbf8a0000, 0x7e008500,
+-	0x7e028501, 0x7e048502,
+-	0x7e068503, 0x807d847d,
++	0xbefd00ff, 0x0000006c,
++	0x80f89078, 0xf462403a,
++	0xf0000000, 0xbf8a0000,
++	0x80fd847d, 0xbf800000,
++	0xbe804300, 0xbe824302,
++	0x80f8a078, 0xf462603a,
++	0xf0000000, 0xbf8a0000,
++	0x80fd887d, 0xbf800000,
++	0xbe804300, 0xbe824302,
++	0xbe844304, 0xbe864306,
++	0x80f8c078, 0xf462803a,
++	0xf0000000, 0xbf8a0000,
++	0x80fd907d, 0xbf800000,
++	0xbe804300, 0xbe824302,
++	0xbe844304, 0xbe864306,
++	0xbe884308, 0xbe8a430a,
++	0xbe8c430c, 0xbe8e430e,
++	0xbf06807d, 0xbfa1fff0,
++	0xb980f801, 0x00000000,
++	0xb8f83b05, 0x80788178,
++	0xbf0d9972, 0xbfa20002,
++	0x84788978, 0xbfa00001,
++	0x84788a78, 0xb8ee1e06,
++	0x846e8a6e, 0x80786e78,
+ 	0x8078ff78, 0x00000200,
+-	0xbf0a6f7d, 0xbfa2ffea,
+-	0xc405006e, 0x008ce800,
+-	0x00000000, 0xc405006e,
+-	0x008ce801, 0x00008000,
+-	0xc405006e, 0x008ce802,
+-	0x00010000, 0xc405006e,
+-	0x008ce803, 0x00018000,
+-	0xbf8a0000, 0xbfa0003d,
+ 	0xbef600ff, 0x01000000,
+-	0xbeee0078, 0x8078ff78,
+-	0x00000400, 0xbefd0084,
+-	0xbf0a6f7d, 0xbfa10016,
+-	0xc4050078, 0x008ce800,
+-	0x00000000, 0xc4050078,
+-	0x008ce801, 0x00010000,
+-	0xc4050078, 0x008ce802,
+-	0x00020000, 0xc4050078,
+-	0x008ce803, 0x00030000,
+-	0xbf8a0000, 0x7e008500,
+-	0x7e028501, 0x7e048502,
+-	0x7e068503, 0x807d847d,
+-	0x8078ff78, 0x00000400,
+-	0xbf0a6f7d, 0xbfa2ffea,
+-	0xb8ef1e06, 0x8b6fc16f,
+-	0xbfa1000f, 0x846f836f,
+-	0x806f7d6f, 0xbefe00c1,
+-	0xbeff0080, 0xc4050078,
+-	0x008ce800, 0x00000000,
+-	0xbf8a0000, 0x7e008500,
+-	0x807d817d, 0x8078ff78,
+-	0x00000080, 0xbf0a6f7d,
+-	0xbfa2fff6, 0xbeff00c1,
+-	0xc405006e, 0x008ce800,
+-	0x00000000, 0xc405006e,
+-	0x008ce801, 0x00010000,
+-	0xc405006e, 0x008ce802,
+-	0x00020000, 0xc405006e,
+-	0x008ce803, 0x00030000,
+-	0xbf8a0000, 0xb8f83b05,
+-	0x80788178, 0xbf0d9972,
+-	0xbfa20002, 0x84788978,
+-	0xbfa00001, 0x84788a78,
+-	0xb8ee1e06, 0x846e8a6e,
+-	0x80786e78, 0x8078ff78,
+-	0x00000200, 0x80f8ff78,
+-	0x00000050, 0xbef600ff,
+-	0x01000000, 0xbefd00ff,
+-	0x0000006c, 0x80f89078,
+-	0xf462403a, 0xf0000000,
+-	0xbf8a0000, 0x80fd847d,
+-	0xbf800000, 0xbe804300,
+-	0xbe824302, 0x80f8a078,
+-	0xf462603a, 0xf0000000,
+-	0xbf8a0000, 0x80fd887d,
+-	0xbf800000, 0xbe804300,
+-	0xbe824302, 0xbe844304,
+-	0xbe864306, 0x80f8c078,
+-	0xf462803a, 0xf0000000,
+-	0xbf8a0000, 0x80fd907d,
+-	0xbf800000, 0xbe804300,
+-	0xbe824302, 0xbe844304,
+-	0xbe864306, 0xbe884308,
+-	0xbe8a430a, 0xbe8c430c,
+-	0xbe8e430e, 0xbf06807d,
+-	0xbfa1fff0, 0xb980f801,
+-	0x00000000, 0xb8f83b05,
+-	0x80788178, 0xbf0d9972,
+-	0xbfa20002, 0x84788978,
+-	0xbfa00001, 0x84788a78,
+-	0xb8ee1e06, 0x846e8a6e,
+-	0x80786e78, 0x8078ff78,
+-	0x00000200, 0xbef600ff,
+-	0x01000000, 0xbeff0071,
+-	0xf4621bfa, 0xf0000000,
+-	0x80788478, 0xf4621b3a,
++	0xbeff0071, 0xf4621bfa,
+ 	0xf0000000, 0x80788478,
+-	0xf4621b7a, 0xf0000000,
+-	0x80788478, 0xf4621c3a,
++	0xf4621b3a, 0xf0000000,
++	0x80788478, 0xf4621b7a,
+ 	0xf0000000, 0x80788478,
+-	0xf4621c7a, 0xf0000000,
+-	0x80788478, 0xf4621eba,
++	0xf4621c3a, 0xf0000000,
++	0x80788478, 0xf4621c7a,
+ 	0xf0000000, 0x80788478,
+-	0xf4621efa, 0xf0000000,
+-	0x80788478, 0xf4621e7a,
++	0xf4621eba, 0xf0000000,
++	0x80788478, 0xf4621efa,
+ 	0xf0000000, 0x80788478,
+-	0xf4621cfa, 0xf0000000,
+-	0x80788478, 0xf4621bba,
++	0xf4621e7a, 0xf0000000,
++	0x80788478, 0xf4621cfa,
+ 	0xf0000000, 0x80788478,
+-	0xbf8a0000, 0xb96ef814,
+ 	0xf4621bba, 0xf0000000,
+ 	0x80788478, 0xbf8a0000,
+-	0xb96ef815, 0xf4621bba,
++	0xb96ef814, 0xf4621bba,
+ 	0xf0000000, 0x80788478,
+-	0xbf8a0000, 0xb96ef812,
++	0xbf8a0000, 0xb96ef815,
+ 	0xf4621bba, 0xf0000000,
+ 	0x80788478, 0xbf8a0000,
+-	0xb96ef813, 0x8b6eff7f,
+-	0x04000000, 0xbfa1000d,
+-	0x80788478, 0xf4621bba,
++	0xb96ef812, 0xf4621bba,
+ 	0xf0000000, 0x80788478,
+-	0xbf8a0000, 0xbf0d806e,
+-	0xbfa10006, 0x856e906e,
+-	0x8b6e6e6e, 0xbfa10003,
+-	0xbe804ec1, 0x816ec16e,
+-	0xbfa0fffb, 0xbefd006f,
+-	0xbefe0070, 0xbeff0071,
+-	0xb97b2011, 0x857b867b,
+-	0xb97b0191, 0x857b827b,
+-	0xb97bba11, 0xb973f801,
+-	0xb8ee3b05, 0x806e816e,
+-	0xbf0d9972, 0xbfa20002,
+-	0x846e896e, 0xbfa00001,
+-	0x846e8a6e, 0xb8ef1e06,
+-	0x846f8a6f, 0x806e6f6e,
+-	0x806eff6e, 0x00000200,
+-	0x806e746e, 0x826f8075,
+-	0x8b6fff6f, 0x0000ffff,
+-	0xf4605c37, 0xf8000050,
+-	0xf4605d37, 0xf8000060,
+-	0xf4601e77, 0xf8000074,
+-	0xbf8a0000, 0x8b6dff6d,
+-	0x0000ffff, 0x8bfe7e7e,
+-	0x8bea6a6a, 0xb97af804,
++	0xbf8a0000, 0xb96ef813,
++	0x8b6eff7f, 0x04000000,
++	0xbfa1000d, 0x80788478,
++	0xf4621bba, 0xf0000000,
++	0x80788478, 0xbf8a0000,
++	0xbf0d806e, 0xbfa10006,
++	0x856e906e, 0x8b6e6e6e,
++	0xbfa10003, 0xbe804ec1,
++	0x816ec16e, 0xbfa0fffb,
++	0xbefd006f, 0xbefe0070,
++	0xbeff0071, 0xb97b2011,
++	0x857b867b, 0xb97b0191,
++	0x857b827b, 0xb97bba11,
++	0xb973f801, 0xb8ee3b05,
++	0x806e816e, 0xbf0d9972,
++	0xbfa20002, 0x846e896e,
++	0xbfa00001, 0x846e8a6e,
++	0xb8ef1e06, 0x846f8a6f,
++	0x806e6f6e, 0x806eff6e,
++	0x00000200, 0x806e746e,
++	0x826f8075, 0x8b6fff6f,
++	0x0000ffff, 0xf4605c37,
++	0xf8000050, 0xf4605d37,
++	0xf8000060, 0xf4601e77,
++	0xf8000074, 0xbf8a0000,
++	0x8b6dff6d, 0x0000ffff,
++	0x8bfe7e7e, 0x8bea6a6a,
++	0xb97af804, 0xbe804ec2,
++	0xbf94fffe, 0xbe804a6c,
+ 	0xbe804ec2, 0xbf94fffe,
+-	0xbe804a6c, 0xbe804ec2,
+-	0xbf94fffe, 0xbfb10000,
++	0xbfb10000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+ 	0xbf9f0000, 0xbf9f0000,
+-	0xbf9f0000, 0x00000000,
+ };
+--- a/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm
++++ b/drivers/gpu/drm/amd/amdkfd/cwsr_trap_handler_gfx12.asm
+@@ -30,6 +30,7 @@
+ #define CHIP_GFX12 37
+ 
+ #define SINGLE_STEP_MISSED_WORKAROUND 1	//workaround for lost TRAP_AFTER_INST exception when SAVECTX raised
++#define HAVE_VALU_SGPR_HAZARD (ASIC_FAMILY == CHIP_GFX12)
+ 
+ var SQ_WAVE_STATE_PRIV_BARRIER_COMPLETE_MASK	= 0x4
+ var SQ_WAVE_STATE_PRIV_SCC_SHIFT		= 9
+@@ -351,6 +352,7 @@ L_HAVE_VGPRS:
+ 	v_writelane_b32	v0, ttmp13, 0xD
+ 	v_writelane_b32	v0, exec_lo, 0xE
+ 	v_writelane_b32	v0, exec_hi, 0xF
++	valu_sgpr_hazard()
+ 
+ 	s_mov_b32	exec_lo, 0x3FFF
+ 	s_mov_b32	exec_hi, 0x0
+@@ -417,7 +419,6 @@ L_SAVE_HWREG:
+ 	v_mov_b32	v0, 0x0							//Offset[31:0] from buffer resource
+ 	v_mov_b32	v1, 0x0							//Offset[63:32] from buffer resource
+ 	v_mov_b32	v2, 0x0							//Set of SGPRs for TCP store
+-	s_mov_b32	m0, 0x0							//Next lane of v2 to write to
+ 
+ 	// Ensure no further changes to barrier or LDS state.
+ 	// STATE_PRIV.BARRIER_COMPLETE may change up to this point.
+@@ -430,40 +431,41 @@ L_SAVE_HWREG:
+ 	s_andn2_b32	s_save_state_priv, s_save_state_priv, SQ_WAVE_STATE_PRIV_BARRIER_COMPLETE_MASK
+ 	s_or_b32	s_save_state_priv, s_save_state_priv, s_save_tmp
+ 
+-	write_hwreg_to_v2(s_save_m0)
+-	write_hwreg_to_v2(s_save_pc_lo)
+ 	s_andn2_b32	s_save_tmp, s_save_pc_hi, S_SAVE_PC_HI_FIRST_WAVE_MASK
+-	write_hwreg_to_v2(s_save_tmp)
+-	write_hwreg_to_v2(s_save_exec_lo)
+-	write_hwreg_to_v2(s_save_exec_hi)
+-	write_hwreg_to_v2(s_save_state_priv)
++	v_writelane_b32	v2, s_save_m0, 0x0
++	v_writelane_b32	v2, s_save_pc_lo, 0x1
++	v_writelane_b32	v2, s_save_tmp, 0x2
++	v_writelane_b32	v2, s_save_exec_lo, 0x3
++	v_writelane_b32	v2, s_save_exec_hi, 0x4
++	v_writelane_b32	v2, s_save_state_priv, 0x5
++	v_writelane_b32	v2, s_save_xnack_mask, 0x7
++	valu_sgpr_hazard()
+ 
+ 	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_EXCP_FLAG_PRIV)
+-	write_hwreg_to_v2(s_save_tmp)
++	v_writelane_b32	v2, s_save_tmp, 0x6
+ 
+-	write_hwreg_to_v2(s_save_xnack_mask)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_MODE)
++	v_writelane_b32	v2, s_save_tmp, 0x8
+ 
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_MODE)
+-	write_hwreg_to_v2(s_save_m0)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_SCRATCH_BASE_LO)
++	v_writelane_b32	v2, s_save_tmp, 0x9
+ 
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_SCRATCH_BASE_LO)
+-	write_hwreg_to_v2(s_save_m0)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_SCRATCH_BASE_HI)
++	v_writelane_b32	v2, s_save_tmp, 0xA
+ 
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_SCRATCH_BASE_HI)
+-	write_hwreg_to_v2(s_save_m0)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_EXCP_FLAG_USER)
++	v_writelane_b32	v2, s_save_tmp, 0xB
+ 
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_EXCP_FLAG_USER)
+-	write_hwreg_to_v2(s_save_m0)
+-
+-	s_getreg_b32	s_save_m0, hwreg(HW_REG_WAVE_TRAP_CTRL)
+-	write_hwreg_to_v2(s_save_m0)
++	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_TRAP_CTRL)
++	v_writelane_b32	v2, s_save_tmp, 0xC
+ 
+ 	s_getreg_b32	s_save_tmp, hwreg(HW_REG_WAVE_STATUS)
+-	write_hwreg_to_v2(s_save_tmp)
++	v_writelane_b32	v2, s_save_tmp, 0xD
+ 
+ 	s_get_barrier_state s_save_tmp, -1
+ 	s_wait_kmcnt (0)
+-	write_hwreg_to_v2(s_save_tmp)
++	v_writelane_b32	v2, s_save_tmp, 0xE
++	valu_sgpr_hazard()
+ 
+ 	// Write HWREGs with 16 VGPR lanes. TTMPs occupy space after this.
+ 	s_mov_b32       exec_lo, 0xFFFF
+@@ -497,10 +499,12 @@ L_SAVE_SGPR_LOOP:
+ 	s_movrels_b64	s12, s12						//s12 = s[12+m0], s13 = s[13+m0]
+ 	s_movrels_b64	s14, s14						//s14 = s[14+m0], s15 = s[15+m0]
+ 
+-	write_16sgpr_to_v2(s0)
+-
+-	s_cmp_eq_u32	ttmp13, 0x20						//have 32 VGPR lanes filled?
+-	s_cbranch_scc0	L_SAVE_SGPR_SKIP_TCP_STORE
++	s_cmp_eq_u32	ttmp13, 0x0
++	s_cbranch_scc0	L_WRITE_V2_SECOND_HALF
++	write_16sgpr_to_v2(s0, 0x0)
++	s_branch	L_SAVE_SGPR_SKIP_TCP_STORE
++L_WRITE_V2_SECOND_HALF:
++	write_16sgpr_to_v2(s0, 0x10)
+ 
+ 	buffer_store_dword	v2, v0, s_save_buf_rsrc0, s_save_mem_offset scope:SCOPE_SYS
+ 	s_add_u32	s_save_mem_offset, s_save_mem_offset, 0x80
+@@ -1056,27 +1060,21 @@ L_END_PGM:
+ 	s_endpgm_saved
+ end
+ 
+-function write_hwreg_to_v2(s)
+-	// Copy into VGPR for later TCP store.
+-	v_writelane_b32	v2, s, m0
+-	s_add_u32	m0, m0, 0x1
+-end
+-
+-
+-function write_16sgpr_to_v2(s)
++function write_16sgpr_to_v2(s, lane_offset)
+ 	// Copy into VGPR for later TCP store.
+ 	for var sgpr_idx = 0; sgpr_idx < 16; sgpr_idx ++
+-		v_writelane_b32	v2, s[sgpr_idx], ttmp13
+-		s_add_u32	ttmp13, ttmp13, 0x1
++		v_writelane_b32	v2, s[sgpr_idx], sgpr_idx + lane_offset
+ 	end
++	valu_sgpr_hazard()
++	s_add_u32	ttmp13, ttmp13, 0x10
+ end
+ 
+ function write_12sgpr_to_v2(s)
+ 	// Copy into VGPR for later TCP store.
+ 	for var sgpr_idx = 0; sgpr_idx < 12; sgpr_idx ++
+-		v_writelane_b32	v2, s[sgpr_idx], ttmp13
+-		s_add_u32	ttmp13, ttmp13, 0x1
++		v_writelane_b32	v2, s[sgpr_idx], sgpr_idx
+ 	end
++	valu_sgpr_hazard()
+ end
+ 
+ function read_hwreg_from_mem(s, s_rsrc, s_mem_offset)
+@@ -1128,3 +1126,11 @@ function get_wave_size2(s_reg)
+ 	s_getreg_b32	s_reg, hwreg(HW_REG_WAVE_STATUS,SQ_WAVE_STATUS_WAVE64_SHIFT,SQ_WAVE_STATUS_WAVE64_SIZE)
+ 	s_lshl_b32	s_reg, s_reg, S_WAVE_SIZE
+ end
++
++function valu_sgpr_hazard
++#if HAVE_VALU_SGPR_HAZARD
++	for var rep = 0; rep < 8; rep ++
++		ds_nop
++	end
++#endif
++end
 
 
 
