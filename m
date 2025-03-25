@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-126461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6D0A700BB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4CAA6FFAD
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34BE2176D64
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2B6E172DDA
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C818D26B2D6;
-	Tue, 25 Mar 2025 12:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D454266B63;
+	Tue, 25 Mar 2025 12:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMw5IRUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLwgwzEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8655425D528;
-	Tue, 25 Mar 2025 12:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD49259CAD;
+	Tue, 25 Mar 2025 12:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906267; cv=none; b=nZ+dwjQRtXym5Da93I+NsUPtt+S6K2PaiCK9s/XVipxtCHAoGg2HUOJPQtnzqunE6jm0GbDyhSPmfMVoMCh7M0hNZR7K+c0zzkVE8slSV4XZXxgthW9PcLYb1QfUKXsMfcM+LlWVQDfR3TZK6ourfqcirTk5ulqANPLXLGbA67k=
+	t=1742905765; cv=none; b=MDiVakT6QLvjS3RwvvF6ZNy9lJCGpXvoCmaddNgpBEFSZDEN7ZmSTVPSx0fftBEzWbvbVjtqIvxK+8f0oY4yZvbsV0FBfauh3ggZ7WfdU2Qh3CdAxjtam+fi9YcQVAaqBcOpSRQ33LU4CyIPQfrgVyeetPJ7t7reKGOkVWI9pR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906267; c=relaxed/simple;
-	bh=vzJ1FSnYypTits+H9tjhVCvPFlZD0BeflZ7pjcltUfE=;
+	s=arc-20240116; t=1742905765; c=relaxed/simple;
+	bh=lmM1StIT6z2vuFUYCmT7jqeCcNGi0ygsPQ4lThimjRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XA1rzLrjDWYT6JowYFxruY7RZH7fcfvDXXK1mGcqNutmxMjOgRL2qd06hS07BX6dWMPFaD1oimqb+hLeCXdZzeS+uKyrRQqqTrKJPisW0GDcqNKqcZCN0WbLOkTsR3PrnMeoDFxgp5RFANuUrH5gCYBrKnS67t+jRsHxiHLQIik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMw5IRUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33148C4CEE4;
-	Tue, 25 Mar 2025 12:37:47 +0000 (UTC)
+	 MIME-Version; b=YnRyUIVKB8RhVviF0HUfkoyh4EoDYrT9Lsk0MPG83bwoFgNs+pCqHxe5CLK/Yr/KdrwWLfLsIFSdJiXHP+smH8bEhC04hYRgjldhUt8D1R6Py57tQ0JSsPv64BvZbpZMjWHdQroZGGedUq0gdAQ0zaCLfkBI2im9xGCwn65ygCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLwgwzEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDEFC4CEE4;
+	Tue, 25 Mar 2025 12:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906267;
-	bh=vzJ1FSnYypTits+H9tjhVCvPFlZD0BeflZ7pjcltUfE=;
+	s=korg; t=1742905765;
+	bh=lmM1StIT6z2vuFUYCmT7jqeCcNGi0ygsPQ4lThimjRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMw5IRUrXpnUE5pAOYn+bW33DaO39dyL2++1DhmxJIvZh+B0e5nmdKtBMIEq4seRP
-	 Hwj00j3AbfMClGddypM8smrzaDsQSr3k0fV+zwtSx4taHZIhAQ7xrBo3YaqZIhHFDA
-	 ZoMgcxCR8FtojOG2nN3TxYVg9FKfMp8SEHYmyxp8=
+	b=yLwgwzEgodYla2l8yYzwZyf6bio4+jHNgbE0aqjISlTYwOjoWFP0H/2SerfUv5yIF
+	 G+mr+yKGVymmJLYCTIberfdM+YSj+0Jt96U186NNCegd0c1jymxcZHdRgcDz60XKfT
+	 UssY2mWd2sTz8uzGWoYKm1A3xHppbiNbD4gBbSEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Phil Elwell <phil@raspberrypi.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/116] RDMA/hns: Fix invalid sq params not being blocked
-Date: Tue, 25 Mar 2025 08:21:53 -0400
-Message-ID: <20250325122149.884880429@linuxfoundation.org>
+Subject: [PATCH 6.1 152/198] ARM: dts: bcm2711: PL011 UARTs are actually r1p5
+Date: Tue, 25 Mar 2025 08:21:54 -0400
+Message-ID: <20250325122200.643513139@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Phil Elwell <phil@raspberrypi.com>
 
-[ Upstream commit 13c90c222049764bb7e6a1689bd785f424bd8bd5 ]
+[ Upstream commit 0de09025f161f67c07978c4742e221243d070d41 ]
 
-SQ params from userspace are checked in by set_user_sq_size(). But
-when the check fails, the function doesn't return but instead keep
-running and overwrite 'ret'. As a result, the invalid params will
-not get blocked actually.
+The ARM PL011 UART instances in BCM2711 are r1p5 spec, which means they
+have 32-entry FIFOs. The correct periphid value for this is 0x00341011.
+Thanks to N Buchwitz for pointing this out.
 
-Add a return right after the failed check. Besides, although the
-check result of kernel sq params will not be overwritten, to keep
-coding style unified, move default_congest_type() before
-set_kernel_sq_size().
-
-Fixes: 6ec429d5887a ("RDMA/hns: Support userspace configuring congestion control algorithm with QP granularity")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250223125614.3592-2-wahrenst@gmx.net
+Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/bcm2711.dtsi | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index a97348a1c61f1..8408f9a5c309d 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -1121,24 +1121,23 @@ static int set_qp_param(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp,
- 						 ibucontext);
- 		hr_qp->config = uctx->config;
- 		ret = set_user_sq_size(hr_dev, &init_attr->cap, hr_qp, ucmd);
--		if (ret)
-+		if (ret) {
- 			ibdev_err(ibdev,
- 				  "failed to set user SQ size, ret = %d.\n",
- 				  ret);
-+			return ret;
-+		}
+diff --git a/arch/arm/boot/dts/bcm2711.dtsi b/arch/arm/boot/dts/bcm2711.dtsi
+index 941c4d16791b4..d94e70d36dcad 100644
+--- a/arch/arm/boot/dts/bcm2711.dtsi
++++ b/arch/arm/boot/dts/bcm2711.dtsi
+@@ -134,7 +134,7 @@ uart2: serial@7e201400 {
+ 			clocks = <&clocks BCM2835_CLOCK_UART>,
+ 				 <&clocks BCM2835_CLOCK_VPU>;
+ 			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
++			arm,primecell-periphid = <0x00341011>;
+ 			status = "disabled";
+ 		};
  
- 		ret = set_congest_param(hr_dev, hr_qp, ucmd);
--		if (ret)
--			return ret;
- 	} else {
- 		if (hr_dev->pci_dev->revision >= PCI_REVISION_ID_HIP09)
- 			hr_qp->config = HNS_ROCE_EXSGE_FLAGS;
-+		default_congest_type(hr_dev, hr_qp);
- 		ret = set_kernel_sq_size(hr_dev, &init_attr->cap, hr_qp);
- 		if (ret)
- 			ibdev_err(ibdev,
- 				  "failed to set kernel SQ size, ret = %d.\n",
- 				  ret);
--
--		default_congest_type(hr_dev, hr_qp);
- 	}
+@@ -145,7 +145,7 @@ uart3: serial@7e201600 {
+ 			clocks = <&clocks BCM2835_CLOCK_UART>,
+ 				 <&clocks BCM2835_CLOCK_VPU>;
+ 			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
++			arm,primecell-periphid = <0x00341011>;
+ 			status = "disabled";
+ 		};
  
- 	return ret;
+@@ -156,7 +156,7 @@ uart4: serial@7e201800 {
+ 			clocks = <&clocks BCM2835_CLOCK_UART>,
+ 				 <&clocks BCM2835_CLOCK_VPU>;
+ 			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
++			arm,primecell-periphid = <0x00341011>;
+ 			status = "disabled";
+ 		};
+ 
+@@ -167,7 +167,7 @@ uart5: serial@7e201a00 {
+ 			clocks = <&clocks BCM2835_CLOCK_UART>,
+ 				 <&clocks BCM2835_CLOCK_VPU>;
+ 			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
++			arm,primecell-periphid = <0x00341011>;
+ 			status = "disabled";
+ 		};
+ 
+@@ -1154,6 +1154,7 @@ &txp {
+ };
+ 
+ &uart0 {
++	arm,primecell-periphid = <0x00341011>;
+ 	interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
+ };
+ 
 -- 
 2.39.5
 
