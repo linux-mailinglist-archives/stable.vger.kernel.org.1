@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2355FA6FFCC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AFAA6FFAA
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3FDF7A2D9F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4C8B178E3E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B7C267B9B;
-	Tue, 25 Mar 2025 12:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0459266F02;
+	Tue, 25 Mar 2025 12:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaEQYqwH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGRXM/Y2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083162561D7;
-	Tue, 25 Mar 2025 12:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6CC266EF3;
+	Tue, 25 Mar 2025 12:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905955; cv=none; b=MI71/CkgL9Sv4BqeTTL5GVrFARBfR4jFwLZUddv04J0ud6gtnmGosWFXaMKMenWK4IY/ZQs6eRSQrEUK9HYUWNCpYTbC3v2LyDaAL7mnrPQUjgCLbeQ8AFN4J+MKn/wVgKQjTwSgLF3WBzAsW5Au6wvm77Y/xO1XFYV8N/JVxzw=
+	t=1742905708; cv=none; b=cYVoLhBmubEwoaY6xAkNKjVcPfBD6TIAryJIiaGlfL2ta005WpzHmRVc8NihpthHUZf6PKke56aMM0peZS3cWEkzLQ7EmjbwK5z2vL6Yta3FO7fgXR4VQgM0hPFmXY3+PrrAX+cK3APQgwv/g6EIx/2VAffviKHEPhkYeJ4OgvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905955; c=relaxed/simple;
-	bh=6jEga7tE3ildlNeNG7shdR/wsPbun0jVZ5pn0wvBU1Y=;
+	s=arc-20240116; t=1742905708; c=relaxed/simple;
+	bh=rlpOlDxN3WzmR+CuR/9q+d9b+2wDmqLAOndV9rCNat4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxkaRPWBhBN+jJQYk73f8wLzyEZ6abFMwbRj1OAw7jTwSbe5exYMibUlAH0OMfisBLEnKfmkTopAdEfVrUA9soQbH9n8RMQ6h/bl8GJzrIkS8WonlGgE8cpGKzL3af+95+45J2sYHFAYuzJQiUl5AxM5qXETKYlecFpENyDJBp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaEQYqwH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B82C4CEE4;
-	Tue, 25 Mar 2025 12:32:34 +0000 (UTC)
+	 MIME-Version; b=Lrvlb64nfYzmnPFtVtMG42QrScY+xYeEpJnW4R+Oy0bKXPM7sH0W+UVGVJtWL44aqE+rVI1mSBScYIU/fNHuXibdvg7PSc1XfPtVHVOGdAfjX7lfj4x4D+kOX6bRN1aih/x+RuKEOyhHp4AK5OqMC83rKJuMfYXZ/vx4lPJUxtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGRXM/Y2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08561C4CEE4;
+	Tue, 25 Mar 2025 12:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905954;
-	bh=6jEga7tE3ildlNeNG7shdR/wsPbun0jVZ5pn0wvBU1Y=;
+	s=korg; t=1742905708;
+	bh=rlpOlDxN3WzmR+CuR/9q+d9b+2wDmqLAOndV9rCNat4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EaEQYqwH0wjUHGff5RtZnt9CAgW7DcvKhIdKeqfSSx47Wze3qLZ1F9UJsMiFvZ+LU
-	 w+thmbz2A8zElGmrdZtyMhpM+kxM9A0D7b5EFjk4OgHjwi0zKn+YtmWDDd149GTwjp
-	 xXAPcopo6hQ28fMJX7MJIfgvsO4ixtYz0ejLKfGQ=
+	b=cGRXM/Y2nyTfRcn1GUC4ADCkTPoJbLk9aSphLgTUgEHYkIDUk0nZMOf5jV682SsVp
+	 tk7xXUiTY6y6EY8/zgAmecWXlAQFQOxAVFzvvGj4RJ9mVEzlbeSOGEyvG3UG8hufzS
+	 T3LgLF3uLvm74gjPqNnGnkGl8ZY9fSYZQwt94cKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 025/119] RDMA/hns: Fix invalid sq params not being blocked
+	Matthew Maurer <mmaurer@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.1 121/198] rust: Disallow BTF generation with Rust + LTO
 Date: Tue, 25 Mar 2025 08:21:23 -0400
-Message-ID: <20250325122149.710255107@linuxfoundation.org>
+Message-ID: <20250325122159.829227300@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Matthew Maurer <mmaurer@google.com>
 
-[ Upstream commit 13c90c222049764bb7e6a1689bd785f424bd8bd5 ]
+commit 5daa0c35a1f0e7a6c3b8ba9cb721e7d1ace6e619 upstream.
 
-SQ params from userspace are checked in by set_user_sq_size(). But
-when the check fails, the function doesn't return but instead keep
-running and overwrite 'ret'. As a result, the invalid params will
-not get blocked actually.
+The kernel cannot currently self-parse BTF containing Rust debug
+information. pahole uses the language of the CU to determine whether to
+filter out debug information when generating the BTF. When LTO is
+enabled, Rust code can cross CU boundaries, resulting in Rust debug
+information in CUs labeled as C. This results in a system which cannot
+parse its own BTF.
 
-Add a return right after the failed check. Besides, although the
-check result of kernel sq params will not be overwritten, to keep
-coding style unified, move default_congest_type() before
-set_kernel_sq_size().
-
-Fixes: 6ec429d5887a ("RDMA/hns: Support userspace configuring congestion control algorithm with QP granularity")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+Cc: stable@vger.kernel.org
+Fixes: c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
+Link: https://lore.kernel.org/r/20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ init/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index a97348a1c61f1..8408f9a5c309d 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -1121,24 +1121,23 @@ static int set_qp_param(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp,
- 						 ibucontext);
- 		hr_qp->config = uctx->config;
- 		ret = set_user_sq_size(hr_dev, &init_attr->cap, hr_qp, ucmd);
--		if (ret)
-+		if (ret) {
- 			ibdev_err(ibdev,
- 				  "failed to set user SQ size, ret = %d.\n",
- 				  ret);
-+			return ret;
-+		}
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1925,7 +1925,7 @@ config RUST
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+ 	depends on !SHADOW_CALL_STACK
+-	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
++	depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && !LTO)
+ 	help
+ 	  Enables Rust support in the kernel.
  
- 		ret = set_congest_param(hr_dev, hr_qp, ucmd);
--		if (ret)
--			return ret;
- 	} else {
- 		if (hr_dev->pci_dev->revision >= PCI_REVISION_ID_HIP09)
- 			hr_qp->config = HNS_ROCE_EXSGE_FLAGS;
-+		default_congest_type(hr_dev, hr_qp);
- 		ret = set_kernel_sq_size(hr_dev, &init_attr->cap, hr_qp);
- 		if (ret)
- 			ibdev_err(ibdev,
- 				  "failed to set kernel SQ size, ret = %d.\n",
- 				  ret);
--
--		default_congest_type(hr_dev, hr_qp);
- 	}
- 
- 	return ret;
--- 
-2.39.5
-
 
 
 
