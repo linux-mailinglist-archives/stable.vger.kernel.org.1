@@ -1,145 +1,127 @@
-Return-Path: <stable+bounces-126551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755AEA70186
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:25:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A400FA701B6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB5A8447E5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5E7816AEE8
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06A42566CC;
-	Tue, 25 Mar 2025 12:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361D42566FB;
+	Tue, 25 Mar 2025 13:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FviM090t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8j0ACHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F79725DAEB;
-	Tue, 25 Mar 2025 12:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98DADF59
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 13:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906435; cv=none; b=sUZfjz07jX7bzJGfbOZtMrEebvMkDQ/PC7DjWGCErVPB34Aw26QKD1/HaXdFXzhCnuuOjcpc5qU2cJAw19fSm2n7IxHGE59BTLvTvZJv23BEw7kLe5pXIpJI6BQ1CFUUqMZ1aj0IIrgsJ15bJY1N2L4CiDGPZl/oDCsA4dDIK94=
+	t=1742907740; cv=none; b=Ex5p+6jCjWvHmtXPFlJYkkqJYATFBbZ1ab8p3kjtFPV/jTFyt54BcIzcRfDKc/NpEqzBg91wwEoqP7ji6zBCCbHiwKTUJtxEd8aUvZQd5LZvf06/cGsU9zQdpszTpiPi/oT0RfKHkkRSbaE1dL9rX7ZFbedISlBjknM3QQ0/rA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906435; c=relaxed/simple;
-	bh=84EhEmbEZP/a26jflbNXZEb1EAkAzbl4a+H6+emxKEw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suX1IM8+jfbs7khGIxD2Uw/tRAwh/0UVZinUfC9TIcs2vMVX989lps1gCmc2HSYYkfe1ujWsJQUDAdrwVOrXAc48k7IedAEbJaFUFbWpDTE4bM3BzxV7Ii7qWgxWaszjNNHTKcSKUtqfBTFQ8sBh6u2yZ0uvUgqhCKqzWWRvDSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FviM090t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3254EC4CEE4;
-	Tue, 25 Mar 2025 12:40:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906435;
-	bh=84EhEmbEZP/a26jflbNXZEb1EAkAzbl4a+H6+emxKEw=;
+	s=arc-20240116; t=1742907740; c=relaxed/simple;
+	bh=ld+mLJGuQQn3+dwEdWMZzqmZdUjdOOJoErJZ9zfhUMI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h+aA4x7iMOB6YRMdlleIpw4bO5h9LtWmKzT8Ahv4XPfusb3o6Al/O6YFyjQCn9h/iuakFOOxTqJ/wqEK3mDMy9HW5bW4cnBPNxAwweXj43e4JGf5irmR+xzIuYpBIsDESn84F1wRhq+671nKwJmR6OV0WQk6FW84vK1yP8/GCe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8j0ACHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48A2C4CEE4;
+	Tue, 25 Mar 2025 13:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742907738;
+	bh=ld+mLJGuQQn3+dwEdWMZzqmZdUjdOOJoErJZ9zfhUMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FviM090tT4xgT0dGQZ3GSlmQUH9HbRe0fA8mZryFf2vvjOFn8dW3h8bGn2kXY8BhB
-	 xGC/qbPWsP3S6nyvy+lVA5/OzYIa5Nwu9TsxhITKCjp+p2n6mG03C6l7fyqgRKC2LJ
-	 FcGVDhpNr6NrONXJqI2dgIynFToT/AnTukPoweEQ=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=n8j0ACHwLPAtD6PLatPj15zLU+CNOAKtRXTbq456x2b/tW8VQRy3TjEleJlLODjoo
+	 YiwVXr9mKmfqSwp5ZQjBVCorrbZWpSQAAVBplWy3IM9jLanUPFjEVR4U5LrkqCmuq3
+	 rLfZR8aJ0LFyEBFiVUV9TMrS1qDnuiYQwsq8SPGdfXyf6n/daDKiHMkgmiM259W5hh
+	 CoxFrjRtWaQ3fkyPcI7EJD3rH3FyT+5O818Pf+eU3OqargSaRXJD+iV34WFnwtB1GT
+	 c5sWH1MvfSz59O41X7uxN/I7EHvaKKAIDPFDBX3kkKr8vK0rDSNadsUEnZbxXld2hP
+	 yOO9CbTDr39jQ==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Arthur Mongodin <amongodin@randorisec.fr>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.12 116/116] mptcp: Fix data stream corruption in the address announcement
-Date: Tue, 25 Mar 2025 08:23:23 -0400
-Message-ID: <20250325122152.175590397@linuxfoundation.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+Cc: Cliff Liu <donghua.liu@windriver.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10.y] ipvs: properly dereference pe in ip_vs_add_service
+Date: Tue, 25 Mar 2025 09:02:16 -0400
+Message-Id: <20250325075625-994ee91cdf42f593@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250325061439.3334363-1-donghua.liu@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+[ Sasha's backport helper bot ]
 
-------------------
+Hi,
 
-From: Arthur Mongodin <amongodin@randorisec.fr>
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-commit 2c1f97a52cb827a5f2768e67a9dddffae1ed47ab upstream.
+The upstream commit SHA1 provided is correct: cbd070a4ae62f119058973f6d2c984e325bce6e7
 
-Because of the size restriction in the TCP options space, the MPTCP
-ADD_ADDR option is exclusive and cannot be sent with other MPTCP ones.
-For this reason, in the linked mptcp_out_options structure, group of
-fields linked to different options are part of the same union.
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Cliff Liu<donghua.liu@windriver.com>
+Commit author: Chen Hanxiao<chenhx.fnst@fujitsu.com>
 
-There is a case where the mptcp_pm_add_addr_signal() function can modify
-opts->addr, but not ended up sending an ADD_ADDR. Later on, back in
-mptcp_established_options, other options will be sent, but with
-unexpected data written in other fields due to the union, e.g. in
-opts->ext_copy. This could lead to a data stream corruption in the next
-packet.
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 3dd428039e06)
+6.1.y | Present (different SHA1: b2c664df3bb4)
+5.15.y | Not found
 
-Using an intermediate variable, prevents from corrupting previously
-established DSS option. The assignment of the ADD_ADDR option
-parameters is now done once we are sure this ADD_ADDR option can be set
-in the packet, e.g. after having dropped other suboptions.
-
-Fixes: 1bff1e43a30e ("mptcp: optimize out option generation")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Arthur Mongodin <amongodin@randorisec.fr>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-[ Matt: the commit message has been updated: long lines splits and some
-  clarifications. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-1-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note: The patch differs from the upstream commit:
 ---
- net/mptcp/options.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+1:  cbd070a4ae62f ! 1:  11fd9143f92c0 ipvs: properly dereference pe in ip_vs_add_service
+    @@ Metadata
+      ## Commit message ##
+         ipvs: properly dereference pe in ip_vs_add_service
+     
+    +    [ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
+    +
+         Use pe directly to resolve sparse warning:
+     
+           net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
+    @@ Commit message
+         Acked-by: Julian Anastasov <ja@ssi.bg>
+         Acked-by: Simon Horman <horms@kernel.org>
+         Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+    +    Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+    +    Signed-off-by: He Zhe <Zhe.He@windriver.com>
+     
+      ## net/netfilter/ipvs/ip_vs_ctl.c ##
+     @@ net/netfilter/ipvs/ip_vs_ctl.c: ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
+    - 	if (ret < 0)
+    - 		goto out_err;
+    + 		sched = NULL;
+    + 	}
+      
+     -	/* Bind the ct retriever */
+     -	RCU_INIT_POINTER(svc->pe, pe);
+    @@ net/netfilter/ipvs/ip_vs_ctl.c: ip_vs_add_service(struct netns_ipvs *ipvs, struc
+     +	if (pe && pe->conn_out)
+      		atomic_inc(&ipvs->conn_out_counter);
+      
+    + 	ip_vs_start_estimator(ipvs, &svc->stats);
+    + 
+     +	/* Bind the ct retriever */
+     +	RCU_INIT_POINTER(svc->pe, pe);
+     +	pe = NULL;
+---
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -651,6 +651,7 @@ static bool mptcp_established_options_ad
- 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
- 	bool drop_other_suboptions = false;
- 	unsigned int opt_size = *size;
-+	struct mptcp_addr_info addr;
- 	bool echo;
- 	int len;
- 
-@@ -659,7 +660,7 @@ static bool mptcp_established_options_ad
- 	 */
- 	if (!mptcp_pm_should_add_signal(msk) ||
- 	    (opts->suboptions & (OPTION_MPTCP_MPJ_ACK | OPTION_MPTCP_MPC_ACK)) ||
--	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &opts->addr,
-+	    !mptcp_pm_add_addr_signal(msk, skb, opt_size, remaining, &addr,
- 		    &echo, &drop_other_suboptions))
- 		return false;
- 
-@@ -672,7 +673,7 @@ static bool mptcp_established_options_ad
- 	else if (opts->suboptions & OPTION_MPTCP_DSS)
- 		return false;
- 
--	len = mptcp_add_addr_len(opts->addr.family, echo, !!opts->addr.port);
-+	len = mptcp_add_addr_len(addr.family, echo, !!addr.port);
- 	if (remaining < len)
- 		return false;
- 
-@@ -689,6 +690,7 @@ static bool mptcp_established_options_ad
- 		opts->ahmac = 0;
- 		*size -= opt_size;
- 	}
-+	opts->addr = addr;
- 	opts->suboptions |= OPTION_MPTCP_ADD_ADDR;
- 	if (!echo) {
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ADDADDRTX);
+Results of testing on various branches:
 
-
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.10.y       |  Success    |  Success   |
 
