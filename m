@@ -1,127 +1,109 @@
-Return-Path: <stable+bounces-126000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A87A6EC18
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 10:03:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72AC4A6ECEA
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 10:46:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23DE5188419B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 09:03:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC225188CDC2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 09:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3C91DB924;
-	Tue, 25 Mar 2025 09:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PGkz+VyM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D211DE8AF;
+	Tue, 25 Mar 2025 09:45:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mx2.aip.ooo (mx2.aip.ooo [185.232.107.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760FF1F63D9
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 09:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475481DB125;
+	Tue, 25 Mar 2025 09:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.232.107.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742893402; cv=none; b=cgn28vulnfimtMxtV3CGDr6thiyMZupsB8TLAbZJcxp+PPQhz0sEirKopDEPjSRoHWkS67RM1t9bI58AX0kV7TQvCo1HIbZSg55o1L0Xe2bWAtM/YHR8HvHn/HtMPqhdZisMoLqIU/iMs5hxisyIsj7wOl5BsDa5AJltNI6D2D8=
+	t=1742895946; cv=none; b=FRr7j7c69XmJoiFRrJycSRhzi98HI1qG3m1bVnyTMlmadEPRm5bWlMMFLmfumSsZauTr2Uz7YLzolMEay8oEOPUa9RShoi0peKB40/el+AOZkvWp0rL+s9uhrkXVQ3LdSqVd8pBR6lshRXVLg97iaUuHfjkrSM15dQnK2+SpIhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742893402; c=relaxed/simple;
-	bh=UvzxqcOL6OUkTtr4lFFzh6hnAD3fKjSDEzEco6HYaHk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=s7JHFrtaA+RcBfsFwjCdGSMZJYiUmJMGgATg7e9dpOK71KsjMqbduZkg3tTDVT2qD9ILlZfTmVUAsJFjiLMYPPbPV8x5p8HZyMRoilSGhavOmtYxRMjdqtbR6ieNbZTm1MJ/XMS4Y32F93G3scijs/Q8sW6WGBgNBCrfrU+JB7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PGkz+VyM; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742893400; x=1774429400;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=UvzxqcOL6OUkTtr4lFFzh6hnAD3fKjSDEzEco6HYaHk=;
-  b=PGkz+VyMU5bBPVExvBos7s3DvBk/48M+Bt0BsbxtyjdTojRsuWRaOnEB
-   1AulRoMdH3jT4cLCkHpfV6kPETP+34jbwdlAqHfd5TNPCYlD+rQT7R55Z
-   GtVN6rUKMWH/igusWkNNjWLgt4YMjhQnH/T0KAeukxTNSGXDSPD817l9E
-   xRi6Vwj4is3nyTFnY0vTbNmBC0ZJWLazYxOKLy87qLLBaTQ3HpC1dnzyi
-   s+fvW7KM0xh3qfjzJMEiJTTvrqwpTXRtAaGu1YdjYJcXobMX5Ey/CVQ0K
-   MNWfQZuazZKLq/zUTk40IeNs06Hyqebdxfu00hQHE0rgRth9NixKTh5pr
-   w==;
-X-CSE-ConnectionGUID: mRH+H7lISUe3iXaGnsB2qA==
-X-CSE-MsgGUID: vFZdot0pSKCqMlsqDNIWSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="46868685"
-X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; 
-   d="scan'208";a="46868685"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 02:03:17 -0700
-X-CSE-ConnectionGUID: luqqJcHrQk6tUwGnEbb1tA==
-X-CSE-MsgGUID: huEGemd5QLq1wid3od2j/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; 
-   d="scan'208";a="125091586"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.134])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 02:03:15 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>, Matt Roper
- <matthew.d.roper@intel.com>
-Cc: intel-xe@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Vivek
- Kasireddy <vivek.kasireddy@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/i915/xe2hpd: Identify the memory type for SKUs
- with GDDR + ECC
-In-Reply-To: <32lakxysapix2hgoh5e7n2b6zlv544nh6vcvmg6zllzjnlikmd@7k37w7pqy4p2>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250324-tip-v2-1-38397de319f8@intel.com>
- <20250324200207.GN3175483@mdroper-desk1.amr.corp.intel.com>
- <32lakxysapix2hgoh5e7n2b6zlv544nh6vcvmg6zllzjnlikmd@7k37w7pqy4p2>
-Date: Tue, 25 Mar 2025 11:03:13 +0200
-Message-ID: <87bjtpa3e6.fsf@intel.com>
+	s=arc-20240116; t=1742895946; c=relaxed/simple;
+	bh=hHMCEXxzUqIp7Lmp8dSlKc13OfFAgtId5ffLRKJJG+8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dDVCw28jn+huseZdVgRBDK9sE2/2W44zUcWNQjW0+fYdQEC8hzGFmURbnK9bo+HqItd2Geb2aLGdUc6OZtFpjChR5rmnj10oNyaaFTrjcUzFM2I1i42xqfHyTynTg/rak1FFDC05HSRxmRYB3K9rWiWmBxSRRNqu/ZCjf87eIn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cyberprotect.ru; spf=pass smtp.mailfrom=cyberprotect.ru; arc=none smtp.client-ip=185.232.107.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cyberprotect.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyberprotect.ru
+Received: from aip-exch-2.aip.ooo ([10.77.28.102] helo=aip-exch.aip.ooo)
+	by mx2.aip.ooo with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <Pavel.Paklov@cyberprotect.ru>)
+	id 1tx0VW-004s05-AC; Tue, 25 Mar 2025 12:23:38 +0300
+Received: from 10.77.154.78 (10.77.154.78) by AIP-EXCH-2.aip.ooo
+ (10.77.28.102) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 25 Mar
+ 2025 12:23:37 +0300
+From: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
+To: Joerg Roedel <joro@8bytes.org>
+CC: <pavel.paklov@cyberprotect.ru>, Pavel Paklov
+	<Pavel.Paklov@cyberprotect.ru>, Suravee Suthikulpanit
+	<suravee.suthikulpanit@amd.com>, Will Deacon <will@kernel.org>, Robin Murphy
+	<robin.murphy@arm.com>, Wan Zongshun <Vincent.Wan@amd.com>,
+	<iommu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
+Subject: [PATCH] iommu/amd: Fix potential buffer overflow in parse_ivrs_acpihid
+Date: Tue, 25 Mar 2025 09:22:44 +0000
+Message-ID: <20250325092259.392844-1-Pavel.Paklov@cyberprotect.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-SA-Exim-Connect-IP: 10.77.28.102
+X-SA-Exim-Mail-From: Pavel.Paklov@cyberprotect.ru
+X-SA-Exim-Scanned: No (on mx2.aip.ooo); SAEximRunCond expanded to false
 
-On Mon, 24 Mar 2025, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
-> On Mon, Mar 24, 2025 at 01:02:07PM -0700, Matt Roper wrote:
->>On Mon, Mar 24, 2025 at 10:22:33AM -0700, Lucas De Marchi wrote:
->>> From: Vivek Kasireddy <vivek.kasireddy@intel.com>
->>>
->>> Some SKUs of Xe2_HPD platforms (such as BMG) have GDDR memory type
->>> with ECC enabled. We need to identify this scenario and add a new
->>> case in xelpdp_get_dram_info() to handle it. In addition, the
->>> derating value needs to be adjusted accordingly to compensate for
->>> the limited bandwidth.
->>>
->>> Bspec: 64602
->>> Cc: Matt Roper <matthew.d.roper@intel.com>
->>> Fixes: 3adcf970dc7e ("drm/xe/bmg: Drop force_probe requirement")
->>> Cc: stable@vger.kernel.org
+There is a string parsing logic error which can lead to an overflow of hid
+or uid buffers. Comparing ACPIID_LEN against a total string length doesn't
+take into account the lengths of individual hid and uid buffers so the
+check is insufficient in some cases. For example if the length of hid 
+string is 4 and the length of the uid string is 260, the length of str 
+will be equal to ACPIID_LEN + 1 but uid string will overflow uid buffer 
+which size is 256.
 
-FYI, this does not cherry-pick cleanly to drm-intel-next-fixes, and
-needs a backport.
+The same applies to the hid string with length 13 and uid string with 
+length 250.
 
-There are dependencies on at least
+Check the length of hid and uid strings separately to prevent 
+buffer overflow.
 
-4051c59e2a6a ("drm/i915/xe3lpd: Update bandwidth parameters")
-9377c00cfdb5 ("drm/i915/display: Convert intel_bw.c internally to intel_display")
-d706998b6da6 ("drm/i915/display: Convert intel_bw.c externally to intel_display")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-but I don't think we want to backport those.
+Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
+---
+ drivers/iommu/amd/init.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-BR,
-Jani.
-
-
-
-
->>> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
->>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->>
->>Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
->
-> Thanks. Patch pushed to drm-intel-next.
->
-> Lucas De Marchi
-
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index cb536d372b12..fb82f8035c0f 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -3677,6 +3677,14 @@ static int __init parse_ivrs_acpihid(char *str)
+ 	while (*uid == '0' && *(uid + 1))
+ 		uid++;
+ 
++	if (strlen(hid) >= ACPIHID_HID_LEN) {
++		pr_err("Invalid command line: hid is too long\n");
++		return 1;
++	} else if (strlen(uid) >= ACPIHID_UID_LEN) {
++		pr_err("Invalid command line: uid is too long\n");
++		return 1;
++	}
++
+ 	i = early_acpihid_map_size++;
+ 	memcpy(early_acpihid_map[i].hid, hid, strlen(hid));
+ 	memcpy(early_acpihid_map[i].uid, uid, strlen(uid));
 -- 
-Jani Nikula, Intel
+2.43.0
+
 
