@@ -1,144 +1,298 @@
-Return-Path: <stable+bounces-126585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2A9A7070C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 17:37:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E4CA70708
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 17:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 714723AC029
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 16:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07A1D175E05
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 16:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AC525D530;
-	Tue, 25 Mar 2025 16:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB4C25E449;
+	Tue, 25 Mar 2025 16:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="IFWRq18x"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="H/FQe3sF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11022097.outbound.protection.outlook.com [40.93.195.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D046212E1CD;
-	Tue, 25 Mar 2025 16:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742920361; cv=none; b=F5fJnrBoOukWxgA+Gsoaa0gdV64CMtbc7CRVE4UKlBcB2qF4eyv6CQrvOeStdJsGUjPEQKXGnePFBb4/8jzNAVPS+clb6jqReCK3P5i/eRBChKPfps2EFLyOhwIS0gbWpmqdopW035KlI4/S2J9gTxaOqw6jhyK4sCvYC8Pev2c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742920361; c=relaxed/simple;
-	bh=vl9PHw3P9CnPqxmaj5vO84SgXuxPVC3cqOewI6IQ9AU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JZ6R3nInsLL1YOk8GNyhQgpywey2Mt5RmBMhyB3HllAr1V0q5rK6NViPWpMKnTNujOOdGj+hJl2IB26F7esC/0O9ImWta7Bt4imveruekcxSaAfJXcBqUkl4Vm/z13La/LaDA1m2Cu8vW8TlMRX/LRHNmsCyrqiwZAs0p0+lp10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=IFWRq18x; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fedora.intra.ispras.ru (unknown [10.10.165.13])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 4161C448787A;
-	Tue, 25 Mar 2025 16:32:29 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 4161C448787A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1742920349;
-	bh=xtjQNCIG90SkONBmw2cPQ+VxbDhw9iY6/7ps8Q1kb8g=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IFWRq18xmsCHUVqvKa7vP77Ae03kPGXNyvbr33sDvejaQOUZiEnIwgVm7sloBCkNh
-	 ACyuNMbQ/EdaLzr9MpGbAB6oFmHrhIetXs4QH+sTk2cIyCUl49rRkkURmEdd6GJgSc
-	 zrN+6Vc4R6fsIE2EfmP4Ll3oxPFOwrWqNd97DEdk=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Richard Weinberger <richard@nod.at>,
-	Zhihao Cheng <chengzhihao1@huawei.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	David Woodhouse <dwmw2@infradead.org>,
-	linux-mtd@lists.infradead.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4AB25D8F7;
+	Tue, 25 Mar 2025 16:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.97
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742920372; cv=fail; b=t1PgePHyAcLqFPQClteY0YoWPc+XS7Z+tZkXZcy9ysNxf06C8bb+uBE58XUC/gUynC2fOyHAG9lw4amviEhftRgJI9Q4+Arqf22NoW+yx83/h+0mjO9/6yQ3MbRdyu4tq5oCUIE5Lc9nZTjHB3bZsbBgyB/pZCxLAKMBA1ff9x8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742920372; c=relaxed/simple;
+	bh=Vrd/lNAUHg+hjPive1rHQK37gtkkMwnJWtQofwGzFZA=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=WwFgB/CoXdapxOKobn1UrNz3vo5kYLcPiIw6n01uSSEAgQL6o9pr8vbmerK0ZPBson8oD0lLhmLqgTybtIW3JOAxwpOy+CdZawRh6OGjtZFAhY0A9rxl5Y0zYFVDQkCV7rPmpIakF2UnQJ7CPtWr/5ClrUrE4GriPLrS2lxkwpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=H/FQe3sF; arc=fail smtp.client-ip=40.93.195.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RDZn/Psgr3YcgJJbL6H8EcfSrokDTvwND2GLMmJ2GdJCiqSSZfgduv8WHOxLz84nmtqTs8tsTS88C0fw0j33mhBqHeQAQE4pdK5Uz83V8ydL1wzPVcpOIL8i46QKWziHnEb2vJu4ZyK/rt/D6/8aQQ1b8Ld6Jw/Y5v0D09cyZGSC12NXgTuC8u+y5O0ct3hGvll78zUSQZai0ftOM+fkVu5u5AjyD4V8rc72S/7vq6PFxjYq2Tqsjtn5adsVqwZYycpJOJ6HlV/TA2vrTuU14ZGN5Omr9wD9nZU/aginm/+8lQhnGiKwbeERisIbZwmkoIb/coGQ1riLcvnOASSIag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=brrxUtbWjX7nO5Ras2SMBt8NGERj+o1dTL7Zl1QMc4c=;
+ b=OvEEsyPcHhkn7ZOfKr5chd9VfpvXf9ZyJ2dimjh23SalB7jj0UgVlmC+54+x2CoVhbfCWoDrNqkXqD/+MWKY0rYiw3iVb6GB6eEb0MeMftY+96ga5BEGfuk98gBiszQO5oE8fum59Hbra5JtMw8bQ7c61XZKjnwiJD7Ro1nY9VAqfjNTY7DPZUVSbu7XIcdcXuYvrH/u8eZQiJKqfd8FTT6DW5GKE0YtJTcKey+fXJ/u99Jee+k9nOKCMzgAm90aWz+gKeG3CNMwU0UbPIU9AaSSk30Ob0hI2OmopSg1JRgezoyd58Btkla25HHAqSB1EkBQ1+gmRbEUw/8wZGoaAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=brrxUtbWjX7nO5Ras2SMBt8NGERj+o1dTL7Zl1QMc4c=;
+ b=H/FQe3sFPn2xSqL90Eleqzv4SibAQRWTyiHxuTLIjc7Pp9CKaaAU8mcZWrXPhSoiA7SOL1oS1dui1c9tqz9bOjZlX7J0xwC7R+zuDzsiQ93CoVKgewOx+EzdQCOP3017/QSxH+I6NlLsEGkoleJuZDBlg/83rKVf8SlHSGUWJI4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+Received: from BY5PR21MB1443.namprd21.prod.outlook.com (2603:10b6:a03:21f::18)
+ by BYAPR21MB1334.namprd21.prod.outlook.com (2603:10b6:a03:115::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8583.25; Tue, 25 Mar
+ 2025 16:32:47 +0000
+Received: from BY5PR21MB1443.namprd21.prod.outlook.com
+ ([fe80::5490:14c7:52e2:e12f]) by BY5PR21MB1443.namprd21.prod.outlook.com
+ ([fe80::5490:14c7:52e2:e12f%7]) with mapi id 15.20.8558.037; Tue, 25 Mar 2025
+ 16:32:47 +0000
+From: Haiyang Zhang <haiyangz@microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: haiyangz@microsoft.com,
+	decui@microsoft.com,
+	stephen@networkplumber.org,
+	kys@microsoft.com,
+	paulros@microsoft.com,
+	olaf@aepfle.de,
+	vkuznets@redhat.com,
+	davem@davemloft.net,
+	wei.liu@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	leon@kernel.org,
+	longli@microsoft.com,
+	ssengar@linux.microsoft.com,
+	linux-rdma@vger.kernel.org,
+	daniel@iogearbox.net,
+	john.fastabend@gmail.com,
+	bpf@vger.kernel.org,
+	ast@kernel.org,
+	hawk@kernel.org,
+	tglx@linutronix.de,
+	shradhagupta@linux.microsoft.com,
+	jesse.brandeburg@intel.com,
+	andrew+netdev@lunn.ch,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
 	stable@vger.kernel.org
-Subject: [PATCH] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
-Date: Tue, 25 Mar 2025 19:32:13 +0300
-Message-ID: <20250325163215.287311-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.49.0
+Subject: [PATCH net,v2] net: mana: Switch to page pool for jumbo frames
+Date: Tue, 25 Mar 2025 09:32:37 -0700
+Message-Id: <1742920357-27263-1-git-send-email-haiyangz@microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+Content-Type: text/plain
+X-ClientProxiedBy: MW4PR04CA0341.namprd04.prod.outlook.com
+ (2603:10b6:303:8a::16) To BY5PR21MB1443.namprd21.prod.outlook.com
+ (2603:10b6:a03:21f::18)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Sender: LKML haiyangz <lkmlhyz@microsoft.com>
+X-MS-Exchange-MessageSentRepresentingType: 2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR21MB1443:EE_|BYAPR21MB1334:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf591600-dcbd-442c-c29b-08dd6bbaacf6
+X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?nfxU0sYIT8urEOkBlRo5GSYGErta9BgDQyqL5X73xJZL6aYheUTen25cuZhB?=
+ =?us-ascii?Q?DO9TgyrEflYaYkoH4fUJy+bY4j/HRP8lHYdxX73bP84g9bypE1qiXtguteQ6?=
+ =?us-ascii?Q?wKV1LR5k7yzAAiR6FDwTI0vBbbGzNQddFeLiItFENxaU7PQe/ALK6a5Na0mH?=
+ =?us-ascii?Q?UWEUpPkk8WUVMuZ9d3kJcOEb3rSbMKB+F5dTimKHJ48pGaTLx5MSZx1xV1QW?=
+ =?us-ascii?Q?2DxJLpmuwkU8PNfIIva53KJ/Y8dROw73XGMxKDc+5W6N7rKpSC+ECNtzse2/?=
+ =?us-ascii?Q?M3tkChHd5VnWASV0ScltVinc8NxGs0lpPILkDnTEJKPyVyZJaqtP7JNJCud7?=
+ =?us-ascii?Q?GrRbpc68Y4c1EMpc7Hed+zumSPhbj5WtGeE3aLOOpRnxomWysrOYzow9hJsO?=
+ =?us-ascii?Q?sMm+vI3KmvNIUiMTnWtw2flELwR/mEnLnfLZKEBnhT9nM2uZX+BjQIE62yUo?=
+ =?us-ascii?Q?6kXkREdwlVDbDgR/19mBakE4xdqJbpMDO9gvQ5mmdFnG16q+jRqyVc+QPGZ8?=
+ =?us-ascii?Q?6MiE0oOiTezKloiEdt3wL/DKqqJvqwU59iiK8/yLDE+2rZ8W09lENZ6HZGEe?=
+ =?us-ascii?Q?CRjQgUDHxrY3ZIm2Sw3ckSoUrhfNpGBE+8cjWz05Rc0NZWMR/EGucd6sDFPs?=
+ =?us-ascii?Q?6p8BYgUxWbwilEfj9bmeMzD1oz7KuTNQjEAA+DN4lrKoNaB8s3hgKot7ONao?=
+ =?us-ascii?Q?LX1YF5dCnunlxgo18yE4gkg1Y2Tk79hWbwZGAWRJsWOvwcjV2ognRYLc/CGj?=
+ =?us-ascii?Q?qkJRtgjaVWiG6yx5LllTVD9nocvKOowvocNMV5ZlVb1FDvIZjEbSrpMS8k45?=
+ =?us-ascii?Q?AEqv7/8tQAwN1kcZ0FtTxAPu/zvhdipDbDLW8jBg2zKLueeVI8BT+8FeYlVB?=
+ =?us-ascii?Q?V51YBj9Z33uPioX0gP9xH2bWKIxHOTo5ZE5KdFsoc8KqA7/HMfhBer65+6Uh?=
+ =?us-ascii?Q?2h+vDFVze2USR1cGdjFN+MQ965jU8bCJNcTw1VN0cjMpcOgkEbRP114CG2Ow?=
+ =?us-ascii?Q?aZZZNPzK9OROj8cI0/z5ciDVMaqGs3H6yHyrGHq8PGOxHSuRIyP9diSgbkBJ?=
+ =?us-ascii?Q?a8P0stBx4o4W8oFGrLiRVd7LfX6uwDRATg2a/mSsOeK/jmtkOXHO/VwQp/Mc?=
+ =?us-ascii?Q?moMX8tkxZNDoAHypKgnH3i7YSzFFuzZaVqjWKlIDqQLQ6x/r93it6xt7SLTC?=
+ =?us-ascii?Q?fAkga9H3zDYvbddFZTqLDGzuNdMenYgtkq2nNWOxOeaSHWNgvpHg/rVemR+s?=
+ =?us-ascii?Q?3egRXxNhL6TmIf8WCIpNVDXaCiBXiYsLv3QZzY8siyTUHWsQsF8v4wiXz5DA?=
+ =?us-ascii?Q?eBDhUqC6WsQHcc92a81QJ8xX3coUUab+hEY60eVjfcW30aQSKVDfbIo8CYOb?=
+ =?us-ascii?Q?8Inrkb9Z3fbVVjFebCUTiAiCPvFzGx0PN6jEYPx2OVgou7GYbVcSojnTFytZ?=
+ =?us-ascii?Q?8u5gfmnerB5HTBycCS1hp+RUE1UwQ0tnNPqBJSQJMq4hnBrdf8mmqg=3D=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR21MB1443.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?2PkWScBkdajWdMSroHTA4eUVvCqEG1fVkJb3moRJerfzwI9dDaHbQvokJ5ki?=
+ =?us-ascii?Q?qU9GHQ96AMXccbKs3gTgFt0gmekaNWJsxCCr18mQmKq2IJPE+ey9Nww4mhO+?=
+ =?us-ascii?Q?vl/LShGXi1e5GWqu9MHjF4f/FX3Xebcn1FARUGeHI6sLCGXtA+P7CnwDOJAK?=
+ =?us-ascii?Q?g8tlaz9SHmsqxYaxviL2BrWsXJu50t2skmRn6IkyD0IeQ2B7gW8UySC1bvHW?=
+ =?us-ascii?Q?Js65KOzNMv9QhxBmb6cXrC/APsKT5T0O4rYlan0zZ6jPhpFlsoZxF7ir54rB?=
+ =?us-ascii?Q?YYDGAy5B4azJ1nD73IqcCShw5uoxAjEb7Qq6gnKW2WfL1JQY0mFoffnszq8X?=
+ =?us-ascii?Q?Rv1NIueMnQ8sNNCuhboeC9UIcF0oeMvedZ7h1r8GXv4oDq5yl8pSQpeKrPt2?=
+ =?us-ascii?Q?jBoeGfAAUEjAl8K0Gj6I0mC58p3B1EiUpBRZO+XY8MZlUCBg+lin1RTHXyKB?=
+ =?us-ascii?Q?psbcyj5RyXi7vEicNRkSrWT938YczozWFCCiilG0kwBxUCcg0Xds5XnU9j4L?=
+ =?us-ascii?Q?NOrxoeaUvIE9m5CFz0cQK/d16zGKTcknwrujWTXATzF1WUBIuTeKaFLx9fxw?=
+ =?us-ascii?Q?5IDa0Ql+3+yFl6RhHSJ7D7VFWcidljurbHxsocCzf3ybxiu9wa6P8Cyr/HIP?=
+ =?us-ascii?Q?NkmX9WtFtROsP5yf/f84W4xOyWvJwgcAnoYh1tj/sviebQiU6BCWFKxcyjSc?=
+ =?us-ascii?Q?ZfdwPOoufYedQ3Tc+d5jd6fwg0+ErQQ2YeoiZO6xuI0CWtkWU2CHbmzsdH7Z?=
+ =?us-ascii?Q?0jJh/7Fv/3du0QsGxyQgGO02i8MYSuWd0bCYZQ44bymNc7akzOY0BUx2lGU2?=
+ =?us-ascii?Q?YNLTbfbBIKOI1dotCAFnwrSQnW3ee6hfGa01KHgK00MB1q656HeO/rIrFJ5A?=
+ =?us-ascii?Q?2jPPcvCNrkLZmtCBJUQhdeGS94adaHeBZ0kbB6ph4VAndUpNf+nS/VDR1txY?=
+ =?us-ascii?Q?hnINaEYlIxQdvTNnTgVpuGJhxbNW9fsfOEubAtN8Xz/gv7Ktf7jtj8gSIW8+?=
+ =?us-ascii?Q?MTCeCagb6uRSnjqwE9n7zd8kUFGvVNezRFw7/gYXllJ20UCJfZohn50Vq1z4?=
+ =?us-ascii?Q?PoVA53A8pDhPaAb8OGxYOLuFYrQd41UkqgLfUv0zTVReOeeqtxnySjcD+hUK?=
+ =?us-ascii?Q?Lre6VCzmqMLEEWYRqosWdRH9B73lTuVmqf2yhoA5hK7Z9TvtkSezOTtVrlIc?=
+ =?us-ascii?Q?oDhi8G7rlrOzY/QwmlQgWFUPB37a2CVj3PsRTylL3BF41b5dJEzpHzONAY3+?=
+ =?us-ascii?Q?0k5QJqSXld/emWjBX6TqMc/K9RVeLVI/A3N0hrYerRiUCa1u8v1JnYoWBBgP?=
+ =?us-ascii?Q?i2ATSctaCIvozr4bga9Y9Gd7dkxoDlmiGePFm1mXptGR8kJS/+wt8fx7gcku?=
+ =?us-ascii?Q?hpaHohtZUNWNqU02c5C0IDDwy1hStEITPXqLYqe9VUxR+mAzzabhtG+8r22x?=
+ =?us-ascii?Q?izAfAeSasDSRy+Zg/YSqdOct7e9Vzm2f7rfrVknYJxpVAvYJFbfldPFWydHo?=
+ =?us-ascii?Q?qH+33ESmbGRMa8k8qZB/+Wkg7x1zKxyUv/2v8MM1/hj9KbTHcndZ+qHRR3Ht?=
+ =?us-ascii?Q?FbSpVXwwQUsU8JDQ+PQUwe0sdG8rMn+/S3rfVMTo?=
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf591600-dcbd-442c-c29b-08dd6bbaacf6
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR21MB1443.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2025 16:32:46.9858
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9NFnc91fx9rI7T86/Y9A9o5+FEuK/+RJ5X25+w3r1Dt4M2P1cJLvfT9q+aQ/39x0fVGqAthznuk4e4ayrvLXOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR21MB1334
 
-Fuzzing hit another invalid pointer dereference due to the lack of
-checking whether jffs2_prealloc_raw_node_refs() completed successfully.
-Subsequent logic implies that the node refs have been allocated.
+Frag allocators, such as netdev_alloc_frag(), were not designed to
+work for fragsz > PAGE_SIZE.
 
-Handle that. The code is ready for propagating the error upwards.
+So, switch to page pool for jumbo frames instead of using page frag
+allocators. This driver is using page pool for smaller MTUs already.
 
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 1 PID: 5835 Comm: syz-executor145 Not tainted 5.10.234-syzkaller #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:jffs2_link_node_ref+0xac/0x690 fs/jffs2/nodelist.c:600
-Call Trace:
- jffs2_mark_erased_block fs/jffs2/erase.c:460 [inline]
- jffs2_erase_pending_blocks+0x688/0x1860 fs/jffs2/erase.c:118
- jffs2_garbage_collect_pass+0x638/0x1a00 fs/jffs2/gc.c:253
- jffs2_reserve_space+0x3f4/0xad0 fs/jffs2/nodemgmt.c:167
- jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
- jffs2_write_end+0x712/0x1110 fs/jffs2/file.c:302
- generic_perform_write+0x2c2/0x500 mm/filemap.c:3347
- __generic_file_write_iter+0x252/0x610 mm/filemap.c:3465
- generic_file_write_iter+0xdb/0x230 mm/filemap.c:3497
- call_write_iter include/linux/fs.h:2039 [inline]
- do_iter_readv_writev+0x46d/0x750 fs/read_write.c:740
- do_iter_write+0x18c/0x710 fs/read_write.c:866
- vfs_writev+0x1db/0x6a0 fs/read_write.c:939
- do_pwritev fs/read_write.c:1036 [inline]
- __do_sys_pwritev fs/read_write.c:1083 [inline]
- __se_sys_pwritev fs/read_write.c:1078 [inline]
- __x64_sys_pwritev+0x235/0x310 fs/read_write.c:1078
- do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
-Fixes: f560928baa60 ("[JFFS2] Allocate node_ref for wasted space when skipping to page boundary")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Fixes: 80f6215b450e ("net: mana: Add support for jumbo frame")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
 ---
+v2: updated the commit msg as suggested by Jakub Kicinski.
 
-Similar to https://lore.kernel.org/linux-mtd/20250307163409.13491-2-a.sadovnikov@ispras.ru/
-but touches two remaining places.
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 46 ++++---------------
+ 1 file changed, 9 insertions(+), 37 deletions(-)
 
- fs/jffs2/erase.c | 4 +++-
- fs/jffs2/scan.c  | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/fs/jffs2/erase.c b/fs/jffs2/erase.c
-index ef3a1e1b6cb0..fda9f4d6093f 100644
---- a/fs/jffs2/erase.c
-+++ b/fs/jffs2/erase.c
-@@ -425,7 +425,9 @@ static void jffs2_mark_erased_block(struct jffs2_sb_info *c, struct jffs2_eraseb
- 			.totlen =	cpu_to_je32(c->cleanmarker_size)
- 		};
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 9a8171f099b6..4d41f4cca3d8 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -661,30 +661,16 @@ int mana_pre_alloc_rxbufs(struct mana_port_context *mpc, int new_mtu, int num_qu
+ 	mpc->rxbpre_total = 0;
  
--		jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		if (ret)
-+			goto filebad;
+ 	for (i = 0; i < num_rxb; i++) {
+-		if (mpc->rxbpre_alloc_size > PAGE_SIZE) {
+-			va = netdev_alloc_frag(mpc->rxbpre_alloc_size);
+-			if (!va)
+-				goto error;
+-
+-			page = virt_to_head_page(va);
+-			/* Check if the frag falls back to single page */
+-			if (compound_order(page) <
+-			    get_order(mpc->rxbpre_alloc_size)) {
+-				put_page(page);
+-				goto error;
+-			}
+-		} else {
+-			page = dev_alloc_page();
+-			if (!page)
+-				goto error;
++		page = dev_alloc_pages(get_order(mpc->rxbpre_alloc_size));
++		if (!page)
++			goto error;
  
- 		marker.hdr_crc = cpu_to_je32(crc32(0, &marker, sizeof(struct jffs2_unknown_node)-4));
+-			va = page_to_virt(page);
+-		}
++		va = page_to_virt(page);
  
-diff --git a/fs/jffs2/scan.c b/fs/jffs2/scan.c
-index 29671e33a171..62879c218d4b 100644
---- a/fs/jffs2/scan.c
-+++ b/fs/jffs2/scan.c
-@@ -256,7 +256,9 @@ int jffs2_scan_medium(struct jffs2_sb_info *c)
+ 		da = dma_map_single(dev, va + mpc->rxbpre_headroom,
+ 				    mpc->rxbpre_datasize, DMA_FROM_DEVICE);
+ 		if (dma_mapping_error(dev, da)) {
+-			put_page(virt_to_head_page(va));
++			put_page(page);
+ 			goto error;
+ 		}
  
- 		jffs2_dbg(1, "%s(): Skipping %d bytes in nextblock to ensure page alignment\n",
- 			  __func__, skip);
--		jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		if (ret)
-+			goto out;
- 		jffs2_scan_dirty_space(c, c->nextblock, skip);
- 	}
- #endif
+@@ -1672,7 +1658,7 @@ static void mana_rx_skb(void *buf_va, bool from_pool,
+ }
+ 
+ static void *mana_get_rxfrag(struct mana_rxq *rxq, struct device *dev,
+-			     dma_addr_t *da, bool *from_pool, bool is_napi)
++			     dma_addr_t *da, bool *from_pool)
+ {
+ 	struct page *page;
+ 	void *va;
+@@ -1683,21 +1669,6 @@ static void *mana_get_rxfrag(struct mana_rxq *rxq, struct device *dev,
+ 	if (rxq->xdp_save_va) {
+ 		va = rxq->xdp_save_va;
+ 		rxq->xdp_save_va = NULL;
+-	} else if (rxq->alloc_size > PAGE_SIZE) {
+-		if (is_napi)
+-			va = napi_alloc_frag(rxq->alloc_size);
+-		else
+-			va = netdev_alloc_frag(rxq->alloc_size);
+-
+-		if (!va)
+-			return NULL;
+-
+-		page = virt_to_head_page(va);
+-		/* Check if the frag falls back to single page */
+-		if (compound_order(page) < get_order(rxq->alloc_size)) {
+-			put_page(page);
+-			return NULL;
+-		}
+ 	} else {
+ 		page = page_pool_dev_alloc_pages(rxq->page_pool);
+ 		if (!page)
+@@ -1730,7 +1701,7 @@ static void mana_refill_rx_oob(struct device *dev, struct mana_rxq *rxq,
+ 	dma_addr_t da;
+ 	void *va;
+ 
+-	va = mana_get_rxfrag(rxq, dev, &da, &from_pool, true);
++	va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
+ 	if (!va)
+ 		return;
+ 
+@@ -2172,7 +2143,7 @@ static int mana_fill_rx_oob(struct mana_recv_buf_oob *rx_oob, u32 mem_key,
+ 	if (mpc->rxbufs_pre)
+ 		va = mana_get_rxbuf_pre(rxq, &da);
+ 	else
+-		va = mana_get_rxfrag(rxq, dev, &da, &from_pool, false);
++		va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
+ 
+ 	if (!va)
+ 		return -ENOMEM;
+@@ -2258,6 +2229,7 @@ static int mana_create_page_pool(struct mana_rxq *rxq, struct gdma_context *gc)
+ 	pprm.nid = gc->numa_node;
+ 	pprm.napi = &rxq->rx_cq.napi;
+ 	pprm.netdev = rxq->ndev;
++	pprm.order = get_order(rxq->alloc_size);
+ 
+ 	rxq->page_pool = page_pool_create(&pprm);
+ 
 -- 
-2.49.0
+2.34.1
 
 
