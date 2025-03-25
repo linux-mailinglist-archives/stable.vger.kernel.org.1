@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D050A6FFC7
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E8AA70038
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3908C1899B1D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16C5E3B17E8
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B741266F1A;
-	Tue, 25 Mar 2025 12:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A1C267F6C;
+	Tue, 25 Mar 2025 12:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkJzXdKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhZGkmOV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396432571DC;
-	Tue, 25 Mar 2025 12:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEE2267F66;
+	Tue, 25 Mar 2025 12:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905732; cv=none; b=Zmg3PHnNVM6Izc7rmclJPpxP6IV5FRxu8dmzJcMnqN7vGo1mTZ49JNBVFrewKGlBq1u8ldUD2VaHOtEN5lF4Q5wPJ1MGPlEUadr47AV/TDj4fdJwRgLPcyfigy5rN24WFubOVIucH4LHdWYX+oqRT7iy7+o+ceB0Jf+b0SudEQ8=
+	t=1742905870; cv=none; b=bkWckY6PqGXRKmif22V/aDzd+P4R92Z9vef/Ewaiso3WcAX2QvibreQXs94aYIN8ykewqg93u7KN2uHd5qCJ9hKmxBxZGAYMNJkDtyzPvyOSYMXLNqnNrAvasV1WbKrcqynk+fc1yWkdbKg5tES9kp2JftSvymY9HwAnLUx9DbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905732; c=relaxed/simple;
-	bh=OF5dYWbKA8/58jyW+CNO7LgXM2sWHpVQJuOHuXpyRmE=;
+	s=arc-20240116; t=1742905870; c=relaxed/simple;
+	bh=2RHI+QpSnITbezb3hbgKMZ7WiokvN5ScZ32tJV90Y9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOnrYd5nmq/3HKikdqYHgIpBnU4JwmGFcdjmh6PyUVB0jjyC0j6Z+x3LqnHxyl3pFg173NnRKf+B+mieSOolmCx0jojWEVnwDkc4dcNT2MZVim7iwg3icxD4En3R+Itv5tFR3zKA85nhgtQ92ye1Nz6NahoQGdZkUHEWwoDOFIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkJzXdKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00A8C4CEE4;
-	Tue, 25 Mar 2025 12:28:51 +0000 (UTC)
+	 MIME-Version; b=JEa6oVxlM09H+UBEf3Qud+xCTZzPMRvQJoihTnV+adISzFuiSAG39CZuTCza2/MPUpT/8DzZb/3Zny5VP0luyC04ei09N36ohGpBSgEU7xs6LtDZ5aJlBZ/9A6D/7vgKTZxoVroPZHVSkWLNnhPK/2NLjrlfvEsbCDtlu3HOhg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhZGkmOV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61225C4CEE4;
+	Tue, 25 Mar 2025 12:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905732;
-	bh=OF5dYWbKA8/58jyW+CNO7LgXM2sWHpVQJuOHuXpyRmE=;
+	s=korg; t=1742905870;
+	bh=2RHI+QpSnITbezb3hbgKMZ7WiokvN5ScZ32tJV90Y9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkJzXdKmBHaySj+eSaCBFozcTR/yVPBy22oDNa+QtGEJY500pDuS0KDkmiJGd/MWJ
-	 91Yk59VGmZj6BDz6YQyy2DeXhziKXNTZPHbNZPJk5agOgFyYTS4KxEmCLWM8kb7XZ/
-	 eX22rzxkvSWpw2kRIzZxVRplG3dlEjuyGd+iYUVs=
+	b=NhZGkmOV/4Wb0SosmKfaYhzEmABJRxhKzIf+x31zz/nbSY1mDTFUxD78BBAsO0rLp
+	 VAZ+kaYh0lc8IZOmBPCpL+VzPt0vw0wrrm+vsbobsja3Q2ewT0mwd0BH9JIKWueoVy
+	 bImNgO1QxdwO1T46Y9kmZa/VFhlQ6dmY86lgYdyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 106/198] Input: i8042 - swap old quirk combination with new quirk for several devices
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 010/119] ARM: dts: bcm2711: Fix xHCI power-domain
 Date: Tue, 25 Mar 2025 08:21:08 -0400
-Message-ID: <20250325122159.435098468@linuxfoundation.org>
+Message-ID: <20250325122149.326268808@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,152 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 75ee4ebebbbe8dc4b55ba37f388924fa96bf1564 upstream.
+[ Upstream commit f44fa354a0715577ca32b085f6f60bcf32c748dd ]
 
-Some older Clevo barebones have problems like no or laggy keyboard after
-resume or boot which can be fixed with the SERIO_QUIRK_FORCENORESTORE
-quirk.
+During s2idle tests on the Raspberry CM4 the VPU firmware always crashes
+on xHCI power-domain resume:
 
-While the old quirk combination did not show negative effects on these
-devices specifically, the new quirk works just as well and seems more
-stable in general.
+root@raspberrypi:/sys/power# echo freeze > state
+[   70.724347] xhci_suspend finished
+[   70.727730] xhci_plat_suspend finished
+[   70.755624] bcm2835-power bcm2835-power: Power grafx off
+[   70.761127]  USB: Set power to 0
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://lore.kernel.org/r/20250221230137.70292-3-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[   74.653040]  USB: Failed to set power to 1 (-110)
+
+This seems to be caused because of the mixed usage of
+raspberrypi-power and bcm2835-power at the same time. So avoid
+the usage of the VPU firmware power-domain driver, which
+prevents the VPU crash.
+
+Fixes: 522c35e08b53 ("ARM: dts: bcm2711: Add BCM2711 xHCI support")
+Link: https://github.com/raspberrypi/linux/issues/6537
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250201112729.31509-1-wahrenst@gmx.net
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   40 +++++++++++-----------------------
- 1 file changed, 14 insertions(+), 26 deletions(-)
+ arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi | 5 -----
+ arch/arm/boot/dts/broadcom/bcm2711.dtsi     | 1 +
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1080,16 +1080,14 @@ static const struct dmi_system_id i8042_
- 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
- 			DMI_MATCH(DMI_BOARD_NAME, "AURA1501"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "TUXEDO"),
- 			DMI_MATCH(DMI_BOARD_NAME, "EDUBOOK1502"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/* Mivvy M310 */
-@@ -1171,8 +1169,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "LAPQC71A"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1205,8 +1202,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NH5xAx"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1218,8 +1214,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	/*
- 	 * At least one modern Clevo barebone has the touchpad connected both
-@@ -1235,17 +1230,15 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NS50MU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
--					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
--					SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
-+					SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NS50_70MU"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOAUX | SERIO_QUIRK_NOMUX |
--					SERIO_QUIRK_RESET_ALWAYS | SERIO_QUIRK_NOLOOP |
--					SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX |
-+					SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1319,8 +1312,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "P65_67RS"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/*
-@@ -1338,8 +1330,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "PB50_70DFx,DDx"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1363,8 +1354,7 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "PCX0DX"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
-@@ -1383,15 +1373,13 @@ static const struct dmi_system_id i8042_
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170KM-G"),
- 		},
--		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
--					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
- 	},
- 	{
- 		/*
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi b/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi
+index 6bf4241fe3b73..c78ed064d1667 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "bcm2835-rpi.dtsi"
+ 
+-#include <dt-bindings/power/raspberrypi-power.h>
+ #include <dt-bindings/reset/raspberrypi,firmware-reset.h>
+ 
+ / {
+@@ -101,7 +100,3 @@ &v3d {
+ &vchiq {
+ 	interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
+ };
+-
+-&xhci {
+-	power-domains = <&power RPI_POWER_DOMAIN_USB>;
+-};
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+index e4e42af21ef3a..5eaec6c6a1df3 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+@@ -610,6 +610,7 @@ xhci: usb@7e9c0000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
++			power-domains = <&pm BCM2835_POWER_DOMAIN_USB>;
+ 			/* DWC2 and this IP block share the same USB PHY,
+ 			 * enabling both at the same time results in lockups.
+ 			 * So keep this node disabled and let the bootloader
+-- 
+2.39.5
+
 
 
 
