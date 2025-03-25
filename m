@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A4CA70061
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7962AA70067
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 114A9189D607
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45A76188CAAC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C5229B212;
-	Tue, 25 Mar 2025 12:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A012269CF2;
+	Tue, 25 Mar 2025 12:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZVWCkuw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXQmKHNO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BF5267B9F;
-	Tue, 25 Mar 2025 12:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A16E2571AC;
+	Tue, 25 Mar 2025 12:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905856; cv=none; b=ddbtx+9MJn2q2moohVVw56P88ZhXFNpFIdu5hYRbAQXP6IUqKCcbb03FBgsgUdIb2woqWOkgnrzWtRMuc1ymvU9RA8hbEFy5LSQKnb1BSQLLtJiVUuiF4TsanhD8BKGDwq5nGbCLdmNW8fP3xU+RGGeKY77tBLWSQBqtaLKTz30=
+	t=1742906111; cv=none; b=vGvBFK2KNL6vt721pVh/781OQKpy7WX0YOBu3GIShi1+yVd5upTuKg4OY8kG/m5uFsDTNyIW34oe7+sf/fXZljMkBvXZBPolMyT+7HmRGk/dRsPchYr8S2E04u8+odHSjxmwvU0e6GUoy/f0IDXzoVG6Y/sNEuc6j80hYwtR5ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905856; c=relaxed/simple;
-	bh=TWHJs0Rgtgi/gjhepEJSMveLJDGM7aytLh+EYC+hBNI=;
+	s=arc-20240116; t=1742906111; c=relaxed/simple;
+	bh=LUwOHKfeWwqf6/KM3prOzwICR3yjr/lVlnbh6Bl+2Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plIWcNM5gLLDYirM+L3VWHoFrM7ov7wv6FltvUj8x8Fpwwman6gXChwJo0atuaGfOB7mYELZlGOU2KUDqyaiG8Qam2ISbnfYNsXUtDU0+3lhNqCmETNJt/7eTA3egvKiZyDwOgC+/LQxQVgf1PzNH83+hx1g8VahJ28P8slB474=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZVWCkuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F66C4CEE4;
-	Tue, 25 Mar 2025 12:30:55 +0000 (UTC)
+	 MIME-Version; b=iX+2TqUcxge8gD3NQsa3dqTyilADwLd7EYV16VIBzkyZi3ZbBh2wkkgzvTqXk7MHPri9tbCQ14Sc7W1R+Xc5JWfcTBSnwW5CmETSE+tj708ymLiLSPYF3cdWrg6SI1uHV5nweIGFgk364A+fcavpJPZ9xCXiaCAB+UK584K+o4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXQmKHNO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB3AC4CEE4;
+	Tue, 25 Mar 2025 12:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905856;
-	bh=TWHJs0Rgtgi/gjhepEJSMveLJDGM7aytLh+EYC+hBNI=;
+	s=korg; t=1742906111;
+	bh=LUwOHKfeWwqf6/KM3prOzwICR3yjr/lVlnbh6Bl+2Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZVWCkuwUqynREwBj2IfmAag9RXrViAnQJV1eT7d1iOCXmbuCugdutYIp6Q4Qf53X
-	 IZCyKkOyEjRWQO99v3b8B/kOShFupHIYqi9HtA9HJUYyRHIovqSJTePoQe1ghIOP9g
-	 +wwSF/pNS4fxbbx+y4rFx8/cIrEGPO7GQFBa+kAA=
+	b=qXQmKHNOscP9qHEC6xksHVqkToh+GIZZzbNHPn/VaiI5BtSL65mkWdy9fSVBwTlJ6
+	 90FyqpEYpiPnmHMtV4AJY5S84r6rhXJc9tXFftDUHVQXEYU5DaXjO+FunW4fCACTiu
+	 rs2desMwjoVJnAeT2Z5iUMNkBEAs8qrpwYe+Ed8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 173/198] regulator: check that dummy regulator has been probed before using it
+	Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 20/77] Bluetooth: hci_event: Fix connection regression between LE and non-LE adapters
 Date: Tue, 25 Mar 2025 08:22:15 -0400
-Message-ID: <20250325122201.183300195@linuxfoundation.org>
+Message-ID: <20250325122144.880058522@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
 
-commit 2c7a50bec4958f1d1c84d19cde518d0e96a676fd upstream.
+[ Upstream commit f6685a96c8c8a07e260e39bac86d4163cfb38a4d ]
 
-Due to asynchronous driver probing there is a chance that the dummy
-regulator hasn't already been probed when first accessing it.
+Due to a typo during defining HCI errors it is not possible to connect
+LE-capable device with BR/EDR only adapter. The connection is terminated
+by the LE adapter because the invalid LL params error code is treated
+as unsupported remote feature.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Link: https://patch.msgid.link/20250313103051.32430-3-ceggers@arri.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 79c0868ad65a ("Bluetooth: hci_event: Use HCI error defines instead of magic values")
+Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ include/net/bluetooth/hci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -2091,6 +2091,10 @@ static int regulator_resolve_supply(stru
- 
- 		if (have_full_constraints()) {
- 			r = dummy_regulator_rdev;
-+			if (!r) {
-+				ret = -EPROBE_DEFER;
-+				goto out;
-+			}
- 			get_device(&r->dev);
- 		} else {
- 			dev_err(dev, "Failed to resolve %s-supply for %s\n",
-@@ -2108,6 +2112,10 @@ static int regulator_resolve_supply(stru
- 			goto out;
- 		}
- 		r = dummy_regulator_rdev;
-+		if (!r) {
-+			ret = -EPROBE_DEFER;
-+			goto out;
-+		}
- 		get_device(&r->dev);
- 	}
- 
-@@ -2216,8 +2224,10 @@ struct regulator *_regulator_get(struct
- 			 * enabled, even if it isn't hooked up, and just
- 			 * provide a dummy.
- 			 */
--			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
- 			rdev = dummy_regulator_rdev;
-+			if (!rdev)
-+				return ERR_PTR(-EPROBE_DEFER);
-+			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
- 			get_device(&rdev->dev);
- 			break;
- 
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 77a3040a3f29d..e4a97b2d09984 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -668,7 +668,7 @@ enum {
+ #define HCI_ERROR_REMOTE_POWER_OFF	0x15
+ #define HCI_ERROR_LOCAL_HOST_TERM	0x16
+ #define HCI_ERROR_PAIRING_NOT_ALLOWED	0x18
+-#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1e
++#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1a
+ #define HCI_ERROR_INVALID_LL_PARAMS	0x1e
+ #define HCI_ERROR_UNSPECIFIED		0x1f
+ #define HCI_ERROR_ADVERTISING_TIMEOUT	0x3c
+-- 
+2.39.5
+
 
 
 
