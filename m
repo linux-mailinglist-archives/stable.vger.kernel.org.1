@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF23A70084
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E325A70132
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9092C7A4B93
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 816783BB540
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C3426F473;
-	Tue, 25 Mar 2025 12:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A53426A1C8;
+	Tue, 25 Mar 2025 12:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BwuXoQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iI0TFYPZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177F726F46F;
-	Tue, 25 Mar 2025 12:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4606E26AA8D;
+	Tue, 25 Mar 2025 12:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906384; cv=none; b=TtIFdmH4L8fi64J00PRUGhE4WDyhi33fe9XKN6zYFJlbFY9xA6eOFkKaJC6jV5HSXZiOYiVriUq4WFFngxAQX2sY7f1p59RV61EFTzzqEx+GgQeNL69pJQXE5GvU1xAKlKWccZVOV8tC17zFEW18NNphrRuMMDpJvYHMEVpyskM=
+	t=1742906187; cv=none; b=hZ/VCxcdUcT+9mFLKAMiAaikMFAqNRxfiexSnca5Fhw+bJ1sI8v2nJYPBoSDL0gecR2xJK18INkNWqoYBBie/Cl5gpdvGYwWIx5bLle9XjPQqUVJCAb58H/6hFS46h0hjIejl6m2rupFcOcrbnPWvVmxufetEtzbIuM4zjF0ymo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906384; c=relaxed/simple;
-	bh=6TNm+oDbZUdF1rLNRP+DkI+olBb5+vKjgYl/8m7QMJI=;
+	s=arc-20240116; t=1742906187; c=relaxed/simple;
+	bh=mi1FKd2YDw4LOR2sKTTb6Dy32tBo0exmy/igh327Pok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njM6xCp1NwRKBHUc8LGE6YuI3ACl1yetUCJfv1kdcYhDxPUe4ETsecSBBOCCJsOpeW0OrfFARTCY9kWFmxcRGtuDvcSd51Z7Yw/UVqOlbgxTGDEpnWCY9Y0mB0q6aNMTyMvq4sh+yt1ecB9ejZA06oL/OoyH/BGljXCn1h8AcaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BwuXoQb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEAFAC4CEE9;
-	Tue, 25 Mar 2025 12:39:43 +0000 (UTC)
+	 MIME-Version; b=k/pThiGMUiXOVymhPdUyNBwlAKVl3me8tZgbLDKxhPNm4/omlChY/Ga48IgzWmyVNa/yc6mAQ8N2AHjUg+O2GUe9lCrDA8/F0MgduRfGgnmIgwlO7x8ahT78xuEgOT4XXi+zyZg8ZpAKBYej4eWKEQPWgjZ8opMfGffIQPKj7Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iI0TFYPZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EA2C4CEE4;
+	Tue, 25 Mar 2025 12:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906384;
-	bh=6TNm+oDbZUdF1rLNRP+DkI+olBb5+vKjgYl/8m7QMJI=;
+	s=korg; t=1742906186;
+	bh=mi1FKd2YDw4LOR2sKTTb6Dy32tBo0exmy/igh327Pok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BwuXoQbVUj0YJWwXps0fp4WUgsRMJ2AEu6ZQSfZbjKLpk8gvNSc+pAxjkyhoBhrp
-	 5fcDfmfe/W7CWDbCdU3PoAx1k8WkbBanns92rsXSgidAzL+k/K/BhkVmDFyjhxDn2M
-	 cjk5h/3re/Sa4Xnt/i4pJVJEGU6gjbCNfBgivcBs=
+	b=iI0TFYPZPJAXaLDspJzOQ36o0s8gJ21MRK8RQfjs3/cPK1oS3rvMwbRw8cJf1Wqmv
+	 9t6silD0ix2yV/8WBPXx8zS8yswXZJgHv6pOoqDZPppM9ApBNCUP1qpIjHrv8cyx5t
+	 SsTsz9HK9u2LrvVZthqpA12x6BuDVug5GMEKkNJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 088/116] pmdomain: amlogic: fix T7 ISP secpower
-Date: Tue, 25 Mar 2025 08:22:55 -0400
-Message-ID: <20250325122151.460426174@linuxfoundation.org>
+	Igor Leite Ladessa <igor-ladessa@hotmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 61/77] ksmbd: fix incorrect validation for num_aces field of smb_acl
+Date: Tue, 25 Mar 2025 08:22:56 -0400
+Message-ID: <20250325122145.945578503@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit ef17b519088ee0c167cf507820609732ec8bad1a upstream.
+commit 1b8b67f3c5e5169535e26efedd3e422172e2db64 upstream.
 
-ISP and MIPI_ISP, these two have a parent-child relationship,
-ISP depends on MIPI_ISP.
+parse_dcal() validate num_aces to allocate posix_ace_state_array.
 
-Fixes: ca75e4b214c6 ("pmdomain: amlogic: Add support for T7 power domains controller")
-Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250303-fix-t7-pwrc-v1-1-b563612bcd86@amlogic.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
+
+It is an incorrect validation that we can create an array of size ULONG_MAX.
+smb_acl has ->size field to calculate actual number of aces in request buffer
+size. Use this to check invalid num_aces.
+
+Reported-by: Igor Leite Ladessa <igor-ladessa@hotmail.com>
+Tested-by: Igor Leite Ladessa <igor-ladessa@hotmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/amlogic/meson-secure-pwrc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smbacl.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/pmdomain/amlogic/meson-secure-pwrc.c
-+++ b/drivers/pmdomain/amlogic/meson-secure-pwrc.c
-@@ -221,7 +221,7 @@ static const struct meson_secure_pwrc_do
- 	SEC_PD(T7_VI_CLK2,	0),
- 	/* ETH is for ethernet online wakeup, and should be always on */
- 	SEC_PD(T7_ETH,		GENPD_FLAG_ALWAYS_ON),
--	SEC_PD(T7_ISP,		0),
-+	TOP_PD(T7_ISP,		0, PWRC_T7_MIPI_ISP_ID),
- 	SEC_PD(T7_MIPI_ISP,	0),
- 	TOP_PD(T7_GDC,		0, PWRC_T7_NIC3_ID),
- 	TOP_PD(T7_DEWARP,	0, PWRC_T7_NIC3_ID),
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -398,7 +398,9 @@ static void parse_dacl(struct mnt_idmap
+ 	if (num_aces <= 0)
+ 		return;
+ 
+-	if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
++	if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
++			(offsetof(struct smb_ace, sid) +
++			 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
+ 		return;
+ 
+ 	ret = init_acl_state(&acl_state, num_aces);
+@@ -432,6 +434,7 @@ static void parse_dacl(struct mnt_idmap
+ 			offsetof(struct smb_sid, sub_auth);
+ 
+ 		if (end_of_acl - acl_base < acl_size ||
++		    ppace[i]->sid.num_subauth == 0 ||
+ 		    ppace[i]->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
+ 		    (end_of_acl - acl_base <
+ 		     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth) ||
 
 
 
