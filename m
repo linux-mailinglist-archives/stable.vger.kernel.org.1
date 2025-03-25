@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-126150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59634A6FFEC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB061A70057
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F1B19A4373
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B1D48411EC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6120266B7F;
-	Tue, 25 Mar 2025 12:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894C929C325;
+	Tue, 25 Mar 2025 12:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vjv92KLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yu9El+iB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749DB266569;
-	Tue, 25 Mar 2025 12:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46592267F7E;
+	Tue, 25 Mar 2025 12:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905693; cv=none; b=ipqz9u9Q7t63EtTuqU/pkXcWjuLgBDp8xpg5UoVRahKh5EJ3GS3ZsH2vT0U7C8QIwYsRTauFTQRQbwZIJibxGfQlUjV98qqqJLJ9LQ5V3YMygWwbsfZuOzNtonNPG7MHqSNZH46+/SA7qXxUzfhbdoG7Cr8Oiu2fhCJmsvUmMhA=
+	t=1742905885; cv=none; b=cjuLdP4kQqdQR9RQsUtP9gsEQGFJZP2nTC1NCARlVto1LfXihq5G53E748OjekQpODSuTxZhvpePKNbbYpZJdG96SOYmU3N3VPKIBUKde7JWI8X0kdrdSKTqsHY9M6szx6ShWhdKFE476WA6stJHOqg8X33zNcrQqcf63AsJnTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905693; c=relaxed/simple;
-	bh=93Pzeq+bEOTkK/+TbAEohuqwFCxlpoI6Jpw3NANdNRs=;
+	s=arc-20240116; t=1742905885; c=relaxed/simple;
+	bh=ruFdBrk1DP8ZmlfKHR8gu4eloB35eRkaGTT762FeiOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nhnyb7CmI9p8frmm4oGEQtb7TTf8sIpeHjNXHixZHlInYUDVBFUGuvx2rldBdC6Apr2h2ofXtn9DM7XIiyZ2Q2m1un9XqB3dES2/anEpySL5PoXXTJGX8ubB4FjmKkF+Lndn/6cMWGthqqqNa159fgN4MtkzYctniByitMG187o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vjv92KLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21ADFC4CEE4;
-	Tue, 25 Mar 2025 12:28:13 +0000 (UTC)
+	 MIME-Version; b=E3ztepTLj3xeLW257FtbFwXqRxzwZBBwy/kWphtgUGWmo2dqg5En8LgBvaZICDiO8AIudx8EWLb7mqFElt2cBEF0muSAx+BQLwTveptvAZNNKe+KSGc+XB5i5gYsf5Jopg/ff5CYTNkU2iBKVUL0iWYNd3fg3XbQdMNPm0caHf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yu9El+iB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2D4C4CEED;
+	Tue, 25 Mar 2025 12:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905693;
-	bh=93Pzeq+bEOTkK/+TbAEohuqwFCxlpoI6Jpw3NANdNRs=;
+	s=korg; t=1742905885;
+	bh=ruFdBrk1DP8ZmlfKHR8gu4eloB35eRkaGTT762FeiOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vjv92KLyBYfpOBgm35Hcb1LehByy/cWCdbm0B90ragfM19V09poVwi/f+PvyAmm43
-	 cssTb4Z3293iIl0Rg9jB9vaO/3DmYAFaPcXjxkCaRvwIonDGgVg4p/o/oN4Dr2sFpA
-	 h6ATQrqnPfd32gmh9i/C8yjrtHTP6zZGhNnOfLFU=
+	b=Yu9El+iBxF0BBoAJ+kG0JrFqI1c0w8mZKFcjFaSrczKoM83KI6IdW101TjlQj3To9
+	 Uh4jgF10zz55xwQJhLwW6jYBQwfotN72E7FYbz1hmZ/rmBm1BLuzsFvI50GfJwGWul
+	 QbQjk4Yuhro5hr8cOi4LhanEHrUQIuG0cSn6a2iQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH 6.1 113/198] drm/atomic: Filter out redundant DPMS calls
-Date: Tue, 25 Mar 2025 08:21:15 -0400
-Message-ID: <20250325122159.617458863@linuxfoundation.org>
+	Phil Elwell <phil@raspberrypi.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 018/119] ARM: dts: bcm2711: Dont mark timer regs unconfigured
+Date: Tue, 25 Mar 2025 08:21:16 -0400
+Message-ID: <20250325122149.531601749@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Phil Elwell <phil@raspberrypi.com>
 
-commit de93ddf88088f7624b589d0ff3af9effb87e8f3b upstream.
+[ Upstream commit c24f272ae751a9f54f8816430e7f2d56031892cc ]
 
-Video players (eg. mpv) do periodic XResetScreenSaver() calls to
-keep the screen on while the video playing. The modesetting ddx
-plumbs these straight through into the kernel as DPMS setproperty
-ioctls, without any filtering whatsoever. When implemented via
-atomic these end up as empty commits on the crtc (which will
-nonetheless take one full frame), which leads to a dropped
-frame every time XResetScreenSaver() is called.
+During upstream process of Raspberry Pi 4 back in 2019 the ARMv7 stubs
+didn't configured the ARM architectural timer. This firmware issue has
+been fixed in 2020, which gave users enough time to update their system.
 
-Let's just filter out redundant DPMS property changes in the
-kernel to avoid this issue.
+So drop this property to allow the use of the vDSO version of
+clock_gettime.
 
-v2: Explain the resulting commits a bit better (Sima)
-    Document the behaviour in uapi docs (Sima)
-
-Cc: stable@vger.kernel.org
-Testcase: igt/kms_flip/flip-vs-dpms-on-nop
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250219160239.17502-1-ville.syrjala@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/raspberrypi/tools/pull/113
+Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250222094113.48198-1-wahrenst@gmx.net
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_uapi.c |    4 ++++
- drivers/gpu/drm/drm_connector.c   |    4 ++++
- 2 files changed, 8 insertions(+)
+ arch/arm/boot/dts/broadcom/bcm2711.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -932,6 +932,10 @@ int drm_atomic_connector_commit_dpms(str
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+index 4fd0732a34d32..c06d9f5e53c80 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
++++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
+@@ -451,8 +451,6 @@ IRQ_TYPE_LEVEL_LOW)>,
+ 					  IRQ_TYPE_LEVEL_LOW)>,
+ 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) |
+ 					  IRQ_TYPE_LEVEL_LOW)>;
+-		/* This only applies to the ARMv7 stub */
+-		arm,cpu-registers-not-fw-configured;
+ 	};
  
- 	if (mode != DRM_MODE_DPMS_ON)
- 		mode = DRM_MODE_DPMS_OFF;
-+
-+	if (connector->dpms == mode)
-+		goto out;
-+
- 	connector->dpms = mode;
- 
- 	crtc = connector->state->crtc;
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -1100,6 +1100,10 @@ static const struct drm_prop_enum_list d
-  * 	callback. For atomic drivers the remapping to the "ACTIVE" property is
-  * 	implemented in the DRM core.
-  *
-+ * 	On atomic drivers any DPMS setproperty ioctl where the value does not
-+ * 	change is completely skipped, otherwise a full atomic commit will occur.
-+ * 	On legacy drivers the exact behavior is driver specific.
-+ *
-  * 	Note that this property cannot be set through the MODE_ATOMIC ioctl,
-  * 	userspace must use "ACTIVE" on the CRTC instead.
-  *
+ 	cpus: cpus {
+-- 
+2.39.5
+
 
 
 
