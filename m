@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E547CA6FFB4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE8CA701A4
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:27:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D781E17410F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C606D19A7511
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA31F25A34A;
-	Tue, 25 Mar 2025 12:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5145126E15A;
+	Tue, 25 Mar 2025 12:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHpjyvY1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTsiYzBU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AA8259CAD;
-	Tue, 25 Mar 2025 12:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA5F25D91C;
+	Tue, 25 Mar 2025 12:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905778; cv=none; b=YRK6bc4iXnbn8ZCvAhXmPZNs44hdI/oTcoUTFliD+qjrB/ClLM8aSzW1c/QHNJVZ26qBT+Y5b2dwDExUI9YDvD55ion36VzH3HekA/YvrlGzScR4OSVdHsc8GFN9Q8P84Pyxf7dAfmMNpYpL4TUPkgoDdLquMsDfBvTw6GW2guQ=
+	t=1742906333; cv=none; b=d9flcyCuRX1PMibHvHLxNgr/kxpc3OiEAqe25iqQn4v8qnRNqpSGNIze8b682fEOw05OHYiYYlH7aTOuiaN6XQTZEhCaIEiGxaan69aE80TpfTFbDGeSevXKeBHRJ5IcTfua5tYJRZib8sn+TC0qYNIedwXPX3l30/YWNza9f9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905778; c=relaxed/simple;
-	bh=cOXtecQufruUs5H96qvXMstnl2DqXuzBJRUjpupp3B4=;
+	s=arc-20240116; t=1742906333; c=relaxed/simple;
+	bh=umdlJZoNZRZO+NGUKKz6ubV86vC9uSs3VUnogpWAqtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7GOtiVAjC6l5VyRoBCEwkCK8JlXj4HuIuyLgof6JOQLzQrSUAufBQL4Nn9uOMTWSpfuLkwj+fGbGzlwdWPVcMLYpt+b3DE7RvyZGHU+qi26B71tnEF5eDDrHs/juXpQ8Nm/GUcDsdLFVkT5UpZJ10JGF/5PZZazmmcmD8Z7fMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHpjyvY1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2830AC4CEED;
-	Tue, 25 Mar 2025 12:29:38 +0000 (UTC)
+	 MIME-Version; b=pPe8CZLrfsBH7PoXhrSQOu1cV/Nx3SvJJphHrkZ/7Gi73x2DVuF8UilzHMK6AIQ0oiQ1znkFOCHZTFZLUqtmbIHPOz9z4FJH8SEfw7QHCCHVpuEv9ozNigoolhQbSBqZlchxbQwy7EFqIXzAJuEzgnbjcdoTMvRODLC0R3fFJKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTsiYzBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA35C4CEE4;
+	Tue, 25 Mar 2025 12:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905778;
-	bh=cOXtecQufruUs5H96qvXMstnl2DqXuzBJRUjpupp3B4=;
+	s=korg; t=1742906332;
+	bh=umdlJZoNZRZO+NGUKKz6ubV86vC9uSs3VUnogpWAqtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yHpjyvY1fOAHMY2/hVTlV0zqt85GHYlpLZl1ej0bxhbOJ85/FbZqD1N3aujvAl/e5
-	 EAKAG5GTRjtPZ/36h95wyEcSq0aVwFHISF5emsWgkGUFF23iDYNsOh58+AncVbJ1FI
-	 ia2istJUfoSoqa5uz8eaRl52HEKSeEw+VcK8206k=
+	b=tTsiYzBUjw0gsznsKE7KnIdK9RLFGGYGWEl8mweJaCZsK3eIAD3fE92lupOvdoQXL
+	 s2576Qhzgd5mQbThmStA2K2VBCH7Uimn3GFwYx0y5Q1XyuXtwubQq+KJ4l+rStweLj
+	 KGo+6WsT5PXEEi/lp34DO+5L2/fuvOnefYZyqQwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/198] RDMA/hns: Fix unmatched condition in error path of alloc_user_qp_db()
-Date: Tue, 25 Mar 2025 08:22:00 -0400
-Message-ID: <20250325122200.800839756@linuxfoundation.org>
+Subject: [PATCH 6.12 034/116] tracing: tprobe-events: Fix to clean up tprobe correctly when module unload
+Date: Tue, 25 Mar 2025 08:22:01 -0400
+Message-ID: <20250325122150.084780669@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit b9f59a24ba35a7d955a9f8e148dd9f85b7b40a01 ]
+[ Upstream commit 0a8bb688aa824863716fc570d818b8659a79309d ]
 
-Currently the condition of unmapping sdb in error path is not exactly
-the same as the condition of mapping in alloc_user_qp_db(). This may
-cause a problem of unmapping an unmapped db in some case, such as
-when the QP is XRC TGT. Unified the two conditions.
+When unloading module, the tprobe events are not correctly cleaned
+up. Thus it becomes `fprobe-event` and never be enabled again even
+if loading the same module again.
 
-Fixes: 90ae0b57e4a5 ("RDMA/hns: Combine enable flags of qp")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+For example;
+
+ # cd /sys/kernel/tracing
+ # modprobe trace_events_sample
+ # echo 't:my_tprobe foo_bar' >> dynamic_events
+ # cat dynamic_events
+t:tracepoints/my_tprobe foo_bar
+ # rmmod trace_events_sample
+ # cat dynamic_events
+f:tracepoints/my_tprobe foo_bar
+
+As you can see, the second time my_tprobe starts with 'f' instead
+of 't'.
+
+This unregisters the fprobe and tracepoint callback when module is
+unloaded but marks the fprobe-event is tprobe-event.
+
+Link: https://lore.kernel.org/all/174158724946.189309.15826571379395619524.stgit@mhiramat.tok.corp.google.com/
+
+Fixes: 57a7e6de9e30 ("tracing/fprobe: Support raw tracepoints on future loaded modules")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ kernel/trace/trace_fprobe.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index 19136cb169600..86a48ca127862 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -924,12 +924,14 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 			    struct hns_roce_ib_create_qp *ucmd,
- 			    struct hns_roce_ib_create_qp_resp *resp)
- {
-+	bool has_sdb = user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd);
- 	struct hns_roce_ucontext *uctx = rdma_udata_to_drv_context(udata,
- 		struct hns_roce_ucontext, ibucontext);
-+	bool has_rdb = user_qp_has_rdb(hr_dev, init_attr, udata, resp);
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	int ret;
- 
--	if (user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd)) {
-+	if (has_sdb) {
- 		ret = hns_roce_db_map_user(uctx, ucmd->sdb_addr, &hr_qp->sdb);
- 		if (ret) {
- 			ibdev_err(ibdev,
-@@ -940,7 +942,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 		hr_qp->en_flags |= HNS_ROCE_QP_CAP_SQ_RECORD_DB;
+diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
+index 99048c3303822..092c31907c71a 100644
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -977,10 +977,13 @@ static int __tracepoint_probe_module_cb(struct notifier_block *self,
+ 					reenable_trace_fprobe(tf);
+ 			}
+ 		} else if (val == MODULE_STATE_GOING && tp_mod->mod == tf->mod) {
+-			tracepoint_probe_unregister(tf->tpoint,
++			unregister_fprobe(&tf->fp);
++			if (trace_fprobe_is_tracepoint(tf)) {
++				tracepoint_probe_unregister(tf->tpoint,
+ 					tf->tpoint->probestub, NULL);
+-			tf->tpoint = NULL;
+-			tf->mod = NULL;
++				tf->tpoint = TRACEPOINT_STUB;
++				tf->mod = NULL;
++			}
+ 		}
  	}
- 
--	if (user_qp_has_rdb(hr_dev, init_attr, udata, resp)) {
-+	if (has_rdb) {
- 		ret = hns_roce_db_map_user(uctx, ucmd->db_addr, &hr_qp->rdb);
- 		if (ret) {
- 			ibdev_err(ibdev,
-@@ -954,7 +956,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 	return 0;
- 
- err_sdb:
--	if (hr_qp->en_flags & HNS_ROCE_QP_CAP_SQ_RECORD_DB)
-+	if (has_sdb)
- 		hns_roce_db_unmap_user(uctx, &hr_qp->sdb);
- err_out:
- 	return ret;
+ 	mutex_unlock(&event_mutex);
 -- 
 2.39.5
 
