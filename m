@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-126349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8B8A7004C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E932A7018C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F3C517B643
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A815E189BDF2
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3764A2698A1;
-	Tue, 25 Mar 2025 12:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AF525DB14;
+	Tue, 25 Mar 2025 12:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+npCReC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGmKRPtg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79642698A8;
-	Tue, 25 Mar 2025 12:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D6625DB11;
+	Tue, 25 Mar 2025 12:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906059; cv=none; b=lqY8NeHIEcInQEPMiGfaXNV04XOZaJdCPSHSo/Boymx7uS82D4a9KXr/LgixOmKNckFkxYztLwtBmorfxh5T0IjwovKsmd9SOyT11j+jcEP+wGQ3EspIjRhcGTpgbXJIhATVhEbC2uJbyxt0snNEuv1bgaHnz0i62/ImlsRbQYY=
+	t=1742906374; cv=none; b=dLvpXcXFPEmC8QV3c+5BwcEldzyvr8Y+Fpc1tTt3R8NnAzD2PBBkCEmgV7chzaFQH1elRCjcJ+06/yv+JGwl83UmQJXXi+Toah4voCAamwXhzM+4pwgd52npdp0Gs6HT8OwW9xsejLCluk0sxwgp7O4dem2wlWVUmksYnxr/XaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906059; c=relaxed/simple;
-	bh=thA8BvFrZ4roCDnSetuch5UvS1Aji6kSj5HToQbvtls=;
+	s=arc-20240116; t=1742906374; c=relaxed/simple;
+	bh=t5y1I97bDnxoCChYnDYnhstp3Ae61jooXUFedxDWPB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tb07sqH4h5QuvIBfxXbu/EGkKd+jhACdez7oFoNOvM+321apSnRPSiuia7tfAY8qZnyMIapmlbEHi/wBUjuT4FkitxACdBYvSgBufphXkABw+nktl58n5xo5DL+ABHzxDoRkZIHTWgTLFE55jAw0RomRoHVn+Cliv9wUydGGrwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+npCReC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF5DC4CEE4;
-	Tue, 25 Mar 2025 12:34:18 +0000 (UTC)
+	 MIME-Version; b=ZHdIfHFN+khC6Tc0ikPl8MidcNBd3yJNJB3sogBTZywMdDIdJMpbmClUQvB2f/3ikHoV6BZMvGTr6CIalLX7hAn+UDxgcfZbdat78jaCQj6rHfe6MlgE7fdv/quPNIAYuH8Tlm6pa/4E2pDy+8lfF0Hrtyu5ni8Yo+ApRxEIRbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGmKRPtg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E50CC4CEE4;
+	Tue, 25 Mar 2025 12:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906058;
-	bh=thA8BvFrZ4roCDnSetuch5UvS1Aji6kSj5HToQbvtls=;
+	s=korg; t=1742906374;
+	bh=t5y1I97bDnxoCChYnDYnhstp3Ae61jooXUFedxDWPB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+npCReC+l4/+2wAnfrlTLwHmYcURNOFAmAjaBraeygtit0oTZ/SvQ7tqswy3uGxY
-	 TGGk7v/QqL27bee7mST1faugpZKQ1xJrDpc6I3F8bcHasLbh4d9W9V3RXvGsgyi9ua
-	 +rtJVufqWqXcjj9xN9iDtpFi9/bRaUyjgtgcartw=
+	b=tGmKRPtgVb86yeNrj4vrBI8xxBs2F4GWebnqQut5ekjVI/DHoB9jXYjqYPVHPt7L4
+	 gTVidQAu+nzVH8sc0rZRlEvXHyRkusn4WSG9eT0ACfEW8cTaMSOdTaHLJPpMAfio03
+	 crSHnXJuKUjXILQ2mP0/32vfJPRfGQOfpag3QiPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.13 112/119] KVM: arm64: Remove host FPSIMD saving for non-protected KVM
+	Ben Schneider <ben@bens.haus>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.12 083/116] efi/libstub: Avoid physical address 0x0 when doing random allocation
 Date: Tue, 25 Mar 2025 08:22:50 -0400
-Message-ID: <20250325122151.919018542@linuxfoundation.org>
+Message-ID: <20250325122151.334383533@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,215 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 8eca7f6d5100b6997df4f532090bc3f7e0203bef ]
+commit cb16dfed0093217a68c0faa9394fa5823927e04c upstream.
 
-Now that the host eagerly saves its own FPSIMD/SVE/SME state,
-non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
-and the code to do this is never used. Protected KVM still needs to
-save/restore the host FPSIMD/SVE state to avoid leaking guest state to
-the host (and to avoid revealing to the host whether the guest used
-FPSIMD/SVE/SME), and that code needs to be retained.
+Ben reports spurious EFI zboot failures on a system where physical RAM
+starts at 0x0. When doing random memory allocation from the EFI stub on
+such a platform, a random seed of 0x0 (which means no entropy source is
+available) will result in the allocation to be placed at address 0x0 if
+sufficient space is available.
 
-Remove the unused code and data structures.
+When this allocation is subsequently passed on to the decompression
+code, the 0x0 address is mistaken for NULL and the code complains and
+gives up.
 
-To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
-VHE hyp code, the nVHE/hVHE version is moved into the shared switch
-header, where it is only invoked when KVM is in protected mode.
+So avoid address 0x0 when doing random allocation, and set the minimum
+address to the minimum alignment.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250210195226.1215254-3-mark.rutland@arm.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-[CPACR_EL1_ZEN -> CPACR_ELx_ZEN -- broonie]
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reported-by: Ben Schneider <ben@bens.haus>
+Tested-by: Ben Schneider <ben@bens.haus>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/kvm_host.h       |   18 ++++--------------
- arch/arm64/kvm/arm.c                    |    8 --------
- arch/arm64/kvm/fpsimd.c                 |    2 --
- arch/arm64/kvm/hyp/include/hyp/switch.h |   25 +++++++++++++++++++++++--
- arch/arm64/kvm/hyp/nvhe/hyp-main.c      |    2 +-
- arch/arm64/kvm/hyp/nvhe/switch.c        |   28 ----------------------------
- arch/arm64/kvm/hyp/vhe/switch.c         |    8 --------
- 7 files changed, 28 insertions(+), 63 deletions(-)
+ drivers/firmware/efi/libstub/randomalloc.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -613,23 +613,13 @@ struct kvm_host_data {
- 	struct kvm_cpu_context host_ctxt;
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -75,6 +75,10 @@ efi_status_t efi_random_alloc(unsigned l
+ 	if (align < EFI_ALLOC_ALIGN)
+ 		align = EFI_ALLOC_ALIGN;
  
- 	/*
--	 * All pointers in this union are hyp VA.
-+	 * Hyp VA.
- 	 * sve_state is only used in pKVM and if system_supports_sve().
- 	 */
--	union {
--		struct user_fpsimd_state *fpsimd_state;
--		struct cpu_sve_state *sve_state;
--	};
-+	struct cpu_sve_state *sve_state;
- 
--	union {
--		/* HYP VA pointer to the host storage for FPMR */
--		u64	*fpmr_ptr;
--		/*
--		 * Used by pKVM only, as it needs to provide storage
--		 * for the host
--		 */
--		u64	fpmr;
--	};
-+	/* Used by pKVM only. */
-+	u64	fpmr;
- 
- 	/* Ownership of the FP regs */
- 	enum {
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -2468,14 +2468,6 @@ static void finalize_init_hyp_mode(void)
- 			per_cpu_ptr_nvhe_sym(kvm_host_data, cpu)->sve_state =
- 				kern_hyp_va(sve_state);
- 		}
--	} else {
--		for_each_possible_cpu(cpu) {
--			struct user_fpsimd_state *fpsimd_state;
--
--			fpsimd_state = &per_cpu_ptr_nvhe_sym(kvm_host_data, cpu)->host_ctxt.fp_regs;
--			per_cpu_ptr_nvhe_sym(kvm_host_data, cpu)->fpsimd_state =
--				kern_hyp_va(fpsimd_state);
--		}
- 	}
- }
- 
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -64,8 +64,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vc
- 	 */
- 	fpsimd_save_and_flush_cpu_state();
- 	*host_data_ptr(fp_owner) = FP_STATE_FREE;
--	*host_data_ptr(fpsimd_state) = NULL;
--	*host_data_ptr(fpmr_ptr) = NULL;
- 
- 	vcpu_clear_flag(vcpu, HOST_SVE_ENABLED);
- 	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -375,7 +375,28 @@ static inline void __hyp_sve_save_host(v
- 			 true);
- }
- 
--static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu);
-+static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * Non-protected kvm relies on the host restoring its sve state.
-+	 * Protected kvm restores the host's sve state as not to reveal that
-+	 * fpsimd was used by a guest nor leak upper sve bits.
-+	 */
-+	if (system_supports_sve()) {
-+		__hyp_sve_save_host();
++	/* Avoid address 0x0, as it can be mistaken for NULL */
++	if (alloc_min == 0)
++		alloc_min = align;
 +
-+		/* Re-enable SVE traps if not supported for the guest vcpu. */
-+		if (!vcpu_has_sve(vcpu))
-+			cpacr_clear_set(CPACR_ELx_ZEN, 0);
-+
-+	} else {
-+		__fpsimd_save_state(host_data_ptr(host_ctxt.fp_regs));
-+	}
-+
-+	if (kvm_has_fpmr(kern_hyp_va(vcpu->kvm)))
-+		*host_data_ptr(fpmr) = read_sysreg_s(SYS_FPMR);
-+}
-+
+ 	size = round_up(size, EFI_ALLOC_ALIGN);
  
- /*
-  * We trap the first access to the FP/SIMD to save the host context and
-@@ -425,7 +446,7 @@ static bool kvm_hyp_handle_fpsimd(struct
- 	isb();
- 
- 	/* Write out the host state if it's in the registers */
--	if (host_owns_fp_regs())
-+	if (is_protected_kvm_enabled() && host_owns_fp_regs())
- 		kvm_hyp_save_fpsimd_host(vcpu);
- 
- 	/* Restore the guest state */
---- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-+++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-@@ -83,7 +83,7 @@ static void fpsimd_sve_sync(struct kvm_v
- 	if (system_supports_sve())
- 		__hyp_sve_restore_host();
- 	else
--		__fpsimd_restore_state(*host_data_ptr(fpsimd_state));
-+		__fpsimd_restore_state(host_data_ptr(host_ctxt.fp_regs));
- 
- 	if (has_fpmr)
- 		write_sysreg_s(*host_data_ptr(fpmr), SYS_FPMR);
---- a/arch/arm64/kvm/hyp/nvhe/switch.c
-+++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -193,34 +193,6 @@ static bool kvm_handle_pvm_sys64(struct
- 		kvm_handle_pvm_sysreg(vcpu, exit_code));
- }
- 
--static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
--{
--	/*
--	 * Non-protected kvm relies on the host restoring its sve state.
--	 * Protected kvm restores the host's sve state as not to reveal that
--	 * fpsimd was used by a guest nor leak upper sve bits.
--	 */
--	if (unlikely(is_protected_kvm_enabled() && system_supports_sve())) {
--		__hyp_sve_save_host();
--
--		/* Re-enable SVE traps if not supported for the guest vcpu. */
--		if (!vcpu_has_sve(vcpu))
--			cpacr_clear_set(CPACR_ELx_ZEN, 0);
--
--	} else {
--		__fpsimd_save_state(*host_data_ptr(fpsimd_state));
--	}
--
--	if (kvm_has_fpmr(kern_hyp_va(vcpu->kvm))) {
--		u64 val = read_sysreg_s(SYS_FPMR);
--
--		if (unlikely(is_protected_kvm_enabled()))
--			*host_data_ptr(fpmr) = val;
--		else
--			**host_data_ptr(fpmr_ptr) = val;
--	}
--}
--
- static const exit_handler_fn hyp_exit_handlers[] = {
- 	[0 ... ESR_ELx_EC_MAX]		= NULL,
- 	[ESR_ELx_EC_CP15_32]		= kvm_hyp_handle_cp15_32,
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -309,14 +309,6 @@ static bool kvm_hyp_handle_eret(struct k
- 	return true;
- }
- 
--static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
--{
--	__fpsimd_save_state(*host_data_ptr(fpsimd_state));
--
--	if (kvm_has_fpmr(vcpu->kvm))
--		**host_data_ptr(fpmr_ptr) = read_sysreg_s(SYS_FPMR);
--}
--
- static bool kvm_hyp_handle_tlbi_el2(struct kvm_vcpu *vcpu, u64 *exit_code)
- {
- 	int ret = -EINVAL;
+ 	/* count the suitable slots in each memory map entry */
 
 
 
