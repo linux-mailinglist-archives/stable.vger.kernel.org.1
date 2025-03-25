@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-126526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9ABEA701B3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:28:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A38E7A70099
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0C919A777A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D252717A735
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80BA26FA4D;
-	Tue, 25 Mar 2025 12:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC5926AA9E;
+	Tue, 25 Mar 2025 12:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XC89wDpL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8o3Eazk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864E526FA45;
-	Tue, 25 Mar 2025 12:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FB926AA9B;
+	Tue, 25 Mar 2025 12:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906389; cv=none; b=TfI0gB3C6dV9XDXcgZTawjoMJXeHljGJGMxNyLSMF2V7zLwvD3QxC43XoQo6yIAre9efTCIyd/CXZnYy3kgU7sJzrjtHGrB/nubL2aETw0VicWekc0XL7F9+X0RXPWrqq0gEx86hxsc+vgU+ariNd7XeCkcb6GLbtrGuSdDtqiw=
+	t=1742906192; cv=none; b=Y38UIKmprHnS9BN/hHGVrnH9Wu0Fyi1n14XzZ8oMr4GK4guPh6dKSaXuQBv7eZDVZ+EbkOJi91gnTTqp4neZL3OmzsmGE5vylxDn7+MHNmqQIbUlFnXtSX0GBbTs2GfYpDSbUIGFYWyFSTBaxkpodnzHsuLOmiQ3zCB6JB4jwuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906389; c=relaxed/simple;
-	bh=nMKjN8mt05kli6QUZFV0DwfefupBhbpMxIxr4yPXh3E=;
+	s=arc-20240116; t=1742906192; c=relaxed/simple;
+	bh=6oa26oMB+pWcraJc6oBgd5mW5EUkfg1IDGwBFWgIpPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOQCTVFeCJOiOB57n2XLw/a38ka7eRTGic2TeanDI+S1cZyYQWm+yH7wIcIIoZfnmH5QlNv1oi9C9Obbahb+FDhM53DZj+1JnRXVpma0a3DcCNuo3ELM1ZP2qqq1ARPLUOIKFktrmcZ9o+4vcBnqlwyH4s6F4h+VjxF+1pq8ifQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XC89wDpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3936AC4CEE4;
-	Tue, 25 Mar 2025 12:39:49 +0000 (UTC)
+	 MIME-Version; b=EI75qbfq3KEk0HTIwLGbkh6yP+JIGMzZjgSY4cAR1T5b/WekeFmtyQVRDQAxR6j86+fqO4bnqYObyHHTNDVLKYP1ejsiO1LIo48wPZL+HXXHUHsmykBqBZxjz5+mvERM1kcsNCZUXn+LWif9LJ6YSuwQBXl5r+e+AxwTD4TbLjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8o3Eazk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2A1C4CEE4;
+	Tue, 25 Mar 2025 12:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906389;
-	bh=nMKjN8mt05kli6QUZFV0DwfefupBhbpMxIxr4yPXh3E=;
+	s=korg; t=1742906192;
+	bh=6oa26oMB+pWcraJc6oBgd5mW5EUkfg1IDGwBFWgIpPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XC89wDpLmq0HN1Ee3ltqeQ7zEg6pw/JMKjUWYrqDkByY2MhH7+gQCpYcdrshsXvB3
-	 BAEfS7yNf3D1eEBax4WB4VLX8/PNyqIh18LZsoFNNQEe1s4u55nn1ScxqqblQ38ZZg
-	 /EYI7IHu+kiiln8RLRcitjv2gUZmE1nhpDpLeYNA=
+	b=U8o3EazkMXaCWiUmi/DQZwAK+kDvvpzT1492qWRU0IPeO27R4xir6xlDZIUKupSVz
+	 XDWBo1Y3frFqldyozF2RerIXuDJI7oaNJnpUk1uiCdYqLFDACS/Qn4jwTEKHZx/9Bb
+	 v31VRjNsRrVCEZSDooSLYJK//XyDYytwSun5L2nY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 091/116] drm/amdgpu/gfx12: correct cleanup of me field with gfx_v12_0_me_fini()
+	James Clark <james.clark@linaro.org>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 63/77] KVM: arm64: Calculate cptr_el2 traps on activating traps
 Date: Tue, 25 Mar 2025 08:22:58 -0400
-Message-ID: <20250325122151.538551387@linuxfoundation.org>
+Message-ID: <20250325122146.007520667@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Fuad Tabba <tabba@google.com>
 
-commit 86730b5261d4d8dae3f5b97709d40d694ecf1ddf upstream.
+[ Upstream commit 2fd5b4b0e7b440602455b79977bfa64dea101e6c ]
 
-In gfx_v12_0_cp_gfx_load_me_microcode_rs64(), gfx_v12_0_pfp_fini() is
-incorrectly used to free 'me' field of 'gfx', since gfx_v12_0_pfp_fini()
-can only release 'pfp' field of 'gfx'. The release function of 'me' field
-should be gfx_v12_0_me_fini().
+Similar to VHE, calculate the value of cptr_el2 from scratch on
+activate traps. This removes the need to store cptr_el2 in every
+vcpu structure. Moreover, some traps, such as whether the guest
+owns the fp registers, need to be set on every vcpu run.
 
-Fixes: 52cb80c12e8a ("drm/amdgpu: Add gfx v12_0 ip block support (v6)")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ebdc52607a46cda08972888178c6aa9cd6965141)
-Cc: stable@vger.kernel.org # 6.12.x
+Reported-by: James Clark <james.clark@linaro.org>
+Fixes: 5294afdbf45a ("KVM: arm64: Exclude FP ownership from kvm_vcpu_arch")
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Link: https://lore.kernel.org/r/20241216105057.579031-13-tabba@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/kvm_host.h  |    1 
+ arch/arm64/kvm/arm.c               |    1 
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c |    2 -
+ arch/arm64/kvm/hyp/nvhe/pkvm.c     |   27 -------------------
+ arch/arm64/kvm/hyp/nvhe/switch.c   |   52 ++++++++++++++++++++++---------------
+ 5 files changed, 32 insertions(+), 51 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-@@ -2395,7 +2395,7 @@ static int gfx_v12_0_cp_gfx_load_me_micr
- 				      (void **)&adev->gfx.me.me_fw_data_ptr);
- 	if (r) {
- 		dev_err(adev->dev, "(%d) failed to create me data bo\n", r);
--		gfx_v12_0_pfp_fini(adev);
-+		gfx_v12_0_me_fini(adev);
- 		return r;
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -486,7 +486,6 @@ struct kvm_vcpu_arch {
+ 	/* Values of trap registers for the guest. */
+ 	u64 hcr_el2;
+ 	u64 mdcr_el2;
+-	u64 cptr_el2;
+ 
+ 	/* Values of trap registers for the host before guest entry. */
+ 	u64 mdcr_el2_host;
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1309,7 +1309,6 @@ static int kvm_arch_vcpu_ioctl_vcpu_init
  	}
  
+ 	vcpu_reset_hcr(vcpu);
+-	vcpu->arch.cptr_el2 = kvm_get_reset_cptr_el2(vcpu);
+ 
+ 	/*
+ 	 * Handle the "start in power-off" case.
+--- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
++++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
+@@ -36,7 +36,6 @@ static void flush_hyp_vcpu(struct pkvm_h
+ 
+ 	hyp_vcpu->vcpu.arch.hcr_el2	= host_vcpu->arch.hcr_el2;
+ 	hyp_vcpu->vcpu.arch.mdcr_el2	= host_vcpu->arch.mdcr_el2;
+-	hyp_vcpu->vcpu.arch.cptr_el2	= host_vcpu->arch.cptr_el2;
+ 
+ 	hyp_vcpu->vcpu.arch.iflags	= host_vcpu->arch.iflags;
+ 	hyp_vcpu->vcpu.arch.fp_state	= host_vcpu->arch.fp_state;
+@@ -59,7 +58,6 @@ static void sync_hyp_vcpu(struct pkvm_hy
+ 	host_vcpu->arch.ctxt		= hyp_vcpu->vcpu.arch.ctxt;
+ 
+ 	host_vcpu->arch.hcr_el2		= hyp_vcpu->vcpu.arch.hcr_el2;
+-	host_vcpu->arch.cptr_el2	= hyp_vcpu->vcpu.arch.cptr_el2;
+ 
+ 	host_vcpu->arch.fault		= hyp_vcpu->vcpu.arch.fault;
+ 
+--- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
++++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+@@ -26,8 +26,6 @@ static void pvm_init_traps_aa64pfr0(stru
+ 	const u64 feature_ids = pvm_read_id_reg(vcpu, SYS_ID_AA64PFR0_EL1);
+ 	u64 hcr_set = HCR_RW;
+ 	u64 hcr_clear = 0;
+-	u64 cptr_set = 0;
+-	u64 cptr_clear = 0;
+ 
+ 	/* Protected KVM does not support AArch32 guests. */
+ 	BUILD_BUG_ON(FIELD_GET(ARM64_FEATURE_MASK(ID_AA64PFR0_EL1_EL0),
+@@ -57,21 +55,10 @@ static void pvm_init_traps_aa64pfr0(stru
+ 	/* Trap AMU */
+ 	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64PFR0_EL1_AMU), feature_ids)) {
+ 		hcr_clear |= HCR_AMVOFFEN;
+-		cptr_set |= CPTR_EL2_TAM;
+-	}
+-
+-	/* Trap SVE */
+-	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64PFR0_EL1_SVE), feature_ids)) {
+-		if (has_hvhe())
+-			cptr_clear |= CPACR_EL1_ZEN_EL0EN | CPACR_EL1_ZEN_EL1EN;
+-		else
+-			cptr_set |= CPTR_EL2_TZ;
+ 	}
+ 
+ 	vcpu->arch.hcr_el2 |= hcr_set;
+ 	vcpu->arch.hcr_el2 &= ~hcr_clear;
+-	vcpu->arch.cptr_el2 |= cptr_set;
+-	vcpu->arch.cptr_el2 &= ~cptr_clear;
+ }
+ 
+ /*
+@@ -101,7 +88,6 @@ static void pvm_init_traps_aa64dfr0(stru
+ 	const u64 feature_ids = pvm_read_id_reg(vcpu, SYS_ID_AA64DFR0_EL1);
+ 	u64 mdcr_set = 0;
+ 	u64 mdcr_clear = 0;
+-	u64 cptr_set = 0;
+ 
+ 	/* Trap/constrain PMU */
+ 	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64DFR0_EL1_PMUVer), feature_ids)) {
+@@ -128,17 +114,8 @@ static void pvm_init_traps_aa64dfr0(stru
+ 	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64DFR0_EL1_TraceFilt), feature_ids))
+ 		mdcr_set |= MDCR_EL2_TTRF;
+ 
+-	/* Trap Trace */
+-	if (!FIELD_GET(ARM64_FEATURE_MASK(ID_AA64DFR0_EL1_TraceVer), feature_ids)) {
+-		if (has_hvhe())
+-			cptr_set |= CPACR_EL1_TTA;
+-		else
+-			cptr_set |= CPTR_EL2_TTA;
+-	}
+-
+ 	vcpu->arch.mdcr_el2 |= mdcr_set;
+ 	vcpu->arch.mdcr_el2 &= ~mdcr_clear;
+-	vcpu->arch.cptr_el2 |= cptr_set;
+ }
+ 
+ /*
+@@ -189,10 +166,6 @@ static void pvm_init_trap_regs(struct kv
+ 	/* Clear res0 and set res1 bits to trap potential new features. */
+ 	vcpu->arch.hcr_el2 &= ~(HCR_RES0);
+ 	vcpu->arch.mdcr_el2 &= ~(MDCR_EL2_RES0);
+-	if (!has_hvhe()) {
+-		vcpu->arch.cptr_el2 |= CPTR_NVHE_EL2_RES1;
+-		vcpu->arch.cptr_el2 &= ~(CPTR_NVHE_EL2_RES0);
+-	}
+ }
+ 
+ /*
+--- a/arch/arm64/kvm/hyp/nvhe/switch.c
++++ b/arch/arm64/kvm/hyp/nvhe/switch.c
+@@ -36,34 +36,46 @@ DEFINE_PER_CPU(unsigned long, kvm_hyp_ve
+ 
+ extern void kvm_nvhe_prepare_backtrace(unsigned long fp, unsigned long pc);
+ 
+-static void __activate_traps(struct kvm_vcpu *vcpu)
++static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
+ {
+-	u64 val;
++	u64 val = CPTR_EL2_TAM;	/* Same bit irrespective of E2H */
+ 
+-	___activate_traps(vcpu);
+-	__activate_traps_common(vcpu);
++	if (has_hvhe()) {
++		val |= CPACR_ELx_TTA;
+ 
+-	val = vcpu->arch.cptr_el2;
+-	val |= CPTR_EL2_TAM;	/* Same bit irrespective of E2H */
+-	val |= has_hvhe() ? CPACR_EL1_TTA : CPTR_EL2_TTA;
+-	if (cpus_have_final_cap(ARM64_SME)) {
+-		if (has_hvhe())
+-			val &= ~(CPACR_EL1_SMEN_EL1EN | CPACR_EL1_SMEN_EL0EN);
+-		else
+-			val |= CPTR_EL2_TSM;
+-	}
++		if (guest_owns_fp_regs(vcpu)) {
++			val |= CPACR_ELx_FPEN;
++			if (vcpu_has_sve(vcpu))
++				val |= CPACR_ELx_ZEN;
++		}
++	} else {
++		val |= CPTR_EL2_TTA | CPTR_NVHE_EL2_RES1;
++
++		/*
++		 * Always trap SME since it's not supported in KVM.
++		 * TSM is RES1 if SME isn't implemented.
++		 */
++		val |= CPTR_EL2_TSM;
+ 
+-	if (!guest_owns_fp_regs(vcpu)) {
+-		if (has_hvhe())
+-			val &= ~(CPACR_EL1_FPEN_EL0EN | CPACR_EL1_FPEN_EL1EN |
+-				 CPACR_EL1_ZEN_EL0EN | CPACR_EL1_ZEN_EL1EN);
+-		else
+-			val |= CPTR_EL2_TFP | CPTR_EL2_TZ;
++		if (!vcpu_has_sve(vcpu) || !guest_owns_fp_regs(vcpu))
++			val |= CPTR_EL2_TZ;
+ 
+-		__activate_traps_fpsimd32(vcpu);
++		if (!guest_owns_fp_regs(vcpu))
++			val |= CPTR_EL2_TFP;
+ 	}
+ 
++	if (!guest_owns_fp_regs(vcpu))
++		__activate_traps_fpsimd32(vcpu);
++
+ 	kvm_write_cptr_el2(val);
++}
++
++static void __activate_traps(struct kvm_vcpu *vcpu)
++{
++	___activate_traps(vcpu);
++	__activate_traps_common(vcpu);
++	__activate_cptr_traps(vcpu);
++
+ 	write_sysreg(__this_cpu_read(kvm_hyp_vector), vbar_el2);
+ 
+ 	if (cpus_have_final_cap(ARM64_WORKAROUND_SPECULATIVE_AT)) {
 
 
 
