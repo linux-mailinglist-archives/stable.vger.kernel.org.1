@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-126387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431F2A700E7
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B93A70055
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DE903B4745
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF6FC16E489
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35C7269D1F;
-	Tue, 25 Mar 2025 12:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEF7269812;
+	Tue, 25 Mar 2025 12:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1faraWTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3CS0TN1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910232580F6;
-	Tue, 25 Mar 2025 12:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C40D2571AB;
+	Tue, 25 Mar 2025 12:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906130; cv=none; b=cnivAIJ9AdKjZGqp8ndAMHs2TrYOX3yYQ8u853UV8/5FrQnzwMVwPXxM/M7/FDhps89ZfXSCzegh0P/d2V/i9i+GLYqWqS8O4oVyqEZg6Q1UmL/f7cHuWLEkwVRVvPE8DKc+8dPboNmfOrsFfF7NuEAccOi7WvOmaz8GVzizIg0=
+	t=1742906017; cv=none; b=sPgkV3ewyQGmEHHzz2SK1/Bo+B2+5HVltCICSNN4Ynthviy/XSarCwfZ0EXI5v2VnvCHk9BqWTepXA/XBt7BUftDmT8sRwRioT+JUQEnnJ7bYSxQkwUVrIsCtlpledAcx8CJqFzk4puJhs77DUGlKmvHeexSQWKRu4NVamps7fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906130; c=relaxed/simple;
-	bh=+8GBBTj2HCRA2Uw+tlnj5WZN55CZuFC7YIlVYBVqY+U=;
+	s=arc-20240116; t=1742906017; c=relaxed/simple;
+	bh=c1+0BDk/oZ4dy7RItT3G5Z5S8UD4NG9ZFMRB0z96O64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvBTkhp6mxbb7B3BCn90JPQMZYIHCon20CnlYUb5HQ6cp8HV/KTr+/qgHKrgwoRPJI5agJt2+K6nV2BYwJ+3YljlG7TFaFiRIkItZtvFvdDFJpvfOosSs2zsIFrQnbW6KmDmy/lBCMhdssUaVydAupdpOlMQok1r+GmuU0SL1TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1faraWTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97F4C4CEE9;
-	Tue, 25 Mar 2025 12:35:29 +0000 (UTC)
+	 MIME-Version; b=cXRMIr2YUfFJd399I5ZdXO5xFdgAVdAUgNMtnWfHZph/k9gvjWHm7Xfd0hSEm2phm3SRJ9CmFVIlDZelrsWtpod29wDdLLeFRN2OqxmmEviXbhh5qGraIAKxABLQIupx0sJbC77fqr2qyjXN3LmNE2KbEmCfLRBRzPRY3EZWLkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3CS0TN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADACBC4CEE4;
+	Tue, 25 Mar 2025 12:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906130;
-	bh=+8GBBTj2HCRA2Uw+tlnj5WZN55CZuFC7YIlVYBVqY+U=;
+	s=korg; t=1742906016;
+	bh=c1+0BDk/oZ4dy7RItT3G5Z5S8UD4NG9ZFMRB0z96O64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1faraWTQLF225Pryjh58E5hvaPW1y/dauX0BfAxvF3FGWDAmP1axNjQ0Rf12air2u
-	 u/2F4muhxU3b+LGRkEayvhYG9FdwjTZrrY/6oBm45oA0wJxtdw+bhMbkbpgO+GC7SO
-	 wQmuI+dUpZPxbX6PAzYg+ll+KN21nhJsqQH2QsWU=
+	b=i3CS0TN12wjTqL+BFcY2/NEX4nxgY6S0S/1z8M+LPxLVrOL4ZUEZAlLLFg3v6BqTH
+	 xQy8V784uIGSgjhj1zgwIul8pEpzhI6k7531uDRcGX4LADppOC6WwM3p9p3WhgTzjy
+	 jkAA5fu2YQwp4py4tVaNSbkD9Jb3D5PeVmTmcKKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Cassen <acassen@corp.free.fr>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 03/77] xfrm: fix tunnel mode TX datapath in packet offload mode
+	Frank Li <frank.li@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.13 060/119] can: flexcan: disable transceiver during system PM
 Date: Tue, 25 Mar 2025 08:21:58 -0400
-Message-ID: <20250325122144.377172048@linuxfoundation.org>
+Message-ID: <20250325122150.587117726@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Cassen <acassen@corp.free.fr>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit 5eddd76ec2fd1988f0a3450fde9730b10dd22992 ]
+commit 5a19143124be42900b3fbc9ada3c919632eb45eb upstream.
 
-Packets that match the output xfrm policy are delivered to the netstack.
-In IPsec packet mode for tunnel mode, the HW is responsible for building
-the hard header and outer IP header. In such a situation, the inner
-header may refer to a network that is not directly reachable by the host,
-resulting in a failed neighbor resolution. The packet is then dropped.
-xfrm policy defines the netdevice to use for xmit so we can send packets
-directly to it.
+During system PM, if no wakeup requirement, disable transceiver to
+save power.
 
-Makes direct xmit exclusive to tunnel mode, since some rules may apply
-in transport mode.
-
-Fixes: f8a70afafc17 ("xfrm: add TX datapath support for IPsec packet offload mode")
-Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <frank.li@nxp.com>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250314110145.899179-2-haibo.chen@nxp.com
+[mkl: add newlines]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_output.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ drivers/net/can/flexcan/flexcan-core.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index e5722c95b8bb3..9160a5e09041d 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -610,6 +610,40 @@ int xfrm_output_resume(struct sock *sk, struct sk_buff *skb, int err)
- }
- EXPORT_SYMBOL_GPL(xfrm_output_resume);
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -2260,6 +2260,10 @@ static int __maybe_unused flexcan_suspen
  
-+static int xfrm_dev_direct_output(struct sock *sk, struct xfrm_state *x,
-+				  struct sk_buff *skb)
-+{
-+	struct dst_entry *dst = skb_dst(skb);
-+	struct net *net = xs_net(x);
-+	int err;
+ 			flexcan_chip_interrupts_disable(dev);
+ 
++			err = flexcan_transceiver_disable(priv);
++			if (err)
++				return err;
 +
-+	dst = skb_dst_pop(skb);
-+	if (!dst) {
-+		XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-+		kfree_skb(skb);
-+		return -EHOSTUNREACH;
-+	}
-+	skb_dst_set(skb, dst);
-+	nf_reset_ct(skb);
+ 			err = pinctrl_pm_select_sleep_state(device);
+ 			if (err)
+ 				return err;
+@@ -2292,10 +2296,16 @@ static int __maybe_unused flexcan_resume
+ 			if (err)
+ 				return err;
+ 
+-			err = flexcan_chip_start(dev);
++			err = flexcan_transceiver_enable(priv);
+ 			if (err)
+ 				return err;
+ 
++			err = flexcan_chip_start(dev);
++			if (err) {
++				flexcan_transceiver_disable(priv);
++				return err;
++			}
 +
-+	err = skb_dst(skb)->ops->local_out(net, sk, skb);
-+	if (unlikely(err != 1)) {
-+		kfree_skb(skb);
-+		return err;
-+	}
-+
-+	/* In transport mode, network destination is
-+	 * directly reachable, while in tunnel mode,
-+	 * inner packet network may not be. In packet
-+	 * offload type, HW is responsible for hard
-+	 * header packet mangling so directly xmit skb
-+	 * to netdevice.
-+	 */
-+	skb->dev = x->xso.dev;
-+	__skb_push(skb, skb->dev->hard_header_len);
-+	return dev_queue_xmit(skb);
-+}
-+
- static int xfrm_output2(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
- 	return xfrm_output_resume(sk, skb, 1);
-@@ -729,6 +763,13 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
- 			return -EHOSTUNREACH;
+ 			flexcan_chip_interrupts_enable(dev);
  		}
  
-+		/* Exclusive direct xmit for tunnel mode, as
-+		 * some filtering or matching rules may apply
-+		 * in transport mode.
-+		 */
-+		if (x->props.mode == XFRM_MODE_TUNNEL)
-+			return xfrm_dev_direct_output(sk, x, skb);
-+
- 		return xfrm_output_resume(sk, skb, 0);
- 	}
- 
--- 
-2.39.5
-
 
 
 
