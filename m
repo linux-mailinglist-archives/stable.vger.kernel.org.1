@@ -1,126 +1,124 @@
-Return-Path: <stable+bounces-126003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE7FA6ED83
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:25:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BDEA6EDA3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:27:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB17F3AF827
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 10:24:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C33C31896D1A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 10:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9261EBFE2;
-	Tue, 25 Mar 2025 10:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650782561B8;
+	Tue, 25 Mar 2025 10:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="FYNKqZPL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkyeH/HT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921A91EA7CD
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 10:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE8E255249;
+	Tue, 25 Mar 2025 10:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742898297; cv=none; b=MAL2Ex76fmQbqH7E/q7x0xzg6iR1QYInxQqjmiSiC48SAu4sAcO1jDy+xCuQPgNtwvL4kJEIOTIBoZ6JNkCQfuRtt1FiCyO0Eu3uArhB5fPT7W23kCrh1ZifqNJNwO+/Lu1QxuZz6BOVyoOU14YTr+nzcA71cYRyD9E4JsJ/eQ0=
+	t=1742898396; cv=none; b=Ontt9pQ4OD0mg1pNkCZyDtnZNBZ4qmRzT381v7DO0voadKB5c+CJ3Z8Bnajv9j2uVBUgAVqLXaJLh7THjIcnMtlbKyozL4PvjljDLRyA5ch0FeuKtQLECYCgjXdlAyAIg/JKV9h9q1xlpJD5hHyqOBEqxMLyKtjWayd7ZULVCOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742898297; c=relaxed/simple;
-	bh=z+c8zELSrHp64t09GyCDgXuXyc4d7V+DwrevJ04pFik=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=gJz3smki8ewHgt+BQBGmteiDBBCDFwhHrFg+Vbd7lNep31bEX2cikLLWKWDEYp/3MFaJrFj632RYh+/qfr9EbzBmcrrv5vwiWSKuzp4pcQiwCS68/VtVHmbYUhdbL2Jwp6ja0f5qykseQ1gxQ8k5oYU09MXe/sT7kjvW8bOaV/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=FYNKqZPL; arc=none smtp.client-ip=52.95.48.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1742898296; x=1774434296;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=f8H/YRU3zx591aQycj/3pVhlY+IjvDM6UVse4mwe5O4=;
-  b=FYNKqZPLvFUVgK3h7VO6vE/b1lU+yKVh9+OLQb2QoLA9W3iON0w4tZWB
-   XBOTjZGeFePa48CJA/N6fYr2gOUC77ZXMgP6EBY0a3ZoN1Cz3c+YbWymo
-   3FK7UoU0iV//YZAmxlUFNlBdo0btkZDS/6kD4LGbZstPs1tIy9Ur9wVl9
-   k=;
-X-IronPort-AV: E=Sophos;i="6.14,274,1736812800"; 
-   d="scan'208";a="474128744"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 10:24:51 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [10.0.17.79:30922]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.8.139:2525] with esmtp (Farcaster)
- id adf60b02-6bf7-47f2-a9c5-21e053e71723; Tue, 25 Mar 2025 10:24:49 +0000 (UTC)
-X-Farcaster-Flow-ID: adf60b02-6bf7-47f2-a9c5-21e053e71723
-Received: from EX19D019EUB002.ant.amazon.com (10.252.51.33) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 25 Mar 2025 10:24:41 +0000
-Received: from EX19D019EUB003.ant.amazon.com (10.252.51.50) by
- EX19D019EUB002.ant.amazon.com (10.252.51.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 25 Mar 2025 10:24:41 +0000
-Received: from EX19D019EUB003.ant.amazon.com ([fe80::531b:a721:1f0c:7896]) by
- EX19D019EUB003.ant.amazon.com ([fe80::531b:a721:1f0c:7896%3]) with mapi id
- 15.02.1544.014; Tue, 25 Mar 2025 10:24:41 +0000
-From: "Acs, Jakub" <acsjakub@amazon.de>
-To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-CC: "Acs, Jakub" <acsjakub@amazon.de>, Hagar Hemdan <hagarhem@amazon.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH 6.1] block, bfq: fix re-introduced UAF in bic_set_bfqq()
-Thread-Topic: [PATCH 6.1] block, bfq: fix re-introduced UAF in bic_set_bfqq()
-Thread-Index: AQHbnXAe8vbn5GzlZEaO8KyHerbMYQ==
-Date: Tue, 25 Mar 2025 10:24:41 +0000
-Message-ID: <20250325102409.50587-1-acsjakub@amazon.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1742898396; c=relaxed/simple;
+	bh=Oh9hzrub7V3yA6gRUAWaXuxAVYkgTAMlh3xgo9/9ols=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lLAzAuJPBCTtwTO2AV3ZExs1Rm5ATiZeSkdwraR2BJC5TGZpU4X4Rj77WRUWmvXXACcJ56HsxHK3h8tjO5FeuBiiQU/q0VG0KZqpqt2MV18m77T6R0eSx6ZSbj4/WUdj+l1SH6wN6VxfIJZFh1J90GQQVto1GlYa+qLzkXzs9Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkyeH/HT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBEAC4AF0B;
+	Tue, 25 Mar 2025 10:26:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742898395;
+	bh=Oh9hzrub7V3yA6gRUAWaXuxAVYkgTAMlh3xgo9/9ols=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SkyeH/HTmIBNAjo7Dx7nqIpBRB79DCVMvI1u2Su7let3jQAlYRaI68+tDB4KPdA6l
+	 mz2Wv/ydl61gRRiKN5/MEOLl7ckni3Lcs8nOTYeUOW8IEnGRcwTB9nSVd1+7tZyca6
+	 C1II+sfocYNKda4dr1+JC4lwYhRNLZPakozchoBPKivqOQTgWZhkgOIDv5Zkk2/kFb
+	 7E+LCI6r7E5mjD+zu5o2nS/d3CTr3GMa/vQCBEvZB1iaBjeLCtpM198N0tqnm+j8qp
+	 FFxyx3iuq2nm3JhGnXPl7vDgACZIP5DziqXBrRd5KmZoi1jNt17ix68m40ETZuzeaa
+	 E0296fJI8B9sg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tx1UQ-00GsRS-0l;
+	Tue, 25 Mar 2025 10:26:34 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev
+Cc: Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Janne Grunau <j@jannau.net>,
+	Hector Martin <marcan@marcan.st>,
+	Sven Peter <sven@svenpeter.dev>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 08/13] PCI: apple: Set only available ports up
+Date: Tue, 25 Mar 2025 10:26:05 +0000
+Message-Id: <20250325102610.2073863-9-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250325102610.2073863-1-maz@kernel.org>
+References: <20250325102610.2073863-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, asahi@lists.linux.dev, alyssa@rosenzweig.io, j@jannau.net, marcan@marcan.st, sven@svenpeter.dev, bhelgaas@google.com, lpieralisi@kernel.org, kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org, krzk+dt@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Commit eca0025faa96ac ("block, bfq: split sync bfq_queues on a=0A=
-per-actuator basis"), which is a backport of 9778369a2d6c5e ("block,=0A=
-bfq: split sync bfq_queues on a per-actuator basis") re-introduces UAF=0A=
-bug originally fixed by b600de2d7d3a16 ("block, bfq: fix uaf for bfqq in=0A=
-bic_set_bfqq()") and backported to 6.1 in cb1876fc33af26 ("block, bfq:=0A=
-fix uaf for bfqq in bic_set_bfqq()").=0A=
-=0A=
-bfq_release_process_ref() may release the sync_bfqq variable, which=0A=
-points to the same bfqq as bic->bfqq member for call context from=0A=
-__bfq_bic_change_cgroup(). bic_set_bfqq() then accesses bic->bfqq member=0A=
-which leads to the UAF condition.=0A=
-=0A=
-Fix this by bringing the incriminated function calls back in correct=0A=
-order.=0A=
-=0A=
-Fixes: eca0025faa96ac ("block, bfq: split sync bfq_queues on a per-actuator=
- basis")=0A=
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>=0A=
-Cc: Hagar Hemdan <hagarhem@amazon.com>=0A=
-Cc: stable@vger.kernel.org=0A=
----=0A=
- block/bfq-cgroup.c | 2 +-=0A=
- 1 file changed, 1 insertion(+), 1 deletion(-)=0A=
-=0A=
-diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c=0A=
-index 5d202b775beb..c202e2527d05 100644=0A=
---- a/block/bfq-cgroup.c=0A=
-+++ b/block/bfq-cgroup.c=0A=
-@@ -739,8 +739,8 @@ static void bfq_sync_bfqq_move(struct bfq_data *bfqd,=
-=0A=
- 		 * old cgroup.=0A=
- 		 */=0A=
- 		bfq_put_cooperator(sync_bfqq);=0A=
--		bfq_release_process_ref(bfqd, sync_bfqq);=0A=
- 		bic_set_bfqq(bic, NULL, true, act_idx);=0A=
-+		bfq_release_process_ref(bfqd, sync_bfqq);=0A=
- 	}=0A=
- }=0A=
- =0A=
--- =0A=
-2.47.1=0A=
-=0A=
+From: Janne Grunau <j@jannau.net>
+
+Iterating over disabled ports results in of_irq_parse_raw() parsing
+the wrong "interrupt-map" entries, as it takes the status of the node
+into account.
+
+Switching from for_each_child_of_node() to for_each_available_child_of_node()
+solves this issue.
+
+This became apparent after disabling unused PCIe ports in the Apple
+Silicon device trees instead of deleting them.
+
+Link: https://lore.kernel.org/asahi/20230214-apple_dts_pcie_disable_unused-v1-0-5ea0d3ddcde3@jannau.net/
+Link: https://lore.kernel.org/asahi/1ea2107a-bb86-8c22-0bbc-82c453ab08ce@linaro.org/
+Fixes: 1e33888fbe44 ("PCI: apple: Add initial hardware bring-up")
+Cc: stable@vger.kernel.org
+Signed-off-by: Janne Grunau <j@jannau.net>
+Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ drivers/pci/controller/pcie-apple.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
+index 6271533f1b042..23d9f62bd2ad4 100644
+--- a/drivers/pci/controller/pcie-apple.c
++++ b/drivers/pci/controller/pcie-apple.c
+@@ -747,7 +747,7 @@ static int apple_pcie_init(struct pci_config_window *cfg)
+ 	struct device_node *of_port;
+ 	int ret;
+ 
+-	for_each_child_of_node(dev->of_node, of_port) {
++	for_each_available_child_of_node(dev->of_node, of_port) {
+ 		ret = apple_pcie_setup_port(pcie, of_port);
+ 		if (ret) {
+ 			dev_err(dev, "Port %pOF setup fail: %d\n", of_port, ret);
+-- 
+2.39.2
+
 
