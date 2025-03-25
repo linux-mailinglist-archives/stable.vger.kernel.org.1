@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13398A70118
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B7FA70062
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 799F9843EFA
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E47F9176C9E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B3A26B2DC;
-	Tue, 25 Mar 2025 12:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A732325BAB7;
+	Tue, 25 Mar 2025 12:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0Eny3Wr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIeBko1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6734826B2B3;
-	Tue, 25 Mar 2025 12:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DB12561A2;
+	Tue, 25 Mar 2025 12:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906271; cv=none; b=oI3hcN/sliEB06j+kjbbR3RY7e/pRMZAWRehMGgb+mMFHDHf35kokFhsbUlwWgJe9zWNYoeft73nFpqwD36TzB3jiB9QoynZm+TCieVgjeADzqKGYUIHqw6pwh0VhWELu7TkV2Rc6HzVbMxmz+wTCAWRaQEFljNBYTwzTdGamhk=
+	t=1742906089; cv=none; b=VJ+aIJZK7Ocq4JA0ogb7Xu0UM6bF92dgPNyES1BUpcNkgMgaiwUJx3pmvHN9e1r5fAuTF1tFafIzWxh8irXygNAjnxqn+Pup5iiJwvkkp9xX2Iee35/6GaomQUX2pWZE5wwwwWPdEVETqDqKWYhlT2BbFrhfx7HM0sf/nC5m5YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906271; c=relaxed/simple;
-	bh=wyOFq07p58OSkWx9wXO55j/fM74n9ai2rtENavVwyUI=;
+	s=arc-20240116; t=1742906089; c=relaxed/simple;
+	bh=NXVcfym7y3uoOUTbTWfxad3KgtpCEEVBxUxqn+SGNIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UP3eGUZRpIwuLx5S+K1kE/XyBcKTBGXN+lIAeuOigFEUsHbsCfUEe+4pzqvOq3O7VBjunTv0gps78Tora/mkMQrsCNXQOX3Ae0mPvh6dcwkF18ZzMPVYe3p/0jpbDqkDG/FRodNrWjk2NkZ1yhu5NfGHnl6EFgqXLbQVNr3xocg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0Eny3Wr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1577AC4CEE4;
-	Tue, 25 Mar 2025 12:37:50 +0000 (UTC)
+	 MIME-Version; b=PoEodKq5FMCY6YzJB6JWg3xazFw2YAgWkj9yDdp4I0tsILrKSUYdfLBLM0MvkITCNKF4OXhg3HFiTiQ+R4fKba0+rpPmndvQlfWA0qBDCub+ayQaoXXoTJAYQ/gNsz7hLZFgp4hg46yPNg5slFotSGCn/IXJ1Z/i7YitZ62SXro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIeBko1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1C5C4CEE9;
+	Tue, 25 Mar 2025 12:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906271;
-	bh=wyOFq07p58OSkWx9wXO55j/fM74n9ai2rtENavVwyUI=;
+	s=korg; t=1742906088;
+	bh=NXVcfym7y3uoOUTbTWfxad3KgtpCEEVBxUxqn+SGNIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0Eny3WrzSQZxfz/OJx7MJUjA1I2FHOrLQkF3DJAoyEYR0+ZrrGtVnanJa13jYtaK
-	 1zsd6QDuHh3QunMXDLkYIB57E8vHZUIs4FTfFaeacPDWoNoMwxe1JY7SM3/VOGv0jz
-	 /THYdqSywd4mM9Bikv95oLXEMH+skyRUosjDLVQI=
+	b=GIeBko1ZTA5zxAQlUelsGjaLip3Dwnk9wL2jJaNqNblusP5i3tl7atwxQhwWe3c/l
+	 J6zZqcq7Y5+pHOFpMnRnv8gWux9l6t7REEEbrB2A07heXS3/PeYCXG7wPt3uDScuMj
+	 t2ffvKwiw0vYzXV6Yi2opZz+r7tr8U1oDs1hfCUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/116] RDMA/hns: Fix missing xa_destroy()
-Date: Tue, 25 Mar 2025 08:21:55 -0400
-Message-ID: <20250325122149.934085252@linuxfoundation.org>
+Subject: [PATCH 6.6 01/77] firmware: imx-scu: fix OF node leak in .probe()
+Date: Tue, 25 Mar 2025 08:21:56 -0400
+Message-ID: <20250325122144.305047508@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit eda0a2fdbc24c35cd8d61d9c9111cafd5f89b2dc ]
+[ Upstream commit fbf10b86f6057cf79300720da4ea4b77e6708b0d ]
 
-Add xa_destroy() for xarray in driver.
+imx_scu_probe() calls of_parse_phandle_with_args(), but does not
+release the OF node reference obtained by it. Add a of_node_put() call
+after done with the node.
 
-Fixes: 5c1f167af112 ("RDMA/hns: Init SRQ table for hip08")
-Fixes: 27e19f451089 ("RDMA/hns: Convert cq_table to XArray")
-Fixes: 736b5a70db98 ("RDMA/hns: Convert qp_table_tree to XArray")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-7-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: f25a066d1a07 ("firmware: imx-scu: Support one TX and one RX")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_alloc.c | 4 +++-
- drivers/infiniband/hw/hns/hns_roce_cq.c    | 1 +
- drivers/infiniband/hw/hns/hns_roce_qp.c    | 1 +
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/firmware/imx/imx-scu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_alloc.c b/drivers/infiniband/hw/hns/hns_roce_alloc.c
-index 950c133d4220e..6ee911f6885b5 100644
---- a/drivers/infiniband/hw/hns/hns_roce_alloc.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_alloc.c
-@@ -175,8 +175,10 @@ void hns_roce_cleanup_bitmap(struct hns_roce_dev *hr_dev)
- 	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_XRC)
- 		ida_destroy(&hr_dev->xrcd_ida.ida);
+diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
+index 1dd4362ef9a3f..8c28e25ddc8a6 100644
+--- a/drivers/firmware/imx/imx-scu.c
++++ b/drivers/firmware/imx/imx-scu.c
+@@ -280,6 +280,7 @@ static int imx_scu_probe(struct platform_device *pdev)
+ 		return ret;
  
--	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_SRQ)
-+	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_SRQ) {
- 		ida_destroy(&hr_dev->srq_table.srq_ida.ida);
-+		xa_destroy(&hr_dev->srq_table.xa);
-+	}
- 	hns_roce_cleanup_qp_table(hr_dev);
- 	hns_roce_cleanup_cq_table(hr_dev);
- 	ida_destroy(&hr_dev->mr_table.mtpt_ida.ida);
-diff --git a/drivers/infiniband/hw/hns/hns_roce_cq.c b/drivers/infiniband/hw/hns/hns_roce_cq.c
-index 4106423a1b399..3a5c93c9fb3e6 100644
---- a/drivers/infiniband/hw/hns/hns_roce_cq.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_cq.c
-@@ -537,5 +537,6 @@ void hns_roce_cleanup_cq_table(struct hns_roce_dev *hr_dev)
+ 	sc_ipc->fast_ipc = of_device_is_compatible(args.np, "fsl,imx8-mu-scu");
++	of_node_put(args.np);
  
- 	for (i = 0; i < HNS_ROCE_CQ_BANK_NUM; i++)
- 		ida_destroy(&hr_dev->cq_table.bank[i].ida);
-+	xa_destroy(&hr_dev->cq_table.array);
- 	mutex_destroy(&hr_dev->cq_table.bank_mutex);
- }
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index 52b671156246b..8901c142c1b65 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -1603,6 +1603,7 @@ void hns_roce_cleanup_qp_table(struct hns_roce_dev *hr_dev)
- 	for (i = 0; i < HNS_ROCE_QP_BANK_NUM; i++)
- 		ida_destroy(&hr_dev->qp_table.bank[i].ida);
- 	xa_destroy(&hr_dev->qp_table.dip_xa);
-+	xa_destroy(&hr_dev->qp_table_xa);
- 	mutex_destroy(&hr_dev->qp_table.bank_mutex);
- 	mutex_destroy(&hr_dev->qp_table.scc_mutex);
- }
+ 	num_channel = sc_ipc->fast_ipc ? 2 : SCU_MU_CHAN_NUM;
+ 	for (i = 0; i < num_channel; i++) {
 -- 
 2.39.5
 
