@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-126268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C50A6FFC0
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA55A70175
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:24:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B32A7A28CC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EADD019A5807
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDFF268C44;
-	Tue, 25 Mar 2025 12:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C0E25D537;
+	Tue, 25 Mar 2025 12:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z14QVR5P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLJkIfZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05A8E55B;
-	Tue, 25 Mar 2025 12:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2399E2586E0;
+	Tue, 25 Mar 2025 12:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905911; cv=none; b=lapCnslHDp2eC5KGiHkCo07qsQiVGCQEDnd5AS0EFTwnC66GbyvVts8pIPwSmXC4D/bskksLymrIOJ8PrW14hPY5OCl+W/q2FF6UGDrSdtS8sdQ/M4GQJPvO5ND6LKBbzgZcsm2ZVPu+I5M6pdK5jlZO8OtZTRGbGmScJaVLc8A=
+	t=1742906275; cv=none; b=Eve1f1Frp1nesXjA/9/mn8uaXhQS/kMPctY95cJWn2YdECDM/xhWxp81sxiWarYvptq7ZxY7dMyzcGTTf2UClVYQWfhMMxntC9K/zWwMhwdZLUbZJ/zKVWMjwWSzGULuJIMfqATo8BodScotcNgCbaFMtvot5iUs0v25SP8p3fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905911; c=relaxed/simple;
-	bh=sDQjGI/FQbDeliczrsHg2jfwVKEciWjka/Op3pkSH/w=;
+	s=arc-20240116; t=1742906275; c=relaxed/simple;
+	bh=+zJtqvB1qO+xQ2OE4g245vIEZjrfNvI8jaNNyc06Qaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDwVMl73+uLGIDXNdgPPV1h75Y01GBLXHFV5kER8flxAgE5RC802ND5jrdY9ze13uDpRcHufSonM1PPG3FsThY8Bmd6a28cGauLErvJ1PqMzn6eV6R66EAcnaoa/tDx92QGTgWHgr/0senz9mM9ekIAyECWYvUUAQCPiXHgRHmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z14QVR5P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39F9C4CEE9;
-	Tue, 25 Mar 2025 12:31:50 +0000 (UTC)
+	 MIME-Version; b=uMI+NQnYRmve1x4hlFksWfnFSOpp4LX27Poojb7s7ypRxXDIkaZ+1twpY013OsbSbjqZ6OJcSJUfmV2U57yjNPVf0PMTkt5elbwX8owoLQ+l9kuCj/DcgFTKOeLQxH3+3P0R2Hi4GbS7Jk3YdKnX4sEaQT3Z5fXQhn0WPNoEtec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLJkIfZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6F5C4CEE4;
+	Tue, 25 Mar 2025 12:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905910;
-	bh=sDQjGI/FQbDeliczrsHg2jfwVKEciWjka/Op3pkSH/w=;
+	s=korg; t=1742906275;
+	bh=+zJtqvB1qO+xQ2OE4g245vIEZjrfNvI8jaNNyc06Qaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z14QVR5PCq6F4GDVSMnKgG3+bd0hJxjxdda34ub+eWngSOuSUnTpimsVGDFRRcdR9
-	 dcMnZYscVft55YWwt4GBm/HC7C+7Nc0AVr6yrIu2nCv5158lN/q1pelTQIAe3vaj2r
-	 e9XDntgRI5xEvT/xgnGvjZrTfNkabladjgA40Wb8=
+	b=xLJkIfZW7SrmoRlroAHomr9dJZbg/AlHleD0d/gkcDG5u9OpJGemQfVVIO2DtKPid
+	 eigZWu45N5RA1KWHkaT1H/ymYlX7g72WLac/bxwnMGr6ev2EzWoUnta9BB65cP4reo
+	 T/eMcQW+QkGWHJFpxca0hqq4wCnUy9wU/7L9KZLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Troy Hanson <quic_thanson@quicinc.com>,
-	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 032/119] accel/qaic: Fix possible data corruption in BOs > 2G
+Subject: [PATCH 6.12 003/116] arm64: dts: freescale: tqma8mpql: Fix vqmmc-supply
 Date: Tue, 25 Mar 2025 08:21:30 -0400
-Message-ID: <20250325122149.885053172@linuxfoundation.org>
+Message-ID: <20250325122149.295339925@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 84a833d90635e4b846333e2df0ae72f9cbecac39 ]
+[ Upstream commit 38f59e0e8bd2b3e1319716e4aeaeb9a6223b006d ]
 
-When slicing a BO, we need to iterate through the BO's sgt to find the
-right pieces to construct the slice. Some of the data types chosen for
-this process are incorrectly too small, and can overflow. This can
-result in the incorrect slice construction, which can lead to data
-corruption in workload execution.
+eMMC is supplied by BUCK5 rail. Use the actual regulator instead of
+a virtual fixed regulator.
 
-The device can only handle 32-bit sized transfers, and the scatterlist
-struct only supports 32-bit buffer sizes, so our upper limit for an
-individual transfer is an unsigned int. Using an int is incorrect due to
-the reservation of the sign bit. Upgrade the length of a scatterlist
-entry and the offsets into a scatterlist entry to unsigned int for a
-correct representation.
-
-While each transfer may be limited to 32-bits, the overall BO may exceed
-that size. For counting the total length of the BO, we need a type that
-can represent the largest allocation possible on the system. That is the
-definition of size_t, so use it.
-
-Fixes: ff13be830333 ("accel/qaic: Add datapath")
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
-Reviewed-by: Youssef Samir <quic_yabdulra@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306171959.853466-1-jeff.hugo@oss.qualcomm.com
+Fixes: 418d1d840e421 ("arm64: dts: freescale: add initial device tree for TQMa8MPQL with i.MX8MP")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/qaic/qaic_data.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../boot/dts/freescale/imx8mp-tqma8mpql.dtsi     | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/accel/qaic/qaic_data.c b/drivers/accel/qaic/qaic_data.c
-index c20eb63750f51..ffcdf5738d099 100644
---- a/drivers/accel/qaic/qaic_data.c
-+++ b/drivers/accel/qaic/qaic_data.c
-@@ -172,9 +172,10 @@ static void free_slice(struct kref *kref)
- static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_table **sgt_out,
- 					struct sg_table *sgt_in, u64 size, u64 offset)
- {
--	int total_len, len, nents, offf = 0, offl = 0;
- 	struct scatterlist *sg, *sgn, *sgf, *sgl;
-+	unsigned int len, nents, offf, offl;
- 	struct sg_table *sgt;
-+	size_t total_len;
- 	int ret, j;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
+index 336785a9fba89..3ddc5aaa7c5f0 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
+@@ -1,7 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+ /*
+- * Copyright 2021-2022 TQ-Systems GmbH
+- * Author: Alexander Stein <alexander.stein@tq-group.com>
++ * Copyright 2021-2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
++ * D-82229 Seefeld, Germany.
++ * Author: Alexander Stein
+  */
  
- 	/* find out number of relevant nents needed for this mem */
-@@ -182,6 +183,8 @@ static int clone_range_of_sgt_for_slice(struct qaic_device *qdev, struct sg_tabl
- 	sgf = NULL;
- 	sgl = NULL;
- 	nents = 0;
-+	offf = 0;
-+	offl = 0;
+ #include "imx8mp.dtsi"
+@@ -23,15 +24,6 @@ reg_vcc3v3: regulator-vcc3v3 {
+ 		regulator-max-microvolt = <3300000>;
+ 		regulator-always-on;
+ 	};
+-
+-	/* e-MMC IO, needed for HS modes */
+-	reg_vcc1v8: regulator-vcc1v8 {
+-		compatible = "regulator-fixed";
+-		regulator-name = "VCC1V8";
+-		regulator-min-microvolt = <1800000>;
+-		regulator-max-microvolt = <1800000>;
+-		regulator-always-on;
+-	};
+ };
  
- 	size = size ? size : PAGE_SIZE;
- 	for_each_sgtable_dma_sg(sgt_in, sg, j) {
+ &A53_0 {
+@@ -197,7 +189,7 @@ &usdhc3 {
+ 	no-sd;
+ 	no-sdio;
+ 	vmmc-supply = <&reg_vcc3v3>;
+-	vqmmc-supply = <&reg_vcc1v8>;
++	vqmmc-supply = <&buck5_reg>;
+ 	status = "okay";
+ };
+ 
 -- 
 2.39.5
 
