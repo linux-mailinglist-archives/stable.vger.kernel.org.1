@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-126352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD04A6FFE8
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABB4A700FD
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8EE37A6D9A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78BFB19A4251
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01967254B1B;
-	Tue, 25 Mar 2025 12:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064B826E15B;
+	Tue, 25 Mar 2025 12:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6/y/un9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0yFoSWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42751531C5;
-	Tue, 25 Mar 2025 12:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B828825D8F6;
+	Tue, 25 Mar 2025 12:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906064; cv=none; b=L74tCbz6bEQXq9qOZmu6+ZrOrFSskd06J2ab57ZWX49BvnRCENp/ABEs8lNkK7ql9IMrQzDHG/zn/5AxoVtVeXDTPgwOzrNhhsQmdnw43non9k58GQf16fHaUxLP86voraiALrDkKCalUFUWHtNB2WyBFfKjkz8wQRBeSEU7Yo4=
+	t=1742906329; cv=none; b=lzelNLAeWbQ5pUkga3NpqsPsl71y0tumXggTOIUDM8s/FXy/uXPTWY3mhPQ52StNg6H7hDRDt3eOkbO+5a89V1y1j+/qeznx/pJpv2WAdGGttT2wkOEcwL87TJ9iYRIIh4+4aUBDOPL6t513DvXc35Qb1OudaT5pvoNurwHUs4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906064; c=relaxed/simple;
-	bh=WqLnjLf8k9kX4C9U9I700WPOmp2lWtYG2D/1eBIJA5E=;
+	s=arc-20240116; t=1742906329; c=relaxed/simple;
+	bh=tRN3yHJ/A1t+4Um0CfwWgvCIF5NNuTj3Emju3pZ4F4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5iR0OxGm6z6HoWHlWzPvS34OG1LQ9QNS8s8bXz+d5zQkXoZrztzZhgpBYE1bqiK9TkbbN11D8TSoRiTXh9ibJIHDGr+y7ltRH/LNWfWhYj8tJYTzXRv3qUyTbIRtvrtRQUz9ueZXbU9patvzvVkpoBY9GyovoF75aSRBjuiRgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6/y/un9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FD6C4CEE4;
-	Tue, 25 Mar 2025 12:34:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c0m/lBSESJARnivJdFt/dDuCXqX65EsENGdE4spshHNsf6AOfmSmTudwYZ3u6lDkMluQpnGbehWarBlfTL1rmMSY+5+RsywFxMvC9bjrhTVKthiuotlUepVc/yImX3QCIZePgENJb2QSLgVy2F2Vg8t2LGTFATSJ5EOp8Duax90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0yFoSWE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F341EC4CEED;
+	Tue, 25 Mar 2025 12:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906064;
-	bh=WqLnjLf8k9kX4C9U9I700WPOmp2lWtYG2D/1eBIJA5E=;
+	s=korg; t=1742906329;
+	bh=tRN3yHJ/A1t+4Um0CfwWgvCIF5NNuTj3Emju3pZ4F4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p6/y/un9Mk9uyrKSM44QxHy9uTkX/7GeqU2H7W7lT6BWwkKBNMi7uhXBIBAHvYGbE
-	 4Quv9a0vaL4uaCmTyVkpqTiMsuL/OIEjrH4VNfmDowuT6q0old9F7Js9vPVwxO32PK
-	 97hR+bQ3CpghcrjwR3a0OOPsEflOkj4IJNyVo8Ys=
+	b=I0yFoSWEIdV6/xwEZw4e09lNaNZii8m8fwpmF4oDufZuyBzUG81Nu6Dp5IAFkkCse
+	 ziyrfEa2v8+liMDcennpRiH/84nb3rENhNemjN+aVnabWYmNwijD+riQ3S4PomfLZw
+	 pliloy+YB5DP3tzzA3S3RE1OJSCdSgrX3uOuPpuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Schneider <ben@bens.haus>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.13 088/119] efi/libstub: Avoid physical address 0x0 when doing random allocation
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	intel-xe@lists.freedesktop.org,
+	Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.12 059/116] drm/xe: Fix exporting xe buffers multiple times
 Date: Tue, 25 Mar 2025 08:22:26 -0400
-Message-ID: <20250325122151.308241124@linuxfoundation.org>
+Message-ID: <20250325122150.718996453@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +68,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
 
-commit cb16dfed0093217a68c0faa9394fa5823927e04c upstream.
+commit 50af7cab7520e46680cf4633bba6801443b75856 upstream.
 
-Ben reports spurious EFI zboot failures on a system where physical RAM
-starts at 0x0. When doing random memory allocation from the EFI stub on
-such a platform, a random seed of 0x0 (which means no entropy source is
-available) will result in the allocation to be placed at address 0x0 if
-sufficient space is available.
+The `struct ttm_resource->placement` contains TTM_PL_FLAG_* flags, but
+it was incorrectly tested for XE_PL_* flags.
+This caused xe_dma_buf_pin() to always fail when invoked for
+the second time. Fix this by checking the `mem_type` field instead.
 
-When this allocation is subsequently passed on to the decompression
-code, the 0x0 address is mistaken for NULL and the code complains and
-gives up.
-
-So avoid address 0x0 when doing random allocation, and set the minimum
-address to the minimum alignment.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: Ben Schneider <ben@bens.haus>
-Tested-by: Ben Schneider <ben@bens.haus>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 7764222d54b7 ("drm/xe: Disallow pinning dma-bufs in VRAM")
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: intel-xe@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.8+
+Signed-off-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250218100353.2137964-1-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+(cherry picked from commit b96dabdba9b95f71ded50a1c094ee244408b2a8e)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/randomalloc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/xe/xe_bo.h      |    2 --
+ drivers/gpu/drm/xe/xe_dma_buf.c |    2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -75,6 +75,10 @@ efi_status_t efi_random_alloc(unsigned l
- 	if (align < EFI_ALLOC_ALIGN)
- 		align = EFI_ALLOC_ALIGN;
+--- a/drivers/gpu/drm/xe/xe_bo.h
++++ b/drivers/gpu/drm/xe/xe_bo.h
+@@ -314,7 +314,6 @@ static inline unsigned int xe_sg_segment
  
-+	/* Avoid address 0x0, as it can be mistaken for NULL */
-+	if (alloc_min == 0)
-+		alloc_min = align;
-+
- 	size = round_up(size, EFI_ALLOC_ALIGN);
+ #define i915_gem_object_flush_if_display(obj)		((void)(obj))
  
- 	/* count the suitable slots in each memory map entry */
+-#if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
+ /**
+  * xe_bo_is_mem_type - Whether the bo currently resides in the given
+  * TTM memory type
+@@ -329,4 +328,3 @@ static inline bool xe_bo_is_mem_type(str
+ 	return bo->ttm.resource->mem_type == mem_type;
+ }
+ #endif
+-#endif
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -58,7 +58,7 @@ static int xe_dma_buf_pin(struct dma_buf
+ 	 * 1) Avoid pinning in a placement not accessible to some importers.
+ 	 * 2) Pinning in VRAM requires PIN accounting which is a to-do.
+ 	 */
+-	if (xe_bo_is_pinned(bo) && bo->ttm.resource->placement != XE_PL_TT) {
++	if (xe_bo_is_pinned(bo) && !xe_bo_is_mem_type(bo, XE_PL_TT)) {
+ 		drm_dbg(&xe->drm, "Can't migrate pinned bo for dma-buf pin.\n");
+ 		return -EINVAL;
+ 	}
 
 
 
