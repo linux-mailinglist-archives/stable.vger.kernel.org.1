@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-126433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE017A70111
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7CDA70172
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E59F6840C47
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF91B3BCE80
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1053F26B09F;
-	Tue, 25 Mar 2025 12:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B598270EAB;
+	Tue, 25 Mar 2025 12:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjAb4kj6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XA0IBWCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C122625C6F9;
-	Tue, 25 Mar 2025 12:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B2126FD95;
+	Tue, 25 Mar 2025 12:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906214; cv=none; b=qBWj4qFbZOrE9k5wT0h9zHFZ9PyVau8sRS6vKgjbQxrMxj3Em8Li7YK1sXmyqhvg69Z5Rvd2PCrsuelTxvFmdSY3+WbycdfntwaKAWwHdRQefoJcLLh4xb36DaoBXRy+Oe0LZHJFQ8F04xU4DXho9JO0/Nu13fn+d2+IdCeD3O4=
+	t=1742906415; cv=none; b=DZaiMPKAhtPHDnRRNqaqGSlfQs3rsee3KFx2OntP1ghleHpSsFsfRABRlvx1B2NEpbNsSX2FCA9FB+HR0E9KcXKJ6wDqsH7+Ku30s+CicsODgeFpRyH1c7X73YylwbciC11lhJjvf/RlncaxRvhenq0yjLBm+VLHUQN+XfrYe3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906214; c=relaxed/simple;
-	bh=TKh7yIiWd6JNPnNzbK1yRP/aE/AWRNzb/RgO7dK1ns8=;
+	s=arc-20240116; t=1742906415; c=relaxed/simple;
+	bh=kX+ibNaHopNDzKeCftVlurr7ZCAmD47Vgr1XNzphKi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lm0huY7qddKg05SI4rB+z+Q0E7RGTOYWoPhgDquEMzSTAAjGH9+AUgcqoK96dnIMbyeGDqozDbsJpSSWbPYkSwGQCUtgBdoE0FY4c6g+06AHmF5CAJcfAC1CP5k9FtoG2IDsNRK0Tp5hx+no2LfNfb8W6XUDLrX0qe891LkDa80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjAb4kj6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75028C4CEE9;
-	Tue, 25 Mar 2025 12:36:54 +0000 (UTC)
+	 MIME-Version; b=qxj3Ebt1F2xC+WZpGpHpu7hszctzQ/euX+MSCWnR5F+/4vjKMPSaUv2WwzslUtYiaE59Q3uz2rGTdDRtc4QPtJI5S3u5Kxj2jUfdI5d9peavilVbHPBL2+YM8msykB2olBVKbneQtGqlwGWD+4G1DGIy0JSQDNYGJYGc2fbBcNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XA0IBWCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A45C4CEE4;
+	Tue, 25 Mar 2025 12:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906214;
-	bh=TKh7yIiWd6JNPnNzbK1yRP/aE/AWRNzb/RgO7dK1ns8=;
+	s=korg; t=1742906415;
+	bh=kX+ibNaHopNDzKeCftVlurr7ZCAmD47Vgr1XNzphKi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HjAb4kj6MDkZrWGo+KiiG11xuxa3m5R/DIENzDIWF2SVxw5FCy6N7C428q6yObgKX
-	 ctWcxizucfXUjeLIK9V98LSiPlFQkDXqROSLYgkGAwYvzBNIx0wKkwminYYOEJz8Xe
-	 ujOaKbQox1NHTYsKnLnccTSLPBIOcnHf4H3nochw=
+	b=XA0IBWCcwt3IUIQmIbzaLreJMP6cgD/IDbSpEsESNeEQipID9BAO/ARyruhZJQKaf
+	 7YSnvgbyYuM3ACI74Mhj7u7MWlfOJdFUMudWdOlTJ1TkklfMDqHuJxYzN7scLiLheV
+	 RDVgLaLR9rkb6C5wQEwkwKL2jlmEojbhDSGo0G3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Felix Moessbauer <felix.moessbauer@siemens.com>
-Subject: [PATCH 6.6 77/77] netfilter: nft_counter: Use u64_stats_t for statistic.
-Date: Tue, 25 Mar 2025 08:23:12 -0400
-Message-ID: <20250325122146.471413138@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.12 106/116] KVM: arm64: Remove host FPSIMD saving for non-protected KVM
+Date: Tue, 25 Mar 2025 08:23:13 -0400
+Message-ID: <20250325122151.917068488@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,250 +66,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 4a1d3acd6ea86075e77fcc1188c3fc372833ba73 upstream.
+[ Upstream commit 8eca7f6d5100b6997df4f532090bc3f7e0203bef ]
 
-The nft_counter uses two s64 counters for statistics. Those two are
-protected by a seqcount to ensure that the 64bit variable is always
-properly seen during updates even on 32bit architectures where the store
-is performed by two writes. A side effect is that the two counter (bytes
-and packet) are written and read together in the same window.
+Now that the host eagerly saves its own FPSIMD/SVE/SME state,
+non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
+and the code to do this is never used. Protected KVM still needs to
+save/restore the host FPSIMD/SVE state to avoid leaking guest state to
+the host (and to avoid revealing to the host whether the guest used
+FPSIMD/SVE/SME), and that code needs to be retained.
 
-This can be replaced with u64_stats_t. write_seqcount_begin()/ end() is
-replaced with u64_stats_update_begin()/ end() and behaves the same way
-as with seqcount_t on 32bit architectures. Additionally there is a
-preempt_disable on PREEMPT_RT to ensure that a reader does not preempt a
-writer.
-On 64bit architectures the macros are removed and the reads happen
-without any retries. This also means that the reader can observe one
-counter (bytes) from before the update and the other counter (packets)
-but that is okay since there is no requirement to have both counter from
-the same update window.
+Remove the unused code and data structures.
 
-Convert the statistic to u64_stats_t. There is one optimisation:
-nft_counter_do_init() and nft_counter_clone() allocate a new per-CPU
-counter and assign a value to it. During this assignment preemption is
-disabled which is not needed because the counter is not yet exposed to
-the system so there can not be another writer or reader. Therefore
-disabling preemption is omitted and raw_cpu_ptr() is used to obtain a
-pointer to a counter for the assignment.
+To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
+VHE hyp code, the nVHE/hVHE version is moved into the shared switch
+header, where it is only invoked when KVM is in protected mode.
 
-Cc: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20250210195226.1215254-3-mark.rutland@arm.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_counter.c |   90 ++++++++++++++++++++++----------------------
- 1 file changed, 46 insertions(+), 44 deletions(-)
+ arch/arm64/include/asm/kvm_host.h       |   18 ++++--------------
+ arch/arm64/kvm/arm.c                    |    8 --------
+ arch/arm64/kvm/fpsimd.c                 |    2 --
+ arch/arm64/kvm/hyp/include/hyp/switch.h |   25 +++++++++++++++++++++++--
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c      |    2 +-
+ arch/arm64/kvm/hyp/nvhe/switch.c        |   28 ----------------------------
+ arch/arm64/kvm/hyp/vhe/switch.c         |    8 --------
+ 7 files changed, 28 insertions(+), 63 deletions(-)
 
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -8,7 +8,7 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/module.h>
--#include <linux/seqlock.h>
-+#include <linux/u64_stats_sync.h>
- #include <linux/netlink.h>
- #include <linux/netfilter.h>
- #include <linux/netfilter/nf_tables.h>
-@@ -17,6 +17,11 @@
- #include <net/netfilter/nf_tables_offload.h>
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -602,23 +602,13 @@ struct kvm_host_data {
+ 	struct kvm_cpu_context host_ctxt;
  
- struct nft_counter {
-+	u64_stats_t	bytes;
-+	u64_stats_t	packets;
-+};
-+
-+struct nft_counter_tot {
- 	s64		bytes;
- 	s64		packets;
- };
-@@ -25,25 +30,24 @@ struct nft_counter_percpu_priv {
- 	struct nft_counter __percpu *counter;
- };
+ 	/*
+-	 * All pointers in this union are hyp VA.
++	 * Hyp VA.
+ 	 * sve_state is only used in pKVM and if system_supports_sve().
+ 	 */
+-	union {
+-		struct user_fpsimd_state *fpsimd_state;
+-		struct cpu_sve_state *sve_state;
+-	};
++	struct cpu_sve_state *sve_state;
  
--static DEFINE_PER_CPU(seqcount_t, nft_counter_seq);
-+static DEFINE_PER_CPU(struct u64_stats_sync, nft_counter_sync);
+-	union {
+-		/* HYP VA pointer to the host storage for FPMR */
+-		u64	*fpmr_ptr;
+-		/*
+-		 * Used by pKVM only, as it needs to provide storage
+-		 * for the host
+-		 */
+-		u64	fpmr;
+-	};
++	/* Used by pKVM only. */
++	u64	fpmr;
  
- static inline void nft_counter_do_eval(struct nft_counter_percpu_priv *priv,
- 				       struct nft_regs *regs,
- 				       const struct nft_pktinfo *pkt)
- {
-+	struct u64_stats_sync *nft_sync;
- 	struct nft_counter *this_cpu;
--	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
--	myseq = this_cpu_ptr(&nft_counter_seq);
+ 	/* Ownership of the FP regs */
+ 	enum {
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -2476,14 +2476,6 @@ static void finalize_init_hyp_mode(void)
+ 			per_cpu_ptr_nvhe_sym(kvm_host_data, cpu)->sve_state =
+ 				kern_hyp_va(sve_state);
+ 		}
+-	} else {
+-		for_each_possible_cpu(cpu) {
+-			struct user_fpsimd_state *fpsimd_state;
 -
--	write_seqcount_begin(myseq);
-+	nft_sync = this_cpu_ptr(&nft_counter_sync);
- 
--	this_cpu->bytes += pkt->skb->len;
--	this_cpu->packets++;
-+	u64_stats_update_begin(nft_sync);
-+	u64_stats_add(&this_cpu->bytes, pkt->skb->len);
-+	u64_stats_inc(&this_cpu->packets);
-+	u64_stats_update_end(nft_sync);
- 
--	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
- 
-@@ -66,17 +70,16 @@ static int nft_counter_do_init(const str
- 	if (cpu_stats == NULL)
- 		return -ENOMEM;
- 
--	preempt_disable();
--	this_cpu = this_cpu_ptr(cpu_stats);
-+	this_cpu = raw_cpu_ptr(cpu_stats);
- 	if (tb[NFTA_COUNTER_PACKETS]) {
--	        this_cpu->packets =
--			be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_PACKETS]));
-+		u64_stats_set(&this_cpu->packets,
-+			      be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_PACKETS])));
+-			fpsimd_state = &per_cpu_ptr_nvhe_sym(kvm_host_data, cpu)->host_ctxt.fp_regs;
+-			per_cpu_ptr_nvhe_sym(kvm_host_data, cpu)->fpsimd_state =
+-				kern_hyp_va(fpsimd_state);
+-		}
  	}
- 	if (tb[NFTA_COUNTER_BYTES]) {
--		this_cpu->bytes =
--			be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_BYTES]));
-+		u64_stats_set(&this_cpu->bytes,
-+			      be64_to_cpu(nla_get_be64(tb[NFTA_COUNTER_BYTES])));
- 	}
--	preempt_enable();
+ }
+ 
+--- a/arch/arm64/kvm/fpsimd.c
++++ b/arch/arm64/kvm/fpsimd.c
+@@ -64,8 +64,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vc
+ 	 */
+ 	fpsimd_save_and_flush_cpu_state();
+ 	*host_data_ptr(fp_owner) = FP_STATE_FREE;
+-	*host_data_ptr(fpsimd_state) = NULL;
+-	*host_data_ptr(fpmr_ptr) = NULL;
+ 
+ 	vcpu_clear_flag(vcpu, HOST_SVE_ENABLED);
+ 	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -344,7 +344,28 @@ static inline void __hyp_sve_save_host(v
+ 			 true);
+ }
+ 
+-static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu);
++static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
++{
++	/*
++	 * Non-protected kvm relies on the host restoring its sve state.
++	 * Protected kvm restores the host's sve state as not to reveal that
++	 * fpsimd was used by a guest nor leak upper sve bits.
++	 */
++	if (system_supports_sve()) {
++		__hyp_sve_save_host();
 +
- 	priv->counter = cpu_stats;
- 	return 0;
- }
-@@ -104,40 +107,41 @@ static void nft_counter_obj_destroy(cons
- }
- 
- static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
--			      struct nft_counter *total)
-+			      struct nft_counter_tot *total)
- {
-+	struct u64_stats_sync *nft_sync;
- 	struct nft_counter *this_cpu;
--	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
--	myseq = this_cpu_ptr(&nft_counter_seq);
-+	nft_sync = this_cpu_ptr(&nft_counter_sync);
++		/* Re-enable SVE traps if not supported for the guest vcpu. */
++		if (!vcpu_has_sve(vcpu))
++			cpacr_clear_set(CPACR_ELx_ZEN, 0);
 +
-+	u64_stats_update_begin(nft_sync);
-+	u64_stats_add(&this_cpu->packets, -total->packets);
-+	u64_stats_add(&this_cpu->bytes, -total->bytes);
-+	u64_stats_update_end(nft_sync);
- 
--	write_seqcount_begin(myseq);
--	this_cpu->packets -= total->packets;
--	this_cpu->bytes -= total->bytes;
--	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
- 
- static void nft_counter_fetch(struct nft_counter_percpu_priv *priv,
--			      struct nft_counter *total)
-+			      struct nft_counter_tot *total)
- {
- 	struct nft_counter *this_cpu;
--	const seqcount_t *myseq;
- 	u64 bytes, packets;
- 	unsigned int seq;
- 	int cpu;
- 
- 	memset(total, 0, sizeof(*total));
- 	for_each_possible_cpu(cpu) {
--		myseq = per_cpu_ptr(&nft_counter_seq, cpu);
-+		struct u64_stats_sync *nft_sync = per_cpu_ptr(&nft_counter_sync, cpu);
++	} else {
++		__fpsimd_save_state(host_data_ptr(host_ctxt.fp_regs));
++	}
 +
- 		this_cpu = per_cpu_ptr(priv->counter, cpu);
- 		do {
--			seq	= read_seqcount_begin(myseq);
--			bytes	= this_cpu->bytes;
--			packets	= this_cpu->packets;
--		} while (read_seqcount_retry(myseq, seq));
-+			seq	= u64_stats_fetch_begin(nft_sync);
-+			bytes	= u64_stats_read(&this_cpu->bytes);
-+			packets	= u64_stats_read(&this_cpu->packets);
-+		} while (u64_stats_fetch_retry(nft_sync, seq));
++	if (kvm_has_fpmr(kern_hyp_va(vcpu->kvm)))
++		*host_data_ptr(fpmr) = read_sysreg_s(SYS_FPMR);
++}
++
  
- 		total->bytes	+= bytes;
- 		total->packets	+= packets;
-@@ -148,7 +152,7 @@ static int nft_counter_do_dump(struct sk
- 			       struct nft_counter_percpu_priv *priv,
- 			       bool reset)
- {
--	struct nft_counter total;
-+	struct nft_counter_tot total;
+ /*
+  * We trap the first access to the FP/SIMD to save the host context and
+@@ -394,7 +415,7 @@ static bool kvm_hyp_handle_fpsimd(struct
+ 	isb();
  
- 	nft_counter_fetch(priv, &total);
+ 	/* Write out the host state if it's in the registers */
+-	if (host_owns_fp_regs())
++	if (is_protected_kvm_enabled() && host_owns_fp_regs())
+ 		kvm_hyp_save_fpsimd_host(vcpu);
  
-@@ -237,7 +241,7 @@ static int nft_counter_clone(struct nft_
- 	struct nft_counter_percpu_priv *priv_clone = nft_expr_priv(dst);
- 	struct nft_counter __percpu *cpu_stats;
- 	struct nft_counter *this_cpu;
--	struct nft_counter total;
-+	struct nft_counter_tot total;
+ 	/* Restore the guest state */
+--- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
++++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
+@@ -83,7 +83,7 @@ static void fpsimd_sve_sync(struct kvm_v
+ 	if (system_supports_sve())
+ 		__hyp_sve_restore_host();
+ 	else
+-		__fpsimd_restore_state(*host_data_ptr(fpsimd_state));
++		__fpsimd_restore_state(host_data_ptr(host_ctxt.fp_regs));
  
- 	nft_counter_fetch(priv, &total);
- 
-@@ -245,11 +249,9 @@ static int nft_counter_clone(struct nft_
- 	if (cpu_stats == NULL)
- 		return -ENOMEM;
- 
--	preempt_disable();
--	this_cpu = this_cpu_ptr(cpu_stats);
--	this_cpu->packets = total.packets;
--	this_cpu->bytes = total.bytes;
--	preempt_enable();
-+	this_cpu = raw_cpu_ptr(cpu_stats);
-+	u64_stats_set(&this_cpu->packets, total.packets);
-+	u64_stats_set(&this_cpu->bytes, total.bytes);
- 
- 	priv_clone->counter = cpu_stats;
- 	return 0;
-@@ -267,17 +269,17 @@ static void nft_counter_offload_stats(st
- 				      const struct flow_stats *stats)
- {
- 	struct nft_counter_percpu_priv *priv = nft_expr_priv(expr);
-+	struct u64_stats_sync *nft_sync;
- 	struct nft_counter *this_cpu;
--	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
--	myseq = this_cpu_ptr(&nft_counter_seq);
-+	nft_sync = this_cpu_ptr(&nft_counter_sync);
- 
--	write_seqcount_begin(myseq);
--	this_cpu->packets += stats->pkts;
--	this_cpu->bytes += stats->bytes;
--	write_seqcount_end(myseq);
-+	u64_stats_update_begin(nft_sync);
-+	u64_stats_add(&this_cpu->packets, stats->pkts);
-+	u64_stats_add(&this_cpu->bytes, stats->bytes);
-+	u64_stats_update_end(nft_sync);
- 	local_bh_enable();
+ 	if (has_fpmr)
+ 		write_sysreg_s(*host_data_ptr(fpmr), SYS_FPMR);
+--- a/arch/arm64/kvm/hyp/nvhe/switch.c
++++ b/arch/arm64/kvm/hyp/nvhe/switch.c
+@@ -193,34 +193,6 @@ static bool kvm_handle_pvm_sys64(struct
+ 		kvm_handle_pvm_sysreg(vcpu, exit_code));
  }
  
-@@ -286,7 +288,7 @@ void nft_counter_init_seqcount(void)
- 	int cpu;
- 
- 	for_each_possible_cpu(cpu)
--		seqcount_init(per_cpu_ptr(&nft_counter_seq, cpu));
-+		u64_stats_init(per_cpu_ptr(&nft_counter_sync, cpu));
+-static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
+-{
+-	/*
+-	 * Non-protected kvm relies on the host restoring its sve state.
+-	 * Protected kvm restores the host's sve state as not to reveal that
+-	 * fpsimd was used by a guest nor leak upper sve bits.
+-	 */
+-	if (unlikely(is_protected_kvm_enabled() && system_supports_sve())) {
+-		__hyp_sve_save_host();
+-
+-		/* Re-enable SVE traps if not supported for the guest vcpu. */
+-		if (!vcpu_has_sve(vcpu))
+-			cpacr_clear_set(CPACR_ELx_ZEN, 0);
+-
+-	} else {
+-		__fpsimd_save_state(*host_data_ptr(fpsimd_state));
+-	}
+-
+-	if (kvm_has_fpmr(kern_hyp_va(vcpu->kvm))) {
+-		u64 val = read_sysreg_s(SYS_FPMR);
+-
+-		if (unlikely(is_protected_kvm_enabled()))
+-			*host_data_ptr(fpmr) = val;
+-		else
+-			**host_data_ptr(fpmr_ptr) = val;
+-	}
+-}
+-
+ static const exit_handler_fn hyp_exit_handlers[] = {
+ 	[0 ... ESR_ELx_EC_MAX]		= NULL,
+ 	[ESR_ELx_EC_CP15_32]		= kvm_hyp_handle_cp15_32,
+--- a/arch/arm64/kvm/hyp/vhe/switch.c
++++ b/arch/arm64/kvm/hyp/vhe/switch.c
+@@ -309,14 +309,6 @@ static bool kvm_hyp_handle_eret(struct k
+ 	return true;
  }
  
- struct nft_expr_type nft_counter_type;
+-static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
+-{
+-	__fpsimd_save_state(*host_data_ptr(fpsimd_state));
+-
+-	if (kvm_has_fpmr(vcpu->kvm))
+-		**host_data_ptr(fpmr_ptr) = read_sysreg_s(SYS_FPMR);
+-}
+-
+ static bool kvm_hyp_handle_tlbi_el2(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	int ret = -EINVAL;
 
 
 
