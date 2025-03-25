@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C34AA7008C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6871A70088
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA41517340A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88F53841AE7
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE54A25C6E5;
-	Tue, 25 Mar 2025 12:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3891D269899;
+	Tue, 25 Mar 2025 12:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaaKgYQu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htWziMiq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B35925BADD;
-	Tue, 25 Mar 2025 12:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC22A2580E4;
+	Tue, 25 Mar 2025 12:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906168; cv=none; b=bOJiWSXWYeCNqc7t/iLoMtfePp7CzA2cXOK4IOTv0/tqwxw3KLn3/3f0XezlAEKDRRWLlJ3LnKh+25mT8yDAu446mQp0H8GQlUCAKhQpMmuLOF2wThjbV0Bl1nYi1Ans9Gc9aptFfqqaSNZPshMWpTItd2r2Oiuqc8/wNMWrwG0=
+	t=1742906054; cv=none; b=U94UJkLEbDC5OQv+lLEyaEXLJMCBCQvkhaahsNRdPeAOroYM/1Y7nYVHfvB0O56PgwjFHhQuZrFVh35cbIFgow7foJrh3d+hYW5S3BOQ6dWZR06x5xltFO/WeR98xDCLdw9Ruk7hDrv7nRaW3u0Z01fEYnK5mc55wBpga0390+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906168; c=relaxed/simple;
-	bh=dYf+e7Q65hn46QSAL+ccO8dHfRv1jEfT3QmgRfyCf2M=;
+	s=arc-20240116; t=1742906054; c=relaxed/simple;
+	bh=6g7cu+RNWtlBzoXHntOhNxmX7/a3Q96O6k1F7MpeZzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k565JSELlX3HaSL0KtaKkIhdxF2m3rNO6CwOe1i8MTK3mc7+JuBlxUulsvBLlDLvARNjUbmpP7Atj2jwYs00SGcOeixn4qdudpTiXLyFhsvYsIEz5aVccl1OA7XbT53fpUlUI8zscI+fdLq+1MkIb8Oikw6NZpIhf/CKaz0ap5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaaKgYQu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472B4C4CEE4;
-	Tue, 25 Mar 2025 12:36:08 +0000 (UTC)
+	 MIME-Version; b=XNUqisg9pbI9VXg3Pz3Da6Rp5uJzwpLVEjWZB0qyuU3KsA1RlGkyXxsttnpdnSygUSfffW0ekNNRlI7o0qksC1WvhIhIGG5WSi8DzUiYyY6agTA/odfQmuV2phZ2KY5MbM092NKZ8yJdhsJfnLkItdGFc9pDMex0aHtPu0idxbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htWziMiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BFEC4CEE4;
+	Tue, 25 Mar 2025 12:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906168;
-	bh=dYf+e7Q65hn46QSAL+ccO8dHfRv1jEfT3QmgRfyCf2M=;
+	s=korg; t=1742906053;
+	bh=6g7cu+RNWtlBzoXHntOhNxmX7/a3Q96O6k1F7MpeZzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OaaKgYQuT+9WqmgkxMG72423ET5W1hYvbsvKP+em1ao7S9NWs3ixyCcSR/Va3TV1+
-	 AbaYGJhAAoSyUOLGnUhu2Lo63eBgD9e/pSMUcfZChzmobbMSzERyMF7RxH9LiQqJbD
-	 co57oab0hXiX79MRnBCkfZz55yO3a4S0WUBDxXWg=
+	b=htWziMiqk7igM2SSbWeI5e9zu9sqOARLCVEQjB8KRAjQDqTp/r6bj4Bh5tl4X1qnn
+	 t27v3jlLvlpGvPdhmCrqjkL0D+fk6w7dyjrlW6ULGG/Mdj+Pl1BdC6LloB5V0YZjJ/
+	 md/wq3Gf2EZtASv+x6mBCTmBXM86O2tkI8UCAfbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 52/77] xsk: fix an integer overflow in xp_create_and_assign_umem()
+	syzbot+cf285a028ffba71b2ef5@syzkaller.appspotmail.com,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.13 109/119] io_uring/net: fix sendzc double notif flush
 Date: Tue, 25 Mar 2025 08:22:47 -0400
-Message-ID: <20250325122145.713166262@linuxfoundation.org>
+Message-ID: <20250325122151.838047861@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 559847f56769037e5b2e0474d3dbff985b98083d upstream.
+commit 67c007d6c12da3e456c005083696c20d4498ae72 upstream.
 
-Since the i and pool->chunk_size variables are of type 'u32',
-their product can wrap around and then be cast to 'u64'.
-This can lead to two different XDP buffers pointing to the same
-memory area.
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 0 PID: 5823 at lib/refcount.c:28 refcount_warn_saturate+0x15a/0x1d0 lib/refcount.c:28
+RIP: 0010:refcount_warn_saturate+0x15a/0x1d0 lib/refcount.c:28
+Call Trace:
+ <TASK>
+ io_notif_flush io_uring/notif.h:40 [inline]
+ io_send_zc_cleanup+0x121/0x170 io_uring/net.c:1222
+ io_clean_op+0x58c/0x9a0 io_uring/io_uring.c:406
+ io_free_batch_list io_uring/io_uring.c:1429 [inline]
+ __io_submit_flush_completions+0xc16/0xd20 io_uring/io_uring.c:1470
+ io_submit_flush_completions io_uring/io_uring.h:159 [inline]
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with SVACE.
+Before the blamed commit, sendzc relied on io_req_msg_cleanup() to clear
+REQ_F_NEED_CLEANUP, so after the following snippet the request will
+never hit the core io_uring cleanup path.
 
-Fixes: 94033cd8e73b ("xsk: Optimize for aligned case")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Link: https://patch.msgid.link/20250313085007.3116044-1-Ilia.Gavrilov@infotecs.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+io_notif_flush();
+io_req_msg_cleanup();
+
+The easiest fix is to null the notification. io_send_zc_cleanup() can
+still be called after, but it's tolerated.
+
+Reported-by: syzbot+cf285a028ffba71b2ef5@syzkaller.appspotmail.com
+Tested-by: syzbot+cf285a028ffba71b2ef5@syzkaller.appspotmail.com
+Fixes: cc34d8330e036 ("io_uring/net: don't clear REQ_F_NEED_CLEANUP unconditionally")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/e1306007458b8891c88c4f20c966a17595f766b0.1742643795.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xdp/xsk_buff_pool.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/net.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -104,7 +104,7 @@ struct xsk_buff_pool *xp_create_and_assi
- 		if (pool->unaligned)
- 			pool->free_heads[i] = xskb;
- 		else
--			xp_init_xskb_addr(xskb, pool, i * pool->chunk_size);
-+			xp_init_xskb_addr(xskb, pool, (u64)i * pool->chunk_size);
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1439,6 +1439,7 @@ int io_send_zc(struct io_kiocb *req, uns
+ 	 */
+ 	if (!(issue_flags & IO_URING_F_UNLOCKED)) {
+ 		io_notif_flush(zc->notif);
++		zc->notif = NULL;
+ 		io_req_msg_cleanup(req, 0);
  	}
- 
- 	return pool;
+ 	io_req_set_res(req, ret, IORING_CQE_F_MORE);
+@@ -1499,6 +1500,7 @@ int io_sendmsg_zc(struct io_kiocb *req,
+ 	 */
+ 	if (!(issue_flags & IO_URING_F_UNLOCKED)) {
+ 		io_notif_flush(sr->notif);
++		sr->notif = NULL;
+ 		io_req_msg_cleanup(req, 0);
+ 	}
+ 	io_req_set_res(req, ret, IORING_CQE_F_MORE);
 
 
 
