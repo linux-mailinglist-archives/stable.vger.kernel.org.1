@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-126495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7693FA70164
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:23:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FDFA70064
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A15C83B9B92
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 601EE178579
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7A1258CC8;
-	Tue, 25 Mar 2025 12:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEAE2698BF;
+	Tue, 25 Mar 2025 12:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbnJoGjT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZW2dSk6j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381D426E15E;
-	Tue, 25 Mar 2025 12:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7F02586C4;
+	Tue, 25 Mar 2025 12:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906331; cv=none; b=GKTKh641/JVQl4ZpFG1qaK1TKsC0TXzGGj66nnDoh6aRvSjh/1jHZKXb2j1VEmWHFMUe4BHZTp31UljKbB4CPBNmwHxiVQdEh6NefA/6L7oBJ4rLri2dLN690z1P/KgRL+9swmD5C88vZ9Q1vwl44kcufKYZu9PIORNBFIhATU0=
+	t=1742906072; cv=none; b=ukdOof9VYiO4VVLGEelIhqFU9NeefZp0dMYf+c2Dh4thzJRwou7LFJGeehhO7bRFjeM2isXJN/UPsMLvF2uLAW7Y17kdRvpzerCW1ZCZK+AlGP3WwOPB2jvI+qopT6G9wXRVCfYHqLpJNVyX2WNEi8MxQUuDkLs6FtX35vT39uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906331; c=relaxed/simple;
-	bh=vrHaK+Cr5Rnu3Hg6LBYViEgkTwn1hkoXDwtv4YOQDVc=;
+	s=arc-20240116; t=1742906072; c=relaxed/simple;
+	bh=QzZsJMUXWWMjBTYJJTz7MP6rzpZ4iGTW4p4czDySPOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UP5jrn44LKh4IMyhF8nwMsGScaE7uSRnmPrQ3ptCUgarCf4qZzx3d5t2v7m3tV9XI6j+DXm4lM9REqD+V4G8XYnUgzwkVn4WMr+oCHEqTahfH3lwlUSCVbwBjUOaf3T/Ohibce77OQVGZFSDMjtVjUQi4RLNWtR3icp6kn8ZOpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbnJoGjT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA620C4CEE4;
-	Tue, 25 Mar 2025 12:38:50 +0000 (UTC)
+	 MIME-Version; b=CWJL72fqmc9sashghqMSafzrPHAn6sXjt3b/Ymgkcu/e02/cYxYVldtvaNbrlkYRSHJ8OptwfCIjPrsT2vTvemQL3YoT6NX+8eje2Hl5hC9JvSVnF8pHSpZDlck2d7DddjGFMD5ROvZ5HidvqCIjQd8j/jweiOkC7weZaRm1mRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZW2dSk6j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F60C4CEE4;
+	Tue, 25 Mar 2025 12:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906331;
-	bh=vrHaK+Cr5Rnu3Hg6LBYViEgkTwn1hkoXDwtv4YOQDVc=;
+	s=korg; t=1742906072;
+	bh=QzZsJMUXWWMjBTYJJTz7MP6rzpZ4iGTW4p4czDySPOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbnJoGjT80fgnpMu9P4PcYJOfRMgDBlIpD2WB4+XTRxnM/cLTWn2ChAWg9EG6Ckyk
-	 wUu7Nrow3/JkEcjZnX8fdBJibCRJYIatIpquOPaAAioxYbz0xD1LyrQyJJqIdHCSeS
-	 lVp96RV/LdwHxxmT6q76EwllAztdrHfk3yFQ1hlg=
+	b=ZW2dSk6jC09dEnrxzKcRa4a7P2bKBR5KgXOZ23R0qv4nJEma2NalmVo2mOaAxi9Jt
+	 wsBr1ZGxoVWNv9O0I9LbTlXl4NJxd9KEZZl1bn+Q7htKvs2J/eia9ORqgfAhyPqAZg
+	 +smNfGpz/T/e1hAX53nWJgGvLQn+zI7vno4Li5XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 6.12 060/116] drm/v3d: Dont run jobs that have errors flagged in its fence
+	syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com,
+	David Howells <dhowells@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.13 089/119] keys: Fix UAF in key_put()
 Date: Tue, 25 Mar 2025 08:22:27 -0400
-Message-ID: <20250325122150.744164311@linuxfoundation.org>
+Message-ID: <20250325122151.333793621@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 80cbee810e4e13cdbd3ae9654e9ecddf17f3e828 upstream.
+commit 75845c6c1a64483e9985302793dbf0dfa5f71e32 upstream.
 
-The V3D driver still relies on `drm_sched_increase_karma()` and
-`drm_sched_resubmit_jobs()` for resubmissions when a timeout occurs.
-The function `drm_sched_increase_karma()` marks the job as guilty, while
-`drm_sched_resubmit_jobs()` sets an error (-ECANCELED) in the DMA fence of
-that guilty job.
+Once a key's reference count has been reduced to 0, the garbage collector
+thread may destroy it at any time and so key_put() is not allowed to touch
+the key after that point.  The most key_put() is normally allowed to do is
+to touch key_gc_work as that's a static global variable.
 
-Because of this, we must check whether the job’s DMA fence has been
-flagged with an error before executing the job. Otherwise, the same guilty
-job may be resubmitted indefinitely, causing repeated GPU resets.
+However, in an effort to speed up the reclamation of quota, this is now
+done in key_put() once the key's usage is reduced to 0 - but now the code
+is looking at the key after the deadline, which is forbidden.
 
-This patch adds a check for an error on the job's fence to prevent running
-a guilty job that was previously flagged when the GPU timed out.
+Fix this by using a flag to indicate that a key can be gc'd now rather than
+looking at the key's refcount in the garbage collector.
 
-Note that the CPU and CACHE_CLEAN queues do not require this check, as
-their jobs are executed synchronously once the DRM scheduler starts them.
-
-Cc: stable@vger.kernel.org
-Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
-Fixes: 1584f16ca96e ("drm/v3d: Add support for submitting jobs to the TFU.")
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250313-v3d-gpu-reset-fixes-v4-1-c1e780d8e096@igalia.com
+Fixes: 9578e327b2b4 ("keys: update key quotas in key_put()")
+Reported-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/673b6aec.050a0220.87769.004a.GAE@google.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/linux/key.h |    1 +
+ security/keys/gc.c  |    4 +++-
+ security/keys/key.c |    2 ++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -319,11 +319,15 @@ v3d_tfu_job_run(struct drm_sched_job *sc
- 	struct drm_device *dev = &v3d->drm;
- 	struct dma_fence *fence;
+--- a/include/linux/key.h
++++ b/include/linux/key.h
+@@ -236,6 +236,7 @@ struct key {
+ #define KEY_FLAG_ROOT_CAN_INVAL	7	/* set if key can be invalidated by root without permission */
+ #define KEY_FLAG_KEEP		8	/* set if key should not be removed */
+ #define KEY_FLAG_UID_KEYRING	9	/* set if key is a user or user session keyring */
++#define KEY_FLAG_FINAL_PUT	10	/* set if final put has happened on key */
  
-+	if (unlikely(job->base.base.s_fence->finished.error))
-+		return NULL;
-+
-+	v3d->tfu_job = job;
-+
- 	fence = v3d_fence_create(v3d, V3D_TFU);
- 	if (IS_ERR(fence))
- 		return NULL;
+ 	/* the key type and key description string
+ 	 * - the desc is used to match a key against search criteria
+--- a/security/keys/gc.c
++++ b/security/keys/gc.c
+@@ -218,8 +218,10 @@ continue_scanning:
+ 		key = rb_entry(cursor, struct key, serial_node);
+ 		cursor = rb_next(cursor);
  
--	v3d->tfu_job = job;
- 	if (job->base.irq_fence)
- 		dma_fence_put(job->base.irq_fence);
- 	job->base.irq_fence = dma_fence_get(fence);
-@@ -361,6 +365,9 @@ v3d_csd_job_run(struct drm_sched_job *sc
- 	struct dma_fence *fence;
- 	int i, csd_cfg0_reg;
+-		if (refcount_read(&key->usage) == 0)
++		if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
++			smp_mb(); /* Clobber key->user after FINAL_PUT seen. */
+ 			goto found_unreferenced_key;
++		}
  
-+	if (unlikely(job->base.base.s_fence->finished.error))
-+		return NULL;
-+
- 	v3d->csd_job = job;
- 
- 	v3d_invalidate_caches(v3d);
+ 		if (unlikely(gc_state & KEY_GC_REAPING_DEAD_1)) {
+ 			if (key->type == key_gc_dead_keytype) {
+--- a/security/keys/key.c
++++ b/security/keys/key.c
+@@ -658,6 +658,8 @@ void key_put(struct key *key)
+ 				key->user->qnbytes -= key->quotalen;
+ 				spin_unlock_irqrestore(&key->user->lock, flags);
+ 			}
++			smp_mb(); /* key->user before FINAL_PUT set. */
++			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
+ 			schedule_work(&key_gc_work);
+ 		}
+ 	}
 
 
 
