@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A708BA7001F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76912A70069
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 202113BFE0A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA970174585
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250072206BB;
-	Tue, 25 Mar 2025 12:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9FB25BAAD;
+	Tue, 25 Mar 2025 12:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ol03aV3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNQ1fEMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D489DA2D;
-	Tue, 25 Mar 2025 12:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00BC25BAD4;
+	Tue, 25 Mar 2025 12:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905829; cv=none; b=Jf9lpp7CRTrrp5zCrPvTDEQquf+PoccWpvXTJzfLVn1VTkOvTjMA/M0qiCd/sDg3HWlRAj06jtg6YT71EYbfOiB41K5E4zaby/KX7yLAZGZwyvckvZtNhBk9wMlQodIPcFwAtCtrSjQwP8JNmR1/G5OLGCnI9xb95SRCSAJJ6dA=
+	t=1742906149; cv=none; b=Y1eTtBWBhaf7bFQt97sxTzO3jkDt9ETjEl4RI1i8s71IMbg9a70YqGZ8azuMrprp7l8DalbWloIhIxc1LMnc2Qvr0sCHkT8cSWn7ahU364EItWnBb2cxIKFAAc1BD1DMhNBjupN01zAw1oXRb9e0v/RLSiJMgiZ38cUeQ45fXLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905829; c=relaxed/simple;
-	bh=8wkQqXrNZXTQYD6VgEOSpGt4dzNPjoGbSBPUAf3DXmE=;
+	s=arc-20240116; t=1742906149; c=relaxed/simple;
+	bh=Ma9ai4OVxKfJ8PrCAVvKFry0n8SBl4ngIC6GRiKbitM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8tcm/rSKEH+s9A2RJ3hX4CFchDobdqAt61HIqfJwLghr3G2G5Yh2NSziyjNxCkfD/dNavzkawirXqQveMsGKZpoE6wsHUhiuKnaiSRVhzT6UPDXeqo/bArqOt/R2Hrqqpdy67SJkLNLimlX1F05yukf+WvTZncMv9rErntJHxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ol03aV3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDF1C4CEED;
-	Tue, 25 Mar 2025 12:30:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UagokoStX2VmLeeMDm/dkbvlGqxD7OkbC5rKUSyBjGu0KEseXN+O3ns10tK+eYAjLMUJzqlLKPcuCrJXcjNX/J/xVJMzgW4GVQjsI75zbPOEsOlpntF0IeDB7pcp7ILRxB3TIrSNss+/B48Pbshp0JB3p9PVgp8dkQNjcA7+94I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNQ1fEMk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739F4C4CEE4;
+	Tue, 25 Mar 2025 12:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905829;
-	bh=8wkQqXrNZXTQYD6VgEOSpGt4dzNPjoGbSBPUAf3DXmE=;
+	s=korg; t=1742906149;
+	bh=Ma9ai4OVxKfJ8PrCAVvKFry0n8SBl4ngIC6GRiKbitM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ol03aV3vTp2+pjMjKmruPSeG8QQ9yw31KZTHXOiUIEl02ePcLR/vpcQpjAt7ki0Rh
-	 fkOToOqMiHKdtVmv6lG6UyvnG/lCVGs+9M+i4PK5mJJH1PPra7jLsgaayxuOKhXpKo
-	 rhOmHt4FWL0lLaVrsTbk4lPQa7115YRCj8rSE8F8=
+	b=DNQ1fEMkwYeOJ+q8TNX2kNCEMl+vhTeZVYn4xruhSu1OimYbllK9SxCQHlzYoSK93
+	 uXnlYUn5m6L62T9/GwZLJVaDje4OmmAKbr1nbHJsI24TlF+qdeZS2QzC5yi0Ivs4AA
+	 MGLZEAS5KnGwGbIxPnUMH0w65OgWAGqQJ8BvsguM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Leite Ladessa <igor-ladessa@hotmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 187/198] ksmbd: fix incorrect validation for num_aces field of smb_acl
+	Iago Toral Quiroga <itoral@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.6 34/77] drm/v3d: Dont run jobs that have errors flagged in its fence
 Date: Tue, 25 Mar 2025 08:22:29 -0400
-Message-ID: <20250325122201.554770738@linuxfoundation.org>
+Message-ID: <20250325122145.246647083@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +59,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit 1b8b67f3c5e5169535e26efedd3e422172e2db64 upstream.
+commit 80cbee810e4e13cdbd3ae9654e9ecddf17f3e828 upstream.
 
-parse_dcal() validate num_aces to allocate posix_ace_state_array.
+The V3D driver still relies on `drm_sched_increase_karma()` and
+`drm_sched_resubmit_jobs()` for resubmissions when a timeout occurs.
+The function `drm_sched_increase_karma()` marks the job as guilty, while
+`drm_sched_resubmit_jobs()` sets an error (-ECANCELED) in the DMA fence of
+that guilty job.
 
-if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
+Because of this, we must check whether the job’s DMA fence has been
+flagged with an error before executing the job. Otherwise, the same guilty
+job may be resubmitted indefinitely, causing repeated GPU resets.
 
-It is an incorrect validation that we can create an array of size ULONG_MAX.
-smb_acl has ->size field to calculate actual number of aces in request buffer
-size. Use this to check invalid num_aces.
+This patch adds a check for an error on the job's fence to prevent running
+a guilty job that was previously flagged when the GPU timed out.
 
-Reported-by: Igor Leite Ladessa <igor-ladessa@hotmail.com>
-Tested-by: Igor Leite Ladessa <igor-ladessa@hotmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Note that the CPU and CACHE_CLEAN queues do not require this check, as
+their jobs are executed synchronously once the DRM scheduler starts them.
+
+Cc: stable@vger.kernel.org
+Fixes: d223f98f0209 ("drm/v3d: Add support for compute shader dispatch.")
+Fixes: 1584f16ca96e ("drm/v3d: Add support for submitting jobs to the TFU.")
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250313-v3d-gpu-reset-fixes-v4-1-c1e780d8e096@igalia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_sched.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -398,7 +398,9 @@ static void parse_dacl(struct user_names
- 	if (num_aces <= 0)
- 		return;
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -179,11 +179,15 @@ v3d_tfu_job_run(struct drm_sched_job *sc
+ 	struct drm_device *dev = &v3d->drm;
+ 	struct dma_fence *fence;
  
--	if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
-+	if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
-+			(offsetof(struct smb_ace, sid) +
-+			 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
- 		return;
++	if (unlikely(job->base.base.s_fence->finished.error))
++		return NULL;
++
++	v3d->tfu_job = job;
++
+ 	fence = v3d_fence_create(v3d, V3D_TFU);
+ 	if (IS_ERR(fence))
+ 		return NULL;
  
- 	ret = init_acl_state(&acl_state, num_aces);
-@@ -432,6 +434,7 @@ static void parse_dacl(struct user_names
- 			offsetof(struct smb_sid, sub_auth);
+-	v3d->tfu_job = job;
+ 	if (job->base.irq_fence)
+ 		dma_fence_put(job->base.irq_fence);
+ 	job->base.irq_fence = dma_fence_get(fence);
+@@ -217,6 +221,9 @@ v3d_csd_job_run(struct drm_sched_job *sc
+ 	struct dma_fence *fence;
+ 	int i;
  
- 		if (end_of_acl - acl_base < acl_size ||
-+		    ppace[i]->sid.num_subauth == 0 ||
- 		    ppace[i]->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
- 		    (end_of_acl - acl_base <
- 		     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth) ||
++	if (unlikely(job->base.base.s_fence->finished.error))
++		return NULL;
++
+ 	v3d->csd_job = job;
+ 
+ 	v3d_invalidate_caches(v3d);
 
 
 
