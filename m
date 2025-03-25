@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-126159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C17A6FFA7
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD9FA700C5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 863A41885F5A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FFA6843AE3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC03266F0F;
-	Tue, 25 Mar 2025 12:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B54268FD8;
+	Tue, 25 Mar 2025 12:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ny0L7bFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9VVnIw2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A58C41C85;
-	Tue, 25 Mar 2025 12:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28D22561D7;
+	Tue, 25 Mar 2025 12:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905710; cv=none; b=Gudif8RUJ+ddWAsx8+SXcXB6CdPehUPvK9JfVcMwxGTBYqXCjkIxXEf4cQtcqKdse3vNQGA3zMjU3PsOzoKkxEfJAGFmYPUSR/5YFZQVLtc8F5CdmwXk+d5OShnBi810oD8RcCxHT0jnLWT7TgqH/tYTFW+izpxEa77kJmgg8Lw=
+	t=1742905956; cv=none; b=unGwXA63AmBVSiGYRVaDLUTQobsL7/xZYktUXwkLCOYhCK4U17XTwNyN6zh7Hp7YIsRLG/q4dpuU8zLtiG3ndAfKIyBueWCfe7Tvgvzjz1C3miMDWZoHuvy3gSKv673xzTJzbF3EpkEQ84+e5l5GH6enlsOYMBe4a99Jiom0evI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905710; c=relaxed/simple;
-	bh=Jqc6opI6LDiyLBO4h9k1FZaGpgaHidFUPFkBP7zNJrM=;
+	s=arc-20240116; t=1742905956; c=relaxed/simple;
+	bh=w8/0nEMMefRkThNlCZYhPcV2Vw5SdpRcuTPQHoiRLuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQzSxArvwrf6VnZGAgOR3ZTLtJlLXCQhlc8d5/FQ+Ht9c9bhcZpxta+LCT9uqOZKv1FhykdgJMdxAzbJXPD+j2KNE09vX62LXKYip4cKSZlQbvDUyN5QhglITklk5aC8iE5jkEDj5x6S7TZJ21hrwb6fi889DmqY+dGXPTmtkU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ny0L7bFl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB23C4CEE4;
-	Tue, 25 Mar 2025 12:28:29 +0000 (UTC)
+	 MIME-Version; b=r6xu4TPCp2QN5SeQoA4VEATp+iFpjEt3iz5YeSclNKYohUwy1O/nm9OlHqRPxui1dyETBDWxezTm4PMA4fcPCbyChUwdO2v/myrOP3dkER+Mhz2a62SqTq0wXtGSIzci827VeiKDveqHKXqX1uu37Ibmz3P8hknz+yiJMo1u96Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9VVnIw2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879FCC4CEE4;
+	Tue, 25 Mar 2025 12:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905710;
-	bh=Jqc6opI6LDiyLBO4h9k1FZaGpgaHidFUPFkBP7zNJrM=;
+	s=korg; t=1742905956;
+	bh=w8/0nEMMefRkThNlCZYhPcV2Vw5SdpRcuTPQHoiRLuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ny0L7bFl4APmcjfn7uBzCNxUyuf5krTV/k2qBXnBk7mKXWLq5VkNufHyYac7XGaF7
-	 vHTz7hJaaIJH775EhnLPUTf7GRqS8yuUQ/S67zX2afmOUmgzNX9hXPdgJllyvkrkJz
-	 AzbJfxSLFQ0f9kGs1TpJZFO1TuBcjHQGRdBxil7U=
+	b=w9VVnIw2foHxCUBzLjowpX8uovWj+0BxBN9WgkG0tTwCVy6lLfuV4wpi5yK5mFM09
+	 ZGsbaPVOdlchykX+DB/b6Ta2PQZdMT8pMpOwZfME1SPgV9tQcJOzfIVGpK94Y6GoD0
+	 dpCqZwTcuvXqpTCZJRcPqFwSMxvnACE7CkXkfZ5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Lai <yi1.lai@intel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Chen Linxuan <chenlinxuan@deepin.org>
-Subject: [PATCH 6.1 122/198] lib/buildid: Handle memfd_secret() files in build_id_parse()
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 026/119] RDMA/hns: Fix a missing rollback in error path of hns_roce_create_qp_common()
 Date: Tue, 25 Mar 2025 08:21:24 -0400
-Message-ID: <20250325122159.854576486@linuxfoundation.org>
+Message-ID: <20250325122149.736535444@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit 5ac9b4e935dfc6af41eee2ddc21deb5c36507a9f upstream.
+[ Upstream commit 444907dd45cbe62fd69398805b6e2c626fab5b3a ]
 
->From memfd_secret(2) manpage:
+When ib_copy_to_udata() fails in hns_roce_create_qp_common(),
+hns_roce_qp_remove() should be called in the error path to
+clean up resources in hns_roce_qp_store().
 
-  The memory areas backing the file created with memfd_secret(2) are
-  visible only to the processes that have access to the file descriptor.
-  The memory region is removed from the kernel page tables and only the
-  page tables of the processes holding the file descriptor map the
-  corresponding physical memory. (Thus, the pages in the region can't be
-  accessed by the kernel itself, so that, for example, pointers to the
-  region can't be passed to system calls.)
-
-We need to handle this special case gracefully in build ID fetching
-code. Return -EFAULT whenever secretmem file is passed to build_id_parse()
-family of APIs. Original report and repro can be found in [0].
-
-  [0] https://lore.kernel.org/bpf/ZwyG8Uro%2FSyTXAni@ly-workstation/
-
-Fixes: de3ec364c3c3 ("lib/buildid: add single folio-based file reader abstraction")
-Reported-by: Yi Lai <yi1.lai@intel.com>
-Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Link: https://lore.kernel.org/bpf/20241017175431.6183-A-hca@linux.ibm.com
-Link: https://lore.kernel.org/bpf/20241017174713.2157873-1-andrii@kernel.org
-[ Chen Linxuan: backport same logic without folio-based changes ]
-Fixes: 88a16a130933 ("perf: Add build id data in mmap2 event")
-Signed-off-by: Chen Linxuan <chenlinxuan@deepin.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0f00571f9433 ("RDMA/hns: Use new SQ doorbell register for HIP09")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250311084857.3803665-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/buildid.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -5,6 +5,7 @@
- #include <linux/elf.h>
- #include <linux/kernel.h>
- #include <linux/pagemap.h>
-+#include <linux/secretmem.h>
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index 8408f9a5c309d..52b671156246b 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -1220,7 +1220,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
+ 				       min(udata->outlen, sizeof(resp)));
+ 		if (ret) {
+ 			ibdev_err(ibdev, "copy qp resp failed!\n");
+-			goto err_store;
++			goto err_flow_ctrl;
+ 		}
+ 	}
  
- #define BUILD_ID 3
- 
-@@ -157,6 +158,10 @@ int build_id_parse(struct vm_area_struct
- 	if (!vma->vm_file)
- 		return -EINVAL;
- 
-+	/* reject secretmem folios created with memfd_secret() */
-+	if (vma_is_secretmem(vma))
-+		return -EFAULT;
-+
- 	page = find_get_page(vma->vm_file->f_mapping, 0);
- 	if (!page)
- 		return -EFAULT;	/* page not mapped */
+-- 
+2.39.5
+
 
 
 
