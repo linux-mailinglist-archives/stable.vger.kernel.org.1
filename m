@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-126208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103FAA7009A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05605A700F7
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B442189DA1F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D993BA206
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD8E25A35E;
-	Tue, 25 Mar 2025 12:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F8026B2A9;
+	Tue, 25 Mar 2025 12:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oF0vUyhk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOrhsv1V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AA3259CAD;
-	Tue, 25 Mar 2025 12:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC6325D521;
+	Tue, 25 Mar 2025 12:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905800; cv=none; b=uwf4IHUf5cU8RW/m+mrPR5mMLdfDOoftyR+efDUmqflxQ2s7DN6vJXpL+vWid9ISKsXEH1HQslnU1mvFMgmQukjhSlZUezYmBEMMh+5TB7Lk528Z5vJjrkClos+o22HsLweq/Catv3K6w7gK0xL9bw9z9CXq9ohGNnJsry9IW44=
+	t=1742906245; cv=none; b=XGhWTkZuoGhdIGl3vj1/pBucslNZQYE42rETPvMkEbBP3r5fjuhCYLAu4j8cZPhdc33iWNrO2YrvSE/7HjGUccH7MwpHJ4sU0ZSCwzfHMaVBqmU5cU+5fvDCYFECSMvHH+YFKcVyoD3/X/Di+5zHppGXYByBsDA/Xr0BkIQ0JNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905800; c=relaxed/simple;
-	bh=77SsWQj4J0NJ37DppBeK4UBMYXYLx+ZOgfyeXQzdTL8=;
+	s=arc-20240116; t=1742906245; c=relaxed/simple;
+	bh=uM5WGSHsDe9OjWJwifMx909Ip4a63jqyalTRp0v4PrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVs2wpur0XwaHfGTmm4dlgqTE9Xmau6S17KAdpGAfFALshmCWVqpLnxQmUpsidWRxhdkw2yRBrr5OjYuCITCNkyOT2fZ34QjMBN29Aryt4hGu0gIGtmtMS4Sn/q9ltkIUf2bl2r5gDbm48ibeEDobhnx/VgEHNxU4IK9bBl+UcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oF0vUyhk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8D8C4CEE4;
-	Tue, 25 Mar 2025 12:30:00 +0000 (UTC)
+	 MIME-Version; b=b59SM1QSG9pmrxve+cRhNe2fT52Ml4u61+nk1k3ZYkUqJenyQx6uy4eVVBKr8FbaGqwOc0E9/sfH2xyUIUP8tWxwv/cSC/70K0MNrtkd4CGo5hmjNrU/Vt0PwE8iUjPgTXwhVDGQ8qhJYsSpIr0KQx9RG4iZr2n8jvH+Aw446uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOrhsv1V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314D4C4CEE4;
+	Tue, 25 Mar 2025 12:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905800;
-	bh=77SsWQj4J0NJ37DppBeK4UBMYXYLx+ZOgfyeXQzdTL8=;
+	s=korg; t=1742906245;
+	bh=uM5WGSHsDe9OjWJwifMx909Ip4a63jqyalTRp0v4PrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oF0vUyhkAZZsNNfc4usmTSy+PPVZ5UnTp5QpENntI4B3h7wMTafQ+Oh54CVEnxGMB
-	 cumoLTDv3nNdU9Jek+AXQUOi12W7z7u5eTq3+VUWxxLXSSBG/ICeFS/QEiM/3akdy9
-	 iyxz64CJKRQchYz/cf9jZxTK27IufxOMa2MZGrs8=
+	b=NOrhsv1VoOTuYHIUZfUCyEgLXHY7hL4dcYJznlcy97rz0xqvxpJsmMGkA12e1lQfv
+	 baxKXJtRn88M5pZV6Oxzcpxx4mlRBlgyxhSkFcPKYdZkAYgMJBHfjihT200EFTXBWh
+	 CCPZxu6jUoiyZIA7LZQN9ES6GmZMR4vGkTa5CHJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/198] arm64: mm: Populate vmemmap at the page level if not section aligned
+Subject: [PATCH 6.12 015/116] RDMA/rxe: Fix the failure of ibv_query_device() and ibv_query_device_ex() tests
 Date: Tue, 25 Mar 2025 08:21:42 -0400
-Message-ID: <20250325122200.326136956@linuxfoundation.org>
+Message-ID: <20250325122149.609916296@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit d4234d131b0a3f9e65973f1cdc71bb3560f5d14b ]
+[ Upstream commit 8ce2eb9dfac8743d1c423b86339336a5b6a6069e ]
 
-On the arm64 platform with 4K base page config, SECTION_SIZE_BITS is set
-to 27, making one section 128M. The related page struct which vmemmap
-points to is 2M then.
-Commit c1cc1552616d ("arm64: MMU initialisation") optimizes the
-vmemmap to populate at the PMD section level which was suitable
-initially since hot plug granule is always one section(128M). However,
-commit ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-introduced a 2M(SUBSECTION_SIZE) hot plug granule, which disrupted the
-existing arm64 assumptions.
+In rdma-core, the following failures appear.
 
-The first problem is that if start or end is not aligned to a section
-boundary, such as when a subsection is hot added, populating the entire
-section is wasteful.
+"
+$ ./build/bin/run_tests.py -k device
+ssssssss....FF........s
+======================================================================
+FAIL: test_query_device (tests.test_device.DeviceTest.test_query_device)
+Test ibv_query_device()
+----------------------------------------------------------------------
+Traceback (most recent call last):
+   File "/home/ubuntu/rdma-core/tests/test_device.py", line 63, in
+   test_query_device
+     self.verify_device_attr(attr, dev)
+   File "/home/ubuntu/rdma-core/tests/test_device.py", line 200, in
+   verify_device_attr
+     assert attr.sys_image_guid != 0
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
 
-The next problem is if we hotplug something that spans part of 128 MiB
-section (subsections, let's call it memblock1), and then hotplug something
-that spans another part of a 128 MiB section(subsections, let's call it
-memblock2), and subsequently unplug memblock1, vmemmap_free() will clear
-the entire PMD entry which also supports memblock2 even though memblock2
-is still active.
+======================================================================
+FAIL: test_query_device_ex (tests.test_device.DeviceTest.test_query_device_ex)
+Test ibv_query_device_ex()
+----------------------------------------------------------------------
+Traceback (most recent call last):
+   File "/home/ubuntu/rdma-core/tests/test_device.py", line 222, in
+   test_query_device_ex
+     self.verify_device_attr(attr_ex.orig_attr, dev)
+   File "/home/ubuntu/rdma-core/tests/test_device.py", line 200, in
+   verify_device_attr
+     assert attr.sys_image_guid != 0
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+"
 
-Assuming hotplug/unplug sizes are guaranteed to be symmetric. Do the
-fix similar to x86-64: populate to pages levels if start/end is not aligned
-with section boundary.
+The root cause is: before a net device is set with rxe, this net device
+is used to generate a sys_image_guid.
 
-Cc: stable@vger.kernel.org # v5.4+
-Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20250304072700.3405036-1-quic_zhenhuah@quicinc.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 2ac5415022d1 ("RDMA/rxe: Remove the direct link to net_device")
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://patch.msgid.link/20250302215444.3742072-1-yanjun.zhu@linux.dev
+Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
+Tested-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/mmu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe.c | 25 ++++++-------------------
+ 1 file changed, 6 insertions(+), 19 deletions(-)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 6a4f118fb25f4..f095b99bb2144 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1209,8 +1209,11 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- 	pmd_t *pmdp;
+diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
+index 1ba4a0c8726ae..e27478fe9456c 100644
+--- a/drivers/infiniband/sw/rxe/rxe.c
++++ b/drivers/infiniband/sw/rxe/rxe.c
+@@ -38,10 +38,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
+ }
  
- 	WARN_ON((start < VMEMMAP_START) || (end > VMEMMAP_END));
-+	/* [start, end] should be within one section */
-+	WARN_ON_ONCE(end - start > PAGES_PER_SECTION * sizeof(struct page));
+ /* initialize rxe device parameters */
+-static void rxe_init_device_param(struct rxe_dev *rxe)
++static void rxe_init_device_param(struct rxe_dev *rxe, struct net_device *ndev)
+ {
+-	struct net_device *ndev;
+-
+ 	rxe->max_inline_data			= RXE_MAX_INLINE_DATA;
  
--	if (!ARM64_KERNEL_USES_PMD_MAPS)
-+	if (!ARM64_KERNEL_USES_PMD_MAPS ||
-+	    (end - start < PAGES_PER_SECTION * sizeof(struct page)))
- 		return vmemmap_populate_basepages(start, end, node, altmap);
+ 	rxe->attr.vendor_id			= RXE_VENDOR_ID;
+@@ -74,15 +72,9 @@ static void rxe_init_device_param(struct rxe_dev *rxe)
+ 	rxe->attr.max_pkeys			= RXE_MAX_PKEYS;
+ 	rxe->attr.local_ca_ack_delay		= RXE_LOCAL_CA_ACK_DELAY;
  
- 	do {
+-	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
+-	if (!ndev)
+-		return;
+-
+ 	addrconf_addr_eui48((unsigned char *)&rxe->attr.sys_image_guid,
+ 			ndev->dev_addr);
+ 
+-	dev_put(ndev);
+-
+ 	rxe->max_ucontext			= RXE_MAX_UCONTEXT;
+ }
+ 
+@@ -115,18 +107,13 @@ static void rxe_init_port_param(struct rxe_port *port)
+ /* initialize port state, note IB convention that HCA ports are always
+  * numbered from 1
+  */
+-static void rxe_init_ports(struct rxe_dev *rxe)
++static void rxe_init_ports(struct rxe_dev *rxe, struct net_device *ndev)
+ {
+ 	struct rxe_port *port = &rxe->port;
+-	struct net_device *ndev;
+ 
+ 	rxe_init_port_param(port);
+-	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
+-	if (!ndev)
+-		return;
+ 	addrconf_addr_eui48((unsigned char *)&port->port_guid,
+ 			    ndev->dev_addr);
+-	dev_put(ndev);
+ 	spin_lock_init(&port->port_lock);
+ }
+ 
+@@ -144,12 +131,12 @@ static void rxe_init_pools(struct rxe_dev *rxe)
+ }
+ 
+ /* initialize rxe device state */
+-static void rxe_init(struct rxe_dev *rxe)
++static void rxe_init(struct rxe_dev *rxe, struct net_device *ndev)
+ {
+ 	/* init default device parameters */
+-	rxe_init_device_param(rxe);
++	rxe_init_device_param(rxe, ndev);
+ 
+-	rxe_init_ports(rxe);
++	rxe_init_ports(rxe, ndev);
+ 	rxe_init_pools(rxe);
+ 
+ 	/* init pending mmap list */
+@@ -184,7 +171,7 @@ void rxe_set_mtu(struct rxe_dev *rxe, unsigned int ndev_mtu)
+ int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name,
+ 			struct net_device *ndev)
+ {
+-	rxe_init(rxe);
++	rxe_init(rxe, ndev);
+ 	rxe_set_mtu(rxe, mtu);
+ 
+ 	return rxe_register_device(rxe, ibdev_name, ndev);
 -- 
 2.39.5
 
