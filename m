@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C664A70020
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C253A6FFAB
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE02C166C8D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 505C43BD14D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B92268FD2;
-	Tue, 25 Mar 2025 12:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42A6266EFC;
+	Tue, 25 Mar 2025 12:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsOenrgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMk6uRPP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1262B25A64B;
-	Tue, 25 Mar 2025 12:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F2A266EF3;
+	Tue, 25 Mar 2025 12:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905953; cv=none; b=fhtznwOHBDmFI0I1Or++BcP22idCIU6hebq0oCNNPPLdasKOHBHmbnmpcEoTjRCFj5Vf5y5euhtSWK/3ve/Iuffocl24F9wvwlgSje8d8lzfLUrYZLadwvZEYhXsvbBA7lu/LBZoY9g4AkfUxrsJUpKWHmSs5WGXscYnWPS3OuI=
+	t=1742905706; cv=none; b=ZBlXbtaLmN9GxtUvqKqQeYEjUU8zWZRNHvY0FuFFcK/CR4MMdlno6MsN55OvzK9mlK1bSkPVSKmJfPXRsO8dL42f9jBKYdeVnTLeFXiXF1nHl3EP4Kj9Vdbt7hiJET/LOLZhrJNRmwqbPfbAwlIpqQuMSCcE6yZXgrSzLtfd2yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905953; c=relaxed/simple;
-	bh=JAxgc1LL9KqFvbD3Seav0S4KlzLeyIUmG75mEnGZ89E=;
+	s=arc-20240116; t=1742905706; c=relaxed/simple;
+	bh=XxV1pgqI5+VCskBM3NYfxzKS8yh2fQh1vDUcG7WMKzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+hcKj6ZCVR78TxXpDOPaMv2ud7r4yeYT54PjDfdwcL3MqJ0tlnBkEhK33id71GeRZa9lVplbZv+F9AZOYkuLQ5mz4cA3rIYiv09pzM0+NDJqGIytHqWoCrx/7+9NADpcKYKhuJi1XmuBtAtmj7AzsrpXmCnqdK8t6hA/r4yT4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsOenrgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB63C4CEE4;
-	Tue, 25 Mar 2025 12:32:32 +0000 (UTC)
+	 MIME-Version; b=J6ch7aDJHLlm2+Ym4mqE12RlVgJjmUe3YBCWLEAV4tq+zWF2eh21ssNJL6FFyoQMdfOH7O0/5uRqBoBC+DUz1dN7HN4H2byDsf23VaEy/o9DtFYl7AJsB/8O5nN9o1oFJyg+Svn9z8/2NVyzy7NkvXbSkeneGDhFwoAG1camTtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMk6uRPP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3156AC4CEED;
+	Tue, 25 Mar 2025 12:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905952;
-	bh=JAxgc1LL9KqFvbD3Seav0S4KlzLeyIUmG75mEnGZ89E=;
+	s=korg; t=1742905706;
+	bh=XxV1pgqI5+VCskBM3NYfxzKS8yh2fQh1vDUcG7WMKzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zsOenrgt0V81fszzjLeyT3TE6cDzUoAPJdIaMc4+Gxq5NdhGxQs8lFGYWETMHBg4Y
-	 RneMfaZ0xpH0/oAfS8iZBlBULQVzd3ndVSpBinA+N24YI8ylHTqChuvl4F3ub/fdq4
-	 GD1S0MzxpgJJYhgN/C2F76wlf1OQCeg262lrn4gA=
+	b=kMk6uRPPljZCUMS6zCSjdUqP04b3c2mImB9zBBSSgpiZl4YCpjBXGQF5VMq2uuej2
+	 OTVvXJ4TUbYLyjvXzsVfCl2tCeTpe3UzT8JPtPiAhDtuSyMyddg+GIOlfyjybivCwO
+	 EJdxIhNKIB8T8zP1zXBGPZ2rL2m6b1EcR/8a1Ez0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 024/119] RDMA/hns: Fix unmatched condition in error path of alloc_user_qp_db()
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 120/198] qlcnic: fix memory leak issues in qlcnic_sriov_common.c
 Date: Tue, 25 Mar 2025 08:21:22 -0400
-Message-ID: <20250325122149.686776025@linuxfoundation.org>
+Message-ID: <20250325122159.803335499@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit b9f59a24ba35a7d955a9f8e148dd9f85b7b40a01 ]
+commit d2b9d97e89c79c95f8b517e4fa43fd100f936acc upstream.
 
-Currently the condition of unmapping sdb in error path is not exactly
-the same as the condition of mapping in alloc_user_qp_db(). This may
-cause a problem of unmapping an unmapped db in some case, such as
-when the QP is XRC TGT. Unified the two conditions.
+Add qlcnic_sriov_free_vlans() in qlcnic_sriov_alloc_vlans() if
+any sriov_vlans fails to be allocated.
+Add qlcnic_sriov_free_vlans() to free the memory allocated by
+qlcnic_sriov_alloc_vlans() if "sriov->allowed_vlans" fails to
+be allocated.
 
-Fixes: 90ae0b57e4a5 ("RDMA/hns: Combine enable flags of qp")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 91b7282b613d ("qlcnic: Support VLAN id config.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250307094952.14874-1-haoxiang_li2024@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index 9e2e76c594063..a97348a1c61f1 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -868,12 +868,14 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 			    struct hns_roce_ib_create_qp *ucmd,
- 			    struct hns_roce_ib_create_qp_resp *resp)
- {
-+	bool has_sdb = user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd);
- 	struct hns_roce_ucontext *uctx = rdma_udata_to_drv_context(udata,
- 		struct hns_roce_ucontext, ibucontext);
-+	bool has_rdb = user_qp_has_rdb(hr_dev, init_attr, udata, resp);
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	int ret;
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
+@@ -454,8 +454,10 @@ static int qlcnic_sriov_set_guest_vlan_m
  
--	if (user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd)) {
-+	if (has_sdb) {
- 		ret = hns_roce_db_map_user(uctx, ucmd->sdb_addr, &hr_qp->sdb);
- 		if (ret) {
- 			ibdev_err(ibdev,
-@@ -884,7 +886,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 		hr_qp->en_flags |= HNS_ROCE_QP_CAP_SQ_RECORD_DB;
+ 	num_vlans = sriov->num_allowed_vlans;
+ 	sriov->allowed_vlans = kcalloc(num_vlans, sizeof(u16), GFP_KERNEL);
+-	if (!sriov->allowed_vlans)
++	if (!sriov->allowed_vlans) {
++		qlcnic_sriov_free_vlans(adapter);
+ 		return -ENOMEM;
++	}
+ 
+ 	vlans = (u16 *)&cmd->rsp.arg[3];
+ 	for (i = 0; i < num_vlans; i++)
+@@ -2167,8 +2169,10 @@ int qlcnic_sriov_alloc_vlans(struct qlcn
+ 		vf = &sriov->vf_info[i];
+ 		vf->sriov_vlans = kcalloc(sriov->num_allowed_vlans,
+ 					  sizeof(*vf->sriov_vlans), GFP_KERNEL);
+-		if (!vf->sriov_vlans)
++		if (!vf->sriov_vlans) {
++			qlcnic_sriov_free_vlans(adapter);
+ 			return -ENOMEM;
++		}
  	}
  
--	if (user_qp_has_rdb(hr_dev, init_attr, udata, resp)) {
-+	if (has_rdb) {
- 		ret = hns_roce_db_map_user(uctx, ucmd->db_addr, &hr_qp->rdb);
- 		if (ret) {
- 			ibdev_err(ibdev,
-@@ -898,7 +900,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
  	return 0;
- 
- err_sdb:
--	if (hr_qp->en_flags & HNS_ROCE_QP_CAP_SQ_RECORD_DB)
-+	if (has_sdb)
- 		hns_roce_db_unmap_user(uctx, &hr_qp->sdb);
- err_out:
- 	return ret;
--- 
-2.39.5
-
 
 
 
