@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-126184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30FBA6FFCE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC240A701A8
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:27:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0A6C3B9EA5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60A1D189F2F7
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009EE2673B0;
-	Tue, 25 Mar 2025 12:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557C026B2C8;
+	Tue, 25 Mar 2025 12:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1MVqCFZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+E1ouhS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16A9259CAD;
-	Tue, 25 Mar 2025 12:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1144525C717;
+	Tue, 25 Mar 2025 12:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905756; cv=none; b=loO4O3wuk8sVhKVjxF8/aKND3hSol5tV6K4I37t5XWrvOvL0CVP6sI91OpL0ALiaUZOwsafj8M96/veklMDfxNAzNZD0auzjBaEPRxXweudSr0qD/gbF/EcS9pBYoD6qy3DJFbtzOX793MwTmM8KRBBorP10NWwjtv4DwENFxCw=
+	t=1742906260; cv=none; b=uU3GS4uFyZXFgkP20ymMCsBJ0aWjoycOTI4mNyrXYA/h5bhxjBqmam1WhoIrq6IM1mEhj43bxGiRvSkBybuyHXVWuHIBFwyH1bbzyYVaWKGcW5Bbo9K9Et4aAPtUjYdPEWt9QRl4KjzbC5ahxd9tzX9juW9VulQcjrbBwDNgi5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905756; c=relaxed/simple;
-	bh=owbNrBj65sv6Ng67JmtbznHYX3XfDCa42r8qpUzkf/I=;
+	s=arc-20240116; t=1742906260; c=relaxed/simple;
+	bh=he2HYiAAnHOMYLX4QYDfddtxUcK70wb0KmqDPkCBTlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDPCyk7yxHIpDrZbUsG9vWLmt3fs6N0UIBeK1Qq4LIp+vjCjw2y9YNHn1jqKty2NwkBVN2k1PmGaqkp0aMkha1MQ1Qh6xb9iIqWL/P3aIMjblS/cBcTZgwh1HCV5cKzN0aRoWEGdY9ds+Sh+4ioZ96B6jpenG+xyZQqr016BJ3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1MVqCFZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FFFC4CEE4;
-	Tue, 25 Mar 2025 12:29:16 +0000 (UTC)
+	 MIME-Version; b=VwrAadBFeZbdPzgcb+uSHO/bRfIeA0mLnFGsGB5EOfPN3ZEEC1/brYwp+6ekFJOBIx/eQW5OwRROdltnCDAEEuhl+/pX7kgYTxPOqFDkYy+ieCpEgWKi9sPCVniWKKOAgRlg1VT4sWGtI0RLE+SkcJO4aAKcWUYdUMvA9JmbYbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+E1ouhS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93F5C4CEE4;
+	Tue, 25 Mar 2025 12:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905756;
-	bh=owbNrBj65sv6Ng67JmtbznHYX3XfDCa42r8qpUzkf/I=;
+	s=korg; t=1742906259;
+	bh=he2HYiAAnHOMYLX4QYDfddtxUcK70wb0KmqDPkCBTlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g1MVqCFZp+Mkb0zxiotRKZAV2KOAZMRdPjpQoPtzGcjdMtGUV5uehfEgTQGLkLc9f
-	 gA0DX1quMv/ZxuzsewXNe3Uyon2YYTLxOSiN09wbapUlIKCWK3d7v0CSR29wS1a2r1
-	 +DqG+ec+IPio9zpghtdTGLO4jkJNFmaTEeRntaLM=
+	b=b+E1ouhS00tIW0/p930cYBie7XrjeTgbpTS+ObXdxK3U2xrWiZNOm/t8NiHv+ff2V
+	 ya54sN+T0GQk2ixo3MzrxBZpVtwKHAopx0T0/6lu98zWD8OWwRCCR0ymEnubksZOdF
+	 MuhLesNRxnetBKI6A/Q0i43fyOndrCWtQdKtGYSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/198] arm64: dts: freescale: tqma8mpql: Fix vqmmc-supply
+Subject: [PATCH 6.12 022/116] dma-mapping: fix missing clear bdr in check_ram_in_range_map()
 Date: Tue, 25 Mar 2025 08:21:49 -0400
-Message-ID: <20250325122200.513991076@linuxfoundation.org>
+Message-ID: <20250325122149.785195450@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 38f59e0e8bd2b3e1319716e4aeaeb9a6223b006d ]
+[ Upstream commit 8324993f60305e50f27b98358b01b9837e10d159 ]
 
-eMMC is supplied by BUCK5 rail. Use the actual regulator instead of
-a virtual fixed regulator.
+As discussed in [1], if 'bdr' is set once, it would never get
+cleared, hence 0 is always returned.
 
-Fixes: 418d1d840e421 ("arm64: dts: freescale: add initial device tree for TQMa8MPQL with i.MX8MP")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Refactor the range check hunk into a new helper dma_find_range(),
+which allows 'bdr' to be cleared in each iteration.
+
+Link: https://lore.kernel.org/all/64931fac-085b-4ff3-9314-84bac2fa9bdb@quicinc.com/ # [1]
+Fixes: a409d9600959 ("dma-mapping: fix dma_addressing_limited() if dma_range_map can't cover all system RAM")
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://lore.kernel.org/r/20250307030350.69144-1-quic_bqiang@quicinc.com
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-tqma8mpql.dtsi     | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ kernel/dma/direct.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-index 7bd680a926ce7..c63144f2456e3 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-@@ -1,7 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 5b4e6d3bf7bcc..b8fe0b3d0ffb6 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -584,6 +584,22 @@ int dma_direct_supported(struct device *dev, u64 mask)
+ 	return mask >= phys_to_dma_unencrypted(dev, min_mask);
+ }
+ 
++static const struct bus_dma_region *dma_find_range(struct device *dev,
++						   unsigned long start_pfn)
++{
++	const struct bus_dma_region *m;
++
++	for (m = dev->dma_range_map; PFN_DOWN(m->size); m++) {
++		unsigned long cpu_start_pfn = PFN_DOWN(m->cpu_start);
++
++		if (start_pfn >= cpu_start_pfn &&
++		    start_pfn - cpu_start_pfn < PFN_DOWN(m->size))
++			return m;
++	}
++
++	return NULL;
++}
++
  /*
-- * Copyright 2021-2022 TQ-Systems GmbH
-- * Author: Alexander Stein <alexander.stein@tq-group.com>
-+ * Copyright 2021-2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Alexander Stein
-  */
+  * To check whether all ram resource ranges are covered by dma range map
+  * Returns 0 when further check is needed
+@@ -593,20 +609,12 @@ static int check_ram_in_range_map(unsigned long start_pfn,
+ 				  unsigned long nr_pages, void *data)
+ {
+ 	unsigned long end_pfn = start_pfn + nr_pages;
+-	const struct bus_dma_region *bdr = NULL;
+-	const struct bus_dma_region *m;
+ 	struct device *dev = data;
  
- #include "imx8mp.dtsi"
-@@ -23,15 +24,6 @@ reg_vcc3v3: regulator-vcc3v3 {
- 		regulator-max-microvolt = <3300000>;
- 		regulator-always-on;
- 	};
--
--	/* e-MMC IO, needed for HS modes */
--	reg_vcc1v8: regulator-vcc1v8 {
--		compatible = "regulator-fixed";
--		regulator-name = "VCC1V8";
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <1800000>;
--		regulator-always-on;
--	};
- };
+ 	while (start_pfn < end_pfn) {
+-		for (m = dev->dma_range_map; PFN_DOWN(m->size); m++) {
+-			unsigned long cpu_start_pfn = PFN_DOWN(m->cpu_start);
++		const struct bus_dma_region *bdr;
  
- &A53_0 {
-@@ -194,7 +186,7 @@ &usdhc3 {
- 	no-sd;
- 	no-sdio;
- 	vmmc-supply = <&reg_vcc3v3>;
--	vqmmc-supply = <&reg_vcc1v8>;
-+	vqmmc-supply = <&buck5_reg>;
- 	status = "okay";
- };
+-			if (start_pfn >= cpu_start_pfn &&
+-			    start_pfn - cpu_start_pfn < PFN_DOWN(m->size)) {
+-				bdr = m;
+-				break;
+-			}
+-		}
++		bdr = dma_find_range(dev, start_pfn);
+ 		if (!bdr)
+ 			return 1;
  
 -- 
 2.39.5
