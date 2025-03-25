@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-126255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88069A70010
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 884CDA70009
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B9EF17AE17
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3082F19A09D1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA01268695;
-	Tue, 25 Mar 2025 12:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7B6266EE4;
+	Tue, 25 Mar 2025 12:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkiH88eW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UP5o26cQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E6525A337;
-	Tue, 25 Mar 2025 12:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7D51D959B;
+	Tue, 25 Mar 2025 12:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905887; cv=none; b=klcbNtP7uJjS4uQ1MasgYdjULSVZmtqXg9wtt0KdqCBbOpfWW5rEJcaEsXkI6q+tJsfvCd5Ql3BP6sw16F0rt98dytpUrmMJvCDso86lieqkfBQaKDMaZlq5w1I4GAM5TdO+hr1uOiLzHi8m2HBfyRDHehzOKvzXyLKSb0+Mmog=
+	t=1742905697; cv=none; b=WtfqjmZypN6q/4ttqLarkHdITX99nkB94MwNMRlesmH7iPn19383u0YOIRMKCEZY3fG4KLnGYQgI1hLZ6/J8jsNGk4mBR6SXxvf3pHD2QW586NN3FRQ7dv0rMR5yalv8uEdcPdT4GM4A1M1/7GJlIkkzf5qb9tdoXM88Sp2PNl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905887; c=relaxed/simple;
-	bh=xX89Ma+xc08CJ++0p55284IuljKZkCcz3Q2X44tHMLU=;
+	s=arc-20240116; t=1742905697; c=relaxed/simple;
+	bh=qnNPsqzp8jrJPyDaGK4x4nYFYdp253Q1O3/9BN2lrLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKdblfKKzca3FzGhsLQBfCuF0xI+NmSNmlKN7qDfYFsVxz1EUwkQ6XJqp9nLUdRz7Yk+zq9A0XMCie38jijNC2GaDMukWwFDqXJGLNzljaW0b+LwMDVtlOhaiDHnt1Eq3Kzftnl1l1n2ZiGhP+uGNCSC7yWEcIqi214mAR10sxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkiH88eW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E4CC4CEE4;
-	Tue, 25 Mar 2025 12:31:26 +0000 (UTC)
+	 MIME-Version; b=YVL/Y2aUS4kxs6lzpoE5LGHaKVSeTNjgwQoaPLYk2tCnx/RG0IQT3Ob1jxcNXiqV985NMe1CpIJLEm8n78igaCOMCJlSagEQ4VswKtsWahxbLrs8mZuZ0D28hOGFB25KUoKaeHnr1fond/Lz76s4nEdOrfPUMDLQ3DHnPdppWAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UP5o26cQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AB8C4CEE9;
+	Tue, 25 Mar 2025 12:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905886;
-	bh=xX89Ma+xc08CJ++0p55284IuljKZkCcz3Q2X44tHMLU=;
+	s=korg; t=1742905696;
+	bh=qnNPsqzp8jrJPyDaGK4x4nYFYdp253Q1O3/9BN2lrLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OkiH88eWmJujRNHKBeFGrsxBmtJj1IrYpfhQ/WN40SSxAG4zE48WAD0OCVlD6MEbB
-	 Cfwac89NcmeiFeYlU0GePHwJ0K91h366JAVXEhEw8jEr+9g34zyseMycRHoVygErpD
-	 5mAqYqfNAof64OqUkqiPKgdlHvtTq0p2pURIT51M=
+	b=UP5o26cQ/ccGc11eR+hn2QiDq40DZu9jUjwdgIODoMCCm7r6ozroJbdIU14AmvB6h
+	 c/M/Ea0aewzt1IH4VCQUFrxkr6vMCM2PK9yCy36nldbUvQ4l5r+xTOLakZJFf20EI0
+	 D7XCooIBVVUqmdIjeITzXSgnOb3amSBPIYneK/Bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Brautaset <tbrautaset@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 019/119] ARM: dts: BCM5301X: Fix switch port labels of ASUS RT-AC5300
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 115/198] drm/amd/display: Restore correct backlight brightness after a GPU reset
 Date: Tue, 25 Mar 2025 08:21:17 -0400
-Message-ID: <20250325122149.561439293@linuxfoundation.org>
+Message-ID: <20250325122159.672957216@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chester A. Unal <chester.a.unal@arinc9.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 56e12d0c8d395b6e48f128858d4f725c1ded6c95 ]
+commit 5760388d9681ac743038b846b9082b9023969551 upstream.
 
-After using the device for a while, Tom reports that he initially described
-the switch port labels incorrectly. Correct them.
+[Why]
+GPU reset will attempt to restore cached state, but brightness doesn't
+get restored. It will come back at 100% brightness, but userspace thinks
+it's the previous value.
 
-Reported-by: Tom Brautaset <tbrautaset@gmail.com>
-Fixes: 961dedc6b4e4 ("ARM: dts: BCM5301X: Add DT for ASUS RT-AC5300")
-Signed-off-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20250303-for-broadcom-fix-rt-ac5300-switch-ports-v1-1-e058856ef4d3@arinc9.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[How]
+When running resume sequence if GPU is in reset restore brightness
+to previous value.
+
+Acked-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5e19e2b57b6bb640d68dfc7991e1e182922cf867)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/broadcom/bcm47094-asus-rt-ac5300.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm47094-asus-rt-ac5300.dts b/arch/arm/boot/dts/broadcom/bcm47094-asus-rt-ac5300.dts
-index 6c666dc7ad23e..01ec8c03686a6 100644
---- a/arch/arm/boot/dts/broadcom/bcm47094-asus-rt-ac5300.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm47094-asus-rt-ac5300.dts
-@@ -126,11 +126,11 @@ &srab {
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -230,6 +230,10 @@ static int amdgpu_dm_atomic_check(struct
+ static void handle_hpd_irq_helper(struct amdgpu_dm_connector *aconnector);
+ static void handle_hpd_rx_irq(void *param);
  
- 	ports {
- 		port@0 {
--			label = "lan4";
-+			label = "wan";
- 		};
++static void amdgpu_dm_backlight_set_level(struct amdgpu_display_manager *dm,
++					 int bl_idx,
++					 u32 user_brightness);
++
+ static bool
+ is_timing_unchanged_for_freesync(struct drm_crtc_state *old_crtc_state,
+ 				 struct drm_crtc_state *new_crtc_state);
+@@ -2885,6 +2889,12 @@ static int dm_resume(void *handle)
  
- 		port@1 {
--			label = "lan3";
-+			label = "lan1";
- 		};
+ 		mutex_unlock(&dm->dc_lock);
  
- 		port@2 {
-@@ -138,11 +138,11 @@ port@2 {
- 		};
- 
- 		port@3 {
--			label = "lan1";
-+			label = "lan3";
- 		};
- 
- 		port@4 {
--			label = "wan";
-+			label = "lan4";
- 		};
- 	};
- };
--- 
-2.39.5
-
++		/* set the backlight after a reset */
++		for (i = 0; i < dm->num_of_edps; i++) {
++			if (dm->backlight_dev[i])
++				amdgpu_dm_backlight_set_level(dm, i, dm->brightness[i]);
++		}
++
+ 		return 0;
+ 	}
+ 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
 
 
 
