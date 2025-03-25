@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-126376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A716A6FFF5
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 431F2A700E7
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B85897A7871
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DE903B4745
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01C2269CED;
-	Tue, 25 Mar 2025 12:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35C7269D1F;
+	Tue, 25 Mar 2025 12:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnCW18Kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1faraWTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB032571AC;
-	Tue, 25 Mar 2025 12:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910232580F6;
+	Tue, 25 Mar 2025 12:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906109; cv=none; b=RwELcTjP48IUBde71jUyLwnOIln2+MPZxAXD1LnnkgKXIb3rXd4Jzu9z+FQtKT3kgzkrxjGsRGeAoDo80ER+pkml+6bRT/2TLcIGolZjDDBlhulZqM4r4K+UHeDks5gwUu7fUowTHzZIfo4iHmg1dTCcx8aMIHYajxmME76ths0=
+	t=1742906130; cv=none; b=cnivAIJ9AdKjZGqp8ndAMHs2TrYOX3yYQ8u853UV8/5FrQnzwMVwPXxM/M7/FDhps89ZfXSCzegh0P/d2V/i9i+GLYqWqS8O4oVyqEZg6Q1UmL/f7cHuWLEkwVRVvPE8DKc+8dPboNmfOrsFfF7NuEAccOi7WvOmaz8GVzizIg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906109; c=relaxed/simple;
-	bh=Sx49HA7a++bToXp8wGaNuPtey8FlObr/j86XxAXkXEM=;
+	s=arc-20240116; t=1742906130; c=relaxed/simple;
+	bh=+8GBBTj2HCRA2Uw+tlnj5WZN55CZuFC7YIlVYBVqY+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnNGxjckYLtZVkqFDMKUKJgKzambXIZR6+wfkqj/Tp5AtWtm8mrS+Ps4CHY2rkVY07cn43k/oRyNgGZGesLCXaVn3n5ySl2LpImYGWE/ycjBLbnDkljNFNeaSY16fjwVSspA/beve1ZScjUuYJbyjZIc0f2yI1G+BGPwc3rm2Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnCW18Kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF3AC4CEE4;
-	Tue, 25 Mar 2025 12:35:09 +0000 (UTC)
+	 MIME-Version; b=SvBTkhp6mxbb7B3BCn90JPQMZYIHCon20CnlYUb5HQ6cp8HV/KTr+/qgHKrgwoRPJI5agJt2+K6nV2BYwJ+3YljlG7TFaFiRIkItZtvFvdDFJpvfOosSs2zsIFrQnbW6KmDmy/lBCMhdssUaVydAupdpOlMQok1r+GmuU0SL1TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1faraWTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97F4C4CEE9;
+	Tue, 25 Mar 2025 12:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906109;
-	bh=Sx49HA7a++bToXp8wGaNuPtey8FlObr/j86XxAXkXEM=;
+	s=korg; t=1742906130;
+	bh=+8GBBTj2HCRA2Uw+tlnj5WZN55CZuFC7YIlVYBVqY+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnCW18KfpFqPxfT/zowvC3qr+v080ebLeYzW143bY4bhBurw+ihHfJuTu1GJUuveH
-	 t1C/0/P5AK3Om+ZKWsHfWSABOBdnX82XhS4xQnrDSdaN6K05lxJ19EtUGIwXcezDFw
-	 N8sUnEhIlWy1SMgtnAx+mKSB8oRuDpm0Eg7SXnnA=
+	b=1faraWTQLF225Pryjh58E5hvaPW1y/dauX0BfAxvF3FGWDAmP1axNjQ0Rf12air2u
+	 u/2F4muhxU3b+LGRkEayvhYG9FdwjTZrrY/6oBm45oA0wJxtdw+bhMbkbpgO+GC7SO
+	 wQmuI+dUpZPxbX6PAzYg+ll+KN21nhJsqQH2QsWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Alexandre Cassen <acassen@corp.free.fr>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 02/77] arm64: dts: freescale: tqma8mpql: Fix vqmmc-supply
-Date: Tue, 25 Mar 2025 08:21:57 -0400
-Message-ID: <20250325122144.335790974@linuxfoundation.org>
+Subject: [PATCH 6.6 03/77] xfrm: fix tunnel mode TX datapath in packet offload mode
+Date: Tue, 25 Mar 2025 08:21:58 -0400
+Message-ID: <20250325122144.377172048@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
 References: <20250325122144.259256924@linuxfoundation.org>
@@ -66,60 +67,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Alexandre Cassen <acassen@corp.free.fr>
 
-[ Upstream commit 38f59e0e8bd2b3e1319716e4aeaeb9a6223b006d ]
+[ Upstream commit 5eddd76ec2fd1988f0a3450fde9730b10dd22992 ]
 
-eMMC is supplied by BUCK5 rail. Use the actual regulator instead of
-a virtual fixed regulator.
+Packets that match the output xfrm policy are delivered to the netstack.
+In IPsec packet mode for tunnel mode, the HW is responsible for building
+the hard header and outer IP header. In such a situation, the inner
+header may refer to a network that is not directly reachable by the host,
+resulting in a failed neighbor resolution. The packet is then dropped.
+xfrm policy defines the netdevice to use for xmit so we can send packets
+directly to it.
 
-Fixes: 418d1d840e421 ("arm64: dts: freescale: add initial device tree for TQMa8MPQL with i.MX8MP")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Makes direct xmit exclusive to tunnel mode, since some rules may apply
+in transport mode.
+
+Fixes: f8a70afafc17 ("xfrm: add TX datapath support for IPsec packet offload mode")
+Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-tqma8mpql.dtsi     | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ net/xfrm/xfrm_output.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-index ebc29a950ba9a..e9413c9ccafc5 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-@@ -1,7 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
- /*
-- * Copyright 2021-2022 TQ-Systems GmbH
-- * Author: Alexander Stein <alexander.stein@tq-group.com>
-+ * Copyright 2021-2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Alexander Stein
-  */
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index e5722c95b8bb3..9160a5e09041d 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -610,6 +610,40 @@ int xfrm_output_resume(struct sock *sk, struct sk_buff *skb, int err)
+ }
+ EXPORT_SYMBOL_GPL(xfrm_output_resume);
  
- #include "imx8mp.dtsi"
-@@ -23,15 +24,6 @@ reg_vcc3v3: regulator-vcc3v3 {
- 		regulator-max-microvolt = <3300000>;
- 		regulator-always-on;
- 	};
--
--	/* e-MMC IO, needed for HS modes */
--	reg_vcc1v8: regulator-vcc1v8 {
--		compatible = "regulator-fixed";
--		regulator-name = "VCC1V8";
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <1800000>;
--		regulator-always-on;
--	};
- };
++static int xfrm_dev_direct_output(struct sock *sk, struct xfrm_state *x,
++				  struct sk_buff *skb)
++{
++	struct dst_entry *dst = skb_dst(skb);
++	struct net *net = xs_net(x);
++	int err;
++
++	dst = skb_dst_pop(skb);
++	if (!dst) {
++		XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
++		kfree_skb(skb);
++		return -EHOSTUNREACH;
++	}
++	skb_dst_set(skb, dst);
++	nf_reset_ct(skb);
++
++	err = skb_dst(skb)->ops->local_out(net, sk, skb);
++	if (unlikely(err != 1)) {
++		kfree_skb(skb);
++		return err;
++	}
++
++	/* In transport mode, network destination is
++	 * directly reachable, while in tunnel mode,
++	 * inner packet network may not be. In packet
++	 * offload type, HW is responsible for hard
++	 * header packet mangling so directly xmit skb
++	 * to netdevice.
++	 */
++	skb->dev = x->xso.dev;
++	__skb_push(skb, skb->dev->hard_header_len);
++	return dev_queue_xmit(skb);
++}
++
+ static int xfrm_output2(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+ 	return xfrm_output_resume(sk, skb, 1);
+@@ -729,6 +763,13 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
+ 			return -EHOSTUNREACH;
+ 		}
  
- &A53_0 {
-@@ -193,7 +185,7 @@ &usdhc3 {
- 	no-sd;
- 	no-sdio;
- 	vmmc-supply = <&reg_vcc3v3>;
--	vqmmc-supply = <&reg_vcc1v8>;
-+	vqmmc-supply = <&buck5_reg>;
- 	status = "okay";
- };
++		/* Exclusive direct xmit for tunnel mode, as
++		 * some filtering or matching rules may apply
++		 * in transport mode.
++		 */
++		if (x->props.mode == XFRM_MODE_TUNNEL)
++			return xfrm_dev_direct_output(sk, x, skb);
++
+ 		return xfrm_output_resume(sk, skb, 0);
+ 	}
  
 -- 
 2.39.5
