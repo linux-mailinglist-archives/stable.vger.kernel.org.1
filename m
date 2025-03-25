@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DA6A6FFB1
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59634A6FFEC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 458297A45F6
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:02:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F1B19A4373
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF05429C321;
-	Tue, 25 Mar 2025 12:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6120266B7F;
+	Tue, 25 Mar 2025 12:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVtXGGPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vjv92KLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7008626868F;
-	Tue, 25 Mar 2025 12:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749DB266569;
+	Tue, 25 Mar 2025 12:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905883; cv=none; b=PFqr52U89LlDEjaWOBjArcombY+WVOAmD8FkxqMLVY77Pb7i+KXcQNhbvPBnFdkT1lOxPVwMSSEwLV/spsNxDC+sF0pQDz7ftG/MaWSSOQDQpg7IFfPm5prsaIdPOmAwNl6luuHroG911htXjSH4YNsKz7tgKE8Ag6rnwCtmo+w=
+	t=1742905693; cv=none; b=ipqz9u9Q7t63EtTuqU/pkXcWjuLgBDp8xpg5UoVRahKh5EJ3GS3ZsH2vT0U7C8QIwYsRTauFTQRQbwZIJibxGfQlUjV98qqqJLJ9LQ5V3YMygWwbsfZuOzNtonNPG7MHqSNZH46+/SA7qXxUzfhbdoG7Cr8Oiu2fhCJmsvUmMhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905883; c=relaxed/simple;
-	bh=T/V55C074dibtQyHKKoMPQJshgxliBufofwdgsDY0KQ=;
+	s=arc-20240116; t=1742905693; c=relaxed/simple;
+	bh=93Pzeq+bEOTkK/+TbAEohuqwFCxlpoI6Jpw3NANdNRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VejCl+DFW+7I0u632jK4I9jTMBN61DKN24ihiR/7YXggcdtNSoUiajaunw5+uctwVfMAGZM1cz1vh75fHBI8c8yjOuxUMt18UScxXQn3HB6Klg6bC0zYUABQlOyt/gbiBzdO7VTfRPECbdaspQPoRt1Us+MjMFHI48pHVO+3vzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVtXGGPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24876C4CEE4;
-	Tue, 25 Mar 2025 12:31:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nhnyb7CmI9p8frmm4oGEQtb7TTf8sIpeHjNXHixZHlInYUDVBFUGuvx2rldBdC6Apr2h2ofXtn9DM7XIiyZ2Q2m1un9XqB3dES2/anEpySL5PoXXTJGX8ubB4FjmKkF+Lndn/6cMWGthqqqNa159fgN4MtkzYctniByitMG187o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vjv92KLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21ADFC4CEE4;
+	Tue, 25 Mar 2025 12:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905883;
-	bh=T/V55C074dibtQyHKKoMPQJshgxliBufofwdgsDY0KQ=;
+	s=korg; t=1742905693;
+	bh=93Pzeq+bEOTkK/+TbAEohuqwFCxlpoI6Jpw3NANdNRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XVtXGGPyVvjDHyqwP8x73IvOsKqA7+z43pB0XcYGeJNSHLlRRNPCzwLnpa949Nr6z
-	 qOjhW0gEz8b77g4RiwcfWB3lh6ETJVS7/2KUl+OYgAvADOEAcW50Vfmu9ZV9jksR8o
-	 vqBkU7POY+0ySX7NFDpXuZBqFgxrg9dX7NdQIqa8=
+	b=Vjv92KLyBYfpOBgm35Hcb1LehByy/cWCdbm0B90ragfM19V09poVwi/f+PvyAmm43
+	 cssTb4Z3293iIl0Rg9jB9vaO/3DmYAFaPcXjxkCaRvwIonDGgVg4p/o/oN4Dr2sFpA
+	 h6ATQrqnPfd32gmh9i/C8yjrtHTP6zZGhNnOfLFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 017/119] ARM: OMAP1: select CONFIG_GENERIC_IRQ_CHIP
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Subject: [PATCH 6.1 113/198] drm/atomic: Filter out redundant DPMS calls
 Date: Tue, 25 Mar 2025 08:21:15 -0400
-Message-ID: <20250325122149.504504185@linuxfoundation.org>
+Message-ID: <20250325122159.617458863@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +59,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 98f3ab18a0a55aa1ff2cd6b74bd0c02c8f76f17e ]
+commit de93ddf88088f7624b589d0ff3af9effb87e8f3b upstream.
 
-When GENERIC_IRQ_CHIP is disabled, OMAP1 kernels fail to link:
+Video players (eg. mpv) do periodic XResetScreenSaver() calls to
+keep the screen on while the video playing. The modesetting ddx
+plumbs these straight through into the kernel as DPMS setproperty
+ioctls, without any filtering whatsoever. When implemented via
+atomic these end up as empty commits on the crtc (which will
+nonetheless take one full frame), which leads to a dropped
+frame every time XResetScreenSaver() is called.
 
-arm-linux-gnueabi-ld: arch/arm/mach-omap1/irq.o: in function `omap1_init_irq':
-irq.c:(.init.text+0x1e8): undefined reference to `irq_alloc_generic_chip'
-arm-linux-gnueabi-ld: irq.c:(.init.text+0x228): undefined reference to `irq_setup_generic_chip'
-arm-linux-gnueabi-ld: irq.c:(.init.text+0x2a8): undefined reference to `irq_gc_set_wake'
-arm-linux-gnueabi-ld: irq.c:(.init.text+0x2b0): undefined reference to `irq_gc_mask_set_bit'
-arm-linux-gnueabi-ld: irq.c:(.init.text+0x2b4): undefined reference to `irq_gc_mask_clr_bit'
+Let's just filter out redundant DPMS property changes in the
+kernel to avoid this issue.
 
-This has apparently been the case for many years, but I never caught it
-in randconfig builds until now, as there are dozens of other drivers
-that also 'select GENERIC_IRQ_CHIP' and statistically there is almost
-always one of them enabled.
+v2: Explain the resulting commits a bit better (Sima)
+    Document the behaviour in uapi docs (Sima)
 
-Fixes: 55b447744389 ("ARM: OMAP1: Switch to use generic irqchip in preparation for sparse IRQ")
-Link: https://lore.kernel.org/r/20250205121151.289535-1-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Testcase: igt/kms_flip/flip-vs-dpms-on-nop
+Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250219160239.17502-1-ville.syrjala@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-omap1/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_atomic_uapi.c |    4 ++++
+ drivers/gpu/drm/drm_connector.c   |    4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/arch/arm/mach-omap1/Kconfig b/arch/arm/mach-omap1/Kconfig
-index a643b71e30a35..08ec6bd84ada5 100644
---- a/arch/arm/mach-omap1/Kconfig
-+++ b/arch/arm/mach-omap1/Kconfig
-@@ -8,6 +8,7 @@ menuconfig ARCH_OMAP1
- 	select ARCH_OMAP
- 	select CLKSRC_MMIO
- 	select FORCE_PCI if PCCARD
-+	select GENERIC_IRQ_CHIP
- 	select GPIOLIB
- 	help
- 	  Support for older TI OMAP1 (omap7xx, omap15xx or omap16xx)
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/drm_atomic_uapi.c
++++ b/drivers/gpu/drm/drm_atomic_uapi.c
+@@ -932,6 +932,10 @@ int drm_atomic_connector_commit_dpms(str
+ 
+ 	if (mode != DRM_MODE_DPMS_ON)
+ 		mode = DRM_MODE_DPMS_OFF;
++
++	if (connector->dpms == mode)
++		goto out;
++
+ 	connector->dpms = mode;
+ 
+ 	crtc = connector->state->crtc;
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -1100,6 +1100,10 @@ static const struct drm_prop_enum_list d
+  * 	callback. For atomic drivers the remapping to the "ACTIVE" property is
+  * 	implemented in the DRM core.
+  *
++ * 	On atomic drivers any DPMS setproperty ioctl where the value does not
++ * 	change is completely skipped, otherwise a full atomic commit will occur.
++ * 	On legacy drivers the exact behavior is driver specific.
++ *
+  * 	Note that this property cannot be set through the MODE_ATOMIC ioctl,
+  * 	userspace must use "ACTIVE" on the CRTC instead.
+  *
 
 
 
