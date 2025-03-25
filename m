@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-126488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B95A70123
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C346DA70002
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5037D17694D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F200175EDB
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3753926E154;
-	Tue, 25 Mar 2025 12:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBAC267F5D;
+	Tue, 25 Mar 2025 12:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTtXmzSe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmXADaQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B0A25C717;
-	Tue, 25 Mar 2025 12:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49584267F58;
+	Tue, 25 Mar 2025 12:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906318; cv=none; b=mmHZfvE/XmBMi+9WIfiiMkWootIpQybrDqsEe5Knf2OBH+yofb//+FwfLtRr5NT7N7yHxLWgX4V5mrnnXjgfgeI2UHmrjfNqi7Mp3lBUp+JzAsXbiS/5QjRQHNwI4hAnpDhNrOoLozYPMXcEN3tkub5Pykn2h5wnVque1Qnm94s=
+	t=1742905865; cv=none; b=PLEhf3brfFi2GR9+d9cDpplfGoPvwMe9hF9ukzcGFQH5B/7o3J2HxbIj56y0fby+V2unHn4FxJYilkfXt/WNCs71XYkwt4SlAAX+hdqrw9w89IfXPvevyQlvLgsPh7f+iYI7s6e6kDE+q0Lnl93yaTWwmx6MJ4QBmLyir/62h3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906318; c=relaxed/simple;
-	bh=EA/mjAFEAQgPmvUOcw170FQf6H2tCAURAvmFs56Ru44=;
+	s=arc-20240116; t=1742905865; c=relaxed/simple;
+	bh=UMp5A7UVm2L92Sif/XKY61wGgxodFD8Ybdihs7KTVM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmXNUi2qPZHta5UDVJLo6nYEj0Pgsa/jz23PEETztLghw//6ksTzg24dfxngJeg32f5tr4iDwjzfftLyCV+tJ25RwO/kndqsC7zeFf3TAL+UgC27kx1FAObLZgJgQ7WSNepHUhnVH6Mr615qpp2NqaYhY5hcsKp+gzGUNNsL5uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTtXmzSe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0E1C4CEE4;
-	Tue, 25 Mar 2025 12:38:37 +0000 (UTC)
+	 MIME-Version; b=dusr5eb8w4ysA6zSq3vqnL00ivY94qk7mY7mvX+adG8M4RRjcYkta0VkCBR2EqOV0t+o/EQSYGg1yTcXmursi4akav6tGPn2u/nhB9lQbqfq7YtZoYCMqkQbh9qglKA6eU3FSFWijIaioLdowo9ePECxizg1NToBP9o4DCQfN88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmXADaQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB55C4CEE9;
+	Tue, 25 Mar 2025 12:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906317;
-	bh=EA/mjAFEAQgPmvUOcw170FQf6H2tCAURAvmFs56Ru44=;
+	s=korg; t=1742905865;
+	bh=UMp5A7UVm2L92Sif/XKY61wGgxodFD8Ybdihs7KTVM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTtXmzSeOxSNX0oIZUx9XmnFSD30XisKOjGuSracE+PlOBywQQjDrAhkgLMB+d7CH
-	 zLFmwZ8+Mo1QLqAVcoQhOphC9m53AajMqoi/VZMfotqEu8jYPe9Yfw8q4KZ76tcEXJ
-	 Ch/1IlRS5l4fxwwalXVUZH3XoO4fC6/P/zC09+Lo=
+	b=WmXADaQLeSR0U98SqOWvnQzNYUKVlY+4SPaktt4bnBJYV3eOKzTDFOAkZHKt5zR2A
+	 GIMrtW6rw1NFLj/3D2Qjo+TwnucXY9eLctmw/WzE+TZ2m1uTXIgpa7lO1E+1xtXCJO
+	 CJESG5FrqNV0UIQmGQEq15mSWD6On5FOVHFrm0R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 053/116] net: mana: Support holes in device list reply msg
+	Ye Bin <yebin10@huawei.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 178/198] proc: fix UAF in proc_get_inode()
 Date: Tue, 25 Mar 2025 08:22:20 -0400
-Message-ID: <20250325122150.562121158@linuxfoundation.org>
+Message-ID: <20250325122201.318068991@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +64,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 2fc8a346625eb1abfe202062c7e6a13d76cde5ea upstream.
+commit 654b33ada4ab5e926cd9c570196fefa7bec7c1df upstream.
 
-According to GDMA protocol, holes (zeros) are allowed at the beginning
-or middle of the gdma_list_devices_resp message. The existing code
-cannot properly handle this, and may miss some devices in the list.
+Fix race between rmmod and /proc/XXX's inode instantiation.
 
-To fix, scan the entire list until the num_of_devs are found, or until
-the end of the list.
+The bug is that pde->proc_ops don't belong to /proc, it belongs to a
+module, therefore dereferencing it after /proc entry has been registered
+is a bug unless use_pde/unuse_pde() pair has been used.
 
-Cc: stable@vger.kernel.org
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Reviewed-by: Shradha Gupta <shradhagupta@microsoft.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/1741723974-1534-1-git-send-email-haiyangz@microsoft.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+use_pde/unuse_pde can be avoided (2 atomic ops!) because pde->proc_ops
+never changes so information necessary for inode instantiation can be
+saved _before_ proc_register() in PDE itself and used later, avoiding
+pde->proc_ops->...  dereference.
+
+      rmmod                         lookup
+sys_delete_module
+                         proc_lookup_de
+			   pde_get(de);
+			   proc_get_inode(dir->i_sb, de);
+  mod->exit()
+    proc_remove
+      remove_proc_subtree
+       proc_entry_rundown(de);
+  free_module(mod);
+
+                               if (S_ISREG(inode->i_mode))
+	                         if (de->proc_ops->proc_read_iter)
+                           --> As module is already freed, will trigger UAF
+
+BUG: unable to handle page fault for address: fffffbfff80a702b
+PGD 817fc4067 P4D 817fc4067 PUD 817fc0067 PMD 102ef4067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 26 UID: 0 PID: 2667 Comm: ls Tainted: G
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+RIP: 0010:proc_get_inode+0x302/0x6e0
+RSP: 0018:ffff88811c837998 EFLAGS: 00010a06
+RAX: dffffc0000000000 RBX: ffffffffc0538140 RCX: 0000000000000007
+RDX: 1ffffffff80a702b RSI: 0000000000000001 RDI: ffffffffc0538158
+RBP: ffff8881299a6000 R08: 0000000067bbe1e5 R09: 1ffff11023906f20
+R10: ffffffffb560ca07 R11: ffffffffb2b43a58 R12: ffff888105bb78f0
+R13: ffff888100518048 R14: ffff8881299a6004 R15: 0000000000000001
+FS:  00007f95b9686840(0000) GS:ffff8883af100000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffffbfff80a702b CR3: 0000000117dd2000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ proc_lookup_de+0x11f/0x2e0
+ __lookup_slow+0x188/0x350
+ walk_component+0x2ab/0x4f0
+ path_lookupat+0x120/0x660
+ filename_lookup+0x1ce/0x560
+ vfs_statx+0xac/0x150
+ __do_sys_newstat+0x96/0x110
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+[adobriyan@gmail.com: don't do 2 atomic ops on the common path]
+Link: https://lkml.kernel.org/r/3d25ded0-1739-447e-812b-e34da7990dcf@p183
+Fixes: 778f3dd5a13c ("Fix procfs compat_ioctl regression")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c |   14 ++++++++++----
- include/net/mana/gdma.h                         |   11 +++++++----
- 2 files changed, 17 insertions(+), 8 deletions(-)
+ fs/proc/generic.c       |   10 +++++++++-
+ fs/proc/inode.c         |    6 +++---
+ fs/proc/internal.h      |   14 ++++++++++++++
+ include/linux/proc_fs.h |    7 +++++--
+ 4 files changed, 31 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -131,9 +131,10 @@ static int mana_gd_detect_devices(struct
- 	struct gdma_list_devices_resp resp = {};
- 	struct gdma_general_req req = {};
- 	struct gdma_dev_id dev;
--	u32 i, max_num_devs;
-+	int found_dev = 0;
- 	u16 dev_type;
- 	int err;
-+	u32 i;
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -558,10 +558,16 @@ struct proc_dir_entry *proc_create_reg(c
+ 	return p;
+ }
  
- 	mana_gd_init_req_hdr(&req.hdr, GDMA_LIST_DEVICES, sizeof(req),
- 			     sizeof(resp));
-@@ -145,12 +146,17 @@ static int mana_gd_detect_devices(struct
- 		return err ? err : -EPROTO;
- 	}
+-static inline void pde_set_flags(struct proc_dir_entry *pde)
++static void pde_set_flags(struct proc_dir_entry *pde)
+ {
+ 	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+ 		pde->flags |= PROC_ENTRY_PERMANENT;
++	if (pde->proc_ops->proc_read_iter)
++		pde->flags |= PROC_ENTRY_proc_read_iter;
++#ifdef CONFIG_COMPAT
++	if (pde->proc_ops->proc_compat_ioctl)
++		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
++#endif
+ }
  
--	max_num_devs = min_t(u32, MAX_NUM_GDMA_DEVICES, resp.num_of_devs);
--
--	for (i = 0; i < max_num_devs; i++) {
-+	for (i = 0; i < GDMA_DEV_LIST_SIZE &&
-+	     found_dev < resp.num_of_devs; i++) {
- 		dev = resp.devs[i];
- 		dev_type = dev.type;
+ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+@@ -625,6 +631,7 @@ struct proc_dir_entry *proc_create_seq_p
+ 	p->proc_ops = &proc_seq_ops;
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_seq_private);
+@@ -655,6 +662,7 @@ struct proc_dir_entry *proc_create_singl
+ 		return NULL;
+ 	p->proc_ops = &proc_single_ops;
+ 	p->single_show = show;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_single_data);
+--- a/fs/proc/inode.c
++++ b/fs/proc/inode.c
+@@ -679,13 +679,13 @@ struct inode *proc_get_inode(struct supe
  
-+		/* Skip empty devices */
-+		if (dev.as_uint32 == 0)
-+			continue;
+ 	if (S_ISREG(inode->i_mode)) {
+ 		inode->i_op = de->proc_iops;
+-		if (de->proc_ops->proc_read_iter)
++		if (pde_has_proc_read_iter(de))
+ 			inode->i_fop = &proc_iter_file_ops;
+ 		else
+ 			inode->i_fop = &proc_reg_file_ops;
+ #ifdef CONFIG_COMPAT
+-		if (de->proc_ops->proc_compat_ioctl) {
+-			if (de->proc_ops->proc_read_iter)
++		if (pde_has_proc_compat_ioctl(de)) {
++			if (pde_has_proc_read_iter(de))
+ 				inode->i_fop = &proc_iter_file_ops_compat;
+ 			else
+ 				inode->i_fop = &proc_reg_file_ops_compat;
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -84,6 +84,20 @@ static inline void pde_make_permanent(st
+ 	pde->flags |= PROC_ENTRY_PERMANENT;
+ }
+ 
++static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
++{
++	return pde->flags & PROC_ENTRY_proc_read_iter;
++}
 +
-+		found_dev++;
++static inline bool pde_has_proc_compat_ioctl(const struct proc_dir_entry *pde)
++{
++#ifdef CONFIG_COMPAT
++	return pde->flags & PROC_ENTRY_proc_compat_ioctl;
++#else
++	return false;
++#endif
++}
 +
- 		/* HWC is already detected in mana_hwc_create_channel(). */
- 		if (dev_type == GDMA_DEVICE_HWC)
- 			continue;
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -406,8 +406,6 @@ struct gdma_context {
- 	struct gdma_dev		mana_ib;
+ extern struct kmem_cache *proc_dir_entry_cache;
+ void pde_free(struct proc_dir_entry *pde);
+ 
+--- a/include/linux/proc_fs.h
++++ b/include/linux/proc_fs.h
+@@ -20,10 +20,13 @@ enum {
+ 	 * If in doubt, ignore this flag.
+ 	 */
+ #ifdef MODULE
+-	PROC_ENTRY_PERMANENT = 0U,
++	PROC_ENTRY_PERMANENT		= 0U,
+ #else
+-	PROC_ENTRY_PERMANENT = 1U << 0,
++	PROC_ENTRY_PERMANENT		= 1U << 0,
+ #endif
++
++	PROC_ENTRY_proc_read_iter	= 1U << 1,
++	PROC_ENTRY_proc_compat_ioctl	= 1U << 2,
  };
  
--#define MAX_NUM_GDMA_DEVICES	4
--
- static inline bool mana_gd_is_mana(struct gdma_dev *gd)
- {
- 	return gd->dev_id.type == GDMA_DEVICE_MANA;
-@@ -554,11 +552,15 @@ enum {
- #define GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG BIT(3)
- #define GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT BIT(5)
- 
-+/* Driver can handle holes (zeros) in the device list */
-+#define GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP BIT(11)
-+
- #define GDMA_DRV_CAP_FLAGS1 \
- 	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
- 	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX | \
- 	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG | \
--	 GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT)
-+	 GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT | \
-+	 GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP)
- 
- #define GDMA_DRV_CAP_FLAGS2 0
- 
-@@ -619,11 +621,12 @@ struct gdma_query_max_resources_resp {
- }; /* HW DATA */
- 
- /* GDMA_LIST_DEVICES */
-+#define GDMA_DEV_LIST_SIZE 64
- struct gdma_list_devices_resp {
- 	struct gdma_resp_hdr hdr;
- 	u32 num_of_devs;
- 	u32 reserved;
--	struct gdma_dev_id devs[64];
-+	struct gdma_dev_id devs[GDMA_DEV_LIST_SIZE];
- }; /* HW DATA */
- 
- /* GDMA_REGISTER_DEVICE */
+ struct proc_ops {
 
 
 
