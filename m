@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D2BA70015
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFCAA70126
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEEB47A194C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00BFE1741F5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1655C25C6E2;
-	Tue, 25 Mar 2025 12:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36BB025DAE6;
+	Tue, 25 Mar 2025 12:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVTHKEYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkJw3OvU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CE22580F7;
-	Tue, 25 Mar 2025 12:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E896426F455;
+	Tue, 25 Mar 2025 12:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906166; cv=none; b=UOQ+DJajQuFYvPwbTf8arlVE6JaP/1phqm5TzSztOu0dSOIZhdkt1yR3kokoW/6zNmc63lArJ2/lb5eC1DVA37CR1WFU4nur8CM/S70nVGk2uvAk4mbWoYGzVFgEdOKluQxpYRkQPfqnScjj/EOSYxW+YydxDkzkEzbWwzmecA0=
+	t=1742906368; cv=none; b=UJ7im7f4+dFuNI7Y+MZHkwBEA4GFpta2JLVkPev27ohOSkmS5muNjoSvs7IHGQKSSPfrLBqxl+fJdIC0qBDObhIe6guk+3I3o5/ftDhjfBIEWNXy+aBcYnc5PN8Z7Wwp546YBmz/NuzLQsOWPcjKaZklBSOakm9/m5ffdecqT8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906166; c=relaxed/simple;
-	bh=DB0/tbY9t2YQ81OYEPJje8svNPAetLFs/epY4Ph+ypQ=;
+	s=arc-20240116; t=1742906368; c=relaxed/simple;
+	bh=xXoObsU5IiMyGt2kJki6C9oLkeqAO9zJp4FvfGlKKPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YaV8ZRVJPgjTJ7cIDKZ9WcrJ6PQlh2mUU08giW700iVlN2fk8tU+lLbMtdi3Io22+Pj+/3f1Q9lLeuliazJ9ggqb/IbP85Z2O7Ipsof6tZXcxk5kn7Ezs5VJopFmbgyaKMPIVkOByzS9B/mjuS6xhSRYNk0CZLwH2oxV1898Wy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVTHKEYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E16C4CEE4;
-	Tue, 25 Mar 2025 12:36:06 +0000 (UTC)
+	 MIME-Version; b=Y/RqPVAys+2USaeyANYehKTThvWVgcqBYdcSV3sIee1IAe3EhIqKSNXSmdi9/u1t4mt5F/opEb69jxUjjTotdSUHbE6ZgA0j2EPrw1N2tdKMn5cwEPeLe5WwSs+7KLi7ZaM1BhnevdEbpLcSJYW/jFnfKhC72AYCmJBfnOp3sjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkJw3OvU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29884C4CEE4;
+	Tue, 25 Mar 2025 12:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906166;
-	bh=DB0/tbY9t2YQ81OYEPJje8svNPAetLFs/epY4Ph+ypQ=;
+	s=korg; t=1742906367;
+	bh=xXoObsU5IiMyGt2kJki6C9oLkeqAO9zJp4FvfGlKKPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVTHKEYBCB6gca/9rhjRTQMh9+9lH16TudGpGUtcPid93eolkfQBG0TzLtordMAeC
-	 2Pvtz2jQsFdJAYVTL85EHaxg7lTSLMTKvBWvd2PgKxdCNp5r8yIK3RApdtgpcs6oRQ
-	 bJGxLTW3x0TeSIcbz3Wu9AqNS+bqwhXFcbLUjEaY=
+	b=KkJw3OvUOm+cc6RtU5ziCRkm4STNWuihvsqVUSbHM48GUtXzk/yE87KTqRKSTAUmM
+	 7NOkW2mTJYluUYVsspaEppjJh8Svk5/H3K5DrJ73H4MwKmtFTgZX+ax/xxWka2DovW
+	 tSmQQPbBdkD7W15wbfQyx32bnLsxrsCl697L3hlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Schneider <ben@bens.haus>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 51/77] efi/libstub: Avoid physical address 0x0 when doing random allocation
-Date: Tue, 25 Mar 2025 08:22:46 -0400
-Message-ID: <20250325122145.686462514@linuxfoundation.org>
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.12 080/116] ARM: dts: imx6qdl-apalis: Fix poweroff on Apalis iMX6
+Date: Tue, 25 Mar 2025 08:22:47 -0400
+Message-ID: <20250325122151.256494461@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit cb16dfed0093217a68c0faa9394fa5823927e04c upstream.
+commit 83964a29379cb08929a39172780a4c2992bc7c93 upstream.
 
-Ben reports spurious EFI zboot failures on a system where physical RAM
-starts at 0x0. When doing random memory allocation from the EFI stub on
-such a platform, a random seed of 0x0 (which means no entropy source is
-available) will result in the allocation to be placed at address 0x0 if
-sufficient space is available.
+The current solution for powering off the Apalis iMX6 is not functioning
+as intended. To resolve this, it is necessary to power off the
+vgen2_reg, which will also set the POWER_ENABLE_MOCI signal to a low
+state. This ensures the carrier board is properly informed to initiate
+its power-off sequence.
 
-When this allocation is subsequently passed on to the decompression
-code, the 0x0 address is mistaken for NULL and the code complains and
-gives up.
-
-So avoid address 0x0 when doing random allocation, and set the minimum
-address to the minimum alignment.
+The new solution uses the regulator-poweroff driver, which will power
+off the regulator during a system shutdown.
 
 Cc: <stable@vger.kernel.org>
-Reported-by: Ben Schneider <ben@bens.haus>
-Tested-by: Ben Schneider <ben@bens.haus>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 4eb56e26f92e ("ARM: dts: imx6q-apalis: Command pmic to standby for poweroff")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/randomalloc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -75,6 +75,10 @@ efi_status_t efi_random_alloc(unsigned l
- 	if (align < EFI_ALLOC_ALIGN)
- 		align = EFI_ALLOC_ALIGN;
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
+@@ -108,6 +108,11 @@
+ 		};
+ 	};
  
-+	/* Avoid address 0x0, as it can be mistaken for NULL */
-+	if (alloc_min == 0)
-+		alloc_min = align;
++	poweroff {
++		compatible = "regulator-poweroff";
++		cpu-supply = <&vgen2_reg>;
++	};
 +
- 	size = round_up(size, EFI_ALLOC_ALIGN);
+ 	reg_module_3v3: regulator-module-3v3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-always-on;
+@@ -236,10 +241,6 @@
+ 	status = "disabled";
+ };
  
- 	/* count the suitable slots in each memory map entry */
+-&clks {
+-	fsl,pmic-stby-poweroff;
+-};
+-
+ /* Apalis SPI1 */
+ &ecspi1 {
+ 	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
+@@ -527,7 +528,6 @@
+ 
+ 	pmic: pmic@8 {
+ 		compatible = "fsl,pfuze100";
+-		fsl,pmic-stby-poweroff;
+ 		reg = <0x08>;
+ 
+ 		regulators {
 
 
 
