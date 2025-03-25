@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-126406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547F9A700B8
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0677A7017A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E124119A6C47
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5229819A4C80
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3091226A1B0;
-	Tue, 25 Mar 2025 12:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB7226F453;
+	Tue, 25 Mar 2025 12:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQDq1V1b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjvPiwnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F2B25BAD9;
-	Tue, 25 Mar 2025 12:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC4A25D525;
+	Tue, 25 Mar 2025 12:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906165; cv=none; b=PjedS55c+3XQJizKpa+zs1pf/dqpTsceJadjiMzb6Abg6+quyaYOIOs8DV+I7mV9qWdxmhK/u/UhKx4wh8isG0ZBkmw3ZYMvyhlgo4LEdNFVpOHhLJpttxt6v+vBF6fOAtpHfjiMOEjRrh09oTe7Od379i5xFX3VeHJpN2gw2/w=
+	t=1742906365; cv=none; b=qmPsObeDh8V+ftAb627Z5yBMMB8iGkALT5Q+WpdqaQ54orBiEGi8pyWz9uanSQEPhrZhHORibDtbrfCtHhoUBSa+WEhSBWntQGPFszHviWZNM5DmG3kyUgGyX4Rs9QgigaI3VYK+wkW6z5I4lWpRjrAs1VyAOxT1PKVNzYVtdnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906165; c=relaxed/simple;
-	bh=HmWfJcEd6s4X4v8pBPDY7xYKxP/Xpw4QVlY+HDtUD2w=;
+	s=arc-20240116; t=1742906365; c=relaxed/simple;
+	bh=Nmr/wWMsFqfEfKXU9OrY5uhbIXY51NcGKFARWzCq9QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbTG9PknfCki1bgZMqO0Dp1owtZDigJy8TDhv0SShOPhwtOryXcYsvIR9+K6rtRNlvZNMS8+UxnaXVj4Bp/8zF2UVl2DWvK13ZlMYLQpV/Qf11a8XhWOGPvpNOy4tWUkkg5sjPSQcy9JpNCZglJ1gfQkxoeMW6X79FIAvb9gTAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQDq1V1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98579C4CEE4;
-	Tue, 25 Mar 2025 12:36:04 +0000 (UTC)
+	 MIME-Version; b=ViFI9w9wtegbP/D2OYeXKupA1BeuSVeDizxZEJrKLxoGDhC8ekMU0HdSRBaj/s/6I+5N2jMFNEzdAbvUT9NHXX5fGT5U1sUD22pAW771Yp5XZtIzaE7JgyR23AUe0TQhvXpENK+vcbMa7PmQ8eUpjK6AQpsI9Ta+bfP4eVCx0ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjvPiwnv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63151C4CEE4;
+	Tue, 25 Mar 2025 12:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906164;
-	bh=HmWfJcEd6s4X4v8pBPDY7xYKxP/Xpw4QVlY+HDtUD2w=;
+	s=korg; t=1742906365;
+	bh=Nmr/wWMsFqfEfKXU9OrY5uhbIXY51NcGKFARWzCq9QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQDq1V1bAbMxJMbwtlsbIu1zlNPNz1qDgwXJND2deGa0Q4856+QWUW9oqSN4X1ch9
-	 RxXUx8GirJ1zFQKfs0eBeGA4y3ime/7RHg5s9ONoT9y73V3jwPWCF5kDZ5KFcG7MCs
-	 nz/lxgNbI/GuiFLLZ3CXJIMGS43axKeBTfenF/xo=
+	b=yjvPiwnvL7W2qqeaIy1ekKy4PSD54Nl0Oq8j+g6drfBLUUQ0R2ZD8bfvB3Zv5xGy9
+	 w3iZGjvjfCgr3MmO00Y1/E1u9mNy3oOfG4g19Rw32EY9W1Pca5FWXtlffatec1Q/Pu
+	 l7p8XPIMokMBTfBzSc0KyXuVJ+T94ewayuJn46fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 6.6 50/77] ARM: shmobile: smp: Enforce shmobile_smp_* alignment
-Date: Tue, 25 Mar 2025 08:22:45 -0400
-Message-ID: <20250325122145.661007489@linuxfoundation.org>
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 079/116] memcg: drain obj stock on cpu hotplug teardown
+Date: Tue, 25 Mar 2025 08:22:46 -0400
+Message-ID: <20250325122151.229353306@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Shakeel Butt <shakeel.butt@linux.dev>
 
-commit 379c590113ce46f605439d4887996c60ab8820cc upstream.
+commit 9f01b4954490d4ccdbcc2b9be34a9921ceee9cbb upstream.
 
-When the addresses of the shmobile_smp_mpidr, shmobile_smp_fn, and
-shmobile_smp_arg variables are not multiples of 4 bytes, secondary CPU
-bring-up fails:
+Currently on cpu hotplug teardown, only memcg stock is drained but we
+need to drain the obj stock as well otherwise we will miss the stats
+accumulated on the target cpu as well as the nr_bytes cached. The stats
+include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
+addition we are leaking reference to struct obj_cgroup object.
 
-    smp: Bringing up secondary CPUs ...
-    CPU1: failed to come online
-    CPU2: failed to come online
-    CPU3: failed to come online
-    smp: Brought up 1 node, 1 CPU
-
-Fix this by adding the missing alignment directive.
-
-Fixes: 4e960f52fce16a3b ("ARM: shmobile: Move shmobile_smp_{mpidr, fn, arg}[] from .text to .bss")
-Closes: https://lore.kernel.org/r/CAMuHMdU=QR-JLgEHKWpsr6SbaZRc-Hz9r91JfpP8c3n2G-OjqA@mail.gmail.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/c499234d559a0d95ad9472883e46077311051cd8.1741612208.git.geert+renesas@glider.be
-Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250310230934.2913113-1-shakeel.butt@linux.dev
+Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-shmobile/headsmp.S |    1 +
- 1 file changed, 1 insertion(+)
+ mm/memcontrol.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/arch/arm/mach-shmobile/headsmp.S
-+++ b/arch/arm/mach-shmobile/headsmp.S
-@@ -136,6 +136,7 @@ ENDPROC(shmobile_smp_sleep)
- 	.long	shmobile_smp_arg - 1b
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1882,9 +1882,18 @@ void drain_all_stock(struct mem_cgroup *
+ static int memcg_hotplug_cpu_dead(unsigned int cpu)
+ {
+ 	struct memcg_stock_pcp *stock;
++	struct obj_cgroup *old;
++	unsigned long flags;
  
- 	.bss
-+	.align	2
- 	.globl	shmobile_smp_mpidr
- shmobile_smp_mpidr:
- 	.space	NR_CPUS * 4
+ 	stock = &per_cpu(memcg_stock, cpu);
++
++	/* drain_obj_stock requires stock_lock */
++	local_lock_irqsave(&memcg_stock.stock_lock, flags);
++	old = drain_obj_stock(stock);
++	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
++
+ 	drain_stock(stock);
++	obj_cgroup_put(old);
+ 
+ 	return 0;
+ }
 
 
 
