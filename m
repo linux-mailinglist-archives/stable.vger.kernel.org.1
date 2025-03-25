@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-126113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28A4A6FFCA
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E22D8A6FF9F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB73C19A23F4
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:58:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E0E8189E05B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8F626657B;
-	Tue, 25 Mar 2025 12:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D80290BC3;
+	Tue, 25 Mar 2025 12:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqrwS3ku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKP5Crd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACF725A2C0;
-	Tue, 25 Mar 2025 12:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E161290BB4;
+	Tue, 25 Mar 2025 12:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905625; cv=none; b=Vj500FNawtrbcEY7d2QOXz0DVXaFWbjSFL0P1v8LyGXF7fIgVvwMy4dmoGt1DaaRZXTlkbZQAvmoQuWgV2eyNCGFs+rGekNS1NbRisgJAQRFoz5aNjMbkezvnAABK4iETAEIQgm/riFQ6kbMhkg8yfScvbB50kvFL5v6cVQjbMU=
+	t=1742905604; cv=none; b=McPR+/cnbmcEBiWdu4a6Xb6yd8g4q7RCwGTPnqF338qONv1OCr5tsBz+pIFKyjtRXHRLxX2T9cn3PbXsvi5fjT8JhNkJ/6LbespSwyDYb/p/i+kBiegRdThdYxBxdDq1/hsMfxsMGPsyYU4yqy+0ZRtB+J6EMQbYyR5VjKWLQDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905625; c=relaxed/simple;
-	bh=UXSdBcKyN88grZrvEi7fevU+Fjgkp4WVo8wTcf6c9pw=;
+	s=arc-20240116; t=1742905604; c=relaxed/simple;
+	bh=FCrjv6qTU6QgliBHuC7IHxNz8HjTi6Ma6bwqerhfVQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jq/Evk4mgWf+MaaXAwQEXj4IXf4eliJObWEZXYOyDRL68Y9MwamiQYrdToFjc2f4IvNVQFANb9arLRxaQ2J1f7UMWeekgakCW7YQMI6YRvPdla2rJAgmV0Rscs8jARtMCpzLEVx2epQcM+IquS86dndW50ktfD2Xi09lcudJ7dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqrwS3ku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1988C4CEE9;
-	Tue, 25 Mar 2025 12:27:04 +0000 (UTC)
+	 MIME-Version; b=cZZZ7yBe8Tmcha62iQft+YOCOHTpJKvxBxltJNkl6Uufjy8Ml0agJ5T80pHipOmhrk3tKtlVWBKpkwTjxg12ObcSDfwAaGfDjq9mp30qad8hbOr1Bx9qxSrZTYgaGFFu9J8zYG7liD5x37XZE6RxBAdzlfFw7/EZhbL8cDbwiIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKP5Crd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95BEC4CEEF;
+	Tue, 25 Mar 2025 12:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905625;
-	bh=UXSdBcKyN88grZrvEi7fevU+Fjgkp4WVo8wTcf6c9pw=;
+	s=korg; t=1742905603;
+	bh=FCrjv6qTU6QgliBHuC7IHxNz8HjTi6Ma6bwqerhfVQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqrwS3kuFiBHR7ekl+wN1kpeyZ5fWnyl2Z4S7eVFGdkStXLlmefdatNMLAltGvDEY
-	 oGm9966IdBTysRzCr/gyzTk/EKM88UN1oKp7SiZF1H99bGeVqdKcAeivs5HkjeegOS
-	 eCHrKfTpo1MvtrcjiQFgFQBOpeZUIfrOYAvIVoWs=
+	b=MKP5Crd/Mzhal+FII/VJjJGcScShx0j959yvja+/8RBsEUJEFiwxpmOXpf9bo3Cav
+	 gvQakzUd25/NKPqoFo3XQDuagJLyPqI2lAeZ3wBZdPONzrF/NNrW8VuLRwIC9lx+70
+	 6whqevc98nWA8DuBLmj0RUzqp/zlPA4jUrvC0tIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/198] sched: Clarify wake_up_q()s write to task->wake_q.next
-Date: Tue, 25 Mar 2025 08:20:08 -0400
-Message-ID: <20250325122157.843620662@linuxfoundation.org>
+Subject: [PATCH 6.1 063/198] ASoC: tas2770: Fix volume scale
+Date: Tue, 25 Mar 2025 08:20:25 -0400
+Message-ID: <20250325122158.298164514@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -66,39 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit bcc6244e13b4d4903511a1ea84368abf925031c0 ]
+[ Upstream commit 579cd64b9df8a60284ec3422be919c362de40e41 ]
 
-Clarify that wake_up_q() does an atomic write to task->wake_q.next, after
-which a concurrent __wake_q_add() can immediately overwrite
-task->wake_q.next again.
+The scale starts at -100dB, not -128dB.
 
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250129-sched-wakeup-prettier-v1-1-2f51f5f663fa@google.com
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2770-v1-1-cf50ff1d59a3@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/codecs/tas2770.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 9be8a509b5f3f..9b01fdceb6220 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -997,9 +997,10 @@ void wake_up_q(struct wake_q_head *head)
- 		struct task_struct *task;
+diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
+index 8557759acb1f2..e284a3a854591 100644
+--- a/sound/soc/codecs/tas2770.c
++++ b/sound/soc/codecs/tas2770.c
+@@ -508,7 +508,7 @@ static int tas2770_codec_probe(struct snd_soc_component *component)
+ }
  
- 		task = container_of(node, struct task_struct, wake_q);
--		/* Task can safely be re-inserted now: */
- 		node = node->next;
--		task->wake_q.next = NULL;
-+		/* pairs with cmpxchg_relaxed() in __wake_q_add() */
-+		WRITE_ONCE(task->wake_q.next, NULL);
-+		/* Task can safely be re-inserted now. */
+ static DECLARE_TLV_DB_SCALE(tas2770_digital_tlv, 1100, 50, 0);
+-static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -12750, 50, 0);
++static DECLARE_TLV_DB_SCALE(tas2770_playback_volume, -10050, 50, 0);
  
- 		/*
- 		 * wake_up_process() executes a full barrier, which pairs with
+ static const struct snd_kcontrol_new tas2770_snd_controls[] = {
+ 	SOC_SINGLE_TLV("Speaker Playback Volume", TAS2770_PLAY_CFG_REG2,
 -- 
 2.39.5
 
