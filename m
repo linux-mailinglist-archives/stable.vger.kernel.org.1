@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DB1A7006C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6A7A70168
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:23:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 167A3188E3F2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32AE519A4791
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D30269810;
-	Tue, 25 Mar 2025 12:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A70A1DFF8;
+	Tue, 25 Mar 2025 12:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqgySEX0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0KCFiZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FAB2580DE;
-	Tue, 25 Mar 2025 12:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C99925D525;
+	Tue, 25 Mar 2025 12:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906015; cv=none; b=PJ14p0tYuUD2CHgmesvOm864mQtNtht18PvUoVpoLW6tZXBeunhzSlVo+iU5EdWOLj1yLzbJNvtMbw7vFa+BNzxsxZMaiVBYULL6fDs/D5footqOxrpTuA45eQ+qniViH9lg82UhWk9bbGKQOr1BJDfiG1bFDx6CYAAPiX9bQ9A=
+	t=1742906277; cv=none; b=eqJKtJgNr7AxjOrxttQWGJIMHzC6+OrSlHgoElfxF4cM0ttaczv2AK9MuyiqKGehgJqCStS8nrZXOuQEq6ofhnPy0LShc3N3kV46MCZ+x96xDTCGZ7gY47h6ktZSNc/28O7bjyEZVeqJ6X7ehi8lL0L2tsDZoLyZgZzrKDUGRpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906015; c=relaxed/simple;
-	bh=1njYjMLRNtqKhoJ9YZPXDIzJsN5MN4pRtY8FzdyU0a0=;
+	s=arc-20240116; t=1742906277; c=relaxed/simple;
+	bh=v+ZfnYtLu5mFZjFsHksfGpD0xxnwdo7x3vAJYS65Ph8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5aCRZZVZsz6S5YgdMvGYion3V/2WhDf4JwsQkjdgyxgHxHMRkkjZ15VSUzDKXZXVYcCPbj3ib8ZtBwetmwnsgJ97EZs2w7G4hk5XTFOtGBFFCVO5bHelguIy+mME0I0tR6m1cu288Y9g3qspDh0/576aBbc/YaOBpYh74r0jJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqgySEX0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF28CC4CEE4;
-	Tue, 25 Mar 2025 12:33:34 +0000 (UTC)
+	 MIME-Version; b=a1qGxB1odi1Nhu76VCXcXGIAY4pTxgMEubXa2iop1Is97ipJ8qbHZR8Op4KnMvUsEvky7JgwAkudqZcGO2aOysniNyaXknf1tVt5U8f/kB6dT051qlwjQjGyAs1qHyLChzUGJRsqehmwgOQy+1Vp9J1vLVKy2vW1Eaw/G/VQ2WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0KCFiZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4F9C4CEE4;
+	Tue, 25 Mar 2025 12:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906015;
-	bh=1njYjMLRNtqKhoJ9YZPXDIzJsN5MN4pRtY8FzdyU0a0=;
+	s=korg; t=1742906276;
+	bh=v+ZfnYtLu5mFZjFsHksfGpD0xxnwdo7x3vAJYS65Ph8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GqgySEX0Z/BtAufy3kQTpopYa9UDvR7DeZOn5eo2X4kLHPvdBtmtpOaoQw26KiHJ5
-	 B1zwcLwVbiJishqXhtJ8MCPp67c8VZO9bdCuayv5E8I9R9i8WKLJNeIIllA7NHxZ8t
-	 OI8QZw6pQNNF053swWVriFcfFIFV20a3CX0hSi0c=
+	b=I0KCFiZKuWrmwGlQJmB4IEOFjugk9UM60id2YZvSndsvjBBu09ji8yMqXtc/PNbid
+	 crOzwh8YOOm8z64P/zUPcz1ljVqZHx/0v7uNvwEjW4tifFhDKmxmpjE34Bsn0hoeM2
+	 dz2MAf64LBnQi7IsFQD3/VVAfB7N7eYlHtBY8mQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.13 059/119] can: flexcan: only change CAN state when link up in system PM
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 030/116] Bluetooth: Fix error code in chan_alloc_skb_cb()
 Date: Tue, 25 Mar 2025 08:21:57 -0400
-Message-ID: <20250325122150.562413004@linuxfoundation.org>
+Message-ID: <20250325122149.983653925@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit fd99d6ed20234b83d65b9c5417794343577cf3e5 upstream.
+[ Upstream commit 72d061ee630d0dbb45c2920d8d19b3861c413e54 ]
 
-After a suspend/resume cycle on a down interface, it will come up as
-ERROR-ACTIVE.
+The chan_alloc_skb_cb() function is supposed to return error pointers on
+error.  Returning NULL will lead to a NULL dereference.
 
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
-
-$ sudo systemctl suspend
-
-$ ip -details -s -s a s dev flexcan0
-3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
-    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
-
-And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
-has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
-
-Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
-[mkl: add newlines]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6b8d4a6a0314 ("Bluetooth: 6LoWPAN: Use connected oriented channel instead of fixed one")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/flexcan/flexcan-core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/bluetooth/6lowpan.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -2266,8 +2266,9 @@ static int __maybe_unused flexcan_suspen
- 		}
- 		netif_stop_queue(dev);
- 		netif_device_detach(dev);
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index 50cfec8ccac4f..3c29778171c58 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -825,11 +825,16 @@ static struct sk_buff *chan_alloc_skb_cb(struct l2cap_chan *chan,
+ 					 unsigned long hdr_len,
+ 					 unsigned long len, int nb)
+ {
++	struct sk_buff *skb;
 +
-+		priv->can.state = CAN_STATE_SLEEPING;
- 	}
--	priv->can.state = CAN_STATE_SLEEPING;
- 
- 	return 0;
+ 	/* Note that we must allocate using GFP_ATOMIC here as
+ 	 * this function is called originally from netdev hard xmit
+ 	 * function in atomic context.
+ 	 */
+-	return bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
++	skb = bt_skb_alloc(hdr_len + len, GFP_ATOMIC);
++	if (!skb)
++		return ERR_PTR(-ENOMEM);
++	return skb;
  }
-@@ -2278,7 +2279,6 @@ static int __maybe_unused flexcan_resume
- 	struct flexcan_priv *priv = netdev_priv(dev);
- 	int err;
  
--	priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	if (netif_running(dev)) {
- 		netif_device_attach(dev);
- 		netif_start_queue(dev);
-@@ -2298,6 +2298,8 @@ static int __maybe_unused flexcan_resume
- 
- 			flexcan_chip_interrupts_enable(dev);
- 		}
-+
-+		priv->can.state = CAN_STATE_ERROR_ACTIVE;
- 	}
- 
- 	return 0;
+ static void chan_suspend_cb(struct l2cap_chan *chan)
+-- 
+2.39.5
+
 
 
 
