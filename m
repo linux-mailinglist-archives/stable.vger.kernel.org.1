@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-126297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18FDA700EF
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2A2A70017
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D66A6188A983
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71BB38408C4
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8937F268FCF;
-	Tue, 25 Mar 2025 12:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EE0268698;
+	Tue, 25 Mar 2025 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOPdIys0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B64YIa4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C5425B673;
-	Tue, 25 Mar 2025 12:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A6525D54A;
+	Tue, 25 Mar 2025 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905964; cv=none; b=s1FqdEfNfRg/1FPWGq4QvxgE0wSFFtEh88OuEA4RF/Z2OaS4/kFJP3Bd2jI3XUG2UxeM+u36i6Q8bjSRCSd5KCjFyzm45L9Rs89l0VBwh5EoGy7oBPZpUQRMcUxgcG4RVbtJTib1Navkd4N28PYIInwScKLQ1vxGqPzYqfVAHnE=
+	t=1742905905; cv=none; b=Ix4KxDGiS6WkqD/PQ+cF5/khzjn6juF006NC19YlH5bmQ8pVFqhhEYd+rifloBMHzka1ceJPfchPk2tTSq4oyCJvkS9xLhmTotqh4Ys0D9IN2DozFAYfAywZKLCGiM00X8Uj2Pm2ueXEfiYAU6WGDjOegusmmBfZdcetQLhXxHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905964; c=relaxed/simple;
-	bh=bC7Ox/L0LE+j74ANvzttkByEOlXjeHhA9cQkMcWOO3s=;
+	s=arc-20240116; t=1742905905; c=relaxed/simple;
+	bh=cjk2z2kGuYtesOrFoKl+1PbIAQncOIbq4GObz/7QQ5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XKN5+3njYEY55tKWY6SUfotM+Ev5SozEFZz2Rz+M007a43SGBQ/DNTLD1AcZypowdlDO1DULC7697wo1N1upu1bDykGjlrjfqSvRwDK/3L8yNm/fcXpdsEoPWYCSVIcI9uwuT5WMTLclQauB0vqHRVGPk6ldAnS3SerIM/iJ12s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOPdIys0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED39FC4CEE4;
-	Tue, 25 Mar 2025 12:32:43 +0000 (UTC)
+	 MIME-Version; b=JpVMxHaf80lt0pWixdJE9UQKIUobA/ByRb71+zJWFrCEygCQhtOwxHNidxVN+5Kr/9IW0yyurWsn/1bGWbcLOjmbnUG6rTVHYyIvkM7XiwA4xEiGuN0gY1eQDSmQ8zkP+EL6S6JV9I9nkWCQoSdxPx6g4d6ZFItYKc72MMEofHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B64YIa4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E96C4CEE4;
+	Tue, 25 Mar 2025 12:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905964;
-	bh=bC7Ox/L0LE+j74ANvzttkByEOlXjeHhA9cQkMcWOO3s=;
+	s=korg; t=1742905905;
+	bh=cjk2z2kGuYtesOrFoKl+1PbIAQncOIbq4GObz/7QQ5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOPdIys0l4nuxf1qYGCir8/6CkyZ1jpp6RSIfkGet7AAB1yz5E71ExWZ5bWps+EWv
-	 xZuI8LfMvILxb+cLt9eIWKXzBpPBq1XMQUOjfa4oOU3q1tFHE3h93UHsm6Xnh/QYeq
-	 F9chL2ts6TjZT6TA821vWQyRpQvrVucwags1IGqk=
+	b=B64YIa4p+kdJzLqsMULZ0lai1qVn3Hjkp5SFNXAXjmSQczSZmzPT60KaI+D2zRHyT
+	 xeL/TyEc6oQQiQ8FOv/YCDmUC3Xldi01vCE+qKSmlDMBRlBORw4UP2fxIcZnk3QTj0
+	 fip6D9l1isD+gB48OljmIr+bzjiNwqpj7m5EnP2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Brautaset <tbrautaset@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 020/119] ARM: dts: BCM5301X: Fix switch port labels of ASUS RT-AC3200
-Date: Tue, 25 Mar 2025 08:21:18 -0400
-Message-ID: <20250325122149.587312579@linuxfoundation.org>
+Subject: [PATCH 6.13 021/119] dma-mapping: fix missing clear bdr in check_ram_in_range_map()
+Date: Tue, 25 Mar 2025 08:21:19 -0400
+Message-ID: <20250325122149.611672548@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
 References: <20250325122149.058346343@linuxfoundation.org>
@@ -67,52 +67,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chester A. Unal <chester.a.unal@arinc9.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 24d4c56dd68906bf55ff8fc2e2d36760f97dce5f ]
+[ Upstream commit 8324993f60305e50f27b98358b01b9837e10d159 ]
 
-After using the device for a while, Tom reports that he initially described
-the switch port labels incorrectly. Apparently, ASUS's own firmware also
-describes them incorrectly. Correct them to what is seen on the chassis.
+As discussed in [1], if 'bdr' is set once, it would never get
+cleared, hence 0 is always returned.
 
-Reported-by: Tom Brautaset <tbrautaset@gmail.com>
-Fixes: b116239094d8 ("ARM: dts: BCM5301X: Add DT for ASUS RT-AC3200")
-Signed-off-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Link: https://lore.kernel.org/r/20250304-for-broadcom-fix-rt-ac3200-switch-ports-v1-1-7e249a19a13e@arinc9.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Refactor the range check hunk into a new helper dma_find_range(),
+which allows 'bdr' to be cleared in each iteration.
+
+Link: https://lore.kernel.org/all/64931fac-085b-4ff3-9314-84bac2fa9bdb@quicinc.com/ # [1]
+Fixes: a409d9600959 ("dma-mapping: fix dma_addressing_limited() if dma_range_map can't cover all system RAM")
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://lore.kernel.org/r/20250307030350.69144-1-quic_bqiang@quicinc.com
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/dma/direct.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts b/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts
-index 53cb0c58f6d05..3da2daee0c849 100644
---- a/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts
-@@ -124,19 +124,19 @@ port@0 {
- 		};
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 5b4e6d3bf7bcc..b8fe0b3d0ffb6 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -584,6 +584,22 @@ int dma_direct_supported(struct device *dev, u64 mask)
+ 	return mask >= phys_to_dma_unencrypted(dev, min_mask);
+ }
  
- 		port@1 {
--			label = "lan1";
-+			label = "lan4";
- 		};
++static const struct bus_dma_region *dma_find_range(struct device *dev,
++						   unsigned long start_pfn)
++{
++	const struct bus_dma_region *m;
++
++	for (m = dev->dma_range_map; PFN_DOWN(m->size); m++) {
++		unsigned long cpu_start_pfn = PFN_DOWN(m->cpu_start);
++
++		if (start_pfn >= cpu_start_pfn &&
++		    start_pfn - cpu_start_pfn < PFN_DOWN(m->size))
++			return m;
++	}
++
++	return NULL;
++}
++
+ /*
+  * To check whether all ram resource ranges are covered by dma range map
+  * Returns 0 when further check is needed
+@@ -593,20 +609,12 @@ static int check_ram_in_range_map(unsigned long start_pfn,
+ 				  unsigned long nr_pages, void *data)
+ {
+ 	unsigned long end_pfn = start_pfn + nr_pages;
+-	const struct bus_dma_region *bdr = NULL;
+-	const struct bus_dma_region *m;
+ 	struct device *dev = data;
  
- 		port@2 {
--			label = "lan2";
-+			label = "lan3";
- 		};
+ 	while (start_pfn < end_pfn) {
+-		for (m = dev->dma_range_map; PFN_DOWN(m->size); m++) {
+-			unsigned long cpu_start_pfn = PFN_DOWN(m->cpu_start);
++		const struct bus_dma_region *bdr;
  
- 		port@3 {
--			label = "lan3";
-+			label = "lan2";
- 		};
+-			if (start_pfn >= cpu_start_pfn &&
+-			    start_pfn - cpu_start_pfn < PFN_DOWN(m->size)) {
+-				bdr = m;
+-				break;
+-			}
+-		}
++		bdr = dma_find_range(dev, start_pfn);
+ 		if (!bdr)
+ 			return 1;
  
- 		port@4 {
--			label = "lan4";
-+			label = "lan1";
- 		};
- 	};
- };
 -- 
 2.39.5
 
