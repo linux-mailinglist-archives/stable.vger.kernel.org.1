@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-126084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC4CA6FEF9
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:59:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8169A6FF30
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 629273B7726
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:52:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C924884038E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDD725A2A7;
-	Tue, 25 Mar 2025 12:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85F8265CC0;
+	Tue, 25 Mar 2025 12:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSYQwfqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQzwY3qz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E101C2580E1;
-	Tue, 25 Mar 2025 12:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860B825745C;
+	Tue, 25 Mar 2025 12:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905571; cv=none; b=XOAtL98ro/stlQYLA3fnQ6KQc2Fnvng309KqbmdG56bycmJVG8s7MZ2Mz2YsmgBOEA9SLNOPMJ6lboamyrOVj4oCp95xxuZHeXLxvLkWTaZ2iv/DXqzmqwHq8uEnGc3G7QkSA8Wxq8sRHjwb3znprpOOuRxLagtQNDMjBHvmOWM=
+	t=1742905591; cv=none; b=mUOFVKz/oeC1wWJ3Q4uO0VfzsZj3QK8yB9sVEVckiUoY7SdPi7OoT8IGioMDYbzV2kJC4iDLHm/7HuL6jUrMVW5sSbbrpI32ecI1ctU+D8y23CXM9u0dzWKFHnvijNsksp9CMsQtSt0LDqKsWdmL1o/6318XI12J2iqRPG0nxCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905571; c=relaxed/simple;
-	bh=IBs7vhSrBjZCgVAiUEeYDOo1Mr2rYDFRvHBVfNtOV5E=;
+	s=arc-20240116; t=1742905591; c=relaxed/simple;
+	bh=dHFqGZB/o+zvBVM1Np0QC6tdfZwG1YyL1xBe94SUimw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHqfTf38ofqs46vlSJ87xFL2d2J5x4nmTzFwJdaBDwUkRcMc+wcxOBxC44p2S4i+rxci7VYWu4031hKM3omPyaSWXpn4ht44Ivj+zPZZev/9yYS8S6UMUw+9Ev9Zi5AdEuy1T4iWujeh1yI/+tk3/pGPPk3RwkQ+obmZO/6SPG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSYQwfqo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C52C4CEE4;
-	Tue, 25 Mar 2025 12:26:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G0VFtcE3qZzIBnmhpIehWcsI1m5PXJbWK8CsECPGnKHTR8tnlugtuUUem0OrjUdNnPJATFNMA5waoqZgnmWf5zVpB6kWIJ86k6RUy8rKx8513txE9w7/Kl5H2ku7A2WnTO6/biflbC10M/cCAkcRe27dqjbLRKeCLEwYwRGiaUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQzwY3qz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0ADC4CEF1;
+	Tue, 25 Mar 2025 12:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905570;
-	bh=IBs7vhSrBjZCgVAiUEeYDOo1Mr2rYDFRvHBVfNtOV5E=;
+	s=korg; t=1742905591;
+	bh=dHFqGZB/o+zvBVM1Np0QC6tdfZwG1YyL1xBe94SUimw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSYQwfqofd2ypma3IFaxD4W3/fV/KwrfytFd71abP3AwNgUQpNF9amy4ISV5DVbe/
-	 8O9Nn0Noj10GPuWurSNPHPK8ydr1mLco4zvmUN1ikQkUmyNpIL/s+x0eQ043ZJlK5B
-	 4SNI00uMeodrJb7rLeLftoPgwVLkA4YvBfefTMeM=
+	b=PQzwY3qz4TS6TICigPiWMF8TwDoe7H4cyWADN6zecZ/I//8X2d8SMQNanA7YFHSLS
+	 o6YV4fh+3VGmrAFbGhGXrOktD9Decqu+oQuyvFXAF+SLMvaupYrZNaZOwM9uFDc8ac
+	 iZ4IbroeBhrnIy0wIyb5IW0AE74Rk8SRexEj/yFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Kees Cook <kees@kernel.org>,
+	Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/198] alpha/elf: Fix misc/setarch test of util-linux by removing 32bit support
-Date: Tue, 25 Mar 2025 08:20:01 -0400
-Message-ID: <20250325122157.667663181@linuxfoundation.org>
+Subject: [PATCH 6.1 040/198] vboxsf: fix building with GCC 15
+Date: Tue, 25 Mar 2025 08:20:02 -0400
+Message-ID: <20250325122157.693448563@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -63,155 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric W. Biederman <ebiederm@xmission.com>
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
 
-[ Upstream commit b029628be267cba3c7684ec684749fe3e4372398 ]
+[ Upstream commit 4e7487245abcbc5a1a1aea54e4d3b33c53804bda ]
 
-Richard Henderson <richard.henderson@linaro.org> writes[1]:
+Building with GCC 15 results in build error
+fs/vboxsf/super.c:24:54: error: initializer-string for array of ‘unsigned char’ is too long [-Werror=unterminated-string-initialization]
+   24 | static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
+      |                                                      ^~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
-> There was a Spec benchmark (I forget which) which was memory bound and ran
-> twice as fast with 32-bit pointers.
->
-> I copied the idea from DEC to the ELF abi, but never did all the other work
-> to allow the toolchain to take advantage.
->
-> Amusingly, a later Spec changed the benchmark data sets to not fit into a
-> 32-bit address space, specifically because of this.
->
-> I expect one could delete the ELF bit and personality and no one would
-> notice. Not even the 10 remaining Alpha users.
+Due to GCC having enabled -Werror=unterminated-string-initialization[0]
+by default. Separately initializing each array element of
+VBSF_MOUNT_SIGNATURE to ensure NUL termination, thus satisfying GCC 15
+and fixing the build error.
 
-In [2] it was pointed out that parts of setarch weren't working
-properly on alpha because it has it's own SET_PERSONALITY
-implementation.  In the discussion that followed Richard Henderson
-pointed out that the 32bit pointer support for alpha was never
-completed.
+[0]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wno-unterminated-string-initialization
 
-Fix this by removing alpha's 32bit pointer support.
-
-As a bit of paranoia refuse to execute any alpha binaries that have
-the EF_ALPHA_32BIT flag set.  Just in case someone somewhere has
-binaries that try to use alpha's 32bit pointer support.
-
-Link: https://lkml.kernel.org/r/CAFXwXrkgu=4Qn-v1PjnOR4SG0oUb9LSa0g6QXpBq4ttm52pJOQ@mail.gmail.com [1]
-Link: https://lkml.kernel.org/r/20250103140148.370368-1-glaubitz@physik.fu-berlin.de [2]
-Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/87y0zfs26i.fsf_-_@email.froward.int.ebiederm.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+Link: https://lore.kernel.org/r/20250121162648.1408743-1-brahmajit.xyz@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/include/asm/elf.h       |  6 +-----
- arch/alpha/include/asm/pgtable.h   |  2 +-
- arch/alpha/include/asm/processor.h |  8 ++------
- arch/alpha/kernel/osf_sys.c        | 11 ++---------
- 4 files changed, 6 insertions(+), 21 deletions(-)
+ fs/vboxsf/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/alpha/include/asm/elf.h b/arch/alpha/include/asm/elf.h
-index 8049997fa372a..2039a8c8d5473 100644
---- a/arch/alpha/include/asm/elf.h
-+++ b/arch/alpha/include/asm/elf.h
-@@ -74,7 +74,7 @@ typedef elf_fpreg_t elf_fpregset_t[ELF_NFPREG];
- /*
-  * This is used to ensure we don't load something for the wrong architecture.
-  */
--#define elf_check_arch(x) ((x)->e_machine == EM_ALPHA)
-+#define elf_check_arch(x) (((x)->e_machine == EM_ALPHA) && !((x)->e_flags & EF_ALPHA_32BIT))
+diff --git a/fs/vboxsf/super.c b/fs/vboxsf/super.c
+index 74952e58cca06..48f33d4994dc8 100644
+--- a/fs/vboxsf/super.c
++++ b/fs/vboxsf/super.c
+@@ -21,7 +21,8 @@
  
- /*
-  * These are used to set parameters in the core dumps.
-@@ -145,10 +145,6 @@ extern int dump_elf_task_fp(elf_fpreg_t *dest, struct task_struct *task);
- 	: amask (AMASK_CIX) ? "ev6" : "ev67");	\
- })
+ #define VBOXSF_SUPER_MAGIC 0x786f4256 /* 'VBox' little endian */
  
--#define SET_PERSONALITY(EX)					\
--	set_personality(((EX).e_flags & EF_ALPHA_32BIT)		\
--	   ? PER_LINUX_32BIT : PER_LINUX)
--
- extern int alpha_l1i_cacheshape;
- extern int alpha_l1d_cacheshape;
- extern int alpha_l2_cacheshape;
-diff --git a/arch/alpha/include/asm/pgtable.h b/arch/alpha/include/asm/pgtable.h
-index 9e45f6735d5d2..6fe4e9deeb5ef 100644
---- a/arch/alpha/include/asm/pgtable.h
-+++ b/arch/alpha/include/asm/pgtable.h
-@@ -322,7 +322,7 @@ extern inline pte_t mk_swap_pte(unsigned long type, unsigned long offset)
+-static const unsigned char VBSF_MOUNT_SIGNATURE[4] = "\000\377\376\375";
++static const unsigned char VBSF_MOUNT_SIGNATURE[4] = { '\000', '\377', '\376',
++						       '\375' };
  
- extern void paging_init(void);
- 
--/* We have our own get_unmapped_area to cope with ADDR_LIMIT_32BIT.  */
-+/* We have our own get_unmapped_area */
- #define HAVE_ARCH_UNMAPPED_AREA
- 
- #endif /* _ALPHA_PGTABLE_H */
-diff --git a/arch/alpha/include/asm/processor.h b/arch/alpha/include/asm/processor.h
-index 714abe494e5fd..916a2dd782c1a 100644
---- a/arch/alpha/include/asm/processor.h
-+++ b/arch/alpha/include/asm/processor.h
-@@ -8,23 +8,19 @@
- #ifndef __ASM_ALPHA_PROCESSOR_H
- #define __ASM_ALPHA_PROCESSOR_H
- 
--#include <linux/personality.h>	/* for ADDR_LIMIT_32BIT */
--
- /*
-  * We have a 42-bit user address space: 4TB user VM...
-  */
- #define TASK_SIZE (0x40000000000UL)
- 
--#define STACK_TOP \
--  (current->personality & ADDR_LIMIT_32BIT ? 0x80000000 : 0x00120000000UL)
-+#define STACK_TOP (0x00120000000UL)
- 
- #define STACK_TOP_MAX	0x00120000000UL
- 
- /* This decides where the kernel will search for a free chunk of vm
-  * space during mmap's.
-  */
--#define TASK_UNMAPPED_BASE \
--  ((current->personality & ADDR_LIMIT_32BIT) ? 0x40000000 : TASK_SIZE / 2)
-+#define TASK_UNMAPPED_BASE (TASK_SIZE / 2)
- 
- /* This is dead.  Everything has been moved to thread_info.  */
- struct thread_struct { };
-diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
-index c54469b369cb6..03b70b6c92502 100644
---- a/arch/alpha/kernel/osf_sys.c
-+++ b/arch/alpha/kernel/osf_sys.c
-@@ -1213,8 +1213,7 @@ SYSCALL_DEFINE1(old_adjtimex, struct timex32 __user *, txc_p)
- 	return ret;
- }
- 
--/* Get an address range which is currently unmapped.  Similar to the
--   generic version except that we know how to honor ADDR_LIMIT_32BIT.  */
-+/* Get an address range which is currently unmapped. */
- 
- static unsigned long
- arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
-@@ -1236,13 +1235,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
- 		       unsigned long len, unsigned long pgoff,
- 		       unsigned long flags)
- {
--	unsigned long limit;
--
--	/* "32 bit" actually means 31 bit, since pointers sign extend.  */
--	if (current->personality & ADDR_LIMIT_32BIT)
--		limit = 0x80000000;
--	else
--		limit = TASK_SIZE;
-+	unsigned long limit = TASK_SIZE;
- 
- 	if (len > limit)
- 		return -ENOMEM;
+ static int follow_symlinks;
+ module_param(follow_symlinks, int, 0444);
 -- 
 2.39.5
 
