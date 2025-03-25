@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B1EA70151
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:22:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13848A70063
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D386F188E235
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F34AA17A5A1
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05335269820;
-	Tue, 25 Mar 2025 12:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5B426A0C6;
+	Tue, 25 Mar 2025 12:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EV/am8Rm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3+hpvz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89872571AB;
-	Tue, 25 Mar 2025 12:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C036426A0BF;
+	Tue, 25 Mar 2025 12:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906035; cv=none; b=PpPUNhtMDlwqvfcRQNG/bkxOy8J5X7Q+2gLmym9+rJ8+vRYocGXU1JRkBTe6mtjkXs2b0koHPOiei+Cl6GRTcPwPiTrZzNVM2q2C2ZQ+ZvjFY8pv2FN7YPZ16ZEsJskegL/XIomCwTNy41qq4X4lTwZ7+KU8DIpPz3kBQ0ZQ8wY=
+	t=1742906151; cv=none; b=u6EPIU9pHCpUa3vZUrwqCa6oa5nDanGsO6LyBUBo8KpCiNTNb48+OnZhnLSiciECgC/LPbzW9qla15GsUtXzmuSG+GgsZL15HsqqVz8a5kLDzs4G8i3QjZ5gdMmjF0QtyJGVB8r3ezUyXThAqjRjIner6ZTPne2KgMBtIyhNXqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906035; c=relaxed/simple;
-	bh=yLQ3WbUaTMil23v0t/bzXpYS8b1Hm3s0rtZHLK/so14=;
+	s=arc-20240116; t=1742906151; c=relaxed/simple;
+	bh=Or6D7Dk+G1fpS13+ryBfAnhHtXo5hSmk6m+v23ouIZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iIWSE6OBsxjBlcXFv4xZqLy61FOcRPmUE3OQ9e5kZ4PzJoMqgaC2gvhv15k/kuxtFYbQgXa6eCZCHqJ/mq2Fx2JTRbTn1V0jXQP7itNs6r4P0IjnqmOrOImoVDx9P3ach1LP03G2trtgRcPndnX6uyFl165xe7uJMQ/J46EWjBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EV/am8Rm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C90C4CEE4;
-	Tue, 25 Mar 2025 12:33:54 +0000 (UTC)
+	 MIME-Version; b=I67rJ1Tcq8zidcRmLCgsK5QdZLmyL2CiOZ0Tw8ipxwGjTxYeDc3gFaBWTfGbJQx/ibyPnLSi0Sz4gCPFzDdiCPKKgleqywuP2s18nvvOW1VJW3oQVJZ2pXai/JKA7sbxU/FITKzz36jBzG+kKpFI3L6+s34F4YE0rVeDTn/WLNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3+hpvz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1B2C4AF09;
+	Tue, 25 Mar 2025 12:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906035;
-	bh=yLQ3WbUaTMil23v0t/bzXpYS8b1Hm3s0rtZHLK/so14=;
+	s=korg; t=1742906151;
+	bh=Or6D7Dk+G1fpS13+ryBfAnhHtXo5hSmk6m+v23ouIZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EV/am8RmiNvS98mm7mGJIcK/IN9ilBR+DpLFSmpJk5hS2PqpC9z7K5MzCOAf6GyzV
-	 Njl36nicYQP6sWR1nZWgfCOIQRY5sq8Dq1PwiNB+bGXbIWtdrEkALH2kqauaTBaHb9
-	 Nefq8cAFbdPN0GLnmZ3PMmH+P2yPXhPgXJBFGBbo=
+	b=f3+hpvz+rigb9lyVCEEQ2b6GH9Grc5trHwaMyGrj45hZfch/M7EEpgv7U/wxSqIcU
+	 RTMXkDwQ2jWHjkoamx/LBNBirFTVvsyCjCu213h/kBaA9dK6tZMmnAZ6mcjUdP5RqV
+	 uINrN9lpqfapgvpLZMqRpQ3vsGs4XMIVTEaAZI50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Belanger <david.belanger@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.13 100/119] drm/amdgpu: Restore uncached behaviour on GFX12
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 43/77] mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops
 Date: Tue, 25 Mar 2025 08:22:38 -0400
-Message-ID: <20250325122151.612259868@linuxfoundation.org>
+Message-ID: <20250325122145.479841155@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Belanger <david.belanger@amd.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-commit 35b6162bb790555ad56b7f0d120e307b8334d778 upstream.
+commit 723ef0e20dbb2aa1b5406d2bb75374fc48187daa upstream.
 
-Always use MTYPE_UC if UNCACHED flag is specified.
+cqhci timeouts observed on brcmstb platforms during suspend:
+  ...
+  [  164.832853] mmc0: cqhci: timeout for tag 18
+  ...
 
-This makes kernarg region uncached and it restores
-usermode cache disable debug flag functionality.
+Adding cqhci_suspend()/resume() calls to disable cqe
+in sdhci_brcmstb_suspend()/resume() respectively to fix
+CQE timeouts seen on PM suspend.
 
-Do not set MTYPE_UC for COHERENT flag, on GFX12 coherence is handled by
-shader code.
-
-Signed-off-by: David Belanger <david.belanger@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit eb6cdfb807d038d9b9986b5c87188f28a4071eae)
-Cc: stable@vger.kernel.org # 6.12.x
+Fixes: d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20250311165946.28190-1-kamal.dasu@broadcom.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c |   22 ++--------------------
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c   |    8 +-------
- 2 files changed, 3 insertions(+), 27 deletions(-)
+ drivers/mmc/host/sdhci-brcmstb.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-@@ -501,9 +501,6 @@ static void gmc_v12_0_get_vm_pte(struct
- 				 uint64_t *flags)
- {
- 	struct amdgpu_bo *bo = mapping->bo_va->base.bo;
--	struct amdgpu_device *bo_adev;
--	bool coherent, is_system;
--
+--- a/drivers/mmc/host/sdhci-brcmstb.c
++++ b/drivers/mmc/host/sdhci-brcmstb.c
+@@ -384,8 +384,15 @@ static int sdhci_brcmstb_suspend(struct
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
++	int ret;
  
- 	*flags &= ~AMDGPU_PTE_EXECUTABLE;
- 	*flags |= mapping->flags & AMDGPU_PTE_EXECUTABLE;
-@@ -519,26 +516,11 @@ static void gmc_v12_0_get_vm_pte(struct
- 		*flags &= ~AMDGPU_PTE_VALID;
- 	}
- 
--	if (!bo)
--		return;
--
--	if (bo->flags & (AMDGPU_GEM_CREATE_COHERENT |
--			       AMDGPU_GEM_CREATE_UNCACHED))
--		*flags = AMDGPU_PTE_MTYPE_GFX12(*flags, MTYPE_UC);
--
--	bo_adev = amdgpu_ttm_adev(bo->tbo.bdev);
--	coherent = bo->flags & AMDGPU_GEM_CREATE_COHERENT;
--	is_system = bo->tbo.resource &&
--		(bo->tbo.resource->mem_type == TTM_PL_TT ||
--		 bo->tbo.resource->mem_type == AMDGPU_PL_PREEMPT);
--
- 	if (bo && bo->flags & AMDGPU_GEM_CREATE_GFX12_DCC)
- 		*flags |= AMDGPU_PTE_DCC;
- 
--	/* WA for HW bug */
--	if (is_system || ((bo_adev != adev) && coherent))
--		*flags = AMDGPU_PTE_MTYPE_GFX12(*flags, MTYPE_NC);
--
-+	if (bo && bo->flags & AMDGPU_GEM_CREATE_UNCACHED)
-+		*flags = AMDGPU_PTE_MTYPE_GFX12(*flags, MTYPE_UC);
+ 	clk_disable_unprepare(priv->base_clk);
++	if (host->mmc->caps2 & MMC_CAP2_CQE) {
++		ret = cqhci_suspend(host->mmc);
++		if (ret)
++			return ret;
++	}
++
+ 	return sdhci_pltfm_suspend(dev);
  }
  
- static unsigned gmc_v12_0_get_vbios_fb_size(struct amdgpu_device *adev)
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -1276,13 +1276,7 @@ svm_range_get_pte_flags(struct kfd_node
- 		break;
- 	case IP_VERSION(12, 0, 0):
- 	case IP_VERSION(12, 0, 1):
--		if (domain == SVM_RANGE_VRAM_DOMAIN) {
--			if (bo_node != node)
--				mapping_flags |= AMDGPU_VM_MTYPE_NC;
--		} else {
--			mapping_flags |= coherent ?
--				AMDGPU_VM_MTYPE_UC : AMDGPU_VM_MTYPE_NC;
--		}
-+		mapping_flags |= AMDGPU_VM_MTYPE_NC;
- 		break;
- 	default:
- 		mapping_flags |= coherent ?
+@@ -410,6 +417,9 @@ static int sdhci_brcmstb_resume(struct d
+ 			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
+ 	}
+ 
++	if (host->mmc->caps2 & MMC_CAP2_CQE)
++		ret = cqhci_resume(host->mmc);
++
+ 	return ret;
+ }
+ #endif
 
 
 
