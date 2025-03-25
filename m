@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-126389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BEDA6FFF9
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ACA1A6FFED
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCA1B7A1683
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 401F43B432C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0518126A088;
-	Tue, 25 Mar 2025 12:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CFE2E3392;
+	Tue, 25 Mar 2025 12:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrNUZvyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/dcn3rS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73DE25BACB;
-	Tue, 25 Mar 2025 12:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01FE2E337A;
+	Tue, 25 Mar 2025 12:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906133; cv=none; b=BYwyZd6ySe1HoViSThl9gM6lKFe8rCUVq7NOWB3qUx7WLVhye4p0ER/08+RxChnhmRzAqE3Q0JKCJEa+qLy9n4K0G9lCRaCOtKRz5bLAFNPrkSfL75rp6WrOOYWLg7VX3X53pmtp4poDRNhkt/sjQ4GZH4TXt8b5bZfxVWCNK8U=
+	t=1742905824; cv=none; b=kigTCJKZp3jgYgCylw2QzenWTro8hY75srlqxPnprBqUFmmXec7DOM3lmAVqxylvyXwq52aLlqwF9/3QY/fhhVZDbfphX/vmbwrbu4PE5/79WbLOQQRyaIx6Zc3GA2MGVZyF+fV8WAg9B6UOIAP9FWJME0xXih9a2fLj5nfnVDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906133; c=relaxed/simple;
-	bh=wFmCcyG5bvfqVlyzieFeSlvUA3qe74VsrrOpTG5R2+0=;
+	s=arc-20240116; t=1742905824; c=relaxed/simple;
+	bh=1zi2tC/2cro9PblS4bz/tsMi3OIc7q470aezfOhCCSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoC0IbdWTK0JNE0LW1MGqOQq9Wt5C/ApAxOr53/Tm+eMnLZ8IvtOB6RwrgOv8Cvsj9MHtiShXkUaV5DJRzmQ+5iqR/7iDv97U6ymMFM/Ful4xW8GIqmmPpp/aJrLcGNtGKmjtu0s11FcnWFTFPAxQSfYj8ModxpYaSvzRqbkC4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrNUZvyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F30AC4CEE9;
-	Tue, 25 Mar 2025 12:35:33 +0000 (UTC)
+	 MIME-Version; b=jQVoXWC/dOLgonZmY0dRmcsaYAiyQWZDjzjF9OIQZwVoKZqhkqmiW6P+X9KYGxodUNLbYR05dk+m3Sr9TSILyXiMr3ehBdmSfB/FPcC/1Xsm/ErOQj/R+F9kiTXdITx1JHRdBB+DTDl/EAAFd1KgFuVi/u1f5ydVoAf7wJyIXp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/dcn3rS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FABC4CEE4;
+	Tue, 25 Mar 2025 12:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906133;
-	bh=wFmCcyG5bvfqVlyzieFeSlvUA3qe74VsrrOpTG5R2+0=;
+	s=korg; t=1742905824;
+	bh=1zi2tC/2cro9PblS4bz/tsMi3OIc7q470aezfOhCCSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VrNUZvyopg4+0+fLe+C/nZquIpxkAzp0CP0Jvul+fr8Z8tC7naVwpvzpRhaD58wPH
-	 ui1fw8eisaodtYVGG1LbDU3lRmdJ3JuJqCYGdHX8qHI9LFEdSYzsr9bJxpYLop4xcM
-	 gg/ckRzlvjxXim29PIBvmI5JGYcoJKmEHJj5+oGU=
+	b=p/dcn3rSU4ZcYlP21FHJ1glnAWTU+7hQ+DpteJj6r3vULshde/YZuz7MR5dD75sW/
+	 Ux1tG4ONEtQNDszDjk/QMH9dULkFzV3mwNBX8kuOiN2c6wWNyIXE3mfTscj1r5tSgc
+	 GK5kjYCpSVCmIfru51T34Fwu8uHW6rWk3o2SW63w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7d8c418e8317899e88c@syzkaller.appspotmail.com,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 31/77] can: ucan: fix out of bound read in strscpy() source
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Saranya R <quic_sarar@quicinc.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 184/198] soc: qcom: pdr: Fix the potential deadlock
 Date: Tue, 25 Mar 2025 08:22:26 -0400
-Message-ID: <20250325122145.168858849@linuxfoundation.org>
+Message-ID: <20250325122201.474951760@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Saranya R <quic_sarar@quicinc.com>
 
-commit 1d22a122ffb116c3cf78053e812b8b21f8852ee9 upstream.
+commit 2eeb03ad9f42dfece63051be2400af487ddb96d2 upstream.
 
-Commit 7fdaf8966aae ("can: ucan: use strscpy() to instead of strncpy()")
-unintentionally introduced a one byte out of bound read on strscpy()'s
-source argument (which is kind of ironic knowing that strscpy() is meant
-to be a more secure alternative :)).
+When some client process A call pdr_add_lookup() to add the look up for
+the service and does schedule locator work, later a process B got a new
+server packet indicating locator is up and call pdr_locator_new_server()
+which eventually sets pdr->locator_init_complete to true which process A
+sees and takes list lock and queries domain list but it will timeout due
+to deadlock as the response will queued to the same qmi->wq and it is
+ordered workqueue and process B is not able to complete new server
+request work due to deadlock on list lock.
 
-Let's consider below buffers:
+Fix it by removing the unnecessary list iteration as the list iteration
+is already being done inside locator work, so avoid it here and just
+call schedule_work() here.
 
-  dest[len + 1]; /* will be NUL terminated */
-  src[len]; /* may not be NUL terminated */
+       Process A                        Process B
 
-When doing:
+                                     process_scheduled_works()
+pdr_add_lookup()                      qmi_data_ready_work()
+ process_scheduled_works()             pdr_locator_new_server()
+                                         pdr->locator_init_complete=true;
+   pdr_locator_work()
+    mutex_lock(&pdr->list_lock);
 
-  strncpy(dest, src, len);
-  dest[len] = '\0';
+     pdr_locate_service()                  mutex_lock(&pdr->list_lock);
 
-strncpy() will read up to len bytes from src.
+      pdr_get_domain_list()
+       pr_err("PDR: %s get domain list
+               txn wait failed: %d\n",
+               req->service_name,
+               ret);
 
-On the other hand:
+Timeout error log due to deadlock:
 
-  strscpy(dest, src, len + 1);
+"
+ PDR: tms/servreg get domain list txn wait failed: -110
+ PDR: service lookup for msm/adsp/sensor_pd:tms/servreg failed: -110
+"
 
-will read up to len + 1 bytes from src, that is to say, an out of bound
-read of one byte will occur on src if it is not NUL terminated. Note
-that the src[len] byte is never copied, but strscpy() still needs to
-read it to check whether a truncation occurred or not.
+Thanks to Bjorn and Johan for letting me know that this commit also fixes
+an audio regression when using the in-kernel pd-mapper as that makes it
+easier to hit this race. [1]
 
-This exact pattern happened in ucan.
-
-The root cause is that the source is not NUL terminated. Instead of
-doing a copy in a local buffer, directly NUL terminate it as soon as
-usb_control_msg() returns. With this, the local firmware_str[] variable
-can be removed.
-
-On top of this do a couple refactors:
-
-  - ucan_ctl_payload->raw is only used for the firmware string, so
-    rename it to ucan_ctl_payload->fw_str and change its type from u8 to
-    char.
-
-  - ucan_device_request_in() is only used to retrieve the firmware
-    string, so rename it to ucan_get_fw_str() and refactor it to make it
-    directly handle all the string termination logic.
-
-Reported-by: syzbot+d7d8c418e8317899e88c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-can/67b323a4.050a0220.173698.002b.GAE@google.com/
-Fixes: 7fdaf8966aae ("can: ucan: use strscpy() to instead of strncpy()")
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250218143515.627682-2-mailhol.vincent@wanadoo.fr
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lore.kernel.org/lkml/Zqet8iInnDhnxkT9@hovoldconsulting.com/ # [1]
+Fixes: fbe639b44a82 ("soc: qcom: Introduce Protection Domain Restart helpers")
+CC: stable@vger.kernel.org
+Reviewed-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Tested-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Saranya R <quic_sarar@quicinc.com>
+Co-developed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250212163720.1577876-1-mukesh.ojha@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/ucan.c |   43 ++++++++++++++++++-------------------------
- 1 file changed, 18 insertions(+), 25 deletions(-)
+ drivers/soc/qcom/pdr_interface.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -186,7 +186,7 @@ union ucan_ctl_payload {
- 	 */
- 	struct ucan_ctl_cmd_get_protocol_version cmd_get_protocol_version;
- 
--	u8 raw[128];
-+	u8 fw_str[128];
- } __packed;
- 
- enum {
-@@ -424,18 +424,20 @@ static int ucan_ctrl_command_out(struct
- 			       UCAN_USB_CTL_PIPE_TIMEOUT);
- }
- 
--static int ucan_device_request_in(struct ucan_priv *up,
--				  u8 cmd, u16 subcmd, u16 datalen)
-+static void ucan_get_fw_str(struct ucan_priv *up, char *fw_str, size_t size)
+--- a/drivers/soc/qcom/pdr_interface.c
++++ b/drivers/soc/qcom/pdr_interface.c
+@@ -74,7 +74,6 @@ static int pdr_locator_new_server(struct
  {
--	return usb_control_msg(up->udev,
--			       usb_rcvctrlpipe(up->udev, 0),
--			       cmd,
--			       USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
--			       subcmd,
--			       0,
--			       up->ctl_msg_buffer,
--			       datalen,
--			       UCAN_USB_CTL_PIPE_TIMEOUT);
-+	int ret;
-+
-+	ret = usb_control_msg(up->udev, usb_rcvctrlpipe(up->udev, 0),
-+			      UCAN_DEVICE_GET_FW_STRING,
-+			      USB_DIR_IN | USB_TYPE_VENDOR |
-+			      USB_RECIP_DEVICE,
-+			      0, 0, fw_str, size - 1,
-+			      UCAN_USB_CTL_PIPE_TIMEOUT);
-+	if (ret > 0)
-+		fw_str[ret] = '\0';
-+	else
-+		strscpy(fw_str, "unknown", size);
- }
+ 	struct pdr_handle *pdr = container_of(qmi, struct pdr_handle,
+ 					      locator_hdl);
+-	struct pdr_service *pds;
  
- /* Parse the device information structure reported by the device and
-@@ -1314,7 +1316,6 @@ static int ucan_probe(struct usb_interfa
- 	u8 in_ep_addr;
- 	u8 out_ep_addr;
- 	union ucan_ctl_payload *ctl_msg_buffer;
--	char firmware_str[sizeof(union ucan_ctl_payload) + 1];
+ 	mutex_lock(&pdr->lock);
+ 	/* Create a local client port for QMI communication */
+@@ -86,12 +85,7 @@ static int pdr_locator_new_server(struct
+ 	mutex_unlock(&pdr->lock);
  
- 	udev = interface_to_usbdev(intf);
- 
-@@ -1527,17 +1528,6 @@ static int ucan_probe(struct usb_interfa
- 	 */
- 	ucan_parse_device_info(up, &ctl_msg_buffer->cmd_get_device_info);
- 
--	/* just print some device information - if available */
--	ret = ucan_device_request_in(up, UCAN_DEVICE_GET_FW_STRING, 0,
--				     sizeof(union ucan_ctl_payload));
--	if (ret > 0) {
--		/* copy string while ensuring zero termination */
--		strscpy(firmware_str, up->ctl_msg_buffer->raw,
--			sizeof(union ucan_ctl_payload) + 1);
--	} else {
--		strcpy(firmware_str, "unknown");
+ 	/* Service pending lookup requests */
+-	mutex_lock(&pdr->list_lock);
+-	list_for_each_entry(pds, &pdr->lookups, node) {
+-		if (pds->need_locator_lookup)
+-			schedule_work(&pdr->locator_work);
 -	}
--
- 	/* device is compatible, reset it */
- 	ret = ucan_ctrl_command_out(up, UCAN_COMMAND_RESET, 0, 0);
- 	if (ret < 0)
-@@ -1555,7 +1545,10 @@ static int ucan_probe(struct usb_interfa
+-	mutex_unlock(&pdr->list_lock);
++	schedule_work(&pdr->locator_work);
  
- 	/* initialisation complete, log device info */
- 	netdev_info(up->netdev, "registered device\n");
--	netdev_info(up->netdev, "firmware string: %s\n", firmware_str);
-+	ucan_get_fw_str(up, up->ctl_msg_buffer->fw_str,
-+			sizeof(up->ctl_msg_buffer->fw_str));
-+	netdev_info(up->netdev, "firmware string: %s\n",
-+		    up->ctl_msg_buffer->fw_str);
- 
- 	/* success */
  	return 0;
+ }
 
 
 
