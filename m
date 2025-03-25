@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48CEA70012
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70CCA6FFA3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE969173EED
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5F573B9D8A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735EE268C41;
-	Tue, 25 Mar 2025 12:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613E725A333;
+	Tue, 25 Mar 2025 12:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOlvOcZn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4/h1OPc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307942686BD;
-	Tue, 25 Mar 2025 12:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAA22571DC;
+	Tue, 25 Mar 2025 12:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905909; cv=none; b=byxVHEuUHP1il+cbj1mzKPk6UvKr8yDgytcxZQznLc+iWGWqrBFGcCDh2GK4h3OG4RXqmpwvYwRPHN+9kqBExyDrsnaLSoUSnoPAK3iDFcv/N4ZsDgN7068zFXNiHAbuQlJvYd4JC5XUypxx4dWT++utune2TSm/haXd3TjnSqo=
+	t=1742905721; cv=none; b=fjIkYwS8QjRhwm8sWYySo0G5i3LzoElMoNfBSAWySgfXK2zlHFJBbYEMUP9peleq79Fsole/9sXAwr+B43jdZvh5otAczQswwpOpdt/sRyBt7x0sy+71fCbV24JLOGv1jMaE6CrHPhrSIPOL1XthjHprAsDFE89ciLCw9ykFKp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905909; c=relaxed/simple;
-	bh=KT+lPZZJBw31moasN4QmXBx/3a8z3F4it1yLSAXbP1k=;
+	s=arc-20240116; t=1742905721; c=relaxed/simple;
+	bh=SES/wls+wQAxyGV3mJ3jxTmRJj8DJxU41vL+o98Y/eU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKsehoGI+K4NUeeHvWxSnqkmINvLv5T1WsCSwZBBIL7gb+LVOl874J0DMGPk8wXesamaqvkc8tTyHtJa58bgULPPpzTb1FjfsIhnzdPxr/YrP5o1JWT2ucXMBGXKCzWbG+pNtF/OSqMDL7ZdAW861Bq57s2mGIBjt7WKeJOCGSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOlvOcZn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7254C4CEE4;
-	Tue, 25 Mar 2025 12:31:48 +0000 (UTC)
+	 MIME-Version; b=Ja3TOsRsgXixWPQh5qEKJ7h/n3hpS5q3rxiYRtzMZXU5XKgAmZVr6MPXyXnp5XWMkgWZpYx6Xt6paKrl5hA67jor3nIRKC4xeB6Y7x/C4V6XeOybBQXPpOA3NMMK2+/emDrYJ5I8h6haXyjGHuyxR/3tAVUbwvM57ojQtMcRMNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4/h1OPc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77BDC4CEE4;
+	Tue, 25 Mar 2025 12:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905909;
-	bh=KT+lPZZJBw31moasN4QmXBx/3a8z3F4it1yLSAXbP1k=;
+	s=korg; t=1742905721;
+	bh=SES/wls+wQAxyGV3mJ3jxTmRJj8DJxU41vL+o98Y/eU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOlvOcZnizUXljA7n88yH6oLxImMnOnpDpFzjpn7PJx5aHMDhdYjTSrlv+B4NUiYx
-	 SNYHLliq6UbaVQF1aZUNWkeixp8fNT5fuRTpJTg2zcvrveYgOivEvqlISz4Tl81/lC
-	 RG1qCxcMBuTFtVEroUV1r7A/to6ss4UI7vxTtugo=
+	b=T4/h1OPcpJh1z/WPy0erzJO8QiyY9fSaSkE9GzpZJOEUKc2Ef5BEMEy0ksWQgDwwv
+	 s/YDXvnHucDXG1jNs4r5a2bsdGvLs/d0LOjlYkLxA8zwJ/CJrG/Eoh0rWRVpvK1/VC
+	 +boEEIgNchV4K0J2R6gnmfWirS6uwVnI2SDo6/So=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 031/119] Bluetooth: hci_event: Fix connection regression between LE and non-LE adapters
+Subject: [PATCH 6.1 127/198] drm/gma500: Add NULL check for pci_gfx_root in mid_get_vbt_data()
 Date: Tue, 25 Mar 2025 08:21:29 -0400
-Message-ID: <20250325122149.859500354@linuxfoundation.org>
+Message-ID: <20250325122159.983644921@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit f6685a96c8c8a07e260e39bac86d4163cfb38a4d ]
+[ Upstream commit 9af152dcf1a06f589f44a74da4ad67e365d4db9a ]
 
-Due to a typo during defining HCI errors it is not possible to connect
-LE-capable device with BR/EDR only adapter. The connection is terminated
-by the LE adapter because the invalid LL params error code is treated
-as unsupported remote feature.
+Since pci_get_domain_bus_and_slot() can return NULL, add NULL check for
+pci_gfx_root in the mid_get_vbt_data().
 
-Fixes: 79c0868ad65a ("Bluetooth: hci_event: Use HCI error defines instead of magic values")
-Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This change is similar to the checks implemented in mid_get_fuse_settings()
+and mid_get_pci_revID(), which were introduced by commit 0cecdd818cd7
+("gma500: Final enables for Oaktrail") as "additional minor
+bulletproofing".
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: f910b411053f ("gma500: Add the glue to the various BIOS and firmware interfaces")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306112046.17144-1-i.abramov@mt-integration.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/gma500/mid_bios.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 6203bd8663b74..f2f69eb4295e1 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -684,7 +684,7 @@ enum {
- #define HCI_ERROR_REMOTE_POWER_OFF	0x15
- #define HCI_ERROR_LOCAL_HOST_TERM	0x16
- #define HCI_ERROR_PAIRING_NOT_ALLOWED	0x18
--#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1e
-+#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1a
- #define HCI_ERROR_INVALID_LL_PARAMS	0x1e
- #define HCI_ERROR_UNSPECIFIED		0x1f
- #define HCI_ERROR_ADVERTISING_TIMEOUT	0x3c
+diff --git a/drivers/gpu/drm/gma500/mid_bios.c b/drivers/gpu/drm/gma500/mid_bios.c
+index 7e76790c6a81f..cba97d7db131d 100644
+--- a/drivers/gpu/drm/gma500/mid_bios.c
++++ b/drivers/gpu/drm/gma500/mid_bios.c
+@@ -279,6 +279,11 @@ static void mid_get_vbt_data(struct drm_psb_private *dev_priv)
+ 					    0, PCI_DEVFN(2, 0));
+ 	int ret = -1;
+ 
++	if (pci_gfx_root == NULL) {
++		WARN_ON(1);
++		return;
++	}
++
+ 	/* Get the address of the platform config vbt */
+ 	pci_read_config_dword(pci_gfx_root, 0xFC, &addr);
+ 	pci_dev_put(pci_gfx_root);
 -- 
 2.39.5
 
