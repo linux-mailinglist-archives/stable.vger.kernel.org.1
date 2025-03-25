@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-126446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E34A700EC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 942F0A700B5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 613898427CB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF0CC19A5A72
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3921F25D1EB;
-	Tue, 25 Mar 2025 12:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C399268C62;
+	Tue, 25 Mar 2025 12:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWBC2sfs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pm+fbz+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB367F9E6;
-	Tue, 25 Mar 2025 12:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4B82571DB;
+	Tue, 25 Mar 2025 12:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906240; cv=none; b=i0rEjRjV+5XVCWmmRJketkP21uN2aUNnVozwF9+XQwqm/fc2oQ7bmN+Vf+dxlNH91+jp1Lt7MX3wu8bO9N59vUJTrFsowJNIcpcuci+fczDw7hNtqS0W82gO0OtVyGRatCE1ACjNbL+0oS1GfP9gZhH+eFSZuZSCOqPCiXn10uc=
+	t=1742905929; cv=none; b=GMoaFiLRQXg6/yKmODhla9f1ySJ7Cp2hddexVWVAcsUsJPA5tK74S/vPXgbHpXFg7YEhhh4rhAg+tMvBSLvtY5K1NRnPalY5D6JxfhIoINqK9jmOHGajZ9GGzrcXSyOGA/ijfcqeCQvUAssGqN4xKq4LgWFHr+4SRoH13nlnRNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906240; c=relaxed/simple;
-	bh=WOz9wOhOOeTyqhRfi1NPDj/GZGTaJyUUYYbqzFAPCyA=;
+	s=arc-20240116; t=1742905929; c=relaxed/simple;
+	bh=D4/LmYY1nSONTbMVGa/aj40bS70pu+NgRD1f3NHOul4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tpw+7H2VaL845HPDXD5uYrFHJewTyz28B11XAVLAZM1ovs/PYDjdrasgz2N7Ar/CMtWthhA9AFoR65RFTtuTSU1299299eTs94VVdSgnyVUmwZWDddRwC6xBXBBNj/5P2hA718UXohBX3t6Wyzo1VqLPZk6drJS+HWVTlx0dCAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWBC2sfs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8F3C4CEE4;
-	Tue, 25 Mar 2025 12:37:19 +0000 (UTC)
+	 MIME-Version; b=twBmaQXXXcYOOWfY5/eV5RQezns7HRTR2kB2oNCIpiQFW2WkScRPnRMEatNvO2J6tovNg+9awyjW6hKyPZztfBDYlULNMpp3s2OM/GeG8QEztjkAMp5DJnyYPrc52HMrkcQe5d7DIzXE/ZHgIvpWofM6Qviry0PFTqZcPy7MkE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pm+fbz+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CCAC4CEE4;
+	Tue, 25 Mar 2025 12:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906239;
-	bh=WOz9wOhOOeTyqhRfi1NPDj/GZGTaJyUUYYbqzFAPCyA=;
+	s=korg; t=1742905929;
+	bh=D4/LmYY1nSONTbMVGa/aj40bS70pu+NgRD1f3NHOul4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWBC2sfsXdpbdOntzoorPC5i5ZQ6VFnk8Oec7iFfsPMZgW3MhUK3bT+ZXvRq5bm9a
-	 BhL2/x7eBkoebqwd++Gx2qDmX3Yk9S+yXMdNi6GN0D65Ku1S8udIMhQn8D05iGYGLm
-	 CiNQnzE59WYXfCpOE2ql7C3r5/3JNtf5mgUVC7C8=
+	b=pm+fbz+vY0k7pn5UdQPJhskdMwolvrjcJIYFO9ohLIyYx9rjqZxuKwInPDviP1YEL
+	 bo29ztcioc021orqKtseH9LV7i1mL2lLiEYOYQjASEksiP9QXi36Fsode59lFVdFBa
+	 BUMhtTV4/0DEwN+l7faKB7puO9tQNDIOzDwdSpDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Elwell <phil@raspberrypi.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/116] ARM: dts: bcm2711: PL011 UARTs are actually r1p5
+Subject: [PATCH 6.13 041/119] devlink: fix xa_alloc_cyclic() error handling
 Date: Tue, 25 Mar 2025 08:21:39 -0400
-Message-ID: <20250325122149.531407516@linuxfoundation.org>
+Message-ID: <20250325122150.107952407@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 0de09025f161f67c07978c4742e221243d070d41 ]
+[ Upstream commit f3b97b7d4bf316c3991e5634c9f4847c2df35478 ]
 
-The ARM PL011 UART instances in BCM2711 are r1p5 spec, which means they
-have 32-entry FIFOs. The correct periphid value for this is 0x00341011.
-Thanks to N Buchwitz for pointing this out.
+In case of returning 1 from xa_alloc_cyclic() (wrapping) ERR_PTR(1) will
+be returned, which will cause IS_ERR() to be false. Which can lead to
+dereference not allocated pointer (rel).
 
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250223125614.3592-2-wahrenst@gmx.net
-Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fix it by checking if err is lower than zero.
+
+This wasn't found in real usecase, only noticed. Credit to Pierre.
+
+Fixes: c137743bce02 ("devlink: introduce object and nested devlink relationship infra")
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/broadcom/bcm2711.dtsi | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/devlink/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-index 5eaec6c6a1df3..4fd0732a34d32 100644
---- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-+++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-@@ -134,7 +134,7 @@ uart2: serial@7e201400 {
- 			clocks = <&clocks BCM2835_CLOCK_UART>,
- 				 <&clocks BCM2835_CLOCK_VPU>;
- 			clock-names = "uartclk", "apb_pclk";
--			arm,primecell-periphid = <0x00241011>;
-+			arm,primecell-periphid = <0x00341011>;
- 			status = "disabled";
- 		};
+diff --git a/net/devlink/core.c b/net/devlink/core.c
+index f49cd83f1955f..7203c39532fcc 100644
+--- a/net/devlink/core.c
++++ b/net/devlink/core.c
+@@ -117,7 +117,7 @@ static struct devlink_rel *devlink_rel_alloc(void)
  
-@@ -145,7 +145,7 @@ uart3: serial@7e201600 {
- 			clocks = <&clocks BCM2835_CLOCK_UART>,
- 				 <&clocks BCM2835_CLOCK_VPU>;
- 			clock-names = "uartclk", "apb_pclk";
--			arm,primecell-periphid = <0x00241011>;
-+			arm,primecell-periphid = <0x00341011>;
- 			status = "disabled";
- 		};
- 
-@@ -156,7 +156,7 @@ uart4: serial@7e201800 {
- 			clocks = <&clocks BCM2835_CLOCK_UART>,
- 				 <&clocks BCM2835_CLOCK_VPU>;
- 			clock-names = "uartclk", "apb_pclk";
--			arm,primecell-periphid = <0x00241011>;
-+			arm,primecell-periphid = <0x00341011>;
- 			status = "disabled";
- 		};
- 
-@@ -167,7 +167,7 @@ uart5: serial@7e201a00 {
- 			clocks = <&clocks BCM2835_CLOCK_UART>,
- 				 <&clocks BCM2835_CLOCK_VPU>;
- 			clock-names = "uartclk", "apb_pclk";
--			arm,primecell-periphid = <0x00241011>;
-+			arm,primecell-periphid = <0x00341011>;
- 			status = "disabled";
- 		};
- 
-@@ -1178,6 +1178,7 @@ &txp {
- };
- 
- &uart0 {
-+	arm,primecell-periphid = <0x00341011>;
- 	interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
- };
- 
+ 	err = xa_alloc_cyclic(&devlink_rels, &rel->index, rel,
+ 			      xa_limit_32b, &next, GFP_KERNEL);
+-	if (err) {
++	if (err < 0) {
+ 		kfree(rel);
+ 		return ERR_PTR(err);
+ 	}
 -- 
 2.39.5
 
