@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-126100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333BDA6FF5D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:03:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC4CA6FF43
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:02:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE71319A3561
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E5713B8DB5
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497A7265CCF;
-	Tue, 25 Mar 2025 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB1B290BD2;
+	Tue, 25 Mar 2025 12:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIZ9usro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3JYk8x8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0832B25745C;
-	Tue, 25 Mar 2025 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C58266563;
+	Tue, 25 Mar 2025 12:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905601; cv=none; b=CQKbshK5OJJO7eAuYO+ms7K6/jt5AvQmPRmoZsk0FvJxYTfPM74ehnkgDSJRz2cowi82prTFmEswgzk1rg3SUBftDkLkqg98Vzof294vtxCrp8DK7nUkiAllfSSK63O3/lzLkTsoSDFSzRQ7lX21UpBR4CFowWpneiQJ6xO2PIw=
+	t=1742905605; cv=none; b=pFNSTtzSVJ7LDaNVitjxN8C5JjzZ8OO7MEPmzCyIc8nxLVmF3AmULdAmtm7UjsvDinO9vTvN956kRAoCc+K8wbfQvtnrtjkH/vbw76n928DHJVnEDnA1HU+lC4MqBCBkC4mV6ptQPBGf86wOD8c7FV+HTm7B753arJVXqIKfLY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905601; c=relaxed/simple;
-	bh=wE0KJxUwC3zwHTCFP3z0N3OEFrnefdIDdaNeBXE79Jc=;
+	s=arc-20240116; t=1742905605; c=relaxed/simple;
+	bh=Nrk9PoltTu2f/7Yaehrdx+0CauhLWrr0DsMyCZqUlsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFfHjbUVonc8qVOgUyPphcabOEtsrs+ApMd8a3sr7T+q6SC9G2/b+7WgnNg6vFUrWRVJqpdIJSvBNxH09OplR09lrgNUe3HjBIK1/5lOrao6w60CAIT1o2JiOBEQ4uyAfkZEWHkjQnwrA4STMjX9nOGE0/8LBHKAM4TlhktMRr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIZ9usro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5BFC4CEF0;
-	Tue, 25 Mar 2025 12:26:40 +0000 (UTC)
+	 MIME-Version; b=lLyxwwsuXV1fEVoakR+zx4FQf/761ctZsmYSP5SzNAmrwr1K3o4fo4R12lzn8gF5ov6X3iRamCqfYFFj5UfYHkiw0wZDFWZFEkXjUDWe+YBc1SM3oBrsph8S9pVFrlDRQUc8KDXOVL6hXMsFTguTGMXEQjHxRdDIZewy3k9kY+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3JYk8x8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E47C4CEE4;
+	Tue, 25 Mar 2025 12:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905600;
-	bh=wE0KJxUwC3zwHTCFP3z0N3OEFrnefdIDdaNeBXE79Jc=;
+	s=korg; t=1742905605;
+	bh=Nrk9PoltTu2f/7Yaehrdx+0CauhLWrr0DsMyCZqUlsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EIZ9usroru24SdTNvj8i/09553VwoEyPzazHUS+YHxqjjDa6VRkV28Ji8OCjYg/Fi
-	 s2/ZVthVgPAxSyw4tPEwNSBIR8pflLgkt/LiCkNSP+Yw5CDAVvrCoK/rIJetSvhk3l
-	 G7uu5fakzsNjWWS2OD1+LGW/7l34DCB7o8CieT7c=
+	b=Z3JYk8x84609NfX3ougKA0BEf/lDnqDWXO1C8L2iYQawmQD5A4iArydOwT2nugkux
+	 f1TR28dwsBwp21oLhL3WEENg4j9cV67AQvT0Dl2pf5Aa7MSaQGeiM3sZ8SUePIr845
+	 qHiugldSW3418Q3UwTmojGY0aFaaDOeWttNwUgqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+	Neal Gompa <neal@gompa.dev>,
+	Hector Martin <marcan@marcan.st>,
+	James Calligeros <jcalligeros99@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/198] nvme: only allow entering LIVE from CONNECTING state
-Date: Tue, 25 Mar 2025 08:20:24 -0400
-Message-ID: <20250325122158.269593477@linuxfoundation.org>
+Subject: [PATCH 6.1 064/198] ASoC: tas2764: Fix power control mask
+Date: Tue, 25 Mar 2025 08:20:26 -0400
+Message-ID: <20250325122158.326163813@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -67,36 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit d2fe192348f93fe3a0cb1e33e4aba58e646397f4 ]
+[ Upstream commit a3f172359e22b2c11b750d23560481a55bf86af1 ]
 
-The fabric transports and also the PCI transport are not entering the
-LIVE state from NEW or RESETTING. This makes the state machine more
-restrictive and allows to catch not supported state transitions, e.g.
-directly switching from RESETTING to LIVE.
-
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Link: https://patch.msgid.link/20250218-apple-codec-changes-v2-1-932760fd7e07@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/codecs/tas2764.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index ba76cd3b5f852..6a636fe6506b4 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -501,8 +501,6 @@ bool nvme_change_ctrl_state(struct nvme_ctrl *ctrl,
- 	switch (new_state) {
- 	case NVME_CTRL_LIVE:
- 		switch (old_state) {
--		case NVME_CTRL_NEW:
--		case NVME_CTRL_RESETTING:
- 		case NVME_CTRL_CONNECTING:
- 			changed = true;
- 			fallthrough;
+diff --git a/sound/soc/codecs/tas2764.h b/sound/soc/codecs/tas2764.h
+index 168af772a898f..d13ecae9c9c2f 100644
+--- a/sound/soc/codecs/tas2764.h
++++ b/sound/soc/codecs/tas2764.h
+@@ -25,7 +25,7 @@
+ 
+ /* Power Control */
+ #define TAS2764_PWR_CTRL		TAS2764_REG(0X0, 0x02)
+-#define TAS2764_PWR_CTRL_MASK		GENMASK(1, 0)
++#define TAS2764_PWR_CTRL_MASK		GENMASK(2, 0)
+ #define TAS2764_PWR_CTRL_ACTIVE		0x0
+ #define TAS2764_PWR_CTRL_MUTE		BIT(0)
+ #define TAS2764_PWR_CTRL_SHUTDOWN	BIT(1)
 -- 
 2.39.5
 
