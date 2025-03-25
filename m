@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF37A700F6
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0AC8A70082
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 227243B2086
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B23713B9306
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35645269B18;
-	Tue, 25 Mar 2025 12:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DFF2690C9;
+	Tue, 25 Mar 2025 12:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhdgGNhT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+Ywuj3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75B52571AC;
-	Tue, 25 Mar 2025 12:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAF01DD9D3;
+	Tue, 25 Mar 2025 12:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906102; cv=none; b=GYHVXtt/q0tQ+fIuMAFUg7kFKeJPN9ddhF985FJMSnsBy+JmmtzUN8mGXXwEkVLnUaODuanIMBr2tul1hmOdRTkGAdLTNpppP8xLTUIhAsCzONXz05qcG2Q085pQBoUGmV/eAHPFZLB8CheEylImkSKggcUjBuZ2omBtrHmq3R0=
+	t=1742905988; cv=none; b=QP0RRT5Aayjv3a/nEpq5s7XDlhrnJSAdzGUnrcCquXFD0NUGn6lROdjewHJny7YsR7peSGPgmPXSOLQ3bTYV7wZydIume5JFiCYo4TEsHBnXce2nUwI2KnJ95DLPekBqBRWTFefkgrhLRQFys9aYer8ReQYE7PsslWEIJRP97OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906102; c=relaxed/simple;
-	bh=FhVwOX8TSfFTAZEU+tXTZWxIFULehn1hjx+FVLrBfpk=;
+	s=arc-20240116; t=1742905988; c=relaxed/simple;
+	bh=B6eRi0UySarl63MbnzezSmzI4sX6DF1KoyAJN75Fk+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBSIiGoGOBpsK+/QmdyAGDCHxABpBhlBHVIsQo7rxDZ1hk3IyWRtNiXh3KQOIDhYfZUrn87S3L0NlPkC9E+iTLg/czReqYY36tSvh8NkxC4g57nVed3ZhXwO1ZWu9YdfMniemqc/72bKfw6Z1+zOejzxgqVcgwHDWn1WOrJOdHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhdgGNhT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B55C4CEE9;
-	Tue, 25 Mar 2025 12:35:01 +0000 (UTC)
+	 MIME-Version; b=MvxS1GkhBH+MlHpE0Mq4gA7TAS0Y2SerohgEwa6VHBKGil+JkLXRu6gJRVfMjF6fiQMnStBkUtJb1eruHe9U0pZD6rIMUNXC+nyMZqL7W5urZJx42OUbsfe6dBDlXtvkC5w7B30wjfoE3082Se68/mjwOob7PoEvf5CDcowGm5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+Ywuj3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEA4C4CEE4;
+	Tue, 25 Mar 2025 12:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906101;
-	bh=FhVwOX8TSfFTAZEU+tXTZWxIFULehn1hjx+FVLrBfpk=;
+	s=korg; t=1742905987;
+	bh=B6eRi0UySarl63MbnzezSmzI4sX6DF1KoyAJN75Fk+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhdgGNhTQ9D+lhD235i9i1/sn3lJnwdFTBpja6Mixwm7SesxqbTr2+0z1vLU6kQzw
-	 BkJvXMbX7hpKo1r7Gg4LgtoZHdy2V5vS3/j7XYw6RoplFD+DwWSHP80qN+JWYe8HPe
-	 cvizFatk5vhZ3zK7wRYwiAvLkR8G1OoRIM2qmW6A=
+	b=B+Ywuj3JSEILfHUbpVwjiCFruCJrrsascnhM5fLOAdy9T393ikCB0j13Q6F4hUvJ5
+	 QmEsEB6+uFyASiWZPCQSrX98yuFjkIxOwR0nDMfm+CHtWfog9ftCVXdhDHumwmA+Hg
+	 SfPP78HxCRY6YLeJhM9N3a9Xiq0GDSIlsjX7uv0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 16/77] RDMA/hns: Fix unmatched condition in error path of alloc_user_qp_db()
+	Justin Klaassen <justin@tidylabs.net>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.13 073/119] arm64: dts: rockchip: fix u2phy1_host status for NanoPi R4S
 Date: Tue, 25 Mar 2025 08:22:11 -0400
-Message-ID: <20250325122144.766763582@linuxfoundation.org>
+Message-ID: <20250325122150.922304580@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Justin Klaassen <justin@tidylabs.net>
 
-[ Upstream commit b9f59a24ba35a7d955a9f8e148dd9f85b7b40a01 ]
+commit 38f4aa34a5f737ea8588dac320d884cc2e762c03 upstream.
 
-Currently the condition of unmapping sdb in error path is not exactly
-the same as the condition of mapping in alloc_user_qp_db(). This may
-cause a problem of unmapping an unmapped db in some case, such as
-when the QP is XRC TGT. Unified the two conditions.
+The u2phy1_host should always have the same status as usb_host1_ehci
+and usb_host1_ohci, otherwise the EHCI and OHCI drivers may be
+initialized for a disabled usb port.
 
-Fixes: 90ae0b57e4a5 ("RDMA/hns: Combine enable flags of qp")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250311084857.3803665-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Per the NanoPi R4S schematic, the phy-supply for u2phy1_host is set to
+the vdd_5v regulator.
+
+Fixes: db792e9adbf8 ("rockchip: rk3399: Add support for FriendlyARM NanoPi R4S")
+Cc: stable@vger.kernel.org
+Signed-off-by: Justin Klaassen <justin@tidylabs.net>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250225170420.3898-1-justin@tidylabs.net
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index 97d79c8d5cd06..0b054b708d515 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -860,12 +860,14 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 			    struct hns_roce_ib_create_qp *ucmd,
- 			    struct hns_roce_ib_create_qp_resp *resp)
- {
-+	bool has_sdb = user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd);
- 	struct hns_roce_ucontext *uctx = rdma_udata_to_drv_context(udata,
- 		struct hns_roce_ucontext, ibucontext);
-+	bool has_rdb = user_qp_has_rdb(hr_dev, init_attr, udata, resp);
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	int ret;
+--- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dtsi
+@@ -115,7 +115,7 @@
+ };
  
--	if (user_qp_has_sdb(hr_dev, init_attr, udata, resp, ucmd)) {
-+	if (has_sdb) {
- 		ret = hns_roce_db_map_user(uctx, ucmd->sdb_addr, &hr_qp->sdb);
- 		if (ret) {
- 			ibdev_err(ibdev,
-@@ -876,7 +878,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 		hr_qp->en_flags |= HNS_ROCE_QP_CAP_SQ_RECORD_DB;
- 	}
+ &u2phy1_host {
+-	status = "disabled";
++	phy-supply = <&vdd_5v>;
+ };
  
--	if (user_qp_has_rdb(hr_dev, init_attr, udata, resp)) {
-+	if (has_rdb) {
- 		ret = hns_roce_db_map_user(uctx, ucmd->db_addr, &hr_qp->rdb);
- 		if (ret) {
- 			ibdev_err(ibdev,
-@@ -890,7 +892,7 @@ static int alloc_user_qp_db(struct hns_roce_dev *hr_dev,
- 	return 0;
- 
- err_sdb:
--	if (hr_qp->en_flags & HNS_ROCE_QP_CAP_SQ_RECORD_DB)
-+	if (has_sdb)
- 		hns_roce_db_unmap_user(uctx, &hr_qp->sdb);
- err_out:
- 	return ret;
--- 
-2.39.5
-
+ &uart0 {
 
 
 
