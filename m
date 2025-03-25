@@ -1,150 +1,155 @@
-Return-Path: <stable+bounces-126044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586A1A6FA8D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D068A6FB71
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:27:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED7FE1891591
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:59:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 550111899CC4
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598EB256C7C;
-	Tue, 25 Mar 2025 11:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D99259CAD;
+	Tue, 25 Mar 2025 12:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YoGtcwGW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ug4EAGJY"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9082F25742C
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836AD265627
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 12:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742903884; cv=none; b=q/FrlbkcnNOowIp4czSxmAh59sZxh9zWRm709SmovtD620H+9IQJVAukOUJ6r+EBUXRjV8x4IoRdZSxJVNDfvnVsz0pW8S9pJoyIpuqT+agIs8zMIEyTvLzM8+c5jCWK9B46NLtp6pHhf+ZMDCxyc+QSAp77s1gfRP4J77g5v10=
+	t=1742905156; cv=none; b=H8R63z/zEj3rnVvykwyB7VFrH9FLcd3nCDbGEDYLsmdeLonnCPSOVirGBRBZqqvfSyedy0sVGUZgEl2nHwp4KENW0gZ4VaPuhcF22WeR8jCrXnYDWyNq3BsghAAI2/pNVRfRlu4sJ4+GZwciEMSIt+qRqKzJSKJihQHCPvuphzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742903884; c=relaxed/simple;
-	bh=EhkCcKvMO5FXE+BxXjdos8aDqMsGvPPSOVvmXd199Ng=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DdD7ZPN+XuLuBKYvJdPOfsd/e15MSlFTiJz8g6LCpR8vyJC4V4cblRFu11Jn81lm608oJNQ788dEQdSeiBbwLI4YJ67MJLVa3JPZYzH5Xe7n4RlKC+CsElGn7JfHXFdHRfDf03bvfLvBdUOMRCtWbQlOIzkvyVdJ1W+BUr0571E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YoGtcwGW; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742903880;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=66ScJ5U4mFltzfqo02WJQQOu9FrvajI5Tu1fFaDtkl4=;
-	b=YoGtcwGWlxXcBPkefsVhMcj+YflSAOe01Pm/3x11FvKBL9tUMqdcdpCrM9EVMqQPDYlDoE
-	SuSK48HSCFV4PU1JI/hO13UoHcytkPpgN/fQU6rZy5NtgfG8RMbp3sTt7rheAylY6oP3qe
-	MljvtTvZwf64jCk6dv0KapwA8a1hPQk=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-n3Kwj8azNV-ysUPQlC1MwQ-1; Tue, 25 Mar 2025 07:57:58 -0400
-X-MC-Unique: n3Kwj8azNV-ysUPQlC1MwQ-1
-X-Mimecast-MFC-AGG-ID: n3Kwj8azNV-ysUPQlC1MwQ_1742903877
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-30c0c56a73aso26292031fa.1
-        for <stable@vger.kernel.org>; Tue, 25 Mar 2025 04:57:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742903877; x=1743508677;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=66ScJ5U4mFltzfqo02WJQQOu9FrvajI5Tu1fFaDtkl4=;
-        b=RxH6dC0GWaTDqz2mThPqPCj6bZZpMcm8YVYUZnez0uvHo+txXe920lx3B4eNgfBWwQ
-         wSySKAMEklT29ufuZBfje3qcyWi5KmoTpbFVPPUEyuVcMbNr5AZp9iB0fkm05RqXl1e/
-         BEtzsUZPRrB8p0kWSMPGP1zQ0JH48ugcWFnaGxuEmwZRCaWZeHfWdZ0hY/cmXgYFrBlO
-         rCbf3sDuLP8dW9rMyQDZMonVnhQYR/VK6VUjGrRn7Q8VS9s4v2B3hptQE67ez8J5PKFp
-         DaRsOXxuooG9Co4DiWXdXUWgcNhzTG35KEYrGpcKVzXIjJK9qXPYMT8wJapBD3CJnaoP
-         a2+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXjkQwVhRBpcNHBG6snGwr6OiQJG7v9eHA6nKsF3/EQt2Cykg0Gx6dfPOyd/zDrmdBh8vv98YY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxy3lxsFARsQOsyTnddEAUFwkd5+W31ls6OZCFh6bQmefEkzivQ
-	uiFY2Bdh8ZXc86STNXWq81qL/BxRiV5Jz7ZujSdKUpEfJsgqdyjVuM/xx/kofY9oXwVycTZHbQG
-	OzmIAx3ljlIIDSmkX6qGO8DjCrQMEENdYBL4vbnu7APVcKGETeM4wEw==
-X-Gm-Gg: ASbGncvDVFxlAAfzDF3KOA9bSVF+WHYoWbNMRLD1WqX1/5pEq2jyjxmeE9f0YNSsPC8
-	TrJtA7Ufmrknv0OgfD4SAK5jXeYUDmj8KsmouZHFos4GoxLhmGSYqHfE8kzjq7Iiuup9eoK1yzv
-	W6iaOqyJTr6FrB/9tGTJkC89ZxQXzxAzj/ffG+0I98zH5lq6bkDSho9BgM1GUQZfAPzTK0+uhrg
-	L++GAK+Clsng/aoDIo1sGRVQVt+PcFb+eW0Eyp1egNsFhrTPfUmDPkGrO6c+FRITWp3KWDyS5uj
-	P45y2Vyr69nPN3jXczXe+AttEVqoseuRiJdwu45pL+fFowS7NN2g4u0=
-X-Received: by 2002:a05:651c:170d:b0:30c:460f:f56 with SMTP id 38308e7fff4ca-30d7e2349a2mr51836631fa.20.1742903876760;
-        Tue, 25 Mar 2025 04:57:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFsVQ5ThcgNl6aFdF7RZUEJ9ftLWGxPNlNQbEsFkk48iEQQ4ebeeG5mcwR88P3gcTTqWHXCA==
-X-Received: by 2002:a05:651c:170d:b0:30c:460f:f56 with SMTP id 38308e7fff4ca-30d7e2349a2mr51836521fa.20.1742903876296;
-        Tue, 25 Mar 2025 04:57:56 -0700 (PDT)
-Received: from [192.168.68.107] (c-85-226-167-233.bbcust.telenor.se. [85.226.167.233])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30d7d7c1d8esm17547331fa.13.2025.03.25.04.57.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Mar 2025 04:57:55 -0700 (PDT)
-Message-ID: <636546d444306b8af453cdf126453a8a1f0404d1.camel@redhat.com>
-Subject: Re: [PATCH v2 1/5] ovl: don't allow datadir only
-From: Alexander Larsson <alexl@redhat.com>
-To: Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org
-Cc: Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org, 
- Giuseppe Scrivano <gscrivan@redhat.com>, stable@vger.kernel.org
-Date: Tue, 25 Mar 2025 12:57:54 +0100
-In-Reply-To: <20250325104634.162496-2-mszeredi@redhat.com>
-References: <20250325104634.162496-1-mszeredi@redhat.com>
-	 <20250325104634.162496-2-mszeredi@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1742905156; c=relaxed/simple;
+	bh=5kH1KO8WDs5aIZd9WwwTtnXTdH4djBhFZ6Hvt1YKRCg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BX4hCgn9E8x9qCAbRAiYc0SUdZiApWLAPPFyI4+mEW0ipHp5YVM+SNm4w3+hcVnIvL/xwhgjH4XDw5XImVzwvzn4dwK4OfBvn5E4ZpTKqSJ2g1/VMfKmLaHqYovkvSWnZ0JC/uBX8cbEeuATVRY506DLHmx20hC57GsyHIkfZk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ug4EAGJY; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742905154; x=1774441154;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=5kH1KO8WDs5aIZd9WwwTtnXTdH4djBhFZ6Hvt1YKRCg=;
+  b=Ug4EAGJYk7pNC/yYO280GaCwIlk+i8C6wep6meJwPT/Q0fCJ0goWcPeN
+   2Mg6qISJraJXESn78jOoPkABotc8BkkSCI+72UGKYJ1GxPYvQ3nxyKYm9
+   45Ky+QE8NvyA5ekkLI/NXU8gh0OKLu50PdX69HJWGt9CC4JGTNWjk2eql
+   8DMnll79vs9Noz9d6JdmnJpka6piD7z/tycuRITz4yM4c6fnZXh+J9c4y
+   bzzS1CRoQWypXP5j2YkkdOVouSRl338XEeCULng16OLTEuWDjiywdsYF+
+   yZKnZfeFihbwpgAttVd9lA4I3CajkM2e0F/Xd9zG4GljmTeR129cemNd+
+   Q==;
+X-CSE-ConnectionGUID: 9GmPzi6KTDSUp581wcqHEA==
+X-CSE-MsgGUID: ovw1hVhnTJ6Bwa+iOwHocA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11383"; a="55518323"
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; 
+   d="scan'208";a="55518323"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 05:19:14 -0700
+X-CSE-ConnectionGUID: yGiuUG3vR/emptbm68gb9A==
+X-CSE-MsgGUID: mdYZFPAyTpmjxGXZZJZjrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,274,1736841600"; 
+   d="scan'208";a="155373146"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 25 Mar 2025 05:19:11 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 00CE6367; Tue, 25 Mar 2025 14:19:09 +0200 (EET)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Farrah Chen <farrah.chen@intel.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Thomas Lendacky <thomas.lendacky@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6.y] mm/page_alloc: fix memory accept before watermarks gets initialized
+Date: Tue, 25 Mar 2025 14:16:21 +0200
+Message-ID: <20250325121621.2011574-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <2025032417-prior-uncooked-bf1f@gregkh>
+References: <2025032417-prior-uncooked-bf1f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2025-03-25 at 11:46 +0100, Miklos Szeredi wrote:
-> In theory overlayfs could support upper layer directly referring to a
-> data
-> layer, but there's no current use case for this.
->=20
-> Originally, when data-only layers were introduced, this wasn't
-> allowed,
-> only introduced by the "datadir+" feature, but without actually
-> handling
-> this case, resulting in an Oops.
->=20
-> Fix by disallowing datadir without lowerdir.
->=20
-> Reported-by: Giuseppe Scrivano <gscrivan@redhat.com>
-> Fixes: 24e16e385f22 ("ovl: add support for appending lowerdirs one by
-> one")
-> Cc: <stable@vger.kernel.org> # v6.7
-> Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Watermarks are initialized during the postcore initcall.  Until then, all
+watermarks are set to zero.  This causes cond_accept_memory() to
+incorrectly skip memory acceptance because a watermark of 0 is always met.
 
-Reviewed-by: Alexander Larsson <alexl@redhat.com>
+This can lead to a premature OOM on boot.
 
+To ensure progress, accept one MAX_ORDER page if the watermark is zero.
 
-> =C2=A0		return ERR_PTR(-EINVAL);
-> =C2=A0	}
-> =C2=A0
-> +	if (ctx->nr =3D=3D ctx->nr_data) {
-> +		pr_err("at least one non-data lowerdir is
-> required\n");
-> +		return ERR_PTR(-EINVAL);
-> +	}
-> +
-> =C2=A0	err =3D -EINVAL;
-> =C2=A0	for (i =3D 0; i < ctx->nr; i++) {
-> =C2=A0		l =3D &ctx->lower[i];
+Link: https://lkml.kernel.org/r/20250310082855.2587122-1-kirill.shutemov@linux.intel.com
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Cc: Ashish Kalra <ashish.kalra@amd.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
+Cc: Thomas Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 800f1059c99e2b39899bdc67a7593a7bea6375d8)
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ mm/page_alloc.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---=20
-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D=
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-=3D-=3D-=3D
- Alexander Larsson                                            Red Hat,
-Inc=20
-       alexl@redhat.com            alexander.larsson@gmail.com=20
-He's an obese crooked filmmaker trapped in a world he never made. She's
-a=20
-provocative red-headed stripper from a different time and place. They=20
-fight crime!=20
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 191f0f95d3ed..bc62bb2a3b13 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6653,7 +6653,7 @@ static bool try_to_accept_memory_one(struct zone *zone)
+ 
+ static bool cond_accept_memory(struct zone *zone, unsigned int order)
+ {
+-	long to_accept;
++	long to_accept, wmark;
+ 	bool ret = false;
+ 
+ 	if (!has_unaccepted_memory())
+@@ -6662,8 +6662,18 @@ static bool cond_accept_memory(struct zone *zone, unsigned int order)
+ 	if (list_empty(&zone->unaccepted_pages))
+ 		return false;
+ 
++	wmark = high_wmark_pages(zone);
++
++	/*
++	 * Watermarks have not been initialized yet.
++	 *
++	 * Accepting one MAX_ORDER page to ensure progress.
++	 */
++	if (!wmark)
++		return try_to_accept_memory_one(zone);
++
+ 	/* How much to accept to get to high watermark? */
+-	to_accept = high_wmark_pages(zone) -
++	to_accept = wmark -
+ 		    (zone_page_state(zone, NR_FREE_PAGES) -
+ 		    __zone_watermark_unusable_free(zone, order, 0) -
+ 		    zone_page_state(zone, NR_UNACCEPTED));
+-- 
+2.47.2
 
 
