@@ -1,141 +1,159 @@
-Return-Path: <stable+bounces-126578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B56FA7056A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 16:46:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F74FA70608
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 17:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E55D8188806F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 15:46:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E3D5188781A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 16:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC1E25743E;
-	Tue, 25 Mar 2025 15:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E514207A0B;
+	Tue, 25 Mar 2025 16:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8Pgyj5e"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="wUfVeTSd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC76256C89;
-	Tue, 25 Mar 2025 15:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD217253B41;
+	Tue, 25 Mar 2025 16:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742917545; cv=none; b=hJLkCbkWpEJ0t+0Ccyy9HsyHgAUD739mvvUoEjk4MeyL3KP1n7YEDkUHMfFYDGZAcqvFAvBQk8wameZ/9NzN3oRhweCSO4bM5EgWWWsrO771FOpsl3rSi5I/tPHv3RtJ2MtKAPjh0CSEpVh2XMNSYnsATz76yfG23NHARlYQSE4=
+	t=1742918848; cv=none; b=l0m5uRY+tUaqxI0WyCkdQgP2QOed0ni+v+zrId2SHjWQQCHTHgTqzIBNJkU/HLhbHnjPeOGYfnqu24DP03p5C3m4topAwgh1qsZOkgUG5HjYoohZyAjOSF/5YO5Qt75FsajUu9z488WLExyVGamRyrtV55AcNu2JG90e7tQVuzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742917545; c=relaxed/simple;
-	bh=DLMLURxBlPuCtMwT7e06KXHAr/xm9CeEmbZfX3sYIWc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CFOVMLsze0EB4OWRI08f5nUlFFZ/wBxmkxufUFxaVaKvwBoEf/Nir7iPj8gwqwKwG8kcl+7gI3qRt5mZE4LwgW7/9/hZxQSxjGBcP2rcicsHeoUSO3y2RTKhqadPQ54fEE9a78Q8z+6tSsJvKE9zbwBY40AikGY31C6unlC94Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O8Pgyj5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A61C4CEE4;
-	Tue, 25 Mar 2025 15:45:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742917543;
-	bh=DLMLURxBlPuCtMwT7e06KXHAr/xm9CeEmbZfX3sYIWc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=O8Pgyj5es0qxPPH/Pof5lLue/nCSGdaYB9WadlRwBPyni7CSTLeo0MSuZqb+ZuUOY
-	 WnZJBk63hNEfYAnHILuPZ6/4oWwj3G5zXS0K8HSGu/7cYJt6dhbZ3+EEj1Fo5hnA0z
-	 yEpI5/+0cJotj8VAOUUjgaFhx9HFMb3KdH+pkgsWIuKbzNJ8blOnwf+IMy/LyAiQIt
-	 sK6qksY7m7cc6qxqu9hw04K77ghEmJkqO3RBoHtEHz2hcskhXDA1plLOp1oMHOQAHa
-	 2l0zoEGxZQt8yvsqjc7m3RP5mwKWfJhVsrunEmXZRIsjOcRfAHvcbayrtodcNtweGf
-	 r3WP89swdLY2Q==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 25 Mar 2025 08:45:18 -0700
-Subject: [PATCH 1/2] lib/string.c: Add wcslen()
+	s=arc-20240116; t=1742918848; c=relaxed/simple;
+	bh=AfeinVZchvMBv438BnpRosunMeQS/bsLf199sZ53/es=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=hBOJPpsMdL8T+SPCD9bkPE5foLXGZDocFDSfPMhY5mEyIz2rPCX+nk6sZalJUpMUxDDlDzzaXhbMNnDDRR4f8+QmM03VM8ciifwfxqpBsStoFQB/wcKwv+Hl3gKoETWBDeinvYPJ5M9NTmrtE9S6IkTTKOObSH2HpimJb3jqtoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=wUfVeTSd; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1742918837;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QCdOLNdtvvawO2bLA9Pq/xQEF8vw52RF0Zlq/SJ2c7c=;
+	b=wUfVeTSdLHzAFhu0xYsljK9AL/NIapgRddAqJIa07lxsXIGlgJUt3Gwqs7VSjnfvqky12j
+	tofRAlyjRtNI2LmU9bPpPFPuMlaDzj86ewGY3BvH6YutxsxM7xNtwI+mTniyo6HophI5if
+	2CD2b+wWt6fScbtF7D/6O1+vUEyIO9TQCThj9NzV14uxa6pae/cESsldjNjMy5MOZUXjGP
+	7uRZ51L7//TMWgAO8rXlmiEqlQaLIDfDzbaMpkT30JAE64LNdRGc2f2bxvH+edlBXO8Jlx
+	cxEo5Uwr+FAepTbwxvv1IpMwxp9QKmLNUGwxqcXxiTH9AwDSKI4rsQFwW8AN3w==
+Date: Tue, 25 Mar 2025 17:07:16 +0100
+From: Dragan Simic <dsimic@manjaro.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ Heiko Stuebner <heiko@sntech.de>
+Subject: Re: [PATCH 6.6 00/77] 6.6.85-rc1 review
+In-Reply-To: <CA+G9fYvWau1nC8wmpWkxG8gWPaRMP9pbkh2eNsAZoUMeRPgzqA@mail.gmail.com>
+References: <20250325122144.259256924@linuxfoundation.org>
+ <CA+G9fYvWau1nC8wmpWkxG8gWPaRMP9pbkh2eNsAZoUMeRPgzqA@mail.gmail.com>
+Message-ID: <a823454af9915fe3acfcb66fd84dc826@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250325-string-add-wcslen-for-llvm-opt-v1-1-b8f1e2c17888@kernel.org>
-References: <20250325-string-add-wcslen-for-llvm-opt-v1-0-b8f1e2c17888@kernel.org>
-In-Reply-To: <20250325-string-add-wcslen-for-llvm-opt-v1-0-b8f1e2c17888@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Andy Shevchenko <andy@kernel.org>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-hardening@vger.kernel.org, llvm@lists.linux.dev, 
- linux-efi@vger.kernel.org, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2400; i=nathan@kernel.org;
- h=from:subject:message-id; bh=DLMLURxBlPuCtMwT7e06KXHAr/xm9CeEmbZfX3sYIWc=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDOmPzi8y3Fg7/e2W+e9Ys26u8Xub1ZMjoTb5N5/k5C3nu
- BK3/szT6yhlYRDjYpAVU2Spfqx63NBwzlnGG6cmwcxhZQIZwsDFKQAT8TRkZLjGmT/znJts5u8S
- 9qhJ7ufsj+e6Tt6hwsLhF1e7cPcb6cmMDLNSj91301a7d/jAFeaSeb+jSpwWyf6tLb2/3LjJ2+B
- ELAsA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-A recent optimization change in LLVM [1] aims to transform certain loop
-idioms into calls to strlen() or wcslen(). This change transforms the
-first while loop in UniStrcat() into a call to wcslen(), breaking the
-build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+Hello Naresh,
 
-  ld.lld: error: undefined symbol: wcslen
-  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
-  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
-  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
-  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+On 2025-03-25 16:07, Naresh Kamboju wrote:
+> On Tue, 25 Mar 2025 at 18:05, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+>> 
+>> This is the start of the stable review cycle for the 6.6.85 release.
+>> There are 77 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, 
+>> please
+>> let me know.
+>> 
+>> Responses should be made by Thu, 27 Mar 2025 12:21:27 +0000.
+>> Anything received after that time might be too late.
+>> 
+>> The whole patch series can be found in one patch at:
+>>         
+>> https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.85-rc1.gz
+>> or in the git tree and branch at:
+>>         
+>> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git 
+>> linux-6.6.y
+>> and the diffstat can be found below.
+>> 
+>> thanks,
+>> 
+>> greg k-h
+> 
+> 
+> Regressions on arm64 rk3399 dtb builds failed with gcc-13 the
+> stable-rc 6.6.85-rc1
+> 
+> First seen on the v6.6.83-245-gc1fb5424adea
+>  Good: v6.6.84
+>  Bad: 6.6.85-rc1
+> 
+> * arm64, build
+>   - gcc-13-defconfig
+> 
+> Regression Analysis:
+>  - New regression? yes
+>  - Reproducibility? Yes
+> 
+> 
+> Build regression: arm64 dtb rockchip non-existent node or label 
+> "vcca_0v9"
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> ## Build log
+> arch/arm64/boot/dts/rockchip/rk3399.dtsi:221.23-266.4: ERROR
+> (phandle_references):
+> /pcie@f8000000: Reference to non-existent node or label "vcca_0v9"
+> 
+>   also defined at 
+> arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi:659.8-669.3
+> 
+> ## Source
+> * Kernel version: 6.6.85-rc1
+> * Git tree:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+> * Git sha: c1fb5424adea53e3a4d8b2018c5e974f7772af29
+> * Git describe: v6.6.83-245-gc1fb5424adea
+> * Project details:
+> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/
+> 
+> ## Build
+> * Build log:
+> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/testrun/27760755/suite/build/test/gcc-13-defconfig/log
+> * Build history:
+> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/testrun/27763720/suite/build/test/gcc-13-defconfig/history/
+> * Build details:
+> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.83-245-gc1fb5424adea/testrun/27760755/suite/build/test/gcc-13-defconfig/
+> * Build link:
+> https://storage.tuxsuite.com/public/linaro/lkft/builds/2uoHmBcVLd60GQ0SVHWAaZRZfNd/
+> * Kernel config:
+> https://storage.tuxsuite.com/public/linaro/lkft/builds/2uoHmBcVLd60GQ0SVHWAaZRZfNd/config
+> 
+> ## Steps to reproduce
+>  - # tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
+> --kconfig defconfig
 
-The kernel does not build with '-ffreestanding' (which would avoid this
-transformation) because it does want libcall optimizations in general
-and turning on '-ffreestanding' disables the majority of them. While
-'-fno-builtin-wcslen' would be more targeted at the problem, it does not
-work with LTO.
-
-Add a basic wcslen() to avoid this linkage failure. While no
-architecture or FORTIFY_SOURCE overrides this, add it to string.c
-instead of string_helpers.c so that it is built with '-ffreestanding',
-otherwise the compiler might transform it into a call to itself. Give
-wcslen() an internal prototype to avoid -Wmissing-prototypes (a global
-prototype needs a little extra work and it is not currently needed).
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- lib/string.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/lib/string.c b/lib/string.c
-index eb4486ed40d2..bbee8a9e4d83 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -21,6 +21,7 @@
- #include <linux/errno.h>
- #include <linux/limits.h>
- #include <linux/linkage.h>
-+#include <linux/nls.h>
- #include <linux/stddef.h>
- #include <linux/string.h>
- #include <linux/types.h>
-@@ -429,6 +430,17 @@ size_t strnlen(const char *s, size_t count)
- EXPORT_SYMBOL(strnlen);
- #endif
- 
-+size_t wcslen(const wchar_t *s);
-+size_t wcslen(const wchar_t *s)
-+{
-+	const wchar_t *sc;
-+
-+	for (sc = s; *sc != '\0'; ++sc)
-+		/* nothing */;
-+	return sc - s;
-+}
-+EXPORT_SYMBOL(wcslen);
-+
- #ifndef __HAVE_ARCH_STRSPN
- /**
-  * strspn - Calculate the length of the initial substring of @s which only contain letters in @accept
-
--- 
-2.49.0
-
+This is caused by another patch from the original series failing
+to apply due to some bulk regulator renaming.  I'll send backported
+version of that patch soon, which should make everything fine.
 
