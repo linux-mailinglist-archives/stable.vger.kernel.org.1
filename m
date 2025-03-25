@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-126156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D245A7006B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15D6A6FFC9
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2E3D19A43AC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33BA57A2410
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CF6266EF9;
-	Tue, 25 Mar 2025 12:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E39268FC5;
+	Tue, 25 Mar 2025 12:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gpyv2OFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlcAUH3R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD20D41C85;
-	Tue, 25 Mar 2025 12:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3962561D7;
+	Tue, 25 Mar 2025 12:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905704; cv=none; b=YD71B2Q8FQ7uQ65RTm6rjZqLb+XkIPq39zZINtZyjdF4WPMtHwCwxfH5j4ZBByRJPHmXgQXx8q8chbme+p2k8HR7P39tlV+08/vRTUz1QWc/bklH+L6pGpUrVwE8g6spe6if0hiPDd0nuxEoLTDqc5YpOslPAFg7w+GMLex/pVw=
+	t=1742905946; cv=none; b=ql58194amWCWX1JZMS4ulnHZtP10dO7UngdsBNQ6bAifcXHNVYoVwi4zoqAJgzwkw3nKF2ffJY8Yw+65KBOu137zZdgK6t9bIL2MhPWb4vUkTqKE3U6tZW8XSI88jXBbTL2loUi97XUyqWL2VjiaZLPm8LbNZF/DILWk/2H5M/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905704; c=relaxed/simple;
-	bh=GKcVi+TSE0jWFzuxDmiYdGkKwiWlS84om56u5TfFyLw=;
+	s=arc-20240116; t=1742905946; c=relaxed/simple;
+	bh=rMIJxhcxt6ffmteMS5eq5nGC7CAN/d3KnzOWm3HyZFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8LhCFQ28BJaejv5XUZQ+XzsIoRyXVkp3WFUdaDMniymh7R8GrZOQP709fX8ImbmGnIxLee2xTD3rx+xicQu6663aGwJJu0S1N7pslwypfwNGafe8yfwhHo9Lr0DmivfA9aU2Unb5L3CKg09lhQVDVVpRldiAIwNCrYxMfEbrHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gpyv2OFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E5DC4CEE4;
-	Tue, 25 Mar 2025 12:28:24 +0000 (UTC)
+	 MIME-Version; b=lJc4D6foIegLgJ4q/jFUWEeYqXuXmGS107pSBDQ7FwYK+eNNzbzi8ByW2ydEi070waOl7zuQavRdEJabcjX0JG0IjZnzW1Vi1imRQzsrGqOwnxmVPrxm4PHt0TRHAqO53NGyEz9Dj+34i7ysu+WXmM0hQwY4d1mtGwAxS3pf0H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlcAUH3R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E12C4CEE4;
+	Tue, 25 Mar 2025 12:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905704;
-	bh=GKcVi+TSE0jWFzuxDmiYdGkKwiWlS84om56u5TfFyLw=;
+	s=korg; t=1742905945;
+	bh=rMIJxhcxt6ffmteMS5eq5nGC7CAN/d3KnzOWm3HyZFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gpyv2OFPFLGTk2CtYh9B7BkjMPKFut4yfbdUe4Wj0MgHiA4+NeSeqOUHH5QbuJpFc
-	 8FRceV7DSDReS+aknT3eoHDLNIRuNdyQ867FUSZiLWAGVNd+Py/eXrimc9TQ1cGob3
-	 Y21p3h+2VhpYQhFe5mwSS2HxMFK/wZgcq9lWurCM=
+	b=tlcAUH3REKS2Ihz1f2UfV+ZImCLEpkgNaVOuqvTFB3L6QvhTUTN/P8VjP7DxKkJTK
+	 P7UhH2TXnyRi6cKp49yTceb20inFiyi6E/CJbpkGpJLSbsUPMUbyeJ2AtTkBjG+F78
+	 gHqyXCbGSYwzpKjznFIXeEs0cNYnxcC4qXnRUBO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Mizrahi <thomasmizra@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 119/198] ASoC: amd: yc: Support mic on another Lenovo ThinkPad E16 Gen 2 model
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 023/119] RDMA/hns: Fix soft lockup during bt pages loop
 Date: Tue, 25 Mar 2025 08:21:21 -0400
-Message-ID: <20250325122159.777197077@linuxfoundation.org>
+Message-ID: <20250325122149.661555048@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Mizrahi <thomasmizra@gmail.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit 0704a15b930cf97073ce091a0cd7ad32f2304329 upstream.
+[ Upstream commit 25655580136de59ec89f09089dd28008ea440fc9 ]
 
-The internal microphone on the Lenovo ThinkPad E16 model requires a
-quirk entry to work properly. This was fixed in a previous patch (linked
-below), but depending on the specific variant of the model, the product
-name may be "21M5" or "21M6".
+Driver runs a for-loop when allocating bt pages and mapping them with
+buffer pages. When a large buffer (e.g. MR over 100GB) is being allocated,
+it may require a considerable loop count. This will lead to soft lockup:
 
-The following patch fixed this issue for the 21M5 variant:
-  https://lore.kernel.org/all/20240725065442.9293-1-tiwai@suse.de/
+        watchdog: BUG: soft lockup - CPU#27 stuck for 22s!
+        ...
+        Call trace:
+         hem_list_alloc_mid_bt+0x124/0x394 [hns_roce_hw_v2]
+         hns_roce_hem_list_request+0xf8/0x160 [hns_roce_hw_v2]
+         hns_roce_mtr_create+0x2e4/0x360 [hns_roce_hw_v2]
+         alloc_mr_pbl+0xd4/0x17c [hns_roce_hw_v2]
+         hns_roce_reg_user_mr+0xf8/0x190 [hns_roce_hw_v2]
+         ib_uverbs_reg_mr+0x118/0x290
 
-This patch adds support for the microphone on the 21M6 variant.
+        watchdog: BUG: soft lockup - CPU#35 stuck for 23s!
+        ...
+        Call trace:
+         hns_roce_hem_list_find_mtt+0x7c/0xb0 [hns_roce_hw_v2]
+         mtr_map_bufs+0xc4/0x204 [hns_roce_hw_v2]
+         hns_roce_mtr_create+0x31c/0x3c4 [hns_roce_hw_v2]
+         alloc_mr_pbl+0xb0/0x160 [hns_roce_hw_v2]
+         hns_roce_reg_user_mr+0x108/0x1c0 [hns_roce_hw_v2]
+         ib_uverbs_reg_mr+0x120/0x2bc
 
-Link: https://github.com/ramaureirac/thinkpad-e14-linux/issues/31
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Mizrahi <thomasmizra@gmail.com>
-Link: https://patch.msgid.link/20250308041303.198765-1-thomasmizra@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a cond_resched() to fix soft lockup during these loops. In order not
+to affect the allocation performance of normal-size buffer, set the loop
+count of a 100GB MR as the threshold to call cond_resched().
+
+Fixes: 38389eaa4db1 ("RDMA/hns: Add mtr support for mixed multihop addressing")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250311084857.3803665-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_hem.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -252,6 +252,13 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21M6"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
- 		}
- 	},
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
+index 605562122ecce..ca0798224e565 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
+@@ -1361,6 +1361,11 @@ static int hem_list_alloc_root_bt(struct hns_roce_dev *hr_dev,
+ 	return ret;
+ }
+ 
++/* This is the bottom bt pages number of a 100G MR on 4K OS, assuming
++ * the bt page size is not expanded by cal_best_bt_pg_sz()
++ */
++#define RESCHED_LOOP_CNT_THRESHOLD_ON_4K 12800
++
+ /* construct the base address table and link them by address hop config */
+ int hns_roce_hem_list_request(struct hns_roce_dev *hr_dev,
+ 			      struct hns_roce_hem_list *hem_list,
+@@ -1369,6 +1374,7 @@ int hns_roce_hem_list_request(struct hns_roce_dev *hr_dev,
+ {
+ 	const struct hns_roce_buf_region *r;
+ 	int ofs, end;
++	int loop;
+ 	int unit;
+ 	int ret;
+ 	int i;
+@@ -1386,7 +1392,10 @@ int hns_roce_hem_list_request(struct hns_roce_dev *hr_dev,
+ 			continue;
+ 
+ 		end = r->offset + r->count;
+-		for (ofs = r->offset; ofs < end; ofs += unit) {
++		for (ofs = r->offset, loop = 1; ofs < end; ofs += unit, loop++) {
++			if (!(loop % RESCHED_LOOP_CNT_THRESHOLD_ON_4K))
++				cond_resched();
++
+ 			ret = hem_list_alloc_mid_bt(hr_dev, r, unit, ofs,
+ 						    hem_list->mid_bt[i],
+ 						    &hem_list->btm_bt);
+@@ -1443,9 +1452,14 @@ void *hns_roce_hem_list_find_mtt(struct hns_roce_dev *hr_dev,
+ 	struct list_head *head = &hem_list->btm_bt;
+ 	struct hns_roce_hem_item *hem, *temp_hem;
+ 	void *cpu_base = NULL;
++	int loop = 1;
+ 	int nr = 0;
+ 
+ 	list_for_each_entry_safe(hem, temp_hem, head, sibling) {
++		if (!(loop % RESCHED_LOOP_CNT_THRESHOLD_ON_4K))
++			cond_resched();
++		loop++;
++
+ 		if (hem_list_page_is_in_range(hem, offset)) {
+ 			nr = offset - hem->start;
+ 			cpu_base = hem->addr + nr * BA_BYTE_LEN;
+-- 
+2.39.5
+
 
 
 
