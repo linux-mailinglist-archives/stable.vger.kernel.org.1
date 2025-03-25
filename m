@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7B7A700EE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86882A70036
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB6F17670B
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3CD8177EBE
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB6925D52E;
-	Tue, 25 Mar 2025 12:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BF9268FF1;
+	Tue, 25 Mar 2025 12:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLD7Wxy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXzzHbQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFA225D525;
-	Tue, 25 Mar 2025 12:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14D625B680;
+	Tue, 25 Mar 2025 12:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906345; cv=none; b=c71LJI1h5p+l5fw3bsiI2q+zgO5jeZDuipDSZuWuy4TD+P/yc0utZjgI71SXMmxaUI7m7AKX9vhAh4/3BU+0u0YSBIwgN4E3BXS/t+f4ntwwmvPbmfUbRl7WDpz0UKKqKu/F9guvnJeRiv1OGbd7kCK7KZzJvqEP8Q7jIVuAkoY=
+	t=1742905975; cv=none; b=i4pb9Lns1mz9lPUjeL4YMZsjFsMqJfY8ALYfK8X7m4MdxvyPGXTQFu30Bki98LVyZol7Ic+DdkdUQccL6mo7z7985WY0rwSUnB+XEcQhvFg4SyIOY0ZoZHr/aRcHDkcZD06TTeTF73C9oVdAT9cz8HgLcCZYdDqgFLsqau8tyKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906345; c=relaxed/simple;
-	bh=Qy1r2Qoc+Nmf/pgF3VWv1Y8nn1McAmNGloDk8BsToa0=;
+	s=arc-20240116; t=1742905975; c=relaxed/simple;
+	bh=fz0yyzKnk4pgKBdCYifzDxwZ7VleVllt24J7npXoSgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNBdfMulxjxAPHiaSN0ebSORdyZYbjRD4YIr5L33QNjhh2gapEMJ/z3Nnxbto3K+EoVJQSuBJW/HK69CYUysA95Dqgzs04AYUKSZs9ORpHyO0ZG5CFYuMnm+KDKptM37z5uYo5ALSpnsjaO11gELXasx3DzasKLYdeD89nSlzSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLD7Wxy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3185DC4CEF2;
-	Tue, 25 Mar 2025 12:39:05 +0000 (UTC)
+	 MIME-Version; b=d5JvLqxynJTs9a2QcGmczQ7ArqQN6YzyJbOIboeqrlclnaLyK0e5AHw0XCYFMBTjH9huwyGx+oqWiCsh6hpmT/8aYvEWOJbQQA+ZhzNqG0XDbDehVF3Pk5cHLKoPql8eDUuROY6a4ZUdMWeFBufClVmTT8yF4TTp6MwgiYrqayY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXzzHbQw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9F0C4CEE4;
+	Tue, 25 Mar 2025 12:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906345;
-	bh=Qy1r2Qoc+Nmf/pgF3VWv1Y8nn1McAmNGloDk8BsToa0=;
+	s=korg; t=1742905975;
+	bh=fz0yyzKnk4pgKBdCYifzDxwZ7VleVllt24J7npXoSgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lLD7Wxy4cV2wZRaZiCu/G4Sz8DdoBCSmKt0vSvw5o2R45W8hEQmnKiaOpoXoLBLet
-	 YyczmlGeirW2scIEJQyL4/So1KBKqVyttzV16pkx2LTAYYbMVR4nqa0LgXlRr08ZoZ
-	 ocDVkSq6prvOIH3U5fGVh9SyL54iUU18zWC7dKDY=
+	b=NXzzHbQwJvZdBp/dcfIlR/NTm6zX5fLuKSsR9YaRQL/3JuDSjhNuBcDipeKnwaVfh
+	 ZbZ4b8wJC96W7s/Q+whGrZP7Hq0U1VBiF57HtGfxxPC9Yv4M/n5jlwHsXOcYiy7XTL
+	 T/yrBGFmGVKJFWdPeczoSTCoPTg2w/hhDiwgH0CA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/116] ipv6: Fix memleak of nhc_pcpu_rth_output in fib_check_nh_v6_gw().
+	Christian Eggers <ceggers@arri.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.13 067/119] regulator: check that dummy regulator has been probed before using it
 Date: Tue, 25 Mar 2025 08:22:05 -0400
-Message-ID: <20250325122150.181872282@linuxfoundation.org>
+Message-ID: <20250325122150.769604297@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit 9740890ee20e01f99ff1dde84c63dcf089fabb98 ]
+commit 2c7a50bec4958f1d1c84d19cde518d0e96a676fd upstream.
 
-fib_check_nh_v6_gw() expects that fib6_nh_init() cleans up everything
-when it fails.
+Due to asynchronous driver probing there is a chance that the dummy
+regulator hasn't already been probed when first accessing it.
 
-Commit 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
-moved fib_nh_common_init() before alloc_percpu_gfp() within fib6_nh_init()
-but forgot to add cleanup for fib6_nh->nh_common.nhc_pcpu_rth_output in
-case it fails to allocate fib6_nh->rt6i_pcpu, resulting in memleak.
-
-Let's call fib_nh_common_release() and clear nhc_pcpu_rth_output in the
-error path.
-
-Note that we can remove the fib6_nh_release() call in nh_create_ipv6()
-later in net-next.git.
-
-Fixes: 7dd73168e273 ("ipv6: Always allocate pcpu memory in a fib6_nh")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250312010333.56001-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Link: https://patch.msgid.link/20250313103051.32430-3-ceggers@arri.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/regulator/core.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 2736dea77575b..e9a30978abac1 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3644,7 +3644,8 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
- 		in6_dev_put(idev);
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2025,6 +2025,10 @@ static int regulator_resolve_supply(stru
  
- 	if (err) {
--		lwtstate_put(fib6_nh->fib_nh_lws);
-+		fib_nh_common_release(&fib6_nh->nh_common);
-+		fib6_nh->nh_common.nhc_pcpu_rth_output = NULL;
- 		fib6_nh->fib_nh_lws = NULL;
- 		netdev_put(dev, dev_tracker);
+ 		if (have_full_constraints()) {
+ 			r = dummy_regulator_rdev;
++			if (!r) {
++				ret = -EPROBE_DEFER;
++				goto out;
++			}
+ 			get_device(&r->dev);
+ 		} else {
+ 			dev_err(dev, "Failed to resolve %s-supply for %s\n",
+@@ -2042,6 +2046,10 @@ static int regulator_resolve_supply(stru
+ 			goto out;
+ 		}
+ 		r = dummy_regulator_rdev;
++		if (!r) {
++			ret = -EPROBE_DEFER;
++			goto out;
++		}
+ 		get_device(&r->dev);
  	}
--- 
-2.39.5
-
+ 
+@@ -2167,8 +2175,10 @@ struct regulator *_regulator_get_common(
+ 			 * enabled, even if it isn't hooked up, and just
+ 			 * provide a dummy.
+ 			 */
+-			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			rdev = dummy_regulator_rdev;
++			if (!rdev)
++				return ERR_PTR(-EPROBE_DEFER);
++			dev_warn(dev, "supply %s not found, using dummy regulator\n", id);
+ 			get_device(&rdev->dev);
+ 			break;
+ 
 
 
 
