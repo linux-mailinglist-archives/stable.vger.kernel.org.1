@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-126298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8B6A70051
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCAAA70016
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C172189E905
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D39019A10BC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982F8268FE6;
-	Tue, 25 Mar 2025 12:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0C12676C8;
+	Tue, 25 Mar 2025 12:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITHCyfwb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBQAX5hT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B30268C6C;
-	Tue, 25 Mar 2025 12:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EB1266595;
+	Tue, 25 Mar 2025 12:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905966; cv=none; b=Rw8dfguwvGvoOa0upBCkfIJ4vtWeMVIhDY1JcFHbygEwQNddXYQXsg9j5pmmwK8nYwDTL+2qbc3+r98tv/Su+U/XSJCNtqj7ZLhMRgZQaxK/y2/cAS8EziqqqSlRrPfe1KDAobUgozNO60erwhQ/Rmoh8fq1frbh36jRqT5AjG8=
+	t=1742905764; cv=none; b=OjpNs765n7VZ/2fHYmnsIQUZNM0ZPvOmujqnwegjzjIfoxMvNEhoHB6D1UYbPGIBYc+SiWRuKUCcdBkCEsbmNpesDNrNzaI5MdrNXjMWpOO55DwJxUPL0P3LasfiRx5D5m2UbOJV4imxCa2UZJZey2Z739DQavnx9FMH2oZs+RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905966; c=relaxed/simple;
-	bh=Y98Pn+ER7ZiLvk3g+Oq3Yca3cuIqwDTNS9UUZ+elDCY=;
+	s=arc-20240116; t=1742905764; c=relaxed/simple;
+	bh=aNuWIbL/TXkLQEF7qri74ECM09SiCOYewU+qKtnJAew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zr7hHTiKG/xOHrPjMnbVsxvDKYS8XRmKXn8hOu086PTcp/6S9gk3MZ18zhdlNIQ8hd0qVF0uaG7V6Te5m89QcTgfgmPVyXF91M7l8KZM+f5q9JiIyR589KwqSzSlMplxAdxPffUnG6jLadSR42DKmlS1OfZMxtQKBJEHLMnfikc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITHCyfwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3840C4CEE4;
-	Tue, 25 Mar 2025 12:32:45 +0000 (UTC)
+	 MIME-Version; b=MirzKn1NWnWPg81k5yqZqFY03JF0NC7eCE/dg1ujtzMFRArqoYQXhQO8+itGNc0aY0N/N65ND4iUTGlh/HyzTsxwyWPQUwGlvrSdxDSVMb693/aj9d4abehLrop0XPvhnE6Ipic6cz/AcGpldpCQx9L8fP1FcgKm32T1PSmCeeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBQAX5hT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BC4C4CEE4;
+	Tue, 25 Mar 2025 12:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905966;
-	bh=Y98Pn+ER7ZiLvk3g+Oq3Yca3cuIqwDTNS9UUZ+elDCY=;
+	s=korg; t=1742905763;
+	bh=aNuWIbL/TXkLQEF7qri74ECM09SiCOYewU+qKtnJAew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ITHCyfwbCzu2oJGPQKwWhPgKLF5e1HM+gEZ9uuzADB0Kt3a3BMlyG9TRZO9JGPLEf
-	 9oxuGiFPcC0lP/D/wpG9Me0+0Te8eEk+iFoddtd3Sj0o5bYd390K0Xb9qfGZI+zxiL
-	 rBmZGbPdnFWNdQZ6dj4ctaLCJtqWz+f8aOO23KTY=
+	b=ZBQAX5hTPzU4BFkKpBfoEgcR97A0SXPT/GvhTiEYUSCz9AgP6m6F+Bq1dtC9BKbr2
+	 EkaRpyOgSz1YwUuoYATO0LnPw4+oer8DaX8BvrjT9k53Q3RDj8bbWAmqBaf9l0Ce45
+	 A2SuI+8UHuHck6aK3iefi9plftmxZ+Jm1RmKvd/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Nishanth Menon <nm@ti.com>,
-	Aniket Limaye <a-limaye@ti.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.13 054/119] i2c: omap: fix IRQ storms
-Date: Tue, 25 Mar 2025 08:21:52 -0400
-Message-ID: <20250325122150.434665107@linuxfoundation.org>
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 151/198] soc: imx8m: Unregister cpufreq and soc dev in cleanup path
+Date: Tue, 25 Mar 2025 08:21:53 -0400
+Message-ID: <20250325122200.618311147@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 285df995f90e3d61d97f327d34b9659d92313314 upstream.
+[ Upstream commit cf7139aac463880cbd5c5e999c118fbe91631411 ]
 
-On the GTA04A5 writing a reset command to the gyroscope causes IRQ
-storms because NACK IRQs are enabled and therefore triggered but not
-acked.
+Unregister the cpufreq device and soc device when resource unwinding,
+otherwise there will be warning when do removing test:
+sysfs: cannot create duplicate filename '/devices/platform/imx-cpufreq-dt'
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.13.0-rc1-next-20241204
+Hardware name: NXP i.MX8MPlus EVK board (DT)
 
-Sending a reset command to the gyroscope by
-i2cset 1 0x69 0x14 0xb6
-with an additional debug print in the ISR (not the thread) itself
-causes
-
-[ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
-[ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
-[ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
-[ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
-[ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-[ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-[ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-repeating till infinity
-[...]
-(0x2 = NACK, 0x100 = Bus free, which is not enabled)
-Apparently no other IRQ bit gets set, so this stalls.
-
-Do not ignore enabled interrupts and make sure they are acked.
-If the NACK IRQ is not needed, it should simply not enabled, but
-according to the above log, caring about it is necessary unless
-the Bus free IRQ is enabled and handled. The assumption that is
-will always come with a ARDY IRQ, which was the idea behind
-ignoring it, proves wrong.
-It is true for simple reads from an unused address.
-
-To still avoid the i2cdetect trouble which is the reason for
-commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
-avoid doing much about NACK in omap_i2c_xfer_data() which is used
-by both IRQ mode and polling mode, so also the false detection fix
-is extended to polling usage and IRQ storms are avoided.
-
-By changing this, the hardirq handler is not needed anymore to filter
-stuff.
-
-The mentioned gyro reset now just causes a -ETIMEDOUT instead of
-hanging the system.
-
-Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
-CC: stable@kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Tested-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Aniket Limaye <a-limaye@ti.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250228140420.379498-1-andreas@kemnade.info
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9cc832d37799 ("soc: imx8m: Probe the SoC driver as platform driver")
+Cc: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-omap.c |   26 +++++++-------------------
- 1 file changed, 7 insertions(+), 19 deletions(-)
+ drivers/soc/imx/soc-imx8m.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1048,23 +1048,6 @@ static int omap_i2c_transmit_data(struct
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index bd62ccb935a1a..006cad061a32b 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -192,9 +192,20 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
+ 	devm_kasprintf((dev), GFP_KERNEL, "%d.%d", ((soc_rev) >> 4) & 0xf, (soc_rev) & 0xf) : \
+ 	"unknown"
+ 
++static void imx8m_unregister_soc(void *data)
++{
++	soc_device_unregister(data);
++}
++
++static void imx8m_unregister_cpufreq(void *data)
++{
++	platform_device_unregister(data);
++}
++
+ static int imx8m_soc_probe(struct platform_device *pdev)
+ {
+ 	struct soc_device_attribute *soc_dev_attr;
++	struct platform_device *cpufreq_dev;
+ 	const struct imx8_soc_data *data;
+ 	struct device *dev = &pdev->dev;
+ 	const struct of_device_id *id;
+@@ -239,11 +250,22 @@ static int imx8m_soc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(soc_dev))
+ 		return PTR_ERR(soc_dev);
+ 
++	ret = devm_add_action(dev, imx8m_unregister_soc, soc_dev);
++	if (ret)
++		return ret;
++
+ 	pr_info("SoC: %s revision %s\n", soc_dev_attr->soc_id,
+ 		soc_dev_attr->revision);
+ 
+-	if (IS_ENABLED(CONFIG_ARM_IMX_CPUFREQ_DT))
+-		platform_device_register_simple("imx-cpufreq-dt", -1, NULL, 0);
++	if (IS_ENABLED(CONFIG_ARM_IMX_CPUFREQ_DT)) {
++		cpufreq_dev = platform_device_register_simple("imx-cpufreq-dt", -1, NULL, 0);
++		if (IS_ERR(cpufreq_dev))
++			return dev_err_probe(dev, PTR_ERR(cpufreq_dev),
++					     "Failed to register imx-cpufreq-dev device\n");
++		ret = devm_add_action(dev, imx8m_unregister_cpufreq, cpufreq_dev);
++		if (ret)
++			return ret;
++	}
+ 
  	return 0;
  }
- 
--static irqreturn_t
--omap_i2c_isr(int irq, void *dev_id)
--{
--	struct omap_i2c_dev *omap = dev_id;
--	irqreturn_t ret = IRQ_HANDLED;
--	u16 mask;
--	u16 stat;
--
--	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
--	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
--
--	if (stat & mask)
--		ret = IRQ_WAKE_THREAD;
--
--	return ret;
--}
--
- static int omap_i2c_xfer_data(struct omap_i2c_dev *omap)
- {
- 	u16 bits;
-@@ -1095,8 +1078,13 @@ static int omap_i2c_xfer_data(struct oma
- 		}
- 
- 		if (stat & OMAP_I2C_STAT_NACK) {
--			err |= OMAP_I2C_STAT_NACK;
-+			omap->cmd_err |= OMAP_I2C_STAT_NACK;
- 			omap_i2c_ack_stat(omap, OMAP_I2C_STAT_NACK);
-+
-+			if (!(stat & ~OMAP_I2C_STAT_NACK)) {
-+				err = -EAGAIN;
-+				break;
-+			}
- 		}
- 
- 		if (stat & OMAP_I2C_STAT_AL) {
-@@ -1472,7 +1460,7 @@ omap_i2c_probe(struct platform_device *p
- 				IRQF_NO_SUSPEND, pdev->name, omap);
- 	else
- 		r = devm_request_threaded_irq(&pdev->dev, omap->irq,
--				omap_i2c_isr, omap_i2c_isr_thread,
-+				NULL, omap_i2c_isr_thread,
- 				IRQF_NO_SUSPEND | IRQF_ONESHOT,
- 				pdev->name, omap);
- 
+-- 
+2.39.5
+
 
 
 
