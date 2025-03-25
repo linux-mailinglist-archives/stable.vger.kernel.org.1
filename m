@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-126142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D32AA6FFB8
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33FDA6FFBE
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87891841E16
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C0AD3B9274
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192D3266B64;
-	Tue, 25 Mar 2025 12:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BD0266B74;
+	Tue, 25 Mar 2025 12:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9FHGemO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/dTx+aB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE52266B63;
-	Tue, 25 Mar 2025 12:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02D5266B6C;
+	Tue, 25 Mar 2025 12:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905678; cv=none; b=h65CZAKsAQhnjhbifUmfWjherAbucWZfoa8mbHJb59FfIryQSbC1CWuPBoYb+eQCee5uWk0WF9jx/NlR4sHxkhcpi/JYQHXc2XFzUkoiRpcom7FbJE/ENRS2QMFMl6HEyyQ9eHwg0mMVE/+rb80QKYWbOJdjN5i/HGKRdMsLNl8=
+	t=1742905682; cv=none; b=GE62YQGfRJkVQqTUDo9TRCIEGP5VaA7QVhVWZ5W6aH3GusVWdEynnDPnwg3Xa8rz9gOOFjgRHgfYuvuYELsqVgE2cILVHTCfo44VdGXkf2aFbbDUz095TPBRMbszccfEUlPuoN8M6L5dAETPSgqUCc+1xnWR2E6IqLsd4A7Jz5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905678; c=relaxed/simple;
-	bh=o6VQgI8AtMN9VO+cFjOnxl3wO2Mzp/UQx8IFOjcyFMU=;
+	s=arc-20240116; t=1742905682; c=relaxed/simple;
+	bh=icPh597X6mjC+ltNedFPq9LM7XMx40tpWD4DO8RZOHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDIXhW6hxuDcc3qt6pcZ/UmaS8YE8yANy9NZ6NzEtKmetB2mn9XxOkeGC6VmNmKrP5B7IV0KO2nxfrxuRB3wfL8R0zI5gPyYMN3PfvOjxMH/jJytMsqQcyNZ3ag/LOpas5yF2w+ooRENOV32v7VUfKetOQCgpYTiEzZGnodafzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9FHGemO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809F8C4CEE4;
-	Tue, 25 Mar 2025 12:27:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SfumU4B9AfhL54I8bce4BzQwBJYoCl5+gyZb+s+tJRlOqX60Bz2RQajJJWE4idPsqVi44XzGqKJTO8pttlARjGe1ygFasR6MnKhT+JRDJmTYpr6Hn9uS31TjKClIHDDAI6RWMCvxutXiqjiFhsDod/SR12XAY6BY2nahhO8bPGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/dTx+aB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A69C4CEE4;
+	Tue, 25 Mar 2025 12:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905678;
-	bh=o6VQgI8AtMN9VO+cFjOnxl3wO2Mzp/UQx8IFOjcyFMU=;
+	s=korg; t=1742905682;
+	bh=icPh597X6mjC+ltNedFPq9LM7XMx40tpWD4DO8RZOHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9FHGemOZrE+g5TwC3xHEAn2jO7dwpbhrSssICPNi41KxcZddM07mkVHcgWs2PzsR
-	 DMxQeml784Xf3gMO7Y+z70yAW5JWYDJkXou2ljqQ5LFg2zIx3uO5tZL6MshZa8Yr9x
-	 RHfyGxnEkHMKMStPrmbjLIDiiR95M42FS4fMyrKU=
+	b=Z/dTx+aBmbgXFlCmXT2EKR6UdkzKG3V7ZdmdfnJo0dNOjwiUiqmbnB3rvD7hKsYRr
+	 ywyk5sdp7DwK+HKxf0AM6qhAPhpakOdCqbLt1XyotZixvuw5qZw6XsNvZ2CPOv1RVd
+	 VkI6odqWKj3PuOSTiTsHHSaaUgHhjneMU5zT9eT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Lucas=20M=C3=BClling?= <lmulling@proton.me>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 074/198] mm: add nommu variant of vm_insert_pages()
-Date: Tue, 25 Mar 2025 08:20:36 -0400
-Message-ID: <20250325122158.580528034@linuxfoundation.org>
+Subject: [PATCH 6.1 076/198] io_uring: dont attempt to mmap larger than what the user asks for
+Date: Tue, 25 Mar 2025 08:20:38 -0400
+Message-ID: <20250325122158.631004052@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -59,6 +59,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
@@ -67,35 +68,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Jens Axboe <axboe@kernel.dk>
 
-Commit 62346c6cb28b043f2a6e95337d9081ec0b37b5f5 upstream.
+Commit 06fe9b1df1086b42718d632aa57e8f7cd1a66a21 upstream.
 
-An identical one exists for vm_insert_page(), add one for
-vm_insert_pages() to avoid needing to check for CONFIG_MMU in code using
-it.
+If IORING_FEAT_SINGLE_MMAP is ignored, as can happen if an application
+uses an ancient liburing or does setup manually, then 3 mmap's are
+required to map the ring into userspace. The kernel will still have
+collapsed the mappings, however userspace may ask for mapping them
+individually. If so, then we should not use the full number of ring
+pages, as it may exceed the partial mapping. Doing so will yield an
+-EFAULT from vm_insert_pages(), as we pass in more pages than what the
+application asked for.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cap the number of pages to match what the application asked for, for
+the particular mapping operation.
+
+Reported-by: Lucas Mülling <lmulling@proton.me>
+Link: https://github.com/axboe/liburing/issues/1157
+Fixes: 3ab1db3c6039 ("io_uring: get rid of remap_pfn_range() for mapping rings/sqes")
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/nommu.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ io_uring/io_uring.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -357,6 +357,13 @@ int vm_insert_page(struct vm_area_struct
- }
- EXPORT_SYMBOL(vm_insert_page);
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3237,6 +3237,7 @@ static __cold int io_uring_mmap(struct f
+ 	struct io_ring_ctx *ctx = file->private_data;
+ 	size_t sz = vma->vm_end - vma->vm_start;
+ 	long offset = vma->vm_pgoff << PAGE_SHIFT;
++	unsigned int npages;
+ 	unsigned long pfn;
+ 	void *ptr;
  
-+int vm_insert_pages(struct vm_area_struct *vma, unsigned long addr,
-+			struct page **pages, unsigned long *num)
-+{
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(vm_insert_pages);
-+
- int vm_map_pages(struct vm_area_struct *vma, struct page **pages,
- 			unsigned long num)
- {
+@@ -3247,8 +3248,8 @@ static __cold int io_uring_mmap(struct f
+ 	switch (offset & IORING_OFF_MMAP_MASK) {
+ 	case IORING_OFF_SQ_RING:
+ 	case IORING_OFF_CQ_RING:
+-		return io_uring_mmap_pages(ctx, vma, ctx->ring_pages,
+-						ctx->n_ring_pages);
++		npages = min(ctx->n_ring_pages, (sz + PAGE_SIZE - 1) >> PAGE_SHIFT);
++		return io_uring_mmap_pages(ctx, vma, ctx->ring_pages, npages);
+ 	case IORING_OFF_SQES:
+ 		return io_uring_mmap_pages(ctx, vma, ctx->sqe_pages,
+ 						ctx->n_sqe_pages);
 
 
 
