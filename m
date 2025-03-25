@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-126554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F18BA70135
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902ECA7004F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CCEB16A426
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:14:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B78D7A5BC6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401B3270EBD;
-	Tue, 25 Mar 2025 12:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB74225D1E2;
+	Tue, 25 Mar 2025 12:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFs5UKCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdoa6bl8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37E5258CD1;
-	Tue, 25 Mar 2025 12:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F442571AC;
+	Tue, 25 Mar 2025 12:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906441; cv=none; b=u5xFa979dsSYZy8mMvoj8JcUZppch0lAfVeIFHQSx5KyR596M03Q+lO5MSG3QWYZeKTWi+IpxpTq8j3tJXqK4J1of/vWFlMV2bZIg2jJAniU2VWCsK3knUR+rhaQjA4pzBOwTlJwECWs4hQNTlgsapAh2Da8ltSwj9vuU2rC6BM=
+	t=1742906228; cv=none; b=n9sf01wKQCkTOsD6OSdv+3Xhs34Bu9TYevpA/7FwGiHViNWl/r2gmw8+u7YWBQwoTElqzwo/qTJnn0uQ3G9rOlhHqVt5zVKu8B5FX/9JHWJX/vYtiwGee7yTBJfoLzmDNQ32msLfq2BF+u1h4HT1qcDCSeSiMsY1LO0Quk8HhcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906441; c=relaxed/simple;
-	bh=BtuaNMr8dPjrJAts6EoT2ws8/KmfMUv3Rw9uyea6XoE=;
+	s=arc-20240116; t=1742906228; c=relaxed/simple;
+	bh=tde1+79mArFYMlN0jkb6Al7nQBXPJhdz83krGpbDxDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UXs7emm6zd5tTFEJudE1xydPgLZ85yDVIAYlNeMCKRxy9XkBw4xmFq43kQTwJbBd4LSsMLJm/vJ7mmWGdIzXSmf1xwS6RzeyUwoW3QaiIiaQM9HnDaKCMUOfr9sovgiGphD0COkGKcp1PumMTEHLWUMldSy6suwWVeFhMfWanHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFs5UKCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E4AC4CEE4;
-	Tue, 25 Mar 2025 12:40:40 +0000 (UTC)
+	 MIME-Version; b=b6RpO2srXq+08TiQ+TBKGJQdRMfCbzazN3ynrz5yvK0hW8yA5us8nRAcyrMthZWkpYuWWD6zY2ikFPt9pAC5VcymBmBSjiIucRGscry+s1DtvM7x/KEemTIINEBz6xEg4dl6J/+2LCM2pHikAe+8m8CrnOht5gGTXJmDBNIyUh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdoa6bl8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D97C4CEEE;
+	Tue, 25 Mar 2025 12:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906440;
-	bh=BtuaNMr8dPjrJAts6EoT2ws8/KmfMUv3Rw9uyea6XoE=;
+	s=korg; t=1742906228;
+	bh=tde1+79mArFYMlN0jkb6Al7nQBXPJhdz83krGpbDxDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cFs5UKCiXKEI6ozn75RYjgQyHm9quHSCtM8xlP29H3VWehczW+NbGpuxoiBtNu8Ml
-	 6SgFJo+/2IfIQy3xtjztpI2tFtstVo56Po6/qwyUNpP5tZGnM0lpT34tN6VOanc54d
-	 6keRNVpyjoy9Yb0phjjoe7FtFZ6gi82O7OFnkNH4=
+	b=fdoa6bl8dIU4SXAoKrYGvWeBU7BaeWoZFCUhPQmtyO5aGEMBAlx/16xLskVQayGiA
+	 hQPQ+8L1H3RZJarzx8CHuIwwS9khzcQ6riG+YCWvQ8sVBGgJfskRgN8KJXeEGXD3kf
+	 FXgL3fbbYnH4BLpgPYtpWgBxnOugJfrFwMtsDX9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tom=C3=A1=C5=A1=20Trnka?= <trnka@scm.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 101/116] drm/amdkfd: Fix user queue validation on Gfx7/8
+	lei lu <llfamsec@gmail.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.6 73/77] btrfs: make sure that WRITTEN is set on all metadata blocks
 Date: Tue, 25 Mar 2025 08:23:08 -0400
-Message-ID: <20250325122151.786662934@linuxfoundation.org>
+Message-ID: <20250325122146.335803761@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +63,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 542c3bb836733a1325874310d54d25b4907ed10e upstream.
+commit e03418abde871314e1a3a550f4c8afb7b89cb273 upstream.
 
-To workaround queue full h/w issue on Gfx7/8, when application create
-AQL queue, the ring buffer bo allocate size is queue_size/2 and
-map queue_size ring buffer to GPU in 2 pieces using 2 attachments, each
-attachment map size is queue_size/2, with same ring_bo backing memory.
+We previously would call btrfs_check_leaf() if we had the check
+integrity code enabled, which meant that we could only run the extended
+leaf checks if we had WRITTEN set on the header flags.
 
-For Gfx7/8, user queue buffer validation should use queue_size/2 to
-verify ring_bo allocation and mapping size.
+This leaves a gap in our checking, because we could end up with
+corruption on disk where WRITTEN isn't set on the leaf, and then the
+extended leaf checks don't get run which we rely on to validate all of
+the item pointers to make sure we don't access memory outside of the
+extent buffer.
 
-Fixes: 68e599db7a54 ("drm/amdkfd: Validate user queue buffers")
-Suggested-by: Tomáš Trnka <trnka@scm.com>
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e7a477735f1771b9a9346a5fbd09d7ff0641723a)
-Cc: stable@vger.kernel.org
+However, since 732fab95abe2 ("btrfs: check-integrity: remove
+CONFIG_BTRFS_FS_CHECK_INTEGRITY option") we no longer call
+btrfs_check_leaf() from btrfs_mark_buffer_dirty(), which means we only
+ever call it on blocks that are being written out, and thus have WRITTEN
+set, or that are being read in, which should have WRITTEN set.
+
+Add checks to make sure we have WRITTEN set appropriately, and then make
+sure __btrfs_check_leaf() always does the item checking.  This will
+protect us from file systems that have been corrupted and no longer have
+WRITTEN set on some of the blocks.
+
+This was hit on a crafted image tweaking the WRITTEN bit and reported by
+KASAN as out-of-bound access in the eb accessors. The example is a dir
+item at the end of an eb.
+
+  [2.042] BTRFS warning (device loop1): bad eb member start: ptr 0x3fff start 30572544 member offset 16410 size 2
+  [2.040] general protection fault, probably for non-canonical address 0xe0009d1000000003: 0000 [#1] PREEMPT SMP KASAN NOPTI
+  [2.537] KASAN: maybe wild-memory-access in range [0x0005088000000018-0x000508800000001f]
+  [2.729] CPU: 0 PID: 2587 Comm: mount Not tainted 6.8.2 #1
+  [2.729] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  [2.621] RIP: 0010:btrfs_get_16+0x34b/0x6d0
+  [2.621] RSP: 0018:ffff88810871fab8 EFLAGS: 00000206
+  [2.621] RAX: 0000a11000000003 RBX: ffff888104ff8720 RCX: ffff88811b2288c0
+  [2.621] RDX: dffffc0000000000 RSI: ffffffff81dd8aca RDI: ffff88810871f748
+  [2.621] RBP: 000000000000401a R08: 0000000000000001 R09: ffffed10210e3ee9
+  [2.621] R10: ffff88810871f74f R11: 205d323430333737 R12: 000000000000001a
+  [2.621] R13: 000508800000001a R14: 1ffff110210e3f5d R15: ffffffff850011e8
+  [2.621] FS:  00007f56ea275840(0000) GS:ffff88811b200000(0000) knlGS:0000000000000000
+  [2.621] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [2.621] CR2: 00007febd13b75c0 CR3: 000000010bb50000 CR4: 00000000000006f0
+  [2.621] Call Trace:
+  [2.621]  <TASK>
+  [2.621]  ? show_regs+0x74/0x80
+  [2.621]  ? die_addr+0x46/0xc0
+  [2.621]  ? exc_general_protection+0x161/0x2a0
+  [2.621]  ? asm_exc_general_protection+0x26/0x30
+  [2.621]  ? btrfs_get_16+0x33a/0x6d0
+  [2.621]  ? btrfs_get_16+0x34b/0x6d0
+  [2.621]  ? btrfs_get_16+0x33a/0x6d0
+  [2.621]  ? __pfx_btrfs_get_16+0x10/0x10
+  [2.621]  ? __pfx_mutex_unlock+0x10/0x10
+  [2.621]  btrfs_match_dir_item_name+0x101/0x1a0
+  [2.621]  btrfs_lookup_dir_item+0x1f3/0x280
+  [2.621]  ? __pfx_btrfs_lookup_dir_item+0x10/0x10
+  [2.621]  btrfs_get_tree+0xd25/0x1910
+
+Reported-by: lei lu <llfamsec@gmail.com>
+CC: stable@vger.kernel.org # 6.7+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ copy more details from report ]
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_queue.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/btrfs/tree-checker.c |   30 +++++++++++++++---------------
+ fs/btrfs/tree-checker.h |    1 +
+ 2 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-index 24396a2c77bd..4afff7094caf 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-@@ -233,6 +233,7 @@ void kfd_queue_buffer_put(struct amdgpu_bo **bo)
- int kfd_queue_acquire_buffers(struct kfd_process_device *pdd, struct queue_properties *properties)
- {
- 	struct kfd_topology_device *topo_dev;
-+	u64 expected_queue_size;
- 	struct amdgpu_vm *vm;
- 	u32 total_cwsr_size;
- 	int err;
-@@ -241,6 +242,15 @@ int kfd_queue_acquire_buffers(struct kfd_process_device *pdd, struct queue_prope
- 	if (!topo_dev)
- 		return -EINVAL;
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1889,6 +1889,11 @@ enum btrfs_tree_block_status __btrfs_che
+ 		return BTRFS_TREE_BLOCK_INVALID_LEVEL;
+ 	}
  
-+	/* AQL queues on GFX7 and GFX8 appear twice their actual size */
-+	if (properties->type == KFD_QUEUE_TYPE_COMPUTE &&
-+	    properties->format == KFD_QUEUE_FORMAT_AQL &&
-+	    topo_dev->node_props.gfx_target_version >= 70000 &&
-+	    topo_dev->node_props.gfx_target_version < 90000)
-+		expected_queue_size = properties->queue_size / 2;
-+	else
-+		expected_queue_size = properties->queue_size;
++	if (unlikely(!btrfs_header_flag(leaf, BTRFS_HEADER_FLAG_WRITTEN))) {
++		generic_err(leaf, 0, "invalid flag for leaf, WRITTEN not set");
++		return BTRFS_TREE_BLOCK_WRITTEN_NOT_SET;
++	}
 +
- 	vm = drm_priv_to_vm(pdd->drm_priv);
- 	err = amdgpu_bo_reserve(vm->root.bo, false);
- 	if (err)
-@@ -255,7 +265,7 @@ int kfd_queue_acquire_buffers(struct kfd_process_device *pdd, struct queue_prope
- 		goto out_err_unreserve;
+ 	/*
+ 	 * Extent buffers from a relocation tree have a owner field that
+ 	 * corresponds to the subvolume tree they are based on. So just from an
+@@ -1950,6 +1955,7 @@ enum btrfs_tree_block_status __btrfs_che
+ 	for (slot = 0; slot < nritems; slot++) {
+ 		u32 item_end_expected;
+ 		u64 item_data_end;
++		enum btrfs_tree_block_status ret;
  
- 	err = kfd_queue_buffer_get(vm, (void *)properties->queue_address,
--				   &properties->ring_bo, properties->queue_size);
-+				   &properties->ring_bo, expected_queue_size);
- 	if (err)
- 		goto out_err_unreserve;
+ 		btrfs_item_key_to_cpu(leaf, &key, slot);
  
--- 
-2.49.0
-
+@@ -2005,21 +2011,10 @@ enum btrfs_tree_block_status __btrfs_che
+ 			return BTRFS_TREE_BLOCK_INVALID_OFFSETS;
+ 		}
+ 
+-		/*
+-		 * We only want to do this if WRITTEN is set, otherwise the leaf
+-		 * may be in some intermediate state and won't appear valid.
+-		 */
+-		if (btrfs_header_flag(leaf, BTRFS_HEADER_FLAG_WRITTEN)) {
+-			enum btrfs_tree_block_status ret;
+-
+-			/*
+-			 * Check if the item size and content meet other
+-			 * criteria
+-			 */
+-			ret = check_leaf_item(leaf, &key, slot, &prev_key);
+-			if (unlikely(ret != BTRFS_TREE_BLOCK_CLEAN))
+-				return ret;
+-		}
++		/* Check if the item size and content meet other criteria. */
++		ret = check_leaf_item(leaf, &key, slot, &prev_key);
++		if (unlikely(ret != BTRFS_TREE_BLOCK_CLEAN))
++			return ret;
+ 
+ 		prev_key.objectid = key.objectid;
+ 		prev_key.type = key.type;
+@@ -2049,6 +2044,11 @@ enum btrfs_tree_block_status __btrfs_che
+ 	int level = btrfs_header_level(node);
+ 	u64 bytenr;
+ 
++	if (unlikely(!btrfs_header_flag(node, BTRFS_HEADER_FLAG_WRITTEN))) {
++		generic_err(node, 0, "invalid flag for node, WRITTEN not set");
++		return BTRFS_TREE_BLOCK_WRITTEN_NOT_SET;
++	}
++
+ 	if (unlikely(level <= 0 || level >= BTRFS_MAX_LEVEL)) {
+ 		generic_err(node, 0,
+ 			"invalid level for node, have %d expect [1, %d]",
+--- a/fs/btrfs/tree-checker.h
++++ b/fs/btrfs/tree-checker.h
+@@ -51,6 +51,7 @@ enum btrfs_tree_block_status {
+ 	BTRFS_TREE_BLOCK_INVALID_BLOCKPTR,
+ 	BTRFS_TREE_BLOCK_INVALID_ITEM,
+ 	BTRFS_TREE_BLOCK_INVALID_OWNER,
++	BTRFS_TREE_BLOCK_WRITTEN_NOT_SET,
+ };
+ 
+ /*
 
 
 
