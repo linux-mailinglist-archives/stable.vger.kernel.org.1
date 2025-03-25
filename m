@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-126370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04ADA70072
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E52A70101
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAC60172A2D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A56B19A20C4
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D680269B12;
-	Tue, 25 Mar 2025 12:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DFF267F66;
+	Tue, 25 Mar 2025 12:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJnhmuLV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feDLn0C5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB0E2571AC;
-	Tue, 25 Mar 2025 12:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F74C1DD9D3;
+	Tue, 25 Mar 2025 12:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906098; cv=none; b=EP9sdH/VVPNtdWF3Zw0I4veHcs5xIF0pV4Fld2OTJkWqjXjH5soiXhmXPY8+UKY9qYTEYblDEDfGfo2nxRrEWOPbcCLGOOytBH8t/Y7yfossEXr7hXsSdU3uvuNFVVJWXMA1WwVnCi2KQ8JdlX8YcngeyTvHY/OpHhydCOKRGdk=
+	t=1742905983; cv=none; b=DrKm9fWoOjL5j+w5B4+EwhyLyf7BfjL2dhcXbQJtIR9xwqCX46UKUcnrZrqrGQUQCE4TV3cW1rQ/cKxb3BMdqHLwGwHZcLtx1w/sq5bEhwav33q26s9B7QTXVeA6kZezId1Cw6TDu5UpgTn3Dg9llJ0P5X44HsItt3FI0A4KgTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906098; c=relaxed/simple;
-	bh=rXnogmdeCHokgsxtKtwvCIOr0Lva8IPBBMDwqIgzIGU=;
+	s=arc-20240116; t=1742905983; c=relaxed/simple;
+	bh=TyHI5oWYqU4HG7cGcIDZ+G8k/wTL4R0K0ftNplnyDrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjKYfXiZg2EH/GCqWW0KrObP9e0Idho5OeoAwibUer0ayHr+VW7aWvefiOXWvlhfB9I2tuko+RTejAlTUDr3S0QTWw9+p5Q+dsTav/HhO1AyCJ63HzDfL4LgHRa3mE47PXHi+KWIG1+mpkdEVFV8d1frugCPn0amIkWDuYGs4ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJnhmuLV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1470C4AF0B;
-	Tue, 25 Mar 2025 12:34:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GEyWyMrj+8ZPXpq9A3qKYL5/axSKZo6xLxUtD/qL7T1wNxQvvCeOtsYgXfonBHeLzrHkXPssFMQ2hlSSIu7KngzUZuiXFn0zpC8E8axztRtOMQme/YjoEDjdb+XIw0n23Uk/yD7oGneJGuKpq1tmbGWfm7KmqO1OvG86lx18DsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feDLn0C5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57069C4CEE4;
+	Tue, 25 Mar 2025 12:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906098;
-	bh=rXnogmdeCHokgsxtKtwvCIOr0Lva8IPBBMDwqIgzIGU=;
+	s=korg; t=1742905982;
+	bh=TyHI5oWYqU4HG7cGcIDZ+G8k/wTL4R0K0ftNplnyDrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJnhmuLV/GaGPcz9G8Jt2n8KA1oJjtnlnaEMvu1c0mx4XhwUMhty6VltQDjvwO0te
-	 JNQ4ARJ0U7e4BcuAv/kCmLd7Sg03p5e6qqIod5XRx/qVq5zkumdIadPNC2waUrkCuj
-	 h6rCBDhTBeHvaDnp8c3J3EncXlKF0Xqty3gDtpos=
+	b=feDLn0C5nYQFOdc4jd6m17lQ+1/lc+IAZAPCcVGvuV5LzxIY+Gwwgl/VDJ+cXx5Ka
+	 EUYzAYL3Mxkx/WxRa9z8wM23JRKCQOndhD1WlNOjbPrEC69VzuKzP4frDTYFp0DqI1
+	 UjF1To3aujpnN5a+x2bP//Z0KfoAmkO8VwzU41BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 14/77] RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.13 071/119] arm64: dts: rockchip: fix pinmux of UART0 for PX30 Ringneck on Haikou
 Date: Tue, 25 Mar 2025 08:22:09 -0400
-Message-ID: <20250325122144.708946225@linuxfoundation.org>
+Message-ID: <20250325122150.868627821@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-[ Upstream commit 81c0db302a674f8004ed805393d17fd76f552e83 ]
+commit 2db7d29c7b1629ced3cbab3de242511eb3c22066 upstream.
 
-Driver is always clearing the mask that sets the VLAN ID/Service Level
-in the adapter. Recent change for supporting multiple traffic class
-exposed this issue.
+UART0 pinmux by default configures GPIO0_B5 in its UART RTS function for
+UART0. However, by default on Haikou, it is used as GPIO as UART RTS for
+UART5.
 
-Allow setting SL and VLAN_ID while QP is moved from INIT to RTR state.
+Therefore, let's update UART0 pinmux to not configure the pin in that
+mode, a later commit will make UART5 request the GPIO pinmux.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Fixes: c64b16a37b6d ("RDMA/bnxt_re: Support different traffic class")
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1741670196-2919-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c484cf93f61b ("arm64: dts: rockchip: add PX30-µQ7 (Ringneck) SoM with Haikou baseboard")
+Cc: stable@vger.kernel.org
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Link: https://lore.kernel.org/r/20250225-ringneck-dtbos-v3-1-853a9a6dd597@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index c4f10498c79d8..68ea4ed0b171b 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -1197,8 +1197,6 @@ static void __modify_flags_from_init_state(struct bnxt_qplib_qp *qp)
- 			qp->path_mtu =
- 				CMDQ_MODIFY_QP_PATH_MTU_MTU_2048;
- 		}
--		qp->modify_flags &=
--			~CMDQ_MODIFY_QP_MODIFY_MASK_VLAN_ID;
- 		/* Bono FW require the max_dest_rd_atomic to be >= 1 */
- 		if (qp->max_dest_rd_atomic < 1)
- 			qp->max_dest_rd_atomic = 1;
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
++++ b/arch/arm64/boot/dts/rockchip/px30-ringneck-haikou.dts
+@@ -222,6 +222,8 @@
+ };
+ 
+ &uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_xfer>;
+ 	status = "okay";
+ };
+ 
 
 
 
