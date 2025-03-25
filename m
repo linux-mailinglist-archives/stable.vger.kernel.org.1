@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-126290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F89DA700E9
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A98A4A6FF9A
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31801188C3F3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5F6D1789B4
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8F6268FCD;
-	Tue, 25 Mar 2025 12:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B776A2673B3;
+	Tue, 25 Mar 2025 12:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jNMI8Jz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRqjXajL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC422561D7;
-	Tue, 25 Mar 2025 12:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AAF259CAD;
+	Tue, 25 Mar 2025 12:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905951; cv=none; b=KoM+5VOVDhxBOEo9AaasaNVKf/LltIJZDIGQLSptCQXicwcrk5IdnosSxe9L6oDSdkUdTjstgXYR8a/vUWRdAh/E1ObRlrAtt8myYmFNhaM9iJEqFA9XfGUaB26R6HVOXMbyIFqy0kz2OfPVlIe/UEkx+q/O692+h515twG72T4=
+	t=1742905758; cv=none; b=PZ+ZmqbZzNraEFvOqBHgj6g1VLlEylhodspfjfQD+FUHKB3bxiw1eAHL16e8s8TqlrhxakOut79AK4pc+FBtq+V35RPUixCMoBmQH7K0mTUnuea5ESzJqo/AxuFRtYU3Z9fWMukYqHexwnPnxCdC7jqJNFFngtie0SIKLLdEq8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905951; c=relaxed/simple;
-	bh=cmAbjMFFO3seCksdoV/ifutfeMBri8ImotBEoLez4sc=;
+	s=arc-20240116; t=1742905758; c=relaxed/simple;
+	bh=pf8ZTjRk7nmcjCZ2L9nY6TGkg6T7GJNyIgOiJRu5ZpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9kYm05PqFcciTSsmZaYjTTOM9tpELJFKnc/GC2IwOSzkWLdvv4qLsdkJqisdBgXbzLtwhCsuAbR6x/HEgCDR95YA35JQU/Zue0xms4AkYxG69ve7LyvuMaXwpFr/wGqMofVC7vR45LMpDqLvXiPjoCRQHIC9U9bS60z99NLnng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jNMI8Jz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0CAC4CEE4;
-	Tue, 25 Mar 2025 12:32:30 +0000 (UTC)
+	 MIME-Version; b=o/7jIMoOIFPWAzWxAeMuSyBZg/DkhdAuJ5PvquKmrlJLbGMMpzmrvZ4oLfB+gQvAOvFCQ3s8mN4Z/idvRpKslaQw7hjTFD3G2osGXccDRhsXbaGeYT64NzTN8d0PR7YzgOYpgM8/tzByrqqg6cp2TloulnL+Bi0u+/jTASYqvnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRqjXajL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF5EC4CEED;
+	Tue, 25 Mar 2025 12:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905951;
-	bh=cmAbjMFFO3seCksdoV/ifutfeMBri8ImotBEoLez4sc=;
+	s=korg; t=1742905758;
+	bh=pf8ZTjRk7nmcjCZ2L9nY6TGkg6T7GJNyIgOiJRu5ZpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jNMI8Jz0chbVZCwdKVij1kWfpJXyjrFbcXfuQeRyvX8hjRGFNVEs0zDVIzDV3/v/
-	 ZfJSSYcaXIOWu14GRJVbRKorSVKIcrsIgXLvxYuKFtXlty3PeraoOR5BKqilyGdH16
-	 t+IzqFmCibqzTM5ZETf9TAS8FRNeKO8PD75byVic=
+	b=rRqjXajLOPJQXjdqQJKZ5v8bq1R6WerRggng4WKa20oEiAtwwzypX7qGO0qxHyDNu
+	 dW9mbvJ8U+6ZtCNnc6wQOz/bffvSqvFgPUAQudg/TjWqpYb87v7ThCfE1wNJdZypmh
+	 o5wpw8jv06JIQFOIWtUp47GcdO9IaPAnYue2wckg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Marsh <arthur.marsh@internode.on.net>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.13 052/119] media: rtl2832_sdr: assign vb2 lock before vb2_queue_init
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 148/198] xfrm_output: Force software GSO only in tunnel mode
 Date: Tue, 25 Mar 2025 08:21:50 -0400
-Message-ID: <20250325122150.385536556@linuxfoundation.org>
+Message-ID: <20250325122200.540291421@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
-References: <20250325122149.058346343@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-commit d9e7c172a7f247f7ef0b151fa8c8f044b6a2a070 upstream.
+[ Upstream commit 0aae2867aa6067f73d066bc98385e23c8454a1d7 ]
 
-Commit c780d01cf1a6 ("media: vb2: vb2_core_queue_init(): sanity check lock
-and wait_prepare/finish") added a sanity check to ensure that if there are
-no wait_prepare/finish callbacks set by the driver, then the vb2_queue lock
-must be set, since otherwise the vb2 core cannot do correct locking.
+The cited commit fixed a software GSO bug with VXLAN + IPSec in tunnel
+mode. Unfortunately, it is slightly broader than necessary, as it also
+severely affects performance for Geneve + IPSec transport mode over a
+device capable of both HW GSO and IPSec crypto offload. In this case,
+xfrm_output unnecessarily triggers software GSO instead of letting the
+HW do it. In simple iperf3 tests over Geneve + IPSec transport mode over
+a back-2-back pair of NICs with MTU 1500, the performance was observed
+to be up to 6x worse when doing software GSO compared to leaving it to
+the hardware.
 
-The rtl2832_sdr.c triggered this warning: it turns out that while the
-driver does set this lock, it sets it too late. So move it up to before
-the vb2_queue_init() call.
+This commit makes xfrm_output only trigger software GSO in crypto
+offload cases for already encapsulated packets in tunnel mode, as not
+doing so would then cause the inner tunnel skb->inner_networking_header
+to be overwritten and break software GSO for that packet later if the
+device turns out to not be capable of HW GSO.
 
-Reported-by: Arthur Marsh <arthur.marsh@internode.on.net>
-Closes: https://lore.kernel.org/linux-media/20241211042355.8479-1-user@am64/
-Fixes: 8fcd2795d22a ("media: rtl2832_sdr: drop vb2_ops_wait_prepare/finish")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Taking a closer look at the conditions for the original bug, to better
+understand the reasons for this change:
+- vxlan_build_skb -> iptunnel_handle_offloads sets inner_protocol and
+  inner network header.
+- then, udp_tunnel_xmit_skb -> ip_tunnel_xmit adds outer transport and
+  network headers.
+- later in the xmit path, xfrm_output -> xfrm_outer_mode_output ->
+  xfrm4_prepare_output -> xfrm4_tunnel_encap_add overwrites the inner
+  network header with the one set in ip_tunnel_xmit before adding the
+  second outer header.
+- __dev_queue_xmit -> validate_xmit_skb checks whether GSO segmentation
+  needs to happen based on dev features. In the original bug, the hw
+  couldn't segment the packets, so skb_gso_segment was invoked.
+- deep in the .gso_segment callback machinery, __skb_udp_tunnel_segment
+  tries to use the wrong inner network header, expecting the one set in
+  iptunnel_handle_offloads but getting the one set by xfrm instead.
+- a bit later, ipv6_gso_segment accesses the wrong memory based on that
+  wrong inner network header.
+
+With the new change, the original bug (or similar ones) cannot happen
+again, as xfrm will now trigger software GSO before applying a tunnel.
+This concern doesn't exist in packet offload mode, when the HW adds
+encapsulation headers. For the non-offloaded packets (crypto in SW),
+software GSO is still done unconditionally in the else branch.
+
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: a204aef9fd77 ("xfrm: call xfrm_output_gso when inner_protocol is set in xfrm_output")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/rtl2832_sdr.c |    2 +-
+ net/xfrm/xfrm_output.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/dvb-frontends/rtl2832_sdr.c
-+++ b/drivers/media/dvb-frontends/rtl2832_sdr.c
-@@ -1363,6 +1363,7 @@ static int rtl2832_sdr_probe(struct plat
- 	dev->vb_queue.ops = &rtl2832_sdr_vb2_ops;
- 	dev->vb_queue.mem_ops = &vb2_vmalloc_memops;
- 	dev->vb_queue.timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
-+	dev->vb_queue.lock = &dev->vb_queue_lock;
- 	ret = vb2_queue_init(&dev->vb_queue);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Could not initialize vb2 queue\n");
-@@ -1421,7 +1422,6 @@ static int rtl2832_sdr_probe(struct plat
- 	/* Init video_device structure */
- 	dev->vdev = rtl2832_sdr_template;
- 	dev->vdev.queue = &dev->vb_queue;
--	dev->vdev.queue->lock = &dev->vb_queue_lock;
- 	video_set_drvdata(&dev->vdev, dev);
+diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+index 07a7ee43b8ae2..c59c548d8fc10 100644
+--- a/net/xfrm/xfrm_output.c
++++ b/net/xfrm/xfrm_output.c
+@@ -738,7 +738,7 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
+ 		skb->encapsulation = 1;
  
- 	/* Register the v4l2_device structure */
+ 		if (skb_is_gso(skb)) {
+-			if (skb->inner_protocol)
++			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
+ 				return xfrm_output_gso(net, sk, skb);
+ 
+ 			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
+-- 
+2.39.5
+
 
 
 
