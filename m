@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-126519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10995A7007E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C5EA700C7
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E379F7A3307
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43AFF19A6D53
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DB625DD03;
-	Tue, 25 Mar 2025 12:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71C126A1DD;
+	Tue, 25 Mar 2025 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqhOpzh9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6fXubfj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9008225DB11;
-	Tue, 25 Mar 2025 12:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EC526A1C5;
+	Tue, 25 Mar 2025 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906376; cv=none; b=LpO6bvRMkDJj/JtRVJAy0IB6SCICTvxtCxIVJmWSeM8vRlNahBsElEBffLcf2Np3zP7d0FTY96E8Kh9/BrQreYVStItRZwhJNNQz5Wqw4cliwezYFYhVh65VmVSRoYHHgz/o4mWP+2+p+YL5GiB5MO3UkNx7yikOm+luEqaJx0Q=
+	t=1742906177; cv=none; b=WagNvP6MiM2vx1s3iPGJ7z4jgfm7GTS0/5YEaKUEbRk5g0K4nhkC/htXoVkv86+G7Ph7Af82DH+3fzKkBJW9fVie/iIw+rn01ITEvZR97Uphy1Qim5JDhN0eqWagolu4EACEO3Jo2ntlVZFjzVlysHKSUMTr1f8Efg1EhvUgWQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906376; c=relaxed/simple;
-	bh=dN4cHZgQGkT7qf/1VxEeLXaLWJHpmOQDmJ6zJQq/or0=;
+	s=arc-20240116; t=1742906177; c=relaxed/simple;
+	bh=aFPt36b88bu/IS2oPE/0m/mpGF4Ik3SGQMiA60dE9rE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZPgs5tMuRFKnHwt6kMbdowXghgwIJaTBtRUPbD/Mb7rDN1lJVS8tJqgN3py8g1W+93hq2A+a3zWbc63RE5SQ3XvK1WIcf4bdRXEAkKsoe+niRorChUeaRB5aEjcTEXlie9r3TlMXrbgX/9T1pfWjBU6H+NRNZuh0zFaqxZcOXlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqhOpzh9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40630C4CEE4;
-	Tue, 25 Mar 2025 12:39:36 +0000 (UTC)
+	 MIME-Version; b=r8faI/d9DcLUZYQjznKQ4QgOQTmeY/lBpmh8pHAP2OZIZmndsxClFMwkCip9YQaLMoLlLXjlPfuvz8LwWdDPi+qSNLSHknEzCVXPozUKKdB8VI8bhTp22GtSg/EKb1r30luFjtuxSGXdWGNWi/pOz8qtpCDS2UkF2WRclcwQbF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6fXubfj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3873EC4CEE4;
+	Tue, 25 Mar 2025 12:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906376;
-	bh=dN4cHZgQGkT7qf/1VxEeLXaLWJHpmOQDmJ6zJQq/or0=;
+	s=korg; t=1742906177;
+	bh=aFPt36b88bu/IS2oPE/0m/mpGF4Ik3SGQMiA60dE9rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqhOpzh9TWjvMti6GpU/31+eXcDQRnVhhG8nPrUSXsNI7+Ms8WUcEvOmVXrVfVGRt
-	 OEuYPG4EhIaYFMMbkn6muaegqrW4R037aCSxACPgpxmeaZha3qkqNC39qE/RGvmm7R
-	 qGR4kXXwgK1p/hHsVsgk54sL3EAqhyLixpudAzCY=
+	b=W6fXubfjzI0o0w9aFA/fXxlWNCR9He8JHF4+7al9v78ScZJUGiNMB8iACmaCT/PzC
+	 iWOw52zJEoOCYIDz/Ckr90OSvly5vnJVv1SJ3iWewgtVZ1L09xgjEQcEdr7NE0FUZ+
+	 R630t8WzVAzRhTk4aottstLhoSAKQdrBq7VoEfek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com,
-	David Howells <dhowells@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.12 084/116] keys: Fix UAF in key_put()
+	qianyi liu <liuqianyi125@gmail.com>,
+	Philipp Stanner <phasta@kernel.org>
+Subject: [PATCH 6.6 56/77] drm/sched: Fix fence reference count leak
 Date: Tue, 25 Mar 2025 08:22:51 -0400
-Message-ID: <20250325122151.359494355@linuxfoundation.org>
+Message-ID: <20250325122145.817427302@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: qianyi liu <liuqianyi125@gmail.com>
 
-commit 75845c6c1a64483e9985302793dbf0dfa5f71e32 upstream.
+commit a952f1ab696873be124e31ce5ef964d36bce817f upstream.
 
-Once a key's reference count has been reduced to 0, the garbage collector
-thread may destroy it at any time and so key_put() is not allowed to touch
-the key after that point.  The most key_put() is normally allowed to do is
-to touch key_gc_work as that's a static global variable.
+The last_scheduled fence leaks when an entity is being killed and adding
+the cleanup callback fails.
 
-However, in an effort to speed up the reclamation of quota, this is now
-done in key_put() once the key's usage is reduced to 0 - but now the code
-is looking at the key after the deadline, which is forbidden.
+Decrement the reference count of prev when dma_fence_add_callback()
+fails, ensuring proper balance.
 
-Fix this by using a flag to indicate that a key can be gc'd now rather than
-looking at the key's refcount in the garbage collector.
-
-Fixes: 9578e327b2b4 ("keys: update key quotas in key_put()")
-Reported-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/673b6aec.050a0220.87769.004a.GAE@google.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: stable@vger.kernel.org	# v6.2+
+[phasta: add git tag info for stable kernel]
+Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
+Signed-off-by: qianyi liu <liuqianyi125@gmail.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250311060251.4041101-1-liuqianyi125@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/key.h |    1 +
- security/keys/gc.c  |    4 +++-
- security/keys/key.c |    2 ++
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/scheduler/sched_entity.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/include/linux/key.h
-+++ b/include/linux/key.h
-@@ -236,6 +236,7 @@ struct key {
- #define KEY_FLAG_ROOT_CAN_INVAL	7	/* set if key can be invalidated by root without permission */
- #define KEY_FLAG_KEEP		8	/* set if key should not be removed */
- #define KEY_FLAG_UID_KEYRING	9	/* set if key is a user or user session keyring */
-+#define KEY_FLAG_FINAL_PUT	10	/* set if final put has happened on key */
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -237,9 +237,16 @@ static void drm_sched_entity_kill(struct
+ 		struct drm_sched_fence *s_fence = job->s_fence;
  
- 	/* the key type and key description string
- 	 * - the desc is used to match a key against search criteria
---- a/security/keys/gc.c
-+++ b/security/keys/gc.c
-@@ -218,8 +218,10 @@ continue_scanning:
- 		key = rb_entry(cursor, struct key, serial_node);
- 		cursor = rb_next(cursor);
- 
--		if (refcount_read(&key->usage) == 0)
-+		if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
-+			smp_mb(); /* Clobber key->user after FINAL_PUT seen. */
- 			goto found_unreferenced_key;
+ 		dma_fence_get(&s_fence->finished);
+-		if (!prev || dma_fence_add_callback(prev, &job->finish_cb,
+-					   drm_sched_entity_kill_jobs_cb))
++		if (!prev ||
++		    dma_fence_add_callback(prev, &job->finish_cb,
++					   drm_sched_entity_kill_jobs_cb)) {
++			/*
++			 * Adding callback above failed.
++			 * dma_fence_put() checks for NULL.
++			 */
++			dma_fence_put(prev);
+ 			drm_sched_entity_kill_jobs_cb(NULL, &job->finish_cb);
 +		}
  
- 		if (unlikely(gc_state & KEY_GC_REAPING_DEAD_1)) {
- 			if (key->type == key_gc_dead_keytype) {
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -658,6 +658,8 @@ void key_put(struct key *key)
- 				key->user->qnbytes -= key->quotalen;
- 				spin_unlock_irqrestore(&key->user->lock, flags);
- 			}
-+			smp_mb(); /* key->user before FINAL_PUT set. */
-+			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
- 			schedule_work(&key_gc_work);
- 		}
+ 		prev = &s_fence->finished;
  	}
 
 
