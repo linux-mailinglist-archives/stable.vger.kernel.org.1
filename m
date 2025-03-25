@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381DCA700C3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48CEA70012
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DFAA19A473F
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE969173EED
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACEB26B2BA;
-	Tue, 25 Mar 2025 12:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735EE268C41;
+	Tue, 25 Mar 2025 12:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5c44YcY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOlvOcZn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1969826B2AA;
-	Tue, 25 Mar 2025 12:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307942686BD;
+	Tue, 25 Mar 2025 12:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906255; cv=none; b=puixtN+0kOWoPstJQnF4y6MJ05pWMJaF/WtM5qZWlDj0WALh3wXuLiGBPswXIc7m0G9DjXJD/Yufb+Lp4BFbO19JbWlhI6A2Uos+BkE5DHoSPpvwdcREhqSPshzC9GHrlh6/um8bbNegJC6B8JrJdDF01clCehovLGb1S+ZvKjo=
+	t=1742905909; cv=none; b=byxVHEuUHP1il+cbj1mzKPk6UvKr8yDgytcxZQznLc+iWGWqrBFGcCDh2GK4h3OG4RXqmpwvYwRPHN+9kqBExyDrsnaLSoUSnoPAK3iDFcv/N4ZsDgN7068zFXNiHAbuQlJvYd4JC5XUypxx4dWT++utune2TSm/haXd3TjnSqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906255; c=relaxed/simple;
-	bh=IQS8ZLTTO0IIg8A3g551wGFAJnACQEvUoPfbHy2YPCg=;
+	s=arc-20240116; t=1742905909; c=relaxed/simple;
+	bh=KT+lPZZJBw31moasN4QmXBx/3a8z3F4it1yLSAXbP1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnCOUPMLIij26VesK116Sx56gMyBSaEN54ZwCf//QKCxznief/Qe5pwpjKDwRBONFNn+z7ZHJer3FPWIbHkrrU/1GaavC9i5U/eYfF57JOS82OLRbWjBANSLnAv/0xgE9INmfJ7QCQOdw5lPKSPeqRI0NEGdJykRA32U/4fMTyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5c44YcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDD3C4CEE4;
-	Tue, 25 Mar 2025 12:37:34 +0000 (UTC)
+	 MIME-Version; b=tKsehoGI+K4NUeeHvWxSnqkmINvLv5T1WsCSwZBBIL7gb+LVOl874J0DMGPk8wXesamaqvkc8tTyHtJa58bgULPPpzTb1FjfsIhnzdPxr/YrP5o1JWT2ucXMBGXKCzWbG+pNtF/OSqMDL7ZdAW861Bq57s2mGIBjt7WKeJOCGSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOlvOcZn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7254C4CEE4;
+	Tue, 25 Mar 2025 12:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906254;
-	bh=IQS8ZLTTO0IIg8A3g551wGFAJnACQEvUoPfbHy2YPCg=;
+	s=korg; t=1742905909;
+	bh=KT+lPZZJBw31moasN4QmXBx/3a8z3F4it1yLSAXbP1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5c44YcYYCNt3mNV+0IT4rcOUR9+otu7p05OwLHMJnqaPw1hKBff1QHt93Ol4lA8H
-	 7jxkj+2w82QRGxB/1YmwtodiHKHRW60gOFrATerHVTlpH6i/1RpHj1CoOkDRP0BkWn
-	 3YPYF8uEAm7IDSBNuvZ07bF5y3KCiK8/XbK0fFfQ=
+	b=GOlvOcZnizUXljA7n88yH6oLxImMnOnpDpFzjpn7PJx5aHMDhdYjTSrlv+B4NUiYx
+	 SNYHLliq6UbaVQF1aZUNWkeixp8fNT5fuRTpJTg2zcvrveYgOivEvqlISz4Tl81/lC
+	 RG1qCxcMBuTFtVEroUV1r7A/to6ss4UI7vxTtugo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/116] firmware: imx-scu: fix OF node leak in .probe()
+Subject: [PATCH 6.13 031/119] Bluetooth: hci_event: Fix connection regression between LE and non-LE adapters
 Date: Tue, 25 Mar 2025 08:21:29 -0400
-Message-ID: <20250325122149.270652665@linuxfoundation.org>
+Message-ID: <20250325122149.859500354@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
 
-[ Upstream commit fbf10b86f6057cf79300720da4ea4b77e6708b0d ]
+[ Upstream commit f6685a96c8c8a07e260e39bac86d4163cfb38a4d ]
 
-imx_scu_probe() calls of_parse_phandle_with_args(), but does not
-release the OF node reference obtained by it. Add a of_node_put() call
-after done with the node.
+Due to a typo during defining HCI errors it is not possible to connect
+LE-capable device with BR/EDR only adapter. The connection is terminated
+by the LE adapter because the invalid LL params error code is treated
+as unsupported remote feature.
 
-Fixes: f25a066d1a07 ("firmware: imx-scu: Support one TX and one RX")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 79c0868ad65a ("Bluetooth: hci_event: Use HCI error defines instead of magic values")
+Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/imx/imx-scu.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/bluetooth/hci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/imx/imx-scu.c b/drivers/firmware/imx/imx-scu.c
-index 1dd4362ef9a3f..8c28e25ddc8a6 100644
---- a/drivers/firmware/imx/imx-scu.c
-+++ b/drivers/firmware/imx/imx-scu.c
-@@ -280,6 +280,7 @@ static int imx_scu_probe(struct platform_device *pdev)
- 		return ret;
- 
- 	sc_ipc->fast_ipc = of_device_is_compatible(args.np, "fsl,imx8-mu-scu");
-+	of_node_put(args.np);
- 
- 	num_channel = sc_ipc->fast_ipc ? 2 : SCU_MU_CHAN_NUM;
- 	for (i = 0; i < num_channel; i++) {
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 6203bd8663b74..f2f69eb4295e1 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -684,7 +684,7 @@ enum {
+ #define HCI_ERROR_REMOTE_POWER_OFF	0x15
+ #define HCI_ERROR_LOCAL_HOST_TERM	0x16
+ #define HCI_ERROR_PAIRING_NOT_ALLOWED	0x18
+-#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1e
++#define HCI_ERROR_UNSUPPORTED_REMOTE_FEATURE	0x1a
+ #define HCI_ERROR_INVALID_LL_PARAMS	0x1e
+ #define HCI_ERROR_UNSPECIFIED		0x1f
+ #define HCI_ERROR_ADVERTISING_TIMEOUT	0x3c
 -- 
 2.39.5
 
