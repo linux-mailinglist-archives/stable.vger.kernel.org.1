@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8652A700BD
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25620A70110
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F93C175C3A
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56D56189DC57
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AB626AA87;
-	Tue, 25 Mar 2025 12:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CB126F45F;
+	Tue, 25 Mar 2025 12:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7wkB52n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOmm7hTO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEF726A1C5;
-	Tue, 25 Mar 2025 12:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779662690F2;
+	Tue, 25 Mar 2025 12:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906181; cv=none; b=Ew0cAsagDbGdcah/CO21cts9oq0sknLxeh4CrJfVncpPi7Uuzho7RmRFT5Rv1r1+CnMtsDL3giIzrs7FsAX95MQR2RQTe9VKzvCg92twfLQjdCjg1P4fmn6blhRdZ3bUrgyuC8ZZCBUiyUl47ZgajJ4jFVE3gWHMjJe85KL1D7s=
+	t=1742906380; cv=none; b=UM+BtDuJkl4p62nGE5Ohn7Dv3gcPjD4DJJ2zYwrJNtw3ShRqVXyKnZU00zVpX3WfyRwySQcByE7FGKfreiHTuHPHbIFTGC5EHGHgrhSAkUsAxxKB1Gcg7mytrmsIrBGMgswvqk9DZMyR60v7qNACrGIcXhZbEdn5+gyKc5dviuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906181; c=relaxed/simple;
-	bh=yvRKKpVDWh4OvAS3C3cjppcKKOyv8lFOr+44bi2DotU=;
+	s=arc-20240116; t=1742906380; c=relaxed/simple;
+	bh=lole+tdBo6c+4oJr4O0hW6p2KMCZxoWLwVzR8b/Uk6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZI1me/JkWOsQ6Ukt+ZX1049Af6GbEafFWSPeq7hXFUC2dEI6wJmPA6HPwnpihGUQ7ubkRiSAfTSjoHa8bUa2Qh5pbOXbIl3vEE6Dq/C6FWJjqGMM7EHJgUeZL3qvRSNQqz2bhP3/7M6NzEmEO4UFmK/SwSOUDg2S7Ap20j2qPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7wkB52n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29ADC4CEE4;
-	Tue, 25 Mar 2025 12:36:20 +0000 (UTC)
+	 MIME-Version; b=UlEvfCAgsKKdH00CzE92CCBUE45l1MfPi8utEZh9urr2scE3TMI/blmAVMw6ltDVdrvOX+IN1Mt+bXqpDcYA88HQdfg72VzRl5CSovOXpOGgMKWVT9YyxuD7qr4aY5FwAGqGSmrU5w9TgPRuytIr7Cz+USwxePpAcE1gdbciihE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOmm7hTO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A36C4CEE4;
+	Tue, 25 Mar 2025 12:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906181;
-	bh=yvRKKpVDWh4OvAS3C3cjppcKKOyv8lFOr+44bi2DotU=;
+	s=korg; t=1742906380;
+	bh=lole+tdBo6c+4oJr4O0hW6p2KMCZxoWLwVzR8b/Uk6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7wkB52nHgMrr5wPoEEtqOYmy2FCkiByVh9EiJS/bGNsOPrm2+jqn4o+2J+LGv6SE
-	 tKhHXDDTzuNr3d+w2Qv2Zh4BkZOE7ZOp1bh/ASOHbL/fqjZShawzV1VL9HxfiXiacr
-	 FzoN1cCoB5S7+I8BvceR9fNCgBOMZvUnhz0PLmII=
+	b=TOmm7hTOalYsUyF8lAwLz7Y1+BpQE5bYuwOIpOmAgxV0p28kKeal5YnmlIznBMyMz
+	 FILYGlp9ptOd7bJ5cYPk5yXOipnckMuoGRph6TxTUkQ8uSDdwm5zuo5n+iq/9Pq2I9
+	 yq/pIMiYOnClVeoAbdn0bweo8vCEurW9/k0CD9d8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rosca <david.rosca@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>
-Subject: [PATCH 6.6 58/77] drm/amdgpu: Fix JPEG video caps max size for navi1x and raven
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.12 086/116] batman-adv: Ignore own maximum aggregation size during RX
 Date: Tue, 25 Mar 2025 08:22:53 -0400
-Message-ID: <20250325122145.868163968@linuxfoundation.org>
+Message-ID: <20250325122151.410156772@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rosca <david.rosca@amd.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit ec33964d9d88488fa954a03d476a8b811efc6e85 upstream.
+commit 548b0c5de7619ef53bbde5590700693f2f6d2a56 upstream.
 
-8192x8192 is the maximum supported resolution.
+An OGMv1 and OGMv2 packet receive processing were not only limited by the
+number of bytes in the received packet but also by the nodes maximum
+aggregation packet size limit. But this limit is relevant for TX and not
+for RX. It must not be enforced by batadv_(i)v_ogm_aggr_packet to avoid
+loss of information in case of a different limit for sender and receiver.
 
-Signed-off-by: David Rosca <david.rosca@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6e0d2fde3ae8fdb5b47e10389f23ed2cb4daec5d)
+This has a minor side effect for B.A.T.M.A.N. IV because the
+batadv_iv_ogm_aggr_packet is also used for the preprocessing for the TX.
+But since the aggregation code itself will not allow more than
+BATADV_MAX_AGGREGATION_BYTES bytes, this check was never triggering (in
+this context) prior of removing it.
+
 Cc: stable@vger.kernel.org
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Fixes: 9323158ef9f4 ("batman-adv: OGMv2 - implement originators logic")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nv.c    |    2 +-
- drivers/gpu/drm/amd/amdgpu/soc15.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/batman-adv/bat_iv_ogm.c |    3 +--
+ net/batman-adv/bat_v_ogm.c  |    3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/nv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nv.c
-@@ -84,7 +84,7 @@ static const struct amdgpu_video_codec_i
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 8192, 8192, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 8192, 4352, 0)},
- };
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -324,8 +324,7 @@ batadv_iv_ogm_aggr_packet(int buff_pos,
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm_packet->tvlv_len);
  
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -125,7 +125,7 @@ static const struct amdgpu_video_codec_i
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 4096, 52)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VC1, 1920, 1088, 4)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 4096, 186)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 4096, 4096, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_JPEG, 8192, 8192, 0)},
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_VP9, 4096, 4096, 0)},
- };
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
  
+ /* send a batman ogm to a given interface */
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -839,8 +839,7 @@ batadv_v_ogm_aggr_packet(int buff_pos, i
+ 	/* check if there is enough space for the optional TVLV */
+ 	next_buff_pos += ntohs(ogm2_packet->tvlv_len);
+ 
+-	return (next_buff_pos <= packet_len) &&
+-	       (next_buff_pos <= BATADV_MAX_AGGREGATION_BYTES);
++	return next_buff_pos <= packet_len;
+ }
+ 
+ /**
 
 
 
