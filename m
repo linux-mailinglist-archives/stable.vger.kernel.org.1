@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-126482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1C6A7010D
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BA5A7009C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E760843640
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FDCB19A335E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0C726E145;
-	Tue, 25 Mar 2025 12:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837FC2690E7;
+	Tue, 25 Mar 2025 12:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9z/Fm/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfJAgU3n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF38525C717;
-	Tue, 25 Mar 2025 12:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436391DD9D3;
+	Tue, 25 Mar 2025 12:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906306; cv=none; b=r7SXWIN2JEbkYeWtM8zDO9xNgqREwUPN5x+BwI8RzJ/EXOeJjoGZvgLG5c9MX+yd0CfusrgUrR4kjI9NRbHMJJR9/Ms2GZN+rq1/Jk+iG4ic5kRDVSHMDJScdzX7HxwzQVpW/ISB3J7lzWvHgwCh+/3QlLUr3xk0D2iMZli0uwc=
+	t=1742905997; cv=none; b=NBKBULnQUnvjGnf1D4R/sbMXHqhtyFMYWu+FOZyjHk7CcoK369OVH1GIaVk+miuxS4/TZEIpecNUyzQ4CzrYPcZcUPWkH8Za65bRW20I5ZcXFMkGvCGhycYMyxC6nnqFUumC5D8O6Huw0pt+J9Miv41KKqCQL3puWW3z5GqRSkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906306; c=relaxed/simple;
-	bh=qF8nnOmDKv+eJz4k//BNqlGElgCO9OKEuTsnp3XM85g=;
+	s=arc-20240116; t=1742905997; c=relaxed/simple;
+	bh=bZAeLUJcFxejPtybDaWcuoagkkxTE55jr7YvUlFKxXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASpAgU+jK0/W/wE4K3VdGz6Mq9Oq4SNi9Qaw7TAhHvJ0PftFo+sE6FSVT9gES/RGWaF9MLXYMaxtPtUpmTuiT8Zs7nKyZOfIvXWIv9naKB/boNFUQrilC+y/rHTzuNDLxM+TuQCv85a3LZGvTPCxs4wmkG9AxTPAFDg9J8G21GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9z/Fm/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710D8C4CEE4;
-	Tue, 25 Mar 2025 12:38:26 +0000 (UTC)
+	 MIME-Version; b=Q0eji+vkuoFIYlboL7sQytRatOH6zk3TvsMNJHlSauke0quTtikQ2JI4tFlMWWMNdmX7yYOjbrwuM14SlEUR8Gp9XNvBz2TQbWzi1cfOVPK7Bf3+bwqt16MPXpRB63zhuvLnzQJu+ubF3C1MTUts2Tyok+e3W4UU8ChT0to/bv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfJAgU3n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E703AC4CEE4;
+	Tue, 25 Mar 2025 12:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906306;
-	bh=qF8nnOmDKv+eJz4k//BNqlGElgCO9OKEuTsnp3XM85g=;
+	s=korg; t=1742905997;
+	bh=bZAeLUJcFxejPtybDaWcuoagkkxTE55jr7YvUlFKxXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9z/Fm/tEsVyozRpSfKMOSyqaonkTZbZuqWXhO6uF+yJivodAwH8DrDBaH4ZxEYCv
-	 wIX+oQmJO+svX5dvNKxzNnyLN72copt2wpJEANLbtJhzuLOSJfYD6FSe45Bh3+bbNd
-	 PmernBPy87MGuFqUTJ0P3FoJyvkDVYPKvwTWqu5k=
+	b=lfJAgU3nNXNJtomIu2HS3hh8vfM3Pq28E6CpSPcaoKKpDFVsQJvvIQhDieSHTu+iE
+	 6x1aVKT8xDSJej8riPb+vIo+xJ9JjWSrJ7q226hfchpnDpH4egiBtquKFuvePOmM1u
+	 OfAdSrSJoTenb3uxi6PE2h8qk0piAiVPlsu/jLC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongjian Sun <sunyongjian1@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/116] libfs: Fix duplicate directory entry in offset_dir_lookup
-Date: Tue, 25 Mar 2025 08:22:15 -0400
-Message-ID: <20250325122150.434751788@linuxfoundation.org>
+	Rafael Aquini <raquini@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 078/119] selftests/mm: run_vmtests.sh: fix half_ufd_size_MB calculation
+Date: Tue, 25 Mar 2025 08:22:16 -0400
+Message-ID: <20250325122151.051037358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+From: Rafael Aquini <raquini@redhat.com>
 
-[ Upstream commit f70681e9e6066ab7b102e6b46a336a8ed67812ae ]
+commit 67a2f86846f244d81601cf2e1552c4656b8556d6 upstream.
 
-There is an issue in the kernel:
+We noticed that uffd-stress test was always failing to run when invoked
+for the hugetlb profiles on x86_64 systems with a processor count of 64 or
+bigger:
 
-In tmpfs, when using the "ls" command to list the contents
-of a directory with a large number of files, glibc performs
-the getdents call in multiple rounds. If a concurrent unlink
-occurs between these getdents calls, it may lead to duplicate
-directory entries in the ls output. One possible reproduction
-scenario is as follows:
+  ...
+  # ------------------------------------
+  # running ./uffd-stress hugetlb 128 32
+  # ------------------------------------
+  # ERROR: invalid MiB (errno=9, @uffd-stress.c:459)
+  ...
+  # [FAIL]
+  not ok 3 uffd-stress hugetlb 128 32 # exit=1
+  ...
 
-Create 1026 files and execute ls and rm concurrently:
+The problem boils down to how run_vmtests.sh (mis)calculates the size of
+the region it feeds to uffd-stress.  The latter expects to see an amount
+of MiB while the former is just giving out the number of free hugepages
+halved down.  This measurement discrepancy ends up violating uffd-stress'
+assertion on number of hugetlb pages allocated per CPU, causing it to bail
+out with the error above.
 
-for i in {1..1026}; do
-    echo "This is file $i" > /tmp/dir/file$i
-done
+This commit fixes that issue by adjusting run_vmtests.sh's
+half_ufd_size_MB calculation so it properly renders the region size in
+MiB, as expected, while maintaining all of its original constraints in
+place.
 
-ls /tmp/dir				rm /tmp/dir/file4
-	->getdents(file1026-file5)
-						->unlink(file4)
-
-	->getdents(file5,file3,file2,file1)
-
-It is expected that the second getdents call to return file3
-through file1, but instead it returns an extra file5.
-
-The root cause of this problem is in the offset_dir_lookup
-function. It uses mas_find to determine the starting position
-for the current getdents call. Since mas_find locates the first
-position that is greater than or equal to mas->index, when file4
-is deleted, it ends up returning file5.
-
-It can be fixed by replacing mas_find with mas_find_rev, which
-finds the first position that is less than or equal to mas->index.
-
-Fixes: b9b588f22a0c ("libfs: Use d_children list to iterate simple_offset directories")
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Link: https://lore.kernel.org/r/20250320034417.555810-1-sunyongjian@huaweicloud.com
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250218192251.53243-1-aquini@redhat.com
+Fixes: 2e47a445d7b3 ("selftests/mm: run_vmtests.sh: fix hugetlb mem size calculation")
+Signed-off-by: Rafael Aquini <raquini@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/libfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mm/run_vmtests.sh |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index b0f262223b535..3cb49463a8496 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -492,7 +492,7 @@ offset_dir_lookup(struct dentry *parent, loff_t offset)
- 		found = find_positive_dentry(parent, NULL, false);
- 	else {
- 		rcu_read_lock();
--		child = mas_find(&mas, DIR_OFFSET_MAX);
-+		child = mas_find_rev(&mas, DIR_OFFSET_MIN);
- 		found = find_positive_dentry(parent, child, false);
- 		rcu_read_unlock();
- 	}
--- 
-2.39.5
-
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -302,7 +302,9 @@ uffd_stress_bin=./uffd-stress
+ CATEGORY="userfaultfd" run_test ${uffd_stress_bin} anon 20 16
+ # Hugetlb tests require source and destination huge pages. Pass in half
+ # the size of the free pages we have, which is used for *each*.
+-half_ufd_size_MB=$((freepgs / 2))
++# uffd-stress expects a region expressed in MiB, so we adjust
++# half_ufd_size_MB accordingly.
++half_ufd_size_MB=$(((freepgs * hpgsize_KB) / 1024 / 2))
+ CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb "$half_ufd_size_MB" 32
+ CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb-private "$half_ufd_size_MB" 32
+ CATEGORY="userfaultfd" run_test ${uffd_stress_bin} shmem 20 16
 
 
 
