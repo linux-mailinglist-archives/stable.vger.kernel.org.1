@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-126417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E504EA700F0
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF23A70084
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9683BCA57
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9092C7A4B93
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4129B26A1C5;
-	Tue, 25 Mar 2025 12:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C3426F473;
+	Tue, 25 Mar 2025 12:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1e+sW2a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BwuXoQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30DB25C6E4;
-	Tue, 25 Mar 2025 12:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177F726F46F;
+	Tue, 25 Mar 2025 12:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906185; cv=none; b=GQ9Z8vzou/eTnb04oKOdbNJhBVx8E1t6ONe3VbEx8PgbL3Pko9lViWncmAX6d/NnsvuAUmkF8J/1e40cYKVoYigZmHxUNii8vmLBrlzwn42J4gbcEOAwJMyhmVBW04Gh8b11pyndyU59D8AeZths//j620Jq7MRD9aXYp2X4MM0=
+	t=1742906384; cv=none; b=TtIFdmH4L8fi64J00PRUGhE4WDyhi33fe9XKN6zYFJlbFY9xA6eOFkKaJC6jV5HSXZiOYiVriUq4WFFngxAQX2sY7f1p59RV61EFTzzqEx+GgQeNL69pJQXE5GvU1xAKlKWccZVOV8tC17zFEW18NNphrRuMMDpJvYHMEVpyskM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906185; c=relaxed/simple;
-	bh=Nxr/u6hF2bvxiwY394g8b2CyDX3va03jtdQvNVlzc1w=;
+	s=arc-20240116; t=1742906384; c=relaxed/simple;
+	bh=6TNm+oDbZUdF1rLNRP+DkI+olBb5+vKjgYl/8m7QMJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CByHsS1BPTVMuZogA+MP7Zg9HF0k2U20TRBuKisTvY3o1WJ1+CmWaVSW9nbDVHvvcU3G8T+Usr3trDQZCEKClEDz1tNeWy+PeZf6CyqfGjDowmcP38aAEGW6eAogkyb7UUzk1Mxfuy4wVn6R4RNi93AILrayb1kw6FV7c3k49IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1e+sW2a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A57C4CEE4;
-	Tue, 25 Mar 2025 12:36:24 +0000 (UTC)
+	 MIME-Version; b=njM6xCp1NwRKBHUc8LGE6YuI3ACl1yetUCJfv1kdcYhDxPUe4ETsecSBBOCCJsOpeW0OrfFARTCY9kWFmxcRGtuDvcSd51Z7Yw/UVqOlbgxTGDEpnWCY9Y0mB0q6aNMTyMvq4sh+yt1ecB9ejZA06oL/OoyH/BGljXCn1h8AcaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BwuXoQb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEAFAC4CEE9;
+	Tue, 25 Mar 2025 12:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906184;
-	bh=Nxr/u6hF2bvxiwY394g8b2CyDX3va03jtdQvNVlzc1w=;
+	s=korg; t=1742906384;
+	bh=6TNm+oDbZUdF1rLNRP+DkI+olBb5+vKjgYl/8m7QMJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1e+sW2amWmQLrYVvi1T7ZyGHKqRfEt1HmkfHpsZa4uCKtpGWXoXGfbeXpgRmAKvE
-	 ncifKv0j/FakoFw6ndqBVVHqPHvApbDv6VzGiQXAfUDejJSif8KYBbzakgjEERXOel
-	 beq+Nt6y1lsAfZutvhVzc9MAqbDDMw6cIeJP3p3I=
+	b=1BwuXoQbVUj0YJWwXps0fp4WUgsRMJ2AEu6ZQSfZbjKLpk8gvNSc+pAxjkyhoBhrp
+	 5fcDfmfe/W7CWDbCdU3PoAx1k8WkbBanns92rsXSgidAzL+k/K/BhkVmDFyjhxDn2M
+	 cjk5h/3re/Sa4Xnt/i4pJVJEGU6gjbCNfBgivcBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChiaHsuan Chung <chiahsuan.chung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 60/77] drm/amd/display: Use HW lock mgr for PSR1 when only one eDP
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 088/116] pmdomain: amlogic: fix T7 ISP secpower
 Date: Tue, 25 Mar 2025 08:22:55 -0400
-Message-ID: <20250325122145.920109552@linuxfoundation.org>
+Message-ID: <20250325122151.460426174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-commit acbf16a6ae775b4db86f537448cc466288aa307e upstream.
+commit ef17b519088ee0c167cf507820609732ec8bad1a upstream.
 
-[WHY]
-DMUB locking is important to make sure that registers aren't accessed
-while in PSR.  Previously it was enabled but caused a deadlock in
-situations with multiple eDP panels.
+ISP and MIPI_ISP, these two have a parent-child relationship,
+ISP depends on MIPI_ISP.
 
-[HOW]
-Detect if multiple eDP panels are in use to decide whether to use
-lock. Refactor the function so that the first check is for PSR-SU
-and then replay is in use to prevent having to look up number
-of eDP panels for those configurations.
-
-Fixes: f245b400a223 ("Revert "drm/amd/display: Use HW lock mgr for PSR1"")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3965
-Reviewed-by: ChiaHsuan Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ed569e1279a3045d6b974226c814e071fa0193a6)
+Fixes: ca75e4b214c6 ("pmdomain: amlogic: Add support for T7 power domains controller")
+Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250303-fix-t7-pwrc-v1-1-b563612bcd86@amlogic.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/pmdomain/amlogic/meson-secure-pwrc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-@@ -69,5 +69,16 @@ bool should_use_dmub_lock(struct dc_link
- 	if (link->replay_settings.replay_feature_enabled)
- 		return true;
- 
-+	/* only use HW lock for PSR1 on single eDP */
-+	if (link->psr_settings.psr_version == DC_PSR_VERSION_1) {
-+		struct dc_link *edp_links[MAX_NUM_EDP];
-+		int edp_num;
-+
-+		dc_get_edp_links(link->dc, edp_links, &edp_num);
-+
-+		if (edp_num == 1)
-+			return true;
-+	}
-+
- 	return false;
- }
+--- a/drivers/pmdomain/amlogic/meson-secure-pwrc.c
++++ b/drivers/pmdomain/amlogic/meson-secure-pwrc.c
+@@ -221,7 +221,7 @@ static const struct meson_secure_pwrc_do
+ 	SEC_PD(T7_VI_CLK2,	0),
+ 	/* ETH is for ethernet online wakeup, and should be always on */
+ 	SEC_PD(T7_ETH,		GENPD_FLAG_ALWAYS_ON),
+-	SEC_PD(T7_ISP,		0),
++	TOP_PD(T7_ISP,		0, PWRC_T7_MIPI_ISP_ID),
+ 	SEC_PD(T7_MIPI_ISP,	0),
+ 	TOP_PD(T7_GDC,		0, PWRC_T7_NIC3_ID),
+ 	TOP_PD(T7_DEWARP,	0, PWRC_T7_NIC3_ID),
 
 
 
