@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-126225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CECA6FFC3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557A1A700CD
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35D7B171FBE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:01:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E56F19A46C6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E921EEA36;
-	Tue, 25 Mar 2025 12:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D3926A1C7;
+	Tue, 25 Mar 2025 12:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zmxuob+x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0ewMFPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F98A25A62B;
-	Tue, 25 Mar 2025 12:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7150A26A1BD;
+	Tue, 25 Mar 2025 12:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905831; cv=none; b=B4yrt5QMqSOXnyFJWe4XMQnM5/PPrjdwkpBSLFYk63QZ9ImpnCj2w/Krc6gBR0dVKd4uCsPNYEw6dXnvBGdqIhgHwBWZyy3VSWWU21PYAAwsxknjcHhAw2tUxSiys6MvNPLa2iH58s5ZN6rgypU2PzzwSf4isypcEms7X085n7Q=
+	t=1742906170; cv=none; b=gjb/hjU0BpcXXpwukNzsxTFzRa1fSbBcdmxiU84oq4gbKjtjcDY6YWGyRAG2CJskBab7r9oALCF7nbbRlsZ3q87Rmh6qblhku3Z34bG18jU4tMim5f5UjDKrCxOD8/91vLzrY3Y5Axs8vvAtSVtgxWvH/RYBc6I39e1eDgRjlP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905831; c=relaxed/simple;
-	bh=9WCI+Wyo5oCQXgbvYLel7+AA+hZAW7D15j7CL45xwTQ=;
+	s=arc-20240116; t=1742906170; c=relaxed/simple;
+	bh=poUxc/VHItdPEWuVfB4W1Or3rfdWdq7kWPoSVRr0SbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSIEjrdzxllkHB6zj1QU+wMzzAsmfNakcwdXVKTtEEi2do68GCh+xgUi2N2jSJQp1suyBL6Is6zDmNPaJwmBeH7FueeVd4plZurLVUQ6QUQJEstCl9vfsaZiRA7//1DkBiMRrIxWv2j5t1zfG7cYYi6HTVe6hKnbZhGAmbqL5VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zmxuob+x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449E7C4CEEF;
-	Tue, 25 Mar 2025 12:30:31 +0000 (UTC)
+	 MIME-Version; b=mOiDvKQqMszzDXSj+3Q4iGAnOeZnH6wxc6EPPqIf2D4RlrqrqtWu1FeVxnN0Eb44yAnTbRvEyU4RdkEWRcMxemMeQkPl2NHipYgnTIlKmRIQdEZD5lgUKv5GQYgSsYLJw698kBzZwgW629gAWTZ+07XYW4fKrlt6BbSmvrwa4ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0ewMFPL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D0AC4CEE9;
+	Tue, 25 Mar 2025 12:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905831;
-	bh=9WCI+Wyo5oCQXgbvYLel7+AA+hZAW7D15j7CL45xwTQ=;
+	s=korg; t=1742906170;
+	bh=poUxc/VHItdPEWuVfB4W1Or3rfdWdq7kWPoSVRr0SbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zmxuob+xo0IjBERAeMLidmtspTVlyBanmFTmxZv3OKE3TtAreo00Wdfia1WgYNiwi
-	 b5Op02R/P/UMtkNBDtjeVB5KW2T4D8QxW9K0ZcvW411pDSu3TlTKtB+g1ot9AAID3E
-	 xNKsWxwHSPxyiBUlx9ai3lrliH34oksam7XNkaBE=
+	b=P0ewMFPLia/KLa+ZPvh+CxI9Uz/bIOe7KjX9P/DQJisoKiy2qxWLnC1cQGZHALh91
+	 u4ncpEZU7cTOJtcFqvIZ483qgDQpHv40LEfHmrBlWt2qEzkDYa3ZpMZMN1cua/yaNV
+	 AyOvJHiK8g+3amqUF+N4t3/8vau2qIdVUMdJQWx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChiaHsuan Chung <chiahsuan.chung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 188/198] drm/amd/display: Use HW lock mgr for PSR1 when only one eDP
+	E Shattow <e@freeshell.de>,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 6.6 35/77] riscv: dts: starfive: Fix a typo in StarFive JH7110 pin function definitions
 Date: Tue, 25 Mar 2025 08:22:30 -0400
-Message-ID: <20250325122201.581000380@linuxfoundation.org>
+Message-ID: <20250325122145.272993153@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: E Shattow <e@freeshell.de>
 
-commit acbf16a6ae775b4db86f537448cc466288aa307e upstream.
+commit 1b133129ad6b28186214259af3bd5fc651a85509 upstream.
 
-[WHY]
-DMUB locking is important to make sure that registers aren't accessed
-while in PSR.  Previously it was enabled but caused a deadlock in
-situations with multiple eDP panels.
+Fix a typo in StarFive JH7110 pin function definitions for GPOUT_SYS_SDIO1_DATA4
 
-[HOW]
-Detect if multiple eDP panels are in use to decide whether to use
-lock. Refactor the function so that the first check is for PSR-SU
-and then replay is in use to prevent having to look up number
-of eDP panels for those configurations.
-
-Fixes: f245b400a223 ("Revert "drm/amd/display: Use HW lock mgr for PSR1"")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3965
-Reviewed-by: ChiaHsuan Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ed569e1279a3045d6b974226c814e071fa0193a6)
-Cc: stable@vger.kernel.org
-[superm1: Adjust for missing replay support bfeefe6ea5f1,
-          Adjust for dc_get_edp_links not being renamed from get_edp_links()]
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Fixes: e22f09e598d12 ("riscv: dts: starfive: Add StarFive JH7110 pin function definitions")
+Signed-off-by: E Shattow <e@freeshell.de>
+Acked-by: Hal Feng <hal.feng@starfivetech.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/riscv/boot/dts/starfive/jh7110-pinfunc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-@@ -67,5 +67,17 @@ bool should_use_dmub_lock(struct dc_link
- {
- 	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
- 		return true;
-+
-+	/* only use HW lock for PSR1 on single eDP */
-+	if (link->psr_settings.psr_version == DC_PSR_VERSION_1) {
-+		struct dc_link *edp_links[MAX_NUM_EDP];
-+		int edp_num;
-+
-+		get_edp_links(link->dc, edp_links, &edp_num);
-+
-+		if (edp_num == 1)
-+			return true;
-+	}
-+
- 	return false;
- }
+diff --git a/arch/riscv/boot/dts/starfive/jh7110-pinfunc.h b/arch/riscv/boot/dts/starfive/jh7110-pinfunc.h
+index 256de17f5261..ae49c908e7fb 100644
+--- a/arch/riscv/boot/dts/starfive/jh7110-pinfunc.h
++++ b/arch/riscv/boot/dts/starfive/jh7110-pinfunc.h
+@@ -89,7 +89,7 @@
+ #define GPOUT_SYS_SDIO1_DATA1			59
+ #define GPOUT_SYS_SDIO1_DATA2			60
+ #define GPOUT_SYS_SDIO1_DATA3			61
+-#define GPOUT_SYS_SDIO1_DATA4			63
++#define GPOUT_SYS_SDIO1_DATA4			62
+ #define GPOUT_SYS_SDIO1_DATA5			63
+ #define GPOUT_SYS_SDIO1_DATA6			64
+ #define GPOUT_SYS_SDIO1_DATA7			65
+-- 
+2.49.0
+
 
 
 
