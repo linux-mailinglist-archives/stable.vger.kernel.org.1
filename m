@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-126518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E932A7018C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:26:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5FCA700FC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A815E189BDF2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DD6E841B4B
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AF525DB14;
-	Tue, 25 Mar 2025 12:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026E326A1D9;
+	Tue, 25 Mar 2025 12:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGmKRPtg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+BHxEfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D6625DB11;
-	Tue, 25 Mar 2025 12:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D7C25C6E4;
+	Tue, 25 Mar 2025 12:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906374; cv=none; b=dLvpXcXFPEmC8QV3c+5BwcEldzyvr8Y+Fpc1tTt3R8NnAzD2PBBkCEmgV7chzaFQH1elRCjcJ+06/yv+JGwl83UmQJXXi+Toah4voCAamwXhzM+4pwgd52npdp0Gs6HT8OwW9xsejLCluk0sxwgp7O4dem2wlWVUmksYnxr/XaY=
+	t=1742906175; cv=none; b=OytxHsxOU60FvLNPLSLrztLgawOTAWW2ulTOhKoGtPzQZeoCupQa11cjzVdEjWrIOsBx1gaxyAnTmJbQue2B3EgMeaSm6G0a0exB4JjSN4eIyiBxlGgn4LboOKdcZ6OS7YnHkEQ7cySgP+Jz5rioikSTvlw6W/sxawmu03dkEJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906374; c=relaxed/simple;
-	bh=t5y1I97bDnxoCChYnDYnhstp3Ae61jooXUFedxDWPB0=;
+	s=arc-20240116; t=1742906175; c=relaxed/simple;
+	bh=3wP7bpwxOpd+kOpZbAGX4NB2/WLmHq5/ITuTW7mVprw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHdIfHFN+khC6Tc0ikPl8MidcNBd3yJNJB3sogBTZywMdDIdJMpbmClUQvB2f/3ikHoV6BZMvGTr6CIalLX7hAn+UDxgcfZbdat78jaCQj6rHfe6MlgE7fdv/quPNIAYuH8Tlm6pa/4E2pDy+8lfF0Hrtyu5ni8Yo+ApRxEIRbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGmKRPtg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E50CC4CEE4;
-	Tue, 25 Mar 2025 12:39:34 +0000 (UTC)
+	 MIME-Version; b=AXPrdghXH0tlmChPd9KFJEKr+yzTLDkubaadKAmLsZq3yLMOEibAbCKuD8/41Lplt/5MtuLKzuQuJdvbvyvyfoIwJWgQ9d8CV7aQOMUWTq0JgSIemaIyG1ti1+bRVrRjBIV6hxOIOtAtcdbSlj9TzAwfdr+DHd5B7IOBfMcAEmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+BHxEfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A672C4CEE4;
+	Tue, 25 Mar 2025 12:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906374;
-	bh=t5y1I97bDnxoCChYnDYnhstp3Ae61jooXUFedxDWPB0=;
+	s=korg; t=1742906175;
+	bh=3wP7bpwxOpd+kOpZbAGX4NB2/WLmHq5/ITuTW7mVprw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGmKRPtgVb86yeNrj4vrBI8xxBs2F4GWebnqQut5ekjVI/DHoB9jXYjqYPVHPt7L4
-	 gTVidQAu+nzVH8sc0rZRlEvXHyRkusn4WSG9eT0ACfEW8cTaMSOdTaHLJPpMAfio03
-	 crSHnXJuKUjXILQ2mP0/32vfJPRfGQOfpag3QiPs=
+	b=j+BHxEfhHrRSrvhIBe3x0XRAc471dU1zRjX1J950bZhP6b+VmERrcRG1JxQmH/0yO
+	 fsu+fbUnNga7lkxO5H+Zc1TYBskT0D36zPki93bY/q+W2VAAv8Kihn1iGjTsjjLslO
+	 u9CgGtqHonGFuIsY5wg3P0XOw21yhWaRuFKBu7tM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Schneider <ben@bens.haus>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.12 083/116] efi/libstub: Avoid physical address 0x0 when doing random allocation
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 55/77] drm/radeon: fix uninitialized size issue in radeon_vce_cs_parse()
 Date: Tue, 25 Mar 2025 08:22:50 -0400
-Message-ID: <20250325122151.334383533@linuxfoundation.org>
+Message-ID: <20250325122145.789690454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit cb16dfed0093217a68c0faa9394fa5823927e04c upstream.
+commit dd8689b52a24807c2d5ce0a17cb26dc87f75235c upstream.
 
-Ben reports spurious EFI zboot failures on a system where physical RAM
-starts at 0x0. When doing random memory allocation from the EFI stub on
-such a platform, a random seed of 0x0 (which means no entropy source is
-available) will result in the allocation to be placed at address 0x0 if
-sufficient space is available.
+On the off chance that command stream passed from userspace via
+ioctl() call to radeon_vce_cs_parse() is weirdly crafted and
+first command to execute is to encode (case 0x03000001), the function
+in question will attempt to call radeon_vce_cs_reloc() with size
+argument that has not been properly initialized. Specifically, 'size'
+will point to 'tmp' variable before the latter had a chance to be
+assigned any value.
 
-When this allocation is subsequently passed on to the decompression
-code, the 0x0 address is mistaken for NULL and the code complains and
-gives up.
+Play it safe and init 'tmp' with 0, thus ensuring that
+radeon_vce_cs_reloc() will catch an early error in cases like these.
 
-So avoid address 0x0 when doing random allocation, and set the minimum
-address to the minimum alignment.
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-Cc: <stable@vger.kernel.org>
-Reported-by: Ben Schneider <ben@bens.haus>
-Tested-by: Ben Schneider <ben@bens.haus>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 2fc5703abda2 ("drm/radeon: check VCE relocation buffer range v3")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2d52de55f9ee7aaee0e09ac443f77855989c6b68)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/randomalloc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/radeon/radeon_vce.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -75,6 +75,10 @@ efi_status_t efi_random_alloc(unsigned l
- 	if (align < EFI_ALLOC_ALIGN)
- 		align = EFI_ALLOC_ALIGN;
+--- a/drivers/gpu/drm/radeon/radeon_vce.c
++++ b/drivers/gpu/drm/radeon/radeon_vce.c
+@@ -557,7 +557,7 @@ int radeon_vce_cs_parse(struct radeon_cs
+ {
+ 	int session_idx = -1;
+ 	bool destroyed = false, created = false, allocated = false;
+-	uint32_t tmp, handle = 0;
++	uint32_t tmp = 0, handle = 0;
+ 	uint32_t *size = &tmp;
+ 	int i, r = 0;
  
-+	/* Avoid address 0x0, as it can be mistaken for NULL */
-+	if (alloc_min == 0)
-+		alloc_min = align;
-+
- 	size = round_up(size, EFI_ALLOC_ALIGN);
- 
- 	/* count the suitable slots in each memory map entry */
 
 
 
