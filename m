@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-126539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF71A7015E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:22:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00436A70125
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFBE8178684
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:13:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6510F3BF963
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAEA9270EA7;
-	Tue, 25 Mar 2025 12:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F69C26B0BF;
+	Tue, 25 Mar 2025 12:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBEjpyHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MF4GhEOx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B3226F47B;
-	Tue, 25 Mar 2025 12:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19742571AC;
+	Tue, 25 Mar 2025 12:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906413; cv=none; b=jjopXV3yIiUUVGlDAbLhs+fcGOkmhVTnTuFVs6cyPfemXGWG6jrXAaDCtkNQAtAX21hpdZ9qC0DgqCE2QPWzDIvdg8i0nI3Ck+is2cDf91pYQdlc1+ma6t41dX3kCeWrhDh0MOCIZIi6bdMqiQKWCzvVFPc1yfiNsoX8wa2qbFQ=
+	t=1742906221; cv=none; b=SFekuyP23lqlyXorIbiH6nz1IzeuprpZBOefsXaSGUM51Mauyvf9F7LLa3TkWQ+XFI1osEoOxKpmQ5EhB3P0bzFNkCxoHJhwBjZGQn4QCljw2VVK+nAcJUdOTmnDNdhkDinRzA0fRjoAyj+Z40crZ2ERFM5xt57MJbAc3HwQdGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906413; c=relaxed/simple;
-	bh=5W/6a3ATg9fTIYyOG7WAUyPH6uSTcPcEgXKc5+q6Xk4=;
+	s=arc-20240116; t=1742906221; c=relaxed/simple;
+	bh=bkzAU0pYx5BcVJNQ/qanhzDT80OaeJRFgWyyqmWqBKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeVVOLIezLRyldH1vn21wcTPJHEkcD+jVBapf6HUwSPauLyYx0fGp8dDCAWx4Bs2icQD3fqFE1hXtVUtUGDtmlyqlGACITYgP719dGXEEgMa0FW9mcNeQo1ksBIRM012hGJS4ceKNFeuOg4ew2qtGpRmeaaBvpR12k1YfR5BSSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBEjpyHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07106C4CEE4;
-	Tue, 25 Mar 2025 12:40:12 +0000 (UTC)
+	 MIME-Version; b=iInod75+K/XSacLvZgDOkFXUEhrI74WzT0vrWKR/FLck42bI90iJLI3YRXeJWvPLxbTDmBzaheApdDlk99AUN7oQ2Ai04SGvTAB4f/6FyhYGaYo2LoNBdBZMaWZCVCdPK0Q+bH+/GNxA0wr8UXpqWPd/FCL0KBSpfp1Njgub1mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF4GhEOx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBB7C4CEE9;
+	Tue, 25 Mar 2025 12:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906413;
-	bh=5W/6a3ATg9fTIYyOG7WAUyPH6uSTcPcEgXKc5+q6Xk4=;
+	s=korg; t=1742906220;
+	bh=bkzAU0pYx5BcVJNQ/qanhzDT80OaeJRFgWyyqmWqBKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBEjpyHSNVmamI/XU11i5kim2VqNbgGQivi27rbOrG2ZQPhpsNQwSVFNW73fgF02d
-	 lEawqsHklfB/eZ8Lr3u+HFYmyOQC0xDDYe3CG2KgCWLX8hJ2B1MoF4w7Hlt52GVikg
-	 5eL40/RqL5etaXbr3D/hvTb9SBu6I1YYwAjYRkaM=
+	b=MF4GhEOxGsMl7Vji7+a/sbXY1cWOsqGnZ6a4z2sO6NO9sFvE3VxRk5CF9TL6pkrfi
+	 hExpJ3pDH+6rpGIAUjjdOdKM++YbP4f0ea3q/QxudbO+NfEMqpgrZfpC9//JEQN+7H
+	 Cq/tFKipLkzib8W2hFm4vj3J1I/u82L2MlB9aqxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 097/116] drm/amdgpu/pm: wire up hwmon fan speed for smu 14.0.2
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.6 69/77] KVM: arm64: Mark some header functions as inline
 Date: Tue, 25 Mar 2025 08:23:04 -0400
-Message-ID: <20250325122151.688150536@linuxfoundation.org>
+Message-ID: <20250325122146.199889835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +66,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 5ca0040ecfe8ba0dee9df1f559e8d7587f12bf89 upstream.
+[ Upstream commit f9dd00de1e53a47763dfad601635d18542c3836d ]
 
-Add callbacks for fan speed fetching.
+The shared hyp switch header has a number of static functions which
+might not be used by all files that include the header, and when unused
+they will provoke compiler warnings, e.g.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4034
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 90df6db62fa78a8ab0b705ec38db99c7973b95d6)
-Cc: stable@vger.kernel.org # 6.12.x
+| In file included from arch/arm64/kvm/hyp/nvhe/hyp-main.c:8:
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:703:13: warning: 'kvm_hyp_handle_dabt_low' defined but not used [-Wunused-function]
+|   703 | static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~~~~~
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:682:13: warning: 'kvm_hyp_handle_cp15_32' defined but not used [-Wunused-function]
+|   682 | static bool kvm_hyp_handle_cp15_32(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~~~~
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:662:13: warning: 'kvm_hyp_handle_sysreg' defined but not used [-Wunused-function]
+|   662 | static bool kvm_hyp_handle_sysreg(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~~~
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:458:13: warning: 'kvm_hyp_handle_fpsimd' defined but not used [-Wunused-function]
+|   458 | static bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~~~
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:329:13: warning: 'kvm_hyp_handle_mops' defined but not used [-Wunused-function]
+|   329 | static bool kvm_hyp_handle_mops(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~
+
+Mark these functions as 'inline' to suppress this warning. This
+shouldn't result in any functional change.
+
+At the same time, avoid the use of __alias() in the header and alias
+kvm_hyp_handle_iabt_low() and kvm_hyp_handle_watchpt_low() to
+kvm_hyp_handle_memory_fault() using CPP, matching the style in the rest
+of the kernel. For consistency, kvm_hyp_handle_memory_fault() is also
+marked as 'inline'.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20250210195226.1215254-8-mark.rutland@arm.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c |   35 +++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ arch/arm64/kvm/hyp/include/hyp/switch.h |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-@@ -1628,6 +1628,39 @@ out:
- 	adev->unique_id = ((uint64_t)upper32 << 32) | lower32;
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -279,7 +279,7 @@ static inline void __hyp_sve_restore_gue
+  * If FP/SIMD is not implemented, handle the trap and inject an undefined
+  * instruction exception to the guest. Similarly for trapped SVE accesses.
+  */
+-static bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	bool sve_guest;
+ 	u8 esr_ec;
+@@ -518,7 +518,7 @@ static bool handle_ampere1_tcr(struct kv
+ 	return true;
  }
  
-+static int smu_v14_0_2_get_fan_speed_pwm(struct smu_context *smu,
-+					 uint32_t *speed)
-+{
-+	int ret;
-+
-+	if (!speed)
-+		return -EINVAL;
-+
-+	ret = smu_v14_0_2_get_smu_metrics_data(smu,
-+					       METRICS_CURR_FANPWM,
-+					       speed);
-+	if (ret) {
-+		dev_err(smu->adev->dev, "Failed to get fan speed(PWM)!");
-+		return ret;
-+	}
-+
-+	/* Convert the PMFW output which is in percent to pwm(255) based */
-+	*speed = min(*speed * 255 / 100, (uint32_t)255);
-+
-+	return 0;
-+}
-+
-+static int smu_v14_0_2_get_fan_speed_rpm(struct smu_context *smu,
-+					 uint32_t *speed)
-+{
-+	if (!speed)
-+		return -EINVAL;
-+
-+	return smu_v14_0_2_get_smu_metrics_data(smu,
-+						METRICS_CURR_FANSPEED,
-+						speed);
-+}
-+
- static int smu_v14_0_2_get_power_limit(struct smu_context *smu,
- 				       uint32_t *current_power_limit,
- 				       uint32_t *default_power_limit,
-@@ -2794,6 +2827,8 @@ static const struct pptable_funcs smu_v1
- 	.set_performance_level = smu_v14_0_set_performance_level,
- 	.gfx_off_control = smu_v14_0_gfx_off_control,
- 	.get_unique_id = smu_v14_0_2_get_unique_id,
-+	.get_fan_speed_pwm = smu_v14_0_2_get_fan_speed_pwm,
-+	.get_fan_speed_rpm = smu_v14_0_2_get_fan_speed_rpm,
- 	.get_power_limit = smu_v14_0_2_get_power_limit,
- 	.set_power_limit = smu_v14_0_2_set_power_limit,
- 	.get_power_profile_mode = smu_v14_0_2_get_power_profile_mode,
+-static bool kvm_hyp_handle_sysreg(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_sysreg(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	if (cpus_have_final_cap(ARM64_WORKAROUND_CAVIUM_TX2_219_TVM) &&
+ 	    handle_tx2_tvm(vcpu))
+@@ -541,7 +541,7 @@ static bool kvm_hyp_handle_sysreg(struct
+ 	return false;
+ }
+ 
+-static bool kvm_hyp_handle_cp15_32(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_cp15_32(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	if (static_branch_unlikely(&vgic_v3_cpuif_trap) &&
+ 	    __vgic_v3_perform_cpuif_access(vcpu) == 1)
+@@ -550,19 +550,18 @@ static bool kvm_hyp_handle_cp15_32(struc
+ 	return false;
+ }
+ 
+-static bool kvm_hyp_handle_memory_fault(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_memory_fault(struct kvm_vcpu *vcpu,
++					       u64 *exit_code)
+ {
+ 	if (!__populate_fault_info(vcpu))
+ 		return true;
+ 
+ 	return false;
+ }
+-static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+-	__alias(kvm_hyp_handle_memory_fault);
+-static bool kvm_hyp_handle_watchpt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+-	__alias(kvm_hyp_handle_memory_fault);
++#define kvm_hyp_handle_iabt_low		kvm_hyp_handle_memory_fault
++#define kvm_hyp_handle_watchpt_low	kvm_hyp_handle_memory_fault
+ 
+-static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	if (kvm_hyp_handle_memory_fault(vcpu, exit_code))
+ 		return true;
 
 
 
