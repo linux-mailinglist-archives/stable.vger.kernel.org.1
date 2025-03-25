@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-126453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EFBA700C2
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:16:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D73A6FFFC
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B30E719A728C
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00C9719A4859
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8431326B2BB;
-	Tue, 25 Mar 2025 12:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167A1267708;
+	Tue, 25 Mar 2025 12:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ck9KY5Vr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuqIx8Pn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4268826B2BA;
-	Tue, 25 Mar 2025 12:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FA4267703;
+	Tue, 25 Mar 2025 12:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906253; cv=none; b=i2yMrECIZeDWY09UB0FWDt1lh+UetCkv8QgenEvqy+QlU6yWSqEFYGbE2CogFQGezx8qJpIID1JGRCa2NbEaxpX0Ea8QA3wFF/PTmnKbmn/utVaaqRUd5CMHGcs45XaaNANYn22KRFiC/UB8Yicsg0SAw97Rw2XT1YbbxSt2avA=
+	t=1742905809; cv=none; b=ojxeraeyhkLDrFv7J5w7Dsh/fgFeb/Ge/s1RSqcHIqETlnbw3kfq/ESiSUrj3ul7MoCyAf6kBMcycEeOqBzV1M3wviPJvkGUewxgMW7UIRMUpMa86YsRUQXolDrthw/FdnikiZTaIzLA/9lu+l2Ib6JYnaMxcxFj2xyj7UaNJNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906253; c=relaxed/simple;
-	bh=/0HG64hFgr01Ng9P7Is/1tg6t1y1Ae3VA5OU09CizLg=;
+	s=arc-20240116; t=1742905809; c=relaxed/simple;
+	bh=mlCX3o1UccWhTnRZjgVJtTYHYyTKZRViN5Kqs/wV/8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZ+qJZbyX57napCy+esRokbzF1KvHj56MauX8ysYrimLo46WLnUrBkGWsfcXTqVzzV9q/ZrWCuwLqT5hwBn1Ia7yTbAQvHZnDnD3Vk8Em68sHXb+vVoYTo3R1H+Ksgu6DVAn3TOek+KUADHwv9HoLpc2RBEF/GF7fw8LVboplww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ck9KY5Vr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0DDC4CEE4;
-	Tue, 25 Mar 2025 12:37:32 +0000 (UTC)
+	 MIME-Version; b=uSpBn7G43T/DMqQgdkjDzm5siErhu2QF+CjR1xiELTbLAfQyPSLGo4HCsmWQ562PzNSZ1EgR9spSYDrGkxjFv3wUCqcNJGao0LXW/QX+byU0pRqv/L4ASHBKS1NlCJNEmL2u+xYOR66tHpMbOxqlbsUsIxTmthHwY+n/Y9g9vFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuqIx8Pn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760F6C4CEE4;
+	Tue, 25 Mar 2025 12:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906252;
-	bh=/0HG64hFgr01Ng9P7Is/1tg6t1y1Ae3VA5OU09CizLg=;
+	s=korg; t=1742905809;
+	bh=mlCX3o1UccWhTnRZjgVJtTYHYyTKZRViN5Kqs/wV/8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ck9KY5VrEG1HYMhG+YhxanEBRFTc/VpT5pIWGbEIfwLAAbyUsYLaZUTsysJm5CG+7
-	 5HrVW3rpDn/e2ek5tyr/GD9UlnkcZVdcqYukTXajADPb8YzGqFPSTBdpBROkAzmxN6
-	 6FqengxbIzG7TeahDFr5xsBkjNalkCmOv3zbBkh8=
+	b=cuqIx8PnHYT5j+OyDAeE4H/cN0N5p42pxb8wYTAll5ZWPfxWpjlxkpRIlmYPY/I0K
+	 hjWya5/XSgIweRDMatTSthYpYZJ5Vp/81e/pFbPd9XsV36knpz2V914O6ElHr263S9
+	 /ugr/n60yuo8wOVG0mVj5JF9/4/Evye0LacmHj5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Elwell <phil@raspberrypi.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/116] ARM: dts: bcm2711: Dont mark timer regs unconfigured
-Date: Tue, 25 Mar 2025 08:21:46 -0400
-Message-ID: <20250325122149.710661697@linuxfoundation.org>
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 145/198] smb: client: fix potential UAF in cifs_dump_full_key()
+Date: Tue, 25 Mar 2025 08:21:47 -0400
+Message-ID: <20250325122200.462937228@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit c24f272ae751a9f54f8816430e7f2d56031892cc ]
+commit 58acd1f497162e7d282077f816faa519487be045 upstream.
 
-During upstream process of Raspberry Pi 4 back in 2019 the ARMv7 stubs
-didn't configured the ARM architectural timer. This firmware issue has
-been fixed in 2020, which gave users enough time to update their system.
+Skip sessions that are being teared down (status == SES_EXITING) to
+avoid UAF.
 
-So drop this property to allow the use of the vDSO version of
-clock_gettime.
-
-Link: https://github.com/raspberrypi/tools/pull/113
-Fixes: 7dbe8c62ceeb ("ARM: dts: Add minimal Raspberry Pi 4 support")
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250222094113.48198-1-wahrenst@gmx.net
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/broadcom/bcm2711.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ fs/smb/client/ioctl.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm2711.dtsi b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-index 4fd0732a34d32..c06d9f5e53c80 100644
---- a/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-+++ b/arch/arm/boot/dts/broadcom/bcm2711.dtsi
-@@ -451,8 +451,6 @@ IRQ_TYPE_LEVEL_LOW)>,
- 					  IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) |
- 					  IRQ_TYPE_LEVEL_LOW)>;
--		/* This only applies to the ARMv7 stub */
--		arm,cpu-registers-not-fw-configured;
- 	};
- 
- 	cpus: cpus {
--- 
-2.39.5
-
+--- a/fs/smb/client/ioctl.c
++++ b/fs/smb/client/ioctl.c
+@@ -246,7 +246,9 @@ static int cifs_dump_full_key(struct cif
+ 		spin_lock(&cifs_tcp_ses_lock);
+ 		list_for_each_entry(server_it, &cifs_tcp_ses_list, tcp_ses_list) {
+ 			list_for_each_entry(ses_it, &server_it->smb_ses_list, smb_ses_list) {
+-				if (ses_it->Suid == out.session_id) {
++				spin_lock(&ses_it->ses_lock);
++				if (ses_it->ses_status != SES_EXITING &&
++				    ses_it->Suid == out.session_id) {
+ 					ses = ses_it;
+ 					/*
+ 					 * since we are using the session outside the crit
+@@ -254,9 +256,11 @@ static int cifs_dump_full_key(struct cif
+ 					 * so increment its refcount
+ 					 */
+ 					ses->ses_count++;
++					spin_unlock(&ses_it->ses_lock);
+ 					found = true;
+ 					goto search_end;
+ 				}
++				spin_unlock(&ses_it->ses_lock);
+ 			}
+ 		}
+ search_end:
 
 
 
