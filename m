@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-126094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E19A6FF29
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:00:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC75A6FF2D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83C5317A806
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:55:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6332E173C5C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBEE28FFD2;
-	Tue, 25 Mar 2025 12:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54540265CBE;
+	Tue, 25 Mar 2025 12:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/G7A+9B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9uQJYEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C439265CAD;
-	Tue, 25 Mar 2025 12:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA49290085;
+	Tue, 25 Mar 2025 12:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905589; cv=none; b=Sa8xH+N0+Im8sCrqTJ9pdhveDjhE/IW8pVrr6YK4f3/AnR6ETdXbxJd2e094hUhY2m473yB6g/pVrNfA31UFYFYtDO50laOYcfr9kvrhugndAJYQcXVBgLBM34/neVP6VW6ARvWxxHSlRqw7G1x60u+xkFcuooMuOTsSAjTm+vE=
+	t=1742905593; cv=none; b=LU+YvdVXVd5Fb7IKSbD2QU6aE1JCorUbwa6UuUGlgvSCs/gjj9/LKSbDFPX6WK71+L/T/sx9ZvFO8TIlKOQ/tSq9XigGhpoO8UIq9XBgggyXA4J9Q10f7Va2SY2L8mMYkvvyuhuWe/01ibGWEQmcVcHtXddSQg2aVWYRJWbEbVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905589; c=relaxed/simple;
-	bh=w6GFT7a00If2IArktORgzzHuDH9heKiST7QRLfYWQvc=;
+	s=arc-20240116; t=1742905593; c=relaxed/simple;
+	bh=Z/amHm39IzUSTEN7K9MlBCeNRUkWbtziOPwnNhlw02g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1xRzpDl5xj2vO2JJPij3GbFmZHiQ8IpHPrRJCblBKa+rffvGkYVnxfwSk3X6+wQFstjkP1ljLv6hYJREgUNKpmUxM5Bz1eRka+/S+VLZqBLQwUOJ0rlWz7IKil/pochY5QDRLSkOmp/9/tgkXQDwpblNkcHtffwS/O+DvvqdoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/G7A+9B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4BBC4CEED;
-	Tue, 25 Mar 2025 12:26:28 +0000 (UTC)
+	 MIME-Version; b=bU5zcN+JtlsbOh1aTiabUhjbafLaxcKdxfafG6YLg5qj+01ldf5eLMPJ5CmNNGT8KpW8Q7xt9RhFMIgQkIM6oqxkRd7BuaN25Lvz8pQ5l7FXSL58m0QYB2yKyTfDTBsqAg0XJWXp8HNXgYXqczvb0g3E61/04HWrz5mM1H0AuAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9uQJYEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978B8C4CEF1;
+	Tue, 25 Mar 2025 12:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905589;
-	bh=w6GFT7a00If2IArktORgzzHuDH9heKiST7QRLfYWQvc=;
+	s=korg; t=1742905592;
+	bh=Z/amHm39IzUSTEN7K9MlBCeNRUkWbtziOPwnNhlw02g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/G7A+9Bh5uHPi9gzzTvq9PUVwE6ckNW9tZBQtnXoNZjGSBUck3UyUD/LuduouXZL
-	 SXoSzAXjwVnldFDLlz3QWsBUbu+9JW/vSRKsIkH+Grf5FHulFHFqQSsLX45UJdBQhZ
-	 +CnFbO5k+5yLHG31f0Y5lWuA0gjojNGPIUYFgBz0=
+	b=p9uQJYEQRJbYdYhcc/w6OPFDagYhpUdDcbnh7LAlMHJQ45wjoHmKfO18gy3mLMm6N
+	 6MS6x7Lm4re+U6x6X7bXXfzbPabkLrBODQYgjNkjfXrAKK1ZmlTqk6d4jMQsEV/MY/
+	 S8aT/Ft1YI/mi7+qM9lj4JOTU3Q3sQTIKP3dTsSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christopher Lentocha <christopherericlentocha@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/198] net: wwan: mhi_wwan_mbim: Silence sequence number glitch errors
-Date: Tue, 25 Mar 2025 08:20:19 -0400
-Message-ID: <20250325122158.130184760@linuxfoundation.org>
+Subject: [PATCH 6.1 058/198] nvme-pci: quirk Acer FA100 for non-uniqueue identifiers
+Date: Tue, 25 Mar 2025 08:20:20 -0400
+Message-ID: <20250325122158.157405334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
 References: <20250325122156.633329074@linuxfoundation.org>
@@ -68,59 +67,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Christopher Lentocha <christopherericlentocha@gmail.com>
 
-[ Upstream commit 0d1fac6d26aff5df21bb4ec980d9b7a11c410b96 ]
+[ Upstream commit fcd875445866a5219cf2be3101e276b21fc843f3 ]
 
-When using the Qualcomm X55 modem on the ThinkPad X13s, the kernel log is
-constantly being filled with errors related to a "sequence number glitch",
-e.g.:
+In order for two Acer FA100 SSDs to work in one PC (in the case of
+myself, a Lenovo Legion T5 28IMB05), and not show one drive and not
+the other, and sometimes mix up what drive shows up (randomly), these
+two lines of code need to be added, and then both of the SSDs will
+show up and not conflict when booting off of one of them. If you boot
+up your computer with both SSDs installed without this patch, you may
+also randomly get into a kernel panic (if the initrd is not set up) or
+stuck in the initrd "/init" process, it is set up, however, if you do
+apply this patch, there should not be problems with booting or seeing
+both contents of the drive. Tested with the btrfs filesystem with a
+RAID configuration of having the root drive '/' combined to make two
+256GB Acer FA100 SSDs become 512GB in total storage.
 
-	[ 1903.284538] sequence number glitch prev=16 curr=0
-	[ 1913.812205] sequence number glitch prev=50 curr=0
-	[ 1923.698219] sequence number glitch prev=142 curr=0
-	[ 2029.248276] sequence number glitch prev=1555 curr=0
-	[ 2046.333059] sequence number glitch prev=70 curr=0
-	[ 2076.520067] sequence number glitch prev=272 curr=0
-	[ 2158.704202] sequence number glitch prev=2655 curr=0
-	[ 2218.530776] sequence number glitch prev=2349 curr=0
-	[ 2225.579092] sequence number glitch prev=6 curr=0
+Kernel Logs with patch applied (`dmesg -t | grep -i nvm`):
 
-Internet connectivity is working fine, so this error seems harmless. It
-looks like modem does not preserve the sequence number when entering low
-power state; the amount of errors depends on how actively the modem is
-being used.
+```
+...
+nvme 0000:04:00.0: platform quirk: setting simple suspend
+nvme nvme0: pci function 0000:04:00.0
+nvme 0000:05:00.0: platform quirk: setting simple suspend
+nvme nvme1: pci function 0000:05:00.0
+nvme nvme1: missing or invalid SUBNQN field.
+nvme nvme1: allocated 64 MiB host memory buffer.
+nvme nvme0: missing or invalid SUBNQN field.
+nvme nvme0: allocated 64 MiB host memory buffer.
+nvme nvme1: 8/0/0 default/read/poll queues
+nvme nvme1: Ignoring bogus Namespace Identifiers
+nvme nvme0: 8/0/0 default/read/poll queues
+nvme nvme0: Ignoring bogus Namespace Identifiers
+nvme0n1: p1 p2
+...
+```
 
-A similar issue has also been seen on USB-based MBIM modems [1]. However,
-in cdc_ncm.c the "sequence number glitch" message is a debug message
-instead of an error. Apply the same to the mhi_wwan_mbim.c driver to
-silence these errors when using the modem.
+Kernel Logs with patch not applied (`dmesg -t | grep -i nvm`):
 
-[1]: https://lists.freedesktop.org/archives/libmbim-devel/2016-November/000781.html
+```
+...
+nvme 0000:04:00.0: platform quirk: setting simple suspend
+nvme nvme0: pci function 0000:04:00.0
+nvme 0000:05:00.0: platform quirk: setting simple suspend
+nvme nvme1: pci function 0000:05:00.0
+nvme nvme0: missing or invalid SUBNQN field.
+nvme nvme1: missing or invalid SUBNQN field.
+nvme nvme0: allocated 64 MiB host memory buffer.
+nvme nvme1: allocated 64 MiB host memory buffer.
+nvme nvme0: 8/0/0 default/read/poll queues
+nvme nvme1: 8/0/0 default/read/poll queues
+nvme nvme1: globally duplicate IDs for nsid 1
+nvme nvme1: VID:DID 1dbe:5216 model:Acer SSD FA100 256GB firmware:1.Z.J.2X
+nvme0n1: p1 p2
+...
+```
 
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250212-mhi-wwan-mbim-sequence-glitch-v1-1-503735977cbd@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Christopher Lentocha <christopherericlentocha@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/mhi_wwan_mbim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
-index ef70bb7c88ad6..43c20deab3189 100644
---- a/drivers/net/wwan/mhi_wwan_mbim.c
-+++ b/drivers/net/wwan/mhi_wwan_mbim.c
-@@ -209,7 +209,7 @@ static int mbim_rx_verify_nth16(struct mhi_mbim_context *mbim, struct sk_buff *s
- 	if (mbim->rx_seq + 1 != le16_to_cpu(nth16->wSequence) &&
- 	    (mbim->rx_seq || le16_to_cpu(nth16->wSequence)) &&
- 	    !(mbim->rx_seq == 0xffff && !le16_to_cpu(nth16->wSequence))) {
--		net_err_ratelimited("sequence number glitch prev=%d curr=%d\n",
-+		net_dbg_ratelimited("sequence number glitch prev=%d curr=%d\n",
- 				    mbim->rx_seq, le16_to_cpu(nth16->wSequence));
- 	}
- 	mbim->rx_seq = le16_to_cpu(nth16->wSequence);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index f939b6dc295e6..afcb9668dad98 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3577,6 +3577,8 @@ static const struct pci_device_id nvme_id_table[] = {
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x1cc1, 0x5350),   /* ADATA XPG GAMMIX S50 */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
++	{ PCI_DEVICE(0x1dbe, 0x5216),   /* Acer/INNOGRIT FA100/5216 NVMe SSD */
++		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x1dbe, 0x5236),   /* ADATA XPG GAMMIX S70 */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x1e49, 0x0021),   /* ZHITAI TiPro5000 NVMe SSD */
 -- 
 2.39.5
 
