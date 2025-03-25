@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-126480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E4AA700CB
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE952A70037
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:12:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 683C7169B02
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:11:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB92717789C
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F69926B97F;
-	Tue, 25 Mar 2025 12:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27D32690D6;
+	Tue, 25 Mar 2025 12:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGm8Nhh4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXcB7W4o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0AB25D542;
-	Tue, 25 Mar 2025 12:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9F725522E;
+	Tue, 25 Mar 2025 12:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906303; cv=none; b=TzWF38bng5KFUo/BOPp7UOOUyn22rGQ6zAXnbQEc64IzMw5jHuGFtxlfToSI0s+vSd5Pm7DXVm+5FYYjMl83ZvwoHcDqWxnn1stLu3wsMQZk7heuno42bSufU3BX8gfGIxFfJsZ4K2qLnhGd2bopvS5S1F+xqf2URaBbGWTrPxg=
+	t=1742905993; cv=none; b=rNaOvjrir75OWWZqbG8bJE0eXC6iIF26AXhBSPAq54g7opP9FvqeRmtW/d9s/b2eQPUpBu4yWjxesUFYatm+9mFcDkdMnzWFpk8lMc9wn2630F+ND5l05g6KdGHQtT70MbE1OW9o0BmxkTHawDbyF9UTxdYj6AIlEQ0F6oFd6UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906303; c=relaxed/simple;
-	bh=zLPIjpZWchrzo+te8VKKdZKu6uul95x7KV3gwNeqLuw=;
+	s=arc-20240116; t=1742905993; c=relaxed/simple;
+	bh=YhBt0Ktrk6qRwT95rTa5TnX6Bs8W+zPSD2GKqdb0BiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYt/WgqaB3e5OXyb/W+ho8k8UT8jTBK2Lo49Skj9HZdLUeMX/OvoywBYlw717miXTO4oCutzNi9+hMB+NRxANqt++tG56j1CvwhG6CVakidJ/qdy0Q4suLeqzkUy9RR6YUqW9I6im5BvRSdW2qYPHbWQBvYUSwQX5nNLe3jblMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGm8Nhh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B47FC4CEE4;
-	Tue, 25 Mar 2025 12:38:22 +0000 (UTC)
+	 MIME-Version; b=T7l10KmrInrXyFa8SdufSjYxXyc7sHOc1zcNNFif3k4MNI4QOTr874qltCG1/CCLu38Vo/otFJvxWjuPcd6PKMn+Dm1HD3VnhcSdjkpntT0tVU7Lc76oZARRKBOCM/FDJgLUqnJk1DBGxf0926ibyt4ndSa86w5SDK7eZcyoy5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXcB7W4o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389BFC4CEE4;
+	Tue, 25 Mar 2025 12:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906302;
-	bh=zLPIjpZWchrzo+te8VKKdZKu6uul95x7KV3gwNeqLuw=;
+	s=korg; t=1742905993;
+	bh=YhBt0Ktrk6qRwT95rTa5TnX6Bs8W+zPSD2GKqdb0BiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGm8Nhh4EVycXC3ZGPnBAADjNla7xa7XQN+6DmYoS0FoQ+fLMCyXxGtTAHFulspYP
-	 mpmbiW3cPS4uIUyTIxGzc2NFul/gkGMtnClTUbT3klQMlLMdpc1woZkih4xXBwjTvz
-	 cFZMffa/cWQJbTlbm5C9/iFXLDvRv5L+ZGB10hu4=
+	b=jXcB7W4oNf56OdaDSCf1VoyM6HMHGRpWXr7xmdKu3qKMP9KH7qW8TKGjZZkfFuEYV
+	 7rAV0Bh3GlW14mhdLCZUj/YYOf2U2pScl0dSnpA0fX8ZfZX2ABgsqwcnaaVc3u6w5x
+	 TD/9/jYDXmlrtUNQaB0C8paJYThyDEUYia+DNEeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/116] net: lwtunnel: fix recursion loops
-Date: Tue, 25 Mar 2025 08:22:13 -0400
-Message-ID: <20250325122150.383010075@linuxfoundation.org>
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.13 076/119] mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops
+Date: Tue, 25 Mar 2025 08:22:14 -0400
+Message-ID: <20250325122150.997359607@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,181 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-[ Upstream commit 986ffb3a57c5650fb8bf6d59a8f0f07046abfeb6 ]
+commit 723ef0e20dbb2aa1b5406d2bb75374fc48187daa upstream.
 
-This patch acts as a parachute, catch all solution, by detecting
-recursion loops in lwtunnel users and taking care of them (e.g., a loop
-between routes, a loop within the same route, etc). In general, such
-loops are the consequence of pathological configurations. Each lwtunnel
-user is still free to catch such loops early and do whatever they want
-with them. It will be the case in a separate patch for, e.g., seg6 and
-seg6_local, in order to provide drop reasons and update statistics.
-Another example of a lwtunnel user taking care of loops is ioam6, which
-has valid use cases that include loops (e.g., inline mode), and which is
-addressed by the next patch in this series. Overall, this patch acts as
-a last resort to catch loops and drop packets, since we don't want to
-leak something unintentionally because of a pathological configuration
-in lwtunnels.
+cqhci timeouts observed on brcmstb platforms during suspend:
+  ...
+  [  164.832853] mmc0: cqhci: timeout for tag 18
+  ...
 
-The solution in this patch reuses dev_xmit_recursion(),
-dev_xmit_recursion_inc(), and dev_xmit_recursion_dec(), which seems fine
-considering the context.
+Adding cqhci_suspend()/resume() calls to disable cqe
+in sdhci_brcmstb_suspend()/resume() respectively to fix
+CQE timeouts seen on PM suspend.
 
-Closes: https://lore.kernel.org/netdev/2bc9e2079e864a9290561894d2a602d6@akamai.com/
-Closes: https://lore.kernel.org/netdev/Z7NKYMY7fJT5cYWu@shredder/
-Fixes: ffce41962ef6 ("lwtunnel: support dst output redirect function")
-Fixes: 2536862311d2 ("lwt: Add support to redirect dst.input")
-Fixes: 14972cbd34ff ("net: lwtunnel: Handle fragmentation")
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Link: https://patch.msgid.link/20250314120048.12569-2-justin.iurman@uliege.be
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d46ba2d17f90 ("mmc: sdhci-brcmstb: Add support for Command Queuing (CQE)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20250311165946.28190-1-kamal.dasu@broadcom.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/lwtunnel.c | 65 ++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 53 insertions(+), 12 deletions(-)
+ drivers/mmc/host/sdhci-brcmstb.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/core/lwtunnel.c b/net/core/lwtunnel.c
-index 711cd3b4347a7..4417a18b3e951 100644
---- a/net/core/lwtunnel.c
-+++ b/net/core/lwtunnel.c
-@@ -23,6 +23,8 @@
- #include <net/ip6_fib.h>
- #include <net/rtnh.h>
- 
-+#include "dev.h"
-+
- DEFINE_STATIC_KEY_FALSE(nf_hooks_lwtunnel_enabled);
- EXPORT_SYMBOL_GPL(nf_hooks_lwtunnel_enabled);
- 
-@@ -325,13 +327,23 @@ EXPORT_SYMBOL_GPL(lwtunnel_cmp_encap);
- 
- int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct dst_entry *dst = skb_dst(skb);
- 	const struct lwtunnel_encap_ops *ops;
- 	struct lwtunnel_state *lwtstate;
--	int ret = -EINVAL;
-+	struct dst_entry *dst;
-+	int ret;
-+
-+	if (dev_xmit_recursion()) {
-+		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
-+				     __func__);
-+		ret = -ENETDOWN;
-+		goto drop;
-+	}
- 
--	if (!dst)
-+	dst = skb_dst(skb);
-+	if (!dst) {
-+		ret = -EINVAL;
- 		goto drop;
-+	}
- 	lwtstate = dst->lwtstate;
- 
- 	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
-@@ -341,8 +353,11 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	ret = -EOPNOTSUPP;
- 	rcu_read_lock();
- 	ops = rcu_dereference(lwtun_encaps[lwtstate->type]);
--	if (likely(ops && ops->output))
-+	if (likely(ops && ops->output)) {
-+		dev_xmit_recursion_inc();
- 		ret = ops->output(net, sk, skb);
-+		dev_xmit_recursion_dec();
-+	}
- 	rcu_read_unlock();
- 
- 	if (ret == -EOPNOTSUPP)
-@@ -359,13 +374,23 @@ EXPORT_SYMBOL_GPL(lwtunnel_output);
- 
- int lwtunnel_xmit(struct sk_buff *skb)
- {
--	struct dst_entry *dst = skb_dst(skb);
- 	const struct lwtunnel_encap_ops *ops;
- 	struct lwtunnel_state *lwtstate;
--	int ret = -EINVAL;
-+	struct dst_entry *dst;
-+	int ret;
-+
-+	if (dev_xmit_recursion()) {
-+		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
-+				     __func__);
-+		ret = -ENETDOWN;
-+		goto drop;
-+	}
- 
--	if (!dst)
-+	dst = skb_dst(skb);
-+	if (!dst) {
-+		ret = -EINVAL;
- 		goto drop;
-+	}
- 
- 	lwtstate = dst->lwtstate;
- 
-@@ -376,8 +401,11 @@ int lwtunnel_xmit(struct sk_buff *skb)
- 	ret = -EOPNOTSUPP;
- 	rcu_read_lock();
- 	ops = rcu_dereference(lwtun_encaps[lwtstate->type]);
--	if (likely(ops && ops->xmit))
-+	if (likely(ops && ops->xmit)) {
-+		dev_xmit_recursion_inc();
- 		ret = ops->xmit(skb);
-+		dev_xmit_recursion_dec();
-+	}
- 	rcu_read_unlock();
- 
- 	if (ret == -EOPNOTSUPP)
-@@ -394,13 +422,23 @@ EXPORT_SYMBOL_GPL(lwtunnel_xmit);
- 
- int lwtunnel_input(struct sk_buff *skb)
- {
--	struct dst_entry *dst = skb_dst(skb);
- 	const struct lwtunnel_encap_ops *ops;
- 	struct lwtunnel_state *lwtstate;
--	int ret = -EINVAL;
-+	struct dst_entry *dst;
+--- a/drivers/mmc/host/sdhci-brcmstb.c
++++ b/drivers/mmc/host/sdhci-brcmstb.c
+@@ -503,8 +503,15 @@ static int sdhci_brcmstb_suspend(struct
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_brcmstb_priv *priv = sdhci_pltfm_priv(pltfm_host);
 +	int ret;
  
--	if (!dst)
-+	if (dev_xmit_recursion()) {
-+		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
-+				     __func__);
-+		ret = -ENETDOWN;
- 		goto drop;
+ 	clk_disable_unprepare(priv->base_clk);
++	if (host->mmc->caps2 & MMC_CAP2_CQE) {
++		ret = cqhci_suspend(host->mmc);
++		if (ret)
++			return ret;
 +	}
 +
-+	dst = skb_dst(skb);
-+	if (!dst) {
-+		ret = -EINVAL;
-+		goto drop;
-+	}
- 	lwtstate = dst->lwtstate;
+ 	return sdhci_pltfm_suspend(dev);
+ }
  
- 	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
-@@ -410,8 +448,11 @@ int lwtunnel_input(struct sk_buff *skb)
- 	ret = -EOPNOTSUPP;
- 	rcu_read_lock();
- 	ops = rcu_dereference(lwtun_encaps[lwtstate->type]);
--	if (likely(ops && ops->input))
-+	if (likely(ops && ops->input)) {
-+		dev_xmit_recursion_inc();
- 		ret = ops->input(skb);
-+		dev_xmit_recursion_dec();
-+	}
- 	rcu_read_unlock();
+@@ -529,6 +536,9 @@ static int sdhci_brcmstb_resume(struct d
+ 			ret = clk_set_rate(priv->base_clk, priv->base_freq_hz);
+ 	}
  
- 	if (ret == -EOPNOTSUPP)
--- 
-2.39.5
-
++	if (host->mmc->caps2 & MMC_CAP2_CQE)
++		ret = cqhci_resume(host->mmc);
++
+ 	return ret;
+ }
+ #endif
 
 
 
