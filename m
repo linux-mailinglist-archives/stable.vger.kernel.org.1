@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-126230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE66A6FFE3
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0166A700CF
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA6B33BF095
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:01:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C01219A61A6
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E92B267B11;
-	Tue, 25 Mar 2025 12:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E9D269816;
+	Tue, 25 Mar 2025 12:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDb8VXWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vtyn9kAb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D071257AFC;
-	Tue, 25 Mar 2025 12:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1912225A2BB;
+	Tue, 25 Mar 2025 12:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905841; cv=none; b=PjIUMfdMzyyEUsk0TR7qeZaC0N77lhRzY5cW5fmrvOJTw/7zZ0tVdSqXvvDbb9reD+oPyjJqz0TrdRhUTDXarlJCfdyXKun6a3beNYD2g2+VNzsdFmrP6saO49vM+84sPCZ8d9Nr07bSPnLW3fyDLjCsgLsK0/0aAViqCmx3D9M=
+	t=1742906028; cv=none; b=BHOlLp0/9b9x2Tp1//+1aZtrg14xAelbGajrE+PVwGuN+61IuIMzb/qPof+ibAcWkJvuN0n4wInye7wTEDVddb2IfYTv6e13aCjyqGCXLmhme+DRbxwUpgd3n8HFWsqqXqO/AF2anAnTYhvsbBz92XEGOg8OQhd8hDdMKDzOM9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905841; c=relaxed/simple;
-	bh=I1YAwbTvJKussG3oObpbFkFsq7jYPXHUWtQSC8RC+M0=;
+	s=arc-20240116; t=1742906028; c=relaxed/simple;
+	bh=eMECScl9vJUHGyw9lEW6eWJZxYxt7QlR16AU4Z4055Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XvWyl7o5GjY4KUtbyII1O4X5G7cAb6/5fcpTAgP0GT3Ggorn7i3EWuxJmktx2SAhF2mDDHcN4zDuSGIE4Q/awVuep8BVF5kigy/gZmXDVQrKGmIMsB+QUilN2/4DLI+xqxe+CPnWi598FMzZqgrA/vAcoDX7ouTxp3qu9GxGc3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDb8VXWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A57C4CEE4;
-	Tue, 25 Mar 2025 12:30:40 +0000 (UTC)
+	 MIME-Version; b=YQhPLpwzrpB6rlS0VQgTTA6dEm34yQT5SWgMZ/wSsXqY0pRGJPGmEbjzlAvcRtzGsxcRZ3CUNyXTpuh21uUmuCqyeBw6sBt7frMNvkyba+qRWvCYq1XUcmNX24FXJy7WXzwR6SRDU/BggrdDM4SnDxPuoov7q5++KEt5GoydJ8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vtyn9kAb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C02C4CEE4;
+	Tue, 25 Mar 2025 12:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905840;
-	bh=I1YAwbTvJKussG3oObpbFkFsq7jYPXHUWtQSC8RC+M0=;
+	s=korg; t=1742906028;
+	bh=eMECScl9vJUHGyw9lEW6eWJZxYxt7QlR16AU4Z4055Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rDb8VXWyaRYwBdj/5niz1myhsPw5KhVjQhCKp7m7LLjEJUxOOnwZDfaYyJxdIE65m
-	 nk/fhLYqPZRHa6RAK4zJ9pA3Vj34ukGxra9sARTCQh4na7FkrbM0TPTL9dylOXevZA
-	 itwW9Hio+NeP8Nxm16CIHHkCFk7fD0exJRCy9F2U=
+	b=Vtyn9kAbFdoOhnqNU8GHtCAGvzKjWsONL6nnuYpo3TsEDDt0slpJlvdqPlMMBPQya
+	 23xlSgMENdHIdYQNEwNKWMS5vFFstSco3JMlyBjeNP6QoqK6JIjLEiUb//bM/fSTwu
+	 yN/Cq5h39pn+ENW6tHJ5WF4gsDwybhd0zzfA1nY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 192/198] media: mediatek: vcodec: Fix VP8 stateless decoder smatch warning
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.13 096/119] drm/amdgpu/gfx12: correct cleanup of me field with gfx_v12_0_me_fini()
 Date: Tue, 25 Mar 2025 08:22:34 -0400
-Message-ID: <20250325122201.687601813@linuxfoundation.org>
+Message-ID: <20250325122151.511586662@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit b113bc7c0e83b32f4dd2d291a2b6c4803e0a2c44 upstream.
+commit 86730b5261d4d8dae3f5b97709d40d694ecf1ddf upstream.
 
-Fix a smatch static checker warning on vdec_vp8_req_if.c.
-Which leads to a kernel crash when fb is NULL.
+In gfx_v12_0_cp_gfx_load_me_microcode_rs64(), gfx_v12_0_pfp_fini() is
+incorrectly used to free 'me' field of 'gfx', since gfx_v12_0_pfp_fini()
+can only release 'pfp' field of 'gfx'. The release function of 'me' field
+should be gfx_v12_0_me_fini().
 
-Fixes: 7a7ae26fd458 ("media: mediatek: vcodec: support stateless VP8 decoding")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 52cb80c12e8a ("drm/amdgpu: Add gfx v12_0 ip block support (v6)")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ebdc52607a46cda08972888178c6aa9cd6965141)
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/vcodec/vdec/vdec_vp8_req_if.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp8_req_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp8_req_if.c
-@@ -336,14 +336,18 @@ static int vdec_vp8_slice_decode(void *h
- 	src_buf_info = container_of(bs, struct mtk_video_dec_buf, bs_buffer);
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+@@ -2413,7 +2413,7 @@ static int gfx_v12_0_cp_gfx_load_me_micr
+ 				      (void **)&adev->gfx.me.me_fw_data_ptr);
+ 	if (r) {
+ 		dev_err(adev->dev, "(%d) failed to create me data bo\n", r);
+-		gfx_v12_0_pfp_fini(adev);
++		gfx_v12_0_me_fini(adev);
+ 		return r;
+ 	}
  
- 	fb = inst->ctx->dev->vdec_pdata->get_cap_buffer(inst->ctx);
--	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
-+	if (!fb) {
-+		mtk_vcodec_err(inst, "fb buffer is NULL");
-+		return -ENOMEM;
-+	}
- 
--	y_fb_dma = fb ? (u64)fb->base_y.dma_addr : 0;
-+	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
-+	y_fb_dma = fb->base_y.dma_addr;
- 	if (inst->ctx->q_data[MTK_Q_DATA_DST].fmt->num_planes == 1)
- 		c_fb_dma = y_fb_dma +
- 			inst->ctx->picinfo.buf_w * inst->ctx->picinfo.buf_h;
- 	else
--		c_fb_dma = fb ? (u64)fb->base_c.dma_addr : 0;
-+		c_fb_dma = fb->base_c.dma_addr;
- 
- 	inst->vsi->dec.bs_dma = (u64)bs->dma_addr;
- 	inst->vsi->dec.bs_sz = bs->size;
 
 
 
