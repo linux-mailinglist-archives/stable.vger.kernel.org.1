@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51196A6F425
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:33:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89CDA6F41E
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7273E3B5CBE
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:33:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7221D1891BE9
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 11:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393CF255E55;
-	Tue, 25 Mar 2025 11:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AD21E7C28;
+	Tue, 25 Mar 2025 11:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cD7xtXa4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OJrL0uA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE020BA36
-	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D617D2561A4
+	for <stable@vger.kernel.org>; Tue, 25 Mar 2025 11:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742902405; cv=none; b=V3J+aPg1Xdnzg5FroY+i/uDynlV/acE3KswnbRI9TsBstNlo2K7z76A1pxnxBYcezcp7TDqaxqQYINWKUIInbHcJzV6/qEg7dp8NNCKly7MnzGMIZlr0Zr8ZkNPqTGWcZyAA66y9dPz5T8I/zIonlee4lbFCOIXS8UuJBoOebUs=
+	t=1742902406; cv=none; b=Wqsy9YOyzJBjlVIOYaeH+ztntdfXfKxBGqS0HVo1CPfB0a8ZyBLXIenBD9sds9qlSQDMYtfJ097i7p1NsWkAsPm0RYtPZTMjhURr2rno+QLDHf5QCvppdh3TNjmNnIVNUZ70ul1XY4CQPIPE+kR9N6feSFlNSbxKlkECfeNx02I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742902405; c=relaxed/simple;
-	bh=1rh6LRHwJd83lLg8fszpLqJe/Vo0SjNts8tbsMseeIs=;
+	s=arc-20240116; t=1742902406; c=relaxed/simple;
+	bh=OlPOQJg3xZKJu+KnZVJN2wA2JrK7hAuMzEq3banQFdI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bND8b0JA7XgOzliFtwy2V4Ct1gLp8/ToM7KMetOLJy0zBdYVD862gZGkAIHTiVuQp8MDIpkGTDjfL7mG2Th7ufYd/6j0hgLTAU3/uMpoMYlhIuIGG4Jd+G7617hdnAPwxIQgMxVk+WL5YDfoTbYgzDUyl9B6BwQgJmdenNx4Skc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cD7xtXa4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C602C4CEE4;
-	Tue, 25 Mar 2025 11:33:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d6DEDmEhU9a4hCrHUV0EdYKVOxpvbS4wQ8e+VeMWcx4lnY/lEUONC2RibQ8iRlNluFxTDBdGdi947bKpiAoi2zYS+qupK6exlciCRnd0COW1I7KDKi9M9p7txaOEDzE4FsG6Wh3J7C1RRr96weZqOwI10fH7dnVg3D4Z2Jr1EUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OJrL0uA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4488AC4CEE4;
+	Tue, 25 Mar 2025 11:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742902404;
-	bh=1rh6LRHwJd83lLg8fszpLqJe/Vo0SjNts8tbsMseeIs=;
+	s=k20201202; t=1742902406;
+	bh=OlPOQJg3xZKJu+KnZVJN2wA2JrK7hAuMzEq3banQFdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cD7xtXa439hfacgkPUGIr9TtG+JoujzPwOyZc9LqJ4MQLFKUj3F1Iej9By9kM0qpw
-	 F3Zfn2vVuJJDkC/uIO97o8Q9T3qaBTG6GPhqzB1seT7xQU+qR6rrvak7IQRIjPhq0M
-	 TRJHQIIfjrnVbBg+6Eb6KLtdE8jXi7GmPd5acVYgR8vI7IWr9mPLJbGsq8szJLVY8m
-	 DgxB/pbma4CcidMdMkgEiZctwQ3TR480e/Goqs8Eznn7d3nvQyKXS0PONcRG8qxt0/
-	 aWAUnmdQxVhDQuG4lBolGBaX4o+d/tNwv70gFoo3TVqa5rZMip3hJFBHrO+xlC+GLL
-	 QG4/GMi7k2VPw==
+	b=OJrL0uA8pjv4Le2hSPIKVZL3erKHeLqowk/MLxZkUtwLPaZeT8cK/2PIR/9XEnEKj
+	 p7IXvC5PPjysFxx+1ESi+Ip4eRmWpPhCnpAogqP2AFJu7uxQg4bQWLFhaKYCpwaioP
+	 0blsGnb7Tf8Z2Z+5yhnBB4NelYNhTz8keWuVDN0P3HqvTLIPgy8psVI3x5cQB12+qt
+	 wHbO47NOrnXexM22L+BKaf3B6eqlbVsaVxgIevlZx0YlEReCjcIrK/HzoM43dmubFi
+	 JP0JJI4hB720TxNbBZGJXu5LBawJw4MIyKWL/VcOGhD/+mqKYENzsimGq9LtBScBHq
+	 L/zMeTGInTlJA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kang Wenlin <wenlin.kang@windriver.com>,
+Cc: jianqi.ren.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y 1/7] binfmt_elf: replace IS_ERR() with IS_ERR_VALUE()
-Date: Tue, 25 Mar 2025 07:33:22 -0400
-Message-Id: <20250324220316-f3fe5b2a6a2a22f3@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] wifi: iwlwifi: mvm: ensure offloading TID queue exists
+Date: Tue, 25 Mar 2025 07:33:25 -0400
+Message-Id: <20250324232803-2a3c4228866b95ca@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250324071942.2553928-2-wenlin.kang@windriver.com>
+In-Reply-To:  <20250324072433.3796220-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,36 +67,64 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: dc64cc12bcd14219afb91b55d23192c3eb45aa43
+The upstream commit SHA1 provided is correct: 78f65fbf421a61894c14a1b91fe2fb4437b3fe5f
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Kang Wenlin<wenlin.kang@windriver.com>
-Commit author: Bo Liu<liubo03@inspur.com>
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Benjamin Berg<benjamin.berg@intel.com>
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  dc64cc12bcd14 ! 1:  35172eeb12462 binfmt_elf: replace IS_ERR() with IS_ERR_VALUE()
+1:  78f65fbf421a6 ! 1:  dc42d7e691464 wifi: iwlwifi: mvm: ensure offloading TID queue exists
     @@ Metadata
       ## Commit message ##
-         binfmt_elf: replace IS_ERR() with IS_ERR_VALUE()
+         wifi: iwlwifi: mvm: ensure offloading TID queue exists
      
-    +    commit dc64cc12bcd14219afb91b55d23192c3eb45aa43 upstream
+    +    [ Upstream commit 78f65fbf421a61894c14a1b91fe2fb4437b3fe5f ]
     +
-         Avoid typecasts that are needed for IS_ERR() and use IS_ERR_VALUE()
-         instead.
+         The resume code path assumes that the TX queue for the offloading TID
+         has been configured. At resume time it then tries to sync the write
+         pointer as it may have been updated by the firmware.
+    @@ Commit message
+         Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+         Link: https://msgid.link/20240218194912.6632e6dc7b35.Ie6e6a7488c9c7d4529f13d48f752b5439d8ac3c4@changeid
+         Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
      
-         Signed-off-by: Bo Liu <liubo03@inspur.com>
-         Signed-off-by: Kees Cook <keescook@chromium.org>
-         Link: https://lore.kernel.org/r/20221115031757.2426-1-liubo03@inspur.com
-    +    Signed-off-by: Wenlin Kang <wenlin.kang@windriver.com>
-     
-      ## fs/binfmt_elf.c ##
-     @@ fs/binfmt_elf.c: static int load_elf_binary(struct linux_binprm *bprm)
+      ## drivers/net/wireless/intel/iwlwifi/mvm/d3.c ##
+     @@ drivers/net/wireless/intel/iwlwifi/mvm/d3.c: static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
+    @@ drivers/net/wireless/intel/iwlwifi/mvm/d3.c: static int __iwl_mvm_suspend(struct
+     +			.offloading_tid = 0,
+     +		};
+      
+    - 		wowlan_config_cmd.sta_id = mvmvif->deflink.ap_sta_id;
+    + 		wowlan_config_cmd.sta_id = mvmvif->ap_sta_id;
+      
+     @@ drivers/net/wireless/intel/iwlwifi/mvm/d3.c: static int __iwl_mvm_suspend(struct ieee80211_hw *hw,
+      			goto out_noreset;
+    @@ drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+     @@
+      /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+      /*
+    -- * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
+    +- * Copyright (C) 2012-2014, 2018-2021 Intel Corporation
+     + * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
+       * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+       * Copyright (C) 2015-2016 Intel Deutschland GmbH
+       */
+     @@ drivers/net/wireless/intel/iwlwifi/mvm/sta.h: void iwl_mvm_modify_all_sta_disable_tx(struct iwl_mvm *mvm,
+    + 				       struct iwl_mvm_vif *mvmvif,
+      				       bool disable);
+    - 
+      void iwl_mvm_csa_client_absent(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
+     +int iwl_mvm_sta_ensure_queue(struct iwl_mvm *mvm, struct ieee80211_txq *txq);
+      void iwl_mvm_add_new_dqa_stream_wk(struct work_struct *wk);
 ---
 
 Results of testing on various branches:
