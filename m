@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FE9A6FFBD
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:07:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA77A700A0
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:15:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C04FA17A5EA
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:00:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2F6617BB73
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF2B1CD1F;
-	Tue, 25 Mar 2025 12:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBE326A086;
+	Tue, 25 Mar 2025 12:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYeC4m/i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipJxwQLk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4772E337A;
-	Tue, 25 Mar 2025 12:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9DB1E5B91;
+	Tue, 25 Mar 2025 12:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742905826; cv=none; b=piSQDIU3HaugMuGCwNHt1zR0nXLce6+4+SLBs4MQYHmQ7G0ETivBSfBQ7LLe5arH9ACx3REF1V2+aa72pKI4nEd8UB+7fEKLWtBrRemcNpFbsJU7WlwocGeAvQWsgOEghfLT9ZUjOwknnViB2Ez+eMD1xA7VWERMIsmq33Xij/U=
+	t=1742906135; cv=none; b=Q7DF+2xDN/6N+vcbnKxMvafZmEEPaZfATfC+jp4oYWPHNnoFxcGa47lcZWAKYMJ5OvpL9knqov6/kjbZ3qAibvLN8b1549c/2omrJv/MRdz1ZgM9YBa0bO7/+vji7X6iPI7ui20CEDGtQKrTfQZkK3ld00RO3TmzWU3+curyrSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742905826; c=relaxed/simple;
-	bh=ur6zGhZpNtHWl7SUUFapdZewnJVtbFn8bwYT1sWTOoY=;
+	s=arc-20240116; t=1742906135; c=relaxed/simple;
+	bh=hUBS7C1YerxcnCW7neyhhdhhgXhM6LFK7hRkT2JQJqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhsnC/tWPNLKwA94NFTBs3gyMKsyqDNQq9UqXsdFhYlEy6GJxeq456wo1RByWm2zArYL2KA5XSqG+Esy1wVPBKI9zTygkQd3LB24FP4xjIVv0/mCozbH7rivrfUF0IfYBQ2ZdvXWxRvJLKacKGKm4nHdQwCM2x5gyv+0MYbhj+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYeC4m/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39F8C4CEE4;
-	Tue, 25 Mar 2025 12:30:25 +0000 (UTC)
+	 MIME-Version; b=cA0Qq0UMArDnNOkLlp6IXOQy+uu4pNd3rvCnc1p95I1RwR91ATpXjxFYAy8JdLDA2WhdZw5pGJVQSffP9dGdwUKLv11h3MxNXt1yjhUZyq6chgSyBhqhIPgwtRBq6nKMts7G8H14zvapccQyGv8JJg0YZE+KAv4xHTyRpUhKkBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipJxwQLk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAAEC4CEE9;
+	Tue, 25 Mar 2025 12:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742905826;
-	bh=ur6zGhZpNtHWl7SUUFapdZewnJVtbFn8bwYT1sWTOoY=;
+	s=korg; t=1742906135;
+	bh=hUBS7C1YerxcnCW7neyhhdhhgXhM6LFK7hRkT2JQJqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BYeC4m/i0kv9KL6cRRn/hxkyQWQGhrT9ok5n43DTABGhmZlay9sFXl1w3X79fVBaD
-	 xuVboT7IbQXvx5AsRLvu6zFBsT/PKUxa8YoA/wS3xuiCb75HwO1oJ0X9QtycKn9+4w
-	 vCzLFhTnVqHgz18Ms7pPedKUUz2DkCGOX5BYXLM4=
+	b=ipJxwQLkEGWwmHydum/9gBZ/FvgSl6NRf0a52CE4y5r1xE9BHl/XdOfLm0NWJkdej
+	 iGZnLYRFpEIBoivdF9TYDipTlZx3sbmJ+4xYpWIAbGPP56AFi5wzc30IqvY4fzYwuR
+	 9H/SimTBLNDkWvL8T3fnqkdaU1jFI+pZZNOsoUro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 185/198] drm/radeon: fix uninitialized size issue in radeon_vce_cs_parse()
+	Haibo Chen <haibo.chen@nxp.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 32/77] can: flexcan: only change CAN state when link up in system PM
 Date: Tue, 25 Mar 2025 08:22:27 -0400
-Message-ID: <20250325122201.501445125@linuxfoundation.org>
+Message-ID: <20250325122145.193629385@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
-References: <20250325122156.633329074@linuxfoundation.org>
+In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
+References: <20250325122144.259256924@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-commit dd8689b52a24807c2d5ce0a17cb26dc87f75235c upstream.
+commit fd99d6ed20234b83d65b9c5417794343577cf3e5 upstream.
 
-On the off chance that command stream passed from userspace via
-ioctl() call to radeon_vce_cs_parse() is weirdly crafted and
-first command to execute is to encode (case 0x03000001), the function
-in question will attempt to call radeon_vce_cs_reloc() with size
-argument that has not been properly initialized. Specifically, 'size'
-will point to 'tmp' variable before the latter had a chance to be
-assigned any value.
+After a suspend/resume cycle on a down interface, it will come up as
+ERROR-ACTIVE.
 
-Play it safe and init 'tmp' with 0, thus ensuring that
-radeon_vce_cs_reloc() will catch an early error in cases like these.
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 1000
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+$ sudo systemctl suspend
 
-Fixes: 2fc5703abda2 ("drm/radeon: check VCE relocation buffer range v3")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2d52de55f9ee7aaee0e09ac443f77855989c6b68)
+$ ip -details -s -s a s dev flexcan0
+3: flexcan0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN group default qlen 10
+    link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 1000
+
+And only set CAN state to CAN_STATE_ERROR_ACTIVE when resume process
+has no issue, otherwise keep in CAN_STATE_SLEEPING as suspend did.
+
+Fixes: 4de349e786a3 ("can: flexcan: fix resume function")
 Cc: stable@vger.kernel.org
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250314110145.899179-1-haibo.chen@nxp.com
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/all/20250314-married-polar-elephant-b15594-mkl@pengutronix.de
+[mkl: add newlines]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_vce.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/flexcan/flexcan-core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/radeon/radeon_vce.c
-+++ b/drivers/gpu/drm/radeon/radeon_vce.c
-@@ -557,7 +557,7 @@ int radeon_vce_cs_parse(struct radeon_cs
- {
- 	int session_idx = -1;
- 	bool destroyed = false, created = false, allocated = false;
--	uint32_t tmp, handle = 0;
-+	uint32_t tmp = 0, handle = 0;
- 	uint32_t *size = &tmp;
- 	int i, r = 0;
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -2251,8 +2251,9 @@ static int __maybe_unused flexcan_suspen
+ 		}
+ 		netif_stop_queue(dev);
+ 		netif_device_detach(dev);
++
++		priv->can.state = CAN_STATE_SLEEPING;
+ 	}
+-	priv->can.state = CAN_STATE_SLEEPING;
  
+ 	return 0;
+ }
+@@ -2263,7 +2264,6 @@ static int __maybe_unused flexcan_resume
+ 	struct flexcan_priv *priv = netdev_priv(dev);
+ 	int err;
+ 
+-	priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	if (netif_running(dev)) {
+ 		netif_device_attach(dev);
+ 		netif_start_queue(dev);
+@@ -2283,6 +2283,8 @@ static int __maybe_unused flexcan_resume
+ 
+ 			flexcan_chip_interrupts_enable(dev);
+ 		}
++
++		priv->can.state = CAN_STATE_ERROR_ACTIVE;
+ 	}
+ 
+ 	return 0;
 
 
 
