@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DC6A700F1
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:18:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87687A70162
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:23:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B53AE841EF6
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:09:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87B0B19A1541
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210C929C35B;
-	Tue, 25 Mar 2025 12:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFEE25DB0B;
+	Tue, 25 Mar 2025 12:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BICAHKIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3v0A5jP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DA629C354;
-	Tue, 25 Mar 2025 12:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD99025DB14;
+	Tue, 25 Mar 2025 12:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906195; cv=none; b=lTsU/FLvK+D/mmhqQs4zuqZiF/fd4qgIm1No/P78nzTHW7wqjyYl/7LFwf65VCKYOuaeT7zEEIlSfSqTTzWcLeK+/YxdAPKEsDLpLipwMGm1I/soDr6NrCwTFc3570BSngy+f1/LmAuao+ZFFAj1qAi952/bBTMXeSKvJQqCiuk=
+	t=1742906373; cv=none; b=JTmHd5ALeMQCeEndbTNEoYpzmCp+ciZ9+8QjPy7JYxIdLxeULgzzhQdP9mkv8k1O9ubQ5PrREY7ero6h+t5GIXB3i3NZdOZ+45/5y9NOpjNq6GaxEYKvBSwvdQjv8FTWVnBgFd66hX4AOXmIgiZWtCFR7Ssan/mzSdAMgE5Epdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906195; c=relaxed/simple;
-	bh=K4VqFj7PK9nrpOzN2O3fU2rG3fAyj9Nzu3XEoU/9XZI=;
+	s=arc-20240116; t=1742906373; c=relaxed/simple;
+	bh=fmvEn8kGrb0ZaFk5xFX9BZA/hC69HAM4Hy4k9Vf7Bnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTpXapW4Co4Mnuziajetoz+gyciUmWRNpkczujbUeornMDyJTrXbFyKYg3s6hcwo2SQFQafuu8eld8HnbzqNYezOJfjZpomSyaCpsed6vIVwheDTlaJWsZZcpJND9uyKL8raWIWHfTwMT70xqIELuD5GGzuzXpaI4Xq44z+387Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BICAHKIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB01C4CEE4;
-	Tue, 25 Mar 2025 12:36:35 +0000 (UTC)
+	 MIME-Version; b=SBJtyDAWaYzv2/uuPD5A3yuLO/6uu9xeluV4sq7zDxo4IQkNobUmk/XUiYpaJQ57/nzVrrcx9ZRsb1gpkUgK3vdzkcc9i8POcw+mwkjQaz20ktzbQ2Y6Sxa+2YP8X2BaTaBF5K4brVlVt9Q5W7lFnkDcFm1cl0h1ZBQoFxnXG+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3v0A5jP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E95C4CEE4;
+	Tue, 25 Mar 2025 12:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906195;
-	bh=K4VqFj7PK9nrpOzN2O3fU2rG3fAyj9Nzu3XEoU/9XZI=;
+	s=korg; t=1742906372;
+	bh=fmvEn8kGrb0ZaFk5xFX9BZA/hC69HAM4Hy4k9Vf7Bnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BICAHKILuXEu/JvbPdF8QJUekt5ghtIqSB29yvBqd6Un6u5ncwULKOkwanWfay2qa
-	 0foL1ZM7sUm5ZQRjvpEbAd8w78y6nvsqelXg3qZHm/CKwrzdY5TGmDgrPui4VZIBAr
-	 UtjznMTFWkyh/lDjtWceVaY6+vYh0M8Ag+ilLD5I=
+	b=h3v0A5jPd104VBpLphFvkH/9pNl1lZAzdJSduM0Y2pDknL2NpHISLRl/sxemhYrDW
+	 zdli3CP6Zz7pDMFAhHG1I7NUUQkqiiIHqNn2xGyuYmB9v2wd8ob8Q8+u6OrUs2B3XO
+	 3XLkKclUDFEg79l46LIVaIJ501HA+5mlPYTn0BJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Christian Eggers <ceggers@arri.de>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 37/77] regulator: check that dummy regulator has been probed before using it
+Subject: [PATCH 6.12 065/116] regulator: check that dummy regulator has been probed before using it
 Date: Tue, 25 Mar 2025 08:22:32 -0400
-Message-ID: <20250325122145.324670626@linuxfoundation.org>
+Message-ID: <20250325122150.871559389@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
+References: <20250325122149.207086105@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -83,7 +83,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/regulator/core.c
 +++ b/drivers/regulator/core.c
-@@ -2084,6 +2084,10 @@ static int regulator_resolve_supply(stru
+@@ -2024,6 +2024,10 @@ static int regulator_resolve_supply(stru
  
  		if (have_full_constraints()) {
  			r = dummy_regulator_rdev;
@@ -94,7 +94,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			get_device(&r->dev);
  		} else {
  			dev_err(dev, "Failed to resolve %s-supply for %s\n",
-@@ -2101,6 +2105,10 @@ static int regulator_resolve_supply(stru
+@@ -2041,6 +2045,10 @@ static int regulator_resolve_supply(stru
  			goto out;
  		}
  		r = dummy_regulator_rdev;
@@ -105,7 +105,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		get_device(&r->dev);
  	}
  
-@@ -2209,8 +2217,10 @@ struct regulator *_regulator_get(struct
+@@ -2166,8 +2174,10 @@ struct regulator *_regulator_get_common(
  			 * enabled, even if it isn't hooked up, and just
  			 * provide a dummy.
  			 */
