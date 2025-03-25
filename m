@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-126467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A381A700DC
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:17:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 745C3A6FFF3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 055F917C825
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:10:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2323B4EA3
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 12:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E5C25C710;
-	Tue, 25 Mar 2025 12:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E5225A33C;
+	Tue, 25 Mar 2025 12:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WI5zea3Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLDMBtdN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38EB2586E0;
-	Tue, 25 Mar 2025 12:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141842571DC;
+	Tue, 25 Mar 2025 12:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906278; cv=none; b=HLE45lkdqsMbV131BT+y9x0rn/btRFYNgntjlWeuv2m+xHfh6v+60vUxg+34ut2a4MTcEbJWPdn5JhsY4UgGKgqoSyGv1QhIAThJ+fVapk1yh1zOX+hupFKAtdzrjrt2XJ9aBz8DJbQW0RVuQq8fprJEQL10ZvsC5y1s5xLJih8=
+	t=1742905725; cv=none; b=TqXux7Q5RASZ47hJleeD1Vmm5glDV7ys9nOYQgViwNAoOjqVVCQwr7gthWv8GHhBO/xMNCIQ8SIfrV34NhVq1T8Tolz7VkEDBmkzHnoxRGP3GsegRzWUiFZ7gr/BR45jTJwhzLMxyNzXQk/DXmQb6s9PvgiGM4otQUZdN1Z7x4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906278; c=relaxed/simple;
-	bh=w+8OCPbMnFOT1I43CsXAVE03TbeC5hY0dXr0n9Pd/K0=;
+	s=arc-20240116; t=1742905725; c=relaxed/simple;
+	bh=AUcjFZkc+E3vNmDATh+VA9BkGqKqjgUD/ZmjxB2AKP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsAod1mKHbMM5XZqAQNiXoQcq9AXkr3THMi8r+NAXbOeT7+KNjwMv4mHd//QyhENTv3Sc5c3LGJozHuAh6couqqCGSMBsHejB+te9wOnTYswv9yru4fgKj4zCvYsPxgy7ApxQu32bxfZ2mT/E8cxSGV+8b8RSwkhiZ0cqqHSDVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WI5zea3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65684C4CEE4;
-	Tue, 25 Mar 2025 12:37:58 +0000 (UTC)
+	 MIME-Version; b=O8jXEwbiRjIN5jiYKi1nT6h1LT73+HsVji6szOXALPqYouVu0tN30SVa/fkh8oUPpEKRWZSeVCzi7R3XuCjwq4yhyoT2+I8IlJmtN4bj/PD7iY3OZorSgsKs3SrpKTFbbJul/oj8MXmEScGsheMOjF+//oC4ahWGPNM87MIvGKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLDMBtdN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DFCC4CEE4;
+	Tue, 25 Mar 2025 12:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906278;
-	bh=w+8OCPbMnFOT1I43CsXAVE03TbeC5hY0dXr0n9Pd/K0=;
+	s=korg; t=1742905724;
+	bh=AUcjFZkc+E3vNmDATh+VA9BkGqKqjgUD/ZmjxB2AKP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WI5zea3ZjCZqBDGetiltyf6LxTWMOeymTQK1fCwXFes2tpQkwTsKwCEEu62ujoCk1
-	 MUlFNVuqhPObxAfHRoOqDguf1Xb4HA68geGYAbyeU4m5pfXpiVcFjcoj3EOSXdD2GB
-	 H8roHWVfhXrYNAhp5Ymk2eR7E/7Mq/5tqmzAGjFM=
+	b=kLDMBtdNdQcnx9SrDXlfM1CEF2WK8prd8Up3/iqh4SRH8O3FeJWwCz/0BD2ogtCKc
+	 1/vPIEqhNg4Qdg41et08Svjt0Tpp2BkoOBkt6I0pk2BsBtket3VKn3wAJTaHx6CNQ1
+	 Umrei9vyFvAM+xV8/dbHAi9Mh/gr30BiFpqmtKhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko.stuebner@cherry.de>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Asahi Lina <lina@asahilina.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/116] arm64: dts: rockchip: remove supports-cqe from rk3588 jaguar
+Subject: [PATCH 6.1 129/198] scripts: generate_rust_analyzer: Handle sub-modules with no Makefile
 Date: Tue, 25 Mar 2025 08:21:31 -0400
-Message-ID: <20250325122149.321041230@linuxfoundation.org>
+Message-ID: <20250325122200.036618637@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122149.207086105@linuxfoundation.org>
-References: <20250325122149.207086105@linuxfoundation.org>
+In-Reply-To: <20250325122156.633329074@linuxfoundation.org>
+References: <20250325122156.633329074@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko.stuebner@cherry.de>
+From: Asahi Lina <lina@asahilina.net>
 
-[ Upstream commit 304b0a60d38dc24bfbfc9adc7d254d1cf8f98317 ]
+[ Upstream commit 5c7548d5a25306dcdb97689479be81cacc8ce596 ]
 
-The sdhci controller supports cqe it seems and necessary code also is in
-place - in theory.
+More complex drivers might want to use modules to organize their Rust
+code, but those module folders do not need a Makefile.
+generate_rust_analyzer.py currently crashes on those. Fix it so that a
+missing Makefile is silently ignored.
 
-At this point Jaguar and Tiger are the only boards enabling cqe support
-on the rk3588 and we are seeing reliability issues under load.
-
-This can be caused by either a controller-, hw- or driver-issue and
-definitly needs more investigation to work properly it seems.
-
-So disable cqe support on Jaguar for now.
-
-Fixes: d1b8b36a2cc5 ("arm64: dts: rockchip: add Theobroma Jaguar SBC")
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Link: https://lore.kernel.org/r/20250219093303.2320517-1-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://github.com/Rust-for-Linux/linux/pull/883
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Stable-dep-of: 2e0f91aba507 ("scripts: generate_rust_analyzer: add missing macros deps")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts | 1 -
- 1 file changed, 1 deletion(-)
+ scripts/generate_rust_analyzer.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts b/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
-index 31d2f8994f851..e61c5731fb99f 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
-@@ -455,7 +455,6 @@ &sdhci {
- 	non-removable;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&emmc_bus8 &emmc_cmd &emmc_clk &emmc_data_strobe>;
--	supports-cqe;
- 	vmmc-supply = <&vcc_3v3_s3>;
- 	vqmmc-supply = <&vcc_1v8_s3>;
- 	status = "okay";
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 75bb611bd7516..ab6af280b9de0 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -98,7 +98,10 @@ def generate_crates(srctree, objtree, sysroot_src):
+             name = path.name.replace(".rs", "")
+ 
+             # Skip those that are not crate roots.
+-            if f"{name}.o" not in open(path.parent / "Makefile").read():
++            try:
++                if f"{name}.o" not in open(path.parent / "Makefile").read():
++                    continue
++            except FileNotFoundError:
+                 continue
+ 
+             logging.info("Adding %s", name)
 -- 
 2.39.5
 
