@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-126379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916B6A70098
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC10A7011F
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43BDE17BA3E
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:06:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69F5519A3F6D
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8823B269CFD;
-	Tue, 25 Mar 2025 12:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1FA2690F1;
+	Tue, 25 Mar 2025 12:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13LboX0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfYzhjAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B062571AC;
-	Tue, 25 Mar 2025 12:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BABE2690EA;
+	Tue, 25 Mar 2025 12:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906115; cv=none; b=LRraEd6QEtl/ft9zgMDH16XFWy45ZKshJnvfE5DmGkcfu80TWIRHXAvYDR2aa+nFbsDOeBxIVzNWeFSftv2HOp4y3udmfrn3vVj1up4b2STNKzv6KiV3iu9HBGvOZa6DXGnFxaI/VloeT5LgbLKGo94n6cfVVAT/ucm9wFLGfUY=
+	t=1742905999; cv=none; b=Mu+medjoza6JccWCGqV+n5oXxeIKHznzkucnUzNcJbK1uc/W7VW46Xut/ZrXytNj3z8kkoqvmUPYEv4sgXoc+PXCqWwOg3wq3eT+E/1iac1mw/jsoKNWjdBeUuJRJsFGivqkEivLs/Il49G95grhDyKjs2+JkEMEHw3Ava0G3Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906115; c=relaxed/simple;
-	bh=VDhiAA8SNoZgNrsVJHiaZgn4RAudsHgDFFZyi2P/AAE=;
+	s=arc-20240116; t=1742905999; c=relaxed/simple;
+	bh=257TV07Qwq28CO8scFNldPOl/DYcqvTnwWtAMKwqyfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5iSvGgxYJewcJUlrlJhJJM3EYevKcRXLahKAmYRD3yb8EUZ8wNDtJwquj+X1eJiSS8HTIHJkFRb5o8SirzCUaUIYPZ8VxcH74vJz9c+qZj1xg5kZ1UkAiH6nes9oL2JzXDXaO77VyDC+Il/PHVwwRRqSRsEx220raGRhVe9iuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13LboX0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F98C4CEED;
-	Tue, 25 Mar 2025 12:35:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KWZModT6u/e+/fzkcHoqDYfH+l/SRDKHOnNExa+VfaBmiOtcrUIQ76Gg8rbrN42mxDBMc94qITxf7eJW3VnP97stT+jhamtkbjIPRfiRbm2P16TIhUhnl6a9VrDrrje4w6Sr1iHJK5nWqBl5K2VNE0OBJ/AK7ivrnZXkxaZfnW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfYzhjAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9030C4CEE4;
+	Tue, 25 Mar 2025 12:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906115;
-	bh=VDhiAA8SNoZgNrsVJHiaZgn4RAudsHgDFFZyi2P/AAE=;
+	s=korg; t=1742905998;
+	bh=257TV07Qwq28CO8scFNldPOl/DYcqvTnwWtAMKwqyfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=13LboX0IPdWZ0mWdQikFASn+cO0LyFMoip+hKJCeqHhFGFAbAVJFKb2zUfpPTjF9W
-	 3JzjQ8Z5ttKHWVpGlW1HID/FkCRV2jkvn0C5YzDafnYawO2wzSdKClowDFtAthfaZI
-	 187nSDPOJ2Qh9lF0dEMKZQxl6C2FNNwVd0BCGRss=
+	b=GfYzhjASqV/LbRCxwVIc4ffkrON/q3Djlt1jVcR7u898uXpdTs/WPOhzf9VePSHdX
+	 n3BowllO0O+pPc+oglZI3idaNf5l7Lz2WSZcx7Zf8Ja2va/1rrej1INlK6DhE8QtSX
+	 /NRDbg1v7gHvxwNfPwbIMsmm/bPB+T/DqAlSDy3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 22/77] ARM: davinci: da850: fix selecting ARCH_DAVINCI_DA8XX
+	"Raphael S. Carvalho" <raphaelsc@scylladb.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 079/119] mm: fix error handling in __filemap_get_folio() with FGP_NOWAIT
 Date: Tue, 25 Mar 2025 08:22:17 -0400
-Message-ID: <20250325122144.936056960@linuxfoundation.org>
+Message-ID: <20250325122151.075899565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Raphael S. Carvalho <raphaelsc@scylladb.com>
 
-[ Upstream commit 45d5fe1c53baaed1fb3043f45d1e15ebb4bbe86a ]
+commit 182db972c9568dc530b2f586a2f82dfd039d9f2a upstream.
 
-Chips in the DA850 family need to have ARCH_DAVINCI_DA8XX to be selected
-in order to enable some peripheral drivers.
+original report:
+https://lore.kernel.org/all/CAKhLTr1UL3ePTpYjXOx2AJfNk8Ku2EdcEfu+CH1sf3Asr=B-Dw@mail.gmail.com/T/
 
-This was accidentally removed in a previous commit.
+When doing buffered writes with FGP_NOWAIT, under memory pressure, the
+system returned ENOMEM despite there being plenty of available memory, to
+be reclaimed from page cache.  The user space used io_uring interface,
+which in turn submits I/O with FGP_NOWAIT (the fast path).
 
-Fixes: dec85a95167a ("ARM: davinci: clean up platform support")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+retsnoop pointed to iomap_get_folio:
+
+00:34:16.180612 -> 00:34:16.180651 TID/PID 253786/253721
+(reactor-1/combined_tests):
+
+                    entry_SYSCALL_64_after_hwframe+0x76
+                    do_syscall_64+0x82
+                    __do_sys_io_uring_enter+0x265
+                    io_submit_sqes+0x209
+                    io_issue_sqe+0x5b
+                    io_write+0xdd
+                    xfs_file_buffered_write+0x84
+                    iomap_file_buffered_write+0x1a6
+    32us [-ENOMEM]  iomap_write_begin+0x408
+iter=&{.inode=0xffff8c67aa031138,.len=4096,.flags=33,.iomap={.addr=0xffffffffffffffff,.length=4096,.type=1,.flags=3,.bdev=0x…
+pos=0 len=4096 foliop=0xffffb32c296b7b80
+!    4us [-ENOMEM]  iomap_get_folio
+iter=&{.inode=0xffff8c67aa031138,.len=4096,.flags=33,.iomap={.addr=0xffffffffffffffff,.length=4096,.type=1,.flags=3,.bdev=0x…
+pos=0 len=4096
+
+This is likely a regression caused by 66dabbb65d67 ("mm: return an ERR_PTR
+from __filemap_get_folio"), which moved error handling from
+io_map_get_folio() to __filemap_get_folio(), but broke FGP_NOWAIT
+handling, so ENOMEM is being escaped to user space.  Had it correctly
+returned -EAGAIN with NOWAIT, either io_uring or user space itself would
+be able to retry the request.
+
+It's not enough to patch io_uring since the iomap interface is the one
+responsible for it, and pwritev2(RWF_NOWAIT) and AIO interfaces must
+return the proper error too.
+
+The patch was tested with scylladb test suite (its original reproducer),
+and the tests all pass now when memory is pressured.
+
+Link: https://lkml.kernel.org/r/20250224143700.23035-1-raphaelsc@scylladb.com
+Fixes: 66dabbb65d67 ("mm: return an ERR_PTR from __filemap_get_folio")
+Signed-off-by: Raphael S. Carvalho <raphaelsc@scylladb.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-davinci/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ mm/filemap.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
-index 2a8a9fe46586d..3fa15f3422409 100644
---- a/arch/arm/mach-davinci/Kconfig
-+++ b/arch/arm/mach-davinci/Kconfig
-@@ -27,6 +27,7 @@ config ARCH_DAVINCI_DA830
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1956,8 +1956,19 @@ no_page:
  
- config ARCH_DAVINCI_DA850
- 	bool "DA850/OMAP-L138/AM18x based system"
-+	select ARCH_DAVINCI_DA8XX
- 	select DAVINCI_CP_INTC
- 
- config ARCH_DAVINCI_DA8XX
--- 
-2.39.5
-
+ 		if (err == -EEXIST)
+ 			goto repeat;
+-		if (err)
++		if (err) {
++			/*
++			 * When NOWAIT I/O fails to allocate folios this could
++			 * be due to a nonblocking memory allocation and not
++			 * because the system actually is out of memory.
++			 * Return -EAGAIN so that there caller retries in a
++			 * blocking fashion instead of propagating -ENOMEM
++			 * to the application.
++			 */
++			if ((fgp_flags & FGP_NOWAIT) && err == -ENOMEM)
++				err = -EAGAIN;
+ 			return ERR_PTR(err);
++		}
+ 		/*
+ 		 * filemap_add_folio locks the page, and for mmap
+ 		 * we expect an unlocked page.
 
 
 
