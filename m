@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-126386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED43AA70096
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:14:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E52A70075
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 14:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3E3174ACD
-	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:07:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F112B188EB07
+	for <lists+stable@lfdr.de>; Tue, 25 Mar 2025 13:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFF6269D1B;
-	Tue, 25 Mar 2025 12:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F502580ED;
+	Tue, 25 Mar 2025 12:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsqqSj1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDW99uzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0EA269D16;
-	Tue, 25 Mar 2025 12:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CC52571AB;
+	Tue, 25 Mar 2025 12:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742906128; cv=none; b=ltuFlxtzz9NQ17veoT4wIU/aD4KjK9wst/JFlGkcT1acCBTXUOdLQFe8s1u6/Pst12ORkGyRBTVa2HtAoOXzY8FvQhnYSp2WPDndxMmgdKhwPNIH3Q0qpS2PCk3bOm2nDNWOfScPZ4sZj12tiD4kXHhnSLKw3ZyL67+PFOjcMuM=
+	t=1742906024; cv=none; b=a7YDQGAH/e6ZkCfm/qh1AkvzkX/5rNxKTtbTyXL+QRW45W6b6smzVTPxP/YfAvEQm5v19lReQLqXPu4Bu1M0OILzd2UQyiQ0n8mmbRKFKX6NwGF2Tn2Te6vhxItjIKwOYXXQcgARWCLxUxiH6q4UUWgdsXJRYYGn4I4Q2CEvot4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742906128; c=relaxed/simple;
-	bh=HNmryvZ7zri8DY/aGlx1lQDlF9vifnmrA3SCeAibOsQ=;
+	s=arc-20240116; t=1742906024; c=relaxed/simple;
+	bh=dv4M0z0eAxNoQeFItUfw4GrXJ9Q7DyuWHMg5HS5BGYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cq8ElQ7/XGubLOtR5WrGFYCBbX8Zj8+W0GoF2bRSZbbMKiHxuOPdIbLX0t04Qn5g1/NWeBSHoBuxp+/q3ixIyZ1FKorCEHIcz/Ml5rKrWO1K7B3oH3lpSAaWy6Gg07MSNfbrAZTLfN+Jw2kyNIdFLfmvBqmOuxTshkoY0A5vWaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsqqSj1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C9CC4CEE9;
-	Tue, 25 Mar 2025 12:35:27 +0000 (UTC)
+	 MIME-Version; b=kWnKpcOuLWu9v0g5X4Bw4Q2aCdeeUOU7EKQlX6hGGlqu9I1ZB8XoY+6wGNB55efscgjyL/mEyLoeMhQ9iHugEM+59hjWc7cMP7DcEiV/07Tn+lmod56+35Hc1i9wh5ZVAfmTP8bgCIAvrrl6egW66YOPsKamw1mlBW+WW/NX/Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDW99uzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11321C4CEE4;
+	Tue, 25 Mar 2025 12:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742906128;
-	bh=HNmryvZ7zri8DY/aGlx1lQDlF9vifnmrA3SCeAibOsQ=;
+	s=korg; t=1742906024;
+	bh=dv4M0z0eAxNoQeFItUfw4GrXJ9Q7DyuWHMg5HS5BGYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OsqqSj1yO9MR0QGkh3qvUaNsdOBOvaEApRl6r6wW0tEcxBmXUMwL/qADUr/qwVtzc
-	 xwAtLsYLzOV2ZC7hRSutPonH1I09SL9xZF7+ELG4T/EYXRvoNvzoQhSGH4UG8rQi9q
-	 YZHtH4ULbrFDvywtPRL9jj7qRsbVJTxEz56/r41w=
+	b=zDW99uzR/t3LxkDylJkv6E43GdAGGZvPcb1itEsLOhmVvy16EprQwfS2/0e3TFG6S
+	 k2VDvDSgnBdT1zpr5jFD2qRK4814GyWTqezHELTRTAlZc8w0tzaff26Wz6QoNeQa0Y
+	 wGd/jaR7zKp0SGf0/gpAo/EUdj5TW7DT2jjEZPVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Nishanth Menon <nm@ti.com>,
-	Aniket Limaye <a-limaye@ti.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 29/77] i2c: omap: fix IRQ storms
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH 6.13 086/119] ARM: shmobile: smp: Enforce shmobile_smp_* alignment
 Date: Tue, 25 Mar 2025 08:22:24 -0400
-Message-ID: <20250325122145.115115556@linuxfoundation.org>
+Message-ID: <20250325122151.256962426@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250325122144.259256924@linuxfoundation.org>
-References: <20250325122144.259256924@linuxfoundation.org>
+In-Reply-To: <20250325122149.058346343@linuxfoundation.org>
+References: <20250325122149.058346343@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 285df995f90e3d61d97f327d34b9659d92313314 upstream.
+commit 379c590113ce46f605439d4887996c60ab8820cc upstream.
 
-On the GTA04A5 writing a reset command to the gyroscope causes IRQ
-storms because NACK IRQs are enabled and therefore triggered but not
-acked.
+When the addresses of the shmobile_smp_mpidr, shmobile_smp_fn, and
+shmobile_smp_arg variables are not multiples of 4 bytes, secondary CPU
+bring-up fails:
 
-Sending a reset command to the gyroscope by
-i2cset 1 0x69 0x14 0xb6
-with an additional debug print in the ISR (not the thread) itself
-causes
+    smp: Bringing up secondary CPUs ...
+    CPU1: failed to come online
+    CPU2: failed to come online
+    CPU3: failed to come online
+    smp: Brought up 1 node, 1 CPU
 
-[ 363.353515] i2c i2c-1: ioctl, cmd=0x720, arg=0xbe801b00
-[ 363.359039] omap_i2c 48072000.i2c: addr: 0x0069, len: 2, flags: 0x0, stop: 1
-[ 363.366180] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x1110)
-[ 363.371673] omap_i2c 48072000.i2c: IRQ (ISR = 0x0010)
-[ 363.376892] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-[ 363.382263] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-[ 363.387664] omap_i2c 48072000.i2c: IRQ LL (ISR = 0x0102)
-repeating till infinity
-[...]
-(0x2 = NACK, 0x100 = Bus free, which is not enabled)
-Apparently no other IRQ bit gets set, so this stalls.
+Fix this by adding the missing alignment directive.
 
-Do not ignore enabled interrupts and make sure they are acked.
-If the NACK IRQ is not needed, it should simply not enabled, but
-according to the above log, caring about it is necessary unless
-the Bus free IRQ is enabled and handled. The assumption that is
-will always come with a ARDY IRQ, which was the idea behind
-ignoring it, proves wrong.
-It is true for simple reads from an unused address.
-
-To still avoid the i2cdetect trouble which is the reason for
-commit c770657bd261 ("i2c: omap: Fix standard mode false ACK readings"),
-avoid doing much about NACK in omap_i2c_xfer_data() which is used
-by both IRQ mode and polling mode, so also the false detection fix
-is extended to polling usage and IRQ storms are avoided.
-
-By changing this, the hardirq handler is not needed anymore to filter
-stuff.
-
-The mentioned gyro reset now just causes a -ETIMEDOUT instead of
-hanging the system.
-
-Fixes: c770657bd261 ("i2c: omap: Fix standard mode false ACK readings").
-CC: stable@kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Tested-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Aniket Limaye <a-limaye@ti.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250228140420.379498-1-andreas@kemnade.info
+Fixes: 4e960f52fce16a3b ("ARM: shmobile: Move shmobile_smp_{mpidr, fn, arg}[] from .text to .bss")
+Closes: https://lore.kernel.org/r/CAMuHMdU=QR-JLgEHKWpsr6SbaZRc-Hz9r91JfpP8c3n2G-OjqA@mail.gmail.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/c499234d559a0d95ad9472883e46077311051cd8.1741612208.git.geert+renesas@glider.be
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-omap.c |   26 +++++++-------------------
- 1 file changed, 7 insertions(+), 19 deletions(-)
+ arch/arm/mach-shmobile/headsmp.S |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -1049,23 +1049,6 @@ static int omap_i2c_transmit_data(struct
- 	return 0;
- }
+--- a/arch/arm/mach-shmobile/headsmp.S
++++ b/arch/arm/mach-shmobile/headsmp.S
+@@ -136,6 +136,7 @@ ENDPROC(shmobile_smp_sleep)
+ 	.long	shmobile_smp_arg - 1b
  
--static irqreturn_t
--omap_i2c_isr(int irq, void *dev_id)
--{
--	struct omap_i2c_dev *omap = dev_id;
--	irqreturn_t ret = IRQ_HANDLED;
--	u16 mask;
--	u16 stat;
--
--	stat = omap_i2c_read_reg(omap, OMAP_I2C_STAT_REG);
--	mask = omap_i2c_read_reg(omap, OMAP_I2C_IE_REG) & ~OMAP_I2C_STAT_NACK;
--
--	if (stat & mask)
--		ret = IRQ_WAKE_THREAD;
--
--	return ret;
--}
--
- static int omap_i2c_xfer_data(struct omap_i2c_dev *omap)
- {
- 	u16 bits;
-@@ -1096,8 +1079,13 @@ static int omap_i2c_xfer_data(struct oma
- 		}
- 
- 		if (stat & OMAP_I2C_STAT_NACK) {
--			err |= OMAP_I2C_STAT_NACK;
-+			omap->cmd_err |= OMAP_I2C_STAT_NACK;
- 			omap_i2c_ack_stat(omap, OMAP_I2C_STAT_NACK);
-+
-+			if (!(stat & ~OMAP_I2C_STAT_NACK)) {
-+				err = -EAGAIN;
-+				break;
-+			}
- 		}
- 
- 		if (stat & OMAP_I2C_STAT_AL) {
-@@ -1475,7 +1463,7 @@ omap_i2c_probe(struct platform_device *p
- 				IRQF_NO_SUSPEND, pdev->name, omap);
- 	else
- 		r = devm_request_threaded_irq(&pdev->dev, omap->irq,
--				omap_i2c_isr, omap_i2c_isr_thread,
-+				NULL, omap_i2c_isr_thread,
- 				IRQF_NO_SUSPEND | IRQF_ONESHOT,
- 				pdev->name, omap);
- 
+ 	.bss
++	.align	2
+ 	.globl	shmobile_smp_mpidr
+ shmobile_smp_mpidr:
+ 	.space	NR_CPUS * 4
 
 
 
