@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DC5A70EEE
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 03:23:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DD9A70EEF
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 03:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495F6189A5CF
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 02:23:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 519BD189A5CF
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 02:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA0E13633F;
-	Wed, 26 Mar 2025 02:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A777213A86C;
+	Wed, 26 Mar 2025 02:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAcsrK7B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GeVP7H5d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5D5137775
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 02:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691E2137775
+	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 02:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742955818; cv=none; b=UYCzlY8lgF1dGBkQWbWYeSYMILBD0WVPr418OmHGbx/HlY/VH7IaUhF+5Tw1fpz6TvFovpYlvkBojOnSSy1z7DgGMeXYeFwFmiDZhIcCyF0mGaHZHwR4YMGIBr4A3pae+sPLdpquVeJIeUCH518Pm/7gK9y0x8egFbhTENVI60w=
+	t=1742955820; cv=none; b=qXIljJ1VhJLICYsq7jS0TpUj7VvGUDl8IevM/QqEp+NVMhfAj55GKyFJHp9xDt8AmCqe3x+rFBpIW3lEYmSLzxQ7ackYSlXycdspus7mmaQRIPFipibi5jeqQ8ZoWlOPWzx1HiC9vkannTZAcGJ4rK5Itn2iZRuIlij4xg2m3EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742955818; c=relaxed/simple;
-	bh=dRJbsN7v2/2w2TbXwftpLqgMZW5kp0WNah0NFEbeOeA=;
+	s=arc-20240116; t=1742955820; c=relaxed/simple;
+	bh=EQKWl4TDcDRH7HpH25DCd6CD8xfbsNVDf6XQFJiR1AE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VUB3HSvJDYP7/t/rFKdcpYmHmLAi4EZeZqV/B8aWLc9/MyMSJXs3+wIC+9Plo14lP4X05tl919+Qw+c1pjen5Nz1TCeqfGz5KUlmGmmOlh+aI7jLuk364PK5OYEkV7/H3Mz5HSCKwE+yi1MgL70EhK5CSv4CMWLxAtVMR2y/OlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QAcsrK7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9D2C4CEE4;
-	Wed, 26 Mar 2025 02:23:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S8Sinl38OLrkz3UKs0R44g8ldXFIcAHfQKXDn73D8TXwzJvoa0V41FNCTwZiSIwBmxUJLV0Kx1wvDzPZCWgrC73JgzoZ6S0/VMkRBXo5SoVVpm54m0EcVPxmvij5TVm65zUKJcEd1AKB1j1eoBqQCqSklB2dEmRvmUaj5jUM/2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GeVP7H5d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA6BC4CEE4;
+	Wed, 26 Mar 2025 02:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742955817;
-	bh=dRJbsN7v2/2w2TbXwftpLqgMZW5kp0WNah0NFEbeOeA=;
+	s=k20201202; t=1742955819;
+	bh=EQKWl4TDcDRH7HpH25DCd6CD8xfbsNVDf6XQFJiR1AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QAcsrK7B+Wdue6RBzfUkPW9NHkt5CUQDTLXXt8ZJTgp/q5DKrrmYGEX5Uzv1idVvl
-	 FHc+QjJfdHnSahx/2Mn4vezt7CTjnLRcP8F506acpsYnlXUZ3wKOAhOJrInBiGq/8r
-	 uxoRFAunvhvd5QWbvneCIvQuYSnxu7LCk2/XJElTLmKvaDo8G+SZp9+2CJzrLvI0M/
-	 Lo/8JCTYsqKotkvMHEF9lGvgK2w8l5yDHZuWfyGBf8bO8zjkrVpFJUTo3Yqj3bjHru
-	 fB50eIvx3gpOmh8PPgf/v7itas4LXLQJEIRAyeGylySfkH8M1BltbasH2ITN2P48N9
-	 zxgRrghlVBGpQ==
+	b=GeVP7H5d6CNXmBfG0xWySAp+9yR5r8Tnpx2+r8MzOP55ukMsKv7Yg3DVJwkHTzZ/U
+	 2CZIHfufgV11l/t0ls4r4imiwfqnwrjdzpMtrQiWRTvz3ATV4lfnJO7aKwxmvGyG3M
+	 +XURMDZ4yJn0bs355xtYr+9HA7uTtfxJxBQSQOoR+o5af/D553bOEN6d0NQ6GzPDKA
+	 K+dPzXmRFtuTQTLfQSTbmpXngpNi2+ySXtGm7OAvVfsCUCJMiCY96FV3O0LD72N3Dr
+	 dHU54oxUHyIKJW4hDrGfwKBn8u1tQgGGCGYDcmiVuPNkGfY3mGztX6Urjac+wnlxJd
+	 TOfyb20B7Cx7g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	florian.fainelli@broadcom.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 5.4 v2 2/2] openvswitch: fix lockup on tx to unregistering netdev with carrier
-Date: Tue, 25 Mar 2025 22:23:35 -0400
-Message-Id: <20250325214412-788099d451e95300@stable.kernel.org>
+Subject: Re: [PATCH stable 5.10 v2 2/2] openvswitch: fix lockup on tx to unregistering netdev with carrier
+Date: Tue, 25 Mar 2025 22:23:37 -0400
+Message-Id: <20250325205537-aef538619ff3d934@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250325192220.1849902-3-florian.fainelli@broadcom.com>
+In-Reply-To:  <20250325192236.1849940-3-florian.fainelli@broadcom.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -81,11 +81,10 @@ Status in newer kernel trees:
 6.6.y | Present (different SHA1: ea966b669878)
 6.1.y | Present (different SHA1: ea9e990356b7)
 5.15.y | Not found
-5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  47e55e4b410f7 ! 1:  9a82976cb1dc6 openvswitch: fix lockup on tx to unregistering netdev with carrier
+1:  47e55e4b410f7 ! 1:  8eccde1235b42 openvswitch: fix lockup on tx to unregistering netdev with carrier
     @@ Metadata
       ## Commit message ##
          openvswitch: fix lockup on tx to unregistering netdev with carrier
@@ -114,5 +113,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
