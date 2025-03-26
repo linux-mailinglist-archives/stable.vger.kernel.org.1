@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-126765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F0CA71CFE
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:22:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF945A71CFB
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:21:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 432BE177557
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:19:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A77C840D5B
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0A4203719;
-	Wed, 26 Mar 2025 17:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC51204583;
+	Wed, 26 Mar 2025 17:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="by5Ez+4C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6C9TknM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D560202C4E;
-	Wed, 26 Mar 2025 17:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC0E2040A9;
+	Wed, 26 Mar 2025 17:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743009576; cv=none; b=Pc5kZkWoCV/sScgWsYTeMt1k6OFeJJ+CyDcGXzuSB4/QoeUycNHSC3b5GB/z6m3fppg3mGTqT5vvX50EI/CdYylMZDT8qbrTPdsO2iu74FP8gpYCfBR5nlINIdDdw7Fmjd6FSqJFQOjhLsLhybuBGXKjZ9DGFgIjAT1NGjGJ7i0=
+	t=1743009579; cv=none; b=ImuhOFfyltHiErCb9e3IShFP1LhLR0MxprMsL7zp4GplskeDP8XXCfcC4dGsNOer2bm4fMUyvGQgeOSCMSa3kKMXlKddU+91r9Hqga1rkZK1XT2M3Ki0rzTG2lj8Vq4gNt3Md6nzPovJLOSdCBpOUi2KSE7jjS/2/RrZvyUR/uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743009576; c=relaxed/simple;
-	bh=+49VODqoj66jw7qSglZ0qzDiNUhovV3FO932Zf0ilsw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UvMp5TKMi/ulOSgt+yPHqPpEjNHjZsjm8aiYT7+Ld6Tw+OHnQzXGzTqa3I6LjHcSiVj24h2EJg6C2tCMjRBxUbshY+aOwV9V7mJAo6HOgIjDFhEJyl7PbBnkSdaDxf5zSVxVc1IPJH2J/el7qvCVNjNWMreZ+YF5TTcE/IoflKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=by5Ez+4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF39BC4CEE2;
-	Wed, 26 Mar 2025 17:19:33 +0000 (UTC)
+	s=arc-20240116; t=1743009579; c=relaxed/simple;
+	bh=oMWE79HdrGxa1KMv6bx0+sXnyICeQbf7kRdyS1Zdqbk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Hds79Wh1LjElM4zKn/gJWKtEPw7xaApwbsuGgHomRUrk5GfQqbZ2pieAjWXz1dGroIqgPKaZpMP4FVkffdtqi1I0A75sOjQi4gzU74wqusdAmtAShqilH8zFiHD/fUhaLcc+uVqTWaKSFQVi3SmdgJOJ2gvNUnNFQoau0JGJyZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6C9TknM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85457C4CEE8;
+	Wed, 26 Mar 2025 17:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743009576;
-	bh=+49VODqoj66jw7qSglZ0qzDiNUhovV3FO932Zf0ilsw=;
-	h=From:Subject:Date:To:Cc:From;
-	b=by5Ez+4CGpJ4g3aL+02KdMQdu1IAWtduTkPCqVeHcRJT0hSiqJaRLin/05YS7biYx
-	 CUuoDZ5KhtWc7r9bZn4I8UuGMxrQQ6gFQFTqph9e1W7lLX/sxt/J7ISB8rtNb3i/nX
-	 AcqdUTjfeBCPK9wLSApiIYzRNowy4gYU+FvfaJooRbhZCj+KkE8kK/1NM11mhF89zh
-	 1hKgPtjp1Ybi8VcY32rP/a2B4uKswtDNZ1rcWqanCoRA2B7LfPI5ARf9B0pfsZG9qG
-	 AONO+u238blggxajwtaUdwXepSvrJARBaaQrEACbw47EKFR+0y502RAYUw1JiZ/7b0
-	 7LrFoemKIj8mw==
+	s=k20201202; t=1743009578;
+	bh=oMWE79HdrGxa1KMv6bx0+sXnyICeQbf7kRdyS1Zdqbk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=B6C9TknMyxzfZe6z/2Yh1Z6IS6/A+7IoUAvHGyZi3ijdZn1R1lWcH7B5SDS/4JEpg
+	 OWvPnkZejvnhlKDd8KpJjCmKC18d0GbqNuxz+kKxme5CRNBtjFOWVn6eXjnxWP3pu8
+	 9bPnR7xftNxgVdHnNg0RcQzHGLBa6ym4OpDpA6T6K20A9hivXEhyXaoW4EQT3V7WXJ
+	 0LiBkJrqhL6KvXqpdXmqh5b6HWVVUrrcSs89lRjyq1rerSsr8jlHhygnOmFW5VTyPI
+	 I3rT0yCPcfdX19JONuQAziXs7jsgolH8kBkGc6VyeNNqYdrdULt8/5J9/XoO/DSkMF
+	 g+bqQ2+k6WThg==
 From: Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH v2 0/2] Add wcslen()
-Date: Wed, 26 Mar 2025 09:32:30 -0700
-Message-Id: <20250326-string-add-wcslen-for-llvm-opt-v2-0-d864ab2cbfe4@kernel.org>
+Date: Wed, 26 Mar 2025 09:32:31 -0700
+Subject: [PATCH v2 1/2] include: Move typedefs in nls.h to their own header
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,11 +52,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAB4s5GcC/4WNQQ7CIBAAv9Jwdg2gTakn/2F6aGHbEhGapUFNw
- 9/FJp49zhxmNhaRLEZ2qTZGmGy0wReQh4rpufcTgjWFmeSy5id5hriS9RP0xsBTR4cexkDgXHp
- AWFZoeN20wgyt1JyVyEI42tc+uHWFZxvXQO/9l8TX/tL1v3QSwGFQo0CpRaOUut6RPLpjoIl1O
- ecPgEpbss0AAAA=
-X-Change-ID: 20250324-string-add-wcslen-for-llvm-opt-705791db92c0
+Message-Id: <20250326-string-add-wcslen-for-llvm-opt-v2-1-d864ab2cbfe4@kernel.org>
+References: <20250326-string-add-wcslen-for-llvm-opt-v2-0-d864ab2cbfe4@kernel.org>
+In-Reply-To: <20250326-string-add-wcslen-for-llvm-opt-v2-0-d864ab2cbfe4@kernel.org>
 To: Kees Cook <kees@kernel.org>
 Cc: Andy Shevchenko <andy@kernel.org>, 
  Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
@@ -65,54 +63,90 @@ Cc: Andy Shevchenko <andy@kernel.org>,
  linux-hardening@vger.kernel.org, llvm@lists.linux.dev, 
  stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1541; i=nathan@kernel.org;
- h=from:subject:message-id; bh=+49VODqoj66jw7qSglZ0qzDiNUhovV3FO932Zf0ilsw=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDOlPzFXbuHpfx290nF57fAa3ze9fKzltO65lNs240cJxZ
- qr0MpXfHaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAiKpKMDAcKVux88OXDd7Vj
- gu0LLs/7/CH9unrn9y+ztOpN+j5vvriKkeGXR//X3nVJV9dP/sv/6suNaf78LBdvFR9ecuEoL9O
- 7RXJ8AA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2578; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=oMWE79HdrGxa1KMv6bx0+sXnyICeQbf7kRdyS1Zdqbk=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDOlPzFUTlry5zht35Mj7sqkvpn+I0r10a8/P0zcPT2xn8
+ FN6K874oKOUhUGMi0FWTJGl+rHqcUPDOWcZb5yaBDOHlQlkCAMXpwBMpECIkWHX5sd6B1v8+5x1
+ qi8+XbbsWfScq0tsDzQyn3ESam8LeTKZkWH7N71vLSnHNtZbcJidNWxVVd+0bc/GpeEpEVklm5q
+ 5LFkA
 X-Developer-Key: i=nathan@kernel.org; a=openpgp;
  fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Hi all,
+In order to allow commonly included headers such as string.h to access
+typedefs such as wchar_t without running into issues with the rest of
+the NLS library, refactor the typedefs out into their own header that
+can be included in a much safer manner.
 
-A recent LLVM change [1] introduces a call to wcslen() in
-fs/smb/client/smb2pdu.c through UniStrcat() via
-alloc_path_with_tree_prefix(). Similar to the bcmp() and stpcpy()
-additions that happened in 5f074f3e192f and 1e1b6d63d634, add wcslen()
-to fix the linkage failure.
-
-[1]: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d
-
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
-Changes in v2:
-- Refactor typedefs from nls.h into nls_types.h to make it safe to
-  include in string.h, which may be included in many places throughout
-  the kernel that may not like the other stuff nls.h brings in:
-  https://lore.kernel.org/202503260611.MDurOUhF-lkp@intel.com/
-- Drop libstub change due to the above change, as it is no longer
-  necessary.
-- Move prototype shuffle of patch 2 into the patch that adds wcslen()
-  (Andy)
-- Use new nls_types.h in string.{c,h}
-- Link to v1: https://lore.kernel.org/r/20250325-string-add-wcslen-for-llvm-opt-v1-0-b8f1e2c17888@kernel.org
-
----
-Nathan Chancellor (2):
-      include: Move typedefs in nls.h to their own header
-      lib/string.c: Add wcslen()
-
  include/linux/nls.h       | 19 +------------------
  include/linux/nls_types.h | 25 +++++++++++++++++++++++++
- include/linux/string.h    |  2 ++
- lib/string.c              | 11 +++++++++++
- 4 files changed, 39 insertions(+), 18 deletions(-)
----
-base-commit: 78ab93c78fb31c5dfe207318aa2b7bd4e41f8dba
-change-id: 20250324-string-add-wcslen-for-llvm-opt-705791db92c0
+ 2 files changed, 26 insertions(+), 18 deletions(-)
 
-Best regards,
+diff --git a/include/linux/nls.h b/include/linux/nls.h
+index e0bf8367b274..3d416d1f60b6 100644
+--- a/include/linux/nls.h
++++ b/include/linux/nls.h
+@@ -3,24 +3,7 @@
+ #define _LINUX_NLS_H
+ 
+ #include <linux/init.h>
+-
+-/* Unicode has changed over the years.  Unicode code points no longer
+- * fit into 16 bits; as of Unicode 5 valid code points range from 0
+- * to 0x10ffff (17 planes, where each plane holds 65536 code points).
+- *
+- * The original decision to represent Unicode characters as 16-bit
+- * wchar_t values is now outdated.  But plane 0 still includes the
+- * most commonly used characters, so we will retain it.  The newer
+- * 32-bit unicode_t type can be used when it is necessary to
+- * represent the full Unicode character set.
+- */
+-
+-/* Plane-0 Unicode character */
+-typedef u16 wchar_t;
+-#define MAX_WCHAR_T	0xffff
+-
+-/* Arbitrary Unicode character */
+-typedef u32 unicode_t;
++#include <linux/nls_types.h>
+ 
+ struct nls_table {
+ 	const char *charset;
+diff --git a/include/linux/nls_types.h b/include/linux/nls_types.h
+new file mode 100644
+index 000000000000..8caefdba19b1
+--- /dev/null
++++ b/include/linux/nls_types.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_NLS_TYPES_H
++#define _LINUX_NLS_TYPES_H
++
++#include <linux/types.h>
++
++/* Unicode has changed over the years.  Unicode code points no longer
++ * fit into 16 bits; as of Unicode 5 valid code points range from 0
++ * to 0x10ffff (17 planes, where each plane holds 65536 code points).
++ *
++ * The original decision to represent Unicode characters as 16-bit
++ * wchar_t values is now outdated.  But plane 0 still includes the
++ * most commonly used characters, so we will retain it.  The newer
++ * 32-bit unicode_t type can be used when it is necessary to
++ * represent the full Unicode character set.
++ */
++
++/* Plane-0 Unicode character */
++typedef u16 wchar_t;
++#define MAX_WCHAR_T	0xffff
++
++/* Arbitrary Unicode character */
++typedef u32 unicode_t;
++
++#endif /* _LINUX_NLS_TYPES_H */
+
 -- 
-Nathan Chancellor <nathan@kernel.org>
+2.49.0
 
 
