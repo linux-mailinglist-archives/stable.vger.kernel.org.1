@@ -1,208 +1,158 @@
-Return-Path: <stable+bounces-126759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420ADA71BB8
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:24:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB068A71C09
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:42:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 634247A58EE
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 16:23:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0C613BE3DE
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 16:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAAD51F8BC9;
-	Wed, 26 Mar 2025 16:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B851F790F;
+	Wed, 26 Mar 2025 16:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thaumatec-com.20230601.gappssmtp.com header.i=@thaumatec-com.20230601.gappssmtp.com header.b="SRaiq7bV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SNu5xj+K"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BB71F6664
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 16:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBC91F7557;
+	Wed, 26 Mar 2025 16:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743006236; cv=none; b=J0Mg9+Q3QNLh9EdC2b+D6j34kfPcUwEZXyeS2TIE69IK2bYjvUWjQ+YaL5Wjn+Sc0Pcdkl2x0m5UYi11RYBruL3c2KZ3NGcz8t4i6OfiKCLM4J4hgZU4eHKAVY3MZMF0p+T8lK195Z1Y8o0UtJsYJsHBza09+0Z+duGXioQZvso=
+	t=1743007273; cv=none; b=AOtzRBiS1vhG8/G+sZPSD3cAngA0/tzgaPn31diM5r1GNaa7YwmhnoBEaHop2/wHZ1L0VkPbWJ3m8RVeoCMc7RQZ6ltltER/JNHNrtbresDbCvETgvc+c6AASHOyhkQECk1KeacHlA1V9p7m/upXqaf9px8FsyouzTjsxvuydak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743006236; c=relaxed/simple;
-	bh=Xyyjf1iVpsBKHBeKbA3NYgJgRAsD7ncLZzoytlF9COg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sGAbcegGezk0xk4DtiA0W6dtT3b63yTvIQ3XYqOL5Kn4z8LSF39TT1nhmbRQyta1eydr1gt0z3eIuwiyZTeNz7UXSpHtM4qmJPPzO2lNPaSMYJfp1891mNnqnrJr43GkmTsiEa7Zz6ckDCqc4sjCgh23EtydolgoqFiGf12hAhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thaumatec.com; spf=pass smtp.mailfrom=thaumatec.com; dkim=pass (2048-bit key) header.d=thaumatec-com.20230601.gappssmtp.com header.i=@thaumatec-com.20230601.gappssmtp.com header.b=SRaiq7bV; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thaumatec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thaumatec.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ac2bdea5a38so1492766b.0
-        for <stable@vger.kernel.org>; Wed, 26 Mar 2025 09:23:53 -0700 (PDT)
+	s=arc-20240116; t=1743007273; c=relaxed/simple;
+	bh=TRPCTeOblCNc+WaPMVcdL7R3jZ+yjzK8dIVH4te2LzA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fi54Ml191e6lolL8F/1GkNsJC5WIN8sdhW/viLhlixMjD42MgP3kMzJ/rwYIlGKhgg72zRwKg9mxeurOnloffYUpguccb8f2JwvtWvs6AznrwnP4fRrBj00CLOAs2YXhRNlHVFdSLNkGYmfQ61FeExLCZ/Fo0JQVd3WIPJVia+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SNu5xj+K; arc=none smtp.client-ip=209.85.167.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3f6a92f234dso3996791b6e.3;
+        Wed, 26 Mar 2025 09:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thaumatec-com.20230601.gappssmtp.com; s=20230601; t=1743006232; x=1743611032; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gDeO2nIfMOICmbdN4iB492bLj9a77KMSQWKqvg2E0aY=;
-        b=SRaiq7bVYUgs2L8R3vlFonRrbUENE5holF9mpWbPXwWNurc+TZ00EF9oPPa9csnlwz
-         iUJ/1bReYeEoU8BjG3WZPeygIoIPaKRYja//oDhx6bCTpTbs4FrEL5fY+7oRVLAga/5f
-         7wLL3K4s+IXOxLAi1cWYo+7OjGm4Fy61GucasgLu/znPcEunI4Pi2RMNkzId0EW0X37/
-         BK0Jn/kjf5CjVgLqy2pq341IIAInb60PIng6XnmGC8/BT8UQZyBZWqKKjgibfvzR2TaB
-         s9VRmUew2mcv7WL9MTpDBgNOye5+ZJsHw0kFsXpdit5IldPysWo6wgnJNZlulAf64fwd
-         3lXA==
+        d=gmail.com; s=20230601; t=1743007270; x=1743612070; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=DuR6RrNn5JVp/SGXjPsHV3iRc5Uc6pEi1SUbL9dqAmA=;
+        b=SNu5xj+KULoQNnEAPkMulkr+W6uSupFCE9mOh1PNEMqJ8mlPCIHf1LPYf2RxLWEDqb
+         l8sMLJRXrYxeRI/vzcyO34GTX7njyUNQ/umMDOcL1/U50dED/58fvGD0WyQVUqSoxfOa
+         op9KSRCEUkR0bpwgzgTNC13umduT7Nw4/upAJp1RLEWtVHCZiaNi/dN6DPtUlNur26/A
+         lmwTCRSv4RcW7tCwzxk3QPZhBZI6nJ/GueuHhKNeEcx4CSkS+pj6Y3/rxa6hu/BuY/nL
+         b7PY6M31ysk6+8AARnVX2reB9prAipX8IygqokWDqidAiVWgiXFGqqm1WpGc+bmU2762
+         zUvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743006232; x=1743611032;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gDeO2nIfMOICmbdN4iB492bLj9a77KMSQWKqvg2E0aY=;
-        b=KNvnKVlocUVMJ6PY7L7WzcKgLlmKaYVXySOrjbT0XA+4e2u0+fOPryYTGcKkc4NHW/
-         LIlHt1SGLm6EokIQ4ZwOBI5IyohZEkiHysWJHtZnGDvL6Uzn5gFOU0ub1+pVIE2PQrPn
-         RKrzTkFnZ9z0E9Qv/TGkg1O6Ol1uzDHRpaG4SQophsu0hnqOizOf+PuURf1S4Ce1mNZH
-         nmDfPfSZc0Zed5Z4KpOUywvFXP+ZsRx3mB+peTUDVb12BD1ET60VgN4Qt339IqqYSWjI
-         ngdgbLaLBvFfIwshCYL7Sk/N7qAJV3DYTSTPBH6u9AmSML1g4z574FiFEUQpapMhfHvl
-         OyVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXW1ojBqayY1+ST/l1/c2axTA8mE/1J5cUkDsKOMJw74BuiXJXhyyuHwliDfUzSJhWcDf+Nnjc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI+DvB2ZQVgr8IKwTxvj8Dfg1tN5tFTP+yvtSqATRKptUPJbeW
-	5MiAN85CtNfga9fvjegEVYLeCdYXSfPxrIbQjD7jKX8+B+c40FyU1eLlzP2r1hw=
-X-Gm-Gg: ASbGncuya7p99Iw3pgtqv8r5t6pZ6yoW4E1VQQrixNQFQ5fdAvBlJq6RwhJHXXHMVKf
-	nHLwucq6guG68k9/49UhdPYe/jX2V8fEI0iBnfX7jA61i9dCmtg349s8G4ZU64b0LsoLZqw1HVt
-	GESJVDg88MqrC/LQfCjXPukGX4CwbQMP8TkGUPZMakbL/g6m5KjuR6ykCMbFFYwD1HfBFyXrICg
-	oBOWFEHu/z3VhN50Oi/HF/KHtMEq7395GLbq7DsZAmqmxLVm3t+vtgxALzGzG3aOb9RLl2OlkrH
-	yp4Hh2e7BxNhyA5KjTrUMoZp7q07my2D8e3VJ1nZ9EHqQ/Gs6hO/KryTIg==
-X-Google-Smtp-Source: AGHT+IEc7BN+I9AuEBYkJp/jaWFUpD0J6wfKpFX9npNAzocR2TXh01hPKMJxC/w2Hwxq2f61h0F3IQ==
-X-Received: by 2002:a17:906:6a04:b0:ac0:6e7d:cd0b with SMTP id a640c23a62f3a-ac6faf0b809mr4040966b.34.1743006232177;
-        Wed, 26 Mar 2025 09:23:52 -0700 (PDT)
-Received: from [127.0.1.1] ([91.90.172.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac6f0f498ecsm76678866b.135.2025.03.26.09.23.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 09:23:51 -0700 (PDT)
-From: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Date: Wed, 26 Mar 2025 17:22:58 +0100
-Subject: [PATCH 3/5] arm64: dts: rockchip: fix internal USB hub instability
- on RK3399 Puma
+        d=1e100.net; s=20230601; t=1743007270; x=1743612070;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DuR6RrNn5JVp/SGXjPsHV3iRc5Uc6pEi1SUbL9dqAmA=;
+        b=HbPogLc+x/KzGprJ4jx+ag3DTGs3EZ5knMpMvJj0gYAAEz2/pWjpEv+NiKtKLn/zuc
+         kp9rUrZI9flQvPyTzr3aBLtaVlddvPIpkYJiO06ceVQhUjEZuJ8T+9TZXPTe/iXWTONJ
+         854betV2keOnjqS4J4QLvrBO3rGvPxpYQlxa7u65epSLS2wVTasMF96rW2ttqov92fqL
+         naMvwSgVka93aLQAandsYWKX/gOWDaoeEO0dAoD12bf3eCzr2NmEmxTXcRtUGvgwjvhG
+         XR9joVE+m7aLsLTkrtU8fL8b7WWqBglf+CfSpzKHCq2N0STds/aZU+9UTlbp66CjJQwD
+         xH4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUOhQUQvYI1L4O9pU+JsGFTHUsrzeg0k4NxJk+UVfCy2nPrt5WXnDd9Gevgti88sC84EZvUcVQhE/yPmM8=@vger.kernel.org, AJvYcCW+oRjiP5Auu88JDYZYhkRjWQIHvu+vO1Kyj8Z0CjHb5ATx0sZ8fODxx3J2n0zNj1kHMFr1DkEV@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7GvZqrq9VRIn7ocoF0+i4blEJr74ecd/+dsKpOzEpRK0q4fJ8
+	XdqG1HnmWkUmSUWidJOgkEwA75kLNvZRjaqoG+yUnPdlNqZh2yLE
+X-Gm-Gg: ASbGncvf6M3zEIaneGrTfN553V/gizuJfaRaHQs9ozO77p9JUuHrdTg9MRPrA9rNtDt
+	L7NYi64l27nsGIo1mxdmVivK4GsMFMg1e/75fu8gmTQRk9isLS6iv/6fVkvu1OYOtHgagNyqTmW
+	TcNbeRt0SVrG6GQowKpx+1WSJsotvdK9VbGyOyemYN2ByUJo6WyjXcKgXsVhq1QinzAZSBXXtrd
+	RXIZnhzkLxqJTzr2w+ovPOSF46TV9LaxZxgN7pbV9kyVNii0j45wJUMh9s7/2h5Ue1Nfo6te3AC
+	fcVtA5UHb49EsuMWfWJjAB08kzJBxsBQd4SJCO5bMcUHkrOOJQBj8cBnGU0jFnO/7emSM9KU
+X-Google-Smtp-Source: AGHT+IEmQtI7rlWgL7N8H1faOpD3vZb0pZHTQTAvPeHVI00gjl3GJfby348T43wqGb8GCvK22tFxLw==
+X-Received: by 2002:a05:6808:bc7:b0:3f8:91d1:d950 with SMTP id 5614622812f47-3fefa6309b1mr121472b6e.38.1743007269922;
+        Wed, 26 Mar 2025 09:41:09 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3febf6e95d8sm2431122b6e.13.2025.03.26.09.41.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Mar 2025 09:41:09 -0700 (PDT)
+Message-ID: <542780c5-5ccd-457a-9a61-4df9144d38de@gmail.com>
+Date: Wed, 26 Mar 2025 09:41:06 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250326-onboard_usb_dev-v1-3-a4b0a5d1b32c@thaumatec.com>
-References: <20250326-onboard_usb_dev-v1-0-a4b0a5d1b32c@thaumatec.com>
-In-Reply-To: <20250326-onboard_usb_dev-v1-0-a4b0a5d1b32c@thaumatec.com>
-To: Matthias Kaehlcke <mka@chromium.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Benjamin Bara <benjamin.bara@skidata.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
- Klaus Goger <klaus.goger@theobroma-systems.com>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, 
- Lukasz Czechowski <lukasz.czechowski@thaumatec.com>, 
- quentin.schulz@cherry.de, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/197] 6.1.132-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250326154349.272647840@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250326154349.272647840@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Currently, the onboard Cypress CYUSB3304 USB hub is not defined in
-the device tree, and hub reset pin is provided as vcc5v0_host
-regulator to usb phy. This causes instability issues, as a result
-of improper reset duration.
+On 3/26/25 08:44, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.132 release.
+> There are 197 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 28 Mar 2025 15:43:27 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.132-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The fixed regulator device requests the GPIO during probe in its
-inactive state (except if regulator-boot-on property is set, in
-which case it is requested in the active state). Considering gpio
-is GPIO_ACTIVE_LOW for Puma, it means it’s driving it high. Then
-the regulator gets enabled (because regulator-always-on property),
-which drives it to its active state, meaning driving it low.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-The Cypress CYUSB3304 USB hub actually requires the reset to be
-asserted for at least 5 ms, which we cannot guarantee right now
-since there's no delay in the current config, meaning the hub may
-sometimes work or not. We could add delay as offered by
-fixed-regulator but let's rather fix this by using the proper way
-to model onboard USB hubs.
-
-Define hub_2_0 and hub_3_0 nodes, as the onboard Cypress hub
-consist of two 'logical' hubs, for USB2.0 and USB3.0.
-Use the 'reset-gpios' property of hub to assign reset pin instead
-of using regulator. Rename the vcc5v0_host regulator to
-cy3304_reset to be more meaningful.
-The vdd-supply and vdd2-supply properties in hub nodes were
-skipped, because hub power supplies are always enabled based
-on HW design.
-
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Cc: stable@vger.kernel.org # 6.6
-Cc: stable@vger.kernel.org # Backport of the patch in this series fixing product ID in onboard_dev_id_table and onboard_dev_match in drivers/usb/misc/onboard_usb_dev.{c,h} driver
-Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
----
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi | 33 ++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 13 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index 995b30a7aae0..3a9049372e12 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -60,16 +60,6 @@ vcc3v3_sys: regulator-vcc3v3-sys {
- 		vin-supply = <&vcc5v0_sys>;
- 	};
- 
--	vcc5v0_host: regulator-vcc5v0-host {
--		compatible = "regulator-fixed";
--		gpio = <&gpio4 RK_PA3 GPIO_ACTIVE_LOW>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&vcc5v0_host_en>;
--		regulator-name = "vcc5v0_host";
--		regulator-always-on;
--		vin-supply = <&vcc5v0_sys>;
--	};
--
- 	vcc5v0_sys: regulator-vcc5v0-sys {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vcc5v0_sys";
-@@ -521,8 +511,8 @@ pmic_int_l: pmic-int-l {
- 		};
- 	};
- 
--	usb2 {
--		vcc5v0_host_en: vcc5v0-host-en {
-+	usb {
-+		cy3304_reset: cy3304-reset {
- 			rockchip,pins =
- 			  <4 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
- 		};
-@@ -591,7 +581,6 @@ u2phy1_otg: otg-port {
- 	};
- 
- 	u2phy1_host: host-port {
--		phy-supply = <&vcc5v0_host>;
- 		status = "okay";
- 	};
- };
-@@ -603,6 +592,24 @@ &usbdrd3_1 {
- &usbdrd_dwc3_1 {
- 	status = "okay";
- 	dr_mode = "host";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&cy3304_reset>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	hub_2_0: hub@1 {
-+		compatible = "usb4b4,6502";
-+		reg = <1>;
-+		peer-hub = <&hub_3_0>;
-+		reset-gpios = <&gpio4 RK_PA3 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	hub_3_0: hub@2 {
-+		compatible = "usb4b4,6500";
-+		reg = <2>;
-+		peer-hub = <&hub_2_0>;
-+		reset-gpios = <&gpio4 RK_PA3 GPIO_ACTIVE_HIGH>;
-+	};
- };
- 
- &usb_host1_ehci {
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.43.0
-
+Florian
 
