@@ -1,125 +1,122 @@
-Return-Path: <stable+bounces-126681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A293A710F7
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 08:03:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AFFA7111A
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 08:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63DBE188AE25
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 07:03:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67B413B978B
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 07:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9212D191F6D;
-	Wed, 26 Mar 2025 07:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OLdgg/0l"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0D81993B7;
+	Wed, 26 Mar 2025 07:08:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F2719047C
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 07:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8E5C8FE;
+	Wed, 26 Mar 2025 07:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742972608; cv=none; b=rc1EshiZltYD0Q5L01ERWnj3eZaUzr0Jk3RpsNT979CJABZR4xnOrjWS77IUy3Y16PCCDQyhFyAXENolwTk8jj0+E6mEhVnQMWXK5Tv9B424u/ZPnpd9M+N+L4j6SqCkTfZseYIgimv6L/cAoGBKlx0sY2iOxXPJmXP8Kod9Uxs=
+	t=1742972909; cv=none; b=lQ2Q3VlttynLhcUEkXXWRoOt9buhGN35ZzA2eY66COtGD0xRlnpexGN4YIFKHtMyyp7nLDDec2lWi/DsC3bP0a3aDiSZO9F+UMZzOPHDBvfpIxnvpVtyb3YugxIRaEwDt6sfJ7G+6z4BngZfqNWIDiK6SSBNBO/8gs3Ix/uV4iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742972608; c=relaxed/simple;
-	bh=qTpgNy6zEDsUZhOgWml+A7fADV/itqrWvIqhBWECVzc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=eBTv0tid3XlIw5VW6pwAXu7qju5uimlvqv2aGnSxrQJXqsoY4OldB+CMh+j+Hsps4R+4ngbakK8lIh+HpHgakM7D7D7EX5zxeVAzGYnpNOWtWeymb6k4aIe1I382Y1kF73SiNbCatqrPBCMLVObviU/MGsKEMnnkfqO2k/dXJ+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--keirf.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OLdgg/0l; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--keirf.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43d51bd9b45so28882145e9.1
-        for <stable@vger.kernel.org>; Wed, 26 Mar 2025 00:03:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742972605; x=1743577405; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VjdDMxOJ8ypIsJr26T0ef7SswO7nHrS4JeKFOEHommw=;
-        b=OLdgg/0lcUlFYDTUfmCHOW4+p6ZmeD+XTpQeAknHEolk8qBst5l4m+AxlxzJ6NNz6x
-         CdTwrID5S3BIjG+SbCSIj7oNswm3DQpfyj01+4ol+SirAL5gKSetVzID+lcphx06n6ef
-         SVew1+ekJfidbeWcm3It5+BXVOIqNnsewtjBJRR3HWaX9QPET5pX0V/YY1ZslrntnKjl
-         tKGDJ4tfhhbotu25K3gntRPX7P+MKalv0VZrMouqDqV5kHpGrmbx8o/elplwHZV/k3QI
-         r1y7n+Ssg/wqAomNabRi9mTsMj2gzHXVR9plyvJlmHSvTcfKUL0NuZIPoVOgZkn9MtQl
-         Qp4Q==
+	s=arc-20240116; t=1742972909; c=relaxed/simple;
+	bh=7umMe/owTqkQYNzQvn99o/BkcrVTlBwCps7KAJeuZOY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DmFuJ9WgsIy1Z4x4e4sJH1pLd+pINFEyAlf6QZaBZoe9l44+ZIcrn4MijW/i3t/jFizT1PiSgxT3+H4HQqWI+kl2PNN+aMdEw1TNEz72oYFUpF+9cJYAhNY4+xPp0amZqgOk/phl4tXPyvi8Hz0wWyY3/IHR7GXE2Ts+W9we9JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-223a7065ff8so74535275ad.0;
+        Wed, 26 Mar 2025 00:08:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742972605; x=1743577405;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VjdDMxOJ8ypIsJr26T0ef7SswO7nHrS4JeKFOEHommw=;
-        b=qTFecF2FBrHsj8ZZRR8aJN1ZJA/GpitZPdwFGNwPwmsHO+O787io+zGSf4gGOGUAVh
-         X+6McSwmyc2m4MqJgsqqY1/NhOBTetyuDn1sr9IPDZfPKe19l3skvic+HxJi74UXpo6a
-         DV3z2iv/py9vS0c39TV9q/K2SnxWbQc6NJcK5mdWlXGW6sGTJmMCtugPTJkK1Y7UFx1s
-         QMKMpQsCSnlBlINWWUNI1nlZVsDrV7XaOa+zhheEEsjzliPxcGWus6MsMscy9M4CWHfV
-         aWFCS2bufbP0qXf4D1/0N+JX2S1Az9iwmvQp3mi0y06l7sfRuPbMDzn5+VbKR4zQONRK
-         YkBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdPpjarZmILiPUSSPVzZhd1N6/5MDjXYjqGXBB2SsN3ohBX936Wz35eSy90HWmgyMAEGMxrfo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxx+ZGiOpdfFYeSlnUbDZhwV+RQPMtCmx77eBJtMcxSLefE5AJO
-	emSCVH2mV20vkl0HTXRMYxNiPqBrZw6/sp96/nM/NbzcewtdH+BMLiaVWEnUxhbikMLRALqGjQ=
-	=
-X-Google-Smtp-Source: AGHT+IH/xYSgXGEpnU/366BtleKSATBGgV7i3H8fDcMjsdSTbRVbQbDtBIxppx2fAgMCYggfEAQrcuBHoQ==
-X-Received: from wmbgx13.prod.google.com ([2002:a05:600c:858d:b0:43d:8f:dd29])
- (user=keirf job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:186d:b0:390:ed04:a676
- with SMTP id ffacd0b85a97d-3997f8ff44fmr18138026f8f.22.1742972605097; Wed, 26
- Mar 2025 00:03:25 -0700 (PDT)
-Date: Wed, 26 Mar 2025 07:02:55 +0000
+        d=1e100.net; s=20230601; t=1742972907; x=1743577707;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Usze/Hu/f9NyhQihXYEPOZpxjmRJBiCjP4S9p3//eDA=;
+        b=bP+ZXSoWioknnbmBlcB3ubm9613K1QbgsVKCRVzrg3lFE8KKby45PCniI63Fdqr+Fb
+         WVBpfOZq8hwwYvtYE1xhWNdD4thZrCEVOcAYBoN/REuRxUMAzeA2rTLgnB4pBBi2KSxc
+         yZ8FRzHQpH+k1R455aCTXwwtaEG3mNGII2WV5FZusssbFXylCfApy1BZJZ6z5Vf8slWz
+         WTX9mh0ms6HlRbD1ewzibZh2vdAqJGlZidat4zGKtMVA0ott42nUJiwvNbOfpJXYiZXH
+         k0FqQdlQqJrWexHg1baXTEPMlN++RbpEYCiQqFkv+Vr7HkGvfqLPfQL5izhpnvpcsYxB
+         d2Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPPscDKY3vEAP8Mcr9yC6oVgEu17+5c6CqQQLdKxLUA5g/znpTrvkGgRPzwHYuh7IwM1s3eP1/OsM6+w==@vger.kernel.org, AJvYcCWBgyA6jQ3X/LN3+aea/CrUKLfiuuMz1g99xSODVwu7pQJd5UVWB1mUvszAqaWo24kSSh+xpDZa@vger.kernel.org, AJvYcCX/6Q8gQYeiPZS2GrC8bDEPkyjisfKCURtA7PxAUhC35MzSwoFTWtUYWgabRQniuKbRU2TXRs2XrJpx@vger.kernel.org, AJvYcCXcZOVvQF6AF0hDWKgJ3CUpWbH4GZV2JoY/3EGOvBEpnz3Vf1SfktOZ9n7fjcpmNC1FBwwBSb505lsRi8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwK5Ch70/G1ah3B5V0cCdNGHkEZzj2WGYSnu9zyu8B/Dbt0zqfv
+	yvqzhovQr2R84hnHPmBFiwOdWTwe2/yyHJo/8PzVd8a9vv22HoOjJoyIuenT
+X-Gm-Gg: ASbGncv7BX7Ug600WmNxEJwsmZB8WbkQs7Q9NpRKt73Gl+b4QrUQDJfhcy0aftL/qBe
+	9pxuNXBdOFGAdqeUR4jT16avpw2BZBBahGYN8ym/foXwuha2phoRh90citBHMXrppZkN+OrEJWm
+	Y5qHjEiDpY5pmb+d0Do/d7AOeX7uplVZF0crJ7fyawx2J0YcHZwADEacpwdswMZVXWRgl1M3HJS
+	sSv4DJTp/tGmFKfzLH7AjVqyom46teiMQOJoL/1AR5J+M49vXqysB2aGd0dcYM7OPGuR0oJam71
+	jhixC/JGkVI/xD7s0qaYBIsUK2ZEqtu5o+iE+PJtSzEO7a9yBrjzlkS9EKog0dcqKEwkg0GZFLr
+	VUcc=
+X-Google-Smtp-Source: AGHT+IGyEsepOSz9UoNKc7Y22NXljw4tUhAHspFeSHM2qES1d+egW2qdQZ6cpo8lCD4d3eJlrT4aQQ==
+X-Received: by 2002:a17:902:e54a:b0:21f:85ee:f2df with SMTP id d9443c01a7336-22780c79888mr292422165ad.15.1742972906946;
+        Wed, 26 Mar 2025 00:08:26 -0700 (PDT)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22780f50c80sm102359315ad.104.2025.03.26.00.08.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Mar 2025 00:08:26 -0700 (PDT)
+Date: Wed, 26 Mar 2025 16:08:25 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, lpieralisi@kernel.org,
+	vigneshr@ti.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
+ J784S4
+Message-ID: <20250326070825.GD2822343@rocinante>
+References: <20250313055519.j3bpvsm6govd5ytk@uda0492258>
+ <20250313160215.GA736346@bhelgaas>
+ <20250314041705.v5j2fjulol5ywvyq@uda0492258>
+ <20250326065447.GC2822343@rocinante>
+ <20250326070124.boluxjcid4ouszqk@uda0492258>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
-Message-ID: <20250326070255.2567981-1-keirf@google.com>
-Subject: [PATCH] arm64: mops: Do not dereference src reg for a set operation
-From: Keir Fraser <keirf@google.com>
-To: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: Keir Fraser <keirf@google.com>, Kristina Martsenko <kristina.martsenko@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250326070124.boluxjcid4ouszqk@uda0492258>
 
-The register is not defined and reading it can result in a UBSAN
-out-of-bounds array access error, specifically when the srcreg field
-value is 31.
+Hello,
 
-Cc: Kristina Martsenko <kristina.martsenko@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Keir Fraser <keirf@google.com>
----
- arch/arm64/include/asm/traps.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+[...]
+> > > > So I guess without this patch, we incorrectly ignore link-down
+> > > > interrupts on J784S4.  It's good to have a one-sentence motivation
+> > > > like that somewhere in the commit log that we can pull out and include
+> > > > in the merge commit log and the pull request.
+> > > 
+> > > Yes, we can prepend the following to the existing commit message:
+> > > "Link down interrupts on J784S4 SoC are missed because..."
+> > > 
+> > > resulting in the following updated paragraph in the commit message:
+> > > Link down interrupts on J784S4 SoC are missed because commit under Fixes
+> > > assigned the value of 'linkdown_irq_regfield' for the....
+> > 
+> > How does this look like?
+> > 
+> >   https://web.git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=controller/j721e&id=b97b5b8cb603a4ba6b3f7f1b6065fa76e69bdb56
+> > 
+> > Let me know if you want any changes.
+> 
+> I will suggest minor changes to the first paragraph of the commit
+> message resulting in the following paragraph:
+> 
+> Commit under Fixes assigned the value of .linkdown_irq_regfield for the
+> J784S4 SoC as the "LINK_DOWN" macro corresponding to BIT(1), and as a
+> result, the Link Down interrupts on J784S4 SoC are missed.
 
-diff --git a/arch/arm64/include/asm/traps.h b/arch/arm64/include/asm/traps.h
-index d780d1bd2eac..82cf1f879c61 100644
---- a/arch/arm64/include/asm/traps.h
-+++ b/arch/arm64/include/asm/traps.h
-@@ -109,10 +109,9 @@ static inline void arm64_mops_reset_regs(struct user_pt_regs *regs, unsigned lon
- 	int dstreg = ESR_ELx_MOPS_ISS_DESTREG(esr);
- 	int srcreg = ESR_ELx_MOPS_ISS_SRCREG(esr);
- 	int sizereg = ESR_ELx_MOPS_ISS_SIZEREG(esr);
--	unsigned long dst, src, size;
-+	unsigned long dst, size;
- 
- 	dst = regs->regs[dstreg];
--	src = regs->regs[srcreg];
- 	size = regs->regs[sizereg];
- 
- 	/*
-@@ -129,6 +128,7 @@ static inline void arm64_mops_reset_regs(struct user_pt_regs *regs, unsigned lon
- 		}
- 	} else {
- 		/* CPY* instruction */
-+		unsigned long src = regs->regs[srcreg];
- 		if (!(option_a ^ wrong_option)) {
- 			/* Format is from Option B */
- 			if (regs->pstate & PSR_N_BIT) {
--- 
-2.49.0.395.g12beb8f557-goog
+OK.  Updated.  We are going to meet there half-way. :)
 
+Thank you!
+
+	Krzysztof
 
