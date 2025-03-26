@@ -1,73 +1,73 @@
-Return-Path: <stable+bounces-126791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF60A71E8A
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 19:40:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDE4A71E94
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 19:42:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C9A43B984F
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23E15188AF5D
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFAF24EF67;
-	Wed, 26 Mar 2025 18:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F581253337;
+	Wed, 26 Mar 2025 18:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R5GNfyBu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JqqicsDb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60B924CEEE;
-	Wed, 26 Mar 2025 18:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C275D24EA9A;
+	Wed, 26 Mar 2025 18:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743014417; cv=none; b=KNBlWwxa2DvOB/NeLIQj100iE5R2qrXk1KIhTr7u8xnuSl0c+/9xQtp4dcarz36g76qbCmKFTeVbEACU/TExK6DAMXA2GgAjQiEgPkHVQVj+GqLHXIuOWbSbdWa4iJ2EvjPhFUTmJm4DHCMAc4nkcYns5vHT+sTu7rcAZb68eww=
+	t=1743014544; cv=none; b=qab9dlsx1H3LdPs4iI4n8w39XYbfaAiS1muy6bCk7XfKeDCiqppH/lqtrXSohHxoiFGT/azktY1G3PvLvu3Pmfg306Z/enCPj2sW/++K5RTZOrqVVQb6B679UiWim2ktxPtdlL8Z0BG7JTjPlQ24KipFIszzJhRa3hpkAZw3vKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743014417; c=relaxed/simple;
-	bh=F5Y3RF0ndf8/9azcsuLfDmtYTAz9gCrDPqNMbnYLM/c=;
+	s=arc-20240116; t=1743014544; c=relaxed/simple;
+	bh=3GCuaFRiBJqbAVFYSqi9R3hp1bxmX5HXeie7MDE5R1s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iW1MaRX1lPV3oPCjwNX5o/R5nafaUmqrkDKnEXQAPbjGx/EvsjtOkeuo1ksZHSQjWFHPVOXUx+XAyn2PswCgPRpyndarTISvCRql68426IqEOc2oRPWm5I4l770ezWlDgbEk1T1aeuOUO091AzSAKpe8cITIm3q3YQkbga+O7no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R5GNfyBu; arc=none smtp.client-ip=209.85.208.42
+	 To:Cc:Content-Type; b=hqX7VnVfjdLnLxnpQLeUMqqG/B7WdLD8IorHLSDJVpvMvBxLEzJSMcWVLdc7MYhUxMGKNVtSYTX9Nac0jDBMYMXTQ709epM7X0TRzMT5ikrHIP+vOK+80kPWfTCnBCjPv3r5tmqxKvr09Vp4lE2WO/xlaYQYVBpHsF4jkmjScqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JqqicsDb; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5e8be1c6ff8so246953a12.1;
-        Wed, 26 Mar 2025 11:40:15 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5ed1ac116e3so216109a12.3;
+        Wed, 26 Mar 2025 11:42:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743014414; x=1743619214; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743014541; x=1743619341; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sOrtiNV+oGhM+385d+TAFbT9mzLoUCEIKut5q82hzIo=;
-        b=R5GNfyBus4A7nney46YC6LA4g0kZ5jJauSUQT2USKS0yaqq498/WbbRytLe9U63Y1v
-         C5yuP88u1TWK6Yu9GgK/78pq7Z5EoaC0G/0Ckr/tfg799viwijUpzOhFfoJRyATnZNoO
-         ft7z857N1nzDfscRqJ3hY5aGJkHDiRD+Z+42JXgQYLZkN1RRYLkPxF2MOI5DKVgdshPb
-         nNGUPsdwa+t6ULJcdeNwpJg61S9XhB7vON52aaEjLyBd4/D4xqJ0svJPlNJSxbkmNW8n
-         M0b8QDMWQntANFwGqSVLi2bOkyYe/MvVTGmYkLblhIc+BfFPotAPbozKh336vqSwSCEi
-         Ak4g==
+        bh=fsiPA+wQiDjy+/qU9eR9YHSnTKpdRuheNLQ9Ls8sYTc=;
+        b=JqqicsDbY6fcYq5vS0SauUOioRJb0A5+IdzUpYgQt7y9aLAxbeH8jDUlfuf3QtOcJu
+         unAie76QDHkvr+70lcEM2nvmW+bzG8+daWoG5DpPht0R2rxHGqkfUocIwn/v9pz5clQQ
+         rNYLHfrvxCm1+G1gc6pmu4MHngWlQioeTupdzEQjAhKkPqD3IjavpXAVX8IflP0tQ/8D
+         XNOxE/ggNNzLJimN30i8kCLDDECm2tMuz5Gmqr6SfJIHnS3uRh6m1RmM6byco+DXg8ZS
+         AhK9FkvjTtR0tkS2XYhPqbkvodXz041MYyDp366H7oqtuKQkB33B+HqD3Eo/jCIrbbbI
+         92TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743014414; x=1743619214;
+        d=1e100.net; s=20230601; t=1743014541; x=1743619341;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sOrtiNV+oGhM+385d+TAFbT9mzLoUCEIKut5q82hzIo=;
-        b=tfJWbQEq+1yeRMp/4jruCcudQQg6KzN+rKO610c3BXJDneV+4Yh/o0f/LBwkYazOuK
-         8NLkS3pZuJBLJrQY9k2iNjpgKLEcM3Pqdxl9l9BqVLeIgBc/DSB2rugTVqHwQLggQif8
-         qAZifM8b0BNqEn1AK9oyNF1I+jalxIoFxfcmeqUejxDfHoygYGW/oz7Xwx75CbNUFnei
-         kNcNSy2NvjlruwbP3vadlz7DyL3Liie7kh+UwUF5V1zTaUXZz4oUdCUQKbQUqQp9VKwR
-         I77+HkMD9/Vaor2OeD23D7DTcv401VjoWNkNq4oiRgRUPJxJOJh4URA/hDJjsSElAfqo
-         DjSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUXlwQcZ7Y1elfHg/qJrx0x6+88M30QCVTnmEMU1VX1iwWhUZSk4XjVnHutdDkt0aesPX0bdrE4@vger.kernel.org, AJvYcCVrjOIt5xe+BQ5rkIU7Xurr1xcLD68JVEffzvndYd3eYsMdjWtSYsB7cCTC7ijEosejKgX5JVSCRGEVWOVL@vger.kernel.org, AJvYcCXTHhknumUFIymQbN6cHXnqlyKmLiH/Y++JKRegDeji6OMsZe2TtijPCAZ0i/VMikrRgCxEdf39c4ceFpg3R5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwO/tvLWCpMmTfiCXo3kPSjNgEKPSc+i2rQBa4sgZekbHMVBKdB
-	jpq8yWoGM1zdaqV4ehGaE5gmSUJZoVCSoc9phpIq676nmUPs8qhWazCnxpaeeBlOzyPHgktWcsP
-	0dqRpN8mnpdcBpwP7QG+cBS0LwsM=
-X-Gm-Gg: ASbGncuhW4he5pmh6VLHD65R2pDnBsmyY5ww+MHnXpWdtH6n69s/J+rakpjmhLth9Jv
-	kyjiM9MKjBd3nBsrJJHhAcsi1suSgeACjqKr4CCjY3tF4HpchoI+pp+MZ+WEv6kn0IlIzHSbV4+
-	B4HllRvGSNvbByRRblxahTGX59tw==
-X-Google-Smtp-Source: AGHT+IG/c8A09fmH4Hvi2r2iNvibbo0gF+QCVgYY3qZ1UUFDvGnHQ5yFC2x9sm4XWN8Ulm3xGBe6lcMopbawOHcqDlo=
-X-Received: by 2002:a17:907:3da1:b0:ac2:6bb5:413c with SMTP id
- a640c23a62f3a-ac6faf45fbcmr48841566b.31.1743014413852; Wed, 26 Mar 2025
- 11:40:13 -0700 (PDT)
+        bh=fsiPA+wQiDjy+/qU9eR9YHSnTKpdRuheNLQ9Ls8sYTc=;
+        b=Sd+oOYGgnqMQkBGo7m6su+VPdopQk0d1QoA1PWBrYl/hE1pipKe5DjhuUFwQiiCbO4
+         OvKEPHpfeGN6pRoT/S6y5+xmPjlWpvs6QMZhg2ohTtz2o1KMPjeCKIMCP4u6jRMUB+tb
+         Gljyzww5vwK0ql6YFIx1p0tigxdFFX87TI5qrX1n6ip1dvC9ZIG414wLBlaQivlaUJtY
+         FnzsvF8f/LXiArTcj2TdI+nThcY+a0WpapJholwtHfJJunVqQxowF8mIsKMTBltMvBXu
+         qYoYcX7lD6PYKq2YoqT+U6aEeNvPe+dWl7132mSMY+38jloya07Yyfdq5TsJyYMGYKv7
+         9WbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjhKaansyV4AsNebIDjWmRZ5KcY3BL0GlMKh9IiV+kjKO0XeHkKBSypCarBjGWdOSGITGjDEna0LhIIrq8@vger.kernel.org, AJvYcCWGxcasJo/IClsY8kkb522tGSn/yypYclNKfW8VAwRwXzOeT9XZi2OFEWM0WvyNH6ffQf4MYRCP@vger.kernel.org, AJvYcCXIng3Sa1kY0oN5RzzbyW7K11jXtdQZvBE+68C+fpDfiP9EfT4nSwXf/iG3PGiWiIeY7eX9r3vK6l50BIqN2Cw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzlexyx0YnYYBmy+kgmSY1Jl5nAZiahpNcMXBwKK6KKLTGENrX8
+	ZCUm27Ylbd8Lf5QjLZKMTUQo8doNzCa+JpcY5V+pO1gB2dKOchY6JS9Kmkq/pi+b5k+OgfTot2X
+	x+2g4++Mxh3uADnbRfrzinjZkLfM=
+X-Gm-Gg: ASbGncv5lLaGu7Y5EhFJSOOOUiuvEfcj1whT7liWfPJkxjHKZghjhKawn5/bVX6sGWG
+	ewmysAS90WIn7WouAAXHO4GocC98yeyWvKuAI7Eu5Vc2WtsVn7misEpOhzj8oQfWzn2ms3P55YE
+	VlWq/OVOyH7mESxxCyGPhPhNxnXOgagut0EsYl
+X-Google-Smtp-Source: AGHT+IHvjBEb8u3bGux3ahHtVwunzcocu6dQwS2Xse9Cp8eI4Z66HuwdqhCdzBpOe4XmdyMVe7tLDyY+cjoIXRJFZBM=
+X-Received: by 2002:a17:907:3fa3:b0:abf:6ebf:5500 with SMTP id
+ a640c23a62f3a-ac6faeb7134mr50473666b.16.1743014540877; Wed, 26 Mar 2025
+ 11:42:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,12 +75,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250326-string-add-wcslen-for-llvm-opt-v2-0-d864ab2cbfe4@kernel.org>
- <20250326-string-add-wcslen-for-llvm-opt-v2-2-d864ab2cbfe4@kernel.org>
-In-Reply-To: <20250326-string-add-wcslen-for-llvm-opt-v2-2-d864ab2cbfe4@kernel.org>
+ <20250326-string-add-wcslen-for-llvm-opt-v2-2-d864ab2cbfe4@kernel.org> <CAHp75Vd_mJggRRLfziWUf0tgr3K125uVBNh9VdSo9LHVJz2r_w@mail.gmail.com>
+In-Reply-To: <CAHp75Vd_mJggRRLfziWUf0tgr3K125uVBNh9VdSo9LHVJz2r_w@mail.gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 26 Mar 2025 20:39:37 +0200
-X-Gm-Features: AQ5f1JqlCAtx3V-rK5Wv2QTv2YVgCmrK0MvTDzYhi8EajWnLgB-2pLN4PzLaYE0
-Message-ID: <CAHp75Vd_mJggRRLfziWUf0tgr3K125uVBNh9VdSo9LHVJz2r_w@mail.gmail.com>
+Date: Wed, 26 Mar 2025 20:41:44 +0200
+X-Gm-Features: AQ5f1JqGF7dttWsEgjPhabIJU0Qow2xz-VT0UfD-t8uVq_PkVNBOsCT8C5GAZHk
+Message-ID: <CAHp75VdQv=0wvgMDGNoXojALWh2B-92gjkO7zrv=d42ocamM4Q@mail.gmail.com>
 Subject: Re: [PATCH v2 2/2] lib/string.c: Add wcslen()
 To: Nathan Chancellor <nathan@kernel.org>
 Cc: Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
@@ -90,67 +90,33 @@ Cc: Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 26, 2025 at 7:19=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
-g> wrote:
->
-> A recent optimization change in LLVM [1] aims to transform certain loop
-> idioms into calls to strlen() or wcslen(). This change transforms the
-> first while loop in UniStrcat() into a call to wcslen(), breaking the
-> build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
->
->   ld.lld: error: undefined symbol: wcslen
->   >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2=
-_utils.h:54)
->   >>>               vmlinux.o:(alloc_path_with_tree_prefix)
->   >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2=
-_utils.h:54)
->   >>>               vmlinux.o:(alloc_path_with_tree_prefix)
->
-> The kernel does not build with '-ffreestanding' (which would avoid this
-> transformation) because it does want libcall optimizations in general
-> and turning on '-ffreestanding' disables the majority of them. While
-> '-fno-builtin-wcslen' would be more targeted at the problem, it does not
-> work with LTO.
->
-> Add a basic wcslen() to avoid this linkage failure. While no
-> architecture or FORTIFY_SOURCE overrides this, add it to string.c
-> instead of string_helpers.c so that it is built with '-ffreestanding',
-> otherwise the compiler might transform it into a call to itself.
+On Wed, Mar 26, 2025 at 8:39=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Wed, Mar 26, 2025 at 7:19=E2=80=AFPM Nathan Chancellor <nathan@kernel.=
+org> wrote:
 
 ...
 
-> --- a/include/linux/string.h
-> +++ b/include/linux/string.h
-> @@ -7,6 +7,7 @@
->  #include <linux/cleanup.h>     /* for DEFINE_FREE() */
->  #include <linux/compiler.h>    /* for inline */
->  #include <linux/types.h>       /* for size_t */
+> > --- a/include/linux/string.h
+> > +++ b/include/linux/string.h
+> > @@ -7,6 +7,7 @@
+> >  #include <linux/cleanup.h>     /* for DEFINE_FREE() */
+> >  #include <linux/compiler.h>    /* for inline */
+> >  #include <linux/types.h>       /* for size_t */
+>
+> > +#include <linux/nls_types.h>   /* for wchar_t */
+>
+> I know it's not ordered, but can we at least not make it worse, i.e.
+> squeeze this to be after the compiler.h? Or even somewhere after below
+> the err*.h? Whatever gives a better (sparsely) ordered overall
+> result...
 
-> +#include <linux/nls_types.h>   /* for wchar_t */
+I just checked, and the only unordered piece is those two: types +
+stddef right now, and if you move nls_types.h after errno.h it will
+keep the status quo.
 
-I know it's not ordered, but can we at least not make it worse, i.e.
-squeeze this to be after the compiler.h? Or even somewhere after below
-the err*.h? Whatever gives a better (sparsely) ordered overall
-result...
-
->  #include <linux/stddef.h>      /* for NULL */
->  #include <linux/err.h>         /* for ERR_PTR() */
-
-...
-
->  #ifndef __HAVE_ARCH_STRNLEN
->  extern __kernel_size_t strnlen(const char *,__kernel_size_t);
->  #endif
-> +extern __kernel_size_t wcslen(const wchar_t *s);
-
-I'm wondering why we still continue putting this 'extern' keyword.
-Yes, I see that the rest is like this, but for new code do we really
-need it?
-
->  #ifndef __HAVE_ARCH_STRPBRK
->  extern char * strpbrk(const char *,const char *);
->  #endif
-
+> >  #include <linux/stddef.h>      /* for NULL */
+> >  #include <linux/err.h>         /* for ERR_PTR() */
 
 --=20
 With Best Regards,
