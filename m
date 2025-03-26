@@ -1,124 +1,162 @@
-Return-Path: <stable+bounces-126792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FDE4A71E94
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 19:42:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDD9A71EE7
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 20:12:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23E15188AF5D
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:42:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCDEF170EC5
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 19:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F581253337;
-	Wed, 26 Mar 2025 18:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67BA2580D3;
+	Wed, 26 Mar 2025 19:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JqqicsDb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X8VJHKQo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C275D24EA9A;
-	Wed, 26 Mar 2025 18:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59314257ADE;
+	Wed, 26 Mar 2025 19:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743014544; cv=none; b=qab9dlsx1H3LdPs4iI4n8w39XYbfaAiS1muy6bCk7XfKeDCiqppH/lqtrXSohHxoiFGT/azktY1G3PvLvu3Pmfg306Z/enCPj2sW/++K5RTZOrqVVQb6B679UiWim2ktxPtdlL8Z0BG7JTjPlQ24KipFIszzJhRa3hpkAZw3vKM=
+	t=1743016303; cv=none; b=Gc9rOb/IpCdIItsvRXsS7qS+wQWeczDRvUQirMB000ZT0sa5JcEwTbze8vbx+gSy7pc5b9BGoGnDz5Yugn9VC1gZwLLCkD9FtYdMHnrv7u743lVqwiUCFV0yEx1tUU6/W0yvJiRxZiUmuWfrvDffRXcqEMPjMzrplg0NHBVXFEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743014544; c=relaxed/simple;
-	bh=3GCuaFRiBJqbAVFYSqi9R3hp1bxmX5HXeie7MDE5R1s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hqX7VnVfjdLnLxnpQLeUMqqG/B7WdLD8IorHLSDJVpvMvBxLEzJSMcWVLdc7MYhUxMGKNVtSYTX9Nac0jDBMYMXTQ709epM7X0TRzMT5ikrHIP+vOK+80kPWfTCnBCjPv3r5tmqxKvr09Vp4lE2WO/xlaYQYVBpHsF4jkmjScqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JqqicsDb; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5ed1ac116e3so216109a12.3;
-        Wed, 26 Mar 2025 11:42:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743014541; x=1743619341; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fsiPA+wQiDjy+/qU9eR9YHSnTKpdRuheNLQ9Ls8sYTc=;
-        b=JqqicsDbY6fcYq5vS0SauUOioRJb0A5+IdzUpYgQt7y9aLAxbeH8jDUlfuf3QtOcJu
-         unAie76QDHkvr+70lcEM2nvmW+bzG8+daWoG5DpPht0R2rxHGqkfUocIwn/v9pz5clQQ
-         rNYLHfrvxCm1+G1gc6pmu4MHngWlQioeTupdzEQjAhKkPqD3IjavpXAVX8IflP0tQ/8D
-         XNOxE/ggNNzLJimN30i8kCLDDECm2tMuz5Gmqr6SfJIHnS3uRh6m1RmM6byco+DXg8ZS
-         AhK9FkvjTtR0tkS2XYhPqbkvodXz041MYyDp366H7oqtuKQkB33B+HqD3Eo/jCIrbbbI
-         92TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743014541; x=1743619341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fsiPA+wQiDjy+/qU9eR9YHSnTKpdRuheNLQ9Ls8sYTc=;
-        b=Sd+oOYGgnqMQkBGo7m6su+VPdopQk0d1QoA1PWBrYl/hE1pipKe5DjhuUFwQiiCbO4
-         OvKEPHpfeGN6pRoT/S6y5+xmPjlWpvs6QMZhg2ohTtz2o1KMPjeCKIMCP4u6jRMUB+tb
-         Gljyzww5vwK0ql6YFIx1p0tigxdFFX87TI5qrX1n6ip1dvC9ZIG414wLBlaQivlaUJtY
-         FnzsvF8f/LXiArTcj2TdI+nThcY+a0WpapJholwtHfJJunVqQxowF8mIsKMTBltMvBXu
-         qYoYcX7lD6PYKq2YoqT+U6aEeNvPe+dWl7132mSMY+38jloya07Yyfdq5TsJyYMGYKv7
-         9WbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjhKaansyV4AsNebIDjWmRZ5KcY3BL0GlMKh9IiV+kjKO0XeHkKBSypCarBjGWdOSGITGjDEna0LhIIrq8@vger.kernel.org, AJvYcCWGxcasJo/IClsY8kkb522tGSn/yypYclNKfW8VAwRwXzOeT9XZi2OFEWM0WvyNH6ffQf4MYRCP@vger.kernel.org, AJvYcCXIng3Sa1kY0oN5RzzbyW7K11jXtdQZvBE+68C+fpDfiP9EfT4nSwXf/iG3PGiWiIeY7eX9r3vK6l50BIqN2Cw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzlexyx0YnYYBmy+kgmSY1Jl5nAZiahpNcMXBwKK6KKLTGENrX8
-	ZCUm27Ylbd8Lf5QjLZKMTUQo8doNzCa+JpcY5V+pO1gB2dKOchY6JS9Kmkq/pi+b5k+OgfTot2X
-	x+2g4++Mxh3uADnbRfrzinjZkLfM=
-X-Gm-Gg: ASbGncv5lLaGu7Y5EhFJSOOOUiuvEfcj1whT7liWfPJkxjHKZghjhKawn5/bVX6sGWG
-	ewmysAS90WIn7WouAAXHO4GocC98yeyWvKuAI7Eu5Vc2WtsVn7misEpOhzj8oQfWzn2ms3P55YE
-	VlWq/OVOyH7mESxxCyGPhPhNxnXOgagut0EsYl
-X-Google-Smtp-Source: AGHT+IHvjBEb8u3bGux3ahHtVwunzcocu6dQwS2Xse9Cp8eI4Z66HuwdqhCdzBpOe4XmdyMVe7tLDyY+cjoIXRJFZBM=
-X-Received: by 2002:a17:907:3fa3:b0:abf:6ebf:5500 with SMTP id
- a640c23a62f3a-ac6faeb7134mr50473666b.16.1743014540877; Wed, 26 Mar 2025
- 11:42:20 -0700 (PDT)
+	s=arc-20240116; t=1743016303; c=relaxed/simple;
+	bh=FjoBf5oIKnt+BxBL5ikSxff8xK7Z5Im1gcOrV8814C0=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=LdO8+3fl5CPVuMSj/ZELgfUhSsE6LsIPsPsV5eLFEhGgA4i2syMIRy9M7rkE3eNY4olJMX+9JAZvhTJFW3rOduv7KaU9ykqii8aQhKgqGayQImkgdSgjdFoffGa352/b6+hBxuCIkh2cMqEzVo9XJFgqZwOafHUc7hyOoyZ8Xpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X8VJHKQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB9BC4AF09;
+	Wed, 26 Mar 2025 19:11:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743016302;
+	bh=FjoBf5oIKnt+BxBL5ikSxff8xK7Z5Im1gcOrV8814C0=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=X8VJHKQoKx8TN6Nrrw4iVI4qoPraLVsFZAWJKgnItF1dK/53F9EYLQB5pYJXgibly
+	 xiyu5iNkZYozvEXYu2kxBf/yCi3qNE7VeRLZh+Zr8/Icir0WpkkciAGz7BM/oPuODG
+	 IeAjHVVGKEHMlh7XxXHwTk4UK/Bgpu2lXiTWZCtVJmaOrxOEcmCYgWELL9BTadg6+2
+	 gC9KMPu1s7yo0EQ5CFyxfQjDEa9j3SMZvAMh+xsgoK9S2ZFDTN3ym5Fn7x5vcMBb0L
+	 kghNDPFmQLQwX46UOq63Q10fyvnULTyKmrj1ZCSpHiFYppVXLGEcqp3wT6IjZ9+o+B
+	 sOa2/athzo7lQ==
+Date: Wed, 26 Mar 2025 14:11:41 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250326-string-add-wcslen-for-llvm-opt-v2-0-d864ab2cbfe4@kernel.org>
- <20250326-string-add-wcslen-for-llvm-opt-v2-2-d864ab2cbfe4@kernel.org> <CAHp75Vd_mJggRRLfziWUf0tgr3K125uVBNh9VdSo9LHVJz2r_w@mail.gmail.com>
-In-Reply-To: <CAHp75Vd_mJggRRLfziWUf0tgr3K125uVBNh9VdSo9LHVJz2r_w@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 26 Mar 2025 20:41:44 +0200
-X-Gm-Features: AQ5f1JqGF7dttWsEgjPhabIJU0Qow2xz-VT0UfD-t8uVq_PkVNBOsCT8C5GAZHk
-Message-ID: <CAHp75VdQv=0wvgMDGNoXojALWh2B-92gjkO7zrv=d42ocamM4Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] lib/string.c: Add wcslen()
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-rockchip@lists.infradead.org, quentin.schulz@cherry.de, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Benjamin Bara <benjamin.bara@skidata.com>, 
+ Matthias Kaehlcke <mka@chromium.org>, Heiko Stuebner <heiko@sntech.de>, 
+ Klaus Goger <klaus.goger@theobroma-systems.com>, 
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+In-Reply-To: <20250326-onboard_usb_dev-v1-0-a4b0a5d1b32c@thaumatec.com>
+References: <20250326-onboard_usb_dev-v1-0-a4b0a5d1b32c@thaumatec.com>
+Message-Id: <174301524097.2716484.8735882534615031646.robh@kernel.org>
+Subject: Re: [PATCH 0/5] Fix onboard USB hub instability on RK3399 Puma SoM
 
-On Wed, Mar 26, 2025 at 8:39=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Wed, Mar 26, 2025 at 7:19=E2=80=AFPM Nathan Chancellor <nathan@kernel.=
-org> wrote:
 
-...
+On Wed, 26 Mar 2025 17:22:55 +0100, Lukasz Czechowski wrote:
+> The RK3399 Puma SoM contains the internal Cypress CYUSB3304 USB
+> hub, that shows instability due to improper reset pin configuration.
+> Currently reset pin is modeled as a vcc5v0_host regulator, that
+> might result in too short reset pulse duration.
+> Starting with the v6.6, the Onboard USB hub driver (later renamed
+> to Onboard USB dev) contains support for Cypress HX3 hub family.
+> It can be now used to correctly model the RK3399 Puma SoM hardware.
+> 
+> The first commits in this series fix the onboard USB dev driver to
+> support all HX3 hub variants, including the CYUSB3304 found in
+> the RK3399 Puma SoM.
+> This allows to introduce fix for internal USB hub instability on
+> RK3399 Puma, by replacing the vcc5v0_host regulator with
+> cy3304_reset, used inside the hub node.
+> Please be aware that the patch that fixes USB hub instability in
+> arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi can me merged only
+> after updating the Onboard USB dev driver, otherwise the hub
+> will not work.
+> 
+> Two last commits in the series disable unrouted USB controllers
+> and PHYs on RK3399 Puma SOM and Haikou carrier board, with no
+> intended functional changes.
+> 
+> Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+> ---
+> Lukasz Czechowski (3):
+>       usb: misc: onboard_usb_dev: fix support for Cypress HX3 hubs
+>       dt-bindings: usb: cypress,hx3: Add support for all variants
+>       arm64: dts: rockchip: fix internal USB hub instability on RK3399 Puma
+> 
+> Quentin Schulz (2):
+>       arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma
+>       arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma with Haikou
+> 
+>  .../devicetree/bindings/usb/cypress,hx3.yaml       |  6 +++
+>  .../arm64/boot/dts/rockchip/rk3399-puma-haikou.dts |  8 ----
+>  arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi      | 43 ++++++++++------------
+>  drivers/usb/misc/onboard_usb_dev.c                 | 10 ++++-
+>  drivers/usb/misc/onboard_usb_dev.h                 |  6 +++
+>  5 files changed, 39 insertions(+), 34 deletions(-)
+> ---
+> base-commit: 1e26c5e28ca5821a824e90dd359556f5e9e7b89f
+> change-id: 20250326-onboard_usb_dev-a7c063a8a515
+> 
+> Best regards,
+> --
+> Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+> 
+> 
+> 
 
-> > --- a/include/linux/string.h
-> > +++ b/include/linux/string.h
-> > @@ -7,6 +7,7 @@
-> >  #include <linux/cleanup.h>     /* for DEFINE_FREE() */
-> >  #include <linux/compiler.h>    /* for inline */
-> >  #include <linux/types.h>       /* for size_t */
->
-> > +#include <linux/nls_types.h>   /* for wchar_t */
->
-> I know it's not ordered, but can we at least not make it worse, i.e.
-> squeeze this to be after the compiler.h? Or even somewhere after below
-> the err*.h? Whatever gives a better (sparsely) ordered overall
-> result...
 
-I just checked, and the only unordered piece is those two: types +
-stddef right now, and if you move nls_types.h after errno.h it will
-keep the status quo.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-> >  #include <linux/stddef.h>      /* for NULL */
-> >  #include <linux/err.h>         /* for ERR_PTR() */
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
---=20
-With Best Regards,
-Andy Shevchenko
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: base-commit 1e26c5e28ca5821a824e90dd359556f5e9e7b89f not known, ignoring
+ Base: attempting to guess base-commit...
+ Base: tags/next-20250326 (best guess, 2/5 blobs matched)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/rockchip/' for 20250326-onboard_usb_dev-v1-0-a4b0a5d1b32c@thaumatec.com:
+
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: hub@1: 'vdd-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/cypress,hx3.yaml#
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: hub@1: 'vdd2-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/cypress,hx3.yaml#
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: hub@2: 'vdd-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/cypress,hx3.yaml#
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: hub@2: 'vdd2-supply' is a required property
+	from schema $id: http://devicetree.org/schemas/usb/cypress,hx3.yaml#
+arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dtb: pinctrl: gpios: {'bios-disable-override-hog-pin': {'rockchip,pins': [[3, 29, 0, 190]], 'phandle': 185}, 'q7-thermal-pin': {'rockchip,pins': [[0, 3, 0, 189]], 'phandle': 184}} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml#
+
+
+
+
+
 
