@@ -1,256 +1,142 @@
-Return-Path: <stable+bounces-126685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5275AA711FE
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 09:05:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0871DA7120A
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 09:07:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B7023A98DF
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 08:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 064711897C35
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 08:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EF219D884;
-	Wed, 26 Mar 2025 08:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB1B17A2FD;
+	Wed, 26 Mar 2025 08:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tf6o+jcg";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sdumLWQH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PhFDyktU"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2CD19F10A;
-	Wed, 26 Mar 2025 08:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E4019FA8D
+	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 08:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742976176; cv=none; b=muS0/KSOKk2uBCssIxvsr+FdB9Q6wbfsOCtMVhxgRCmupd21Dqk4JwIcTRsmm1Bs16iXtuFve/wdKTKH0HM/ha0YG0e24IuHqSsNm4GT0ISQVWIH0kW3u05J6SPGxq/IZJUvfj9EFCV+l+o2yCtRK2W4jO/ImSeXrRmHHhMvS4U=
+	t=1742976423; cv=none; b=VqIQ8LdHWawe7OrOExGE7CwCcqG6YvNOFi8BWTVwGYP54MUwH/t+wlC2I2u+iKOvaV8wZ+yKdox2A9mAHJ/0y14Nf9/PgnecFvC4z93sGwiFtvGl+enPOBSC69o18Ra5q80wZj946NYVc/P57Rd/7lk4UXBGa5sNCHDSk9+oywI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742976176; c=relaxed/simple;
-	bh=JmoLePE8QJbKeZQ3C8QX0X0eA0Fp+alg+DtWX5oHr5c=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=KdYILEf+RavfzDUuB2B9x0R1y6frPc+Umu3V0ETcLmJp4jyAPiewpokXgYUSU+6CqzgMGA6leLC6qmfpDRi+WcII8gZ+dcSvmFPIgrngoTdkE21RZNqnV+qj+tpAUdLfZWKuWSXfeUKD40suJK1tMzmk4CdX7DcUnvDDlUvtB2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tf6o+jcg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sdumLWQH; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Mar 2025 08:02:43 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742976171;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uNjoH9Y4CeYJsqO8vczoARuZDeayo1PlEVJGTUvLz3A=;
-	b=tf6o+jcgo1aLySFs4mrgs6ppTg4HRrRs1vvBLw1BXdY9nZ0sV4ygjLYRZXcT3tbzhtZCRk
-	dDP2woUTVxFWwIogpNmlA1oxP8FVxMEuvdmgdekeIyHFnh8XCYrC97Rj42uTV38QpfokQz
-	fQ9XEWL2gjRno3e9S5i0JyU53mpKvnoGwMyiKQStMnSRC5YjedY4gtc9YXFaUix4rBylPp
-	MQN8EDe3q3RlcN7Xvu8wPxxrhvsWnlDwz4T2cmUqfBR4wLUhht3mn6/fA3wfMgFM7pugm4
-	6sEpcWEPX1EbIUsgpyCYMpwTQd4sM7BUs2komqa2WNsxNNxMzpQBg7FBr/W5og==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742976171;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uNjoH9Y4CeYJsqO8vczoARuZDeayo1PlEVJGTUvLz3A=;
-	b=sdumLWQHAdTyBKZPEIY5u1GttIbVv7ekEIuOvxpb+qrekaMb1qNdZluieb/rLYaBHgXOmO
-	u0xw6ysr8piIeICw==
-From: "tip-bot2 for Vishal Annapurve" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Fix arch_safe_halt() execution for TDX VMs
-Cc: Vishal Annapurve <vannapurve@google.com>, Ingo Molnar <mingo@kernel.org>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Ryan Afranji <afranji@google.com>, Andy Lutomirski <luto@kernel.org>,
- Brian Gerst <brgerst@gmail.com>, Juergen Gross <jgross@suse.com>,
- "H. Peter Anvin" <hpa@zytor.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250228014416.3925664-3-vannapurve@google.com>
-References: <20250228014416.3925664-3-vannapurve@google.com>
+	s=arc-20240116; t=1742976423; c=relaxed/simple;
+	bh=1h14r4Gq72zE+uCNNVQUHEuRRZWjoHzu+rsjHlpWOUg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GotiUIgy4U40Ym0aNDi9Zn15GU6rIhcjWyfSj84UL30NiaSBpEzQNqwfZ0fWJqFUrEVGBNynEqKDCD3XcyyR5/PrxjYfg16LtBE3/EZTQNUWOPJXl38MTTnb3+ku3VuPw2FHnj+cihXXiKtl3+wm11JcKpo2v9bayBLYJvNpgnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PhFDyktU; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742976422; x=1774512422;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=1h14r4Gq72zE+uCNNVQUHEuRRZWjoHzu+rsjHlpWOUg=;
+  b=PhFDyktUYXipu5jxPsY1lwwAdNj7GXF/+NmiXwt7Hxb52M65Ssy02WUo
+   oYPasjZrP217mDC5notsU3BI/Y7BRK0kwduj/ZtuOLsxV1lJma6BWmFcb
+   ke03IvyJZlWf2Je2FggCbcH4MHy1lhhlUWbVrH6eOOMoZhTfLN6sfz2o3
+   tL7y5stPqRcO3UgPrHm3XeFWXWvSfYSox9fn4zuOuw+lF2wTzoJyWHfdh
+   duhLXxhPjbTMBvButZmBVjD20289tClRqBlRDfoUVe+oreBNTnOC6lmM4
+   0Rw/hGWXK3EIf6Z+iSeblLtyAVdniI9vSSv3ttQ6xOSWjUtyX+oAQZWGD
+   A==;
+X-CSE-ConnectionGUID: aol+BUeGS7WBCKrm92mAgQ==
+X-CSE-MsgGUID: UrKIENqpTgKcAtVcsCyzLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="44139694"
+X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; 
+   d="scan'208";a="44139694"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 01:07:01 -0700
+X-CSE-ConnectionGUID: BokTjAbjRGa7Q2WQF5G3TQ==
+X-CSE-MsgGUID: 2o5xN5B0TqGGq7R2n+/Wdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; 
+   d="scan'208";a="129360645"
+Received: from kwywiol-mobl1.ger.corp.intel.com (HELO [10.245.83.152]) ([10.245.83.152])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 01:06:59 -0700
+Message-ID: <17c82a42-2174-425f-a4c4-4df18176f7a1@linux.intel.com>
+Date: Wed, 26 Mar 2025 09:06:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174297617047.14745.9690994192475300024.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] accel/ivpu: Fix deadlock in ivpu_ms_cleanup()
+To: Lizhi Hou <lizhi.hou@amd.com>,
+ Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+ dri-devel@lists.freedesktop.org
+Cc: oded.gabbay@gmail.com, quic_jhugo@quicinc.com, stable@vger.kernel.org
+References: <20250325114306.3740022-1-maciej.falkowski@linux.intel.com>
+ <20250325114306.3740022-2-maciej.falkowski@linux.intel.com>
+ <a0d93faa-40e0-4fc9-8b86-1e30c3946124@amd.com>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <a0d93faa-40e0-4fc9-8b86-1e30c3946124@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the x86/tdx branch of tip:
+Hi,
 
-Commit-ID:     9f98a4f4e7216dbe366010b4cdcab6b220f229c4
-Gitweb:        https://git.kernel.org/tip/9f98a4f4e7216dbe366010b4cdcab6b220f229c4
-Author:        Vishal Annapurve <vannapurve@google.com>
-AuthorDate:    Fri, 28 Feb 2025 01:44:15 
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 26 Mar 2025 08:51:20 +01:00
+On 3/25/2025 9:50 PM, Lizhi Hou wrote:
+> 
+> On 3/25/25 04:43, Maciej Falkowski wrote:
+>> From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>>
+>> Fix deadlock in ivpu_ms_cleanup() by preventing runtime resume after
+>> file_priv->ms_lock is acquired.
+>>
+>> During a failure in runtime resume, a cold boot is executed, which
+>> calls ivpu_ms_cleanup_all(). This function calls ivpu_ms_cleanup()
+>> that acquires file_priv->ms_lock and causes the deadlock.
+>>
+>> Fixes: cdfad4db7756 ("accel/ivpu: Add NPU profiling support")
+>> Cc: <stable@vger.kernel.org> # v6.11+
+>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>> Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+>> ---
+>>   drivers/accel/ivpu/ivpu_ms.c | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/drivers/accel/ivpu/ivpu_ms.c b/drivers/accel/ivpu/ivpu_ms.c
+>> index ffe7b10f8a76..eb485cf15ad6 100644
+>> --- a/drivers/accel/ivpu/ivpu_ms.c
+>> +++ b/drivers/accel/ivpu/ivpu_ms.c
+>> @@ -4,6 +4,7 @@
+>>    */
+>>     #include <drm/drm_file.h>
+>> +#include <linux/pm_runtime.h>
+>>     #include "ivpu_drv.h"
+>>   #include "ivpu_gem.h"
+>> @@ -281,6 +282,9 @@ int ivpu_ms_get_info_ioctl(struct drm_device *dev, void *data, struct drm_file *
+>>   void ivpu_ms_cleanup(struct ivpu_file_priv *file_priv)
+>>   {
+>>       struct ivpu_ms_instance *ms, *tmp;
+>> +    struct ivpu_device *vdev = file_priv->vdev;
+>> +
+>> +    pm_runtime_get_sync(vdev->drm.dev);
+> 
+> Could get_sync() be failed here? Maybe it is better to add warning for failure?
 
-x86/tdx: Fix arch_safe_halt() execution for TDX VMs
+Yes, this could fail but we already have detailed warnings in runtime resume callback (ivpu_pm_runtime_resume_cb()).
+> 
+>>         mutex_lock(&file_priv->ms_lock);
+>>   @@ -293,6 +297,8 @@ void ivpu_ms_cleanup(struct ivpu_file_priv *file_priv)
+>>           free_instance(file_priv, ms);
+>>         mutex_unlock(&file_priv->ms_lock);
+>> +
+>> +    pm_runtime_put_autosuspend(vdev->drm.dev);
+>>   }
+>>     void ivpu_ms_cleanup_all(struct ivpu_device *vdev)
 
-Direct HLT instruction execution causes #VEs for TDX VMs which is routed
-to hypervisor via TDCALL. If HLT is executed in STI-shadow, resulting #VE
-handler will enable interrupts before TDCALL is routed to hypervisor
-leading to missed wakeup events, as current TDX spec doesn't expose
-interruptibility state information to allow #VE handler to selectively
-enable interrupts.
+Regards,
+Jacek
 
-Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-prevented the idle routines from executing HLT instruction in STI-shadow.
-But it missed the paravirt routine which can be reached via this path
-as an example:
-
-	kvm_wait()       =>
-        safe_halt()      =>
-        raw_safe_halt()  =>
-        arch_safe_halt() =>
-        irq.safe_halt()  =>
-        pv_native_safe_halt()
-
-To reliably handle arch_safe_halt() for TDX VMs, introduce explicit
-dependency on CONFIG_PARAVIRT and override paravirt halt()/safe_halt()
-routines with TDX-safe versions that execute direct TDCALL and needed
-interrupt flag updates. Executing direct TDCALL brings in additional
-benefit of avoiding HLT related #VEs altogether.
-
-As tested by Ryan Afranji:
-
-  "Tested with the specjbb2015 benchmark. It has heavy lock contention which leads
-   to many halt calls. TDX VMs suffered a poor score before this patchset.
-
-   Verified the major performance improvement with this patchset applied."
-
-Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Tested-by: Ryan Afranji <afranji@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250228014416.3925664-3-vannapurve@google.com
----
- arch/x86/Kconfig           |  1 +
- arch/x86/coco/tdx/tdx.c    | 26 +++++++++++++++++++++++++-
- arch/x86/include/asm/tdx.h |  4 ++--
- arch/x86/kernel/process.c  |  2 +-
- 4 files changed, 29 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 05b4eca..f614c05 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -878,6 +878,7 @@ config INTEL_TDX_GUEST
- 	depends on X86_64 && CPU_SUP_INTEL
- 	depends on X86_X2APIC
- 	depends on EFI_STUB
-+	depends on PARAVIRT
- 	select ARCH_HAS_CC_PLATFORM
- 	select X86_MEM_ENCRYPT
- 	select X86_MCE
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 7772b01..aa0eb40 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -14,6 +14,7 @@
- #include <asm/ia32.h>
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
-+#include <asm/paravirt_types.h>
- #include <asm/pgtable.h>
- #include <asm/set_memory.h>
- #include <asm/traps.h>
-@@ -398,7 +399,7 @@ static int handle_halt(struct ve_info *ve)
- 	return ve_instr_len(ve);
- }
- 
--void __cpuidle tdx_safe_halt(void)
-+void __cpuidle tdx_halt(void)
- {
- 	const bool irq_disabled = false;
- 
-@@ -409,6 +410,16 @@ void __cpuidle tdx_safe_halt(void)
- 		WARN_ONCE(1, "HLT instruction emulation failed\n");
- }
- 
-+static void __cpuidle tdx_safe_halt(void)
-+{
-+	tdx_halt();
-+	/*
-+	 * "__cpuidle" section doesn't support instrumentation, so stick
-+	 * with raw_* variant that avoids tracing hooks.
-+	 */
-+	raw_local_irq_enable();
-+}
-+
- static int read_msr(struct pt_regs *regs, struct ve_info *ve)
- {
- 	struct tdx_module_args args = {
-@@ -1110,6 +1121,19 @@ void __init tdx_early_init(void)
- 	x86_platform.guest.enc_kexec_finish	     = tdx_kexec_finish;
- 
- 	/*
-+	 * Avoid "sti;hlt" execution in TDX guests as HLT induces a #VE that
-+	 * will enable interrupts before HLT TDCALL invocation if executed
-+	 * in STI-shadow, possibly resulting in missed wakeup events.
-+	 *
-+	 * Modify all possible HLT execution paths to use TDX specific routines
-+	 * that directly execute TDCALL and toggle the interrupt state as
-+	 * needed after TDCALL completion. This also reduces HLT related #VEs
-+	 * in addition to having a reliable halt logic execution.
-+	 */
-+	pv_ops.irq.safe_halt = tdx_safe_halt;
-+	pv_ops.irq.halt = tdx_halt;
-+
-+	/*
- 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
- 	 * bringup low level code. That raises #VE which cannot be handled
- 	 * there.
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 65394aa..4a1922e 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -58,7 +58,7 @@ void tdx_get_ve_info(struct ve_info *ve);
- 
- bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
- 
--void tdx_safe_halt(void);
-+void tdx_halt(void);
- 
- bool tdx_early_handle_ve(struct pt_regs *regs);
- 
-@@ -72,7 +72,7 @@ void __init tdx_dump_td_ctls(u64 td_ctls);
- #else
- 
- static inline void tdx_early_init(void) { };
--static inline void tdx_safe_halt(void) { };
-+static inline void tdx_halt(void) { };
- 
- static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
- 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 91f6ff6..962c3ce 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -939,7 +939,7 @@ void __init select_idle_routine(void)
- 		static_call_update(x86_idle, mwait_idle);
- 	} else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
- 		pr_info("using TDX aware idle routine\n");
--		static_call_update(x86_idle, tdx_safe_halt);
-+		static_call_update(x86_idle, tdx_halt);
- 	} else {
- 		static_call_update(x86_idle, default_idle);
- 	}
 
