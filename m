@@ -1,104 +1,111 @@
-Return-Path: <stable+bounces-126677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CA6A710C3
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 07:51:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B98AA710C9
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 07:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF094170AD7
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 06:51:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3A51895F60
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 06:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B70335C7;
-	Wed, 26 Mar 2025 06:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NC0ojnZ4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935DC190696;
+	Wed, 26 Mar 2025 06:54:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0701494CF
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 06:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7834A29;
+	Wed, 26 Mar 2025 06:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742971856; cv=none; b=drT7oB+p1q8T2ahjYz0KBA/+UqbLtxnumhycgSMVLRExbaZGZ33AibZESu0Rg/5YN9SIn49ODSN/RO+505m/k7bBY54V1N3MnfOfFPgs3MbHXncy9tpyhxCGwCu6MsaY8Pb2TxxEuDJR3U4hsKnrP3XWZE3NMfM3+MvEgQmQ/3Q=
+	t=1742972092; cv=none; b=U2kKkiVjNHhrpSk9yREk2/thIDZ3UcpI7ED0Aps/rJ90Z08wDbjau2q/YaSzIiCZWwyzYTeiyfmpoShHEEwwVw+01KE1G8btISNW5GYircuEVkE+WfOQaqnB8P/pQzf0FLL1+HRa+oLSv0qcoaGHp3Ot+2nb1rqNoNGZCCT9fH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742971856; c=relaxed/simple;
-	bh=FIZeOZwHQRIy53PzOnKX0jk8xS8uzlQ4s4+VbId5vX8=;
+	s=arc-20240116; t=1742972092; c=relaxed/simple;
+	bh=VjofAGvmROzV0yThEO+wRTmQS9z4hiCq3OXJpkxvNlk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ULChqRA3vuobtFp4bl/AeIk0/svHvRF6N1OHSzmTdTitWNNW0gABiePof0x9ZnBbbmuxcA2M49ZWQERr8qL6axUIXMIp3Zlzja5CvLO0hDx8En/yVLRHeag+KmTe7YiQqCRoiFKV1304zPW1PqxJFFwvk1NkrHRLh8HcW8N7W6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NC0ojnZ4; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742971855; x=1774507855;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=FIZeOZwHQRIy53PzOnKX0jk8xS8uzlQ4s4+VbId5vX8=;
-  b=NC0ojnZ4XLwUNLXfGltYBQoFWUyEKdOXqux2Tm8ibycWTjVFoZeNP+Qh
-   uAVuV/SMs09wb4aI0Jw0aqmGGyIs+wSgnScefMUuQB1RO+tandun2YuA1
-   /PQ31PBLz6HTQG6zdgtWPJ3HAxHMyBD9crSDP6JeeSV1zssEtOX7wkYXk
-   gZU9dYsQtnDVl2djDTdHlplJYVc0DKNgLoZDukGUoHUD53G2rjtE0foXD
-   MUxXq9G3VfVsQ9V2hirbAmy/J6fI1G78u1jiYAtjMfhJYdP5/cMPN1QQ8
-   +KkKTRN0z3GbVLCPbm8Bwm2O1ClMNTVFqoCIP8dyflP9JLXZHOWeck00G
-   A==;
-X-CSE-ConnectionGUID: Auxum9yJTCCw0oCeWXr8Xw==
-X-CSE-MsgGUID: JTyhqR0nQ2SQfkwHlX51tw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="46982084"
-X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; 
-   d="scan'208";a="46982084"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 23:50:55 -0700
-X-CSE-ConnectionGUID: 4IVh/AmzRlCk0Mo5C1sdyw==
-X-CSE-MsgGUID: AFLACqhESKqr6Yh1Q3B70w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; 
-   d="scan'208";a="155560524"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 25 Mar 2025 23:50:53 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 3DAA4141; Wed, 26 Mar 2025 08:50:52 +0200 (EET)
-Date: Wed, 26 Mar 2025 08:50:52 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 6.6.y] mm/page_alloc: fix memory accept before watermarks
- gets initialized
-Message-ID: <pkwudbhxsc27frdpmtggtqylzadklhz4w6djtno2kgz7l33iok@o2irbjtmwehd>
-References: <20250325121621.2011574-1-kirill.shutemov@linux.intel.com>
- <20250325124736-cc99722df0f49555@stable.kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UNuErk6lB/vY6jDFXXu8v2EGYC+ZhIgmTc6Vh6/QQYDAh78S9SILWdb99oV8UotiH8pibPbTWuWKASSQjGN3f3tDhir+o09Zo6O38EQ3vEbeki4myqIJbkRJOtpwDAulF/N42z1+7iDU6aNC19/ihmsGmbllFkv6YqPCQUnD338=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22622ddcc35so11187935ad.2;
+        Tue, 25 Mar 2025 23:54:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742972090; x=1743576890;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a5r6oCeJ4EMAeiLeoG532L2JW9nTuYagBmQstVPI3p0=;
+        b=vvUU3sFJVbY6SM6u00cxkgOYx/GErMAYuFxkxuk4EEnkeXSACleKwedsSgzmHG/18n
+         7zti8AXCxXLCQETtC8DERC9PoyBnaYv8xv9IGK/46N7uM/5XI+OU8OGK2BDK1LJI0F7p
+         06+MzQMGYI+tDDvFRn/rnDWPUDAojD/hTT8lrfYqhnLuxCizFmOeS1RrC4ONv6To+xCY
+         YD0lh9PKi/volghgMkybVBg7CbUjGySP3aRctoz0bFiWoR4T9aPxkou/jefxkbNQxDki
+         KpDm0aRbACyLfMbvz5Gh0rio4Za2JrmH/Q5IJ60CfHhZHYmFFas8eUN1CxWrB+3sY7uQ
+         DR6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUse5sPrxeBvgCx7Tj+ZOBJlgXDbhqxXYw3gEkoQg7P6VnWOfLSgVbxUeFM8N3MkuW9NppVofwmc+oz1ho=@vger.kernel.org, AJvYcCUzX0RHvKnS250Jb7i94WFt0nIyB5MOfRlmeO0B5V8uwZO6s98snyNR8xLqGFbwoXDTMmhHyTTlwpIT@vger.kernel.org, AJvYcCVbl4/648Mqc5stW4uFJkm8+8z3rltZ3R55OvB5rhgr7c356dKnOrh0aL2SKnbqJwlE8wwIEXcY@vger.kernel.org, AJvYcCWjs9ULm9fKjjHSnUbZGGVqYdU5ijz6+HtfK8n+BHL/QM1TPj8hL3AuYhDrhVq8H6uxIQKuNRhNOl1RXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzL6iC1apOBaNdpctc3/OcBvajfNvLX70WZp0wB8YTWdT7hurco
+	MwOyL5M4H3fosqu3MtGYL8iW+maDE1s8If/gchxqGosK9W/Rf3TxO+xvHg/x
+X-Gm-Gg: ASbGncu/G6+OGCZys5OEkmqn5uK8DpSoSC+GO9BGNMsdXR8ls98FoGzk9FMPNUObKXz
+	UD6BJ4KEA9cOiNxSEacmgkxj3L1b/TLyOULqh60vM8E9oyyP0KyCxy6zfV+dPnQ4Je74k74Rx++
+	0lOE2gjYbd8gPRSJfMbowjsa1rDYBQpmybDqY+TbBxeJgY6owWfXFrGeA4vC9y0yHAtQxwLpUIM
+	+5HoHc4od/D7V5F7NhdRH5qNdNFnQgicXE5KSiwHKCnfqmriUrdTJBU1QywQnOQu/1iC7+Jpd8Q
+	uhBS9Q4nuo++GRsXnIjiYWmMFNYMgP6GB1GiuL3flIRuDs2OnJ4AavK40wvjpv0agaTJXccell9
+	n7NM=
+X-Google-Smtp-Source: AGHT+IE6BS0dWx+A4CO2d0RKHQRRpGuVDJdQisEl5b1NHCFZIRGeaNjz7ChH04Mj+QdFzRg0J2Qpzw==
+X-Received: by 2002:a05:6a00:e13:b0:736:fff2:99b with SMTP id d2e1a72fcca58-73905a530b6mr30978159b3a.23.1742972090093;
+        Tue, 25 Mar 2025 23:54:50 -0700 (PDT)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7390611d573sm11744324b3a.100.2025.03.25.23.54.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Mar 2025 23:54:49 -0700 (PDT)
+Date: Wed, 26 Mar 2025 15:54:47 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, lpieralisi@kernel.org,
+	vigneshr@ti.com, manivannan.sadhasivam@linaro.org, robh@kernel.org,
+	bhelgaas@google.com, rogerq@kernel.org, linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	srk@ti.com
+Subject: Re: [PATCH] PCI: j721e: Fix the value of linkdown_irq_regfield for
+ J784S4
+Message-ID: <20250326065447.GC2822343@rocinante>
+References: <20250313055519.j3bpvsm6govd5ytk@uda0492258>
+ <20250313160215.GA736346@bhelgaas>
+ <20250314041705.v5j2fjulol5ywvyq@uda0492258>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250325124736-cc99722df0f49555@stable.kernel.org>
+In-Reply-To: <20250314041705.v5j2fjulol5ywvyq@uda0492258>
 
-On Tue, Mar 25, 2025 at 12:56:44PM -0400, Sasha Levin wrote:
-> [ Sasha's backport helper bot ]
-> 
-> Hi,
-> 
-> Summary of potential issues:
-> ⚠️ Found matching upstream commit but patch is missing proper reference to it
-> 
-> Found matching upstream commit: 800f1059c99e2b39899bdc67a7593a7bea6375d8
-> 
-> Status in newer kernel trees:
-> 6.13.y | Present (different SHA1: 18c31f7ee240)
-> 6.12.y | Present (different SHA1: f4bc2f91e6f5)
-> 
-> Note: The patch differs from the upstream commit:
+Hello,
 
-That's okay. Stable tree doesn't include 59149bf8cea9 ("mm: accept to promo watermark")
+[...]
+> > So I guess without this patch, we incorrectly ignore link-down
+> > interrupts on J784S4.  It's good to have a one-sentence motivation
+> > like that somewhere in the commit log that we can pull out and include
+> > in the merge commit log and the pull request.
+> 
+> Yes, we can prepend the following to the existing commit message:
+> "Link down interrupts on J784S4 SoC are missed because..."
+> 
+> resulting in the following updated paragraph in the commit message:
+> Link down interrupts on J784S4 SoC are missed because commit under Fixes
+> assigned the value of 'linkdown_irq_regfield' for the....
 
+How does this look like?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+  https://web.git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=controller/j721e&id=b97b5b8cb603a4ba6b3f7f1b6065fa76e69bdb56
+
+Let me know if you want any changes.
+
+Thank you!
+
+	Krzysztof
 
