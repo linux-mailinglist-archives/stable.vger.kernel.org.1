@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-126748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19441A71B78
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:06:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974D4A71B56
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:03:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 652B817462D
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 16:01:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29FE47A8B5D
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 16:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540291F540F;
-	Wed, 26 Mar 2025 16:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218FD1F463C;
+	Wed, 26 Mar 2025 16:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IKsYc/G9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g4xMvjbH"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874651F463C;
-	Wed, 26 Mar 2025 16:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585151F5402;
+	Wed, 26 Mar 2025 16:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743004908; cv=none; b=DBVlA4VbDtQfe5oLEAiogwnyENbvIm5HqTkLPqymmXBFhp3IW4z6R5B7PQts1TCbMXA2FbNaM5HH8RM8nLvNijpHR8wUiC5jQOPX9iIjR5LkcPJhklWLQU5K26N4bKidnhVR3N4xuOmhfrvDbx3wACm0k0bvIS3A2THscF/mExk=
+	t=1743004911; cv=none; b=OXcCj+qiziOBCM22Lxx9AySILui0lA+azS3UiesmxZixfyJzodQjnMpcsSvWOljhHyRGCmwc2J/l0VcbEbJrsY/E5l4CWh3yyFVdDTFsVZ4W+J/SgTCrpRqBBYaXHc6SrEpdd0AhKcbDfmqqR9uWTsQaV44MYnZcukRpbTBVVks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743004908; c=relaxed/simple;
-	bh=ae2T/3dzG5CLlJUyV0wbM2VVjM+75FqgogkpMameZMM=;
+	s=arc-20240116; t=1743004911; c=relaxed/simple;
+	bh=W2HVQ8BEyML65PSTZrKfO0xXPcysyzh4Hk5b82bfqRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYoz3oyjkjGhBuW7GYeyisNkCPjQjyuHFtFyTC/BTNzfPy1RbZqriLAIrkYVaCmTsjXvRQVekRO35yGF+1aiyS6N2upL7Q/eQsK5XrXTAIAGmCkhbOsKW0ejphH5UpL/Xi0O7aw4PwB+6WgJsI3a1Dhus4RFrvEHDd3Fsxbi4+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IKsYc/G9; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=VHhrBt/WVo2AX+vkmLM+9GoBcUYE8MFc2iSKmaGwfX7u8C17S84qS+MtkjLcEYNDqAXfldYZwN6MA6yjtoVCc6rwy9WwBc5L1z8D8+JIQqHqH8iOXgZi0w6xVDR/vqRNuBhmzSmsn2N/qn4dR8z3SvH9FfnRak6WOP54E1zUVyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g4xMvjbH; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743004907; x=1774540907;
+  t=1743004910; x=1774540910;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ae2T/3dzG5CLlJUyV0wbM2VVjM+75FqgogkpMameZMM=;
-  b=IKsYc/G9VKw8YBQFO9hTVokDLVYUuHeFx7T19bvs3vUKoPgKTtGEr1Kx
-   ICMZo8h893PT6VLYAfHTdt5u/s01FaqGU6IKmd5TglyxabKoYtah/8m+X
-   o0sDfX2gsoJEJjsgnXYRAxh29Hp/lkNTDGbAjmHGFwyF/Dnlph69KpUBS
-   /kQVv3MNXW7JqrciQjgpjAWfhcRYgMz7Y18eu9WFaEfqYkRyPKRdSXYga
-   CJJSWDs28rUHLJOr5rql7BLC+PepufS4qri7/r5e87TBB7d8BpVpzcXrO
-   qCjC4SP5SMGX6T7M2b0eZ9df3VuUVrpt/XFdpZIH72D0HlB4PqnC3PrI/
-   Q==;
-X-CSE-ConnectionGUID: DtAVP+KhSFmrFE90nT+8fA==
-X-CSE-MsgGUID: FnmF8J11T5mWh/hzqeY74Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="61823876"
+  bh=W2HVQ8BEyML65PSTZrKfO0xXPcysyzh4Hk5b82bfqRY=;
+  b=g4xMvjbHbzJbZ7KZKa2Km6dlcmvXfHRA1168ChE0Tkg+R4Tp0hYOD2VO
+   WOBfxJaL15QXrHfnao3XRyFXG+WFlWTJv42NB2Fbq3+Dd6nWTN5ty7oTi
+   VS/Y4UZ3+E+wAiTfyXO4XYQMd96D0ji7MahSBdxcaN+Oz27X3m374zNpR
+   zU7yNVnobBiha/6syf4pAs+FQzRLvXoeLmxJ+7hyv7NjOnlITfeb433c8
+   5m4VPygS0awwZcP9cC5WsZaRyVXL3Q7oFFUXBZ8bMO4xDM1bVnlzq2+/e
+   Ih/AF1/GtWB++sS50aRrI4SxjCAWEg0nToC/oOnET8hKH3OfcWWUlrD32
+   A==;
+X-CSE-ConnectionGUID: jhaDyXO2S1+jUkfZ2FgC3A==
+X-CSE-MsgGUID: vVaveV7xSLqgyYu7cSNMJg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="61823893"
 X-IronPort-AV: E=Sophos;i="6.14,278,1736841600"; 
-   d="scan'208";a="61823876"
+   d="scan'208";a="61823893"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 09:01:46 -0700
-X-CSE-ConnectionGUID: BhVnVSUNSryP1/Yr8AM90g==
-X-CSE-MsgGUID: n9hobIxQTTiRTsnaHwwQsA==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 09:01:50 -0700
+X-CSE-ConnectionGUID: Qg7S4ycaROizp+tLbZ4LKw==
+X-CSE-MsgGUID: ZfjPEkCaQfeOVW///m1NZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,278,1736841600"; 
-   d="scan'208";a="129928567"
+   d="scan'208";a="129928576"
 Received: from silpixa00400314.ir.intel.com (HELO silpixa00400314.ger.corp.intel.com) ([10.237.223.204])
-  by fmviesa004.fm.intel.com with ESMTP; 26 Mar 2025 09:01:44 -0700
+  by fmviesa004.fm.intel.com with ESMTP; 26 Mar 2025 09:01:48 -0700
 From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 To: herbert@gondor.apana.org.au
 Cc: linux-crypto@vger.kernel.org,
@@ -67,9 +67,9 @@ Cc: linux-crypto@vger.kernel.org,
 	stable@vger.kernel.org,
 	Ahsan Atta <ahsan.atta@intel.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 2/8] crypto: qat - add shutdown handler to qat_420xx
-Date: Wed, 26 Mar 2025 15:59:47 +0000
-Message-ID: <20250326160116.102699-4-giovanni.cabiddu@intel.com>
+Subject: [PATCH 4/8] crypto: qat - add shutdown handler to qat_dh895xcc
+Date: Wed, 26 Mar 2025 15:59:49 +0000
+Message-ID: <20250326160116.102699-6-giovanni.cabiddu@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250326160116.102699-2-giovanni.cabiddu@intel.com>
 References: <20250326160116.102699-2-giovanni.cabiddu@intel.com>
@@ -89,30 +89,33 @@ load in a newly rebooted kernel.
 
 This might result in output like the following after the kexec reboot:
 
-    420xx 0000:01:00.0: Failed to power up the device
-    420xx 0000:01:00.0: Failed to initialize device
-    420xx 0000:01:00.0: Resetting device qat_dev0
-    420xx 0000:01:00.0: probe with driver 420xx failed with error -14
+    QAT: AE0 is inactive!!
+    QAT: failed to get device out of reset
+    dh895xcc 0000:3f:00.0: qat_hal_clr_reset error
+    dh895xcc 0000:3f:00.0: Failed to init the AEs
+    dh895xcc 0000:3f:00.0: Failed to initialise Acceleration Engine
+    dh895xcc 0000:3f:00.0: Resetting device qat_dev0
+    dh895xcc 0000:3f:00.0: probe with driver dh895xcc failed with error -14
 
 Implement the shutdown() handler that hooks into the reboot notifier
 list. This brings down the QAT device and ensures it is shut down
 properly.
 
 Cc: <stable@vger.kernel.org>
-Fixes: fcf60f4bcf54 ("crypto: qat - add support for 420xx devices")
+Fixes: 7afa232e76ce ("crypto: qat - Intel(R) QAT DH895xcc accelerator")
 Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 ---
- drivers/crypto/intel/qat/qat_420xx/adf_drv.c | 8 ++++++++
+ drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/drivers/crypto/intel/qat/qat_420xx/adf_drv.c b/drivers/crypto/intel/qat/qat_420xx/adf_drv.c
-index 8084aa0f7f41..b4731f02deb8 100644
---- a/drivers/crypto/intel/qat/qat_420xx/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_420xx/adf_drv.c
-@@ -186,11 +186,19 @@ static void adf_remove(struct pci_dev *pdev)
- 	adf_cleanup_accel(accel_dev);
+diff --git a/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c b/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
+index 730147404ceb..b59e0cc49e52 100644
+--- a/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
++++ b/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
+@@ -209,6 +209,13 @@ static void adf_remove(struct pci_dev *pdev)
+ 	kfree(accel_dev);
  }
  
 +static void adf_shutdown(struct pci_dev *pdev)
@@ -122,9 +125,11 @@ index 8084aa0f7f41..b4731f02deb8 100644
 +	adf_dev_down(accel_dev);
 +}
 +
- static struct pci_driver adf_driver = {
- 	.id_table = adf_pci_tbl,
- 	.name = ADF_420XX_DEVICE_NAME,
+ static const struct pci_device_id adf_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_QAT_DH895XCC) },
+ 	{ }
+@@ -220,6 +227,7 @@ static struct pci_driver adf_driver = {
+ 	.name = ADF_DH895XCC_DEVICE_NAME,
  	.probe = adf_probe,
  	.remove = adf_remove,
 +	.shutdown = adf_shutdown,
