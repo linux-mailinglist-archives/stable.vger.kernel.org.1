@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD622A70EED
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 03:23:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DC5A70EEE
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 03:23:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE8BE17952A
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 02:23:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495F6189A5CF
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 02:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B09137750;
-	Wed, 26 Mar 2025 02:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA0E13633F;
+	Wed, 26 Mar 2025 02:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pL4N2xtE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAcsrK7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753797F9
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 02:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5D5137775
+	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 02:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742955815; cv=none; b=ouT7XHlAZPlu7KEMc3HguM4xh6dJR1wNv0265jyqlUXTX5HZsc3wFxfaCtqeAOeocPqPvlr26x8fv0pxSO6rgDEbR5KoSeGQYkZ4S13+9r3mG91jzVUzwlmWgD8mnSIxoDzbMBC+IvSREsv3Q7bu36VZBaaz08s7C2o1kxW815w=
+	t=1742955818; cv=none; b=UYCzlY8lgF1dGBkQWbWYeSYMILBD0WVPr418OmHGbx/HlY/VH7IaUhF+5Tw1fpz6TvFovpYlvkBojOnSSy1z7DgGMeXYeFwFmiDZhIcCyF0mGaHZHwR4YMGIBr4A3pae+sPLdpquVeJIeUCH518Pm/7gK9y0x8egFbhTENVI60w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742955815; c=relaxed/simple;
-	bh=/l8OEmEOa9+PjEoyltf5JRrzMmllHFT8UwApTdfLVZM=;
+	s=arc-20240116; t=1742955818; c=relaxed/simple;
+	bh=dRJbsN7v2/2w2TbXwftpLqgMZW5kp0WNah0NFEbeOeA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e+Xab6EDSlikcWRQDoK50Qr1Qh6iLhOOWTJazaSSQkQ0k3eUN2M13yIsIzfod/JWI7I9t+xe1iBhoAYPXjQ+4szOKgTl2m89hU+DiLlU7Wca6LtfcEV3ElfdOdFVrnSConEM268o2wwuT9q2fqkVjB+lkFNI+UQ0hWQXnUaRJtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pL4N2xtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5EDC4CEE4;
-	Wed, 26 Mar 2025 02:23:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VUB3HSvJDYP7/t/rFKdcpYmHmLAi4EZeZqV/B8aWLc9/MyMSJXs3+wIC+9Plo14lP4X05tl919+Qw+c1pjen5Nz1TCeqfGz5KUlmGmmOlh+aI7jLuk364PK5OYEkV7/H3Mz5HSCKwE+yi1MgL70EhK5CSv4CMWLxAtVMR2y/OlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QAcsrK7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9D2C4CEE4;
+	Wed, 26 Mar 2025 02:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742955814;
-	bh=/l8OEmEOa9+PjEoyltf5JRrzMmllHFT8UwApTdfLVZM=;
+	s=k20201202; t=1742955817;
+	bh=dRJbsN7v2/2w2TbXwftpLqgMZW5kp0WNah0NFEbeOeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pL4N2xtErFFX4j2h1V1n2zJU9JXBePUBtPh52bGJ6KPPZeCmCux/8ysx6zY0RN53i
-	 yQ5M8lQhzMPJ+Rlxt16yRCG+UUJIpWaV68nUZEmPCPPaurDoXkBJy76ZIBSX93i52v
-	 6ygDumYFaw5IEjehIz50KcHeWy3gB76LxcOi1PWaB597JpyX/OZmCef1IpnW6I9esw
-	 fGDF5CXzsHny2ap3RkuQlmSW1zV9v6xGJitLL4tBiVv95kW+91Mil2Kit1EW5NhI0p
-	 tZwRWU3x7PECCVBHIszYebet6jPDsP9Dht0LC86CYVZBYKXD+VEOJ+uzhtbvsRJTuw
-	 3iSTOcxcOqYgA==
+	b=QAcsrK7B+Wdue6RBzfUkPW9NHkt5CUQDTLXXt8ZJTgp/q5DKrrmYGEX5Uzv1idVvl
+	 FHc+QjJfdHnSahx/2Mn4vezt7CTjnLRcP8F506acpsYnlXUZ3wKOAhOJrInBiGq/8r
+	 uxoRFAunvhvd5QWbvneCIvQuYSnxu7LCk2/XJElTLmKvaDo8G+SZp9+2CJzrLvI0M/
+	 Lo/8JCTYsqKotkvMHEF9lGvgK2w8l5yDHZuWfyGBf8bO8zjkrVpFJUTo3Yqj3bjHru
+	 fB50eIvx3gpOmh8PPgf/v7itas4LXLQJEIRAyeGylySfkH8M1BltbasH2ITN2P48N9
+	 zxgRrghlVBGpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	larry.bassel@oracle.com
+	florian.fainelli@broadcom.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y] virtio-net: Add validation for used length
-Date: Tue, 25 Mar 2025 22:23:31 -0400
-Message-Id: <20250325215012-b1dbc44d1f2f743c@stable.kernel.org>
+Subject: Re: [PATCH stable 5.4 v2 2/2] openvswitch: fix lockup on tx to unregistering netdev with carrier
+Date: Tue, 25 Mar 2025 22:23:35 -0400
+Message-Id: <20250325214412-788099d451e95300@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250325234402.2735260-1-larry.bassel@oracle.com>
+In-Reply-To:  <20250325192220.1849902-3-florian.fainelli@broadcom.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,73 +65,54 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+ℹ️ This is part 2/2 of a series
+⚠️ Provided upstream commit SHA1 does not match found commit
 
-Found matching upstream commit: ad993a95c508417acdeb15244109e009e50d8758
+The claimed upstream commit SHA1 (82f433e8dd0629e16681edf6039d094b5518d8ed) was not found.
+However, I found a matching commit: 47e55e4b410f7d552e43011baa5be1aab4093990
 
 WARNING: Author mismatch between patch and found commit:
-Backport author: Larry Bassel<larry.bassel@oracle.com>
-Commit author: Xie Yongji<xieyongji@bytedance.com>
+Backport author: Florian Fainelli<florian.fainelli@broadcom.com>
+Commit author: Ilya Maximets<i.maximets@ovn.org>
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (exact SHA1)
-5.10.y | Present (different SHA1: c92298d228f6)
+6.12.y | Present (different SHA1: 82f433e8dd06)
+6.6.y | Present (different SHA1: ea966b669878)
+6.1.y | Present (different SHA1: ea9e990356b7)
+5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  ad993a95c5084 ! 1:  34cd3a563c1ba virtio-net: Add validation for used length
+1:  47e55e4b410f7 ! 1:  9a82976cb1dc6 openvswitch: fix lockup on tx to unregistering netdev with carrier
     @@ Metadata
       ## Commit message ##
-         virtio-net: Add validation for used length
+         openvswitch: fix lockup on tx to unregistering netdev with carrier
      
-    +    commit ad993a95c508 ("virtio-net: Add validation for used length")
+    +    [ Upstream commit 82f433e8dd0629e16681edf6039d094b5518d8ed ]
     +
-         This adds validation for used length (might come
-         from an untrusted device) to avoid data corruption
-         or loss.
-    @@ Commit message
-         Acked-by: Jason Wang <jasowang@redhat.com>
-         Link: https://lore.kernel.org/r/20210531135852.113-1-xieyongji@bytedance.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit ad993a95c508417acdeb15244109e009e50d8758)
-    +    [Larry: backport to 5.4.y. Minor conflict resolved due to missing commit 9ce6146ec7b50
-    +    virtio_net: Add XDP frame size in two code paths]
-    +    Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
+         Commit in a fixes tag attempted to fix the issue in the following
+         sequence of calls:
      
-      ## drivers/net/virtio_net.c ##
-     @@ drivers/net/virtio_net.c: static struct sk_buff *receive_small(struct net_device *dev,
-    @@ drivers/net/virtio_net.c: static struct sk_buff *receive_mergeable(struct net_de
-      	head_skb = NULL;
-      	stats->bytes += len - vi->hdr_len;
-      
-    ++	truesize = mergeable_ctx_to_truesize(ctx);
-     +	if (unlikely(len > truesize)) {
-     +		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
-     +			 dev->name, len, (unsigned long)ctx);
-    @@ drivers/net/virtio_net.c: static struct sk_buff *receive_mergeable(struct net_de
-      	}
-      	rcu_read_unlock();
-      
-    +-	truesize = mergeable_ctx_to_truesize(ctx);
-     -	if (unlikely(len > truesize)) {
-     -		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
-     -			 dev->name, len, (unsigned long)ctx);
-    @@ drivers/net/virtio_net.c: static struct sk_buff *receive_mergeable(struct net_de
-     -	}
-     -
-      	head_skb = page_to_skb(vi, rq, page, offset, len, truesize, !xdp_prog,
-    - 			       metasize, !!headroom);
-    + 			       metasize);
-      	curr_skb = head_skb;
+    @@ Commit message
+         Reviewed-by: Aaron Conole <aconole@redhat.com>
+         Link: https://patch.msgid.link/20250109122225.4034688-1-i.maximets@ovn.org
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
+    +    Signed-off-by: Carlos Soto <carlos.soto@broadcom.com>
+    +    Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+     
+      ## net/openvswitch/actions.c ##
+     @@ net/openvswitch/actions.c: static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
 ---
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
