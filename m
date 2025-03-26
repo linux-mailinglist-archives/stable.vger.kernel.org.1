@@ -1,87 +1,88 @@
-Return-Path: <stable+bounces-126743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56723A71B47
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:01:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA51A71B38
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 16:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5AE27A815D
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 15:58:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C2273A4F34
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 15:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1621F1F8937;
-	Wed, 26 Mar 2025 15:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F991F463C;
+	Wed, 26 Mar 2025 15:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="T8VWEhwI"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dRzBgyrQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A361F790F
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 15:58:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300BA1DB933;
+	Wed, 26 Mar 2025 15:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743004735; cv=none; b=IZau/CvLXReo6Mveq55rZUbJUgh3e52szvnPk5W9d+S18yl8iMcHO6llxJe0DNQ22YSg+4QMGChwQ6kouFsSM0nfMBSZ3jcvsgfYinK7dKOzFMLbvC2SrJOYEFTWmLGPk1whzFXuCX83HX8BUePg5dj92cvralb8swgx/xGS8iA=
+	t=1743004692; cv=none; b=rVZb4u7TFTRmmbCdU+1dXExFfLBqRldW8aK1QrP/1kbYivyLBsTFgMdIfWDsTULAaa4ty8NpNLasYj4ejBUsoDAZd25mXMA4igMTMbpK8PoLQJrE1/hf3118CQKamRnkoQYu6KkqNS9IQewa9IwEw7ftx9fkEwIWt/nrb2SsZc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743004735; c=relaxed/simple;
-	bh=Ko35wHuYTUsyD9pNDD6CddW86SuHmvVF/p8rHOgc5Kc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=osrdr3iN1K8uGvLKpvPEUMZxy+uGz3VslWZeexuvv81BwG2ZBZzI9oodziWXEcEkLuYlNn9+srj6/HS+aEleShSWp0Q0iuOTxV3rAR76t4rYuHwwMwwZG/W6+YCWR96hNBj4lE3+rlNuEJZXRjy2BewvVaka4aVf8hF9vJC0RS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=T8VWEhwI; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff615a114bso1849598a91.0
-        for <stable@vger.kernel.org>; Wed, 26 Mar 2025 08:58:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1743004733; x=1743609533; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vaZQ+2MJDMVjz/9PaIWP0hky9ATIPKX3HyuJU/jmspM=;
-        b=T8VWEhwIWdprG7TzGEYgjk8BP/tosxJmDPwv1apaqgnHfMtYfvrE9EfeKFk/WJGTiP
-         T4knKjFqT11kDt1yCPC0XVRr2Kdte1to2oNh4c6QneRLhxyYh/RXmCf4oNPIAuAx2xXa
-         90KmDNoJ+JQunZJbAulL5f7e+W61mYfNEIJEM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743004733; x=1743609533;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vaZQ+2MJDMVjz/9PaIWP0hky9ATIPKX3HyuJU/jmspM=;
-        b=mJ+9Vd6dx9FeXA9GJcgk6bqzyckVkPXSFoR0vJBFhMThajt8qxzy06EgIFZ4OrRaZ5
-         z4Uz7se4AQbt5AYC6O9jhMONI80cF9jXortMurSioNmWGvFC5Gq+z5+v/Zf1HBIXzyuU
-         OCdXej47Yp32LqkiML4DlOJg6lwktARmIa4uaoIZ/CIeUOznfK7EDmoNpsvTEuCwRSCP
-         tJOlLOrqwlg0DNBh/SXbi3vdzUQt0d/JymYaxhhPDJEOUjmJeIwmMjSiH65J/LCKLA5L
-         Hh4bpKxuS/3XayIV7BxE2vo1na9uiLHNhaiyKPqExfJF1ihOA7lezpCZP0zQr+p+6LRn
-         NVwg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqsgrTOEuzprOB1qJd3IjTbcY1wcuMH9Kc0JpgfDRMv3gXqtRZKdb0BTuDk5hzxn/fLNPwK/o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+8M7/T3K8OjxvYZaxL4iyA0yrO+h69KDnc4urUQ+mOYDtxUC+
-	QVQ+jwQ4BZhRt6VzEW0ZCwxRULzJYuOhZMhqMwOuJBoUiF01ELreKC7PbVCh6d0=
-X-Gm-Gg: ASbGncvEMSj0/p4jWHnAckff2OULC6Z5GKipH3d9SaE43eeyVzN+sqUyTlS3q0niL9x
-	WxiH0zP/TioUUye/qQqnjee5vmnTu05A6PM+As86OUHw+T73D5jlyqYCQv767AbTp4kNdkAOJm7
-	sBrBVlwjGUfuIUvuq3NKMKfiQARUwFD1iTfRKHzFVt6i7j4wYlbNSG7Ny4otWhXHiJ05QEkdtOB
-	K94M3T4XashLdJKXP6EwH+j9P2YVnhLW9OfJiBaeEu90bfrcBR/gIt+OXxjxbS0dRUKy+ouUuDI
-	rMsolLGbXue3m9ykeJ6RiXlU+i/QpHdqnJAv42ogYZxThngSbH2g3Hdf4COqxcqeDRL3sSMlA2a
-	ElyxH
-X-Google-Smtp-Source: AGHT+IHFgZ5MnxSjZ1MnHHSC8h28hT1dJVRZQpLzJ1vDyTU635J4PM5CGpBG8FJ9Nnh2HGTU+QyICw==
-X-Received: by 2002:a17:90b:3e8d:b0:2fc:aaf:74d3 with SMTP id 98e67ed59e1d1-303788c3949mr5434698a91.4.1743004733212;
-        Wed, 26 Mar 2025 08:58:53 -0700 (PDT)
-Received: from sidong.sidong.yang.office.furiosa.vpn ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73905fab1d1sm12423939b3a.32.2025.03.26.08.58.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 08:58:52 -0700 (PDT)
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Mark Harmstone <maharmstone@fb.com>
-Cc: linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Sidong Yang <sidong.yang@furiosa.ai>
-Subject: [PATCH 6.14] btrfs: ioctl: error on fixed buffer flag for io-uring cmd
-Date: Wed, 26 Mar 2025 15:57:36 +0000
-Message-ID: <20250326155736.611445-1-sidong.yang@furiosa.ai>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1743004692; c=relaxed/simple;
+	bh=MmR/aVOHY0L/NzbbfkfB4uycEt+rH3vhdCA4y3t3Sxg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k2IVOEOPdeKQISS6KItfXrjwGSPihOUANhpL6Pe/0XcQcfRRihHq7OUpOtd7WJUbaS9hkOdYEQp+7fh8PHk3R+QBC5NeRC3sCn9cEZWVB3o1aUT9XRhr4zda/JOQb+RCLdMxGtGBEX7zMSN2kPMXmKbQZ0/k8AjCDwvO0kwkqTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dRzBgyrQ; arc=none smtp.client-ip=192.19.166.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 0133CC0005CF;
+	Wed, 26 Mar 2025 08:58:10 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 0133CC0005CF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+	s=dkimrelay; t=1743004690;
+	bh=MmR/aVOHY0L/NzbbfkfB4uycEt+rH3vhdCA4y3t3Sxg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dRzBgyrQm4OnogP3RVnMWWBAXjKtqqNJVKYYOE+v6Ds5b6xAsmcJ7QQYqYN/JM5So
+	 3svDGu0+nFNYbr2nHMlWWjfvSmfcY5f4i+mmsFHEOLXfdCLahQnt74alWIUMpVaJ/D
+	 VnnIjlvYAN70BGCuXvLGI187uhVvx/AH1bDt2y4c=
+Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 724494002F44;
+	Wed, 26 Mar 2025 11:58:07 -0400 (EDT)
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+To: stable@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Pravin B Shelar <pshelar@ovn.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Song Liu <songliubraving@fb.com>,
+	Yonghong Song <yhs@fb.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+	Yan Zhai <yan@cloudflare.com>,
+	Felix Huettner <felix.huettner@mail.schwarz>,
+	Joe Stringer <joestringer@nicira.com>,
+	Andy Zhou <azhou@nicira.com>,
+	Justin Pettit <jpettit@nicira.com>,
+	Thomas Graf <tgraf@suug.ch>,
+	Luca Czesla <luca.czesla@mail.schwarz>,
+	Simon Horman <simon.horman@corigine.com>,
+	netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
+	linux-kernel@vger.kernel.org (open list),
+	dev@openvswitch.org (open list:OPENVSWITCH),
+	bpf@vger.kernel.org (open list:BPF (Safe dynamic programs and tools))
+Subject: [PATCH stable 5.4 v3 0/2] openvswitch port output fixes
+Date: Wed, 26 Mar 2025 08:57:58 -0700
+Message-Id: <20250326155800.4133904-1-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,47 +91,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, the io-uring fixed buffer cmd flag is silently dismissed,
-even though it does not work. This patch returns an error when the flag
-is set, making it clear that operation is not supported.
+This patch series contains some missing openvswitch port output fixes
+for the stable 5.4 kernel.
 
-Fixes: 34310c442e17 ("btrfs: add io_uring command for encoded reads (ENCODED_READ ioctl)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
----
- fs/btrfs/ioctl.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Changes in v3:
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 6c18bad53cd3..62bb9e11e8d6 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -4823,6 +4823,12 @@ static int btrfs_uring_encoded_read(struct io_uring_cmd *cmd, unsigned int issue
- 		ret = -EPERM;
- 		goto out_acct;
- 	}
-+
-+	if (cmd->flags & IORING_URING_CMD_FIXED) {
-+		ret = -EOPNOTSUPP;
-+		goto out_acct;
-+	}
-+
- 	file = cmd->file;
- 	inode = BTRFS_I(file->f_inode);
- 	fs_info = inode->root->fs_info;
-@@ -4959,6 +4965,11 @@ static int btrfs_uring_encoded_write(struct io_uring_cmd *cmd, unsigned int issu
- 		goto out_acct;
- 	}
- 
-+	if (cmd->flags & IORING_URING_CMD_FIXED) {
-+		ret = -EOPNOTSUPP;
-+		goto out_acct;
-+	}
-+
- 	file = cmd->file;
- 	sqe_addr = u64_to_user_ptr(READ_ONCE(cmd->sqe->addr));
- 
+- correct SHA reference in the second patch
+
+Changes in v2:
+
+- use BUILD_BUG_ON_INVALID rather than DEBUG_NET_WARN_ON_ONCE which does
+  not exist in Linux 5.4
+
+Felix Huettner (1):
+  net: openvswitch: fix race on port output
+
+Ilya Maximets (1):
+  openvswitch: fix lockup on tx to unregistering netdev with carrier
+
+ net/core/dev.c            | 1 +
+ net/openvswitch/actions.c | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
 -- 
-2.43.0
+2.34.1
 
 
