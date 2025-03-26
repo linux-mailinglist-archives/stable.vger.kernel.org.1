@@ -1,106 +1,91 @@
-Return-Path: <stable+bounces-126770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABCC6A71D55
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:39:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9207A71D74
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:42:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C77A97A635C
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:38:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 809DD16AFEC
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBC323C8D0;
-	Wed, 26 Mar 2025 17:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1EB23E345;
+	Wed, 26 Mar 2025 17:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="oEOnQeXv"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Ch98438N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B7F22E400;
-	Wed, 26 Mar 2025 17:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E0C23E323;
+	Wed, 26 Mar 2025 17:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743010731; cv=none; b=jBkOZKBfN2a4LX2MynI8ig7qEoqpadfwEHRlEKFHAqEHZzdLVn1EzY8NKTHRo+fWNH2KigQ9IuJ94H/dHdEBh+ciGnuzlsUq/4NNyYacYHPULfbn+3gEWt2OKmAMaIRm/bxthh78o0aGyvlTKs0jWxbv2kLMDKUwK/3hFLgai/E=
+	t=1743010901; cv=none; b=DEaCzk4gN1l3ffflHflpAAewqDQbSBhQbjhK6GM1Wu1MDRr6MwlIk3wMvF/4kYzq+tHT16sD54Wa39tdi0l0u6BFew2S7FZpjq0k6G0OO5BXlOiLJr3j/O1GO9AADWREvoE/HYMx7w80ntE4fCrDE2lxSY9gGhF5bhL/aHERNls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743010731; c=relaxed/simple;
-	bh=yl0t+HWGTi+COmrHFYzrfcaopHMXF6yjTDk8RhvcoA8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jQb/xtG1npIkEKB9X4mjm0DJkhXnq14EYeREUZB3nfBwtbxpSteP2aghcf+I0I45zxb2pMNHV94GyNqtHJlmtu2/cgx1bJ7fRcYqnwlIATpN+kxnzVw5/oTHztO9l/QUZ3xosGGEr6+YZOsNszQ5bxTQ+umyvfcsKuo13m7uCjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=oEOnQeXv; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 2DABF1FB9C;
-	Wed, 26 Mar 2025 18:38:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1743010725;
-	bh=sLJ+3DY8jmPT6Dfy0q0w2XM67M9sQ9k+sTABADH9eMs=; h=From:To:Subject;
-	b=oEOnQeXvd1e9Xxep3C/I27MhIB4t1DSnzuuyvsQCBToAVGZw2rAbtrw9WY0VE5Q/K
-	 XkqM14XNZ64tTJ8l5HXSLCd4eNB6FrgjwMyGbSwdMdzJ9Ake5Ea60XfCUSv2aKLxx8
-	 23+8ersQwM6Czqii91w4/Cd0RrePiq/AwRTWY6tqKbOoH7ecS/nEO8ENWgybj+9rPY
-	 LXECmzhOpePpIb2duijq077tJo/25nbxWFyq0AFmkpRbM0aI+fpOlbAC6tff5dA3Em
-	 Ixz1iCcloR142daI6QSnd0TN07HqVv6RylX+ts/rXaeFcoTePzmYwBU6i7oD15lpAu
-	 YkdHKkAIdknXw==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	linux-gpio@vger.kernel.org,
+	s=arc-20240116; t=1743010901; c=relaxed/simple;
+	bh=QWcAU5Bf/tJiv14blMoU5qRG461UGi6cUJ2OSEyNX6k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=IiKdxph9sIgJCletTFkT0Y7Znvr4nOUAK+HsPSHjroEc9tZq3LInPp0DelxBQa1DPbyifnMPBsHmQ5XeVlv1Tt7g5ECvXazg3yaqAdwlokU3+k2dphExUFgxLAtyWvfs9FGA59kJzXgis9chqdkMK4rkgRXVP8P1QznC9ifnaPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Ch98438N; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id 61CAD210235A; Wed, 26 Mar 2025 10:41:34 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 61CAD210235A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1743010894;
+	bh=vq/m6UX+jgdE2OJ3ZOqLq5fcypQ7sNuUeNKGnfH2CQ4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ch98438N9bjqD03FbT4mPimN7YbJzyoECXdcTSTsg+cR0UPJsnVk7TS/K6a79JEWx
+	 SQiEMedMHR26vSIwlk+RHVUjDx1TnZ2y5W9BKlql2ljOa2YHD1mu1ZqwnL1Ck+FoS2
+	 Ac5kkF0zdm0ymnWION7Yxq8R265arca+xVav/qLA=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
 	linux-kernel@vger.kernel.org,
-	Marek Vasut <marek.vasut@gmail.com>,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
 	stable@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH v1] gpio: pca953x: fix IRQ storm on system wake up
-Date: Wed, 26 Mar 2025 18:38:38 +0100
-Message-Id: <20250326173838.4617-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.5
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org
+Subject: Re: [PATCH 6.6 00/76] 6.6.85-rc2 review
+Date: Wed, 26 Mar 2025 10:41:34 -0700
+Message-Id: <1743010894-3733-1-git-send-email-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <20250326154346.820929475@linuxfoundation.org>
+References: <20250326154346.820929475@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+The kernel, bpf tool, perf tool, and kselftest builds fine for v6.6.85-rc2 on x86 and arm64 Azure VM.
 
-If an input changes state during wake-up and is used as an interrupt
-source, the IRQ handler reads the volatile input register to clear the
-interrupt mask and deassert the IRQ line. However, the IRQ handler is
-triggered before access to the register is granted, causing the read
-operation to fail.
+Kernel binary size for x86 build:
+text      data      bss      dec       hex      filename
+27318965  16715522  4640768  48675255  2e6b9b7  vmlinux
 
-As a result, the IRQ handler enters a loop, repeatedly printing the
-"failed reading register" message, until `pca953x_resume` is eventually
-called, which restores the driver context and enables access to
-registers.
+Kernel binary size for arm64 build:
+text      data      bss      dec       hex      filename
+34688860  13845666  970368   49504894  2f3627e  vmlinux
 
-Fix by using DEFINE_NOIRQ_DEV_PM_OPS which ensures that `pca953x_resume`
-is called before the IRQ handler is called.
 
-Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- drivers/gpio/gpio-pca953x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Tested-by: Hardik Garg <hargar@linux.microsoft.com>
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index d63c1030e6ac..d39bdc125cfc 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -1252,7 +1252,7 @@ static int pca953x_resume(struct device *dev)
- 	return ret;
- }
- 
--static DEFINE_SIMPLE_DEV_PM_OPS(pca953x_pm_ops, pca953x_suspend, pca953x_resume);
-+static DEFINE_NOIRQ_DEV_PM_OPS(pca953x_pm_ops, pca953x_suspend, pca953x_resume);
- 
- /* convenience to stop overlong match-table lines */
- #define OF_653X(__nrgpio, __int) ((void *)(__nrgpio | PCAL653X_TYPE | __int))
--- 
-2.39.5
 
+
+
+Thanks,
+Hardik
 
