@@ -1,577 +1,159 @@
-Return-Path: <stable+bounces-126736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3550FA71B16
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 16:51:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA3FA71B2D
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 16:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3E1D1888627
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 15:47:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 398601887381
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 15:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D4F1F3BB6;
-	Wed, 26 Mar 2025 15:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190231F4297;
+	Wed, 26 Mar 2025 15:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/AuZlI4"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ehYVPtdF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F63E19CC3E;
-	Wed, 26 Mar 2025 15:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6920A1F4160
+	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 15:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743004047; cv=none; b=K0CYVuZEnA2smWwwYtjSFlj36uE+cwYTj+IA+F2+7HCz6ohmokwiGY+ihCTNIH7dpQ0ngIfYb+qf/5NaO3gbyQYv/cP69m+ft+mt7cz8XLf4YHlb2y+fkZl1TRrvHjzfy1WAlPQ+Agn8admyM3YzN/U99XXgS6rxMBWFhTflqH4=
+	t=1743004410; cv=none; b=WsHFpGexce3p7ELJC0iQSdn30w8EjDerbXV4BmcQvwzNvoOL/eLia4MBaO7lFwKzMq8NGVTBIyEhkmQ0/JinppI7BenKFMvOx7NmgCdQGjpbPUt2x2r5YiX6goXs/ZF3NWr4/VhB2JPo4IxR9kD9GyaMtEh1C0jZSCGeeBoGpQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743004047; c=relaxed/simple;
-	bh=ilrxYk+4ltFVbbiMBrlakyO08MxWOmOB2LmVBrTGLqY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NJSuCO2gyTaUohV57ni73+PqExBG9lgDHtj6K3q3/RoZTWT54wfRxqF787l7fHgMQaxBUD8YnlPcmlDNEM2QCLpLrygWKLEXrpJ1WDH4M8PxbzJAzlF/KLdnFltCVq9DRnoG8/ouFrXzgvvgdBHdSJnffnms/gXISua2HFhW6Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/AuZlI4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698CDC4CEE2;
-	Wed, 26 Mar 2025 15:47:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743004046;
-	bh=ilrxYk+4ltFVbbiMBrlakyO08MxWOmOB2LmVBrTGLqY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=J/AuZlI49cb5qilh7rG0sW51INAurlTQeFaVORjcap9W/qtgiMuXrFk12PUgODDYQ
-	 ybcGBHdCg8y+8nqBL7DvQNW0ll3B6eSJsM6PVgnbRzmeNSOU8kIJSu7SWYO/UHANxJ
-	 ls4Mgt3nBh/cEppaDw4saRGaS/ow6eq0KEaimmbQ=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org
-Subject: [PATCH 6.12 000/115] 6.12.21-rc2 review
-Date: Wed, 26 Mar 2025 11:46:02 -0400
-Message-ID: <20250326154546.724728617@linuxfoundation.org>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743004410; c=relaxed/simple;
+	bh=Cmgc9jxK6Ofoo2XQp4Jk7gnBtwLWf98tvySpbz1N580=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eUbT0K4VQzdjawEvJzZx3IpOgqeOAWLCM6IyBeRI6c+Td2Ey5zq0+mOlRxOPyRlUgCdC/NqgwTXu12t8b2xj5WVTNGLQiLF6Axr8K01xOYqUoPfsF35ssRYhFRJ7ETeF+zBiRUP2kOwP9mfYWnPPNmP56CtVdw/DaLStzfsJRRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ehYVPtdF; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3fbaa18b810so2052989b6e.2
+        for <stable@vger.kernel.org>; Wed, 26 Mar 2025 08:53:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1743004408; x=1743609208; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=SM5fPhKH3eo9QWVzWqGRULqwyyIH1WW4d5YRJrpPBCU=;
+        b=ehYVPtdFhMCYtM9DbsS9zJfc6DbaUSKKCSEItpjmSxyfIV78afqOTXjPhRgqnpvsXk
+         h6vSXpz7NgQiljvaK/CglVay+BGgy4UOrn6J57w6+bQb0Wz+KEK+nsooX+3jMC3UuShD
+         6/e3c0OdVB5AXSYqmODKayaqMua7clPha022w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743004408; x=1743609208;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SM5fPhKH3eo9QWVzWqGRULqwyyIH1WW4d5YRJrpPBCU=;
+        b=pL99O1NrU5yIkjzxs5XEpYoeChYiqryhmYnK73JtLOzYUKxKAXRgEQIkHGNdS5itxI
+         w7Q3SMiM2d5CKWdngmAOjghHUmZSjKFdfUxFvezWKd+Lea8NV1B02/+mKKkHwm0ff0JF
+         0Ed6WTpM0KCgO4KzD2qXz8840xyz7lTyFpEmAWAlOdhp55F2QixfHRfXFMqHNGboBo1I
+         f7G0f1cXujroc6+Hsdd84Ze2O/7qHcwgmtfIT5Mj8BTMf17K1SXx+YVgtyTMjeA3P31M
+         GVcIh6/GNan43hQlh3Fx8FH5e+xbRKaW3O8Y5ibzhvH8qt0PprOxLp4PjiN0APqFDZai
+         mt3A==
+X-Gm-Message-State: AOJu0YxU2So1zwqzvIHF7nhMh5gV2b0ksPSS3UW18S3WK6w6mUSBfmmc
+	3eRF6gS2cmckOFm5haMu5ApKTdu8PwclGQrl2kSAXI9moDOXXG2ReGpBAPM/FA==
+X-Gm-Gg: ASbGncuqM2m5x6PF2NW2ZYYQ4KXqM4wKLcbffDpRm6bO/7iRTQGiCmaWybS+zIDKI9E
+	w/s4VB/n5WAxOXTCoQNNBkCCFcPCuj17SPNdaZN9YWfVzlnBOjiYnsfLn5UVjMD/buzWSuhJchW
+	jTr672y20SNpoYc05RjjD0Pgbvpn0l9VrnakM5mEQg3U1SzgdKwUxnOR3QAM988HSQ5fRixUBdX
+	pG6OmxC0Z650wG+hUB5ncOejnGksdZNUFlFUOjKquiY1KB5l7Wuh9YNjse/7nyjBClHG9OMjpht
+	yK6we8jAGMiIfZWwHXZx1klqdCYor+kx08eGjHbxuik+4AK6+pRsV8M2AshKOZf9pXAp+ywTdOc
+	XgOZv7BTdat9s+YebSXs=
+X-Google-Smtp-Source: AGHT+IGAqY1afSx2VOLR53tgrTQpoT0AFaUAQGaXTStPgH9gc/ljordP841Cx+qYslm1PKBCzo1JIA==
+X-Received: by 2002:a05:6808:10c9:b0:3f8:a72f:a976 with SMTP id 5614622812f47-3fefa540987mr23090b6e.11.1743004408340;
+        Wed, 26 Mar 2025 08:53:28 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3febf6bd815sm2389722b6e.9.2025.03.26.08.53.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Mar 2025 08:53:27 -0700 (PDT)
+Message-ID: <fe0b5fc5-a365-45e2-8e87-24b2830255bf@broadcom.com>
+Date: Wed, 26 Mar 2025 08:53:23 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.21-rc2.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.12.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.12.21-rc2
-X-KernelTest-Deadline: 2025-03-28T15:45+00:00
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-This is the start of the stable review cycle for the 6.12.21 release.
-There are 115 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Fri, 28 Mar 2025 15:45:30 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.21-rc2.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.12.21-rc2
-
-Arthur Mongodin <amongodin@randorisec.fr>
-    mptcp: Fix data stream corruption in the address announcement
-
-Zi Yan <ziy@nvidia.com>
-    mm/huge_memory: drop beyond-EOF folios with the right number of refs
-
-Justin Klaassen <justin@tidylabs.net>
-    arm64: dts: rockchip: fix u2phy1_host status for NanoPi R4S
-
-Eder Zulian <ezulian@redhat.com>
-    libsubcmd: Silence compiler warning
-
-Dietmar Eggemann <dietmar.eggemann@arm.com>
-    Revert "sched/core: Reduce cost of sched_move_task when config autogroup"
-
-Mark Rutland <mark.rutland@arm.com>
-    KVM: arm64: Eagerly switch ZCR_EL{1,2}
-
-Mark Rutland <mark.rutland@arm.com>
-    KVM: arm64: Mark some header functions as inline
-
-Mark Rutland <mark.rutland@arm.com>
-    KVM: arm64: Refactor exit handlers
-
-Mark Rutland <mark.rutland@arm.com>
-    KVM: arm64: Remove VHE host restore of CPACR_EL1.SMEN
-
-Mark Rutland <mark.rutland@arm.com>
-    KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
-
-Mark Rutland <mark.rutland@arm.com>
-    KVM: arm64: Remove host FPSIMD saving for non-protected KVM
-
-Mark Rutland <mark.rutland@arm.com>
-    KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state
-
-Fuad Tabba <tabba@google.com>
-    KVM: arm64: Calculate cptr_el2 traps on activating traps
-
-Pavel Begunkov <asml.silence@gmail.com>
-    io_uring/net: fix sendzc double notif flush
-
-Namjae Jeon <linkinjeon@kernel.org>
-    ksmbd: fix incorrect validation for num_aces field of smb_acl
-
-Philip Yang <Philip.Yang@amd.com>
-    drm/amdkfd: Fix user queue validation on Gfx7/8
-
-David Rosca <david.rosca@amd.com>
-    drm/amdgpu: Fix JPEG video caps max size for navi1x and raven
-
-David Rosca <david.rosca@amd.com>
-    drm/amdgpu: Fix MPEG2, MPEG4 and VC1 video caps max size
-
-David Rosca <david.rosca@amd.com>
-    drm/amdgpu: Remove JPEG from vega and carrizo video caps
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu/pm: wire up hwmon fan speed for smu 14.0.2
-
-Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-    drm/amdgpu/pm: Handle SCLK offset correctly in overdrive for smu 14.0.2
-
-David Belanger <david.belanger@amd.com>
-    drm/amdgpu: Restore uncached behaviour on GFX12
-
-Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-    drm/amd/pm: add unique_id for gfx12
-
-Mario Limonciello <mario.limonciello@amd.com>
-    drm/amd/display: Use HW lock mgr for PSR1 when only one eDP
-
-Yilin Chen <Yilin.Chen@amd.com>
-    drm/amd/display: Fix message for support_edp0_on_dp1
-
-Wentao Liang <vulab@iscas.ac.cn>
-    drm/amdgpu/gfx12: correct cleanup of 'me' field with gfx_v12_0_me_fini()
-
-qianyi liu <liuqianyi125@gmail.com>
-    drm/sched: Fix fence reference count leak
-
-Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-    drm/radeon: fix uninitialized size issue in radeon_vce_cs_parse()
-
-Xianwei Zhao <xianwei.zhao@amlogic.com>
-    pmdomain: amlogic: fix T7 ISP secpower
-
-Saranya R <quic_sarar@quicinc.com>
-    soc: qcom: pdr: Fix the potential deadlock
-
-Sven Eckelmann <sven@narfation.org>
-    batman-adv: Ignore own maximum aggregation size during RX
-
-Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-    xsk: fix an integer overflow in xp_create_and_assign_umem()
-
-David Howells <dhowells@redhat.com>
-    keys: Fix UAF in key_put()
-
-Ard Biesheuvel <ardb@kernel.org>
-    efi/libstub: Avoid physical address 0x0 when doing random allocation
-
-Johan Hovold <johan+linaro@kernel.org>
-    firmware: qcom: uefisecapp: fix efivars registration race
-
-Geert Uytterhoeven <geert+renesas@glider.be>
-    ARM: shmobile: smp: Enforce shmobile_smp_* alignment
-
-Stefan Eichenberger <stefan.eichenberger@toradex.com>
-    ARM: dts: imx6qdl-apalis: Fix poweroff on Apalis iMX6
-
-Shakeel Butt <shakeel.butt@linux.dev>
-    memcg: drain obj stock on cpu hotplug teardown
-
-Ye Bin <yebin10@huawei.com>
-    proc: fix UAF in proc_get_inode()
-
-Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-    mm/page_alloc: fix memory accept before watermarks gets initialized
-
-Zi Yan <ziy@nvidia.com>
-    mm/migrate: fix shmem xarray update during migration
-
-Raphael S. Carvalho <raphaelsc@scylladb.com>
-    mm: fix error handling in __filemap_get_folio() with FGP_NOWAIT
-
-Rafael Aquini <raquini@redhat.com>
-    selftests/mm: run_vmtests.sh: fix half_ufd_size_MB calculation
-
-Gu Bowen <gubowen5@huawei.com>
-    mmc: atmel-mci: Add missing clk_disable_unprepare()
-
-Kamal Dasu <kamal.dasu@broadcom.com>
-    mmc: sdhci-brcmstb: add cqhci suspend/resume to PM ops
-
-Quentin Schulz <quentin.schulz@cherry.de>
-    arm64: dts: rockchip: fix pinmux of UART5 for PX30 Ringneck on Haikou
-
-Quentin Schulz <quentin.schulz@cherry.de>
-    arm64: dts: rockchip: fix pinmux of UART0 for PX30 Ringneck on Haikou
-
-Stefan Eichenberger <stefan.eichenberger@toradex.com>
-    arm64: dts: freescale: imx8mm-verdin-dahlia: add Microphone Jack to sound card
-
-Stefan Eichenberger <stefan.eichenberger@toradex.com>
-    arm64: dts: freescale: imx8mp-verdin-dahlia: add Microphone Jack to sound card
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    accel/qaic: Fix integer overflow in qaic_validate_req()
-
-Christian Eggers <ceggers@arri.de>
-    regulator: check that dummy regulator has been probed before using it
-
-Christian Eggers <ceggers@arri.de>
-    regulator: dummy: force synchronous probing
-
-Max Kellermann <max.kellermann@ionos.com>
-    netfs: Call `invalidate_cache` only if implemented
-
-E Shattow <e@freeshell.de>
-    riscv: dts: starfive: Fix a typo in StarFive JH7110 pin function definitions
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring/net: don't clear REQ_F_NEED_CLEANUP unconditionally
-
-Maíra Canal <mcanal@igalia.com>
-    drm/v3d: Don't run jobs that have errors flagged in its fence
-
-Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
-    drm/xe: Fix exporting xe buffers multiple times
-
-Haibo Chen <haibo.chen@nxp.com>
-    can: flexcan: disable transceiver during system PM
-
-Haibo Chen <haibo.chen@nxp.com>
-    can: flexcan: only change CAN state when link up in system PM
-
-Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-    can: ucan: fix out of bound read in strscpy() source
-
-Biju Das <biju.das.jz@bp.renesas.com>
-    can: rcar_canfd: Fix page entries in the AFL list
-
-Biju Das <biju.das.jz@bp.renesas.com>
-    dt-bindings: can: renesas,rcar-canfd: Fix typo in pattern properties for R-Car V4M
-
-Haiyang Zhang <haiyangz@microsoft.com>
-    net: mana: Support holes in device list reply msg
-
-Andreas Kemnade <andreas@kemnade.info>
-    i2c: omap: fix IRQ storms
-
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
-    tracing: tprobe-events: Fix leakage of module refcount
-
-Guillaume Nault <gnault@redhat.com>
-    Revert "gre: Fix IPv6 link-local address generation."
-
-Lin Ma <linma@zju.edu.cn>
-    net/neighbor: add missing policy for NDTPA_QUEUE_LENBYTES
-
-Yongjian Sun <sunyongjian1@huawei.com>
-    libfs: Fix duplicate directory entry in offset_dir_lookup
-
-Justin Iurman <justin.iurman@uliege.be>
-    net: ipv6: ioam6: fix lwtunnel_output() loop
-
-Justin Iurman <justin.iurman@uliege.be>
-    net: lwtunnel: fix recursion loops
-
-MD Danish Anwar <danishanwar@ti.com>
-    net: ti: icssg-prueth: Add lock to stats
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    net: atm: fix use after free in lec_send()
-
-Jason Gunthorpe <jgg@ziepe.ca>
-    gpu: host1x: Do not assume that a NULL domain means no DMA IOMMU
-
-Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-    phy: fix xa_alloc_cyclic() error handling
-
-Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-    dpll: fix xa_alloc_cyclic() error handling
-
-Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-    devlink: fix xa_alloc_cyclic() error handling
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    ipv6: Set errno after ip_fib_metrics_init() in ip6_route_info_create().
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    ipv6: Fix memleak of nhc_pcpu_rth_output in fib_check_nh_v6_gw().
-
-Felix Fietkau <nbd@nbd.name>
-    net: ipv6: fix TCP GSO segmentation with NAT
-
-Vignesh Raghavendra <vigneshr@ti.com>
-    net: ethernet: ti: am65-cpsw: Fix NAPI registration sequence
-
-Niklas Cassel <cassel@kernel.org>
-    ata: libata-core: Add ATA_QUIRK_NO_LPM_ON_ATI for certain Samsung SSDs
-
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
-    tracing: tprobe-events: Fix to clean up tprobe correctly when module unload
-
-David Lechner <dlechner@baylibre.com>
-    ARM: davinci: da850: fix selecting ARCH_DAVINCI_DA8XX
-
-Jeffrey Hugo <quic_jhugo@quicinc.com>
-    accel/qaic: Fix possible data corruption in BOs > 2G
-
-Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
-    Bluetooth: hci_event: Fix connection regression between LE and non-LE adapters
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    Bluetooth: Fix error code in chan_alloc_skb_cb()
-
-Junxian Huang <huangjunxian6@hisilicon.com>
-    RDMA/hns: Fix wrong value of max_sge_rd
-
-Junxian Huang <huangjunxian6@hisilicon.com>
-    RDMA/hns: Fix missing xa_destroy()
-
-Junxian Huang <huangjunxian6@hisilicon.com>
-    RDMA/hns: Fix a missing rollback in error path of hns_roce_create_qp_common()
-
-Junxian Huang <huangjunxian6@hisilicon.com>
-    RDMA/hns: Fix invalid sq params not being blocked
-
-Junxian Huang <huangjunxian6@hisilicon.com>
-    RDMA/hns: Fix unmatched condition in error path of alloc_user_qp_db()
-
-Junxian Huang <huangjunxian6@hisilicon.com>
-    RDMA/hns: Fix soft lockup during bt pages loop
-
-Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-    RDMA/bnxt_re: Avoid clearing VLAN_ID mask in modify qp path
-
-Baochen Qiang <quic_bqiang@quicinc.com>
-    dma-mapping: fix missing clear bdr in check_ram_in_range_map()
-
-Chester A. Unal <chester.a.unal@arinc9.com>
-    ARM: dts: BCM5301X: Fix switch port labels of ASUS RT-AC3200
-
-Chester A. Unal <chester.a.unal@arinc9.com>
-    ARM: dts: BCM5301X: Fix switch port labels of ASUS RT-AC5300
-
-Phil Elwell <phil@raspberrypi.com>
-    ARM: dts: bcm2711: Don't mark timer regs unconfigured
-
-Arnd Bergmann <arnd@arndb.de>
-    ARM: OMAP1: select CONFIG_GENERIC_IRQ_CHIP
-
-Qasim Ijaz <qasdev00@gmail.com>
-    RDMA/mlx5: Handle errors returned from mlx5r_ib_rate()
-
-Kashyap Desai <kashyap.desai@broadcom.com>
-    RDMA/bnxt_re: Add missing paranthesis in map_qp_id_to_tbl_indx
-
-Zhu Yanjun <yanjun.zhu@linux.dev>
-    RDMA/rxe: Fix the failure of ibv_query_device() and ibv_query_device_ex() tests
-
-Yao Zi <ziyao@disroot.org>
-    arm64: dts: rockchip: Remove undocumented sdmmc property from lubancat-1
-
-Phil Elwell <phil@raspberrypi.com>
-    arm64: dts: bcm2712: PL011 UARTs are actually r1p5
-
-Phil Elwell <phil@raspberrypi.com>
-    ARM: dts: bcm2711: PL011 UARTs are actually r1p5
-
-Stefan Wahren <wahrenst@gmx.net>
-    ARM: dts: bcm2711: Fix xHCI power-domain
-
-Peng Fan <peng.fan@nxp.com>
-    soc: imx8m: Unregister cpufreq and soc dev in cleanup path
-
-Marek Vasut <marex@denx.de>
-    soc: imx8m: Use devm_* to simplify probe failure handling
-
-Marek Vasut <marex@denx.de>
-    soc: imx8m: Remove global soc_uid
-
-Cosmin Ratiu <cratiu@nvidia.com>
-    xfrm_output: Force software GSO only in tunnel mode
-
-Alexandre Cassen <acassen@corp.free.fr>
-    xfrm: fix tunnel mode TX datapath in packet offload mode
-
-Heiko Stuebner <heiko.stuebner@cherry.de>
-    arm64: dts: rockchip: remove supports-cqe from rk3588 tiger
-
-Heiko Stuebner <heiko.stuebner@cherry.de>
-    arm64: dts: rockchip: remove supports-cqe from rk3588 jaguar
-
-Alexander Stein <alexander.stein@ew.tq-group.com>
-    arm64: dts: freescale: tqma8mpql: Fix vqmmc-supply
-
-Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-    firmware: imx-scu: fix OF node leak in .probe()
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    firmware: qcom: scm: Fix error code in probe()
-
-
--------------
-
-Diffstat:
-
- .../bindings/net/can/renesas,rcar-canfd.yaml       |   2 +-
- Makefile                                           |   4 +-
- arch/arm/boot/dts/broadcom/bcm2711-rpi.dtsi        |   5 -
- arch/arm/boot/dts/broadcom/bcm2711.dtsi            |  12 +-
- .../boot/dts/broadcom/bcm4709-asus-rt-ac3200.dts   |  12 +-
- .../boot/dts/broadcom/bcm47094-asus-rt-ac5300.dts  |   8 +-
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi      |  10 +-
- arch/arm/mach-davinci/Kconfig                      |   1 +
- arch/arm/mach-omap1/Kconfig                        |   1 +
- arch/arm/mach-shmobile/headsmp.S                   |   1 +
- arch/arm64/boot/dts/broadcom/bcm2712.dtsi          |   2 +-
- .../boot/dts/freescale/imx8mm-verdin-dahlia.dtsi   |   6 +-
- .../arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi |  16 +--
- .../boot/dts/freescale/imx8mp-verdin-dahlia.dtsi   |   6 +-
- .../boot/dts/rockchip/px30-ringneck-haikou.dts     |  12 ++
- arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts |   2 +-
- arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts |   1 -
- arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts     |   1 -
- arch/arm64/boot/dts/rockchip/rk3588-tiger.dtsi     |   1 -
- arch/arm64/include/asm/kvm_host.h                  |  23 +---
- arch/arm64/kernel/fpsimd.c                         |  25 ----
- arch/arm64/kvm/arm.c                               |   9 --
- arch/arm64/kvm/fpsimd.c                            | 100 ++------------
- arch/arm64/kvm/hyp/entry.S                         |   5 +
- arch/arm64/kvm/hyp/include/hyp/switch.h            | 133 +++++++++++++-----
- arch/arm64/kvm/hyp/nvhe/hyp-main.c                 |  11 +-
- arch/arm64/kvm/hyp/nvhe/pkvm.c                     |  29 ----
- arch/arm64/kvm/hyp/nvhe/switch.c                   | 140 ++++++++++---------
- arch/arm64/kvm/hyp/vhe/switch.c                    |  21 ++-
- arch/riscv/boot/dts/starfive/jh7110-pinfunc.h      |   2 +-
- drivers/accel/qaic/qaic_data.c                     |   9 +-
- drivers/ata/libata-core.c                          |  14 +-
- drivers/dpll/dpll_core.c                           |   2 +-
- drivers/firmware/efi/libstub/randomalloc.c         |   4 +
- drivers/firmware/imx/imx-scu.c                     |   1 +
- drivers/firmware/qcom/qcom_qseecom_uefisecapp.c    |  18 +--
- drivers/firmware/qcom/qcom_scm.c                   |   4 +-
- drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c             |   2 +-
- drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c             |  22 +--
- drivers/gpu/drm/amd/amdgpu/nv.c                    |  20 +--
- drivers/gpu/drm/amd/amdgpu/soc15.c                 |  21 ++-
- drivers/gpu/drm/amd/amdgpu/vi.c                    |  43 +++---
- drivers/gpu/drm/amd/amdkfd/kfd_queue.c             |  12 +-
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c               |   8 +-
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  |   2 +-
- .../gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c  |  11 ++
- drivers/gpu/drm/amd/pm/amdgpu_pm.c                 |   2 +
- .../gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c   |  96 +++++++------
- drivers/gpu/drm/radeon/radeon_vce.c                |   2 +-
- drivers/gpu/drm/scheduler/sched_entity.c           |  11 +-
- drivers/gpu/drm/v3d/v3d_sched.c                    |   9 +-
- drivers/gpu/drm/xe/xe_bo.h                         |   2 -
- drivers/gpu/drm/xe/xe_dma_buf.c                    |   2 +-
- drivers/gpu/host1x/dev.c                           |   6 +
- drivers/i2c/busses/i2c-omap.c                      |  26 +---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c           |   2 -
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.h         |   3 +-
- drivers/infiniband/hw/hns/hns_roce_alloc.c         |   4 +-
- drivers/infiniband/hw/hns/hns_roce_cq.c            |   1 +
- drivers/infiniband/hw/hns/hns_roce_hem.c           |  16 ++-
- drivers/infiniband/hw/hns/hns_roce_main.c          |   2 +-
- drivers/infiniband/hw/hns/hns_roce_qp.c            |  20 +--
- drivers/infiniband/hw/mlx5/ah.c                    |  14 +-
- drivers/infiniband/sw/rxe/rxe.c                    |  25 +---
- drivers/mmc/host/atmel-mci.c                       |   4 +-
- drivers/mmc/host/sdhci-brcmstb.c                   |  10 ++
- drivers/net/can/flexcan/flexcan-core.c             |  18 ++-
- drivers/net/can/rcar/rcar_canfd.c                  |  28 ++--
- drivers/net/can/usb/ucan.c                         |  43 +++---
- drivers/net/ethernet/microsoft/mana/gdma_main.c    |  14 +-
- drivers/net/ethernet/ti/am65-cpsw-nuss.c           |  32 +++--
- drivers/net/ethernet/ti/icssg/icssg_prueth.c       |   1 +
- drivers/net/ethernet/ti/icssg/icssg_prueth.h       |   2 +
- drivers/net/ethernet/ti/icssg/icssg_stats.c        |   4 +
- drivers/net/phy/phy_link_topology.c                |   2 +-
- drivers/pmdomain/amlogic/meson-secure-pwrc.c       |   2 +-
- drivers/regulator/core.c                           |  12 +-
- drivers/regulator/dummy.c                          |   2 +-
- drivers/soc/imx/soc-imx8m.c                        | 151 ++++++++++-----------
- drivers/soc/qcom/pdr_interface.c                   |   8 +-
- fs/libfs.c                                         |   2 +-
- fs/netfs/write_collect.c                           |   3 +-
- fs/proc/generic.c                                  |  10 +-
- fs/proc/inode.c                                    |   6 +-
- fs/proc/internal.h                                 |  14 ++
- fs/smb/server/smbacl.c                             |   5 +-
- include/linux/key.h                                |   1 +
- include/linux/libata.h                             |   2 +
- include/linux/proc_fs.h                            |   7 +-
- include/net/bluetooth/hci.h                        |   2 +-
- include/net/mana/gdma.h                            |  11 +-
- io_uring/net.c                                     |   5 +-
- kernel/dma/direct.c                                |  28 ++--
- kernel/sched/core.c                                |  21 +--
- kernel/trace/trace_fprobe.c                        |  30 ++--
- mm/filemap.c                                       |  13 +-
- mm/huge_memory.c                                   |   2 +-
- mm/memcontrol.c                                    |   9 ++
- mm/migrate.c                                       |  10 +-
- mm/page_alloc.c                                    |  14 +-
- net/atm/lec.c                                      |   3 +-
- net/batman-adv/bat_iv_ogm.c                        |   3 +-
- net/batman-adv/bat_v_ogm.c                         |   3 +-
- net/bluetooth/6lowpan.c                            |   7 +-
- net/core/lwtunnel.c                                |  65 +++++++--
- net/core/neighbour.c                               |   1 +
- net/devlink/core.c                                 |   2 +-
- net/ipv6/addrconf.c                                |  15 +-
- net/ipv6/ioam6_iptunnel.c                          |   8 +-
- net/ipv6/route.c                                   |   5 +-
- net/ipv6/tcpv6_offload.c                           |  21 ++-
- net/mptcp/options.c                                |   6 +-
- net/xdp/xsk_buff_pool.c                            |   2 +-
- net/xfrm/xfrm_output.c                             |  43 +++++-
- security/keys/gc.c                                 |   4 +-
- security/keys/key.c                                |   2 +
- tools/lib/subcmd/parse-options.c                   |   2 +-
- tools/testing/selftests/mm/run_vmtests.sh          |   4 +-
- 118 files changed, 942 insertions(+), 819 deletions(-)
-
-
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable 5.15 v2 2/2] openvswitch: fix lockup on tx to
+ unregistering netdev with carrier
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Ilya Maximets <i.maximets@ovn.org>,
+ Friedrich Weber <f.weber@proxmox.com>, Aaron Conole <aconole@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ Carlos Soto <carlos.soto@broadcom.com>, "David S. Miller"
+ <davem@davemloft.net>, Pravin B Shelar <pshelar@ovn.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <kafai@fb.com>,
+ Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Willem de Bruijn <willemb@google.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Felix Huettner <felix.huettner@mail.schwarz>,
+ Breno Leitao <leitao@debian.org>, Yan Zhai <yan@cloudflare.com>,
+ =?UTF-8?Q?Beno=C3=AEt_Monin?= <benoit.monin@gmx.fr>,
+ Joe Stringer <joestringer@nicira.com>, Justin Pettit <jpettit@nicira.com>,
+ Andy Zhou <azhou@nicira.com>, Luca Czesla <luca.czesla@mail.schwarz>,
+ Simon Horman <simon.horman@corigine.com>,
+ "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:OPENVSWITCH" <dev@openvswitch.org>,
+ "open list:BPF (Safe dynamic programs and tools)" <bpf@vger.kernel.org>
+References: <20250325192246.1849981-1-florian.fainelli@broadcom.com>
+ <20250325192246.1849981-3-florian.fainelli@broadcom.com>
+ <2025032620-protract-reassign-f3e7@gregkh>
+Content-Language: en-US
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <2025032620-protract-reassign-f3e7@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 3/26/25 08:39, Greg KH wrote:
+> On Tue, Mar 25, 2025 at 12:22:46PM -0700, Florian Fainelli wrote:
+>> From: Ilya Maximets <i.maximets@ovn.org>
+>>
+>> [ Upstream commit 82f433e8dd0629e16681edf6039d094b5518d8ed ]
+> 
+> As Sasha's bot said, this is the wrong git id :(
+
+Sorry, I have been down with the flu over the weekend and am clearly not 
+fully recovered :D
+-- 
+Florian
 
