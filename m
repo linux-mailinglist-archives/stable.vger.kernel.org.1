@@ -1,227 +1,131 @@
-Return-Path: <stable+bounces-126688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8CA6A712DD
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 09:40:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C7CA713DF
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 10:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F28F170292
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 08:40:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F0B416FB2A
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 09:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6AB19F121;
-	Wed, 26 Mar 2025 08:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A441A3A80;
+	Wed, 26 Mar 2025 09:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="KyCrqoNk";
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="h2goKGQl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ApaHC+Uf"
 X-Original-To: stable@vger.kernel.org
-Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D24A145B25
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 08:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79302A1B2;
+	Wed, 26 Mar 2025 09:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742978439; cv=none; b=PaLWHdTKN4SAJ1r48iJQh9F0PiSzMprErwhDNnB//luR8lKw6mQpNixJFwLmzwpIZ8gf35trTuBQAIBYMyDCvl41B7PPdTG4OKNmBkzJ3JNAwtYu8xIwMm8K/cyE0dtwRme9SERvdHaHwkmjX6eCySKFVMupAm3vOHkSygXUOLQ=
+	t=1742981965; cv=none; b=AgMN6tkUeDNb+Wa/BB98SDydO3UFD3yu2RTLd59wEF7tDhtv8lTHRFPkMDj2VkH2sIJRdyHxu5o6kf/tFaVH493Haih2J9ziej8EsNMHv1nX5RfmYXFU2V4f9633t3OFfFlcVyHvi3d438IyiQNngxXz+apiLFuNzFMik2/GMF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742978439; c=relaxed/simple;
-	bh=0cRbGra4b0bceGn7QIieNJyYHJGW+QjN+ZSB/kGRFrs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nc66Mh7UJ3JJ+tkw0u6p14pcr3XIaNXgGn7tPpXKJfB3VgvVQuop2AsLOvqPtuaesyQWtlCoBaqZJkcKh2yB7u1g9XsKvvUGpC24taoeKviIQL2FmShJJKxRkOSmfooPac4/FD5zjmAYG2sNnbZlghjgDwk9ebG3dLS+Au9YwWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=KyCrqoNk; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=h2goKGQl; arc=none smtp.client-ip=35.74.137.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
-	s=gw2_bookworm; t=1742977962;
-	bh=0cRbGra4b0bceGn7QIieNJyYHJGW+QjN+ZSB/kGRFrs=;
-	h=From:Date:Subject:To:Cc:From;
-	b=KyCrqoNkC/Ia0M/HbiXwWcLsxM8OrshBP9wjlnNgcWcxZj5PwXtNIoAj2w+CM2TLq
-	 1oTpVat0ToFbCoGNSzJmTW9ZOdZrdhKd4GP2C4+ieuVlFL1FSonDLrGqv+e9fMTo/L
-	 UZP7ToyIt0LggI+GOIMGc9EL866E3OOj/rH9/qMMzqB/buhKcOwsv7oV0cULSqGN8e
-	 hcwcPuIlxQTiez3Ygo2GsBL3ef4d1TJg87loQ222xei3n2IKQrtwe1DolOv0ExumMa
-	 X+h9je/nTKdEc+ICXNqjNq/V2LIRXRwI0Y1TOIwskr2IFLa/de1EM9HDcOFubQ2Gzx
-	 DtviG9Evqls/w==
-Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
-	by gw2.atmark-techno.com (Postfix) with ESMTP id AA13A991
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 17:32:42 +0900 (JST)
-Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=h2goKGQl;
-	dkim-atps=neutral
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id 30814A32
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 17:32:41 +0900 (JST)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-224347aef79so167253045ad.2
-        for <stable@vger.kernel.org>; Wed, 26 Mar 2025 01:32:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1742977960; x=1743582760; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5X6bjgAmnqJeE1zDjlF2ZnFDYz5C8T4cY+6ErJYvhHI=;
-        b=h2goKGQld0eoGhF77+DQSgRmo3kWimf+unycQe/Bdn17nVOWYEmD0tvB6pwJTmlp3i
-         jfKhfGjCXlx+EjdZuV3Iq3ixmJgRr2FUj4TunOt4NXH5Ddk+6aX9tTT4otStGETiON/l
-         i1QQLi6IuyfN4ZHs55vqvU11mjMxYHM8Ncmn4oAiUeYIhWRc90X1aebbujkjnAe638r6
-         iEPfHzk9rGETDzXyhgIEg8wRj2UDCOv6q3odsKZ+8bXEvEhsnMrKbblGEvslCXXrsxPQ
-         qBC1DUUE0S6U+IBLX5bg/BBQUw5tfvE6E/KU9YDqAjD3wtpf7MwYM88XQbhusLd8v9od
-         Hnew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742977960; x=1743582760;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5X6bjgAmnqJeE1zDjlF2ZnFDYz5C8T4cY+6ErJYvhHI=;
-        b=Mvanot01nhsyXD50fIwUDDuL5uFRnXwwkhOhw+nM7eMx5ZhYhUKcgv0u0naAyYX9V7
-         7vYVpNsb+BynqATEP0zzP4X3TDF0Z67igvfCKXWFVwaeYpdjWKZcYvpJJBiyzKKmzBPT
-         cuE1AplkXaDrTH8BUOxl5Ngzzvf35iXn2Xhh+4TxqhqC1zwgpk61ozxNcGW8UW29lDfP
-         2YuTGw9s9rN/LFXRVgiWN0mSX4XrNgZf4HCzdVaYEHm4QG/Bd0kh6eiPSRr6W2hZmelq
-         RDRdPKmi/xa2EsqkcYOGLdMqsZoLzxRxyXW6bz8f3CD9UXYWhIQQ7E+PHT0uK4J4lPNF
-         i5eg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQkt3OdW3Qe1vAEI1ERYPrmyvtzXpWQVDV2yIycqhU9I5LwEArQ314wQJ6jQ3yuZewE1uV4V8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEL/y7V/4tKNC0FNk7iYdRpH/w27llFWR27PDFC6Tr0s4RQ0Cg
-	piljgmNqFdZnZ1j/jyloFY4NjtgRyhtzmE6FHq7mJ+P5Uo+2PL/ycErIOIwIx9iJN/YAa1kQM+9
-	OHWvho5ftdwGmI3pkfFuSqiDc5EQUJoWM579HQgNoAq9yD1sARJYKnDc=
-X-Gm-Gg: ASbGncsahZEFFsC3Vfnp8haxVAatd2pLwQQ+owpDLXozSSQOk2SbKv8qpG6eMp0CHDH
-	b/kSm9/9F5BQViwYVGPgi1hKR3DNQTGyNZPEMBMO+cPJqwkPTeoAs8krRRG1skgN7YpWxAqRRhH
-	syRNaD4mVnCkF02iIJN7GhKmZkAgwqKQi7d3NIbD9AVtjV4IU+/ij6BdZ6DI3XfuGRNhN0YwuPs
-	dV+PTDm4Bi5uufOu0AvJUGG8JWblJCAxwazGHQKq/J+HqJcYQbl0zf97ffrsPmBPez4WKRpP6UL
-	gUtb6FCxXdRN3tYI54B98aGA4+6gwwzHqzHo9cme7JfRn5akgNU+nCQo/dz609Eg/gNadRqn1zg
-	=
-X-Received: by 2002:a17:903:1790:b0:223:90ec:80f0 with SMTP id d9443c01a7336-22780d7ffafmr331281945ad.22.1742977959943;
-        Wed, 26 Mar 2025 01:32:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFl/5IlHXqH0aB13xDFaYCORfVdtz8hAaULYBSzwHSWdGQtUhQFGCFwqrNs+4G3fTBWpyPAKA==
-X-Received: by 2002:a17:903:1790:b0:223:90ec:80f0 with SMTP id d9443c01a7336-22780d7ffafmr331281685ad.22.1742977959446;
-        Wed, 26 Mar 2025 01:32:39 -0700 (PDT)
-Received: from localhost (117.209.187.35.bc.googleusercontent.com. [35.187.209.117])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-227811faae6sm104137995ad.245.2025.03.26.01.32.38
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 26 Mar 2025 01:32:38 -0700 (PDT)
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Date: Wed, 26 Mar 2025 17:32:36 +0900
-Subject: [PATCH v2] net: usb: usbnet: restore usb%d name exception for
- local mac addresses
+	s=arc-20240116; t=1742981965; c=relaxed/simple;
+	bh=Mp7PS2Hsz1Y1++3pUe2iXl59mJgfLQOY3hRaKyxKOI4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QMSXGYDTxx6rNhPjh/CUHnFFlquS9fW60Ov1ALeOkqgyVp9H4xL48OEDYC/ZDM0RlqyayVdheWDX+b6VB2Zzo7l+bYEBJ/hh49BURfctiXDrk94uLE12QtohqGax1QgOs14fNCvok52dkUgOLWMxKuW1AodltV3UM4njRVxFIOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ApaHC+Uf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BCFC4CEEA;
+	Wed, 26 Mar 2025 09:39:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742981965;
+	bh=Mp7PS2Hsz1Y1++3pUe2iXl59mJgfLQOY3hRaKyxKOI4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ApaHC+Uf5A1ua9ePUD6nc+4eNxhxdmJH86reahFps3SZnbjkkcaDbtuuLG46Q2vwn
+	 9p5C9lhcUgbVIhErca64F5Klq1j3vBjf3203GoyfTL/1Ro3RxORx4H5PUAFgz0CJXC
+	 wxcnse2vbdu3drRJT+Z0zstzCF+lYGNA9ZRRB9WCR7RMeTFQa0zpLwVoa5pGPS4v0O
+	 qDEgtHVffgkTlaXwitLFukstMZB7CmXrI4VU6YUTefSWl8J3+KbKaqMRbMeHp67iK6
+	 D9VB2WjE1p5cAafC/2mhoTnozJlOzRP8luEoYrO4R4rHj9gFFHz8lVA3PTc1+23VCy
+	 3TmocOn5qRnXw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1txNEJ-00HEb9-0v;
+	Wed, 26 Mar 2025 09:39:23 +0000
+Date: Wed, 26 Mar 2025 09:39:22 +0000
+Message-ID: <86zfh8ku5x.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Keir Fraser <keirf@google.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Kristina Martsenko <kristina.martsenko@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: mops: Do not dereference src reg for a set operation
+In-Reply-To: <20250326070255.2567981-1-keirf@google.com>
+References: <20250326070255.2567981-1-keirf@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250326-usbnet_rename-v2-1-57eb21fcff26@atmark-techno.com>
-X-B4-Tracking: v=1; b=H4sIAKO742cC/x3Myw6CMBCF4Vchs7akNyC68j0MMZUO0BhaMwOoI
- by7leV/kvNtwEgBGS7FBoRr4JBiDn0qoBtdHFAEnxu01JU0uhYLPyLOd8LoJhS+75VCK5vaWMi
- fF2EfPod3a3OPgedE34Nf1X/9S1ZpaZSRtmrKs7RGV0IJx5PzuPC1Sx7fhN2zTDRAu+/7DweKv
- MCmAAAA
-X-Change-ID: 20250326-usbnet_rename-dff11e407634
-To: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Ahmed Naseef <naseefkm@gmail.com>, 
- Dominique Martinet <dominique.martinet@atmark-techno.com>
-X-Mailer: b4 0.15-dev-7be4f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3726;
- i=dominique.martinet@atmark-techno.com; h=from:subject:message-id;
- bh=0cRbGra4b0bceGn7QIieNJyYHJGW+QjN+ZSB/kGRFrs=;
- b=owEBbQKS/ZANAwAKAfKKYH/WjHEHAcsmYgBn47ulGDPu0y4xObg81ZeM/RGWZMEWrb8QgxT73
- LoFtKKYgBOJAjMEAAEKAB0WIQQoFSiLMD+txr0veJbyimB/1oxxBwUCZ+O7pQAKCRDyimB/1oxx
- By9LEACUn0d0TrNeqwWIw2qkse0TqsuERFt3yevQMkJbWUaS2XYL8ghnOPm84VKxBxllN8QBeC4
- ONXojVb5taUPBWbBaG0hQOMXDC8eEHdMAhBvYvezEHLC6DEadWg6WBHGFPT7IK9KaIx/PQ88I0Z
- bLFJ5utzVk6qi+V9NYvI82qTvv/SmDNzR1X5u9fHo94g7xz/bTDG1VXTYDqqCXjSd9Do3XFwmZr
- 0PCb1OlERU0xg4udUZd24YwGT+r9A/I4jbSEkY+CdQE6MpOkxApZ6SzmAwgdM4jujAkQVZjOgR1
- YMWHXH/QkZDnbmSSX+Pb/Acsl90jDm/IZuGDS8P4PgQP0QDH8c9PnatPEm4Mi1QGt+qjfeTs1ol
- NnqeEXpl9DS0/YVKGyFgYd+D9ut5Tla1OS0uqbmW8kK5ED5YeUfCAPBNacb9beTc/didmW369iN
- oFbfaxxfoZtHCXvbNfRqLTnj571uoX45/dz64m1e2jcvIRHEaLglaUFsGpO801+9XYrIk1USY6c
- 4Sjv52xgDr2miXkVcVHoXWb+d5rsz+9vrzYo9JZZ2vKVUW800CaPPYAo9tUFOc0iBDbMLZGl1dr
- dXE13tC6yobHnPrOWAFc5ruyHDXa1XhzLK8AXhQeE+JTpk+TVV5DlyuTYQkpm+5tltAa6xm2L/x
- sHz8VJHReSVsAdg==
-X-Developer-Key: i=dominique.martinet@atmark-techno.com; a=openpgp;
- fpr=2815288B303FADC6BD2F7896F28A607FD68C7107
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: keirf@google.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kristina.martsenko@arm.com, catalin.marinas@arm.com, mark.rutland@arm.com, will@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-commit 8a7d12d674ac ("net: usb: usbnet: fix name regression") assumed
-that local addresses always came from the kernel, but some devices hand
-out local mac addresses so we ended up with point-to-point devices with
-a mac set by the driver, renaming to eth%d when they used to be named
-usb%d.
+On Wed, 26 Mar 2025 07:02:55 +0000,
+Keir Fraser <keirf@google.com> wrote:
+> 
+> The register is not defined and reading it can result in a UBSAN
+> out-of-bounds array access error, specifically when the srcreg field
+> value is 31.
 
-Userspace should not rely on device name, but for the sake of stability
-restore the local mac address check portion of the naming exception:
-point to point devices which either have no mac set by the driver or
-have a local mac handed out by the driver will keep the usb%d name.
+Gah, XZR/SP encoding strikes back...
 
-(some USB LTE modems are known to hand out a stable mac from the locally
-administered range; that mac appears to be random (different for
-mulitple devices) and can be reset with device-specific commands, so
-while such devices would benefit from getting a OUI reserved, we have
-to deal with these and might as well preserve the existing behavior
-to avoid breaking fragile openwrt configurations and such on upgrade.)
+> 
+> Cc: Kristina Martsenko <kristina.martsenko@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Keir Fraser <keirf@google.com>
+> ---
+>  arch/arm64/include/asm/traps.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/traps.h b/arch/arm64/include/asm/traps.h
+> index d780d1bd2eac..82cf1f879c61 100644
+> --- a/arch/arm64/include/asm/traps.h
+> +++ b/arch/arm64/include/asm/traps.h
+> @@ -109,10 +109,9 @@ static inline void arm64_mops_reset_regs(struct user_pt_regs *regs, unsigned lon
+>  	int dstreg = ESR_ELx_MOPS_ISS_DESTREG(esr);
+>  	int srcreg = ESR_ELx_MOPS_ISS_SRCREG(esr);
+>  	int sizereg = ESR_ELx_MOPS_ISS_SIZEREG(esr);
+> -	unsigned long dst, src, size;
+> +	unsigned long dst, size;
+>  
+>  	dst = regs->regs[dstreg];
+> -	src = regs->regs[srcreg];
+>  	size = regs->regs[sizereg];
+>  
+>  	/*
+> @@ -129,6 +128,7 @@ static inline void arm64_mops_reset_regs(struct user_pt_regs *regs, unsigned lon
+>  		}
+>  	} else {
+>  		/* CPY* instruction */
+> +		unsigned long src = regs->regs[srcreg];
+>  		if (!(option_a ^ wrong_option)) {
+>  			/* Format is from Option B */
+>  			if (regs->pstate & PSR_N_BIT) {
 
-Link: https://lkml.kernel.org/r/20241203130457.904325-1-asmadeus@codewreck.org
-Fixes: 8a7d12d674ac ("net: usb: usbnet: fix name regression")
-Cc: stable@vger.kernel.org
-Tested-by: Ahmed Naseef <naseefkm@gmail.com>
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
----
-Changes in v2:
-- Added Cc stable as requested
-- Fix block comment style (checkpatch warning)
-- Added some more details about the local device handing out local macs
-and openwrt, thank you for the reminder Ahmed.
-(FWIW this commit has been in our downstream tree all this time and we've
-had no obvious errors due to it)
-- Link to v1: https://lore.kernel.org/r/20241203130457.904325-1-asmadeus@codewreck.org
----
- drivers/net/usb/usbnet.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 44179f4e807fc350f3d5710f0bc5f42e6414fd6e..aeab2308b15008185336f717172b090739f4f9d0 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -178,6 +178,17 @@ int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
- }
- EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
- 
-+static bool usbnet_needs_usb_name_format(struct usbnet *dev, struct net_device *net)
-+{
-+	/* Point to point devices which don't have a real MAC address
-+	 * (or report a fake local one) have historically used the usb%d
-+	 * naming. Preserve this..
-+	 */
-+	return (dev->driver_info->flags & FLAG_POINTTOPOINT) != 0 &&
-+		(is_zero_ether_addr(net->dev_addr) ||
-+		 is_local_ether_addr(net->dev_addr));
-+}
-+
- static void intr_complete (struct urb *urb)
- {
- 	struct usbnet	*dev = urb->context;
-@@ -1762,13 +1773,11 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 		if (status < 0)
- 			goto out1;
- 
--		// heuristic:  "usb%d" for links we know are two-host,
--		// else "eth%d" when there's reasonable doubt.  userspace
--		// can rename the link if it knows better.
-+		/* heuristic: rename to "eth%d" if we are not sure this link
-+		 * is two-host (these links keep "usb%d")
-+		 */
- 		if ((dev->driver_info->flags & FLAG_ETHER) != 0 &&
--		    ((dev->driver_info->flags & FLAG_POINTTOPOINT) == 0 ||
--		     /* somebody touched it*/
--		     !is_zero_ether_addr(net->dev_addr)))
-+		    !usbnet_needs_usb_name_format(dev, net))
- 			strscpy(net->name, "eth%d", sizeof(net->name));
- 		/* WLAN devices should always be named "wlan%d" */
- 		if ((dev->driver_info->flags & FLAG_WLAN) != 0)
+	M.
 
----
-base-commit: 0fed89a961ea851945d23cc35beb59d6e56c0964
-change-id: 20250326-usbnet_rename-dff11e407634
-
-Best regards,
 -- 
-Dominique Martinet <dominique.martinet@atmark-techno.com>
-
-
+Without deviation from the norm, progress is not possible.
 
