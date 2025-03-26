@@ -1,198 +1,131 @@
-Return-Path: <stable+bounces-126785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE48CA71E30
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 19:21:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E996A71E45
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 19:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A73783A412B
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:21:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A20B37A413C
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A5B251794;
-	Wed, 26 Mar 2025 18:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F25724C09B;
+	Wed, 26 Mar 2025 18:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZLtUFMuR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GN1CpGSb"
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F4E251782
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 18:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610EC24A077
+	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 18:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743013280; cv=none; b=k7EKd8aECC0JHVNadD7f67Y9k1Y72WethzHocYUIxa2G7MbC1n/11PzVNKRGIb/uLXe+Rhfu94+e6SzUY3SWIavVBwcjHoITtQHF0KxzurDz70xSbGZIwDtQXrN6aUFBafQslORsN+hjr3+uuEwTRj0rni3BpSizgok1kc3iM+g=
+	t=1743013565; cv=none; b=FtK/Vj32Dxr6yMMZ8mImFaROTGUIBUV/+wSc51Nyzevc+4vPsDqA3He8T75JSnqKa2SkDJxExj0BVGbc7NqZy1wat4UZwc/g2T/JGNKjgnN8VLTs5cYw0575O5KiPqGHhWbHW1eRzHmXmyHYpaYYJ/Hq02xiEyrY7JUjn9U65P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743013280; c=relaxed/simple;
-	bh=kTu8Y38oyzpI58LvWFfWQLfuXaWediTmwJ+j0gXAwz8=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=XfxVMLdyL0vUmUFy09gf3Z7Iy4Gs7xNh+83UKHs6t2xpMGSmQuHUlNlWPqDfSLXOSDVSI2Pd+MndOq7+Yb259SjvY1OJxTIwyoCIcMIcGhUEDNLq5JoBkZUe/chycdvVzdqhfRi43ufu9IGdu9tMQzV+erT3Z9gkYLvNMHgg8Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZLtUFMuR; arc=none smtp.client-ip=91.218.175.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1743013565; c=relaxed/simple;
+	bh=4a6MJVACf8plBUVwu7XMhK2bh2PQqvPirvejVyArCyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=moUOP0zwy5cRI2OyyCX5iOCgde2J9P6ngktmXi/CEvLUS/k9NkUVaZhT/ifb5wcuiIV2RKmuUOIaBpdFKWhOjhtva+D/JpKkWc+ltiLMBUJWY6uKlNjy3gkHXZZAzgSs9uKaIvblLMbfjr3+HVb+LvXgz+AlZBP/r4uU2bsW27s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GN1CpGSb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743013562;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZqF23292VQn0OS5nUGd1NykBkUqFN4AceX8/gqxGmQk=;
+	b=GN1CpGSbUPVe7ClfDvnCgs3MwcR4jlZ4XqJbYdoiB4RNWnpYuKG0gVRsRPzycZLtWMK6dU
+	WynZLNP/7hd94VI5UxB1ygjTNn6J94dvsOvJBiHQp6RGykw0iHGqAgH+oXrjyjoE94lN5k
+	rLENkrV9FY4G6GRGH8MNxeG/q76dmtI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-524-x8HxVPtyPpOYrTsOH4ngJg-1; Wed,
+ 26 Mar 2025 14:25:59 -0400
+X-MC-Unique: x8HxVPtyPpOYrTsOH4ngJg-1
+X-Mimecast-MFC-AGG-ID: x8HxVPtyPpOYrTsOH4ngJg_1743013556
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AFB7F19560B1;
+	Wed, 26 Mar 2025 18:25:55 +0000 (UTC)
+Received: from pauld.westford.csb (unknown [10.22.88.205])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 320E719541A5;
+	Wed, 26 Mar 2025 18:25:52 +0000 (UTC)
+Date: Wed, 26 Mar 2025 14:25:49 -0400
+From: Phil Auld <pauld@redhat.com>
+To: Harshit Agarwal <harshit@nutanix.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Jon Kohler <jon@nutanix.com>,
+	Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
+	Rahul Chunduru <rahul.chunduru@nutanix.com>,
+	Will Ton <william.ton@nutanix.com>
+Subject: Re: [PATCH v2] sched/rt: Fix race in push_rt_task
+Message-ID: <20250326182549.GB167702@pauld.westford.csb>
+References: <20250214170844.201692-1-harshit@nutanix.com>
+ <20250217115409.05599bd2@gandalf.local.home>
+ <20250326131821.GA144611@pauld.westford.csb>
+ <801794EB-9075-4097-9355-76A042B62FB5@nutanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1743013276;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4l+lQzfNdWNrBtg0qkUm5FjVJVe3D1qdSIMMNwvWfII=;
-	b=ZLtUFMuRR0PCvDeRaLPBt1OT2NHm3TA+YNaujeY/7Jabk+FjavAKUQcgUpZgcF4lgNWfof
-	6hYxkHKchqQ/ap5znX3NpF/1Gdx2ScgM6dKwr7eQB/pirYAIBDG3asEzIaHYOPLMbIY2Wv
-	yho8IVrBWUlX0mMWrVZWE7M+7OGJ+Rk=
-Date: Wed, 26 Mar 2025 18:21:13 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Ihor Solodrai" <ihor.solodrai@linux.dev>
-Message-ID: <f779b5c8d15358edd999d9eedef02ebb30c781a1@linux.dev>
-TLS-Required: No
-Subject: Re: CI for LTS kernels
-To: "Shung-Hsi Yu" <shung-hsi.yu@suse.com>
-Cc: "Eduard Zingerman" <eddyz87@gmail.com>, "Mykola Lysenko"
- <mykolal@fb.com>, daniel@isovalent.com, "Alexei Starovoitov"
- <ast@kernel.org>, andrii@kernel.org, bpf@vger.kernel.org,
- stable@vger.kernel.org, song@kernel.org
-In-Reply-To: <ixcbd3kvefirq5yfr6ooprtpgmbbmtbhfjwguwzlwlx273xuxb@gcxwy72fmdzf>
-References: <50cfe7a278ba2518346b050285bc41aa36d834b1.camel@gmail.com>
- <kf9KhbhYjnPiE15zPbVJI0jMZDUQoNG74HrQe4c_bsP1wDXEPV7mms7zvnLUVKKjSto0SNYASRg8Q3rsewZCXDNwr8yKzu3g4U2JpVE_AmI=@pm.me>
- <ixcbd3kvefirq5yfr6ooprtpgmbbmtbhfjwguwzlwlx273xuxb@gcxwy72fmdzf>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <801794EB-9075-4097-9355-76A042B62FB5@nutanix.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On 3/24/25 8:49 PM, Shung-Hsi Yu wrote:
-> Hi Ihor,
+On Wed, Mar 26, 2025 at 05:57:23PM +0000 Harshit Agarwal wrote:
+> 
+> 
+> > On Mar 26, 2025, at 6:18 AM, Phil Auld <pauld@redhat.com> wrote:
+> >> 
+> > 
+> > We've got some cases that look to be hitting this as well.
+> > 
+> > I'm a little concerned about turning some runtime checks into
+> > BUG_ON()s but in this case I think we are really just going to
+> > trap out on !has_pushable_tasks() check first and if not, pick
+> > a different task and don't drop the lock so it should pass the
+> > BUG_ON()s and fail to match the original task.  So...
+> > 
+> > Reviewed-by: Phil Auld <pauld@redhat.com>
+> > 
+> 
+> Thanks Phil for your review. Just FYI this is the link to
+> v3 (latest version) of this change 
+> https://lore.kernel.org/lkml/20250225180553.167995-1-harshit@nutanix.com/
+> No change here in the code w.r.t v2. I had just updated the
+> commit message to add stable maintainers.
 >
-> On Mon, Mar 24, 2025 at 10:16:38PM +0000, Ihor Solodrai wrote:
->> On Monday, March 24th, 2025 at 1:55 PM, Eduard Zingerman <eddyz87@gmai=
-l.com> wrote:
->>> Hi All,
->>>
->>> The question of testing LTS kernel on BPF CI was
->>> raised by Shung-Hsi on the LSFMM today.
->>> I think, Ihor in CC can guide through the process
->>> of adding such support to the CI if decision would
->>> be made to commit to this.
->
-> Thank you Eduard for start the thread.
->
-> Attaching the link to the slides[1] for reference.
->
->>> Eduard.
->>
->> Hi Eduard, thanks for pinging me.
->>
->> I actually thought about implementing LTS kernel testing for libbpf,
->> but so far it was not a priority.
->
-> I'm not too familiar with BPF CI, but I assuming this meant having
-> libbpf's GitHub action test stable/linux.git as well, along side the
-> current bpf/bpf-next.git target?
->
-> It if it's that then it would be great. Exactly what I'm looking for.
 
-Hi Shung-Hsi.
+Ah cool, thanks I missed that.  So my pinging/reviewing here might not
+help get it in. Let me see if I can find that and reply to it :)
 
-In short, yes: it's possible to set up Github Actions to run BPF
-selftests on LTS kernels using current BPF CI code.
 
-I'm afraid we don't have enough bandwidth on BPF side to maintain LTS
-kernel testing within our CI infrastructure. But I will share with you
-some pointers in case you're willing to take a stab at it.
+Cheers,
+Phil
 
-All the CI code is public and you should be able to figure out how to
-modify it for your needs.
 
-https://github.com/libbpf/ci has a collection of callable Github
-Actions that can be used as building blocks for kernel testing.
-For example, you can use `get-linux-source` action to download any
-source revision:
+> Regards,
+> Harshit
 
-      - uses: libbpf/ci/get-linux-source@v3
-        with:
-          repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/li=
-nux.git
-          rev: master
+-- 
 
-The actual BPF CI workflows implementation is located at
-https://github.com/kernel-patches/vmtest repo.  In particular, see
-`.github/workflows` directory.
-
-https://github.com/libbpf/libbpf contains a simpler version of a very
-similar workflow, although it has additional code to test libbpf
-builds on various distros.
-
->
->> ... One thing we'd need to figure out
->> is a way of determining which subset of the selftests is supposed to
->> work on a given revision.
->
-> I think I might be able to help.
->
-> Some question though, is the plan to run bpf-next BPF selftests on LTS
-> kernels? (hence both bpf/bpf-next.git and stable/linux.git will both
-> need to cloned, separately)
-
-Well, that's a design decision for the LTS testers. I don't think it
-makes sense to run all bpf-next tests on older kernels, as usually
-tests are added with new features, which would be absent. But it seems
-like a good idea to backport and run tests (if there are any) for
-backported fixes. It feels like a lot of work though.
-
->
-> Suppose we have some per test case annotation of the kernel release tha=
-t
-> its depending feature is introduced, would that work? (we might have to
-> start with an even coarser grain and ignore annotating feature
-> introduced long time ago)
->
-> Thinking out loud here. Starting with 6.12 is likely the easiest, for
-> that I'd just need annotations like like SINCE("6.14"), SINCE("6.13"),
-> SINCE(BPF_LTS_TEST_BASE) where BPF_LTS_TEST_BASE is "6.12". And have
-> most test group/cases annotated with SINCE(BPF_LTS_TEST_BASE). Anything
-> not annotated would be considered to be bpf-next-only.
-
-I'd be reluctant to introduce annotations directly in test
-definitions. I think a better approach is to maintain allow/denylists
-that control what tests to run on what revision. BPF selftests runners
-already support allow/denylisting. The hard part is to actually
-produce and maintain those lists.
-
->
-> OTOH we could just use the LTS BPF selftests found in the same code bas=
-e
-> as the LTS kernel themselves. That seems to be eaiser as a POC.
-
-Yes, that's a reasonable approach in the beginning.
-
->
->> I definitely could help setting this up, if there is a need.
->
-> Definitely. If you could also give me some pointers on where to start (=
-I
-> guess I'd need to clone libbpf repo in GitHub and hack on the .github
-> files), and what to watch out for that would be deeply appreciated.
-
-One thing that you might want to explore is setting up a Kernel Patches
-Daemon (KPD) instance. It can be  integrated with patchwork and github to
-automatically collect submitted patches and open PRs to a github
-repository for CI testing.
-
-Here is a public repository:
-https://github.com/facebookincubator/kernel-patches-daemon
-
-I don't know the details about how to set it up, but I know a couple
-of subsystems besides BPF are already using it.
-
->
-> Thanks,
-> Shung-Hsi
->
-> 1: https://speakerdeck.com/shunghsiyu/bpf-in-stable-kernels
 
