@@ -1,48 +1,82 @@
-Return-Path: <stable+bounces-126714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCB8A7182F
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 15:14:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6760EA71875
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 15:27:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C7AF1890507
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 14:12:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF527169358
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 14:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9411F17E8;
-	Wed, 26 Mar 2025 14:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972EB1E1DEC;
+	Wed, 26 Mar 2025 14:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKABfhct"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="G0k3uA9y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944C018EB0;
-	Wed, 26 Mar 2025 14:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0CF4A29;
+	Wed, 26 Mar 2025 14:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742998353; cv=none; b=JeunvFaNe+okY9rMhc4vRn0lSeKfQYi8QdH3ivbhToe6Z9PXPj0XE2b0aVH2xa9rfPxXttNKO5AbnyRdJTNO+LgWCje1H87WmqJkH+88DVM87xMPAi3slCJmrNZfIR205yO9/gHpKHciJmWNvAgH3QXC5cGGGCQ7cTZ2BI0oCjc=
+	t=1742999243; cv=none; b=XpYId4M56QIk93rflHFN2OeGvIWlzXfRNEeGUDPI7tltUR3gh8U3ssmYqhRb8vb0TOjpaxUbQDqIQg6Y/9PuyqzF8DlYNWbxiZpYCMLZ9zReOE4SkwF8E6gdOJEDb+QMoRgG+JJnzuwGaA7EGRl26uJ0mnbmsD9F/2a22PcNuZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742998353; c=relaxed/simple;
-	bh=NKKFR0KgiRnmrxDD2Mlb/uWpUSSQjkxtzvuAILx2bbY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h6D6oICdxgJCERUnnvC5RpB9ioDqozBVuhnMM/QhCyn2oDVEApaeop1WrO5WVTrBN2hzdTrChA5pVYvfu8nrBU4pv4eAabaDSEIlVXnOICRYOTdjfhoHWFiKYvCmg2aqibUVxQRQzX/hsvS9cuJZs75J/J6bKiHjR56TbffN7qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKABfhct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7141C4CEE2;
-	Wed, 26 Mar 2025 14:12:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742998353;
-	bh=NKKFR0KgiRnmrxDD2Mlb/uWpUSSQjkxtzvuAILx2bbY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CKABfhctp9RkWeycV6li1QBPsIcjaYadrPGg7X6d052msqvdJddCXOo4ae8/jHXPq
-	 IdAAOIYgCF09DPH8f+gcfVeOtcx9QWKQHGBxthWN1VGOb25SGPoShAYmclCszsSycp
-	 yILPvYj3eCGPzuaEiB+rbYZq427YXxOdgBLWlhOcjo1d0k/D5dH8zdl00sq+6BaKqF
-	 igYUCSmctKnQh2fhoDRnp1ySn4Zc4a3Q6xBch5CQp4B3kMWPgTW9k1RndiQ9ImD3HM
-	 RWFoVgXHOfav9CF4QYRKhzE9Hzwas+bQ2VZ+lFJfQ+hlkkah+EIYYU29Huj7BmVxDt
-	 lTWODQ7ZvZ5jA==
-Message-ID: <6073eb68-560c-4864-92d7-c6f61b187f6d@kernel.org>
-Date: Wed, 26 Mar 2025 15:12:25 +0100
+	s=arc-20240116; t=1742999243; c=relaxed/simple;
+	bh=/ZTYXxLZLmI/3Zl22WN5QwsezgsJ7SdB97yP/oUhulc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=bIqfhfIJ+HmFleVM32AFBDVxXDVPL+8s26ikxjWa1qMIvRR3n+GOPyESPy5xvrsnJlcP3UHtcCM7UkxK+scF21c1cwKUK1zXg4SX0d+8U1Rbe0ebV9BSpD8h4mXyZLM0gjBfbvNuBRUalQndAjQLpqmt1YOwz5sMVMnQSK+xATw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=G0k3uA9y; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QE3GX9007910;
+	Wed, 26 Mar 2025 14:26:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=DttbU1
+	mhrlgqDl7CIiI442+YIwV7ZeTeOKpje6c5Vaw=; b=G0k3uA9yfRA1ZE7UFxx7ff
+	7lz7upYes5Wz9m6I2ofOZEz9CZ+jirYBMVlSrMzDzEDKzX6NoMysTMAciKgayogZ
+	YgZjEQuDvWWeXU+2tXC555UMVCP711u9ovugmEHofROo4aDFjoOob5HxXnlttQ5f
+	B5HP9H7RHV+pkYiKmm8O7XGGPANRs4/Dr1/QSdZ7G0e+Sd4iW1kLdrdLveOtWsGQ
+	Uqe20G0OEOAzOQ+MJKHKo+CfsXsAGRRoaK2Upm3NI93dxrwJQ4akddHRK0GKyinh
+	GxWxJA1LOh7a3k6QJ82UHJLWJICJtB7itDjEr74eAt0PCvSMpsNQ2OdDJAXpWSvg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45mk0q8512-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Mar 2025 14:26:56 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52QEJePi017476;
+	Wed, 26 Mar 2025 14:26:56 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45mk0q84yg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Mar 2025 14:26:55 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52QDXdg0030330;
+	Wed, 26 Mar 2025 14:26:40 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j7htgwq4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Mar 2025 14:26:39 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52QEQahQ46793170
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 26 Mar 2025 14:26:36 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 38D0E2004B;
+	Wed, 26 Mar 2025 14:26:36 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7DC0020040;
+	Wed, 26 Mar 2025 14:26:33 +0000 (GMT)
+Received: from [9.43.113.131] (unknown [9.43.113.131])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 26 Mar 2025 14:26:33 +0000 (GMT)
+Message-ID: <f1ff432f-a807-4d78-9687-589f3bc2e962@linux.ibm.com>
+Date: Wed, 26 Mar 2025 19:56:27 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,88 +84,158 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] clk: s2mps11: initialise clk_hw_onecell_data::num before
- accessing ::hws[] in probe()
-To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-hardening@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250326-s2mps11-ubsan-v1-1-fcc6fce5c8a9@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH] powerpc64/bpf: fix JIT code size calculation of bpf
+ trampoline
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Naveen N. Rao" <naveen@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>, stable@vger.kernel.org
+References: <20250326120800.1141056-1-hbathini@linux.ibm.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250326-s2mps11-ubsan-v1-1-fcc6fce5c8a9@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250326120800.1141056-1-hbathini@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vWbU4eSWyMp8C3NN4h0Gev7zBSHcjT4a
+X-Proofpoint-ORIG-GUID: gjnpnOiFYqAorgHbwl-PVJXW4BgABysh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-26_07,2025-03-26_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 phishscore=0 mlxscore=0 mlxlogscore=742 impostorscore=0
+ malwarescore=0 adultscore=0 bulkscore=0 clxscore=1015 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503260088
 
-On 26/03/2025 13:08, André Draszik wrote:
-> With UBSAN enabled, we're getting the following trace:
-> 
->     UBSAN: array-index-out-of-bounds in .../drivers/clk/clk-s2mps11.c:186:3
->     index 0 is out of range for type 'struct clk_hw *[] __counted_by(num)' (aka 'struct clk_hw *[]')
-> 
-> This is because commit f316cdff8d67 ("clk: Annotate struct
-> clk_hw_onecell_data with __counted_by") annotated the hws member of
-> that struct with __counted_by, which informs the bounds sanitizer about
-> the number of elements in hws, so that it can warn when hws is accessed
-> out of bounds.
-> 
-> As noted in that change, the __counted_by member must be initialised
-> with the number of elements before the first array access happens,
-> otherwise there will be a warning from each access prior to the
-> initialisation because the number of elements is zero. This occurs in
-> s2mps11_clk_probe() due to ::num being assigned after ::hws access.
-> 
-> Move the assignment to satisfy the requirement of assign-before-access.
-> 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Best regards,
-Krzysztof
+On 26/03/25 5:38 pm, Hari Bathini wrote:
+> The JIT compile of ldimm instructions can be anywhere between 1-5
+> instructions long depending on the value being loaded.
+> 
+> arch_bpf_trampoline_size() provides JIT size of the BPF trampoline
+> before the buffer for JIT'ing it is allocated. BPF trampoline JIT
+> code has ldimm instructions that need to load the value of pointer
+> to struct bpf_tramp_image. But this pointer value is not same while
+> calling arch_bpf_trampoline_size() & arch_prepare_bpf_trampoline().
+> So, the size arrived at using arch_bpf_trampoline_size() can vary
+> from the size needed in arch_prepare_bpf_trampoline(). When the
+> number of ldimm instructions emitted in arch_bpf_trampoline_size()
+> is less than the number of ldimm instructions emitted during the
+> actual JIT compile of trampoline, the below warning is produced:
+> 
+>    WARNING: CPU: 8 PID: 204190 at arch/powerpc/net/bpf_jit_comp.c:981 __arch_prepare_bpf_trampoline.isra.0+0xd2c/0xdcc
+> 
+> which is:
+> 
+>    /* Make sure the trampoline generation logic doesn't overflow */
+>    if (image && WARN_ON_ONCE(&image[ctx->idx] >
+> 			(u32 *)rw_image_end - BPF_INSN_SAFETY)) {
+> 
+> Pass NULL as the first argument to __arch_prepare_bpf_trampoline()
+> call from arch_bpf_trampoline_size() function, to differentiate it
+> from how arch_prepare_bpf_trampoline() calls it and ensure maximum
+> possible instructions are emitted in arch_bpf_trampoline_size() for
+> ldimm instructions that load a different value during the actual JIT
+> compile of BPF trampoline.
+> 
+> Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Closes: https://lore.kernel.org/all/6168bfc8-659f-4b5a-a6fb-90a916dde3b3@linux.ibm.com/
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>   arch/powerpc/net/bpf_jit_comp.c | 31 ++++++++++++++++++++++++-------
+>   1 file changed, 24 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index 2991bb171a9b..49d7e9a8d17c 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -686,7 +686,7 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>   	 *                              [                   ] --
+>   	 * LR save area                 [ r0 save (64-bit)  ]   | header
+>   	 *                              [ r0 save (32-bit)  ]   |
+
+> -	 * dummy frame for unwind       [ back chain 1      ] --
+> +	 /* dummy frame for unwind       [ back chain 1      ] --
+
+Sorry. a redundant '/' there.
+Will resend..
+
+>   	 *                              [ padding           ] align stack frame
+>   	 *       r4_off                 [ r4 (tailcallcnt)  ] optional - 32-bit powerpc
+>   	 *       alt_lr_off             [ real lr (ool stub)] optional - actual lr
+> @@ -833,7 +833,12 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>   	EMIT(PPC_RAW_STL(_R26, _R1, nvr_off + SZL));
+>   
+>   	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+> -		PPC_LI_ADDR(_R3, (unsigned long)im);
+> +		/*
+> +		 * Emit maximum possible instructions while getting the size of
+> +		 * bpf trampoline to ensure trampoline JIT code doesn't overflow.
+> +		 */
+> +		PPC_LI_ADDR(_R3, im ? (unsigned long)im :
+> +				(unsigned long)(~(1UL << (BITS_PER_LONG - 1))));
+>   		ret = bpf_jit_emit_func_call_rel(image, ro_image, ctx,
+>   						 (unsigned long)__bpf_tramp_enter);
+>   		if (ret)
+> @@ -889,7 +894,8 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>   			bpf_trampoline_restore_tail_call_cnt(image, ctx, func_frame_offset, r4_off);
+>   
+>   		/* Reserve space to patch branch instruction to skip fexit progs */
+> -		im->ip_after_call = &((u32 *)ro_image)[ctx->idx];
+> +		if (im)
+> +			im->ip_after_call = &((u32 *)ro_image)[ctx->idx];
+>   		EMIT(PPC_RAW_NOP());
+>   	}
+>   
+> @@ -912,8 +918,14 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>   		}
+>   
+>   	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+> -		im->ip_epilogue = &((u32 *)ro_image)[ctx->idx];
+> -		PPC_LI_ADDR(_R3, im);
+> +		if (im)
+> +			im->ip_epilogue = &((u32 *)ro_image)[ctx->idx];
+> +		/*
+> +		 * Emit maximum possible instructions while getting the size of
+> +		 * bpf trampoline to ensure trampoline JIT code doesn't overflow.
+> +		 */
+> +		PPC_LI_ADDR(_R3, im ? (unsigned long)im :
+> +				(unsigned long)(~(1UL << (BITS_PER_LONG - 1))));
+>   		ret = bpf_jit_emit_func_call_rel(image, ro_image, ctx,
+>   						 (unsigned long)__bpf_tramp_exit);
+>   		if (ret)
+> @@ -972,7 +984,6 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>   int arch_bpf_trampoline_size(const struct btf_func_model *m, u32 flags,
+>   			     struct bpf_tramp_links *tlinks, void *func_addr)
+>   {
+> -	struct bpf_tramp_image im;
+>   	void *image;
+>   	int ret;
+>   
+> @@ -988,7 +999,13 @@ int arch_bpf_trampoline_size(const struct btf_func_model *m, u32 flags,
+>   	if (!image)
+>   		return -ENOMEM;
+>   
+> -	ret = __arch_prepare_bpf_trampoline(&im, image, image + PAGE_SIZE, image,
+> +	/*
+> +	 * Pass NULL as bpf_tramp_image pointer to differentiate the intent to get the
+> +	 * buffer size for trampoline here. This differentiation helps in accounting for
+> +	 * maximum possible instructions if the JIT code size is likely to vary during
+> +	 * the actual JIT compile of the trampoline.
+> +	 */
+> +	ret = __arch_prepare_bpf_trampoline(NULL, image, image + PAGE_SIZE, image,
+>   					    m, flags, tlinks, func_addr);
+>   	bpf_jit_free_exec(image);
+>   
+
 
