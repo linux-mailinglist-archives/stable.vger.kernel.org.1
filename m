@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DD9A70EEF
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 03:23:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A54BA70EF0
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 03:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 519BD189A5CF
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 02:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EBA51704E3
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 02:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A777213A86C;
-	Wed, 26 Mar 2025 02:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AA676034;
+	Wed, 26 Mar 2025 02:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GeVP7H5d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pIwjEPIA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691E2137775
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 02:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E456F137750
+	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 02:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742955820; cv=none; b=qXIljJ1VhJLICYsq7jS0TpUj7VvGUDl8IevM/QqEp+NVMhfAj55GKyFJHp9xDt8AmCqe3x+rFBpIW3lEYmSLzxQ7ackYSlXycdspus7mmaQRIPFipibi5jeqQ8ZoWlOPWzx1HiC9vkannTZAcGJ4rK5Itn2iZRuIlij4xg2m3EI=
+	t=1742955824; cv=none; b=Bn5VlpXtzCXKjl1pX/5Da027mfyPQ3QCpZ1+7M9OS0cdtFVrdeLNz7qIy024durElZ8fykLx5N0+VcZ/17u0SG6t5cM5MLDm/rxBbrHuSta1lpb5b2wHruo957HD9v2e0OhYwN+yWe0H86YwQE6UIDoG/OjgU1+6Kj9nf+zy6DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742955820; c=relaxed/simple;
-	bh=EQKWl4TDcDRH7HpH25DCd6CD8xfbsNVDf6XQFJiR1AE=;
+	s=arc-20240116; t=1742955824; c=relaxed/simple;
+	bh=IZNUKc0sELz0mIe+V93EiR7rS7xXl+fSvVO5G98SMHI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S8Sinl38OLrkz3UKs0R44g8ldXFIcAHfQKXDn73D8TXwzJvoa0V41FNCTwZiSIwBmxUJLV0Kx1wvDzPZCWgrC73JgzoZ6S0/VMkRBXo5SoVVpm54m0EcVPxmvij5TVm65zUKJcEd1AKB1j1eoBqQCqSklB2dEmRvmUaj5jUM/2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GeVP7H5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA6BC4CEE4;
-	Wed, 26 Mar 2025 02:23:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TB+KziWvaXAX33LD3wr9yMceEPPhGNHc7cdOYwHDC/2JxIjCkfLB44crcW5+ecIMuGuWm1AKnmT+C+0z0h3Ita7AiM5dZq4PACFOXk7rJooNvHFGbePvIAPq2JazzQPsG5ZDu1HnOMRSYT0EceOsAtzNY5B/Vs3CjSovslH6vEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pIwjEPIA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F00C4CEE4;
+	Wed, 26 Mar 2025 02:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742955819;
-	bh=EQKWl4TDcDRH7HpH25DCd6CD8xfbsNVDf6XQFJiR1AE=;
+	s=k20201202; t=1742955823;
+	bh=IZNUKc0sELz0mIe+V93EiR7rS7xXl+fSvVO5G98SMHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GeVP7H5d6CNXmBfG0xWySAp+9yR5r8Tnpx2+r8MzOP55ukMsKv7Yg3DVJwkHTzZ/U
-	 2CZIHfufgV11l/t0ls4r4imiwfqnwrjdzpMtrQiWRTvz3ATV4lfnJO7aKwxmvGyG3M
-	 +XURMDZ4yJn0bs355xtYr+9HA7uTtfxJxBQSQOoR+o5af/D553bOEN6d0NQ6GzPDKA
-	 K+dPzXmRFtuTQTLfQSTbmpXngpNi2+ySXtGm7OAvVfsCUCJMiCY96FV3O0LD72N3Dr
-	 dHU54oxUHyIKJW4hDrGfwKBn8u1tQgGGCGYDcmiVuPNkGfY3mGztX6Urjac+wnlxJd
-	 TOfyb20B7Cx7g==
+	b=pIwjEPIAKGAGAfimRcblwIWd0v9MH0pfyfIel67zQPRYrUpiVmeUQq0VSTRVf4xGD
+	 envypqnVudeC2/tceyKLQmDpsKngI7B4qSqhXMqTokYLMZx3yg/OSrfv2kFnnL4JqX
+	 DA8Dl7C4tYUsk1kFVSphZYs0q0Irq6JkL7cAy8kByJu9SDQduTSbM3weN6t/LjbUBH
+	 YXpinAPLXRA80iNvBk+EkoXxkxaDSyDa2s8DXuy1OkbemaYlFfs67BJkt3PUizCw+D
+	 iTLq3dkpaqaZNFLXbt9PvDlmUl/IV1JEWAuAfuGWfQx7JKIqDFFir2UUoXV+ePWQSI
+	 yQ8AFainB/UfA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	florian.fainelli@broadcom.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 5.10 v2 2/2] openvswitch: fix lockup on tx to unregistering netdev with carrier
-Date: Tue, 25 Mar 2025 22:23:37 -0400
-Message-Id: <20250325205537-aef538619ff3d934@stable.kernel.org>
+Subject: Re: [PATCH stable 5.10 v2 1/2] net: openvswitch: fix race on port output
+Date: Tue, 25 Mar 2025 22:23:40 -0400
+Message-Id: <20250325204629-522e4dfadac1e567@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250325192236.1849940-3-florian.fainelli@broadcom.com>
+In-Reply-To:  <20250325192236.1849940-2-florian.fainelli@broadcom.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,53 +65,58 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-ℹ️ This is part 2/2 of a series
-⚠️ Provided upstream commit SHA1 does not match found commit
+⚠️ Found follow-up fixes in mainline
 
-The claimed upstream commit SHA1 (82f433e8dd0629e16681edf6039d094b5518d8ed) was not found.
-However, I found a matching commit: 47e55e4b410f7d552e43011baa5be1aab4093990
+The upstream commit SHA1 provided is correct: 066b86787fa3d97b7aefb5ac0a99a22dad2d15f8
 
-WARNING: Author mismatch between patch and found commit:
+WARNING: Author mismatch between patch and upstream commit:
 Backport author: Florian Fainelli<florian.fainelli@broadcom.com>
-Commit author: Ilya Maximets<i.maximets@ovn.org>
+Commit author: Felix Huettner<felix.huettner@mail.schwarz>
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: 82f433e8dd06)
-6.6.y | Present (different SHA1: ea966b669878)
-6.1.y | Present (different SHA1: ea9e990356b7)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (different SHA1: 644b3051b06b)
 5.15.y | Not found
+
+Found fixes commits:
+47e55e4b410f openvswitch: fix lockup on tx to unregistering netdev with carrier
 
 Note: The patch differs from the upstream commit:
 ---
-1:  47e55e4b410f7 ! 1:  8eccde1235b42 openvswitch: fix lockup on tx to unregistering netdev with carrier
+1:  066b86787fa3d ! 1:  5a74abd455f78 net: openvswitch: fix race on port output
     @@ Metadata
       ## Commit message ##
-         openvswitch: fix lockup on tx to unregistering netdev with carrier
+         net: openvswitch: fix race on port output
      
-    +    [ Upstream commit 82f433e8dd0629e16681edf6039d094b5518d8ed ]
+    +    [ Upstream commit 066b86787fa3d97b7aefb5ac0a99a22dad2d15f8 ]
     +
-         Commit in a fixes tag attempted to fix the issue in the following
-         sequence of calls:
-     
+         assume the following setup on a single machine:
+         1. An openvswitch instance with one bridge and default flows
+         2. two network namespaces "server" and "client"
     @@ Commit message
-         Reviewed-by: Aaron Conole <aconole@redhat.com>
-         Link: https://patch.msgid.link/20250109122225.4034688-1-i.maximets@ovn.org
+         Reviewed-by: Simon Horman <simon.horman@corigine.com>
+         Link: https://lore.kernel.org/r/ZC0pBXBAgh7c76CA@kernel-bug-kernel-bug
          Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
     +    Signed-off-by: Carlos Soto <carlos.soto@broadcom.com>
     +    Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
      
-      ## net/openvswitch/actions.c ##
-     @@ net/openvswitch/actions.c: static void do_output(struct datapath *dp, struct sk_buff *skb, int out_port,
+      ## net/core/dev.c ##
+     @@ net/core/dev.c: static u16 skb_tx_hash(const struct net_device *dev,
+      	}
+      
+      	if (skb_rx_queue_recorded(skb)) {
+    -+		DEBUG_NET_WARN_ON_ONCE(qcount == 0);
+    ++		BUILD_BUG_ON_INVALID(qcount == 0);
+      		hash = skb_get_rx_queue(skb);
+      		if (hash >= qoffset)
+      			hash -= qoffset;
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
