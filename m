@@ -1,138 +1,118 @@
-Return-Path: <stable+bounces-126764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095C6A71C9B
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:01:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F0CA71CFE
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 18:22:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76B71688B2
-	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 16:59:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 432BE177557
+	for <lists+stable@lfdr.de>; Wed, 26 Mar 2025 17:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CEE1F7554;
-	Wed, 26 Mar 2025 16:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0A4203719;
+	Wed, 26 Mar 2025 17:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="PTEL4x+o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="by5Ez+4C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C811E4AE
-	for <stable@vger.kernel.org>; Wed, 26 Mar 2025 16:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D560202C4E;
+	Wed, 26 Mar 2025 17:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743008347; cv=none; b=orqx4QB0FpO5O5xGy6iouxOuYN5X6jTJzWryOI5rHSMr5p3mN0KpKS5XkQRYP8fvwW6TTxvCVmB6bDJcKlKSFsawvhNOWlRaJba13lrCDsCSHmReaUwwwOZI9W8hopgFSJw5vuUUWGC5p4h8HBEFYydAbuCgvOKslRkJUEzbfCg=
+	t=1743009576; cv=none; b=Pc5kZkWoCV/sScgWsYTeMt1k6OFeJJ+CyDcGXzuSB4/QoeUycNHSC3b5GB/z6m3fppg3mGTqT5vvX50EI/CdYylMZDT8qbrTPdsO2iu74FP8gpYCfBR5nlINIdDdw7Fmjd6FSqJFQOjhLsLhybuBGXKjZ9DGFgIjAT1NGjGJ7i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743008347; c=relaxed/simple;
-	bh=arQGwZVPrqbThb0yWEHXg8QkLpjhua1AljRyajPQaU0=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=e5SVuNxZnSdgLuCTvAB7+xnH/v4jgYlr2xzcE8NkLGwDO2cxu8lwVAutBzeCGCqBIP0GHknizlNzWSmTlhgomcqapBNmDuNN+24hpjR+NONHsjSd8+/KGjVbBUtnVFUby4cdxpW4GF18nbd3PEwkVaFzmw70pCaM1s+0UUtjxEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=PTEL4x+o; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6ff0c9d1761so827147b3.1
-        for <stable@vger.kernel.org>; Wed, 26 Mar 2025 09:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1743008345; x=1743613145; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y379J0tkPhPdZ2TRAbtAzwhfI8nL+5d4ifK0P3kvmzg=;
-        b=PTEL4x+ojwt8UYhgHlmgoFB2RdWMfBgOiCuS6Cm/7biXEMPcNovXsNFxu3BJw6YlN6
-         mVwW7CFI4HQnNRHHNHOAmGj71xjh12UYiVS0qDtHQrtHblRgibPP8a0b4SlECzBNud6z
-         IUAOt0HSgRr40GmHOFBCWD8QFzGr4ZzZVYIYgFL5hnb/eHrxJNyfE6uC2DOr4mJLwYav
-         WPq2dyPupiJi1wmy70FhG8FaJMaD0WxcZ3bHsSIqdDqi4QcV5EFuXgshaIZovTSA5sN8
-         uqwgsbXRYZvbaNdPUTFxzjVsYenoKuxUeR0/2rNX+d+4dlTOGfxnz4TMZty9QAHfKCrJ
-         qb0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743008345; x=1743613145;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y379J0tkPhPdZ2TRAbtAzwhfI8nL+5d4ifK0P3kvmzg=;
-        b=hqdWbiqWDIJk9rKZNA+fDlJzwHdBJGjRKDyNkvJgTE8dD3CtzlwdNE3ynf/aR5Aar9
-         9OKwaukPvz4ZxYwG8sUA/6LMkR1puufQx5VuZYzGdcrJUfF+g0yfeQi2Ptv2eLffc44G
-         f3UZeDwHqthhlu2rqvooJY+Wyhs3JzVng/0h7+o0s542VxFK3e+ki4iftDdqsQYuMqY7
-         fMWxIEsDYKM6HGAEw/vajD7FkT999iRxSeysJLgdUdDCmUWrezRg6KfnepFQWfh2JEO5
-         2nP3cg/GXnrIq4oNDVlZfkHMk6W9cckGN4NAOuG/17WpT5+JBtHyuUYcwo86CCKEyjlL
-         jIHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4NcGABe+yrCho6ZL947/UBZgMD9zfGBZKjOtH035OObK0JSKTCa3sjNdp7oOqjTOg/aamfeA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+k8xViH9u+WVX6AVloLbOw2jcMMfZHJgoBB9HZ64OBdos7bV4
-	rHHWWBmLod5QLBBOJ+VJ1jIeyzDEVbEONVqmauII9FZfQGQfragTT++GtrrSch58Y80Ua2kNNa9
-	MFrvu40kkiVWk45fd0qhBA/V01MFns6rRvvLBJQ==
-X-Gm-Gg: ASbGncvUwrX7DJRDrf6JZEhunQD1V1iMHSD5drWwqQ54S+ez0kqzwnmk1Feo4Yap9j2
-	M9DwojFrBcaDNStyAXRcWLEiznBJo3ifqLb7HH9ROyAYye+TRcIJxjS5VitjKan+ChrHrjzfEFI
-	3tv6AmH27VDqxYDzZQUA/xiyVx25xz7blogMI=
-X-Google-Smtp-Source: AGHT+IEl5uMhnAamdpWuSK0NjN7Ck+kfXmQfyQlpL3bPrXoItaHZcFEq11YZeZSARx83L9hUcR1CA/6r3+lz01izZw8=
-X-Received: by 2002:a05:690c:6501:b0:6fd:4521:f9d7 with SMTP id
- 00721157ae682-7022508f563mr3572827b3.24.1743008344647; Wed, 26 Mar 2025
- 09:59:04 -0700 (PDT)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 26 Mar 2025 09:59:03 -0700
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 26 Mar 2025 09:59:03 -0700
+	s=arc-20240116; t=1743009576; c=relaxed/simple;
+	bh=+49VODqoj66jw7qSglZ0qzDiNUhovV3FO932Zf0ilsw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UvMp5TKMi/ulOSgt+yPHqPpEjNHjZsjm8aiYT7+Ld6Tw+OHnQzXGzTqa3I6LjHcSiVj24h2EJg6C2tCMjRBxUbshY+aOwV9V7mJAo6HOgIjDFhEJyl7PbBnkSdaDxf5zSVxVc1IPJH2J/el7qvCVNjNWMreZ+YF5TTcE/IoflKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=by5Ez+4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF39BC4CEE2;
+	Wed, 26 Mar 2025 17:19:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743009576;
+	bh=+49VODqoj66jw7qSglZ0qzDiNUhovV3FO932Zf0ilsw=;
+	h=From:Subject:Date:To:Cc:From;
+	b=by5Ez+4CGpJ4g3aL+02KdMQdu1IAWtduTkPCqVeHcRJT0hSiqJaRLin/05YS7biYx
+	 CUuoDZ5KhtWc7r9bZn4I8UuGMxrQQ6gFQFTqph9e1W7lLX/sxt/J7ISB8rtNb3i/nX
+	 AcqdUTjfeBCPK9wLSApiIYzRNowy4gYU+FvfaJooRbhZCj+KkE8kK/1NM11mhF89zh
+	 1hKgPtjp1Ybi8VcY32rP/a2B4uKswtDNZ1rcWqanCoRA2B7LfPI5ARf9B0pfsZG9qG
+	 AONO+u238blggxajwtaUdwXepSvrJARBaaQrEACbw47EKFR+0y502RAYUw1JiZ/7b0
+	 7LrFoemKIj8mw==
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH v2 0/2] Add wcslen()
+Date: Wed, 26 Mar 2025 09:32:30 -0700
+Message-Id: <20250326-string-add-wcslen-for-llvm-opt-v2-0-d864ab2cbfe4@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Reply-To: kernelci@lists.linux.dev
-Date: Wed, 26 Mar 2025 09:59:03 -0700
-X-Gm-Features: AQ5f1JqTOlOL-5GcPkw4PagyqdtZL2vYY0ow8gKLUZrz25VTIFhgWGeBM9NJrTw
-Message-ID: <CACo-S-0iiF-VZStXMO54KgdmvAF=VtE-=6ijdpS-FhS_UYcewQ@mail.gmail.com>
-Subject: [REGRESSION] stable-rc/linux-6.1.y: (build) stack frame size (2536)
- exceeds limit (2048) in 'dml314_ModeSuppor...
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB4s5GcC/4WNQQ7CIBAAv9Jwdg2gTakn/2F6aGHbEhGapUFNw
+ 9/FJp49zhxmNhaRLEZ2qTZGmGy0wReQh4rpufcTgjWFmeSy5id5hriS9RP0xsBTR4cexkDgXHp
+ AWFZoeN20wgyt1JyVyEI42tc+uHWFZxvXQO/9l8TX/tL1v3QSwGFQo0CpRaOUut6RPLpjoIl1O
+ ecPgEpbss0AAAA=
+X-Change-ID: 20250324-string-add-wcslen-for-llvm-opt-705791db92c0
+To: Kees Cook <kees@kernel.org>
+Cc: Andy Shevchenko <andy@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, llvm@lists.linux.dev, 
+ stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1541; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=+49VODqoj66jw7qSglZ0qzDiNUhovV3FO932Zf0ilsw=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDOlPzFXbuHpfx290nF57fAa3ze9fKzltO65lNs240cJxZ
+ qr0MpXfHaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAiKpKMDAcKVux88OXDd7Vj
+ gu0LLs/7/CH9unrn9y+ztOpN+j5vvriKkeGXR//X3nVJV9dP/sv/6suNaf78LBdvFR9ecuEoL9O
+ 7RXJ8AA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Hello,
+Hi all,
 
-New build issue found on stable-rc/linux-6.1.y:
+A recent LLVM change [1] introduces a call to wcslen() in
+fs/smb/client/smb2pdu.c through UniStrcat() via
+alloc_path_with_tree_prefix(). Similar to the bcmp() and stpcpy()
+additions that happened in 5f074f3e192f and 1e1b6d63d634, add wcslen()
+to fix the linkage failure.
+
+[1]: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d
 
 ---
- stack frame size (2536) exceeds limit (2048) in
-'dml314_ModeSupportAndSystemConfigurationFull'
-[-Werror,-Wframe-larger-than] in
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn314/display_mode_vba_314.o
-(drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn314/display_mode_vba_314.c)
-[logspec:kbuild,kbuild.compiler.error]
+Changes in v2:
+- Refactor typedefs from nls.h into nls_types.h to make it safe to
+  include in string.h, which may be included in many places throughout
+  the kernel that may not like the other stuff nls.h brings in:
+  https://lore.kernel.org/202503260611.MDurOUhF-lkp@intel.com/
+- Drop libstub change due to the above change, as it is no longer
+  necessary.
+- Move prototype shuffle of patch 2 into the patch that adds wcslen()
+  (Andy)
+- Use new nls_types.h in string.{c,h}
+- Link to v1: https://lore.kernel.org/r/20250325-string-add-wcslen-for-llvm-opt-v1-0-b8f1e2c17888@kernel.org
+
 ---
+Nathan Chancellor (2):
+      include: Move typedefs in nls.h to their own header
+      lib/string.c: Add wcslen()
 
-- dashboard: https://d.kernelci.org/i/maestro:648fbfc56c50cbf6f8e1b118aecda05fbf80323c
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  f5ad54ef021f6fb63ac97b3dec5efa9cc1a2eb51
+ include/linux/nls.h       | 19 +------------------
+ include/linux/nls_types.h | 25 +++++++++++++++++++++++++
+ include/linux/string.h    |  2 ++
+ lib/string.c              | 11 +++++++++++
+ 4 files changed, 39 insertions(+), 18 deletions(-)
+---
+base-commit: 78ab93c78fb31c5dfe207318aa2b7bd4e41f8dba
+change-id: 20250324-string-add-wcslen-for-llvm-opt-705791db92c0
 
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
 
-Log excerpt:
-=====================================================
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn314/display_mode_vba_314.c:3890:6:
-error: stack frame size (2536) exceeds limit (2048) in
-'dml314_ModeSupportAndSystemConfigurationFull'
-[-Werror,-Wframe-larger-than]
- 3890 | void dml314_ModeSupportAndSystemConfigurationFull(struct
-display_mode_lib *mode_lib)
-      |      ^
-  CC      drivers/gpu/drm/amd/amdgpu/../display/dc/dce/dce_ipp.o
-1 error generated.
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## x86_64_defconfig+kselftest+x86-board on (x86_64):
-- compiler: clang-17
-- dashboard: https://d.kernelci.org/build/maestro:67e4241067593f2aa035cf70
-
-
-#kernelci issue maestro:648fbfc56c50cbf6f8e1b118aecda05fbf80323c
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
