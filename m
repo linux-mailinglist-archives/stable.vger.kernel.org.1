@@ -1,187 +1,129 @@
-Return-Path: <stable+bounces-126824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C8DA729BF
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 06:01:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557DAA72A23
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 07:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01305174248
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 05:01:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2102218970DF
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 06:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16EDB1B87CF;
-	Thu, 27 Mar 2025 05:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F50E1A9B4F;
+	Thu, 27 Mar 2025 06:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="KfJ4C1Vu"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jT9wp617"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5432618EB0;
-	Thu, 27 Mar 2025 05:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8A217E4;
+	Thu, 27 Mar 2025 06:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743051703; cv=none; b=Fg6ibIlH+Q4maCym2xlHYwDpW0cGT9nTPsmHvw0UiV8EKKCF6bdprHDEaS/mxI++YYTsTABVqpKAe5Ce8V0Lr1sb0jvBqN8TesMaO0LpcEhyIM+dcsBLpS2hxiBpkUMc4Vc+7f/bIfK9n7hq83QjXvXsu20U5/QFr/fNMMHBNXI=
+	t=1743056755; cv=none; b=cmVCVJZAt2Ux1KhIQSrcwTsV6SHw79yP1EHLSNTg156FcsZg+qdwlqz/DHqDEDaIbKyBSlOGau9aKYxIhbooI6Jj/G+OUTZRQkg83jA4qCO1N3BWEHm96V7dy/hK7g0+Hf1DT+b2wp8RGfBYKef6BjFC2KXiOwkDV5qY2Iis51E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743051703; c=relaxed/simple;
-	bh=xYu6biCgRAvV54XDPXKBT2zX4ig7grodlwKFQMpKzuk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AvSsM3neFg1MDuU0ffby5biQm6XoivaOXE9oR5WZ30iiIn7CAJa+c2I9LkKPPI5BpJTsVaOn0hUY9aHzPK8a5DkElsP5s2jaYdaJU+41o+vzbBUv8KfRzTdE8QDIWbw/gnhUD3WJ6TMjJdgzD2pKrPOCIqRdKvw6KFeTC9OJBgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=KfJ4C1Vu; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id B3A5C211143F; Wed, 26 Mar 2025 22:01:40 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B3A5C211143F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1743051700;
-	bh=TRzzvHz66Y/kUUMQcpHVIbr9k8vTxUvWBzzSkkTuLw0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KfJ4C1Vum9CP9IxbsicYpgcJT+JGr4ohXDEECm+2Lfiu2kJmGX9YXI/FBKq3JAVAp
-	 SBeY9fq7GC+OML/ZFYT1Yun5DEK1yZyZsZpD6RkHs/+xaPNHwzk9glQdFMLKLE3BRG
-	 cHyCaCLoKhemP//Z9NZpwGOVoLj82nyInV84LJHA=
-Date: Wed, 26 Mar 2025 22:01:40 -0700
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	decui@microsoft.com, stephen@networkplumber.org, kys@microsoft.com,
-	paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
-	davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
-	longli@microsoft.com, ssengar@linux.microsoft.com,
-	linux-rdma@vger.kernel.org, daniel@iogearbox.net,
-	john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
-	hawk@kernel.org, tglx@linutronix.de, jesse.brandeburg@intel.com,
-	andrew+netdev@lunn.ch, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net,v2] net: mana: Switch to page pool for jumbo frames
-Message-ID: <20250327050140.GA13258@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1742920357-27263-1-git-send-email-haiyangz@microsoft.com>
+	s=arc-20240116; t=1743056755; c=relaxed/simple;
+	bh=AoXL8hpcNGRM86CC02gZufjwGC+N033mnX/R9DQvFTc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rCqHlAJxRNfaBwodXY8bgalffPnzYpeAFsha30m57d6979fkGJHWf/c14pFMFLqcXrnr3m9nHMq+MbiuT+J2PKPYY4TwsgpPTSEcjfy6S9KgQDW13WXEQ/JVFbvU55rxgnLZulMX9htkgqqC+kdNglGl6uhHRrSnl0zqHNXterw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jT9wp617; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52R6PZRT2400369
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Mar 2025 01:25:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1743056735;
+	bh=X6X477M6Va5tmFzvIWyeyFPAoll0J0fqW7yMcUpyfIs=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=jT9wp617Nb+KhxmAumqwlwv2WEZXkT9C0gQFEk7k8EJmHA607mAlPG4gTeJA/g4iP
+	 u7zVlOYTRV8A9zXKJja9hMRfT8GeEQYkVfVkUjl4MdpXaVgy131oKVFkTF9l8AiiUK
+	 doU5CRR7HBOO9IvehTdzv6xKIcBBaAhf2VAGzpOc=
+Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52R6PZvA107600
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 27 Mar 2025 01:25:35 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 27
+ Mar 2025 01:25:35 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 27 Mar 2025 01:25:35 -0500
+Received: from [172.24.227.193] (devarsh-precision-tower-3620.dhcp.ti.com [172.24.227.193])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52R6PVGp070709;
+	Thu, 27 Mar 2025 01:25:31 -0500
+Message-ID: <b7439746-4143-4504-939e-e8abd705c962@ti.com>
+Date: Thu, 27 Mar 2025 11:55:30 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1742920357-27263-1-git-send-email-haiyangz@microsoft.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] media: ti: j721e-csi2rx: Use
+ devm_of_platform_populate
+To: Jai Luthra <jai.luthra@ideasonboard.com>,
+        Jai Luthra
+	<jai.luthra@linux.dev>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans
+ Verkuil <hverkuil@xs4all.nl>,
+        Tomi Valkeinen
+	<tomi.valkeinen@ideasonboard.com>,
+        Sakari Ailus
+	<sakari.ailus@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>
+CC: Rishikesh Donadkar <r-donadkar@ti.com>,
+        Vaishnav Achath
+	<vaishnav.a@ti.com>,
+        Changhuang Liang <changhuang.liang@starfivetech.com>,
+        <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250324-probe_fixes-v1-0-5cd5b9e1cfac@ideasonboard.com>
+ <20250324-probe_fixes-v1-1-5cd5b9e1cfac@ideasonboard.com>
+Content-Language: en-US
+From: Devarsh Thakkar <devarsht@ti.com>
+In-Reply-To: <20250324-probe_fixes-v1-1-5cd5b9e1cfac@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Tue, Mar 25, 2025 at 09:32:37AM -0700, Haiyang Zhang wrote:
-> Frag allocators, such as netdev_alloc_frag(), were not designed to
-> work for fragsz > PAGE_SIZE.
+On 24/03/25 17:31, Jai Luthra wrote:
+> Ensure that we clean up the platform bus when we remove this driver.
 > 
-> So, switch to page pool for jumbo frames instead of using page frag
-> allocators. This driver is using page pool for smaller MTUs already.
+> This fixes a crash seen when reloading the module for the child device
+> with the parent not yet reloaded.
 > 
+> Fixes: b4a3d877dc92 ("media: ti: Add CSI2RX support for J721E")
 > Cc: stable@vger.kernel.org
-> Fixes: 80f6215b450e ("net: mana: Add support for jumbo frame")
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+> Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+
+Regards
+Devarsh
 > ---
-> v2: updated the commit msg as suggested by Jakub Kicinski.
+>   drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> ---
->  drivers/net/ethernet/microsoft/mana/mana_en.c | 46 ++++---------------
->  1 file changed, 9 insertions(+), 37 deletions(-)
+> diff --git a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+> index 6412a00be8eab89548950dd21b3b3ec02dafa5b4..a066024bf745450e2ba01d06c0fec4e6bdbfa97e 100644
+> --- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+> +++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+> @@ -1118,7 +1118,7 @@ static int ti_csi2rx_probe(struct platform_device *pdev)
+>   	if (ret)
+>   		goto err_vb2q;
+>   
+> -	ret = of_platform_populate(csi->dev->of_node, NULL, NULL, csi->dev);
+> +	ret = devm_of_platform_populate(csi->dev);
+>   	if (ret) {
+>   		dev_err(csi->dev, "Failed to create children: %d\n", ret);
+>   		goto err_subdev;
 > 
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 9a8171f099b6..4d41f4cca3d8 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -661,30 +661,16 @@ int mana_pre_alloc_rxbufs(struct mana_port_context *mpc, int new_mtu, int num_qu
->  	mpc->rxbpre_total = 0;
->  
->  	for (i = 0; i < num_rxb; i++) {
-> -		if (mpc->rxbpre_alloc_size > PAGE_SIZE) {
-> -			va = netdev_alloc_frag(mpc->rxbpre_alloc_size);
-> -			if (!va)
-> -				goto error;
-> -
-> -			page = virt_to_head_page(va);
-> -			/* Check if the frag falls back to single page */
-> -			if (compound_order(page) <
-> -			    get_order(mpc->rxbpre_alloc_size)) {
-> -				put_page(page);
-> -				goto error;
-> -			}
-> -		} else {
-> -			page = dev_alloc_page();
-> -			if (!page)
-> -				goto error;
-> +		page = dev_alloc_pages(get_order(mpc->rxbpre_alloc_size));
-> +		if (!page)
-> +			goto error;
->  
-> -			va = page_to_virt(page);
-> -		}
-> +		va = page_to_virt(page);
->  
->  		da = dma_map_single(dev, va + mpc->rxbpre_headroom,
->  				    mpc->rxbpre_datasize, DMA_FROM_DEVICE);
->  		if (dma_mapping_error(dev, da)) {
-> -			put_page(virt_to_head_page(va));
-> +			put_page(page);
->  			goto error;
->  		}
->  
-> @@ -1672,7 +1658,7 @@ static void mana_rx_skb(void *buf_va, bool from_pool,
->  }
->  
->  static void *mana_get_rxfrag(struct mana_rxq *rxq, struct device *dev,
-> -			     dma_addr_t *da, bool *from_pool, bool is_napi)
-> +			     dma_addr_t *da, bool *from_pool)
->  {
->  	struct page *page;
->  	void *va;
-> @@ -1683,21 +1669,6 @@ static void *mana_get_rxfrag(struct mana_rxq *rxq, struct device *dev,
->  	if (rxq->xdp_save_va) {
->  		va = rxq->xdp_save_va;
->  		rxq->xdp_save_va = NULL;
-> -	} else if (rxq->alloc_size > PAGE_SIZE) {
-> -		if (is_napi)
-> -			va = napi_alloc_frag(rxq->alloc_size);
-> -		else
-> -			va = netdev_alloc_frag(rxq->alloc_size);
-> -
-> -		if (!va)
-> -			return NULL;
-> -
-> -		page = virt_to_head_page(va);
-> -		/* Check if the frag falls back to single page */
-> -		if (compound_order(page) < get_order(rxq->alloc_size)) {
-> -			put_page(page);
-> -			return NULL;
-> -		}
->  	} else {
->  		page = page_pool_dev_alloc_pages(rxq->page_pool);
->  		if (!page)
-> @@ -1730,7 +1701,7 @@ static void mana_refill_rx_oob(struct device *dev, struct mana_rxq *rxq,
->  	dma_addr_t da;
->  	void *va;
->  
-> -	va = mana_get_rxfrag(rxq, dev, &da, &from_pool, true);
-> +	va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
->  	if (!va)
->  		return;
->  
-> @@ -2172,7 +2143,7 @@ static int mana_fill_rx_oob(struct mana_recv_buf_oob *rx_oob, u32 mem_key,
->  	if (mpc->rxbufs_pre)
->  		va = mana_get_rxbuf_pre(rxq, &da);
->  	else
-> -		va = mana_get_rxfrag(rxq, dev, &da, &from_pool, false);
-> +		va = mana_get_rxfrag(rxq, dev, &da, &from_pool);
->  
->  	if (!va)
->  		return -ENOMEM;
-> @@ -2258,6 +2229,7 @@ static int mana_create_page_pool(struct mana_rxq *rxq, struct gdma_context *gc)
->  	pprm.nid = gc->numa_node;
->  	pprm.napi = &rxq->rx_cq.napi;
->  	pprm.netdev = rxq->ndev;
-> +	pprm.order = get_order(rxq->alloc_size);
->  
->  	rxq->page_pool = page_pool_create(&pprm);
->  
-> -- 
-Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> 2.34.1
 
