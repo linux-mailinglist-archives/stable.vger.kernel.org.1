@@ -1,144 +1,122 @@
-Return-Path: <stable+bounces-126837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33352A72C1F
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 10:11:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AEBA72C93
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 10:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC1B4173F9D
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 09:11:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E560E1898FB4
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 09:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5217A20B7F7;
-	Thu, 27 Mar 2025 09:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABA120CCC4;
+	Thu, 27 Mar 2025 09:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cZmw8cvb"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B56A286A9;
-	Thu, 27 Mar 2025 09:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A221CAA85;
+	Thu, 27 Mar 2025 09:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743066671; cv=none; b=SqddGtyuHiARQOFdD1zQCW7q3CfZWqPGI+UUCNJPx/sFXOeHbvUJkHNWDnS4XMK/hDEzne9aMVMDFpmDxoOa/5iYlIIVhv2nbk7qYhInAi/QO8gRFiEAN3KQec1bT52NGRVSwyjq0lD7w6byKvVWUXDOttDrFq/F03gHsHX7Pgw=
+	t=1743068092; cv=none; b=LKwUqnZ+UDRs8jeKup0H3BNlZ6/lFWHa9ytSkqltaefbf0MpHgelrlYvgjpoFip4uX4Hsxh2zxF46YryDxwEGq0wgRb8vXz+iAK5+Sc8jucB4EGFnZy87yL37UZHtqAPmWGTtFYhc+2xZ1XzWArT9Ly9CBHnkzBogYd6/+s1Gw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743066671; c=relaxed/simple;
-	bh=y7axKAJliHD2zTOIYFEFVrRu7lE1cQmDkIumIcuNBvc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=giHTuDJiJqnC5zz+XuJNbCumQ4c/pgfzarzqGYzmNmjBRHDVu9b5ySdKUIMto7EPx+bYiV1TRDz3Q41I5wqFFuac8BDOiC9p+rDcM3zhKFkL0KXSIRULR8P60kwPYRDk6A9jVQ78HQg16FW+iIddA6kYEBdUUHMtyd9s2pt3ZCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52R5wYMm005249;
-	Thu, 27 Mar 2025 02:10:32 -0700
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hvqkde3b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 27 Mar 2025 02:10:31 -0700 (PDT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Thu, 27 Mar 2025 02:10:31 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Thu, 27 Mar 2025 02:10:26 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>,
-        <mani@kernel.org>, <agross@kernel.org>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>, <jejb@linux.ibm.com>,
-        <martin.petersen@oracle.com>, <bvanassche@acm.org>,
-        <quic_asutoshd@quicinc.com>, <quic_cang@quicinc.com>,
-        <linux-arm-msm@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <manivannan.sadhasivam@linaro.org>, <beanhuo@micron.com>
-Subject: [PATCH 6.6.y] scsi: ufs: qcom: Only free platform MSIs when ESI is enabled
-Date: Thu, 27 Mar 2025 17:10:26 +0800
-Message-ID: <20250327091026.1239657-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1743068092; c=relaxed/simple;
+	bh=feahf2RlNjMG7TuzyyRQ7CAEtCk2y5mQ9bTEbE1vmSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pQIHt9zDG2qKEPHEeMImNiYYfIDEzFoEZcXYmit+Wu6DbiFTbhoGe/70K39ylr95EOUpMS/Z4Uckid3Z3QNGjkCF26l+L5E71ditO/2MND6iCY+SfoMi4haeK1WCNWFai3mcw2ANRfWVwsN5rRjqgkdeGkE1qRO4kZnZvPWOswY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cZmw8cvb; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54ac9b3ddf6so736461e87.1;
+        Thu, 27 Mar 2025 02:34:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743068089; x=1743672889; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cwthd6DvDSuYnlEHZsEaCsrecTV0g5QhuogV3nNKmcI=;
+        b=cZmw8cvbRWqSHx/74Ffc3gs+P6O/to6eG3xun2W4/JMbm0WyPJr0q+0bOz6uLFj/v9
+         nVW5Y3myodnqA4OBGpTj+FivqN8DDqz94LwOmIg4GjWwoDn4wIn5WQuNXT/cf9P6dOJg
+         P9GzTKGTMRRdNqL1LbyB8mk9zc6mC88lH++TCOZ0LMkfPMaDsxaKeUyXxqYNDTkcBI6I
+         c8Nox71k6pnBmsO22tp+Wog93NePFJirp0KN8iL2u4qDls0jvabxa46zFS8L481UQmi7
+         Hrewuv6YyLTpU3ZLY6QZkN06kl2fFDJh9cFyquGSm3eSyFs1rH6ABCpQXCDFqGzwz5fF
+         TG8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743068089; x=1743672889;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cwthd6DvDSuYnlEHZsEaCsrecTV0g5QhuogV3nNKmcI=;
+        b=IF4jO4UnGSYF8zFfmEQ/R6Xu4Inm4uHsZYpjDLnEV7kxGsDxU97rNLnHHcfX7RWRjq
+         dUh9DOFgW/kJhSec4nt73xMfC5I+pEkGnrFqRC3j4s1/eC/KMp8l2z4O4H+c4paYwfe7
+         XJp0ioMtPPJVeNH66MSwmlSSoIJ547F9vMaKDxfQQVdW4C0KQRiAao25MQyM5P1gaYzg
+         5sEsivwsCQjZbE2x0VlsD2k3MCdlrQOm2fg9FQZg4Dn0Hr2+JwOY8wPBmyU6pmqGdbRZ
+         eelgVUUQvmUIxVaen4ZzcunVv7kfed7Tg6w3HRZqF28ruccSgTB3iTuAlld2oiiBk16T
+         q1qg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ7Xq9awTZ8bif5UjzNDog95tKPBJfjV1t68JomRxQqTS4lNGkBc5hU6N3Ve9gUrbX7o/n3NRk5vA9@vger.kernel.org, AJvYcCWq8rrgEzOyakdN34ZpzAIgWRaV0xowl07XUE9Yl71oE8ytc6wFAAIcZOV1HlD4dbfyHrml/IsvciuTFPE=@vger.kernel.org, AJvYcCXFETA2Cuqd0soz/W1x1+wMU3lu2w4UDvaSrvcIkN2qG5Jfxxa8MqyLC3VG2RNBhW29/9IbEcUc@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx7lBXhnt5RV8bsH2Z2y2t/a5g9NBt0vRCdy0tMCRcqaeVQBGh
+	FiWKdNXzZmNeq/woSI3mvmtpg3VCDwjKfJLP/nKuImJtafrbF/nQ
+X-Gm-Gg: ASbGncusxeFgLf8DIR0XvV/WSNDISi7eAI5mLlbFsXSa5fvxEEMiSiUK3Wfg5mvQAwd
+	RS5DZcHxhUhPf7PU80XSWzkLdqtpKl6DTcNoqGYuP9rmV2QDve0l7HrEiRktJoyYfJE1t6+PUH2
+	T7dyuFlr8FscQyMFkoFlf4rStZae0Nww1bBd/qLUMIf4XssWrje25UdsWYCK+LsOlQPiwgPoD1v
+	cAiJQLlWa9FWQfA0P1kKHUthjWsqdiVFfS1GZhVBqkTI5VSct8ZzZBNYGjBRrHEO+ioVKl5f5DQ
+	OtFmrLGBFOHXbekePHxT2hQo0SwaCeu04M2cCfiscQkXg5YG0UHrfiErDGngFw==
+X-Google-Smtp-Source: AGHT+IFwgZ6kYC8A0WndQ549KjcP1lam1V9gB0x42xLQC3LqdXyaaWkYCCa3Vu+K+wV3jCMbpRX8xg==
+X-Received: by 2002:a05:6512:15a6:b0:549:8f47:e67d with SMTP id 2adb3069b0e04-54b012435a4mr969722e87.34.1743068088708;
+        Thu, 27 Mar 2025 02:34:48 -0700 (PDT)
+Received: from foxbook (adtt243.neoplus.adsl.tpnet.pl. [79.185.231.243])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54ad646931esm2034295e87.42.2025.03.27.02.34.46
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Thu, 27 Mar 2025 02:34:47 -0700 (PDT)
+Date: Thu, 27 Mar 2025 10:34:43 +0100
+From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
+To: "Rangoju, Raju" <raju.rangoju@amd.com>
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, mathias.nyman@intel.com,
+ mathias.nyman@linux.intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH v4] usb: xhci: quirk for data loss in ISOC transfers
+Message-ID: <20250327103443.682f4cd1@foxbook>
+In-Reply-To: <bb78e164-f24f-49d2-b560-24d097cb2827@amd.com>
+References: <20250326074736.1a852cbc@foxbook>
+	<bb78e164-f24f-49d2-b560-24d097cb2827@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=XNkwSRhE c=1 sm=1 tr=0 ts=67e51607 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=PY6Zn8H8AAAA:8 a=N54-gffFAAAA:8 a=yPCof4ZbAAAA:8 a=t7CeM3EgAAAA:8
- a=5s8WT1kodU2SEgI5n5gA:9 a=cvBusfyB2V15izCimMoJ:22 a=ySS05r0LPNlNiX1MMvNp:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: Gqh5IStRisjoFhxzw3k-prtDyJR8ytRv
-X-Proofpoint-ORIG-GUID: Gqh5IStRisjoFhxzw3k-prtDyJR8ytRv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-26_09,2025-03-26_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
- mlxscore=0 impostorscore=0 adultscore=0 spamscore=0 phishscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2503270061
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+On Thu, 27 Mar 2025 12:08:53 +0530, Rangoju, Raju wrote:
+> > What if there is an ISOC IN endpoint with 64ms ESIT? I haven't yet
+> > seen such a slow isoc endpoint, but I think they are allowed by the
+> > spec. Your changelog suggests any periodic IN endpoint can trigger
+> > this bug. 
+> 
+> If such an endpoint is implemented, it could theoretically contribute
+> to scheduling conflicts similar to those caused by INT endpoints in
+> this context. However, our observations and testing on affected
+> platforms primarily involved periodic IN endpoints with service
+> intervals greater than 32ms interfering with ISOC OUT endpoints.
 
-commit 64506b3d23a337e98a74b18dcb10c8619365f2bd upstream.
+In such case it would make sense to drop the check for
+usb_endpoint_xfer_int(&ep->desc)
+and rely on existing (xfer_int || xfer_isoc) in the outer 'if'.
 
-Otherwise, it will result in a NULL pointer dereference as below:
+> I'm not completely sure about this corner case if HS OUT endpoints
+> can inadvertently get affected when co-existing with long-interval
+> LS/FS IN endpoints. Our IP vendor confirmed that LS/FS devices are
+> not affected.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
-Call trace:
- mutex_lock+0xc/0x54
- platform_device_msi_free_irqs_all+0x14/0x20
- ufs_qcom_remove+0x34/0x48 [ufs_qcom]
- platform_remove+0x28/0x44
- device_remove+0x4c/0x80
- device_release_driver_internal+0xd8/0x178
- driver_detach+0x50/0x9c
- bus_remove_driver+0x6c/0xbc
- driver_unregister+0x30/0x60
- platform_driver_unregister+0x14/0x20
- ufs_qcom_pltform_exit+0x18/0xb94 [ufs_qcom]
- __arm64_sys_delete_module+0x180/0x260
- invoke_syscall+0x44/0x100
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0xdc
- el0t_64_sync_handler+0xc0/0xc4
- el0t_64_sync+0x190/0x194
+There is also a third case of a FS device behind an external HS hub.
+The device will look like FS to this code here, but the xHC will need
+to schedule HS transactions to service it.
 
-Cc: stable@vger.kernel.org # 6.3
-Fixes: 519b6274a777 ("scsi: ufs: qcom: Add MCQ ESI config vendor specific ops")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20241111-ufs_bug_fix-v1-2-45ad8b62f02e@linaro.org
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Verified the build test
----
- drivers/ufs/host/ufs-qcom.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index c5a6b133d364..51ed40529f9a 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -1918,10 +1918,12 @@ static int ufs_qcom_probe(struct platform_device *pdev)
- static int ufs_qcom_remove(struct platform_device *pdev)
- {
- 	struct ufs_hba *hba =  platform_get_drvdata(pdev);
-+	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
- 
- 	pm_runtime_get_sync(&(pdev)->dev);
- 	ufshcd_remove(hba);
--	platform_msi_domain_free_irqs(hba->dev);
-+	if (host->esi_enabled)
-+		platform_msi_domain_free_irqs(hba->dev);
- 	return 0;
- }
- 
--- 
-2.25.1
-
+Regards,
+Michal
 
