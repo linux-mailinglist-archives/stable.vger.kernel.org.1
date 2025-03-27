@@ -1,137 +1,145 @@
-Return-Path: <stable+bounces-126875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1668DA73537
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 16:03:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7EF6A7354B
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 16:06:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52BDF188F7B9
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 15:02:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13E261725DD
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 15:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947CE146A72;
-	Thu, 27 Mar 2025 15:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F298149C7B;
+	Thu, 27 Mar 2025 15:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="mas/slcB"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="kbF/Fw9M"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0533035957
-	for <stable@vger.kernel.org>; Thu, 27 Mar 2025 15:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77731146A66
+	for <stable@vger.kernel.org>; Thu, 27 Mar 2025 15:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743087731; cv=none; b=lO0Kj6JH0SM9PdAORR6LMc4bCxQtOyKTZNds1By0ttBtY6oMkTfkf82iBaXdMNaPQLUlE2YSBQvFxKdX5p6a/aSfNAHSKPlGklDZoE5it66aNQTUqBJM8f7rZrQXohr+GdOky8OdCYhhIDlKiZwwIsxdSLvd7lJrfs7DGWTQJNA=
+	t=1743087858; cv=none; b=XTKMxzmBTZHHKoZ+9Qaa5fX/JUmOX/hQbtsJ2F3BiLNT++NW3d/L4xr8nJ7bCQ3jjmKCxyncSAn2uowXPqDf8wMHoiArkixBuhwb8Ni4mSyT2a5WfTDmjQ2c7BS6WRm4qQwR/1Fhu5hPMtfb2pjj1mQ14tABdVoPUAkvjQvUDXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743087731; c=relaxed/simple;
-	bh=oKZeyOlcmWhv+Tjy/QuaTCsTxF/1DkLzixlEK/75rmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TrtTRWWyJa1Tqgx45MDjrQSC6OD4KuQI2KyR/mEg3IT39m+RMX0+UsmoFc8rSy7tcZqbx4chOHMc+T+Dvm16+pXQU0PMjiEmvNmgZlSOCQSHgLmbOWtXscVlZ0pDl93kH2R9PnX9UfJiU+nUN4oufMZtOfdhC7k1MrwV6xZivGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=mas/slcB; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1743087858; c=relaxed/simple;
+	bh=hTh/cfVgLHrPOGu6GYfIXW4bOU+Eq28EHmrYsiW2aWc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cnDOhhyYDzac9ZHky5KQTb6Ms1bOpWoQx718IjtT4iApSitMx0s0vMBsQmpVu8hwbgkqj91CwH8TZmyvPpGAVO+eSPGRKy741mk9oCfunA6Tz7Y8/JhCFAY+SgX/uktdQmi0sQ82PEqlI6lXigTcjLFGgosuSruNLPhiFkZVcSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=kbF/Fw9M; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2240b4de12bso31982225ad.2
-        for <stable@vger.kernel.org>; Thu, 27 Mar 2025 08:02:09 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2240b4de12bso32122055ad.2
+        for <stable@vger.kernel.org>; Thu, 27 Mar 2025 08:04:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1743087729; x=1743692529; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3qSWt3uvMh71gDWYUGX7+fPc1Nv/aAAnMr090z0vRF4=;
-        b=mas/slcB7LMJEJT59vrOmkPiPex6wsg+AqXWtTr+7ESbVtzwq8sQCKV1yMuQUo3+0a
-         TCsP71PMh9bpbgtijjY+JTQ7Dnq+zvmOfiyldFpF2n/v0mghhsrRumgXQ03gBgqEvLmp
-         smxPPYYHrJbu6x1UtOlURoKw5T2On6rddhd0E=
+        d=chromium.org; s=google; t=1743087857; x=1743692657; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1dzn/q3DwJwUQakeNgiZfS0yjXlYy1cHDyYLgM2hgUc=;
+        b=kbF/Fw9MBisX2Nd+N1XCOWW4BNOdcPuWdY/X1h4czHDt63O1ELouX1qamvPp7ZmqY/
+         P9QL4FSdWBbeQrmTo2rTG8o/RQ+2AnW8Cy6RuIR9vumG4dN4PlvDb9P3ub3BnG+YBp7R
+         obrEjGz2Sj7Ux5o+3km31lHIumfwOFwGI5t7w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743087729; x=1743692529;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3qSWt3uvMh71gDWYUGX7+fPc1Nv/aAAnMr090z0vRF4=;
-        b=ATOmeoX6X+JSW3Cv8ki6m3FQ/cZCk4CZ59haHWWsk8nFb3XvDyZZ5gRHUUzxpzBJCs
-         P6BnrPGnyZQ1/zCIE3hbNLCRjzYTcKX+PqA/iICLdC7M6vsePps7V3CH9nVh01DDR/Qe
-         MYgEV12BrLipjsVrFp3ZwIXYrlSCR/ZFM69RuAKcTB0lq9C6oOzsutoGr7999cAslVzZ
-         8fBaaF1s535UpDof+TMRNSL7JQkwAuuVTLs72hwmuG9x792nRxtmbq4oEV3oKdVqXZX1
-         XDwKzq2SSPyyW47G81LCwfU28Ilv8Wo8WwMBOYHo7n3py76zTVCczCUHKbxxM1wTIeYF
-         DIFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdOhUJi6Tqusu5m9wUgz/DwArAxgJ9/i2wPXJSUUK+YQ+MfOnmUL/LgQlAC0r0NE0LPDv8nxs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2birdaDxWc/0Wg5DYDNi/s2auKSIG6DzSsV/7WuVYJFBo4IaM
-	FR1zPuQtKou2A9BAgiaXuNSgxS3rK60WzFW3ibD4GZM4+fiB9TKelOluYDlXyQ==
-X-Gm-Gg: ASbGncuUIJuhXO8hJW8DAGfU3OTTgxTsogkbRbwGFYIOwLWnsycpDxcxfdL7TiSiMrB
-	R/YAr3Vsvv/oqGRIl9bbRoENXkOaidtdmHEnAQ7EkuNrTrLNReSSOBLkHy/qzFpGigEdT327Pwz
-	8LCkvGApr7UH4WYraBSlYVtGpAOTCyPWsE70xDg8G5cmdtG1vWmM/0ca6cuJvoYFtW/N1JzECi9
-	rXy65TChsYu9jT7AyBDw+hUXEAYLZU0sZJC8Mcn2Sef71MjX2DYceHQMxsKmFU9xvz7CGjpwydh
-	omU3gG+/1wBdzV9AJQ6nvV5hbOmt5Zatk0zqAkdY4fCPz2E=
-X-Google-Smtp-Source: AGHT+IG/IJqrqoT0m0m7gmMVPQjaTlvKtiXxSxIivb95+Nb+Y8jAJm8non/NDiXNCuNHB+d50FJhAA==
-X-Received: by 2002:a17:902:cece:b0:224:255b:c92e with SMTP id d9443c01a7336-2280481d10cmr50732785ad.3.1743087729081;
-        Thu, 27 Mar 2025 08:02:09 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:cd9c:961:27c5:9ceb])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291f1cf93esm316675ad.154.2025.03.27.08.02.06
+        d=1e100.net; s=20230601; t=1743087857; x=1743692657;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1dzn/q3DwJwUQakeNgiZfS0yjXlYy1cHDyYLgM2hgUc=;
+        b=meDax9oVwb1F/xxLdvaPnbQvMeLhH62r5BKTDwXlujYmxd+MtiCBNvK/bjjVc/yoaG
+         QhqccQJenu2whej+LU61C8TCAVlfypnyk+0aFKxmvmVLLyppRNnuYQshtuFyWT5EAVyr
+         BtdBFemxkjoB5GO8X+SF66brGdPfH/2cgeEhCXc7Q/Kv+tcgtuq1DEm4njrJNvJPobLk
+         GrkZeljZpMpa+/bEMsrqUtOVOwPe76TGqw+aFZiCJYhcskXFhMea1e3k/pwy/V292sgZ
+         45tMEb2ri1Zj/RRUDe+K5FQ2uh10WUh9iHAQHAozXyxxXT2PHox8cWlCGCW/+JVD4P6p
+         R+Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCXyKzwYMrnfVm5sccpQif4GdUk5iL3BNHdZmVLSrIbBpzgTpYTiCrsRpV5aVT+7vHbvnueIC6Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+IF75Zb7ZVcYwbwn/2oyxI8+RUCjd0md2V148rnimMDTi7uA3
+	FzqPXCMkxGENG8QrbChL9g8lzRLZ/VsCQ45HcABuE2MlU5FRdvbQaB7dZZA5rw==
+X-Gm-Gg: ASbGncuqUB4Y14ADq6zmHoDsE30nsUkCrRngj0x66gxy6fv7XvmtcURGqATk7Txt9MZ
+	EeiW5AEv3sZH+jo/G4+VSMTqnR601DRpTdW25P88LewEy/IzixfrS1VOeZgYHV7MwYaYlWY7ili
+	hRT1lxOTPrVOwBhhyuVRk0K4wuNwvF9XmjWKaAFU9rFMFO3HWCamiS9PipfsiZAXrAl771WCxqA
+	Zdzz1T9ULzpMQ7u5dH9JKIf/qVBLIUy1gG4fmoa/wdJvruE7iEG4RirUSWE7bpEPeQyl3ZDQhGR
+	zGd0CJV0f1GJXrAICHl3V6IuVC0Y5h/QPuU78ngc7qIXBBdx44s5Uz2aiWwljkCUdPq8ZQ==
+X-Google-Smtp-Source: AGHT+IEVqGTm9SnJQYYYVq75N+ryfrvO/8a+zp+Bo8G0CL6FxM48RSgxG269/Ff2pGWCEpMLTxoWGQ==
+X-Received: by 2002:a17:902:ef4d:b0:224:1ef:1e00 with SMTP id d9443c01a7336-2280485782emr63449195ad.19.1743087856578;
+        Thu, 27 Mar 2025 08:04:16 -0700 (PDT)
+Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:cd9c:961:27c5:9ceb])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291eee0bafsm619715ad.90.2025.03.27.08.04.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Mar 2025 08:02:08 -0700 (PDT)
-Date: Fri, 28 Mar 2025 00:02:03 +0900
+        Thu, 27 Mar 2025 08:04:15 -0700 (PDT)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andreas Noever <andreas.noever@gmail.com>, Michael Jamet <michael.jamet@intel.com>, 
-	Mika Westerberg <westeri@kernel.org>, Yehezkel Bernat <YehezkelShB@gmail.com>, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCHv2] thunderbolt: do not double dequeue a request
-Message-ID: <qdbqm52rasvncb7db5ok5qfep7bfkxq34veihhrd2xdodozdbl@wltsov2h5fcz>
-References: <20250327114222.100293-1-senozhatsky@chromium.org>
- <20250327133756.GA3152277@black.fi.intel.com>
- <vxocwwtfwg3tmjm62kcz33ypsg22afccd2ua5jqymbxaxwcigf@nnydc53vu3gv>
- <20250327142038.GB3152277@black.fi.intel.com>
- <jdupmjvntywimlzlhvq3rfsiwmlox6ssdtdncfe3mmo3wonzta@qwlb3wuosv66>
- <20250327145543.GC3152277@black.fi.intel.com>
+To: Andreas Noever <andreas.noever@gmail.com>,
+	Michael Jamet <michael.jamet@intel.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	stable@vger.kernel.org
+Subject: [PATCHv3] thunderbolt: do not double dequeue a request
+Date: Fri, 28 Mar 2025 00:03:50 +0900
+Message-ID: <20250327150406.138736-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250327145543.GC3152277@black.fi.intel.com>
+Content-Transfer-Encoding: 8bit
 
-On (25/03/27 16:55), Mika Westerberg wrote:
-[..]
-> > Yes, if it's scheduled.  If it's already executed then we can schedule
-> > again.
-> > 
-> > 	tb_cfg_request_sync() {
-> > 	 tb_cfg_request()
-> > 	   schedule_work()
-> 
-> This point it runs tb_cfg_request_work() which then calls the callback
-> (tb_cfg_request_complete()) before it dequeues so "done" is completed.
-> 
-> > 	                        executes tb_cfg_request_dequeue
-> 
-> > 	 wait_for_completion_timeout()
-> 
-> so this will return > 0 as "done" completed..
-> 
-> > 	   schedule_work()
-> > 	                        executes tb_cfg_request_dequeue again
-> 
-> ..and we don't call this one.
+Some of our devices crash in tb_cfg_request_dequeue():
 
-Ah, okay, I see.  Thanks for the explanations.  I'll drop
-that one from the commit message then (let me re-spin v3,
-just for the history).
+ general protection fault, probably for non-canonical address 0xdead000000000122
 
-[..]
-> > Let me see what I can do (we don't normally apply patches that
-> > were not in the corresponding subsystem tree).
-> > 
-> > In the meantime, do you have a subsystem/driver tree that is exposed
-> > to linux-next?  If so, would be cool if you can pick up the patch so
-> > that it can get some extra testing via linux-next.
-> 
-> Yes I do, see [1] but it does not work like that. First you should make
-> sure you patch works by testing it yourself and then we can pick it up for
-> others to test.
+ CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
+ RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
+ Call Trace:
+ <TASK>
+ ? tb_cfg_request_dequeue+0x2d/0xa0
+ tb_cfg_request_work+0x33/0x80
+ worker_thread+0x386/0x8f0
+ kthread+0xed/0x110
+ ret_from_fork+0x38/0x50
+ ret_from_fork_asm+0x1b/0x30
 
-Sure, if I had the H/W testing would have done by now.  OK, let me try
-to work this out.
+The circumstances are unclear, however, the theory is that
+tb_cfg_request_work() can be scheduled twice for a request:
+first time via frame.callback from ring_work() and second
+time from tb_cfg_request().  Both times kworkers will execute
+tb_cfg_request_dequeue(), which results in double list_del()
+from the ctl->request_queue (the list poison deference hints
+at it: 0xdead000000000122).
+
+Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
+bit set.
+
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: stable@vger.kernel.org
+---
+
+v3: tweaked commit message
+
+ drivers/thunderbolt/ctl.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/thunderbolt/ctl.c b/drivers/thunderbolt/ctl.c
+index cd15e84c47f4..1db2e951b53f 100644
+--- a/drivers/thunderbolt/ctl.c
++++ b/drivers/thunderbolt/ctl.c
+@@ -151,6 +151,11 @@ static void tb_cfg_request_dequeue(struct tb_cfg_request *req)
+ 	struct tb_ctl *ctl = req->ctl;
+ 
+ 	mutex_lock(&ctl->request_queue_lock);
++	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
++		mutex_unlock(&ctl->request_queue_lock);
++		return;
++	}
++
+ 	list_del(&req->list);
+ 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
+ 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
+-- 
+2.49.0.395.g12beb8f557-goog
+
 
