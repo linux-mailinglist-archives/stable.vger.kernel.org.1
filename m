@@ -1,55 +1,88 @@
-Return-Path: <stable+bounces-126819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C21CA72920
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 04:26:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A3FA72943
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 04:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3738189B601
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 03:25:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B45188F21D
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 03:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86FF1C861C;
-	Thu, 27 Mar 2025 03:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F4B1C3039;
+	Thu, 27 Mar 2025 03:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KszUwacK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZPmU6itZ"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9141AA1E0;
-	Thu, 27 Mar 2025 03:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC6E1F8729;
+	Thu, 27 Mar 2025 03:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743045846; cv=none; b=IoupBNcUVQcDm5JlxsjM3Y8sNRcTuTXVtnUln8bEDpzZWNy0ODjTy7Pt34RzqzcONQUtynOVUDhpy/atGDFELsVgNUGQ/vGqcffAiyynFd5hLx0x2lBWiOTR8umJacbjo0waZ6z4E9d7ttGkCcA7AhwEth486f9zMUdp3vFLOBA=
+	t=1743045882; cv=none; b=QoS6MWgJEwFUIwOPY0pOpzjxUY08lYg/EcIC04sniC01aq+gUY9bfrmK6nf82JnSz6JcnfkckQadAqrZi8yd53btfMErHRtQ32JtjLwaGRw4LWQHVnPkmJRbNSsyZ5bNJ93sxbhpJ8tMz5QgGHnL9i13xeEExAw34qSEmIQtCZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743045846; c=relaxed/simple;
-	bh=m14h3yoUTbAqVpXODC0zMSbRl54bX2+I393JGsWn+ik=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZG9PISJnXPxqqiBmSzq3ZlHZvozUPzxm3NSPIH45lYBxC4+NO9hNMHWaq2/3WOzrsEBGd3k6Mfq28T7QBk734X4Pb7VqqpQsmY8SZTJHq6yN/+RGbZe6IXqMudvW6eAY1qo91hm74gLwiKsyz8DvLp0ePShtoVpQlX+bYoNfm6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KszUwacK; arc=none smtp.client-ip=115.124.30.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1743045833; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=IzFeiGzmrelIDrN3T+p0dy+aeXecEBBAeMklppQIpr0=;
-	b=KszUwacK5zbgkjS1bePSQ0Ji3+/TMyiHCfy570l2kotxUlUEJc9meAAqpsfxhh6mx2Dc2SRicfUOwl3fuCd1v4oYPLoOZXoHkWf0ea0yN+4KksSVzExuZBaEczaWZbXkPA2v5YbcH6hNJMX/iVnSxoCOgDHd1bXmpTRnMaOCwGs=
-Received: from localhost(mailfrom:kanie@linux.alibaba.com fp:SMTPD_---0WT78S1A_1743045829 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 27 Mar 2025 11:23:53 +0800
-From: Guixin Liu <kanie@linux.alibaba.com>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>
-Cc: linux-gpio@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
+	s=arc-20240116; t=1743045882; c=relaxed/simple;
+	bh=D1y5O7GHFPafWCaRwvfdCQY7Fye/a1hcOZ95f7+lWic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iPrQXqRzSIo2EpOBcnc3UobqoU3fPNGCMvdxxFt+lQxI3AFePgQuI/2vI+GKQeEwEQ69TCCUcrLoaNvG6a6JXe0JOncSUv87TEGYMDxmRYtLPvy09g0VAABVtslWP949d/It0LhfPAg06r7/p8o5mcnC58dbYz8CpnfKi+CZAEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZPmU6itZ; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2264aefc45dso15029655ad.0;
+        Wed, 26 Mar 2025 20:24:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743045880; x=1743650680; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BvDZBbhZMPX6erlds9jOpeJO2KealfqA0C2o57c54Qg=;
+        b=ZPmU6itZvQPhTatzP1N0banKJX7D5xkspNtg0Mit1knMqgfKbeKvPijgAEajvW+33A
+         tzzBOMlq2jq3SBpZN/CbAQmSFSj4/c4sdBa04c4CNIr9qu6BPlBIGPkvrgte6YW96NYb
+         bqwqJezXEkCfOMGaPD9pT+rnBr+uKa4KvnBMwEF0hR7FUXl+b8xrriMHMmYHNIEYXbLs
+         L8zFHcaWKLsWakNgd7sysN2OKVmngLWbrE7KdkgGwcqSLyDanVv1jtg2+LHFJEmOANhm
+         X/5RP7xSH9Ql7Ghs4K9YljgININI7LYPPX5ajXh2wYjRbmXsx28HLKkTVNUyfZj4diFp
+         bzlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743045880; x=1743650680;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BvDZBbhZMPX6erlds9jOpeJO2KealfqA0C2o57c54Qg=;
+        b=HGY4qQDFfg+PsZBhxo+1KhyR7+vDZIh5bEofYyEHKk6sPgeD4U+3vJKWFEXCqZoQgM
+         /uVIZ/OE/Qd9V2Omu/+eS1t9PWhNW9BdLHZ6jPDWRriOrtJoZDJcODhDdvZAvRIrx355
+         vadN248f1ocUhfCYMJLY2QxTk+sHOT+Hmkt3RszbDWarjYLIirrK6IbuCjCs9FBg14HA
+         oF2nstA/1Mq/GVCw9veFoIghZjbzy3dLxJGSVMB6HF+ZHBMw5Cjre10OK/W0r1WvjDZW
+         eA/GiitkyU0ZU2SoU+YOQn2qJFn2kj98RgXD+SYHjjPlKMNExz+Yaq4yQSogTsVVQZZu
+         T7Hw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwa6OgL2V2yH4LChMfq8Q7R5NBuh8lqtC1ILdWfQ+IOivixIgJkKdclll/RRgj6LdALuQC4PkX@vger.kernel.org, AJvYcCWTq5H5sDWYAqXqxstWjH4T4DO4qZ82y8XvfnQ7uVNrAFytny9m9732fUafmRa2YfuHq+lqD0MHgd0gqvk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZat4c4Tup/yy/hTiWCthC0KLBM+Kw8E+IahMkD8zCk05T3noY
+	6yymq+iZchq9lnuSp4vMoPBs1s0/ibl4BdAfQXuPvKNxRkmi1nDS
+X-Gm-Gg: ASbGncuH4683+z7VajeBt9wYTZYqgxwLsMXcSb8zvVKS9tUSY2RyE58gZO3Ko2fP0WY
+	5OWwlE1499MEGDnTR0U95mSAoJAzfU/L8A5FaknzUCwtcLk6yCX4rSnk+xkjSGu2fzMLbwCPL0L
+	eSaQzxIVuYp0g3b46qPUPA/yXtPiBlM82dfYhXxXlFxIy9gmBn3LE1rOxi0UAn0LOsTNaxPp+xZ
+	mJZAjh898P1WyBmKdQHg1JWD8kIs52VjZyyo/XG/AvtgPC5CUtzN68mjXWPH+RpT6bi8hDb3wFS
+	QSyX/FalXemMO/SmBhYkP95AKSJ2mzi2TdV7
+X-Google-Smtp-Source: AGHT+IHd6OOeyDgumFlrKIkvH53qKhq7ryWom5Dv+FjCyOIRYvw1a98qVpzr0bR6HZjcMQv3+tTIlQ==
+X-Received: by 2002:a05:6a21:58b:b0:1f5:86f2:ba57 with SMTP id adf61e73a8af0-1fea2ef626cmr4947090637.30.1743045879679;
+        Wed, 26 Mar 2025 20:24:39 -0700 (PDT)
+Received: from apollo.localdomain ([2601:646:8201:fd20::f147])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af8a27dec60sm11911927a12.4.2025.03.26.20.24.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Mar 2025 20:24:39 -0700 (PDT)
+From: Khem Raj <raj.khem@gmail.com>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Kees Cook <kees@kernel.org>
+Cc: linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Khem Raj <raj.khem@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3] gpio: tegra186: fix resource handling in ACPI probe path
-Date: Thu, 27 Mar 2025 11:23:49 +0800
-Message-ID: <20250327032349.78809-1-kanie@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v2] mips: Add '-std=gnu11' to vdso CFLAGS
+Date: Wed, 26 Mar 2025 20:24:36 -0700
+Message-ID: <20250327032436.3600578-1-raj.khem@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,72 +91,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When the Tegra186 GPIO controller is probed through ACPI matching,
-the driver emits two error messages during probing:
-  "tegra186-gpio NVDA0508:00: invalid resource (null)"
-  "tegra186-gpio NVDA0508:00: invalid resource (null)"
+GCC 15 changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, mips/vdso code uses
+its own CFLAGS without a '-std=' value, which break with this dialect
+change because of the kernel's own definitions of bool, false, and true
+conflicting with the C23 reserved keywords.
 
-Fix this by getting resource first and then do the ioremap.
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
 
-Fixes: 2606e7c9f5fc ("gpio: tegra186: Add ACPI support")
+Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
+these errors and make the C standard version of these areas match the
+rest of the kernel.
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
 ---
-Changes from v2 to v3:
-- Add "CC: stable" to commit body.
+v2: Filter the -std flag from KBUILD_CFLAGS instead of hardcoding
 
-Changes from v1 to v2:
-- Add "Fixes" to commit body.
+ arch/mips/vdso/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/gpio/gpio-tegra186.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
-index 6895b65c86af..d27bfac6c9f5 100644
---- a/drivers/gpio/gpio-tegra186.c
-+++ b/drivers/gpio/gpio-tegra186.c
-@@ -823,6 +823,7 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
- 	struct gpio_irq_chip *irq;
- 	struct tegra_gpio *gpio;
- 	struct device_node *np;
-+	struct resource *res;
- 	char **names;
- 	int err;
- 
-@@ -842,19 +843,19 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
- 	gpio->num_banks++;
- 
- 	/* get register apertures */
--	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
--	if (IS_ERR(gpio->secure)) {
--		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
--		if (IS_ERR(gpio->secure))
--			return PTR_ERR(gpio->secure);
--	}
--
--	gpio->base = devm_platform_ioremap_resource_byname(pdev, "gpio");
--	if (IS_ERR(gpio->base)) {
--		gpio->base = devm_platform_ioremap_resource(pdev, 1);
--		if (IS_ERR(gpio->base))
--			return PTR_ERR(gpio->base);
--	}
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "security");
-+	if (!res)
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	gpio->secure = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(gpio->secure))
-+		return PTR_ERR(gpio->secure);
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpio");
-+	if (!res)
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-+	gpio->base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(gpio->base))
-+		return PTR_ERR(gpio->base);
- 
- 	err = platform_irq_count(pdev);
- 	if (err < 0)
--- 
-2.43.0
-
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index fb4c493aaffa..69d4593f64fe 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -27,6 +27,7 @@ endif
+ # offsets.
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
++	$(filter -std=%,$(KBUILD_CFLAGS)) \
+ 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
+ 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
 
