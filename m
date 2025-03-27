@@ -1,198 +1,135 @@
-Return-Path: <stable+bounces-126891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91253A73E70
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 20:15:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D281FA73EE9
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 20:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F70516D127
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 19:15:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C16671B60522
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 19:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A39157E6B;
-	Thu, 27 Mar 2025 19:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F3E21B91D;
+	Thu, 27 Mar 2025 19:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fh2GXN8j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxsCj518"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F88A55;
-	Thu, 27 Mar 2025 19:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02F61C7019;
+	Thu, 27 Mar 2025 19:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743102943; cv=none; b=nRdRlTkYqXX9Z3dJL522Q84QHqPPkQadfjMbvb325rhaSwx4rEN0IXaX9LB9BqTUv2+dhK7otv3puZf5VQOCGBjzLTPAavGJunQZzufQ+rt94tCk6pzpuCjc/UGCNGm8YceHnzyN+FaIGpQsSf00++WWP2Lu264KtFAe8IsWheE=
+	t=1743104377; cv=none; b=YVLYY7DgXQe8mKdiMB3CxYFyeHyT1Y+GI458Zu6IUGGcUCF0dvRUxaNnWwrhZ68/khCaiMZFB/x4eQ3E0ZPOBSVU3eb7jCzHd3BVkwFQyFb2/g2ieRPeOXlWjSSltonle66zAi43Oltv4lLuXhsF7QjI7wzC3A4ndiJojnBr+g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743102943; c=relaxed/simple;
-	bh=Rw5YIuasHI4FgVTE4nUpNhBDzZD/qo8wURofcGnCHPA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=HrursWj+QuPTB6DkxwmbM1YSo9NKeMhu1EVWHgmypl+dU54WQ9hiC/TbA0B1SCebHOd/+Tm6QJ0Vd9J667YH/jZpR8NHPXaPaNk3x5PYTxsCka+SMZ/Fvw9193ZHVrYoOgFfQv0g9KLjkb6Yb9EgGm2mCWv4EF2P1ADg6q7umXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fh2GXN8j; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4394036c0efso9598185e9.2;
-        Thu, 27 Mar 2025 12:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743102940; x=1743707740; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zfwfv1QkpZUVspd7kmNSz+5Pyv+VFy0ns7dOJv/HVl4=;
-        b=Fh2GXN8jSFKLObAex6klCqe1FmDDjFjcR6CXTILaxhNf3Y8hR483QoPxp1O1jenUeH
-         NAhCfls2T5cZCbwuNE32CI9K9IcSc6DSEuUe+WIGP7iqPHpSaKcvop88S4M0cQ5xv32H
-         uoeB21ddooGtV7suz/5yzKN/Zs1dhMHacmu4qzRQJ6/AduAtb2o+SF73GOEgpMUUA+Oy
-         igORk4AWQye2CgM9rlWWN5xm70NSobXKl1HE98UUcakVaEW8d2aL8OIy+EFz8SGvJ9ZV
-         GpqBI426e4fHzWwoSmlgQcRLjhdkP99gtG6MiS1u48ou7iKmKLckREmUylMvuK2Sr1Kx
-         0e6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743102940; x=1743707740;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zfwfv1QkpZUVspd7kmNSz+5Pyv+VFy0ns7dOJv/HVl4=;
-        b=Dssw4gv4a7A/G26ptVef010ugNvSw9o6xNh7G1bt9iNfGP8Bd+sdaWb0tKYlZGqHb1
-         ZGUaviOGO2lak4KEm4x1Yl+lQGcz6HOdFZi7A/fLQEUTo1Hy4TSGZG3MMSq+CDCPaJGe
-         CuoFhx6D9wpHJCkmCz/+LkwlyfCJXuCCFu8TplZe5bsr2/eCrRtyHufTuSuc5JLn+ysS
-         j/8BRr/zP5vIyrfH2YQGPaU9270F4VA+YwElAbHVCqd71Qx2MrGRGAJZdH2AU3BH7JK0
-         /k+4eM1WOnV7NqnzNq1/CyoyogSJjmC6m5PaKuIyizha3A7JJXNN4vjRDidThgA3uhmF
-         Z9PA==
-X-Forwarded-Encrypted: i=1; AJvYcCWXDd1kiV4B0etWxVrFXxcuGcuE+Kkt+ZP9wfSdcltWJeLzcSgF9tRfKVLHujftTDqV7O2BqOOx@vger.kernel.org, AJvYcCWm33hqdNTVUq+3XStstDhY+Rpq08JVWGliAaInQpPDn6/5wXouktN1k8UsgX22tdVvGaYzggARGDJVQ/W+@vger.kernel.org, AJvYcCXApjFDVsdo6T5CFahldbrAnCK2cQHr+pEr1Zij50vPe3pI4zkWnlOWieZ5E1ZXDnw93Ot721OlwkQ3QRoB@vger.kernel.org
-X-Gm-Message-State: AOJu0YxL9wZbPWTs14q36ymyRYP1eMh65IF1KoR7AsvPewAXzVRGHZPw
-	rO/Sz3vTw2BDvLGOAv2PbImam2gEz8Tx+0whEigMvMzyrPh6bGl2
-X-Gm-Gg: ASbGncs82fum2XvsvF+vE1Xjo5/xZDeSnwbEiruihtD1EAUFMH7NSnS11H/608aPW57
-	bRcJQLGCVhQy41zMfqnrr/dMVXwxtvez06Lmus81D/lI0p6SyzsT+El7qqJyNjrA/qXL4HPSyqU
-	0jcWk1CpaMOnMgd2KOyrxPZ4pKyDNlLuUOPi5SpU+pV3zWWkP9kR9Ubi0jtVdNRg+CQgtTKsGxV
-	viG9HZTMZP44+surchnlfnzjD1SQjH0ryhDg5l3Xc5jdIZeYkqqD0ZRWXSQLvb/leUMrRciO9F8
-	kyi9v5Km8cDQwF/+FsjrXU+gS5s0wW1WQi0Ta1vCSfSgaLd45KITCA==
-X-Google-Smtp-Source: AGHT+IF6wQGZ2i0qPbjE48g6AoqxPSkbrIx5QXDhbvYGV8JqzaVvMSMYLsYltI99DKGgpV1fk5VzWQ==
-X-Received: by 2002:a05:600c:5103:b0:43d:683:8caa with SMTP id 5b1f17b1804b1-43d84fbea4bmr40267415e9.15.1743102939774;
-        Thu, 27 Mar 2025 12:15:39 -0700 (PDT)
-Received: from [192.168.3.5] ([212.115.166.76])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d830f5f22sm46351685e9.30.2025.03.27.12.15.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Mar 2025 12:15:38 -0700 (PDT)
-Message-ID: <3b1f2031-9f91-48d8-8c79-65d470142f26@gmail.com>
-Date: Thu, 27 Mar 2025 20:15:36 +0100
+	s=arc-20240116; t=1743104377; c=relaxed/simple;
+	bh=qgcmWSQ73m/nlt+LAcujjvdRS2oaqefet/VvhLSsEG8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LLgybSzgmxNEllGwQ1aVCoJgPgOhHsp9WFFbWLwVfChB7ntpFEDLsv1Vp3zcU2gUWC4QjGI9uiF42ZJ9EXHpuVz+M7IsVfrWiRwgdr8QDVzmwZO3c4WiKOnhmYeIcChKCNtvole5xq2gIeEOnAuDnCWCwU7mKlmaodpkPmQC4AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxsCj518; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514EEC4CEE5;
+	Thu, 27 Mar 2025 19:39:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743104377;
+	bh=qgcmWSQ73m/nlt+LAcujjvdRS2oaqefet/VvhLSsEG8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nxsCj518N1E+FFnPXHACZvvt4LT+xHzXkh4tyqzuh+xKr6dTgkMqGJnhjNmiPD8YQ
+	 R32cCzpcAwfi95dEV9mlVijk5gFZiuMsTzyu9FotswZew6+GNN5yOQx9Hor00zny2U
+	 lwpDpC0wBuEWFf7yLxtO9XyMXjZunY5rlD0vWb194YIDiP8BRXwpAncVecFgxscq1z
+	 AkscOD7hDTekILNi0Iq57H4L1yh1OxIG8UweFBGGk2W+VKSyJS0Wd7xCzCGZhW1d/b
+	 vUhBD37y3+wswgn3lowQJUPJzHUFCEJLS7n53N5QN9ZkUUYUd4TCVXx7PAvlq/svR/
+	 CTyb7QT2wwqTQ==
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-2bd2218ba4fso483445fac.1;
+        Thu, 27 Mar 2025 12:39:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVtRS0xPOqK9ZiL5BwIug7ArTzJURUltV6RAng2u2UafkAbrA1FPn3/TsfbkPcmeJOZcLFwXc9X@vger.kernel.org, AJvYcCWAAb/wqWffDZQ+jykn4+Bof8gh/h9wfBzgegZdiNsPW2fq3P2fmX9AIV1oNEO9IgxsjtybODPlEX6dMfKz@vger.kernel.org, AJvYcCXefyFvMqbP9GSVO3iIdKX1eVWqJBl78hw7oFw2s6gZRhywjxAuir54eJdNCeetwN5NbgBFshcDdCyQ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzyy4zRvIFdxnLtZ2uRPIlclhxuWzFQWFDdzMMvlPaqBAZ3/5i2
+	0k1Re7G5Ks5BsAdCg+YrAOP/MnC2+vmJegp/5VbpTCGBFA1zPNpcMnfyEHgcCQhEII3ZMrBym44
+	0mqZt09MQ7Y/MW7cpB3xH6XOFG6Q=
+X-Google-Smtp-Source: AGHT+IFfbF859Ml6WjNSHLFR2N7RKpUdQUPsH2SfuPMF9ozrjRYIDTtA4i7eC25mpTuXuPzO1o8vur56NH168cSn1Ew=
+X-Received: by 2002:a05:6870:e2cc:b0:2c2:3e54:553 with SMTP id
+ 586e51a60fabf-2c8481b51f1mr2832440fac.28.1743104376648; Thu, 27 Mar 2025
+ 12:39:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Attila Szasz <szasza.contact@gmail.com>
-Subject: Re: [PATCH] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
-To: Greg KH <gregkh@linuxfoundation.org>,
- Cengiz Can <cengiz.can@canonical.com>
-Cc: Salvatore Bonaccorso <carnil@debian.org>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, lvc-patches@linuxtesting.org,
- dutyrok@altlinux.org, syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
- stable@vger.kernel.org
-References: <20241019191303.24048-1-kovalev@altlinux.org>
- <Z9xsx-w4YCBuYjx5@eldamar.lan>
- <d4mpuomgxqi7xppaewlpey6thec7h2fk4sm2iktqsx6bhwu5ph@ctkjksxmkgne>
- <2025032402-jam-immovable-2d57@gregkh>
-Content-Language: en-US
-In-Reply-To: <2025032402-jam-immovable-2d57@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250318160903.77107-1-pmenzel@molgen.mpg.de> <CABbizf-uBEiujmpUHHPdZT7JftyoM+qUKVRt4wuNxa6Actqo5Q@mail.gmail.com>
+In-Reply-To: <CABbizf-uBEiujmpUHHPdZT7JftyoM+qUKVRt4wuNxa6Actqo5Q@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 27 Mar 2025 20:39:24 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hP-tJ8YVmAiZF0ij2Z-Mjy4uEvuYoLWi9UC2XdGM6iug@mail.gmail.com>
+X-Gm-Features: AQ5f1Joqpr26DlP06rBMLqLghnMo0aVY6tHjw0TNpkbtiN-JtcTcp-SVF_uttKQ
+Message-ID: <CAJZ5v0hP-tJ8YVmAiZF0ij2Z-Mjy4uEvuYoLWi9UC2XdGM6iug@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
+To: Anton Shyndin <mrcold.il@gmail.com>, Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Len Brown <lenb@kernel.org>, Hans de Goede <hdegoede@redhat.com>, 
+	All applicable <stable@vger.kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-hi, Attila here—the one who wrote the article and the PoC.
+On Wed, Mar 19, 2025 at 1:50=E2=80=AFPM Anton Shyndin <mrcold.il@gmail.com>=
+ wrote:
+>
+> Tested-by: Anton Shyndin <mrcold.il@gmail.com>
+>
+> On Tue, Mar 18, 2025 at 6:09=E2=80=AFPM Paul Menzel <pmenzel@molgen.mpg.d=
+e> wrote:
+> >
+> > Like the ASUS Vivobook X1504VAP and Vivobook X1704VAP, the ASUS Vivoboo=
+k 14
+> > X1404VAP has its keyboard IRQ (1) described as ActiveLow in the DSDT, w=
+hich
+> > the kernel overrides to EdgeHigh breaking the keyboard.
+> >
+> >     $ sudo dmidecode
+> >     [=E2=80=A6]
+> >     System Information
+> >             Manufacturer: ASUSTeK COMPUTER INC.
+> >             Product Name: ASUS Vivobook 14 X1404VAP_X1404VA
+> >     [=E2=80=A6]
+> >     $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
+> >                  IRQ (Level, ActiveLow, Exclusive, )
+> >                      {1}
+> >
+> > Add the X1404VAP to the irq1_level_low_skip_override[] quirk table to f=
+ix
+> > this.
+> >
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219224
+> > Cc: Anton Shyndin <mrcold.il@gmail.com>
+> > Cc: Hans de Goede <hdegoede@redhat.com>
+> > Cc: All applicable <stable@vger.kernel.org>
+> > Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> > ---
+> >  drivers/acpi/resource.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> > index b4cd14e7fa76..14c7bac4100b 100644
+> > --- a/drivers/acpi/resource.c
+> > +++ b/drivers/acpi/resource.c
+> > @@ -440,6 +440,13 @@ static const struct dmi_system_id irq1_level_low_s=
+kip_override[] =3D {
+> >                         DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
+> >                 },
+> >         },
+> > +       {
+> > +               /* Asus Vivobook X1404VAP */
+> > +               .matches =3D {
+> > +                       DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC=
+."),
+> > +                       DMI_MATCH(DMI_BOARD_NAME, "X1404VAP"),
+> > +               },
+> > +       },
+> >         {
+> >                 /* Asus Vivobook X1504VAP */
+> >                 .matches =3D {
+> > --
 
-just for the record: this was a mistake then, and if one happens to 
-discover another impactful bug in a potentially orphaned filesystem or 
-another subsystem, it might EVEN get prioritized by upstream and stable 
-over /panic_on_warn/ stuff next time, right? or am I missing something?
-
-On 3/24/25 17:17, Greg KH wrote:
-> On Mon, Mar 24, 2025 at 07:14:07PM +0300, Cengiz Can wrote:
->> On 20-03-25 20:30:15, Salvatore Bonaccorso wrote:
->>> Hi
->>>
->> Hello Salvatore,
->>
->>> On Sat, Oct 19, 2024 at 10:13:03PM +0300, Vasiliy Kovalev wrote:
->>>> Syzbot reported an issue in hfs subsystem:
->>>>
->>>> BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
->>>> BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
->>>> BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
->>>> Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
->>>>
->>>> Call Trace:
->>>>   <TASK>
->>>>   __dump_stack lib/dump_stack.c:94 [inline]
->>>>   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
->>>>   print_address_description mm/kasan/report.c:377 [inline]
->>>>   print_report+0x169/0x550 mm/kasan/report.c:488
->>>>   kasan_report+0x143/0x180 mm/kasan/report.c:601
->>>>   kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
->>>>   __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
->>>>   memcpy_from_page include/linux/highmem.h:423 [inline]
->>>>   hfs_bnode_read fs/hfs/bnode.c:35 [inline]
->>>>   hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
->>>>   hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
->>>>   hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
->>>>   hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
->>>>   vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
->>>>   do_mkdirat+0x264/0x3a0 fs/namei.c:4280
->>>>   __do_sys_mkdir fs/namei.c:4300 [inline]
->>>>   __se_sys_mkdir fs/namei.c:4298 [inline]
->>>>   __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
->>>>   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
->>>>   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
->>>>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
->>>> RIP: 0033:0x7fbdd6057a99
->>>>
->>>> Add a check for key length in hfs_bnode_read_key to prevent
->>>> out-of-bounds memory access. If the key length is invalid, the
->>>> key buffer is cleared, improving stability and reliability.
->>>>
->>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->>>> Reported-by:syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
->>>> Closes:https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
->>>> Cc:stable@vger.kernel.org
->>>> Signed-off-by: Vasiliy Kovalev<kovalev@altlinux.org>
->>>> ---
->>>>   fs/hfs/bnode.c     | 6 ++++++
->>>>   fs/hfsplus/bnode.c | 6 ++++++
->>>>   2 files changed, 12 insertions(+)
->>>>
->>>> diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
->>>> index 6add6ebfef8967..cb823a8a6ba960 100644
->>>> --- a/fs/hfs/bnode.c
->>>> +++ b/fs/hfs/bnode.c
->>>> @@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode *node, void *key, int off)
->>>>   	else
->>>>   		key_len = tree->max_key_len + 1;
->>>>   
->>>> +	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
->>>> +		memset(key, 0, sizeof(hfs_btree_key));
->>>> +		pr_err("hfs: Invalid key length: %d\n", key_len);
->>>> +		return;
->>>> +	}
->>>> +
->>>>   	hfs_bnode_read(node, key, off, key_len);
->>>>   }
->> Simpler the better.
->>
->> Our fix was released back in February. (There are other issues in our attempt I
->> admit).
->>
->> https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/jammy/commit/?id=2e8d8dffa2e0b5291522548309ec70428be7cf5a
->>
->> If someone can pick this submission, I will be happy to replace our version.
-> any specific reason why you didn't submit this upstream?  Or did that
-> happen and it somehow not get picked up?
->
-> And why assign a CVE for an issue that is in the mainline kernel, last I
-> checked, Canonical was NOT allowed to do that.
->
-> Please work to revoke that CVE and ask for one properly.
->
-> thanks,
->
-> greg k-h
->
+Applied as 6.15-rc material, thanks!
 
