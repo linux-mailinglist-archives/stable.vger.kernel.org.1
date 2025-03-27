@@ -1,80 +1,119 @@
-Return-Path: <stable+bounces-126884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF87A7372C
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 17:43:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71733A73772
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 17:56:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FCE4188C911
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 16:42:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D007B3BEBD2
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 16:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BC71B043C;
-	Thu, 27 Mar 2025 16:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CC2218EBE;
+	Thu, 27 Mar 2025 16:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eKzFd5Q1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VifKqujm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6301A00D1;
-	Thu, 27 Mar 2025 16:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DAA217670
+	for <stable@vger.kernel.org>; Thu, 27 Mar 2025 16:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743093753; cv=none; b=tXZRHtA93wC0mjovTAaIXTaKypQmJsPjvBw90c4C9/UpR9mkQvN5wEDluyzNwPLM58NTG7XUrAFBt7tEP8/LnkFV5kyDVMV2SznV1R4/pcSBXJHvYMTa+HXzvURlVWyJmMEY1ObL7R9VzHcOc8ym9K662rhdifp7Iq1AxUAmLfQ=
+	t=1743094542; cv=none; b=SMV6wH2y+kMcUjg/t93U8RHBA19xCqRtj49MqJPQHpdUWJnHEyoa1cDLI0uSj4oSLw+hZRmJBhFcuQTtan4GwsghWO2Sfs2rjzHFVsNyF409Crnn9aYB1fD9zMDUxSDN/Zqt2+A8m33PLpUpZTAxghnzss9DH4XJvb6VjD3noWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743093753; c=relaxed/simple;
-	bh=QyH77tECH3lylpaKyou3K7E3snQSAJIhR+N1IUAgi74=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fhk82+sqdwCfgcc9QDtwT4IlEtlN1XKMcNPp48ygD2QFnL9JjmtCPLHVwQzyb7h49UzTkIgJcRiHcFKW1ad+VaPnVhFKmnfnC8ivGUNgEair0buqs44jkFJQWKH8Z/Qrk0R4M0gDWBwiwN16jm4306FEzxUQZX0aj5UWmwsGjIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eKzFd5Q1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A43C4CEDD;
-	Thu, 27 Mar 2025 16:42:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743093752;
-	bh=QyH77tECH3lylpaKyou3K7E3snQSAJIhR+N1IUAgi74=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eKzFd5Q1gv6S4vMmsJlrOy8tVOkL3QoYdYVyoWXZHR8rCdqsBWNeeoThrTDPKrGJ/
-	 P5hUtgsIfH7HMHZ+nIjVS7TmPSu5MyENL7uXNuY+3bENEclSCwoovuR8sw2LLD3yGM
-	 ZSspOavMRFSBPPiIk6/tb+EiVNiSSwGhkxX2GSMMVuf2mBqebTQ0HUCCVcEp5pGKDl
-	 en0jKCEWsM3Iier9NbtVzy6sk32xNuDkMe25Edq32hyl8M7ZfZY4O//VjuRCr7SkBB
-	 98Hoxh9L5YNeAyyvTewGFzzuPyxUmYEAnW8R5XjRlmQ9hMh6WALQYW0Ny0k4GYZ/xL
-	 LPt97A7IHKojA==
-Date: Thu, 27 Mar 2025 09:42:31 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>,
-	stable@vger.kernel.org, David Binderman <dcb314@hotmail.com>
-Subject: Re: [PATCH] arm/crc-t10dif: fix use of out-of-scope array in
- crc_t10dif_arch()
-Message-ID: <20250327164231.GD1425@sol.localdomain>
-References: <20250326200812.125574-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1743094542; c=relaxed/simple;
+	bh=nj7ctlLUPBhXLU2hYbBq2i6X82dxxo6rB22cQvrf4cU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WHQNwDqbVh7J8k2hG/ia9w7TQbkmOjdlVg3Q7zEg7ohFZ+3jbhk1R0y9KtGmqOfMQHILdcspBLYp5wBJRw+fmIYf69oHdPrOjHoWggazhTn2JzT2bz0Jfyb0v0QkpdkguYvywitUzLwVslLXwr+el0B9LiUWgM7dsrSVIsukkvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VifKqujm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743094539;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VbX/5Ob9pOtkWAganTWpzVv74gSf/f5jc7A7ck7dnNQ=;
+	b=VifKqujmjPC1WuS8zvqOhytmcVhaJ+D43pGFXPTil2uf2hbcDeZ80eVyBLcH8le7a/lErP
+	WfNx5QNUSnGpX7hE04rcUtZZEWLQlZ3J2PR2vjCSx7573spteb5jIboXF9r4X/MFmxmlyO
+	jktG6g5LknagXWivd4bCF3Erhkhn8IY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-499-SmbQ37vyPRqr8ezw_g485w-1; Thu,
+ 27 Mar 2025 12:55:36 -0400
+X-MC-Unique: SmbQ37vyPRqr8ezw_g485w-1
+X-Mimecast-MFC-AGG-ID: SmbQ37vyPRqr8ezw_g485w_1743094535
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB9E518004A9;
+	Thu, 27 Mar 2025 16:55:34 +0000 (UTC)
+Received: from x1.redhat.com (unknown [10.44.32.148])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B1BFC180174E;
+	Thu, 27 Mar 2025 16:55:31 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tianshu Qiu <tian.shu.qiu@intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] media: ov2740: Move pm-runtime cleanup on probe-errors to proper place
+Date: Thu, 27 Mar 2025 17:55:29 +0100
+Message-ID: <20250327165529.31388-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250326200812.125574-1-ebiggers@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Wed, Mar 26, 2025 at 01:08:12PM -0700, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> Fix a silly bug where an array was used outside of its scope.
-> 
-> Fixes: 1684e8293605 ("arm/crc-t10dif: expose CRC-T10DIF function through lib")
-> Cc: stable@vger.kernel.org
-> Reported-by: David Binderman <dcb314@hotmail.com>
-> Closes: https://lore.kernel.org/r/AS8PR02MB102170568EAE7FFDF93C8D1ED9CA62@AS8PR02MB10217.eurprd02.prod.outlook.com
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
->  arch/arm/lib/crc-t10dif-glue.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+When v4l2_subdev_init_finalize() fails no changes have been made to
+the runtime-pm device state yet, so the probe_error_media_entity_cleanup
+rollback path should not touch the runtime-pm device state.
 
-Applied to https://web.git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git/log/?h=crc-next
+Instead this should be done from the probe_error_v4l2_subdev_cleanup
+rollback path. Note the pm_runtime_xxx() calls are put above
+the v4l2_subdev_cleanup() call to have the reverse call order of probe().
 
-- Eric
+Fixes: 289c25923ecd ("media: ov2740: Use sub-device active state")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Changes in v2:
+- Add Fixes: tag
+---
+ drivers/media/i2c/ov2740.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/i2c/ov2740.c b/drivers/media/i2c/ov2740.c
+index 80d151e8ae29..6cf461e3373c 100644
+--- a/drivers/media/i2c/ov2740.c
++++ b/drivers/media/i2c/ov2740.c
+@@ -1456,12 +1456,12 @@ static int ov2740_probe(struct i2c_client *client)
+ 	return 0;
+ 
+ probe_error_v4l2_subdev_cleanup:
++	pm_runtime_disable(&client->dev);
++	pm_runtime_set_suspended(&client->dev);
+ 	v4l2_subdev_cleanup(&ov2740->sd);
+ 
+ probe_error_media_entity_cleanup:
+ 	media_entity_cleanup(&ov2740->sd.entity);
+-	pm_runtime_disable(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
+ 
+ probe_error_v4l2_ctrl_handler_free:
+ 	v4l2_ctrl_handler_free(ov2740->sd.ctrl_handler);
+-- 
+2.49.0
+
 
