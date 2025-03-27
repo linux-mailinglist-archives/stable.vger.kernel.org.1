@@ -1,193 +1,148 @@
-Return-Path: <stable+bounces-126841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10046A72CFE
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 10:57:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAAD0A72D87
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 11:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B6093BC3F3
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 09:55:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 805173B05D5
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 10:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DCE20E31E;
-	Thu, 27 Mar 2025 09:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B5C20E70D;
+	Thu, 27 Mar 2025 10:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="H9BSvqmm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71274210F59
-	for <stable@vger.kernel.org>; Thu, 27 Mar 2025 09:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43FF20E6FB;
+	Thu, 27 Mar 2025 10:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743069268; cv=none; b=Sh8AJLujYHAMgCI7/pwQV6OmIdeer05wmbEUBEYp/KoNLj2M0Bpw2tPwEN2e9Ri2I5ec4593sdQrYM8lalMxysedg5UXNFBU003bFV3osctHOln+OXrggUVkDro9y7PI37nfcvmmAdKfYNhrxlqI8lixYdGzuKyM43OmlDGuVYg=
+	t=1743070485; cv=none; b=CrGiG925HQuoKR1fZozIyVKsWWjakOAkkbujJ4lsmyDBPW0trTo8ZBSV2cB4uri9DC3gKSRwDmTkAcdV/QLg+v12cbZXNUcrKuOP0Aa+QwdNGEFKDsm+etOiCAEImk2qZenOMPsqJDPLoWgeKqFTyhusga+r4IuTP8RNEQAVyt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743069268; c=relaxed/simple;
-	bh=6zabux+aTIAgQ+DcCLgG2UmoTfa5XtXUF9mOrLWwi8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEGQEtwaVuMCMX+lWgaGtVsqgK2U1o9TQ8wwrt3hDGzJf1gZum0/uYkByl/2I3+/qQ4AtcRMkVTTH4MZ7THvbaCwIPgkwV7Ak+Ouc4R8cYB1N5QNG8KZ4wPg9DCanhbqK/5XRCGh+AFE3shx6wMUzwKsfMT13JXmsdf3DzDvJDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.198])
-	by gateway (Coremail) with SMTP id _____8DxjXJQIOVnjBGoAA--.19362S3;
-	Thu, 27 Mar 2025 17:54:24 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.198])
-	by front1 (Coremail) with SMTP id qMiowMAxSsQpIOVned1iAA--.26323S4;
-	Thu, 27 Mar 2025 17:54:23 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH V2 3/3] drm/amd/display: Protect FPU in dml2_validate()/dml21_validate()
-Date: Thu, 27 Mar 2025 17:53:34 +0800
-Message-ID: <20250327095334.3327111-3-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250327095334.3327111-1-chenhuacai@loongson.cn>
-References: <20250327095334.3327111-1-chenhuacai@loongson.cn>
+	s=arc-20240116; t=1743070485; c=relaxed/simple;
+	bh=rnzBvdRbSTyIG6cy6l+uIjLmvLq18jqXRfIor1Iq/hI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NhzCAJTtUiSqrNjUedPtKXTi/NPZ8ZJ+xRHLDKhoIFO4G33m8goMH807bZq89k0+fBV6efRYAk5HSg91/8MXyLHasM+Qwq2xYK4lFr6toxttYy77orEzj5PCFP2Au7MP+5uSWCAiLCbtnGwGWTNLdS1D3J7Rp+A3kS2RO7NvEdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=H9BSvqmm; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 52RAEEx22362126
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Mar 2025 05:14:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1743070454;
+	bh=X9teR79IJRxW3SQmh9ToGw/nunmVP9SzQFNAQN9VgFI=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=H9BSvqmmEyWsWMn3L2ssLCJHJPF2vfzqmRaEY7qtbvYc6QUFro12AhoQf3CJcKqiZ
+	 GlGqs0yP4Ky0QNl1NzgYsUOiwZpta3ABZ+WWiFmZpuKy5jH+Y5TqLrUMntqOy8GkDA
+	 mFlJ322ej1oO72C4dtoqDP572Ojsk4sGSERx46iY=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 52RAEEqL111973
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 27 Mar 2025 05:14:14 -0500
+Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 27
+ Mar 2025 05:14:13 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 27 Mar 2025 05:14:13 -0500
+Received: from [172.24.227.193] (devarsh-precision-tower-3620.dhcp.ti.com [172.24.227.193])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 52RAE9Zj131057;
+	Thu, 27 Mar 2025 05:14:10 -0500
+Message-ID: <7a6966e8-dbbe-49de-84e4-127c22c7ca33@ti.com>
+Date: Thu, 27 Mar 2025 15:44:09 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMAxSsQpIOVned1iAA--.26323S4
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3AFy5tw4fJw45urWrZr4fZwc_yoW7Zw18pr
-	yUJr1rCrW8JF1Utw1UA3WUXF15GwnxZF18JryDJw13Ww1UXw1DJryDJrW7GrW5JF45JF13
-	ta1UJw4Utr18C3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9jb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y
-	6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
-	AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE
-	2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
-	C2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kfnx
-	nUUI43ZEXa7IU8EeHDUUUUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/6] media: ti: j721e-csi2rx: Fix source subdev link
+ creation
+To: Jai Luthra <jai.luthra@ideasonboard.com>,
+        Jai Luthra
+	<jai.luthra@linux.dev>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans
+ Verkuil <hverkuil@xs4all.nl>,
+        Tomi Valkeinen
+	<tomi.valkeinen@ideasonboard.com>,
+        Sakari Ailus
+	<sakari.ailus@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>
+CC: Rishikesh Donadkar <r-donadkar@ti.com>,
+        Vaishnav Achath
+	<vaishnav.a@ti.com>,
+        Changhuang Liang <changhuang.liang@starfivetech.com>,
+        <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250324-probe_fixes-v1-0-5cd5b9e1cfac@ideasonboard.com>
+ <20250324-probe_fixes-v1-3-5cd5b9e1cfac@ideasonboard.com>
+Content-Language: en-US
+From: Devarsh Thakkar <devarsht@ti.com>
+In-Reply-To: <20250324-probe_fixes-v1-3-5cd5b9e1cfac@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Commit 7da55c27e76749b9 ("drm/amd/display: Remove incorrect FP context
-start") removes the FP context protection of dml2_create(), and it said
-"All the DC_FP_START/END should be used before call anything from DML2".
+On 24/03/25 17:31, Jai Luthra wrote:
+> We don't use OF ports and remote-endpoints to connect the CSI2RX bridge
+> and this device in the device tree, thus it is wrong to use
+> v4l2_create_fwnode_links_to_pad() to create the media graph link between
+> the two.
+> 
+> It works out on accident, as neither the source nor the sink implement
+> the .get_fwnode_pad() callback, and the framework helper falls back on
+> using the first source and sink pads to create the link between them.
+> 
+> Instead, manually create the media link from the first source pad of the
+> bridge to the first sink pad of the J721E CSI2RX.
+> 
+> Fixes: b4a3d877dc92 ("media: ti: Add CSI2RX support for J721E")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
 
-However, dml2_validate()/dml21_validate() are not protected from their
-callers, causing such errors:
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
 
- do_fpu invoked from kernel context![#1]:
- CPU: 10 UID: 0 PID: 331 Comm: kworker/10:1H Not tainted 6.14.0-rc6+ #4
- Workqueue: events_highpri dm_irq_work_func [amdgpu]
- pc ffff800003191eb0 ra ffff800003191e60 tp 9000000107a94000 sp 9000000107a975b0
- a0 9000000140ce4910 a1 0000000000000000 a2 9000000140ce49b0 a3 9000000140ce49a8
- a4 9000000140ce49a8 a5 0000000100000000 a6 0000000000000001 a7 9000000107a97660
- t0 ffff800003790000 t1 9000000140ce5000 t2 0000000000000001 t3 0000000000000000
- t4 0000000000000004 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
- t8 0000000100000000 u0 ffff8000031a3b9c s9 9000000130bc0000 s0 9000000132400000
- s1 9000000140ec0000 s2 9000000132400000 s3 9000000140ce0000 s4 90000000057f8b88
- s5 9000000140ec0000 s6 9000000140ce4910 s7 0000000000000001 s8 9000000130d45010
- ra: ffff800003191e60 dml21_map_dc_state_into_dml_display_cfg+0x40/0x1140 [amdgpu]
-   ERA: ffff800003191eb0 dml21_map_dc_state_into_dml_display_cfg+0x90/0x1140 [amdgpu]
-  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-  PRMD: 00000004 (PPLV0 +PIE -PWE)
-  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
- ESTAT: 000f0000 [FPD] (IS= ECode=15 EsubCode=0)
-  PRID: 0014d010 (Loongson-64bit, Loongson-3C6000/S)
- Process kworker/10:1H (pid: 331, threadinfo=000000007bf9ddb0, task=00000000cc4ab9f3)
- Stack : 0000000100000000 0000043800000780 0000000100000001 0000000100000001
-         0000000000000000 0000078000000000 0000000000000438 0000078000000000
-         0000000000000438 0000078000000000 0000000000000438 0000000100000000
-         0000000100000000 0000000100000000 0000000100000000 0000000100000000
-         0000000000000001 9000000140ec0000 9000000132400000 9000000132400000
-         ffff800003408000 ffff800003408000 9000000132400000 9000000140ce0000
-         9000000140ce0000 ffff800003193850 0000000000000001 9000000140ec0000
-         9000000132400000 9000000140ec0860 9000000140ec0738 0000000000000001
-         90000001405e8000 9000000130bc0000 9000000140ec02a8 ffff8000031b5db8
-         0000000000000000 0000043800000780 0000000000000003 ffff8000031b79cc
-         ...
- Call Trace:
- [<ffff800003191eb0>] dml21_map_dc_state_into_dml_display_cfg+0x90/0x1140 [amdgpu]
- [<ffff80000319384c>] dml21_validate+0xcc/0x520 [amdgpu]
- [<ffff8000031b8948>] dc_validate_global_state+0x2e8/0x460 [amdgpu]
- [<ffff800002e94034>] create_validate_stream_for_sink+0x3d4/0x420 [amdgpu]
- [<ffff800002e940e4>] amdgpu_dm_connector_mode_valid+0x64/0x240 [amdgpu]
- [<900000000441d6b8>] drm_connector_mode_valid+0x38/0x80
- [<900000000441d824>] __drm_helper_update_and_validate+0x124/0x3e0
- [<900000000441ddc0>] drm_helper_probe_single_connector_modes+0x2e0/0x620
- [<90000000044050dc>] drm_client_modeset_probe+0x23c/0x1780
- [<9000000004420384>] __drm_fb_helper_initial_config_and_unlock+0x44/0x5a0
- [<9000000004403acc>] drm_client_dev_hotplug+0xcc/0x140
- [<ffff800002e9ab50>] handle_hpd_irq_helper+0x1b0/0x1e0 [amdgpu]
- [<90000000038f5da0>] process_one_work+0x160/0x300
- [<90000000038f6718>] worker_thread+0x318/0x440
- [<9000000003901b8c>] kthread+0x12c/0x220
- [<90000000038b1484>] ret_from_kernel_thread+0x8/0xa4
-
-Unfortunately, protecting dml2_validate()/dml21_validate() out of DML2
-causes "sleeping function called from invalid context", so protect them
-with DC_FP_START() and DC_FP_END() inside.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- .../gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c    | 9 +++++++--
- drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c       | 5 +++++
- 2 files changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-index bbc798e039f5..d124c38fbfd3 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-@@ -273,11 +273,16 @@ bool dml21_validate(const struct dc *in_dc, struct dc_state *context, struct dml
- {
- 	bool out = false;
- 
-+	DC_FP_START();
-+
- 	/* Use dml_validate_only for fast_validate path */
--	if (fast_validate) {
-+	if (fast_validate)
- 		out = dml21_check_mode_support(in_dc, context, dml_ctx);
--	} else
-+	else
- 		out = dml21_mode_check_and_programming(in_dc, context, dml_ctx);
-+
-+	DC_FP_END();
-+
- 	return out;
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-index fc551c63c9e8..9cd140df132a 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-@@ -732,11 +732,16 @@ bool dml2_validate(const struct dc *in_dc, struct dc_state *context, struct dml2
- 		return out;
- 	}
- 
-+	DC_FP_START();
-+
- 	/* Use dml_validate_only for fast_validate path */
- 	if (fast_validate)
- 		out = dml2_validate_only(context);
- 	else
- 		out = dml2_validate_and_build_resource(in_dc, context);
-+
-+	DC_FP_END();
-+
- 	return out;
- }
- 
--- 
-2.47.1
-
+Regards
+Devarsh
+> ---
+>   drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+> index 6d406925e092660cb67c04cc2a7e1e10c14e295e..ad51d033b6725426550578bdac1bae8443458f13 100644
+> --- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+> +++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
+> @@ -53,6 +53,8 @@
+>   #define DRAIN_TIMEOUT_MS		50
+>   #define DRAIN_BUFFER_SIZE		SZ_32K
+>   
+> +#define CSI2RX_BRIDGE_SOURCE_PAD	1
+> +
+>   struct ti_csi2rx_fmt {
+>   	u32				fourcc;	/* Four character code. */
+>   	u32				code;	/* Mbus code. */
+> @@ -427,8 +429,9 @@ static int csi_async_notifier_complete(struct v4l2_async_notifier *notifier)
+>   	if (ret)
+>   		return ret;
+>   
+> -	ret = v4l2_create_fwnode_links_to_pad(csi->source, &csi->pad,
+> -					      MEDIA_LNK_FL_IMMUTABLE | MEDIA_LNK_FL_ENABLED);
+> +	ret = media_create_pad_link(&csi->source->entity, CSI2RX_BRIDGE_SOURCE_PAD,
+> +				    &vdev->entity, csi->pad.index,
+> +				    MEDIA_LNK_FL_IMMUTABLE | MEDIA_LNK_FL_ENABLED);
+>   
+>   	if (ret) {
+>   		video_unregister_device(vdev);
+> 
 
