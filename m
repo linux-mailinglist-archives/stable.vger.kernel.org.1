@@ -1,134 +1,100 @@
-Return-Path: <stable+bounces-126820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A3FA72943
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 04:31:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF34A72951
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 04:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B45188F21D
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 03:29:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A67F6188FF9E
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 03:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F4B1C3039;
-	Thu, 27 Mar 2025 03:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A2D145B27;
+	Thu, 27 Mar 2025 03:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZPmU6itZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fE3RwaWE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC6E1F8729;
-	Thu, 27 Mar 2025 03:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1119F335C0
+	for <stable@vger.kernel.org>; Thu, 27 Mar 2025 03:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743045882; cv=none; b=QoS6MWgJEwFUIwOPY0pOpzjxUY08lYg/EcIC04sniC01aq+gUY9bfrmK6nf82JnSz6JcnfkckQadAqrZi8yd53btfMErHRtQ32JtjLwaGRw4LWQHVnPkmJRbNSsyZ5bNJ93sxbhpJ8tMz5QgGHnL9i13xeEExAw34qSEmIQtCZs=
+	t=1743046714; cv=none; b=qHlohXbDnMcdEsJExuraJ61WjWOcxL8QQvX5PGZczjTwovKcgxw3Z7dV3BKLnJ44vL2SlDqvHHdUBNaL8Z2efYm6Wpz/Kml8BTbqB8qW7rm4rQwx4iMUcPD+AyLbzjJWv5JRXVPv8M+/5EfQIcGv088kMlfYehdvn+JE5I9zWnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743045882; c=relaxed/simple;
-	bh=D1y5O7GHFPafWCaRwvfdCQY7Fye/a1hcOZ95f7+lWic=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iPrQXqRzSIo2EpOBcnc3UobqoU3fPNGCMvdxxFt+lQxI3AFePgQuI/2vI+GKQeEwEQ69TCCUcrLoaNvG6a6JXe0JOncSUv87TEGYMDxmRYtLPvy09g0VAABVtslWP949d/It0LhfPAg06r7/p8o5mcnC58dbYz8CpnfKi+CZAEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZPmU6itZ; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2264aefc45dso15029655ad.0;
-        Wed, 26 Mar 2025 20:24:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743045880; x=1743650680; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BvDZBbhZMPX6erlds9jOpeJO2KealfqA0C2o57c54Qg=;
-        b=ZPmU6itZvQPhTatzP1N0banKJX7D5xkspNtg0Mit1knMqgfKbeKvPijgAEajvW+33A
-         tzzBOMlq2jq3SBpZN/CbAQmSFSj4/c4sdBa04c4CNIr9qu6BPlBIGPkvrgte6YW96NYb
-         bqwqJezXEkCfOMGaPD9pT+rnBr+uKa4KvnBMwEF0hR7FUXl+b8xrriMHMmYHNIEYXbLs
-         L8zFHcaWKLsWakNgd7sysN2OKVmngLWbrE7KdkgGwcqSLyDanVv1jtg2+LHFJEmOANhm
-         X/5RP7xSH9Ql7Ghs4K9YljgININI7LYPPX5ajXh2wYjRbmXsx28HLKkTVNUyfZj4diFp
-         bzlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743045880; x=1743650680;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BvDZBbhZMPX6erlds9jOpeJO2KealfqA0C2o57c54Qg=;
-        b=HGY4qQDFfg+PsZBhxo+1KhyR7+vDZIh5bEofYyEHKk6sPgeD4U+3vJKWFEXCqZoQgM
-         /uVIZ/OE/Qd9V2Omu/+eS1t9PWhNW9BdLHZ6jPDWRriOrtJoZDJcODhDdvZAvRIrx355
-         vadN248f1ocUhfCYMJLY2QxTk+sHOT+Hmkt3RszbDWarjYLIirrK6IbuCjCs9FBg14HA
-         oF2nstA/1Mq/GVCw9veFoIghZjbzy3dLxJGSVMB6HF+ZHBMw5Cjre10OK/W0r1WvjDZW
-         eA/GiitkyU0ZU2SoU+YOQn2qJFn2kj98RgXD+SYHjjPlKMNExz+Yaq4yQSogTsVVQZZu
-         T7Hw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwa6OgL2V2yH4LChMfq8Q7R5NBuh8lqtC1ILdWfQ+IOivixIgJkKdclll/RRgj6LdALuQC4PkX@vger.kernel.org, AJvYcCWTq5H5sDWYAqXqxstWjH4T4DO4qZ82y8XvfnQ7uVNrAFytny9m9732fUafmRa2YfuHq+lqD0MHgd0gqvk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZat4c4Tup/yy/hTiWCthC0KLBM+Kw8E+IahMkD8zCk05T3noY
-	6yymq+iZchq9lnuSp4vMoPBs1s0/ibl4BdAfQXuPvKNxRkmi1nDS
-X-Gm-Gg: ASbGncuH4683+z7VajeBt9wYTZYqgxwLsMXcSb8zvVKS9tUSY2RyE58gZO3Ko2fP0WY
-	5OWwlE1499MEGDnTR0U95mSAoJAzfU/L8A5FaknzUCwtcLk6yCX4rSnk+xkjSGu2fzMLbwCPL0L
-	eSaQzxIVuYp0g3b46qPUPA/yXtPiBlM82dfYhXxXlFxIy9gmBn3LE1rOxi0UAn0LOsTNaxPp+xZ
-	mJZAjh898P1WyBmKdQHg1JWD8kIs52VjZyyo/XG/AvtgPC5CUtzN68mjXWPH+RpT6bi8hDb3wFS
-	QSyX/FalXemMO/SmBhYkP95AKSJ2mzi2TdV7
-X-Google-Smtp-Source: AGHT+IHd6OOeyDgumFlrKIkvH53qKhq7ryWom5Dv+FjCyOIRYvw1a98qVpzr0bR6HZjcMQv3+tTIlQ==
-X-Received: by 2002:a05:6a21:58b:b0:1f5:86f2:ba57 with SMTP id adf61e73a8af0-1fea2ef626cmr4947090637.30.1743045879679;
-        Wed, 26 Mar 2025 20:24:39 -0700 (PDT)
-Received: from apollo.localdomain ([2601:646:8201:fd20::f147])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af8a27dec60sm11911927a12.4.2025.03.26.20.24.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 20:24:39 -0700 (PDT)
-From: Khem Raj <raj.khem@gmail.com>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Kees Cook <kees@kernel.org>
-Cc: linux-mips@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Khem Raj <raj.khem@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mips: Add '-std=gnu11' to vdso CFLAGS
-Date: Wed, 26 Mar 2025 20:24:36 -0700
-Message-ID: <20250327032436.3600578-1-raj.khem@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743046714; c=relaxed/simple;
+	bh=GanYbABjnyFvDBvlDkCQrPUbi71BK1WBemPF+KREl5g=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ofyL/8hrayMfw/eWAlPlWUExQEDsI47VzNreHWf1ZAvhKWYzvy+kEx/2SWsyY9mn3MjmyybxXfh0ZMteHcRsS3dhRbmgksMGbe6+Bt1mdzi90upiGpmCxW8a4RlPMmF0dXyWdgfLpYzFxN9LKtA3r9VdtU1EzAHewmNjTADgk9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fE3RwaWE; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743046713; x=1774582713;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=GanYbABjnyFvDBvlDkCQrPUbi71BK1WBemPF+KREl5g=;
+  b=fE3RwaWEpZvSS6wI791aSTviJoMIPA4TwFnIFC2mbeXkEnAMjkl9aEvL
+   BvO3lqfDVXd6hy6y1FZ7qvZCxyma8UGosSwK6Segu0ecQU30w9BSWQc7B
+   u3mro/CV+cXZxjxWCvVoQIN9+ErJH96B0vnTEMOT0WLdXEG+HdZ4Rei44
+   XQd/eCCJy10Any56CgiIdLxh0aJoJZ70z/QeNKDgBH6agIsNdTJjSG3Kv
+   GcU9z/fTGeuSjF4cUYZxYhzpGQ6Eu5SrKqpiWLl/7mTE/X94t46LcfQjp
+   16jzodT0TZdGOJ7550GJNsoSeycEfvMOywPw873o3uFfDoiFa5MYVCDoG
+   g==;
+X-CSE-ConnectionGUID: Tm219tvmQ0S1eFHbhJ1rQg==
+X-CSE-MsgGUID: LWvO4L02Qhu4ZerDOOlAbA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44481322"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; 
+   d="scan'208";a="44481322"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 20:38:32 -0700
+X-CSE-ConnectionGUID: y02+3yFkTNa6L+1h8HMOIQ==
+X-CSE-MsgGUID: UklW+tDWSyS25P4CdN4w7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; 
+   d="scan'208";a="156000360"
+Received: from lkp-server02.sh.intel.com (HELO e98e3655d6d2) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 26 Mar 2025 20:38:31 -0700
+Received: from kbuild by e98e3655d6d2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1txe4b-0006KR-1H;
+	Thu, 27 Mar 2025 03:38:29 +0000
+Date: Thu, 27 Mar 2025 11:37:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guixin Liu <kanie@linux.alibaba.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] gpio: tegra186: fix resource handling in ACPI probe
+ path
+Message-ID: <Z-TIEgLtBPiPupAe@06395982a548>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250327032006.73798-1-kanie@linux.alibaba.com>
 
-GCC 15 changed the default C standard dialect from gnu17 to gnu23,
-which should not have impacted the kernel because it explicitly requests
-the gnu11 standard in the main Makefile. However, mips/vdso code uses
-its own CFLAGS without a '-std=' value, which break with this dialect
-change because of the kernel's own definitions of bool, false, and true
-conflicting with the C23 reserved keywords.
+Hi,
 
-  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-     11 |         false   = 0,
-        |         ^~~~~
-  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
-     35 | typedef _Bool                   bool;
-        |                                 ^~~~
-  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+Thanks for your patch.
 
-Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
-these errors and make the C standard version of these areas match the
-rest of the kernel.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: Khem Raj <raj.khem@gmail.com>
-Cc: stable@vger.kernel.org
----
-v2: Filter the -std flag from KBUILD_CFLAGS instead of hardcoding
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
- arch/mips/vdso/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] gpio: tegra186: fix resource handling in ACPI probe path
+Link: https://lore.kernel.org/stable/20250327032006.73798-1-kanie%40linux.alibaba.com
 
-diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-index fb4c493aaffa..69d4593f64fe 100644
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -27,6 +27,7 @@ endif
- # offsets.
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
-+	$(filter -std=%,$(KBUILD_CFLAGS)) \
- 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
- 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
