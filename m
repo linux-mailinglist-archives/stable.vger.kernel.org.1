@@ -1,134 +1,196 @@
-Return-Path: <stable+bounces-126829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DF1A72A93
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 08:29:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB872A72AA1
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 08:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E617618947C5
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 07:29:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 510501896FA1
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 07:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662E91F4C99;
-	Thu, 27 Mar 2025 07:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9281FF61D;
+	Thu, 27 Mar 2025 07:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XVH+7Azp";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dCMw+44a"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YUp2PcTJ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2565A1F4C84;
-	Thu, 27 Mar 2025 07:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0850F1FF613
+	for <stable@vger.kernel.org>; Thu, 27 Mar 2025 07:36:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743060580; cv=none; b=Z68eazVQj0pLYIO5u/s5mwJt2NC/q1vfNZAZq7UsSXiRGi7e9ard0XISPkWowJqXA2zi8NEhkU5RauktzaAIwAmB7kV7JAG3/dmMO8zBAmC8ncEjF0lsnfQ2tU9ETcNIg3yjRBjSjbjwQ0IAjUOBMgoR8SOy0nFjQjcHIoYLqx8=
+	t=1743060964; cv=none; b=n192VvDwq8I9Mw0Kk+Ea7LpY23ChqX1tv4HTtqogCcTKjtBJJ9klIucBRoW7yYW/KtGHwEyP04fZUv/B/OStelNx1Ez0xT3EmopSYPdIgfTHJONblq/5+A8+NxHWqC9IBFDVJ8gJkxftJrO9t6SlcV4lnKhP1GW2eCfplqoUbtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743060580; c=relaxed/simple;
-	bh=3IxE9eOQMfi7kEhpK35vuO2kbQmb/e1Ie+KL3VDxl8c=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=oqRCC+CrdJpihufG0WN1AObrSjymnjnJjIWvFOvDOPU6XudjsHrXaMFcvyn4eTJloa5Qct8SUhVi7hcUK+m7Y+rayO1LCH4OgClLGlAM5/A2ILicxu0mpWuXpDJLhUFR2OegvW6sACpUTMdtHHPehOqJ5gwP1Hwl9Yo6hR72fwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XVH+7Azp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dCMw+44a; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 27 Mar 2025 07:29:31 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743060575;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VQ9s+vlxdp0zs18EJ6/ldypBQXUY54t96roc7c4NIOA=;
-	b=XVH+7AzpToqVeEhD5LA7DpK0KLNZp88y5k/2MJTFuJ6a5M5KR3lvtV0ZYsY5s7zvkZjcLA
-	T57M6q4MSQPPlFgAVCTG3f4x5ipwj2xF20DS1ADOveC472JYTxpPPcgcEYkc4OgI2nY14u
-	KufhKdelnnXX5mq6IXnuChEweFYttqe/aI7rfxVS2CBE8uroscBXlwlm6JmuD2T/sXRNAn
-	J0nYomDzu0pVqEId1fqkNyEKJxSVIjmlLLg2IqI2V0MhdJ1X6HKcnzWAP9DqtAuzXJKVVU
-	Wl6OikTn88ctUvcqT4H2k4u8URTo6CQnfFCLzIAf6+8NofAmXCPq651HzKJ7RA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743060575;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VQ9s+vlxdp0zs18EJ6/ldypBQXUY54t96roc7c4NIOA=;
-	b=dCMw+44ax/RBvMafWEcCGvj5a7AFaOrLxv/SqwDOz2suBWHToM63BCPvFN9muWJCNXccZk
-	03SqXo8SKgl2cyCQ==
-From: "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] locking/lockdep: Decrease nr_unused_locks if
- lock unused in zap_class()
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Waiman Long <longman@redhat.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250326180831.510348-1-boqun.feng@gmail.com>
-References: <20250326180831.510348-1-boqun.feng@gmail.com>
+	s=arc-20240116; t=1743060964; c=relaxed/simple;
+	bh=yrY8VfjNeosBxXXkOauKnIhZOnR93pLSzmdIVaLmK3o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=dl/h54uNrkR/c4Fl7cuUsqIgdZ+1Fd4+Jh4G78xeqLcqrJURmuUfGhpg8meoTyAyAQKJgMzLU5MrvNE0RQ8fqp10TFOQ1Tpe2lnVtBh6KuOKn0yIHxulqDSXkfWZ53po1eMk1BIIkjoT7iTZsJ4gp7LseeLNJeeHOYFg5Alk3yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YUp2PcTJ; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743060962; x=1774596962;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=yrY8VfjNeosBxXXkOauKnIhZOnR93pLSzmdIVaLmK3o=;
+  b=YUp2PcTJRlL40XbEeeH6NlaAoKNl5WaILSx+S2vMJf3WaX3mGSfwCxO1
+   259QjtbWJUcnRIV/8dHrZQ44NOc0ohRllhBhyjdH/wRveOeajJJbSWkQg
+   Wr9p32M2Jn029J0FpMAdVLEycFuGfcrDey115Or6Nt3fiQxhWq0Z2gKjR
+   ij57rzTHaAuxQSrDL3U9xQ0z/gUUWSfbf1PUMq35p3zYRxR/FgFkhb2qh
+   kILmcBNo9hvYHqMW9r16pMGoQO9QVJsZc8fcgeSThmd03WkwjZWQ5Whyb
+   7lRZm/xMh4oSWVw2hvjBgKhG6T0zDZ2LgogmsJE14RYdT9aoCFGtGUH1S
+   g==;
+X-CSE-ConnectionGUID: J6e3ltYgSkCbYagGW7Vcjw==
+X-CSE-MsgGUID: 9hGYRXnaQ1eVl2h6LNCBTQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44297070"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; 
+   d="scan'208";a="44297070"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 00:36:01 -0700
+X-CSE-ConnectionGUID: rvqhyw/1TaqgLYess/peMw==
+X-CSE-MsgGUID: 7pjgDcxfTh+aro5gLqyw8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; 
+   d="scan'208";a="125029781"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.17])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 00:35:59 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] drm/i915/dp: Reject HBR3 when sink doesn't
+ support TPS4
+In-Reply-To: <20250306210740.11886-1-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250303123952.5669-1-ville.syrjala@linux.intel.com>
+ <20250306210740.11886-1-ville.syrjala@linux.intel.com>
+Date: Thu, 27 Mar 2025 09:35:56 +0200
+Message-ID: <87h63f6i3n.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174306057203.14745.17035425599679029480.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the locking/urgent branch of tip:
+On Thu, 06 Mar 2025, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> According to the DP spec TPS4 is mandatory for HBR3. We have
+> however seen some broken eDP sinks that violate this and
+> declare support for HBR3 without TPS4 support.
+>
+> At least in the case of the icl Dell XPS 13 7390 this results
+> in an unstable output.
+>
+> Reject HBR3 when TPS4 supports is unavailable on the sink.
+>
+> v2: Leave breadcrumbs in dmesg to avoid head scratching (Jani)
+>
+> Cc: stable@vger.kernel.org
+> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
-Commit-ID:     495f53d5cca0f939eaed9dca90b67e7e6fb0e30c
-Gitweb:        https://git.kernel.org/tip/495f53d5cca0f939eaed9dca90b67e7e6fb0e30c
-Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Wed, 26 Mar 2025 11:08:30 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 27 Mar 2025 08:23:17 +01:00
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-locking/lockdep: Decrease nr_unused_locks if lock unused in zap_class()
+> ---
+>  drivers/gpu/drm/i915/display/intel_dp.c | 49 +++++++++++++++++++++----
+>  1 file changed, 42 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i9=
+15/display/intel_dp.c
+> index 205ec315b413..70f5d1465f81 100644
+> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+> @@ -172,10 +172,28 @@ int intel_dp_link_symbol_clock(int rate)
+>=20=20
+>  static int max_dprx_rate(struct intel_dp *intel_dp)
+>  {
+> +	struct intel_display *display =3D to_intel_display(intel_dp);
+> +	struct intel_encoder *encoder =3D &dp_to_dig_port(intel_dp)->base;
+> +	int max_rate;
+> +
+>  	if (intel_dp_tunnel_bw_alloc_is_enabled(intel_dp))
+> -		return drm_dp_tunnel_max_dprx_rate(intel_dp->tunnel);
+> +		max_rate =3D drm_dp_tunnel_max_dprx_rate(intel_dp->tunnel);
+> +	else
+> +		max_rate =3D drm_dp_bw_code_to_link_rate(intel_dp->dpcd[DP_MAX_LINK_RA=
+TE]);
+>=20=20
+> -	return drm_dp_bw_code_to_link_rate(intel_dp->dpcd[DP_MAX_LINK_RATE]);
+> +	/*
+> +	 * Some broken eDP sinks illegally declare support for
+> +	 * HBR3 without TPS4, and are unable to produce a stable
+> +	 * output. Reject HBR3 when TPS4 is not available.
+> +	 */
+> +	if (max_rate >=3D 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
+> +		drm_dbg_kms(display->drm,
+> +			    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
+> +			    encoder->base.base.id, encoder->base.name);
+> +		max_rate =3D 540000;
+> +	}
+> +
+> +	return max_rate;
+>  }
+>=20=20
+>  static int max_dprx_lane_count(struct intel_dp *intel_dp)
+> @@ -4170,6 +4188,9 @@ static void intel_edp_mso_init(struct intel_dp *int=
+el_dp)
+>  static void
+>  intel_edp_set_sink_rates(struct intel_dp *intel_dp)
+>  {
+> +	struct intel_display *display =3D to_intel_display(intel_dp);
+> +	struct intel_encoder *encoder =3D &dp_to_dig_port(intel_dp)->base;
+> +
+>  	intel_dp->num_sink_rates =3D 0;
+>=20=20
+>  	if (intel_dp->edp_dpcd[0] >=3D DP_EDP_14) {
+> @@ -4180,10 +4201,7 @@ intel_edp_set_sink_rates(struct intel_dp *intel_dp)
+>  				 sink_rates, sizeof(sink_rates));
+>=20=20
+>  		for (i =3D 0; i < ARRAY_SIZE(sink_rates); i++) {
+> -			int val =3D le16_to_cpu(sink_rates[i]);
+> -
+> -			if (val =3D=3D 0)
+> -				break;
+> +			int rate;
+>=20=20
+>  			/* Value read multiplied by 200kHz gives the per-lane
+>  			 * link rate in kHz. The source rates are, however,
+> @@ -4191,7 +4209,24 @@ intel_edp_set_sink_rates(struct intel_dp *intel_dp)
+>  			 * back to symbols is
+>  			 * (val * 200kHz)*(8/10 ch. encoding)*(1/8 bit to Byte)
+>  			 */
+> -			intel_dp->sink_rates[i] =3D (val * 200) / 10;
+> +			rate =3D le16_to_cpu(sink_rates[i]) * 200 / 10;
+> +
+> +			if (rate =3D=3D 0)
+> +				break;
+> +
+> +			/*
+> +			 * Some broken eDP sinks illegally declare support for
+> +			 * HBR3 without TPS4, and are unable to produce a stable
+> +			 * output. Reject HBR3 when TPS4 is not available.
+> +			 */
+> +			if (rate >=3D 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
+> +				drm_dbg_kms(display->drm,
+> +					    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
+> +					    encoder->base.base.id, encoder->base.name);
+> +				break;
+> +			}
+> +
+> +			intel_dp->sink_rates[i] =3D rate;
+>  		}
+>  		intel_dp->num_sink_rates =3D i;
+>  	}
 
-Currently, when a lock class is allocated, nr_unused_locks will be
-increased by 1, until it gets used: nr_unused_locks will be decreased by
-1 in mark_lock(). However, one scenario is missed: a lock class may be
-zapped without even being used once. This could result into a situation
-that nr_unused_locks != 0 but no unused lock class is active in the
-system, and when `cat /proc/lockdep_stats`, a WARN_ON() will
-be triggered in a CONFIG_DEBUG_LOCKDEP=y kernel:
-
-  [...] DEBUG_LOCKS_WARN_ON(debug_atomic_read(nr_unused_locks) != nr_unused)
-  [...] WARNING: CPU: 41 PID: 1121 at kernel/locking/lockdep_proc.c:283 lockdep_stats_show+0xba9/0xbd0
-
-And as a result, lockdep will be disabled after this.
-
-Therefore, nr_unused_locks needs to be accounted correctly at
-zap_class() time.
-
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250326180831.510348-1-boqun.feng@gmail.com
----
- kernel/locking/lockdep.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index b15757e..58d78a3 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -6264,6 +6264,9 @@ static void zap_class(struct pending_free *pf, struct lock_class *class)
- 		hlist_del_rcu(&class->hash_entry);
- 		WRITE_ONCE(class->key, NULL);
- 		WRITE_ONCE(class->name, NULL);
-+		/* Class allocated but not used, -1 in nr_unused_locks */
-+		if (class->usage_mask == 0)
-+			debug_atomic_dec(nr_unused_locks);
- 		nr_lock_classes--;
- 		__clear_bit(class - lock_classes, lock_classes_in_use);
- 		if (class - lock_classes == max_lock_class_idx)
+--=20
+Jani Nikula, Intel
 
