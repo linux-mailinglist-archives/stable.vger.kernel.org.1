@@ -1,160 +1,147 @@
-Return-Path: <stable+bounces-126873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A53A7350C
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 15:55:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A54D3A73529
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 15:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E793172DAD
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 14:55:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A373A4DC9
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 14:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6E92185BD;
-	Thu, 27 Mar 2025 14:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AC65C603;
+	Thu, 27 Mar 2025 14:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jCfR81V5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jiimHST+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6305C603;
-	Thu, 27 Mar 2025 14:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E58121885D;
+	Thu, 27 Mar 2025 14:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743087349; cv=none; b=gLoCpjL9e0la1E2Z4VvmZEJaNv2PQhVpETMf542KsN9lgw2rXR9g6icMQHnfryJwsFF+7qGY8WQTXbxvw7eDV5TaTpR1g4Ci144Jc1YCNFh6d/WlFWWo8SUlsvJIL1GycdxU4FvZJ+IYTePsLpq22ORlXAah4NBL7Njv4iSyIMA=
+	t=1743087447; cv=none; b=etN7dxt+J9fhSI7Z1Qx3pkMKTe4/bt8K8XqxEUyGaTxeR+GpKYHPcHnL+qr3shq5GIA+59HLSaGDrpjHq5/iuUNr1DqRssK6akB6lVBKJ9Rtfap3dBe6j9KvrOOu9nx93W+sT2BZDcn7/kiWJTehkPJGU05ZHiCqkNKYY9dWrog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743087349; c=relaxed/simple;
-	bh=O+fF0T1K8ENoKQc8U/kUz5mudOhbJ4KqLrmWLy8Gx68=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IvFFZI8OBCmraWbvvZeDLOHZVwiHyDxQvrhcP6KbghyLDzUOAmLvVvvNMTf6V990dpoWf15tN/mw90sT3STZJTubMmURbAmEEhLceZBFAYkDsDAahoM/UfcMlx44ZGKejKAjhnfy3MbicN4TMxw0HEqqFLjqimkfL2bHslD0Rl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jCfR81V5; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743087348; x=1774623348;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=O+fF0T1K8ENoKQc8U/kUz5mudOhbJ4KqLrmWLy8Gx68=;
-  b=jCfR81V5Z3Ya9pBfIEPAdBOJ2waHOATlVLW/g1MQ7lxrCkrg8GlkKztI
-   RaEKYU+25DRHDAGTH0EvDxj31nlQ82oZuuy7B3OHr6ukicFetuGR06X39
-   W8FGtuPGBWYUyFpLbz/xRpKVDHIw52S2vpRJHm1fFBEhwFmZj2FM8apVD
-   O9ARy3DFRc3/F9Brnz7AjImabtMXNmkntD4PvFh/G+5VDyAr6YIqzufY7
-   NZxHaBz0itJQe+fErLhhiymK1qDmGHY0kEvUemt339HMoDl7o/H59bBaC
-   NUskM5IXc28OUZq7KNyL57qm8R5NC1s8w6/sM2/yxIv6PutymZtO18Zf3
-   A==;
-X-CSE-ConnectionGUID: fYYDA3tTQc6GOZb4oV+2zg==
-X-CSE-MsgGUID: 38b+GzfqRoeApe8vHzNaPg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44342591"
-X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; 
-   d="scan'208";a="44342591"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 07:55:47 -0700
-X-CSE-ConnectionGUID: w6/uUPDzQ22W/58VoYQrmA==
-X-CSE-MsgGUID: mbijv60mSXS2SPK0EiC98g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; 
-   d="scan'208";a="130231181"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 27 Mar 2025 07:55:44 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 64B461CA; Thu, 27 Mar 2025 16:55:43 +0200 (EET)
-Date: Thu, 27 Mar 2025 16:55:43 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andreas Noever <andreas.noever@gmail.com>,
-	Michael Jamet <michael.jamet@intel.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCHv2] thunderbolt: do not double dequeue a request
-Message-ID: <20250327145543.GC3152277@black.fi.intel.com>
-References: <20250327114222.100293-1-senozhatsky@chromium.org>
- <20250327133756.GA3152277@black.fi.intel.com>
- <vxocwwtfwg3tmjm62kcz33ypsg22afccd2ua5jqymbxaxwcigf@nnydc53vu3gv>
- <20250327142038.GB3152277@black.fi.intel.com>
- <jdupmjvntywimlzlhvq3rfsiwmlox6ssdtdncfe3mmo3wonzta@qwlb3wuosv66>
+	s=arc-20240116; t=1743087447; c=relaxed/simple;
+	bh=3ca1jXJVG2mOl67Hy3N9jGGUUJEjCNX9S7Ae/wsyZTY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hBgCNpoOTp3tgmbRxorQeMqwSVAbasK/WeAhzxdiaY3hyi+l2datcVTRnahX+jy077gAJkRYBNh9mTLvsCeG5DicGIvp3J9QtG/dv9L3EJaYEGIHYhmKYxnUk6xbbSs+Lrk8DFLlAkvQ7uTnT+DD3DsMCm5GULiQlJMPReE49Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jiimHST+; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ac2963dc379so169649166b.2;
+        Thu, 27 Mar 2025 07:57:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743087444; x=1743692244; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LrtcrjXP+vqYsnJ6jTIyiKrk1d4PGceYFyFEdcX84c8=;
+        b=jiimHST+ojNztLiuH5zyn91YHE4Ob1mfYkf5BJ7TrTV0bm/GdTNstFpq6bT0L1SOeQ
+         nTf60CirZ50NI/CIqzVPEfMxZshPXdjPCgiGlYZIR31DreW0WieB/SM0Ma3UIiIQ9PEL
+         EedTIo2g7fGKKwBthgQy3U0l2cRGih3KTzXdDf9YoSQQ7fd/NXN26Cp3l4b58ywr07aR
+         SH5eDeyPijsrSMvIzt3VqbkPI/GJ7sqX0epL4170MdcHzr785jNIIaHuoDULuv6xB52y
+         ZmDb4MIZY0Fr5X5wVETI+myjDrtbfsSZac4KV6Rt3BmPCHSYWJGG0u7IjqInuVV6PVO8
+         8j9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743087444; x=1743692244;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LrtcrjXP+vqYsnJ6jTIyiKrk1d4PGceYFyFEdcX84c8=;
+        b=WVXIpNcSoMlPDzX5kbjbZQLF6tDqz8r+R2aZgKpln3tAskxl3vN2nuBWuIMBpCD9Cj
+         45Dr45fQ8piteh6SPBnjwLswbuaYRrOrfgF7z8lQUBUvYSScMoRs16ncPiK+d4ZeG6XW
+         6oznHd/knTNNqWGnxe8TCAVgJ0NUyw1kuYzS7yPjFRKXkcovz2YLKMOJIBvVpn9tT43Z
+         wxJZXBL7IG71eZKizSGjL5uplkWRhSinD31SaE1gFmkXFZ4/9mGGmUdrMZnkqqdoxIi1
+         HIVgR+azjJ0BBsmXUVMg5d1hFbaGjpAmSB7ejpWYRFEuqSaay8BC2p2diB3yELtYy3dq
+         Y70w==
+X-Forwarded-Encrypted: i=1; AJvYcCWk2FHr6L4M9seHCa3zya5g5/llKDFFGGLcT4Gudq0fSMqLOvN2wGStALUolWs7n/zI2HPtsuwa3skbMxg=@vger.kernel.org, AJvYcCXDRCsy54z2D2WUm+n3hsZXfOXREpuSxRQ3u/qqtFEjDZ6CWvxx3sPkU8gnQpCGi+k/b8VpkkeJ@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDgzWr2x4CtCC79Os9ih//o/kGgeZmFFeTxjVe2OJ7vEc2K7dS
+	xyLObJr5dajOAZyi+53Q1GXO5VcvyIciLwUPkyBsOJ5XbAEYsHAV
+X-Gm-Gg: ASbGncsL3nu69BdI/ijXJp6TVWhiCAzG1QMn1qfrhDR4JL1xEP/47xoYYLhb7H0asjC
+	4R5Uc2XHK6XVYuXdL928znpZCUL5Hrkux3O6Gqocq1d0QnltiRGyxeRUZDxlG+3wcWtncEPlrBq
+	CeGM9p5M4a10DrAkeuhsVdPuadsHgY39nAnhuD8NIbVz2NPJEgQ6i4VW5GTRo+ZKYohHkZ+d8ZS
+	WENTmPE4GxKR1TASR392xPL4BcMuYvdSW4scD9qXGA77mn0W2i2cfHn/P4f06qtKyNkO53BTnrd
+	xgHVVRt13bgeXhdKKpC4VX6g/WWbPNYk7ivbnRXbPCxRE2RgXmRMrOzerw==
+X-Google-Smtp-Source: AGHT+IFCE4MB8d+lfSyRNEmD5p+UBSxa7j4waVFjpL5DlULNguo61UAXaCJyUw9RvzVXpNfogE4XHg==
+X-Received: by 2002:a17:907:2da9:b0:ac3:ef11:8787 with SMTP id a640c23a62f3a-ac6fb1a7559mr318885566b.54.1743087443561;
+        Thu, 27 Mar 2025 07:57:23 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::191? ([2620:10d:c092:600::1:8902])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71922ba88sm5308466b.16.2025.03.27.07.57.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Mar 2025 07:57:22 -0700 (PDT)
+Message-ID: <411a996d-8e47-4b30-8782-4418cf701f69@gmail.com>
+Date: Thu, 27 Mar 2025 14:58:11 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <jdupmjvntywimlzlhvq3rfsiwmlox6ssdtdncfe3mmo3wonzta@qwlb3wuosv66>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14] btrfs: ioctl: error on fixed buffer flag for
+ io-uring cmd
+To: Sidong Yang <sidong.yang@furiosa.ai>, Josef Bacik <josef@toxicpanda.com>,
+ David Sterba <dsterba@suse.com>, Mark Harmstone <maharmstone@fb.com>
+Cc: linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+References: <20250326155736.611445-1-sidong.yang@furiosa.ai>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250326155736.611445-1-sidong.yang@furiosa.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 3/26/25 15:57, Sidong Yang wrote:
+> Currently, the io-uring fixed buffer cmd flag is silently dismissed,
+> even though it does not work. This patch returns an error when the flag
+> is set, making it clear that operation is not supported.
 
-On Thu, Mar 27, 2025 at 11:37:35PM +0900, Sergey Senozhatsky wrote:
-> On (25/03/27 16:20), Mika Westerberg wrote:
-> > > On (25/03/27 15:37), Mika Westerberg wrote:
-> > > > > Another possibility can be tb_cfg_request_sync():
-> > > > > 
-> > > > > tb_cfg_request_sync()
-> > > > >  tb_cfg_request()
-> > > > >   schedule_work(&req->work) -> tb_cfg_request_dequeue()
-> > > > >  tb_cfg_request_cancel()
-> > > > >   schedule_work(&req->work) -> tb_cfg_request_dequeue()
-> > > > 
-> > > > Not sure about this one because &req->work will only be scheduled once the
-> > > > second schedule_work() should not queue it again (as far as I can tell).
-> > > 
-> > > If the second schedule_work() happens after a timeout, that's what
-> > > !wait_for_completion_timeout() does, then the first schedule_work()
-> > > can already execute the work by that time, and then we can schedule
-> > > the work again (but the request is already dequeued).  Am I missing
-> > > something?
-> > 
-> > schedule_work() does not schedule the work again if it is already
-> > scheduled.
+IIRC, the feature where you use the flag hasn't been merged
+yet and is targeting 6.16. In this case you need to send this
+patch for 6.15, and once merged stable will try to pick it up
+from there.
+
+> Fixes: 34310c442e17 ("btrfs: add io_uring command for encoded reads (ENCODED_READ ioctl)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> ---
+>   fs/btrfs/ioctl.c | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
 > 
-> Yes, if it's scheduled.  If it's already executed then we can schedule
-> again.
-> 
-> 	tb_cfg_request_sync() {
-> 	 tb_cfg_request()
-> 	   schedule_work()
+> diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+> index 6c18bad53cd3..62bb9e11e8d6 100644
+> --- a/fs/btrfs/ioctl.c
+> +++ b/fs/btrfs/ioctl.c
+> @@ -4823,6 +4823,12 @@ static int btrfs_uring_encoded_read(struct io_uring_cmd *cmd, unsigned int issue
+>   		ret = -EPERM;
+>   		goto out_acct;
+>   	}
+> +
+> +	if (cmd->flags & IORING_URING_CMD_FIXED) {
+> +		ret = -EOPNOTSUPP;
+> +		goto out_acct;
+> +	}
+> +
+>   	file = cmd->file;
+>   	inode = BTRFS_I(file->f_inode);
+>   	fs_info = inode->root->fs_info;
+> @@ -4959,6 +4965,11 @@ static int btrfs_uring_encoded_write(struct io_uring_cmd *cmd, unsigned int issu
+>   		goto out_acct;
+>   	}
+>   
+> +	if (cmd->flags & IORING_URING_CMD_FIXED) {
+> +		ret = -EOPNOTSUPP;
+> +		goto out_acct;
+> +	}
+> +
+>   	file = cmd->file;
+>   	sqe_addr = u64_to_user_ptr(READ_ONCE(cmd->sqe->addr));
+>   
 
-This point it runs tb_cfg_request_work() which then calls the callback
-(tb_cfg_request_complete()) before it dequeues so "done" is completed.
+-- 
+Pavel Begunkov
 
-> 	                        executes tb_cfg_request_dequeue
-
-> 	 wait_for_completion_timeout()
-
-so this will return > 0 as "done" completed..
-
-> 	   schedule_work()
-> 	                        executes tb_cfg_request_dequeue again
-
-..and we don't call this one.
-
-> 	}
-> 
-> I guess there can be enough delay (for whatever reason, not only
-> wait_for_completion_timeout(), but maybe also preemption) between
-> two schedule_work calls?
-> 
-> > > The 0xdead000000000122 deference is a LIST_POISON on x86_64, which
-> > > is set explicitly in list_del(), so I'd say I'm fairly confident
-> > > that we have a double list_del() in tb_cfg_request_dequeue().
-> > 
-> > Yes, I agree but since I have not seen any similar reports (sans what I saw
-> > ages ago), I would like to be sure the issue you see is actually fixed with
-> > the patch (and that there are no unexpected side-effects). ;-)
-> 
-> Let me see what I can do (we don't normally apply patches that
-> were not in the corresponding subsystem tree).
-> 
-> In the meantime, do you have a subsystem/driver tree that is exposed
-> to linux-next?  If so, would be cool if you can pick up the patch so
-> that it can get some extra testing via linux-next.
-
-Yes I do, see [1] but it does not work like that. First you should make
-sure you patch works by testing it yourself and then we can pick it up for
-others to test.
-
-[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/westeri/thunderbolt.git/
 
