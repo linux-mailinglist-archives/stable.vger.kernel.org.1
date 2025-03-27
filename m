@@ -1,49 +1,55 @@
-Return-Path: <stable+bounces-126817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCEAA728C5
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 03:30:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4774A7294D
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 04:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15E2916934D
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 02:30:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93227A2505
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 03:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F123C128816;
-	Thu, 27 Mar 2025 02:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E95160DCF;
+	Thu, 27 Mar 2025 03:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="B1tQw4n8"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9257A15AF6;
-	Thu, 27 Mar 2025 02:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFE4749C;
+	Thu, 27 Mar 2025 03:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743042631; cv=none; b=FVm6kfhgn+z548msNgbU9kpcDI9tA9d6QjnkmAu/1DUc4ZNd1oWo0aAak/Zc7sRM66YE1WT6r5QKHGjbhA7W2YSLTM4RWwobYh6O31KrOj+X8qhk9Y5KYqQII9f5kOhO/YhzqB7u+Zr7eVxFaolqJuaSZpsyYcerYjHv2obGl0w=
+	t=1743046559; cv=none; b=STxMoIGwMcDUUzg4b8hTEKOWGhiOU+7jsdiAYZRxXRxGHU5JMfz26MmefNf4IvVRzjnVRsImFbKSj7Fi6abw8S6ZtIqZiZysnQ9EqWpU6tUYGbUhP4SiZN6QqgXn2rGKkd1QB63IsViy8HIVZsTttTxCJox/2NfghU1neJTj7PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743042631; c=relaxed/simple;
-	bh=4sYWNtAc4YF7YZg03HO0SzkfYuVw4goAQfDHPc5y0l0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uSnLibB5SjrDpDXY7byh9tgU2eMWx9ZXW1qLVaKtTZ/sy/oO7Hhwf+OYBLeLzbR5iOQYo+KTBP7XbBaSznptbFoRC/8GtXOSwheMuOxNdiIFo12YD/mPz3YoAKwQ6gT98NqHjp+Hu/4yR/RCztqMjlNBDNLhWrNrvRVb20THNys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowACnUQIouORnBG4iAg--.12734S2;
-	Thu, 27 Mar 2025 10:30:11 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: davem@davemloft.net,
-	andreas@gaisler.com,
-	make24@iscas.ac.cn,
-	sam@ravnborg.org,
-	dawei.li@shingroup.cn
-Cc: sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1743046559; c=relaxed/simple;
+	bh=B4DFsCLzfJydiMiaUXd15k2xHQUR8806BueCQKWjvh4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TU8w1d//o3BaqxjWL1kNu4MvzfMhPJIvZJv4QkGijX9zjGavoE6YjeOf2DaPWCd2fYdhNEEU/5lZxkcps0S9zCmnp20XSLdkUHJp5iLjg50fN4kS+ypAqgyl0FStSRcI2fGG/c93oyrP4+sjTBfEH2edpKtzHYmlJzADZEbuH0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=B1tQw4n8; arc=none smtp.client-ip=115.124.30.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1743046552; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=7fENAmjA5HlDqIU2S3l84f8tZ1auIWrnxR7dGJSHztU=;
+	b=B1tQw4n8uQzBAhx3+Hagr07uyaXrwzGLN9nxEu0b6EHprmb3odYdOkt6hklS+ePDEhIw5ky3+ozsfXHdkMC0+DWuSfhKD7w9YIOGqcJTDl9Ig+j0kJOe0FmIfH2HFhZyLyZsLG0+OzUGr2m8QtcV1jMpCMMg2CzJY4ZTEOP6hpY=
+Received: from localhost(mailfrom:kanie@linux.alibaba.com fp:SMTPD_---0WT7CZp1_1743045606 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 27 Mar 2025 11:20:10 +0800
+From: Guixin Liu <kanie@linux.alibaba.com>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>
+Cc: linux-gpio@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] sparc: fix error handling in scan_one_device()
-Date: Thu, 27 Mar 2025 10:29:59 +0800
-Message-Id: <20250327022959.2086463-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH v2] gpio: tegra186: fix resource handling in ACPI probe path
+Date: Thu, 27 Mar 2025 11:20:06 +0800
+Message-ID: <20250327032006.73798-1-kanie@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,57 +57,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACnUQIouORnBG4iAg--.12734S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GF13GrWUGF4kuFW8WF43GFg_yoWktwbEga
-	12v34UWr1fAwsagw43Ar4a9r1xtrnFyFWrK34Iyr1kJayrXrZrWrs5Gw4vvr9rWa17Cr1D
-	Za4qqrsFkr1SgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb3kFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
-	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r
-	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
-	YI8I648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUvg4fUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Once of_device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-So fix this by calling put_device(), then the name can be freed in
-kobject_cleanup().
+When the Tegra186 GPIO controller is probed through ACPI matching,
+the driver emits two error messages during probing:
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
 
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
+Fix this by getting resource first and then do the ioremap.
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: cf44bbc26cf1 ("[SPARC]: Beginnings of generic of_device framework.")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Fixes: 2606e7c9f5fc ("gpio: tegra186: Add ACPI support")
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
 ---
- arch/sparc/kernel/of_device_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes from v1 to v2:
+- Add "Fixes" to commit body.
 
-diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
-index f98c2901f335..4272746d7166 100644
---- a/arch/sparc/kernel/of_device_64.c
-+++ b/arch/sparc/kernel/of_device_64.c
-@@ -677,7 +677,7 @@ static struct platform_device * __init scan_one_device(struct device_node *dp,
+ drivers/gpio/gpio-tegra186.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
+index 6895b65c86af..d27bfac6c9f5 100644
+--- a/drivers/gpio/gpio-tegra186.c
++++ b/drivers/gpio/gpio-tegra186.c
+@@ -823,6 +823,7 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
+ 	struct gpio_irq_chip *irq;
+ 	struct tegra_gpio *gpio;
+ 	struct device_node *np;
++	struct resource *res;
+ 	char **names;
+ 	int err;
  
- 	if (of_device_register(op)) {
- 		printk("%pOF: Could not register of device.\n", dp);
--		kfree(op);
-+		put_device(&op->dev);
- 		op = NULL;
- 	}
+@@ -842,19 +843,19 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
+ 	gpio->num_banks++;
  
+ 	/* get register apertures */
+-	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
+-	if (IS_ERR(gpio->secure)) {
+-		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
+-		if (IS_ERR(gpio->secure))
+-			return PTR_ERR(gpio->secure);
+-	}
+-
+-	gpio->base = devm_platform_ioremap_resource_byname(pdev, "gpio");
+-	if (IS_ERR(gpio->base)) {
+-		gpio->base = devm_platform_ioremap_resource(pdev, 1);
+-		if (IS_ERR(gpio->base))
+-			return PTR_ERR(gpio->base);
+-	}
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "security");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	gpio->secure = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->secure))
++		return PTR_ERR(gpio->secure);
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpio");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	gpio->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->base))
++		return PTR_ERR(gpio->base);
+ 
+ 	err = platform_irq_count(pdev);
+ 	if (err < 0)
 -- 
-2.25.1
+2.43.0
 
 
