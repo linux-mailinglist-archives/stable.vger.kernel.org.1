@@ -1,173 +1,103 @@
-Return-Path: <stable+bounces-126827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5B9A72A6C
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 08:12:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7993AA72A84
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 08:24:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1FEB1890217
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 07:12:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51E933B60D1
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 07:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C611C8634;
-	Thu, 27 Mar 2025 07:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747E51F4165;
+	Thu, 27 Mar 2025 07:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="h8AErXRy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFPMiyMf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9964D1C861C;
-	Thu, 27 Mar 2025 07:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1F91F417F;
+	Thu, 27 Mar 2025 07:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743059546; cv=none; b=Ge7WWKVAlQs5LG14z39gby6faF0ID2kufglbX0d7rAQ3hAGNcOAXPrCCJP8/y2LcCvp/Ku7xHIhwKk9eI5eNLMwywt1T/qiLVlp8i837F89Wu3YvN4bEMeZfDp/I0ED4TrePPxJSAh5XKVAT/c5PClmSlDgTuJ8bw4v0Ub4RjbI=
+	t=1743060273; cv=none; b=X2dBf+ouUW5IpZJtPF6mcTGrj+MDlOWoI80nAvWs+rL01pN9rAbIfSZUiCUzEhWmwkwhfAMi1By/DMf8LPX/4fxKtmAmVXAvwtOX9IUyXgA51ZlYQWlb4hPxGgQ17OWWYwluqPsR5YM89nbNsnFfeHKgGBP73YW/LtM5samyWlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743059546; c=relaxed/simple;
-	bh=xLDxqFPTSPn0/knZPERzvm0+bXSKlxaYfylULmtrafg=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=RjfHE96IPnshf6hhb+ZtAAsM5Ma7vJsXTe8HXoYiXGkTZ99EDigqS5ckNt36xFDJLJ3/GWADVJMa1/RDt3D4PSDqN3SUjNxwYNpkDWqsMmjwlXy051It+bqoPGcVqb0RiU2qmnuDCDZzZnV1LeV9dc9xN1SnOVvpjYlwpIQgoZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=h8AErXRy; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1743060273; c=relaxed/simple;
+	bh=5mrwyUBbs/sowRee6ww7D8l8zGKZjFYwwpbZCZuTpyQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aKQMEHcnhJ3aV7f67336621Eu+FFjiU2hvwCe0JqEU0Vbb5bm1kn6CugB6MVBKPUFrix0xBKH7wudAs1ZWttmuGq9ifqjI/iLBEFSBjJdsygD9a/36RjV6uA720gu+ZI2T1+DGvQ4/2CJVIb35SggHfKSKkW6iBL2mDAWAdryE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFPMiyMf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82CAC4CEDD;
+	Thu, 27 Mar 2025 07:24:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743060272;
+	bh=5mrwyUBbs/sowRee6ww7D8l8zGKZjFYwwpbZCZuTpyQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qFPMiyMfUlF2cyye8jxucDWiIAR05b92rsW7clbWkzitfcClfE0VrjRC4PK8sO8Tx
+	 AcHIORFD0ieHPtvUOTXnTg23a+wlVrzJC0E7tNQa8Ebx2JwbiZWUj8kFNAMUzHyjK7
+	 Lfv5nCGL+Y/jDPKv6nLuYo0nRxP2upNojGSVjUPPDqe9qY4k2Y89EBZcp9ROV58AMF
+	 uLbEOKXH6zCcIh0aTo9AOGN5bgQe4OjOTeSBEs7EEshdULmVEuIkG6UueyW5B3xlpB
+	 XTV5cIO71M69VMOtWHcFJ81f1CwBMb2d9FrSREhdCcpQ4BVe1JkZq8O4xsM/qEI2ib
+	 ShqIlh4acZeSQ==
+Date: Thu, 27 Mar 2025 08:24:27 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Ingo Molnar <mingo@redhat.com>
+Subject: Re: [PATCH] locking: lockdep: Decrease nr_unused_locks if lock
+ unused in zap_class()
+Message-ID: <Z-T9K80wB4xw99jR@gmail.com>
+References: <20250326180831.510348-1-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1743059536;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lH20vJ48RSA10XECX0SWG627PAsPjNVOUl91E9dSA10=;
-	b=h8AErXRy2tf++eIitSzH4Z7avDyXJ3XY5svwpL8omEiu/+RugNoAOmQgoAcvtxJuq2K3lF
-	OBL7yNp5z2S8UrU2xL3P/dwwPZ+z2tjk/FL5wYznfPEuLNF7EXHBeoNJV8+tdlqKW8Bysu
-	A/h8o7mVuanCMIOBx4cAJCCNpxAybAPPM/CJ3gE0Dw31mk75lBGlhtbg7J9tMANBPyuwHI
-	HmMVM/OIxMoeQoOc0MfCW/ho1u82D1qIw8Uw03DHGmPjBsRLHLDDquUAjboVscVmAKjsgv
-	eW/Y0hHCT9n8ETLIsGgsnV9HG4X25LpUQs7NAaHZTFDN+v7rAdLXnkg2C6k71w==
-Date: Thu, 27 Mar 2025 08:12:14 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>, Naresh Kamboju
- <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
- patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Heiko Stuebner <heiko@sntech.de>, Vegard Nossum <vegard.nossum@oracle.com>,
- Darren Kenny <darren.kenny@oracle.com>, Diederik de Haas
- <didi.debian@cknow.org>
-Subject: Re: [PATCH 6.6 00/77] 6.6.85-rc1 review
-In-Reply-To: <2025032656-closure-exile-38fe@gregkh>
-References: <20250325122144.259256924@linuxfoundation.org>
- <CA+G9fYvWau1nC8wmpWkxG8gWPaRMP9pbkh2eNsAZoUMeRPgzqA@mail.gmail.com>
- <a823454af9915fe3acfcb66fd84dc826@manjaro.org>
- <751cf2c6-c692-4595-98e9-fa3ae4dfd10a@oracle.com>
- <0001e7e020145983055d154488f5c460@manjaro.org>
- <2025032656-closure-exile-38fe@gregkh>
-Message-ID: <6a8a77a00a11ae9c22b1a2fe50cbbb34@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250326180831.510348-1-boqun.feng@gmail.com>
 
-Hello Greg,
 
-On 2025-03-26 16:38, Greg Kroah-Hartman wrote:
-> On Wed, Mar 26, 2025 at 04:56:18AM +0100, Dragan Simic wrote:
->> On 2025-03-26 03:33, Harshit Mogalapalli wrote:
->> > On 25/03/25 21:37, Dragan Simic wrote:
->> > > On 2025-03-25 16:07, Naresh Kamboju wrote:
->> > ...
->> > > > Build regression: arm64 dtb rockchip non-existent node or label
->> > > > "vcca_0v9"
->> > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->> > > >
->> > > > ## Build log
->> > > > arch/arm64/boot/dts/rockchip/rk3399.dtsi:221.23-266.4: ERROR
->> > > > (phandle_references):
->> > > > /pcie@f8000000: Reference to non-existent node or label "vcca_0v9"
->> > > >
->> > > >   also defined at arch/arm64/boot/dts/rockchip/rk3399-
->> > > > rockpro64.dtsi:659.8-669.3
->> > ...
->> > >
->> > > This is caused by another patch from the original series failing
->> > > to apply due to some bulk regulator renaming.  I'll send backported
->> > > version of that patch soon, which should make everything fine.
->> >
->> > On ARM configs, we do see the same issue that Naresh reported.
->> >
->> > arch/arm64/boot/dts/rockchip/rk3399.dtsi:221.23-266.4: ERROR
->> > (phandle_references): /pcie@f8000000: Reference to non-existent node
->> > or label "vcca_0v9"
->> >  also defined at
->> > arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi:659.8-669.3
->> > ERROR: Input tree has errors, aborting (use -f to force output)
->> > make[3]: *** [scripts/Makefile.lib:423:
->> > arch/arm64/boot/dts/rockchip/rk3399-rockpro64-v2.dtb] Error 2
->> > make[3]: *** Waiting for unfinished jobs....
->> > arch/arm64/boot/dts/rockchip/rk3399.dtsi:221.23-266.4: ERROR
->> > (phandle_references): /pcie@f8000000: Reference to non-existent node
->> > or label "vcca_0v9"
->> >  also defined at
->> > arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtsi:659.8-669.3
->> > ERROR: Input tree has errors, aborting (use -f to force output)
->> > make[3]: *** [scripts/Makefile.lib:423:
->> > arch/arm64/boot/dts/rockchip/rk3399-rockpro64.dtb] Error 2
->> > make[2]: *** [scripts/Makefile.build:480: arch/arm64/boot/dts/rockchip]
->> > Error 2
->> > make[2]: *** Waiting for unfinished jobs....
->> >
->> > Caused by commit: 1e4bd0ec5a47 ("arm64: dts: rockchip: Add missing
->> > PCIe supplies to RockPro64 board dtsi") -- PATCH 42/77 of this series.
->> >
->> > We see same problem with 6.12.21-rc1 as well.
->> >
->> > Notes:
->> > -----
->> > I think Dragan was referring to upstream commit: bd1c959f37f3 ("arm64:
->> > dts: rockchip: Add avdd HDMI supplies to RockPro64 board dtsi") which
->> > will fix this problem but fails to apply due to regulator renaming in
->> > commit: 5c96e6330197 ("arm64: dts: rockchip: adapt regulator nodenames
->> > to preferred form") which is not in stable kernels(6.6.y and 6.12.y)
->> 
->> Exactly, the direct dependency is the commit bd1c959f37f3 ("arm64:
->> dts: rockchip: Add avdd HDMI supplies to RockPro64 board dtsi"),
->> for which I haven't sent the backported version yet.
->> 
->> As Diederik pointed it out already in a separate message [*] from
->> a couple of days ago, it might be the best to include the commit
->> 5c96e6330197 ("arm64: dts: rockchip: adapt regulator nodenames to
->> preferred form") into stable kernels as well.
->> 
->> Obviously, including the commit 5c96e6330197 pretty much goes
->> against the rules of stable kernels, but it would save a lot of
->> time and effort in the future.
->> 
->> [*] 
->> https://lore.kernel.org/stable/D8ONE4WEF7A2.1OE1YY8J34MM3@cknow.org/
-> 
-> As that's a big change, and no one seems to be sending it to me for
-> inclusion, I'll just go drop the patch that broke the builds for now 
-> and
-> wait for someone to send working ones later.
+* Boqun Feng <boqun.feng@gmail.com> wrote:
 
-Makes sense to me, thanks.  I'll send you the three patches (i.e., the
-bulk regulator renaming patch, and the two RockPro64 patches) that need
-to be included in the stable kernels, in the next couple of days.  
-Having
-the bulk regulator renaming patch included in the stable kernels should
-save us a lot of time and effort in the future.
+> diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+> index b15757e63626..686546d52337 100644
+> --- a/kernel/locking/lockdep.c
+> +++ b/kernel/locking/lockdep.c
+> @@ -6264,6 +6264,9 @@ static void zap_class(struct pending_free *pf, struct lock_class *class)
+>  		hlist_del_rcu(&class->hash_entry);
+>  		WRITE_ONCE(class->key, NULL);
+>  		WRITE_ONCE(class->name, NULL);
+> +		/* class allocated but not used, -1 in nr_unused_locks */
+> +		if (class->usage_mask == 0)
+> +			debug_atomic_dec(nr_unused_locks);
 
-I would've sent you those patches earlier, but I'm currently in a really
-tight spot when it comes to time.
+Nit: capitalization in comments should follow the style of the 
+surrounding code - ie. I did the change below.
+
+Thanks,
+
+	Ingo
+
+======================>
+ kernel/locking/lockdep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 686546d52337..58d78a33ac65 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -6264,7 +6264,7 @@ static void zap_class(struct pending_free *pf, struct lock_class *class)
+ 		hlist_del_rcu(&class->hash_entry);
+ 		WRITE_ONCE(class->key, NULL);
+ 		WRITE_ONCE(class->name, NULL);
+-		/* class allocated but not used, -1 in nr_unused_locks */
++		/* Class allocated but not used, -1 in nr_unused_locks */
+ 		if (class->usage_mask == 0)
+ 			debug_atomic_dec(nr_unused_locks);
+ 		nr_lock_classes--;
 
