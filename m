@@ -1,205 +1,106 @@
-Return-Path: <stable+bounces-126843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0DCA72D9D
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 11:16:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF09DA72D9C
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 11:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D933C188FCC9
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 10:16:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39E5117085B
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 10:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744C520FA8F;
-	Thu, 27 Mar 2025 10:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IF/yDhX4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E70B20E6EA;
+	Thu, 27 Mar 2025 10:15:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2589720F095;
-	Thu, 27 Mar 2025 10:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4509220E6EC;
+	Thu, 27 Mar 2025 10:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743070525; cv=none; b=NTFUEq4nhLQFBSuT3QnTwcuzVsvVC+k8soiAPDZvL39R0ZsWcj8XI+JAn+usIECqzQnHkDCLjxaPxear1FlUXhsd9QfILhdSj84qYxoxm711a6/ZwrO5mTEYJVj/oaoidNqAlBtf7QwijVQ7xkruIf43i4IINAZYJjbFhmO4JLA=
+	t=1743070544; cv=none; b=ZbmNtp5As6bVq+tfnf8Utdq0MynCmA20jlNpPMPPm1moIz+bQkToczCo9cxh9T+fg4kY0pzHRl2cUnPIgbW4oFF2n28w3/r84jUbDWsLuHLnaftjwrVWx5TmrfkXU14od4/6pwDWpLY3f9gpCI8Jswgc14hJTebsckSRNXfLQCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743070525; c=relaxed/simple;
-	bh=UzJiYS3JI1YoDbd0y1pICIatHn+gHECMIdSbHA/EmNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WoJgxrtXSVs8EOshYqzDsvNRcvw5ZRvkRjQEHVOnUuUqa7aF4FTRezm5NIDyScbbIFvr/LPAkvQSv30T8hcAsXP2boVU4V3ncqMjH5Uq6hReOfSLqEi8dGpzXSJEDk4NCMkuL6qhkqZ16HUnhylwmLX1yNMqmRs1sHbAzplBmmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IF/yDhX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF91C4CEDD;
-	Thu, 27 Mar 2025 10:15:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743070524;
-	bh=UzJiYS3JI1YoDbd0y1pICIatHn+gHECMIdSbHA/EmNA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IF/yDhX4zMqBX+2n/33ESUGZKPBxUOxclq/H7/KyL31PlithIZmAadrar2WfKieru
-	 kwWURPZqMj4DfHpEZUK1DPUiHjP1pFeEUup3Zoqw7Fo5P56LJI8G87JiUsSCVi4Zba
-	 E5v/BVtlvZl5s7rLPpFiUsDD2v3/AU/BegTiFEk6eXj6UwmSct5lPJqftbr08h8c14
-	 U88bbZcZl8cIZOlzu9MppbqXFM4V7LdXkRFdEPcOWoGfCJ7cKQfy5woFoiTd1HI5eZ
-	 08grf+TTozHVLwNwkjysOVjYwA6PS5wYnrFKVrBL6MqNX1I5We5Hit8Rd77nKk6wrh
-	 blQxlBGR3PmUg==
-Date: Thu, 27 Mar 2025 11:15:19 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Philipp Stanner <phasta@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/nouveau: Prevent signalled fences in pending list
-Message-ID: <Z-UlN4pIwct-q83Y@pollux>
-References: <20250327084256.11201-2-phasta@kernel.org>
- <8882f3d5-6e00-4aae-af3f-7df447158fda@amd.com>
+	s=arc-20240116; t=1743070544; c=relaxed/simple;
+	bh=hCYIWleHnb9AsPF4NRJLHVCBvzakjpZqCnO9IxidLxw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hgkeqrqkv1sXxzWxD1nIpuITTUdzSXag60L3kRTEzOtbOcbGPOjCiq8vTo1H2oThlfAEmnGw3mn5r9VLCX3P6VeqnbFeNSqHWQ7cYEnpn8cqhgy0HKRM/LzHTjyG1hg18k9Rm0l2MiTlihMwBnyhEbEk2EupduH1zxuW08S97cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.198])
+	by gateway (Coremail) with SMTP id _____8DxzOJKJeVn5haoAA--.19682S3;
+	Thu, 27 Mar 2025 18:15:38 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.198])
+	by front1 (Coremail) with SMTP id qMiowMCxvMY_JeVn5OJiAA--.29343S2;
+	Thu, 27 Mar 2025 18:15:37 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Guo Ren <guoren@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Mingcong Bai <baimingcong@loongson.cn>
+Subject: [PATCH] LoongArch: Increase MAX_IO_PICS up to 8
+Date: Thu, 27 Mar 2025 18:15:20 +0800
+Message-ID: <20250327101520.3328657-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8882f3d5-6e00-4aae-af3f-7df447158fda@amd.com>
+X-CM-TRANSID:qMiowMCxvMY_JeVn5OJiAA--.29343S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7Gr1Dtr48Jw13CFy5Jr4rXrc_yoWDKrg_Wa
+	4xXw4ku348GFWjvwn0qas3JF1xua1fGas09F1xZF9FyFy5tr4rXw4DAw1UAr1Yk3ykWr4Y
+	ga9rJFy5Aw1akosvyTuYvTs0mTUanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbVAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0
+	oVCq3wAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa02
+	0Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1l
+	Yx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrw
+	CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUXVWU
+	AwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1V
+	AFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xII
+	jxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4
+	A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU
+	0xZFpf9x07jFa0PUUUUU=
 
-On Thu, Mar 27, 2025 at 09:56:01AM +0100, Christian König wrote:
-> Am 27.03.25 um 09:42 schrieb Philipp Stanner:
-> > Nouveau currently relies on the assumption that dma_fences will only
-> > ever get signalled through nouveau_fence_signal(), which takes care of
-> > removing a signalled fence from the list nouveau_fence_chan.pending.
-> >
-> > This self-imposed rule is violated in nouveau_fence_done(), where
-> > dma_fence_is_signaled() can signal the fence without removing it from
-> > the list. This enables accesses to already signalled fences through the
-> > list, which is a bug.
-> >
-> > Furthermore, it must always be possible to use standard dma_fence
-> > methods an a dma_fence and observe valid behavior. The canonical way of
-> > ensuring that signalling a fence has additional effects is to add those
-> > effects to a callback and register it on the fence.
-> 
-> Good catch.
-> 
-> >
-> > Move the code from nouveau_fence_signal() into a dma_fence callback.
-> > Register that callback when creating the fence.
-> 
-> But that's a really ugly approach.
-> 
-> Either nouveau shouldn't implement the signaled callback or make sure that when returning true from the signaled callback the fence is also removed from the pending list.
+Begin with Loongson-3C6000, the number of PCI host can be as many as
+8 for multi-chip machines, and this number should be the same for I/O
+interrupt controllers. To support these machines we also increase the
+MAX_IO_PICS up to 8.
 
-I think the idea of the fix is to not cover one additional case (i.e.
-dma_fence_is_signaled()), but all cases.
+Cc: stable@vger.kernel.org
+Tested-by: Mingcong Bai <baimingcong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/include/asm/irq.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-For instance, what if only dma_fence_signal() is called on this fence? Then it
-would still not be removed from the pending list, etc.
+diff --git a/arch/loongarch/include/asm/irq.h b/arch/loongarch/include/asm/irq.h
+index a0ca84da8541..12bd15578c33 100644
+--- a/arch/loongarch/include/asm/irq.h
++++ b/arch/loongarch/include/asm/irq.h
+@@ -53,7 +53,7 @@ void spurious_interrupt(void);
+ #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+ void arch_trigger_cpumask_backtrace(const struct cpumask *mask, int exclude_cpu);
+ 
+-#define MAX_IO_PICS 2
++#define MAX_IO_PICS 8
+ #define NR_IRQS	(64 + NR_VECTORS * (NR_CPUS + MAX_IO_PICS))
+ 
+ struct acpi_vector_group {
+-- 
+2.47.1
 
-I'm all for a better solution, but I think it should cover all cases.
-
-> 
-> >
-> > Cc: <stable@vger.kernel.org> # 4.10+
-> > Fixes: f54d1867005c ("dma-buf: Rename struct fence to dma_fence")
-> > Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> > ---
-> > I'm not entirely sure what Fixes-Tag is appropriate. The last time the
-> > line causing the signalled fence in the list was touched is the commit
-> > listed above.
-
-You could search for the commit that introduced the code before commit
-f54d1867005c. This one is surely not correct.
-
-However, in cases where you can't find the commit that introduced the problem,
-since the bug was always present, you can also drop Fixes: and Cc stable only.
-
-> 
-> Yeah, that's most likely not correct. My educated guess is that the bug was always there just never discovered.
-> 
-> Regards,
-> Christian.
-> 
-> > ---
-> >  drivers/gpu/drm/nouveau/nouveau_fence.c | 41 ++++++++++++++++---------
-> >  drivers/gpu/drm/nouveau/nouveau_fence.h |  1 +
-> >  2 files changed, 27 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/nouveau/nouveau_fence.c b/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > index 7cc84472cece..b2c2241a8803 100644
-> > --- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > +++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-> > @@ -50,24 +50,22 @@ nouveau_fctx(struct nouveau_fence *fence)
-> >  	return container_of(fence->base.lock, struct nouveau_fence_chan, lock);
-> >  }
-> >  
-> > -static int
-> > -nouveau_fence_signal(struct nouveau_fence *fence)
-> > +static void
-> > +nouveau_fence_cleanup_cb(struct dma_fence *dfence, struct dma_fence_cb *cb)
-> >  {
-> > -	int drop = 0;
-> > +	struct nouveau_fence_chan *fctx;
-> > +	struct nouveau_fence *fence;
-> > +
-> > +	fence = container_of(dfence, struct nouveau_fence, base);
-> > +	fctx = nouveau_fctx(fence);
-> >  
-> > -	dma_fence_signal_locked(&fence->base);
-> >  	list_del(&fence->head);
-> >  	rcu_assign_pointer(fence->channel, NULL);
-> >  
-> > -	if (test_bit(DMA_FENCE_FLAG_USER_BITS, &fence->base.flags)) {
-> > -		struct nouveau_fence_chan *fctx = nouveau_fctx(fence);
-> > -
-> > -		if (!--fctx->notify_ref)
-> > -			drop = 1;
-> > -	}
-> > +	if (test_bit(DMA_FENCE_FLAG_USER_BITS, &fence->base.flags))
-> > +		--fctx->notify_ref;
-> >  
-> >  	dma_fence_put(&fence->base);
-> > -	return drop;
-> >  }
-> >  
-> >  static struct nouveau_fence *
-> > @@ -93,7 +91,8 @@ nouveau_fence_context_kill(struct nouveau_fence_chan *fctx, int error)
-> >  		if (error)
-> >  			dma_fence_set_error(&fence->base, error);
-> >  
-> > -		if (nouveau_fence_signal(fence))
-> > +		dma_fence_signal_locked(&fence->base);
-> > +		if (fctx->notify_ref == 0)
-> >  			nvif_event_block(&fctx->event);
-> >  	}
-> >  	fctx->killed = 1;
-> > @@ -131,7 +130,6 @@ static int
-> >  nouveau_fence_update(struct nouveau_channel *chan, struct nouveau_fence_chan *fctx)
-> >  {
-> >  	struct nouveau_fence *fence;
-> > -	int drop = 0;
-> >  	u32 seq = fctx->read(chan);
-> >  
-> >  	while (!list_empty(&fctx->pending)) {
-> > @@ -140,10 +138,10 @@ nouveau_fence_update(struct nouveau_channel *chan, struct nouveau_fence_chan *fc
-> >  		if ((int)(seq - fence->base.seqno) < 0)
-> >  			break;
-> >  
-> > -		drop |= nouveau_fence_signal(fence);
-> > +		dma_fence_signal_locked(&fence->base);
-> >  	}
-> >  
-> > -	return drop;
-> > +	return fctx->notify_ref == 0 ? 1 : 0;
-
-This seems to introduce a new bug.
-
-Since the fence is removed from the pending list through the callback, we may
-not enter the code paths calling nouveau_fence_update() anymore. In fact, I
-think you can remove nouveau_fence_update() entirely and just call
-
-	nvif_event_block(&fctx->event);
-
-directly from the callback if !--fctx->notify_ref.
 
