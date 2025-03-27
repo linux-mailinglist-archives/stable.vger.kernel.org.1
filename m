@@ -1,194 +1,229 @@
-Return-Path: <stable+bounces-126857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78064A73292
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 13:50:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778A3A73298
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 13:51:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55A6C7A2A0A
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 12:49:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D1CA3B63E4
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 12:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FED2144C7;
-	Thu, 27 Mar 2025 12:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E6438FA6;
+	Thu, 27 Mar 2025 12:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F7QQm62O"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m71q7kSX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F95338FA6
-	for <stable@vger.kernel.org>; Thu, 27 Mar 2025 12:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4539F2F2A
+	for <stable@vger.kernel.org>; Thu, 27 Mar 2025 12:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743079826; cv=none; b=e57LUQ0qXUpjxfKiXrYwiT1y11tImHGr926/jt3Z8CM/uoI+58Snq5fDVFbufPRMqURNa5VN3JawwiRKT/Mf6dHWwNHLHoOVOgtmMhfCHJ+sg7xnocjNQ+FvNYauFUMtT6YXmgH29UxsTXA79/5yBj233Pa7TCfLS1rEh3wonEU=
+	t=1743079850; cv=none; b=IcP443SrepvLx7d09L+zYjFHxjDyEBsoYLitRX5qpEnT/r7+YDM8NFu5Ulfn1yxkN4s6vD/V/d8qecHH/sVzgiKpgHPAOL3Dudr0dzU2/hw33GHJd31irfwBFG/U6gYmH0rBjS7A6E9XVttFAjJt1EE7O2sb6WyYwBqIQngebVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743079826; c=relaxed/simple;
-	bh=x0/E2M0F+EgLHnBAChfuUY4dPirGmTNiotD1PkORt9M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ltWcA9pvxnRsYjgbgRXFDi3KrJ7HyqoHSGZb1k6p+6Zl/DNRMQjJfjg6sbyF3sHPjPBMPY0iGI/cwmZrjXiDgBjkF0bREmMfIeyo4kEC2MRNJK7EzXFCK529HuJA/ATnmLKtKgFyKzN6DMTlIQPEo4pwIE3jqZ/loQxJ7TGPOds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F7QQm62O; arc=none smtp.client-ip=209.85.222.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-86feb848764so440621241.0
-        for <stable@vger.kernel.org>; Thu, 27 Mar 2025 05:50:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1743079822; x=1743684622; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YxPf82X3yEknJZahIFwtaw08CtPbnq39I71FWEqVAf8=;
-        b=F7QQm62OZHOUaeLPsRQHgemR1rBdyRwYLC/mzeib+x13U1Tb2asL6cwOBqmRZP3fD7
-         tvQhPrhkzUSxf9Eij4gUGWkVEqKdqlZ9XWeu73FnEa9MAEu6PvBI2IPj8Ljc8kgQjl+K
-         vVwjxC/ZBhVRayWt3slHX7er26mgZ8ilIWL3KnYAtt3g1HjZ3VQYSfYIyu3LhcJGSYQT
-         IAftgDXu8sKVgCpBpQvatSFKcWCKgbzEcxuueE/KZtCV4dwdR0HSjwRVUxZglpUYYg6j
-         mcAwmap5ttkX+T5POPhlgcHwzKHNnQO7RTW1BjUnPNr/TFFkMlqRd0sX0h9vbX2vt2WL
-         8X4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743079822; x=1743684622;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YxPf82X3yEknJZahIFwtaw08CtPbnq39I71FWEqVAf8=;
-        b=J2Jv1857kVWFI06oPxd2GBe+9rS2M4fz+V8iOCJx3vUOvvTOiYWqGXvHVpa3EKdfLO
-         Aq7gBC1JlTDmTAGGspeEfzLL6JNAHegngSR2r2taYde6CyQaw20kJqZX2QHQ4h3FjDNp
-         GXHPxJD1NrNA6zzGYW81B1kWSG4z+6WFHww43ip7Alfp8aoam1K/Aw7kvznYQTm2CO/4
-         CO8krUFikIOGA1DwdnBFJtzAd800b9s3rSWfdXA2JQgndIw+y5UCvQOnNLqTB2jrvZap
-         ZrKHd5qsSdWp4yqp0zyaXFS243J94CA0IpFREU890x8cZUmpnCoE1XpwVnc/BOSi/kj/
-         Z48Q==
-X-Gm-Message-State: AOJu0Yw8NI5lHXvHMonaS3+VWTDJmHy06AH2z1GcmuVVY5SB3asPYSjE
-	n0CvjLKCdfvRJpWdPa/Vct9IZ0gJDDUx6/8uB4LeS6gzLmAXGygMmEo6ZGgbjCzKp3bNUO3ZWEe
-	bHanXF/tUaJaIiql15Lue+vw3siqreeedU/x54Q==
-X-Gm-Gg: ASbGncsMfUV0GntrutkhbXUBAZbJ5tPRHZXHu8gSZFgso6+423HNVN8TrzN8DALquEq
-	B6AGr2YA4Lt4PTyKhSYoa+D7faffHx+US5cnQUoZOelLW8/yDlrRbSR9vpkrBMWrjtVVF/hRMh1
-	/uJKBInBi0K4tHAxGDV9v0O6ndBWEurmVAnYF72AN58v26qCn7RWNdRMnuYHU=
-X-Google-Smtp-Source: AGHT+IHJT4hKKSEUXlpmrmhxoV+NJpCfU27nTmRX+PSKGFNIOYp+YtuJN7H/mSdObFWYsi6xV1D2Xzz8lFMeeJw8D60=
-X-Received: by 2002:a05:6102:1529:b0:4bb:b589:9d95 with SMTP id
- ada2fe7eead31-4c586ef2197mr3532762137.4.1743079821716; Thu, 27 Mar 2025
- 05:50:21 -0700 (PDT)
+	s=arc-20240116; t=1743079850; c=relaxed/simple;
+	bh=ADizISV61R67N+/speR0GVdxFoBHzsujpuBdr10/NNE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZNgtXQG08DroskZibLzSLXVxEaCQAANUQJgn8i9OtXtHU/TkqpmdKeouwSIT1pR3CMnJegkQy6kwc1IvHQ7jx8/RaGoXnkIrZ0NyHLC4rUFsDNYwLLo1T8W3k2MNN02n7O9o6ShaJvGhwT9lHle9Zbl9cnhmKpSdkEGM2WSM+l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m71q7kSX; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743079848; x=1774615848;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=ADizISV61R67N+/speR0GVdxFoBHzsujpuBdr10/NNE=;
+  b=m71q7kSXFS6o811x106KqWTCb635sGg/0l3tnP+W1aZHMqqCpGZnuHVw
+   szkRC08Vjb4MK4XFxQ74a0ksfDdGCOXEvOQFwZ/nx07rqB8MAClmyVloW
+   LLvoB1lhvJLWnjHUR+LO/B8ZqJ9lT2KjULThQZskfzRMQdj6gnxRBeLYo
+   2Z9QeCx/mF2E75pkfXYWdlfUQ1nfX0VLqe+K02hEwO74Su6i5tAxnBQbw
+   Wy6pRz+YlXm8qGU34FFCxN8kjZvcM/XTA9DEmcMPAX/z+GFWzDfjTNz0Z
+   WsO+lBErM8v2elrMadou5usCiotxyIIAUGbRYuikdtQ3D+fkce5jfC0hy
+   w==;
+X-CSE-ConnectionGUID: FOpSugyVTAGcoD9+1Lq+mQ==
+X-CSE-MsgGUID: tRrKpcwvQdS7G/kkGAKrKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="54610351"
+X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; 
+   d="scan'208";a="54610351"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 05:50:47 -0700
+X-CSE-ConnectionGUID: tHUU/RJpTYu5XdvR1aSBzg==
+X-CSE-MsgGUID: fKvI69N1QmW0GiUFwhJtCw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,280,1736841600"; 
+   d="scan'208";a="162365263"
+Received: from carterle-desk.ger.corp.intel.com (HELO [10.245.246.40]) ([10.245.246.40])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 05:50:46 -0700
+Message-ID: <0634c06e557f29fadca38883654720aeb1b989ed.camel@linux.intel.com>
+Subject: Re: [PATCH v2] drm/xe: Fix an out-of-bounds shift when invalidating
+ TLB
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org, Lucas De Marchi
+ <lucas.demarchi@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>, Rodrigo Vivi
+	 <rodrigo.vivi@intel.com>, stable@vger.kernel.org, Lucas De Marchi
+	 <lucas.demarchi@intel.com>
+Date: Thu, 27 Mar 2025 13:50:43 +0100
+In-Reply-To: <20250326151634.36916-1-thomas.hellstrom@linux.intel.com>
+References: <20250326151634.36916-1-thomas.hellstrom@linux.intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250326154349.272647840@linuxfoundation.org>
-In-Reply-To: <20250326154349.272647840@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 27 Mar 2025 18:20:10 +0530
-X-Gm-Features: AQ5f1JqzxAAFsa6xfl6ahL538LTvEz_6T0WQuL-UCtRCOoqdpwdAR2e1PKOJHcs
-Message-ID: <CA+G9fYsRQub2qq0ePDs6aBAc+0qHRGwH_WPsTfhcwkviD1eH1w@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/197] 6.1.132-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Dave Chinner <dchinner@redhat.com>, Christoph Hellwig <hch@lst.de>, 
-	Leah Rumancik <leah.rumancik@gmail.com>, Anders Roxell <anders.roxell@linaro.org>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 26 Mar 2025 at 21:15, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.132 release.
-> There are 197 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 28 Mar 2025 15:43:27 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.132-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi, Lucas,
 
-Regressions on arm, arm64, mips, powerpc builds failed with gcc-13 and
-clang the stable-rc 6.1.132-rc1 and 6.1.132-rc2.
+On Wed, 2025-03-26 at 16:16 +0100, Thomas Hellstr=C3=B6m wrote:
+> When the size of the range invalidated is larger than
+> rounddown_pow_of_two(ULONG_MAX),
+> The function macro roundup_pow_of_two(length) will hit an out-of-
+> bounds
+> shift [1].
+>=20
+> Use a full TLB invalidation for such cases.
+> v2:
+> - Use a define for the range size limit over which we use a full
+> =C2=A0 TLB invalidation. (Lucas)
+> - Use a better calculation of the limit.
 
-First seen on the 6.1.132-rc1
- Good: v6.1.131
- Bad: Linux 6.1.132-rc1 and Linux 6.1.132-rc2
+Does your R-B hold also for v2?
 
-* arm, build
-  - clang-20-davinci_all_defconfig
-  - clang-nightly-davinci_all_defconfig
-  - gcc-13-davinci_all_defconfig
-  - gcc-8-davinci_all_defconfig
-
-* arm64, build
-  - gcc-12-lkftconfig-graviton4
-  - gcc-12-lkftconfig-graviton4-kselftest-frag
-  - gcc-12-lkftconfig-graviton4-no-kselftest-frag
-
-* mips, build
-  - gcc-12-malta_defconfig
-  - gcc-8-malta_defconfig
-
-* powerpc, build
-  - clang-20-defconfig
-  - clang-20-ppc64e_defconfig
-  - clang-nightly-defconfig
-  - clang-nightly-ppc64e_defconfig
-  - gcc-13-defconfig
-  - gcc-13-ppc64e_defconfig
-  - gcc-13-ppc6xx_defconfig
-  - gcc-8-defconfig
-  - gcc-8-ppc64e_defconfig
-  - gcc-8-ppc6xx_defconfig
-
-Regression Analysis:
- - New regression? yes
- - Reproducibility? Yes
-
-Build regression: arm arm64 mips powerpc xfs_alloc.c 'mp' undeclared
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build log
-fs/xfs/libxfs/xfs_alloc.c: In function '__xfs_free_extent_later':
-fs/xfs/libxfs/xfs_alloc.c:2551:51: error: 'mp' undeclared (first use
-in this function); did you mean 'tp'?
- 2551 |         if (XFS_IS_CORRUPT(mp, !xfs_verify_fsbext(mp, bno, len)))
-      |                                                   ^~
+Thanks,
+Thomas
 
 
-## Source
-* Kernel version: 6.1.132-rc2
-* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* Git sha: f5ad54ef021f6fb63ac97b3dec5efa9cc1a2eb51
-* Git describe: v6.1.131-198-gf5ad54ef021f
-* Project details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.131-198-gf5ad54ef021f/
+>=20
+> [1]:
+> [=C2=A0=C2=A0 39.202421] ------------[ cut here ]------------
+> [=C2=A0=C2=A0 39.202657] UBSAN: shift-out-of-bounds in
+> ./include/linux/log2.h:57:13
+> [=C2=A0=C2=A0 39.202673] shift exponent 64 is too large for 64-bit type '=
+long
+> unsigned int'
+> [=C2=A0=C2=A0 39.202688] CPU: 8 UID: 0 PID: 3129 Comm: xe_exec_system_ Ta=
+inted:
+> G=C2=A0=C2=A0=C2=A0=C2=A0 U=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 6.14.0+ #10
+> [=C2=A0=C2=A0 39.202690] Tainted: [U]=3DUSER
+> [=C2=A0=C2=A0 39.202690] Hardware name: ASUS System Product Name/PRIME B5=
+60M-A
+> AC, BIOS 2001 02/01/2023
+> [=C2=A0=C2=A0 39.202691] Call Trace:
+> [=C2=A0=C2=A0 39.202692]=C2=A0 <TASK>
+> [=C2=A0=C2=A0 39.202695]=C2=A0 dump_stack_lvl+0x6e/0xa0
+> [=C2=A0=C2=A0 39.202699]=C2=A0 ubsan_epilogue+0x5/0x30
+> [=C2=A0=C2=A0 39.202701]=C2=A0 __ubsan_handle_shift_out_of_bounds.cold+0x=
+61/0xe6
+> [=C2=A0=C2=A0 39.202705]=C2=A0 xe_gt_tlb_invalidation_range.cold+0x1d/0x3=
+a [xe]
+> [=C2=A0=C2=A0 39.202800]=C2=A0 ? find_held_lock+0x2b/0x80
+> [=C2=A0=C2=A0 39.202803]=C2=A0 ? mark_held_locks+0x40/0x70
+> [=C2=A0=C2=A0 39.202806]=C2=A0 xe_svm_invalidate+0x459/0x700 [xe]
+> [=C2=A0=C2=A0 39.202897]=C2=A0 drm_gpusvm_notifier_invalidate+0x4d/0x70 [=
+drm_gpusvm]
+> [=C2=A0=C2=A0 39.202900]=C2=A0 __mmu_notifier_release+0x1f5/0x270
+> [=C2=A0=C2=A0 39.202905]=C2=A0 exit_mmap+0x40e/0x450
+> [=C2=A0=C2=A0 39.202912]=C2=A0 __mmput+0x45/0x110
+> [=C2=A0=C2=A0 39.202914]=C2=A0 exit_mm+0xc5/0x130
+> [=C2=A0=C2=A0 39.202916]=C2=A0 do_exit+0x21c/0x500
+> [=C2=A0=C2=A0 39.202918]=C2=A0 ? lockdep_hardirqs_on_prepare+0xdb/0x190
+> [=C2=A0=C2=A0 39.202920]=C2=A0 do_group_exit+0x36/0xa0
+> [=C2=A0=C2=A0 39.202922]=C2=A0 get_signal+0x8f8/0x900
+> [=C2=A0=C2=A0 39.202926]=C2=A0 arch_do_signal_or_restart+0x35/0x100
+> [=C2=A0=C2=A0 39.202930]=C2=A0 syscall_exit_to_user_mode+0x1fc/0x290
+> [=C2=A0=C2=A0 39.202932]=C2=A0 do_syscall_64+0xa1/0x180
+> [=C2=A0=C2=A0 39.202934]=C2=A0 ? do_user_addr_fault+0x59f/0x8a0
+> [=C2=A0=C2=A0 39.202937]=C2=A0 ? lock_release+0xd2/0x2a0
+> [=C2=A0=C2=A0 39.202939]=C2=A0 ? do_user_addr_fault+0x5a9/0x8a0
+> [=C2=A0=C2=A0 39.202942]=C2=A0 ? trace_hardirqs_off+0x4b/0xc0
+> [=C2=A0=C2=A0 39.202944]=C2=A0 ? clear_bhb_loop+0x25/0x80
+> [=C2=A0=C2=A0 39.202946]=C2=A0 ? clear_bhb_loop+0x25/0x80
+> [=C2=A0=C2=A0 39.202947]=C2=A0 ? clear_bhb_loop+0x25/0x80
+> [=C2=A0=C2=A0 39.202950]=C2=A0 entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [=C2=A0=C2=A0 39.202952] RIP: 0033:0x7fa945e543e1
+> [=C2=A0=C2=A0 39.202961] Code: Unable to access opcode bytes at 0x7fa945e=
+543b7.
+> [=C2=A0=C2=A0 39.202962] RSP: 002b:00007ffca8fb4170 EFLAGS: 00000293
+> [=C2=A0=C2=A0 39.202963] RAX: 000000000000003d RBX: 0000000000000000 RCX:
+> 00007fa945e543e3
+> [=C2=A0=C2=A0 39.202964] RDX: 0000000000000000 RSI: 00007ffca8fb41ac RDI:
+> 00000000ffffffff
+> [=C2=A0=C2=A0 39.202964] RBP: 00007ffca8fb4190 R08: 0000000000000000 R09:
+> 00007fa945f600a0
+> [=C2=A0=C2=A0 39.202965] R10: 0000000000000000 R11: 0000000000000293 R12:
+> 0000000000000000
+> [=C2=A0=C2=A0 39.202966] R13: 00007fa9460dd310 R14: 00007ffca8fb41ac R15:
+> 0000000000000000
+> [=C2=A0=C2=A0 39.202970]=C2=A0 </TASK>
+> [=C2=A0=C2=A0 39.202970] ---[ end trace ]---
+>=20
+> Fixes: 332dd0116c82 ("drm/xe: Add range based TLB invalidations")
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.8+
+> Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com> #v1
+> ---
+> =C2=A0drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c | 12 ++++++++++--
+> =C2=A01 file changed, 10 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+> b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+> index 03072e094991..084cbdeba8ea 100644
+> --- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+> +++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+> @@ -322,6 +322,13 @@ int xe_gt_tlb_invalidation_ggtt(struct xe_gt
+> *gt)
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
+> +/*
+> + * Ensure that roundup_pow_of_two(length) doesn't overflow.
+> + * Note that roundup_pow_of_two() operates on unsigned long,
+> + * not on u64.
+> + */
+> +#define MAX_RANGE_TLB_INVALIDATION_LENGTH
+> (rounddown_pow_of_two(ULONG_MAX))
+> +
+> =C2=A0/**
+> =C2=A0 * xe_gt_tlb_invalidation_range - Issue a TLB invalidation on this
+> GT for an
+> =C2=A0 * address range
+> @@ -346,6 +353,7 @@ int xe_gt_tlb_invalidation_range(struct xe_gt
+> *gt,
+> =C2=A0	struct xe_device *xe =3D gt_to_xe(gt);
+> =C2=A0#define MAX_TLB_INVALIDATION_LEN	7
+> =C2=A0	u32 action[MAX_TLB_INVALIDATION_LEN];
+> +	u64 length =3D end - start;
+> =C2=A0	int len =3D 0;
+> =C2=A0
+> =C2=A0	xe_gt_assert(gt, fence);
+> @@ -358,11 +366,11 @@ int xe_gt_tlb_invalidation_range(struct xe_gt
+> *gt,
+> =C2=A0
+> =C2=A0	action[len++] =3D XE_GUC_ACTION_TLB_INVALIDATION;
+> =C2=A0	action[len++] =3D 0; /* seqno, replaced in
+> send_tlb_invalidation */
+> -	if (!xe->info.has_range_tlb_invalidation) {
+> +	if (!xe->info.has_range_tlb_invalidation ||
+> +	=C2=A0=C2=A0=C2=A0 length > MAX_RANGE_TLB_INVALIDATION_LENGTH) {
+> =C2=A0		action[len++] =3D
+> MAKE_INVAL_OP(XE_GUC_TLB_INVAL_FULL);
+> =C2=A0	} else {
+> =C2=A0		u64 orig_start =3D start;
+> -		u64 length =3D end - start;
+> =C2=A0		u64 align;
+> =C2=A0
+> =C2=A0		if (length < SZ_4K)
 
-## Build
-* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.131-198-gf5ad54ef021f/testrun/27785617/suite/build/test/gcc-12-lkftconfig-graviton4-kselftest-frag/log
-* Build history:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.131-198-gf5ad54ef021f/testrun/27785617/suite/build/test/gcc-12-lkftconfig-graviton4-kselftest-frag/history/
-* Build details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.131-198-gf5ad54ef021f/testrun/27785617/suite/build/test/gcc-12-lkftconfig-graviton4-kselftest-frag/
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2urSwNctsyhQzf1j7dvt6nHemP5/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2urSwNctsyhQzf1j7dvt6nHemP5/config
-
-## Steps to reproduce
- - tuxmake --runtime podman --target-arch arm64 --toolchain gcc-12 \
-    --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2urSwNctsyhQzf1j7dvt6nHemP5/config
-debugkernel dtbs dtbs-legacy headers kernel kselftest modules
- - tuxmake --runtime podman --target-arch arm --toolchain clang-20
---kconfig davinci_all_defconfig LLVM=1 LLVM_IAS=1
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
