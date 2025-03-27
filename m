@@ -1,220 +1,133 @@
-Return-Path: <stable+bounces-126889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78F7A73B83
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 18:38:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3811A73E21
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 19:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91E3F7A11E6
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 17:37:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E7973B937E
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 18:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713C319E997;
-	Thu, 27 Mar 2025 17:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6086821ABD5;
+	Thu, 27 Mar 2025 18:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="POVud3ec"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="icw2OWCa"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2055.outbound.protection.outlook.com [40.107.220.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E62EEA9
-	for <stable@vger.kernel.org>; Thu, 27 Mar 2025 17:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743097125; cv=fail; b=hESF4f+2GNHIzbAy9Ac0ugloZxhH4+YHMJh2Aw1u/Rf/4W4kK8ataI1rylMuQmr0hULrj2bGzhftLL11o1l9ANiQE0g4CuCSLX+wSCGjZrh+4w/Q9dsVWs5vUSSKCiXLum81//q1x002SYQOsBsclIvgsOcNM6YNc63x9zicVCc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743097125; c=relaxed/simple;
-	bh=9um3142xk9HGSmsz21SW28sRMTiXV/jVLQB8UywD/4o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=thHzsmlJ6cCdpv3dTJwgC2Nfukky+XfY4x9Mjp2k8G942HgP2vUjyv/1ZoCpXwk50osimuBt7+fZ6tyVkN7GbZU+1eAlL5OPdGbR3RX6xrRbIZRONGvLw+yrvpQOsO32nJisfYpQFhLjBhvRnUtA0PRlbhuy5H5gD861GyanmQ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=POVud3ec; arc=fail smtp.client-ip=40.107.220.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fjaRsctnKHUeqhGiVJs5duQB+/iA2dDyPtl/Lw0P7qdAK1krwGemdlJCeefnG9s7/cp32MjehCrW61Dobu5QxpU4FsBmItbtDuWB47Km7PMNCmF+DNfP3jjMaj6JEyD+ofXjAc7iQY2THG3ZFapC+2DuOda+XRqtdg2X00SWeoG6xXt39T6OGtxDrm/rIhmQmA/gf0xXdvD6iNEu9K/Alr2VbmEa+9GkOZbjjfDQPtUQAeXb2nRVYq4XhsHc76E2oTiQTsJTL/ObODhgzIVsfK1+rg1cueZzJy/pgmid3z58MaIUFrOsW2v9W/ieItg7UU2fh4NrrztD9OqfcUnrnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6kaf/YUIzffoDGRYwpo5C22Fjfltz4LsutCtr2lsx5w=;
- b=shmzlVa4IUyuFV4zRFLdWPcI5doVg9KfRSM7ydGYHZVP+PbVSwhwuHgf0nrlj7nCI5aydyWAWFOAjTzOcJ7QrAq0m2edA75w51TlwiHUGD3q8qs4/dFtK6ZtDK2sYwhZsYKA5s4ns1tIXF4AIUjuq8Q5AufuCIVsmCnrLtj2ZliPYw+njrxwqznNhRIdwZfTvjT4OUKjEWspC0mA++CXnXM16cv4CTHsKJ0X9DD5L338T7ij24lUaafvlQrBiWDt684ciOtmuCYJCFnlzSFwjaElE1zNtA0E+EzfTdyiT7rTrivEGC6qpWrTbgzumUEzvsc8vlFfDV7Jyx/5Gm7saA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6kaf/YUIzffoDGRYwpo5C22Fjfltz4LsutCtr2lsx5w=;
- b=POVud3ec1Kjy8T7ksHK9aQYeP4qs2eukeC99Ysx8JWyBiINTUFJHXlsQV63YDr/dhfdycIdF7YPb5XabKY40/tePdb0UuP42DXXghEye4Jxnf0jxQnm50a86kSbGyoW+Fax0fJoulM/oJj+3GSHXYlNk8yXEH0rfnddXMwqMFjg=
-Received: from PH5P222CA0010.NAMP222.PROD.OUTLOOK.COM (2603:10b6:510:34b::11)
- by DS0PR12MB8480.namprd12.prod.outlook.com (2603:10b6:8:159::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Thu, 27 Mar
- 2025 17:38:39 +0000
-Received: from CY4PEPF0000EE3D.namprd03.prod.outlook.com
- (2603:10b6:510:34b:cafe::20) by PH5P222CA0010.outlook.office365.com
- (2603:10b6:510:34b::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.45 via Frontend Transport; Thu,
- 27 Mar 2025 17:38:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CY4PEPF0000EE3D.mail.protection.outlook.com (10.167.242.15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8534.20 via Frontend Transport; Thu, 27 Mar 2025 17:38:38 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 27 Mar
- 2025 12:38:37 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 27 Mar
- 2025 12:38:37 -0500
-Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Thu, 27 Mar 2025 12:38:36 -0500
-Message-ID: <40a4d432-aa18-6a60-adcc-e73eb3c7fcb7@amd.com>
-Date: Thu, 27 Mar 2025 10:38:31 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3364158545;
+	Thu, 27 Mar 2025 18:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743101391; cv=none; b=ejoGn1Z3tm+ROezlHt/TZvzUBOwfn5aKFyHOLjoLDV//CwGmZM8eULw6pISceWzzQYNpvp7BjQPYtpFfnUiVYM7LnqQzdgRls5cMQvgs64mEvDArmsnc9SF5gKBza15a4VsR7M1L1x2VUdFdnpRYAai8Www2ufo1SC7yI4EQUtA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743101391; c=relaxed/simple;
+	bh=yo9h3+0O0jiuqGJBwr8AegoFYKEEY9KlXwdKgUTwsx0=;
+	h=Date:To:From:Subject:Message-Id; b=dKbvvM2ys/l3YBu0h7d9Z/FsCpZWS6DxG3yq5hhlPwwHEiie0nlULosRJwkJO+wkQTWw8kk/wIOz05qpJWNoUfmFd28sliDOkmPBUtKyImFQmNfVobrWaxoanQIZiTr2GNJ9qXPJa+Wn51Z5JgkaHo87Fiarg8WtCVrdq3s3Loo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=icw2OWCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5369BC4CEDD;
+	Thu, 27 Mar 2025 18:49:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1743101390;
+	bh=yo9h3+0O0jiuqGJBwr8AegoFYKEEY9KlXwdKgUTwsx0=;
+	h=Date:To:From:Subject:From;
+	b=icw2OWCaF5wzcc3feduQ2U/5QfotapROr/WMqKaM3K3145yFK3vzglJgEDIMPJzUW
+	 I6ZX+zjT0jk1uqUL+Stum46d9pasY85cc34vlhSMa4NzXQHuZZG6TUrMzS0RPsF9Dg
+	 UJ4JKFmbtCQifJhGKqNm85LcvMfopUrWM487n+YQ=
+Date: Thu, 27 Mar 2025 11:49:49 -0700
+To: mm-commits@vger.kernel.org,vigneshr@ti.com,stable@vger.kernel.org,robert.jarzmik@free.fr,praneeth@ti.com,kamlesh@ti.com,axboe@kernel.dk,t-pratham@ti.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + lib-scatterlist-fix-sg_split_phys-to-preserve-original-scatterlist-offsets.patch added to mm-nonmm-unstable branch
+Message-Id: <20250327184950.5369BC4CEDD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 1/2] accel/ivpu: Fix deadlock in ivpu_ms_cleanup()
-Content-Language: en-US
-To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>, Maciej Falkowski
-	<maciej.falkowski@linux.intel.com>, <dri-devel@lists.freedesktop.org>
-CC: <oded.gabbay@gmail.com>, <quic_jhugo@quicinc.com>,
-	<stable@vger.kernel.org>
-References: <20250325114306.3740022-1-maciej.falkowski@linux.intel.com>
- <20250325114306.3740022-2-maciej.falkowski@linux.intel.com>
- <a0d93faa-40e0-4fc9-8b86-1e30c3946124@amd.com>
- <17c82a42-2174-425f-a4c4-4df18176f7a1@linux.intel.com>
-From: Lizhi Hou <lizhi.hou@amd.com>
-In-Reply-To: <17c82a42-2174-425f-a4c4-4df18176f7a1@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3D:EE_|DS0PR12MB8480:EE_
-X-MS-Office365-Filtering-Correlation-Id: ec752d6d-eaa3-475d-301c-08dd6d56353b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Qks4Njc1ZWdoTjFISHVTR1VpS1NXRStMNUcwNTJJL2YzVmFLaW53R1R6QU1u?=
- =?utf-8?B?ckFGUndGcFZkS1VwNG55M1J6ZmtFVm93M2R2S1ZzczE4aHZnU280K29mbGhG?=
- =?utf-8?B?djA3bDdEeStPTTIyaHd5UjdLaUdGbVpabG5YYTVhUlp1SDlDR3o2ZUlBV2ps?=
- =?utf-8?B?TGJaa2RpdzN3QU9xek1HNUs0OVhvcjhEVkZiVy9PUTlnZnFkTlgwOFprUzAy?=
- =?utf-8?B?S25rWndjbkRpK0lOb2luMEJ0QTIrc2VCd3BuVVpXd0N5cDd4KzRRT3FxL0dn?=
- =?utf-8?B?YVIrUzB0NVVBaVU0ekJCcHcyS0tLaDJQaUpQaDkyVElMRHFXWWVsNTUrQU9X?=
- =?utf-8?B?SHhpeDRUejd5cCsyblU5TE4zZEloUlVRcnMrMDZib1NqVVJRc2RmTWt4Vzhm?=
- =?utf-8?B?QmNOdDR0WWhSQkZZVWZYQkVXU3VTL0hKb0VWbkJnZkVYQWR2bC8vWjlCeC9T?=
- =?utf-8?B?RDdBL0NDWXd1SFE0OHVDY2RkRzlQZFpIS3ZlTkNqSEVzamFlT1MvTGZMQ0JN?=
- =?utf-8?B?Z2lwMjM3Y2o2TlZieVNzSnJ0QmdjT0lBMkRSY0FlMjY4a1lRajRURWU3cmZL?=
- =?utf-8?B?ell6TW8rcFVTNkJ4MW90T2d0QTV1ajJpNmloYmRTeHY0NXFkWjZ5bU1OZHdo?=
- =?utf-8?B?d1hHV041QTFBV0JUQm1NZkp3UFFQSVI2aTJWQWl4bzUybEUwTVhPeWRBVTk3?=
- =?utf-8?B?MnpCcDRaL29DUk83T0YzV2J3RnhkTUJ6T3NISjdiOGpmaDNSTmNXTXZDMXNH?=
- =?utf-8?B?R1lscWpXaGd2dXhXNWJpbzczWE9Ta3RETTZ4RWJLaGx3aWtqdTBCN25aOXVr?=
- =?utf-8?B?TzNCSEFiamZGdlhhU1pwQU9sSWs4TUtxT1ZvMVYvc1V0bTIwbHU3Uk4xUEl1?=
- =?utf-8?B?NFpvdVpvVFpVQnFzVGZOcURFWTVHV0N5dlo5b0dBeE05SFdkNktST25lM1RM?=
- =?utf-8?B?Snd0U3FmTVduUGN3UVR1a2w4QlBKemN2UEQ5b1YzeFJwU2FVNnpCVzZMWlh1?=
- =?utf-8?B?c0lWR2JuYnBDM2JvbFdzV2U2aWM4dGhlS0lmeWVYSzJEWUxWelBvN2phUU5H?=
- =?utf-8?B?d3A3UFhndnBabHBLZFF3WDZGL0R0VGV1Y0dPZGVwWnlUNSt4RHpGNjEvOElU?=
- =?utf-8?B?V2kyS1FVRENCbGJtWkU1dDdkNVQ1Ry9HYndsY3N1VjBIYnFVVXNEN3QxU251?=
- =?utf-8?B?bkdtdGM4YmRvNDlLSS83T0MzejlSOXVGVEg0bzBqOFpHeW9IaVNYUlp3ZXN4?=
- =?utf-8?B?N2pXZUp6N21Gd0g3ZVhCai93aUUwRDhwdHZwSTZLM0pRVHRMUmNYOUZPOFNG?=
- =?utf-8?B?a3pDREpQQmE3Q2IxS2s3dk5BcWR5bXN0LytNVFpqcHk4MXBMNWV1K2pmMDF0?=
- =?utf-8?B?NlIzTm5wUHFQRlZnVml5bzB2VlQ2VkZEQXJrVWV0dFBpakJaTXRUdjhyTzZa?=
- =?utf-8?B?T0ZLMU5hSlA5QTJTOEh5NmZIUnFhaVFKNGVYUkFrVzUvTTI3WW9TcW00b05Z?=
- =?utf-8?B?cWtRSCt5ZTkrMGdIdkRvbmxvdEd5ZTdHZVVLNmwzQkVhRnB1dWJtUW9CdGk1?=
- =?utf-8?B?L2FIK1BBdkFhZW1jdVp0Z3JPbDcyczMwZFNKUXB5NFJ6MDBLaG9MRFIvMEpL?=
- =?utf-8?B?eXB2KytwS05sYnlML2RnWVVsS0NrVnNZK1NVWDZUTi9ydTJpMzF0blhVR2dJ?=
- =?utf-8?B?TXVpdWZiNEtYcEpQZnk5QzIwOFUxQ0tkaTVCZ1V1VC9RRHhRY1U0dUxyWGlV?=
- =?utf-8?B?aE1QTHY2bnpEY1lzekxZRjRDNGM1Yy9kQ1p1MXNGNHJFcGRzYzZsUnlzeTRQ?=
- =?utf-8?B?ck05V0QraXlyamZXaVRWTFhkUmlGZVdkeHVQZ2FiYy9wTFE2OG9WTnBETDhR?=
- =?utf-8?B?NWJzNTBjU1ZnWWY5Y2lZdmRnZGUwb3J2eDFnUEQvN3RBUXd6ZUJONUkvN3I4?=
- =?utf-8?B?dmhXMVBKbmVmYjVXcURseWpRcWtlODcyQ1hzRFBCeUdCaXhub0hjdWdVQ1RR?=
- =?utf-8?Q?fc4x87pKLrAj3GOjbNuakUoEz9qxD4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2025 17:38:38.2758
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec752d6d-eaa3-475d-301c-08dd6d56353b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE3D.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8480
 
 
-On 3/26/25 01:06, Jacek Lawrynowicz wrote:
-> Hi,
->
-> On 3/25/2025 9:50 PM, Lizhi Hou wrote:
->> On 3/25/25 04:43, Maciej Falkowski wrote:
->>> From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->>>
->>> Fix deadlock in ivpu_ms_cleanup() by preventing runtime resume after
->>> file_priv->ms_lock is acquired.
->>>
->>> During a failure in runtime resume, a cold boot is executed, which
->>> calls ivpu_ms_cleanup_all(). This function calls ivpu_ms_cleanup()
->>> that acquires file_priv->ms_lock and causes the deadlock.
->>>
->>> Fixes: cdfad4db7756 ("accel/ivpu: Add NPU profiling support")
->>> Cc: <stable@vger.kernel.org> # v6.11+
->>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->>> Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
->>> ---
->>>    drivers/accel/ivpu/ivpu_ms.c | 6 ++++++
->>>    1 file changed, 6 insertions(+)
->>>
->>> diff --git a/drivers/accel/ivpu/ivpu_ms.c b/drivers/accel/ivpu/ivpu_ms.c
->>> index ffe7b10f8a76..eb485cf15ad6 100644
->>> --- a/drivers/accel/ivpu/ivpu_ms.c
->>> +++ b/drivers/accel/ivpu/ivpu_ms.c
->>> @@ -4,6 +4,7 @@
->>>     */
->>>      #include <drm/drm_file.h>
->>> +#include <linux/pm_runtime.h>
->>>      #include "ivpu_drv.h"
->>>    #include "ivpu_gem.h"
->>> @@ -281,6 +282,9 @@ int ivpu_ms_get_info_ioctl(struct drm_device *dev, void *data, struct drm_file *
->>>    void ivpu_ms_cleanup(struct ivpu_file_priv *file_priv)
->>>    {
->>>        struct ivpu_ms_instance *ms, *tmp;
->>> +    struct ivpu_device *vdev = file_priv->vdev;
->>> +
->>> +    pm_runtime_get_sync(vdev->drm.dev);
->> Could get_sync() be failed here? Maybe it is better to add warning for failure?
-> Yes, this could fail but we already have detailed warnings in runtime resume callback (ivpu_pm_runtime_resume_cb()).
+The patch titled
+     Subject: lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     lib-scatterlist-fix-sg_split_phys-to-preserve-original-scatterlist-offsets.patch
 
-Will the deadlock still happens if this function fails?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-scatterlist-fix-sg_split_phys-to-preserve-original-scatterlist-offsets.patch
 
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Lizhi
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
->>>          mutex_lock(&file_priv->ms_lock);
->>>    @@ -293,6 +297,8 @@ void ivpu_ms_cleanup(struct ivpu_file_priv *file_priv)
->>>            free_instance(file_priv, ms);
->>>          mutex_unlock(&file_priv->ms_lock);
->>> +
->>> +    pm_runtime_put_autosuspend(vdev->drm.dev);
->>>    }
->>>      void ivpu_ms_cleanup_all(struct ivpu_device *vdev)
-> Regards,
-> Jacek
->
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: T Pratham <t-pratham@ti.com>
+Subject: lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
+Date: Wed, 19 Mar 2025 16:44:38 +0530
+
+The split_sg_phys function was incorrectly setting the offsets of all
+scatterlist entries (except the first) to 0.  Only the first scatterlist
+entry's offset and length needs to be modified to account for the skip. 
+Setting the rest entries' offsets to 0 could lead to incorrect data
+access.
+
+I am using this function in a crypto driver that I'm currently developing
+(not yet sent to mailing list).  During testing, it was observed that the
+output scatterlists (except the first one) contained incorrect garbage
+data.
+
+I narrowed this issue down to the call of sg_split().  Upon debugging
+inside this function, I found that this resetting of offset is the cause
+of the problem, causing the subsequent scatterlists to point to incorrect
+memory locations in a page.  By removing this code, I am obtaining
+expected data in all the split output scatterlists.  Thus, this was indeed
+causing observable runtime effects!
+
+This patch removes the offending code, ensuring that the page offsets in
+the input scatterlist are preserved in the output scatterlist.
+
+Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
+Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Kamlesh Gurudasani <kamlesh@ti.com>
+Cc: Praneeth Bajjuri <praneeth@ti.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/sg_split.c |    2 --
+ 1 file changed, 2 deletions(-)
+
+--- a/lib/sg_split.c~lib-scatterlist-fix-sg_split_phys-to-preserve-original-scatterlist-offsets
++++ a/lib/sg_split.c
+@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
+ 			if (!j) {
+ 				out_sg->offset += split->skip_sg0;
+ 				out_sg->length -= split->skip_sg0;
+-			} else {
+-				out_sg->offset = 0;
+ 			}
+ 			sg_dma_address(out_sg) = 0;
+ 			sg_dma_len(out_sg) = 0;
+_
+
+Patches currently in -mm which might be from t-pratham@ti.com are
+
+lib-scatterlist-fix-sg_split_phys-to-preserve-original-scatterlist-offsets.patch
+
 
