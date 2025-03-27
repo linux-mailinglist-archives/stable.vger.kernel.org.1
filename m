@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-126894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58873A74013
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 22:15:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF64A74014
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 22:16:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C5023AAA30
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 21:11:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EA1C3BFBF7
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 21:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24F81D5ADA;
-	Thu, 27 Mar 2025 21:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06DD1D54E9;
+	Thu, 27 Mar 2025 21:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jxuJcS0G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U5y0jVGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6C21624C2;
-	Thu, 27 Mar 2025 21:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9118D19DF75;
+	Thu, 27 Mar 2025 21:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743109910; cv=none; b=rQ+mH7mqrsCrrl/CZ0uiMyr6t998+d30BznXRK4kEzrNPL2ubZ0b4nL+gihez9VT7IO80o5qZEc9aFzWjlpZUYp+kdyOC8iZ/q1BgE8cixOPZ2KvdcqwbjUZSmYRFaaFrA8FjcF5QDetOQK73qGFPu+ORiBDQa41Jd5/6zaR9dQ=
+	t=1743109921; cv=none; b=bPq7SLr47K68mhivGEZUMfI0+S4SnegZ2Dp6rK0kppW5tsjlPYhVcvXVPDuyFSxC/2MlDzZvWdWY145GOD/8PKFMCsWoSPLmfTxhyoN55ope8FN0KiMKcJ32LYC9VcA+eok5uISUb7Jh5ij8PEsO6C5kIieEHHIc25T5CGRsWvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743109910; c=relaxed/simple;
-	bh=2FnkE7kyKzooN89ZP+W7jaZvCQm8AS6VHiuvwyP/8fc=;
+	s=arc-20240116; t=1743109921; c=relaxed/simple;
+	bh=ByYkNM5OERWUhideqGYvTVTMOWKjfplXMqbr3m6/940=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=lCOwv4kcwknTcV92US5XwIxpu75tEEs3keyjqSyhIuDxYGfHzsU3zviT5Qt2dGcdTXvSqafXj5Es7OflVX8W1SZS44SS7m5fSKYAjLJ4rYfS83vlKHdAHTkbuubSz0bdiI5KLyC1+8tXA5bUqSFZJSfVsRTAYHoxIB2N2CO5u18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jxuJcS0G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F3EC4CEDD;
-	Thu, 27 Mar 2025 21:11:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g5wIDNKsGaEWWW8H/MBKZBizBbgSJCyLbp6APqu39R0vusA5zT4wBsOa1N+RHPW+SbYpNXmK+8+P6e6Txc6zyLsDgF4PzGoWaDt672lC+tYPxvK7NZbxkxLTR2De5YY+mpqVVusdChUXMbt2py4jRJA1Np95QB9QN8PAL3kHNw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U5y0jVGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4D4C4CEDD;
+	Thu, 27 Mar 2025 21:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743109910;
-	bh=2FnkE7kyKzooN89ZP+W7jaZvCQm8AS6VHiuvwyP/8fc=;
+	s=k20201202; t=1743109921;
+	bh=ByYkNM5OERWUhideqGYvTVTMOWKjfplXMqbr3m6/940=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=jxuJcS0GRKgyRFFHIST9QTQYkeJ0r4qSncJfMoEdcVbTppLxbPR6yftvVN44ZM8tJ
-	 KFZ30Ja8lFJ0ePfwPSadNLEvAsUyG8nIoZlc+0OUvxJaUcNta0Y/mOH0uE70ggGII1
-	 Qh1TiY3+bestzVKrgxflKUEhNP6YoYby7781bKFajVSRUjlvmxQn71iVkJjd7T4Pa+
-	 LriVtcv/6hNO2+jip2P6NdVRJ+U+3xPb/+clwXYg3/zeNaMAtSpFAU4mBEXPubgtd8
-	 BOBxe6kLrf7eQdnShxen5sBpDrliOxe2HV5N15ivuCUK0KUNPt7UT+H6+riPXqT2Os
-	 hhn0fn8clQNHQ==
+	b=U5y0jVGXrQ8fexhfA/U0PHsfgSeCU8oje7d5hVlBOY7qAu6imaEz8gihZ/uvbe+W/
+	 juYD/ZtsT8XNW3VVIUcwtIH+/oK0pbsZ/y9g3hlXU+G2Y3cxHx3kTUcuSEtmQ/+tuy
+	 KSPZjQUKcGLSvxVGNI8xZPYBfs7SfsXkm9/MuteJQt4vGQqQKudyQdhfWKvF4eLW8T
+	 FYlmjyXMeYD5gWXue1me/2MQ8mjNEOvno7tnOqGuacTC77uwOhqPFMLz1BrMqbXvyX
+	 x2TbPzRFHS8FkPnT9pZtYK8YaNeI/YQEnKjZIbUUSefrqRrd+DPTtOMBawPuAB5hdV
+	 Xv+9BicigW8SA==
 From: Mark Brown <broonie@kernel.org>
-To: srinivas.kandagatla@linaro.org, linux-sound@vger.kernel.org, 
- Alexey Klimov <alexey.klimov@linaro.org>
-Cc: lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- krzysztof.kozlowski@linaro.org, pierre-louis.bossart@linux.dev, 
- vkoul@kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- dmitry.baryshkov@oss.qualcomm.com
-In-Reply-To: <20250327154650.337404-1-alexey.klimov@linaro.org>
-References: <20250327154650.337404-1-alexey.klimov@linaro.org>
-Subject: Re: [PATCH] ASoC: qdsp6: q6asm-dai: fix q6asm_dai_compr_set_params
- error path
-Message-Id: <174310990724.446560.8160330650752927571.b4-ty@kernel.org>
-Date: Thu, 27 Mar 2025 21:11:47 +0000
+To: John Ogness <john.ogness@linutronix.de>, 
+ Volker Haspel <volker.haspel@linutronix.de>, Han Xu <han.xu@nxp.com>
+Cc: stable@vger.kernel.org, Kevin Hao <haokexin@gmail.com>, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250326224152.2147099-1-han.xu@nxp.com>
+References: <20250326224152.2147099-1-han.xu@nxp.com>
+Subject: Re: [PATCH] spi: fsl-qspi: use devm function instead of driver
+ remove
+Message-Id: <174310991931.446685.5350029703728855284.b4-ty@kernel.org>
+Date: Thu, 27 Mar 2025 21:11:59 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,25 +63,26 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-1b0d6
 
-On Thu, 27 Mar 2025 15:46:50 +0000, Alexey Klimov wrote:
-> In case of attempts to compress playback something, for instance,
-> when audio routing is not set up correctly, the audio DSP is left in
-> inconsistent state because we are not doing the correct things in
-> the error path of q6asm_dai_compr_set_params().
+On Wed, 26 Mar 2025 17:41:51 -0500, Han Xu wrote:
+> Driver use devm APIs to manage clk/irq/resources and register the spi
+> controller, but the legacy remove function will be called first during
+> device detach and trigger kernel panic. Drop the remove function and use
+> devm_add_action_or_reset() for driver cleanup to ensure the release
+> sequence.
 > 
-> So, when routing is not set up and compress playback is attempted
-> the following errors are present (simplified log):
+> Trigger kernel panic on i.MX8MQ by
+> echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
 > 
 > [...]
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
 Thanks!
 
-[1/1] ASoC: qdsp6: q6asm-dai: fix q6asm_dai_compr_set_params error path
-      commit: 7eccc86e90f04a0d758d16c08627a620ac59604d
+[1/1] spi: fsl-qspi: use devm function instead of driver remove
+      commit: 40369bfe717e96e26650eeecfa5a6363563df6e4
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
