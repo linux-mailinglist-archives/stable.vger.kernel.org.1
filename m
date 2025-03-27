@@ -1,209 +1,182 @@
-Return-Path: <stable+bounces-126831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFC7A72AEC
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 08:59:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1274A72B02
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 09:05:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F9B316CE4C
-	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 07:59:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91D397A4F0D
+	for <lists+stable@lfdr.de>; Thu, 27 Mar 2025 08:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B20D1FF7D6;
-	Thu, 27 Mar 2025 07:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2277E1FFC42;
+	Thu, 27 Mar 2025 08:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="Z9A1aRbv"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="aQIty+8T"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03olkn2031.outbound.protection.outlook.com [40.92.58.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805351FF7CC;
-	Thu, 27 Mar 2025 07:58:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.58.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743062338; cv=fail; b=qArljuNBFaC9vRPVytwaKfI/dExEgI0OlJlHJSdTT2UpVwFsk/1o9X581NA+WFn2nHr6N9vpzfUUORHLh9FoaTzlXce1Mvzn523x/pCGtKs9wuJ2vzCZbbrFpFBjhRP1of27w6I2SQt8X5Tz4Z/2pFFpHWDGG8SiSvop04ZpEOk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743062338; c=relaxed/simple;
-	bh=rtqtCBPcpxaqzYQDyVBnmvpaDOiihh0pxTPw1G7geP4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=aEjjesoeJjb2aK/ysKFrnGWq4/QYv+Fm41AsFKMac3Z47aQMCS6cHGwVtKGBMgxAJdpzQcr38FbQDEyFsRJZPiT8RajRgEM9WlGSmGXWMgQX52vvUb7+mrY1KzasSVCCbOL2BcS3BmloV6KgPb0etRKKaOpdBE8V7+fYD6zC/oU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=Z9A1aRbv; arc=fail smtp.client-ip=40.92.58.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l3iXfaw4j//xNjgRcYpbdGkgGYdpqRWGuI0tfIqHx/V5b0l6zrdgIrav3OdSTqXhoe18qewvVI7lntYjEvJiBgqErW9cpxIJonqDlO+5OO8VFQ7Hc68MxeXqgvlQNelNg0dTG8yTCuTN6wV4XG9Ctl6cDAst2S2sd7P/8abBj9pSvYGWR/KbQHlu0IbgleXR7tfaL8+xJOgbf7DwffIInsSzUIoAHqXd0EqaqdUtHcnc3PWeRNVF4gyk/oNR35cQcTwfczXgUhAcOuSPrW7fFMBImh4SNtF/0ePFVM7xJubohlRzl6qhOeWro7OFLpy7u+AoYW+ru1d7xFt4rzeydg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rtqtCBPcpxaqzYQDyVBnmvpaDOiihh0pxTPw1G7geP4=;
- b=gBCFJRgT9crAAN7LY4Y8Dn+B+KM2Urh4T3bE/6FQ1caNrLrdjxycyjJ3nc6dK5RjcGXFgS0KB66wLHJeqfvS21Ut3HR4AR4NZwadhcTAqLQsD7wXydnMD3cIUpakaXQvrY9CHhqqb01zYK3nCkMtQedziJ39UHFHBThrKZO9NcZ1M+eB14saR4fAED9SH3LjMptTgoqje1EfZoJPnxvt2Shb0h3mZUmikZqdInLNATO6Y6uPKrd+b9f9nqU4v8EudqreVnFmyfzm4StikIYsV0WFFVsMC/boChUcN8Q8eizI7GHiAZoZUOhO/xACwKrVdfsezxVVm0PelclyFBLN9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rtqtCBPcpxaqzYQDyVBnmvpaDOiihh0pxTPw1G7geP4=;
- b=Z9A1aRbv0F+pjlA8nNsGIUrroBKZZCbKqjIQZm7/nf5VGMaNwk4addvomfKMdNIqEZjAOc77Sm0H600k86kjFY+fxNj8hJP6mVTZRAZt4wU0uDEVgbtVpS6I1jOVmx0mNvPgX3psiCAIgPc1SlH4wXgv0gMLfqigObGFsJLqcDs4y/RwVvvA5wbCtHgS3JRMKUhIx7amo7t8dPf4Q6RyyVDDvtmIfHbTLi8xu1wiMPMd50FyEHlCk3yVVAdk0s+R8mgmxkImm/ZzHvoudF0TvfyVK3etv/COwiRcbqWVkMjPTrx3KKxpk6MMxrhBUjOhNGKNGvb74/Ad+Tw6OrOo1w==
-Received: from AS8PR02MB10217.eurprd02.prod.outlook.com
- (2603:10a6:20b:63e::17) by DB8PR02MB5754.eurprd02.prod.outlook.com
- (2603:10a6:10:117::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.45; Thu, 27 Mar
- 2025 07:58:51 +0000
-Received: from AS8PR02MB10217.eurprd02.prod.outlook.com
- ([fe80::58c3:9b65:a6fb:b655]) by AS8PR02MB10217.eurprd02.prod.outlook.com
- ([fe80::58c3:9b65:a6fb:b655%6]) with mapi id 15.20.8534.043; Thu, 27 Mar 2025
- 07:58:51 +0000
-From: David Binderman <dcb314@hotmail.com>
-To: Eric Biggers <ebiggers@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Ard Biesheuvel <ardb@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] arm64/crc-t10dif: fix use of out-of-scope array in
- crc_t10dif_arch()
-Thread-Topic: [PATCH] arm64/crc-t10dif: fix use of out-of-scope array in
- crc_t10dif_arch()
-Thread-Index: AQHbnosK3mh9Fpk80UqRnNseAaITfLOGnkLl
-Date: Thu, 27 Mar 2025 07:58:51 +0000
-Message-ID:
- <AS8PR02MB10217FDBBC9DBA3A5B3C5F27B9CA12@AS8PR02MB10217.eurprd02.prod.outlook.com>
-References: <20250326200918.125743-1-ebiggers@kernel.org>
-In-Reply-To: <20250326200918.125743-1-ebiggers@kernel.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-GB
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR02MB10217:EE_|DB8PR02MB5754:EE_
-x-ms-office365-filtering-correlation-id: 4c47aaee-ea1c-4bbc-2dd6-08dd6d053664
-x-microsoft-antispam:
- BCL:0;ARA:14566002|7092599003|15080799006|8062599003|461199028|15030799003|8060799006|19110799003|102099032|1602099012|440099028|3412199025|4302099013|10035399004|41001999003;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?5z+XN7407nJioKn0qT+Qsa5w/29Tm2k2D54t0W0wAWO9Zb3x0QKGaaYvuY?=
- =?iso-8859-1?Q?PwbWmEm4LKyMwMQa1IAQ1xEa5phzMQDfnwvnq/sR+dQvfrIbkZ9PJfLUwV?=
- =?iso-8859-1?Q?BUw6dcT0LT5Byh3Ub7YxII1xTensxmhfdRzFaYO4kYE1R/Y7AWcRzFaj1q?=
- =?iso-8859-1?Q?N1bjNFp0ttZYtJaFuJZ+SkXz5EMKA+LTL/2x5vB93kJxsCXToEldcBWOvS?=
- =?iso-8859-1?Q?FK39dEfFr81vOLLMikCr5LEy6WyN5cRlLKnzIgqjEX6aD5YvZ54zFPGvwv?=
- =?iso-8859-1?Q?esivvVo/H1ejKv+AyL6NCU2WrG5rvH9n0bwO/aYLr5lkwx0PeLRE2bK5WP?=
- =?iso-8859-1?Q?PubqGpU+MarV9/CUv59Cqy4H7dXhQpdxnRpoPAzwYX72kpg0uOiHJTcnWT?=
- =?iso-8859-1?Q?69IIW6gWnGG6jgTAI6hXKzao4CCXbQy7yymAGUhIgxAR73oNRxd3d5NX2t?=
- =?iso-8859-1?Q?yTCOQP7mIsx+uqoDAj4AJkfvGGGcJRUSVAAlHjSpTI7k4D/Ue+lhjSBSns?=
- =?iso-8859-1?Q?l9fhRfhqVBUuj74tZAy2eVTTuUy30oUghHuyT5/8DNq6JJXXPFHIRY9lEC?=
- =?iso-8859-1?Q?XzE1yOKc5PnZ0I+cRcqm7PYXgXBGe6Tq9FKjh/lVRCr+3SVMwbmgP8BbmD?=
- =?iso-8859-1?Q?LK+qJ2aM/XY6O7kiq77ZfeEnT5sNZSDAq2UtuDTeZQRCYwqTf2sAsMdIPo?=
- =?iso-8859-1?Q?7QRqI2wbnbk28gxkk//1r41RR1rpR+nMRF6jYdYJKcrqOT/mHXQGKEtQhL?=
- =?iso-8859-1?Q?pM2+Gt3QHCxfKBJrKVxaKvj7EU93j8V9R/GvnpTpBY2Yy9GJ6OrEFRmKY4?=
- =?iso-8859-1?Q?oGrdnVS2b/Y9jp1wLLkf4x1//eZ/fRhq8hq8xjkUSygbHEHK0tr8XFiOU9?=
- =?iso-8859-1?Q?xtrTAHOH1qvEzAn+jQQB5Cl14jlCywTz8HVmFIrsoZUDBRv0cBUdk/ufMz?=
- =?iso-8859-1?Q?5Y4UBSrV+Dl6b0nFbyLBL76RCKpkmjop7JBO7aaNTvgfRJirgNU0BFQCpC?=
- =?iso-8859-1?Q?OOUhfArvMmjZSR2jVnd0E6pnxIK8s4zb+YUZAP8KxL3xVAsoQYPibZT2IS?=
- =?iso-8859-1?Q?MBmdALnt/97RvuyLHXz8JE6daxF1rnqs696HQlOg4IVk/rRseI5XNNs+6T?=
- =?iso-8859-1?Q?448fbitvIxMMYAeFEg1s7D5xW+DIxcLnsZR8DnXPuLxqgHKUp6QVGWdIGL?=
- =?iso-8859-1?Q?JQV6e4LFQDTahyb1V+pbEvw0AGKzd0CpxvAj2rUjhwwtC7tDHT616rDEwt?=
- =?iso-8859-1?Q?lvfjbd4cLLU08qKUKWmSI+vEBFnLVjn912DB3uhJMoCRvUrVJptx4/GoMd?=
- =?iso-8859-1?Q?QGxNFWGiVhE8reXDDMSgNFbtqqNF68/+Mex8XbkvoE+5gTnToDysf6KR31?=
- =?iso-8859-1?Q?ffHoXNPvegWyENWpnnUj7TF2pGeXt8lQ=3D=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?vD+wrbMgc5W2qC6HOzaXoxkzs2IyFlddxWlBJagPnnpf+I/n5iD6JthP1L?=
- =?iso-8859-1?Q?Q2dPvR1xouTUr/7fvhgMokuYcCMQDbwI5JNpK35ft9Xq/i/E0jsU6swUJb?=
- =?iso-8859-1?Q?uV0GdQHlwZGOOgTzD77cUh7h9NwFd1aaDR/d08qk94SIbSjduFW9Z8vKjX?=
- =?iso-8859-1?Q?RnYdGQpKCXix24AUEqtYncSPlgM+A+RVHH5RpuaXWiiUSc5oJIyr5uFRgy?=
- =?iso-8859-1?Q?KdgeBhP0doUAwnVLZ8DrNfevb7dK8VpLOV/Xofyu4l9pTgVy789qLx5jCS?=
- =?iso-8859-1?Q?LXDzi4uW94YnI0YZ08HJK0WeIgRD1cExqc3U2LrIrzmredpnASA/13CWJ0?=
- =?iso-8859-1?Q?bFkUOQOfXYa9qN+pE41eBDJGt5FKRwZxUPDASQCpvB9gtgTq4875TmUB9c?=
- =?iso-8859-1?Q?DGyHNMf26S6ehXon4Ql0AJZ00o69rXrbVpmPby4eB273llsozoUQZgCA8L?=
- =?iso-8859-1?Q?RljsOor1bBOdXZYz+0stChzpKxePHQQPiaUC4gNuppA87yDe0TKAwbe52W?=
- =?iso-8859-1?Q?HrVtldmwfkGfkL2Gvvd0x6vyWermagHUoe4nMuDvMwbO7mSupcVGH0HpVk?=
- =?iso-8859-1?Q?ogFLtLLT6/UgNk+sw+hkvDN5EfYtKO9DOMVV92/c2iY0uysoz2D/KZQe4S?=
- =?iso-8859-1?Q?PAEXtDqH36Ciy6tnr9xc/cAxuKzwix2cZCD2MHbk8PO4FLNH+AkPh+Po4v?=
- =?iso-8859-1?Q?TBPrc3421f+ez/1cZ49gEw50R73502pc+u/fzdJ6dh+B5Yx81uKd8P9fzY?=
- =?iso-8859-1?Q?/KLACkgFk3gic6zsC+KDU1bOfuDlJDnV0aGmA6LMRp1NPmRncE239fvZcg?=
- =?iso-8859-1?Q?AWxoz3kBWaE0qyBFp7Iirky+iN93iZzxMhUlVpnPpTupcRw/ajbHAmNl1t?=
- =?iso-8859-1?Q?6J64SmdETtmKDi3Z1Doww1NxhaU0RCoLHKgZJgOzXg+yepKXFz59ILpU5h?=
- =?iso-8859-1?Q?XEiT4lqNTbvo1P+8KpJ8EQp0OEyo0OBJlKPmVctZnwdamb+qlVq2Y5KYnv?=
- =?iso-8859-1?Q?JlZTL1XRhs9AjKD7lGSdwqSjk2bNAnIq7Wm9Bx+faVmWmFXonz4+6zBaRe?=
- =?iso-8859-1?Q?+WzMLXCEhlj0nwT39wiZiZvsoyfK6bi6rmogtB3n9ZF5+OADj/GlddpWoQ?=
- =?iso-8859-1?Q?q77/gYsUv9f0t8fHCTHMFxmwaOPjwF2PwX0kDZ75x26MGMU6by8n6Sj3M1?=
- =?iso-8859-1?Q?8uWW8oXGBr3o/ZHmUSpK94MUBvpdNoLWuMgLmUrRzst9yXEIUEevJ3RCMZ?=
- =?iso-8859-1?Q?RQjulaEbZN3PO6UEJYOA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956AA3A1BA;
+	Thu, 27 Mar 2025 08:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743062723; cv=none; b=f2AAEkc+MWKmzt/Q9vEUOykO7vtexwCRON+nEcTOvCkpUDEJ7dzXfXspKn+sXwTCuRcoOJixz+5nDCi58EFoByZK2943BJ0JpBHA58kglVpJ2Z+QR6qVN+n3IJ8whMlc89IuUl1okOCCc7kvAo8DMvPdhtiMQw3zqbpj6LBhYZ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743062723; c=relaxed/simple;
+	bh=F9EWPBC+aRPB+clpv2QSwDl0b7NQoqlU0kHNGRoi/7Q=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=irn1mBKY5Q5/ZPYxptJRx3E+VkB7GfeHNUWkNo5q+397GIYdqaP58UQS6xVamLMcND11tdaqUPgSGzs8Va3C8pNv+er2qOnUZyB8sgEphKTFwUm6Ip0Zde2flHede2Y3w3+aigcwrEswNEPiuS7nNgrBbz/GMpL2whhicYOvfLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=aQIty+8T; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-7828-19-msonline-outlook-12d23.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR02MB10217.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c47aaee-ea1c-4bbc-2dd6-08dd6d053664
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2025 07:58:51.0483
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR02MB5754
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1743062719;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7QtJKq+OsWpHhYsRUPr9FSDRdjBhO4gzujqqenof5Gw=;
+	b=aQIty+8T2fPR116eQzueuqp4MJQLLFL/toTBOr+3/IiJoMiyAFxARk7fZhBkLVYkNqIo4y
+	bb3gBpbrc4YRESUr9dGs8XiXt9c4FFpU2ILsuwLPDpQAhb1zVoMutS9C8mVk4qDkyAftnj
+	VAmFu2UlBCYBMdnVz6LYK4UAZVzLfoWW/n/EwcDbuDO8hUES5wGlBdbFQnZ5f2wnglx3YH
+	nrG1rJk/QQBrAvE7ojzUInZ1K9DrjLOkeHgdJ686L8IR4fLyAKf2eiUgtuOpfPg+QhZi1s
+	hxBO4zlVTBBncPGd3raWKJeWlQxF9p6Q0Fv+qeg3f0hcOb7KmKtrdsyCtpZOpw==
+Date: Thu, 27 Mar 2025 09:05:17 +0100
+From: Dragan Simic <dsimic@manjaro.org>
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: linux-rockchip@lists.infradead.org, heiko@sntech.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, stable@vger.kernel.org, Alexey Charkov
+ <alchark@gmail.com>
+Subject: Re: [PATCH v2] arm64: dts: rockchip: Remove overdrive-mode OPPs from
+ RK3588J SoC dtsi
+In-Reply-To: <f73743cb-fdea-4b53-9665-4cc303498171@cherry.de>
+References: <eeec0d30d79b019d111b3f0aa2456e69896b2caa.1742813866.git.dsimic@manjaro.org>
+ <f73743cb-fdea-4b53-9665-4cc303498171@cherry.de>
+Message-ID: <5f39aa155b2ef6e6b355b7f9f9a6ce6b@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-Hello there Eric,=0A=
-=0A=
->Fix a silly bug where an array was used outside of its scope.=0A=
-=0A=
-I am surprised your C compiler doesn't find this bug.=0A=
-gcc 14.2 onwards should be able to, but clang not.=0A=
-=0A=
-I will make an enhancement request in clang.=0A=
-=0A=
-Regards=0A=
-=0A=
-David Binderman=0A=
-=0A=
-Fixes: 2051da858534 ("arm64/crc-t10dif: expose CRC-T10DIF function through =
-lib")=0A=
-Cc: stable@vger.kernel.org=0A=
-Reported-by: David Binderman <dcb314@hotmail.com>=0A=
-Closes: https://lore.kernel.org/r/AS8PR02MB102170568EAE7FFDF93C8D1ED9CA62@A=
-S8PR02MB10217.eurprd02.prod.outlook.com=0A=
-Signed-off-by: Eric Biggers <ebiggers@google.com>=0A=
----=0A=
-=A0arch/arm64/lib/crc-t10dif-glue.c | 4 +---=0A=
-=A01 file changed, 1 insertion(+), 3 deletions(-)=0A=
-=0A=
-diff --git a/arch/arm64/lib/crc-t10dif-glue.c b/arch/arm64/lib/crc-t10dif-g=
-lue.c=0A=
-index a007d0c5f3fed..bacd18f231688 100644=0A=
---- a/arch/arm64/lib/crc-t10dif-glue.c=0A=
-+++ b/arch/arm64/lib/crc-t10dif-glue.c=0A=
-@@ -43,13 +43,11 @@ u16 crc_t10dif_arch(u16 crc, const u8 *data, size_t len=
-gth)=0A=
-=A0=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ke=
-rnel_neon_begin();=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 cr=
-c_t10dif_pmull_p8(crc, data, length, buf);=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ke=
-rnel_neon_end();=0A=
-=A0=0A=
--=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 crc =3D=
- 0;=0A=
--=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 data =
-=3D buf;=0A=
--=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 length =
-=3D sizeof(buf);=0A=
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return =
-crc_t10dif_generic(0, buf, sizeof(buf));=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0 }=0A=
-=A0=A0=A0=A0=A0=A0=A0=A0 return crc_t10dif_generic(crc, data, length);=0A=
-=A0}=0A=
-=A0EXPORT_SYMBOL(crc_t10dif_arch);=0A=
-=0A=
-base-commit: 1e26c5e28ca5821a824e90dd359556f5e9e7b89f=0A=
---=0A=
-2.49.0=0A=
+Hello Quentin,
+
+On 2025-03-26 11:07, Quentin Schulz wrote:
+> On 3/24/25 12:00 PM, Dragan Simic wrote:
+>> The differences in the vendor-approved CPU and GPU OPPs for the 
+>> standard
+>> Rockchip RK3588 variant [1] and the industrial Rockchip RK3588J 
+>> variant [2]
+>> come from the latter, presumably, supporting an extended temperature 
+>> range
+>> that's usually associated with industrial applications, despite the 
+>> two SoC
+>> variant datasheets specifying the same upper limit for the allowed 
+>> ambient
+>> temperature for both variants.  However, the lower temperature limit 
+>> is
+>> specified much lower for the RK3588J variant. [1][2]
+>> 
+>> To be on the safe side and to ensure maximum longevity of the RK3588J 
+>> SoCs,
+>> only the CPU and GPU OPPs that are declared by the vendor to be always 
+>> safe
+>> for this SoC variant may be provided.  As explained by the vendor [3] 
+>> and
+>> according to the RK3588J datasheet, [2] 
+>> higher-frequency/higher-voltage
+>> CPU and GPU OPPs can be used as well, but at the risk of reducing the 
+>> SoC
+>> lifetime expectancy.  Presumably, using the higher OPPs may be safe 
+>> only
+>> when not enjoying the assumed extended temperature range that the 
+>> RK3588J,
+>> as an SoC variant targeted specifically at higher-temperature, 
+>> industrial
+>> applications, is made (or binned) for.
+>> 
+>> Anyone able to keep their RK3588J-based board outside the 
+>> above-presumed
+>> extended temperature range at all times, and willing to take the 
+>> associated
+>> risk of possibly reducing the SoC lifetime expectancy, is free to 
+>> apply
+>> a DT overlay that adds the higher CPU and GPU OPPs.
+>> 
+>> With all this and the downstream RK3588(J) DT definitions [4][5] in 
+>> mind,
+>> let's delete the RK3588J CPU and GPU OPPs that are not considered 
+>> belonging
+>> to the normal operation mode for this SoC variant.  To quote the 
+>> RK3588J
+>> datasheet [2], "normal mode means the chipset works under safety 
+>> voltage
+>> and frequency;  for the industrial environment, highly recommend to 
+>> keep in
+> 
+> FYI, the answer from Rockchip support about what "industrial
+> environment" means is:
+> 
+> """
+> Industrial environments encompass a wide range of settings, from
+> manufacturing plants to chemical processing facilities. These
+> environments are characterized by the use of complex machinery,
+> stringent safety protocols, and the need for continuous operations.
+> """
+> 
+> which is not really helping me understand when we should be able to
+> use the overdrive mode.
+
+Thanks for forwarding this!  I really can't escape comparing the
+response from Rockchip support to the old funny story in which
+a passenger on a plane asks a flight attendant where they are,
+and the attendant responds that they're on a plane. :D
+
+In other words, that's perfectly valid information that describes
+what an industrial environment looks like, but it has nothing to
+do with describing the specifics of the applications of RK3588J
+in such environments.
+
+> Why would you buy an RK3588J variant if you don't plan on using them
+> on the -40 - -20°C range that isn't supported by the RK3588 variant,
+> which seems to me to be the only advertised difference?
+
+Yes, AFAICT that's the only directly related difference in the
+hard numbers provided by the RK3588 and RK3588J datasheets.
+
+> It also seems like the RK3588M supports the same operating range as
+> the RK3588J but at faster speeds? c.f.
+> https://en.t-firefly.com/product/industry/aio3588mq#spec and
+> https://download.t-firefly.com/%E4%BA%A7%E5%93%81%E8%A7%84%E6%A0%BC%E6%96%87%E6%A1%A3/%E6%A0%B8%E5%BF%83%E6%9D%BF/iCore-3588MQ%20-%20Automotive-Grade%20AI%20Core%20Board.pdf
+> 
+> Couldn't find a datasheet though.
+
+There's also the following document:
+https://download.t-firefly.com/Spec/CoreBorads/iCore-3588Q_Specification_EN.pdf?v=1743061914
+
+I've also been unable to find the RK3588M datasheet.  Regarding
+the Firefly SoMs with different RK3588 variants, it does seem
+that the RK3588M, i.e. the automotive variant, is capable of
+reaching 2.0 GHz throughout its entire operating range.
+
+Maybe the RK3588M datasheet will become publicly available at
+some point, allowing us to learn a bit more about it.
+
+> Talk about confusing specs...
+> 
+> I'll stop caring from now about this very topic :)
+
+We've exhausted all the available resources, so there actually
+isn't much more to do anyway.
 
