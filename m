@@ -1,137 +1,117 @@
-Return-Path: <stable+bounces-126908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE985A7429C
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 03:53:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A285A742DE
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 05:01:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2938D1B6059B
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 02:52:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B7723B9435
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 04:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3F120E01B;
-	Fri, 28 Mar 2025 02:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568DB1AF0C1;
+	Fri, 28 Mar 2025 04:01:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915A720DD6B;
-	Fri, 28 Mar 2025 02:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265CF17C77;
+	Fri, 28 Mar 2025 04:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743130301; cv=none; b=WtzaXJnZC/h3NcsriYNsheXUm7jVq9FHa9wHn3dFCTZf7hmB+TWTKJqgDTAOlAHEeXk4BqfnsTSkaOhZZQzC/GWwPRyWo75GdGD0SG+Yoi5Q/87LWm/Kxo/uT1t+xnMEVUWKMQbE5J2yBM9s5YG2TvYNliGtFHEPxIP+6R7nDkk=
+	t=1743134489; cv=none; b=SFNKRggpGRvyE4fGgQfmes9/XPGWDZzPpKg1f4iIeXrNLCwkzmq1DsIhvPsolkOAm++RANRXK4u/Bga18bWbG6rv2P11DcyBziyULGSbtW8sDcONI+6iRqCebZMPc4KROsC0hZom8zL6iHMZGR0KKozFEiH6w6N+h+gIGI+8XOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743130301; c=relaxed/simple;
-	bh=OfSMEoXcKwYz9G/YAO5ukyb0YgaWhOSY50U/Dlz3TLA=;
-	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=CnQW2xU9mAqqc23XXHsuw9snVjnwEQ8hTtExACy5qPAqqoaA9eTkWGjiPQ0bE2fRUVeWX2hcemYVU+ZR44hwJDfB7D1avAQ+uSRrXoh1ktyzJyghHtkTdQfPUzlpcYhhrETzzybCnNkBI1wxBg/RQFtuhREDH2XafwsHDqVuhUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from fedori.lan (51b692a2.dsl.pool.telekom.hu [::ffff:81.182.146.162])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 00000000000800FA.0000000067E60D82.0006A495; Fri, 28 Mar 2025 03:46:26 +0100
-From: Gergo Koteles <soyer@irl.hu>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-  Len Brown <lenb@kernel.org>,
-  Mario Limonciello <mario.limonciello@amd.com>,
-  Rodrigo Siqueira <siqueira@igalia.com>,
-  Alex Hung <alex.hung@amd.com>,
-  Alex Deucher <alexander.deucher@amd.com>
-Cc: linux-acpi@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-  linux-kernel@vger.kernel.org, Gergo Koteles <soyer@irl.hu>,
-  stable@vger.kernel.org
-Subject: [PATCH] ACPI: video: Handle fetching EDID as ACPI_TYPE_PACKAGE
-Date: Fri, 28 Mar 2025 03:44:00 +0100
-Message-ID: <4cef341fdf7a0e877c50b502fc95ee8be28aa811.1743129387.git.soyer@irl.hu>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743134489; c=relaxed/simple;
+	bh=QRDTSdWRYXSibG99+Qb8vlhuhVjKmGrEbPWOYfoggf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QTv9CtdaHR8GMuRgfXOq6amlqF6H4knz0Vlq29hehOrKQWJj/na70f3KTGiEgEc6Od2iOpYO6V0Qp3FIMXjoCKxPK09ZGkCDFUUWsAn+lYJEQt6XagkdOkqKMFaPUAkpBnESjI/bEebintFGxUJSmHiesH5W/rJ8NmWkjktjH+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAA0C4CEE4;
+	Fri, 28 Mar 2025 04:01:26 +0000 (UTC)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mingcong Bai <baimingcong@loongson.cn>
+Subject: [PATCH V3] USB: OHCI: Add quirk for LS7A OHCI controller (rev 0x02)
+Date: Fri, 28 Mar 2025 12:00:59 +0800
+Message-ID: <20250328040059.3672979-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Some Lenovo laptops incorrectly return EDID as
-buffer in ACPI package (instead of just a buffer)
-when calling _DDC.
-
-Calling _DDC generates this ACPI Warning:
-ACPI Warning: \_SB.PCI0.GP17.VGA.LCD._DDC: Return type mismatch - \
-found Package, expected Integer/Buffer (20240827/nspredef-254)
-
-Use the first element of the package to get the EDID buffer.
-
-The DSDT:
-
-Name (AUOP, Package (0x01)
-{
-	Buffer (0x80)
-	{
-	...
-	}
-})
-
-...
-
-Method (_DDC, 1, NotSerialized)  // _DDC: Display Data Current
-{
-	If ((PAID == AUID))
-        {
-		Return (AUOP) /* \_SB_.PCI0.GP17.VGA_.LCD_.AUOP */
-	}
-	ElseIf ((PAID == IVID))
-	{
-		Return (IVOP) /* \_SB_.PCI0.GP17.VGA_.LCD_.IVOP */
-	}
-	ElseIf ((PAID == BOID))
-	{
-		Return (BOEP) /* \_SB_.PCI0.GP17.VGA_.LCD_.BOEP */
-	}
-	ElseIf ((PAID == SAID))
-	{
-		Return (SUNG) /* \_SB_.PCI0.GP17.VGA_.LCD_.SUNG */
-	}
-
-	Return (Zero)
-}
+The OHCI controller (rev 0x02) under LS7A PCI host has a hardware flaw.
+MMIO register with offset 0x60/0x64 is treated as legacy PS2-compatible
+keyboard/mouse interface, which confuse the OHCI controller. Since OHCI
+only use a 4KB BAR resource indeed, the LS7A OHCI controller's 32KB BAR
+is wrapped around (the second 4KB BAR space is the same as the first 4KB
+internally). So we can add an 4KB offset (0x1000) to the OHCI registers
+(from the PCI BAR resource) as a quirk.
 
 Cc: stable@vger.kernel.org
-Fixes: c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if available for eDP")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4085
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Tested-by: Mingcong Bai <baimingcong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- drivers/acpi/acpi_video.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+V2: add a comment explaining why the quirk is needed and how it fixes.
+V3: use if condition instead of ?: expression.
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index efdadc74e3f4..65cf36796506 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -649,6 +649,9 @@ acpi_video_device_EDID(struct acpi_video_device *device, void **edid, int length
- 
- 	obj = buffer.pointer;
- 
-+	if (obj && obj->type == ACPI_TYPE_PACKAGE && obj->package.count == 1)
-+		obj = &obj->package.elements[0];
-+
- 	if (obj && obj->type == ACPI_TYPE_BUFFER) {
- 		*edid = kmemdup(obj->buffer.pointer, obj->buffer.length, GFP_KERNEL);
- 		ret = *edid ? obj->buffer.length : -ENOMEM;
-@@ -658,7 +661,7 @@ acpi_video_device_EDID(struct acpi_video_device *device, void **edid, int length
- 		ret = -EFAULT;
- 	}
- 
--	kfree(obj);
-+	kfree(buffer.pointer);
- 	return ret;
+ drivers/usb/host/ohci-pci.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/drivers/usb/host/ohci-pci.c b/drivers/usb/host/ohci-pci.c
+index 900ea0d368e0..bd90b2fed51b 100644
+--- a/drivers/usb/host/ohci-pci.c
++++ b/drivers/usb/host/ohci-pci.c
+@@ -165,6 +165,25 @@ static int ohci_quirk_amd700(struct usb_hcd *hcd)
+ 	return 0;
  }
  
++static int ohci_quirk_loongson(struct usb_hcd *hcd)
++{
++	struct pci_dev *pdev = to_pci_dev(hcd->self.controller);
++
++	/*
++	 * Loongson's LS7A OHCI controller (rev 0x02) has a
++	 * flaw. MMIO register with offset 0x60/64 is treated
++	 * as legacy PS2-compatible keyboard/mouse interface.
++	 * Since OHCI only use 4KB BAR resource, LS7A OHCI's
++	 * 32KB BAR is wrapped around (the 2nd 4KB BAR space
++	 * is the same as the 1st 4KB internally). So add 4KB
++	 * offset (0x1000) to the OHCI registers as a quirk.
++	 */
++	if (pdev->revision == 0x2)
++		hcd->regs += SZ_4K;	/* SZ_4K = 0x1000 */
++
++	return 0;
++}
++
+ static int ohci_quirk_qemu(struct usb_hcd *hcd)
+ {
+ 	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
+@@ -224,6 +242,10 @@ static const struct pci_device_id ohci_pci_quirks[] = {
+ 		PCI_DEVICE(PCI_VENDOR_ID_ATI, 0x4399),
+ 		.driver_data = (unsigned long)ohci_quirk_amd700,
+ 	},
++	{
++		PCI_DEVICE(PCI_VENDOR_ID_LOONGSON, 0x7a24),
++		.driver_data = (unsigned long)ohci_quirk_loongson,
++	},
+ 	{
+ 		.vendor		= PCI_VENDOR_ID_APPLE,
+ 		.device		= 0x003f,
 -- 
-2.49.0
+2.47.1
 
 
