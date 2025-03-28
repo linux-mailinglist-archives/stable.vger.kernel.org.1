@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-126953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C46A74ECC
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 18:03:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A78A74ECD
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 18:03:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04BDE3A5777
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 17:02:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B7AB7A660D
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 17:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7962C1A08B1;
-	Fri, 28 Mar 2025 17:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809ED1D8A0B;
+	Fri, 28 Mar 2025 17:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AyYH6fuL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VyZXUsmu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8B23C0C
-	for <stable@vger.kernel.org>; Fri, 28 Mar 2025 17:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4101D3C0C
+	for <stable@vger.kernel.org>; Fri, 28 Mar 2025 17:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743181387; cv=none; b=MGllO9yMLSvQQ483Cflq93e568CItnDXZCg9STv2Bq+l9TR0I9vfVpt4++cptm7ZOSsHrQoAxsUpN8Guahp6VDFTDczGiGnNBDu7bXHVarPQW81UxNpSKJfk1tn7YHTBUnUzahJ6XdYWv03p8l+C9jMpudYESQf+PqWekepf+zY=
+	t=1743181389; cv=none; b=Hikpb2SV2OIDo/HJTg/j7QnRwBUQ07ptNQJXtxJrta7jjg5y4xr7Ke66zWviCZ21pyE+wjAA8nz70daZRv0HEdBfoKTETMjGQqybRn2ATPsHgADPlyQ8f4QuEMU1YPOXPOyifQiLOd7X5hAPo57El1aJqBc7WdZBtU4nNfIhQbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743181387; c=relaxed/simple;
-	bh=kdFXEWQBBxAgbOAGuN/tQdrjNAetGAany1Ey1VcZKHQ=;
+	s=arc-20240116; t=1743181389; c=relaxed/simple;
+	bh=41K97/7X+69s1xkqkaKrKO+J+owI9ODAA2Mar0GLTfM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oDsjEiAB0BP81k6jo+tsrsNOm0lN5QALLTZ+kriGmQqWOiIBZix93IJ3CHl2d6IF7xdFgdPcZFPJlgxc8H3OLHVyT29N2tHhtTfGLfk2xOihVd4PbYOGaE+JgLb2ocYS3ldaRapd/8aoiNqYprnISyyH5fVWuVx8TjwaysPqOQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AyYH6fuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA0DC4CEE4;
-	Fri, 28 Mar 2025 17:03:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rIJNYramunQS7tzAyVNyYGZ2YX1lj8uCEuCBvtZm6VhBNPhglKG91Yra/DcyGrnqZt2+WN1isC/jejVuGDYlnLjFUmOwchIglniYRaCJuyZTgJiQ3vfhhwoc8+pKraKdi8E8VGDw1zrPwvEVL1lgBx714Bp9QlAvqQOaURfNr30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VyZXUsmu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52151C4CEE4;
+	Fri, 28 Mar 2025 17:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743181386;
-	bh=kdFXEWQBBxAgbOAGuN/tQdrjNAetGAany1Ey1VcZKHQ=;
+	s=k20201202; t=1743181388;
+	bh=41K97/7X+69s1xkqkaKrKO+J+owI9ODAA2Mar0GLTfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AyYH6fuLPKGkDkq+jCxUtZB3WFY7KwOI5/PbrgWXVc89CAC4NkV2jRLOtSH//lVpl
-	 sa799bEM75tzgC6R9s6h0u0C/y65oxkHnneiBNiCdo6F6kGRxlzmu9rxUc+mAV960p
-	 n5SGEbs+f886ddyKwbZI6UD3ZAm8RiTt7lbKn9hyvHbkeX+U6IzdFtn4zCRyjR/aVw
-	 vit+KcDoQAgSaNNQAm2kciQfQX6i4N2Lmb4GafqKr7V8ox0pB0l9rhnK/H0P+WQYz7
-	 RMAAIfLKHplyuGl8YeqZqFHAuuzD7LZDZ/IX02Rp/oGN+mQzhdWOrrpFnKgThUcqFy
-	 7uSU4e+cKbftQ==
+	b=VyZXUsmuT1yDTsZKjntyHnUHSIVa7Y0kGaRgenRC/xPs1VQhwSuQEpdluP/KccUnW
+	 VuwbG8ZDX4GRPeSx1sn1Jd9w0E5quNpwcYakQw05zHLy24j3usDj8085vfaQCGS19p
+	 R2fJqjnrcqx+/l0TTQD6izOEfR2YGNMtgT1yFJBjHW/Y3YUD7xB8GMl7zRhfolQYd3
+	 2hFyWu9+KiK25C5rjK+uyh33nJKgTlSFAiGqARZRtaWmE/PARPhBOtow5QfFlE5R0g
+	 9jVlMQvguUVyP0lsgtW78iuJUNhcnAb5pBkdDD58q2qqYVSoAXrYwDSE443IRmZt8S
+	 Hu0/PrNxHGgNg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Leah Rumancik <leah.rumancik@gmail.com>,
+Cc: bin.lan.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] xfs: give xfs_extfree_intent its own perag reference
-Date: Fri, 28 Mar 2025 13:03:05 -0400
-Message-Id: <20250328115749-28b6a5ffec417878@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y] fs/ntfs3: Fixed overflow check in mi_enum_attr()
+Date: Fri, 28 Mar 2025 13:03:07 -0400
+Message-Id: <20250328121447-f4ced71d6419023c@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250327215925.3423507-1-leah.rumancik@gmail.com>
+In-Reply-To:  <20250328091824.1646736-1-bin.lan.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,26 +67,27 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: f6b384631e1e3482c24e35b53adbd3da50e47e8f
+The upstream commit SHA1 provided is correct: 652cfeb43d6b9aba5c7c4902bed7a7340df131fb
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Leah Rumancik<leah.rumancik@gmail.com>
-Commit author: Darrick J. Wong<djwong@kernel.org>
+Backport author: bin.lan.cn@windriver.com
+Commit author: Konstantin Komarov<almaz.alexandrovich@paragon-software.com>
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 8c77398c7261)
+6.1.y | Present (different SHA1: e99faa973596)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f6b384631e1e3 < -:  ------------- xfs: give xfs_extfree_intent its own perag reference
--:  ------------- > 1:  344a09659766c Linux 6.1.131
+1:  652cfeb43d6b9 < -:  ------------- fs/ntfs3: Fixed overflow check in mi_enum_attr()
+-:  ------------- > 1:  8f6e53a6ae4e8 fs/ntfs3: Fixed overflow check in mi_enum_attr()
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
