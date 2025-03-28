@@ -1,112 +1,138 @@
-Return-Path: <stable+bounces-126924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C399A74814
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 11:21:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0514A748B1
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 11:50:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B8977A7FBD
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 10:19:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D91AF7A83AD
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 10:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F30A2144A0;
-	Fri, 28 Mar 2025 10:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9D4212FAD;
+	Fri, 28 Mar 2025 10:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ZCIgt/Sn"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="liim98gH"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8705C213E66;
-	Fri, 28 Mar 2025 10:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F2D1C174E
+	for <stable@vger.kernel.org>; Fri, 28 Mar 2025 10:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743157257; cv=none; b=qnPPX2euJMV1ox5Gq5koMiNH5kawZqA+8a8K3wn7dXlf85+PCZmRRy0pgghWxckkY1/zxkAihmBuULeWhFKg/PZbhslOjo2967s6yVnl8QtIiKZZfau+WWT25ykxEWQWXK6wf1y+fV9+fwEOtn8f/RJU/GX5F8UZRuOnXhnYYgc=
+	t=1743158992; cv=none; b=TXmOl88/SgBgdipBacGxfKY0hlHnl4oG8UHppXaceyvo/q1AJoMqN7zJqH6uVSkZ4a5wk+bZGNL13/9oUGvWhhqYlmwI38MjRzdLZIrCWjWV8tYdGAOz8VE2Jn4VICBNQRX4uB8UOBdneb+5vaRHOXo7Gz8bOlP2bzXT4g2RDR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743157257; c=relaxed/simple;
-	bh=G37Rpxj9artpzjHdH9Kk80lSjQKgVboLMMZFWLJA/YM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ElHFCp8ksIxWcjK2hfw3eSQBRuJ/mlj5NX/mXyegWst4VwrdsUURHNIidhcHLNbC+bX92N4zUvAeaabFKsCd+B7xvwdj5kEYkgChFMLT6W61JRA/YGzENwq/RJNKAQU4UKyCwIFEX+g6/YZbQELv9kxMyBEYGBEddo/tacqxmnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ZCIgt/Sn; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 84E34101D4409;
-	Fri, 28 Mar 2025 11:20:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1743157252; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=WpjA+IwZTQ3hDj6knG5UpwdBfRtzOJ7yh3/1OQNgpWk=;
-	b=ZCIgt/Sn2A3J4Qbw6/w5TT8J5sG4z1Vcd7s68vS5boYUw/wVWe533s0vL0+haSfwT/hvwq
-	KC7D1VRUKbHOJS3Skd0ZLMiYlmVyyyRqbH5JiOeKIcDCb2NeegD4twjEmXOa/DSI8/QftM
-	7lAjIbCYgRKfXzJRg4ySzKQohzgNFadBZIH3jglOj7ZgktJQgmkUHt+Gg3Qn4baqt5UOi6
-	k+xEf0TFlL0sk0qA7RbFGjA9D8UmM++jCLLOgnUPH5oX3wJWd/aeuTyCpTBC70LnbvxeNJ
-	MoH3XZKmiWG1/9jblABjm1ye+kAIzUXSvlb6i01qO/86sJ76OFUTmac5xuKNZg==
-Date: Fri, 28 Mar 2025 11:20:46 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.12 000/115] 6.12.21-rc2 review
-Message-ID: <Z+Z3/hhNoBemgSYS@duo.ucw.cz>
-References: <20250326154546.724728617@linuxfoundation.org>
+	s=arc-20240116; t=1743158992; c=relaxed/simple;
+	bh=72hN35xKbPLsrofs2a84WCnG4Ltb4xvwlQLBAMP5uYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HdrAn6mHRDw3cu+BQTxjS/tJc8EH/Oo2Rkd3oDk/pTEcTFBWmlFtZC4ZO9fD2OVyz3+erPmc5zxbnfEMTtJP2/Fa8UiPz/3J85x5neulESm3aigWS9hYof+awweD5+0flz9m86+H81/eCwBe4LuoMUtke4n6iSH5iKIuwjzccRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=liim98gH; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4394036c0efso13076515e9.2
+        for <stable@vger.kernel.org>; Fri, 28 Mar 2025 03:49:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743158987; x=1743763787; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VH0Cwtt/VTuuDdT3io/MJ5ajnJoFp34tHNTuBuJNQOU=;
+        b=liim98gH4gL+tpMdeetqRkKaOb/whCUks5eoNW6zM9Ji1hOby7epRb288Mpu5Ic7Xy
+         LD8eVOPc5iBLcyU8Y51ssggARHzXq2LjwNqXZpWwS/DSpyP7hJZKi7IyNDfu+TArgWez
+         FuFaVaZQmVdsuM1u86dIgVu52DvBq/amvFE5Qp+N/yS2MDVEmogbNq2L/7rspRQTxJ0/
+         n18Jb+g/0rjrXBAsM3aGKGHfdKpzY/y1fHIKJ/Q1kRQ9lXtjlI9AD93ppnfz8OY4az0X
+         v98NwdfH3VjhtRPNDqfXs5FvfGyxBC+MYx1GrRjm9lXaxpxexPNUxh1GTmk6w2TtyaaI
+         vmeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743158987; x=1743763787;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VH0Cwtt/VTuuDdT3io/MJ5ajnJoFp34tHNTuBuJNQOU=;
+        b=VhPCCM3ev9ay7Lmu5MorsxdniQCsZja8YveMDjlJmhx92l+g7PsxMmZbtJvbNELSKr
+         i3H3MivhIg45ioRx6HwNSnaiPCZuid2SBxgpj67ibmfybB10xOiT8WWjdutjDUgw1kBu
+         7KVKb6xmSCownHBlhk458pgTp+VmZFFonbTiPhZqUnxL+C4V1yRQBRRmI01DCn9pcWYF
+         5DmoMEKCfF5iqzElctVvx3tpPwYKwNiRM5uNBJ6sKTS0sI+/Hm2uh8xB9yGxeWyBEtPn
+         kUFd1gfW343r4EgjPvZgjPsb/xqTbR3Z6UmtAlRekhrRpDAJkBvYH75RZ596D4zwJ/CE
+         oPNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJzzhvS5Xo2uqGcblOlCrqcnTqS8E4DGXKBozmqr6gD0ANLZlmPjSs6KqFT70S7TvSoFNWwec=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaW9TTmXOPtWTeQ/OgVf1WHnim1qaxsdKh6PuQf1TQnrpAPhN6
+	n0Q3zlUsBoIDs2qVzGgRnQORlAOlPw0zHidYf7A/NZd/nc0jQ80Oxxe1JE7eXiRvM86tWxCRhHX
+	HtrA=
+X-Gm-Gg: ASbGncvvdnNorx698z5Yz+J2U8IOIufq09aM1oOz7lGHHC5OxSivei2I/rggDN+1bHt
+	9MmIdrzICYNQQNIGbnBinNCllD8pDjDwLDTqi9bvAJ1agu4oBuLAOUH/lnTEW6xvRP5LlYQ+q09
+	Sp6qqj8Vv2lblwsJUFCX5IsXwbjozy4tEkjXiXSKdGP/arN6actBR0O69QPdTRRw24RmnM65C28
+	3OWNuFsHAIuhsacRXrY7pmVnik1ensFJRFG/bxVMw2AHwe0hFlEedi8RgfXsjmADM8kkFKBi7l9
+	c1ilDHIwvcMX5SEbi6GlRuoPiMm6j6WvIOAsJvD/JM+P6A3pVXCH1A2efwe+cesvPqOKcnpE
+X-Google-Smtp-Source: AGHT+IHp8Quyt2xQsQT//2VK/V1cAZvb4JwTbOBC6Hl7+G6SZLVoHWk9yvPPwlmOIpGiBX4qeXqhoQ==
+X-Received: by 2002:a05:600c:5103:b0:43d:683:8caa with SMTP id 5b1f17b1804b1-43d84fbea4bmr60361565e9.15.1743158987018;
+        Fri, 28 Mar 2025 03:49:47 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:e0a:355:6b90:e24f:43ff:fee6:750f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b7a41c0sm2163406f8f.88.2025.03.28.03.49.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Mar 2025 03:49:46 -0700 (PDT)
+From: Frode Isaksen <fisaksen@baylibre.com>
+To: linux-usb@vger.kernel.org,
+	Thinh.Nguyen@synopsys.com
+Cc: gregkh@linuxfoundation.org,
+	fisaksen@baylibre.com,
+	Frode Isaksen <frode@meta.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] usb: dwc3: gadget: check that event count does not exceed event buffer length
+Date: Fri, 28 Mar 2025 11:44:35 +0100
+Message-ID: <20250328104930.2179123-1-fisaksen@baylibre.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="69CeavOzPm4brp6y"
-Content-Disposition: inline
-In-Reply-To: <20250326154546.724728617@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
+From: Frode Isaksen <frode@meta.com>
 
---69CeavOzPm4brp6y
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The event count is read from register DWC3_GEVNTCOUNT.
+There is a check for the count being zero, but not for exceeding the
+event buffer length.
+Check that event count does not exceed event buffer length,
+avoiding an out-of-bounds access when memcpy'ing the event.
+Crash log:
+Unable to handle kernel paging request at virtual address ffffffc0129be000
+pc : __memcpy+0x114/0x180
+lr : dwc3_check_event_buf+0xec/0x348
+x3 : 0000000000000030 x2 : 000000000000dfc4
+x1 : ffffffc0129be000 x0 : ffffff87aad60080
+Call trace:
+__memcpy+0x114/0x180
+dwc3_interrupt+0x24/0x34
 
-Hi!
+Signed-off-by: Frode Isaksen <frode@meta.com>
+Fixes: ebbb2d59398f ("usb: dwc3: gadget: use evt->cache for processing events")
+Cc: stable@vger.kernel.org
+---
+v1 -> v2: Added Fixes and Cc tag.
 
-> This is the start of the stable review cycle for the 6.12.21 release.
-> There are 115 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+This bug was discovered, tested and fixed (no more crashes seen) on Meta Quest 3 device.
+Also tested on T.I. AM62x board.
 
-CIP testing did not find any problems here:
+ drivers/usb/dwc3/gadget.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.12.y
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 63fef4a1a498..548e112167f3 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4564,7 +4564,7 @@ static irqreturn_t dwc3_check_event_buf(struct dwc3_event_buffer *evt)
+ 
+ 	count = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
+ 	count &= DWC3_GEVNTCOUNT_MASK;
+-	if (!count)
++	if (!count || count > evt->length)
+ 		return IRQ_NONE;
+ 
+ 	evt->count = count;
+-- 
+2.48.1
 
-I believe 6.6 will pass the testing, too, with enough retries; bbb is
-doing that for some reason.
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.6.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---69CeavOzPm4brp6y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ+Z3/gAKCRAw5/Bqldv6
-8k/cAJ9WmK/AMr2bwLBaTMbLAv92XoplNACglOAunu5RUzKAJ7kpAEK6YffjKks=
-=/nV5
------END PGP SIGNATURE-----
-
---69CeavOzPm4brp6y--
 
