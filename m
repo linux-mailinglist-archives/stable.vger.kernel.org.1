@@ -1,147 +1,133 @@
-Return-Path: <stable+bounces-126911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDAC6A74357
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 06:27:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C5EA7446B
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 08:43:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58D8E3B9C50
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 05:27:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59AA417B956
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 07:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B3320DD74;
-	Fri, 28 Mar 2025 05:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98F621171F;
+	Fri, 28 Mar 2025 07:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="XsTA9zfS"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="goTTTOQ0";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SxrUfOHW"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE37C28373;
-	Fri, 28 Mar 2025 05:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743139663; cv=pass; b=AEhsDRC9iUKTOfCnquS5+EibHHuvcw/3XH8wVz2Re2hIHi9yxgS78FeW/TluOP/QofUw9wAJY0vWh7anHFTD8hDRfMLCkchaS7gnrNbDjk5I28S4uqSaCeGOt855PCL3u/7OudnFhg2TTqSUI/REf+OC3oqoax1/d628qQ4+hTg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743139663; c=relaxed/simple;
-	bh=UA/jB0jRtT9MrE0m/chZoZltKCIECcikeSy39MQlrkc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j7PUew1aAhmhntzPFeSAXJEnH9ezjiZrW23RiYafQH+OApqfjBQDk5rvzgW2sp/0lV68CvQeawpWj3IcWCmdmNe9imxu29fcLA+4dmNkb/P2A64YNSn9BUwxG/cVhe5Pux0I/NnGSmG0OFN+7WzwdxNZgY5UCRKMyhuJvu/ksY0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=XsTA9zfS; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1743139628; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=SNkk3gtNPaXXwdrW6fxgFUV/5Bey7TsGy4tPCrEBB6ffAggQ3W2qc1RBP7BNbBjB2eIRKtT46QJJedOiwPrTMp3R7/QFTd+rhIJer7xpXyPI/Diu5QVxKkpoZ7h1eZ0c4tV+z49+vFzbt7x7w3VSnswzE9czqg2uGZCsKrHRWHU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1743139628; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=8fm2pR+vn3KKxWHjwpsQpoYtJSPoJCzGUQuWZmtgZF4=; 
-	b=M6nKWV3en9cG17a7BT25zDUHyaiQrcbuzq05N6Hm3rsL08KyooohItgXD7toFOnD2TljvYM1ZLGlA8v1DXIls2/Q3r4WuUBqljR0TIVnfy3ZGn2c2TotR8GNNKsftbdv+HLns4AsM2gVGNeU2gwmp6+RJkMpinGuyWXnm60SWgk=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
-	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743139628;
-	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=8fm2pR+vn3KKxWHjwpsQpoYtJSPoJCzGUQuWZmtgZF4=;
-	b=XsTA9zfSLisYIt+9lTUsiXcJIOA/gC/jYCxQE5wi/9x8WyiT+abmCx9pUJhlraM6
-	0gYnZbsqu1MFEO9Q2m+g3QxPi4oTn2yz1ZPA27L2g73KmlsqgSq2wJb9pkqREB55cKl
-	O3FDQX75S2LXpaQmWu18VSsVKmncypAdeMVm9f8o=
-Received: by mx.zohomail.com with SMTPS id 1743139625825613.9288733094755;
-	Thu, 27 Mar 2025 22:27:05 -0700 (PDT)
-Message-ID: <f9be4614-95ec-4b63-9cfd-0936a323b131@collabora.com>
-Date: Fri, 28 Mar 2025 08:27:01 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FE918871F
+	for <stable@vger.kernel.org>; Fri, 28 Mar 2025 07:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743147797; cv=none; b=UdJNxSjoPjLTHxX6zv2ybGy3g7QBJdwSp7QbYD7XvinfELiHhEya/bXc9dkr/JATAjc27LoiGWbcxNp498t/nQJOFqug/fhMvBU8iKOsLABi1P0MsZfc7cO9fSAmgZJFVnGt7XhYHnj0Za9P2DYBJoMmwW24ukVNdvUCGBFrLT0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743147797; c=relaxed/simple;
+	bh=b/viEq97jcdvMBR3yQRpuWRBRYuA924NYKTuRO1lGhI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jg8TOH/s8aGE2GPsbVaJpj52yGQfx9jE94lmE12PTcCkqvlbd+4IckZrmXeRLOOOubpxnqf/mbvrfxS9+mqkm5dWt+P4ZIXY2ounNKYGA60riwVAwC68iBPK96VvYRaYm5HDn4LDq3pyVdTMKyE5x9uvsJy03R5EWYSXx4aQfLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=goTTTOQ0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SxrUfOHW; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfout.phl.internal (Postfix) with ESMTP id 1945C1382C97;
+	Fri, 28 Mar 2025 03:43:14 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Fri, 28 Mar 2025 03:43:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1743147794; x=1743234194; bh=qf1DxZ8MTM
+	JC3aQWwL67qTQb3Ac1N9CwbfaoxbwdtT4=; b=goTTTOQ0tQzsIJ+ylJRoTgqeg3
+	24xCnp0S+0wUJwwIyK5oK8enzS4q4U5C8Ewh6Z4hG07pNhWUDoOUIMQXMgMegW24
+	pwuaFrYq6EjDkHQJshxu8B3tGt0KBaAtkCLciUL1d+O/hzTlXJdPxS8uQpTuKnPj
+	tlWexpfY/UK/0LgcRJZUGAxSzm+jNmEDefW6Orp6qbdlCrDtc4FI95LK7xIXdnfJ
+	muJEGfA7IWkaooXVwckC6qj6C61FmgjyZivEAb1T4amNQck9xAd3k1GN8cUuYQ5G
+	4wFe2LFyqKjETe3m0hREYk56CDldizaJsmu5smiulv5z1EL4AXHRxdk90XXg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1743147794; x=1743234194; bh=qf1DxZ8MTMJC3aQWwL67qTQb3Ac1N9Cwbfa
+	oxbwdtT4=; b=SxrUfOHWAvo+7eMM8uVLTewQ5PxKkYVremm5+KIQSxl3fOCxb34
+	Lk3r6YnXWHcwHF61pjhYa/On+wlv10wdzZ6JBBZf/li1qsJ27tLJpkH0rafSeIGr
+	AbKpe3WSrKXPpiq8N24pUqzmYkp52deqnSa4vB4UmJzy0uOD5XQ/9+JggoICHRLG
+	uYCDFnUyeyW3b4Pw/rzIfD5lYlAhFmPx6Bo9dMxAledsZRcr760k6/kEyPdInmj/
+	8Fo1ojz4MiFwXtsm30eEjQWORLvqT0TWR8UQ/DWSydJeU8u6CNxpYkwFF97tYJVJ
+	E69qILJZYCEepkIvoHRcsrjCJvc/mH3ObBg==
+X-ME-Sender: <xms:EVPmZ8pJHA3jzvKRGpKMW1oFq-z8REg7ddT-dI_HDUeNFy9CgcGL1A>
+    <xme:EVPmZyoDhXmwlNpRk0E2V6oPMGwLcTZwMq-o6A0MOxUweVvJMfwDQcV70sREXfrvB
+    7MRC_3c8iOpww>
+X-ME-Received: <xmr:EVPmZxNtkoxilOwkJpXv-b3HAl0rqPRA0BJltZP8zDs6NHcB77b5nsX2E71kmZ2LOoOpmWZtbzfGydxJ81FnEqpY_bTFpF8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujedtjedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecugg
+    ftrfgrthhtvghrnhepgeehueehgfdtledutdelkeefgeejteegieekheefudeiffdvudef
+    feelvedttddvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtgho
+    mhdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    hlvggrhhdrrhhumhgrnhgtihhksehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhtrggs
+    lhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgihfshdqshhtrggslh
+    gvsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepughjfihonhhgsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopegutghhihhnnhgvrhesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:EVPmZz7vvrQxnCUiRGBLwilCN4BNv2g7mA97NHt1VdZMMTmTdgxAng>
+    <xmx:EVPmZ75VqQ27PSMN2O7qngadH1xptuf1fAY6NdDtUCZCnI5Kq7jYXw>
+    <xmx:EVPmZzjSMESB8ta4exntmmzDDl-8zg024pKzacwQg-Q8WWBD58C7Xg>
+    <xmx:EVPmZ15j5bOZ_Y1U2WHrsVNpujJMPEWyOrwNcOWWzavadq5LV91B8Q>
+    <xmx:ElPmZ4zTKHWGk6bTANMaDg2u6HCv6Ui2BV_vCtHvAMxI1rjTUkM2w9Od>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 28 Mar 2025 03:43:13 -0400 (EDT)
+Date: Fri, 28 Mar 2025 08:41:49 +0100
+From: Greg KH <greg@kroah.com>
+To: Leah Rumancik <leah.rumancik@gmail.com>
+Cc: stable@vger.kernel.org, xfs-stable@lists.linux.dev,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>
+Subject: Re: [PATCH 6.1] xfs: give xfs_extfree_intent its own perag reference
+Message-ID: <2025032842-enamel-tarot-6b5e@gregkh>
+References: <20250327215925.3423507-1-leah.rumancik@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: SPI transfers in atomic context [Was: Re: [PATCH v1 1/1] mfd:
- rk8xx: Fix shutdown handler]
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
- Lee Jones <lee@kernel.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Mark Brown <broonie@kernel.org>, Wolfram Sang <wsa@the-dreams.de>
-Cc: Urja <urja@urja.dev>, Heiko Stuebner <heiko@sntech.de>,
- linux-rockchip@lists.infradead.org, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel@collabora.com, stable@vger.kernel.org
-References: <20240730180903.81688-1-sebastian.reichel@collabora.com>
- <20240801131823.GB1019230@google.com>
- <ih7hiojzuvqzpyipj66mgu5pmcderltabim7s5dnfzm6qpztbh@jqkst5tfw5ra>
- <sg5kgo5qjqyzfyk5nyjbkpgvbx6sfb7agc67ch6wsdq3etrsbf@h6xbtfs45k4w>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <sg5kgo5qjqyzfyk5nyjbkpgvbx6sfb7agc67ch6wsdq3etrsbf@h6xbtfs45k4w>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250327215925.3423507-1-leah.rumancik@gmail.com>
 
-On 3/20/25 13:10, Uwe Kleine-König wrote:
-> Hi,
+On Thu, Mar 27, 2025 at 02:59:24PM -0700, Leah Rumancik wrote:
+> From: "Darrick J. Wong" <djwong@kernel.org>
 > 
-> On Thu, Aug 01, 2024 at 05:22:24PM +0200, Sebastian Reichel wrote:
->> On Thu, Aug 01, 2024 at 02:18:23PM GMT, Lee Jones wrote:
->>>> +	/*
->>>> +	 * Currently the Rockchip SPI driver always sleeps when doing SPI
->>>> +	 * transfers. This is not allowed in the SYS_OFF_MODE_POWER_OFF
->>>> +	 * handler, so we are using the prepare handler as a workaround.
->>>> +	 * This should be removed once the Rockchip SPI driver has been
->>>> +	 * adapted.
->>>> +	 */
->>>
->>> So why not just adapt the SPI driver now?
->>
->> This patch is simple and thus can easily be backported, so that the
->> Acer Chromebook shutdown is fixed in the stable kernels. SPI based
->> rkxx has been using SYS_OFF_MODE_POWER_OFF_PREPARE from the start,
->> so it's not a regression.
->>
->> As far as I could see the SPI framework does not have something
->> comparable to the I2C .xfer_atomic handler. So fixing up the
->> Rockchip SPI driver probably involves creating some SPI core
->> helpers. I'm not yet sure about the best way to deal with this.
->> But I guess it will be better not having to backport all of the
->> requires changes to stable.
->>
->> In any case I think the next step in this direction is discussing
->> how to handle this in general for SPI.
->>
->>> What's the bet that if accepted, this hack is still here in 5 years time?
->>
->> Even if I don't work on this now, I would expect somebody to have
->> issues with broken shutdown on RK3588 boards before 5 years are
->> over :)
+> [ Upstream commit f6b384631e1e3482c24e35b53adbd3da50e47e8f ]
 > 
-> I'd like to have power-off working on Qnap TS-433 in the next Debian
-> stable. With my Debian Kernel hat on I'd say cherry-picking such a
-> commit (if it's in mainline) is acceptable. Backporting a major
-> extension to the spi framework isn't.
+> Give the xfs_extfree_intent an passive reference to the perag structure
+> data.  This reference will be used to enable scrub intent draining
+> functionality in subsequent patches.  The space being freed must already
+> be allocated, so we need to able to run even if the AG is being offlined
+> or shrunk.
 > 
-> So: Expectation confirmed! And while I agree that hacks are not nice,
-> I prefer a hack now over a machine that doesn't shut down properly over
-> the next five years (if Lee's expectation is also correct).
+> Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+> Reviewed-by: Dave Chinner <dchinner@redhat.com>
+> Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+> Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+> ---
 > 
-> Can we maybe go forward and do both? Accept this hack patch now and work
-> on spi to make atomic xfers possible?
+> This is to fix build fialure noted here:
+> https://lore.kernel.org/stable/8c6125d7-363c-42b3-bdbb-f802cb8b4408@web.de/
 > 
-> Mark, are there concerns from your side? 
-> Wolfram, are there things you would recommend to do differently in spi
-> than what you have in i2c?
+> Tested on auto group x 9 configs with no regressions seen.
+> 
+> Already ack'd on xfs-stable list.
 
-Hi, want let you know that I've started to work recently on atomic SPI
-transfer support to have SPI shutdown working properly with this driver.
-It's in progress.
+Now queued up, thanks.
 
-Meanwhile this patch should've been merged a year ago because it fixes
-the regression.
-
-Lee, please apply it for -stable.
-
--- 
-Best regards,
-Dmitry
+greg k-h
 
