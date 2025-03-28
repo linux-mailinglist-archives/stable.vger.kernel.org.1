@@ -1,169 +1,147 @@
-Return-Path: <stable+bounces-126910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F576A74338
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 06:23:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDAC6A74357
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 06:27:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17160189EB2E
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 05:24:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58D8E3B9C50
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 05:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F404A201039;
-	Fri, 28 Mar 2025 05:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B3320DD74;
+	Fri, 28 Mar 2025 05:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="EyWVG6Mh"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="XsTA9zfS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229C81A0BCA
-	for <stable@vger.kernel.org>; Fri, 28 Mar 2025 05:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743139424; cv=none; b=aSs8X5TbH5dhBOq3r3qtzZSkCTb60xpqL080GSFqmqVLhIBsykMrKvVnvbUfxX5oxEnYn3CygI+DZk+d3Rr4iyUGJOiOVmtzfPSnowipuvLJT7WqhcQ9f9I9dLtk6w5vvQ19wyapbgztmpeDbZsOp3SKhINt9Ok6uDKDcNLCmWw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743139424; c=relaxed/simple;
-	bh=rjm2kyFJM/oTTcUQkAvPohHlHqu5acUnY1JM2jMRNdQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V2yYibRxQIg0qN3QVpwqvev6I8i8zIBB+euNkyaRvmCcMPxsvqlR5+QKAN4pKjOPq3yNx+InOeWfYl9eI91rCEkk7a1Dq/VLuvy1SLCEK8J9sXNm/Rgzz42EQZDVOHHTW5ieeHIZ5uyqdegwas6LR4WQu0BpoU/7Pink1+C3y5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=EyWVG6Mh; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id C0C391C2444
-	for <stable@vger.kernel.org>; Fri, 28 Mar 2025 08:23:32 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:to:from:from; s=dkim; t=1743139412; x=
-	1744003413; bh=rjm2kyFJM/oTTcUQkAvPohHlHqu5acUnY1JM2jMRNdQ=; b=E
-	yWVG6MhWMvTC458TpU4m9ssSnpD5WQFZ9+KlkiZfk1CdH3lnw8UAW57H3/8ZtH50
-	688Rq+F5k9pEQ9alpGenSANhDJPw/b1EBvMak7soVb9+T6PM9LCnbaXqcOClTHwj
-	AdrnilfKVXReNCuDNQbA+3yb1NwKf3IQvluNOICgUw=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id KN1ZAa76LKYB for <stable@vger.kernel.org>;
-	Fri, 28 Mar 2025 08:23:32 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id D49A21C0872;
-	Fri, 28 Mar 2025 08:23:20 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: "David S. Miller" <davem@davemloft.net>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Song Liu <songliubraving@fb.com>,
-	Yonghong Song <yhs@fb.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	bpf@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH 5.10] gso: fix udp gso fraglist segmentation after pull from frag_list
-Date: Fri, 28 Mar 2025 05:23:13 +0000
-Message-ID: <20250328052315.1205798-1-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE37C28373;
+	Fri, 28 Mar 2025 05:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743139663; cv=pass; b=AEhsDRC9iUKTOfCnquS5+EibHHuvcw/3XH8wVz2Re2hIHi9yxgS78FeW/TluOP/QofUw9wAJY0vWh7anHFTD8hDRfMLCkchaS7gnrNbDjk5I28S4uqSaCeGOt855PCL3u/7OudnFhg2TTqSUI/REf+OC3oqoax1/d628qQ4+hTg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743139663; c=relaxed/simple;
+	bh=UA/jB0jRtT9MrE0m/chZoZltKCIECcikeSy39MQlrkc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j7PUew1aAhmhntzPFeSAXJEnH9ezjiZrW23RiYafQH+OApqfjBQDk5rvzgW2sp/0lV68CvQeawpWj3IcWCmdmNe9imxu29fcLA+4dmNkb/P2A64YNSn9BUwxG/cVhe5Pux0I/NnGSmG0OFN+7WzwdxNZgY5UCRKMyhuJvu/ksY0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=XsTA9zfS; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1743139628; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=SNkk3gtNPaXXwdrW6fxgFUV/5Bey7TsGy4tPCrEBB6ffAggQ3W2qc1RBP7BNbBjB2eIRKtT46QJJedOiwPrTMp3R7/QFTd+rhIJer7xpXyPI/Diu5QVxKkpoZ7h1eZ0c4tV+z49+vFzbt7x7w3VSnswzE9czqg2uGZCsKrHRWHU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1743139628; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=8fm2pR+vn3KKxWHjwpsQpoYtJSPoJCzGUQuWZmtgZF4=; 
+	b=M6nKWV3en9cG17a7BT25zDUHyaiQrcbuzq05N6Hm3rsL08KyooohItgXD7toFOnD2TljvYM1ZLGlA8v1DXIls2/Q3r4WuUBqljR0TIVnfy3ZGn2c2TotR8GNNKsftbdv+HLns4AsM2gVGNeU2gwmp6+RJkMpinGuyWXnm60SWgk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743139628;
+	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=8fm2pR+vn3KKxWHjwpsQpoYtJSPoJCzGUQuWZmtgZF4=;
+	b=XsTA9zfSLisYIt+9lTUsiXcJIOA/gC/jYCxQE5wi/9x8WyiT+abmCx9pUJhlraM6
+	0gYnZbsqu1MFEO9Q2m+g3QxPi4oTn2yz1ZPA27L2g73KmlsqgSq2wJb9pkqREB55cKl
+	O3FDQX75S2LXpaQmWu18VSsVKmncypAdeMVm9f8o=
+Received: by mx.zohomail.com with SMTPS id 1743139625825613.9288733094755;
+	Thu, 27 Mar 2025 22:27:05 -0700 (PDT)
+Message-ID: <f9be4614-95ec-4b63-9cfd-0936a323b131@collabora.com>
+Date: Fri, 28 Mar 2025 08:27:01 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: SPI transfers in atomic context [Was: Re: [PATCH v1 1/1] mfd:
+ rk8xx: Fix shutdown handler]
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
+ Lee Jones <lee@kernel.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Mark Brown <broonie@kernel.org>, Wolfram Sang <wsa@the-dreams.de>
+Cc: Urja <urja@urja.dev>, Heiko Stuebner <heiko@sntech.de>,
+ linux-rockchip@lists.infradead.org, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@collabora.com, stable@vger.kernel.org
+References: <20240730180903.81688-1-sebastian.reichel@collabora.com>
+ <20240801131823.GB1019230@google.com>
+ <ih7hiojzuvqzpyipj66mgu5pmcderltabim7s5dnfzm6qpztbh@jqkst5tfw5ra>
+ <sg5kgo5qjqyzfyk5nyjbkpgvbx6sfb7agc67ch6wsdq3etrsbf@h6xbtfs45k4w>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Content-Language: en-US
+In-Reply-To: <sg5kgo5qjqyzfyk5nyjbkpgvbx6sfb7agc67ch6wsdq3etrsbf@h6xbtfs45k4w>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-From: Willem de Bruijn <willemb@google.com>
+On 3/20/25 13:10, Uwe Kleine-König wrote:
+> Hi,
+> 
+> On Thu, Aug 01, 2024 at 05:22:24PM +0200, Sebastian Reichel wrote:
+>> On Thu, Aug 01, 2024 at 02:18:23PM GMT, Lee Jones wrote:
+>>>> +	/*
+>>>> +	 * Currently the Rockchip SPI driver always sleeps when doing SPI
+>>>> +	 * transfers. This is not allowed in the SYS_OFF_MODE_POWER_OFF
+>>>> +	 * handler, so we are using the prepare handler as a workaround.
+>>>> +	 * This should be removed once the Rockchip SPI driver has been
+>>>> +	 * adapted.
+>>>> +	 */
+>>>
+>>> So why not just adapt the SPI driver now?
+>>
+>> This patch is simple and thus can easily be backported, so that the
+>> Acer Chromebook shutdown is fixed in the stable kernels. SPI based
+>> rkxx has been using SYS_OFF_MODE_POWER_OFF_PREPARE from the start,
+>> so it's not a regression.
+>>
+>> As far as I could see the SPI framework does not have something
+>> comparable to the I2C .xfer_atomic handler. So fixing up the
+>> Rockchip SPI driver probably involves creating some SPI core
+>> helpers. I'm not yet sure about the best way to deal with this.
+>> But I guess it will be better not having to backport all of the
+>> requires changes to stable.
+>>
+>> In any case I think the next step in this direction is discussing
+>> how to handle this in general for SPI.
+>>
+>>> What's the bet that if accepted, this hack is still here in 5 years time?
+>>
+>> Even if I don't work on this now, I would expect somebody to have
+>> issues with broken shutdown on RK3588 boards before 5 years are
+>> over :)
+> 
+> I'd like to have power-off working on Qnap TS-433 in the next Debian
+> stable. With my Debian Kernel hat on I'd say cherry-picking such a
+> commit (if it's in mainline) is acceptable. Backporting a major
+> extension to the spi framework isn't.
+> 
+> So: Expectation confirmed! And while I agree that hacks are not nice,
+> I prefer a hack now over a machine that doesn't shut down properly over
+> the next five years (if Lee's expectation is also correct).
+> 
+> Can we maybe go forward and do both? Accept this hack patch now and work
+> on spi to make atomic xfers possible?
+> 
+> Mark, are there concerns from your side? 
+> Wolfram, are there things you would recommend to do differently in spi
+> than what you have in i2c?
 
-commit a1e40ac5b5e9077fe1f7ae0eb88034db0f9ae1ab upstream.
+Hi, want let you know that I've started to work recently on atomic SPI
+transfer support to have SPI shutdown working properly with this driver.
+It's in progress.
 
-Detect gso fraglist skbs with corrupted geometry (see below) and
-pass these to skb_segment instead of skb_segment_list, as the first
-can segment them correctly.
+Meanwhile this patch should've been merged a year ago because it fixes
+the regression.
 
-Valid SKB_GSO_FRAGLIST skbs
-- consist of two or more segments
-- the head_skb holds the protocol headers plus first gso_size
-- one or more frag_list skbs hold exactly one segment
-- all but the last must be gso_size
+Lee, please apply it for -stable.
 
-Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
-modify these skbs, breaking these invariants.
-
-In extreme cases they pull all data into skb linear. For UDP, this
-causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
-udp_hdr(seg->next)->dest.
-
-Detect invalid geometry due to pull, by checking head_skb size.
-Don't just drop, as this may blackhole a destination. Convert to be
-able to pass to regular skb_segment.
-
-Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20241001171752.107580-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
----
- net/ipv4/udp_offload.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index b6952b88b505..515d591d00b9 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -8,6 +8,7 @@
- 
- #include <linux/skbuff.h>
- #include <net/udp.h>
-+#include <net/ip6_checksum.h>
- #include <net/protocol.h>
- #include <net/inet_common.h>
- 
-@@ -269,8 +270,26 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 	__sum16 check;
- 	__be16 newlen;
- 
--	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
--		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-+	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
-+		 /* Detect modified geometry and pass those to skb_segment. */
-+		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
-+			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-+
-+		 /* Setup csum, as fraglist skips this in udp4_gro_receive. */
-+		gso_skb->csum_start = skb_transport_header(gso_skb) - gso_skb->head;
-+		gso_skb->csum_offset = offsetof(struct udphdr, check);
-+		gso_skb->ip_summed = CHECKSUM_PARTIAL;
-+
-+		uh = udp_hdr(gso_skb);
-+		if (is_ipv6)
-+			uh->check = ~udp_v6_check(gso_skb->len,
-+						  &ipv6_hdr(gso_skb)->saddr,
-+						  &ipv6_hdr(gso_skb)->daddr, 0);
-+		else
-+			uh->check = ~udp_v4_check(gso_skb->len,
-+						  ip_hdr(gso_skb)->saddr,
-+						  ip_hdr(gso_skb)->daddr, 0);
-+	}
- 
- 	mss = skb_shinfo(gso_skb)->gso_size;
- 	if (gso_skb->len <= sizeof(*uh) + mss)
 -- 
-2.43.0
-
+Best regards,
+Dmitry
 
