@@ -1,92 +1,151 @@
-Return-Path: <stable+bounces-126917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B814FA7453B
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 09:19:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C9DA7454E
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 09:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E572189CD60
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 08:19:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0870188EF39
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 08:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B5D212B17;
-	Fri, 28 Mar 2025 08:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA83211485;
+	Fri, 28 Mar 2025 08:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qG3GtZtn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jqCAaJHW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4736153BE8;
-	Fri, 28 Mar 2025 08:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3E618DB2B
+	for <stable@vger.kernel.org>; Fri, 28 Mar 2025 08:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743149947; cv=none; b=HMxDkoGcC4EYT2WJsnNNTnZGESNtzTiAwR2akhNQzDxBt9d2yfiBkZcr8CtYUpag3E41wxfAfil8pfpL2W83+U/qFdYEY5D++9DFd0StAJRMNMSW/rEHRgUOGD4aCaJ0CFF/exgEvnqEMulCgib0KpuCMaLtyrQKp23vmrBlNo4=
+	t=1743150242; cv=none; b=uGgQKfoNtq8yurSwVcqpzQ5pMRozMmEq9H9s2NqmakB6ZxodaKubnzyNh2KjiguH/EN6MTHaEJt+L5D1I4GC/w6wTKv7V4OMAG0kqpobHMxOa3xbm78BAUt/ARb87xEUgm6kF+ElhKpSX1/JJhqD/bKQkS5Pfs75uhQiQBdRsVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743149947; c=relaxed/simple;
-	bh=eXkyQAmWLQhgbflGuE6/2roWByAJGJzRKnWkxqKXpr0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SMNBQ4VrTnrLjAFReb01yREoZAiX7sD7QR2gSnwwdQNlCEwJnsE45mDs0WeOoK3pXKVo+d12HGliBmp62ECBL+WTEyqm+/GTep8bYzzKUL4QoINwED4wdoOuZLgdSt88zNu7LuMFcwhp73Qx0Ts3YIDj65bP7LwXjYX8JPXQgRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qG3GtZtn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D4AC4CEE4;
-	Fri, 28 Mar 2025 08:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743149947;
-	bh=eXkyQAmWLQhgbflGuE6/2roWByAJGJzRKnWkxqKXpr0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qG3GtZtnCFsiKLE21GDIQj94MikZUdLpBnmZDeoZNnTD4vf6OZTlRrVb/NtZAe/TW
-	 xMQySvO4HGCmmIA/+2e6Yyf97jRCGtfxzaFD9JfBBdqMCSHugcNjRSf0k0pMeWNgkh
-	 JIlDAfdbTjEMPggbhusLn7HjPZRbb9ZyDaSM9gNN1uHaer1mVDimaxp4XXvlg9DaQN
-	 8A9hMhvqSYBg39PkGF82aQkFCwKwLe8JRmwdXBGyenkYje5d/VayiU2KFIO1pOGS0P
-	 6taEZ0fWLi6pnQqARE7alhTwPZKLy55U8x0/sD7ZVfQmljHmIx4+JjPZQI+p0rSACc
-	 ps4zNQAIpwVfw==
-Date: Fri, 28 Mar 2025 09:19:03 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Cc: Matthias Kaehlcke <mka@chromium.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Benjamin Bara <benjamin.bara@skidata.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	Klaus Goger <klaus.goger@theobroma-systems.com>, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, quentin.schulz@cherry.de, stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] usb: misc: onboard_usb_dev: fix support for Cypress
- HX3 hubs
-Message-ID: <20250328-holistic-feathered-guppy-5bac92@krzk-bin>
-References: <20250326-onboard_usb_dev-v1-0-a4b0a5d1b32c@thaumatec.com>
- <20250326-onboard_usb_dev-v1-1-a4b0a5d1b32c@thaumatec.com>
+	s=arc-20240116; t=1743150242; c=relaxed/simple;
+	bh=eGI32WhpgyzFIHFK5QikFy6F+lcZCPEkmnoatYyfojk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Exc9LP19MBvNPuLlZ0dxlfuy3P7dI8khUTffz4KY8m4RIZCjOwAUwpBeC20NghQPfMlBooR/FjpsW8nAmgWlM812VOJwVKiKQ2qcJZsFqskbJQGQA8fUzmWb6zbbOAQwggBJbn6XBUVbYo69nVx7i+FPrnzcSFn8KEEYpCkxnpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jqCAaJHW; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743150241; x=1774686241;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eGI32WhpgyzFIHFK5QikFy6F+lcZCPEkmnoatYyfojk=;
+  b=jqCAaJHWn6Fio4zSaysnGo+QTTr0/BR88bqOWjw5emqL9uoYBK2tXJ8r
+   g9D9Jr6dS4Y+u4/8Dli/3ARlV9dOi6sMGxrU6Yg7HBo+/sUMnqh3IanaB
+   hcNcM4Ka6tWOorqZmuomtBWdmlSFlVcrtzfoOL5uK/bIjEhcc8L0coziW
+   i5CB2ipwpZwZo31b8qKw68NPhueeWIdRxdgF3upd60LOK7m+7VtVr2Yvb
+   XvjTnHcmDK5pPUI7d5wGEO8KwWUPmeS7tL+HECl/dn2QHOA7Z2qa72csk
+   LF4OFJJaiH4j28dLtOOCB1jVVRWRdDnhtVnP57t2oOr4NrypeTMIHhu4V
+   Q==;
+X-CSE-ConnectionGUID: nCW6DqmARkW5HiSokeS0hQ==
+X-CSE-MsgGUID: pIaRGw8HTCCs4h+i21fznA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="44635231"
+X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; 
+   d="scan'208";a="44635231"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2025 01:24:00 -0700
+X-CSE-ConnectionGUID: gF2iXmXYSxqjZdUZih+0tg==
+X-CSE-MsgGUID: /IyywgYtRMq8bdbaQky+FA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,282,1736841600"; 
+   d="scan'208";a="125839079"
+Received: from tmilea-mobl3.ger.corp.intel.com (HELO [10.245.115.15]) ([10.245.115.15])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Mar 2025 01:23:58 -0700
+Message-ID: <a4365e8a-093d-488c-be79-6eda6b29ddde@linux.intel.com>
+Date: Fri, 28 Mar 2025 09:23:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250326-onboard_usb_dev-v1-1-a4b0a5d1b32c@thaumatec.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] accel/ivpu: Fix deadlock in ivpu_ms_cleanup()
+To: Lizhi Hou <lizhi.hou@amd.com>,
+ Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+ dri-devel@lists.freedesktop.org
+Cc: oded.gabbay@gmail.com, quic_jhugo@quicinc.com, stable@vger.kernel.org
+References: <20250325114306.3740022-1-maciej.falkowski@linux.intel.com>
+ <20250325114306.3740022-2-maciej.falkowski@linux.intel.com>
+ <a0d93faa-40e0-4fc9-8b86-1e30c3946124@amd.com>
+ <17c82a42-2174-425f-a4c4-4df18176f7a1@linux.intel.com>
+ <40a4d432-aa18-6a60-adcc-e73eb3c7fcb7@amd.com>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <40a4d432-aa18-6a60-adcc-e73eb3c7fcb7@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 26, 2025 at 05:22:56PM +0100, Lukasz Czechowski wrote:
-> diff --git a/drivers/usb/misc/onboard_usb_dev.h b/drivers/usb/misc/onboard_usb_dev.h
-> index 317b3eb99c02..17696f7c5e43 100644
-> --- a/drivers/usb/misc/onboard_usb_dev.h
-> +++ b/drivers/usb/misc/onboard_usb_dev.h
-> @@ -104,8 +104,14 @@ static const struct of_device_id onboard_dev_match[] = {
->  	{ .compatible = "usb451,8027", .data = &ti_tusb8020b_data, },
->  	{ .compatible = "usb451,8140", .data = &ti_tusb8041_data, },
->  	{ .compatible = "usb451,8142", .data = &ti_tusb8041_data, },
-> +	{ .compatible = "usb4b4,6500", .data = &cypress_hx3_data, },
-> +	{ .compatible = "usb4b4,6502", .data = &cypress_hx3_data, },
-> +	{ .compatible = "usb4b4,6503", .data = &cypress_hx3_data, },
->  	{ .compatible = "usb4b4,6504", .data = &cypress_hx3_data, },
->  	{ .compatible = "usb4b4,6506", .data = &cypress_hx3_data, },
-> +	{ .compatible = "usb4b4,6507", .data = &cypress_hx3_data, },
-> +	{ .compatible = "usb4b4,6508", .data = &cypress_hx3_data, },
 
-Why are you adding so many entries? Same entry is a strong sign these
-are compatible.
 
-Best regards,
-Krzysztof
+On 3/27/2025 6:38 PM, Lizhi Hou wrote:
+> 
+> On 3/26/25 01:06, Jacek Lawrynowicz wrote:
+>> Hi,
+>>
+>> On 3/25/2025 9:50 PM, Lizhi Hou wrote:
+>>> On 3/25/25 04:43, Maciej Falkowski wrote:
+>>>> From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>>>>
+>>>> Fix deadlock in ivpu_ms_cleanup() by preventing runtime resume after
+>>>> file_priv->ms_lock is acquired.
+>>>>
+>>>> During a failure in runtime resume, a cold boot is executed, which
+>>>> calls ivpu_ms_cleanup_all(). This function calls ivpu_ms_cleanup()
+>>>> that acquires file_priv->ms_lock and causes the deadlock.
+>>>>
+>>>> Fixes: cdfad4db7756 ("accel/ivpu: Add NPU profiling support")
+>>>> Cc: <stable@vger.kernel.org> # v6.11+
+>>>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>>>> Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+>>>> ---
+>>>>    drivers/accel/ivpu/ivpu_ms.c | 6 ++++++
+>>>>    1 file changed, 6 insertions(+)
+>>>>
+>>>> diff --git a/drivers/accel/ivpu/ivpu_ms.c b/drivers/accel/ivpu/ivpu_ms.c
+>>>> index ffe7b10f8a76..eb485cf15ad6 100644
+>>>> --- a/drivers/accel/ivpu/ivpu_ms.c
+>>>> +++ b/drivers/accel/ivpu/ivpu_ms.c
+>>>> @@ -4,6 +4,7 @@
+>>>>     */
+>>>>      #include <drm/drm_file.h>
+>>>> +#include <linux/pm_runtime.h>
+>>>>      #include "ivpu_drv.h"
+>>>>    #include "ivpu_gem.h"
+>>>> @@ -281,6 +282,9 @@ int ivpu_ms_get_info_ioctl(struct drm_device *dev, void *data, struct drm_file *
+>>>>    void ivpu_ms_cleanup(struct ivpu_file_priv *file_priv)
+>>>>    {
+>>>>        struct ivpu_ms_instance *ms, *tmp;
+>>>> +    struct ivpu_device *vdev = file_priv->vdev;
+>>>> +
+>>>> +    pm_runtime_get_sync(vdev->drm.dev);
+>>> Could get_sync() be failed here? Maybe it is better to add warning for failure?
+>> Yes, this could fail but we already have detailed warnings in runtime resume callback (ivpu_pm_runtime_resume_cb()).
+> 
+> Will the deadlock still happens if this function fails?
+
+No. The deadlock was caused by runtime resume in free_instance().
+pm_runtime_get_sync() will always bump PM usage counter, so there will be no resume regardless if it fails or not.
+
+>>>>          mutex_lock(&file_priv->ms_lock);
+>>>>    @@ -293,6 +297,8 @@ void ivpu_ms_cleanup(struct ivpu_file_priv *file_priv)
+>>>>            free_instance(file_priv, ms);
+>>>>          mutex_unlock(&file_priv->ms_lock);
+>>>> +
+>>>> +    pm_runtime_put_autosuspend(vdev->drm.dev);
+>>>>    }
+>>>>      void ivpu_ms_cleanup_all(struct ivpu_device *vdev)
+>> Regards,
+>> Jacek
+>>
 
 
