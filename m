@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-126904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB0CA741C5
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 01:38:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016F2A74223
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 02:48:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68B54189C4B8
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 00:38:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9CE1189F750
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 01:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6AD156F4A;
-	Fri, 28 Mar 2025 00:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92756188734;
+	Fri, 28 Mar 2025 01:48:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD2114D2BB;
-	Fri, 28 Mar 2025 00:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDE81F5E6
+	for <stable@vger.kernel.org>; Fri, 28 Mar 2025 01:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743122324; cv=none; b=MUr+Wp27lgSNFovI97wRP41OK5IfY/stgEPdiNWDqm4NMIc2Z6XO/KFn06Oyc9eABQdOhAT84Wbl3KA9mnlw33pn4Ww0LyeEGXDcaSM2zHCjD6mAzydXzQaKf6PIp/FDBPugkzLW7/WXikqFn7GKrUQCybnM1W/M/LvnOBFxR9M=
+	t=1743126487; cv=none; b=FwZJC4rSEUZDFKWCOxX7w9oRgVpgNoyQB5+NljPcWh2fLknJWWnzfHz4h4Nn9uYqZ2OcMzjmC06pA3tmtDxh4Sz+I/OkoAOevgt4TFwllTM3JStxZpG3oHNCm5XJHbm3liYMv9hyPoHrQowrFPnA7H921x9Gqvw+xQPDmuxRjl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743122324; c=relaxed/simple;
-	bh=D+7ReCJLn6d03f6xTdJS0+RJKNpRezru3XPiEXsYjJU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ujl0Oi3IKAKr2wYmfuMvqSupna110PzCmJ3jnFcr2no32Kld/Khw2VWhkBlet18ppSwgegi1QRUHJb7sDUsNlVji/dfcOMICznBYbN1X5DKoP4EBjNIw+92iprXAalcA+lHJ+lj8+uVx2fZ/HoF55r0IJ5wYKBaf6DirTLtmE40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52S0030p020373;
-	Fri, 28 Mar 2025 00:38:23 GMT
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45hm68pmcd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 28 Mar 2025 00:38:22 +0000 (GMT)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Thu, 27 Mar 2025 17:38:21 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Thu, 27 Mar 2025 17:38:18 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>,
-        <changhuang.liang@starfivetech.com>, <kernel@esmil.dk>,
-        <hal.feng@starfivetech.com>, <p.zabel@pengutronix.de>,
-        <conor.dooley@microchip.com>
-Subject: [PATCH 6.6.y] reset: starfive: jh71x0: Fix accessing the empty member on JH7110 SoC
-Date: Fri, 28 Mar 2025 08:38:18 +0800
-Message-ID: <20250328003818.1525870-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1743126487; c=relaxed/simple;
+	bh=xAQ0px3+SNPSvpFZoJtz/zUaCmD/ubF34cju4R7uVkw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=S7QjUkkZdi29WaRGJlfg8Ifiz/UZchyovsOQPBZ9TyWA9X8STjuxHBhdxMaU9b7beCzAM2wV+y9FZb5OqJA1Cw5vUsKQxPuf6tTKoMLdkuIAOLpW4aOGBgHCiZJuIUvdv97Vz/pFgV/g67ycAQ4sxP1S6mcJZQkVqQp47bOOkOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.9.245])
+	by gateway (Coremail) with SMTP id _____8CxbWvK_+Vnl+CoAA--.21160S3;
+	Fri, 28 Mar 2025 09:47:54 +0800 (CST)
+Received: from code-server.gen (unknown [10.2.9.245])
+	by front1 (Coremail) with SMTP id qMiowMDxu8TH_+VnqOZjAA--.33647S2;
+	Fri, 28 Mar 2025 09:47:51 +0800 (CST)
+From: Dongyan Qian <qiandongyan@loongson.cn>
+To: chenhuacai@loongson.cn
+Cc: airlied@gmail.com,
+	alexander.deucher@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	chenhuacai@kernel.org,
+	christian.koenig@amd.com,
+	dri-devel@lists.freedesktop.org,
+	simona@ffwll.ch,
+	stable@vger.kernel.org
+Subject: Re: [PATCH V2 3/3] drm/amd/display: Protect FPU in dml2_validate()/dml21_validate()
+Date: Fri, 28 Mar 2025 09:47:51 +0800
+Message-Id: <20250328014751.674244-1-qiandongyan@loongson.cn>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20250327095334.3327111-3-chenhuacai@loongson.cn>
+References: <20250327095334.3327111-3-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,59 +56,41 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: bNReoe5PplN0fEFNLHCP06ZmD2_bmp0g
-X-Authority-Analysis: v=2.4 cv=etjfzppX c=1 sm=1 tr=0 ts=67e5ef7e cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=Bq6zwJu1AAAA:8 a=t7CeM3EgAAAA:8 a=ywNUzwTxH0ZiiNjt-R4A:9 a=KQ6X2bKhxX7Fj2iT9C4S:22
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: bNReoe5PplN0fEFNLHCP06ZmD2_bmp0g
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-27_05,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- malwarescore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 suspectscore=0
- impostorscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
- clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2503280002
+X-CM-TRANSID:qMiowMDxu8TH_+VnqOZjAA--.33647S2
+X-CM-SenderInfo: htld0v5rqj5t3q6o00pqjv00gofq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
+Hi Huacai,
 
-[ Upstream commit 2cf59663660799ce16f4dfbed97cdceac7a7fa11 ]
+Tested successfully with `glmark2` on both x86 and Loongson platforms, using AMD Radeon RX 9070 XT.
 
-data->asserted will be NULL on JH7110 SoC since commit 82327b127d41
-("reset: starfive: Add StarFive JH7110 reset driver") was added. Add
-the judgment condition to avoid errors when calling reset_control_status
-on JH7110 SoC.
-
-Fixes: 82327b127d41 ("reset: starfive: Add StarFive JH7110 reset driver")
-Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
-Acked-by: Hal Feng <hal.feng@starfivetech.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://lore.kernel.org/r/20240925112442.1732416-1-changhuang.liang@starfivetech.com
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
-Verified the build test
----
- drivers/reset/starfive/reset-starfive-jh71x0.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/reset/starfive/reset-starfive-jh71x0.c b/drivers/reset/starfive/reset-starfive-jh71x0.c
-index 55bbbd2de52c..29ce3486752f 100644
---- a/drivers/reset/starfive/reset-starfive-jh71x0.c
-+++ b/drivers/reset/starfive/reset-starfive-jh71x0.c
-@@ -94,6 +94,9 @@ static int jh71x0_reset_status(struct reset_controller_dev *rcdev,
- 	void __iomem *reg_status = data->status + offset * sizeof(u32);
- 	u32 value = readl(reg_status);
- 
-+	if (!data->asserted)
-+		return !(value & mask);
-+
- 	return !((value ^ data->asserted[offset]) & mask);
- }
- 
--- 
-2.25.1
+**Intel i5-10400F Platform:**
+
+- **Board / CPU**: Intel i5-10400F
+- **Firmware Vendor**: American Megatrends International, LLC
+- **Kernel**: https://lore.kernel.org/all/20250327095334.3327111-3-chenhuacai@loongson.cn/
+- **GPU**: AMD Navi 48 [RX 9070/9070 XT]
+- **Result**: `glmark2` score 18703
+
+---
+
+**Loongson 3C6000 Platform:**
+
+- **Board / CPU**: 3C6000 AC612A0
+- **Firmware**: EDK2025-3C6000-7A2000_AC612A0_Rc2502pre0313
+- **Kernel**: https://lore.kernel.org/all/20250327095334.3327111-3-chenhuacai@loongson.cn/
+- **GPU**: AMD Navi 48 [RX 9070/9070 XT]
+- **Result**: `glmark2` score 10893 
+
+---
+
+Tested-by: Dongyan Qian <qiandongyan@loongson.cn>
+
+Best Regards,  
+Dongyan Qian
 
 
