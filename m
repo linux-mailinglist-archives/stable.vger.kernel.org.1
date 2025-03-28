@@ -1,120 +1,124 @@
-Return-Path: <stable+bounces-126930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96970A749CC
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 13:29:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E2CA749E2
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 13:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89A147A4241
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 12:28:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3F1B1888ABE
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 12:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A13021B9C0;
-	Fri, 28 Mar 2025 12:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF63320B;
+	Fri, 28 Mar 2025 12:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Cf1eAIlL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/6ymHg8O"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="VbIUA2p9"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B549121ADBC;
-	Fri, 28 Mar 2025 12:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDB18F7D;
+	Fri, 28 Mar 2025 12:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743164974; cv=none; b=gxzPAXkAyDjd1DTK/+Crzl5MysEiAEgy1BwRyKXFc+DAEIWz4dde4JLpJeOjnFMTlAsbj44kOB6lnrLxBhVSVpWKEN8+OLg/u3RBMxJFdi51XxwDR3wjh1/t1IZj7T207DKDFjhhX3guBefwWW1gKbfkYVSvehGl3MY+3FKlZCA=
+	t=1743165478; cv=none; b=b1SqPgZB1kOvoI1t1knKH9ykLKhKs109j/kL9aux8gjUbSrOhzhaka2az80fxAapYPiJCFEGiITlZ+gZwqH8+s8xXOvf/B1IsBLCt8GKBb664tIFBzHgphCuriPK4jlcdD/5r2FmIbjf6IizfIv9BGWA9ZeshXZEWV9Rqh7mMXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743164974; c=relaxed/simple;
-	bh=NC71RCgKx1VzfATo4SMybFVbIZBLe1wK7psQL34+xRs=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=RBBwa0D8zlQ6Ndh4RQwFzGkyPvIdv7oMAztuvqJiXfB8Nf+UebK9OJkaGLuBV71bL7jDqExi6ZEnoJWKX7efqncuKxnxdZbeVKoemUnqtN6cm6FTuL/pCyOQiYjA9yIBMTc7UpR/pYTS+L1T0dlrDFre2uM7MLaUMlG+DFt0F5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Cf1eAIlL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/6ymHg8O; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 28 Mar 2025 12:29:22 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743164970;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nLxxtQfWt8F1cTUmw8yduUelufCDQn4P8udW6pGvP/k=;
-	b=Cf1eAIlL/K5XY/cc7tODr7B6wDput7sEFib/bZBdM4E2ZupjgMh+23xOqLIOwGxzLFbaLo
-	nMoklVDW+4Ikbh+3h6qUd5v6zZA730wgtB6BygegTSQ01+V42LlHe6eelcpk+vuwHrj6ij
-	hJXemRJdbLUnDsWXHRKCdIezv7L83sXAnP16GayskgIaEOTtuK+vUD2+41ZIjSEgcfUIqK
-	vvCC+Am6PSWtcr52MP3pbhXfiF4Ky/VhvgxVFB8AVWsyutVS2k+OZrBZLbVKCHlw+zKJGm
-	C/bPr/73KzQQ6WUaCfbINGqFkgJhbWfcm309QcM/NPam6uRN/H7xy199VtowIQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743164970;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nLxxtQfWt8F1cTUmw8yduUelufCDQn4P8udW6pGvP/k=;
-	b=/6ymHg8OCEXLmslxA8iFXtfmrc2dhH5zyeTgTqQkwz3gKjkz4sHU2tKYcFUrxSxwaz+8Sv
-	uuAf1YIxHDubRgDA==
-From: "tip-bot2 for Boris Ostrovsky" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/microcode/AMD: Fix __apply_microcode_amd()'s
- return value
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250327230503.1850368-2-boris.ostrovsky@oracle.com>
-References: <20250327230503.1850368-2-boris.ostrovsky@oracle.com>
+	s=arc-20240116; t=1743165478; c=relaxed/simple;
+	bh=gXZMM9dIJk+UayztFAHwSYgFE4erlyKrm08RE2SIk7U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sBsbSn5iQvmW2r3lislDh8ofH9w8YEQWBjUGBpLCq5nL6WkblxD0paihZupd5YaBAtaCRsHVMGAixqQbf3iwWa/4clHorGUjqVjlaMa4OZJiRnBRZ+Mon6gn5LTtp4OHjqA8n8qwPts564dS7U96WS2BrQ7uhuqB6ZWNVmuSGAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=VbIUA2p9; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43cec5cd73bso13757915e9.3;
+        Fri, 28 Mar 2025 05:37:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1743165475; x=1743770275; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xQTCb13dlcBwF4DMmiRnbU7+UrXrX4JGlrCk5UoyzXc=;
+        b=VbIUA2p9yCUuPKFjF62octjpZkjUbVa1JE6gqdUMGcCIbYWBAB/0x66/RHTbnDqd1A
+         iZAGWGOuaWWfj5ZlKxbkQ16X8h+hxxAiwSZ3RKCvxH7Ely3BdefOPOb1pZUVY8klZSPj
+         iyDTN1DhBT7cJG0fj7EnlPHv8wWdau6jxqbzWotXcNv0baLDkx/NU5ibq77vPRe/bjlJ
+         SwzjWXMLxIfeKmjrYMeLeRiqS+VB3zc2qPopwS/mQLZDrNwtTrhacd0ZDXnCBri2TUCY
+         taPysRVTZi86n3oksLfPJJPDbiDEPVMXmZFKZTy/aIUH3DhkS4JQc3DPfRGeia+x8EFx
+         YioA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743165475; x=1743770275;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xQTCb13dlcBwF4DMmiRnbU7+UrXrX4JGlrCk5UoyzXc=;
+        b=CGuAJ10rD/uzdSbsbMx058QGkVecPETXyACNL4TPF/uuTvnWs0uQyrgceS9QGddY8R
+         QhdLS8Xrke/X+lf5P6XdmASj2Xo+kl/YA/ZWIb/1DSa6rXfDC31BDVZO6X+hD1KddO6t
+         ZeGG4X0t5Rqu9riLPxb6b4001/YchsSYUt1s/PsewZ5izoX5HctwgKCJuQO/+Xx19YmP
+         vaQ/NPfQV1gtqYIv539/QxUZ25vsF4Ka0t8Ifax9LSp81WwU8QSA/WKz8InVeNrEHVX5
+         W6rOndLKvjGPXdLSCxsZZ642vqhpBO9FGUHuClEvDphyfPHH8oXo7tfhntzl0z32Y+n9
+         paXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAP/mIgnSvEd/OIK2JlphsrAPmkrBLsPRx11x62E6OZygV8kxjk3+yh9K08r9GxhT9+CuDSTl1tdcXuuo=@vger.kernel.org, AJvYcCWwnXT1j/dkr+frgOZpHdzMirp1lnvzg05mimfm38nOAtjmewjeX8yeIIJkZTzhoy6oTonRFY51@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAeNncI2Pole0k+cEoex/78tjZ+c4YlQw55g5g+dTx1i5PqPXM
+	cdX3wrI0SuVNRGGhGnu7yh3480V9Tus/WQ9FPeKLDrHfic7INn8=
+X-Gm-Gg: ASbGncv4otkLrfPf0uFupNYq+AJ0mKv/rhMUZWRhOFdkTn8FsqlhpRl3qc1sMxhYkGi
+	WViF3RGU/gUZxe3SZm5ZZn/RCGNYtUjncrUyz1hWwk5QLiT5f35UZ52ul5cHz2LBvAJsYLCTtCv
+	iItye2kt30gEqHFX7lpsquoZNkLT/KY9Eo+njTp94GIL3gN7G1K1AMr30QKQ8tn/JtANEE0ScyG
+	0Rg0NgOtyCGK+86X/+btSRjPSo5L26ThLOfeaNltzP2RAIoqdxFKiJvVyhXTLKiUJca2FM+uDqf
+	fFc9xStAzEIQLK9571lNcWx4NdCGNrMq/1GRcs93XGgsFEnY1Py2pyZPW2dBptT4R036vPX6fF3
+	hDrZJrUuT7Y57SUK2cLGiP2w=
+X-Google-Smtp-Source: AGHT+IETWTz0/f50w8S5qemUwIFlMsEwzmPuImlQZlXznfvbz7J2nktJXxQNH6s//faEpXnd3Av+FA==
+X-Received: by 2002:a05:600c:4f89:b0:43c:f5e4:895e with SMTP id 5b1f17b1804b1-43d84f5b4d4mr68120615e9.1.1743165474637;
+        Fri, 28 Mar 2025 05:37:54 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2acddf.dip0.t-ipconnect.de. [91.42.205.223])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d82e834a5sm71937665e9.13.2025.03.28.05.37.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Mar 2025 05:37:53 -0700 (PDT)
+Message-ID: <689412eb-8c45-452b-9364-c6edbcd655aa@googlemail.com>
+Date: Fri, 28 Mar 2025 13:37:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174316496492.14745.16906685061384112632.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/197] 6.1.132-rc3 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250328074420.301061796@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250328074420.301061796@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+Am 28.03.2025 um 08:47 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.132 release.
+> There are 197 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Commit-ID:     31ab12df723543047c3fc19cb8f8c4498ec6267f
-Gitweb:        https://git.kernel.org/tip/31ab12df723543047c3fc19cb8f8c4498ec6267f
-Author:        Boris Ostrovsky <boris.ostrovsky@oracle.com>
-AuthorDate:    Thu, 27 Mar 2025 19:05:02 -04:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 28 Mar 2025 12:49:02 +01:00
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-x86/microcode/AMD: Fix __apply_microcode_amd()'s return value
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-When verify_sha256_digest() fails, __apply_microcode_amd() should propagate
-the failure by returning false (and not -1 which is promoted to true).
 
-Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches")
-Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250327230503.1850368-2-boris.ostrovsky@oracle.com
----
- arch/x86/kernel/cpu/microcode/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Beste Grüße,
+Peter Schneider
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index 138689b..b61028c 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -600,7 +600,7 @@ static bool __apply_microcode_amd(struct microcode_amd *mc, u32 *cur_rev,
- 	unsigned long p_addr = (unsigned long)&mc->hdr.data_code;
- 
- 	if (!verify_sha256_digest(mc->hdr.patch_id, *cur_rev, (const u8 *)p_addr, psize))
--		return -1;
-+		return false;
- 
- 	native_wrmsrl(MSR_AMD64_PATCH_LOADER, p_addr);
- 
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
