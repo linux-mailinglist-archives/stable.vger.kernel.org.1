@@ -1,132 +1,106 @@
-Return-Path: <stable+bounces-126940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6220FA74CB6
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 15:32:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544E7A74D0B
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 15:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66DF6188B2C8
-	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 14:29:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CDBF17AE48
+	for <lists+stable@lfdr.de>; Fri, 28 Mar 2025 14:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E61621CC43;
-	Fri, 28 Mar 2025 14:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D33E1BE86E;
+	Fri, 28 Mar 2025 14:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XOgJHHmH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9Tgunk3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAA921C9EA;
-	Fri, 28 Mar 2025 14:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B65C1BBBE5;
+	Fri, 28 Mar 2025 14:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743172098; cv=none; b=RFZt5AYi1jHSwBOi9HkRAgughSigZmPlepUa0wHAY+rM+wQnWaeNX8/xwQUDLQt0PC93EjtqppGtE/tLmBtcdOjzBd7zhh00bD3ovogkt2W6Gqt7QS9V2Wm+ggDd8qSQRJrc8pmz3AhGNw92ZKvLSOpBnlw3NFA9+dGx2Mqg3yY=
+	t=1743172938; cv=none; b=tQDTLhYNlkFaSp9IByJiqWHPHMqtkpjnwcmtPSc0ZAxTq1sVHGjs7sqV+GXzp+IPLdBr9hf3vxe8A4reLEtM20KJeaG6UZ9F/5HRFNjPSmm6PSARUOHBeMKnexWlvTcTVMYxGZ/q4wPG8GT4kH3OHhW//UwYgZnFhc8UABJkJy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743172098; c=relaxed/simple;
-	bh=pR7ZsBtXGnaffvDzR3G0f+xtFYL/1NJWJsq/1XvaP14=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TttubRbLtcu7W9CKcrWHZLUxqC4stBw9M969mdqCFvT4fhGAZny4ykPsflGF43SMxOLGAx6Elu4nz0Arx5H4vOH5SV4DgGOOMNCSVBcaqqK6OFXqt5jHCY02F9VLqTusSxtJAeGgtLpJ3LoMMBGEXwxScRIDDXKEjWEIBEN4xuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XOgJHHmH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AACC4CEEA;
-	Fri, 28 Mar 2025 14:28:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743172097;
-	bh=pR7ZsBtXGnaffvDzR3G0f+xtFYL/1NJWJsq/1XvaP14=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=XOgJHHmHqS7/tfLxYg9SAp5uZMO2fkVPNFIBycOsswwoXPofe46AwJaWteldjBC0f
-	 KDpr5xj2PKw25vGwOH5445L7xWUi5c9PAKFN+7XnL7rzkQa0+hcphN36Xr7NsVN6ir
-	 L8f3N6G0+5zKJVGfinLdfszK/55goH+bAfOZ4T/1bF2YjVgTp0E3Vg//p3X8TYHmqn
-	 H1Wpfa1Ldfy4/ho5E6QgeVawjRmnAjQcRywlrgdCKfW0HZQW3QpUtnZp6E2vUa6QDo
-	 wXMD+ccmebSgJPgNR3RbZaSR1VS14Y7xCwLi6lG2QxKRmkJYWghooy+dj0oHmLg3DB
-	 VowqV7jyxk+YQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Fri, 28 Mar 2025 15:27:18 +0100
-Subject: [PATCH net 3/4] selftests: mptcp: close fd_in before returning in
- main_loop
+	s=arc-20240116; t=1743172938; c=relaxed/simple;
+	bh=9kl9o647WBVi548Ir5Sz2CygoNnflg8magY1k477qBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ooPokj0zep4eCHjYm8RxnzyIUSHdanFYm129eQITFtfCbIeD5Md0DrdFX45L90ldCXiaCE4xu4FrdBk4aZ/FmKndUmdqEvg6+as+qv5T/YaCy8QdqtnWAnryo1xDlkQa2mB4o3yyqPpzTIpgiAGOfx43Gp0zdLSQf6REZ3f9ito=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9Tgunk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F53DC4CEE4;
+	Fri, 28 Mar 2025 14:42:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1743172937;
+	bh=9kl9o647WBVi548Ir5Sz2CygoNnflg8magY1k477qBI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A9Tgunk3IvOuhlHzCGe3HJEBbzKK2BRsm6955AIW1LwcAsE4aWE259TDrg9n7/RpO
+	 xi2Jz47HlKlgmUcydIhlTmkIRLzEVIhpkMQIwooCELNvNfQmoMXgQ0EeQLTfDDibc/
+	 FbA+8iMvaH7/++QEV+1qi9/k/xQtiZCgkWnFvucQ=
+Date: Fri, 28 Mar 2025 15:42:14 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 6.1 000/197] 6.1.132-rc3 review
+Message-ID: <2025032803-crafter-perceive-a756@gregkh>
+References: <20250328074420.301061796@linuxfoundation.org>
+ <e0a881cf-8a00-418d-a10d-c088bfc1059e@rnnvmail201.nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250328-net-mptcp-misc-fixes-6-15-v1-3-34161a482a7f@kernel.org>
-References: <20250328-net-mptcp-misc-fixes-6-15-v1-0-34161a482a7f@kernel.org>
-In-Reply-To: <20250328-net-mptcp-misc-fixes-6-15-v1-0-34161a482a7f@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Florian Westphal <fw@strlen.de>, Shuah Khan <shuah@kernel.org>, 
- Dmytro Shytyi <dmytro@shytyi.net>, Gang Yan <yangang@kylinos.cn>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
- Cong Liu <liucong2@kylinos.cn>, Geliang Tang <geliang@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1319; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=BATmZiZuy/W/ffocjWue1jFUcQe06Xg/5usGzRn674w=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBn5rHsARxaxO00MS0AB6QHgVg6IwYBz4m0aRpHO
- vWjhh3OHcKJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ+ax7AAKCRD2t4JPQmmg
- c9cKD/0RWsgah9b5ObqcTpttQVC8TRcZlz5IQMiEyoH25Ki7UTrez92SHxAgw4L5axK6J4R5YlZ
- kr5TnM5j3iqMmXc+mGRkSPJlkM8k4wCzdGuUX/kw8wkQ9y5kz7XNCGRj84P6rrmP5A2hpcSHNM/
- ygZjtap6mSsBhIih8Apl0/KASYihnzBuqtpHpJIYS6Q7+wczHvpHx3KLYRo3UR/Hsq1GqzuPAKO
- RAVU0gIQZUBcWPGmVTgE7HvzV5kPkSeFQk9sS1TVLWaepESnrg4V0/BUKeCevKUE86uwg0vVNdh
- P0jd0L55nrCBrOSQeizvkrQKLUrlhlboJ9PglWCFhIEhxtSkfP38EfGE3u0Fp9fpaJUjJZIyR2r
- +Fv8EW32R4esU8srm++oqjR0MfP+X15tZdMM0FTCw7C8hhtpWTzofjrB/dHdya3vrJfj8FDDhDr
- 54QGX2mU9vwsUMj36syTUZNUGEWjFaxkTpic2TUmU3cdghVULjPP1Ubp2lxPts/PYTH1H4TxTn4
- jYKkr4TohX8ZtfzdHYyuS6eAYzBBbogjaoNrgOW2Yr9O9BnuRdBiqtPN9pDoYLdhT3UDPiox5ns
- u9hiDhchLlF8jFdeK68K8Sfs0utVcFjulpDsl6leG4yFLpDc1An0vgoBdRtEdT6glHKRG5V7HKb
- 8yPlYVO/iXSpihw==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e0a881cf-8a00-418d-a10d-c088bfc1059e@rnnvmail201.nvidia.com>
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+On Fri, Mar 28, 2025 at 07:23:49AM -0700, Jon Hunter wrote:
+> On Fri, 28 Mar 2025 08:47:06 +0100, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.132 release.
+> > There are 197 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Sun, 30 Mar 2025 07:43:56 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.132-rc3.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> All tests passing for Tegra ...
+> 
+> Test results for stable-v6.1:
+>     10 builds:	10 pass, 0 fail
+>     28 boots:	28 pass, 0 fail
+>     115 tests:	115 pass, 0 fail
+> 
+> Linux version:	6.1.132-rc3-g0c858fc73636
+> Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+>                 tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+>                 tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+>                 tegra210-p2371-2180, tegra210-p3450-0000,
+>                 tegra30-cardhu-a04
+> 
+> Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-The file descriptor 'fd_in' is opened when cfg_input is configured, but
-not closed in main_loop(), this patch fixes it.
+Finally!  :)
 
-Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
-Cc: stable@vger.kernel.org
-Co-developed-by: Cong Liu <liucong2@kylinos.cn>
-Signed-off-by: Cong Liu <liucong2@kylinos.cn>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- tools/testing/selftests/net/mptcp/mptcp_connect.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Thanks for testing.
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.c b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-index 893dc36b12f607bec56a41c9961eff272a7837c7..c83a8b47bbdfa5fcf1462e2b2949b41fd32c9b14 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1299,7 +1299,7 @@ int main_loop(void)
- 
- 	ret = copyfd_io(fd_in, fd, 1, 0, &winfo);
- 	if (ret)
--		return ret;
-+		goto out;
- 
- 	if (cfg_truncate > 0) {
- 		shutdown(fd, SHUT_WR);
-@@ -1320,7 +1320,10 @@ int main_loop(void)
- 		close(fd);
- 	}
- 
--	return 0;
-+out:
-+	if (cfg_input)
-+		close(fd_in);
-+	return ret;
- }
- 
- int parse_proto(const char *proto)
-
--- 
-2.48.1
-
+greg k-h
 
