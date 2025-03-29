@@ -1,154 +1,142 @@
-Return-Path: <stable+bounces-126986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2ACA7538D
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 01:04:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798DAA7540B
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 03:43:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B18F7A72AB
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 00:03:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDA497A7CDC
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 02:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE03B17C91;
-	Sat, 29 Mar 2025 00:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CqM6trdQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653FB250F8;
+	Sat, 29 Mar 2025 02:43:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07424A0F
-	for <stable@vger.kernel.org>; Sat, 29 Mar 2025 00:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E15B676
+	for <stable@vger.kernel.org>; Sat, 29 Mar 2025 02:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743206633; cv=none; b=O4zAEOAhFNC3vHts0uOiV7tRdzB4VuQbxwSrOcq95hsgg3wraXcXSWjA6s4UOftzn4ytdg4dVa2yN5Q1pT/DdFob6AOV3n23RdbvCLpeNTyip8nHHQiAcVvfqPH4Zd7z3H1DNQz+s6KkuuFHy1MsqFwM8tUfX3vcjT1G09F0c8M=
+	t=1743216199; cv=none; b=mnkBdQcYl4Agkgqffd2uXtK6h/dLYev6CMHbloktNaNMwLVHmnBTVidK8GsDgsdGNjANHd2LIYcDkcor1f61m+WohrDkUP3DqjsZQHy3CksDBstei5zEoS3UCnsyfKuekst1yEHo+HvQdOBEOtyJQ1VBp+TFEyhRCb9IUQHlIVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743206633; c=relaxed/simple;
-	bh=A4qOF8g/Lp0fNN70XKVNtD9pF/sKUksq0VFQkLxYtOA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Z1h/UVBVlY45rTZ2yDA2OwcArHh8+vg2AzyYSelUXCd4v6N3d8JMjczZ9IW+v6cWv3mrtLhMyO9UR0S4Q2jr7tN4bQfhySx40JZWMLo0KL76bzk9okgQC+LRHaE5J1aD1tmnVaSQGLS0+zsVXy4DGrUhWoevuw/1kfAM4DHavS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pcc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CqM6trdQ; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pcc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22410b910b0so39666695ad.2
-        for <stable@vger.kernel.org>; Fri, 28 Mar 2025 17:03:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1743206631; x=1743811431; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mEgmoeCU7ZoBbD/6q07yzTwvuV9KDxvtvsClWJ9QuF8=;
-        b=CqM6trdQnGyRuGojGezqW97vHKKPBba0YFXnxkJYUjR5WqFZ+srqQE/JxKuUcrK1zP
-         epGyEB5E/IvmhgFwRBI2siYtJ+9TpAc0LvKD3TUdQMB1lsRs0o/H5vMU9RvMw05WVbFP
-         PDBPYUTokovsDljKlToIbpQl5uCL/XAmwpkxibZ9JZi8Vristc4qGncD3ffkFnQt7/Gg
-         6Gj/ge9MlbXnOw62liHAG6yavJcuJEQ8ek3eitT2Ym/4+fNkLctPutd3WvTpeGAZVmGX
-         A/P++a8ym79yEDclEgWtyjaD7XOF84i3KRdjStdb21hrbdrD8gdxxxMnFwMG6UEiZ4Kh
-         ucww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743206631; x=1743811431;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mEgmoeCU7ZoBbD/6q07yzTwvuV9KDxvtvsClWJ9QuF8=;
-        b=XtBf9Qfcs8d0/5ykqdwa0MHSHKpyxF3pk1dbfh0+FjZRURnfIoZemPP+lLMS5XzTpK
-         Dd/1NtqxUt9+mmM3HMddf+wHCAqyKy87yyz2rGkuW/LrNCk9cCn8wt56OlBzwbVUd73d
-         deaiLRC7VUM8gjt23GnBZ1GNisZpoGiR2B2kEVuqFHcGLUm20G3PfjDKBf5Q/EWGKmUs
-         zAhtxc5tJg7wu1Ov/BzefL4xwD9aQs544c1fSRy7pPPQDgdFO2rlbpbZnRnbmKbcq0Ba
-         rYRNEiPC+iF5VycDU9OUXltz3FgjUfgghCMFJRI+FkR3/JGjOz8x3TSCxLQ8Zm6La4uY
-         ZbEA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQU+eotYemNuGVLnuWXaVvpEcigylmm8ITZmYS/sIXoy6gd7sCDORhnjBXnqVDlrRmeiylQjI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzY3MA4vr2RB+8Uy2cuh2jX2+EDTD2FfSKhohGNtLPEIQX2Oybg
-	B9AiegnJs9mr5k2b+2/3r+8vi3QMHO0gCiv1ndf5kNJE9RPwE9jpcJLwKuB7SAOgSg==
-X-Google-Smtp-Source: AGHT+IHjR6hGtSOVpUkc0nyNRot3w3fhTtOD52YS62CSenulpOThQdeL5LjrShYtAkO27skye9Y/6dw=
-X-Received: from pfbmd6.prod.google.com ([2002:a05:6a00:7706:b0:739:4935:6146])
- (user=pcc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e887:b0:223:f408:c3f8
- with SMTP id d9443c01a7336-2292f960348mr16354725ad.14.1743206631260; Fri, 28
- Mar 2025 17:03:51 -0700 (PDT)
-Date: Fri, 28 Mar 2025 17:03:36 -0700
-In-Reply-To: <20250329000338.1031289-1-pcc@google.com>
+	s=arc-20240116; t=1743216199; c=relaxed/simple;
+	bh=HcIGeBrGMpCMxWsLaMVzZX0Pv11Can9GqBFjhYG624s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NF91aCtfklJuAs3MpIR7IHSTpRlBH6J/acoRMWa+Wxr7vpbFnlpKkbRqM9V9kWFtRLKvlPi2g+F031abiJWfuuaKCIgnI0mXVJ4tYIPG1VpKr1Gyety4jcIvZRJjJyrJR7y2r4TFEBjDlXC5aR0yOLGjFLm0JFKFmHfWHI3eez0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [209.85.219.173])
+	by gateway (Coremail) with SMTP id _____8AxTWs8Xudn9xCqAA--.21907S3;
+	Sat, 29 Mar 2025 10:43:08 +0800 (CST)
+Received: from mail-yb1-f173.google.com (unknown [209.85.219.173])
+	by front1 (Coremail) with SMTP id qMiowMBx3MQ5XudnhMBlAA--.39722S3;
+	Sat, 29 Mar 2025 10:43:07 +0800 (CST)
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e5ad75ca787so2566901276.0
+        for <stable@vger.kernel.org>; Fri, 28 Mar 2025 19:43:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVvIruijcShdDK60a8Okps95iKmz5fZk0DWJkFqKxVdhJIBeXQrhI/ftKuNjTHI5L+3BLtHf5s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/1/eqRzl9vfAv/hSzjpTWmIEnhLdZDcOuI50XQAkhIHCaapAi
+	uy8/xc8LggX88aUOW0XJRUbT5LyoxtftN6TAOm3fcktTscBL9ODBjGE5WT/J+ARPz2NziP51+hO
+	eZ2lrjTec5U8KRrBe7F8u5hDbs+ECkluE1ZUhcw==
+X-Google-Smtp-Source: AGHT+IGk4jLVMMvZ9NO4g+M6cXpWM89jtepREBCULlvcxr5aiChB5Hx8NjFVELFpjOU4wIk0eMDYI9EFrsKCf5pBsNY=
+X-Received: by 2002:a05:6902:230a:b0:e61:f51a:a79c with SMTP id
+ 3f1490d57ef6-e6b736c36f9mr6818089276.19.1743216184810; Fri, 28 Mar 2025
+ 19:43:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250329000338.1031289-1-pcc@google.com>
-X-Mailer: git-send-email 2.49.0.472.ge94155a9ec-goog
-Message-ID: <20250329000338.1031289-2-pcc@google.com>
-Subject: [PATCH v4 1/2] string: Add load_unaligned_zeropad() code path to sized_strscpy()
-From: Peter Collingbourne <pcc@google.com>
-To: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Collingbourne <pcc@google.com>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+MIME-Version: 1.0
+References: <20250304073554.20869-1-wangrui@loongson.cn> <aab657d72a3ee578e5c7a09c6c044e0d5c5add9a.camel@xry111.site>
+ <CAAhV-H5ayw7NxbSbCeAFaxOz+TZ8QeghmhW6-j2B1vTcjYxsJQ@mail.gmail.com> <CANiq72=AZ+CN4SScZcnRBpkS8ogCaZ=Uhe=k7fhGCVyecyRu5g@mail.gmail.com>
+In-Reply-To: <CANiq72=AZ+CN4SScZcnRBpkS8ogCaZ=Uhe=k7fhGCVyecyRu5g@mail.gmail.com>
+From: WANG Rui <wangrui@loongson.cn>
+Date: Sat, 29 Mar 2025 10:42:54 +0800
+X-Gmail-Original-Message-ID: <CAHirt9jg2hMJDb7o2H33-6DqnF0boUwdfiwmaJahg5C2=sPi0g@mail.gmail.com>
+X-Gm-Features: AQ5f1Jrp_Grtk1mM9tgpZbrZSf0byvB8hoYloKhjBdo_j1DwQ_sq-aJDwVxK7Po
+Message-ID: <CAHirt9jg2hMJDb7o2H33-6DqnF0boUwdfiwmaJahg5C2=sPi0g@mail.gmail.com>
+Subject: Re: [PATCH] rust: Fix enabling Rust and building with GCC for LoongArch
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>, Xi Ruoyao <xry111@xry111.site>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:qMiowMBx3MQ5XudnhMBlAA--.39722S3
+X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CF1UuFW7tF1xAr1DJr1DurX_yoW8Xw1rpr
+	WkKasrCr4kKFW8t3WxA340vayjk3ykurW8CrW5X342v3Z8uF1SgrW0qF1a9Fy8WF1kWw4j
+	vanF9a1rKFWqvFcCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41l42xK82IYc2Ij64
+	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j8yCJUUUUU=
 
-The call to read_word_at_a_time() in sized_strscpy() is problematic
-with MTE because it may trigger a tag check fault when reading
-across a tag granule (16 bytes) boundary. To make this code
-MTE compatible, let's start using load_unaligned_zeropad()
-on architectures where it is available (i.e. architectures that
-define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
-takes care of page boundaries as well as tag granule boundaries,
-also disable the code preventing crossing page boundaries when using
-load_unaligned_zeropad().
+On Sat, Mar 29, 2025 at 12:15=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
-Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
-Cc: stable@vger.kernel.org
----
-v2:
-- new approach
+Thanks for the review and feedback!
 
- lib/string.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+> In any case, the usual question for these "skipped flags" is whether
+> they could affect the output of `bindgen`, i.e. could they modify
+> layouts somehow?
 
-diff --git a/lib/string.c b/lib/string.c
-index eb4486ed40d25..b632c71df1a50 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -119,6 +119,7 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
- 	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
- 		return -E2BIG;
- 
-+#ifndef CONFIG_DCACHE_WORD_ACCESS
- #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	/*
- 	 * If src is unaligned, don't cross a page boundary,
-@@ -133,12 +134,14 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
- 	/* If src or dest is unaligned, don't do word-at-a-time. */
- 	if (((long) dest | (long) src) & (sizeof(long) - 1))
- 		max = 0;
-+#endif
- #endif
- 
- 	/*
--	 * read_word_at_a_time() below may read uninitialized bytes after the
--	 * trailing zero and use them in comparisons. Disable this optimization
--	 * under KMSAN to prevent false positive reports.
-+	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
-+	 * uninitialized bytes after the trailing zero and use them in
-+	 * comparisons. Disable this optimization under KMSAN to prevent
-+	 * false positive reports.
- 	 */
- 	if (IS_ENABLED(CONFIG_KMSAN))
- 		max = 0;
-@@ -146,7 +149,11 @@ ssize_t sized_strscpy(char *dest, const char *src, size_t count)
- 	while (max >= sizeof(unsigned long)) {
- 		unsigned long c, data;
- 
-+#ifdef CONFIG_DCACHE_WORD_ACCESS
-+		c = load_unaligned_zeropad(src+res);
-+#else
- 		c = read_word_at_a_time(src+res);
-+#endif
- 		if (has_zero(c, &data, &constants)) {
- 			data = prep_zero_mask(c, data, &constants);
- 			data = create_zero_mask(data);
--- 
-2.49.0.472.ge94155a9ec-goog
+These "skipped flags" won't affect the output of `bindgen`.
+
+>
+> Also, it would be nice to mention a bit more what was the build error
+> and the GCC version in the commit message.
+
+To make it easier for the maintainer to include more details in the
+commit message, I've attached the original build error message below.
+
+  BINDGEN rust/bindings/bindings_generated.rs
+error: unknown argument: '-mexplicit-relocs'
+error: unknown argument: '-mdirect-extern-access'
+error: unsupported argument 'normal' to option '-mcmodel=3D' for target 'un=
+known'
+error: unknown target triple 'unknown'
+panicked at /home/hev/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/=
+bindgen-0.71.1/ir/context.rs:564:15:
+libclang error; possible causes include:
+- Invalid flag syntax
+- Unrecognized flags
+- Invalid flag arguments
+- File I/O errors
+- Host vs. target architecture mismatch
+If you encounter an error missing from this list, please file an issue or a=
+ PR!
+
+gcc version 14.2.0 (crosstool-NG 1.27.0)
+
+>
+> Finally, regarding the Cc: stable, I guess that means 6.12+ since it
+> is the first LTS with loongarch64, right?
+
+Also, the `Cc: stable` is indeed targeting 6.12+, as it's the first
+LTS with LoongArch64.
+
+Thanks again!
+
+Cheers,
+-Rui
 
 
