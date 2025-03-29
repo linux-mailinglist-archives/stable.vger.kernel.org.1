@@ -1,187 +1,586 @@
-Return-Path: <stable+bounces-127003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B80A75638
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 13:17:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD5FA7564A
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 13:52:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C03097A289F
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 12:16:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB983AC547
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 12:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47A31C460A;
-	Sat, 29 Mar 2025 12:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CD61C5D77;
+	Sat, 29 Mar 2025 12:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jh5BBsib";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+jfvA3VY";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jh5BBsib";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+jfvA3VY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WzQu3r6e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FED1BD9C9
-	for <stable@vger.kernel.org>; Sat, 29 Mar 2025 12:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870EE1A3150;
+	Sat, 29 Mar 2025 12:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743250668; cv=none; b=MF6uldQW6/jeopxYgHNTZNgzyq6vU1AYw+PPEIcyKh3FdnkJx8KS2oopdxSpLa4eY3RbENbfRvcKyKIEeoICalgVcgLV0R1J0AMn08x/XRetb+EyEEfqHB1EY0RLWet+3OZ7U2qxDtO1kdm8Y6Qsz+GCm+R5XYm7VyZ8Dm92c7M=
+	t=1743252766; cv=none; b=nksR5aH3hh4lzarABIFLerQ5Lfh/UmqcFolIyuPNuTsBkCqqFG9YGe3tkJE7AbZS8eDEYTYCXbc7JdhRzLzrCTcPqNLshmaGn/16mY1aJimVlaw3SdTfMMpmeYpYXsaCLRQ85J/CxyAfuTRsPJoocHrgMfmquKEa2Rj++VbS96c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743250668; c=relaxed/simple;
-	bh=Th9q2zWuN9ateO/cXt4zELyLpd5GlCiqo47HRHIwo6U=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DPbJi0zVsyAd9eWtHb8UtRXciJ22dwM3D8rKGCFKi8ZnBFH37CMqxzuy8y1mRiEu22sdu/2qzv2MDKbw5r2eu8Kz2vb/t1kAVLL5VOsnpVvwh/UEpHOpL0FfZfSAB8IC2IHiTSWDkThdGnpr6XcpDUk7Yo885m70X99j7erpZ5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jh5BBsib; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+jfvA3VY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jh5BBsib; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+jfvA3VY; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 13EA51F393;
-	Sat, 29 Mar 2025 12:17:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1743250665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qfC8qPNIcAhBLRTyMdYT4Z+49oDjmYN8xkMGiLd1fpw=;
-	b=jh5BBsibFabbvx82IP2rBNMandkFtFiRu+pT5fxN3fSqSJZl5Ka+cR717dFRH8yrp6ruz0
-	7Im4hc0kRBcBKQ3gxKyQp35+ce38rk7Opn/EtS9H6YJBfX4OfDbaF7kWSx/xSOuPin9EDc
-	TKRfolE8vqOGrowHDKYCOrKBHsE/r/8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1743250665;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qfC8qPNIcAhBLRTyMdYT4Z+49oDjmYN8xkMGiLd1fpw=;
-	b=+jfvA3VYGqtBsZ0pAfTuaX/iAJkH41m6Zrjmd4S+sWTAwFCpEs0JQETVwfYFltnf7X6BGe
-	aXowyeY63Pd/eDBA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1743250665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qfC8qPNIcAhBLRTyMdYT4Z+49oDjmYN8xkMGiLd1fpw=;
-	b=jh5BBsibFabbvx82IP2rBNMandkFtFiRu+pT5fxN3fSqSJZl5Ka+cR717dFRH8yrp6ruz0
-	7Im4hc0kRBcBKQ3gxKyQp35+ce38rk7Opn/EtS9H6YJBfX4OfDbaF7kWSx/xSOuPin9EDc
-	TKRfolE8vqOGrowHDKYCOrKBHsE/r/8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1743250665;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qfC8qPNIcAhBLRTyMdYT4Z+49oDjmYN8xkMGiLd1fpw=;
-	b=+jfvA3VYGqtBsZ0pAfTuaX/iAJkH41m6Zrjmd4S+sWTAwFCpEs0JQETVwfYFltnf7X6BGe
-	aXowyeY63Pd/eDBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA73E13A4B;
-	Sat, 29 Mar 2025 12:17:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oUNQJ+jk52e6OgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Sat, 29 Mar 2025 12:17:44 +0000
-Date: Sat, 29 Mar 2025 13:17:44 +0100
-Message-ID: <87wmc83uaf.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: regressions@lists.linux.dev
-Cc: Chuck Lever <chuck.lever@oracle.com>,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [REGRESSION] Chrome and VSCode breakage with the commit b9b588f22a0c
-In-Reply-To: <874j0lvy89.wl-tiwai@suse.de>
-References: <874j0lvy89.wl-tiwai@suse.de>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1743252766; c=relaxed/simple;
+	bh=eZpiFhvDtIwHjX2CuR9smL6njxD51RMyHgmPsElPOQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aJ0PU0u61a1VB6ExtPLMOsAwTHfDOpktKr+o6fv4pCEnWVp1irlGaXYoIguANkQNMJAxvbjS+ZM1iJI3aAjjmPKUg3CMH2acJGWbclZduWWuzZZ2oDpEmAJwnhXqo5XWRAirdBPGrJRKSrANS+WgbbUcLfYnxYDSG1ApP94eXoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WzQu3r6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA34C4CEE2;
+	Sat, 29 Mar 2025 12:52:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743252766;
+	bh=eZpiFhvDtIwHjX2CuR9smL6njxD51RMyHgmPsElPOQE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WzQu3r6ebDUh73MnwZ00Fiz+g1sNIgrk8UZikLEmwGEu1nGTlMxhDehG9hkjhRt6r
+	 DVgBs84IOKvkU6XwXBzdK28PFQhrQS23ezp5npi1KLYoU+d2oTp/s/mR/Bh65EOXtp
+	 mJiBCyCh3zu5ypb6m94nvenRAT4sOmyMyyGoNI1BMWZVXIDTLosZBYueVnWY2lYdqU
+	 oau4HRbL7E7C8jXBVwpYKGLlm12oXiuQCLSa7FhVLtDuVdJu6CfKQZb/SODYQfMP9w
+	 ZfoaNEhgxpPb5jwK9o/Vxz+WG5I8nRaXWffNi0ZH1S3BlawPgQneu7deMk0/+zKfQM
+	 5kFXsQkWSm3nw==
+Date: Sat, 29 Mar 2025 13:52:41 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Sean Wang <sean.wang@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>,
+	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] pinctrl: airoha: fix wrong PHY LED mapping and PHY2 LED
+ defines
+Message-ID: <Z-ftGYXl01tg9I0n@lore-rh-laptop>
+References: <20250326122359.27504-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Score: -3.30
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.com:url]
-X-Spam-Flag: NO
-X-Spam-Level: 
-
-On Sun, 23 Feb 2025 09:53:10 +0100,
-Takashi Iwai wrote:
-> 
-> [ resent due to a wrong address for regression reporting, sorry! ]
-> 
-> Hi,
-> 
-> we received a bug report showing the regression on 6.13.1 kernel
-> against 6.13.0.  The symptom is that Chrome and VSCode stopped working
-> with Gnome Scaling, as reported on openSUSE Tumbleweed bug tracker
->   https://bugzilla.suse.com/show_bug.cgi?id=1236943
-> 
-> Quoting from there:
-> """
-> I use the latest TW on Gnome with a 4K display and 150%
-> scaling. Everything has been working fine, but recently both Chrome
-> and VSCode (installed from official non-openSUSE channels) stopped
-> working with Scaling.
-> ....
-> I am using VSCode with:
-> `--enable-features=UseOzonePlatform --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto` and for Chrome, I select `Preferred Ozone platform` == `Wayland`.
-> """
-> 
-> Surprisingly, the bisection pointed to the backport of the commit
-> b9b588f22a0c049a14885399e27625635ae6ef91 ("libfs: Use d_children list
-> to iterate simple_offset directories").
-> 
-> Indeed, the revert of this patch on the latest 6.13.4 was confirmed to
-> fix the issue.  Also, the reporter verified that the latest 6.14-rc
-> release is still affected, too.
-> 
-> For now I have no concrete idea how the patch could break the behavior
-> of a graphical application like the above.  Let us know if you need
-> something for debugging.  (Or at easiest, join to the bugzilla entry
-> and ask there; or open another bug report at whatever you like.)
-> 
-> BTW, I'll be traveling tomorrow, so my reply will be delayed.
-> 
-> 
-> thanks,
-> 
-> Takashi
-> 
-> #regzbot introduced: b9b588f22a0c049a14885399e27625635ae6ef91
-> #regzbot monitor: https://bugzilla.suse.com/show_bug.cgi?id=1236943
-
-After all, this seems to be a bug in Chrome and its variant, which was
-surfaced by the kernel commit above: as the commit changes the
-directory enumeration, it also changed the list order returned from
-libdrm drmGetDevices2(), and it screwed up the application that worked
-casually beforehand.  That said, the bug itself has been already
-present.  The Chrome upstream tracker:
-  https://issuetracker.google.com/issues/396434686
-
-#regzbot invalid: problem has always existed on Chrome and related code
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="bxBCDseondUIzNHf"
+Content-Disposition: inline
+In-Reply-To: <20250326122359.27504-1-ansuelsmth@gmail.com>
 
 
-Takashi
+--bxBCDseondUIzNHf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> The current PHY2 LED define are wrong and actually set BITs outside the
+> related mask. Fix it and set the correct value. While at it, also use
+> FIELD_PREP_CONST macro to make it simple to understand what values are
+> actually applied for the mask.
+>=20
+> Also fix wrong PHY LED mapping. The SoC Switch supports up to 4 port but
+> the register define mapping for 5 PHY port, starting from 0. The mapping
+> was wrongly defined starting from PHY1. Reorder the function group to
+> start from PHY0. PHY4 is actually never supported as we don't have a
+> GPIO pin to assign.
+
+Hi Christian,
+
+This patch is fine, just a nit inline
+
+Regards,
+Lorenzo
+
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 1c8ace2d0725 ("pinctrl: airoha: Add support for EN7581 SoC")
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
+>  drivers/pinctrl/mediatek/pinctrl-airoha.c | 179 +++++++++++-----------
+>  1 file changed, 90 insertions(+), 89 deletions(-)
+>=20
+> diff --git a/drivers/pinctrl/mediatek/pinctrl-airoha.c b/drivers/pinctrl/=
+mediatek/pinctrl-airoha.c
+> index 547a798b71c8..9099ad34aa29 100644
+> --- a/drivers/pinctrl/mediatek/pinctrl-airoha.c
+> +++ b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+> @@ -6,6 +6,7 @@
+>   */
+> =20
+>  #include <dt-bindings/pinctrl/mt65xx.h>
+> +#include <linux/bitfield.h>
+>  #include <linux/bits.h>
+>  #include <linux/cleanup.h>
+>  #include <linux/gpio/driver.h>
+> @@ -112,39 +113,39 @@
+>  #define REG_LAN_LED1_MAPPING			0x0280
+> =20
+>  #define LAN4_LED_MAPPING_MASK			GENMASK(18, 16)
+> -#define LAN4_PHY4_LED_MAP			BIT(18)
+> -#define LAN4_PHY2_LED_MAP			BIT(17)
+> -#define LAN4_PHY1_LED_MAP			BIT(16)
+> -#define LAN4_PHY0_LED_MAP			0
+> -#define LAN4_PHY3_LED_MAP			GENMASK(17, 16)
+> +#define LAN4_PHY4_LED_MAP			FIELD_PREP_CONST(LAN4_LED_MAPPING_MASK, 0x4)
+> +#define LAN4_PHY3_LED_MAP			FIELD_PREP_CONST(LAN4_LED_MAPPING_MASK, 0x3)
+> +#define LAN4_PHY2_LED_MAP			FIELD_PREP_CONST(LAN4_LED_MAPPING_MASK, 0x2)
+> +#define LAN4_PHY1_LED_MAP			FIELD_PREP_CONST(LAN4_LED_MAPPING_MASK, 0x1)
+> +#define LAN4_PHY0_LED_MAP			FIELD_PREP_CONST(LAN4_LED_MAPPING_MASK, 0x0)
+
+What about doing something like:
+
+#define LAN4_PHY_LED_MAP(_n)			FIELD_PREP_CONST(LAN4_LED_MAPPING_MASK, (_n))
+
+
+> =20
+>  #define LAN3_LED_MAPPING_MASK			GENMASK(14, 12)
+> -#define LAN3_PHY4_LED_MAP			BIT(14)
+> -#define LAN3_PHY2_LED_MAP			BIT(13)
+> -#define LAN3_PHY1_LED_MAP			BIT(12)
+> -#define LAN3_PHY0_LED_MAP			0
+> -#define LAN3_PHY3_LED_MAP			GENMASK(13, 12)
+> +#define LAN3_PHY4_LED_MAP			FIELD_PREP_CONST(LAN3_LED_MAPPING_MASK, 0x4)
+> +#define LAN3_PHY3_LED_MAP			FIELD_PREP_CONST(LAN3_LED_MAPPING_MASK, 0x3)
+> +#define LAN3_PHY2_LED_MAP			FIELD_PREP_CONST(LAN3_LED_MAPPING_MASK, 0x2)
+> +#define LAN3_PHY1_LED_MAP			FIELD_PREP_CONST(LAN3_LED_MAPPING_MASK, 0x1)
+> +#define LAN3_PHY0_LED_MAP			FIELD_PREP_CONST(LAN3_LED_MAPPING_MASK, 0x0)
+> =20
+>  #define LAN2_LED_MAPPING_MASK			GENMASK(10, 8)
+> -#define LAN2_PHY4_LED_MAP			BIT(12)
+> -#define LAN2_PHY2_LED_MAP			BIT(11)
+> -#define LAN2_PHY1_LED_MAP			BIT(10)
+> -#define LAN2_PHY0_LED_MAP			0
+> -#define LAN2_PHY3_LED_MAP			GENMASK(11, 10)
+> +#define LAN2_PHY4_LED_MAP			FIELD_PREP_CONST(LAN2_LED_MAPPING_MASK, 0x4)
+> +#define LAN2_PHY3_LED_MAP			FIELD_PREP_CONST(LAN2_LED_MAPPING_MASK, 0x3)
+> +#define LAN2_PHY2_LED_MAP			FIELD_PREP_CONST(LAN2_LED_MAPPING_MASK, 0x2)
+> +#define LAN2_PHY1_LED_MAP			FIELD_PREP_CONST(LAN2_LED_MAPPING_MASK, 0x1)
+> +#define LAN2_PHY0_LED_MAP			FIELD_PREP_CONST(LAN2_LED_MAPPING_MASK, 0x0)
+> =20
+>  #define LAN1_LED_MAPPING_MASK			GENMASK(6, 4)
+> -#define LAN1_PHY4_LED_MAP			BIT(6)
+> -#define LAN1_PHY2_LED_MAP			BIT(5)
+> -#define LAN1_PHY1_LED_MAP			BIT(4)
+> -#define LAN1_PHY0_LED_MAP			0
+> -#define LAN1_PHY3_LED_MAP			GENMASK(5, 4)
+> +#define LAN1_PHY4_LED_MAP			FIELD_PREP_CONST(LAN1_LED_MAPPING_MASK, 0x4)
+> +#define LAN1_PHY3_LED_MAP			FIELD_PREP_CONST(LAN1_LED_MAPPING_MASK, 0x3)
+> +#define LAN1_PHY2_LED_MAP			FIELD_PREP_CONST(LAN1_LED_MAPPING_MASK, 0x2)
+> +#define LAN1_PHY1_LED_MAP			FIELD_PREP_CONST(LAN1_LED_MAPPING_MASK, 0x1)
+> +#define LAN1_PHY0_LED_MAP			FIELD_PREP_CONST(LAN1_LED_MAPPING_MASK, 0x0)
+> =20
+>  #define LAN0_LED_MAPPING_MASK			GENMASK(2, 0)
+> -#define LAN0_PHY4_LED_MAP			BIT(3)
+> -#define LAN0_PHY2_LED_MAP			BIT(2)
+> -#define LAN0_PHY1_LED_MAP			BIT(1)
+> -#define LAN0_PHY0_LED_MAP			0
+> -#define LAN0_PHY3_LED_MAP			GENMASK(2, 1)
+> +#define LAN0_PHY4_LED_MAP			FIELD_PREP_CONST(LAN0_LED_MAPPING_MASK, 0x4)
+> +#define LAN0_PHY3_LED_MAP			FIELD_PREP_CONST(LAN0_LED_MAPPING_MASK, 0x3)
+> +#define LAN0_PHY2_LED_MAP			FIELD_PREP_CONST(LAN0_LED_MAPPING_MASK, 0x2)
+> +#define LAN0_PHY1_LED_MAP			FIELD_PREP_CONST(LAN0_LED_MAPPING_MASK, 0x1)
+> +#define LAN0_PHY0_LED_MAP			FIELD_PREP_CONST(LAN0_LED_MAPPING_MASK, 0x0)
+> =20
+>  /* CONF */
+>  #define REG_I2C_SDA_E2				0x001c
+> @@ -1476,8 +1477,8 @@ static const struct airoha_pinctrl_func_group phy1_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN1_LED_MAPPING_MASK,
+> -			LAN1_PHY1_LED_MAP
+> +			LAN0_LED_MAPPING_MASK,
+> +			LAN0_PHY0_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1491,8 +1492,8 @@ static const struct airoha_pinctrl_func_group phy1_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN2_LED_MAPPING_MASK,
+> -			LAN2_PHY1_LED_MAP
+> +			LAN1_LED_MAPPING_MASK,
+> +			LAN1_PHY0_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1506,8 +1507,8 @@ static const struct airoha_pinctrl_func_group phy1_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN3_LED_MAPPING_MASK,
+> -			LAN3_PHY1_LED_MAP
+> +			LAN2_LED_MAPPING_MASK,
+> +			LAN2_PHY0_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1521,8 +1522,8 @@ static const struct airoha_pinctrl_func_group phy1_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN4_LED_MAPPING_MASK,
+> -			LAN4_PHY1_LED_MAP
+> +			LAN3_LED_MAPPING_MASK,
+> +			LAN3_PHY0_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	},
+> @@ -1540,8 +1541,8 @@ static const struct airoha_pinctrl_func_group phy2_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN1_LED_MAPPING_MASK,
+> -			LAN1_PHY2_LED_MAP
+> +			LAN0_LED_MAPPING_MASK,
+> +			LAN0_PHY1_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1555,8 +1556,8 @@ static const struct airoha_pinctrl_func_group phy2_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN2_LED_MAPPING_MASK,
+> -			LAN2_PHY2_LED_MAP
+> +			LAN1_LED_MAPPING_MASK,
+> +			LAN1_PHY1_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1570,8 +1571,8 @@ static const struct airoha_pinctrl_func_group phy2_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN3_LED_MAPPING_MASK,
+> -			LAN3_PHY2_LED_MAP
+> +			LAN2_LED_MAPPING_MASK,
+> +			LAN2_PHY1_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1585,8 +1586,8 @@ static const struct airoha_pinctrl_func_group phy2_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN4_LED_MAPPING_MASK,
+> -			LAN4_PHY2_LED_MAP
+> +			LAN3_LED_MAPPING_MASK,
+> +			LAN3_PHY1_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	},
+> @@ -1604,8 +1605,8 @@ static const struct airoha_pinctrl_func_group phy3_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN1_LED_MAPPING_MASK,
+> -			LAN1_PHY3_LED_MAP
+> +			LAN0_LED_MAPPING_MASK,
+> +			LAN0_PHY2_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1619,8 +1620,8 @@ static const struct airoha_pinctrl_func_group phy3_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN2_LED_MAPPING_MASK,
+> -			LAN2_PHY3_LED_MAP
+> +			LAN1_LED_MAPPING_MASK,
+> +			LAN1_PHY2_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1634,8 +1635,8 @@ static const struct airoha_pinctrl_func_group phy3_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN3_LED_MAPPING_MASK,
+> -			LAN3_PHY3_LED_MAP
+> +			LAN2_LED_MAPPING_MASK,
+> +			LAN2_PHY2_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1649,8 +1650,8 @@ static const struct airoha_pinctrl_func_group phy3_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN4_LED_MAPPING_MASK,
+> -			LAN4_PHY3_LED_MAP
+> +			LAN3_LED_MAPPING_MASK,
+> +			LAN3_PHY2_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	},
+> @@ -1668,8 +1669,8 @@ static const struct airoha_pinctrl_func_group phy4_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN1_LED_MAPPING_MASK,
+> -			LAN1_PHY4_LED_MAP
+> +			LAN0_LED_MAPPING_MASK,
+> +			LAN0_PHY3_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1683,8 +1684,8 @@ static const struct airoha_pinctrl_func_group phy4_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN2_LED_MAPPING_MASK,
+> -			LAN2_PHY4_LED_MAP
+> +			LAN1_LED_MAPPING_MASK,
+> +			LAN1_PHY3_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1698,8 +1699,8 @@ static const struct airoha_pinctrl_func_group phy4_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN3_LED_MAPPING_MASK,
+> -			LAN3_PHY4_LED_MAP
+> +			LAN2_LED_MAPPING_MASK,
+> +			LAN2_PHY3_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1713,8 +1714,8 @@ static const struct airoha_pinctrl_func_group phy4_=
+led0_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED0_MAPPING,
+> -			LAN4_LED_MAPPING_MASK,
+> -			LAN4_PHY4_LED_MAP
+> +			LAN3_LED_MAPPING_MASK,
+> +			LAN3_PHY3_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	},
+> @@ -1732,8 +1733,8 @@ static const struct airoha_pinctrl_func_group phy1_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN1_LED_MAPPING_MASK,
+> -			LAN1_PHY1_LED_MAP
+> +			LAN0_LED_MAPPING_MASK,
+> +			LAN0_PHY0_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1747,8 +1748,8 @@ static const struct airoha_pinctrl_func_group phy1_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN2_LED_MAPPING_MASK,
+> -			LAN2_PHY1_LED_MAP
+> +			LAN1_LED_MAPPING_MASK,
+> +			LAN1_PHY0_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1762,8 +1763,8 @@ static const struct airoha_pinctrl_func_group phy1_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN3_LED_MAPPING_MASK,
+> -			LAN3_PHY1_LED_MAP
+> +			LAN2_LED_MAPPING_MASK,
+> +			LAN2_PHY0_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1777,8 +1778,8 @@ static const struct airoha_pinctrl_func_group phy1_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN4_LED_MAPPING_MASK,
+> -			LAN4_PHY1_LED_MAP
+> +			LAN3_LED_MAPPING_MASK,
+> +			LAN3_PHY0_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	},
+> @@ -1796,8 +1797,8 @@ static const struct airoha_pinctrl_func_group phy2_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN1_LED_MAPPING_MASK,
+> -			LAN1_PHY2_LED_MAP
+> +			LAN0_LED_MAPPING_MASK,
+> +			LAN0_PHY1_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1811,8 +1812,8 @@ static const struct airoha_pinctrl_func_group phy2_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN2_LED_MAPPING_MASK,
+> -			LAN2_PHY2_LED_MAP
+> +			LAN1_LED_MAPPING_MASK,
+> +			LAN1_PHY1_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1826,8 +1827,8 @@ static const struct airoha_pinctrl_func_group phy2_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN3_LED_MAPPING_MASK,
+> -			LAN3_PHY2_LED_MAP
+> +			LAN2_LED_MAPPING_MASK,
+> +			LAN2_PHY1_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1841,8 +1842,8 @@ static const struct airoha_pinctrl_func_group phy2_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN4_LED_MAPPING_MASK,
+> -			LAN4_PHY2_LED_MAP
+> +			LAN3_LED_MAPPING_MASK,
+> +			LAN3_PHY1_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	},
+> @@ -1860,8 +1861,8 @@ static const struct airoha_pinctrl_func_group phy3_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN1_LED_MAPPING_MASK,
+> -			LAN1_PHY3_LED_MAP
+> +			LAN0_LED_MAPPING_MASK,
+> +			LAN0_PHY2_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1875,8 +1876,8 @@ static const struct airoha_pinctrl_func_group phy3_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN2_LED_MAPPING_MASK,
+> -			LAN2_PHY3_LED_MAP
+> +			LAN1_LED_MAPPING_MASK,
+> +			LAN1_PHY2_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1890,8 +1891,8 @@ static const struct airoha_pinctrl_func_group phy3_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN3_LED_MAPPING_MASK,
+> -			LAN3_PHY3_LED_MAP
+> +			LAN2_LED_MAPPING_MASK,
+> +			LAN2_PHY2_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1905,8 +1906,8 @@ static const struct airoha_pinctrl_func_group phy3_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN4_LED_MAPPING_MASK,
+> -			LAN4_PHY3_LED_MAP
+> +			LAN3_LED_MAPPING_MASK,
+> +			LAN3_PHY2_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	},
+> @@ -1924,8 +1925,8 @@ static const struct airoha_pinctrl_func_group phy4_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN1_LED_MAPPING_MASK,
+> -			LAN1_PHY4_LED_MAP
+> +			LAN0_LED_MAPPING_MASK,
+> +			LAN0_PHY3_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1939,8 +1940,8 @@ static const struct airoha_pinctrl_func_group phy4_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN2_LED_MAPPING_MASK,
+> -			LAN2_PHY4_LED_MAP
+> +			LAN1_LED_MAPPING_MASK,
+> +			LAN1_PHY3_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1954,8 +1955,8 @@ static const struct airoha_pinctrl_func_group phy4_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN3_LED_MAPPING_MASK,
+> -			LAN3_PHY4_LED_MAP
+> +			LAN2_LED_MAPPING_MASK,
+> +			LAN2_PHY3_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	}, {
+> @@ -1969,8 +1970,8 @@ static const struct airoha_pinctrl_func_group phy4_=
+led1_func_group[] =3D {
+>  		.regmap[1] =3D {
+>  			AIROHA_FUNC_MUX,
+>  			REG_LAN_LED1_MAPPING,
+> -			LAN4_LED_MAPPING_MASK,
+> -			LAN4_PHY4_LED_MAP
+> +			LAN3_LED_MAPPING_MASK,
+> +			LAN3_PHY3_LED_MAP
+>  		},
+>  		.regmap_size =3D 2,
+>  	},
+> --=20
+> 2.48.1
+>=20
+
+--bxBCDseondUIzNHf
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ+ftFgAKCRA6cBh0uS2t
+rA3jAQC3DuuDUXFJE6ZIunnmBsWsnWDVyyuB2dClQt002JIXcQEAiac4v+IAntq8
+nQ3BuM2ng3XlSqEIu12K9X4Xkuobzwo=
+=x72S
+-----END PGP SIGNATURE-----
+
+--bxBCDseondUIzNHf--
 
