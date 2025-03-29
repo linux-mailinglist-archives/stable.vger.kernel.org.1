@@ -1,150 +1,187 @@
-Return-Path: <stable+bounces-127002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E9AA755FC
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 12:40:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B80A75638
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 13:17:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F389616F2F8
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 11:40:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C03097A289F
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 12:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EA91D63F9;
-	Sat, 29 Mar 2025 11:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47A31C460A;
+	Sat, 29 Mar 2025 12:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bg7IBuNj"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jh5BBsib";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+jfvA3VY";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jh5BBsib";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+jfvA3VY"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441912AD2A
-	for <stable@vger.kernel.org>; Sat, 29 Mar 2025 11:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FED1BD9C9
+	for <stable@vger.kernel.org>; Sat, 29 Mar 2025 12:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743248409; cv=none; b=A2PM25g0GbyvCsuKXvOCy/kIjUH0/SBoNfn2+Mr+fQ5BBxmRcoGmFVtrSAT/jHsKPzSo7po9O66v+0phluAppOGuinOZjVDhAAxzz+nWHRkx4i6v6fT4U+2YdzSIqNLZVaFS/g54mRBRhXY1gdpXJpiPsv1LB+6LggLLxvwYyRM=
+	t=1743250668; cv=none; b=MF6uldQW6/jeopxYgHNTZNgzyq6vU1AYw+PPEIcyKh3FdnkJx8KS2oopdxSpLa4eY3RbENbfRvcKyKIEeoICalgVcgLV0R1J0AMn08x/XRetb+EyEEfqHB1EY0RLWet+3OZ7U2qxDtO1kdm8Y6Qsz+GCm+R5XYm7VyZ8Dm92c7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743248409; c=relaxed/simple;
-	bh=4ZeWdO9vWBQvCeusrKYzW1xKaowzbrUNRAEcKZOnMWo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ezO6kFQcG7bhuia4r59PiDPq7YvqAIwSrKvJ3NCLes4gFCaEGdbFILuo8MRNe8J1VgNszgklnheUYIyQ5skaOx/GeQdIhYDnq8hdJoV3960BHurNo1jcQL7CBfyZc+t//vSvJH9sc0mfBhjMXNZATIEJMS20VffqAazuJfc3sKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bg7IBuNj; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1743248402;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20240116; t=1743250668; c=relaxed/simple;
+	bh=Th9q2zWuN9ateO/cXt4zELyLpd5GlCiqo47HRHIwo6U=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DPbJi0zVsyAd9eWtHb8UtRXciJ22dwM3D8rKGCFKi8ZnBFH37CMqxzuy8y1mRiEu22sdu/2qzv2MDKbw5r2eu8Kz2vb/t1kAVLL5VOsnpVvwh/UEpHOpL0FfZfSAB8IC2IHiTSWDkThdGnpr6XcpDUk7Yo885m70X99j7erpZ5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jh5BBsib; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+jfvA3VY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jh5BBsib; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+jfvA3VY; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 13EA51F393;
+	Sat, 29 Mar 2025 12:17:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1743250665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+ZUmc0mq21gmsiUqtz6/4c/LeqvF+5GvQEyiqdwc40U=;
-	b=bg7IBuNjl/kOFEjc6vu5s8/EsngGR/+XRlzlLEqwPI3BPh+CYPEYQ8RAwFk1Bflsn0jZ+m
-	FtnISIz7vW6dESONrDjnBhajTDWpgKioalwSfVTcHuzrkORep0yPS2VJTt2nmdtGw2bZed
-	q56zZQOmk3xVQqSNX5T64oMXpLHqfhg=
-From: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Cc: Nishanth Menon <nm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Praneeth Bajjuri <praneeth@ti.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Dominik Haller <d.haller@phytec.de>,
-	DRI Development List <dri-devel@lists.freedesktop.org>,
-	Linux Kernel List <linux-kernel@vger.kernel.org>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v11 05/14] drm/bridge: cdns-dsi: Wait for Clk and Data Lanes to be ready
-Date: Sat, 29 Mar 2025 17:09:16 +0530
-Message-Id: <20250329113925.68204-6-aradhya.bhatia@linux.dev>
-In-Reply-To: <20250329113925.68204-1-aradhya.bhatia@linux.dev>
-References: <20250329113925.68204-1-aradhya.bhatia@linux.dev>
+	bh=qfC8qPNIcAhBLRTyMdYT4Z+49oDjmYN8xkMGiLd1fpw=;
+	b=jh5BBsibFabbvx82IP2rBNMandkFtFiRu+pT5fxN3fSqSJZl5Ka+cR717dFRH8yrp6ruz0
+	7Im4hc0kRBcBKQ3gxKyQp35+ce38rk7Opn/EtS9H6YJBfX4OfDbaF7kWSx/xSOuPin9EDc
+	TKRfolE8vqOGrowHDKYCOrKBHsE/r/8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1743250665;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qfC8qPNIcAhBLRTyMdYT4Z+49oDjmYN8xkMGiLd1fpw=;
+	b=+jfvA3VYGqtBsZ0pAfTuaX/iAJkH41m6Zrjmd4S+sWTAwFCpEs0JQETVwfYFltnf7X6BGe
+	aXowyeY63Pd/eDBA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1743250665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qfC8qPNIcAhBLRTyMdYT4Z+49oDjmYN8xkMGiLd1fpw=;
+	b=jh5BBsibFabbvx82IP2rBNMandkFtFiRu+pT5fxN3fSqSJZl5Ka+cR717dFRH8yrp6ruz0
+	7Im4hc0kRBcBKQ3gxKyQp35+ce38rk7Opn/EtS9H6YJBfX4OfDbaF7kWSx/xSOuPin9EDc
+	TKRfolE8vqOGrowHDKYCOrKBHsE/r/8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1743250665;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qfC8qPNIcAhBLRTyMdYT4Z+49oDjmYN8xkMGiLd1fpw=;
+	b=+jfvA3VYGqtBsZ0pAfTuaX/iAJkH41m6Zrjmd4S+sWTAwFCpEs0JQETVwfYFltnf7X6BGe
+	aXowyeY63Pd/eDBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA73E13A4B;
+	Sat, 29 Mar 2025 12:17:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id oUNQJ+jk52e6OgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Sat, 29 Mar 2025 12:17:44 +0000
+Date: Sat, 29 Mar 2025 13:17:44 +0100
+Message-ID: <87wmc83uaf.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: regressions@lists.linux.dev
+Cc: Chuck Lever <chuck.lever@oracle.com>,
+	linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [REGRESSION] Chrome and VSCode breakage with the commit b9b588f22a0c
+In-Reply-To: <874j0lvy89.wl-tiwai@suse.de>
+References: <874j0lvy89.wl-tiwai@suse.de>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.com:url]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+On Sun, 23 Feb 2025 09:53:10 +0100,
+Takashi Iwai wrote:
+> 
+> [ resent due to a wrong address for regression reporting, sorry! ]
+> 
+> Hi,
+> 
+> we received a bug report showing the regression on 6.13.1 kernel
+> against 6.13.0.  The symptom is that Chrome and VSCode stopped working
+> with Gnome Scaling, as reported on openSUSE Tumbleweed bug tracker
+>   https://bugzilla.suse.com/show_bug.cgi?id=1236943
+> 
+> Quoting from there:
+> """
+> I use the latest TW on Gnome with a 4K display and 150%
+> scaling. Everything has been working fine, but recently both Chrome
+> and VSCode (installed from official non-openSUSE channels) stopped
+> working with Scaling.
+> ....
+> I am using VSCode with:
+> `--enable-features=UseOzonePlatform --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto` and for Chrome, I select `Preferred Ozone platform` == `Wayland`.
+> """
+> 
+> Surprisingly, the bisection pointed to the backport of the commit
+> b9b588f22a0c049a14885399e27625635ae6ef91 ("libfs: Use d_children list
+> to iterate simple_offset directories").
+> 
+> Indeed, the revert of this patch on the latest 6.13.4 was confirmed to
+> fix the issue.  Also, the reporter verified that the latest 6.14-rc
+> release is still affected, too.
+> 
+> For now I have no concrete idea how the patch could break the behavior
+> of a graphical application like the above.  Let us know if you need
+> something for debugging.  (Or at easiest, join to the bugzilla entry
+> and ask there; or open another bug report at whatever you like.)
+> 
+> BTW, I'll be traveling tomorrow, so my reply will be delayed.
+> 
+> 
+> thanks,
+> 
+> Takashi
+> 
+> #regzbot introduced: b9b588f22a0c049a14885399e27625635ae6ef91
+> #regzbot monitor: https://bugzilla.suse.com/show_bug.cgi?id=1236943
 
-Once the DSI Link and DSI Phy are initialized, the code needs to wait
-for Clk and Data Lanes to be ready, before continuing configuration.
-This is in accordance with the DSI Start-up procedure, found in the
-Technical Reference Manual of Texas Instrument's J721E SoC[0] which
-houses this DSI TX controller.
+After all, this seems to be a bug in Chrome and its variant, which was
+surfaced by the kernel commit above: as the commit changes the
+directory enumeration, it also changed the list order returned from
+libdrm drmGetDevices2(), and it screwed up the application that worked
+casually beforehand.  That said, the bug itself has been already
+present.  The Chrome upstream tracker:
+  https://issuetracker.google.com/issues/396434686
 
-If the previous bridge (or crtc/encoder) are configured pre-maturely,
-the input signal FIFO gets corrupt. This introduces a color-shift on the
-display.
+#regzbot invalid: problem has always existed on Chrome and related code
 
-Allow the driver to wait for the clk and data lanes to get ready during
-DSI enable.
 
-[0]: See section 12.6.5.7.3 "Start-up Procedure" in J721E SoC TRM
-     TRM Link: http://www.ti.com/lit/pdf/spruil1
-
-Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
-Cc: stable@vger.kernel.org
-Tested-by: Dominik Haller <d.haller@phytec.de>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
----
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-index 741d676b8266..93c3d5f1651d 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -776,7 +776,7 @@ static void cdns_dsi_bridge_atomic_enable(struct drm_bridge *bridge,
- 	struct drm_connector *connector;
- 	unsigned long tx_byte_period;
- 	struct cdns_dsi_cfg dsi_cfg;
--	u32 tmp, reg_wakeup, div;
-+	u32 tmp, reg_wakeup, div, status;
- 	int nlanes;
- 
- 	if (WARN_ON(pm_runtime_get_sync(dsi->base.dev) < 0))
-@@ -796,6 +796,19 @@ static void cdns_dsi_bridge_atomic_enable(struct drm_bridge *bridge,
- 	cdns_dsi_hs_init(dsi);
- 	cdns_dsi_init_link(dsi);
- 
-+	/*
-+	 * Now that the DSI Link and DSI Phy are initialized,
-+	 * wait for the CLK and Data Lanes to be ready.
-+	 */
-+	tmp = CLK_LANE_RDY;
-+	for (int i = 0; i < nlanes; i++)
-+		tmp |= DATA_LANE_RDY(i);
-+
-+	if (readl_poll_timeout(dsi->regs + MCTL_MAIN_STS, status,
-+			       (tmp == (status & tmp)), 100, 500000))
-+		dev_err(dsi->base.dev,
-+			"Timed Out: DSI-DPhy Clock and Data Lanes not ready.\n");
-+
- 	writel(HBP_LEN(dsi_cfg.hbp) | HSA_LEN(dsi_cfg.hsa),
- 	       dsi->regs + VID_HSIZE1);
- 	writel(HFP_LEN(dsi_cfg.hfp) | HACT_LEN(dsi_cfg.hact),
--- 
-2.34.1
-
+Takashi
 
