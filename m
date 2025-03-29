@@ -1,87 +1,78 @@
-Return-Path: <stable+bounces-126997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16A1A755DB
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 12:17:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8097EA755E9
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 12:39:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BE1B7A63A5
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 11:16:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BE757A63E0
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 11:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4141AF0CA;
-	Sat, 29 Mar 2025 11:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9AD1C5D72;
+	Sat, 29 Mar 2025 11:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cRROQjr5"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="H1+1j4hY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5650854763;
-	Sat, 29 Mar 2025 11:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D145F1C3C07
+	for <stable@vger.kernel.org>; Sat, 29 Mar 2025 11:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743247044; cv=none; b=bNHuK9UKGldYfIrrqx8hB+wlyXMBU0gZBnY6RLIlncys6Qv87Rn0u2XSFrMioz2it+eASBIHMeOE5LZ0OWp1ni5wrEeY/5OsgJhI0u8l3whPWLwbYtsPS9jAd9xbOCCr1p2Inu7BU0OxosFE2v76Nr95FG1ifsOhsu0OK5ACvyw=
+	t=1743248383; cv=none; b=s1d2ZLrBJ6JWv+A7O1rUSAVIO957T4PxJ7ErwB3QUDr3/2teJ4DDablltGJiSEFTSk8A7vmzRR/oi+3spinK0PtAIaExWt3NxxCF8loN3Yb8KdYbcE2IbCEues3YWKOk+zrXkKvp7zAUOuHfxC4cNOHCYUXUF59B7zIRz9K8T90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743247044; c=relaxed/simple;
-	bh=iVyKzVfxR8LdP5by3NoY8zhrOtkB7jVDbkJlfjDY8OE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J6apyt9NZczyEsBEfiw6OZUPQVzXBYbrfnAxGZfNsx5/diuEYWWoFwd43nEg/WpZi/e/x6ZHJFSVQh+tebfWRJLG6bmQy8kFbRtNnDJt22LdWveacJK4W3zHn8NgP7jrMP0gocy1lNke/QeEI5Iv6XTCy18kC2OFDRxZzu3KaB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cRROQjr5; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43d07ca6a80so16017185e9.1;
-        Sat, 29 Mar 2025 04:17:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743247040; x=1743851840; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XCZ2IYJ2ToIg9/KMdOINj9YW27Hjn4u6ydCp4dWPNz0=;
-        b=cRROQjr5/4OoQFSgLDATLr7vPcd6bd6UODvDfOhEJjYRvi0IFdCDn9X2YfjOFYdAKN
-         evDlHP/PlhLAD9fEry2EqFeBRCHIjF/nzWtYx0jNO84amj9B9yKFA4qfIVL96X5buVXg
-         nTVvOzTdkv0iqBP47/bIyraDq2Z+VDbXNCXsApCXrIpbG4dgN6DhTgzNsZLzlsLsmbWS
-         7D0UJrpqanDVlYpV52Tma8Mpms0PoW6LE54IT7EgXCElotk1U1x8K/cuYRlPPVgzPenr
-         SsTrwVyRCl0Y9uEwnlK6EvEf0Jskjg2G/NIwMZJVa8zrp5PRblLE2ts1TxdeTRJkkUnZ
-         qzuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743247041; x=1743851841;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XCZ2IYJ2ToIg9/KMdOINj9YW27Hjn4u6ydCp4dWPNz0=;
-        b=N3JW0DljNhIANVsBQM7xlZmhdAUWmvSbh4wpG+3d4orlRKv2fDsu072dVuwC5kMYED
-         xIIc1T5srf+1Zbm3eQRZuI7WJHueJxUdJjCTSpBq//1pTbjOj8TKNikowG6Fd/TBtWp2
-         C12WnaYBLnvVcyhKjtPaTZbx8AAyuLuLp6c0iSmzRz7NbnI/I3C2vh0KfZsJNlGGEeiB
-         l/a/OjvWE30muI1QFSV4h2QyAPWYk9pvhoeNhfpi62ziujD3jugjZWhwOMA+xOEX+pq6
-         mbFy9y4nOdpkVk8VnqidI9mE3ChsZNbaFzd1S52uMGhEze5LMbNhldAE70P9mbN5nRux
-         wUvA==
-X-Forwarded-Encrypted: i=1; AJvYcCXGs//XFH25+8ohN7pKWYXXNLvWuQfCu7u/+vQizxjQ0tAAJdHaD1n77gvJPkHaxByVlzKove45@vger.kernel.org, AJvYcCXaVbJxIEmfPOF8tayXxY0sFHkzHOu0L0IljB0MryS87XSTTlS0ZOQMfLX9YtWVS/YfUCfH8Z8w48xEAFU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvN/rkzLA44mF0du/KD/cIHHS2q79bnRmV0CfrujuHV7C7fHoZ
-	FupaEgCsPRSsu/u61v14q/sLMKJIsaOjqeG5acvqogYba04Sgfad60C1wg==
-X-Gm-Gg: ASbGnctQs1bZx1KHyY4PWfyZyqT9Fj9J5EVZZAHezQrpJZ6Xp8KS4glK+x2ZzPxm2pA
-	s7EL3uqJ2sIbSJ1UQEBJd0w8W2QXOKN6vnIf4n1KKZqFaG21Nu65yjg1XKYdAZYYYtO8FBdmItF
-	JeOa0ZLKxhiaoYA+w3EKmIHym4AnDYRYD80zWy3or4z3o0F8a0lEF9rHG/VrGjmoQxavrhDDaif
-	6FgRoDuHvuPTNjLEM+c2+HrHsdlp6sdAUoTb6LFfG7VDdM349YeIjGaMrRbNMc6Y8lzNWW6F0CB
-	6qZWkT8QeEH1GQXNdYF/EP0z7uZXRhmTZDu26seNK1YEjg==
-X-Google-Smtp-Source: AGHT+IGDbZteM2t+YPVw5ySzoBnXTQv1/QQFxNbONb1Mvy0uKs3/oMD8mkZWX/L6t/AP9Jyjt5WQWQ==
-X-Received: by 2002:a05:600c:b98:b0:43d:16a0:d82c with SMTP id 5b1f17b1804b1-43db61d7b53mr27399475e9.2.1743247040450;
-        Sat, 29 Mar 2025 04:17:20 -0700 (PDT)
-Received: from qasdev.Home ([2a02:c7c:6696:8300:c564:b82e:4883:713c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d8ff042bcsm57170215e9.28.2025.03.29.04.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Mar 2025 04:17:20 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: mark@fasheh.com,
-	jlbec@evilplan.org,
-	joseph.qi@linux.alibaba.com
-Cc: ocfs2-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	syzbot <syzbot+e41e83af7a07a4df8051@syzkaller.appspotmail.com>,
+	s=arc-20240116; t=1743248383; c=relaxed/simple;
+	bh=GQNVQGTV6tU0ucAzACDoH1RS8W51GlHc/KpBiGt+pM0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=d4wlK0pmVxEZ9CeGBkDDaRYPY/BVY7B822F0ZBpxhCC8Frhek+ZV8ySlfTDMt1BfXe0/jed2ZSPmBaKPpQ+k7ASy7KAbOK2NckViIKtb6NLA26u3RQnw1UzHgZwSPjQaytoQugQCSe4TYAhL5+szXB1ZxKPkwlOM39EYXmpnHWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=H1+1j4hY; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1743248379;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k5hNPwbnjZEy7+j1MXKyHlFHRyFkdr5dcKL3LqQkG8s=;
+	b=H1+1j4hYuWwhNd9nivU+m/Bp2Z5eRbVWjQiiXagmULJtRfXePjQEi0LpPSeGRXPnzkz52H
+	WhAfDHQVjckZezegGWCPZ6D1EODP4UK+5d/Y7/NnJlQlwnrzFqCQQzM8E4FYe14XGSwyxU
+	VX4RAGIyy5hzfu4fcRABl72wY7UZMOo=
+From: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Praneeth Bajjuri <praneeth@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Dominik Haller <d.haller@phytec.de>,
+	DRI Development List <dri-devel@lists.freedesktop.org>,
+	Linux Kernel List <linux-kernel@vger.kernel.org>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND] ocfs2: Validate chain list bits per cluster to prevent div-by-zero
-Date: Sat, 29 Mar 2025 11:16:54 +0000
-Message-Id: <20250329111654.5764-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+Subject: [PATCH v11 01/14] drm/bridge: cdns-dsi: Fix connecting to next bridge
+Date: Sat, 29 Mar 2025 17:09:12 +0530
+Message-Id: <20250329113925.68204-2-aradhya.bhatia@linux.dev>
+In-Reply-To: <20250329113925.68204-1-aradhya.bhatia@linux.dev>
+References: <20250329113925.68204-1-aradhya.bhatia@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,80 +80,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-The call trace shows that the div error occurs on the following line where the code sets 
-the e_cpos member of the extent record while dividing bg_bits by the bits per 
-cluster value from the chain list:
+From: Aradhya Bhatia <a-bhatia1@ti.com>
 
-		rec->e_cpos = cpu_to_le32(le16_to_cpu(bg->bg_bits) /
-				  le16_to_cpu(cl->cl_bpc));
-				  
-Looking at the code disassembly we see the problem occurred during the divw instruction
-which performs a 16-bit unsigned divide operation. The main ways a divide error can occur is
-if:
+Fix the OF node pointer passed to the of_drm_find_bridge() call to find
+the next bridge in the display chain.
 
-1) the divisor is 0
-2) if the quotient is too large for the designated register (overflow).
+The code to find the next panel (and create its panel-bridge) works
+fine, but to find the next (non-panel) bridge does not.
 
-Normally the divisor being 0 is the most common cause for a division error to occur.
+To find the next bridge in the pipeline, we need to pass "np" - the OF
+node pointer of the next entity in the devicetree chain. Passing
+"of_node" to of_drm_find_bridge (which is what the code does currently)
+will fetch the bridge for the cdns-dsi which is not what's required.
 
-Focusing on the bits per cluster cl->cl_bpc (since it is the divisor) we see that cl is created in
-ocfs2_block_group_alloc(), cl is derived from ocfs2_dinode->id2.i_chain. To fix this issue we should 
-verify the cl_bpc member in the chain list to ensure it is valid and non-zero.
+Fix that.
 
-Looking through the rest of the OCFS2 code it seems like there are other places which could benefit 
-from improved checks of the cl_bpc members of chain lists like the following:
-
-In ocfs2_group_extend():
-
-	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
-	if (le16_to_cpu(group->bg_bits) / cl_bpc + new_clusters >
-		le16_to_cpu(fe->id2.i_chain.cl_cpg)) {
-		ret = -EINVAL;
-		goto out_unlock;
-	}
-
-Reported-by: syzbot <syzbot+e41e83af7a07a4df8051@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=e41e83af7a07a4df8051
+Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
 ---
- fs/ocfs2/resize.c   | 4 ++--
- fs/ocfs2/suballoc.c | 5 +++++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/resize.c b/fs/ocfs2/resize.c
-index b0733c08ed13..22352c027ecd 100644
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -329,8 +329,8 @@ int ocfs2_group_extend(struct inode * inode, int new_clusters)
- 	group = (struct ocfs2_group_desc *)group_bh->b_data;
- 
- 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
--	if (le16_to_cpu(group->bg_bits) / cl_bpc + new_clusters >
--		le16_to_cpu(fe->id2.i_chain.cl_cpg)) {
-+	if (!cl_bpc || le16_to_cpu(group->bg_bits) / cl_bpc + new_clusters >
-+		       le16_to_cpu(fe->id2.i_chain.cl_cpg)) {
- 		ret = -EINVAL;
- 		goto out_unlock;
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+index 99d43944fb8f..1cfe17865b06 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -966,7 +966,7 @@ static int cdns_dsi_attach(struct mipi_dsi_host *host,
+ 		bridge = drm_panel_bridge_add_typed(panel,
+ 						    DRM_MODE_CONNECTOR_DSI);
+ 	} else {
+-		bridge = of_drm_find_bridge(dev->dev.of_node);
++		bridge = of_drm_find_bridge(np);
+ 		if (!bridge)
+ 			bridge = ERR_PTR(-EINVAL);
  	}
-diff --git a/fs/ocfs2/suballoc.c b/fs/ocfs2/suballoc.c
-index f7b483f0de2a..844cb36bd7ab 100644
---- a/fs/ocfs2/suballoc.c
-+++ b/fs/ocfs2/suballoc.c
-@@ -671,6 +671,11 @@ static int ocfs2_block_group_alloc(struct ocfs2_super *osb,
- 	BUG_ON(ocfs2_is_cluster_bitmap(alloc_inode));
- 
- 	cl = &fe->id2.i_chain;
-+	if (!le16_to_cpu(cl->cl_bpc)) {
-+		status = -EINVAL;
-+		goto bail;
-+	}
-+
- 	status = ocfs2_reserve_clusters_with_limit(osb,
- 						   le16_to_cpu(cl->cl_cpg),
- 						   max_block, flags, &ac);
 -- 
-2.39.5
+2.34.1
 
 
