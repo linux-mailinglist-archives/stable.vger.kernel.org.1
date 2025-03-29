@@ -1,161 +1,120 @@
-Return-Path: <stable+bounces-126993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50792A75529
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 09:41:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B187A75542
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 09:53:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E00733AFFE1
-	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 08:41:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A01611891A40
+	for <lists+stable@lfdr.de>; Sat, 29 Mar 2025 08:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061F719B3CB;
-	Sat, 29 Mar 2025 08:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0FE18DF93;
+	Sat, 29 Mar 2025 08:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zx/mZjrM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e65lhkwZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE3F5D477;
-	Sat, 29 Mar 2025 08:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525D035972;
+	Sat, 29 Mar 2025 08:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743237669; cv=none; b=tFbGZIPpAjrcPZF6aMeERjsLBKjsjK/vGXbacNK3SBYlOTJjQqVVZLBfD2z1q/9Ly/V3uce2ivP8P5CmUcNPLNIBx1BObJ5N2a6ulCZ/0HNmV0cOkSmsY7yzDdCGd8IYr7G5Dx573KZ2rcscf5ZY0Ag0pTcaxqG364h8GQ8w2SA=
+	t=1743238377; cv=none; b=IpfUIncuTeXMT/rxHNrJWbu5cCrIVBog9w/tUi9u1D3Hguy0AjM7B2uOQrD3O6LV2MuLGEYTlY1e3+liMteM3zccKA6kTenzNQzfvPyWFqZu3D/eMJmjT2RpWZnyK172nq0+PFKmMnlzoMdPlIs0IqruF8yYb/eoXZoNCwczU6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743237669; c=relaxed/simple;
-	bh=Zxi4fz242TKRMcLWwMnqMDyq07mgpNk9ykRalU4MaA4=;
+	s=arc-20240116; t=1743238377; c=relaxed/simple;
+	bh=VuNKaSttNCraDAMFXX4IwdkGLy4R9KErqa/ImpP7GDI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WOJ1N0sklWAm52i1FTxDAWsTt6XK7HIaYECGcdGWflBRf5dGAq/t7OCkUOU8fBqKldXr9s0rFk5LO12PbHZD8DjUlsRwPUWAKegEauPMJK2g9RRJTDTKVuTfCYI5JkV7zhTikaTTGA/vUnrUFbaWH5VOaRRuXRnuxoE/c/ytjSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zx/mZjrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDFAC4CEE2;
-	Sat, 29 Mar 2025 08:41:09 +0000 (UTC)
+	 To:Cc:Content-Type; b=uTTXN9vqIhjcWVmSM+dxr5GPABa+4uRvEfLfi18/zTvCBbDKhOHrqh7x/7pQ+8bqBIw/lslPx/hetlOvvtjaghqOHPw3HLUvqhabRLzc4EykP0OzbkJ1wi7RYFdMgMDL1UiGKeM3JQic3Va1a7GGQEMWa7c7uvmBj1JyhVyaS3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e65lhkwZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41E9C4CEE2;
+	Sat, 29 Mar 2025 08:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743237669;
-	bh=Zxi4fz242TKRMcLWwMnqMDyq07mgpNk9ykRalU4MaA4=;
+	s=k20201202; t=1743238376;
+	bh=VuNKaSttNCraDAMFXX4IwdkGLy4R9KErqa/ImpP7GDI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Zx/mZjrM6XqTziTy4RNGn0HVSEcxkhfXOeQCNfYvlSZZiEnuOKpvNsTq82xlA8hRn
-	 LbRs532AIIcDZ/RkQJriwX+XNIeEfJ2Ip4JCw0HGkujPwcRC+4Ys5+oeo3REgNpuTG
-	 le8ktQt7eDzaqcHFiO7r2yiqk/gp3mm2q1X62kPgySJEAlrVfxV71BNxeFGatrAhRQ
-	 6UdcVXJaq87kmDu/aArGCIKEVSH1bDf+5jRZFhusGYSAJ/0fkb4NBGDb4hB2yOAkCQ
-	 6HQ1pGAJxfOxAQXNl+x+FoqE8WIav2byeSAAYWDXZkPJ1dUobUuNHm852mot0D+Tv4
-	 s1oL/yqaxhVUQ==
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5e5bc066283so4722786a12.0;
-        Sat, 29 Mar 2025 01:41:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVe2ow4tLo9fFV0iXyIFsnSzP2khsk7L9TCHX2eMyIscKr8HO7JwtWO7zH+d3rIMXC5HGIuVfms@vger.kernel.org, AJvYcCWPLhSBvx1SSEp62udXDcfOWfGH71gsapekK0aYDcKToBHUObTkyi04dH8UWLgbb+bDnKzRA4KtKtnDww4=@vger.kernel.org, AJvYcCXGZcnMrlf7wwudloKf0xDOEOY9xmwOFcToxLWB/HoBb2+ydA5WM4Jwi3JDWfdMbm4nqK6PhehabTQP@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfeRCs2llyRmLEn7t20nxFnVhZ4tQN9ICG6a5LHEe5J6LfyvJk
-	0ZIHZxnBV9BXwH57Z3fmpjLxO7LG6vhaxII0X+FZ+Ooseu5T6bAT7aMSQ8AlGpUDQMBjrgqdVih
-	j+HWi2J/LuF0mJ13e5sYkOY0Xk20=
-X-Google-Smtp-Source: AGHT+IGv/udn16XAHP7Zs4N/IrBN03X4HvrPUNd9Z/faAOhZLawsyjO76H/1B0YEPwmuaU5XcM20zJcmJKmgAZJmeY0=
-X-Received: by 2002:a17:907:9693:b0:ac6:ff34:d046 with SMTP id
- a640c23a62f3a-ac7389ea430mr192916366b.2.1743237668046; Sat, 29 Mar 2025
- 01:41:08 -0700 (PDT)
+	b=e65lhkwZazJXDxHke7ITrqrGsNTa/7lBo7ScI8lwRLjDm+wC1YFiDX5bnYK75Hw4P
+	 y+WJSwrfTZtXQ4EhINWX/wJTpVu4SiMprLh0xw2x7UGUa8/qljf1W/ooggQqTnJnY1
+	 u49qG78g/yRn/Q7TbulS4AG5ZLvW43fTNi/VXhGZjKgPoEvjg90LKngLl0JTc3ehX9
+	 tbfiSM3wGV6/uIuWm6UCuB9+6eISC/dUQeCPeLw8V1/8Vbza0bl6TtBJJ9zeFws7wb
+	 Hh+nDdJF50HT8ZOT+Yh/ieLHp6Q828JUrIbzT3bD0cqvTlezt8BBoY8Ut9KGa+2mBU
+	 diRGhVYLs99/A==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e6167d0536so1689576a12.1;
+        Sat, 29 Mar 2025 01:52:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUn7YVVrN99SK8VpnAVI5Lr6/i2eebryxxB2LLpRzS30CmZPzBUHDdr4jTFNsl1FSwILYhbmHaU@vger.kernel.org, AJvYcCVDG8XIX9kuuy0M/Yjz0JOTylZ+YTIskNg/jRJN8TgkiVcloe3pLG1RWjKVKmoIi4w6APl3WS0AsOw1Tx0=@vger.kernel.org, AJvYcCXARvY8tKOsZFNPaEtTSnh6qYDXyYQwhmMQH4kpcPGqSwEJWgwrlITLSOMO8Tj2jBOuT2t5w7fzwjsuxkzxv/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEXa+d5CvTQpVPGcJPGioFs+RamU952ofde/a954Lcc34/WteB
+	x4l5LSm6/GhNeGM7/lAoN6SRRABpeAcmgmInImsSNPKmtj4SwYHyBjxLYnMxt5ofP75RVqWjhhP
+	wObWKkW3CpvbadxCjdGHCe5uBnXE=
+X-Google-Smtp-Source: AGHT+IFcTBlHFMe+cnzJ3GscmxD7DadfgO659/mYjAgkv2zsYhCstTT+cs4vEk+dCL2YR1W8PvXdP/Jf5yhQc854D64=
+X-Received: by 2002:a17:907:6092:b0:ac4:491:1549 with SMTP id
+ a640c23a62f3a-ac738a088edmr212495866b.1.1743237957112; Sat, 29 Mar 2025
+ 01:45:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250327044840.3179796-1-chenhuacai@loongson.cn> <208f5310-5932-402b-9980-0225e67f2d66@rowland.harvard.edu>
-In-Reply-To: <208f5310-5932-402b-9980-0225e67f2d66@rowland.harvard.edu>
+References: <20250304073554.20869-1-wangrui@loongson.cn> <aab657d72a3ee578e5c7a09c6c044e0d5c5add9a.camel@xry111.site>
+ <CAAhV-H5ayw7NxbSbCeAFaxOz+TZ8QeghmhW6-j2B1vTcjYxsJQ@mail.gmail.com> <CANiq72=AZ+CN4SScZcnRBpkS8ogCaZ=Uhe=k7fhGCVyecyRu5g@mail.gmail.com>
+In-Reply-To: <CANiq72=AZ+CN4SScZcnRBpkS8ogCaZ=Uhe=k7fhGCVyecyRu5g@mail.gmail.com>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 29 Mar 2025 16:40:59 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4aitynD20EEWQhF_uv79+1nw7sKxzd7c_+009oY63tEg@mail.gmail.com>
-X-Gm-Features: AQ5f1JpMjO_6Um_SuZ1zMErU5UTbjicHozY5ADRdcNCOEzMWygBf3AVFsRaYCIg
-Message-ID: <CAAhV-H4aitynD20EEWQhF_uv79+1nw7sKxzd7c_+009oY63tEg@mail.gmail.com>
-Subject: Re: [PATCH V2] USB: OHCI: Add quirk for LS7A OHCI controller (rev 0x02)
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
-	Mingcong Bai <baimingcong@loongson.cn>
+Date: Sat, 29 Mar 2025 16:45:49 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5Yc8d4qSN0Fwe=wShXHzJrdJ0KX87kV0_0ToQiHBEECQ@mail.gmail.com>
+X-Gm-Features: AQ5f1Jo_BhIWW_S-wVrrfYgevxjvR72OSEu-wwQPjbXYleu9ZtV1saltGmiCwUg
+Message-ID: <CAAhV-H5Yc8d4qSN0Fwe=wShXHzJrdJ0KX87kV0_0ToQiHBEECQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: Fix enabling Rust and building with GCC for LoongArch
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Xi Ruoyao <xry111@xry111.site>, WANG Rui <wangrui@loongson.cn>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 27, 2025 at 10:13=E2=80=AFPM Alan Stern <stern@rowland.harvard.=
-edu> wrote:
+Hi, Miguel,
+
+On Sat, Mar 29, 2025 at 12:15=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Thu, Mar 27, 2025 at 12:48:40PM +0800, Huacai Chen wrote:
-> > The OHCI controller (rev 0x02) under LS7A PCI host has a hardware flaw.
-> > MMIO register with offset 0x60/0x64 is treated as legacy PS2-compatible
-> > keyboard/mouse interface, which confuse the OHCI controller. Since OHCI
-> > only use a 4KB BAR resource indeed, the LS7A OHCI controller's 32KB BAR
-> > is wrapped around (the second 4KB BAR space is the same as the first 4K=
-B
-> > internally). So we can add an 4KB offset (0x1000) to the OHCI registers
-> > (from the PCI BAR resource) as a quirk.
+> On Tue, Mar 4, 2025 at 10:12=E2=80=AFAM Huacai Chen <chenhuacai@kernel.or=
+g> wrote:
 > >
-> > Cc: stable@vger.kernel.org
-> > Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-> > Tested-by: Mingcong Bai <baimingcong@loongson.cn>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > ---
-> > V2: add a comment explaining why the quirk is needed and how it fixes.
-> >
-> >  drivers/usb/host/ohci-pci.c | 22 ++++++++++++++++++++++
-> >  1 file changed, 22 insertions(+)
-> >
-> > diff --git a/drivers/usb/host/ohci-pci.c b/drivers/usb/host/ohci-pci.c
-> > index 900ea0d368e0..bd90b2fed51b 100644
-> > --- a/drivers/usb/host/ohci-pci.c
-> > +++ b/drivers/usb/host/ohci-pci.c
-> > @@ -165,6 +165,24 @@ static int ohci_quirk_amd700(struct usb_hcd *hcd)
-> >       return 0;
-> >  }
-> >
-> > +static int ohci_quirk_loongson(struct usb_hcd *hcd)
-> > +{
-> > +     struct pci_dev *pdev =3D to_pci_dev(hcd->self.controller);
-> > +
-> > +     /*
-> > +      * Loongson's LS7A OHCI controller (rev 0x02) has a
-> > +      * flaw. MMIO register with offset 0x60/64 is treated
-> > +      * as legacy PS2-compatible keyboard/mouse interface.
-> > +      * Since OHCI only use 4KB BAR resource, LS7A OHCI's
-> > +      * 32KB BAR is wrapped around (the 2nd 4KB BAR space
-> > +      * is the same as the 1st 4KB internally). So add 4KB
-> > +      * offset (0x1000) to the OHCI registers as a quirk.
-> > +      */
-> > +     hcd->regs +=3D (pdev->revision =3D=3D 0x2) ? 0x1000 : 0x0;
+> > Don't rely on  default behavior, things may change in future.
+> > Acked-by: Huacai Chen <chenhuacai@loongson.cn>
 >
-> I'm sorry, I should have mentioned this previously but I only noticed it
-> now.  This would be a lot easier for people to read if you wrote it as a
-> simple "if" statement:
->
->         if (pdev->revision =3D=3D 0x02)
->                 hcd->regs +=3D 0x1000;
->
-> Otherwise the patch looks fine.  If you make this change, you can
-> resubmit it with:
->
-> Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Thanks, V3 is sent:
-https://lore.kernel.org/linux-usb/20250328040059.3672979-1-chenhuacai@loong=
-son.cn/T/#u
+> I was pinged about this one -- are you picking this one through your tree=
+?
+OK, I wll pick it to the loongarch tree, thanks.
 
 Huacai
 
 >
-> Alan Stern
+> I didn't test it, but the change seems safe to me for other
+> architectures that we have at the moment, since they don't seem to set
+> any of those three from a quick look, so:
 >
-> > +
-> > +     return 0;
-> > +}
-> > +
-> >  static int ohci_quirk_qemu(struct usb_hcd *hcd)
-> >  {
-> >       struct ohci_hcd *ohci =3D hcd_to_ohci(hcd);
-> > @@ -224,6 +242,10 @@ static const struct pci_device_id ohci_pci_quirks[=
-] =3D {
-> >               PCI_DEVICE(PCI_VENDOR_ID_ATI, 0x4399),
-> >               .driver_data =3D (unsigned long)ohci_quirk_amd700,
-> >       },
-> > +     {
-> > +             PCI_DEVICE(PCI_VENDOR_ID_LOONGSON, 0x7a24),
-> > +             .driver_data =3D (unsigned long)ohci_quirk_loongson,
-> > +     },
-> >       {
-> >               .vendor         =3D PCI_VENDOR_ID_APPLE,
-> >               .device         =3D 0x003f,
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> In any case, the usual question for these "skipped flags" is whether
+> they could affect the output of `bindgen`, i.e. could they modify
+> layouts somehow?
+>
+> Also, it would be nice to mention a bit more what was the build error
+> and the GCC version in the commit message.
+>
+> Finally, regarding the Cc: stable, I guess that means 6.12+ since it
+> is the first LTS with loongarch64, right?
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
 
