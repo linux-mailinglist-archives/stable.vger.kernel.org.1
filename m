@@ -1,152 +1,177 @@
-Return-Path: <stable+bounces-127020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB57A75A66
-	for <lists+stable@lfdr.de>; Sun, 30 Mar 2025 16:53:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7B9A75AF1
+	for <lists+stable@lfdr.de>; Sun, 30 Mar 2025 18:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF9E3167DC7
-	for <lists+stable@lfdr.de>; Sun, 30 Mar 2025 14:53:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E9D4188B5E4
+	for <lists+stable@lfdr.de>; Sun, 30 Mar 2025 16:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865451C3F02;
-	Sun, 30 Mar 2025 14:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691471D63E2;
+	Sun, 30 Mar 2025 16:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UMKTmMya"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z4I2+t77"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E363A1B87EE
-	for <stable@vger.kernel.org>; Sun, 30 Mar 2025 14:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2209461
+	for <stable@vger.kernel.org>; Sun, 30 Mar 2025 16:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743346397; cv=none; b=GlXcWGBnJkL17YIay6xMhRHSu2SbfI0mL7Us5CFAVT9uIBIDUFa+0GtHWyC/KKHO1gLyuRmQN9fHjlIaJ24KF7ODFc30FcGm08Q1jilfER9MTurK/gSiHsftX5u3PRduLSW/UA+XfGIrmWjdd+U6mZAcc088iXsmycFbEQ6a14o=
+	t=1743352548; cv=none; b=ZNoTdBL+lRvliw4HQxc+G3BbzaxGssBaaUSPpV61sTSU00G7XA8v478TMab26mqN8JJ303oC6axQ6IB7xif/vqcgJB5IRzbPuCam3PiB2DKeqXMLGVieJ+pktYaLaBHi3gsEGZuzlAdFGxlZuWjyqSpqgobOInOou3IrbzHnmBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743346397; c=relaxed/simple;
-	bh=883aU6M4P8B1Gvoywvx1N+4lquH75UhP5vvd8twaVuM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OkGMGKo25f0BUAjWDivzKIbl8bwmRejM6qkUMBUqMDjMHm12jNMvUihYkJ6Ls7uNJPas0A3TsJK+MmxRza9ZxxSjCzSlkA+CiGZzNFbwQUCu6zk/6Ran5wFIu9EA9Upnipks9nThd54aLCjd1AdmjJcC6K0/DYYpM5Js2YSBR24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UMKTmMya; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1743352548; c=relaxed/simple;
+	bh=S4RODy1Q/hZZxDPN61Kt7DmGQaqQa/2RGDWfOBPMSdU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s5cUgzcRvNcnlcy6f1PA8TNrWyISZOBXSayTGeEMx91LhtkEqJ6ehlbK6uqbokEUMljWQ2ddArU+HbRQamao7vpAJMtXy7zbCjlKWCGKoXqztqBhIwgUsKW/Sp3LwCACoZbvDd6uuso4ASJ+C27b0EzsO2vzoWw7KliNSGAs/WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z4I2+t77; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-227cf12df27so52962865ad.0
-        for <stable@vger.kernel.org>; Sun, 30 Mar 2025 07:53:14 -0700 (PDT)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-39c0dfba946so1211524f8f.3
+        for <stable@vger.kernel.org>; Sun, 30 Mar 2025 09:35:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743346394; x=1743951194; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1gpBpp857KGUKkj2FFhAtCqlWpQJppTa6XQGxc0B3vY=;
-        b=UMKTmMyaHu3R64ekyAshzOpFsZdKAjBdNxbl5koT1jfY/qw5aQSQ90roKKH7poF2OA
-         BJPwhc8/JlSGQDw7jZR8+Y4AaLcLPvBGWKZSOH8ESwmN5/ZXbk4oomNRjInBoj+mLV+g
-         YxPYltyfMBRjTIvIXDmWsyfLCjpgReXe/wYg1jNMJ3tgmSflChM53DeI7cbeEXfT8wAZ
-         gaPbEdwY90xYLvEU+mhqDpfi6a+Nf62N0LjaH6b5ywssMfAdSkbOldGtEH/lDfikAYRh
-         peMW2D7PTSSzkP2UWSi1I31+QXlkgNT3bfvw7CzP8IDCTHRvj0LaQBUJmfhKGRGExdsn
-         YQcw==
+        d=gmail.com; s=20230601; t=1743352544; x=1743957344; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uuOuqty0i2CYwtRK3Rp+qfQDE4owvRyeSN1m7kjYXkQ=;
+        b=Z4I2+t77iRIBfFPsR4F0wH+gnCqwev44fcKdRvlPOX/+kgkWakRFIoJyUaRkuAYqxD
+         ZfhgnigukavmaJJKIOdHtAdrAYau49cdT0aDbjvOZ9vhl1EOYuErqC9s+n7kthSDeqoM
+         pZt1e/PcZScUMxWhBMFsSERpsIHGmOjqHd9Jue4s8BTqDLsELHbCQPLEaWSnlm+itTl9
+         cxLcpuCBLdcC6FLptDEZXpKbdL8+255vKuPRNghY+3GoIxlxEuoUvPkKGdC9AiXO7mdm
+         QqDWDMlvdmJmEUCdlOjRBQMn2b/3kLho1UjGDh8Loz2CB0nRY/8QHPpq1XV7MUoMt3FS
+         5P/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743346394; x=1743951194;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1gpBpp857KGUKkj2FFhAtCqlWpQJppTa6XQGxc0B3vY=;
-        b=m+HJoOMZxnBORQiIJ8RUHwwU8egDlcwbkmrlKVPOstlC30f5LhRBoWjxhCzCNCfTqZ
-         0od85+TedmqHRaCg+wMA00zg2vYlL2l0VJrqNyFceqtig2lZRpScHnUAQMk29G2/XOGa
-         korFvj+pXpatwTnYZVZ4mjF5E4YO5lokFZYrr0eh3pfVX6HoETAHmOkpwlh8pTqa4r4U
-         1R8JqwV3/esWsIX6DcOGASjsoqzcXryYDcPqw/YNL3Q0gLW7UKbEr7+FHqSk/rqrQKl2
-         AazZzpORF2sSatjIXfgIMEJeAU+Fh212KT+7yQggjF/3qgyfIeN+XDPaFqcgqTBxqghn
-         Bcfw==
-X-Forwarded-Encrypted: i=1; AJvYcCULWEo8Bz6eXFg5MPzB06Evy+WbTOWpFr28ACnu/1KZBB4yNcj9wnPSBbUnbLTorJJ1uNxjd+0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyim3a108DIuQsZi/OThvSkOKul/NzFs+Qc9U0ZJV24zjthMau/
-	21mFRxpDuyx4J/Q2JC52r+YmS9PR4H18aW2X7wEOD9tf6AdvvVAJ
-X-Gm-Gg: ASbGncu2/mU2/st9FJn1NL6fVuc971duLkg5cuNmz97I1h1tIn9FF9KAIrazFMwZXXv
-	1xdoFlWSoZLL0yoTHQ0/B2RDZ81cA/NUC4QSc+Vjz57HW+ZdscuCuAE7G5tBmvKyFDuA5gLrFNR
-	rD2KDtE0n628yJgbqK735UjzNIy3yks2E10WD0iJ/9xl67BB2VuYVusnntF9LBJXDNjBHh4QD+Y
-	dY82w1EKj2pd9obeNW2ZGFT7KDVesA9VBNLegB/a8M+dumJA3hfXrt+MD/wv9qHEkve+KLDlDAk
-	gN19LMxOfe1efF19zXCRZLxSuhWKHdzEOKQb+uRi64flimYAG4u/ttCZAsK8UTLjyD/iwUkYC5h
-	NolVkyK0=
-X-Google-Smtp-Source: AGHT+IGu9HKANB/ggGladsYzfGeGJ99b5Mg3rsHMq3G79NuqEoNtlnzVXXVYjeAGCo8eMt4EAoYRfQ==
-X-Received: by 2002:a17:902:ec90:b0:221:1356:10c5 with SMTP id d9443c01a7336-22921ca4193mr129887945ad.9.1743346394332;
-        Sun, 30 Mar 2025 07:53:14 -0700 (PDT)
-Received: from localhost (om126233180002.36.openmobile.ne.jp. [126.233.180.2])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3039e10baa2sm8653661a91.24.2025.03.30.07.53.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Mar 2025 07:53:14 -0700 (PDT)
-Date: Sun, 30 Mar 2025 23:53:10 +0900
-From: Zhenyu Wang <zhenyuw.linux@gmail.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, Kees Cook <kees@kernel.org>,
-	Nicolas Chauvet <kwizart@gmail.com>,
-	Damian Tometzki <damian@riscv-rocks.de>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/gvt: fix unterminated-string-initialization
- warning
-Message-ID: <Z-la1kFHvH4zu_X5@dell-wzy>
-References: <20250327124739.2609656-1-jani.nikula@intel.com>
+        d=1e100.net; s=20230601; t=1743352544; x=1743957344;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uuOuqty0i2CYwtRK3Rp+qfQDE4owvRyeSN1m7kjYXkQ=;
+        b=dvkI1zEPwnjCDnqNFC9tIf7tNfiuBPoxhvijfVWd2UyETCGUkydPr2at9vd/H0du08
+         dwwJi/GT+Y0RJGQe+Qb+ab0YBADOuxYIo80TTZdafPGcELZRdeTm+9DDKaOzP/YGddYR
+         I6xi671lWYJwOwn8xYU7zrMeTF5ZlDLdzg22QLbXzCaonjG939BA4X4e+X1dxlZeWl4F
+         S6Cw6dW+PNk3oTRra91+m9Lyyezk44PN7y/hXOBw4u5d9BGLQAYt4gX+IVr4PJaTSMCJ
+         BrzRrzUS4Z4hHeEvI+50dA+7f76E/7LV0yIL7+cAE8chHgNuWk87JUQHOexC9oXYDeY0
+         b2pA==
+X-Forwarded-Encrypted: i=1; AJvYcCWXTZzR40Vxrf9hkchifA6y75Jgd5F0O4GpPFhs82EGBINhyZJxCb0vfPm1ZfQpL/VmAkLEyXw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRopBiySgEJyOwQtA5i58n5YLR151VunaRLsewgoaNp/HLwLQ9
+	MOYa7oS2leGkSy/1ngMwRecvN/dP32allkB/TI4gk+S6dMZGC4g2Yr4yacNl
+X-Gm-Gg: ASbGnct1MrNA0d0ijlVDqZ3oPo7v9PyQGKa4qMJ2LkfnwVuz2dmZGJjyCX7AAIchY8E
+	WHf7nVYySGo8oD60sVdoQtH8M29JACvQVpvhdFviDepgW2IMZEFQSuVUzLWxLkyegrYhndpxAtM
+	kekJ02OgYlsSvnZLCXe5KzgEQ0RoWlXiwJ2Ku2iqxv1J0aql069oWSglboXc408zh0kukOgPWvB
+	BgcN9erz+PEPJDz9Afd+lD+N0b3IYnYy1Pf9ZlBfXzmgpy0bWnfZIbVY6z1s+VZ5ZgJARGEo+5J
+	ZeHPdjkKilSadMARTle9osaJZ3GsXssQp29OfwqIL8dlWyKY6BgnJo6ozhdBMWzHMXX/HEVlD/B
+	x/RbR5+7/dmExnFoJJUAx3DS3pO4=
+X-Google-Smtp-Source: AGHT+IHoyEbJ5/v1QJFBuWxBOsgt/kiZQGVTRtOGc8h5L9u1NHxhfrrZbHC8fyaTQD6E9ugMTRFeLg==
+X-Received: by 2002:a05:6000:2b03:b0:391:4674:b10f with SMTP id ffacd0b85a97d-39c121188demr3552253f8f.36.1743352544412;
+        Sun, 30 Mar 2025 09:35:44 -0700 (PDT)
+Received: from [192.168.10.195] (net-188-216-175-96.cust.vodafonedsl.it. [188.216.175.96])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b6627bfsm8820607f8f.25.2025.03.30.09.35.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 30 Mar 2025 09:35:43 -0700 (PDT)
+Message-ID: <efde5e18-672f-484f-90c3-d23d673daa18@gmail.com>
+Date: Sun, 30 Mar 2025 18:35:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250327124739.2609656-1-jani.nikula@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Regression: mt7921e unable to change power state from d3cold to
+ d0 - 6.12.x broken, past LTS 6.6.x works
+To: Christian Heusel <christian@heusel.eu>
+Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ Linux Regressions <regressions@lists.linux.dev>
+References: <415e7c31-1e8d-499b-911e-33569c29ebe0@gmail.com>
+ <2025031923-rocklike-unbitten-9e90@gregkh>
+ <5e260035-1f1b-4444-b3b8-1b5757e5ed08@gmail.com>
+ <38658f1a-216b-470d-99a2-13d66f075c77@heusel.eu>
+Content-Language: en-US, it-IT
+From: Sergio Callegari <sergio.callegari@gmail.com>
+In-Reply-To: <38658f1a-216b-470d-99a2-13d66f075c77@heusel.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 27, 2025 at 02:47:39PM +0200, Jani Nikula wrote:
-> Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
-> (which is "IntelGraphicsMem") drops the NUL termination of the
-> string. This is intentional, but the compiler doesn't know this.
->
+Hi Christian,
 
-Indeed...
+Thanks for your nice offer, details below:
 
-> Switch to initializing header->signature directly from the string
-> litaral, with sizeof destination rather than source. We don't treat the
-> signature as a string other than for initialization; it's really just a
-> blob of binary data.
+On 20/03/2025 11:05, Christian Heusel wrote:
+> Hey Sergio,
 > 
-> Add a static assert for good measure to cross-check the sizes.
+> On 25/03/20 08:49AM, Sergio Callegari wrote:
+>> Might be able to test on the distro built kernels that basically trace the
+>> releases and stable point releases. This should start helping bracketing the
+>> problem a bit better as a starter. But it is going to take a lot of time,
+>> since the issue happens when the machine fails to get out of hibernation,
+>> that is not always, and obvioulsy I need to try avoiding this situation as
+>> much as possible.
 > 
-> Reported-by: Kees Cook <kees@kernel.org>
-> Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
-> Tested-by: Nicolas Chauvet <kwizart@gmail.com>
-> Tested-by: Damian Tometzki <damian@riscv-rocks.de>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
+> Which linux distro are you using? If you're on Arch Linux I can provide
+> you with prebuilt images for the bisection :)
 
-Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
+I am on manjaro, where the kernel follows slightly different naming 
+conventions, but the arch kernels should be OK. So thank you very much 
+for the nice offer. The thing is possibly a bit premature, in that I 
+would like to identify first what is the kernel RC or point release 
+where the issue started to appear, because I have these kernels 
+available for my distro which makes things easier. Unfortunately, I am 
+still in the dark even wrt this.
 
->  drivers/gpu/drm/i915/gvt/opregion.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+The issue is nasty, because it only happens when you crash on restore 
+from hibernation, which is something that I am desperately trying to 
+avoid because this is my work machine and I really don't want to risk 
+data loss.
+
+The big problem with this bug is that you remain with the impression 
+that your hardware is bricked. On the web I read that booting windows 
+immediately gives you back the wifi device on pcie, but I really cannot 
+say, as I have no windows to try. What I can say is that the 6.6 LTS 
+kernel also lets you recover the WIFI, while 6.12 LTS does not.
+
+As a stopgap, would be great to know if there is anything that can be 
+done while on 6.12 to fully reset the pcie (or the pcie device, I still 
+don't know what is the culprit), so you don't need to boot an older kernel.
+
+Thanks again,
+Sergio
+
 > 
-> diff --git a/drivers/gpu/drm/i915/gvt/opregion.c b/drivers/gpu/drm/i915/gvt/opregion.c
-> index 509f9ccae3a9..dbad4d853d3a 100644
-> --- a/drivers/gpu/drm/i915/gvt/opregion.c
-> +++ b/drivers/gpu/drm/i915/gvt/opregion.c
-> @@ -222,7 +222,6 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
->  	u8 *buf;
->  	struct opregion_header *header;
->  	struct vbt v;
-> -	const char opregion_signature[16] = OPREGION_SIGNATURE;
->  
->  	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
->  	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
-> @@ -236,8 +235,10 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
->  	/* emulated opregion with VBT mailbox only */
->  	buf = (u8 *)vgpu_opregion(vgpu)->va;
->  	header = (struct opregion_header *)buf;
-> -	memcpy(header->signature, opregion_signature,
-> -	       sizeof(opregion_signature));
-> +
-> +	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
-> +	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
-> +
->  	header->size = 0x8;
->  	header->opregion_ver = 0x02000000;
->  	header->mboxes = MBOX_VBT;
-> -- 
-> 2.39.5
+>>
+>> Incidentally, the machine seems to hibernate-resume just fine. It is when I
+>> suspend-then-hibernate that I get the failures.
+>>
+>> Before contacting the network driver authors, I just wanted to query whether
+>> the issue is likely in it or in the power-management or pcie subsystems.
+>>
+>> Thanks,
+>> Sergio
 > 
+> Cheers,
+> Chris
+> 
+>>
+>> On 20/03/2025 00:54, Greg KH wrote:
+>>> On Wed, Mar 19, 2025 at 08:38:52PM +0100, Sergio Callegari wrote:
+>>>> There is a nasty regression wrt mt7921e in the last LTS series (6.12). If
+>>>> your computer crashes or fails to get out of hibernation, then at the next
+>>>> boot the mt7921e wifi does not work, with dmesg reporting that it is unable
+>>>> to change power state from d3cold to d0.
+>>>>
+>>>> The issue is nasty, because rebooting won't help.
+>>>
+>>> Can you do a 'git bisect' to track down the issue?  Also, maybe letting
+>>> the network driver authors know about this would be good.
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>
+>>
+
 
