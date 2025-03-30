@@ -1,156 +1,161 @@
-Return-Path: <stable+bounces-127017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6832DA759C0
-	for <lists+stable@lfdr.de>; Sun, 30 Mar 2025 13:15:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5537BA75A2A
+	for <lists+stable@lfdr.de>; Sun, 30 Mar 2025 15:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C25188B326
-	for <lists+stable@lfdr.de>; Sun, 30 Mar 2025 11:15:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02EBB164F67
+	for <lists+stable@lfdr.de>; Sun, 30 Mar 2025 13:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D2B19AA63;
-	Sun, 30 Mar 2025 11:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67F71C32FF;
+	Sun, 30 Mar 2025 13:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F2jRadxj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBcd2yWW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681B54A05;
-	Sun, 30 Mar 2025 11:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E8A1C69D;
+	Sun, 30 Mar 2025 13:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743333339; cv=none; b=vF/laMWZ+z1ArYbhOdl/zPA/VZpCN8LPg8Hb25JXBK8N8jx5GvIGpZzy28fm54hL2C/EsJj5jQJ81hWYbKPddBy9zZGrdjt3QH8HtBEZHOwUpclBRVcdRt/yxMu1bttavbtWX9FkdoW/nyfhl6R72LdksLjPYUlCab+K4uPxzhM=
+	t=1743340061; cv=none; b=dziVVUnZG7O6cv3NEaIJvp0BEtybDizv6NiMiRyzNIYh2qtmZFaUQwPIDX0Q7svA4xVrRanV4UBB25xuqMtc71zUppgVY6R8psSGuwZV1x4xCfrxZ0BkWHhesn+7dtm0MaMC9JE5h626cyKXAgzqtHWUPHMzzk2MD+fvk4Zhu8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743333339; c=relaxed/simple;
-	bh=ECt91EY7sdi+ZAZgpiRGsq2myEddr0gF5Q/4CRaCPSw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HPZ6uW5O5vlPTQ2VyzU1JmNtiaHBM5LHeZ5FME8WvCl9weGWE2DbD5+OURw05zxTF5RQBkSDBK3IYDVIwffjLHmCDnktxO/3BE2RSy1gBtOr9bOMy6DRXU10xQUgSOrKHkKlgAk+tnSTTaT24F04Qc3fpVhk6mzZIPe2R7Qv4rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F2jRadxj; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ff69365e1dso4679700a91.3;
-        Sun, 30 Mar 2025 04:15:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743333338; x=1743938138; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8bOkg965odz+QE9cKXvYVRkNTxhqTHUa1qzYcFa9wPk=;
-        b=F2jRadxj2QRL0OVEnz4ekVsfNSAZOUpI0CaZKF7i3j3uftyqgW9KaM5yrhm/0cL2iX
-         QA/e++wPMiFR8pqASE2y3Tr3eFwtUGn+e8pGYGXpjhyXEIa4UTgy1CNngkeFnslzKdaJ
-         ojI42iF8Ukb7VdPTdRDP+CPTtAVBHNe3rfDgNTVlVnXgzE/Sx9XYZZKrpOWN47e1HpMh
-         OqR+LNFy8gm6BmJYASEO9s///+KG28OsmAfh9n2gAnCgXgo6kjD0YERqJP5xpH+WQrBn
-         BEPzoKmtsSP2W0WIr6JQM2yj+9NXMoZqfw25BbD0JM/+9/PY2cUZki5cMndD8YJnARNx
-         cO1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743333338; x=1743938138;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8bOkg965odz+QE9cKXvYVRkNTxhqTHUa1qzYcFa9wPk=;
-        b=AtjQtS/NSyFJeIWY52zdcq/Q3vwPz9Ggr5wfwaslkOEQPlKo4jieOoNJ7Snm+sV85o
-         2uWudJBYgPyJMzqCmj0qDGrAKt8hxCds2PWMpNdjuOiPF+XYAHdsIo7E4vpxDlhS2ZP2
-         j+dG/MEp2ENnsy6+Yvr5VXPH3YJtELSE7v/pF/b6tP00hOeOvBR1ZclLNw5V0rS30/aH
-         gZGuAh6sfts8otgliT8n08srVsOagQ/5cdbphobjM89rz7irvZVlLkslIrOWmDMP7raE
-         m2Ekc4fM+e4WtFbbde5d8HXe0uDuxDstHn9z3PSImp6h0UkeptuyjRbdoYE/lpLygqKJ
-         Z6wA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjL4jxo19zhR/DsppGjbIxryx5svD6250Wvn+Gm8GAO6I/O6Sc1AZBNZwdRNTrJTJzvNTGvbynRRxIpIk=@vger.kernel.org, AJvYcCXxN8XUQGSm4EolanXDKrZjbK48ymevMHhobvYEZBX3Me6ZLDMRGum1ja+EtuVj6//L/KwiaXsq@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGXs1kh6wCxQBW88U77+lVbvnmYlYH8niXMc1a2AFUjzJtyhzz
-	wYtpO/5jetbx2G3LRdE82GbhKMUKegfZTXN2JM0sLiikR0nZ+rhU
-X-Gm-Gg: ASbGnctChLqqJnpBwrhNvWiJdZEc5gq2F1sCZGFRn9h9MfO83xlJhVKa+YNAa/8prvl
-	HxN8par9SpCJOvU93em2zPAdwlBB6cfCQDt2yXeOKDlJq9+S3199Jk0TiD/ihIk7fQuge+8UDoZ
-	Npx4BMy/8LBO5OWnd+0DtKoOFWWBgS5g8yYSLd5FHvoFh8z3eZvmCaQ/PEFIVEI7BBZSmS4ThkE
-	JN4Q3bVDTitT2331UZCodAlhnhe2TquStBkwGtmt7XW8d0rSjRAApnzqrNUq8FKvSEedDAwnd3L
-	YRn7y5PZYBgZaaDo+ayvIkuGi9CKyvQJb6P02Ns9mslYr8u0B4sPai34Fz7uKijjZq9nnaC+HPh
-	wqpvrCakMMRAqUBpZ4WL+7IlffmvcmhIaQRRpW+1vbQ==
-X-Google-Smtp-Source: AGHT+IEr5XA09hAhyrlbGXwVWq56SHCAv4LzqL2X4GJ5+M6iunRrNMxXVWWj1zZU1Aw/S704vfVyAg==
-X-Received: by 2002:a17:90b:1dd0:b0:2ff:7b28:a51a with SMTP id 98e67ed59e1d1-305320b171cmr10716832a91.17.1743333337650;
-        Sun, 30 Mar 2025 04:15:37 -0700 (PDT)
-Received: from DESKTOP-NBGHJ1C.flets-east.jp (p12284229-ipxg45101marunouchi.tokyo.ocn.ne.jp. [60.39.60.229])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3039dff0c76sm7552658a91.20.2025.03.30.04.15.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Mar 2025 04:15:37 -0700 (PDT)
-From: Ryo Takakura <ryotkkr98@gmail.com>
-To: alex@ghiti.fr,
-	aou@eecs.berkeley.edu,
-	gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	john.ogness@linutronix.de,
-	palmer@dabbelt.com,
-	paul.walmsley@sifive.com,
-	pmladek@suse.com,
-	samuel.holland@sifive.com,
-	bigeasy@linutronix.de,
-	conor.dooley@microchip.com,
-	u.kleine-koenig@baylibre.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-serial@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ryo Takakura <ryotkkr98@gmail.com>
-Subject: [PATCH v3 1/2] serial: sifive: lock port in startup()/shutdown() callbacks
-Date: Sun, 30 Mar 2025 20:15:15 +0900
-Message-Id: <20250330111515.393038-1-ryotkkr98@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250330110957.392460-1-ryotkkr98@gmail.com>
-References: <20250330110957.392460-1-ryotkkr98@gmail.com>
+	s=arc-20240116; t=1743340061; c=relaxed/simple;
+	bh=4fkcn/ee0GBAw/wWJYEwRjJcNAIwUXCfEH3IvQv9uc4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hb0+Szwqat80bPqRjkX/4CrBe6J1kIQSv6gaeHEZBtMEPB4WI3jWvLqGfMzjSNXMFWVGihCO3VDKI9S4l6pXGXw/Fx6lKxLP6o20nDUpRC9BPnTbXDdEU5f1H1tX+Fuf8ZNhXEsn7SpVoIfvpVT8qDsR2MrvO5d/4O5WBXdzAu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBcd2yWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C3EC4CEE5;
+	Sun, 30 Mar 2025 13:07:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743340061;
+	bh=4fkcn/ee0GBAw/wWJYEwRjJcNAIwUXCfEH3IvQv9uc4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RBcd2yWWFdUbUE5pjitkQm4oQJA+RmPYpQVqHY4Ajn//IhkkChvSX6NRYQrZLiauu
+	 CV7ORi53lUlODd6Dl0oamWmzDIaO8DhA76LWfLFYWDHhyKz0a8EaL41wB5TXYGPwgu
+	 9Ec5bJu8os8vb8r+cLnwpClBzwYoFk0MZS3snE8jrqZtQeNOOb65djdzl97/g1L2Go
+	 4fzIMOqDw5snUBX7MEZqyN5e/AEAFkoZp+6YvJNw2Z/OUq+Z/dDoWcD3ipXwfbIllM
+	 L3mKVe6Fv3sWrM5OJRsKL8Mg2f2u0WV9usvhoAvCrkVAeOrcEjKwyH4kA1UgiTC4rb
+	 Ai8rFZDijNjPw==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ac2bdea5a38so599394466b.0;
+        Sun, 30 Mar 2025 06:07:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWt1GHw65dPgi7xH0u6cVrOAmxlUoLgCjvl4/BvGF/g2GdB5ReUG+Dnoh/lk/PH1JFvl5fuc8Lr0+BWAd8s@vger.kernel.org, AJvYcCXNG+mTE58vKKT/jvZm/dwGCPqzvqZ4YcLDEZjC/g99f4rYlYw9ymSqr1ls295IERtMQNHMIjX6@vger.kernel.org, AJvYcCXbKV5o/Wo5KnxGiesOwycrNtM/BTWor3guUdg3DVI0SRGHoz0BS9RLimf80NIW8unziHR2+0nwfA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhCDV0+258y9kvoOn0tJLEPH2hjfqff0DIdr3kup4pD6rzEqLV
+	B4DdENG/+rNofmfoYA8mgrPob3lJP1Qu8VGEggvqYPqwK65VjPKzbXUnekLU5b8nb5hYKEIwk4i
+	ZC5ei12OuAc3aNzlBdVVKL2f268I=
+X-Google-Smtp-Source: AGHT+IFAawyj1EZJacFB7lPOlHE/sLuxr6nqwGy8x4wXEm4WSPiqm8D8dRPwkV+ZuY/NFvlzmiHFfF+vy5pxguZo2lI=
+X-Received: by 2002:a17:907:2d07:b0:ac3:ed4c:6a17 with SMTP id
+ a640c23a62f3a-ac738a36df5mr452541766b.24.1743340059563; Sun, 30 Mar 2025
+ 06:07:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250319064031.2971073-1-chenhuacai@loongson.cn>
+ <20250319064031.2971073-4-chenhuacai@loongson.cn> <2025031943-disparity-dash-cfa3@gregkh>
+ <Z9rYQy3l5V5cvW7W@t14s> <2025031942-portside-finite-34a9@gregkh> <CAASaF6zNsiwUOcSD177aORwfBu4kaq8EKh1XdZkO13kgedcOPA@mail.gmail.com>
+In-Reply-To: <CAASaF6zNsiwUOcSD177aORwfBu4kaq8EKh1XdZkO13kgedcOPA@mail.gmail.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sun, 30 Mar 2025 21:07:28 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7ECQp4S8SNF8_fbK2CHHpgAsfAZk4QdJLYb4iXtjLYyA@mail.gmail.com>
+X-Gm-Features: AQ5f1Jp3x96k66jg3TQPvsXg4rxU088H7mKXTpRrrpYUCQMd2JOJNB7bwpUNSpo
+Message-ID: <CAAhV-H7ECQp4S8SNF8_fbK2CHHpgAsfAZk4QdJLYb4iXtjLYyA@mail.gmail.com>
+Subject: Re: [PATCH 6.1&6.6 V3 3/3] sign-file,extract-cert: use pkcs11
+ provider for OPENSSL MAJOR >= 3
+To: Jan Stancek <jstancek@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen <chenhuacai@loongson.cn>, 
+	Sasha Levin <sashal@kernel.org>, Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org, 
+	David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, R Nageswara Sastry <rnsastry@linux.ibm.com>, 
+	Neal Gompa <neal@gompa.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
-The register is also accessed from write() callback.
+On Thu, Mar 20, 2025 at 12:53=E2=80=AFAM Jan Stancek <jstancek@redhat.com> =
+wrote:
+>
+> On Wed, Mar 19, 2025 at 5:26=E2=80=AFPM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Wed, Mar 19, 2025 at 03:44:19PM +0100, Jan Stancek wrote:
+> > > On Wed, Mar 19, 2025 at 07:13:13AM -0700, Greg Kroah-Hartman wrote:
+> > > > On Wed, Mar 19, 2025 at 02:40:31PM +0800, Huacai Chen wrote:
+> > > > > From: Jan Stancek <jstancek@redhat.com>
+> > > > >
+> > > > > commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
+> > > > >
+> > > > > ENGINE API has been deprecated since OpenSSL version 3.0 [1].
+> > > > > Distros have started dropping support from headers and in future
+> > > > > it will likely disappear also from library.
+> > > > >
+> > > > > It has been superseded by the PROVIDER API, so use it instead
+> > > > > for OPENSSL MAJOR >=3D 3.
+> > > > >
+> > > > > [1] https://github.com/openssl/openssl/blob/master/README-ENGINES=
+.md
+> > > > >
+> > > > > [jarkko: fixed up alignment issues reported by checkpatch.pl --st=
+rict]
+> > > > >
+> > > > > Signed-off-by: Jan Stancek <jstancek@redhat.com>
+> > > > > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > > > > Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+> > > > > Reviewed-by: Neal Gompa <neal@gompa.dev>
+> > > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > > > ---
+> > > > >  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------=
+------
+> > > > >  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++-----------=
+-
+> > > > >  2 files changed, 138 insertions(+), 58 deletions(-)
+> > > >
+> > > > This seems to differ from what is upstream by a lot, please documen=
+t
+> > > > what you changed from it and why when you resend this series again.
+> > >
+> > > Hunks are arranged differently, but code appears to be identical.
+> > > When I apply the series to v6.6.83 and compare with upstream I get:
+> >
+> > If so, why is the diffstat different?  Also why are the hunks arranged
+> > differently,
+>
+> He appears to be using "--diff-algorithm=3Dminimal", while you probably
+> patience or histogram.
+Hi, Jan,
 
-If console were printing and startup()/shutdown() callback
-gets called, its access to the register could be overwritten.
+I tried --diff-algorithm=3Dminimal/patience/histogram from the upstream
+commit, they all give the same result as this patch. But Sasha said
+the upstream diffstat is different, so how does he generate the patch?
 
-Add port->lock to startup()/shutdown() callbacks to make sure
-their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
-write() callback.
+Huacai
 
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Cc: stable@vger.kernel.org
----
- drivers/tty/serial/sifive.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/tty/serial/sifive.c b/drivers/tty/serial/sifive.c
-index 5904a2d4c..054a8e630 100644
---- a/drivers/tty/serial/sifive.c
-+++ b/drivers/tty/serial/sifive.c
-@@ -563,8 +563,11 @@ static void sifive_serial_break_ctl(struct uart_port *port, int break_state)
- static int sifive_serial_startup(struct uart_port *port)
- {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
- 
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_enable_rxwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
- 
- 	return 0;
- }
-@@ -572,9 +575,12 @@ static int sifive_serial_startup(struct uart_port *port)
- static void sifive_serial_shutdown(struct uart_port *port)
- {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
- 
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_disable_rxwm(ssp);
- 	__ssp_disable_txwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
- }
- 
- /**
--- 
-2.34.1
-
+>
+> $ git format-patch -1 --stdout --diff-algorithm=3Dminimal 558bdc45dfb2 |
+> grep -A3 -m1 -- "---"
+> ---
+>  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
+>  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
+>  2 files changed, 138 insertions(+), 58 deletions(-)
+>
+> Should be easy to regenerate with different diff-alg for v4.
+>
+> Regards,
+> Jan
+>
+> > that's a hint to me that something went wrong and I can't
+> > trust the patch at all.
+> >
+> > thanks,
+> >
+> > greg k-h
+> >
+>
 
