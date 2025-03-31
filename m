@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-127166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921AAA76941
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:06:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CADA769C8
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:18:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3DE716B448
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:05:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 737AA3B0854
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E1A229B36;
-	Mon, 31 Mar 2025 14:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB15922A4CD;
+	Mon, 31 Mar 2025 14:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJWFfwFX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYTLSwVm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEBA21CFEF;
-	Mon, 31 Mar 2025 14:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77121215078;
+	Mon, 31 Mar 2025 14:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432839; cv=none; b=AxAlVzfyUV2kT+5PeYtoXm+HGa2nhsWBMmjC4zJTR4albJYE4fL2Pp6xq32oPSompPLquZXLQRbj0P9LXzmOpkbceVhcChr8RG9DMohAEhSFY1UUNxxW9jS/aQRpbVhuzDT9V3fPQ1MYT+QIufIY6R3gXiQlYDKsGOzZ4m9LXeg=
+	t=1743432842; cv=none; b=ds0KpF25CAoongyBtSlYOYd4ILCSUETmZL6xFKy6n8C2euWlkaqPy6IS6G3emSe1/FoQOJGgV6p228klZbgKReV7IgnbRvkHCK2Qaw1pIOXKQ+J3N7JckB67Y3DPQCkr/e8uSHvnbnaK3HF9l0lxC2Yv8w6XEo8/K7y/+vKkRnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432839; c=relaxed/simple;
-	bh=K3UQOvgFhX7bBubHcCv+Ov3Z4uv1xZwQ6p00LlLBhpo=;
+	s=arc-20240116; t=1743432842; c=relaxed/simple;
+	bh=JHvzP+hUYBoJ9QnlX7YdWhMeQVeyfXu1CQrpDc0tVaU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gu7wciZdB6eXhrbr0LiKD2fSwULRZvWX4iUeOjt3lA/wu136bBIPnXtg0Mo/5CLUb714FIL9O4aWSoLuYObAyvct3VQrMMc99Mq1cCbIPFs78dzFosiiiAw326TSbNiQPLeha0Z3YA71zPxqHEcACYql5CjMH1ePvB+23dXBDGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJWFfwFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8435C4CEE3;
-	Mon, 31 Mar 2025 14:53:57 +0000 (UTC)
+	 MIME-Version; b=k3SxSQcrJoTLoT5vpNGvbgkK8TOu4Yal/cO2czx5z6T7sYVpG92+G4dpWo31kBrYzbR3kywqhe4LCkyPb6mpT6t8Ju3ss4I2MndryQCJoMXTShwxQgwOn8mXpeSKMs9F/mP+N21EqN4hiz40oa+woUkq8DAvAPuLQ0jl9w5DarA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYTLSwVm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AC7C4CEEE;
+	Mon, 31 Mar 2025 14:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432839;
-	bh=K3UQOvgFhX7bBubHcCv+Ov3Z4uv1xZwQ6p00LlLBhpo=;
+	s=k20201202; t=1743432842;
+	bh=JHvzP+hUYBoJ9QnlX7YdWhMeQVeyfXu1CQrpDc0tVaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJWFfwFXhtMAYIN3TMySafT/PmPWhotuosowOW4OZyiirGxs+VP39rxbBomU6LxaD
-	 Zs0LN3h79TEh0e95/GZT4rMa6BwnHFRKY9G7dlSFGclTy4/jj7IFT0BnoVCpemSgJt
-	 QKJhATGNWwsr4nBBHBldv7t73qgA6BwRktYbXfIIwFtPaOVT+2Exv9tEB8z8ZmOo9Q
-	 2NedLw39a7HNRjwcHF8Xf9Atm/iGFYXM/Zy8sy3GlevN7jzu3A0rH6x1FxkMBVZzF/
-	 brkp5KKTnxvkvMLeuu6JTfHiQ5RQ0u/xJlyQLpFDG8RED/wvF/yhfcPV6MxjmIbs2s
-	 YZUuJj5UkTiTg==
+	b=gYTLSwVmBC4UsiVeHXg2LFZVM8sBlGeJiavoh4jcZqwvwCbheS8QCMUso2+dtou+L
+	 UUhntZYQ+DkADJazupObgZfYKtuyblr99pEBJwGFhnFgyV5UwlbWBdFP2T/kTL6PR2
+	 iWfdurFm1QCn3W9Y3ToX5rRki0iq3Gs2SIdzTE099aJtTwK7Ru8UOagDpufVtQKiWe
+	 ORQ8OcC+PZUzdW7npGojJX1RGU2Hm2Ztk6KCj35ob7SqZWsf8N/D8G4oVGcY595bFX
+	 WqeNMHM1tHWe0/N9WifVx/aMN3RE8xKjEVWKhf4wK0ZPP0Kt6D8SRjHVlEVgAF14Pz
+	 zQN9oV6sKmqHA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chris Chiu <chris.chiu@canonical.com>,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Syed Saba kareem <syed.sabakareem@amd.com>,
+	Reiner <Reiner.Proels@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	kailang@realtek.com,
-	sbinding@opensource.cirrus.com,
-	josh@joshuagrisham.com,
+	venkataprasad.potturu@amd.com,
+	end.to.start@mail.ru,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 25/27] ALSA: hda/realtek: fix micmute LEDs on HP Laptops with ALC3247
-Date: Mon, 31 Mar 2025 10:52:43 -0400
-Message-Id: <20250331145245.1704714-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 26/27] ASoC: amd: yc: update quirk data for new Lenovo model
+Date: Mon, 31 Mar 2025 10:52:44 -0400
+Message-Id: <20250331145245.1704714-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145245.1704714-1-sashal@kernel.org>
 References: <20250331145245.1704714-1-sashal@kernel.org>
@@ -71,38 +72,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Syed Saba kareem <syed.sabakareem@amd.com>
 
-[ Upstream commit 78f4ca3c6f6fd305b9af8c51470643617df85e11 ]
+[ Upstream commit 5a4dd520ef8a94ecf81ac77b90d6a03e91c100a9 ]
 
-More HP EliteBook with Realtek HDA codec ALC3247 with combined CS35L56
-Amplifiers need quirk ALC236_FIXUP_HP_GPIO_LED to fix the micmute LED.
+Update Quirk data for new Lenovo model 83J2 for YC platform.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250321104914.544233-2-chris.chiu@canonical.com
+Signed-off-by: Syed Saba kareem <syed.sabakareem@amd.com>
+Link: https://patch.msgid.link/20250321122507.190193-1-syed.sabakareem@amd.com
+Reported-by: Reiner <Reiner.Proels@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219887
+Tested-by: Reiner <Reiner.Proels@gmail.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 283ccffcab068..41ecda04af300 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10699,6 +10699,11 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8d92, "HP ZBook Firefly 16 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8de8, "HP Gemtree", ALC245_FIXUP_TAS2781_SPI_2),
- 	SND_PCI_QUIRK(0x103c, 0x8de9, "HP Gemtree", ALC245_FIXUP_TAS2781_SPI_2),
-+	SND_PCI_QUIRK(0x103c, 0x8dec, "HP EliteBook 640 G12", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8dee, "HP EliteBook 660 G12", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8df0, "HP EliteBook 630 G12", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8dfc, "HP EliteBook 645 G12", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8dfe, "HP EliteBook 665 G12", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e14, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e15, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e16, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index bd3808f98ec9e..e632f16c91025 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -339,6 +339,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83J2"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.39.5
 
