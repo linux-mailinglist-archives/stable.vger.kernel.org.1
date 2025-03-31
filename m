@@ -1,86 +1,97 @@
-Return-Path: <stable+bounces-127033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD903A7601A
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 09:34:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFA4A76049
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 09:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 133677A2F6E
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 07:33:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15B9A16802D
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 07:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0623418CBE1;
-	Mon, 31 Mar 2025 07:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0B31C07C3;
+	Mon, 31 Mar 2025 07:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lilYTrAL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NwxUtLTB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8AB4A35
-	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 07:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A7213D8A4;
+	Mon, 31 Mar 2025 07:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743406442; cv=none; b=vF2p+V1+odt18g/aDr1dNPMGhRHtBgZJ8FCVTtAdoaCqmZnE9pJhRQj70Sz+ZLW31D1qSkewNLD1TPbwQ0JK6T/MdBEoYjITAMJkI7e+j+la9/PUE32/xxsxVPE+m9gVTMfkm3/C+qo0ag5dT+I2qqTpOYmB//+9JBH3YuZhjuE=
+	t=1743407069; cv=none; b=aE28NAYH1E/jl326v+ZyjSSARJ5HvU7o+AzVEvxP9TIp6txGsdpxxv3WKLdzBKgUAWhs7bfokiT9BFlAnx/virlnMlmghbj0vwvgVpIB6nqHotatevcJb/sL9lxwDj32XqHLeT6RHbNVTezcMihwfevPL3HSgHtSpNpnT07zdpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743406442; c=relaxed/simple;
-	bh=H3noSuLRqppGXZZpybzZ0kmfA35iwqBGQqevQBzJLuY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idH5NXJN6HVizavif3xFmMG29QPF+6+RnOzTj3i+aZN/QyFXXecgSZLrIaPlgpC8Nzw4uMWUV1C1RBXazwHyGaM/+uvuUu69NLZMLaZIsjYNfqZ1GD9NtiWb7iPoQLOzAqysM+hYXsGxM3keRoj9fUA8Nnvyd5RSjPDLLdMQ2Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lilYTrAL; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1743407069; c=relaxed/simple;
+	bh=xmT1Q5a6AFUPK9f/ucAFOyzxGK4M6ko0iruMsYTwOog=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kWIk0Y5J5VuxeMioxdUYierfYJasQYC9aag3ZmbAANOgcE5hVju0q3Ta517ErRWrS5J9uam8qLdidMV7djNlksnrIm+KATaABtGfDTY05eZRjrKQj913YJ+9iopGxDTA9bUqyuUPnynboMIQlEXVaFyUDKKKs1H/DOfEXpgNbnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NwxUtLTB; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43ce71582e9so28566475e9.1
-        for <stable@vger.kernel.org>; Mon, 31 Mar 2025 00:34:00 -0700 (PDT)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cec5cd73bso26111025e9.3;
+        Mon, 31 Mar 2025 00:44:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743406439; x=1744011239; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rsJn1/lD61gg9beTFeKU1ta88fegvilMlDEHUW9v1p4=;
-        b=lilYTrALeLMdNPK3s7mf6877zZ+932ra7hg/S9n1M2Jz0RLDW9o4jmrFAT5WIqrmuL
-         +mpOrgXqCV/eTgY/Cbx6Y5gcialeZwzeHQebshO7E3csNfnxMECIL92zaZrF5Ez7XEAo
-         owdVSoimxS/RU90HyUBm4joSbUBBlsxhOiTUzzEIFerx0oDl4bb43njfJfLobHQrsNtj
-         oKA83PHfQHkjXIu6Ii1ITpfSTOiRm6mSbcBgvO4FQLX/1wj4oQ2jxCEFRvOph6GucYrq
-         N5QUr5aCMrKTEK9W3Niru9WYrEJc6i8q0pD0s3IXNSh3isPSPlUPz81y7N4hfB80Jztb
-         jZfg==
+        d=gmail.com; s=20230601; t=1743407066; x=1744011866; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B8L3gLHE0iXx8zQGDJ8LlLcTKVC/8dXUo9ajwXYWTFg=;
+        b=NwxUtLTBsC5GdkchlO9r7BjGTBt6UkIcPcs9ls+YjHNpqwtzhdjAtxRLqkiwCOBfAq
+         FSYuwvOLFUzcmObNsqhTz5fBfoAQ5aPnARKu6B8sSis5rlZmRiGpJ3jtFb9pbuMfq3al
+         DrO6SDfAzOl+CuTjF0Z4Mi7qHlHa3oOkND1TFri86eQD73GWS8yIr54RCIX6i65Q52U5
+         YeYYew+JGT6h9Z2fJ2PLbd1lhA+TX/ls2t+v1LQVZiW9yuW1ruM6As4GnLhav0dIKkvA
+         487+9GCaEcY8UpAHR7+4YgpSHzuXXo8NN53eqv99A64QIhUlsn7uEIMw94PlMT21WiOy
+         wA5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743406439; x=1744011239;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rsJn1/lD61gg9beTFeKU1ta88fegvilMlDEHUW9v1p4=;
-        b=nOSop5ffLSm9S8XGWQ5fJEaGcMTpnaY8zb4aciNJBBlu21B3jkbyTbWaWpkPVm/de0
-         RBbAsmO/NSAvb+Ifwbeg5gC+MawqYGDQD4xJZNYQcFFdVc86F/qqbq0ZmXm92QeoYH7G
-         ZLC/2LEe9WFR+46XAn+AbfjAFt1e0iOc/dhmyDOjFjJ1sUA+Oa2jLb0j6xuAlBOvw5pu
-         +zfJQAT2L9hIMKxWdqze1T8IruWaxmEJKbzrhWo1Pq5YWkoHjr1BQZK3j/8Zw+A0TXAv
-         JJ2A3rQlLBdGGTJwOfeJ52eU0xKag7L9/b+GxnUtu220loYbHaYZ0/aVexiZXu882Z9n
-         LcoQ==
-X-Gm-Message-State: AOJu0YzudHUiq9l85frRiqpCMFEYUal93nvZIErcoYl6KPJ+/A6ZSTau
-	dIbX53p26JvKBhuJZNrVKjs8pOZBjEY1pHdz0zX+E4ya1CKm/rJBTQAATg==
-X-Gm-Gg: ASbGnctH9qCGuXYIt8DS8fw6zNGezHMwjC3BI8TJ1fieJtcmhp5K5nhQCotUxK/Cl88
-	+oWDDGLkYRGzbY1aZqF3kNFzItRwRTqLuQFey4wGJycHhbrtKKxyA280/Jpl5NIJkV8NkZkNLSG
-	aXDAjX9Qy5NrD/XqVvhM60G4raFhECfLugBF7FtlI27I0/Nh9giGEtyo5xOeP/s8AWBKTrtTUX1
-	7u91t5A4av1ZGmcZo/HPkrIbVdKap+Gz6V3FtYPAyclfWPrbzZ7+J/hisASlZWm/eb+KeBEtZSN
-	kqAZJBoQ1xj0808SmtWEecfit8uMQL4KNbD3/VrQa8PBnVXaaQ==
-X-Google-Smtp-Source: AGHT+IECboQaK8Bhzd6eaiQvXHaewH9bnkMgpfTYpTszjT6ipjOxd/ilDOc8eA6JE626BeJ9igjnBQ==
-X-Received: by 2002:a05:600c:1d9b:b0:439:86fb:7340 with SMTP id 5b1f17b1804b1-43e9dea091amr17654215e9.30.1743406438553;
-        Mon, 31 Mar 2025 00:33:58 -0700 (PDT)
-Received: from eichest-laptop.lan ([2a02:168:af72:0:8643:8378:653c:f3e8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d8ff02e84sm112630115e9.32.2025.03.31.00.33.57
+        d=1e100.net; s=20230601; t=1743407066; x=1744011866;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B8L3gLHE0iXx8zQGDJ8LlLcTKVC/8dXUo9ajwXYWTFg=;
+        b=uutd2oy2OTly3p0ypqv4qJgWZ2tzw/0qXDK+Etq76smp6vEye7c9cI+uLYcXAMbMkv
+         4vkyuQf+bS00xBHqVEzVaKhWuwt0Fo8J0Kw20xQbiRN2ttA6bMkZHPXUKd8SYf3+b8wx
+         OqB0KcTEUq8DL3H4hFUqlZKlS9w1frsxuYw5hQgzs7LnPJcjRu0Bdi6HpyA6dlEokXyb
+         6EhQmkpAXB+hB2fS5EJYZjvbB+kjz6N5ZCSrEO2ihOU0lZtw96KxbIL/9inmZU7Vlo7w
+         ErLXAE2Wdy2gtJFz0Fdx01BVm+alr26QhLTzkRaJtjTDHNk5ekDU6ktLHOcT5x7Iz34v
+         XG/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV7xXW4cXXSbWMz3gWBY+du7gpv8PtXYk3/wyMnh187vnVjSwdoFK8b1O2J/+2uMbLlZXVYVCzG@vger.kernel.org, AJvYcCXVaVAis6mKHnxOU7e8pNh+si+dyTh351uKBsyw9vjKs2ApAiUMgMcLBOD5Ttkqdysuj1XCxZLYDzme86A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy53LUtWMSY9HiqNoJQCW6CS6spnoqTSuBHR/S8pjXFyqkMFg3W
+	GWMRGf0qFGHp2mwTPOOYf4ptdhcSWwgshbcOlL069inQMTlLdK9J
+X-Gm-Gg: ASbGnctkJcSUA+2uYnuc/rG7Fs9t5YMimA97a+U3mxTd7VqdPP1cISg8pViedhdaH7U
+	Z/LksQEy98gHa+af1yx3yU1oGw8hCBshpHa00hLU0/0q1CdlmfBbhpUYTgDEhhxgqG3XZMqsn6P
+	iNRPLz50hE1eG8BQ96DTHAHKHPNMZ6TT8jIL4iF9BmFqWq4iZL5tasBUYmFTNhpEX4Ci1mk21rq
+	O9X9XJCTCJFJC/yI7DMJip7fyqUoFyUOTTzjwLdhbg6zTOJ6M5f5H2XnezJF2VRi1SIsAU8qeoQ
+	uhcY8iQQbtGH3m/yWZMn7df6exuSyJSvk/4d8Tyg9H2HHBsiAA==
+X-Google-Smtp-Source: AGHT+IEU6fWpjT/iTPyqpawIrj8kideGZRhmNQegpvlEXo12tPGNrAQ7TR+EVkOdgUcKFpnGqAnuvw==
+X-Received: by 2002:a05:600c:5119:b0:43d:526:e0ce with SMTP id 5b1f17b1804b1-43db62bb97dmr49667695e9.21.1743407066132;
+        Mon, 31 Mar 2025 00:44:26 -0700 (PDT)
+Received: from toolbox.. ([87.200.95.144])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b6588e9sm10812284f8f.14.2025.03.31.00.44.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Mar 2025 00:33:58 -0700 (PDT)
-From: Stefan Eichenberger <eichest@gmail.com>
-To: stable@vger.kernel.org
-Cc: Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.1.y] ARM: dts: imx6qdl-apalis: Fix poweroff on Apalis iMX6
-Date: Mon, 31 Mar 2025 09:33:24 +0200
-Message-ID: <20250331073350.12287-1-eichest@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2025032458-hammock-twitter-2596@gregkh>
-References: <2025032458-hammock-twitter-2596@gregkh>
+        Mon, 31 Mar 2025 00:44:25 -0700 (PDT)
+From: Christian Hewitt <christianshewitt@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Da Xue <da@libre.computer>
+Subject: [PATCH v2] net: mdio: mux-meson-gxl: set 28th bit in eth_reg2
+Date: Mon, 31 Mar 2025 07:44:20 +0000
+Message-Id: <20250331074420.3443748-1-christianshewitt@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,63 +100,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Da Xue <da@libre.computer>
 
-The current solution for powering off the Apalis iMX6 is not functioning
-as intended. To resolve this, it is necessary to power off the
-vgen2_reg, which will also set the POWER_ENABLE_MOCI signal to a low
-state. This ensures the carrier board is properly informed to initiate
-its power-off sequence.
+This bit is necessary to enable packets on the interface. Without this
+bit set, ethernet behaves as if it is working, but no activity occurs.
 
-The new solution uses the regulator-poweroff driver, which will power
-off the regulator during a system shutdown.
+The vendor SDK sets this bit along with the PHY_ID bits. U-boot also
+sets this bit, but if u-boot is not compiled with networking support
+the interface will not work.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 4eb56e26f92e ("ARM: dts: imx6q-apalis: Command pmic to standby for poweroff")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-(cherry picked from commit 83964a29379cb08929a39172780a4c2992bc7c93)
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Fixes: 9a24e1ff4326 ("net: mdio: add amlogic gxl mdio mux support");
+Signed-off-by: Da Xue <da@libre.computer>
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
 ---
- arch/arm/boot/dts/imx6qdl-apalis.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Resending on behalf of Da Xue who has email sending issues.
+Changes since v1 [0]:
+- Remove blank line between Fixes and SoB tags
+- Submit without mail server mangling the patch
+- Minor tweaks to subject line and commit message
+- CC to stable@vger.kernel.org
 
-diff --git a/arch/arm/boot/dts/imx6qdl-apalis.dtsi b/arch/arm/boot/dts/imx6qdl-apalis.dtsi
-index 7c17b91f09655..dc170a68c42f6 100644
---- a/arch/arm/boot/dts/imx6qdl-apalis.dtsi
-+++ b/arch/arm/boot/dts/imx6qdl-apalis.dtsi
-@@ -101,6 +101,11 @@ lvds_panel_in: endpoint {
- 		};
- 	};
+[0] https://patchwork.kernel.org/project/linux-amlogic/patch/CACqvRUbx-KsrMwCHYQS6eGXBohynD8Q1CQx=8=9VhqZi13BCQQ@mail.gmail.com/
+
+ drivers/net/mdio/mdio-mux-meson-gxl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/mdio/mdio-mux-meson-gxl.c b/drivers/net/mdio/mdio-mux-meson-gxl.c
+index 00c66240136b..fc5883387718 100644
+--- a/drivers/net/mdio/mdio-mux-meson-gxl.c
++++ b/drivers/net/mdio/mdio-mux-meson-gxl.c
+@@ -17,6 +17,7 @@
+ #define  REG2_LEDACT		GENMASK(23, 22)
+ #define  REG2_LEDLINK		GENMASK(25, 24)
+ #define  REG2_DIV4SEL		BIT(27)
++#define  REG2_RESERVED_28	BIT(28)
+ #define  REG2_ADCBYPASS		BIT(30)
+ #define  REG2_CLKINSEL		BIT(31)
+ #define ETH_REG3		0x4
+@@ -65,7 +66,7 @@ static void gxl_enable_internal_mdio(struct gxl_mdio_mux *priv)
+ 	 * The only constraint is that it must match the one in
+ 	 * drivers/net/phy/meson-gxl.c to properly match the PHY.
+ 	 */
+-	writel(FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
++	writel(REG2_RESERVED_28 | FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
+ 	       priv->regs + ETH_REG2);
  
-+	poweroff {
-+		compatible = "regulator-poweroff";
-+		cpu-supply = <&vgen2_reg>;
-+	};
-+
- 	reg_module_3v3: regulator-module-3v3 {
- 		compatible = "regulator-fixed";
- 		regulator-always-on;
-@@ -220,10 +225,6 @@ &can2 {
- 	status = "disabled";
- };
- 
--&clks {
--	fsl,pmic-stby-poweroff;
--};
--
- /* Apalis SPI1 */
- &ecspi1 {
- 	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
-@@ -511,7 +512,6 @@ &i2c2 {
- 
- 	pmic: pmic@8 {
- 		compatible = "fsl,pfuze100";
--		fsl,pmic-stby-poweroff;
- 		reg = <0x08>;
- 
- 		regulators {
+ 	/* Enable the internal phy */
 -- 
-2.45.2
-
+2.34.1
 
