@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-127143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AABA76982
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:10:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2090AA76966
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 274323B3A56
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:59:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 526383B2D65
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712AA21A42D;
-	Mon, 31 Mar 2025 14:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF0921B8F2;
+	Mon, 31 Mar 2025 14:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mUK1U7cD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fDzMx+jo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEC7218AA3;
-	Mon, 31 Mar 2025 14:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CC921A452;
+	Mon, 31 Mar 2025 14:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432770; cv=none; b=fvqnDHc9rH0U0J/StZvFC6vkxguByNyoVxvluEAGdqfi7aTEFrEMUdvz9e4mSoVHxwtQiEgj+5BydYbfpuD9hLhuvwSHBgvG4Xz2yQCd18IUN9sq8OFLsJl6wdVe4LfMCVsABm7GFg1hjCo+trAK6dqE6sKFqHfpQZ2WgIEiWxA=
+	t=1743432772; cv=none; b=f4cNpEsEoGQuRcpbqAh+DABTOJjFyXK7PeOw801EmYan6I/B2Tu27NtDzLlO3MxHpyCqQLIr1+vIfQ9C12AS+9atrhmeMvCybWJsKsUR37Q3UciNY0fcMROu0YI7v9h01hpTvCbu6eEQD0ifexZqPljbCxgBvwpwH1HqXUOuYpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432770; c=relaxed/simple;
-	bh=yuUMbbdYjnlLnW7qcBa4ymooKDLZ8qgAPimz0TsDkn0=;
+	s=arc-20240116; t=1743432772; c=relaxed/simple;
+	bh=WwKf7qEzym3fm1+PYCXiS5nCEC8E5Q7PGj26QpqD5CM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BoS83L6ZnfoBnfHWvDyyCo/4Jd6BUNBN849Wtvu2wYoNTxZ8eRGpzpPv+PUUNYPxwzoS01xjYOcdxRB9fOCKcsCiSgF5S4DTbfa5QSD/x6Nzv+Pr+el7X59EV9nmMOuDY4+oxlAHiKA6dRbXeHUOqpD6F0fn1Dg+KyMO/f60REU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mUK1U7cD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217D2C4CEEB;
-	Mon, 31 Mar 2025 14:52:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V6JkOUhfGijPsT18BHv2MFUD7fof8oDAsgckKbwygJoQYJWHSEx5Knn6c8vts1cU9R5T/nFboTMkxPzmF27DrhL6Jy9pXb5sp2a7x0vyqPm5IadUAkSaWgRmuqul6YDA21QXlZ/Qlln8wKqwg2dzfq4PlPq2dW8j7gV3UpC7vSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fDzMx+jo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FB1C4CEE4;
+	Mon, 31 Mar 2025 14:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432769;
-	bh=yuUMbbdYjnlLnW7qcBa4ymooKDLZ8qgAPimz0TsDkn0=;
+	s=k20201202; t=1743432771;
+	bh=WwKf7qEzym3fm1+PYCXiS5nCEC8E5Q7PGj26QpqD5CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUK1U7cDQDq5E2yCg97TZHyTZuAPwwXONRdqYt8UqiUlXwfGGsHot5qhoBAYAXNp4
-	 +Q/WqVzcOj5VEjRPE6KjAppAHnjmH3774yG789RdupA3wneNjUomcfM37JFIu9dq9X
-	 UiywenajLN+/p53BlIwY/Au9cSP0Mla7aiRZpjSTDCs1wCsBVEkBMKDSNaRnDEVBHg
-	 W8Jm4sMLnQGQilXbVyprydGBlWwuiX9l20cR4w906IxHkrRkYOaJPwatSooJYVVxJH
-	 vvGOirKH3ZxsfVYoOWTWl2DDq0ZYSWI5N6E7PNYe0CRSPba2zgrj8p5bvuO/cNUdUi
-	 e2y7Vi5x3WWKg==
+	b=fDzMx+joGirAUQ6yB6SKfYtAoRk+QLPd9v3bBEg6ItmfPUJp9pmPeRPEEMBHMwVKF
+	 IxT2nMg9F/XqJ5IM7QUXNWpU7SSnJ+9jaKPFaXRQ8e/f/ZGkECTvN04TpYLb97WDx1
+	 drI7Qq4Q+vDe27sC7Ifj9SKGIWVtNIKAPV9wUG5Q2+14++f+Ow73HgsueL2YNOBciQ
+	 COr5Sm5BEPgdUUjsKHFkKOVJgKVf4ErRbaiQVHBYC91YuXxqLWm6qjPesgRec4h39C
+	 t5gUfAuVAdDQvUMQrPX4eFy95Fwgy1SuxUAYnYB3ZeswrVcZePYHuM3T4qVd5121ao
+	 Os3kCQ2sp6D4g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhang Heng <zhangheng@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+Cc: =?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Makarenko Oleg <oleg@makarenk.ooo>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	daniel.baluta@nxp.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	sound-open-firmware@alsa-project.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 02/27] ASoC: SOF: topology: Use krealloc_array() to replace krealloc()
-Date: Mon, 31 Mar 2025 10:52:20 -0400
-Message-Id: <20250331145245.1704714-2-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 03/27] HID: pidff: Convert infinite length from Linux API to PID standard
+Date: Mon, 31 Mar 2025 10:52:21 -0400
+Message-Id: <20250331145245.1704714-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145245.1704714-1-sashal@kernel.org>
 References: <20250331145245.1704714-1-sashal@kernel.org>
@@ -68,41 +68,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit a05143a8f713d9ae6abc41141dac52c66fca8b06 ]
+[ Upstream commit 37e0591fe44dce39d1ebc7a82d5b6e4dba1582eb ]
 
-Use krealloc_array() to replace krealloc() with multiplication.
-krealloc_array() has multiply overflow check, which will be safer.
+Software uses 0 as de-facto infinite lenght on Linux FF apis (SDL),
+Linux doesn't actually define anythi as of now, while USB PID defines
+NULL (0xffff). Most PID devices do not expect a 0-length effect and
+can't interpret it as infinite. This change fixes Force Feedback for
+most PID compliant devices.
 
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20250117014343.451503-1-zhangheng@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+As most games depend on updating the values of already playing infinite
+effects, this is crucial to ensure they will actually work.
+
+Previously, users had to rely on third-party software to do this conversion
+and make their PID devices usable.
+
+Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/topology.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index 688cc7ac17148..dc9cb83240678 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -1273,8 +1273,8 @@ static int sof_widget_parse_tokens(struct snd_soc_component *scomp, struct snd_s
- 			struct snd_sof_tuple *new_tuples;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 3b4ee21cd8111..5fe4422bb5bad 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -21,6 +21,7 @@
+ #include "usbhid.h"
  
- 			num_tuples += token_list[object_token_list[i]].count * (num_sets - 1);
--			new_tuples = krealloc(swidget->tuples,
--					      sizeof(*new_tuples) * num_tuples, GFP_KERNEL);
-+			new_tuples = krealloc_array(swidget->tuples,
-+						    num_tuples, sizeof(*new_tuples), GFP_KERNEL);
- 			if (!new_tuples) {
- 				ret = -ENOMEM;
- 				goto err;
+ #define	PID_EFFECTS_MAX		64
++#define	PID_INFINITE		0xffff
+ 
+ /* Report usage table used to put reports into an array */
+ 
+@@ -301,7 +302,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
+ 	pidff->set_effect_type->value[0] =
+ 		pidff->create_new_effect_type->value[0];
+-	pidff->set_effect[PID_DURATION].value[0] = effect->replay.length;
++
++	/* Convert infinite length from Linux API (0)
++	   to PID standard (NULL) if needed */
++	pidff->set_effect[PID_DURATION].value[0] =
++		effect->replay.length == 0 ? PID_INFINITE : effect->replay.length;
++
+ 	pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = effect->trigger.button;
+ 	pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] =
+ 		effect->trigger.interval;
 -- 
 2.39.5
 
