@@ -1,129 +1,161 @@
-Return-Path: <stable+bounces-127141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DCAA76972
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:10:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D62A7692C
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DCA43B287A
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:57:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D580188731D
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAC42222DD;
-	Mon, 31 Mar 2025 14:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1481E5705;
+	Mon, 31 Mar 2025 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QaOeALJw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dLUwUQyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2107B221F34
-	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 14:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91371E260A;
+	Mon, 31 Mar 2025 14:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432505; cv=none; b=AqraNJCmz47FotSqy0z0pYtk6IGZWQaz+n10kAYo2Owse1+o+c7UtICSjsL2MaHp7VSkF679Ftbs4EYv8VAxuB8PgSKxh6zG2XksQ/5vLAngsz0t4QXCUkO4BoLiNuDovdoOK9B0R2QD+T1cN6W+6UuXDYYBJ/DcjTmqOZJ0i+s=
+	t=1743432767; cv=none; b=Nxf3umjGSicFLSdR3qYXr/OMP6brXP8H7zJoR09X4cuXWtQvIhkrNcsca9VHQRljLXMzU2v2ZbBVmdgC0qOI5IamqNg8AAQBwx/oFKNsS5M7R85Jyq4d5Z4J4+0zS6QTnb8t02LyjkCWRwEeICRpOKZpw08RWnL4VveA5GvBqgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432505; c=relaxed/simple;
-	bh=jWVMXqkjDvw+9b/CGWBmvFNHGuuNpsU9OjLBy/NZVWs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MWadM/W2cetYG1bGfWoYaFno8uKziF6Vm8DXMjJKiIKBVnmnai5JsnK7LV0CBqbqmIT70dIZ/C68BPy5Lk/0BP6+zdYzH5M7CYj+5BjTcZtY644U4i9ICCc1cV+hVihhtALUg07kZg4bE0Y+5tSaQsnZXQSdPWL5+Da+GbdX1fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QaOeALJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAD1C4CEE9;
-	Mon, 31 Mar 2025 14:48:24 +0000 (UTC)
+	s=arc-20240116; t=1743432767; c=relaxed/simple;
+	bh=PHTS/WBwjTKYlMdCIAb1qBrBV5xna69lqUPWK3NIU3I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LP3L/nE8taoRrZxWXo0N2iIErcmHMCpAX3BEKh/tbNObC8A9Lzdi/oSqmBzSgEZJr8Su0puKdR09RbLOw091qHK6LfILQ94CSOvQYy5SgMmMBSkrGEmDeLTCcaxO7cjjKm3n0RNFy2btEv6fDXpl1s3pxy7noREvgaxuJNMxtwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dLUwUQyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95409C4CEE3;
+	Mon, 31 Mar 2025 14:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432504;
-	bh=jWVMXqkjDvw+9b/CGWBmvFNHGuuNpsU9OjLBy/NZVWs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QaOeALJwwY8369sjrAnenpSaXTMbmMBuIMNV8K5UzdpFV6n4bSOZjBWD0GmD8vfkl
-	 SuynXcP+XE0S+6fzJWRrKSj9RXeYPv/LvGfxII+rSmJTcdTsgfmuiTx2WjDVTqMeZw
-	 fS1chzIJdmTeZuj57pwr532FN/krWv1CYt+mDCWSIjZ1hsv0VRox8+RYFlKwRCsgN2
-	 XzQMSc2Otk8p3RqaaLWQf4fqAAZf0TRcb+jQMyLon5q5ei1sFQ/+nL6OfenJ6ZXOfP
-	 yxsnUBB7/mwyBBHMTUwvxDJs2tRi+7YH31yZwEN0wOQPaNNNcUftIFISD7QKimyWqd
-	 dXcqZD6DddGCg==
+	s=k20201202; t=1743432767;
+	bh=PHTS/WBwjTKYlMdCIAb1qBrBV5xna69lqUPWK3NIU3I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dLUwUQyFXWAmVwI1sjPLADc6RCr/s5sz4Emwroh5B2CnWtyKy+qMswNKAyS0+fnJU
+	 n1peNmtHrGAKmZ16thmkWzufIMkuRaNSG1EARVc3EGWbvonap6s+fFvTAuZnT3bsHo
+	 yw2FRggh/nqxbNxdCccET7gWUNJXnh2a3Vfbq6/ua9AGRRgLc5omxAjx7WW9wZP0mI
+	 smvZVoLjUfBb7RxGJJKu6ALTSx2ng6+1dQMKTEPZN39SEXi87BnLaN/A8El3DR7i3M
+	 EecxQhkqaBdS/ZPFU/ekotHrSlhqvLws9D4eqU7UJ5GtLD2oNtmGadf/NiGPGiBsOt
+	 Ekq68N6Grd9lQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] media: i2c: et8ek8: Don't strip remove function when driver is builtin
-Date: Mon, 31 Mar 2025 10:48:22 -0400
-Message-Id: <20250331101245-3127e31ad643cfee@stable.kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Daniel Schaefer <dhs@frame.work>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	linux@frame.work,
+	"Dustin L . Howett" <dustin@howett.net>,
+	Sasha Levin <sashal@kernel.org>,
+	bleung@chromium.org,
+	chrome-platform@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.14 01/27] platform/chrome: cros_ec_lpc: Match on Framework ACPI device
+Date: Mon, 31 Mar 2025 10:52:19 -0400
+Message-Id: <20250331145245.1704714-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250331064733.3180764-1-bin.lan.cn@windriver.com>
-References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Daniel Schaefer <dhs@frame.work>
 
-Hi,
+[ Upstream commit d83c45aeec9b223fe6db4175e9d1c4f5699cc37a ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Load the cros_ec_lpc driver based on a Framework FRMWC004 ACPI device,
+which mirrors GOOG0004, but also applies npcx quirks for Framework
+systems.
 
-The upstream commit SHA1 provided is correct: 545b215736c5c4b354e182d99c578a472ac9bfce
+Matching on ACPI will let us avoid having to change the SMBIOS match
+rules again and again.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: bin.lan.cn@windriver.com
-Commit author: Uwe Kleine-König<u.kleine-koenig@pengutronix.de>
-
-Status in newer kernel trees:
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: c1a3803e5bb9)
-6.1.y | Not found
-5.15.y | Not found
-
-Note: The patch differs from the upstream commit:
+Cc: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: linux@frame.work
+Cc: Dustin L. Howett <dustin@howett.net>
+Signed-off-by: Daniel Schaefer <dhs@frame.work>
+Link: https://lore.kernel.org/r/20250128181329.8070-1-dhs@frame.work
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  545b215736c5c ! 1:  7f327a373d739 media: i2c: et8ek8: Don't strip remove function when driver is builtin
-    @@ Metadata
-      ## Commit message ##
-         media: i2c: et8ek8: Don't strip remove function when driver is builtin
-     
-    +    [ Upstream commit 545b215736c5c4b354e182d99c578a472ac9bfce ]
-    +
-         Using __exit for the remove function results in the remove callback
-         being discarded with CONFIG_VIDEO_ET8EK8=y. When such a device gets
-         unbound (e.g. using sysfs or hotplug), the driver is just removed
-    @@ Commit message
-         Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-         Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-         Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
-     
-      ## drivers/media/i2c/et8ek8/et8ek8_driver.c ##
-     @@ drivers/media/i2c/et8ek8/et8ek8_driver.c: static int et8ek8_probe(struct i2c_client *client)
-      	return ret;
-      }
-      
-    --static void __exit et8ek8_remove(struct i2c_client *client)
-    -+static void et8ek8_remove(struct i2c_client *client)
-    +-static int __exit et8ek8_remove(struct i2c_client *client)
-    ++static int et8ek8_remove(struct i2c_client *client)
-      {
-      	struct v4l2_subdev *subdev = i2c_get_clientdata(client);
-      	struct et8ek8_sensor *sensor = to_et8ek8_sensor(subdev);
-     @@ drivers/media/i2c/et8ek8/et8ek8_driver.c: static struct i2c_driver et8ek8_i2c_driver = {
-      		.of_match_table	= et8ek8_of_table,
-      	},
-    - 	.probe		= et8ek8_probe,
-    + 	.probe_new	= et8ek8_probe,
-     -	.remove		= __exit_p(et8ek8_remove),
-     +	.remove		= et8ek8_remove,
-      	.id_table	= et8ek8_id_table,
----
+ drivers/platform/chrome/cros_ec_lpc.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-Results of testing on various branches:
+diff --git a/drivers/platform/chrome/cros_ec_lpc.c b/drivers/platform/chrome/cros_ec_lpc.c
+index 5a2f1d98b3501..be319949b9415 100644
+--- a/drivers/platform/chrome/cros_ec_lpc.c
++++ b/drivers/platform/chrome/cros_ec_lpc.c
+@@ -30,6 +30,7 @@
+ 
+ #define DRV_NAME "cros_ec_lpcs"
+ #define ACPI_DRV_NAME "GOOG0004"
++#define FRMW_ACPI_DRV_NAME "FRMWC004"
+ 
+ /* True if ACPI device is present */
+ static bool cros_ec_lpc_acpi_device_found;
+@@ -514,7 +515,7 @@ static int cros_ec_lpc_probe(struct platform_device *pdev)
+ 	acpi_status status;
+ 	struct cros_ec_device *ec_dev;
+ 	struct cros_ec_lpc *ec_lpc;
+-	struct lpc_driver_data *driver_data;
++	const struct lpc_driver_data *driver_data;
+ 	u8 buf[2] = {};
+ 	int irq, ret;
+ 	u32 quirks;
+@@ -526,6 +527,9 @@ static int cros_ec_lpc_probe(struct platform_device *pdev)
+ 	ec_lpc->mmio_memory_base = EC_LPC_ADDR_MEMMAP;
+ 
+ 	driver_data = platform_get_drvdata(pdev);
++	if (!driver_data)
++		driver_data = acpi_device_get_match_data(dev);
++
+ 	if (driver_data) {
+ 		quirks = driver_data->quirks;
+ 
+@@ -696,12 +700,6 @@ static void cros_ec_lpc_remove(struct platform_device *pdev)
+ 	cros_ec_unregister(ec_dev);
+ }
+ 
+-static const struct acpi_device_id cros_ec_lpc_acpi_device_ids[] = {
+-	{ ACPI_DRV_NAME, 0 },
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(acpi, cros_ec_lpc_acpi_device_ids);
+-
+ static const struct lpc_driver_data framework_laptop_npcx_lpc_driver_data __initconst = {
+ 	.quirks = CROS_EC_LPC_QUIRK_REMAP_MEMORY,
+ 	.quirk_mmio_memory_base = 0xE00,
+@@ -713,6 +711,13 @@ static const struct lpc_driver_data framework_laptop_mec_lpc_driver_data __initc
+ 	.quirk_aml_mutex_name = "ECMT",
+ };
+ 
++static const struct acpi_device_id cros_ec_lpc_acpi_device_ids[] = {
++	{ ACPI_DRV_NAME, 0 },
++	{ FRMW_ACPI_DRV_NAME, (kernel_ulong_t)&framework_laptop_npcx_lpc_driver_data },
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, cros_ec_lpc_acpi_device_ids);
++
+ static const struct dmi_system_id cros_ec_lpc_dmi_table[] __initconst = {
+ 	{
+ 		/*
+@@ -866,7 +871,8 @@ static int __init cros_ec_lpc_init(void)
+ 	int ret;
+ 	const struct dmi_system_id *dmi_match;
+ 
+-	cros_ec_lpc_acpi_device_found = !!cros_ec_lpc_get_device(ACPI_DRV_NAME);
++	cros_ec_lpc_acpi_device_found = !!cros_ec_lpc_get_device(ACPI_DRV_NAME) ||
++		!!cros_ec_lpc_get_device(FRMW_ACPI_DRV_NAME);
+ 
+ 	dmi_match = dmi_first_match(cros_ec_lpc_dmi_table);
+ 
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
 
