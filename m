@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-127253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881EBA76AA7
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:36:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1236A76AA8
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36181188B0BA
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:28:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BE3F189088D
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8352512C3;
-	Mon, 31 Mar 2025 14:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0862512DC;
+	Mon, 31 Mar 2025 14:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F5/EG8vY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNEmxlkb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF4D250C15;
-	Mon, 31 Mar 2025 14:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264A0250C11;
+	Mon, 31 Mar 2025 14:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743433046; cv=none; b=SQEf5pi6kSorYrHBN6/oY2pRtUHF/J2Jl/7X+XXxuNXiWvj6y0dyuZCtT594YMqS1Cz5jXZjRe7OrXWAQ/CHKxXQM8ndZZXMMlxKvp3zU3/Fjbf0uskQaOEQabqKeqGwIeTi6TPP6PkONn75BERNF8HF9FXNK+HcjpeANkGH+uE=
+	t=1743433048; cv=none; b=itSrNqt0Gfd3HIwNRKb04LcZCvxovS6uX5uef3RYU1RggcXLMkbI7ry2aT5Q9GY6W2xaGnk7ZwTelvrCDnFXz2TVzPfSDlHFoBY09ZQfmvfsPBYzslfjrevDG26UNnfb5Vsb3UsyOBWpzOPWMS0vuH/tHC77FhEfoMm37SedGtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743433046; c=relaxed/simple;
-	bh=Gvx6KokmUxpphRcJS6u6zciMsxm/5KeToOEJIyofGxA=;
+	s=arc-20240116; t=1743433048; c=relaxed/simple;
+	bh=cJyX7/Y8pQJ/g2XZu2mETst7ifeMERPuSmR3F3qbPq8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qGmUgFBgOASgnRKQN2nKMV3wGvf896SSCsa3YywmHBaO763qH5BObIqI5yA8yDwuPjzQ7xqgl4wzLYigHBJpdg3mUZ1HhME4ZYuyg9YccqMqP+o2C7J4iP0qw3tI7hSzbmLC+gfokfjoXpx5Hfa0zBxHs0hq6Z4oVE2NDr/spgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F5/EG8vY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346EAC4CEE3;
-	Mon, 31 Mar 2025 14:57:25 +0000 (UTC)
+	 MIME-Version; b=FQud3RRSa00xjS6Zm7CWLaTPUCIIAZhOCthsu1g5JXvXLRPljMlWGX24ouRjT7uZr490qg7LtNIpOqJNotxEWcweNrmZn063XyBe6YBEIDMQGvG4clrIpuQknGoVotMXi6ccwnm7FebBVr4P5Kg76SU/NK1jAo1kxYgSJTjnmDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNEmxlkb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BEAC4CEE3;
+	Mon, 31 Mar 2025 14:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743433046;
-	bh=Gvx6KokmUxpphRcJS6u6zciMsxm/5KeToOEJIyofGxA=;
+	s=k20201202; t=1743433048;
+	bh=cJyX7/Y8pQJ/g2XZu2mETst7ifeMERPuSmR3F3qbPq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5/EG8vY/cnGpfEgmf2jfUECjhGwMv/Nbl6HElhq4QKqeNHTtqAdLRgTXKTR/hKWL
-	 33Fu/rPMfUQX7x4XwnbHskj25LSD3XR1nc6JfFhCzvAKadQ7jRfBA5tXBUAgH7h5yW
-	 gHTfo8fRkjZ3ZW6RewFsrV5kHT+ZZhgDgzuK8/R+3XTLZ68rfBQd2cVkQEfp3WSI6E
-	 QF8W1Zy55YYbIyELTG1JidxHz/fyjTHdFWOapAzrDrTLnO3PY4Z68hnkj0LxLVdAl0
-	 1nYpi2ugFlU9tMpRStlpgonGMnfPwz4WShrP8wXmFXDsOENLXUu4zRL0JrGubvY+Qy
-	 O5Qlkpe24TPYg==
+	b=FNEmxlkbg8ULYi1k8hZy3jU3E10vS8sY9UFctK0h5dSDDnvfnGBBerWEL7IogBmcq
+	 +EuRv/uQvIjnt5icbQFIXtddIfqTYVCvOLc3FXwzy//Mzc55DppRZHvqud23qXtLuy
+	 sLEx0ScbbrNcPQr3+8wmPUgn5jChxjU6e86q9VFIQ1xMYsuvN1OhMR2nbDZxROV6xk
+	 ur1jkCaFBxp2NtW7kKkDk55PcTi9VmvK7qlB3O+9Nc40Fg12IBOEBBH2LHM3picG3t
+	 RN4rS4Pg8XQ5PDffRfcX/bmNz5gHl3pv8aHTun4PqCJEvKZCZ41Gl5Pnf4WxqHEdYM
+	 HCnqZcVTLRdOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Maxim Mikityanskiy <maxtram95@gmail.com>,
+Cc: Ricard Wanderlof <ricard2013@butoba.net>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
+	clemens@ladisch.de,
 	perex@perex.cz,
 	tiwai@suse.com,
-	yung-chuan.liao@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
-	hkallweit1@gmail.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 4/5] ALSA: hda: intel: Fix Optimus when GPU has no sound
-Date: Mon, 31 Mar 2025 10:57:15 -0400
-Message-Id: <20250331145716.1706253-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 5/5] ALSA: usb-audio: Fix CME quirk for UF series keyboards
+Date: Mon, 31 Mar 2025 10:57:16 -0400
+Message-Id: <20250331145716.1706253-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145716.1706253-1-sashal@kernel.org>
 References: <20250331145716.1706253-1-sashal@kernel.org>
@@ -71,64 +68,121 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.235
 Content-Transfer-Encoding: 8bit
 
-From: Maxim Mikityanskiy <maxtram95@gmail.com>
+From: Ricard Wanderlof <ricard2013@butoba.net>
 
-[ Upstream commit 2b360ba9a4936486380bc30d1eabceb40a714d98 ]
+[ Upstream commit c2820405ba55a38932aa2177f026b70064296663 ]
 
-quirk_nvidia_hda() forcefully enables HDA controller on all NVIDIA GPUs,
-because some buggy BIOSes leave it disabled. However, some dual-GPU
-laptops do not have a functional HDA controller in DGPU, and BIOS
-disables it on purpose. After quirk_nvidia_hda() reenables this dummy
-HDA controller, attempting to probe it fails at azx_first_init(), which
-is too late to cancel the probe, as it happens in azx_probe_continue().
+Fix quirk for CME master keyboards so it not only handles
+sysex but also song position pointer, MIDI timing clock, start
+and stop messages, and active sensing. All of these can be
+output by the CME UF series master keyboards.
 
-The sna_hda_intel driver calls azx_free() and stops the chip, however,
-it stays probed, and from the runtime PM point of view, the device
-remains active (it was set as active by the PCI subsystem on probe). It
-prevents vga_switcheroo from turning off the DGPU, because
-pci_create_device_link() syncs power management for video and audio
-devices.
+Tested with a CME UF6 in a desktop Linux environment as
+well as on the Zynthian Raspberry Pi based platform.
 
-Affected devices should be added to driver_denylist to prevent them from
-probing early. This patch helps identify such devices by printing a
-warning, and also forces the device to the suspended state to allow
-vga_switcheroo turn off DGPU.
-
-Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
-Link: https://patch.msgid.link/20250208214602.39607-2-maxtram95@gmail.com
+Signed-off-by: Ricard Wanderlof <ricard2013@butoba.net>
+Link: https://patch.msgid.link/20250313-cme-fix-v1-1-d404889e4de8@butoba.net
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ sound/usb/midi.c | 80 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 74 insertions(+), 6 deletions(-)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index fad3e8853be02..407bbf9264ac4 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -1399,8 +1399,21 @@ static void azx_free(struct azx *chip)
- 	if (use_vga_switcheroo(hda)) {
- 		if (chip->disabled && hda->probe_continued)
- 			snd_hda_unlock_devices(&chip->bus);
--		if (hda->vga_switcheroo_registered)
-+		if (hda->vga_switcheroo_registered) {
- 			vga_switcheroo_unregister_client(chip->pci);
-+
-+			/* Some GPUs don't have sound, and azx_first_init fails,
-+			 * leaving the device probed but non-functional. As long
-+			 * as it's probed, the PCI subsystem keeps its runtime
-+			 * PM status as active. Force it to suspended (as we
-+			 * actually stop the chip) to allow GPU to suspend via
-+			 * vga_switcheroo, and print a warning.
-+			 */
-+			dev_warn(&pci->dev, "GPU sound probed, but not operational: please add a quirk to driver_denylist\n");
-+			pm_runtime_disable(&pci->dev);
-+			pm_runtime_set_suspended(&pci->dev);
-+			pm_runtime_enable(&pci->dev);
-+		}
- 	}
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index f0a70e912bddc..b09b7b3c0110e 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -505,16 +505,84 @@ static void ch345_broken_sysex_input(struct snd_usb_midi_in_endpoint *ep,
  
- 	if (bus->chip_init) {
+ /*
+  * CME protocol: like the standard protocol, but SysEx commands are sent as a
+- * single USB packet preceded by a 0x0F byte.
++ * single USB packet preceded by a 0x0F byte, as are system realtime
++ * messages and MIDI Active Sensing.
++ * Also, multiple messages can be sent in the same packet.
+  */
+ static void snd_usbmidi_cme_input(struct snd_usb_midi_in_endpoint *ep,
+ 				  uint8_t *buffer, int buffer_length)
+ {
+-	if (buffer_length < 2 || (buffer[0] & 0x0f) != 0x0f)
+-		snd_usbmidi_standard_input(ep, buffer, buffer_length);
+-	else
+-		snd_usbmidi_input_data(ep, buffer[0] >> 4,
+-				       &buffer[1], buffer_length - 1);
++	int remaining = buffer_length;
++
++	/*
++	 * CME send sysex, song position pointer, system realtime
++	 * and active sensing using CIN 0x0f, which in the standard
++	 * is only intended for single byte unparsed data.
++	 * So we need to interpret these here before sending them on.
++	 * By default, we assume single byte data, which is true
++	 * for system realtime (midi clock, start, stop and continue)
++	 * and active sensing, and handle the other (known) cases
++	 * separately.
++	 * In contrast to the standard, CME does not split sysex
++	 * into multiple 4-byte packets, but lumps everything together
++	 * into one. In addition, CME can string multiple messages
++	 * together in the same packet; pressing the Record button
++	 * on an UF6 sends a sysex message directly followed
++	 * by a song position pointer in the same packet.
++	 * For it to have any reasonable meaning, a sysex message
++	 * needs to be at least 3 bytes in length (0xf0, id, 0xf7),
++	 * corresponding to a packet size of 4 bytes, and the ones sent
++	 * by CME devices are 6 or 7 bytes, making the packet fragments
++	 * 7 or 8 bytes long (six or seven bytes plus preceding CN+CIN byte).
++	 * For the other types, the packet size is always 4 bytes,
++	 * as per the standard, with the data size being 3 for SPP
++	 * and 1 for the others.
++	 * Thus all packet fragments are at least 4 bytes long, so we can
++	 * skip anything that is shorter; this also conveniantly skips
++	 * packets with size 0, which CME devices continuously send when
++	 * they have nothing better to do.
++	 * Another quirk is that sometimes multiple messages are sent
++	 * in the same packet. This has been observed for midi clock
++	 * and active sensing i.e. 0x0f 0xf8 0x00 0x00 0x0f 0xfe 0x00 0x00,
++	 * but also multiple note ons/offs, and control change together
++	 * with MIDI clock. Similarly, some sysex messages are followed by
++	 * the song position pointer in the same packet, and occasionally
++	 * additionally by a midi clock or active sensing.
++	 * We handle this by looping over all data and parsing it along the way.
++	 */
++	while (remaining >= 4) {
++		int source_length = 4; /* default */
++
++		if ((buffer[0] & 0x0f) == 0x0f) {
++			int data_length = 1; /* default */
++
++			if (buffer[1] == 0xf0) {
++				/* Sysex: Find EOX and send on whole message. */
++				/* To kick off the search, skip the first
++				 * two bytes (CN+CIN and SYSEX (0xf0).
++				 */
++				uint8_t *tmp_buf = buffer + 2;
++				int tmp_length = remaining - 2;
++
++				while (tmp_length > 1 && *tmp_buf != 0xf7) {
++					tmp_buf++;
++					tmp_length--;
++				}
++				data_length = tmp_buf - buffer;
++				source_length = data_length + 1;
++			} else if (buffer[1] == 0xf2) {
++				/* Three byte song position pointer */
++				data_length = 3;
++			}
++			snd_usbmidi_input_data(ep, buffer[0] >> 4,
++					       &buffer[1], data_length);
++		} else {
++			/* normal channel events */
++			snd_usbmidi_standard_input(ep, buffer, source_length);
++		}
++		buffer += source_length;
++		remaining -= source_length;
++	}
+ }
+ 
+ /*
 -- 
 2.39.5
 
