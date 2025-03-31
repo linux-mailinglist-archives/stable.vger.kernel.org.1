@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-127153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB826A76947
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:07:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09142A7694D
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3F051890882
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:02:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 082361890DCA
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2AC2253E4;
-	Mon, 31 Mar 2025 14:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A07822540F;
+	Mon, 31 Mar 2025 14:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPsQANIf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pT6CCTi5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729F12253B7;
-	Mon, 31 Mar 2025 14:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15199214818;
+	Mon, 31 Mar 2025 14:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432792; cv=none; b=trnEq1z+qFGA6yZROYH1XDvAJIgYQMSxaRdNDlGL6yrn/cxmc5jBjjZcyHzHXZwQUW+9nN2jGUFNFzezxt0mrZbcobvVIyuufRPs4aN9XV5N9DL2XIS9d2fpP2a2COlWskgxLFuDB/zkTzgBmkjOV4OCf6i0/vMAfmXDXSOy6OA=
+	t=1743432798; cv=none; b=dtSCxESoLCMcPTv9u7OXVepCeTvtWKkDFQ1NAz4epbvd31VjSFBUb1sFs/cS1uHv8+BfocwV4I4iT/j5dCWmjg+pOhM/0bSBX9LS1HexSf7blEwNElKH9zGr41wxP3WRK6y7pnPZHtB8eall66IWQ420FekiblgkAIUQSvTDdJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432792; c=relaxed/simple;
-	bh=S6y4x2Dy0+A5U6tconAysDu/dhTuwtwV+TzuTjZj4eE=;
+	s=arc-20240116; t=1743432798; c=relaxed/simple;
+	bh=0LJdgguMi0We6lrTakf8gcKH2u1OohuUr2cVkweiHVE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MD0D3kmLHEZlENh/zLwUrbn5Ss8yCXcN+tJ3Ejxc9XNA0l/9AQepS1q4kK6OTOZAoB41yXIlF10SzhyDO3AEiESaU3QRqCH/FbLysxcrDL6ll5CUEo5YUWhfpoF9DxSeJFC2hAP9wAJh9uuQn/MzZfQvVubT+2kQ20nJYnlNdqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPsQANIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63FEC4CEE3;
-	Mon, 31 Mar 2025 14:53:10 +0000 (UTC)
+	 MIME-Version; b=N/Pe7WtMuColL/v/2piYq6ydyfd4Rixe0lCAUWt8hxZ5B4M+vqMz1MyaOQKmuRZjbD9SA97hycnZuDRYUpbhPCw58HEYosvASZRhuHB+i2+LkWq/nLNG7tONdZC8W3ChuWiMqSNGt/9ykYW1PR/jkK3Ta3bGrAq6XvJwxXJUYmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pT6CCTi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7EAC4CEE3;
+	Mon, 31 Mar 2025 14:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432792;
-	bh=S6y4x2Dy0+A5U6tconAysDu/dhTuwtwV+TzuTjZj4eE=;
+	s=k20201202; t=1743432796;
+	bh=0LJdgguMi0We6lrTakf8gcKH2u1OohuUr2cVkweiHVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KPsQANIfa4C5h9PdYVj1IFLSbpdZ1yP+d6s9+F6CnsBA+uPoyXAQAqVOPKbl7vDzO
-	 kXqgZI1NTcwrE9w3cZSfWcn4yECpZ5qDIJg29pyhWx3SLD4zhFlw9Fai61Gwsoa7h5
-	 0+YbNt8S884AKnK96AVqWzZ4fccypqFCiUveRNaiVuBYQI0orNZbiPJoFaFn4ki6FN
-	 6mmYR7iqe66NppTRbRPUbWqpZ2Jc881aqgBAGibR+zTHBI214EEFl/Za5XtmJEIWFE
-	 phU5mw8p5lzqKzQ+P0UQrOItt5HfytEP+prCpVdMzrcjKldhHYZ1MaM25hbOg/2lLv
-	 +yn/lLXS9CK/Q==
+	b=pT6CCTi50yoLlRiW1rc/0FgxZWwratRgty7mkZ/zi4cJutciqaGAEDrlUFa0FgRxt
+	 NBiAQMD7RaIYlFcVWsZqF17P9h3qzaaWqFEX56WWSOCFI4VvL3x+GdLEX41tqlyWw2
+	 sh7Q9kgLX89N/Ade41YIHPyaHi1gClXwFI+Id1aXrPZ/NvkbeAq0QE35y0is8YgqwK
+	 KVA5hV5zPJEr/8iMPPfsBdmoAUhffzQIf8cOeSWml+p6JlYu/fQz+6DUuCMjoqo1Hd
+	 af2IZQiCRquLTEl5YXFepd9Kw8DB/dcRShSePkYAl7h/GCiDg2UxttLEuo7GR8DbSV
+	 IgJw9eAp5Tcag==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Tomasz=20Paku=C5=82a?= <forest10pl@gmail.com>,
-	Nolan Nicholson <nolananicholson@gmail.com>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 12/27] HID: pidff: Fix null pointer dereference in pidff_find_fields
-Date: Mon, 31 Mar 2025 10:52:30 -0400
-Message-Id: <20250331145245.1704714-12-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	vkoul@kernel.org,
+	venkataprasad.potturu@amd.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 13/27] ASoC: amd: ps: use macro for ACP6.3 pci revision id
+Date: Mon, 31 Mar 2025 10:52:31 -0400
+Message-Id: <20250331145245.1704714-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145245.1704714-1-sashal@kernel.org>
 References: <20250331145245.1704714-1-sashal@kernel.org>
@@ -69,69 +65,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Tomasz Pakuła <forest10pl@gmail.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
+[ Upstream commit 4b36a47e2d989b98953dbfb1e97da0f0169f5086 ]
 
-This function triggered a null pointer dereference if used to search for
-a report that isn't implemented on the device. This happened both for
-optional and required reports alike.
+Use macro for ACP6.3 PCI revision id instead of hard coded value.
 
-The same logic was applied to pidff_find_special_field and although
-pidff_init_fields should return an error earlier if one of the required
-reports is missing, future modifications could change this logic and
-resurface this possible null pointer dereference again.
-
-LKML bug report:
-https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
-
-Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://patch.msgid.link/20250207062819.1527184-3-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/soc/amd/ps/acp63.h  | 1 +
+ sound/soc/amd/ps/pci-ps.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 4c94d8cbac43a..25dbed076f530 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -793,6 +793,11 @@ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
- static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
- 			     struct hid_report *report, int count, int strict)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_fields, null report\n");
-+		return -1;
-+	}
-+
- 	int i, j, k, found;
- 	int return_value = 0;
+diff --git a/sound/soc/amd/ps/acp63.h b/sound/soc/amd/ps/acp63.h
+index e54eabaa4d3e1..28d3959a416b3 100644
+--- a/sound/soc/amd/ps/acp63.h
++++ b/sound/soc/amd/ps/acp63.h
+@@ -11,6 +11,7 @@
+ #define ACP_DEVICE_ID 0x15E2
+ #define ACP63_REG_START		0x1240000
+ #define ACP63_REG_END		0x125C000
++#define ACP63_PCI_REV		0x63
  
-@@ -917,6 +922,11 @@ static int pidff_reports_ok(struct pidff_device *pidff)
- static struct hid_field *pidff_find_special_field(struct hid_report *report,
- 						  int usage, int enforce_min)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_special_field, null report\n");
-+		return NULL;
-+	}
-+
- 	int i;
+ #define ACP_SOFT_RESET_SOFTRESET_AUDDONE_MASK	0x00010001
+ #define ACP_PGFSM_CNTL_POWER_ON_MASK	1
+diff --git a/sound/soc/amd/ps/pci-ps.c b/sound/soc/amd/ps/pci-ps.c
+index 8b556950b855a..6015dd5270731 100644
+--- a/sound/soc/amd/ps/pci-ps.c
++++ b/sound/soc/amd/ps/pci-ps.c
+@@ -562,7 +562,7 @@ static int snd_acp63_probe(struct pci_dev *pci,
  
- 	for (i = 0; i < report->maxfield; i++) {
+ 	/* Pink Sardine device check */
+ 	switch (pci->revision) {
+-	case 0x63:
++	case ACP63_PCI_REV:
+ 		break;
+ 	default:
+ 		dev_dbg(&pci->dev, "acp63 pci device not found\n");
 -- 
 2.39.5
 
