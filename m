@@ -1,117 +1,95 @@
-Return-Path: <stable+bounces-127042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05895A765B9
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:23:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4654A76605
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FE0F3A6E28
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 12:22:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29D3F1887558
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 12:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31321E32A3;
-	Mon, 31 Mar 2025 12:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D06B1E1A05;
+	Mon, 31 Mar 2025 12:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pq+lbGHa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MoiHZIVB"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3C5155393
-	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 12:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023328BEA;
+	Mon, 31 Mar 2025 12:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423788; cv=none; b=heUfUPH6skA2I7u8a1imSkYEaLvi4q1jBeY+XUeuTnQ1KlLnF6LvAzKULJKgwtcVcer81gUo8J+SypiUtuKQJHM/lJABhqW7EDrFrSUs3AwzqHT11M/ydH0FG/eKBfIJxLgcSUIjuRNaMDKznJTpsbffbnNvlAnN3RU2WXvEDm8=
+	t=1743424362; cv=none; b=G7Yp2ug+A9bQt0C9pitP7gYd5RxSZ6jDWbn56Ay2gGrNRbtgSAohra3IEd09uZsutB2A+JoiNmU2lhXF39egvl9A/ltbL+BPodcY1e4LIKcwkxoV171vxUKEtQk+yHxRqp4zNhW7jARVWKdkSkqwCvCIU2P0gjDFbUiagONuUcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423788; c=relaxed/simple;
-	bh=OCZvu5QJIcaNqafaE+kxtGxHaUlcB7WyioBflxbw96o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZkLhjz2vB6/W4vM8qI6qzHDodPDnLsC5n1cQRInyfEamKpg3dUqLHFir34ArBgD09GO96mmzRQCwZU/SZWXTy0kd7JV5qtlLJHob2ksGRUeTqYBBkTW7PlERX51yv7h9/2XgfdIr46ME/bpPZTZrOiGUeHJ9muKJkITzwg7qcUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pq+lbGHa; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743423787; x=1774959787;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=OCZvu5QJIcaNqafaE+kxtGxHaUlcB7WyioBflxbw96o=;
-  b=Pq+lbGHaNmVJtrxkq/qri0HWKaRqU/g7uT61KYwlucuhhNlRJysr0xyZ
-   jgo46xEciK7XYNS/6LoGXXmXUD4/1W7Vp/6m4005fPkW3kx42L0T22ddp
-   p1KW/uwNUVNpB0LtSh2QNysWKJNva/pdgr0piqrdmW+7xZP7rfnyt/cI2
-   sJpL2x9J/br/ojAWALyNU3RCKhVat+eJwKfaPgoK28whGcKraEV6Gbsas
-   Xo4jaOSVX0gCznGopF4vSZzosauoGIfHxPz5zXhXVgFTNgQAm9f862Feg
-   eb3F4t9QWcAEUm2ND32+QCoMO2NEwt39yoxqDe0ULvZwkdXJL/pdhvH2R
-   w==;
-X-CSE-ConnectionGUID: 0s/y3lMuQD2N4fEy9ZVr3Q==
-X-CSE-MsgGUID: mERONm7GRzqrxRzGICT+ww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="44714238"
-X-IronPort-AV: E=Sophos;i="6.14,290,1736841600"; 
-   d="scan'208";a="44714238"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2025 05:23:07 -0700
-X-CSE-ConnectionGUID: 8GbwudkYSVykEz7vltiLdA==
-X-CSE-MsgGUID: r1ChqzVZQCyuLJorEJb74A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,290,1736841600"; 
-   d="scan'208";a="126066586"
-Received: from pszymich-mobl2.ger.corp.intel.com (HELO [10.245.112.211]) ([10.245.112.211])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2025 05:23:05 -0700
-Message-ID: <72fe8dcc-3a02-49ca-9285-17aec29cf493@linux.intel.com>
-Date: Mon, 31 Mar 2025 14:23:01 +0200
+	s=arc-20240116; t=1743424362; c=relaxed/simple;
+	bh=/9UMxV9C0ZFWNA4MVNHGM2B2ubXASCVpghnMfKCyzKM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kxKqAkiHHFRU7+626MYXi6L6gu1QGLtXXnsv9zkQ+H7yIwRnKf3mwd24HZWHWrfG8q+mwE3zesgjJkoUVVNoUUiW6uenk/OTuUBbTn6KwhUMfhX5eYQQyrhONfGEs4VbsPwt5XEQVN4D1y1Fq8uRIVtUBx0bwcfr/Xp8AyFfuuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MoiHZIVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1BAC4CEE3;
+	Mon, 31 Mar 2025 12:32:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743424361;
+	bh=/9UMxV9C0ZFWNA4MVNHGM2B2ubXASCVpghnMfKCyzKM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MoiHZIVBQb/9TMsKfoHq+WnMNahoZTf3g7D7ioteQ8vjUhDp9YpQ9mR318QbHET8w
+	 PShRG0Ly3siL7mauHHNJcyulEtBDXXDpsjzwal0bUueW5OvocvjX8ZH3f7bxiL4wO0
+	 tVjiRSQ/6PmQ8iecFBRDZ/O2qm1WOfkBb5ZYh9z/RJYcvYp3HxsUTvqyWvh0mn+yS9
+	 wGRSvYdj6RLqu1wQtexX1+HQ09+UDuMkuufrsEwfruI9ACPLMAZkDmNobROkCPyTv+
+	 m9HahQlW8NyrcjnAEyNAJyny0OtqVDI1suLchwIJU/iNugq/ekws5+RZt2mypVRGkA
+	 sFbTXJL65Ar/A==
+Date: Mon, 31 Mar 2025 13:32:36 +0100
+From: Mark Brown <broonie@kernel.org>
+To: srinivas.kandagatla@linaro.org
+Cc: perex@perex.cz, tiwai@suse.com, krzysztof.kozlowski@linaro.org,
+	linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dmitry.baryshkov@linaro.org,
+	johan+linaro@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5 3/5] ASoC: q6apm-dai: make use of q6apm_get_hw_pointer
+Message-ID: <74214537-ad4c-428f-8323-b79502788a66@sirena.org.uk>
+References: <20250314174800.10142-1-srinivas.kandagatla@linaro.org>
+ <20250314174800.10142-4-srinivas.kandagatla@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] accel/ivpu: Fix warning in
- ivpu_ipc_send_receive_internal()
-To: Maciej Falkowski <maciej.falkowski@linux.intel.com>,
- dri-devel@lists.freedesktop.org
-Cc: oded.gabbay@gmail.com, quic_jhugo@quicinc.com, lizhi.hou@amd.com,
- stable@vger.kernel.org
-References: <20250325114219.3739951-1-maciej.falkowski@linux.intel.com>
-Content-Language: en-US
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20250325114219.3739951-1-maciej.falkowski@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="NhPuFL6AeQDXhXJO"
+Content-Disposition: inline
+In-Reply-To: <20250314174800.10142-4-srinivas.kandagatla@linaro.org>
+X-Cookie: The Ranger isn't gonna like it, Yogi.
 
-Applied to drm-misc-fixes
 
-On 3/25/2025 12:42 PM, Maciej Falkowski wrote:
-> From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> 
-> Warn if device is suspended only when runtime PM is enabled.
-> Runtime PM is disabled during reset/recovery and it is not an error
-> to use ivpu_ipc_send_receive_internal() in such cases.
-> 
-> Fixes: 5eaa49741119 ("accel/ivpu: Prevent recovery invocation during probe and resume")
-> Cc: <stable@vger.kernel.org> # v6.13+
-> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-> ---
->  drivers/accel/ivpu/ivpu_ipc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/accel/ivpu/ivpu_ipc.c b/drivers/accel/ivpu/ivpu_ipc.c
-> index 0e096fd9b95d..39f83225c181 100644
-> --- a/drivers/accel/ivpu/ivpu_ipc.c
-> +++ b/drivers/accel/ivpu/ivpu_ipc.c
-> @@ -302,7 +302,8 @@ ivpu_ipc_send_receive_internal(struct ivpu_device *vdev, struct vpu_jsm_msg *req
->  	struct ivpu_ipc_consumer cons;
->  	int ret;
->  
-> -	drm_WARN_ON(&vdev->drm, pm_runtime_status_suspended(vdev->drm.dev));
-> +	drm_WARN_ON(&vdev->drm, pm_runtime_status_suspended(vdev->drm.dev) &&
-> +		    pm_runtime_enabled(vdev->drm.dev));
->  
->  	ivpu_ipc_consumer_add(vdev, &cons, channel, NULL);
->  
+--NhPuFL6AeQDXhXJO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Fri, Mar 14, 2025 at 05:47:58PM +0000, srinivas.kandagatla@linaro.org wrote:
+
+> Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+> Cc: stable@vger.kernel.org
+
+This commit doesn't appear to exist.
+
+--NhPuFL6AeQDXhXJO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmfqi2MACgkQJNaLcl1U
+h9B2hQf/aTPSvZufhdBJPko/DP5CQ2MYquv5UUlKDt22IED+7oDOBo+Juy31hak1
+jajqojGdU8TgEDE4vc5/h5Lghxw290CVhBFqClvO3nqYT3p5d0xLX+6ZB0di9sKn
+oHqg0nXNKZxyFVlDyOLnhVdGoTR6KWHflOkJTMfkzOdE85BiK/OZkCz4OAnPxXYM
+pfbquVMOcAKIWt5RAU3oa8ooyPkpKf1Z+68deC09Fk6yCn05M/P6d2k6EbVX7cH7
+DTRBVhPRM6Zn++MuHrZ1V88FdnNceqIS0HHvHFF5ZJ+c9V5cdwxbEX8TXIwsu6dE
+fc+Pjtqloz2Q5/SydNopsRcqKlaDsA==
+=gxJU
+-----END PGP SIGNATURE-----
+
+--NhPuFL6AeQDXhXJO--
 
