@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-127160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A27A76932
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:05:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A81A76987
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5472F1664A9
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:04:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39CA83B736A
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944F1226D10;
-	Mon, 31 Mar 2025 14:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F43227BA9;
+	Mon, 31 Mar 2025 14:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pGudHGib"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rZFyDEzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDA4226D0C;
-	Mon, 31 Mar 2025 14:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69511214A88;
+	Mon, 31 Mar 2025 14:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432823; cv=none; b=pJqrHllGfKsEcpoob0HnD2Y0gwiwICbh3fXh9cYcgkROLMu1quSmGtQDA7HV09pZcsT/3Vn/ZtQdUEnivL/8z7uO920cPCwI5dfPBDfa4AiZ+vR8jdPqGcSuoyDe9qvyd1Dejx2R4pAhaNXo2NSmYS/px/y9kM2Pu0pJrG5nUOQ=
+	t=1743432825; cv=none; b=IbY+ei+jhy9B3NuNTXKzjXbXTeIHMcjpAZfOY6G+FzIsLHa5UKZtlW/Y8+xEuH6iCdr4kvAYP/AtFKAH3ECztLzsm7xeoY7AifgtNI9RXgDWwy5EY02aN8Kr8hOv4HEQaU5uqtM+HqMNd+ibeytNrV5AB+EhIJSxpPbSEtOyOBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432823; c=relaxed/simple;
-	bh=rezlBpCcK5CkyuC1s7VsbRM49dmcOIeJc5mqRAqahCo=;
+	s=arc-20240116; t=1743432825; c=relaxed/simple;
+	bh=uQFa8VPa77pMARASFQnw4YhBH/IrNw7QrbHmXyIPycs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OFp/rUE4sRBLs7Ref6w7Su+4i6sJp0zPDQdslIaz5dVYd17nC1vT82578B/R8xc/Df8+KxiW97290li1hzmaW9/z4MhO+qlysmCHcfVCwlr0WHxhlvW/RXeSfKuSbrSVDxuz0X4K82YOFTpWMaRibZjqtlOacUtDEmoFlqaBsKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pGudHGib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F700C4CEE4;
-	Mon, 31 Mar 2025 14:53:41 +0000 (UTC)
+	 MIME-Version; b=oTBThPtCdjnw4+79A2A4Gt0tESNce1wWcR1ik3FJk4CCPKeZvVpbhy+H9S4jMTpRYYmIzKP9hvl8Jfaa2LnAbqtbFQd1acfSLxMEzspTeFrd7aCNEW4a6L8VjNX0S67MczVGFaQJax+FTwThvTSTvz41hvNI1H1GTyF8XMNHdJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rZFyDEzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE24C4CEE3;
+	Mon, 31 Mar 2025 14:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432823;
-	bh=rezlBpCcK5CkyuC1s7VsbRM49dmcOIeJc5mqRAqahCo=;
+	s=k20201202; t=1743432824;
+	bh=uQFa8VPa77pMARASFQnw4YhBH/IrNw7QrbHmXyIPycs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGudHGibP+QQCBlqFP7+HUJ4iCpWY0q9rmNi7LrgkjNgFhJdXZ+vCpA/4/OMhqzU4
-	 kXWfLo1DDBuTyV58VRI9KlxGYr/1SItDIuRNnb32ZddiGS2RRPVVLQ3VyvQzQs+lTq
-	 w/dujMg0QXc0FjV1Wfpo0ETlz9SbyxjENY6tdPegaDt677sTaivYNxzwpbeBct459G
-	 zOJVyhduxgWjmVVDAHjOOBoAjKnbvELmnEW8PRr3+oXFY7fcgnpjjwsrKaYeiUb/sC
-	 U8ZiyguYNaiuUNJ5zBT7a7PinJZtaL0MLSkt8BA2RxHgt2DYV0WllHSh4zvV2bKT9A
-	 qbwXEaCOpKOdw==
+	b=rZFyDEzh6Z7mlO5SPtfyPPA0AuZFPDm1G8RK90jpX/TM0YzkFuXCTeDIN48rrNPTe
+	 JHuON5iKTS5JKM72f8ggCCa8WKJGJSrGzvn/gyWhbywfF1B3oKy5HRm5Dqhb62eLzT
+	 fcnmEA3lUztQmUHgZkzKP9p6SQJzc1xWo8JKOmbHjJhpARSKuf1TnlWCWiCSFVgpNx
+	 GO9GAKyJQ7zaQ7PQeQRfIRHdV62Wf8otsDrdOCrcTcSviGJkz/zpJHxVXTKSHf6bjv
+	 KE9O068Yqxevozx+rX2FcFkIB7pdi6Z7TAQsP7iO6IC4OElTSOqyOTcnBca3S2sa3z
+	 ovElbHZFHHnUw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vishnu Sankar <vishnuocv@gmail.com>,
-	Vishnu Sankar <vsankar@lenovo.com>,
-	kernel test robot <lkp@intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Aakarsh Jain <aakarsh.jain@samsung.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 19/27] HID: lenovo: Fix to ensure the data as __le32 instead of u32
-Date: Mon, 31 Mar 2025 10:52:37 -0400
-Message-Id: <20250331145245.1704714-19-sashal@kernel.org>
+	andrzej.hajda@intel.com,
+	mchehab@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 20/27] media: s5p-mfc: Corrected NV12M/NV21M plane-sizes
+Date: Mon, 31 Mar 2025 10:52:38 -0400
+Message-Id: <20250331145245.1704714-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145245.1704714-1-sashal@kernel.org>
 References: <20250331145245.1704714-1-sashal@kernel.org>
@@ -69,37 +70,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Vishnu Sankar <vishnuocv@gmail.com>
+From: Aakarsh Jain <aakarsh.jain@samsung.com>
 
-[ Upstream commit d6ea85f8371b99c1d3a90ee4e2fb1a648f8d71d3 ]
+[ Upstream commit 7d0d0b2342bebc47a46499cdf21257ed1e58c4aa ]
 
-Ensure that data is treated as __le32 instead of u32 before
-applying le32_to_cpu.
-This patch fixes the sparse warning "sparse: cast to restricted __le32".
+There is a possibility of getting page fault if the overall
+buffer size is not aligned to 256bytes. Since MFC does read
+operation only and it won't corrupt the data values even if
+it reads the extra bytes.
+Corrected luma and chroma plane sizes for V4L2_PIX_FMT_NV12M
+and V4L2_PIX_FMT_NV21M pixel format.
 
-Signed-off-by: Vishnu Sankar <vishnuocv@gmail.com>
-Signed-off-by: Vishnu Sankar <vsankar@lenovo.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501101635.qJrwAOwf-lkp@intel.com/
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Suggested-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Aakarsh Jain <aakarsh.jain@samsung.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-lenovo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-index a7d9ca02779ea..04508c36bdc82 100644
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -778,7 +778,7 @@ static int lenovo_raw_event(struct hid_device *hdev,
- 	if (unlikely((hdev->product == USB_DEVICE_ID_LENOVO_X12_TAB
- 			|| hdev->product == USB_DEVICE_ID_LENOVO_X12_TAB2)
- 			&& size >= 3 && report->id == 0x03))
--		return lenovo_raw_event_TP_X12_tab(hdev, le32_to_cpu(*(u32 *)data));
-+		return lenovo_raw_event_TP_X12_tab(hdev, le32_to_cpu(*(__le32 *)data));
- 
- 	return 0;
- }
+diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c
+index 73f7af674c01b..0c636090d723d 100644
+--- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c
++++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_opr_v6.c
+@@ -549,8 +549,9 @@ static void s5p_mfc_enc_calc_src_size_v6(struct s5p_mfc_ctx *ctx)
+ 		case V4L2_PIX_FMT_NV21M:
+ 			ctx->stride[0] = ALIGN(ctx->img_width, S5P_FIMV_NV12M_HALIGN_V6);
+ 			ctx->stride[1] = ALIGN(ctx->img_width, S5P_FIMV_NV12M_HALIGN_V6);
+-			ctx->luma_size = ctx->stride[0] * ALIGN(ctx->img_height, 16);
+-			ctx->chroma_size =  ctx->stride[0] * ALIGN(ctx->img_height / 2, 16);
++			ctx->luma_size = ALIGN(ctx->stride[0] * ALIGN(ctx->img_height, 16), 256);
++			ctx->chroma_size = ALIGN(ctx->stride[0] * ALIGN(ctx->img_height / 2, 16),
++					256);
+ 			break;
+ 		case V4L2_PIX_FMT_YUV420M:
+ 		case V4L2_PIX_FMT_YVU420M:
 -- 
 2.39.5
 
