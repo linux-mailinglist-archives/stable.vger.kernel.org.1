@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-127111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CE9A76893
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:49:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DF6A768AE
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5EF1890137
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:46:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88BF33A5B87
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035BC215F49;
-	Mon, 31 Mar 2025 14:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A67B227B8C;
+	Mon, 31 Mar 2025 14:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KFhRV77U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVYr95AK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B359321516E;
-	Mon, 31 Mar 2025 14:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA752227599;
+	Mon, 31 Mar 2025 14:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743431788; cv=none; b=R1TZ3JsIPtlNz3mr0V5SjnYwkxHp4uJOl3+dNxE1OyqhEL24NM63qN+tweJxQVhjVhf/mlVNycPgJWDvr5Cw8QGsapvJsd5iV6U5q3ixy4IXEYZQDoJKgiHOG60+tv0jbvck4fnpu3ywsELAPMeOKnDQ5vR6WFBD89D+BHpQ6ZM=
+	t=1743431791; cv=none; b=sVfahEkehCseXtdZPlTuKb2oDXQwa7d8EFDotbqY95lvSF+kEO+PfFDzWb9/Xm+Q6BCsn7N448KXm4ivDwVcEGZOzyUbU4aUaI9z1e3qns59sB7TkoWeSU+9DJsxZE/JUr55WaZMTJ3oW9dAwbtsOOMcfKxI4J2APX/nPxG4MWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743431788; c=relaxed/simple;
-	bh=xaEMZxbQp1Qr9ivAjB59KF4a/0OwWMSbOUS1BmmeD7w=;
+	s=arc-20240116; t=1743431791; c=relaxed/simple;
+	bh=8KI2vcAonFYEcFnRA7fUT66S7PeMBDbGzjmE3qr7M+4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b3TcBxRZEs1RPKq7EGuhg/Daz693xCsV5wheutXMhZW2g5RS5rG+GdK57VmTN8nkYkSW6st3hhxV326VCkbCqRWLx4zUByK813V4qwD+2Uururp9YeWK5OU+Mp7DGxeSdXtfyD0K/MbxYFV42JINa58Yty2ur3R/dXWCkEMA5Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KFhRV77U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EE5C4CEE3;
-	Mon, 31 Mar 2025 14:36:27 +0000 (UTC)
+	 MIME-Version; b=RlC2LhCH3io66SYH9i2NVwESR8zpFcptlkYNjEAdFuqzNI9fKy5c7e+om/gT813DrWQ9O67N7FauIpXCyjhC00sTvM0AWQbbrASqyvug/2ZKt2cjdAzbgc947WooioXscdFtxnPUooNMyog29Rry5XrWSJllNlpH+OoD9ncONCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVYr95AK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEEAC4CEE4;
+	Mon, 31 Mar 2025 14:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743431788;
-	bh=xaEMZxbQp1Qr9ivAjB59KF4a/0OwWMSbOUS1BmmeD7w=;
+	s=k20201202; t=1743431790;
+	bh=8KI2vcAonFYEcFnRA7fUT66S7PeMBDbGzjmE3qr7M+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KFhRV77Umy3pgwfcAW9V7LTG+S7DKCUZpg7OcKaiiGUIDAmh0wzX9H8a5NQkGMXK8
-	 UWUfPZQTFbf7kRZmGLP5I3W8X/GIbvm58kn97zERqqUqkPf4GABG3WzditNoociYt7
-	 lHAv1MElEMVaFSE5J3jbPrro+xG3QNNJyE+/i8fbo/WTS62/61HUvzohd5t8kLCOcM
-	 Cc8CqAhQf6TQMEZC1yZTHKCy99qX/EjU2ecnWmxodPS5GwE4QtG1a49G4ANtP0S3gA
-	 pxbWiCA8uK6jii93LJcNp1JUFMIotQyZVSGDjMPnbwUKzXld0cnBMoi/ooUwFOyNJG
-	 Sg8SvNg1xPhGg==
+	b=MVYr95AKQMFTKVgezAW8ZMuXlmOzDp2GmsY/nFO26OU3FHUu7v/tWtvz7HbSLYf2M
+	 O+CSCh61y+doQcN2yKltFbluLOjJnjhOVpR4X0zKs5v1tNj6uFH0hGb389sDHwjRVT
+	 Er3bL3845VxR2acYZFv3wKx/kylXOsVPk5kNBtF9iokjJNXxfFk+0zrOC8lttXX1HE
+	 c6+sbNQQOgcr0kQUGjmNDqWCLcWs2/qllTNdrYGnBDxpuEYRNBVlH1Sta6qjks2jVZ
+	 Ev1eMcPYVjO73kT/+JBuVBLzFXkZghmW91aCPdnGasoy6phMjL6q21RG5dRAg3VWwB
+	 3XBVxDCeFdyWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	xen-devel@lists.xenproject.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 7/9] xen/mcelog: Add __nonstring annotations for unterminated strings
-Date: Mon, 31 Mar 2025 10:36:00 -0400
-Message-Id: <20250331143605.1686243-7-sashal@kernel.org>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kai Huang <kai.huang@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	dave.hansen@linux.intel.com,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org
+Subject: [PATCH AUTOSEL 6.6 8/9] x86/mm/ident_map: Fix theoretical virtual address overflow to zero
+Date: Mon, 31 Mar 2025 10:36:01 -0400
+Message-Id: <20250331143605.1686243-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331143605.1686243-1-sashal@kernel.org>
 References: <20250331143605.1686243-1-sashal@kernel.org>
@@ -67,43 +74,83 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <kees@kernel.org>
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit 1c3dfc7c6b0f551fdca3f7c1f1e4c73be8adb17d ]
+[ Upstream commit f666c92090a41ac5524dade63ff96b3adcf8c2ab ]
 
-When a character array without a terminating NUL character has a static
-initializer, GCC 15's -Wunterminated-string-initialization will only
-warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
-with __nonstring to and correctly identify the char array as "not a C
-string" and thereby eliminate the warning.
+The current calculation of the 'next' virtual address in the
+page table initialization functions in arch/x86/mm/ident_map.c
+doesn't protect against wrapping to zero.
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc: xen-devel@lists.xenproject.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Acked-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250310222234.work.473-kees@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+This is a theoretical issue that cannot happen currently,
+the problematic case is possible only if the user sets a
+high enough x86_mapping_info::offset value - which no
+current code in the upstream kernel does.
+
+( The wrapping to zero only occurs if the top PGD entry is accessed.
+  There are no such users upstream. Only hibernate_64.c uses
+  x86_mapping_info::offset, and it operates on the direct mapping
+  range, which is not the top PGD entry. )
+
+Should such an overflow happen, it can result in page table
+corruption and a hang.
+
+To future-proof this code, replace the manual 'next' calculation
+with p?d_addr_end() which handles wrapping correctly.
+
+[ Backporter's note: there's no need to backport this patch. ]
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20241016111458.846228-2-kirill.shutemov@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/xen/interface/xen-mca.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/mm/ident_map.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/include/xen/interface/xen-mca.h b/include/xen/interface/xen-mca.h
-index 464aa6b3a5f92..1c9afbe8cc260 100644
---- a/include/xen/interface/xen-mca.h
-+++ b/include/xen/interface/xen-mca.h
-@@ -372,7 +372,7 @@ struct xen_mce {
- #define XEN_MCE_LOG_LEN 32
+diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
+index fe0b2e66ded93..7adf7001473e7 100644
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -28,9 +28,7 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
+ 		pmd_t *pmd;
+ 		bool use_gbpage;
  
- struct xen_mce_log {
--	char signature[12]; /* "MACHINECHECK" */
-+	char signature[12] __nonstring; /* "MACHINECHECK" */
- 	unsigned len;	    /* = XEN_MCE_LOG_LEN */
- 	unsigned next;
- 	unsigned flags;
+-		next = (addr & PUD_MASK) + PUD_SIZE;
+-		if (next > end)
+-			next = end;
++		next = pud_addr_end(addr, end);
+ 
+ 		/* if this is already a gbpage, this portion is already mapped */
+ 		if (pud_leaf(*pud))
+@@ -81,10 +79,7 @@ static int ident_p4d_init(struct x86_mapping_info *info, p4d_t *p4d_page,
+ 		p4d_t *p4d = p4d_page + p4d_index(addr);
+ 		pud_t *pud;
+ 
+-		next = (addr & P4D_MASK) + P4D_SIZE;
+-		if (next > end)
+-			next = end;
+-
++		next = p4d_addr_end(addr, end);
+ 		if (p4d_present(*p4d)) {
+ 			pud = pud_offset(p4d, 0);
+ 			result = ident_pud_init(info, pud, addr, next);
+@@ -126,10 +121,7 @@ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
+ 		pgd_t *pgd = pgd_page + pgd_index(addr);
+ 		p4d_t *p4d;
+ 
+-		next = (addr & PGDIR_MASK) + PGDIR_SIZE;
+-		if (next > end)
+-			next = end;
+-
++		next = pgd_addr_end(addr, end);
+ 		if (pgd_present(*pgd)) {
+ 			p4d = p4d_offset(pgd, 0);
+ 			result = ident_p4d_init(info, p4d, addr, next);
 -- 
 2.39.5
 
