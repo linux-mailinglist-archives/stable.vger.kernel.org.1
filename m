@@ -1,187 +1,131 @@
-Return-Path: <stable+bounces-127273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81089A77007
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 23:21:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE3AA7702E
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 23:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B6B43AA600
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 21:21:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1F27188D8D8
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 21:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4C321C9E9;
-	Mon, 31 Mar 2025 21:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6CEFC0B;
+	Mon, 31 Mar 2025 21:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lessconfused.com header.i=@lessconfused.com header.b="Y7BP6nhf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSBnYYr3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8121B2144CE
-	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 21:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654628472
+	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 21:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743456084; cv=none; b=MholJ8AYfURyf6K7sFjT5vW0XOMdM4edl6iIl40sJ6GF0ktw/Q0dzcucrYdQRCmYWS0IsAJ38ly2ouHnEFFBhONM9z7TFs6NoGsx2574Verzwf9MfWcIAKpjS5Kh1ookP86pX/bPQJdu2qh7mDijctLfwZtJdBETGcrZt0ljnIE=
+	t=1743456720; cv=none; b=F58ExMy+ul0XGajkHcHBkdAWgcGlBWo4t2+7/9TG/FIJqrQ+GXuMKb8lXXfwjm/34s6cmujC0uVwvevfENfSVKBo6AJ0YqhpJyvtm0CKfqLjjM6WFktgEoiugmI3+tBhetl8uh29715Q8df3Zr5KSPZV3qHVxSbBA/cNCABpJQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743456084; c=relaxed/simple;
-	bh=VYxMbRRBbMozMTUiOpSryYZs6R37YG4QhxXtAYqdTQU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RjvzMduoahB6QhkuJsd3EktY14PqepnEblBA2ix7rYSmwIy3LpKbqumxn20xZBNHYdmXrp9+AYCUZPw5hAyGbGgXQWgWk02dh+Dp+89yZQ2AoRtQlMtdqghBCSdC/lcRDXzyx4xVlk7GesqhRNi8ORBPS3pOH7t0Uz1z1wZUj4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lessconfused.com; spf=pass smtp.mailfrom=lessconfused.com; dkim=pass (1024-bit key) header.d=lessconfused.com header.i=@lessconfused.com header.b=Y7BP6nhf; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lessconfused.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lessconfused.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-300fefb8e06so7843328a91.0
-        for <stable@vger.kernel.org>; Mon, 31 Mar 2025 14:21:21 -0700 (PDT)
+	s=arc-20240116; t=1743456720; c=relaxed/simple;
+	bh=R1xOES8SL+Fk1DGQ2wMiMJFawzJXZNVjN4KGF4q3q2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i+befKwhnJLJ/iHpUfYVzQKGwgSFFSkTx5B2vPVS6CkgZShec+VPS6Cq4lFTGI2aFQB7c+wI5RfeMxTcZwr/xSuXAC8e7onAvzH8m58KvZkdZWlFPMXVjdavxarUgDGcRMlkXrlOh2MSHybYEtO0q/7nz56oaegrB03k/bjPKQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSBnYYr3; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43cfba466b2so48443675e9.3
+        for <stable@vger.kernel.org>; Mon, 31 Mar 2025 14:31:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lessconfused.com; s=lessconfused; t=1743456081; x=1744060881; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1743456717; x=1744061517; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IqFv7p5NcVMXzdeHBPjYikjLO1JUbU/VCURUs/xfOEs=;
-        b=Y7BP6nhfpsJxpHcx8RGyjlpQGTJ3+vFy1yASffS6kGj4aJzB6wEIxR1XkhnT+pbz0S
-         xZSsXbAgZ1gr8LNgPMbrnyQzSz4NPRz09B0Ck9l1YShoPwSNJxpN/H1VaPr5ZO2HC69P
-         +nojLK7i7/hzvrdi698SriU8i+5hVHKP1CSlY=
+        bh=e3Exn/wkBTkPhtwKgX8FGnHYhicP+rBh55v518Vsav4=;
+        b=TSBnYYr3mKRCvcMtxqivBk43D/FQZIly3tnpWnAgCtmP/StoNGPwtn4TOIwLZ8cwi2
+         yKbe8bLh+nwhK+ECndXD3WowaGW+Xvc3NladG4qVPxfUWSSlb/e0UolqxXZ5JwqNusdI
+         +0t1cmw3ffCApjZhZlD8onRX4hn9St9Lw/+vWEczZb3DSd4+h8+L6eFBVbSyzvj4MKNw
+         AZO97qIJ2r4t5HGGiDMeknH+KYABQ34QlzFI/bZuJ3S4OuO5W1zPl5IWn5vbVbTAXoXq
+         TQzNNcmdS+EDnEIWSc1XumzHIxyOHPMSsJfaRV9VQRXTJ6ZzvFd6IJvitZUs1WnRZLNG
+         D4VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743456081; x=1744060881;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1743456717; x=1744061517;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IqFv7p5NcVMXzdeHBPjYikjLO1JUbU/VCURUs/xfOEs=;
-        b=TQR4mFBUhIsftbzYoGq5uDv1PcuGuzqJCI+4oZ7q+8nfNcq3C4nmUxkcCXCAPSn/aO
-         GRzoEcpFY7wHXhIGp2gpFkJ9MMxMTi14dj/jXlmzN+P+6iCcfcExrp9ncgQvYrAZozGj
-         yuZGxrkJk3nzymCIbg7Bxn1uDx0kxxujOdqIdfTQXiYEaftT/7x9xTdpDoZTHfXtMqdR
-         FUy8gD9pmKDcTgfIAql4Lm/P02dxbFjdwQiBE5yufbCspDKGaKZIOZqX4SFoQI6BCTaT
-         9Xevcd1q1p2jKYiKbKxNjeRGAAcB3G2ugtRqjKjSH3NKD1TGXRFyI9O0Rrx5Z5qtMGpm
-         LZfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWrZtePOnSxMTiQGs2bBD1742WJ2i0FGxRYFQtRBzG6aG4F+U7pL4oeqQ/tgjIkAY7pycVuBzk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwklWveFhEE9vv+63zh/sofP5YJq0OwhR2c9199YA9Gdv4NU06s
-	EiSBb3owFBxFG3BtqFvek8AGLq1fnzQRmhEEGTRrDwS8WTmEo59voRYo6qYhqoeEWPz0Qk3fkwY
-	bOu6G2eu/+K2OE7X/r7+69V8v9XoDJOfgqDQeYg==
-X-Gm-Gg: ASbGncvjKPkZQsGyxvIGyTWlmHPfthXRvPO1xqqpkykNvlmH+XRr/wkUJkLmJZrySOx
-	sahNViQWPvpApskb03WQoJsWDffhkZ5CI0svxNIIfm+vjRyKXH0C3KJKpA6GkBKcEWArckUkFan
-	DejA9Kxxc/aEOoVq6SQ1HBMK4=
-X-Google-Smtp-Source: AGHT+IHwfY9YDI7gAxVEnaSnjkABdZZOKgGT0o+XpttcOyVXA2GQq0jvYVFLH9NQlhONNF8RbNEGEwVheCtAyPLI7IM=
-X-Received: by 2002:a17:90b:570d:b0:2fe:85f0:e115 with SMTP id
- 98e67ed59e1d1-30560949feemr889884a91.26.1743456080750; Mon, 31 Mar 2025
- 14:21:20 -0700 (PDT)
+        bh=e3Exn/wkBTkPhtwKgX8FGnHYhicP+rBh55v518Vsav4=;
+        b=fW/vFzPbKYpYUAIJ3bjda4ru4N0OLi/vx27Yc084kJ0yWwyWWvFDHQl82/6VjPPq3l
+         nTy0BRhEai6SZT+P8guD2V3HrAl3AUqV/BZ6gmIysal/acmS0TY3KTEE8X9rHsbMetk2
+         AKLSxfIJ5WqdSThSphiITCHB2RjcG7UQ1YHQNF3MvmyXRM1Tp2OiUbCvedNO3jQkFFRT
+         btbNI2xW7Ere0NkpBFWVvHZm20JFuFHyXvYiSmswBbiKn6FCvtTiOTJdry/3z6ZJWvNw
+         eyverMH3OzvoVrTAVmyYFlYnAqo4jmW8Yk0KsItTDFaACXh1diBSgOsqYMaR2HZLLa0W
+         5y1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUZgJLvB5oVvHeGf0GUA6m2P77Qypc96KKSz2Rb1y8KkThZegl/w9iu72ScvGf4pINg88P1erQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTe/fA8XzZZR9NF721V0cANz6SJCBDff60ebDZ72hHqLO22u1O
+	Q5DkWJSjcAN/OxxkiNrXcQ+Q9VpDwi4m7SGNVnopZ44pwWEd7isR
+X-Gm-Gg: ASbGnct9YKoKFiETnWEwhMsAsvmIQS8/NjLEqXPxGf2NlfczCMhwr9m2Jr2EkYdqu66
+	/EgWzRGAd6747mZUqVPyiL9P7ZNnqlbTCGOiYrAUnNidj5X4MSTxpHJq7mSBxw5cOGPfuBZA90N
+	mKGcu1pDhdwm/Ibg9jvj3z8wezWJbPIQ2C1lTDzLN+Juj8Yv4Tk0H/E8CX+BBb1CxeAC7dhXzcQ
+	o4Wh46fnCL0LTzqFkdQzf2nBtEo4y7KmLNA3Bt7ENkrPZTw6vUpxq/DAGW/eYdA3uwG7BtErw7H
+	XKlrn69XKd1p96PsCD2mj4zNK3IN02+cj2iyeljLT+g5ErQpjmf/b6FjdB0gZ0b5LRsMlEsaB/Y
+	tyWrbSu0=
+X-Google-Smtp-Source: AGHT+IEpCL3ntyjH4x7myZpm1PaA0O4Ri2CUDXSnoYpASpJKwvBumZ7gHb7wXUSsy8vWv8jiGPHshg==
+X-Received: by 2002:a5d:5f48:0:b0:391:47d8:de2d with SMTP id ffacd0b85a97d-39c120e3585mr8580667f8f.23.1743456716492;
+        Mon, 31 Mar 2025 14:31:56 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b662c05sm12141919f8f.23.2025.03.31.14.31.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Mar 2025 14:31:56 -0700 (PDT)
+Date: Mon, 31 Mar 2025 22:31:54 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Alexander Aring <aahringo@redhat.com>
+Cc: agruenba@redhat.com, stable@vger.kernel.org, gfs2@lists.linux.dev
+Subject: Re: [PATCH gfs2/for-next] gfs2: use delay during spinlock area
+Message-ID: <20250331223154.1fd4b0dc@pumpkin>
+In-Reply-To: <20250331193656.1134507-1-aahringo@redhat.com>
+References: <20250331193656.1134507-1-aahringo@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250331074420.3443748-1-christianshewitt@gmail.com>
- <17cfc9e2-5920-42e9-b934-036351c5d8d2@lunn.ch> <Z-qeXK2BlCAR1M0F@shell.armlinux.org.uk>
- <CACdvmAijY=ovZBgwBFDBne5dJPHrReLTV6+1rJZRxxGm42fcMA@mail.gmail.com> <Z-r7c1bAHJK48xhD@shell.armlinux.org.uk>
-In-Reply-To: <Z-r7c1bAHJK48xhD@shell.armlinux.org.uk>
-From: Da Xue <da@lessconfused.com>
-Date: Mon, 31 Mar 2025 17:21:08 -0400
-X-Gm-Features: AQ5f1JogYqSKmDgBJP4R985J7fldNhdkXea2BS9P9NlvEC_qQFM2qGPLO_OsWfE
-Message-ID: <CACdvmAhvh-+-yiATTqnzJCLthtr8uNpJqUrXQGs5MFJSHafkSQ@mail.gmail.com>
-Subject: Re: [PATCH v2] net: mdio: mux-meson-gxl: set 28th bit in eth_reg2
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Kevin Hilman <khilman@baylibre.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Da Xue <da@libre.computer>, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, 
-	Jerome Brunet <jbrunet@baylibre.com>, Jakub Kicinski <kuba@kernel.org>, 
-	linux-amlogic@lists.infradead.org, Paolo Abeni <pabeni@redhat.com>, 
-	"David S . Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org, 
-	Heiner Kallweit <hkallweit1@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 31, 2025 at 4:30=E2=80=AFPM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
->
-> On Mon, Mar 31, 2025 at 03:09:00PM -0400, Da Xue wrote:
-> > On Mon, Mar 31, 2025 at 9:55=E2=80=AFAM Russell King (Oracle)
-> > <linux@armlinux.org.uk> wrote:
-> > >
-> > > On Mon, Mar 31, 2025 at 03:43:26PM +0200, Andrew Lunn wrote:
-> > > > On Mon, Mar 31, 2025 at 07:44:20AM +0000, Christian Hewitt wrote:
-> > > > > From: Da Xue <da@libre.computer>
-> > > > >
-> > > > > This bit is necessary to enable packets on the interface. Without=
- this
-> > > > > bit set, ethernet behaves as if it is working, but no activity oc=
-curs.
-> > > > >
-> > > > > The vendor SDK sets this bit along with the PHY_ID bits. U-boot a=
-lso
-> > > > > sets this bit, but if u-boot is not compiled with networking supp=
-ort
-> > > > > the interface will not work.
-> > > > >
-> > > > > Fixes: 9a24e1ff4326 ("net: mdio: add amlogic gxl mdio mux support=
-");
-> > > > > Signed-off-by: Da Xue <da@libre.computer>
-> > > > > Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-> > > > > ---
-> > > > > Resending on behalf of Da Xue who has email sending issues.
-> > > > > Changes since v1 [0]:
-> > > > > - Remove blank line between Fixes and SoB tags
-> > > > > - Submit without mail server mangling the patch
-> > > > > - Minor tweaks to subject line and commit message
-> > > > > - CC to stable@vger.kernel.org
-> > > > >
-> > > > > [0] https://patchwork.kernel.org/project/linux-amlogic/patch/CACq=
-vRUbx-KsrMwCHYQS6eGXBohynD8Q1CQx=3D8=3D9VhqZi13BCQQ@mail.gmail.com/
-> > > > >
-> > > > >  drivers/net/mdio/mdio-mux-meson-gxl.c | 3 ++-
-> > > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > >
-> > > > > diff --git a/drivers/net/mdio/mdio-mux-meson-gxl.c b/drivers/net/=
-mdio/mdio-mux-meson-gxl.c
-> > > > > index 00c66240136b..fc5883387718 100644
-> > > > > --- a/drivers/net/mdio/mdio-mux-meson-gxl.c
-> > > > > +++ b/drivers/net/mdio/mdio-mux-meson-gxl.c
-> > > > > @@ -17,6 +17,7 @@
-> > > > >  #define  REG2_LEDACT               GENMASK(23, 22)
-> > > > >  #define  REG2_LEDLINK              GENMASK(25, 24)
-> > > > >  #define  REG2_DIV4SEL              BIT(27)
-> > > > > +#define  REG2_RESERVED_28  BIT(28)
-> > > >
-> > > > It must have some meaning, it cannot be reserved. So lets try to fi=
-nd
-> > > > a better name.
-> > >
-> > > Indeed, that was my thoughts as well, but Andrew got his reply in
-> > > before I got around to replying!
-> >
-> > The datasheets don't have much in the way of information about this
-> > register bit. The Amlogic GXL datasheet is notoriously inaccurate.
-> >
-> > ETH_REG2 0XC8834558
-> > 29:28 R 0x1 reserved
-> >
-> > It claims the bit is read only while the BSP hard codes the setting of
-> > this register. I am open to any name for this register bit.
-> > This is the only thing holding up distro netbooting for these very
-> > popular chip family.
->
-> Which interface mode do we think this affects?
->
-> As a suggestion, maybe call it:
->
-> REG2_<interfacemode>_EN
->
-> and possibly add a comment "This bit is documented as reserved, but
-> needs to be set so that <interfacemode> can pass traffic. This is
-> an unofficial name."
+On Mon, 31 Mar 2025 15:36:56 -0400
+Alexander Aring <aahringo@redhat.com> wrote:
 
-I found this on the zircon kernel:
+> In a rare case of gfs2 spectator mount the ls->ls_recover_spin is being
+> held. In this case we cannot call msleep_interruptible() as we a in a
+> non-sleepable context. Replace it with mdelay() to busy wait for 1
+> second.
 
-#define REG2_ETH_REG2_REVERSED (1 << 28)
+You can't busy wait like that.
+You've just stopped any RT process that last ran on the cpu you are
+on from running, as well as all any interrupts tied to the cpu.
+Also consider a single cpu system.
 
-pregs->Write32(REG2_ETH_REG2_REVERSED | REG2_INTERNAL_PHY_ID, PER_ETH_REG2)=
-;
+	David
 
-I can respin and call it that.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 4a7727725dc7 ("GFS2: Fix recovery issues for spectators")
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
+> ---
+>  fs/gfs2/lock_dlm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
+> index 58aeeae7ed8c..ac0afedff49b 100644
+> --- a/fs/gfs2/lock_dlm.c
+> +++ b/fs/gfs2/lock_dlm.c
+> @@ -996,7 +996,7 @@ static int control_mount(struct gfs2_sbd *sdp)
+>  		if (sdp->sd_args.ar_spectator) {
+>  			fs_info(sdp, "Recovery is required. Waiting for a "
+>  				"non-spectator to mount.\n");
+> -			msleep_interruptible(1000);
+> +			mdelay(1000);
+>  		} else {
+>  			fs_info(sdp, "control_mount wait1 block %u start %u "
+>  				"mount %u lvb %u flags %lx\n", block_gen,
 
->
-> --
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
