@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-127095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047D3A7686F
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 865FCA76871
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57DCD188936E
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:43:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01A2A188A073
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A59224224;
-	Mon, 31 Mar 2025 14:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A02F224236;
+	Mon, 31 Mar 2025 14:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="STSqu9aV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZsovAhIJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268A922371E;
-	Mon, 31 Mar 2025 14:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A4E214A7B;
+	Mon, 31 Mar 2025 14:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743431737; cv=none; b=M3P0KxP4FaZTOAJP/0sDARLT/BY3VABO7bI2vcL5Lk++SVNTf8BroTPGwOfPGVYD/igMFT1gTxakwJ25FKd0ywseQTRNlHIX9cTrRK3vfOf7HmN4rEgrKfVJRDsBcuJxlbs7aAVQpCdEyxAJS2FiiY0dkCU0+1NpU3ek8epDlGg=
+	t=1743431741; cv=none; b=SaozXdZrYaqc2LiQbSAM0+xPReCOfk1Rsw9Hgrtz5g9Ff9EL1YxuXl5rCfNiGR+lqg+WsVCj732K/PSuo0XMagv3blCwqOyC/e478WPYKwFZLC29LbJzFxfaeGTzG9KCZhBfggasfHBvL/YBz2HY+zWizGSjFRvt/TthJC/BO9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743431737; c=relaxed/simple;
-	bh=dokLz64a3JAqkh0ZQOi/NgeiJe5tuEwL48FedkASPCY=;
+	s=arc-20240116; t=1743431741; c=relaxed/simple;
+	bh=DIQizwHmfCEk4AJXRdolmNYd1M44sWCcLNHDmneyAT4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=anrJCOn/Qb3l4j8Ijb16FAc/jt7xvBHJ23SBrRzekYeFn4BAYilWpRkDkMs76CQx1+4g/h/BWJyKTpCue51LtAeY32Hb4N4UDVsEEn8Ph4abbXLSCPgmprXTKO1tsDvmJ9vrCPwRkL5yM4ZCebhAm1TJz7IHTDOPvzo9KokQ+/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STSqu9aV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B65CC4CEE3;
-	Mon, 31 Mar 2025 14:35:35 +0000 (UTC)
+	 MIME-Version; b=HCh73VFF9P4vD4v1eYeK+KF9O3Vb/rDSSri1skUKReW9IBThcyG5pDU9UX7YrI5orGw1xH49RQ+wggtXXUV7e5HV2tQBBi5vNg/bD30YFQafSZvGqqYNXoVUsZi/XGZ+JemgMIDal95lSQ9HrYXEK3wZemykQMYDmTyDRQIuxek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZsovAhIJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4228FC4CEE3;
+	Mon, 31 Mar 2025 14:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743431736;
-	bh=dokLz64a3JAqkh0ZQOi/NgeiJe5tuEwL48FedkASPCY=;
+	s=k20201202; t=1743431739;
+	bh=DIQizwHmfCEk4AJXRdolmNYd1M44sWCcLNHDmneyAT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STSqu9aVWdnYpatBgdcgQaxgoR/DJfp8HfsBJXmVcqE6tmgzs1J5XXm/wYiWMWB5P
-	 NVl9xZMUixEQvUttJsZgEX174eqHeZtaSc9EsDXRniRRiPWxnu5mB7M7ofCtHSkzeN
-	 Nus3Bl+2/B1axV4eXgGLd7vkjNLgLiZguxb4Plmgd91GWupcGS9kXiTngfpTG/9vOr
-	 1GmnAssARn4naomqF/zz6ETnlc5plhLdupXB64Pd4ykA1CRwsGA31b8RO52hB7stFX
-	 JkKbILRV10YUVnCUMTe9ZadAYZAGPKrwKNiK1zKYeNjFWxa5K5RHFEf16mzzwZFiYZ
-	 zyHsXIs220ORA==
+	b=ZsovAhIJVvecGyYg+S/0e6QQPIRtocaf47BQ2pVUOyvsnaysvAoPVBvjC7/8YBXPW
+	 HbYo/8RIlYhiLjzO4Ndx0+pLXYRCKF9/dHf+uaVDrLkFoAyiRkgUPZiZBFoJWCQpoP
+	 EyZSgmXrBU+DpKSwR1EYYDGgzHVwm12ZwnUmFokNB/P3YwwpTZN977AB34Tn2KoBsQ
+	 9UYI2q9zgWMTklUDRS0tQ10+XriYYp3utDptWlpMNrwvAzCnTHy4bfzXJpKbX10Re5
+	 WNpruPTpX278ImzQxNbrPYBpNAO7FM/rQU6dI7uHK/iDzxKrXQw2R3dcZ5rxzT4ifA
+	 DXavDpHX0ZdiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Uros Bizjak <ubizjak@gmail.com>,
-	Matt Fleming <matt@readmodwrite.com>,
+Cc: "Xin Li (Intel)" <xin@zytor.com>,
 	Ingo Molnar <mingo@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>,
 	tglx@linutronix.de,
 	mingo@redhat.com,
 	bp@alien8.de,
 	dave.hansen@linux.intel.com,
 	x86@kernel.org
-Subject: [PATCH AUTOSEL 6.12 03/13] x86/percpu: Disable named address spaces for UBSAN_BOOL with KASAN for GCC < 14.2
-Date: Mon, 31 Mar 2025 10:35:17 -0400
-Message-Id: <20250331143528.1685794-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 04/13] x86/ia32: Leave NULL selector values 0~3 unchanged
+Date: Mon, 31 Mar 2025 10:35:18 -0400
+Message-Id: <20250331143528.1685794-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331143528.1685794-1-sashal@kernel.org>
 References: <20250331143528.1685794-1-sashal@kernel.org>
@@ -70,61 +74,139 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: "Xin Li (Intel)" <xin@zytor.com>
 
-[ Upstream commit b6762467a09ba8838c499e4f36561e82fc608ed1 ]
+[ Upstream commit ad546940b5991d3e141238cd80a6d1894b767184 ]
 
-GCC < 14.2 does not correctly propagate address space qualifiers
-with -fsanitize=bool,enum. Together with address sanitizer then
-causes that load to be sanitized.
+The first GDT descriptor is reserved as 'NULL descriptor'.  As bits 0
+and 1 of a segment selector, i.e., the RPL bits, are NOT used to index
+GDT, selector values 0~3 all point to the NULL descriptor, thus values
+0, 1, 2 and 3 are all valid NULL selector values.
 
-Disable named address spaces for GCC < 14.2 when both, UBSAN_BOOL
-and KASAN are enabled.
+When a NULL selector value is to be loaded into a segment register,
+reload_segments() sets its RPL bits.  Later IRET zeros ES, FS, GS, and
+DS segment registers if any of them is found to have any nonzero NULL
+selector value.  The two operations offset each other to actually effect
+a nop.
 
-Reported-by: Matt Fleming <matt@readmodwrite.com>
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Besides, zeroing of RPL in NULL selector values is an information leak
+in pre-FRED systems as userspace can spot any interrupt/exception by
+loading a nonzero NULL selector, and waiting for it to become zero.
+But there is nothing software can do to prevent it before FRED.
+
+ERETU, the only legit instruction to return to userspace from kernel
+under FRED, by design does NOT zero any segment register to avoid this
+problem behavior.
+
+As such, leave NULL selector values 0~3 unchanged and close the leak.
+
+Do the same on 32-bit kernel as well.
+
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250227140715.2276353-1-ubizjak@gmail.com
-Closes: https://lore.kernel.org/lkml/20241213190119.3449103-1-matt@readmodwrite.com/
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241126184529.1607334-1-xin@zytor.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ arch/x86/kernel/signal_32.c | 62 +++++++++++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 6f8e9af827e0c..e9fb64b55912d 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2433,18 +2433,20 @@ config CC_HAS_NAMED_AS
- 	def_bool $(success,echo 'int __seg_fs fs; int __seg_gs gs;' | $(CC) -x c - -S -o /dev/null)
- 	depends on CC_IS_GCC
+diff --git a/arch/x86/kernel/signal_32.c b/arch/x86/kernel/signal_32.c
+index ef654530bf5a9..98123ff10506c 100644
+--- a/arch/x86/kernel/signal_32.c
++++ b/arch/x86/kernel/signal_32.c
+@@ -33,25 +33,55 @@
+ #include <asm/smap.h>
+ #include <asm/gsseg.h>
  
-+#
-+# -fsanitize=kernel-address (KASAN) and -fsanitize=thread (KCSAN)
-+# are incompatible with named address spaces with GCC < 13.3
-+# (see GCC PR sanitizer/111736 and also PR sanitizer/115172).
-+#
++/*
++ * The first GDT descriptor is reserved as 'NULL descriptor'.  As bits 0
++ * and 1 of a segment selector, i.e., the RPL bits, are NOT used to index
++ * GDT, selector values 0~3 all point to the NULL descriptor, thus values
++ * 0, 1, 2 and 3 are all valid NULL selector values.
++ *
++ * However IRET zeros ES, FS, GS, and DS segment registers if any of them
++ * is found to have any nonzero NULL selector value, which can be used by
++ * userspace in pre-FRED systems to spot any interrupt/exception by loading
++ * a nonzero NULL selector and waiting for it to become zero.  Before FRED
++ * there was nothing software could do to prevent such an information leak.
++ *
++ * ERETU, the only legit instruction to return to userspace from kernel
++ * under FRED, by design does NOT zero any segment register to avoid this
++ * problem behavior.
++ *
++ * As such, leave NULL selector values 0~3 unchanged.
++ */
++static inline u16 fixup_rpl(u16 sel)
++{
++	return sel <= 3 ? sel : sel | 3;
++}
 +
- config CC_HAS_NAMED_AS_FIXED_SANITIZERS
--	def_bool CC_IS_GCC && GCC_VERSION >= 130300
-+	def_bool y
-+	depends on !(KASAN || KCSAN) || GCC_VERSION >= 130300
-+	depends on !(UBSAN_BOOL && KASAN) || GCC_VERSION >= 140200
+ #ifdef CONFIG_IA32_EMULATION
+ #include <asm/unistd_32_ia32.h>
  
- config USE_X86_SEG_SUPPORT
--	def_bool y
--	depends on CC_HAS_NAMED_AS
--	#
--	# -fsanitize=kernel-address (KASAN) and -fsanitize=thread
--	# (KCSAN) are incompatible with named address spaces with
--	# GCC < 13.3 - see GCC PR sanitizer/111736.
--	#
--	depends on !(KASAN || KCSAN) || CC_HAS_NAMED_AS_FIXED_SANITIZERS
-+	def_bool CC_HAS_NAMED_AS
-+	depends on CC_HAS_NAMED_AS_FIXED_SANITIZERS
+ static inline void reload_segments(struct sigcontext_32 *sc)
+ {
+-	unsigned int cur;
++	u16 cur;
  
- config CC_HAS_SLS
- 	def_bool $(cc-option,-mharden-sls=all)
++	/*
++	 * Reload fs and gs if they have changed in the signal
++	 * handler.  This does not handle long fs/gs base changes in
++	 * the handler, but does not clobber them at least in the
++	 * normal case.
++	 */
+ 	savesegment(gs, cur);
+-	if ((sc->gs | 0x03) != cur)
+-		load_gs_index(sc->gs | 0x03);
++	if (fixup_rpl(sc->gs) != cur)
++		load_gs_index(fixup_rpl(sc->gs));
+ 	savesegment(fs, cur);
+-	if ((sc->fs | 0x03) != cur)
+-		loadsegment(fs, sc->fs | 0x03);
++	if (fixup_rpl(sc->fs) != cur)
++		loadsegment(fs, fixup_rpl(sc->fs));
++
+ 	savesegment(ds, cur);
+-	if ((sc->ds | 0x03) != cur)
+-		loadsegment(ds, sc->ds | 0x03);
++	if (fixup_rpl(sc->ds) != cur)
++		loadsegment(ds, fixup_rpl(sc->ds));
+ 	savesegment(es, cur);
+-	if ((sc->es | 0x03) != cur)
+-		loadsegment(es, sc->es | 0x03);
++	if (fixup_rpl(sc->es) != cur)
++		loadsegment(es, fixup_rpl(sc->es));
+ }
+ 
+ #define sigset32_t			compat_sigset_t
+@@ -105,18 +135,12 @@ static bool ia32_restore_sigcontext(struct pt_regs *regs,
+ 	regs->orig_ax = -1;
+ 
+ #ifdef CONFIG_IA32_EMULATION
+-	/*
+-	 * Reload fs and gs if they have changed in the signal
+-	 * handler.  This does not handle long fs/gs base changes in
+-	 * the handler, but does not clobber them at least in the
+-	 * normal case.
+-	 */
+ 	reload_segments(&sc);
+ #else
+-	loadsegment(gs, sc.gs);
+-	regs->fs = sc.fs;
+-	regs->es = sc.es;
+-	regs->ds = sc.ds;
++	loadsegment(gs, fixup_rpl(sc.gs));
++	regs->fs = fixup_rpl(sc.fs);
++	regs->es = fixup_rpl(sc.es);
++	regs->ds = fixup_rpl(sc.ds);
+ #endif
+ 
+ 	return fpu__restore_sig(compat_ptr(sc.fpstate), 1);
 -- 
 2.39.5
 
