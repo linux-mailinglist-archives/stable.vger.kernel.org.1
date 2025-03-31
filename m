@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-127211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30D7A769D5
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:19:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F52CA76A1E
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03BCC16C18C
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:18:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24A48188D383
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C2523BCEB;
-	Mon, 31 Mar 2025 14:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745C623BD0A;
+	Mon, 31 Mar 2025 14:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jTgjcGrB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLXc1VxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A487923A9AD;
-	Mon, 31 Mar 2025 14:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE6923BD00;
+	Mon, 31 Mar 2025 14:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432951; cv=none; b=cnL+6x1xX84Ev241rInGNbATOR5VDn3ajHCGGqMdzCLvTa3W35+Vo0ZxVnSSTQmvNFSB8rvT2wQV9rovtmjFYEo9uMqHaDiSeArTfEDRF5tIdQbKxes4/ok339JyfsOcCKblro3IbyY6WugVLVU+1OQB+307eipIYYByW+MssVE=
+	t=1743432953; cv=none; b=J343jodDAHGG5m6lp8wD2mTMDloUEiliTdnllekIECcClSfWwdtkbtQU538RMvMjA+H0WdGxH+o/eoMDvaLhQSyRJCcdnCPD8p8UVdrNMC6PAQOonb6wHhtTng7BxxrnRSBnhcHVyzeo4J9Rzm03ecZQDWJ5IQ/PT/3hf03QaPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432951; c=relaxed/simple;
-	bh=NcT/hrnzRrIJVeDe2fXHIUpKPsKeQ7p3K4hVhXqhQQI=;
+	s=arc-20240116; t=1743432953; c=relaxed/simple;
+	bh=H5+2lWJeC2qedJ7GiGJCXL5dN0FLI0q0Nwo+89w8j3E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Vnx8p+PVfvcCJe6f7Wn8YUcabqnQcMsiDAJjp5FEnTJT0f8osPk4dRXsda95KNd72ns30qhA+OqglJAFTyI5rfnUnB3zBJeUrSvvnpyeRjH8TtrNxLFqptGydwV8XBY4KoXKoy+bzu4CiMa5YTZ5Zln6K5ANy5HulAAWM5Gmoqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jTgjcGrB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FF6C4CEE3;
-	Mon, 31 Mar 2025 14:55:50 +0000 (UTC)
+	 MIME-Version; b=nsZbqvK9EahAPWIXiO6rekz8YPrhxYoF6yNjHpRHHqol/mWK7KbunJKVD2rZTEznQNNEK2bLPs17inb/FklfiL2QoSR/0Bo2N9Dq2ukFX2S7tqVy0ulqRMNAz2tUio3uXjy1QT6Gvh1BU9M5fUCWWSgInLSkuzxfY1HY+KCBY4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLXc1VxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1197DC4CEE3;
+	Mon, 31 Mar 2025 14:55:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432951;
-	bh=NcT/hrnzRrIJVeDe2fXHIUpKPsKeQ7p3K4hVhXqhQQI=;
+	s=k20201202; t=1743432953;
+	bh=H5+2lWJeC2qedJ7GiGJCXL5dN0FLI0q0Nwo+89w8j3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jTgjcGrB8Sijq8vgvC7EP8cYWaykh7THqUJebKNMrGwAH2xHFyhELtS9lKFHoP3v4
-	 AxbAwV9g4nay7GAqG9RPmSejUkPEK6tp7EtaJCWONe7/yi51MEf+8bPuVQUP4ZFaDz
-	 U2frugzH3neVdqLSm6Pk1hUhezsOjW/9SLiSKVlySiDU66nuwQGfXqexeOjcHE1XlA
-	 uDAKGUz7nq2O4a/h4NOfD9s1g1l986n0GzVHsJvOjldmFI2Z4yTUFBo/BkNugk3O3L
-	 Wkmj9sXBUfEdMTBnmBprWOkimgm1OyYBo6IxKgp3us0FBbRYRrlPy7z8opuI5JSePA
-	 528UafbYV+KGA==
+	b=TLXc1VxPICLz+nNar7aHbOR/ybnumFSvuIDNpV6vSPoYygOBcvxZ1+Dfo+5uY2Don
+	 qeUIkzsieoPUiKVnBbMzLHEzF0u0luOx0hYC66DJSPhHfncYdri0vRB+lqLxoia+4c
+	 s5FwHukLmTHo2Um11D+mf5AafPchrRdveKLvyCj/b+FQ0pFLtKm85x+DJTFiSxCJ3j
+	 FHpD4scLVWgjlOXCJmJ296etjpBJYkObGBOnr9xFxqn0d4mBf7yvPft7dyJ95mVOwv
+	 Rqo0MjFJKXKOUhdZ/QZgNTlk5KMEUv/NyrtUE7Xw2JHWp2saqKydnLpiI0fQpPHHEb
+	 UwDOTSNc7+xlg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+Cc: Ricard Wanderlof <ricard2013@butoba.net>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	jh80.chung@samsung.com,
-	linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 19/23] mmc: dw_mmc: add a quirk for accessing 64-bit FIFOs in two halves
-Date: Mon, 31 Mar 2025 10:55:05 -0400
-Message-Id: <20250331145510.1705478-19-sashal@kernel.org>
+	clemens@ladisch.de,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 20/23] ALSA: usb-audio: Fix CME quirk for UF series keyboards
+Date: Mon, 31 Mar 2025 10:55:06 -0400
+Message-Id: <20250331145510.1705478-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145510.1705478-1-sashal@kernel.org>
 References: <20250331145510.1705478-1-sashal@kernel.org>
@@ -66,181 +68,121 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Ricard Wanderlof <ricard2013@butoba.net>
 
-[ Upstream commit 57c0902f8bec51add5a1eb908d8b876592725d81 ]
+[ Upstream commit c2820405ba55a38932aa2177f026b70064296663 ]
 
-In certain DW MMC implementations (such as in some Exynos7870
-controllers), 64-bit read/write is not allowed from a 64-bit FIFO.
-Add a quirk which facilitates accessing the 64-bit FIFO registers in two
-32-bit halves.
+Fix quirk for CME master keyboards so it not only handles
+sysex but also song position pointer, MIDI timing clock, start
+and stop messages, and active sensing. All of these can be
+output by the CME UF series master keyboards.
 
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Link: https://lore.kernel.org/r/20250219-exynos7870-mmc-v2-2-b4255a3e39ed@disroot.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Tested with a CME UF6 in a desktop Linux environment as
+well as on the Zynthian Raspberry Pi based platform.
+
+Signed-off-by: Ricard Wanderlof <ricard2013@butoba.net>
+Link: https://patch.msgid.link/20250313-cme-fix-v1-1-d404889e4de8@butoba.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/dw_mmc.c | 94 ++++++++++++++++++++++++++++++++++++++-
- drivers/mmc/host/dw_mmc.h | 27 +++++++++++
- 2 files changed, 119 insertions(+), 2 deletions(-)
+ sound/usb/midi.c | 80 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 74 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
-index e9f6e4e622901..55158540c28cf 100644
---- a/drivers/mmc/host/dw_mmc.c
-+++ b/drivers/mmc/host/dw_mmc.c
-@@ -2579,6 +2579,91 @@ static void dw_mci_pull_data64(struct dw_mci *host, void *buf, int cnt)
- 	}
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index 779d97d31f170..826ac870f2469 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -489,16 +489,84 @@ static void ch345_broken_sysex_input(struct snd_usb_midi_in_endpoint *ep,
+ 
+ /*
+  * CME protocol: like the standard protocol, but SysEx commands are sent as a
+- * single USB packet preceded by a 0x0F byte.
++ * single USB packet preceded by a 0x0F byte, as are system realtime
++ * messages and MIDI Active Sensing.
++ * Also, multiple messages can be sent in the same packet.
+  */
+ static void snd_usbmidi_cme_input(struct snd_usb_midi_in_endpoint *ep,
+ 				  uint8_t *buffer, int buffer_length)
+ {
+-	if (buffer_length < 2 || (buffer[0] & 0x0f) != 0x0f)
+-		snd_usbmidi_standard_input(ep, buffer, buffer_length);
+-	else
+-		snd_usbmidi_input_data(ep, buffer[0] >> 4,
+-				       &buffer[1], buffer_length - 1);
++	int remaining = buffer_length;
++
++	/*
++	 * CME send sysex, song position pointer, system realtime
++	 * and active sensing using CIN 0x0f, which in the standard
++	 * is only intended for single byte unparsed data.
++	 * So we need to interpret these here before sending them on.
++	 * By default, we assume single byte data, which is true
++	 * for system realtime (midi clock, start, stop and continue)
++	 * and active sensing, and handle the other (known) cases
++	 * separately.
++	 * In contrast to the standard, CME does not split sysex
++	 * into multiple 4-byte packets, but lumps everything together
++	 * into one. In addition, CME can string multiple messages
++	 * together in the same packet; pressing the Record button
++	 * on an UF6 sends a sysex message directly followed
++	 * by a song position pointer in the same packet.
++	 * For it to have any reasonable meaning, a sysex message
++	 * needs to be at least 3 bytes in length (0xf0, id, 0xf7),
++	 * corresponding to a packet size of 4 bytes, and the ones sent
++	 * by CME devices are 6 or 7 bytes, making the packet fragments
++	 * 7 or 8 bytes long (six or seven bytes plus preceding CN+CIN byte).
++	 * For the other types, the packet size is always 4 bytes,
++	 * as per the standard, with the data size being 3 for SPP
++	 * and 1 for the others.
++	 * Thus all packet fragments are at least 4 bytes long, so we can
++	 * skip anything that is shorter; this also conveniantly skips
++	 * packets with size 0, which CME devices continuously send when
++	 * they have nothing better to do.
++	 * Another quirk is that sometimes multiple messages are sent
++	 * in the same packet. This has been observed for midi clock
++	 * and active sensing i.e. 0x0f 0xf8 0x00 0x00 0x0f 0xfe 0x00 0x00,
++	 * but also multiple note ons/offs, and control change together
++	 * with MIDI clock. Similarly, some sysex messages are followed by
++	 * the song position pointer in the same packet, and occasionally
++	 * additionally by a midi clock or active sensing.
++	 * We handle this by looping over all data and parsing it along the way.
++	 */
++	while (remaining >= 4) {
++		int source_length = 4; /* default */
++
++		if ((buffer[0] & 0x0f) == 0x0f) {
++			int data_length = 1; /* default */
++
++			if (buffer[1] == 0xf0) {
++				/* Sysex: Find EOX and send on whole message. */
++				/* To kick off the search, skip the first
++				 * two bytes (CN+CIN and SYSEX (0xf0).
++				 */
++				uint8_t *tmp_buf = buffer + 2;
++				int tmp_length = remaining - 2;
++
++				while (tmp_length > 1 && *tmp_buf != 0xf7) {
++					tmp_buf++;
++					tmp_length--;
++				}
++				data_length = tmp_buf - buffer;
++				source_length = data_length + 1;
++			} else if (buffer[1] == 0xf2) {
++				/* Three byte song position pointer */
++				data_length = 3;
++			}
++			snd_usbmidi_input_data(ep, buffer[0] >> 4,
++					       &buffer[1], data_length);
++		} else {
++			/* normal channel events */
++			snd_usbmidi_standard_input(ep, buffer, source_length);
++		}
++		buffer += source_length;
++		remaining -= source_length;
++	}
  }
  
-+static void dw_mci_push_data64_32(struct dw_mci *host, void *buf, int cnt)
-+{
-+	struct mmc_data *data = host->data;
-+	int init_cnt = cnt;
-+
-+	/* try and push anything in the part_buf */
-+	if (unlikely(host->part_buf_count)) {
-+		int len = dw_mci_push_part_bytes(host, buf, cnt);
-+
-+		buf += len;
-+		cnt -= len;
-+
-+		if (host->part_buf_count == 8) {
-+			mci_fifo_l_writeq(host->fifo_reg, host->part_buf);
-+			host->part_buf_count = 0;
-+		}
-+	}
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	if (unlikely((unsigned long)buf & 0x7)) {
-+		while (cnt >= 8) {
-+			u64 aligned_buf[16];
-+			int len = min(cnt & -8, (int)sizeof(aligned_buf));
-+			int items = len >> 3;
-+			int i;
-+			/* memcpy from input buffer into aligned buffer */
-+			memcpy(aligned_buf, buf, len);
-+			buf += len;
-+			cnt -= len;
-+			/* push data from aligned buffer into fifo */
-+			for (i = 0; i < items; ++i)
-+				mci_fifo_l_writeq(host->fifo_reg, aligned_buf[i]);
-+		}
-+	} else
-+#endif
-+	{
-+		u64 *pdata = buf;
-+
-+		for (; cnt >= 8; cnt -= 8)
-+			mci_fifo_l_writeq(host->fifo_reg, *pdata++);
-+		buf = pdata;
-+	}
-+	/* put anything remaining in the part_buf */
-+	if (cnt) {
-+		dw_mci_set_part_bytes(host, buf, cnt);
-+		/* Push data if we have reached the expected data length */
-+		if ((data->bytes_xfered + init_cnt) ==
-+		    (data->blksz * data->blocks))
-+			mci_fifo_l_writeq(host->fifo_reg, host->part_buf);
-+	}
-+}
-+
-+static void dw_mci_pull_data64_32(struct dw_mci *host, void *buf, int cnt)
-+{
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	if (unlikely((unsigned long)buf & 0x7)) {
-+		while (cnt >= 8) {
-+			/* pull data from fifo into aligned buffer */
-+			u64 aligned_buf[16];
-+			int len = min(cnt & -8, (int)sizeof(aligned_buf));
-+			int items = len >> 3;
-+			int i;
-+
-+			for (i = 0; i < items; ++i)
-+				aligned_buf[i] = mci_fifo_l_readq(host->fifo_reg);
-+
-+			/* memcpy from aligned buffer into output buffer */
-+			memcpy(buf, aligned_buf, len);
-+			buf += len;
-+			cnt -= len;
-+		}
-+	} else
-+#endif
-+	{
-+		u64 *pdata = buf;
-+
-+		for (; cnt >= 8; cnt -= 8)
-+			*pdata++ = mci_fifo_l_readq(host->fifo_reg);
-+		buf = pdata;
-+	}
-+	if (cnt) {
-+		host->part_buf = mci_fifo_l_readq(host->fifo_reg);
-+		dw_mci_pull_final_bytes(host, buf, cnt);
-+	}
-+}
-+
- static void dw_mci_pull_data(struct dw_mci *host, void *buf, int cnt)
- {
- 	int len;
-@@ -3379,8 +3464,13 @@ int dw_mci_probe(struct dw_mci *host)
- 		width = 16;
- 		host->data_shift = 1;
- 	} else if (i == 2) {
--		host->push_data = dw_mci_push_data64;
--		host->pull_data = dw_mci_pull_data64;
-+		if ((host->quirks & DW_MMC_QUIRK_FIFO64_32)) {
-+			host->push_data = dw_mci_push_data64_32;
-+			host->pull_data = dw_mci_pull_data64_32;
-+		} else {
-+			host->push_data = dw_mci_push_data64;
-+			host->pull_data = dw_mci_pull_data64;
-+		}
- 		width = 64;
- 		host->data_shift = 3;
- 	} else {
-diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
-index 6447b916990dc..5463392dc8110 100644
---- a/drivers/mmc/host/dw_mmc.h
-+++ b/drivers/mmc/host/dw_mmc.h
-@@ -281,6 +281,8 @@ struct dw_mci_board {
- 
- /* Support for longer data read timeout */
- #define DW_MMC_QUIRK_EXTENDED_TMOUT            BIT(0)
-+/* Force 32-bit access to the FIFO */
-+#define DW_MMC_QUIRK_FIFO64_32                 BIT(1)
- 
- #define DW_MMC_240A		0x240a
- #define DW_MMC_280A		0x280a
-@@ -472,6 +474,31 @@ struct dw_mci_board {
- #define mci_fifo_writel(__value, __reg)	__raw_writel(__reg, __value)
- #define mci_fifo_writeq(__value, __reg)	__raw_writeq(__reg, __value)
- 
-+/*
-+ * Some dw_mmc devices have 64-bit FIFOs, but expect them to be
-+ * accessed using two 32-bit accesses. If such controller is used
-+ * with a 64-bit kernel, this has to be done explicitly.
-+ */
-+static inline u64 mci_fifo_l_readq(void __iomem *addr)
-+{
-+	u64 ans;
-+	u32 proxy[2];
-+
-+	proxy[0] = mci_fifo_readl(addr);
-+	proxy[1] = mci_fifo_readl(addr + 4);
-+	memcpy(&ans, proxy, 8);
-+	return ans;
-+}
-+
-+static inline void mci_fifo_l_writeq(void __iomem *addr, u64 value)
-+{
-+	u32 proxy[2];
-+
-+	memcpy(proxy, &value, 8);
-+	mci_fifo_writel(addr, proxy[0]);
-+	mci_fifo_writel(addr + 4, proxy[1]);
-+}
-+
- /* Register access macros */
- #define mci_readl(dev, reg)			\
- 	readl_relaxed((dev)->regs + SDMMC_##reg)
+ /*
 -- 
 2.39.5
 
