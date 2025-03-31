@@ -1,68 +1,61 @@
-Return-Path: <stable+bounces-127130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76171A768A1
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB0CA768A4
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 998537A20C9
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:49:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E1587A12A6
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B2322D4D0;
-	Mon, 31 Mar 2025 14:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD4F22D4E7;
+	Mon, 31 Mar 2025 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLDheGcu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3atrgKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E775B22D4C8;
-	Mon, 31 Mar 2025 14:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C8921B9F6;
+	Mon, 31 Mar 2025 14:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743431847; cv=none; b=mNOVROiSjBwLsOwEIuSptfn8/qFYzqDsEsb/Ouslc0cDERi5xM3D97LyVQxws3vl+zK9kbvSCUH/LtJCsWcNehwLNkqgkJUKuySa3LBK4RXcsefDapSY9hVHIAVz/7FU9Hp7YY2DCW68GE0ywage6XsYipNf1X+s9aSruepDwWE=
+	t=1743431851; cv=none; b=cfVLgVkYynSmXRYSgCd+So6RIXM8xkO6S6F2r6l3Ye6SG2hzYmORo90GBSNhnRh13LqPvQiAzAFlHO39cR75RqZNdcA2AT+PAmwpXmwd7UkZS92j7ckfJlqNJj299Eg1R+IZnhWQqYRi5HqDpKIINPznH2fPTZIiKevyfb9FO2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743431847; c=relaxed/simple;
-	bh=5ADO/3ZB6u14eIhTvT/hIqhq1OHtuLq3qs53bMniVfQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uurSRfwxuFiiuOrSnOUKagSx+GHrjeN1HsGRhk5o2MEgdlYEB0QvBzY8/DJ/kMEhWHdzSn8v774e7nLj9ZBizzlGOMNEhws92LhVad3TZJGmakAt8GcsCxBnVefC07lkq0Bj3/mxxn57HTmoswwPSqsMjyyRR63U47zr89wONjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLDheGcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98C4C4CEE3;
-	Mon, 31 Mar 2025 14:37:24 +0000 (UTC)
+	s=arc-20240116; t=1743431851; c=relaxed/simple;
+	bh=doh+7ARyEYWjZJvgKfbqcxfkqsBHv0qsRf5JId0INjw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EhvqlLfBG/owoGBfXP9ueugCJSyVZ8qTscD7r5xYqdnxZ9LpwYhx+r8V8/0PF0CXaH318lnvZeFQQKPf5qXEA7sJrh7BnkA1PkWaIHT2stOzEivOsZbG2HCP2BbVA5zniIOMi8NH27cSUAKbnz3fEefe/ACr4YQ3K1gZSMoR+xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3atrgKf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAD2C4CEE4;
+	Mon, 31 Mar 2025 14:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743431846;
-	bh=5ADO/3ZB6u14eIhTvT/hIqhq1OHtuLq3qs53bMniVfQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KLDheGcumL9qAiOvnZq8ZnWs9EET6sUTQzysSA/GFdCOhgv4I9wI7e6X7AQFR7PWt
-	 GUJe+HqNEVSqC5/CcBecISgF19vIiK4Zvvoh2UdmcY4wgnDpmjmAtPS1nwXOXXp05V
-	 llxzIPHQl3j4BJh9Ju+/qcryntiKJMRhB2TkSP8jhjKDaXO5Exo66cZ1liI++nC7Rb
-	 SlZo+vWL5oVFk0AAN2E3l1D18zwV7FPKz3uxPGUtv484iMsf3mOmJQPvPKY4rlVNoF
-	 iTL0dajY8o+VffR+2arhy9yEVr6UZjFVGad9NSRpc174lNlGtPDqFXtp1YnwJjrX2e
-	 4hOaRapZFbQbA==
+	s=k20201202; t=1743431850;
+	bh=doh+7ARyEYWjZJvgKfbqcxfkqsBHv0qsRf5JId0INjw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=k3atrgKfckisFLP/9gKDGvlWCvIe2BVdG+IH6il79cD2Fe8xe3o+IKTfcsS+/gD0Z
+	 xfxRXCAY6CKJzdJ1jRcyKLMcU30cQ5DslY+kc1HYYMM3hiXpA0RhYg0nAiHP8t8QmW
+	 lfLuvrBm0GH09bIMJ4x+ZA7/Tk/hZsJQfPGiyw3U16GKNdUHXXbSLPZDRdmcEqSe1y
+	 6SWqVx258NG52PNTDBQhRav/92R3mpNBb0f+nz/aPubCYQP3VoLwwu01hf89PVe8/Z
+	 h/QaP9jcYRcNzgCRCfhAwLGhCR4BZU0cdTI4gfSU54Ei5LcdQro8+tiZONjfsXc7NO
+	 dMh0VsyH4IpBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	dave.hansen@linux.intel.com,
-	peterz@infradead.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org
-Subject: [PATCH AUTOSEL 5.10 6/6] x86/mm/ident_map: Fix theoretical virtual address overflow to zero
-Date: Mon, 31 Mar 2025 10:37:08 -0400
-Message-Id: <20250331143710.1686600-6-sashal@kernel.org>
+	trenn@suse.com,
+	shuah@kernel.org,
+	jwyatt@redhat.com,
+	jkacur@redhat.com,
+	peng.fan@nxp.com,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/5] pm: cpupower: bench: Prevent NULL dereference on malloc failure
+Date: Mon, 31 Mar 2025 10:37:22 -0400
+Message-Id: <20250331143728.1686696-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250331143710.1686600-1-sashal@kernel.org>
-References: <20250331143710.1686600-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,86 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.235
+X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit f666c92090a41ac5524dade63ff96b3adcf8c2ab ]
+[ Upstream commit 208baa3ec9043a664d9acfb8174b332e6b17fb69 ]
 
-The current calculation of the 'next' virtual address in the
-page table initialization functions in arch/x86/mm/ident_map.c
-doesn't protect against wrapping to zero.
+If malloc returns NULL due to low memory, 'config' pointer can be NULL.
+Add a check to prevent NULL dereference.
 
-This is a theoretical issue that cannot happen currently,
-the problematic case is possible only if the user sets a
-high enough x86_mapping_info::offset value - which no
-current code in the upstream kernel does.
-
-( The wrapping to zero only occurs if the top PGD entry is accessed.
-  There are no such users upstream. Only hibernate_64.c uses
-  x86_mapping_info::offset, and it operates on the direct mapping
-  range, which is not the top PGD entry. )
-
-Should such an overflow happen, it can result in page table
-corruption and a hang.
-
-To future-proof this code, replace the manual 'next' calculation
-with p?d_addr_end() which handles wrapping correctly.
-
-[ Backporter's note: there's no need to backport this patch. ]
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20241016111458.846228-2-kirill.shutemov@linux.intel.com
+Link: https://lore.kernel.org/r/20250219122715.3892223-1-quic_zhonhan@quicinc.com
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/ident_map.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ tools/power/cpupower/bench/parse.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index 968d7005f4a72..2f383e288c430 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -27,9 +27,7 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
+diff --git a/tools/power/cpupower/bench/parse.c b/tools/power/cpupower/bench/parse.c
+index e63dc11fa3a53..48e25be6e1635 100644
+--- a/tools/power/cpupower/bench/parse.c
++++ b/tools/power/cpupower/bench/parse.c
+@@ -120,6 +120,10 @@ FILE *prepare_output(const char *dirname)
+ struct config *prepare_default_config()
+ {
+ 	struct config *config = malloc(sizeof(struct config));
++	if (!config) {
++		perror("malloc");
++		return NULL;
++	}
  
--		next = (addr & PUD_MASK) + PUD_SIZE;
--		if (next > end)
--			next = end;
-+		next = pud_addr_end(addr, end);
+ 	dprintf("loading defaults\n");
  
- 		if (info->direct_gbpages) {
- 			pud_t pudval;
-@@ -68,10 +66,7 @@ static int ident_p4d_init(struct x86_mapping_info *info, p4d_t *p4d_page,
- 		p4d_t *p4d = p4d_page + p4d_index(addr);
- 		pud_t *pud;
- 
--		next = (addr & P4D_MASK) + P4D_SIZE;
--		if (next > end)
--			next = end;
--
-+		next = p4d_addr_end(addr, end);
- 		if (p4d_present(*p4d)) {
- 			pud = pud_offset(p4d, 0);
- 			result = ident_pud_init(info, pud, addr, next);
-@@ -113,10 +108,7 @@ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
- 		pgd_t *pgd = pgd_page + pgd_index(addr);
- 		p4d_t *p4d;
- 
--		next = (addr & PGDIR_MASK) + PGDIR_SIZE;
--		if (next > end)
--			next = end;
--
-+		next = pgd_addr_end(addr, end);
- 		if (pgd_present(*pgd)) {
- 			p4d = p4d_offset(pgd, 0);
- 			result = ident_p4d_init(info, p4d, addr, next);
 -- 
 2.39.5
 
