@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-127079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3E3A76832
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:39:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B365A7684F
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1FCC7A2AFC
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:38:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ED2D188D691
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD832206BC;
-	Mon, 31 Mar 2025 14:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B37221578;
+	Mon, 31 Mar 2025 14:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4rsu0YO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BU1jfacc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123342144C4;
-	Mon, 31 Mar 2025 14:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86B422156D;
+	Mon, 31 Mar 2025 14:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743431694; cv=none; b=UIwaNALKY0/9chTsWI+tGR67C5RjIA7Wm+V1Dpq1TL96VtpjZ9UYcw0+KvEsZYRq8CUtt8osmfTqqBE4ozJfos1a/bCPOB1cZ0aDkILU/x7JrE/wSOhEHbPWbJO/rdxQN4thOLZx8dS+/sWh8JHUjIUxJPkGEH6+/zIdx/7kRnc=
+	t=1743431696; cv=none; b=kXF/JFyU6oooBIuXTSxHRGeFMFkJ2yGhSoidu953bE3gsn5oDN4VwpzKR4P84kmtQtxIkPPy5Gk3/R7mfh3trkzoUzO9odcnw/0QNtMhGi3O8qONcDcfvA63FPrj8gumqLBjU5nuM2XgQOG+zQlpL/fvw3Nffq1mcKp7IqHJMRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743431694; c=relaxed/simple;
-	bh=mAM52nXXk2wvI22VWk+1kREQBjj6KscgBkI2cwPtYwY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g0gR0tKOe+O+Aa4kASscgcrGwBlLM8YDGxcsc9DIDN8QqWtSixdI3qRC7Qk1CQ5S1OiROrUgJW/ZwtdMz6pHb1F2gSLGt8VJhOuQL5mS5EPhKY7fg/aJYWu6B24xuMY3QhjZRyQVLWTj5+7TlhmkSFhq00pv72OZyS4zkXoo+/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4rsu0YO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7FCC4CEE3;
-	Mon, 31 Mar 2025 14:34:51 +0000 (UTC)
+	s=arc-20240116; t=1743431696; c=relaxed/simple;
+	bh=OwDSW0Yx5MMteLWtiExux18IwLA6wIA5DFoE2zRAAfM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Id5/krto/LTyPowYqXvM0ysuXX2Sj7DgkuMdUzGmc5PXWuv28T/0L04f3GvkdG1G7LGSPPctzMxtABKQ+SG8aoJt4FM/aKw013lLkxaOKuGXYi2mqU9L5uIXeQReYMxdjazJn0LfNJuNKdWTS40Ud0LO6G6dI3e3aHVTH+miy9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BU1jfacc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC7BC4CEE3;
+	Mon, 31 Mar 2025 14:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743431693;
-	bh=mAM52nXXk2wvI22VWk+1kREQBjj6KscgBkI2cwPtYwY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D4rsu0YOvpuTU86W7BqCgMv76xZ4BeOaXwclxmhjrF6r0+IulNA30EVzFCtdCKwJn
-	 xrZxUjGu9LaQimRft0iU2Tz47TrrLxa5bqpxIwnoskGpJg6dzjsvHhIi2QgkHZEMgD
-	 Ibx9QMF9IHY9GPTe/Unr/40Ra03ruPjbO2UnzN6Z4bkjhhHOkv4IhyIJJeMawiX10i
-	 bfv+jxOABFk81zGdiuaoA9v+X73zhYJMenuPtphVUvb0wmSTGLMJnbWK1qUWNKMGiE
-	 gG75pNtPqW0RhhlzectBVC1AH9GS5lP7/g3LS106bbiQv3mX0yKU62QmB+F5HNxwCr
-	 MrtZFzsDxzutQ==
+	s=k20201202; t=1743431696;
+	bh=OwDSW0Yx5MMteLWtiExux18IwLA6wIA5DFoE2zRAAfM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BU1jfaccERxRKeAaN6nOFGfU1OsGMDs7r3gU3nimIhKeDiGPRBYiGJJJVcimVTBeu
+	 ZCbr386NlVCZb0v8d4gHVEpGb9nQZU1wDbEvwEC+hNh2xDp/Ju7De0RI4T0TIpX4Ui
+	 jjkSGESsnM7zta0TedIcIOU27cWIFUMtheXUHbCYI0hghIXlDzujfBu9O3WL3EP1BX
+	 qb9sw3cEm4kHBJRGfECFUHNto/P6mMDLW18dFHbN6QoVy/5rP0qkvmxHd8oXNEAS64
+	 xQdphM5y6h1W769hDdLBnXLzJRtdRzAA6PMVqFd3hdAttwcT1cabmGYXSaSf3gqFDq
+	 dHE1DjewLhvfA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Paul E. McKenney" <paulmck@kernel.org>,
-	syzbot+16a19b06125a2963eaee@syzkaller.appspotmail.com,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	bpf@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>,
+Cc: Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jiangshanlai@gmail.com,
-	josh@joshtriplett.org,
-	rcu@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 01/16] srcu: Force synchronization for srcu_get_delay()
-Date: Mon, 31 Mar 2025 10:34:35 -0400
-Message-Id: <20250331143450.1685242-1-sashal@kernel.org>
+	trenn@suse.com,
+	shuah@kernel.org,
+	jwyatt@redhat.com,
+	jkacur@redhat.com,
+	peng.fan@nxp.com,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 02/16] pm: cpupower: bench: Prevent NULL dereference on malloc failure
+Date: Mon, 31 Mar 2025 10:34:36 -0400
+Message-Id: <20250331143450.1685242-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250331143450.1685242-1-sashal@kernel.org>
+References: <20250331143450.1685242-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,81 +70,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: "Paul E. McKenney" <paulmck@kernel.org>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit d31e31365b5b6c0cdfc74d71be87234ced564395 ]
+[ Upstream commit 208baa3ec9043a664d9acfb8174b332e6b17fb69 ]
 
-Currently, srcu_get_delay() can be called concurrently, for example,
-by a CPU that is the first to request a new grace period and the CPU
-processing the current grace period.  Although concurrent access is
-harmless, it unnecessarily expands the state space.  Additionally,
-all calls to srcu_get_delay() are from slow paths.
+If malloc returns NULL due to low memory, 'config' pointer can be NULL.
+Add a check to prevent NULL dereference.
 
-This commit therefore protects all calls to srcu_get_delay() with
-ssp->srcu_sup->lock, which is already held on the invocation from the
-srcu_funnel_gp_start() function.  While in the area, this commit also
-adds a lockdep_assert_held() to srcu_get_delay() itself.
-
-Reported-by: syzbot+16a19b06125a2963eaee@syzkaller.appspotmail.com
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: <bpf@vger.kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20250219122715.3892223-1-quic_zhonhan@quicinc.com
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/srcutree.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tools/power/cpupower/bench/parse.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index 5e2e534647946..c5419e97bd97b 100644
---- a/kernel/rcu/srcutree.c
-+++ b/kernel/rcu/srcutree.c
-@@ -647,6 +647,7 @@ static unsigned long srcu_get_delay(struct srcu_struct *ssp)
- 	unsigned long jbase = SRCU_INTERVAL;
- 	struct srcu_usage *sup = ssp->srcu_sup;
- 
-+	lockdep_assert_held(&ACCESS_PRIVATE(ssp->srcu_sup, lock));
- 	if (srcu_gp_is_expedited(ssp))
- 		jbase = 0;
- 	if (rcu_seq_state(READ_ONCE(sup->srcu_gp_seq))) {
-@@ -674,9 +675,13 @@ static unsigned long srcu_get_delay(struct srcu_struct *ssp)
- void cleanup_srcu_struct(struct srcu_struct *ssp)
+diff --git a/tools/power/cpupower/bench/parse.c b/tools/power/cpupower/bench/parse.c
+index 080678d9d74e2..bd67c758b33ac 100644
+--- a/tools/power/cpupower/bench/parse.c
++++ b/tools/power/cpupower/bench/parse.c
+@@ -121,6 +121,10 @@ FILE *prepare_output(const char *dirname)
+ struct config *prepare_default_config()
  {
- 	int cpu;
-+	unsigned long delay;
- 	struct srcu_usage *sup = ssp->srcu_sup;
+ 	struct config *config = malloc(sizeof(struct config));
++	if (!config) {
++		perror("malloc");
++		return NULL;
++	}
  
--	if (WARN_ON(!srcu_get_delay(ssp)))
-+	spin_lock_irq_rcu_node(ssp->srcu_sup);
-+	delay = srcu_get_delay(ssp);
-+	spin_unlock_irq_rcu_node(ssp->srcu_sup);
-+	if (WARN_ON(!delay))
- 		return; /* Just leak it! */
- 	if (WARN_ON(srcu_readers_active(ssp)))
- 		return; /* Just leak it! */
-@@ -1102,7 +1107,9 @@ static bool try_check_zero(struct srcu_struct *ssp, int idx, int trycount)
- {
- 	unsigned long curdelay;
+ 	dprintf("loading defaults\n");
  
-+	spin_lock_irq_rcu_node(ssp->srcu_sup);
- 	curdelay = !srcu_get_delay(ssp);
-+	spin_unlock_irq_rcu_node(ssp->srcu_sup);
- 
- 	for (;;) {
- 		if (srcu_readers_active_idx_check(ssp, idx))
-@@ -1849,7 +1856,9 @@ static void process_srcu(struct work_struct *work)
- 	ssp = sup->srcu_ssp;
- 
- 	srcu_advance_state(ssp);
-+	spin_lock_irq_rcu_node(ssp->srcu_sup);
- 	curdelay = srcu_get_delay(ssp);
-+	spin_unlock_irq_rcu_node(ssp->srcu_sup);
- 	if (curdelay) {
- 		WRITE_ONCE(sup->reschedule_count, 0);
- 	} else {
 -- 
 2.39.5
 
