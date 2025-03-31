@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-127075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50489A7683F
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:40:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0699BA7682C
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52ABB18859F0
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:39:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9108716ABA4
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A89E218AA3;
-	Mon, 31 Mar 2025 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6837A21E0BD;
+	Mon, 31 Mar 2025 14:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jn4DcN9S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rqSoh5qd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA18D21D5A7;
-	Mon, 31 Mar 2025 14:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2701621E0BA;
+	Mon, 31 Mar 2025 14:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743431681; cv=none; b=Umu6PfDWCswgQKS2xs9z01Abt5xQmR8giLlWCiPASLdH5pszYhsZBNcegYq0KFTwyHL5P3nyPFucs2Y2xA3B11hpwp5olMLHECxIsMYfv6qIn2e0z66f7ere8mxsZ6pYdwZlD2U9ylovtEr8yeK7IJYK0iD4pMy9UE3yC6ULQDQ=
+	t=1743431685; cv=none; b=Gfx83xi1tBENa9gstS4t0XR4mjpgEIffs5gYMwW1vH8gNAQEMl56ktLlIPRKyWG8JqIEFeuq/MSfdrDiKkTtZ7VB4ARPtJDd4hJA9JcKsMBvlWWroEc/w7sIz4xeQf6gnGpnI3JD3XpzzQBPI2P/D7GQVSfhOe/kr4FlsqsaMio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743431681; c=relaxed/simple;
-	bh=GIrt7w0DLmjw04BZ37oHxkGh+eTxPO57Gus5gul+Uuo=;
+	s=arc-20240116; t=1743431685; c=relaxed/simple;
+	bh=Q/k4m5b+O4/qJe7oLypmoL0kQq7LTjsImryXZvNM048=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=c34VDPTzw3jU0kAqzzZ5g6lNKSc31k/mNv1XuEh9XCjC3U2uW8YMy32FUFSwAW0KGy354eWMeuc+ShqssBd7PeJ457yuw3sBozCZlEZWn+ziVP/KkHAxpb/MEM6ZEP/SbK9ZCyv/8K3uc+VG3bcJkLQOhuCYeXODH8OAydtxJRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jn4DcN9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F358C4CEE3;
-	Mon, 31 Mar 2025 14:34:40 +0000 (UTC)
+	 MIME-Version; b=bidme5oZ252LRWJjZGTM7qFsIEMbb0AdVRI0ffSOYOz4QRL/2ZpSLw9zzsBDW1m/E/bmrkfwMOzSEyKyhsu5MvlxF+r2lyMz+zN6O0Z807YSpI6NAZrFuMzIcj5tMSSRX+YrI9GwTxOYAnW0Dz6S+NLaLHCM0D2dBSE8jVZK7DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rqSoh5qd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11708C4CEE4;
+	Mon, 31 Mar 2025 14:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743431681;
-	bh=GIrt7w0DLmjw04BZ37oHxkGh+eTxPO57Gus5gul+Uuo=;
+	s=k20201202; t=1743431684;
+	bh=Q/k4m5b+O4/qJe7oLypmoL0kQq7LTjsImryXZvNM048=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jn4DcN9Sismu84Q1M4GTygU0FNGUhraxzQ57+GVS8d/PpvbcnzYxaKTsA2cb4/k97
-	 giNCv+OHHFOyV0B7Z1fImfQJpFsJIjYJ1nBxcOe/5/FZ5Y1mzy6rYWLDeuyteJoZZR
-	 Uh+cKZ3rRfQ72LuWikTyrQA66M9HwAyh4HTTDCTUSzfWkPFC57noVa0YcfG3GvTgWe
-	 4vpyrHQ+0tmV/1dYXEHOS4g9fN0oijPcZh9YukaDzL1bWsgpX76fBBa3op6eVgES1Y
-	 N1RmQt9+K3TcMI1iDT5D56zNyelbVnWwKTzWj/lDs+qlGs1eEdsPDOb4gM4Ty0IVbc
-	 huZzCzEZI5h1Q==
+	b=rqSoh5qdHEnTqpW9NF0eI+v0xImawH4BZEamGhXkaLaUz2YpmEQ3JvQVMlR94Vdqu
+	 WVMtdrRMxk9ndssmUpOTLBv6H8ooVNZEsSdWRl7KaeSH8KYFVzlQ9FT92rrT9/sXFs
+	 tFl9Y7W4t0dn5WzDVoywiYKeBp/KqBqmdjxIUir40FirxU6VMm2BG+5XqJVlpsip3b
+	 yC7vafo5ueJqf/25Ox8l6lu5MluKDPlpzAjwt+VUqUvGQ8iLZus8JHZ55QbfT+oApy
+	 71fv0iqxYqrKUTGVyPupXRBv/kaNIPMSFIPknHXb4Pde7fe8oalH1R+eloc82a9+cA
+	 dYR8Zu2bKGWqA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
-	Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>,
-	Miroslav Pavleski <miroslav@pavleski.net>,
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ray.huang@amd.com,
-	rafael@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 13/18] cpufreq/amd-pstate: Invalidate cppc_req_cached during suspend
-Date: Mon, 31 Mar 2025 10:34:03 -0400
-Message-Id: <20250331143409.1682789-13-sashal@kernel.org>
+	will@kernel.org,
+	mark.rutland@arm.com,
+	oliver.upton@linux.dev,
+	shameerali.kolothum.thodi@huawei.com,
+	maz@kernel.org,
+	bwicaksono@nvidia.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 14/18] arm64: cputype: Add QCOM_CPU_PART_KRYO_3XX_GOLD
+Date: Mon, 31 Mar 2025 10:34:04 -0400
+Message-Id: <20250331143409.1682789-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331143409.1682789-1-sashal@kernel.org>
 References: <20250331143409.1682789-1-sashal@kernel.org>
@@ -69,50 +73,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit b7a41156588ad03757bf0a2f0e05d6cbcebeaa9e ]
+[ Upstream commit 401c3333bb2396aa52e4121887a6f6a6e2f040bc ]
 
-During resume it's possible the firmware didn't restore the CPPC request
-MSR but the kernel thinks the values line up. This leads to incorrect
-performance after resume from suspend.
+Add a definition for the Qualcomm Kryo 300-series Gold cores.
 
-To fix the issue invalidate the cached value at suspend. During resume use
-the saved values programmed as cached limits.
-
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Reviewed-by: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
-Reported-by: Miroslav Pavleski <miroslav@pavleski.net>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217931
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20241219131107.v3.1.I18e0288742871393228249a768e5d56ea65d93dc@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 313550fa62d41..340fb00aec6d7 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -1617,7 +1617,7 @@ static int amd_pstate_epp_reenable(struct cpufreq_policy *policy)
- 					  max_perf, policy->boost_enabled);
- 	}
- 
--	return amd_pstate_update_perf(cpudata, 0, 0, max_perf, cpudata->epp_cached, false);
-+	return amd_pstate_epp_update_limit(policy);
- }
- 
- static int amd_pstate_epp_cpu_online(struct cpufreq_policy *policy)
-@@ -1666,6 +1666,9 @@ static int amd_pstate_epp_suspend(struct cpufreq_policy *policy)
- 	if (cppc_state != AMD_PSTATE_ACTIVE)
- 		return 0;
- 
-+	/* invalidate to ensure it's rewritten during resume */
-+	cpudata->cppc_req_cached = 0;
-+
- 	/* set this flag to avoid setting core offline*/
- 	cpudata->suspended = true;
- 
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 6f3f4142e214f..c2da1661a44e6 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -119,6 +119,7 @@
+ #define QCOM_CPU_PART_KRYO		0x200
+ #define QCOM_CPU_PART_KRYO_2XX_GOLD	0x800
+ #define QCOM_CPU_PART_KRYO_2XX_SILVER	0x801
++#define QCOM_CPU_PART_KRYO_3XX_GOLD	0x802
+ #define QCOM_CPU_PART_KRYO_3XX_SILVER	0x803
+ #define QCOM_CPU_PART_KRYO_4XX_GOLD	0x804
+ #define QCOM_CPU_PART_KRYO_4XX_SILVER	0x805
+@@ -196,6 +197,7 @@
+ #define MIDR_QCOM_KRYO MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO)
+ #define MIDR_QCOM_KRYO_2XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_GOLD)
+ #define MIDR_QCOM_KRYO_2XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_SILVER)
++#define MIDR_QCOM_KRYO_3XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_GOLD)
+ #define MIDR_QCOM_KRYO_3XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_SILVER)
+ #define MIDR_QCOM_KRYO_4XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_GOLD)
+ #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
 -- 
 2.39.5
 
