@@ -1,148 +1,190 @@
-Return-Path: <stable+bounces-127269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7920AA76D8E
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 21:42:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD02A76DE5
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 22:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C930B3AABC4
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 19:42:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A406188CBB2
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 20:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16072215067;
-	Mon, 31 Mar 2025 19:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D125721517E;
+	Mon, 31 Mar 2025 20:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="PfD6USYn"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="mwRI0wn0"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95391214201
-	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 19:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6975E1C5D7A;
+	Mon, 31 Mar 2025 20:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743450150; cv=none; b=erpusD6vzWoOYnE5a9NR24SrWVGsmtpXi+I+VL3P4HIPeybI6RrxYxc0WieEyjdB0O6nuXyMrKr8J6VWOlv69GtkUUkaU/y2Tj50zewZGPNBl91nl0hyp7E9eUCLnVjFLinHCxu5aeojnw/svHpnd1z7LrOEpt2mx8IFRLtmzJc=
+	t=1743451470; cv=none; b=CMukNL1smCvU7HrpAlyuPb+GFeJbvvMVkLdPK2AkDBm35puWrB89sPoG7v1xeer7Q2R1ZiQdnSLPUn+QbzLl2bLX7DSsDgEBNbPieARuFN9IvOTAJ4ehB6lvquW4d54jjB0d40bX7mYTIijwUISKF8pXamOE8Og99AlIYGkYaXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743450150; c=relaxed/simple;
-	bh=aPKWTk9O6jvx7rc6Zp+Is6TBVXCKivNv+Hw0kK9/cTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zl8ZP8LU0HVoT6Ui3JI5cUsr2UiqJ01d9Pf+dCvMc9lpyQOHDXrw+G7xWh89cYs4JuUbDt8pPIMIAjzrz6CegWbAc+NHeLcpRvBM0/2R+/oOEbjdX/t8iiHXkEi/xM2TX/CRgOR/Sgo14tWp3PntnVTeumiGWxCWvrw7bxW88rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=PfD6USYn; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=rVlZZIyv4OmgkIPoXTTB1AOOU+jCOEaTz7XE+EIH4Es=; b=PfD6USYnQn7UdkrdK8S+n6AhjU
-	KPG1r0g+MGl8ap2Fkr/Jle67xArcIR/Chclmh3xVu4n1gCge+URpJ/VDnq4l88hAO1ejlzkUCry3f
-	DG2VfY805uCZF4xDRYKUukV/efvmQaH3IqSbBD7LsXASKcwjzdV6FwaKQU6mK32iMfBfef5kgtBOa
-	EVyJoL/8I7eL+I8IYoP4VdVtVaDWYeAevY+xhHa2/lSMXWR4jUA6rO9Iqac7u4u3h3fOl04Exl6g8
-	3WG0nhPHXMXdX/98VlHKrZcZOTRJ/VvGjZ7fnvXGkJPkY16hLjl8fc+ewJi4gq1YOlEXXbJ8eGJ69
-	LRrRrF6A==;
-Received: from [179.125.94.226] (helo=quatroqueijos.lan)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tzL1d-009LPP-1s; Mon, 31 Mar 2025 21:42:26 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: stable@vger.kernel.org
-Cc: Imre Deak <imre.deak@intel.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	kernel-dev@igalia.com,
-	cascardo@igalia.com
-Subject: [PATCH 6.6 3/3] drm/amd/display: Don't write DP_MSTM_CTRL after LT
-Date: Mon, 31 Mar 2025 16:42:17 -0300
-Message-ID: <20250331194217.763735-3-cascardo@igalia.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250331194217.763735-1-cascardo@igalia.com>
-References: <20250331194217.763735-1-cascardo@igalia.com>
+	s=arc-20240116; t=1743451470; c=relaxed/simple;
+	bh=8mhciQk3HNzOogA+iAMRW1adL+y5/80yE1gAmrwRiys=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=GYCPNrrC/jwkZx0L3WyNdVWo0IfVI4hgHqZ3ALqbs4eX/tj0nU1ZwjmGVxCVmDyRuOLbdXLbR+bqtKIxN5hue7Uza5QH8Qihe/OBNo7O9rUcGMzbqiPqf2HgW7TuYHbALpC2PTy3Rf0aoGiKa0x7j7gbbAjB4YYtDE7cLsg4Gx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=mwRI0wn0; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 52VK3rrW3400773
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 31 Mar 2025 13:03:53 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 52VK3rrW3400773
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025032001; t=1743451434;
+	bh=v8U0XHZi6lxT6tv6Qcq2KDfmB1yuIr305PlMO2qKFKc=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=mwRI0wn0fINax6NVfzvYht9qPRyoDSv9oOrViwt3WMotoBTOjVSwStshBNClUQy7W
+	 eM9pJ2kJ2Hr+3pARrY8BN9lKlPbmK4HEefOsy5MrmAeYJqnnvJ0xU/Pf8MlwDhlnGT
+	 +JIeXZrZbINeO7yXdZlYVv93+dnrN0nKcOWN3wnFiO0/4l1tqiOUSl5UUJYG/8Ulcl
+	 63E2yIUXdQm5rkGEgPU10B48rIXle8ZXOFGexXCsnrDNWrRlfHf/G0zy6Tj5gGgFn4
+	 o1SQmMUMhdR3iglmXd/XcR2BttcrLBpVx7ghN4rT/mXWj0K5elzjn/dHRDaB8r+und
+	 7T1usmLHHFk2Q==
+Date: Mon, 31 Mar 2025 13:03:51 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, "Xin Li (Intel)" <xin@zytor.com>
+CC: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, rafael@kernel.org, pavel@kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, xi.pardee@intel.com,
+        todd.e.brandt@intel.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v1_1/1=5D_x86/fred=3A_Fix_system?=
+ =?US-ASCII?Q?_hang_during_S4_resume_with_FRED_enabled?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAJZ5v0jfak9K_7b=adf5ew-xDiGHUEPSp5ZpAGt66Okj-ovsGQ@mail.gmail.com>
+References: <20250326062540.820556-1-xin@zytor.com> <CAJZ5v0jfak9K_7b=adf5ew-xDiGHUEPSp5ZpAGt66Okj-ovsGQ@mail.gmail.com>
+Message-ID: <148C8753-8972-4970-8951-E2D1CB26D8B0@zytor.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+On March 31, 2025 8:30:49 AM PDT, "Rafael J=2E Wysocki" <rafael@kernel=2Eor=
+g> wrote:
+>On Wed, Mar 26, 2025 at 7:26=E2=80=AFAM Xin Li (Intel) <xin@zytor=2Ecom> =
+wrote:
+>>
+>> During an S4 resume, the system first performs a cold power-on=2E  The
+>> kernel image is initially loaded to a random linear address, and the
+>> FRED MSRs are initialized=2E  Subsequently, the S4 image is loaded,
+>> and the kernel image is relocated to its original address from before
+>> the S4 suspend=2E  Due to changes in the kernel text and data mappings,
+>> the FRED MSRs must be reinitialized=2E
+>
+>To be precise, the above description of the hibernation control flow
+>doesn't exactly match the code=2E
+>
+>Yes, a new kernel is booted upon a wakeup from S4, but this is not "a
+>cold power-on", strictly speaking=2E  This kernel is often referred to
+>as the restore kernel and yes, it initializes the FRED MSRs as
+>appropriate from its perspective=2E
+>
+>Yes, it loads a hibernation image, including the kernel that was
+>running before hibernation, often referred to as the image kernel, but
+>it does its best to load image pages directly into the page frames
+>occupied by them before hibernation unless those page frames are
+>currently in use=2E  In that case, the given image pages are loaded into
+>currently free page frames, but they may or may not be part of the
+>image kernel (they may as well belong to user space processes that
+>were running before hibernation)=2E  Yes, all of these pages need to be
+>moved to their original locations before the last step of restore,
+>which is a jump into a "trampoline" page in the image kernel, but this
+>is sort of irrelevant to the issue at hand=2E
+>
+>At this point, the image kernel has control, but the FRED MSRs still
+>contain values written to them by the restore kernel and there is no
+>guarantee that those values are the same as the ones written into them
+>by the image kernel before hibernation=2E  Thus the image kernel must
+>ensure that the values of the FRED MSRs will be the same as they were
+>before hibernation, and because they only depend on the location of
+>the kernel text and data, they may as well be recomputed from scratch=2E
+>
+>> Reported-by: Xi Pardee <xi=2Epardee@intel=2Ecom>
+>> Reported-and-Tested-by: Todd Brandt <todd=2Ee=2Ebrandt@intel=2Ecom>
+>> Suggested-by: H=2E Peter Anvin (Intel) <hpa@zytor=2Ecom>
+>> Signed-off-by: Xin Li (Intel) <xin@zytor=2Ecom>
+>> Cc: stable@kernel=2Eorg # 6=2E9+
+>> ---
+>>  arch/x86/power/cpu=2Ec | 16 ++++++++++++++++
+>>  1 file changed, 16 insertions(+)
+>>
+>> diff --git a/arch/x86/power/cpu=2Ec b/arch/x86/power/cpu=2Ec
+>> index 63230ff8cf4f=2E=2Eef3c152c319c 100644
+>> --- a/arch/x86/power/cpu=2Ec
+>> +++ b/arch/x86/power/cpu=2Ec
+>> @@ -27,6 +27,7 @@
+>>  #include <asm/mmu_context=2Eh>
+>>  #include <asm/cpu_device_id=2Eh>
+>>  #include <asm/microcode=2Eh>
+>> +#include <asm/fred=2Eh>
+>>
+>>  #ifdef CONFIG_X86_32
+>>  __visible unsigned long saved_context_ebx;
+>> @@ -231,6 +232,21 @@ static void notrace __restore_processor_state(stru=
+ct saved_context *ctxt)
+>>          */
+>>  #ifdef CONFIG_X86_64
+>>         wrmsrl(MSR_GS_BASE, ctxt->kernelmode_gs_base);
+>> +
+>> +       /*
+>> +        * Restore FRED configs=2E
+>> +        *
+>> +        * FRED configs are completely derived from current kernel text=
+ and
+>> +        * data mappings, thus nothing needs to be saved and restored=
+=2E
+>> +        *
+>> +        * As such, simply re-initialize FRED to restore FRED configs=
+=2E
+>
+>Instead of the above, I would just say "Reinitialize FRED to ensure
+>that the FRED registers contain the same values as before
+>hibernation=2E"
+>
+>> +        *
+>> +        * Note, FRED RSPs setup needs to access percpu data structures=
+=2E
+>
+>And I'm not sure what you wanted to say here?  Does this refer to the
+>ordering of the code below or to something else?
+>
+>> +        */
+>> +       if (ctxt->cr4 & X86_CR4_FRED) {
+>> +               cpu_init_fred_exceptions();
+>> +               cpu_init_fred_rsps();
+>> +       }
+>>  #else
+>>         loadsegment(fs, __KERNEL_PERCPU);
+>>  #endif
+>> --
+>
 
-[ Upstream commit bc068194f548ef1f230d96c4398046bf59165992 ]
+Just to make it clear: the patch is correct, the shortcoming is in the des=
+cription=2E=20
 
-[Why]
-Observe after suspend/resme, we can't light up mst monitors under specific
-mst hub. The reason is that driver still writes DPCD DP_MSTM_CTRL after LT.
-It's forbidden even we write the same value for that dpcd register.
+I would say that Xin's description, although perhaps excessively brief, is=
+ correct from the *hardware* point of view, whereas Rafael adds the much ne=
+eded *software* perspective=2E=20
 
-[How]
-We already resume the mst branch device dpcd settings during
-resume_mst_branch_status(). Leverage drm_dp_mst_topology_queue_probe() to
-only probe the topology, not calling drm_dp_mst_topology_mgr_resume() which
-will set DP_MSTM_CTRL as well.
+As far as hardware is concerned, Linux S4 is just a power on (we don't use=
+ any BIOS support for S4 even if it exists, which it rarely does anymore, a=
+nd for very good reasons=2E) From a software point of view, it is more like=
+ a kexec into the frozen kernel image, which then has to re-establish its r=
+untime execution environment =E2=80=93 (including the FRED state, which is =
+what this patch does=2E)
 
-Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
-Change-Id: I879e9f2e53dfb6fa28a33b6202a5402945ae91c5
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[cascardo: adjust context in local declarations]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c    | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 986ee37688c1..2b7f98a2e36f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2825,8 +2825,7 @@ static int dm_resume(void *handle)
- 	struct dm_atomic_state *dm_state = to_dm_atomic_state(dm->atomic_obj.state);
- 	enum dc_connection_type new_connection_type = dc_connection_none;
- 	struct dc_state *dc_state;
--	int i, r, j, ret;
--	bool need_hotplug = false;
-+	int i, r, j;
- 
- 	if (amdgpu_in_reset(adev)) {
- 		dc_state = dm->cached_dc_state;
-@@ -3003,23 +3002,16 @@ static int dm_resume(void *handle)
- 		    aconnector->mst_root)
- 			continue;
- 
--		ret = drm_dp_mst_topology_mgr_resume(&aconnector->mst_mgr, true);
--
--		if (ret < 0) {
--			dm_helpers_dp_mst_stop_top_mgr(aconnector->dc_link->ctx,
--					aconnector->dc_link);
--			need_hotplug = true;
--		}
-+		drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
- 	}
- 	drm_connector_list_iter_end(&iter);
- 
--	if (need_hotplug)
--		drm_kms_helper_hotplug_event(ddev);
--
- 	amdgpu_dm_irq_resume_late(adev);
- 
- 	amdgpu_dm_smu_write_watermarks_table(adev);
- 
-+	drm_kms_helper_hotplug_event(ddev);
-+
- 	return 0;
- }
- 
--- 
-2.47.2
-
+For the APs this is done through the normal AP bringup mechanism, it is on=
+ly the BSP that needs special treatment=2E
 
