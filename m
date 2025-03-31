@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-127257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2805A76AD3
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:41:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40CAA76AAA
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F08C53A7E51
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:29:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A543188CFB0
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F076252900;
-	Mon, 31 Mar 2025 14:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDD7253331;
+	Mon, 31 Mar 2025 14:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sedjpUf5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="swZqPtnw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A20D2528ED;
-	Mon, 31 Mar 2025 14:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6422222AF;
+	Mon, 31 Mar 2025 14:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743433056; cv=none; b=A1/DmOWZcbcQntDQmkwRC0Y2sY43MXiZAGCo2Y3wn6LQmVYoRdpG2+4EdAd+iuK1FYyCrmRovVCZ6Xk4mQhXwDJ0vVfwGA0+Y25GJw7iEcmPhPokbKplnPCOnSh+SUk/EXtn5I4SW7N/iNi1NCQxQLI/jzAsJpgdq//5oFv89/E=
+	t=1743433058; cv=none; b=EISqaXTf54ppYp5zJV/hNv7ETVmzu9LIkb5fQrXpsJG1teCmqSJc0+D0uWsSly5sXXmk1lntwxg5vgzG6AJrA60mimYuGH1mHxQHtnxn5wUCpgLp2sEddb/TwgPIV4oSis82DTZIiROmmT3fGT+wguBvEKMG2Sb83OUX8L5ggu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743433056; c=relaxed/simple;
-	bh=NVLozsaYedadfSYx5D/Ah92WhepsYqoR1n2WxLWQlQY=;
+	s=arc-20240116; t=1743433058; c=relaxed/simple;
+	bh=DF/6hI8PnmpVqj4wvDg+xKkjiFenqhCM23f0r3uzogw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j49bKVopdRTTJLCIBdEwQPqRN0vPer6rxJUxB/4lTk4qe0F3Cg7CBhfgcq/EZUGhnJSy6WCbwZhU6TRSnrwItLACdi+gOlN/bDuNhm6fe76/zaIBe3WlFbPDjZiuNh/Z4pOZDU/UjOtyTgO0gcvKGa57ztlcTtyjQPaaeQtnDsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sedjpUf5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4477C4CEE3;
-	Mon, 31 Mar 2025 14:57:33 +0000 (UTC)
+	 MIME-Version; b=ZTmlBNwoqKRcpwmukIMIn4NB59EcgCB2+4+9Ui7nWlmyMC2AAG66OiXWYXVU63S7NmPRaY2Q6g1tQslqo3HEIxlMOL0eH26t0qNloUpdseqfNwxrFccViRxiKT8u6Bzxhzik+i4pS5umHC1MIfmQTUxYg9FXOo+4clsRBYx8fGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=swZqPtnw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0271C4CEE3;
+	Mon, 31 Mar 2025 14:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743433055;
-	bh=NVLozsaYedadfSYx5D/Ah92WhepsYqoR1n2WxLWQlQY=;
+	s=k20201202; t=1743433058;
+	bh=DF/6hI8PnmpVqj4wvDg+xKkjiFenqhCM23f0r3uzogw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sedjpUf5lAz2smOE2l46Lokc4Jy46HnawmAZ0a8Ti4X6UPx254jfpZvFDcIsBvnP9
-	 Bz/59q6NdDIblYMQpdWmqCXqSX806QRdSTeRfzaYL6xKNTyWWyjUtEJkbSlOhbPzNG
-	 hIaCiVtg0dGbD8u3AbpJI+Ge5WPvAnVlLXLNjzC1+ITABU6aa93OnI4DioI0scVh4b
-	 yhy2pzVPNYq1mzP7BBgW/ot6SUA6au7P9o6Tm0c7QZux+tqHvACUY87frhu/foC5iu
-	 xxYAZVn2kyD7jl/f2cdlExc3bphd7ZxAB1aKgTxkyMWZ9swWrSNbMD4EsDxIBTSFWs
-	 GVUTEUINpzHbg==
+	b=swZqPtnwm8mK1jEjrF61SZ+E/pbgQAokiqnl1IQg9Q+9ZA/E3LPsmAi/fUU3CxlGZ
+	 zFK2ldAR3lT1Vse2d+xHaqoPGXxVuESB9QH6+uCVxXXTy4MgT7J+0CJdkcwqCii4lX
+	 53/DBZdaS1IHvZABJkYlEgAyhC2nJ2HGSja7hAOh5iDRJtz1ZxWD43JXU1S97Kb9A+
+	 eatT1UT6TWqA4JkCXgvXxKriBqG2n8gMZioPhrg0OYQhvV3SoTJRqvCGK/pKt0Bws7
+	 P95E/dBjtM9OjolgHJQXo/ST57dT5h3acr1UV+Lz+9/8xIjOlnolGe4ljxZxS0YtX+
+	 /nri4SG46dcLg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Tomasz=20Paku=C5=82a?= <forest10pl@gmail.com>,
-	Nolan Nicholson <nolananicholson@gmail.com>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Maxim Mikityanskiy <maxtram95@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 3/5] HID: pidff: Fix null pointer dereference in pidff_find_fields
-Date: Mon, 31 Mar 2025 10:57:26 -0400
-Message-Id: <20250331145728.1706329-3-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	peter.ujfalusi@linux.intel.com,
+	pierre-louis.bossart@linux.dev,
+	yung-chuan.liao@linux.intel.com,
+	hkallweit1@gmail.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 4/5] ALSA: hda: intel: Fix Optimus when GPU has no sound
+Date: Mon, 31 Mar 2025 10:57:27 -0400
+Message-Id: <20250331145728.1706329-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145728.1706329-1-sashal@kernel.org>
 References: <20250331145728.1706329-1-sashal@kernel.org>
@@ -69,69 +66,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
 
-From: Tomasz Pakuła <forest10pl@gmail.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
+[ Upstream commit 2b360ba9a4936486380bc30d1eabceb40a714d98 ]
 
-This function triggered a null pointer dereference if used to search for
-a report that isn't implemented on the device. This happened both for
-optional and required reports alike.
+quirk_nvidia_hda() forcefully enables HDA controller on all NVIDIA GPUs,
+because some buggy BIOSes leave it disabled. However, some dual-GPU
+laptops do not have a functional HDA controller in DGPU, and BIOS
+disables it on purpose. After quirk_nvidia_hda() reenables this dummy
+HDA controller, attempting to probe it fails at azx_first_init(), which
+is too late to cancel the probe, as it happens in azx_probe_continue().
 
-The same logic was applied to pidff_find_special_field and although
-pidff_init_fields should return an error earlier if one of the required
-reports is missing, future modifications could change this logic and
-resurface this possible null pointer dereference again.
+The sna_hda_intel driver calls azx_free() and stops the chip, however,
+it stays probed, and from the runtime PM point of view, the device
+remains active (it was set as active by the PCI subsystem on probe). It
+prevents vga_switcheroo from turning off the DGPU, because
+pci_create_device_link() syncs power management for video and audio
+devices.
 
-LKML bug report:
-https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
+Affected devices should be added to driver_denylist to prevent them from
+probing early. This patch helps identify such devices by printing a
+warning, and also forces the device to the suspended state to allow
+vga_switcheroo turn off DGPU.
 
-Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Link: https://patch.msgid.link/20250208214602.39607-2-maxtram95@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/pci/hda/hda_intel.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index ba0d7cb15377e..7801294fe086d 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -770,6 +770,11 @@ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
- static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
- 			     struct hid_report *report, int count, int strict)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_fields, null report\n");
-+		return -1;
-+	}
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index 59fc56a970a9d..cdc1d00ab34b1 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -1410,8 +1410,21 @@ static void azx_free(struct azx *chip)
+ 	if (use_vga_switcheroo(hda)) {
+ 		if (chip->disabled && hda->probe_continued)
+ 			snd_hda_unlock_devices(&chip->bus);
+-		if (hda->vga_switcheroo_registered)
++		if (hda->vga_switcheroo_registered) {
+ 			vga_switcheroo_unregister_client(chip->pci);
 +
- 	int i, j, k, found;
++			/* Some GPUs don't have sound, and azx_first_init fails,
++			 * leaving the device probed but non-functional. As long
++			 * as it's probed, the PCI subsystem keeps its runtime
++			 * PM status as active. Force it to suspended (as we
++			 * actually stop the chip) to allow GPU to suspend via
++			 * vga_switcheroo, and print a warning.
++			 */
++			dev_warn(&pci->dev, "GPU sound probed, but not operational: please add a quirk to driver_denylist\n");
++			pm_runtime_disable(&pci->dev);
++			pm_runtime_set_suspended(&pci->dev);
++			pm_runtime_enable(&pci->dev);
++		}
+ 	}
  
- 	for (k = 0; k < count; k++) {
-@@ -883,6 +888,11 @@ static int pidff_reports_ok(struct pidff_device *pidff)
- static struct hid_field *pidff_find_special_field(struct hid_report *report,
- 						  int usage, int enforce_min)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_special_field, null report\n");
-+		return NULL;
-+	}
-+
- 	int i;
- 
- 	for (i = 0; i < report->maxfield; i++) {
+ 	if (bus->chip_init) {
 -- 
 2.39.5
 
