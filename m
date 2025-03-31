@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-127137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9FDA768E9
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:57:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C61BA768F2
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D2216607D
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:57:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 442627A256D
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B65B218AD1;
-	Mon, 31 Mar 2025 14:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5641C21859F;
+	Mon, 31 Mar 2025 14:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ie4r0Asl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SdehB3CL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CB1217F5C
-	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 14:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17768215773
+	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 14:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432497; cv=none; b=J0Z0CzjzqldzjsCL40Gh/bHxMb56CZQx1K33i6iW3hrIHpjQgb8UBSqx6PXp2pOjo5H+iXVCBZBUK1pbG5HBWA4/2btHiJWZZh5hhfj10iVkjIqM7tpWBp233gZC+eFg+amr5TLWtFcvq/ATv7HgLoIct38j2ibRKS+kYtbQVJc=
+	t=1743432499; cv=none; b=m/CZkQpCiz09Rik2BDJgBSi4ymNXWovbNCsAgjryuV1f9dtEQWmp8h2mAOLQaDHpdyrJWAuMrcAmslP5BMmXUdquwaxEz4FKqHIm5k1qALv4PkzvEg/+j7Mm3TnyF0UfjgBlu+RJeNocs+H5ir2CqmCQDHsQlv44HHwBu6bUE7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432497; c=relaxed/simple;
-	bh=oRnAK0eeZgvDMbwjuRmU7nTXNewdZ7nXwgwNPyxuHFs=;
+	s=arc-20240116; t=1743432499; c=relaxed/simple;
+	bh=jjC4wGqGenHBI2q53ZumWEkw47i4wT6NEu3Fh12ECxM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gd/h5atvRFjJhXUv2AagRu+j/dNyIoHEhg43yBLKJujTv+78xdNVz5JuRlFr4jMUl462Boqv+phbuTrk/rLcLGobjrsFGcv9pQAhzcl5oV/8fLeYb5RtC/mscS5rvx2U5Recix600hkgU0E9+beTvOHt3pCUo3KeW3F2Wvd3KYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ie4r0Asl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0843CC4CEE3;
-	Mon, 31 Mar 2025 14:48:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sHF4091LMV4C/Cc7HVOSDrOsAK7DKteTDYzAtdLZcoxrFVq7NrxHiP0wsXIcV1uaYLgpJjK45Df8Ralg9tCusD6DlHVWWIbKpK8peVvOmy1lIkL3WKkJpUC9cWfoNGq55e9MkwAmR6+b/k9ivIpKrwmfzpl4eXShgaZci9Cc8uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SdehB3CL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120F7C4CEE3;
+	Mon, 31 Mar 2025 14:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432496;
-	bh=oRnAK0eeZgvDMbwjuRmU7nTXNewdZ7nXwgwNPyxuHFs=;
+	s=k20201202; t=1743432498;
+	bh=jjC4wGqGenHBI2q53ZumWEkw47i4wT6NEu3Fh12ECxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ie4r0Aslce1wYKk6dgQA2bvOGCEYzP1mscTbyXpGu4UwS118FgX10qM4FkRk84kID
-	 2VdKW9ks5kWLzgY8o7sADPQtEDNI9etpWTpSKCJiHekiaTjYJ6nZ128eCjFYqc23im
-	 Aas6xtdA6W4io8eMAo0oQe9fpGL1GCQpnf4TXR8sy3iugm2NllDpM4Z6fP4EU0PmZh
-	 uLvtTBSNTWFfUUf8ZamNq8f3bolgQsaLeq8XJTETxePiEjBLejvszAdiagMP71SsaL
-	 3uvAjV0lIwTgHLLu1RTaJEYonxHRPTKfwxXrHP7CCLzrY2BJdxZcpBkLCNvT2cT9a5
-	 d4zyS2KabRyDg==
+	b=SdehB3CL1pYuwhr+bBWUYOSyWlWIxaBf/In7i7R0Iu93sPCIQx4J8Oz8k6dKWcgbi
+	 24DvHgN1sk6R0QzACLgJVjr6lAzLi9H1Pr8o2EnzT7CXOi9oh8TCQTaWucCtRjI84m
+	 w6Ro5Nf40wPdgzkhvYZ4zve8l2BdDj4XLQ9gCSdowAfzqHgvGUx+8TGOekJLBc2hkw
+	 CCjyD5BVHgzERD3UnP7OHWB4hqhUleWp3nlcUW446KOWh6NemyFktQjfAnYIpaVMgG
+	 CjHyZ2PCsshgXdrSS/ICfVwkGgo+DgtJIQmzoo2Jg2o+jGfRZ5frwOaFBSLBugQLhZ
+	 AUpOtYzJefsXA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: bin.lan.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] media: i2c: et8ek8: Don't strip remove function when driver is builtin
-Date: Mon, 31 Mar 2025 10:48:14 -0400
-Message-Id: <20250331103442-bb666d7a344813c7@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] media: i2c: et8ek8: Don't strip remove function when driver is builtin
+Date: Mon, 31 Mar 2025 10:48:16 -0400
+Message-Id: <20250331102541-0bf68e6012a148c1@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250331064640.3180481-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20250331064549.3180155-1-bin.lan.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,11 +77,10 @@ Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
 6.6.y | Present (different SHA1: c1a3803e5bb9)
-6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  545b215736c5c ! 1:  ce89440fbcece media: i2c: et8ek8: Don't strip remove function when driver is builtin
+1:  545b215736c5c ! 1:  c13245918af57 media: i2c: et8ek8: Don't strip remove function when driver is builtin
     @@ Metadata
       ## Commit message ##
          media: i2c: et8ek8: Don't strip remove function when driver is builtin
@@ -100,16 +99,7 @@ Note: The patch differs from the upstream commit:
      
       ## drivers/media/i2c/et8ek8/et8ek8_driver.c ##
      @@ drivers/media/i2c/et8ek8/et8ek8_driver.c: static int et8ek8_probe(struct i2c_client *client)
-      	return ret;
-      }
-      
-    --static void __exit et8ek8_remove(struct i2c_client *client)
-    -+static void et8ek8_remove(struct i2c_client *client)
-    +-static int __exit et8ek8_remove(struct i2c_client *client)
-    ++static int et8ek8_remove(struct i2c_client *client)
-      {
-      	struct v4l2_subdev *subdev = i2c_get_clientdata(client);
-      	struct et8ek8_sensor *sensor = to_et8ek8_sensor(subdev);
+    @@ drivers/media/i2c/et8ek8/et8ek8_driver.c: static int et8ek8_probe(struct i2c_cli
      @@ drivers/media/i2c/et8ek8/et8ek8_driver.c: static struct i2c_driver et8ek8_i2c_driver = {
       		.of_match_table	= et8ek8_of_table,
       	},
@@ -124,5 +114,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
