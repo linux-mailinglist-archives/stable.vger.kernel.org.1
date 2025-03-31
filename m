@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-127185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBE7A7698C
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:11:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063DAA76990
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 998A77A5181
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:09:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB87016C50F
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359FA22FF58;
-	Mon, 31 Mar 2025 14:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5862230985;
+	Mon, 31 Mar 2025 14:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gc8NeI+C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B1c34UHZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E034C22FF33;
-	Mon, 31 Mar 2025 14:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C73121D5A1;
+	Mon, 31 Mar 2025 14:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432896; cv=none; b=frCWaa6JtiZ2x/PjsCYTMNfXRT7quMs84UkX5ZvPbbCBwForQL9TTWi/9XjT5hA1FNA91eCxGMDoxECF4d89y9cUNkg1gd3B4PQ6LtA9KlXRm+R2gZFfEgzWwRVdu2O1NHW5WPqRBpvjfAybY8f2oVy+5kTI6LZZY3uq69F//4A=
+	t=1743432897; cv=none; b=E00+EXgjMMGYNEv8fodCmvee/s6cnuRFHU1vce8SWSCClexJnvgFLM5MPSEv35luReU+MQqA/mrYzf/HGzGrvbnh5hKvNYKRaQ9QlbqMcHdq/2AX/SNDTzWcsLx+xMWYJdfcMiyM+8pH5RvtsyOwDmPQdW0Ny1jPdIUT44Gyb5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432896; c=relaxed/simple;
-	bh=DofeCn7+p+C7HWB7rPQvFmfiOTP/DSvjSaOvKewTANA=;
+	s=arc-20240116; t=1743432897; c=relaxed/simple;
+	bh=BqImHxyP5D1K/WYNiKwOS/If7appcnjmTOLGjmFXYEI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XShiFZj+VCGgOaWozf5TsAsPfyqgZ9yfNMlmWg0R8UfZSQW1q5DMM9W1/lxmO1Q6VcscMIC2/jeCteVN0Q0BDXcqH/BjQBTTwAOOIypl+yE5EY/0/WolMYh6geBOnP5qohDRIjGFJrWUfkZvY1g1o/nFA2h97aDb3lA8bq7HMj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gc8NeI+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE94C4CEE3;
-	Mon, 31 Mar 2025 14:54:54 +0000 (UTC)
+	 MIME-Version; b=WRCCVPBNf0sossu7JqQW1sm51sNnCgwQRea3Mf9ouanOs5KA9k7HmgdyAe2yeCrcM5Q4z6yxUYTAZI9HdhaLDpHuGSvPMGfuJpHT9EvFUtSSdLtmY4v/urgypb1S+MaBviC/9ezI8QuIxuzutewACqXh5rLzoSU/LQBJw55KTs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B1c34UHZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39876C4CEE3;
+	Mon, 31 Mar 2025 14:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432895;
-	bh=DofeCn7+p+C7HWB7rPQvFmfiOTP/DSvjSaOvKewTANA=;
+	s=k20201202; t=1743432897;
+	bh=BqImHxyP5D1K/WYNiKwOS/If7appcnjmTOLGjmFXYEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gc8NeI+C9GCpRA7c5Rc3jQSpvprUFAF1M70Wn/mBaSEQtkJPOFrvAQ/yKyli7S2fQ
-	 tWC+RlAnyO9hN2+PCZ/edOCNa3B33fMzoPsEj0t+OmDqVGduhGfnkRNIfA1Vqh7KEH
-	 SHOFIsWtisXI4U4PTsjK1hh/G3pzXxfjZ6+LYvBKsIHHfRh2707wAo2OpFhvgQ8Rc1
-	 9yngCgeBxvSm9yoymzGzGlpCER/QH4jPMZSy0XRQIwypVlzQlENmOv2yuluiSM8Z2M
-	 yrmihqRGFKdLCOeMKtUvwKys7uQNxyUyY7VqB181aehOgUnMh2iL98YuIwd2QcoqPH
-	 eoQe8RqnJMhqw==
+	b=B1c34UHZ/oJeMhbxvg2h8CYSTSQmIUuYUhNJQ+thrNUVGcO8M0n3kD2xJoTjSQStH
+	 prf9UanCvxhu1z7X06AWbSJ1wmBIpPGHlllBZCqu1017Mvcu2al7VhSsOe3DMiEIkg
+	 CA+H8yMKV+PmHAJZ6HvoqtGsIxJ8V8soHPd8zcGZM6ZeJaCCTNiLa/e9Z1SNgUDauL
+	 dV+YuK1qILgEdr2wUk2Dfy4HWYPzE0vco578PokpeEMf++eCXU7puZnVAcKZsEEu2m
+	 5F2iYiNV/sXNLzinQ0jqMVcaEwlNGiMmixKt4W2NoMSIBY2zp1/pyJf8E2So21xeY0
+	 4rZ4DzI9l94pw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.13 17/24] ASoC: fsl_audmix: register card device depends on 'dais' property
-Date: Mon, 31 Mar 2025 10:53:57 -0400
-Message-Id: <20250331145404.1705141-17-sashal@kernel.org>
+	hdegoede@redhat.com,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 18/24] media: uvcvideo: Add quirk for Actions UVC05
+Date: Mon, 31 Mar 2025 10:53:58 -0400
+Message-Id: <20250331145404.1705141-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145404.1705141-1-sashal@kernel.org>
 References: <20250331145404.1705141-1-sashal@kernel.org>
@@ -71,51 +68,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 294a60e5e9830045c161181286d44ce669f88833 ]
+[ Upstream commit 8c54e58f94ed3ff28643aefd2c0c2c98313ee770 ]
 
-In order to make the audmix device linked by audio graph card, make
-'dais' property to be optional.
+Actions UVC05 is a HDMI to USB dongle that implements the UVC protocol.
 
-If 'dais' property exists, then register the imx-audmix card driver.
-otherwise, it should be linked by audio graph card.
+When the device suspends, its firmware seems to enter a weird mode when it
+does not produce more frames.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250226100508.2352568-5-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add the device to the quirk list to disable autosuspend.
+
+Bus 001 Device 007: ID 1de1:f105 Actions Microelectronics Co. Display
+ capture-UVC05
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 [unknown]
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x1de1 Actions Microelectronics Co.
+  idProduct          0xf105 Display capture-UVC05
+  bcdDevice            4.09
+  iManufacturer           1 Actions Micro
+  iProduct                2 Display capture-UVC05
+  iSerial                 3 -1005308387
+  bNumConfigurations      1
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20241210-uvc-hdmi-suspend-v1-1-01f5dec023ea@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_audmix.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-index 3cd9a66b70a15..7981d598ba139 100644
---- a/sound/soc/fsl/fsl_audmix.c
-+++ b/sound/soc/fsl/fsl_audmix.c
-@@ -488,11 +488,17 @@ static int fsl_audmix_probe(struct platform_device *pdev)
- 		goto err_disable_pm;
- 	}
- 
--	priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
--	if (IS_ERR(priv->pdev)) {
--		ret = PTR_ERR(priv->pdev);
--		dev_err(dev, "failed to register platform: %d\n", ret);
--		goto err_disable_pm;
-+	/*
-+	 * If dais property exist, then register the imx-audmix card driver.
-+	 * otherwise, it should be linked by audio graph card.
-+	 */
-+	if (of_find_property(pdev->dev.of_node, "dais", NULL)) {
-+		priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
-+		if (IS_ERR(priv->pdev)) {
-+			ret = PTR_ERR(priv->pdev);
-+			dev_err(dev, "failed to register platform: %d\n", ret);
-+			goto err_disable_pm;
-+		}
- 	}
- 
- 	return 0;
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 011a14506ea0b..396a04542c045 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -3030,6 +3030,15 @@ static const struct usb_device_id uvc_ids[] = {
+ 	  .bInterfaceProtocol	= 0,
+ 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_PROBE_MINMAX
+ 					| UVC_QUIRK_IGNORE_SELECTOR_UNIT) },
++	/* Actions Microelectronics Co. Display capture-UVC05 */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x1de1,
++	  .idProduct		= 0xf105,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= 0,
++	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_DISABLE_AUTOSUSPEND) },
+ 	/* NXP Semiconductors IR VIDEO */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
 -- 
 2.39.5
 
