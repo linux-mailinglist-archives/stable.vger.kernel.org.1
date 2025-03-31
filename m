@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-127240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B28A76A30
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:25:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F33CA76A79
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 181E57A2A4A
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:24:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1845D188824D
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA2124C068;
-	Mon, 31 Mar 2025 14:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0C324C085;
+	Mon, 31 Mar 2025 14:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1ZFcJ5S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvDvwkV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0896E24BD1A;
-	Mon, 31 Mar 2025 14:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7767F24C07E;
+	Mon, 31 Mar 2025 14:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743433017; cv=none; b=Uywlr81nOtXYxKMnKVFUExMvJvD7eyFYWR7Phoh/hjxpkD3svcAY6PRCCkDyAtco9MaH9m9eIlQQ444FJ4+uPwmqToMiiAUtN7bWPr/369TPLEhk0dMvRIgXi9eQgaVfBQBtPLUaB8WmGFHbLZYMDvtNVOn4nhJTSVUyBbcRaSE=
+	t=1743433018; cv=none; b=HtlPde5osk8DbCVlHwKjg+a1Un/tAgUBmnLnTPXgCGW0qwp8y9QndT68H26NKbuLFqAjsTesRL2DOO1hczPmE36lBi1mFiASom5NJfqc9HooxfuCT5DZqSn7NlTiwejAgIfzA8b2S6HOwce451tnbhvqfDa+RfzFYipquye4T7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743433017; c=relaxed/simple;
-	bh=Cm1Em4GVh5UN3KC7kQilCOySbGi3rdIYc+i4/iSCYXo=;
+	s=arc-20240116; t=1743433018; c=relaxed/simple;
+	bh=QtTHlnH7LWdu4JlRXiAIGEBR7SRkB52s+WC/quhM0Vc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fSrYaTfS2UicKdY4Xc+HDLb01R0zSdOVy3mBnEmzgBvJ6lF8KJY9kJYD5rYz89xcIYzqSMDnXziLbeks7mBKH7vy6Y4knEmoo7v6dSUTdSpCYP35Fx0fopuqqDsd0MpzUzpEEjqKvJv0tL1IQII4rgJc7aS+T+9pasou1uPIPcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1ZFcJ5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D434C4CEE9;
-	Mon, 31 Mar 2025 14:56:55 +0000 (UTC)
+	 MIME-Version; b=gNH28mqeLKtLt4xK+47rbRMXPCaFppHrZH/pnYy1/tAKpGj16hPQ54aNp1iWm81PaxXyMKx4CfxLXaGdWhdatBiGRcSjRBvFfv7E61YBris6cjsoH3FxS5XwLmZf4I2YOh+efPbcLMir/FYUwYAmwaYk8RGb0CcuCYEJEG9735k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvDvwkV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CBEC4CEE4;
+	Mon, 31 Mar 2025 14:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743433016;
-	bh=Cm1Em4GVh5UN3KC7kQilCOySbGi3rdIYc+i4/iSCYXo=;
+	s=k20201202; t=1743433018;
+	bh=QtTHlnH7LWdu4JlRXiAIGEBR7SRkB52s+WC/quhM0Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1ZFcJ5SD66wA5lwxt/Mke2xihUTvVhzi5lTxYGwCj/Yq0lHiu1TkCE7uvLSyhRJ+
-	 EefeokeNPLqwMTDFUkSiRNhqLk9zSfjR5kK5QM6DMboc1zNzJWiGzEjx7qh+4TJkvv
-	 Pu6O9XQrjnP1kDjRFnMUuDrFYdzMY4BRGRbc2e2SmRDVXLqgfBCDKuybm1nExzgRZa
-	 VeToPEj8sISu1C0OvL8llQzcuQiLKu91dB/Gc73I51NQsHGgV6ykKYPYpfByQC4b4k
-	 wAu6XNrU2l5Q4Bu2SL/4xtZ98PpyuskrhR5CVMisjQU2G6TrbuHdjvFUUH3bC+7tr/
-	 SyLjDvs5aEy4g==
+	b=nvDvwkV+eLgwKSBRTxhI+E+YNkREIwh6fAaBVkMZnADEoLnTC0yzSw3IFYh5Nf0kT
+	 IgBLLUYerSumWe7DUPhu6y2Syf6MGMe13S2L6wBUXGDjusv8Fjm7oqZCey5+mvDghc
+	 bzS3smuIK+dKnKc5bR4s+P0sjvFDOSDWBQ1/LBf2LWgpuftH86d5GjVuG+OzD+ck2m
+	 0ZDEOeak/7BAsOndh10ExM3jZMbl6XHZkPcYtMI9rGLpdNtNO9JgbeaDLkqUmFWbo0
+	 pM7BsGyT6X56XjiMnpckDNk+jPSUEOqS2gLzFgb3tHRvqh+xmm5pAOskF0jDnJ2wO6
+	 TJWJTZ4QbOJOA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.1 6/9] ASoC: fsl_audmix: register card device depends on 'dais' property
-Date: Mon, 31 Mar 2025 10:56:39 -0400
-Message-Id: <20250331145642.1706037-6-sashal@kernel.org>
+	jh80.chung@samsung.com,
+	linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 7/9] mmc: dw_mmc: add a quirk for accessing 64-bit FIFOs in two halves
+Date: Mon, 31 Mar 2025 10:56:40 -0400
+Message-Id: <20250331145642.1706037-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145642.1706037-1-sashal@kernel.org>
 References: <20250331145642.1706037-1-sashal@kernel.org>
@@ -71,51 +66,181 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.132
 Content-Transfer-Encoding: 8bit
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-[ Upstream commit 294a60e5e9830045c161181286d44ce669f88833 ]
+[ Upstream commit 57c0902f8bec51add5a1eb908d8b876592725d81 ]
 
-In order to make the audmix device linked by audio graph card, make
-'dais' property to be optional.
+In certain DW MMC implementations (such as in some Exynos7870
+controllers), 64-bit read/write is not allowed from a 64-bit FIFO.
+Add a quirk which facilitates accessing the 64-bit FIFO registers in two
+32-bit halves.
 
-If 'dais' property exists, then register the imx-audmix card driver.
-otherwise, it should be linked by audio graph card.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250226100508.2352568-5-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Link: https://lore.kernel.org/r/20250219-exynos7870-mmc-v2-2-b4255a3e39ed@disroot.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_audmix.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/mmc/host/dw_mmc.c | 94 ++++++++++++++++++++++++++++++++++++++-
+ drivers/mmc/host/dw_mmc.h | 27 +++++++++++
+ 2 files changed, 119 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-index 672148dd4b234..acb499a5043c8 100644
---- a/sound/soc/fsl/fsl_audmix.c
-+++ b/sound/soc/fsl/fsl_audmix.c
-@@ -492,11 +492,17 @@ static int fsl_audmix_probe(struct platform_device *pdev)
- 		goto err_disable_pm;
+diff --git a/drivers/mmc/host/dw_mmc.c b/drivers/mmc/host/dw_mmc.c
+index d0da4573b38cd..0822493c949e8 100644
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -2574,6 +2574,91 @@ static void dw_mci_pull_data64(struct dw_mci *host, void *buf, int cnt)
  	}
+ }
  
--	priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
--	if (IS_ERR(priv->pdev)) {
--		ret = PTR_ERR(priv->pdev);
--		dev_err(dev, "failed to register platform: %d\n", ret);
--		goto err_disable_pm;
-+	/*
-+	 * If dais property exist, then register the imx-audmix card driver.
-+	 * otherwise, it should be linked by audio graph card.
-+	 */
-+	if (of_find_property(pdev->dev.of_node, "dais", NULL)) {
-+		priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
-+		if (IS_ERR(priv->pdev)) {
-+			ret = PTR_ERR(priv->pdev);
-+			dev_err(dev, "failed to register platform: %d\n", ret);
-+			goto err_disable_pm;
++static void dw_mci_push_data64_32(struct dw_mci *host, void *buf, int cnt)
++{
++	struct mmc_data *data = host->data;
++	int init_cnt = cnt;
++
++	/* try and push anything in the part_buf */
++	if (unlikely(host->part_buf_count)) {
++		int len = dw_mci_push_part_bytes(host, buf, cnt);
++
++		buf += len;
++		cnt -= len;
++
++		if (host->part_buf_count == 8) {
++			mci_fifo_l_writeq(host->fifo_reg, host->part_buf);
++			host->part_buf_count = 0;
 +		}
- 	}
++	}
++#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
++	if (unlikely((unsigned long)buf & 0x7)) {
++		while (cnt >= 8) {
++			u64 aligned_buf[16];
++			int len = min(cnt & -8, (int)sizeof(aligned_buf));
++			int items = len >> 3;
++			int i;
++			/* memcpy from input buffer into aligned buffer */
++			memcpy(aligned_buf, buf, len);
++			buf += len;
++			cnt -= len;
++			/* push data from aligned buffer into fifo */
++			for (i = 0; i < items; ++i)
++				mci_fifo_l_writeq(host->fifo_reg, aligned_buf[i]);
++		}
++	} else
++#endif
++	{
++		u64 *pdata = buf;
++
++		for (; cnt >= 8; cnt -= 8)
++			mci_fifo_l_writeq(host->fifo_reg, *pdata++);
++		buf = pdata;
++	}
++	/* put anything remaining in the part_buf */
++	if (cnt) {
++		dw_mci_set_part_bytes(host, buf, cnt);
++		/* Push data if we have reached the expected data length */
++		if ((data->bytes_xfered + init_cnt) ==
++		    (data->blksz * data->blocks))
++			mci_fifo_l_writeq(host->fifo_reg, host->part_buf);
++	}
++}
++
++static void dw_mci_pull_data64_32(struct dw_mci *host, void *buf, int cnt)
++{
++#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
++	if (unlikely((unsigned long)buf & 0x7)) {
++		while (cnt >= 8) {
++			/* pull data from fifo into aligned buffer */
++			u64 aligned_buf[16];
++			int len = min(cnt & -8, (int)sizeof(aligned_buf));
++			int items = len >> 3;
++			int i;
++
++			for (i = 0; i < items; ++i)
++				aligned_buf[i] = mci_fifo_l_readq(host->fifo_reg);
++
++			/* memcpy from aligned buffer into output buffer */
++			memcpy(buf, aligned_buf, len);
++			buf += len;
++			cnt -= len;
++		}
++	} else
++#endif
++	{
++		u64 *pdata = buf;
++
++		for (; cnt >= 8; cnt -= 8)
++			*pdata++ = mci_fifo_l_readq(host->fifo_reg);
++		buf = pdata;
++	}
++	if (cnt) {
++		host->part_buf = mci_fifo_l_readq(host->fifo_reg);
++		dw_mci_pull_final_bytes(host, buf, cnt);
++	}
++}
++
+ static void dw_mci_pull_data(struct dw_mci *host, void *buf, int cnt)
+ {
+ 	int len;
+@@ -3374,8 +3459,13 @@ int dw_mci_probe(struct dw_mci *host)
+ 		width = 16;
+ 		host->data_shift = 1;
+ 	} else if (i == 2) {
+-		host->push_data = dw_mci_push_data64;
+-		host->pull_data = dw_mci_pull_data64;
++		if ((host->quirks & DW_MMC_QUIRK_FIFO64_32)) {
++			host->push_data = dw_mci_push_data64_32;
++			host->pull_data = dw_mci_pull_data64_32;
++		} else {
++			host->push_data = dw_mci_push_data64;
++			host->pull_data = dw_mci_pull_data64;
++		}
+ 		width = 64;
+ 		host->data_shift = 3;
+ 	} else {
+diff --git a/drivers/mmc/host/dw_mmc.h b/drivers/mmc/host/dw_mmc.h
+index 4ed81f94f7cab..af16dbb37f261 100644
+--- a/drivers/mmc/host/dw_mmc.h
++++ b/drivers/mmc/host/dw_mmc.h
+@@ -280,6 +280,8 @@ struct dw_mci_board {
  
- 	return 0;
+ /* Support for longer data read timeout */
+ #define DW_MMC_QUIRK_EXTENDED_TMOUT            BIT(0)
++/* Force 32-bit access to the FIFO */
++#define DW_MMC_QUIRK_FIFO64_32                 BIT(1)
+ 
+ #define DW_MMC_240A		0x240a
+ #define DW_MMC_280A		0x280a
+@@ -471,6 +473,31 @@ struct dw_mci_board {
+ #define mci_fifo_writel(__value, __reg)	__raw_writel(__reg, __value)
+ #define mci_fifo_writeq(__value, __reg)	__raw_writeq(__reg, __value)
+ 
++/*
++ * Some dw_mmc devices have 64-bit FIFOs, but expect them to be
++ * accessed using two 32-bit accesses. If such controller is used
++ * with a 64-bit kernel, this has to be done explicitly.
++ */
++static inline u64 mci_fifo_l_readq(void __iomem *addr)
++{
++	u64 ans;
++	u32 proxy[2];
++
++	proxy[0] = mci_fifo_readl(addr);
++	proxy[1] = mci_fifo_readl(addr + 4);
++	memcpy(&ans, proxy, 8);
++	return ans;
++}
++
++static inline void mci_fifo_l_writeq(void __iomem *addr, u64 value)
++{
++	u32 proxy[2];
++
++	memcpy(proxy, &value, 8);
++	mci_fifo_writel(addr, proxy[0]);
++	mci_fifo_writel(addr + 4, proxy[1]);
++}
++
+ /* Register access macros */
+ #define mci_readl(dev, reg)			\
+ 	readl_relaxed((dev)->regs + SDMMC_##reg)
 -- 
 2.39.5
 
