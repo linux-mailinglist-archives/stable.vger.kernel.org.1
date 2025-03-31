@@ -1,68 +1,64 @@
-Return-Path: <stable+bounces-127078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA91A7684B
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:41:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3E3A76832
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 920B7188AE6B
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:39:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1FCC7A2AFC
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CF822068D;
-	Mon, 31 Mar 2025 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD832206BC;
+	Mon, 31 Mar 2025 14:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IWkyQDIy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4rsu0YO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4D122069E;
-	Mon, 31 Mar 2025 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123342144C4;
+	Mon, 31 Mar 2025 14:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743431689; cv=none; b=E0MqgCjM/uggOYtIPcln8oXK7tDm6GljW1BUhUOXorFqH0+bSEgSCOrrwHp/rYNXGZ+Y+NW3pPFU4Af6p2+vwIzCGmb2IXmR0jbxVKbkhSwGz8PWVeGAAmmcHehR9RmBU54guJKxW8g0Gq86PcgIhLCISuit0yTOsW0qfInea3s=
+	t=1743431694; cv=none; b=UIwaNALKY0/9chTsWI+tGR67C5RjIA7Wm+V1Dpq1TL96VtpjZ9UYcw0+KvEsZYRq8CUtt8osmfTqqBE4ozJfos1a/bCPOB1cZ0aDkILU/x7JrE/wSOhEHbPWbJO/rdxQN4thOLZx8dS+/sWh8JHUjIUxJPkGEH6+/zIdx/7kRnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743431689; c=relaxed/simple;
-	bh=5DlYIc+Mxp6wP2XagxFIavXx5bYn9hjr7ENOqeYEYRg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hCJIRKjke09avaS91c3oXVjiE+vsmqHznoXsSaqZRRWW7AfHPewNBi8z4TWoX42B5l58dkmmuLbfAMocN/6ZaErDJRDMxPFDlwki4Je/drCWIwL3VRQYmDixD3exMHyPFT4RXFQPUArRN6rl4MxWzUbp0dfclmzgx1x/HN0at2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IWkyQDIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68892C4CEE4;
-	Mon, 31 Mar 2025 14:34:47 +0000 (UTC)
+	s=arc-20240116; t=1743431694; c=relaxed/simple;
+	bh=mAM52nXXk2wvI22VWk+1kREQBjj6KscgBkI2cwPtYwY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g0gR0tKOe+O+Aa4kASscgcrGwBlLM8YDGxcsc9DIDN8QqWtSixdI3qRC7Qk1CQ5S1OiROrUgJW/ZwtdMz6pHb1F2gSLGt8VJhOuQL5mS5EPhKY7fg/aJYWu6B24xuMY3QhjZRyQVLWTj5+7TlhmkSFhq00pv72OZyS4zkXoo+/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4rsu0YO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7FCC4CEE3;
+	Mon, 31 Mar 2025 14:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743431689;
-	bh=5DlYIc+Mxp6wP2XagxFIavXx5bYn9hjr7ENOqeYEYRg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWkyQDIy50TLV/WySs1Lw9uVGy7Qg5xaEDB96ruhiRYxO5MISUro3sNGEdSUuO2My
-	 VhSUL13soC1PNNE2KGCqxcE4qjTswoz8qjeOd1xTwdA7bQdU8VNVBBoWS5SxBYlwlL
-	 VBnXtL4XLBfkngukOl0FRqFwsSMCeulcp6FULr8sQ/3tAOd7F1anOwrb6/eJ3QOpXY
-	 GUjz2KgSr3ZPTkQeRzFksGdsQ7bonWIswX9dEltci1ZtBlsrriXwlxF6AyrWiRGUzA
-	 yE28Ohpuc5ZBSbEwwflPP3UtgL9G6JyDj2TwdyRmB5epISOv25SxwV8w6KkTRbZ+ru
-	 lqJp2nloLWcwg==
+	s=k20201202; t=1743431693;
+	bh=mAM52nXXk2wvI22VWk+1kREQBjj6KscgBkI2cwPtYwY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=D4rsu0YOvpuTU86W7BqCgMv76xZ4BeOaXwclxmhjrF6r0+IulNA30EVzFCtdCKwJn
+	 xrZxUjGu9LaQimRft0iU2Tz47TrrLxa5bqpxIwnoskGpJg6dzjsvHhIi2QgkHZEMgD
+	 Ibx9QMF9IHY9GPTe/Unr/40Ra03ruPjbO2UnzN6Z4bkjhhHOkv4IhyIJJeMawiX10i
+	 bfv+jxOABFk81zGdiuaoA9v+X73zhYJMenuPtphVUvb0wmSTGLMJnbWK1qUWNKMGiE
+	 gG75pNtPqW0RhhlzectBVC1AH9GS5lP7/g3LS106bbiQv3mX0yKU62QmB+F5HNxwCr
+	 MrtZFzsDxzutQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+	syzbot+16a19b06125a2963eaee@syzkaller.appspotmail.com,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	bpf@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dave.hansen@linux.intel.com,
-	peterz@infradead.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org
-Subject: [PATCH AUTOSEL 6.14 16/18] x86/mm/ident_map: Fix theoretical virtual address overflow to zero
-Date: Mon, 31 Mar 2025 10:34:06 -0400
-Message-Id: <20250331143409.1682789-16-sashal@kernel.org>
+	jiangshanlai@gmail.com,
+	josh@joshtriplett.org,
+	rcu@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 01/16] srcu: Force synchronization for srcu_get_delay()
+Date: Mon, 31 Mar 2025 10:34:35 -0400
+Message-Id: <20250331143450.1685242-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250331143409.1682789-1-sashal@kernel.org>
-References: <20250331143409.1682789-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,86 +67,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14
+X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+From: "Paul E. McKenney" <paulmck@kernel.org>
 
-[ Upstream commit f666c92090a41ac5524dade63ff96b3adcf8c2ab ]
+[ Upstream commit d31e31365b5b6c0cdfc74d71be87234ced564395 ]
 
-The current calculation of the 'next' virtual address in the
-page table initialization functions in arch/x86/mm/ident_map.c
-doesn't protect against wrapping to zero.
+Currently, srcu_get_delay() can be called concurrently, for example,
+by a CPU that is the first to request a new grace period and the CPU
+processing the current grace period.  Although concurrent access is
+harmless, it unnecessarily expands the state space.  Additionally,
+all calls to srcu_get_delay() are from slow paths.
 
-This is a theoretical issue that cannot happen currently,
-the problematic case is possible only if the user sets a
-high enough x86_mapping_info::offset value - which no
-current code in the upstream kernel does.
+This commit therefore protects all calls to srcu_get_delay() with
+ssp->srcu_sup->lock, which is already held on the invocation from the
+srcu_funnel_gp_start() function.  While in the area, this commit also
+adds a lockdep_assert_held() to srcu_get_delay() itself.
 
-( The wrapping to zero only occurs if the top PGD entry is accessed.
-  There are no such users upstream. Only hibernate_64.c uses
-  x86_mapping_info::offset, and it operates on the direct mapping
-  range, which is not the top PGD entry. )
-
-Should such an overflow happen, it can result in page table
-corruption and a hang.
-
-To future-proof this code, replace the manual 'next' calculation
-with p?d_addr_end() which handles wrapping correctly.
-
-[ Backporter's note: there's no need to backport this patch. ]
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20241016111458.846228-2-kirill.shutemov@linux.intel.com
+Reported-by: syzbot+16a19b06125a2963eaee@syzkaller.appspotmail.com
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: <bpf@vger.kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/ident_map.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ kernel/rcu/srcutree.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index 5ab7bd2f1983c..bd5d101c5c379 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -101,9 +101,7 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 		pmd_t *pmd;
- 		bool use_gbpage;
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 5e2e534647946..c5419e97bd97b 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -647,6 +647,7 @@ static unsigned long srcu_get_delay(struct srcu_struct *ssp)
+ 	unsigned long jbase = SRCU_INTERVAL;
+ 	struct srcu_usage *sup = ssp->srcu_sup;
  
--		next = (addr & PUD_MASK) + PUD_SIZE;
--		if (next > end)
--			next = end;
-+		next = pud_addr_end(addr, end);
++	lockdep_assert_held(&ACCESS_PRIVATE(ssp->srcu_sup, lock));
+ 	if (srcu_gp_is_expedited(ssp))
+ 		jbase = 0;
+ 	if (rcu_seq_state(READ_ONCE(sup->srcu_gp_seq))) {
+@@ -674,9 +675,13 @@ static unsigned long srcu_get_delay(struct srcu_struct *ssp)
+ void cleanup_srcu_struct(struct srcu_struct *ssp)
+ {
+ 	int cpu;
++	unsigned long delay;
+ 	struct srcu_usage *sup = ssp->srcu_sup;
  
- 		/* if this is already a gbpage, this portion is already mapped */
- 		if (pud_leaf(*pud))
-@@ -154,10 +152,7 @@ static int ident_p4d_init(struct x86_mapping_info *info, p4d_t *p4d_page,
- 		p4d_t *p4d = p4d_page + p4d_index(addr);
- 		pud_t *pud;
+-	if (WARN_ON(!srcu_get_delay(ssp)))
++	spin_lock_irq_rcu_node(ssp->srcu_sup);
++	delay = srcu_get_delay(ssp);
++	spin_unlock_irq_rcu_node(ssp->srcu_sup);
++	if (WARN_ON(!delay))
+ 		return; /* Just leak it! */
+ 	if (WARN_ON(srcu_readers_active(ssp)))
+ 		return; /* Just leak it! */
+@@ -1102,7 +1107,9 @@ static bool try_check_zero(struct srcu_struct *ssp, int idx, int trycount)
+ {
+ 	unsigned long curdelay;
  
--		next = (addr & P4D_MASK) + P4D_SIZE;
--		if (next > end)
--			next = end;
--
-+		next = p4d_addr_end(addr, end);
- 		if (p4d_present(*p4d)) {
- 			pud = pud_offset(p4d, 0);
- 			result = ident_pud_init(info, pud, addr, next);
-@@ -199,10 +194,7 @@ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
- 		pgd_t *pgd = pgd_page + pgd_index(addr);
- 		p4d_t *p4d;
++	spin_lock_irq_rcu_node(ssp->srcu_sup);
+ 	curdelay = !srcu_get_delay(ssp);
++	spin_unlock_irq_rcu_node(ssp->srcu_sup);
  
--		next = (addr & PGDIR_MASK) + PGDIR_SIZE;
--		if (next > end)
--			next = end;
--
-+		next = pgd_addr_end(addr, end);
- 		if (pgd_present(*pgd)) {
- 			p4d = p4d_offset(pgd, 0);
- 			result = ident_p4d_init(info, p4d, addr, next);
+ 	for (;;) {
+ 		if (srcu_readers_active_idx_check(ssp, idx))
+@@ -1849,7 +1856,9 @@ static void process_srcu(struct work_struct *work)
+ 	ssp = sup->srcu_ssp;
+ 
+ 	srcu_advance_state(ssp);
++	spin_lock_irq_rcu_node(ssp->srcu_sup);
+ 	curdelay = srcu_get_delay(ssp);
++	spin_unlock_irq_rcu_node(ssp->srcu_sup);
+ 	if (curdelay) {
+ 		WRITE_ONCE(sup->reschedule_count, 0);
+ 	} else {
 -- 
 2.39.5
 
