@@ -1,72 +1,80 @@
-Return-Path: <stable+bounces-127029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC44A75F00
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 08:48:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23E1A75FFD
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 09:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C274167A87
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 06:48:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A3231680C4
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 07:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517A214A605;
-	Mon, 31 Mar 2025 06:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACBD1ACEDC;
+	Mon, 31 Mar 2025 07:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=kvaser.com header.i=@kvaser.com header.b="Y0Sx02lL"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2138.outbound.protection.outlook.com [40.107.247.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436B333EA
-	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 06:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA82F1B4138;
+	Mon, 31 Mar 2025 07:25:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.138
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743403688; cv=fail; b=fxA6nUJHL76i7mt6WFUqK7sr0VP8fTQl11A3RKBUOJICR6Uf7oba2sSiysBQS0MJE3U3T1egunHDrhmnP6HscnszRB7YQ5Hf7PXJHvdN33AdxG1WjdOsc5kBCIWvUMjXGBhto7Ehf1edjfo4MfSVH4Cs49MIyeII2XfRa3oDNM4=
+	t=1743405950; cv=fail; b=KEybaPv8JHUvga1eqLUcXDTFGUXkKTOnHb+wY4n0CwfJWPL0GsN0GpLXJvz5VKDdQyZ3thoo7H0JSNlq6cdTGGZ6u7CmbpXWgwlcVqMDOV4dtGGJ3HmkXo6YbHHcsByfvZbP1yC1IohEKOMfmivkEUgDfVPSKG9Oo7J96ut+gDo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743403688; c=relaxed/simple;
-	bh=EAf2BZURAf9zCd05g7OM/An/hyEJOFRNiwqg+xC+Uy0=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rZSl7lNfvWnXuQZA8UE4/A5nBa/cG7riha9Ed8qmoGIvVxiCFV9Zr3frzyVEkTA0Xs3V6SZ4KxggQ+vBPvlAEXsX8fPHtphVMSuEzE+QQK3D/OJoXM4+mOXWGJwvE+LtmNNOUpvTzcwkjf62NItLsM9t3vRCnGF2nOqn1s26WJA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52V5IX35008674;
-	Mon, 31 Mar 2025 06:47:54 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2047.outbound.protection.outlook.com [104.47.70.47])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45p6311tnx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Mar 2025 06:47:53 +0000 (GMT)
+	s=arc-20240116; t=1743405950; c=relaxed/simple;
+	bh=+QcD5zUzBP0rGqUxYIEbfrqmzzAPnW8cRn2Lo5qxrL8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qvwUEl+x2DED5AcuHfzMu1v18LV67Yzzt7akoUHLLFw4aLjMTPOundaF+5ahcoVlR05V1kVDhYgDmYm+58nYIZfigSS8WansMwgHZKjLACY8/7acHxW4TwwQwfRMqpiiTmHWBatDWEptzeOgXUXsI8Kboz/0PZzSC5xPiNEXsRY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kvaser.com; spf=pass smtp.mailfrom=kvaser.com; dkim=pass (1024-bit key) header.d=kvaser.com header.i=@kvaser.com header.b=Y0Sx02lL; arc=fail smtp.client-ip=40.107.247.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kvaser.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kvaser.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YP16SFUKul9SN84CGn7cWTggOJ3CqBnrnG80UuMRLdgAjMe+UnSE8yQOZPCc3GTWSwqMr9zMeFE+gken9FFj6yP961BbEtqLqB9VobPIjGoKiCydLhitooeQ1QQwbRvfr1bhCrXGkf0zFvgG4hZoNmYH2oOsoz46R3v6C4/+6oyn/ncl6sshvABWXQuLAsFcjPWcBwJ+jKyGtb3PdfpBvBAQWJRquT/YydI8u41GUgQEj8iWFUpDkS0UbUeYZsldd7fLiOiKaDfgkgMsPfMnRNIZH/aLVuYk9Jre585U8eQI6qjEWPZszT+EZQsJgPcNr6sCDF8pxFnmB5AqBq7dng==
+ b=dJqSdie+Ym+vJqp9xwLvqii4UvUnBvXKTv758jBh9jDNeyqrOjTglla4I/b+w11M8tivbaN3cxqA777kOB41PsVxNmz4pKQU/zWh0T1w6uW4apoYRi3SSuCwTsnaGbf2TL/CuFMmDwv7ITWbRma8KHpBXfB0sKOqw4pqI2k0S6/HLcgqjunTaEFbEaj2my/TJCaf1G/XacwnSLVleHe1H7XZjNlKcj5Q8HG21KxO8/2CwY7dtKAeJNxE6d7CQbopwV9hqnQO7sOd8ARjnaI3m1ABNawtvrfWIUfzmCGYZdQMbAA7wCIKY80gLon4x9depdB2+elhuL0KFvQv+TNwYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GoHJloD9EmQk/O5OqwDDCWvcr439O87cEW4Hj0mmN/o=;
- b=Tw0T3EsZDkHKdPa6bdF4sC6GN11tMJUJmgzYJNgk78lioJVJuXH2XI8v/Y9OrKDF7BHR+QllB9nHMt94Eieq8rioMmRZWUs0y4CavNzW2X+qDO6oFG4zPCvlDjexm0zlB1l3vd8E59nvy5CiKaCGF05r7WV9cy+DNYwVFqbM9he6AZSt+R4eybDZXYDmWhJ+YfpfeChpQ1CSSfR+DElTSTM0ey3L9SiqZ5qRHjSHuFTuYzW/dFdgEWGpSiTf5/hgpIT8ULoR4KF1lnvDWngBLw7X4An6ZKaNirGxaPpevjiilGEBdoj75bKHaVn/fIB4RgVNGj4imJRtvImne93enw==
+ bh=CbdQ5g8F9f3YktDY6MEljvOviBKVKZn/H8RuA3KV+dA=;
+ b=UEb186CTGZM3fuwd3ZpO84zj4wPiTA8CzVYW8mcAOnvDvmrjVv4Mqu/De+/GSa9zSDaSgGcID9398ByjEs+V/uvsbr/clapfdXw9NpOf8WmEDzLOJQjiQuMf3T9g+e38yCEV248FmOWqzbeml9bT/bFuFZNHifDP/AkllQG2DAyKE0C6XhgFzEVIZd+NIno0aDewqUw6hta7mKu0ofXriOroFt0RUVdPaoc2plMYP2DFpfW23H1NrdB+j5jRJXz/dpJdZPzht2Cta4vGMkTVW42c14icUQq+ZuYLp3cWrRi/BVoIlrZc4H3s0nj1uLs4K+Y/96Kpda/CzlyeBr4MEg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CH3PR11MB8701.namprd11.prod.outlook.com (2603:10b6:610:1c8::10)
- by MW3PR11MB4586.namprd11.prod.outlook.com (2603:10b6:303:5e::15) with
+ smtp.mailfrom=kvaser.com; dmarc=pass action=none header.from=kvaser.com;
+ dkim=pass header.d=kvaser.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kvaser.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CbdQ5g8F9f3YktDY6MEljvOviBKVKZn/H8RuA3KV+dA=;
+ b=Y0Sx02lLWt/TPzRuhq7OjM8SJkiNpVUwnFuImo8REWGzr4qdccAzoRBMjvluuzwpQE+r3XoHZKgvT3pFSBUNhBTB18RlgqeL5eVRuBXiKyaKP4ugac1wWpQ5dep5Cs0lD3rzUzhqsk/BPiC3EaJTxwXo6i9tezyhF7dNdCFmNSs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kvaser.com;
+Received: from AM9P193MB1652.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:3ed::14)
+ by PAXP193MB2428.EURP193.PROD.OUTLOOK.COM (2603:10a6:102:22e::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.52; Mon, 31 Mar
- 2025 06:47:51 +0000
-Received: from CH3PR11MB8701.namprd11.prod.outlook.com
- ([fe80::5727:1867:fb60:69d0]) by CH3PR11MB8701.namprd11.prod.outlook.com
- ([fe80::5727:1867:fb60:69d0%2]) with mapi id 15.20.8534.045; Mon, 31 Mar 2025
- 06:47:51 +0000
-From: bin.lan.cn@windriver.com
-To: gregkh@linuxfoundation.org, stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com, sakari.ailus@linux.intel.com,
-        u.kleine-koenig@pengutronix.de, hverkuil-cisco@xs4all.nl
-Subject: [PATCH 5.10.y] media: i2c: et8ek8: Don't strip remove function when driver is builtin
-Date: Mon, 31 Mar 2025 14:47:33 +0800
-Message-Id: <20250331064733.3180764-1-bin.lan.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.19; Mon, 31 Mar
+ 2025 07:25:43 +0000
+Received: from AM9P193MB1652.EURP193.PROD.OUTLOOK.COM
+ ([fe80::e973:de09:5df2:4e18]) by AM9P193MB1652.EURP193.PROD.OUTLOOK.COM
+ ([fe80::e973:de09:5df2:4e18%4]) with mapi id 15.20.8606.021; Mon, 31 Mar 2025
+ 07:25:43 +0000
+From: Axel Forsman <axfo@kvaser.com>
+To: linux-can@vger.kernel.org
+Cc: mkl@pengutronix.de,
+	mailhol.vincent@wanadoo.fr,
+	Axel Forsman <axfo@kvaser.com>,
+	stable@vger.kernel.org,
+	Jimmy Assarsson <extja@kvaser.com>
+Subject: [PATCH 1/3] can: kvaser_pciefd: Force IRQ edge in case of nested IRQ
+Date: Mon, 31 Mar 2025 09:25:26 +0200
+Message-ID: <20250331072528.137304-2-axfo@kvaser.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250331072528.137304-1-axfo@kvaser.com>
+References: <20250331072528.137304-1-axfo@kvaser.com>
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2PR01CA0028.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::21) To CH3PR11MB8701.namprd11.prod.outlook.com
- (2603:10b6:610:1c8::10)
+Content-Type: text/plain
+X-ClientProxiedBy: MM0P280CA0114.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:9::11) To AM9P193MB1652.EURP193.PROD.OUTLOOK.COM
+ (2603:10a6:20b:3ed::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,161 +82,259 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8701:EE_|MW3PR11MB4586:EE_
-X-MS-Office365-Filtering-Correlation-Id: d91214f1-3313-4758-89c4-08dd701ff502
+X-MS-TrafficTypeDiagnostic: AM9P193MB1652:EE_|PAXP193MB2428:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9052841e-cb79-4322-ee62-08dd70253f0c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|52116014|1800799024|38350700014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UnIvS2U5OTdKVFE2M2lhNmY3S0N0MEd5TmRGZElVNEFDU1hKRnVCVUtRa21Y?=
- =?utf-8?B?dytBbElvdG9RcTVsa1hQbmRUR3ZRcVoralh3dmJvckhNVTZUa2ZDOG5MMVBu?=
- =?utf-8?B?R0RJWXowMzBlcEhEMTI1MUNWenFucVhua2xTL3c1cUUwcCtLOE8rWDJrQ3BH?=
- =?utf-8?B?bmw5UWdJb1hCSTUyMWZ2Yk9uSXpYQWg5Q3hVYndEdzNxdVBlTlhaL2VKV0Qv?=
- =?utf-8?B?U09DT0dEZkJrbi9YQituYnJTWU9oOFc3dlZZaG5qdm40cUFHSFhoYWdYZHBT?=
- =?utf-8?B?TG1TWVZ0SnZYelJ0UllBUS9jNkN5VXY0NHNibFYvdEw1OE9aZXBNTnZXakhm?=
- =?utf-8?B?NmNwRmdHUnBKZlNKdWxJSUNGNm1KMC8vL2M3cjJ6VmxKa0krQ2lZRHZXK0w0?=
- =?utf-8?B?bzd2RmUrWGlQeDBvQ3N2ci9Sekk0WTN3S3RxNnN6TGIyRHJUM051blRzc1Bv?=
- =?utf-8?B?THpEVytGTXZ6K2UzYU5HVXUycmhaUFBoRFAvdjVjMEdheUFnQ2Mxb3gvV3Nl?=
- =?utf-8?B?YmFyUDRtdi9ST1BOckdNTHd4TzdwWlJ1bWUwRzhDMXJrTEhNbFpIUm9jVXdH?=
- =?utf-8?B?aWk5dUdKdmlwd05KbkZ5LzlMcjcra3hndXFNQU9vK1lqVG8yRHRQTmZvM3Ew?=
- =?utf-8?B?SDJXa2tIUGFMQUE5dEdhVW9FamNnOWxXK0xURE1pTUprOTZzSGNGOUgvbjJV?=
- =?utf-8?B?bGZtKzFndFgxVS9MOWpFdHlHbW16S3ZNbTZERGVlamtjZXRoNkxlaUt3eUtr?=
- =?utf-8?B?R0g5UmtLWW1EYUNRNmNqRDkrVWxIZUdQeVZJL2IrQ1lwaFhmdi9scXhXN3lN?=
- =?utf-8?B?bWo4bkNrNkRmOXpQZWpqbkhldjFtakR5WGk1elVLS3VEN0puZEFBa3MrOHpK?=
- =?utf-8?B?OHQ3U1lhTUpCSWJva09iU2pJRnozU3IrZStLM2JXQ2VQNk5McFczOGxsWXJ1?=
- =?utf-8?B?SlAvTTdRS0pmZTQrRFVURzlzOHVNcTQ0WjgvTnNSck5VaDJZSTZyWnE5Z0N5?=
- =?utf-8?B?TkwyODEybzlrbDdIU3hoUTgrUWs4cnBvL0U2LzVUMWZmckVnTlNIc280WnVx?=
- =?utf-8?B?bXhyK0R0TmYyVjZpYzlkbjB3VDNDcTdZMUgveTFYUFlFUXNMQ3d6TVdXNURJ?=
- =?utf-8?B?OTQvdFoyRWtOdEVYOUtFSTVPQSs5L2s5K0lPT0ErTk4yZFJFbndHK2p3bVJk?=
- =?utf-8?B?YWdlRmxWalFNa2QrRVNYbUs3UkJrU2JVL3NqV0pyMkRVaXFib2VkUzV6REhw?=
- =?utf-8?B?Y3NtbDlIdGJQdUwwVmY0OTJJcFdJRDFvelB5d0I0OEE1c1lCUjdzR2J1MW5S?=
- =?utf-8?B?K0JNZm12NmhkUnhjM3gxd1hwaGtFYWdkV2k1UVFybEd4ZEtXa2F6dy84a1VM?=
- =?utf-8?B?cWYxQWtxMlRnS0xWT1VKNUkvaVd6ZGNvWUwvc2xJbm5ab0JRNzVyZ1Fka2lo?=
- =?utf-8?B?VUo3ZzBISWQxeGpwdWxQNFdDRTQ1b0JqdVBrWnZodnlXVjJYLy92RURWZDBk?=
- =?utf-8?B?ejFZYm9mcy9iK0ZHMkxpeEFDZS9UeWYrNkdkWXZiU1ZTRDgwNHRMSnlmbmh1?=
- =?utf-8?B?aXl6UzhwTGtJRko4U1gyUVA4c3N3UU1GSzZvWDQ0QXZNQmxNQlo2NEIwR2F5?=
- =?utf-8?B?b1dqUEZwcVlUUWwwWCtkaU1MWjlneGk4YUVGR2ZJZENvUXpiTS9EemIzSXRD?=
- =?utf-8?B?STNrYVJvaldkaGx3N2RiWlc1Z2NoQjR5N3JvdjNvQ2ZEcWxneUhFRkRXVVE1?=
- =?utf-8?B?L3Q0QitvWS9vSVRWQ3IyZVcxbFRsZEp6QS9ySXlkVHZ2SmlPSmR5YjV2U1NW?=
- =?utf-8?B?ZnRZTlZ6dHpVTXBUMTQ2cndlR20rR1F5UTBaTFIzVUI1empjcS9wS0xCaERm?=
- =?utf-8?B?Zi9NYzkrWXd2ZitOcnVPbEpzVGV2S3hjaTJkY3pGSU5aNXYrM2NTVmwvZjRE?=
- =?utf-8?Q?cf1U3mL7It5Cl+G2EtnvZ9Tif1iYzZAJ?=
+	=?us-ascii?Q?0FsJCCYG8gDPVkGBMxQukfMYWxpGGBlhMIzXn4FI8fLTMhyl2aj6yIGHQFQY?=
+ =?us-ascii?Q?QyRaf0zXZ166sz/V6mTZB2WFuR9+/SQRlVX2XGMBB79BBUPTgvtlACYtQmY6?=
+ =?us-ascii?Q?MxRal0dffDlOlXTHpywaG9LYtOl8b+8pnhq+lH5qFb44btELSHOhfvheADtd?=
+ =?us-ascii?Q?diOMCClrvQtcxeG9e46Cny7YjnlyJoYsMfwZavMt4rcT7HOpnkWa5JHFCibk?=
+ =?us-ascii?Q?1Q27noF4CaJG763ddWCyVAmVWZbgWJY3prBlDwR0Oer+s7YKw9BhxH60Ak2w?=
+ =?us-ascii?Q?1JVbXVRxFvq4xtm6D1dO10huaREu/WNi19fREIhYzfMeu8GllfdupS+RN/vc?=
+ =?us-ascii?Q?SsQQXsToerSKIo97r4uXTinisj+C9W4GDMYqbugATWUgTh8MaObJDtpSx2GZ?=
+ =?us-ascii?Q?Oxly75My2LLSzzHAGPcyOtCXFe4Rbn8fce45Me4f2jXRpCzucv7jax+X11a9?=
+ =?us-ascii?Q?geoTQXPJtH7/fIQICw36lcu7J0JMJhdDfUs+VrAzT4w6cyB9D+DMJFjxufah?=
+ =?us-ascii?Q?dCljvjKba4tnhjXWFlc4/UtHuNG6PLKomG8lePIoffMttXaJmIvsFderxSm2?=
+ =?us-ascii?Q?8yrA6jZO0fkdlR7aLmeyLyT8MGSwtAnC8E+mG0HTuAufMjUZ8zUt1C2iMRj6?=
+ =?us-ascii?Q?wN1g58MuhXQqFXBFROZyITvUevczIq0UnimLwW+HEKFSeG3LDPwfzrJ61Jzv?=
+ =?us-ascii?Q?1K8KabjoKT+V7tEGCoR1PEjAsoEn/JC4GAJWTd5SRoV1OTN+nKOPAkpJemCD?=
+ =?us-ascii?Q?dKJJDz9UjfsPpkaMbZlV5yoKcKC/6h5MrXPu1tdYPQLR5z+0ka0Bt5GDJSNf?=
+ =?us-ascii?Q?zFT0I1hKr+XWyfe/Tq5ICXopVMTTQswmR9Lz8H2YNUkKP3fJw1ewnm5Ed0PG?=
+ =?us-ascii?Q?mhlUD/kVZFfanOH54OtE8ZXLuyZmbZVp3Y8ItIXsOvBGwWZMvIy0AQ1c8Lgk?=
+ =?us-ascii?Q?0sFEd0b6JpW52XtOwnRuB4gNPgaoRw5YbHeS5CjHAJTCJs27ZtlSJ6Ogs7ap?=
+ =?us-ascii?Q?fswkWERjAuCPTfCF/GiCGuZQnVY+HukIHGBkrI8+D/nTTFoPYBraUN5RjpH9?=
+ =?us-ascii?Q?PcLGU1AQqd7jp6sjmlnulHvjU+YfKQX0rzrMPj/4cNkiJK9OIrxT4yQlds2n?=
+ =?us-ascii?Q?k+976R5o3sAMKnD1lvFFUE9lAs5OldubJ2DC5OCY5kZT/vRjuz1g/jZbmF2u?=
+ =?us-ascii?Q?FzB32ZbcKjuMPllxXEhmo7klPDYtFGfTcQNFzNDCItDUYCSilLklPX1MDQEw?=
+ =?us-ascii?Q?7cQz353MvkWEBKbFsiW7OcuGq6/rEUNMP1cXVx1AKYiB+oDgKMhTdIbTVm0e?=
+ =?us-ascii?Q?oXCbUF0H6jyo6I5XGNXy8zVoHpzG3MTG8CTnCsSS1XOs1+aNRd9FCvo7ysye?=
+ =?us-ascii?Q?xIt72mONEOeQbiqRK7Nqn3I1pjNA?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8701.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P193MB1652.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WXE5L3cxNTV4UXNMQmRxcm5FTHFhd011alhRbktGRzdMOXpiTGtBeHQxd3lp?=
- =?utf-8?B?K0phbjVmR284QUgwMWJreWdyUGw0aXpldkZDbkJKVzlvdGVOejAzazQ1eDQ4?=
- =?utf-8?B?UE1UVk5KdVgzVEdWVG5IK2p6NDNyanY1cjJkcmlvUHJJVUxhQTFqZWtmeFhV?=
- =?utf-8?B?ZWp3OXJIVzhBOGFILzVDT04xYmxhUGRtMXRsVXByWG52WldhU0dvMDVJNWZT?=
- =?utf-8?B?czhyWHVSUjhOc05aRjZ5RFRCajE3RXJKRjdtVkR4VFRiRDdlNWEreUowSGdw?=
- =?utf-8?B?SDEvVG5wMHFQYjNFV2V3THZXZUZUOEtnSmFHMkNXR3VDWURlWDlrMVZFOVlZ?=
- =?utf-8?B?dnBQMVFCTUNMSjFzZE5VUXpYU0plUUFDcHg1b0pxUWlJL3FlWWg4NkNzbmRB?=
- =?utf-8?B?Z2hwWSt3dGhTSUZBTnlkbE4yTGpRTm9saXZEd0tTUmFlSkFZaEFhTjBjeG9u?=
- =?utf-8?B?dW0yeFQrMTkrK0RrcERRaW9RSEMvZGtwS0l6Q2dyZVdNYzBhZ01hNjZ2bGJI?=
- =?utf-8?B?UnhFR1VVUFlHOGhqTWpvTXhoNzg3MFlFVEJZVGszelJQb25uZTd5Q2pQd2R0?=
- =?utf-8?B?dEMyVk9BTk50YlV6U1NPSlBydzZxQXhqS1VZdEVKaHFoU2l3Rm53ZWFadnRO?=
- =?utf-8?B?Y3pETTUwbTl4cXJNZUkrVnJJY0RjZjJCbmEyazczWkltN21RN1V1a3AwTzNQ?=
- =?utf-8?B?NDJCaHoxQU90VCtyZ25nM3F5dXVaNVRMUVB1RXBFU3g4emdZaFBDeGVpQk1l?=
- =?utf-8?B?ZVhLZ25qdHYzNTh5dmg0OFRQRVkvRjg3UzJkczJObzgvMEZMWXdwT0RDWjM3?=
- =?utf-8?B?d0hzdU45SVcwd3ZSaGt2OHBaMTRNRnRCV3hvK3A3SGc5R0t2a0c1eEc1STZU?=
- =?utf-8?B?NzhwRDJGdkRKRmEvTDZaeUlsTEJPUUwwTHplMkg4dXhiSFNtZmNkZWhZM3Nj?=
- =?utf-8?B?MDIxMHBjaVlNYTNJL1FJcWdTN2lUZjEvdjl0UGdFSWJJSHpkYzJGSmtETmsr?=
- =?utf-8?B?K2F0TUJmanUveTdsZzNJYWhpYlcrNzg3MnNGc3BMRk9QM05lSVBMK3hoMENv?=
- =?utf-8?B?aE1YQnQ0eGN5c3E3MUpXRVRCOUpKZU9Dckw1L0pCZjJ1NlhjMFBnMWRJV09N?=
- =?utf-8?B?NUR2ckdHL3IxL3VLOUVTQTFTTHVaZmlXc3JNdGNFc0xHU25kU3NBQlZNeFNh?=
- =?utf-8?B?dXY1SXdpMnZRU3JXZGxaT0FDb1E3b1pwTkxtKzY0aWp3RG1GK0dVZjA0NEdn?=
- =?utf-8?B?NGF5MDlNOFQrWm5rM3hhNUs5UC9vZWNYRUFZMHBueHNaTEpjK2dpNVU1a0ZR?=
- =?utf-8?B?VVhzNXVOODR5U2c0OHhjWHk5OWtJRURHNDlNaFhibUozSG5zQzMyYmlSN0V3?=
- =?utf-8?B?R2E2N0hZUW1KbTRGcnJkMjR1Z3BQZ1pzbW9PaVpCajhBeWQzS3FvSDdhWnhX?=
- =?utf-8?B?cGg3OUd2WHJXSDQzdXQ3aWEvZmRhK0FxWTZQNThBVkZ1YTNCN01RMVZZZnNL?=
- =?utf-8?B?VkM2cWVnWTdwV0ZlV0J0TWZNd3NVSEltSWY2L3N5NS83THV5ZUtaMVJNcDhl?=
- =?utf-8?B?Z3hiVEJkSlpEdTV4ZTZ6RklBV0xMTkVwZUVqUUMvcXNGNWd6eWFGbDBybUtC?=
- =?utf-8?B?YzdNS0FGUTRGdWpPS3BhR0tQOG9PQklHVkJyZFJEQUhTRzJtRG5OSkYrYUs3?=
- =?utf-8?B?U1ZUMVkrRG0vNWRGSWUyM0ptS2ZmWEF5SWlteDdlZVpNVUhoOGtrcVUwT3lw?=
- =?utf-8?B?WWE0L2kxaTJZTGpJUmdibk1kNTFJNmdCSVpmdkZDMENzQW9ENjAybXlUa1dD?=
- =?utf-8?B?aG5MUGtPb1ZGYVE2NHZSeGR1Ynk3aFFGREMyU1p3OHQ2YUkzOEJFTHBUYlBt?=
- =?utf-8?B?czFRMFFYM3hXOURidTRkbFI4eFEvdHl4bkxhTlloK2hHYThvWmxaUGY4WHdy?=
- =?utf-8?B?RGxlbjg1VW96cURvcnRPSlRGTEFyZTBOeURzaVFZNlRyS1ZHQ0t5MEhVcmNS?=
- =?utf-8?B?OU4zSGVmUFI2aVl5QXdrTzBXdWZ6a0h3NHp5MTlQelFLQ1lsZEhjak9qMSsz?=
- =?utf-8?B?MC9vcGt3U0c5Z05ybSsyNDNwcERWSkNyVXdRak90MU9HTWtwR29PaTBuWklm?=
- =?utf-8?B?RXEzZlFFZHVpd2pvVSt0ZjJTWDBXV0lrSnVoVVNSckRZUjRUNklXaXhvTUNq?=
- =?utf-8?B?WlE9PQ==?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d91214f1-3313-4758-89c4-08dd701ff502
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8701.namprd11.prod.outlook.com
+	=?us-ascii?Q?bstMGC965ev8um0Bfu0VuVjy9FYkYCY2akl2WPWtd3naGAEh/k5ycWd2iBII?=
+ =?us-ascii?Q?uOUPO/TgawV6zj0H+Nu9vnn5AtslI9dCJyvu2lUTGyiR4HG8uePRelKoqyN0?=
+ =?us-ascii?Q?Sr7APEa/l3Atip8zj4xnEh2RkNU2d1A3w5G56SspQvoqvcqHiOSxF1z3af1K?=
+ =?us-ascii?Q?8QTMZAKpM2z77UbSyORNYrkVPgaPt4+Hpl6j+sbhNAPrrETEysYqjQZu7a+L?=
+ =?us-ascii?Q?2uCyBjale0IOapBxkeFV6QKkkMnScaZE+XygcY1MtLYF6sAr0Mu/d81OLWpK?=
+ =?us-ascii?Q?VsM1sAq8IWJxDWHa1etYc928qLaTKMuQJek9P2zl8qwWi/S0JRcGFpF5MwjT?=
+ =?us-ascii?Q?e2dNeYvEl/qbcMYbenyLbCMXvUib08SsP/MNuNHpXSOL67DwGHCw6xKU3k2O?=
+ =?us-ascii?Q?skLHaAS2oBU4HlbvJG+TJg/J+skJDzddYOhOail34GkHSlTxo7BsXy5GEQSB?=
+ =?us-ascii?Q?iDnCrdtzB5rNHbMAGhKsJnpF56CE5W7pjHu4LyILr9g15yDMK8d6j5kWtW8g?=
+ =?us-ascii?Q?qz/jazflSghQNgHBhgm9DSDmr+3R8ueWdCW5Zs7uxFyllCK5t1Gf2jQ92TnS?=
+ =?us-ascii?Q?7KImkR+pRaV986vydmBl2nDdNOFAy0zrt+63YoiVY4eUJVCEij8MADZHfzRj?=
+ =?us-ascii?Q?dRG8AenmFFnW5x6KxdQ6TL4CtOU7eGwuRJ4kiLZlsManWdkx38kW65QBIyze?=
+ =?us-ascii?Q?ouG0+wsbxqtBK96z4Z/ShlAnLBt7kZOf0FFtrEO2ePiyWxz7xLUP1k46W0rI?=
+ =?us-ascii?Q?4OFBx1gXeeubAMtx0tlnvzQWsKiiQuCNwnIjWIuD7eDG7VOmm1sG1jnPcoME?=
+ =?us-ascii?Q?up/8kh2GkDnnqa5EhdNwc8qawHJ0nz6IbRQ975bIYaYqDENwMypd78SYDQPO?=
+ =?us-ascii?Q?wiFtyHWNoNLKVh/7FZyY+5gohKxo9PJ/8h4YNy480z/JmK0jUWAESfP+bwMX?=
+ =?us-ascii?Q?ghJVkQncXJmIG1aUTR5lJjk+zxn+eSl2lfAnJ7+os3mkCAEwhERgVpINxE5V?=
+ =?us-ascii?Q?eAZzPt/DeuIUwQY0uBfmmC7my9W1XnTTcssUwZhshJJTMpbmMHjBLW+ktuqX?=
+ =?us-ascii?Q?TLxlbz3mRb0Kr5ixEAvEBl6/94bNlIingXaYch04gkhweve1+zcyzlqdQgE2?=
+ =?us-ascii?Q?4w2mAc8jXF/ONTrk0r9BBROca2qqstUL8sW+ig2Zuukyonrox+sOsRqMa1fg?=
+ =?us-ascii?Q?LOdt5Srn+uhNnmQcovgqOLjhZsJihIPFxEtRgwwj88HaUNwX6hcE/lqC9VyJ?=
+ =?us-ascii?Q?WTsfPbE0tYQP3LAOdMJGA8yOpZgsCryohG/xxpA0lOj9Qo6TsIOn9/mH+ZZe?=
+ =?us-ascii?Q?9c+I90eD+xruQiuO0ZkNc7sV7XXbtm7xNRRKnbLzDLneo90Pcxb2lOyPgjCj?=
+ =?us-ascii?Q?cMj2K5iGYSO8MS149KsbuSUxvdczBydvAvNK+iAIKoF2lpePNTah1gRXOU7r?=
+ =?us-ascii?Q?dYk7E93WVmifDtZ1CM9VixdY/RB0WN71y0XvaszwtwZ0TJC+R6cAMzbqeIs4?=
+ =?us-ascii?Q?HpGcuEFt142Gg9Sth+8wJ5wch755BLDS231vXBrVt5WYe1efZzGgYIiPAmIP?=
+ =?us-ascii?Q?k7wWlTVs4ADNa0UMl7CWHIjB2wkiu5NLKZg6Zp6Y?=
+X-OriginatorOrg: kvaser.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9052841e-cb79-4322-ee62-08dd70253f0c
+X-MS-Exchange-CrossTenant-AuthSource: AM9P193MB1652.EURP193.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2025 06:47:51.5225
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2025 07:25:43.1666
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-Id: 73c42141-e364-4232-a80b-d96bd34367f3
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2a817PCqVeq2oZqoQ6tyyT/sNhNIosLhIsmhzdafOMiA9XzXJakT/4uVtE+MpSCwHTYdAn7RPiC1rzR9w263ZMF0m4Q7jLGgIOcpaiTGqHQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4586
-X-Authority-Analysis: v=2.4 cv=C+npyRP+ c=1 sm=1 tr=0 ts=67ea3a99 cx=c_pps a=l9lnEPKonMfu/vbXsUzXcw==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Vs1iUdzkB0EA:10 a=H5OGdu5hBBwA:10 a=QyXUC8HyAAAA:8 a=xOd6jRPJAAAA:8 a=t7CeM3EgAAAA:8 a=yxFpyxf4MhevmFWHfCYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: Pf7YlL92HnNQJ2UfV1lkcCriAFGhLAoc
-X-Proofpoint-GUID: Pf7YlL92HnNQJ2UfV1lkcCriAFGhLAoc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-31_03,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- clxscore=1015 priorityscore=1501 bulkscore=0 adultscore=0
- lowpriorityscore=0 malwarescore=0 mlxlogscore=984 mlxscore=0 phishscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2503310046
+X-MS-Exchange-CrossTenant-UserPrincipalName: iVISeCltvg5Y2teRATBR/ykJQ2CXztof5w1AdVKdbrnaTyTevw7UEsYMuZcc9X2QPskEpbiQB/riwpJ23EkWSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXP193MB2428
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Avoid the driver missing IRQs by temporarily masking IRQs in the ISR
+to enforce an edge even if a different IRQ is signalled before handled
+IRQs are cleared.
 
-[ Upstream commit 545b215736c5c4b354e182d99c578a472ac9bfce ]
-
-Using __exit for the remove function results in the remove callback
-being discarded with CONFIG_VIDEO_ET8EK8=y. When such a device gets
-unbound (e.g. using sysfs or hotplug), the driver is just removed
-without the cleanup being performed. This results in resource leaks. Fix
-it by compiling in the remove callback unconditionally.
-
-This also fixes a W=1 modpost warning:
-
-	WARNING: modpost: drivers/media/i2c/et8ek8/et8ek8: section mismatch in reference: et8ek8_i2c_driver+0x10 (section: .data) -> et8ek8_remove (section: .exit.text)
-
-Fixes: c5254e72b8ed ("[media] media: Driver for Toshiba et8ek8 5MP sensor")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 48f827d4f48f ("can: kvaser_pciefd: Move reset of DMA RX buffers to the end of the ISR")
+Cc: stable@vger.kernel.org
+Signed-off-by: Axel Forsman <axfo@kvaser.com>
+Tested-by: Jimmy Assarsson <extja@kvaser.com>
+Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
 ---
-Build test passed.
----
- drivers/media/i2c/et8ek8/et8ek8_driver.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/kvaser_pciefd.c | 83 ++++++++++++++++-----------------
+ 1 file changed, 39 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/media/i2c/et8ek8/et8ek8_driver.c b/drivers/media/i2c/et8ek8/et8ek8_driver.c
-index 256acf73d5ea..4d7c4eac5e20 100644
---- a/drivers/media/i2c/et8ek8/et8ek8_driver.c
-+++ b/drivers/media/i2c/et8ek8/et8ek8_driver.c
-@@ -1460,7 +1460,7 @@ static int et8ek8_probe(struct i2c_client *client)
+diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
+index fa04a7ced02b..0d1b895509c3 100644
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -1646,24 +1646,28 @@ static int kvaser_pciefd_read_buffer(struct kvaser_pciefd *pcie, int dma_buf)
+ 	return res;
+ }
+ 
+-static u32 kvaser_pciefd_receive_irq(struct kvaser_pciefd *pcie)
++static void kvaser_pciefd_receive_irq(struct kvaser_pciefd *pcie)
+ {
++	__le32 __iomem *srb_cmd_reg = KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG;
+ 	u32 irq = ioread32(KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IRQ_REG);
+ 
+-	if (irq & KVASER_PCIEFD_SRB_IRQ_DPD0)
+-		kvaser_pciefd_read_buffer(pcie, 0);
++	iowrite32(irq, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IRQ_REG);
+ 
+-	if (irq & KVASER_PCIEFD_SRB_IRQ_DPD1)
++	if (irq & KVASER_PCIEFD_SRB_IRQ_DPD0) {
++		kvaser_pciefd_read_buffer(pcie, 0);
++		iowrite32(KVASER_PCIEFD_SRB_CMD_RDB0, srb_cmd_reg); /* Rearm buffer */
++	}
++
++	if (irq & KVASER_PCIEFD_SRB_IRQ_DPD1) {
+ 		kvaser_pciefd_read_buffer(pcie, 1);
++		iowrite32(KVASER_PCIEFD_SRB_CMD_RDB1, srb_cmd_reg); /* Rearm buffer */
++	}
+ 
+ 	if (unlikely(irq & KVASER_PCIEFD_SRB_IRQ_DOF0 ||
+ 		     irq & KVASER_PCIEFD_SRB_IRQ_DOF1 ||
+ 		     irq & KVASER_PCIEFD_SRB_IRQ_DUF0 ||
+ 		     irq & KVASER_PCIEFD_SRB_IRQ_DUF1))
+ 		dev_err(&pcie->pci->dev, "DMA IRQ error 0x%08X\n", irq);
+-
+-	iowrite32(irq, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IRQ_REG);
+-	return irq;
+ }
+ 
+ static void kvaser_pciefd_transmit_irq(struct kvaser_pciefd_can *can)
+@@ -1691,29 +1695,22 @@ static irqreturn_t kvaser_pciefd_irq_handler(int irq, void *dev)
+ 	struct kvaser_pciefd *pcie = (struct kvaser_pciefd *)dev;
+ 	const struct kvaser_pciefd_irq_mask *irq_mask = pcie->driver_data->irq_mask;
+ 	u32 pci_irq = ioread32(KVASER_PCIEFD_PCI_IRQ_ADDR(pcie));
+-	u32 srb_irq = 0;
+-	u32 srb_release = 0;
+ 	int i;
+ 
+ 	if (!(pci_irq & irq_mask->all))
+ 		return IRQ_NONE;
+ 
++	iowrite32(0, KVASER_PCIEFD_PCI_IEN_ADDR(pcie));
++
+ 	if (pci_irq & irq_mask->kcan_rx0)
+-		srb_irq = kvaser_pciefd_receive_irq(pcie);
++		kvaser_pciefd_receive_irq(pcie);
+ 
+ 	for (i = 0; i < pcie->nr_channels; i++) {
+ 		if (pci_irq & irq_mask->kcan_tx[i])
+ 			kvaser_pciefd_transmit_irq(pcie->can[i]);
+ 	}
+ 
+-	if (srb_irq & KVASER_PCIEFD_SRB_IRQ_DPD0)
+-		srb_release |= KVASER_PCIEFD_SRB_CMD_RDB0;
+-
+-	if (srb_irq & KVASER_PCIEFD_SRB_IRQ_DPD1)
+-		srb_release |= KVASER_PCIEFD_SRB_CMD_RDB1;
+-
+-	if (srb_release)
+-		iowrite32(srb_release, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG);
++	iowrite32(irq_mask->all, KVASER_PCIEFD_PCI_IEN_ADDR(pcie));
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -1733,13 +1730,22 @@ static void kvaser_pciefd_teardown_can_ctrls(struct kvaser_pciefd *pcie)
+ 	}
+ }
+ 
++static void kvaser_pciefd_disable_irq_srcs(struct kvaser_pciefd *pcie)
++{
++	unsigned int i;
++
++	/* Masking PCI_IRQ is insufficient as running ISR will unmask it */
++	iowrite32(0, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IEN_REG);
++	for (i = 0; i < pcie->nr_channels; ++i)
++		iowrite32(0, pcie->can[i]->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
++}
++
+ static int kvaser_pciefd_probe(struct pci_dev *pdev,
+ 			       const struct pci_device_id *id)
+ {
+ 	int ret;
+ 	struct kvaser_pciefd *pcie;
+ 	const struct kvaser_pciefd_irq_mask *irq_mask;
+-	void __iomem *irq_en_base;
+ 
+ 	pcie = devm_kzalloc(&pdev->dev, sizeof(*pcie), GFP_KERNEL);
+ 	if (!pcie)
+@@ -1805,8 +1811,7 @@ static int kvaser_pciefd_probe(struct pci_dev *pdev,
+ 		  KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_IEN_REG);
+ 
+ 	/* Enable PCI interrupts */
+-	irq_en_base = KVASER_PCIEFD_PCI_IEN_ADDR(pcie);
+-	iowrite32(irq_mask->all, irq_en_base);
++	iowrite32(irq_mask->all, KVASER_PCIEFD_PCI_IEN_ADDR(pcie));
+ 	/* Ready the DMA buffers */
+ 	iowrite32(KVASER_PCIEFD_SRB_CMD_RDB0,
+ 		  KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG);
+@@ -1820,8 +1825,7 @@ static int kvaser_pciefd_probe(struct pci_dev *pdev,
+ 	return 0;
+ 
+ err_free_irq:
+-	/* Disable PCI interrupts */
+-	iowrite32(0, irq_en_base);
++	kvaser_pciefd_disable_irq_srcs(pcie);
+ 	free_irq(pcie->pci->irq, pcie);
+ 
+ err_pci_free_irq_vectors:
+@@ -1844,35 +1848,26 @@ static int kvaser_pciefd_probe(struct pci_dev *pdev,
  	return ret;
  }
  
--static int __exit et8ek8_remove(struct i2c_client *client)
-+static int et8ek8_remove(struct i2c_client *client)
+-static void kvaser_pciefd_remove_all_ctrls(struct kvaser_pciefd *pcie)
+-{
+-	int i;
+-
+-	for (i = 0; i < pcie->nr_channels; i++) {
+-		struct kvaser_pciefd_can *can = pcie->can[i];
+-
+-		if (can) {
+-			iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
+-			unregister_candev(can->can.dev);
+-			del_timer(&can->bec_poll_timer);
+-			kvaser_pciefd_pwm_stop(can);
+-			free_candev(can->can.dev);
+-		}
+-	}
+-}
+-
+ static void kvaser_pciefd_remove(struct pci_dev *pdev)
  {
- 	struct v4l2_subdev *subdev = i2c_get_clientdata(client);
- 	struct et8ek8_sensor *sensor = to_et8ek8_sensor(subdev);
-@@ -1504,7 +1504,7 @@ static struct i2c_driver et8ek8_i2c_driver = {
- 		.of_match_table	= et8ek8_of_table,
- 	},
- 	.probe_new	= et8ek8_probe,
--	.remove		= __exit_p(et8ek8_remove),
-+	.remove		= et8ek8_remove,
- 	.id_table	= et8ek8_id_table,
- };
+ 	struct kvaser_pciefd *pcie = pci_get_drvdata(pdev);
++	unsigned int i;
  
+-	kvaser_pciefd_remove_all_ctrls(pcie);
++	for (i = 0; i < pcie->nr_channels; ++i) {
++		struct kvaser_pciefd_can *can = pcie->can[i];
+ 
+-	/* Disable interrupts */
+-	iowrite32(0, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CTRL_REG);
+-	iowrite32(0, KVASER_PCIEFD_PCI_IEN_ADDR(pcie));
++		unregister_candev(can->can.dev);
++		del_timer(&can->bec_poll_timer);
++		kvaser_pciefd_pwm_stop(can);
++	}
+ 
++	kvaser_pciefd_disable_irq_srcs(pcie);
+ 	free_irq(pcie->pci->irq, pcie);
+ 	pci_free_irq_vectors(pcie->pci);
++
++	for (i = 0; i < pcie->nr_channels; ++i)
++		free_candev(pcie->can[i]->can.dev);
++
+ 	pci_iounmap(pdev, pcie->reg_base);
+ 	pci_release_regions(pdev);
+ 	pci_disable_device(pdev);
 -- 
-2.34.1
+2.47.2
 
 
