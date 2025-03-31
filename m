@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-127214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33AA3A769E7
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:20:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FAD9A76A49
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D44DB7A2148
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:17:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF193AF91F
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4543D23C8A9;
-	Mon, 31 Mar 2025 14:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C4123C8C4;
+	Mon, 31 Mar 2025 14:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XI8m3ncP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUYhGH61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018EA23C8A2;
-	Mon, 31 Mar 2025 14:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB3C23C38C;
+	Mon, 31 Mar 2025 14:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432959; cv=none; b=k/uHjgEab0wLIA1DKLRw+xfvcwoPq08hKzKComV51zvKhoLyvE9nJ/+k1aqi62JSzsAX2Q0YwFOWtCf4km7k5r5GjACVaHzS/Ud262mCwoS5TmQOoKejSB/OzBn3VRN3uxHlxql1ElI/iW8H8VgEQle7sQuqjvshdZPwgTbKaIM=
+	t=1743432960; cv=none; b=ehg6vU6j72goM9qua+VPUMyTJrht4n3cEXeF9FKwGUFV4xgBv9Idij1Wy5sIAr9UGKMzOslFta06ybPcQJM3iQcOKrXtR/NN/MBuUWJvsrhEg51/Js8C9KjpRVFeVk1M9k0YY8qQketFLdpxpMRZxTMzdCmcu59eb3hHfetBGmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432959; c=relaxed/simple;
-	bh=JHvzP+hUYBoJ9QnlX7YdWhMeQVeyfXu1CQrpDc0tVaU=;
+	s=arc-20240116; t=1743432960; c=relaxed/simple;
+	bh=NuQi7sGKwuKY+hUiEudtXjgQ66TKKxCP3gmGJjW7KEE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jELeOYqNp/+QqXMU5t3Aca9r8xoL3Fg1NIzHA2W2nXoYdb7jrj2xDEzVabx4D/xdW33Iu2LBqgJEhZOkWHEPIE7SZAAZ4E6xc1+FePzBilCPXRLwCWJESGWxwGgN5FcAlnOWKKbU0GURNVuI8aQ7h+sTiz7C5zmN7H1KP1Hx9dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XI8m3ncP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741E2C4CEE3;
-	Mon, 31 Mar 2025 14:55:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bLht0p31KWO535xgghxFyDvhWgI3GrXLby8vuVjnmtAGhtAi2pncupmGnWjECSxfMT49PM3Wd9Qw5reGMtsbooldgp825sofgVl08poOWD8lvKqKBdL899LXnmgjhCEnXQKoVGxSrzxpXYYVOABX2aKrK8gtVMXhmrh+iDENNYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LUYhGH61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58963C4CEE4;
+	Mon, 31 Mar 2025 14:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432958;
-	bh=JHvzP+hUYBoJ9QnlX7YdWhMeQVeyfXu1CQrpDc0tVaU=;
+	s=k20201202; t=1743432960;
+	bh=NuQi7sGKwuKY+hUiEudtXjgQ66TKKxCP3gmGJjW7KEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XI8m3ncPT1MVOsAWYA4q5Y+qn8ykuv5Fx4ik56/YjfJA54rzj0GYXGD9VRvJymRuP
-	 i8prfoxWukk1iZj9HCuZHWkzXuSo2b3hJM1OoukLMD7TiRk0vQt+5VAIsQoH3pZfmv
-	 ftgoc3gmsO1bLUp3In7AFvlPhdRH34oRynwLK5t2w+qfrGU1pbVVZ3U35kADvluaKP
-	 7lmcI5CAmkrY7ghnNZm4ODIEbL2Y7xhzBecejwcNsB+XayFXlawH2gxft/vX4tQJXQ
-	 G2aPSBKFwNg8y74RbeQJby0TPok47hBX3eAptO3ZY4C3SH+91r2FBWAsfsnZP8gFKW
-	 FyMyONW/LQIkA==
+	b=LUYhGH61uXqB7uf9KnWvFH78Knt5h1ZtwXlBcAsSaYCl1VVmWjDi4zC3ls1owjtq0
+	 VHE+5Cusb6OZVald4bZUSdmckN4+ACJ6r19YBMZKEsc6ZTuCCYZ1lEH0Fa6rZjLs2S
+	 oOMs6PWOWC5Na3y43foHmfWIEHdMGSeKYPioTmJfRv5xTiDbL327o9eV7rISiC/kD3
+	 97jMxyGPf/AOY/cwrwsBd+sN+9JGFkfFVkAJNvj/HPjSR38auvND/36/Y1OCyx+i4i
+	 KwflmkYoK30PKG7tnP/lV5/McLE/u4IRTbp/V33N2gyHeO5D4KWrVzYdg4yPd8X739
+	 Aixm2YiMVORvg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Syed Saba kareem <syed.sabakareem@amd.com>,
-	Reiner <Reiner.Proels@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	venkataprasad.potturu@amd.com,
-	end.to.start@mail.ru,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 22/23] ASoC: amd: yc: update quirk data for new Lenovo model
-Date: Mon, 31 Mar 2025 10:55:08 -0400
-Message-Id: <20250331145510.1705478-22-sashal@kernel.org>
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 23/23] platform/x86: x86-android-tablets: Add select POWER_SUPPLY to Kconfig
+Date: Mon, 31 Mar 2025 10:55:09 -0400
+Message-Id: <20250331145510.1705478-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145510.1705478-1-sashal@kernel.org>
 References: <20250331145510.1705478-1-sashal@kernel.org>
@@ -67,47 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.21
 Content-Transfer-Encoding: 8bit
 
-From: Syed Saba kareem <syed.sabakareem@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 5a4dd520ef8a94ecf81ac77b90d6a03e91c100a9 ]
+[ Upstream commit 2c30357e755b087217c7643fda2b8aea6d6deda4 ]
 
-Update Quirk data for new Lenovo model 83J2 for YC platform.
+Commit c78dd25138d1 ("platform/x86: x86-android-tablets: Add Vexia EDU
+ATLA 10 EC battery driver"), adds power_supply class registering to
+the x86-android-tablets code.
 
-Signed-off-by: Syed Saba kareem <syed.sabakareem@amd.com>
-Link: https://patch.msgid.link/20250321122507.190193-1-syed.sabakareem@amd.com
-Reported-by: Reiner <Reiner.Proels@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219887
-Tested-by: Reiner <Reiner.Proels@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add "select POWER_SUPPLY" to the Kconfig entry to avoid these errors:
+
+ERROR: modpost: "power_supply_get_drvdata" [drivers/platform/x86/x86-android-tablets/vexia_atla10_ec.ko] undefined!
+ERROR: modpost: "power_supply_changed" [drivers/platform/x86/x86-android-tablets/vexia_atla10_ec.ko] undefined!
+ERROR: modpost: "devm_power_supply_register" [drivers/platform/x86/x86-android-tablets/vexia_atla10_ec.ko] undefined!
+
+When POWER_SUPPLY support is not enabled.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202503231159.ga9eWMVO-lkp@intel.com/
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250324125052.374369-1-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/platform/x86/x86-android-tablets/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index bd3808f98ec9e..e632f16c91025 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -339,6 +339,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83J2"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/platform/x86/x86-android-tablets/Kconfig b/drivers/platform/x86/x86-android-tablets/Kconfig
+index 88d9e8f2ff24e..c98dfbdfb9dda 100644
+--- a/drivers/platform/x86/x86-android-tablets/Kconfig
++++ b/drivers/platform/x86/x86-android-tablets/Kconfig
+@@ -8,6 +8,7 @@ config X86_ANDROID_TABLETS
+ 	depends on I2C && SPI && SERIAL_DEV_BUS && ACPI && EFI && GPIOLIB && PMIC_OPREGION
+ 	select NEW_LEDS
+ 	select LEDS_CLASS
++	select POWER_SUPPLY
+ 	help
+ 	  X86 tablets which ship with Android as (part of) the factory image
+ 	  typically have various problems with their DSDTs. The factory kernels
 -- 
 2.39.5
 
