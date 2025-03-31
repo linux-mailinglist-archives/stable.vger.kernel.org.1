@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-127233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5762A76A61
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:30:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACF2A76A5A
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 600B7188F867
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:23:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9DF188D25A
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7752459F8;
-	Mon, 31 Mar 2025 14:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFDE2475CE;
+	Mon, 31 Mar 2025 14:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2FiE1nv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tHVUyCIB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989F8221DAA;
-	Mon, 31 Mar 2025 14:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8730A221DB2;
+	Mon, 31 Mar 2025 14:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432999; cv=none; b=W6j+TZM8JlQucziDT24rZBDm3FB2O10fkvJj5rRFORnVMiB1jD51RkkpUrAySoSzl9DqXINHk28lG2g+8v6WZS9EUWFppFkQLefg+9mNtd5e1NCDXvvIdIV9eF2qN1+KAgpznQojN32ZRkQD76FOm5vBuJCuRvKnJWDE9N7e600=
+	t=1743433003; cv=none; b=n93h4f+4siGW34B79Sdy72EXCWs+NwSBhp1LTu/ofWNRanGDEBY1154F1DPM0rHbHRHEqaui+sCWUAZxyX+HYcsCR08l8GgSM/H+74fqNdqWQJCMitDzLDGgayl5m/DuFtRSguJssM6ufMzOKMCze2UaJWl3n5+Qutb1K3pFFBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432999; c=relaxed/simple;
-	bh=S3C3aVWQGzzI25t6fOd1oulqgTWGDhqBLOHkqO7rUmU=;
+	s=arc-20240116; t=1743433003; c=relaxed/simple;
+	bh=gviPPoSfaGquxPgSySGC1fLXCD0LjXCDjq1UJ02+CeU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fsaWvM/gUqzeYmiFqHl6yx7QmNhlij84mVjOM52vkgOjB+gbeTZB3mXzDJpJbfkDmIyoc2xgVOAe5u+AFHnP2YG2k4LYTcsNQvreAqVaOqpjIsGRWfsqgm3XOdNRVdPRjYgmuiNrJtF3xfYGUaS9gF6kLf3iIIuuAQKcMMPsV7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2FiE1nv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2281C4CEE3;
-	Mon, 31 Mar 2025 14:56:37 +0000 (UTC)
+	 MIME-Version; b=VwsC7GVBpqnPlrs3g3ZXGHUqigEzCn18SouvLIKJ1HXGz0/l2Rv3ROq1Xvz87yjiVy3RyiaaxD4JBf4g2DWXI83SniLjzagjwk+ufhdUpTZex6zO12y/gApkXvXHBtdthlGOk62R18WXYWwns1XCpYiUtXltuhes9e3KzexBkdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tHVUyCIB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABFDC4CEE3;
+	Mon, 31 Mar 2025 14:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432999;
-	bh=S3C3aVWQGzzI25t6fOd1oulqgTWGDhqBLOHkqO7rUmU=;
+	s=k20201202; t=1743433002;
+	bh=gviPPoSfaGquxPgSySGC1fLXCD0LjXCDjq1UJ02+CeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2FiE1nvDv4z+p3CU1UPxudBuViC2cfTSAY9B+f8EkTkwaykRBVHjrpyLeBeYlrue
-	 hvHAHQdKE/IYcQNSfJAO4FrE12y7tMY4kOHiXiMy3Mo8hixeycGjesDzsHCfEnHH25
-	 c8iZEysP9Oe0cQOJrS4jRlAqT17pldlWZe4+wqTORc9knnekoP57JJIeTGP24Ezhku
-	 JwiI/OwOBq8Ilo/8uGuRy/wHNTk+nhUROk5VU0+FeTW2gbjd1i9iuV9LexMlNzUQKI
-	 /KROGyd+chCG/62hcCqRM6HPUlt/3OcT7Hj3oczuZQ7OPFLaWUTeyEnJr12odx6dtI
-	 g5W181kEGGmaw==
+	b=tHVUyCIBQQxqmIaWPhwoJCAd1pMAdTLbso++hlvIfXhVVLrS2YB+27x5JPV3eZOED
+	 wlH3ZCSX0NWdsWKKp4Er/OB44XCel2LQdXV/bK79mkWIlX99fhsItzXwurqgl8v3l6
+	 qRmY/cSBPOozXkkNDVo4FEwYMQ5kflabE6WpvHHO0ZpXrGE3cgEpSBvDcW5UX7/YX1
+	 cHNc0p3Ogx1gX/HsgI0UH/Q1kQjJQ5z+kAb431YxxNl2xIh9Z+Dd4M8a9ugw9mds3n
+	 LUxqc4uQRtPyOghow45djZ1nwmMIg9C2i92q4AsNYqIVFKxOJxgxCGUKMie277jnwe
+	 fTYKPSPh+SC/w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: keenplify <keenplify@gmail.com>,
+Cc: Syed Saba kareem <syed.sabakareem@amd.com>,
+	Reiner <Reiner.Proels@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	mario.limonciello@amd.com,
-	venkataprasad.potturu@amd.com,
 	end.to.start@mail.ru,
+	venkataprasad.potturu@amd.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 18/19] ASoC: amd: Add DMI quirk for ACP6X mic support
-Date: Mon, 31 Mar 2025 10:55:59 -0400
-Message-Id: <20250331145601.1705784-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 19/19] ASoC: amd: yc: update quirk data for new Lenovo model
+Date: Mon, 31 Mar 2025 10:56:00 -0400
+Message-Id: <20250331145601.1705784-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145601.1705784-1-sashal@kernel.org>
 References: <20250331145601.1705784-1-sashal@kernel.org>
@@ -71,18 +72,18 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.85
 Content-Transfer-Encoding: 8bit
 
-From: keenplify <keenplify@gmail.com>
+From: Syed Saba kareem <syed.sabakareem@amd.com>
 
-[ Upstream commit 309b367eafc8e162603cd29189da6db770411fea ]
+[ Upstream commit 5a4dd520ef8a94ecf81ac77b90d6a03e91c100a9 ]
 
-Some AMD laptops with ACP6X do not expose the DMIC properly on Linux.
-Adding a DMI quirk enables mic functionality.
+Update Quirk data for new Lenovo model 83J2 for YC platform.
 
-Similar to Bugzilla #218402, this issue affects multiple users.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219853
-Signed-off-by: keenplify <keenplify@gmail.com>
-Link: https://patch.msgid.link/20250315111617.12194-1-keenplify@gmail.com
+Signed-off-by: Syed Saba kareem <syed.sabakareem@amd.com>
+Link: https://patch.msgid.link/20250321122507.190193-1-syed.sabakareem@amd.com
+Reported-by: Reiner <Reiner.Proels@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219887
+Tested-by: Reiner <Reiner.Proels@gmail.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -90,23 +91,23 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+)
 
 diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 2981bd1c3530d..2536bd3d59464 100644
+index 2536bd3d59464..622df58a96942 100644
 --- a/sound/soc/amd/yc/acp6x-mach.c
 +++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -584,6 +584,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "pang13"),
+@@ -339,6 +339,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
  		}
  	},
 +	{
 +		.driver_data = &acp6x_card,
 +		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83J2"),
 +		}
 +	},
- 	{}
- };
- 
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.39.5
 
