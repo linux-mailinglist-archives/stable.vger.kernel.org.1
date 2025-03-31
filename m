@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-127074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C4FA76837
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:40:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50489A7683F
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 16:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF10C188D9EB
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:39:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52ABB18859F0
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 14:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD26121D591;
-	Mon, 31 Mar 2025 14:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A89E218AA3;
+	Mon, 31 Mar 2025 14:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOeinx5j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jn4DcN9S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F2721D596;
-	Mon, 31 Mar 2025 14:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA18D21D5A7;
+	Mon, 31 Mar 2025 14:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743431680; cv=none; b=n+gAB90fPpzhxuKWfBrLh0HP0Xm1v3PeazeQXokc4d9mEgNPAKZPaHkj2YHTYysEeYLmanyqyyd+C0S3cwT4buu9C9I2pz5RoONMhqeb3RUtjEH0QIHD9dxCXcn/UL8IGlSooizc8zLXggNDj95AYPJcOgaildswi5RZkqTwmCo=
+	t=1743431681; cv=none; b=Umu6PfDWCswgQKS2xs9z01Abt5xQmR8giLlWCiPASLdH5pszYhsZBNcegYq0KFTwyHL5P3nyPFucs2Y2xA3B11hpwp5olMLHECxIsMYfv6qIn2e0z66f7ere8mxsZ6pYdwZlD2U9ylovtEr8yeK7IJYK0iD4pMy9UE3yC6ULQDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743431680; c=relaxed/simple;
-	bh=WGh2VH/p78vjglhZ0w1dJgel8kTb2gHFjJxvKjKveHE=;
+	s=arc-20240116; t=1743431681; c=relaxed/simple;
+	bh=GIrt7w0DLmjw04BZ37oHxkGh+eTxPO57Gus5gul+Uuo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UgsmhcKUJWMJG27Y0+Kxx2O+gs1UnOrqnL5KOKSbY11Magach5UK7EG7Um887uy7iqiIE3FFX6+wumP3rBSo9EM/1hluTF6sySKawgQWUp7NqFH+a17BoQUbWKgjYM1bUhB4e2joMFe2sfYZG+XYtvdSyq8GPjpe+ikOInYwB8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOeinx5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A821C4CEE9;
-	Mon, 31 Mar 2025 14:34:38 +0000 (UTC)
+	 MIME-Version; b=c34VDPTzw3jU0kAqzzZ5g6lNKSc31k/mNv1XuEh9XCjC3U2uW8YMy32FUFSwAW0KGy354eWMeuc+ShqssBd7PeJ457yuw3sBozCZlEZWn+ziVP/KkHAxpb/MEM6ZEP/SbK9ZCyv/8K3uc+VG3bcJkLQOhuCYeXODH8OAydtxJRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jn4DcN9S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F358C4CEE3;
+	Mon, 31 Mar 2025 14:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743431680;
-	bh=WGh2VH/p78vjglhZ0w1dJgel8kTb2gHFjJxvKjKveHE=;
+	s=k20201202; t=1743431681;
+	bh=GIrt7w0DLmjw04BZ37oHxkGh+eTxPO57Gus5gul+Uuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOeinx5ja3k+70BcmIjI9fftl2hKSFpoI+E+bBw7TmbwP31+o5C7Di3SPBY6LyUn6
-	 l7tCAQVR1B1fJmCB5mR8HxpPJfT0OlxjKwvvoxS77/IP/K7qytUC6HDd/9ja8XB6tV
-	 ve2+A+YpOYICJErnuMZvIeYgRqepdk8wikHrWEAyfipNuKrUQBvhP6mCpfYN42U9rW
-	 yJbEvKQLFwGT0YjhPhYIkBm4Qs8e5wCtUCiS2Iiqn3tEDoVkx8Y4THOor2RTL9sCz0
-	 mTUMuVaNLN+1c548fKpXf14n+qoTO35ASwvM4epKF2LAEEzQQdPhtZCFZGm1w4N7s8
-	 PHtO/Ic9jsuKQ==
+	b=jn4DcN9Sismu84Q1M4GTygU0FNGUhraxzQ57+GVS8d/PpvbcnzYxaKTsA2cb4/k97
+	 giNCv+OHHFOyV0B7Z1fImfQJpFsJIjYJ1nBxcOe/5/FZ5Y1mzy6rYWLDeuyteJoZZR
+	 Uh+cKZ3rRfQ72LuWikTyrQA66M9HwAyh4HTTDCTUSzfWkPFC57noVa0YcfG3GvTgWe
+	 4vpyrHQ+0tmV/1dYXEHOS4g9fN0oijPcZh9YukaDzL1bWsgpX76fBBa3op6eVgES1Y
+	 N1RmQt9+K3TcMI1iDT5D56zNyelbVnWwKTzWj/lDs+qlGs1eEdsPDOb4gM4Ty0IVbc
+	 huZzCzEZI5h1Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Paul E. McKenney" <paulmck@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
+	Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>,
+	Miroslav Pavleski <miroslav@pavleski.net>,
 	Sasha Levin <sashal@kernel.org>,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	joel.granados@kernel.org,
-	akpm@linux-foundation.org,
-	jani.nikula@intel.com,
-	ashutosh.dixit@intel.com,
-	linux@weissschuh.net,
-	zhangguopeng@kylinos.cn,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 12/18] Flush console log from kernel_power_off()
-Date: Mon, 31 Mar 2025 10:34:02 -0400
-Message-Id: <20250331143409.1682789-12-sashal@kernel.org>
+	ray.huang@amd.com,
+	rafael@kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 13/18] cpufreq/amd-pstate: Invalidate cppc_req_cached during suspend
+Date: Mon, 31 Mar 2025 10:34:03 -0400
+Message-Id: <20250331143409.1682789-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331143409.1682789-1-sashal@kernel.org>
 References: <20250331143409.1682789-1-sashal@kernel.org>
@@ -77,98 +69,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: "Paul E. McKenney" <paulmck@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 6ea9a1781c70a8be1fcdc49134fc1bf4baba8bca ]
+[ Upstream commit b7a41156588ad03757bf0a2f0e05d6cbcebeaa9e ]
 
-Kernels built with CONFIG_PREEMPT_RT=y can lose significant console output
-and shutdown time, which hides shutdown-time RCU issues from rcutorture.
-Therefore, make pr_flush() public and invoke it after then last print
-in kernel_power_off().
+During resume it's possible the firmware didn't restore the CPPC request
+MSR but the kernel thinks the values line up. This leads to incorrect
+performance after resume from suspend.
 
-[ paulmck: Apply John Ogness feedback. ]
-[ paulmck: Appy Sebastian Andrzej Siewior feedback. ]
-[ paulmck: Apply kernel test robot feedback. ]
+To fix the issue invalidate the cached value at suspend. During resume use
+the saved values programmed as cached limits.
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://lore.kernel.org/r/5f743488-dc2a-4f19-bdda-cf50b9314832@paulmck-laptop
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Reviewed-by: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
+Reported-by: Miroslav Pavleski <miroslav@pavleski.net>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217931
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/printk.h | 6 ++++++
- kernel/printk/printk.c | 4 +---
- kernel/reboot.c        | 1 +
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/cpufreq/amd-pstate.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index 4217a9f412b26..5b462029d03c1 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -207,6 +207,7 @@ void printk_legacy_allow_panic_sync(void);
- extern bool nbcon_device_try_acquire(struct console *con);
- extern void nbcon_device_release(struct console *con);
- void nbcon_atomic_flush_unsafe(void);
-+bool pr_flush(int timeout_ms, bool reset_on_progress);
- #else
- static inline __printf(1, 0)
- int vprintk(const char *s, va_list args)
-@@ -315,6 +316,11 @@ static inline void nbcon_atomic_flush_unsafe(void)
- {
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 313550fa62d41..340fb00aec6d7 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1617,7 +1617,7 @@ static int amd_pstate_epp_reenable(struct cpufreq_policy *policy)
+ 					  max_perf, policy->boost_enabled);
+ 	}
+ 
+-	return amd_pstate_update_perf(cpudata, 0, 0, max_perf, cpudata->epp_cached, false);
++	return amd_pstate_epp_update_limit(policy);
  }
  
-+static inline bool pr_flush(int timeout_ms, bool reset_on_progress)
-+{
-+	return true;
-+}
+ static int amd_pstate_epp_cpu_online(struct cpufreq_policy *policy)
+@@ -1666,6 +1666,9 @@ static int amd_pstate_epp_suspend(struct cpufreq_policy *policy)
+ 	if (cppc_state != AMD_PSTATE_ACTIVE)
+ 		return 0;
+ 
++	/* invalidate to ensure it's rewritten during resume */
++	cpudata->cppc_req_cached = 0;
 +
- #endif
+ 	/* set this flag to avoid setting core offline*/
+ 	cpudata->suspended = true;
  
- bool this_cpu_in_panic(void);
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 07668433644b8..057db78876cd9 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2461,7 +2461,6 @@ asmlinkage __visible int _printk(const char *fmt, ...)
- }
- EXPORT_SYMBOL(_printk);
- 
--static bool pr_flush(int timeout_ms, bool reset_on_progress);
- static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress);
- 
- #else /* CONFIG_PRINTK */
-@@ -2474,7 +2473,6 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
- 
- static u64 syslog_seq;
- 
--static bool pr_flush(int timeout_ms, bool reset_on_progress) { return true; }
- static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progress) { return true; }
- 
- #endif /* CONFIG_PRINTK */
-@@ -4466,7 +4464,7 @@ static bool __pr_flush(struct console *con, int timeout_ms, bool reset_on_progre
-  * Context: Process context. May sleep while acquiring console lock.
-  * Return: true if all usable printers are caught up.
-  */
--static bool pr_flush(int timeout_ms, bool reset_on_progress)
-+bool pr_flush(int timeout_ms, bool reset_on_progress)
- {
- 	return __pr_flush(NULL, timeout_ms, reset_on_progress);
- }
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index b5a8569e5d81f..41ab9e1ba3575 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -704,6 +704,7 @@ void kernel_power_off(void)
- 	migrate_to_reboot_cpu();
- 	syscore_shutdown();
- 	pr_emerg("Power down\n");
-+	pr_flush(1000, true);
- 	kmsg_dump(KMSG_DUMP_SHUTDOWN);
- 	machine_power_off();
- }
 -- 
 2.39.5
 
