@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-127159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B33A7692E
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:04:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A27A76932
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06FA163EE3
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:03:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5472F1664A9
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F1021CA14;
-	Mon, 31 Mar 2025 14:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944F1226D10;
+	Mon, 31 Mar 2025 14:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHeN4vO8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pGudHGib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDA2226CE7;
-	Mon, 31 Mar 2025 14:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDA4226D0C;
+	Mon, 31 Mar 2025 14:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743432822; cv=none; b=WzVyqSHZcHzWZDQPWx9nDO3ghmVfqJj1dhLFYVO6gR2Abkqhs2Trq78W8H0O/j2WHywxHaw1+wz3CIiMkn0U+a4tPV8JVSrLYHjLaidTv1uVlkX/RK5b9mRRosUdMiHk/1/M7colNpLJhDqIF1soj06Zz4WVkr+H3Xu2C4D9ll4=
+	t=1743432823; cv=none; b=pJqrHllGfKsEcpoob0HnD2Y0gwiwICbh3fXh9cYcgkROLMu1quSmGtQDA7HV09pZcsT/3Vn/ZtQdUEnivL/8z7uO920cPCwI5dfPBDfa4AiZ+vR8jdPqGcSuoyDe9qvyd1Dejx2R4pAhaNXo2NSmYS/px/y9kM2Pu0pJrG5nUOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743432822; c=relaxed/simple;
-	bh=25fzOivX1IS/e+Qrezpogo5zOR6xf2mvYjkdN25r+Lc=;
+	s=arc-20240116; t=1743432823; c=relaxed/simple;
+	bh=rezlBpCcK5CkyuC1s7VsbRM49dmcOIeJc5mqRAqahCo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=N7bF4sqDVhR7a1qN4uZfCs0YPPxFheW/qB2nmc0RL2E0WZOGT9v3A4bblNUCy1ucNEhCys7tqCZE9tH7XnoBmsCRAxXM4dJ9qQh1P1FihOVOYgcHS8m+/6oVJL0Tx5KN7UZdaxxCEyRgsZvVUuWfgki7GF1ZSJmGFb0tPdhM0qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHeN4vO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F0DC4CEE3;
-	Mon, 31 Mar 2025 14:53:40 +0000 (UTC)
+	 MIME-Version; b=OFp/rUE4sRBLs7Ref6w7Su+4i6sJp0zPDQdslIaz5dVYd17nC1vT82578B/R8xc/Df8+KxiW97290li1hzmaW9/z4MhO+qlysmCHcfVCwlr0WHxhlvW/RXeSfKuSbrSVDxuz0X4K82YOFTpWMaRibZjqtlOacUtDEmoFlqaBsKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pGudHGib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F700C4CEE4;
+	Mon, 31 Mar 2025 14:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743432821;
-	bh=25fzOivX1IS/e+Qrezpogo5zOR6xf2mvYjkdN25r+Lc=;
+	s=k20201202; t=1743432823;
+	bh=rezlBpCcK5CkyuC1s7VsbRM49dmcOIeJc5mqRAqahCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHeN4vO8XMj/DbBzvtgrhUmL6tKRXszpyWezYSa/OVLXjl/4p0lIiu+4jlO3HMWau
-	 2gNfFOxr1c1w5KZhoEiwuCfkg7K0tOBi/Wrjp32XhjIl0llw29BRemlLIDoVKzHx6g
-	 mflRtCuth9g5unN6uWh9bi0S3o3wZ7R3buXJjHqILcXuQNZ9BRmutm5o3KhfXMrMj/
-	 d0iS0KmzAaZa7QgJ9RR9IljUMjgjQ8hH4a/upnHUWKQvVFQ8c16eY7uXtXIJxkFgGF
-	 cjn69XzEJkZMADzgKkadDieiBi3RcLfxTuNmhmuwWJWn9QnaYIQULYDG+ydZHUzYTG
-	 j/MWB9a05ypiQ==
+	b=pGudHGibP+QQCBlqFP7+HUJ4iCpWY0q9rmNi7LrgkjNgFhJdXZ+vCpA/4/OMhqzU4
+	 kXWfLo1DDBuTyV58VRI9KlxGYr/1SItDIuRNnb32ZddiGS2RRPVVLQ3VyvQzQs+lTq
+	 w/dujMg0QXc0FjV1Wfpo0ETlz9SbyxjENY6tdPegaDt677sTaivYNxzwpbeBct459G
+	 zOJVyhduxgWjmVVDAHjOOBoAjKnbvELmnEW8PRr3+oXFY7fcgnpjjwsrKaYeiUb/sC
+	 U8ZiyguYNaiuUNJ5zBT7a7PinJZtaL0MLSkt8BA2RxHgt2DYV0WllHSh4zvV2bKT9A
+	 qbwXEaCOpKOdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Vishnu Sankar <vishnuocv@gmail.com>,
+	Vishnu Sankar <vsankar@lenovo.com>,
+	kernel test robot <lkp@intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hdegoede@redhat.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 18/27] media: uvcvideo: Add quirk for Actions UVC05
-Date: Mon, 31 Mar 2025 10:52:36 -0400
-Message-Id: <20250331145245.1704714-18-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 19/27] HID: lenovo: Fix to ensure the data as __le32 instead of u32
+Date: Mon, 31 Mar 2025 10:52:37 -0400
+Message-Id: <20250331145245.1704714-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250331145245.1704714-1-sashal@kernel.org>
 References: <20250331145245.1704714-1-sashal@kernel.org>
@@ -68,65 +69,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14
 Content-Transfer-Encoding: 8bit
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Vishnu Sankar <vishnuocv@gmail.com>
 
-[ Upstream commit 8c54e58f94ed3ff28643aefd2c0c2c98313ee770 ]
+[ Upstream commit d6ea85f8371b99c1d3a90ee4e2fb1a648f8d71d3 ]
 
-Actions UVC05 is a HDMI to USB dongle that implements the UVC protocol.
+Ensure that data is treated as __le32 instead of u32 before
+applying le32_to_cpu.
+This patch fixes the sparse warning "sparse: cast to restricted __le32".
 
-When the device suspends, its firmware seems to enter a weird mode when it
-does not produce more frames.
-
-Add the device to the quirk list to disable autosuspend.
-
-Bus 001 Device 007: ID 1de1:f105 Actions Microelectronics Co. Display
- capture-UVC05
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 [unknown]
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x1de1 Actions Microelectronics Co.
-  idProduct          0xf105 Display capture-UVC05
-  bcdDevice            4.09
-  iManufacturer           1 Actions Micro
-  iProduct                2 Display capture-UVC05
-  iSerial                 3 -1005308387
-  bNumConfigurations      1
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241210-uvc-hdmi-suspend-v1-1-01f5dec023ea@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Vishnu Sankar <vishnuocv@gmail.com>
+Signed-off-by: Vishnu Sankar <vsankar@lenovo.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501101635.qJrwAOwf-lkp@intel.com/
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/hid/hid-lenovo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index deadbcea5e227..11b04f6f60cd1 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -3062,6 +3062,15 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_PROBE_MINMAX
- 					| UVC_QUIRK_IGNORE_SELECTOR_UNIT) },
-+	/* Actions Microelectronics Co. Display capture-UVC05 */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x1de1,
-+	  .idProduct		= 0xf105,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_DISABLE_AUTOSUSPEND) },
- 	/* NXP Semiconductors IR VIDEO */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index a7d9ca02779ea..04508c36bdc82 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -778,7 +778,7 @@ static int lenovo_raw_event(struct hid_device *hdev,
+ 	if (unlikely((hdev->product == USB_DEVICE_ID_LENOVO_X12_TAB
+ 			|| hdev->product == USB_DEVICE_ID_LENOVO_X12_TAB2)
+ 			&& size >= 3 && report->id == 0x03))
+-		return lenovo_raw_event_TP_X12_tab(hdev, le32_to_cpu(*(u32 *)data));
++		return lenovo_raw_event_TP_X12_tab(hdev, le32_to_cpu(*(__le32 *)data));
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
