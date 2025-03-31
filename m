@@ -1,189 +1,141 @@
-Return-Path: <stable+bounces-127259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68DFA76A89
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:33:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58EE1A76A63
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 17:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B587C16C78E
-	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:30:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD38E7A03D4
+	for <lists+stable@lfdr.de>; Mon, 31 Mar 2025 15:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CB3253357;
-	Mon, 31 Mar 2025 14:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124872147E0;
+	Mon, 31 Mar 2025 14:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u+4l0cYE"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="C092Emt5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAEC25334D;
-	Mon, 31 Mar 2025 14:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B500202978
+	for <stable@vger.kernel.org>; Mon, 31 Mar 2025 14:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743433059; cv=none; b=q6z+dg+06C7wYyIZpc533UpAFt2IL5vu6RS7j4SOFPr1myBkYYAE2fpVoPDQNxFwf0zV2AH4RGhEsVvTxzCukTMKNo7AYIs/3kfq3oGMJhbyfbQ88rCSY2SlWWq352OqUoVpOa3BrSLZpHMqcjRRLEMdzvHHHghWwWTX2WfLuNk=
+	t=1743433106; cv=none; b=gsv/e5A8H36jnoaBNrcpUkAcDsac7xNz6PsPDn0EYYmK0lCw4YufBWVfILn8GasnFStW84c9oLdMRyyc5xuXSTMcqJLweWST97XxsaZ/1w8ZeNH9Y3IQrxFHf0D5iAySmYPDhS8ck0ZLBBJU/zoDVlSQsNb5t/N8uO7DGK0jDG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743433059; c=relaxed/simple;
-	bh=d0vGvwbwP8fWW4AbI8Iq6Ga7f0iNLcIIEd2wDfHEa50=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OU0LfSRqM5SiVcYF+erlZEjAqiA/880O0A2yfNhIVsuBFpwX0UHYSmiJU0aXTRgJKcsKijt4sZP5VZV7lIBtXHyAvfQEYbr6sFtiZ29jQumKjrw7o6jfDcQR1TuDQUDlpwsGINJ5ehO+3m6fA31ASO4ZI4u3/BMN4hIqn3endaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u+4l0cYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF52EC4CEE4;
-	Mon, 31 Mar 2025 14:57:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743433059;
-	bh=d0vGvwbwP8fWW4AbI8Iq6Ga7f0iNLcIIEd2wDfHEa50=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+4l0cYENUmO0ojKgDOkrfRxfJFis4OrljdYHMLa1U3p0S0Vs8OoLBx1u5QZXkyXX
-	 hyun21uEdQqvlXjafqLB87AflQ6nAqPz66ZfVSuYTL825N/z48DHseRFOjy8qJHt3I
-	 1zBMpaFM5wVjZpwoNJVTvFIyer/Va7GJyVLZE6yi81Z7zpiY0nDdnQ9NgwnRI8+up9
-	 doCwX/70uEJFIgHYA8Za9nEjOrFRCWwewHkKT/vuvpJSwyKkQ19Lmpf82bklkluPTT
-	 cifZixN2T5hxeNM9/i23g7+SLJnsNurih5JCU8qcq6dTbdtagtYX62g5TvNkNYOxoI
-	 +ipFOwu6sPO/Q==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Ricard Wanderlof <ricard2013@butoba.net>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	clemens@ladisch.de,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 5/5] ALSA: usb-audio: Fix CME quirk for UF series keyboards
-Date: Mon, 31 Mar 2025 10:57:28 -0400
-Message-Id: <20250331145728.1706329-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250331145728.1706329-1-sashal@kernel.org>
-References: <20250331145728.1706329-1-sashal@kernel.org>
+	s=arc-20240116; t=1743433106; c=relaxed/simple;
+	bh=AytwwkCCw7mAVvmaQUJ146h6BcX7r/O6OSfcod8qcGY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fJWGh4/BksQ5feBdfOJNcnit0pKGHGbCeE/wU8g1myfownjhT4O8h568RrO/kJzTovxFHbvwSg6DdyOkKHWtq5sIuPglcz4CtYz8LRWcNYZ//eadUCYMgDMDB3T5lASbcfuDiGe6unNQN4+9X8I0gjhqS169/p7h4/9UDnfUo4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=C092Emt5; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=x2CQAuRRAYRwMlr3omFwD6fijeSiAzW0M3gV5PMmEAQ=; b=C092Emt5ERNe/qO651jZskXloE
+	3D6dgtXYyqVSPFli/fs6K2kA2fFvXty4vnGuqCO1O2LdjRcJs7H3SDYRrWwGDEZbxS/g3ko6zpKni
+	IjTN9FUNmCzkRJnUiWERFjbO2z4xopt9QXOkRNGnuP85RnpTAaPGrR02ZWKuHDl06TqesQhLC+Nl/
+	UKcVbJL8RGnf74/RenAG+7JOM14Z4Z0NX3mHUWYzMXqrZTZedIgR+Muz1UoSlAmg7Z9yeTqErycNj
+	gAPJ+3fNWnhKyTSazHHiA0JZbWSw0r1mw5/khznEkw2WMqY162LpPRJLWxVh1JZsRjKIfl6BuZOal
+	fYv1knxQ==;
+Received: from [179.125.94.226] (helo=quatroqueijos.lan)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tzGah-009FbH-Vz; Mon, 31 Mar 2025 16:58:20 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: stable@vger.kernel.org
+Cc: Wayne Lin <Wayne.Lin@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	kernel-dev@igalia.com,
+	cascardo@igalia.com
+Subject: [PATCH 6.12] drm/amd/display: Don't write DP_MSTM_CTRL after LT
+Date: Mon, 31 Mar 2025 11:58:19 -0300
+Message-ID: <20250331145819.682274-1-cascardo@igalia.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
 
-From: Ricard Wanderlof <ricard2013@butoba.net>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit c2820405ba55a38932aa2177f026b70064296663 ]
+[ Upstream commit bc068194f548ef1f230d96c4398046bf59165992 ]
 
-Fix quirk for CME master keyboards so it not only handles
-sysex but also song position pointer, MIDI timing clock, start
-and stop messages, and active sensing. All of these can be
-output by the CME UF series master keyboards.
+[Why]
+Observe after suspend/resme, we can't light up mst monitors under specific
+mst hub. The reason is that driver still writes DPCD DP_MSTM_CTRL after LT.
+It's forbidden even we write the same value for that dpcd register.
 
-Tested with a CME UF6 in a desktop Linux environment as
-well as on the Zynthian Raspberry Pi based platform.
+[How]
+We already resume the mst branch device dpcd settings during
+resume_mst_branch_status(). Leverage drm_dp_mst_topology_queue_probe() to
+only probe the topology, not calling drm_dp_mst_topology_mgr_resume() which
+will set DP_MSTM_CTRL as well.
 
-Signed-off-by: Ricard Wanderlof <ricard2013@butoba.net>
-Link: https://patch.msgid.link/20250313-cme-fix-v1-1-d404889e4de8@butoba.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- sound/usb/midi.c | 80 ++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 74 insertions(+), 6 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c    | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/sound/usb/midi.c b/sound/usb/midi.c
-index f175c537353a0..2dded1f2ca05e 100644
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -505,16 +505,84 @@ static void ch345_broken_sysex_input(struct snd_usb_midi_in_endpoint *ep,
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index d9a3917d207e..c4c6538eabae 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3231,8 +3231,7 @@ static int dm_resume(void *handle)
+ 	struct dm_atomic_state *dm_state = to_dm_atomic_state(dm->atomic_obj.state);
+ 	enum dc_connection_type new_connection_type = dc_connection_none;
+ 	struct dc_state *dc_state;
+-	int i, r, j, ret;
+-	bool need_hotplug = false;
++	int i, r, j;
+ 	struct dc_commit_streams_params commit_params = {};
  
- /*
-  * CME protocol: like the standard protocol, but SysEx commands are sent as a
-- * single USB packet preceded by a 0x0F byte.
-+ * single USB packet preceded by a 0x0F byte, as are system realtime
-+ * messages and MIDI Active Sensing.
-+ * Also, multiple messages can be sent in the same packet.
-  */
- static void snd_usbmidi_cme_input(struct snd_usb_midi_in_endpoint *ep,
- 				  uint8_t *buffer, int buffer_length)
- {
--	if (buffer_length < 2 || (buffer[0] & 0x0f) != 0x0f)
--		snd_usbmidi_standard_input(ep, buffer, buffer_length);
--	else
--		snd_usbmidi_input_data(ep, buffer[0] >> 4,
--				       &buffer[1], buffer_length - 1);
-+	int remaining = buffer_length;
+ 	if (dm->dc->caps.ips_support) {
+@@ -3427,23 +3426,16 @@ static int dm_resume(void *handle)
+ 		    aconnector->mst_root)
+ 			continue;
+ 
+-		ret = drm_dp_mst_topology_mgr_resume(&aconnector->mst_mgr, true);
+-
+-		if (ret < 0) {
+-			dm_helpers_dp_mst_stop_top_mgr(aconnector->dc_link->ctx,
+-					aconnector->dc_link);
+-			need_hotplug = true;
+-		}
++		drm_dp_mst_topology_queue_probe(&aconnector->mst_mgr);
+ 	}
+ 	drm_connector_list_iter_end(&iter);
+ 
+-	if (need_hotplug)
+-		drm_kms_helper_hotplug_event(ddev);
+-
+ 	amdgpu_dm_irq_resume_late(adev);
+ 
+ 	amdgpu_dm_smu_write_watermarks_table(adev);
+ 
++	drm_kms_helper_hotplug_event(ddev);
 +
-+	/*
-+	 * CME send sysex, song position pointer, system realtime
-+	 * and active sensing using CIN 0x0f, which in the standard
-+	 * is only intended for single byte unparsed data.
-+	 * So we need to interpret these here before sending them on.
-+	 * By default, we assume single byte data, which is true
-+	 * for system realtime (midi clock, start, stop and continue)
-+	 * and active sensing, and handle the other (known) cases
-+	 * separately.
-+	 * In contrast to the standard, CME does not split sysex
-+	 * into multiple 4-byte packets, but lumps everything together
-+	 * into one. In addition, CME can string multiple messages
-+	 * together in the same packet; pressing the Record button
-+	 * on an UF6 sends a sysex message directly followed
-+	 * by a song position pointer in the same packet.
-+	 * For it to have any reasonable meaning, a sysex message
-+	 * needs to be at least 3 bytes in length (0xf0, id, 0xf7),
-+	 * corresponding to a packet size of 4 bytes, and the ones sent
-+	 * by CME devices are 6 or 7 bytes, making the packet fragments
-+	 * 7 or 8 bytes long (six or seven bytes plus preceding CN+CIN byte).
-+	 * For the other types, the packet size is always 4 bytes,
-+	 * as per the standard, with the data size being 3 for SPP
-+	 * and 1 for the others.
-+	 * Thus all packet fragments are at least 4 bytes long, so we can
-+	 * skip anything that is shorter; this also conveniantly skips
-+	 * packets with size 0, which CME devices continuously send when
-+	 * they have nothing better to do.
-+	 * Another quirk is that sometimes multiple messages are sent
-+	 * in the same packet. This has been observed for midi clock
-+	 * and active sensing i.e. 0x0f 0xf8 0x00 0x00 0x0f 0xfe 0x00 0x00,
-+	 * but also multiple note ons/offs, and control change together
-+	 * with MIDI clock. Similarly, some sysex messages are followed by
-+	 * the song position pointer in the same packet, and occasionally
-+	 * additionally by a midi clock or active sensing.
-+	 * We handle this by looping over all data and parsing it along the way.
-+	 */
-+	while (remaining >= 4) {
-+		int source_length = 4; /* default */
-+
-+		if ((buffer[0] & 0x0f) == 0x0f) {
-+			int data_length = 1; /* default */
-+
-+			if (buffer[1] == 0xf0) {
-+				/* Sysex: Find EOX and send on whole message. */
-+				/* To kick off the search, skip the first
-+				 * two bytes (CN+CIN and SYSEX (0xf0).
-+				 */
-+				uint8_t *tmp_buf = buffer + 2;
-+				int tmp_length = remaining - 2;
-+
-+				while (tmp_length > 1 && *tmp_buf != 0xf7) {
-+					tmp_buf++;
-+					tmp_length--;
-+				}
-+				data_length = tmp_buf - buffer;
-+				source_length = data_length + 1;
-+			} else if (buffer[1] == 0xf2) {
-+				/* Three byte song position pointer */
-+				data_length = 3;
-+			}
-+			snd_usbmidi_input_data(ep, buffer[0] >> 4,
-+					       &buffer[1], data_length);
-+		} else {
-+			/* normal channel events */
-+			snd_usbmidi_standard_input(ep, buffer, source_length);
-+		}
-+		buffer += source_length;
-+		remaining -= source_length;
-+	}
+ 	return 0;
  }
  
- /*
 -- 
-2.39.5
+2.47.2
 
 
