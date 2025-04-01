@@ -1,47 +1,68 @@
-Return-Path: <stable+bounces-127308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0481A77804
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 11:44:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D877A7782B
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 11:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF6AA16A4D6
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 09:44:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E68DE3A9836
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 09:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B1F1EF375;
-	Tue,  1 Apr 2025 09:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AED1EFF9A;
+	Tue,  1 Apr 2025 09:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b="DsAJ08YI"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from forward203a.mail.yandex.net (forward203a.mail.yandex.net [178.154.239.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9C01EB1A7;
-	Tue,  1 Apr 2025 09:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107251EBA08;
+	Tue,  1 Apr 2025 09:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743500686; cv=none; b=bg73S1GTi/X0aJhtfoseXDR8LM435c/n06k1ALqpPqUt1jyUgVjrNIGFXb3L4bigj/0AHXlCLAR1vNdJsAOTqEYEsdtCg40FeE3HUL+Rkz4CND18E2VDek/dBEI6xeas6WzV6QqHdtX3iq7NCGoNdi0o5pJs7M7hXaef6QkjANU=
+	t=1743501102; cv=none; b=jHig9i+7uXyxsj2NGqdOnaz39wDsehGVz9XXcxCG20shq73aqayMLBVW2V88r8dPSPbmB4NAJv0zelEPd8S1uy4sBICxQSpbwXQadfOi+YvaKZzMC3s5QmufgfyACE2xOiYUhgOFr+t+0QE/6VLh1oq1HtwVMlbUNzTdzF+cVlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743500686; c=relaxed/simple;
-	bh=Af1+AkpqfX2f2V8L9uHzFX6RQOHRce6SCz0W2kXUOSQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FB54+JLfuny62Wh8ZFlQOREniNHSSeF9u7IUFlCo/ywcTPsFpGckIDoXReMaylyOsiglxr8a5QC8+WRLjl+iELIaEA99K2Ky5SXVuxKlGe5lUS4Sy8KC1Kn310YoxJAuIG0awAWMFqg6uSIkgucj9Uao3xiLvKTvioU3BrytVsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowADnjv+DtetnAd2vBA--.1435S2;
-	Tue, 01 Apr 2025 17:44:36 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: obitton@habana.ai,
-	ogabbay@kernel.org
-Cc: dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1743501102; c=relaxed/simple;
+	bh=9oElyV9diyT6UtDkNT9r9IuGjmpF0oRUKUrRx68NNnQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=linVVlHoNEvJm8A3szmVmHjTFkOjtoxXwcZ4MT8kHmSnzDmOhaIU+rMyRX2bMZB65MEpWJQnHhKwtloSXuqHhj1k6qcU3KdyQt+DshKSo75K4KyzALq8E6mxObDvjaaQNeU6v4fl8JtHGy/TVVFKzp94cfWbqfa+g3GwMylCVCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru; spf=pass smtp.mailfrom=rosa.ru; dkim=pass (1024-bit key) header.d=rosa.ru header.i=@rosa.ru header.b=DsAJ08YI; arc=none smtp.client-ip=178.154.239.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosa.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosa.ru
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d101])
+	by forward203a.mail.yandex.net (Yandex) with ESMTPS id 2029265AD9;
+	Tue,  1 Apr 2025 12:48:14 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:6100:0:640:f888:0])
+	by forward101a.mail.yandex.net (Yandex) with ESMTPS id 061EC60E26;
+	Tue,  1 Apr 2025 12:48:06 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3mSPBN0LjiE0-OJ0SsBLL;
+	Tue, 01 Apr 2025 12:48:05 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosa.ru; s=mail;
+	t=1743500885; bh=hQ+lFy4tyS21KRRYFD5T13q7+AM2thXzEE8iO94oHas=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=DsAJ08YIH5tLB6+KBUOqtUKTjkVJ75VI0ZRrTPAv81J12fSy9sH4z36T9vR2PeKvJ
+	 EmXw4iIsa2GyhxlB/OHnu71eeMOTIJq78hxPmkDsaMhXZSPkgOWyrd42VgySWjHyuP
+	 556qAK5Qjb/UvVqNkEfmjVQ004Lp4+XDRd5nFv3o=
+Authentication-Results: mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net; dkim=pass header.i=@rosa.ru
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Rishi Gupta <gupt21@gmail.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	linux-i2c@vger.kernel.org,
+	linux-input@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] habanalabs: Add error handling for hl_mmu_get_hop_pte_phys_addr()
-Date: Tue,  1 Apr 2025 17:44:13 +0800
-Message-ID: <20250401094413.2401-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	lvc-project@linuxtesting.org,
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH 5.10/5.15/6.1] HID: mcp2221: Set driver data before I2C adapter add
+Date: Tue,  1 Apr 2025 12:47:50 +0300
+Message-ID: <20250401094752.8324-1-m.lobanov@rosa.ru>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,55 +70,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADnjv+DtetnAd2vBA--.1435S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zr4Uuw18JF4Duw15Kr47CFg_yoW8GryfpF
-	n3Kr4rXFy5Jr1UZayUtr1IvF1Yv39xWFy3K3ZFka9093s8X3s7u343W3WSvw4UArWkGan7
-	Zw1kAFs8CF18ZrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUcBMtUUU
-	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBg0TA2frlYJ04QABsU
 
-In _hl_mmu_v2_hr_map(), If hl_mmu_get_hop_pte_phys_addr() fail to
-get physical address, the return address will be set as U64_MAX.
-Hence, the return value of hl_mmu_get_hop_pte_phys_addr() must
-be checked to prevent invalid address access. Add error handling
-and propagate return code to caller function to fix this issue.
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
 
-Fixes: 8aa1e1e60553 ("habanalabs: add gaudi2 MMU support")
-Cc: stable@vger.kernel.org # v6.0+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+commit f2d4a5834638bbc967371b9168c0b481519f7c5e upstream.
+
+The process of adding an I2C adapter can invoke I2C accesses on that new
+adapter (see i2c_detect()).
+
+Ensure we have set the adapter's driver data to avoid null pointer
+dereferences in the xfer functions during the adapter add.
+
+This has been noted in the past and the same fix proposed but not
+completed. See:
+https://lore.kernel.org/lkml/ef597e73-ed71-168e-52af-0d19b03734ac@vigem.de/
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+[Mikhail Lobanov: older kernels use i2c_add_adapter() instead of
+devm_i2c_add_adapter().
+This problem manifests itself in stable kernel branches:
+https://syzkaller.appspot.com/bug?extid=40dc62a33c759a65ad44,
+https://syzkaller.appspot.com/bug?extid=24b122f8e84c3f9d9d1d]
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
 ---
- drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/hid/hid-mcp2221.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c b/drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c
-index 31507b2a431b..cdade07e22c5 100644
---- a/drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c
-+++ b/drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c
-@@ -253,6 +253,11 @@ static int _hl_mmu_v2_hr_map(struct hl_ctx *ctx,
- 		hop_pte_phys_addr[i] = hl_mmu_get_hop_pte_phys_addr(ctx, mmu_prop, i,
- 									hops_pgt_info[i]->phys_addr,
- 									scrambled_virt_addr);
-+		if (hop_pte_phys_addr[i] == U64_MAX) {
-+			rc = -EINVAL;
-+			goto err;
-+		}
-+
- 		curr_pte = *(u64 *) (uintptr_t) hl_mmu_hr_pte_phys_to_virt(ctx, hops_pgt_info[i],
- 							hop_pte_phys_addr[i],
- 							ctx->hdev->asic_prop.pmmu.hop_table_size);
+diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+index 560eeec4035a..b0dc0edc69c2 100644
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -879,12 +879,12 @@ static int mcp2221_probe(struct hid_device *hdev,
+ 	snprintf(mcp->adapter.name, sizeof(mcp->adapter.name),
+ 			"MCP2221 usb-i2c bridge");
+ 
++	i2c_set_adapdata(&mcp->adapter, mcp);
+ 	ret = i2c_add_adapter(&mcp->adapter);
+ 	if (ret) {
+ 		hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
+ 		goto err_i2c;
+ 	}
+-	i2c_set_adapdata(&mcp->adapter, mcp);
+ 
+ 	/* Setup GPIO chip */
+ 	mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
 -- 
-2.42.0.windows.2
+2.47.2
 
 
