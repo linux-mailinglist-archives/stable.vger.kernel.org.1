@@ -1,149 +1,136 @@
-Return-Path: <stable+bounces-127299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5538EA77702
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 10:58:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9AFA776F0
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 10:52:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD99F16A1E6
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 08:58:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD1B7188D2E9
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 08:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9D11EC006;
-	Tue,  1 Apr 2025 08:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F68C1EC00D;
+	Tue,  1 Apr 2025 08:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="ECK0v/CU"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="G4swfDbX"
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5551EB5FC;
-	Tue,  1 Apr 2025 08:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF69F1EA7E6;
+	Tue,  1 Apr 2025 08:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743497868; cv=none; b=GmHPJS8dh6o0satYc9eQ6N+X/NjlCedAx8Y8z7RBrkYRVAuA7Wx6R7VKZvetIfre553IMNrjvWDPwEmAZkUOQuwggKopGxqRJ+YukXOpipu5m5N0dwbvUi4wkAy8QU/grS7vSbv2C8IKg7RCSPNEVUlvj4CxWnoz7JfET82nqPg=
+	t=1743497546; cv=none; b=I2luPcxt2S8UFOc5qf//whTMYTp3A4eROtMnPLJLNt94xGeANzXiRIoicgtEvx1nMuZ6TnMgCBCdfWzah7sapZLfIlBNMH2D2xGaAD8qSXwTPXnLx5+GxaVhzdjxrjO98ikrfmhW/SRdYbDq4BGGQnqB0dMUpqSCmv7dVTknHHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743497868; c=relaxed/simple;
-	bh=d78V2SRfd+yrCnP+CSQdEt2iDe09S12xQHysnYKYb54=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bXJIuzF7tnEP72F8BwKHuA7YiZiO21EesHicz59rszdwwQYe7XZMBvqrlsJnuAUYzUp8sTvvtMZ8d7goMVA/93mp1bck8hm0Ch/Aj/fwMXDiWPpOEHb2n1OyNtxSu46ncusBhpHJQKduM9f/9dBgcQqnhy/WgGz0mR4xdaqsz7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=ECK0v/CU; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1743497344;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WL4H1/n+KU4vDHV20Jk9Fts6NmwKIU67Olt2xVADMKQ=;
-	b=ECK0v/CUv5HYRLgRT7DeRHtoMrKwucrsQs2muDt0Obk5vr7SY/cKmt4bHi8EwKH/q85qbt
-	fUhcG6kxBrmOcGnQKl88z/WlbIjL8Zrz6gPGvmEmeawsmNKCG1lt7o1TsCV9me/frKXqK4
-	j/gQq9Bb/OBzjPpc4dkI6SGFs+j20pY=
-From: Sven Eckelmann <sven@narfation.org>
-To: mareklindner@neomailbox.ch, sw@simonwunderlich.de, a@unstable.cc,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, Wentao Liang <vulab@iscas.ac.cn>
-Cc: b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Wentao Liang <vulab@iscas.ac.cn>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] batman-adv: batman-adv: handle tvlv unicast send errors
-Date: Tue, 01 Apr 2025 10:48:59 +0200
-Message-ID: <22646445.EfDdHjke4D@ripper>
-In-Reply-To: <20250401083901.2261-1-vulab@iscas.ac.cn>
-References: <20250401083901.2261-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1743497546; c=relaxed/simple;
+	bh=uknq8KkrbpOwWJEI8kUyHYAvI1ygoW33zrV/LkyDiaY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EYfCG5j9CUQS05yQ8vKS8TKV/aMkHFFIIHHFPwKu8Up7HDmbp3FsInBQMu065ei6D2Fbc4i20XvQ1yQ5r/oxCsAD+qwu0i4d5Ria7+K9690RZk2IyMM2UQNIKyJqiS+YqS1uCJGrr4e3QrmtEMkPBpF5NpCxbJdAHM2S11N2uKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=G4swfDbX; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=kFFvVb7pyRd1m9PwZr3OgHd+El34mFJ6WcuuSCpuExo=; b=G4swfDbX/nywfj0pb7hMY5OgFh
+	oRL2Vu1aq3y/bodsb6MSs1ZZFgbPKkrI4Ez9PwCq9btHC2q2xEvVmUj2ANerr87coc+ngWcfPfVvU
+	QwlzA8an/OuG8KZ50NcFCX8dAoPMhv86ub8QrfD0tq+/a0dZTN9SXBRebkTFvZ6m0BnV6vd8YpV1U
+	l5HC1OJvAeJLgjDTbxCiBvmRdv6ASeQiVeM/xZCfAWhNWQ/lpE+DDdIijxgy6CFr254aGzizoArFt
+	l8of9psQPK+wW02zD+/79v7+u/9cgeqWcqDdxuEIdaxJE0lX8ADaOj4t1H7TOkDcI20ju5pMJX4tc
+	kBzJVjwQ==;
+Received: from i59f7adb8.versanet.de ([89.247.173.184] helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tzXLz-009Zsi-UM; Tue, 01 Apr 2025 10:52:16 +0200
+From: Angelos Oikonomopoulos <angelos@igalia.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: angelos@igalia.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-dev@igalia.com,
+	anshuman.khandual@arm.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3] arm64: Don't call NULL in do_compat_alignment_fixup
+Date: Tue,  1 Apr 2025 10:51:50 +0200
+Message-ID: <20250401085150.148313-1-angelos@igalia.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart7787093.EvYhyI6sBW";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 
---nextPart7787093.EvYhyI6sBW
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Date: Tue, 01 Apr 2025 10:48:59 +0200
-Message-ID: <22646445.EfDdHjke4D@ripper>
-In-Reply-To: <20250401083901.2261-1-vulab@iscas.ac.cn>
-References: <20250401083901.2261-1-vulab@iscas.ac.cn>
-MIME-Version: 1.0
+do_alignment_t32_to_handler only fixes up alignment faults for specific
+instructions; it returns NULL otherwise. When that's the case, signal to
+the caller that it needs to proceed with the regular alignment fault
+handling (i.e. SIGBUS). Without this patch, we get:
 
-On Tuesday, 1 April 2025 10:39:00 CEST Wentao Liang wrote:
-> In batadv_tvlv_unicast_send(), the return value of
-> batadv_send_skb_to_orig() is ignored. This could silently
-> drop send failures, making it difficult to detect connectivity
-> issues.
-> 
-> Add error checking for batadv_send_skb_to_orig() and log failures
-> via batadv_dbg() to improve error visibility.
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+  Mem abort info:
+    ESR = 0x0000000086000006
+    EC = 0x21: IABT (current EL), IL = 32 bits
+    SET = 0, FnV = 0
+    EA = 0, S1PTW = 0
+    FSC = 0x06: level 2 translation fault
+  user pgtable: 4k pages, 48-bit VAs, pgdp=00000800164aa000
+  [0000000000000000] pgd=0800081fdbd22003, p4d=0800081fdbd22003, pud=08000815d51c6003, pmd=0000000000000000
+  Internal error: Oops: 0000000086000006 [#1] SMP
+  Modules linked in: cfg80211 rfkill xt_nat xt_tcpudp xt_conntrack nft_chain_nat xt_MASQUERADE nf_nat nf_conntrack_netlink nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xfrm_user xfrm_algo xt_addrtype nft_compat br_netfilter veth nvme_fa>
+   libcrc32c crc32c_generic raid0 multipath linear dm_mod dax raid1 md_mod xhci_pci nvme xhci_hcd nvme_core t10_pi usbcore igb crc64_rocksoft crc64 crc_t10dif crct10dif_generic crct10dif_ce crct10dif_common usb_common i2c_algo_bit i2c>
+  CPU: 2 PID: 3932954 Comm: WPEWebProcess Not tainted 6.1.0-31-arm64 #1  Debian 6.1.128-1
+  Hardware name: GIGABYTE MP32-AR1-00/MP32-AR1-00, BIOS F18v (SCP: 1.08.20211002) 12/01/2021
+  pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : 0x0
+  lr : do_compat_alignment_fixup+0xd8/0x3dc
+  sp : ffff80000f973dd0
+  x29: ffff80000f973dd0 x28: ffff081b42526180 x27: 0000000000000000
+  x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+  x23: 0000000000000004 x22: 0000000000000000 x21: 0000000000000001
+  x20: 00000000e8551f00 x19: ffff80000f973eb0 x18: 0000000000000000
+  x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+  x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+  x11: 0000000000000000 x10: 0000000000000000 x9 : ffffaebc949bc488
+  x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+  x5 : 0000000000400000 x4 : 0000fffffffffffe x3 : 0000000000000000
+  x2 : ffff80000f973eb0 x1 : 00000000e8551f00 x0 : 0000000000000001
+  Call trace:
+   0x0
+   do_alignment_fault+0x40/0x50
+   do_mem_abort+0x4c/0xa0
+   el0_da+0x48/0xf0
+   el0t_32_sync_handler+0x110/0x140
+   el0t_32_sync+0x190/0x194
+  Code: bad PC value
+  ---[ end trace 0000000000000000 ]---
 
-This looks more like patch you've added for printk-debugging and nothing for 
-stable. And you ignore that it can also return things like -EINPROGRESS. Which 
-is not an error.
+Signed-off-by: Angelos Oikonomopoulos <angelos@igalia.com>
+Fixes: 3fc24ef32d3b93 ("arm64: compat: Implement misalignment fixups for multiword loads")
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/kernel/compat_alignment.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-You can also see that this was just for printk-debugging because the error 
-class and message has nothing to do with the actual code.
-
-> 
-> Fixes: 1ad5bcb2a032 ("batman-adv: Consume skb in batadv_send_skb_to_orig")
-> Cc: stable@vger.kernel.org # 4.10+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  net/batman-adv/tvlv.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-> index 2a583215d439..f081136cc5b7 100644
-> --- a/net/batman-adv/tvlv.c
-> +++ b/net/batman-adv/tvlv.c
-> @@ -625,6 +625,7 @@ void batadv_tvlv_unicast_send(struct batadv_priv 
-*bat_priv, const u8 *src,
->  	unsigned char *tvlv_buff;
->  	unsigned int tvlv_len;
->  	ssize_t hdr_len = sizeof(*unicast_tvlv_packet);
-> +	int r;
->  
->  	orig_node = batadv_orig_hash_find(bat_priv, dst);
->  	if (!orig_node)
-> @@ -657,7 +658,10 @@ void batadv_tvlv_unicast_send(struct batadv_priv 
-*bat_priv, const u8 *src,
->  	tvlv_buff += sizeof(*tvlv_hdr);
->  	memcpy(tvlv_buff, tvlv_value, tvlv_value_len);
->  
-> -	batadv_send_skb_to_orig(skb, orig_node, NULL);
-> +	r = batadv_send_skb_to_orig(skb, orig_node, NULL);
-> +	if (r != NET_XMIT_SUCCESS)
-> +		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
-> +			   "Fail to send the ack.");
-
-No, this is definitely the wrong error class. And why do you think that it is 
-an ack?
->  out:
->  	batadv_orig_node_put(orig_node);
->  }
-> 
-
-Kind regards,
-	Sven
-
---nextPart7787093.EvYhyI6sBW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZ+uoewAKCRBND3cr0xT1
-y2qlAP9WnQgyuTR1ObdOwnfoccPeZM0k100Xsm1CijZC5WAcyAD+NywbzgD5+yMk
-e/XenInlVjSxcxl696zJLzJxWyD3cws=
-=d3Hb
------END PGP SIGNATURE-----
-
---nextPart7787093.EvYhyI6sBW--
-
-
+diff --git a/arch/arm64/kernel/compat_alignment.c b/arch/arm64/kernel/compat_alignment.c
+index deff21bfa680..b68e1d328d4c 100644
+--- a/arch/arm64/kernel/compat_alignment.c
++++ b/arch/arm64/kernel/compat_alignment.c
+@@ -368,6 +368,8 @@ int do_compat_alignment_fixup(unsigned long addr, struct pt_regs *regs)
+ 		return 1;
+ 	}
+ 
++	if (!handler)
++		return 1;
+ 	type = handler(addr, instr, regs);
+ 
+ 	if (type == TYPE_ERROR || type == TYPE_FAULT)
+-- 
+2.49.0
 
 
