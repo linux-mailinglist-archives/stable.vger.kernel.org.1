@@ -1,141 +1,126 @@
-Return-Path: <stable+bounces-127318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35ABA7799B
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 13:35:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6B6A7799C
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 13:35:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E1C1188EE22
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 11:35:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0874216B2E7
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 11:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2C11F9ED2;
-	Tue,  1 Apr 2025 11:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6971FAC30;
+	Tue,  1 Apr 2025 11:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YTn3EeX/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HefyF9xF"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D161F1F91CD
-	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 11:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1751F91CD;
+	Tue,  1 Apr 2025 11:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743507305; cv=none; b=GG4R2OCfJ4yUkqqXnSm7qZuweNkA3jziJaewiuldPkcZVr4JKy62P55CdB//6l4rj4Z0+TCvT9U5I4eaFi1+AunXB2Qy2ZuopUlp4WDp7mxPI/FvVpaTwL/kFpuiof0i6w0+zaKLWnhRGepd1Tta6CyJeByF4BZ58UHjKSPxkKk=
+	t=1743507310; cv=none; b=bqhVGUbbK3qM51n38nezg6wf9P/BOLpvVhvAAB8A/TsZLJHV6lFyEF8Tr11DLRtQRnivML0DauA3gO38hrWYlyccLq8wGG6ytBpZU9J3jrP5LtUIKhU+X+kP8nHCRyksfKm/FxZF+kyiPsAjsi0hzT/SpqRCOVGK6oR5O0kg6f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743507305; c=relaxed/simple;
-	bh=lAEC+Pf5uytHLCbc/4PM5Z7g7tEIjr/2/EY3vxgSUVM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rrwXBA5h6T/WxWUU9tcKRqRwFb1dznyP7MFwC1OU7ofPaJ2Fa2pprGz0W4kI1obObgqlpYsbaCgDRKoVRGBxYOsgEXcMCVA6htFjrSrrUF9bkFLWsOf1EDaJBQx6GYgzY595s/GOE2r1UkgEFidUcFi8qS5m/mhuF8VAPJNfOJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YTn3EeX/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743507302;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vF4YuDd97kbH9h4b0Huy41NC1nIWjQbGUIb1cXKzuDs=;
-	b=YTn3EeX/GWjNmfvd0G65lj3cjm4D81oGDPLogLVUi3qZYSFJI3HEBMxXa/rlEIyyJdX8B+
-	Uw8O64lc0MfT36c4bcd1UUItB8/KvVecfamFbd2NQ7KyzQUanIyKsD/gzyYc4d1U72QDu+
-	b3yfYduIeQcBYIaYOXznGeLXe+nKWyI=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-475--G6_sfhBPSS1CjuPWOTbXw-1; Tue, 01 Apr 2025 07:35:01 -0400
-X-MC-Unique: -G6_sfhBPSS1CjuPWOTbXw-1
-X-Mimecast-MFC-AGG-ID: -G6_sfhBPSS1CjuPWOTbXw_1743507301
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-229170fbe74so81292255ad.2
-        for <stable@vger.kernel.org>; Tue, 01 Apr 2025 04:35:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743507300; x=1744112100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vF4YuDd97kbH9h4b0Huy41NC1nIWjQbGUIb1cXKzuDs=;
-        b=UAM6Js7Yqdq3NblqMUcHQHTgHG4cJUPqQcVCOmT80VrHgGD5r30KqCwkpJmL0gHEXN
-         nPy7BxKcfRbIypjKQWuBQqR2ckoHezs9JukrmknIHsoVT9C81IG6Z3CfkP1Uv9e6Wi8x
-         25CPOQZ2Vj+M6WkmV2JP2chg8zeFqoQRVTsa9NnhDwiHT7V1x3dh2K9PAD4O9DquscE6
-         HPO5XLfbnlUT8tVWz/XCKRcJDqXonvZ673wUJC1pnXDf8MTuZeKvx0DpoGL6ReSGFctN
-         t/RFMWArtwICvCdQGyZrb0ZWyZpt35povAz7YAo/QUa/dm2FDVAZfAOhVHZxOKjnYAgA
-         F7pw==
-X-Gm-Message-State: AOJu0YwP7e0wJ3h28c3XhCKiH43GorbE3qbQZjFL5HfSGt7DYjDndPKe
-	hTEDnxYHGtiGBfVcuikXklnDnzsHk/keRGxULIxX3HoqHNVrpn+Gz/M3qZ632gMpsdKNngBjhvL
-	oxr+X0eDo5tTEesIOoy3mlj5S4lazUilovg7h0gqblwRDuipiPrmdrUKSf3GHvfVlv/meA9lx0I
-	6NEmUlTLTKa3+TXl95w5r2ceL2CxI0HWdnXlV6
-X-Gm-Gg: ASbGncuZSAVIKO5EtvHLgRGARr4gaDQAQvvq2HQT371aI4LakQLsKX0WMO8mycS6qS5
-	1+OCwoqwew5X5uRoMQB4a8W7zFn7TapW7lWp5eCwPklxqiFMS7LwPhBfgIm4SXbDDLCnvUjo=
-X-Received: by 2002:a17:903:2408:b0:21f:85af:4bbf with SMTP id d9443c01a7336-2292f95d1f0mr186006895ad.20.1743507299907;
-        Tue, 01 Apr 2025 04:34:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSn5uOt98uhKZMMDLL1PKULGJN4KlvJ0HGSMvnm2Gb0y4uBbgD4AVkvun+hnHid4h00atdlaLqTwOr5wiMPx0=
-X-Received: by 2002:a17:903:2408:b0:21f:85af:4bbf with SMTP id
- d9443c01a7336-2292f95d1f0mr186006645ad.20.1743507299575; Tue, 01 Apr 2025
- 04:34:59 -0700 (PDT)
+	s=arc-20240116; t=1743507310; c=relaxed/simple;
+	bh=ns65+oXL5DE7rKysJM1mY8iITuMcqvITWk3VuegazFY=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=pvktk9bm3Aorg8R0MljCp1pZSlu3jrfHvoOApBh0A4wjJQRTOPNIOdhqd8wAd5os4ymKyCKyH54WnxddlLHLyakSqdOUeC5pO5GFQfVD1EbjoC+xDm+vCYfAbvYy6NlKgLkER18nVa9LC6wEQiZ429pb94JEQ/Psj8CWcymucCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HefyF9xF; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743507308; x=1775043308;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=ns65+oXL5DE7rKysJM1mY8iITuMcqvITWk3VuegazFY=;
+  b=HefyF9xF07uE+Y9PhsgA/cEg1AH0GiT5Nr7RCYcM2VB6/PyDgTQ5WueN
+   FRhoOFF56Ll0NXroCejHUdv/ZfIm1shTTc5WX+VvTUaYkLXGdZkKESLP/
+   1mnzp2pRoGnq64XKm160qX9eCT1peAUV6BcKyAc8gNoTdb7DPFo8vj80r
+   LTP9/i4xpOmc8WSV6VBCMgaSXbe9rucX9A6vftXccJV71ZMgj6KmPb34P
+   ZD8XH14u8NDin74ti9iwRW/8Mg6aZ+eXCIXTAf7i6AMEiBpG4/dctdEj3
+   NlG441KZqvIZUr4pz0k2CQYmx/5FLmYg6U9ZReiR/lSDo8YwPaGdNJ8GQ
+   w==;
+X-CSE-ConnectionGUID: tn7HdwJzQWil95uyschdDQ==
+X-CSE-MsgGUID: srLIaPvHT7e0BhjTjvjUhg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="32422379"
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; 
+   d="scan'208";a="32422379"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 04:35:07 -0700
+X-CSE-ConnectionGUID: 1eLpTKYjShmsUQIxTZ/8Ag==
+X-CSE-MsgGUID: PMJMqGeORjajm07VotKYfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; 
+   d="scan'208";a="131087891"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.126])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 04:35:05 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 1 Apr 2025 14:35:01 +0300 (EEST)
+To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+cc: Hans de Goede <hdegoede@redhat.com>, platform-driver-x86@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] platform/x86: ISST: Correct command storage data
+ length
+In-Reply-To: <20250328224749.2691272-1-srinivas.pandruvada@linux.intel.com>
+Message-ID: <4049a875-fb64-c84d-c092-daa11fcc9a6c@linux.intel.com>
+References: <20250328224749.2691272-1-srinivas.pandruvada@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250331230324.1266587-1-aahringo@redhat.com>
-In-Reply-To: <20250331230324.1266587-1-aahringo@redhat.com>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Tue, 1 Apr 2025 13:34:48 +0200
-X-Gm-Features: AQ5f1JpDZFaI4ElGDN_h999frdCV6HsRsYbhA0HPvlCNr-3Y6fXIOT9mZSYMj88
-Message-ID: <CAHc6FU7ny9PZeg6sipLc36VwiRChAbw=MtyCveGnX3pXLTfVKQ@mail.gmail.com>
-Subject: Re: [PATCHv2 gfs2/for-next] gfs2: move msleep to sleepable context
-To: Alexander Aring <aahringo@redhat.com>
-Cc: stable@vger.kernel.org, gfs2@lists.linux.dev, david.laight.linux@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 
-On Tue, Apr 1, 2025 at 1:03=E2=80=AFAM Alexander Aring <aahringo@redhat.com=
-> wrote:
-> This patch moves the msleep_interruptible() out of the non-sleepable
-> context by moving the ls->ls_recover_spin spinlock around so
-> msleep_interruptible() will be called in a sleepable context.
->
+On Fri, 28 Mar 2025, Srinivas Pandruvada wrote:
+
+> After resume/online turbo limit ratio (TRL) is restored partially if
+> the admin explicitly changed TRL from user space.
+> 
+> A hash table is used to store SST mail box and MSR settings when modified
+> to restore those settings after resume or online. This uses a struct
+> isst_cmd field "data" to store these settings. This is a 64 bit field.
+> But isst_store_new_cmd() is only assigning as u32. This results in
+> truncation of 32 bits.
+> 
+> Change the argument to u64 from u32.
+> 
+> Fixes: f607874f35cb ("platform/x86: ISST: Restore state on resume")
+> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 > Cc: stable@vger.kernel.org
-> Fixes: 4a7727725dc7 ("GFS2: Fix recovery issues for spectators")
-> Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
+
+Thanks, I've applied this to the review-ilpo-fixes branch.
+
+While reviewing this, I noticed full_cmd is currently typed as int but I 
+think it should be u32 to match the type in the struct.
+
+The construction of full_cmd also open codes FIELD_PREP() and doesn't use 
+named defines for the fields. And ->cmd is also decomposed in 
+isst_mbox_resume_command() which should use FIELD_GET() and the same 
+defines.
+
 > ---
-> changes since v2:
->  - move the spinlock around to avoid schedule under spinlock
->
->  fs/gfs2/lock_dlm.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/gfs2/lock_dlm.c b/fs/gfs2/lock_dlm.c
-> index 58aeeae7ed8c..2c9172dd41e7 100644
-> --- a/fs/gfs2/lock_dlm.c
-> +++ b/fs/gfs2/lock_dlm.c
-> @@ -996,14 +996,15 @@ static int control_mount(struct gfs2_sbd *sdp)
->                 if (sdp->sd_args.ar_spectator) {
->                         fs_info(sdp, "Recovery is required. Waiting for a=
- "
->                                 "non-spectator to mount.\n");
-> +                       spin_unlock(&ls->ls_recover_spin);
->                         msleep_interruptible(1000);
->                 } else {
->                         fs_info(sdp, "control_mount wait1 block %u start =
-%u "
->                                 "mount %u lvb %u flags %lx\n", block_gen,
->                                 start_gen, mount_gen, lvb_gen,
->                                 ls->ls_recover_flags);
-> +                       spin_unlock(&ls->ls_recover_spin);
->                 }
-> -               spin_unlock(&ls->ls_recover_spin);
->                 goto restart;
->         }
->
-> --
-> 2.43.0
+>  drivers/platform/x86/intel/speed_select_if/isst_if_common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+> index dbcd3087aaa4..31239a93dd71 100644
+> --- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+> +++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+> @@ -84,7 +84,7 @@ static DECLARE_HASHTABLE(isst_hash, 8);
+>  static DEFINE_MUTEX(isst_hash_lock);
+>  
+>  static int isst_store_new_cmd(int cmd, u32 cpu, int mbox_cmd_type, u32 param,
+> -			      u32 data)
+> +			      u64 data)
+>  {
+>  	struct isst_cmd *sst_cmd;
 
-Pushed to for-next, thanks.
-
-Andreas
+-- 
+ i.
 
 
