@@ -1,565 +1,123 @@
-Return-Path: <stable+bounces-127335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D180A77CEC
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 15:56:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 768F6A77D01
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 15:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 895C1188B9B8
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 13:56:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0F26188BD66
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 13:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B273C20468A;
-	Tue,  1 Apr 2025 13:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B6B204696;
+	Tue,  1 Apr 2025 13:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o7vdGmO5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K7yfZrBB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6964DC2C6;
-	Tue,  1 Apr 2025 13:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1876A4501A;
+	Tue,  1 Apr 2025 13:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743515766; cv=none; b=WqEAveKG5Q1FcSb7at+UQd1fImuUHC0UmzYNPI70uQuqcJ0FFau0rHDkv/yBxQc8/Vc8M62ybaUO3+Z2gsNMCy9pqHHe/TA5zBwMeeMMTWLnzzy3taOMchcDwVx7x920PNUIQ+H0nWe2QaFjP5oPsjQOmMmA41tDLj+zIqaoBYs=
+	t=1743515914; cv=none; b=fwPryB/Y76hJ1vrzsuNnx1+wJ12aNNnaOwrLR4XcaLWGS2M6UIwrECuLjJOz2aZikSjkUmRpZ9KPBzSMwj8/+3K1FmBAThWFjT4Io9doWfnrnsiJthH8gLGUxuPsIzMy1VToGmgeA24QkHvDavYrfnI/7/z/bXy8jloSnfEI/A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743515766; c=relaxed/simple;
-	bh=vOJVAGJTEuAy1vm3ddszdLsD3QriX/nzRc5+pSlCs8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R9gaVHLMQJLnTayHaoDgo6kd9MxT0/rHWOk8YQpYnhOUknSJ38aA1IKjJd9SIEGFBMr123rEAMFTG+qEjSsggFcxpuvhb6zpI/j9uAKJ1eM+ZMKuCSvKWnuSoJXA3tbZI/XQcKQLXGXlmiR87xbdOvzXoWd8S/8JqirYlIPOO58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o7vdGmO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA44C4CEE4;
-	Tue,  1 Apr 2025 13:56:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743515765;
-	bh=vOJVAGJTEuAy1vm3ddszdLsD3QriX/nzRc5+pSlCs8E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o7vdGmO5begJnV+11RKXwxfNoFckttAv6bpYAXo6O7e0SIal3YfNWFJx1zL7arTDI
-	 GGLFdXXBuxCbnOhN3RJJsMEOf6y+mvz4WFuPK86w8PAoN27ZkFEXD+qCQuBBnMaDBL
-	 rLLD/is2izh7sREvpuBdMFEvQ3Nf8xWGIXt6h8KbgpH9J1QNmpT0BflvJcFLJ8LI/9
-	 3R7v9iRyt9JQ0rRQOslh57IgWE1WSboFb/+vuf0yjrB38RHGQHoN0SVtheXma09cSd
-	 GgbE+ouoZ1v1luADVo+lkIumppiAn/OD6Aup93HVQpPtfKgJH+s06ThxLefnTVfexy
-	 +3pICuc63w+Cg==
-Date: Tue, 1 Apr 2025 15:56:03 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Sean Wang <sean.wang@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Benjamin Larsson <benjamin.larsson@genexis.eu>,
-	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1743515914; c=relaxed/simple;
+	bh=Ik9ndR1ZOthTt3RPFJbayzRDoWqFGAwHZ4LyIzPoYyI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NBhlg1iyrII4+++qTg9RuE73Dk2wA9fpECEoT4bLb7VdH0IissczzIaJW+xzAP2VSx4W+x6ZrgzczCWBocyQQ/YOuICFf9Cwm5XU93ATNOVzYqo44dyDMF4BoK058Dw7zlWTswLBR0gCEvAvCWD2Hn7DkDPMDvL9j5J61ljgJao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K7yfZrBB; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-224341bbc1dso93898085ad.3;
+        Tue, 01 Apr 2025 06:58:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743515912; x=1744120712; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gvs23NKWJWpxifCmG2JMMd+dceGohlJ1NYBE+YufBB0=;
+        b=K7yfZrBBp8X10Vr+cBlTDZfQF+XKB2OsZlrCLko6NBkPoAVn2yfVMBg6UVexnZhp0T
+         RsykDtyepGNgHsVUTpo93WkFGuwA7E8dEMUlLaDbCQBHxEqO8sonQVCJFrukml8ul0W7
+         fUyOw+JcYN1wwji+oiIIkY8dsQcPzoPvIycNU9vsde0BhHC1LdVmYcJMj/Hn1OYOczMT
+         +7wIEuaJvRA7DXm9shnX+4tvWuya5GOX5m8tWXSBSMGoi/GoGtn54y2cT6w24LiCRwd4
+         Ae4Ser3VTkgIHoioNhi9f4dkgS9lYZFSbqOR3k68MSZYXPKCzv7wKlj4nAM3kc14em1C
+         2Cvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743515912; x=1744120712;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gvs23NKWJWpxifCmG2JMMd+dceGohlJ1NYBE+YufBB0=;
+        b=JPb/QszxwP+OC000xhOxSJfQogZsCiCTaXbB1+nifKl/8lr4y9Z9ruBEkI3JGMsa2d
+         JvYWqeb9pALzOXyFSrtm/e77khwNkm5Bv3hLQZ1Ec8bOndIwqwWY3kk8oh3BxkKm065e
+         W36/wknor2nFUPw6RI7KGu44i7x+GwkK0PHTDZx6grN8Rcp1bPKuDu4rLQSKGBCVLf29
+         GqIl3u55srB0hnt+5HptwGKjgZPrn/5/aT1R7CIqwnuiKgWaK89y/uhS0fQ0wRMLo/Dj
+         Ljdx1b1XDVi3nv2sI7LvtefbA4lbEhaEOZG+deuotcA3OpaBHDaG+6V477fLKhG4YDrb
+         RONg==
+X-Forwarded-Encrypted: i=1; AJvYcCU7quvZ+eaMRXxRcmcIDBb7H3OvLCnWepePX5eMMbm/YPnC5M/D/fFbx2z9fpg6E27mHWCRqTM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJX61zPZzfV8EJuan2m1MBj1iRLkFCPVG8FpntqEth6WMvcJm1
+	bNhH9Tu+b0kX7ta07XOca9z/b1Annu1jOW6gafK59D1ZEiQpRwcH
+X-Gm-Gg: ASbGncuMQ/VeVDWGguXt3KeOFKkDSyHIX9AE0XqRzuhco76iYi921CXNBt5V42eaRoI
+	g4uSQLrgXYlpgG0tKBIz3eI2cEihLvCOMr/h89nZfqVYk2fiqZzH/vUr91WfBnb9uTldVcGpA48
+	omEk8jNQwtzBe21du1nOYuaXzP50dyKI4+D60nTYmvsGOEWp4KL64TCxu+YlgZnQJhSXWZJJMJ0
+	9sWFKGxnBvyDqZUC7ARCf3CCxSHtxUJ1ZEcwHylc5OAdwygCpwucqwdmKVOXuy7muJp7d6mOf+p
+	ThKBfliSL6/PfnuyRTLBT2YOmwS0lIkD1lAjQ5Cl9aGw53l6M19i0YMlu4OXEx+eiuWLQGHBp1m
+	X5BJv0w==
+X-Google-Smtp-Source: AGHT+IFe5huXyqUWJr2X0qS753K3KbtPpTRYhcHoKF9r1UMNQ7vm5c8wsTWP9penkOThrq06D6mW9Q==
+X-Received: by 2002:a05:6a00:ac3:b0:736:5544:7ad7 with SMTP id d2e1a72fcca58-739803c0672mr15923478b3a.14.1743515912195;
+        Tue, 01 Apr 2025 06:58:32 -0700 (PDT)
+Received: from henry.localdomain ([111.202.148.167])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73970e1d922sm8923850b3a.37.2025.04.01.06.58.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Apr 2025 06:58:31 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] pinctrl: airoha: fix wrong PHY LED mapping and PHY2
- LED defines
-Message-ID: <Z-vwczLnmAkswNeD@lore-desk>
-References: <20250401135026.18018-1-ansuelsmth@gmail.com>
+Subject: [PATCH v2] misc: tps6594-pfsm: Add NULL check in tps6594_pfsm_probe()
+Date: Tue,  1 Apr 2025 21:58:25 +0800
+Message-Id: <20250401135825.28694-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nRYz62PYEOHq01AT"
-Content-Disposition: inline
-In-Reply-To: <20250401135026.18018-1-ansuelsmth@gmail.com>
+Content-Transfer-Encoding: 8bit
 
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+tps6594_pfsm_probe() does not check for this case, which results in a
+NULL pointer dereference.
 
---nRYz62PYEOHq01AT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-> The current PHY2 LED define are wrong and actually set BITs outside the
-> related mask. Fix it and set the correct value. While at it, also use
-> FIELD_PREP_CONST macro to make it simple to understand what values are
-> actually applied for the mask.
->=20
-> Also fix wrong PHY LED mapping. The SoC Switch supports up to 4 port but
-> the register define mapping for 5 PHY port, starting from 0. The mapping
-> was wrongly defined starting from PHY1. Reorder the function group to
-> start from PHY0. PHY4 is actually never supported as we don't have a
-> GPIO pin to assign.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 1c8ace2d0725 ("pinctrl: airoha: Add support for EN7581 SoC")
-> Reviewed-by: Benjamin Larsson <benjamin.larsson@genexis.eu>
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org # 6.5+
+Fixes: a0df3ef087f8 ("misc: tps6594-pfsm: Add driver for TI TPS6594 PFSM")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+---
+V1 -> V2: Add Cc stable line.
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+ drivers/misc/tps6594-pfsm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> ---
-> Changes v2:
-> - Add Reviewed-by tag
-> - Use more symbolic macro
->=20
->  drivers/pinctrl/mediatek/pinctrl-airoha.c | 159 ++++++++++------------
->  1 file changed, 70 insertions(+), 89 deletions(-)
->=20
-> diff --git a/drivers/pinctrl/mediatek/pinctrl-airoha.c b/drivers/pinctrl/=
-mediatek/pinctrl-airoha.c
-> index 547a798b71c8..5d84a778683d 100644
-> --- a/drivers/pinctrl/mediatek/pinctrl-airoha.c
-> +++ b/drivers/pinctrl/mediatek/pinctrl-airoha.c
-> @@ -6,6 +6,7 @@
->   */
-> =20
->  #include <dt-bindings/pinctrl/mt65xx.h>
-> +#include <linux/bitfield.h>
->  #include <linux/bits.h>
->  #include <linux/cleanup.h>
->  #include <linux/gpio/driver.h>
-> @@ -112,39 +113,19 @@
->  #define REG_LAN_LED1_MAPPING			0x0280
-> =20
->  #define LAN4_LED_MAPPING_MASK			GENMASK(18, 16)
-> -#define LAN4_PHY4_LED_MAP			BIT(18)
-> -#define LAN4_PHY2_LED_MAP			BIT(17)
-> -#define LAN4_PHY1_LED_MAP			BIT(16)
-> -#define LAN4_PHY0_LED_MAP			0
-> -#define LAN4_PHY3_LED_MAP			GENMASK(17, 16)
-> +#define LAN4_PHY_LED_MAP(_n)			FIELD_PREP_CONST(LAN4_LED_MAPPING_MASK, (=
-_n))
-> =20
->  #define LAN3_LED_MAPPING_MASK			GENMASK(14, 12)
-> -#define LAN3_PHY4_LED_MAP			BIT(14)
-> -#define LAN3_PHY2_LED_MAP			BIT(13)
-> -#define LAN3_PHY1_LED_MAP			BIT(12)
-> -#define LAN3_PHY0_LED_MAP			0
-> -#define LAN3_PHY3_LED_MAP			GENMASK(13, 12)
-> +#define LAN3_PHY_LED_MAP(_n)			FIELD_PREP_CONST(LAN3_LED_MAPPING_MASK, (=
-_n))
-> =20
->  #define LAN2_LED_MAPPING_MASK			GENMASK(10, 8)
-> -#define LAN2_PHY4_LED_MAP			BIT(12)
-> -#define LAN2_PHY2_LED_MAP			BIT(11)
-> -#define LAN2_PHY1_LED_MAP			BIT(10)
-> -#define LAN2_PHY0_LED_MAP			0
-> -#define LAN2_PHY3_LED_MAP			GENMASK(11, 10)
-> +#define LAN2_PHY_LED_MAP(_n)			FIELD_PREP_CONST(LAN2_LED_MAPPING_MASK, (=
-_n))
-> =20
->  #define LAN1_LED_MAPPING_MASK			GENMASK(6, 4)
-> -#define LAN1_PHY4_LED_MAP			BIT(6)
-> -#define LAN1_PHY2_LED_MAP			BIT(5)
-> -#define LAN1_PHY1_LED_MAP			BIT(4)
-> -#define LAN1_PHY0_LED_MAP			0
-> -#define LAN1_PHY3_LED_MAP			GENMASK(5, 4)
-> +#define LAN1_PHY_LED_MAP(_n)			FIELD_PREP_CONST(LAN1_LED_MAPPING_MASK, (=
-_n))
-> =20
->  #define LAN0_LED_MAPPING_MASK			GENMASK(2, 0)
-> -#define LAN0_PHY4_LED_MAP			BIT(3)
-> -#define LAN0_PHY2_LED_MAP			BIT(2)
-> -#define LAN0_PHY1_LED_MAP			BIT(1)
-> -#define LAN0_PHY0_LED_MAP			0
-> -#define LAN0_PHY3_LED_MAP			GENMASK(2, 1)
-> +#define LAN0_PHY_LED_MAP(_n)			FIELD_PREP_CONST(LAN0_LED_MAPPING_MASK, (=
-_n))
-> =20
->  /* CONF */
->  #define REG_I2C_SDA_E2				0x001c
-> @@ -1476,8 +1457,8 @@ static const struct airoha_pinctrl_func_group phy1_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN1_LED_MAPPING_MASK,
-> -			LAN1_PHY1_LED_MAP
-> +			LAN0_LED_MAPPING_MASK,
-> +			LAN0_PHY_LED_MAP(0)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1491,8 +1472,8 @@ static const struct airoha_pinctrl_func_group phy1_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN2_LED_MAPPING_MASK,
-> -			LAN2_PHY1_LED_MAP
-> +			LAN1_LED_MAPPING_MASK,
-> +			LAN1_PHY_LED_MAP(0)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1506,8 +1487,8 @@ static const struct airoha_pinctrl_func_group phy1_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN3_LED_MAPPING_MASK,
-> -			LAN3_PHY1_LED_MAP
-> +			LAN2_LED_MAPPING_MASK,
-> +			LAN2_PHY_LED_MAP(0)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1521,8 +1502,8 @@ static const struct airoha_pinctrl_func_group phy1_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN4_LED_MAPPING_MASK,
-> -			LAN4_PHY1_LED_MAP
-> +			LAN3_LED_MAPPING_MASK,
-> +			LAN3_PHY_LED_MAP(0)
->  		},
->  		.regmap_size =3D 2,
->  	},
-> @@ -1540,8 +1521,8 @@ static const struct airoha_pinctrl_func_group phy2_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN1_LED_MAPPING_MASK,
-> -			LAN1_PHY2_LED_MAP
-> +			LAN0_LED_MAPPING_MASK,
-> +			LAN0_PHY_LED_MAP(1)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1555,8 +1536,8 @@ static const struct airoha_pinctrl_func_group phy2_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN2_LED_MAPPING_MASK,
-> -			LAN2_PHY2_LED_MAP
-> +			LAN1_LED_MAPPING_MASK,
-> +			LAN1_PHY_LED_MAP(1)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1570,8 +1551,8 @@ static const struct airoha_pinctrl_func_group phy2_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN3_LED_MAPPING_MASK,
-> -			LAN3_PHY2_LED_MAP
-> +			LAN2_LED_MAPPING_MASK,
-> +			LAN2_PHY_LED_MAP(1)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1585,8 +1566,8 @@ static const struct airoha_pinctrl_func_group phy2_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN4_LED_MAPPING_MASK,
-> -			LAN4_PHY2_LED_MAP
-> +			LAN3_LED_MAPPING_MASK,
-> +			LAN3_PHY_LED_MAP(1)
->  		},
->  		.regmap_size =3D 2,
->  	},
-> @@ -1604,8 +1585,8 @@ static const struct airoha_pinctrl_func_group phy3_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN1_LED_MAPPING_MASK,
-> -			LAN1_PHY3_LED_MAP
-> +			LAN0_LED_MAPPING_MASK,
-> +			LAN0_PHY_LED_MAP(2)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1619,8 +1600,8 @@ static const struct airoha_pinctrl_func_group phy3_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN2_LED_MAPPING_MASK,
-> -			LAN2_PHY3_LED_MAP
-> +			LAN1_LED_MAPPING_MASK,
-> +			LAN1_PHY_LED_MAP(2)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1634,8 +1615,8 @@ static const struct airoha_pinctrl_func_group phy3_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN3_LED_MAPPING_MASK,
-> -			LAN3_PHY3_LED_MAP
-> +			LAN2_LED_MAPPING_MASK,
-> +			LAN2_PHY_LED_MAP(2)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1649,8 +1630,8 @@ static const struct airoha_pinctrl_func_group phy3_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN4_LED_MAPPING_MASK,
-> -			LAN4_PHY3_LED_MAP
-> +			LAN3_LED_MAPPING_MASK,
-> +			LAN3_PHY_LED_MAP(2)
->  		},
->  		.regmap_size =3D 2,
->  	},
-> @@ -1668,8 +1649,8 @@ static const struct airoha_pinctrl_func_group phy4_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN1_LED_MAPPING_MASK,
-> -			LAN1_PHY4_LED_MAP
-> +			LAN0_LED_MAPPING_MASK,
-> +			LAN0_PHY_LED_MAP(3)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1683,8 +1664,8 @@ static const struct airoha_pinctrl_func_group phy4_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN2_LED_MAPPING_MASK,
-> -			LAN2_PHY4_LED_MAP
-> +			LAN1_LED_MAPPING_MASK,
-> +			LAN1_PHY_LED_MAP(3)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1698,8 +1679,8 @@ static const struct airoha_pinctrl_func_group phy4_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN3_LED_MAPPING_MASK,
-> -			LAN3_PHY4_LED_MAP
-> +			LAN2_LED_MAPPING_MASK,
-> +			LAN2_PHY_LED_MAP(3)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1713,8 +1694,8 @@ static const struct airoha_pinctrl_func_group phy4_=
-led0_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED0_MAPPING,
-> -			LAN4_LED_MAPPING_MASK,
-> -			LAN4_PHY4_LED_MAP
-> +			LAN3_LED_MAPPING_MASK,
-> +			LAN3_PHY_LED_MAP(3)
->  		},
->  		.regmap_size =3D 2,
->  	},
-> @@ -1732,8 +1713,8 @@ static const struct airoha_pinctrl_func_group phy1_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN1_LED_MAPPING_MASK,
-> -			LAN1_PHY1_LED_MAP
-> +			LAN0_LED_MAPPING_MASK,
-> +			LAN0_PHY_LED_MAP(0)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1747,8 +1728,8 @@ static const struct airoha_pinctrl_func_group phy1_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN2_LED_MAPPING_MASK,
-> -			LAN2_PHY1_LED_MAP
-> +			LAN1_LED_MAPPING_MASK,
-> +			LAN1_PHY_LED_MAP(0)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1762,8 +1743,8 @@ static const struct airoha_pinctrl_func_group phy1_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN3_LED_MAPPING_MASK,
-> -			LAN3_PHY1_LED_MAP
-> +			LAN2_LED_MAPPING_MASK,
-> +			LAN2_PHY_LED_MAP(0)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1777,8 +1758,8 @@ static const struct airoha_pinctrl_func_group phy1_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN4_LED_MAPPING_MASK,
-> -			LAN4_PHY1_LED_MAP
-> +			LAN3_LED_MAPPING_MASK,
-> +			LAN3_PHY_LED_MAP(0)
->  		},
->  		.regmap_size =3D 2,
->  	},
-> @@ -1796,8 +1777,8 @@ static const struct airoha_pinctrl_func_group phy2_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN1_LED_MAPPING_MASK,
-> -			LAN1_PHY2_LED_MAP
-> +			LAN0_LED_MAPPING_MASK,
-> +			LAN0_PHY_LED_MAP(1)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1811,8 +1792,8 @@ static const struct airoha_pinctrl_func_group phy2_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN2_LED_MAPPING_MASK,
-> -			LAN2_PHY2_LED_MAP
-> +			LAN1_LED_MAPPING_MASK,
-> +			LAN1_PHY_LED_MAP(1)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1826,8 +1807,8 @@ static const struct airoha_pinctrl_func_group phy2_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN3_LED_MAPPING_MASK,
-> -			LAN3_PHY2_LED_MAP
-> +			LAN2_LED_MAPPING_MASK,
-> +			LAN2_PHY_LED_MAP(1)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1841,8 +1822,8 @@ static const struct airoha_pinctrl_func_group phy2_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN4_LED_MAPPING_MASK,
-> -			LAN4_PHY2_LED_MAP
-> +			LAN3_LED_MAPPING_MASK,
-> +			LAN3_PHY_LED_MAP(1)
->  		},
->  		.regmap_size =3D 2,
->  	},
-> @@ -1860,8 +1841,8 @@ static const struct airoha_pinctrl_func_group phy3_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN1_LED_MAPPING_MASK,
-> -			LAN1_PHY3_LED_MAP
-> +			LAN0_LED_MAPPING_MASK,
-> +			LAN0_PHY_LED_MAP(2)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1875,8 +1856,8 @@ static const struct airoha_pinctrl_func_group phy3_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN2_LED_MAPPING_MASK,
-> -			LAN2_PHY3_LED_MAP
-> +			LAN1_LED_MAPPING_MASK,
-> +			LAN1_PHY_LED_MAP(2)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1890,8 +1871,8 @@ static const struct airoha_pinctrl_func_group phy3_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN3_LED_MAPPING_MASK,
-> -			LAN3_PHY3_LED_MAP
-> +			LAN2_LED_MAPPING_MASK,
-> +			LAN2_PHY_LED_MAP(2)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1905,8 +1886,8 @@ static const struct airoha_pinctrl_func_group phy3_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN4_LED_MAPPING_MASK,
-> -			LAN4_PHY3_LED_MAP
-> +			LAN3_LED_MAPPING_MASK,
-> +			LAN3_PHY_LED_MAP(2)
->  		},
->  		.regmap_size =3D 2,
->  	},
-> @@ -1924,8 +1905,8 @@ static const struct airoha_pinctrl_func_group phy4_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN1_LED_MAPPING_MASK,
-> -			LAN1_PHY4_LED_MAP
-> +			LAN0_LED_MAPPING_MASK,
-> +			LAN0_PHY_LED_MAP(3)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1939,8 +1920,8 @@ static const struct airoha_pinctrl_func_group phy4_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN2_LED_MAPPING_MASK,
-> -			LAN2_PHY4_LED_MAP
-> +			LAN1_LED_MAPPING_MASK,
-> +			LAN1_PHY_LED_MAP(3)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1954,8 +1935,8 @@ static const struct airoha_pinctrl_func_group phy4_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN3_LED_MAPPING_MASK,
-> -			LAN3_PHY4_LED_MAP
-> +			LAN2_LED_MAPPING_MASK,
-> +			LAN2_PHY_LED_MAP(3)
->  		},
->  		.regmap_size =3D 2,
->  	}, {
-> @@ -1969,8 +1950,8 @@ static const struct airoha_pinctrl_func_group phy4_=
-led1_func_group[] =3D {
->  		.regmap[1] =3D {
->  			AIROHA_FUNC_MUX,
->  			REG_LAN_LED1_MAPPING,
-> -			LAN4_LED_MAPPING_MASK,
-> -			LAN4_PHY4_LED_MAP
-> +			LAN3_LED_MAPPING_MASK,
-> +			LAN3_PHY_LED_MAP(3)
->  		},
->  		.regmap_size =3D 2,
->  	},
-> --=20
-> 2.48.1
->=20
+diff --git a/drivers/misc/tps6594-pfsm.c b/drivers/misc/tps6594-pfsm.c
+index 0a24ce44cc37..0d9dad20b6ae 100644
+--- a/drivers/misc/tps6594-pfsm.c
++++ b/drivers/misc/tps6594-pfsm.c
+@@ -281,6 +281,8 @@ static int tps6594_pfsm_probe(struct platform_device *pdev)
+ 	pfsm->miscdev.minor = MISC_DYNAMIC_MINOR;
+ 	pfsm->miscdev.name = devm_kasprintf(dev, GFP_KERNEL, "pfsm-%ld-0x%02x",
+ 					    tps->chip_id, tps->reg);
++	if (!pfsm->miscdev.name)
++		return -ENOMEM;
+ 	pfsm->miscdev.fops = &tps6594_pfsm_fops;
+ 	pfsm->miscdev.parent = dev->parent;
+ 	pfsm->chip_id = tps->chip_id;
+-- 
+2.34.1
 
---nRYz62PYEOHq01AT
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ+vwcwAKCRA6cBh0uS2t
-rNMvAQCC3qXkUGBbmTKpqXtmDpcfFfy2GUHnM7lnNIMj6NxI0QD+PpG0H5XNZ3VI
-kk0XQB0c2gUlQ6n+H1HB33xvyJTafAE=
-=u1TQ
------END PGP SIGNATURE-----
-
---nRYz62PYEOHq01AT--
 
