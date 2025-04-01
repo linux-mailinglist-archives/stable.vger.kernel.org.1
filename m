@@ -1,109 +1,149 @@
-Return-Path: <stable+bounces-127301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B0DA77730
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 11:06:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78480A776C9
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 10:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EB23188D60E
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 09:06:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2285A188D4C0
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 08:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFA61EBFE8;
-	Tue,  1 Apr 2025 09:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7FD21EB9E3;
+	Tue,  1 Apr 2025 08:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b="MiJIQkjs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XtcW2qJm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com [185.132.180.163])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF331EB5CA;
-	Tue,  1 Apr 2025 09:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.180.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AA71EB9FF
+	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 08:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743498372; cv=none; b=Yu/2AkY7zofgOQ2CVkNlShOdUIv3IXGzyUat+bLlLTHfV+UcOl52LdtODRDCkJnuuHq1XMl96aTbGYuswg4gWUiEkYvOOAW+hYd7fuQ7sZYJz4T8rPZQOmChFlrdQnrkMV7j/NTBH1f+hyj4lIXeQVq0MVguzqSgnJbocrd4J94=
+	t=1743497205; cv=none; b=C5hghW5lxVIDSzW4p4le7PdXwEvOonfmZeB7YjrFAnLI9sQJBqng0UZC7SbcWGcnrcYHGlqAP0zzXOj6KPrfSQrfJBFk21fVwgaDJwtgHMNlW0DPvzhV86zofanPI5oodJRSBIUXa5g5dX/B31PGzFp+7hC0ocMJerIB5ZBCxq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743498372; c=relaxed/simple;
-	bh=vJXQ6fKZCQBmrvpC2hox6sd8/K5nDDiVBhyWXScvot0=;
-	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
-	 MIME-Version:Content-Type; b=tVyuidMQSAgqxRlrdkRv+Mc7/LXp4xFpMPFV1N5mwXxY4ZwWvU4Ackr6x3hvbFFfQK+yM6og8ihbg0qbpKFT4Z9+dz/QJ55k/6kCC4uqhH9oiCQoZP4iNhaQucAWYyJzFd4dfQtztnxCWZIQ68bCr2fi6SY2vqxlmtjdUByZqGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=MiJIQkjs; arc=none smtp.client-ip=185.132.180.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imgtec.com
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
-	by mx07-00376f01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5316j2iT027691;
-	Tue, 1 Apr 2025 09:42:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=dk201812; bh=R
-	8TCmtRbqOlDrGi1Q5AjHaOUy2iI6+a6JqFKx2HI1T0=; b=MiJIQkjsAZPWoW+4z
-	fF9W2XYmhZpzmPi/kofq1YxITdtR/0VxfY7nIqYbraiDKbqvBkVLp/hbKuMvgl/H
-	TFWcoYLAdG6cY5KucHKq09lpKiaw28OufDYF5wDzr2LDADHcZ+c6Jo0XB0IAhqcq
-	wuFaeFx0rogHIAHbvYq9hgWkaV6cVhyRxAwHyhDYrWiZYtnnlLRdh+SyU2VGfpJ0
-	4N+YS6Y8DAUhB68EhsyrTkbUWiCZPXx/Zf6FmshQHwGanwD3l7FVhwYuEqtVNmIg
-	zqiCx8b0L8f5NH1YJhohoiAKZ84T7uA1WRyDNo5sizqvDUDRwpJs8X9d9kS7VKyl
-	L8/sg==
-Received: from hhmail05.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
-	by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 45p9u0t0cx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 01 Apr 2025 09:42:13 +0100 (BST)
-Received: from
- 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
- (172.25.6.134) by HHMAIL05.hh.imgtec.org (10.100.10.120) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Tue, 1 Apr 2025 09:42:12 +0100
-From: Matt Coster <matt.coster@imgtec.com>
-To: Frank Binns <frank.binns@imgtec.com>,
-        Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Boris Brezillon
-	<boris.brezillon@collabora.com>,
-        Brendan King <Brendan.King@imgtec.com>
-CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, Brendan King <brendan.king@imgtec.com>
-In-Reply-To: <20250318-ddkopsrc-1337-use-after-free-in-pvr_queue_prepare_job-v1-1-80fb30d044a6@imgtec.com>
-References: <20250318-ddkopsrc-1337-use-after-free-in-pvr_queue_prepare_job-v1-1-80fb30d044a6@imgtec.com>
-Subject: Re: [PATCH] drm/imagination: take paired job reference
-Message-ID: <174349693233.75513.9819587084207763142.b4-ty@imgtec.com>
-Date: Tue, 1 Apr 2025 09:42:12 +0100
+	s=arc-20240116; t=1743497205; c=relaxed/simple;
+	bh=PsGkjwijO7QZJn7Tb41UnkWLgAytQqDzIVDErOmndxE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AahFUApmSQuHdkJFGVA9fOAYb/22VDYypN5Lk9oaDWpDYtSp144J0tv6BQHoZXuyPte+LCupoYlhO/GBlXeuBA7r3srJVEw5ugRa1ipWIDBzr+PuLj8VmtoT0x3t7FSawfbh9sjYwGu53tSUM+CY2PKZh0+BHODDwjGDI+t2ANI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XtcW2qJm; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743497204; x=1775033204;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=PsGkjwijO7QZJn7Tb41UnkWLgAytQqDzIVDErOmndxE=;
+  b=XtcW2qJmhPnwmwMoHBhpbufymIrLZGLPt9DQLlZdsoRxhk3s+MTUdw3R
+   8OO1kcJ7+xfL6AnkW5nmy2YV6rvGHYkthWtx+h70h05T/OEUVTGLBDZOt
+   5llGb8kzGw0VI5kamf4VDsdXT4Vv587bjSKN9z1Ciw0Vo3gxRnIXs6mR8
+   XaoVxlGBcZfiyHha++nb7nt3GMXqXw6gFfiLIZbS1CBli66+kBgrp5XAN
+   5dGR0tvuXcCi5VR3FCfUtjskzgD4ikHp9gqpbPC9fsiAnXsVnrolvE1xA
+   vpTWyTqPbSV1J6jjwA0odMH00Q9MFoXH9YWnntlD+Ob3vmQZaovr3WXCT
+   Q==;
+X-CSE-ConnectionGUID: mKUatddrS/2dEIACJWo4KQ==
+X-CSE-MsgGUID: 9TuZ2+LVQgWTUp0hMg+e0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="44522765"
+X-IronPort-AV: E=Sophos;i="6.14,292,1736841600"; 
+   d="scan'208";a="44522765"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 01:46:43 -0700
+X-CSE-ConnectionGUID: ktFo+2eeRGaQq03HgzqcFA==
+X-CSE-MsgGUID: 5nS/a4vKTqKtV1fSTywAcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,292,1736841600"; 
+   d="scan'208";a="157253689"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.7])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 01:46:41 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Zhenyu Wang <zhenyuw.linux@gmail.com>
+Cc: intel-gfx@lists.freedesktop.org, Kees Cook <kees@kernel.org>, Nicolas
+ Chauvet <kwizart@gmail.com>, Damian Tometzki <damian@riscv-rocks.de>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/gvt: fix unterminated-string-initialization
+ warning
+In-Reply-To: <Z-la1kFHvH4zu_X5@dell-wzy>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250327124739.2609656-1-jani.nikula@intel.com>
+ <Z-la1kFHvH4zu_X5@dell-wzy>
+Date: Tue, 01 Apr 2025 11:46:37 +0300
+Message-ID: <87bjtg46c2.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
-X-EXCLAIMER-MD-CONFIG: 15a78312-3e47-46eb-9010-2e54d84a9631
-X-Proofpoint-ORIG-GUID: rXrcd4LUK4OaPkzD9an5f0DhBOyUSUr5
-X-Authority-Analysis: v=2.4 cv=c/CrQQ9l c=1 sm=1 tr=0 ts=67eba6e5 cx=c_pps a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17 a=UtEzwyU9vMAA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=r_1tXGB3AAAA:8 a=dJcJSLYtkHp847Acm8sA:9 a=QEXdDO2ut3YA:10
- a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-GUID: rXrcd4LUK4OaPkzD9an5f0DhBOyUSUr5
+Content-Type: text/plain
 
+On Sun, 30 Mar 2025, Zhenyu Wang <zhenyuw.linux@gmail.com> wrote:
+> On Thu, Mar 27, 2025 at 02:47:39PM +0200, Jani Nikula wrote:
+>> Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
+>> (which is "IntelGraphicsMem") drops the NUL termination of the
+>> string. This is intentional, but the compiler doesn't know this.
+>>
+>
+> Indeed...
+>
+>> Switch to initializing header->signature directly from the string
+>> litaral, with sizeof destination rather than source. We don't treat the
+>> signature as a string other than for initialization; it's really just a
+>> blob of binary data.
+>> 
+>> Add a static assert for good measure to cross-check the sizes.
+>> 
+>> Reported-by: Kees Cook <kees@kernel.org>
+>> Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
+>> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
+>> Tested-by: Nicolas Chauvet <kwizart@gmail.com>
+>> Tested-by: Damian Tometzki <damian@riscv-rocks.de>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>> ---
+>
+> Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
 
-On Tue, 18 Mar 2025 14:53:13 +0000, Brendan King wrote:
-> For paired jobs, have the fragment job take a reference on the
-> geometry job, so that the geometry job cannot be freed until
-> the fragment job has finished with it.
-> 
-> The geometry job structure is accessed when the fragment job is being
-> prepared by the GPU scheduler. Taking the reference prevents the
-> geometry job being freed until the fragment job no longer requires it.
-> 
-> [...]
+Thanks for the review, pushed to din.
 
-Applied, thanks!
+BR,
+Jani.
 
-[1/1] drm/imagination: take paired job reference
-      commit: 4ba2abe154ef68f9612eee9d6fbfe53a1736b064
+>
+>>  drivers/gpu/drm/i915/gvt/opregion.c | 7 ++++---
+>>  1 file changed, 4 insertions(+), 3 deletions(-)
+>> 
+>> diff --git a/drivers/gpu/drm/i915/gvt/opregion.c b/drivers/gpu/drm/i915/gvt/opregion.c
+>> index 509f9ccae3a9..dbad4d853d3a 100644
+>> --- a/drivers/gpu/drm/i915/gvt/opregion.c
+>> +++ b/drivers/gpu/drm/i915/gvt/opregion.c
+>> @@ -222,7 +222,6 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
+>>  	u8 *buf;
+>>  	struct opregion_header *header;
+>>  	struct vbt v;
+>> -	const char opregion_signature[16] = OPREGION_SIGNATURE;
+>>  
+>>  	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
+>>  	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
+>> @@ -236,8 +235,10 @@ int intel_vgpu_init_opregion(struct intel_vgpu *vgpu)
+>>  	/* emulated opregion with VBT mailbox only */
+>>  	buf = (u8 *)vgpu_opregion(vgpu)->va;
+>>  	header = (struct opregion_header *)buf;
+>> -	memcpy(header->signature, opregion_signature,
+>> -	       sizeof(opregion_signature));
+>> +
+>> +	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
+>> +	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
+>> +
+>>  	header->size = 0x8;
+>>  	header->opregion_ver = 0x02000000;
+>>  	header->mboxes = MBOX_VBT;
+>> -- 
+>> 2.39.5
+>> 
 
-Best regards,
 -- 
-Matt Coster <matt.coster@imgtec.com>
-
+Jani Nikula, Intel
 
