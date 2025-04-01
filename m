@@ -1,81 +1,118 @@
-Return-Path: <stable+bounces-127283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E86A7732A
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 06:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7447A7734A
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 06:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA21B3AC453
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 04:02:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3E073AEE6D
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 04:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D56F155A30;
-	Tue,  1 Apr 2025 04:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="j88BjEpY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C611C5489;
+	Tue,  1 Apr 2025 04:12:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E89D187550;
-	Tue,  1 Apr 2025 04:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.50.62.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF9E7FBA2;
+	Tue,  1 Apr 2025 04:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743480157; cv=none; b=k+gAEfR04fc643ZAIR2pAGiHZj5X7WUcAX18njk57pfsP72f8X0mvFg3mc0lXtdZUOaeOzEmR0Wgs6clbG8s7GHkmqDdBsG9hSZYyIzqS7ATlZKE4rcaNVZaoXmbG3VLJupbg/LpqD1dSKNIfo+6RmLZbPpa+ZMB32F8pDy18Zs=
+	t=1743480737; cv=none; b=MmJFV9AK6FKC7LKXFHjkJnrvqhzYgdSo1E/8aBlNdOlVL1ftWsPrAe5YQ6Li2mACm85Irfr94Rd8mpzrF3KDqy3zBTFWYxaorcNxL7cIdBe7q0EY1WAR6Iwr9B3J/1E9ZalyHunvUZNoJnHAZSzUMax5+4gj+R7YNV1c2DZe7tI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743480157; c=relaxed/simple;
-	bh=COGoUV2LNCT7BAByBN+90DSwtl7nzPfe94IaM5eu25A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nnGladCdq+cg/L3pOfTmaZLwIgMMQ5zDauISitKoOwnZ2EDolx7ODGAeDW0Gi7MoMp64uNeJwZ7HrVIKER5eals47R3aSo6qSzL6wQh7bxhQAMsjO7XE3PNp07V/DcGEkYewsvOOFdGGg3UfyQLECc2kO/ojIPt16HcH5ZyJKJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com; spf=fail smtp.mailfrom=atomide.com; dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b=j88BjEpY; arc=none smtp.client-ip=74.50.62.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomide.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=atomide.com
-Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
-	by mail5.25mail.st (Postfix) with ESMTPSA id 91DD26040B;
-	Tue,  1 Apr 2025 03:54:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
-	s=25mailst; t=1743479666;
-	bh=COGoUV2LNCT7BAByBN+90DSwtl7nzPfe94IaM5eu25A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j88BjEpYJbGHDIbrbQgnoxpXCjz6IezOyCvVyNwLauDr3s0CUHlhkktyM3q/Sg4DP
-	 KIju37voGdqjHrK6cRQHhbeirbEHelkezjqNwh4Cb9r8FiSuMOu4o3WScv/Vt3fsrk
-	 P+I1rtsv2D35AViLzbRwAnVHD7hyYutQvQLyRoo8unI5RdtN8RkQ8psUmgE5HMtWa/
-	 0ZutpaCEQw90RtyFCvRuySo3K4tXEHeUHy/FJLglhm/hJ2hpEqQIuje64/gL8Z1ICz
-	 8Rw+o7+zeSY4uBC/+on3fkT3c5KNlAZ58zcjOTeZuCyFdf708m2GG9WVHEpP+SEywS
-	 I/YMrqTnbktvw==
-Date: Tue, 1 Apr 2025 06:54:03 +0300
-From: Tony Lindgren <tony@atomide.com>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: khilman@kernel.org, aaro.koskinen@iki.fi, rogerq@kernel.org,
-	linux@armlinux.org.uk, linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	sre@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ARM: omap: pmic-cpcap: do not mess around without CPCAP
- or OMAP4
-Message-ID: <20250401035403.GF4957@atomide.com>
-References: <20250331144439.769697-1-andreas@kemnade.info>
+	s=arc-20240116; t=1743480737; c=relaxed/simple;
+	bh=rTx8MvmTBpW5t6mgl50Rs3iMX+EIlOymsf7bK+Q719A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oHCJlR8bVzDJXXZQ3tdZkzd2bXJZrH4ABYtuROF7K135FAZmCfy6wyszrantEs6MNefwZb4e89uE5Va0XfLzH//ZHy78l9xx36jLdlfEsnNQRl/f0ba8Xi1mBvztxLpNv0G/x8HRQCayvl1oJVUvym60tBCNXFPMoapmyvlaJIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowACn3gaRZ+tnerKTBA--.2373S2;
+	Tue, 01 Apr 2025 12:12:07 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: mchehab@kernel.org
+Cc: yujiaoliang@vivo.com,
+	hverkuil@xs4all.nl,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] media: dvb: Add error checking for bcm3510_writeB()
+Date: Tue,  1 Apr 2025 12:11:41 +0800
+Message-ID: <20250401041141.2016-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250331144439.769697-1-andreas@kemnade.info>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACn3gaRZ+tnerKTBA--.2373S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJryfCw45Xw17tFyktrW3trb_yoW8Cr1xpr
+	sFy3yrZa4jya1xGFnxtw18KFyrtw1rtayrKF93CF1xZr1rWay3XrnFqa13ta45ArWfJa13
+	Zw47JFWxCFyqyF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUbSfO7UUUU
+	U==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwwSA2fqg1RtQAACsv
 
-* Andreas Kemnade <andreas@kemnade.info> [250331 14:45]:
-> The late init call just writes to omap4 registers as soon as
-> CONFIG_MFD_CPCAP is enabled without checking whether the
-> cpcap driver is actually there or the SoC is indeed an
-> OMAP4.
-> Rather do these things only with the right device combination.
-> 
-> Fixes booting the BT200 with said configuration enabled and non-factory
-> X-Loader and probably also some surprising behavior on other devices.
+In  bcm3510_bert_reset(), the function performed multiple writes
+without checking the return value of bcm3510_writeB(). This could
+result in silent failures if the writes failed, leaving the BER
+counter in an undefined state.
 
-Nice catch:
+Add error checking for each bcm3510_writeB call and propagate any
+errors immediately. This ensures proper error handling and prevents
+silent failures during BER counter initialization.
 
-Reivewed-by: Tony Lindgren <tony@atomide.com>
+Fixes: 55f51efdb696 ("[PATCH] dvb: flexcop: add BCM3510 ATSC frontend support for Air2PC card")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/media/dvb-frontends/bcm3510.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/media/dvb-frontends/bcm3510.c b/drivers/media/dvb-frontends/bcm3510.c
+index d935fb10e620..fc5853fc9595 100644
+--- a/drivers/media/dvb-frontends/bcm3510.c
++++ b/drivers/media/dvb-frontends/bcm3510.c
+@@ -270,10 +270,18 @@ static int bcm3510_bert_reset(struct bcm3510_state *st)
+ 	if ((ret = bcm3510_readB(st,0xfa,&b)) < 0)
+ 		return ret;
+ 
+-	b.BERCTL_fa.RESYNC = 0; bcm3510_writeB(st,0xfa,b);
+-	b.BERCTL_fa.RESYNC = 1; bcm3510_writeB(st,0xfa,b);
+-	b.BERCTL_fa.RESYNC = 0; bcm3510_writeB(st,0xfa,b);
+-	b.BERCTL_fa.CNTCTL = 1; b.BERCTL_fa.BITCNT = 1; bcm3510_writeB(st,0xfa,b);
++	b.BERCTL_fa.RESYNC = 0;
++	if ((ret = bcm3510_writeB(st,0xfa,b)) < 0)
++		return ret;
++	b.BERCTL_fa.RESYNC = 1;
++	if ((ret = bcm3510_writeB(st,0xfa,b)) < 0)
++		return ret;
++	b.BERCTL_fa.RESYNC = 0;
++	if ((ret = bcm3510_writeB(st,0xfa,b)) < 0)
++		return ret;
++	b.BERCTL_fa.CNTCTL = 1; b.BERCTL_fa.BITCNT = 1;
++	if ((ret = bcm3510_writeB(st,0xfa,b)) < 0)
++		return ret;
+ 
+ 	/* clear residual bit counter TODO  */
+ 	return 0;
+-- 
+2.42.0.windows.2
+
 
