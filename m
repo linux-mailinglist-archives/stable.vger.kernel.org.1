@@ -1,138 +1,139 @@
-Return-Path: <stable+bounces-127294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D37A775C7
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 09:58:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027B1A775C4
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 09:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB282188BA02
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 07:58:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5065A188B9D1
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 07:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E711E98F9;
-	Tue,  1 Apr 2025 07:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BB01E7C11;
+	Tue,  1 Apr 2025 07:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="dbx6XvMy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j2UOoP3N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537A41078F;
-	Tue,  1 Apr 2025 07:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A111078F
+	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 07:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743494285; cv=none; b=PT4zWu9lneRWyPrp7zOvA86fUM+7TO4OyTZn1Idh59rpII870umTj3WXlNlPi+wNiQikdyx2O+qz/k9K+wshwF6VGtGNC0a9c3Vqp5sfw5m0qqhPYN+AYFaa3QHMnk3yzWnlJes2BEtpGygC/syNpxNNBOzkBUf/tlwVdvcIAjw=
+	t=1743494261; cv=none; b=sP6/uRmbLxCX53G8/5onZ+jm6RRSSdLClkD0xm1Pl8M+MLcxgiPNCyVVuBeMpRw8QFDl15e24aH91bc6O+bM6kwMFpH1MUKPexQ5wFwIwhRrTya1xgp70gcDpggXdATkw0wV903m147Ysogc/hNoaL4FgSgm1Bmz3WHht7aog+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743494285; c=relaxed/simple;
-	bh=Zuky21qHhOoUcW95DBWvq7xeXz3F0IcpbLmzX/Q+5yk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EeOex4eYlhiWbZMAsNpNaQ3/ijv0dxOSqtrXFpJDKChVuTpSOlcb6t1IGnk6fxL96t3EZ44i5fLgkjcB0ygtf6J/hDIKQ8wKN+hQtMHVFZ+joNU6VsxhRLaAAv22JdIawECDKA3Rv8x748AKotFcSZN9TnbBNkoXOZAgHOkVumM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=dbx6XvMy; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 5317vSlf3626157
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 1 Apr 2025 00:57:31 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 5317vSlf3626157
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025032001; t=1743494252;
-	bh=PXqPsnXL5zoeesrQ9uDoxGxPHXk0Y7zXqzlVU5X8/Lg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=dbx6XvMy8z0d5iKogpw0LKrho5EEcyx61LP9SgpA9LRDPafRIVAW9FSiKnNykThiJ
-	 4Ya5coPyx8+Ab5GxWkSuohdzIEM2uBPluLzbYyHskEb0TQCflNtCZjkmFYbxprJ/8s
-	 Tz0qnCQ2CmZeMzw3x2Z+z7dcMf5XotW7am3gML6eq8HFSY6TZVAwdzlUrYbewN9seF
-	 170Y0rgiPolqw3YYcHUYXL3LHnFzW0FwArxFt1vxLHBSPfMsTI4ZQhFyIR+nT6FY+Y
-	 9AuKhJMjQnMyNsUix4IGPUUdElWMSACNzv8tkhzjvMZQKxTMFca2OFU0BXPUuA2Ic5
-	 bSx6NsQJA3GXA==
-From: "Xin Li (Intel)" <xin@zytor.com>
-To: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc: rafael@kernel.org, pavel@kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, luto@kernel.org, brgerst@gmail.com, jgross@suse.com,
-        torvalds@linux-foundation.org, xi.pardee@intel.com,
-        todd.e.brandt@intel.com, xin@zytor.com
-Subject: [PATCH v2 1/1] x86/fred: Fix system hang during S4 resume with FRED enabled
-Date: Tue,  1 Apr 2025 00:57:27 -0700
-Message-ID: <20250401075728.3626147-1-xin@zytor.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743494261; c=relaxed/simple;
+	bh=gsOC6Rdr7oKwXyERdvN9ZCknZbemPP5V4VJ2wdV1FgE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E7pV9gK31bCaKPxrbtENyr0CUKlLhVuHDIRrN0KxhRTET8hpIk6pdU/ZTCexLn75L6iQGCZQesMiHE5UsfLBA+U7IKp9LsDanBCESheIbyPFzAJr4nO/bMhI8hlawy8oAsOZp9caIv+5eM+X62i05UjoNWNJq+7M8DpLH0aWWsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j2UOoP3N; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743494258; x=1775030258;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gsOC6Rdr7oKwXyERdvN9ZCknZbemPP5V4VJ2wdV1FgE=;
+  b=j2UOoP3N5Qg2Yzp5uEKTdcU6arkoKupPyO/DMNePjzo/ZB9E47KAByJ9
+   retf9jNm1hTb79v04oVIwnCr/L1ZaKX0RIOyEr/8Gy8iBpAWgukrjiBuM
+   W5gAlCPwofYa+knazz9vaoDbQoqWwFinjD19nq7fYW4+N+MKa4EEm/nAf
+   JgnQFFq2+/iYwk2v9w/5pofmo9V+bryVLYU9GRI9whHyQCR2LsBMAx3ni
+   8KudHhB5EQdr8qkpcVM45DPmvmsFiMNCdP7hh1xXKJSpX5aB/CaCvSKM2
+   81nkY9i9pF0TGFL5Qoi8+y110ORz3WTvxaOCgMA7VoXn0s2GFW67QnsRQ
+   Q==;
+X-CSE-ConnectionGUID: gGcViaerQ0qi4UqfHzhmdA==
+X-CSE-MsgGUID: 7JTUoykHR5K/iVCErIZvHw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="44054386"
+X-IronPort-AV: E=Sophos;i="6.14,292,1736841600"; 
+   d="scan'208";a="44054386"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 00:57:38 -0700
+X-CSE-ConnectionGUID: n/HefCdgTY6bVQlhI/Aoyw==
+X-CSE-MsgGUID: 04wal0V/Tc6yT+lACGj31A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,292,1736841600"; 
+   d="scan'208";a="131172051"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa003.jf.intel.com with ESMTP; 01 Apr 2025 00:57:36 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 825BC278; Tue, 01 Apr 2025 10:57:34 +0300 (EEST)
+Date: Tue, 1 Apr 2025 10:57:34 +0300
+From: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
+	Vishal Annapurve <vannapurve@google.com>, Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, 
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
+ BIOS data
+Message-ID: <z7h6sepvvrqvmpiccqubganhshcbzzrbvda7dntzufqywei4gz@6clsg5lbvamd>
+References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
 
-Upon a wakeup from S4, the restore kernel starts and initializes the
-FRED MSRs as needed from its perspective.  It then loads a hibernation
-image, including the image kernel, and attempts to load image pages
-directly into their original page frames used before hibernation unless
-those frames are currently in use.  Once all pages are moved to their
-original locations, it jumps to a "trampoline" page in the image kernel.
+On Mon, Mar 31, 2025 at 04:14:40PM -0700, Dan Williams wrote:
+> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> address space) via /dev/mem results in an SEPT violation.
+> 
+> The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
+> unencrypted mapping where the kernel had established an encrypted
+> mapping previously.
+> 
+> Teach __ioremap_check_other() that this address space shall always be
+> mapped as encrypted as historically it is memory resident data, not MMIO
+> with side-effects.
 
-At this point, the image kernel takes control, but the FRED MSRs still
-contain values set by the restore kernel, which may differ from those
-set by the image kernel before hibernation.  Therefore, the image kernel
-must ensure the FRED MSRs have the same values as before hibernation.
-Since these values depend only on the location of the kernel text and
-data, they can be recomputed from scratch.
+I am not sure if all AMD platforms would survive that.
 
-Reported-by: Xi Pardee <xi.pardee@intel.com>
-Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Tested-by: Todd Brandt <todd.e.brandt@intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org # 6.9+
----
+Tom?
 
-Change in v2:
-* Rewrite the change log and in-code comments based on Rafael's feedback.
----
- arch/x86/power/cpu.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+> 
+> Cc: <x86@kernel.org>
+> Cc: Vishal Annapurve <vannapurve@google.com>
+> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
+> Tested-by: Nikolay Borisov <nik.borisov@suse.com>
+> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  arch/x86/mm/ioremap.c |    4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+> index 42c90b420773..9e81286a631e 100644
+> --- a/arch/x86/mm/ioremap.c
+> +++ b/arch/x86/mm/ioremap.c
+> @@ -122,6 +122,10 @@ static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *des
+>  		return;
+>  	}
+>  
+> +	/* Ensure BIOS data (see devmem_is_allowed()) is consistently mapped */
+> +	if (PHYS_PFN(addr) < 256)
 
-diff --git a/arch/x86/power/cpu.c b/arch/x86/power/cpu.c
-index 63230ff8cf4f..08e76a5ca155 100644
---- a/arch/x86/power/cpu.c
-+++ b/arch/x86/power/cpu.c
-@@ -27,6 +27,7 @@
- #include <asm/mmu_context.h>
- #include <asm/cpu_device_id.h>
- #include <asm/microcode.h>
-+#include <asm/fred.h>
- 
- #ifdef CONFIG_X86_32
- __visible unsigned long saved_context_ebx;
-@@ -231,6 +232,19 @@ static void notrace __restore_processor_state(struct saved_context *ctxt)
- 	 */
- #ifdef CONFIG_X86_64
- 	wrmsrl(MSR_GS_BASE, ctxt->kernelmode_gs_base);
-+
-+	/*
-+	 * Reinitialize FRED to ensure the FRED MSRs contain the same values
-+	 * as before hibernation.
-+	 *
-+	 * Note, the setup of FRED RSPs requires access to percpu data
-+	 * structures.  Therefore, FRED reinitialization can only occur after
-+	 * the percpu access pointer (i.e., MSR_GS_BASE) is restored.
-+	 */
-+	if (ctxt->cr4 & X86_CR4_FRED) {
-+		cpu_init_fred_exceptions();
-+		cpu_init_fred_rsps();
-+	}
- #else
- 	loadsegment(fs, __KERNEL_PERCPU);
- #endif
+Maybe
+	if (addr < BIOS_END)
 
-base-commit: 535bd326c5657fe570f41b1f76941e449d9e2062
+?
+
+> +		desc->flags |= IORES_MAP_ENCRYPTED;
+> +
+>  	if (!IS_ENABLED(CONFIG_EFI))
+>  		return;
+>  
+> 
+
 -- 
-2.49.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
