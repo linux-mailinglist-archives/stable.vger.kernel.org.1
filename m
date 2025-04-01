@@ -1,98 +1,121 @@
-Return-Path: <stable+bounces-127295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFC9A7764E
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 10:24:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2154A7769B
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 10:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAFE83A5C4E
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 08:22:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77D15188A455
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 08:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20431E9B2E;
-	Tue,  1 Apr 2025 08:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H3aJCLaU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C363E1EB1AC;
+	Tue,  1 Apr 2025 08:39:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A652D1E261F;
-	Tue,  1 Apr 2025 08:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835261E47C9;
+	Tue,  1 Apr 2025 08:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743495779; cv=none; b=sn6h7KKD83b8DT64SNxwhr5eHRfwl5sOe4RV4XJdxhcGxR81xjg6oklE2W9hzyxFDM6FKuDtKJ0KcdYjAq4aHIcm3sFi6kCb9yWpzJhG/EPKk4lvnlrEKbXiSnLJGVstvjm1WqB8lKgZ411/zPM/MU45ITTWIggPYNH04arlfLQ=
+	t=1743496797; cv=none; b=falYdLFL1lhLbc71g3ODPjPH4fclwPBpV9Jhojejq96nZIT+SL4hCIhmNolRBhO3X5LgRUduTnPlaa7qDn8XElljTMcxFrDODubcpkzHL0KGAejVu7UVrQ2T4oFaDc7Fn0Y5DDR16yZl1hW1hL7RZeiQmAaUdSKGdOAtaK+EuPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743495779; c=relaxed/simple;
-	bh=O0QQJEF18+1rlQZs043LAf4yFZOKmppUTBC2llv9WRc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NfH2ozepZhbmUEu2db2bDSoJAXP/EC1Wz+ZIEBXfp/gAQW58/O+WL6hrVr+4X1x4OoI6cOrQ7zzGuibj1ZrJKy9CXZElmH7913cYmPWAqcgQcfuSAveSUgb7Smd6GuxAWjYfWBswp0oSOnt816L01r0Vna/kc4Dye+NqpB/1omo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H3aJCLaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A2AC4CEE4;
-	Tue,  1 Apr 2025 08:22:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743495779;
-	bh=O0QQJEF18+1rlQZs043LAf4yFZOKmppUTBC2llv9WRc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H3aJCLaUO6zzX8Z9stF1XQwpJLlyTGC+uYJ1dakhWIF3agcP/5BLLtepziTzajCK1
-	 S8a85mi95sIQ7Uix4i9u31YkllaLlwFy18x7AHj3ISHlDZrMj40OfhfcueXObWLfwB
-	 DVBPMRz0svKriGcJjI98U43pgNZ/gTDXIhtJjAv5nSDwPFw0AI4Mxkcd8gJdt1e/r8
-	 JRl9cWCOIkehMkNwnKrSWYjlWV79JbvvQ6c6cK+TSFmxraAwLdzCCBQ5FDcom+m+FI
-	 TE1f2ITwQfjbbQ2FBBJTE4JE1j50A5T02DmJ1IeMaCdbLOxPHNnifpfM2C4ImcwZip
-	 FADmhbExd11rQ==
-Date: Tue, 1 Apr 2025 10:22:53 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	"Xin Li (Intel)" <xin@zytor.com>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	pavel@kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	xi.pardee@intel.com, todd.e.brandt@intel.com
-Subject: Re: [PATCH v1 1/1] x86/fred: Fix system hang during S4 resume with
- FRED enabled
-Message-ID: <Z-uiXfz1nOP7jGQv@gmail.com>
-References: <20250326062540.820556-1-xin@zytor.com>
- <CAJZ5v0jfak9K_7b=adf5ew-xDiGHUEPSp5ZpAGt66Okj-ovsGQ@mail.gmail.com>
- <148C8753-8972-4970-8951-E2D1CB26D8B0@zytor.com>
+	s=arc-20240116; t=1743496797; c=relaxed/simple;
+	bh=M+neyQM2i4qoH8h0avruc2kXdgJ2YHJWrKz+OdjGL7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C3+6Kn0NLUOagBkQbwiV2BXycDzLOfdS3ZOL9OkR++oPSHRwZTWlV9hJwq4tsAfcA2/M4LV8xaIpwdAkoHCulPmHEJPCcx6WtSRslppVpBC7Fx2MDFGzqK2760ot9l3vi+4eTgYzEVOIARPGLCKzAzFqFq8ND6McQwd9P8MESQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowAA33f1AputnQ5eqBA--.451S2;
+	Tue, 01 Apr 2025 16:39:30 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: mareklindner@neomailbox.ch,
+	sw@simonwunderlich.de,
+	a@unstable.cc,
+	sven@narfation.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: b.a.t.m.a.n@lists.open-mesh.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] batman-adv: batman-adv: handle tvlv unicast send errors
+Date: Tue,  1 Apr 2025 16:39:00 +0800
+Message-ID: <20250401083901.2261-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <148C8753-8972-4970-8951-E2D1CB26D8B0@zytor.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAA33f1AputnQ5eqBA--.451S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ww1rGF1DCrW8XrWUuw13CFg_yoW8XF17pF
+	Z5Gr15Gw1DJa1SqFyjq345Zr4Yyws7KrWj9FZ7A3W3ZFsxKrySgay8Z34jyF4rXay2ka1D
+	Xr4qgF9xAa4DCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8TA2frlbhKlQAAso
 
+In batadv_tvlv_unicast_send(), the return value of
+batadv_send_skb_to_orig() is ignored. This could silently
+drop send failures, making it difficult to detect connectivity
+issues.
 
-* H. Peter Anvin <hpa@zytor.com> wrote:
+Add error checking for batadv_send_skb_to_orig() and log failures
+via batadv_dbg() to improve error visibility.
 
-> Just to make it clear: the patch is correct, the shortcoming is in 
-> the description.
-> 
-> I would say that Xin's description, although perhaps excessively 
-> brief, is correct from the *hardware* point of view, whereas Rafael 
-> adds the much needed *software* perspective.
+Fixes: 1ad5bcb2a032 ("batman-adv: Consume skb in batadv_send_skb_to_orig")
+Cc: stable@vger.kernel.org # 4.10+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ net/batman-adv/tvlv.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-This part of the -v1 patch was a bit misleading to me:
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index 2a583215d439..f081136cc5b7 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -625,6 +625,7 @@ void batadv_tvlv_unicast_send(struct batadv_priv *bat_priv, const u8 *src,
+ 	unsigned char *tvlv_buff;
+ 	unsigned int tvlv_len;
+ 	ssize_t hdr_len = sizeof(*unicast_tvlv_packet);
++	int r;
+ 
+ 	orig_node = batadv_orig_hash_find(bat_priv, dst);
+ 	if (!orig_node)
+@@ -657,7 +658,10 @@ void batadv_tvlv_unicast_send(struct batadv_priv *bat_priv, const u8 *src,
+ 	tvlv_buff += sizeof(*tvlv_hdr);
+ 	memcpy(tvlv_buff, tvlv_value, tvlv_value_len);
+ 
+-	batadv_send_skb_to_orig(skb, orig_node, NULL);
++	r = batadv_send_skb_to_orig(skb, orig_node, NULL);
++	if (r != NET_XMIT_SUCCESS)
++		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
++			   "Fail to send the ack.");
+ out:
+ 	batadv_orig_node_put(orig_node);
+ }
+-- 
+2.42.0.windows.2
 
->> Due to changes in the kernel text and data mappings, the FRED MSRs 
->> must be reinitialized.
-
-... as it suggests that the FRED MSRs will change from before the 
-suspend - while they don't.
-
-What this sentence meant is that FRED MSRs set up by the intermediate 
-*kexec kernel* are incorrect and must be reinitialized again to 
-reconstruct the pre-hibernation state. Ie. there's 3 FRED setup states: 
-pre-S4, kexec and post-S4, where pre-S4 == post-S4. Right?
-
-I think the description and comments in the -v2 patch are better in 
-this regard.
-
-Thanks,
-
-	Ingo
 
