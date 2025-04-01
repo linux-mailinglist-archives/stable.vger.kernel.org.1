@@ -1,448 +1,116 @@
-Return-Path: <stable+bounces-127346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB31A77FB1
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 17:59:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3813FA780A1
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 18:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D37D162FBA
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 15:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46E0D1883BD2
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 16:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842E520C48F;
-	Tue,  1 Apr 2025 15:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF4E204693;
+	Tue,  1 Apr 2025 16:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IWPpc5pP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZQ04TIZS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650A61A5BB0
-	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 15:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C253C26AF3
+	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 16:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743523170; cv=none; b=AnTRSuAxbQTgr6TNmfI5KLUDh4JFM7lPpAWzx6qgZQA9Pm9n88syKTMhzIHY3F9OaRvjRjLOC9j9PB8BYGCR7y/P5ZDbZi6UaK5RcBcxdb6qjlx9g5HbMg+Fc4A1fbQRZ5D8Huenhrp+dhsKAvypUz/dRf2rVJv81r4+mtYxr2o=
+	t=1743525487; cv=none; b=h4CEcTcVWHXDxDK7qAwitKgGL0ketytPSgrK1DJqVzwi47Ohg/2rAtUBdXrl7CfAWKgQQrY+JpVPHAJsEQ/djHjMRzlUnbbjjpUMbtrDopAdTi4j1chHNI3CmG520JEWIFajXCrQ9Hb4WVQDenGdcFMEeRQlaIdpq2MpvuPu8CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743523170; c=relaxed/simple;
-	bh=sj+wVdpIIhc8ga/J3gmtItYeeVvHjjQdf5GT+0rq654=;
+	s=arc-20240116; t=1743525487; c=relaxed/simple;
+	bh=SZf271VfOjlaxtvm/iinogqmiUjjofRuKWh7OgdDSZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dx1HWMSNBTGfP5IOzUjH+bVbbCkyTCQ5yZPq88eAY1m9bJutkVFFrhcb4x0vzP8Q6bFzJcp7u9H6mIDaFg958p62ApL9nBa6GJHf6dKhEJrPIwi7QkiFZoZB0fWzICVnsiWoQyXmSSibpDgQuFrloyd+pr3nF5qcj3wCsvaFqIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IWPpc5pP; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version:Content-Type; b=XuXjBCqctGeYKAWyRlP0/cQnTnRajcjjysabnZiioNsUJviE+rBtW/edIDHu+n6Wt1nTWqjM1ASyJosazhlWB3wRXx7MgnpfHyTDoqxAede9YToWuVsXFh4Fsn1oGuZUFI9XveZ/t1+GYr4TBtwxrc1FTPzDWpZ86ZZODxfQ3HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZQ04TIZS; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743523168; x=1775059168;
+  t=1743525486; x=1775061486;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=sj+wVdpIIhc8ga/J3gmtItYeeVvHjjQdf5GT+0rq654=;
-  b=IWPpc5pPhaNqASo73z8kY+8UzsudVnxN1U1X2245MHJN7W8MG7Pem8Bt
-   hNhYsadAspBV0DiXu03Q0VL8oGgn/TPWlUD9ekpRomaLSRcuKFzf8Lc1e
-   QLDZsT8spGN/2FkNF1qKwEdIc5U7nxCVLbEQbhB5QgXcOYZyrNKppBFzv
-   pBbpXifCEl51/6HzGYdXirJ6+txyQM8aSrnt8Z4yAHU3ChQO+im2IzxJn
-   3Tv90dW3OGZnTET+EDtTt95CWohc8fE8t21z4doP40TtAwChNAqsbKcfV
-   bQb6m+AZPODHfydFog5uqzgG7bbP2i/sWCIpUrcx5RYB76IfE7tG+KOGx
-   w==;
-X-CSE-ConnectionGUID: MJLji8Y+Sqyf5m0UjB+QYA==
-X-CSE-MsgGUID: RVBOGcQtQK2UP2DGepbN+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="44108609"
+  bh=SZf271VfOjlaxtvm/iinogqmiUjjofRuKWh7OgdDSZs=;
+  b=ZQ04TIZS/W+HU9mouRfcnXEBr8c5D5WyqR6ezf1aWSQR89s+JHP3SVqK
+   fVTRmEVB/QEHi7QkhNeKdF0TyorQnN0fxCpcTJnYjc1feDSJv/Oh7WS3S
+   SR97LlzPbtFGMtYftRib5hh7cl9QAVT+U81bxz78sn8EBMv2Cae9ZUud4
+   F/aCsG/IS4cszDPqSPjYxUKBay/ojGdfYIo0h7ts2mFsmgOI9gIPgRCPb
+   l4l1zPwQNSmE8OQwr9ih1LadmGyU7cVwgc7YF3IP+O18PJ0uRSsJq7mdg
+   nhNBMJVp4l6mA+lUmbNFDrvt1+jAh05xesp3MZjyCgG5GwJqfjw2myT9h
+   A==;
+X-CSE-ConnectionGUID: LZ0cLrZiSx2l5xsOAUTSHw==
+X-CSE-MsgGUID: F1X8E6xaRQeG1GpIoaINvg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="55520048"
 X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; 
-   d="scan'208";a="44108609"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 08:59:25 -0700
-X-CSE-ConnectionGUID: za0I2vxdQ6eMo+7qs3pPqw==
-X-CSE-MsgGUID: P2hnQsXSQ+m1DZncQ/H9zw==
+   d="scan'208";a="55520048"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 09:38:05 -0700
+X-CSE-ConnectionGUID: Du1X8kyJTICkCAciKvlq4w==
+X-CSE-MsgGUID: GWp3WaDGTeqQz+56dEPI/A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; 
-   d="scan'208";a="157413743"
-Received: from try2-8594.igk.intel.com ([10.91.220.58])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 08:59:24 -0700
-From: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: oded.gabbay@gmail.com,
-	quic_jhugo@quicinc.com,
-	jacek.lawrynowicz@linux.intel.com,
-	lizhi.hou@amd.com,
-	Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>,
-	stable@vger.kernel.org,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Subject: [PATCH 1/2] accel/ivpu: Fix the NPU's DPU frequency calculation
-Date: Tue,  1 Apr 2025 17:59:11 +0200
-Message-ID: <20250401155912.4049340-2-maciej.falkowski@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250401155912.4049340-1-maciej.falkowski@linux.intel.com>
-References: <20250401155912.4049340-1-maciej.falkowski@linux.intel.com>
+   d="scan'208";a="131638607"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orviesa005.jf.intel.com with SMTP; 01 Apr 2025 09:38:02 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Tue, 01 Apr 2025 19:38:01 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 3/4] drm/i915/gem: Allow EXEC_CAPTURE on recoverable contexts on DG1
+Date: Tue,  1 Apr 2025 19:37:51 +0300
+Message-ID: <20250401163752.6412-4-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.45.3
+In-Reply-To: <20250401163752.6412-1-ville.syrjala@linux.intel.com>
+References: <20250401163752.6412-1-ville.syrjala@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Fix the frequency returned to the user space by
-the DRM_IVPU_PARAM_CORE_CLOCK_RATE GET_PARAM IOCTL.
-The kernel driver returned CPU frequency for MTL and bare
-PLL frequency for LNL - this was inconsistent and incorrect
-for both platforms. With this fix the driver returns maximum
-frequency of the NPU data processing unit (DPU) for all HW
-generations. This is what user space always expected.
+The intel-media-driver is currently broken on DG1 because
+it uses EXEC_CAPTURE with recovarable contexts. Relax the
+check to allow that.
 
-Also do not set CPU frequency in boot params - the firmware
-does not use frequency passed from the driver, it was only
-used by the early pre-production firmware.
-With that we can remove CPU frequency calculation code.
+I've also submitted a fix for the intel-media-driver:
+https://github.com/intel/media-driver/pull/1920
 
-Show NPU frequency in FREQ_CHANGE interrupt when frequency
-tracking is enabled.
-
-Fixes: 8a27ad81f7d3 ("accel/ivpu: Split IP and buttress code")
-Cc: <stable@vger.kernel.org> # v6.11+
-Signed-off-by: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+Cc: stable@vger.kernel.org
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 71b1669ea9bd ("drm/i915/uapi: tweak error capture on recoverable contexts")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- drivers/accel/ivpu/ivpu_drv.c     |   4 +-
- drivers/accel/ivpu/ivpu_fw.c      |   3 +-
- drivers/accel/ivpu/ivpu_hw.h      |  11 +--
- drivers/accel/ivpu/ivpu_hw_btrs.c | 126 +++++++++++++-----------------
- drivers/accel/ivpu/ivpu_hw_btrs.h |   6 +-
- include/uapi/drm/ivpu_accel.h     |   4 +-
- 6 files changed, 66 insertions(+), 88 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_drv.c b/drivers/accel/ivpu/ivpu_drv.c
-index 5e3888ff1022..eff1d3ca075f 100644
---- a/drivers/accel/ivpu/ivpu_drv.c
-+++ b/drivers/accel/ivpu/ivpu_drv.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (C) 2020-2024 Intel Corporation
-+ * Copyright (C) 2020-2025 Intel Corporation
-  */
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+index ca7e9216934a..ea9d5063ce78 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+@@ -2013,7 +2013,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
+ 			continue;
  
- #include <linux/firmware.h>
-@@ -164,7 +164,7 @@ static int ivpu_get_param_ioctl(struct drm_device *dev, void *data, struct drm_f
- 		args->value = vdev->platform;
- 		break;
- 	case DRM_IVPU_PARAM_CORE_CLOCK_RATE:
--		args->value = ivpu_hw_ratio_to_freq(vdev, vdev->hw->pll.max_ratio);
-+		args->value = ivpu_hw_dpu_max_freq_get(vdev);
- 		break;
- 	case DRM_IVPU_PARAM_NUM_CONTEXTS:
- 		args->value = ivpu_get_context_count(vdev);
-diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
-index 3799231b39e7..5e1d709c6a46 100644
---- a/drivers/accel/ivpu/ivpu_fw.c
-+++ b/drivers/accel/ivpu/ivpu_fw.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (C) 2020-2024 Intel Corporation
-+ * Copyright (C) 2020-2025 Intel Corporation
-  */
+ 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
+-		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
++		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
+ 			return -EINVAL;
  
- #include <linux/firmware.h>
-@@ -576,7 +576,6 @@ void ivpu_fw_boot_params_setup(struct ivpu_device *vdev, struct vpu_boot_params
- 
- 	boot_params->magic = VPU_BOOT_PARAMS_MAGIC;
- 	boot_params->vpu_id = to_pci_dev(vdev->drm.dev)->bus->number;
--	boot_params->frequency = ivpu_hw_pll_freq_get(vdev);
- 
- 	/*
- 	 * This param is a debug firmware feature.  It switches default clock
-diff --git a/drivers/accel/ivpu/ivpu_hw.h b/drivers/accel/ivpu/ivpu_hw.h
-index 16435f2756d0..6e67e736ef8e 100644
---- a/drivers/accel/ivpu/ivpu_hw.h
-+++ b/drivers/accel/ivpu/ivpu_hw.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * Copyright (C) 2020-2024 Intel Corporation
-+ * Copyright (C) 2020-2025 Intel Corporation
-  */
- 
- #ifndef __IVPU_HW_H__
-@@ -82,9 +82,9 @@ static inline u64 ivpu_hw_range_size(const struct ivpu_addr_range *range)
- 	return range->end - range->start;
- }
- 
--static inline u32 ivpu_hw_ratio_to_freq(struct ivpu_device *vdev, u32 ratio)
-+static inline u32 ivpu_hw_dpu_max_freq_get(struct ivpu_device *vdev)
- {
--	return ivpu_hw_btrs_ratio_to_freq(vdev, ratio);
-+	return ivpu_hw_btrs_dpu_max_freq_get(vdev);
- }
- 
- static inline void ivpu_hw_irq_clear(struct ivpu_device *vdev)
-@@ -92,11 +92,6 @@ static inline void ivpu_hw_irq_clear(struct ivpu_device *vdev)
- 	ivpu_hw_ip_irq_clear(vdev);
- }
- 
--static inline u32 ivpu_hw_pll_freq_get(struct ivpu_device *vdev)
--{
--	return ivpu_hw_btrs_pll_freq_get(vdev);
--}
--
- static inline u32 ivpu_hw_profiling_freq_get(struct ivpu_device *vdev)
- {
- 	return vdev->hw->pll.profiling_freq;
-diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.c b/drivers/accel/ivpu/ivpu_hw_btrs.c
-index 56c56012b980..91eb8a93c15b 100644
---- a/drivers/accel/ivpu/ivpu_hw_btrs.c
-+++ b/drivers/accel/ivpu/ivpu_hw_btrs.c
-@@ -1,8 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (C) 2020-2024 Intel Corporation
-+ * Copyright (C) 2020-2025 Intel Corporation
-  */
- 
-+#include <linux/units.h>
-+
- #include "ivpu_drv.h"
- #include "ivpu_hw.h"
- #include "ivpu_hw_btrs.h"
-@@ -28,17 +30,13 @@
- 
- #define BTRS_LNL_ALL_IRQ_MASK ((u32)-1)
- 
--#define BTRS_MTL_WP_CONFIG_1_TILE_5_3_RATIO WP_CONFIG(MTL_CONFIG_1_TILE, MTL_PLL_RATIO_5_3)
--#define BTRS_MTL_WP_CONFIG_1_TILE_4_3_RATIO WP_CONFIG(MTL_CONFIG_1_TILE, MTL_PLL_RATIO_4_3)
--#define BTRS_MTL_WP_CONFIG_2_TILE_5_3_RATIO WP_CONFIG(MTL_CONFIG_2_TILE, MTL_PLL_RATIO_5_3)
--#define BTRS_MTL_WP_CONFIG_2_TILE_4_3_RATIO WP_CONFIG(MTL_CONFIG_2_TILE, MTL_PLL_RATIO_4_3)
--#define BTRS_MTL_WP_CONFIG_0_TILE_PLL_OFF   WP_CONFIG(0, 0)
- 
- #define PLL_CDYN_DEFAULT               0x80
- #define PLL_EPP_DEFAULT                0x80
- #define PLL_CONFIG_DEFAULT             0x0
--#define PLL_SIMULATION_FREQ            10000000
--#define PLL_REF_CLK_FREQ               50000000
-+#define PLL_REF_CLK_FREQ               50000000ull
-+#define PLL_RATIO_TO_FREQ(x)           ((x) * PLL_REF_CLK_FREQ)
-+
- #define PLL_TIMEOUT_US		       (1500 * USEC_PER_MSEC)
- #define IDLE_TIMEOUT_US		       (5 * USEC_PER_MSEC)
- #define TIMEOUT_US                     (150 * USEC_PER_MSEC)
-@@ -62,6 +60,8 @@
- #define DCT_ENABLE                     0x1
- #define DCT_DISABLE                    0x0
- 
-+static u32 pll_ratio_to_dpu_freq(struct ivpu_device *vdev, u32 ratio);
-+
- int ivpu_hw_btrs_irqs_clear_with_0_mtl(struct ivpu_device *vdev)
- {
- 	REGB_WR32(VPU_HW_BTRS_MTL_INTERRUPT_STAT, BTRS_MTL_ALL_IRQ_MASK);
-@@ -156,7 +156,7 @@ static int info_init_mtl(struct ivpu_device *vdev)
- 
- 	hw->tile_fuse = BTRS_MTL_TILE_FUSE_ENABLE_BOTH;
- 	hw->sku = BTRS_MTL_TILE_SKU_BOTH;
--	hw->config = BTRS_MTL_WP_CONFIG_2_TILE_4_3_RATIO;
-+	hw->config = WP_CONFIG(MTL_CONFIG_2_TILE, MTL_PLL_RATIO_4_3);
- 
- 	return 0;
- }
-@@ -334,8 +334,8 @@ int ivpu_hw_btrs_wp_drive(struct ivpu_device *vdev, bool enable)
- 
- 	prepare_wp_request(vdev, &wp, enable);
- 
--	ivpu_dbg(vdev, PM, "PLL workpoint request: %u Hz, config: 0x%x, epp: 0x%x, cdyn: 0x%x\n",
--		 PLL_RATIO_TO_FREQ(wp.target), wp.cfg, wp.epp, wp.cdyn);
-+	ivpu_dbg(vdev, PM, "PLL workpoint request: %lu MHz, config: 0x%x, epp: 0x%x, cdyn: 0x%x\n",
-+		 pll_ratio_to_dpu_freq(vdev, wp.target) / HZ_PER_MHZ, wp.cfg, wp.epp, wp.cdyn);
- 
- 	ret = wp_request_send(vdev, &wp);
- 	if (ret) {
-@@ -573,6 +573,39 @@ int ivpu_hw_btrs_wait_for_idle(struct ivpu_device *vdev)
- 		return REGB_POLL_FLD(VPU_HW_BTRS_LNL_VPU_STATUS, IDLE, 0x1, IDLE_TIMEOUT_US);
- }
- 
-+static u32 pll_config_get_mtl(struct ivpu_device *vdev)
-+{
-+	return REGB_RD32(VPU_HW_BTRS_MTL_CURRENT_PLL);
-+}
-+
-+static u32 pll_config_get_lnl(struct ivpu_device *vdev)
-+{
-+	return REGB_RD32(VPU_HW_BTRS_LNL_PLL_FREQ);
-+}
-+
-+static u32 pll_ratio_to_dpu_freq_mtl(u16 ratio)
-+{
-+	return (PLL_RATIO_TO_FREQ(ratio) * 2) / 3;
-+}
-+
-+static u32 pll_ratio_to_dpu_freq_lnl(u16 ratio)
-+{
-+	return PLL_RATIO_TO_FREQ(ratio) / 2;
-+}
-+
-+static u32 pll_ratio_to_dpu_freq(struct ivpu_device *vdev, u32 ratio)
-+{
-+	if (ivpu_hw_btrs_gen(vdev) == IVPU_HW_BTRS_MTL)
-+		return pll_ratio_to_dpu_freq_mtl(ratio);
-+	else
-+		return pll_ratio_to_dpu_freq_lnl(ratio);
-+}
-+
-+u32 ivpu_hw_btrs_dpu_max_freq_get(struct ivpu_device *vdev)
-+{
-+	return pll_ratio_to_dpu_freq(vdev, vdev->hw->pll.max_ratio);
-+}
-+
- /* Handler for IRQs from Buttress core (irqB) */
- bool ivpu_hw_btrs_irq_handler_mtl(struct ivpu_device *vdev, int irq)
- {
-@@ -582,9 +615,12 @@ bool ivpu_hw_btrs_irq_handler_mtl(struct ivpu_device *vdev, int irq)
- 	if (!status)
- 		return false;
- 
--	if (REG_TEST_FLD(VPU_HW_BTRS_MTL_INTERRUPT_STAT, FREQ_CHANGE, status))
--		ivpu_dbg(vdev, IRQ, "FREQ_CHANGE irq: %08x",
--			 REGB_RD32(VPU_HW_BTRS_MTL_CURRENT_PLL));
-+	if (REG_TEST_FLD(VPU_HW_BTRS_MTL_INTERRUPT_STAT, FREQ_CHANGE, status)) {
-+		u32 pll = pll_config_get_mtl(vdev);
-+
-+		ivpu_dbg(vdev, IRQ, "FREQ_CHANGE irq, wp %08x, %lu MHz",
-+			 pll, pll_ratio_to_dpu_freq_mtl(pll) / HZ_PER_MHZ);
-+	}
- 
- 	if (REG_TEST_FLD(VPU_HW_BTRS_MTL_INTERRUPT_STAT, ATS_ERR, status)) {
- 		ivpu_err(vdev, "ATS_ERR irq 0x%016llx", REGB_RD64(VPU_HW_BTRS_MTL_ATS_ERR_LOG_0));
-@@ -633,8 +669,12 @@ bool ivpu_hw_btrs_irq_handler_lnl(struct ivpu_device *vdev, int irq)
- 		queue_work(system_wq, &vdev->irq_dct_work);
- 	}
- 
--	if (REG_TEST_FLD(VPU_HW_BTRS_LNL_INTERRUPT_STAT, FREQ_CHANGE, status))
--		ivpu_dbg(vdev, IRQ, "FREQ_CHANGE irq: %08x", REGB_RD32(VPU_HW_BTRS_LNL_PLL_FREQ));
-+	if (REG_TEST_FLD(VPU_HW_BTRS_LNL_INTERRUPT_STAT, FREQ_CHANGE, status)) {
-+		u32 pll = pll_config_get_lnl(vdev);
-+
-+		ivpu_dbg(vdev, IRQ, "FREQ_CHANGE irq, wp %08x, %lu MHz",
-+			 pll, pll_ratio_to_dpu_freq_lnl(pll) / HZ_PER_MHZ);
-+	}
- 
- 	if (REG_TEST_FLD(VPU_HW_BTRS_LNL_INTERRUPT_STAT, ATS_ERR, status)) {
- 		ivpu_err(vdev, "ATS_ERR LOG1 0x%08x ATS_ERR_LOG2 0x%08x\n",
-@@ -717,60 +757,6 @@ void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 acti
- 	REGB_WR32(VPU_HW_BTRS_LNL_PCODE_MAILBOX_STATUS, val);
- }
- 
--static u32 pll_ratio_to_freq_mtl(u32 ratio, u32 config)
--{
--	u32 pll_clock = PLL_REF_CLK_FREQ * ratio;
--	u32 cpu_clock;
--
--	if ((config & 0xff) == MTL_PLL_RATIO_4_3)
--		cpu_clock = pll_clock * 2 / 4;
--	else
--		cpu_clock = pll_clock * 2 / 5;
--
--	return cpu_clock;
--}
--
--u32 ivpu_hw_btrs_ratio_to_freq(struct ivpu_device *vdev, u32 ratio)
--{
--	struct ivpu_hw_info *hw = vdev->hw;
--
--	if (ivpu_hw_btrs_gen(vdev) == IVPU_HW_BTRS_MTL)
--		return pll_ratio_to_freq_mtl(ratio, hw->config);
--	else
--		return PLL_RATIO_TO_FREQ(ratio);
--}
--
--static u32 pll_freq_get_mtl(struct ivpu_device *vdev)
--{
--	u32 pll_curr_ratio;
--
--	pll_curr_ratio = REGB_RD32(VPU_HW_BTRS_MTL_CURRENT_PLL);
--	pll_curr_ratio &= VPU_HW_BTRS_MTL_CURRENT_PLL_RATIO_MASK;
--
--	if (!ivpu_is_silicon(vdev))
--		return PLL_SIMULATION_FREQ;
--
--	return pll_ratio_to_freq_mtl(pll_curr_ratio, vdev->hw->config);
--}
--
--static u32 pll_freq_get_lnl(struct ivpu_device *vdev)
--{
--	u32 pll_curr_ratio;
--
--	pll_curr_ratio = REGB_RD32(VPU_HW_BTRS_LNL_PLL_FREQ);
--	pll_curr_ratio &= VPU_HW_BTRS_LNL_PLL_FREQ_RATIO_MASK;
--
--	return PLL_RATIO_TO_FREQ(pll_curr_ratio);
--}
--
--u32 ivpu_hw_btrs_pll_freq_get(struct ivpu_device *vdev)
--{
--	if (ivpu_hw_btrs_gen(vdev) == IVPU_HW_BTRS_MTL)
--		return pll_freq_get_mtl(vdev);
--	else
--		return pll_freq_get_lnl(vdev);
--}
--
- u32 ivpu_hw_btrs_telemetry_offset_get(struct ivpu_device *vdev)
- {
- 	if (ivpu_hw_btrs_gen(vdev) == IVPU_HW_BTRS_MTL)
-diff --git a/drivers/accel/ivpu/ivpu_hw_btrs.h b/drivers/accel/ivpu/ivpu_hw_btrs.h
-index 1fd71b4d4ab0..a2f0877237e8 100644
---- a/drivers/accel/ivpu/ivpu_hw_btrs.h
-+++ b/drivers/accel/ivpu/ivpu_hw_btrs.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * Copyright (C) 2020-2024 Intel Corporation
-+ * Copyright (C) 2020-2025 Intel Corporation
-  */
- 
- #ifndef __IVPU_HW_BTRS_H__
-@@ -13,7 +13,6 @@
- 
- #define PLL_PROFILING_FREQ_DEFAULT   38400000
- #define PLL_PROFILING_FREQ_HIGH      400000000
--#define PLL_RATIO_TO_FREQ(x)         ((x) * PLL_REF_CLK_FREQ)
- 
- #define DCT_DEFAULT_ACTIVE_PERCENT 15u
- #define DCT_PERIOD_US		   35300u
-@@ -32,12 +31,11 @@ int ivpu_hw_btrs_ip_reset(struct ivpu_device *vdev);
- void ivpu_hw_btrs_profiling_freq_reg_set_lnl(struct ivpu_device *vdev);
- void ivpu_hw_btrs_ats_print_lnl(struct ivpu_device *vdev);
- void ivpu_hw_btrs_clock_relinquish_disable_lnl(struct ivpu_device *vdev);
-+u32 ivpu_hw_btrs_dpu_max_freq_get(struct ivpu_device *vdev);
- bool ivpu_hw_btrs_irq_handler_mtl(struct ivpu_device *vdev, int irq);
- bool ivpu_hw_btrs_irq_handler_lnl(struct ivpu_device *vdev, int irq);
- int ivpu_hw_btrs_dct_get_request(struct ivpu_device *vdev, bool *enable);
- void ivpu_hw_btrs_dct_set_status(struct ivpu_device *vdev, bool enable, u32 dct_percent);
--u32 ivpu_hw_btrs_pll_freq_get(struct ivpu_device *vdev);
--u32 ivpu_hw_btrs_ratio_to_freq(struct ivpu_device *vdev, u32 ratio);
- u32 ivpu_hw_btrs_telemetry_offset_get(struct ivpu_device *vdev);
- u32 ivpu_hw_btrs_telemetry_size_get(struct ivpu_device *vdev);
- u32 ivpu_hw_btrs_telemetry_enable_get(struct ivpu_device *vdev);
-diff --git a/include/uapi/drm/ivpu_accel.h b/include/uapi/drm/ivpu_accel.h
-index 746c43bd3eb6..2f24103f4533 100644
---- a/include/uapi/drm/ivpu_accel.h
-+++ b/include/uapi/drm/ivpu_accel.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only WITH Linux-syscall-note */
- /*
-- * Copyright (C) 2020-2024 Intel Corporation
-+ * Copyright (C) 2020-2025 Intel Corporation
-  */
- 
- #ifndef __UAPI_IVPU_DRM_H__
-@@ -147,7 +147,7 @@ struct drm_ivpu_param {
- 	 * platform type when executing on a simulator or emulator (read-only)
- 	 *
- 	 * %DRM_IVPU_PARAM_CORE_CLOCK_RATE:
--	 * Current PLL frequency (read-only)
-+	 * Maximum frequency of the NPU data processing unit clock (read-only)
- 	 *
- 	 * %DRM_IVPU_PARAM_NUM_CONTEXTS:
- 	 * Maximum number of simultaneously existing contexts (read-only)
+ 		for_each_batch_create_order(eb, j) {
 -- 
-2.43.0
+2.45.3
 
 
