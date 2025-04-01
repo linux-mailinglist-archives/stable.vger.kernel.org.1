@@ -1,117 +1,116 @@
-Return-Path: <stable+bounces-127337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8BFA77D86
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 16:20:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC014A77DBE
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 16:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3026F3AEAA0
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 14:18:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B315F16CC96
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 14:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E83204C17;
-	Tue,  1 Apr 2025 14:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDB6204C2F;
+	Tue,  1 Apr 2025 14:29:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="mGTjgFrW"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790451DF25C;
-	Tue,  1 Apr 2025 14:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CD4204C02
+	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 14:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743517120; cv=none; b=TNXAeOW515KmuIy6sJWDQ/Qar3xL4ih5+v0nSttdckSTtiI0Yp7yVkHwJ7iK6JosWXd/+Kr7/UrCh+E4OYoolUeN/ioO5qMfvaeGeDvpNWvFS9SINIPKCxPEKoFr0U8VOST+s643GKSCuiU0FKwzO/GFZAbx7M/QElhRcrcUp70=
+	t=1743517791; cv=none; b=EcFkp1dgULBuxqtgJX2aE0OA5e/831cNhzgCzdWE0WdDU1qavn6a9ICqmdGIAdhzSpOpr57fgT/ggLpjzyViNMBpttYDUBprUqbmgmTi1senc/GTjUUU9X2LX6DI0XYNCS3F7xy34cVkcNsU1GlkAUCskyQhnYLGbyJqAJVEhzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743517120; c=relaxed/simple;
-	bh=+H8Y4inqSqA/NnBib4Aj5cYm+YX0DahBQFwcHapTRR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K+Sdlai1FG04SLxxrq183TTPvv0o3+Vf9LAKsIjV0qSEMQ/3nDynWJ7tOuHJAAIAG+0F4uSqAApEcBreM39lvTV+mpb73ipkAkCBCj5BPFuZAZMYxiCdNto2KvoOyOyKYjPBeT8dvk4Ita0sNMi83Zl7MB+8B4OIPWdgWLMXQRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-05 (Coremail) with SMTP id zQCowACn5g6W9etnbEPBBA--.49542S2;
-	Tue, 01 Apr 2025 22:18:00 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	mark.rutland@arm.com,
-	alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org,
-	irogers@google.com,
-	adrian.hunter@intel.com,
-	kan.liang@linux.intel.com,
-	tglx@linutronix.de,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com
-Cc: linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] perf/x86/intel/uncore: Add error handling for uncore_msr_box_ctl()
-Date: Tue,  1 Apr 2025 22:17:41 +0800
-Message-ID: <20250401141741.2705-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1743517791; c=relaxed/simple;
+	bh=4+DXyGZpy3baMIIEpJypfdpYsotPYKsxA3mI/UuDijo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U64679HS++K1BPgMk2yht0qiJyTeeFB3+zMYgfGfwj7AU2NXurg8yktFSpPoPbDftibpo1czVqKqaToA1tzjnXYaXNA5NMwnhVqBz6QjJLUddNOVEKZBIoWoUoPU9zQHbRHsZ83mq1pWkTpDbXNZLFfCv+iYtcxVcDUP747v+6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=mGTjgFrW; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43cf680d351so37755585e9.0
+        for <stable@vger.kernel.org>; Tue, 01 Apr 2025 07:29:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1743517788; x=1744122588; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4+DXyGZpy3baMIIEpJypfdpYsotPYKsxA3mI/UuDijo=;
+        b=mGTjgFrWukuCgEL1V89KWiCBAZVaAwkfyWfauRCvEJmnXY5lHfl+spBQxEiMyKK6fe
+         dkfqaWxw3weMe4lRZ0SyTzMNg2+nY4+ZD1YhiMH3lMXF9lFZ+WjvgJAWQbZKLK0wKZv1
+         EfzkhPpIHr93ggh6ADw0H6f0usvjyhd6tNThiu8VdrJWJVYOzrwCRYW0PmYONL/okXlV
+         otpSUU1h3Vz9Uffo0qLBoD85WV9FiQO8sAfyjCLv/X9mybzyJQShC0jtjElLthqPtO3r
+         L6bMncHQR5tCaQ5daeBc6i2fsB9T5lRyjfGfxnhRr9gu2yEjTe3TaqXzUrDWXvYcVhuo
+         sijQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743517788; x=1744122588;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4+DXyGZpy3baMIIEpJypfdpYsotPYKsxA3mI/UuDijo=;
+        b=MmFkmuLJ4YCutU9zqyVkCMpxWsDFhok0YK0hWSVZqrEPWoxe1qma8uI8w3NTevbUS0
+         qeAgGzPtGpD+1kpvtt8njWCFO7l+GIIyzSESP7aeVB04hu7yPuPmhtLk9P+X0UJj/jMo
+         JGt+Mb/lsY8vQw/FGRW3LPKid3iCIt12FoSxS35UOli5/TE3xx7TRV7pzEQYMZj0kVrd
+         x9lYfyvIUDRN7NYIyKBXQGixrxVB6RJGWj4SClIE1858oDmg6HKoxHOEQYOKuH7Tr8pq
+         DfhpszCSShzH9O5d8w0SXVMRz7XfrRCu30O5enfRWFJwQiOPdzHlhcMG9WMNKwZ/JxoR
+         WowA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqWxMN217TV2kqHc65L435KtJ6RwNGXaAel6i7AT4AillPDveLR8R5yDnS3Ln8I7fF8EaD3x0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8MDt91J4wiqsD5l1EdM7luTvL/CboZA6Y/k2QPtD9Q9OOMKo/
+	/3rJ1otjegJ60KNnACKZekNhrKilJhUtb/rWbrL8GSh8TdOc03ZC5BcbKm7XFck=
+X-Gm-Gg: ASbGncu1ZQ9gv2tO02APQX41Yc1DUl0jL5UpvkytAk/W01B48kytLdWfhwUc9J7w09W
+	msRCRMyrfgJq6CwA/wuKE4eAI0aJinjRc3+nZDDmeT/8xkCHLKgU5SRNthBD+m89hTlE3+bDNXw
+	O7d1RSxO65UX5+pgW1//6KgIfJhOd2JYjYMka0d5zxBm24Bnp+HIpYwVGCqPZF/snqAu4hjQzfw
+	q9omjFo3n5aBlNjfSM7NgG6fm9yP+0ePmltL9BbIuAtA+QKOXW2lmunTUGtXXo+gO4k8jN5HIGU
+	KqqU2iyF0IThCKMAMZmIAFjLvquKc2kyYFbJn0uwAeS3Df9HGlw7WND8lMA/jCto3kwV2L2CTA0
+	P4RBAmj2PL/4tQCvZgPzuzd67V2Q=
+X-Google-Smtp-Source: AGHT+IHNx4vQ9HZX3k4j4jTP+pXfpW+zl8Y4RdgON0AYVMnFWqF1w5VQnDHa4fobYb4eHhHiNIy/Pg==
+X-Received: by 2002:a05:6000:18a2:b0:38d:ba8e:7327 with SMTP id ffacd0b85a97d-39c27ee84f2mr205051f8f.8.1743517788210;
+        Tue, 01 Apr 2025 07:29:48 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b66a9d2sm14254936f8f.43.2025.04.01.07.29.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Apr 2025 07:29:47 -0700 (PDT)
+Date: Tue, 1 Apr 2025 15:29:45 +0100
+From: Daniel Thompson <daniel@riscstar.com>
+To: Haoyu Li <lihaoyu499@gmail.com>
+Cc: danielt@kernel.org, chenyuan0y@gmail.com, deller@gmx.de,
+	dri-devel@lists.freedesktop.org, jani.nikula@linux.intel.com,
+	jingoohan1@gmail.com, lee@kernel.org, linux-fbdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, robh@kernel.org,
+	stable@vger.kernel.org, zichenxie0106@gmail.com
+Subject: Re: [PATCH] drivers: video: backlight: Fix NULL Pointer Dereference
+ in backlight_device_register()
+Message-ID: <Z-v4WansLWJtv9CV@aspen.lan>
+References: <Z65fFRKgqk-33HXI@aspen.lan>
+ <20250219122950.7416-1-lihaoyu499@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACn5g6W9etnbEPBBA--.49542S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrZw4xGrWrJF1rKFyUGFW7Jwb_yoW8JF1Dpr
-	W29r9Iqry3ua95WayDGF18ArWayFWrGas8Wr4DG34fCrn8Jr13Gr47K3Waka95Gry8KFyx
-	Zr18Xr4UGayDAFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7sRE2Q6tUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRETA2fr2Lpa7gAAsS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250219122950.7416-1-lihaoyu499@gmail.com>
 
-In mtl_uncore_msr_init_box(), the return value of uncore_msr_box_ctl()
-needs to be checked before being used as the parameter of wrmsrl().
-A proper implementation can be found in ivbep_uncore_msr_init_box().
+Hi Haoyu
 
-Add error handling for uncore_msr_box_ctl() to ensure the MSR write
-operation is only performed when a valid MSR address is returned.
+On Wed, Feb 19, 2025 at 08:29:50PM +0800, Haoyu Li wrote:
+> As per Jani and Daniel's feedback, I have updated the patch so that
+> the `wled->name` null check now occurs in the `wled_configure`
+> function, right after the `devm_kasprintf` callsite. This should
+> resolve the issue.
 
-Fixes: c828441f21dd ("perf/x86/intel/uncore: Add Meteor Lake support")
-Cc: stable@vger.kernel.org # v6.3+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- arch/x86/events/intel/uncore_snb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+I'm afraid this patch got swamped in my mailbox and I missed it.
 
-diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncore_snb.c
-index 3934e1e4e3b1..84070388f495 100644
---- a/arch/x86/events/intel/uncore_snb.c
-+++ b/arch/x86/events/intel/uncore_snb.c
-@@ -691,7 +691,10 @@ static struct intel_uncore_type mtl_uncore_hac_cbox = {
- 
- static void mtl_uncore_msr_init_box(struct intel_uncore_box *box)
- {
--	wrmsrl(uncore_msr_box_ctl(box), SNB_UNC_GLOBAL_CTL_EN);
-+	unsigned int msr = uncore_msr_box_ctl(box);
-+
-+	if (msr)
-+		wrmsrl(msr, SNB_UNC_GLOBAL_CTL_EN);
- }
- 
- static struct intel_uncore_ops mtl_uncore_msr_ops = {
--- 
-2.42.0.windows.2
+Worse, we've just been discussing and reviewing a patch for the same
+issue from another developer:
+https://lore.kernel.org/all/20250401091647.22784-1-bsdhenrymartin@gmail.com/
 
+So, I just wanted to acknowlege the mistake. Sorry.
+
+
+Daniel.
 
