@@ -1,114 +1,160 @@
-Return-Path: <stable+bounces-127320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5890FA779A0
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 13:35:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F27A77A15
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 13:52:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B2003AD4D2
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 11:35:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BB287A1697
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 11:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F961F8BBC;
-	Tue,  1 Apr 2025 11:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210DF1FBC92;
+	Tue,  1 Apr 2025 11:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R4dZaDjJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UABBcv3N"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCE61FA26C;
-	Tue,  1 Apr 2025 11:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96679476;
+	Tue,  1 Apr 2025 11:51:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743507330; cv=none; b=tROK96N5LbfXoaPo92MWw5ba6odQg0lT7sWyvS1hHY3sJZEKRXFB9mauzGJts9B36pWqssz+r6CBsJBn23OWxEcsjMJsCLFjxjvQ12FRIwVIH4pf/eueHjYIR+IIiRlD+dVzKuoHHzt/Up2nmAEXV7lsGpyAPsXeXGUydcUgfKo=
+	t=1743508315; cv=none; b=oMdUsbQRFg56Ex4qzfRdilMqltVpBSMAlFG7HbpGwHRFmg3ehgkgUvRBFDaN0zc9d5n8rQxkRqO3qqaP1fsHC4PcfFHih5e3BooZLrqJ/K8egY/VlzLbUhFeR0ccDaaFXTLUb5KQE7tpNJtU2yvkg24tu7VRSTiQboCwpsPQfRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743507330; c=relaxed/simple;
-	bh=OhNeptbAimAxwxg3/oj50OR59tc+7qzE/FdhfTTVrsI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=n4W7+u9JQ5qOFrTE8bEWuOH/EBhXhhsGZ4Lp7TwUOGuTM2GWUBiCVMuo6ETP1S/s0t9BDtwbktzyXAGng/zoxkvTyVIC4vLWm3q3O3/utOJf5NgV9cyNJzwZKLHvh2tXtWnBoOQBH8qFHtxIHZvDNk2oO+SXEFIKL6oqVKQJCqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R4dZaDjJ; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743507329; x=1775043329;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=OhNeptbAimAxwxg3/oj50OR59tc+7qzE/FdhfTTVrsI=;
-  b=R4dZaDjJZVJn9gLLYkbECbqSNd7ahEbTMSZGj4m4VFBUDNIH6CdVzg7d
-   5evP2ZvKlAlyvL7kvUmctKLDK2ODG/pUlGdXdS12QIqtj37YL1Dq11kQ1
-   /285+utHNyvW4r5xbMocDHLoqxmvOvoTf8Kw/qkHy3RgxDQve/2MhOLEv
-   +sD3QheQcuws3k17CYbCHrbezNgR+mHO7L82rQt9eaTOMJN69LrS22ZB3
-   faVDGE1WVTnPg0meFSvS8B54StT9816su3I4vHl6rVQ5qJRE/Uk2CtQrq
-   Rcd0YN8rYCNRMs4KaUMoG0LJla6/40/w4gTkT9c5AXFpmGJpgwjRlB+F2
-   w==;
-X-CSE-ConnectionGUID: f591Krf5SDyVz39YZJtmzw==
-X-CSE-MsgGUID: 0cYNaiYaRACYCh1HuWgoQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="48616233"
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; 
-   d="scan'208";a="48616233"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 04:35:28 -0700
-X-CSE-ConnectionGUID: nB1mp2o5TmGhgoO4oKmoSg==
-X-CSE-MsgGUID: eGJ4PKoLRGS3Vq79pdTn8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,293,1736841600"; 
-   d="scan'208";a="126120335"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.126])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 04:35:24 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: hmh@hmh.eng.br, hdegoede@redhat.com, 
- Seyediman Seyedarab <imandevel@gmail.com>
-Cc: ibm-acpi-devel@lists.sourceforge.net, 
- platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Seyediman Seyedarab <ImanDevel@gmail.com>, 
- Vlastimil Holer <vlastimil.holer@gmail.com>, stable@vger.kernel.org, 
- Alireza Elikahi <scr0lll0ck1s4b0v3h0m3k3y@gmail.com>, 
- Kurt Borja <kuurtb@gmail.com>, 
- Eduard Christian Dumitrescu <eduard.c.dumitrescu@gmail.com>
-In-Reply-To: <20250324152442.106113-1-ImanDevel@gmail.com>
-References: <20250324152442.106113-1-ImanDevel@gmail.com>
-Subject: Re: [PATCH v3] platform/x86: thinkpad_acpi: disable ACPI fan
- access for T495* and E560
-Message-Id: <174350731915.2494.4458891330469738526.b4-ty@linux.intel.com>
-Date: Tue, 01 Apr 2025 14:35:19 +0300
+	s=arc-20240116; t=1743508315; c=relaxed/simple;
+	bh=E+aYB8ocMdh2cBhiUzobqPIZzwXAJ/3ZPCQMLoddGjU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u4RsFB4COrZizE/Ca4e5AEb8Jm6It2kcI9kzbhV4PcY48r+2WnXQr2CUP3M0w8ccV2KrQ5Ic0VYvAaM2+HnUN3htdZc+GXZa+CJBt8MoVZaIEsnFetR8V5uSBDYx28omYoTy0fG0grhLw3tVO9R5RanMUc2DQ2L2Mz47SyHX1Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UABBcv3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D75C4CEE8;
+	Tue,  1 Apr 2025 11:51:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743508315;
+	bh=E+aYB8ocMdh2cBhiUzobqPIZzwXAJ/3ZPCQMLoddGjU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=UABBcv3NrzktVMTtqvzxm3QMZPvFUVakwxGongmJO3GLk3MwHBU1mvBAaQPdVnl0j
+	 JrjlPX/P6yGaIGwePJDz5O6nb0tQZb7UlK5ifl226N48TjhUGhWp8S6mBpcrdTEeVO
+	 4MDT1x1ezh9vUKsiMmZZ/hWECjXZD7dtqJjxKwB1PVa9quV6miMIrHfINUj+PcB6Ot
+	 NDpt1b5JtIeJR83ylovowynWdcekeqCHM665GvHmrNCFSDO3UOY7ri8onBX+JmWOHk
+	 9hPlh3juk+j59AI6Wz8zGQhQvZVQk/aBc68er3yCJgL0CRNsvgUCoGQhaeR1iLCB35
+	 X58D/Fz4t+7Gw==
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2c81fffd523so1703448fac.0;
+        Tue, 01 Apr 2025 04:51:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVipO+tVVSSTAF9IiAKA8wrQJ5JSRDVRGfd+3mVoScBy1BqMVrJ1F9DtIbDC4EZmJrf7qzxR0zFvTrelV4=@vger.kernel.org, AJvYcCWzbvUgRC6UXpU19/h0PFcLWtcrAZ+L20wYdqJrGiuxNcIsCOWIeQopGFv306ANmm8c/HOY4LzN@vger.kernel.org
+X-Gm-Message-State: AOJu0YzL32TD6/HGYt+x1xNB+ZTpvg5Bs+hSUGd/Lm6qTJWLAv5vCoaP
+	4IYCX57BjV+JyIGdKWfmU8RMF31AT1nmWjWUcBRtcLzOInEa7DrdZGjHMS8q6CoLWEg5ENMWsKL
+	E8Ok/Wvr25C+aE6Q0dz1bdLH2hi8=
+X-Google-Smtp-Source: AGHT+IFn6Bi+Dnctzh8KGZpcYIv+IQJGBcrY8EaGdyE5gFfCz0hm86z5KpV94NN/Wu3rjBA2PsRpNuD6A8MHac3owAQ=
+X-Received: by 2002:a05:6871:82b:b0:29e:5e83:150e with SMTP id
+ 586e51a60fabf-2cbcf77437dmr5836423fac.27.1743508314455; Tue, 01 Apr 2025
+ 04:51:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+References: <20250401075728.3626147-1-xin@zytor.com>
+In-Reply-To: <20250401075728.3626147-1-xin@zytor.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 1 Apr 2025 13:51:43 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j4_i7FyMi1gnZZ1ymi=SkAySpk28oWoitGo4BOt-Wsyg@mail.gmail.com>
+X-Gm-Features: AQ5f1Jok1Tlzb8a-RMfEeGheQ4w5um035keyQcoquNa3nRQtyfJpYgCWyrRs4yY
+Message-ID: <CAJZ5v0j4_i7FyMi1gnZZ1ymi=SkAySpk28oWoitGo4BOt-Wsyg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] x86/fred: Fix system hang during S4 resume with
+ FRED enabled
+To: "Xin Li (Intel)" <xin@zytor.com>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, rafael@kernel.org, pavel@kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, luto@kernel.org, 
+	brgerst@gmail.com, jgross@suse.com, torvalds@linux-foundation.org, 
+	xi.pardee@intel.com, todd.e.brandt@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 24 Mar 2025 11:24:42 -0400, Seyediman Seyedarab wrote:
+On Tue, Apr 1, 2025 at 9:57=E2=80=AFAM Xin Li (Intel) <xin@zytor.com> wrote=
+:
+>
+> Upon a wakeup from S4, the restore kernel starts and initializes the
+> FRED MSRs as needed from its perspective.  It then loads a hibernation
+> image, including the image kernel, and attempts to load image pages
+> directly into their original page frames used before hibernation unless
+> those frames are currently in use.  Once all pages are moved to their
+> original locations, it jumps to a "trampoline" page in the image kernel.
+>
+> At this point, the image kernel takes control, but the FRED MSRs still
+> contain values set by the restore kernel, which may differ from those
+> set by the image kernel before hibernation.  Therefore, the image kernel
+> must ensure the FRED MSRs have the same values as before hibernation.
+> Since these values depend only on the location of the kernel text and
+> data, they can be recomputed from scratch.
+>
+> Reported-by: Xi Pardee <xi.pardee@intel.com>
+> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+> Tested-by: Todd Brandt <todd.e.brandt@intel.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Brian Gerst <brgerst@gmail.com>
+> Cc: Juergen Gross <jgross@suse.com>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: stable@vger.kernel.org # 6.9+
 
-> T495, T495s, and E560 laptops have the FANG+FANW ACPI methods (therefore
-> fang_handle and fanw_handle are not NULL) but they do not actually work,
-> which results in a "No such device or address" error. The DSDT table code
-> for the FANG+FANW methods doesn't seem to do anything special regarding
-> the fan being secondary. Fan access and control is restored after forcing
-> the legacy non-ACPI fan control method by setting both fang_handle and
-> fanw_handle to NULL. The bug was introduced in commit 57d0557dfa49
-> ("platform/x86: thinkpad_acpi: Add Thinkpad Edge E531 fan support"),
-> which added a new fan control method via the FANG+FANW ACPI methods.
-> 
-> [...]
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
+> ---
+>
+> Change in v2:
+> * Rewrite the change log and in-code comments based on Rafael's feedback.
 
-Thank you for your contribution, it has been applied to my local
-review-ilpo-fixes branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
-local branch there, which might take a while.
+Thanks!
 
-The list of commits applied:
-[1/1] platform/x86: thinkpad_acpi: disable ACPI fan access for T495* and E560
-      commit: 2b9f84e7dc863afd63357b867cea246aeedda036
-
---
- i.
-
+> ---
+>  arch/x86/power/cpu.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/arch/x86/power/cpu.c b/arch/x86/power/cpu.c
+> index 63230ff8cf4f..08e76a5ca155 100644
+> --- a/arch/x86/power/cpu.c
+> +++ b/arch/x86/power/cpu.c
+> @@ -27,6 +27,7 @@
+>  #include <asm/mmu_context.h>
+>  #include <asm/cpu_device_id.h>
+>  #include <asm/microcode.h>
+> +#include <asm/fred.h>
+>
+>  #ifdef CONFIG_X86_32
+>  __visible unsigned long saved_context_ebx;
+> @@ -231,6 +232,19 @@ static void notrace __restore_processor_state(struct=
+ saved_context *ctxt)
+>          */
+>  #ifdef CONFIG_X86_64
+>         wrmsrl(MSR_GS_BASE, ctxt->kernelmode_gs_base);
+> +
+> +       /*
+> +        * Reinitialize FRED to ensure the FRED MSRs contain the same val=
+ues
+> +        * as before hibernation.
+> +        *
+> +        * Note, the setup of FRED RSPs requires access to percpu data
+> +        * structures.  Therefore, FRED reinitialization can only occur a=
+fter
+> +        * the percpu access pointer (i.e., MSR_GS_BASE) is restored.
+> +        */
+> +       if (ctxt->cr4 & X86_CR4_FRED) {
+> +               cpu_init_fred_exceptions();
+> +               cpu_init_fred_rsps();
+> +       }
+>  #else
+>         loadsegment(fs, __KERNEL_PERCPU);
+>  #endif
+>
+> base-commit: 535bd326c5657fe570f41b1f76941e449d9e2062
+> --
+> 2.49.0
+>
 
