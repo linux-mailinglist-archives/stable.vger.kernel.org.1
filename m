@@ -1,88 +1,53 @@
-Return-Path: <stable+bounces-127327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9131A77B89
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 15:00:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B129FA77BAC
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 15:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D617C7A3D13
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 12:59:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 094111884924
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 13:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110752040AB;
-	Tue,  1 Apr 2025 12:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fMSCtp1l"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE20A2036E1;
+	Tue,  1 Apr 2025 13:06:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9202040A1;
-	Tue,  1 Apr 2025 12:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6613229A1;
+	Tue,  1 Apr 2025 13:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743512394; cv=none; b=eVQn0jxAZggrhwayOfIB0yqqQDO0HMAflGZUBfkTfkpip5dTJ4zgaat0DgNR0FaBoTnIgB5ipspLmr4aDHFZwB3GU8gbht5XR0B5m7wooszuAxsXbEl8Yyp2hzDv7V8FDKlTWZzAo8jjnQ3xCyAiKg0ljIVaTaOZ0nDWD6CBrls=
+	t=1743512797; cv=none; b=VrQWAGKQhWH3zp8aP/uE+Nl8zjxrkgF1zdiJZjPMuHUw3heSHZDTa//2GRzWP4VdLpLObDA3EQAukjfq4ocF8xDU93sRVAFRZQuoVsLh2vbIbaEs7EU+qyJIgdoWH6Haoz7UnGcU342jhosu8jHiCMOqAOmWX3p3RnJCpzsUwkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743512394; c=relaxed/simple;
-	bh=j9Ea+bGDlsx72Z+0qw+iSlhE73mDYKtBDLMBr82GFeU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HuTitAubs9OL1VOOmZl9YxqnSe5n0fj3Ow6HTdQSUffnkGLNQo1qXNV9FA0+P4Rv+SNkLR7oi7+QNpEWbjvnITR5mWBv26VhDsLI7gX64WZxeb5GT+k+m/gh03B7g4xcMM/yiG27uQc2TPyZbGrz4s08geva8TEraN52x+zlW5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fMSCtp1l; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43d07ca6a80so29093005e9.1;
-        Tue, 01 Apr 2025 05:59:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743512391; x=1744117191; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WTjMam3B4j2k7paZIQkl/YwqiiiVRaZIkBuTe1yGXLk=;
-        b=fMSCtp1la//8XkfKjvMyQM3+iZ6m7kNQadjd/0Sb+5FKf3JXEeaqY9KnbeWtcd2Kbg
-         RYHo9AiONZ9gsIiPko5V4ezKoudVFHLfhLdXoDRp4cOlzsyed/HxwcE+uuQ8d3wYVkWF
-         1t0Lr5l1+n11qXttqcibRQ20gBvpzNqWhQJy3cuhHqim2rekPb4Bm8HTt638cFQhkhi+
-         z5o6Mjl1BBn7D97clGzz1Fx4W34nFqBjMINDGudhbovnxE06XIlmz89NEYgFDRi6XF+s
-         VbPNSw78lP0Lh1XxUpWDU3zbKh3CTMXg56pS+0PqDw4T/f1A0ntLjq9wC54yrgdjzzag
-         G1yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743512391; x=1744117191;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WTjMam3B4j2k7paZIQkl/YwqiiiVRaZIkBuTe1yGXLk=;
-        b=er9NaD/SGSjZwyF9YerYE/knydUumEEd7qk6yRmLVHLGxHeUc0fgr5Ir1rdKFIEHcg
-         OYHfjA/L9NrPprZ9t7RZnCKkqb05c9/LHI5l87yco99LkTCM6C3TIKJD6g7ql2cTPZBD
-         F7XYpQJv9IE4d7Ah5PSf4XlvU05vbH/GAtHhu9j7CXvW27sJl10DsQ6DtMOKywvO3t7B
-         mvxh/0f6zH3+aYV4fjSsMP1C3PElUvWtnP/VLkEeoEpSEi5I5Gp4OcRK9/0Xofwreq4K
-         Y+0EeLdqnurj9TZp8iCLNcSNxNYcgspDPSmm8SUsPkqz8Kr5lH0I3UqZwUfIQgKrjkEN
-         6k+w==
-X-Forwarded-Encrypted: i=1; AJvYcCW3T/IrUeVn5nJlJDNvup8LQlPzqISg+JWHx9dhuA3/fYZ3zDdko/Hgb+tjwjJXxctB2VGV1fAT@vger.kernel.org, AJvYcCWwhSRpvBYedsp5pSdmvxWfks0LTPUq2ZrxGyf5giPBdSS3SrezRXNwKcKDiftpyVe46AT/b2qxD2u1HF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpQS0BKNPyFavdjf7THgaAI09Ulcz+Zbf8Ll47QroMoUB7NOVL
-	NFgYTLCfYGmImZe2S0xCr82wjxlj8vLV1FYNyDV2VDv38LwsfgJX
-X-Gm-Gg: ASbGncvsSX7WvJPyvpQp/6RpJiVrbZn5krlKvq2pBCNIJbUiAF/3ZBHYKLpn2Wz3dMv
-	gxGnYUOBiIbggVBdxTFuXy94d/PiWz326CtEnCZEU1MH3OS3/gZ7y93m12XuLiIuXDf/fD2WNr3
-	ZOFhjpkmELb3ZTy4Eiy8jliuTEaCIe4Va7U4I8P5rXOQmxYlp/hbux+vM44jUAoHYo4f3jdPytG
-	TcGC7u0cDBt5GuCh8xYEWnecFXbwDdFPdE7A9hVzGcd83Bg87SnfXZpQHAMsVkxrM/MK4Li8VET
-	jki+VKr5PIhg+GD1oIdPX/6uKgDaxHd6XOyGUAaVA8kL5xpR4xr5CQ==
-X-Google-Smtp-Source: AGHT+IF418b6NVmuSPIOsaUq9V0yNXF5CwKyASr7hgcL1/aD11X/ysF6LRsihYCLdVncwG0TZ6ba9w==
-X-Received: by 2002:a05:600c:198f:b0:43b:ca39:6c7d with SMTP id 5b1f17b1804b1-43db61d8326mr124424215e9.3.1743512391249;
-        Tue, 01 Apr 2025 05:59:51 -0700 (PDT)
-Received: from qasdev.Home ([2a02:c7c:6696:8300:19:d895:ffa3:4fcf])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d8ff042bcsm154715445e9.28.2025.04.01.05.59.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 05:59:50 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: ping.cheng@wacom.com,
-	jason.gerecke@wacom.com,
-	jikos@kernel.org,
-	bentiss@kernel.org
-Cc: linux-input@vger.kernel.org,
+	s=arc-20240116; t=1743512797; c=relaxed/simple;
+	bh=aM4P6LXDP5Ax4pIA2Q6gLObhPDwVSK/b1kVvhkanqUU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=taYgupAhslhcHXW3/3UWEe3Za6Befa14Yi8N/oh+ocyUF0o8tXCGml5dl7wDI7dj9ZKHuMOnkN1eaCAAKDqC7zNkwUfSNr1l/jXW23X/fsbeIcylLUQ9YA5jchWnfA1E2y0OTSxisL3ge38Ekz3OyTbO8AsCTzLy1x1v71o00ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowADXgQLL5OtndRXABA--.4273S2;
+	Tue, 01 Apr 2025 21:06:19 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: ecree.xilinx@gmail.com,
+	habetsm.xilinx@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-net-drivers@amd.com,
 	linux-kernel@vger.kernel.org,
-	syzbot <syzbot+d5204cbbdd921f1f7cad@syzkaller.appspotmail.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] HID: wacom: fix shift OOB in kfifo allocation for zero pktlen
-Date: Tue,  1 Apr 2025 13:59:12 +0100
-Message-Id: <20250401125912.73044-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+Subject: [PATCH] sfc: Add error handling for devlink_info_serial_number_put()
+Date: Tue,  1 Apr 2025 21:05:57 +0800
+Message-ID: <20250401130557.2515-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,53 +55,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADXgQLL5OtndRXABA--.4273S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kr1xArW5KFWxXw13JF17GFg_yoW8Gr1fpa
+	y3JF9IgryfGrW09w4UZF18ZFyavayUKF1DGFZakw4ruan3tFn0vrsY93Wa9F4UArykG3Wx
+	tr1UCrW7C3Z8A37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW5GwCF04k20xvY0x0EwIxGrw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUaeHkUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgsTA2frlYK1dQABsH
 
-During wacom_parse_and_register() the code calls wacom_devm_kfifo_alloc 
-to allocate a fifo. During this operation it passes kfifo_alloc a 
-fifo_size of 0. Kfifo attempts to round the size passed to it to the 
-next power of 2 via roundup_pow_of_two (queue-type data structures
-do this to maintain efficiency of operations). 
+In  efx_devlink_info_board_cfg(), the return value of
+devlink_info_serial_number_put() needs to be checked.
+This could result in silent failures if the function failed.
 
-However during this phase a problem arises when the roundup_pow_of_two() 
-function utilises a shift exponent of fls_long(n-1), where n is the 
-fifo_size. Since n is 0 in this case and n is also an unsigned long, 
-doing n-1 causes unsigned integer wrap-around to occur making the 
-fifo_size 4294967295. So the code effectively does fls_long(4294967295) 
-which results in 64. Returning back to roundup_pow_of_two(), the code 
-utilises a shift exponent of 64. When a shift exponent of 64 is used 
-on a 64-bit type such as 1UL it results in a shift-out-of-bounds.
+Add error checking for efx_devlink_info_board_cfg() and
+propagate any errors immediately to ensure proper
+error handling and prevents silent failures.
 
-The root cause of the issue seems to stem from insufficient validation 
-of wacom_compute_pktlen(), since in this case the fifo_size comes 
-from wacom_wac->features.pktlen. During wacom_parse_and_register() 
-the wacom_compute_pktlen() function sets the pktlen as 0.
-
-To fix this, we should handle cases where wacom_compute_pktlen() 
-results in 0.
-
-Reported-by: syzbot <syzbot+d5204cbbdd921f1f7cad@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=d5204cbbdd921f1f7cad
-Tested-by: Qasim Ijaz <qasdev00@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Fixes: 14743ddd2495 ("sfc: add devlink info support for ef100")
+Cc: stable@vger.kernel.org # v6.3+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/hid/wacom_sys.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/sfc/efx_devlink.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
-index 97393a3083ca..9b2f3dbca467 100644
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2361,6 +2361,8 @@ static int wacom_parse_and_register(struct wacom *wacom, bool wireless)
- 	unsigned int connect_mask = HID_CONNECT_HIDRAW;
+diff --git a/drivers/net/ethernet/sfc/efx_devlink.c b/drivers/net/ethernet/sfc/efx_devlink.c
+index 3cd750820fdd..17279bbd81d5 100644
+--- a/drivers/net/ethernet/sfc/efx_devlink.c
++++ b/drivers/net/ethernet/sfc/efx_devlink.c
+@@ -581,12 +581,14 @@ static int efx_devlink_info_board_cfg(struct efx_nic *efx,
+ {
+ 	char sn[EFX_MAX_SERIALNUM_LEN];
+ 	u8 mac_address[ETH_ALEN];
+-	int rc;
++	int rc, err;
  
- 	features->pktlen = wacom_compute_pktlen(hdev);
-+	if (!features->pktlen)
-+		return -ENODEV;
- 
- 	if (!devres_open_group(&hdev->dev, wacom, GFP_KERNEL))
- 		return -ENOMEM;
+ 	rc = efx_mcdi_get_board_cfg(efx, (u8 *)mac_address, NULL, NULL);
+ 	if (!rc) {
+ 		snprintf(sn, EFX_MAX_SERIALNUM_LEN, "%pm", mac_address);
+-		devlink_info_serial_number_put(req, sn);
++		err = devlink_info_serial_number_put(req, sn);
++		if (err)
++			return err;
+ 	}
+ 	return rc;
+ }
 -- 
-2.39.5
+2.42.0.windows.2
 
 
