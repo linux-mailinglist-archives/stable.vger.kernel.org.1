@@ -1,86 +1,88 @@
-Return-Path: <stable+bounces-127326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EB4A77B5F
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 14:54:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9131A77B89
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 15:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A20FE1688F9
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 12:54:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D617C7A3D13
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 12:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557462036F6;
-	Tue,  1 Apr 2025 12:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110752040AB;
+	Tue,  1 Apr 2025 12:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="trNQnSQ4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fMSCtp1l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCB51F0E56
-	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 12:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9202040A1;
+	Tue,  1 Apr 2025 12:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743512060; cv=none; b=iPlO5FRa1MinJvjZ8aeDvHuNXXA1Lrwgd+SMtDVdfLwJvGGtX/Dwv0WOQfGIMAEc16ifibaqFNYVn+NvcTmW4WrsN6nFb48P2A0c6xBfvp+LpvP5m1B9GsrQS1498k+v+I3GxCXKw2komc23e8I4h6cQETJIPDfwI6NlNdyX33U=
+	t=1743512394; cv=none; b=eVQn0jxAZggrhwayOfIB0yqqQDO0HMAflGZUBfkTfkpip5dTJ4zgaat0DgNR0FaBoTnIgB5ipspLmr4aDHFZwB3GU8gbht5XR0B5m7wooszuAxsXbEl8Yyp2hzDv7V8FDKlTWZzAo8jjnQ3xCyAiKg0ljIVaTaOZ0nDWD6CBrls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743512060; c=relaxed/simple;
-	bh=l2PcQYbG8B/62rNOGiRk4wusyvFroUGb6d2YBZuccW4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I7Bk+V+yl8lEOCMy/R/jHD055Rv7yTATRhUDK/c9GhJDuv0eDyR004QfibmR/Bs1FtdrI5WHZ2ruvnKotKiIqIqJbttEQ7TI1TCEHA0dpB85tGhrIW2ZtxnokhcdxuGW/V2Ar9IgcGmikp9B+CdWQ1tWXVg7pdKCn8mPRANElG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=trNQnSQ4; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cf06eabdaso52428295e9.2
-        for <stable@vger.kernel.org>; Tue, 01 Apr 2025 05:54:16 -0700 (PDT)
+	s=arc-20240116; t=1743512394; c=relaxed/simple;
+	bh=j9Ea+bGDlsx72Z+0qw+iSlhE73mDYKtBDLMBr82GFeU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HuTitAubs9OL1VOOmZl9YxqnSe5n0fj3Ow6HTdQSUffnkGLNQo1qXNV9FA0+P4Rv+SNkLR7oi7+QNpEWbjvnITR5mWBv26VhDsLI7gX64WZxeb5GT+k+m/gh03B7g4xcMM/yiG27uQc2TPyZbGrz4s08geva8TEraN52x+zlW5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fMSCtp1l; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43d07ca6a80so29093005e9.1;
+        Tue, 01 Apr 2025 05:59:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743512055; x=1744116855; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743512391; x=1744117191; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kIq2bCCkLTbVl75qgjk5SV7W2QZVt5vI8B/3mGbWOoQ=;
-        b=trNQnSQ40kGaZJpWM9QFx+punNyaFS6cCaOYW0f0k6zB/tqEpznMnZUN9VeM6mKYg9
-         uMZENe0DTG8StT5z3823P7GXZCQ8IglQhX9XftQoD+4usV+f9F9kRFemtCsFaXe2eEab
-         H5fxEfREONJ1O5Zr26laXA5p/7O4iG8XE+70BM5SXWN+ZhlQ7hm+HEg/5uylwN64UK/j
-         SDqxs5CahUBwHuH+aDUCW9RvC2SF9oU4wHg16d9ahd1o1sTezvCp6Cfw4xH+Z3cnXuyr
-         42Dh/PhJywC4nmJj6yWIjKhNJP0LuEwsVh0KiwXj6JblHnMCtX+HKpsM5ysjcJrai3b2
-         Gzww==
+        bh=WTjMam3B4j2k7paZIQkl/YwqiiiVRaZIkBuTe1yGXLk=;
+        b=fMSCtp1la//8XkfKjvMyQM3+iZ6m7kNQadjd/0Sb+5FKf3JXEeaqY9KnbeWtcd2Kbg
+         RYHo9AiONZ9gsIiPko5V4ezKoudVFHLfhLdXoDRp4cOlzsyed/HxwcE+uuQ8d3wYVkWF
+         1t0Lr5l1+n11qXttqcibRQ20gBvpzNqWhQJy3cuhHqim2rekPb4Bm8HTt638cFQhkhi+
+         z5o6Mjl1BBn7D97clGzz1Fx4W34nFqBjMINDGudhbovnxE06XIlmz89NEYgFDRi6XF+s
+         VbPNSw78lP0Lh1XxUpWDU3zbKh3CTMXg56pS+0PqDw4T/f1A0ntLjq9wC54yrgdjzzag
+         G1yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743512055; x=1744116855;
+        d=1e100.net; s=20230601; t=1743512391; x=1744117191;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=kIq2bCCkLTbVl75qgjk5SV7W2QZVt5vI8B/3mGbWOoQ=;
-        b=hXy7udXZ0g94TJ5EtRx8lv7IneDBwReeJKf7mb1WKibpei5G37YhSbqibvotC+Oua+
-         3bJEgMKNn/Rt6VQIiLm83+gkOsjlGfQwIqD6WsYrqwsWvJJtP3UJf/1BBXx7tUJkiFay
-         Sbn9YnHf6kkueHDclTKZLIVg4gzc4IFlXyxw3vZ7Dcjfr43/EBUQ3zvLZOpi1wSc8IHU
-         Vq21qD1Xj+WtoF23+GNed+o1Zr5mIX76ft2vjajPu4Rel3WewClG+vqsjNXDUE0XOJK0
-         Yi4a6urNddz6iwMa2DU4UN8p9dzeDgWfVgFBoaxYHSmNMOd2+wQokD2FnRFxtAo37zyq
-         l6pw==
-X-Forwarded-Encrypted: i=1; AJvYcCUcDUBWNErjKwzSmYUnLoyLlS3qT/n+g6YVr3Dm91uXucwoFSwjnCtYpU00+v1deKDzi+/hR78=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywpm1NULxnrv2/Ubm7wk5pTUYElQVZsdveo0Xw8RK7Wo552ZG7I
-	m981VVFEzb++o5jUkjPZXxb0KWqESzfFBMpF6LPOzu2unOM2e80loGhXgpDCurc=
-X-Gm-Gg: ASbGnctJgBaMT2sYTE6uxpEnGLC5oiGcR2+/UF+d+VCFJgH9dF5DNlp+idsmTyT/6rv
-	tPEmxtMKHq4847ypOIoe0DR5xTDHANNNYgrIOUmNNWdmjZBqrw9nN+UXFDrIkxDxDW/SGUHil5l
-	+I8i9LrsHbS7Mz/Nt6SHMqnob/06DjwU7WgNmjQ4e/t1+2KLtpVUQYRKE4RjorWjePbWSzVgJzp
-	EBJ217hlCrD6Tw7gSyjzC9pd0CohBNb5xUgwdyEDYDoarUWB6Rxz0fYB0rl6sGmARn2zC4fA976
-	qW9so+Wbvs2LhJRYvOhgbZU4AqCBxDxcAvjXkL8HHfyKoWR7EDGr7zNAn1c9Vg==
-X-Google-Smtp-Source: AGHT+IEfm8jBIGS/rCkSCv4g7EEJ/qYcFumwtgYOgwdspDEMaLkkrz6eUaRLu7Yh0d7egIxV9UoOVA==
-X-Received: by 2002:a5d:6d84:0:b0:391:2dea:c98d with SMTP id ffacd0b85a97d-39c120cbb15mr8544270f8f.8.1743512055189;
-        Tue, 01 Apr 2025 05:54:15 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:e0a:355:6b90:e24f:43ff:fee6:750f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b658ab2sm14214546f8f.15.2025.04.01.05.54.14
+        bh=WTjMam3B4j2k7paZIQkl/YwqiiiVRaZIkBuTe1yGXLk=;
+        b=er9NaD/SGSjZwyF9YerYE/knydUumEEd7qk6yRmLVHLGxHeUc0fgr5Ir1rdKFIEHcg
+         OYHfjA/L9NrPprZ9t7RZnCKkqb05c9/LHI5l87yco99LkTCM6C3TIKJD6g7ql2cTPZBD
+         F7XYpQJv9IE4d7Ah5PSf4XlvU05vbH/GAtHhu9j7CXvW27sJl10DsQ6DtMOKywvO3t7B
+         mvxh/0f6zH3+aYV4fjSsMP1C3PElUvWtnP/VLkEeoEpSEi5I5Gp4OcRK9/0Xofwreq4K
+         Y+0EeLdqnurj9TZp8iCLNcSNxNYcgspDPSmm8SUsPkqz8Kr5lH0I3UqZwUfIQgKrjkEN
+         6k+w==
+X-Forwarded-Encrypted: i=1; AJvYcCW3T/IrUeVn5nJlJDNvup8LQlPzqISg+JWHx9dhuA3/fYZ3zDdko/Hgb+tjwjJXxctB2VGV1fAT@vger.kernel.org, AJvYcCWwhSRpvBYedsp5pSdmvxWfks0LTPUq2ZrxGyf5giPBdSS3SrezRXNwKcKDiftpyVe46AT/b2qxD2u1HF4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpQS0BKNPyFavdjf7THgaAI09Ulcz+Zbf8Ll47QroMoUB7NOVL
+	NFgYTLCfYGmImZe2S0xCr82wjxlj8vLV1FYNyDV2VDv38LwsfgJX
+X-Gm-Gg: ASbGncvsSX7WvJPyvpQp/6RpJiVrbZn5krlKvq2pBCNIJbUiAF/3ZBHYKLpn2Wz3dMv
+	gxGnYUOBiIbggVBdxTFuXy94d/PiWz326CtEnCZEU1MH3OS3/gZ7y93m12XuLiIuXDf/fD2WNr3
+	ZOFhjpkmELb3ZTy4Eiy8jliuTEaCIe4Va7U4I8P5rXOQmxYlp/hbux+vM44jUAoHYo4f3jdPytG
+	TcGC7u0cDBt5GuCh8xYEWnecFXbwDdFPdE7A9hVzGcd83Bg87SnfXZpQHAMsVkxrM/MK4Li8VET
+	jki+VKr5PIhg+GD1oIdPX/6uKgDaxHd6XOyGUAaVA8kL5xpR4xr5CQ==
+X-Google-Smtp-Source: AGHT+IF418b6NVmuSPIOsaUq9V0yNXF5CwKyASr7hgcL1/aD11X/ysF6LRsihYCLdVncwG0TZ6ba9w==
+X-Received: by 2002:a05:600c:198f:b0:43b:ca39:6c7d with SMTP id 5b1f17b1804b1-43db61d8326mr124424215e9.3.1743512391249;
+        Tue, 01 Apr 2025 05:59:51 -0700 (PDT)
+Received: from qasdev.Home ([2a02:c7c:6696:8300:19:d895:ffa3:4fcf])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d8ff042bcsm154715445e9.28.2025.04.01.05.59.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 05:54:14 -0700 (PDT)
-From: Frode Isaksen <fisaksen@baylibre.com>
-To: linux-usb@vger.kernel.org,
-	Thinh.Nguyen@synopsys.com
-Cc: gregkh@linuxfoundation.org,
-	krishna.kurapati@oss.qualcomm.com,
-	Frode Isaksen <frode@meta.com>,
+        Tue, 01 Apr 2025 05:59:50 -0700 (PDT)
+From: Qasim Ijaz <qasdev00@gmail.com>
+To: ping.cheng@wacom.com,
+	jason.gerecke@wacom.com,
+	jikos@kernel.org,
+	bentiss@kernel.org
+Cc: linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot <syzbot+d5204cbbdd921f1f7cad@syzkaller.appspotmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] usb: dwc3: gadget: check that event count does not exceed event buffer length
-Date: Tue,  1 Apr 2025 14:53:13 +0200
-Message-ID: <20250401125350.221910-1-fisaksen@baylibre.com>
-X-Mailer: git-send-email 2.49.0
+Subject: [PATCH] HID: wacom: fix shift OOB in kfifo allocation for zero pktlen
+Date: Tue,  1 Apr 2025 13:59:12 +0100
+Message-Id: <20250401125912.73044-1-qasdev00@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,50 +91,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Frode Isaksen <frode@meta.com>
+During wacom_parse_and_register() the code calls wacom_devm_kfifo_alloc 
+to allocate a fifo. During this operation it passes kfifo_alloc a 
+fifo_size of 0. Kfifo attempts to round the size passed to it to the 
+next power of 2 via roundup_pow_of_two (queue-type data structures
+do this to maintain efficiency of operations). 
 
-The event count is read from register DWC3_GEVNTCOUNT.
-There is a check for the count being zero, but not for exceeding the
-event buffer length.
-Check that event count does not exceed event buffer length,
-avoiding an out-of-bounds access when memcpy'ing the event.
-Crash log:
-Unable to handle kernel paging request at virtual address ffffffc0129be000
-pc : __memcpy+0x114/0x180
-lr : dwc3_check_event_buf+0xec/0x348
-x3 : 0000000000000030 x2 : 000000000000dfc4
-x1 : ffffffc0129be000 x0 : ffffff87aad60080
-Call trace:
-__memcpy+0x114/0x180
-dwc3_interrupt+0x24/0x34
+However during this phase a problem arises when the roundup_pow_of_two() 
+function utilises a shift exponent of fls_long(n-1), where n is the 
+fifo_size. Since n is 0 in this case and n is also an unsigned long, 
+doing n-1 causes unsigned integer wrap-around to occur making the 
+fifo_size 4294967295. So the code effectively does fls_long(4294967295) 
+which results in 64. Returning back to roundup_pow_of_two(), the code 
+utilises a shift exponent of 64. When a shift exponent of 64 is used 
+on a 64-bit type such as 1UL it results in a shift-out-of-bounds.
 
-Signed-off-by: Frode Isaksen <frode@meta.com>
-Fixes: ebbb2d59398f ("usb: dwc3: gadget: use evt->cache for processing events")
+The root cause of the issue seems to stem from insufficient validation 
+of wacom_compute_pktlen(), since in this case the fifo_size comes 
+from wacom_wac->features.pktlen. During wacom_parse_and_register() 
+the wacom_compute_pktlen() function sets the pktlen as 0.
+
+To fix this, we should handle cases where wacom_compute_pktlen() 
+results in 0.
+
+Reported-by: syzbot <syzbot+d5204cbbdd921f1f7cad@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=d5204cbbdd921f1f7cad
+Tested-by: Qasim Ijaz <qasdev00@gmail.com>
 Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 ---
-v1->v2: added error log
+ drivers/hid/wacom_sys.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- drivers/usb/dwc3/gadget.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 89a4dc8ebf94..923737776d82 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4564,6 +4564,12 @@ static irqreturn_t dwc3_check_event_buf(struct dwc3_event_buffer *evt)
- 	if (!count)
- 		return IRQ_NONE;
+diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+index 97393a3083ca..9b2f3dbca467 100644
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2361,6 +2361,8 @@ static int wacom_parse_and_register(struct wacom *wacom, bool wireless)
+ 	unsigned int connect_mask = HID_CONNECT_HIDRAW;
  
-+	if (count > evt->length) {
-+		dev_err(dwc->dev, "invalid count(%u) > evt->length(%u)\n",
-+			count, evt->length);
-+		return IRQ_NONE;
-+	}
-+
- 	evt->count = count;
- 	evt->flags |= DWC3_EVENT_PENDING;
+ 	features->pktlen = wacom_compute_pktlen(hdev);
++	if (!features->pktlen)
++		return -ENODEV;
  
+ 	if (!devres_open_group(&hdev->dev, wacom, GFP_KERNEL))
+ 		return -ENOMEM;
 -- 
-2.49.0
+2.39.5
 
 
