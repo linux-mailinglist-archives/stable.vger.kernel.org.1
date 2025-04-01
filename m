@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-127362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672D6A78477
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 00:15:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AEDA784A1
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 00:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FBE63AF20E
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 22:15:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C70123A0472
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 22:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A6D2163B9;
-	Tue,  1 Apr 2025 22:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43B921579C;
+	Tue,  1 Apr 2025 22:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bfWkbOvc"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fmffdPhk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DAF215F49;
-	Tue,  1 Apr 2025 22:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BED1D79B8;
+	Tue,  1 Apr 2025 22:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743545715; cv=none; b=Jzq48c4Mg5KCFtZwbc3l2y+45uQpdyrHEhB5S+2KJXw5BCZIE4yiu9HrNfsL+SdaRI2/vKSoEV0PHejV1WaRGmAlzzCy8Oi6+95ECBBrYULmJZRE/6umHTs6C6RxoFWf9JFxs2gF4SEVh++HXO0N7XVpkSHEm/GKQWsN38cEMio=
+	t=1743546078; cv=none; b=RdLZreWqg+WbnCOZeeMyMJIEjUHitIP+QIzyjCh4KdnH9SDLRxJrbhJcQEa+Tf9aL2AiIiOiFNV9qWv56uSS6y9J5HMe/o+8ZT93Dcm0A8dtukEI2xbC4YhEzgb81ev7XvqOOWvzliuMPq7Ks+5wehcASsuNR0LY56TNa2hSI1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743545715; c=relaxed/simple;
-	bh=HO0EKI1e3GgJZBngOx3l/+hdhP6K0ulOpnpmCq9PAyY=;
-	h=Date:To:From:Subject:Message-Id; b=qH9iCVgAF20K/ctNU1QGsxTM6yB5685dIBdNlcvqfBuVcH1KikKQHHd6vQg9UIdslLb7k0WuGEfTkqpRcE63qzDpi5aBxQoBf8ycbHBQW6z9gy7Bxzu9GNm4cHH4MBCNePbAFzAkpPEqwZbyPY4dLkY7+B4z5UjN6ZzWiQRS9ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bfWkbOvc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D39C4CEE4;
-	Tue,  1 Apr 2025 22:15:14 +0000 (UTC)
+	s=arc-20240116; t=1743546078; c=relaxed/simple;
+	bh=78ddjpxOz+Akg7Ngn0H50V79Nh4PJysWjECs4tKZfng=;
+	h=Date:To:From:Subject:Message-Id; b=jyP4TJmmIpc3ULbmHPha7S007ive81+FT7rCQnfUaTdz9z+hixxYl8hI+btb2iDJP83Vqw1XlVxqWZ2AlJT3ulDBS4hV1TFhxCHix6h6lzoHssak1GdT6GmXMf0TLj8FUcitBGI7dCOtwPoYxDNK8UVgKP7hpc6AwMthwyDPko8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fmffdPhk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A624C4CEE4;
+	Tue,  1 Apr 2025 22:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1743545714;
-	bh=HO0EKI1e3GgJZBngOx3l/+hdhP6K0ulOpnpmCq9PAyY=;
+	s=korg; t=1743546078;
+	bh=78ddjpxOz+Akg7Ngn0H50V79Nh4PJysWjECs4tKZfng=;
 	h=Date:To:From:Subject:From;
-	b=bfWkbOvcCU2u2sDAeCLu517LqWyd/GJrn1n51chHQMqqZwZSk3gXRzM3yM11YHAiZ
-	 COss6xLwgmgBhCq8JKzeqzt0rPzQ/E7pdW312n9CEVgILAl85YQ0nNTmkX9X4aGt5R
-	 gDjSCswxlvgnF+e03tfOOApaNBMBmIKd1+l7UOHc=
-Date: Tue, 01 Apr 2025 15:15:14 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nphamcs@gmail.com,lists@colorremedies.com,herbert@gondor.apana.org.au,hannes@cmpxchg.org,ebiggers@kernel.org,davem@davemloft.net,chengming.zhou@linux.dev,yosry.ahmed@linux.dev,akpm@linux-foundation.org
+	b=fmffdPhka7JqNhsIEyyDnd8nBv+jhq8D/2ciOyixdS7IC/N94A8m3ycR7MYnD7jWr
+	 bfS+j5aSgSbzIbTPZRN0f6xX1VWArHQrUUS5aCGEy6CCZRuCxo/DyuaWVFmHaofiPV
+	 Xb+3LacbbyxTamR/Zi7/OKHFq/hiRP0KxkHgudAo=
+Date: Tue, 01 Apr 2025 15:21:17 -0700
+To: mm-commits@vger.kernel.org,vigneshr@ti.com,stable@vger.kernel.org,robert.jarzmik@free.fr,praneeth@ti.com,kamlesh@ti.com,axboe@kernel.dk,t-pratham@ti.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-zswap-fix-crypto_free_acomp-deadlock-in-zswap_cpu_comp_dead.patch removed from -mm tree
-Message-Id: <20250401221514.C4D39C4CEE4@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] lib-scatterlist-fix-sg_split_phys-to-preserve-original-scatterlist-offsets.patch removed from -mm tree
+Message-Id: <20250401222118.5A624C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,129 +50,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: zswap: fix crypto_free_acomp() deadlock in zswap_cpu_comp_dead()
+     Subject: lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
 has been removed from the -mm tree.  Its filename was
-     mm-zswap-fix-crypto_free_acomp-deadlock-in-zswap_cpu_comp_dead.patch
+     lib-scatterlist-fix-sg_split_phys-to-preserve-original-scatterlist-offsets.patch
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
+This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: mm: zswap: fix crypto_free_acomp() deadlock in zswap_cpu_comp_dead()
-Date: Wed, 26 Feb 2025 18:56:25 +0000
+From: T Pratham <t-pratham@ti.com>
+Subject: lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
+Date: Wed, 19 Mar 2025 16:44:38 +0530
 
-Currently, zswap_cpu_comp_dead() calls crypto_free_acomp() while holding
-the per-CPU acomp_ctx mutex.  crypto_free_acomp() then holds scomp_lock
-(through crypto_exit_scomp_ops_async()).
+The split_sg_phys function was incorrectly setting the offsets of all
+scatterlist entries (except the first) to 0.  Only the first scatterlist
+entry's offset and length needs to be modified to account for the skip. 
+Setting the rest entries' offsets to 0 could lead to incorrect data
+access.
 
-On the other hand, crypto_alloc_acomp_node() holds the scomp_lock (through
-crypto_scomp_init_tfm()), and then allocates memory.  If the allocation
-results in reclaim, we may attempt to hold the per-CPU acomp_ctx mutex.
+I am using this function in a crypto driver that I'm currently developing
+(not yet sent to mailing list).  During testing, it was observed that the
+output scatterlists (except the first one) contained incorrect garbage
+data.
 
-The above dependencies can cause an ABBA deadlock.  For example in the
-following scenario:
+I narrowed this issue down to the call of sg_split().  Upon debugging
+inside this function, I found that this resetting of offset is the cause
+of the problem, causing the subsequent scatterlists to point to incorrect
+memory locations in a page.  By removing this code, I am obtaining
+expected data in all the split output scatterlists.  Thus, this was indeed
+causing observable runtime effects!
 
-(1) Task A running on CPU #1:
-    crypto_alloc_acomp_node()
-      Holds scomp_lock
-      Enters reclaim
-      Reads per_cpu_ptr(pool->acomp_ctx, 1)
+This patch removes the offending code, ensuring that the page offsets in
+the input scatterlist are preserved in the output scatterlist.
 
-(2) Task A is descheduled
-
-(3) CPU #1 goes offline
-    zswap_cpu_comp_dead(CPU #1)
-      Holds per_cpu_ptr(pool->acomp_ctx, 1))
-      Calls crypto_free_acomp()
-      Waits for scomp_lock
-
-(4) Task A running on CPU #2:
-      Waits for per_cpu_ptr(pool->acomp_ctx, 1) // Read on CPU #1
-      DEADLOCK
-
-Since there is no requirement to call crypto_free_acomp() with the per-CPU
-acomp_ctx mutex held in zswap_cpu_comp_dead(), move it after the mutex is
-unlocked.  Also move the acomp_request_free() and kfree() calls for
-consistency and to avoid any potential sublte locking dependencies in the
-future.
-
-With this, only setting acomp_ctx fields to NULL occurs with the mutex
-held.  This is similar to how zswap_cpu_comp_prepare() only initializes
-acomp_ctx fields with the mutex held, after performing all allocations
-before holding the mutex.
-
-Opportunistically, move the NULL check on acomp_ctx so that it takes place
-before the mutex dereference.
-
-Link: https://lkml.kernel.org/r/20250226185625.2672936-1-yosry.ahmed@linux.dev
-Fixes: 12dcb0ef5406 ("mm: zswap: properly synchronize freeing resources during CPU hotunplug")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Co-developed-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Reported-by: syzbot+1a517ccfcbc6a7ab0f82@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67bcea51.050a0220.bbfd1.0096.GAE@google.com/
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Tested-by: Nhat Pham <nphamcs@gmail.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Eric Biggers <ebiggers@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Chris Murphy <lists@colorremedies.com>
+Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
+Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Kamlesh Gurudasani <kamlesh@ti.com>
+Cc: Praneeth Bajjuri <praneeth@ti.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/zswap.c |   30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ lib/sg_split.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/mm/zswap.c~mm-zswap-fix-crypto_free_acomp-deadlock-in-zswap_cpu_comp_dead
-+++ a/mm/zswap.c
-@@ -883,18 +883,32 @@ static int zswap_cpu_comp_dead(unsigned
- {
- 	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
- 	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
-+	struct acomp_req *req;
-+	struct crypto_acomp *acomp;
-+	u8 *buffer;
-+
-+	if (IS_ERR_OR_NULL(acomp_ctx))
-+		return 0;
- 
- 	mutex_lock(&acomp_ctx->mutex);
--	if (!IS_ERR_OR_NULL(acomp_ctx)) {
--		if (!IS_ERR_OR_NULL(acomp_ctx->req))
--			acomp_request_free(acomp_ctx->req);
--		acomp_ctx->req = NULL;
--		if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
--			crypto_free_acomp(acomp_ctx->acomp);
--		kfree(acomp_ctx->buffer);
--	}
-+	req = acomp_ctx->req;
-+	acomp = acomp_ctx->acomp;
-+	buffer = acomp_ctx->buffer;
-+	acomp_ctx->req = NULL;
-+	acomp_ctx->acomp = NULL;
-+	acomp_ctx->buffer = NULL;
- 	mutex_unlock(&acomp_ctx->mutex);
- 
-+	/*
-+	 * Do the actual freeing after releasing the mutex to avoid subtle
-+	 * locking dependencies causing deadlocks.
-+	 */
-+	if (!IS_ERR_OR_NULL(req))
-+		acomp_request_free(req);
-+	if (!IS_ERR_OR_NULL(acomp))
-+		crypto_free_acomp(acomp);
-+	kfree(buffer);
-+
- 	return 0;
- }
- 
+--- a/lib/sg_split.c~lib-scatterlist-fix-sg_split_phys-to-preserve-original-scatterlist-offsets
++++ a/lib/sg_split.c
+@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
+ 			if (!j) {
+ 				out_sg->offset += split->skip_sg0;
+ 				out_sg->length -= split->skip_sg0;
+-			} else {
+-				out_sg->offset = 0;
+ 			}
+ 			sg_dma_address(out_sg) = 0;
+ 			sg_dma_len(out_sg) = 0;
 _
 
-Patches currently in -mm which might be from yosry.ahmed@linux.dev are
+Patches currently in -mm which might be from t-pratham@ti.com are
 
 
 
