@@ -1,224 +1,216 @@
-Return-Path: <stable+bounces-127325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11283A77AEF
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 14:26:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC0FA77AED
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 14:26:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5018C188FC99
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 12:26:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6186A16BABB
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 12:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7232D203712;
-	Tue,  1 Apr 2025 12:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DBE202F7B;
+	Tue,  1 Apr 2025 12:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ShzPhrhb"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A871202C4A;
-	Tue,  1 Apr 2025 12:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF81202C5D
+	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 12:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743510379; cv=none; b=TfEhJyXLZD9MetsHypTcD8SBjU7jvdDUinLVa4UXc7vNPiuQ6rWaK4D1OihoAkmT6bMVvZrKKnR4c91e7K0DkByhPblW6IbQjkRYwjl3lXcw4Kc/mwKtVRu0OYQl1StbXO4FM26LAu4cv8H+DSwkoyffGO4O4mhgw7r0MpQe+e4=
+	t=1743510377; cv=none; b=X62wF84lLVDQ/3Uz4eNZE7S1t3/saH3HHfIsURmkmyEiIlZF5pB/fRsSGqiLLuppzrGhEFH+nKU1jtnx6p9lsqd4BjNMdXUCAywGJgFLVY7mdxRMUDGEhQSzMkKKlRDGAyVDTdg+pUka4kC9yE4X0Fk/7UKvuZK63J/1rXLbMi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743510379; c=relaxed/simple;
-	bh=yVlNj81mAThIrdq3zo5BnPl7YUlNfDWWuq9UKyIvOrs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUiclWozXel1GkydSX42YKgWGNFXFcqVt3fe150+9YyqGQugUcvc2AxyLATnt+92lNEl1+iYAzymgjdocfoqHDPE5NvtA5Se70+0Km3q1224qN6sQ2Lli0B/zNQRcu74pEaTZQUDYfP/0JEa+OE31cZtRrvrb4XqHXdZbbz6bv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2CED522D7;
-	Tue,  1 Apr 2025 05:26:19 -0700 (PDT)
-Received: from pluto.guest.local (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C2353F63F;
-	Tue,  1 Apr 2025 05:26:12 -0700 (PDT)
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	arm-scmi@vger.kernel.org
-Cc: sudeep.holla@arm.com,
-	james.quinlan@broadcom.com,
-	f.fainelli@gmail.com,
-	vincent.guittot@linaro.org,
-	peng.fan@oss.nxp.com,
-	michal.simek@amd.com,
-	quic_sibis@quicinc.com,
-	dan.carpenter@linaro.org,
-	maz@kernel.org,
-	johan@kernel.org,
-	stable@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>
-Subject: [RFC PATCH 1/3] firmware: arm_scmi: Ensure that the message-id supports fastchannel
-Date: Tue,  1 Apr 2025 13:25:43 +0100
-Message-ID: <20250401122545.1941755-2-cristian.marussi@arm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250401122545.1941755-1-cristian.marussi@arm.com>
-References: <20250401122545.1941755-1-cristian.marussi@arm.com>
+	s=arc-20240116; t=1743510377; c=relaxed/simple;
+	bh=MzWbRRs8pa6TteDFhTWSEA05fml/aRf6VDr6jSrrhl8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YwkWv1JiwkPQF+vzD1HhBdD7kKUcGwOquYFNkDe8gBtsLHME04SzmEb6bZIcPgJpmdUlLSdr8VLbOjWLMu0FA+5WPcozie2ohHSC7ZlKTLyARJnHIZq5+QzNIvPqbJ4alsVPlkN8bbL+ih00GxBamOgZyeA+o6yoPoH94XkPgVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ShzPhrhb; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5317MvJH024962
+	for <stable@vger.kernel.org>; Tue, 1 Apr 2025 12:26:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	s5IelXbw1nz5rkiuUSMs5w3F2RL5AE5cDWJplubtFH4=; b=ShzPhrhb00ncAYyG
+	gmU8r1cR9cGillA+SR52rm3c4D4g/iJoAAnLH36M4LWWT4WlCF+f2vIjQkhWltZD
+	ObZo835RPeQTEacjukwOK9BTXYmCtVY58MbtJPDlhmXTEj0rLb1ep3HAb2P9WsV3
+	a2XZwOInITmHLO72EX7+Wpod2jVbitk83jAIX1YSWaCg20HI8ZUa8QzNeECxMHNN
+	mmJxSTWH5a9fh2mI1HBoQbe+lhX2TJsZ2fDEOAIUztG9ZIG3ktKNoM/9gMkzsf2Y
+	6avmjNs5Ob5Ey+uKeierob7lF6zcSi5kdytIk0D7mk8Pvsccfh49VH7/lXQ/Gvh/
+	GSrw6A==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45rbpys0yp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 01 Apr 2025 12:26:14 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2242ade807fso1590745ad.2
+        for <stable@vger.kernel.org>; Tue, 01 Apr 2025 05:26:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743510373; x=1744115173;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s5IelXbw1nz5rkiuUSMs5w3F2RL5AE5cDWJplubtFH4=;
+        b=bLkOJeqoYn9odX4iNfNcR2TtYlhi0kc0t4jbMpU9jzOk82+kCfU+1rbJAFlg3JWmDP
+         Lyt8jb5escsHJtwNDgDJcAS2PDjULjOoRRFkA1I9gcqoXZ/PoKgROOqUhLEeuGX5mKm/
+         fuJroBLuNwWI9bONf6yTdOY3nQYDaiDr+opRnMLxXqywE69M/K0pEgv4ekMrvD15DoK9
+         G2ludWWDqfOmXR0H1BL3OnRiako5/fXulxGRLmwKpJaiOcvSQ1CC3fK77K+vKrO1KitA
+         d1FaTE4OJxnE15JLx3iDnEdpfQnhO04uwTeFdGnsFiMdCey3n8KuQxQCGQbpMlK7de1c
+         aP5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUFfpYPyw8umk/HH1uiNGWdLHsrhlhB+oq3uFe5HtyaqrOmJCRHfPW5XOCTlBpMG+QWjdZCk2o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4rbagQ8QB9x2OqV8bVlTavu9A9suwYiK9+N9J/MOONgMF5aXa
+	HP0Irr/Liy1rKch/Ux1n7RT6qsfl59QHK5WQMnMFqzkMmzkobj9esmTDpmccU7blWm58rbeFC/N
+	fbY98dHuZCk5WpVfWcIlhMVei0TGE7rkEswXah3YzT1OBRBkc9t3rYEc=
+X-Gm-Gg: ASbGncuc2Lajguj4C7vbjKhP/lursAv88gsx2gsBcPKJU/4p4I2nMsZRS6cNseBUQTn
+	uOL1fQfph5MvnqBSoaivhKVpTSc0MaknCxbvC9arKK57MCiOblnyAOjJvFbMx36Z2GJ7eTgk76K
+	fzMqywGuai8lkCskkEZRqrTndQJLfQxHT28TFutXvvegYyCjv0VpbX8VxxGksvNaAXgJlVcUBTJ
+	sHWXPaCb1RH5ATvvEtmICVasgUFqzYuNMqYLs05rNQoue8M1+c5FEJzVzGzOKZfU2FH2pu+2kzd
+	YlPt5UUdlIUay2VUSkKRVa0kq1sjwxJ6rVV3RK0SEfpdpl7IdUhN5NE=
+X-Received: by 2002:a17:902:f709:b0:215:6e01:ad07 with SMTP id d9443c01a7336-2292f94a1aamr166788325ad.6.1743510373141;
+        Tue, 01 Apr 2025 05:26:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF913CZIgF3zF0FHk8m4BOSMaMjEn/F31BODeWH5rl8fQt/hKYO7T1Pweu6BZVIgOku/ZpQDg==
+X-Received: by 2002:a17:902:f709:b0:215:6e01:ad07 with SMTP id d9443c01a7336-2292f94a1aamr166788065ad.6.1743510372745;
+        Tue, 01 Apr 2025 05:26:12 -0700 (PDT)
+Received: from [192.168.31.128] ([152.59.239.241])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291f1cec2fsm86789825ad.117.2025.04.01.05.26.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Apr 2025 05:26:12 -0700 (PDT)
+Message-ID: <a1ccb48d-8c32-42bf-885f-22f3b1ca147b@oss.qualcomm.com>
+Date: Tue, 1 Apr 2025 17:56:08 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] usb: dwc3: gadget: check that event count does not
+ exceed event buffer length
+To: Frode Isaksen <fisaksen@baylibre.com>, Thinh.Nguyen@synopsys.com
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+        Frode Isaksen <frode@meta.com>, stable@vger.kernel.org
+References: <20250328104930.2179123-1-fisaksen@baylibre.com>
+ <0767d38d-179a-4c5e-9dfe-fef847d1354d@oss.qualcomm.com>
+ <d21c87f4-0e26-41e1-a114-7fb982d0fd34@baylibre.com>
+Content-Language: en-US
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+In-Reply-To: <d21c87f4-0e26-41e1-a114-7fb982d0fd34@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: AsNr66a_sALwf0kSLNc2xuAjmxX-kaiN
+X-Proofpoint-ORIG-GUID: AsNr66a_sALwf0kSLNc2xuAjmxX-kaiN
+X-Authority-Analysis: v=2.4 cv=ZNLXmW7b c=1 sm=1 tr=0 ts=67ebdb66 cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=v/fl2IxmdEHBtBzv4ytVIg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=jIQo8A4GAAAA:8 a=VabnemYjAAAA:8
+ a=EqO8uaqlcL3FtOQN4IAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22 a=TjNXssC_j7lpFel5tvFf:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-01_05,2025-03-27_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 clxscore=1015 mlxscore=0 adultscore=0 mlxlogscore=999
+ priorityscore=1501 bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0
+ impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504010076
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
 
-Currently the perf and powercap protocol relies on the protocol domain
-attributes, which just ensures that one fastchannel per domain, before
-instantiating fastchannels for all possible message-ids. Fix this by
-ensuring that each message-id supports fastchannel before initialization.
 
-Logs:
-scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:0] - ret:-95. Using regular messaging.
-scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:1] - ret:-95. Using regular messaging.
-scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:2] - ret:-95. Using regular messaging.
+On 4/1/2025 5:38 PM, Frode Isaksen wrote:
+> On 4/1/25 7:43 AM, Krishna Kurapati wrote:
+>>
+>>
+>> On 3/28/2025 4:14 PM, Frode Isaksen wrote:
+>>> From: Frode Isaksen <frode@meta.com>
+>>>
+>>> The event count is read from register DWC3_GEVNTCOUNT.
+>>> There is a check for the count being zero, but not for exceeding the
+>>> event buffer length.
+>>> Check that event count does not exceed event buffer length,
+>>> avoiding an out-of-bounds access when memcpy'ing the event.
+>>> Crash log:
+>>> Unable to handle kernel paging request at virtual address 
+>>> ffffffc0129be000
+>>> pc : __memcpy+0x114/0x180
+>>> lr : dwc3_check_event_buf+0xec/0x348
+>>> x3 : 0000000000000030 x2 : 000000000000dfc4
+>>> x1 : ffffffc0129be000 x0 : ffffff87aad60080
+>>> Call trace:
+>>> __memcpy+0x114/0x180
+>>> dwc3_interrupt+0x24/0x34
+>>>
+>>> Signed-off-by: Frode Isaksen <frode@meta.com>
+>>> Fixes: ebbb2d59398f ("usb: dwc3: gadget: use evt->cache for 
+>>> processing events")
+>>> Cc: stable@vger.kernel.org
+>>> ---
+>>> v1 -> v2: Added Fixes and Cc tag.
+>>>
+>>> This bug was discovered, tested and fixed (no more crashes seen) on 
+>>> Meta Quest 3 device.
+>>> Also tested on T.I. AM62x board.
+>>>
+>>>   drivers/usb/dwc3/gadget.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+>>> index 63fef4a1a498..548e112167f3 100644
+>>> --- a/drivers/usb/dwc3/gadget.c
+>>> +++ b/drivers/usb/dwc3/gadget.c
+>>> @@ -4564,7 +4564,7 @@ static irqreturn_t dwc3_check_event_buf(struct 
+>>> dwc3_event_buffer *evt)
+>>>         count = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
+>>>       count &= DWC3_GEVNTCOUNT_MASK;
+>>> -    if (!count)
+>>> +    if (!count || count > evt->length)
+>>>           return IRQ_NONE;
+>>>         evt->count = count;
+>>
+>>
+>> I did see this issue previously ([1] on 5.10) on SAR2130 (upstreamed 
+>> recently). Can you help check if the issue is same on your end if you 
+>> can reproduce it easily. Thinh also provided some debug pointers to 
+>> check suspecting it to be a HW issue.
+> 
+> Seems to be exactly the same issue, and your fix looks OK as well. I'm 
+> happy to abandon my patch and let yo provide the fix.
+>
 
-CC: stable@vger.kernel.org
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
-Fixes: 6f9ea4dabd2d ("firmware: arm_scmi: Generalize the fast channel support")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-[Cristian: Modified the condition checked to establish support or not]
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
----
-Since PROTOCOL_MESSAGE_ATTRIBUTES, used to check if message_id is supported,
-is a mandatory command, it cannot fail so we must bail-out NOT only if FC was
-not supported for that command but also if the query fails as a whole; so the
-condition checked for bailing out is modified to:
+NAK. I tried to skip copying data beyond 4K which is not the right 
+approach. Thinh was tending more towards your line of code changes. So 
+your code looks fine, but an error log indicating the presence of this 
+issue might be helpful.
 
-	if (ret || !MSG_SUPPORTS_FASTCHANNEL(attributes)) {
+> Note that I am not able to reproduce this locally and it happens very 
+> seldom.
+> 
 
-Removed also Tested-by and Reviewed-by tags since I modified the logic.
----
- drivers/firmware/arm_scmi/driver.c    | 76 +++++++++++++++------------
- drivers/firmware/arm_scmi/protocols.h |  2 +
- 2 files changed, 45 insertions(+), 33 deletions(-)
+It was very hard to reproduce this issue. Only two instances reported on 
+SAR2130 on my end.
 
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index bf2dc200604e..3855a9791f4a 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1738,6 +1738,39 @@ static int scmi_common_get_max_msg_size(const struct scmi_protocol_handle *ph)
- 	return info->desc->max_msg_size;
- }
- 
-+/**
-+ * scmi_protocol_msg_check  - Check protocol message attributes
-+ *
-+ * @ph: A reference to the protocol handle.
-+ * @message_id: The ID of the message to check.
-+ * @attributes: A parameter to optionally return the retrieved message
-+ *		attributes, in case of Success.
-+ *
-+ * An helper to check protocol message attributes for a specific protocol
-+ * and message pair.
-+ *
-+ * Return: 0 on SUCCESS
-+ */
-+static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
-+				   u32 message_id, u32 *attributes)
-+{
-+	int ret;
-+	struct scmi_xfer *t;
-+
-+	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
-+			    sizeof(__le32), 0, &t);
-+	if (ret)
-+		return ret;
-+
-+	put_unaligned_le32(message_id, t->tx.buf);
-+	ret = do_xfer(ph, t);
-+	if (!ret && attributes)
-+		*attributes = get_unaligned_le32(t->rx.buf);
-+	xfer_put(ph, t);
-+
-+	return ret;
-+}
-+
- /**
-  * struct scmi_iterator  - Iterator descriptor
-  * @msg: A reference to the message TX buffer; filled by @prepare_message with
-@@ -1879,6 +1912,7 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
- 	int ret;
- 	u32 flags;
- 	u64 phys_addr;
-+	u32 attributes;
- 	u8 size;
- 	void __iomem *addr;
- 	struct scmi_xfer *t;
-@@ -1887,6 +1921,15 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
- 	struct scmi_msg_resp_desc_fc *resp;
- 	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
- 
-+	/* Check if the MSG_ID supports fastchannel */
-+	ret = scmi_protocol_msg_check(ph, message_id, &attributes);
-+	if (ret || !MSG_SUPPORTS_FASTCHANNEL(attributes)) {
-+		dev_dbg(ph->dev,
-+			"Skip FC init for 0x%02X/%d  domain:%d - ret:%d\n",
-+			pi->proto->id, message_id, domain, ret);
-+		return;
-+	}
-+
- 	if (!p_addr) {
- 		ret = -EINVAL;
- 		goto err_out;
-@@ -2014,39 +2057,6 @@ static void scmi_common_fastchannel_db_ring(struct scmi_fc_db_info *db)
- #endif
- }
- 
--/**
-- * scmi_protocol_msg_check  - Check protocol message attributes
-- *
-- * @ph: A reference to the protocol handle.
-- * @message_id: The ID of the message to check.
-- * @attributes: A parameter to optionally return the retrieved message
-- *		attributes, in case of Success.
-- *
-- * An helper to check protocol message attributes for a specific protocol
-- * and message pair.
-- *
-- * Return: 0 on SUCCESS
-- */
--static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
--				   u32 message_id, u32 *attributes)
--{
--	int ret;
--	struct scmi_xfer *t;
--
--	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
--			    sizeof(__le32), 0, &t);
--	if (ret)
--		return ret;
--
--	put_unaligned_le32(message_id, t->tx.buf);
--	ret = do_xfer(ph, t);
--	if (!ret && attributes)
--		*attributes = get_unaligned_le32(t->rx.buf);
--	xfer_put(ph, t);
--
--	return ret;
--}
--
- static const struct scmi_proto_helpers_ops helpers_ops = {
- 	.extended_name_get = scmi_common_extended_name_get,
- 	.get_max_msg_size = scmi_common_get_max_msg_size,
-diff --git a/drivers/firmware/arm_scmi/protocols.h b/drivers/firmware/arm_scmi/protocols.h
-index aaee57cdcd55..d62c4469d1fd 100644
---- a/drivers/firmware/arm_scmi/protocols.h
-+++ b/drivers/firmware/arm_scmi/protocols.h
-@@ -31,6 +31,8 @@
- 
- #define SCMI_PROTOCOL_VENDOR_BASE	0x80
- 
-+#define MSG_SUPPORTS_FASTCHANNEL(x)	((x) & BIT(0))
-+
- enum scmi_common_cmd {
- 	PROTOCOL_VERSION = 0x0,
- 	PROTOCOL_ATTRIBUTES = 0x1,
--- 
-2.47.0
+> Where can I find the upstream'ed version ?
+> 
 
+The upstreamed version I was referring to was that SAR2130 DT is present 
+on open-source.
+
+Regards,
+Krishna,
+
+>>
+>> As per the comments from Thinh, he suggested to add a error log as 
+>> well when this happens [2].
+>>
+>> [1]: 
+>> https://lore.kernel.org/all/20230521100330.22478-1-quic_kriskura@quicinc.com/
+>>
+>> [2]: 
+>> https://lore.kernel.org/all/20230525001822.ane3zcyyifj2kuwx@synopsys.com/
+>>
+>> Regards,
+>> Krishna,
+> 
+> 
 
