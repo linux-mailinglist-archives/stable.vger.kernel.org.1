@@ -1,127 +1,180 @@
-Return-Path: <stable+bounces-127322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660CBA77A3F
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 13:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D5DA77A62
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 14:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1F4A188FF8D
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 11:59:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70840188C54E
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 12:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295CF201258;
-	Tue,  1 Apr 2025 11:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846E04690;
+	Tue,  1 Apr 2025 12:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UCJRBMoc"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="uo0PMitD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5544B1E51E7;
-	Tue,  1 Apr 2025 11:58:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD97202961
+	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 12:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743508701; cv=none; b=DBTMOcPCBzIRNct6F+519GN5DlJ+APFqrjTSmc7NABf1cyfi9JrF36pEwiwsjLukexgyIMXEiifZlpSpcSvusBVazeCVCLJNxUc3gBmn4JrkioHLdUxGl8WzlMALMmEuOjRHgnjvG5KVB6vfbiXvcMzKFujmHuG4q8nZWGO0zZg=
+	t=1743509304; cv=none; b=cXvqRqHDS452tsK7hNRpEe1kQlbLGN+lp/piLrVFIZPQ0ZMFA55f9S9v9nx6c5xJJ4AoFp6gbVJOLGLGgGJNh2LC/iRBX9E/FlqUf6u/DM/zYI62J3ZnAmCmRLMw38NPH3AKdzirXaHBvel/d8E5dMCmWL4Cx2CVXMAPgvXpy0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743508701; c=relaxed/simple;
-	bh=7jGgpK8qQ9n6fLGlDYchkwfaXEMrN1dXXUgorto3Ylc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cuhcjq0Qu08PlrDQINsa/GoYYbOEe8DprL2piQW5F7dDiBdrZWRGUssorudUUPZBuCPqQiz9GaF09TgvajwdSTz9NDbe0bat5hn+7sb70NXlvmfbH2Jot/Ej9DQ//IghldJ3T2l401q/tH0KAXI35uZfpd9StGC0co3b1Bf0VeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UCJRBMoc; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43d0782d787so36200375e9.0;
-        Tue, 01 Apr 2025 04:58:20 -0700 (PDT)
+	s=arc-20240116; t=1743509304; c=relaxed/simple;
+	bh=4Vv6laZev+3uckOJC8R85Cr5k4Jrd2urTTuF5Q/ymoQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LKSHHRlaADWsU/+p2tShRYJVuM0azFd87hUtHjq5ScPaBO+CYxMmyZyTABvta6RudpW922VqQgtWN8cukAKC0aTWLyzIZFjJBFOFtY/+XY+30T0jhUJetMyjSx67fEEcc5NciJBdio8dg+NPnXK0p/Ru+7ExQNGMRU3RiVfOrt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=uo0PMitD; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cfe574976so38054205e9.1
+        for <stable@vger.kernel.org>; Tue, 01 Apr 2025 05:08:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743508698; x=1744113498; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KanvA1m7FW/GqYde50MUMIMfUtRewOSi+lWetCQJygM=;
-        b=UCJRBMocR/5KQQUa8CMgVEiQist6dKsu+I2Yv+v2TEb33+pwJvcyk068N7bh3XtAx3
-         k2/qI/1IwIydcKvzWy2rtAhKz06jS4Z3JS+7+VsQv/TbPATLhyWDQFI7xFlNHRT/TEfj
-         iJzPGKKXslAE1NwOO6Wi5lJkIUhwnICYd5HgGQq/okGdikz34vHNn0UvqqlWqy8xfKAq
-         yoRmTHW2F6UeUQtDtPhd1q4nBmdNyqtTdWhFcl6Nxcs0SN388vcNkoukupnZFtCumqq+
-         d5E1nvNWpdlcfzeuGzOYGiIj942MI2DxIVdWKOIIDtrq/djkSDRQLrM0IztFEUivL3/9
-         oUrw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743509300; x=1744114100; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8rF05+ebNrUc51ARp3OPp7l0cwideFIblxLqwfQ/B7c=;
+        b=uo0PMitDb6JlcedZr6SAha41TB8C+/hHY5h4B+Z8xv6RcThff/x5X1/MNvNVSfVpOB
+         oojfuvT3/0jd3aEf3XWFKfaUd9u5621CaOtHmS9/IpplNUIExy1vZ7tP1hJ6dlBfFzwo
+         yGTyDvBcuk6Ot3NKnwGI5q0h/08akOUUyc1E8T85uGD64vdb15cGnFMf7h4WTucfGkxc
+         b8jZBDPqRBJdBcjjo23hutde9Tv7r/+V3AufUOuLQDikkUzz598TEDKYkrRSLRupgW2z
+         E4HkgxsHRbJz4YtNohU+KZMApz3s3qpdeLMxybPHKUo44SWlLo14GLuAwOo0SZtPGQWe
+         v7sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743508698; x=1744113498;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KanvA1m7FW/GqYde50MUMIMfUtRewOSi+lWetCQJygM=;
-        b=T4ClJgadLZ1bJNnGQi7im+CtP/Q9PS5ywE9lhI+xRhKMp/0E0FiSuQPK0iPs+yXTJT
-         cFUSXE96SQmgAhCAmwuAtX2gYn+2ZkHXhw0JlCYkGODp9sQN3eIzrL9v4471aUjEiut0
-         PlGGijHOsoYsxVhKTQKG+Hs3uSUclS9R2m/p3kZmKXgZ95rYTzqLUMgWooW8IN/Zw+bG
-         EYeBlkLvoD/X4NpUdevmgaFrTbYUhgQc4RiHS+3lwFLlZMnufU9qcKy1cQcJGz4yyjEJ
-         Irokj4QVg3/jftsQpNFxIBT7ogVCBwoQyHZi49j57UT4p7pTQl/YyXD5eP537uhquGod
-         pxXg==
-X-Forwarded-Encrypted: i=1; AJvYcCWiD7G25Mqe+l4JmibDPEvDIyH+cW9rQNrByOlLtPZy0LydOdwV9Jc7bIxtF5b2G75bOEOWKzOZL5pdykWN@vger.kernel.org, AJvYcCX8zCsMg5kFSm8pGDve3wvguRle0D93e12TL/VEifA1nNBigeMFrE9LAc56AJdJU/kBMp/7UfBF+KtSVFE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSrtikY58nq3Sxpww7x2OR5O8CJTyEvJ3qNEmmsXIiGv+65YKo
-	X+q4y0m+wys8C1UMlt2A339SZFgCdxINJvWrmSWwuZs660sUtbHY
-X-Gm-Gg: ASbGncvFooq1+KAK9UdoZ1FX4HjBItNJvHb76j1LP433BzEVddd4qxAigIKUrhVuc5j
-	kjhn01EAWQfsW3LXStrgl3zgpm4vdu5b/BWKzzHr8eQNKkwf5UYkxB4Mk7mUrauwImeTlCV0lp0
-	YIbQGgxkZhNoQHS00pw/zKY9TiIZ+UlNMgYX8SI346cmcmSJ6XSGb0ijdElkUysffzTwAMPJGzJ
-	BX0tY4nze36IknUI1HKyZkRvpr4UZVMbLsNq+YJp97zJUgxB61ezYrv/akfZv6KF4DnbgMS+spv
-	6uRkIk8+PAzFUj1rL/SquuuzQbkwTAxdAZN7LMaXdT0+fKqff/ZF85wUxJCYjhqXy6V4tkrWLfD
-	hLVC4GdIaGtHnRQrtxukX7P31
-X-Google-Smtp-Source: AGHT+IECBNFX7PtxksIsQVDrR2DK+8zzgrgJQHq8DTNdbyhMlqJF7qUTFeCUtlbUOTo6/APJ7Ut5Ag==
-X-Received: by 2002:a05:600c:3489:b0:43d:aed:f7de with SMTP id 5b1f17b1804b1-43db62b7a0cmr109300545e9.21.1743508698338;
-        Tue, 01 Apr 2025 04:58:18 -0700 (PDT)
-Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43d82efeacasm197565095e9.23.2025.04.01.04.58.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 04:58:18 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Antoine Tenart <atenart@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Richard van Schagen <vschagen@icloud.com>,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] crypto: inside-secure/eip93 - acquire lock on eip93_put_descriptor hash
-Date: Tue,  1 Apr 2025 13:57:30 +0200
-Message-ID: <20250401115735.11726-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.48.1
+        d=1e100.net; s=20230601; t=1743509300; x=1744114100;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8rF05+ebNrUc51ARp3OPp7l0cwideFIblxLqwfQ/B7c=;
+        b=ZNaf2YiDfjN3GElrc923RtT+2FjUoRm7yr5k5EgearjjEG4LzEfyD5Zn+PyFVdOtMD
+         zn/+JO957aWkLnVP0xICelep7ulrCS5fW87oEnrm0EyUY90axioXYG5QRuPfGWCMem4X
+         cEED/jUJsySHPZRMmUZbjeF9JzXalQwqiVYESIBV7QeH6Hf7cGUt7dXp9I7vr5yM7Jt0
+         GzaRFKQxCqYQ/oYoXz5uP7YUBmioUBtEDN1F/1KQhyLauVDPC7MdIGaLE4wC6CXMn1vW
+         d6IzrW+sc2HwEWGrAsxXLME0XYCaoT3ZJvMMnniqtip26u3+Nf/aBzBjFQ5dY4O2Kz8T
+         zmMw==
+X-Forwarded-Encrypted: i=1; AJvYcCWqYny+S9quI5o68Q3HPUBntHuhVc1Ytm9tn24t8wFht0CzILEipIo5Ci6se/nqYqLfhk8pALM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVObVlsh2xuf9DJk/VORcGYDX095RTGOlQBl/qQDzq3qxUNSTU
+	sKLITFybcWqRuy3FC5WKE0rMrGJuSWvpmNPiQLOTo+62JpfkEKDiDNot9o0uj7M=
+X-Gm-Gg: ASbGnct3qcsUAcyfmtz4RebNJn7G5VMKNjAR8VezQtfHytH0o2L1fu2elc77OCbqfS0
+	38wQRY3CB2tvbCEZSlAKKwH3ZAdm8KEZFsfPCED3UvBOum0nmOqxmMxdCAI1bOqojMn0gg92xFn
+	89VWKy+qEP3vpd6IZKUz/fFZxpfTgaJT8Epc5qTtFSbWbt1jLYxSxKEr3oWyutTXZjtdgunRiuo
+	njCDo9mbQUzYZxU3CJFB76ZcrBuSzyfTGnaz+MBiUkFqLTf8IMVc3De7HMWA6Rzxta0bgGqydDG
+	C9z9N/JjwqIf7xgQBfSKNueJN9eBegScjSKdW89Nw6QBnHegEIPg5RX+jAYmFr7xM15tDzeV1Jk
+	EZlgRAfexAA8uA8Al
+X-Google-Smtp-Source: AGHT+IHd8uMhZptFl8bv8YVFrthS9yQYfUTh7Hnl5uqVZj2ELTeRPc2qrCjI3tMlk0oo9THuz9yfgg==
+X-Received: by 2002:a05:600c:8705:b0:43b:c95f:fd9 with SMTP id 5b1f17b1804b1-43ea7c4e749mr29887215e9.5.1743509299543;
+        Tue, 01 Apr 2025 05:08:19 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:355:6b90:e24f:43ff:fee6:750f? ([2a01:e0a:355:6b90:e24f:43ff:fee6:750f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d900013afsm154577795e9.36.2025.04.01.05.08.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Apr 2025 05:08:18 -0700 (PDT)
+Message-ID: <d21c87f4-0e26-41e1-a114-7fb982d0fd34@baylibre.com>
+Date: Tue, 1 Apr 2025 14:08:17 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] usb: dwc3: gadget: check that event count does not
+ exceed event buffer length
+To: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+ Thinh.Nguyen@synopsys.com
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+ Frode Isaksen <frode@meta.com>, stable@vger.kernel.org
+References: <20250328104930.2179123-1-fisaksen@baylibre.com>
+ <0767d38d-179a-4c5e-9dfe-fef847d1354d@oss.qualcomm.com>
+Content-Language: en-US
+From: Frode Isaksen <fisaksen@baylibre.com>
+In-Reply-To: <0767d38d-179a-4c5e-9dfe-fef847d1354d@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-In the EIP93 HASH functions, the eip93_put_descriptor is called without
-acquiring lock. This is problematic when multiple thread execute hash
-operations.
+On 4/1/25 7:43 AM, Krishna Kurapati wrote:
+>
+>
+> On 3/28/2025 4:14 PM, Frode Isaksen wrote:
+>> From: Frode Isaksen <frode@meta.com>
+>>
+>> The event count is read from register DWC3_GEVNTCOUNT.
+>> There is a check for the count being zero, but not for exceeding the
+>> event buffer length.
+>> Check that event count does not exceed event buffer length,
+>> avoiding an out-of-bounds access when memcpy'ing the event.
+>> Crash log:
+>> Unable to handle kernel paging request at virtual address 
+>> ffffffc0129be000
+>> pc : __memcpy+0x114/0x180
+>> lr : dwc3_check_event_buf+0xec/0x348
+>> x3 : 0000000000000030 x2 : 000000000000dfc4
+>> x1 : ffffffc0129be000 x0 : ffffff87aad60080
+>> Call trace:
+>> __memcpy+0x114/0x180
+>> dwc3_interrupt+0x24/0x34
+>>
+>> Signed-off-by: Frode Isaksen <frode@meta.com>
+>> Fixes: ebbb2d59398f ("usb: dwc3: gadget: use evt->cache for 
+>> processing events")
+>> Cc: stable@vger.kernel.org
+>> ---
+>> v1 -> v2: Added Fixes and Cc tag.
+>>
+>> This bug was discovered, tested and fixed (no more crashes seen) on 
+>> Meta Quest 3 device.
+>> Also tested on T.I. AM62x board.
+>>
+>>   drivers/usb/dwc3/gadget.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+>> index 63fef4a1a498..548e112167f3 100644
+>> --- a/drivers/usb/dwc3/gadget.c
+>> +++ b/drivers/usb/dwc3/gadget.c
+>> @@ -4564,7 +4564,7 @@ static irqreturn_t dwc3_check_event_buf(struct 
+>> dwc3_event_buffer *evt)
+>>         count = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
+>>       count &= DWC3_GEVNTCOUNT_MASK;
+>> -    if (!count)
+>> +    if (!count || count > evt->length)
+>>           return IRQ_NONE;
+>>         evt->count = count;
+>
+>
+> I did see this issue previously ([1] on 5.10) on SAR2130 (upstreamed 
+> recently). Can you help check if the issue is same on your end if you 
+> can reproduce it easily. Thinh also provided some debug pointers to 
+> check suspecting it to be a HW issue.
 
-Correctly acquire ring write lock on calling eip93_put_descriptor to
-prevent concurrent access and mess with the ring pointers.
+Seems to be exactly the same issue, and your fix looks OK as well. I'm 
+happy to abandon my patch and let yo provide the fix.
 
-Cc: stable@vger.kernel.org
-Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
-Reported-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/crypto/inside-secure/eip93/eip93-hash.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Note that I am not able to reproduce this locally and it happens very 
+seldom.
 
-diff --git a/drivers/crypto/inside-secure/eip93/eip93-hash.c b/drivers/crypto/inside-secure/eip93/eip93-hash.c
-index 5e9627467a42..df1b05ac5a57 100644
---- a/drivers/crypto/inside-secure/eip93/eip93-hash.c
-+++ b/drivers/crypto/inside-secure/eip93/eip93-hash.c
-@@ -260,7 +260,8 @@ static int eip93_send_hash_req(struct crypto_async_request *async, u8 *data,
- 	}
- 
- again:
--	ret = eip93_put_descriptor(eip93, &cdesc);
-+	scoped_guard(spinlock_irqsave, &eip93->ring->write_lock)
-+		ret = eip93_put_descriptor(eip93, &cdesc);
- 	if (ret) {
- 		usleep_range(EIP93_RING_BUSY_DELAY,
- 			     EIP93_RING_BUSY_DELAY * 2);
--- 
-2.48.1
+Where can I find the upstream'ed version ?
+
+Thanks,
+
+Frode
+
+>
+> As per the comments from Thinh, he suggested to add a error log as 
+> well when this happens [2].
+>
+> [1]: 
+> https://lore.kernel.org/all/20230521100330.22478-1-quic_kriskura@quicinc.com/
+>
+> [2]: 
+> https://lore.kernel.org/all/20230525001822.ane3zcyyifj2kuwx@synopsys.com/
+>
+> Regards,
+> Krishna,
+
 
 
