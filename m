@@ -1,216 +1,138 @@
-Return-Path: <stable+bounces-127324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC0FA77AED
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 14:26:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7EB4A77B5F
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 14:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6186A16BABB
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 12:26:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A20FE1688F9
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 12:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DBE202F7B;
-	Tue,  1 Apr 2025 12:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557462036F6;
+	Tue,  1 Apr 2025 12:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ShzPhrhb"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="trNQnSQ4"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF81202C5D
-	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 12:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCB51F0E56
+	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 12:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743510377; cv=none; b=X62wF84lLVDQ/3Uz4eNZE7S1t3/saH3HHfIsURmkmyEiIlZF5pB/fRsSGqiLLuppzrGhEFH+nKU1jtnx6p9lsqd4BjNMdXUCAywGJgFLVY7mdxRMUDGEhQSzMkKKlRDGAyVDTdg+pUka4kC9yE4X0Fk/7UKvuZK63J/1rXLbMi0=
+	t=1743512060; cv=none; b=iPlO5FRa1MinJvjZ8aeDvHuNXXA1Lrwgd+SMtDVdfLwJvGGtX/Dwv0WOQfGIMAEc16ifibaqFNYVn+NvcTmW4WrsN6nFb48P2A0c6xBfvp+LpvP5m1B9GsrQS1498k+v+I3GxCXKw2komc23e8I4h6cQETJIPDfwI6NlNdyX33U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743510377; c=relaxed/simple;
-	bh=MzWbRRs8pa6TteDFhTWSEA05fml/aRf6VDr6jSrrhl8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YwkWv1JiwkPQF+vzD1HhBdD7kKUcGwOquYFNkDe8gBtsLHME04SzmEb6bZIcPgJpmdUlLSdr8VLbOjWLMu0FA+5WPcozie2ohHSC7ZlKTLyARJnHIZq5+QzNIvPqbJ4alsVPlkN8bbL+ih00GxBamOgZyeA+o6yoPoH94XkPgVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ShzPhrhb; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5317MvJH024962
-	for <stable@vger.kernel.org>; Tue, 1 Apr 2025 12:26:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	s5IelXbw1nz5rkiuUSMs5w3F2RL5AE5cDWJplubtFH4=; b=ShzPhrhb00ncAYyG
-	gmU8r1cR9cGillA+SR52rm3c4D4g/iJoAAnLH36M4LWWT4WlCF+f2vIjQkhWltZD
-	ObZo835RPeQTEacjukwOK9BTXYmCtVY58MbtJPDlhmXTEj0rLb1ep3HAb2P9WsV3
-	a2XZwOInITmHLO72EX7+Wpod2jVbitk83jAIX1YSWaCg20HI8ZUa8QzNeECxMHNN
-	mmJxSTWH5a9fh2mI1HBoQbe+lhX2TJsZ2fDEOAIUztG9ZIG3ktKNoM/9gMkzsf2Y
-	6avmjNs5Ob5Ey+uKeierob7lF6zcSi5kdytIk0D7mk8Pvsccfh49VH7/lXQ/Gvh/
-	GSrw6A==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45rbpys0yp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 01 Apr 2025 12:26:14 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2242ade807fso1590745ad.2
-        for <stable@vger.kernel.org>; Tue, 01 Apr 2025 05:26:13 -0700 (PDT)
+	s=arc-20240116; t=1743512060; c=relaxed/simple;
+	bh=l2PcQYbG8B/62rNOGiRk4wusyvFroUGb6d2YBZuccW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I7Bk+V+yl8lEOCMy/R/jHD055Rv7yTATRhUDK/c9GhJDuv0eDyR004QfibmR/Bs1FtdrI5WHZ2ruvnKotKiIqIqJbttEQ7TI1TCEHA0dpB85tGhrIW2ZtxnokhcdxuGW/V2Ar9IgcGmikp9B+CdWQ1tWXVg7pdKCn8mPRANElG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=trNQnSQ4; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cf06eabdaso52428295e9.2
+        for <stable@vger.kernel.org>; Tue, 01 Apr 2025 05:54:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1743512055; x=1744116855; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kIq2bCCkLTbVl75qgjk5SV7W2QZVt5vI8B/3mGbWOoQ=;
+        b=trNQnSQ40kGaZJpWM9QFx+punNyaFS6cCaOYW0f0k6zB/tqEpznMnZUN9VeM6mKYg9
+         uMZENe0DTG8StT5z3823P7GXZCQ8IglQhX9XftQoD+4usV+f9F9kRFemtCsFaXe2eEab
+         H5fxEfREONJ1O5Zr26laXA5p/7O4iG8XE+70BM5SXWN+ZhlQ7hm+HEg/5uylwN64UK/j
+         SDqxs5CahUBwHuH+aDUCW9RvC2SF9oU4wHg16d9ahd1o1sTezvCp6Cfw4xH+Z3cnXuyr
+         42Dh/PhJywC4nmJj6yWIjKhNJP0LuEwsVh0KiwXj6JblHnMCtX+HKpsM5ysjcJrai3b2
+         Gzww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743510373; x=1744115173;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s5IelXbw1nz5rkiuUSMs5w3F2RL5AE5cDWJplubtFH4=;
-        b=bLkOJeqoYn9odX4iNfNcR2TtYlhi0kc0t4jbMpU9jzOk82+kCfU+1rbJAFlg3JWmDP
-         Lyt8jb5escsHJtwNDgDJcAS2PDjULjOoRRFkA1I9gcqoXZ/PoKgROOqUhLEeuGX5mKm/
-         fuJroBLuNwWI9bONf6yTdOY3nQYDaiDr+opRnMLxXqywE69M/K0pEgv4ekMrvD15DoK9
-         G2ludWWDqfOmXR0H1BL3OnRiako5/fXulxGRLmwKpJaiOcvSQ1CC3fK77K+vKrO1KitA
-         d1FaTE4OJxnE15JLx3iDnEdpfQnhO04uwTeFdGnsFiMdCey3n8KuQxQCGQbpMlK7de1c
-         aP5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUFfpYPyw8umk/HH1uiNGWdLHsrhlhB+oq3uFe5HtyaqrOmJCRHfPW5XOCTlBpMG+QWjdZCk2o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4rbagQ8QB9x2OqV8bVlTavu9A9suwYiK9+N9J/MOONgMF5aXa
-	HP0Irr/Liy1rKch/Ux1n7RT6qsfl59QHK5WQMnMFqzkMmzkobj9esmTDpmccU7blWm58rbeFC/N
-	fbY98dHuZCk5WpVfWcIlhMVei0TGE7rkEswXah3YzT1OBRBkc9t3rYEc=
-X-Gm-Gg: ASbGncuc2Lajguj4C7vbjKhP/lursAv88gsx2gsBcPKJU/4p4I2nMsZRS6cNseBUQTn
-	uOL1fQfph5MvnqBSoaivhKVpTSc0MaknCxbvC9arKK57MCiOblnyAOjJvFbMx36Z2GJ7eTgk76K
-	fzMqywGuai8lkCskkEZRqrTndQJLfQxHT28TFutXvvegYyCjv0VpbX8VxxGksvNaAXgJlVcUBTJ
-	sHWXPaCb1RH5ATvvEtmICVasgUFqzYuNMqYLs05rNQoue8M1+c5FEJzVzGzOKZfU2FH2pu+2kzd
-	YlPt5UUdlIUay2VUSkKRVa0kq1sjwxJ6rVV3RK0SEfpdpl7IdUhN5NE=
-X-Received: by 2002:a17:902:f709:b0:215:6e01:ad07 with SMTP id d9443c01a7336-2292f94a1aamr166788325ad.6.1743510373141;
-        Tue, 01 Apr 2025 05:26:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF913CZIgF3zF0FHk8m4BOSMaMjEn/F31BODeWH5rl8fQt/hKYO7T1Pweu6BZVIgOku/ZpQDg==
-X-Received: by 2002:a17:902:f709:b0:215:6e01:ad07 with SMTP id d9443c01a7336-2292f94a1aamr166788065ad.6.1743510372745;
-        Tue, 01 Apr 2025 05:26:12 -0700 (PDT)
-Received: from [192.168.31.128] ([152.59.239.241])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291f1cec2fsm86789825ad.117.2025.04.01.05.26.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Apr 2025 05:26:12 -0700 (PDT)
-Message-ID: <a1ccb48d-8c32-42bf-885f-22f3b1ca147b@oss.qualcomm.com>
-Date: Tue, 1 Apr 2025 17:56:08 +0530
+        d=1e100.net; s=20230601; t=1743512055; x=1744116855;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kIq2bCCkLTbVl75qgjk5SV7W2QZVt5vI8B/3mGbWOoQ=;
+        b=hXy7udXZ0g94TJ5EtRx8lv7IneDBwReeJKf7mb1WKibpei5G37YhSbqibvotC+Oua+
+         3bJEgMKNn/Rt6VQIiLm83+gkOsjlGfQwIqD6WsYrqwsWvJJtP3UJf/1BBXx7tUJkiFay
+         Sbn9YnHf6kkueHDclTKZLIVg4gzc4IFlXyxw3vZ7Dcjfr43/EBUQ3zvLZOpi1wSc8IHU
+         Vq21qD1Xj+WtoF23+GNed+o1Zr5mIX76ft2vjajPu4Rel3WewClG+vqsjNXDUE0XOJK0
+         Yi4a6urNddz6iwMa2DU4UN8p9dzeDgWfVgFBoaxYHSmNMOd2+wQokD2FnRFxtAo37zyq
+         l6pw==
+X-Forwarded-Encrypted: i=1; AJvYcCUcDUBWNErjKwzSmYUnLoyLlS3qT/n+g6YVr3Dm91uXucwoFSwjnCtYpU00+v1deKDzi+/hR78=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywpm1NULxnrv2/Ubm7wk5pTUYElQVZsdveo0Xw8RK7Wo552ZG7I
+	m981VVFEzb++o5jUkjPZXxb0KWqESzfFBMpF6LPOzu2unOM2e80loGhXgpDCurc=
+X-Gm-Gg: ASbGnctJgBaMT2sYTE6uxpEnGLC5oiGcR2+/UF+d+VCFJgH9dF5DNlp+idsmTyT/6rv
+	tPEmxtMKHq4847ypOIoe0DR5xTDHANNNYgrIOUmNNWdmjZBqrw9nN+UXFDrIkxDxDW/SGUHil5l
+	+I8i9LrsHbS7Mz/Nt6SHMqnob/06DjwU7WgNmjQ4e/t1+2KLtpVUQYRKE4RjorWjePbWSzVgJzp
+	EBJ217hlCrD6Tw7gSyjzC9pd0CohBNb5xUgwdyEDYDoarUWB6Rxz0fYB0rl6sGmARn2zC4fA976
+	qW9so+Wbvs2LhJRYvOhgbZU4AqCBxDxcAvjXkL8HHfyKoWR7EDGr7zNAn1c9Vg==
+X-Google-Smtp-Source: AGHT+IEfm8jBIGS/rCkSCv4g7EEJ/qYcFumwtgYOgwdspDEMaLkkrz6eUaRLu7Yh0d7egIxV9UoOVA==
+X-Received: by 2002:a5d:6d84:0:b0:391:2dea:c98d with SMTP id ffacd0b85a97d-39c120cbb15mr8544270f8f.8.1743512055189;
+        Tue, 01 Apr 2025 05:54:15 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:e0a:355:6b90:e24f:43ff:fee6:750f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b658ab2sm14214546f8f.15.2025.04.01.05.54.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Apr 2025 05:54:14 -0700 (PDT)
+From: Frode Isaksen <fisaksen@baylibre.com>
+To: linux-usb@vger.kernel.org,
+	Thinh.Nguyen@synopsys.com
+Cc: gregkh@linuxfoundation.org,
+	krishna.kurapati@oss.qualcomm.com,
+	Frode Isaksen <frode@meta.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] usb: dwc3: gadget: check that event count does not exceed event buffer length
+Date: Tue,  1 Apr 2025 14:53:13 +0200
+Message-ID: <20250401125350.221910-1-fisaksen@baylibre.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] usb: dwc3: gadget: check that event count does not
- exceed event buffer length
-To: Frode Isaksen <fisaksen@baylibre.com>, Thinh.Nguyen@synopsys.com
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-        Frode Isaksen <frode@meta.com>, stable@vger.kernel.org
-References: <20250328104930.2179123-1-fisaksen@baylibre.com>
- <0767d38d-179a-4c5e-9dfe-fef847d1354d@oss.qualcomm.com>
- <d21c87f4-0e26-41e1-a114-7fb982d0fd34@baylibre.com>
-Content-Language: en-US
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-In-Reply-To: <d21c87f4-0e26-41e1-a114-7fb982d0fd34@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: AsNr66a_sALwf0kSLNc2xuAjmxX-kaiN
-X-Proofpoint-ORIG-GUID: AsNr66a_sALwf0kSLNc2xuAjmxX-kaiN
-X-Authority-Analysis: v=2.4 cv=ZNLXmW7b c=1 sm=1 tr=0 ts=67ebdb66 cx=c_pps a=JL+w9abYAAE89/QcEU+0QA==:117 a=v/fl2IxmdEHBtBzv4ytVIg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=jIQo8A4GAAAA:8 a=VabnemYjAAAA:8
- a=EqO8uaqlcL3FtOQN4IAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22 a=TjNXssC_j7lpFel5tvFf:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-01_05,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 adultscore=0 mlxlogscore=999
- priorityscore=1501 bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504010076
 
+From: Frode Isaksen <frode@meta.com>
 
+The event count is read from register DWC3_GEVNTCOUNT.
+There is a check for the count being zero, but not for exceeding the
+event buffer length.
+Check that event count does not exceed event buffer length,
+avoiding an out-of-bounds access when memcpy'ing the event.
+Crash log:
+Unable to handle kernel paging request at virtual address ffffffc0129be000
+pc : __memcpy+0x114/0x180
+lr : dwc3_check_event_buf+0xec/0x348
+x3 : 0000000000000030 x2 : 000000000000dfc4
+x1 : ffffffc0129be000 x0 : ffffff87aad60080
+Call trace:
+__memcpy+0x114/0x180
+dwc3_interrupt+0x24/0x34
 
-On 4/1/2025 5:38 PM, Frode Isaksen wrote:
-> On 4/1/25 7:43 AM, Krishna Kurapati wrote:
->>
->>
->> On 3/28/2025 4:14 PM, Frode Isaksen wrote:
->>> From: Frode Isaksen <frode@meta.com>
->>>
->>> The event count is read from register DWC3_GEVNTCOUNT.
->>> There is a check for the count being zero, but not for exceeding the
->>> event buffer length.
->>> Check that event count does not exceed event buffer length,
->>> avoiding an out-of-bounds access when memcpy'ing the event.
->>> Crash log:
->>> Unable to handle kernel paging request at virtual address 
->>> ffffffc0129be000
->>> pc : __memcpy+0x114/0x180
->>> lr : dwc3_check_event_buf+0xec/0x348
->>> x3 : 0000000000000030 x2 : 000000000000dfc4
->>> x1 : ffffffc0129be000 x0 : ffffff87aad60080
->>> Call trace:
->>> __memcpy+0x114/0x180
->>> dwc3_interrupt+0x24/0x34
->>>
->>> Signed-off-by: Frode Isaksen <frode@meta.com>
->>> Fixes: ebbb2d59398f ("usb: dwc3: gadget: use evt->cache for 
->>> processing events")
->>> Cc: stable@vger.kernel.org
->>> ---
->>> v1 -> v2: Added Fixes and Cc tag.
->>>
->>> This bug was discovered, tested and fixed (no more crashes seen) on 
->>> Meta Quest 3 device.
->>> Also tested on T.I. AM62x board.
->>>
->>>   drivers/usb/dwc3/gadget.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
->>> index 63fef4a1a498..548e112167f3 100644
->>> --- a/drivers/usb/dwc3/gadget.c
->>> +++ b/drivers/usb/dwc3/gadget.c
->>> @@ -4564,7 +4564,7 @@ static irqreturn_t dwc3_check_event_buf(struct 
->>> dwc3_event_buffer *evt)
->>>         count = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0));
->>>       count &= DWC3_GEVNTCOUNT_MASK;
->>> -    if (!count)
->>> +    if (!count || count > evt->length)
->>>           return IRQ_NONE;
->>>         evt->count = count;
->>
->>
->> I did see this issue previously ([1] on 5.10) on SAR2130 (upstreamed 
->> recently). Can you help check if the issue is same on your end if you 
->> can reproduce it easily. Thinh also provided some debug pointers to 
->> check suspecting it to be a HW issue.
-> 
-> Seems to be exactly the same issue, and your fix looks OK as well. I'm 
-> happy to abandon my patch and let yo provide the fix.
->
+Signed-off-by: Frode Isaksen <frode@meta.com>
+Fixes: ebbb2d59398f ("usb: dwc3: gadget: use evt->cache for processing events")
+Cc: stable@vger.kernel.org
+---
+v1->v2: added error log
 
-NAK. I tried to skip copying data beyond 4K which is not the right 
-approach. Thinh was tending more towards your line of code changes. So 
-your code looks fine, but an error log indicating the presence of this 
-issue might be helpful.
+ drivers/usb/dwc3/gadget.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> Note that I am not able to reproduce this locally and it happens very 
-> seldom.
-> 
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 89a4dc8ebf94..923737776d82 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4564,6 +4564,12 @@ static irqreturn_t dwc3_check_event_buf(struct dwc3_event_buffer *evt)
+ 	if (!count)
+ 		return IRQ_NONE;
+ 
++	if (count > evt->length) {
++		dev_err(dwc->dev, "invalid count(%u) > evt->length(%u)\n",
++			count, evt->length);
++		return IRQ_NONE;
++	}
++
+ 	evt->count = count;
+ 	evt->flags |= DWC3_EVENT_PENDING;
+ 
+-- 
+2.49.0
 
-It was very hard to reproduce this issue. Only two instances reported on 
-SAR2130 on my end.
-
-> Where can I find the upstream'ed version ?
-> 
-
-The upstreamed version I was referring to was that SAR2130 DT is present 
-on open-source.
-
-Regards,
-Krishna,
-
->>
->> As per the comments from Thinh, he suggested to add a error log as 
->> well when this happens [2].
->>
->> [1]: 
->> https://lore.kernel.org/all/20230521100330.22478-1-quic_kriskura@quicinc.com/
->>
->> [2]: 
->> https://lore.kernel.org/all/20230525001822.ane3zcyyifj2kuwx@synopsys.com/
->>
->> Regards,
->> Krishna,
-> 
-> 
 
