@@ -1,76 +1,61 @@
-Return-Path: <stable+bounces-127293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027B1A775C4
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 09:57:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEFC9A7764E
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 10:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5065A188B9D1
-	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 07:57:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAFE83A5C4E
+	for <lists+stable@lfdr.de>; Tue,  1 Apr 2025 08:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BB01E7C11;
-	Tue,  1 Apr 2025 07:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20431E9B2E;
+	Tue,  1 Apr 2025 08:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j2UOoP3N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H3aJCLaU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A111078F
-	for <stable@vger.kernel.org>; Tue,  1 Apr 2025 07:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A652D1E261F;
+	Tue,  1 Apr 2025 08:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743494261; cv=none; b=sP6/uRmbLxCX53G8/5onZ+jm6RRSSdLClkD0xm1Pl8M+MLcxgiPNCyVVuBeMpRw8QFDl15e24aH91bc6O+bM6kwMFpH1MUKPexQ5wFwIwhRrTya1xgp70gcDpggXdATkw0wV903m147Ysogc/hNoaL4FgSgm1Bmz3WHht7aog+c=
+	t=1743495779; cv=none; b=sn6h7KKD83b8DT64SNxwhr5eHRfwl5sOe4RV4XJdxhcGxR81xjg6oklE2W9hzyxFDM6FKuDtKJ0KcdYjAq4aHIcm3sFi6kCb9yWpzJhG/EPKk4lvnlrEKbXiSnLJGVstvjm1WqB8lKgZ411/zPM/MU45ITTWIggPYNH04arlfLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743494261; c=relaxed/simple;
-	bh=gsOC6Rdr7oKwXyERdvN9ZCknZbemPP5V4VJ2wdV1FgE=;
+	s=arc-20240116; t=1743495779; c=relaxed/simple;
+	bh=O0QQJEF18+1rlQZs043LAf4yFZOKmppUTBC2llv9WRc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E7pV9gK31bCaKPxrbtENyr0CUKlLhVuHDIRrN0KxhRTET8hpIk6pdU/ZTCexLn75L6iQGCZQesMiHE5UsfLBA+U7IKp9LsDanBCESheIbyPFzAJr4nO/bMhI8hlawy8oAsOZp9caIv+5eM+X62i05UjoNWNJq+7M8DpLH0aWWsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j2UOoP3N; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743494258; x=1775030258;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gsOC6Rdr7oKwXyERdvN9ZCknZbemPP5V4VJ2wdV1FgE=;
-  b=j2UOoP3N5Qg2Yzp5uEKTdcU6arkoKupPyO/DMNePjzo/ZB9E47KAByJ9
-   retf9jNm1hTb79v04oVIwnCr/L1ZaKX0RIOyEr/8Gy8iBpAWgukrjiBuM
-   W5gAlCPwofYa+knazz9vaoDbQoqWwFinjD19nq7fYW4+N+MKa4EEm/nAf
-   JgnQFFq2+/iYwk2v9w/5pofmo9V+bryVLYU9GRI9whHyQCR2LsBMAx3ni
-   8KudHhB5EQdr8qkpcVM45DPmvmsFiMNCdP7hh1xXKJSpX5aB/CaCvSKM2
-   81nkY9i9pF0TGFL5Qoi8+y110ORz3WTvxaOCgMA7VoXn0s2GFW67QnsRQ
-   Q==;
-X-CSE-ConnectionGUID: gGcViaerQ0qi4UqfHzhmdA==
-X-CSE-MsgGUID: 7JTUoykHR5K/iVCErIZvHw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="44054386"
-X-IronPort-AV: E=Sophos;i="6.14,292,1736841600"; 
-   d="scan'208";a="44054386"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 00:57:38 -0700
-X-CSE-ConnectionGUID: n/HefCdgTY6bVQlhI/Aoyw==
-X-CSE-MsgGUID: 04wal0V/Tc6yT+lACGj31A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,292,1736841600"; 
-   d="scan'208";a="131172051"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa003.jf.intel.com with ESMTP; 01 Apr 2025 00:57:36 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 825BC278; Tue, 01 Apr 2025 10:57:34 +0300 (EEST)
-Date: Tue, 1 Apr 2025 10:57:34 +0300
-From: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>
-Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
-	Vishal Annapurve <vannapurve@google.com>, Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, 
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
- BIOS data
-Message-ID: <z7h6sepvvrqvmpiccqubganhshcbzzrbvda7dntzufqywei4gz@6clsg5lbvamd>
-References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=NfH2ozepZhbmUEu2db2bDSoJAXP/EC1Wz+ZIEBXfp/gAQW58/O+WL6hrVr+4X1x4OoI6cOrQ7zzGuibj1ZrJKy9CXZElmH7913cYmPWAqcgQcfuSAveSUgb7Smd6GuxAWjYfWBswp0oSOnt816L01r0Vna/kc4Dye+NqpB/1omo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H3aJCLaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A2AC4CEE4;
+	Tue,  1 Apr 2025 08:22:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743495779;
+	bh=O0QQJEF18+1rlQZs043LAf4yFZOKmppUTBC2llv9WRc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H3aJCLaUO6zzX8Z9stF1XQwpJLlyTGC+uYJ1dakhWIF3agcP/5BLLtepziTzajCK1
+	 S8a85mi95sIQ7Uix4i9u31YkllaLlwFy18x7AHj3ISHlDZrMj40OfhfcueXObWLfwB
+	 DVBPMRz0svKriGcJjI98U43pgNZ/gTDXIhtJjAv5nSDwPFw0AI4Mxkcd8gJdt1e/r8
+	 JRl9cWCOIkehMkNwnKrSWYjlWV79JbvvQ6c6cK+TSFmxraAwLdzCCBQ5FDcom+m+FI
+	 TE1f2ITwQfjbbQ2FBBJTE4JE1j50A5T02DmJ1IeMaCdbLOxPHNnifpfM2C4ImcwZip
+	 FADmhbExd11rQ==
+Date: Tue, 1 Apr 2025 10:22:53 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Xin Li (Intel)" <xin@zytor.com>, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	pavel@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	xi.pardee@intel.com, todd.e.brandt@intel.com
+Subject: Re: [PATCH v1 1/1] x86/fred: Fix system hang during S4 resume with
+ FRED enabled
+Message-ID: <Z-uiXfz1nOP7jGQv@gmail.com>
+References: <20250326062540.820556-1-xin@zytor.com>
+ <CAJZ5v0jfak9K_7b=adf5ew-xDiGHUEPSp5ZpAGt66Okj-ovsGQ@mail.gmail.com>
+ <148C8753-8972-4970-8951-E2D1CB26D8B0@zytor.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,61 +64,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <148C8753-8972-4970-8951-E2D1CB26D8B0@zytor.com>
 
-On Mon, Mar 31, 2025 at 04:14:40PM -0700, Dan Williams wrote:
-> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-> address space) via /dev/mem results in an SEPT violation.
+
+* H. Peter Anvin <hpa@zytor.com> wrote:
+
+> Just to make it clear: the patch is correct, the shortcoming is in 
+> the description.
 > 
-> The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
-> unencrypted mapping where the kernel had established an encrypted
-> mapping previously.
-> 
-> Teach __ioremap_check_other() that this address space shall always be
-> mapped as encrypted as historically it is memory resident data, not MMIO
-> with side-effects.
+> I would say that Xin's description, although perhaps excessively 
+> brief, is correct from the *hardware* point of view, whereas Rafael 
+> adds the much needed *software* perspective.
 
-I am not sure if all AMD platforms would survive that.
+This part of the -v1 patch was a bit misleading to me:
 
-Tom?
+>> Due to changes in the kernel text and data mappings, the FRED MSRs 
+>> must be reinitialized.
 
-> 
-> Cc: <x86@kernel.org>
-> Cc: Vishal Annapurve <vannapurve@google.com>
-> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
-> Tested-by: Nikolay Borisov <nik.borisov@suse.com>
-> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  arch/x86/mm/ioremap.c |    4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-> index 42c90b420773..9e81286a631e 100644
-> --- a/arch/x86/mm/ioremap.c
-> +++ b/arch/x86/mm/ioremap.c
-> @@ -122,6 +122,10 @@ static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *des
->  		return;
->  	}
->  
-> +	/* Ensure BIOS data (see devmem_is_allowed()) is consistently mapped */
-> +	if (PHYS_PFN(addr) < 256)
+... as it suggests that the FRED MSRs will change from before the 
+suspend - while they don't.
 
-Maybe
-	if (addr < BIOS_END)
+What this sentence meant is that FRED MSRs set up by the intermediate 
+*kexec kernel* are incorrect and must be reinitialized again to 
+reconstruct the pre-hibernation state. Ie. there's 3 FRED setup states: 
+pre-S4, kexec and post-S4, where pre-S4 == post-S4. Right?
 
-?
+I think the description and comments in the -v2 patch are better in 
+this regard.
 
-> +		desc->flags |= IORES_MAP_ENCRYPTED;
-> +
->  	if (!IS_ENABLED(CONFIG_EFI))
->  		return;
->  
-> 
+Thanks,
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+	Ingo
 
