@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-127442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6382CA797A0
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 23:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 214DCA797A1
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 23:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23DAD16657C
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E55061677B0
 	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 21:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C5719D897;
-	Wed,  2 Apr 2025 21:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A54C1F1936;
+	Wed,  2 Apr 2025 21:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qp2CyWj+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HxRTsj0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40174288DA
-	for <stable@vger.kernel.org>; Wed,  2 Apr 2025 21:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF80E288DA
+	for <stable@vger.kernel.org>; Wed,  2 Apr 2025 21:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743629114; cv=none; b=Yd5A89F0sKQH0oXBQnkJQ1SoMiEusK1IVcSbTsSTUeW7vlZNYVqicMm/AkYrKU8N9xPtTGsqy9yZB/XAGP0x9odBk8BKKvMBtDvjhDexxVtlq2dpbQPrqGVBTt3K/9CRMVV0IXg1e6QnN3aNVTQFDOU4reCzhvEGa4q7c0FLFnA=
+	t=1743629117; cv=none; b=Ycr3Yj/IW1F5hABmF6TkZrCZL5FnUKZz8dVIFKsIGdgfzCBO0M3rl5+0wJ0TBtK0o7vnvUlDw7Fctd9LgML+PKxT5D5uVvDmUcG0b1FAJHJ3xvCwp64/JYEeW2HmTP46eY65hpdFEBuUN6LLukobW7ecjRFAYMizC+bYjm+W9RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743629114; c=relaxed/simple;
-	bh=G/kK2D8kDdkaqdiQcqzgisNYoiiit69jc/l+ENJMid4=;
+	s=arc-20240116; t=1743629117; c=relaxed/simple;
+	bh=o4hL/p+rOAoDVYRfkP+37twT48P8ANuZ2qY5czSea3U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U1UzRtYuqS27L8d9i5kvnl63VYrAnS5T4Ps64OfGpCbcNtHgAApaqPr/+ToSDXTXjcrsZV/mmvetLpS9EQhs1L2iar0v3oYHnFc8jsTP8g7IoxSmD8O2dOVTVXeUhh7gsZnCYvNbSXCzdNz0yzf5/JWGqyl7zW2SXbvqBsQVwTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qp2CyWj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DBCC4CEDD;
-	Wed,  2 Apr 2025 21:25:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kc7GXu34HgwHMomsdsZyMM8K9jRGicPncqXMwtk1Ps5mMi80moPdiIHqfMVERGFeybcXCTWCKZj98N8ITSkU43Wms3JAFIPe3r2x5YTHQthmDavEulrWu95y0h91hwY31sVP/RHapNPXT1WEihVVlzWAv+A9WO+BskIATIJJd8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HxRTsj0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D715BC4CEDD;
+	Wed,  2 Apr 2025 21:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743629113;
-	bh=G/kK2D8kDdkaqdiQcqzgisNYoiiit69jc/l+ENJMid4=;
+	s=k20201202; t=1743629116;
+	bh=o4hL/p+rOAoDVYRfkP+37twT48P8ANuZ2qY5czSea3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qp2CyWj+s69WCDV4iPsz1pVTmGcJX4pr6kvdGBWd4zLpF2Lz9JL6urgKP8D8bzlwT
-	 GqOU3mB1KrZS2K2MMu0g10dYRC2N1/duPAHHURO63wT41w2LpdzRrShtjCbN1b5bYY
-	 qx8Rmd8AbZpwdsoobxSN5u6uNxXkOtFoa5DDuEOQtinq1/4JaNvW2PQ+azUCfHq8ss
-	 rvZP/WhJIVBi9LC1S73cvp+Woi3Nna8h35IcVmkEKZ7XG0JSuE9oCiqoSB+qoo1GcK
-	 SvEHK/TSbkiUXqIJR3ac8oZtAlSTckqDCp0DV7vw56ttCn04sMAE3fytgU8c6dS8wt
-	 sap9o9urMhppQ==
+	b=HxRTsj0MmB864IpsZuklsIUzQ/VPK5m8rcRtH+MHSDdNAhsWuNHaCCd6vfTAFIId5
+	 8I/pcxVzR2/2dk8UDjR8252d1gumwPl2g4gQHvv9vYXhd3IsEdfomaUwf7Nx59EVDy
+	 /dBwSdA1CWXrpMTxrBsb9Lb/ss1iy+cfWtBP/6YjlHilTFBneOtSK6hc5GhkUy4jEt
+	 q2AVKfru/Dq21yDB7rie2pfpwX7Zwuuo3t+PKUl6ydc4mzTISzONUDwjwX55RcJMO7
+	 72zNfI4HcwOWwVBeza1a8vfmzXxY0z0IvzZVZDdNEZPtVZi8MdhS311/GkgREx+ldh
+	 T2tLLBjVpMK2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Feng Liu <Feng.Liu3@windriver.com>,
+Cc: Kang Wenlin <wenlin.kang@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] i2c: dev: check return value when calling dev_set_name()
-Date: Wed,  2 Apr 2025 17:25:09 -0400
-Message-Id: <20250402123137-ab9b03396cc51ce5@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y 3/6] binfmt_elf: Use elf_load() for interpreter
+Date: Wed,  2 Apr 2025 17:25:14 -0400
+Message-Id: <20250402133325-29332c05069f740f@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250402061645.1194002-1-Feng.Liu3@windriver.com>
+In-Reply-To:  <20250402082656.4177277-4-wenlin.kang@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,54 +67,41 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 993eb48fa199b5f476df8204e652eff63dd19361
+The upstream commit SHA1 provided is correct: 8b04d32678e3c46b8a738178e0e55918eaa3be17
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Feng Liu<Feng.Liu3@windriver.com>
-Commit author: Andy Shevchenko<andriy.shevchenko@linux.intel.com>
+Backport author: Kang Wenlin<wenlin.kang@windriver.com>
+Commit author: Kees Cook<keescook@chromium.org>
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (different SHA1: 2f345bb14ad4)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  993eb48fa199b ! 1:  011fada4599a5 i2c: dev: check return value when calling dev_set_name()
+1:  8b04d32678e3c ! 1:  498e3c72603ad binfmt_elf: Use elf_load() for interpreter
     @@ Metadata
       ## Commit message ##
-         i2c: dev: check return value when calling dev_set_name()
+         binfmt_elf: Use elf_load() for interpreter
      
-    +    [ Upstream commit 993eb48fa199b5f476df8204e652eff63dd19361 ]
+    +    commit 8b04d32678e3c46b8a738178e0e55918eaa3be17 upstream
     +
-         If dev_set_name() fails, the dev_name() is null, check the return
-         value of dev_set_name() to avoid the null-ptr-deref.
+         Handle arbitrary memsz>filesz in interpreter ELF segments, instead of
+         only supporting it in the last segment (which is expected to be the
+         BSS).
+    @@ Commit message
+         Signed-off-by: Sebastian Ott <sebott@redhat.com>
+         Link: https://lore.kernel.org/r/20230929032435.2391507-3-keescook@chromium.org
+         Signed-off-by: Kees Cook <keescook@chromium.org>
+    +    Signed-off-by: Wenlin Kang <wenlin.kang@windriver.com>
      
-         Fixes: 1413ef638aba ("i2c: dev: Fix the race between the release of i2c_dev and cdev")
-         Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-         Signed-off-by: Wolfram Sang <wsa@kernel.org>
-    +    Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
-    +    Signed-off-by: He Zhe <Zhe.He@windriver.com>
-     
-      ## drivers/i2c/i2c-dev.c ##
-     @@ drivers/i2c/i2c-dev.c: static int i2cdev_attach_adapter(struct device *dev, void *dummy)
-    @@ drivers/i2c/i2c-dev.c: static int i2cdev_attach_adapter(struct device *dev, void
-     +	if (res)
-     +		goto err_put_i2c_dev;
-      
-    - 	pr_debug("adapter [%s] registered as minor %d\n", adap->name, adap->nr);
-    + 	pr_debug("i2c-dev: adapter [%s] registered as minor %d\n",
-    + 		 adap->name, adap->nr);
-      	return 0;
-     +
-     +err_put_i2c_dev:
+      ## fs/binfmt_elf.c ##
+     @@ fs/binfmt_elf.c: static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
