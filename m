@@ -1,155 +1,210 @@
-Return-Path: <stable+bounces-127430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE3FA795CC
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 21:21:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FDE5A79605
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 21:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 732963A93EB
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 19:21:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B42FD17013F
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 19:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D711E1A32;
-	Wed,  2 Apr 2025 19:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AAE1EBA07;
+	Wed,  2 Apr 2025 19:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WOjc2rcx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QPRpkg7Y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709661917C2;
-	Wed,  2 Apr 2025 19:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B52D2AF19;
+	Wed,  2 Apr 2025 19:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743621699; cv=none; b=EoWIE2x456trO/zQjCKKOkCxd9WonZcxOumgcXaG/QEnSgKdaf1hZ3tDPItk9fulNvXu/ZbuWYaKuoPY7s4ktOU8G3pIb33I0viSSFhYXGSJhpEAX4O4yRyKFwXVGPT7jhDmgZku6yAxqZDqTDQg37hVDYKPztUaN/kI8P859rA=
+	t=1743622871; cv=none; b=PQz1LZIIBpkt57j82sJYzbcg8WMZbwEkxAy8wNfZfqg6KRZ1DHUgqDXVL/vioD5HUlccCQbRSU2/6eMExyG/e3nll8pCrwQLqTpgA/mdVIW4gCEALhTJje5keo6ze+sJrT41sZU5XbmV0ZKGowCTygJLSmOi9zDkXJVawg0CVpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743621699; c=relaxed/simple;
-	bh=Y0CJoWpl3EeJ09Y6hm8dhwkjJsoPxwsv8MYXUF0IkkI=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=Wvz8DVEYc6/lQnd5G9DykGh5vNUA5R1DLQ8BXmB5KzwMl7Ov3AN/hf4ljk25h6tEvNLceu5/2wiFi5AMxQsFn9jPS408Jlyc95KVEJ9hGBpoXagEb5DDIZ4q9rcueb9Xuv6s70X8iESrEWhZqica9rVUuRKjuMV9O8KVoYtNnzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WOjc2rcx; arc=none smtp.client-ip=209.85.208.43
+	s=arc-20240116; t=1743622871; c=relaxed/simple;
+	bh=HQYrUf3Z4hmCPC+YCNHa1UrZ8jCM/O8ktaJyaaK/ih0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cjsbhG6NAgVfVfnApBM6JFkOdNb3Mjjnh6AYet03/DNZnTSe8p4yGzXn/XKIrokdoYLWwZ8Et7szqp3h/D8/CqQJ1oO1KfVBtofXJR4Xdt9gI2nxW75veci54l7I64WTq40RiOwTNBSdOKT11xDJtuxkJZ1LPf3ICWUc0wv1Ieo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QPRpkg7Y; arc=none smtp.client-ip=209.85.166.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5dbf7d45853so29131a12.1;
-        Wed, 02 Apr 2025 12:21:37 -0700 (PDT)
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3cfce97a3d9so1023175ab.2;
+        Wed, 02 Apr 2025 12:41:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743621695; x=1744226495; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding
-         :disposition-notification-to:date:cc:to:from:subject:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Y0CJoWpl3EeJ09Y6hm8dhwkjJsoPxwsv8MYXUF0IkkI=;
-        b=WOjc2rcxBDyJ9G7KHkNHm/9YEk0XTHn9nz+tXYMGxHeP3y8P/QiISyIa9jgpPaMCwA
-         dAWBSquoHXjKn2qtPmIXD3ceFYtBPLDwaY5EpuT3d0UHKyy2mxtPqpMIszOSVzUMfHWv
-         tRYD+Vi40gGj6+Spn6Lhu2Rt01TvD+doLAkzPtrIHCmXBtCZi7fAWSPl/Pq4+MG1gzYC
-         ezrD8R5ws2XSRhI5uZsmrVA9ooV8XCjOmCynnB12u+RlyXNvupPFHwAHB7X8ecgPkVfw
-         0ORvD549cAHb6lmyV3zg98nM9D4+2eKSenzpcrfXKnC8frzZWQ/YLHMyoCJwnudWHBuq
-         polA==
+        d=gmail.com; s=20230601; t=1743622867; x=1744227667; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UUS1J/z9kQSq8/4qkw4zIETjzLEsRP7cJOaot+HzQu4=;
+        b=QPRpkg7YO04K4i4HBCrRyMVHktAD3FvaDpxWS7ECioowhpKNlFAIvQy66WHY20T2lh
+         oLw7NtNSXU+l7WF0nQVP4jO6hEsvFwsbOEUbVIuNJBRhFm43OizYArC8bksAh9xb7/p4
+         INSrSASlpz5I7x10vFlmUdNXiue5SKPvepI/Dj+R00itQPO0PeR5n+6OoyqNCky5wYMT
+         pvuAz4dgbe8cQzaVxkCqgH7Kac2a84Cfo8HaVlId7Ufo7YiHmprKp6Qmna/RffFelPTg
+         7745ijdr1V1gtTgtX1AF9ZSf9Wix6LYi54i2STKYx9rYq49csLwx4O0PD2PPbxFxd2d0
+         JOqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743621695; x=1744226495;
-        h=mime-version:user-agent:content-transfer-encoding
-         :disposition-notification-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y0CJoWpl3EeJ09Y6hm8dhwkjJsoPxwsv8MYXUF0IkkI=;
-        b=e1yJm+jEwdfTqtb5SP8kkaFUzfbCQdBZLoUIuUYWMDbSBr8T94gJoWdDA3Uzcoof8s
-         6X6tn3SCg2Rwv+SyaacOWMcLnYE2hhueTNHlKHGUcCLM09WgUgK+7tMT9Bw0bUIAw+KI
-         KNowcA8WHH560EgKrCd3q3Kg74a6cuRAJFFzPtbPfv2vqz2UePHYIqWfqo4dLrfvBOMg
-         ru0J1P106njiFcRwVFRvO4YuhkWz2Z7HEOAWI9u9tD4DIAZ8+vW4OfD3rXCcIh6mRy9i
-         h6sy7HBcsn3JagCKw5HjUvdfOqhiWbqFYm/FzXMbI9L+k96qAdRP+mRYYrvkK7YdZx9d
-         iRbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUs3zXxzzdzYZ3GWZp6RVxZnyirsBEBTtG0C7MtQJfYLX1Ov66gqYAjVqmft1JGpzJovBhdGD8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqLxRDJpsLknUe+Gv5WxCUjXJ+w+69K8Y6zNmTa/z6FyHcUZbP
-	8i9btQOJ+lZHuWXEyWWBzXq6MJPRBp7kWnxRbQc151yJpaSpF7rQmVnqWw==
-X-Gm-Gg: ASbGncu2RKM7ECmuvuisgB0vi20KWJzcI+q1S4H/moUpkxMZgxIOrE9QYlkwcgco4v1
-	D0tpVlfpp9779fudA5O3bekxgvP5zIMgGsQ18F1ivz+fiC5Gr0KhhtyHW9WBkovhQSrVVk9tqoB
-	BleBJuMe2g9m6YHOz1tOZj0K1OR21fQOA0qrtsQQBvOT+FcGH+4oEP9NuwvlC1mdyH8pmpB3rau
-	lzf0GD5cC5BwJI/vHgq0wtEsHlXzEgmDt6ZKnQaI5wWVdOlt/i9ycHYzpuDU6kKvYCT6IDuEfZ5
-	Rf0LI46H/pM6WU6wDdYfFkgNxP9s9Wp7KCrQOI9Z5fsJFWpXCpnvMhtJ1soqk4G6g4YSU6cocHq
-	GXSToTMjaKhFnX/75ZrlmTA==
-X-Google-Smtp-Source: AGHT+IFiQzV9o9e7nDkOOcJEinOSM0/JLY+RhChkW9DUoFCOY0jF5RPJcHwkT1do1xB278YUakWHmg==
-X-Received: by 2002:a05:6402:1e8c:b0:5e0:36da:7ae4 with SMTP id 4fb4d7f45d1cf-5f03bfbf084mr1997409a12.1.1743621695196;
-        Wed, 02 Apr 2025 12:21:35 -0700 (PDT)
-Received: from [192.168.1.239] (89-64-31-184.dynamic.chello.pl. [89.64.31.184])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5edc17e0704sm8822861a12.66.2025.04.02.12.21.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Apr 2025 12:21:34 -0700 (PDT)
-Message-ID: <a0f1dae5eee091781711d3b4ebe812b9a1f8c944.camel@gmail.com>
-Subject: Request for backporting hid-pidff driver patches
-From: tomasz.pakula.oficjalny@gmail.com
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc: sashal@kernel.org, gregkh@linuxfoundation.org, oleg@makarenk.ooo
-Date: Wed, 02 Apr 2025 21:21:31 +0200
-Disposition-Notification-To: tomasz.pakula.oficjalny@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0 
+        d=1e100.net; s=20230601; t=1743622867; x=1744227667;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UUS1J/z9kQSq8/4qkw4zIETjzLEsRP7cJOaot+HzQu4=;
+        b=qW6i+8uk/y4nwjd5ddf/+cNGrNew+yWlVQHonE+tBJIyRTxmoqey1OV7WZqsBMp0G8
+         96Roetg1naUkIJEbbxzW6CEzJwDCD43Fur5afbQnvd+NJ5mJlFV7HRfsdd9aFgzW3rIG
+         BLTf1kLhVsQ8MScyxYAFDfwspJhhOFR0DoxZjqguxB7BFjNvmgrKlFg7L802kj1aBrCY
+         EVM1AUkN8K6tihaM6EmIrvzIg5KjlgsqRhwCOG/BL9edRNUjvWKurivLNEpYEfbflw04
+         pEicrfEsW7uxYlqT+BdXVntPbeMVsjxD7FPpu48gpR+KE5yRvoVXVUYis4HhAYWX6Eaz
+         OrYw==
+X-Forwarded-Encrypted: i=1; AJvYcCUV/PZmRQwIbViIaLEpn03Zvt8zoUgTeUUr6oZTsAA4XcczyfUxM+kIYz9lDXPk9vhhaCtwN7nq@vger.kernel.org, AJvYcCVUjyXIkWhKKe/zR63dtgV30PEIeeN6PZ5+Pjid7Xf7gq6yB1UD5eDUbsyAipMo97qB8b7evMFH+4UoNg==@vger.kernel.org, AJvYcCXuOCXNUyD6VeKDErxWKmc9hrlAuFsgdsH6/q0K4paDtibWqywbeBBQZ8lwd63felAwSaVTtFInSzfNOgs=@vger.kernel.org, AJvYcCXuiRJYDuXNdujpS5grrZS+dSvJ9tLrIITVd3lITsAKS8U8RrjaCN9LkTrsHHrexQfHnwLVtSQJ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzM81CJxuP+oLf+VTeEwH5I8aXj8xh4itJyKWFUQbQKuRdHXWQf
+	wpXKVGl+/b5SmPkiCrCS4ZtAgg5GZPe/Qi8Nb0/sZ9A6g4FyGJYdC+WJFvfmgOuq5wkCDK2sQ/4
+	1PuVNEeEgvmFG8v14umYiuUjElvDa+wlZ
+X-Gm-Gg: ASbGncu3qYUw6iipZPWmVzIEByY8cld9eBpo01A9W05+VUK/3awC048Z8j+Y73Tiezb
+	0bamOt1CJm5cAeEg+DfGPWm+ZmWR950M+Xyl5cHc6iLZkB8eFN+GnhFua22ebX3SzUp6vRdrYPU
+	eDPCGEAWTmnXA8s+TQvNv8tAGjmew6cq/Zoen8zWI=
+X-Google-Smtp-Source: AGHT+IEWfma6X5ez4B84XHaA8Hg5GU9L8meSLHJ4iYrb/qIwt8c4/Ivb+o9zQV621QfArJuMXBAKElx8oRo/JcJFASg=
+X-Received: by 2002:a05:6e02:3a04:b0:3d6:cbed:3302 with SMTP id
+ e9e14a558f8ab-3d6dd76c89emr2439975ab.2.1743622867040; Wed, 02 Apr 2025
+ 12:41:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
+In-Reply-To: <20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Wed, 2 Apr 2025 15:40:56 -0400
+X-Gm-Features: AQ5f1JorQaO0HCtrnUXO4s6aGuDFn3xGfel9XaXoLYeySmPI2omcRJXHShX-dDs
+Message-ID: <CADvbK_dTX3c9wgMa8bDW-Hg-5gGJ7sJzN5s8xtGwwYW9FE=rcg@mail.gmail.com>
+Subject: Re: [PATCH] sctp: check transport existence before processing a send primitive
+To: =?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, kernel-dev@igalia.com, linux-sctp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello
+On Wed, Apr 2, 2025 at 6:26=E2=80=AFAM Ricardo Ca=C3=B1uelo Navarro <rcn@ig=
+alia.com> wrote:
+>
+> sctp_sendmsg() re-uses associations and transports when possible by
+> doing a lookup based on the socket endpoint and the message destination
+> address, and then sctp_sendmsg_to_asoc() sets the selected transport in
+> all the message chunks to be sent.
+>
+> There's a possible race condition if another thread triggers the removal
+> of that selected transport, for instance, by explicitly unbinding an
+> address with setsockopt(SCTP_SOCKOPT_BINDX_REM), after the chunks have
+> been set up and before the message is sent. This causes the access to
+> the transport data in sctp_outq_select_transport(), when the association
+> outqueue is flushed, to do a use-after-free read.
+>
+The data send path:
 
-Recently AUTOSEL selected some of out patches to hid-pidff and
-hid-universal-pidff. Though I looked over what was selected and
-everything will be working, I'd like to keep the drivers up-to-date at
-least going back to 6.12 as these kernels are widely used and leaving
-said driers in an incomplete state, not up to upstream might lead to
-some false positive bug reports to me and Oleg.
+  sctp_endpoint_lookup_assoc() ->
+  sctp_sendmsg_to_asoc()
 
-Here's the full list of the hid-pidff related patches from upstream. It
-might look like a lot but some granular changes were recorded as the
-driver was in need of an overhaul for at least 10 years. This mainly
-touches just two files.
+And the transport removal path:
 
-I tested it personally and all the patches apply cleanly on top of
-current 6.12.y, 6.13.y and 6.14.y branches.
+  sctp_sf_do_asconf() ->
+  sctp_process_asconf() ->
+  sctp_assoc_rm_peer()
 
-Thanks in advance!
+are both protected by the same socket lock.
 
-e2fa0bdf08a7 HID: pidff: Fix set_device_control()
-f98ecedbeca3 HID: pidff: Fix 90 degrees direction name North -> East
-1a575044d516 HID: pidff: Compute INFINITE value instead of using hardcoded =
-0xffff
-0c6673e3d17b HID: pidff: Clamp effect playback LOOP_COUNT value
-bbeface10511 HID: pidff: Rename two functions to align them with naming con=
-vention
-1bd55e79cbc0 HID: pidff: Remove redundant call to pidff_find_special_keys
-9d4174dc4a23 HID: pidff: Support device error response from PID_BLOCK_LOAD
-e19675c24774 HID: pidff: Comment and code style update
-c385f61108d4 HID: hid-universal-pidff: Add Asetek wheelbases support
-1f650dcec32d HID: pidff: Make sure to fetch pool before checking SIMULTANEO=
-US_MAX
-2c2afb50b50f MAINTAINERS: Update hid-universal-pidff entry
-5d98079b2d01 HID: pidff: Factor out pool report fetch and remove excess dec=
-laration
-217551624569 HID: pidff: Use macros instead of hardcoded min/max values for=
- shorts
-4eb9c2ee538b HID: pidff: Simplify pidff_rescale_signed
-0d24d4b1da96 HID: pidff: Move all hid-pidff definitions to a dedicated head=
-er
-22a05462c3d0 HID: pidff: Fix null pointer dereference in pidff_find_fields
-f7ebf0b11b9e HID: pidff: Factor out code for setting gain
-8713107221a8 HID: pidff: Rescale time values to match field units
-1c12f136891c HID: pidff: Define values used in pidff_find_special_fields
-e4bdc80ef142 HID: pidff: Simplify pidff_upload_effect function
-cb3fd788e3fa HID: pidff: Completely rework and fix pidff_reset function
-abdbf8764f49 HID: pidff: Add PERIODIC_SINE_ONLY quirk
-7d3adb9695ec MAINTAINERS: Add entry for hid-universal-pidff driver
-f06bf8d94fff HID: Add hid-universal-pidff driver and supported device ids
-ce52c0c939fc HID: pidff: Stop all effects before enabling actuators
-3051bf5ec773 HID: pidff: Add FIX_WHEEL_DIRECTION quirk
-36de0164bbaf HID: pidff: Add hid_pidff_init_with_quirks and export as GPL s=
-ymbol
-a4119108d253 HID: pidff: Add PERMISSIVE_CONTROL quirk
-fc7c154e9bb3 HID: pidff: Add MISSING_PBO quirk and its detection
-2d5c7ce5bf4c HID: pidff: Add MISSING_DELAY quirk and its detection
-f538183e997a HID: pidff: Clamp PERIODIC effect period to device's logical r=
-ange
-8876fc1884f5 HID: pidff: Do not send effect envelope if it's empty
-37e0591fe44d HID: pidff: Convert infinite length from Linux API to PID stan=
-dard
+Additionally, when a path is removed, sctp_assoc_rm_peer() updates the
+transport of all existing chunks in the send queues (peer->transmitted
+and asoc->outqueue.out_chunk_list) to NULL.
 
-Tomasz
+It will be great if you can reproduce the issue locally and help check
+how the potential race occurs.
+
+> This patch addresses this scenario by checking if the transport still
+> exists right after the chunks to be sent are set up to use it and before
+> proceeding to sending them. If the transport was freed since it was
+> found, the send is aborted. The reason to add the check here is that
+> once the transport is assigned to the chunks, deleting that transport
+> is safe, since it will also set chunk->transport to NULL in the affected
+> chunks. This scenario is correctly handled already, see Fixes below.
+>
+> The bug was found by a private syzbot instance (see the error report [1]
+> and the C reproducer that triggers it [2]).
+>
+> Link: https://people.igalia.com/rcn/kernel_logs/20250402__KASAN_slab-use-=
+after-free_Read_in_sctp_outq_select_transport.txt [1]
+> Link: https://people.igalia.com/rcn/kernel_logs/20250402__KASAN_slab-use-=
+after-free_Read_in_sctp_outq_select_transport__repro.c [2]
+> Cc: stable@vger.kernel.org
+> Fixes: df132eff4638 ("sctp: clear the transport of some out_chunk_list ch=
+unks in sctp_assoc_rm_peer")
+> Signed-off-by: Ricardo Ca=C3=B1uelo Navarro <rcn@igalia.com>
+> ---
+>  net/sctp/socket.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>
+> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> index 36ee34f483d703ffcfe5ca9e6cc554fba24c75ef..9c5ff44fa73cae6a6a0479080=
+0cc33dfa08a8da9 100644
+> --- a/net/sctp/socket.c
+> +++ b/net/sctp/socket.c
+> @@ -1787,17 +1787,24 @@ static int sctp_sendmsg_check_sflags(struct sctp_=
+association *asoc,
+>         return 1;
+>  }
+>
+> +static union sctp_addr *sctp_sendmsg_get_daddr(struct sock *sk,
+> +                                              const struct msghdr *msg,
+> +                                              struct sctp_cmsgs *cmsgs);
+> +
+>  static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
+>                                 struct msghdr *msg, size_t msg_len,
+>                                 struct sctp_transport *transport,
+>                                 struct sctp_sndrcvinfo *sinfo)
+>  {
+> +       struct sctp_transport *aux_transport =3D NULL;
+>         struct sock *sk =3D asoc->base.sk;
+> +       struct sctp_endpoint *ep =3D sctp_sk(sk)->ep;
+>         struct sctp_sock *sp =3D sctp_sk(sk);
+>         struct net *net =3D sock_net(sk);
+>         struct sctp_datamsg *datamsg;
+>         bool wait_connect =3D false;
+>         struct sctp_chunk *chunk;
+> +       union sctp_addr *daddr;
+>         long timeo;
+>         int err;
+>
+> @@ -1869,6 +1876,15 @@ static int sctp_sendmsg_to_asoc(struct sctp_associ=
+ation *asoc,
+>                 sctp_set_owner_w(chunk);
+>                 chunk->transport =3D transport;
+>         }
+> +       /* Fail if transport was deleted after lookup in sctp_sendmsg() *=
+/
+> +       daddr =3D sctp_sendmsg_get_daddr(sk, msg, NULL);
+> +       if (daddr) {
+> +               sctp_endpoint_lookup_assoc(ep, daddr, &aux_transport);
+> +               if (!aux_transport || aux_transport !=3D transport) {
+> +                       sctp_datamsg_free(datamsg);
+> +                       goto err;
+> +               }
+> +       }
+>
+We should avoid an extra hashtable lookup on this hot TX path, as it would
+negatively impact performance.
+
+Thanks.
+
+>         err =3D sctp_primitive_SEND(net, asoc, datamsg);
+>         if (err) {
+>
+> ---
+> base-commit: 38fec10eb60d687e30c8c6b5420d86e8149f7557
+> change-id: 20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_tr=
+ansport-46c9c30bcb7d
+>
 
