@@ -1,146 +1,98 @@
-Return-Path: <stable+bounces-127418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F754A7919C
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 17:00:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B01AA791AB
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 17:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E53E3B242A
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 15:00:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0764A1892A46
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 15:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D1523BD0C;
-	Wed,  2 Apr 2025 15:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9676123C8CC;
+	Wed,  2 Apr 2025 15:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DFlhRkJZ"
 X-Original-To: stable@vger.kernel.org
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0CF23BD09;
-	Wed,  2 Apr 2025 15:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.67.55.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EFD23C8AD;
+	Wed,  2 Apr 2025 15:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743606011; cv=none; b=Ljte44PsB67URQMiyGjpfUfCwyghn2djW88uUvqorKmTyiPajSh5lMwtRO9+wjReMTQIM69yVY4OloDr1XzpOY9LteOl5AZgWHqMGNmkaqn53/u4DdquhvSWkdTgbLgtHFSEtKhYiA+7Nq69sECfGqr/Pc5VNHYiuQ8QYirHFI0=
+	t=1743606016; cv=none; b=ShimyzcyVvpHKvgz4XitjPyDkt5tP/1oi1kG+nm7D5ogUvNw6HI4vpSEkaZmGG3NK3e18KWM96BI2OubxYGxhjG7omewI4rRiGpHBPVQpJuHQyYdYItIPOtcKrq2JsQ4vFRtwWys1IO6imt8TpFU/YYW1Jb68Hl3elbCvpFlN5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743606011; c=relaxed/simple;
-	bh=QDR3wL0XPBW/EDcrWr7RCbY09c1dPTtj1ZoruraubdI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CAyUx/6Ug6kOtpIwDTRl/2uyck/tDVNqS9N6rIiwoJiI2oVXCV6wS8cJ2VYtfeRMQYkBYp0MWKHZjsOV3/9Aaprrmz0DSvCyExte181e3p1vU98HuUSGsitDto0DREXSd+x9L2Ui9nzjgf+TR9MTbUfGW5l14gSOCvyFRrG87CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com; spf=pass smtp.mailfrom=shelob.surriel.com; arc=none smtp.client-ip=96.67.55.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shelob.surriel.com
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@shelob.surriel.com>)
-	id 1tzzYb-000000007Vk-0UjT;
-	Wed, 02 Apr 2025 10:59:09 -0400
-Message-ID: <9d38c61098b426777c1a748cf1baf8e57c41c334.camel@surriel.com>
-Subject: Re: [PATCH] sched/fair: Add null pointer check to pick_next_entity()
-From: Rik van Riel <riel@surriel.com>
-To: Peter Zijlstra <peterz@infradead.org>, Pat Cody <pat@patcody.io>
-Cc: mingo@redhat.com, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, 	vschneid@redhat.com, linux-kernel@vger.kernel.org,
- patcody@meta.com, 	kernel-team@meta.com, stable@vger.kernel.org, Breno
- Leitao <leitao@debian.org>
-Date: Wed, 02 Apr 2025 10:59:09 -0400
-In-Reply-To: <20250324115613.GD14944@noisy.programming.kicks-ass.net>
-References: <20250320205310.779888-1-pat@patcody.io>
-	 <20250324115613.GD14944@noisy.programming.kicks-ass.net>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1743606016; c=relaxed/simple;
+	bh=isEtce1XzbwTB4+VX7772Pt07KMqxmVCirBGrNO7B/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VNKZi/By3ydh56pcU0JYCU9KH/w747zmnNfqwf+h7OoctyDNbJnvCYCzkLH2coCRUiicH5XLdsyiSzkgN5DAYtr43xGqrquMzp0Ra8VkJZPEIf1XdElp59KfJ+WDdBC2uR52DADfTeyNhCfSGQwfvNE6w8h64P37opEsPYFWc4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DFlhRkJZ; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=H/LzOSBZMJnPa9n+hJhMKcetVnuAU/qb1xOh1kNA3po=; b=DFlhRkJZvk0FxUhTFpLMVcqGW6
+	xG1V3XXL/3wXAn/c2FOYw2EQMYqW/olCsErvNjPUKfLGXt+KADdT2YskzUX3BUzbnyAagDDYzB/fm
+	ZR4Q9IpNbzkJL3GnwtfzS0XcEfD/32j2Dfmitv5ap5a8XrmQ8JcS7Kf2QXPDc3sqfLLqaVqVAynw3
+	SVXXASaClM2+3ASDNUleyBPQi3HXCWxVaxx8xZiTEgWj5/FavNMrcjK/FGXAxKgWhUbSiBa86JP8X
+	ULsI58AmQLxczl1eK++kle8TpZzr4ssoKT0HwbiRLd+lve1N9BIfdY9N8jDECSQ2yYLh8qLlIA9Mb
+	nT2UhlgQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.1 #2 (Red Hat Linux))
+	id 1tzzZX-00000009gs7-0PTo;
+	Wed, 02 Apr 2025 15:00:07 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	intel-gfx@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	v9fs@lists.linux.dev
+Subject: [PATCH v2 1/9] 9p: Add a migrate_folio method
+Date: Wed,  2 Apr 2025 15:59:55 +0100
+Message-ID: <20250402150005.2309458-2-willy@infradead.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250402150005.2309458-1-willy@infradead.org>
+References: <20250402150005.2309458-1-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Sender: riel@surriel.com
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2025-03-24 at 12:56 +0100, Peter Zijlstra wrote:
-> On Thu, Mar 20, 2025 at 01:53:10PM -0700, Pat Cody wrote:
-> > pick_eevdf() can return null, resulting in a null pointer
-> > dereference
-> > crash in pick_next_entity()
->=20
-> If it returns NULL while nr_queued, something is really badly wrong.
->=20
-> Your check will hide this badness.
+The migration code used to be able to migrate dirty 9p folios by writing
+them back using writepage.  When the writepage method was removed,
+we neglected to add a migrate_folio method, which means that dirty 9p
+folios have been unmovable ever since.  This reduced our success at
+defragmenting memory on machines which use 9p heavily.
 
-Looking at the numbers, I suspect vruntime_eligible()
-is simply not allowing us to run the left-most entity
-in the rb tree.
+Fixes: 80105ed2fd27 (9p: Use netfslib read/write_iter)
+Cc: stable@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>
+Cc: v9fs@lists.linux.dev
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ fs/9p/vfs_addr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-At the root level we are seeing these numbers:
+diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
+index 32619d146cbc..1286d96a29bc 100644
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -164,4 +164,5 @@ const struct address_space_operations v9fs_addr_operations = {
+ 	.invalidate_folio	= netfs_invalidate_folio,
+ 	.direct_IO		= noop_direct_IO,
+ 	.writepages		= netfs_writepages,
++	.migrate_folio		= filemap_migrate_folio,
+ };
+-- 
+2.47.2
 
-*(struct cfs_rq *)0xffff8882b3b80000 =3D {
-	.load =3D (struct load_weight){
-		.weight =3D (unsigned long)4750106,
-		.inv_weight =3D (u32)0,
-	},
-	.nr_running =3D (unsigned int)3,
-	.h_nr_running =3D (unsigned int)3,
-	.idle_nr_running =3D (unsigned int)0,
-	.idle_h_nr_running =3D (unsigned int)0,
-	.h_nr_delayed =3D (unsigned int)0,
-	.avg_vruntime =3D (s64)-2206158374744070955,
-	.avg_load =3D (u64)4637,
-	.min_vruntime =3D (u64)12547674988423219,
-
-Meanwhile, the cfs_rq->curr entity has a weight of=20
-4699124, a vruntime of 12071905127234526, and a
-vlag of -2826239998
-
-The left node entity in the cfs_rq has a weight
-of 107666, a vruntime of 16048555717648580,
-and a vlag of -1338888
-
-I cannot for the life of me figure out how the
-avg_vruntime number is so out of whack from what
-the vruntime numbers of the sched entities on the
-runqueue look like.
-
-The avg_vruntime code is confusing me. On the
-one hand the vruntime number is multiplied by
-the sched entity weight when adding to or
-subtracting to avg_vruntime, but on the other
-hand vruntime_eligible scales the comparison
-by the cfs_rq->avg_load number.
-
-What even protects the load number in vruntime_eligible
-from going negative in certain cases, when the current
-entity's entity_key is a negative value?
-
-The latter is probably not the bug we're seeing now, but
-I don't understand how that is supposed to behave.
-
-
---=20
-All Rights Reversed.
 
