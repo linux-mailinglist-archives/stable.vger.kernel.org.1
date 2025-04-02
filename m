@@ -1,114 +1,154 @@
-Return-Path: <stable+bounces-127409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51386A78ED6
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 14:45:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEBBA78EEC
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 14:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15CC816818C
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 12:45:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCB527A40BF
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 12:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA66238D3B;
-	Wed,  2 Apr 2025 12:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C8C23A9B0;
+	Wed,  2 Apr 2025 12:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="F/Yn087g"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2941F2BBB;
-	Wed,  2 Apr 2025 12:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF9923A9A4;
+	Wed,  2 Apr 2025 12:47:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743597948; cv=none; b=WIYv+KARBhzYuDo1AOitq6Hnhb3Si5+sUUs6B1t3HC71z3bbeFI/YiGFUkoL2xC4NQ7+gZv/NVZ4LDhtq76NboeSa5+cYCKaoS9efq2Pdsl5vLif+VmNgdXhM91ORts2RhgOZRg7dfwmNuZxmqdGr46NmgwgaDlwdTn3S+D8pnc=
+	t=1743598043; cv=none; b=hLxwtbjmNLOVIwKJBrfQ8+P1z7zxzq7mV2Ux4IxqDtQBq3EFnrt4tGc6u6p3/YExpZ/9iPvD/GwQJsZFENhCxviUZZFdWPpyhkG43VxvtrcPOXBM78KQcuLDGCUceJDP1cYDgtTmmkVREsgDtfyfYIpbYg283B0H1hjgJbO928c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743597948; c=relaxed/simple;
-	bh=kkd8u8qjRsZKGfCBhYwabWw6BCgMMgLM99/L5iSUIiM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RDvyTry3nrPe3WJKTTepfEcj5LIK6MEoFkyX67lN6J0XWdaoMFO9AI5yqU2dZxqh+f/U/iCm/YEhWlh6qB1NKpMljkdwTZNNUyRkBevR649NJfAnGJATGiZtFazqAT3Loh296cqo1sbGxajngpebgL637UWAi79wXX8SYWDXbsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowACHLwBtMe1npwYqBQ--.6509S2;
-	Wed, 02 Apr 2025 20:45:35 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] usb: renesas_usbhs: Add error handling for usbhsf_fifo_select()
-Date: Wed,  2 Apr 2025 20:45:15 +0800
-Message-ID: <20250402124515.3447-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1743598043; c=relaxed/simple;
+	bh=I0q8yuccgOTwPasdvh8g2GR8Zcmx2hyT3zKwoj4ieVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TaNXjCaXmqQBok5jkMpceextMCQFhF9X/Mzf91VDbkg9omiTSNHMHGMajpjc7+tL6BeWoUjv1aZn88YG4aGkMB2voIYgHIPtQOiZlHF69mxFijq9TOgtvSjju38+hwToRqvpmWz99uXdElmmHiHt4P3km1lW+/SI6gsjvGGpP94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=F/Yn087g; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=iNrXwLiaCyxw5lMHmTmgzkArPeaL8QrC1vfZuM5wnc4=; b=F/Yn087gqPQgTAh2YdjKH/VtZ5
+	NU/GYeFc9oCxswyI2Y0uLKR+owwsSciPOgIoAkecu/HWGBS7g0rEdkJ0FXrVo5E39sbEooN8Nv8k4
+	ZJlpu+UdPZDOwuRUHnP2vjxNxnnLOZUaBVlwW4gD+4US5UPYYeZ7MsP2N8QatRVoSuv8nGyj4CyG3
+	brkMQRuxSOc17oj+BYJejgnoMSEtJTb8RkXJ0YVHKtvw/o6xR/Ovyp1GCBjjwlvPBw+vhUS0AA/ax
+	u8qTbhqPFkJoi0kVc1TR+hEgmUrREjo51ZfXVD00KIa6BjqwCm5UMPucUkMwseDLYhaA/ztgyDFES
+	ye1dYBHA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
+	id 1tzxUu-000000071Gk-2xtB;
+	Wed, 02 Apr 2025 12:47:12 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 4A6CF30049D; Wed,  2 Apr 2025 14:47:12 +0200 (CEST)
+Date: Wed, 2 Apr 2025 14:47:12 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Harshit Agarwal <harshit@nutanix.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	linux-kernel@vger.kernel.org, Jon Kohler <jon@nutanix.com>,
+	Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
+	Rahul Chunduru <rahul.chunduru@nutanix.com>,
+	Will Ton <william.ton@nutanix.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] sched/rt: Fix race in push_rt_task
+Message-ID: <20250402124712.GN25239@noisy.programming.kicks-ass.net>
+References: <20250225180553.167995-1-harshit@nutanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACHLwBtMe1npwYqBQ--.6509S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr1rGrWkZF1Utr4kXrWDArb_yoW8XrWfpF
-	W7G3y5ur1rJw1UXa1UJ3y8Zw1FvayFgry7ZrsrKa97AF13Ja12ya9YvF10vr1DG3yayw1F
-	g3WvyFs5Gan7CFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUcBMtUUU
-	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgAA2ftBI+RrQAAs6
+In-Reply-To: <20250225180553.167995-1-harshit@nutanix.com>
 
-In usbhsf_dcp_data_stage_prepare_pop(), the return value of
-usbhsf_fifo_select() needs to be checked. A proper implementation
-can be found in usbhsf_dma_try_pop_with_rx_irq().
+On Tue, Feb 25, 2025 at 06:05:53PM +0000, Harshit Agarwal wrote:
 
-Add an error check and jump to PIO pop when FIFO selection fails.
+> Details
+> =======
+> Let's look at the following scenario to understand this race.
+> 
+> 1) CPU A enters push_rt_task
+>   a) CPU A has chosen next_task = task p.
+>   b) CPU A calls find_lock_lowest_rq(Task p, CPU Z’s rq).
+>   c) CPU A identifies CPU X as a destination CPU (X < Z).
+>   d) CPU A enters double_lock_balance(CPU Z’s rq, CPU X’s rq).
+>   e) Since X is lower than Z, CPU A unlocks CPU Z’s rq. Someone else has
+>      locked CPU X’s rq, and thus, CPU A must wait.
+> 
+> 2) At CPU Z
+>   a) Previous task has completed execution and thus, CPU Z enters
+>      schedule, locks its own rq after CPU A releases it.
+>   b) CPU Z dequeues previous task and begins executing task p.
+>   c) CPU Z unlocks its rq.
+>   d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
+>      lock) which triggers the schedule function on CPU Z.
+>   e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
+>   f) As part of dequeue, it sets p.on_rq = 0 and unlocks its rq.
+> 
+> 3) At CPU B
+>   a) CPU B enters try_to_wake_up with input task p.
+>   b) Since CPU Z dequeued task p, p.on_rq = 0, and CPU B updates
+>      B.state = WAKING.
+>   c) CPU B via select_task_rq determines CPU Y as the target CPU.
+> 
+> 4) The race
+>   a) CPU A acquires CPU X’s lock and relocks CPU Z.
+>   b) CPU A reads task p.cpu = Z and incorrectly concludes task p is
+>      still on CPU Z.
+>   c) CPU A failed to notice task p had been dequeued from CPU Z while
+>      CPU A was waiting for locks in double_lock_balance. If CPU A knew
+>      that task p had been dequeued, it would return NULL forcing
+>      push_rt_task to give up the task p's migration.
+>   d) CPU B updates task p.cpu = Y and calls ttwu_queue.
+>   e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
+>      p.on_rq = 1.
+>   f) CPU B unlocks CPU Y, triggering memory synchronization.
+>   g) CPU A reads task p.on_rq = 1, cementing its assumption that task p
+>      has not migrated.
+>   h) CPU A decides to migrate p to CPU X.
+> 
+> This leads to A dequeuing p from Y's queue and various crashes down the
+> line.
+> 
+> Solution
+> ========
+> The solution here is fairly simple. After obtaining the lock (at 4a),
+> the check is enhanced to make sure that the task is still at the head of
+> the pushable tasks list. If not, then it is anyway not suitable for
+> being pushed out.
+> 
+> Testing
+> =======
+> The fix is tested on a cluster of 3 nodes, where the panics due to this
+> are hit every couple of days. A fix similar to this was deployed on such
+> cluster and was stable for more than 30 days.
+> 
+> Co-developed-by: Jon Kohler <jon@nutanix.com>
+> Signed-off-by: Jon Kohler <jon@nutanix.com>
+> Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+> Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+> Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+> Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+> Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+> Tested-by: Will Ton <william.ton@nutanix.com>
+> Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> Cc: stable@vger.kernel.org
+> ---
 
-Fixes: 9e74d601de8a ("usb: gadget: renesas_usbhs: add data/status stage handler")
-Cc: stable@vger.kernel.org # v3.2+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/usb/renesas_usbhs/fifo.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Thanks, I've picked this up to land after -rc1.
 
-diff --git a/drivers/usb/renesas_usbhs/fifo.c b/drivers/usb/renesas_usbhs/fifo.c
-index 10607e273879..6cc07ab4782d 100644
---- a/drivers/usb/renesas_usbhs/fifo.c
-+++ b/drivers/usb/renesas_usbhs/fifo.c
-@@ -466,6 +466,7 @@ static int usbhsf_dcp_data_stage_prepare_pop(struct usbhs_pkt *pkt,
- 	struct usbhs_pipe *pipe = pkt->pipe;
- 	struct usbhs_priv *priv = usbhs_pipe_to_priv(pipe);
- 	struct usbhs_fifo *fifo = usbhsf_get_cfifo(priv);
-+	int ret;
- 
- 	if (usbhs_pipe_is_busy(pipe))
- 		return 0;
-@@ -480,10 +481,14 @@ static int usbhsf_dcp_data_stage_prepare_pop(struct usbhs_pkt *pkt,
- 
- 	usbhs_pipe_sequence_data1(pipe); /* DATA1 */
- 
--	usbhsf_fifo_select(pipe, fifo, 0);
-+	ret = usbhsf_fifo_select(pipe, fifo, 0);
-+	if (ret < 0)
-+		goto usbhsf_pio_prepare_pop;
-+
- 	usbhsf_fifo_clear(pipe, fifo);
- 	usbhsf_fifo_unselect(pipe, fifo);
- 
-+usbhsf_pio_prepare_pop:
- 	/*
- 	 * change handler to PIO pop
- 	 */
--- 
-2.42.0.windows.2
 
 
