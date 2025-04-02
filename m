@@ -1,86 +1,103 @@
-Return-Path: <stable+bounces-127414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D314A790A0
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 16:04:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84585A790F4
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 16:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E498168AE4
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 14:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1B5D188D889
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 14:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A455F237705;
-	Wed,  2 Apr 2025 14:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A830F20E00B;
+	Wed,  2 Apr 2025 14:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Sa9OHrYk"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cJaMMfMJ"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1869C17C68;
-	Wed,  2 Apr 2025 14:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627A76F30F
+	for <stable@vger.kernel.org>; Wed,  2 Apr 2025 14:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743602647; cv=none; b=IbdZvP/1lHgGTg6jL3m1MeV9NSyPalcVP6YL0bPDBJDN/ZWwCg+uOwucB7C9c16XUqiHlX2ecBXrGst6PlLYxPtBJmLPcmSHZJOaSe1IP+Orc8JqJNTw/3zp2ASv78VPcOu+ZYjmwYStgTOwSQJ40ag05woZrWUXCD/q/JlPiW8=
+	t=1743603356; cv=none; b=FKffSY20lHWmxpOfDL8xTnSmC+bb0i95rFOb63Day3cQl8cA7uEmqjN2BRAaskrskfjflZRsXL2YQZLjrMkHENfs0UogKHV+aA0s2oFjWChJUYS9brSOH5PEsuukq/5a40xL8iGW8Xiqv6CIfyAHY2LJv1uIfvstKL8aLU6pRak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743602647; c=relaxed/simple;
-	bh=OBfHirOrTC2pb23RcdLE7kWtv/yuu2ZTh+nJlFlHYJ4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=N4AU1aoHUKFo9HdMTcEJRnskoYUty/wCKnTf2aGmxrHraBi/0+miwTlGrW5FYColsIIlvoARrPpfPptTnxhHYKbYqEwWKDRmm2H3JhCLTCFi1XhwrXDjjwLlQdb3jmuqHBzu65ovyHZaTCbahkAeMXn5TkUO57MU5q8h/EivyQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Sa9OHrYk; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=OBfHirOrTC2pb23RcdLE7kWtv/yuu2ZTh+nJlFlHYJ4=; b=Sa9OHrYkEcQWOVuJ6gyqPbjnPr
-	/e26dbfCfIs4THr0d0MwKMkHTdS5QHXgbHr4IuYFj2+cB7mCTJds+4KKTwPq2N31Nals+cmC33O16
-	SODh8GD1JIL3HmOPDjpm0e+XvTlpAQLRQiiu/I707og5l4ebjr8jxyMh2RdHXdeK9yHqNs3R9MdIp
-	ZBsdSN+iGz9HPqfzMI2t4BGfAKeyLTpDqIOjo+cS/ca8JIf5HAO5YXDHXMW5HeI605jj4Uj71vSqE
-	mvWZXCUlBOZSLRRvRLBApNQChBUmodB7FlVAhlQox8oiUspi4ehtxnDLWtplajZcNPNEFesHRMPNG
-	Uhks7wvQ==;
-Received: from 79.red-83-60-111.dynamicip.rima-tde.net ([83.60.111.79] helo=[192.168.1.72])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tzyh8-00AP3c-Oj; Wed, 02 Apr 2025 16:03:54 +0200
-Message-ID: <3afa71f8ed15ea4c10b31a4cf41c39ea6edc56cb.camel@igalia.com>
-Subject: Re: [PATCH] sctp: check transport existence before processing a
- send primitive
-From: Ricardo =?ISO-8859-1?Q?Ca=F1uelo?= Navarro <rcn@igalia.com>
-To: Simon Horman <horms@kernel.org>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long	
- <lucien.xin@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni	 <pabeni@redhat.com>, kernel-dev@igalia.com,
- linux-sctp@vger.kernel.org, 	netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 02 Apr 2025 16:03:53 +0200
-In-Reply-To: <62dbd9ed967e43e7310cd5333867cfd8930321c4.camel@igalia.com>
-References: 
-	<20250402-kasan_slab-use-after-free_read_in_sctp_outq_select_transport-v1-1-da6f5f00f286@igalia.com>
-		 <20250402132141.GO214849@horms.kernel.org>
-	 <62dbd9ed967e43e7310cd5333867cfd8930321c4.camel@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 
+	s=arc-20240116; t=1743603356; c=relaxed/simple;
+	bh=HmxXuuLvTGRW2v0lSm/MV17CTpYebj+3WV1Y2S95tAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gJKkK+8N5H6gBQHZhTFmiC7e7KalJcUWNQ6/FvIuA+8aNS9QGPrV4bFs/1oK+sJYV6+j9CSnPzdN9oEDz+eLBva79ILFLrtAPL05urNignbsE6JK+rCZKAMSKzU3cyKyMOXeJ/Uht8Hn8UXJuNshtQcGYn3HUK1KAgEUnT4fLbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cJaMMfMJ; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Wed, 2 Apr 2025 10:15:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1743603342;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CM4At2M6VUr7hqgzQbMZ99RPNNt354raBAzhLjuv9tY=;
+	b=cJaMMfMJzHtPeZSRikn8f6yctUS9lY7DG5BJtz3NWsqYcgD7NrJlYzXUdVwLCn1MvdI4bt
+	Oa6xIOTFBbcUJkoMDapN9DDPaxurXFHBNoMxSEkwWCn0a/xJl1Vqfz++jGYwQeEN+xzBuj
+	/RxPxYdFUypswelsB0pxamJoN4mGtEc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] bcachefs: Add error handling for zlib_deflateInit2()
+Message-ID: <xjtejtaya3znotupznz4eywstkjvucxwyo2gf4b6phcwq6a2i5@pqicczp3ty5g>
+References: <20250402134544.3550-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250402134544.3550-1-vulab@iscas.ac.cn>
+X-Migadu-Flow: FLOW_OUT
 
-By the way, I'm thinking of setting err to -EAGAIN here so that
-userspace can retry the send and sctp_sendmsg() will try again to find
-a suitable association or create a new one if necessary, but if someone
-more knowledgeable about the SCTP implementation has a better
-suggestion about what kind of error to return in this scenario, I'd
-appreciate it.
+On Wed, Apr 02, 2025 at 09:45:44PM +0800, Wentao Liang wrote:
+> In attempt_compress(), the return value of zlib_deflateInit2() needs to be
+> checked. A proper implementation can be found in  pstore_compress().
+> 
+> Add an error check and return 0 immediately if the initialzation fails.
+> 
+> Fixes: 986e9842fb68 ("bcachefs: Compression levels")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-Regards,
-Ricardo
+Applied
+
+> ---
+>  fs/bcachefs/compress.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/bcachefs/compress.c b/fs/bcachefs/compress.c
+> index f99ff1819597..5af37c40cef0 100644
+> --- a/fs/bcachefs/compress.c
+> +++ b/fs/bcachefs/compress.c
+> @@ -365,13 +365,14 @@ static int attempt_compress(struct bch_fs *c,
+>  		};
+>  
+>  		zlib_set_workspace(&strm, workspace);
+> -		zlib_deflateInit2(&strm,
+> +		if (zlib_deflateInit2(&strm,
+>  				  compression.level
+>  				  ? clamp_t(unsigned, compression.level,
+>  					    Z_BEST_SPEED, Z_BEST_COMPRESSION)
+>  				  : Z_DEFAULT_COMPRESSION,
+>  				  Z_DEFLATED, -MAX_WBITS, DEF_MEM_LEVEL,
+> -				  Z_DEFAULT_STRATEGY);
+> +				  Z_DEFAULT_STRATEGY) != Z_OK)
+> +			return 0;
+>  
+>  		if (zlib_deflate(&strm, Z_FINISH) != Z_STREAM_END)
+>  			return 0;
+> -- 
+> 2.42.0.windows.2
+> 
 
