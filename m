@@ -1,134 +1,114 @@
-Return-Path: <stable+bounces-127408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73956A78D1C
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 13:32:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51386A78ED6
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 14:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CE221892B25
-	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 11:31:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15CC816818C
+	for <lists+stable@lfdr.de>; Wed,  2 Apr 2025 12:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1FC235BFB;
-	Wed,  2 Apr 2025 11:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cJq/UmwN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA66238D3B;
+	Wed,  2 Apr 2025 12:45:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9971023B0;
-	Wed,  2 Apr 2025 11:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2941F2BBB;
+	Wed,  2 Apr 2025 12:45:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743593488; cv=none; b=hfHdSvLxG2sYGTvNVAR/gEXQ4yo9j9LC17TSXpNoR8wkZLGqyG35dPTmvGVvfiWzCwUO9Ov8u5ZEodKfUPGW0a9v29BMQMebcmEGg+vTS14MiZUq9gdM6uNSkHkjaKEBY0yg+C6klMk9GCMfbRZUJuGyTY5Lax8hFdmidqa4kaQ=
+	t=1743597948; cv=none; b=WIYv+KARBhzYuDo1AOitq6Hnhb3Si5+sUUs6B1t3HC71z3bbeFI/YiGFUkoL2xC4NQ7+gZv/NVZ4LDhtq76NboeSa5+cYCKaoS9efq2Pdsl5vLif+VmNgdXhM91ORts2RhgOZRg7dfwmNuZxmqdGr46NmgwgaDlwdTn3S+D8pnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743593488; c=relaxed/simple;
-	bh=k1UyVXVWg2z8ebfSXRRxAGOouyZA/x1/w5HRrCKSSeE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LWYICxTcEjO1/4n2xdDrFH7gSc1QywKbSC/1p1qvaA0JiiELP9HOtVyY6LFPAVaMKJMoFNh8HPGspb9magPcVardXLqNnumyDUknRvm4X+C4u8BiEYOSixg/FPB3SkByhVgyTdg76ldJ+O9GP9mU9hZ0ZwRJM9Nhh0HlpWKTNC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cJq/UmwN; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-54acc04516fso6275728e87.0;
-        Wed, 02 Apr 2025 04:31:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743593485; x=1744198285; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VOAVNu9Kqf7PZaTRYwlcNfDlS68QrPwBXmLNyWX78Ag=;
-        b=cJq/UmwNsnm6BB47UEoGq890CcvjzKwUw85HuQbuKaMo4gX62zoQfVRcCYYTxqhNA5
-         nnj22pQ4pW0aqXEPoDmEl+6O34WRb33xmnFkyt/YTkB8arh+YJQ/cwAmdoROnFRSAF54
-         fpYr3IvAtenOly8YR84ksBq74qV9Fm6z5J+yWNrowYX49wOZKf+H2lLW7xQe9/1CTSer
-         H/DJgAXe2pIj0xJUs0vyTIzraxQF0SbfnvfnR/tQJcupze4MlK0PJmkq0xM+xgsZD7VG
-         ++dXhjDshFOrhC+ynCC+iTQR5NB4flA+nZxpJ68bDnUbu16yWggcHeDg5UKvKwNlvzIH
-         C1EQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743593485; x=1744198285;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VOAVNu9Kqf7PZaTRYwlcNfDlS68QrPwBXmLNyWX78Ag=;
-        b=vdA67KE7AJwbw6+5cJZzl1eQsli1qDV6CmDBBAJURs1EGrYGVEqO4tG4hcC0Tvpi/p
-         gXqNjS2+Gkvn5g7Jlj7n8yWEIgOHcWYsQrRqBs6uqMUol+WdsiTEEHLCKgUqZPxAsRJo
-         EInSvxhzyU3Ilgu17XErSezfLfPjisSs7n26wm/sdKFqhM0nU6hxoPvLLXAoEYQQ0jFF
-         YxrgiMuHil016TWw9LHNHa+hL+wzX6tYmxrslVa9cVLRaxBE8+6U4s3et5ekj6BHu0WP
-         qw9k10jYksrOh7n46kblj4UCuQr/cFBgy83sLN8FsK2Id5hxFIYHpsMXNTD/sM9RSATt
-         CSxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ7H9aKjA9eVcEGahWDcjZTQ8HAWV++KMnyUQgJR8d26p26576p5hbJ8aFQqe/wXT3lsNgdJd6@vger.kernel.org, AJvYcCXyKbqqdNiuiTJzn/Ggpe5nv0+LKjuLnw7ntJc8msmfa2A48DMNjrmE/z9Y0ODrfSz3o102e03cB2mC3eQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOAEdu/KtCCGfkJSAK4M6gOaZU2zLr065PLuliCv/JTxi3s9Va
-	W7d0awnEczVOS1hQbPSg4Fi36Msx5GAeZkZa/HJ3GFjUluWUnzk4EbUGlhBtpPCGuQt7C7oIef1
-	70/p6p2ILl4gSrB3e7U182vl+SJ7lKdMy
-X-Gm-Gg: ASbGncupwAW70wl+NsN7moB1sonOxekLRyoO72dZVtpZaybivyzQDeIrXO+P7bz4ZVd
-	KSIqCMDsi7B03NptvrlYe+0u5HBekaT8TmqIAS3GrWmjAPNzo/069s1opereTugu1QSTtATapCV
-	rExT8p2rfUyf72Agig0bj5TSmstZ313+yRuG6fwzwuSKa3zCqSPGV1QQ4ZELiDmvIT60v+G20=
-X-Google-Smtp-Source: AGHT+IGDP7fN/mlgeR1ejgbnG6v2T05K9e3eS+G5D4ks1NyMNbGzNy7b9fCSqq7Gay9J6tYjG5W23A4J+hlZdsO25Ts=
-X-Received: by 2002:a05:6512:2c99:b0:54b:117c:118c with SMTP id
- 2adb3069b0e04-54b117c11f5mr4261792e87.57.1743593484370; Wed, 02 Apr 2025
- 04:31:24 -0700 (PDT)
+	s=arc-20240116; t=1743597948; c=relaxed/simple;
+	bh=kkd8u8qjRsZKGfCBhYwabWw6BCgMMgLM99/L5iSUIiM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RDvyTry3nrPe3WJKTTepfEcj5LIK6MEoFkyX67lN6J0XWdaoMFO9AI5yqU2dZxqh+f/U/iCm/YEhWlh6qB1NKpMljkdwTZNNUyRkBevR649NJfAnGJATGiZtFazqAT3Loh296cqo1sbGxajngpebgL637UWAi79wXX8SYWDXbsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowACHLwBtMe1npwYqBQ--.6509S2;
+	Wed, 02 Apr 2025 20:45:35 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] usb: renesas_usbhs: Add error handling for usbhsf_fifo_select()
+Date: Wed,  2 Apr 2025 20:45:15 +0800
+Message-ID: <20250402124515.3447-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250402085856.3348-1-vulab@iscas.ac.cn>
-In-Reply-To: <20250402085856.3348-1-vulab@iscas.ac.cn>
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Wed, 2 Apr 2025 20:31:08 +0900
-X-Gm-Features: AQ5f1JovFhM7rRGBrJhv4JMkrXTr2ISvt_zbXmpfVi3qcZyzfqwkEJEsTyuCYdM
-Message-ID: <CAKFNMomx3hpQrntyO0zQZviPa40LiC5KqxFa-m1PZcnZ7ku58A@mail.gmail.com>
-Subject: Re: [PATCH] nilfs2: Add pointer check for nilfs_direct_propagate()
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: linux-nilfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACHLwBtMe1npwYqBQ--.6509S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr1rGrWkZF1Utr4kXrWDArb_yoW8XrWfpF
+	W7G3y5ur1rJw1UXa1UJ3y8Zw1FvayFgry7ZrsrKa97AF13Ja12ya9YvF10vr1DG3yayw1F
+	g3WvyFs5Gan7CFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUcBMtUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAgAA2ftBI+RrQAAs6
 
-On Wed, Apr 2, 2025 at 5:59=E2=80=AFPM Wentao Liang wrote:
->
-> In nilfs_direct_propagate(), the printer get from nilfs_direct_get_ptr()
-> need to be checked to ensure it is not an invalid pointer. A proper
-> implementation can be found in nilfs_direct_delete(). Add a value check
-> and return -ENOENT when it is an invalid pointer.
->
-> Fixes: 10ff885ba6f5 ("nilfs2: get rid of nilfs_direct uses")
-> Cc: stable@vger.kernel.org # v2.6+
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  fs/nilfs2/direct.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
-> index 893ab36824cc..ff1c9fe72bec 100644
-> --- a/fs/nilfs2/direct.c
-> +++ b/fs/nilfs2/direct.c
-> @@ -273,6 +273,9 @@ static int nilfs_direct_propagate(struct nilfs_bmap *=
-bmap,
->         dat =3D nilfs_bmap_get_dat(bmap);
->         key =3D nilfs_bmap_data_get_key(bmap, bh);
->         ptr =3D nilfs_direct_get_ptr(bmap, key);
-> +       if (ptr =3D=3D NILFS_BMAP_INVALID_PTR)
-> +               return -ENOENT;
-> +
->         if (!buffer_nilfs_volatile(bh)) {
->                 oldreq.pr_entry_nr =3D ptr;
->                 newreq.pr_entry_nr =3D ptr;
-> --
-> 2.42.0.windows.2
->
+In usbhsf_dcp_data_stage_prepare_pop(), the return value of
+usbhsf_fifo_select() needs to be checked. A proper implementation
+can be found in usbhsf_dma_try_pop_with_rx_irq().
 
-This patch requires review and correction.
-To avoid noise, I will comment on it separately in a reply email that
-excludes the stable ML.
+Add an error check and jump to PIO pop when FIFO selection fails.
 
-As a comment in advance, the commit pointed to by the Fixes tag is not
-the commit that caused the issue, and the version specification "#
-v2.6+" includes versions prior to nilfs2 mainline integration, so it
-is unnecessary.
+Fixes: 9e74d601de8a ("usb: gadget: renesas_usbhs: add data/status stage handler")
+Cc: stable@vger.kernel.org # v3.2+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/usb/renesas_usbhs/fifo.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Regards,
-Ryusuke Konishi
+diff --git a/drivers/usb/renesas_usbhs/fifo.c b/drivers/usb/renesas_usbhs/fifo.c
+index 10607e273879..6cc07ab4782d 100644
+--- a/drivers/usb/renesas_usbhs/fifo.c
++++ b/drivers/usb/renesas_usbhs/fifo.c
+@@ -466,6 +466,7 @@ static int usbhsf_dcp_data_stage_prepare_pop(struct usbhs_pkt *pkt,
+ 	struct usbhs_pipe *pipe = pkt->pipe;
+ 	struct usbhs_priv *priv = usbhs_pipe_to_priv(pipe);
+ 	struct usbhs_fifo *fifo = usbhsf_get_cfifo(priv);
++	int ret;
+ 
+ 	if (usbhs_pipe_is_busy(pipe))
+ 		return 0;
+@@ -480,10 +481,14 @@ static int usbhsf_dcp_data_stage_prepare_pop(struct usbhs_pkt *pkt,
+ 
+ 	usbhs_pipe_sequence_data1(pipe); /* DATA1 */
+ 
+-	usbhsf_fifo_select(pipe, fifo, 0);
++	ret = usbhsf_fifo_select(pipe, fifo, 0);
++	if (ret < 0)
++		goto usbhsf_pio_prepare_pop;
++
+ 	usbhsf_fifo_clear(pipe, fifo);
+ 	usbhsf_fifo_unselect(pipe, fifo);
+ 
++usbhsf_pio_prepare_pop:
+ 	/*
+ 	 * change handler to PIO pop
+ 	 */
+-- 
+2.42.0.windows.2
+
 
